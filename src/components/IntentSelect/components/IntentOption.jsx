@@ -8,6 +8,7 @@ import { PlatformType, SPACE_REGEXP } from '@/constants';
 const PLATFORM_ICONS = {
   [PlatformType.ALEXA]: 'amazon',
   [PlatformType.GOOGLE]: 'google',
+  [PlatformType.GENERAL]: 'inFlow',
 };
 
 const getFormatedLabel = (label, searchLabel) => {

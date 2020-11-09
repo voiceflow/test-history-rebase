@@ -7,7 +7,7 @@ import { FullSkill } from '@/models';
 import publishingAdapter from './publishing';
 import settingsAdapter from './settings';
 
-const alexaVersionAdapter = createAdapter<GoogleVersion, FullSkill>(
+const googleVersionAdapter = createAdapter<GoogleVersion, FullSkill>(
   ({ name, _id, creatorID, projectID, rootDiagramID, variables, platformData: { settings, publishing } }) => ({
     id: _id,
     name,
@@ -28,6 +28,7 @@ const alexaVersionAdapter = createAdapter<GoogleVersion, FullSkill>(
       [PlatformType.GOOGLE]: {
         googleId: null,
       },
+      [PlatformType.GENERAL]: {},
     },
     meta: {
       ...publishingAdapter.fromDB(publishing),
@@ -46,4 +47,4 @@ const alexaVersionAdapter = createAdapter<GoogleVersion, FullSkill>(
   }
 );
 
-export default alexaVersionAdapter;
+export default googleVersionAdapter;

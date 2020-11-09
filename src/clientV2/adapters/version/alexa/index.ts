@@ -28,6 +28,7 @@ const alexaVersionAdapter = createAdapter<AlexaVersion, FullSkill>(
       [PlatformType.GOOGLE]: {
         googleId: null,
       },
+      [PlatformType.GENERAL]: {},
     },
     meta: {
       ...publishingAdapter.fromDB(publishing),

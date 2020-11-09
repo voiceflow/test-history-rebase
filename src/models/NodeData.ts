@@ -1,4 +1,5 @@
-import { ExpressionType, IntegrationUser, PermissionType, SlotMapping } from '@voiceflow/alexa-types';
+import { PermissionType } from '@voiceflow/alexa-types';
+import { ExpressionType, IntegrationUser, SlotMapping } from '@voiceflow/general-types';
 import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
 import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/general-types/build/nodes/googleSheets';
 import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
@@ -222,6 +223,7 @@ export namespace NodeData {
   export type AccountLinking = {};
 
   export type Intent = Record<PlatformType, Intent.PlatformData>;
+
   export namespace Intent {
     export type PlatformData = { intent: string | null; mappings: SlotMapping[] };
   }

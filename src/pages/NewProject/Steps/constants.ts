@@ -100,4 +100,4 @@ export const PLATFORM_META: PlatformMetaProps = {
   },
 };
 
-export const PLATFORM_META_ARRAY = [PLATFORM_META[PlatformType.ALEXA], PLATFORM_META[PlatformType.GOOGLE]];
+export const PLATFORM_META_ARRAY = [PLATFORM_META[PlatformType.ALEXA], PLATFORM_META[PlatformType.GOOGLE], PLATFORM_META[PlatformType.GENERAL]];

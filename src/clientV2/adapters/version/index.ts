@@ -1,33 +1,23 @@
-import { AlexaProjectMemberData, AlexaVersion } from '@voiceflow/alexa-types';
-import { Member, Version, VersionPlatformData } from '@voiceflow/api-sdk';
-import { GoogleVersion } from '@voiceflow/google-types';
+import { Version, VersionPlatformData } from '@voiceflow/api-sdk';
 
-import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
+import { AdapterNotImplementedError, BidirectionalAdapter, createAdapter } from '@/client/adapters/utils';
 import { PlatformType } from '@/constants';
 import { FullSkill } from '@/models';
+import { getPlatformValue } from '@/utils/platform';
 
 import alexaVersionAdapter from './alexa';
+import generalVersionAdapter from './general';
 import googleVersionAdapter from './google';
 
-const versionAdapter = createAdapter<Version<VersionPlatformData>, FullSkill, [{ platform: PlatformType; member?: Member }]>(
-  (dbVersion, { platform = PlatformType.ALEXA, member }) => {
-    if (platform === PlatformType.ALEXA) {
-      const version = alexaVersionAdapter.fromDB(dbVersion as AlexaVersion);
+const versionAdapter = createAdapter<Version<VersionPlatformData>, FullSkill, [{ platform: PlatformType }]>(
+  (version, { platform = PlatformType.ALEXA }) => {
+    const adapter = getPlatformValue<BidirectionalAdapter<Version<any>, FullSkill, [], []>>(platform, {
+      [PlatformType.ALEXA]: alexaVersionAdapter,
+      [PlatformType.GOOGLE]: googleVersionAdapter,
+      [PlatformType.GENERAL]: generalVersionAdapter,
+    });
 
-      if (member) {
-        const {
-          platformData: { selectedVendor, vendors },
-        } = member as Member<AlexaProjectMemberData>;
-        version.publishInfo.alexa.amznID = vendors?.find(({ vendorID }) => vendorID === selectedVendor)?.skillID ?? null;
-        version.publishInfo.alexa.vendorId = selectedVendor;
-      }
-      return version;
-    }
-
-    if (platform === PlatformType.GOOGLE) {
-      return googleVersionAdapter.fromDB(dbVersion as GoogleVersion);
-    }
-    throw new Error('Invalid Platform');
+    return adapter.fromDB(version);
   },
   () => {
     throw new AdapterNotImplementedError();

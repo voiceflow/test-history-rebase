@@ -23,6 +23,7 @@ const PlatformSelect: React.FC<PlatformSelectProps> = ({ setSelectedPlatform, cr
   }, []);
 
   const actionsEnv = useFeature(FeatureFlag.ACTIONS_ENV);
+  const generalPlatform = useFeature(FeatureFlag.GENERAL_PLATFORM);
 
   return (
     <Container width={980}>
@@ -36,7 +37,7 @@ const PlatformSelect: React.FC<PlatformSelectProps> = ({ setSelectedPlatform, cr
         </div>
       </FlexCenter>
       <PlatformCardsContainer>
-        {PLATFORM_META_ARRAY.map((meta, index) => {
+        {PLATFORM_META_ARRAY.filter(({ platform }) => platform !== PlatformType.GENERAL || generalPlatform.isEnabled).map((meta, index) => {
           return (
             <PlatformCard
               key={index}

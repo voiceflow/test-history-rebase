@@ -19,3 +19,9 @@ export enum StepLabelVariant {
   SECONDARY = 'secondary',
   PLACEHOLDER = 'placeholder',
 }
+
+export enum PortType {
+  NEXT = 'next',
+  PAUSE = 'pause',
+  PREVIOUS = 'previous',
+}

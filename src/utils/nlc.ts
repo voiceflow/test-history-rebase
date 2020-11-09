@@ -1,4 +1,4 @@
-import { constants, utils } from '@voiceflow/common';
+import { utils } from '@voiceflow/common';
 import NLC, { IIntentSlot } from '@voiceflow/natural-language-commander';
 
 import { spreadSynonyms } from '@/client/adapters/slot';
@@ -7,43 +7,17 @@ import Logger from '@/utils/logger';
 
 const log = Logger.child('nlc');
 
-type BuiltInIntentsFilter = (name: string) => boolean;
-
 type Options = {
   slots: DBSlot[];
   intents: DBIntent[];
-  language: string;
-  builtInIntentsFilter?: BuiltInIntentsFilter;
+  builtInIntents: { name: string; samples: string[] }[];
 };
 
 const { getUtterancesWithSlotNames } = utils.intent;
 
-const {
-  intents: { DEFAULT_INTENTS },
-} = constants;
-
 const CUSTOM_SLOT_TYPE = 'Custom';
 
-const AUDIO_INTENTS = [
-  {
-    name: 'Pause',
-    intent: 'AMAZON.PauseIntent',
-  },
-  {
-    name: 'Resume',
-    intent: 'AMAZON.ResumeIntent',
-  },
-  {
-    name: 'Next',
-    intent: 'AMAZON.NextIntent',
-  },
-  {
-    name: 'Previous',
-    intent: 'AMAZON.PreviousIntent',
-  },
-];
-
-export const registerSlots = (nlc: NLC, slots: DBSlot[]) => {
+export const registerSlots = (nlc: NLC, { slots }: Options) => {
   slots.map(spreadSynonyms).forEach((slot) => {
     try {
       if (slot.type?.value === CUSTOM_SLOT_TYPE) {
@@ -57,7 +31,7 @@ export const registerSlots = (nlc: NLC, slots: DBSlot[]) => {
   });
 };
 
-export const registerCustomIntents = (nlc: NLC, { slots, intents }: Pick<Options, 'slots' | 'intents'>) => {
+export const registerCustomIntents = (nlc: NLC, { slots, intents }: Options) => {
   intents.forEach((intent) => {
     const samples = getUtterancesWithSlotNames(intent.inputs, slots)
       .map((value) => value.trim())
@@ -106,54 +80,26 @@ export const registerCustomIntents = (nlc: NLC, { slots, intents }: Pick<Options
   });
 };
 
-export const registerBuiltInIntents = (nlc: NLC, { language, builtInIntentsFilter }: Pick<Options, 'language' | 'builtInIntentsFilter'>) => {
-  try {
-    const builtInIntents = DEFAULT_INTENTS[language.slice(0, 2)].defaults;
+export const registerBuiltInIntents = (nlc: NLC, { builtInIntents }: Options) => {
+  builtInIntents.forEach((intent) => {
+    const { name, samples } = intent;
 
-    builtInIntents.forEach((intent) => {
-      const { samples, name } = intent;
-
-      if (builtInIntentsFilter && builtInIntentsFilter(name) === false) {
-        return;
-      }
-
-      try {
-        nlc.registerIntent({
-          intent: name,
-          utterances: samples,
-        });
-      } catch (err) {
-        log.error('NLC Unable To Register Built In Intent', log.value(intent), err);
-      }
-    });
-
-    AUDIO_INTENTS.forEach(({ intent, name }) => {
-      if (builtInIntentsFilter && builtInIntentsFilter(name) === false) {
-        return;
-      }
-
-      try {
-        nlc.registerIntent({
-          intent,
-          utterances: [name],
-        });
-      } catch (err) {
-        log.error('NLC Unable To Register Audio Intent', log.value(intent), err);
-      }
-    });
-  } catch (err) {
-    log.error(err);
-  }
+    try {
+      nlc.registerIntent({ intent: name, utterances: samples });
+    } catch (err) {
+      log.error('NLC Unable To Register Built In Intent', log.value(intent), err);
+    }
+  });
 };
 
-export const createAndRegister = ({ slots, intents, language, builtInIntentsFilter }: Options): NLC => {
+export const createAndRegister = (options: Options): NLC => {
   const nlc = new NLC();
 
-  registerSlots(nlc, slots);
+  registerSlots(nlc, options);
 
-  registerCustomIntents(nlc, { slots, intents });
+  registerCustomIntents(nlc, options);
 
-  registerBuiltInIntents(nlc, { language, builtInIntentsFilter });
+  registerBuiltInIntents(nlc, options);
 
   return nlc;
 };

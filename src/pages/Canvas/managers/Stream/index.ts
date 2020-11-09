@@ -1,4 +1,5 @@
-import { BlockType, PlatformType } from '@/constants';
+import { BlockType } from '@/constants';
+import { PortType } from '@/constants/canvas';
 import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
@@ -23,12 +24,9 @@ const StreamManager: NodeConfig<NodeData.Stream> = {
       ports: {
         in: [{}],
         out: [
-          // google out port
-          { platform: PlatformType.GOOGLE },
-          // alexa "next" port
-          { platform: PlatformType.ALEXA },
-          // alexa "previous" port
-          { platform: PlatformType.ALEXA },
+          { label: PortType.NEXT, target: null },
+          { label: PortType.PREVIOUS, target: null },
+          { label: PortType.PAUSE, target: null },
         ],
       },
     },

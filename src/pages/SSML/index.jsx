@@ -1,3 +1,4 @@
+import { Voice } from '@voiceflow/alexa-types';
 import React from 'react';
 
 import Button from '@/components/Button';
@@ -18,12 +19,12 @@ function getInitialValue() {
     const { text, voice } = JSON.parse(localStorage.getItem('SSML_EDITOR'));
     return { text, voice };
   } catch (err) {
-    return { text: '', voice: 'Alexa' };
+    return { text: '', voice: Voice.ALEXA };
   }
 }
 
 function wrapVoice({ text, voice }) {
-  if (voice === 'Alexa') return text;
+  if (voice === Voice.ALEXA) return text;
 
   return `<voice name="${voice}">${text}</voice>`;
 }

@@ -1,4 +1,5 @@
 import { AlexaProjectData, AlexaProjectMemberData, AlexaVersionData } from '@voiceflow/alexa-types';
+import { Member } from '@voiceflow/api-sdk';
 import { GoogleProjectData, GoogleProjectMemberData, GoogleVersionData } from '@voiceflow/google-types';
 
 import client from '@/client';
@@ -94,10 +95,19 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
   );
 
   const project = projectAdapter.fromDB(dbProject);
-  const member = dbProject.members.find(({ creatorID }) => creatorID === userID);
 
   // use the project name instead of the version name
-  const skill = versionAdapter.fromDB({ ...dbVersion, name: project.name }, { platform: dbProject.platform as PlatformType, member });
+  const skill = versionAdapter.fromDB({ ...dbVersion, name: project.name }, { platform: dbProject.platform as PlatformType });
+
+  // temporary setup until we refactor the skill duck and move vendor/amazonID to project
+  const member = dbProject.members.find(({ creatorID }) => creatorID === userID);
+  if (member) {
+    const {
+      platformData: { selectedVendor, vendors },
+    } = member as Member<AlexaProjectMemberData>;
+    skill.publishInfo.alexa.amznID = vendors?.find(({ vendorID }) => vendorID === selectedVendor)?.skillID ?? null;
+    skill.publishInfo.alexa.vendorId = selectedVendor;
+  }
 
   dispatch(Creator.resetCreator());
 

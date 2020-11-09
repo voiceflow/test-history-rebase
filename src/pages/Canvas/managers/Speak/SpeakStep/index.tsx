@@ -5,6 +5,7 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { getAudioTitle } from '@/utils/audio';
+import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
 import { stripHTMLTags } from '@/utils/string';
 
@@ -33,9 +34,13 @@ enum IconColor {
 }
 
 export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, portID }) => {
-  const itemProps = {
-    placeholder: `What will ${PlatformType.GOOGLE === platform ? 'Google' : 'Alexa'} say?`,
-  };
+  const placeholder = getPlatformValue(platform, {
+    [PlatformType.ALEXA]: 'What will Alexa say?',
+    [PlatformType.GOOGLE]: 'What will Google say?',
+    [PlatformType.GENERAL]: "What will 'the assistant' say?",
+  });
+
+  const itemProps = { placeholder };
 
   const itemsToRender = random && items.length ? [items[0]] : items;
 

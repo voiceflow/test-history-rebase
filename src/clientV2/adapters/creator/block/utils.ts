@@ -2,22 +2,16 @@ import { Voice } from '@voiceflow/alexa-types';
 import { DiagramNode as DBNode, Port as DBPort } from '@voiceflow/api-sdk';
 import { NoMatches, Prompt } from '@voiceflow/general-types';
 
-import { Adapter, Options, createAdapter, createSimpleAdapter } from '@/client/adapters/utils';
-import { DialogType, PlatformType, RepromptType, SLOT_REGEXP, VARIABLE_STRING_REGEXP } from '@/constants';
+import { createAdapter, createSimpleAdapter } from '@/client/adapters/utils';
+import { DialogType, RepromptType, SLOT_REGEXP, VARIABLE_STRING_REGEXP } from '@/constants';
 import { Node, NodeData, Port } from '@/models';
 import { SpeakData } from '@/models/Speak';
 
-const PLATFORMS = Object.values(PlatformType);
-
-export const createBlockAdapter = <I, O>(
-  fromDB: Adapter<I, [{ platform: PlatformType }], O>,
-  toDB: Adapter<O, [{ platform: PlatformType }], I>,
-  options: Options = {}
-) => createSimpleAdapter<I, O, [{ platform: PlatformType }], [{ platform: PlatformType }]>(fromDB, toDB, options);
+export const createBlockAdapter = createSimpleAdapter;
 
 export type PortsAdapter = {
-  toDB: (ports: { port: Port; target: string | null }[], node: Node, platform: PlatformType) => DBPort[];
-  fromDB: (ports: DBPort[], node: DBNode, platform: PlatformType) => { port: Port; target: string | null }[];
+  toDB: (ports: { port: Port; target: string | null }[], node: Node) => DBPort[];
+  fromDB: (ports: DBPort[], node: DBNode) => { port: Port; target: string | null }[];
 };
 
 // TODO: refactor merge repromptAdapter and noMatchRepromptAdapter to use the same types
@@ -66,5 +60,4 @@ export const transformVariablesFromReadableWithoutTrim = (text: string) => text.
 
 export const transformVariablesFromReadable = (text: string) => transformVariablesFromReadableWithoutTrim(text).trim();
 
-export const defaultPlatformsData = <T>(data: T) =>
-  PLATFORMS.reduce<Record<PlatformType, T>>((acc, platform) => Object.assign(acc, { [platform]: data }), {} as Record<PlatformType, T>);
+export const getPortByLabel = (ports: { port: Port; target: string | null }[], label: string) => ports.find(({ port }) => port.label === label);

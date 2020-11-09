@@ -4,7 +4,6 @@ import React from 'react';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { HelpTooltip } from '@/components/IntentForm';
 import OverflowMenu from '@/components/OverflowMenu';
-import { PlatformType } from '@/constants';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -14,13 +13,11 @@ import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoRe
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import ElseResponse from '@/pages/Canvas/managers/Choice/components/ElseResponse';
+import { defaultPlatformsData } from '@/utils/platform';
 
 import DraggableItem from './DraggableItem';
 
-const choiceFactory = () => ({
-  [PlatformType.ALEXA]: { id: cuid.slug(), intent: null, mappings: [] },
-  [PlatformType.GOOGLE]: { id: cuid.slug(), intent: null, mappings: [] },
-});
+const choiceFactory = () => defaultPlatformsData({ id: cuid.slug(), intent: null, mappings: [] });
 
 function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
   const { choices } = data;

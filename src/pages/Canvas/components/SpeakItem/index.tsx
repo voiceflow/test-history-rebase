@@ -63,7 +63,7 @@ const SpeakItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakItemProps> 
   },
   ref
 ) => {
-  const isAlexa = platform === PlatformType.ALEXA;
+  const isGoogle = platform === PlatformType.GOOGLE;
   const isNew = latestCreatedKey === itemKey;
 
   const updateContent = React.useCallback(({ text }) => onUpdate({ content: text }), [onUpdate]);
@@ -99,7 +99,7 @@ const SpeakItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakItemProps> 
           ) : (
             <>
               <AudioUpload audio={item.url} update={updateAudio} />
-              {!isAlexa && item.url && (
+              {isGoogle && item.url && (
                 <Box mt={12}>
                   <VariablesInputComponent value={item.desc || ''} onBlur={updateDesc} placeholder="Enter audio description" multiline />
                 </Box>

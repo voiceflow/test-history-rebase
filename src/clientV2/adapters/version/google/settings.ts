@@ -1,69 +1,19 @@
-import { GoogleSettings, RepeatType, SessionType, Voice, defaultGoogleSettings } from '@voiceflow/google-types';
+import { RepeatType } from '@voiceflow/general-types';
+import { GoogleSettings, Voice, defaultGoogleSettings } from '@voiceflow/google-types';
 import _invert from 'lodash/invert';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { FullSkill } from '@/models';
+
+import { createErrorPromptAdapter, createRestartAdapter } from '../utils';
 
 export type SkillSettings = Pick<
   FullSkill['meta'],
   'repeat' | 'accountLinking' | 'alexaEvents' | 'settings' | 'restart' | 'resumePrompt' | 'errorPrompt' | 'alexa_permissions'
 >;
 
-export const restartAdapter = createAdapter<GoogleSettings['session'], Pick<SkillSettings, 'restart' | 'resumePrompt'>>(
-  (session) =>
-    session.type === SessionType.RESUME
-      ? {
-          restart: false,
-          resumePrompt: {
-            voice: session.resume?.voice || Voice.DEFAULT,
-            content: session.resume?.content || '',
-            follow_voice: session.follow?.voice,
-            follow_content: session.follow?.content,
-          },
-        }
-      : {
-          restart: true,
-          resumePrompt: {
-            voice: Voice.DEFAULT,
-            content: '',
-          },
-        },
-  ({ restart, resumePrompt = {} }) => {
-    if (restart)
-      return {
-        type: SessionType.RESTART,
-      };
-    const { voice, content, follow_content, follow_voice } = resumePrompt;
-    return {
-      type: SessionType.RESUME,
-      resume:
-        voice && content?.trim()
-          ? {
-              voice: voice as Voice,
-              content,
-            }
-          : null,
-      follow:
-        follow_content?.trim() && follow_voice
-          ? {
-              voice: follow_voice as Voice,
-              content: follow_content,
-            }
-          : null,
-    };
-  }
-);
-
-export const errorPromptAdapter = createAdapter<GoogleSettings['error'], SkillSettings['errorPrompt']>(
-  (errorPrompt) => errorPrompt || { voice: Voice.DEFAULT, content: '' },
-  (errorPrompt) =>
-    errorPrompt?.voice && errorPrompt?.content?.trim()
-      ? {
-          voice: errorPrompt.voice as Voice,
-          content: errorPrompt.content,
-        }
-      : null
-);
+export const restartAdapter = createRestartAdapter<Voice>({ defaultVoice: Voice.DEFAULT });
+export const errorPromptAdapter = createErrorPromptAdapter<Voice>({ defaultVoice: Voice.DEFAULT });
 
 export const RepeatMap = {
   [RepeatType.ALL]: 100,

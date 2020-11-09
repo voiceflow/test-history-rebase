@@ -4,7 +4,7 @@ import { createAdapter } from '@/client/adapters/utils';
 import { BlockType, PlatformType } from '@/constants';
 import { Link, Node, NodeData, Port } from '@/models';
 
-import { defaultPortAdapter, noInPortTypes, portsAdapter } from './block';
+import { defaultPortAdapter, getPortsAdapter, noInPortTypes } from './block';
 import { IN_PORT_KEY } from './constants';
 import nodeDataAdapter from './nodeData';
 import { generateInPort, getInPortID, isBlock, isStep } from './utils';
@@ -74,9 +74,10 @@ const nodeAdapter = createAdapter<
       if (!noInPortTypes.has(node.type)) {
         registerPort(generateInPort(node.id));
       }
-      (portsAdapter[node.type] || defaultPortAdapter)
-        .fromDB(dbNode.data.ports, dbNode, platform)
-        .forEach(({ port, target }) => registerPort(port, nextStep === target ? null : target));
+
+      const adapter = getPortsAdapter(platform)?.[node.type] || defaultPortAdapter;
+
+      adapter.fromDB(dbNode.data.ports, dbNode).forEach(({ port, target }) => registerPort(port, nextStep === target ? null : target));
     }
 
     return {
@@ -97,13 +98,14 @@ const nodeAdapter = createAdapter<
     };
 
     if (node.ports.out.length > 0) {
-      diagramNode.data.ports = (portsAdapter[type] || defaultPortAdapter).toDB(
+      const adapter = getPortsAdapter(platform)?.[type as BlockType] || defaultPortAdapter;
+
+      diagramNode.data.ports = adapter.toDB(
         node.ports.out.map((portID) => ({
           port: portMap[portID],
           target: portToTargets[portID] || stepMap[node.id] || null,
         })),
-        node,
-        platform
+        node
       );
     }
 

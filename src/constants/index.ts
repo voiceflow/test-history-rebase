@@ -72,7 +72,7 @@ export const PLATFORM_META: Record<PlatformType, { icon: Icon; hidden: boolean }
   },
   [PlatformType.GENERAL]: {
     icon: 'inFlow',
-    hidden: true,
+    hidden: false,
   },
 };
 

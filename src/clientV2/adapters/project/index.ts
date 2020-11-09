@@ -1,5 +1,5 @@
 import { AlexaProjectData, AlexaProjectMemberData } from '@voiceflow/alexa-types';
-import { Project as DBProject } from '@voiceflow/api-sdk';
+import { BasePlatformData, Project as DBProject } from '@voiceflow/api-sdk';
 import { GoogleProjectData, GoogleProjectMemberData } from '@voiceflow/google-types';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
@@ -8,7 +8,10 @@ import { Project } from '@/models';
 
 export { default as productAdapter } from './product';
 
-const projectAdapter = createAdapter<DBProject<AlexaProjectData | GoogleProjectData, AlexaProjectMemberData | GoogleProjectMemberData>, Project>(
+const projectAdapter = createAdapter<
+  DBProject<AlexaProjectData | GoogleProjectData | BasePlatformData, AlexaProjectMemberData | GoogleProjectMemberData | BasePlatformData>,
+  Project
+>(
   ({ _id, name, devVersion, platform, privacy, image = null }) => ({
     id: _id,
     name,

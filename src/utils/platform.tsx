@@ -7,6 +7,8 @@ import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 import log from '@/utils/logger';
 
+const PLATFORMS = Object.values(PlatformType);
+
 const getPlatformComponentSwitcher = (
   components: Partial<Record<PlatformType, React.FC>>,
   defaultComponent: React.FC
@@ -63,3 +65,6 @@ export const getPlatformValue = <T extends any>(
 
   return value;
 };
+
+export const defaultPlatformsData = <T,>(data: T) =>
+  PLATFORMS.reduce<Record<PlatformType, T>>((acc, platform) => Object.assign(acc, { [platform]: data }), {} as Record<PlatformType, T>);

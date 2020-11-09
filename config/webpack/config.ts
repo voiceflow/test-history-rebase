@@ -16,6 +16,7 @@ import {
   ff_dataRefactor,
   ff_gadgets,
   ff_headerRedesign,
+  ff_generalPlatform,
   ff_prototypeTest,
   ga,
   intercom,
@@ -65,6 +66,7 @@ export const ENV = {
   // feature flags
   FF_GADGETS: ff_gadgets && 'true',
   FF_DATA_REFACTOR: ff_dataRefactor && 'true',
+  FF_GENERAL_PLATFORM: ff_generalPlatform && 'true',
   FF_CODE_EXPORT: ff_codeExport && 'true',
   FF_ACTIONS_ENV: ff_actionsEnv && 'true',
   FF_PROTOTYPE_TEST: ff_prototypeTest && 'true',

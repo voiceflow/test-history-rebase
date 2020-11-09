@@ -48,7 +48,7 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
       return response;
     },
     async (error) => {
-      if (error.response.status === StatusCode.UNAUTHORIZED) {
+      if (error.response?.status === StatusCode.UNAUTHORIZED) {
         await logoutHandler(error.config.baseURL);
       }
 

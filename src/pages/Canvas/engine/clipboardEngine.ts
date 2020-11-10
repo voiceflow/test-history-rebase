@@ -225,7 +225,7 @@ class ClipboardEngine extends EngineConsumer {
 
         const nodesWithData = isSameSkill
           ? result.nodes.map((node) => {
-              const data = Creator.dataByNodeIDSelector(state)(node.id);
+              const data = result.data[node.id];
 
               return {
                 data,

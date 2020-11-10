@@ -1,11 +1,9 @@
 import _uniq from 'lodash/uniq';
 
 import client from '@/client';
-import { IS_TEST } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { duckLogger } from '@/ducks/utils';
 import { ProjectList } from '@/models';
@@ -20,16 +18,13 @@ import { allProjectListsSelector, defaultProjectListSelector, projectListByIDSel
 const log = duckLogger.child('projectList');
 
 export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch, getState) => {
-  const isDataRefactorEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.DATA_REFACTOR);
   const isActionsEnvEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ACTIONS_ENV);
 
   try {
     // TODO: REMOVE AFTER DATA REFACTOR MIGRATIONS (DUAL ENVIRONMENT FOR GOOGLE)
     const lists = isActionsEnvEnabled ? [] : await client.projectList.find(workspaceID);
 
-    const rawProjects = await dispatch(
-      isDataRefactorEnabled ? ProjectV2.loadProjectsForWorkspace(workspaceID) : Project.loadProjectsForTeam(workspaceID)
-    );
+    const rawProjects = await dispatch(ProjectV2.loadProjectsForWorkspace(workspaceID));
 
     const projectIDs = rawProjects.map(({ id }) => id);
 
@@ -109,22 +104,16 @@ export const addProjectToDefaultList = (projectID: string, addToStart?: boolean)
 };
 
 export const deleteProjectList = (listID: string): Thunk => async (dispatch, getState) => {
-  const isDataRefactorEnabled = IS_TEST ? false : Feature.isFeatureEnabledSelector(getState())(FeatureFlag.DATA_REFACTOR);
-
   const state = getState();
   const list = projectListByIDSelector(state)(listID);
 
-  await Promise.all(
-    list.projects.map((projectID) => dispatch(isDataRefactorEnabled ? ProjectV2.deleteProject(projectID) : Project.deleteProject(projectID)))
-  );
+  await Promise.all(list.projects.map((projectID) => dispatch(ProjectV2.deleteProject(projectID))));
 
   dispatch(removeProjectList(listID));
 };
 
-export const deleteProjectFromList = (listID: string, projectID: string): Thunk => async (dispatch, getState) => {
-  const isDataRefactorEnabled = IS_TEST ? false : Feature.isFeatureEnabledSelector(getState())(FeatureFlag.DATA_REFACTOR);
-
-  await dispatch(isDataRefactorEnabled ? ProjectV2.deleteProject(projectID) : Project.deleteProject(projectID));
+export const deleteProjectFromList = (listID: string, projectID: string): Thunk => async (dispatch) => {
+  await dispatch(ProjectV2.deleteProject(projectID));
 
   dispatch(removeProjectFromList(listID, projectID));
 };

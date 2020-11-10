@@ -6,36 +6,18 @@ import Checkbox from '@/components/Checkbox';
 import DropdownButton from '@/components/DropdownButton';
 import Input from '@/components/Input';
 import Menu, { MenuItem } from '@/components/Menu';
-import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import { updateSelectedVendor, updateVendorSkillID } from '@/ducks/account/sideEffectsV2';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
 
-function Migrate({
-  amazonID,
-  amazonAccount,
-  projectID,
-  updateVendor,
-  updateAmznId,
-  vendorID,
-  onError,
-  onSuccess,
-  updateSelectedVendor,
-  updateVendorSkillID,
-}) {
+function Migrate({ amazonID, amazonAccount, projectID, vendorID, onError, onSuccess, updateSelectedVendor, updateVendorSkillID }) {
   const [newAmazonID, setNewAmaonID] = React.useState('');
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   const updateSkillID = async () => {
     try {
-      if (dataRefactor.isEnabled) {
-        await updateVendorSkillID(projectID, vendorID, newAmazonID);
-      } else {
-        await updateAmznId(projectID, vendorID, newAmazonID);
-      }
+      await updateVendorSkillID(projectID, vendorID, newAmazonID);
 
       onSuccess();
     } catch (error) {
@@ -84,7 +66,7 @@ function Migrate({
               <MenuItem disabled>Select Vendor</MenuItem>
               <MenuItem divider />
               {vendors.map(({ id, name }) => (
-                <MenuItem key={id} onClick={() => (dataRefactor.isEnabled ? updateSelectedVendor(id) : updateVendor(id))}>
+                <MenuItem key={id} onClick={() => updateSelectedVendor(id)}>
                   <Checkbox checked={vendorID === id} readOnly /> {name}
                 </MenuItem>
               ))}
@@ -110,8 +92,6 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updateAmznId: Account.updateAmznId,
-  updateVendor: AlexaPublish.updateVendor,
   updateVendorSkillID,
   updateSelectedVendor,
 };

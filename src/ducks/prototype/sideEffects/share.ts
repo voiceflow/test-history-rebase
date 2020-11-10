@@ -1,7 +1,4 @@
-import client from '@/client';
 import clientV2 from '@/clientV2';
-import { FeatureFlag } from '@/config/features';
-import * as Feature from '@/ducks/feature';
 import { setError } from '@/ducks/modal';
 import { activeDiagramIDSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { Thunk } from '@/store/types';
@@ -29,10 +26,7 @@ const sharePrototype = (): Thunk<unknown | null> => async (dispatch, getState) =
       params = variables;
     }
 
-    const dataRefactor = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.DATA_REFACTOR);
-    return dataRefactor
-      ? await clientV2.api.prototype.createInfo(skillID, diagramID, params)
-      : await client.prototype.createInfo(skillID, diagramID, params);
+    return await clientV2.api.prototype.createInfo(skillID, diagramID, params);
   } catch (error) {
     console.error(error);
     dispatch(setError('Unable to generate share link'));

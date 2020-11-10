@@ -4,7 +4,7 @@ import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import Section, { SectionVariant } from '@/components/Section';
 import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
-import { activeProjectIDSelector, saveMeta, skillMetaSelector } from '@/ducks/skill';
+import { activeProjectIDSelector, skillMetaSelector } from '@/ducks/skill';
 import { saveSettings } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
@@ -17,16 +17,10 @@ import AlexaGadgetsToggle from './components/AlexaGadgetsToggle';
 
 const AceEditorComponent: any = AceEditor;
 
-const AlexaFeatures: React.FC<ConnectedAlexaFeatures & { platformMeta: PlatformSettingsMetaProps }> = ({
-  meta,
-  platformMeta,
-  saveMeta,
-  saveSettings,
-}) => {
+const AlexaFeatures: React.FC<ConnectedAlexaFeatures & { platformMeta: PlatformSettingsMetaProps }> = ({ meta, platformMeta, saveSettings }) => {
   const { alexaEvents: propAlexaEvents } = meta;
   const { descriptors } = platformMeta;
   const { events } = descriptors;
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
   const gadgetsFeat = useFeature(FeatureFlag.GADGETS);
 
   const [alexaEvents, setAlexaEvents] = React.useState(propAlexaEvents || '');
@@ -50,11 +44,7 @@ const AlexaFeatures: React.FC<ConnectedAlexaFeatures & { platformMeta: PlatformS
     };
 
     try {
-      if (dataRefactor.isEnabled) {
-        saveSettings(settingsObject, ['error', 'events']);
-      } else {
-        saveMeta(settingsObject);
-      }
+      saveSettings(settingsObject, ['error', 'events']);
     } catch (err) {
       toast.error('Settings Save Error');
     }
@@ -97,7 +87,6 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  saveMeta,
   saveSettings,
 };
 

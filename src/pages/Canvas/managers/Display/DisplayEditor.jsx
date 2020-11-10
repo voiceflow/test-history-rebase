@@ -4,15 +4,14 @@ import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import alexaService from '@/clientV2/platformServices/alexa/handlers';
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
-import { FeatureFlag } from '@/config/features';
 import { DisplayType, ModalType } from '@/constants';
-import { createDisplay, displayByIDSelector, duplicateDisplay, updateDisplayData } from '@/ducks/display';
+import { createDisplay, updateDisplayData } from '@/ducks/display';
 import { activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useFeature, useModals } from '@/hooks';
+import { useModals } from '@/hooks';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 
-import { AdvancedEditor, AdvancedEditorV2, Footer, SplashEditor, SplashEditorV2 } from './components';
+import { AdvancedEditorV2, Footer, SplashEditorV2 } from './components';
 import { VERSIONS } from './constants';
 
 const DISPLAY_OPTIONS = [
@@ -26,12 +25,10 @@ const DISPLAY_OPTIONS = [
   },
 ];
 
-function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, selected, onChange, duplicateDisplay }) {
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
-
+function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, onChange }) {
   const { migrating, displayType, backgroundImage, splashHeader, displayID, document: documentData, aplCommands, jsonFileName, version } = data;
 
-  const datasource = dataRefactor.isEnabled ? data.dataSource : data.datasource;
+  const datasource = data.dataSource;
 
   const { open: openModal } = useModals(ModalType.DISPLAY_PREVIEW);
   const cache = React.useRef({ migrating, onChange, version });
@@ -44,9 +41,9 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
   const openPreviewModal = async () => {
     const apl = aplCommands || '';
     let data = datasource || '';
-    let selectedDocument = !dataRefactor.isEnabled ? selected.document : documentData;
+    let selectedDocument = documentData;
 
-    if (dataRefactor.isEnabled && displayType === DisplayType.SPLASH) {
+    if (displayType === DisplayType.SPLASH) {
       ({ document: selectedDocument, datasource: data } = await alexaService.getDisplayWithDatasource(splashHeader, backgroundImage));
     }
 
@@ -71,21 +68,12 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
         cache.current.onChange({ migrating: true });
 
         let newDisplayID;
-        let newDisplayType = displayType;
-
-        // Only duplicate if the legacy display block is not empty
-        if (!dataRefactor.isEnabled && displayID) {
-          newDisplayID = await duplicateDisplay(displayID, skillID);
-        }
-
-        if (!dataRefactor.isEnabled) {
-          newDisplayType = displayID ? DisplayType.ADVANCED : DisplayType.SPLASH;
-        }
+        const newDisplayType = displayType;
 
         cache.current.onChange({
           displayType: newDisplayType,
           displayID: newDisplayID,
-          jsonFileName: dataRefactor.isEnabled ? jsonFileName : newDisplayID,
+          jsonFileName,
           version: VERSIONS.EDITORS_REDESIGN,
         });
       }
@@ -112,18 +100,7 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
         </FormControl>
       </Section>
 
-      {displayType === DisplayType.SPLASH && !dataRefactor.isEnabled && (
-        <SplashEditor
-          skillID={skillID}
-          createDisplay={createDisplay}
-          splashHeader={splashHeader}
-          onChange={onChange}
-          backgroundImage={backgroundImage}
-          displayID={displayID}
-          updateDisplay={updateDisplayData}
-        />
-      )}
-      {displayType === DisplayType.SPLASH && dataRefactor.isEnabled && (
+      {displayType === DisplayType.SPLASH && (
         <SplashEditorV2
           skillID={skillID}
           createDisplay={createDisplay}
@@ -134,20 +111,7 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
           updateDisplay={updateDisplayData}
         />
       )}
-      {displayType === DisplayType.ADVANCED && !dataRefactor.isEnabled && (
-        <AdvancedEditor
-          display={selected}
-          datasource={datasource}
-          aplCommands={aplCommands}
-          createDisplay={createDisplay}
-          updateDisplay={updateDisplayData}
-          displayID={displayID}
-          skillID={skillID}
-          jsonFileName={jsonFileName}
-          onChange={onChange}
-        />
-      )}
-      {displayType === DisplayType.ADVANCED && dataRefactor.isEnabled && (
+      {displayType === DisplayType.ADVANCED && (
         <AdvancedEditorV2
           datasource={datasource}
           aplCommands={aplCommands}
@@ -163,12 +127,10 @@ function DisplayEditor({ data, skillID, createDisplay, updateDisplayData, select
 }
 const mapStateToProps = {
   skillID: activeSkillIDSelector,
-  selected: displayByIDSelector,
 };
 
 const mapDispatchToProps = {
   createDisplay,
-  duplicateDisplay,
   updateDisplayData,
 };
 

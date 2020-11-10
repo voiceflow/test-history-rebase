@@ -279,7 +279,6 @@ yarn start --ff_someFeature
 #### Available Flags and Environment Variables
 
 - `ff_gadgets` / `VF_APP_FF_GADGETS`: enable alexa gadgets interface
-- `ff_dataRefactor` / `VF_APP_FF_DATA_REFACTOR`: amazon/google jobs publish system
 - `ff_generalPlatform` / `VF_APP_FF_GENERAL_PLATFORM`: general platform
 - `ff_actionsEnv` / `VF_APP_FF_ACTIONS_ENV`: google actions beta environment
 - `ff_prototypeTest` / `VF_APP_FF_PROTOTYPE_TEST`: visuals in prototyping test tools

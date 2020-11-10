@@ -2,12 +2,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getPlatformService } from '@/clientV2';
-import { FeatureFlag } from '@/config/features';
 import { JobStatus } from '@/constants';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
-import { useDidUpdateEffect, useFeature, useSetup, useTeardown } from '@/hooks';
+import { useDidUpdateEffect, useSetup, useTeardown } from '@/hooks';
 import { AlexaPublishJob, GooglePublishJob } from '@/models';
 import { Nullable } from '@/types';
 
@@ -24,7 +23,6 @@ export const { Consumer: PublishConsumer } = PublishContext;
 const PULL_TIMEOUT = 3000; // 3s
 
 export const PublishProvider: React.FC = ({ children }) => {
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
   const pullTimeout = React.useRef<number>();
   const [job, setJob] = React.useState<Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>>(null);
 
@@ -32,7 +30,7 @@ export const PublishProvider: React.FC = ({ children }) => {
   const projectID = useSelector(Skill.activeProjectIDSelector);
   const dispatch = useDispatch();
 
-  const service = dataRefactor.isEnabled ? getPlatformService(platform) : null;
+  const service = getPlatformService(platform);
 
   const getJob = React.useCallback(async () => {
     const currentJob = await service?.publish.getStatus(projectID);
@@ -80,11 +78,9 @@ export const PublishProvider: React.FC = ({ children }) => {
   }, [projectID, service]);
 
   // eslint-disable-next-line lodash/prefer-constant
-  useSetup(dataRefactor.isEnabled ? getJob : () => null);
+  useSetup(getJob);
 
   useDidUpdateEffect(() => {
-    if (!dataRefactor.isEnabled) return;
-
     // stop pulling when projectID/platform changed
     stopPulling();
 
@@ -92,10 +88,6 @@ export const PublishProvider: React.FC = ({ children }) => {
   }, [projectID, getJob]);
 
   useDidUpdateEffect(() => {
-    if (!dataRefactor.isEnabled) {
-      return;
-    }
-
     // stop pulling when job is finished or job was canceled
     if (!job || job.status === JobStatus.FINISHED) {
       stopPulling();

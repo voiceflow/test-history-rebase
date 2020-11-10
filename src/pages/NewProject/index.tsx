@@ -6,13 +6,12 @@ import InnerContainer from '@/components/CreationSteps/components/Containers/Inn
 import OuterContainer from '@/components/CreationSteps/components/Containers/OuterContainer';
 import CreationHeader from '@/components/CreationSteps/components/Header';
 import { FlexCenter } from '@/components/Flex';
-import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useFeature } from '@/hooks';
+import { useDidUpdateEffect } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
@@ -26,7 +25,6 @@ const NUMBER_OF_STEPS = 3;
 const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?: { listID: string } } }> = ({
   computedMatch,
   goToDashboard,
-  createSkill,
   goToCanvas,
   createProject,
 }) => {
@@ -43,46 +41,32 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   const [mainLanguage, setMainLanguage] = React.useState(GOOGLE_LOCALES.EN);
   const [creatingProject, setCreatingProject] = React.useState(false);
   const CurrentStep: React.FC<any> = StepMeta[currentStep].component;
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   const finalizeCreation = async () => {
     setCreatingProject(true);
-    const projectData = {
-      name,
-      locales: selectedPlatform === PlatformType.GENERAL ? [] : selectedLocales,
-      platform: selectedPlatform!,
-      mainLocale: mainLanguage,
-      invocation: invocationName,
-      smallIcon,
-      largeIcon,
-    };
     const listID = computedMatch?.params?.listID;
 
     try {
-      if (dataRefactor.isEnabled) {
-        const project = await createProject({ platform: selectedPlatform!, name, largeIcon, listID });
-        // TODO: in the future make new project parameters much more platform specific
-        if (selectedPlatform === PlatformType.ALEXA) {
-          clientV2.alexaService.version.updatePublishing(project.versionID, {
-            invocationName,
-            invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
-            locales: selectedLocales as any,
-            largeIcon,
-            smallIcon,
-          });
-        } else if (selectedPlatform === PlatformType.GOOGLE) {
-          clientV2.googleService.version.updatePublishing(project.versionID, {
-            locales: selectedLocales as any,
-            smallLogoImage: smallIcon,
-            displayName: name,
-            pronunciation: invocationName,
-            sampleInvocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
-          });
-        }
-        goToCanvas(project.versionID);
-      } else {
-        await createSkill(selectedPlatform!, projectData, listID);
+      const project = await createProject({ platform: selectedPlatform!, name, largeIcon, listID });
+      // TODO: in the future make new project parameters much more platform specific
+      if (selectedPlatform === PlatformType.ALEXA) {
+        clientV2.alexaService.version.updatePublishing(project.versionID, {
+          invocationName,
+          invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
+          locales: selectedLocales as any,
+          largeIcon,
+          smallIcon,
+        });
+      } else if (selectedPlatform === PlatformType.GOOGLE) {
+        clientV2.googleService.version.updatePublishing(project.versionID, {
+          locales: selectedLocales as any,
+          smallLogoImage: smallIcon,
+          displayName: name,
+          pronunciation: invocationName,
+          sampleInvocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
+        });
       }
+      goToCanvas(project.versionID);
     } finally {
       setCreatingProject(false);
     }

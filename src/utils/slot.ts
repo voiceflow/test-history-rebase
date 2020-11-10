@@ -9,17 +9,14 @@ import { Nullable } from '@/types';
 export const getSlotTypes = ({
   locales,
   platform,
-  publishInfo,
-  isDataRefactorEnabled,
 }: {
   locales: Locale[];
   platform: PlatformType;
   publishInfo: Nullable<Record<PlatformType, any>>;
-  isDataRefactorEnabled: boolean;
 }) => {
   const customSlotType = SLOT_TYPES[0];
 
-  if (isDataRefactorEnabled && platform === PlatformType.GOOGLE) {
+  if (platform === PlatformType.GOOGLE) {
     return [{ value: customSlotType.label, label: customSlotType.label }, ...GOOGLE_SLOT_TYPES];
   }
 
@@ -31,20 +28,8 @@ export const getSlotTypes = ({
 
     const slotLocales = slot.locales[platform] || [];
 
-    switch (platform) {
-      case PlatformType.GOOGLE:
-        // eslint-disable-next-line no-case-declarations
-        const googleInfo = publishInfo?.google;
-        if (!(googleInfo && googleInfo.main_locale && !slotLocales.includes(googleInfo.main_locale))) {
-          slots.push(slot);
-        }
-        break;
-      case PlatformType.ALEXA:
-        if (!slotLocales || (locales && _.intersection(slotLocales, locales).length === locales.length)) {
-          slots.push(slot);
-        }
-        break;
-      default:
+    if (platform === PlatformType.ALEXA && (!slotLocales || (locales && _.intersection(slotLocales, locales).length === locales.length))) {
+      slots.push(slot);
     }
   });
 

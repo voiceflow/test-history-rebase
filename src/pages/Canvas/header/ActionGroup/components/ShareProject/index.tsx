@@ -5,14 +5,13 @@ import Button, { ButtonVariant } from '@/components/Button';
 import Dropdown from '@/components/Dropdown';
 import { ModalFooter } from '@/components/LegacyModal';
 import Tooltip from '@/components/TippyTooltip';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType, PlatformType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useFeature, useModals, usePermission, useSmartReducerV2, useTrackingEvents } from '@/hooks';
+import { useModals, usePermission, useSmartReducerV2, useTrackingEvents } from '@/hooks';
 import InviteByLink from '@/pages/Collaborators/components/InviteByLink';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps, Nullable } from '@/types';
@@ -31,7 +30,6 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   sharePrototype,
   platform,
   projectID,
-  renderPrototype,
   renderPrototypeV2,
   updateProjectPrivacy,
 }) => {
@@ -50,15 +48,9 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     loadingTestableLink: false,
   });
 
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
-
   const onClickPrototype = () => {
     if (render) {
-      if (dataRefactor.isEnabled) {
-        renderPrototypeV2({ aborted: false });
-      } else {
-        renderPrototype();
-      }
+      renderPrototypeV2({ aborted: false });
     }
   };
 
@@ -78,9 +70,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   };
 
   const onClickImport = () => {
-    if (dataRefactor.isEnabled) {
-      updateProjectPrivacy(projectID, ProjectPrivacy.PUBLIC);
-    }
+    updateProjectPrivacy(projectID, ProjectPrivacy.PUBLIC);
   };
 
   const wrapToggleShare = (prevIsOpen: boolean, onToggle: () => void) => () => {
@@ -156,7 +146,6 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   sharePrototype: Prototype.sharePrototype,
-  renderPrototype: Prototype.renderPrototype,
   renderPrototypeV2: Prototype.renderPrototypeV2,
   updateProjectPrivacy: ProjectV2.updateProjectPrivacy,
 };

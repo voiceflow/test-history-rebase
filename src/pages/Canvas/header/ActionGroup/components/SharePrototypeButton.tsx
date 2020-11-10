@@ -2,16 +2,14 @@ import React from 'react';
 
 import Button, { ButtonVariant } from '@/components/Button';
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useEnableDisable, useFeature, usePermission, useTrackingEvents } from '@/hooks';
+import { useEnableDisable, usePermission, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
 
-const SharePrototypeButton: React.FC<ConnectedSharePrototypeButtonProps> = ({ sharePrototype, renderPrototype, renderPrototypeV2 }) => {
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
+const SharePrototypeButton: React.FC<ConnectedSharePrototypeButtonProps> = ({ sharePrototype, renderPrototypeV2 }) => {
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [isCopied, setCopiedStatus, clearCopiedStatus] = useEnableDisable();
   const [trackingEvents] = useTrackingEvents();
@@ -33,11 +31,7 @@ const SharePrototypeButton: React.FC<ConnectedSharePrototypeButtonProps> = ({ sh
   };
 
   const onClickPrototype = () => {
-    if (dataRefactor.isEnabled) {
-      renderPrototypeV2({ aborted: false });
-    } else {
-      renderPrototype();
-    }
+    renderPrototypeV2({ aborted: false });
     copyTestableLink();
     trackingEvents.trackActiveProjectTestableLinkShare();
     toast.success('Link copied to clipboard.');
@@ -62,7 +56,6 @@ const SharePrototypeButton: React.FC<ConnectedSharePrototypeButtonProps> = ({ sh
 
 const mapDispatchToProps = {
   sharePrototype: Prototype.sharePrototype,
-  renderPrototype: Prototype.renderPrototype,
   renderPrototypeV2: Prototype.renderPrototypeV2,
 };
 

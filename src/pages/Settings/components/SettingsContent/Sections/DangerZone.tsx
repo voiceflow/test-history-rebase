@@ -3,14 +3,11 @@ import React from 'react';
 import Button, { ButtonVariant } from '@/components/Button';
 import { FlexApart } from '@/components/Flex';
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import * as Modal from '@/ducks/modal';
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect, styled } from '@/hocs';
-import { useFeature } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 const Container = styled(FlexApart)`
@@ -37,21 +34,12 @@ const Description = styled.div`
   font-size: 13px;
 `;
 
-const DangerZone: React.FC<ConnectedDangerZoneProps> = ({
-  activeSkill,
-  setConfirm,
-  goToDashboard,
-  activeProjectId,
-  deleteProject,
-  deleteProjectV2,
-}) => {
+const DangerZone: React.FC<ConnectedDangerZoneProps> = ({ activeSkill, setConfirm, goToDashboard, activeProjectId, deleteProjectV2 }) => {
   const { name } = activeSkill;
-
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   const handleDelete = async () => {
     try {
-      await (dataRefactor.isEnabled ? deleteProjectV2 : deleteProject)(activeProjectId);
+      await deleteProjectV2(activeProjectId);
       goToDashboard();
       toast.success(`Successfully deleted ${name}`);
     } catch (e) {
@@ -88,7 +76,6 @@ const mapStateToProps = {
 };
 
 const mapDispatchProps = {
-  deleteProject: Project.deleteProject,
   deleteProjectV2: ProjectV2.deleteProject,
   goToDashboard: Router.goToDashboard,
   setConfirm: Modal.setConfirm,

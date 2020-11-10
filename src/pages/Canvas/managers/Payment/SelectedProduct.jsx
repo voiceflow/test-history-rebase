@@ -4,7 +4,6 @@ import React from 'react';
 import Divider from '@/components/Divider';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import TextArea from '@/components/TextArea';
-import { FeatureFlag } from '@/config/features';
 import { NamespaceProvider } from '@/contexts';
 import * as Feature from '@/ducks/feature';
 import * as Product from '@/ducks/product';
@@ -70,18 +69,15 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   updateProduct: Product.updateProduct,
-  uploadProduct: Product.uploadProduct,
   uploadProductV2: ProductV2.uploadProduct,
 };
 
-const mergeProps = ({ product: productByIDSelector, isFeatureEnabled }, { updateProduct, uploadProduct, uploadProductV2 }, { productID }) => {
-  const isDataRefactorEnabled = isFeatureEnabled(FeatureFlag.DATA_REFACTOR);
-
+const mergeProps = ({ product: productByIDSelector }, { updateProduct, uploadProductV2 }, { productID }) => {
   return {
     product: productByIDSelector(productID),
     updateProduct: (values) => {
       updateProduct(productID, values);
-      isDataRefactorEnabled ? uploadProductV2(productID) : uploadProduct(productID);
+      uploadProductV2(productID);
     },
   };
 };

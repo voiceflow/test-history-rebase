@@ -1,4 +1,3 @@
-import axios from 'axios';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import Select from 'react-select';
@@ -20,7 +19,6 @@ import { Spinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import Toggle from '@/components/Toggle';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
-import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
@@ -51,28 +49,17 @@ class Skill extends Component {
   };
 
   async componentDidMount() {
-    const { skillID, dataRefactorEnabled } = this.props;
+    const { skillID } = this.props;
 
-    let skill;
-    let projectName;
-    let projectID;
+    // read version publishing info
+    const version = await clientV2.api.version.get(skillID);
+    const projectID = version.projectID;
 
-    if (dataRefactorEnabled) {
-      // read version publishing info
-      const version = await clientV2.api.version.get(skillID);
-      projectID = version.projectID;
+    const dbProject = await clientV2.api.project.get(version.projectID);
+    const publishing = version.platformData.publishing;
 
-      const dbProject = await clientV2.api.project.get(version.projectID);
-      const publishing = version.platformData.publishing;
-
-      skill = alexaPublishingAdapterV2.fromDB(publishing);
-      projectName = dbProject.name;
-    } else {
-      const { data } = await axios.get(`/skill/${skillID}?verbose=1`);
-
-      skill = amazonFormAdapter.fromDB(data);
-      projectName = skill.name;
-    }
+    const skill = alexaPublishingAdapterV2.fromDB(publishing);
+    const projectName = dbProject.name;
 
     this.setState(
       {
@@ -165,7 +152,7 @@ class Skill extends Component {
   };
 
   save = async () => {
-    const { skillID, updateSkill, updateSkillMeta, updateProjectName, dataRefactorEnabled, updateProducts } = this.props;
+    const { skillID, updateSkill, updateSkillMeta, updateProjectName, updateProducts } = this.props;
     const amazonFormObj = this.getFormValueObj();
     const formState = this.state;
 
@@ -176,19 +163,15 @@ class Skill extends Component {
     }
 
     try {
-      if (dataRefactorEnabled) {
-        // convert snake case prop names to camel case, e.g. inv_name => envName
-        const publishingForm = amazonFormAdapter.toDBV2(formState, amazonFormObj);
-        const publishing = alexaPublishingAdapterV2.toDB(publishingForm);
+      // convert snake case prop names to camel case, e.g. inv_name => envName
+      const publishingForm = amazonFormAdapter.toDBV2(formState, amazonFormObj);
+      const publishing = alexaPublishingAdapterV2.toDB(publishingForm);
 
-        await clientV2.alexaService.version.updatePublishing(skillID, publishing);
-        await clientV2.api.project.update(formState.projectID, { name: publishingForm.name });
+      await clientV2.alexaService.version.updatePublishing(skillID, publishing);
+      await clientV2.api.project.update(formState.projectID, { name: publishingForm.name });
 
-        updateProjectName(formState.projectID, publishingForm.name);
-      } else {
-        const toDbProperties = amazonFormAdapter.toDB(formState, amazonFormObj);
-        await axios.patch(`/skill/${skillID}?publish=true`, toDbProperties);
-      }
+      updateProjectName(formState.projectID, publishingForm.name);
+
       updateSkillMeta(toStoreProperties.meta);
       updateSkill(toStoreProperties.skill);
       updateProducts(formState.locales);
@@ -755,7 +738,6 @@ const validate = (values) => {
 const mapStateToProps = {
   user: Account.userSelector,
   skillID: SkillDuck.activeSkillIDSelector,
-  amznID: AlexaPublish.amznIDSelector,
   review: AlexaPublish.reviewSelector,
   amazonForm: getFormValues(PUBLISH_AMAZON_FORM),
   feature: Feature.isFeatureEnabledSelector,
@@ -770,10 +752,8 @@ const mapDispatchToProps = {
   updateProducts: Product.handleSkillLocaleChange,
 };
 
-const mergeProps = ({ feature: featureSelector, amznID, amazonID }) => ({ amazonID: featureSelector(FeatureFlag.DATA_REFACTOR) ? amazonID : amznID });
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps, mergeProps),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: PUBLISH_AMAZON_FORM,
     validate,

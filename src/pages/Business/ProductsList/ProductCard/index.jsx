@@ -6,9 +6,7 @@ import { Tooltip } from 'react-tippy';
 import Dropdown from '@/components/Dropdown';
 import IconButton from '@/components/IconButton';
 import SvgIcon from '@/components/SvgIcon';
-import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
-import * as Product from '@/ducks/product';
 import * as ProductV2 from '@/ducks/productV2';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
@@ -113,23 +111,15 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  copyProduct: Product.copyProduct,
-  copyProductV2: ProductV2.copyProduct,
-  deleteProduct: Product.deleteProduct,
-  deleteProductV2: ProductV2.deleteProduct,
+  copyProduct: ProductV2.copyProduct,
+  deleteProduct: ProductV2.deleteProduct,
   goToEditProduct: Router.goToEditProduct,
 };
 
-const mergeProps = (
-  { skillID, isFeatureEnabled },
-  { copyProduct, copyProductV2, deleteProduct, deleteProductV2, goToEditProduct },
-  { productID }
-) => {
-  const isDataRefactorEnabled = isFeatureEnabled(FeatureFlag.DATA_REFACTOR);
-
+const mergeProps = ({ skillID }, { copyProduct, deleteProduct, goToEditProduct }, { productID }) => {
   return {
-    copyProduct: () => (isDataRefactorEnabled ? copyProductV2(productID) : copyProduct(skillID, productID)),
-    deleteProduct: () => (isDataRefactorEnabled ? deleteProductV2(productID) : deleteProduct(skillID, productID)),
+    copyProduct: () => copyProduct(productID),
+    deleteProduct: () => deleteProduct(productID),
     goToEditProduct: () => goToEditProduct(skillID, productID),
   };
 };

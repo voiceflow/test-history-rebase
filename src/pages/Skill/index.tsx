@@ -9,7 +9,6 @@ import Page from '@/components/Page';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
-import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as SkillDuck from '@/ducks/skill';
@@ -24,7 +23,7 @@ import Migrate from '@/pages/Migrate';
 import Publish from '@/pages/Publish';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { isOnlyViewerSelector } from '@/store/selectors';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { ConnectedProps } from '@/types';
 import { compose } from '@/utils/functional';
 import { getActivePageAndMatch } from '@/utils/routes';
 
@@ -53,16 +52,14 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
   goToDashboard,
   goToCanvas,
   saveProjectNameV2,
-  updateProjectName,
   isOnlyViewer,
 }) => {
   const [isIdle, onIdle, onActive] = useEnableDisable();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const isPrototypingMode = usePrototypingMode();
 
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
   const prototypeTestEnabled = useFeature(FeatureFlag.PROTOTYPE_TEST).isEnabled;
-  const projectNameChange = dataRefactor.isEnabled ? saveProjectNameV2 : updateProjectName;
+  const projectNameChange = saveProjectNameV2;
 
   const idleTimer = React.useRef<IdleTimer>(null);
 
@@ -151,23 +148,12 @@ const mapDispatchToProps = {
   saveProjectNameV2: SkillV2.saveProjectName,
   goToDashboard: Router.goToDashboard,
   goToCanvas: Router.goToCanvas,
-  updateProjectName: Project.updateProjectName,
-  updateSkillName: SkillDuck.saveSkillSettings,
 };
 
-const mergeProps = (
-  ...[{ activeSkill }, { updateProjectName, updateSkillName }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>
-) => ({
-  updateProjectName: (name: string) => {
-    updateProjectName(activeSkill?.projectID, name);
-    updateSkillName({ name });
-  },
-});
-
-type ConnectedSkillProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
+type ConnectedSkillProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps, mergeProps),
+  connect(mapStateToProps, mapDispatchToProps),
   withBatchLoadingGate(
     [
       ProjectLoadingGate,

@@ -27,7 +27,6 @@ import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useFeature, useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
 import * as Models from '@/models';
-import { copyProject } from '@/store/sideEffects';
 import { copyProject as copyProjectV2 } from '@/store/sideEffectsV2';
 import { ConnectedProps } from '@/types';
 import * as Userflow from '@/vendors/userflow';
@@ -73,7 +72,6 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
     }
   }, []);
 
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
   const actionsEnv = useFeature(FeatureFlag.ACTIONS_ENV);
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const [loading, toggleLoading] = React.useState(true);
@@ -92,15 +90,11 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
       }
       toggleLoadingModal(true);
 
-      if (dataRefactor.isEnabled) {
-        await props.copyProjectV2(projectId, props.workspaceID!, boardId);
-      } else {
-        await props.copyProject(projectId, props.workspaceID!, boardId);
-      }
+      await props.copyProjectV2(projectId, props.workspaceID!, boardId);
 
       toggleLoadingModal(false);
     },
-    [props.projects, props.workspace, props.workspaceID, props.copyProject, props.copyProjectV2]
+    [props.projects, props.workspace, props.workspaceID, props.copyProjectV2]
   );
 
   const onDeleteProject = React.useCallback(
@@ -353,7 +347,6 @@ const mapDispatchToProps = {
   loadLists: ProjectList.loadProjectLists,
   createNewList: ProjectList.createNewList,
   deleteProject: ProjectList.deleteProjectFromList,
-  copyProject,
   copyProjectV2,
   setConfirm: Modal.setConfirm,
   setError: Modal.setError,

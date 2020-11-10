@@ -3,7 +3,7 @@ import React from 'react';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
 import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
-import { activePlatformSelector, saveMeta, settingsSelector, updateSettings } from '@/ducks/skill';
+import { activePlatformSelector, settingsSelector, updateSettings } from '@/ducks/skill';
 import { saveSettings } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useFeature, useTeardown } from '@/hooks';
@@ -21,16 +21,11 @@ type SettingsProps = {
   saveSettings: typeof saveSettings;
 };
 
-const AlexaGadgets: React.FC<SettingsProps> = ({ platform, settings, updateSettings, saveMeta, saveSettings }) => {
+const AlexaGadgets: React.FC<SettingsProps> = ({ platform, settings, updateSettings, saveSettings }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
 
   useTeardown(() => {
-    if (dataRefactor.isEnabled) {
-      saveSettings({ settings }, ['customInterface']);
-    } else {
-      saveMeta({ settings });
-    }
+    saveSettings({ settings }, ['customInterface']);
   }, [settings]);
 
   return (
@@ -58,7 +53,6 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   updateSettings,
-  saveMeta,
   saveSettings,
 };
 

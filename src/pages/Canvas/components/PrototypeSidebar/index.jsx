@@ -8,7 +8,6 @@ import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } 
 import SvgIcon from '@/components/SvgIcon';
 import { FeatureFlag } from '@/config/features';
 import { EventualEngineContext } from '@/contexts';
-import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
@@ -27,22 +26,11 @@ import Container from './components/PrototypeSidebarContainer';
 import EmbedContainer from './components/PrototypeSidebarEmbedContainer';
 import { PROTOTYPE_SIDEBAR_WIDTH } from './constants';
 
-const PrototypeSidebar = ({
-  settings,
-  renderPrototype,
-  resetPrototype,
-  saveActiveDiagram,
-  saveActiveDiagramV2,
-  renderPrototypeV2,
-  isMuted,
-  updatePrototype,
-  status,
-}) => {
+const PrototypeSidebar = ({ settings, resetPrototype, saveActiveDiagramV2, renderPrototypeV2, isMuted, updatePrototype, status }) => {
   const prototypeTestEnabled = useFeature(FeatureFlag.PROTOTYPE_TEST).isEnabled;
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const isPrototypingMode = usePrototypingMode();
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
   const eventualEngine = React.useContext(EventualEngineContext);
   const [atTop, setAtTop] = React.useState(true);
   const notStarted = status === PMStatus.IDLE;
@@ -65,10 +53,10 @@ const PrototypeSidebar = ({
     enableLoading();
 
     // eslint-disable-next-line promise/catch-or-return
-    (dataRefactor?.isEnabled ? saveActiveDiagramV2 : saveActiveDiagram)()
+    saveActiveDiagramV2()
       .catch((err) => console.error(err))
       .then(async () => {
-        await (dataRefactor?.isEnabled ? renderPrototypeV2 : renderPrototype)(renderAbortControl);
+        await renderPrototypeV2(renderAbortControl);
         disableLoading();
       });
 
@@ -140,9 +128,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   setError: Modal.setError,
   resetPrototype: Prototype.resetPrototype,
-  renderPrototype: Prototype.renderPrototype,
   renderPrototypeV2: Prototype.renderPrototypeV2,
-  saveActiveDiagram: Diagram.saveActiveDiagram,
   saveActiveDiagramV2: DiagramV2.saveActiveDiagram,
   updatePrototype: Prototype.updatePrototype,
 };

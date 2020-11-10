@@ -6,12 +6,11 @@ import Section, { SectionToggleVariant, SectionVariant } from '@/components/Sect
 import { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';
-import { FeatureFlag } from '@/config/features';
 import { VoiceType } from '@/constants';
-import { saveSkillSettings, skillMetaSelector } from '@/ducks/skill';
+import { skillMetaSelector } from '@/ducks/skill';
 import { saveProjectName, saveSettings } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
-import { useDebouncedCallback, useDidUpdateEffect, useFeature, useSyncedSmartReducer } from '@/hooks';
+import { useDebouncedCallback, useDidUpdateEffect, useSyncedSmartReducer } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { ErrorMessage } from '@/pages/Settings/components';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
@@ -32,7 +31,6 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & { pla
   meta,
   platformMeta,
   saveSettings,
-  saveSkillSettings,
 }) => {
   const { descriptors } = platformMeta;
   const { continuePrevious, allowRepeat, repeatDialog, repeatEverything } = descriptors;
@@ -95,14 +93,8 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & { pla
     setResumePrompt({ ...resumePrompt, voice });
   };
 
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
-
   const save = useDebouncedCallback(SAVE_SETTINGS_DEBOUNCE_DELAY, async (data) => {
-    if (dataRefactor.isEnabled) {
-      await saveSettings(data, ['session', 'repeat']);
-    } else {
-      await saveSkillSettings(data);
-    }
+    await saveSettings(data, ['session', 'repeat']);
   });
 
   const updateData = async () => {
@@ -239,7 +231,6 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   saveSettings,
   saveProjectName,
-  saveSkillSettings,
 };
 
 type ConnectedGlobalConversationLogic = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

@@ -1,16 +1,13 @@
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import { syncSelectedVendor } from '@/ducks/account/sideEffectsV2';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useAsyncMountUnmount, useFeature, useToggle } from '@/hooks';
-import Upload from '@/pages/Canvas/header/ActionGroup/components/Alexa/Upload';
+import { useAsyncMountUnmount, useToggle } from '@/hooks';
 import UploadV2 from '@/pages/Canvas/header/ActionGroup/components/AlexaUploadButtonV2/Button';
 import UploadPopup from '@/pages/Canvas/header/ActionGroup/components/UploadPopup';
-import UploadAlexa from '@/pages/Publish/Upload/Alexa';
 import { Alexa } from '@/pages/Publish/UploadV2';
 import { ExportContext } from '@/pages/Skill/contexts';
 import { ConnectedProps } from '@/types';
@@ -19,21 +16,16 @@ import { isNotify, isReady, isRunning } from '@/utils/job';
 import { ActionContainer, ContentContainer, ContentSection, LinkContainer, PlatformText, SpacingSection, Text } from '../components';
 import Section from '../components/Section';
 
-const UploadComponent: React.FC<any> = Upload;
 const Stages = AlexaPublish.ALEXA_STAGES as any;
 const States = AlexaPublish.ALEXA_STATES as any;
 
-const Export: React.FC<ConnectedExportProps> = ({ alexaPublish, platform, syncSelectedVendor, checkAmazonAccount, syncVendors }) => {
+const Export: React.FC<ConnectedExportProps> = ({ alexaPublish, platform, syncSelectedVendor }) => {
   const [open, toggleOpen] = useToggle(false);
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
   const { cancel, job, start } = React.useContext(ExportContext)!;
 
   const onClose = () => {
     toggleOpen(false);
-
-    if (dataRefactor.isEnabled) {
-      cancel();
-    }
+    cancel();
   };
 
   React.useEffect(() => {
@@ -56,16 +48,11 @@ const Export: React.FC<ConnectedExportProps> = ({ alexaPublish, platform, syncSe
   };
 
   useAsyncMountUnmount(async () => {
-    if (dataRefactor.isEnabled) {
-      await syncSelectedVendor();
-    } else {
-      await checkAmazonAccount();
-      await syncVendors();
-    }
+    await syncSelectedVendor();
   });
 
   React.useEffect(() => {
-    if (dataRefactor.isEnabled && isNotify(job)) {
+    if (isNotify(job)) {
       toggleOpen(true);
     }
   }, [job?.status]);
@@ -84,14 +71,10 @@ const Export: React.FC<ConnectedExportProps> = ({ alexaPublish, platform, syncSe
           </Text>
 
           <ActionContainer>
-            {dataRefactor.isEnabled ? (
-              <UploadV2 isActive={isRunning(job)} onClick={exportV2Click} label="Export" />
-            ) : (
-              <UploadComponent setPopup={toggleOpen} label="Export" options={{ export: true }} />
-            )}
+            <UploadV2 isActive={isRunning(job)} onClick={exportV2Click} label="Export" />
 
-            <UploadPopup open={dataRefactor.isEnabled ? !isReady(job) && open : open} onClose={onClose}>
-              {dataRefactor.isEnabled ? <Alexa export /> : <UploadAlexa />}
+            <UploadPopup open={!isReady(job) && open} onClose={onClose}>
+              <Alexa export />
             </UploadPopup>
           </ActionContainer>
         </Section>

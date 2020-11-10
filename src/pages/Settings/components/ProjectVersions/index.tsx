@@ -2,7 +2,6 @@ import ObjectID from 'bson-objectid';
 import moment from 'moment';
 import React from 'react';
 
-import client from '@/client';
 import { ProjectVersion } from '@/client/project';
 import clientV2 from '@/clientV2';
 import { FlexCenter } from '@/components/Flex';
@@ -10,12 +9,10 @@ import { LoadCircle } from '@/components/Loader';
 import SvgIcon from '@/components/SvgIcon';
 import { ClickableText } from '@/components/Text/components/ClickableText';
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
 import { ContentSection } from '@/pages/Settings/components/SettingsContent/components';
 import { PLATFORM_SETTINGS_META } from '@/pages/Settings/constants';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -28,17 +25,10 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, curren
   const [versions, setVersions] = React.useState<ProjectVersion[]>([]);
   const { name } = PLATFORM_SETTINGS_META[platform];
 
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
-
   const swapVersions = async (versionId: string) => {
     try {
-      if (dataRefactor.isEnabled) {
-        await clientV2.api.restoreBackup(projectID, versionId);
-        goToCanvas(versionId);
-      } else {
-        const data = await client.skill.restore(versionId);
-        goToCanvas(data.skill_id);
-      }
+      await clientV2.api.restoreBackup(projectID, versionId);
+      goToCanvas(versionId);
       toast.success('Successfully restored version');
     } catch (err) {
       toast.error('Unable to restore version');
@@ -56,25 +46,16 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, curren
 
   const fetchBackups = React.useCallback(async () => {
     try {
-      if (dataRefactor.isEnabled) {
-        // legacy backup system, requires design and refactor
-        const DBversions = (await clientV2.api.project.getVersions(projectID)).filter((version) => version.platformData.status?.stage !== 'LIVE');
-        setVersions(
-          DBversions.map((version) => ({
-            skill_id: version._id,
-            platform,
-            published_platform: platform,
-            created: ObjectID.isValid(version._id) ? new ObjectID(version._id).getTimestamp().toString() : '',
-          }))
-        );
-      } else {
-        const liveVersion = await client.project.getLiveVersion(projectID);
-        const versions = (await client.project.getVersions(projectID)).filter((version: any) => {
-          return version.skill_id !== liveVersion.live_version;
-        });
-
-        setVersions(versions);
-      }
+      // legacy backup system, requires design and refactor
+      const DBversions = (await clientV2.api.project.getVersions(projectID)).filter((version) => version.platformData.status?.stage !== 'LIVE');
+      setVersions(
+        DBversions.map((version) => ({
+          skill_id: version._id,
+          platform,
+          published_platform: platform,
+          created: ObjectID.isValid(version._id) ? new ObjectID(version._id).getTimestamp().toString() : '',
+        }))
+      );
     } catch (err) {
       toast.error('Unable to Fetch Backup Versions');
     } finally {

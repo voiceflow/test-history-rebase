@@ -1,8 +1,8 @@
 import client from '@/client';
 import * as Feature from '@/ducks/feature';
-import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListSelectors from '@/ducks/projectList/selectors';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { CRUDState } from '@/ducks/utils/crud';
 import * as Models from '@/models';
 import { normalize } from '@/utils/normalized';
@@ -153,8 +153,8 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
     });
 
     describe('deleteProjectList()', () => {
-      it('should add a project list and all the projects in it', async () => {
-        const deleteProject = stubEffect(Project, 'deleteProject');
+      it('should remove a project list and all the projects in it', async () => {
+        const deleteProject = stubEffect(ProjectV2, 'deleteProject');
 
         const { expectDispatch, expectStubCalled } = await applyEffect(ProjectList.deleteProjectList(LIST_ID));
 
@@ -164,8 +164,8 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
     });
 
     describe('deleteProjectFromList()', () => {
-      it('should add a project list and all the projects in it', async () => {
-        const deleteProject = stubEffect(Project, 'deleteProject');
+      it('should the the projects in the list', async () => {
+        const deleteProject = stubEffect(ProjectV2, 'deleteProject');
 
         const { expectDispatch, expectStubCalled } = await applyEffect(ProjectList.deleteProjectFromList(LIST_ID, PROJECT_ID));
 

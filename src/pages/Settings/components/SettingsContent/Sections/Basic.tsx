@@ -1,24 +1,19 @@
 import { Locale } from '@voiceflow/alexa-types';
 import React, { ChangeEvent, useEffect } from 'react';
 
-import client from '@/client';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import Input from '@/components/Input';
 import Section, { SectionVariant } from '@/components/Section';
 import Select from '@/components/Select';
-import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
-import { googleIDSelector, updatePublishInfo } from '@/ducks/publish/google';
+import { googleIDSelector } from '@/ducks/publish/google';
 import * as Skill from '@/ducks/skill';
-import { saveSkillSettings } from '@/ducks/skill/sideEffects';
 import { saveInvocationName, saveLocales, saveProjectName } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
 import { FORMATTED_LOCALES, GOOGLE_LANGUAGE_TO_LOCALES } from '@/pages/Publish/Google/Form';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { without } from '@/utils/array';
-import { arrayStringReplace } from '@/utils/string';
 
 import { PlatformSettingsMetaProps, SettingSections } from '../../../constants';
 
@@ -35,13 +30,6 @@ type BasicProps = {
   platform: PlatformType;
 };
 
-type newSettingsDataProps = {
-  name: string;
-  invName: string;
-  locales: Locale[];
-  invocations?: string[];
-};
-
 const sectionStyling = {
   paddingBottom: '24px',
 };
@@ -52,33 +40,22 @@ const getLocaleLanguage = (locales: any[]) => {
 
 const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   saveProjectName,
-  saveSkillSettings,
   saveInvocationName,
-  saveSkillMeta,
   saveLocales,
   meta,
   skill,
-  updatePublishInfo,
-  versionID,
-  googleID,
   platform,
   platformMeta,
 }) => {
   const { invName } = meta;
-  const { name, locales, publishInfo } = skill;
+  const { name, locales } = skill;
   const { descriptors, localeText } = platformMeta;
   const { projectName, invocationName, localesDescriptor } = descriptors;
-
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
-
-  const initialInvocationName = React.useMemo(() => invName, [invName]);
 
   const [newInvocation, setNewInvocation] = React.useState(invName);
   const [newProjectName, setNewProjectName] = React.useState(name);
   const [selectedLocales, setSelectedLocales] = React.useState<Locale[]>(locales || []);
-  const [mainLanguage, setMainLanguage] = React.useState<string>(
-    dataRefactor.isEnabled ? getLocaleLanguage(locales) : publishInfo?.google?.main_locale
-  );
+  const [mainLanguage, setMainLanguage] = React.useState<string>(getLocaleLanguage(locales));
 
   const displayName =
     platform === PlatformType.ALEXA
@@ -86,30 +63,12 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
       : '';
 
   const saveSettings = async () => {
-    const newSettingsData: newSettingsDataProps = {
-      name: newProjectName,
-      invName: newInvocation,
-      locales: selectedLocales,
-    };
-
-    if (dataRefactor.isEnabled) {
-      saveProjectName(newProjectName);
-      saveInvocationName(newInvocation);
-      if (platform === PlatformType.ALEXA) {
-        saveLocales(selectedLocales as [Locale, ...Locale[]]);
-      } else {
-        saveLocales(GOOGLE_LANGUAGE_TO_LOCALES[mainLanguage] as [Locale, ...Locale[]]);
-      }
+    saveProjectName(newProjectName);
+    saveInvocationName(newInvocation);
+    if (platform === PlatformType.ALEXA) {
+      saveLocales(selectedLocales as [Locale, ...Locale[]]);
     } else {
-      // Legacy, to be removed after data refactor is merged / enabled
-      if (initialInvocationName !== newInvocation) {
-        const newPhrases = arrayStringReplace(initialInvocationName, newInvocation, meta.invocations.value || meta.invocations);
-        newSettingsData.invocations = newPhrases;
-      }
-
-      const newMeta = { locales: selectedLocales };
-      await saveSkillMeta(newMeta);
-      await saveSkillSettings(newSettingsData);
+      saveLocales(GOOGLE_LANGUAGE_TO_LOCALES[mainLanguage] as [Locale, ...Locale[]]);
     }
   };
 
@@ -147,16 +106,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
           onSelect={async (val: string) => {
             setMainLanguage(val);
 
-            if (dataRefactor.isEnabled) {
-              saveLocales(GOOGLE_LANGUAGE_TO_LOCALES[val] as [Locale, ...Locale[]]);
-            } else {
-              const googlePublishInfo = {
-                main_locale: val,
-              };
-
-              await client.skill.updateGooglePublishInfo(versionID, googlePublishInfo);
-              updatePublishInfo({ ...googlePublishInfo, googleId: googleID });
-            }
+            saveLocales(GOOGLE_LANGUAGE_TO_LOCALES[val] as [Locale, ...Locale[]]);
           }}
           getOptionValue={(option) => option?.value || ''}
           renderOptionLabel={(option) => option.name}
@@ -204,11 +154,8 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  saveSkillMeta: Skill.saveSkillMeta,
-  saveSkillSettings,
   saveInvocationName,
   saveProjectName,
-  updatePublishInfo,
   saveLocales,
 };
 

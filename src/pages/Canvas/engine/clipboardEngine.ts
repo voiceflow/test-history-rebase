@@ -4,9 +4,7 @@ import { get, set } from 'idb-keyval';
 
 import client from '@/client';
 import nodeAdapter from '@/client/adapters/creator/node';
-import nodeDataAdapter from '@/client/adapters/creator/nodeData';
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import { BlockType, CLIPBOARD_DATA_KEY, COPY_NODES, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Diagrams from '@/ducks/diagram';
@@ -56,8 +54,6 @@ class ClipboardEngine extends EngineConsumer {
       const platform = Skill.activePlatformSelector(state);
       const { data } = Creator.creatorDiagramSelector(state);
 
-      const isDataRefactorEnabled = this.engine.isFeatureEnabled(FeatureFlag.DATA_REFACTOR);
-
       const skillID = Skill.activeSkillIDSelector(state);
 
       const allNodes = Creator.allNodesByIDsSelector(state)(nodeIDs).filter(
@@ -89,60 +85,31 @@ class ClipboardEngine extends EngineConsumer {
       const legacyNodes = copiedNodes.map((node) =>
         nodeAdapter.toDB(node, { nodes: creator.nodes, ports: creator.ports, data: creator.data, linksByPortID: creator.linksByPortID, platform })
       );
-      let copyData: ClipboardContext;
 
-      if (isDataRefactorEnabled) {
-        const { intents: intentIDs, products: productIDs, diagrams: diagramIDs } = getCopiedNodeDataIDs(data, copiedNodes, platform);
+      const { intents: intentIDs, products: productIDs, diagrams: diagramIDs } = getCopiedNodeDataIDs(data, copiedNodes, platform);
 
-        const products = Product.productsByIDsSelector(state)(productIDs);
-        const diagrams = Diagrams.diagramsByIDsSelector(state)(diagramIDs);
-        const intents = Intent.intentsByIDsSelector(state)(intentIDs);
-        const slots = Slot.findSlotsByIDsSelector(state)(Intent.allSlotsIDsByIntentIDsSelector(state)(intentIDs));
+      const products = Product.productsByIDsSelector(state)(productIDs);
+      const diagrams = Diagrams.diagramsByIDsSelector(state)(diagramIDs);
+      const intents = Intent.intentsByIDsSelector(state)(intentIDs);
+      const slots = Slot.findSlotsByIDsSelector(state)(Intent.allSlotsIDsByIntentIDsSelector(state)(intentIDs));
 
-        copyData = {
-          skillID,
-          data: creator.data,
-          nodes: copiedNodes,
-          legacyNodes,
-          ports,
-          links,
-          displays: [],
-          products,
-          diagrams,
-          intents,
-          slots,
-          platform,
-        };
-      } else {
-        const { intents: intentIDs, products: productIDs, displays: displayIDs, diagrams: diagramIDs } = await client.clipboard.copy(
-          skillID,
-          legacyNodes
-        );
-
-        const displays = Display.displaysByIDsSelector(state)(displayIDs);
-        const products = Product.productsByIDsSelector(state)(productIDs.map(String));
-        const diagrams = Diagrams.diagramsByIDsSelector(state)(diagramIDs);
-        const intents = Intent.intentsByIDsSelector(state)(intentIDs);
-        const slots = Slot.findSlotsByIDsSelector(state)(Intent.allSlotsIDsByIntentIDsSelector(state)(intentIDs));
-
-        copyData = {
-          skillID,
-          data: creator.data,
-          nodes: copiedNodes,
-          legacyNodes,
-          ports,
-          links,
-          displays,
-          products,
-          diagrams,
-          intents,
-          slots,
-          platform,
-        };
-      }
+      const copyData: ClipboardContext = {
+        skillID,
+        data: creator.data,
+        nodes: copiedNodes,
+        legacyNodes,
+        ports,
+        links,
+        displays: [],
+        products,
+        diagrams,
+        intents,
+        slots,
+        platform,
+      };
 
       const encryptedData = synchronousCrypto.encrypt(JSON.stringify(copyData), keyToEncrypt);
-      const version = isDataRefactorEnabled ? ClipboardVersion.V3 : ClipboardVersion.V2;
+      const version = ClipboardVersion.V3;
 
       await set(
         CLIPBOARD_DATA_KEY,
@@ -160,7 +127,7 @@ class ClipboardEngine extends EngineConsumer {
       const b64Data = await get<string>(CLIPBOARD_DATA_KEY);
 
       const { data, key, version: sourceVersion } = JSON.parse(Utf8.stringify(Base64.parse(b64Data)));
-      const targetVersion = this.engine.isFeatureEnabled(FeatureFlag.DATA_REFACTOR) ? ClipboardVersion.V3 : ClipboardVersion.V2;
+      const targetVersion = ClipboardVersion.V3;
 
       if (sourceVersion !== targetVersion) {
         throw new Error('cliboard version mismatch');
@@ -247,7 +214,6 @@ class ClipboardEngine extends EngineConsumer {
     const state = this.engine.store.getState();
     const skillID = Skill.activeSkillIDSelector(state);
     const copyBuffer = Clipboard.deserialize(pastedText);
-    const isDataRefactorEnabled = this.engine.isFeatureEnabled(FeatureFlag.DATA_REFACTOR);
 
     if (copyBuffer) {
       try {
@@ -257,31 +223,16 @@ class ClipboardEngine extends EngineConsumer {
 
         const isSameSkill = result.skillID === skillID;
 
-        let nodesWithData;
+        const nodesWithData = isSameSkill
+          ? result.nodes.map((node) => {
+              const data = Creator.dataByNodeIDSelector(state)(node.id);
 
-        if (isDataRefactorEnabled) {
-          nodesWithData = isSameSkill
-            ? result.nodes.map((node) => {
-                const data = Creator.dataByNodeIDSelector(state)(node.id);
-
-                return {
-                  data,
-                  node,
-                };
-              })
-            : await this.internal.importClipboardContextV2(result);
-        } else {
-          const legacyNodes = isSameSkill ? result.legacyNodes : await this.internal.importClipboardContext(skillID, result);
-
-          nodesWithData = legacyNodes.map((node: Models.DBNode) => {
-            const nodeData = nodeDataAdapter.fromDB(node.extras, node);
-
-            return {
-              data: nodeData,
-              node: nodeAdapter.fromDB(node, nodeData, node.parentNode),
-            };
-          });
-        }
+              return {
+                data,
+                node,
+              };
+            })
+          : await this.internal.importClipboardContextV2(result);
 
         const { ports, links } = result;
 

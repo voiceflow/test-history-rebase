@@ -1,12 +1,10 @@
 import _uniq from 'lodash/uniq';
 import { createSelector } from 'reselect';
 
-import { FeatureFlag } from '@/config/features';
 import { BUILT_IN_VARIABLES } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
-import * as Feature from '@/ducks/feature';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
@@ -36,10 +34,8 @@ export const allVariablesSelector = createSelector(
   (globalVariables, activeDiagramVariables, slotNames) => _uniq([...slotNames, ...BUILT_IN_VARIABLES, ...globalVariables, ...activeDiagramVariables])
 );
 
-export const activeSlotTypesSelector = createSelector(
-  [Skill.activeSkillSelector, Feature.isFeatureEnabledSelector],
-  ({ locales, platform, publishInfo }, isFeatureEnabled) =>
-    getSlotTypes({ locales, platform, publishInfo, isDataRefactorEnabled: isFeatureEnabled(FeatureFlag.DATA_REFACTOR) })
+export const activeSlotTypesSelector = createSelector([Skill.activeSkillSelector], ({ locales, platform, publishInfo }) =>
+  getSlotTypes({ locales, platform, publishInfo })
 );
 
 export const activeProjectSelector = createSelector(Skill.activeProjectIDSelector, Project.projectByIDSelector, (projectID, getProject) =>

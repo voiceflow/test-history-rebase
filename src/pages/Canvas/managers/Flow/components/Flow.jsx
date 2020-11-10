@@ -1,14 +1,11 @@
-import cuid from 'cuid';
 import React from 'react';
 
 import Select from '@/components/Select';
-import { FeatureFlag } from '@/config/features';
 import { DIAGRAM_ID_SEPARATOR, ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
 
 import MissingFlowMessage from './MissingFlowMessage';
 
@@ -22,21 +19,7 @@ const buildOptions = (diagrams) =>
       label: diagram.name,
     }));
 
-function Flow({
-  onChange,
-  diagrams,
-  diagram,
-  updateSubDiagrams,
-  createDiagram,
-  diagramID,
-  goToDiagram,
-  saveActiveDiagram,
-  enterOnCreate = true,
-  createDiagramV2,
-  saveActiveDiagramV2,
-}) {
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
-
+function Flow({ onChange, diagrams, diagram, diagramID, goToDiagram, enterOnCreate = true, createDiagramV2, saveActiveDiagramV2 }) {
   const [value, setValue] = React.useState(diagram ? generateDiagramValue(diagram) : null);
   const options = React.useMemo(() => buildOptions(diagrams), [diagrams]);
   const optionsMap = React.useMemo(() => options.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [options]);
@@ -47,11 +30,8 @@ function Flow({
   const updateDiagram = React.useCallback(
     (diagramID) => {
       setSelectedDiagram(diagramID);
-      if (!dataRefactor.isEnabled) {
-        updateSubDiagrams();
-      }
     },
-    [setSelectedDiagram, updateSubDiagrams]
+    [setSelectedDiagram]
   );
 
   const setFlow = React.useCallback(
@@ -65,40 +45,16 @@ function Flow({
 
   const onCreate = React.useCallback(
     async (name) => {
-      if (dataRefactor.isEnabled) {
-        await saveActiveDiagramV2();
-        const newDiagramID = await createDiagramV2(name);
+      await saveActiveDiagramV2();
+      const newDiagramID = await createDiagramV2(name);
 
-        setValue(generateDiagramValue({ id: newDiagramID, name }));
-        setSelectedDiagram(newDiagramID);
-        if (enterOnCreate) {
-          goToDiagram(newDiagramID);
-        }
-        return;
-      }
-
-      const diagramID = cuid();
-      await createDiagram(diagramID, name);
-      await updateSubDiagrams();
-      await saveActiveDiagram();
-
-      setValue(generateDiagramValue({ id: diagramID, name }));
-      setSelectedDiagram(diagramID);
+      setValue(generateDiagramValue({ id: newDiagramID, name }));
+      setSelectedDiagram(newDiagramID);
       if (enterOnCreate) {
-        await goToDiagram(diagramID);
+        goToDiagram(newDiagramID);
       }
     },
-    [
-      createDiagram,
-      updateSubDiagrams,
-      saveActiveDiagram,
-      options,
-      setSelectedDiagram,
-      goToDiagram,
-      createDiagramV2,
-      saveActiveDiagramV2,
-      enterOnCreate,
-    ]
+    [options, setSelectedDiagram, goToDiagram, createDiagramV2, saveActiveDiagramV2, enterOnCreate]
   );
 
   const validateCreate = (name) => {
@@ -133,11 +89,8 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  createDiagram: Diagram.createDiagram,
   createDiagramV2: DiagramV2.createNewDiagram,
-  saveActiveDiagram: Diagram.saveActiveDiagram,
   saveActiveDiagramV2: DiagramV2.saveActiveDiagram,
-  updateSubDiagrams: Diagram.updateSubDiagrams,
   goToDiagram: Router.goToDiagram,
 };
 

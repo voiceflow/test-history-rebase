@@ -3,8 +3,6 @@ import { createSelector } from 'reselect';
 import client from '@/client';
 import creatorAdapter from '@/client/adapters/creator';
 import clientV2 from '@/clientV2';
-import { IS_TEST } from '@/config';
-import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
 import { creatorDiagramIDSelector } from '@/ducks/creator';
 import { clearModal, setConfirm } from '@/ducks/modal';
@@ -15,7 +13,6 @@ import { isLinkedCommandNode, isLinkedFlowNode } from '@/utils/node';
 import { denormalize, getNormalizedByKey } from '@/utils/normalized';
 
 import * as Creator from './creator';
-import * as Feature from './feature';
 import { lastRealtimeTimestampSelector, rtctimestampSelector } from './realtime';
 import { goToDiagram, goToRootDiagram } from './router';
 import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector } from './skill';
@@ -307,18 +304,10 @@ export const addDiagramVariable = (diagramID: string, variable: string): Thunk =
   dispatch(updateDiagramVariables(diagramID, unique(append(variables, variable))));
 };
 
-export const loadDiagramVariables = (diagramID: string): Thunk<string[]> => async (dispatch, getState) => {
-  const isDataRefactorEnabled = IS_TEST ? false : Feature.isFeatureEnabledSelector(getState())(FeatureFlag.DATA_REFACTOR);
-  // TODO: no longer need to load diagram variables individually in the future
-  if (isDataRefactorEnabled) {
-    const { variables } = await clientV2.api.diagram.get<{ variables: string[] }>(diagramID, ['variables']);
-    dispatch(updateDiagramVariables(diagramID, variables));
-    return variables;
-  }
-
-  const variables = await client.diagram.findVariables(diagramID);
+// TODO: no longer need to load diagram variables individually in the future
+export const loadDiagramVariables = (diagramID: string): Thunk<string[]> => async (dispatch) => {
+  const { variables } = await clientV2.api.diagram.get<{ variables: string[] }>(diagramID, ['variables']);
   dispatch(updateDiagramVariables(diagramID, variables));
-
   return variables;
 };
 
@@ -326,18 +315,8 @@ export const saveDiagramVariables = (diagramID: string): Thunk => async (_, getS
   const state = getState();
   const variables = diagramVariablesSelector(state)(diagramID);
 
-  const isDataRefactorEnabled = IS_TEST ? false : Feature.isFeatureEnabledSelector(getState())(FeatureFlag.DATA_REFACTOR);
-  if (isDataRefactorEnabled) {
-    const rtctimestamp = rtctimestampSelector(state);
-    await clientV2.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { variables });
-    return;
-  }
-
-  const remoteDiagramVariables = await client.diagram.findVariables(diagramID);
-
-  if (!hasIdenticalMembers(remoteDiagramVariables, variables)) {
-    await client.diagram.updateVariables(diagramID, variables);
-  }
+  const rtctimestamp = rtctimestampSelector(state);
+  await clientV2.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { variables });
 };
 
 export const saveActiveDiagramVariables = (): Thunk => async (dispatch, getState) => {

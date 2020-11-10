@@ -2,12 +2,9 @@ import React from 'react';
 import { ActionCreators } from 'redux-undo';
 
 import LoadingGate from '@/components/LoadingGate';
-import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import { activeDiagramIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
-import { initializeCreatorForDiagram } from '@/store/sideEffects';
 import { initializeCreatorForDiagram as initializeCreatorForDiagramV2 } from '@/store/sideEffectsV2';
 import { Action } from '@/store/types';
 import { ConnectedProps, MergeArguments } from '@/types';
@@ -16,14 +13,12 @@ const RawDiagramLoadingGate: React.FC<ConnectedDiagramLoadingGateProps> = ({
   diagramID,
   creatorDiagramID,
   isDiagramLoaded,
-  loadDiagram,
   loadDiagramV2,
   clearHistory,
   children,
 }) => {
   const prevDiagramID = React.useRef(diagramID);
-  const dataRefactor = useFeature(FeatureFlag.DATA_REFACTOR);
-  const load = dataRefactor.isEnabled ? loadDiagramV2 : loadDiagram;
+  const load = loadDiagramV2;
 
   // reset history if switching between diagrams
   React.useEffect(() => {
@@ -46,16 +41,12 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  loadDiagram: initializeCreatorForDiagram,
   loadDiagramV2: initializeCreatorForDiagramV2,
   clearHistory: ActionCreators.clearHistory as () => Action,
 };
 
-const mergeProps = (
-  ...[{ diagramID, creatorDiagramID }, { loadDiagram, loadDiagramV2 }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>
-) => ({
+const mergeProps = (...[{ diagramID, creatorDiagramID }, { loadDiagramV2 }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
   isDiagramLoaded: creatorDiagramID === diagramID,
-  loadDiagram: () => loadDiagram(diagramID),
   loadDiagramV2: () => loadDiagramV2(diagramID),
 });
 

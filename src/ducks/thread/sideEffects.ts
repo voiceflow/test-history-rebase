@@ -163,7 +163,7 @@ export const handleNewThread = (payload: { projectID: string; created: DBThread 
 
   if (creatorID === thread.creatorID) return;
 
-  dispatch(ThreadActions.prependThread(thread.id, thread));
+  dispatch(ThreadActions.addThread(thread.id, thread));
   dispatch(ThreadActions.updateUnreadComments(true));
 };
 

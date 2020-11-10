@@ -10,7 +10,7 @@ import { connect } from '@/hocs';
 import { loadVersion } from '@/store/sideEffectsV2';
 import { ConnectedProps, MergeArguments } from '@/types';
 
-import CommentingUpdates from './ComentingUpdates';
+import CommentingUpdates from './CommentingUpdates';
 
 export type ProjectLoadingGateProps = {
   versionID: string;

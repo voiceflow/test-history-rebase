@@ -1,4 +1,4 @@
-import client from '@/client';
+import clientV2 from '@/clientV2';
 import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import * as Skill from '@/ducks/skill';
@@ -7,30 +7,51 @@ import { Thunk } from '@/store/types';
 import { Nullable } from '@/types';
 
 import { duckLogger } from '../utils';
-import { updateAccount, updateAmazonAccount } from './actions';
+import { updateAccount } from './actions';
 import { STATE_KEY } from './constants';
-import { amazonAccountSelector } from './selectors';
+import { amazonVendorsSelector } from './selectors';
 
 const log = duckLogger.child(STATE_KEY);
 
-export const getVendors = (): Thunk => async (dispatch, getState) => {
-  const state = getState();
-
-  if (!amazonAccountSelector(state)) return;
-
+export const linkGoogleAccount = (code: string): Thunk<Nullable<Account.Google>> => async (dispatch) => {
   try {
-    const vendors = await client.user.getVendors();
-    if (Array.isArray(vendors)) {
-      dispatch(updateAmazonAccount({ vendors }));
-    }
+    const google = await clientV2.googleService.session.linkAccount({ code });
+
+    dispatch(updateAccount({ google }));
+
+    return google;
   } catch (err) {
     log.error(err);
+    throw err;
   }
 };
 
-export const createAmazonSession = (code: string): Thunk<Nullable<Account.Amazon>> => async (dispatch) => {
+export const getGoogleAccount = (): Thunk => async (dispatch) => {
+  let google: Nullable<Account.Google> = null;
+
   try {
-    const amazon = (await client.session.amazon.linkAccount(code)) || null;
+    google = await clientV2.googleService.session.getAccount();
+  } catch (err) {
+    log.error(err);
+  }
+
+  dispatch(updateAccount({ google }));
+};
+
+export const unlinkGoogleAccount = (): Thunk => async (dispatch) => {
+  try {
+    await clientV2.googleService.session.unlinkAccount();
+
+    dispatch(updateAccount({ google: null }));
+  } catch {
+    dispatch(Modal.setError('Something went wrong - please refresh your page'));
+  }
+};
+
+export const linkAmazonAccount = (code: string): Thunk<Nullable<Account.Amazon>> => async (dispatch) => {
+  try {
+    const amazon = await clientV2.alexaService.session.linkAccount({ code });
+
     dispatch(updateAccount({ amazon }));
 
     return amazon;
@@ -40,60 +61,50 @@ export const createAmazonSession = (code: string): Thunk<Nullable<Account.Amazon
   }
 };
 
-export const checkAmazonAccount = (): Thunk => async (dispatch) => {
-  let amazon = null;
+export const getAmazonAccount = (): Thunk => async (dispatch) => {
+  let amazon: Nullable<Account.Amazon> = null;
+
   try {
-    amazon = (await client.session.amazon.getAccount()) || null;
+    amazon = await clientV2.alexaService.session.getAccount();
   } catch (err) {
     log.error(err);
   }
+
   dispatch(updateAccount({ amazon }));
 };
 
-export const deleteAmazonAccount = (): Thunk => async (dispatch) => {
+export const unlinkAmazonAccount = (): Thunk => async (dispatch) => {
   try {
-    await client.session.amazon.deleteAccount();
+    await clientV2.alexaService.session.unlinkAccount();
+
     dispatch(updateAccount({ amazon: null }));
-  } catch (err) {
+  } catch {
     dispatch(Modal.setError('Something went wrong - please refresh your page'));
   }
 };
 
-export const updateAmznId = (projectID: string, vendorID: string, newAmznID: string): Thunk => async (dispatch) => {
-  try {
-    const returnAmznID = await client.project.updateAmznId(projectID, vendorID, newAmznID);
+export const updateVendorSkillID = (projectID: string, vendorID: string, skillID: string): Thunk => async (dispatch) => {
+  await clientV2.alexaService.project.updateVendorSkillID(projectID, vendorID, skillID);
 
-    dispatch(Skill.updatePublishPlatforms[PlatformType.ALEXA]({ amznID: returnAmznID }));
-  } catch (err) {
-    dispatch(Modal.setError('Something went wrong - please refresh your page'));
-  }
+  dispatch(Skill.updatePublishPlatforms[PlatformType.ALEXA]({ amznID: skillID }));
 };
 
-export const createGoogleSession = (code: string): Thunk => async (dispatch) => {
-  try {
-    const google = (await client.session.google.linkAccount(code)) || null;
-    dispatch(updateAccount({ google }));
-  } catch (err) {
-    log.error(err);
-    throw err;
-  }
+export const updateSelectedVendor = (vendorID: string): Thunk => async (dispatch, getState) => {
+  const projectID = Skill.activeProjectIDSelector(getState());
+
+  const { skillID } = await clientV2.alexaService.project.updateSelectedVendor(projectID, vendorID);
+
+  dispatch(Skill.updatePublishPlatforms[PlatformType.ALEXA]({ amznID: skillID, vendorId: vendorID }));
 };
 
-export const checkGoogleAccount = (): Thunk => async (dispatch) => {
-  let google = null;
-  try {
-    google = (await client.session.google.getAccount()) || null;
-  } catch (err) {
-    log.error(err);
-  }
-  dispatch(updateAccount({ google }));
-};
+export const syncSelectedVendor = (): Thunk => async (dispatch, getState) => {
+  await dispatch(getAmazonAccount());
 
-export const deleteGoogleAccount = (): Thunk => async (dispatch) => {
-  try {
-    await client.session.google.deleteAccount();
-    dispatch(updateAccount({ google: null }));
-  } catch (err) {
-    dispatch(Modal.setError('Something went wrong - please refresh your page'));
+  const state = getState();
+  const vendors = amazonVendorsSelector(state);
+  const skillVendor = Skill.selectedVendorSelector(state);
+
+  if (skillVendor && vendors.length && !vendors.find((vendor) => vendor?.id === skillVendor)) {
+    await dispatch(updateSelectedVendor(vendors[0]?.id));
   }
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as AccountSideEffectsV2 from '@/ducks/account/sideEffectsV2';
+import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks';
 import { Alexa } from '@/pages/Publish/UploadV2';
@@ -52,7 +52,7 @@ const AlexaUploadButton: React.FC<AlexaUploadButtonConnectedProps> = ({ syncSele
 };
 
 const mapDispatchToProps = {
-  syncSelectedVendor: AccountSideEffectsV2.syncSelectedVendor,
+  syncSelectedVendor: Account.syncSelectedVendor,
 };
 
 type AlexaUploadButtonConnectedProps = ConnectedProps<{}, typeof mapDispatchToProps>;

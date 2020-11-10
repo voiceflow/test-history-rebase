@@ -1,7 +1,6 @@
 import React from 'react';
 
 import * as Account from '@/ducks/account';
-import { syncSelectedVendor } from '@/ducks/account/sideEffectsV2';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -91,8 +90,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   syncVendors: AlexaPublish.syncVendors,
-  checkAmazonAccount: Account.checkAmazonAccount,
-  syncSelectedVendor,
+  syncSelectedVendor: Account.syncSelectedVendor,
 };
 
 type ConnectedExportProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

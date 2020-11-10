@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as AccountSideEffectsV2 from '@/ducks/account/sideEffectsV2';
+import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks';
 import { Google } from '@/pages/Publish/UploadV2';
@@ -11,7 +11,7 @@ import { isNotify, isReady, isRunning } from '@/utils/job';
 import UploadPopup from '../UploadPopup';
 import Button from './Button';
 
-const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ getGoogleAccountV2 }) => {
+const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ getGoogleAccount }) => {
   const { job, cancel, publish } = React.useContext(PublishContext)!;
 
   const [opened, onToggle] = useToggle();
@@ -37,7 +37,7 @@ const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ getGoo
   };
 
   React.useEffect(() => {
-    getGoogleAccountV2();
+    getGoogleAccount();
   }, []);
 
   return (
@@ -52,7 +52,7 @@ const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ getGoo
 };
 
 const mapDispatchToProps = {
-  getGoogleAccountV2: AccountSideEffectsV2.getGoogleAccountV2,
+  getGoogleAccount: Account.getGoogleAccount,
 };
 
 type GoogleUploadButtonConnectedProps = ConnectedProps<{}, typeof mapDispatchToProps>;

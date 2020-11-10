@@ -387,7 +387,6 @@ export const checkVendors = () =>
     if (!Account.amazonVendorsSelector(getState()).length) {
       // get vendors and check again
       dispatch(updateAlexaStage(ALEXA_STAGES.CHECKING_VENDOR));
-      await dispatch(Account.getVendors());
 
       // STEP 2.5: if no vendors again then send to developer account screen
       if (!Account.amazonVendorsSelector(getState()).length) {
@@ -427,8 +426,6 @@ export const updateVendor = (vendorId) => async (dispatch, getState) => {
 };
 
 export const syncVendors = () => async (dispatch, getState) => {
-  await dispatch(Account.getVendors());
-
   const state = getState();
   const vendors = Account.amazonVendorsSelector(state);
   const skillVendor = vendorIdSelector(state);

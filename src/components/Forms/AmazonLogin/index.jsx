@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import Button from '@/components/Button';
 import { AMAZON_APP_ID } from '@/config';
-import { linkAmazonAccountV2 } from '@/ducks/account/sideEffectsV2';
+import * as Account from '@/ducks/account';
 
 const AmazonLoad = () =>
   new Promise((resolve) => {
@@ -33,7 +33,7 @@ const AmazonLoad = () =>
   });
 
 export const AmazonLoginButton = (props) => {
-  const { onLoad, onFail, onSuccess, linkAmazonAccountV2 } = props;
+  const { onLoad, onFail, onSuccess, linkAmazonAccount } = props;
 
   useEffect(() => {
     AmazonLoad();
@@ -49,7 +49,7 @@ export const AmazonLoginButton = (props) => {
             throw new Error();
           }
 
-          const account = await linkAmazonAccountV2(response.code);
+          const account = await linkAmazonAccount(response.code);
 
           onSuccess(account);
         } catch (err) {
@@ -76,7 +76,7 @@ AmazonLoginButton.propTypes = {
 };
 
 const mapDispatchToProps = {
-  linkAmazonAccountV2,
+  linkAmazonAccount: Account.linkAmazonAccount,
 };
 
 export default connect(null, mapDispatchToProps)(AmazonLoginButton);

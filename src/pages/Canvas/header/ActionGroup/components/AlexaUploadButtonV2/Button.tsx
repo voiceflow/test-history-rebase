@@ -7,7 +7,6 @@ import Menu, { MenuItem } from '@/components/Menu';
 import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import * as Account from '@/ducks/account';
-import { updateSelectedVendor } from '@/ducks/account/sideEffectsV2';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
 import { usePermission } from '@/hooks';
@@ -82,7 +81,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updateSelectedVendor,
+  updateSelectedVendor: Account.updateSelectedVendor,
 };
 
 type ConnectedButtonProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

@@ -1,7 +1,7 @@
-import client from '@/client';
+import client from '@/clientV2';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
-import { Fixtures, generate } from '@/utils/testing';
+import { Fixtures } from '@/utils/testing';
 
 import suite from './_suite';
 
@@ -71,127 +71,109 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
     });
   });
 
-  describeSideEffects(({ applyEffect, createState }) => {
-    describe('getVendors()', () => {
-      it('should be a noop if no amazon account available', async () => {
-        const { dispatch } = await applyEffect(Account.getVendors(), createState({} as any));
-
-        expect(dispatch).to.not.be.called;
-      });
-
-      it('should store array of vendors', async () => {
-        const vendors: any[] = generate.array();
-        const getVendors = stub(client.user, 'getVendors').resolves(vendors);
-
-        const { expectDispatch } = await applyEffect(Account.getVendors());
-
-        expect(getVendors).to.be.calledWithExactly();
-        expectDispatch(Account.updateAmazonAccount({ vendors }));
-      });
-    });
-
-    describe('createAmazonSession()', () => {
+  describeSideEffects(({ applyEffect }) => {
+    describe('linkAmazonAccount()', () => {
       it('should link amazon account', async () => {
         const code = '!@#';
         const amazonAccount: any = { token: 'xyz' };
-        const linkAccount = stub(client.session.amazon, 'linkAccount').resolves(amazonAccount);
+        const linkAccount = stub(client.alexaService.session, 'linkAccount').resolves(amazonAccount);
 
-        const { expectDispatch } = await applyEffect(Account.createAmazonSession(code));
+        const { expectDispatch } = await applyEffect(Account.linkAmazonAccount(code));
 
-        expect(linkAccount).to.be.calledWithExactly(code);
+        expect(linkAccount).to.be.calledWith({ code });
         expectDispatch(Account.updateAccount({ amazon: amazonAccount }));
       });
     });
 
-    describe('checkAmazonAccount()', () => {
+    describe('getAmazonAccount()', () => {
       it('should update amazon account on success', async () => {
         const amazonAccount: any = { token: 'xyz' };
-        const getAccount = stub(client.session.amazon, 'getAccount').resolves(amazonAccount);
+        const getAccount = stub(client.alexaService.session, 'getAccount').resolves(amazonAccount);
 
-        const { expectDispatch } = await applyEffect(Account.checkAmazonAccount());
+        const { expectDispatch } = await applyEffect(Account.getAmazonAccount());
 
         expect(getAccount).to.be.calledWithExactly();
         expectDispatch(Account.updateAccount({ amazon: amazonAccount }));
       });
 
       it('should clear amazon account on failure', async () => {
-        stub(client.session.amazon, 'getAccount').throws(new Error('mock error'));
+        stub(client.alexaService.session, 'getAccount').throws(new Error('mock error'));
 
-        const { expectDispatch } = await applyEffect(Account.checkAmazonAccount());
+        const { expectDispatch } = await applyEffect(Account.getAmazonAccount());
 
         expectDispatch(Account.updateAccount({ amazon: null }));
       });
     });
 
-    describe('deleteAmazonAccount()', () => {
+    describe('unlinkAmazonAccount()', () => {
       it('should clear amazon account on success', async () => {
         const amazonAccount: any = { token: 'xyz' };
-        const deleteAccount = stub(client.session.amazon, 'deleteAccount').resolves(amazonAccount);
+        const deleteAccount = stub(client.alexaService.session, 'unlinkAccount').resolves(amazonAccount);
 
-        const { expectDispatch } = await applyEffect(Account.deleteAmazonAccount());
+        const { expectDispatch } = await applyEffect(Account.unlinkAmazonAccount());
 
         expect(deleteAccount).to.be.calledWithExactly();
         expectDispatch(Account.updateAccount({ amazon: null }));
       });
 
       it('should set an error on failure', async () => {
-        const deleteAccount = stub(client.session.amazon, 'deleteAccount').throws(new Error('mock error'));
+        const deleteAccount = stub(client.alexaService.session, 'unlinkAccount').throws(new Error('mock error'));
 
-        const { expectDispatch } = await applyEffect(Account.deleteAmazonAccount());
+        const { expectDispatch } = await applyEffect(Account.unlinkAmazonAccount());
 
         expect(deleteAccount).to.be.calledWithExactly();
         expectDispatch(Modal.setError('Something went wrong - please refresh your page'));
       });
     });
 
-    describe('createGoogleSession()', () => {
+    describe('linkGoogleAccount()', () => {
       it('should link google account', async () => {
         const code = '!@#';
         const googleAccount: any = { token: 'xyz' };
-        const linkAccount = stub(client.session.google, 'linkAccount').returns(googleAccount);
+        const linkAccount = stub(client.googleService.session, 'linkAccount').returns(googleAccount);
 
-        const { expectDispatch } = await applyEffect(Account.createGoogleSession(code));
+        const { expectDispatch } = await applyEffect(Account.linkGoogleAccount(code));
 
-        expect(linkAccount).to.be.calledWithExactly(code);
+        expect(linkAccount).to.be.calledWith({ code });
         expectDispatch(Account.updateAccount({ google: googleAccount }));
       });
     });
 
-    describe('checkGoogleAccount()', () => {
+    describe('getGoogleAccount()', () => {
       it('should update google account on success', async () => {
         const googleAccount: any = { token: 'xyz' };
-        const getAccount = stub(client.session.google, 'getAccount').returns(googleAccount);
+        const getAccount = stub(client.googleService.session, 'getAccount').returns(googleAccount);
 
-        const { expectDispatch } = await applyEffect(Account.checkGoogleAccount());
+        const { expectDispatch } = await applyEffect(Account.getGoogleAccount());
 
         expect(getAccount).to.be.calledWithExactly();
         expectDispatch(Account.updateAccount({ google: googleAccount }));
       });
 
       it('should clear google account on failure', async () => {
-        stub(client.session.google, 'getAccount').throws(new Error('mock error'));
+        stub(client.googleService.session, 'getAccount').throws(new Error('mock error'));
 
-        const { expectDispatch } = await applyEffect(Account.checkGoogleAccount());
+        const { expectDispatch } = await applyEffect(Account.getGoogleAccount());
 
         expectDispatch(Account.updateAccount({ google: null }));
       });
     });
 
-    describe('deleteGoogleAccount()', () => {
+    describe('unlinkGoogleAccount()', () => {
       it('should clear google account on success', async () => {
         const googleAccount: any = { token: 'xyz' };
-        const deleteAccount = stub(client.session.google, 'deleteAccount').returns(googleAccount);
+        const deleteAccount = stub(client.googleService.session, 'unlinkAccount').returns(googleAccount);
 
-        const { expectDispatch } = await applyEffect(Account.deleteGoogleAccount());
+        const { expectDispatch } = await applyEffect(Account.unlinkGoogleAccount());
 
         expect(deleteAccount).to.be.calledWithExactly();
         expectDispatch(Account.updateAccount({ google: null }));
       });
 
       it('should set an error on failure', async () => {
-        const deleteAccount = stub(client.session.google, 'deleteAccount').throws(() => new Error('mock error'));
+        const deleteAccount = stub(client.googleService.session, 'unlinkAccount').throws(() => new Error('mock error'));
 
-        const { expectDispatch } = await applyEffect(Account.deleteGoogleAccount());
+        const { expectDispatch } = await applyEffect(Account.unlinkGoogleAccount());
 
         expect(deleteAccount).to.be.calledWithExactly();
         expectDispatch(Modal.setError('Something went wrong - please refresh your page'));

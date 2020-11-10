@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import Modal, { ModalHeader } from '@/components/LegacyModal';
 import { JobStatus } from '@/constants';
-import * as Account from '@/ducks/account';
-import { syncSelectedVendor } from '@/ducks/account/sideEffectsV2';
+import Account from '@/ducks/account';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
 import { Alexa } from '@/pages/Publish/UploadV2';
@@ -46,12 +45,10 @@ export const PublishAmazon = (props) => {
 
 const mapStateToProps = {
   stage: AlexaPublish.publishStageSelector,
-  amazon: Account.amazonAccountSelector,
 };
 
 const mapDispatchToProps = {
-  checkAmazonAccount: Account.checkAmazonAccount,
-  syncSelectedVendor,
+  syncSelectedVendor: Account.syncSelectedVendor,
   syncVendors: AlexaPublish.syncVendors,
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 import BaseButton from '@/components/Button/components/BaseButton';
 import SvgIcon from '@/components/SvgIcon';
-import { linkGoogleAccountV2 } from '@/ducks/account/sideEffectsV2';
+import { linkGoogleAccount } from '@/ducks/account';
 import { connect, styled } from '@/hocs';
 import { useGoogleLogin } from '@/hooks';
 import * as Models from '@/models';
@@ -28,14 +28,14 @@ export type GoogleLoginProps = {
   onSuccess: (account: Models.Account.Google) => void;
 };
 
-const GoogleLogin: React.FC<GoogleLoginProps & ConnectedGoogleLoginProps> = ({ scopes, onSuccess, onFail, onLoad, linkGoogleAccountV2 }) => {
+const GoogleLogin: React.FC<GoogleLoginProps & ConnectedGoogleLoginProps> = ({ scopes, onSuccess, onFail, onLoad, linkGoogleAccount }) => {
   const login = useGoogleLogin(scopes, onLoad);
 
   const onLogin = React.useCallback(
     () =>
       login()
         .then(async (code) => {
-          const account = await linkGoogleAccountV2(code);
+          const account = await linkGoogleAccount(code);
 
           onSuccess(account!);
         })
@@ -52,7 +52,7 @@ const GoogleLogin: React.FC<GoogleLoginProps & ConnectedGoogleLoginProps> = ({ s
 };
 
 const mapDispatchToProps = {
-  linkGoogleAccountV2,
+  linkGoogleAccount,
 };
 
 type ConnectedGoogleLoginProps = ConnectedProps<{}, typeof mapDispatchToProps>;

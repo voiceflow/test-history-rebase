@@ -7,7 +7,6 @@ import DropdownButton from '@/components/DropdownButton';
 import Input from '@/components/Input';
 import Menu, { MenuItem } from '@/components/Menu';
 import * as Account from '@/ducks/account';
-import { updateSelectedVendor, updateVendorSkillID } from '@/ducks/account/sideEffectsV2';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -92,8 +91,8 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updateVendorSkillID,
-  updateSelectedVendor,
+  updateVendorSkillID: Account.updateVendorSkillID,
+  updateSelectedVendor: Account.updateSelectedVendor,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Migrate);

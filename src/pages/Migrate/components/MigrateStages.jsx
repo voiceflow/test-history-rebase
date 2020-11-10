@@ -3,7 +3,7 @@ import { Alert } from 'reactstrap';
 
 import Button from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
-import { syncSelectedVendor } from '@/ducks/account/sideEffectsV2';
+import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
 
@@ -47,7 +47,7 @@ function MigrateStages({ syncSelectedVendor }) {
 }
 
 const mapDispatchToProps = {
-  syncSelectedVendor,
+  syncSelectedVendor: Account.syncSelectedVendor,
 };
 
 export default connect(null, mapDispatchToProps)(MigrateStages);

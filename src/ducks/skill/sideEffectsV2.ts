@@ -8,7 +8,7 @@ import accountLinkingAdapter from '@/clientV2/adapters/version/alexa/accountLink
 import alexaSettingsAdapter, { SkillSettings } from '@/clientV2/adapters/version/alexa/settings';
 import googleSettingsAdapter from '@/clientV2/adapters/version/google/settings';
 import { PlatformType } from '@/constants';
-import * as Diagram from '@/ducks/diagramV2';
+import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/productV2';
 import * as Project from '@/ducks/project';

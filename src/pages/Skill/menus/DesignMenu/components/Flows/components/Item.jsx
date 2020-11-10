@@ -3,7 +3,7 @@ import React from 'react';
 import ContextMenu from '@/components/ContextMenu';
 import { OverflowText } from '@/components/Text';
 import { Members } from '@/components/User';
-import * as DiagramV2 from '@/ducks/diagramV2';
+import * as Diagram from '@/ducks/diagram';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
@@ -17,30 +17,30 @@ import ItemContainer from './ItemContainer';
 import ItemDeleteConfirm from './ItemDeleteConfirm';
 import ItemInput from './ItemInput';
 
-const Item = ({ id, name, isActive, viewers, setError, setConfirm, copyDiagramV2, goToDiagram, renameDiagramV2, deleteDiagramV2, rootDiagramID }) => {
+const Item = ({ id, name, isActive, viewers, setError, setConfirm, copyDiagram, goToDiagram, renameDiagram, deleteDiagram, rootDiagramID }) => {
   const [renameEnabled, toggleRenameEnabled] = useToggle(false);
   const [label, setLabel] = React.useState(name || '');
 
   const menuOptions = React.useMemo(() => {
     const options = [
-      { label: 'Duplicate', onClick: () => copyDiagramV2(id, { openDiagram: true }) },
+      { label: 'Duplicate', onClick: () => copyDiagram(id, { openDiagram: true }) },
       {
         label: 'Delete',
         onClick: () =>
           setConfirm({
             text: <ItemDeleteConfirm />,
             warning: true,
-            confirm: () => deleteDiagramV2(id).catch((err) => setError(err.message)),
+            confirm: () => deleteDiagram(id).catch((err) => setError(err.message)),
           }),
       },
     ];
     if (id !== rootDiagramID) options.unshift({ label: 'Rename', onClick: toggleRenameEnabled });
 
     return options;
-  }, [id, setError, setConfirm, copyDiagramV2, deleteDiagramV2, toggleRenameEnabled, rootDiagramID]);
+  }, [id, setError, setConfirm, copyDiagram, deleteDiagram, toggleRenameEnabled, rootDiagramID]);
 
   const onSaveName = () => {
-    renameDiagramV2(id, label);
+    renameDiagram(id, label);
     toggleRenameEnabled(false);
   };
 
@@ -88,10 +88,10 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   setError: Modal.setError,
   setConfirm: Modal.setConfirm,
-  copyDiagramV2: DiagramV2.copyDiagram,
+  copyDiagram: Diagram.copyDiagram,
   goToDiagram: Router.goToDiagram,
-  deleteDiagramV2: DiagramV2.deleteDiagram,
-  renameDiagramV2: DiagramV2.renameDiagram,
+  deleteDiagram: Diagram.deleteDiagram,
+  renameDiagram: Diagram.renameDiagram,
 };
 
 const mergeProps = ({ getDiagramViewers }, _, { id }) => ({

@@ -8,7 +8,7 @@ import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } 
 import SvgIcon from '@/components/SvgIcon';
 import { FeatureFlag } from '@/config/features';
 import { EventualEngineContext } from '@/contexts';
-import * as DiagramV2 from '@/ducks/diagramV2';
+import * as Diagram from '@/ducks/diagram';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
 import { prototypeStatusSelector } from '@/ducks/prototype';
@@ -26,7 +26,7 @@ import Container from './components/PrototypeSidebarContainer';
 import EmbedContainer from './components/PrototypeSidebarEmbedContainer';
 import { PROTOTYPE_SIDEBAR_WIDTH } from './constants';
 
-const PrototypeSidebar = ({ settings, resetPrototype, saveActiveDiagramV2, renderPrototypeV2, isMuted, updatePrototype, status }) => {
+const PrototypeSidebar = ({ settings, resetPrototype, saveActiveDiagram, renderPrototypeV2, isMuted, updatePrototype, status }) => {
   const prototypeTestEnabled = useFeature(FeatureFlag.PROTOTYPE_TEST).isEnabled;
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
@@ -53,7 +53,7 @@ const PrototypeSidebar = ({ settings, resetPrototype, saveActiveDiagramV2, rende
     enableLoading();
 
     // eslint-disable-next-line promise/catch-or-return
-    saveActiveDiagramV2()
+    saveActiveDiagram()
       .catch((err) => console.error(err))
       .then(async () => {
         await renderPrototypeV2(renderAbortControl);
@@ -129,7 +129,7 @@ const mapDispatchToProps = {
   setError: Modal.setError,
   resetPrototype: Prototype.resetPrototype,
   renderPrototypeV2: Prototype.renderPrototypeV2,
-  saveActiveDiagramV2: DiagramV2.saveActiveDiagram,
+  saveActiveDiagram: Diagram.saveActiveDiagram,
   updatePrototype: Prototype.updatePrototype,
 };
 

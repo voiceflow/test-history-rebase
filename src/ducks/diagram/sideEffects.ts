@@ -1,5 +1,6 @@
 import clientV2 from '@/clientV2';
 import creatorAdapterV2 from '@/clientV2/adapters/creator';
+import { creatorDiagramIDSelector } from '@/ducks/creator';
 import { CreatorDiagram } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { unique } from '@/utils/array';
@@ -7,15 +8,38 @@ import { getCurrentTimestamp } from '@/utils/time';
 
 import { userIDSelector } from '../account';
 import * as Creator from '../creator';
-import * as DiagramReducer from '../diagram';
 import { rtctimestampSelector } from '../realtime';
 import { goToDiagram, goToRootDiagram } from '../router';
 import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector } from '../skill';
 import { viewportByIDSelector } from '../viewport';
+import { addDiagram, replaceDiagrams, updateDiagram, updateDiagramVariables } from './actions';
 import { generateDefaultDiagram } from './constants';
+import { allDiagramsSelector, diagramVariablesSelector } from './selectors';
 import { PrimativeDiagram } from './types';
 
 // side effects
+
+// TODO: no longer need to load diagram variables individually in the future
+export const loadDiagramVariables = (diagramID: string): Thunk<string[]> => async (dispatch) => {
+  const { variables } = await clientV2.api.diagram.get<{ variables: string[] }>(diagramID, ['variables']);
+  dispatch(updateDiagramVariables(diagramID, variables));
+  return variables;
+};
+
+export const saveDiagramVariables = (diagramID: string): Thunk => async (_, getState) => {
+  const state = getState();
+  const variables = diagramVariablesSelector(state)(diagramID);
+
+  const rtctimestamp = rtctimestampSelector(state);
+  await clientV2.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { variables });
+};
+
+export const saveActiveDiagramVariables = (): Thunk => async (dispatch, getState) => {
+  const diagramID = creatorDiagramIDSelector(getState());
+  if (!diagramID) return;
+
+  await dispatch(saveDiagramVariables(diagramID));
+};
 
 export const loadVersionDiagrams = (versionID: string): Thunk => async (dispatch) => {
   const diagrams = await clientV2.api.version.getDiagrams<{ _id: string; name: string; variables: string[]; children: string[] }>(versionID, [
@@ -25,9 +49,7 @@ export const loadVersionDiagrams = (versionID: string): Thunk => async (dispatch
     'children',
   ]);
 
-  dispatch(
-    DiagramReducer.replaceDiagrams(diagrams.map(({ _id, name, variables, children = [] }) => ({ id: _id, name, subDiagrams: children, variables })))
-  );
+  dispatch(replaceDiagrams(diagrams.map(({ _id, name, variables, children = [] }) => ({ id: _id, name, subDiagrams: children, variables }))));
 };
 
 export const adaptActiveDiagram = (): SyncThunk<PrimativeDiagram & { _id: string }> => (_, getState) => {
@@ -41,7 +63,7 @@ export const adaptActiveDiagram = (): SyncThunk<PrimativeDiagram & { _id: string
   const viewport = viewportByIDSelector(state)(diagramID);
   const { rootNodeIDs, nodes, ports, data, markupNodeIDs } = Creator.creatorDiagramSelector(state);
   const links = Creator.allLinksSelector(state);
-  const variables = DiagramReducer.diagramVariablesSelector(state)(diagramID);
+  const variables = diagramVariablesSelector(state)(diagramID);
   const platform = activePlatformSelector(state);
 
   const diagram = creatorAdapterV2.toDB(
@@ -76,7 +98,7 @@ export const createNewDiagram = (name: string, diagram: PrimativeDiagram = gener
     modified: getCurrentTimestamp(),
   });
 
-  dispatch(DiagramReducer.addDiagram(diagramID, { name, id: diagramID, subDiagrams: [], variables: [] }));
+  dispatch(addDiagram(diagramID, { name, id: diagramID, subDiagrams: [], variables: [] }));
   return diagramID;
 };
 
@@ -86,7 +108,7 @@ export const copyDiagram = (diagramID: string, { openDiagram = false }: { openDi
 ) => {
   const state = getState();
   const versionID = activeSkillIDSelector(state);
-  const allDiagrams = DiagramReducer.allDiagramsSelector(state);
+  const allDiagrams = allDiagramsSelector(state);
 
   const { _id, ...diagram } = await clientV2.api.diagram.get(diagramID);
 
@@ -125,6 +147,6 @@ export const deleteDiagram = (diagramID: string): Thunk => async (dispatch, getS
 };
 
 export const renameDiagram = (diagramID: string, name: string): Thunk => async (dispatch, getState) => {
-  dispatch(DiagramReducer.updateDiagram(diagramID, { name }, true));
+  dispatch(updateDiagram(diagramID, { name }, true));
   await clientV2.api.diagram.options({ headers: { rtctimestamp: rtctimestampSelector(getState()) } }).update(diagramID, { name });
 };

@@ -3,7 +3,6 @@ import React from 'react';
 import Select from '@/components/Select';
 import { DIAGRAM_ID_SEPARATOR, ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
-import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 
@@ -19,7 +18,7 @@ const buildOptions = (diagrams) =>
       label: diagram.name,
     }));
 
-function Flow({ onChange, diagrams, diagram, diagramID, goToDiagram, enterOnCreate = true, createDiagramV2, saveActiveDiagramV2 }) {
+function Flow({ onChange, diagrams, diagram, diagramID, goToDiagram, enterOnCreate = true, createNewDiagram, saveActiveDiagram }) {
   const [value, setValue] = React.useState(diagram ? generateDiagramValue(diagram) : null);
   const options = React.useMemo(() => buildOptions(diagrams), [diagrams]);
   const optionsMap = React.useMemo(() => options.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [options]);
@@ -45,8 +44,8 @@ function Flow({ onChange, diagrams, diagram, diagramID, goToDiagram, enterOnCrea
 
   const onCreate = React.useCallback(
     async (name) => {
-      await saveActiveDiagramV2();
-      const newDiagramID = await createDiagramV2(name);
+      await saveActiveDiagram();
+      const newDiagramID = await createNewDiagram(name);
 
       setValue(generateDiagramValue({ id: newDiagramID, name }));
       setSelectedDiagram(newDiagramID);
@@ -54,7 +53,7 @@ function Flow({ onChange, diagrams, diagram, diagramID, goToDiagram, enterOnCrea
         goToDiagram(newDiagramID);
       }
     },
-    [options, setSelectedDiagram, goToDiagram, createDiagramV2, saveActiveDiagramV2, enterOnCreate]
+    [options, setSelectedDiagram, goToDiagram, createNewDiagram, saveActiveDiagram, enterOnCreate]
   );
 
   const validateCreate = (name) => {
@@ -89,8 +88,8 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  createDiagramV2: DiagramV2.createNewDiagram,
-  saveActiveDiagramV2: DiagramV2.saveActiveDiagram,
+  createNewDiagram: Diagram.createNewDiagram,
+  saveActiveDiagram: Diagram.saveActiveDiagram,
   goToDiagram: Router.goToDiagram,
 };
 

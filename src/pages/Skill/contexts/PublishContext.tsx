@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getPlatformService } from '@/clientV2';
 import { JobStatus } from '@/constants';
-import * as Diagram from '@/ducks/diagramV2';
+import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
 import { useDidUpdateEffect, useSetup, useTeardown } from '@/hooks';

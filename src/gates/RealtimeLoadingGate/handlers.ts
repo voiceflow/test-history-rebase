@@ -24,14 +24,14 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
     const platform = Skill.activePlatformSelector(getState());
     dispatch(platform === PlatformType.ALEXA ? AlexaPublish.updatePublishInfo(data, meta) : GooglePublish.updatePublishInfo(data, meta));
   },
-  [Realtime.ResourceType.FLOWS]: async (data: Models.Diagram[], meta: object) => {
+  [Realtime.ResourceType.FLOWS]: async (data: Models.Diagram[]) => {
     const state = getState();
     const getDiagramByID = Diagram.diagramByIDSelector(state);
 
     if (data.some(({ id }) => !getDiagramByID(id))) {
       const skillID = Skill.activeSkillIDSelector(state);
 
-      await dispatch(Diagram.loadDiagramsForSkill(skillID, meta));
+      await dispatch(Diagram.loadVersionDiagrams(skillID));
     }
   },
   [Realtime.ResourceType.VARIABLES]: (data: string[], meta: object) => {

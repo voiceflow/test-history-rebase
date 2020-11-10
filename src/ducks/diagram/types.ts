@@ -8,3 +8,10 @@ export type PrimativeDiagram = {
   nodes: Record<string, DiagramNode>;
   children: string[];
 };
+
+export type StructuredFlow = {
+  id: string;
+  name: string;
+  children: StructuredFlow[];
+  parents: StructuredFlow[];
+};

@@ -14,7 +14,6 @@ import { BlockType, DiagramState, NEW_PRODUCT_ID } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
-import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Display from '@/ducks/display';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
@@ -29,7 +28,6 @@ import { VERSIONS as DISPLAY_VERSIONS } from '@/pages/Canvas/managers/Display/co
 import { isLinkedDisplayNode } from '@/utils/node';
 
 import { activeDiagramViewersSelector } from './selectors';
-import { savePlatformAndActiveDiagram } from './sideEffects';
 import { AnyAction, Dispatchable, Selector, StoreMiddleware, StoreMiddlewareAPI } from './types';
 import { storeLogger } from './utils';
 
@@ -134,7 +132,7 @@ const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (action) 
     try {
       store.dispatch(Creator.setDiagramState(DiagramState.SAVING));
 
-      await store.dispatch(DiagramV2.saveActiveDiagram());
+      await store.dispatch(Diagram.saveActiveDiagram());
 
       store.dispatch(Creator.setDiagramState(DiagramState.SAVED));
     } catch (err) {
@@ -232,7 +230,6 @@ const createMiddleware = (history: History) => {
         SkillV2.saveIntentsAndSlots
       )
     ),
-    createAutosaveMiddleware(Skill.activePlatformSelector, savePlatformAndActiveDiagram, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createAutosaveMiddleware(Skill.globalVariablesSelector, SkillV2.saveVariables, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createAutosaveMiddleware(Diagram.activeDiagramVariables, Diagram.saveActiveDiagramVariables, [
       Creator.CreatorAction.INITIALIZE_CREATOR,

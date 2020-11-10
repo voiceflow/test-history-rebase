@@ -4,6 +4,8 @@ import { objectID } from '@/utils';
 
 import { PrimativeDiagram } from './types';
 
+export const STATE_KEY = 'diagram';
+
 // eslint-disable-next-line import/prefer-default-export
 export const generateDefaultDiagram = (): PrimativeDiagram => {
   const startNodeID = objectID();

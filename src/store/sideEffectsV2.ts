@@ -12,8 +12,7 @@ import versionAdapter from '@/clientV2/adapters/version';
 import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
-import * as DiagramReducer from '@/ducks/diagram';
-import * as Diagram from '@/ducks/diagramV2';
+import * as Diagram from '@/ducks/diagram';
 import * as Integration from '@/ducks/integration';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/productV2';
@@ -71,7 +70,7 @@ export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (
 
   const creator = creatorAdapter.fromDB(DBDiagram, { platform });
 
-  dispatch(DiagramReducer.updateDiagramVariables(diagramID, variables));
+  dispatch(Diagram.updateDiagramVariables(diagramID, variables));
   dispatch(Viewport.rehydrateViewport(diagramID, { x, y, zoom }));
   dispatch(Creator.initializeCreator({ ...creator, diagramID: creator.diagramID !== diagramID ? diagramID : creator.diagramID }));
   dispatch(Realtime.updateLastTimestamp(timestamp));

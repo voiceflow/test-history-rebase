@@ -115,8 +115,6 @@ context('Canvas - Commenting', () => {
           .eq(1)
           .find('.vf-thread-editor__comment')
           .should('contain.text', 'this is my reply!');
-
-        commentingMode.el.threadIndicator.should('have.text', '2');
       });
 
       it('delete', () => {

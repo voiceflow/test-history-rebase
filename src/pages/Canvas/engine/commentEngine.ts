@@ -112,8 +112,6 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
   unresolveThread = this.bind(Thread.unresolveThread);
 
-  deleteThreadsByNodeIDs = this.bind(Thread.deleteThreadsByNodeIDs);
-
   startThread() {
     if (this.hasTarget) return;
 

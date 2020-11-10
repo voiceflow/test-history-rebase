@@ -42,6 +42,8 @@ const threadEntitySelector = createSelector([Creator.nodeByIDSelector, Thread.th
 class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Models.Node | null }, ThreadInstance> {
   diagramID: string;
 
+  threadOrder: number;
+
   get isFocused() {
     return this.engine.comment.isFocused(this.threadID);
   }
@@ -51,12 +53,17 @@ class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Models.
 
     const { thread } = this.resolve();
     this.diagramID = thread.diagramID;
+    this.threadOrder = this.getThreadOrder();
 
     this.log.debug(this.log.init('constructed thread'), this.log.slug(threadID));
   }
 
   resolve() {
     return this.engine.select(threadEntitySelector)(this.threadID);
+  }
+
+  getThreadOrder() {
+    return this.engine.select(Thread.threadOrder)(this.threadID);
   }
 
   shouldUpdate() {

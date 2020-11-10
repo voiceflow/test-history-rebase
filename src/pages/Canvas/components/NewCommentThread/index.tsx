@@ -1,5 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
+import * as Thread from '@/ducks/thread';
 import { useLinkedRef, useRegistration } from '@/hooks';
 import { CommentIndicator } from '@/pages/Canvas/components/CommentThread/components';
 import { useThreadHandlers } from '@/pages/Canvas/components/CommentThread/hooks';
@@ -16,6 +18,7 @@ const NewCommentThread: React.FC = () => {
   const api = useNewCommentAPI();
   const originRef = useLinkedRef(api.origin);
   const engine = React.useContext(EngineContext)!;
+  const threadCount = useSelector(Thread.threadCount);
 
   const handlers = useThreadHandlers(
     {
@@ -61,7 +64,7 @@ const NewCommentThread: React.FC = () => {
     <>
       <DragTarget position={origin} zIndex={10}>
         <CommentIndicator draggable tabIndex={-1} {...handlers}>
-          1
+          {threadCount + 1}
         </CommentIndicator>
         <ThreadEditor />
       </DragTarget>

@@ -16,15 +16,10 @@ const threadClient = {
     fetch.post<DBThread>(`${COMMENTING_PATH}/${projectID}/threads`, threadAdapter.toDB((data as unknown) as Thread)).then(threadAdapter.fromDB),
 
   update: (projectID: string, threadID: string, data: Thread) => {
-    const { resolved, node_id, position } = threadAdapter.toDB(data);
+    const { resolved, node_id, position, deleted } = threadAdapter.toDB(data);
 
-    return fetch.put(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`, { resolved, node_id, position });
+    return fetch.put(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`, { resolved, node_id, position, deleted });
   },
-
-  delete: (projectID: string, threadID: string) => fetch.delete(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`),
-
-  deleteThreadsByNodeIDs: (projectID: string, diagramID: string, nodeIDs: string[]) =>
-    fetch.delete(`${COMMENTING_PATH}/${projectID}/diagram/${diagramID}/node/threads`, { node_ids: nodeIDs }),
 };
 
 export default threadClient;

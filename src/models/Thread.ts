@@ -16,6 +16,7 @@ export type Thread = {
   creatorID: number;
   resolved: boolean;
   comments: Comment[];
+  deleted: boolean;
 };
 
 export type NewThread = Assign<Omit<Thread, 'id'>, { comments: [Pick<Comment, 'creatorID' | 'text' | 'mentions'>] }>;
@@ -31,4 +32,5 @@ export type DBThread = {
   creator_id: number;
   resolved: boolean;
   comments: DBComment[];
+  deleted: boolean;
 };

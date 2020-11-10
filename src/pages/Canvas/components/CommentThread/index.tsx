@@ -14,8 +14,7 @@ const CommentThread: React.FC = () => {
   const focusThread = React.useContext(FocusThreadContext)!;
   const threadEntity = React.useContext(ThreadEntityContext)!;
   const instance = useThreadInstance<HTMLDivElement>();
-  const { commentCount, isFocused } = threadEntity.useState((e) => ({
-    commentCount: e.resolve().thread.comments.length,
+  const { isFocused } = threadEntity.useState((e) => ({
     isFocused: e.isFocused,
   }));
 
@@ -65,7 +64,7 @@ const CommentThread: React.FC = () => {
       zIndex={isFocused ? 10 : undefined}
     >
       <CommentIndicator className={`${ClassName.CANVAS_THREAD}__indicator`} draggable tabIndex={-1} {...handlers} isFocused={isFocused}>
-        {commentCount}
+        {threadEntity.threadOrder}
       </CommentIndicator>
       {isFocused && <ThreadEditor />}
     </DragTarget>

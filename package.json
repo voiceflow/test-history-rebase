@@ -145,7 +145,7 @@
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.4",
     "@types/chai": "^4.2.11",
     "@types/circular-dependency-plugin": "^5.0.1",
-    "@types/classnames": "^2.2.10",
+    "@types/classnames": "^2.2.11",
     "@types/copy-webpack-plugin": "^6.0.0",
     "@types/crypto-js": "^4.0.0",
     "@types/draft-js": "^0.10.40",

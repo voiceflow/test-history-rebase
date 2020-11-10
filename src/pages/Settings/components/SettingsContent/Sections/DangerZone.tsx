@@ -4,7 +4,7 @@ import Button, { ButtonVariant } from '@/components/Button';
 import { FlexApart } from '@/components/Flex';
 import { toast } from '@/components/Toast';
 import * as Modal from '@/ducks/modal';
-import * as ProjectV2 from '@/ducks/projectV2';
+import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect, styled } from '@/hocs';
@@ -34,12 +34,12 @@ const Description = styled.div`
   font-size: 13px;
 `;
 
-const DangerZone: React.FC<ConnectedDangerZoneProps> = ({ activeSkill, setConfirm, goToDashboard, activeProjectId, deleteProjectV2 }) => {
+const DangerZone: React.FC<ConnectedDangerZoneProps> = ({ activeSkill, setConfirm, goToDashboard, activeProjectId, deleteProject }) => {
   const { name } = activeSkill;
 
   const handleDelete = async () => {
     try {
-      await deleteProjectV2(activeProjectId);
+      await deleteProject(activeProjectId);
       goToDashboard();
       toast.success(`Successfully deleted ${name}`);
     } catch (e) {
@@ -76,7 +76,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchProps = {
-  deleteProjectV2: ProjectV2.deleteProject,
+  deleteProject: Project.deleteProject,
   goToDashboard: Router.goToDashboard,
   setConfirm: Modal.setConfirm,
 };

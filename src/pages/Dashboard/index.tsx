@@ -27,7 +27,7 @@ import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useFeature, useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
 import * as Models from '@/models';
-import { copyProject as copyProjectV2 } from '@/store/sideEffectsV2';
+import { copyProject } from '@/store/sideEffectsV2';
 import { ConnectedProps } from '@/types';
 import * as Userflow from '@/vendors/userflow';
 
@@ -90,11 +90,11 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
       }
       toggleLoadingModal(true);
 
-      await props.copyProjectV2(projectId, props.workspaceID!, boardId);
+      await props.copyProject(projectId, props.workspaceID!, boardId);
 
       toggleLoadingModal(false);
     },
-    [props.projects, props.workspace, props.workspaceID, props.copyProjectV2]
+    [props.projects, props.workspace, props.workspaceID, props.copyProject]
   );
 
   const onDeleteProject = React.useCallback(
@@ -347,7 +347,7 @@ const mapDispatchToProps = {
   loadLists: ProjectList.loadProjectLists,
   createNewList: ProjectList.createNewList,
   deleteProject: ProjectList.deleteProjectFromList,
-  copyProjectV2,
+  copyProject,
   setConfirm: Modal.setConfirm,
   setError: Modal.setError,
   deleteList: ProjectList.deleteProjectList,

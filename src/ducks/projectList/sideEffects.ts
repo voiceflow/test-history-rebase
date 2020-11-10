@@ -4,7 +4,7 @@ import client from '@/client';
 import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
-import * as ProjectV2 from '@/ducks/projectV2';
+import * as Project from '@/ducks/project';
 import { duckLogger } from '@/ducks/utils';
 import { ProjectList } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
@@ -24,7 +24,7 @@ export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch,
     // TODO: REMOVE AFTER DATA REFACTOR MIGRATIONS (DUAL ENVIRONMENT FOR GOOGLE)
     const lists = isActionsEnvEnabled ? [] : await client.projectList.find(workspaceID);
 
-    const rawProjects = await dispatch(ProjectV2.loadProjectsForWorkspace(workspaceID));
+    const rawProjects = await dispatch(Project.loadProjectsForWorkspace(workspaceID));
 
     const projectIDs = rawProjects.map(({ id }) => id);
 
@@ -107,13 +107,13 @@ export const deleteProjectList = (listID: string): Thunk => async (dispatch, get
   const state = getState();
   const list = projectListByIDSelector(state)(listID);
 
-  await Promise.all(list.projects.map((projectID) => dispatch(ProjectV2.deleteProject(projectID))));
+  await Promise.all(list.projects.map((projectID) => dispatch(Project.deleteProject(projectID))));
 
   dispatch(removeProjectList(listID));
 };
 
 export const deleteProjectFromList = (listID: string, projectID: string): Thunk => async (dispatch) => {
-  await dispatch(ProjectV2.deleteProject(projectID));
+  await dispatch(Project.deleteProject(projectID));
 
   dispatch(removeProjectFromList(listID, projectID));
 };

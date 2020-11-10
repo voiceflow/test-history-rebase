@@ -2,13 +2,13 @@ import { createSelector } from 'reselect';
 
 import { Permission, hasRolePermission } from '@/config/permissions';
 import { EDITOR_SEAT_ROLES, PlanType, UserRole } from '@/constants';
+import { userIDSelector } from '@/ducks/account/selectors';
 import { activeProjectIDSelector } from '@/ducks/skill/skill/selectors';
 import { createRootSelector } from '@/ducks/utils';
 import { Workspace } from '@/models';
 import { NonNullableRecord } from '@/types';
 import { getAlternativeColor } from '@/utils/colors';
 
-import { userIDSelector } from '../account/selectors';
 import { STATE_KEY, TEMPLATES_ADMIN_ID, TEMPLATES_EDITORS_ID } from './constants';
 
 const rootSelector = createRootSelector(STATE_KEY);

@@ -7,7 +7,7 @@ import OuterContainer from '@/components/CreationSteps/components/Containers/Out
 import CreationHeader from '@/components/CreationSteps/components/Header';
 import { FlexCenter } from '@/components/Flex';
 import { PlatformType } from '@/constants';
-import * as ProjectV2 from '@/ducks/projectV2';
+import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -144,7 +144,7 @@ const mapDispatchToPrpos = {
   goToDashboard: Router.goToDashboard,
   goToCanvas: Router.goToCanvas,
   createSkill: Skill.createSkill,
-  createProject: ProjectV2.createProject,
+  createProject: Project.createProject,
 };
 
 type ConnectedNewProjectProps = ConnectedProps<{}, typeof mapDispatchToPrpos>;

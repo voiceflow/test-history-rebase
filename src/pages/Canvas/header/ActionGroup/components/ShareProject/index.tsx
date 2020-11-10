@@ -7,7 +7,7 @@ import { ModalFooter } from '@/components/LegacyModal';
 import Tooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import { ModalType, PlatformType } from '@/constants';
-import * as ProjectV2 from '@/ducks/projectV2';
+import * as Project from '@/ducks/project';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -147,7 +147,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   sharePrototype: Prototype.sharePrototype,
   renderPrototypeV2: Prototype.renderPrototypeV2,
-  updateProjectPrivacy: ProjectV2.updateProjectPrivacy,
+  updateProjectPrivacy: Project.updateProjectPrivacy,
 };
 
 type ConnectedShareProjectProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

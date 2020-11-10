@@ -9,7 +9,7 @@ import { toast as toastNotif } from '@/components/Toast';
 import { USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
 import { BillingPeriod, ModalType, PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
-import * as ProjectV2 from '@/ducks/projectV2';
+import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
@@ -454,7 +454,7 @@ const mapDispatchToProps = {
   updateWorkspaceImage: Workspace.updateWorkspaceImage,
   goToWorkspace: Router.goToWorkspace,
   trackInvitationAccepted: Tracking.trackInvitationAccepted,
-  createProject: ProjectV2.createProject,
+  createProject: Project.createProject,
 };
 
 type ConnectedOnboardingContextProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

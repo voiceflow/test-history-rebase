@@ -11,32 +11,8 @@ import { activeWorkspaceIDSelector } from '@/ducks/workspace/selectors';
 import { Project } from '@/models';
 import { Thunk } from '@/store/types';
 
-import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from '../utils/crud';
-
-export const STATE_KEY = 'project';
-
-const projectReducer = createCRUDReducer<Project>(STATE_KEY);
-
-export default projectReducer;
-
-// selectorsvc
-
-export const {
-  root: rootProjectsSelector,
-  all: allProjectsSelector,
-  map: projectsMapSelector,
-  key: projectsKeySelector,
-  byID: projectByIDSelector,
-  has: hasProjectsSelector,
-} = createCRUDSelectors<Project>(STATE_KEY);
-
-// action creators
-
-export const { add: addProject, update: updateProject, remove: removeProject, replace: replaceProjects } = createCRUDActionCreators<Project>(
-  STATE_KEY
-);
-
-export const updateProjectName = (id: string, name: string) => updateProject(id, { name }, true);
+import { removeProject, replaceProjects, updateProject } from './actions';
+import { projectByIDSelector } from './selectors';
 
 // side effects
 
@@ -60,14 +36,14 @@ export const setupProjectSocketConnection = (projectID: string) => async () => {
   await client.socket?.project.initialize(projectID);
 };
 
-export type createProjectParams = {
+export type CreateProjectParams = {
   platform: PlatformType;
   name: string;
   largeIcon: string;
   listID?: string;
 };
 
-export const createProject = ({ platform, name, largeIcon, listID }: Partial<createProjectParams>, templateTag?: string): Thunk<Project> => async (
+export const createProject = ({ platform, name, largeIcon, listID }: Partial<CreateProjectParams>, templateTag?: string): Thunk<Project> => async (
   dispatch,
   getState
 ) => {

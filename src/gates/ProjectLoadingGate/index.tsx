@@ -19,7 +19,7 @@ export type ProjectLoadingGateProps = {
 
 const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoadingGateProps> = ({
   isProjectLoaded,
-  loadProjectV2,
+  loadProject,
   joinProjectChannel,
   loadThreads,
   setError,
@@ -27,7 +27,7 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
 }) => {
   const loadProjectAndJoinChannel = React.useCallback(async () => {
     try {
-      const skill = await loadProjectV2();
+      const skill = await loadProject();
 
       if (skill.projectID) {
         // TODO: move this into loadProject once FF removed
@@ -39,7 +39,7 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
       console.error(e);
       setError(e);
     }
-  }, [loadProjectV2, loadThreads, joinProjectChannel, setError]);
+  }, [loadProject, loadThreads, joinProjectChannel, setError]);
 
   React.useEffect(() => client.socket.global.watchForReconnected(joinProjectChannel), [joinProjectChannel]);
 
@@ -56,7 +56,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  loadProjectV2: loadVersion,
+  loadProject: loadVersion,
   setError: Modal.setError,
   joinProjectChannel: Project.setupProjectSocketConnection,
   loadThreads: Thread.loadThreads,
@@ -64,7 +64,7 @@ const mapDispatchToProps = {
 
 // eslint-disable-next-line no-shadow
 const mergeProps = (
-  ...[{ activeSkill }, { loadProjectV2, joinProjectChannel, setError, loadThreads }, { versionID, diagramID }]: MergeArguments<
+  ...[{ activeSkill }, { loadProject, joinProjectChannel, setError, loadThreads }, { versionID, diagramID }]: MergeArguments<
     typeof mapStateToProps,
     typeof mapDispatchToProps,
     ProjectLoadingGateProps
@@ -73,7 +73,7 @@ const mergeProps = (
   setError,
   loadThreads,
   isProjectLoaded: !!activeSkill && activeSkill.id === versionID,
-  loadProjectV2: () => loadProjectV2(versionID, diagramID),
+  loadProject: () => loadProject(versionID, diagramID),
   joinProjectChannel: (projectID = activeSkill.projectID) => joinProjectChannel(projectID),
 });
 

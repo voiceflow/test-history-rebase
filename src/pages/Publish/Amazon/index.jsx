@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import Modal, { ModalHeader } from '@/components/LegacyModal';
 import { JobStatus } from '@/constants';
-import Account from '@/ducks/account';
+import * as Account from '@/ducks/account';
 import * as AlexaPublish from '@/ducks/publish/alexa';
 import { connect } from '@/hocs';
 import { Alexa } from '@/pages/Publish/UploadV2';

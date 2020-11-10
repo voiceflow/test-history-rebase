@@ -128,16 +128,14 @@ export const SocialLoginContainer = styled.div`
   text-align: right;
   margin-top: 32px;
   width: 404px;
+
   .helperText {
     font-size: 15px;
     color: #8da2b5;
     float: left;
-    margin-top: 13px;
   }
 
   .social-button {
-    display: inline-flex;
-    align-items: center;
     width: fit-content;
     font-weight: 500;
     font-size: 15px;
@@ -149,7 +147,6 @@ export const SocialLoginContainer = styled.div`
     background-color: #fff;
     border: 1px solid #dfe3ed;
     border-radius: 90px;
-    margin-left: 8px;
     &:hover {
       background-image: linear-gradient(-180deg, rgba(238, 244, 246, 0.85), #eef4f6);
     }

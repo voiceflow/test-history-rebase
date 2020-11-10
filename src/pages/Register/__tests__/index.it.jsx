@@ -88,8 +88,8 @@ describe('Onboarding', () => {
     await googleLogin()(mockDispatch, mockGetState);
 
     expect(client.session.create.mock.calls.length).toBe(1);
-    expect(mockGetState.mock.calls.length).toBe(1);
-    expect(mockDispatch.mock.calls.length).toBe(3);
+    expect(mockGetState.mock.calls.length).toBe(0);
+    expect(mockDispatch.mock.calls.length).toBe(1);
   });
 
   it('tests the facebook login functionality', async () => {
@@ -99,7 +99,7 @@ describe('Onboarding', () => {
     await facebookLogin()(mockDispatch, mockGetState);
 
     expect(client.session.create.mock.calls.length).toBe(1);
-    expect(mockGetState.mock.calls.length).toBe(1);
-    expect(mockDispatch.mock.calls.length).toBe(3);
+    expect(mockGetState.mock.calls.length).toBe(0);
+    expect(mockDispatch.mock.calls.length).toBe(1);
   });
 });

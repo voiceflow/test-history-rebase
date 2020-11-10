@@ -8,6 +8,7 @@ import fetch from './fetch';
 const SESSION_PATH = 'session';
 
 const SESSION_ENDPOINTS = {
+  [SessionType.SSO]: 'ssoLogin',
   [SessionType.GOOGLE]: 'googleLogin',
   [SessionType.FACEBOOK]: 'fbLogin',
   [SessionType.BASIC_AUTH]: 'session',

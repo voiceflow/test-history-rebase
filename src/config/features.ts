@@ -2,6 +2,7 @@
 
 import { INTERCOM_ENABLED } from '.';
 
+export const SSO_ENABLED = process.env.FF_SSO === 'true';
 export const GADGETS_ENABLED = process.env.FF_GADGETS === 'true';
 export const CODE_EXPORT_ENABLED = process.env.FF_CODE_EXPORT === 'true';
 export const ACTIONS_ENV_ENABLED = process.env.FF_ACTIONS_ENV === 'true';
@@ -10,6 +11,7 @@ export const HEADER_REDESIGN_ENABLED = process.env.FF_HEADER_REDESIGN === 'true'
 export const GENERAL_PLATFORM_ENABLED = process.env.FF_GENERAL_PLATFORM === 'true';
 
 export enum FeatureFlag {
+  SSO = 'sso',
   GADGETS = 'gadgets',
   CODE_EXPORT = 'code_export',
   ACTIONS_ENV = 'actions_env',
@@ -22,6 +24,7 @@ export enum FeatureFlag {
 }
 
 export const LOCAL_FEATURE_OVERRIDES = {
+  [FeatureFlag.SSO]: SSO_ENABLED,
   [FeatureFlag.GADGETS]: GADGETS_ENABLED,
   [FeatureFlag.INTERCOM_INTEGRATION]: INTERCOM_ENABLED,
   [FeatureFlag.CODE_EXPORT]: CODE_EXPORT_ENABLED,

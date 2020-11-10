@@ -9,6 +9,7 @@ import storageSession from 'redux-persist/lib/storage/session';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
+import clientV2 from '@/clientV2';
 import { ROOT_DOMAIN } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { SessionType } from '@/constants';
@@ -192,12 +193,10 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
   }
 };
 
-const createSession = (sessionType: SessionType) => (authRequest: unknown): Thunk => async (dispatch, getState) => {
+const setSession = ({ token, user }: { token: string; user: Models.Account }): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const browserID = browserIDSelector(state);
   const tabID = tabIDSelector(state);
-  const { user, token } = await client.session.create(sessionType, authRequest);
-
+  const browserID = browserIDSelector(state);
   Cookies.removeLastSessionCookie();
   await dispatch(updateAuthToken(token));
 
@@ -206,6 +205,7 @@ const createSession = (sessionType: SessionType) => (authRequest: unknown): Thun
 
   const location = ConnectedReactRouter.getLocation(state);
   const search = queryString.parse(location.search);
+
   // Show join workspace onboarding on first login of an invite or with a workspace promo
   if ((search.invite && user.first_login) || search.promo) {
     dispatch(goToOnboarding());
@@ -219,6 +219,18 @@ const createSession = (sessionType: SessionType) => (authRequest: unknown): Thun
   }
 
   await identifyUser(user);
+};
+
+export const ssoLogin = (data: { code: string; coupon?: string }): Thunk => async (dispatch) => {
+  const { user, token } = await clientV2.api.sso.login(data);
+
+  await dispatch(setSession({ user, token }));
+};
+
+const createSession = (sessionType: SessionType) => (authRequest: unknown): Thunk => async (dispatch) => {
+  const { user, token } = await client.session.create(sessionType, authRequest);
+
+  await dispatch(setSession({ user, token }));
 };
 
 export const signup = createSession(SessionType.SIGN_UP);

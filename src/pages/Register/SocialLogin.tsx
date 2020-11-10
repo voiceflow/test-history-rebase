@@ -4,24 +4,47 @@ import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse } from 'react-google-login';
 
-import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from '@/config';
+import Button, { ButtonVariant } from '@/components/Button';
+import { FlexApart } from '@/components/Flex';
+import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID, OKTA_CLIENT_ID, OKTA_DOMAIN, OKTA_SCOPES } from '@/config';
+import { FeatureFlag } from '@/config/features';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
+import { useFeature, useTeardown } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
+import OKTA from '@/utils/okta';
 
 import { SocialLoginContainer } from './AuthBoxes';
 
 export type SocialLoginProps = {
-  entryText: string;
   light?: boolean;
   coupon?: string;
   disabled?: boolean;
+  entryText: string;
 };
 
-const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({ entryText, light, coupon, disabled, googleLogin, facebookLogin }) => {
+const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
+  light,
+  coupon,
+  disabled,
+  ssoLogin,
+  entryText,
+  googleLogin,
+  facebookLogin,
+}) => {
+  const sso = useFeature(FeatureFlag.SSO);
+
   const [authError, setAuthError] = useState<null | boolean>(null);
-  let timeout: number | undefined;
+  const okta = React.useMemo(
+    () =>
+      new OKTA({
+        domain: OKTA_DOMAIN,
+        scopes: OKTA_SCOPES,
+        clientID: OKTA_CLIENT_ID,
+      }),
+    []
+  );
 
   const triggerGoogleLogin = (userProfile: GoogleLoginResponse) => {
     googleLogin({
@@ -50,49 +73,81 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({ e
     return false;
   };
 
-  useEffect(() => {
-    timeout = setTimeout(() => {
-      setAuthError(false);
-    }, 5000);
+  const onSSOLogin = async () => {
+    try {
+      const { code } = await okta.login(`${window.location.origin}/login/sso/callback`);
 
-    return () => clearTimeout(timeout);
+      await ssoLogin({ code, coupon: coupon || undefined });
+    } catch (err) {
+      setAuthError(err);
+    }
+  };
+
+  useEffect(() => {
+    if (authError) {
+      const timeout = setTimeout(() => {
+        setAuthError(false);
+      }, 5000);
+
+      return () => clearTimeout(timeout);
+    }
+
+    return undefined;
+  }, [authError]);
+
+  useTeardown(() => {
+    okta.closeChannel();
   });
 
   return (
     <SocialLoginContainer>
-      <div className="helperText">{entryText}</div>
-      <GoogleLogin
-        clientId={GOOGLE_CLIENT_ID}
-        render={(renderProps) => (
-          <div
-            onClick={() => {
-              !disabled && renderProps!.onClick();
-            }}
+      <FlexApart>
+        {!sso.isEnabled && <div className="helperText">{entryText}</div>}
+
+        <GoogleLogin
+          clientId={GOOGLE_CLIENT_ID}
+          render={(renderProps) => (
+            <Button
+              variant={ButtonVariant.SECONDARY}
+              onClick={() => !disabled && renderProps!.onClick()}
+              className={cn('social-button', { 'social-button-light': light })}
+            >
+              <img src="/google.svg" alt="Google Login" />
+              Google
+            </Button>
+          )}
+          onSuccess={triggerGoogleLogin as GoogleLoginProps['onSuccess']}
+          onFailure={noop}
+        />
+
+        <FacebookLogin
+          appId={FACEBOOK_APP_ID}
+          fields="name,email"
+          render={(renderProps) => (
+            <Button
+              variant={ButtonVariant.SECONDARY}
+              onClick={() => !disabled && renderProps!.onClick()}
+              className={cn('social-button', { 'social-button-light': light })}
+            >
+              <img src="/facebook.svg" alt="Facebook Login" />
+              Facebook
+            </Button>
+          )}
+          callback={triggerFbLogin}
+        />
+
+        {sso.isEnabled && (
+          <Button
+            icon="lock"
+            variant={ButtonVariant.SECONDARY}
+            onClick={onSSOLogin}
             className={cn('social-button', { 'social-button-light': light })}
           >
-            <img src="/google.svg" alt="" />
-            Google
-          </div>
+            SSO
+          </Button>
         )}
-        onSuccess={triggerGoogleLogin as GoogleLoginProps['onSuccess']}
-        onFailure={noop}
-      />
-      <FacebookLogin
-        appId={FACEBOOK_APP_ID}
-        fields="name,email"
-        render={(renderProps) => (
-          <div
-            onClick={() => {
-              !disabled && renderProps.onClick();
-            }}
-            className={cn('social-button', { 'social-button-light': light })}
-          >
-            <img src="/facebook.svg" alt="" />
-            Facebook
-          </div>
-        )}
-        callback={triggerFbLogin}
-      />
+      </FlexApart>
+
       {authError && (
         <div className="errorContainer row">
           <div className="col-1">
@@ -106,8 +161,9 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({ e
 };
 
 const mapDispatchToProps = {
-  facebookLogin: Session.facebookLogin,
+  ssoLogin: Session.ssoLogin,
   googleLogin: Session.googleLogin,
+  facebookLogin: Session.facebookLogin,
 };
 
 type ConnectedSocialLoginProps = ConnectedProps<{}, typeof mapDispatchToProps>;

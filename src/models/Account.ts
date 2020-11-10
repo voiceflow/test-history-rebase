@@ -6,6 +6,7 @@ export type Account = {
   creator_id: number;
   image: string;
   created: string;
+  first_login?: boolean;
 };
 
 export type LockOwner = Account & {

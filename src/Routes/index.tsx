@@ -9,6 +9,7 @@ import { connect } from '@/hocs';
 import Export from '@/pages/Export';
 import Onboarding from '@/pages/Onboarding';
 import LoginForm from '@/pages/Register/LoginForm';
+import LoginSSOCallback from '@/pages/Register/LoginSSOCallback';
 import Reset from '@/pages/Register/Reset';
 import ResetPassword from '@/pages/Register/ResetPassword';
 import SignupForm from '@/pages/Register/SignupForm';
@@ -37,6 +38,7 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => {
         <PublicRoute exact path={Path.RESET_PASSWORD} name="Reset Password" component={ResetPassword} />
         <PublicRoute exact path={Path.RESET} name="Reset" component={Reset} />
         <PublicRoute exact path={Path.LOGIN} name="Login" component={LoginForm} />
+        <PublicRoute exact path={Path.LOGIN_SSO_CALLBACK} name="Login SSO Callback" component={LoginSSOCallback} />
         <PublicRoute exact path={Path.PROMO_SIGNUP} name="SignUpPromo" component={SignupForm} promo />
         <PublicRoute exact path={Path.SIGNUP} name="SignUp" component={SignupForm} />
         <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />

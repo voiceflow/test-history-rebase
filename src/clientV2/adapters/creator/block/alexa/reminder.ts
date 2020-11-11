@@ -3,8 +3,9 @@ import { ReminderClientType, ReminderType } from '@voiceflow/alexa-types/build/n
 import _ from 'lodash';
 
 import { NodeData } from '@/models';
+import { transformVariablesFromReadable, transformVariablesToReadable } from '@/utils/slot';
 
-import { createBlockAdapter, transformVariablesFromReadable, transformVariablesToReadable } from '../utils';
+import { createBlockAdapter } from '../utils';
 
 const reminderDataAdapter = createBlockAdapter<ReminderData, NodeData.Reminder>(
   ({

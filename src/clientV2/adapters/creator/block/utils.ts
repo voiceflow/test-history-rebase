@@ -3,7 +3,7 @@ import { DiagramNode as DBNode, Port as DBPort } from '@voiceflow/api-sdk';
 import { NoMatches, Prompt } from '@voiceflow/general-types';
 
 import { createAdapter, createSimpleAdapter } from '@/client/adapters/utils';
-import { DialogType, RepromptType, SLOT_REGEXP, VARIABLE_STRING_REGEXP } from '@/constants';
+import { DialogType, RepromptType } from '@/constants';
 import { Node, NodeData, Port } from '@/models';
 import { SpeakData } from '@/models/Speak';
 
@@ -53,11 +53,5 @@ export const noMatchAdapter = createAdapter<NoMatches<any>, NodeData.NoMatches>(
     reprompts: noMatchRepromptAdapter.mapToDB(reprompts),
   })
 );
-
-export const transformVariablesToReadable = (text: string) => text.replace(SLOT_REGEXP, '{$1}').trim();
-
-export const transformVariablesFromReadableWithoutTrim = (text: string) => text.replace(VARIABLE_STRING_REGEXP, '{{[$1].$1}}');
-
-export const transformVariablesFromReadable = (text: string) => transformVariablesFromReadableWithoutTrim(text).trim();
 
 export const getPortByLabel = (ports: { port: Port; target: string | null }[], label: string) => ports.find(({ port }) => port.label === label);

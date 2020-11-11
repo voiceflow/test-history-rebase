@@ -185,7 +185,7 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
 
     const location = ConnectedReactRouter.getLocation(state);
     const search = queryString.parse(location.search);
-    if (search.promo) {
+    if (search.promo || search.ob_plan) {
       dispatch(goToOnboarding());
     }
   } catch (err) {
@@ -207,7 +207,7 @@ const setSession = ({ token, user }: { token: string; user: Models.Account }): T
   const search = queryString.parse(location.search);
 
   // Show join workspace onboarding on first login of an invite or with a workspace promo
-  if ((search.invite && user.first_login) || search.promo) {
+  if ((search.invite && user.first_login) || search.promo || search.ob_plan) {
     dispatch(goToOnboarding());
   } else if (search.invite || !user.first_login) {
     dispatch(goToDashboardWithSearch(location.search));

@@ -1,6 +1,7 @@
 /* eslint-disable lodash/prefer-constant, lodash/prefer-noop */
 
 import * as Tracking from '@/ducks/tracking';
+import { SpecificFlowType } from '@/pages/Onboarding/context/types';
 
 export const ONBOARDING_PROJECT_NAME = 'First Project';
 
@@ -82,3 +83,9 @@ export const STEP_META: StepMetaProps = {
       }),
   },
 };
+
+export const SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES = [
+  SpecificFlowType.upgrade_workspace_existing,
+  SpecificFlowType.login_student_existing,
+  SpecificFlowType.login_creator_existing,
+];

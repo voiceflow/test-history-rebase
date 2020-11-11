@@ -19,6 +19,7 @@ import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useToggle } from '@/hooks';
+import { DBWorkspace } from '@/models';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
 import { OnboardingProps } from '@/pages/Onboarding/types';
@@ -43,13 +44,13 @@ import {
 
 export const GET_PRICE_WITHOUT_TEAM_ID_CONST = 'none';
 
-const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces, creatorID, workspaceSelector }) => {
+const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces, workspaceByID, creatorID, workspaceSelector }) => {
   const { state, actions } = useContext(OnboardingContext);
   const { plan, couponCode, period } = state.paymentMeta;
   const { sendingRequests, selectableWorkspace, hasFixedPeriod, specificFlowType } = state;
 
   const numberOfSeats = actions.getNumberOfEditors();
-
+  const [seatCount, setSeatCount] = React.useState(numberOfSeats);
   const [usingCoupon, toggleCoupon] = useToggle(!!couponCode);
   const [coupon, setCoupon] = React.useState(couponCode || '');
   const [paymentPeriod, setPaymentPeriod] = React.useState(period);
@@ -66,6 +67,7 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
   const onContinue = async () => {
     actions.setPaymentMeta({
       ...state.paymentMeta,
+      seats: seatCount,
       couponCode: coupon,
       period: paymentPeriod,
       plan: selectedPlan,
@@ -86,10 +88,10 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
 
   const getPrice = useDebouncedCallback(
     500,
-    async (selectedPlan: PlanType, numberOfSeats: number, paymentPeriod: BillingPeriod, coupon: string) => {
+    async (selectedPlan: PlanType, seatCount: number, paymentPeriod: BillingPeriod, coupon: string) => {
       const { price, errors } = await client.workspace.calculatePrice(GET_PRICE_WITHOUT_TEAM_ID_CONST, {
         plan: selectedPlan!,
-        seats: numberOfSeats,
+        seats: seatCount,
         period: paymentPeriod,
         coupon: coupon || undefined,
       });
@@ -107,8 +109,22 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
   const isPromoPlanCreation = specificFlowType === SpecificFlowType.login_student_new || specificFlowType === SpecificFlowType.login_creator_new;
 
   React.useEffect(() => {
-    getPrice(selectedPlan!, numberOfSeats, paymentPeriod, coupon);
-  }, [coupon, paymentPeriod, selectedPlan, numberOfSeats, setCouponError, setPriceError]);
+    getPrice(selectedPlan!, seatCount, paymentPeriod, coupon);
+  }, [coupon, paymentPeriod, selectedPlan, seatCount, setCouponError, setPriceError]);
+
+  React.useEffect(() => {
+    const targetWorkspace = workspaceByID(selectedWorkspaceId);
+    let numberOfEditors = 0;
+    targetWorkspace?.members.forEach((member: DBWorkspace.Member) => {
+      if (member.role === UserRole.ADMIN || member.role === UserRole.EDITOR) {
+        numberOfEditors++;
+      }
+    });
+
+    const newSeatCount = Math.max(seatCount, numberOfEditors);
+    setSeatCount(newSeatCount);
+  }, [selectedWorkspaceId]);
+
   const dollarPrice = price / 100;
   const dropdownConfig = !selectableWorkspace
     ? {
@@ -159,7 +175,7 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
         <InfoBubble>
           <img src="/images/team-group.svg" alt="team" height={64} />
           <BubbleTextContainer column>
-            <EditorSeatsText>{numberOfSeats} Editor Seats</EditorSeatsText>
+            <EditorSeatsText>{seatCount} Editor Seats</EditorSeatsText>
             <PeriodDropdownContainer>
               <Dropdown
                 options={[
@@ -239,6 +255,7 @@ const mapStateToProps = {
   workspaces: Workspace.allWorkspacesSelector,
   workspaceSelector: Workspace.workspaceByIDSelector,
   creatorID: Account.userIDSelector,
+  workspaceByID: Workspace.workspaceByIDSelector,
 };
 
 type ConnectedPaymentProps = ConnectedProps<typeof mapStateToProps>;

@@ -5,6 +5,7 @@ import InnerContainer from '@/components/CreationSteps/components/Containers/Inn
 import OuterContainer from '@/components/CreationSteps/components/Containers/OuterContainer';
 import { UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
@@ -12,34 +13,47 @@ import { CurrentStep, Header } from './components';
 import { OnboardingProvider } from './context';
 import { OnboardingDataProps, OnboardingProps } from './types';
 
-export const Onboarding: React.FC<OnboardingProps> = ({ data, location, firstTime = true }) => {
+export const Onboarding: React.FC<OnboardingProps> = ({ fetchWorkspaces, data, location, firstTime = true }) => {
   const query = queryString.parse(location?.search);
-  return (
-    <div>
-      <OuterContainer>
-        <OnboardingProvider isLoginFlow={firstTime} query={query}>
-          <InnerContainer>
-            <Header />
-            <CurrentStep data={data} />
-          </InnerContainer>
-        </OnboardingProvider>
-      </OuterContainer>
-    </div>
-  );
+  const [finishedFetchingWorkspaces, setFinishedFetchingWorkspaces] = React.useState(false);
+
+  const fetchWorkspacesFunc = async () => {
+    await fetchWorkspaces?.();
+    setFinishedFetchingWorkspaces(true);
+  };
+
+  React.useEffect(() => {
+    fetchWorkspacesFunc();
+  });
+
+  return finishedFetchingWorkspaces ? (
+    <OuterContainer>
+      <OnboardingProvider isLoginFlow={firstTime} query={query}>
+        <InnerContainer>
+          <Header />
+          <CurrentStep data={data} />
+        </InnerContainer>
+      </OnboardingProvider>
+    </OuterContainer>
+  ) : null;
 };
 
-const ConnectedOnboarding: React.FC<ConnectedOnboardingProps> = ({ user, ...props }) => {
+const ConnectedOnboarding: React.FC<ConnectedOnboardingProps> = ({ fetchWorkspaces, user, ...props }) => {
   const data: OnboardingDataProps = {
     collaborators: [{ email: user.email!, permission: UserRole.ADMIN }],
   };
 
-  return <Onboarding data={data} {...props} />;
+  return <Onboarding data={data} fetchWorkspaces={fetchWorkspaces} {...props} />;
 };
 
 const mapStateToProps = {
   user: Account.userSelector,
 };
 
-type ConnectedOnboardingProps = ConnectedProps<typeof mapStateToProps>;
+const mapDispatchToProps = {
+  fetchWorkspaces: Workspace.fetchWorkspaces,
+};
 
-export default connect(mapStateToProps)(ConnectedOnboarding);
+type ConnectedOnboardingProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectedOnboarding) as React.FC<Omit<OnboardingProps, 'data'>>;

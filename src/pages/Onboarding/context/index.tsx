@@ -20,7 +20,7 @@ import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import * as Userflow from '@/vendors/userflow';
 
-import { STEP_META, StepID } from '../constants';
+import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, STEP_META, StepID } from '../constants';
 import { CollaboratorType } from '../types';
 import {
   OnboardingContextActions,
@@ -92,7 +92,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   firstLogin,
   validateInvite,
   workspaces,
-  isLoginFlow,
+  isLoginFlow, // This boolean represents if the user hits the onboarding flow from a link/new signup, or from the dashboard 'create workspace' button
   createProject,
   trackInvitationAccepted,
   workspaceById,
@@ -105,19 +105,15 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const dispatch = useDispatch();
   const [trackingEvents] = useTrackingEvents();
   const [isFinalizing, setIsFinalizing] = React.useState(false);
-  const { plan, period, couponCode, flow, seats } = Utils.extractQueryParams(query);
   const hasFixedPeriod = !!query.ob_period;
+  const { plan, period, couponCode, flow, seats } = Utils.extractQueryParams(query);
   const isFirstSession = firstLogin;
-  const firstStep = Utils.getFirstStep({ flow, isLoginFlow, isFirstSession, hasPresetSeats: !!seats });
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
-  const specificFlowType = Utils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
-  const numberOfSteps = Utils.getNumberOfSteps(specificFlowType, !!seats);
+  const specificFlowType = Utils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession, workspaces);
+  const numberOfSteps = Utils.getNumberOfSteps(specificFlowType, !!seats, workspaces);
+  const firstStep = Utils.getFirstStep({ flow, isLoginFlow, isFirstSession, hasPresetSeats: !!seats, specificFlowType, workspaces });
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
-
-  const selectableWorkspaceInPayment =
-    !!query.choose_workspace ||
-    specificFlowType === SpecificFlowType.login_student_existing ||
-    specificFlowType === SpecificFlowType.login_creator_existing;
+  const selectableWorkspaceInPayment = !!query.choose_workspace || SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES.includes(specificFlowType);
 
   const [state, actions] = useSmartReducer({
     selectableWorkspace: selectableWorkspaceInPayment,
@@ -200,11 +196,10 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   };
 
   const handlePayment = async (workspaceID: string, source: any) => {
-    const { plan, period, couponCode } = paymentMeta;
-
+    const { plan, period, couponCode, seats } = paymentMeta;
     await client.workspace.checkout(workspaceID, {
       plan,
-      seats: getNumberOfEditors(),
+      seats,
       period,
       coupon: couponCode || undefined,
       source_id: source?.id,

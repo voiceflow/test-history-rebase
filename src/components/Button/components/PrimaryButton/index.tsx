@@ -11,9 +11,12 @@ export type PrimaryButtonProps = PrimaryButtonContainerProps & {
   isLoading?: boolean;
 };
 
-const PrimaryButton: React.FC<PrimaryButtonProps> = ({ icon, children, iconProps, isLoading, ...props }) => {
+const PrimaryButton: React.ForwardRefRenderFunction<HTMLButtonElement, PrimaryButtonProps> = (
+  { icon, children, iconProps, isLoading, ...props },
+  ref
+) => {
   return (
-    <Container {...props}>
+    <Container ref={ref} {...props}>
       <Label isLoading={isLoading}>{children}</Label>
       {icon && (
         <Icon>
@@ -24,4 +27,4 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({ icon, children, iconProps
   );
 };
 
-export default PrimaryButton;
+export default React.forwardRef(PrimaryButton);

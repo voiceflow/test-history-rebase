@@ -85,10 +85,11 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     <Dropdown
       placement="bottom"
       zIndex={999}
+      preventOverflow={{ padding: 10, boundariesElement: document.body }}
       menu={() => (
         <MenuContainer>
           <FadeDownDelayedContainer>
-            <span>
+            <div>
               <MenuItem
                 isAllowed={canSharePrototype}
                 loading={state.loadingTestableLink}
@@ -112,7 +113,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
                 onClick={onClickImport}
               />
               <ExportItem onRedirect={openCanvasExportModal} />
-            </span>
+            </div>
             {canInviteByLink && (
               <Footer onClick={stopImmediatePropagation()}>
                 <InviteByLink noIcon />

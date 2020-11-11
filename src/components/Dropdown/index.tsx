@@ -28,6 +28,7 @@ export type DropdownProps<T> = {
   placement?: DropdownPlacement;
   autoWidth?: boolean;
   selfDismiss?: boolean;
+  preventOverflow?: NonNullable<PopperProps['modifiers']>['preventOverflow'];
   maxVisibleItems?: number;
 };
 
@@ -44,6 +45,7 @@ const Dropdown = <T extends any = undefined>({
   placement = 'bottom-start',
   autoWidth = false,
   selfDismiss = false,
+  preventOverflow = { enabled: false },
   maxVisibleItems,
 }: DropdownProps<T>) => {
   const containerRef = React.useRef<Nullable<HTMLDivElement>>(null);
@@ -75,7 +77,7 @@ const Dropdown = <T extends any = undefined>({
             modifiers={{
               hide: { enabled: false },
               autoSizing: { enabled: true, fn: onComputedStyle, order: 840 },
-              preventOverflow: { enabled: false },
+              preventOverflow,
             }}
           >
             {({ ref, style, placement }) => (

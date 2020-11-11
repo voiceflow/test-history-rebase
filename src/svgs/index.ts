@@ -114,7 +114,6 @@ export { default as lock } from './lock.svg';
 export { default as loader2 } from './loader-2.svg';
 export { default as loader3 } from './loader-3.svg';
 export { default as loader4 } from './loader-4.svg';
-export { default as logo } from './logo.svg';
 export { default as logs } from './logs.svg';
 export { default as longArrowLeft } from './solid/long-arrow-left.svg';
 export { default as longArrowRight } from './solid/long-arrow-right.svg';

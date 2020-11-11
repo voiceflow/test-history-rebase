@@ -1,8 +1,9 @@
 import { Locale } from '@voiceflow/alexa-types';
 
-import client from '@/client';
+import clientV2 from '@/clientV2';
+import { productAdapter } from '@/clientV2/adapters/project';
 import { NEW_PRODUCT_ID } from '@/constants';
-import { activeLocalesSelector, activeSkillIDSelector } from '@/ducks/skill';
+import * as Skill from '@/ducks/skill';
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from '@/ducks/utils/crud';
 import { Product } from '@/models';
 import { Thunk } from '@/store/types';
@@ -37,33 +38,29 @@ export const { add: addProduct, update: updateProduct, remove: removeProduct, re
 
 // side effects
 
-export const loadProductsForSkill = (skillID: string): Thunk<Product[]> => async (dispatch) => {
-  const products = await client.skill.findProducts(skillID);
-
-  dispatch(replaceProducts(products));
-
-  return products;
-};
-
 export const createProduct = (): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const locales = activeLocalesSelector(state);
+  const locales = Skill.activeLocalesSelector(state);
 
   const product = createNewProduct(locales);
 
-  dispatch(addProduct(product.id, product as Product));
+  dispatch(addProduct(product.id, product));
 };
 
-export const copyProduct = (skillID: string, productID: string): Thunk => async (dispatch) => {
-  const copiedProduct = await client.product.copy(skillID, productID);
+export const copyProduct = (productID: string): Thunk => async (dispatch, getState) => {
+  const projectID = Skill.activeProjectIDSelector(getState());
 
-  dispatch(addProduct(String(copiedProduct.id), copiedProduct));
+  const copiedProduct = await clientV2.alexaService.project.copyProduct(projectID, productID);
+
+  dispatch(addProduct(copiedProduct.productID, productAdapter.fromDB(copiedProduct)));
 };
 
-export const deleteProduct = (skillID: string, productID: string): Thunk => async (dispatch) => {
-  await client.product.delete(skillID, productID);
+export const deleteProduct = (productID: string): Thunk => async (dispatch, getState) => {
+  const projectID = Skill.activeProjectIDSelector(getState());
 
-  await dispatch(loadProductsForSkill(skillID));
+  await clientV2.alexaService.project.deleteProduct(projectID, productID);
+
+  dispatch(removeProduct(productID));
 };
 
 export const cancelProduct = (): Thunk => (dispatch) => dispatch(removeProduct(NEW_PRODUCT_ID));
@@ -71,25 +68,43 @@ export const cancelProduct = (): Thunk => (dispatch) => dispatch(removeProduct(N
 export const uploadProduct = (productID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const product = productByIDSelector(state)(productID);
-  const skillID = activeSkillIDSelector(state);
+  const projectID = Skill.activeProjectIDSelector(state);
 
-  if (product.id === (NEW_PRODUCT_ID as any)) {
-    await client.product.create({ ...product, skill: skillID });
+  if (product.id === NEW_PRODUCT_ID) {
+    const alexaProduct = await clientV2.alexaService.project.createProduct(projectID, productAdapter.toDB(product));
+
+    dispatch(cancelProduct());
+    dispatch(addProduct(alexaProduct.productID, productAdapter.fromDB(alexaProduct)));
   } else {
-    await client.product.update({ ...product, skill: skillID });
-  }
+    await clientV2.alexaService.project.updateProduct(projectID, productID, { ...productAdapter.toDB(product), productID });
 
-  await dispatch(loadProductsForSkill(skillID));
+    dispatch(addProduct(productID, product));
+  }
 };
 
 export const handleSkillLocaleChange = (locales: Locale[]): Thunk => async (dispatch, getState) => {
   const state = getState();
   const allProducts = allProductsSelector(state);
-  const skillID = activeSkillIDSelector(state);
+  const projectID = Skill.activeProjectIDSelector(state);
 
   if (allProducts.length) {
     allProducts.forEach((product) => dispatch(updateProduct(product.id, { locales }, true)));
 
-    await Promise.all(allProducts.map((product) => client.product.update({ ...product, skill: skillID })));
+    await Promise.all(
+      allProducts.map((product) =>
+        clientV2.alexaService.project.updateProduct(projectID, product.id, { ...productAdapter.toDB(product), productID: product.id })
+      )
+    );
   }
+};
+
+export const copyNewProduct = (product: Product): Thunk<string> => async (dispatch, getState) => {
+  const state = getState();
+  const projectID = Skill.activeProjectIDSelector(state);
+
+  const alexaProduct = await clientV2.alexaService.project.createProduct(projectID, productAdapter.toDB({ ...product, id: NEW_PRODUCT_ID }));
+
+  dispatch(addProduct(alexaProduct.productID, productAdapter.fromDB(alexaProduct)));
+
+  return alexaProduct.productID;
 };

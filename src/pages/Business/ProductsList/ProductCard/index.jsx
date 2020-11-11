@@ -7,7 +7,7 @@ import Dropdown from '@/components/Dropdown';
 import IconButton from '@/components/IconButton';
 import SvgIcon from '@/components/SvgIcon';
 import * as Feature from '@/ducks/feature';
-import * as ProductV2 from '@/ducks/productV2';
+import * as Product from '@/ducks/product';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -111,8 +111,8 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  copyProduct: ProductV2.copyProduct,
-  deleteProduct: ProductV2.deleteProduct,
+  copyProduct: Product.copyProduct,
+  deleteProduct: Product.deleteProduct,
   goToEditProduct: Router.goToEditProduct,
 };
 

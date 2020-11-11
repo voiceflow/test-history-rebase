@@ -12,9 +12,9 @@ import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { DataTypes, download } from '@/utils/dom';
 import { handleJSONFileRead } from '@/utils/files';
 
-function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, displayID, onChange, aplCommands = '', datasource = '', display }) {
+const AdvancedEditor = ({ jsonFileName, onChange, aplCommands = '', document: documentData, datasource = '' }) => {
   const removeFile = () => {
-    onChange({ jsonFileName: null, displayID: null, datasource: null });
+    onChange({ jsonFileName: null, dataSource: null, document: null });
   };
 
   const customOnDropAccept = async (acceptedFiles) => {
@@ -27,19 +27,7 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
       const documentString = JSON.stringify(document, null, '\t');
       const datasourceString = JSON.stringify(datasource, null, '\t');
 
-      const payload = {
-        document: documentString,
-        datasource: datasourceString,
-        title: fileName,
-      };
-
-      if (displayID) {
-        await updateDisplay(skillID, displayID, payload);
-        onChange({ jsonFileName: fileName, datasource: datasourceString });
-      } else {
-        const displayID = await createDisplay(skillID, payload);
-        onChange({ displayID, jsonFileName: fileName, datasource: datasourceString });
-      }
+      onChange({ jsonFileName: fileName, dataSource: datasourceString, document: documentString });
     };
 
     fileReader.onloadend = (data) => {
@@ -51,8 +39,8 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
 
   const downloadAPL = () => {
     try {
-      const document = JSON.parse(display.document);
-      const datasources = JSON.parse(display.datasource);
+      const document = JSON.parse(documentData);
+      const datasources = JSON.parse(datasource);
       download(jsonFileName, JSON.stringify({ document, datasources }, null, '\t'), DataTypes.JSON);
     } catch (err) {
       toast.error('Invalid JSON Format');
@@ -65,7 +53,7 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
         variant="tertiary"
         header="JSON File"
         isDividerNested
-        suffix={display && <SvgIcon variant="standard" icon="downloads" onClick={downloadAPL} size={14} />}
+        suffix={documentData && datasource && <SvgIcon variant="standard" icon="downloads" onClick={downloadAPL} size={14} />}
         customContentStyling={{ paddingBottom: '20px' }}
       >
         <JsonUpload customOnDropAccept={customOnDropAccept} file={jsonFileName} onRemove={removeFile} />
@@ -78,7 +66,7 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
               <AceEditor
                 name="datasourceEditor"
                 mode="json"
-                onChange={(datasource) => onChange({ datasource })}
+                onChange={(dataSource) => onChange({ dataSource })}
                 fontSize={14}
                 showPrintMargin={false}
                 showGutter
@@ -111,6 +99,6 @@ function AdvancedEditor({ jsonFileName, createDisplay, updateDisplay, skillID, d
       )}
     </>
   );
-}
+};
 
 export default AdvancedEditor;

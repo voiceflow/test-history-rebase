@@ -15,7 +15,7 @@ import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Integration from '@/ducks/integration';
 import * as Intent from '@/ducks/intent';
-import * as Product from '@/ducks/productV2';
+import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as Realtime from '@/ducks/realtime';

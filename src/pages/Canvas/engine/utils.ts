@@ -1,16 +1,15 @@
 import { CanvasAPI } from '@/components/Canvas';
 import { BlockType, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import * as Display from '@/ducks/display';
 import { EntityMap, Link, Node, NodeData, NodeWithData, Port } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptor } from '@/pages/Canvas/managers/types';
-import { Dispatch, DispatchResult, Dispatchable, Dispatcher, Selector } from '@/store/types';
+import { DispatchResult, Dispatchable, Dispatcher, Selector } from '@/store/types';
 import { NullableRecord, Pair, Point } from '@/types';
 import { objectID } from '@/utils';
 import { asyncForEach, unique } from '@/utils/array';
 import { Logger } from '@/utils/logger';
-import { isChoiceNode, isLinkedDisplayNode, isLinkedFlowNode, isLinkedIntentNode, isProductLinkedNode } from '@/utils/node';
+import { isChoiceNode, isLinkedFlowNode, isLinkedIntentNode, isProductLinkedNode } from '@/utils/node';
 import { isInRange } from '@/utils/number';
 
 import type { Engine } from '.';
@@ -120,20 +119,11 @@ export const cloneLink = ({ getPortID, getNodeID }: CloneUtils) => (link: Link):
   },
 });
 
-export const cloneNodeWithData = ({ getNodeID, getPortID }: CloneUtils, dispatch: Dispatch, skillID: string) => async ({
-  node,
-  data,
-}: NodeWithData): Promise<NodeWithData> => {
-  let originNode = node;
-  let originNodeData: NodeData<unknown> = data;
+export const cloneNodeWithData = ({ getNodeID, getPortID }: CloneUtils) => async ({ node, data }: NodeWithData): Promise<NodeWithData> => {
+  const originNode = node;
+  const originNodeData: NodeData<unknown> = data;
 
   const newID = getNodeID(originNode.id);
-
-  if (isLinkedDisplayNode(originNodeData)) {
-    const newDisplayID = await dispatch(Display.duplicateDisplay(originNodeData.displayID, skillID));
-    originNodeData = { ...originNodeData, displayID: newDisplayID } as NodeData<NodeData.Display>;
-    originNode = { ...originNode, ports: originNode.ports };
-  }
 
   return {
     node: {
@@ -190,7 +180,7 @@ export const mergeEntityMaps = (lhs: EntityMap, rhs: EntityMap) => ({
   links: [...lhs.links, ...rhs.links],
 });
 
-export const cloneEntityMap = async ({ nodesWithData, ports, links }: EntityMap, dispatch: Dispatch, skillID: string) => {
+export const cloneEntityMap = async ({ nodesWithData, ports, links }: EntityMap) => {
   const context = createCloneContext();
 
   const clonedPorts = ports.map(clonePort(context));
@@ -198,7 +188,7 @@ export const cloneEntityMap = async ({ nodesWithData, ports, links }: EntityMap,
   const clonedNodesWithData: NodeWithData[] = [];
 
   await asyncForEach(nodesWithData, async (nodeData) => {
-    const clonedNodeData = await cloneNodeWithData(context, dispatch, skillID)(nodeData);
+    const clonedNodeData = await cloneNodeWithData(context)(nodeData);
     clonedNodesWithData.push(clonedNodeData);
   });
 

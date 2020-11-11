@@ -29,7 +29,6 @@ const DisplayManager: NodeConfig<NodeData.Display> = {
       name: 'Display',
       type: 'display',
       displayType: DisplayType.SPLASH,
-      displayID: null,
       datasource: '',
       aplCommands: '',
       updateOnChange: false,

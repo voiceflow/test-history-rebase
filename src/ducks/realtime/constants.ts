@@ -17,7 +17,6 @@ export enum ResourceType {
   SLOTS = 'slots',
   FLOWS = 'flows',
   PRODUCTS = 'products',
-  DISPLAYS = 'displays',
   SETTINGS = 'settings',
   PUBLISH = 'publish',
 }

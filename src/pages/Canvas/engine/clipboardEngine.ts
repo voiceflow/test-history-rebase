@@ -2,13 +2,11 @@ import Base64 from 'crypto-js/enc-base64';
 import Utf8 from 'crypto-js/enc-utf8';
 import { get, set } from 'idb-keyval';
 
-import client from '@/client';
 import nodeAdapter from '@/client/adapters/creator/node';
 import { toast } from '@/components/Toast';
 import { BlockType, CLIPBOARD_DATA_KEY, COPY_NODES, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Diagrams from '@/ducks/diagram';
-import * as Display from '@/ducks/display';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
 import * as Skill from '@/ducks/skill';
@@ -167,27 +165,6 @@ class ClipboardEngine extends EngineConsumer {
           targetPlatform,
         })
       );
-    },
-
-    importClipboardContext: async (skillID: string, { slots, intents, products, displays, diagrams, legacyNodes }: ClipboardContext) => {
-      this.dispatch(Slot.addSlots(slots));
-      this.dispatch(Intent.addIntents(intents));
-
-      const { newNodes, newDiagrams } = await client.clipboard.paste(skillID, {
-        nodes: legacyNodes,
-        products,
-        displays,
-        diagrams,
-      });
-
-      this.dispatch(Diagrams.addDiagrams(diagrams.map((diagram) => ({ ...diagram, subDiagrams: [], id: newDiagrams[diagram.id] }))));
-      await Promise.all<any>([
-        this.dispatch(Display.loadDisplaysForSkill(skillID)),
-        this.dispatch(Product.loadProductsForSkill(skillID)),
-        ...diagrams.map((diagram) => this.dispatch(Diagrams.loadDiagramVariables(newDiagrams[diagram.id]))),
-      ]);
-
-      return newNodes;
     },
   };
 

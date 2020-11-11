@@ -3,7 +3,6 @@ import canvasExport from './canvasExport';
 import clipboard from './clipboard';
 import comment from './comment';
 import diagram from './diagram';
-import display from './display';
 import feature from './feature';
 import file from './file';
 import onboarding from './onboarding';
@@ -35,7 +34,6 @@ const client = {
   prototype,
   clipboard,
   skill,
-  display,
   product,
   file,
   template,

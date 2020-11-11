@@ -1,5 +1,4 @@
 import { BlockType } from '@/constants';
-import { activeSkillIDSelector } from '@/ducks/skill';
 import { EntityMap, Node } from '@/models';
 import { Pair } from '@/types';
 import { objectID } from '@/utils';
@@ -61,9 +60,7 @@ class DiagramEngine extends EngineConsumer {
   }
 
   async cloneEntities(entityMap: EntityMap, coords: Coords) {
-    const state = this.engine.store.getState();
-    const skillID = activeSkillIDSelector(state);
-    const clonedEntityMap = await cloneEntityMap(entityMap, this.engine.store.dispatch, skillID);
+    const clonedEntityMap = await cloneEntityMap(entityMap);
     await this.engine.node.addMany(clonedEntityMap, coords);
 
     return clonedEntityMap;

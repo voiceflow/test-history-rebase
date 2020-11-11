@@ -10,7 +10,7 @@ import googleSettingsAdapter from '@/clientV2/adapters/version/google/settings';
 import { PlatformType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
-import * as Product from '@/ducks/productV2';
+import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
 import * as Slot from '@/ducks/slot';
 import * as Models from '@/models';

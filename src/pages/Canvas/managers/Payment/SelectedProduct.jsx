@@ -7,7 +7,6 @@ import TextArea from '@/components/TextArea';
 import { NamespaceProvider } from '@/contexts';
 import * as Feature from '@/ducks/feature';
 import * as Product from '@/ducks/product';
-import * as ProductV2 from '@/ducks/productV2';
 import { connect } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -69,15 +68,15 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   updateProduct: Product.updateProduct,
-  uploadProductV2: ProductV2.uploadProduct,
+  uploadProduct: Product.uploadProduct,
 };
 
-const mergeProps = ({ product: productByIDSelector }, { updateProduct, uploadProductV2 }, { productID }) => {
+const mergeProps = ({ product: productByIDSelector }, { updateProduct, uploadProduct }, { productID }) => {
   return {
     product: productByIDSelector(productID),
     updateProduct: (values) => {
       updateProduct(productID, values);
-      uploadProductV2(productID);
+      uploadProduct(productID);
     },
   };
 };

@@ -8,7 +8,6 @@ import SvgIcon from '@/components/SvgIcon';
 import { NEW_PRODUCT_ID } from '@/constants';
 import * as Feature from '@/ducks/feature';
 import * as Product from '@/ducks/product';
-import * as ProductV2 from '@/ducks/productV2';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { compose } from '@/utils/functional';
@@ -195,9 +194,9 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   goToProducts: Router.goToProducts,
-  createProduct: ProductV2.createProduct,
-  cancelProduct: ProductV2.cancelProduct,
-  uploadProduct: ProductV2.uploadProduct,
+  createProduct: Product.createProduct,
+  cancelProduct: Product.cancelProduct,
+  uploadProduct: Product.uploadProduct,
 };
 
 const mergeProps = ({ product: productByIDSelector }, { goToProducts, uploadProduct }, { match, skillID }) => {

@@ -8,10 +8,6 @@ const checkNodeType = <T>(type: BlockType) => (data: { type: BlockType }): data 
 
 export const isDisplayNode = checkNodeType<NodeData.Display>(BlockType.DISPLAY);
 
-export const isLinkedDisplayNode = (
-  data: NodeData<unknown>
-): data is Overwrite<NodeData<NodeData.Display>, NonNullishRecord<Pick<NodeData.Display, 'displayID'>>> => isDisplayNode(data) && !!data.displayID;
-
 export const isFlowNode = checkNodeType<NodeData.Flow>(BlockType.FLOW);
 
 export const isLinkedFlowNode = (

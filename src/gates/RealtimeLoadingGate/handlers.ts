@@ -1,6 +1,5 @@
 import { PlatformType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
-import * as Display from '@/ducks/display';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
 import * as AlexaPublish from '@/ducks/publish/alexa';
@@ -15,7 +14,6 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
   [Realtime.ResourceType.SLOTS]: (data: Models.Slot[], meta: object) => dispatch(Slot.replaceSlots(data, meta)),
   [Realtime.ResourceType.INTENTS]: (data: Models.Intent[], meta: object) => dispatch(Intent.replaceIntents(data, meta)),
   [Realtime.ResourceType.PRODUCTS]: (data: Models.Product[], meta: object) => dispatch(Product.replaceProducts(data, meta)),
-  [Realtime.ResourceType.DISPLAYS]: (data: Models.Display[], meta: object) => dispatch(Display.replaceDisplays(data, meta)),
   [Realtime.ResourceType.SETTINGS]: (data: { skillName: string; meta: unknown }, meta: object) => {
     dispatch(Skill.updateSkillMeta(data.meta, meta));
     dispatch(Skill.updateActiveSkill({ name: data.skillName }, meta));

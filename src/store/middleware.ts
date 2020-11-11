@@ -10,11 +10,10 @@ import { debounce } from 'throttle-debounce';
 import { toast } from '@/components/Toast';
 import { LOGROCKET_ENABLED } from '@/config';
 import { RootRoute } from '@/config/routes';
-import { BlockType, DiagramState, NEW_PRODUCT_ID } from '@/constants';
+import { DiagramState, NEW_PRODUCT_ID } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
-import * as Display from '@/ducks/display';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
 import * as ProjectList from '@/ducks/projectList';
@@ -24,8 +23,6 @@ import * as SkillV2 from '@/ducks/skill/sideEffectsV2';
 import * as Slot from '@/ducks/slot';
 import { CRUDAction } from '@/ducks/utils/crud';
 import * as Workspace from '@/ducks/workspace';
-import { VERSIONS as DISPLAY_VERSIONS } from '@/pages/Canvas/managers/Display/constants';
-import { isLinkedDisplayNode } from '@/utils/node';
 
 import { activeDiagramViewersSelector } from './selectors';
 import { AnyAction, Dispatchable, Selector, StoreMiddleware, StoreMiddlewareAPI } from './types';
@@ -163,29 +160,6 @@ const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (action) 
   }
 };
 
-const cleanupDisplayMiddleware: StoreMiddleware = (store) => (next) => (action) => {
-  if (action.type === Creator.DiagramAction.REMOVE_MANY_NODES || action.type === Creator.DiagramAction.REMOVE_NODE) {
-    const state = store.getState();
-    const nodeIDs = action.type === Creator.DiagramAction.REMOVE_NODE ? [action.payload] : action.payload;
-
-    const cleanupDisplayData = (nodeIDArray: string[]) => {
-      nodeIDArray.forEach((nodeID) => {
-        const nodeData = Creator.dataByNodeIDSelector(state)(nodeID);
-        if (nodeData.type === BlockType.COMBINED) {
-          const { combinedNodes } = Creator.nodeByIDSelector(state)(nodeID);
-          return cleanupDisplayData(combinedNodes);
-        }
-        if (isLinkedDisplayNode(nodeData) && nodeData.version === DISPLAY_VERSIONS.EDITORS_REDESIGN) {
-          store.dispatch(Display.deleteDisplay(nodeData.displayID));
-        }
-      });
-    };
-
-    cleanupDisplayData(nodeIDs);
-  }
-  next(action);
-};
-
 // reset the creator state when navigating to the canvas from elsewhere in the app
 const creatorResetMiddleware: StoreMiddleware = (store) => (next) => (action) => {
   if (action.type === LOCATION_CHANGE) {
@@ -223,7 +197,6 @@ const createMiddleware = (history: History) => {
     thunk,
     creatorHistoryMiddleware,
     creatorResetMiddleware,
-    cleanupDisplayMiddleware,
     createLoggedInMiddleware(
       createAutosaveMiddleware(
         createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }),
@@ -246,7 +219,6 @@ const createMiddleware = (history: History) => {
     ),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.PUBLISH, Skill.publishInfoSelector, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.FLOWS, Diagram.allDiagramsSelector, [Skill.SkillAction.SET_ACTIVE_SKILL]),
-    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.DISPLAYS, Display.allDisplaysSelector, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.PRODUCTS, Product.allProductsSelector, [
       CRUDAction.CRUD_UPDATE,
       (action) => action.type === CRUDAction.CRUD_ADD && action.payload?.key === NEW_PRODUCT_ID,

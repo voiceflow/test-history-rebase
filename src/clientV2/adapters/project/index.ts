@@ -12,10 +12,10 @@ const projectAdapter = createAdapter<
   DBProject<AlexaProjectData | GoogleProjectData | BasePlatformData, AlexaProjectMemberData | GoogleProjectMemberData | BasePlatformData>,
   Project
 >(
-  ({ _id, name, devVersion, platform, privacy, image = null }) => ({
+  ({ _id, name, devVersion, platform, privacy, image = null, liveVersion }) => ({
     id: _id,
     name,
-    isLive: false,
+    isLive: !!liveVersion,
     module: '',
     locales: [],
     created: '',

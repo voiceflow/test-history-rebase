@@ -254,11 +254,6 @@ export namespace NodeData {
     splashHeader?: string;
     jsonFileName?: string | null;
     updateOnChange?: boolean;
-
-    /**
-     * TODO: seems to be only referenced in @/store/middleware, can maybe be removed?
-     */
-    version?: '1';
   };
 
   export type IntegrationDefaultProps<T extends IntegrationType> = {

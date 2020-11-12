@@ -4,7 +4,6 @@ import { NodeData } from '@/models';
 import { NodeConfig } from '../types';
 import DisplayEditor from './DisplayEditor';
 import DisplayStep from './DisplayStep';
-import { VERSIONS } from './constants';
 
 const DisplayManager: NodeConfig<NodeData.Display> = {
   type: BlockType.DISPLAY,
@@ -35,7 +34,6 @@ const DisplayManager: NodeConfig<NodeData.Display> = {
       backgroundImage: null,
       splashHeader: '',
       jsonFileName: null,
-      version: VERSIONS.EDITORS_REDESIGN as any,
     },
   }),
 };

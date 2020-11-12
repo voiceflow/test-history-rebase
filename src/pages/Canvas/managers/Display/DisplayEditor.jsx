@@ -24,13 +24,13 @@ const DISPLAY_OPTIONS = [
 ];
 
 function DisplayEditor({ data, skillID, onChange }) {
-  const { migrating, displayType, backgroundImage, splashHeader, document: documentData, aplCommands, jsonFileName, version } = data;
+  const { migrating, displayType, backgroundImage, splashHeader, document: documentData, aplCommands, jsonFileName } = data;
 
   const datasource = data.dataSource;
 
   const { open: openModal } = useModals(ModalType.DISPLAY_PREVIEW);
-  const cache = React.useRef({ migrating, onChange, version });
-  cache.current = { ...cache.current, version, migrating, onChange };
+  const cache = React.useRef({ migrating, onChange });
+  cache.current = { ...cache.current, migrating, onChange };
 
   // avoid preview for SPLASH when datarefactor enabled as we do not have document
   const canCreatePreview =
@@ -60,7 +60,7 @@ function DisplayEditor({ data, skillID, onChange }) {
     onChange(resetDataObject);
   };
 
-  return !version ? null : (
+  return (
     <Content footer={() => <Footer openPreviewModal={openPreviewModal} canRenderPreview={canCreatePreview} />}>
       <Section>
         <FormControl label="Display Type" contentBottomUnits={0}>

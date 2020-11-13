@@ -8,11 +8,17 @@ export default {
   submit: () => cy.get('button[type="submit"]').click(),
 
   el: {
+    get socialLogin() {
+      return cy.get('.social-button');
+    },
     get googleLogin() {
-      return cy.get('.social-button').first();
+      return this.socialLogin.contains('Google');
     },
     get facebookLogin() {
-      return cy.get('.social-button').last();
+      return this.socialLogin.contains('Facebook');
+    },
+    get ssoLogin() {
+      return this.socialLogin.contains('SSO');
     },
     get loginPrompt() {
       return cy.get('.auth__link');

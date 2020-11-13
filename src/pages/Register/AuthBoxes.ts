@@ -129,12 +129,6 @@ export const SocialLoginContainer = styled.div`
   margin-top: 32px;
   width: 404px;
 
-  .helperText {
-    font-size: 15px;
-    color: #8da2b5;
-    float: left;
-  }
-
   .social-button {
     width: fit-content;
     font-weight: 500;

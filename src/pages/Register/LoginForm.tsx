@@ -96,7 +96,7 @@ export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> 
           </div>
         </Form>
 
-        <SocialLogin entryText="Or sign in with" light />
+        <SocialLogin light />
       </AuthBox>
     </AuthenticationContainer>
   );

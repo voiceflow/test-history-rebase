@@ -175,7 +175,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedSignupFormProps> = 
           </div>
         </Form>
 
-        <SocialLogin entryText="Or sign up with" coupon={coupon} disabled={isSignupDisabled} />
+        <SocialLogin coupon={coupon} disabled={isSignupDisabled} />
 
         {signupError && (
           <div className="errorContainer row">

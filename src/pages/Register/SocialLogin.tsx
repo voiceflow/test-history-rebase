@@ -7,10 +7,9 @@ import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse } from 'react-google
 import Button, { ButtonVariant } from '@/components/Button';
 import { FlexApart } from '@/components/Flex';
 import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID, OKTA_CLIENT_ID, OKTA_DOMAIN, OKTA_SCOPES } from '@/config';
-import { FeatureFlag } from '@/config/features';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useFeature, useTeardown } from '@/hooks';
+import { useTeardown } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
 import OKTA from '@/utils/okta';
@@ -21,20 +20,9 @@ export type SocialLoginProps = {
   light?: boolean;
   coupon?: string;
   disabled?: boolean;
-  entryText: string;
 };
 
-const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
-  light,
-  coupon,
-  disabled,
-  ssoLogin,
-  entryText,
-  googleLogin,
-  facebookLogin,
-}) => {
-  const sso = useFeature(FeatureFlag.SSO);
-
+const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({ light, coupon, disabled, ssoLogin, googleLogin, facebookLogin }) => {
   const [authError, setAuthError] = useState<null | boolean>(null);
   const okta = React.useMemo(
     () =>
@@ -101,9 +89,7 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
 
   return (
     <SocialLoginContainer>
-      <FlexApart>
-        {!sso.isEnabled && <div className="helperText">{entryText}</div>}
-
+      <FlexApart fullWidth>
         <GoogleLogin
           clientId={GOOGLE_CLIENT_ID}
           render={(renderProps) => (
@@ -136,16 +122,9 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
           callback={triggerFbLogin}
         />
 
-        {sso.isEnabled && (
-          <Button
-            icon="lock"
-            variant={ButtonVariant.SECONDARY}
-            onClick={onSSOLogin}
-            className={cn('social-button', { 'social-button-light': light })}
-          >
-            SSO
-          </Button>
-        )}
+        <Button icon="lock" variant={ButtonVariant.SECONDARY} onClick={onSSOLogin} className={cn('social-button', { 'social-button-light': light })}>
+          SSO
+        </Button>
       </FlexApart>
 
       {authError && (

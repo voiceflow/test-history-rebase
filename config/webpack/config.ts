@@ -16,7 +16,6 @@ import {
   ff_generalPlatform,
   ff_headerRedesign,
   ff_prototypeTest,
-  ff_sso,
   ga,
   intercom,
   logFilter,
@@ -63,7 +62,6 @@ export const ENV = {
   USERFLOW_ENABLED: userflow && 'true',
 
   // feature flags
-  FF_SSO: ff_sso && 'true',
   FF_GADGETS: ff_gadgets && 'true',
   FF_GENERAL_PLATFORM: ff_generalPlatform && 'true',
   FF_CODE_EXPORT: ff_codeExport && 'true',

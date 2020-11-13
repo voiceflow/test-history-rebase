@@ -31,7 +31,6 @@ declare module 'webpack-nano/argv' {
     userflow: boolean;
 
     // feature flags
-    ff_sso: boolean;
     ff_gadgets: boolean;
     ff_codeExport: boolean;
     ff_prototypeTest: boolean;

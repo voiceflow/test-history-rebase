@@ -34,7 +34,6 @@ declare module 'webpack-nano/argv' {
     ff_sso: boolean;
     ff_gadgets: boolean;
     ff_codeExport: boolean;
-    ff_actionsEnv: boolean;
     ff_prototypeTest: boolean;
     ff_headerRedesign: boolean;
     ff_generalPlatform: boolean;

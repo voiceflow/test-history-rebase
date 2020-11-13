@@ -1,8 +1,6 @@
 import _uniq from 'lodash/uniq';
 
 import client from '@/client';
-import { FeatureFlag } from '@/config/features';
-import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import { duckLogger } from '@/ducks/utils';
@@ -17,12 +15,9 @@ import { allProjectListsSelector, defaultProjectListSelector, projectListByIDSel
 
 const log = duckLogger.child('projectList');
 
-export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch, getState) => {
-  const isActionsEnvEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ACTIONS_ENV);
-
+export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch) => {
   try {
-    // TODO: REMOVE AFTER DATA REFACTOR MIGRATIONS (DUAL ENVIRONMENT FOR GOOGLE)
-    const lists = isActionsEnvEnabled ? [] : await client.projectList.find(workspaceID);
+    const lists = await client.projectList.find(workspaceID);
 
     const rawProjects = await dispatch(Project.loadProjectsForWorkspace(workspaceID));
 
@@ -54,8 +49,7 @@ export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch,
       } else {
         normalizedLists.push({
           id: cuid(),
-          // TODO: REMOVE AFTER DATA REFACTOR MIGRATIONS (DUAL ENVIRONMENT FOR GOOGLE)
-          name: isActionsEnvEnabled ? 'Actions Project Beta' : DEFAULT_LIST_NAME,
+          name: DEFAULT_LIST_NAME,
           projects: unusedProjectIDs,
         });
       }
@@ -69,10 +63,6 @@ export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch,
 };
 
 export const saveProjectListsForWorkspace = (workspaceID: string): Thunk => async (_, getState) => {
-  // TODO: REMOVE AFTER DATA REFACTOR MIGRATIONS (DUAL ENVIRONMENT FOR GOOGLE)
-  const isActionsEnvEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ACTIONS_ENV);
-  if (isActionsEnvEnabled) return;
-
   const projectLists = allProjectListsSelector(getState());
 
   await client.projectList.update(workspaceID, projectLists);

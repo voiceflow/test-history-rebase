@@ -1,5 +1,4 @@
 import client from '@/client';
-import * as Feature from '@/ducks/feature';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListSelectors from '@/ducks/projectList/selectors';
@@ -118,11 +117,9 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
         const lists: any[] = generate.array();
         const updateLists = stub(client.projectList, 'update');
         stub(ProjectListSelectors, 'allProjectListsSelector').returns(lists);
-        const feature = stub(Feature, 'isFeatureEnabledSelector').returns(() => false);
 
         await applyEffect(ProjectList.saveProjectListsForWorkspace(workspaceID));
 
-        expect(feature.callCount).to.eq(1);
         expect(updateLists).to.be.calledWithExactly(workspaceID, lists);
       });
     });

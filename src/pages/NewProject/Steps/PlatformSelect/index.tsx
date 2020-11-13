@@ -22,7 +22,6 @@ const PlatformSelect: React.FC<PlatformSelectProps> = ({ setSelectedPlatform, cr
     setSelectedPlatform(null);
   }, []);
 
-  const actionsEnv = useFeature(FeatureFlag.ACTIONS_ENV);
   const generalPlatform = useFeature(FeatureFlag.GENERAL_PLATFORM);
 
   return (
@@ -41,7 +40,6 @@ const PlatformSelect: React.FC<PlatformSelectProps> = ({ setSelectedPlatform, cr
           return (
             <PlatformCard
               key={index}
-              disabled={actionsEnv.isEnabled && meta.platform !== PlatformType.GOOGLE}
               platformMeta={meta}
               onClick={() => {
                 if (creatingSkill) return;

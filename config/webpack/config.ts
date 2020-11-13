@@ -11,7 +11,6 @@ import {
   debugRealtime,
   debugSocket,
   env,
-  ff_actionsEnv,
   ff_codeExport,
   ff_gadgets,
   ff_generalPlatform,
@@ -68,7 +67,6 @@ export const ENV = {
   FF_GADGETS: ff_gadgets && 'true',
   FF_GENERAL_PLATFORM: ff_generalPlatform && 'true',
   FF_CODE_EXPORT: ff_codeExport && 'true',
-  FF_ACTIONS_ENV: ff_actionsEnv && 'true',
   FF_PROTOTYPE_TEST: ff_prototypeTest && 'true',
   FF_HEADER_REDESIGN: ff_headerRedesign && 'true',
 

@@ -1,9 +1,7 @@
 import client from '@/client';
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import { PlatformType, UserRole } from '@/constants';
 import { deleteNormalize, normalize } from '@/ducks/_normalize';
-import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import { saveProjectListsForWorkspace } from '@/ducks/projectList/sideEffects';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
@@ -59,11 +57,7 @@ export const fetchWorkspaces = (): SyncThunk => async (dispatch, getState) => {
     const state = getState();
     const activeWorkspaceID = activeWorkspaceIDSelector(state)!;
 
-    let workspaces = await client.workspace.find();
-
-    if (Feature.isFeatureEnabledSelector(state)(FeatureFlag.ACTIONS_ENV)) {
-      workspaces = workspaces.filter((workspace) => !workspace.templates);
-    }
+    const workspaces = await client.workspace.find();
 
     // NORMALIZE TEAMS
     const normalizedWorkspaces = normalize(

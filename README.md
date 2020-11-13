@@ -280,11 +280,9 @@ yarn start --ff_someFeature
 
 - `ff_gadgets` / `VF_APP_FF_GADGETS`: enable alexa gadgets interface
 - `ff_generalPlatform` / `VF_APP_FF_GENERAL_PLATFORM`: general platform
-- `ff_actionsEnv` / `VF_APP_FF_ACTIONS_ENV`: google actions beta environment
 - `ff_prototypeTest` / `VF_APP_FF_PROTOTYPE_TEST`: visuals in prototyping test tools
 - `ff_headerRedesign` / `VF_APP_FF_HEADER_REDESIGN`: canvas header redesign
 - `ff_sso` / `VF_APP_FF_SSO`: okta sso integration
-
 
 ### Environment variable overrides
 

@@ -12,9 +12,6 @@ import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
-import { Link as Anchor } from '@/components/Text';
-import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
@@ -25,7 +22,7 @@ import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
+import { useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
 import * as Models from '@/models';
 import { copyProject } from '@/store/sideEffectsV2';
 import { ConnectedProps } from '@/types';
@@ -72,7 +69,6 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
     }
   }, []);
 
-  const actionsEnv = useFeature(FeatureFlag.ACTIONS_ENV);
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const [loading, toggleLoading] = React.useState(true);
   const [filter_text, handleFilterText] = React.useState('');
@@ -163,34 +159,6 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
       openCollaboratorsModal();
     } else if (query?.upgrade_workspace) {
       openPaymentModal();
-    }
-
-    if (document.referrer?.includes('creator.actions.voiceflow.com') && !sessionStorage.getItem('creator_return_to_actions')) {
-      sessionStorage.setItem('creator_return_to_actions', 'true');
-
-      toast.warn(
-        <>
-          Looking to build with Google Action Console? Get early access at{' '}
-          <Anchor href="https://creator.actions.voiceflow.com" target="" rel="">
-            creator.actions.voiceflow.com
-          </Anchor>
-        </>,
-        { autoClose: false, closeButton: true }
-      );
-    } else if (actionsEnv.isEnabled && !sessionStorage.getItem('actions_return_to_creator')) {
-      sessionStorage.setItem('actions_return_to_creator', 'true');
-
-      toast.warn(
-        <>
-          This version of your workspace is for your new Google Actions Console projects only.
-          <br />
-          Looking for your existing projects? Return to{' '}
-          <Anchor href="https://creator.voiceflow.com" target="" rel="">
-            creator.voiceflow.com
-          </Anchor>
-        </>,
-        { autoClose: false, closeButton: true }
-      );
     }
   }, []);
 
@@ -311,8 +279,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
                           }}
                         </DragLayer>
 
-                        {/* TODO: REMOVE AFTER DATA REFACTOR MIGRATIONS (DUAL ENVIRONMENT FOR GOOGLE) */}
-                        {canManageLists && !actionsEnv.isEnabled && (
+                        {canManageLists && (
                           <div className="main-list-add">
                             <Tooltip distance={10} title="Add new list" position="bottom">
                               <IconButton large icon="addStep" onClick={props.createNewList} size={13} />

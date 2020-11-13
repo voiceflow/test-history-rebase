@@ -28,6 +28,7 @@ export const {
   byID: productByIDSelector,
   findByIDs: productsByIDsSelector,
   has: hasProductsSelector,
+  map: productMapSelector,
 } = createCRUDSelectors<Product>(STATE_KEY);
 
 // action creators

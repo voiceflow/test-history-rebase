@@ -9,6 +9,7 @@ export enum EventName {
   SESSION_BEGIN = 'Begin New Session',
   SESSION_DURATION = 'Creator Session Duration',
 
+  WORKSPACE_DELETE = 'Delete Workspace',
   WORKSPACE_SESSION_BEGIN = 'Begin Workspace Session',
 
   INVITATION_CANCEL = 'Cancel Invitation',

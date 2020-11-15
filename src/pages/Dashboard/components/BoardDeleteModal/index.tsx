@@ -9,7 +9,7 @@ import { Spinner } from '@/components/Spinner';
 import { ModalType } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
+import { useModals, useTrackingEvents } from '@/hooks';
 import * as Models from '@/models';
 import { ConnectedProps } from '@/types';
 
@@ -18,6 +18,7 @@ export type BoardDeleteModalProps = {
 };
 
 export const BoardDeleteModal: React.FC<BoardDeleteModalProps & ConnectedBoardDeleteModalProps> = ({ workspace, deleteWorkspace }) => {
+  const [trackEvents] = useTrackingEvents();
   const [name, updateName] = React.useState('');
   const [deleting, updateDeleting] = React.useState(false);
 
@@ -36,6 +37,7 @@ export const BoardDeleteModal: React.FC<BoardDeleteModalProps & ConnectedBoardDe
     try {
       updateDeleting(true);
       await deleteWorkspace(workspace.id);
+      trackEvents.trackWorkspaceDelete(workspace.id);
     } finally {
       closeSettingsModal();
       close();

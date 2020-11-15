@@ -14,3 +14,12 @@ export const trackWorkspace = (workspace: Workspace) => () => {
   });
   client.analytics.identifyWorkspace(workspace);
 };
+
+export const trackWorkspaceDelete = (workspaceID: string) => () => {
+  client.analytics.track(EventName.WORKSPACE_DELETE, {
+    teamhashed: ['workspace_id'],
+    properties: {
+      workspace_id: workspaceID,
+    },
+  });
+};

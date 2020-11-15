@@ -12,7 +12,13 @@ import { useDidUpdateEffect, useTeardown } from '@/hooks';
 import { Markup } from '@/models';
 
 import { InlineStylePrefix } from '../constants';
-import { getInlineStylePrefixAndValue, getSelectionPrefixedInlineStyle, togglePrefixedInlineStyle } from '../utils';
+import {
+  applyFakeSelectionStyle,
+  getInlineStylePrefixAndValue,
+  getSelectionPrefixedInlineStyle,
+  removeFakeSelectionStyle,
+  togglePrefixedInlineStyle,
+} from '../utils';
 
 export type TextColorProps = Omit<DraftJsBlockStyleButtonProps, 'children'> & {
   saveEditorState: (state: EditorState) => void;
@@ -101,12 +107,12 @@ const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, s
   const onApplyFakeSelection = () => {
     // to fix the issue when te slider loses focus on the drag start
     requestAnimationFrame(() => {
-      setEditorState(togglePrefixedInlineStyle(getEditorState(), InlineStylePrefix.FAKE_SELECTION, '1'));
+      setEditorState(applyFakeSelectionStyle(getEditorState()));
     });
   };
 
   const onRemoveAndSaveFakeSelection = () => {
-    const state = togglePrefixedInlineStyle(getEditorState(), InlineStylePrefix.FAKE_SELECTION);
+    const state = removeFakeSelectionStyle(getEditorState());
 
     setEditorState(state);
     saveEditorState(state);

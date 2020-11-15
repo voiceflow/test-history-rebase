@@ -72,9 +72,12 @@ export const getFullTextSelection = (editorState: EditorState) => {
   });
 };
 
-export const getSelectionPrefixedInlineStyle = (editorState: EditorState, prefix: InlineStylePrefix) => {
+export const getSelectionPrefixedInlineStyle = (
+  editorState: EditorState,
+  prefix: InlineStylePrefix,
+  currentSelection: SelectionState = editorState.getSelection()
+) => {
   const inlineStyles: string[] = [];
-  const currentSelection = editorState.getSelection();
 
   const start = currentSelection.getStartOffset();
   const end = currentSelection.getEndOffset();
@@ -109,11 +112,11 @@ export const togglePrefixedInlineStyle = (editorState: EditorState, prefix: Inli
   let selection = editorState.getSelection();
   const isCollapsed = selection.isCollapsed();
 
-  const inlineStyles = getSelectionPrefixedInlineStyle(editorState, prefix);
-
   if (isCollapsed) {
     selection = getFullTextSelection(editorState);
   }
+
+  const inlineStyles = getSelectionPrefixedInlineStyle(editorState, prefix, selection);
 
   let newContent = editorState.getCurrentContent();
 
@@ -126,4 +129,34 @@ export const togglePrefixedInlineStyle = (editorState: EditorState, prefix: Inli
   }
 
   return EditorState.push(editorState, newContent, 'change-inline-style');
+};
+
+export const applyFakeSelectionStyle = (editorState: EditorState) => {
+  let selection = editorState.getSelection();
+  const isCollapsed = selection.isCollapsed();
+
+  if (isCollapsed) {
+    selection = getFullTextSelection(editorState);
+  }
+
+  return EditorState.push(
+    editorState,
+    Modifier.applyInlineStyle(editorState.getCurrentContent(), selection, InlineStylePrefix.FAKE_SELECTION),
+    'change-inline-style'
+  );
+};
+
+export const removeFakeSelectionStyle = (editorState: EditorState) => {
+  let selection = editorState.getSelection();
+  const isCollapsed = selection.isCollapsed();
+
+  if (isCollapsed) {
+    selection = getFullTextSelection(editorState);
+  }
+
+  return EditorState.push(
+    editorState,
+    Modifier.removeInlineStyle(editorState.getCurrentContent(), selection, InlineStylePrefix.FAKE_SELECTION),
+    'change-inline-style'
+  );
 };

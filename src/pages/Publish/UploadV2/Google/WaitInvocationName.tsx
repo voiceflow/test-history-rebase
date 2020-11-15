@@ -6,12 +6,12 @@ import Input from '@/components/Input';
 import SvgIcon, { IconVariant } from '@/components/SvgIcon';
 import { BlockText } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
-import { getGoogleInvocationNameError } from '@/ducks/publish/utilsV2';
 import * as Skill from '@/ducks/skill';
 import { saveInvocationName } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { useSmartReducerV2 } from '@/hooks';
 import { GoogleExportJob, GooglePublishJob } from '@/models';
+import { getGoogleInvocationNameError } from '@/pages/Publish/utils';
 import { ConnectedProps, Nullable } from '@/types';
 
 import { ButtonContainer, Description, LoaderStage, StageContainer } from '../components';

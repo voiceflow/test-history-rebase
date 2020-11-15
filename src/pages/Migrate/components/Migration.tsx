@@ -10,7 +10,6 @@ import Select from '@/components/Select';
 import { toast } from '@/components/Toast';
 import * as Account from '@/ducks/account';
 import * as Product from '@/ducks/product';
-import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
@@ -133,7 +132,7 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
 const mapStateToProps = {
   projectID: Skill.activeProjectIDSelector,
   amazonAccount: Account.amazonAccountSelector,
-  selectedVendor: AlexaPublish.vendorIdSelector,
+  selectedVendor: Skill.selectedVendorSelector,
   productMap: Product.productMapSelector,
 };
 

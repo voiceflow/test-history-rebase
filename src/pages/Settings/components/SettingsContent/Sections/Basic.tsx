@@ -6,11 +6,10 @@ import Input from '@/components/Input';
 import Section, { SectionVariant } from '@/components/Section';
 import Select from '@/components/Select';
 import { PlatformType } from '@/constants';
-import { googleIDSelector } from '@/ducks/publish/google';
 import * as Skill from '@/ducks/skill';
 import { saveInvocationName, saveLocales, saveProjectName } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
-import { FORMATTED_LOCALES, GOOGLE_LANGUAGE_TO_LOCALES } from '@/pages/Publish/Google/Form';
+import { FORMATTED_LOCALES, GOOGLE_LANGUAGE_TO_LOCALES } from '@/pages/Publish/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { without } from '@/utils/array';
@@ -68,7 +67,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     if (platform === PlatformType.ALEXA) {
       saveLocales(selectedLocales as [Locale, ...Locale[]]);
     } else {
-      saveLocales(GOOGLE_LANGUAGE_TO_LOCALES[mainLanguage] as [Locale, ...Locale[]]);
+      saveLocales(GOOGLE_LANGUAGE_TO_LOCALES[mainLanguage] as any);
     }
   };
 
@@ -103,10 +102,9 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
           placeholder="Language"
           value={FORMATTED_GOOGLE_LOCALES_LABELS[mainLanguage]}
           options={FORMATTED_LOCALES}
-          onSelect={async (val: string) => {
+          onSelect={async (val) => {
             setMainLanguage(val);
-
-            saveLocales(GOOGLE_LANGUAGE_TO_LOCALES[val] as [Locale, ...Locale[]]);
+            saveLocales(GOOGLE_LANGUAGE_TO_LOCALES[val] as any);
           }}
           getOptionValue={(option) => option?.value || ''}
           renderOptionLabel={(option) => option.name}
@@ -149,7 +147,6 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 const mapStateToProps = {
   meta: Skill.skillMetaSelector,
   skill: Skill.activeSkillSelector,
-  googleID: googleIDSelector,
   versionID: Skill.activeSkillIDSelector,
 };
 

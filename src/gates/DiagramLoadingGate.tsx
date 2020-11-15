@@ -5,7 +5,7 @@ import LoadingGate from '@/components/LoadingGate';
 import * as Creator from '@/ducks/creator';
 import { activeDiagramIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { initializeCreatorForDiagram as initializeCreatorForDiagramV2 } from '@/store/sideEffectsV2';
+import { initializeCreatorForDiagram } from '@/store/sideEffects';
 import { Action } from '@/store/types';
 import { ConnectedProps, MergeArguments } from '@/types';
 
@@ -13,12 +13,11 @@ const RawDiagramLoadingGate: React.FC<ConnectedDiagramLoadingGateProps> = ({
   diagramID,
   creatorDiagramID,
   isDiagramLoaded,
-  loadDiagramV2,
+  loadDiagram,
   clearHistory,
   children,
 }) => {
   const prevDiagramID = React.useRef(diagramID);
-  const load = loadDiagramV2;
 
   // reset history if switching between diagrams
   React.useEffect(() => {
@@ -29,7 +28,7 @@ const RawDiagramLoadingGate: React.FC<ConnectedDiagramLoadingGateProps> = ({
   }, [isDiagramLoaded, creatorDiagramID, clearHistory]);
 
   return (
-    <LoadingGate label="Diagrams" isLoaded={isDiagramLoaded} load={load}>
+    <LoadingGate label="Diagrams" isLoaded={isDiagramLoaded} load={loadDiagram}>
       {children}
     </LoadingGate>
   );
@@ -41,13 +40,13 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  loadDiagramV2: initializeCreatorForDiagramV2,
+  loadDiagram: initializeCreatorForDiagram,
   clearHistory: ActionCreators.clearHistory as () => Action,
 };
 
-const mergeProps = (...[{ diagramID, creatorDiagramID }, { loadDiagramV2 }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
+const mergeProps = (...[{ diagramID, creatorDiagramID }, { loadDiagram }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
   isDiagramLoaded: creatorDiagramID === diagramID,
-  loadDiagramV2: () => loadDiagramV2(diagramID),
+  loadDiagram: () => loadDiagram(diagramID),
 });
 
 type ConnectedDiagramLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;

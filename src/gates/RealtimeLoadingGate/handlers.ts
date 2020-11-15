@@ -1,9 +1,6 @@
-import { PlatformType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
-import * as AlexaPublish from '@/ducks/publish/alexa';
-import * as GooglePublish from '@/ducks/publish/google';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
@@ -17,10 +14,6 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
   [Realtime.ResourceType.SETTINGS]: (data: { skillName: string; meta: unknown }, meta: object) => {
     dispatch(Skill.updateSkillMeta(data.meta, meta));
     dispatch(Skill.updateActiveSkill({ name: data.skillName }, meta));
-  },
-  [Realtime.ResourceType.PUBLISH]: (data: any, meta: Record<string, unknown>) => {
-    const platform = Skill.activePlatformSelector(getState());
-    dispatch(platform === PlatformType.ALEXA ? AlexaPublish.updatePublishInfo(data, meta) : GooglePublish.updatePublishInfo(data, meta));
   },
   [Realtime.ResourceType.FLOWS]: async (data: Models.Diagram[]) => {
     const state = getState();

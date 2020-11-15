@@ -7,7 +7,7 @@ import * as Project from '@/ducks/project';
 import * as Skill from '@/ducks/skill';
 import * as Thread from '@/ducks/thread';
 import { connect } from '@/hocs';
-import { loadVersion } from '@/store/sideEffectsV2';
+import { loadVersion } from '@/store/sideEffects';
 import { ConnectedProps, MergeArguments } from '@/types';
 
 import CommentingUpdates from './CommentingUpdates';

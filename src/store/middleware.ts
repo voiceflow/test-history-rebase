@@ -217,7 +217,6 @@ const createMiddleware = (history: History) => {
       }),
       [Skill.SkillAction.SET_ACTIVE_SKILL]
     ),
-    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.PUBLISH, Skill.publishInfoSelector, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.FLOWS, Diagram.allDiagramsSelector, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.PRODUCTS, Product.allProductsSelector, [
       CRUDAction.CRUD_UPDATE,

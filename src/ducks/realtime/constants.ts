@@ -18,7 +18,6 @@ export enum ResourceType {
   FLOWS = 'flows',
   PRODUCTS = 'products',
   SETTINGS = 'settings',
-  PUBLISH = 'publish',
 }
 
 export enum LockAction {

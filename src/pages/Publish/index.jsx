@@ -9,11 +9,9 @@ import { FeatureFlag } from '@/config/features';
 import { PublishRoute } from '@/config/routes';
 import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
-import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
-import { LockedResourceOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 
 import PublishAmazon from './Amazon';
 import Export from './Export';
@@ -64,48 +62,23 @@ function Publish(props) {
   }
 
   return (
-    <LockedResourceOverlay type={Realtime.ResourceType.PUBLISH}>
-      {({ lockOwner, prevOwner, forceUpdateKey }) => (
-        <Container>
-          <Sidebar>
-            {tabOptions.map((tab, i) => (
-              <SidebarItem key={i} as={NavLink} to={updateLink(`${path}${tab.link}`, skillID)} exact={tab.exact} activeClassName="active">
-                {tab.display(i)}
-              </SidebarItem>
-            ))}
-          </Sidebar>
+    <Container>
+      <Sidebar>
+        {tabOptions.map((tab, i) => (
+          <SidebarItem key={i} as={NavLink} to={updateLink(`${path}${tab.link}`, skillID)} exact={tab.exact} activeClassName="active">
+            {tab.display(i)}
+          </SidebarItem>
+        ))}
+      </Sidebar>
 
-          <PlatformContainer>
-            <Switch>
-              <PrivateRoute
-                {...ownProps}
-                key={forceUpdateKey}
-                path={`${path}/${PublishRoute.ALEXA}`}
-                skillID={skillID}
-                component={PublishAmazon}
-                isLocked={!!lockOwner || !!prevOwner}
-              />
-              <PrivateRoute
-                {...ownProps}
-                key={forceUpdateKey}
-                path={`${path}/${PublishRoute.GOOGLE}`}
-                skillID={skillID}
-                component={PublishGoogle}
-                isLocked={!!lockOwner || !!prevOwner}
-              />
-              <PrivateRoute
-                {...ownProps}
-                key={forceUpdateKey}
-                path={`${path}/${PublishRoute.EXPORT}`}
-                skillID={skillID}
-                component={Export}
-                isLocked={false}
-              />
-            </Switch>
-          </PlatformContainer>
-        </Container>
-      )}
-    </LockedResourceOverlay>
+      <PlatformContainer>
+        <Switch>
+          <PrivateRoute {...ownProps} path={`${path}/${PublishRoute.ALEXA}`} skillID={skillID} component={PublishAmazon} />
+          <PrivateRoute {...ownProps} path={`${path}/${PublishRoute.GOOGLE}`} skillID={skillID} component={PublishGoogle} />
+          <PrivateRoute {...ownProps} path={`${path}/${PublishRoute.EXPORT}`} skillID={skillID} component={Export} isLocked={false} />
+        </Switch>
+      </PlatformContainer>
+    </Container>
   );
 }
 

@@ -14,7 +14,7 @@ import { allWorkspacesSelector, workspaceByIDSelector } from '@/ducks/workspace'
 import { extractMemberById } from '@/ducks/workspace/utils';
 import { connect } from '@/hocs';
 import { useModals, useTrackingEvents } from '@/hooks';
-import { importProject } from '@/store/sideEffectsV2';
+import { importProject } from '@/store/sideEffects';
 
 import { ImportSelect } from './ModalComponents';
 

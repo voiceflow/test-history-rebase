@@ -15,7 +15,6 @@ import product, * as Product from '@/ducks/product';
 import project, * as Project from '@/ducks/project';
 import projectList, * as ProjectList from '@/ducks/projectList';
 import prototype, * as Prototype from '@/ducks/prototype';
-import publish from '@/ducks/publish';
 import realtime, * as Realtime from '@/ducks/realtime';
 import recent, * as Recent from '@/ducks/recent';
 import * as Router from '@/ducks/router';
@@ -34,7 +33,6 @@ const getCombinedReducer = (history: History) =>
     [Router.STATE_KEY]: connectRouter(history),
     form: formReducer,
     [ProjectList.STATE_KEY]: projectList,
-    publish,
     [Modal.STATE_KEY]: modal,
     [Workspace.STATE_KEY]: workspace,
     [Thread.STATE_KEY]: thread,

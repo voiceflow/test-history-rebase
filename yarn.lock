@@ -4718,6 +4718,20 @@
     regenerator-runtime "^0.13.5"
     superstruct "^0.10.12"
 
+"@voiceflow/api-sdk@1.12.1":
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.12.1.tgz#e9620f82cdfa91a05d15c3615b254ac3182f8ff6"
+  integrity sha512-q2XwAs36LbVjBfV1pYc36qj/TIU3k8Fm9QzONgebjsf8ApJIiHApNAINLW47mO3QFEX6DSiFsY5ytakZqoUvVQ==
+  dependencies:
+    "@types/atob" "^2.1.2"
+    "@voiceflow/logger" "^1.1.10"
+    atob "^2.1.2"
+    axios "^0.19.2"
+    core-js "^3.6.5"
+    io-ts "^2.2.8"
+    regenerator-runtime "^0.13.5"
+    superstruct "^0.10.12"
+
 "@voiceflow/apl-renderer@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/apl-renderer/-/apl-renderer-1.0.0.tgz#8adfe323417b21f2831ae6ed6e80e9cde4a9c4ba"
@@ -4818,6 +4832,13 @@
   dependencies:
     "@voiceflow/api-sdk" "1.12.0"
 
+"@voiceflow/general-types@1.5.1", "@voiceflow/general-types@^1.5.0":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.5.1.tgz#3045d7dbe4149c7404ff0b407e9eb6e4b91a0eca"
+  integrity sha512-UOSxDxE18gxq1RdK0bzlyGG2p4zciQ2SjI989jveQ0Ezl+kpKkLxmd9VDwDzjorOh0QJmHhEeLHzngI1y8TQCw==
+  dependencies:
+    "@voiceflow/api-sdk" "1.12.1"
+
 "@voiceflow/git-branch-check@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@voiceflow/git-branch-check/-/git-branch-check-1.1.3.tgz#13bb13b7f8ee3b77cec3a0f2e9303f9d615bc253"
@@ -4825,13 +4846,13 @@
   dependencies:
     current-git-branch "^1.1.0"
 
-"@voiceflow/google-types@1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.6.1.tgz#5573dc0ee45ee145c061966c670d2b7ded05a582"
-  integrity sha512-rHbZBAvQzU3Atch+60rR2aA/8aqSXDD4pFt2cZG+O/+IvO9G+TN9ottnHy3zq/IHpabggzEA6rdEol7++OCtoA==
+"@voiceflow/google-types@1.6.2":
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.6.2.tgz#55d4f837af3787d86fee3dfca968554a77f4ecd3"
+  integrity sha512-v0CpWPfD+IyapVLi47DitHMTGfq6vcp8Txv/bswovEXhA2WnrYu8V+13sMDkQrCl2Yzcj0T9eU+09gwgfqWe+g==
   dependencies:
-    "@voiceflow/api-sdk" "1.12.0"
-    "@voiceflow/general-types" "1.5.0"
+    "@voiceflow/api-sdk" "1.12.1"
+    "@voiceflow/general-types" "1.5.1"
     googleapis "^60.0.1"
 
 "@voiceflow/logger@^1.1.10":

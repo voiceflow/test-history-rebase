@@ -24,7 +24,6 @@ import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
-import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as SkillDuck from '@/ducks/skill';
 import { connect } from '@/hocs';
 import amazonFormAdapter from '@/pages/Publish/Amazon/amazonAdaptor';
@@ -738,7 +737,6 @@ const validate = (values) => {
 const mapStateToProps = {
   user: Account.userSelector,
   skillID: SkillDuck.activeSkillIDSelector,
-  review: AlexaPublish.reviewSelector,
   amazonForm: getFormValues(PUBLISH_AMAZON_FORM),
   feature: Feature.isFeatureEnabledSelector,
   amazonID: SkillDuck.amazonIDSelector,

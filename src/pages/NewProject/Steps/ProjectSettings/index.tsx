@@ -1,3 +1,4 @@
+import _constant from 'lodash/constant';
 import React from 'react';
 
 import Button, { ButtonVariant } from '@/components/Button';
@@ -7,15 +8,15 @@ import Input from '@/components/Input';
 import Select from '@/components/Select';
 import Icon from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
-import { invNameError } from '@/ducks/publish/utils';
 import { PLATFORM_META } from '@/pages/NewProject/Steps/constants';
 import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
 import { LoadingButton } from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components';
-import { FORMATTED_LOCALES, GOOGLE_LANGUAGE_TO_LOCALES } from '@/pages/Publish/Google/Form';
+import { FORMATTED_LOCALES, GOOGLE_LANGUAGE_TO_LOCALES, getAmazonInvocationNameError, getGoogleInvocationNameError } from '@/pages/Publish/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Settings/components/SettingsContent/Sections/Basic';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { without } from '@/utils/array';
+import { getPlatformValue } from '@/utils/platform';
 
 import { SectionDescription, SectionErrorMessage, SectionTitle } from '../components';
 
@@ -48,7 +49,16 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
     selectedPlatform === PlatformType.ALEXA
       ? selectedLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')
       : '';
-  const invocationError = invocationName && invNameError(invocationName, selectedLocales);
+  const invocationError =
+    invocationName &&
+    getPlatformValue<(name?: string, locales?: any[]) => string | null>(
+      selectedPlatform,
+      {
+        [PlatformType.ALEXA]: getAmazonInvocationNameError,
+        [PlatformType.GOOGLE]: getGoogleInvocationNameError,
+      },
+      _constant(null)
+    )(invocationName, selectedLocales);
   const canContinue = !invocationError && (!!selectedLocales.length || !!mainLanguage);
   const InvocationDescriptionComponent: React.FC = PLATFORM_META[selectedPlatform].invocationDescription!;
   const LanguageDescriptionComponent: React.FC = PLATFORM_META[selectedPlatform].localesDescription!;
@@ -78,7 +88,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
             placeholder="Language"
             value={FORMATTED_GOOGLE_LOCALES_LABELS[mainLanguage]}
             options={FORMATTED_LOCALES}
-            onSelect={(val: string) => {
+            onSelect={(val: any) => {
               setMainLanguage(val);
               setSelectedLocales(GOOGLE_LANGUAGE_TO_LOCALES[val]);
             }}

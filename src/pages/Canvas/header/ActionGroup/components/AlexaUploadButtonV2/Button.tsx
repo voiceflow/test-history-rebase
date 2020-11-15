@@ -7,7 +7,7 @@ import Menu, { MenuItem } from '@/components/Menu';
 import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import * as Account from '@/ducks/account';
-import * as AlexaPublish from '@/ducks/publish/alexa';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { usePermission } from '@/hooks';
 import { Identifier } from '@/styles/constants';
@@ -77,7 +77,7 @@ const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorI
 const mapStateToProps = {
   amazon: Account.amazonAccountSelector,
   vendors: Account.amazonVendorsSelector,
-  vendorID: AlexaPublish.vendorIdSelector,
+  vendorID: Skill.selectedVendorSelector,
 };
 
 const mapDispatchToProps = {

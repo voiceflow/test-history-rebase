@@ -1,7 +1,6 @@
 import React from 'react';
 
 import * as Account from '@/ducks/account';
-import * as AlexaPublish from '@/ducks/publish/alexa';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount, useToggle } from '@/hooks';
@@ -15,10 +14,7 @@ import { isNotify, isReady, isRunning } from '@/utils/job';
 import { ActionContainer, ContentContainer, ContentSection, LinkContainer, PlatformText, SpacingSection, Text } from '../components';
 import Section from '../components/Section';
 
-const Stages = AlexaPublish.ALEXA_STAGES as any;
-const States = AlexaPublish.ALEXA_STATES as any;
-
-const Export: React.FC<ConnectedExportProps> = ({ alexaPublish, platform, syncSelectedVendor }) => {
+const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }) => {
   const [open, toggleOpen] = useToggle(false);
   const { cancel, job, start } = React.useContext(ExportContext)!;
 
@@ -27,17 +23,7 @@ const Export: React.FC<ConnectedExportProps> = ({ alexaPublish, platform, syncSe
     cancel();
   };
 
-  React.useEffect(() => {
-    const stageState = States[alexaPublish.stage];
-
-    if (alexaPublish.stage === Stages.IDLE) {
-      toggleOpen(false);
-    } else if (stageState.end) {
-      toggleOpen(true);
-    }
-  }, [alexaPublish.stage, alexaPublish.id]);
-
-  const exportV2Click = () => {
+  const exportClick = () => {
     if (isReady(job)) {
       start();
       toggleOpen(false);
@@ -70,7 +56,7 @@ const Export: React.FC<ConnectedExportProps> = ({ alexaPublish, platform, syncSe
           </Text>
 
           <ActionContainer>
-            <UploadV2 isActive={isRunning(job)} onClick={exportV2Click} label="Export" />
+            <UploadV2 isActive={isRunning(job)} onClick={exportClick} label="Export" />
 
             <UploadPopup open={!isReady(job) && open} onClose={onClose}>
               <Alexa export />
@@ -85,11 +71,9 @@ const Export: React.FC<ConnectedExportProps> = ({ alexaPublish, platform, syncSe
 
 const mapStateToProps = {
   platform: Skill.activePlatformSelector,
-  alexaPublish: AlexaPublish.publishStateSelector,
 };
 
 const mapDispatchToProps = {
-  syncVendors: AlexaPublish.syncVendors,
   syncSelectedVendor: Account.syncSelectedVendor,
 };
 

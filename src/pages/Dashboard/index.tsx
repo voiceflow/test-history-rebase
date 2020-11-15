@@ -24,7 +24,7 @@ import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
 import * as Models from '@/models';
-import { copyProject } from '@/store/sideEffectsV2';
+import { copyProject } from '@/store/sideEffects';
 import { ConnectedProps } from '@/types';
 import * as Userflow from '@/vendors/userflow';
 

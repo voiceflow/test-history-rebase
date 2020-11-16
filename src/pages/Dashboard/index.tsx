@@ -1,5 +1,6 @@
 import './DashBoard.css';
 
+import { ProjectPrivacy } from '@voiceflow/api-sdk';
 import cn from 'classnames';
 import queryString from 'query-string';
 import React from 'react';
@@ -12,6 +13,7 @@ import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
+import { toast } from '@/components/Toast';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
@@ -20,12 +22,14 @@ import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
+import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
+import { useModals, usePermission, useScrollHelpers, useSetup, useTrackingEvents, useWorkspaceTracking } from '@/hooks';
 import * as Models from '@/models';
 import { copyProject } from '@/store/sideEffects';
 import { ConnectedProps } from '@/types';
+import { copy } from '@/utils/clipboard';
 import * as Userflow from '@/vendors/userflow';
 
 import DashboardHeader from './Header';
@@ -70,6 +74,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
   }, []);
 
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
+  const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [loading, toggleLoading] = React.useState(true);
   const [filter_text, handleFilterText] = React.useState('');
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
@@ -77,6 +82,9 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
   const { toggle: toggleLoadingModal } = useModals(ModalType.LOADING);
+  const { open: openProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
+
+  const [trackingEvents] = useTrackingEvents();
 
   const onCopyProject = React.useCallback(
     async (projectId, boardId = null) => {
@@ -91,6 +99,24 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
       toggleLoadingModal(false);
     },
     [props.projects, props.workspace, props.workspaceID, props.copyProject]
+  );
+
+  const onDownloadProject = React.useCallback(
+    async (projectId) => {
+      if (canShareProject) {
+        try {
+          copy(`${window.location.origin}/dashboard?import=${projectId}`);
+          toast.success('Copied to clipboard');
+          trackingEvents.trackActiveProjectDownloadLinkShare();
+          props.updateProjectPrivacy(projectId, ProjectPrivacy.PUBLIC);
+        } catch {
+          toast.error('Error getting import link');
+        }
+      } else {
+        openProjectDownloadModal();
+      }
+    },
+    [props.updateProjectPrivacy]
   );
 
   const onDeleteProject = React.useCallback(
@@ -255,6 +281,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
                               onRemove={onDeleteBoard}
                               projects={projects}
                               onCopyProject={onCopyProject}
+                              onDownloadProject={onDownloadProject}
                               onDeleteProject={onDeleteProject(list.id)}
                               createSkill={onCreateProject}
                               onMove={onMove}
@@ -308,6 +335,7 @@ const mapStateToProps = {
   workspaceID: Workspace.activeWorkspaceIDSelector,
   workspaces: Workspace.allWorkspacesSelector,
   hasTemplatesWorkspace: Workspace.hasTemplateWorkspaceSelector,
+  meta: Skill.skillMetaSelector,
 };
 
 const mapDispatchToProps = {
@@ -323,6 +351,7 @@ const mapDispatchToProps = {
   transplantProject: ProjectList.transplantProject,
   moveList: ProjectList.moveProjectList,
   fetchNotifications: Notifications.fetchNotifications,
+  updateProjectPrivacy: Project.updateProjectPrivacy,
 };
 
 type ConnectedDashboardProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

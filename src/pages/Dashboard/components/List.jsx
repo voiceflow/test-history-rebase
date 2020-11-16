@@ -39,6 +39,7 @@ export function List(props) {
     onMoveProject,
     onDropProject,
     onCopyProject,
+    onDownloadProject,
     connectDragSource,
     isDraggingPreview,
     connectDropTarget,
@@ -185,6 +186,7 @@ export function List(props) {
                               isLive={project.isLive}
                               onRemove={() => onDeleteProject(project.id, project.name)}
                               onDuplicate={() => onCopyProject(project.id, id)}
+                              onDownload={() => onDownloadProject(project.id)}
                             />
                           </li>
                         );

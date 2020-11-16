@@ -42,6 +42,7 @@ export function Item(props) {
     platform,
     version_id,
     onDuplicate,
+    onDownload,
     connectDragSource,
     connectDropTarget,
     isReference,
@@ -66,6 +67,11 @@ export function Item(props) {
           value: 'remove',
           label: 'Remove Project',
           onClick: onRemove,
+        },
+        {
+          value: 'download',
+          label: 'Download Project',
+          onClick: onDownload,
         },
       ]
     : [];
@@ -165,6 +171,7 @@ Item.propTypes = {
   isDragLayer: PropTypes.bool,
   version_id: PropTypes.string.isRequired,
   onDuplicate: PropTypes.func.isRequired,
+  onDownload: PropTypes.func.isRequired,
   connectDragSource: PropTypes.func,
   connectDropTarget: PropTypes.func,
   isDraggingPreview: PropTypes.bool,

@@ -17,13 +17,7 @@ import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { BlockAPI } from '@/pages/Canvas/types';
 
 import { FontWeight, InlineStylePrefix } from '../constants';
-import {
-  getInlineStylePrefixAndValue,
-  getRawContent,
-  getSelectionPrefixedInlineStyle,
-  removeFakeSelectionStyle,
-  togglePrefixedInlineStyle,
-} from '../utils';
+import { getInlineStylePrefixAndValue, getRawContent, getSelectionPrefixedInlineStyle, togglePrefixedInlineStyle } from '../utils';
 import { Container, Link } from './components';
 import { createEditorState, customStyleFn, findAllDraggableParents } from './utils';
 
@@ -59,6 +53,13 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
 
     draggableParentsCache.current = draggableParents;
   };
+
+  useDidUpdateEffect(() => {
+    const isLocked = !!isNodeLocked?.(nodeEntity.nodeID);
+    if (!isFocused || isLocked) {
+      setEditorState(createEditorState(data.content));
+    }
+  }, [data.content, isFocused]);
 
   const onBlur = React.useCallback(() => {
     const content = getRawContent(editorState);
@@ -150,7 +151,7 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
         selectionCache.current.anchorOffset !== anchorOffset;
 
       if (isFocused && selection.getHasFocus() && selectionChanged) {
-        setEditorState(removeFakeSelectionStyle(state));
+        setEditorState(togglePrefixedInlineStyle(state, InlineStylePrefix.FAKE_SELECTION));
       } else {
         setEditorState(state);
       }
@@ -188,14 +189,6 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
     },
     [editorState]
   );
-
-  useDidUpdateEffect(() => {
-    const isLocked = !!isNodeLocked?.(nodeEntity.nodeID);
-
-    if (!isFocused || isLocked) {
-      setEditorState(removeFakeSelectionStyle(createEditorState(data.content)));
-    }
-  }, [data.content, isFocused]);
 
   React.useEffect(() => {
     if (isFocused && !editorState.getSelection().getHasFocus() && !editorState.getCurrentContent().isEmpty()) {

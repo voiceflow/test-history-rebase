@@ -6,13 +6,7 @@ import React from 'react';
 import Select from '@/components/Select';
 
 import { FONTS_LABELS, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, Font, FontWeight, InlineStylePrefix } from '../../constants';
-import {
-  applyFakeSelectionStyle,
-  getInlineStylePrefixAndValue,
-  getSelectionPrefixedInlineStyle,
-  removeFakeSelectionStyle,
-  togglePrefixedInlineStyle,
-} from '../../utils';
+import { getInlineStylePrefixAndValue, getSelectionPrefixedInlineStyle, togglePrefixedInlineStyle } from '../../utils';
 import { FormGroup } from './components';
 
 type FontStylesProps = Omit<DraftJsBlockStyleButtonProps, 'children'> & {
@@ -43,12 +37,12 @@ const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState,
   }, [getEditorState?.()]);
 
   const onShowFakeSelection = () => {
-    setEditorState(applyFakeSelectionStyle(getEditorState()));
+    setEditorState(togglePrefixedInlineStyle(getEditorState(), InlineStylePrefix.FAKE_SELECTION, '1'));
   };
 
   const onHideFakeSelection = () => {
     setTimeout(() => {
-      setEditorState(removeFakeSelectionStyle(getEditorState()));
+      setEditorState(togglePrefixedInlineStyle(getEditorState(), InlineStylePrefix.FAKE_SELECTION));
     }, 100);
   };
 

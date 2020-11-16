@@ -10,13 +10,7 @@ import { useDismissable } from '@/hooks/dismiss';
 import { preventDefault, withEnterPress } from '@/utils/dom';
 
 import { InlineStylePrefix } from '../../constants';
-import {
-  applyFakeSelectionStyle,
-  createPrefixedInlineStyle,
-  getFullTextSelection,
-  removeFakeSelectionStyle,
-  togglePrefixedInlineStyle,
-} from '../../utils';
+import { createPrefixedInlineStyle, getFullTextSelection, togglePrefixedInlineStyle } from '../../utils';
 import IconButton from '../IconButton';
 import { PopoverContainer, Title } from './components';
 
@@ -66,14 +60,14 @@ const Hyperlink: React.FC<HyperlinkProps> = ({ getEditorState, setEditorState, s
 
   const onClose = () => {
     setTimeout(() => {
-      setEditorState(removeFakeSelectionStyle(getEditorState()));
+      setEditorState(togglePrefixedInlineStyle(getEditorState(), InlineStylePrefix.FAKE_SELECTION, '1'));
     }, 100);
   };
 
   const [open, toggleOpen] = useDismissable(false, onClose, false, popperRef);
 
   const onShow = () => {
-    setEditorState(applyFakeSelectionStyle(getEditorState()));
+    setEditorState(togglePrefixedInlineStyle(getEditorState(), InlineStylePrefix.FAKE_SELECTION));
     toggleOpen();
   };
 

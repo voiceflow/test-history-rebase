@@ -1,5 +1,5 @@
 import { BillingPeriod, PlanType, PromoType, UserRole } from '@/constants';
-import { Query } from '@/models';
+import { Query, Workspace } from '@/models';
 
 import { StepID } from '../constants';
 import { CollaboratorType } from '../types';
@@ -19,14 +19,21 @@ export const getFirstStep = ({
   isLoginFlow,
   isFirstSession,
   hasPresetSeats,
+  specificFlowType,
+  workspaces,
 }: {
   flow: OnboardingType;
   isLoginFlow: boolean;
   isFirstSession: boolean;
   hasPresetSeats: boolean;
+  specificFlowType?: SpecificFlowType;
+  workspaces: Workspace[];
 }) => {
-  if (!isLoginFlow) {
+  if (!isLoginFlow || (!workspaces.length && !isLoginFlow)) {
     return OnboardingType.create;
+  }
+  if (specificFlowType === SpecificFlowType.upgrade_workspace_existing) {
+    return StepID.PAYMENT;
   }
 
   switch (flow) {
@@ -43,7 +50,7 @@ export const getFirstStep = ({
   }
 };
 
-export const getSpecificFlowType = (query: Query, flow: OnboardingType, loginFlow: boolean, isFirstSession: boolean) => {
+export const getSpecificFlowType = (query: Query, flow: OnboardingType, loginFlow: boolean, isFirstSession: boolean, workspaces: Workspace[]) => {
   if (flow === OnboardingType.join) {
     return SpecificFlowType.login_invite;
   }
@@ -62,29 +69,33 @@ export const getSpecificFlowType = (query: Query, flow: OnboardingType, loginFlo
   if (query?.ob_payment) {
     return SpecificFlowType.login_payment_new;
   }
-  if (loginFlow) {
-    return SpecificFlowType.login_vanilla_new;
+  if (!loginFlow || (!workspaces.length && !loginFlow)) {
+    return SpecificFlowType.create_workspace;
+  }
+  if (!isFirstSession && flow === OnboardingType.create && loginFlow) {
+    return SpecificFlowType.upgrade_workspace_existing;
   }
 
-  return SpecificFlowType.create_workspace;
+  return SpecificFlowType.login_vanilla_new;
 };
 
-export const getNumberOfSteps = (specificFlowType: SpecificFlowType, hasPresetSeats: boolean, hasWorkspaces: boolean) => {
+export const getNumberOfSteps = (specificFlowType: SpecificFlowType, hasPresetSeats: boolean, workspaces: Workspace[]) => {
   switch (specificFlowType) {
     case SpecificFlowType.login_invite:
+    case SpecificFlowType.upgrade_workspace_existing:
       return 1;
     case SpecificFlowType.login_student_existing:
     case SpecificFlowType.login_creator_existing:
       return hasPresetSeats ? 1 : 2;
     case SpecificFlowType.create_workspace:
-      return !hasWorkspaces ? 2 : 3;
+      return !workspaces.length ? 2 : 3;
     case SpecificFlowType.login_student_new:
     case SpecificFlowType.login_creator_new:
       return 5;
     case SpecificFlowType.login_payment_new:
       return 5;
     case SpecificFlowType.login_vanilla_new:
-      return !hasWorkspaces ? 4 : 5;
+      return 4;
     default:
       return 4;
   }

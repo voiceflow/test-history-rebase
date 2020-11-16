@@ -84,4 +84,8 @@ export const STEP_META: StepMetaProps = {
   },
 };
 
-export const SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES = [SpecificFlowType.login_student_existing, SpecificFlowType.login_creator_existing];
+export const SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES = [
+  SpecificFlowType.upgrade_workspace_existing,
+  SpecificFlowType.login_student_existing,
+  SpecificFlowType.login_creator_existing,
+];

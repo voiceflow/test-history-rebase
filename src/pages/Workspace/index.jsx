@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Button from '@/components/LegacyButton';
 import { Path } from '@/config/routes';
-import { goTo } from '@/ducks/router';
+import { goToOnboarding } from '@/ducks/router';
 import { allWorkspacesSelector } from '@/ducks/workspace';
 import { WorkspacesLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
@@ -19,7 +19,7 @@ const PAGES_MATCHES = {
   onboarding: [Path.ONBOARDING],
 };
 
-function Workspace({ workspaces, goTo }) {
+function Workspace({ workspaces, goToOnboarding }) {
   if (workspaces.length === 0) {
     return (
       <div className="h-100 d-flex justify-content-center">
@@ -35,7 +35,7 @@ function Workspace({ workspaces, goTo }) {
             incredible voice experiences
           </span>
           <br />
-          <Button id="createWorkspace" isPrimary className="mt-4" onClick={() => goTo('workspace/new')}>
+          <Button id="createWorkspace" isPrimary className="mt-4" onClick={goToOnboarding}>
             New Workspace
           </Button>
         </div>
@@ -56,7 +56,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  goTo,
+  goToOnboarding,
 };
 
 export default compose(

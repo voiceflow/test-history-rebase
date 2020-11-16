@@ -60,7 +60,7 @@ export function Item(props) {
     ? [
         {
           value: 'duplicate',
-          label: 'Copy Project',
+          label: 'Duplicate Project',
           onClick: onDuplicate,
         },
         {

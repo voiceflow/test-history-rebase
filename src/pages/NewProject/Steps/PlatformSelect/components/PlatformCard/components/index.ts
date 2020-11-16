@@ -1,3 +1,5 @@
+import { rgba } from 'polished';
+
 import { FlexCenter } from '@/components/Flex';
 import { css, styled, transition } from '@/hocs';
 
@@ -65,7 +67,7 @@ export const IconImage = styled.img<{ size: number }>`
   `}
 `;
 
-export const PlatformFeatureBubble = styled.div<{ color: string; borderColor: string }>`
+export const PlatformFeatureBubble = styled.div<{ color: string; borderColor: Record<string, number> }>`
   ${transition('border-color')};
   border-radius: 17px;
   border: solid 1px rgba(85, 137, 235, 0.3);
@@ -81,10 +83,10 @@ export const PlatformFeatureBubble = styled.div<{ color: string; borderColor: st
 
   ${({ color, borderColor }) => css`
     color: ${color};
-    border-color: ${borderColor};
-  `}
+    border-color: ${rgba(borderColor.red, borderColor.green, borderColor.blue, 0.3)} !important;
 
-  :hover {
-    border-color: transparent;
-  }
+    :hover {
+      border-color: ${rgba(borderColor.red, borderColor.green, borderColor.blue, 0.6)} !important;
+    }
+  `}
 `;

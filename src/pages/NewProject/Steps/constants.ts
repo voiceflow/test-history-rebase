@@ -19,7 +19,7 @@ export const PLATFORM_FEATURE_META = {
   [PlatformFeature.DESIGN_AND_PROTO]: {
     name: 'Design & Prototype',
     color: '#5589eb',
-    borderColor: 'rgb(85 137 235 / 30%)',
+    borderColor: { red: 85, green: 137, blue: 235 },
     description: (platform: PlatformType) =>
       platform === PlatformType.GENERAL
         ? 'Design, prototype and share conversations for any channel or custom assistant'
@@ -28,7 +28,7 @@ export const PLATFORM_FEATURE_META = {
   [PlatformFeature.PUBLISH]: {
     name: 'Publish',
     color: '#558b2f',
-    borderColor: 'rgb(85 139 47 / 30%)',
+    borderColor: { red: 85, green: 139, blue: 47 },
     description: (platform: PlatformType) =>
       `Publish live apps to the ${PLATFORM_META[platform].company} ${PLATFORM_META[platform].platformAppType} store`,
   },

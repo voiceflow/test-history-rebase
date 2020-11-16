@@ -33,7 +33,6 @@ export function Item(props) {
   const {
     id,
     name,
-    created,
     diagram,
     language,
     isLive,
@@ -54,7 +53,8 @@ export function Item(props) {
 
   const { open: openCloneModal } = useModals(ModalType.IMPORT_PROJECT);
   const pathTo = isReference ? `/reference/${id}` : `/${RootRoute.PROJECT}/${version_id}/canvas/${diagram}`;
-  const color = PROJECT_COLORS[new Date(created).getTime() % PROJECT_COLORS.length] ?? PROJECT_COLORS[0];
+  const dateFromID = new Date(parseInt(id.substring(0, 8), 16));
+  const color = PROJECT_COLORS[dateFromID.getTime() % PROJECT_COLORS.length] || PROJECT_COLORS[0];
   const options = canManageProjects
     ? [
         {

@@ -20,7 +20,6 @@ export enum SpecificFlowType {
   create_workspace = 'create_workspace',
   login_creator_new = 'login_creator_new',
   login_creator_existing = 'login_creator_existing',
-  upgrade_workspace_existing = 'upgrade_workspace_existing',
 }
 
 export type OnboardingContextState = {

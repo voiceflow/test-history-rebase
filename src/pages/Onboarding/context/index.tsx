@@ -7,7 +7,7 @@ import client from '@/client';
 import { ButtonVariant } from '@/components/Button/constants';
 import { toast as toastNotif } from '@/components/Toast';
 import { USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
-import { BillingPeriod, ModalType, PlatformType } from '@/constants';
+import { BillingPeriod, ModalType, PlatformType, UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
@@ -109,10 +109,24 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const { plan, period, couponCode, flow, seats } = Utils.extractQueryParams(query);
   const isFirstSession = firstLogin;
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
-  const specificFlowType = Utils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession, workspaces);
-  const numberOfSteps = Utils.getNumberOfSteps(specificFlowType, !!seats, workspaces);
-  const firstStep = Utils.getFirstStep({ flow, isLoginFlow, isFirstSession, hasPresetSeats: !!seats, specificFlowType, workspaces });
+
+  // if the user has existing workspaces they are owners of
+  const hasWorkspaces = React.useMemo(
+    () =>
+      !!workspaces.filter((workspace) =>
+        workspace.members?.some((member) => member.creator_id === account.creator_id && member.role === UserRole.ADMIN)
+      ).length,
+    [workspaces.length, account.creator_id]
+  );
+  const specificFlowType = Utils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
+  const numberOfSteps = Utils.getNumberOfSteps(specificFlowType, !!seats, hasWorkspaces);
+  const firstStep = Utils.getFirstStep({
+    flow,
+    isLoginFlow,
+    isFirstSession,
+    hasPresetSeats: !!seats,
+  });
   const selectableWorkspaceInPayment = !!query.choose_workspace || SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES.includes(specificFlowType);
 
   const [state, actions] = useSmartReducer({
@@ -321,19 +335,22 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     }
 
     try {
-      const { versionID } = await createProject({ platform: PlatformType.ALEXA }, 'onboarding');
       if (isLoginFlow) {
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
+          const { versionID } = await createProject({ platform: PlatformType.ALEXA }, 'onboarding');
           await goToCanvas(versionID!);
           await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
         }
       } else {
-        const message = `Your Voiceflow ${state.paymentMeta.plan} subscription has been activated.`;
         goToWorkspace(workspace.id);
 
-        openSuccessModal({ title: 'Payment Successful', message, icon: '/receipt.svg', variant: ButtonVariant.TERTIARY });
+        if (hasWorkspaces) {
+          const message = `Your Voiceflow ${state.paymentMeta.plan} subscription has been activated.`;
+
+          openSuccessModal({ title: 'Payment Successful', message, icon: '/receipt.svg', variant: ButtonVariant.TERTIARY });
+        }
       }
       toastNotif.success('Successfully created workspace');
     } catch (error) {

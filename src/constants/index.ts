@@ -538,3 +538,15 @@ export enum JobBuiltinStageType {
   SUCCESS = 'SUCCESS',
   PROGRESS = 'PROGRESS',
 }
+
+export enum GooglePromptType {
+  CONSENT = 'consent',
+  SELECT_ACCOUNT = 'select_account',
+}
+
+export const GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES = [
+  'profile',
+  'email',
+  'https://www.googleapis.com/auth/drive',
+  'https://www.googleapis.com/auth/spreadsheets',
+];

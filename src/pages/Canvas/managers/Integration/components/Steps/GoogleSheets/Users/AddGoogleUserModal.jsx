@@ -1,8 +1,8 @@
 import React from 'react';
-import GoogleLogin from 'react-google-login';
 
+import GoogleLoginButton from '@/components/Forms/GoogleLoginV2';
 import SvgIcon from '@/components/SvgIcon';
-import { GOOGLE_CLIENT_ID } from '@/config';
+import { GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import { connect } from '@/hocs/connect';
@@ -54,17 +54,7 @@ function AddGoogleUserModal({ addUser, user, skill_id, onSuccess, onError }) {
         <div className="text-muted text-center mt-4 mb-2 mx-5">Log in to connect your account</div>
       </div>
       <div className="d-flex justify-content-center mx-5 my-3">
-        <GoogleLogin
-          clientId={GOOGLE_CLIENT_ID}
-          className="social-button class-ggl mb-4"
-          buttonText="Login with Google"
-          onSuccess={googleLogin}
-          onFailure={onGoogleFailure}
-          responseType="code"
-          accessType="offline"
-          prompt="consent"
-          scope="profile email https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets"
-        />
+        <GoogleLoginButton scopes={GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES} onFail={onGoogleFailure} onSuccess={googleLogin} skipLinkGoogleAccount />
       </div>
     </div>
   );

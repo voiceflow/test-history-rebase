@@ -2,6 +2,7 @@ import React from 'react';
 
 import BaseButton from '@/components/Button/components/BaseButton';
 import SvgIcon from '@/components/SvgIcon';
+import { GooglePromptType } from '@/constants';
 import { linkGoogleAccount } from '@/ducks/account';
 import { connect, styled } from '@/hocs';
 import { useGoogleLogin } from '@/hooks';
@@ -21,23 +22,39 @@ const GoogleLoginButton = styled(BaseButton)`
   }
 `;
 
+type AccountCallback = (account: Models.Account.Google) => void;
+type LoginDataCallback = (loginData: { code: string }) => void;
+
 export type GoogleLoginProps = {
   scopes: string[];
   onFail: () => void;
-  onLoad: () => void;
-  onSuccess: (account: Models.Account.Google) => void;
+  onLoad?: () => void;
+  onSuccess: AccountCallback | LoginDataCallback;
+  skipLinkGoogleAccount?: boolean;
 };
 
-const GoogleLogin: React.FC<GoogleLoginProps & ConnectedGoogleLoginProps> = ({ scopes, onSuccess, onFail, onLoad, linkGoogleAccount }) => {
-  const login = useGoogleLogin(scopes, onLoad);
+const GoogleLogin: React.FC<GoogleLoginProps & ConnectedGoogleLoginProps> = ({
+  scopes,
+  onSuccess,
+  onFail,
+  onLoad,
+  linkGoogleAccount,
+  skipLinkGoogleAccount,
+}) => {
+  const login = useGoogleLogin(scopes, onLoad, GooglePromptType.CONSENT);
 
   const onLogin = React.useCallback(
     () =>
       login()
         .then(async (code) => {
+          if (skipLinkGoogleAccount) {
+            (onSuccess as LoginDataCallback)({ code });
+            return;
+          }
+
           const account = await linkGoogleAccount(code);
 
-          onSuccess(account!);
+          (onSuccess as AccountCallback)(account!);
         })
         .catch(onFail),
     [onSuccess, onFail]

@@ -109,6 +109,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
             selectedItems={selectedLocales}
             selectedValue={alexaDisplayName}
             withCaret
+            dropdownActive
           />
         )}
         <SectionDescription>

@@ -15,7 +15,7 @@ const CardManager: NodeConfig<NodeData.Card> = {
   label: 'Card',
   tip: 'Tell Alexa to show a card',
 
-  factory: () => ({
+  factory: (factoryData?) => ({
     node: {
       ports: {
         in: [{}],
@@ -30,6 +30,7 @@ const CardManager: NodeConfig<NodeData.Card> = {
       largeImage: null,
       smallImage: null,
       hasSmallImage: false,
+      ...factoryData,
     },
   }),
 };

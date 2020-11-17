@@ -18,7 +18,7 @@ const EventManager: NodeConfig<NodeData.Event> = {
 
   mergeInitializer: true,
 
-  factory: () => ({
+  factory: (factoryData?) => ({
     node: {
       ports: {
         out: [{}],
@@ -33,6 +33,7 @@ const EventManager: NodeConfig<NodeData.Event> = {
           var: '',
         },
       ],
+      ...factoryData,
     },
   }),
 };

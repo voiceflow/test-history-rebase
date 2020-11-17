@@ -19,7 +19,7 @@ const SetManager: NodeConfig<NodeData.Set> = {
   step: SetStep,
   editor: SetEditor,
 
-  factory: () => ({
+  factory: (factoryData?) => ({
     node: {
       ports: {
         in: [{}],
@@ -35,6 +35,7 @@ const SetManager: NodeConfig<NodeData.Set> = {
           variable: null,
         },
       ],
+      ...factoryData,
     },
   }),
 };

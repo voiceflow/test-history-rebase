@@ -24,7 +24,7 @@ const IntentManager: NodeConfig<NodeData.Intent> = {
 
   mergeInitializer: true,
 
-  factory: () => ({
+  factory: (factoryData?) => ({
     node: {
       ports: {
         out: [{}],
@@ -35,6 +35,7 @@ const IntentManager: NodeConfig<NodeData.Intent> = {
       alexa: { intent: null, mappings: [] },
       google: { intent: null, mappings: [] },
       general: { intent: null, mappings: [] },
+      ...factoryData,
     },
   }),
 };

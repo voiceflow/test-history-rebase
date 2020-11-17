@@ -17,7 +17,7 @@ const CancelPaymentManager: NodeConfig<NodeData.CancelPayment> = {
   step: CancelPaymentStep,
   editor: CancelPaymentEditor,
 
-  factory: () => ({
+  factory: (factoryData?) => ({
     node: {
       ports: {
         in: [{}],
@@ -27,6 +27,7 @@ const CancelPaymentManager: NodeConfig<NodeData.CancelPayment> = {
     data: {
       name: 'Cancel Payment',
       productID: null,
+      ...factoryData,
     },
   }),
 };

@@ -28,7 +28,7 @@ const PromptManager: NodeConfig<NodeData.Prompt> = {
   editor: PromptEditor,
   editorsByPath: EDITORS_BY_PATH,
 
-  factory: () => ({
+  factory: (factoryData?) => ({
     node: {
       ports: {
         in: [{}],
@@ -48,6 +48,7 @@ const PromptManager: NodeConfig<NodeData.Prompt> = {
         ],
       },
       reprompt: null,
+      ...factoryData,
     },
   }),
 };

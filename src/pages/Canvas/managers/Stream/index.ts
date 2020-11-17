@@ -19,7 +19,7 @@ const StreamManager: NodeConfig<NodeData.Stream> = {
   step: StreamStep,
   editor: StreamEditor,
 
-  factory: () => ({
+  factory: (factoryData?) => ({
     node: {
       ports: {
         in: [{}],
@@ -39,6 +39,7 @@ const StreamManager: NodeConfig<NodeData.Stream> = {
       customPause: false,
       loop: false,
       audio: '',
+      ...factoryData,
     },
   }),
 };

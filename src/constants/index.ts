@@ -496,7 +496,37 @@ export const INTERNAL_NODES = [BlockType.DEPRECATED, BlockType.COMMAND, ...ROOT_
 
 export const MARKUP_NODES = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE];
 
-export const COPY_NODES = [...MARKUP_NODES, BlockType.COMBINED];
+export const STEP_NODES = [
+  BlockType.IF,
+  BlockType.SPEAK,
+  BlockType.CHOICE,
+  BlockType.SET,
+  BlockType.INTENT,
+  BlockType.PROMPT,
+  BlockType.CAPTURE,
+  BlockType.RANDOM,
+  BlockType.INTENT,
+  BlockType.STREAM,
+  BlockType.INTEGRATION,
+  BlockType.FLOW,
+  BlockType.CODE,
+  BlockType.EXIT,
+  BlockType.PROMPT,
+  BlockType.CARD,
+  BlockType.DISPLAY,
+  BlockType.PERMISSION,
+  BlockType.ACCOUNT_LINKING,
+  BlockType.USER_INFO,
+  BlockType.PAYMENT,
+  BlockType.CANCEL_PAYMENT,
+  BlockType.REMINDER,
+  BlockType.DEPRECATED,
+  BlockType.INVALID_PLATFORM,
+  BlockType.EVENT,
+  BlockType.DIRECTIVE,
+];
+
+export const COPY_NODES = [...MARKUP_NODES, ...STEP_NODES, BlockType.COMBINED];
 
 export const DIAGRAM_REFERENCE_NODES = [BlockType.COMMAND, BlockType.FLOW];
 

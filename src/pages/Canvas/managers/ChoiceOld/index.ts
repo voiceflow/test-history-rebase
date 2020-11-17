@@ -25,7 +25,7 @@ const ChoiceOldManager: NodeConfig<NodeData.ChoiceOld> = {
   label: 'Choice (old)',
   tip: 'Listen for the user to make a choice from a list of options you set',
 
-  factory: () => ({
+  factory: (factoryData?) => ({
     node: {
       ports: {
         in: [{}],
@@ -40,6 +40,7 @@ const ChoiceOldManager: NodeConfig<NodeData.ChoiceOld> = {
         },
       ],
       reprompt: null,
+      ...factoryData,
     },
   }),
 };

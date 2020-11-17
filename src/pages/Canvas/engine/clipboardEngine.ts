@@ -3,7 +3,7 @@ import Utf8 from 'crypto-js/enc-utf8';
 import { get, set } from 'idb-keyval';
 
 import { toast } from '@/components/Toast';
-import { BlockType, CLIPBOARD_DATA_KEY, COPY_NODES, PlatformType } from '@/constants';
+import { BlockType, CLIPBOARD_DATA_KEY, COPY_NODES, PlatformType, STEP_NODES } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Diagrams from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
@@ -44,6 +44,7 @@ class ClipboardEngine extends EngineConsumer {
 
   internal = {
     storeData: async (nodeIDs: string[], keyToStore: string, keyToEncrypt: string) => {
+      const isStep = nodeIDs.length === 1 && STEP_NODES.includes(this.engine.getNodeByID(nodeIDs[0]).type);
       const state = this.engine.store.getState();
       const creator = Creator.creatorDiagramSelector(state);
       const platform = Skill.activePlatformSelector(state);
@@ -54,12 +55,13 @@ class ClipboardEngine extends EngineConsumer {
       const allNodes = Creator.allNodesByIDsSelector(state)(nodeIDs).filter(
         (node) => node.type !== BlockType.START && node.type !== BlockType.COMMAND
       );
-      const soloNodes = allNodes.filter((node) => !node.parentNode);
+      const soloNodes = allNodes.filter((node) => !node.parentNode || isStep);
       const orphanedNodes = allNodes
-        .filter((node) => node.parentNode && !nodeIDs.includes(node.parentNode))
+        .filter((node) => {
+          return !isStep && node.parentNode && !nodeIDs.includes(node.parentNode);
+        })
         .map<Models.Node>(({ parentNode, ...nestedNode }) => ({ ...nestedNode, parentNode: null }));
       const nestedNodes = soloNodes.flatMap(({ combinedNodes }) => (combinedNodes.length ? Creator.allNodesByIDsSelector(state)(combinedNodes) : []));
-
       const copiedNodes = [...soloNodes, ...orphanedNodes, ...nestedNodes];
       const copiedNodeIDs = copiedNodes.map(({ id }) => id);
 
@@ -162,7 +164,6 @@ class ClipboardEngine extends EngineConsumer {
 
   copy(unfilteredNodeIDs: string[]) {
     const nodeIDs = unfilteredNodeIDs.filter((nodeID) => COPY_NODES.includes(this.engine.getNodeByID(nodeID).type));
-
     if (!nodeIDs.length) return;
 
     this.log.debug(this.log.pending('copying to buffer'), nodeIDs);

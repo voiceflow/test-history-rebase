@@ -24,7 +24,7 @@ const CaptureManager: NodeConfig<NodeData.Capture> = {
   editor: CaptureEditor as React.FC,
   editorsByPath: EDITORS_BY_PATH,
 
-  factory: () => ({
+  factory: (factoryData?) => ({
     node: {
       ports: {
         in: [{}],
@@ -37,6 +37,7 @@ const CaptureManager: NodeConfig<NodeData.Capture> = {
       variable: null,
       examples: [],
       reprompt: null,
+      ...factoryData,
     },
   }),
 };

@@ -83,6 +83,33 @@ export default {
     markup: {
       goToCanvas: () => cy.getSession().then(({ versionID, diagramID }) => cy.visit(`/project/${versionID}/canvas/${diagramID}/markup`)),
 
+      el: {
+        get menu() {
+          return cy.get('#vf-markup-menu');
+        },
+        get menuButton() {
+          return this.menu.find('button');
+        },
+        get textMenuButton() {
+          return this.menuButton.eq(0);
+        },
+        get imageMenuButton() {
+          return this.menuButton.eq(1);
+        },
+        get markupText() {
+          return cy.get('.vf-canvas__node--markup_text');
+        },
+        get markupTextInput() {
+          return this.markupText.find('.DraftEditor-editorContainer');
+        },
+        get markupImage() {
+          return cy.get('.vf-canvas__node--markup_image');
+        },
+        get imageUpload() {
+          return cy.get('input[type="file"]');
+        },
+      },
+
       meta: {
         route: /project\/.*\/canvas\/.*?\/markup/,
       },

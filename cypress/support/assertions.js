@@ -48,5 +48,18 @@ function hasCoords(_chai) {
   _chai.Assertion.addMethod('coords', assertHasCoords);
 }
 
+function hasCanvasFocus(_chai) {
+  function assertHasCanvasFocus() {
+    if (_chai.util.flag(this, 'negate')) {
+      new _chai.Assertion(this._obj).to.not.have.class('vf-canvas__node--focused');
+    } else {
+      new _chai.Assertion(this._obj).to.have.class('vf-canvas__node--focused');
+    }
+  }
+
+  _chai.Assertion.addMethod('canvasFocus', assertHasCanvasFocus);
+}
+
 chai.use(isOnRoute);
 chai.use(hasCoords);
+chai.use(hasCanvasFocus);

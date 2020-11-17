@@ -41,7 +41,7 @@ context('Canvas - Commenting', () => {
       canvasPage.goToCanvas();
       cy.wait('@loadDiagram');
 
-      canvasPage.el.canvas.find('[tabindex]').first().type('c');
+      cy.sendHotkey('c');
 
       cy.shouldBeOn(commentingMode);
     });

@@ -68,6 +68,11 @@ declare namespace Cypress {
     dragCanvas(movementX: number, movementY: number): Chainable;
 
     /**
+     * send a hotkey event to the canvas
+     */
+    sendHotkey(hotkey: string): Chainable;
+
+    /**
      * get stored session information
      */
     getSession(): Promise<{ versionID: string; diagramID: string }>;
@@ -81,6 +86,14 @@ declare namespace Cypress {
      * await for all loaders on the page to resolve
      */
     awaitLoaded(): Chainable;
+
+    /**
+     * from `cypress-file-upload`
+     */
+    attachFile(
+      fixture: { filePath: string; fileName?: string; fileContent?: Blob; mimeType?: string; encoding?: string },
+      processingOptions?: { subject: 'drag-n-drop' | 'input'; force?: boolean; allowEmpty?: boolean }
+    ): Chainable;
   }
 
   interface Chainer<Subject> {
@@ -103,5 +116,16 @@ declare namespace Cypress {
     ```
     * */
     (chainer: 'have.coords', coords: [number, number]): Chainable<Subject>;
+
+    /**
+     * check to see if the element is at the provided coords
+     *
+     * @example
+     ```
+    cy.get('.node').should('have.canvasFocus')
+    ```
+    * */
+    (chainer: 'have.canvasFocus'): Chainable<Subject>;
+    (chainer: 'not.have.canvasFocus'): Chainable<Subject>;
   }
 }

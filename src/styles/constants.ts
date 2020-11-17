@@ -3,6 +3,7 @@ export enum Identifier {
   FLOW_MENU = 'vf-flow-menu',
   STEP_MENU = 'vf-step-menu',
   RESOURCE_MENU = 'vf-resource-menu',
+  MARKUP_MENU = 'vf-markup-menu',
   PROTOTYPE = 'vf-prototype',
   PROTOTYPE_RESET = 'vf-prototype__reset',
   PROTOTYPE_RESPONSE = 'vf-prototype__response',

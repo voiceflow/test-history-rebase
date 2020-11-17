@@ -20,7 +20,7 @@ context('Canvas - Markup', () => {
     });
   });
 
-  describe('pro plan', () => {
+  describe('pro plan navigate', () => {
     beforeEach(() => {
       cy.server();
       cy.createProject();
@@ -41,7 +41,7 @@ context('Canvas - Markup', () => {
       canvasPage.goToCanvas();
       cy.wait('@loadDiagram');
 
-      canvasPage.el.canvas.find('[tabindex]').first().type('a');
+      cy.sendHotkey('a');
 
       cy.shouldBeOn(markupMode);
     });
@@ -53,6 +53,53 @@ context('Canvas - Markup', () => {
       cy.shouldBeOn(markupMode);
       canvasPage.el.escapeModePrompt.should('be.visible').and('have.text', 'esc to exit markup');
       canvasPage.el.markupModeControl.find('.vf-svg-icon--close').should('be.visible');
+    });
+  });
+
+  describe('markup mode', () => {
+    // eslint-disable-next-line sonarjs/no-identical-functions
+    beforeEach(() => {
+      cy.server();
+      cy.createProject();
+      cy.upgradeTestAccount('pro');
+      canvasPage.route.postDiagram().as('loadDiagram');
+    });
+
+    it('create new text markup', () => {
+      markupMode.goToCanvas();
+      cy.wait('@loadDiagram');
+
+      markupMode.el.textMenuButton.click();
+
+      canvasPage.el.canvas.click(100, 100);
+
+      markupMode.el.markupText.should('be.visible').and('have.canvasFocus');
+      markupMode.el.markupTextInput.type('madagascar');
+
+      canvasPage.el.canvas.click(200, 200);
+
+      markupMode.el.markupText //
+        .should('have.length', 1)
+        .and('not.have.canvasFocus')
+        .and('contain.text', 'madagascar');
+    });
+
+    it.skip('create new image markup', () => {
+      markupMode.goToCanvas();
+      cy.wait('@loadDiagram');
+
+      markupMode.el.imageMenuButton.click();
+
+      markupMode.el.imageUpload.attachFile({
+        filePath: 'image.png',
+      });
+
+      markupMode.el.markupImage //
+        .should('have.length', 1)
+        .and('not.have.canvasFocus')
+        .children()
+        .eq(0)
+        .should('have.attr', 'height', '200px');
     });
   });
 });

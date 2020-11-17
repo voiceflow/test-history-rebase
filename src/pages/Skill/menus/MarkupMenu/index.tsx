@@ -8,6 +8,7 @@ import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
 import { useEditingMode } from '@/pages/Skill/hooks';
+import { Identifier } from '@/styles/constants';
 
 import { MenuContainer, MenuIcon } from './components';
 
@@ -26,7 +27,7 @@ const MarkupMenu: React.FC = () => {
 
   return (
     <>
-      <MenuContainer column>
+      <MenuContainer id={Identifier.MARKUP_MENU} column>
         <Flex mb={16}>
           <Tooltip distance={6} title="Text" position="right">
             <MenuIcon large icon="textAutoResize" onClick={setTextMarkupActive} active={isTextActive} />

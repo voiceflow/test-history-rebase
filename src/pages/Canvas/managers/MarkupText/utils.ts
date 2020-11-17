@@ -1,8 +1,53 @@
-import { ContentBlock, EditorState, Modifier, SelectionState, convertToRaw } from 'draft-js';
+import { CharacterMetadata, ContentBlock, ContentState, EditorState, SelectionState, convertToRaw } from 'draft-js';
+import { Map } from 'immutable';
 
 import { InlineStylePrefix } from './constants';
 
 const INLINE_STYLE_SEPARATOR = '::';
+
+const modifyInlineStyle = (contentState: ContentState, selectionState: SelectionState, inlineStyle: string, addOrRemove: boolean) => {
+  const blockMap = contentState.getBlockMap();
+  const startKey = selectionState.isCollapsed() ? blockMap.first().getKey() : selectionState.getStartKey();
+  const startOffset = selectionState.isCollapsed() ? 0 : selectionState.getStartOffset();
+  const endKey = selectionState.isCollapsed() ? blockMap.last().getKey() : selectionState.getEndKey();
+  const endOffset = selectionState.isCollapsed() ? blockMap.last().getLength() : selectionState.getEndOffset();
+
+  const newBlocks = blockMap
+    .skipUntil((_, k) => k === startKey)
+    .takeUntil((_, k) => k === endKey)
+    .concat(Map([[endKey, blockMap.get(endKey)]]))
+    .map((block, blockKey) => {
+      let sliceStart;
+      let sliceEnd;
+
+      if (startKey === endKey) {
+        sliceStart = startOffset;
+        sliceEnd = endOffset;
+      } else {
+        sliceStart = blockKey === startKey ? startOffset : 0;
+        sliceEnd = blockKey === endKey ? endOffset : block!.getLength();
+      }
+
+      let chars = block!.getCharacterList();
+      let current;
+      while (sliceStart < sliceEnd) {
+        current = chars.get(sliceStart);
+        chars = chars.set(
+          sliceStart,
+          addOrRemove ? CharacterMetadata.applyStyle(current, inlineStyle) : CharacterMetadata.removeStyle(current, inlineStyle)
+        );
+        sliceStart++;
+      }
+
+      return block!.set('characterList', chars) as ContentBlock;
+    });
+
+  return contentState.merge({
+    blockMap: blockMap.merge(newBlocks),
+    selectionAfter: selectionState,
+    selectionBefore: selectionState,
+  }) as ContentState;
+};
 
 export const getRawContent = (editorState: EditorState) => {
   return convertToRaw(editorState.getCurrentContent());
@@ -72,9 +117,12 @@ export const getFullTextSelection = (editorState: EditorState) => {
   });
 };
 
-export const getSelectionPrefixedInlineStyle = (editorState: EditorState, prefix: InlineStylePrefix) => {
+export const getSelectionPrefixedInlineStyle = (
+  editorState: EditorState,
+  prefix: InlineStylePrefix,
+  currentSelection: SelectionState = editorState.getSelection()
+) => {
   const inlineStyles: string[] = [];
-  const currentSelection = editorState.getSelection();
 
   const start = currentSelection.getStartOffset();
   const end = currentSelection.getEndOffset();
@@ -106,24 +154,40 @@ export const getSelectionPrefixedInlineStyle = (editorState: EditorState, prefix
 };
 
 export const togglePrefixedInlineStyle = (editorState: EditorState, prefix: InlineStylePrefix, value?: string) => {
-  let selection = editorState.getSelection();
-  const isCollapsed = selection.isCollapsed();
+  const baseSelection = editorState.getSelection();
+  const isCollapsed = baseSelection.isCollapsed();
 
-  const inlineStyles = getSelectionPrefixedInlineStyle(editorState, prefix);
+  let selection = baseSelection;
 
   if (isCollapsed) {
     selection = getFullTextSelection(editorState);
   }
 
+  const inlineStyles = getSelectionPrefixedInlineStyle(editorState, prefix, selection);
+
   let newContent = editorState.getCurrentContent();
 
   inlineStyles.forEach((inlineStyle) => {
-    newContent = Modifier.removeInlineStyle(newContent, selection, inlineStyle);
+    newContent = modifyInlineStyle(newContent, baseSelection, inlineStyle, false);
   });
 
   if (value) {
-    newContent = Modifier.applyInlineStyle(newContent, selection, createPrefixedInlineStyle(prefix, value));
+    newContent = modifyInlineStyle(newContent, baseSelection, createPrefixedInlineStyle(prefix, value), true);
   }
 
   return EditorState.push(editorState, newContent, 'change-inline-style');
 };
+
+export const applyFakeSelectionStyle = (editorState: EditorState) =>
+  EditorState.push(
+    editorState,
+    modifyInlineStyle(editorState.getCurrentContent(), editorState.getSelection(), InlineStylePrefix.FAKE_SELECTION, true),
+    'change-inline-style'
+  );
+
+export const removeFakeSelectionStyle = (editorState: EditorState) =>
+  EditorState.push(
+    editorState,
+    modifyInlineStyle(editorState.getCurrentContent(), editorState.getSelection(), InlineStylePrefix.FAKE_SELECTION, false),
+    'change-inline-style'
+  );

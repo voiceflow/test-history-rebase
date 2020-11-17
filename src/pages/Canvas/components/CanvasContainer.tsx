@@ -4,10 +4,10 @@ import React from 'react';
 import Drawer from '@/components/Drawer';
 import { toast } from '@/components/Toast';
 import { isSafari } from '@/config';
-import { MarkupModeType } from '@/constants';
+import { MARKUP_NODES, MarkupModeType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { connect, css, styled } from '@/hocs';
-import { useActiveModal, useHotKeys, useRegistration } from '@/hooks';
+import { useActiveModal, useHotKeys, useRegistration, useSetup } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
@@ -54,7 +54,7 @@ const Wrapper = styled.div<{ markupMode: MarkupModeType | null }>`
   }
 `;
 
-const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory, redoHistory, children }) => {
+const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory, redoHistory, children, focusedNode, clearFocus }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const engine = React.useContext(EngineContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
@@ -92,6 +92,12 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
     }
   }, []);
 
+  useSetup(() => {
+    if (focusedNode && MARKUP_NODES.includes(focusedNode.type)) {
+      clearFocus();
+    }
+  });
+
   useRegistration(() => engine.register('container', api), [api]);
 
   useHotKeys(Hotkey.COPY, () => clipboard.copy(), { preventDefault: true });
@@ -117,11 +123,16 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   );
 };
 
+const mapStateToProps = {
+  focusedNode: Creator.focusedNodeSelector,
+};
+
 const mapDispatchToProps = {
+  clearFocus: Creator.clearFocus,
   undoHistory: Creator.undoHistory,
   redoHistory: Creator.redoHistory,
 };
 
-type ConnectedCanvasContainerProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+type ConnectedCanvasContainerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(CanvasContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(CanvasContainer);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { setDisplayName, wrapDisplayName } from 'recompose';
 
 import { withContext } from '@/hocs';
 import type { Engine } from '@/pages/Canvas/engine';
@@ -39,3 +40,14 @@ export const RegisterEngine: React.FC<RegisterEngineProps> = ({ engine }) => {
 };
 
 export const withEventualEngine = withContext(EventualEngineContext, 'eventualEngine');
+
+export const withRequiredEngine = <P extends object, T>(Component: React.ComponentType<P & { engine: Engine }>) =>
+  setDisplayName(wrapDisplayName(Component, 'withRequiredEventualEngine'))(
+    React.forwardRef<T, P>((props, ref) => {
+      const eventualEngine = React.useContext(EventualEngineContext);
+
+      const engine = eventualEngine?.get();
+
+      return !engine ? null : <Component {...props} engine={engine} ref={ref} />;
+    })
+  );

@@ -3,21 +3,27 @@ import React from 'react';
 
 import { FlexAround } from '@/components/Flex';
 import { MarkupModeType, TextAlignment } from '@/constants';
-import { EventualEngineContext } from '@/contexts';
+import { withRequiredEngine } from '@/contexts';
 import { useDidUpdateEffect, useSetup, useTeardown } from '@/hooks';
 import { Markup } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
 import Section from '@/pages/Canvas/components/MarkupSection';
-import { NodeEditor } from '@/pages/Canvas/managers/types';
+import type { Engine } from '@/pages/Canvas/engine';
+import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
 
 import { FontStyles, Hyperlink, IconButtonSeparator, TextAligns, TextColor, TextStyles } from './components';
 import { getRawContent } from './utils';
 
-export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeID, onChange, isOpen }) => {
-  const eventualEngine = React.useContext(EventualEngineContext)!;
+export const MarkupTextEditor: React.FC<NodeEditorPropsType<Markup.NodeData.Text> & { engine: Engine }> = ({
+  data,
+  nodeID,
+  onChange,
+  isOpen,
+  engine,
+}) => {
   const { setModeType } = React.useContext(MarkupModeContext)!;
-  const { toolbarPlugin, anchorPlugin } = eventualEngine.get()!.markup.getPluginsByNodeID(nodeID);
+  const { toolbarPlugin, anchorPlugin } = engine.markup.getPluginsByNodeID(nodeID);
   const [textAlignment, setTextAlignment] = React.useState(data.textAlignment);
 
   const onSetAlignment = (alignment: TextAlignment) => {
@@ -39,8 +45,8 @@ export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeI
   useTeardown(() => {
     const state = toolbarPlugin.store.getItem<() => EditorState>('getEditorState')?.();
 
-    if (state?.getCurrentContent().getPlainText().trim() === '' && eventualEngine.get()?.getNodeByID(nodeID)) {
-      eventualEngine.get()?.node.remove(nodeID);
+    if (state?.getCurrentContent().getPlainText().trim() === '' && engine?.getNodeByID(nodeID)) {
+      engine?.node.remove(nodeID);
     }
   });
 
@@ -48,7 +54,7 @@ export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeI
     const state = toolbarPlugin.store.getItem<() => EditorState>('getEditorState')?.();
 
     if (!isOpen && state?.getCurrentContent().getPlainText().trim() === '') {
-      eventualEngine.get()?.node.remove(nodeID);
+      engine?.node.remove(nodeID);
     }
 
     if (!isOpen) {
@@ -102,4 +108,4 @@ export const MarkupTextEditor: NodeEditor<Markup.NodeData.Text> = ({ data, nodeI
   );
 };
 
-export default MarkupTextEditor;
+export default withRequiredEngine(MarkupTextEditor) as React.FC<NodeEditorPropsType<Markup.NodeData.Text>>;

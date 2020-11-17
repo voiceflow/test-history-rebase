@@ -14,6 +14,7 @@ export type SliderInputGroupProps = {
   sliderPrefix: React.ReactNode;
   onChangeInput: React.ChangeEventHandler<HTMLInputElement>;
   onChangeSlider: (value: number) => void;
+  onAfterChangeSlider?: (value: number) => void;
 };
 
 const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
@@ -25,12 +26,13 @@ const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
   sliderPrefix,
   onChangeInput,
   onChangeSlider,
+  onAfterChangeSlider,
 }) => (
   <FormGroup
     leftColumn={
       <>
         <SliderPrefixContainer>{sliderPrefix}</SliderPrefixContainer>
-        <Slider {...sliderProps} value={sliderValue} onChange={onChangeSlider} />
+        <Slider {...sliderProps} value={sliderValue} onChange={onChangeSlider} onAfterChange={onAfterChangeSlider} />
       </>
     }
     rightColumn={

@@ -8,11 +8,17 @@ import { unstable_batchedUpdates } from 'react-dom';
 
 import ColorSelect from '@/components/ColorSelect';
 import SliderInputGroup from '@/components/SliderInputGroup';
-import { useDidUpdateEffect, useTeardown } from '@/hooks';
+import { useDidUpdateEffect } from '@/hooks';
 import { Markup } from '@/models';
 
 import { InlineStylePrefix } from '../constants';
-import { getInlineStylePrefixAndValue, getSelectionPrefixedInlineStyle, togglePrefixedInlineStyle } from '../utils';
+import {
+  applyFakeSelectionStyle,
+  getInlineStylePrefixAndValue,
+  getSelectionPrefixedInlineStyle,
+  removeFakeSelectionStyle,
+  togglePrefixedInlineStyle,
+} from '../utils';
 
 export type TextColorProps = Omit<DraftJsBlockStyleButtonProps, 'children'> & {
   saveEditorState: (state: EditorState) => void;
@@ -66,9 +72,10 @@ const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, s
 
   const onChangeColor = (nextColor: Markup.Color) => {
     unstable_batchedUpdates(() => {
-      updateEditorColor(nextColor);
+      const state = updateEditorColor(nextColor);
       setColor(nextColor);
       setInputOpacity(`${nextColor.a * 100}`);
+      saveEditorState(state);
     });
   };
 
@@ -101,12 +108,12 @@ const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, s
   const onApplyFakeSelection = () => {
     // to fix the issue when te slider loses focus on the drag start
     requestAnimationFrame(() => {
-      setEditorState(togglePrefixedInlineStyle(getEditorState(), InlineStylePrefix.FAKE_SELECTION, '1'));
+      setEditorState(applyFakeSelectionStyle(getEditorState()));
     });
   };
 
   const onRemoveAndSaveFakeSelection = () => {
-    const state = togglePrefixedInlineStyle(getEditorState(), InlineStylePrefix.FAKE_SELECTION);
+    const state = removeFakeSelectionStyle(getEditorState());
 
     setEditorState(state);
     saveEditorState(state);
@@ -133,14 +140,6 @@ const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, s
     }
   }, [colorStr, hasFocus]);
 
-  useTeardown(() => {
-    const state = getEditorState?.();
-
-    if (state) {
-      saveEditorState(state);
-    }
-  }, []);
-
   return (
     <SliderInputGroup
       inputValue={inputOpacity}
@@ -151,6 +150,7 @@ const TextColor: React.FC<TextColorProps> = ({ getEditorState, setEditorState, s
       sliderPrefix={<ColorSelect color={color} onChange={onChangeColor} onShow={onApplyFakeSelection} onClose={onRemoveAndSaveFakeSelection} />}
       onChangeInput={onChangeOpacityInput}
       onChangeSlider={onChangeOpacitySlider}
+      onAfterChangeSlider={() => saveEditorState(getEditorState())}
     />
   );
 };

@@ -12,7 +12,6 @@ import { Path } from '@/config/routes';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as SkillDuck from '@/ducks/skill';
-import * as SkillV2 from '@/ducks/skill/sideEffectsV2';
 import { PlanRestrictionGate, ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable, useFeature, usePermission } from '@/hooks';
@@ -51,7 +50,7 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
   activeSkill,
   goToDashboard,
   goToCanvas,
-  saveProjectNameV2,
+  saveProjectName,
   isOnlyViewer,
 }) => {
   const [isIdle, onIdle, onActive] = useEnableDisable();
@@ -59,7 +58,6 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
   const isPrototypingMode = usePrototypingMode();
 
   const prototypeTestEnabled = useFeature(FeatureFlag.PROTOTYPE_TEST).isEnabled;
-  const projectNameChange = saveProjectNameV2;
 
   const idleTimer = React.useRef<IdleTimer>(null);
 
@@ -99,7 +97,7 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
           <Page
             header={
               (!prototypeTestEnabled || (prototypeTestEnabled && !isPrototypingMode)) && (
-                <ProjectTitle title={activeSkill.name} onChange={projectNameChange} />
+                <ProjectTitle title={activeSkill.name} onChange={saveProjectName} />
               )
             }
             subHeader={(!prototypeTestEnabled || !isPrototypingMode) && <SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
@@ -145,7 +143,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  saveProjectNameV2: SkillV2.saveProjectName,
+  saveProjectName: SkillDuck.saveProjectName,
   goToDashboard: Router.goToDashboard,
   goToCanvas: Router.goToCanvas,
 };

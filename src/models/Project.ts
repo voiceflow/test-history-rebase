@@ -9,7 +9,6 @@ export type Project = {
   locales: string[];
   module: string;
   created: string;
-  reference: boolean;
   isLive: boolean;
   versionID: string;
   smallIcon: string | null;
@@ -28,7 +27,6 @@ export type DBProject = {
   locales: string[];
   module: string;
   platform: PlatformType;
-  reference: boolean;
   created: string;
   islive: boolean;
   small_icon: string | null;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import workspaceClient from '@/client/workspace';
+import client from '@/client';
 import Button, { ButtonVariant } from '@/components/Button';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import Menu, { MenuItem } from '@/components/Menu';
@@ -39,7 +39,7 @@ const InviteByLinkFooter: React.FC<{ noIcon?: boolean } & ConnectedSeatSummaryPr
 
   React.useEffect(() => {
     const getInviteLink = async () => {
-      setInviteCode(await workspaceClient.getInviteLink(activeWorkspaceID!, linkInvitePermission));
+      setInviteCode(await client.workspace.getInviteLink(activeWorkspaceID!, linkInvitePermission));
     };
     getInviteLink();
   }, [linkInvitePermission]);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getPlatformService } from '@/clientV2';
+import client from '@/client';
 import { JobStatus } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
@@ -30,13 +30,13 @@ export const PublishProvider: React.FC = ({ children }) => {
   const projectID = useSelector(Skill.activeProjectIDSelector);
   const dispatch = useDispatch();
 
-  const service = getPlatformService(platform);
+  const platformClient = client.platform(platform);
 
   const getJob = React.useCallback(async () => {
-    const currentJob = await service?.publish.getStatus(projectID);
+    const currentJob = await platformClient?.publish.getStatus(projectID);
 
     setJob(currentJob || null);
-  }, [projectID, service]);
+  }, [projectID, platformClient]);
 
   const publish = React.useCallback(
     async (submit = false) => {
@@ -46,21 +46,21 @@ export const PublishProvider: React.FC = ({ children }) => {
         console.error(error);
       }
 
-      const result = await service?.publish.run(projectID, submit);
+      const result = await platformClient?.publish.run(projectID, submit);
 
       setJob(result?.job || null);
     },
-    [projectID, service]
+    [projectID, platformClient]
   );
 
   const updateCurrentStage = React.useCallback(
     async (data: unknown) => {
       if (!job) return;
 
-      await service?.publish.updateStage(projectID, job.stage.type as never, data);
+      await platformClient?.publish.updateStage(projectID, job.stage.type as never, data);
       await getJob(); // to fetch updated status
     },
-    [projectID, service, job?.stage.type]
+    [projectID, platformClient, job?.stage.type]
   );
 
   const stopPulling = React.useCallback(() => {
@@ -72,10 +72,10 @@ export const PublishProvider: React.FC = ({ children }) => {
   const cancel = React.useCallback(async () => {
     stopPulling();
 
-    await service?.publish.cancel(projectID);
+    await platformClient?.publish.cancel(projectID);
 
     setJob(null);
-  }, [projectID, service]);
+  }, [projectID, platformClient]);
 
   // eslint-disable-next-line lodash/prefer-constant
   useSetup(getJob);
@@ -92,7 +92,7 @@ export const PublishProvider: React.FC = ({ children }) => {
     if (!job || job.status === JobStatus.FINISHED) {
       stopPulling();
 
-      service?.publish.cancel(projectID);
+      platformClient?.publish.cancel(projectID);
 
       return;
     }

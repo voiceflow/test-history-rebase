@@ -7,7 +7,6 @@ import Section, { SectionVariant } from '@/components/Section';
 import Select from '@/components/Select';
 import { PlatformType } from '@/constants';
 import * as Skill from '@/ducks/skill';
-import { saveInvocationName, saveLocales, saveProjectName } from '@/ducks/skill/sideEffectsV2';
 import { connect } from '@/hocs';
 import { FORMATTED_LOCALES, GOOGLE_LANGUAGE_TO_LOCALES } from '@/pages/Publish/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
@@ -151,9 +150,9 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  saveInvocationName,
-  saveProjectName,
-  saveLocales,
+  saveInvocationName: Skill.saveInvocationName,
+  saveProjectName: Skill.saveProjectName,
+  saveLocales: Skill.saveLocales,
 };
 
 type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

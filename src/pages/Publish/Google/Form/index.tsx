@@ -1,6 +1,6 @@
 import React from 'react';
 
-import clientV2 from '@/clientV2';
+import client from '@/client';
 import Box, { Flex } from '@/components/Box';
 import Button, { ButtonVariant } from '@/components/Button';
 import { Link } from '@/components/Text';
@@ -16,7 +16,7 @@ const GooglePublish: React.FC<ConnectedGooglePublishProps> = ({ projectID }) => 
   const [googleProjectID, setGoogleProjectID] = React.useState<string | null>(null);
 
   useAsyncMountUnmount(async () => {
-    const member = await clientV2.api.project.member.get(projectID);
+    const member = await client.api.project.member.get(projectID);
     setGoogleProjectID((member?.platformData?.googleProjectID as string) || null);
   });
 

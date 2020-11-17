@@ -1,4 +1,4 @@
-import client from '@/clientV2';
+import client from '@/client';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
 import { Fixtures } from '@/utils/testing';
@@ -76,7 +76,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
       it('should link amazon account', async () => {
         const code = '!@#';
         const amazonAccount: any = { token: 'xyz' };
-        const linkAccount = stub(client.alexaService.session, 'linkAccount').resolves(amazonAccount);
+        const linkAccount = stub(client.platform.alexa.session, 'linkAccount').resolves(amazonAccount);
 
         const { expectDispatch } = await applyEffect(Account.linkAmazonAccount(code));
 
@@ -88,7 +88,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
     describe('getAmazonAccount()', () => {
       it('should update amazon account on success', async () => {
         const amazonAccount: any = { token: 'xyz' };
-        const getAccount = stub(client.alexaService.session, 'getAccount').resolves(amazonAccount);
+        const getAccount = stub(client.platform.alexa.session, 'getAccount').resolves(amazonAccount);
 
         const { expectDispatch } = await applyEffect(Account.getAmazonAccount());
 
@@ -97,7 +97,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
       });
 
       it('should clear amazon account on failure', async () => {
-        stub(client.alexaService.session, 'getAccount').throws(new Error('mock error'));
+        stub(client.platform.alexa.session, 'getAccount').throws(new Error('mock error'));
 
         const { expectDispatch } = await applyEffect(Account.getAmazonAccount());
 
@@ -108,7 +108,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
     describe('unlinkAmazonAccount()', () => {
       it('should clear amazon account on success', async () => {
         const amazonAccount: any = { token: 'xyz' };
-        const deleteAccount = stub(client.alexaService.session, 'unlinkAccount').resolves(amazonAccount);
+        const deleteAccount = stub(client.platform.alexa.session, 'unlinkAccount').resolves(amazonAccount);
 
         const { expectDispatch } = await applyEffect(Account.unlinkAmazonAccount());
 
@@ -117,7 +117,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
       });
 
       it('should set an error on failure', async () => {
-        const deleteAccount = stub(client.alexaService.session, 'unlinkAccount').throws(new Error('mock error'));
+        const deleteAccount = stub(client.platform.alexa.session, 'unlinkAccount').throws(new Error('mock error'));
 
         const { expectDispatch } = await applyEffect(Account.unlinkAmazonAccount());
 
@@ -130,7 +130,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
       it('should link google account', async () => {
         const code = '!@#';
         const googleAccount: any = { token: 'xyz' };
-        const linkAccount = stub(client.googleService.session, 'linkAccount').returns(googleAccount);
+        const linkAccount = stub(client.platform.google.session, 'linkAccount').returns(googleAccount);
 
         const { expectDispatch } = await applyEffect(Account.linkGoogleAccount(code));
 
@@ -142,7 +142,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
     describe('getGoogleAccount()', () => {
       it('should update google account on success', async () => {
         const googleAccount: any = { token: 'xyz' };
-        const getAccount = stub(client.googleService.session, 'getAccount').returns(googleAccount);
+        const getAccount = stub(client.platform.google.session, 'getAccount').returns(googleAccount);
 
         const { expectDispatch } = await applyEffect(Account.getGoogleAccount());
 
@@ -151,7 +151,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
       });
 
       it('should clear google account on failure', async () => {
-        stub(client.googleService.session, 'getAccount').throws(new Error('mock error'));
+        stub(client.platform.google.session, 'getAccount').throws(new Error('mock error'));
 
         const { expectDispatch } = await applyEffect(Account.getGoogleAccount());
 
@@ -162,7 +162,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
     describe('unlinkGoogleAccount()', () => {
       it('should clear google account on success', async () => {
         const googleAccount: any = { token: 'xyz' };
-        const deleteAccount = stub(client.googleService.session, 'unlinkAccount').returns(googleAccount);
+        const deleteAccount = stub(client.platform.google.session, 'unlinkAccount').returns(googleAccount);
 
         const { expectDispatch } = await applyEffect(Account.unlinkGoogleAccount());
 
@@ -171,7 +171,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
       });
 
       it('should set an error on failure', async () => {
-        const deleteAccount = stub(client.googleService.session, 'unlinkAccount').throws(() => new Error('mock error'));
+        const deleteAccount = stub(client.platform.google.session, 'unlinkAccount').throws(() => new Error('mock error'));
 
         const { expectDispatch } = await applyEffect(Account.unlinkGoogleAccount());
 

@@ -3,25 +3,13 @@ import React from 'react';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
 import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
-import { activePlatformSelector, settingsSelector, updateSettings } from '@/ducks/skill';
-import { saveSettings } from '@/ducks/skill/sideEffectsV2';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useFeature, useTeardown } from '@/hooks';
 import { Alexa } from '@/pages/Settings/components/ContentDescriptors';
+import { ConnectedProps } from '@/types';
 
-type Settings = {
-  customInterface?: boolean;
-};
-
-type SettingsProps = {
-  platform: PlatformType;
-  settings: Settings;
-  updateSettings: (settings: Settings) => void;
-  saveMeta: (data: { settings: Settings }) => void;
-  saveSettings: typeof saveSettings;
-};
-
-const AlexaGadgets: React.FC<SettingsProps> = ({ platform, settings, updateSettings, saveSettings }) => {
+const AlexaGadgetsToggle: React.FC<ConnectedAlexaGadgetsToggleProps> = ({ platform, settings, updateSettings, saveSettings }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
 
   useTeardown(() => {
@@ -47,13 +35,15 @@ const AlexaGadgets: React.FC<SettingsProps> = ({ platform, settings, updateSetti
 };
 
 const mapStateToProps = {
-  settings: settingsSelector,
-  platform: activePlatformSelector,
+  settings: Skill.settingsSelector,
+  platform: Skill.activePlatformSelector,
 };
 
 const mapDispatchToProps = {
-  updateSettings,
-  saveSettings,
+  updateSettings: Skill.updateSettings,
+  saveSettings: Skill.saveSettings,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AlexaGadgets);
+type ConnectedAlexaGadgetsToggleProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(AlexaGadgetsToggle);

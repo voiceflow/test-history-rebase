@@ -1,7 +1,7 @@
 import { constants } from '@voiceflow/common';
 import React from 'react';
 
-import clientV2 from '@/clientV2';
+import client from '@/client';
 import InnerContainer from '@/components/CreationSteps/components/Containers/InnerContainer';
 import OuterContainer from '@/components/CreationSteps/components/Containers/OuterContainer';
 import CreationHeader from '@/components/CreationSteps/components/Header';
@@ -9,7 +9,6 @@ import { FlexCenter } from '@/components/Flex';
 import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
-import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
@@ -50,7 +49,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
       const project = await createProject({ platform: selectedPlatform!, name, largeIcon, listID });
       // TODO: in the future make new project parameters much more platform specific
       if (selectedPlatform === PlatformType.ALEXA) {
-        clientV2.alexaService.version.updatePublishing(project.versionID, {
+        client.platform.alexa.version.updatePublishing(project.versionID, {
           invocationName,
           invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
           locales: selectedLocales as any,
@@ -58,7 +57,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
           smallIcon,
         });
       } else if (selectedPlatform === PlatformType.GOOGLE) {
-        clientV2.googleService.version.updatePublishing(project.versionID, {
+        client.platform.google.version.updatePublishing(project.versionID, {
           locales: selectedLocales as any,
           smallLogoImage: smallIcon,
           displayName: name,
@@ -143,7 +142,6 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
 const mapDispatchToPrpos = {
   goToDashboard: Router.goToDashboard,
   goToCanvas: Router.goToCanvas,
-  createSkill: Skill.createSkill,
   createProject: Project.createProject,
 };
 

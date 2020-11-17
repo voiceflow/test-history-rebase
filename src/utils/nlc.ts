@@ -1,7 +1,7 @@
 import { utils } from '@voiceflow/common';
 import NLC, { IIntentSlot } from '@voiceflow/natural-language-commander';
 
-import { spreadSynonyms } from '@/client/adapters/slot';
+import { spreadSynonyms } from '@/client/adapters/legacy/slot';
 import { DBIntent, DBSlot } from '@/models';
 import Logger from '@/utils/logger';
 

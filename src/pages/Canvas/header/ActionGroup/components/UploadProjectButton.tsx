@@ -3,14 +3,14 @@ import React from 'react';
 import { PlatformType } from '@/constants';
 import { createPlatformComponent } from '@/utils/platform';
 
-import AlexaUploadButtonV2 from './AlexaUploadButtonV2';
-import GoogleUploadButtonV2 from './GoogleUploadButtonV2';
+import AlexaUploadButton from './AlexaUploadButton';
+import GoogleUploadButton from './GoogleUploadButton';
 
 const UploadButton = createPlatformComponent('UploadButton', {
   // eslint-disable-next-line react/display-name
-  [PlatformType.ALEXA]: () => <AlexaUploadButtonV2 />,
+  [PlatformType.ALEXA]: () => <AlexaUploadButton />,
   // eslint-disable-next-line react/display-name
-  [PlatformType.GOOGLE]: () => <GoogleUploadButtonV2 />,
+  [PlatformType.GOOGLE]: () => <GoogleUploadButton />,
   // eslint-disable-next-line lodash/prefer-constant
   [PlatformType.GENERAL]: () => null,
 });

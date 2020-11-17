@@ -6,7 +6,7 @@ import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
 import * as RealtimeUtils from '@/ducks/realtime/utils';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
+import * as SkillSelectors from '@/ducks/skill/skill/selectors';
 import * as Workspace from '@/ducks/workspace';
 
 import suite from './_suite';
@@ -317,7 +317,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     describe('updateDiagramViewers()', () => {
       it('should update active diagrams with no viewers', async () => {
         const users = {};
-        stub(Skill, 'activeDiagramIDSelector').returns('890');
+        stub(SkillSelectors, 'activeDiagramIDSelector').returns('890');
         stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => false);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(users));
@@ -327,7 +327,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
 
       it('should update active diagrams with a single, pre-existing viewer', async () => {
-        stub(Skill, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
+        stub(SkillSelectors, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
         stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => true);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(USER_LOCKS));
@@ -347,7 +347,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
           },
         };
         const getMembers = stubEffect(Workspace, 'getMembers');
-        stub(Skill, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
+        stub(SkillSelectors, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
         stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => false);
         stub(Workspace, 'activeWorkspaceIDSelector').returns(workspaceID);
 
@@ -504,17 +504,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
         expectDispatch(Realtime.setRealtimeRestriction());
         expect(dispatch).to.be.calledOnce;
-      });
-    });
-
-    describe.skip('setupActiveDiagramConnection()', () => {
-      it('should setup a realtime connection', async () => {
-        const skillID = '1234';
-        const diagramID = '5678';
-        stub(Skill, 'activeSkillIDSelector').returns(skillID);
-        stub(Skill, 'activeDiagramIDSelector').returns(diagramID);
-
-        await applyEffect(Realtime.setupRealtimeConnection(skillID, diagramID));
       });
     });
   });

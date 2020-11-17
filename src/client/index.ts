@@ -1,47 +1,52 @@
+import API from '@voiceflow/api-sdk';
+
+import { API_ENDPOINT } from '@/config';
+import { PlatformType } from '@/constants';
+
 import analytics from './analytics';
+import backup from './backup';
 import canvasExport from './canvasExport';
-import clipboard from './clipboard';
 import comment from './comment';
-import diagram from './diagram';
 import feature from './feature';
 import file from './file';
-import onboarding from './onboarding';
-import product from './product';
-import project from './project';
+import integrations from './integrations';
+import platformClients, { platformServicesMap } from './platforms';
 import projectList from './projectList';
 import prototype from './prototype';
 import session from './session';
-import skill from './skill';
 import socket from './socket';
+import sso from './sso';
 import template from './template';
 import thread from './thread';
 import user from './user';
 import workspace from './workspace';
-import zapier from './zapier';
 
-export * from './onboarding';
+const api = new API({
+  clientKey: 'CREATOR_APP',
+  apiEndpoint: `${API_ENDPOINT}/v2`,
+});
 
 const client = {
-  session,
+  api: api.generatePublicClient(),
+
+  platform: Object.assign(<T extends PlatformType>(platform: T) => platformServicesMap[platform], platformClients),
+
   analytics,
-  diagram,
+  backup,
+  canvasExport,
+  comment,
+  feature,
+  file,
+  integrations,
+  projectList,
+  prototype,
+  session,
+  socket,
+  sso,
+  template,
+  thread,
   user,
   workspace,
-  projectList,
-  project,
-  comment,
-  thread,
-  prototype,
-  clipboard,
-  skill,
-  product,
-  file,
-  template,
-  onboarding,
-  feature,
-  zapier,
-  socket,
-  canvasExport,
 };
 
 export default client;

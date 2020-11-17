@@ -9,7 +9,7 @@ import { useEnableDisable, usePermission, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
 
-const SharePrototypeButton: React.FC<ConnectedSharePrototypeButtonProps> = ({ sharePrototype, renderPrototypeV2 }) => {
+const SharePrototypeButton: React.FC<ConnectedSharePrototypeButtonProps> = ({ sharePrototype, renderPrototype }) => {
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [isCopied, setCopiedStatus, clearCopiedStatus] = useEnableDisable();
   const [trackingEvents] = useTrackingEvents();
@@ -31,7 +31,7 @@ const SharePrototypeButton: React.FC<ConnectedSharePrototypeButtonProps> = ({ sh
   };
 
   const onClickPrototype = () => {
-    renderPrototypeV2({ aborted: false });
+    renderPrototype({ aborted: false });
     copyTestableLink();
     trackingEvents.trackActiveProjectTestableLinkShare();
     toast.success('Link copied to clipboard.');
@@ -56,7 +56,7 @@ const SharePrototypeButton: React.FC<ConnectedSharePrototypeButtonProps> = ({ sh
 
 const mapDispatchToProps = {
   sharePrototype: Prototype.sharePrototype,
-  renderPrototypeV2: Prototype.renderPrototypeV2,
+  renderPrototype: Prototype.renderPrototype,
 };
 
 type ConnectedSharePrototypeButtonProps = ConnectedProps<{}, typeof mapDispatchToProps>;

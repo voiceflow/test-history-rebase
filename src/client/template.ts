@@ -1,12 +1,11 @@
-import { DBTemplate } from '@/models';
+import axios from 'axios';
 
-import templateAdapter from './adapters/template';
-import fetch from './fetch';
-
-export const TEMPLATE_PATH = 'template';
+import { API_ENDPOINT } from '@/config';
+import { PlatformType } from '@/constants';
 
 const templateClient = {
-  find: () => fetch.get<DBTemplate[]>(`${TEMPLATE_PATH}/all`).then(templateAdapter.mapFromDB),
+  getPlatformTemplate: (platform: PlatformType, tag = 'default') =>
+    axios.get(`${API_ENDPOINT}/v2/templates/${platform}`, { params: { tag } }).then((res) => res.data as string | null),
 };
 
 export default templateClient;

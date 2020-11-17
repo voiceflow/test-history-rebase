@@ -1,7 +1,7 @@
 import React from 'react';
 
+import client from '@/client';
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
-import alexaService from '@/clientV2/platformServices/alexa/handlers';
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import { DisplayType, ModalType } from '@/constants';
@@ -42,7 +42,10 @@ function DisplayEditor({ data, skillID, onChange }) {
     let selectedDocument = documentData;
 
     if (displayType === DisplayType.SPLASH) {
-      ({ document: selectedDocument, datasource: data } = await alexaService.getDisplayWithDatasource(splashHeader, backgroundImage));
+      ({ document: selectedDocument, datasource: data } = await client.platform.alexa.handlers.getDisplayWithDatasource(
+        splashHeader,
+        backgroundImage
+      ));
     }
 
     openModal({ apl, data, documentData: selectedDocument });

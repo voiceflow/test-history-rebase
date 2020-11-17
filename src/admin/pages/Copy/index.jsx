@@ -7,7 +7,7 @@ import Select from 'react-select';
 
 import { CopyContent, CopyFields, ToField } from '@/admin/pages/Copy/styles';
 import { AdminTitle } from '@/admin/styles';
-import { getPlatformService } from '@/clientV2';
+import client from '@/client';
 import Button from '@/components/LegacyButton';
 import { toast } from '@/components/Toast';
 
@@ -79,8 +79,7 @@ class Copy extends Component {
     }
 
     try {
-      const service = getPlatformService(this.state.skill.platform);
-      await service.project.copy(this.state.skill.value, { teamID: this.state.target_board.value });
+      await client.platform(this.state.skill.platform).project.copy(this.state.skill.value, { teamID: this.state.target_board.value });
 
       this.setState({ creator: '', skill: null, target_board: '', target_user: '' });
 

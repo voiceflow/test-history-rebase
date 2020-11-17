@@ -1,88 +1,119 @@
+import { Block, DiagramNode, NodeID } from '@voiceflow/api-sdk';
+
+import { createAdapter } from '@/client/adapters/utils';
 import { BlockType, PlatformType } from '@/constants';
-import { DBNode, Node, NodeData, Port } from '@/models';
-import { Normalized, getAllNormalizedByKeys } from '@/utils/normalized';
+import { Link, Node, NodeData, Port } from '@/models';
 
-import { createAdapter } from '../utils';
+import { defaultPortAdapter, getPortsAdapter, noInPortTypes } from './block';
+import { IN_PORT_KEY } from './constants';
 import nodeDataAdapter from './nodeData';
-import portAdapter from './port';
-
-const sortStreamPorts = (ports: Port[]) => {
-  const { alexa, google } = ports.reduce<Record<PlatformType, Port[]>>(
-    (acc, port) => {
-      if (port.platform) {
-        acc[port.platform]?.push(port);
-      }
-
-      return acc;
-    },
-    { alexa: [], google: [], general: [] }
-  );
-
-  return [...google, ...alexa];
-};
+import { generateInPort, getInPortID, isBlock, isStep } from './utils';
 
 const nodeAdapter = createAdapter<
-  DBNode,
-  Node,
-  [NodeData<unknown>, string?],
-  [
-    {
-      nodes: Normalized<Node>;
-      ports: Normalized<Port>;
-      data: Record<string, NodeData<unknown>>;
-      linksByPortID: Record<string, string[]>;
-      platform: PlatformType;
-    }
-  ]
+  DiagramNode,
+  { node: Node; data: NodeData<unknown>; ports: Port[] },
+  [{ parentNode: Block | null; links: Link[]; platform: PlatformType }],
+  [{ portToTargets: Record<string, NodeID>; stepMap: Record<NodeID, NodeID>; platform: PlatformType }]
 >(
-  (dbNode, data, parentNode) => ({
-    id: dbNode.id,
-    type: data.type,
-    x: dbNode.x ?? 0,
-    y: dbNode.y ?? 0,
-    parentNode: parentNode || null,
-    combinedNodes: !parentNode && dbNode.combines ? dbNode.combines.map(({ id }) => id) : [],
-    ports: dbNode.ports.reduce<Record<'in' | 'out', string[]>>(
-      (acc, port) => {
-        (port.in ? acc.in : acc.out).push(port.id);
+  (dbNode, { parentNode, links, platform }) => {
+    const siblingSteps = parentNode?.data.steps ?? [];
+    const data = nodeDataAdapter.fromDB({ data: dbNode.data, type: dbNode.type }, { platform, nodeID: dbNode.nodeID });
 
-        return acc;
+    const ports: Port[] = [];
+
+    const node: Node = {
+      id: dbNode.nodeID,
+      type: data.type,
+      x: dbNode.coords?.[0] || 0,
+      y: dbNode.coords?.[1] || 0,
+      parentNode: parentNode?.nodeID || null,
+      combinedNodes: [],
+      ports: {
+        in: [],
+        out: [],
       },
-      { in: [], out: [] }
-    ),
-  }),
-  (appNode, { nodes, ports, data, linksByPortID, platform }) => {
-    const convertNodeForDB = (rawNode: Node, nextID: string | null = null): DBNode => {
-      const { id, type, x, y, parentNode } = rawNode;
-      const appData = data[id];
+    };
 
-      let outPorts = getAllNormalizedByKeys(ports, rawNode.ports.out);
-      if (type === BlockType.STREAM) {
-        outPorts = sortStreamPorts(outPorts);
+    const registerPort = (port: Port, target?: NodeID | null) => {
+      ports.push(port);
+
+      if (port.id.endsWith(IN_PORT_KEY)) {
+        node.ports.in.push(port.id);
+      } else if (port.id) {
+        node.ports.out.push(port.id);
       }
 
-      return {
-        id,
-        name: appData.name,
-        extras: nodeDataAdapter.toDB(appData, nextID),
-        ports: [
-          ...outPorts.map((port, index) => portAdapter.toDB(port, false, linksByPortID, platform, type, index)),
-          ...getAllNormalizedByKeys(ports, rawNode.ports.in).map((port) => portAdapter.toDB(port, true, linksByPortID, platform)),
-        ],
-        ...(parentNode ? { parentNode, combines: undefined } : { x, y }),
-      };
+      if (target) {
+        links.push({
+          id: port.id,
+          source: {
+            nodeID: node.id,
+            portID: port.id,
+          },
+          target: {
+            nodeID: target,
+            portID: getInPortID(target),
+          },
+        });
+      }
     };
 
+    if (isBlock(dbNode)) {
+      if (data.type === BlockType.COMBINED) {
+        registerPort(generateInPort(node.id));
+      }
+
+      node.combinedNodes = dbNode.data.steps;
+    }
+
+    if (isStep(dbNode)) {
+      const stepIndex = siblingSteps.indexOf(node.id);
+      const hasNextStep = stepIndex !== -1 && stepIndex + 1 < siblingSteps.length;
+      const nextStep = hasNextStep ? siblingSteps[stepIndex + 1] : null;
+
+      if (!noInPortTypes.has(node.type)) {
+        registerPort(generateInPort(node.id));
+      }
+
+      const adapter = getPortsAdapter(platform)?.[node.type] || defaultPortAdapter;
+
+      adapter.fromDB(dbNode.data.ports, dbNode).forEach(({ port, target }) => registerPort(port, nextStep === target ? null : target));
+    }
+
     return {
-      ...convertNodeForDB(appNode),
-      ...(appNode.combinedNodes.length && {
-        combines: getAllNormalizedByKeys(nodes, appNode.combinedNodes).map((childNode, index, combinedNodes) => ({
-          ...convertNodeForDB(childNode, index === combinedNodes.length - 1 ? null : combinedNodes[index + 1]?.id),
-          parentNode: appNode.id,
-          combines: null,
-        })),
-      }),
+      node,
+      data,
+      ports,
     };
+  },
+  ({ node, data, ports }, { portToTargets, stepMap, platform }) => {
+    const portMap = ports.reduce<Record<string, Port>>((acc, port) => ({ ...acc, [port.id]: port }), {});
+    const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform });
+
+    const diagramNode: DiagramNode = {
+      nodeID: node.id,
+      type,
+      coords: node.parentNode ? undefined : [node.x, node.y],
+      data: dbData,
+    };
+
+    if (node.ports.out.length > 0) {
+      const adapter = getPortsAdapter(platform)?.[type as BlockType] || defaultPortAdapter;
+
+      diagramNode.data.ports = adapter.toDB(
+        node.ports.out.map((portID) => ({
+          port: portMap[portID],
+          target: portToTargets[portID] || stepMap[node.id] || null,
+        })),
+        node
+      );
+    }
+
+    if ([BlockType.COMBINED, BlockType.START].includes(node.type)) {
+      diagramNode.data.steps = node.combinedNodes;
+    }
+
+    return diagramNode;
   }
 );
 

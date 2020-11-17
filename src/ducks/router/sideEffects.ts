@@ -6,7 +6,7 @@ import { Path } from '@/config/routes';
 import { InteractionModelTabType } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import * as Realtime from '@/ducks/realtime';
-import * as Skill from '@/ducks/skill';
+import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector, activeSkillSelector } from '@/ducks/skill/skill/selectors';
 import { Skill as SkillModel } from '@/models';
 import { GetState, SyncThunk, Thunk, ThunkDispatch } from '@/store/types';
 
@@ -43,87 +43,87 @@ export const goToCanvasSwitchRealtime = (versionID: string, diagramID: string, i
 
 export const goToCurrentCanvas = (): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const versionID = Skill.activeSkillIDSelector(state);
-  const diagramID = Skill.activeDiagramIDSelector(state);
+  const versionID = activeSkillIDSelector(state);
+  const diagramID = activeDiagramIDSelector(state);
 
   dispatch(goToCanvas(versionID, diagramID));
 };
 
 export const goToCurrentCanvasCommenting = (): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const versionID = Skill.activeSkillIDSelector(state);
-  const diagramID = Skill.activeDiagramIDSelector(state);
+  const versionID = activeSkillIDSelector(state);
+  const diagramID = activeDiagramIDSelector(state);
 
   dispatch(goToCanvasCommenting(versionID, diagramID));
 };
 
 export const redirectToCurrentCanvasCommenting = (): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const versionID = Skill.activeSkillIDSelector(state);
-  const diagramID = Skill.activeDiagramIDSelector(state);
+  const versionID = activeSkillIDSelector(state);
+  const diagramID = activeDiagramIDSelector(state);
 
   dispatch(redirectToCanvasCommenting(versionID, diagramID));
 };
 
 export const goToCurrentCanvasMarkup = (): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const versionID = Skill.activeSkillIDSelector(state);
-  const diagramID = Skill.activeDiagramIDSelector(state);
+  const versionID = activeSkillIDSelector(state);
+  const diagramID = activeDiagramIDSelector(state);
 
   dispatch(goTo(`${generatePath(Path.CANVAS_MARKUP, { versionID, diagramID })}${window.location.search}`));
 };
 
 export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
-  const skill = Skill.activeSkillSelector(getState()) as SkillModel;
+  const skill = activeSkillSelector(getState()) as SkillModel;
 
   await dispatch(goToCanvasSwitchRealtime(skill.id, skill.rootDiagramID));
 };
 
 export const goToDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {
-  const versionID = Skill.activeSkillIDSelector(getState());
+  const versionID = activeSkillIDSelector(getState());
 
   await dispatch(goToCanvasSwitchRealtime(versionID, diagramID));
 };
 
 export const goToDiagramCommenting = (diagramID: string, threadID?: string): Thunk => async (dispatch, getState) => {
-  const versionID = Skill.activeSkillIDSelector(getState());
+  const versionID = activeSkillIDSelector(getState());
 
   await switchRealtime(dispatch, getState, versionID, diagramID);
   dispatch(goToCanvasCommenting(versionID, diagramID, `?${queryString.stringify({ thread: threadID })}`));
 };
 
 export const goToCurrentPrototype = (): SyncThunk => (dispatch, getState) => {
-  const versionID = Skill.activeSkillIDSelector(getState());
+  const versionID = activeSkillIDSelector(getState());
 
   dispatch(goToPrototype(versionID));
 };
 
 export const goToCurrentSettings = (): Thunk => async (dispatch, getState) => {
-  const versionID = Skill.activeSkillIDSelector(getState());
+  const versionID = activeSkillIDSelector(getState());
 
   dispatch(goToSettings(versionID));
 };
 
 export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const versionID = Skill.activeSkillIDSelector(state);
-  const platform = Skill.activePlatformSelector(state);
+  const versionID = activeSkillIDSelector(state);
+  const platform = activePlatformSelector(state);
 
   dispatch(goToPublish(versionID, platform));
 };
 
 export const goToCurrentCanvasInteractionModel = (entityType: InteractionModelTabType): SyncThunk => (dispatch, getState) => {
   const state = getState();
-  const versionID = Skill.activeSkillIDSelector(state);
-  const diagramID = Skill.activeDiagramIDSelector(state);
+  const versionID = activeSkillIDSelector(state);
+  const diagramID = activeDiagramIDSelector(state);
 
   dispatch(goTo(generatePath(Path.CANVAS_MODEL, { versionID, diagramID, modelType: entityType })));
 };
 
 export const goToCurrentCanvasInteractionModelEntity = (entityType: InteractionModelTabType, entityID: string): SyncThunk => (dispatch, getState) => {
   const state = getState();
-  const versionID = Skill.activeSkillIDSelector(state);
-  const diagramID = Skill.activeDiagramIDSelector(state);
+  const versionID = activeSkillIDSelector(state);
+  const diagramID = activeDiagramIDSelector(state);
 
   dispatch(goTo(generatePath(Path.CANVAS_MODEL_ENTITY, { versionID, diagramID, modelType: entityType, modelEntityID: entityID })));
 };

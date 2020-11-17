@@ -1,34 +1,36 @@
 import client from '@/client';
-import intentAdapter from '@/client/adapters/intent';
-import slotAdapter from '@/client/adapters/slot';
-import { allIntentsSelector } from '@/ducks/intent';
-import { setError } from '@/ducks/modal';
-import { activeDiagramIDSelector, activePlatformSelector } from '@/ducks/skill';
-import { allSlotsSelector } from '@/ducks/slot';
+import * as Modal from '@/ducks/modal';
+import * as Skill from '@/ducks/skill';
 import { Thunk } from '@/store/types';
+import { AbortControl, waitJobFinished } from '@/utils/job';
 
 import { log } from '../utils';
 import initializeTest from './initialize';
 
-const renderPrototype = (): Thunk => async (dispatch, getState) => {
-  const state = getState();
-  const intents = intentAdapter.mapToDB(allIntentsSelector(state));
-  const slots = slotAdapter.mapToDB(allSlotsSelector(state));
-  const platform = activePlatformSelector(state);
-  const diagramID = activeDiagramIDSelector(state);
+const MAX_CHECKS = 30;
 
-  if (diagramID === null) return;
+const renderPrototype = (abortControl: AbortControl): Thunk => async (dispatch, getState) => {
+  const projectID = Skill.activeProjectIDSelector(getState());
+
+  if (!projectID) {
+    return;
+  }
 
   try {
-    await client.prototype.render(diagramID, {
-      intents,
-      slots,
-      platform,
+    await client.platform.alexa.prototype.run(projectID);
+
+    await waitJobFinished({
+      fetchJob: () => client.platform.alexa.prototype.getStatus(projectID),
+      maxChecks: MAX_CHECKS,
+      abortControl,
     });
+
+    if (abortControl.aborted) return;
+
     dispatch(initializeTest());
   } catch (err) {
     log.error(err);
-    dispatch(setError('Could Not Render Your Test Project'));
+    dispatch(Modal.setError('Could Not Render Your Test Project'));
   }
 };
 

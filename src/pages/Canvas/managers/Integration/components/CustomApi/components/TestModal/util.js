@@ -1,7 +1,7 @@
 import { utils } from '@voiceflow/common';
 import cloneDeep from 'lodash/cloneDeep';
 
-import { encodeCustomAPIData } from '@/client/adapters/creator/block/integration';
+import { encodeCustomAPIData } from '@/utils/integration';
 
 const { deepDraftToMarkdown } = utils.intent;
 

@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { EventualEngineContext } from '@/contexts';
 import { setError } from '@/ducks/modal';
-import { Context, PrototypeStatus, fetchContext, prototypeNLCSelector, prototypeVariablesSelector, updatePrototypeStatus } from '@/ducks/prototype';
-import { activeLocalesSelector, updateDiagramID } from '@/ducks/skill';
+import * as Prototype from '@/ducks/prototype';
+import * as Skill from '@/ducks/skill';
 import { Slot } from '@/models';
 import { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 
@@ -13,15 +13,15 @@ import PrototypeTool from '../PrototypeTool';
 import { Interaction, Message, PMStatus } from '../types';
 
 const usePrototype = (
-  prototypeToolStatus: PrototypeStatus,
+  prototypeToolStatus: Prototype.PrototypeStatus,
   debug: boolean,
   slots: Array<Slot>
 ): [PMStatus | null, Message[], Interaction[], (input: string) => Promise<void>, (src: string) => void, TAudio | null] => {
   const dispatch = useDispatch();
 
-  const nlc = useSelector(prototypeNLCSelector) as NLC;
-  const variables = useSelector(prototypeVariablesSelector);
-  const [locale] = useSelector(activeLocalesSelector) as string[];
+  const nlc = useSelector(Prototype.prototypeNLCSelector) as NLC;
+  const variables = useSelector(Prototype.prototypeVariablesSelector);
+  const [locale] = useSelector(Skill.activeLocalesSelector) as string[];
 
   const [status, setStatus] = React.useState<PMStatus | null>(null);
   const [messages, updateMessages] = React.useState<Message[]>([]);
@@ -38,9 +38,9 @@ const usePrototype = (
     variables,
     slots,
     setError: (error: string) => dispatch(setError(error)),
-    enterFlow: (diagramID: string) => dispatch(updateDiagramID(diagramID)),
+    enterFlow: (diagramID: string) => dispatch(Skill.updateDiagramID(diagramID)),
     updateStatus: setStatus,
-    fetchContext: (request: any) => (dispatch(fetchContext(request)) as unknown) as Promise<Context | null>,
+    fetchContext: (request: any) => (dispatch(Prototype.fetchContext(request)) as unknown) as Promise<Prototype.Context | null>,
     addToMessages: (message: Message) => updateMessages([...messages, message]),
     setInteractions,
   };
@@ -54,19 +54,19 @@ const usePrototype = (
   const audioInstance = prototype.audio?.audio || null;
 
   React.useEffect(() => {
-    if (prototypeToolStatus === PrototypeStatus.IDLE) {
+    if (prototypeToolStatus === Prototype.PrototypeStatus.IDLE) {
       setStatus(null);
       updateMessages([]);
       setInteractions([]);
       prototype.stop();
-    } else if (prototypeToolStatus === PrototypeStatus.ACTIVE) {
+    } else if (prototypeToolStatus === Prototype.PrototypeStatus.ACTIVE) {
       prototype.start();
     }
   }, [prototypeToolStatus]);
 
   React.useEffect(() => {
     if (status === PMStatus.ENDED) {
-      dispatch(updatePrototypeStatus(PrototypeStatus.ENDED));
+      dispatch(Prototype.updatePrototypeStatus(Prototype.PrototypeStatus.ENDED));
     }
   }, [status]);
 

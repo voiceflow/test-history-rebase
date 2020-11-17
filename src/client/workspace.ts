@@ -1,9 +1,9 @@
-import { BillingPeriod, PlanType, PlatformType, UserRole } from '@/constants';
-import { DBBilling, DBProject, DBWorkspace, Price } from '@/models';
+import { BillingPeriod, PlanType, UserRole } from '@/constants';
+import { DBWorkspace, Price } from '@/models';
+import { DBBilling } from '@/models/Billing';
 
 import invoiceAdapter from './adapters/invoice';
 import memberAdapter from './adapters/member';
-import projectAdapter from './adapters/project';
 import workspaceAdapter from './adapters/workspace';
 import fetch from './fetch';
 
@@ -13,6 +13,7 @@ export const WORKSPACES_PATH = 'workspaces';
 const workspaceClient = {
   find: () => fetch.get<DBWorkspace[]>(WORKSPACES_PATH).then(workspaceAdapter.mapFromDB),
 
+  // TODO: seems legacy
   fetchWorkspace: (workspaceID: string) =>
     fetch.get<DBWorkspace>(`${WORKSPACES_PATH}/${workspaceID}`).then((data) => [workspaceAdapter.fromDB(data)]),
 
@@ -23,26 +24,9 @@ const workspaceClient = {
   updateMembers: (workspaceID: string, payload: { members: DBWorkspace.Member[] }) =>
     fetch.patch<DBWorkspace>(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/members`, payload),
 
-  createProjectFromModule: (
-    workspaceID: string,
-    moduleID: string,
-    project: {
-      name: string;
-      locales: string[];
-      platform: PlatformType;
-      mainLocale?: string;
-      inv_name?: string;
-      image?: string;
-    }
-  ) => fetch.post<DBProject>(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/copy/module/${moduleID}`, project),
-
-  findProjects: (workspaceID: string) => fetch.get<DBProject[]>(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/projects`).then(projectAdapter.mapFromDB),
-
   deleteWorkspace: (workspaceID: string) => fetch.delete(`${WORKSPACES_PATH}/${workspaceID}`),
 
   leaveWorkspace: (workspaceID: string) => fetch.delete(`${WORKSPACES_PATH}/${workspaceID}/members/self`),
-
-  removeMember: (workspaceID: string, creatorID: number) => fetch.delete(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/member/${creatorID}`),
 
   updateName: (workspaceID: string, name: string) => fetch.patch(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/update_name`, { name }),
 
@@ -92,8 +76,6 @@ const workspaceClient = {
     fetch.post<DBWorkspace.Member | void>(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
 
   getInviteLink: (workspaceID: string, role: UserRole) => fetch.post<string>(`${WORKSPACES_PATH}/${workspaceID}/inviteLink`, { role }),
-
-  checkCoupon: (coupon: string) => fetch.get<{ data: string }>(`${WORKSPACES_PATH}/coupon/${coupon}`),
 };
 
 export default workspaceClient;

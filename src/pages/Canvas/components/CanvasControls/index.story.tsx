@@ -6,11 +6,11 @@ import { ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import { EventualEngineProvider, RegisterEngine } from '@/contexts/EventualEngineContext';
 
-import CanvasControlsV2 from '.';
+import CanvasControls from '.';
 
 export default {
   title: 'Creator/Canvas Controls',
-  component: CanvasControlsV2,
+  component: CanvasControls,
 };
 
 // eslint-disable-next-line react/display-name
@@ -47,6 +47,6 @@ const createStory = (isTemplates = false) =>
     )
   );
 
-export const base = createStory()(() => <CanvasControlsV2 />);
+export const base = createStory()(() => <CanvasControls />);
 
-export const withTemplates = createStory(true)(() => <CanvasControlsV2 />);
+export const withTemplates = createStory(true)(() => <CanvasControls />);

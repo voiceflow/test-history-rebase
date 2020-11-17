@@ -8,7 +8,7 @@ import Select from '@/components/Select';
 import { Spinner } from '@/components/Spinner';
 import SubHeaderTabs from '@/components/Tabs';
 import * as Modal from '@/ducks/modal';
-import * as SkillEffectsV2 from '@/ducks/skill/sideEffectsV2';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useSmartReducer } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
@@ -22,7 +22,7 @@ const TAB_COMPONENTS = {
   domain: Domain,
 };
 
-function AccountLinkingEditor({ data, isOpen, setError, getAccountLinkingV2, saveAccountLinkingV2 }) {
+function AccountLinkingEditor({ data, isOpen, setError, getAccountLinking, saveAccountLinking }) {
   const [activeTab, setActiveTab] = React.useState(null);
   const [isLoading, setLoading] = React.useState(true);
   const [state, actions] = useSmartReducer(EMPTY_ACCOUNT_DATA);
@@ -30,8 +30,8 @@ function AccountLinkingEditor({ data, isOpen, setError, getAccountLinkingV2, sav
   const stateRef = React.useRef();
   const TabComponent = TAB_COMPONENTS[activeTab] || Client;
 
-  const getLinking = getAccountLinkingV2;
-  const saveLinking = saveAccountLinkingV2;
+  const getLinking = getAccountLinking;
+  const saveLinking = saveAccountLinking;
 
   const save = React.useCallback(async () => {
     try {
@@ -166,8 +166,8 @@ function AccountLinkingEditor({ data, isOpen, setError, getAccountLinkingV2, sav
 
 const mapDispatchToProps = {
   setError: Modal.setError,
-  getAccountLinkingV2: SkillEffectsV2.getAccountLinking,
-  saveAccountLinkingV2: SkillEffectsV2.saveAccountLinking,
+  getAccountLinking: Skill.getAccountLinking,
+  saveAccountLinking: Skill.saveAccountLinking,
 };
 
 export default connect(null, mapDispatchToProps)(AccountLinkingEditor);

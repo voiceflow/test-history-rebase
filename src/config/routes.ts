@@ -11,7 +11,6 @@ export enum RootRoute {
   WORKSPACE = 'workspace',
   DASHBOARD = 'dashboard',
   ACCOUNT = 'account',
-  REFERENCE = 'reference',
   DEMO = 'demo',
   CANVAS = 'canvas',
   INVITE = 'invite',
@@ -98,7 +97,6 @@ export const Path = {
 
   INVITE: toPath(RootRoute.INVITE),
 
-  PROJECT_REFERENCE: toPath(RootRoute.REFERENCE, ':project_id'),
   PROJECT_DEMO: toPath(RootRoute.DEMO, ':versionID'),
   PROJECT_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID?'),
   PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE, ':diagramID?'),

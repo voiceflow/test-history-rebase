@@ -9,7 +9,6 @@ import storageSession from 'redux-persist/lib/storage/session';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
-import clientV2 from '@/clientV2';
 import { ROOT_DOMAIN } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { SessionType } from '@/constants';
@@ -222,7 +221,7 @@ const setSession = ({ token, user }: { token: string; user: Models.Account }): T
 };
 
 export const ssoLogin = (data: { code: string; coupon?: string }): Thunk => async (dispatch) => {
-  const { user, token } = await clientV2.api.sso.login(data);
+  const { user, token } = await client.sso.login(data);
 
   await dispatch(setSession({ user, token }));
 };

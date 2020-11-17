@@ -2,8 +2,8 @@ import _isNumber from 'lodash/isNumber';
 import _noop from 'lodash/noop';
 import React from 'react';
 
-import clientV2 from '@/clientV2';
-import creatorAdapterV2 from '@/clientV2/adapters/creator';
+import client from '@/client';
+import creatorAdapter from '@/client/adapters/creator';
 import Canvas from '@/components/Canvas';
 import { RenderLayer } from '@/components/Canvas/components';
 import { MARKUP_NODES, ROOT_NODES } from '@/constants';
@@ -131,7 +131,7 @@ const initialize = (diagramID: string) => async (dispatch: any, getState: any) =
   const state = getState();
   const platform = Skill.activePlatformSelector(state);
 
-  const { viewport, ...creator } = creatorAdapterV2.fromDB(await clientV2.api.diagram.get(diagramID), { platform });
+  const { viewport, ...creator } = creatorAdapter.fromDB(await client.api.diagram.get(diagramID), { platform });
 
   const nodesWithCoordinates = creator.nodes.filter((node) => _isNumber(node.x) && _isNumber(node.y));
   const offsets = findCanvasExportOffsets(nodesWithCoordinates);

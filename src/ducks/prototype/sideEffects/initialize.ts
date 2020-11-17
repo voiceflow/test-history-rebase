@@ -1,8 +1,8 @@
 import { constants } from '@voiceflow/common';
 import { DEFAULT_INTENTS_MAP } from '@voiceflow/general-types';
 
-import intentAdapter from '@/client/adapters/intent';
-import slotAdapter from '@/client/adapters/slot';
+import legacyIntentAdapter from '@/client/adapters/legacy/intent';
+import legacySlotAdapter from '@/client/adapters/legacy/slot';
 import { PlatformType } from '@/constants';
 import { allIntentsSelector } from '@/ducks/intent';
 import { activeLocalesSelector, activePlatformSelector } from '@/ducks/skill';
@@ -36,8 +36,8 @@ export const initializePrototype = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const [locale] = activeLocalesSelector(state);
   const platform = activePlatformSelector(state);
-  const intents = intentAdapter.mapToDB(allIntentsSelector(state));
-  const slots = slotAdapter.mapToDB(allSlotsSelector(state));
+  const intents = legacyIntentAdapter.mapToDB(allIntentsSelector(state));
+  const slots = legacySlotAdapter.mapToDB(allSlotsSelector(state));
   const isGeneral = platform === PlatformType.GENERAL;
   const lang = locale.slice(0, 2);
 

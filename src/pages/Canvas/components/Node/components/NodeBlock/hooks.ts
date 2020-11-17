@@ -2,7 +2,7 @@ import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
-import { noInPortTypes } from '@/clientV2/adapters/creator/block';
+import { noInPortTypes } from '@/client/adapters/creator/block';
 import { DragItem, HOVER_THROTTLE_TIMEOUT, MARKUP_NODES } from '@/constants';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { objectID } from '@/utils';

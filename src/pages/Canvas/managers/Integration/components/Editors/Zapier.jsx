@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { useEffect } from 'react';
 
-import integrationsClient from '@/client/integrations';
+import client from '@/client';
 import { Content } from '@/pages/Canvas/components/Editor';
 
 import SetupDropdown from '../Steps/Zapier/Setup/SetupDropdown';
@@ -22,7 +22,7 @@ function ZapierEditor({ data, onChange, currentStep, toggleStep, setStep }) {
 
   useEffect(() => {
     async function fetchToken() {
-      const response = await integrationsClient.getZapierToken();
+      const response = await client.integrations.getZapierToken();
       setToken(response.key);
     }
     fetchToken();

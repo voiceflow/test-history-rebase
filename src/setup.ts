@@ -4,9 +4,9 @@ import _throttle from 'lodash/throttle';
 
 import { toast } from '@/components/Toast';
 
+import client from './client';
 import fetch, { GLOBAL_HEADERS, StatusCode } from './client/fetch';
 import { setUnauthorizedHandler } from './client/fetch/raw';
-import voiceflowAPI from './clientV2/api';
 import { API_ENDPOINT, TRUSTED_ENDPOINTS, VERSION } from './config';
 import { clearPersistedLogs } from './utils/logger';
 import * as Google from './vendors/google';
@@ -56,7 +56,7 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
     }
   );
 
-  voiceflowAPI.fetch.setOptions({
+  client.api.fetch.setOptions({
     headers: {
       browserid: browserID,
       tabid: tabID,

@@ -24,7 +24,6 @@ const Legal = React.lazy(() => import('@/components/Legal'));
 const Skill = React.lazy(() => import('@/pages/Skill'));
 const Account = React.lazy(() => import('@/pages/Account'));
 const Page404 = React.lazy(() => import('@/components/ErrorPages/404'));
-const Reference = React.lazy(() => import('@/components/Reference'));
 const PublicPrototype = React.lazy(() => import('@/pages/PublicPrototype'));
 const Workspace = React.lazy(() => import('@/pages/Workspace'));
 const NewWorkspace = React.lazy(() => import('@/pages/Dashboard/NewWorkspace'));
@@ -49,7 +48,6 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => {
         <PrivateRoute exact path={Path.NEW_WORKSPACE} component={NewWorkspace} />
         <PrivateRoute path={[Path.WORKSPACE, Path.DASHBOARD]} component={Workspace} />
 
-        <PrivateRoute path={Path.PROJECT_REFERENCE} component={Reference} page="canvas" />
         <Route path={Path.PROJECT_DEMO} component={PublicPrototype} />
 
         <Redirect from={LegacyPath.WORKSPACE_DASHBOARD} to={Path.WORKSPACE_DASHBOARD} />

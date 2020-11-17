@@ -7,8 +7,7 @@ import { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import { VoiceType } from '@/constants';
-import { skillMetaSelector } from '@/ducks/skill';
-import { saveProjectName, saveSettings } from '@/ducks/skill/sideEffectsV2';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useDidUpdateEffect, useSyncedSmartReducer } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -225,12 +224,12 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & { pla
 };
 
 const mapStateToProps = {
-  meta: skillMetaSelector,
+  meta: Skill.skillMetaSelector,
 };
 
 const mapDispatchToProps = {
-  saveSettings,
-  saveProjectName,
+  saveSettings: Skill.saveSettings,
+  saveProjectName: Skill.saveProjectName,
 };
 
 type ConnectedGlobalConversationLogic = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

@@ -3,12 +3,11 @@ import { Member } from '@voiceflow/api-sdk';
 import { GoogleProjectData, GoogleProjectMemberData, GoogleVersionData } from '@voiceflow/google-types';
 
 import client from '@/client';
-import clientV2, { getPlatformService } from '@/clientV2';
-import creatorAdapter from '@/clientV2/adapters/creator';
-import intentAdapter from '@/clientV2/adapters/intent';
-import projectAdapter, { productAdapter } from '@/clientV2/adapters/project';
-import slotAdapter from '@/clientV2/adapters/slot';
-import versionAdapter from '@/clientV2/adapters/version';
+import creatorAdapter from '@/client/adapters/creator';
+import intentAdapter from '@/client/adapters/intent';
+import projectAdapter, { productAdapter } from '@/client/adapters/project';
+import slotAdapter from '@/client/adapters/slot';
+import versionAdapter from '@/client/adapters/version';
 import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
@@ -29,12 +28,13 @@ import { storeLogger } from '@/store/utils';
 import { Thunk } from './types';
 
 export const importProject = (projectID: string, workspaceID: string): Thunk<Models.Project> => async (dispatch, getState) => {
-  const project = await clientV2.api.project.get(projectID);
+  const project = await client.api.project.get(projectID);
 
   const activeWorkspaceID = Workspace.activeWorkspaceIDSelector(getState());
 
-  const service = getPlatformService(project.platform as PlatformType);
-  const copiedProject = projectAdapter.fromDB(await service.project.copy(project._id, { teamID: workspaceID }));
+  const copiedProject = projectAdapter.fromDB(
+    await client.platform(project.platform as PlatformType).project.copy(project._id, { teamID: workspaceID })
+  );
 
   if (activeWorkspaceID === workspaceID) {
     dispatch(Project.addProject(copiedProject.id, copiedProject));
@@ -53,8 +53,9 @@ export const copyProject = (projectID: string, workspaceID: string, listID: stri
 
   if (!project) throw new Error();
 
-  const service = getPlatformService(project.platform);
-  const copiedProject = projectAdapter.fromDB(await service.project.copy(project.id, { teamID: workspaceID, name: `${project.name} (COPY)` }));
+  const copiedProject = projectAdapter.fromDB(
+    await client.platform(project.platform).project.copy(project.id, { teamID: workspaceID, name: `${project.name} (COPY)` })
+  );
 
   dispatch(Project.addProject(copiedProject.id, copiedProject));
 
@@ -64,7 +65,7 @@ export const copyProject = (projectID: string, workspaceID: string, listID: stri
 export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const platform = Skill.activePlatformSelector(state);
-  const { diagram: DBDiagram, timestamp } = await clientV2.api.diagram.getRTC(diagramID);
+  const { diagram: DBDiagram, timestamp } = await client.api.diagram.getRTC(diagramID);
 
   const { offsetX: x, offsetY: y, zoom, variables } = DBDiagram;
 
@@ -84,12 +85,12 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
   const userID = Account.userIDSelector(state);
 
   const [dbVersion] = await Promise.all([
-    clientV2.api.version.get<AlexaVersionData | GoogleVersionData>(versionID),
+    client.api.version.get<AlexaVersionData | GoogleVersionData>(versionID),
     dispatch(Diagram.loadVersionDiagrams(versionID)),
     dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users')),
   ] as const);
 
-  const dbProject = await clientV2.api.project.get<AlexaProjectData | GoogleProjectData, AlexaProjectMemberData | GoogleProjectMemberData>(
+  const dbProject = await client.api.project.get<AlexaProjectData | GoogleProjectData, AlexaProjectMemberData | GoogleProjectMemberData>(
     dbVersion.projectID
   );
 

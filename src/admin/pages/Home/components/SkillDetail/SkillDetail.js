@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 
-import { getPlatformService } from '@/clientV2';
+import client from '@/client';
 import { toast } from '@/components/Toast';
 
 export class SkillDetail extends Component {
@@ -42,10 +42,8 @@ export class SkillDetail extends Component {
       return;
     }
 
-    const service = getPlatformService(this.props.skill.platform);
-
     try {
-      await service.project.copy(this.props.skill._id, { teamID: this.state.target_board.value });
+      await client.platform(this.props.skill.platform).project.copy(this.props.skill._id, { teamID: this.state.target_board.value });
 
       this.setState({ target_user: '', target_board: '' });
 

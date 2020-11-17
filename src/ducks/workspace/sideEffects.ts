@@ -5,15 +5,13 @@ import { deleteNormalize, normalize } from '@/ducks/_normalize';
 import * as Modal from '@/ducks/modal';
 import { saveProjectListsForWorkspace } from '@/ducks/projectList/sideEffects';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
-import { allTemplatesSelector, loadTemplates } from '@/ducks/template';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
-import { DBProject, DBWorkspace, Workspace } from '@/models';
+import { DBWorkspace, Workspace } from '@/models';
 import { ActionPayload, SyncThunk, Thunk } from '@/store/types';
 
 import { UpdateWorkspaces, updateCurrentWorkspace, updateWorkspace, updateWorkspaces } from './actions';
-import { NoValidTemplateError } from './constants';
 import { activeWorkspaceIDSelector, activeWorkspaceMembersSelector } from './selectors';
-import { extractErrorFromResponseData, extractErrorMessages, log } from './utils';
+import { extractErrorFromResponseData, extractErrorMessages } from './utils';
 
 const MEMBER_UPDATE_ERROR = 'Unable to Update Members';
 
@@ -177,10 +175,6 @@ export const validateInvite = (invite: string): Thunk<string | null> => async (d
   }
 };
 
-// /////////////////////////
-// New workspace actions  //
-// /////////////////////////
-
 export const sendInvite = (email: string, permissionType: UserRole, showToast = true): Thunk<boolean> => async (dispatch, getState) => {
   const state = getState();
   try {
@@ -292,30 +286,6 @@ export interface NewProjectOptions {
   largeIcon?: string;
   smallIcon?: string;
 }
-
-export const createProject = (workspaceID: string, project: NewProjectOptions, templateIndex = 0): Thunk<DBProject> => async (dispatch, getState) => {
-  await dispatch(loadTemplates());
-  const templates = allTemplatesSelector(getState());
-  const templateID = templates[templateIndex]?.id;
-
-  // onboarding failsafe
-  if (!templateID) {
-    throw new NoValidTemplateError();
-  }
-
-  try {
-    const createdProject = await client.workspace.createProjectFromModule(workspaceID, templateID, project);
-
-    if (createdProject.skill_id && createdProject.diagram) {
-      return createdProject;
-    }
-
-    throw new Error('Invalid Response Format');
-  } catch (err) {
-    log.error(err);
-    throw err;
-  }
-};
 
 export const ejectFromWorkspace = (workspaceID: string, workspaceName: string): Thunk => async (dispatch, getState) => {
   const currentWorkspaceID = activeWorkspaceIDSelector(getState());

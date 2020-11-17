@@ -1,47 +1,38 @@
+import { Slot as DBSlot } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
+import { createAdapter } from '@/client/adapters/utils';
 import { CUSTOM_SLOT_TYPE, LEGACY_CUSTOM_SLOT_TYPE } from '@/constants';
-import { DBSlot, Slot } from '@/models';
+import { Slot, SlotInput } from '@/models';
 
-import { createAdapter } from './utils';
+export const slotInputAdapter = createAdapter<string, SlotInput>(
+  (input) => {
+    const synonyms = input.split(',');
+
+    return {
+      id: cuid.slug(),
+      value: synonyms[0],
+      synonyms: synonyms.slice(1).join(','),
+    };
+  },
+  ({ value, synonyms }) => (synonyms ? `${value},${synonyms}` : value)
+);
 
 const slotAdapter = createAdapter<DBSlot, Slot>(
-  ({ key, name, inputs, color, type }) => ({
+  ({ key, name, type, color, inputs }) => ({
     id: key,
     name,
-    type: (type && (type.value === LEGACY_CUSTOM_SLOT_TYPE ? CUSTOM_SLOT_TYPE : type.value)) || null,
+    type: (type?.value === LEGACY_CUSTOM_SLOT_TYPE ? CUSTOM_SLOT_TYPE : type?.value) || null,
     color,
-    inputs: inputs.map((input) => {
-      const synonyms = input.split(',');
-      return {
-        id: cuid.slug(),
-        value: synonyms[0],
-        synonyms: synonyms.slice(1).join(','),
-      };
-    }),
+    inputs: slotInputAdapter.mapFromDB(inputs),
   }),
   ({ id, name, inputs, color, type }) => ({
     key: id,
     name,
     type: { value: type || CUSTOM_SLOT_TYPE },
     color,
-    inputs: inputs.map(({ value, synonyms }) => (synonyms ? `${value},${synonyms}` : value)),
+    inputs: slotInputAdapter.mapToDB(inputs),
   })
 );
-
-export const spreadSynonyms = (slot: DBSlot) => {
-  return {
-    ...slot,
-    inputs: slot.inputs.reduce<string[]>((acc, input) => {
-      return [
-        ...acc,
-        ...input
-          .split(',')
-          .map((value) => value.trim())
-          .filter(Boolean),
-      ];
-    }, []),
-  };
-};
 
 export default slotAdapter;

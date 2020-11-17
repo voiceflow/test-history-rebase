@@ -1,11 +1,11 @@
 /* eslint-disable no-secrets/no-secrets */
 import React from 'react';
 
-import PublishGoogleFormV2 from './Form';
+import PublishGoogleForm from './Form';
 
 export const PublishGoogle = () => {
   // TODO: implement google publish form V2 (reference alexa)
-  return <PublishGoogleFormV2 />;
+  return <PublishGoogleForm />;
 };
 
 export default PublishGoogle;

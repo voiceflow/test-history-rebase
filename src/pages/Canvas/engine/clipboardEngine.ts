@@ -2,7 +2,6 @@ import Base64 from 'crypto-js/enc-base64';
 import Utf8 from 'crypto-js/enc-utf8';
 import { get, set } from 'idb-keyval';
 
-import nodeAdapter from '@/client/adapters/creator/node';
 import { toast } from '@/components/Toast';
 import { BlockType, CLIPBOARD_DATA_KEY, COPY_NODES, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -10,7 +9,6 @@ import * as Diagrams from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
 import * as Skill from '@/ducks/skill';
-import { handlePastedNodes } from '@/ducks/skill/sideEffectsV2';
 import * as Slot from '@/ducks/slot';
 import * as Models from '@/models';
 import { activeSlotTypesSelector } from '@/store/selectors';
@@ -23,7 +21,6 @@ import { EngineConsumer, getCopiedNodeDataIDs } from './utils';
 type ClipboardContext = {
   skillID: string;
   nodes: Models.Node[];
-  legacyNodes: Models.DBNode[];
   data: Record<string, Models.NodeData<unknown>>;
   ports: Models.Port[];
   links: Models.Link[];
@@ -80,10 +77,6 @@ class ClipboardEngine extends EngineConsumer {
         return acc;
       }, []);
 
-      const legacyNodes = copiedNodes.map((node) =>
-        nodeAdapter.toDB(node, { nodes: creator.nodes, ports: creator.ports, data: creator.data, linksByPortID: creator.linksByPortID, platform })
-      );
-
       const { intents: intentIDs, products: productIDs, diagrams: diagramIDs } = getCopiedNodeDataIDs(data, copiedNodes, platform);
 
       const products = Product.productsByIDsSelector(state)(productIDs);
@@ -95,7 +88,6 @@ class ClipboardEngine extends EngineConsumer {
         skillID,
         data: creator.data,
         nodes: copiedNodes,
-        legacyNodes,
         ports,
         links,
         displays: [],
@@ -136,7 +128,7 @@ class ClipboardEngine extends EngineConsumer {
       return JSON.parse(decryptedData) as ClipboardContext;
     },
 
-    importClipboardContextV2: async ({ slots, intents, products, diagrams, nodes, data, platform: sourcePlatform }: ClipboardContext) => {
+    importClipboardContext: async ({ slots, intents, products, diagrams, nodes, data, platform: sourcePlatform }: ClipboardContext) => {
       const state = this.engine.store.getState();
       const targetPlatform = Skill.activePlatformSelector(state);
       const isPlatformConversion = sourcePlatform !== targetPlatform;
@@ -157,7 +149,7 @@ class ClipboardEngine extends EngineConsumer {
       const nodesWithData = nodes.map((node) => ({ node, data: data[node.id] }));
 
       return this.dispatch(
-        handlePastedNodes({
+        Skill.handlePastedNodes({
           nodes: nodesWithData,
           products: targetPlatform !== PlatformType.ALEXA ? [] : products,
           diagrams,
@@ -209,7 +201,7 @@ class ClipboardEngine extends EngineConsumer {
                 node,
               };
             })
-          : await this.internal.importClipboardContextV2(result);
+          : await this.internal.importClipboardContext(result);
 
         const { ports, links } = result;
 

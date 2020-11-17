@@ -131,7 +131,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
   );
 
   const onCreateProject = React.useCallback(
-    (id) => {
+    (id: string) => {
       if (props.projects.length >= props.workspace!.projects) {
         openProjectLimitModal({ projects: props.workspace!.projects });
       } else {
@@ -283,7 +283,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
                               onCopyProject={onCopyProject}
                               onDownloadProject={onDownloadProject}
                               onDeleteProject={onDeleteProject(list.id)}
-                              createSkill={onCreateProject}
+                              createProject={onCreateProject}
                               onMove={onMove}
                               onMoveProject={onMoveProject}
                               clearNewBoard={props.clearNewList}

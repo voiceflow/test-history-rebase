@@ -1,4 +1,4 @@
-import clientV2 from '@/clientV2';
+import client from '@/client';
 import { setError } from '@/ducks/modal';
 import { activeDiagramIDSelector, activeSkillIDSelector } from '@/ducks/skill';
 import { Thunk } from '@/store/types';
@@ -26,7 +26,7 @@ const sharePrototype = (): Thunk<unknown | null> => async (dispatch, getState) =
       params = variables;
     }
 
-    return await clientV2.api.prototype.createInfo(skillID, diagramID, params);
+    return await client.prototype.createInfo(skillID, diagramID, params);
   } catch (error) {
     console.error(error);
     dispatch(setError('Unable to generate share link'));

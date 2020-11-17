@@ -19,7 +19,6 @@ import * as Product from '@/ducks/product';
 import * as ProjectList from '@/ducks/projectList';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
-import * as SkillV2 from '@/ducks/skill/sideEffectsV2';
 import * as Slot from '@/ducks/slot';
 import { CRUDAction } from '@/ducks/utils/crud';
 import * as Workspace from '@/ducks/workspace';
@@ -200,10 +199,10 @@ const createMiddleware = (history: History) => {
     createLoggedInMiddleware(
       createAutosaveMiddleware(
         createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }),
-        SkillV2.saveIntentsAndSlots
+        Skill.saveIntentsAndSlots
       )
     ),
-    createAutosaveMiddleware(Skill.globalVariablesSelector, SkillV2.saveVariables, [Skill.SkillAction.SET_ACTIVE_SKILL]),
+    createAutosaveMiddleware(Skill.globalVariablesSelector, Skill.saveVariables, [Skill.SkillAction.SET_ACTIVE_SKILL]),
     createAutosaveMiddleware(Diagram.activeDiagramVariables, Diagram.saveActiveDiagramVariables, [
       Creator.CreatorAction.INITIALIZE_CREATOR,
       Creator.CreatorAction.RESET_CREATOR,

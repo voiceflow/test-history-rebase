@@ -6,8 +6,8 @@ import { compose } from 'redux';
 import { getFormValues, reduxForm } from 'redux-form';
 import validUrl from 'valid-url';
 
-import clientV2 from '@/clientV2';
-import alexaPublishingAdapterV2 from '@/clientV2/adapters/version/alexa/publishing';
+import client from '@/client';
+import alexaPublishingAdapter from '@/client/adapters/version/alexa/publishing';
 import Checkbox from '@/components/Checkbox';
 import { FlexCenter } from '@/components/Flex';
 import { FormTextBox } from '@/components/Form/TextBox';
@@ -26,11 +26,11 @@ import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
 import * as SkillDuck from '@/ducks/skill';
 import { connect } from '@/hocs';
-import amazonFormAdapter from '@/pages/Publish/Amazon/amazonAdaptor';
+import { AMAZON_CATEGORIES } from '@/services/Categories';
+import LOCALE_MAP from '@/services/LocaleMap';
 import { arrayStringReplace } from '@/utils/string';
 
-import { AMAZON_CATEGORIES } from '../../../services/Categories';
-import LOCALE_MAP from '../../../services/LocaleMap';
+import amazonFormAdapter from './adapter';
 
 const DEFAULT_TERM_ENDPOINT = 'https://creator.voiceflow.com/creator';
 const PUBLISH_AMAZON_FORM = 'publish_amazon_form';
@@ -38,7 +38,7 @@ const generateTerms = (name, skill, children) => {
   return `${DEFAULT_TERM_ENDPOINT}/terms?name=${encodeURI(name)}&skill=${encodeURI(skill)}${_.isBoolean(children) ? `&children=${children}` : ''}`;
 };
 
-class Skill extends Component {
+class PublishAmazonForm extends Component {
   state = {
     loaded: false,
     id_collapse: false,
@@ -51,13 +51,13 @@ class Skill extends Component {
     const { skillID } = this.props;
 
     // read version publishing info
-    const version = await clientV2.api.version.get(skillID);
+    const version = await client.api.version.get(skillID);
     const projectID = version.projectID;
 
-    const dbProject = await clientV2.api.project.get(version.projectID);
+    const dbProject = await client.api.project.get(version.projectID);
     const publishing = version.platformData.publishing;
 
-    const skill = alexaPublishingAdapterV2.fromDB(publishing);
+    const skill = alexaPublishingAdapter.fromDB(publishing);
     const projectName = dbProject.name;
 
     this.setState(
@@ -163,11 +163,11 @@ class Skill extends Component {
 
     try {
       // convert snake case prop names to camel case, e.g. inv_name => envName
-      const publishingForm = amazonFormAdapter.toDBV2(formState, amazonFormObj);
-      const publishing = alexaPublishingAdapterV2.toDB(publishingForm);
+      const publishingForm = amazonFormAdapter.toDB(formState, amazonFormObj);
+      const publishing = alexaPublishingAdapter.toDB(publishingForm);
 
-      await clientV2.alexaService.version.updatePublishing(skillID, publishing);
-      await clientV2.api.project.update(formState.projectID, { name: publishingForm.name });
+      await client.platform.alexa.version.updatePublishing(skillID, publishing);
+      await client.api.project.update(formState.projectID, { name: publishingForm.name });
 
       updateProjectName(formState.projectID, publishingForm.name);
 
@@ -756,4 +756,4 @@ export default compose(
     form: PUBLISH_AMAZON_FORM,
     validate,
   })
-)(Skill);
+)(PublishAmazonForm);

@@ -2,7 +2,7 @@ import { isEqual } from 'lodash';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { accountLinkingSelector } from '@/ducks/skill/meta';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { AccountLinking } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
@@ -39,7 +39,7 @@ const ConnectedAccountLinkingStep: React.FC<ConnectedAccountLinkingStepProps> = 
 };
 
 const mapStateToProps = {
-  accountLinkingData: accountLinkingSelector,
+  accountLinkingData: Skill.accountLinkingSelector,
 };
 
 export default connect(mapStateToProps)(ConnectedAccountLinkingStep);

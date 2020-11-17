@@ -1,69 +1,60 @@
-import { BlockType, MARKUP_NODES } from '@/constants';
-import { BlockVariant } from '@/constants/canvas';
-import { BlockNodeData, DBNode, NodeData } from '@/models';
+import { DiagramNode } from '@voiceflow/api-sdk';
+import _isFunction from 'lodash/isFunction';
 
-import { createSimpleAdapter } from '../utils';
-import blockAdapter, { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP } from './block';
-import { creatorLogger, isSupportedBlockType } from './utils';
+import { createSimpleAdapter } from '@/client/adapters/utils';
+import { BlockType, PlatformType } from '@/constants';
+import { NodeData } from '@/models';
 
-const log = creatorLogger.child('node-data');
+import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP, getBlockAdapter } from './block';
 
-const nodeDataAdapter = createSimpleAdapter<DBNode.Extras, NodeData<unknown>, [DBNode], [string | null]>(
-  (dbData, node) => {
-    let type = APP_BLOCK_TYPE_FROM_DB[dbData.type] || dbData.type;
+const nodeDataAdapter = createSimpleAdapter<
+  { data: DiagramNode['data']; type: string },
+  NodeData<unknown>,
+  [{ platform: PlatformType; nodeID: string }],
+  [{ platform: PlatformType }]
+>(
+  ({ data: dbData, type: dbType }, { platform, nodeID }) => {
+    const getNodeType = APP_BLOCK_TYPE_FROM_DB[dbType];
 
-    if (!isSupportedBlockType(type)) {
-      type = BlockType.DEPRECATED;
-    }
-
-    // EMERGENCY FIX - LOOK FOR ALTERNATE SOLUTION IN FUTURE
-    try {
-      if (dbData.type === BlockType.DEPRECATED) {
-        if (Array.isArray(dbData.choices) && Array.isArray(dbData.inputs)) {
-          type = BlockType.CHOICE_OLD;
-        } else if (dbData.slot_type && dbData.slot_inputs) {
-          type = BlockType.CAPTURE;
-        } else if (Array.isArray(dbData.alexa?.choices) && Array.isArray(dbData.google?.choices)) {
-          type = BlockType.CHOICE;
-        } else if (Array.isArray(dbData.dialogs) && typeof dbData.randomize === 'boolean') {
-          type = BlockType.SPEAK;
-        } else if (typeof dbData.selected_integration === 'string' && typeof dbData.integrations_data === 'object') {
-          type = BlockType.INTEGRATION;
-        }
-      }
-    } catch (err) {
-      log.error(err);
-    }
-    // END EMERGENCY FIX
+    const type = _isFunction(getNodeType) ? getNodeType(dbData) : getNodeType || dbType;
 
     let data: Partial<NodeData<unknown>> = {};
+
     try {
-      const fromDb = blockAdapter[type].fromDB;
-      data = blockAdapter[type].fromDB(dbData as Parameters<typeof fromDb>[0]);
-    } catch (err) {
-      log.error('Block Adapter Error', err);
-      data = dbData as any;
-      data.deprecatedType = dbData.type;
-      type = BlockType.DEPRECATED;
+      const adapters = getBlockAdapter(platform);
+
+      data = adapters[type]?.fromDB(dbData) || { deprecatedType: type, ...dbData };
+    } catch {
+      data = { deprecatedType: type, ...dbData };
     }
 
     return {
+      name: '',
       ...data,
-      type,
-      name: node.name,
-      nodeID: node.id,
+      type: data.deprecatedType ? BlockType.DEPRECATED : type,
+      nodeID,
       path: [],
-      // blockColor cannot be null as it is being used as a 'variant' in NewBlockContainer
-      // for blocks with only one step, it will break the app
-      blockColor: dbData.color || BlockVariant.STANDARD,
     };
   },
-  ({ path, name, ...appData }, nextID) => ({
-    type: DB_BLOCK_TYPE_FROM_APP[appData.type] || appData.type,
-    ...blockAdapter[appData.type].toDB(appData),
-    color: (!MARKUP_NODES.includes(appData.type) && (appData as BlockNodeData<unknown>).blockColor) || undefined,
-    nextID: nextID || undefined,
-  })
+  ({ type, path, deprecatedType, nodeID, ...appData }, { platform }) => {
+    const getNodeType = DB_BLOCK_TYPE_FROM_APP[type];
+    const dbType = _isFunction(getNodeType) ? getNodeType(appData) : getNodeType || deprecatedType || type;
+
+    let data: DiagramNode['data'] = {};
+
+    try {
+      const adapters = getBlockAdapter(platform);
+
+      data = adapters[type]?.toDB(appData as any) || (appData as any);
+    } catch {
+      data = appData as any;
+    }
+
+    return {
+      data,
+      type: dbType,
+    };
+  }
 );
 
 export default nodeDataAdapter;

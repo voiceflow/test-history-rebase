@@ -1,7 +1,8 @@
-import clientV2 from '@/clientV2';
+import client from '@/client';
 import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';
-import * as Skill from '@/ducks/skill';
+import * as PublishInfo from '@/ducks/skill/publishInfo';
+import { activeProjectIDSelector } from '@/ducks/skill/skill/selectors';
 import { Account } from '@/models';
 import { Thunk } from '@/store/types';
 import { Nullable } from '@/types';
@@ -15,7 +16,7 @@ const log = duckLogger.child(STATE_KEY);
 
 export const linkGoogleAccount = (code: string): Thunk<Nullable<Account.Google>> => async (dispatch) => {
   try {
-    const google = await clientV2.googleService.session.linkAccount({ code });
+    const google = await client.platform.google.session.linkAccount({ code });
 
     dispatch(updateAccount({ google }));
 
@@ -30,7 +31,7 @@ export const getGoogleAccount = (): Thunk => async (dispatch) => {
   let google: Nullable<Account.Google> = null;
 
   try {
-    google = await clientV2.googleService.session.getAccount();
+    google = await client.platform.google.session.getAccount();
   } catch (err) {
     log.error(err);
   }
@@ -40,7 +41,7 @@ export const getGoogleAccount = (): Thunk => async (dispatch) => {
 
 export const unlinkGoogleAccount = (): Thunk => async (dispatch) => {
   try {
-    await clientV2.googleService.session.unlinkAccount();
+    await client.platform.google.session.unlinkAccount();
 
     dispatch(updateAccount({ google: null }));
   } catch {
@@ -50,7 +51,7 @@ export const unlinkGoogleAccount = (): Thunk => async (dispatch) => {
 
 export const linkAmazonAccount = (code: string): Thunk<Nullable<Account.Amazon>> => async (dispatch) => {
   try {
-    const amazon = await clientV2.alexaService.session.linkAccount({ code });
+    const amazon = await client.platform.alexa.session.linkAccount({ code });
 
     dispatch(updateAccount({ amazon }));
 
@@ -65,7 +66,7 @@ export const getAmazonAccount = (): Thunk => async (dispatch) => {
   let amazon: Nullable<Account.Amazon> = null;
 
   try {
-    amazon = await clientV2.alexaService.session.getAccount();
+    amazon = await client.platform.alexa.session.getAccount();
   } catch (err) {
     log.error(err);
   }
@@ -75,7 +76,7 @@ export const getAmazonAccount = (): Thunk => async (dispatch) => {
 
 export const unlinkAmazonAccount = (): Thunk => async (dispatch) => {
   try {
-    await clientV2.alexaService.session.unlinkAccount();
+    await client.platform.alexa.session.unlinkAccount();
 
     dispatch(updateAccount({ amazon: null }));
   } catch {
@@ -84,17 +85,17 @@ export const unlinkAmazonAccount = (): Thunk => async (dispatch) => {
 };
 
 export const updateVendorSkillID = (projectID: string, vendorID: string, skillID: string): Thunk => async (dispatch) => {
-  await clientV2.alexaService.project.updateVendorSkillID(projectID, vendorID, skillID);
+  await client.platform.alexa.project.updateVendorSkillID(projectID, vendorID, skillID);
 
-  dispatch(Skill.updatePublishPlatforms[PlatformType.ALEXA]({ amznID: skillID }));
+  dispatch(PublishInfo.updatePublishPlatforms[PlatformType.ALEXA]({ amznID: skillID }));
 };
 
 export const updateSelectedVendor = (vendorID: string): Thunk => async (dispatch, getState) => {
-  const projectID = Skill.activeProjectIDSelector(getState());
+  const projectID = activeProjectIDSelector(getState());
 
-  const { skillID } = await clientV2.alexaService.project.updateSelectedVendor(projectID, vendorID);
+  const { skillID } = await client.platform.alexa.project.updateSelectedVendor(projectID, vendorID);
 
-  dispatch(Skill.updatePublishPlatforms[PlatformType.ALEXA]({ amznID: skillID, vendorId: vendorID }));
+  dispatch(PublishInfo.updatePublishPlatforms[PlatformType.ALEXA]({ amznID: skillID, vendorId: vendorID }));
 };
 
 export const syncSelectedVendor = (): Thunk => async (dispatch, getState) => {
@@ -102,7 +103,7 @@ export const syncSelectedVendor = (): Thunk => async (dispatch, getState) => {
 
   const state = getState();
   const vendors = amazonVendorsSelector(state);
-  const skillVendor = Skill.selectedVendorSelector(state);
+  const skillVendor = PublishInfo.selectedVendorSelector(state);
 
   if (skillVendor && vendors.length && !vendors.find((vendor) => vendor?.id === skillVendor)) {
     await dispatch(updateSelectedVendor(vendors[0]?.id));

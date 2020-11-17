@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { getPlatformService } from '@/clientV2';
+import client from '@/client';
 import { JobStatus } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
@@ -28,19 +28,19 @@ export const ExportProvider: React.FC = ({ children }) => {
   const platform = useSelector(Skill.activePlatformSelector);
   const projectID = useSelector(Skill.activeProjectIDSelector);
 
-  const service = getPlatformService(platform);
+  const platformClient = client.platform(platform);
 
   const getJob = React.useCallback(async () => {
-    const currentJob = await service?.export.getStatus(projectID);
+    const currentJob = await platformClient?.export.getStatus(projectID);
 
     setJob(currentJob || null);
-  }, [projectID, service]);
+  }, [projectID, platformClient]);
 
   const start = React.useCallback(async () => {
-    const result = await service?.export.run(projectID);
+    const result = await platformClient?.export.run(projectID);
 
     setJob(result?.job || null);
-  }, [projectID, service]);
+  }, [projectID, platformClient]);
 
   const updateCurrentStage = React.useCallback(
     async (data: unknown) => {
@@ -48,10 +48,10 @@ export const ExportProvider: React.FC = ({ children }) => {
         return;
       }
 
-      await service?.export.updateStage(projectID, job.stage.type as never, data);
+      await platformClient?.export.updateStage(projectID, job.stage.type as never, data);
       await getJob(); // to fetch updated status
     },
-    [projectID, service, job?.stage.type]
+    [projectID, platformClient, job?.stage.type]
   );
 
   const stopPulling = React.useCallback(() => {
@@ -63,17 +63,17 @@ export const ExportProvider: React.FC = ({ children }) => {
   const cancel = React.useCallback(async () => {
     stopPulling();
 
-    await service?.export.cancel(projectID);
+    await platformClient?.export.cancel(projectID);
 
     setJob(null);
-  }, [projectID, service]);
+  }, [projectID, platformClient]);
 
   useDidUpdateEffect(() => {
     // stop pulling when job is finished or job was canceled
     if (job === null || job.status === JobStatus.FINISHED) {
       stopPulling();
 
-      service?.export.cancel(projectID);
+      platformClient?.export.cancel(projectID);
 
       return;
     }

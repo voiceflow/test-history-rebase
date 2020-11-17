@@ -22,7 +22,7 @@ export const loadThreads = (projectID: string): Thunk<Thread[]> => async (dispat
 };
 
 export const loadThread = (projectID: string, threadID: string): Thunk<Thread> => async (dispatch) => {
-  const thread: Thread = await client.thread.fetchThread(projectID, threadID);
+  const thread: Thread = await client.thread.get(projectID, threadID);
 
   dispatch(ThreadActions.updateThread(thread.id, thread));
 

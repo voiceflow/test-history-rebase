@@ -2,13 +2,13 @@ import ObjectID from 'bson-objectid';
 import moment from 'moment';
 import React from 'react';
 
-import { ProjectVersion } from '@/client/project';
-import clientV2 from '@/clientV2';
+import client from '@/client';
 import { FlexCenter } from '@/components/Flex';
 import { LoadCircle } from '@/components/Loader';
 import SvgIcon from '@/components/SvgIcon';
 import { ClickableText } from '@/components/Text/components/ClickableText';
 import { toast } from '@/components/Toast';
+import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
@@ -20,6 +20,12 @@ import { ConnectedProps } from '@/types';
 
 import { Descriptor, IconContainer, TableContainer, TableHeader, TableRow } from './components';
 
+type ProjectVersion = {
+  versionID: string;
+  created: string;
+  platform: PlatformType;
+};
+
 const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, currentVersionID, setConfirm, goToCanvas, platform }) => {
   const [loading, setLoading] = React.useState(true);
   const [versions, setVersions] = React.useState<ProjectVersion[]>([]);
@@ -27,7 +33,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, curren
 
   const swapVersions = async (versionId: string) => {
     try {
-      await clientV2.api.restoreBackup(projectID, versionId);
+      await client.backup.restore(projectID, versionId);
       goToCanvas(versionId);
       toast.success('Successfully restored version');
     } catch (err) {
@@ -47,12 +53,11 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, curren
   const fetchBackups = React.useCallback(async () => {
     try {
       // legacy backup system, requires design and refactor
-      const DBversions = (await clientV2.api.project.getVersions(projectID)).filter((version) => version.platformData.status?.stage !== 'LIVE');
+      const dbVersions = (await client.api.project.getVersions(projectID)).filter((version) => version.platformData.status?.stage !== 'LIVE');
       setVersions(
-        DBversions.map((version) => ({
-          skill_id: version._id,
+        dbVersions.map((version) => ({
+          versionID: version._id,
           platform,
-          published_platform: platform,
           created: ObjectID.isValid(version._id) ? new ObjectID(version._id).getTimestamp().toString() : '',
         }))
       );
@@ -84,19 +89,19 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, curren
                   <span>Name</span>
                   <span>Version</span>
                 </TableHeader>
-                {versions.map((version: ProjectVersion, i: number) => {
+                {versions.map((version, index) => {
                   return (
-                    <TableRow key={i}>
+                    <TableRow key={index}>
                       <span>{moment(version.created).fromNow()}</span>
                       <span style={{ color: '#62778c' }}>
-                        <SvgIcon size={12} icon={version.platform === 'google' ? 'google' : 'amazon'} />
+                        <SvgIcon size={12} icon={version.platform === PlatformType.GOOGLE ? 'google' : 'amazon'} />
                         Automatic
                       </span>
                       <span>
-                        {version.skill_id === currentVersionID ? (
+                        {version.versionID === currentVersionID ? (
                           'Current'
                         ) : (
-                          <ClickableText onClick={() => confirmRestore(version.skill_id)}>Restore</ClickableText>
+                          <ClickableText onClick={() => confirmRestore(version.versionID)}>Restore</ClickableText>
                         )}
                       </span>
                     </TableRow>

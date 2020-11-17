@@ -4,9 +4,9 @@ import * as Account from '@/ducks/account';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount, useToggle } from '@/hooks';
-import UploadV2 from '@/pages/Canvas/header/ActionGroup/components/AlexaUploadButtonV2/Button';
+import Upload from '@/pages/Canvas/header/ActionGroup/components/AlexaUploadButton/Button';
 import UploadPopup from '@/pages/Canvas/header/ActionGroup/components/UploadPopup';
-import { Alexa } from '@/pages/Publish/UploadV2';
+import { Alexa } from '@/pages/Publish/Upload';
 import { ExportContext } from '@/pages/Skill/contexts';
 import { ConnectedProps } from '@/types';
 import { isNotify, isReady, isRunning } from '@/utils/job';
@@ -56,7 +56,7 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
           </Text>
 
           <ActionContainer>
-            <UploadV2 isActive={isRunning(job)} onClick={exportClick} label="Export" />
+            <Upload isActive={isRunning(job)} onClick={exportClick} label="Export" />
 
             <UploadPopup open={!isReady(job) && open} onClose={onClose}>
               <Alexa export />

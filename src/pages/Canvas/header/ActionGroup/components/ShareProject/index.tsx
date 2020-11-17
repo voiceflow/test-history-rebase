@@ -30,7 +30,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   sharePrototype,
   platform,
   projectID,
-  renderPrototypeV2,
+  renderPrototype,
   updateProjectPrivacy,
 }) => {
   const { open: openProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
@@ -50,7 +50,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 
   const onClickPrototype = () => {
     if (render) {
-      renderPrototypeV2({ aborted: false });
+      renderPrototype({ aborted: false });
     }
   };
 
@@ -147,7 +147,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   sharePrototype: Prototype.sharePrototype,
-  renderPrototypeV2: Prototype.renderPrototypeV2,
+  renderPrototype: Prototype.renderPrototype,
   updateProjectPrivacy: Project.updateProjectPrivacy,
 };
 

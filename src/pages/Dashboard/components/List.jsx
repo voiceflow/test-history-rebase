@@ -43,7 +43,7 @@ export function List(props) {
     connectDragSource,
     isDraggingPreview,
     connectDropTarget,
-    createSkill,
+    createProject,
   } = props;
 
   const isEmpty = !projects || !projects.length;
@@ -174,7 +174,6 @@ export function List(props) {
                               listId={id}
                               created={project.created}
                               isFB={false}
-                              isReference={project.reference}
                               avatarUrl={icon}
                               name={project.name}
                               diagram={project.diagramID}
@@ -203,7 +202,7 @@ export function List(props) {
                   })}
                 >
                   <div className="main-list-footer-center">
-                    <Button isFlat isBtn onClick={() => createSkill(id)}>
+                    <Button isFlat isBtn onClick={() => createProject(id)}>
                       Create Project
                     </Button>
                   </div>
@@ -235,7 +234,7 @@ List.propTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   name: PropTypes.string,
   projects: PropTypes.array,
-  createSkill: PropTypes.func,
+  createProject: PropTypes.func,
   onRename: PropTypes.func,
   onRemove: PropTypes.func,
   isCreated: PropTypes.bool,

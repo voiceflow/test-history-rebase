@@ -265,7 +265,7 @@ export namespace NodeData {
     url?: string;
     body?: APIKeyVal[];
     headers?: APIKeyVal[];
-    mapping?: { path: string; var: string | null }[];
+    mapping?: { path: string; var: string | null; index?: number }[];
     content?: string;
     parameters?: APIKeyVal[];
     bodyInputType?: APIBodyType;

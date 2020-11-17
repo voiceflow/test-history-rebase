@@ -2,7 +2,7 @@ import { AlexaProjectMemberData } from '@voiceflow/alexa-types';
 import React from 'react';
 import { Alert } from 'reactstrap';
 
-import client from '@/clientV2';
+import client from '@/client';
 import Box, { Flex } from '@/components/Box';
 import Button from '@/components/Button';
 import Input from '@/components/Input';

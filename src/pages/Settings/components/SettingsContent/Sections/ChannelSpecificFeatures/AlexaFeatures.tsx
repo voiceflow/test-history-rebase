@@ -4,8 +4,7 @@ import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import Section, { SectionVariant } from '@/components/Section';
 import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
-import { activeProjectIDSelector, skillMetaSelector } from '@/ducks/skill';
-import { saveSettings } from '@/ducks/skill/sideEffectsV2';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -82,12 +81,12 @@ const AlexaFeatures: React.FC<ConnectedAlexaFeatures & { platformMeta: PlatformS
 };
 
 const mapStateToProps = {
-  meta: skillMetaSelector,
-  projectID: activeProjectIDSelector,
+  meta: Skill.skillMetaSelector,
+  projectID: Skill.activeProjectIDSelector,
 };
 
 const mapDispatchToProps = {
-  saveSettings,
+  saveSettings: Skill.saveSettings,
 };
 
 type ConnectedAlexaFeatures = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

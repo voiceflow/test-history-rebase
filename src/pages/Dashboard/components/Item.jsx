@@ -45,7 +45,6 @@ export function Item(props) {
     onDownload,
     connectDragSource,
     connectDropTarget,
-    isReference,
   } = props;
 
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
@@ -53,7 +52,6 @@ export function Item(props) {
   const [canCloneProject] = usePermission(Permission.CLONE_PROJECT);
 
   const { open: openCloneModal } = useModals(ModalType.IMPORT_PROJECT);
-  const pathTo = isReference ? `/reference/${id}` : `/${RootRoute.PROJECT}/${version_id}/canvas/${diagram}`;
   const dateFromID = new Date(parseInt(id.substring(0, 8), 16));
   const color = PROJECT_COLORS[dateFromID.getTime() % PROJECT_COLORS.length] || PROJECT_COLORS[0];
   const options = canManageProjects
@@ -93,7 +91,7 @@ export function Item(props) {
     <div>
       <ProjectListItem
         hasOptions={hasOptions}
-        to={pathTo}
+        to={`/${RootRoute.PROJECT}/${version_id}/canvas/${diagram}`}
         hidden={isDragging}
         isActive={isDropdownOpened}
         tabIndex={0}

@@ -1,12 +1,5 @@
-import cuid from 'cuid';
-
-import nodeAdapter from '@/client/adapters/creator/node';
-import nodeDataAdapter from '@/client/adapters/creator/nodeData';
-import { BlockType, STEP_NODES } from '@/constants';
-import * as Creator from '@/ducks/creator';
-import * as Skill from '@/ducks/skill';
+import { BlockType } from '@/constants';
 import { EntityMap, Node } from '@/models';
-import { getManager } from '@/pages/Canvas/managers';
 import { Pair } from '@/types';
 import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
@@ -68,98 +61,22 @@ class DiagramEngine extends EngineConsumer {
 
   async cloneEntities(entityMap: EntityMap, coords: Coords) {
     const clonedEntityMap = await cloneEntityMap(entityMap);
-
-    // single step
-    if (clonedEntityMap.nodesWithData.length === 1 && STEP_NODES.includes(clonedEntityMap.nodesWithData[0].node.type)) {
-      const originalNode = entityMap.nodesWithData[0].node;
-      const nodeToCopy = clonedEntityMap.nodesWithData[0].node;
-
-      const parentNode = this.engine.getNodeByID(originalNode.parentNode!);
-
-      let canBeAdded = true;
-      const index = parentNode.combinedNodes.indexOf(originalNode.id) + 1;
-
-      // nodes with that have mergeTerminator: true cannot have any steps after them
-      const allNodesBefore = parentNode.combinedNodes.slice(0, index);
-      allNodesBefore.forEach((nodeID: string) => {
-        const node: Node = this.engine.getNodeByID(nodeID);
-        const config = getManager(node.type);
-        if (config.mergeTerminator || config.mergeInitializer) {
-          canBeAdded = false;
-        }
-      });
-
-      // nodes that have no in ports (intent) cannot have steps before it
-      const allNodesAfter = parentNode.combinedNodes.slice(index);
-      allNodesAfter.forEach((nodeID: string) => {
-        const node: Node = this.engine.getNodeByID(nodeID);
-        if (node.type === BlockType.INTENT) {
-          canBeAdded = false;
-        }
-      });
-
-      // if a step can be added to the block, add it
-      if (canBeAdded) {
-        await this.engine.node.addNestedV2({
-          type: nodeToCopy.type,
-          index,
-          nodeID: cuid(),
-          position: this.engine.getCanvasMousePosition(),
-          factoryData: entityMap.nodesWithData[0].data,
-          parentNodeID: originalNode.parentNode!,
-        });
-      }
-      // if a step cannot be added to the block, create a new block
-      else {
-        await this.engine.node.add(nodeToCopy.type, coords, clonedEntityMap.nodesWithData[0].data, nodeToCopy.id);
-      }
-    } else {
-      await this.engine.node.addMany(clonedEntityMap, coords);
-    }
+    await this.engine.node.addMany(clonedEntityMap, coords);
 
     return clonedEntityMap;
   }
 
   duplicateParentNode(node: Node) {
-    const isStep = STEP_NODES.includes(node.type);
     const parentNode = this.engine.getNodeByID(node.parentNode!);
+    const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [node.id] };
+
+    const entities = this.getParentEntities(node.parentNode!, true, nodeOverrides);
+    const childEntities = this.getEntities(node.id, false);
+    const mergedEntities = mergeEntityMaps(entities, childEntities);
+
     const coords = this.engine.canvas!.toCoords([parentNode.x, parentNode.y]).add(DUPLICATE_OFFSET);
-    if (!isStep) {
-      const nodeOverrides = {
-        parentNode: null,
-        x: parentNode.x,
-        y: parentNode.y,
-        combinedNodes: [node.id],
-      };
 
-      const entities = this.getParentEntities(node.parentNode!, true, nodeOverrides);
-      const childEntities = this.getEntities(node.id, false);
-      const mergedEntities = mergeEntityMaps(entities, childEntities);
-
-      return this.cloneEntities(mergedEntities, coords);
-    }
-    const state = this.engine.store.getState();
-    const creator = Creator.creatorDiagramSelector(state);
-    const targetPlatform = Skill.activePlatformSelector(state);
-    const dbNode = nodeAdapter.toDB(node, {
-      nodes: creator.nodes,
-      ports: creator.ports,
-      data: creator.data,
-      linksByPortID: creator.linksByPortID,
-      platform: targetPlatform,
-    });
-    const nodeData = nodeDataAdapter.fromDB(dbNode.extras, dbNode);
-    const nodesWithData: EntityMap = {
-      nodesWithData: [
-        {
-          data: nodeData,
-          node,
-        },
-      ],
-      ports: [],
-      links: [],
-    };
-    return this.cloneEntities(nodesWithData, coords);
+    return this.cloneEntities(mergedEntities, coords);
   }
 
   duplicateChildNode(node: Node) {
@@ -178,7 +95,6 @@ class DiagramEngine extends EngineConsumer {
     if (rootNode.type === BlockType.START) {
       return null;
     }
-
     const {
       nodesWithData: [nodeWithData],
     } = await (rootNode.parentNode ? this.duplicateParentNode(rootNode) : this.duplicateChildNode(rootNode));

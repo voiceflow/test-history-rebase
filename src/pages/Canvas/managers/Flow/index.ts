@@ -16,7 +16,7 @@ const FlowManager: NodeConfig<NodeData.Flow> = {
   step: FlowStep,
   editor: FlowEditor,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -28,7 +28,6 @@ const FlowManager: NodeConfig<NodeData.Flow> = {
       diagramID: null,
       inputs: [],
       outputs: [],
-      ...factoryData,
     },
   }),
 };

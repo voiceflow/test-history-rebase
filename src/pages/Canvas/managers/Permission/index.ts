@@ -17,7 +17,7 @@ const PermissionManager: NodeConfig<NodeData.Permission> = {
   step: PermissionStep,
   editor: PermissionEditor,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -28,7 +28,6 @@ const PermissionManager: NodeConfig<NodeData.Permission> = {
       name: 'Permission',
       permissions: [],
       custom: false,
-      ...factoryData,
     },
   }),
 };

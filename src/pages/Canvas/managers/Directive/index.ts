@@ -15,7 +15,7 @@ const DirectiveManager: NodeConfig<NodeData.Directive> = {
   label: 'Directive',
   tip: 'send directive to alexa',
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -25,7 +25,6 @@ const DirectiveManager: NodeConfig<NodeData.Directive> = {
     data: {
       name: 'Directive',
       directive: '',
-      ...factoryData,
     },
   }),
 };

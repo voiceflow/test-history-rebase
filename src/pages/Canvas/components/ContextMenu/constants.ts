@@ -1,4 +1,4 @@
-import { BlockType, CLIPBOARD_DATA_KEY, STEP_NODES } from '@/constants';
+import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 
@@ -63,34 +63,25 @@ const isBlock = (nodeID: string, engine: Engine) => {
   return node.type === BlockType.COMBINED;
 };
 
-const isStep = (nodeID: string, engine: Engine) => {
-  const node = engine.getNodeByID(nodeID);
-
-  if (!node) return false;
-
-  return STEP_NODES.includes(node.type);
-};
-
-export const NODE_MENU_OPTIONS: ContextMenuOption<CanvasAction>[] = [
-  // List of menu options for Block
+export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
-    label: 'Rename Block',
+    label: 'Rename',
     value: CanvasAction.RENAME_BLOCK,
     shouldRender: ({ target: nodeID }, { engine }) => {
       const node = engine.getNodeByID(nodeID!);
 
-      return node && isBlock(nodeID!, engine) && !BLOCKS_WITHOUT_RENAME.includes(node.type);
+      return node && !BLOCKS_WITHOUT_RENAME.includes(node.type);
     },
   },
   {
-    label: 'Duplicate Block',
+    label: 'Duplicate',
     value: CanvasAction.DUPLICATE_BLOCK,
     shouldRender: ({ target: nodeID }, { engine }) => {
       return isBlock(nodeID!, engine);
     },
   },
   {
-    label: 'Copy Block',
+    label: 'Copy',
     value: CanvasAction.COPY_BLOCK,
     shouldRender: ({ target: nodeID }, { engine }) => {
       return isBlock(nodeID!, engine);
@@ -105,37 +96,12 @@ export const NODE_MENU_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     },
   },
   {
-    label: 'Delete Block',
+    label: 'Delete',
     value: CanvasAction.DELETE_BLOCK,
-    shouldRender: ({ target: nodeID }, { engine }) => {
-      return isBlock(nodeID!, engine);
-    },
-  },
-  // List of menu options for Step
-  {
-    label: 'Copy Step',
-    value: CanvasAction.COPY_BLOCK,
-    shouldRender: ({ target: nodeID }, { engine }) => {
-      return isStep(nodeID!, engine);
-    },
-  },
-  {
-    label: 'Duplicate Step',
-    value: CanvasAction.DUPLICATE_BLOCK,
-    shouldRender: ({ target: nodeID }, { engine }) => {
-      return isStep(nodeID!, engine);
-    },
-  },
-  {
-    label: 'Delete Step',
-    value: CanvasAction.DELETE_BLOCK,
-    shouldRender: ({ target: nodeID }, { engine }) => {
-      return isStep(nodeID!, engine);
-    },
   },
 ];
 
 export const TARGET_OPTIONS = {
-  [ContextMenuTarget.NODE]: NODE_MENU_OPTIONS,
+  [ContextMenuTarget.NODE]: BLOCK_OPTIONS,
   [ContextMenuTarget.CANVAS]: CANVAS_OPTIONS,
 };

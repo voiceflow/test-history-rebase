@@ -19,7 +19,7 @@ const CommandManager: NodeConfig<NodeData.Command> = {
   editor: CommandEditor,
   editorsByPath: EDITORS_BY_PATH,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {},
     data: {
       name: 'New Command',
@@ -41,7 +41,6 @@ const CommandManager: NodeConfig<NodeData.Command> = {
         mappings: [],
         resume: true,
       },
-      ...factoryData,
     },
   }),
 };

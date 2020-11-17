@@ -24,7 +24,7 @@ const ChoiceManager: NodeConfig<NodeData.Interaction> = {
   editor: ChoiceEditor,
   editorsByPath: EDITORS_BY_PATH,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -65,7 +65,6 @@ const ChoiceManager: NodeConfig<NodeData.Interaction> = {
           },
         ],
       },
-      ...factoryData,
     },
   }),
 };

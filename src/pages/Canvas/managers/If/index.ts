@@ -20,7 +20,7 @@ const IfManager: NodeConfig<NodeData.If> = {
   step: IfStep,
   editor: IfEditor,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -50,7 +50,6 @@ const IfManager: NodeConfig<NodeData.If> = {
           ],
         },
       ],
-      ...factoryData,
     },
   }),
 };

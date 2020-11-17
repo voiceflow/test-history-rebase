@@ -18,7 +18,7 @@ const SpeakManager: NodeConfig<NodeData.Speak> = {
   step: SpeakStep,
   editor: SpeakEditor,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -36,7 +36,6 @@ const SpeakManager: NodeConfig<NodeData.Speak> = {
           content: '',
         },
       ],
-      ...factoryData,
     },
   }),
 };

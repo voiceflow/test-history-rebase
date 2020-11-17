@@ -17,7 +17,7 @@ const RandomManager: NodeConfig<NodeData.Random> = {
   step: RandomStep,
   editor: RandomEditor,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -28,7 +28,6 @@ const RandomManager: NodeConfig<NodeData.Random> = {
       name: 'Random',
       paths: 2,
       noDuplicates: false,
-      ...factoryData,
     },
   }),
 };

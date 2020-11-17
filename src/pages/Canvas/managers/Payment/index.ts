@@ -17,7 +17,7 @@ const PaymentManager: NodeConfig<NodeData.Payment> = {
   step: PaymentStep,
   editor: PaymentEditor,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -27,7 +27,6 @@ const PaymentManager: NodeConfig<NodeData.Payment> = {
     data: {
       name: 'Payment',
       productID: null,
-      ...factoryData,
     },
   }),
 };

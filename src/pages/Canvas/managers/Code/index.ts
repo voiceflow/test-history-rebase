@@ -16,7 +16,7 @@ const CodeManager: NodeConfig<NodeData.Code> = {
   step: CodeStep,
   editor: CodeEditor,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -26,7 +26,6 @@ const CodeManager: NodeConfig<NodeData.Code> = {
     data: {
       name: 'Code',
       code: '',
-      ...factoryData,
     },
   }),
 };

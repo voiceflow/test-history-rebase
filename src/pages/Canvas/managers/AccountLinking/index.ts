@@ -16,7 +16,7 @@ const AccountLinkingManager: NodeConfig<{}> = {
   step: AccountLinkingStep,
   editor: AccountLinkingEditor,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -25,7 +25,6 @@ const AccountLinkingManager: NodeConfig<{}> = {
     },
     data: {
       name: 'Account Linking',
-      ...factoryData,
     },
   }),
 };

@@ -17,7 +17,7 @@ const ReminderManager: NodeConfig<NodeData.Reminder> = {
   step: ReminderStep,
   editor: ReminderEditor,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -32,7 +32,6 @@ const ReminderManager: NodeConfig<NodeData.Reminder> = {
       minutes: '',
       seconds: '',
       recurrenceBool: false,
-      ...factoryData,
     },
   }),
 };

@@ -19,7 +19,7 @@ const UserInfoManager: NodeConfig<NodeData.UserInfo> = {
   step: UserInfoStep,
   editor: UserInfoEditor,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -36,7 +36,6 @@ const UserInfoManager: NodeConfig<NodeData.UserInfo> = {
           product: null,
         },
       ],
-      ...factoryData,
     },
   }),
 };

@@ -17,7 +17,7 @@ const DisplayManager: NodeConfig<NodeData.Display> = {
   step: DisplayStep,
   editor: DisplayEditor,
 
-  factory: (factoryData?) => ({
+  factory: () => ({
     node: {
       ports: {
         in: [{}],
@@ -34,7 +34,6 @@ const DisplayManager: NodeConfig<NodeData.Display> = {
       backgroundImage: null,
       splashHeader: '',
       jsonFileName: null,
-      ...factoryData,
     },
   }),
 };

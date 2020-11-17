@@ -53,7 +53,10 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
     (event: MouseEvent) => {
       const nodeRightClicked = event.button === 2;
       const middleMouseButtonClicked = event.button === 1;
-      if (event.defaultPrevented || engine.isCanvasBusy || nodeRightClicked || draggedCanvas || middleMouseButtonClicked) return;
+      const multiSelect = event.shiftKey;
+      if (event.defaultPrevented || engine.isCanvasBusy || nodeRightClicked || draggedCanvas || middleMouseButtonClicked || multiSelect) {
+        return;
+      }
       engine.clearActivation();
     },
     [draggedCanvas]

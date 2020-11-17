@@ -234,6 +234,48 @@ jobs:
             fi
             kubectl set image --namespace voiceflow-v1 deployment/storybook-$CIRCLE_BRANCH storybook=168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook:k8s-$CIRCLE_SHA1
 
+  build-deploy-admin-dev-environment:
+    executor: vfcommon/build-executor
+    environment:
+      IMAGE_REPO: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin"
+    steps:
+      - add_ssh_keys: # To enable write access to repository for removing dev environment branches
+          fingerprints:
+            - "93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a"
+      - attach_workspace:
+          at: /tmp/vf-build
+      - setup_remote_docker
+      - run:
+          name: "Build admin docker image"
+          command: |
+            IMAGE_TAG="k8s-$CIRCLE_SHA1"
+            IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
+            docker build \
+              -f admin.dockerfile \
+              -t $IMAGE_NAME .
+      - run:
+          name: "Push admin docker images"
+          command: |
+            IMAGE_TAG="k8s-$CIRCLE_SHA1"
+            IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
+            $(aws ecr get-login --no-include-email --region us-east-1)
+            docker push $IMAGE_NAME
+      - run:
+          name: Install latest envcli utility
+          command: |
+            API_URL="https://$GITHUB_TOKEN:@api.github.com/repos/voiceflow/envcli"
+            ASSET_ID=$(curl $API_URL/releases/latest | jq -r '.assets[2].id')
+            curl -J -L -H "Accept: application/octet-stream" "$API_URL/releases/assets/$ASSET_ID" --output envcli.tar.gz
+            tar -xf envcli.tar.gz
+      - run:
+          name: "Deploy dev environment image"
+          command: |
+            IMAGE_TAG="k8s-$CIRCLE_SHA1"
+            IMAGE_NAME="$IMAGE_REPO:$IMAGE_TAG"
+            ENV_NAME="${CIRCLE_BRANCH%%_*}"
+            aws eks --region us-east-1 update-kubeconfig --name development
+            NON_INTERACTIVE=true ./envcli edit component adminui adminui -n $ENV_NAME -i $IMAGE_NAME
+
   build-deploy-admin-image:
     executor: vfcommon/build-executor
     environment:
@@ -393,6 +435,20 @@ workflows:
               only:
                 - /env-.*/
 
+      - build-admin:
+          context: dev-test
+          filters:
+            branches:
+              only:
+                - /env-.*/
+      - build-deploy-admin-dev-environment:
+          context: dev-test
+          requires:
+            - build-admin
+          filters:
+            branches:
+              only:
+                - /env-.*/
   admin:
     jobs:
       - build-admin:

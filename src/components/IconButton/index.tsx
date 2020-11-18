@@ -3,7 +3,7 @@ import React from 'react';
 import SvgIcon, { SvgIconProps } from '@/components/SvgIcon';
 import { Either } from '@/types';
 
-import { ActionContainer, Container, OutlineContainer, SubtleContainer } from './components';
+import { ActionContainer, Container, OutlineContainer, SubtleContainer, SuccessContainer } from './components';
 import { ContainerProps } from './components/Container';
 import { OutlineContainerProps } from './components/OutlineContainer';
 import { SubtleContainerProps } from './components/SubtleContainer';
@@ -28,6 +28,7 @@ const ICON_BUTTON_CONTAINERS: Record<IconButtonVariant, React.FC<ContainerProps 
   [IconButtonVariant.SUBTLE]: SubtleContainer,
   [IconButtonVariant.ACTION]: ActionContainer,
   [IconButtonVariant.OUTLINE]: OutlineContainer,
+  [IconButtonVariant.SUCCESS]: SuccessContainer,
 };
 
 // eslint-disable-next-line react/display-name

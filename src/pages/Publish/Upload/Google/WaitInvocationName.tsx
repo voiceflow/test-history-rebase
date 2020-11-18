@@ -66,7 +66,6 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
         <BlockText color="secondary" fontWeight={600} mr={4}>
           Invocation Name
         </BlockText>
-
         <TippyTooltip
           html={
             <>

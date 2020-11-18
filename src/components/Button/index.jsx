@@ -4,7 +4,7 @@ import React from 'react';
 import SvgIcon from '@/components/SvgIcon';
 import { ClassName } from '@/styles/constants';
 
-import { PrimaryButton, SecondaryButton, TertiaryButton } from './components';
+import { PrimaryButton, QuaternaryButton, SecondaryButton, TertiaryButton } from './components';
 import { ButtonVariant } from './constants';
 
 export { ButtonVariant };
@@ -13,6 +13,7 @@ const BUTTON_VARIANTS = {
   [ButtonVariant.PRIMARY]: PrimaryButton,
   [ButtonVariant.SECONDARY]: SecondaryButton,
   [ButtonVariant.TERTIARY]: TertiaryButton,
+  [ButtonVariant.QUATERNARY]: QuaternaryButton,
 };
 
 function Button({ variant, className, isLoading = false, children, ...props }, ref) {

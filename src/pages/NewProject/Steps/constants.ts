@@ -68,6 +68,7 @@ export const PLATFORM_META: PlatformMetaProps = {
     platformAppType: 'Skill',
     iconType: IconType.ICON,
     icon: 'amazonAlexa',
+    iconColor: '#5fcaf4',
     iconSize: 28,
   },
   [PlatformType.GOOGLE]: {

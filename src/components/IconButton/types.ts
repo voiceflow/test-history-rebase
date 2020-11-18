@@ -5,4 +5,5 @@ export enum IconButtonVariant {
   SUBTLE = 'subtle',
   ACTION = 'action',
   OUTLINE = 'outline',
+  SUCCESS = 'success',
 }

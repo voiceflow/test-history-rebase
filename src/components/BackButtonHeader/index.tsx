@@ -4,11 +4,14 @@ import { Flex } from '@/components/Box';
 import { FlexCenter, FlexEnd } from '@/components/Flex';
 import { BackButton } from '@/components/Header/components';
 import SvgIcon from '@/components/SvgIcon';
+import { FeatureFlag } from '@/config/features';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useHotKeys } from '@/hooks';
+import { useFeature, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
+import { ProgressStage } from '@/pages/Publish/Upload/components';
+import { PublishContext } from '@/pages/Skill/contexts';
 import ArrowLeftIcon from '@/svgs/arrow-left.svg';
 import { ConnectedProps } from '@/types';
 
@@ -36,37 +39,45 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHead
   goToPublish,
   isViewerOrLibraryRole,
 }) => {
+  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
+  const publishContextValue = React.useContext(PublishContext)!;
+
   useHotKeys(Hotkey.PROTOTYPE_PAGE, () => goToPrototype());
   useHotKeys(Hotkey.DESIGN_PAGE, () => goToDesign());
   useHotKeys(Hotkey.LAUNCH_PAGE, () => !isViewerOrLibraryRole && goToPublish());
 
   return render ? (
-    <HeaderContainer style={{ minWidth: '100%' }}>
-      <Flex style={{ padding: 'none', height: '70px', backgroundColor: '#fff' }}>
-        <FlexCenter style={{ minWidth: '100%', height: '100%', padding: 'none' }}>
-          {onNavigateBack && (
-            <BackButtonComp hasBackText={!!navigateBackText} onClick={onNavigateBack}>
-              <SvgIcon icon={ArrowLeftIcon} size={14} className="icon-back" />
-              {navigateBackText && <NavigateBackTextContainer>{navigateBackText}</NavigateBackTextContainer>}
-            </BackButtonComp>
-          )}
-          {header}
-          <FlexEnd
-            style={{
-              padding: 'none',
-              alignItems: 'center',
-              marginRight: '32px',
-              width: '100%',
-              minHeight: '100%',
-              height: '100%',
-            }}
-          >
-            {children}
-          </FlexEnd>
-        </FlexCenter>
-      </Flex>
-      {subHeader && <SubHeader>{subHeader}</SubHeader>}
-    </HeaderContainer>
+    <>
+      {headerRedesign.isEnabled && publishContextValue?.job?.stage.data && (
+        <ProgressStage progress={(publishContextValue?.job?.stage.data as any)!.progress} />
+      )}
+      <HeaderContainer style={{ minWidth: '100%' }}>
+        <Flex style={{ padding: 'none', height: '70px', backgroundColor: '#fff' }}>
+          <FlexCenter style={{ minWidth: '100%', height: '100%', padding: 'none' }}>
+            {onNavigateBack && (
+              <BackButtonComp hasBackText={!!navigateBackText} onClick={onNavigateBack}>
+                <SvgIcon icon={ArrowLeftIcon} size={14} className="icon-back" />
+                {navigateBackText && <NavigateBackTextContainer>{navigateBackText}</NavigateBackTextContainer>}
+              </BackButtonComp>
+            )}
+            {header}
+            <FlexEnd
+              style={{
+                padding: 'none',
+                alignItems: 'center',
+                marginRight: '32px',
+                width: '100%',
+                minHeight: '100%',
+                height: '100%',
+              }}
+            >
+              {children}
+            </FlexEnd>
+          </FlexCenter>
+        </Flex>
+        {subHeader && <SubHeader>{subHeader}</SubHeader>}
+      </HeaderContainer>
+    </>
   ) : null;
 };
 

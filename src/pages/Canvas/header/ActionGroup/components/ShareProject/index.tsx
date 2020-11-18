@@ -5,14 +5,16 @@ import Button, { ButtonVariant } from '@/components/Button';
 import Dropdown from '@/components/Dropdown';
 import { ModalFooter } from '@/components/LegacyModal';
 import Tooltip from '@/components/TippyTooltip';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType, PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useModals, usePermission, useSmartReducerV2, useTrackingEvents } from '@/hooks';
+import { useFeature, useModals, usePermission, useSmartReducerV2, useTrackingEvents } from '@/hooks';
 import InviteByLink from '@/pages/Collaborators/components/InviteByLink';
+import { useCanvasMode } from '@/pages/Skill/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps, Nullable } from '@/types';
 import { stopImmediatePropagation } from '@/utils/dom';
@@ -33,6 +35,8 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   renderPrototype,
   updateProjectPrivacy,
 }) => {
+  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
+
   const { open: openProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
   const { open: openTestableLinksModal } = useModals(ModalType.TESTABLE_LINKS);
   const { open: openCanvasExportModal } = useModals(ModalType.CANVAS_EXPORT);
@@ -42,6 +46,8 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   const [canInviteByLink] = usePermission(Permission.INVITE_BY_LINK);
 
   const [trackingEvents] = useTrackingEvents();
+
+  const isCanvasMode = useCanvasMode();
 
   const [state, stateApi] = useSmartReducerV2({
     testableLink: null as Nullable<string>,
@@ -125,14 +131,29 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     >
       {(ref, onToggle, isOpen) => (
         <Tooltip title="Share Project">
-          <Button
-            ref={ref}
-            variant={platform === PlatformType.GENERAL ? ButtonVariant.PRIMARY : ButtonVariant.SECONDARY}
-            onClick={wrapToggleShare(isOpen, onToggle)}
-            isActive={isOpen}
-          >
-            Share
-          </Button>
+          {headerRedesign.isEnabled && isCanvasMode ? (
+            <Button
+              ref={ref}
+              preventFocusStyle
+              variant={ButtonVariant.QUATERNARY}
+              large
+              onClick={wrapToggleShare(isOpen, onToggle)}
+              isActive={isOpen}
+            >
+              Share
+            </Button>
+          ) : (
+            <Button
+              ref={ref}
+              preventFocusStyle
+              variant={platform === PlatformType.GENERAL ? ButtonVariant.PRIMARY : ButtonVariant.SECONDARY}
+              large
+              onClick={wrapToggleShare(isOpen, onToggle)}
+              isActive={isOpen}
+            >
+              Share
+            </Button>
+          )}
         </Tooltip>
       )}
     </Dropdown>

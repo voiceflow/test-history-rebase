@@ -45,6 +45,7 @@ export { default as community } from './community.svg';
 export { default as checked } from './images/icons/check.svg';
 export { default as creditCard } from './credit-card.svg';
 export { default as canvas } from './canvas.svg';
+export { default as connectGoogle } from './connect-google.svg';
 
 // d
 export { default as display } from './display.svg';
@@ -81,8 +82,9 @@ export { default as google } from './brands/google.svg';
 export { default as grid } from './grid.svg';
 export { default as googleSheets } from './google-sheets.svg';
 export { default as googleAssistant } from './google-assistant.svg';
-export { default as connectGoogle } from './connect-google.svg';
+export { default as googleAssistantNoColor } from './google-assistant-no-color.svg';
 export { default as greater } from './greater.svg';
+export { default as greenCheckMark } from './green-checkmark.svg';
 
 // h
 export { default as hyperlink } from './hyperlink.svg';

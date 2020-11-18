@@ -34,6 +34,7 @@ export namespace AlexaPublishJob {
       errorType: AlexaPublishJobErrorType;
       error?: any;
       amazonError?: boolean;
+      progress?: number;
     }
   >;
 

@@ -21,7 +21,7 @@ import { Interaction, NLCIntent, PMStatus, TMAmazonIntent } from '../types';
 import AudioController from './Audio';
 import MessageController from './Message';
 import TimeoutController from './Timeout';
-import { getNLCIntentSlotsMap } from './utils/intent';
+import { getNLCIntentSlotsMap, getUtteranceChoices } from './utils/intent';
 
 export type TraceControllerProps = {
   nlc: NLC;
@@ -146,7 +146,6 @@ class TraceController {
     this.trace = tailTrace;
 
     this.props.updateStatus(PMStatus.NAVIGATING);
-
     switch (topTrace.type) {
       case TraceType.CHOICE: {
         this.processChoiceTrace(topTrace);
@@ -189,16 +188,7 @@ class TraceController {
     const intents = this.props.nlc.getIntents();
 
     // if the choices are intent names, replace with the first utterance of that intent
-    const utteranceChoices = choices.map((choice) => {
-      const intent = intents.find(({ intent: name }) => name === choice.name);
-
-      const noSlotUtterances = intent?.utterances?.filter((utterance) => !utterance.match(/{\w{1,32}}/g));
-      if (noSlotUtterances?.length) {
-        return { name: noSlotUtterances[0] };
-      }
-
-      return choice;
-    });
+    const utteranceChoices = getUtteranceChoices(choices, intents);
 
     this.props.setInteractions(utteranceChoices);
   }
@@ -256,11 +246,21 @@ class TraceController {
     await this.next(TraceController.getNextStateRequest({ intent: TMAmazonIntent.NEXT }));
   }
 
-  private async processSpeakTrace({ id, payload: { src, type, voice, message } }: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
+  private async processSpeakTrace(
+    { id, payload: { src, type, voice, message, choices } }: SpeakTrace,
+    { onlyMessage }: { onlyMessage?: boolean } = {}
+  ) {
     if (type === SpeakTraceAudioType.AUDIO) {
       this.message.audio(id, { name: message, src });
     } else {
       this.message.speak(id, { message, voice, src });
+    }
+
+    // For handling reprompts
+    if (choices) {
+      const intents = this.props.nlc.getIntents();
+      const utteranceChoices = getUtteranceChoices(choices, intents);
+      this.props.setInteractions(utteranceChoices);
     }
 
     if (onlyMessage) {

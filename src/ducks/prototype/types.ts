@@ -25,7 +25,10 @@ export type TraceGeneric<T, P = {}> = {
 export type EndTrace = TraceGeneric<TraceType.END>;
 export type FlowTrace = TraceGeneric<TraceType.FLOW, { diagramID?: string }>;
 export type BlockTrace = TraceGeneric<TraceType.BLOCK, { blockID: string }>;
-export type SpeakTrace = TraceGeneric<TraceType.SPEAK, { src: string; type: SpeakTraceAudioType; voice?: string; message: string }>;
+export type SpeakTrace = TraceGeneric<
+  TraceType.SPEAK,
+  { src: string; type: SpeakTraceAudioType; voice?: string; message: string; choices: { name: string }[] }
+>;
 export type DebugTrace = TraceGeneric<TraceType.DEBUG, { message: string }>;
 
 export interface Choice {

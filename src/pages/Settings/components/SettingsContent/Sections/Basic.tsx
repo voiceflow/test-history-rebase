@@ -37,13 +37,13 @@ const getLocaleLanguage = (locales: any[]) => {
 };
 
 const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
-  saveProjectName,
-  saveInvocationName,
-  saveLocales,
   meta,
   skill,
   platform,
   platformMeta,
+  saveLocales,
+  saveProjectName,
+  saveInvocationName,
 }) => {
   const { invName } = meta;
   const { name, locales } = skill;
@@ -117,6 +117,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
       <Section customContentStyling={sectionStyling} variant={SectionVariant.QUATERNARY} contentSuffix={projectName} header="Project Name">
         <Input value={newProjectName} onChange={(e: ChangeEvent<HTMLInputElement>) => setNewProjectName(e.target.value)} onBlur={saveSettings} />
       </Section>
+
       {platform !== PlatformType.GENERAL && (
         <>
           <Section
@@ -128,6 +129,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
           >
             <Input value={newInvocation} onChange={(e: ChangeEvent<HTMLInputElement>) => setNewInvocation(e.target.value)} onBlur={saveSettings} />
           </Section>
+
           <Section
             customContentStyling={sectionStyling}
             isDividerNested

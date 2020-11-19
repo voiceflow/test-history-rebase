@@ -30,6 +30,7 @@ export type PlatformSettingsMetaProps = {
     events?: React.FC | string;
     repeatDialog?: any;
     repeatEverything?: any;
+    modelSensitivity?: React.FC | string;
   };
   tabs: SettingsTabsType[];
   localeText?: string;
@@ -55,6 +56,7 @@ export const PLATFORM_SETTINGS_META = <Record<PlatformType, PlatformSettingsMeta
       events: Alexa.Events,
       repeatDialog: General.RepeatDialog,
       repeatEverything: General.RepeatEverything,
+      modelSensitivity: Alexa.ModelSensitivity,
     },
     tabs: [SettingsTabsType.GENERAL, SettingsTabsType.VERSIONS],
     localeText: 'Locales',

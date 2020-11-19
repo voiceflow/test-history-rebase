@@ -9,11 +9,11 @@ import log from '@/utils/logger';
 
 const PLATFORMS = Object.values(PlatformType);
 
-const getPlatformComponentSwitcher = (
-  components: Partial<Record<PlatformType, React.FC>>,
-  defaultComponent: React.FC
+const getPlatformComponentSwitcher = <T,>(
+  components: Partial<Record<PlatformType, React.FC<T>>>,
+  defaultComponent: React.FC<T>
   // eslint-disable-next-line react/display-name
-): React.FC<UploadProjectButtonType> => ({ platform }) => {
+): React.FC<PlatformComponentSwitcherProps & T> => ({ platform, ...props }) => {
   const Component = React.useMemo(() => {
     if (platform in components) {
       return components[platform]!;
@@ -22,14 +22,14 @@ const getPlatformComponentSwitcher = (
     return defaultComponent;
   }, [platform]);
 
-  return <Component />;
+  return <Component {...(props as T)} />;
 };
 
 const mapStateToProps = {
   platform: activePlatformSelector,
 };
 
-type UploadProjectButtonType = ConnectedProps<typeof mapStateToProps>;
+type PlatformComponentSwitcherProps = ConnectedProps<typeof mapStateToProps>;
 
 export const platformMissingValuesWarn = <T extends any>(valuesMap: Partial<Record<PlatformType, T>>, message: string, skipWarning?: boolean) => {
   if (!skipWarning && IS_DEVELOPMENT) {
@@ -41,15 +41,15 @@ export const platformMissingValuesWarn = <T extends any>(valuesMap: Partial<Reco
   }
 };
 
-export const createPlatformComponent = (
+export const createPlatformComponent = <T extends any>(
   name: string,
-  components: Partial<Record<PlatformType, React.FC>>,
-  defaultComponent: React.FC = () => <div>Platform Component is not found!</div>,
+  components: Partial<Record<PlatformType, React.FC<T>>>,
+  defaultComponent: React.FC<T> = () => <div>Platform Component is not found!</div>,
   skipWarning?: boolean
 ) => {
   platformMissingValuesWarn(components, `${name} component has missing components for platforms:`, skipWarning);
 
-  return connect(mapStateToProps)(getPlatformComponentSwitcher(components, defaultComponent));
+  return connect(mapStateToProps)(getPlatformComponentSwitcher(components, defaultComponent)) as React.FC<T>;
 };
 
 export const getPlatformValue = <T extends any>(

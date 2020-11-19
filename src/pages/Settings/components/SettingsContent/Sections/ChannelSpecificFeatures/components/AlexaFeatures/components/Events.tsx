@@ -12,11 +12,14 @@ import { SkillEventsErrorMessage } from '@/pages/Settings/components';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { ConnectedProps } from '@/types';
 
-import AlexaGadgetsToggle from './components/AlexaGadgetsToggle';
-
 const AceEditorComponent: any = AceEditor;
 
-const AlexaFeatures: React.FC<ConnectedAlexaFeatures & { platformMeta: PlatformSettingsMetaProps }> = ({ meta, platformMeta, saveSettings }) => {
+type AlexaEventsOwnProps = {
+  platformMeta: PlatformSettingsMetaProps;
+  modelSensitivityShown?: boolean;
+};
+
+const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({ meta, platformMeta, saveSettings, modelSensitivityShown }) => {
   const { alexaEvents: propAlexaEvents } = meta;
   const { descriptors } = platformMeta;
   const { events } = descriptors;
@@ -49,34 +52,37 @@ const AlexaFeatures: React.FC<ConnectedAlexaFeatures & { platformMeta: PlatformS
     }
   };
   return (
-    <>
-      <AlexaGadgetsToggle />
-      <Section contentPrefix={events} header="Alexa Skill Events" isDividerNested={!!gadgetsFeat.isEnabled} variant={SectionVariant.QUATERNARY}>
-        {alexaEventError && (
-          <SkillEventsErrorMessage>
-            <FormControl>{alexaEventError}</FormControl>
-          </SkillEventsErrorMessage>
-        )}
-        <FormControl contentBottomUnits={3.2}>
-          <AceEditorComponent
-            hasBorder
-            onBlur={save}
-            name="datasource_editor"
-            mode="json"
-            theme="github"
-            placeholder="Input skill events JSON configuration"
-            onChange={updateAlexaEvents}
-            fontSize={14}
-            showPrintMargin={false}
-            showGutter={true}
-            highlightActiveLine={true}
-            value={alexaEvents}
-            editorProps={{ $blockScrolling: true }}
-            setOptions={ACE_EDITOR_OPTIONS}
-          />
-        </FormControl>
-      </Section>
-    </>
+    <Section
+      contentPrefix={events}
+      header="Alexa Skill Events"
+      variant={SectionVariant.QUATERNARY}
+      dividers={gadgetsFeat.isEnabled || modelSensitivityShown}
+      isDividerNested
+    >
+      {alexaEventError && (
+        <SkillEventsErrorMessage>
+          <FormControl>{alexaEventError}</FormControl>
+        </SkillEventsErrorMessage>
+      )}
+      <FormControl contentBottomUnits={3.2}>
+        <AceEditorComponent
+          hasBorder
+          onBlur={save}
+          name="datasource_editor"
+          mode="json"
+          theme="github"
+          placeholder="Input skill events JSON configuration"
+          onChange={updateAlexaEvents}
+          fontSize={14}
+          showPrintMargin={false}
+          showGutter={true}
+          highlightActiveLine={true}
+          value={alexaEvents}
+          editorProps={{ $blockScrolling: true }}
+          setOptions={ACE_EDITOR_OPTIONS}
+        />
+      </FormControl>
+    </Section>
   );
 };
 
@@ -89,6 +95,6 @@ const mapDispatchToProps = {
   saveSettings: Skill.saveSettings,
 };
 
-type ConnectedAlexaFeatures = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+type ConnectedAlexaEvents = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(AlexaFeatures);
+export default connect(mapStateToProps, mapDispatchToProps)(AlexaEvents) as React.FC<AlexaEventsOwnProps>;

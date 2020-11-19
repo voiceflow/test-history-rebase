@@ -1,4 +1,4 @@
-import { Locale } from '@voiceflow/alexa-types';
+import { Locale, ModelSensitivity } from '@voiceflow/alexa-types';
 
 import { PlatformType } from '@/constants';
 
@@ -82,6 +82,7 @@ export type FullSkill = Skill & {
     google_versions: any;
     settings: {
       customInterface?: boolean;
+      modelSensitivity?: null | ModelSensitivity;
     };
     invName: string;
     smallIcon: string;

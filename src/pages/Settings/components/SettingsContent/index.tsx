@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { PlatformType } from '@/constants';
-import AlexaFeatures from '@/pages/Settings/components/SettingsContent/Sections/ChannelSpecificFeatures/AlexaFeatures';
+import AlexaFeatures from '@/pages/Settings/components/SettingsContent/Sections/ChannelSpecificFeatures';
 import { ContentSection } from '@/pages/Settings/components/SettingsContent/components';
 import { SectionVariants } from '@/pages/Settings/components/constants';
 import { PLATFORM_SETTINGS_META, SettingSections, SettingsTabsType } from '@/pages/Settings/constants';
@@ -9,7 +9,7 @@ import { PLATFORM_SETTINGS_META, SettingSections, SettingsTabsType } from '@/pag
 import ProjectVersions from '../ProjectVersions';
 import { Basic, Canvas, DangerZone, GlobalConversationLogic } from './Sections';
 
-const SectionComponents: Record<SettingSections, React.FC> = {
+const SectionComponents: Record<SettingSections, React.FC<{ platform: PlatformType; title: string; platformMeta: any }>> = {
   [SettingSections.BASIC]: Basic,
   [SettingSections.CANVAS]: Canvas,
   [SettingSections.GLOBAL_CONVERSATION_LOGIC]: GlobalConversationLogic,
@@ -28,8 +28,9 @@ const SettingsContent: React.FC<SettingsContentType> = ({ platform, selectedTab 
   return selectedTab === SettingsTabsType.GENERAL ? (
     <>
       {sections.map((section: SettingSections, index) => {
-        const SectionComponent: React.FC<any> = SectionComponents[section];
+        const SectionComponent = SectionComponents[section];
         const variant = section === SettingSections.DANGER_ZONE ? SectionVariants.SECONDARY : SectionVariants.PRIMARY;
+
         return (
           <ContentSection variant={variant} key={index} title={section}>
             <SectionComponent platform={platform} title={section} key={index} platformMeta={PLATFORM_SETTINGS_META[platform]} />

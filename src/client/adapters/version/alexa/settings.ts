@@ -24,27 +24,38 @@ export const RepeatMap = {
 
 const alexaSettingsAdapter = createAdapter<AlexaSettings, SkillSettings>(
   (settings) => {
-    const { error, session, repeat, accountLinking, customInterface, events, permissions } = defaultAlexaSettings(settings);
+    const { error, session, repeat, accountLinking, customInterface, events, permissions, modelSensitivity } = defaultAlexaSettings(settings);
     return {
       repeat: RepeatMap[repeat],
       accountLinking: accountLinking && accountLinkingAdapter.fromDB(accountLinking),
       alexaEvents: events || '',
       settings: {
         customInterface,
+        modelSensitivity,
       },
       alexa_permissions: permissions,
       errorPrompt: errorPromptAdapter.fromDB(error),
       ...restartAdapter.fromDB(session),
     };
   },
-  ({ resumePrompt, errorPrompt, restart, repeat, accountLinking, alexaEvents, alexa_permissions, settings: { customInterface = false } = {} }) => ({
-    session: restartAdapter.toDB({ restart, resumePrompt }),
+  ({
+    restart,
+    repeat,
+    settings: { customInterface = false, modelSensitivity = null } = {},
+    errorPrompt,
+    alexaEvents,
+    resumePrompt,
+    accountLinking,
+    alexa_permissions,
+  }) => ({
     error: errorPromptAdapter.toDB(errorPrompt),
     repeat: (_invert(RepeatMap)[repeat] as RepeatType) || RepeatType.DIALOG,
-    accountLinking: accountLinking && accountLinkingAdapter.toDB(accountLinking),
     events: alexaEvents?.trim() || null,
-    customInterface,
+    session: restartAdapter.toDB({ restart, resumePrompt }),
     permissions: alexa_permissions,
+    accountLinking: accountLinking && accountLinkingAdapter.toDB(accountLinking),
+    customInterface,
+    modelSensitivity,
   })
 );
 

@@ -9,4 +9,4 @@ export * from './skill';
 export * from './publishInfo';
 export * from './sideEffects';
 
-export default compositeReducer(skillReducer, { publishInfo: publishInfoReducer as any, meta: metaReducer });
+export default compositeReducer(skillReducer, { publishInfo: publishInfoReducer, meta: metaReducer });

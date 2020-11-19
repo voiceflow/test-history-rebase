@@ -32,7 +32,7 @@ const validate = (acceptedFiles) => {
   return false;
 };
 
-const validateLink = (link = '') => {
+export const validateLink = (link = '') => {
   if (!link.match(VARIABLE_STRING_REGEXP) && !link.match(HTTPS_URL_REGEX)) {
     return UPLOAD_ERROR.INVALID_URL;
   }

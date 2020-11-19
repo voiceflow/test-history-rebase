@@ -2,10 +2,13 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import Tabs from '@/components/Tabs';
+import { FeatureFlag } from '@/config/features';
+import { PlatformType } from '@/constants';
 import * as Router from '@/ducks/router';
+import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useHotKeys } from '@/hooks';
+import { useFeature, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ConnectedProps } from '@/types';
 
@@ -32,6 +35,7 @@ export type SkillSubHeaderProps = {
 };
 
 const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderProps> = ({
+  platform,
   showPublish,
   activePage,
   goToDesign,
@@ -39,7 +43,9 @@ const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderPr
   goToPublish,
   isViewerOrLibraryRole,
 }) => {
-  const options = showPublish ? TABS : TABS.filter((tab) => tab.value !== 'publish');
+  const codeExport = useFeature(FeatureFlag.CODE_EXPORT);
+
+  const options = showPublish && !(platform === PlatformType.GENERAL && !codeExport.isEnabled) ? TABS : TABS.filter((tab) => tab.value !== 'publish');
 
   const onChange = React.useCallback(
     (value) => {
@@ -71,6 +77,7 @@ const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderPr
 };
 
 const mapStateToProps = {
+  platform: Skill.activePlatformSelector,
   isViewerOrLibraryRole: Workspace.isViewerOrLibraryRoleSelector,
 };
 

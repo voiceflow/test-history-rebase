@@ -40,9 +40,10 @@ export enum CanvasRoute {
 }
 
 export enum PublishRoute {
-  GOOGLE = 'google',
   ALEXA = 'alexa',
+  GOOGLE = 'google',
   EXPORT = 'export',
+  GENERAL = 'general',
 }
 
 export enum ToolsRoute {

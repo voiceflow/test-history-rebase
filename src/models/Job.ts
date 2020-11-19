@@ -4,11 +4,13 @@ import {
   AlexaPublishJobErrorType,
   AlexaPublishJobSuccessType,
   AlexaStageType,
+  GeneralJobErrorType,
+  GeneralJobSuccessType,
+  GeneralStageType,
   GoogleExportJobSuccessType,
   GooglePublishJobErrorType,
   GooglePublishJobSuccessType,
   GoogleStageType,
-  PrototypeStageType,
 } from '@/constants/platforms';
 
 export type JobStage<T extends string = string, D extends object = object> = {
@@ -161,22 +163,29 @@ export namespace GoogleExportJob {
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
 }
 
-export namespace PrototypeJob {
-  export type IdleStage = JobStage<PrototypeStageType.IDLE, Record<string, unknown>>;
+export namespace GeneralJob {
+  export type IdleStage = JobStage<GeneralStageType.IDLE, Record<string, unknown>>;
 
   export type ErrorStage = JobStage<
-    PrototypeStageType.ERROR,
+    GeneralStageType.ERROR,
     {
       message: string;
-      errorType: ProgressStage;
-      error?: string;
+      errorType: GeneralJobErrorType;
+      error?: any;
     }
   >;
 
-  export type SuccessStage = JobStage<PrototypeStageType.SUCCESS, Record<string, unknown>>;
+  export type SuccessStage = JobStage<
+    GeneralStageType.SUCCESS,
+    {
+      data: string;
+      fileName: string;
+      successType: GeneralJobSuccessType;
+    }
+  >;
 
   export type ProgressStage = JobStage<
-    PrototypeStageType.PROGRESS,
+    GeneralStageType.PROGRESS,
     {
       message: string;
       progress: number;

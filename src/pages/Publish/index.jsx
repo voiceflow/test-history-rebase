@@ -1,7 +1,7 @@
 import './Skill.css';
 
 import React from 'react';
-import { NavLink, Switch } from 'react-router-dom';
+import { NavLink, Redirect, Switch } from 'react-router-dom';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Flex from '@/components/Flex';
@@ -26,18 +26,24 @@ const updateLink = (link, versionID) => {
 };
 
 const TABS = {
-  [PlatformType.ALEXA]: {
-    // eslint-disable-next-line react/display-name
-    display: () => <Flex>Amazon Alexa</Flex>,
-    link: `/${PublishRoute.ALEXA}`,
-    exact: true,
-  },
-  [PlatformType.GOOGLE]: {
-    // eslint-disable-next-line react/display-name
-    display: () => <Flex>Google Assistant</Flex>,
-    link: `/${PublishRoute.GOOGLE}`,
-  },
+  [PlatformType.ALEXA]: [
+    {
+      // eslint-disable-next-line react/display-name
+      display: () => <Flex>Amazon Alexa</Flex>,
+      link: `/${PublishRoute.ALEXA}`,
+      exact: true,
+    },
+  ],
+  [PlatformType.GOOGLE]: [
+    {
+      // eslint-disable-next-line react/display-name
+      display: () => <Flex>Google Assistant</Flex>,
+      link: `/${PublishRoute.GOOGLE}`,
+    },
+  ],
+  [PlatformType.GENERAL]: [],
 };
+
 const CODE_EXPORT_TAB = {
   // eslint-disable-next-line react/display-name
   display: () => <Flex>Code Export</Flex>,
@@ -55,9 +61,9 @@ function Publish(props) {
   } = props;
 
   const codeExport = useFeature(FeatureFlag.CODE_EXPORT);
-  let tabOptions = [TABS[platform]];
+  let tabOptions = [...TABS[platform]];
 
-  if (codeExport.isEnabled && platform === PlatformType.ALEXA) {
+  if (codeExport.isEnabled && platform !== PlatformType.GOOGLE) {
     tabOptions = [...tabOptions, CODE_EXPORT_TAB];
   }
 
@@ -76,6 +82,7 @@ function Publish(props) {
           <PrivateRoute {...ownProps} path={`${path}/${PublishRoute.ALEXA}`} skillID={skillID} component={PublishAmazon} />
           <PrivateRoute {...ownProps} path={`${path}/${PublishRoute.GOOGLE}`} skillID={skillID} component={PublishGoogle} />
           <PrivateRoute {...ownProps} path={`${path}/${PublishRoute.EXPORT}`} skillID={skillID} component={Export} isLocked={false} />
+          <Redirect from={`${path}/${PublishRoute.GENERAL}`} to={`${path}/${PublishRoute.EXPORT}`} />
         </Switch>
       </PlatformContainer>
     </Container>

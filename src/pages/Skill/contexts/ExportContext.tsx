@@ -6,11 +6,11 @@ import { JobStatus } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
 import { useDidUpdateEffect, useTeardown } from '@/hooks';
-import { AlexaExportJob, GoogleExportJob } from '@/models';
+import { AlexaExportJob, GeneralJob, GoogleExportJob } from '@/models';
 import { Nullable } from '@/types';
 
 export type ExportContextValue = {
-  job: Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob>;
+  job: Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob | GeneralJob.AnyJob>;
   start: () => Promise<void>;
   cancel: () => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
@@ -23,7 +23,7 @@ const PULL_TIMEOUT = 1500; // 1.5s
 
 export const ExportProvider: React.FC = ({ children }) => {
   const pullTimeout = React.useRef<number>();
-  const [job, setJob] = React.useState<Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob>>(null);
+  const [job, setJob] = React.useState<Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob | GeneralJob.AnyJob>>(null);
 
   const platform = useSelector(Skill.activePlatformSelector);
   const projectID = useSelector(Skill.activeProjectIDSelector);

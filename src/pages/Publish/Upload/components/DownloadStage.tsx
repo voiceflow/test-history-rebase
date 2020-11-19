@@ -2,12 +2,12 @@ import React from 'react';
 
 import { toast } from '@/components/Toast';
 import { useSetup } from '@/hooks';
-import { AlexaExportJob, GoogleExportJob, JobStageData } from '@/models';
+import { AlexaExportJob, GeneralJob, GoogleExportJob, JobStageData } from '@/models';
 import { DataTypes, download } from '@/utils/dom';
 
 type DownloadProps = {
   cancel: () => void;
-  stageData: JobStageData<AlexaExportJob.SuccessStage> | JobStageData<GoogleExportJob.SuccessStage>;
+  stageData: JobStageData<AlexaExportJob.SuccessStage> | JobStageData<GoogleExportJob.SuccessStage> | JobStageData<GeneralJob.SuccessStage>;
 };
 
 const Download: React.FC<DownloadProps> = ({ cancel, stageData }) => {

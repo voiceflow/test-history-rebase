@@ -1,19 +1,19 @@
 import { GeneralSettings, GeneralVersionData, Voice } from '@voiceflow/general-types';
 
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
-import { PrototypeJob } from '@/models';
+import { GeneralStageType } from '@/constants/platforms';
+import { GeneralJob } from '@/models';
 
-import { createPrototypeService, createVersionService } from '../utils';
-import exportService from './export';
+import { createExportService, createPrototypeService, createVersionService } from '../utils';
 import projectService from './project';
 import publishService from './publish';
 
 const googleServiceClient = {
-  export: exportService(),
+  export: createExportService<GeneralJob.AnyJob, GeneralStageType>(GENERAL_SERVICE_ENDPOINT),
   project: projectService,
   publish: publishService(),
   version: createVersionService<GeneralSettings<Voice>, {}, GeneralVersionData<Voice>>(GENERAL_SERVICE_ENDPOINT),
-  prototype: createPrototypeService<PrototypeJob.AnyJob>(GENERAL_SERVICE_ENDPOINT),
+  prototype: createPrototypeService<GeneralJob.AnyJob>(GENERAL_SERVICE_ENDPOINT),
 };
 
 export default googleServiceClient;

@@ -4251,10 +4251,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-mentions@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@types/react-mentions/-/react-mentions-3.3.0.tgz#b446362a1ae20d0c71661c22abd523e8e033220a"
-  integrity sha512-sySDvqX9N5jyOSITd/aylm2b95ALc7zw3grqShqKw7oe0SR0yR+p3O7JoIQjRfVyqYqoOC4WSGyUtoSfnBuiWw==
+"@types/react-mentions@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@types/react-mentions/-/react-mentions-3.3.1.tgz#f0fa1138f7fbf3012546260b634cbf23f735c0fe"
+  integrity sha512-o27Fb89lX4pGcA6lMkE+n7d/jqE9Zty3DYIUTVL0SBx8YV4uiqjI6d/34zVL2bUxq1mXSHb34hm2i358C/rRoA==
   dependencies:
     "@types/react" "*"
 

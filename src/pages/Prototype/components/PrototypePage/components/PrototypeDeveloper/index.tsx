@@ -3,7 +3,7 @@ import React from 'react';
 import Drawer from '@/components/Drawer';
 import Input from '@/components/Input';
 import Section, { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
-import { DEVELOPER_SECTION_WIDTH, SUBMENU_WIDTH } from '@/components/SubMenu/constants';
+import { SUBMENU_WIDTH } from '@/components/SubMenu/constants';
 import Tooltip from '@/components/TippyTooltip';
 import { VariableTag } from '@/components/VariableTag';
 import { FeatureFlag } from '@/config/features';
@@ -15,6 +15,7 @@ import { PROTOTYPE_SIDEBAR_WIDTH } from '@/pages/Canvas/components/PrototypeSide
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
 
+import { DEVELOPER_SECTION_WIDTH } from '../../constants';
 import { Container, Variables } from './components';
 
 type PrototypeDeveloperProps = {

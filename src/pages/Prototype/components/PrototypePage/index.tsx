@@ -2,17 +2,17 @@ import React from 'react';
 
 import SubMenu, { SubMenuItem } from '@/components/SubMenu';
 import { FeatureFlag } from '@/config/features';
-import { PROTOTYPE_MENU_OPTIONS, PrototypeMode, prototypeModeSelector } from '@/ducks/prototype';
 import * as Prototype from '@/ducks/prototype';
+import { PrototypeMode, prototypeModeSelector } from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import Canvas from '@/pages/Canvas';
-import PrototypeSidebar from '@/pages/Canvas/components/PrototypeSidebar';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { ConnectedProps } from '@/types';
 
-import { PrototypeDeveloper, PrototypeDisplay } from './components';
+import { PrototypeDeveloper, PrototypeDisplaySettings } from './components';
+import { PROTOTYPE_MENU_OPTIONS } from './constants';
 
 const PrototypePage: React.FC<ConnectedPrototypePageProps> = ({ mode, platform, updatePrototypeMode }) => {
   const prototypeTest = useFeature(FeatureFlag.PROTOTYPE_TEST);
@@ -23,7 +23,7 @@ const PrototypePage: React.FC<ConnectedPrototypePageProps> = ({ mode, platform, 
       case PrototypeMode.CANVAS:
         return <Canvas />;
       case PrototypeMode.DISPLAY:
-        return <PrototypeDisplay />;
+        return <PrototypeDisplaySettings open={isPrototypingMode} />;
       case PrototypeMode.DEVELOPER:
         return (
           <>
@@ -47,7 +47,6 @@ const PrototypePage: React.FC<ConnectedPrototypePageProps> = ({ mode, platform, 
             }}
           />
           {renderPrototypePageContent()}
-          <PrototypeSidebar />
         </>
       )}
     </>

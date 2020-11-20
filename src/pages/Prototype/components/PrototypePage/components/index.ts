@@ -1,4 +1,4 @@
 import PrototypeDeveloper from './PrototypeDeveloper';
-import PrototypeDisplay from './PrototypeDisplay';
+import PrototypeDisplaySettings from './PrototypeDisplaySettings';
 
-export { PrototypeDisplay, PrototypeDeveloper };
+export { PrototypeDisplaySettings, PrototypeDeveloper };

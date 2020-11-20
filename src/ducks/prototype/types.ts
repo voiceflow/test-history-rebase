@@ -1,5 +1,7 @@
 import NLC from '@voiceflow/natural-language-commander';
 
+import { DeviceType } from '@/pages/Prototype/components/PrototypePage/constants';
+
 // trace types
 export enum TraceType {
   BLOCK = 'block',
@@ -112,5 +114,5 @@ export interface PrototypeState {
   startTime: number;
   context: Context;
   mode: PrototypeMode;
-  display: string | null;
+  display: DeviceType | null;
 }

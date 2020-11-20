@@ -66,6 +66,8 @@ export { default as editName } from './edit-name.svg';
 export { default as elipsis } from './elipsis.svg';
 export { default as emptyState } from './empty-state.svg';
 export { default as emptyCheckbox } from './images/icons/empty.svg';
+export { default as echoShow } from './echo-show.svg';
+export { default as echoSpot } from './echo-spot.svg';
 
 // f
 export { default as frame } from './frame.svg';
@@ -75,6 +77,9 @@ export { default as folderLight } from './folder-light.svg';
 export { default as forward } from './forward.svg';
 export { default as filledCheck } from './filled-check.svg';
 export { default as flag } from './flag.svg';
+export { default as fireHD8 } from './fire-hd-8.svg';
+export { default as fireHD10 } from './fire-hd-10.svg';
+export { default as fireTV } from './fire-tv.svg';
 
 // g
 export { default as globe } from './images/globe.svg';

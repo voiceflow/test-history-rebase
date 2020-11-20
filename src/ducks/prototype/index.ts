@@ -6,6 +6,7 @@ import {
   UpdatePrototype,
   UpdatePrototypeContext,
   UpdatePrototypeContextStore,
+  UpdatePrototypeDisplay,
   UpdatePrototypeMode,
   UpdatePrototypeStatus,
 } from './actions';
@@ -53,6 +54,11 @@ const updatePrototypeModeReducer: Reducer<PrototypeState, UpdatePrototypeMode> =
   mode,
 });
 
+const updatePrototypeDisplayReducer: Reducer<PrototypeState, UpdatePrototypeDisplay> = (state, { payload: display }) => ({
+  ...state,
+  display,
+});
+
 const updatePrototypeContextReducer: Reducer<PrototypeState, UpdatePrototypeContext> = (state, { payload }) => ({
   ...state,
   context: {
@@ -80,6 +86,8 @@ const prototypeReducer: RootReducer<PrototypeState, AnyPrototypeAction> = (state
       return updatePrototypeStatusReducer(state, action);
     case PrototypeAction.UPDATE_TEST_MODE:
       return updatePrototypeModeReducer(state, action);
+    case PrototypeAction.UPDATE_TEST_DISPLAY:
+      return updatePrototypeDisplayReducer(state, action);
     case PrototypeAction.UPDATE_TEST_CONTEXT:
       return updatePrototypeContextReducer(state, action);
     case PrototypeAction.UPDATE_TEST_CONTEXT_STORE:

@@ -25,4 +25,4 @@ export const prototypeShowChipsSelector = createSelector([prototypeSelector], ({
 
 export const prototypeModeSelector = createSelector([prototypeSelector], ({ mode }) => mode);
 
-export const prototypeDisplaySelector = createSelector([prototypeSelector], ({ display }) => display);
+export const prototypeDisplaySelector = createSelector(prototypeSelector, ({ display }) => display);

@@ -109,6 +109,17 @@ const SectionContainer = styled.div<SectionContainerProps>`
             font-weight: ${isCollapsed ? 'normal' : '600'};
             color: #62778c;
           `;
+        case SectionVariant.DEVICE:
+          return css`
+            color: #62778c;
+            font-size: 13px;
+            letter-spacing: 0.34px;
+            text-transform: uppercase;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+          `;
         case SectionVariant.PRIMARY:
         default:
           return css`
@@ -151,6 +162,20 @@ const SectionContainer = styled.div<SectionContainerProps>`
         ${Header} {
           padding-bottom: 10px;
           padding-top: 25px;
+        }
+      `;
+    }
+
+    if (variant === SectionVariant.DEVICE) {
+      return css`
+        border-bottom: 1px solid #dfe3ed;
+        ${Header} {
+          padding-bottom: 19px;
+          padding-top: 18px;
+        }
+
+        ${ContentContainer} {
+          padding: 0;
         }
       `;
     }

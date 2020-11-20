@@ -108,6 +108,7 @@ export namespace NodeData {
   export type Speak = {
     randomize: boolean;
     dialogs: {
+      id: string;
       content?: string;
       type: DialogType;
       voice?: string;

@@ -1,5 +1,6 @@
 import { Voice } from '@voiceflow/general-types';
 import { StepData } from '@voiceflow/general-types/build/nodes/speak';
+import cuid from 'cuid';
 
 import { DialogType } from '@/constants';
 import { NodeData } from '@/models';
@@ -10,7 +11,7 @@ const speakAdapter = createBlockAdapter<StepData<Voice>, NodeData.Speak>(
   ({ randomize, dialogs }) => ({
     randomize,
     dialogs: dialogs.map(({ voice, content }) =>
-      voice === Voice.AUDIO ? { url: content, type: DialogType.AUDIO } : { type: DialogType.VOICE, voice, content }
+      voice === Voice.AUDIO ? { id: cuid.slug(), url: content, type: DialogType.AUDIO } : { id: cuid.slug(), type: DialogType.VOICE, voice, content }
     ),
   }),
   ({ randomize, dialogs }) => ({

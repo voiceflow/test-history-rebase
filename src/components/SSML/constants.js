@@ -7,7 +7,6 @@ const PROSODY_RATE_REGEXP = /^\d+(m?s)?$/;
 const PROSODY_PITCH_REGEXP = /^(\+|-)\d+(\.\d+)?%$/;
 const PROSODY_VOLUME_REGEXP = /^(\+|-)\d+(\.\d+)?dB$/;
 
-export const DEFAULT_VOICE = 'Alexa';
 export const VOICES = constants.voices;
 
 const UNIVERSAL_SAY_AS_OPTS = ['cardinal', 'ordinal', 'characters', 'fraction', 'expletive', 'unit', 'spell-out', 'date', 'telephone'];

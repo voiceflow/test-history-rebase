@@ -24,12 +24,15 @@ export const RepeatMap = {
 
 const alexaSettingsAdapter = createAdapter<AlexaSettings, SkillSettings>(
   (settings) => {
-    const { error, session, repeat, accountLinking, customInterface, events, permissions, modelSensitivity } = defaultAlexaSettings(settings);
+    const { error, session, repeat, accountLinking, customInterface, events, permissions, modelSensitivity, defaultVoice } = defaultAlexaSettings(
+      settings
+    );
     return {
       repeat: RepeatMap[repeat],
       accountLinking: accountLinking && accountLinkingAdapter.fromDB(accountLinking),
       alexaEvents: events || '',
       settings: {
+        defaultVoice,
         customInterface,
         modelSensitivity,
       },
@@ -41,7 +44,7 @@ const alexaSettingsAdapter = createAdapter<AlexaSettings, SkillSettings>(
   ({
     restart,
     repeat,
-    settings: { customInterface = false, modelSensitivity = null } = {},
+    settings: { customInterface = false, modelSensitivity = null, defaultVoice = null } = {},
     errorPrompt,
     alexaEvents,
     resumePrompt,
@@ -53,6 +56,7 @@ const alexaSettingsAdapter = createAdapter<AlexaSettings, SkillSettings>(
     events: alexaEvents?.trim() || null,
     session: restartAdapter.toDB({ restart, resumePrompt }),
     permissions: alexa_permissions,
+    defaultVoice: defaultVoice as Voice | null,
     accountLinking: accountLinking && accountLinkingAdapter.toDB(accountLinking),
     customInterface,
     modelSensitivity,

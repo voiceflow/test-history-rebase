@@ -47,7 +47,8 @@ export type NodeConfig<T extends object | Markup.AnyNodeData> = {
   editorsByPath?: Record<string, React.FC<any>>;
 
   factory: (
-    data?: Partial<T>
+    data?: Partial<T>,
+    options?: { defaultVoice: string }
   ) => {
     node: NodeDescriptor;
     data: Creator.DataDescriptor<T>;

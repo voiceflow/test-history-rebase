@@ -1,3 +1,6 @@
+import { Voice as AlexaVoice } from '@voiceflow/alexa-types';
+import { Voice as GeneralVoice } from '@voiceflow/general-types';
+import { Voice as GoogleVoice } from '@voiceflow/google-types';
 import React from 'react';
 
 import { IS_DEVELOPMENT } from '@/config';
@@ -68,3 +71,10 @@ export const getPlatformValue = <T extends any>(
 
 export const defaultPlatformsData = <T,>(data: T) =>
   PLATFORMS.reduce<Record<PlatformType, T>>((acc, platform) => Object.assign(acc, { [platform]: data }), {} as Record<PlatformType, T>);
+
+export const getPlatformDefaultVoice = (platform: PlatformType) =>
+  getPlatformValue<string>(platform, {
+    [PlatformType.ALEXA]: AlexaVoice.ALEXA,
+    [PlatformType.GOOGLE]: GoogleVoice.DEFAULT,
+    [PlatformType.GENERAL]: GeneralVoice.DEFAULT,
+  });

@@ -28,7 +28,7 @@ const PromptManager: NodeConfig<NodeData.Prompt> = {
   editor: PromptEditor,
   editorsByPath: EDITORS_BY_PATH,
 
-  factory: () => ({
+  factory: (_, options) => ({
     node: {
       ports: {
         in: [{}],
@@ -42,7 +42,7 @@ const PromptManager: NodeConfig<NodeData.Prompt> = {
           {
             id: cuid.slug(),
             type: DialogType.VOICE,
-            voice: 'Alexa',
+            voice: options?.defaultVoice ?? '',
             content: '',
           },
         ],

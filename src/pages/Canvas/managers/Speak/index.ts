@@ -18,7 +18,7 @@ const SpeakManager: NodeConfig<NodeData.Speak> = {
   step: SpeakStep,
   editor: SpeakEditor,
 
-  factory: () => ({
+  factory: (_, options) => ({
     node: {
       ports: {
         in: [{}],
@@ -32,7 +32,7 @@ const SpeakManager: NodeConfig<NodeData.Speak> = {
         {
           id: cuid.slug(),
           type: DialogType.VOICE,
-          voice: 'Alexa',
+          voice: options?.defaultVoice ?? '',
           content: '',
         },
       ],

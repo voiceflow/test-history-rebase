@@ -83,6 +83,7 @@ function SSMLPage() {
             voice={state.voice}
             onBlur={onBlur}
             onChangeVoice={onChangeVoice}
+            withDefaultVoice={false}
             withVariablesPlugin={false}
             onEditorStateChange={onEditorStateChange}
             platform={PlatformType.ALEXA}

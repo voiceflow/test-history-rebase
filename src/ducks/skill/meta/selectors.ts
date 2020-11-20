@@ -8,4 +8,6 @@ export const invNameSelector = createSelector(skillMetaSelector, ({ invName }) =
 
 export const settingsSelector = createSelector(skillMetaSelector, ({ settings }) => settings);
 
+export const defaultVoiceSelector = createSelector(settingsSelector, (settings) => settings?.defaultVoice);
+
 export const accountLinkingSelector = createSelector(skillMetaSelector, ({ accountLinking }) => accountLinking);

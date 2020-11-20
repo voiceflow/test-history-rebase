@@ -6,11 +6,13 @@ import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
 import { clearModal, setConfirm } from '@/ducks/modal';
 import * as Realtime from '@/ducks/realtime';
+import * as Skill from '@/ducks/skill';
 import { EntityMap, Node, NodeData } from '@/models';
 import { Pair, Point } from '@/types';
 import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
 import { isCommandNode } from '@/utils/node';
+import { getPlatformDefaultVoice } from '@/utils/platform';
 
 import { EngineConsumer, nodeFactory } from './utils';
 
@@ -114,6 +116,15 @@ class NodeManager extends EngineConsumer {
     translateManyOnOrigins: (nodeIDs: string[], movement: Pair<number>, origins: Point[]) => {
       nodeIDs.forEach((nodeID, i) => this.internal.translateBaseOnOrigin(nodeID, movement, origins[i]));
     },
+
+    getNodeFactoryOptions: () => {
+      const defaultVoice = this.select(Skill.defaultVoiceSelector);
+      const platform = this.select(Skill.activePlatformSelector);
+
+      return {
+        defaultVoice: defaultVoice || getPlatformDefaultVoice(platform),
+      };
+    },
   };
 
   api(nodeID: string) {
@@ -157,7 +168,7 @@ class NodeManager extends EngineConsumer {
 
   async add(type: BlockType, coords: Coords, factoryData?: Partial<NodeData<unknown>>, nodeID: string = objectID(), autoFocus = true) {
     const [x, y] = this.engine.canvas!.fromCoords(coords);
-    const { node, data } = nodeFactory(type, factoryData);
+    const { node, data } = nodeFactory(type, factoryData, this.internal.getNodeFactoryOptions());
     const augmentedNode = { ...node, x, y, id: nodeID };
     const parentNode = { id: objectID(), ports: { in: [{ id: objectID() }], out: [] } };
 
@@ -336,7 +347,7 @@ class NodeManager extends EngineConsumer {
   async addNested(parentNodeID: string, type: BlockType) {
     const nodeID = objectID();
     const mergedNodeID = objectID();
-    const { node, data } = nodeFactory(type);
+    const { node, data } = nodeFactory(type, undefined, this.internal.getNodeFactoryOptions());
     const augmentedNode = { ...node, id: nodeID };
 
     this.log.debug(this.log.pending('adding nested node'), this.log.slug(nodeID));
@@ -368,7 +379,7 @@ class NodeManager extends EngineConsumer {
   }) {
     const childID = objectID();
     const combinedPortID = objectID();
-    const { node, data } = nodeFactory(type, factoryData);
+    const { node, data } = nodeFactory(type, factoryData, this.internal.getNodeFactoryOptions());
     const [x, y] = position;
     const augmentedNode = { ...node, x, y, id: childID };
     const parentNode = {

@@ -83,14 +83,15 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
 
 export function nodeFactory(
   type: BlockType,
-  factoryData?: Partial<NodeData<unknown>>
+  factoryData?: Partial<NodeData<unknown>>,
+  options?: { defaultVoice: string }
 ): { node: Omit<Creator.NodeDescriptor, 'id'>; data: Creator.DataDescriptor } {
   const config = getManager(type);
 
   const {
     node: { ports, ...node },
     data,
-  } = config?.factory?.(factoryData) ?? { node: {} as NodeDescriptor, data: {} as any };
+  } = config?.factory?.(factoryData, options) ?? { node: {} as NodeDescriptor, data: {} as any };
 
   return {
     node: {

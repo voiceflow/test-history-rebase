@@ -1,16 +1,15 @@
 import cn from 'classnames';
 import React from 'react';
 
+import { defaultLabelRenderer } from '@/components/Select';
+import SvgIcon from '@/components/SvgIcon';
 import { PluginType } from '@/components/TextEditor';
-import { PlatformType } from '@/constants';
-import * as Skill from '@/ducks/skill';
-import { connect } from '@/hocs';
 import { ClassName } from '@/styles/constants';
 
-import { Editor, Speaker, VoiceSelect } from './components';
-import { DEFAULT_VOICE, PLATFORM_SSML_META, VOICES } from './constants';
+import { DefaultVoiceContainer, Editor, Speaker, VoiceItem, VoiceSelect } from './components';
+import { PLATFORM_SSML_META, VOICES } from './constants';
 
-export { VOICES, DEFAULT_VOICE };
+export { VOICES };
 
 const pluginsTypes = [PluginType.XML, PluginType.VARIABLES];
 const pluginsWithoutVariablesTypes = [PluginType.XML];
@@ -25,17 +24,20 @@ const SSML = (
     voice,
     space,
     onBlur,
+    platform,
     creatable,
+    className,
     variables,
     characters,
     placeholder,
+    defaultVoice,
     onEnterPress,
     onChangeVoice,
     onAddVariable,
+    withDefaultVoice = true,
     withVariablesPlugin = true,
+    onChangeDefaultVoice,
     createInputPlaceholder = 'New Variable',
-    platform,
-    className,
     ...props
   },
   ref
@@ -64,12 +66,22 @@ const SSML = (
             searchable
             getOptionValue={getOptionValue}
             getOptionLabel={getOptionLabel}
+            renderOptionLabel={(option, ...args) => (
+              <VoiceItem>
+                {defaultLabelRenderer(option, ...args)}
+                {withDefaultVoice && (
+                  <DefaultVoiceContainer active={option?.value === defaultVoice} onClick={() => onChangeDefaultVoice(option?.value ?? null)}>
+                    <SvgIcon icon="star" />
+                  </DefaultVoiceContainer>
+                )}
+              </VoiceItem>
+            )}
             createInputPlaceholder="Search Voice"
           />
         )}
       </>
     ),
-    [voice, onChangeVoice, getOptionValue, getOptionLabel]
+    [voice, platform, onChangeVoice, getOptionValue, getOptionLabel, defaultVoice, onChangeDefaultVoice]
   );
 
   const platformTags = platformSSMLMeta.platformTags;
@@ -116,10 +128,4 @@ const SSML = (
   );
 };
 
-const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
-};
-
-const mergeProps = ({ platform = PlatformType.ALEXA }) => ({ isAlexa: platform === PlatformType.ALEXA });
-
-export default connect(mapStateToProps, null, mergeProps)(React.forwardRef(SSML));
+export default React.forwardRef(SSML);

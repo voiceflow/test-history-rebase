@@ -10,7 +10,6 @@ const ContinuePrevious: React.FC = () => {
     </DescriptorContainer>
   );
 };
-
 const AllowRepeat: React.FC = () => {
   return (
     <DescriptorContainer variant={DescriptorVariant.PREFIX}>
@@ -20,4 +19,8 @@ const AllowRepeat: React.FC = () => {
   );
 };
 
-export default { ContinuePrevious, AllowRepeat };
+const DefaultVoice: React.FC = () => {
+  return <DescriptorContainer>Choose a Text-to-Speech voice to be applied globally to all new responses.</DescriptorContainer>;
+};
+
+export default { ContinuePrevious, AllowRepeat, DefaultVoice };

@@ -19,21 +19,23 @@ export const RepeatMap = {
 
 const generalSettingsAdapter = createAdapter<GeneralSettings<Voice>, SkillSettings>(
   (settings) => {
-    const { error, session, repeat } = defaultGeneralSettings(settings, { defaultVoice: Voice.DEFAULT });
+    const { error, session, repeat, defaultVoice } = defaultGeneralSettings(settings, { defaultPromptVoice: Voice.DEFAULT });
+
     return {
       repeat: RepeatMap[repeat],
       accountLinking: null,
       alexaEvents: '',
-      settings: {},
+      settings: { defaultVoice },
       alexa_permissions: [],
       errorPrompt: errorPromptAdapter.fromDB(error),
       ...restartAdapter.fromDB(session),
     };
   },
-  ({ resumePrompt, errorPrompt, restart, repeat }) => ({
+  ({ resumePrompt, errorPrompt, restart, repeat, settings: { defaultVoice = null } = {} }) => ({
     session: restartAdapter.toDB({ restart, resumePrompt }),
     error: errorPromptAdapter.toDB(errorPrompt),
     repeat: (_invert(RepeatMap)[repeat] as RepeatType) || RepeatType.DIALOG,
+    defaultVoice: defaultVoice as Voice | null,
   })
 );
 

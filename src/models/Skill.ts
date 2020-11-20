@@ -54,6 +54,7 @@ export type FullSkill<L extends string> = Skill<L> & {
     repeat: number;
     google_versions: any;
     settings: {
+      defaultVoice?: null | string;
       customInterface?: boolean;
       modelSensitivity?: null | ModelSensitivity;
     };

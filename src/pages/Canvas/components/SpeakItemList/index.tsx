@@ -4,19 +4,23 @@ import React from 'react';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import OverflowMenu from '@/components/OverflowMenu';
 import { DialogType, PlatformType } from '@/constants';
+import * as Skill from '@/ducks/skill';
+import { connect } from '@/hocs';
 import { useManager, useToggle } from '@/hooks';
 import { SpeakData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import AudioIcon from '@/pages/Canvas/components/SpeakItem/AudioIcon';
+import { ConnectedProps } from '@/types';
+import { getPlatformDefaultVoice } from '@/utils/platform';
 
-const speakItemFactory = (type: DialogType) => ({
+const speakItemFactory = ({ defaultVoice }: { defaultVoice: string }) => (type: DialogType) => ({
   type,
   id: cuid.slug(),
   open: true,
-  ...(type === DialogType.VOICE ? { voice: 'Alexa', content: '' } : { url: '', desc: '' }),
+  ...(type === DialogType.VOICE ? { voice: defaultVoice, content: '' } : { url: '', desc: '' }),
 });
 
-export type NoMatchesListProps = {
+export type SpeakItemListProps = {
   platform: PlatformType;
   changeRandomize: (newRandomize: boolean) => void;
   changeSpeakItems: (newReprompts: SpeakData[]) => void;
@@ -38,15 +42,16 @@ const SpeakItemList = ({
   itemComponent,
   maxItems,
   speakItems,
+  defaultVoice,
   randomize,
   itemName = 'outputs',
-}: NoMatchesListProps) => {
+}: SpeakItemListProps & ConnectedSpeakItemListProps) => {
   const [isDragging, toggleDragging] = useToggle(false);
   const toggleRandomized = React.useCallback(() => changeRandomize(!randomize), [randomize, changeRandomize]);
   const updateSpeakItems = React.useCallback((newReprompts) => changeSpeakItems(newReprompts), [changeSpeakItems]);
 
   const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = (useManager as any)(speakItems, updateSpeakItems, {
-    factory: speakItemFactory,
+    factory: speakItemFactory({ defaultVoice: defaultVoice || getPlatformDefaultVoice(platform) }),
   });
 
   const addVoice = React.useCallback(
@@ -118,4 +123,10 @@ const SpeakItemList = ({
   );
 };
 
-export default SpeakItemList;
+const mapStateToProps = {
+  defaultVoice: Skill.defaultVoiceSelector,
+};
+
+type ConnectedSpeakItemListProps = ConnectedProps<typeof mapStateToProps, {}>;
+
+export default connect(mapStateToProps)(SpeakItemList) as React.FC<SpeakItemListProps>;

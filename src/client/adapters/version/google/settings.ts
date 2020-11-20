@@ -23,7 +23,8 @@ export const RepeatMap = {
 
 const googleSettingsAdapter = createAdapter<GoogleSettings, SkillSettings>(
   (settings) => {
-    const { error, session, repeat } = defaultGoogleSettings(settings);
+    const { error, session, repeat, defaultVoice } = defaultGoogleSettings(settings);
+
     return {
       repeat: RepeatMap[repeat],
       accountLinking: null,
@@ -31,13 +32,15 @@ const googleSettingsAdapter = createAdapter<GoogleSettings, SkillSettings>(
       settings: {},
       alexa_permissions: [],
       errorPrompt: errorPromptAdapter.fromDB(error),
+      defaultVoice,
       ...restartAdapter.fromDB(session),
     };
   },
-  ({ resumePrompt, errorPrompt, restart, repeat }) => ({
+  ({ resumePrompt, errorPrompt, restart, repeat, settings: { defaultVoice = null } = {} }) => ({
     session: restartAdapter.toDB({ restart, resumePrompt }),
     error: errorPromptAdapter.toDB(errorPrompt),
     repeat: (_invert(RepeatMap)[repeat] as RepeatType) || RepeatType.DIALOG,
+    defaultVoice: defaultVoice as Voice | null,
   })
 );
 

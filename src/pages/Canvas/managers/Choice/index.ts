@@ -24,7 +24,7 @@ const ChoiceManager: NodeConfig<NodeData.Interaction> = {
   editor: ChoiceEditor,
   editorsByPath: EDITORS_BY_PATH,
 
-  factory: () => ({
+  factory: (_, options) => ({
     node: {
       ports: {
         in: [{}],
@@ -60,7 +60,7 @@ const ChoiceManager: NodeConfig<NodeData.Interaction> = {
           {
             id: cuid.slug(),
             type: DialogType.VOICE,
-            voice: 'Alexa',
+            voice: options?.defaultVoice ?? '',
             content: '',
           },
         ],

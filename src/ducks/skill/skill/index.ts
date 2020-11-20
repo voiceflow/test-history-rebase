@@ -20,43 +20,43 @@ export * from './selectors';
 
 // reducers
 
-export const setActiveSkillReducer: Reducer<SkillState, SetActiveSkillAction> = (_, { payload: { skill, diagramID } }) =>
+export const setActiveSkillReducer: Reducer<SkillState<string>, SetActiveSkillAction> = (_, { payload: { skill, diagramID } }) =>
   ({
     ...skill,
     diagramID: diagramID || skill.diagramID,
-  } as SkillState);
+  } as SkillState<string>);
 
-export const updateActiveSkillReducer: Reducer<SkillState, UpdateActiveSkillAction> = (state, { payload }) => ({
+export const updateActiveSkillReducer: Reducer<SkillState<string>, UpdateActiveSkillAction> = (state, { payload }) => ({
   ...state,
   ...payload,
 });
 
-export const updateDiagramIDReducer: Reducer<SkillState, UpdateDiagramIDAction> = (state, { payload: diagramID }) => ({
+export const updateDiagramIDReducer: Reducer<SkillState<string>, UpdateDiagramIDAction> = (state, { payload: diagramID }) => ({
   ...state,
   diagramID,
 });
 
-export const addGlobalVariableReducer: Reducer<SkillState, AddGlobalVariablesAction> = (state, { payload: variable }) => ({
+export const addGlobalVariableReducer: Reducer<SkillState<string>, AddGlobalVariablesAction> = (state, { payload: variable }) => ({
   ...state,
   globalVariables: [...state.globalVariables!, variable],
 });
 
-export const removeGlobalVariableReducer: Reducer<SkillState, RemoveGlobalVariablesAction> = (state, { payload: variable }) => ({
+export const removeGlobalVariableReducer: Reducer<SkillState<string>, RemoveGlobalVariablesAction> = (state, { payload: variable }) => ({
   ...state,
   globalVariables: withoutValue(state.globalVariables!, variable),
 });
 
-export const replaceGlobalVariablesReducer: Reducer<SkillState, ReplaceGlobalVariablesAction> = (state, { payload: variables }) => ({
+export const replaceGlobalVariablesReducer: Reducer<SkillState<string>, ReplaceGlobalVariablesAction> = (state, { payload: variables }) => ({
   ...state,
   globalVariables: variables,
 });
 
-export const setExportingCanvasReducer: Reducer<SkillState, SetExportingCanvasAction> = (state, { payload: exporting }) => ({
+export const setExportingCanvasReducer: Reducer<SkillState<string>, SetExportingCanvasAction> = (state, { payload: exporting }) => ({
   ...state,
   canvasExporting: exporting,
 });
 
-const skillReducer: RootReducer<SkillState, AnySkillAction> = (state = {} as any, action) => {
+const skillReducer: RootReducer<SkillState<string>, AnySkillAction> = (state = {} as any, action) => {
   switch (action.type) {
     case SkillAction.SET_ACTIVE_SKILL:
       return setActiveSkillReducer(state, action);

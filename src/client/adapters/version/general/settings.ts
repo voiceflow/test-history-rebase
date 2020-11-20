@@ -6,7 +6,7 @@ import { FullSkill } from '@/models';
 
 import { createErrorPromptAdapter, createRestartAdapter } from '../utils';
 
-export type SkillSettings = Pick<FullSkill['meta'], 'repeat' | 'settings' | 'restart' | 'resumePrompt' | 'errorPrompt'>;
+export type SkillSettings = Pick<FullSkill<string>['meta'], 'repeat' | 'settings' | 'restart' | 'resumePrompt' | 'errorPrompt'>;
 
 export const restartAdapter = createRestartAdapter<Voice>({ defaultVoice: Voice.DEFAULT });
 export const errorPromptAdapter = createErrorPromptAdapter<Voice>({ defaultVoice: Voice.DEFAULT });

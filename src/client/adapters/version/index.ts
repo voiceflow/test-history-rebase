@@ -9,9 +9,9 @@ import alexaVersionAdapter from './alexa';
 import generalVersionAdapter from './general';
 import googleVersionAdapter from './google';
 
-const versionAdapter = createAdapter<Version<VersionPlatformData>, FullSkill, [{ platform: PlatformType }]>(
+const versionAdapter = createAdapter<Version<VersionPlatformData>, FullSkill<string>, [{ platform: PlatformType }]>(
   (version, { platform = PlatformType.ALEXA }) => {
-    const adapter = getPlatformValue<BidirectionalAdapter<Version<any>, FullSkill, [], []>>(platform, {
+    const adapter = getPlatformValue<BidirectionalAdapter<Version<any>, FullSkill<any>, [], []>>(platform, {
       [PlatformType.ALEXA]: alexaVersionAdapter,
       [PlatformType.GOOGLE]: googleVersionAdapter,
       [PlatformType.GENERAL]: generalVersionAdapter,

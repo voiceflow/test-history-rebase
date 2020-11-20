@@ -1,14 +1,11 @@
-import { Locale, ModelSensitivity } from '@voiceflow/alexa-types';
+import { ModelSensitivity } from '@voiceflow/alexa-types';
 
 import { PlatformType } from '@/constants';
 
-import { DBIntent } from './Intent';
-import { DBSlot } from './Slot';
-
-export type Skill = {
+export type Skill<L extends string> = {
   name: string;
   id: string;
-  locales: Locale[];
+  locales: L[];
   mainLocale?: string;
   creatorID: number;
   projectID: string;
@@ -21,31 +18,7 @@ export type Skill = {
   invocation?: string;
 };
 
-export type DBSkill = {
-  name: string;
-  skill_id: string;
-  creator_id: number;
-  project_id: string;
-  diagram: string;
-  platform: PlatformType;
-  live: boolean;
-  review: boolean;
-  locales: Locale[];
-  google_publish_info: unknown;
-  global?: string[];
-  amzn_id?: string;
-  vendor_id: string | null;
-  google_id: string | null;
-  intents: DBIntent[];
-  slots: DBSlot[];
-};
-
-export type ToDBSkill = Omit<DBSkill, 'intents' | 'slots'> & {
-  intents: string;
-  slots: string;
-};
-
-export type FullSkill = Skill & {
+export type FullSkill<L extends string> = Skill<L> & {
   publishInfo: {
     [PlatformType.GOOGLE]: {
       googleId: null | string;
@@ -63,7 +36,7 @@ export type FullSkill = Skill & {
     description: string;
     keywords: string;
     invocations: string[];
-    locales: string[];
+    locales: L[];
     category: string | null;
     purchase: boolean;
     personal: boolean;

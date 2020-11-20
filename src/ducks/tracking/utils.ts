@@ -36,7 +36,7 @@ export const createProjectEventTracker = <T extends {} | undefined = undefined>(
   callback: (options: T & ProjectEventInfo, ...args: Parameters<Thunk>) => void
 ) => (...args: T extends undefined ? [] : [T]): SyncThunk => (dispatch, getState) => {
   const state = getState();
-  const activeSkill = Skill.activeSkillSelector(state) as Models.Skill;
+  const activeSkill = Skill.activeSkillSelector(state) as Models.Skill<string>;
   const activeWorkspaceID = activeWorkspaceIDSelector(state)!;
 
   const baseEventInfo: ProjectEventInfo = {

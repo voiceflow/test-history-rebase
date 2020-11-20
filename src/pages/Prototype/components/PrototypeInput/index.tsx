@@ -1,4 +1,3 @@
-import { Locale } from '@voiceflow/alexa-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
@@ -16,8 +15,8 @@ import SpeechBar from '../PrototypeSpeechBar';
 import { ControlButton, ControlsContainer, InputArea, InputContainer } from './components';
 
 const InputAreaComp: React.FC<any> = InputArea;
-export type PrototypeInputProps = {
-  locale: Locale;
+export type PrototypeInputProps<L> = {
+  locale: L;
   disabled?: boolean;
   isPublic?: boolean;
   onUserInput: (input: string) => void;
@@ -25,7 +24,7 @@ export type PrototypeInputProps = {
   setShowChips: (val: boolean) => void;
 };
 
-const PrototypeInput: React.FC<PrototypeInputProps & ConnectedPrototypeInputProps> = ({
+const PrototypeInput = <L extends string>({
   inputMode,
   showChips,
   updatePrototype,
@@ -33,7 +32,7 @@ const PrototypeInput: React.FC<PrototypeInputProps & ConnectedPrototypeInputProp
   disabled,
   setShowChips,
   onUserInput,
-}) => {
+}: PrototypeInputProps<L> & ConnectedPrototypeInputProps) => {
   const [value, setValue] = React.useState('');
 
   const sendTextHandler = preventDefault(() => {
@@ -114,4 +113,4 @@ const mapDispatchToProps = {
 
 type ConnectedPrototypeInputProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(PrototypeInput) as React.FC<PrototypeInputProps>;
+export default connect(mapStateToProps, mapDispatchToProps)(PrototypeInput) as <L>(props: PrototypeInputProps<L>) => React.ReactElement;

@@ -1,4 +1,4 @@
-import { constants } from '@voiceflow/common';
+import { Language, LanguageToLocale } from '@voiceflow/google-types';
 import React from 'react';
 
 import client from '@/client';
@@ -16,8 +16,6 @@ import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
 
 import { StepID, StepMeta } from './constants';
-
-const { GOOGLE_LOCALES } = constants.locales;
 
 const NUMBER_OF_STEPS = 3;
 
@@ -37,7 +35,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   const [selectedPlatform, setSelectedPlatform] = React.useState<PlatformType>();
   const [selectedLocales, setSelectedLocales] = React.useState([LOCALE_MAP[0].value]);
   // For Google only
-  const [mainLanguage, setMainLanguage] = React.useState(GOOGLE_LOCALES.EN);
+  const [mainLanguage, setMainLanguage] = React.useState<Language>(Language.EN);
   const [creatingProject, setCreatingProject] = React.useState(false);
   const CurrentStep: React.FC<any> = StepMeta[currentStep].component;
 
@@ -47,9 +45,10 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
 
     try {
       const project = await createProject({ platform: selectedPlatform!, name, largeIcon, listID });
+
       // TODO: in the future make new project parameters much more platform specific
       if (selectedPlatform === PlatformType.ALEXA) {
-        client.platform.alexa.version.updatePublishing(project.versionID, {
+        await client.platform.alexa.version.updatePublishing(project.versionID, {
           invocationName,
           invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
           locales: selectedLocales as any,
@@ -57,8 +56,8 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
           smallIcon,
         });
       } else if (selectedPlatform === PlatformType.GOOGLE) {
-        client.platform.google.version.updatePublishing(project.versionID, {
-          locales: selectedLocales as any,
+        await client.platform.google.version.updatePublishing(project.versionID, {
+          locales: LanguageToLocale[mainLanguage],
           smallLogoImage: smallIcon,
           displayName: name,
           pronunciation: invocationName,

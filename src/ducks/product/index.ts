@@ -43,7 +43,7 @@ export const createProduct = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const locales = activeLocalesSelector(state);
 
-  const product = createNewProduct(locales);
+  const product = createNewProduct(locales as Locale[]);
 
   dispatch(addProduct(product.id, product));
 };

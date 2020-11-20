@@ -1,10 +1,10 @@
-import { GooglePublishing, defaultGooglePublishing } from '@voiceflow/google-types';
+import { GooglePublishing, Locale, defaultGooglePublishing } from '@voiceflow/google-types';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { FullSkill } from '@/models';
 
 type SkillPublishing = Pick<
-  FullSkill['meta'],
+  FullSkill<Locale>['meta'],
   | 'summary'
   | 'description'
   | 'keywords'
@@ -25,7 +25,7 @@ type SkillPublishing = Pick<
   | 'locales'
 >;
 
-const alexaPublishingAdapter = createAdapter<GooglePublishing, SkillPublishing>(
+const googlePublishingAdapter = createAdapter<GooglePublishing, SkillPublishing>(
   (publishing) => {
     const {
       pronunciation,
@@ -86,4 +86,4 @@ const alexaPublishingAdapter = createAdapter<GooglePublishing, SkillPublishing>(
   }
 );
 
-export default alexaPublishingAdapter;
+export default googlePublishingAdapter;

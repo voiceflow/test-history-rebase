@@ -1,4 +1,5 @@
 import { AccountLinking, AlexaVersionData, Locale } from '@voiceflow/alexa-types';
+import { Locale as GoogleLocale } from '@voiceflow/google-types';
 import fileSaver from 'file-saver';
 import _pick from 'lodash/pick';
 
@@ -163,7 +164,7 @@ export const getAccountLinking = (): Thunk<AccountLinking | null> => async (_dis
   return accountLinking && accountLinkingAdapter.fromDB(accountLinking);
 };
 
-export const saveLocales = (locales: [Locale, ...Locale[]]): Thunk => async (dispatch, getState) => {
+export const saveLocales = (locales: Locale[] | GoogleLocale[]): Thunk => async (dispatch, getState) => {
   if (locales?.length === 0) return;
   const state = getState();
   const platform = Skill.activePlatformSelector(state);

@@ -18,9 +18,9 @@ export enum SkillAction {
 
 // action types
 
-export type SetActiveSkillAction = Action<SkillAction.SET_ACTIVE_SKILL, { skill: Skill; diagramID: string }>;
+export type SetActiveSkillAction = Action<SkillAction.SET_ACTIVE_SKILL, { skill: Skill<string>; diagramID: string }>;
 
-export type UpdateActiveSkillAction = Action<SkillAction.UPDATE_ACTIVE_SKILL, Partial<Skill>, object | undefined>;
+export type UpdateActiveSkillAction = Action<SkillAction.UPDATE_ACTIVE_SKILL, Partial<Skill<string>>, object | undefined>;
 
 export type UpdateDiagramIDAction = Action<SkillAction.UPDATE_DIAGRAM_ID, string>;
 
@@ -43,10 +43,10 @@ export type AnySkillAction =
 
 // action creators
 
-export const setActiveSkill = (skill: Skill, diagramID: string): SetActiveSkillAction =>
+export const setActiveSkill = (skill: Skill<string>, diagramID: string): SetActiveSkillAction =>
   createAction(SkillAction.SET_ACTIVE_SKILL, { skill, diagramID });
 
-export const updateActiveSkill = (properties: Partial<Skill>, meta?: object): UpdateActiveSkillAction =>
+export const updateActiveSkill = (properties: Partial<Skill<string>>, meta?: object): UpdateActiveSkillAction =>
   createAction(SkillAction.UPDATE_ACTIVE_SKILL, { ...properties }, meta);
 
 export const updateDiagramID = (diagramID: string): UpdateDiagramIDAction => createAction(SkillAction.UPDATE_DIAGRAM_ID, diagramID);

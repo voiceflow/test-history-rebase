@@ -1,5 +1,5 @@
 import { RepeatType } from '@voiceflow/general-types';
-import { GoogleSettings, Voice, defaultGoogleSettings } from '@voiceflow/google-types';
+import { GoogleSettings, Locale, Voice, defaultGoogleSettings } from '@voiceflow/google-types';
 import _invert from 'lodash/invert';
 
 import { createAdapter } from '@/client/adapters/utils';
@@ -8,7 +8,7 @@ import { FullSkill } from '@/models';
 import { createErrorPromptAdapter, createRestartAdapter } from '../utils';
 
 export type SkillSettings = Pick<
-  FullSkill['meta'],
+  FullSkill<Locale>['meta'],
   'repeat' | 'accountLinking' | 'alexaEvents' | 'settings' | 'restart' | 'resumePrompt' | 'errorPrompt' | 'alexa_permissions'
 >;
 

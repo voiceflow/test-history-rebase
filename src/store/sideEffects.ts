@@ -79,7 +79,7 @@ export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.Skill> => async (dispatch, getState) => {
+export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.Skill<string>> => async (dispatch, getState) => {
   const state = getState();
   const platform = Skill.activePlatformSelector(state);
   const userID = Account.userIDSelector(state);

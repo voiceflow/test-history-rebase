@@ -6,17 +6,17 @@ import { AnySkillMetaAction, SkillMetaAction, UpdateSettingsAction, UpdateSkillM
 export * from './actions';
 export * from './selectors';
 
-export const updateSkillMetaReducer: Reducer<SkillState['meta'], UpdateSkillMetaAction> = (state, { payload }) => ({
+export const updateSkillMetaReducer: Reducer<SkillState<string>['meta'], UpdateSkillMetaAction> = (state, { payload }) => ({
   ...state,
   ...payload,
 });
 
-export const updateSkillMetaSettingsReducer: Reducer<SkillState['meta'], UpdateSettingsAction> = (state, { payload }) => ({
+export const updateSkillMetaSettingsReducer: Reducer<SkillState<string>['meta'], UpdateSettingsAction> = (state, { payload }) => ({
   ...state,
   settings: { ...state.settings, ...payload },
 });
 
-const skillMetaReducer: RootReducer<SkillState['meta'], AnySkillMetaAction> = (state = {} as any, action) => {
+const skillMetaReducer: RootReducer<SkillState<string>['meta'], AnySkillMetaAction> = (state = {} as any, action) => {
   switch (action.type) {
     case SkillMetaAction.UPDATE_SKILL_META_SETTINGS:
       return updateSkillMetaSettingsReducer(state, action);

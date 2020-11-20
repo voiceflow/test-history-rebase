@@ -1,4 +1,3 @@
-import { Locale } from '@voiceflow/alexa-types';
 import { constants } from '@voiceflow/common';
 import _ from 'lodash';
 
@@ -6,11 +5,11 @@ import { PlatformType, SLOT_REGEXP, SLOT_TYPES, VARIABLE_STRING_REGEXP } from '@
 import { GOOGLE_SLOT_TYPES } from '@/constants/platforms';
 import { Nullable } from '@/types';
 
-export const getSlotTypes = ({
+export const getSlotTypes = <L extends string>({
   locales,
   platform,
 }: {
-  locales: Locale[];
+  locales: L[];
   platform: PlatformType;
   publishInfo: Nullable<Record<PlatformType, any>>;
 }) => {
@@ -26,7 +25,7 @@ export const getSlotTypes = ({
   Object.values(SLOT_TYPES).forEach((slot) => {
     if (!slot.type[platform]) return;
 
-    const slotLocales = slot.locales[platform] || [];
+    const slotLocales = (slot.locales[platform] || []) as L[];
 
     if (platform === PlatformType.ALEXA && (!slotLocales || (locales && _.intersection(slotLocales, locales).length === locales.length))) {
       slots.push(slot);

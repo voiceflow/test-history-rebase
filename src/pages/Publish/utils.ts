@@ -1,6 +1,6 @@
-import { Locale } from '@voiceflow/alexa-types';
+import * as Alexa from '@voiceflow/alexa-types';
 import { constants } from '@voiceflow/common';
-import { LanguageToLocale, Locale as GoogleLocale } from '@voiceflow/google-types';
+import * as Google from '@voiceflow/google-types';
 
 const { validLatinChars, validSpokenCharacters, validCharacters } = constants.regex;
 
@@ -13,43 +13,50 @@ const NON_LATIN_REGIONS = ['ja-JP', 'hi-IN'];
 
 const matchesKeyword = (splitName: string[]) => (keyword: string) => splitName.find((split) => split === keyword.toLowerCase());
 
-const { GOOGLE_LOCALES } = constants.locales;
-
-const L = GOOGLE_LOCALES;
-const LOCALE_DISPLAY_NAMES = {
-  [L.HK]: 'Chinese-Cantonese (zh-HK)',
-  [L.CN]: 'Chinese-Simplified (zh-CN)',
-  [L.TW]: 'Chinese-Traditional (zh-TW)',
-  [L.DA]: 'Danish (da)',
-  [L.NL]: 'Dutch (nl)',
-  [L.EN]: 'English (en)',
-  [L.FR]: 'French (fr)',
-  [L.DE]: 'German (de)',
-  [L.HI]: 'Hindi (hi)',
-  [L.ID]: 'Indonesian (id)',
-  [L.IT]: 'Italian (it)',
-  [L.JA]: 'Japanese (ja)',
-  [L.KO]: 'Korean (ko)',
-  [L.NO]: 'Norwegian (no)',
-  [L.PL]: 'Polish (pl)',
-  [L.PT]: 'Portuguese (pt)',
-  [L.BR]: 'Portuguese-Brazilian (pt-BR)',
-  [L.RU]: 'Russian (ru)',
-  [L.ES]: 'Spanish (es)',
-  [L.SV]: 'Swedish (sv)',
-  [L.TH]: 'Thai (th)',
-  [L.TR]: 'Turkish (tr)',
-  [L.UK]: 'Ukranian (uk)',
+const LOCALE_DISPLAY_NAMES: Record<Google.Language, string> = {
+  [Google.Language.HK]: 'Chinese-Cantonese (zh-HK)',
+  [Google.Language.TW]: 'Chinese-Traditional (zh-TW)',
+  [Google.Language.DA]: 'Danish (da)',
+  [Google.Language.NL]: 'Dutch (nl)',
+  [Google.Language.EN]: 'English (en)',
+  [Google.Language.FR]: 'French (fr)',
+  [Google.Language.DE]: 'German (de)',
+  [Google.Language.HI]: 'Hindi (hi)',
+  [Google.Language.ID]: 'Indonesian (id)',
+  [Google.Language.IT]: 'Italian (it)',
+  [Google.Language.JA]: 'Japanese (ja)',
+  [Google.Language.KO]: 'Korean (ko)',
+  [Google.Language.NO]: 'Norwegian (no)',
+  [Google.Language.PL]: 'Polish (pl)',
+  [Google.Language.PT]: 'Portuguese (Brazilian) (pt)',
+  [Google.Language.RU]: 'Russian (ru)',
+  [Google.Language.ES]: 'Spanish (es)',
+  [Google.Language.SV]: 'Swedish (sv)',
+  [Google.Language.TH]: 'Thai (th)',
+  [Google.Language.TR]: 'Turkish (tr)',
 };
 
-export const FORMATTED_LOCALES = Object.keys(GOOGLE_LOCALES).map((key) => {
-  return { value: GOOGLE_LOCALES[key], name: LOCALE_DISPLAY_NAMES[GOOGLE_LOCALES[key]] };
+export const FORMATTED_LOCALES: { value: Google.Language; name: string }[] = Object.keys(Google.Language).map((key) => {
+  return {
+    value: Google.Language[key as keyof typeof Google.Language],
+    name: LOCALE_DISPLAY_NAMES[Google.Language[key as keyof typeof Google.Language]],
+  };
 });
 
-export const GOOGLE_LANGUAGE_TO_LOCALES = LanguageToLocale as Record<string, GoogleLocale[]>;
+export const FORMATTED_GOOGLE_LOCALES_LABELS: Record<string, string> = FORMATTED_LOCALES.reduce<Record<string, string>>(
+  (acc, locale) => Object.assign(acc, { [locale.value]: locale.name }),
+  {}
+);
+
+export const getLocaleLanguage = (locales: Google.Locale[] = []) => {
+  return (
+    Object.keys(Google.LanguageToLocale).find((language) => Google.LanguageToLocale[language as Google.Language].includes(locales?.[0])) ||
+    (Google.Language.EN as Google.Language)
+  );
+};
 
 // TODO: share the logic with the backend
-export const getAmazonInvocationNameError = (name?: string, locales: Locale[] = []) => {
+export const getAmazonInvocationNameError = (name?: string, locales: Alexa.Locale[] = []) => {
   if (!name?.trim()) {
     return 'Invocation name required for Alexa';
   }
@@ -92,7 +99,7 @@ export const getAmazonInvocationNameError = (name?: string, locales: Locale[] = 
 };
 
 // TODO: share the logic with the backend
-export const getGoogleInvocationNameError = (name?: string, locales: Locale[] = []) => {
+export const getGoogleInvocationNameError = (name?: string, locales: Google.Locale[] = []) => {
   if (!name?.trim()) {
     return 'Invocation name required for Google';
   }

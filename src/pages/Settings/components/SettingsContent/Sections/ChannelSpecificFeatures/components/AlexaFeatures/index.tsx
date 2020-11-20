@@ -10,7 +10,7 @@ import { Events, GadgetsToggle, ModelSensitivity } from './components';
 
 export type AlexaFeaturesOwnProps = { platformMeta: PlatformSettingsMetaProps };
 
-const MODEL_SENSITIVITY_SUPPORTED_LOCALES = [Locale.EN_US, Locale.EN_AU, Locale.EN_CA, Locale.EN_IN, Locale.EN_GB, Locale.DE_DE];
+const MODEL_SENSITIVITY_SUPPORTED_LOCALES: string[] = [Locale.EN_US, Locale.EN_AU, Locale.EN_CA, Locale.EN_IN, Locale.EN_GB, Locale.DE_DE];
 
 const AlexaFeatures: React.FC<ConnectedAlexaFeaturesProps & AlexaFeaturesOwnProps> = ({ locales, platformMeta }) => {
   const modelSensitivityShown = React.useMemo(() => locales.some((locale) => MODEL_SENSITIVITY_SUPPORTED_LOCALES.includes(locale)), [locales]);

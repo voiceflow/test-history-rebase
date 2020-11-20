@@ -1,3 +1,4 @@
+import { Language } from '@voiceflow/google-types';
 import _constant from 'lodash/constant';
 import React from 'react';
 
@@ -12,8 +13,12 @@ import { PLATFORM_META } from '@/pages/NewProject/Steps/constants';
 import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
 import { LoadingButton } from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components';
-import { FORMATTED_LOCALES, GOOGLE_LANGUAGE_TO_LOCALES, getAmazonInvocationNameError, getGoogleInvocationNameError } from '@/pages/Publish/utils';
-import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Settings/components/SettingsContent/Sections/Basic';
+import {
+  FORMATTED_GOOGLE_LOCALES_LABELS,
+  FORMATTED_LOCALES,
+  getAmazonInvocationNameError,
+  getGoogleInvocationNameError,
+} from '@/pages/Publish/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { without } from '@/utils/array';
 import { getPlatformValue } from '@/utils/platform';
@@ -89,8 +94,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
             value={FORMATTED_GOOGLE_LOCALES_LABELS[mainLanguage]}
             options={FORMATTED_LOCALES}
             onSelect={(val: any) => {
-              setMainLanguage(val);
-              setSelectedLocales(GOOGLE_LANGUAGE_TO_LOCALES[val]);
+              setMainLanguage(val as Language);
             }}
             getOptionValue={(option) => option?.value || ''}
             renderOptionLabel={(option) => option.name}

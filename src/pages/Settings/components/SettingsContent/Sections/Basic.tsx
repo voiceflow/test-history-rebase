@@ -1,4 +1,5 @@
 import { Locale } from '@voiceflow/alexa-types';
+import { Language, LanguageToLocale, Locale as GoogleLocale } from '@voiceflow/google-types';
 import React, { ChangeEvent, useEffect } from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
@@ -8,17 +9,12 @@ import Select from '@/components/Select';
 import { PlatformType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { FORMATTED_LOCALES, GOOGLE_LANGUAGE_TO_LOCALES } from '@/pages/Publish/utils';
+import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { without } from '@/utils/array';
 
 import { PlatformSettingsMetaProps, SettingSections } from '../../../constants';
-
-export const FORMATTED_GOOGLE_LOCALES_LABELS: Record<string, string> = FORMATTED_LOCALES.reduce<Record<string, string>>(
-  (acc, locale) => Object.assign(acc, { [locale.value]: locale.name }),
-  {}
-);
 
 const UnTypedDropdownMultiselect: any = DropdownMultiselect;
 
@@ -32,10 +28,6 @@ const sectionStyling = {
   paddingBottom: '24px',
 };
 
-const getLocaleLanguage = (locales: any[]) => {
-  return Object.keys(GOOGLE_LANGUAGE_TO_LOCALES).find((locale) => GOOGLE_LANGUAGE_TO_LOCALES[locale].includes(locales[0])) || '';
-};
-
 const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   meta,
   skill,
@@ -46,14 +38,15 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   saveInvocationName,
 }) => {
   const { invName } = meta;
-  const { name, locales } = skill;
+  const { name, locales = [] } = skill;
   const { descriptors, localeText } = platformMeta;
   const { projectName, invocationName, localesDescriptor } = descriptors;
 
   const [newInvocation, setNewInvocation] = React.useState(invName);
   const [newProjectName, setNewProjectName] = React.useState(name);
-  const [selectedLocales, setSelectedLocales] = React.useState<Locale[]>(locales || []);
-  const [mainLanguage, setMainLanguage] = React.useState<string>(getLocaleLanguage(locales));
+
+  const [selectedLocales, setSelectedLocales] = React.useState<Locale[]>((locales || []) as Locale[]);
+  const [mainLanguage, setMainLanguage] = React.useState<string | Language>(getLocaleLanguage(locales as GoogleLocale[]));
 
   const displayName =
     platform === PlatformType.ALEXA
@@ -64,9 +57,9 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     saveProjectName(newProjectName);
     saveInvocationName(newInvocation);
     if (platform === PlatformType.ALEXA) {
-      saveLocales(selectedLocales as [Locale, ...Locale[]]);
+      saveLocales(selectedLocales as Locale[]);
     } else {
-      saveLocales(GOOGLE_LANGUAGE_TO_LOCALES[mainLanguage] as any);
+      saveLocales(LanguageToLocale[mainLanguage as Language]);
     }
   };
 
@@ -102,8 +95,8 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
           value={FORMATTED_GOOGLE_LOCALES_LABELS[mainLanguage]}
           options={FORMATTED_LOCALES}
           onSelect={async (val) => {
-            setMainLanguage(val);
-            saveLocales(GOOGLE_LANGUAGE_TO_LOCALES[val] as any);
+            setMainLanguage(val as Language);
+            saveLocales(LanguageToLocale[val as Language] as any);
           }}
           getOptionValue={(option) => option?.value || ''}
           renderOptionLabel={(option) => option.name}
@@ -112,6 +105,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     }
     return null;
   }, [platform, selectedLocales, mainLanguage]);
+
   return (
     <>
       <Section customContentStyling={sectionStyling} variant={SectionVariant.QUATERNARY} contentSuffix={projectName} header="Project Name">

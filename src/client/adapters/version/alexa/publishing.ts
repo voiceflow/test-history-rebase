@@ -1,10 +1,10 @@
-import { AlexaPublishing, defaultAlexaPublishing } from '@voiceflow/alexa-types';
+import { AlexaPublishing, Locale, defaultAlexaPublishing } from '@voiceflow/alexa-types';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { FullSkill } from '@/models';
 
 type SkillPublishing = Pick<
-  FullSkill['meta'],
+  FullSkill<Locale>['meta'],
   | 'summary'
   | 'description'
   | 'keywords'

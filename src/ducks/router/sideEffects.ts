@@ -74,7 +74,7 @@ export const goToCurrentCanvasMarkup = (): Thunk => async (dispatch, getState) =
 };
 
 export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
-  const skill = activeSkillSelector(getState()) as SkillModel;
+  const skill = activeSkillSelector(getState()) as SkillModel<string>;
 
   await dispatch(goToCanvasSwitchRealtime(skill.id, skill.rootDiagramID));
 };

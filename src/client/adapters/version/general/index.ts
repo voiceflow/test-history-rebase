@@ -7,7 +7,7 @@ import { FullSkill } from '@/models';
 
 import settingsAdapter from './settings';
 
-const generalVersionAdapter = createAdapter<Version<GeneralVersionData<Voice>>, FullSkill>(
+const generalVersionAdapter = createAdapter<Version<GeneralVersionData<Voice>>, FullSkill<string>>(
   ({ name, _id, creatorID, projectID, rootDiagramID, variables, platformData: { settings, publishing } }) => ({
     id: _id,
     name,

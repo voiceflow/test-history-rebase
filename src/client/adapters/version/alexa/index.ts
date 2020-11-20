@@ -1,4 +1,4 @@
-import { AlexaVersion } from '@voiceflow/alexa-types';
+import { AlexaVersion, Locale } from '@voiceflow/alexa-types';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { BUILT_IN_VARIABLES, PlatformType } from '@/constants';
@@ -7,7 +7,7 @@ import { FullSkill } from '@/models';
 import publishingAdapter from './publishing';
 import settingsAdapter from './settings';
 
-const alexaVersionAdapter = createAdapter<AlexaVersion, FullSkill>(
+const alexaVersionAdapter = createAdapter<AlexaVersion, FullSkill<Locale>>(
   ({ name, _id, creatorID, projectID, rootDiagramID, variables, platformData: { settings, publishing } }) => ({
     id: _id,
     name,
@@ -16,7 +16,7 @@ const alexaVersionAdapter = createAdapter<AlexaVersion, FullSkill>(
     rootDiagramID,
     diagramID: rootDiagramID,
     platform: PlatformType.ALEXA,
-    locales: publishing?.locales || ['en-US'],
+    locales: publishing?.locales || [Locale.EN_US],
     globalVariables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
     publishInfo: {
       [PlatformType.ALEXA]: {

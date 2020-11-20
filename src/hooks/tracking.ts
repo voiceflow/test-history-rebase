@@ -74,7 +74,7 @@ export const useWorkspaceTracking = () => {
 export const useCanvasTracking = () => {
   const [trackEvents] = useTrackingEvents();
   const store = useStore();
-  const activeSkill = React.useMemo(() => Skill.activeSkillSelector(store.getState()) as Models.Skill, []);
+  const activeSkill = React.useMemo(() => Skill.activeSkillSelector(store.getState()) as Models.Skill<string>, []);
   const activeWorkspaceID = React.useMemo(() => Workspace.activeWorkspaceIDSelector(store.getState())!, []);
   const startTime = React.useMemo(() => Date.now(), []);
 

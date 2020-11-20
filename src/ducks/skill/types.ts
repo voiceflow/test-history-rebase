@@ -1,9 +1,9 @@
 import { PlatformType } from '@/constants';
-import { FullSkill, Skill } from '@/models';
+import { Skill } from '@/models';
 import { Nullable } from '@/types';
 
-export type SkillState = Skill & {
-  meta: FullSkill['meta'];
+export type SkillState<L extends string> = Skill<L> & {
+  meta: any;
   publishInfo: Nullable<Record<PlatformType, any>>;
   canvasExporting?: boolean;
 };

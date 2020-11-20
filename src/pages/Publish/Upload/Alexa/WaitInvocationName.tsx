@@ -1,4 +1,6 @@
+import { Locale } from '@voiceflow/alexa-types';
 import React from 'react';
+import { Assign } from 'utility-types';
 
 import Box, { Flex } from '@/components/Box';
 import Button, { ButtonVariant } from '@/components/Button';
@@ -112,6 +114,6 @@ const mapDispatchToProps = {
   saveInvocationName: Skill.saveInvocationName,
 };
 
-type WaitInvocationNameConnectedProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+type WaitInvocationNameConnectedProps = Assign<ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>, { locales: Locale[] }>;
 
 export default connect(mapStateToProps, mapDispatchToProps)(WaitInvocationName) as React.FC<WaitInvocationNameProps>;

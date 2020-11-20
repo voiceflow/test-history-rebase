@@ -1,4 +1,4 @@
-import { AlexaSettings, Voice, defaultAlexaSettings } from '@voiceflow/alexa-types';
+import { AlexaSettings, Locale, Voice, defaultAlexaSettings } from '@voiceflow/alexa-types';
 import { RepeatType } from '@voiceflow/general-types';
 import _invert from 'lodash/invert';
 
@@ -9,7 +9,7 @@ import { createErrorPromptAdapter, createRestartAdapter } from '../utils';
 import accountLinkingAdapter from './accountLinking';
 
 export type SkillSettings = Pick<
-  FullSkill['meta'],
+  FullSkill<Locale>['meta'],
   'repeat' | 'accountLinking' | 'alexaEvents' | 'settings' | 'restart' | 'resumePrompt' | 'errorPrompt' | 'alexa_permissions'
 >;
 

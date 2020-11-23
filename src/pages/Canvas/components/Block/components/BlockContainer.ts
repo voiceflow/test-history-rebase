@@ -105,7 +105,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
     cursor: not-allowed;
   }
 
-  .${CANVAS_ACTIVATION_CLASSNAME} .${ClassName.CANVAS_NODE}:not(.${NODE_ACTIVE_CLASSNAME}) {
+  .${CANVAS_ACTIVATION_CLASSNAME} .${ClassName.CANVAS_NODE}:not(.${NODE_ACTIVE_CLASSNAME}) & {
     & {
       ${disabledStyles}
     }

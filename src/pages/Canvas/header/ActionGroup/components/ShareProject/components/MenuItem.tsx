@@ -21,7 +21,7 @@ type MenuItemProps = {
   description: string;
   onRedirect: () => void;
   link: Nullable<string>;
-  help: string;
+  help?: string;
   isAllowed: boolean;
   track: () => void;
   loading?: boolean;
@@ -60,9 +60,9 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, isAllowed, onRe
           <span>{title}</span>
           {!isAllowed && <PlanBubble plan={PlanType.PRO} />}
         </Header>
-        <Description>
-          <span>{description} </span>
-          <Link href={help}>Learn More</Link>
+        <Description fontSize={13}>
+          <span>{description}</span>
+          {help && <Link href={help}>Learn More</Link>}
         </Description>
       </div>
       <ButtonContainer>

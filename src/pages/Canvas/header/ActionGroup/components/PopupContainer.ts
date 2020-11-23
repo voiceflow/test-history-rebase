@@ -1,4 +1,5 @@
-import { keyframes, styled } from '@/hocs';
+import { AlexaStageType, GoogleStageType } from '@/constants/platforms';
+import { css, keyframes, styled } from '@/hocs';
 import { ANIMATION_SPEED } from '@/styles/theme';
 
 import PopupCloseIcon from './PopupCloseIcon';
@@ -14,6 +15,8 @@ const fadeIn = keyframes`
 
 export type PopupContainerProps = {
   open?: boolean;
+  jobStage?: AlexaStageType | GoogleStageType | null;
+  projectExists?: boolean;
 };
 
 const PopupContainer = styled.div<PopupContainerProps>`
@@ -41,6 +44,37 @@ const PopupContainer = styled.div<PopupContainerProps>`
     padding: 18px;
     z-index: 100;
   }
+
+  ${({ jobStage, projectExists }) => {
+    // eslint-disable-next-line sonarjs/no-small-switch
+    switch (jobStage) {
+      case GoogleStageType.WAIT_PROJECT:
+        if (projectExists) {
+          return css`
+            min-width: 254px;
+            max-width: 254px;
+            right: 180px;
+            padding: 0px;
+          `;
+        }
+        return css`
+          min-width: 420px;
+          max-width: 420px;
+          right: 110px;
+          padding: 0px;
+        `;
+
+      case GoogleStageType.SUCCESS:
+      case GoogleStageType.ERROR:
+        return css`
+          min-width: 420px;
+          max-width: 420px;
+          right: 110px;
+        `;
+      default:
+        return css``;
+    }
+  }}
 `;
 
 export default PopupContainer;

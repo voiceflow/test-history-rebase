@@ -7,6 +7,7 @@ import * as SvgIcon from '@/components/SvgIcon';
 import TippyTooltip from '@/components/TippyTooltip';
 import * as Router from '@/ducks/router';
 import { connect, css, styled } from '@/hocs';
+import { useTrackingEvents } from '@/hooks';
 import { Spin } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
@@ -37,11 +38,14 @@ const PlayButton = styled(Button).attrs({ speed: 2000 })<PlayButtonProps>`
 `;
 
 const TestButton: React.FC<ConnectedTestButtonProps> = ({ goToPrototype }) => {
+  const [trackingEvents] = useTrackingEvents();
+
   return (
     <TippyTooltip html={<Box width={180}>Test your Action on your own device, or on the Action developer console</Box>} position="bottom">
       <PlayButton
         icon="play"
         onClick={() => {
+          trackingEvents.trackActiveProjectPrototypeTestClick();
           goToPrototype();
         }}
         iconProps={{ size: 11 }}

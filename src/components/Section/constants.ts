@@ -11,4 +11,5 @@ export enum SectionVariant {
   PROTOTYPE = 'prototype',
   SUBSECTION = 'subsection',
   DEVICE = 'device',
+  UPLOAD = 'upload',
 }

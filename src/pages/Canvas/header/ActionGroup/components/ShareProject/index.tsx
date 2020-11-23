@@ -19,9 +19,9 @@ import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps, Nullable } from '@/types';
 import { stopImmediatePropagation } from '@/utils/dom';
 
-import { ExportItem, MenuContainer, MenuItem } from './components';
+import { ExportItem, MenuContainer, MenuItem, MenuItemV2, SharePrototype } from './components';
 
-const Footer: any = ModalFooter;
+const Footer = ModalFooter as React.FC<any>;
 
 type ShareProjectProps = {
   render: boolean;
@@ -95,35 +95,52 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
       menu={() => (
         <MenuContainer>
           <FadeDownDelayedContainer>
-            <div>
-              <MenuItem
-                isAllowed={canSharePrototype}
-                loading={state.loadingTestableLink}
-                title="Testable Link"
-                description="Share your project with others for in browser prototyping."
-                onRedirect={openTestableLinksModal}
-                help="https://docs.voiceflow.com/#/quickstart/testable-links"
-                link={state.testableLink}
-                track={trackingEvents.trackActiveProjectTestableLinkShare}
-                onClick={onClickPrototype}
-              />
+            {headerRedesign.isEnabled ? (
+              <>
+                <MenuItemV2
+                  isAllowed={canSharePrototype}
+                  title="Share Prototype"
+                  description="Share a testable version of your project that can be prototyped using voice, chat, or chip input."
+                />
+                {canInviteByLink && (
+                  <Footer onClick={stopImmediatePropagation()}>
+                    <SharePrototype isAllowed={canSharePrototype} onClick={onClickPrototype} />
+                  </Footer>
+                )}
+              </>
+            ) : (
+              <>
+                <div>
+                  <MenuItem
+                    isAllowed={canSharePrototype}
+                    loading={state.loadingTestableLink}
+                    title="Testable Link"
+                    description="Share your project with others for in browser prototyping."
+                    onRedirect={openTestableLinksModal}
+                    help="https://docs.voiceflow.com/#/quickstart/testable-links"
+                    link={state.testableLink}
+                    track={trackingEvents.trackActiveProjectTestableLinkShare}
+                    onClick={onClickPrototype}
+                  />
 
-              <MenuItem
-                isAllowed={canShareProject}
-                title="Project Download"
-                description="Allow others to download this project to their own Voiceflow account."
-                onRedirect={openProjectDownloadModal}
-                help="https://docs.voiceflow.com/#/quickstart/downloadable-links"
-                link={`${window.location.origin}/dashboard?import=${projectID}`}
-                track={trackingEvents.trackActiveProjectDownloadLinkShare}
-                onClick={onClickImport}
-              />
-              <ExportItem onRedirect={openCanvasExportModal} />
-            </div>
-            {canInviteByLink && (
-              <Footer onClick={stopImmediatePropagation()}>
-                <InviteByLink noIcon />
-              </Footer>
+                  <MenuItem
+                    isAllowed={canShareProject}
+                    title="Project Download"
+                    description="Allow others to download this project to their own Voiceflow account."
+                    onRedirect={openProjectDownloadModal}
+                    help="https://docs.voiceflow.com/#/quickstart/downloadable-links"
+                    link={`${window.location.origin}/dashboard?import=${projectID}`}
+                    track={trackingEvents.trackActiveProjectDownloadLinkShare}
+                    onClick={onClickImport}
+                  />
+                  <ExportItem onRedirect={openCanvasExportModal} />
+                </div>
+                {canInviteByLink && (
+                  <Footer onClick={stopImmediatePropagation()}>
+                    <InviteByLink noIcon />
+                  </Footer>
+                )}
+              </>
             )}
           </FadeDownDelayedContainer>
         </MenuContainer>

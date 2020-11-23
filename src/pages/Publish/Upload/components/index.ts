@@ -7,3 +7,5 @@ export { default as ProgressStage } from './ProgressStage';
 export { default as DownloadStage } from './DownloadStage';
 export { default as StageContainer } from './StageContainer';
 export { default as ButtonContainer } from './ButtonContainer';
+export { default as StageHeader } from './StageHeader';
+export { default as DropdownSection } from './DropdownSection';

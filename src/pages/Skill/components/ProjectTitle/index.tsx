@@ -1,15 +1,18 @@
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import * as Realtime from '@/ducks/realtime';
 import { connect } from '@/hocs';
-import { usePermission } from '@/hooks';
+import { useFeature, usePermission } from '@/hooks';
 import { useEnableDisable } from '@/hooks/toggle';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
+import ExportProjectButton from './ExportProjectButton';
 import ProjectTitleContainer from './ProjectTitleContainer';
+import { TitleInput } from './components';
 
 const EMPTY_TITLE_DEFAULT = 'Untitled Project';
 
@@ -37,6 +40,7 @@ const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = (
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const isPrototypingMode = usePrototypingMode();
   const isLocked = isLockedSelector(Realtime.ResourceType.SETTINGS);
+  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
 
   React.useEffect(() => {
     updateFormValue(title);
@@ -66,7 +70,7 @@ const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = (
 
   return (
     <ProjectTitleContainer id="project-title">
-      <input
+      <TitleInput
         id={Identifier.PROJECT_TITLE}
         onDoubleClick={onDoubleClick}
         className="edit-input"
@@ -77,6 +81,7 @@ const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = (
         onKeyPress={handleEnterPress}
         disabled={isLocked || !canEditCanvas}
       />
+      {headerRedesign.isEnabled && <ExportProjectButton />}
     </ProjectTitleContainer>
   );
 };

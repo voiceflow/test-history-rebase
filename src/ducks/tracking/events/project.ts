@@ -11,6 +11,10 @@ export const trackActiveProjectSessionBegin = (options: ProjectEventInfo) => () 
 export const trackActiveProjectSessionDuration = (options: ProjectEventInfo & { duration: number }) => () =>
   client.analytics.track(EventName.PROJECT_SESSION_DURATION, createProjectEventPayload(options, { duration: Math.floor(options.duration / 1000) }));
 
+export const trackActiveProjectPrototypeTestClick = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.PROJECT_PROTOTYPE_TEST_CLICK, createProjectEventPayload(options))
+);
+
 export const trackActiveProjectPrototypeTestStart = createProjectEventTracker<{ debug: boolean; display: string | null; mode: PrototypeMode }>(
   (options) =>
     client.analytics.track(
@@ -29,6 +33,14 @@ export const trackActiveProjectTestableLinkShare = createProjectEventTracker((op
 
 export const trackActiveProjectDownloadLinkShare = createProjectEventTracker((options) =>
   client.analytics.track(EventName.PROJECT_SHARE_DOWNLOAD_LINK, createProjectEventPayload(options))
+);
+
+export const trackActiveProjectPublishAttempt = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.PROJECT_PUBLISH_ATTEMPT, createProjectEventPayload(options))
+);
+
+export const trackActiveProjectPublishSuccess = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.PROJECT_PUBLISH_SUCCESS, createProjectEventPayload(options))
 );
 
 export const trackProjectClone = ({

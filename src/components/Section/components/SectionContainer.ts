@@ -1,3 +1,4 @@
+import { darkTheme } from '@/admin/styles/theme';
 import { css, styled, transition, units } from '@/hocs';
 
 import { SectionVariant } from '../constants';
@@ -45,6 +46,12 @@ export const prototypeStyles = css`
 
   ${Header} {
     height: 50px !important;
+  }
+`;
+
+export const uploadStyles = css`
+  ${Header} {
+    height: 52px !important;
   }
 `;
 
@@ -120,6 +127,12 @@ const SectionContainer = styled.div<SectionContainerProps>`
             font-style: normal;
             line-height: normal;
           `;
+        case SectionVariant.UPLOAD:
+          return css`
+            font-size: 15px;
+            color: ${darkTheme.palette.common.black};
+            font-weight: ${isCollapsed ? 'normal' : '600'};
+          `;
         case SectionVariant.PRIMARY:
         default:
           return css`
@@ -176,6 +189,13 @@ const SectionContainer = styled.div<SectionContainerProps>`
 
         ${ContentContainer} {
           padding: 0;
+      `;
+    }
+
+    if (variant === SectionVariant.UPLOAD) {
+      return css`
+        ${Header} {
+          padding: 16px 0px;
         }
       `;
     }
@@ -211,7 +231,9 @@ const SectionContainer = styled.div<SectionContainerProps>`
     `}
 
 
-    ${({ variant }) => variant === SectionVariant.PROTOTYPE && prototypeStyles}
+  ${({ variant }) => variant === SectionVariant.PROTOTYPE && prototypeStyles}
+
+  ${({ variant }) => variant === SectionVariant.UPLOAD && uploadStyles}
 `;
 
 export default SectionContainer;

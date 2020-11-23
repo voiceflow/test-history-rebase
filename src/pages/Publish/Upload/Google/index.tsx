@@ -1,6 +1,8 @@
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import { GoogleStageType } from '@/constants/platforms';
+import { useFeature } from '@/hooks';
 import { ExportContext, PublishContext } from '@/pages/Skill/contexts';
 
 import { LoaderStage, ProgressStage } from '../components';
@@ -15,6 +17,8 @@ type GoogleProps = {
 };
 
 export const Google: React.FC<GoogleProps> = (props) => {
+  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
+
   const exportContextValue = React.useContext(ExportContext)!;
   const publishContextValue = React.useContext(PublishContext)!;
 
@@ -30,7 +34,7 @@ export const Google: React.FC<GoogleProps> = (props) => {
     case GoogleStageType.SUCCESS:
       return <SuccessStage stage={contextValue.job.stage} cancel={contextValue.cancel} />;
     case GoogleStageType.WAIT_ACCOUNT:
-      return <WaitAccountStage updateCurrentStage={contextValue.updateCurrentStage} />;
+      return !headerRedesign.isEnabled ? <WaitAccountStage updateCurrentStage={contextValue.updateCurrentStage} /> : null;
     case GoogleStageType.WAIT_PROJECT:
       return <WaitProjectStage updateCurrentStage={contextValue.updateCurrentStage} cancel={contextValue.cancel} />;
     case GoogleStageType.WAIT_INVOCATION_NAME:

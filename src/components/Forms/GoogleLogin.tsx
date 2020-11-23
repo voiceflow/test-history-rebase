@@ -16,7 +16,6 @@ const GoogleLoginButton = styled(BaseButton)`
   font-family: 'Roboto', sans-serif;
   height: 40px;
   border-radius: 2px;
-
   span:last-of-type {
     padding: 0 22px 0 18px;
   }

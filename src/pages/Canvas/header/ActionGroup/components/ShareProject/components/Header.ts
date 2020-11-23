@@ -1,6 +1,6 @@
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 
-const Header = styled.div<{ marginBottom?: number }>`
+const Header = styled.div`
   font-size: 15px;
   font-weight: 600;
   color: #132144;
@@ -10,12 +10,6 @@ const Header = styled.div<{ marginBottom?: number }>`
     margin-right: 12px;
     vertical-align: middle;
   }
-
-  ${({ marginBottom }) =>
-    marginBottom &&
-    css`
-      margin-bottom: ${marginBottom}px;
-    `}
 `;
 
 export default Header;

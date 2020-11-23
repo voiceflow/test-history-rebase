@@ -1,3 +1,3 @@
-import { ColorProps, FontSizeProps, LayoutProps, SpaceProps, TypographyProps } from 'styled-system';
+import { ColorProps, LayoutProps, SpaceProps, TypographyProps } from 'styled-system';
 
-export type TextProps = ColorProps & FontSizeProps & LayoutProps & SpaceProps & TypographyProps;
+export type TextProps = ColorProps & LayoutProps & SpaceProps & TypographyProps;

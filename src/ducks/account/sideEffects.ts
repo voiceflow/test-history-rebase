@@ -52,7 +52,9 @@ export const unlinkGoogleAccount = (): Thunk => async (dispatch) => {
 export const linkAmazonAccount = (code: string): Thunk<Nullable<Account.Amazon>> => async (dispatch) => {
   try {
     const amazon = await client.platform.alexa.session.linkAccount({ code });
+
     dispatch(updateAccount({ amazon }));
+
     return amazon;
   } catch (err) {
     log.error(err);

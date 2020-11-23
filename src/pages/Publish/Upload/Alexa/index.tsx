@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { AlexaStageType } from '@/constants/platforms';
-import { useFeature } from '@/hooks';
 import { ExportContext, PublishContext } from '@/pages/Skill/contexts';
 
 import { LoaderStage, ProgressStage } from '../components';
@@ -17,8 +15,6 @@ type AlexaProps = {
 };
 
 export const Alexa: React.FC<AlexaProps> = (props) => {
-  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
-
   const exportContextValue = React.useContext(ExportContext)!;
   const publishContextValue = React.useContext(PublishContext)!;
 
@@ -34,7 +30,7 @@ export const Alexa: React.FC<AlexaProps> = (props) => {
     case AlexaStageType.SUCCESS:
       return <SuccessStage stage={contextValue.job.stage} cancel={contextValue.cancel} />;
     case AlexaStageType.WAIT_ACCOUNT:
-      return !headerRedesign.isEnabled ? <WaitAccountStage updateCurrentStage={contextValue.updateCurrentStage} /> : null;
+      return <WaitAccountStage updateCurrentStage={contextValue.updateCurrentStage} />;
     case AlexaStageType.WAIT_VENDORS:
       return <WaitVendorsStage cancel={contextValue.cancel} />;
     case AlexaStageType.WAIT_INVOCATION_NAME:

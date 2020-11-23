@@ -1,13 +1,11 @@
 import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
-import { ModalType } from '@/constants';
 import { GoogleStageType } from '@/constants/platforms';
 import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
-import { useFeature, useModals, useToggle, useTrackingEvents } from '@/hooks';
+import { useFeature, useToggle } from '@/hooks';
 import { Google } from '@/pages/Publish/Upload';
-import WaitProjectStage from '@/pages/Publish/Upload/Google/WaitProjectStage';
 import { PublishContext } from '@/pages/Skill/contexts';
 import { useCanvasMode } from '@/pages/Skill/hooks';
 import { ConnectedProps } from '@/types';
@@ -22,48 +20,31 @@ const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ google
 
   const isCanvasMode = useCanvasMode();
 
-  const { job, publish, updateCurrentStage, cancel } = React.useContext(PublishContext)!;
+  const { job, cancel, publish } = React.useContext(PublishContext)!;
 
-  const [opened, onToggle] = useToggle(false);
-  const { open: openLoginModal, close: closeLoginModal, isOpened: loginModalOpen } = useModals(ModalType.CONNECT);
-  const [trackingEvents] = useTrackingEvents();
+  const [opened, onToggle] = useToggle();
 
   const needsLogin = !google;
-
-  const toggleLoginModal = () => {
-    if (!!opened && job?.stage.type === GoogleStageType.WAIT_ACCOUNT && headerRedesign.isEnabled && !loginModalOpen) {
-      openLoginModal({ stage: job?.stage.type, updateCurrentStage });
-    } else {
-      closeLoginModal();
-    }
-  };
 
   const onClose = React.useCallback(async () => {
     await cancel();
     onToggle(false);
   }, [cancel]);
 
-  const onClick = () => {
-    trackingEvents.trackActiveProjectPublishAttempt();
-    if (isReady(job)) {
-      publish();
-    }
-    onToggle(true);
-
-    toggleLoginModal();
-  };
-
   React.useEffect(() => {
-    if (!opened && isNotify(job) && job?.stage.type !== GoogleStageType.WAIT_ACCOUNT) {
+    if (!opened && isNotify(job)) {
       onToggle(true);
     }
+  }, [opened, job?.status]);
 
-    toggleLoginModal();
-
-    if (job?.stage.type === GoogleStageType.SUCCESS) {
-      trackingEvents.trackActiveProjectPublishSuccess();
+  const onClick = () => {
+    if (isReady(job)) {
+      publish();
+      onToggle(true);
+    } else {
+      onToggle();
     }
-  }, [opened, job?.status, job?.stage.type]);
+  };
 
   React.useEffect(() => {
     getGoogleAccount();
@@ -88,24 +69,13 @@ const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ google
     }
   };
 
-  const noPopup = headerRedesign.isEnabled && (job?.stage.type === GoogleStageType.PROGRESS || job?.stage.type === GoogleStageType.WAIT_ACCOUNT);
-  const popup = headerRedesign.isEnabled ? (
-    <UploadPopup open={opened && !noPopup} onClose={onClose} jobStage={job?.stage.type}>
-      {!noPopup && <Google />}
-    </UploadPopup>
-  ) : (
-    <UploadPopup open={opened && !noPopup} onClose={onClose}>
-      {!noPopup && <Google />}
-    </UploadPopup>
-  );
+  const noPopup = headerRedesign.isEnabled && job?.stage.type === GoogleStageType.PROGRESS;
   return (
     <>
       {headerRedesign.isEnabled && isCanvasMode ? <GoogleButton /> : <Button onClick={onClick} isActive={isRunning(job)} />}
-      {headerRedesign.isEnabled && job?.stage.type === GoogleStageType.WAIT_PROJECT ? (
-        <WaitProjectStage open={opened && !noPopup} onClose={onClose} updateCurrentStage={updateCurrentStage} cancel={cancel} />
-      ) : (
-        popup
-      )}
+      <UploadPopup open={opened && !noPopup} onClose={onClose}>
+        {!noPopup && <Google />}
+      </UploadPopup>
     </>
   );
 };

@@ -24,6 +24,7 @@ declare global {
     VF_OVERRIDE_GOOGLE_ANALYTICS_ID?: string;
     VF_OVERRIDE_COPY_PASTE_KEY?: string;
     VF_OVERRIDE_ADMIN_HOST?: string;
+    VF_OVERRIDE_MAINTENANCE_STATUS_SOURCE?: string;
   }
 }
 
@@ -142,7 +143,7 @@ export const INTERCOM_ENABLED = IS_PRODUCTION || process.env.INTERCOM_ENABLED ==
 export const INTERCOM_APP_ID = window.VF_OVERRIDE_INTERCOM_APP_ID || process.env.INTERCOM_APP_ID!;
 
 // maintenance
-export const MAINTENANCE_STATUS_SOURCE = process.env.MAINTENANCE_STATUS_SOURCE!;
+export const MAINTENANCE_STATUS_SOURCE = window.VF_OVERRIDE_MAINTENANCE_STATUS_SOURCE || process.env.MAINTENANCE_STATUS_SOURCE!;
 
 // copy-paste
 export const COPY_PASTE_KEY = window.VF_OVERRIDE_COPY_PASTE_KEY || process.env.COPY_PASTE_KEY!;

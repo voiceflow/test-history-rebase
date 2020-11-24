@@ -4,7 +4,9 @@ import React from 'react';
 import { defaultLabelRenderer } from '@/components/Select';
 import SvgIcon from '@/components/SvgIcon';
 import { PluginType } from '@/components/TextEditor';
+import TippyTooltip from '@/components/TippyTooltip';
 import { ClassName } from '@/styles/constants';
+import { stopPropagation } from '@/utils/dom';
 
 import { DefaultVoiceContainer, Editor, Speaker, VoiceItem, VoiceSelect } from './components';
 import { PLATFORM_SSML_META, VOICES } from './constants';
@@ -36,6 +38,7 @@ const SSML = (
     onAddVariable,
     withDefaultVoice = true,
     withVariablesPlugin = true,
+    platformDefaultVoice,
     onChangeDefaultVoice,
     createInputPlaceholder = 'New Variable',
     ...props
@@ -70,8 +73,26 @@ const SSML = (
               <VoiceItem>
                 {defaultLabelRenderer(option, ...args)}
                 {withDefaultVoice && (
-                  <DefaultVoiceContainer active={option?.value === defaultVoice} onClick={() => onChangeDefaultVoice(option?.value ?? null)}>
-                    <SvgIcon icon="star" />
+                  <DefaultVoiceContainer active={option?.value === defaultVoice}>
+                    <TippyTooltip
+                      title={option?.value === defaultVoice ? 'Remove as Default' : 'Set as Default Voice'}
+                      disabled={option?.value === defaultVoice && option?.value === platformDefaultVoice}
+                      hideOnClick={false}
+                      popperOptions={{
+                        modifiers: {
+                          preventOverflow: { enabled: false },
+                        },
+                      }}
+                    >
+                      <SvgIcon
+                        icon="star"
+                        onClick={
+                          option?.value === defaultVoice
+                            ? stopPropagation(() => onChangeDefaultVoice(null))
+                            : () => onChangeDefaultVoice(option?.value ?? null)
+                        }
+                      />
+                    </TippyTooltip>
                   </DefaultVoiceContainer>
                 )}
               </VoiceItem>

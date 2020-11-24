@@ -50,7 +50,8 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
     return voices.filter((voice) => voice !== 'audio');
   }, [platform]);
 
-  const defaultVoice = settings.defaultVoice || getPlatformDefaultVoice(platform);
+  const platformDefaultVoice = getPlatformDefaultVoice(platform);
+  const defaultVoice = settings.defaultVoice || platformDefaultVoice;
 
   const defaultResumePrompt = React.useMemo(() => ({ content: '', follow_content: '', follow_voice: defaultVoice, voice: defaultVoice }), [
     defaultVoice,
@@ -208,6 +209,7 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
                 platform={platform}
                 defaultVoice={defaultVoice}
                 onChangeVoice={onChangeResumePromptVoice}
+                platformDefaultVoice={platformDefaultVoice}
                 onChangeDefaultVoice={onChangeDefaultVoice}
               />
 
@@ -250,6 +252,7 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
                   platform={platform}
                   defaultVoice={defaultVoice}
                   onChangeVoice={onChangeFollowUpVoice}
+                  platformDefaultVoice={platformDefaultVoice}
                   onChangeDefaultVoice={onChangeDefaultVoice}
                 />
               </FormControl>

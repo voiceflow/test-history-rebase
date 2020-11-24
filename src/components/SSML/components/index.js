@@ -26,25 +26,32 @@ export const Editor = styled(TextEditor)`
 `;
 
 export const DefaultVoiceContainer = styled(FlexCenter)`
-  ${transition('color', 'opacity')}
-  padding: 0 6px;
+  ${transition('opacity')}
   position: absolute;
   top: 0;
-  right: 6px;
+  right: 24px;
   bottom: 0;
 
   opacity: 0;
-  color: #becedc;
 
-  &:hover {
-    color: #6e849a;
+  svg {
+    ${transition('color')}
+
+    color: #becedc;
+
+    &:hover {
+      color: #6e849a;
+    }
   }
 
   ${({ active }) =>
     active &&
     css`
       opacity: 1 !important;
-      color: #e5b813 !important;
+
+      svg {
+        color: #e5b813 !important;
+      }
     `}
 `;
 
@@ -52,7 +59,7 @@ export const VoiceItem = styled(Flex)`
   margin-left: -36px;
   margin-right: -24px;
   padding-left: 36px;
-  padding-right: 24px;
+  padding-right: 46px;
   flex: 1;
   height: 100%;
 

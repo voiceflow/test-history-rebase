@@ -18,6 +18,12 @@ declare global {
     VF_OVERRIDE_APP_ENV?: string; // creator-app runtime environment
     VF_OVERRIDE_GOOGLE_SERVICE_ENDPOINT?: string; // google-service public endpoint
     VF_OVERRIDE_ALEXA_SERVICE_ENDPOINT?: string; // google-service public endpoint
+    VF_OVERRIDE_INTERCOM_APP_ID?: string;
+    VF_OVERRIDE_AMAZON_APP_ID?: string;
+    VF_OVERRIDE_GOOGLE_CLIENT_ID?: string; // Override the Google OAuth2 Client
+    VF_OVERRIDE_GOOGLE_ANALYTICS_ID?: string;
+    VF_OVERRIDE_COPY_PASTE_KEY?: string;
+    VF_OVERRIDE_ADMIN_HOST?: string;
   }
 }
 
@@ -78,29 +84,31 @@ export const CANVAS_CROSSHAIR_ENABLED = DEBUG_CANVAS || (!IS_PRODUCTION && !!pro
 // realtime
 export const REALTIME_CURSOR_ENABLED = IS_PRODUCTION || DEBUG_REALTIME;
 
-export const ADMIN_HOST =
+const _ADMIN_HOST =
   // eslint-disable-next-line no-nested-ternary
   !API_HOST || API_HOST.includes('localhost')
     ? 'https://localhost:3001'
     : IS_PRODUCTION_ENV
     ? 'https://admin.voiceflow.com'
     : 'https://admin.development.voiceflow.com';
+export const ADMIN_HOST = window.VF_OVERRIDE_ADMIN_HOST || _ADMIN_HOST;
 
 // amazon
-export const AMAZON_APP_ID = process.env.AMAZON_APP_ID!;
+export const AMAZON_APP_ID = window.VF_OVERRIDE_AMAZON_APP_ID || process.env.AMAZON_APP_ID!;
 
 // google
 export const GOOGLE_OAUTH_ID = process.env.GOOGLE_OAUTH_ID!;
 const GOOGLE_PROD_CLIENT_ID = process.env.GOOGLE_PROD_CLIENT_ID!;
 const GOOGLE_DEV_CLIENT_ID = process.env.GOOGLE_DEV_CLIENT_ID!;
-export const GOOGLE_CLIENT_ID = IS_PRODUCTION_ENV ? GOOGLE_PROD_CLIENT_ID : GOOGLE_DEV_CLIENT_ID;
+const _GOOGLE_CLIENT_ID = IS_PRODUCTION_ENV ? GOOGLE_PROD_CLIENT_ID : GOOGLE_DEV_CLIENT_ID;
+export const GOOGLE_CLIENT_ID = window.VF_OVERRIDE_GOOGLE_CLIENT_ID || _GOOGLE_CLIENT_ID;
 
 // tracking
 export const TRACKING_ENABLED = IS_PRODUCTION || process.env.TRACKING_ENABLED === 'true';
 
 // google analytics
 export const GA_ENABLED = TRACKING_ENABLED || process.env.GA_ENABLED === 'true';
-export const GOOGLE_ANALYTICS_ID = process.env.GOOGLE_ANALYTICS_ID!;
+export const GOOGLE_ANALYTICS_ID = window.VF_OVERRIDE_GOOGLE_ANALYTICS_ID || process.env.GOOGLE_ANALYTICS_ID!;
 
 // zapier
 const ZAPIER_DEV_PATH = process.env.ZAPIER_DEV_PATH!;
@@ -131,13 +139,13 @@ export const LOGROCKET_PROJECT = process.env.LOGROCKET_PROJECT!;
 
 // intercom
 export const INTERCOM_ENABLED = IS_PRODUCTION || process.env.INTERCOM_ENABLED === 'true';
-export const INTERCOM_APP_ID = process.env.INTERCOM_APP_ID!;
+export const INTERCOM_APP_ID = window.VF_OVERRIDE_INTERCOM_APP_ID || process.env.INTERCOM_APP_ID!;
 
 // maintenance
 export const MAINTENANCE_STATUS_SOURCE = process.env.MAINTENANCE_STATUS_SOURCE!;
 
 // copy-paste
-export const COPY_PASTE_KEY = process.env.COPY_PASTE_KEY!;
+export const COPY_PASTE_KEY = window.VF_OVERRIDE_COPY_PASTE_KEY || process.env.COPY_PASTE_KEY!;
 
 // userflow
 export const USERFLOW_ENABLED = IS_PRODUCTION || process.env.USERFLOW_ENABLED === 'true';

@@ -446,6 +446,8 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     describe('terminateRealtimeConnection()', () => {
       it('should end and clean up active realtime connection', async () => {
         const terminate = stubSocket('diagram', 'terminate');
+        stub(SkillSelectors, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
+        stub(SkillSelectors, 'activeSkillIDSelector').returns('skill');
 
         const { expectDispatch } = await applyEffect(Realtime.terminateRealtimeConnection());
 

@@ -78,9 +78,13 @@ export const sendRealtimeProjectUpdate = (action: Socket.AnySocketAction): Thunk
   }
 };
 
-export const terminateRealtimeConnection = (): Thunk => async (dispatch) => {
+export const terminateRealtimeConnection = (): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const skillID = activeSkillIDSelector(state);
+  const diagramID = activeDiagramIDSelector(state);
+
   dispatch(disconnectRealtime());
-  await client.socket.diagram.terminate();
+  await client.socket.diagram.terminate(skillID, diagramID);
   dispatch(resetRealtime());
 };
 

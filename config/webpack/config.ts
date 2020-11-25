@@ -21,6 +21,7 @@ import {
   logFilter,
   logLevel,
   logrocket,
+  privateCloud,
   tracking,
   userflow,
 } from 'webpack-nano/argv';
@@ -60,6 +61,8 @@ export const ENV = {
   LOGROCKET_ENABLED: logrocket && 'true',
   INTERCOM_ENABLED: intercom && 'true',
   USERFLOW_ENABLED: userflow && 'true',
+
+  PRIVATE_CLOUD_NAME: privateCloud || '',
 
   // feature flags
   FF_GADGETS: ff_gadgets && 'true',

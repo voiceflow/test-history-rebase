@@ -262,6 +262,21 @@ You are also able to use the flag `--userflow` to enable it from the command lin
 yarn start --userflow
 ```
 
+### Private Cloud
+
+Some features are disabled when running on a private cloud.
+
+```sh
+VF_APP_PRIVATE_CLOUD_NAME='myPrivateCloud'
+
+```
+
+You are also able to use the flag `--privateCloud` to enable it from the command line.
+
+```sh
+yarn start --privateCloud myPrivateCloud
+```
+
 ### Feature Flags
 
 All feature flags environment variables begin with `VF_APP_FF_` and flags for the command line begin with `--ff_`.

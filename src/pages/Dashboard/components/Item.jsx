@@ -62,14 +62,14 @@ export function Item(props) {
           onClick: onDuplicate,
         },
         {
-          value: 'remove',
-          label: 'Remove Project',
-          onClick: onRemove,
-        },
-        {
           value: 'download',
           label: 'Download Project',
           onClick: onDownload,
+        },
+        {
+          value: 'remove',
+          label: 'Remove Project',
+          onClick: onRemove,
         },
       ]
     : [];

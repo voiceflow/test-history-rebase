@@ -6,6 +6,7 @@ import { Form, FormGroup, Input } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
 import { toast } from '@/components/Toast';
+import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
@@ -83,10 +84,8 @@ export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> 
               </Link>
             </FormGroup>
             <div className="row">
-              <div className="col-7 auth__link">
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a onClick={openRegister}>Don't have an account?</a>
-              </div>
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <div className="col-7 auth__link">{IS_PRIVATE_CLOUD ? <span /> : <a onClick={openRegister}>Don't have an account?</a>}</div>
               <div className="col-5">
                 <Button isPrimary isBlock type="submit">
                   {query.invite ? 'Join Team' : 'Sign in'}
@@ -96,7 +95,7 @@ export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> 
           </div>
         </Form>
 
-        <SocialLogin light />
+        {!IS_PRIVATE_CLOUD && <SocialLogin light />}
       </AuthBox>
     </AuthenticationContainer>
   );

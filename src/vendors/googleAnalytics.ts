@@ -7,6 +7,7 @@ import { GA_ENABLED, GOOGLE_ANALYTICS_ID } from '@/config';
 export const initialize = (history: History) => {
   if (GA_ENABLED) {
     ReactGA.initialize(GOOGLE_ANALYTICS_ID);
+    ReactGA.pageview(window.location.pathname);
 
     // report pageview events
     // TODO: should probably replace this with redux-beacon

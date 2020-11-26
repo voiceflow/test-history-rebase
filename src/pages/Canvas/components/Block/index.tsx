@@ -21,6 +21,7 @@ export type BlockProps = WithOptional<BlockSectionProps, 'variant'> & {
     icon?: Icon;
     children?: React.ReactNode;
   }[];
+  actions?: JSX.Element;
   lockOwner?: LockOwner | null;
   blockColor?: string;
   isDisabled?: boolean;

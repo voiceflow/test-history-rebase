@@ -5,12 +5,12 @@ import AudioController from './Audio';
 import DialogController, { DialogControllerProps } from './Dialog';
 import MessageController, { MessageControllerProps } from './Message';
 import TimeoutController from './Timeout';
-import TraceController, { TraceControllerProps } from './Trace';
+import TraceController, { StepDirection, TraceControllerProps } from './Trace';
 
-type Props = MessageControllerProps & TraceControllerProps & DialogControllerProps;
+export type PrototypeToolProps = MessageControllerProps & TraceControllerProps & DialogControllerProps;
 
 class PrototypeTool {
-  private props: Props;
+  private props: PrototypeToolProps;
 
   public audio?: AudioController;
 
@@ -22,7 +22,7 @@ class PrototypeTool {
 
   private timeout?: TimeoutController;
 
-  constructor(props: Props) {
+  constructor(props: PrototypeToolProps) {
     this.props = props;
   }
 
@@ -31,7 +31,7 @@ class PrototypeTool {
 
     this.message!.trackStartTime();
     this.message!.session(cuid(), 'New session started');
-
+    this.trace!.start();
     this.trace!.next();
   }
 
@@ -51,6 +51,14 @@ class PrototypeTool {
   public play(src: string) {
     const muted = this.props.engine?.getPrototypeMuted();
     this.audio?.playExternal(src, muted);
+  }
+
+  public stepBack() {
+    this.trace?.historyStep(StepDirection.BACK);
+  }
+
+  public stepForward() {
+    this.trace?.historyStep(StepDirection.FORWARD);
   }
 
   public async interact(input: string) {

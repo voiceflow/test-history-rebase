@@ -1,5 +1,4 @@
 import { History, Location } from 'history';
-import queryString from 'query-string';
 import React, { Component } from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
@@ -8,8 +7,8 @@ import * as Modal from '@/ducks/modal';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { Query } from '@/models';
 import { ConnectedProps, MergeArguments } from '@/types';
+import * as Query from '@/utils/query';
 
 const DASHBOARD_PATH = '/dashboard';
 
@@ -37,7 +36,7 @@ class WorkspacesLoadingGate extends Component<WorkspacesLoadingGateProps & Conne
     const { history, location, setModal, validateInvite, trackInvitationAccepted } = this.props;
 
     if (location.search) {
-      const query: Query.Onboarding = queryString.parse(location.search);
+      const query = Query.parse(location.search);
 
       if (query.invite) {
         const newWorkspaceID = await validateInvite(query.invite);

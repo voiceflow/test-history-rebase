@@ -1,6 +1,7 @@
 import { BroadcastChannel } from 'broadcast-channel';
 import cuid from 'cuid';
-import queryString from 'query-string';
+
+import * as Query from '@/utils/query';
 
 type OKTAOptions = {
   domain: string;
@@ -55,11 +56,7 @@ class OKTA {
 
   // called in the callback endpoint
   public async handleLogin() {
-    const query: Partial<{
-      code: string;
-      state: string;
-      error_description: string;
-    }> = queryString.parse(window.location.search);
+    const query = Query.parse(window.location.search);
 
     await this.channel.postMessage({
       code: query.code,

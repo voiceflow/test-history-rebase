@@ -4,10 +4,11 @@ import React from 'react';
 import Drawer from '@/components/Drawer';
 import { toast } from '@/components/Toast';
 import { isSafari } from '@/config';
+import { FeatureFlag } from '@/config/features';
 import { MARKUP_NODES, MarkupModeType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { connect, css, styled } from '@/hocs';
-import { useActiveModal, useHotKeys, useRegistration, useSetup } from '@/hooks';
+import { useActiveModal, useFeature, useHotKeys, useRegistration, useSetup } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
@@ -18,6 +19,7 @@ import { Callback, ConnectedProps } from '@/types';
 
 import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
+  CANVAS_MANUAL_NAVIGATION_DISABLED_CLASSNAME,
   CANVAS_MARKUP_CREATING_CLASSNAME,
   CANVAS_MARKUP_ENABLED_CLASSNAME,
   CANVAS_THREAD_OPEN_CLASSNAME,
@@ -63,6 +65,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   const isCommentingMode = useCommentingMode();
   const isMarkupMode = useMarkupMode();
   const isEditingMode = useEditingMode();
+  const manualNavigation = useFeature(FeatureFlag.MANUAL_NAVIGATION);
 
   const activeModal = useActiveModal();
 
@@ -114,6 +117,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
         [CANVAS_COMMENTING_ENABLED_CLASSNAME]: isCommentingMode,
         [CANVAS_MARKUP_ENABLED_CLASSNAME]: isMarkupMode,
         [CANVAS_MARKUP_CREATING_CLASSNAME]: isMarkupCreating,
+        [CANVAS_MANUAL_NAVIGATION_DISABLED_CLASSNAME]: !manualNavigation.isEnabled,
       })}
       markupMode={markupModeType}
       ref={ref}

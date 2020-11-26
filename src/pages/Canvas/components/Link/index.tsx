@@ -1,9 +1,13 @@
 import React from 'react';
 
+// import { activePathLinkIDsSelector } from '@/ducks/prototype';
+// import { compose, connect } from '@/hocs';
+// import { useDidUpdateEffect } from '@/hooks';
 import { EngineContext, LinkEntityContext, PlatformContext } from '@/pages/Canvas/contexts';
 import { useEditingMode } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
 
+// import { ConnectedProps } from '@/types';
 import { Group, HeadMarker, Overlay, Path, RemoveButton, Styles } from './components';
 import { useLinkHandlers, useLinkInstance } from './hooks';
 import { buildHeadMarker } from './utils';
@@ -12,7 +16,10 @@ export * from './constants';
 export * from './components';
 export * from './utils';
 
-const Link = () => {
+// const NODE_CENTER_WAIT_TIME = 400;
+
+// const Link: React.FC<ConnectedLinkStyleProps> = ({ activePathLinkIDs }) => {
+const Link: React.FC = () => {
   const linkEntity = React.useContext(LinkEntityContext)!;
   const isEditingMode = useEditingMode();
   const engine = React.useContext(EngineContext)!;
@@ -20,12 +27,18 @@ const Link = () => {
   const instance = useLinkInstance();
   const { isSupported, isHighlighted } = linkEntity.useState((e) => ({
     isSupported: e.isSupported,
-    isHighlighted: e.isHighlighted,
+    isHighlighted: e.isHighlighted || e.isPrototypeHighlighted,
   }));
   const { onMouseEnter, onMouseLeave, onRemove } = useLinkHandlers();
 
   linkEntity.useInstance(instance);
   linkEntity.useLifecycle();
+
+  // useDidUpdateEffect(() => {
+  //   setTimeout(() => {
+  //     engine.link.redrawLinked(linkEntity.linkID);
+  //   }, NODE_CENTER_WAIT_TIME);
+  // }, [activePathLinkIDs]);
 
   if (!isSupported) return null;
 
@@ -52,4 +65,11 @@ const Link = () => {
   );
 };
 
+// const mapStateToProps = {
+//   activePathLinkIDs: activePathLinkIDsSelector,
+// };
+
+// type ConnectedLinkStyleProps = ConnectedProps<typeof mapStateToProps>;
+
+// export default compose(React.memo, connect(mapStateToProps))(Link);
 export default React.memo(Link);

@@ -3,6 +3,7 @@ import { Reducer, RootReducer } from '@/store/types';
 import {
   AnyPrototypeAction,
   PrototypeAction,
+  PushContextHistory,
   UpdatePrototype,
   UpdatePrototypeContext,
   UpdatePrototypeContextStore,
@@ -25,9 +26,15 @@ export const INITIAL_STATE: PrototypeState = {
   muted: false,
   startTime: 0,
   inputMode: InputMode.TEXT,
+  activePathBlockIDs: [],
+  activePathLinkIDs: [],
   showChips: true,
+  autoplay: false,
   mode: PrototypeMode.CANVAS,
   display: null,
+  contextStep: 0,
+  contextHistory: [],
+  flowIDHistory: [],
   context: {
     turn: {},
     trace: [],
@@ -52,6 +59,11 @@ const updatePrototypeStatusReducer: Reducer<PrototypeState, UpdatePrototypeStatu
 const updatePrototypeModeReducer: Reducer<PrototypeState, UpdatePrototypeMode> = (state, { payload: mode }) => ({
   ...state,
   mode,
+});
+
+const pushContextHistoryReducer: Reducer<PrototypeState, PushContextHistory> = (state, { payload }) => ({
+  ...state,
+  contextHistory: [...state.contextHistory, payload],
 });
 
 const updatePrototypeDisplayReducer: Reducer<PrototypeState, UpdatePrototypeDisplay> = (state, { payload: display }) => ({
@@ -86,6 +98,8 @@ const prototypeReducer: RootReducer<PrototypeState, AnyPrototypeAction> = (state
       return updatePrototypeStatusReducer(state, action);
     case PrototypeAction.UPDATE_TEST_MODE:
       return updatePrototypeModeReducer(state, action);
+    case PrototypeAction.ADD_TEST_CONTEXT_HISTORY:
+      return pushContextHistoryReducer(state, action);
     case PrototypeAction.UPDATE_TEST_DISPLAY:
       return updatePrototypeDisplayReducer(state, action);
     case PrototypeAction.UPDATE_TEST_CONTEXT:

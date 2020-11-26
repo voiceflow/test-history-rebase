@@ -20,13 +20,12 @@ import PrototypePage from '@/pages/Prototype';
 import PrototypeDeveloper from '@/pages/Prototype/components/PrototypePage/components/PrototypeDeveloper';
 import { PMStatus } from '@/pages/Prototype/types';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
-import { compose } from '@/utils/functional';
 
 import Container from './components/PrototypeSidebarContainer';
 import EmbedContainer from './components/PrototypeSidebarEmbedContainer';
 import { PROTOTYPE_SIDEBAR_WIDTH } from './constants';
 
-const PrototypeSidebar = ({ settings, resetPrototype, saveActiveDiagram, renderPrototype, isMuted, updatePrototype, status }) => {
+const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, isMuted, updatePrototype, status }) => {
   const prototypeTestEnabled = useFeature(FeatureFlag.PROTOTYPE_TEST).isEnabled;
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
@@ -64,7 +63,7 @@ const PrototypeSidebar = ({ settings, resetPrototype, saveActiveDiagram, renderP
       renderAbortControl.aborted = true;
 
       toggleSettingsOpen(false);
-      resetPrototype();
+      eventualEngine.get()?.prototype.reset();
     };
   }, [isPrototypingMode]);
 
@@ -104,7 +103,7 @@ const PrototypeSidebar = ({ settings, resetPrototype, saveActiveDiagram, renderP
                         icon="restart"
                         color={notStarted && '#BECEDC'}
                         clickable={!notStarted}
-                        onClick={() => (notStarted ? null : resetPrototype())}
+                        onClick={() => (notStarted ? null : eventualEngine.get()?.prototype.reset())}
                       />
                     </Tooltip>
                   </div>
@@ -120,17 +119,16 @@ const PrototypeSidebar = ({ settings, resetPrototype, saveActiveDiagram, renderP
 };
 
 const mapStateToProps = {
-  settings: Recent.recentprototypeSelector,
+  settings: Recent.recentPrototypeSelector,
   isMuted: Prototype.prototypeMutedSelector,
   status: prototypeStatusSelector,
 };
 
 const mapDispatchToProps = {
   setError: Modal.setError,
-  resetPrototype: Prototype.resetPrototype,
   renderPrototype: Prototype.renderPrototype,
   saveActiveDiagram: Diagram.saveActiveDiagram,
   updatePrototype: Prototype.updatePrototype,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(PrototypeSidebar);
+export default connect(mapStateToProps, mapDispatchToProps)(PrototypeSidebar);

@@ -6,7 +6,8 @@ import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/
 
 import { BlockType, CardType, DialogType, DisplayType, IntegrationType, PlatformType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
-import { SpeakData } from '@/models/Speak';
+
+import { SpeakData } from './Speak';
 
 export type NodeData<T> = T & {
   nodeID: string;
@@ -23,12 +24,12 @@ export type BlockNodeData<T> = NodeData<T> & {
 export namespace NodeData {
   export type Start = {
     name: string;
-    blockColor: string;
+    blockColor: BlockVariant;
   };
 
   export type Combined = {
     name: string;
-    blockColor: string;
+    blockColor: BlockVariant;
   };
 
   export type Code = {

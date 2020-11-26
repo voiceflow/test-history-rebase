@@ -1,7 +1,6 @@
 import * as ConnectedReactRouter from 'connected-react-router';
 import CookiesJS from 'cookies-js';
 import cuid from 'cuid';
-import queryString from 'query-string';
 import { PersistConfig, PersistPartial, persistReducer } from 'redux-persist';
 import { CookieStorage } from 'redux-persist-cookie-storage';
 import storageLocal from 'redux-persist/lib/storage';
@@ -18,6 +17,7 @@ import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
 import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
+import * as Query from '@/utils/query';
 import * as LogRocket from '@/vendors/logRocket';
 import * as Userflow from '@/vendors/userflow';
 
@@ -183,7 +183,7 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     await dispatch(identifyUser(user));
 
     const location = ConnectedReactRouter.getLocation(state);
-    const search = queryString.parse(location.search);
+    const search = Query.parse(location.search);
     if (search.promo || search.ob_plan) {
       dispatch(goToOnboarding());
     }
@@ -203,7 +203,7 @@ const setSession = ({ token, user }: { token: string; user: Models.Account }): T
   dispatch(Account.updateAccount(user));
 
   const location = ConnectedReactRouter.getLocation(state);
-  const search = queryString.parse(location.search);
+  const search = Query.parse(location.search);
 
   // Show join workspace onboarding on first login of an invite or with a workspace promo
   if ((search.invite && user.first_login) || search.promo || search.ob_plan) {

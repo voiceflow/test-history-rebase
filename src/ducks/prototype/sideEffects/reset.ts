@@ -1,9 +1,10 @@
 import { activePlatformSelector, activeProjectIDSelector, globalVariablesSelector } from '@/ducks/skill';
 import { slotNamesSelector } from '@/ducks/slot';
+import { Store } from '@/models';
 import { SyncThunk } from '@/store/types';
 
-import { updatePrototypeContext, updatePrototypeStatus } from '../actions';
-import { PrototypeStatus, Store } from '../types';
+import { updatePrototype, updatePrototypeContext, updatePrototypeStatus } from '../actions';
+import { PrototypeStatus } from '../types';
 import { log } from '../utils';
 
 const resetPrototype = (): SyncThunk => (dispatch, getState) => {
@@ -40,6 +41,9 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
 
   dispatch(updatePrototypeStatus(PrototypeStatus.IDLE));
   dispatch(updatePrototypeContext({ variables }));
+  dispatch(
+    updatePrototype({ contextStep: 0, contextHistory: [], flowIDHistory: [], activePathLinkIDs: [], activePathBlockIDs: [], autoplay: false })
+  );
 };
 
 export default resetPrototype;

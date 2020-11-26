@@ -12,6 +12,7 @@ export const InputArea = styled(TextArea)<{ inputRef: ((node: HTMLTextAreaElemen
   border-radius: 0;
   border: none;
   box-shadow: none;
+
   :active,
   :focus {
     outline: none;
@@ -34,14 +35,17 @@ export const InputContainer = styled.div`
 
 const activeButtonStyle = css`
   background: #eef4f6;
+
   ${SvgIconContainer} {
-    ${transition('color')};
+    ${transition('color')}
+
     color: #7b8895;
   }
 `;
 
-export const ControlButton = styled(FlexCenter)<{ active: boolean }>`
+export const ControlButton = styled(FlexCenter)<{ active: boolean; disabled?: boolean }>`
   ${transition('background')}
+
   border-radius: 5px;
   padding: 3px;
   margin-right: 6px;
@@ -49,16 +53,51 @@ export const ControlButton = styled(FlexCenter)<{ active: boolean }>`
   width: 34px;
   cursor: pointer;
   background: white;
-  :hover {
-    ${activeButtonStyle}
-  }
+
   ${({ active }) =>
     active &&
     css`
       ${activeButtonStyle}
+
       ${SvgIconContainer} {
-        ${transition('color')};
+        ${transition('color')}
+
         color: #132144 !important;
       }
     `}
+
+  ${({ disabled }) =>
+    disabled
+      ? css`
+          cursor: not-allowed;
+
+          ${SvgIconContainer} {
+            ${transition('color')}
+
+            color: #becedc !important;
+          }
+        `
+      : css`
+          :hover {
+            ${activeButtonStyle}
+          }
+
+          :active {
+            ${activeButtonStyle}
+
+            ${SvgIconContainer} {
+              ${transition('color')}
+
+              color: #132144 !important;
+            }
+          }
+        `}
+`;
+
+export const ButtonGroupSplitter = styled.div`
+  width: 1px;
+  height: 16px;
+  background: #dfe3ed;
+  margin-right: 10px;
+  margin-left: 4px;
 `;

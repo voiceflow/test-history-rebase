@@ -1,6 +1,6 @@
 import { utils } from '@voiceflow/common';
 
-import { Choice } from '@/ducks/prototype';
+import { Choice } from '@/models';
 
 import { NLCIntent, NLCIntentSlot } from '../../types';
 

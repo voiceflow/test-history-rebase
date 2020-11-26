@@ -11,11 +11,14 @@ export const CANVAS_MARKUP_CREATING_CLASSNAME = `${Identifier.CANVAS}--markup-cr
 export const CANVAS_MARKUP_TRANSFORMING_CLASSNAME = `${Identifier.CANVAS}--markup-transforming`;
 export const CANVAS_COMMENTING_ENABLED_CLASSNAME = `${Identifier.CANVAS}--commenting`;
 export const CANVAS_THREAD_OPEN_CLASSNAME = `${Identifier.CANVAS}--thread-open`;
+export const CANVAS_PROTOTYPE_RUNNING_CLASSNAME = `${Identifier.CANVAS}--prototype-running`;
+export const CANVAS_MANUAL_NAVIGATION_DISABLED_CLASSNAME = `${Identifier.CANVAS}--disable-manual-navigation`;
 
 export const NODE_DISABLED_CLASSNAME = `${ClassName.CANVAS_NODE}--disabled`;
 export const NODE_HOVERED_CLASSNAME = `${ClassName.CANVAS_NODE}--hovered`;
 export const NODE_HIGHLIGHTED_CLASSNAME = `${ClassName.CANVAS_NODE}--highlighted`;
 export const NODE_SELECTED_CLASSNAME = `${ClassName.CANVAS_NODE}--selected`;
+export const NODE_PROTOTYPE_HIGHLIGHTED_CLASSNAME = `${ClassName.CANVAS_NODE}--prototype-highlighted`;
 export const NODE_FOCUSED_CLASSNAME = `${ClassName.CANVAS_NODE}--focused`;
 export const NODE_ACTIVE_CLASSNAME = `${ClassName.CANVAS_NODE}--active`;
 export const NODE_MERGE_TARGET_CLASSNAME = `${ClassName.CANVAS_NODE}--merge-target`;

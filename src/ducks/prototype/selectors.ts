@@ -9,7 +9,15 @@ export const prototypeNLCSelector = createSelector([prototypeSelector], ({ nlc }
 
 export const prototypeStatusSelector = createSelector([prototypeSelector], ({ status }) => status);
 
+export const prototypeAutoplaySelector = createSelector([prototypeSelector], ({ autoplay }) => autoplay);
+
 export const prototypeContextSelector = createSelector([prototypeSelector], ({ context }) => context);
+
+export const prototypeContextHistorySelector = createSelector([prototypeSelector], ({ contextHistory }) => contextHistory);
+
+export const prototypeFlowIDHistorySelector = createSelector([prototypeSelector], ({ flowIDHistory }) => flowIDHistory);
+
+export const prototypeContextStepSelector = createSelector([prototypeSelector], ({ contextStep }) => contextStep);
 
 export const prototypeIDSelector = createSelector([prototypeSelector], ({ ID }) => ID);
 
@@ -25,4 +33,8 @@ export const prototypeShowChipsSelector = createSelector([prototypeSelector], ({
 
 export const prototypeModeSelector = createSelector([prototypeSelector], ({ mode }) => mode);
 
-export const prototypeDisplaySelector = createSelector(prototypeSelector, ({ display }) => display);
+export const prototypeDisplaySelector = createSelector([prototypeSelector], ({ display }) => display);
+
+export const activePathBlockIDsSelector = createSelector([prototypeSelector], ({ activePathBlockIDs }) => activePathBlockIDs);
+
+export const activePathLinkIDsSelector = createSelector([prototypeSelector], ({ activePathLinkIDs }) => activePathLinkIDs);

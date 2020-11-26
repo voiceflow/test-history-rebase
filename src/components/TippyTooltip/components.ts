@@ -5,4 +5,5 @@ export const HotkeyLabel = styled.span`
   padding-left: 8px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 13px;
+  position: relative;
 `;

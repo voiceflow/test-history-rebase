@@ -7,7 +7,9 @@ import { IIntent } from '@voiceflow/natural-language-commander/dist/lib/nlcInter
 import { SinonSpy, SinonStub } from 'sinon';
 
 import { createSuite } from '@/../test/_suite';
-import { SpeakTraceAudioType, StreamTraceAction, Trace, TraceMap, TraceType } from '@/ducks/prototype';
+import { BlockType } from '@/constants';
+import { SpeakTraceAudioType, StreamTraceAction, TraceType } from '@/constants/prototype';
+import { Trace, TraceMap } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
 import AudioController from '@/pages/Prototype/PrototypeTool/Audio';
 import MessageController from '@/pages/Prototype/PrototypeTool/Message';
@@ -20,7 +22,7 @@ const SRC = 'src';
 const MESSAGE = 'message';
 const BLOCK_ID = 'block-id';
 
-const traceFactory = <T extends TraceType>(type: T, payload: TraceMap[T]['payload']): Trace => ({ id: ID, type, payload } as TraceMap[T]);
+const traceFactory = <T extends TraceType>(type: T, payload: TraceMap[T]['payload']): Trace => ({ id: ID, type, payload } as any);
 
 enum TraceMethods {
   END = 'processEndTrace',
@@ -31,14 +33,20 @@ enum TraceMethods {
   STREAM = 'processStreamTrace',
 }
 
-const suite = createSuite(({ spy, stub, mock, expect }) => ({
+const suite = createSuite(({ spy, stub, expect }) => ({
   createController({
     debug = false,
     intents = [],
     context,
   }: { debug?: boolean; intents?: Omit<IIntent, 'callback'>[]; context?: { trace: Trace[] } } = {}) {
-    const nlc = ({ getIntents: mock().returns(intents) } as any) as NLC;
-    const engine = ({ node: { center: mock() }, selection: { replace: mock() }, getPrototypeMuted: stub() } as any) as Engine;
+    const nlc = ({ getIntents: stub().returns(intents) } as any) as NLC;
+    const engine = ({
+      node: { center: stub(), ports: { out: ['1'] } },
+      nodes: [{ 1: { type: BlockType.START } }],
+      selection: { replace: stub(), getTargets: stub(), reset: stub() },
+      getPrototypeMuted: stub(),
+      getNodeByID: stub().returns({ parentNode: BLOCK_ID, combinedNodes: ['1'] }),
+    } as any) as Engine;
 
     const audio = new AudioController();
     const timeout = new TimeoutController();
@@ -58,9 +66,19 @@ const suite = createSuite(({ spy, stub, mock, expect }) => ({
         engine,
         setError: stub(),
         enterFlow: stub(),
+        getNodeByID: stub(),
         fetchContext: stub().returns(context),
         updateStatus: stub(),
         setInteractions: stub(),
+        flowIDHistory: [],
+        activePathLinkIDs: [],
+        activePathBlockIDs: [],
+        getLinksByPortID: stub(),
+        getJoiningLinks: stub().returns([]),
+        updatePrototype: stub(),
+        contextStep: 1,
+        activeDiagramID: '',
+        contextHistory: [{}],
       },
       audio,
       timeout,
@@ -236,6 +254,7 @@ suite(
                 type: SpeakTraceAudioType.MESSAGE,
                 voice: 'voice',
                 message: MESSAGE,
+                choices: [],
               }),
             ],
           },
@@ -256,6 +275,7 @@ suite(
                 src: SRC,
                 type: SpeakTraceAudioType.AUDIO,
                 message: MESSAGE,
+                choices: [],
               }),
             ],
           },
@@ -276,6 +296,7 @@ suite(
                 src: SRC,
                 type: SpeakTraceAudioType.AUDIO,
                 message: MESSAGE,
+                choices: [],
               }),
             ],
           },
@@ -297,6 +318,7 @@ suite(
                 src: SRC,
                 type: SpeakTraceAudioType.AUDIO,
                 message: MESSAGE,
+                choices: [],
               }),
             ],
           },
@@ -445,11 +467,8 @@ suite(
           context: { trace: [traceFactory(TraceType.END, {})] },
         });
 
-        const stop = spy(controller, 'stop');
-
         await controller.next();
 
-        expect(stop).to.be.called;
         expectMessage(controller, 'session', ID, 'Session ended');
         expectUpdateStatus(controller).to.be.calledWith(PMStatus.ENDED);
       });
@@ -480,6 +499,7 @@ suite(
                 type: SpeakTraceAudioType.MESSAGE,
                 voice: 'voice',
                 message: MESSAGE,
+                choices: [],
               }),
               traceFactory(TraceType.STREAM, { src: SRC, action: StreamTraceAction.PLAY, token: '1' }),
             ],
@@ -493,11 +513,8 @@ suite(
           }
         );
 
-        const stop = spy(controller, 'stop');
-
         await controller.next();
 
-        expect(stop).to.be.called;
         Object.values(TraceMethods).forEach((method) => expect(controller[method]).to.be.called);
         expectMessage(controller, 'session', ID, 'Session ended');
         expectUpdateStatus(controller).to.be.calledWith(PMStatus.ENDED);
@@ -545,6 +562,7 @@ suite(
             type: SpeakTraceAudioType.MESSAGE,
             voice: 'voice',
             message: MESSAGE,
+            choices: [],
           }),
           traceFactory(TraceType.STREAM, { src: SRC, action: StreamTraceAction.PLAY, token: '1' }),
           traceFactory(TraceType.CHOICE, { choices: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }] }),

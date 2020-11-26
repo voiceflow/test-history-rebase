@@ -5,7 +5,7 @@ import { createBlockAdapter } from './utils';
 
 type BlockData = {
   name?: string;
-  color?: string;
+  color?: BlockVariant;
 };
 
 const blockDataAdapter = createBlockAdapter<BlockData, NodeData.Combined | NodeData.Start>(

@@ -51,7 +51,6 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
       getThreadAnchorCoords: () => engine.canvas!.toCoords(position.current!),
       getCenterPoint: () => {
         const node = engine.getNodeByID(nodeEntity.nodeID);
-
         return [node.x, node.y];
       },
       rename: () => blockRef.current?.rename(),

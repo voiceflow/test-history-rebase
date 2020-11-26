@@ -6,6 +6,7 @@ import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
   CANVAS_CREATING_LINK_CLASSNAME,
   CANVAS_MARKUP_ENABLED_CLASSNAME,
+  CANVAS_PROTOTYPE_RUNNING_CLASSNAME,
   CANVAS_SELECTING_GROUP_CLASSNAME,
   CANVAS_THREAD_OPEN_CLASSNAME,
   NODE_ACTIVE_CLASSNAME,
@@ -14,6 +15,7 @@ import {
   NODE_HIGHLIGHTED_CLASSNAME,
   NODE_HOVERED_CLASSNAME,
   NODE_MERGE_TARGET_CLASSNAME,
+  NODE_PROTOTYPE_HIGHLIGHTED_CLASSNAME,
   NODE_SELECTED_CLASSNAME,
   NODE_THREAD_TARGET_CLASSNAME,
 } from '@/pages/Canvas/constants';
@@ -31,6 +33,8 @@ type BlockContainerProps = {
 };
 
 const BlockContainer = styled.div<BlockContainerProps>`
+  ${transition('opacity')}
+
   width: ${({ theme }) => theme.components.block.width}px;
   border-radius: 8px;
   cursor: pointer;
@@ -67,9 +71,9 @@ const BlockContainer = styled.div<BlockContainerProps>`
     ${transition('box-shadow')}
   }
 
-  ${transition('opacity')}
-
-  #${Identifier.CANVAS_CONTAINER}:not(.${CANVAS_SELECTING_GROUP_CLASSNAME}) .${ClassName.CANVAS_NODE}:not(.${NODE_DISABLED_CLASSNAME}):not(.${NODE_FOCUSED_CLASSNAME}) &:hover::before {
+  #${Identifier.CANVAS_CONTAINER}:not(.${CANVAS_SELECTING_GROUP_CLASSNAME})
+    .${ClassName.CANVAS_NODE}:not(.${NODE_DISABLED_CLASSNAME}):not(.${NODE_FOCUSED_CLASSNAME})
+    &:hover::before {
     box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.2);
     border-color: ${withBlockVariantStyle((variant) => variant.activeBorderColor)};
   }
@@ -89,6 +93,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
   }
 
   .${NODE_SELECTED_CLASSNAME} &,
+  .${NODE_PROTOTYPE_HIGHLIGHTED_CLASSNAME} &,
   .${NODE_HIGHLIGHTED_CLASSNAME} &,
   .${NODE_THREAD_TARGET_CLASSNAME} &,
   .${NODE_HOVERED_CLASSNAME}:not(.${NODE_DISABLED_CLASSNAME}) & {
@@ -105,7 +110,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
     cursor: not-allowed;
   }
 
-  .${CANVAS_ACTIVATION_CLASSNAME} .${ClassName.CANVAS_NODE}:not(.${NODE_ACTIVE_CLASSNAME}) & {
+  .${CANVAS_ACTIVATION_CLASSNAME}:not(.${CANVAS_PROTOTYPE_RUNNING_CLASSNAME}) .${ClassName.CANVAS_NODE}:not(.${NODE_ACTIVE_CLASSNAME}) & {
     & {
       ${disabledStyles}
     }

@@ -1,27 +1,46 @@
 import cuid from 'cuid';
 
 import client from '@/client';
-import { activeLocalesSelector } from '@/ducks/skill';
+import { TraceType } from '@/constants/prototype';
+import { activeDiagramIDSelector, activeLocalesSelector } from '@/ducks/skill';
+import { StateRequest, Trace } from '@/models';
 import { Thunk } from '@/store/types';
 
-import { updatePrototypeContext } from '../actions';
-import { prototypeContextSelector } from '../selectors';
+import { pushContextHistory, updatePrototype, updatePrototypeContext } from '../actions';
+import { prototypeContextSelector, prototypeSelector } from '../selectors';
 import { Context } from '../types';
 import { log } from '../utils';
 
-const fetchContext = (request?: any): Thunk<Context | null> => async (dispatch, getState) => {
+const getTargetFlowID = (trace: Trace[]) => {
+  for (let i = trace.length - 1; i >= 0; i--) {
+    const currentTrace = trace[i];
+    if (currentTrace.type === TraceType.FLOW && !!currentTrace.payload?.diagramID) {
+      return currentTrace.payload.diagramID;
+    }
+  }
+  return null;
+};
+
+const fetchContext = (request?: StateRequest): Thunk<Context | null> => async (dispatch, getState) => {
   const state = getState();
   const { trace, ...context } = prototypeContextSelector(state);
+  const { contextStep } = prototypeSelector(state);
+  const currentDiagramID = activeDiagramIDSelector(state);
   const [locale] = activeLocalesSelector(state);
 
   try {
-    const newContext = (await client.prototype.interact({ state: context, request }, locale)) as Context;
+    const newContext: Context = await client.prototype.interact({ state: context, request }, locale);
 
+    newContext.previousContextDiagramID = currentDiagramID;
+    newContext.targetContextDiagramID = getTargetFlowID(newContext.trace) || currentDiagramID;
+
+    dispatch(updatePrototype({ contextStep: contextStep + 1 }));
     dispatch(updatePrototypeContext(newContext));
+    dispatch(pushContextHistory(newContext));
 
     return {
       ...newContext,
-      trace: newContext.trace?.map((trace) => ({ id: cuid(), ...trace })) ?? [],
+      trace: newContext.trace?.map((trace) => ({ ...trace, id: cuid() })) ?? [],
     };
   } catch (err) {
     log.error(err);

@@ -16,7 +16,7 @@ const Port: React.FC<PortProps> = ({ color }) => {
   const portEntity = React.useContext(PortEntityContext)!;
   const instance = usePortInstance<HTMLDivElement>();
   const { isHighlighted, isConnected } = portEntity.useState((e) => ({
-    isHighlighted: e.isHighlighted,
+    isHighlighted: e.isHighlighted || e.isPrototypeHighlighted,
     isConnected: e.isConnected,
   }));
   const { onMouseDown, onMouseUp } = useHandlers();

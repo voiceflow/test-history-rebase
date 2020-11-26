@@ -1,27 +1,26 @@
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import Box from '@/components/Box';
 import Button from '@/components/Button';
 import { ButtonVariant } from '@/components/Button/constants';
-import SvgIcon from '@/components/SvgIcon';
-import { InputMode, prototypeInputModeSelector, prototypeShowChipsSelector, updatePrototype } from '@/ducks/prototype';
+import { EventualEngineContext } from '@/contexts';
+import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
+import Reset from '@/pages/Prototype/components/PrototypeReset';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { preventDefault, withEnterPress } from '@/utils/dom';
 
 import SpeechBar from '../PrototypeSpeechBar';
-import { ControlButton, ControlsContainer, InputArea, InputContainer } from './components';
+import { InputArea, InputContainer } from './components';
+import ControlCenter, { ControlCenterProps } from './components/ControlCenter';
 
 const InputAreaComp: React.FC<any> = InputArea;
-export type PrototypeInputProps<L> = {
+export type PrototypeInputProps<L> = Pick<ControlCenterProps, 'showChips' | 'setShowChips' | 'stepBack' | 'stepForward'> & {
   locale: L;
   disabled?: boolean;
   isPublic?: boolean;
   onUserInput: (input: string) => void;
-  showChips: boolean;
-  setShowChips: (val: boolean) => void;
 };
 
 const PrototypeInput = <L extends string>({
@@ -32,7 +31,11 @@ const PrototypeInput = <L extends string>({
   disabled,
   setShowChips,
   onUserInput,
+  stepForward,
+  status,
+  stepBack,
 }: PrototypeInputProps<L> & ConnectedPrototypeInputProps) => {
+  const eventualEngine = React.useContext(EventualEngineContext)!;
   const [value, setValue] = React.useState('');
 
   const sendTextHandler = preventDefault(() => {
@@ -42,73 +45,68 @@ const PrototypeInput = <L extends string>({
     }
   });
 
-  const inputRef = React.createRef<HTMLInputElement>();
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const setInputMode = (mode: InputMode) => {
+  const setInputMode = (mode: Prototype.InputMode) => {
     updatePrototype({ inputMode: mode });
   };
 
   React.useEffect(() => {
-    inputRef?.current?.focus();
+    inputRef.current?.focus();
   }, []);
 
   return (
     <>
-      <ControlsContainer>
-        <Tooltip title="Text" position="top">
-          <ControlButton active={inputMode === InputMode.TEXT} onClick={() => setInputMode(InputMode.TEXT)}>
-            <SvgIcon icon="text" size={16} color="#99a8b8" />
-          </ControlButton>
-        </Tooltip>
-        <Tooltip title="Voice" position="top">
-          <ControlButton active={inputMode === InputMode.VOICE} onClick={() => setInputMode(InputMode.VOICE)}>
-            <SvgIcon icon="microphone" size={16} color="#99a8b8" />
-          </ControlButton>
-        </Tooltip>
-        <Tooltip title="Chips" position="top">
-          <ControlButton
-            active={showChips}
-            onClick={() => {
-              setShowChips(!showChips);
-            }}
-          >
-            <SvgIcon icon="touch" size={16} color="#99a8b8" />
-          </ControlButton>
-        </Tooltip>
-      </ControlsContainer>
-      <InputContainer>
-        {inputMode === InputMode.TEXT ? (
-          <Box pb={70}>
-            <InputAreaComp
-              id={Identifier.PROTOTYPE_RESPONSE}
-              value={value}
-              minRows={3}
-              onChange={(e: any) => setValue(e.target.value)}
-              onKeyPress={withEnterPress(sendTextHandler)}
-              placeholder="Start typing..."
-              inputRef={inputRef}
-            />
-            <Box position="absolute" bottom={20} right={24}>
-              <Box display="inline-block" fontSize={13} color="#8da2b5" mr={16}>
-                Press enter to
+      <ControlCenter
+        stepForward={stepForward}
+        stepBack={stepBack}
+        inputMode={inputMode}
+        setInputMode={setInputMode}
+        showChips={showChips}
+        setShowChips={setShowChips}
+        inputRef={inputRef}
+      />
+      {status === Prototype.PrototypeStatus.ENDED ? (
+        <Reset onClick={() => eventualEngine.get()?.prototype.reset()} />
+      ) : (
+        <InputContainer>
+          {inputMode === Prototype.InputMode.TEXT ? (
+            <Box pb={70}>
+              <InputAreaComp
+                id={Identifier.PROTOTYPE_RESPONSE}
+                value={value}
+                minRows={3}
+                onChange={(e: any) => setValue(e.target.value)}
+                onKeyPress={withEnterPress(sendTextHandler)}
+                placeholder="Start typing..."
+                inputRef={inputRef}
+              />
+              <Box position="absolute" bottom={20} right={24}>
+                <Box display="inline-block" fontSize={13} color="#8da2b5" mr={16}>
+                  Press enter to
+                </Box>
+                <Button variant={ButtonVariant.SECONDARY} onClick={sendTextHandler} style={{ display: 'inline-block' }}>
+                  Send
+                </Button>
               </Box>
-              <Button variant={ButtonVariant.SECONDARY} onClick={sendTextHandler} style={{ display: 'inline-block' }}>
-                Send
-              </Button>
             </Box>
-          </Box>
-        ) : (
-          <SpeechBar locale={locale} onTranscript={onUserInput} />
-        )}
-      </InputContainer>
+          ) : (
+            <SpeechBar locale={locale} onTranscript={onUserInput} />
+          )}
+        </InputContainer>
+      )}
     </>
   );
 };
 
-const mapStateToProps = { inputMode: prototypeInputModeSelector, showChips: prototypeShowChipsSelector };
+const mapStateToProps = {
+  inputMode: Prototype.prototypeInputModeSelector,
+  showChips: Prototype.prototypeShowChipsSelector,
+  status: Prototype.prototypeStatusSelector,
+};
 
 const mapDispatchToProps = {
-  updatePrototype,
+  updatePrototype: Prototype.updatePrototype,
 };
 
 type ConnectedPrototypeInputProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

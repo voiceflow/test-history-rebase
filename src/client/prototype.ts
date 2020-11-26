@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import legacySkillAdapter, { extractIntents, extractSlots } from '@/client/adapters/legacy/skill';
 import { API_ENDPOINT } from '@/config';
+import { PrototypeContext, StateRequest } from '@/models';
 
 import fetch from './fetch';
 
@@ -9,7 +10,8 @@ export const LEGACY_TESTING_PATH = 'test';
 export const PROTOTYPE_PATH = 'prototype';
 
 const prototypeClient = {
-  interact: (body: object, locale: string) => fetch.post<object>(`${PROTOTYPE_PATH}/interact?locale=${locale}`, body),
+  interact: (body: { state: Omit<PrototypeContext, 'trace'>; request?: StateRequest }, locale: string) =>
+    fetch.post<PrototypeContext>(`${PROTOTYPE_PATH}/interact?locale=${locale}`, body),
 
   getInfo: (configID: string) =>
     fetch.get(`${LEGACY_TESTING_PATH}/getInfo/${configID}`).then((data: any) => {

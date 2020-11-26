@@ -23,9 +23,9 @@ suite(Recent, MOCK_STATE)('Ducks - Recent', ({ expect, describeReducer, describe
   });
 
   describeSelectors(({ select }) => {
-    describe('recentprototypeSelector()', () => {
+    describe('recentPrototypeSelector()', () => {
       it('should select the test tool configuration', () => {
-        expect(select(Recent.recentprototypeSelector)).to.eq(TEST_CONFIG);
+        expect(select(Recent.recentPrototypeSelector)).to.eq(TEST_CONFIG);
       });
     });
   });

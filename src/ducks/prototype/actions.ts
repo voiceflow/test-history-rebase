@@ -1,8 +1,10 @@
+import { StoreType } from '@/constants/prototype';
 import { createAction } from '@/ducks/utils';
+import { Store } from '@/models';
 import { DeviceType } from '@/pages/Prototype/components/PrototypePage/constants';
 import { Action } from '@/store/types';
 
-import { Context, PrototypeMode, PrototypeState, PrototypeStatus, Store, StoreType } from './types';
+import { Context, PrototypeMode, PrototypeState, PrototypeStatus } from './types';
 
 // actions
 
@@ -10,6 +12,7 @@ export enum PrototypeAction {
   UPDATE_TEST = 'TEST:UPDATE',
   UPDATE_TEST_STATUS = 'TEST:STATUS:UPDATE',
   UPDATE_TEST_MODE = 'TEST:MODE:UPDATE',
+  ADD_TEST_CONTEXT_HISTORY = 'TEST:CONTEXT:ADD',
   UPDATE_TEST_CONTEXT = 'TEST:CONTEXT:UPDATE',
   UPDATE_TEST_CONTEXT_STORE = 'TEST:CONTEXT:STORE:UPDATE',
   UPDATE_TEST_TIME = 'TEST:TIME:UPDATE',
@@ -23,6 +26,8 @@ export type UpdatePrototypeStatus = Action<PrototypeAction.UPDATE_TEST_STATUS, P
 
 export type UpdatePrototypeMode = Action<PrototypeAction.UPDATE_TEST_MODE, PrototypeMode>;
 
+export type PushContextHistory = Action<PrototypeAction.ADD_TEST_CONTEXT_HISTORY, Context>;
+
 export type UpdatePrototypeDisplay = Action<PrototypeAction.UPDATE_TEST_DISPLAY, DeviceType>;
 
 export type UpdatePrototypeContext = Action<PrototypeAction.UPDATE_TEST_CONTEXT, Partial<Context>>;
@@ -31,6 +36,7 @@ export type UpdatePrototypeContextStore = Action<PrototypeAction.UPDATE_TEST_CON
 
 export type AnyPrototypeAction =
   | UpdatePrototype
+  | PushContextHistory
   | UpdatePrototypeStatus
   | UpdatePrototypeMode
   | UpdatePrototypeDisplay
@@ -43,6 +49,8 @@ export const updatePrototype = (payload: Partial<PrototypeState>): UpdatePrototy
 export const updatePrototypeStatus = (payload: PrototypeStatus): UpdatePrototypeStatus => createAction(PrototypeAction.UPDATE_TEST_STATUS, payload);
 
 export const updatePrototypeMode = (payload: PrototypeMode): UpdatePrototypeMode => createAction(PrototypeAction.UPDATE_TEST_MODE, payload);
+
+export const pushContextHistory = (payload: Context): PushContextHistory => createAction(PrototypeAction.ADD_TEST_CONTEXT_HISTORY, payload);
 
 export const updatePrototypeDisplay = (payload: DeviceType): UpdatePrototypeDisplay => createAction(PrototypeAction.UPDATE_TEST_DISPLAY, payload);
 

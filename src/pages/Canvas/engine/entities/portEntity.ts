@@ -20,6 +20,10 @@ class PortEntity extends ResourceEntity<Port, PortInstance> {
     return this.engine.highlight.isPortTarget(this.portID);
   }
 
+  get isPrototypeHighlighted() {
+    return this.engine.prototype.isPortHighlighted(this.portID);
+  }
+
   get isConnected() {
     return !!this.engine.getLinkIDsByPortID(this.portID).length;
   }

@@ -11,7 +11,6 @@ import { SyncThunk } from '@/store/types';
 import { createAndRegister } from '@/utils/nlc';
 
 import { updatePrototype } from '../actions';
-import resetState from './reset';
 
 const AUDIO_INTENTS = [
   {
@@ -46,7 +45,6 @@ export const initializePrototype = (): SyncThunk => (dispatch, getState) => {
   const nlc = createAndRegister({ slots, intents, builtInIntents });
 
   dispatch(updatePrototype({ nlc }));
-  dispatch(resetState());
 };
 
 export default initializePrototype;

@@ -8,7 +8,9 @@ import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { compose } from '@/hocs';
 import { useEnableDisable, useHover } from '@/hooks';
+import { NodeData } from '@/models';
 import Block, { HEADER_HEIGHT } from '@/pages/Canvas/components/Block';
+import PlayButton from '@/pages/Canvas/components/PlayButton';
 import { NODE_DISABLED_CLASSNAME, NODE_HOVERED_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext, NodeEntityContext, NodeEntityProvider, PortEntityProvider } from '@/pages/Canvas/contexts';
 import { BlockAPI } from '@/pages/Canvas/types';
@@ -22,10 +24,8 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   const blockRef = React.useRef<BlockAPI>(null);
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
-
   const { name, variant, combinedNodes, lockOwner, isMergeTarget } = nodeEntity.useState((e) => {
-    const { node, data } = e.resolve();
-
+    const { node, data } = e.resolve<NodeData.Combined>();
     return {
       name: data.name,
       variant: data.blockColor || BlockVariant.STANDARD,
@@ -186,6 +186,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
           ref={composeRefs(ref, blockRef, captureDropRef)}
           canEditTitle
           onClick={onClick}
+          actions={<PlayButton nodeID={combinedNodes[0]} variant={variant} />}
           {...hoverHandlers}
         >
           {combinedNodes.map((stepNodeID, index) => (

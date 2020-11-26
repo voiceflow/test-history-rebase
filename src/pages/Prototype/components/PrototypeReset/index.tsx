@@ -1,22 +1,25 @@
 import React from 'react';
 
+import Button, { ButtonVariant } from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
-import Section from '@/components/Section';
-import { ClickableText } from '@/components/Text';
+import { styled } from '@/hocs';
 import { Identifier } from '@/styles/constants';
 
 export type PrototypeResetProps = {
   onClick: React.MouseEventHandler<HTMLSpanElement>;
 };
 
+const Container = styled(FlexCenter)`
+  height: 179px;
+  border-top: solid 1px #eaeff4;
+`;
+
 const PrototypeReset: React.FC<PrototypeResetProps> = ({ onClick }) => (
-  <Section>
-    <FlexCenter>
-      <ClickableText id={Identifier.PROTOTYPE_RESET} onClick={onClick}>
-        Reset Test
-      </ClickableText>
-    </FlexCenter>
-  </Section>
+  <Container>
+    <Button variant={ButtonVariant.TERTIARY} id={Identifier.PROTOTYPE_RESET} onClick={onClick}>
+      Reset Test
+    </Button>
+  </Container>
 );
 
 export default PrototypeReset;

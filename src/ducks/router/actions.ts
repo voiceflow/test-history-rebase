@@ -4,6 +4,7 @@ import { generatePath } from 'react-router-dom';
 import { Path, RootRoute } from '@/config/routes';
 import { PlatformType } from '@/constants';
 import { Action } from '@/store/types';
+import * as Query from '@/utils/query';
 
 export type RouterAction = Action<typeof CALL_HISTORY_METHOD, unknown>;
 
@@ -23,7 +24,8 @@ export const goToDashboardWithSearch = (search: string) => goTo(`${RootRoute.DAS
 
 export const goToOnboarding = () => goTo(`${RootRoute.ONBOARDING}${window.location.search}`);
 
-export const goToPrototype = (versionID: string) => goTo(generatePath(Path.PROJECT_PROTOTYPE, { versionID }));
+export const goToPrototype = (versionID: string, nodeID?: string) =>
+  goTo(`${generatePath(Path.PROJECT_PROTOTYPE, { versionID })}${nodeID ? Query.stringify({ nodeID }) : ''}`);
 
 export const goToSettings = (versionID: string) => goTo(generatePath(Path.PROJECT_SETTINGS, { versionID }));
 

@@ -3,7 +3,6 @@ import React from 'react';
 import SubMenu, { SubMenuItem } from '@/components/SubMenu';
 import { FeatureFlag } from '@/config/features';
 import * as Prototype from '@/ducks/prototype';
-import { PrototypeMode, prototypeModeSelector } from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
@@ -20,11 +19,11 @@ const PrototypePage: React.FC<ConnectedPrototypePageProps> = ({ mode, platform, 
 
   const renderPrototypePageContent = () => {
     switch (mode) {
-      case PrototypeMode.CANVAS:
+      case Prototype.PrototypeMode.CANVAS:
         return <Canvas />;
-      case PrototypeMode.DISPLAY:
+      case Prototype.PrototypeMode.DISPLAY:
         return <PrototypeDisplaySettings open={isPrototypingMode} />;
-      case PrototypeMode.DEVELOPER:
+      case Prototype.PrototypeMode.DEVELOPER:
         return (
           <>
             <PrototypeDeveloper open={isPrototypingMode} />
@@ -43,7 +42,7 @@ const PrototypePage: React.FC<ConnectedPrototypePageProps> = ({ mode, platform, 
           <SubMenu
             options={PROTOTYPE_MENU_OPTIONS[platform].map((option: SubMenuItem) => option)}
             onChange={(value: string) => {
-              updatePrototypeMode(value as PrototypeMode);
+              updatePrototypeMode(value as Prototype.PrototypeMode);
             }}
           />
           {renderPrototypePageContent()}
@@ -53,7 +52,7 @@ const PrototypePage: React.FC<ConnectedPrototypePageProps> = ({ mode, platform, 
   );
 };
 
-const mapStateToProps = { mode: prototypeModeSelector, platform: Skill.activePlatformSelector };
+const mapStateToProps = { mode: Prototype.prototypeModeSelector, platform: Skill.activePlatformSelector };
 
 const mapDispatchToProps = {
   updatePrototypeMode: Prototype.updatePrototypeMode,

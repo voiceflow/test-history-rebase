@@ -45,6 +45,7 @@ import MarkupEngine from './markupEngine';
 import MergeEngine from './mergeEngine';
 import NodeManager from './nodeManager';
 import PortManager from './portManager';
+import PrototypeEngine from './prototypeEngine';
 import RealtimeEngine from './realtimeEngine';
 import SelectionEngine from './selectionEngine';
 import TransformationEngine from './transformationEngine';
@@ -92,6 +93,8 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   markup = new MarkupEngine(this);
 
   comment = new CommentEngine(this);
+
+  prototype = new PrototypeEngine(this);
 
   nodes = new Map<string, { api: NodeEntity; type: BlockType; x: number; y: number }>();
 

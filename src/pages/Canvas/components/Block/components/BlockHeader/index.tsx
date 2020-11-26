@@ -20,9 +20,10 @@ export type BlockHeaderProps = {
   updateName?: (value: string) => void;
   setIsEditing?: (value: boolean) => void;
   titleRef?: React.MutableRefObject<HTMLInputElement | null>;
+  actions?: JSX.Element;
 };
 
-const NewBlockHeader: React.FC<BlockHeaderProps> = ({
+const BlockHeader: React.FC<BlockHeaderProps> = ({
   name,
   canEditTitle,
   isEditing,
@@ -33,6 +34,7 @@ const NewBlockHeader: React.FC<BlockHeaderProps> = ({
   isDisabled,
   isLocked,
   titleRef,
+  actions,
 }) => {
   const isEditingMode = useEditingMode();
 
@@ -82,7 +84,7 @@ const NewBlockHeader: React.FC<BlockHeaderProps> = ({
   }, [readOnly]);
 
   return (
-    <Container hasIcon={!!icon}>
+    <Container>
       {icon && (
         <IconContainer side="left">
           <SvgIcon icon={icon} color="#6e849a" />
@@ -107,13 +109,12 @@ const NewBlockHeader: React.FC<BlockHeaderProps> = ({
           }
         }}
       />
-      {isLocked && (
-        <IconContainer side="right">
-          <SvgIcon icon="lock" />
-        </IconContainer>
-      )}
+      <IconContainer side="right">
+        {isLocked && <SvgIcon icon="lock" />}
+        {actions}
+      </IconContainer>
     </Container>
   );
 };
 
-export default NewBlockHeader;
+export default BlockHeader;

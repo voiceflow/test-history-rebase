@@ -12,7 +12,8 @@ export const OutterChatContainer = styled.div`
 `;
 
 export const InnerChatContainer = styled.div<{ atTop: boolean }>`
-  ${transition()};
+  ${transition()}
+
   overflow: auto;
   height: 100%;
   background: #fdfdfd;

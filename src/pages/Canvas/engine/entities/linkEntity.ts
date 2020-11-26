@@ -26,6 +26,10 @@ class LinkEntity extends ResourceEntity<Models.Link, LinkInstance> {
     return this.engine.highlight.isLinkTarget(this.linkID);
   }
 
+  get isPrototypeHighlighted() {
+    return this.engine.prototype.isLinkHighlighted(this.linkID);
+  }
+
   get isActive() {
     return this.engine.link.isActive(this.linkID);
   }

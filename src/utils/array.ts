@@ -74,6 +74,12 @@ export const findUnion = <T>(lhs: T[], rhs: T[]) => {
   );
 };
 
+export const diff = <T>(lhs: T[], rhs: T[]) => {
+  const { lhsOnly, rhsOnly } = findUnion(lhs, rhs);
+
+  return [...lhsOnly, ...rhsOnly];
+};
+
 export const hasIdenticalMembers = <T>(lhs: T[], rhs: T[]) => {
   if (lhs.length !== rhs.length) {
     return false;

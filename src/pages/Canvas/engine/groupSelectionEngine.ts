@@ -1,7 +1,7 @@
 import { MARKUP_NODES, ROOT_NODES } from '@/constants';
 import { SelectionMarqueeAPI } from '@/pages/Canvas/types';
 import { Point } from '@/types';
-import { findUnion } from '@/utils/array';
+import { diff } from '@/utils/array';
 import { buildVirtualDOMRect } from '@/utils/dom';
 
 import { CANVAS_SELECTING_GROUP_CLASSNAME } from '../constants';
@@ -51,11 +51,11 @@ class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionM
 
     const targets = this.engine.selection.getTargets();
     const nextTargets = this.candidates.filter(({ isWithin }) => isWithin(rect)).map(({ nodeID }) => nodeID);
-    const { lhsOnly: oldTargets, rhsOnly: newTargets } = findUnion(targets, nextTargets);
+    const updateTargets = diff(targets, nextTargets);
 
     this.engine.selection.replace(nextTargets, true);
 
-    [...oldTargets, ...newTargets].forEach((nodeID) => this.engine.node.redraw(nodeID));
+    updateTargets.forEach((nodeID) => this.engine.node.redraw(nodeID));
   }
 
   complete() {

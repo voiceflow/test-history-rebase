@@ -1,5 +1,4 @@
 import * as ConnectedReactRouter from 'connected-react-router';
-import queryString from 'query-string';
 import React from 'react';
 import { createSelector } from 'reselect';
 
@@ -8,10 +7,10 @@ import * as Router from '@/ducks/router';
 import * as Thread from '@/ducks/thread';
 import { useSetup } from '@/hooks';
 import * as Models from '@/models';
-import { Query } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 import { Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
+import * as Query from '@/utils/query';
 
 import { EntityType } from '../constants';
 import type { Engine } from '..';
@@ -131,7 +130,7 @@ class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Models.
 
     useSetup(async () => {
       const search = this.engine.select(ConnectedReactRouter.getSearch);
-      const query = queryString.parse(search) as Query.Canvas;
+      const query = Query.parse(search);
 
       if (query.thread) {
         this.engine.store.dispatch(Router.redirectToCurrentCanvasCommenting());

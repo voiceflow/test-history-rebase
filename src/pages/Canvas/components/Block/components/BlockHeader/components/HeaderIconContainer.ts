@@ -6,7 +6,8 @@ export type HeaderIconContainerProps = {
 
 const HeaderIconContainer = styled.div<HeaderIconContainerProps>`
   position: absolute;
-  padding: 0 5px;
+  padding: 0 8px;
+  overflow: hidden;
 
   ${({ side }) =>
     side === 'left'

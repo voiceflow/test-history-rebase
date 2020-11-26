@@ -4,6 +4,7 @@ import { BlockVariant } from '@/constants/canvas';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import { compose, connect } from '@/hocs';
+import PlayButton from '@/pages/Canvas/components/PlayButton';
 import { NodeEntityContext, NodeEntityProvider, PlatformContext } from '@/pages/Canvas/contexts';
 import { FlowStartBlock, HomeStartBlock } from '@/pages/Canvas/managers/Start/StartBlock';
 import { BlockAPI } from '@/pages/Canvas/types';
@@ -34,14 +35,23 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
         </NodeEntityProvider>
       ))
     : null;
+  const actions = <PlayButton nodeID={nodeEntity.nodeID} />;
 
   if (isRootDiagram) {
     return (
-      <HomeStartBlock portID={outPortID} platform={platform} invocationName={invocationName} commands={commands} lockOwner={lockOwner} ref={ref} />
+      <HomeStartBlock
+        portID={outPortID}
+        platform={platform}
+        invocationName={invocationName}
+        commands={commands}
+        actions={actions}
+        lockOwner={lockOwner}
+        ref={ref}
+      />
     );
   }
 
-  return <FlowStartBlock portID={outPortID} name={diagram?.name} commands={commands} lockOwner={lockOwner} ref={ref} />;
+  return <FlowStartBlock portID={outPortID} name={diagram?.name} commands={commands} actions={actions} lockOwner={lockOwner} ref={ref} />;
 };
 
 const mapStateToProps = {

@@ -7,8 +7,8 @@ import { SUBMENU_WIDTH } from '@/components/SubMenu/constants';
 import Tooltip from '@/components/TippyTooltip';
 import { VariableTag } from '@/components/VariableTag';
 import { FeatureFlag } from '@/config/features';
-import { prototypeVariablesSelector, updateVariables } from '@/ducks/prototype';
-import { recentprototypeSelector, updateRecentPrototype } from '@/ducks/recent';
+import * as Prototype from '@/ducks/prototype';
+import * as Recent from '@/ducks/recent';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { PROTOTYPE_SIDEBAR_WIDTH } from '@/pages/Canvas/components/PrototypeSidebar/constants';
@@ -73,13 +73,13 @@ const PrototypeDeveloper: React.FC<PrototypeDeveloperProps & ConnectedPrototypeD
 };
 
 const mapStateToProps = {
-  settings: recentprototypeSelector,
-  variables: prototypeVariablesSelector,
+  settings: Recent.recentPrototypeSelector,
+  variables: Prototype.prototypeVariablesSelector,
 };
 
 const mapDispatchToProps = {
-  updateSettings: updateRecentPrototype,
-  updateVariables,
+  updateSettings: Recent.updateRecentPrototype,
+  updateVariables: Prototype.updateVariables,
 };
 
 type ConnectedPrototypeDeveloperProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

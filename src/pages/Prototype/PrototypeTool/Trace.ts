@@ -1,37 +1,46 @@
 import NLC from '@voiceflow/natural-language-commander';
+import cuid from 'cuid';
 import _noop from 'lodash/noop';
 
 import { IS_TEST } from '@/config';
-import {
-  BlockTrace,
-  ChoiceTrace,
-  Context,
-  EndTrace,
-  FlowTrace,
-  SpeakTrace,
-  SpeakTraceAudioType,
-  StreamTrace,
-  StreamTraceAction,
-  Trace,
-  TraceType,
-} from '@/ducks/prototype';
+import { BlockType, START_BLOCK_ID } from '@/constants';
+import { SpeakTraceAudioType, StreamTraceAction, TraceType } from '@/constants/prototype';
+import { Context, PrototypeState } from '@/ducks/prototype';
+import { BlockTrace, ChoiceTrace, EndTrace, FlowTrace, Link, Node, SpeakTrace, StateRequest, StreamTrace, Trace } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
+import { unique } from '@/utils/array';
 
 import { Interaction, NLCIntent, PMStatus, TMAmazonIntent } from '../types';
 import AudioController from './Audio';
 import MessageController from './Message';
 import TimeoutController from './Timeout';
+import { getUpdatedContextHistory, waitForFlowLoad } from './utils/activePath';
 import { getNLCIntentSlotsMap, getUtteranceChoices } from './utils/intent';
 
+export enum StepDirection {
+  FORWARD = 'forward',
+  BACK = 'back',
+}
+
 export type TraceControllerProps = {
+  activePathLinkIDs: string[];
+  activePathBlockIDs: string[];
   nlc: NLC;
   debug: boolean;
+  flowIDHistory: string[];
   engine?: null | Engine;
   setError: (error: string) => void;
-  enterFlow?: (diagramID: string) => void;
-  fetchContext: (request?: any) => Promise<Context | null>;
+  enterFlow: (diagramID: string) => void;
+  fetchContext: (request?: StateRequest) => Promise<Context | null>;
   updateStatus: (status: PMStatus) => void;
   setInteractions: (interactions: Interaction[]) => void;
+  updatePrototype: (payload: Partial<PrototypeState>) => void;
+  getLinksByPortID: (portID: string) => Link[];
+  activeDiagramID: string;
+  contextHistory: Partial<Context>[];
+  contextStep: number;
+  getNodeByID: (targetBlockID: string) => void;
+  getJoiningLinks: (lhsNodeID: string, rhsNodeID: string) => Link[];
 };
 
 type Options = {
@@ -47,6 +56,8 @@ type StreamState = {
   offset: number;
 };
 
+const findLastBlockTrace = (trace: Trace[]) => [...trace].reverse().find((traceFrame) => traceFrame.type === TraceType.BLOCK);
+
 const ENTER_FLOW_TIME = 800;
 const MIN_FOCUSED_NODE_TIME = 500;
 
@@ -59,6 +70,8 @@ class TraceController {
 
   private stopped = false;
 
+  private ended = false;
+
   private message: Options['message'];
 
   private timeout: Options['timeout'];
@@ -67,11 +80,15 @@ class TraceController {
 
   private streamState: StreamState = { src: null, offset: 0, token: null };
 
+  public start() {
+    this.ended = false;
+  }
+
   public resetInteractions() {
     this.props.setInteractions([]);
   }
 
-  public static getNextStateRequest(nlcIntent?: NLCIntent | null, input?: string) {
+  public static getNextStateRequest(nlcIntent?: NLCIntent | null, input?: string): StateRequest {
     let intent;
 
     if (nlcIntent) {
@@ -96,7 +113,17 @@ class TraceController {
     this.message = message;
   }
 
-  public next = async (request?: any) => {
+  public next = async (request?: StateRequest) => {
+    const currentContextStep = this.props.contextStep;
+    const contextHistory = this.props.contextHistory;
+    const historyLength = contextHistory.length;
+
+    // Remove any forward history
+    if (currentContextStep !== historyLength - 1) {
+      const newHistoryArray = contextHistory.slice(0, currentContextStep + 1);
+      this.props.updatePrototype({ contextHistory: newHistoryArray });
+    }
+
     this.props.updateStatus(PMStatus.FETCHING_CONTEXT);
 
     this.context = await this.props.fetchContext(request);
@@ -121,6 +148,50 @@ class TraceController {
     } else {
       this.processTrace(this.context.trace);
     }
+  };
+
+  public historyStep = async (direction: StepDirection) => {
+    const offset = direction === StepDirection.BACK ? -1 : 1;
+    const currentContextStep = this.props.contextStep;
+    const newContextStepNumber = currentContextStep + offset;
+    const contextHistory = this.props.contextHistory;
+    const targetDiagramID =
+      direction === StepDirection.BACK
+        ? contextHistory[currentContextStep].previousContextDiagramID
+        : contextHistory[newContextStepNumber].targetContextDiagramID;
+
+    this.resetInteractions();
+
+    if (targetDiagramID && this.props.activeDiagramID !== targetDiagramID) {
+      // TO DO, check it on same flow, if yes, dont run this
+      this.props.enterFlow?.(targetDiagramID);
+      await this.timeout.set(ENTER_FLOW_TIME);
+    }
+
+    const activePathBlockIDsSnapshot = contextHistory[newContextStepNumber]?.activePathBlockIDs || [];
+    const activePathLinkIDsSnapshot = contextHistory[newContextStepNumber]?.activePathLinkIDs || [];
+
+    this.props.updatePrototype({
+      contextStep: newContextStepNumber,
+      activePathLinkIDs: activePathLinkIDsSnapshot,
+      activePathBlockIDs: activePathBlockIDsSnapshot,
+    });
+
+    const targetContext = contextHistory[newContextStepNumber];
+    const targetTrace = targetContext!.trace;
+    const targetBlockTraceFrame = findLastBlockTrace(targetTrace!) as BlockTrace;
+    const targetStepTrace = targetTrace![targetTrace!.length - 1];
+    const targetBlockID = targetBlockTraceFrame.payload?.blockID;
+
+    // wait for the block to render (to account for switching between flows)
+    await waitForFlowLoad(targetBlockID, this.props.getNodeByID);
+    await this.processTrace([targetBlockTraceFrame, targetStepTrace]);
+    this.props.updatePrototype({ context: targetContext as Context });
+
+    this.context = {
+      ...targetContext,
+      trace: targetContext.trace?.map((trace: Trace) => ({ ...trace, id: cuid() })) ?? [],
+    } as Context;
   };
 
   public stop() {
@@ -193,8 +264,34 @@ class TraceController {
     this.props.setInteractions(utteranceChoices);
   }
 
+  private saveActivePathBlock(node: Node) {
+    const updatedActivePathBlockArray = unique([...this.props.activePathBlockIDs, node!.parentNode!]);
+    const updatedContextHistory = getUpdatedContextHistory(
+      this.props.contextStep,
+      this.props.contextHistory,
+      'activePathBlockIDs',
+      updatedActivePathBlockArray
+    );
+
+    const updatePrototypeData = { activePathBlockIDs: updatedActivePathBlockArray, contextHistory: updatedContextHistory };
+
+    this.props.updatePrototype(updatePrototypeData);
+  }
+
   private async processBlockTrace({ payload: { blockID } }: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {
-    this.focusNode(blockID);
+    const node = this.props.engine?.getNodeByID(blockID);
+    const hasParent = !!node?.parentNode;
+    if (hasParent) {
+      this.saveActivePathBlock(node!);
+    }
+    const previousNodeID = this.props.engine?.selection.getTargets()?.[0];
+    const nextStepID = blockID;
+
+    const parentID = node!.parentNode;
+
+    this.saveActivePathLink(nextStepID, previousNodeID!, node!, parentID);
+
+    this.focusNode(nextStepID, parentID!);
 
     if (onlyMessage || !this.props.debug) {
       return;
@@ -276,16 +373,42 @@ class TraceController {
     if (!diagramID || !this.props.enterFlow) {
       return;
     }
-
-    await this.props.enterFlow(diagramID);
+    this.props.enterFlow(diagramID);
     await this.timeout.set(ENTER_FLOW_TIME);
+
+    const currentFlowStack = this.props.flowIDHistory;
+    const flowAlreadyInHistory = currentFlowStack.includes(diagramID);
+    if (!flowAlreadyInHistory) {
+      this.props.updatePrototype({ flowIDHistory: [...currentFlowStack, diagramID] });
+    }
+
+    // Highlight the start block when entering a flow
+    const startNode = Array.from(this.props.engine!.nodes).find((data) => data[1].type === BlockType.START);
+    const startNodeID = startNode![0];
+    let updatedActivePathBlockArray = unique([...this.props.activePathBlockIDs, startNodeID]);
+
+    const beginningBlock = this.props.activePathBlockIDs[0];
+    const beginningFlowID = this.props.flowIDHistory[0];
+
+    // This if block handles the edge case were a user starts on a non-start block when testing, and then enters the
+    // default 'help' flow. Since these diagram start blocks have the same ID, we have to dynamically add and remove
+    // the, from the activePathBlockID array, so when users exit flows, the start block won't be incorrectly highlighted
+    if (beginningBlock !== START_BLOCK_ID && beginningFlowID === diagramID) {
+      updatedActivePathBlockArray = updatedActivePathBlockArray.filter((val) => val !== START_BLOCK_ID);
+    }
+
+    const updatePrototypeData = { activePathBlockIDs: updatedActivePathBlockArray };
+    this.props.updatePrototype(updatePrototypeData);
   }
 
   private async processEndTrace(topTrace: EndTrace) {
-    this.message.session(topTrace.id, 'Session ended');
+    // Only show this message once (end trace can get hit multiple times, with an exit block in a flow)
+    if (!this.ended) {
+      this.message.session(topTrace.id, 'Session ended');
+    }
 
-    this.stop();
-
+    this.ended = true;
+    this.props.engine?.selection.reset();
     this.props.updateStatus(PMStatus.ENDED);
   }
 
@@ -294,9 +417,51 @@ class TraceController {
     this.props.setError(message);
   };
 
-  private focusNode(nodeID: string) {
+  private saveActivePathLink(nodeID: string, previousNodeID: string, node: Node, parentID: string | null) {
+    // Combined blocks and first step IDs must be checked as the inPort
+    const targetNodeIDs = [nodeID];
+    if (parentID) {
+      const isFirstStep = this.props.engine?.getNodeByID(parentID)?.combinedNodes[0] === nodeID;
+      if (isFirstStep) {
+        targetNodeIDs.push(parentID);
+      }
+    }
+
+    const activePathLink: Link | undefined = targetNodeIDs.reduce<Link[]>(
+      (acc, targetNodeID) => [...acc, ...this.props.getJoiningLinks(previousNodeID, targetNodeID)],
+      []
+    )[0];
+
+    let flowOutLink: string[] = [];
+    // We need to prematurely highlight the out link of a node block (if it exists)
+    // because the regular active path logic doesn't account for that case
+    if (node.type === BlockType.FLOW) {
+      const outPort: string = node.ports.out[0];
+      const linksByPortID = this.props.getLinksByPortID(outPort);
+      const flowOutLinkID = linksByPortID?.[0].id;
+      flowOutLink = [flowOutLinkID];
+    }
+
+    let activePathLinkArray = this.props.activePathLinkIDs;
+    if (activePathLink) {
+      activePathLinkArray = unique([...this.props.activePathLinkIDs, ...flowOutLink, activePathLink.id]);
+    }
+    const updatedContextHistory = getUpdatedContextHistory(
+      this.props.contextStep,
+      this.props.contextHistory,
+      'activePathLinkIDs',
+      activePathLinkArray
+    );
+
+    this.props.updatePrototype({ activePathLinkIDs: activePathLinkArray, contextHistory: updatedContextHistory });
+  }
+
+  private focusNode(nodeID: string, parentID: string) {
     this.props.engine?.selection.replace([nodeID]);
-    this.props.engine?.node.center(nodeID);
+
+    if (parentID) {
+      this.props.engine?.node.center(parentID);
+    }
   }
 }
 

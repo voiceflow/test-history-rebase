@@ -2,7 +2,6 @@ import './DashBoard.css';
 
 import { ProjectPrivacy } from '@voiceflow/api-sdk';
 import cn from 'classnames';
-import queryString from 'query-string';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
@@ -30,6 +29,7 @@ import * as Models from '@/models';
 import { copyProject } from '@/store/sideEffects';
 import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
+import * as Query from '@/utils/query';
 import * as Userflow from '@/vendors/userflow';
 
 import DashboardHeader from './Header';
@@ -55,7 +55,7 @@ const getBoardFilteredProjects = (projectsIDs: string[], projectsMap: Record<str
 export type DashboardProps = RouteComponentProps & {};
 
 export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (props) => {
-  const query: Models.Query.Dashboard | null = props.location?.search ? queryString.parse(props.location.search) : null;
+  const query = props.location?.search ? Query.parse(props.location.search) : null;
 
   const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
 

@@ -22,6 +22,7 @@ export * from './Intent';
 export * from './Slot';
 export * from './Workspace';
 export * from './Markup';
+export * from './Prototype';
 export * from './Query';
 export * from './Speak';
 export * from './Comment';

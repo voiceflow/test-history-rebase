@@ -1,4 +1,3 @@
-import queryString from 'query-string';
 import { generatePath } from 'react-router-dom';
 
 import client from '@/client';
@@ -9,6 +8,7 @@ import * as Realtime from '@/ducks/realtime';
 import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector, activeSkillSelector } from '@/ducks/skill/skill/selectors';
 import { Skill as SkillModel } from '@/models';
 import { GetState, SyncThunk, Thunk, ThunkDispatch } from '@/store/types';
+import * as Query from '@/utils/query';
 
 import { goTo, goToCanvasCommenting, goToPrototype, goToPublish, goToSettings, redirectToCanvasCommenting } from './actions';
 
@@ -89,13 +89,12 @@ export const goToDiagramCommenting = (diagramID: string, threadID?: string): Thu
   const versionID = activeSkillIDSelector(getState());
 
   await switchRealtime(dispatch, getState, versionID, diagramID);
-  dispatch(goToCanvasCommenting(versionID, diagramID, `?${queryString.stringify({ thread: threadID })}`));
+  dispatch(goToCanvasCommenting(versionID, diagramID, Query.stringify({ thread: threadID })));
 };
 
-export const goToCurrentPrototype = (): SyncThunk => (dispatch, getState) => {
+export const goToCurrentPrototype = (nodeID?: string): SyncThunk => (dispatch, getState) => {
   const versionID = activeSkillIDSelector(getState());
-
-  dispatch(goToPrototype(versionID));
+  dispatch(goToPrototype(versionID, nodeID));
 };
 
 export const goToCurrentSettings = (): Thunk => async (dispatch, getState) => {

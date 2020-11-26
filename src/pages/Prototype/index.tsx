@@ -1,29 +1,25 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { FlexCenter } from '@/components/Flex';
 import { Link } from '@/components/Text';
-import {
-  PrototypeStatus,
-  prototypeDisplaySelector,
-  prototypeModeSelector,
-  prototypeShowChipsSelector,
-  prototypeStatusSelector,
-  resetPrototype,
-  startPrototype,
-  updatePrototype,
-} from '@/ducks/prototype';
-import { recentprototypeSelector } from '@/ducks/recent';
-import { activeLocalesSelector } from '@/ducks/skill';
+import { FeatureFlag } from '@/config/features';
+import { EventualEngineContext } from '@/contexts';
+import * as PrototypeDuck from '@/ducks/prototype';
+import * as Recent from '@/ducks/recent';
+import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useTrackingEvents } from '@/hooks';
+import { useDidUpdateEffect, useFeature, useTeardown, useTrackingEvents } from '@/hooks';
 import { useDebouncedCallback } from '@/hooks/callback';
 import { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 import { Interactions } from '@/pages/Prototype/components/PrototypeDialog/components';
+import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';
+import * as Query from '@/utils/query';
 
 import { Container, Dialog, InnerChatContainer, Input, OutterChatContainer, Reset, Start, UserSaysContainer } from './components';
 import { usePrototype } from './hooks';
@@ -42,25 +38,35 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   locale,
   status,
   isPublic,
-  startPrototype,
-  resetPrototype,
   debug,
   showChips,
   updatePrototype,
   atTop,
   setAtTop,
+  autoplay,
   slots,
   mode,
   display,
 }) => {
   const [, trackEventsWrapper] = useTrackingEvents();
-  const [prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audioInstance] = usePrototype(status, debug, slots);
+  const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audioInstance, onStepBack, onStepForward } = usePrototype(
+    status,
+    debug,
+    slots
+  );
+  const eventualEngine = React.useContext(EventualEngineContext)!;
+  const location = useLocation();
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [updatedAudioInstance, setUpdatedAudioInstance] = React.useState<TAudio | null>(audioInstance);
   const [forceAudioUpdate, setForceAutoUpdate] = React.useState(0);
+  const manualNavigation = useFeature(FeatureFlag.MANUAL_NAVIGATION);
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
+  const intialLoadFinished = React.useRef(false);
+
+  const { nodeID } = Query.parse(location?.search);
+
   React.useEffect(() => {
     setUpdatedAudioInstance(audioInstance);
   }, [messages, audioInstance, forceAudioUpdate]);
@@ -71,6 +77,23 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   React.useEffect(() => {
     scrollToBottom();
   }, [messages.length, interactions]);
+
+  React.useEffect(() => {
+    if ((nodeID || autoplay) && !!intialLoadFinished.current) {
+      eventualEngine.get()?.prototype.start(null, nodeID!);
+    }
+    intialLoadFinished.current = true;
+  }, [intialLoadFinished.current]);
+
+  useTeardown(() => {
+    eventualEngine.get()?.prototype.reset();
+  }, []);
+
+  useDidUpdateEffect(() => {
+    if (autoplay) {
+      eventualEngine.get()?.prototype.start(null, nodeID!);
+    }
+  }, [autoplay]);
 
   const setShowChips = (val: boolean) => {
     updatePrototype({ showChips: val });
@@ -87,23 +110,35 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     []
   );
 
-  if (status === PrototypeStatus.IDLE) {
+  if (!intialLoadFinished.current) {
+    return null;
+  }
+
+  if (status === PrototypeDuck.PrototypeStatus.IDLE && !autoplay) {
     return (
-      <Container id={Identifier.PROTOTYPE} isPublic={isPublic}>
-        <Start
-          start={() =>
-            isPublic ? startPrototype() : trackEventsWrapper(startPrototype, 'trackActiveProjectPrototypeTestStart', { debug, mode, display })()
-          }
-        />
-        <FlexCenter style={{ paddingBottom: '30px', color: '#62778c', background: '#fdfdfd' }}>
-          <>
+      <FadeDownContainer style={{ height: '100%' }}>
+        <Container id={Identifier.PROTOTYPE} isPublic={isPublic}>
+          <Start
+            start={() => {
+              const startPrototype = () => eventualEngine.get()?.prototype.start();
+
+              if (isPublic) {
+                startPrototype();
+              } else {
+                trackEventsWrapper(startPrototype, 'trackActiveProjectPrototypeTestStart', { debug, mode, display })();
+              }
+
+              eventualEngine.get()?.prototype.start();
+            }}
+          />
+          <FlexCenter style={{ paddingBottom: '30px', color: '#62778c', background: '#fdfdfd' }}>
             New to prototyping?
             <Link href={PrototypingHelpLink} style={{ marginLeft: '6px' }}>
               Learn More
             </Link>
-          </>
-        </FlexCenter>
-      </Container>
+          </FlexCenter>
+        </Container>
+      </FadeDownContainer>
     );
   }
 
@@ -126,10 +161,12 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         </InnerChatContainer>
       </OutterChatContainer>
       <UserSaysContainer>
-        {prototypeMachineStatus === PMStatus.ENDED ? (
-          <Reset onClick={resetPrototype} />
+        {prototypeMachineStatus === PMStatus.ENDED && !manualNavigation.isEnabled ? (
+          <Reset onClick={() => eventualEngine.get()?.prototype.reset()} />
         ) : (
           <Input
+            stepBack={onStepBack}
+            stepForward={onStepForward}
             locale={locale}
             setShowChips={setShowChips}
             showChips={showChips}
@@ -144,19 +181,18 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
 };
 
 const mapStateToProps = {
-  status: prototypeStatusSelector,
-  locales: activeLocalesSelector,
-  settings: recentprototypeSelector,
+  status: PrototypeDuck.prototypeStatusSelector,
+  locales: Skill.activeLocalesSelector,
+  settings: Recent.recentPrototypeSelector,
   slots: Slot.allSlotsSelector,
-  showChips: prototypeShowChipsSelector,
-  mode: prototypeModeSelector,
-  display: prototypeDisplaySelector,
+  showChips: PrototypeDuck.prototypeShowChipsSelector,
+  autoplay: PrototypeDuck.prototypeAutoplaySelector,
+  mode: PrototypeDuck.prototypeModeSelector,
+  display: PrototypeDuck.prototypeDisplaySelector,
 };
 
 const mapDispatchProps = {
-  startPrototype,
-  resetPrototype,
-  updatePrototype,
+  updatePrototype: PrototypeDuck.updatePrototype,
 };
 
 const mergeProps = (...[{ locales }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchProps>) => ({ locale: locales[0] });

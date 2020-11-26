@@ -550,3 +550,5 @@ export const GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES = [
   'https://www.googleapis.com/auth/drive',
   'https://www.googleapis.com/auth/spreadsheets',
 ];
+
+export const START_BLOCK_ID = 'start00000000000000000000';

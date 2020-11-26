@@ -1,4 +1,3 @@
-import queryString from 'query-string';
 import React from 'react';
 
 import InnerContainer from '@/components/CreationSteps/components/Containers/InnerContainer';
@@ -8,13 +7,14 @@ import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
+import * as Query from '@/utils/query';
 
 import { CurrentStep, Header } from './components';
 import { OnboardingProvider } from './context';
 import { OnboardingDataProps, OnboardingProps } from './types';
 
 export const Onboarding: React.FC<OnboardingProps> = ({ fetchWorkspaces, data, location, firstTime = true }) => {
-  const query = queryString.parse(location?.search);
+  const query = Query.parse(location?.search);
   const [finishedFetchingWorkspaces, setFinishedFetchingWorkspaces] = React.useState(false);
 
   const fetchWorkspacesFunc = async () => {

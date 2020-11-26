@@ -126,6 +126,10 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
     return this.engine.transformation.isTarget(this.nodeID);
   }
 
+  get isPrototypeHighlighted() {
+    return this.engine.prototype.isNodeHighlightedLink(this.nodeID);
+  }
+
   get lockOwner() {
     return this.engine.getLockOwner(this.nodeID);
   }

@@ -1,6 +1,6 @@
 import { BillingPeriod, PlanType, PromoType } from '@/constants';
 
-export type Query = Query.Onboarding & Query.Dashboard & Query.Register & Query.Canvas;
+export type Query = Query.Onboarding & Query.Dashboard & Query.Register & Query.Canvas & Query.Okta;
 
 export namespace Query {
   export type Onboarding = Partial<{
@@ -27,10 +27,18 @@ export namespace Query {
     name: string;
     coupon: string;
     invite: string;
+    invite_code: string;
     code: string /* Referral code */;
   }>;
 
   export type Canvas = Partial<{
     thread: string;
+    nodeID: string;
+  }>;
+
+  export type Okta = Partial<{
+    code: string;
+    state: string;
+    error_description: string;
   }>;
 }

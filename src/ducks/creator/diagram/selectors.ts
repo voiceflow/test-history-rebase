@@ -1,12 +1,13 @@
 import { createSelector } from 'reselect';
 
+import { BlockType } from '@/constants';
 import { createKeyedSelector } from '@/ducks/utils';
 import { NodeData } from '@/models';
 import { denormalize, getAllNormalizedByKeys, getNormalizedByKey } from '@/utils/normalized';
 
 import { creatorStateSelector } from '../selectors';
 import { DIAGRAM_STATE_KEY } from './constants';
-import { getLinkIDsByNodeID, getLinkIDsByPortID, getLinkedNodeIDsByNodeID } from './utils';
+import { getJoiningLinkIDs, getLinkIDsByNodeID, getLinkIDsByPortID, getLinkedNodeIDsByNodeID } from './utils';
 
 const rootHistorySelector = createKeyedSelector(creatorStateSelector, DIAGRAM_STATE_KEY);
 
@@ -25,6 +26,11 @@ export const allNodeIDsSelector = createSelector([rootSelector], ({ nodes }) => 
 export const stepNodeIDsSelector = createSelector([rootSelector, allNodeIDsSelector], ({ nodes }, nodeIDs) =>
   nodeIDs.filter((nodeID) => !!getNormalizedByKey(nodes, nodeID).parentNode)
 );
+
+export const startNodeIDSelector = createSelector([rootSelector], ({ nodes }) => {
+  const allNodes = Object.values(nodes.byKey);
+  return allNodes.find((node) => node.type === BlockType.START)?.id;
+});
 
 export const nodeByIDSelector = createSelector([rootSelector], ({ nodes }) => (nodeID: string) => getNormalizedByKey(nodes, nodeID));
 
@@ -49,6 +55,8 @@ export const portByIDSelector = createSelector([rootSelector], ({ ports }) => (p
 export const allPortsByIDsSelector = createSelector([rootSelector], ({ ports }) => (portIDs: string[]) => getAllNormalizedByKeys(ports, portIDs));
 
 export const linkIDsByNodeIDSelector = createSelector([rootSelector], getLinkIDsByNodeID);
+
+export const joiningLinkIDsSelector = createSelector([rootSelector], (state) => getJoiningLinkIDs(state));
 
 export const linkedNodeIDsByNodeIDSelector = createSelector([rootSelector], getLinkedNodeIDsByNodeID);
 

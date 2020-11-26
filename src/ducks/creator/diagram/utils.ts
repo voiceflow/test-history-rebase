@@ -24,11 +24,18 @@ export const getLinkIDsByNodeID = ({ linksByNodeID }: DiagramState) => (nodeID: 
 
 export const getLinkedNodeIDsByNodeID = ({ linkedNodesByNodeID }: DiagramState) => (nodeID: string) => linkedNodesByNodeID[nodeID] || EMPTY_ARRAY;
 
-export const getJoiningLinkIDs = (state: DiagramState) => (lhsNodeID: string, rhsNodeID: string) => {
-  const linkIDSelector = getLinkIDsByNodeID(state);
-  const { union } = findUnion(linkIDSelector(lhsNodeID), linkIDSelector(rhsNodeID));
+export const getJoiningLinkIDs = (state: DiagramState) => (lhsNodeID: string, rhsNodeID: string, directional?: boolean) => {
+  const getLinkIDs = getLinkIDsByNodeID(state);
+  const getLink = (linkID: string) => getNormalizedByKey(state.links, linkID);
+  const { union } = findUnion(getLinkIDs(lhsNodeID), getLinkIDs(rhsNodeID));
 
-  return union;
+  return directional
+    ? union.filter((linkID) => {
+        const link = getLink(linkID);
+
+        return link.source.nodeID === lhsNodeID && link.target.nodeID === rhsNodeID;
+      })
+    : union;
 };
 
 export const getOutgoingLinkIDs = (state: DiagramState, node: Node) => node.ports.out.flatMap((portID) => getLinkIDsByPortID(state)(portID));

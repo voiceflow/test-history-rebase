@@ -26,6 +26,8 @@ export enum Hotkey {
   SELECT_TEXT_MARKUP = 'SELECT_TEXT_MARKUP',
   DUPLICATE = 'DUPLICATE',
   SHOW_HIDE_UI = 'SHOW_HIDE_UI',
+  MOVE_FORWARD = 'MOVE_FORWARD',
+  MOVE_BACKWARD = 'MOVE_BACKWARD',
 }
 
 /**
@@ -60,6 +62,8 @@ const HOTKEY_MAPPING = {
   [Hotkey.SELECT_TEXT_MARKUP]: ['t'],
   [Hotkey.DUPLICATE]: ['ctrl+d', 'meta+d'],
   [Hotkey.SHOW_HIDE_UI]: ['ctrl+\\', 'meta+\\'],
+  [Hotkey.MOVE_FORWARD]: ['right'],
+  [Hotkey.MOVE_BACKWARD]: ['left'],
 };
 
 export default HOTKEY_MAPPING;

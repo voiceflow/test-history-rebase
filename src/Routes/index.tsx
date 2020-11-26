@@ -1,4 +1,3 @@
-import queryString from 'query-string';
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -15,6 +14,7 @@ import ResetPassword from '@/pages/Register/ResetPassword';
 import SignupForm from '@/pages/Register/SignupForm';
 import Settings from '@/pages/Settings';
 import { ConnectedProps } from '@/types';
+import * as Query from '@/utils/query';
 
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
@@ -74,7 +74,7 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => {
           exact
           path={Path.INVITE}
           render={(props) => {
-            const parsed = queryString.parse(props.location.search);
+            const parsed = Query.parse(props.location.search);
             const inviteCode = parsed.invite_code;
             const email = parsed.email;
             const signupLink = email ? `${Path.SIGNUP}?invite=${inviteCode}&email=${email}` : `${Path.SIGNUP}?invite=${inviteCode}`;

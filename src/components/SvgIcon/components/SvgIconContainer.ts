@@ -3,7 +3,7 @@ import _isString from 'lodash/isString';
 import { SpaceProps, space } from 'styled-system';
 
 import { IconVariant } from '@/constants';
-import { css, styled } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 import { Spin } from '@/styles/animations/Spin';
 
 export type SvgIconContainerProps = {
@@ -28,7 +28,7 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
   box-sizing: content-box;
   width: ${({ size, width = size }) => width}px;
   height: ${({ size, height = size }) => height}px;
-  color: ${({ theme, color, variant }) => (variant && theme.components.icon[variant].color) || color};
+  color: ${({ theme, color, variant }) => (variant && theme.components.icon[variant]?.color) || color};
 
   ${false};
 
@@ -63,6 +63,7 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
       display: block;
       cursor: pointer;
       opacity: 0.8;
+      ${transition('opacity')}
 
       &:hover,
       &:active {
@@ -74,11 +75,11 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
     variant &&
     css`
       &:hover {
-        color: ${theme.components.icon[variant].hoverColor || color};
+        color: ${theme.components.icon[variant]?.hoverColor || color};
       }
 
       &:active {
-        color: ${theme.components.icon[variant].activeColor || theme.components.icon[variant].hoverColor || color};
+        color: ${theme.components.icon[variant]?.activeColor || theme.components.icon[variant]?.hoverColor || color};
       }
     `}
 

@@ -439,7 +439,7 @@ class TraceController {
       const outPort: string = node.ports.out[0];
       const linksByPortID = this.props.getLinksByPortID(outPort);
       const flowOutLinkID = linksByPortID?.[0]?.id;
-      flowOutLink = [flowOutLinkID];
+      flowOutLink = flowOutLinkID ? [flowOutLinkID] : [];
     }
 
     let activePathLinkArray = this.props.activePathLinkIDs;

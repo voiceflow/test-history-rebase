@@ -143,7 +143,7 @@
     "@storybook/source-loader": "^5.2.8",
     "@svgr/webpack": "5.4.0",
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.4",
-    "@types/chai": "^4.2.11",
+    "@types/chai": "^4.2.14",
     "@types/circular-dependency-plugin": "^5.0.1",
     "@types/classnames": "^2.2.11",
     "@types/copy-webpack-plugin": "^6.3.0",

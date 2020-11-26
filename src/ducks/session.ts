@@ -9,11 +9,8 @@ import { createSelector } from 'reselect';
 
 import client from '@/client';
 import { ROOT_DOMAIN } from '@/config';
-import { FeatureFlag } from '@/config/features';
 import { SessionType } from '@/constants';
 import * as Account from '@/ducks/account';
-import * as Feature from '@/ducks/feature';
-import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
 import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
@@ -49,6 +46,7 @@ const log = duckLogger.child(STATE_KEY);
 
 export type SessionState = {
   websocketsEnabled: boolean;
+  intercomVisible: boolean;
   token: { value: string | null } & PersistPartial;
   browserID: { value: string } & PersistPartial;
   tabID: { value: string } & PersistPartial;
@@ -56,11 +54,13 @@ export type SessionState = {
 
 const INITIAL_STATE: Omit<SessionState, 'token' | 'browserID' | 'tabID'> = {
   websocketsEnabled: true,
+  intercomVisible: true,
 };
 
 export enum SessionAction {
   SET_AUTH_TOKEN = 'SESSION:SET_AUTH_TOKEN',
   DISABLE_WEBSOCKETS = 'SESSION:DISABLE_WEBSOCKETS',
+  SET_INTERCOM_VISIBLE = 'SESSION:INTERCOM_VISIBLE:SET',
 }
 
 // action types
@@ -69,7 +69,9 @@ export type SetAuthToken = Action<SessionAction.SET_AUTH_TOKEN, string | null>;
 
 export type DisableWebsockets = Action<SessionAction.DISABLE_WEBSOCKETS>;
 
-type AnySessionAction = SetAuthToken | DisableWebsockets;
+export type SetIntercomVisible = Action<SessionAction.SET_INTERCOM_VISIBLE, boolean>;
+
+type AnySessionAction = SetAuthToken | DisableWebsockets | SetIntercomVisible;
 
 // reducers
 
@@ -86,11 +88,18 @@ export const disableWebsocketsReducer: Reducer<SessionState> = (state) => ({
   websocketsEnabled: false,
 });
 
+export const setIntercomVisibleReducer: Reducer<SessionState, SetIntercomVisible> = (state, { payload }) => ({
+  ...state,
+  intercomVisible: payload,
+});
+
 const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INITIAL_STATE as SessionState, action) => {
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
     case SessionAction.DISABLE_WEBSOCKETS:
       return disableWebsocketsReducer(state);
+    case SessionAction.SET_INTERCOM_VISIBLE:
+      return setIntercomVisibleReducer(state, action);
     default:
       return state;
   }
@@ -117,11 +126,19 @@ export const browserIDSelector = createSelector([rootSelector], ({ browserID }) 
 
 export const isWebsocketsEnabledSelector = createSelector([rootSelector], ({ websocketsEnabled }) => websocketsEnabled);
 
+export const isIntercomVisibleSelector = createSelector([rootSelector], ({ intercomVisible }) => intercomVisible);
+
+export const isLoggedInSelector = createSelector([authTokenSelector, Account.userIDSelector], (authToken, userID) => !!(authToken && userID));
+
 // action creators
 
 export const setAuthToken = (token: string | null): SetAuthToken => createAction(SessionAction.SET_AUTH_TOKEN, token);
 
 export const disableWebsockets = (): DisableWebsockets => createAction(SessionAction.DISABLE_WEBSOCKETS);
+
+export const setIntercomVisible = (isVisible: boolean): SetIntercomVisible => createAction(SessionAction.SET_INTERCOM_VISIBLE, isVisible);
+export const showIntercom = () => setIntercomVisible(true);
+export const hideIntercom = () => setIntercomVisible(false);
 
 // side effects
 
@@ -160,12 +177,8 @@ export const logout = (): Thunk => async (dispatch, getState) => {
   await dispatch(resetSession());
 };
 
-export const identifyUser = (user: Models.Account): Thunk => async (_, getState) => {
-  const state = getState();
-  const intercomEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.INTERCOM_INTEGRATION);
-  const workspaceID = Workspace.activeWorkspaceIDSelector(state) || '';
-
-  LogRocket.identify(user, workspaceID, intercomEnabled);
+export const identifyUser = (user: Models.Account): Thunk => async () => {
+  LogRocket.identify(user);
   await Userflow.identify(user);
 };
 
@@ -217,7 +230,7 @@ const setSession = ({ token, user }: { token: string; user: Models.Account }): T
     dispatch(goToOnboarding());
   }
 
-  await identifyUser(user);
+  await dispatch(identifyUser(user));
 };
 
 export const ssoLogin = (data: { code: string; coupon?: string }): Thunk => async (dispatch) => {

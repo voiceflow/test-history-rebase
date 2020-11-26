@@ -1,50 +1,70 @@
 import React from 'react';
-import ReactIntercom from 'react-intercom';
+import { useDispatch } from 'react-redux';
+import { useIntercom } from 'react-use-intercom';
 
-import SwallowError from '@/components/ErrorPages/SwallowError';
-import { INTERCOM_APP_ID } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { connect } from '@/hocs';
+import { compose, connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import * as Intercom from '@/vendors/intercom';
+import * as LogRocket from '@/vendors/logRocket';
 
-export const IntercomChat: React.FC<ConnectedIntercomChatProps> = ({ user, workspace }) => {
+export const IntercomChat: React.FC<ConnectedIntercomChatProps> = ({ user, workspace, isVisible, isLoggedIn }) => {
+  const isRunning = React.useRef(false);
+  const intercom = useIntercom();
   const intercomIntegration = useFeature(FeatureFlag.INTERCOM_INTEGRATION);
 
-  if (!intercomIntegration.isEnabled || !workspace) {
-    return null;
-  }
+  const showIntercom = intercomIntegration.isEnabled && isVisible && !!workspace;
 
-  const intercomUser = Intercom.createUser(user, workspace);
+  React.useEffect(() => {
+    if (!isLoggedIn) return undefined;
 
-  return (
-    <SwallowError>
-      <ReactIntercom appID={INTERCOM_APP_ID} {...intercomUser} />
-    </SwallowError>
-  );
+    return () => {
+      intercom.shutdown();
+      isRunning.current = false;
+    };
+  }, [isLoggedIn]);
+
+  React.useEffect(() => {
+    if (showIntercom) {
+      intercom.boot(Intercom.createProps(user, workspace!));
+      LogRocket.getSessionURL((sessionURL) => intercom.trackEvent('LogRocket', { sessionURL, company_id: workspace!.id }));
+
+      isRunning.current = true;
+    } else if (isRunning.current) {
+      intercom.shutdown();
+    }
+  }, [showIntercom]);
+
+  return null;
 };
 
 const mapStateToProps = {
+  isVisible: Session.isIntercomVisibleSelector,
+  isLoggedIn: Session.isLoggedInSelector,
   workspace: Workspace.activeWorkspaceSelector,
   user: Account.userSelector,
 };
 
 type ConnectedIntercomChatProps = ConnectedProps<typeof mapStateToProps>;
 
-export default connect(mapStateToProps)(IntercomChat);
+export default compose(React.memo, connect(mapStateToProps))(IntercomChat);
 
 export const RemoveIntercom: React.FC = ({ children }) => {
+  const dispatch = useDispatch();
   const intercomIntegration = useFeature(FeatureFlag.INTERCOM_INTEGRATION);
 
   React.useEffect(() => {
     if (!intercomIntegration.isEnabled) return undefined;
 
-    Intercom.updateSettings({ hide_default_launcher: true });
+    dispatch(Session.hideIntercom());
 
-    return () => Intercom.updateSettings({ hide_default_launcher: false });
+    return () => {
+      dispatch(Session.showIntercom());
+    };
   }, []);
 
   return <>{children}</>;

@@ -1,11 +1,14 @@
 import React from 'react';
 
 import { ClickableText } from '@/components/Text';
+import { useOpenIntercom } from '@/vendors/intercom';
 
 function ChatWithUsLink({ children }) {
+  const openIntercom = useOpenIntercom();
+
   return (
     <ClickableText>
-      <a href="/" className="custom_intercom_launcher">
+      <a href="/" onClick={openIntercom}>
         {children}
       </a>
     </ClickableText>

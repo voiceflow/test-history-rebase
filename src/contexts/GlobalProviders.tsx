@@ -3,10 +3,11 @@ import { History } from 'history';
 import React from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import { IntercomProvider } from 'react-use-intercom';
 import { Persistor } from 'redux-persist';
 import { ThemeProvider } from 'styled-components';
 
-import { IS_PRODUCTION_ENV } from '@/config';
+import { INTERCOM_APP_ID, IS_PRODUCTION_ENV } from '@/config';
 import { MaintenanceGate } from '@/gates';
 import { Store } from '@/store/types';
 import theme from '@/styles/theme';
@@ -39,21 +40,23 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
     <StoreProvider store={store} persistor={persistor}>
       <DndProvider backend={HTML5Backend}>
         <ThemeProvider theme={theme}>
-          <TextEditorVariablesPopoverProvider value={document.body}>
-            <MousePositionProvider>
-              <DragProvider>
-                <OverlayProvider>
-                  <EventualEngineProvider>
-                    <IdentityProvider>
-                      <ModalsContextProvider>
-                        {IS_PRODUCTION_ENV ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}
-                      </ModalsContextProvider>
-                    </IdentityProvider>
-                  </EventualEngineProvider>
-                </OverlayProvider>
-              </DragProvider>
-            </MousePositionProvider>
-          </TextEditorVariablesPopoverProvider>
+          <IntercomProvider appId={INTERCOM_APP_ID}>
+            <TextEditorVariablesPopoverProvider value={document.body}>
+              <MousePositionProvider>
+                <DragProvider>
+                  <OverlayProvider>
+                    <EventualEngineProvider>
+                      <IdentityProvider>
+                        <ModalsContextProvider>
+                          {IS_PRODUCTION_ENV ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}
+                        </ModalsContextProvider>
+                      </IdentityProvider>
+                    </EventualEngineProvider>
+                  </OverlayProvider>
+                </DragProvider>
+              </MousePositionProvider>
+            </TextEditorVariablesPopoverProvider>
+          </IntercomProvider>
         </ThemeProvider>
       </DndProvider>
     </StoreProvider>

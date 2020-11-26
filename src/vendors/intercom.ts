@@ -1,34 +1,37 @@
-import { IntercomAPI, UpdateOptions } from 'react-intercom';
+import React from 'react';
+import { IntercomProps, useIntercom } from 'react-use-intercom';
 
 import { LOGROCKET_PROJECT } from '@/config';
 import { Account, Workspace } from '@/models';
 import { NullableRecord } from '@/types';
 
-export function createUser(user: NullableRecord<Account>, workspace: Workspace = {} as Workspace) {
+// eslint-disable-next-line import/prefer-default-export
+export function createProps(user: NullableRecord<Account>, workspace: Workspace = {} as Workspace): IntercomProps {
   return user.creator_id
     ? {
         // user info
-        user_id: user.creator_id,
-        name: user.name,
-        email: user.email,
+        userId: String(user.creator_id),
+        name: user.name!,
+        email: user.email!,
         // active workspace info
-        workspace: workspace.name,
-        workspace_id: workspace.id,
-        plan: workspace.plan || 'basic',
-        seats: workspace.seats,
-        custom_launcher_selector: '.custom_intercom_launcher',
-        logrocketURL: `https://app.logrocket.com/${LOGROCKET_PROJECT}/sessions?u=${user.creator_id}`,
+        customAttributes: {
+          workspace: workspace.name,
+          workspace_id: workspace.id,
+          plan: workspace.plan || 'basic',
+          seats: workspace.seats,
+          logrocketURL: `https://app.logrocket.com/${LOGROCKET_PROJECT}/sessions?u=${user.creator_id}`,
+        },
       }
-    : {
-        custom_launcher_selector: '.custom_intercom_launcher',
-      };
+    : {};
 }
 
-export const updateSettings = (data: UpdateOptions) => {
-  try {
-    IntercomAPI('update', data);
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.warn('failed to update settings', e);
-  }
+export const useOpenIntercom = () => {
+  const { boot, show } = useIntercom();
+
+  return React.useCallback((event?: React.MouseEvent) => {
+    event?.preventDefault();
+
+    boot();
+    show();
+  }, []);
 };

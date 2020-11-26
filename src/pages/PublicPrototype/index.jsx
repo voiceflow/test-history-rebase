@@ -8,16 +8,16 @@ import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import Dropdown from '@/components/Dropdown';
 import Header from '@/components/Header';
 import IconButton from '@/components/IconButton';
+import { RemoveIntercom } from '@/components/IntercomChat';
 import MadeInVoiceflow from '@/components/MadeInVoiceflow';
 import { MenuContainer } from '@/components/Menu';
-import { replaceIntents } from '@/ducks/intent';
-import { initializePrototype, updateVariables } from '@/ducks/prototype';
+import * as Intent from '@/ducks/intent';
+import * as PrototypeDuck from '@/ducks/prototype';
 import { activeDiagramIDSelector, activeNameSelector, setActiveSkill } from '@/ducks/skill';
 import { replaceSlots } from '@/ducks/slot';
 import { connect, styled } from '@/hocs';
 import Prototype from '@/pages/Prototype';
 import { FadeDownDelayedContainer } from '@/styles/animations';
-import * as Intercom from '@/vendors/intercom';
 
 const PrototypeContainer = styled.div`
   position: relative;
@@ -36,7 +36,6 @@ class PublicPrototype extends React.Component {
   state = { loading: 1 };
 
   componentDidMount() {
-    Intercom.updateSettings({ hide_default_launcher: true });
     if (this.props.diagramID) {
       this.setState({ loading: 0 });
     } else {
@@ -57,11 +56,6 @@ class PublicPrototype extends React.Component {
       </FadeDownDelayedContainer>
     </PublicPrototypeMenuContainer>
   );
-
-  // eslint-disable-next-line class-methods-use-this
-  componentWillUnmount() {
-    Intercom.updateSettings({ hide_default_launcher: false });
-  }
 
   async fetchInformation() {
     const { setActiveSkill, initializePrototype, updateVariables, replaceIntents, replaceSlots } = this.props;
@@ -103,6 +97,7 @@ class PublicPrototype extends React.Component {
             </div>
           )}
         />
+        <RemoveIntercom />
         {!this.state.loading && (
           <PrototypeContainer id="PublicUserPrototype">
             <Prototype isPublic debug={false} />
@@ -119,9 +114,9 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  initializePrototype,
-  updateVariables,
-  replaceIntents,
+  initializePrototype: PrototypeDuck.initializePrototype,
+  updateVariables: PrototypeDuck.updateVariables,
+  replaceIntents: Intent.replaceIntents,
   replaceSlots,
   setActiveSkill,
 };

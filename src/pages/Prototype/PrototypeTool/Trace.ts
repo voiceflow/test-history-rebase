@@ -438,7 +438,7 @@ class TraceController {
     if (node.type === BlockType.FLOW) {
       const outPort: string = node.ports.out[0];
       const linksByPortID = this.props.getLinksByPortID(outPort);
-      const flowOutLinkID = linksByPortID?.[0].id;
+      const flowOutLinkID = linksByPortID?.[0]?.id;
       flowOutLink = [flowOutLinkID];
     }
 

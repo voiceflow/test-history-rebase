@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { IS_PRIVATE_CLOUD } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { BlockType, INTERNAL_NODES, IntegrationType, MARKUP_NODES } from '@/constants';
 import { useDidUpdateEffect, useFeature, useTrackingEvents } from '@/hooks';
@@ -14,22 +15,26 @@ export const NO_SPOTLIGHT_BLOCKS = [BlockType.INTEGRATION, BlockType.CHOICE_OLD,
 const BLOCK_TYPES = [
   ...MANAGERS.filter(({ type }) => !NO_SPOTLIGHT_BLOCKS.includes(type)).map(({ type, label }) => ({
     value: type,
+    publicOnly: false,
     label,
   })),
   {
     value: BlockType.INTEGRATION,
     label: 'API',
     factoryData: { selectedIntegration: IntegrationType.CUSTOM_API },
+    publicOnly: false,
   },
   {
     value: BlockType.INTEGRATION,
     label: 'Google Sheets',
     factoryData: { selectedIntegration: IntegrationType.GOOGLE_SHEETS },
+    publicOnly: true,
   },
   {
     value: BlockType.INTEGRATION,
     label: 'Zapier',
     factoryData: { selectedIntegration: IntegrationType.ZAPIER },
+    publicOnly: true,
   },
 ];
 
@@ -51,6 +56,7 @@ const Spotlight = () => {
     () =>
       BLOCK_TYPES.filter((option) => {
         if (!gadgets.isEnabled && [BlockType.DIRECTIVE, BlockType.EVENT].includes(option.value)) return false;
+        if (IS_PRIVATE_CLOUD && option.publicOnly) return false;
 
         return true;
       }),

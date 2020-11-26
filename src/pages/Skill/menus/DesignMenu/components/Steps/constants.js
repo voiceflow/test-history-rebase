@@ -98,6 +98,7 @@ export const ROOT_SECTIONS = [
         label: 'Google Sheets',
         iconColor: getManager(BlockType.INTEGRATION).getIconColor({ selectedIntegration: IntegrationType.GOOGLE_SHEETS }),
         factoryData: { selectedIntegration: IntegrationType.GOOGLE_SHEETS },
+        publicOnly: true,
       },
       {
         type: BlockType.INTEGRATION,
@@ -105,6 +106,7 @@ export const ROOT_SECTIONS = [
         label: 'Zapier',
         iconColor: getManager(BlockType.INTEGRATION).getIconColor({ selectedIntegration: IntegrationType.ZAPIER }),
         factoryData: { selectedIntegration: IntegrationType.ZAPIER },
+        publicOnly: true,
       },
       {
         type: BlockType.CODE,

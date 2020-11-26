@@ -56,7 +56,7 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, isMute
     // eslint-disable-next-line promise/catch-or-return
     saveActiveDiagram()
       .catch((err) => console.error(err))
-      .then(async () => {
+      .finally(async () => {
         await renderPrototype(renderAbortControl);
         disableLoading();
       });

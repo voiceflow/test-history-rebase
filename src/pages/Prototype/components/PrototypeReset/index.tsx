@@ -12,6 +12,7 @@ export type PrototypeResetProps = {
 const Container = styled(FlexCenter)`
   height: 179px;
   border-top: solid 1px #eaeff4;
+  background: white;
 `;
 
 const PrototypeReset: React.FC<PrototypeResetProps> = ({ onClick }) => (

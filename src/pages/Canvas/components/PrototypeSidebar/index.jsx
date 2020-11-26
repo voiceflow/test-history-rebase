@@ -18,6 +18,7 @@ import { useFeature } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import PrototypePage from '@/pages/Prototype';
 import PrototypeDeveloper from '@/pages/Prototype/components/PrototypePage/components/PrototypeDeveloper';
+import { useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 
@@ -30,6 +31,7 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, isMute
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const isPrototypingMode = usePrototypingMode();
+  const resetPrototype = useResetPrototype();
   const eventualEngine = React.useContext(EventualEngineContext);
   const [atTop, setAtTop] = React.useState(true);
   const notStarted = status === PMStatus.IDLE;
@@ -63,7 +65,7 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, isMute
       renderAbortControl.aborted = true;
 
       toggleSettingsOpen(false);
-      eventualEngine.get()?.prototype.reset();
+      resetPrototype();
     };
   }, [isPrototypingMode]);
 
@@ -103,7 +105,7 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, isMute
                         icon="restart"
                         color={notStarted && '#BECEDC'}
                         clickable={!notStarted}
-                        onClick={() => (notStarted ? null : eventualEngine.get()?.prototype.reset())}
+                        onClick={() => (notStarted ? null : resetPrototype())}
                       />
                     </Tooltip>
                   </div>

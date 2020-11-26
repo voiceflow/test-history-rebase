@@ -3,10 +3,10 @@ import React from 'react';
 import Box from '@/components/Box';
 import Button from '@/components/Button';
 import { ButtonVariant } from '@/components/Button/constants';
-import { EventualEngineContext } from '@/contexts';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import Reset from '@/pages/Prototype/components/PrototypeReset';
+import { useResetPrototype } from '@/pages/Prototype/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { preventDefault, withEnterPress } from '@/utils/dom';
@@ -19,7 +19,6 @@ const InputAreaComp: React.FC<any> = InputArea;
 export type PrototypeInputProps<L> = Pick<ControlCenterProps, 'showChips' | 'setShowChips' | 'stepBack' | 'stepForward'> & {
   locale: L;
   disabled?: boolean;
-  isPublic?: boolean;
   onUserInput: (input: string) => void;
 };
 
@@ -35,7 +34,7 @@ const PrototypeInput = <L extends string>({
   status,
   stepBack,
 }: PrototypeInputProps<L> & ConnectedPrototypeInputProps) => {
-  const eventualEngine = React.useContext(EventualEngineContext)!;
+  const resetPrototype = useResetPrototype();
   const [value, setValue] = React.useState('');
 
   const sendTextHandler = preventDefault(() => {
@@ -67,7 +66,7 @@ const PrototypeInput = <L extends string>({
         inputRef={inputRef}
       />
       {status === Prototype.PrototypeStatus.ENDED ? (
-        <Reset onClick={() => eventualEngine.get()?.prototype.reset()} />
+        <Reset onClick={resetPrototype} />
       ) : (
         <InputContainer>
           {inputMode === Prototype.InputMode.TEXT ? (
@@ -107,6 +106,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   updatePrototype: Prototype.updatePrototype,
+  resetPrototype: Prototype.resetPrototype,
 };
 
 type ConnectedPrototypeInputProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

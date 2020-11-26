@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 import { FlexCenter } from '@/components/Flex';
 import { Link } from '@/components/Text';
 import { FeatureFlag } from '@/config/features';
-import { EventualEngineContext } from '@/contexts';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import * as Skill from '@/ducks/skill';
@@ -22,7 +21,7 @@ import { compose } from '@/utils/functional';
 import * as Query from '@/utils/query';
 
 import { Container, Dialog, InnerChatContainer, Input, OutterChatContainer, Reset, Start, UserSaysContainer } from './components';
-import { usePrototype } from './hooks';
+import { usePrototype, useResetPrototype, useStartPrototype } from './hooks';
 import { PMStatus } from './types';
 
 const PrototypingHelpLink = 'https://docs.voiceflow.com/#/platform/prototyping';
@@ -49,12 +48,13 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   display,
 }) => {
   const [, trackEventsWrapper] = useTrackingEvents();
+  const startPrototype = useStartPrototype();
+  const resetPrototype = useResetPrototype();
   const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audioInstance, onStepBack, onStepForward } = usePrototype(
     status,
     debug,
     slots
   );
-  const eventualEngine = React.useContext(EventualEngineContext)!;
   const location = useLocation();
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [updatedAudioInstance, setUpdatedAudioInstance] = React.useState<TAudio | null>(audioInstance);
@@ -80,18 +80,18 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
 
   React.useEffect(() => {
     if ((nodeID || autoplay) && !!intialLoadFinished.current) {
-      eventualEngine.get()?.prototype.start(null, nodeID!);
+      startPrototype(null, nodeID!);
     }
     intialLoadFinished.current = true;
   }, [intialLoadFinished.current]);
 
   useTeardown(() => {
-    eventualEngine.get()?.prototype.reset();
+    resetPrototype();
   }, []);
 
   useDidUpdateEffect(() => {
     if (autoplay) {
-      eventualEngine.get()?.prototype.start(null, nodeID!);
+      startPrototype(null, nodeID!);
     }
   }, [autoplay]);
 
@@ -116,19 +116,15 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
 
   if (status === PrototypeDuck.PrototypeStatus.IDLE && !autoplay) {
     return (
-      <FadeDownContainer style={{ height: '100%' }}>
-        <Container id={Identifier.PROTOTYPE} isPublic={isPublic}>
+      <Container id={Identifier.PROTOTYPE} isPublic={isPublic}>
+        <FadeDownContainer style={{ height: '100%' }}>
           <Start
             start={() => {
-              const startPrototype = () => eventualEngine.get()?.prototype.start();
-
               if (isPublic) {
                 startPrototype();
               } else {
                 trackEventsWrapper(startPrototype, 'trackActiveProjectPrototypeTestStart', { debug, mode, display })();
               }
-
-              eventualEngine.get()?.prototype.start();
             }}
           />
           <FlexCenter style={{ paddingBottom: '30px', color: '#62778c', background: '#fdfdfd' }}>
@@ -137,8 +133,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
               Learn More
             </Link>
           </FlexCenter>
-        </Container>
-      </FadeDownContainer>
+        </FadeDownContainer>
+      </Container>
     );
   }
 
@@ -162,7 +158,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
       </OutterChatContainer>
       <UserSaysContainer>
         {prototypeMachineStatus === PMStatus.ENDED && !manualNavigation.isEnabled ? (
-          <Reset onClick={() => eventualEngine.get()?.prototype.reset()} />
+          <Reset onClick={resetPrototype} />
         ) : (
           <Input
             stepBack={onStepBack}
@@ -170,7 +166,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
             locale={locale}
             setShowChips={setShowChips}
             showChips={showChips}
-            isPublic={isPublic}
             disabled={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.IDLE, PMStatus.DIALOG_PROCESSING)}
             onUserInput={onInteraction}
           />

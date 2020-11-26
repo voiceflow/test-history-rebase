@@ -80,6 +80,10 @@ class TraceController {
 
   private streamState: StreamState = { src: null, offset: 0, token: null };
 
+  get isPublicPrototype() {
+    return !this.props.engine;
+  }
+
   public start() {
     this.ended = false;
   }
@@ -278,26 +282,33 @@ class TraceController {
     this.props.updatePrototype(updatePrototypeData);
   }
 
-  private async processBlockTrace({ payload: { blockID } }: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {
-    const node = this.props.engine?.getNodeByID(blockID);
-    const hasParent = !!node?.parentNode;
-    if (hasParent) {
-      this.saveActivePathBlock(node!);
+  private async processBlockTrace(trace: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {
+    if (!this.isPublicPrototype) {
+      this.highlightBlock(trace);
     }
-    const previousNodeID = this.props.engine?.selection.getTargets()?.[0];
-    const nextStepID = blockID;
-
-    const parentID = node!.parentNode;
-
-    this.saveActivePathLink(nextStepID, previousNodeID!, node!, parentID);
-
-    this.focusNode(nextStepID, parentID!);
 
     if (onlyMessage || !this.props.debug) {
       return;
     }
 
     await this.timeout.set(MIN_FOCUSED_NODE_TIME);
+  }
+
+  private highlightBlock({ payload: { blockID } }: BlockTrace) {
+    const node = this.props.engine?.getNodeByID(blockID);
+    const hasParent = !!node?.parentNode;
+
+    if (hasParent) {
+      this.saveActivePathBlock(node!);
+    }
+
+    const previousNodeID = this.props.engine?.selection.getTargets()?.[0];
+    const nextStepID = blockID;
+    const parentID = node!.parentNode;
+
+    this.saveActivePathLink(nextStepID, previousNodeID!, node!, parentID);
+
+    this.focusNode(nextStepID, parentID!);
   }
 
   private async processStreamTrace(
@@ -373,6 +384,13 @@ class TraceController {
     if (!diagramID || !this.props.enterFlow) {
       return;
     }
+
+    if (!this.isPublicPrototype) {
+      this.navigateToFlow(diagramID);
+    }
+  }
+
+  private async navigateToFlow(diagramID: string) {
     this.props.enterFlow(diagramID);
     await this.timeout.set(ENTER_FLOW_TIME);
 

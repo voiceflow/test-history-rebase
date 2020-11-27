@@ -41,6 +41,7 @@ export type TraceControllerProps = {
   contextStep: number;
   getNodeByID: (targetBlockID: string) => void;
   getJoiningLinks: (lhsNodeID: string, rhsNodeID: string) => Link[];
+  isPublic?: boolean;
 };
 
 type Options = {
@@ -59,7 +60,7 @@ type StreamState = {
 const findLastBlockTrace = (trace: Trace[]) => [...trace].reverse().find((traceFrame) => traceFrame.type === TraceType.BLOCK);
 
 const ENTER_FLOW_TIME = 800;
-const WAIT_FOR_POTENTIAL_ENGINE = 800;
+const WAIT_FOR_ENGINE_TIME = 200;
 const MIN_FOCUSED_NODE_TIME = 500;
 
 class TraceController {
@@ -82,7 +83,7 @@ class TraceController {
   private streamState: StreamState = { src: null, offset: 0, token: null };
 
   get isPublicPrototype() {
-    return !this.props.engine;
+    return !!this.props.isPublic;
   }
 
   public start() {
@@ -285,7 +286,7 @@ class TraceController {
 
   private async processBlockTrace(trace: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {
     if (!this.isPublicPrototype) {
-      this.highlightBlock(trace);
+      await this.highlightBlock(trace);
     }
 
     if (onlyMessage || !this.props.debug) {
@@ -295,7 +296,13 @@ class TraceController {
     await this.timeout.set(MIN_FOCUSED_NODE_TIME);
   }
 
-  private highlightBlock({ payload: { blockID } }: BlockTrace) {
+  private async highlightBlock({ payload: { blockID } }: BlockTrace) {
+    if (!this.isPublicPrototype) {
+      while (!this.props.engine) {
+        // eslint-disable-next-line no-await-in-loop
+        await this.timeout.set(WAIT_FOR_ENGINE_TIME);
+      }
+    }
     const node = this.props.engine?.getNodeByID(blockID);
     const hasParent = !!node?.parentNode;
 
@@ -305,11 +312,11 @@ class TraceController {
 
     const previousNodeID = this.props.engine?.selection.getTargets()?.[0];
     const nextStepID = blockID;
-    const parentID = node!.parentNode;
+    const parentID = node?.parentNode;
 
     this.saveActivePathLink(nextStepID, previousNodeID!, node!, parentID);
 
-    this.focusNode(nextStepID, parentID!);
+    this.focusNode(nextStepID, parentID);
   }
 
   private async processStreamTrace(
@@ -385,7 +392,6 @@ class TraceController {
     if (!diagramID || !this.props.enterFlow) {
       return;
     }
-    await this.timeout.set(WAIT_FOR_POTENTIAL_ENGINE);
 
     if (!this.isPublicPrototype) {
       this.navigateToFlow(diagramID);
@@ -437,7 +443,7 @@ class TraceController {
     this.props.setError(message);
   };
 
-  private saveActivePathLink(nodeID: string, previousNodeID: string, node: Node, parentID: string | null) {
+  private saveActivePathLink(nodeID: string, previousNodeID: string, node: Node, parentID?: string | null) {
     // Combined blocks and first step IDs must be checked as the inPort
     const targetNodeIDs = [nodeID];
     if (parentID) {
@@ -476,7 +482,7 @@ class TraceController {
     this.props.updatePrototype({ activePathLinkIDs: activePathLinkArray, contextHistory: updatedContextHistory });
   }
 
-  private focusNode(nodeID: string, parentID: string) {
+  private focusNode(nodeID: string, parentID?: string | null) {
     this.props.engine?.selection.replace([nodeID]);
 
     if (parentID) {

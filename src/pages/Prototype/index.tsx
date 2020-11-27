@@ -53,7 +53,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audioInstance, onStepBack, onStepForward } = usePrototype(
     status,
     debug,
-    slots
+    slots,
+    isPublic
   );
   const location = useLocation();
   const scrollRef = React.useRef<HTMLDivElement>(null);

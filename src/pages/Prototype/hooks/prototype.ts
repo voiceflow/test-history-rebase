@@ -13,7 +13,7 @@ import { Dispatch } from '@/store/types';
 import PrototypeTool, { PrototypeToolProps } from '../PrototypeTool';
 import { Interaction, Message, PMStatus } from '../types';
 
-const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boolean, slots: Array<Slot>) => {
+const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boolean, slots: Array<Slot>, isPublic?: boolean) => {
   const dispatch = useDispatch() as Dispatch;
 
   const nlc = useSelector(Prototype.prototypeNLCSelector) as NLC;
@@ -42,6 +42,7 @@ const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boo
     locale,
     engine,
     variables,
+    isPublic,
     contextHistory,
     contextStep,
     slots,

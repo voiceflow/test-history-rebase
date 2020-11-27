@@ -59,6 +59,7 @@ type StreamState = {
 const findLastBlockTrace = (trace: Trace[]) => [...trace].reverse().find((traceFrame) => traceFrame.type === TraceType.BLOCK);
 
 const ENTER_FLOW_TIME = 800;
+const WAIT_FOR_POTENTIAL_ENGINE = 800;
 const MIN_FOCUSED_NODE_TIME = 500;
 
 class TraceController {
@@ -384,6 +385,7 @@ class TraceController {
     if (!diagramID || !this.props.enterFlow) {
       return;
     }
+    await this.timeout.set(WAIT_FOR_POTENTIAL_ENGINE);
 
     if (!this.isPublicPrototype) {
       this.navigateToFlow(diagramID);

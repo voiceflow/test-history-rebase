@@ -1,4 +1,8 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
+
+type SectionTitleErrorMessageProps = {
+  marginTop?: number;
+};
 
 export const SectionTitle = styled.label`
   text-align: left;
@@ -10,9 +14,16 @@ export const SectionDescription = styled.div`
   color: #62778c;
   margin-top: 10px;
 `;
-export const SectionErrorMessage = styled.div`
+
+export const SectionErrorMessage = styled.div<SectionTitleErrorMessageProps>`
   text-align: left;
   font-size: 13px;
   color: #e91e63;
   margin-top: 10px;
+
+  ${({ marginTop }) =>
+    marginTop &&
+    css`
+      margin-top: ${marginTop}px;
+    `}
 `;

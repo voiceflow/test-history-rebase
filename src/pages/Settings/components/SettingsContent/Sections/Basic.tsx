@@ -1,5 +1,6 @@
 import { Locale } from '@voiceflow/alexa-types';
 import { Language, LanguageToLocale, Locale as GoogleLocale } from '@voiceflow/google-types';
+import _constant from 'lodash/constant';
 import React, { ChangeEvent, useEffect } from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
@@ -9,10 +10,18 @@ import Select from '@/components/Select';
 import { PlatformType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/utils';
+import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
+import {
+  FORMATTED_GOOGLE_LOCALES_LABELS,
+  FORMATTED_LOCALES,
+  getAmazonInvocationNameError,
+  getGoogleInvocationNameError,
+  getLocaleLanguage,
+} from '@/pages/Publish/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { without } from '@/utils/array';
+import { getPlatformValue } from '@/utils/platform';
 
 import { PlatformSettingsMetaProps, SettingSections } from '../../../constants';
 
@@ -52,6 +61,17 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     platform === PlatformType.ALEXA
       ? selectedLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')
       : '';
+
+  const invocationError =
+    newInvocation &&
+    getPlatformValue<(name?: string, locales?: any[]) => string | null>(
+      platform,
+      {
+        [PlatformType.ALEXA]: getAmazonInvocationNameError,
+        [PlatformType.GOOGLE]: getGoogleInvocationNameError,
+      },
+      _constant(null)
+    )(newInvocation as string, selectedLocales);
 
   const saveSettings = async () => {
     saveProjectName(newProjectName);
@@ -118,10 +138,17 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
             customContentStyling={sectionStyling}
             isDividerNested
             variant={SectionVariant.QUATERNARY}
-            contentSuffix={invocationName}
             header="Invocation Name"
+            contentSuffix={
+              invocationError && newInvocation ? () => <SectionErrorMessage marginTop={16}>{invocationError}</SectionErrorMessage> : invocationName
+            }
           >
-            <Input value={newInvocation} onChange={(e: ChangeEvent<HTMLInputElement>) => setNewInvocation(e.target.value)} onBlur={saveSettings} />
+            <Input
+              error={!!invocationError}
+              value={newInvocation}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setNewInvocation(e.target.value)}
+              onBlur={saveSettings}
+            />
           </Section>
 
           <Section

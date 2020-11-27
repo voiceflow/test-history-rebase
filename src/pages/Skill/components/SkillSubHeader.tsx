@@ -10,6 +10,7 @@ import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useFeature, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
+import { useMarkupMode } from '@/pages/Skill/hooks';
 import { ConnectedProps } from '@/types';
 
 import CanvasViewers from './CanvasViewers';
@@ -44,8 +45,20 @@ const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderPr
   isViewerOrLibraryRole,
 }) => {
   const codeExport = useFeature(FeatureFlag.CODE_EXPORT);
+  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
 
-  const options = showPublish && !(platform === PlatformType.GENERAL && !codeExport.isEnabled) ? TABS : TABS.filter((tab) => tab.value !== 'publish');
+  const headerOptions = TABS.filter((tab) => {
+    if (headerRedesign.isEnabled) {
+      return tab.value !== 'prototype';
+    }
+    return true;
+  });
+  const options =
+    showPublish && !(platform === PlatformType.GENERAL && !codeExport.isEnabled)
+      ? headerOptions
+      : headerOptions.filter((tab) => tab.value !== 'publish');
+
+  const isMarkupMode = useMarkupMode();
 
   const onChange = React.useCallback(
     (value) => {
@@ -62,7 +75,14 @@ const SkillSubHeader: React.FC<SkillSubHeaderProps & ConnecteedeSkillSubHeaderPr
     [goToDesign, goToPrototype, goToPublish]
   );
 
-  useHotKeys(Hotkey.PROTOTYPE_PAGE, () => goToPrototype());
+  useHotKeys(
+    Hotkey.TEST_MODE,
+    () => {
+      if (!isMarkupMode) goToPrototype();
+    },
+    { preventDefault: true },
+    [isMarkupMode]
+  );
   useHotKeys(Hotkey.DESIGN_PAGE, () => goToDesign());
   useHotKeys(Hotkey.LAUNCH_PAGE, () => !isViewerOrLibraryRole && goToPublish());
 

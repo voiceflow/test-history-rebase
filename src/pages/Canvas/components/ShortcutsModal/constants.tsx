@@ -109,11 +109,11 @@ export const SHORTCUTS = [
     command: <ShortcutCommand>1</ShortcutCommand>,
   },
   {
-    title: 'Prototype',
+    title: 'Launch',
     command: <ShortcutCommand>2</ShortcutCommand>,
   },
   {
-    title: 'Launch',
-    command: <ShortcutCommand>3</ShortcutCommand>,
+    title: 'Test Mode',
+    command: <ShortcutCommand>T</ShortcutCommand>,
   },
 ];

@@ -1,27 +1,39 @@
 import React from 'react';
 
+import Box from '@/components/Box';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import TippyTooltip from '@/components/TippyTooltip';
+import { useEnableDisable } from '@/hooks';
+import { AlexaPublishJob, GooglePublishJob, Job } from '@/models';
+import { PublishContext } from '@/pages/Skill/contexts';
 
-type LoadingButtonProps = {
-  progress: number;
-  tooltipOpen: boolean;
+export type LoadingButtonProps = {
+  openTooltip: boolean;
 };
 
-const LoadingButton: React.FC<LoadingButtonProps> = ({ progress, tooltipOpen }) => {
+const LoadingButton: React.FC<LoadingButtonProps> = ({ openTooltip = false }) => {
+  const [open, onEnable, onDisable] = useEnableDisable(false);
+
+  const publish = React.useContext(PublishContext)!;
+
+  // for type identification
+  const job = publish.job as Job<AlexaPublishJob.ProgressStage | GooglePublishJob.ProgressStage>;
+
   return (
     <TippyTooltip
-      open={tooltipOpen}
+      open={open && openTooltip}
       html={
         <div>
-          Uploading:<span style={{ color: 'rgba(255, 255, 255, 0.59)', marginLeft: '7px' }}>{progress || 0}%</span>
+          Uploading:<span style={{ color: 'rgba(255, 255, 255, 0.59)', marginLeft: '7px' }}>{job?.stage.data.progress || 0}%</span>
         </div>
       }
       position="bottom"
     >
-      <IconButton iconProps={{ spin: true }} preventFocusStyle variant={IconButtonVariant.ACTION} icon="loader" large active={false} />
+      <Box onMouseEnter={onEnable} onMouseLeave={onDisable}>
+        <IconButton iconProps={{ spin: true }} preventFocusStyle variant={IconButtonVariant.ACTION} icon="loader" large active={false} />
+      </Box>
     </TippyTooltip>
   );
 };
 
-export default LoadingButton;
+export default React.memo(LoadingButton);

@@ -57,7 +57,9 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const isPrototypingMode = usePrototypingMode();
 
-  const prototypeTestEnabled = useFeature(FeatureFlag.PROTOTYPE_TEST).isEnabled;
+  const prototypeTest = useFeature(FeatureFlag.PROTOTYPE_TEST);
+  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
+  const newPrototypeHeader = prototypeTest.isEnabled || headerRedesign.isEnabled;
 
   const idleTimer = React.useRef<IdleTimer>(null);
 
@@ -96,15 +98,15 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
         <ExportProvider>
           <Page
             header={
-              (!prototypeTestEnabled || (prototypeTestEnabled && !isPrototypingMode)) && (
+              (!newPrototypeHeader || (newPrototypeHeader && !isPrototypingMode)) && (
                 <ProjectTitle title={activeSkill.name} onChange={saveProjectName} />
               )
             }
-            subHeader={(!prototypeTestEnabled || !isPrototypingMode) && <SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
+            subHeader={(!newPrototypeHeader || !isPrototypingMode) && <SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
             canScroll={false}
             headerChildren={<CanvasHeader />}
             onNavigateBack={() => {
-              if (!prototypeTestEnabled) {
+              if (!newPrototypeHeader) {
                 goToDashboard();
               } else if (isPrototypingMode) {
                 goToCanvas(versionID, diagramID);
@@ -112,7 +114,7 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
                 goToDashboard();
               }
             }}
-            navigateBackText={prototypeTestEnabled && isPrototypingMode ? 'Back' : ''}
+            navigateBackText={newPrototypeHeader && isPrototypingMode ? 'Back' : ''}
           >
             <Switch>
               <PrivateRoute

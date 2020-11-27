@@ -4,11 +4,12 @@ import Button, { ButtonVariant } from '@/components/Button';
 import PlanBubble from '@/components/PlanBubble';
 import RadioGroup from '@/components/RadioGroup';
 import { Link } from '@/components/Text';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ExportFormat, PlanType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { usePermission, useTrackingEvents } from '@/hooks';
+import { useFeature, usePermission, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { stopImmediatePropagation } from '@/utils/dom';
 
@@ -25,9 +26,12 @@ export const EXPORT_OPTIONS = [
 
 export type ExportItemProps = {
   onRedirect: () => void;
+  updateType?: (type: ExportFormat) => void;
 };
 
-const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ onRedirect, isExporting, exportCanvas }) => {
+const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ onRedirect, isExporting, exportCanvas, updateType }) => {
+  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
+
   const [selectedExportType, setSelectedExportType] = React.useState(ExportFormat.PNG);
   const [trackingEvents] = useTrackingEvents();
   const [canExport] = usePermission(Permission.CANVAS_EXPORT);
@@ -50,27 +54,37 @@ const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ onRe
           {!canExport && <PlanBubble plan={PlanType.PRO} />}
         </Header>
 
-        <Description mb={16}>
+        <Description fontSize={13} mb={16}>
           <span>Export your projects content as an image or PDF file </span>
           <Link href="https://docs.voiceflow.com/#/features/sharing-features?id=export-your-canvas-as-pdfpng">Learn More</Link>
         </Description>
 
-        <Description mb={8} fontWeight={600}>
+        <Description fontSize={13} mb={8} fontWeight={600}>
           Content Format
         </Description>
 
-        <RadioGroup isFlat options={EXPORT_OPTIONS} checked={selectedExportType} onChange={setSelectedExportType} />
+        <RadioGroup
+          isFlat
+          options={EXPORT_OPTIONS}
+          checked={selectedExportType}
+          onChange={(type) => {
+            setSelectedExportType(type);
+            updateType?.(type);
+          }}
+        />
       </div>
 
-      <ButtonContainer>
-        {isExporting ? (
-          <LoadingButton iconProps={{ spin: true, size: 20 }} variant={ButtonVariant.SECONDARY} icon="publishSpin" square />
-        ) : (
-          <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(onClick)}>
-            Export
-          </Button>
-        )}
-      </ButtonContainer>
+      {!headerRedesign.isEnabled && (
+        <ButtonContainer>
+          {isExporting ? (
+            <LoadingButton iconProps={{ spin: true, size: 20 }} variant={ButtonVariant.SECONDARY} icon="publishSpin" square />
+          ) : (
+            <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(onClick)}>
+              Export
+            </Button>
+          )}
+        </ButtonContainer>
+      )}
     </MenuItemContainer>
   );
 };

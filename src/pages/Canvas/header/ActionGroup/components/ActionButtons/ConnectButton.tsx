@@ -2,6 +2,7 @@ import React from 'react';
 
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import { Icon } from '@/components/SvgIcon';
+import TippyTooltip from '@/components/TippyTooltip';
 import { PlatformType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -13,20 +14,28 @@ const CONNECT_ICON: Record<PlatformType, Icon | null> = {
   [PlatformType.GENERAL]: null,
 };
 
+const CONNECT_MESSAGE: Record<PlatformType, string> = {
+  [PlatformType.ALEXA]: 'Connect to Alexa',
+  [PlatformType.GOOGLE]: 'Connect to Google',
+  [PlatformType.GENERAL]: '',
+};
+
 type ConnectButtonProps = {
   onClick: () => void;
 };
 
 const ConnectButton: React.FC<ConnectButtonProps & ConnectedConnectButtonProps> = ({ platform, onClick }) => {
   return CONNECT_ICON[platform] ? (
-    <IconButton
-      iconProps={{ color: '#3D82E2' }}
-      preventFocusStyle
-      variant={IconButtonVariant.ACTION}
-      icon={CONNECT_ICON[platform] as Icon}
-      large
-      onClick={onClick}
-    />
+    <TippyTooltip title={CONNECT_MESSAGE[platform]} position="bottom">
+      <IconButton
+        iconProps={{ color: '#3D82E2' }}
+        preventFocusStyle
+        variant={IconButtonVariant.ACTION}
+        icon={CONNECT_ICON[platform] as Icon}
+        large
+        onClick={onClick}
+      />
+    </TippyTooltip>
   ) : null;
 };
 
@@ -34,6 +43,6 @@ const mapStateToProps = {
   platform: Skill.activePlatformSelector,
 };
 
-type ConnectedConnectButtonProps = ConnectedProps<typeof mapStateToProps, {}>;
+type ConnectedConnectButtonProps = ConnectedProps<typeof mapStateToProps>;
 
 export default connect(mapStateToProps)(ConnectButton) as React.FC<ConnectButtonProps>;

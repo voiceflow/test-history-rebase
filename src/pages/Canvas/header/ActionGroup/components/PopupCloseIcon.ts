@@ -8,8 +8,10 @@ const PopupCloseIcon = styled(SvgIcon).attrs({ icon: 'close', size: 12 })`
   color: #becedc;
 
   & :hover {
-    color: #6e849a;
+    color: #8da2b5;
   }
+
+  transition: color 0.15s ease;
 `;
 
 export default PopupCloseIcon;

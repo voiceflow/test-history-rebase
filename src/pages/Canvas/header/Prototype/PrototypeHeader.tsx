@@ -9,7 +9,6 @@ import { useFeature } from '@/hooks';
 import { ResourcesHeaderButton, SubHeaderItem } from '@/pages/Dashboard/Header/components';
 
 import { CanvasSettingsButton, GroupContainer, ShareProject, UploadProjectButton } from '../ActionGroup/components';
-import SharePrototypeButton from '../ActionGroup/components/SharePrototypeButton';
 import PrototypeTimer from './PrototypeTimer';
 import { SeparatorDot } from './styled';
 
@@ -20,6 +19,9 @@ const TimerContainer = styled(FlexCenter)`
 
 function PrototypeHeader({ status }: { status: PrototypeStatus }) {
   const prototypeTest = useFeature(FeatureFlag.PROTOTYPE_TEST);
+  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
+  const newPrototypeHeader = prototypeTest.isEnabled || headerRedesign.isEnabled;
+
   return (
     <Flex style={{ height: '100%', minHeight: '100%' }}>
       <TimerContainer>
@@ -30,8 +32,8 @@ function PrototypeHeader({ status }: { status: PrototypeStatus }) {
         )}
         <PrototypeTimer />
       </TimerContainer>
-      {prototypeTest.isEnabled ? (
-        <SharePrototypeButton />
+      {newPrototypeHeader ? (
+        <ShareProject render />
       ) : (
         <>
           <GroupContainer>

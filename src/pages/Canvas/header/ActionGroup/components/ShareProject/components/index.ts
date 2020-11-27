@@ -1,6 +1,8 @@
 export { default as MenuItemContainer } from './MenuItemContainer';
 export { default as MenuContainer } from './MenuContainer';
 export { default as MenuItem } from './MenuItem';
+export { default as MenuItemV2 } from './MenuItemV2';
 export { default as Header } from './Header';
 export { default as Description } from './Description';
 export { default as ExportItem } from './ExportItem';
+export { default as SharePrototype } from './SharePrototype';

@@ -33,7 +33,7 @@ const AmazonLoad = () =>
   });
 
 export const AmazonLoginButton = (props) => {
-  const { onLoad, onFail, onSuccess, linkAmazonAccount } = props;
+  const { onLoad, onFail, onSuccess, disabled = false, linkAmazonAccount } = props;
 
   useEffect(() => {
     AmazonLoad();
@@ -63,7 +63,7 @@ export const AmazonLoginButton = (props) => {
   };
 
   return (
-    <Button variant="primary" className="LoginWithAmazon" onClick={triggerLogin}>
+    <Button variant="primary" className="LoginWithAmazon" onClick={triggerLogin} disabled={disabled}>
       Connect Amazon
     </Button>
   );

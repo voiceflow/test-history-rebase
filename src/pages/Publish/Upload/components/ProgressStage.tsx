@@ -14,10 +14,15 @@ export type ProgressStageProps = {
 };
 
 const ProgressBar = styled.div<ProgressStageProps>`
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
   ${({ progress }) =>
     progress >= 0
       ? css`
-          height: 3px;
+          height: 2px;
           width: ${progress}% !important;
           ${transition()};
         `

@@ -10,7 +10,6 @@ export enum Hotkey {
   LAUNCH_PAGE = 'LAUNCH_PAGE',
   DESIGN_PAGE = 'DESIGN_PAGE',
   USER_SPEECH = 'USER_SPEECH',
-  PROTOTYPE_PAGE = 'PROTOTYPE_PAGE',
   OPEN_CMS_MODAL = 'OPEN_CMS_MODAL',
   OPEN_FLOW_MENU = 'OPEN_FLOW_MENU',
   OPEN_BLOCK_MENU = 'OPEN_BLOCK_MENU',
@@ -28,6 +27,7 @@ export enum Hotkey {
   SHOW_HIDE_UI = 'SHOW_HIDE_UI',
   MOVE_FORWARD = 'MOVE_FORWARD',
   MOVE_BACKWARD = 'MOVE_BACKWARD',
+  TEST_MODE = 'TEST_MODE',
 }
 
 /**
@@ -50,8 +50,7 @@ const HOTKEY_MAPPING = {
   [Hotkey.OPEN_VARIABLE_MENU]: 'shift+3',
   [Hotkey.OPEN_RESOURCES_DROPDOWN]: 'i',
   [Hotkey.DESIGN_PAGE]: '1',
-  [Hotkey.PROTOTYPE_PAGE]: '2',
-  [Hotkey.LAUNCH_PAGE]: '3',
+  [Hotkey.LAUNCH_PAGE]: '2',
   [Hotkey.TOGGLE_LEFT_SIDEBAR_LOCK]: ['/', '?'],
   [Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB]: ['shift+,', ','],
   [Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB]: ['shift+.', '.'],
@@ -64,6 +63,7 @@ const HOTKEY_MAPPING = {
   [Hotkey.SHOW_HIDE_UI]: ['ctrl+\\', 'meta+\\'],
   [Hotkey.MOVE_FORWARD]: ['right'],
   [Hotkey.MOVE_BACKWARD]: ['left'],
+  [Hotkey.TEST_MODE]: 't',
 };
 
 export default HOTKEY_MAPPING;

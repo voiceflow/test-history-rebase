@@ -33,6 +33,7 @@ import {
 import ImportModal from '@/pages/Dashboard/components/ImportModal';
 import BillingModal from '@/pages/Payment/BillingModal';
 import PaymentModal from '@/pages/Payment/PaymentModal';
+import LoginModal from '@/pages/Publish/Upload/common/LoginModal';
 import { compose } from '@/utils/functional';
 
 import Routes from './Routes';
@@ -68,6 +69,7 @@ const App = () => {
       <BillingModal />
       <PaymentModal />
       <RefreshModal />
+      <LoginModal />
     </>
   );
 };

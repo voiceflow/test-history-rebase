@@ -27,7 +27,11 @@ const activeStyle = css`
 const Container = styled(ButtonContainer)<ContainerProps>`
   border: 0;
   background-color: #fff;
+  position: relative;
+  background-size: cover;
+
   border: 1px solid transparent;
+  z-index: 1;
   ${transition('box-shadow', 'color')}
 
   height: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
@@ -64,6 +68,33 @@ const Container = styled(ButtonContainer)<ContainerProps>`
   }
 
   ${({ active }) => active && activeStyle}
+
+  ${({ variant }) =>
+    (variant === IconButtonVariant.SUCCESS || variant === IconButtonVariant.ACTION) &&
+    css`
+      &::before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        opacity: 0;
+        border-radius: 50%;
+        background: linear-gradient(180deg, rgba(93, 157, 245, 0.04) 0%, rgba(44, 133, 255, 0.12) 100%);
+        -webkit-transition: opacity 0.12s linear, -webkit-box-shadow 0.12s linear;
+        transition: opacity 0.12s linear, -webkit-box-shadow 0.12s linear;
+      }
+      &:hover::before {
+        opacity: 1;
+      }
+
+      &:active::before {
+        opacity: 1;
+        box-shadow: inset 0 0 0 1px #fff;
+      }
+    `}
 `;
 
 export default Container;

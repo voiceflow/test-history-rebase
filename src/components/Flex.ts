@@ -39,9 +39,18 @@ export const FlexCenter = styled.div`
   ${flexCenterStyles}
 `;
 
+export const flexStartStyles = css`
+  ${flexStyles}
+  justify-content: flex-start;
+`;
+
 export const flexEndStyles = css`
   ${flexStyles}
   justify-content: flex-end;
+`;
+
+export const FlexStart = styled.div`
+  ${flexStartStyles}
 `;
 
 export const FlexEnd = styled.div`

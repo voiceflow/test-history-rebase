@@ -6,6 +6,7 @@ const MenuContainer = styled(Menu)`
   max-width: 456px;
   width: 456px;
   max-height: 500px;
+  padding-bottom: 0;
 `;
 
 export default MenuContainer;

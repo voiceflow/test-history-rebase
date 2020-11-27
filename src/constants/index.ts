@@ -376,6 +376,8 @@ export enum ModalType {
 
   LOADING = 'loading',
   REFRESH = 'refresh',
+
+  CONNECT = 'connect',
 }
 
 export enum UserRole {

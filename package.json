@@ -273,7 +273,7 @@
     "sinon": "^9.1.0",
     "sinon-chai": "^3.5.0",
     "style-loader": "1.2.1",
-    "stylelint": "^13.7.2",
+    "stylelint": "^13.8.0",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-declaration-block-no-ignored-properties": "^2.3.0",

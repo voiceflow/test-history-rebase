@@ -749,7 +749,7 @@ export const PLATFORM_SSML_META = {
   },
   [PlatformType.GENERAL]: {
     // eslint-disable-next-line lodash/prefer-constant
-    fallbackPlaceholder: () => "What should 'the assistant' say?",
+    fallbackPlaceholder: () => 'What should the assistant say?',
     canChangeVoice: false,
     platformTags: ALEXA_DEFAULT_TAGS,
     addOptions: ALEXA_ADD_OPTIONS,

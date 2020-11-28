@@ -37,7 +37,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, p
   const placeholder = getPlatformValue(platform, {
     [PlatformType.ALEXA]: 'What will Alexa say?',
     [PlatformType.GOOGLE]: 'What will Google say?',
-    [PlatformType.GENERAL]: "What will 'the assistant' say?",
+    [PlatformType.GENERAL]: 'What will the assistant say?',
   });
 
   const itemProps = { placeholder };

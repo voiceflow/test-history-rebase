@@ -2,7 +2,7 @@ import { FlexCenter } from '@/components/Flex';
 import { css, styled } from '@/hocs';
 import { ANIMATION_SPEED } from '@/styles/theme';
 
-const UpdateBubble = styled(FlexCenter)`
+const UpdateBubble = styled(FlexCenter)<{ expand?: boolean }>`
   position: absolute;
   top: -2px;
   right: -1px;
@@ -23,7 +23,7 @@ const UpdateBubble = styled(FlexCenter)`
   }
 
   ${({ expand }) =>
-    expand &&
+    !!expand &&
     css`
       top: 2px;
       right: 2px;

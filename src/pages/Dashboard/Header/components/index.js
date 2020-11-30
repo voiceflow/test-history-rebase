@@ -3,11 +3,11 @@ import { styled } from '@/hocs';
 
 export { default as AddCollaborators } from './AddCollaborators';
 export { default as ButtonSquare } from './ButtonSquare';
-export { default as Numbered } from './Numbered';
-export { default as UpdateBubble } from './UpdateBubble';
 export { default as WorkspacesDropdown } from './WorkspacesDropdown';
 export { default as ResourcesHeaderButton } from './ResourcesHeaderButton';
 export { default as ImportButton } from './ImportButton';
+export { default as NotificationsButton } from './NotificationsButton';
+export { default as SettingsButton } from './SettingsButton';
 
 export const NavChildItem = styled.div`
   padding-left: 20px;

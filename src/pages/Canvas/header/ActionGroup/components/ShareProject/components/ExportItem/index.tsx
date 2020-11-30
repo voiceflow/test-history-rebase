@@ -56,7 +56,7 @@ const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ onRe
         </Header>
 
         <Description fontSize={13} mb={16}>
-          <span>Export your projects content as an image or PDF file </span>
+          <span>Export your project as a PNG, PDF or local file. </span>
           <Link href="https://docs.voiceflow.com/#/features/sharing-features?id=export-your-canvas-as-pdfpng">Learn More</Link>
         </Description>
 

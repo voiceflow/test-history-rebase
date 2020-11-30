@@ -42,8 +42,9 @@ export type CreateProjectParams = {
   listID?: string;
 };
 
-export const importProject = (workspaceID: string, data: string): Thunk => async () => {
-  await client.api.version.import(workspaceID, JSON.parse(data));
+export const importProject = (workspaceID: string, data: string): Thunk<Project> => async () => {
+  const project = await client.api.version.import(workspaceID, JSON.parse(data));
+  return projectAdapter.fromDB(project);
 };
 
 export const createProject = ({ platform, name, largeIcon, listID }: Partial<CreateProjectParams>, templateTag?: string): Thunk<Project> => async (

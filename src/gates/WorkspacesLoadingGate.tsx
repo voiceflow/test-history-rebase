@@ -33,13 +33,13 @@ class WorkspacesLoadingGate extends Component<WorkspacesLoadingGateProps & Conne
   }
 
   async showInviteModal() {
-    const { history, location, setModal, validateInvite, trackInvitationAccepted } = this.props;
+    const { history, location, setModal, acceptInvite, trackInvitationAccepted } = this.props;
 
     if (location.search) {
       const query = Query.parse(location.search);
 
       if (query.invite) {
-        const newWorkspaceID = await validateInvite(query.invite);
+        const newWorkspaceID = await acceptInvite(query.invite);
         const inviteSource = query.email ? 'email' : 'link';
 
         if (!newWorkspaceID) return;
@@ -129,7 +129,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   fetchWorkspaces: Workspace.fetchWorkspaces,
   updateCurrentWorkspace: Workspace.updateCurrentWorkspace,
-  validateInvite: Workspace.validateInvite,
+  acceptInvite: Workspace.acceptInvite,
   setModal: Modal.setModal,
   trackInvitationAccepted: Tracking.trackInvitationAccepted,
 };

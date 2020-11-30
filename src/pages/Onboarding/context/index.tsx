@@ -90,7 +90,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   sendInvite,
   fetchWorkspaces,
   firstLogin,
-  validateInvite,
+  acceptInvite,
   workspaces,
   isLoginFlow, // This boolean represents if the user hits the onboarding flow from a link/new signup, or from the dashboard 'create workspace' button
   createProject,
@@ -225,7 +225,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   };
 
   const finishJoiningWorkspace = async () => {
-    const newWorkspaceID = await validateInvite(query.invite || '');
+    const newWorkspaceID = await acceptInvite(query.invite || '');
     const inviteSource = query.email ? 'email' : 'link';
 
     if (!newWorkspaceID) {
@@ -461,7 +461,7 @@ const mapDispatchToProps = {
   createWorkspace: Workspace.createWorkspace,
   sendInvite: Workspace.sendInvite,
   goToCanvas: Router.goToCanvas,
-  validateInvite: Workspace.validateInvite,
+  acceptInvite: Workspace.acceptInvite,
   goToDashboard: Router.goToDashboard,
   goToDashboardWithSearch: Router.goToDashboardWithSearch,
   updateCurrentWorkspace: Workspace.updateCurrentWorkspace,

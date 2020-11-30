@@ -164,14 +164,22 @@ export const updateWorkspaceImage = (url: string): Thunk => async (dispatch, get
   }
 };
 
-export const validateInvite = (invite: string): Thunk<string | null> => async (dispatch) => {
+export const acceptInvite = (invite: string): Thunk<string | null> => async (dispatch) => {
   try {
-    const workspaceID = await client.workspace.validateInvite(invite);
+    const workspaceID = await client.workspace.acceptInvite(invite);
     dispatch(updateCurrentWorkspace(workspaceID));
     return workspaceID;
   } catch (err) {
     dispatch(Modal.setError(extractErrorFromResponseData(err, 'Invite Invalid')));
     return null;
+  }
+};
+
+export const validateInvite = (invite: string): Thunk<boolean> => async () => {
+  try {
+    return await client.workspace.validateInvite(invite);
+  } catch {
+    return false;
   }
 };
 

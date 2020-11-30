@@ -6,7 +6,7 @@ import client from '@/client';
 import { facebookLogin, googleLogin } from '@/ducks/session';
 
 import { LoginForm } from '../LoginForm';
-import { SignupForm } from '../SignupForm';
+import { PublicSignupForm } from '../PublicSignupForm';
 
 const TEST_EMAIL = 'tests@getvoiceflow.com';
 
@@ -38,7 +38,7 @@ describe('Onboarding', () => {
   const formWrapperClass = '.auth-form-wrapper';
 
   it('creates accounts on signup', () => {
-    const app = shallow(<SignupForm location={location} />);
+    const app = shallow(<PublicSignupForm location={location} />);
 
     app.find(`${formWrapperClass} Input[name="name"]`).simulate('change', { target: { value: 'Voiceflow Tester' } });
     app.find(`${formWrapperClass} Input[name="email"]`).simulate('change', { target: { value: TEST_EMAIL } });
@@ -51,7 +51,7 @@ describe('Onboarding', () => {
   });
 
   it('disallows duplicate accounts', () => {
-    const app = shallow(<SignupForm location={location} />);
+    const app = shallow(<PublicSignupForm location={location} />);
 
     app.find(`${formWrapperClass} Input[name="name"]`).simulate('change', { target: { value: 'Voiceflow Tester' } });
     app.find(`${formWrapperClass} Input[name="email"]`).simulate('change', { target: { value: TEST_EMAIL } });

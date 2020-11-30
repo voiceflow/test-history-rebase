@@ -22,6 +22,7 @@ import MenuItemContainer from '../MenuItemContainer';
 export const EXPORT_OPTIONS = [
   { id: ExportFormat.PNG, label: 'Image' },
   { id: ExportFormat.PDF, label: 'PDF' },
+  { id: ExportFormat.VF, label: 'Local File (.vf)' },
 ];
 
 export type ExportItemProps = {

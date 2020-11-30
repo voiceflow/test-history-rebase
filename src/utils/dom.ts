@@ -231,6 +231,44 @@ export enum DataTypes {
   JSON = 'text/json;charset=utf-8',
 }
 
+export const readFileAsync = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (_.isString(reader.result)) {
+        resolve(reader.result);
+      } else {
+        reject();
+      }
+    };
+
+    reader.onerror = reject;
+
+    reader.readAsText(file);
+  });
+
+export const upload = (onChange: (files: FileList) => void, options: { accept?: string; multiple?: boolean } = {}) => {
+  const element = document.createElement('input');
+  element.setAttribute('type', 'file');
+  element.setAttribute('multiple', `${!!options.multiple}`);
+
+  if (options.accept) {
+    element.setAttribute('accept', options.accept);
+  }
+
+  element.style.display = 'none';
+  element.addEventListener('change', () => {
+    if (element.files?.length) onChange(element.files);
+  });
+
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+};
+
 export const download = (filename: string, text: string, data = DataTypes.TEXT) => {
   const element = document.createElement('a');
   element.setAttribute('href', `data:${data},${encodeURIComponent(text)}`);

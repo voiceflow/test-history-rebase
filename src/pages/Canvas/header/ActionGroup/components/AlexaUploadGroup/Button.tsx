@@ -1,15 +1,11 @@
 import React from 'react';
 
-import Box from '@/components/Box';
 import Checkbox from '@/components/Checkbox';
 import DropdownButton from '@/components/DropdownButton';
 import Menu, { MenuItem } from '@/components/Menu';
-import TippyTooltip from '@/components/TippyTooltip';
-import { Permission } from '@/config/permissions';
 import * as Account from '@/ducks/account';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { usePermission } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
@@ -26,8 +22,6 @@ type ButtonProps = {
 };
 
 const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorID, amazon, onClick, isActive, label, updateSelectedVendor }) => {
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-
   // show dropdown list for vendors
   const showVendors = vendors.length > 1 && !isActive;
 
@@ -35,15 +29,14 @@ const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorI
 
   const buttonLabel = label || (needsLogin ? 'Connect to Alexa' : 'Upload to Alexa');
 
-  const buttonIcon = isActive ? 'publishSpin' : 'rocket';
-
   return (
-    <TippyTooltip
-      html={<Box width={180}>Test your Skill on your own Alexa device, or in the Alexa developer console</Box>}
-      position="bottom"
-      disabled={!canEditCanvas}
+    <UploadButton
+      tooltip="Test your Skill on your own Alexa device, or in the Alexa developer console"
+      onClick={onClick}
+      isActive={isActive}
+      label={buttonLabel}
     >
-      {showVendors ? (
+      {showVendors && (
         <AnyDropdownButton
           id={Identifier.UPLOAD}
           menu={
@@ -65,12 +58,8 @@ const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorI
         >
           {buttonLabel}
         </AnyDropdownButton>
-      ) : (
-        <UploadButton icon={buttonIcon} id={Identifier.UPLOAD} isVendors={vendors.length > 1} onClick={onClick} isUploading={isActive}>
-          {buttonLabel}
-        </UploadButton>
       )}
-    </TippyTooltip>
+    </UploadButton>
   );
 };
 

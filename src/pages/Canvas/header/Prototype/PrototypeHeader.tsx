@@ -8,7 +8,7 @@ import { connect, styled } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { ResourcesHeaderButton, SubHeaderItem } from '@/pages/Dashboard/Header/components';
 
-import { CanvasSettingsButton, GroupContainer, ShareProject, UploadProjectButton } from '../ActionGroup/components';
+import { CanvasSettingsButton, GroupContainer, ShareProject, UploadProjectGroup } from '../ActionGroup/components';
 import PrototypeTimer from './PrototypeTimer';
 import { SeparatorDot } from './styled';
 
@@ -45,7 +45,7 @@ function PrototypeHeader({ status }: { status: PrototypeStatus }) {
           <GroupContainer>
             <ShareProject render={false} />
           </GroupContainer>
-          <UploadProjectButton />
+          <UploadProjectGroup />
         </>
       )}
     </Flex>

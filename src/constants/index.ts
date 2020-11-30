@@ -506,6 +506,7 @@ export enum ExportFormat {
   PNG = 'png',
   PDF = 'pdf',
   JSON = 'json',
+  VF = 'vf',
 }
 
 export enum TextAlignment {

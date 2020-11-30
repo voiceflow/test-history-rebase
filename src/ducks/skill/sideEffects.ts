@@ -19,6 +19,7 @@ import * as Slot from '@/ducks/slot';
 import * as Models from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { getAuthCookie, getByName } from '@/utils/cookies';
+import { DataTypes, download } from '@/utils/dom';
 import { isChoiceNode, isFlowNode, isIntentNode, isProductLinkedNode } from '@/utils/node';
 import { arrayStringReplace } from '@/utils/string';
 
@@ -44,6 +45,21 @@ export const exportCanvas = (type: ExportFormat): Thunk => async (dispatch, getS
   const skillID = Skill.activeSkillIDSelector(state);
   const diagramID = Skill.activeDiagramIDSelector(state);
 
+  dispatch(Skill.setExportingCanvas(true));
+
+  if (type === ExportFormat.VF) {
+    const name = Skill.activeNameSelector(state);
+    try {
+      const data = await client.api.version.export(skillID);
+      download(`${name.replace(/ /g, '_')}-${skillID}.vf`, JSON.stringify(data, null, 2), DataTypes.JSON);
+    } catch (error) {
+      console.error(error);
+      toast.error('.VF export failed');
+    }
+    dispatch(Skill.setExportingCanvas(false));
+    return;
+  }
+
   const options = {
     token: getAuthCookie()!,
     canvasURL: `https://${window.location.host}/project/${skillID}/export/${diagramID}`,
@@ -51,8 +67,6 @@ export const exportCanvas = (type: ExportFormat): Thunk => async (dispatch, getS
     persistedTabID: sessionStorage.getItem('persist:session:tab_id')!,
     persistedBrowserID: localStorage.getItem('persist:session:browser_id')!,
   };
-
-  dispatch(Skill.setExportingCanvas(true));
 
   try {
     let result: Blob;

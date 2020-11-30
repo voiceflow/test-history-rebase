@@ -12,7 +12,7 @@ import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
-import { Numbered, ResourcesHeaderButton, SubHeaderItem, UpdateBubble } from '@/pages/Dashboard/Header/components';
+import { ImportButton, Numbered, ResourcesHeaderButton, SubHeaderItem, UpdateBubble } from '@/pages/Dashboard/Header/components';
 import { stopPropagation } from '@/utils/dom';
 
 import UpdatesPopover from '../UpdatesPopover';
@@ -95,6 +95,10 @@ function RightNavSection({ notifications, readNotifications, plan, leaveWorkspac
             />
           )}
         </Dropdown>
+      </SubHeaderItem>
+
+      <SubHeaderItem>
+        <ImportButton />
       </SubHeaderItem>
 
       <SubHeaderItem>

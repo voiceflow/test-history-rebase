@@ -8,7 +8,7 @@ import { useFeature } from '@/hooks';
 import { ResourcesHeaderButton, SubHeaderItem } from '@/pages/Dashboard/Header/components';
 import { useCanvasMode } from '@/pages/Skill/hooks';
 
-import { CanvasSettingsButton, GroupContainer, ShareProject, TestButton, UploadProjectButton } from './components';
+import { CanvasSettingsButton, GroupContainer, ShareProject, TestButton, UploadProjectGroup } from './components';
 
 function ActionGroup(props: { platform: PlatformType }) {
   const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
@@ -26,10 +26,10 @@ function ActionGroup(props: { platform: PlatformType }) {
       {headerRedesign.isEnabled && isCanvasMode ? (
         <>
           {props.platform === PlatformType.GENERAL ? (
-            <UploadProjectButton />
+            <UploadProjectGroup />
           ) : (
             <GroupContainer>
-              <UploadProjectButton />
+              <UploadProjectGroup />
             </GroupContainer>
           )}
           <GroupContainer>
@@ -43,7 +43,7 @@ function ActionGroup(props: { platform: PlatformType }) {
             <ShareProject render />
           </GroupContainer>
 
-          <UploadProjectButton />
+          <UploadProjectGroup />
         </>
       )}
     </>

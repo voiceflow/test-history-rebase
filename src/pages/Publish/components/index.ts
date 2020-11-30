@@ -9,6 +9,7 @@ export const SectionBox = styled(Flex)`
 `;
 
 export const ContentContainer = styled(Flex)`
+  flex-direction: column;
   padding: 50px;
 `;
 
@@ -29,11 +30,8 @@ export const SectionTitle = styled.div`
 `;
 
 export const ContentSection = styled(FlexCenter)`
-  flex: 4;
-`;
-
-export const SpacingSection = styled.div`
-  flex: 1;
+  margin-right: 20%;
+  margin-bottom: 40px;
 `;
 
 export const PlatformText = styled.span`

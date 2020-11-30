@@ -5,12 +5,12 @@ import client from '@/client';
 import projectAdapter from '@/client/adapters/project';
 import { toast } from '@/components/Toast';
 import { PlatformType } from '@/constants';
+import { removeProject, replaceProjects, updateProject } from '@/ducks/project/actions';
 import { addProjectToList } from '@/ducks/projectList/actions';
 import { activeWorkspaceIDSelector } from '@/ducks/workspace/selectors';
 import { Project } from '@/models';
 import { Thunk } from '@/store/types';
 
-import { removeProject, replaceProjects, updateProject } from './actions';
 import { projectByIDSelector } from './selectors';
 
 // side effects
@@ -40,6 +40,10 @@ export type CreateProjectParams = {
   name: string;
   largeIcon: string;
   listID?: string;
+};
+
+export const importProject = (workspaceID: string, data: string): Thunk => async () => {
+  await client.api.version.import(workspaceID, JSON.parse(data));
 };
 
 export const createProject = ({ platform, name, largeIcon, listID }: Partial<CreateProjectParams>, templateTag?: string): Thunk<Project> => async (

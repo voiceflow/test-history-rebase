@@ -53,7 +53,9 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, curren
   const fetchBackups = React.useCallback(async () => {
     try {
       // legacy backup system, requires design and refactor
-      const dbVersions = (await client.api.project.getVersions(projectID)).filter((version) => version.platformData.status?.stage !== 'LIVE');
+      const dbVersions = (await client.api.project.getVersions(projectID)).filter(
+        (version) => (version.platformData as any).status?.stage !== 'LIVE'
+      );
       setVersions(
         dbVersions.map((version) => ({
           versionID: version._id,

@@ -8,7 +8,7 @@ import { FullSkill } from '@/models';
 import settingsAdapter from './settings';
 
 const generalVersionAdapter = createAdapter<Version<GeneralVersionData<Voice>>, FullSkill<string>>(
-  ({ name, _id, creatorID, projectID, rootDiagramID, variables, platformData: { settings, publishing } }) => ({
+  ({ name, _id, creatorID, projectID, rootDiagramID, variables, platformData: { settings } }) => ({
     id: _id,
     name,
     creatorID,
@@ -16,7 +16,7 @@ const generalVersionAdapter = createAdapter<Version<GeneralVersionData<Voice>>, 
     rootDiagramID,
     diagramID: rootDiagramID,
     platform: PlatformType.GENERAL,
-    locales: (publishing?.locales || ['en-US']) as any,
+    locales: ['en-US'] as any,
     globalVariables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
     publishInfo: {
       [PlatformType.ALEXA]: {

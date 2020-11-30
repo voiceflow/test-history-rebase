@@ -55,6 +55,7 @@ export { default as downloads } from './downloads.svg';
 export { default as docs } from './docs.svg';
 export { default as divide } from './divide.svg';
 export { default as developer } from './developer.svg';
+export { default as download } from './download.svg';
 
 // e
 export { default as equals } from './equals.svg';

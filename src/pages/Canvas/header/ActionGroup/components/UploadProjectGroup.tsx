@@ -3,16 +3,16 @@ import React from 'react';
 import { PlatformType } from '@/constants';
 import { createPlatformComponent } from '@/utils/platform';
 
-import AlexaUploadButton from './AlexaUploadButton';
-import GoogleUploadButton from './GoogleUploadButton';
+import AlexaUploadGroup from './AlexaUploadGroup';
+import GoogleUploadGroup from './GoogleUploadGroup';
 
-const UploadButton = createPlatformComponent('UploadButton', {
+const UploadGroup = createPlatformComponent('UploadGroup', {
   // eslint-disable-next-line react/display-name
-  [PlatformType.ALEXA]: () => <AlexaUploadButton />,
+  [PlatformType.ALEXA]: () => <AlexaUploadGroup />,
   // eslint-disable-next-line react/display-name
-  [PlatformType.GOOGLE]: () => <GoogleUploadButton />,
+  [PlatformType.GOOGLE]: () => <GoogleUploadGroup />,
   // eslint-disable-next-line lodash/prefer-constant
   [PlatformType.GENERAL]: () => null,
 });
 
-export default UploadButton;
+export default UploadGroup;

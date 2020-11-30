@@ -7,6 +7,7 @@ export { default as Numbered } from './Numbered';
 export { default as UpdateBubble } from './UpdateBubble';
 export { default as WorkspacesDropdown } from './WorkspacesDropdown';
 export { default as ResourcesHeaderButton } from './ResourcesHeaderButton';
+export { default as ImportButton } from './ImportButton';
 
 export const NavChildItem = styled.div`
   padding-left: 20px;

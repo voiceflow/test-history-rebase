@@ -33,7 +33,7 @@ export type ConnectBaseModalProps = {
 };
 
 const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseModalProps> = ({ modalType, platform, helpLink, className }) => {
-  const { close: closeConnectModal, data } = useModals(modalType as ModalType);
+  const { close: closeConnectModal, data, isOpened } = useModals(modalType as ModalType);
   const { stage, updateCurrentStage } = data as any;
   const [state, api] = useSmartReducerV2({
     error: false,
@@ -62,6 +62,20 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
 
     updateCurrentStage(account);
   };
+
+  const reset = () => {
+    api.update({
+      error: false,
+      loading: false,
+    });
+  };
+
+  // this handles the edge case where modal is closed without authentication is completed
+  React.useEffect(() => {
+    if (!isOpened) {
+      reset();
+    }
+  }, [isOpened]);
 
   if (stage === AlexaStageType.IDLE || stage === GoogleStageType.IDLE) {
     return (

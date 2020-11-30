@@ -1,3 +1,4 @@
+import { IS_PRIVATE_CLOUD } from '@/config';
 import { BillingPeriod, PlanType, PromoType, UserRole } from '@/constants';
 import { Query } from '@/models';
 
@@ -77,7 +78,7 @@ export const getNumberOfSteps = (specificFlowType: SpecificFlowType, hasPresetSe
     case SpecificFlowType.login_creator_existing:
       return hasPresetSeats ? 1 : 2;
     case SpecificFlowType.create_workspace:
-      return !hasWorkspaces ? 2 : 3;
+      return !hasWorkspaces || IS_PRIVATE_CLOUD ? 2 : 3;
     case SpecificFlowType.login_student_new:
     case SpecificFlowType.login_creator_new:
       return 5;

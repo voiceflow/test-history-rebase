@@ -105,6 +105,10 @@ export const isViewerOrLibraryRoleSelector = createSelector(
 
 export const hasTemplateWorkspaceSelector = createSelector([allWorkspacesSelector], (workspaces) => workspaces.some(({ templates }) => templates));
 
+export const isAdminOfAnyWorkspaceSelector = createSelector([allWorkspacesSelector, userIDSelector], (workspaces, userId) =>
+  workspaces.some(({ members }) => members.some(({ creator_id, role }) => userId === creator_id && role === UserRole.ADMIN))
+);
+
 export const workspaceByProjectIDSelector = createSelector([allWorkspacesSelector, activeProjectIDSelector], (workspaces, projectID) => {
   return workspaces.find(({ boards }) => {
     return boards.find(({ projects }) => projects.includes(projectID));

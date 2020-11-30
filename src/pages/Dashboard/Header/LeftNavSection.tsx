@@ -5,6 +5,7 @@ import { FlexApart } from '@/components/Flex';
 import Menu, { MenuItem } from '@/components/Menu';
 import PlanBubble from '@/components/PlanBubble';
 import SvgIcon from '@/components/SvgIcon';
+import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -28,9 +29,12 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
   isTemplateWorkspace,
   loadingProjects,
   goToWorkspace,
+  isAdminOfAnyWorkspace,
   goTo,
   plan,
 }) => {
+  const showCreateWorkspaceButton = !IS_PRIVATE_CLOUD || isAdminOfAnyWorkspace;
+
   return (
     <>
       <Dropdown
@@ -48,11 +52,14 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
                   </MenuItem>
                 );
               })}
-
-              <MenuItem divider />
-              <MenuItem onClick={() => goTo('workspace/new')} bottomAction id="createWorkspace">
-                Create New Workspace
-              </MenuItem>
+              {showCreateWorkspaceButton && (
+                <>
+                  <MenuItem divider />
+                  <MenuItem onClick={() => goTo('workspace/new')} bottomAction id="createWorkspace">
+                    Create New Workspace
+                  </MenuItem>
+                </>
+              )}
             </>
           </Menu>
         }
@@ -79,6 +86,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
 const mapStateToProps = {
   plan: Workspace.planTypeSelector,
   isTemplateWorkspace: Workspace.isTemplateWorkspaceSelector,
+  isAdminOfAnyWorkspace: Workspace.isAdminOfAnyWorkspaceSelector,
 };
 
 const mapDispatchToProps = {

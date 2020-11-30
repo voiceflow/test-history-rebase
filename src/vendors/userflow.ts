@@ -13,10 +13,10 @@ export const initialize = () => {
   userflow.init(USERFLOW_TOKEN);
 };
 
-export const identify = async (user: Account) => {
+export const identify = async (externalID: string, user: Omit<Account, 'creator_id'>) => {
   if (!USERFLOW_ENABLED) return;
 
-  await userflow.identify(String(user.creator_id), {
+  await userflow.identify(externalID, {
     name: user.name,
     email: user.email,
     signed_up_at: user.created,

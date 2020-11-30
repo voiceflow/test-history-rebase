@@ -63,7 +63,7 @@ export const ENV = {
   INTERCOM_ENABLED: intercom && 'true',
   USERFLOW_ENABLED: userflow && 'true',
 
-  PRIVATE_CLOUD_NAME: privateCloud || '',
+  CLOUD_ENV: privateCloud || '',
 
   // feature flags
   FF_GADGETS: ff_gadgets && 'true',

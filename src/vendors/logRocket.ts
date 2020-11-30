@@ -13,10 +13,10 @@ export function initialize(callback: (sessionURL: string) => void) {
   LogRocket.getSessionURL(callback);
 }
 
-export function identify(user: Account) {
+export function identify(id: string, user: Omit<Account, 'creator_id'>) {
   if (!LOGROCKET_ENABLED) return;
 
-  LogRocket.identify(String(user.creator_id), {
+  LogRocket.identify(id, {
     email: user.email,
     name: user.name,
   });

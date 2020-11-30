@@ -16,7 +16,7 @@ declare global {
     VF_OVERRIDE_API_HOST?: string; // API_HOST URL
     VF_OVERRIDE_CANVAS_EXPORT_ENDPOINT?: string; // CANVAS_ENDPOINT URL
     VF_OVERRIDE_APP_ENV?: string; // creator-app runtime environment
-    VF_OVERRIDE_PRIVATE_CLOUD_NAME?: string; // name of private cloud
+    VF_OVERRIDE_CLOUD_ENV?: string; // name of private cloud
     VF_OVERRIDE_GOOGLE_SERVICE_ENDPOINT?: string; // google-service public endpoint
     VF_OVERRIDE_ALEXA_SERVICE_ENDPOINT?: string; // google-service public endpoint
     VF_OVERRIDE_INTERCOM_APP_ID?: string;
@@ -46,8 +46,8 @@ export const IS_TEST = NODE_ENV === 'test';
 export const APP_ENV = window.VF_OVERRIDE_APP_ENV || process.env.APP_ENV!;
 export const IS_PRODUCTION_ENV = APP_ENV === 'production';
 
-export const PRIVATE_CLOUD_NAME = process.env.VF_OVERRIDE_PRIVATE_CLOUD_NAME || process.env.PRIVATE_CLOUD_NAME;
-export const IS_PRIVATE_CLOUD = !!PRIVATE_CLOUD_NAME;
+export const CLOUD_ENV = process.env.VF_OVERRIDE_CLOUD_ENV || process.env.CLOUD_ENV || 'public';
+export const IS_PRIVATE_CLOUD = IS_PRODUCTION && CLOUD_ENV !== 'public';
 
 export const CREATOR_URL = 'creator.voiceflow.com';
 export const LEGACY_URL = 'creator.getvoiceflow.com';

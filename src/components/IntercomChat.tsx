@@ -9,6 +9,7 @@ import * as Workspace from '@/ducks/workspace';
 import { compose, connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { ConnectedProps } from '@/types';
+import { generateID } from '@/utils/env';
 import * as Intercom from '@/vendors/intercom';
 import * as LogRocket from '@/vendors/logRocket';
 
@@ -31,7 +32,7 @@ export const IntercomChat: React.FC<ConnectedIntercomChatProps> = ({ user, works
   React.useEffect(() => {
     if (showIntercom) {
       intercom.boot(Intercom.createProps(user, workspace!));
-      LogRocket.getSessionURL((sessionURL) => intercom.trackEvent('LogRocket', { sessionURL, company_id: workspace!.id }));
+      LogRocket.getSessionURL((sessionURL) => intercom.trackEvent('LogRocket', { sessionURL, company_id: generateID(workspace!.id) }));
 
       isRunning.current = true;
     } else if (isRunning.current) {

@@ -267,7 +267,7 @@ yarn start --userflow
 Some features are disabled when running on a private cloud.
 
 ```sh
-VF_APP_PRIVATE_CLOUD_NAME='myPrivateCloud'
+VF_APP_CLOUD_ENV='myPrivateCloud'
 
 ```
 

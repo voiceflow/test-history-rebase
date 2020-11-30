@@ -14,6 +14,7 @@ import * as Account from '@/ducks/account';
 import * as Models from '@/models';
 import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
+import { generateID } from '@/utils/env';
 import * as Query from '@/utils/query';
 import * as LogRocket from '@/vendors/logRocket';
 import * as Userflow from '@/vendors/userflow';
@@ -177,9 +178,11 @@ export const logout = (): Thunk => async (dispatch, getState) => {
   await dispatch(resetSession());
 };
 
-export const identifyUser = (user: Models.Account): Thunk => async () => {
-  LogRocket.identify(user);
-  await Userflow.identify(user);
+export const identifyUser = ({ creator_id, ...user }: Models.Account): Thunk => async () => {
+  const externalID = generateID(creator_id);
+
+  LogRocket.identify(externalID, user);
+  await Userflow.identify(externalID, user);
 };
 
 export const restoreSession = (): Thunk => async (dispatch, getState) => {

@@ -304,6 +304,8 @@ class TraceController {
       }
     }
     const node = this.props.engine?.getNodeByID(blockID);
+    if (!node) return;
+
     const hasParent = !!node?.parentNode;
 
     if (hasParent) {
@@ -314,7 +316,7 @@ class TraceController {
     const nextStepID = blockID;
     const parentID = node?.parentNode;
 
-    this.saveActivePathLink(nextStepID, previousNodeID!, node!, parentID);
+    this.saveActivePathLink(nextStepID, previousNodeID!, node, parentID);
 
     this.focusNode(nextStepID, parentID);
   }

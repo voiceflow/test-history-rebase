@@ -63,7 +63,7 @@ export function Item(props) {
         },
         {
           value: 'download',
-          label: 'Download Project',
+          label: 'Copy Download Link',
           onClick: onDownload,
         },
         {

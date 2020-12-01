@@ -394,7 +394,7 @@ class TraceController {
     }
 
     if (!this.isPublicPrototype) {
-      this.navigateToFlow(diagramID);
+      await this.navigateToFlow(diagramID);
     }
   }
 

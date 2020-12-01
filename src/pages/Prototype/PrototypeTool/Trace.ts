@@ -14,7 +14,7 @@ import { Interaction, NLCIntent, PMStatus, TMAmazonIntent } from '../types';
 import AudioController from './Audio';
 import MessageController from './Message';
 import TimeoutController from './Timeout';
-import { getUpdatedContextHistory, waitForFlowLoad } from './utils/activePath';
+import { getUpdatedContextHistory } from './utils/activePath';
 import { getNLCIntentSlotsMap, getUtteranceChoices } from './utils/intent';
 
 export enum StepDirection {
@@ -39,7 +39,7 @@ export type TraceControllerProps = {
   activeDiagramID: string;
   contextHistory: Partial<Context>[];
   contextStep: number;
-  getNodeByID: (targetBlockID: string) => void;
+  getNodeByID: (targetBlockID: string) => Node;
   getJoiningLinks: (lhsNodeID: string, rhsNodeID: string) => Link[];
   isPublic?: boolean;
 };
@@ -59,8 +59,7 @@ type StreamState = {
 
 const findLastBlockTrace = (trace: Trace[]) => [...trace].reverse().find((traceFrame) => traceFrame.type === TraceType.BLOCK);
 
-const ENTER_FLOW_TIME = 800;
-const WAIT_FOR_ENGINE_TIME = 200;
+const WAIT_ENTITY_TIME = 200;
 const MIN_FOCUSED_NODE_TIME = 500;
 
 class TraceController {
@@ -168,10 +167,9 @@ class TraceController {
 
     this.resetInteractions();
 
-    if (targetDiagramID && this.props.activeDiagramID !== targetDiagramID) {
-      // TO DO, check it on same flow, if yes, dont run this
-      this.props.enterFlow?.(targetDiagramID);
-      await this.timeout.set(ENTER_FLOW_TIME);
+    if (targetDiagramID && this.props.activeDiagramID !== targetDiagramID && this.props.enterFlow) {
+      this.props.enterFlow(targetDiagramID);
+      await this.waitDiagram(targetDiagramID);
     }
 
     const activePathBlockIDsSnapshot = contextHistory[newContextStepNumber]?.activePathBlockIDs || [];
@@ -190,7 +188,7 @@ class TraceController {
     const targetBlockID = targetBlockTraceFrame.payload?.blockID;
 
     // wait for the block to render (to account for switching between flows)
-    await waitForFlowLoad(targetBlockID, this.props.getNodeByID);
+    await this.waitNode(targetBlockID);
     await this.processTrace([targetBlockTraceFrame, targetStepTrace]);
     this.props.updatePrototype({ context: targetContext as Context });
 
@@ -223,6 +221,11 @@ class TraceController {
     this.trace = tailTrace;
 
     this.props.updateStatus(PMStatus.NAVIGATING);
+
+    if (!this.isPublicPrototype) {
+      await this.waitEngineAndNodes();
+    }
+
     switch (topTrace.type) {
       case TraceType.CHOICE: {
         this.processChoiceTrace(topTrace);
@@ -297,14 +300,11 @@ class TraceController {
   }
 
   private async highlightBlock({ payload: { blockID } }: BlockTrace) {
-    if (!this.isPublicPrototype) {
-      while (!this.props.engine) {
-        // eslint-disable-next-line no-await-in-loop
-        await this.timeout.set(WAIT_FOR_ENGINE_TIME);
-      }
-    }
     const node = this.props.engine?.getNodeByID(blockID);
-    if (!node) return;
+
+    if (!node) {
+      return;
+    }
 
     const hasParent = !!node?.parentNode;
 
@@ -345,6 +345,7 @@ class TraceController {
     if (token !== this.streamState.token) {
       this.streamState = { src, token, offset: 0 };
     }
+
     const muted = this.props.engine?.getPrototypeMuted();
 
     try {
@@ -402,13 +403,16 @@ class TraceController {
 
   private async navigateToFlow(diagramID: string) {
     this.props.enterFlow(diagramID);
-    await this.timeout.set(ENTER_FLOW_TIME);
 
     const currentFlowStack = this.props.flowIDHistory;
     const flowAlreadyInHistory = currentFlowStack.includes(diagramID);
+
     if (!flowAlreadyInHistory) {
       this.props.updatePrototype({ flowIDHistory: [...currentFlowStack, diagramID] });
     }
+
+    await this.waitDiagram(diagramID);
+    await this.waitEngineAndNodes();
 
     // Highlight the start block when entering a flow
     const startNode = Array.from(this.props.engine!.nodes).find((data) => data[1].type === BlockType.START);
@@ -489,6 +493,27 @@ class TraceController {
 
     if (parentID) {
       this.props.engine?.node.center(parentID);
+    }
+  }
+
+  private async waitNode(nodeID: string) {
+    while (nodeID && !this.props.getNodeByID(nodeID)) {
+      // eslint-disable-next-line no-await-in-loop
+      await this.timeout.set(WAIT_ENTITY_TIME);
+    }
+  }
+
+  private async waitDiagram(diagramID: string) {
+    while (this.props.activeDiagramID !== diagramID) {
+      // eslint-disable-next-line no-await-in-loop
+      await this.timeout.set(WAIT_ENTITY_TIME);
+    }
+  }
+
+  private async waitEngineAndNodes() {
+    while (!this.props.engine?.nodes.size) {
+      // eslint-disable-next-line no-await-in-loop
+      await this.timeout.set(WAIT_ENTITY_TIME);
     }
   }
 }

@@ -13,18 +13,3 @@ export const getUpdatedContextHistory = (
   contextHistoryCopy[currentHistoryStep] = { ...targetHistoryContext, [targetPropertyName]: newData };
   return contextHistoryCopy;
 };
-
-export const waitForFlowLoad = async (targetBlockID: string, getNodeByID: (targetBlockID: string) => void) => {
-  if (targetBlockID) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    while (!getNodeByID(targetBlockID)) {
-      // eslint-disable-next-line no-await-in-loop
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, 100);
-      });
-    }
-  }
-};

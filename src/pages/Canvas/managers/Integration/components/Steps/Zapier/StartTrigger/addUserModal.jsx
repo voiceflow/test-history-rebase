@@ -45,7 +45,7 @@ class FeedAddUserModal extends Component {
       >
         <Input placeholder="Trigger Name" onChange={(e) => this.setState({ name: e.target.value })} className="mb-3" />
         <FlexCenter>
-          <Button onClick={this.add}>Save Trigger</Button>
+          <Button>Save Trigger</Button>
         </FlexCenter>
       </form>
     );

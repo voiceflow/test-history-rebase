@@ -46,7 +46,7 @@ export const IS_TEST = NODE_ENV === 'test';
 export const APP_ENV = window.VF_OVERRIDE_APP_ENV || process.env.APP_ENV!;
 export const IS_PRODUCTION_ENV = APP_ENV === 'production';
 
-export const CLOUD_ENV = process.env.VF_OVERRIDE_CLOUD_ENV || process.env.CLOUD_ENV || 'public';
+export const CLOUD_ENV = window.VF_OVERRIDE_CLOUD_ENV || process.env.CLOUD_ENV || 'public';
 export const IS_PRIVATE_CLOUD = IS_PRODUCTION && CLOUD_ENV !== 'public';
 
 export const CREATOR_URL = 'creator.voiceflow.com';

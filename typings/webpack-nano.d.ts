@@ -39,6 +39,7 @@ declare module 'webpack-nano/argv' {
     ff_prototypeTest: boolean;
     ff_headerRedesign: boolean;
     ff_generalPlatform: boolean;
+    ff_manualNavigation: boolean;
   }>;
 
   export = argv;

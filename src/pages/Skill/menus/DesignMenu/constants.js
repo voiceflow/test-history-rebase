@@ -4,6 +4,6 @@ export const Tab = {
 };
 
 export const TABS = [
-  { value: Tab.STEPS, label: 'STEPS', tooltip: { title: 'Steps', hotkey: '<' } },
-  { value: Tab.FLOWS, label: 'FLOWS', tooltip: { title: 'Flows', hotkey: '>' } },
+  { value: Tab.STEPS, label: 'STEPS', tooltip: { title: 'Steps', hotkey: '<', position: 'top', distance: 8 } },
+  { value: Tab.FLOWS, label: 'FLOWS', tooltip: { title: 'Flows', hotkey: '>', position: 'top', distance: 8 } },
 ];

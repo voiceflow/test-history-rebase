@@ -4,14 +4,15 @@ import { ProjectPrivacy } from '@voiceflow/api-sdk';
 import cn from 'classnames';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Tooltip } from 'react-tippy';
 import { Alert } from 'reactstrap';
 
+import { Flex } from '@/components/Box';
 import DragLayer from '@/components/DragLayer';
 import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import { FullSpinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
+import TippyTooltip from '@/components/TippyTooltip';
 import { toast } from '@/components/Toast';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
@@ -307,11 +308,11 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
                         </DragLayer>
 
                         {canManageLists && (
-                          <div className="main-list-add">
-                            <Tooltip distance={10} title="Add new list" position="bottom">
+                          <Flex style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}>
+                            <TippyTooltip distance={8} title="Add new list" position="bottom">
                               <IconButton large icon="addStep" onClick={props.createNewList} size={13} />
-                            </Tooltip>
-                          </div>
+                            </TippyTooltip>
+                          </Flex>
                         )}
                       </div>
                     </div>

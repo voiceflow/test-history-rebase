@@ -41,7 +41,7 @@ const Message: React.FC<MessageProps> = ({
           </LogoCircle>
         )}
 
-        <TippyTooltip title={startTime} disabled={!startTime}>
+        <TippyTooltip distance={8} position="top" title={startTime} disabled={!startTime}>
           <Bubble rightAlign={rightAlign} onClick={onClick} clickable={!!onClick} isFirstInSeries={isFirstInSeries}>
             {children}
           </Bubble>

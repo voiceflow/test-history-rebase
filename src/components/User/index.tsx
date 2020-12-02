@@ -1,8 +1,8 @@
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import FlexCenter from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
+import TippyTooltip from '@/components/TippyTooltip';
 import { LockOwner } from '@/models';
 import { Identifier } from '@/styles/constants';
 
@@ -74,25 +74,23 @@ export const Members: React.FC<MembersProps> = ({ min = 0, max = 8, onAdd, membe
     <MembersContainer>
       <MembersWrapper>
         {accepted.slice(0, max).map((member, index) => (
-          <div key={member.tabID || member.creator_id} style={{ zIndex: max - index, position: 'relative' }}>
-            <Tooltip title={member.name} position="bottom">
-              <User user={member} />
-            </Tooltip>
-          </div>
+          <TippyTooltip style={{ zIndex: max - index }} key={member.tabID || member.creator_id} title={member.name} position="bottom">
+            <User user={member} />
+          </TippyTooltip>
         ))}
 
         {onAdd && (
-          <Tooltip title="Add Collaborators" position="bottom">
+          <TippyTooltip title="Add Collaborators" position="bottom">
             <AddMemberIcon id={Identifier.ADD_COLLABORATORS} onClick={onAdd}>
               <SvgIcon icon="plus" size={12} />
             </AddMemberIcon>
-          </Tooltip>
+          </TippyTooltip>
         )}
       </MembersWrapper>
 
       {accepted.length > max && (
         <FlexCenter>
-          <Tooltip
+          <TippyTooltip
             html={
               <>
                 {accepted.slice(max).map((member) => (
@@ -106,7 +104,7 @@ export const Members: React.FC<MembersProps> = ({ min = 0, max = 8, onAdd, membe
             position="bottom"
           >
             <div className="text-muted no-select">+{accepted.length - max}</div>
-          </Tooltip>
+          </TippyTooltip>
         </FlexCenter>
       )}
     </MembersContainer>

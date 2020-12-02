@@ -11,7 +11,7 @@ function Header({ tabs, locked, selectedTab, toggleLock, selectActiveTab }) {
       <Tabs selected={selectedTab} options={tabs} onChange={selectActiveTab} />
 
       <LockIconContainer>
-        <TippyTooltip title={locked ? 'Unlock Sidebar' : 'Lock Sidebar'} position="top" hotkey="?">
+        <TippyTooltip title={locked ? 'Unlock Sidebar' : 'Lock Sidebar'} position="top" distance={8} hotkey="?">
           <LockIcon size={15} icon={locked ? 'lock' : 'openLock'} locked={locked} onClick={toggleLock} />
         </TippyTooltip>
       </LockIconContainer>

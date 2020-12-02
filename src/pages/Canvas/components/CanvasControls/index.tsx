@@ -1,9 +1,8 @@
 import cn from 'classnames';
 import React from 'react';
 
-import Box from '@/components/Box';
 import IconButton from '@/components/IconButton';
-import Tooltip from '@/components/TippyTooltip';
+import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { EventualEngineContext } from '@/contexts';
@@ -129,19 +128,17 @@ const CanvasControls: React.FC<CanvasControlProps & ConnectedCanvasControlsProps
           <CanvasControlButton {...CanvasControlMeta[CanvasControl.MODEL]} onClick={onOpenCMS} />
           {showHintFeatures && (
             <>
-              <Box position="relative">
-                <CanvasControlButton
-                  {...CanvasControlMeta[CanvasControl.COMMENTING]}
-                  className={cn(ClassName.CANVAS_CONTROL, COMMENTING_CONTROL_CLASSNAME)}
-                  iconProps={{
-                    active: isCommentingMode,
-                    icon: isCommentingMode ? 'close' : 'comment',
-                    size: isCommentingMode ? 14 : 16,
-                  }}
-                  onClick={toggleCommenting}
-                />
-                {!isCommentingMode && hasUnreadComments && <UnreadCommentsIndicator />}
-              </Box>
+              <CanvasControlButton
+                {...CanvasControlMeta[CanvasControl.COMMENTING]}
+                className={cn(ClassName.CANVAS_CONTROL, COMMENTING_CONTROL_CLASSNAME)}
+                iconProps={{
+                  active: isCommentingMode,
+                  icon: isCommentingMode ? 'close' : 'comment',
+                  size: isCommentingMode ? 14 : 16,
+                }}
+                onClick={toggleCommenting}
+              />
+              {!isCommentingMode && hasUnreadComments && <UnreadCommentsIndicator />}
 
               <CanvasControlButton
                 {...CanvasControlMeta[CanvasControl.MARKUP]}
@@ -157,12 +154,12 @@ const CanvasControls: React.FC<CanvasControlProps & ConnectedCanvasControlsProps
           )}
           <ControlContainer>
             <ZoomContainer>
-              <Tooltip distance={6} title="Zoom Out" position="top" hotkey="-">
+              <TippyTooltip distance={8} title="Zoom Out" position="top" hotkey="-">
                 <IconButton icon="zoomOut" size={14} onClick={onZoomOut} />
-              </Tooltip>
-              <Tooltip distance={6} title="Zoom In" position="top" hotkey="+">
+              </TippyTooltip>
+              <TippyTooltip distance={8} title="Zoom In" position="top" hotkey="+">
                 <IconButton icon="zoomIn" size={14} onClick={onZoomIn} />
-              </Tooltip>
+              </TippyTooltip>
             </ZoomContainer>
           </ControlContainer>
         </Container>

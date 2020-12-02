@@ -80,13 +80,7 @@ const Tabs: React.FC<TabsProps> = ({ as = 'button', options, selected, onChange,
         );
 
         return tooltip ? (
-          <TippyTooltip
-            {...tooltip}
-            tag="div"
-            key={genKey(value)}
-            ref={(instance) => onRef(value)(instance?.tooltipDOM ?? null)}
-            className="tab-tooltip"
-          >
+          <TippyTooltip {...tooltip} tag="div" key={genKey(value)} ref={(instance) => onRef(value)(instance?.tooltipDOM ?? null)}>
             {tab}
           </TippyTooltip>
         ) : (

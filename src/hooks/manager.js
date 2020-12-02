@@ -24,7 +24,7 @@ const UNIQUE_TYPES = ['object', 'function'];
 const DEBOUNCE_TIMEOUT = 300;
 
 // eslint-disable-next-line import/prefer-default-export
-export const useManager = (items, onChange, { factory = identity, getKey, autosave = true, debounced = true, handleRemove } = {}) => {
+export const useManager = (items = [], onChange, { factory = identity, getKey, autosave = true, debounced = true, handleRemove } = {}) => {
   const [forceUpdate] = useForceUpdate();
   const keyLookup = React.useRef();
   const normalized = React.useRef();

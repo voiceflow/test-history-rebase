@@ -91,13 +91,13 @@ export const PLATFORM_META: PlatformMetaProps = {
     company: '',
     description: 'Design, prototype and share conversational apps and dialogs.',
     features: [PlatformFeature.DESIGN_AND_PROTO],
-    icon: 'inFlow',
-    iconColor: '#279745',
+    icon: 'speak',
+    iconColor: '#6E849A',
     platformAppType: '',
     platformName: PlatformType.GENERAL,
     platform: PlatformType.GENERAL,
     iconType: IconType.ICON,
-    iconSize: 22,
+    iconSize: 18,
   },
 };
 

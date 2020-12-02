@@ -4,17 +4,21 @@ import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import { ClickableText } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
 import { toast } from '@/components/Toast';
+import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { useModals } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { readFileAsync, upload } from '@/utils/dom';
 
 const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 
-const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProject, loadProjectLists, goToCanvas }) => {
+const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProject, loadProjectLists, workspace, projects, goToCanvas }) => {
+  const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
+
   const onUpload = async (files: FileList) => {
     if (!files.length) return;
 
@@ -37,21 +41,25 @@ const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProj
     }
   };
 
+  const onClickHandler = () => {
+    if (!!workspace && projects.length >= workspace.projects) {
+      openProjectLimitModal({ projects: workspace!.projects });
+    } else {
+      upload(onUpload, { accept: ACCEPTED_FILE_FORMATS });
+    }
+  };
+
   return (
     <TippyTooltip title="Import" position="bottom">
-      <IconButton
-        preventFocusStyle
-        variant={IconButtonVariant.OUTLINE}
-        icon="download"
-        large
-        onClick={() => upload(onUpload, { accept: ACCEPTED_FILE_FORMATS })}
-      />
+      <IconButton preventFocusStyle variant={IconButtonVariant.OUTLINE} icon="download" large onClick={onClickHandler} />
     </TippyTooltip>
   );
 };
 
 const mapStateToProps = {
   workspaceID: Workspace.activeWorkspaceIDSelector,
+  workspace: Workspace.activeWorkspaceSelector,
+  projects: Project.allProjectsSelector,
 };
 
 const mapDispatchToProps = {

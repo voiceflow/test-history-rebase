@@ -46,24 +46,30 @@ export const GET_PRICE_WITHOUT_TEAM_ID_CONST = 'none';
 
 const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces, workspaceByID, creatorID, workspaceSelector }) => {
   const { state, actions } = useContext(OnboardingContext);
+
   const { plan, couponCode, period } = state.paymentMeta;
   const { sendingRequests, selectableWorkspace, hasFixedPeriod, specificFlowType } = state;
 
   const numberOfSeats = actions.getNumberOfEditors();
-  const [seatCount, setSeatCount] = React.useState(numberOfSeats);
-  const [usingCoupon, toggleCoupon] = useToggle(!!couponCode);
-  const [coupon, setCoupon] = React.useState(couponCode || '');
-  const [paymentPeriod, setPaymentPeriod] = React.useState(period);
-  const [couponError, setCouponError] = React.useState('');
-  const [price, setPrice] = React.useState(0);
-  const [priceError, setPriceError] = React.useState('');
-  const [creditCardError, setCreditCardError] = React.useState('');
+
   const [creditCardComplete, setCreditCardComplete] = React.useState(false);
-  const [selectedPlan, setSelectedPlan] = React.useState(plan);
   const [selectedWorkspaceId, setSelectedWorkspaceId] = React.useState('');
+  const [paymentPeriod, setPaymentPeriod] = React.useState(period);
+  const [creditCardError, setCreditCardError] = React.useState('');
+  const [seatCount, setSeatCount] = React.useState(numberOfSeats);
+  const [selectedPlan, setSelectedPlan] = React.useState(plan);
+  const [coupon, setCoupon] = React.useState(couponCode || '');
+  const [usingCoupon, toggleCoupon] = useToggle(!!couponCode);
+  const [couponError, setCouponError] = React.useState('');
+  const [priceError, setPriceError] = React.useState('');
+  const [price, setPrice] = React.useState(0);
+
+  const dollarPrice = price / 100;
   const workspaceComplete = !selectableWorkspace || (selectableWorkspace && !!selectedWorkspaceId);
   const canContinue = !creditCardError && !couponError && creditCardComplete && !priceError && workspaceComplete;
+  const isPromoPlanCreation = specificFlowType === SpecificFlowType.login_student_new || specificFlowType === SpecificFlowType.login_creator_new;
 
+  // methods
   const onContinue = async () => {
     actions.setPaymentMeta({
       ...state.paymentMeta,
@@ -106,8 +112,7 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
     [setPrice, setCouponError, setPriceError, setCouponError, selectedPlan]
   );
 
-  const isPromoPlanCreation = specificFlowType === SpecificFlowType.login_student_new || specificFlowType === SpecificFlowType.login_creator_new;
-
+  // effects
   React.useEffect(() => {
     getPrice(selectedPlan!, seatCount, paymentPeriod, coupon);
   }, [coupon, paymentPeriod, selectedPlan, seatCount, setCouponError, setPriceError]);
@@ -115,6 +120,7 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
   React.useEffect(() => {
     const targetWorkspace = workspaceByID(selectedWorkspaceId);
     let numberOfEditors = 0;
+
     targetWorkspace?.members.forEach((member: DBWorkspace.Member) => {
       if (member.role === UserRole.ADMIN || member.role === UserRole.EDITOR) {
         numberOfEditors++;
@@ -122,10 +128,11 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
     });
 
     const newSeatCount = Math.max(seatCount, numberOfEditors);
+
     setSeatCount(newSeatCount);
   }, [selectedWorkspaceId]);
 
-  const dollarPrice = price / 100;
+  // component configs
   const dropdownConfig = !selectableWorkspace
     ? {
         text: `${selectedPlan} PLAN`,

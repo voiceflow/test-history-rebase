@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import client from '@/client';
 import { ButtonVariant } from '@/components/Button/constants';
 import { toast as toastNotif } from '@/components/Toast';
-import { USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
+import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
 import { BillingPeriod, ModalType, PlanType, PlatformType, UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
@@ -350,7 +350,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       } else {
         goToWorkspace(workspace.id);
 
-        if (hasWorkspaces) {
+        if (!IS_PRIVATE_CLOUD && hasWorkspaces) {
           const message = `Your Voiceflow ${state.paymentMeta.plan} subscription has been activated.`;
 
           openSuccessModal({ title: 'Payment Successful', message, icon: '/receipt.svg', variant: ButtonVariant.TERTIARY });

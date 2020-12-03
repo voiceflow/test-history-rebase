@@ -6,7 +6,7 @@ import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse } from 'react-google
 
 import Button, { ButtonVariant } from '@/components/Button';
 import { FlexApart } from '@/components/Flex';
-import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID, OKTA_CLIENT_ID, OKTA_DOMAIN, OKTA_SCOPES } from '@/config';
+import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID, IS_PRIVATE_CLOUD, OKTA_CLIENT_ID, OKTA_DOMAIN, OKTA_SCOPES } from '@/config';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useTeardown } from '@/hooks';
@@ -86,6 +86,10 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({ l
   useTeardown(() => {
     okta.closeChannel();
   });
+
+  if (IS_PRIVATE_CLOUD) {
+    return null;
+  }
 
   return (
     <SocialLoginContainer>

@@ -95,7 +95,7 @@ export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> 
           </div>
         </Form>
 
-        {!IS_PRIVATE_CLOUD && <SocialLogin light />}
+        <SocialLogin light />
       </AuthBox>
     </AuthenticationContainer>
   );

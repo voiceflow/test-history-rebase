@@ -8,10 +8,12 @@ import { AlexaPublishJob, GooglePublishJob, Job } from '@/models';
 import { PublishContext } from '@/pages/Skill/contexts';
 
 export type LoadingButtonProps = {
-  openTooltip: boolean;
+  openTooltip?: boolean;
+  spin?: boolean;
+  active?: boolean;
 };
 
-const LoadingButton: React.FC<LoadingButtonProps> = ({ openTooltip = false }) => {
+const LoadingButton: React.FC<LoadingButtonProps> = ({ openTooltip = false, spin = true, active = false }) => {
   const [open, onEnable, onDisable] = useEnableDisable(false);
 
   const publish = React.useContext(PublishContext)!;
@@ -30,7 +32,7 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({ openTooltip = false }) =>
       position="bottom"
     >
       <Box onMouseEnter={onEnable} onMouseLeave={onDisable}>
-        <IconButton iconProps={{ spin: true }} preventFocusStyle variant={IconButtonVariant.ACTION} icon="loader" large active={false} />
+        <IconButton iconProps={{ spin }} variant={IconButtonVariant.ACTION} icon="loader" large active={active} />
       </Box>
     </TippyTooltip>
   );

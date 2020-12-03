@@ -13,8 +13,7 @@ import { useAsyncMountUnmount, useFeature, useSmartReducerV2 } from '@/hooks';
 import UploadPopup from '@/pages/Canvas/header/ActionGroup/components/UploadPopup';
 import { Container, DropdownContainer } from '@/pages/Collaborators/components/InviteByLink/components';
 
-import { ButtonContainer, ButtonLink, Description, LoaderStage, StageContainer } from '../components';
-import { ProjectItem } from './components';
+import { ButtonContainer, ButtonLink, Description, LoaderStage, ProjectItem, StageContainer } from '../components';
 
 const Footer = ModalFooter as React.FC<any>;
 
@@ -34,8 +33,6 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
     error: false,
     loading: true,
   });
-
-  const noCloseIcon = !!projects.length;
 
   useAsyncMountUnmount(async () => {
     try {
@@ -57,13 +54,7 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
 
   if (headerRedesign.isEnabled) {
     return (
-      <UploadPopup
-        open={open!}
-        onClose={onClose!}
-        jobStage={GoogleStageType.WAIT_PROJECT}
-        noCloseIcon={noCloseIcon}
-        projectExists={projects.length > 0}
-      >
+      <UploadPopup open={open!} onClose={onClose!} jobStage={GoogleStageType.WAIT_PROJECT} multiSelect={projects.length > 0}>
         {state.loading ? (
           <LoaderStage>Loading Projects</LoaderStage>
         ) : (

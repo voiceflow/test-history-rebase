@@ -9,3 +9,4 @@ export { default as StageContainer } from './StageContainer';
 export { default as ButtonContainer } from './ButtonContainer';
 export { default as StageHeader } from './StageHeader';
 export { default as DropdownSection } from './DropdownSection';
+export { default as ProjectItem } from './ProjectItem';

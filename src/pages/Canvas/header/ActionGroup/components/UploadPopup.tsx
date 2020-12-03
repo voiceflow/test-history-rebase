@@ -9,15 +9,14 @@ import PopupTransition from './PopupTransition';
 export type UploadPopupProps = {
   open: boolean;
   onClose: () => void;
-  noCloseIcon?: boolean;
   jobStage?: AlexaStageType | GoogleStageType | null;
-  projectExists?: boolean;
+  multiSelect?: boolean;
 };
 
-const UploadPopup: React.FC<UploadPopupProps> = ({ open, onClose, children, noCloseIcon, jobStage, projectExists }) => {
+const UploadPopup: React.FC<UploadPopupProps> = ({ open, onClose, children, jobStage, multiSelect }) => {
   return (
-    <PopupContainer open={open} jobStage={jobStage} projectExists={projectExists}>
-      {!noCloseIcon && <PopupCloseIcon onClick={onClose} />}
+    <PopupContainer open={open} jobStage={jobStage} multiSelect={multiSelect}>
+      {jobStage !== GoogleStageType.WAIT_PROJECT && <PopupCloseIcon onClick={onClose} />}
       <PopupTransition>{children}</PopupTransition>
     </PopupContainer>
   );

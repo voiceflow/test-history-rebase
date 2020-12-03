@@ -86,9 +86,12 @@ const Container = styled(ButtonContainer)<ContainerProps>`
         -webkit-transition: opacity 0.12s linear, -webkit-box-shadow 0.12s linear;
         transition: opacity 0.12s linear, -webkit-box-shadow 0.12s linear;
       }
-      &:hover::before {
-        opacity: 1;
-      }
+      ${variant !== IconButtonVariant.ACTION &&
+      css`
+        &:hover::before {
+          opacity: 1;
+        }
+      `}
 
       &:active::before {
         opacity: 1;

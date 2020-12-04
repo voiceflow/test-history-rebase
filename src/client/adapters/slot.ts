@@ -1,4 +1,4 @@
-import { Slot as DBSlot } from '@voiceflow/general-types';
+import { Slot as DBSlot } from '@voiceflow/api-sdk';
 import cuid from 'cuid';
 
 import { createAdapter } from '@/client/adapters/utils';

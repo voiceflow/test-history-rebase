@@ -1,4 +1,4 @@
-import { Intent as DBIntent } from '@voiceflow/general-types';
+import { Intent as DBIntent } from '@voiceflow/api-sdk';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { PlatformType } from '@/constants';

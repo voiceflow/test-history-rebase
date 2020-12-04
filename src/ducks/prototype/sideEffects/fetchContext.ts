@@ -1,8 +1,10 @@
 import cuid from 'cuid';
 
 import client from '@/client';
+import { FeatureFlag } from '@/config/features';
 import { TraceType } from '@/constants/prototype';
-import { activeDiagramIDSelector, activeLocalesSelector } from '@/ducks/skill';
+import * as Feature from '@/ducks/feature';
+import * as Skill from '@/ducks/skill';
 import { StateRequest, Trace } from '@/models';
 import { Thunk } from '@/store/types';
 
@@ -25,11 +27,14 @@ const fetchContext = (request?: StateRequest): Thunk<Context | null> => async (d
   const state = getState();
   const { trace, ...context } = prototypeContextSelector(state);
   const { contextStep } = prototypeSelector(state);
-  const currentDiagramID = activeDiagramIDSelector(state);
-  const [locale] = activeLocalesSelector(state);
+  const currentDiagramID = Skill.activeDiagramIDSelector(state);
+  const [locale] = Skill.activeLocalesSelector(state);
+  const isGeneralPrototypeEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.GENERAL_PROTOTYPE);
 
   try {
-    const newContext: Context = await client.prototype.interact({ state: context, request }, locale);
+    const interact = isGeneralPrototypeEnabled ? client.prototype.interactV2 : client.prototype.interact;
+
+    const newContext: Context = await interact({ state: context, request }, locale);
 
     newContext.previousContextDiagramID = currentDiagramID;
     newContext.targetContextDiagramID = getTargetFlowID(newContext.trace) || currentDiagramID;

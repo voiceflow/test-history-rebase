@@ -14,6 +14,7 @@ import {
   ff_codeExport,
   ff_gadgets,
   ff_generalPlatform,
+  ff_generalPrototype,
   ff_headerRedesign,
   ff_manualNavigation,
   ff_prototypeTest,
@@ -68,6 +69,7 @@ export const ENV = {
   // feature flags
   FF_GADGETS: ff_gadgets && 'true',
   FF_GENERAL_PLATFORM: ff_generalPlatform && 'true',
+  FF_GENERAL_PROTOTYPE: ff_generalPrototype && 'true',
   FF_CODE_EXPORT: ff_codeExport && 'true',
   FF_PROTOTYPE_TEST: ff_prototypeTest && 'true',
   FF_HEADER_REDESIGN: ff_headerRedesign && 'true',

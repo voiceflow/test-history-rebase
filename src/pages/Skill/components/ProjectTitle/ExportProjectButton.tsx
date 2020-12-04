@@ -9,7 +9,6 @@ import { Link } from '@/components/Text';
 import Tooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import { ExportFormat, ModalType } from '@/constants';
-import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useModals, usePermission, useTrackingEvents } from '@/hooks';
@@ -83,8 +82,6 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  sharePrototype: Prototype.sharePrototype,
-  renderPrototype: Prototype.renderPrototype,
   exportCanvas: Skill.exportCanvas,
 };
 

@@ -4660,20 +4660,20 @@
   resolved "https://registry.yarnpkg.com/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
   integrity sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==
 
-"@voiceflow/alexa-types@1.31.2":
-  version "1.31.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.31.2.tgz#035bdb724c017ba01b39669596946a4c1abe80bb"
-  integrity sha512-DQLURQpr++kRG5N/TRBSSPE7wD+Rt2SVEVflmENg3J3DHShJqkBB6Q2pNq3j6ozExgT6B7gnwYXoCt+KmUznhQ==
+"@voiceflow/alexa-types@1.32.2":
+  version "1.32.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.32.2.tgz#f55533415a7a385adb019ef88cc5119a267ef35c"
+  integrity sha512-vGHXFdxftZvh2uKG0Hy9bTMUiALTS5x2TGnsjyXU9Y/fM4P8vpE0DSVns0+KTGH7QkRNzuA3h3T5hKTQlFrZRA==
   dependencies:
-    "@voiceflow/api-sdk" "1.13.1"
-    "@voiceflow/general-types" "1.8.1"
+    "@voiceflow/api-sdk" "1.17.1"
+    "@voiceflow/general-types" "1.10.2"
     ask-smapi-model "^1.11.0"
     eslint-plugin-prettier "^3.1.4"
 
-"@voiceflow/api-sdk@1.13.1":
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.13.1.tgz#9bee05823bc7d72362ff28552b4e31a5b51da44a"
-  integrity sha512-L4sK23/sT8y2iWnW3gaKKXQr2SvXTiMXQqfqM3D7hR00BEAnZQx7AQ3QStU8Frd5nIJ74O/Y3jPBs82f0TPSBA==
+"@voiceflow/api-sdk@1.17.0":
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.17.0.tgz#f46342d6c4d0c6f32e1b857f1f50811018cd4e76"
+  integrity sha512-w+g6UopXjENbHDRJltQw/sruJU0QLa0TqZr7OyNfbtIkE2I2Sm4+M/eoScNMOscH61GJr4zuhRn5qx00R10jmA==
   dependencies:
     "@types/atob" "^2.1.2"
     "@voiceflow/logger" "^1.1.10"
@@ -4791,12 +4791,19 @@
     eslint-plugin-sonarjs "^0.4.0"
     eslint-plugin-xss "^0.1.9"
 
-"@voiceflow/general-types@1.8.1":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.8.1.tgz#1326c100c132035ea49f3cb48245c96066b1a02c"
-  integrity sha512-uxCMnc/gQtJcTM5ugBwJWpkntDmzWbULF91M1CGhUF3c7WJl6+rSymSIrEp8bTwYmesy/Ur33Uz+nCbug3UP7A==
+"@voiceflow/general-types@1.10.1":
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.10.1.tgz#289cd451a061a38e878eb4f60eb624837f0d073e"
+  integrity sha512-ItwfouZKJn1aUcWEVNcHxtIEeSFg6LnKelx26y8rG09Pam84DrNKRjShiAdFYDrVG1r/UO/ddBROgxUwQIoGAg==
   dependencies:
-    "@voiceflow/api-sdk" "1.13.1"
+    "@voiceflow/api-sdk" "1.17.0"
+
+"@voiceflow/general-types@1.10.2":
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.10.2.tgz#9853e42971967a9b7bd2d8bc0089cfe4648ffb60"
+  integrity sha512-oWIEtQdiFKb9te/YzpWUZLHl6o0igBipe4hb2tzXI64NcRGwzwqTRY4HS8/J8s9ZwhqsgbB3K3FleEqG7UPSaA==
+  dependencies:
+    "@voiceflow/api-sdk" "1.17.1"
 
 "@voiceflow/git-branch-check@^1.1.3":
   version "1.1.3"
@@ -4805,13 +4812,13 @@
   dependencies:
     current-git-branch "^1.1.0"
 
-"@voiceflow/google-types@1.7.3":
-  version "1.7.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.7.3.tgz#d5ee0aafb49d4fb79c41eda4216e443011f1cb62"
-  integrity sha512-elTvKgcaWtaeYvMfLzZoelS+fbTK4d5ZC5mAgu3luw3OD1IaiYYAJzt5I6xK3lAQAHRkyRFMbFObidyOtDfEBA==
+"@voiceflow/google-types@1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.8.2.tgz#a569447ed2d0957f081aefc9176d6c5fdd7c91b8"
+  integrity sha512-o2mYWQFTpPgUzds7Av5/wSqzX14bHte7IJe3vG+rL2tXcY4nggurWaWeCm5+VR0kRE2GCG0I2D2/e6zCbDgP8g==
   dependencies:
-    "@voiceflow/api-sdk" "1.13.1"
-    "@voiceflow/general-types" "1.8.1"
+    "@voiceflow/api-sdk" "1.17.1"
+    "@voiceflow/general-types" "1.10.2"
     googleapis "^60.0.1"
 
 "@voiceflow/logger@^1.1.10":
@@ -9337,6 +9344,13 @@ debug@4.1.1, debug@~4.1.0:
   integrity sha512-pYAIzeRo8J6KPEaJ0VWOh5Pzkbw/RetuzehGM7QRRX5he4fPHx2rdKMB256ehJCkX+XRQm16eZLqLNS8RSZXZw==
   dependencies:
     ms "^2.1.1"
+
+debug@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.2.0.tgz#7f150f93920e94c58f5574c2fd01a3110effe7f1"
+  integrity sha512-IX2ncY78vDTjZMFUdmsvIRFY2Cf4FnD0wRs+nQwJU8Lu99/tPFdb0VybiiMTPe3I6rQmwsqQqRBvxU+bZ/I8sg==
+  dependencies:
+    ms "2.1.2"
 
 debug@=3.1.0, debug@~3.1.0:
   version "3.1.0"

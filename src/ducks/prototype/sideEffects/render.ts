@@ -5,7 +5,7 @@ import { Thunk } from '@/store/types';
 import { AbortControl, waitJobFinished } from '@/utils/job';
 
 import { log } from '../utils';
-import initializeTest from './initialize';
+import initializePrototype from './initialize';
 
 const MAX_CHECKS = 30;
 
@@ -27,7 +27,7 @@ const renderPrototype = (abortControl: AbortControl): Thunk => async (dispatch, 
 
     if (abortControl.aborted) return;
 
-    dispatch(initializeTest());
+    dispatch(initializePrototype());
   } catch (err) {
     log.error(err);
     dispatch(Modal.setError('Could Not Render Your Test Project'));

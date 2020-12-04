@@ -30,7 +30,7 @@ export type PrototypeProps = {
   debug: boolean;
   isPublic?: boolean;
   atTop: boolean;
-  setAtTop: (val: boolean) => void;
+  setAtTop?: (val: boolean) => void;
 };
 
 const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
@@ -104,9 +104,10 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     30,
     () => {
       if (chatScrollRef?.current?.scrollTop === 0) {
-        return setAtTop(true);
+        return setAtTop?.(true);
       }
-      return setAtTop(false);
+
+      return setAtTop?.(false);
     },
     []
   );

@@ -35,9 +35,11 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   platform,
   projectID,
   renderPrototype,
+  renderPrototypeV2,
   updateProjectPrivacy,
 }) => {
   const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
+  const generalPrototype = useFeature(FeatureFlag.GENERAL_PROTOTYPE);
 
   const { open: openProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
   const { open: openTestableLinksModal } = useModals(ModalType.TESTABLE_LINKS);
@@ -59,7 +61,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   const onClickPrototype = () => {
     if (render) {
       if (canSharePrototype) {
-        renderPrototype({ aborted: false });
+        generalPrototype.isEnabled ? renderPrototypeV2({ aborted: false }) : renderPrototype({ aborted: false });
         copyTestableLink();
         toast.success('Link copied to clipboard');
       }
@@ -207,6 +209,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   sharePrototype: Prototype.sharePrototype,
   renderPrototype: Prototype.renderPrototype,
+  renderPrototypeV2: Prototype.renderPrototypeV2,
   updateProjectPrivacy: Project.updateProjectPrivacy,
 };
 

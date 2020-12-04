@@ -13,6 +13,9 @@ const prototypeClient = {
   interact: (body: { state: Omit<PrototypeContext, 'trace'>; request?: StateRequest }, locale: string) =>
     fetch.post<PrototypeContext>(`${PROTOTYPE_PATH}/interact?locale=${locale}`, body),
 
+  interactV2: (body: { state: Omit<PrototypeContext, 'trace'>; request?: StateRequest }, locale: string) =>
+    fetch.post<PrototypeContext>(`${PROTOTYPE_PATH}/interactV2?locale=${locale}`, body),
+
   getInfo: (configID: string) =>
     fetch.get(`${LEGACY_TESTING_PATH}/getInfo/${configID}`).then((data: any) => {
       const skill = legacySkillAdapter.fromDB(data.skill);

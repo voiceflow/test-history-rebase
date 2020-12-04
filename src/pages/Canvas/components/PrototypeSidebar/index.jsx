@@ -26,8 +26,9 @@ import Container from './components/PrototypeSidebarContainer';
 import EmbedContainer from './components/PrototypeSidebarEmbedContainer';
 import { PROTOTYPE_SIDEBAR_WIDTH } from './constants';
 
-const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, isMuted, updatePrototype, status }) => {
+const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, renderPrototypeV2, isMuted, updatePrototype, status }) => {
   const prototypeTestEnabled = useFeature(FeatureFlag.PROTOTYPE_TEST).isEnabled;
+  const generalPrototypeEnabled = useFeature(FeatureFlag.GENERAL_PROTOTYPE).isEnabled;
   const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const isPrototypingMode = usePrototypingMode();
@@ -57,7 +58,7 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, isMute
     saveActiveDiagram()
       .catch((err) => console.error(err))
       .finally(async () => {
-        await renderPrototype(renderAbortControl);
+        await (generalPrototypeEnabled ? renderPrototypeV2(renderAbortControl) : renderPrototype(renderAbortControl));
         disableLoading();
       });
 
@@ -129,6 +130,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   setError: Modal.setError,
   renderPrototype: Prototype.renderPrototype,
+  renderPrototypeV2: Prototype.renderPrototypeV2,
   saveActiveDiagram: Diagram.saveActiveDiagram,
   updatePrototype: Prototype.updatePrototype,
 };

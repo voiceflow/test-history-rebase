@@ -186,7 +186,7 @@ class SocketClient {
     this.#handleError(SocketEvent.CONNECT_FAILED);
   };
 
-  #handleError = (event: SocketEvent) => this.on(event, () => log.error('socket failure from event', log.value(event)));
+  #handleError = (event: SocketEvent) => this.on(event, (data) => log.error('socket failure from event', log.value(event), data));
 }
 
 export default new SocketClient();

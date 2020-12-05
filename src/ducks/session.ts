@@ -1,18 +1,15 @@
 import * as ConnectedReactRouter from 'connected-react-router';
-import CookiesJS from 'cookies-js';
 import cuid from 'cuid';
 import { PersistConfig, PersistPartial, persistReducer } from 'redux-persist';
-import { CookieStorage } from 'redux-persist-cookie-storage';
 import storageLocal from 'redux-persist/lib/storage';
 import storageSession from 'redux-persist/lib/storage/session';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
-import { ROOT_DOMAIN } from '@/config';
 import { SessionType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Models from '@/models';
-import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
+import { Action, Reducer, RootReducer, SyncThunk, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
 import * as Query from '@/utils/query';
@@ -23,15 +20,7 @@ import { goToDashboardWithSearch, goToLogin, goToOnboarding } from './router/act
 import { compositeReducer, createAction, createRootSelector, duckLogger } from './utils';
 
 export const STATE_KEY = 'session';
-const COOKIE_OPTIONS = { path: '/', domain: ROOT_DOMAIN };
 
-const TOKEN_PERSIST_CONFIG = {
-  key: `${STATE_KEY}:token`,
-  storage: new CookieStorage(CookiesJS, {
-    setCookieOptions: COOKIE_OPTIONS,
-  }),
-  whitelist: ['value'],
-};
 const BROWSER_ID_PERSIST_CONFIG = {
   key: `${STATE_KEY}:browser_id`,
   storage: storageLocal,
@@ -76,7 +65,11 @@ type AnySessionAction = SetAuthToken | DisableWebsockets | SetIntercomVisible;
 
 // reducers
 
-export const authTokenReducer: RootReducer<{ value: string | null }, SetAuthToken> = (state = { value: null }, action) => {
+const DefaultAuthTokenState = () => ({
+  value: Cookies.getAuthCookie() || null,
+});
+
+export const authTokenReducer: RootReducer<{ value: string | null }, SetAuthToken> = (state = DefaultAuthTokenState(), action) => {
   if (action.type === SessionAction.SET_AUTH_TOKEN) {
     return { ...state, value: action.payload };
   }
@@ -110,7 +103,7 @@ const sessionBoundReducer = <T>(config: PersistConfig, initialValue: T) =>
   persistReducer<{ value: T }, AnySessionAction>(config, (state = { value: initialValue }) => state);
 
 export default compositeReducer(sessionReducer, {
-  token: persistReducer(TOKEN_PERSIST_CONFIG, authTokenReducer),
+  token: authTokenReducer,
   browserID: sessionBoundReducer(BROWSER_ID_PERSIST_CONFIG, cuid()),
   tabID: sessionBoundReducer(TAB_ID_PERSIST_CONFIG, cuid()),
 });
@@ -146,7 +139,7 @@ export const hideIntercom = () => setIntercomVisible(false);
 /**
  * update the auth token in the store and in the cookie jar
  */
-export const updateAuthToken = (token: string | null): Thunk => async (dispatch) => {
+export const updateAuthToken = (token: string | null): SyncThunk => (dispatch) => {
   if (token === null) {
     Cookies.removeAuthCookie();
   } else {
@@ -157,7 +150,7 @@ export const updateAuthToken = (token: string | null): Thunk => async (dispatch)
 };
 
 export const resetSession = (): Thunk => async (dispatch) => {
-  await dispatch(updateAuthToken(null));
+  dispatch(updateAuthToken(null));
   dispatch(Account.resetAccount());
   dispatch(goToLogin());
 };
@@ -213,7 +206,7 @@ const setSession = ({ token, user }: { token: string; user: Models.Account }): T
   const tabID = tabIDSelector(state);
   const browserID = browserIDSelector(state);
   Cookies.removeLastSessionCookie();
-  await dispatch(updateAuthToken(token));
+  dispatch(updateAuthToken(token));
 
   await client.socket!.auth(token, browserID, tabID);
   dispatch(Account.updateAccount(user));

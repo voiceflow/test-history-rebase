@@ -74,15 +74,15 @@ const diagramSocketClient = {
     return client.watch(ServerEvent.DIAGRAM_RECOVER, callback);
   },
 
-  terminate(skillId: string, diagramId: string) {
-    return client.call(ClientEvent.LEAVE_DIAGRAM, { skillId, diagramId });
+  terminate() {
+    return client.call(ClientEvent.LEAVE_DIAGRAM);
   },
 
   async switch(skillID: string, diagramID: string) {
     const prevStatus = client.status;
     client.status = SocketStatus.TRANSFERRING;
 
-    await this.terminate(skillID, diagramID);
+    await this.terminate();
 
     const locks = await this.initialize(skillID, diagramID);
 

@@ -18,7 +18,7 @@ import * as Project from '@/ducks/project';
 import * as Slot from '@/ducks/slot';
 import * as Models from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
-import { getAuthCookie, getByName } from '@/utils/cookies';
+import { getAuthCookie } from '@/utils/cookies';
 import { DataTypes, download } from '@/utils/dom';
 import { isChoiceNode, isFlowNode, isIntentNode, isProductLinkedNode } from '@/utils/node';
 import { arrayStringReplace } from '@/utils/string';
@@ -63,7 +63,7 @@ export const exportCanvas = (type: ExportFormat): Thunk => async (dispatch, getS
   const options = {
     token: getAuthCookie()!,
     canvasURL: `https://${window.location.host}/project/${skillID}/export/${diagramID}`,
-    persistedToken: getByName('persist%3Asession%3Atoken', { doNotParse: true })!,
+    persistedToken: 'persistedToken', // remove later after updating voiceflow/canvas-export
     persistedTabID: sessionStorage.getItem('persist:session:tab_id')!,
     persistedBrowserID: localStorage.getItem('persist:session:browser_id')!,
   };

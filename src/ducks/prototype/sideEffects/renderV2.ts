@@ -1,7 +1,5 @@
 import client from '@/client';
-import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
-import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as Skill from '@/ducks/skill';
 import { DBIntent, DBSlot } from '@/models';
@@ -18,19 +16,23 @@ const renderPrototype = (abortControl: AbortControl): Thunk => async (dispatch, 
   const platform = Skill.activePlatformSelector(state);
   const projectID = Skill.activeProjectIDSelector(state);
   const versionID = Skill.activeSkillIDSelector(state);
-  const isGeneralPrototypeEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.GENERAL_PROTOTYPE);
 
   if (!projectID) {
     return;
   }
 
   try {
-    const platformServices = isGeneralPrototypeEnabled ? client.platform[platform] : client.platform.alexa;
+    let platformPrototypeService = client.platform[platform].prototype;
 
-    await platformServices.prototype.run(projectID);
+    // remove the prototypeV2 from alexa as part of GENERAL_PROTOTYPE cleanup
+    if (platform === PlatformType.ALEXA) {
+      platformPrototypeService = client.platform[platform].prototypeV2;
+    }
+
+    await platformPrototypeService.run(projectID);
 
     await waitJobFinished({
-      fetchJob: () => platformServices.prototype.getStatus(projectID),
+      fetchJob: () => platformPrototypeService.getStatus(projectID),
       maxChecks: MAX_CHECKS,
       abortControl,
     });

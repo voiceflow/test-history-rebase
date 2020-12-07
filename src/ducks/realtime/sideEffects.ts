@@ -80,7 +80,11 @@ export const sendRealtimeProjectUpdate = (action: Socket.AnySocketAction): Thunk
 
 export const terminateRealtimeConnection = (): Thunk => async (dispatch) => {
   dispatch(disconnectRealtime());
-  await client.socket.diagram.terminate();
+
+  if (client.socket.isConnected()) {
+    await client.socket.diagram.terminate();
+  }
+
   dispatch(resetRealtime());
 };
 

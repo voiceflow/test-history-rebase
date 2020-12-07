@@ -152,6 +152,7 @@ export const updateAuthToken = (token: string | null): SyncThunk => (dispatch) =
 export const resetSession = (): Thunk => async (dispatch) => {
   dispatch(updateAuthToken(null));
   dispatch(Account.resetAccount());
+  await client.socket.logout().catch(console.error);
   dispatch(goToLogin());
 };
 
@@ -187,12 +188,14 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     const user = await client.user.get();
 
     await client.socket!.auth(token, browserID, tabID);
+
     dispatch(Account.updateAccount(user));
 
     await dispatch(identifyUser(user));
 
     const location = ConnectedReactRouter.getLocation(state);
     const search = Query.parse(location.search);
+
     if (search.promo || search.ob_plan) {
       dispatch(goToOnboarding());
     }

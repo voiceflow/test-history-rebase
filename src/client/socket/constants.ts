@@ -3,6 +3,7 @@ export enum DiagramUpdateAction {
 }
 
 export enum SocketEvent {
+  LOGOUT = 'logout',
   INITIALIZE = 'init',
   FAIL = 'fail',
   ERROR = 'error',
@@ -61,4 +62,5 @@ export const CALL_MAP = {
   [ClientEvent.UPDATE_PROJECT]: ServerEvent.PROJECT_UPDATED,
   [ClientEvent.LEAVE_DIAGRAM]: ServerEvent.DIAGRAM_LEFT,
   [SocketEvent.INITIALIZE]: SocketEvent.INITIALIZE,
+  [SocketEvent.LOGOUT]: SocketEvent.LOGOUT,
 };

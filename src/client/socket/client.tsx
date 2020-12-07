@@ -167,7 +167,8 @@ class SocketClient {
     try {
       await this.#initializeConnection(authProfile);
 
-      this.on(SocketEvent.RECONNECT, () => this.#initializeConnection());
+      this.off(SocketEvent.RECONNECT, this.#onReconnect);
+      this.on(SocketEvent.RECONNECT, this.#onReconnect);
 
       this.authProfile = authProfile;
     } catch {
@@ -175,7 +176,19 @@ class SocketClient {
     }
   };
 
-  #initializeConnection = (authProfile = this.authProfile) => this.call(SocketEvent.INITIALIZE, authProfile!, SOCKET_INIT_TIMEOUT);
+  logout = async () => {
+    this.authProfile = null;
+
+    await this.call(SocketEvent.LOGOUT);
+  };
+
+  #onReconnect = () => {
+    if (this.authProfile) {
+      this.#initializeConnection(this.authProfile);
+    }
+  };
+
+  #initializeConnection = (authProfile: AuthProfile) => this.call(SocketEvent.INITIALIZE, authProfile, SOCKET_INIT_TIMEOUT);
 
   #setupErrorHandlers = () => {
     this.#handleError(SocketEvent.FAIL);

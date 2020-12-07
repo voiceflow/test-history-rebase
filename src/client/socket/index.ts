@@ -8,8 +8,11 @@ const socketClient = {
   project,
   diagram,
 
+  isConnected: () => client.isConnected,
+
   connect: client.connect,
   auth: client.auth,
+  logout: client.logout,
   disconnect: client.disconnect,
 };
 

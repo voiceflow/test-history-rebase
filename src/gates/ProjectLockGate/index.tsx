@@ -17,7 +17,7 @@ const ProjectLockGate: React.FC<ConnectedProjectLockGateProps> = ({ isSessionBus
           onTakeover={() => {
             setErrorScreen(null);
             handleSessionTakeover();
-            window.location.reload();
+            setTimeout(window.location.reload, 150);
           }}
         />
       );

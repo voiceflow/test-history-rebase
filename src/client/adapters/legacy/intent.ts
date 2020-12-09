@@ -1,9 +1,18 @@
-import { DBIntent, Intent } from '@/models';
+import { PlatformType } from '@/constants';
+import { Intent, IntentInput, IntentSlot } from '@/models';
 import { denormalize, normalize } from '@/utils/normalized';
 
 import { createAdapter } from '../utils';
 
-const intentAdapter = createAdapter<DBIntent, Intent>(
+export type LegacyDBIntent = {
+  key: string;
+  name: string;
+  slots?: IntentSlot[];
+  inputs: IntentInput[];
+  _platform: PlatformType;
+};
+
+const intentAdapter = createAdapter<LegacyDBIntent, Intent>(
   ({ key, name, inputs, slots = [], _platform }) => ({
     id: key,
     name,

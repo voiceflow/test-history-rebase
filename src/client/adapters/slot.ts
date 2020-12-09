@@ -35,4 +35,18 @@ const slotAdapter = createAdapter<DBSlot, Slot>(
   })
 );
 
+export const spreadSynonyms = (slot: DBSlot) => ({
+  ...slot,
+  inputs: slot.inputs.reduce<string[]>(
+    (acc, input) => [
+      ...acc,
+      ...input
+        .split(',')
+        .map((value) => value.trim())
+        .filter(Boolean),
+    ],
+    []
+  ),
+});
+
 export default slotAdapter;

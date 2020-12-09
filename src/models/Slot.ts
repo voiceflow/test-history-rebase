@@ -11,11 +11,3 @@ export type Slot = {
   color?: string;
   inputs: SlotInput[];
 };
-
-export type DBSlot = {
-  key: string;
-  name: string;
-  type?: { value?: string };
-  color?: string;
-  inputs: string[];
-};

@@ -1,4 +1,4 @@
-import { GooglePublishing, Locale, defaultGooglePublishing } from '@voiceflow/google-types';
+import { GoogleVersionPublishing, Locale, defaultGoogleVersionPublishing } from '@voiceflow/google-types';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { FullSkill } from '@/models';
@@ -25,7 +25,7 @@ type SkillPublishing = Pick<
   | 'locales'
 >;
 
-const googlePublishingAdapter = createAdapter<GooglePublishing, SkillPublishing>(
+const googlePublishingAdapter = createAdapter<GoogleVersionPublishing, SkillPublishing>(
   (publishing) => {
     const {
       pronunciation,
@@ -37,7 +37,7 @@ const googlePublishingAdapter = createAdapter<GooglePublishing, SkillPublishing>
       smallLogoImage,
       sampleInvocations,
       termsOfServiceUrl,
-    } = defaultGooglePublishing(publishing);
+    } = defaultGoogleVersionPublishing(publishing);
 
     return {
       summary: shortDescription,

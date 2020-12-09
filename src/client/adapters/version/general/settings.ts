@@ -1,4 +1,4 @@
-import { GeneralSettings, RepeatType, Voice, defaultGeneralSettings } from '@voiceflow/general-types';
+import { GeneralVersionSettings, Locale, RepeatType, Voice, defaultGeneralVersionSettings } from '@voiceflow/general-types';
 import _invert from 'lodash/invert';
 
 import { createAdapter } from '@/client/adapters/utils';
@@ -6,7 +6,7 @@ import { FullSkill } from '@/models';
 
 import { createErrorPromptAdapter, createRestartAdapter } from '../utils';
 
-export type SkillSettings = Pick<FullSkill<string>['meta'], 'repeat' | 'settings' | 'restart' | 'resumePrompt' | 'errorPrompt'>;
+export type SkillSettings = Pick<FullSkill<string>['meta'], 'repeat' | 'settings' | 'restart' | 'resumePrompt' | 'errorPrompt' | 'locales'>;
 
 export const restartAdapter = createRestartAdapter<Voice>({ defaultVoice: Voice.DEFAULT });
 export const errorPromptAdapter = createErrorPromptAdapter<Voice>({ defaultVoice: Voice.DEFAULT });
@@ -17,12 +17,13 @@ export const RepeatMap = {
   [RepeatType.OFF]: 0,
 };
 
-const generalSettingsAdapter = createAdapter<GeneralSettings<Voice>, SkillSettings>(
+const generalSettingsAdapter = createAdapter<GeneralVersionSettings, SkillSettings>(
   (settings) => {
-    const { error, session, repeat, defaultVoice } = defaultGeneralSettings(settings, { defaultPromptVoice: Voice.DEFAULT });
+    const { error, session, repeat, locales, defaultVoice } = defaultGeneralVersionSettings(settings);
 
     return {
       repeat: RepeatMap[repeat],
+      locales,
       accountLinking: null,
       alexaEvents: '',
       settings: { defaultVoice },
@@ -31,7 +32,8 @@ const generalSettingsAdapter = createAdapter<GeneralSettings<Voice>, SkillSettin
       ...restartAdapter.fromDB(session),
     };
   },
-  ({ resumePrompt, errorPrompt, restart, repeat, settings: { defaultVoice = null } = {} }) => ({
+  ({ locales = [Locale.EN_US], resumePrompt, errorPrompt, restart, repeat, settings: { defaultVoice = null } = {} }) => ({
+    locales: locales as Locale[],
     session: restartAdapter.toDB({ restart, resumePrompt }),
     error: errorPromptAdapter.toDB(errorPrompt),
     repeat: (_invert(RepeatMap)[repeat] as RepeatType) || RepeatType.DIALOG,

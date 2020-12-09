@@ -33,6 +33,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   render,
   sharePrototype,
   platform,
+  versionID,
   projectID,
   renderPrototype,
   renderPrototypeV2,
@@ -58,11 +59,11 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     loadingTestableLink: false,
   });
 
-  const onClickPrototype = () => {
+  const onClickPrototype = async () => {
     if (render) {
       if (canSharePrototype) {
         generalPrototype.isEnabled ? renderPrototypeV2({ aborted: false }) : renderPrototype({ aborted: false });
-        copyTestableLink();
+        await copyTestableLink();
         toast.success('Link copied to clipboard');
       }
     } else {
@@ -70,13 +71,19 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     }
   };
 
-  const copyTestableLink = () => {
-    loadTestableLink();
+  const copyTestableLink = async () => {
+    await loadTestableLink();
     copy(state.testableLink);
   };
 
   const loadTestableLink = async () => {
     if (state.testableLink) {
+      return;
+    }
+    if (generalPrototype.isEnabled) {
+      stateApi.update({
+        testableLink: `${window.location.origin}/prototype/${versionID}`,
+      });
       return;
     }
 
@@ -204,6 +211,7 @@ const mapStateToProps = {
   platform: Skill.activePlatformSelector,
   meta: Skill.skillMetaSelector,
   projectID: Skill.activeProjectIDSelector,
+  versionID: Skill.activeSkillIDSelector,
 };
 
 const mapDispatchToProps = {

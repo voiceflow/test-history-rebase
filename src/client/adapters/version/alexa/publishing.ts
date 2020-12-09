@@ -1,4 +1,4 @@
-import { AlexaPublishing, Locale, defaultAlexaPublishing } from '@voiceflow/alexa-types';
+import { AlexaVersionPublishing, Locale, defaultAlexaVersionPublishing } from '@voiceflow/alexa-types';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { FullSkill } from '@/models';
@@ -25,7 +25,7 @@ type SkillPublishing = Pick<
   | 'locales'
 >;
 
-const alexaPublishingAdapter = createAdapter<AlexaPublishing, SkillPublishing>(
+const alexaPublishingAdapter = createAdapter<AlexaVersionPublishing, SkillPublishing>(
   (publishing) => {
     const {
       summary,
@@ -46,7 +46,7 @@ const alexaPublishingAdapter = createAdapter<AlexaPublishing, SkillPublishing>(
       invocationName,
       locales,
       updatesDescription,
-    } = defaultAlexaPublishing(publishing);
+    } = defaultAlexaVersionPublishing(publishing);
 
     return {
       summary,

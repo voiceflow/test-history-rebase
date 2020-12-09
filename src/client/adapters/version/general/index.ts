@@ -1,5 +1,5 @@
 import { Version } from '@voiceflow/api-sdk';
-import { GeneralVersionData, Voice } from '@voiceflow/general-types';
+import { GeneralVersionData } from '@voiceflow/general-types';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { BUILT_IN_VARIABLES, PlatformType } from '@/constants';
@@ -7,7 +7,7 @@ import { FullSkill } from '@/models';
 
 import settingsAdapter from './settings';
 
-const generalVersionAdapter = createAdapter<Version<GeneralVersionData<Voice>>, FullSkill<string>>(
+const generalVersionAdapter = createAdapter<Version<GeneralVersionData>, FullSkill<string>>(
   ({ name, _id, creatorID, projectID, rootDiagramID, variables, platformData: { settings } }) => ({
     id: _id,
     name,

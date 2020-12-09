@@ -1,15 +1,15 @@
+import { Intent, Slot } from '@voiceflow/api-sdk';
 import { utils } from '@voiceflow/common';
 import NLC, { IIntentSlot } from '@voiceflow/natural-language-commander';
 
-import { spreadSynonyms } from '@/client/adapters/legacy/slot';
-import { DBIntent, DBSlot } from '@/models';
+import { spreadSynonyms } from '@/client/adapters/slot';
 import Logger from '@/utils/logger';
 
 const log = Logger.child('nlc');
 
 type Options = {
-  slots: DBSlot[];
-  intents: DBIntent[];
+  slots: Slot[];
+  intents: Intent[];
   builtInIntents: { name: string; samples: string[] }[];
 };
 

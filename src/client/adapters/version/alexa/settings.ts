@@ -1,4 +1,4 @@
-import { AlexaSettings, Locale, Voice, defaultAlexaSettings } from '@voiceflow/alexa-types';
+import { AlexaVersionSettings, Locale, Voice, defaultAlexaVersionSettings } from '@voiceflow/alexa-types';
 import { RepeatType } from '@voiceflow/general-types';
 import _invert from 'lodash/invert';
 
@@ -22,11 +22,20 @@ export const RepeatMap = {
   [RepeatType.OFF]: 0,
 };
 
-const alexaSettingsAdapter = createAdapter<AlexaSettings, SkillSettings>(
+const alexaSettingsAdapter = createAdapter<AlexaVersionSettings, SkillSettings>(
   (settings) => {
-    const { error, session, repeat, accountLinking, customInterface, events, permissions, modelSensitivity, defaultVoice } = defaultAlexaSettings(
-      settings
-    );
+    const {
+      error,
+      session,
+      repeat,
+      accountLinking,
+      customInterface,
+      events,
+      permissions,
+      modelSensitivity,
+      defaultVoice,
+    } = defaultAlexaVersionSettings(settings);
+
     return {
       repeat: RepeatMap[repeat],
       accountLinking: accountLinking && accountLinkingAdapter.fromDB(accountLinking),

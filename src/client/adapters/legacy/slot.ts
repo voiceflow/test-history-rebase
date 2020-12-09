@@ -1,11 +1,19 @@
 import cuid from 'cuid';
 
 import { CUSTOM_SLOT_TYPE, LEGACY_CUSTOM_SLOT_TYPE } from '@/constants';
-import { DBSlot, Slot } from '@/models';
+import { Slot } from '@/models';
 
 import { createAdapter } from '../utils';
 
-const slotAdapter = createAdapter<DBSlot, Slot>(
+export type LegacyDBSlot = {
+  key: string;
+  name: string;
+  type?: { value?: string };
+  color?: string;
+  inputs: string[];
+};
+
+const slotAdapter = createAdapter<LegacyDBSlot, Slot>(
   ({ key, name, inputs, color, type }) => ({
     id: key,
     name,
@@ -29,7 +37,7 @@ const slotAdapter = createAdapter<DBSlot, Slot>(
   })
 );
 
-export const spreadSynonyms = (slot: DBSlot) => {
+export const spreadSynonyms = (slot: LegacyDBSlot) => {
   return {
     ...slot,
     inputs: slot.inputs.reduce<string[]>((acc, input) => {

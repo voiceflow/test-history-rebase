@@ -1,4 +1,4 @@
-import { GooglePublishing, GoogleSettings, GoogleVersionData } from '@voiceflow/google-types';
+import { GoogleVersionData, GoogleVersionPublishing, GoogleVersionSettings } from '@voiceflow/google-types';
 
 import { GOOGLE_SERVICE_ENDPOINT } from '@/config';
 import { GoogleStageType } from '@/constants/platforms';
@@ -12,7 +12,7 @@ const googleServiceClient = {
   project: projectService,
   publish: createPublishService<GooglePublishJob.AnyJob, GoogleStageType>(GOOGLE_SERVICE_ENDPOINT),
   session: createSessionService<Account.Google, { code: string }>(GOOGLE_SERVICE_ENDPOINT),
-  version: createVersionService<GoogleSettings, GooglePublishing, GoogleVersionData>(GOOGLE_SERVICE_ENDPOINT),
+  version: createVersionService<GoogleVersionSettings, GoogleVersionPublishing, GoogleVersionData>(GOOGLE_SERVICE_ENDPOINT),
   prototype: createPrototypeService<GeneralJob.AnyJob>(GOOGLE_SERVICE_ENDPOINT),
 };
 

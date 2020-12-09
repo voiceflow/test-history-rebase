@@ -1,5 +1,5 @@
 import { RepeatType } from '@voiceflow/general-types';
-import { GoogleSettings, Locale, Voice, defaultGoogleSettings } from '@voiceflow/google-types';
+import { GoogleVersionSettings, Locale, Voice, defaultGoogleVersionSettings } from '@voiceflow/google-types';
 import _invert from 'lodash/invert';
 
 import { createAdapter } from '@/client/adapters/utils';
@@ -21,9 +21,9 @@ export const RepeatMap = {
   [RepeatType.OFF]: 0,
 };
 
-const googleSettingsAdapter = createAdapter<GoogleSettings, SkillSettings>(
+const googleSettingsAdapter = createAdapter<GoogleVersionSettings, SkillSettings>(
   (settings) => {
-    const { error, session, repeat, defaultVoice } = defaultGoogleSettings(settings);
+    const { error, session, repeat, defaultVoice } = defaultGoogleVersionSettings(settings);
 
     return {
       repeat: RepeatMap[repeat],

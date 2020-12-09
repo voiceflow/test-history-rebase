@@ -2,7 +2,6 @@ import client from '@/client';
 import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import * as Skill from '@/ducks/skill';
-import { DBIntent, DBSlot } from '@/models';
 import { Thunk } from '@/store/types';
 import { AbortControl, waitJobFinished } from '@/utils/job';
 
@@ -39,15 +38,11 @@ const renderPrototype = (abortControl: AbortControl): Thunk => async (dispatch, 
 
     if (abortControl.aborted) return;
 
-    const version = await client.api.version.get(versionID);
+    const prototype = await client.api.version.getPrototype(versionID);
 
-    let slots: DBSlot[] = [];
-    let intents: DBIntent[] = [];
+    if (!prototype) throw new Error('version prototype not found');
 
-    if (version.prototype && 'slots' in version.prototype.model) {
-      slots = version.prototype.model.slots;
-      intents = version.prototype.model.intents.map((intent) => ({ ...intent, _platform: PlatformType.GENERAL }));
-    }
+    const { slots, intents } = prototype.model;
 
     dispatch(initializePrototypeV2({ slots, intents }));
   } catch (err) {

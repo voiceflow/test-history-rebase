@@ -1,10 +1,10 @@
-import { Prompt, RestartSession, ResumeSession, SessionType } from '@voiceflow/general-types';
+import { BaseResumeSession, Prompt, RestartSession, SessionType } from '@voiceflow/general-types';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { FullSkill } from '@/models';
 
 export const createRestartAdapter = <V extends string>({ defaultVoice }: { defaultVoice: V }) =>
-  createAdapter<RestartSession | ResumeSession<V>, Pick<FullSkill<string>['meta'], 'restart' | 'resumePrompt'>>(
+  createAdapter<RestartSession | BaseResumeSession<V>, Pick<FullSkill<string>['meta'], 'restart' | 'resumePrompt'>>(
     (session) =>
       session.type === SessionType.RESUME
         ? {

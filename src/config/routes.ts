@@ -12,6 +12,7 @@ export enum RootRoute {
   DASHBOARD = 'dashboard',
   ACCOUNT = 'account',
   DEMO = 'demo',
+  PROTOTYPE = 'prototype',
   CANVAS = 'canvas',
   INVITE = 'invite',
 }
@@ -98,6 +99,7 @@ export const Path = {
 
   INVITE: toPath(RootRoute.INVITE),
 
+  PUBLIC_PROTOTYPE: toPath(RootRoute.PROTOTYPE, ':versionID'),
   PROJECT_DEMO: toPath(RootRoute.DEMO, ':versionID'),
   PROJECT_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID?'),
   PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE, ':diagramID?'),

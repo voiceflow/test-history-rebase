@@ -25,6 +25,28 @@ const prototypeClient = {
       return { skill, intents, slots, testVariableValues: data.globals };
     }),
 
+  getLegacyInfo: (configID: string) =>
+    fetch.get(`${LEGACY_TESTING_PATH}/getInfo/${configID}`).then((data: any) => {
+      const skill = legacySkillAdapter.fromDB(data.skill);
+      const intents = extractIntents(data.skill) as any[];
+      const slots = extractSlots(data.skill) as any[];
+
+      return {
+        data: {
+          name: skill.name,
+          locales: skill.locales || ['en-US'],
+        },
+        context: {
+          stack: [{ programID: skill.rootDiagramID }],
+          variables: (data.globals as Record<string, unknown>) || {},
+        },
+        model: {
+          slots,
+          intents,
+        },
+      };
+    }),
+
   createInfo: (versionID: string, diagramID: string, variables: Record<string, any>) =>
     axios.post(`${API_ENDPOINT}/v2/versions/${versionID}/test`, { diagramID, variables }).then((res) => res.data as string),
 

@@ -16,7 +16,6 @@ import {
   ff_generalPlatform,
   ff_generalPrototype,
   ff_headerRedesign,
-  ff_manualNavigation,
   ff_prototypeTest,
   ga,
   intercom,
@@ -74,7 +73,6 @@ export const ENV = {
   FF_CODE_EXPORT: ff_codeExport && 'true',
   FF_PROTOTYPE_TEST: ff_prototypeTest && 'true',
   FF_HEADER_REDESIGN: ff_headerRedesign && 'true',
-  FF_MANUAL_NAVIGATION: ff_manualNavigation && 'true',
 
   API_HOST: 'localhost',
   ...EXTRACTED_ENV,

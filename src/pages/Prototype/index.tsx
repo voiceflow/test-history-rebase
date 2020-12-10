@@ -3,14 +3,13 @@ import { useLocation } from 'react-router-dom';
 
 import { FlexCenter } from '@/components/Flex';
 import { Link } from '@/components/Text';
-import { FeatureFlag } from '@/config/features';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useDidUpdateEffect, useFeature, useTeardown, useTrackingEvents } from '@/hooks';
+import { useDidUpdateEffect, useTeardown, useTrackingEvents } from '@/hooks';
 import { useDebouncedCallback } from '@/hooks/callback';
 import { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 import { Interactions } from '@/pages/Prototype/components/PrototypeDialog/components';
@@ -20,7 +19,7 @@ import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';
 import * as Query from '@/utils/query';
 
-import { Container, Dialog, InnerChatContainer, Input, OutterChatContainer, Reset, Start, UserSaysContainer } from './components';
+import { Container, Dialog, InnerChatContainer, Input, OutterChatContainer, Start, UserSaysContainer } from './components';
 import { usePrototype, useResetPrototype, useStartPrototype } from './hooks';
 import { PMStatus } from './types';
 
@@ -60,7 +59,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [updatedAudioInstance, setUpdatedAudioInstance] = React.useState<TAudio | null>(audioInstance);
   const [forceAudioUpdate, setForceAutoUpdate] = React.useState(0);
-  const manualNavigation = useFeature(FeatureFlag.MANUAL_NAVIGATION);
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
@@ -159,19 +157,15 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         </InnerChatContainer>
       </OutterChatContainer>
       <UserSaysContainer>
-        {prototypeMachineStatus === PMStatus.ENDED && !manualNavigation.isEnabled ? (
-          <Reset onClick={resetPrototype} />
-        ) : (
-          <Input
-            stepBack={onStepBack}
-            stepForward={onStepForward}
-            locale={locale}
-            setShowChips={setShowChips}
-            showChips={showChips}
-            disabled={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.IDLE, PMStatus.DIALOG_PROCESSING)}
-            onUserInput={onInteraction}
-          />
-        )}
+        <Input
+          stepBack={onStepBack}
+          stepForward={onStepForward}
+          locale={locale}
+          setShowChips={setShowChips}
+          showChips={showChips}
+          disabled={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.IDLE, PMStatus.DIALOG_PROCESSING)}
+          onUserInput={onInteraction}
+        />
       </UserSaysContainer>
     </Container>
   );

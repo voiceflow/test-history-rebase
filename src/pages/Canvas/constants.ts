@@ -12,7 +12,6 @@ export const CANVAS_MARKUP_TRANSFORMING_CLASSNAME = `${Identifier.CANVAS}--marku
 export const CANVAS_COMMENTING_ENABLED_CLASSNAME = `${Identifier.CANVAS}--commenting`;
 export const CANVAS_THREAD_OPEN_CLASSNAME = `${Identifier.CANVAS}--thread-open`;
 export const CANVAS_PROTOTYPE_RUNNING_CLASSNAME = `${Identifier.CANVAS}--prototype-running`;
-export const CANVAS_MANUAL_NAVIGATION_DISABLED_CLASSNAME = `${Identifier.CANVAS}--disable-manual-navigation`;
 
 export const NODE_DISABLED_CLASSNAME = `${ClassName.CANVAS_NODE}--disabled`;
 export const NODE_HOVERED_CLASSNAME = `${ClassName.CANVAS_NODE}--hovered`;

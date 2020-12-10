@@ -2,10 +2,9 @@ import * as React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
 import Tooltip from '@/components/TippyTooltip';
-import { FeatureFlag } from '@/config/features';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useFeature, useHotKeys } from '@/hooks';
+import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ConnectedProps } from '@/types';
 
@@ -34,8 +33,6 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
   inputRef,
   contextStep,
 }) => {
-  const manualNavigation = useFeature(FeatureFlag.MANUAL_NAVIGATION);
-
   const goBackDisabled = contextStep <= 1;
   const goForwardDisabled = contextStep === history.length - 1;
 
@@ -78,22 +75,18 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
           <SvgIcon icon="touch" size={16} color={ICON_COLOR} />
         </ControlButton>
       </Tooltip>
-      {manualNavigation.isEnabled && (
-        <>
-          <ButtonGroupSplitter />
-          <Tooltip title="Back" position="top">
-            <ControlButton active={false} disabled={goBackDisabled} onClick={handleOnBackward} style={{ transform: 'scaleX(-1)' }}>
-              <SvgIcon icon="forward" size={16} color={ICON_COLOR} />
-            </ControlButton>
-          </Tooltip>
-          <Tooltip title="Forward" position="top">
-            <ControlButton disabled={goForwardDisabled} active={false} onClick={handleOnForward}>
-              <SvgIcon icon="forward" size={16} color={ICON_COLOR} />
-            </ControlButton>
-          </Tooltip>
-          <ButtonGroupSplitter />
-        </>
-      )}
+      <ButtonGroupSplitter />
+      <Tooltip title="Back" position="top">
+        <ControlButton active={false} disabled={goBackDisabled} onClick={handleOnBackward} style={{ transform: 'scaleX(-1)' }}>
+          <SvgIcon icon="forward" size={16} color={ICON_COLOR} />
+        </ControlButton>
+      </Tooltip>
+      <Tooltip title="Forward" position="top">
+        <ControlButton disabled={goForwardDisabled} active={false} onClick={handleOnForward}>
+          <SvgIcon icon="forward" size={16} color={ICON_COLOR} />
+        </ControlButton>
+      </Tooltip>
+      <ButtonGroupSplitter />
     </ControlsContainer>
   );
 };

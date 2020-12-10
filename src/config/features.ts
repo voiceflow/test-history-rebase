@@ -7,7 +7,6 @@ export const CODE_EXPORT_ENABLED = process.env.FF_CODE_EXPORT === 'true';
 export const HEADER_REDESIGN_ENABLED = process.env.FF_HEADER_REDESIGN === 'true';
 export const GENERAL_PLATFORM_ENABLED = process.env.FF_GENERAL_PLATFORM === 'true';
 export const PROTOTYPE_TEST_ENABLED = process.env.FF_PROTOTYPE_TEST === 'true';
-export const MANUAL_NAVIGATION_ENABLED = process.env.FF_MANUAL_NAVIGATION === 'true';
 export const GENERAL_PROTOTYPE_ENABLED = process.env.FF_GENERAL_PROTOTYPE === 'true';
 
 export enum FeatureFlag {
@@ -16,7 +15,6 @@ export enum FeatureFlag {
   PROTOTYPE_TEST = 'prototype_test',
   HEADER_REDESIGN = 'header_redesign',
   GENERAL_PLATFORM = 'general_platform',
-  MANUAL_NAVIGATION = 'manual_navigation',
   GENERAL_PROTOTYPE = 'general_prototype',
 
   // permanent circuit breakers for vendor integrations
@@ -30,6 +28,5 @@ export const LOCAL_FEATURE_OVERRIDES = {
   [FeatureFlag.PROTOTYPE_TEST]: PROTOTYPE_TEST_ENABLED,
   [FeatureFlag.HEADER_REDESIGN]: HEADER_REDESIGN_ENABLED,
   [FeatureFlag.GENERAL_PLATFORM]: GENERAL_PLATFORM_ENABLED,
-  [FeatureFlag.MANUAL_NAVIGATION]: MANUAL_NAVIGATION_ENABLED,
   [FeatureFlag.GENERAL_PROTOTYPE]: GENERAL_PROTOTYPE_ENABLED,
 };

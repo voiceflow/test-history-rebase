@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import client from '@/client/workspace';
+import workspaceClient from '@/client/workspace';
 import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 import { Spinner } from '@/components/Spinner';
 import { ModalType } from '@/constants';
@@ -20,7 +20,7 @@ function BillingModal({ workspaceId }) {
 
   const loadInvoiceData = async () => {
     setLoading(true);
-    const data = await client.workspace.getInvoice(workspaceId);
+    const data = await workspaceClient.getInvoice(workspaceId);
     if (!data.invoice && !data.upcoming) {
       setHasPaid(false);
     } else {

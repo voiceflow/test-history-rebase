@@ -9,7 +9,7 @@ import merge from 'webpack-merge';
 import { instrument } from 'webpack-nano/argv';
 
 import paths from '../../paths';
-import { BASE_HREF, IS_ADMIN, IS_PRODUCTION, IS_SERVING } from '../config';
+import { BASE_HREF, ENV, IS_ADMIN, IS_PRODUCTION, IS_SERVING } from '../config';
 
 export default merge(
   {
@@ -48,6 +48,12 @@ export default merge(
           },
           inlineSource: 'runtime~.+\\.js',
         }),
+        templateParameters: (compilation) => {
+          return {
+            compilation,
+            ...ENV,
+          };
+        },
       }),
       new BaseHrefWebpackPlugin({ baseHref: BASE_HREF }),
 

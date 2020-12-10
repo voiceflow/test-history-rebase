@@ -1,4 +1,4 @@
-import { BlockType, IntegrationType, PlatformType } from '@/constants';
+import { BlockType, DialogType, IntegrationType, PlatformType } from '@/constants';
 import { getManager } from '@/pages/Canvas/managers';
 
 export const Section = {
@@ -15,9 +15,17 @@ export const ROOT_SECTIONS = [
     steps: [
       {
         type: BlockType.SPEAK,
-        icon: 'speak',
         label: 'Speak',
-        iconColor: getManager(BlockType.SPEAK).iconColor,
+        icon: getManager(BlockType.SPEAK).getIcon({ dialogs: [{ type: DialogType.VOICE }] }),
+        iconColor: getManager(BlockType.SPEAK).getIconColor({ dialogs: [{ type: DialogType.VOICE }] }),
+        factoryData: { dialogs: [{ type: DialogType.VOICE }] },
+      },
+      {
+        type: BlockType.SPEAK,
+        label: 'Audio',
+        icon: getManager(BlockType.SPEAK).getIcon({ dialogs: [{ type: DialogType.AUDIO }] }),
+        iconColor: getManager(BlockType.SPEAK).getIconColor({ dialogs: [{ type: DialogType.AUDIO }] }),
+        factoryData: { dialogs: [{ type: DialogType.AUDIO }] },
       },
       {
         type: BlockType.CHOICE,

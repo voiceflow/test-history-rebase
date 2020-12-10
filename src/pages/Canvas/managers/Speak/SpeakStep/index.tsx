@@ -9,6 +9,8 @@ import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
 import { stripHTMLTags } from '@/utils/string';
 
+import { ICON, ICON_COLOR } from '../constants';
+
 export type SpeakStepItem = {
   content?: string;
   url?: string;
@@ -21,17 +23,6 @@ export type SpeakStepProps = {
   platform: PlatformType;
   portID: string;
 };
-
-enum Icon {
-  TEXT = 'speak',
-  AUDIO = 'volume',
-  RANDOM = 'speakRandomized',
-}
-
-enum IconColor {
-  AUDIO = '#f83f55',
-  DEFAULT = '#8f8e94',
-}
 
 export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, portID }) => {
   const placeholder = getPlatformValue(platform, {
@@ -53,16 +44,16 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, p
               {...itemProps}
               key={`${index}`}
               label={content ? stripHTMLTags(transformVariablesToReadable(content)) : null}
-              icon={random ? Icon.RANDOM : isAudio ? Icon.AUDIO : Icon.TEXT} // eslint-disable-line no-nested-ternary
+              icon={random ? 'speakRandomized' : isAudio ? ICON[DialogType.AUDIO] : ICON[DialogType.VOICE]} // eslint-disable-line no-nested-ternary
               portID={index === itemsToRender.length - 1 ? portID : null}
-              iconColor={isAudio ? IconColor.AUDIO : IconColor.DEFAULT}
+              iconColor={isAudio && !random ? ICON_COLOR[DialogType.AUDIO] : ICON_COLOR[DialogType.VOICE]}
               labelVariant={isAudio ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
               multilineLabel={!isAudio}
               labelLineClamp={10}
             />
           ))
         ) : (
-          <Item {...itemProps} icon={Icon.TEXT} iconColor={IconColor.DEFAULT} />
+          <Item {...itemProps} icon={ICON[DialogType.VOICE]} iconColor={ICON_COLOR[DialogType.VOICE]} />
         )}
       </Section>
     </Step>

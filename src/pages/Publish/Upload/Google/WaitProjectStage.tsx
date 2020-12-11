@@ -130,7 +130,9 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
                         <Link href="https://docs.voiceflow.com/#/quickstart/testable-links">The Tutorial</Link>
                       </span>
                     </DropdownContainer>
-                    <Button variant={ButtonVariant.PRIMARY}>Create Actions Project</Button>
+                    <ButtonLink href="https://console.actions.google.com/" onClick={cancel}>
+                      <Button variant={ButtonVariant.PRIMARY}>Create Actions Project</Button>
+                    </ButtonLink>
                   </Container>
                 </Footer>
               </StageContainer>

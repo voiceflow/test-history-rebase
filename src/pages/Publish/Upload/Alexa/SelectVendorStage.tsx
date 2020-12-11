@@ -45,7 +45,7 @@ const SelectVendorStage: React.FC<SelectVendorStageProps & ConnectedSelectVendor
 
       <Flex maxHeight={400} mb={8} column style={{ overflow: 'auto' }}>
         {vendors.map(({ id, name }) => (
-          <Flex key={id} fullWidth height={42} onClick={() => onVendorSelect(id)}>
+          <Flex key={id} fullWidth onClick={() => onVendorSelect(id)}>
             <ProjectItem>{name || id}</ProjectItem>
           </Flex>
         ))}

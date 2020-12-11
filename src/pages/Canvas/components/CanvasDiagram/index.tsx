@@ -41,31 +41,22 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const { modeType: markupModeType, isCreating: isMarkupCreating, finishCreating: finishMarkupCreating } = React.useContext(MarkupModeContext)!;
 
   const isEditingMode = useEditingMode();
-  const [draggedCanvas, setDraggedCanvas] = React.useState(false);
   const isCommentingMode = useCommentingMode();
   const { panViewport, zoomViewport, updateViewport } = useCursorControls();
 
-  const onDragStart = React.useCallback(() => {
-    setDraggedCanvas(true);
-  }, [isMarkupCreating, markupModeType]);
-
-  const onMouseUp = React.useCallback(
-    (event: MouseEvent) => {
-      const nodeRightClicked = event.button === 2;
-      const middleMouseButtonClicked = event.button === 1;
-      const multiSelect = event.shiftKey;
-      if (event.defaultPrevented || engine.isCanvasBusy || nodeRightClicked || draggedCanvas || middleMouseButtonClicked || multiSelect) {
-        return;
-      }
-      engine.clearActivation();
-    },
-    [draggedCanvas]
-  );
+  const onMouseUp = React.useCallback((event: MouseEvent) => {
+    const nodeRightClicked = event.button === 2;
+    const middleMouseButtonClicked = event.button === 1;
+    const multiSelect = event.shiftKey;
+    if (event.defaultPrevented || engine.isCanvasBusy || nodeRightClicked || middleMouseButtonClicked || multiSelect) {
+      return;
+    }
+    engine.clearActivation();
+  }, []);
 
   const onClickCanvas = React.useCallback(
     async (event: React.MouseEvent) => {
-      if (event.defaultPrevented || draggedCanvas) {
-        setDraggedCanvas(false);
+      if (event.defaultPrevented) {
         return;
       }
 
@@ -84,7 +75,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         }
       }
     },
-    [isCommentingMode, isMarkupCreating, markupModeType, draggedCanvas]
+    [isCommentingMode, isMarkupCreating, markupModeType]
   );
 
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
@@ -138,7 +129,6 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         onRightClick={contextMenu.onOpen}
         onSelectDragStart={startGroupSelection}
         innerRef={connectBlockDrop}
-        onDragStart={onDragStart}
         addClass={addClass}
         removeClass={removeClass}
       >

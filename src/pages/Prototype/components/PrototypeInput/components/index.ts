@@ -24,6 +24,8 @@ export const InputArea = styled(TextArea)<{ inputRef: ((node: HTMLTextAreaElemen
 export const ControlsContainer = styled(Flex)`
   padding: 10px 24px;
   background: ${THEME.backgrounds.white};
+  border-radius: 12px 12px 0px 0px;
+  border-top: 1px solid #e2e9ec !important;
 `;
 
 export const InputContainer = styled.div`

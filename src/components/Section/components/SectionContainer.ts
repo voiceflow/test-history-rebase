@@ -20,6 +20,7 @@ export type SectionContainerProps = {
   isContextMenuOpen?: boolean;
   isDraggingPreview?: boolean;
   headerToggle?: boolean;
+  isRounded?: boolean;
 };
 
 export const draggingStyles = css`
@@ -79,8 +80,9 @@ const SectionContainer = styled.div<SectionContainerProps>`
   position: relative;
   background-color: #fff;
 
-  ${({ dividers, forceDividers, isDividerNested, isNested, isDividerBottom }) =>
+  ${({ dividers, isRounded, forceDividers, isDividerNested, isNested, isDividerBottom }) =>
     dividers &&
+    !isRounded &&
     (isNested || isDividerNested || forceDividers
       ? dividersStyles
       : css`
@@ -95,6 +97,17 @@ const SectionContainer = styled.div<SectionContainerProps>`
     isNested &&
     css`
       margin: 0 -${units(4)}px;
+    `}
+
+  ${({ isRounded }) =>
+    isRounded &&
+    css`
+      border-radius: 12px 12px 0px 0px;
+      border-top: 1px solid #eaeff4;
+
+      ${Header} {
+        border-radius: 12px 12px 0px 0px;
+      }
     `}
 
   ${({ isDraggingPreview }) => isDraggingPreview && draggingPreviewStyles}

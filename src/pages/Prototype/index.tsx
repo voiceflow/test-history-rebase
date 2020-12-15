@@ -3,13 +3,14 @@ import { useLocation } from 'react-router-dom';
 
 import { FlexCenter } from '@/components/Flex';
 import { Link } from '@/components/Text';
+import { FeatureFlag } from '@/config/features';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useDidUpdateEffect, useTeardown, useTrackingEvents } from '@/hooks';
+import { useDidUpdateEffect, useFeature, useTeardown, useTrackingEvents } from '@/hooks';
 import { useDebouncedCallback } from '@/hooks/callback';
 import { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 import { Interactions } from '@/pages/Prototype/components/PrototypeDialog/components';
@@ -59,6 +60,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [updatedAudioInstance, setUpdatedAudioInstance] = React.useState<TAudio | null>(audioInstance);
   const [forceAudioUpdate, setForceAutoUpdate] = React.useState(0);
+  const generalPrototype = useFeature(FeatureFlag.GENERAL_PROTOTYPE);
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
@@ -127,12 +129,14 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
               }
             }}
           />
-          <FlexCenter style={{ paddingBottom: '30px', color: '#62778c', background: '#fdfdfd' }}>
-            New to prototyping?
-            <Link href={PrototypingHelpLink} style={{ marginLeft: '6px' }}>
-              Learn More
-            </Link>
-          </FlexCenter>
+          {!generalPrototype.isEnabled && (
+            <FlexCenter style={{ paddingBottom: '30px', color: '#62778c', background: '#fdfdfd' }}>
+              New to prototyping?
+              <Link href={PrototypingHelpLink} style={{ marginLeft: '6px' }}>
+                Learn More
+              </Link>
+            </FlexCenter>
+          )}
         </FadeDownContainer>
       </Container>
     );

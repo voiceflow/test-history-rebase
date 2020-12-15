@@ -28,6 +28,5 @@ export const InnerChatContainer = styled.div<{ atTop: boolean }>`
 
 export const UserSaysContainer = styled.div`
   box-shadow: 0 -1px 40px 0 rgba(17, 49, 96, 0.06);
-  border-top: 1px solid #dfe3ed;
   z-index: 2;
 `;

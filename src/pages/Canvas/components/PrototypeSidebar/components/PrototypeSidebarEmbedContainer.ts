@@ -1,11 +1,21 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const PrototypeContainer = styled.div`
+type PrototypeContainerProps = {
+  generalPrototypeEnabled?: boolean;
+};
+
+const PrototypeContainer = styled.div<PrototypeContainerProps>`
   display: flex;
   flex: 1;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+
+  ${({ generalPrototypeEnabled }) =>
+    generalPrototypeEnabled &&
+    css`
+      background-color: 'white';
+    `}
 `;
 
 export default PrototypeContainer;

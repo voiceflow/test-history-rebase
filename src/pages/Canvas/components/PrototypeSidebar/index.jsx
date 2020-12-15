@@ -22,6 +22,7 @@ import { useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 
+import { Trained, Training } from './components/NLUTrain';
 import Container from './components/PrototypeSidebarContainer';
 import EmbedContainer from './components/PrototypeSidebarEmbedContainer';
 import { PROTOTYPE_SIDEBAR_WIDTH } from './constants';
@@ -30,12 +31,17 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
   const prototypeTestEnabled = useFeature(FeatureFlag.PROTOTYPE_TEST).isEnabled;
   const generalPrototypeEnabled = useFeature(FeatureFlag.GENERAL_PROTOTYPE).isEnabled;
   const [settingsOpen, toggleSettingsOpen] = useToggle();
+  const [trainingOpen, toggleTrainingOpen] = useToggle(true);
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const isPrototypingMode = usePrototypingMode();
   const resetPrototype = useResetPrototype();
   const eventualEngine = React.useContext(EventualEngineContext);
   const [atTop, setAtTop] = React.useState(true);
   const notStarted = status === PMStatus.IDLE;
+
+  const [trainingInProgress, setTrainingInProgress] = React.useState(false);
+  // TODO: change state based on luis training
+  const [trainingCompleted] = React.useState(false);
 
   React.useEffect(() => {
     // Reset the custom styling of the header when reset
@@ -79,8 +85,8 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
             <LoadCircle />
           </FlexCenter>
         ) : (
-          <Container>
-            {!prototypeTestEnabled && (
+          <Container generalPrototypeEnabled={generalPrototypeEnabled}>
+            {!prototypeTestEnabled && !generalPrototypeEnabled && (
               <Section
                 header="SETTINGS"
                 variant={SectionVariant.PROTOTYPE}
@@ -89,10 +95,30 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
                 isCollapsed={!settingsOpen}
               />
             )}
+            {generalPrototypeEnabled && notStarted && (
+              <Section
+                header="TRAINING"
+                onClick={toggleTrainingOpen}
+                isCollapsed={!trainingOpen}
+                collapseVariant={SectionToggleVariant.ARROW}
+                variant={SectionVariant.PROTOTYPE}
+                customHeaderStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
+                customContentStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
+              >
+                <div style={{ height: '277px' }}>
+                  {trainingInProgress ? (
+                    <Training />
+                  ) : (
+                    <Trained setTrainingInProgress={setTrainingInProgress} trainingCompleted={trainingCompleted} />
+                  )}
+                </div>
+              </Section>
+            )}
             <Section
               header="DIALOG"
               variant={SectionVariant.PROTOTYPE}
-              customHeaderStyling={{ background: !atTop && !notStarted ? '#fff' : '#FDFDFD' }}
+              customHeaderStyling={{ background: generalPrototypeEnabled || (!atTop && !notStarted) ? '#fff' : '#FDFDFD' }}
+              isRounded={generalPrototypeEnabled && notStarted}
               suffix={
                 <Flex>
                   <div style={{ display: 'inline-block', marginRight: '15px' }}>
@@ -113,7 +139,9 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
                 </Flex>
               }
             />
-            <EmbedContainer>{isPrototypingMode && <PrototypePage debug={settings.debug} atTop={atTop} setAtTop={setAtTop} />}</EmbedContainer>
+            <EmbedContainer generalPrototypeEnabled={generalPrototypeEnabled}>
+              {isPrototypingMode && <PrototypePage debug={settings.debug} atTop={atTop} setAtTop={setAtTop} />}
+            </EmbedContainer>
           </Container>
         )}
       </Drawer>

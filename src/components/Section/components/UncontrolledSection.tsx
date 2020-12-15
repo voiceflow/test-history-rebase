@@ -81,6 +81,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
     collapseVariant = null,
     isDividerNested = false,
     isDraggingPreview = false,
+    isRounded = false,
     customContentStyling,
     customHeaderStyling,
     headerVariant,
@@ -109,6 +110,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
       isNested={isNested}
       isDividerNested={isDividerNested}
       isLink={isLink}
+      isRounded={isRounded}
       {...props}
     >
       {hasHeader && (

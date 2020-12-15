@@ -13,24 +13,23 @@ import { Identifier } from '@/styles/constants';
 
 import ScrollbarsContainer from '../ScrollbarsContainer';
 import { Container, Item } from './components';
-import { PLATFORM_SECTION, ROOT_SECTIONS } from './constants';
+import { PLATFORM_SECTIONS } from './constants';
 
 function Steps({ platform, toggleSection, expandedSections }) {
   const gadgets = useFeature(FeatureFlag.GADGETS);
 
-  const sections = React.useMemo(
-    () =>
-      [...ROOT_SECTIONS, { ...PLATFORM_SECTION, steps: PLATFORM_SECTION.steps[platform] ?? [] }].map((section) => ({
-        ...section,
-        steps: section.steps.filter((step) => {
-          if (!gadgets.isEnabled && [BlockType.EVENT, BlockType.DIRECTIVE].includes(step.type)) return false;
-          if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
+  const sections = React.useMemo(() => {
+    const platformSections = PLATFORM_SECTIONS[platform];
 
-          return true;
-        }),
-      })),
-    [platform]
-  );
+    return platformSections.map((platformSection) => {
+      const platformSteps = platformSection.steps;
+      const steps = gadgets.isEnabled
+        ? platformSteps
+        : platformSteps.filter(({ type, publicOnly }) => ![BlockType.EVENT, BlockType.DIRECTIVE].includes(type) && !(IS_PRIVATE_CLOUD && publicOnly));
+
+      return { ...platformSection, steps };
+    });
+  }, [platform]);
   const expandedSectionsMap = React.useMemo(() => expandedSections.reduce((obj, type) => Object.assign(obj, { [type]: true }), {}), [
     expandedSections,
   ]);

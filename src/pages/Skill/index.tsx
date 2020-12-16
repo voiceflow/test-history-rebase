@@ -30,7 +30,7 @@ import Diagram from './components/Diagram';
 import ProjectTitle from './components/ProjectTitle';
 import SkillSubHeader from './components/SkillSubHeader';
 import { PAGES_MATCHES, TIMEOUT_COUNT } from './constants';
-import { ExportProvider, MarkupModeProvider, PublishProvider } from './contexts';
+import { ExportProvider, MarkupModeProvider, NLPProvider, PublishProvider } from './contexts';
 
 export type SkillProps = RouteComponentProps;
 
@@ -96,42 +96,44 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
       )}
       <PublishProvider>
         <ExportProvider>
-          <Page
-            header={
-              (!newPrototypeHeader || (newPrototypeHeader && !isPrototypingMode)) && (
-                <ProjectTitle title={activeSkill.name} onChange={saveProjectName} />
-              )
-            }
-            subHeader={(!newPrototypeHeader || !isPrototypingMode) && <SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
-            canScroll={false}
-            headerChildren={<CanvasHeader />}
-            onNavigateBack={() => {
-              if (!newPrototypeHeader) {
-                goToDashboard();
-              } else if (isPrototypingMode) {
-                goToCanvas(versionID, diagramID);
-              } else {
-                goToDashboard();
+          <NLPProvider>
+            <Page
+              header={
+                (!newPrototypeHeader || (newPrototypeHeader && !isPrototypingMode)) && (
+                  <ProjectTitle title={activeSkill.name} onChange={saveProjectName} />
+                )
               }
-            }}
-            navigateBackText={newPrototypeHeader && isPrototypingMode ? 'Back' : ''}
-          >
-            <Switch>
-              <PrivateRoute
-                path={[Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
-                component={Diagram}
-                diagramID={diagramID}
-              />
+              subHeader={(!newPrototypeHeader || !isPrototypingMode) && <SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
+              canScroll={false}
+              headerChildren={<CanvasHeader />}
+              onNavigateBack={() => {
+                if (!newPrototypeHeader) {
+                  goToDashboard();
+                } else if (isPrototypingMode) {
+                  goToCanvas(versionID, diagramID);
+                } else {
+                  goToDashboard();
+                }
+              }}
+              navigateBackText={newPrototypeHeader && isPrototypingMode ? 'Back' : ''}
+            >
+              <Switch>
+                <PrivateRoute
+                  path={[Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
+                  component={Diagram}
+                  diagramID={diagramID}
+                />
 
-              <PrivateRoute path={Path.PROJECT_TOOLS} component={Business} />
+                <PrivateRoute path={Path.PROJECT_TOOLS} component={Business} />
 
-              <PrivateRoute path={Path.PROJECT_MIGRATE} component={Migrate} />
+                <PrivateRoute path={Path.PROJECT_MIGRATE} component={Migrate} />
 
-              <PrivateRoute path={Path.PROJECT_PUBLISH} component={Publish} />
+                <PrivateRoute path={Path.PROJECT_PUBLISH} component={Publish} />
 
-              <Redirect to={Path.PROJECT_CANVAS} />
-            </Switch>
-          </Page>
+                <Redirect to={Path.PROJECT_CANVAS} />
+              </Switch>
+            </Page>
+          </NLPProvider>
         </ExportProvider>
       </PublishProvider>
     </MarkupModeProvider>

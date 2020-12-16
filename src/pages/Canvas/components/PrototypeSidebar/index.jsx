@@ -7,6 +7,7 @@ import { LoadCircle } from '@/components/Loader';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
 import { FeatureFlag } from '@/config/features';
+import { NLPTrainStageType } from '@/constants/platforms';
 import { EventualEngineContext } from '@/contexts';
 import * as Diagram from '@/ducks/diagram';
 import * as Modal from '@/ducks/modal';
@@ -20,6 +21,7 @@ import PrototypePage from '@/pages/Prototype';
 import PrototypeDeveloper from '@/pages/Prototype/components/PrototypePage/components/PrototypeDeveloper';
 import { useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
+import { NLPContext } from '@/pages/Skill/contexts';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 
 import { Trained, Training } from './components/NLUTrain';
@@ -36,12 +38,9 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
   const isPrototypingMode = usePrototypingMode();
   const resetPrototype = useResetPrototype();
   const eventualEngine = React.useContext(EventualEngineContext);
+  const nlp = React.useContext(NLPContext);
   const [atTop, setAtTop] = React.useState(true);
   const notStarted = status === PMStatus.IDLE;
-
-  const [trainingInProgress, setTrainingInProgress] = React.useState(false);
-  // TODO: change state based on luis training
-  const [trainingCompleted] = React.useState(false);
 
   React.useEffect(() => {
     // Reset the custom styling of the header when reset
@@ -76,6 +75,8 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
     };
   }, [isPrototypingMode]);
 
+  const isModelTraining = nlp.job?.stage.type === NLPTrainStageType.PROGRESS || nlp.job?.stage.type === NLPTrainStageType.IDLE;
+
   return (
     <>
       {isPrototypingMode && <PrototypeDeveloper open={settingsOpen} />}
@@ -105,13 +106,7 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
                 customHeaderStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
                 customContentStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
               >
-                <div style={{ height: '277px' }}>
-                  {trainingInProgress ? (
-                    <Training />
-                  ) : (
-                    <Trained setTrainingInProgress={setTrainingInProgress} trainingCompleted={trainingCompleted} />
-                  )}
-                </div>
+                <div style={{ height: '277px' }}>{isModelTraining ? <Training /> : <Trained />}</div>
               </Section>
             )}
             <Section

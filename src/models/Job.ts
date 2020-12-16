@@ -11,6 +11,9 @@ import {
   GooglePublishJobErrorType,
   GooglePublishJobSuccessType,
   GoogleStageType,
+  NLPTrainJobErrorType,
+  NLPTrainJobSuccessType,
+  NLPTrainStageType,
 } from '@/constants/platforms';
 
 export type JobStage<T extends string = string, D extends object = object> = {
@@ -191,6 +194,26 @@ export namespace GeneralJob {
       progress: number;
     }
   >;
+
+  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage>;
+}
+
+export namespace NLPTrainJob {
+  export type IdleStage = JobStage<NLPTrainStageType.IDLE, Record<string, unknown>>;
+
+  export type ErrorStage = JobStage<
+    NLPTrainStageType.ERROR,
+    {
+      error?: any;
+      message: string;
+      errorType: NLPTrainJobErrorType;
+      progress?: number;
+    }
+  >;
+
+  export type SuccessStage = JobStage<NLPTrainStageType.SUCCESS, { successType: NLPTrainJobSuccessType }>;
+
+  export type ProgressStage = JobStage<NLPTrainStageType.PROGRESS, { message: string; progress: number }>;
 
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage>;
 }

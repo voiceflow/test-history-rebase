@@ -13,3 +13,21 @@ export enum GeneralJobSuccessType {
   SUCCESS = 'SUCCESS',
   DOWNLOAD = 'DOWNLOAD',
 }
+
+export enum NLPTrainStageType {
+  IDLE = 'IDLE',
+  ERROR = 'ERROR',
+  SUCCESS = 'SUCCESS',
+  PROGRESS = 'PROGRESS',
+}
+
+export enum NLPTrainJobErrorType {
+  TRAINING = 'TRAINING',
+  COMPILING = 'COMPILING',
+  UPLOADING = 'UPLOADING',
+  PUBLISHING = 'PUBLISHING',
+}
+
+export enum NLPTrainJobSuccessType {
+  PUBLISH = 'PUBLISH',
+}

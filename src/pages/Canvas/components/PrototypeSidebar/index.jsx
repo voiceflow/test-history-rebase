@@ -23,6 +23,7 @@ import { useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import { NLPContext } from '@/pages/Skill/contexts';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
+import { FadeDownContainer } from '@/styles/animations';
 
 import { Trained, Training } from './components/NLUTrain';
 import Container from './components/PrototypeSidebarContainer';
@@ -96,7 +97,7 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
                 isCollapsed={!settingsOpen}
               />
             )}
-            {generalPrototypeEnabled && notStarted && (
+            {generalPrototypeEnabled && (
               <Section
                 header="TRAINING"
                 onClick={toggleTrainingOpen}
@@ -105,8 +106,17 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
                 variant={SectionVariant.PROTOTYPE}
                 customHeaderStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
                 customContentStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
+                disappear={!notStarted}
               >
-                <div style={{ height: '277px' }}>{isModelTraining ? <Training /> : <Trained />}</div>
+                <div style={{ height: '277px' }}>
+                  {isModelTraining ? (
+                    <Training />
+                  ) : (
+                    <FadeDownContainer>
+                      <Trained />
+                    </FadeDownContainer>
+                  )}
+                </div>
               </Section>
             )}
             <Section

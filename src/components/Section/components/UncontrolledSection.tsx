@@ -36,6 +36,7 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   dividers?: boolean;
   isNested?: boolean;
   disabled?: boolean;
+  disappear?: boolean;
   dropdown?: React.ReactNode;
   headerRef?: React.Ref<HTMLDivElement>;
   className?: string;
@@ -82,6 +83,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
     isDividerNested = false,
     isDraggingPreview = false,
     isRounded = false,
+    disappear = false,
     customContentStyling,
     customHeaderStyling,
     headerVariant,
@@ -111,6 +113,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
       isDividerNested={isDividerNested}
       isLink={isLink}
       isRounded={isRounded}
+      disappear={disappear}
       {...props}
     >
       {hasHeader && (

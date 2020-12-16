@@ -41,7 +41,7 @@ const Trained: React.FC<TrainedProps & ConnectedTrainedProps> = ({ platform, isM
       <img src="/lightbulb.svg" alt="user" width="80" />
 
       <Text fontSize={16} color="#132144" fontWeight={600} mt={16}>
-        {isTrained ? 'Your assistant is trained' : 'Your assistant needs training.'}
+        {isTrained ? 'Your assistant is trained' : 'Your assistant needs training'}
       </Text>
 
       <Text fontSize={13} color="#62778c" fontWeight={500} mt={16} mb={27} lineHeight={1.54}>

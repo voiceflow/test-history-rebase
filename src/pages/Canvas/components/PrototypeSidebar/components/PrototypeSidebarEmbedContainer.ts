@@ -14,7 +14,7 @@ const PrototypeContainer = styled.div<PrototypeContainerProps>`
   ${({ generalPrototypeEnabled }) =>
     generalPrototypeEnabled &&
     css`
-      background-color: 'white';
+      background-color: white;
     `}
 `;
 

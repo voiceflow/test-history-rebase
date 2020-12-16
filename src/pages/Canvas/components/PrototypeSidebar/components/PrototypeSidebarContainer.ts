@@ -20,7 +20,8 @@ const PrototypeSidebarContainer = styled.div<PrototypeSidebarContainerProps>`
   ${({ generalPrototypeEnabled }) =>
     generalPrototypeEnabled &&
     css`
-      background-color: 'rgba(238, 244, 246, 0.5)';
+      background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.5), rgba(238, 244, 246, 0.7)),
+        linear-gradient(to bottom, var(--white), var(--white));
     `}
 `;
 

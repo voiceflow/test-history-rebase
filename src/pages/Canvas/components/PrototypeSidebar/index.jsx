@@ -112,7 +112,9 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
             <Section
               header="DIALOG"
               variant={SectionVariant.PROTOTYPE}
-              customHeaderStyling={{ background: generalPrototypeEnabled || (!atTop && !notStarted) ? '#fff' : '#FDFDFD' }}
+              customHeaderStyling={{
+                background: generalPrototypeEnabled || (!atTop && !notStarted) ? '#fff' : '#FDFDFD',
+              }}
               isRounded={generalPrototypeEnabled && notStarted}
               suffix={
                 <Flex>

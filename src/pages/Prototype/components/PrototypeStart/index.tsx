@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button, { ButtonVariant } from '@/components/Button';
 import Text, { Link } from '@/components/Text';
+import TippyTooltip from '@/components/TippyTooltip';
 import { FeatureFlag } from '@/config/features';
 import { useFeature } from '@/hooks';
 
@@ -9,9 +10,10 @@ import { Container, ContainerV2 } from './components';
 
 export type PrototypeStartProps = {
   start: React.MouseEventHandler<HTMLButtonElement>;
+  isModelTraining?: boolean;
 };
 
-const PrototypeStart: React.FC<PrototypeStartProps> = ({ start }) => {
+const PrototypeStart: React.FC<PrototypeStartProps> = ({ start, isModelTraining }) => {
   const generalPrototype = useFeature(FeatureFlag.GENERAL_PROTOTYPE);
   return generalPrototype.isEnabled ? (
     <ContainerV2>
@@ -25,9 +27,21 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ start }) => {
         <Link href="https://docs.voiceflow.com/#/platform/prototyping">Learn more.</Link>
       </Text>
 
-      <Button variant={ButtonVariant.TERTIARY} onClick={start}>
-        Start Test
-      </Button>
+      {isModelTraining ? (
+        <TippyTooltip
+          trigger="mouseenter"
+          html={<div style={{ textAlign: 'left', width: '179px', height: '36px' }}>Once training is complete you'll be able to start a test</div>}
+          position="bottom"
+        >
+          <Button variant={ButtonVariant.TERTIARY} onClick={start} disabled>
+            Start Test
+          </Button>
+        </TippyTooltip>
+      ) : (
+        <Button variant={ButtonVariant.TERTIARY} onClick={start}>
+          Start Test
+        </Button>
+      )}
     </ContainerV2>
   ) : (
     <Container>

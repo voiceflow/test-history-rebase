@@ -137,7 +137,7 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
               }
             />
             <EmbedContainer generalPrototypeEnabled={generalPrototypeEnabled}>
-              {isPrototypingMode && <PrototypePage debug={settings.debug} atTop={atTop} setAtTop={setAtTop} />}
+              {isPrototypingMode && <PrototypePage debug={settings.debug} atTop={atTop} setAtTop={setAtTop} isModelTraining={isModelTraining} />}
             </EmbedContainer>
           </Container>
         )}

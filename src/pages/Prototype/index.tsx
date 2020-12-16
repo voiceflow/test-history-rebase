@@ -31,6 +31,7 @@ export type PrototypeProps = {
   isPublic?: boolean;
   atTop: boolean;
   setAtTop?: (val: boolean) => void;
+  isModelTraining?: boolean;
 };
 
 const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
@@ -46,6 +47,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   slots,
   mode,
   display,
+  isModelTraining,
 }) => {
   const [, trackEventsWrapper] = useTrackingEvents();
   const startPrototype = useStartPrototype();
@@ -128,6 +130,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
                 trackEventsWrapper(startPrototype, 'trackActiveProjectPrototypeTestStart', { debug, mode, display })();
               }
             }}
+            isModelTraining={isModelTraining}
           />
           {!generalPrototype.isEnabled && (
             <FlexCenter style={{ paddingBottom: '30px', color: '#62778c', background: '#fdfdfd' }}>

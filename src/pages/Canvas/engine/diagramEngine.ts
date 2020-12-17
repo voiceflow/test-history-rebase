@@ -71,7 +71,10 @@ class DiagramEngine extends EngineConsumer {
     const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [node.id] };
 
     const entities = this.getParentEntities(node.parentNode!, true, nodeOverrides);
-    const childEntities = this.getEntities(node.id, false);
+
+    const newParentNodeID = entities.nodesWithData[0].node.id;
+
+    const childEntities = this.getEntities(node.id, false, { parentNode: newParentNodeID });
     const mergedEntities = mergeEntityMaps(entities, childEntities);
 
     const coords = this.engine.canvas!.toCoords([parentNode.x, parentNode.y]).add(DUPLICATE_OFFSET);
@@ -95,6 +98,7 @@ class DiagramEngine extends EngineConsumer {
     if (rootNode.type === BlockType.START) {
       return null;
     }
+
     const {
       nodesWithData: [nodeWithData],
     } = await (rootNode.parentNode ? this.duplicateParentNode(rootNode) : this.duplicateChildNode(rootNode));

@@ -21,7 +21,6 @@ export type SectionContainerProps = {
   isDraggingPreview?: boolean;
   headerToggle?: boolean;
   isRounded?: boolean;
-  disappear?: boolean;
 };
 
 export const draggingStyles = css`
@@ -80,17 +79,6 @@ export const dividersStyles = css<SectionContainerProps>`
 const SectionContainer = styled.div<SectionContainerProps>`
   position: relative;
   background-color: #fff;
-
-  ${({ disappear }) =>
-    disappear
-      ? css`
-          max-height: 0;
-          overflow: hidden;
-          transition: all 0.35s ease-in-out;
-        `
-      : css`
-          max-height: 100%;
-        `}
 
   ${({ dividers, isRounded, forceDividers, isDividerNested, isNested, isDividerBottom }) =>
     dividers &&

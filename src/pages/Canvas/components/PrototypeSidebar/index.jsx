@@ -23,11 +23,12 @@ import { useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import { NLPContext } from '@/pages/Skill/contexts';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
-import { FadeDownContainer } from '@/styles/animations';
 
 import { Trained, Training } from './components/NLUTrain';
 import Container from './components/PrototypeSidebarContainer';
 import EmbedContainer from './components/PrototypeSidebarEmbedContainer';
+import TrainContainer from './components/TrainContainer';
+import TrainFadeDown from './components/TrainFadeDown';
 import { PROTOTYPE_SIDEBAR_WIDTH } from './constants';
 
 const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, renderPrototypeV2, isMuted, updatePrototype, status }) => {
@@ -106,17 +107,18 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
                 variant={SectionVariant.PROTOTYPE}
                 customHeaderStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
                 customContentStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
-                disappear={!notStarted}
               >
-                <div style={{ height: '277px' }}>
+                <TrainContainer>
                   {isModelTraining ? (
-                    <Training />
+                    <TrainFadeDown key="training">
+                      <Training />
+                    </TrainFadeDown>
                   ) : (
-                    <FadeDownContainer>
+                    <TrainFadeDown key="trained">
                       <Trained />
-                    </FadeDownContainer>
+                    </TrainFadeDown>
                   )}
-                </div>
+                </TrainContainer>
               </Section>
             )}
             <Section

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { FeatureFlag } from '@/config/features';
-import { BlockType, INTERNAL_NODES, IntegrationType, MARKUP_NODES } from '@/constants';
+import { BlockType, DialogType, INTERNAL_NODES, IntegrationType, MARKUP_NODES } from '@/constants';
 import { useDidUpdateEffect, useFeature, useTrackingEvents } from '@/hooks';
 import { NodeData } from '@/models';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
@@ -10,7 +10,13 @@ import MANAGERS from '@/pages/Canvas/managers';
 
 import { Container, Select } from './components';
 
-export const NO_SPOTLIGHT_BLOCKS = [BlockType.INTEGRATION, BlockType.CHOICE_OLD, ...INTERNAL_NODES, ...MARKUP_NODES];
+export const NO_SPOTLIGHT_BLOCKS = [
+  BlockType.INTEGRATION,
+  BlockType.CHOICE_OLD,
+  BlockType.SPEAK, // requires factoryData
+  ...INTERNAL_NODES,
+  ...MARKUP_NODES,
+];
 
 const BLOCK_TYPES = [
   ...MANAGERS.filter(({ type }) => !NO_SPOTLIGHT_BLOCKS.includes(type)).map(({ type, label }) => ({
@@ -18,6 +24,18 @@ const BLOCK_TYPES = [
     publicOnly: false,
     label,
   })),
+  {
+    value: BlockType.SPEAK,
+    label: 'Speak',
+    factoryData: { dialogs: [{ type: DialogType.VOICE }] },
+    publicOnly: false,
+  },
+  {
+    value: BlockType.SPEAK,
+    label: 'Audio',
+    factoryData: { dialogs: [{ type: DialogType.AUDIO }] },
+    publicOnly: false,
+  },
   {
     value: BlockType.INTEGRATION,
     label: 'API',

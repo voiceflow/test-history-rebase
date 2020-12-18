@@ -1,25 +1,34 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
+import { UserRole } from '@/constants';
+import * as Workspace from '@/ducks/workspace';
 import { ImportButton, NotificationsButton, ResourcesHeaderButton, SettingsButton, SubHeaderItem } from '@/pages/Dashboard/Header/components';
 
-const RightNavSection = () => (
-  <>
-    <SubHeaderItem>
-      <SettingsButton />
-    </SubHeaderItem>
+const RightNavSection = () => {
+  const userRole = useSelector(Workspace.userRoleSelector);
 
-    <SubHeaderItem>
-      <ImportButton />
-    </SubHeaderItem>
+  return (
+    <>
+      <SubHeaderItem>
+        <SettingsButton />
+      </SubHeaderItem>
 
-    <SubHeaderItem>
-      <NotificationsButton />
-    </SubHeaderItem>
+      {userRole !== UserRole.LIBRARY && (
+        <SubHeaderItem>
+          <ImportButton />
+        </SubHeaderItem>
+      )}
 
-    <SubHeaderItem>
-      <ResourcesHeaderButton />
-    </SubHeaderItem>
-  </>
-);
+      <SubHeaderItem>
+        <NotificationsButton />
+      </SubHeaderItem>
+
+      <SubHeaderItem>
+        <ResourcesHeaderButton />
+      </SubHeaderItem>
+    </>
+  );
+};
 
 export default RightNavSection;

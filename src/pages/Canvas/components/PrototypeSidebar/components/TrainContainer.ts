@@ -1,9 +1,19 @@
 import Flex from '@/components/Flex';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const TrainContainer = styled(Flex)`
+type TrainContainerProps = {
+  isModelTraining?: boolean;
+};
+
+const TrainContainer = styled(Flex)<TrainContainerProps>`
   height: 277px;
   overflow: hidden;
+
+  ${({ isModelTraining }) =>
+    !isModelTraining &&
+    css`
+      padding-bottom: 21px;
+    `}
 `;
 
 export default TrainContainer;

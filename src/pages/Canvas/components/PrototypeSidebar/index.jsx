@@ -108,7 +108,7 @@ const PrototypeSidebar = ({ settings, saveActiveDiagram, renderPrototype, render
                 customHeaderStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
                 customContentStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
               >
-                <TrainContainer>
+                <TrainContainer isModelTraining={isModelTraining}>
                   {isModelTraining ? (
                     <TrainFadeDown key="training">
                       <Training />

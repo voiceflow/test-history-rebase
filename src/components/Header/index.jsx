@@ -39,7 +39,12 @@ function Header({
     <HeaderContainer>
       <PrimaryHeader isBackClick={onBackClick}>
         {withLogo && (
-          <Logo src={logoAssetPath || '/logo.svg'} alt="logo" draggable="false" onClick={() => (disableLogoClick ? null : openWorkspaceSettings())} />
+          <Logo
+            src={logoAssetPath || '/vf-logo-dashboard.svg'}
+            alt="logo"
+            draggable="false"
+            onClick={() => (disableLogoClick ? null : openWorkspaceSettings())}
+          />
         )}
         {onBackClick && (
           <BackButton>

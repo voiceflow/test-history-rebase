@@ -26,8 +26,10 @@ const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versi
 
       dispatch(Realtime.initializeRealtime(diagramID, locks));
     } catch (err) {
-      console.error(err);
-      dispatch(Modal.setError('Error Switching Flows'));
+      console.error('error switching flows', err);
+      if (err) {
+        dispatch(Modal.setError('Error Switching Flows'));
+      }
     }
   }
 };

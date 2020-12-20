@@ -5,6 +5,7 @@ import Text, { Link } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
 import { FeatureFlag } from '@/config/features';
 import { useFeature } from '@/hooks';
+import { Identifier } from '@/styles/constants';
 
 import { Container, ContainerV2 } from './components';
 
@@ -38,7 +39,7 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ start, isModelTraining 
           </Button>
         </TippyTooltip>
       ) : (
-        <Button variant={ButtonVariant.TERTIARY} onClick={start}>
+        <Button variant={ButtonVariant.TERTIARY} onClick={start} id={Identifier.PROTOTYPE_START}>
           Start Test
         </Button>
       )}
@@ -49,7 +50,7 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ start, isModelTraining 
 
       <div>Start test to see the dialog transcription</div>
 
-      <Button icon="rocket" onClick={start}>
+      <Button icon="rocket" onClick={start} id={Identifier.PROTOTYPE_START}>
         Start Prototype
       </Button>
     </Container>

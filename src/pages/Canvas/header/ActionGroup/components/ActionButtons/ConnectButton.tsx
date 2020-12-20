@@ -6,6 +6,7 @@ import TippyTooltip from '@/components/TippyTooltip';
 import { PlatformType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 const CONNECT_ICON: Record<PlatformType, Icon | null> = {
@@ -28,6 +29,7 @@ const ConnectButton: React.FC<ConnectButtonProps & ConnectedConnectButtonProps> 
   return CONNECT_ICON[platform] ? (
     <TippyTooltip title={CONNECT_MESSAGE[platform]} position="bottom">
       <IconButton
+        id={Identifier.UPLOAD}
         iconProps={{ color: '#3D82E2' }}
         preventFocusStyle
         variant={IconButtonVariant.ACTION}

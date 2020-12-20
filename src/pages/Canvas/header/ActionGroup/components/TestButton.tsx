@@ -8,6 +8,7 @@ import * as Router from '@/ducks/router';
 import { connect, css, styled } from '@/hocs';
 import { useTrackingEvents } from '@/hooks';
 import { Spin } from '@/styles/animations';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 export type PlayButtonProps = {
@@ -42,6 +43,7 @@ const TestButton: React.FC<ConnectedTestButtonProps> = ({ goToPrototype }) => {
   return (
     <Tooltip distance={6} title="Test" position="bottom" hotkey="T">
       <PlayButton
+        id={Identifier.TEST}
         icon="play"
         onClick={() => {
           trackingEvents.trackActiveProjectPrototypeTestClick();

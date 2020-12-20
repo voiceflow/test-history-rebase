@@ -13,6 +13,7 @@ import { Hotkey } from '@/keymap';
 import { ProgressStage } from '@/pages/Publish/Upload/components';
 import { PublishContext } from '@/pages/Skill/contexts';
 import { useMarkupMode } from '@/pages/Skill/hooks';
+import { Identifier } from '@/styles/constants';
 import ArrowLeftIcon from '@/svgs/arrow-left.svg';
 import { ConnectedProps } from '@/types';
 
@@ -64,7 +65,7 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHead
         <Flex style={{ padding: 'none', height: '70px', backgroundColor: '#fff' }}>
           <FlexCenter style={{ minWidth: '100%', height: '100%', padding: 'none' }}>
             {onNavigateBack && (
-              <BackButtonComp hasBackText={!!navigateBackText} onClick={onNavigateBack}>
+              <BackButtonComp hasBackText={!!navigateBackText} onClick={onNavigateBack} id={Identifier.HEADER_BACK}>
                 <SvgIcon icon={ArrowLeftIcon} size={14} className="icon-back" />
                 {navigateBackText && <NavigateBackTextContainer>{navigateBackText}</NavigateBackTextContainer>}
               </BackButtonComp>

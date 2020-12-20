@@ -5,7 +5,7 @@ Cypress.Commands.add('awaitCanvasAnimation', () => {
 });
 
 Cypress.Commands.add('dragNode', { prevSubject: 'element' }, ($node, movementX: number, movementY: number) => {
-  cy.wrap($node).children().trigger('dragstart');
+  cy.wrap($node).trigger('dragstart');
 
   cy.document().then(($doc) => {
     const { clientHeight, clientWidth } = $doc.body;

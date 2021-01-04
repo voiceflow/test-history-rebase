@@ -20,7 +20,7 @@ export const {
   findByIDs: findSlotsByIDsSelector,
   byID: slotByIDSelector,
   has: hasSlotsSelector,
-} = createCRUDSelectors<Slot>(STATE_KEY);
+} = createCRUDSelectors(STATE_KEY);
 
 // action creators
 
@@ -31,7 +31,7 @@ export const {
   remove: removeSlot,
   replace: replaceSlots,
   reorder: reorderSlots,
-} = createCRUDActionCreators<Slot>(STATE_KEY);
+} = createCRUDActionCreators(STATE_KEY);
 
 // selectors
 

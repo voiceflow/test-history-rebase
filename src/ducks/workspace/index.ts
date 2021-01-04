@@ -1,8 +1,10 @@
+import { compositeReducer } from '@/ducks/utils';
+import createCRUDReducer from '@/ducks/utils/crud';
+import { Workspace } from '@/models';
 import { RootReducer } from '@/store/types';
 
 import { AnyWorkspaceAction, WorkspaceAction } from './actions';
-import { INITIAL_STATE } from './constants';
-import { WorkspaceState } from './types';
+import { STATE_KEY } from './constants';
 
 export * from './constants';
 export * from './selectors';
@@ -12,23 +14,18 @@ export * from './types';
 
 // reducers
 
-const workspaceReducer: RootReducer<WorkspaceState, AnyWorkspaceAction> = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case WorkspaceAction.UPDATE_CURRENT_WORKSPACE:
-      window.localStorage.setItem('team', action.payload);
-      return {
-        ...state,
-        activeWorkspaceID: action.payload,
-      };
-    case WorkspaceAction.UPDATE_WORKSPACES:
-      return {
-        ...state,
-        byId: action.payload.byId,
-        allIds: action.payload.allIds,
-      };
-    default:
-      return state;
+const workspaceCRUDReducer = createCRUDReducer<Workspace>(STATE_KEY);
+
+const activeWorkspaceIDReducer: RootReducer<string | null, AnyWorkspaceAction> = (state = localStorage.getItem('team'), action) => {
+  if (action.type === WorkspaceAction.UPDATE_CURRENT_WORKSPACE) {
+    localStorage.setItem('team', action.payload);
+
+    return action.payload;
   }
+
+  return state;
 };
 
-export default workspaceReducer;
+export default compositeReducer(workspaceCRUDReducer, {
+  activeWorkspaceID: activeWorkspaceIDReducer,
+});

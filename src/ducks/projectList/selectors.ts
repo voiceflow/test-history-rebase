@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 
 import { createCRUDSelectors } from '@/ducks/utils/crud';
-import { ProjectList } from '@/models';
 
 import { DEFAULT_LIST_NAME, STATE_KEY } from './constants';
 
@@ -10,7 +9,7 @@ export const {
   all: allProjectListsSelector,
   byID: projectListByIDSelector,
   has: hasProjectListsSelector,
-} = createCRUDSelectors<ProjectList>(STATE_KEY);
+} = createCRUDSelectors(STATE_KEY);
 
 export const defaultProjectListSelector = createSelector(
   [allProjectListsSelector],

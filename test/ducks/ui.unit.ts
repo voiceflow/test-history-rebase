@@ -1,4 +1,5 @@
-import { BlockCategoryType } from '@/constants';
+import { ControlScheme } from '@/components/Canvas/constants';
+import { BlockCategory } from '@/constants';
 import * as UI from '@/ducks/ui';
 import { Tab } from '@/pages/Skill/menus/DesignMenu/constants';
 
@@ -10,9 +11,11 @@ const MOCK_STATE = {
     isHidden: true,
   },
   blockMenu: {
-    openSections: [BlockCategoryType.ADVANCED],
+    openSections: [BlockCategory.BASIC],
   },
   local: {},
+  canvasOnly: false,
+  canvasNavigation: ControlScheme.MOUSE,
   _persist: { version: 1, rehydrated: false },
 };
 
@@ -20,15 +23,15 @@ suite(UI, MOCK_STATE)('Ducks - UI', ({ expect, describeReducer, describeSelector
   describeReducer(({ expectAction }) => {
     describe('toggleBlockMenuSection()', () => {
       it('should add section if not open', () => {
-        expectAction(UI.toggleBlockMenuSection(BlockCategoryType.LOGIC)).toModify({
+        expectAction(UI.toggleBlockMenuSection(BlockCategory.LOGIC)).toModify({
           blockMenu: {
-            openSections: [BlockCategoryType.ADVANCED, BlockCategoryType.LOGIC],
+            openSections: [BlockCategory.BASIC, BlockCategory.LOGIC],
           },
         });
       });
 
       it('should remove section if already open', () => {
-        expectAction(UI.toggleBlockMenuSection(BlockCategoryType.ADVANCED)).toModify({
+        expectAction(UI.toggleBlockMenuSection(BlockCategory.INTEGRATION)).toModify({
           blockMenu: {
             openSections: [],
           },
@@ -75,7 +78,7 @@ suite(UI, MOCK_STATE)('Ducks - UI', ({ expect, describeReducer, describeSelector
   describeSelectors(({ select }) => {
     describe('openBlockMenuSectionsSelector()', () => {
       it('should select the open block menu sections', () => {
-        expect(select(UI.openBlockMenuSectionsSelector)).to.eql([BlockCategoryType.ADVANCED]);
+        expect(select(UI.openBlockMenuSectionsSelector)).to.eql([BlockCategory.BASIC]);
       });
     });
 

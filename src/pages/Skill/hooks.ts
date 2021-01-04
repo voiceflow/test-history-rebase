@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { useRouteMatch } from 'react-router-dom';
 
 import { Permission } from '@/config/permissions';

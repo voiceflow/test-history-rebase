@@ -3,10 +3,14 @@ import React from 'react';
 import { DragContext, DragContextPreviewProps, DragContextType } from '@/contexts';
 
 // eslint-disable-next-line import/prefer-default-export
-export const useDragPreview = (type: string, component: React.FC<DragContextPreviewProps>, options: Record<string, any> = {}) => {
+export const useDragPreview = <P extends { type: string }>(
+  type: string,
+  component: React.FC<DragContextPreviewProps & P>,
+  options: Record<string, any> = {}
+) => {
   const { registerPreview } = React.useContext(DragContext) as NonNullable<DragContextType>;
 
   React.useEffect(() => {
-    registerPreview(type, component, options);
+    registerPreview(type, component as React.FC<DragContextPreviewProps>, options);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 };

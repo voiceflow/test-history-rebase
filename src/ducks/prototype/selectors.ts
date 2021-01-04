@@ -33,7 +33,11 @@ export const prototypeShowChipsSelector = createSelector([prototypeSelector], ({
 
 export const prototypeModeSelector = createSelector([prototypeSelector], ({ mode }) => mode);
 
-export const prototypeDisplaySelector = createSelector([prototypeSelector], ({ display }) => display);
+export const prototypeVisualSelector = createSelector([prototypeSelector], ({ visual }) => visual);
+
+export const prototypeVisualDeviceSelector = createSelector([prototypeVisualSelector], ({ device }) => device);
+
+export const prototypeVisualSourceIDSelector = createSelector([prototypeVisualSelector], ({ sourceID }) => sourceID);
 
 export const activePathBlockIDsSelector = createSelector([prototypeSelector], ({ activePathBlockIDs }) => activePathBlockIDs);
 

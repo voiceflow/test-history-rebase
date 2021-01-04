@@ -121,7 +121,7 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
     this.log.debug(this.log.success('unmerged node'), this.log.slug(sourceNodeID));
   }
 
-  setVirtualSource(type: BlockType, factoryData: Partial<NodeData<unknown>>) {
+  setVirtualSource(type: BlockType, factoryData: Partial<NodeData<unknown>> = {}) {
     this.virtualSource = { type, factoryData };
   }
 

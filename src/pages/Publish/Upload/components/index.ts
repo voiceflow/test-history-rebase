@@ -1,4 +1,3 @@
-export { default as Video } from './Video';
 export { default as ErrorStage } from './ErrorStage';
 export { default as ButtonLink } from './ButtonLink';
 export { default as Description } from './Description';

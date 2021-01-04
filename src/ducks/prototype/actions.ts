@@ -1,7 +1,7 @@
 import { StoreType } from '@/constants/prototype';
 import { createAction } from '@/ducks/utils';
 import { Store } from '@/models';
-import { DeviceType } from '@/pages/Prototype/components/PrototypePage/constants';
+import { DeviceType } from '@/pages/Prototype/constants';
 import { Action } from '@/store/types';
 
 import { Context, PrototypeMode, PrototypeState, PrototypeStatus } from './types';
@@ -16,7 +16,8 @@ export enum PrototypeAction {
   UPDATE_TEST_CONTEXT = 'TEST:CONTEXT:UPDATE',
   UPDATE_TEST_CONTEXT_STORE = 'TEST:CONTEXT:STORE:UPDATE',
   UPDATE_TEST_TIME = 'TEST:TIME:UPDATE',
-  UPDATE_TEST_DISPLAY = 'TEST:DISPLAY:UPDATE',
+  UPDATE_TEST_VISUAL_DEVICE = 'TEST:VISUAL_DEVICE:UPDATE',
+  UPDATE_TEST_VISUAL_SOURCE = 'TEST:VISUAL_SOURCE:UPDATE',
 }
 
 // action types
@@ -28,7 +29,9 @@ export type UpdatePrototypeMode = Action<PrototypeAction.UPDATE_TEST_MODE, Proto
 
 export type PushContextHistory = Action<PrototypeAction.ADD_TEST_CONTEXT_HISTORY, Context>;
 
-export type UpdatePrototypeDisplay = Action<PrototypeAction.UPDATE_TEST_DISPLAY, DeviceType>;
+export type UpdatePrototypeVisualDevice = Action<PrototypeAction.UPDATE_TEST_VISUAL_DEVICE, DeviceType>;
+
+export type UpdatePrototypeVisualSource = Action<PrototypeAction.UPDATE_TEST_VISUAL_SOURCE, string>;
 
 export type UpdatePrototypeContext = Action<PrototypeAction.UPDATE_TEST_CONTEXT, Partial<Context>>;
 
@@ -39,7 +42,8 @@ export type AnyPrototypeAction =
   | PushContextHistory
   | UpdatePrototypeStatus
   | UpdatePrototypeMode
-  | UpdatePrototypeDisplay
+  | UpdatePrototypeVisualDevice
+  | UpdatePrototypeVisualSource
   | UpdatePrototypeContext
   | UpdatePrototypeContextStore;
 
@@ -52,7 +56,11 @@ export const updatePrototypeMode = (payload: PrototypeMode): UpdatePrototypeMode
 
 export const pushContextHistory = (payload: Context): PushContextHistory => createAction(PrototypeAction.ADD_TEST_CONTEXT_HISTORY, payload);
 
-export const updatePrototypeDisplay = (payload: DeviceType): UpdatePrototypeDisplay => createAction(PrototypeAction.UPDATE_TEST_DISPLAY, payload);
+export const updatePrototypeVisualDevice = (payload: DeviceType): UpdatePrototypeVisualDevice =>
+  createAction(PrototypeAction.UPDATE_TEST_VISUAL_DEVICE, payload);
+
+export const updatePrototypeVisualSource = (nodeID: string): UpdatePrototypeVisualSource =>
+  createAction(PrototypeAction.UPDATE_TEST_VISUAL_SOURCE, nodeID);
 
 export const updatePrototypeContext = (payload: Partial<Context>): UpdatePrototypeContext =>
   createAction(PrototypeAction.UPDATE_TEST_CONTEXT, payload);

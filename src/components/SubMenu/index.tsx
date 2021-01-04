@@ -1,14 +1,14 @@
 import React from 'react';
+import { useTheme } from 'styled-components';
 
 import SvgIcon, { Icon } from '@/components/SvgIcon';
 import TippyTooltip from '@/components/TippyTooltip';
 import { PrototypeMode } from '@/ducks/prototype/types';
-import { usePrototypingMode } from '@/pages/Skill/hooks';
+import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions';
 
 import Drawer from '../Drawer';
 import { Container, MenuItem } from './components';
-import { SUBMENU_WIDTH } from './constants';
 
 export type SubMenuItem = {
   icon: Icon;
@@ -16,14 +16,15 @@ export type SubMenuItem = {
 };
 
 export type SubMenuProps = {
+  open: boolean;
   options: SubMenuItem[];
   selected?: string;
   onChange?: (value: string) => void;
 };
 
-const SubMenu: React.FC<SubMenuProps> = ({ options, selected, onChange }) => {
+const SubMenu: React.FC<SubMenuProps> = ({ open, options, selected, onChange }) => {
+  const theme = useTheme() as Theme;
   const [selectedOption, setSelectedOption] = React.useState(selected || options?.[0].value || '');
-  const isPrototypingMode = usePrototypingMode();
 
   const onSubMenuItemClick = (value: string) => {
     setSelectedOption(value);
@@ -31,7 +32,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ options, selected, onChange }) => {
   };
 
   return (
-    <Drawer as="section" open={isPrototypingMode} width={SUBMENU_WIDTH} direction={SlideOutDirection.RIGHT}>
+    <Drawer as="section" open={open} width={theme.components.subMenu.width} direction={SlideOutDirection.RIGHT} zIndex={25}>
       <Container>
         {options.map((option: SubMenuItem, i) => {
           const isSelectedOption = option.value === selectedOption;

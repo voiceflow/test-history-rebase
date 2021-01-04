@@ -7,42 +7,19 @@ import {
   UpdatePrototype,
   UpdatePrototypeContext,
   UpdatePrototypeContextStore,
-  UpdatePrototypeDisplay,
   UpdatePrototypeMode,
   UpdatePrototypeStatus,
+  UpdatePrototypeVisualDevice,
+  UpdatePrototypeVisualSource,
 } from './actions';
-import { InputMode, PrototypeMode, PrototypeState, PrototypeStatus } from './types';
+import { INITIAL_STATE } from './constants';
+import { PrototypeState } from './types';
 
 export * from './actions';
 export * from './constants';
 export * from './types';
 export * from './selectors';
 export * from './sideEffects';
-
-export const INITIAL_STATE: PrototypeState = {
-  ID: null,
-  nlc: null,
-  status: PrototypeStatus.IDLE,
-  muted: false,
-  startTime: 0,
-  inputMode: InputMode.TEXT,
-  activePathBlockIDs: [],
-  activePathLinkIDs: [],
-  showChips: true,
-  autoplay: false,
-  mode: PrototypeMode.CANVAS,
-  display: null,
-  contextStep: 0,
-  contextHistory: [],
-  flowIDHistory: [],
-  context: {
-    turn: {},
-    trace: [],
-    stack: [],
-    storage: {},
-    variables: {},
-  },
-};
 
 // reducers
 
@@ -66,9 +43,20 @@ const pushContextHistoryReducer: Reducer<PrototypeState, PushContextHistory> = (
   contextHistory: [...state.contextHistory, payload],
 });
 
-const updatePrototypeDisplayReducer: Reducer<PrototypeState, UpdatePrototypeDisplay> = (state, { payload: display }) => ({
+const updatePrototypeVisualDeviceReducer: Reducer<PrototypeState, UpdatePrototypeVisualDevice> = (state, { payload: device }) => ({
   ...state,
-  display,
+  visual: {
+    ...state.visual,
+    device,
+  },
+});
+
+const updatePrototypeVisualSourceReducer: Reducer<PrototypeState, UpdatePrototypeVisualSource> = (state, { payload: nodeID }) => ({
+  ...state,
+  visual: {
+    ...state.visual,
+    sourceID: nodeID,
+  },
 });
 
 const updatePrototypeContextReducer: Reducer<PrototypeState, UpdatePrototypeContext> = (state, { payload }) => ({
@@ -100,8 +88,10 @@ const prototypeReducer: RootReducer<PrototypeState, AnyPrototypeAction> = (state
       return updatePrototypeModeReducer(state, action);
     case PrototypeAction.ADD_TEST_CONTEXT_HISTORY:
       return pushContextHistoryReducer(state, action);
-    case PrototypeAction.UPDATE_TEST_DISPLAY:
-      return updatePrototypeDisplayReducer(state, action);
+    case PrototypeAction.UPDATE_TEST_VISUAL_DEVICE:
+      return updatePrototypeVisualDeviceReducer(state, action);
+    case PrototypeAction.UPDATE_TEST_VISUAL_SOURCE:
+      return updatePrototypeVisualSourceReducer(state, action);
     case PrototypeAction.UPDATE_TEST_CONTEXT:
       return updatePrototypeContextReducer(state, action);
     case PrototypeAction.UPDATE_TEST_CONTEXT_STORE:

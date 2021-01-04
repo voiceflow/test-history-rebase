@@ -22,7 +22,6 @@ import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
-import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals, usePermission, useScrollHelpers, useSetup, useTrackingEvents, useWorkspaceTracking } from '@/hooks';
@@ -142,8 +141,6 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
     [props.projects, props.workspace, props.history]
   );
 
-  let loadLists;
-
   const onDeleteBoard = React.useCallback(
     ({ name, id, projects }) => {
       props.setConfirm({
@@ -159,13 +156,11 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
     [props.setConfirm, props.deleteList]
   );
 
-  const updateWorkspace = () => {
+  const updateWorkspace = async () => {
     // ensure workspace hasn't changed
     toggleLoading(true);
-    loadLists = props.loadLists(props.workspaceID!).then(() => {
-      toggleLoading(false);
-      loadLists = null;
-    });
+    await props.loadLists(props.workspaceID!);
+    toggleLoading(false);
   };
 
   const onMove = React.useCallback((drag, hover) => props.moveList(drag.id, hover.id), [props.moveList]);
@@ -207,16 +202,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
       <BoardSettingsModal user={props.user} workspace={props.workspace!} />
 
       <div id="app" className="dashboard">
-        <DashboardHeader
-          user={props.user}
-          history={props.history}
-          handleFilterText={handleFilterText}
-          workspaces={props.workspaces}
-          workspaceID={props.workspaceID}
-          workspace={props.workspace}
-          fetchBoards={loadLists}
-          loadingProjects={loading}
-        />
+        <DashboardHeader handleFilterText={handleFilterText} workspaces={props.workspaces} workspace={props.workspace} loadingProjects={loading} />
 
         {LOCKED && (
           <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
@@ -336,7 +322,6 @@ const mapStateToProps = {
   workspaceID: Workspace.activeWorkspaceIDSelector,
   workspaces: Workspace.allWorkspacesSelector,
   hasTemplatesWorkspace: Workspace.hasTemplateWorkspaceSelector,
-  meta: Skill.skillMetaSelector,
 };
 
 const mapDispatchToProps = {

@@ -1,5 +1,6 @@
 /* eslint-disable lodash/prefer-lodash-typecheck */
 import { createSelector } from 'reselect';
+import { PickByValue } from 'utility-types';
 
 import type { State } from '@/ducks/_root';
 import { Action, RootReducer, Selector } from '@/store/types';
@@ -7,6 +8,7 @@ import { reorder } from '@/utils/array';
 import {
   GetKey,
   Normalized,
+  NormalizedValue,
   ObjectWithId,
   addAllNormalizedByKeys,
   addNormalizedByKey,
@@ -24,6 +26,8 @@ import {
 import { createAction, createRootSelector } from '.';
 
 export type CRUDState<T> = Normalized<T>;
+
+type CRUDStateSubset = PickByValue<State, CRUDState<any>>;
 
 export type Meta = {
   modelType?: string;
@@ -124,9 +128,9 @@ export const crudMoveReducer = <T, S extends CRUDState<T> = CRUDState<T>>(state:
 };
 
 const createCRUDReducer: {
-  <T extends ObjectWithId, K extends GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(
+  <T extends ObjectWithId, G extends GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(
     modelType: string,
-    getKey?: K
+    getKey?: G
   ): RootReducer<S, AnyCRUDAction<T>>;
   // must provide getKey if object does not extend ObjectWithId
   <T, K extends GetKey<T> = (obj: T) => string, S extends CRUDState<T> = CRUDState<T>>(modelType: string, getKey: K): RootReducer<
@@ -168,30 +172,30 @@ export default createCRUDReducer;
 
 // selectors
 
-export const createCRUDSelectors = <T>(modelType: keyof State) => {
-  const root = createRootSelector(modelType) as Selector<CRUDState<T>>;
-  const all = createSelector([root], denormalize) as Selector<T[]>;
-  const collect = createSelector([root], (models) => <R>(collector: (state: CRUDState<T>) => R) => collector(models));
-  const map = createSelector([root], ({ byKey }) => byKey);
-  const key = createSelector([root], ({ allKeys }) => allKeys);
+export const createCRUDSelectors = <K extends keyof CRUDStateSubset, S extends CRUDStateSubset[K], T extends NormalizedValue<S>>(modelType: K) => {
+  const root = createRootSelector<any>(modelType) as Selector<CRUDState<T> & S>;
+  const all = createSelector([root], denormalize as any) as Selector<T[]>;
+  const collect = createSelector([root], (models) => <R>(collector: (state: S) => R) => collector(models));
+  const map = createSelector([root], ({ byKey }): Record<string, T> => byKey);
+  const allIDs = createSelector([root], ({ allKeys }): string[] => allKeys);
 
   return {
-    root,
+    root: root as Selector<S>,
     all,
     map,
-    key,
+    allIDs,
     findByIDs: createSelector([collect], (findModels) => (ids: string[]) =>
-      findModels(({ allKeys, byKey }: CRUDState<T>) =>
+      findModels((normalized) =>
         ids.reduce<T[]>((acc, id) => {
-          if (allKeys.includes(id)) {
-            acc.push(byKey[id]);
+          if (normalized.allKeys.includes(id)) {
+            acc.push(getNormalizedByKey(normalized as CRUDState<any>, id));
           }
 
           return acc;
         }, [])
       )
     ),
-    byID: createSelector([root], (normalized) => (id: string) => getNormalizedByKey(normalized, id)),
+    byID: createSelector([root], (normalized: CRUDState<T>) => (id: string) => getNormalizedByKey(normalized, id)),
     has: createSelector([root], ({ allKeys }) => allKeys.length !== 0),
   };
 };
@@ -214,6 +218,9 @@ export const updateModel = <T, M extends Meta = Meta>(
   (key: string, value: T, patch?: false, meta?: M): CRUDUpdate<T>;
 } => (key: string, value: any, patch = false, meta?: M) => crudAction(modelType, CRUDAction.CRUD_UPDATE, { key, value, patch: patch as any }, meta);
 
+export const patchModel = <T, M extends Meta = Meta>(modelType: string) => (key: string, value: Partial<T>, meta?: M) =>
+  crudAction(modelType, CRUDAction.CRUD_UPDATE, { key, value, patch: true }, meta);
+
 export const removeModel = (modelType: string) => (key: string) => crudAction(modelType, CRUDAction.CRUD_REMOVE, key);
 
 export const removeManyModels = (modelType: string) => (keys: string[]) => crudAction(modelType, CRUDAction.CRUD_REMOVE_MANY, keys);
@@ -226,11 +233,12 @@ export const reorderModels = (modelType: string) => (keyArray: string[]) => crud
 export const moveModels = (modelType: string) => (from: string | number, to: string | number) =>
   crudAction(modelType, CRUDAction.CRUD_MOVE, { from, to });
 
-export const createCRUDActionCreators = <T>(modelType: string) => ({
+export const createCRUDActionCreators = <K extends keyof CRUDStateSubset, T extends NormalizedValue<CRUDStateSubset[K]>>(modelType: K) => ({
   add: addModel<T>(modelType),
   addMany: addManyModels<T>(modelType),
   prepend: prependModel<T>(modelType),
   update: updateModel<T>(modelType),
+  patch: patchModel<T>(modelType),
   remove: removeModel(modelType),
   removeMany: removeManyModels(modelType),
   replace: replaceModels<T>(modelType),

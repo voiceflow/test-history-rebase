@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 
 import { creatorDiagramIDSelector } from '@/ducks/creator';
-import { Diagram } from '@/models';
 import { Thunk } from '@/store/types';
 import { append, unique, withoutValue } from '@/utils/array';
 
@@ -17,7 +16,7 @@ export const {
   update: updateDiagram,
   remove: removeDiagram,
   replace: replaceDiagrams,
-} = createCRUDActionCreators<Diagram>(STATE_KEY);
+} = createCRUDActionCreators(STATE_KEY);
 
 export const replaceSubDiagrams = (diagramID: string, subDiagrams: string[]) => updateDiagram(diagramID, { subDiagrams }, true);
 

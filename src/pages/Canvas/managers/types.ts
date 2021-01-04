@@ -6,6 +6,7 @@ import * as Creator from '@/ducks/creator';
 import { Markup, Node, NodeData, Port } from '@/models';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { ConnectedStepProps } from '@/pages/Canvas/components/Step';
+import { Icon } from '@/svgs/types';
 
 import { NodeDataUpdater } from '../types';
 
@@ -26,9 +27,9 @@ export type NodeEditor<T> = React.FC<NodeEditorPropsType<T>>;
 
 export type NodeConfig<T extends object | Markup.AnyNodeData> = {
   type: BlockType;
-  icon?: string | React.FC;
+  icon?: Icon | React.FC;
   iconColor?: string;
-  getIcon?: (data: T) => string | React.FC;
+  getIcon?: (data: T) => Icon | React.FC;
   getIconColor?: (data: T) => string;
   reprompt?: boolean;
   chips?: boolean;

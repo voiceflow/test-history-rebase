@@ -6,10 +6,9 @@ import { Path } from '@/config/routes';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs';
+import { compose, connect } from '@/hocs';
 import { useDidUpdateEffect, useModals } from '@/hooks';
 import { ConnectedProps } from '@/types';
-import { compose } from '@/utils/functional';
 
 import { IntentsManager, Modal, ModalContent, SlotsManager, VariablesManager } from './components';
 import { TABS } from './constants';
@@ -98,4 +97,4 @@ const mapDispatchToProps = {
 
 export type InteractionModelModalConnectedProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
-export default compose(connect(null, mapDispatchToProps), withRouter)(InteractionModelModal);
+export default compose(connect(null, mapDispatchToProps), withRouter as any)(InteractionModelModal) as React.FC;

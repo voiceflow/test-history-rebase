@@ -1501,16 +1501,6 @@ textarea.form-control::placeholder,
   display: flex;
 }
 
-.react-sweet-progress-symbol {
-  color: #62778c !important;
-  font-weight: 500 !important;
-  font-size: 24px !important;
-}
-
-.react-sweet-progress-circle {
-  stroke: 1px solid #23e4a6 !important;
-}
-
 #dash-nav .nav-pills .nav-item.active .nav-link {
   color: #fff;
   background-color: #007bff !important;

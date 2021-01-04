@@ -1,13 +1,12 @@
 import React from 'react';
 
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import { DiagramState, ModalType } from '@/constants';
 import { GoogleStageType } from '@/constants/platforms';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
-import { useFeature, useModals, useToggle, useTrackingEvents } from '@/hooks';
+import { useModals, useToggle, useTrackingEvents } from '@/hooks';
 import { Google } from '@/pages/Publish/Upload';
 import WaitProjectStage from '@/pages/Publish/Upload/Google/WaitProjectStage';
 import { PublishContext } from '@/pages/Skill/contexts';
@@ -20,8 +19,6 @@ import UploadPopup from '../UploadPopup';
 import Button from './Button';
 
 const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ google, diagramState, getGoogleAccount }) => {
-  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
-
   const isCanvasMode = useCanvasMode();
 
   const { job, publish, updateCurrentStage, cancel } = React.useContext(PublishContext)!;
@@ -49,7 +46,6 @@ const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ google
   const needsLogin = !google;
 
   const toggleLoginModal = () => {
-    if (!headerRedesign.isEnabled) return;
     if (!needsLogin) {
       if (loginModalOpen) {
         closeLoginModal();
@@ -141,21 +137,18 @@ const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ google
 
   const noPopup =
     job?.stage.type === GoogleStageType.WAIT_INVOCATION_NAME ||
-    (headerRedesign.isEnabled &&
-      (job?.stage.type === GoogleStageType.IDLE || job?.stage.type === GoogleStageType.PROGRESS || job?.stage.type === GoogleStageType.WAIT_ACCOUNT));
-  const popup = headerRedesign.isEnabled ? (
+    job?.stage.type === GoogleStageType.IDLE ||
+    job?.stage.type === GoogleStageType.PROGRESS ||
+    job?.stage.type === GoogleStageType.WAIT_ACCOUNT;
+  const popup = (
     <UploadPopup open={opened && !noPopup} onClose={onClose} jobStage={job?.stage.type}>
-      {!noPopup && <Google />}
-    </UploadPopup>
-  ) : (
-    <UploadPopup open={opened && !noPopup} onClose={onClose}>
       {!noPopup && <Google />}
     </UploadPopup>
   );
   return (
     <>
-      {headerRedesign.isEnabled && isCanvasMode ? <GoogleButton /> : <Button onClick={onClick} isActive={isRunning(job)} />}
-      {headerRedesign.isEnabled && job?.stage.type === GoogleStageType.WAIT_PROJECT ? (
+      {isCanvasMode ? <GoogleButton /> : <Button onClick={onClick} isActive={isRunning(job)} />}
+      {job?.stage.type === GoogleStageType.WAIT_PROJECT ? (
         <WaitProjectStage open={opened && !noPopup} onClose={onClose} updateCurrentStage={updateCurrentStage} cancel={cancel} />
       ) : (
         popup

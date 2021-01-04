@@ -36,8 +36,7 @@ declare module 'webpack-nano/argv' {
     // feature flags
     ff_gadgets: boolean;
     ff_codeExport: boolean;
-    ff_prototypeTest: boolean;
-    ff_headerRedesign: boolean;
+    ff_visualPrototype: boolean;
     ff_generalPlatform: boolean;
     ff_generalPrototype: boolean;
     ff_manualNavigation: boolean;

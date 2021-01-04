@@ -1,13 +1,12 @@
 import React from 'react';
 
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import { DiagramState, JobStatus, ModalType } from '@/constants';
 import { AlexaStageType } from '@/constants/platforms';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
-import { useFeature, useModals, useToggle, useTrackingEvents } from '@/hooks';
+import { useModals, useToggle, useTrackingEvents } from '@/hooks';
 import { Alexa } from '@/pages/Publish/Upload';
 import SelectVendorStage from '@/pages/Publish/Upload/Alexa/SelectVendorStage';
 import { PublishContext } from '@/pages/Skill/contexts';
@@ -17,11 +16,8 @@ import { isNotify, isReady, isRunning } from '@/utils/job';
 
 import { ConnectButton, LoadingButton, SuccessButton, UploadButton } from '../ActionButtons';
 import UploadPopup from '../UploadPopup';
-import Button from './Button';
 
 const AlexaUploadButton: React.FC<AlexaUploadButtonConnectedProps> = ({ amazon, syncSelectedVendor, diagramState, vendors }) => {
-  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
-
   const isCanvasMode = useCanvasMode();
 
   const { job, cancel, publish, updateCurrentStage } = React.useContext(PublishContext)!;
@@ -43,11 +39,11 @@ const AlexaUploadButton: React.FC<AlexaUploadButtonConnectedProps> = ({ amazon, 
 
   const noPopup =
     job?.stage.type === AlexaStageType.WAIT_INVOCATION_NAME ||
-    (headerRedesign.isEnabled &&
-      (job?.stage.type === AlexaStageType.IDLE || job?.stage.type === AlexaStageType.PROGRESS || job?.stage.type === AlexaStageType.WAIT_ACCOUNT));
+    job?.stage.type === AlexaStageType.IDLE ||
+    job?.stage.type === AlexaStageType.PROGRESS ||
+    job?.stage.type === AlexaStageType.WAIT_ACCOUNT;
 
   const toggleLoginModal = () => {
-    if (!headerRedesign.isEnabled) return;
     if (!needsLogin) {
       if (loginModalOpen) {
         closeLoginModal();
@@ -168,21 +164,11 @@ const AlexaUploadButton: React.FC<AlexaUploadButtonConnectedProps> = ({ amazon, 
     }
   }, [job?.stage.type, needsLogin, persistSuccess, opened, loginModalOpen, vendorSelected]);
 
-  if (headerRedesign.isEnabled) {
-    return (
-      <>
-        {isCanvasMode && <AlexaButton />}
-        <UploadPopup multiSelect={showSelectVendor} open={opened && (!vendorSelected || !noPopup)} onClose={onClose} jobStage={job?.stage.type}>
-          {showSelectVendor ? <SelectVendorStage setVendorSelected={setVendorSelected} /> : !noPopup && <Alexa />}
-        </UploadPopup>
-      </>
-    );
-  }
   return (
     <>
-      <Button onClick={onClick} isActive={isRunning(job)} />
-      <UploadPopup open={opened && !noPopup} onClose={onClose}>
-        {!noPopup && <Alexa />}
+      {isCanvasMode && <AlexaButton />}
+      <UploadPopup multiSelect={showSelectVendor} open={opened && (!vendorSelected || !noPopup)} onClose={onClose} jobStage={job?.stage.type}>
+        {showSelectVendor ? <SelectVendorStage setVendorSelected={setVendorSelected} /> : !noPopup && <Alexa />}
       </UploadPopup>
     </>
   );

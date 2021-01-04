@@ -3,8 +3,8 @@ import { ControlScheme } from '@/components/Canvas/constants';
 import { GenerateControlInterface } from '../types';
 import Controls from './controls';
 
-const TrackpadInterface: GenerateControlInterface = (handle) => {
-  const controls = new Controls(handle);
+const TrackpadInterface: GenerateControlInterface<[number]> = (handle, scrollTimeout) => {
+  const controls = new Controls(handle, scrollTimeout);
 
   return {
     get isPanning() {

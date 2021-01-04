@@ -4,9 +4,8 @@ import Button, { ButtonVariant } from '@/components/Button';
 import PlanBubble from '@/components/PlanBubble';
 import { Link } from '@/components/Text';
 import Tooltip from '@/components/TippyTooltip';
-import { FeatureFlag } from '@/config/features';
 import { PlanType } from '@/constants';
-import { useEnableDisable, useFeature } from '@/hooks';
+import { useEnableDisable } from '@/hooks';
 import { Nullable } from '@/types';
 import { copy } from '@/utils/clipboard';
 import { stopImmediatePropagation } from '@/utils/dom';
@@ -31,7 +30,6 @@ type MenuItemProps = {
 
 const MenuItem: React.FC<MenuItemProps> = ({ title, description, isAllowed, onRedirect, help, link, track, loading, onClick: onClickProp }) => {
   const [isCopied, setCopiedStatus, clearCopiedStatus] = useEnableDisable();
-  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
 
   const onCopy = React.useCallback(() => {
     copy(link);
@@ -56,7 +54,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, isAllowed, onRe
   }, [isCopied]);
 
   return (
-    <MenuItemContainer oldHeader={!headerRedesign.isEnabled} onClick={stopImmediatePropagation()}>
+    <MenuItemContainer onClick={stopImmediatePropagation()}>
       <div>
         <Header>
           <span>{title}</span>

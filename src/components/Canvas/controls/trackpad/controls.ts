@@ -1,9 +1,9 @@
 import { isChrome, isChromeOS, isEdge, isFirefox, isMac, isWindows } from '@/config';
 import { preventDefault } from '@/utils/dom';
 
-import { ANIMATION_TIMEOUT, ControlType, SCROLL_TIMEOUT } from '../../constants';
+import { ANIMATION_TIMEOUT, ControlType } from '../../constants';
 import MouseControls from '../mouse/controls';
-import { GestureEvent } from '../types';
+import { ControlAction, GestureEvent } from '../types';
 
 class TrackPadControls extends MouseControls {
   lastMultiplier = 0;
@@ -21,6 +21,10 @@ class TrackPadControls extends MouseControls {
   lastScale = 1;
 
   isPanning = false;
+
+  constructor(handle: (action: ControlAction) => void, private scrollTimeout: number) {
+    super(handle);
+  }
 
   dragstart = (event: React.DragEvent) => {
     if (event.defaultPrevented) return;
@@ -164,7 +168,7 @@ class TrackPadControls extends MouseControls {
       clearTimeout(this.scrollComplete);
     }
 
-    this.scrollComplete = setTimeout(this.onScrollComplete, SCROLL_TIMEOUT);
+    this.scrollComplete = setTimeout(this.onScrollComplete, this.scrollTimeout);
 
     if (this.animateCompleteEarly) {
       clearTimeout(this.animateCompleteEarly);

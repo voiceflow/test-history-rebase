@@ -17,6 +17,7 @@ import {
   CANVAS_SHIFT_PRESSED_CLASSNAME,
   ControlScheme,
   ControlType,
+  SCROLL_TIMEOUT,
   ZOOM_FACTOR,
 } from './constants';
 import { CanvasProvider } from './contexts';
@@ -33,6 +34,7 @@ export type CanvasProps = {
   viewport?: Viewport;
   controlScheme?: ControlScheme;
   innerRef?: React.Ref<HTMLDivElement>;
+  scrollTimeout?: number;
   className?: string;
   onChange?: (viewport: Viewport) => void;
   addClass?: (className: string) => void;
@@ -49,6 +51,10 @@ export type CanvasProps = {
 };
 
 class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlScheme'> & { overlay: OverlayValue }> {
+  static defaultProps: CanvasProps = {
+    scrollTimeout: SCROLL_TIMEOUT,
+  };
+
   rootRef = React.createRef<HTMLDivElement>();
 
   renderLayerRef = React.createRef<HTMLDivElement>();
@@ -66,7 +72,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
   api = {
     getControlScheme: () => this.controls.scheme,
     applyControlScheme: (controlScheme: ControlScheme = this.props.controlScheme) => {
-      this.controls = generateControls(controlScheme, this.handleControl);
+      this.controls = generateControls(controlScheme, this.handleControl, this.props.scrollTimeout!);
     },
     isPanning: () => this.controls.isPanning,
     getZoom: () => this.zoom / ZOOM_FACTOR,
@@ -318,7 +324,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
     }
   };
 
-  controls = generateControls(this.props.controlScheme, this.handleControl);
+  controls = generateControls(this.props.controlScheme, this.handleControl, this.props.scrollTimeout!);
 
   onClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     this.controls.click(event);
@@ -387,7 +393,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
 
   componentDidUpdate(prevProps: CanvasProps) {
     if (prevProps.controlScheme !== this.props.controlScheme) {
-      this.controls = generateControls(this.props.controlScheme, this.handleControl);
+      this.controls = generateControls(this.props.controlScheme, this.handleControl, this.props.scrollTimeout!);
     }
   }
 

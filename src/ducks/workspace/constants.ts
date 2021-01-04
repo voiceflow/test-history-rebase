@@ -1,14 +1,13 @@
 import { UserRole } from '@/constants';
+import * as CRUD from '@/ducks/utils/crud';
 import { DBWorkspace } from '@/models';
 
 import { WorkspaceState } from './types';
 
 export const STATE_KEY = 'workspace';
 
-export const INITIAL_STATE: WorkspaceState = {
-  allIds: [],
-  byId: {},
-  activeWorkspaceID: localStorage.getItem('team'),
+export const INITIAL_STATE: Omit<WorkspaceState, 'activeWorkspaceID'> = {
+  ...CRUD.INITIAL_STATE,
 };
 
 export const UNKNOWN_MEMBER_DATA: DBWorkspace.Member = {

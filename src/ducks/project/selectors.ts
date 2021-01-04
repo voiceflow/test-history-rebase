@@ -1,5 +1,3 @@
-import { Project } from '@/models';
-
 import { createCRUDSelectors } from '../utils/crud';
 import { STATE_KEY } from './constants';
 
@@ -8,7 +6,6 @@ export const {
   root: rootProjectsSelector,
   all: allProjectsSelector,
   map: projectsMapSelector,
-  key: projectsKeySelector,
   byID: projectByIDSelector,
   has: hasProjectsSelector,
-} = createCRUDSelectors<Project>(STATE_KEY);
+} = createCRUDSelectors(STATE_KEY);

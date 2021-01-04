@@ -5,7 +5,7 @@ import _noop from 'lodash/noop';
 import { IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
 import { SpeakTraceAudioType, StreamTraceAction, TraceType } from '@/constants/prototype';
-import { Context, PrototypeState } from '@/ducks/prototype';
+import * as Prototype from '@/ducks/prototype';
 import { BlockTrace, ChoiceTrace, EndTrace, FlowTrace, Link, Node, SpeakTrace, StateRequest, StreamTrace, Trace } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
 import { unique } from '@/utils/array';
@@ -31,13 +31,13 @@ export type TraceControllerProps = {
   engine?: null | Engine;
   setError: (error: string) => void;
   enterFlow: (diagramID: string) => void;
-  fetchContext: (request?: StateRequest) => Promise<Context | null>;
+  fetchContext: (request?: StateRequest) => Promise<Prototype.Context | null>;
   updateStatus: (status: PMStatus) => void;
   setInteractions: (interactions: Interaction[]) => void;
-  updatePrototype: (payload: Partial<PrototypeState>) => void;
+  updatePrototype: (payload: Partial<Prototype.PrototypeState>) => void;
   getLinksByPortID: (portID: string) => Link[];
   activeDiagramID: string;
-  contextHistory: Partial<Context>[];
+  contextHistory: Partial<Prototype.Context>[];
   contextStep: number;
   getNodeByID: (targetBlockID: string) => Node;
   getJoiningLinks: (lhsNodeID: string, rhsNodeID: string) => Link[];
@@ -77,7 +77,7 @@ class TraceController {
 
   private timeout: Options['timeout'];
 
-  private context: Context | null = null;
+  private context: Prototype.Context | null = null;
 
   private streamState: StreamState = { src: null, offset: 0, token: null };
 
@@ -190,12 +190,12 @@ class TraceController {
     // wait for the block to render (to account for switching between flows)
     await this.waitNode(targetBlockID);
     await this.processTrace([targetBlockTraceFrame, targetStepTrace]);
-    this.props.updatePrototype({ context: targetContext as Context });
+    this.props.updatePrototype({ context: targetContext as Prototype.Context });
 
     this.context = {
       ...targetContext,
       trace: targetContext.trace?.map((trace: Trace) => ({ ...trace, id: cuid() })) ?? [],
-    } as Context;
+    } as Prototype.Context;
   };
 
   public stop() {
@@ -288,8 +288,14 @@ class TraceController {
   }
 
   private async processBlockTrace(trace: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {
-    if (!this.isPublicPrototype) {
-      await this.highlightBlock(trace);
+    const node = this.props.engine?.getNodeByID(trace.payload.blockID);
+
+    if (node) {
+      this.updateVisual(node);
+
+      if (!this.isPublicPrototype) {
+        await this.highlightBlock(node);
+      }
     }
 
     if (onlyMessage || !this.props.debug) {
@@ -299,13 +305,13 @@ class TraceController {
     await this.timeout.set(MIN_FOCUSED_NODE_TIME);
   }
 
-  private async highlightBlock({ payload: { blockID } }: BlockTrace) {
-    const node = this.props.engine?.getNodeByID(blockID);
-
-    if (!node) {
-      return;
+  private updateVisual(node: Node) {
+    if (node.type === BlockType.DISPLAY) {
+      this.props.engine?.store.dispatch(Prototype.updatePrototypeVisualSource(node.id));
     }
+  }
 
+  private async highlightBlock(node: Node) {
     const hasParent = !!node?.parentNode;
 
     if (hasParent) {
@@ -313,7 +319,7 @@ class TraceController {
     }
 
     const previousNodeID = this.props.engine?.selection.getTargets()?.[0];
-    const nextStepID = blockID;
+    const nextStepID = node.id;
     const parentID = node?.parentNode;
 
     this.saveActivePathLink(nextStepID, previousNodeID!, node, parentID);

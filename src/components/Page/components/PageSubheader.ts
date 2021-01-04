@@ -4,7 +4,7 @@ import { FlexApart } from '@/components/Flex';
 
 const PageSubHeader = styled(FlexApart)`
   box-sizing: border-box;
-  height: 50px;
+  height: ${({ theme }) => theme.components.subHeader.height}px;
   border-top: 1px solid #dfe3ed;
   background: ${({ theme }) => theme.backgrounds.offWhite};
   background-color: #fff;

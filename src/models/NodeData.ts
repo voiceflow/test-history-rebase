@@ -108,15 +108,19 @@ export namespace NodeData {
 
   export type Speak = {
     randomize: boolean;
-    dialogs: {
+    dialogs: Speak.Dialog[];
+  };
+
+  export namespace Speak {
+    export type Dialog = {
       id: string;
       content?: string;
       type: DialogType;
       voice?: string;
       url?: string;
       desc?: string;
-    }[];
-  };
+    };
+  }
 
   export type Card = {
     cardType: CardType;

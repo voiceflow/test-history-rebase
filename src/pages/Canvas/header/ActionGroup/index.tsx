@@ -1,19 +1,16 @@
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
 import { ResourcesHeaderButton, SubHeaderItem } from '@/pages/Dashboard/Header/components';
 import { useCanvasMode } from '@/pages/Skill/hooks';
 
 import { CanvasSettingsButton, GroupContainer, ShareProject, TestButton, UploadProjectGroup } from './components';
 
 function ActionGroup(props: { platform: PlatformType }) {
-  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
-
   const isCanvasMode = useCanvasMode();
+
   return (
     <>
       <GroupContainer>
@@ -23,7 +20,7 @@ function ActionGroup(props: { platform: PlatformType }) {
         </SubHeaderItem>{' '}
       </GroupContainer>
 
-      {headerRedesign.isEnabled && isCanvasMode ? (
+      {isCanvasMode ? (
         <>
           {props.platform === PlatformType.GENERAL ? (
             <UploadProjectGroup />

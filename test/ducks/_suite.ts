@@ -103,24 +103,33 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
       });
     };
 
+    const testInitialState = (initialState: any, deep = false) => {
+      it('should have initial state', () => {
+        utils.expect(Duck.default(undefined, INIT_ACTION)).to[deep ? 'eql' : 'eq'](initialState);
+      });
+    };
+
+    const describeReducer: {
+      (tests: (utils: typeof reducerUtils) => void): void;
+      (initialState: any, tests: (utils: typeof reducerUtils) => void): void;
+    } = (testsOrInitialState: any, maybeTests?: (utils: typeof reducerUtils) => void) => {
+      const tests = maybeTests || testsOrInitialState;
+      const initialState = maybeTests ? testsOrInitialState : Duck.INITIAL_STATE;
+
+      return describe('reducer', () => {
+        testInitialState(initialState, !!maybeTests);
+        testIgnoreOtherActions();
+        tests(reducerUtils);
+      });
+    };
+
     return {
       ...utils,
-      describeReducer: (tests: (utils: typeof reducerUtils) => void) =>
-        describe('reducer', () => {
-          it('should have initial state', () => {
-            utils.expect(Duck.default(undefined, INIT_ACTION)).to.eq(Duck.INITIAL_STATE);
-          });
-
-          testIgnoreOtherActions();
-          tests(reducerUtils);
-        }),
+      describeReducer,
 
       describeCRUDReducer: (tests?: (utils: typeof reducerUtils) => void) =>
         describe('CRUD reducer', () => {
-          it('should have initial state', () => {
-            utils.expect(Duck.default(undefined, INIT_ACTION)).to.eq(CRUD.INITIAL_STATE);
-          });
-
+          testInitialState(CRUD.INITIAL_STATE);
           testIgnoreOtherActions();
           tests?.(reducerUtils);
         }),

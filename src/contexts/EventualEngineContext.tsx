@@ -1,7 +1,6 @@
 import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
-import { withContext } from '@/hocs';
 import type { Engine } from '@/pages/Canvas/engine';
 
 export type EventualEngineContextType = null | {
@@ -38,8 +37,6 @@ export const RegisterEngine: React.FC<RegisterEngineProps> = ({ engine }) => {
 
   return null;
 };
-
-export const withEventualEngine = withContext(EventualEngineContext, 'eventualEngine');
 
 export const withRequiredEngine = <P extends object, T>(Component: React.ComponentType<P & { engine: Engine }>) =>
   setDisplayName(wrapDisplayName(Component, 'withRequiredEventualEngine'))(

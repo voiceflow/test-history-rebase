@@ -34,17 +34,17 @@ export const WORKSPACES_LIMIT = 3;
 
 export const ZERO_VECTOR: Pair<number> = [0, 0];
 
-export enum BlockCategoryType {
-  BASIC = 'basic',
+export enum BlockCategory {
+  USER_INPUT = 'user input',
+  RESPONSE = 'response',
   LOGIC = 'logic',
-  ADVANCED = 'advanced',
-  VISUAL = 'visual',
-  USER = 'user',
+  INTEGRATION = 'integration',
+  CHANNEL = 'channel',
 }
 
-export const DragItem = {
-  BLOCK_MENU: 'blockMenu',
-};
+export enum DragItem {
+  BLOCK_MENU = 'blockMenu',
+}
 
 export enum SessionType {
   SSO = 'sso',

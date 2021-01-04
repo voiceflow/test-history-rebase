@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 
 import { ControlScheme } from '@/components/Canvas/constants';
 import { isMac } from '@/config';
-import { BlockCategoryType } from '@/constants';
+import { BlockCategory } from '@/constants';
 import { Action, Reducer, RootReducer } from '@/store/types';
 import { withoutValue } from '@/utils/array';
 
@@ -16,7 +16,7 @@ export type UIState = {
     isHidden: boolean;
   };
   blockMenu: {
-    openSections: BlockCategoryType[];
+    openSections: BlockCategory[];
   };
   local: Record<string, any>;
   canvasNavigation: ControlScheme;
@@ -30,7 +30,7 @@ export const INITIAL_STATE = {
     isHidden: false,
   },
   blockMenu: {
-    openSections: [BlockCategoryType.BASIC],
+    openSections: [BlockCategory.RESPONSE],
   },
   local: {},
   canvasNavigation: isMac ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
@@ -55,7 +55,7 @@ export enum UIAction {
 
 // action types
 
-export type ToggleBlockMenuSection = Action<UIAction.TOGGLE_BLOCK_MENU_SECTION, BlockCategoryType>;
+export type ToggleBlockMenuSection = Action<UIAction.TOGGLE_BLOCK_MENU_SECTION, BlockCategory>;
 
 export type SetActiveCreatorMenu = Action<UIAction.SET_ACTIVE_CREATOR_MENU, string>;
 
@@ -170,8 +170,7 @@ export const isCanvasOnlyShowingSelector = createSelector(rootSelector, ({ canva
 
 //  action creators
 
-export const toggleBlockMenuSection = (section: BlockCategoryType): ToggleBlockMenuSection =>
-  createAction(UIAction.TOGGLE_BLOCK_MENU_SECTION, section);
+export const toggleBlockMenuSection = (section: BlockCategory): ToggleBlockMenuSection => createAction(UIAction.TOGGLE_BLOCK_MENU_SECTION, section);
 
 export const setActiveCreatorMenu = (menu: string): SetActiveCreatorMenu => createAction(UIAction.SET_ACTIVE_CREATOR_MENU, menu);
 

@@ -7,8 +7,9 @@ import PlanBubble from '@/components/PlanBubble';
 import SvgIcon from '@/components/SvgIcon';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Router from '@/ducks/router';
-import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceDuck from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { Workspace } from '@/models';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -16,11 +17,8 @@ import { noop } from '@/utils/functional';
 
 type LeftNavSectionProps = {
   loadingProjects: boolean;
-  workspaces: { templates: boolean; id: string; name: string }[];
-  activeWorkspace: {
-    name: string;
-    id: string;
-  };
+  workspaces: Workspace[];
+  activeWorkspace: Workspace | null;
 };
 
 const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProps> = ({
@@ -42,7 +40,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
           <Menu maxHeight={600} maxVisibleItems={15}>
             <>
               {workspaces.map((workspace) => {
-                const active = workspace.id === activeWorkspace.id;
+                const active = workspace.id === activeWorkspace?.id;
                 return (
                   <MenuItem key={workspace.id} onClick={() => goToWorkspace(workspace.id)}>
                     <FlexApart style={{ width: '100%' }}>
@@ -73,7 +71,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
             onClick={loadingProjects ? noop : onToggle}
             ref={ref}
           >
-            <div>{activeWorkspace.name}</div>
+            <div>{activeWorkspace?.name}</div>
             <SvgIcon icon="caretDown" color="#6e849a" size={9} />
           </WorkspacesDropdown>
         )}
@@ -84,9 +82,9 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
 };
 
 const mapStateToProps = {
-  plan: Workspace.planTypeSelector,
-  isTemplateWorkspace: Workspace.isTemplateWorkspaceSelector,
-  isAdminOfAnyWorkspace: Workspace.isAdminOfAnyWorkspaceSelector,
+  plan: WorkspaceDuck.planTypeSelector,
+  isTemplateWorkspace: WorkspaceDuck.isTemplateWorkspaceSelector,
+  isAdminOfAnyWorkspace: WorkspaceDuck.isAdminOfAnyWorkspaceSelector,
 };
 
 const mapDispatchToProps = {
@@ -96,4 +94,4 @@ const mapDispatchToProps = {
 
 type ConnectedLeftNavSectionProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(LeftNavSection);
+export default connect(mapStateToProps, mapDispatchToProps)(LeftNavSection) as React.FC<LeftNavSectionProps>;

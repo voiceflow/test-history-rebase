@@ -29,30 +29,10 @@ const getError = ({ errorType, error }: JobStageData<GoogleExportJob.ErrorStage>
   return _isString(strError) ? strError : 'something went wrong, please contact us on Intercom';
 };
 
-const getFooter = ({ googleError }: JobStageData<GoogleExportJob.ErrorStage> | JobStageData<GooglePublishJob.ErrorStage>) => {
-  if (googleError) {
-    return (
-      <>
-        Google responded with an error, Visit our{' '}
-        <u>
-          <a href="https://www.facebook.com/groups/voiceflowgroup">community</a>
-        </u>{' '}
-        or contact us on Intercom
-      </>
-    );
-  }
-
-  return null;
-};
-
 type ErrorStageProps = {
   stage: GoogleExportJob.ErrorStage | GooglePublishJob.ErrorStage;
 };
 
-const ErrorStage: React.FC<ErrorStageProps> = ({ stage }) => (
-  <BaseErrorStage title={getTitle(stage.data)} footer={getFooter(stage.data)}>
-    {getError(stage.data)}
-  </BaseErrorStage>
-);
+const ErrorStage: React.FC<ErrorStageProps> = ({ stage }) => <BaseErrorStage title={getTitle(stage.data)}>{getError(stage.data)}</BaseErrorStage>;
 
 export default ErrorStage;

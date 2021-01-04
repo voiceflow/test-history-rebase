@@ -1,7 +1,7 @@
 import Flex from '@/components/Flex';
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 
-const MenuItemContainer = styled(Flex as any)`
+const MenuItemContainer = styled(Flex)`
   padding: 24px 32px 24px 0px;
   cursor: default;
   margin-left: 32px;
@@ -10,12 +10,6 @@ const MenuItemContainer = styled(Flex as any)`
   :last-child {
     border-bottom: none;
   }
-
-  ${({ oldHeader }) =>
-    oldHeader &&
-    css`
-      border-bottom: 1px solid #eaeff4;
-    `}
 `;
 
 export default MenuItemContainer;

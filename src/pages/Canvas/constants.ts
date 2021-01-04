@@ -1,6 +1,7 @@
 import { ClassName, Identifier } from '@/styles/constants';
 import { hexToRGBA } from '@/utils/colors';
 
+export const CANVAS_HIDDEN_CLASSNAME = `${Identifier.CANVAS}--hidden`;
 export const CANVAS_ACTIVATION_CLASSNAME = `${Identifier.CANVAS}--activation`;
 export const CANVAS_DRAGGING_CLASSNAME = `${Identifier.CANVAS}--dragging`;
 export const CANVAS_MERGING_CLASSNAME = `${Identifier.CANVAS}--merging`;
@@ -11,6 +12,7 @@ export const CANVAS_MARKUP_CREATING_CLASSNAME = `${Identifier.CANVAS}--markup-cr
 export const CANVAS_MARKUP_TRANSFORMING_CLASSNAME = `${Identifier.CANVAS}--markup-transforming`;
 export const CANVAS_COMMENTING_ENABLED_CLASSNAME = `${Identifier.CANVAS}--commenting`;
 export const CANVAS_THREAD_OPEN_CLASSNAME = `${Identifier.CANVAS}--thread-open`;
+export const CANVAS_PROTOTYPE_ENABLED_CLASSNAME = `${Identifier.CANVAS}--prototype`;
 export const CANVAS_PROTOTYPE_RUNNING_CLASSNAME = `${Identifier.CANVAS}--prototype-running`;
 
 export const NODE_DISABLED_CLASSNAME = `${ClassName.CANVAS_NODE}--disabled`;

@@ -2,11 +2,11 @@ import NLC from '@voiceflow/natural-language-commander';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { EventualEngineContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
+import { useEventualEngine } from '@/hooks';
 import { Slot } from '@/models';
 import { Dispatch } from '@/store/types';
 
@@ -32,9 +32,7 @@ const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boo
   const [status, setStatus] = React.useState<PMStatus | null>(null);
   const [messages, updateMessages] = React.useState<Message[]>([]);
   const [interactions, setInteractions] = React.useState<Interaction[]>([]);
-  const eventualEngine = React.useContext(EventualEngineContext)!;
-
-  const engine = eventualEngine.get();
+  const engine = useEventualEngine()()!;
 
   const cacheData: PrototypeToolProps = {
     nlc,

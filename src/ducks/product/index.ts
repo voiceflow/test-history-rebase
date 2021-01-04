@@ -29,13 +29,11 @@ export const {
   findByIDs: productsByIDsSelector,
   has: hasProductsSelector,
   map: productMapSelector,
-} = createCRUDSelectors<Product>(STATE_KEY);
+} = createCRUDSelectors(STATE_KEY);
 
 // action creators
 
-export const { add: addProduct, update: updateProduct, remove: removeProduct, replace: replaceProducts } = createCRUDActionCreators<Product>(
-  STATE_KEY
-);
+export const { add: addProduct, update: updateProduct, remove: removeProduct, replace: replaceProducts } = createCRUDActionCreators(STATE_KEY);
 
 // side effects
 

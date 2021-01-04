@@ -1,22 +1,15 @@
 import React from 'react';
 
-import Button, { ButtonVariant } from '@/components/Button';
 import PlanBubble from '@/components/PlanBubble';
 import RadioGroup from '@/components/RadioGroup';
 import { Link } from '@/components/Text';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ExportFormat, PlanType } from '@/constants';
-import * as Skill from '@/ducks/skill';
-import { connect } from '@/hocs';
-import { useFeature, usePermission, useTrackingEvents } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { usePermission } from '@/hooks';
 import { stopImmediatePropagation } from '@/utils/dom';
 
-import ButtonContainer from '../ButtonContainer';
 import Description from '../Description';
 import Header from '../Header';
-import LoadingButton from '../LoadingButton';
 import MenuItemContainer from '../MenuItemContainer';
 
 export const EXPORT_OPTIONS = [
@@ -26,26 +19,12 @@ export const EXPORT_OPTIONS = [
 ];
 
 export type ExportItemProps = {
-  onRedirect: () => void;
   updateType?: (type: ExportFormat) => void;
 };
 
-const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ onRedirect, isExporting, exportCanvas, updateType }) => {
-  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
-
+const ExportItem: React.FC<ExportItemProps> = ({ updateType }) => {
   const [selectedExportType, setSelectedExportType] = React.useState(ExportFormat.PNG);
-  const [trackingEvents] = useTrackingEvents();
   const [canExport] = usePermission(Permission.CANVAS_EXPORT);
-
-  const onClick = () => {
-    trackingEvents.trackExportButtonClick({ format: selectedExportType });
-
-    if (canExport) {
-      exportCanvas(selectedExportType);
-    } else {
-      onRedirect();
-    }
-  };
 
   return (
     <MenuItemContainer onClick={stopImmediatePropagation()}>
@@ -74,30 +53,8 @@ const ExportItem: React.FC<ExportItemProps & ConnectedExportItemProps> = ({ onRe
           }}
         />
       </div>
-
-      {!headerRedesign.isEnabled && (
-        <ButtonContainer>
-          {isExporting ? (
-            <LoadingButton iconProps={{ spin: true, size: 20 }} variant={ButtonVariant.SECONDARY} icon="publishSpin" square />
-          ) : (
-            <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(onClick)}>
-              Export
-            </Button>
-          )}
-        </ButtonContainer>
-      )}
     </MenuItemContainer>
   );
 };
 
-const mapStateToProps = {
-  isExporting: Skill.isCanvasExportingSelector,
-};
-
-const mapDispatchToProps = {
-  exportCanvas: Skill.exportCanvas,
-};
-
-type ConnectedExportItemProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(ExportItem) as React.FC<ExportItemProps>;
+export default ExportItem;

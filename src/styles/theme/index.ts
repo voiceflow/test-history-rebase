@@ -94,6 +94,30 @@ const THEME = {
         return this.width - this.hiddenWidth;
       },
     },
+    header: {
+      height: 64,
+    },
+    subHeader: {
+      height: 50,
+    },
+    subMenu: {
+      width: 65,
+    },
+    developerSettings: {
+      width: 320,
+    },
+    displaySettings: {
+      width: 234,
+    },
+    prototypeSidebar: {
+      width: 400,
+    },
+    get usedPrototypeDisplayCanvasWidth() {
+      return this.displaySettings.width + this.subMenu.width + this.prototypeSidebar.width;
+    },
+    get usedPrototypeDisplayCanvasHeight() {
+      return this.header.height;
+    },
   },
   transition(...propertyWhitelist: string[]): string {
     const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];

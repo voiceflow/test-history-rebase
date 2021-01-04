@@ -29,4 +29,4 @@ export const {
   remove: removeThread,
   removeMany: removeManyThreads,
   replace: replaceThreads,
-} = CRUD.createCRUDActionCreators<Thread>(STATE_KEY);
+} = CRUD.createCRUDActionCreators(STATE_KEY);

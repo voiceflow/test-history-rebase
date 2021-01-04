@@ -73,7 +73,7 @@
     "description": "Create a styled react component"
   },
   "Redux State Connection": {
-    "scope": "javascript,javascriptreact",
+    "scope": "typescript,typescriptreact",
     "prefix": "xsc",
     "body": [
       "import { connect } from '@/hocs';",
@@ -86,10 +86,22 @@
       "  $4",
       "\\};}",
       "",
+      "type Connected$5Props = ConnectedProps<${6:typeof mapStateToProps}, ${7:typeof mapDispatchToProps}>;",
+      "",
       "export default connect(",
-      "  ${5:mapStateToProps},",
-      "  ${6:mapDispatchToProps},",
-      ")($7)"
+      "  ${6:mapStateToProps},",
+      "  ${7:mapDispatchToProps},",
+      ")($5)"
+    ],
+    "description": "Create redux connection patterns"
+  },
+  "Connected Props": {
+    "scope": "typescript,typescriptreact",
+    "prefix": "xp",
+    "body": [
+      "import { ConnectedProps } from '@/types';",
+      "",
+      "type Connected$1Props = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;"
     ],
     "description": "Create redux connection patterns"
   },

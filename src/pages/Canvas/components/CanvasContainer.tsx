@@ -12,14 +12,16 @@ import { Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
-import { useCommentingMode, useEditingMode, useMarkupMode } from '@/pages/Skill/hooks';
+import { useCommentingMode, useEditingMode, useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { Callback, ConnectedProps } from '@/types';
 
 import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
+  CANVAS_HIDDEN_CLASSNAME,
   CANVAS_MARKUP_CREATING_CLASSNAME,
   CANVAS_MARKUP_ENABLED_CLASSNAME,
+  CANVAS_PROTOTYPE_ENABLED_CLASSNAME,
   CANVAS_THREAD_OPEN_CLASSNAME,
 } from '../constants';
 
@@ -40,6 +42,15 @@ const Wrapper = styled.div<{ markupMode: MarkupModeType | null }>`
         cursor: ${MARKUP_MODE_CURSORS[markupMode]};
       }
     `}
+
+  &.${CANVAS_HIDDEN_CLASSNAME} {
+    display: none;
+  }
+
+  /* account for missing submenu */
+  &.${CANVAS_PROTOTYPE_ENABLED_CLASSNAME} {
+    padding-top: ${({ theme }) => theme.components.subHeader.height}px;
+  }
 
   &.${CANVAS_COMMENTING_ENABLED_CLASSNAME} {
     cursor: crosshair;
@@ -63,6 +74,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   const isCommentingMode = useCommentingMode();
   const isMarkupMode = useMarkupMode();
   const isEditingMode = useEditingMode();
+  const isPrototypingMode = usePrototypingMode();
 
   const activeModal = useActiveModal();
 
@@ -113,6 +125,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
       className={cn({
         [CANVAS_COMMENTING_ENABLED_CLASSNAME]: isCommentingMode,
         [CANVAS_MARKUP_ENABLED_CLASSNAME]: isMarkupMode,
+        [CANVAS_PROTOTYPE_ENABLED_CLASSNAME]: isPrototypingMode,
         [CANVAS_MARKUP_CREATING_CLASSNAME]: isMarkupCreating,
       })}
       markupMode={markupModeType}
@@ -135,4 +148,4 @@ const mapDispatchToProps = {
 
 type ConnectedCanvasContainerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(CanvasContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(CanvasContainer) as React.FC;

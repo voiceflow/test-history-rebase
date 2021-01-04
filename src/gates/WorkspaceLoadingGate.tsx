@@ -3,7 +3,7 @@ import React from 'react';
 import LoadingGate from '@/components/LoadingGate';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { ConnectedProps } from '@/types';
 
 const WorkspaceLoadingGate: React.FC<ConnectedWorkspaceLoadingGateProps> = ({
   activeWorkspace,
@@ -31,15 +31,11 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  fetchWorkspaces: Workspace.fetchWorkspaces,
+  loadWorkspace: Workspace.fetchWorkspaces,
   getMembers: Workspace.getMembers,
   updateCurrentWorkspace: Workspace.updateCurrentWorkspace,
 };
 
-const mergeProps = (...[, { fetchWorkspaces }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
-  loadWorkspace: fetchWorkspaces,
-});
+type ConnectedWorkspaceLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-type ConnectedWorkspaceLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(WorkspaceLoadingGate);
+export default connect(mapStateToProps, mapDispatchToProps)(WorkspaceLoadingGate);

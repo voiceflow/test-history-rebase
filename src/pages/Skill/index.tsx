@@ -6,7 +6,6 @@ import { Alert } from 'reactstrap';
 
 import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as Realtime from '@/ducks/realtime';
@@ -14,7 +13,7 @@ import * as Router from '@/ducks/router';
 import * as SkillDuck from '@/ducks/skill';
 import { PlanRestrictionGate, ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
-import { useCanvasTracking, useEnableDisable, useFeature, usePermission } from '@/hooks';
+import { useCanvasTracking, useEnableDisable, usePermission } from '@/hooks';
 import Business from '@/pages/Business';
 import CanvasHeader from '@/pages/Canvas/header';
 import InactivityModal from '@/pages/Inactivity';
@@ -27,8 +26,8 @@ import { compose } from '@/utils/functional';
 import { getActivePageAndMatch } from '@/utils/routes';
 
 import Diagram from './components/Diagram';
+import ProjectSubHeader from './components/ProjectSubHeader';
 import ProjectTitle from './components/ProjectTitle';
-import SkillSubHeader from './components/SkillSubHeader';
 import { PAGES_MATCHES, TIMEOUT_COUNT } from './constants';
 import { ExportProvider, MarkupModeProvider, NLPProvider, PublishProvider } from './contexts';
 
@@ -56,10 +55,6 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
   const [isIdle, onIdle, onActive] = useEnableDisable();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const isPrototypingMode = usePrototypingMode();
-
-  const prototypeTest = useFeature(FeatureFlag.PROTOTYPE_TEST);
-  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
-  const newPrototypeHeader = prototypeTest.isEnabled || headerRedesign.isEnabled;
 
   const idleTimer = React.useRef<IdleTimer>(null);
 
@@ -98,24 +93,18 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
         <ExportProvider>
           <NLPProvider>
             <Page
-              header={
-                (!newPrototypeHeader || (newPrototypeHeader && !isPrototypingMode)) && (
-                  <ProjectTitle title={activeSkill.name} onChange={saveProjectName} />
-                )
-              }
-              subHeader={(!newPrototypeHeader || !isPrototypingMode) && <SkillSubHeader showPublish={canEditCanvas} activePage={activePage} />}
+              header={!isPrototypingMode && <ProjectTitle title={activeSkill.name} onChange={saveProjectName} />}
+              subHeader={!isPrototypingMode && <ProjectSubHeader showPublish={canEditCanvas} activePage={activePage} />}
               canScroll={false}
               headerChildren={<CanvasHeader />}
               onNavigateBack={() => {
-                if (!newPrototypeHeader) {
-                  goToDashboard();
-                } else if (isPrototypingMode) {
+                if (isPrototypingMode) {
                   goToCanvas(versionID, diagramID);
                 } else {
                   goToDashboard();
                 }
               }}
-              navigateBackText={newPrototypeHeader && isPrototypingMode ? 'Back' : ''}
+              navigateBackText={isPrototypingMode ? 'Back' : ''}
             >
               <Switch>
                 <PrivateRoute

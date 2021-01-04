@@ -1,5 +1,6 @@
 import createCRUDReducer from '@/ducks/utils/crud';
 import { Thread } from '@/models';
+import { RootReducer } from '@/store/types';
 
 import { compositeReducer } from '../utils';
 import { CommentingAction, UpdateUnreadComments } from './actions';
@@ -15,7 +16,7 @@ export * from './types';
 
 const threadCRUDReducer = createCRUDReducer<Thread>(STATE_KEY);
 
-const updateUnreadCommentReducer = (state = false, action: UpdateUnreadComments) => {
+const updateUnreadCommentReducer: RootReducer<boolean, UpdateUnreadComments> = (state = false, action) => {
   if (action.type === CommentingAction.UPDATE_UNREAD_COMMENTS) {
     return action.payload;
   }

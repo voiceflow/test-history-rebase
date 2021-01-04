@@ -1,6 +1,5 @@
 import React from 'react';
 
-import client from '@/client';
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
@@ -9,6 +8,7 @@ import { activeSkillIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
+import { resolveAPL } from '@/store/sideEffects';
 
 import { AdvancedEditor, Footer, SplashEditor } from './components';
 
@@ -23,7 +23,7 @@ const DISPLAY_OPTIONS = [
   },
 ];
 
-function DisplayEditor({ data, skillID, onChange }) {
+function DisplayEditor({ data, skillID, onChange, resolveAPL }) {
   const { migrating, displayType, backgroundImage, splashHeader, document: documentData, aplCommands, jsonFileName } = data;
 
   const datasource = data.dataSource;
@@ -37,18 +37,9 @@ function DisplayEditor({ data, skillID, onChange }) {
     (displayType === DisplayType.SPLASH && (!!splashHeader || backgroundImage)) || (displayType === DisplayType.ADVANCED && jsonFileName);
 
   const openPreviewModal = async () => {
-    const apl = aplCommands || '';
-    let data = datasource || '';
-    let selectedDocument = documentData;
+    const result = await resolveAPL(data);
 
-    if (displayType === DisplayType.SPLASH) {
-      ({ document: selectedDocument, datasource: data } = await client.platform.alexa.handlers.getDisplayWithDatasource(
-        splashHeader,
-        backgroundImage
-      ));
-    }
-
-    openModal({ apl, data, documentData: selectedDocument });
+    openModal({ apl: result.commands, data: result.data, documentData: result.apl });
   };
 
   const changeDisplayType = (type) => {
@@ -85,8 +76,13 @@ function DisplayEditor({ data, skillID, onChange }) {
     </Content>
   );
 }
+
 const mapStateToProps = {
   skillID: activeSkillIDSelector,
 };
 
-export default connect(mapStateToProps)(DisplayEditor);
+const mapDispatchToProps = {
+  resolveAPL,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DisplayEditor);

@@ -6,14 +6,17 @@ import HOTKEY_MAPPING, { Hotkey } from '@/keymap';
 export type Options = null | {
   action?: 'keypress' | 'keydown' | 'keyup';
   preventDefault?: boolean;
+  disable?: boolean;
 };
 
-type Callback = (e: KeyboardEvent) => void | boolean | Promise<void>;
+type Callback = (e: KeyboardEvent) => void;
 
 // eslint-disable-next-line import/prefer-default-export
 export function useHotKeys(key: Hotkey, callback: Callback, options: Options = {}, deps: any[] = []) {
   const memoisedCallback = useMemo(
     () => (e: KeyboardEvent) => {
+      if (options?.disable) return false;
+
       if (!options?.preventDefault) {
         return callback(e);
       }
@@ -23,10 +26,12 @@ export function useHotKeys(key: Hotkey, callback: Callback, options: Options = {
 
       return false;
     },
-    deps
+    [...deps, options?.disable]
   );
 
   useEffect(() => {
+    if (options?.disable) return undefined;
+
     const action = options?.action || 'keydown';
     const keys = HOTKEY_MAPPING[key];
 
@@ -35,5 +40,5 @@ export function useHotKeys(key: Hotkey, callback: Callback, options: Options = {
     return () => {
       instance.reset();
     };
-  }, [memoisedCallback]);
+  }, [memoisedCallback, options?.disable]);
 }

@@ -92,7 +92,6 @@
     "react-select": "^3.1.0",
     "react-speech-recognition": "^2.0.1",
     "react-stripe-elements": "5.1.0",
-    "react-sweet-progress": "^1.1.2",
     "react-table-6": "^6.11.0",
     "react-textarea-autosize": "^7.0.4",
     "react-tippy": "1.4.0",
@@ -273,6 +272,7 @@
     "sinon-chai": "^3.5.0",
     "style-loader": "1.2.1",
     "stylelint": "^13.8.0",
+    "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-declaration-block-no-ignored-properties": "^2.3.0",
@@ -300,24 +300,6 @@
     }
   },
   "license": "UNLICENSED",
-  "lint-staged": {
-    "package.json": [
-      "fixpack"
-    ],
-    "**/*.{js,ts,jsx,tsx}": [
-      "eslint --fix",
-      "prettier-eslint --write"
-    ],
-    "**/*.css": [
-      "prettier-stylelint"
-    ],
-    "Dockerfile": [
-      "hadolint --ignore DL3018"
-    ],
-    "*.dockerfile": [
-      "hadolint --ignore DL3018"
-    ]
-  },
   "prettier": "@voiceflow/prettier-config",
   "scripts": {
     "build": "patch-package && wp --prod",

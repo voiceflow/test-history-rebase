@@ -7,11 +7,11 @@ import { ConnectedProps } from '@/types';
 
 const GlobalSocketSubscriptionsLoadingGate: React.FC<ConnectedGlobalSocketSubscriptionsLoadingGateProps> = ({
   children,
-  updateWorkspace,
+  patchWorkspace,
   ejectFromWorkspace,
 }) => {
   React.useEffect(() => client.socket.global.watchForceRefresh(() => window.location.reload(true)));
-  React.useEffect(() => client.socket.global.watchWorkspaceMembers(({ workspaceID, members }) => updateWorkspace(workspaceID, { members })));
+  React.useEffect(() => client.socket.global.watchWorkspaceMembers(({ workspaceID, members }) => patchWorkspace(workspaceID, { members })));
   React.useEffect(() =>
     client.socket.global.watchForMembershipRevoked(({ workspaceId, workspaceName }) => ejectFromWorkspace(workspaceId, workspaceName))
   );
@@ -20,7 +20,7 @@ const GlobalSocketSubscriptionsLoadingGate: React.FC<ConnectedGlobalSocketSubscr
 };
 
 const mapDispatchToProps = {
-  updateWorkspace: Workspace.updateWorkspace,
+  patchWorkspace: Workspace.patchWorkspace,
   ejectFromWorkspace: Workspace.ejectFromWorkspace,
 };
 

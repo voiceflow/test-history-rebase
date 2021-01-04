@@ -8,7 +8,7 @@ import intentAdapter from '@/client/adapters/intent';
 import projectAdapter, { productAdapter } from '@/client/adapters/project';
 import slotAdapter from '@/client/adapters/slot';
 import versionAdapter from '@/client/adapters/version';
-import { PlatformType } from '@/constants';
+import { DisplayType, PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
@@ -23,6 +23,7 @@ import * as Slot from '@/ducks/slot';
 import * as Viewport from '@/ducks/viewport';
 import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
+import { NodeData } from '@/models';
 import { storeLogger } from '@/store/utils';
 
 import { Thunk } from './types';
@@ -122,4 +123,23 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
   dispatch(Skill.setActiveSkill(skill, diagramID));
 
   return skill;
+};
+
+export const resolveAPL = ({
+  document,
+  aplCommands,
+  dataSource,
+  displayType,
+  splashHeader,
+  backgroundImage,
+}: NodeData<NodeData.Display>): Thunk<{ apl: string; data: string; commands: string }> => async () => {
+  const commands = aplCommands || '';
+  let data = dataSource || '';
+  let apl = document || '';
+
+  if (displayType === DisplayType.SPLASH) {
+    ({ document: apl, datasource: data } = await client.platform.alexa.handlers.getDisplayWithDatasource(splashHeader || '', backgroundImage || ''));
+  }
+
+  return { commands, data, apl };
 };

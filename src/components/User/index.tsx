@@ -58,7 +58,7 @@ export default User;
 
 export type MembersProps = {
   members: LockOwner[];
-  onAdd: () => void;
+  onAdd?: () => void;
   min?: number;
   max?: number;
 };

@@ -3,19 +3,23 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { RemoveIntercom } from '@/components/IntercomChat';
 import { FeatureFlag } from '@/config/features';
-import { EventualEngineContext } from '@/contexts';
+import * as Prototype from '@/ducks/prototype';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useFeature, useTeardown } from '@/hooks';
+import { useEventualEngine, useFeature, useTeardown } from '@/hooks';
+import Canvas from '@/pages/Canvas';
 import CanvasControls from '@/pages/Canvas/components/CanvasControls';
-import PrototypeSidebar from '@/pages/Canvas/components/PrototypeSidebar';
 import TopPrompt from '@/pages/Canvas/components/TopPrompt';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
 import { getManager } from '@/pages/Canvas/managers';
-import PrototypePage from '@/pages/Prototype/components/PrototypePage';
-import { useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
+import PrototypeDeveloperSettings from '@/pages/Prototype/components/PrototypeDeveloperSettings';
+import PrototypeDisplaySettings from '@/pages/Prototype/components/PrototypeDisplaySettings';
+import PrototypeSidebar from '@/pages/Prototype/components/PrototypeSidebar';
+import PrototypeVisualCanvas from '@/pages/Prototype/components/PrototypeVisualCanvas';
+import { useAnyModeOpen, useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import DesignMenu from '@/pages/Skill/menus/DesignMenu';
 import MarkupMenu from '@/pages/Skill/menus/MarkupMenu';
+import PrototypeMenu from '@/pages/Skill/menus/PrototypeMenu';
 import { ConnectedProps } from '@/types';
 
 import DiagramSync from './DiagramSync';
@@ -26,34 +30,66 @@ export type DiagramProps = RouteComponentProps & {
   diagramID: string;
 };
 
-const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, canvasOnly }) => {
-  const prototypeTest = useFeature(FeatureFlag.PROTOTYPE_TEST);
-
-  const eventualEngine = React.useContext(EventualEngineContext);
+const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, prototypeMode, canvasOnly }) => {
+  const visualPrototype = useFeature(FeatureFlag.VISUAL_PROTOTYPE);
+  const engine = useEventualEngine();
   const isPrototypingMode = usePrototypingMode();
   const isMarkupMode = useMarkupMode();
+  const isDesignMode = !useAnyModeOpen();
+
+  const isCanvasVisible = !isPrototypingMode || !visualPrototype.isEnabled || prototypeMode !== Prototype.PrototypeMode.DISPLAY;
+  const isCanvasEditable = !isPrototypingMode;
+
+  React.useEffect(() => {
+    if (isCanvasVisible) return undefined;
+
+    engine()?.hideCanvas();
+    return () => engine()?.showCanvas();
+  }, [isCanvasVisible]);
 
   useTeardown(() => {
-    eventualEngine?.get()?.teardown();
+    engine()?.teardown();
   });
 
   return (
     <>
-      {!isPrototypingMode && <DiagramSync diagramID={diagramID} />}
+      {isCanvasEditable && <DiagramSync diagramID={diagramID} />}
+
       <ManagerProvider value={getManager as any}>
-        <TopPrompt />
+        {!isDesignMode && <TopPrompt />}
 
-        {isMarkupMode ? <MarkupMenu /> : <DesignMenu />}
+        {/* always render the canvas, hide with CSS */}
+        <Canvas />
 
-        <CanvasControls render={(!prototypeTest.isEnabled || !isPrototypingMode) && !canvasOnly} />
+        {(!visualPrototype.isEnabled || isDesignMode) && <CanvasControls render={!canvasOnly} />}
 
-        <FlowControls render={!canvasOnly} />
+        {/* design mode */}
+        {isDesignMode && (
+          <>
+            <DesignMenu />
+            <FlowControls render={!canvasOnly} />
+          </>
+        )}
 
-        <MarkupImageLoading />
+        {/* markup mode */}
+        {isMarkupMode && (
+          <>
+            <MarkupMenu />
+            <MarkupImageLoading />
+          </>
+        )}
 
-        <PrototypePage />
+        {/* prototyping mode */}
+        <PrototypeSidebar open={isPrototypingMode} />
+        <PrototypeMenu open={isPrototypingMode && visualPrototype.isEnabled} />
+        {isPrototypingMode && visualPrototype.isEnabled && (
+          <>
+            <PrototypeDeveloperSettings open={prototypeMode === Prototype.PrototypeMode.DEVELOPER} />
 
-        <PrototypeSidebar />
+            {prototypeMode === Prototype.PrototypeMode.DISPLAY && <PrototypeVisualCanvas />}
+            <PrototypeDisplaySettings open={prototypeMode === Prototype.PrototypeMode.DISPLAY} />
+          </>
+        )}
 
         {canvasOnly && <RemoveIntercom />}
       </ManagerProvider>
@@ -63,10 +99,9 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, ca
 
 const mapStateToProps = {
   canvasOnly: UI.isCanvasOnlyShowingSelector,
+  prototypeMode: Prototype.prototypeModeSelector,
 };
 
-const mapDispatchToProps = {};
+type ConnectedDiagramProps = ConnectedProps<typeof mapStateToProps>;
 
-type ConnectedDiagramProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(Diagram) as React.FC<DiagramProps>;
+export default connect(mapStateToProps)(Diagram) as React.FC<DiagramProps>;

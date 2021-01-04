@@ -28,42 +28,37 @@ const SIMPLE_WORKSPACE = {
   name: 'demo',
   members: [] as any,
 } as Models.Workspace;
-const MOCK_STATE: Workspace.WorkspaceState = {
-  activeWorkspaceID: WORKSPACE.id,
-  byId: {
+
+const MOCK_STATE: any = {
+  activeWorkspaceID: {
+    value: WORKSPACE.id,
+  },
+  byKey: {
     [WORKSPACE.id]: WORKSPACE,
     [OTHER_WORKSPACE.id]: OTHER_WORKSPACE,
     [SIMPLE_WORKSPACE.id]: SIMPLE_WORKSPACE,
   },
-  allIds: [WORKSPACE.id, OTHER_WORKSPACE.id, SIMPLE_WORKSPACE.id],
+  allKeys: [WORKSPACE.id, OTHER_WORKSPACE.id, SIMPLE_WORKSPACE.id],
 };
 
-suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStorage, describeReducer, describeSelectors }) => {
-  describeReducer(({ expectAction }) => {
-    describe('updateCurrentWorkspace()', () => {
-      it('should update the active workspace', () => {
-        const workspaceID = 'ghi';
-        const { setItem } = stubLocalStorage();
+suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, describeReducer, describeSelectors }) => {
+  describeReducer(
+    {
+      ...Workspace.INITIAL_STATE,
+      activeWorkspaceID: {
+        value: null,
+      },
+    },
+    ({ expectAction }) => {
+      describe('updateCurrentWorkspace()', () => {
+        it('should update the active workspace', () => {
+          const workspaceID = 'ghi';
 
-        expectAction(Workspace.updateCurrentWorkspace(workspaceID)).toModify({ activeWorkspaceID: workspaceID });
-
-        expect(setItem).to.be.calledWithExactly('team', workspaceID);
+          expectAction(Workspace.updateCurrentWorkspace(workspaceID)).toModify({ activeWorkspaceID: { value: workspaceID } });
+        });
       });
-    });
-
-    describe('updateWorkspaces()', () => {
-      it('should update workspace state', () => {
-        const nextWorkspaces = {
-          byId: {
-            ghi: { name: 'Shared' } as Models.Workspace,
-          },
-          allIds: ['ghi'],
-        };
-
-        expectAction(Workspace.updateWorkspaces(nextWorkspaces)).toModify(nextWorkspaces);
-      });
-    });
-  });
+    }
+  );
 
   describeSelectors(({ select, createState }) => {
     describe('activeWorkspaceIDSelector()', () => {
@@ -115,7 +110,9 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
       });
 
       it('should select an empty array if no members listed', () => {
-        expect(select(Workspace.activeWorkspaceMembersSelector, createState({ ...MOCK_STATE, activeWorkspaceID: SIMPLE_WORKSPACE.id }))).to.eql([]);
+        expect(
+          select(Workspace.activeWorkspaceMembersSelector, createState({ ...MOCK_STATE, activeWorkspaceID: { value: SIMPLE_WORKSPACE.id } }))
+        ).to.eql([]);
       });
     });
 
@@ -131,7 +128,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
       });
 
       it('should always have at least 1 used seat', () => {
-        expect(select(Workspace.usedEditorSeatsSelector, createState({ ...MOCK_STATE, activeWorkspaceID: 'def' }))).to.eq(1);
+        expect(select(Workspace.usedEditorSeatsSelector, createState({ ...MOCK_STATE, activeWorkspaceID: { value: 'def' } }))).to.eq(1);
       });
     });
 
@@ -157,7 +154,8 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, stubLocalStor
       });
 
       it('should return null members list', () => {
-        expect(select(Workspace.activeWorkspaceMemberSelector, createState({ ...MOCK_STATE, activeWorkspaceID: 'def' }))('999')).to.be.null;
+        expect(select(Workspace.activeWorkspaceMemberSelector, createState({ ...MOCK_STATE, activeWorkspaceID: { value: 'def' } }))('999')).to.be
+          .null;
       });
     });
 

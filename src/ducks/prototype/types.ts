@@ -1,7 +1,7 @@
 import NLC from '@voiceflow/natural-language-commander';
 
 import { PrototypeContext } from '@/models';
-import { DeviceType } from '@/pages/Prototype/components/PrototypePage/constants';
+import { DeviceType } from '@/pages/Prototype/constants';
 
 // context types
 export interface Context extends PrototypeContext {
@@ -46,5 +46,8 @@ export interface PrototypeState {
   contextHistory: Partial<Context>[];
   context: Context;
   mode: PrototypeMode;
-  display: DeviceType | null;
+  visual: {
+    device: DeviceType | null;
+    sourceID: string | null;
+  };
 }

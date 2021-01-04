@@ -11,7 +11,7 @@ type ItemComponentProps = {
   style: object;
   onRemove: (item: any) => void;
   isDragging: boolean;
-  onContextMenu?: React.MouseEvent;
+  onContextMenu?: (event: React.MouseEvent<HTMLElement>) => void;
   connectedDragRef: React.ReactElement | null;
   isContextMenuOpen?: boolean;
 };
@@ -66,9 +66,7 @@ const DnDItem = <I extends unknown>({
   if (menuOptions.length) {
     return (
       <ContextMenu options={menuOptions}>
-        {({ isOpen, onContextMenu }: { isOpen: boolean; onContextMenu: React.MouseEvent }) => (
-          <Item {...itemProps} onContextMenu={onContextMenu} isContextMenuOpen={isOpen} />
-        )}
+        {({ isOpen, onContextMenu }) => <Item {...itemProps} onContextMenu={onContextMenu} isContextMenuOpen={isOpen} />}
       </ContextMenu>
     );
   }

@@ -2,8 +2,7 @@ import React from 'react';
 
 import { toast } from '@/components/Toast';
 import { BlockType, MarkupModeType } from '@/constants';
-import { EventualEngineContext } from '@/contexts';
-import { useDidUpdateEffect, useTrackingEvents, useUpload } from '@/hooks';
+import { useDidUpdateEffect, useEventualEngine, useTrackingEvents, useUpload } from '@/hooks';
 import { Markup, NodeData } from '@/models';
 import { useMarkupMode } from '@/pages/Skill/hooks';
 import { imageSizeFromUrl } from '@/utils/file';
@@ -28,7 +27,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
   const startTimeCache = React.useRef(0);
   const [modeType, setModeType] = React.useState<MarkupModeType | null>(null);
   const [isCreating, setCreating] = React.useState(false);
-  const eventualEngine = React.useContext(EventualEngineContext)!;
+  const getEngine = useEventualEngine();
   const isMarkupMode = useMarkupMode();
 
   const { isLoading: isUploadingImage, onUpload } = useUpload({
@@ -43,7 +42,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
 
     setModeType(type);
     setCreating(isNextCreating);
-    eventualEngine.get()?.canvas?.setBusy(isNextCreating);
+    getEngine()?.canvas?.setBusy(isNextCreating);
   };
 
   const finishCreating = () => setCreatingModeType(null);
@@ -68,7 +67,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
       try {
         setModeType(MarkupModeType.IMAGE);
 
-        const engine = eventualEngine.get()!;
+        const engine = getEngine()!;
 
         const imageURL = await onUpload(null, file);
         const imageSize = await imageSizeFromUrl(imageURL);
@@ -114,7 +113,8 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
   }, []);
 
   useDidUpdateEffect(() => {
-    const engine = eventualEngine.get();
+    const engine = getEngine();
+
     if (isMarkupMode) {
       const hasFocus = engine?.markup.hasFocus;
       if (!hasFocus) {

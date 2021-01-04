@@ -1,10 +1,9 @@
 import React from 'react';
 
+import DisplayRenderer from '@/components/DisplayRenderer';
 import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
-
-import DisplayRender from './DisplayRender';
 
 function PaymentModal() {
   const { isOpened, toggle, data } = useModals(ModalType.DISPLAY_PREVIEW);
@@ -15,7 +14,7 @@ function PaymentModal() {
     <Modal isOpen={isOpened} toggle={toggle}>
       <ModalHeader toggle={toggle} header="Display Preview" />
       <ModalBody className="p-4">
-        <DisplayRender apl={documentData} data={displayData} commands={apl} />
+        <DisplayRenderer apl={documentData} data={displayData} commands={apl} withControls />
       </ModalBody>
     </Modal>
   );

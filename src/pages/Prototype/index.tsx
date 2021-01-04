@@ -1,20 +1,16 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { FlexCenter } from '@/components/Flex';
-import { Link } from '@/components/Text';
-import { FeatureFlag } from '@/config/features';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useDidUpdateEffect, useFeature, useTeardown, useTrackingEvents } from '@/hooks';
+import { useDidUpdateEffect, useTeardown } from '@/hooks';
 import { useDebouncedCallback } from '@/hooks/callback';
 import { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 import { Interactions } from '@/pages/Prototype/components/PrototypeDialog/components';
-import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';
@@ -23,8 +19,6 @@ import * as Query from '@/utils/query';
 import { Container, Dialog, InnerChatContainer, Input, OutterChatContainer, Start, UserSaysContainer } from './components';
 import { usePrototype, useResetPrototype, useStartPrototype } from './hooks';
 import { PMStatus } from './types';
-
-const PrototypingHelpLink = 'https://docs.voiceflow.com/#/platform/prototyping';
 
 export type PrototypeProps = {
   debug: boolean;
@@ -45,11 +39,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   setAtTop,
   autoplay,
   slots,
-  mode,
-  display,
   isModelTraining,
 }) => {
-  const [, trackEventsWrapper] = useTrackingEvents();
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
   const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audioInstance, onStepBack, onStepForward } = usePrototype(
@@ -62,7 +53,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [updatedAudioInstance, setUpdatedAudioInstance] = React.useState<TAudio | null>(audioInstance);
   const [forceAudioUpdate, setForceAutoUpdate] = React.useState(0);
-  const generalPrototype = useFeature(FeatureFlag.GENERAL_PROTOTYPE);
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
@@ -119,30 +109,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   }
 
   if (status === PrototypeDuck.PrototypeStatus.IDLE && !autoplay) {
-    return (
-      <Container id={Identifier.PROTOTYPE} isPublic={isPublic}>
-        <FadeDownContainer style={{ height: '100%' }}>
-          <Start
-            start={() => {
-              if (isPublic) {
-                startPrototype();
-              } else {
-                trackEventsWrapper(startPrototype, 'trackActiveProjectPrototypeTestStart', { debug, mode, display })();
-              }
-            }}
-            isModelTraining={isModelTraining}
-          />
-          {!generalPrototype.isEnabled && (
-            <FlexCenter style={{ paddingBottom: '30px', color: '#62778c', background: '#fdfdfd' }}>
-              New to prototyping?
-              <Link href={PrototypingHelpLink} style={{ marginLeft: '6px' }}>
-                Learn More
-              </Link>
-            </FlexCenter>
-          )}
-        </FadeDownContainer>
-      </Container>
-    );
+    return <Start debug={debug} isModelTraining={isModelTraining} isPublic={isPublic} onStart={startPrototype} />;
   }
 
   return (
@@ -185,8 +152,6 @@ const mapStateToProps = {
   slots: Slot.allSlotsSelector,
   showChips: PrototypeDuck.prototypeShowChipsSelector,
   autoplay: PrototypeDuck.prototypeAutoplaySelector,
-  mode: PrototypeDuck.prototypeModeSelector,
-  display: PrototypeDuck.prototypeDisplaySelector,
 };
 
 const mapDispatchProps = {

@@ -14,7 +14,7 @@ import { allIntentsSelector, intentByIDSelector } from './selectors';
 import { getUniqSlots, newSlotsCreator } from './utils';
 
 const NEW_INTENT_NAME = 'intent';
-const { update } = createCRUDActionCreators<Intent>(STATE_KEY);
+const { update } = createCRUDActionCreators(STATE_KEY);
 
 export const updateIntent: {
   (id: string, data: Intent, patch?: false): SyncThunk;
@@ -51,7 +51,7 @@ export const updateIntent: {
 export const updateIntentSlot = (id: string, slotId: string, data: Partial<IntentSlot>): SyncThunk => (dispatch, getState) => {
   const { slots } = intentByIDSelector(getState())(id);
 
-  return dispatch(updateIntent(id, { slots: patchNormalizedByKey<IntentSlot>(slots, slotId, data) }, true));
+  return dispatch(updateIntent(id, { slots: patchNormalizedByKey(slots, slotId, data) }, true));
 };
 
 export const updateIntentSlotDialog = (id: string, slotId: string, dialog: IntentSlotDialog): SyncThunk => (dispatch, getState) => {

@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import * as Realtime from '@/ducks/realtime';
 import { connect } from '@/hocs';
-import { useFeature, usePermission } from '@/hooks';
+import { usePermission } from '@/hooks';
 import { useEnableDisable } from '@/hooks/toggle';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
@@ -40,7 +39,6 @@ const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = (
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const isPrototypingMode = usePrototypingMode();
   const isLocked = isLockedSelector(Realtime.ResourceType.SETTINGS);
-  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
 
   React.useEffect(() => {
     updateFormValue(title);
@@ -81,7 +79,7 @@ const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = (
         onKeyPress={handleEnterPress}
         disabled={isLocked || !canEditCanvas}
       />
-      {headerRedesign.isEnabled && <ExportProjectButton />}
+      <ExportProjectButton />
     </ProjectTitleContainer>
   );
 };

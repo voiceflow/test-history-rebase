@@ -13,5 +13,5 @@ export type OnboardingProps = {
   firstTime?: boolean;
   workspaces?: Workspace[];
   creatorID?: number;
-  fetchWorkspaces?: () => void;
+  fetchWorkspaces?: () => Promise<void>;
 };

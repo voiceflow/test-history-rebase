@@ -5,6 +5,7 @@ export type DrawerDirection = SlideOutDirection;
 
 export type DrawerProps = {
   scrollable?: boolean;
+  zIndex?: number;
 };
 
 const Drawer = styled(SlideOut)<DrawerProps>`
@@ -15,6 +16,15 @@ const Drawer = styled(SlideOut)<DrawerProps>`
   border-width: 0;
   border-color: #dfe3ed;
   background-color: #fff;
+
+  z-index: ${({ zIndex = 20 }) => zIndex};
+
+  ${({ open }) =>
+    !open &&
+    css`
+      pointer-events: none;
+      user-select: none;
+    `}
 
   ${({ direction = SlideOutDirection.RIGHT }) =>
     direction === SlideOutDirection.RIGHT

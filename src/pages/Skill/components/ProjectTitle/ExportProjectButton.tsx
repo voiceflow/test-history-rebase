@@ -22,7 +22,6 @@ import { ExportIcon } from './components';
 const EXPORT_HELP_LINK = 'https://docs.voiceflow.com/#/features/sharing-features?id=export-your-canvas-as-pdfpng';
 
 const ExportProjectButton: React.FC<ConnectedExportProjectButtonProps> = ({ isExporting, exportCanvas }) => {
-  const { open: openCanvasExportModal } = useModals(ModalType.CANVAS_EXPORT);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
   const [trackingEvents] = useTrackingEvents();
   const [canExport] = usePermission(Permission.CANVAS_EXPORT);
@@ -47,7 +46,7 @@ const ExportProjectButton: React.FC<ConnectedExportProjectButtonProps> = ({ isEx
         <MenuContainer noBottomPadding>
           <FadeDownDelayedContainer>
             <span>
-              <ExportItem onRedirect={openCanvasExportModal} updateType={setSelectedExportType} />
+              <ExportItem updateType={setSelectedExportType} />
             </span>
             <ModalFooter onClick={stopImmediatePropagation()}>
               <FlexApart fullWidth>

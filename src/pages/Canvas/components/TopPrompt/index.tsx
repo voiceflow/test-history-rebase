@@ -21,7 +21,6 @@ const TopPrompt: React.FC<ConnectedTopPrompt> = ({ goToDesign }) => {
   const isPrototypingMode = usePrototypingMode();
   const isCommentingMode = useCommentingMode();
   const isMarkupMode = useMarkupMode();
-  const show = isCommentingMode || isMarkupMode || isPrototypingMode;
 
   let modeText = '';
 
@@ -36,17 +35,13 @@ const TopPrompt: React.FC<ConnectedTopPrompt> = ({ goToDesign }) => {
   useHotKeys(Hotkey.CLOSE_CANVAS_MODE, goToDesign, { preventDefault: true });
 
   return (
-    <>
-      {show && (
-        <CenterContainer>
-          <FadeDownContainer {...fadeConfig}>
-            <Container id={Identifier.ESCAPE_MODE_PROMPT} onClick={goToDesign}>
-              <KeyBubble>esc</KeyBubble> to exit {modeText}
-            </Container>
-          </FadeDownContainer>
-        </CenterContainer>
-      )}
-    </>
+    <CenterContainer>
+      <FadeDownContainer {...fadeConfig}>
+        <Container id={Identifier.ESCAPE_MODE_PROMPT} onClick={goToDesign}>
+          <KeyBubble>esc</KeyBubble> to exit {modeText}
+        </Container>
+      </FadeDownContainer>
+    </CenterContainer>
   );
 };
 

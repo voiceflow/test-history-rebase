@@ -78,4 +78,4 @@ export interface ControlInterface {
   keydown: (event: KeyboardEvent) => void;
 }
 
-export type GenerateControlInterface = (handle: (action: ControlAction) => void) => ControlInterface;
+export type GenerateControlInterface<T extends any[] = []> = (handle: (action: ControlAction) => void, ...args: T) => ControlInterface;

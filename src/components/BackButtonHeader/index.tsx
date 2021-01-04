@@ -4,11 +4,10 @@ import { Flex } from '@/components/Box';
 import { FlexCenter, FlexEnd } from '@/components/Flex';
 import { BackButton } from '@/components/Header/components';
 import SvgIcon from '@/components/SvgIcon';
-import { FeatureFlag } from '@/config/features';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useHotKeys } from '@/hooks';
+import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ProgressStage } from '@/pages/Publish/Upload/components';
 import { PublishContext } from '@/pages/Skill/contexts';
@@ -41,7 +40,6 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHead
   goToPublish,
   isViewerOrLibraryRole,
 }) => {
-  const headerRedesign = useFeature(FeatureFlag.HEADER_REDESIGN);
   const publishContextValue = React.useContext(PublishContext)!;
   const isMarkupMode = useMarkupMode();
 
@@ -58,9 +56,7 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHead
 
   return render ? (
     <>
-      {headerRedesign.isEnabled && publishContextValue?.job?.stage.data && (
-        <ProgressStage progress={(publishContextValue?.job?.stage.data as any)!.progress} />
-      )}
+      {publishContextValue?.job?.stage.data && <ProgressStage progress={(publishContextValue.job.stage.data as any).progress} />}
       <HeaderContainer style={{ minWidth: '100%' }}>
         <Flex style={{ padding: 'none', height: '70px', backgroundColor: '#fff' }}>
           <FlexCenter style={{ minWidth: '100%', height: '100%', padding: 'none' }}>

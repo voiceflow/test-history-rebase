@@ -26,7 +26,7 @@ export const {
   replace: replaceProjectLists,
   reorder: reorderProjectLists,
   move: moveProjectList,
-} = createCRUDActionCreators<ProjectList>(STATE_KEY);
+} = createCRUDActionCreators(STATE_KEY);
 
 export const renameProjectList = (listID: string, name: string) => updateProjectList(listID, { name }, true);
 

@@ -2,15 +2,11 @@ import { createSelector } from 'reselect';
 
 import * as Creator from '@/ducks/creator';
 import * as Skill from '@/ducks/skill';
-import { createRootSelector } from '@/ducks/utils';
 import * as CRUD from '@/ducks/utils/crud';
-import { Thread } from '@/models';
 
 import { STATE_KEY } from './constants';
 
 // selectors
-
-const rootSelector = createRootSelector(STATE_KEY);
 
 export const {
   root: rootThreadsSelector,
@@ -18,7 +14,7 @@ export const {
   byID: threadByIDSelector,
   findByIDs: threadsByIDsSelector,
   has: hasThreadsSelector,
-} = CRUD.createCRUDSelectors<Thread>(STATE_KEY);
+} = CRUD.createCRUDSelectors(STATE_KEY);
 
 export const allThreadIdsSelector = createSelector([allThreadsSelector, Skill.activeDiagramIDSelector], (threads, diagramID) =>
   threads.filter((thread) => thread.diagramID === diagramID).map((thread) => thread.id)
@@ -44,7 +40,10 @@ export const threadIDsByNodeIDSelector = createSelector([allThreadsSelector], (t
   threads.filter((thread) => thread.nodeID === nodeID).map(({ id }) => id)
 );
 
-export const hasUnreadCommentsSelector = createSelector([rootSelector], ({ hasUnreadComments, allKeys }) => hasUnreadComments && !!allKeys.length);
+export const hasUnreadCommentsSelector = createSelector(
+  [rootThreadsSelector],
+  ({ hasUnreadComments, allKeys }) => hasUnreadComments && !!allKeys.length
+);
 
 export const threadCount = createSelector(allThreadIdsSelector, (threads) => threads.length);
 

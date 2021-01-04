@@ -53,7 +53,7 @@ export default persistReducer(PERSIST_CONFIG, viewportReducer);
 
 // selectors
 
-const { byID: byIDSelector } = createCRUDSelectors<ViewportModel>(STATE_KEY);
+const { byID: byIDSelector } = createCRUDSelectors(STATE_KEY);
 
 export const viewportByIDSelector = createSelector([byIDSelector], (getViewport) => (viewportID: string) => {
   const { diagramID, ...viewport } = getViewport(viewportID);
@@ -63,7 +63,7 @@ export const viewportByIDSelector = createSelector([byIDSelector], (getViewport)
 
 // action creators
 
-export const { update: updateViewport } = createCRUDActionCreators<ViewportModel>(STATE_KEY);
+export const { update: updateViewport } = createCRUDActionCreators(STATE_KEY);
 
 export const updateViewportForDiagram = (diagramID: string, viewport: Viewport) => updateViewport(diagramID, { ...viewport, diagramID });
 

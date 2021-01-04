@@ -29,30 +29,10 @@ const getError = ({ errorType, error }: JobStageData<AlexaExportJob.ErrorStage> 
   return _isString(strError) ? strError : 'something went wrong, please contact us on Intercom';
 };
 
-const getFooter = ({ amazonError }: JobStageData<AlexaExportJob.ErrorStage> | JobStageData<AlexaPublishJob.ErrorStage>) => {
-  if (amazonError) {
-    return (
-      <>
-        Amazon responded with an error, Visit our{' '}
-        <u>
-          <a href="https://www.facebook.com/groups/voiceflowgroup">community</a>
-        </u>{' '}
-        or contact us on Intercom
-      </>
-    );
-  }
-
-  return null;
-};
-
 type ErrorStageProps = {
   stage: AlexaExportJob.ErrorStage | AlexaPublishJob.ErrorStage;
 };
 
-const ErrorStage: React.FC<ErrorStageProps> = ({ stage }) => (
-  <BaseErrorStage title={getTitle(stage.data)} footer={getFooter(stage.data)}>
-    {getError(stage.data)}
-  </BaseErrorStage>
-);
+const ErrorStage: React.FC<ErrorStageProps> = ({ stage }) => <BaseErrorStage title={getTitle(stage.data)}>{getError(stage.data)}</BaseErrorStage>;
 
 export default ErrorStage;

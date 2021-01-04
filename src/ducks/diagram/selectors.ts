@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 
 import { creatorDiagramIDSelector } from '@/ducks/creator';
-import { Diagram } from '@/models';
 import { denormalize, getNormalizedByKey } from '@/utils/normalized';
 
 import { createCRUDSelectors } from '../utils/crud';
@@ -16,8 +15,8 @@ export const {
   byID: diagramByIDSelector,
   findByIDs: diagramsByIDsSelector,
   has: hasDiagramsSelector,
-  key: allDiagramIDsSelector,
-} = createCRUDSelectors<Diagram>(STATE_KEY);
+  allIDs: allDiagramIDsSelector,
+} = createCRUDSelectors(STATE_KEY);
 
 export const activeDiagramSelector = createSelector([diagramByIDSelector, creatorDiagramIDSelector], (getDiagram, activeDiagramID) =>
   activeDiagramID ? getDiagram(activeDiagramID) : null

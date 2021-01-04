@@ -1,0 +1,56 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+import Dropdown from '@/components/Dropdown';
+import Menu, { MenuItem } from '@/components/Menu';
+import SvgIcon from '@/components/SvgIcon';
+import * as Account from '@/ducks/account';
+import * as Session from '@/ducks/session';
+import { connect, styled } from '@/hocs';
+import { ConnectedProps } from '@/types';
+import { preventDefault } from '@/utils/dom';
+
+import { UserNameContainer } from './components';
+
+const StyledLink = styled(Link)`
+  color: inherit !important;
+  text-decoration: none !important;
+`;
+
+export const UserMenu: React.FC<ConnectedUserMenuProps> = ({ user, logout }) => (
+  <div className="account-dropdown">
+    <Dropdown
+      menu={
+        <Menu>
+          <MenuItem disabled>{user.email}</MenuItem>
+          <MenuItem divider />
+
+          <StyledLink to="/account">
+            <MenuItem>Account</MenuItem>
+          </StyledLink>
+          <MenuItem onClick={preventDefault(logout) as any}>Logout</MenuItem>
+        </Menu>
+      }
+      placement="bottom-end"
+    >
+      {(ref, onToggle, isOpen) => (
+        <UserNameContainer onClick={onToggle} ref={ref} isOpen={isOpen}>
+          <div>{user.name}</div>
+          <SvgIcon icon="caretDown" color={isOpen ? '#5d9df5' : '#6e849a'} size={9} />
+        </UserNameContainer>
+      )}
+    </Dropdown>
+  </div>
+);
+
+const mapStateToProps = {
+  user: Account.userSelector,
+};
+
+const mapDispatchToProps = {
+  logout: Session.logout,
+};
+
+type ConnectedUserMenuProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserMenu);

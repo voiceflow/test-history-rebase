@@ -16,7 +16,7 @@ export const {
   byID: intentByIDSelector,
   findByIDs: intentsByIDsSelector,
   has: hasIntentsSelector,
-} = createCRUDSelectors<Intent>(STATE_KEY);
+} = createCRUDSelectors(STATE_KEY);
 
 export const allIntentIDsSelector = createSelector([allIntentsSelector], (intents) => intents.map(({ id }) => id));
 

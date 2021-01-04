@@ -4,11 +4,13 @@ import { Store } from '@/models';
 import { SyncThunk } from '@/store/types';
 
 import { updatePrototype, updatePrototypeContext, updatePrototypeStatus } from '../actions';
+import { prototypeVisualSelector } from '../selectors';
 import { PrototypeStatus } from '../types';
 import { log } from '../utils';
 
 const resetPrototype = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
+  const visualState = prototypeVisualSelector(state);
   const globalVariables = globalVariablesSelector(state);
   const slotNames = slotNamesSelector(state);
   const platform = activePlatformSelector(state);
@@ -42,7 +44,15 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
   dispatch(updatePrototypeStatus(PrototypeStatus.IDLE));
   dispatch(updatePrototypeContext({ variables }));
   dispatch(
-    updatePrototype({ contextStep: 0, contextHistory: [], flowIDHistory: [], activePathLinkIDs: [], activePathBlockIDs: [], autoplay: false })
+    updatePrototype({
+      contextStep: 0,
+      contextHistory: [],
+      flowIDHistory: [],
+      activePathLinkIDs: [],
+      activePathBlockIDs: [],
+      autoplay: false,
+      visual: { ...visualState, sourceID: null },
+    })
   );
 };
 

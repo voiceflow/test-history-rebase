@@ -10,10 +10,10 @@ export default templateReducer;
 
 // selectors
 
-export const { root: rootTemplatesSelector, all: allTemplatesSelector, byID: templateByIDSelector, has: hasTemplatesSelector } = createCRUDSelectors<
-  Template
->(STATE_KEY);
+export const { root: rootTemplatesSelector, all: allTemplatesSelector, byID: templateByIDSelector, has: hasTemplatesSelector } = createCRUDSelectors(
+  STATE_KEY
+);
 
 // action creators
 
-export const { replace: replaceTemplates } = createCRUDActionCreators<Template>(STATE_KEY);
+export const { replace: replaceTemplates } = createCRUDActionCreators(STATE_KEY);

@@ -8,8 +8,6 @@ import { useEditingMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import { activeFlowStructureSelector } from '@/store/selectors';
 import { ConnectedProps } from '@/types';
 
-const FlowBarComponent = FlowBar as React.FC<any>;
-
 type FlowControlsProps = {
   render: boolean;
 };
@@ -19,16 +17,12 @@ const FlowControls: React.FC<FlowControlsProps & ConnectedFlowControlsProps> = (
   const isEditingMode = useEditingMode();
   const showFlowControls = !isPrototypingMode && !isRootDiagram && flow;
 
-  if (!showFlowControls) return null;
+  if (!showFlowControls || !render) return null;
 
   return (
     <>
-      {render && (
-        <>
-          <CanvasGoHome withMenu={false} withDrawer={isEditingMode} />
-          <FlowBarComponent withMenu withDrawer={isEditingMode} flow={flow} />
-        </>
-      )}
+      <CanvasGoHome withMenu={false} withDrawer={isEditingMode} />
+      <FlowBar flow={flow} />
     </>
   );
 };

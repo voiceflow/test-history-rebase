@@ -43,21 +43,21 @@ export const useTrackingEvents = () => {
 export const useSessionTracking = () => {
   const [trackEvents] = useTrackingEvents();
   const authToken = useSelector(Session.authTokenSelector);
-  const workspaces = useSelector(Workspace.allWorkspaceIdsSelector);
+  const workspaceIDs = useSelector(Workspace.allWorkspaceIDsSelector);
   const startTime = React.useMemo(() => Date.now(), []);
   const trackSessionTime = React.useCallback(() => trackEvents.trackSessionDuration(Date.now() - startTime), []);
 
   useOneTimeEffect(() => {
-    if (!authToken || workspaces.length === 0) {
+    if (!authToken || workspaceIDs.length === 0) {
       return false;
     }
 
-    trackEvents.trackSessionBegin(workspaces);
+    trackEvents.trackSessionBegin(workspaceIDs);
 
     window.addEventListener('beforeunload', trackSessionTime);
 
     return true;
-  }, [authToken, workspaces]);
+  }, [authToken, workspaceIDs]);
 };
 
 export const useWorkspaceTracking = () => {

@@ -1,0 +1,21 @@
+import Flex, { flexApartStyles } from '@/components/Flex';
+import { css, styled } from '@/hocs';
+
+type HeaderProps = {
+  rightIcon?: boolean;
+};
+
+const Header = styled(Flex)<HeaderProps>`
+  color: #132144;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+  ${({ rightIcon }) =>
+    rightIcon &&
+    css`
+      ${flexApartStyles}
+    `}
+`;
+
+export default Header;

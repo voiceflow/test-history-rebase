@@ -8,6 +8,8 @@ export type Normalized<T> = {
   allKeys: string[];
 };
 
+export type NormalizedValue<T> = T extends Normalized<infer R> ? R : never;
+
 export type GetKey<T> = (obj: T, index?: number, array?: T[]) => string;
 
 export const defaultGetKey = <T extends ObjectWithId>(obj: T) => stringify(obj.id);
@@ -42,12 +44,13 @@ export const getNormalizedByKey = <T>({ byKey }: Normalized<T>, key: string) => 
 
 export const getAllNormalizedByKeys = <T>({ byKey }: Normalized<T>, keys: string[]) => keys.map((key) => byKey[key]);
 
-export const updateNormalizedByKey = <T>({ allKeys, byKey }: Normalized<T>, key: string, obj: T): Normalized<T> => ({
-  allKeys,
-  byKey: { ...byKey, [key]: obj },
-});
+export const updateNormalizedByKey = <T, N extends Normalized<T>>({ byKey, ...rest }: N, key: string, obj: T) =>
+  ({
+    ...rest,
+    byKey: { ...byKey, [key]: obj },
+  } as N);
 
-export const patchNormalizedByKey = <T>(normalized: Normalized<T>, key: string, obj: Partial<T>) =>
+export const patchNormalizedByKey = <T, N extends Normalized<T>>(normalized: N, key: string, obj: Partial<T>) =>
   updateNormalizedByKey(normalized, key, { ...getNormalizedByKey(normalized, key), ...obj });
 
 export const addNormalizedByKey = <T>(normalized: Normalized<T>, key: string, obj: T) => ({

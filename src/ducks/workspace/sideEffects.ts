@@ -1,40 +1,46 @@
 import client from '@/client';
 import { toast } from '@/components/Toast';
 import { PlatformType, UserRole } from '@/constants';
-import { deleteNormalize, normalize } from '@/ducks/_normalize';
 import * as Modal from '@/ducks/modal';
 import { saveProjectListsForWorkspace } from '@/ducks/projectList/sideEffects';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
+import * as CRUD from '@/ducks/utils/crud';
 import { DBWorkspace, Workspace } from '@/models';
-import { ActionPayload, SyncThunk, Thunk } from '@/store/types';
+import { SyncThunk, Thunk } from '@/store/types';
+import { withoutValue } from '@/utils/array';
+import { normalize } from '@/utils/normalized';
 
-import { UpdateWorkspaces, updateCurrentWorkspace, updateWorkspace, updateWorkspaces } from './actions';
-import { activeWorkspaceIDSelector, activeWorkspaceMembersSelector } from './selectors';
+import { patchWorkspace, updateCurrentWorkspace } from './actions';
+import { STATE_KEY } from './constants';
+import { activeWorkspaceIDSelector, activeWorkspaceMembersSelector, allWorkspaceIDsSelector } from './selectors';
 import { extractErrorFromResponseData, extractErrorMessages } from './utils';
 
 const MEMBER_UPDATE_ERROR = 'Unable to Update Members';
+
+const crud = CRUD.createCRUDActionCreators(STATE_KEY);
 
 export const updateCurrentWorkspaceItem = (payload: Partial<Workspace>): SyncThunk => (dispatch, getState) => {
   const workspaceID = activeWorkspaceIDSelector(getState());
 
   if (workspaceID) {
-    dispatch(updateWorkspace(workspaceID, payload));
+    dispatch(patchWorkspace(workspaceID, payload));
   }
 };
 
 export const removeWorkspace = (workspaceID: string): Thunk => async (dispatch, getState) => {
-  const workspaces = getState().workspace;
-  const state = deleteNormalize(workspaceID, workspaces);
+  const state = getState();
+  const workspaceIDs = withoutValue(allWorkspaceIDsSelector(state), workspaceID);
+
   // default to the first existing team
-  const newWorkspace = state.allIds.length > 0 ? state.allIds[0] : undefined;
+  const newWorkspace = workspaceIDs.length > 0 ? workspaceIDs[0] : undefined;
 
   if (!newWorkspace) {
     dispatch(goToWorkspace());
   } else {
     dispatch(updateCurrentWorkspace(newWorkspace));
   }
-  dispatch(updateWorkspaces(state));
+  dispatch(crud.remove(workspaceID));
 };
 
 export const deleteWorkspace = (workspaceID: string): Thunk => async (dispatch) => {
@@ -50,27 +56,21 @@ export const deleteWorkspace = (workspaceID: string): Thunk => async (dispatch) 
   }
 };
 
-export const fetchWorkspaces = (): SyncThunk => async (dispatch, getState) => {
+export const fetchWorkspaces = (): Thunk => async (dispatch, getState) => {
   try {
     const state = getState();
     const activeWorkspaceID = activeWorkspaceIDSelector(state)!;
 
     const workspaces = await client.workspace.find();
-
-    // NORMALIZE TEAMS
-    const normalizedWorkspaces = normalize(
-      'id',
-      workspaces.sort((l, r) => (l.templates && 1) || (r.templates && -1) || 0).map((workspace) => ({ ...workspace }))
-    ) as ActionPayload<UpdateWorkspaces>;
+    const sorted = workspaces.sort((l, r) => (l.templates && 1) || (r.templates && -1) || 0).map((workspace) => ({ ...workspace }));
+    const normalized = normalize(sorted);
 
     // If the current team doesn't exist, default it to something else
-    dispatch(updateWorkspaces(normalizedWorkspaces));
+    dispatch(crud.replace(workspaces.sort((l, r) => (l.templates && 1) || (r.templates && -1) || 0).map((workspace) => ({ ...workspace }))));
 
-    if (!normalizedWorkspaces.byId.hasOwnProperty(activeWorkspaceID)) {
-      dispatch(updateCurrentWorkspace(workspaces[0]?.id));
+    if (!normalized.allKeys.includes(activeWorkspaceID)) {
+      dispatch(updateCurrentWorkspace(workspaces[0]?.id ?? null));
     }
-
-    return normalizedWorkspaces;
   } catch (err) {
     dispatch(Modal.setError('Unable to fetch workspaces'));
 
@@ -100,7 +100,7 @@ export const fetchWorkspace = (): Thunk => async (dispatch, getState) => {
 
     const [workspace] = await client.workspace.fetchWorkspace(activeWorkspaceID);
 
-    dispatch(updateWorkspace(activeWorkspaceID, workspace));
+    dispatch(patchWorkspace(activeWorkspaceID, workspace));
   } catch (err) {
     dispatch(Modal.setError('Unable to fetch workspace'));
 
@@ -142,7 +142,7 @@ export const updateWorkspaceName = (name: string): Thunk => async (dispatch, get
 
     await client.workspace.updateName(activeWorkspaceID, name);
 
-    dispatch(updateWorkspace(activeWorkspaceID, { name }));
+    dispatch(patchWorkspace(activeWorkspaceID, { name }));
   } catch (err) {
     dispatch(Modal.setError(extractErrorFromResponseData(err, 'Invalid Workspace Name')));
 
@@ -156,7 +156,7 @@ export const updateWorkspaceImage = (url: string): Thunk => async (dispatch, get
 
     await client.workspace.updateImage(activeWorkspaceID, url);
 
-    dispatch(updateWorkspace(activeWorkspaceID, { image: url }));
+    dispatch(patchWorkspace(activeWorkspaceID, { image: url }));
   } catch (err) {
     dispatch(Modal.setError('Error updating workspace image'));
 
@@ -191,7 +191,7 @@ export const sendInvite = (email: string, permissionType: UserRole, showToast = 
     const newMember = await client.workspace.sendInvite(currentWorkspaceID, email, permissionType || undefined);
 
     if (newMember) {
-      dispatch(updateWorkspace(currentWorkspaceID, { members: [...currentMembers, newMember] }));
+      dispatch(patchWorkspace(currentWorkspaceID, { members: [...currentMembers, newMember] }));
       dispatch(trackInvitationSent(currentWorkspaceID, email));
     }
 
@@ -215,7 +215,7 @@ export const updateInvite = (email: string, permissionType: UserRole): Thunk => 
     await client.workspace.updateInvite(currentWorkspaceID, email, permissionType);
 
     const updatedMembers = currentMembers.map((member) => (member.email !== email ? member : { ...member, role: permissionType }));
-    dispatch(updateWorkspace(currentWorkspaceID, { members: updatedMembers }));
+    dispatch(patchWorkspace(currentWorkspaceID, { members: updatedMembers }));
 
     toast.success('Updated permissions');
   } catch (err) {
@@ -234,7 +234,7 @@ export const cancelInvite = (email: string): Thunk => async (dispatch, getState)
     dispatch(trackInvitationCancelled(workspaceID, email));
 
     const updatedMembers = currentMembers.filter((member) => member.email !== email);
-    dispatch(updateWorkspace(workspaceID, { members: updatedMembers }));
+    dispatch(patchWorkspace(workspaceID, { members: updatedMembers }));
 
     toast.success('Cancelled invite');
   } catch (err) {
@@ -252,7 +252,7 @@ export const updateMember = (creatorID: number, role: UserRole): Thunk => async 
     await client.workspace.updateMember(workspaceID, creatorID, role);
 
     const updatedMembers = currentMembers.map((member) => (member.creator_id === creatorID ? { ...member, role } : member));
-    dispatch(updateWorkspace(workspaceID, { members: updatedMembers }));
+    dispatch(patchWorkspace(workspaceID, { members: updatedMembers }));
   } catch (err) {
     toast.error(extractErrorMessages(err));
     throw err;
@@ -268,7 +268,7 @@ export const deleteMember = (creatorID: number): Thunk => async (dispatch, getSt
     await client.workspace.deleteMember(workspaceID, creatorID);
 
     const updatedMembers = currentMembers.filter((member) => member.creator_id !== creatorID);
-    dispatch(updateWorkspace(workspaceID, { members: updatedMembers }));
+    dispatch(patchWorkspace(workspaceID, { members: updatedMembers }));
   } catch (err) {
     toast.error(extractErrorMessages(err));
     throw err;
@@ -278,7 +278,7 @@ export const deleteMember = (creatorID: number): Thunk => async (dispatch, getSt
 export const getMembers = (workspaceID: string): Thunk => async (dispatch) => {
   try {
     const members = await client.workspace.findMembers(workspaceID);
-    dispatch(updateWorkspace(workspaceID, { members }));
+    dispatch(patchWorkspace(workspaceID, { members }));
   } catch (err) {
     toast.error('Unable to retrieve members');
     throw err;

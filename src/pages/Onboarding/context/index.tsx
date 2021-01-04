@@ -263,7 +263,6 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     }
 
     let workspace;
-    let userWorkspaces: any;
 
     const selectedWorkspaceID = paymentMeta.selectedWorkspaceId;
     if (selectedWorkspaceID) {
@@ -327,7 +326,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         email: email!,
         channels,
         teamSize,
-        workspaceIDs: userWorkspaces?.allIds,
+        workspaceIDs: [],
       });
     }
 

@@ -4,18 +4,23 @@ import { Permission, hasRolePermission } from '@/config/permissions';
 import { EDITOR_SEAT_ROLES, PlanType, UserRole } from '@/constants';
 import { userIDSelector } from '@/ducks/account/selectors';
 import { activeProjectIDSelector } from '@/ducks/skill/skill/selectors';
-import { createRootSelector } from '@/ducks/utils';
+import * as CRUD from '@/ducks/utils/crud';
 import { Workspace } from '@/models';
 import { NonNullableRecord } from '@/types';
 import { getAlternativeColor } from '@/utils/colors';
 
 import { STATE_KEY, TEMPLATES_ADMIN_ID, TEMPLATES_EDITORS_ID } from './constants';
 
-const rootSelector = createRootSelector(STATE_KEY);
+export const {
+  root: rootWorkspacesSelector,
+  all: allWorkspacesSelector,
+  allIDs: allWorkspaceIDsSelector,
+  byID: workspaceByIDSelector,
+  findByIDs: workspacesByIDsSelector,
+  has: hasWorkspacesSelector,
+} = CRUD.createCRUDSelectors(STATE_KEY);
 
-export const activeWorkspaceIDSelector = createSelector([rootSelector], ({ activeWorkspaceID }) => activeWorkspaceID);
-
-export const workspaceByIDSelector = createSelector([rootSelector], ({ byId }) => (workspaceID: string) => byId[workspaceID]);
+export const activeWorkspaceIDSelector = createSelector([rootWorkspacesSelector], ({ activeWorkspaceID }) => activeWorkspaceID);
 
 export const activeWorkspaceSelector = createSelector([workspaceByIDSelector, activeWorkspaceIDSelector], (getWorkspace, workspaceID) =>
   workspaceID ? getWorkspace(workspaceID) : null
@@ -50,10 +55,6 @@ export const usedViewerSeatsSelector = createSelector(
   [activeWorkspaceMembersSelector],
   (members) => members.filter((member) => !EDITOR_SEAT_ROLES.includes(member.role)).length
 );
-
-export const allWorkspaceIdsSelector = createSelector([rootSelector], ({ allIds }) => allIds || []);
-
-export const allWorkspacesSelector = createSelector([rootSelector], ({ allIds, byId }) => allIds.map((workspaceID) => byId[workspaceID]));
 
 export const activeWorkspaceMemberSelector = createSelector([activeWorkspaceMembersSelector], (members) => (creatorID: string) =>
   members?.find((member) => String(member.creator_id) === creatorID) || null

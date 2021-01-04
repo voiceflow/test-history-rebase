@@ -19,7 +19,7 @@ import * as Thread from '@/ducks/thread';
 import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { useMouseMove } from '@/hooks';
 import { NodeData } from '@/models';
-import { CanvasAction } from '@/pages/Canvas/constants';
+import { CANVAS_HIDDEN_CLASSNAME, CanvasAction } from '@/pages/Canvas/constants';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { Selector, Store } from '@/store/types';
 import { Pair, Point } from '@/types';
@@ -249,6 +249,14 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   removeClass(className: string) {
     this.components.container?.removeClass(className);
     this.log.debug(this.log.reset('removed class'), this.log.value(className));
+  }
+
+  showCanvas() {
+    this.removeClass(CANVAS_HIDDEN_CLASSNAME);
+  }
+
+  hideCanvas() {
+    this.addClass(CANVAS_HIDDEN_CLASSNAME);
   }
 
   /**

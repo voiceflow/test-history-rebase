@@ -223,9 +223,6 @@ const setSession = ({ token, user }: { token: string; user: Models.Account }): T
   } else if (search.invite || !user.first_login) {
     dispatch(goToDashboardWithSearch(location.search));
   } else {
-    // TODO: put these in redux
-    localStorage.setItem('is_first_upload', 'true');
-    localStorage.setItem('is_first_session', 'true');
     dispatch(goToOnboarding());
   }
 

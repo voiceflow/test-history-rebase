@@ -1,5 +1,5 @@
 {
-  "extends": ["stylelint-config-standard", "prettier-stylelint/config", "stylelint-config-rational-order"],
+  "extends": ["stylelint-config-standard", "prettier-stylelint/config", "stylelint-config-rational-order", "stylelint-config-prettier"],
   "plugins": ["stylelint-declaration-block-no-ignored-properties", "stylelint-no-unsupported-browser-features"],
   "rules": {
     "declaration-colon-newline-after": "always-multi-line",

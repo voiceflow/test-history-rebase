@@ -123,7 +123,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
                     </TrainFadeDown>
                   ) : (
                     <TrainFadeDown key="trained">
-                      <Trained isModelChangedSinceLastPublish={false} />
+                      <Trained />
                     </TrainFadeDown>
                   )}
                 </TrainContainer>

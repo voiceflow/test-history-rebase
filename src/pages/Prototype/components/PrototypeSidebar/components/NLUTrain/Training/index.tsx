@@ -2,7 +2,7 @@ import React from 'react';
 
 import Text, { Link } from '@/components/Text';
 
-import NLUContainer from '../NLUContainer';
+import NLUContainer from '../../NLUContainer';
 import { Loader } from './components';
 
 const Training: React.FC = () => (

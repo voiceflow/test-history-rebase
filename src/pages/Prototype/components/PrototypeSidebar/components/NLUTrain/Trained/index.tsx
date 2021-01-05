@@ -1,5 +1,6 @@
 import React from 'react';
 
+import client from '@/client';
 import Button, { ButtonVariant } from '@/components/Button';
 import Text, { Link } from '@/components/Text';
 import { toast } from '@/components/Toast';
@@ -7,10 +8,12 @@ import { PlatformType } from '@/constants';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
+import { useSetup } from '@/hooks';
 import { NLPContext } from '@/pages/Skill/contexts';
 import { ConnectedProps } from '@/types';
 
-import NLUContainer from './NLUContainer';
+import NLUContainer from '../../NLUContainer';
+import { ModelDiff, getModelsDiffs, isModelChanged } from './utils';
 
 const TRAIN_ASSISTANT_TEXT = {
   [PlatformType.ALEXA]: 'Train Alexa Skill',
@@ -18,12 +21,12 @@ const TRAIN_ASSISTANT_TEXT = {
   [PlatformType.GENERAL]: 'Train Assistant',
 };
 
-type TrainedProps = {
-  isModelChangedSinceLastPublish: boolean;
-};
-
-const Trained: React.FC<TrainedProps & ConnectedTrainedProps> = ({ platform, isModelChangedSinceLastPublish }) => {
+const Trained: React.FC<ConnectedTrainedProps> = ({ platform, versionID, projectID }) => {
   const nlp = React.useContext(NLPContext)!;
+  const [modelDiff, setModelDiff] = React.useState<ModelDiff>({
+    slots: { new: [], deleted: [], updated: [] },
+    intents: { new: [], deleted: [], updated: [] },
+  })!;
 
   const onStartTraining = async () => {
     try {
@@ -33,9 +36,17 @@ const Trained: React.FC<TrainedProps & ConnectedTrainedProps> = ({ platform, isM
     }
   };
 
-  const isTrained = !isModelChangedSinceLastPublish && nlp.job?.stage.type === NLPTrainStageType.SUCCESS;
+  useSetup(async () => {
+    const [projectPrototype, versionPrototype] = await Promise.all([
+      client.api.project.getPrototype(projectID),
+      client.api.version.getPrototype(versionID),
+    ] as const);
 
-  // TODO: add jobs error message
+    setModelDiff(getModelsDiffs(projectPrototype?.trainedModel ?? { slots: [], intents: [] }, versionPrototype.model));
+  });
+
+  const isTrained = !isModelChanged(modelDiff) && (!nlp.job || nlp.job.stage.type === NLPTrainStageType.SUCCESS);
+
   return (
     <NLUContainer>
       <img src="/lightbulb.svg" alt="user" width="80" />
@@ -57,8 +68,10 @@ const Trained: React.FC<TrainedProps & ConnectedTrainedProps> = ({ platform, isM
 
 const mapStateToProps = {
   platform: Skill.activePlatformSelector,
+  versionID: Skill.activeSkillIDSelector,
+  projectID: Skill.activeProjectIDSelector,
 };
 
 type ConnectedTrainedProps = ConnectedProps<typeof mapStateToProps>;
 
-export default connect(mapStateToProps)(Trained) as React.FC<TrainedProps>;
+export default connect(mapStateToProps)(Trained) as React.FC;

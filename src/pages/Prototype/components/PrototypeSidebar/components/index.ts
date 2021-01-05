@@ -1,5 +1,5 @@
-export { default as Trained } from './Trained';
-export { default as Training } from './Training';
+export { default as Trained } from './NLUTrain/Trained';
+export { default as Training } from './NLUTrain/Training';
 export { default as TrainContainer } from './TrainContainer';
 export { default as TrainFadeDown } from './TrainFadeDown';
 export { default as Container } from './PrototypeSidebarContainer';

@@ -51,6 +51,7 @@ const workspaceClient = {
       seats: number;
       period: BillingPeriod;
       coupon?: string;
+      onlyVerified?: boolean;
     }
   ) => fetch.post<Price>(`${WORKSPACES_PATH}/${workspaceID}/price`, data),
 

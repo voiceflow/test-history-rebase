@@ -59,6 +59,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
           seats,
           period,
           coupon: coupon || undefined,
+          onlyVerified: true,
         });
 
         if (checkHash.current !== hash) {
@@ -143,7 +144,8 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
 
       let numberOfSeats = seats;
       if (numberOfSeats === UNLIMITED_EDITORS_CONST) {
-        const editorCount = workspace.members.filter(({ role }) => role === UserRole.EDITOR || role === UserRole.ADMIN).length;
+        const editorCount = workspace.members.filter(({ role, creator_id }) => !!creator_id && (role === UserRole.EDITOR || role === UserRole.ADMIN))
+          .length;
         numberOfSeats = editorCount;
       }
 

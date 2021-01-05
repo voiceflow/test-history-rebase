@@ -2,11 +2,12 @@ import NLC from '@voiceflow/natural-language-commander';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
-import { useEventualEngine } from '@/hooks';
+import { useEventualEngine, useFeature } from '@/hooks';
 import { Slot } from '@/models';
 import { Dispatch } from '@/store/types';
 
@@ -15,6 +16,8 @@ import { Interaction, Message, PMStatus } from '../types';
 
 const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boolean, slots: Array<Slot>, isPublic?: boolean) => {
   const dispatch = useDispatch() as Dispatch;
+
+  const generalPrototype = useFeature(FeatureFlag.GENERAL_PROTOTYPE);
 
   const nlc = useSelector(Prototype.prototypeNLCSelector) as NLC;
   const variables = useSelector(Prototype.prototypeVariablesSelector);
@@ -53,11 +56,13 @@ const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boo
     enterFlow: (diagramID) => dispatch(Skill.updateDiagramID(diagramID)),
     updateStatus: setStatus,
     fetchContext: (request) => dispatch(Prototype.fetchContext(request)),
+    fetchContextV2: (request) => dispatch(Prototype.fetchContextV2(request)),
     addToMessages: (message) => updateMessages([...messages, message]),
     setInteractions,
     activePathLinkIDs,
     getLinksByPortID,
     activePathBlockIDs,
+    [FeatureFlag.GENERAL_PROTOTYPE]: generalPrototype.isEnabled,
   };
 
   const cache = React.useRef(cacheData);

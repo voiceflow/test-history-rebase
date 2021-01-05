@@ -1,8 +1,10 @@
+import { GeneralRequest, RequestType, TextRequest } from '@voiceflow/general-types';
 import NLC from '@voiceflow/natural-language-commander';
 import cuid from 'cuid';
-import _noop from 'lodash/noop';
+import _ from 'lodash';
 
 import { IS_TEST } from '@/config';
+import { FeatureFlag } from '@/config/features';
 import { BlockType, START_BLOCK_ID } from '@/constants';
 import { SpeakTraceAudioType, StreamTraceAction, TraceType } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
@@ -42,6 +44,8 @@ export type TraceControllerProps = {
   getNodeByID: (targetBlockID: string) => Node;
   getJoiningLinks: (lhsNodeID: string, rhsNodeID: string) => Link[];
   isPublic?: boolean;
+  [FeatureFlag.GENERAL_PROTOTYPE]: boolean;
+  fetchContextV2: (request: GeneralRequest) => Promise<Prototype.Context | null>;
 };
 
 type Options = {
@@ -132,6 +136,45 @@ class TraceController {
     this.props.updateStatus(PMStatus.FETCHING_CONTEXT);
 
     this.context = await this.props.fetchContext(request);
+
+    if (this.stopped) {
+      return;
+    }
+
+    if (!this.context) {
+      this.setError('Unable to fetch response');
+      return;
+    }
+
+    if (!this.context.trace.length) {
+      return;
+    }
+
+    this.audio.stop();
+
+    if (IS_TEST) {
+      await this.processTrace(this.context.trace);
+    } else {
+      this.processTrace(this.context.trace);
+    }
+  };
+
+  public nextV2 = async (input?: string) => {
+    const currentContextStep = this.props.contextStep;
+    const contextHistory = this.props.contextHistory;
+    const historyLength = contextHistory.length;
+
+    // Remove any forward history
+    if (currentContextStep !== historyLength - 1) {
+      const newHistoryArray = contextHistory.slice(0, currentContextStep + 1);
+      this.props.updatePrototype({ contextHistory: newHistoryArray });
+    }
+
+    this.props.updateStatus(PMStatus.FETCHING_CONTEXT);
+
+    const request: TextRequest | null = _.isString(input) ? { type: RequestType.TEXT, payload: input } : null;
+
+    this.context = await this.props.fetchContextV2(request);
 
     if (this.stopped) {
       return;
@@ -394,7 +437,7 @@ class TraceController {
 
     const muted = this.props.engine?.getPrototypeMuted();
 
-    await this.audio.play(src, { muted, onError: () => this.setError() }).catch(_noop);
+    await this.audio.play(src, { muted, onError: () => this.setError() }).catch(_.noop);
   }
 
   private async processFlowTrace({ payload: { diagramID } }: FlowTrace) {

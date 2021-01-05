@@ -6,7 +6,7 @@ import { Thunk } from '@/store/types';
 import { AbortControl, waitJobFinished } from '@/utils/job';
 
 import { log } from '../utils';
-import initializePrototypeV2 from './initializeV2';
+import resetPrototype from './reset';
 
 const MAX_CHECKS = 30;
 
@@ -42,9 +42,7 @@ const renderPrototype = (abortControl: AbortControl): Thunk => async (dispatch, 
 
     if (!prototype) throw new Error('version prototype not found');
 
-    const { slots, intents } = prototype.model;
-
-    dispatch(initializePrototypeV2({ slots, intents }));
+    dispatch(resetPrototype());
   } catch (err) {
     log.error(err);
     dispatch(Modal.setError('Could Not Render Your Test Project'));

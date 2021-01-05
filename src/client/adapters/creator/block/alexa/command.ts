@@ -1,4 +1,4 @@
-import type { StepData } from '@voiceflow/general-types/build/nodes/command';
+import type { StepData } from '@voiceflow/general-types/build/nodes/push';
 
 import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';

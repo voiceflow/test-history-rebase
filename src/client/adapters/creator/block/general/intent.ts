@@ -1,4 +1,4 @@
-import { StepData } from '@voiceflow/general-types/build/nodes/intent';
+import { StepData } from '@voiceflow/general-types/build/nodes/jump';
 
 import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';

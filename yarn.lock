@@ -4684,6 +4684,20 @@
     regenerator-runtime "^0.13.5"
     superstruct "^0.10.12"
 
+"@voiceflow/api-sdk@1.19.0":
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.19.0.tgz#99b9a55df30bf2875e93182de81f41abb6f32ee0"
+  integrity sha512-FHcpjqSyfMEGGYFpjOmtDGxY3p/bN7aQ8oTVZPzqm1iZ/psFT8wwSBpxPkbwi+XEkYfuq10ZtloDURar+BkDSg==
+  dependencies:
+    "@types/atob" "^2.1.2"
+    "@voiceflow/logger" "^1.1.10"
+    atob "^2.1.2"
+    axios "^0.19.2"
+    core-js "^3.6.5"
+    io-ts "^2.2.8"
+    regenerator-runtime "^0.13.5"
+    superstruct "^0.10.12"
+
 "@voiceflow/apl-renderer@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/apl-renderer/-/apl-renderer-1.0.0.tgz#8adfe323417b21f2831ae6ed6e80e9cde4a9c4ba"
@@ -4783,6 +4797,13 @@
   integrity sha512-1dvpxE/dc8poZVRZQjGy6QLoeKIr7ti6oXglIbz5k1Sw5JDWP5XXfAxXUXA8FMkh66aboyivhIQ1Rl5n3axPyg==
   dependencies:
     "@voiceflow/api-sdk" "1.18.0"
+
+"@voiceflow/general-types@1.14.4":
+  version "1.14.4"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.14.4.tgz#5be4cabf6e7352b924376ccd6cfe506a907763cc"
+  integrity sha512-WQ9PDjsnn/6bapkTIyw62fjg2Tzp6ivHybKk2JCaLuo0e4Txn+HcLXyBOqBcQYw+MnjvihurKXI5I4ocvKqHlg==
+  dependencies:
+    "@voiceflow/api-sdk" "1.19.0"
 
 "@voiceflow/git-branch-check@^1.1.3":
   version "1.1.3"

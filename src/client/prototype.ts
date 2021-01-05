@@ -1,7 +1,8 @@
+import { GeneralRequest } from '@voiceflow/general-types';
 import axios from 'axios';
 
 import legacySkillAdapter, { extractIntents, extractSlots } from '@/client/adapters/legacy/skill';
-import { API_ENDPOINT } from '@/config';
+import { API_ENDPOINT, GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import { PrototypeContext, StateRequest } from '@/models';
 
 import fetch from './fetch';
@@ -13,8 +14,10 @@ const prototypeClient = {
   interact: (body: { state: Omit<PrototypeContext, 'trace'>; request?: StateRequest }, locale: string) =>
     fetch.post<PrototypeContext>(`${PROTOTYPE_PATH}/interact?locale=${locale}`, body),
 
-  interactV2: (body: { state: Omit<PrototypeContext, 'trace'>; request?: StateRequest }, locale: string) =>
-    fetch.post<PrototypeContext>(`${PROTOTYPE_PATH}/interactV2?locale=${locale}`, body),
+  interactV2: (versionID: string, body: { state: Omit<PrototypeContext, 'trace'>; request: GeneralRequest }) =>
+    axios
+      .post<{ state: PrototypeContext; trace: PrototypeContext['trace'] }>(`${GENERAL_RUNTIME_ENDPOINT}/interact/${versionID}`, body)
+      .then(({ data }) => data),
 
   getInfo: (configID: string) =>
     fetch.get(`${LEGACY_TESTING_PATH}/getInfo/${configID}`).then((data: any) => {

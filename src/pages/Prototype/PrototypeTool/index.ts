@@ -1,5 +1,7 @@
 import cuid from 'cuid';
 
+import { FeatureFlag } from '@/config/features';
+
 import { NLCIntent } from '../types';
 import AudioController from './Audio';
 import DialogController, { DialogControllerProps } from './Dialog';
@@ -32,7 +34,12 @@ class PrototypeTool {
     this.message!.trackStartTime();
     this.message!.session(cuid(), 'New session started');
     this.trace!.start();
-    this.trace!.next();
+
+    if (this.props[FeatureFlag.GENERAL_PROTOTYPE]) {
+      this.trace!.nextV2();
+    } else {
+      this.trace!.next();
+    }
   }
 
   public stop() {
@@ -69,6 +76,11 @@ class PrototypeTool {
     this.message?.user(cuid(), input);
 
     try {
+      if (this.props[FeatureFlag.GENERAL_PROTOTYPE]) {
+        await this.trace!.nextV2(input);
+        return;
+      }
+
       const intent = await this.dialog?.handle(input);
 
       await this.trace!.next(TraceController.getNextStateRequest(intent as NLCIntent, input));

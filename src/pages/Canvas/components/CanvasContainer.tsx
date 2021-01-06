@@ -47,11 +47,6 @@ const Wrapper = styled.div<{ markupMode: MarkupModeType | null }>`
     display: none;
   }
 
-  /* account for missing submenu */
-  &.${CANVAS_PROTOTYPE_ENABLED_CLASSNAME} {
-    padding-top: ${({ theme }) => theme.components.subHeader.height}px;
-  }
-
   &.${CANVAS_COMMENTING_ENABLED_CLASSNAME} {
     cursor: crosshair;
 

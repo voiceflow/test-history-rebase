@@ -308,6 +308,10 @@ class TraceController {
   }
 
   private processChoiceTrace({ payload: { choices } }: ChoiceTrace) {
+    if (this.props[FeatureFlag.GENERAL_PROTOTYPE]) {
+      return this.props.setInteractions(choices);
+    }
+
     const intents = this.props.nlc.getIntents();
 
     // if the choices are intent names, replace with the first utterance of that intent

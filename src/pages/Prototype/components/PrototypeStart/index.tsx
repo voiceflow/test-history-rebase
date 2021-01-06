@@ -94,15 +94,6 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
             </FlexCenter>
           </>
         )}
-        <Container>
-          <img src="/Testing.svg" alt="user" width="80" />
-
-          <div>Start test to see the dialog transcription</div>
-
-          <Button icon="rocket" onClick={start}>
-            Start Prototype
-          </Button>
-        </Container>
       </FadeDownContainer>
     </PrototypeContainer>
   );

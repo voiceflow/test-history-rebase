@@ -24,15 +24,15 @@ export const RepeatMap = {
 const googleSettingsAdapter = createAdapter<GoogleVersionSettings, SkillSettings>(
   (settings) => {
     const { error, session, repeat, defaultVoice } = defaultGoogleVersionSettings(settings);
-
     return {
       repeat: RepeatMap[repeat],
       accountLinking: null,
       alexaEvents: '',
-      settings: {},
+      settings: {
+        defaultVoice,
+      },
       alexa_permissions: [],
       errorPrompt: errorPromptAdapter.fromDB(error),
-      defaultVoice,
       ...restartAdapter.fromDB(session),
     };
   },

@@ -7,6 +7,8 @@ export const CODE_EXPORT_ENABLED = process.env.FF_CODE_EXPORT === 'true';
 export const GENERAL_PLATFORM_ENABLED = process.env.FF_GENERAL_PLATFORM === 'true';
 export const GENERAL_PROTOTYPE_ENABLED = process.env.FF_GENERAL_PROTOTYPE === 'true';
 export const VISUAL_PROTOTYPE_ENABLED = process.env.FF_VISUAL_PROTOTYPE === 'true';
+export const TTS_VOICES_ENABLED = process.env.FF_TTS_VOICES === 'true';
+export const WAVENET_VOICES_ENABLED = process.env.FF_WAVENET_VOICES === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
@@ -14,6 +16,8 @@ export enum FeatureFlag {
   VISUAL_PROTOTYPE = 'prototype_test',
   GENERAL_PLATFORM = 'general_platform',
   GENERAL_PROTOTYPE = 'general_prototype',
+  TTS_VOICES = 'tts_voices',
+  WAVENET_VOICES = 'wavenet_voices',
 
   // permanent circuit breakers for vendor integrations
   INTERCOM_INTEGRATION = 'intercom_integration',
@@ -26,4 +30,6 @@ export const LOCAL_FEATURE_OVERRIDES = {
   [FeatureFlag.VISUAL_PROTOTYPE]: VISUAL_PROTOTYPE_ENABLED,
   [FeatureFlag.GENERAL_PLATFORM]: GENERAL_PLATFORM_ENABLED,
   [FeatureFlag.GENERAL_PROTOTYPE]: GENERAL_PROTOTYPE_ENABLED,
+  [FeatureFlag.TTS_VOICES]: TTS_VOICES_ENABLED,
+  [FeatureFlag.WAVENET_VOICES]: WAVENET_VOICES_ENABLED,
 };

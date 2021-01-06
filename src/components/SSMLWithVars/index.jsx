@@ -9,13 +9,11 @@ import { compose } from '@/utils/functional';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
 const SSMLWithVars = (
-  { icon = 'alexa', voice, variables, defaultVoice, platform, addGlobalVariable, saveSettings, updateSettings, ...props },
+  { icon = 'alexa', voice, variables, locales, defaultVoice, platform, addGlobalVariable, saveSettings, updateSettings, ...props },
   ref
 ) => {
   const vars = React.useMemo(() => variables.map((name) => ({ id: name, name, isVariable: true })), [variables]);
-
   const platformDefaultVoice = getPlatformDefaultVoice(platform);
-
   const onAddVariable = React.useCallback(
     (name) => {
       try {
@@ -39,6 +37,7 @@ const SSMLWithVars = (
     <SSML
       ref={ref}
       icon={icon}
+      locales={locales}
       // defaultVoice from store is nullable
       voice={voice || defaultVoice || platformDefaultVoice}
       space
@@ -57,6 +56,7 @@ const mapStateToProps = {
   platform: Skill.activePlatformSelector,
   variables: allVariablesSelector,
   defaultVoice: Skill.defaultVoiceSelector,
+  locales: Skill.activeLocalesSelector,
 };
 
 const mapDispatchToProps = {

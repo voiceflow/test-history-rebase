@@ -8,9 +8,11 @@ import { createExportService, createPrototypeService, createVersionService } fro
 import createNLPService from './nlp';
 import projectService from './project';
 import publishService from './publish';
+import ttsService from './tts';
 
 const generalServiceClient = {
   nlp: createNLPService(GENERAL_SERVICE_ENDPOINT),
+  tts: ttsService,
   export: createExportService<GeneralJob.AnyJob, GeneralStageType>(GENERAL_SERVICE_ENDPOINT),
   project: projectService,
   publish: publishService(),

@@ -40,7 +40,10 @@ declare module 'webpack-nano/argv' {
     ff_generalPlatform: boolean;
     ff_generalPrototype: boolean;
     ff_manualNavigation: boolean;
+    ff_ttsVoices: boolean;
+    ff_wavenetVoices: boolean;
   }>;
 
   export = argv;
+
 }

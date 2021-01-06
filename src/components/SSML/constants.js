@@ -1,7 +1,9 @@
 import { constants } from '@voiceflow/common';
+import { Locale, LocaleToVoiceLanguageCode, VoiceLanguageCodeToVoice, VoiceType } from '@voiceflow/google-types/build/constants/index';
 import _constant from 'lodash/constant';
 
 import { PlatformType } from '@/constants';
+import { capitalizeFirstLetter } from '@/utils/string';
 
 const PROSODY_RATE_REGEXP = /^\d+(m?s)?$/;
 const PROSODY_PITCH_REGEXP = /^(\+|-)\d+(\.\d+)?%$/;
@@ -739,6 +741,13 @@ export const PLATFORM_SSML_META = {
     canChangeVoice: true,
     platformTags: ALEXA_DEFAULT_TAGS,
     addOptions: ALEXA_ADD_OPTIONS,
+    voiceOptions: () =>
+      VOICES.map((voice) => {
+        return {
+          value: voice.label,
+          ...voice,
+        };
+      }),
   },
   [PlatformType.GOOGLE]: {
     // eslint-disable-next-line lodash/prefer-constant
@@ -746,6 +755,34 @@ export const PLATFORM_SSML_META = {
     canChangeVoice: false,
     platformTags: GOOGLE_DEFAULT_TAGS,
     addOptions: UNIVERSAL_ADD_OPTIONS,
+    voiceOptions: (locales, useWavenet) => {
+      const localeMeta = locales?.map((locale) => {
+        return {
+          locale,
+          languageCode: LocaleToVoiceLanguageCode[locale],
+        };
+      });
+      return localeMeta?.map((meta) => {
+        return {
+          value: meta.locale,
+          label: meta.locale,
+          options: [].concat(
+            ...VoiceLanguageCodeToVoice[meta.languageCode].map((voiceMeta) => {
+              return voiceMeta.voiceName
+                .filter((voiceName) => {
+                  return useWavenet ? voiceName.includes(VoiceType.WAVENET) : voiceName.includes(VoiceType.STANDARD);
+                })
+                .map((voiceName) => {
+                  return {
+                    value: voiceName,
+                    label: voiceName,
+                  };
+                });
+            })
+          ),
+        };
+      });
+    },
   },
   [PlatformType.GENERAL]: {
     // eslint-disable-next-line lodash/prefer-constant
@@ -753,5 +790,20 @@ export const PLATFORM_SSML_META = {
     canChangeVoice: false,
     platformTags: ALEXA_DEFAULT_TAGS,
     addOptions: ALEXA_ADD_OPTIONS,
+    voiceOptions: (locales, useWavenet) => {
+      const allGoogleLocales = Object.values(Locale);
+      return [
+        {
+          value: capitalizeFirstLetter(PlatformType.ALEXA),
+          label: capitalizeFirstLetter(PlatformType.ALEXA),
+          options: PLATFORM_SSML_META[PlatformType.ALEXA].voiceOptions(),
+        },
+        {
+          value: capitalizeFirstLetter(PlatformType.GOOGLE),
+          label: capitalizeFirstLetter(PlatformType.GOOGLE),
+          options: PLATFORM_SSML_META[PlatformType.GOOGLE].voiceOptions(allGoogleLocales, useWavenet),
+        },
+      ];
+    },
   },
 };

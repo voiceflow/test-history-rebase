@@ -5,6 +5,9 @@ import { defaultLabelRenderer } from '@/components/Select';
 import SvgIcon from '@/components/SvgIcon';
 import { PluginType } from '@/components/TextEditor';
 import TippyTooltip from '@/components/TippyTooltip';
+import { FeatureFlag } from '@/config/features';
+import { PlatformType } from '@/constants';
+import { useFeature } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { stopPropagation } from '@/utils/dom';
 
@@ -26,6 +29,7 @@ const SSML = (
     voice,
     space,
     onBlur,
+    locales,
     platform,
     creatable,
     className,
@@ -46,8 +50,21 @@ const SSML = (
   ref
 ) => {
   const platformSSMLMeta = PLATFORM_SSML_META[platform];
+  const ttsVoices = useFeature(FeatureFlag.TTS_VOICES);
+  const wavenetVoices = useFeature(FeatureFlag.WAVENET_VOICES);
   const SSMLPlaceholder = placeholder ?? platformSSMLMeta.fallbackPlaceholder(voice);
-  const canChangeVoice = platformSSMLMeta.canChangeVoice;
+  let canChangeVoice = platformSSMLMeta.canChangeVoice;
+  const voiceOptions = platformSSMLMeta.voiceOptions(locales, wavenetVoices.isEnabled);
+  const hasProjectLevelVoice = platform === PlatformType.GOOGLE;
+
+  const handleDefaultVoice = (option) => {
+    option?.value === defaultVoice ? stopPropagation(onChangeDefaultVoice(null)) : onChangeDefaultVoice(option?.value ?? null);
+  };
+
+  // When removing the ttsVoices FF, update the PLATFORM_SSML_META const to return true for all platforms' canChangeVoice
+  if (ttsVoices.isEnabled && platform !== PlatformType.ALEXA) {
+    canChangeVoice = true;
+  }
 
   const getOptionValue = React.useCallback((option) => option?.value, []);
   const getOptionLabel = React.useCallback((value) => voicesMap[value], []);
@@ -55,51 +72,100 @@ const SSML = (
   const additionalXMLControlsRenderer = React.useCallback(
     ({ store }) => (
       <>
-        <Speaker voice={voice} getSSMLToPlay={() => store.getEditorState().getCurrentContent().getPlainText()} />
-        {canChangeVoice && (
-          <VoiceSelect
-            label={voice}
-            inline
-            grouped
-            options={VOICES}
-            minWidth={false}
-            onSelect={(value) => onChangeVoice(value)}
-            autoWidth={false}
-            borderLess
-            searchable
-            getOptionValue={getOptionValue}
-            getOptionLabel={getOptionLabel}
-            renderOptionLabel={(option, ...args) => (
-              <VoiceItem>
-                {defaultLabelRenderer(option, ...args)}
-                {withDefaultVoice && (
-                  <DefaultVoiceContainer active={option?.value === defaultVoice}>
-                    <TippyTooltip
-                      title={option?.value === defaultVoice ? 'Remove as Default' : 'Set as Default Voice'}
-                      disabled={option?.value === defaultVoice && option?.value === platformDefaultVoice}
-                      hideOnClick={false}
-                      popperOptions={{
-                        modifiers: {
-                          preventOverflow: { enabled: false },
-                        },
-                      }}
-                    >
-                      <SvgIcon
-                        icon="star"
-                        onClick={
-                          option?.value === defaultVoice
-                            ? stopPropagation(() => onChangeDefaultVoice(null))
-                            : () => onChangeDefaultVoice(option?.value ?? null)
-                        }
-                      />
-                    </TippyTooltip>
-                  </DefaultVoiceContainer>
+        <Speaker
+          voice={hasProjectLevelVoice ? defaultVoice : voice}
+          platform={platform}
+          getSSMLToPlay={() => store.getEditorState().getCurrentContent().getPlainText()}
+        />
+        {canChangeVoice &&
+          (ttsVoices.isEnabled ? (
+            <VoiceSelect
+              label={hasProjectLevelVoice ? defaultVoice : voice || 'Select Voice'}
+              placeholder="Select Voice"
+              multiLevelDropdown
+              inline
+              value={null}
+              borderLess
+              searchable={true}
+              onSelect={(value) => {
+                onChangeVoice(value);
+              }}
+              minWidth={false}
+              autoWidth={false}
+              createInputPlaceholder="Search Voice"
+              options={voiceOptions}
+              getOptionValue={(option) => option?.value}
+              getOptionLabel={(value) => value}
+              renderOptionLabel={(option, ...args) => {
+                return (
+                  <VoiceItem onClick={() => hasProjectLevelVoice && handleDefaultVoice(option)}>
+                    {defaultLabelRenderer(option, ...args)}
+                    {withDefaultVoice && !option.options && (
+                      <DefaultVoiceContainer active={option?.value === defaultVoice}>
+                        <TippyTooltip
+                          title={option?.value === defaultVoice ? 'Remove as Default' : 'Set as Default Voice'}
+                          disabled={option?.value === defaultVoice && option?.value === platformDefaultVoice}
+                          hideOnClick={false}
+                          popperOptions={{
+                            modifiers: {
+                              preventOverflow: { enabled: false },
+                            },
+                          }}
+                        >
+                          <SvgIcon icon="star" onClick={() => handleDefaultVoice(option)} />
+                        </TippyTooltip>
+                      </DefaultVoiceContainer>
+                    )}
+                  </VoiceItem>
+                );
+              }}
+            />
+          ) : (
+            <>
+              <VoiceSelect
+                label={voice}
+                inline
+                grouped
+                options={VOICES}
+                minWidth={false}
+                onSelect={(value) => onChangeVoice(value)}
+                autoWidth={false}
+                borderLess
+                searchable
+                getOptionValue={getOptionValue}
+                getOptionLabel={getOptionLabel}
+                renderOptionLabel={(option, ...args) => (
+                  <VoiceItem>
+                    {defaultLabelRenderer(option, ...args)}
+                    {withDefaultVoice && (
+                      <DefaultVoiceContainer active={option?.value === defaultVoice}>
+                        <TippyTooltip
+                          title={option?.value === defaultVoice ? 'Remove as Default' : 'Set as Default Voice'}
+                          disabled={option?.value === defaultVoice && option?.value === platformDefaultVoice}
+                          hideOnClick={false}
+                          popperOptions={{
+                            modifiers: {
+                              preventOverflow: { enabled: false },
+                            },
+                          }}
+                        >
+                          <SvgIcon
+                            icon="star"
+                            onClick={
+                              option?.value === defaultVoice
+                                ? stopPropagation(() => onChangeDefaultVoice(null))
+                                : () => onChangeDefaultVoice(option?.value ?? null)
+                            }
+                          />
+                        </TippyTooltip>
+                      </DefaultVoiceContainer>
+                    )}
+                  </VoiceItem>
                 )}
-              </VoiceItem>
-            )}
-            createInputPlaceholder="Search Voice"
-          />
-        )}
+                createInputPlaceholder="Search Voice"
+              />
+            </>
+          ))}
       </>
     ),
     [voice, platform, onChangeVoice, getOptionValue, getOptionLabel, defaultVoice, onChangeDefaultVoice]

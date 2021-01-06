@@ -1,7 +1,11 @@
 import { FlexCenter } from '@/components/Flex';
 import { css, styled, transition } from '@/hocs';
 
-const SpeakerWrapper = styled(FlexCenter)`
+type SpeakerWrapperProps = {
+  isPlaying?: boolean;
+};
+
+const SpeakerWrapper = styled(FlexCenter)<SpeakerWrapperProps>`
   width: 20px;
   height: 24px;
   padding: 4px 0 4px 4px;

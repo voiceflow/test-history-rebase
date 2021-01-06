@@ -21,6 +21,7 @@ import { ResponseUtterancesTooltip, SlotConfirmationTooltip, SlotPromptTooltip, 
 
 function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalone = false, updateIntentSlot, updateIntentSlotDialog }) {
   const isAlexa = platform === PlatformType.ALEXA;
+  const isGeneral = platform === PlatformType.GENERAL;
   const utteranceRef = React.useRef();
   const {
     required,
@@ -96,7 +97,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
               />
             </FormControl>
 
-            {isAlexa && (
+            {(isAlexa || isGeneral) && (
               <EditorSection
                 namespace="responseUtterances"
                 header="Response Utterances"

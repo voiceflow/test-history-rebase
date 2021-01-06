@@ -306,10 +306,14 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
   });
 
   describeSideEffects(({ applyEffect, createState, stubEffect }) => {
-    const stubSocket = <K extends keyof SocketClient>(clientName: K, name: keyof SocketClient[K]) => {
+    const stubSocket = <K extends keyof SocketClient>(name: K, value: Partial<SocketClient[K]>) => {
+      const socket = client.socket;
+      stub(client, 'socket').get(() => ({ ...socket, [name]: value }));
+    };
+    const stubSocketClient = <K extends keyof SocketClient>(clientName: K, name: keyof SocketClient[K]) => {
       const clientMethod = stub();
 
-      stub(client, 'socket').get(() => ({ [clientName]: { [name]: clientMethod } }));
+      stubSocket(clientName, { [name]: clientMethod } as any);
 
       return clientMethod;
     };
@@ -364,7 +368,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       const serverAction: any = { type: 'server::SOME_ACTION' };
 
       it('should send realtime update action when connected', async () => {
-        const sendUpdate = stubSocket('diagram', 'sendUpdate');
+        const sendUpdate = stubSocketClient('diagram', 'sendUpdate');
         const createServerAction = stub(RealtimeUtils, 'createServerAction').returns(serverAction);
 
         await applyEffect(Realtime.sendRealtimeUpdate(action));
@@ -376,7 +380,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       it('should send realtime update action with locks', async () => {
         const lockAction = { type: 'lock::SOME_ACTION' };
         const updateLockAction: any = { type: 'SOME_ACTION', meta: { lock: lockAction } };
-        const sendUpdate = stubSocket('diagram', 'sendUpdate');
+        const sendUpdate = stubSocketClient('diagram', 'sendUpdate');
         stub(RealtimeUtils, 'createServerAction').returns(serverAction);
 
         await applyEffect(Realtime.sendRealtimeUpdate(updateLockAction));
@@ -385,7 +389,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
 
       it('should not send realtime update action when disconnected', async () => {
-        const sendUpdate = stubSocket('diagram', 'sendUpdate');
+        const sendUpdate = stubSocketClient('diagram', 'sendUpdate');
 
         await applyEffect(Realtime.sendRealtimeUpdate(action), createState({ ...MOCK_STATE, connected: false }));
 
@@ -397,7 +401,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       const volatileAction: any = { type: 'SOME_ACTION' };
 
       it('should send realtime volatile action when connected', async () => {
-        const sendVolatileUpdate = stubSocket('diagram', 'sendVolatileUpdate');
+        const sendVolatileUpdate = stubSocketClient('diagram', 'sendVolatileUpdate');
 
         await applyEffect(Realtime.sendRealtimeVolatileUpdate(volatileAction));
 
@@ -405,7 +409,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
 
       it('should not send realtime volatile action when disconnected', async () => {
-        const sendVolatileUpdate = stubSocket('diagram', 'sendVolatileUpdate');
+        const sendVolatileUpdate = stubSocketClient('diagram', 'sendVolatileUpdate');
 
         await applyEffect(Realtime.sendRealtimeVolatileUpdate(volatileAction), createState({ ...MOCK_STATE, connected: false }));
 
@@ -417,7 +421,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       const projectAction: any = { type: 'SOME_ACTION' };
 
       it('should send realtime project action when connected', async () => {
-        const sendUpdate = stubSocket('project', 'sendUpdate');
+        const sendUpdate = stubSocketClient('project', 'sendUpdate');
 
         await applyEffect(Realtime.sendRealtimeProjectUpdate(projectAction));
 
@@ -427,7 +431,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       it('should send realtime project action with locks', async () => {
         const lockAction = { type: 'lock::SOME_ACTION' };
         const projectLockAction: any = { type: 'SOME_ACTION', meta: { lock: lockAction } };
-        const sendUpdate = stubSocket('project', 'sendUpdate');
+        const sendUpdate = stubSocketClient('project', 'sendUpdate');
 
         await applyEffect(Realtime.sendRealtimeProjectUpdate(projectLockAction));
 
@@ -435,7 +439,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
 
       it('should not send realtime project action when disconnected', async () => {
-        const sendUpdate = stubSocket('project', 'sendUpdate');
+        const sendUpdate = stubSocketClient('project', 'sendUpdate');
 
         await applyEffect(Realtime.sendRealtimeProjectUpdate(projectAction), createState({ ...MOCK_STATE, connected: false }));
 
@@ -445,7 +449,8 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
     describe('terminateRealtimeConnection()', () => {
       it('should end and clean up active realtime connection', async () => {
-        const terminate = stubSocket('diagram', 'terminate');
+        const terminate = stubSocketClient('diagram', 'terminate');
+        stubSocket('isConnected', () => true);
 
         const { expectDispatch } = await applyEffect(Realtime.terminateRealtimeConnection());
 
@@ -457,7 +462,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
     describe('handleRealtimeTakeover()', () => {
       it('should attempt to takeover a realtime session', async () => {
-        const takeoverSessioon = stubSocket('project', 'takeoverSession');
+        const takeoverSessioon = stubSocketClient('project', 'takeoverSession');
 
         const { expectDispatch } = await applyEffect(Realtime.handleRealtimeTakeover());
 
@@ -474,7 +479,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       it('should setup a realtime connection', async () => {
         const locks = { blocks: { movement: { def: tabID } } };
         const filteredLocks: any = { blocks: { movement: {} } };
-        const initialize = stubSocket('diagram', 'initialize').returns(locks);
+        const initialize = stubSocketClient('diagram', 'initialize').returns(locks);
         const removeSelfFromLocks = stub(RealtimeUtils, 'removeSelfFromLocks').returns(filteredLocks);
         stub(Session, 'tabIDSelector').returns(tabID);
 
@@ -487,7 +492,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
 
       it('should set session as busy', async () => {
-        stubSocket('diagram', 'initialize').throws({ browserId: 'abc', device: {} });
+        stubSocketClient('diagram', 'initialize').throws({ browserId: 'abc', device: {} });
         stub(Session, 'tabIDSelector').returns(tabID);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(skillID, diagramID));
@@ -497,7 +502,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
 
       it('should set realtime restriction', async () => {
-        stubSocket('diagram', 'initialize').throws({ busyBy: ['11'] });
+        stubSocketClient('diagram', 'initialize').throws({ busyBy: ['11'] });
         stub(Session, 'tabIDSelector').returns(tabID);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(skillID, diagramID));

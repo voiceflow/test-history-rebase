@@ -75,4 +75,4 @@ const mapStateToProps = {
 
 type ConnectedChoiceStepProps = ConnectedProps<typeof mapStateToProps>;
 
-export default connect(mapStateToProps)<ConnectedStepProps<NodeData.Interaction>>(ConnectedChoiceStep);
+export default connect(mapStateToProps)(ConnectedChoiceStep) as React.FC<ConnectedStepProps<NodeData.Interaction>>;

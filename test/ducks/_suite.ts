@@ -75,24 +75,28 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
           utils.expect(stub).to.be.calledWithExactly(...args);
         };
 
-        try {
-          const result = await sideEffect(dispatch, getState);
+        const result = await sideEffect(dispatch, getState);
 
-          return {
-            result,
-            getState,
-            dispatch,
-            expectDispatch,
-            expectStubCalled,
-          };
+        return {
+          result,
+          getState,
+          dispatch,
+          expectDispatch,
+          expectStubCalled,
+        };
+      },
+
+      catchEffect: async (sideEffect: AnyThunk, rootState?: Partial<State>) => {
+        const dispatch = utils.spy();
+        const getState: () => any = utils.spy(() => ({ [Duck.STATE_KEY]: state, ...rootState }));
+        const expectDispatch = (action: { type: string } | AnyAction | AnyThunk) => utils.expect(dispatch).to.be.calledWithExactly(action);
+
+        try {
+          await sideEffect(dispatch, getState);
+
+          throw Error('should have thrown an error');
         } catch (error) {
-          return {
-            error,
-            getState,
-            dispatch,
-            expectDispatch,
-            expectStubCalled,
-          };
+          return { error, expectDispatch };
         }
       },
     };
@@ -124,7 +128,6 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
     };
 
     return {
-      ...utils,
       describeReducer,
 
       describeCRUDReducer: (tests?: (utils: typeof reducerUtils) => void) =>

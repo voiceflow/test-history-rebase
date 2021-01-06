@@ -31,6 +31,7 @@
     "lodash-es",
     "ignore-styles",
     "mock-local-storage",
-    "istanbul-instrumenter-loader"
+    "istanbul-instrumenter-loader",
+    "tslib"
   ]
 }

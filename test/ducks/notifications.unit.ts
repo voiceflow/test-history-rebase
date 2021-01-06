@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { State } from '@/ducks/_root';
 import * as Account from '@/ducks/account';
 import * as Notifications from '@/ducks/notifications';
 import * as crypto from '@/utils/crypto';
@@ -101,33 +102,32 @@ suite(Notifications, MOCK_STATE)(
       describe('fetchNotifications()', () => {
         const userID = 132;
         const lastChecked = new Date('2020/01/01').getTime();
-        const notifications = [{ created: lastChecked + 2000 }, { created: lastChecked - 13000 }];
+        const notifications: Notifications.Notification[] = [{ created: lastChecked + 2000 }, { created: lastChecked - 13000 }] as any[];
+        const rootState = { account: { creator_id: userID } } as State;
 
         it('should fetch new notifications from the DB', async () => {
           const get = stub(axios, 'get').resolves({ data: { rows: notifications, last_checked: lastChecked } } as any);
-          stub(Account, 'userIDSelector').returns(userID);
 
-          const { expectDispatch } = await applyEffect(Notifications.fetchNotifications());
+          const { expectDispatch } = await applyEffect(Notifications.fetchNotifications(), rootState);
 
           expect(get).to.be.calledWithExactly(`/product_updates/${userID}`);
           expectDispatch(
             Notifications.setNotifications([
-              { created: lastChecked + 2000, isNew: true },
-              { created: lastChecked - 13000, isNew: false },
+              { ...notifications[0], isNew: true },
+              { ...notifications[1], isNew: false },
             ] as Notifications.Notification[])
           );
         });
 
         it('should fetch new notifications for the first time from the DB', async () => {
           stub(axios, 'get').resolves({ data: { rows: notifications, last_checked: null } } as any);
-          stub(Account, 'userIDSelector').returns(userID);
 
-          const { expectDispatch } = await applyEffect(Notifications.fetchNotifications());
+          const { expectDispatch } = await applyEffect(Notifications.fetchNotifications(), rootState);
 
           expectDispatch(
             Notifications.setNotifications([
-              { created: lastChecked + 2000, isNew: true },
-              { created: lastChecked - 13000, isNew: true },
+              { ...notifications[0], isNew: true },
+              { ...notifications[1], isNew: true },
             ] as Notifications.Notification[])
           );
         });
@@ -135,12 +135,13 @@ suite(Notifications, MOCK_STATE)(
 
       describe('readNotifications()', () => {
         const userID = 123;
+        const rootState = { account: { creator_id: userID } } as State;
 
         it('should mark old notifcations as read', async () => {
           const post = stub(axios, 'post');
           stub(Account, 'userIDSelector').returns(userID);
 
-          const { expectDispatch } = await applyEffect(Notifications.readNotifications());
+          const { expectDispatch } = await applyEffect(Notifications.readNotifications(), rootState);
 
           expect(post).to.be.calledWithExactly(`/product_updates/${userID}`);
           expectDispatch(Notifications.markNotificationAsRead());

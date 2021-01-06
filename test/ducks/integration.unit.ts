@@ -131,7 +131,7 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
     });
   });
 
-  describeSideEffects(({ applyEffect }) => {
+  describeSideEffects(({ applyEffect, catchEffect }) => {
     const platform = generate.string();
     const platformUsers = generate.array(3, () => ({ platform }));
     const platform2 = generate.string();
@@ -158,7 +158,7 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
         const mockError = new Error('fail');
         stub(axios, 'post').rejects(mockError);
 
-        const { expectDispatch, error } = await applyEffect(Integration.fetchIntegrationUsers());
+        const { expectDispatch, error } = await catchEffect(Integration.fetchIntegrationUsers());
 
         expectDispatch(Integration.fetchIntegrationUsersBegin());
         expectDispatch(Integration.fetchIntegrationUsersFailure(mockError));
@@ -190,7 +190,7 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
         const mockError: any = { response: { data: errorMessage } };
         stub(axios, 'post').rejects(mockError);
 
-        const { expectDispatch, error } = await applyEffect(Integration.addIntegrationUser(integration, userData));
+        const { expectDispatch, error } = await catchEffect(Integration.addIntegrationUser(integration, userData));
 
         expectDispatch(Integration.addIntegrationUserBegin());
         expectDispatch(Integration.addIntegrationUserFailure(mockError));
@@ -203,7 +203,7 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
         const mockError: any = { response: { data: errorObject } };
         stub(axios, 'post').rejects(mockError);
 
-        const { expectDispatch, error } = await applyEffect(Integration.addIntegrationUser(integration, userData));
+        const { expectDispatch, error } = await catchEffect(Integration.addIntegrationUser(integration, userData));
 
         expectDispatch(Integration.addIntegrationUserBegin());
         expectDispatch(Integration.addIntegrationUserFailure(mockError));
@@ -214,7 +214,7 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
         const errorMessage = generate.string();
         stub(axios, 'post').rejects(errorMessage);
 
-        const { expectDispatch, error } = await applyEffect(Integration.addIntegrationUser(integration, userData));
+        const { expectDispatch, error } = await catchEffect(Integration.addIntegrationUser(integration, userData));
 
         expectDispatch(Integration.addIntegrationUserBegin());
         // expectDispatch(Integration.addIntegrationUserFailure(errorMessage));
@@ -245,7 +245,7 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
         const mockError = new Error('fail');
         stub(axios, 'post').rejects(mockError);
 
-        const { expectDispatch, error } = await applyEffect(Integration.deleteIntegrationUser(integration, userData));
+        const { expectDispatch, error } = await catchEffect(Integration.deleteIntegrationUser(integration, userData));
 
         expectDispatch(Integration.deleteIntegrationUserBegin());
         expectDispatch(Integration.deleteIntegrationUserFailure(mockError));

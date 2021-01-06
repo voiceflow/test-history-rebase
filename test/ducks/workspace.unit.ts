@@ -30,9 +30,7 @@ const SIMPLE_WORKSPACE = {
 } as Models.Workspace;
 
 const MOCK_STATE: any = {
-  activeWorkspaceID: {
-    value: WORKSPACE.id,
-  },
+  activeWorkspaceID: WORKSPACE.id,
   byKey: {
     [WORKSPACE.id]: WORKSPACE,
     [OTHER_WORKSPACE.id]: OTHER_WORKSPACE,
@@ -45,16 +43,14 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, describeReduc
   describeReducer(
     {
       ...Workspace.INITIAL_STATE,
-      activeWorkspaceID: {
-        value: null,
-      },
+      activeWorkspaceID: null,
     },
     ({ expectAction }) => {
       describe('updateCurrentWorkspace()', () => {
         it('should update the active workspace', () => {
           const workspaceID = 'ghi';
 
-          expectAction(Workspace.updateCurrentWorkspace(workspaceID)).toModify({ activeWorkspaceID: { value: workspaceID } });
+          expectAction(Workspace.updateCurrentWorkspace(workspaceID)).toModify({ activeWorkspaceID: workspaceID });
         });
       });
     }
@@ -110,9 +106,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, describeReduc
       });
 
       it('should select an empty array if no members listed', () => {
-        expect(
-          select(Workspace.activeWorkspaceMembersSelector, createState({ ...MOCK_STATE, activeWorkspaceID: { value: SIMPLE_WORKSPACE.id } }))
-        ).to.eql([]);
+        expect(select(Workspace.activeWorkspaceMembersSelector, createState({ ...MOCK_STATE, activeWorkspaceID: SIMPLE_WORKSPACE.id }))).to.eql([]);
       });
     });
 
@@ -128,7 +122,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, describeReduc
       });
 
       it('should always have at least 1 used seat', () => {
-        expect(select(Workspace.usedEditorSeatsSelector, createState({ ...MOCK_STATE, activeWorkspaceID: { value: 'def' } }))).to.eq(1);
+        expect(select(Workspace.usedEditorSeatsSelector, createState({ ...MOCK_STATE, activeWorkspaceID: 'def' }))).to.eq(1);
       });
     });
 
@@ -154,8 +148,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, describeReduc
       });
 
       it('should return null members list', () => {
-        expect(select(Workspace.activeWorkspaceMemberSelector, createState({ ...MOCK_STATE, activeWorkspaceID: { value: 'def' } }))('999')).to.be
-          .null;
+        expect(select(Workspace.activeWorkspaceMemberSelector, createState({ ...MOCK_STATE, activeWorkspaceID: 'def' }))('999')).to.be.null;
       });
     });
 

@@ -34,4 +34,4 @@ const mapStateToProps = {
 
 type ConnectedIntentStepProps = ConnectedProps<typeof mapStateToProps>;
 
-export default connect(mapStateToProps)<ConnectedStepProps<NodeData.Intent>>(ConnectedIntentStep);
+export default connect(mapStateToProps)(ConnectedIntentStep) as React.FC<ConnectedStepProps<NodeData.Intent>>;

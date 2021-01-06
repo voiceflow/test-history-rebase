@@ -115,11 +115,11 @@ export const forceNotificationIfNew = (notification: Notification): SyncThunk =>
 };
 
 export const fetchNotifications = (): Thunk => async (dispatch, getState) => {
-  const useId = Account.userIDSelector(getState());
+  const userID = Account.userIDSelector(getState());
 
   let {
     data: { rows: notifications, last_checked: lastChecked },
-  } = await axios.get(`/product_updates/${useId}`);
+  } = await axios.get(`/product_updates/${userID}`);
 
   lastChecked = lastChecked ? moment(lastChecked).unix() : 0;
 
@@ -132,9 +132,9 @@ export const fetchNotifications = (): Thunk => async (dispatch, getState) => {
 };
 
 export const readNotifications = (): SyncThunk => (dispatch, getState) => {
-  const useId = Account.userIDSelector(getState());
+  const userID = Account.userIDSelector(getState());
 
-  axios.post(`/product_updates/${useId}`);
+  axios.post(`/product_updates/${userID}`);
 
   dispatch(markNotificationAsRead());
 };

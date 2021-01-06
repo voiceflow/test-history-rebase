@@ -21,6 +21,7 @@ const ID = 'id';
 const SRC = 'src';
 const MESSAGE = 'message';
 const BLOCK_ID = 'block-id';
+const STEP_ID = 'step-id';
 
 const traceFactory = <T extends TraceType>(type: T, payload: TraceMap[T]['payload']): Trace => ({ id: ID, type, payload } as any);
 
@@ -45,7 +46,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
       nodes: [{ 1: { type: BlockType.START } }],
       selection: { replace: stub(), getTargets: stub(), reset: stub() },
       getPrototypeMuted: stub(),
-      getNodeByID: stub().returns({ parentNode: BLOCK_ID, combinedNodes: ['1'] }),
+      getNodeByID: stub().returns({ id: STEP_ID, parentNode: BLOCK_ID, combinedNodes: ['1'] }),
     } as any) as Engine;
 
     const audio = new AudioController();
@@ -87,6 +88,10 @@ const suite = createSuite(({ spy, stub, expect }) => ({
 
     // @ts-ignore
     spy(controller, 'processTrace');
+
+    stub(controller, 'waitNode' as any);
+    stub(controller, 'waitDiagram' as any);
+    stub(controller, 'waitEngineAndNodes' as any);
 
     // @ts-ignore
     Object.values(TraceMethods).forEach((method) => spy(controller, method));
@@ -230,7 +235,7 @@ suite(
 
         await controller.next();
 
-        expectFocusNode(controller, BLOCK_ID).to.be.calledOnceWith(BLOCK_ID);
+        expectFocusNode(controller, STEP_ID).to.be.calledOnceWith(BLOCK_ID);
         expectSetTimeout(controller).not.to.be.called;
         expectProcessSingleTrace(controller, TraceMethods.BLOCK);
       });
@@ -240,7 +245,7 @@ suite(
 
         await controller.next();
 
-        expectFocusNode(controller, BLOCK_ID).calledOnce;
+        expectFocusNode(controller, STEP_ID).calledOnce;
         expectSetTimeout(controller).to.be.called;
         expectProcessSingleTrace(controller, TraceMethods.BLOCK);
       });
@@ -361,7 +366,7 @@ suite(
 
         expectProcessSingleTrace(controller, TraceMethods.FLOW);
         expectEnterFlow(controller).to.be.calledWith('diagramID');
-        expectSetTimeout(controller).to.be.called;
+        expect(controller['waitDiagram']).to.be.calledWithExactly('diagramID');
       });
 
       it('should process flow trace without diagramID', async () => {
@@ -534,12 +539,12 @@ suite(
     });
 
     describe('stop()', () => {
-      it('should clear and stop  trace', async () => {
+      it('should clear and stop  trace', () => {
         const controller = createController();
 
         controller['trace'] = [traceFactory(TraceType.BLOCK, { blockID: BLOCK_ID })];
 
-        await controller.stop();
+        controller.stop();
 
         expect(controller['trace']).to.be.deep.eq([]);
         expect(controller['stopped']).to.true;

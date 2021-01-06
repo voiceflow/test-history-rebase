@@ -73,6 +73,8 @@ type AnyIntegrationAction =
 const skillReducer: RootReducer<IntegrationState, AnyIntegrationAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case IntegrationAction.FETCH_INTEGRATION_USERS_BEGIN:
+    case IntegrationAction.ADD_INTEGRATION_USER_BEGIN:
+    case IntegrationAction.DELETE_INTEGRATION_USER_BEGIN:
       return {
         ...state,
         loading: true,
@@ -91,36 +93,14 @@ const skillReducer: RootReducer<IntegrationState, AnyIntegrationAction> = (state
         error: action.payload.error,
         integration_users: {},
       };
-    case IntegrationAction.ADD_INTEGRATION_USER_BEGIN:
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
     case IntegrationAction.ADD_INTEGRATION_USER_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        integration_users: action.payload.new_integration_users,
-      };
-    case IntegrationAction.ADD_INTEGRATION_USER_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload.error,
-      };
-    case IntegrationAction.DELETE_INTEGRATION_USER_BEGIN:
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
     case IntegrationAction.DELETE_INTEGRATION_USER_SUCCESS:
       return {
         ...state,
         loading: false,
         integration_users: action.payload.new_integration_users,
       };
+    case IntegrationAction.ADD_INTEGRATION_USER_FAILURE:
     case IntegrationAction.DELETE_INTEGRATION_USER_FAILURE:
       return {
         ...state,

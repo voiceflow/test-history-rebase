@@ -37,4 +37,4 @@ const mergeProps = (
 
 export type ConnectedCommandStepProps = ConnectedProps<{}, typeof mapDispatchToProps, typeof mergeProps>;
 
-export default connect(null, mapDispatchToProps, mergeProps)<ConnectedStepProps<NodeData.Command>>(ConnectedCommandStep);
+export default connect(null, mapDispatchToProps, mergeProps)(ConnectedCommandStep) as React.FC<ConnectedStepProps<NodeData.Command>>;

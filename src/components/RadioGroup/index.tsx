@@ -38,7 +38,7 @@ const RadioGroup = <T extends any>({
 
         return (
           <RadioButtonContainer key={index}>
-            <Checkbox {...props} type={CheckboxType.RADIO} value={id} checked={isChecked} onChange={() => onChange(id)} isFlat>
+            <Checkbox {...props} type={CheckboxType.RADIO} value={id as any} checked={isChecked} onChange={() => onChange(id)} isFlat>
               <div>{label}</div>
             </Checkbox>
           </RadioButtonContainer>

@@ -11,7 +11,7 @@ const MOCK_STATE = {
     isHidden: true,
   },
   blockMenu: {
-    openSections: [BlockCategory.BASIC],
+    openSections: [BlockCategory.USER_INPUT],
   },
   local: {},
   canvasOnly: false,
@@ -25,13 +25,13 @@ suite(UI, MOCK_STATE)('Ducks - UI', ({ expect, describeReducer, describeSelector
       it('should add section if not open', () => {
         expectAction(UI.toggleBlockMenuSection(BlockCategory.LOGIC)).toModify({
           blockMenu: {
-            openSections: [BlockCategory.BASIC, BlockCategory.LOGIC],
+            openSections: [BlockCategory.USER_INPUT, BlockCategory.LOGIC],
           },
         });
       });
 
       it('should remove section if already open', () => {
-        expectAction(UI.toggleBlockMenuSection(BlockCategory.INTEGRATION)).toModify({
+        expectAction(UI.toggleBlockMenuSection(BlockCategory.USER_INPUT)).toModify({
           blockMenu: {
             openSections: [],
           },
@@ -78,7 +78,7 @@ suite(UI, MOCK_STATE)('Ducks - UI', ({ expect, describeReducer, describeSelector
   describeSelectors(({ select }) => {
     describe('openBlockMenuSectionsSelector()', () => {
       it('should select the open block menu sections', () => {
-        expect(select(UI.openBlockMenuSectionsSelector)).to.eql([BlockCategory.BASIC]);
+        expect(select(UI.openBlockMenuSectionsSelector)).to.eql([BlockCategory.USER_INPUT]);
       });
     });
 

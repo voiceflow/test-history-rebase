@@ -283,6 +283,7 @@
     "ts-mocha": "^7.0.0",
     "ts-node": "^9.0.0",
     "tsconfig-paths-webpack-plugin": "^3.3.0",
+    "tslib": "1.13.0",
     "typescript": "^3.7.5",
     "webpack": "^4.2.1",
     "webpack-bundle-analyzer": "^3.6.0",
@@ -330,10 +331,10 @@
     "storybook": "start-storybook --https --ssl-cert=certs/localhost.crt --ssl-key=certs/localhost.key --static-dir=public",
     "storybook:build": "build-storybook --output-dir storybook_build --static-dir=public --quiet",
     "tdd:integration": "yarn test:integration --watchAll=true",
-    "tdd:unit": "NODE_ENV=test nyc --reporter=text ts-mocha --watch --watch-extensions js,jsx,ts,tsx --paths --config config/test/unit/mocharc.yml",
+    "tdd:unit": "NODE_ENV=test nyc --reporter=text ts-mocha --project tsconfig.test.json --watch --watch-extensions js,jsx,ts,tsx --paths --config config/test/unit/mocharc.yml",
     "test": "yarn test:unit && yarn test:integration",
     "test:dependencies": "depcheck $(exargs .depcheckrc)",
     "test:integration": "NODE_ENV=test jest --config config/test/integration/jest.config.js",
-    "test:unit": "NODE_ENV=test nyc ts-mocha --paths --config config/test/unit/mocharc.yml"
+    "test:unit": "NODE_ENV=test nyc ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml"
   }
 }

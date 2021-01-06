@@ -1,11 +1,24 @@
 import axios from 'axios';
 
+import { NetworkError } from '@/client/fetch';
+import { log } from '@/client/fetch/utils';
 import { Nullable } from '@/types';
 
 export const RESOURCE_ENDPOINT = 'session';
 
 const createSessionService = <A extends Record<string, any>, D extends Record<string, any>>(serviceEndpoint: string) => ({
-  getAccount: () => axios.get<Nullable<A>>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/profile`).then((res) => res.data),
+  getAccount: () =>
+    axios
+      .get<Nullable<A>>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/profile`)
+      .then((res) => res.data)
+      .catch((err: NetworkError<unknown>) => {
+        if (err.statusCode === 500) {
+          log.warn('no active profile found');
+          return null;
+        }
+
+        throw err;
+      }),
 
   linkAccount: (data: D) => axios.post<A>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}`, data).then((res) => res.data),
 

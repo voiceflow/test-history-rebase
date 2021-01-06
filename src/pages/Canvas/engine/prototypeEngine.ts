@@ -41,7 +41,7 @@ class PrototypeEngine extends EngineConsumer {
     this.log.debug(this.log.pending('initializing prototype'));
     this.engine.addClass(CANVAS_PROTOTYPE_RUNNING_CLASSNAME);
     this.dispatch(Prototype.startPrototype(diagramID, nodeID));
-    this.engine.store.subscribe(() => this.redrawHighlighted());
+    this.teardownSubscription = this.engine.store.subscribe(() => this.redrawHighlighted());
 
     this.log.info(this.log.success('prototype initialized'));
   }
@@ -73,6 +73,7 @@ class PrototypeEngine extends EngineConsumer {
 
     this.log.debug(this.log.pending('resetting prototype'));
     this.teardownSubscription();
+    this.teardownSubscription = noop;
     this.highlightedNodeIDs = [];
     this.highlightedLinkIDs = [];
 

@@ -22,8 +22,9 @@ const Drawer = styled(SlideOut)<DrawerProps>`
   ${({ open }) =>
     !open &&
     css`
-      pointer-events: none;
-      user-select: none;
+      > * {
+        visibility: hidden;
+      }
     `}
 
   ${({ direction = SlideOutDirection.RIGHT }) =>

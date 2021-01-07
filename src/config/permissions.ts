@@ -75,6 +75,7 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.SHARE_PROJECT]: [
     PlanType.STUDENT,
     PlanType.OLD_STARTER,
+    PlanType.STARTER,
     PlanType.PRO,
     PlanType.OLD_PRO,
     PlanType.TEAM,

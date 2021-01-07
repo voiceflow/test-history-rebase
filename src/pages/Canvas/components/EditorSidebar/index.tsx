@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { withTheme } from 'styled-components';
 
 import Drawer from '@/components/Drawer';
@@ -6,10 +7,7 @@ import { RemoveIntercom } from '@/components/IntercomChat';
 import { BlockType, MARKUP_NODES } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
-import { FocusState } from '@/ducks/creator';
-import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
-import { Node, NodeData } from '@/models';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { ManagerContext, PlatformContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
@@ -17,7 +15,6 @@ import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
 import { useEditingMode } from '@/pages/Skill/hooks';
 import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut.ts';
-import { MergeArguments } from '@/types';
 import { stopImmediatePropagation } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 
@@ -29,15 +26,14 @@ import { useEditorPath, useUpdateData } from './hooks';
 const UNEDITABLE_BLOCKS = [BlockType.COMMENT, BlockType.MARKUP_IMAGE];
 
 type EditSidebarProps = {
-  focus: FocusState;
-  node: Node | null;
-  parent: NodeData<unknown>;
   theme: Theme;
 };
 
-const EditSidebar: React.FC<EditSidebarProps> = ({ focus, node, parent, theme }) => {
+const EditSidebar: React.FC<EditSidebarProps> = ({ theme }) => {
+  const focus = useSelector(Creator.creatorFocusSelector);
+
   const isEditingMode = useEditingMode();
-  const { path, goToPath, pushToPath, popFromPath } = useEditorPath(node, parent);
+  const { node, path, goToPath, pushToPath, popFromPath } = useEditorPath();
   const getManager = React.useContext(ManagerContext)!;
   const platform = React.useContext(PlatformContext)!;
   const prevPathLength = React.useRef(0);
@@ -136,18 +132,4 @@ const EditSidebar: React.FC<EditSidebarProps> = ({ focus, node, parent, theme })
   );
 };
 
-const mapStateToProps = {
-  node: Creator.focusedNodeSelector,
-  parent: Creator.dataByNodeIDSelector,
-  focus: Creator.creatorFocusSelector,
-};
-
-const mergeProps = (...[{ node, parent: getParentData }]: MergeArguments<typeof mapStateToProps, {}>) => {
-  const parent = node?.parentNode && getParentData(node.parentNode);
-
-  return { parent };
-};
-
-export type ConnectedEditSidebarProps = Omit<EditSidebarProps, keyof typeof mapStateToProps | 'theme'>;
-
-export default compose(connect(mapStateToProps, null, mergeProps), withTheme, React.memo)(EditSidebar) as React.FC<ConnectedEditSidebarProps>;
+export default compose(withTheme, React.memo)(EditSidebar) as React.FC;

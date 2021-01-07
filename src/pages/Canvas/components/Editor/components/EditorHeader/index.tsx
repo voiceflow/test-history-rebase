@@ -39,6 +39,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ path = [], data, onRename, 
         <Breadcrumbs className={EDITOR_BREADCRUMBS_CLASSNAME}>
           {path.map(({ label: pathLabel }, index) => {
             fullPath += `${pathLabel}-${index}/`;
+
             return (
               <React.Fragment key={fullPath}>
                 {index !== 0 && <Divider>/</Divider>}

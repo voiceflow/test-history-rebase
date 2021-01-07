@@ -1,6 +1,6 @@
 import cuid from 'cuid';
 
-import { BlockType } from '@/constants';
+import { BlockType, DialogType } from '@/constants';
 import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
@@ -17,8 +17,8 @@ const SpeakManager: NodeConfig<NodeData.Speak> = {
   step: SpeakStep,
   editor: SpeakEditor,
 
-  getIcon: (data) => ICON[data.dialogs[0].type],
-  getIconColor: (data) => ICON_COLOR[data.dialogs[0].type],
+  getIcon: (data) => ICON[data?.dialogs[0]?.type] || ICON[DialogType.VOICE],
+  getIconColor: (data) => ICON_COLOR[data?.dialogs[0]?.type] || ICON_COLOR[DialogType.VOICE],
 
   factory: (data, options) => ({
     node: {

@@ -25,14 +25,6 @@ export type SpeakStepProps = {
 };
 
 export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, portID }) => {
-  const placeholder = getPlatformValue(platform, {
-    [PlatformType.ALEXA]: 'What will Alexa say?',
-    [PlatformType.GOOGLE]: 'What will Google say?',
-    [PlatformType.GENERAL]: 'What will the assistant say?',
-  });
-
-  const itemProps = { placeholder };
-
   const itemsToRender = random && items.length ? [items[0]] : items;
 
   return (
@@ -41,7 +33,11 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, p
         {itemsToRender.length ? (
           itemsToRender.map(({ content, isAudio }, index) => (
             <Item
-              {...itemProps}
+              placeholder={getPlatformValue(platform, {
+                [PlatformType.ALEXA]: isAudio ? 'Upload audio file' : 'What will Alexa say?',
+                [PlatformType.GOOGLE]: 'What will Google say?',
+                [PlatformType.GENERAL]: 'What will the assistant say?',
+              })}
               key={`${index}`}
               label={content ? stripHTMLTags(transformVariablesToReadable(content)) : null}
               icon={random ? 'speakRandomized' : isAudio ? ICON[DialogType.AUDIO] : ICON[DialogType.VOICE]} // eslint-disable-line no-nested-ternary
@@ -53,7 +49,15 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, p
             />
           ))
         ) : (
-          <Item {...itemProps} icon={ICON[DialogType.VOICE]} iconColor={ICON_COLOR[DialogType.VOICE]} />
+          <Item
+            placeholder={getPlatformValue(platform, {
+              [PlatformType.ALEXA]: 'What will Alexa say?',
+              [PlatformType.GOOGLE]: 'What will Google say?',
+              [PlatformType.GENERAL]: 'What will the assistant say?',
+            })}
+            icon={ICON[DialogType.VOICE]}
+            iconColor={ICON_COLOR[DialogType.VOICE]}
+          />
         )}
       </Section>
     </Step>

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { BlockType } from '@/constants';
+import * as Creator from '@/ducks/creator';
 import { Node, NodeData } from '@/models';
 import { EngineContext, ManagerContext, ManagerGetter } from '@/pages/Canvas/contexts';
 import type { Engine } from '@/pages/Canvas/engine/';
@@ -46,9 +47,17 @@ const generatePath = (node: Node | null, parent: NodeData<unknown> | null, engin
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export const useEditorPath = (node: Node | null, parent: NodeData<unknown> | null) => {
+export const useEditorPath = () => {
   const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
+
+  const node = engine.select(Creator.focusedNodeSelector);
+  let parent: NodeData<unknown> | null = null;
+
+  if (node?.parentNode) {
+    parent = engine.select(Creator.dataByNodeIDSelector)(node.parentNode);
+  }
+
   const originalPath = React.useMemo(() => generatePath(node, parent, engine)(getManager), [node, parent, engine, getManager]);
   const [path, updatePath] = React.useState(originalPath);
 
@@ -70,7 +79,7 @@ export const useEditorPath = (node: Node | null, parent: NodeData<unknown> | nul
     updatePath(originalPath);
   }, [originalPath]);
 
-  return { path, goToPath, pushToPath, popFromPath };
+  return { node, path, goToPath, pushToPath, popFromPath };
 };
 
 export const useHeaderActions = (headerActions = DEFAULT_SIDEBAR_HEADER_ACTIONS) => {

@@ -28,6 +28,7 @@ export enum EventName {
   PROJECT_NEW_THREAD_REPLY = 'New Thread Reply Created',
   PROJECT_PUBLISH_ATTEMPT = 'Publish Attempt',
   PROJECT_PUBLISH_SUCCESS = 'Publish Success',
+  PROJECT_TRAIN_ASSISTANT = 'Train Assistant',
 
   CANVAS_MENU_LOCK = 'Canvas Menu Lock',
   CANVAS_SPOTLIGHT_OPENED = 'Spotlight Opened',

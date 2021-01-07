@@ -57,9 +57,11 @@ function SlotEdit({
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
   const { open: openSlotsBulkUploadModal } = useModals(ModalType.IMPORT_SLOTS);
   const [selectedColor, setSelectedColor] = React.useState(color);
-  const [slotType, setSlotType] = React.useState(type);
+  const [slotType, setSlotType] = React.useState(() => type || (slotTypes.length === 1 ? slotTypes[0].value : type));
   const [slotName, setSlotName] = React.useState(() => removeTrailingUnderscores(formatIntentName(name)));
-  const [customLines, setCustomLines] = React.useState(inputs);
+  const [customLines, setCustomLines] = React.useState(() =>
+    inputs?.length ? inputs : (slotType === CUSTOM_SLOT_TYPE && [generateSlotInput()]) || inputs
+  );
   const slotTypesMap = React.useMemo(() => slotTypes.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [slotTypes]);
   const nameRef = React.useRef(null);
   const onCustomLineChange = React.useCallback((index, data) => setCustomLines(replace(customLines, index, { ...customLines[index], ...data })), [
@@ -196,6 +198,7 @@ function SlotEdit({
         <Select
           value={slotType}
           options={slotTypes}
+          disabled={slotType && slotTypes.length === 1}
           onSelect={updateSlotType}
           searchable
           placeholder="Select slot data type"

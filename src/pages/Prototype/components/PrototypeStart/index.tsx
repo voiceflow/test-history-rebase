@@ -52,9 +52,9 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
             <Text fontSize={16} color="#132144" fontWeight={600} mt={16}>
               Test your project.
             </Text>
+
             <Text fontSize={13} color="#62778c" fontWeight={500} mt={16} mb={27} lineHeight={1.54}>
-              Start a test to interact with your project using text, voice or chips.{' '}
-              <Link href="https://docs.voiceflow.com/#/platform/prototyping">Learn more.</Link>
+              Start a test to interact with your project using text, voice or chips. <Link href={PROTOTYPING_HELP_LINK}>Learn more.</Link>
             </Text>
 
             {isModelTraining ? (
@@ -86,6 +86,7 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
                 Start Prototype
               </Button>
             </Container>
+
             <FlexCenter style={{ paddingBottom: '30px', color: '#62778c', background: '#fdfdfd' }}>
               New to prototyping?
               <Link href={PROTOTYPING_HELP_LINK} style={{ marginLeft: '6px' }}>

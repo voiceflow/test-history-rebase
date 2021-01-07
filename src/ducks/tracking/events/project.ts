@@ -43,6 +43,10 @@ export const trackActiveProjectPublishSuccess = createProjectEventTracker((optio
   client.analytics.track(EventName.PROJECT_PUBLISH_SUCCESS, createProjectEventPayload(options))
 );
 
+export const trackProjectTrainAssistant = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.PROJECT_TRAIN_ASSISTANT, createProjectEventPayload(options))
+);
+
 export const trackProjectClone = ({
   template_id,
   template_name,

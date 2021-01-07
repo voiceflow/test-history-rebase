@@ -8,9 +8,10 @@ import { PlatformType } from '@/constants';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useSetup } from '@/hooks';
+import { useSetup, useTrackingEvents } from '@/hooks';
 import { NLPContext } from '@/pages/Skill/contexts';
 import { ConnectedProps } from '@/types';
+import logger from '@/utils/logger';
 
 import NLUContainer from '../../NLUContainer';
 import { ModelDiff, getModelsDiffs, isModelChanged } from './utils';
@@ -23,16 +24,20 @@ const TRAIN_ASSISTANT_TEXT = {
 
 const Trained: React.FC<ConnectedTrainedProps> = ({ platform, versionID, projectID }) => {
   const nlp = React.useContext(NLPContext)!;
+  const [trackingEvents] = useTrackingEvents();
   const [modelDiff, setModelDiff] = React.useState<ModelDiff>({
     slots: { new: [], deleted: [], updated: [] },
     intents: { new: [], deleted: [], updated: [] },
   })!;
 
   const onStartTraining = async () => {
+    trackingEvents.trackProjectTrainAssistant();
+
     try {
       await nlp.publish();
-    } catch {
-      toast.error('An error occurred while training the model');
+    } catch (err) {
+      logger.warn('Train error', err);
+      toast.error('An error occurred while training the model.');
     }
   };
 
@@ -46,6 +51,13 @@ const Trained: React.FC<ConnectedTrainedProps> = ({ platform, versionID, project
   });
 
   const isTrained = !isModelChanged(modelDiff) && (!nlp.job || nlp.job.stage.type === NLPTrainStageType.SUCCESS);
+
+  React.useEffect(() => {
+    if (nlp.job?.stage.type === NLPTrainStageType.ERROR) {
+      logger.warn('Train error', nlp.job.stage.data);
+      toast.error('An error occurred while training the model.');
+    }
+  }, [nlp.job?.stage.type]);
 
   return (
     <NLUContainer>

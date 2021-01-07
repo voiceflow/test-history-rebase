@@ -282,11 +282,6 @@ export const GENERAL_SECTIONS = [
     label: 'Integration',
     steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP],
   },
-  {
-    type: BlockCategory.CHANNEL,
-    label: 'Channel',
-    steps: [PURCHASE_STEP, CANCEL_PURCHASE_STEP, REMINDER_STEP, USER_INFO_STEP, PERMISSIONS_STEP, ACCOUNT_LINKING_STEP],
-  },
 ];
 
 // mapping each platform to corresponding list of sections

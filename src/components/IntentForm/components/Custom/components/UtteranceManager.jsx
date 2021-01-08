@@ -8,13 +8,15 @@ import ListManager from '@/components/ListManager';
 import { SectionToggleVariant } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
 import TippyTooltip from '@/components/TippyTooltip';
+import { toast } from '@/components/Toast';
 import Utterance from '@/components/Utterance';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
+import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
-import { useEnableDisable, useModals, usePermission } from '@/hooks';
+import { useDidUpdateEffect, useEnableDisable, useModals, usePermission } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { stopPropagation } from '@/utils/dom';
@@ -23,19 +25,20 @@ import { validateUtterance } from '@/utils/intent';
 import ListManagerWrapper from '../../ListManagerWrapper';
 import UtterancesTooltip from './UtterancesTooltip';
 
-function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNested }) {
+function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, intents, isNested }) {
   const intentID = intent.id;
-
   const utteranceRef = React.useRef();
-
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const [isEmpty, updateIsEmpty] = React.useState(true);
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
   const { toggle: toggleSlotEdit, close: closeSlotEdit, isInStack: slotEditOpen } = useModals(ModalType.SLOT_EDIT);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
-
   const onUpdateUtterances = React.useCallback((inputs) => updateIntent(intentID, { inputs }, true), [intentID, updateIntent]);
+
+  const warnNoUtterances = () => {
+    toast.warn(`Your intent (${intent.name}) has no utterances. Add utterances to make your intent triggerable.`);
+  };
 
   const onAddSlot = React.useCallback(
     (name) =>
@@ -84,6 +87,13 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
       openImportBulkDeniedModal();
     }
   };
+
+  // For the side editor collapse
+  useDidUpdateEffect(() => {
+    if (!focus.isActive && !intent.inputs?.length) {
+      warnNoUtterances();
+    }
+  }, [focus.isActive, intent.inputs]);
 
   return (
     <EditorSection
@@ -161,6 +171,7 @@ function UtteranceManager({ intent, slots, addSlot, updateIntent, intents, isNes
 const mapStateToProps = {
   slots: Slot.allSlotsSelector,
   intents: Intent.allIntentsSelector,
+  focus: Creator.creatorFocusSelector,
 };
 
 const mapDispatchToProps = {

@@ -151,7 +151,7 @@
     "@types/gapi": "^0.0.39",
     "@types/gapi.auth2": "^0.0.52",
     "@types/git-branch": "^2.0.1",
-    "@types/html-webpack-plugin": "^3.2.3",
+    "@types/html-webpack-plugin": "^3.2.4",
     "@types/jest": "^26.0.15",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/loglevel": "^1.6.3",

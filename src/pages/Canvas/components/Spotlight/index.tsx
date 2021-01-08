@@ -2,68 +2,24 @@ import React from 'react';
 
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { FeatureFlag } from '@/config/features';
-import { BlockType, DialogType, INTERNAL_NODES, IntegrationType, MARKUP_NODES } from '@/constants';
+import { BlockType } from '@/constants';
 import { useDidUpdateEffect, useFeature, useTrackingEvents } from '@/hooks';
 import { NodeData } from '@/models';
-import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
-import MANAGERS from '@/pages/Canvas/managers';
+import { EngineContext, PlatformContext, SpotlightContext } from '@/pages/Canvas/contexts';
+import { PLATFORM_SECTIONS } from '@/pages/Skill/menus/DesignMenu/components/Steps/constants';
 
 import { Container, Select } from './components';
-
-export const NO_SPOTLIGHT_BLOCKS = [
-  BlockType.INTEGRATION,
-  BlockType.CHOICE_OLD,
-  BlockType.SPEAK, // requires factoryData
-  ...INTERNAL_NODES,
-  ...MARKUP_NODES,
-];
-
-const BLOCK_TYPES = [
-  ...MANAGERS.filter(({ type }) => !NO_SPOTLIGHT_BLOCKS.includes(type)).map(({ type, label }) => ({
-    value: type,
-    publicOnly: false,
-    label,
-  })),
-  {
-    value: BlockType.SPEAK,
-    label: 'Speak',
-    factoryData: { dialogs: [{ type: DialogType.VOICE }] },
-    publicOnly: false,
-  },
-  {
-    value: BlockType.SPEAK,
-    label: 'Audio',
-    factoryData: { dialogs: [{ type: DialogType.AUDIO }] },
-    publicOnly: false,
-  },
-  {
-    value: BlockType.INTEGRATION,
-    label: 'API',
-    factoryData: { selectedIntegration: IntegrationType.CUSTOM_API },
-    publicOnly: false,
-  },
-  {
-    value: BlockType.INTEGRATION,
-    label: 'Google Sheets',
-    factoryData: { selectedIntegration: IntegrationType.GOOGLE_SHEETS },
-    publicOnly: true,
-  },
-  {
-    value: BlockType.INTEGRATION,
-    label: 'Zapier',
-    factoryData: { selectedIntegration: IntegrationType.ZAPIER },
-    publicOnly: true,
-  },
-];
 
 export const filterSpotlightOption = (value: { label: string }, input: string) => value.label.toLowerCase().startsWith(input.toLowerCase().trim());
 
 const Spotlight = () => {
+  const platform = React.useContext(PlatformContext)!;
   // NOTE: extra protection against context being falsy needed for HMR
   const spotlight = React.useContext(SpotlightContext);
   const [trackingEvents] = useTrackingEvents();
   const engine = React.useContext(EngineContext)!;
   const gadgets = useFeature(FeatureFlag.GADGETS);
+  const isVisible = !!spotlight?.isVisible;
 
   const addBlock = async (blockType: BlockType, factoryData?: Partial<NodeData<unknown>>) => {
     await engine.node.add(blockType, engine.getMouseCoords(), factoryData);
@@ -72,28 +28,35 @@ const Spotlight = () => {
 
   const options = React.useMemo(
     () =>
-      BLOCK_TYPES.filter((option) => {
-        if (!gadgets.isEnabled && [BlockType.DIRECTIVE, BlockType.EVENT].includes(option.value)) return false;
-        if (IS_PRIVATE_CLOUD && option.publicOnly) return false;
-
-        return true;
-      }),
+      PLATFORM_SECTIONS[platform]
+        .flatMap((section) => section.steps)
+        .filter((option) => {
+          if (!gadgets.isEnabled && [BlockType.DIRECTIVE, BlockType.EVENT].includes(option.type)) return false;
+          if (IS_PRIVATE_CLOUD && option.publicOnly) return false;
+          return true;
+        }),
     []
   );
 
   useDidUpdateEffect(() => {
-    if (spotlight?.isVisible) {
+    if (isVisible) {
       trackingEvents.trackCanvasSpotlightOpened();
     }
-  }, [spotlight?.isVisible]);
+  }, [isVisible]);
 
-  if (!spotlight?.isVisible) {
+  if (!isVisible) {
     return null;
   }
 
   return (
     <Container>
       <Select
+        onKeyDown={(event: React.KeyboardEvent) => {
+          if (event.key === 'Escape') {
+            spotlight?.hide();
+            event.preventDefault();
+          }
+        }}
         onBlur={spotlight?.hide}
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus

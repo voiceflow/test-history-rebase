@@ -28,6 +28,8 @@ declare global {
     VF_OVERRIDE_ADMIN_HOST?: string;
     VF_OVERRIDE_MAINTENANCE_STATUS_SOURCE?: string;
     VF_OVERRIDE_GENERAL_RUNTIME_ENDPOINT?: string;
+    VF_OVERRIDE_OKTA_DOMAIN?: string;
+    VF_OVERRIDE_OKTA_CLIENT_ID?: string;
   }
 }
 
@@ -182,6 +184,6 @@ export const GENERAL_RUNTIME_ENDPOINT = IS_DEVELOPMENT ? GENERAL_RUNTIME_LOCAL_E
 export const TRUSTED_ENDPOINTS = [API_ENDPOINT, ALEXA_SERVICE_ENDPOINT, GOOGLE_SERVICE_ENDPOINT, GENERAL_SERVICE_ENDPOINT];
 
 // okta
-export const OKTA_DOMAIN = process.env.OKTA_DOMAIN!;
+export const OKTA_DOMAIN = window.VF_OVERRIDE_OKTA_DOMAIN || process.env.OKTA_DOMAIN!;
 export const OKTA_SCOPES = ['openid', 'profile', 'email', 'offline_access'];
-export const OKTA_CLIENT_ID = process.env.OKTA_CLIENT_ID!;
+export const OKTA_CLIENT_ID = window.VF_OVERRIDE_OKTA_CLIENT_ID || process.env.OKTA_CLIENT_ID!;

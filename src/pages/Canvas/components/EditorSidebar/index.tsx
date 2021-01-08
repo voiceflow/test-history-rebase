@@ -31,6 +31,7 @@ type EditSidebarProps = {
 
 const EditSidebar: React.FC<EditSidebarProps> = ({ theme }) => {
   const focus = useSelector(Creator.creatorFocusSelector);
+  const focusedNodeData = useSelector(Creator.focusedNodeDataSelector);
 
   const isEditingMode = useEditingMode();
   const { node, path, goToPath, pushToPath, popFromPath } = useEditorPath();
@@ -40,7 +41,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({ theme }) => {
   const prevAnimationDistance = React.useRef(40);
   const [isModal, enableModalMode, disableModalMode] = useEnableDisable(false);
   const shouldRender = !!node && !UNEDITABLE_BLOCKS.includes(node.type);
-  const isOpen = isEditingMode && shouldRender && focus.isActive && !isModal;
+  const isOpen = isEditingMode && shouldRender && focus.isActive && !!focusedNodeData && !isModal;
   const updateData = useUpdateData(node?.id);
   const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
 

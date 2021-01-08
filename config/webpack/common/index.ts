@@ -5,7 +5,6 @@ import webpack from 'webpack';
 import { action } from 'webpack-nano/argv';
 import WebpackBar from 'webpackbar';
 
-import paths from '../../paths';
 import { BASE_HREF, ENV, IS_PRODUCTION } from '../config';
 
 const commonConfig: webpack.Configuration = {
@@ -16,10 +15,14 @@ const commonConfig: webpack.Configuration = {
   resolve: {
     extensions: ['.js', '.json', '.jsx', '.ts', '.tsx', '.css'],
     alias: {
-      '@': paths.sourceDir,
       lodash: 'lodash-es',
     },
-    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, '../../../tsconfig.build.json') })],
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: path.resolve(__dirname, '../../../tsconfig.build.json'),
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      }),
+    ],
   },
 
   plugins: [

@@ -70,6 +70,7 @@ function getHost() {
 
 export const API_HOST = window.VF_OVERRIDE_API_HOST || getHost();
 export const API_ENDPOINT = `https://${API_HOST}${IS_DEVELOPMENT ? ':8080' : ''}`;
+export const API_V2_ENDPOINT = `${API_ENDPOINT}/v2`;
 
 export const ROOT_DOMAIN = process.env.ROOT_DOMAIN || (IS_DEVELOPMENT ? window.location.hostname : 'voiceflow.com');
 export const VERSION = process.env.VERSION!;

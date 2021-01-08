@@ -2,17 +2,17 @@ import { GeneralRequest } from '@voiceflow/general-types';
 import axios from 'axios';
 
 import legacySkillAdapter, { extractIntents, extractSlots } from '@/client/adapters/legacy/skill';
-import { API_ENDPOINT, GENERAL_RUNTIME_ENDPOINT } from '@/config';
-import { PrototypeContext, StateRequest } from '@/models';
+import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
+import { PrototypeContext, StateRequest, Store } from '@/models';
 
-import fetch from './fetch';
+import { api, apiV2 } from './fetch';
 
 export const LEGACY_TESTING_PATH = 'test';
 export const PROTOTYPE_PATH = 'prototype';
 
 const prototypeClient = {
   interact: (body: { state: Omit<PrototypeContext, 'trace'>; request?: StateRequest }, locale: string) =>
-    fetch.post<PrototypeContext>(`${PROTOTYPE_PATH}/interact?locale=${locale}`, body),
+    api.post<PrototypeContext>(`${PROTOTYPE_PATH}/interact?locale=${locale}`, body),
 
   interactV2: (versionID: string, body: { state: Omit<PrototypeContext, 'trace'>; request: GeneralRequest }) =>
     axios
@@ -20,7 +20,7 @@ const prototypeClient = {
       .then(({ data }) => data),
 
   getInfo: (configID: string) =>
-    fetch.get(`${LEGACY_TESTING_PATH}/getInfo/${configID}`).then((data: any) => {
+    api.get<{ skill: unknown; globals: Partial<Store> }>(`${LEGACY_TESTING_PATH}/getInfo/${configID}`).then((data) => {
       const skill = legacySkillAdapter.fromDB(data.skill);
       const intents = extractIntents(data.skill);
       const slots = extractSlots(data.skill);
@@ -29,7 +29,7 @@ const prototypeClient = {
     }),
 
   getLegacyInfo: (configID: string) =>
-    fetch.get(`${LEGACY_TESTING_PATH}/getInfo/${configID}`).then((data: any) => {
+    api.get(`${LEGACY_TESTING_PATH}/getInfo/${configID}`).then((data: any) => {
       const skill = legacySkillAdapter.fromDB(data.skill);
       const intents = extractIntents(data.skill) as any[];
       const slots = extractSlots(data.skill) as any[];
@@ -51,9 +51,9 @@ const prototypeClient = {
     }),
 
   createInfo: (versionID: string, diagramID: string, variables: Record<string, any>) =>
-    axios.post(`${API_ENDPOINT}/v2/versions/${versionID}/test`, { diagramID, variables }).then((res) => res.data as string),
+    apiV2.post<string>(`versions/${versionID}/test`, { diagramID, variables }),
 
-  getSpeakAudio: ({ ssml, voice }: { ssml: string; voice: string }) => fetch.post<string>(`${LEGACY_TESTING_PATH}/speak`, { ssml, voice }),
+  getSpeakAudio: ({ ssml, voice }: { ssml: string; voice: string }) => api.post<string>(`${LEGACY_TESTING_PATH}/speak`, { ssml, voice }),
 };
 
 export default prototypeClient;

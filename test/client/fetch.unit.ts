@@ -1,8 +1,8 @@
 import { SinonStub } from 'sinon';
 
 import suite from '@/../test/_suite';
-import fetch, { DEFAULT_FETCH_OPTIONS, REQUEST_CACHE } from '@/client/fetch';
-import rawFetch from '@/client/fetch/raw';
+import fetch, * as Fetch from '@/client/fetch';
+import createRawFetch from '@/client/fetch/raw';
 import { FetchOptions } from '@/client/fetch/types';
 import * as FetchUtils from '@/client/fetch/utils';
 import { generate } from '@/utils/testing';
@@ -10,22 +10,23 @@ import { generate } from '@/utils/testing';
 type MockResult = { status?: number; body?: string };
 
 const TEST_URL = 'test/12345';
-const FULL_TEST_URL = `https://undefined/${TEST_URL}`;
+const TEST_API_ENDPOINT = 'https://undefined';
+const FULL_TEST_URL = `${TEST_API_ENDPOINT}/${TEST_URL}`;
 
 suite('fetch', ({ expect, spy, stub, mockDate }) => {
   const mockRequestCache = ({ get = null, set = null, has = null }: Partial<Record<'get' | 'set' | 'has', number | null>> = {}) => {
-    spy(REQUEST_CACHE as any);
+    spy(Fetch.REQUEST_CACHE as any);
 
     return {
       verify: () => {
         if (get !== null) {
-          expect(REQUEST_CACHE.get).to.have.callCount(get);
+          expect(Fetch.REQUEST_CACHE.get).to.have.callCount(get);
         }
         if (set !== null) {
-          expect(REQUEST_CACHE.set).to.have.callCount(set);
+          expect(Fetch.REQUEST_CACHE.set).to.have.callCount(set);
         }
         if (has !== null) {
-          expect(REQUEST_CACHE.has).to.have.callCount(has);
+          expect(Fetch.REQUEST_CACHE.has).to.have.callCount(has);
         }
       },
     };
@@ -55,9 +56,33 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
     });
   };
 
-  describe('rawFetch()', () => {
+  describe('api', () => {
+    it('has endpoint prefix', async () => {
+      const fetchCall = stubFetch().yields();
+
+      await Fetch.api('some/path');
+
+      expect(fetchCall).to.be.calledWith(`${TEST_API_ENDPOINT}/some/path`);
+    });
+  });
+
+  describe('apiV2', () => {
+    it('has endpoint prefix', async () => {
+      const fetchCall = stubFetch().yields();
+
+      await Fetch.apiV2('some/path');
+
+      expect(fetchCall).to.be.calledWith(`${TEST_API_ENDPOINT}/v2/some/path`);
+    });
+  });
+
+  describe('creatRawFetch()', () => {
+    const testAPIEndpoint = 'https://myEnpoint';
+    const fullTestURL = `${testAPIEndpoint}/${TEST_URL}`;
+    const rawFetch = createRawFetch(testAPIEndpoint);
+
     beforeEach(() => {
-      REQUEST_CACHE.clear();
+      Fetch.REQUEST_CACHE.clear();
     });
 
     it('passes options', async () => {
@@ -65,8 +90,8 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
 
       await rawFetch(TEST_URL, { foo: 'bar' } as any);
 
-      expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
-        ...DEFAULT_FETCH_OPTIONS,
+      expect(fetchCall).to.be.calledWithExactly(fullTestURL, {
+        ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: {},
         foo: 'bar',
       });
@@ -78,8 +103,8 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
 
       const response = await rawFetch(TEST_URL);
 
-      expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
-        ...DEFAULT_FETCH_OPTIONS,
+      expect(fetchCall).to.be.calledWithExactly(fullTestURL, {
+        ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: {},
       });
       expect(response).to.eql(mockResponse);
@@ -187,7 +212,7 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
       const response = await fetch.get(TEST_URL);
 
       expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
-        ...DEFAULT_FETCH_OPTIONS,
+        ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: {},
         method: 'GET',
       });
@@ -202,7 +227,7 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
       const response = await fetch.post(TEST_URL, mockBody);
 
       expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
-        ...DEFAULT_FETCH_OPTIONS,
+        ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: { 'content-type': 'application/json' },
         method: 'POST',
         body: JSON.stringify(mockBody),
@@ -218,7 +243,7 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
       const response = await fetch.put(TEST_URL, mockBody);
 
       expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
-        ...DEFAULT_FETCH_OPTIONS,
+        ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: { 'content-type': 'application/json' },
         method: 'PUT',
         body: JSON.stringify(mockBody),
@@ -234,7 +259,7 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
       const response = await fetch.patch(TEST_URL, mockBody);
 
       expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
-        ...DEFAULT_FETCH_OPTIONS,
+        ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: { 'content-type': 'application/json' },
         method: 'PATCH',
         body: JSON.stringify(mockBody),
@@ -250,7 +275,7 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
       const response = await fetch.delete(TEST_URL, mockBody);
 
       expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
-        ...DEFAULT_FETCH_OPTIONS,
+        ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: { 'content-type': 'application/json' },
         method: 'DELETE',
         body: JSON.stringify(mockBody),

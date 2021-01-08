@@ -3,14 +3,19 @@ import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 
-suite('Client - Integrations', ({ expect, stubFetch, expectCall }) => {
+suite('Client - Integrations', ({ expect, stubFetch }) => {
+  it('should have expected keys', () => {
+    expect(Object.keys(client)).to.have.members(['getZapierToken']);
+  });
+
   describe('getZapierToken()', () => {
     it('should get zapier integration token', async () => {
-      const data: any = generate.object();
-      const fetch = stubFetch().resolves(data);
+      const tokenResponse: any = generate.object();
+      const fetch = stubFetch('api').resolves(tokenResponse);
 
-      await expectCall(client.getZapierToken).toYield(data);
+      const result = await client.getZapierToken();
 
+      expect(result).to.eq(tokenResponse);
       expect(fetch).to.be.calledWithExactly('api/token');
     });
   });

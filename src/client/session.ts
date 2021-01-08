@@ -2,11 +2,11 @@ import { DEVICE_INFO } from '@/config';
 import { SessionType } from '@/constants';
 import { Account } from '@/models';
 
-import fetch from './fetch';
+import { api } from './fetch';
 
-const SESSION_PATH = 'session';
+export const SESSION_PATH = 'session';
 
-const SESSION_ENDPOINTS = {
+export const SESSION_ENDPOINTS = {
   [SessionType.SSO]: 'ssoLogin',
   [SessionType.GOOGLE]: 'googleLogin',
   [SessionType.FACEBOOK]: 'fbLogin',
@@ -15,9 +15,9 @@ const SESSION_ENDPOINTS = {
 };
 
 const sessionClient = {
-  delete: () => fetch.delete(SESSION_PATH),
+  delete: () => api.delete(SESSION_PATH),
 
-  create: (type: SessionType, user: unknown) => fetch.put<{ user: Account; token: string }>(SESSION_ENDPOINTS[type], { user, device: DEVICE_INFO }),
+  create: (type: SessionType, user: unknown) => api.put<{ user: Account; token: string }>(SESSION_ENDPOINTS[type], { user, device: DEVICE_INFO }),
 };
 
 export default sessionClient;

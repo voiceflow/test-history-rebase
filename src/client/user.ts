@@ -1,13 +1,13 @@
 import { Account } from '@/models';
 
-import fetch from './fetch';
+import { api } from './fetch';
 
-const USER_PATH = 'user';
+export const USER_PATH = 'user';
 
 const userClient = {
-  get: () => fetch.get<Account>(USER_PATH),
+  get: () => api.get<Account>(USER_PATH),
 
-  updateProfilePicture: (url: string) => fetch.post('user/profilePictureURL', { url }),
+  updateProfilePicture: (url: string) => api.post(`${USER_PATH}/profilePictureURL`, { url }),
 };
 
 export default userClient;

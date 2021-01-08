@@ -8,6 +8,7 @@ export type FetchOptions = Pick<RequestInit, 'credentials' | 'mode'> & {
   body?: string | object;
   headers?: Record<string, string>;
   unauthorizedInterceptor?: boolean;
+  query?: Record<string, string | number | boolean>;
 };
 
 export type FetchResult<R> = {

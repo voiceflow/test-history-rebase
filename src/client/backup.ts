@@ -1,9 +1,7 @@
-import axios from 'axios';
-
-import { API_ENDPOINT } from '@/config';
+import { apiV2 } from './fetch';
 
 const backupClient = {
-  restore: (projectID: string, versionID: string) => axios.post(`${API_ENDPOINT}/v2/projects/${projectID}/restore/${versionID}`),
+  restore: (projectID: string, versionID: string) => apiV2.post(`projects/${projectID}/restore/${versionID}`),
 };
 
 export default backupClient;

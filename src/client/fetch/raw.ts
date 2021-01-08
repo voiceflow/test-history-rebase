@@ -1,6 +1,7 @@
 import hash from 'object-hash';
 
-import { API_ENDPOINT, DEBUG_HTTP } from '@/config';
+import { DEBUG_HTTP } from '@/config';
+import * as Query from '@/utils/query';
 
 import { DEFAULT_CACHE_TIMEOUT, GLOBAL_HEADERS, MAX_CACHE_SIZE, Method, NetworkError, REQUEST_CACHE, StatusCode } from './constants';
 import { FetchOptions, FetchResult } from './types';
@@ -12,13 +13,13 @@ export const setUnauthorizedHandler = (handler: (endpoint: string) => void) => {
   unauthorizedHandler = handler;
 };
 
-async function rawFetch<R>(
+const createRawFetch = (apiEndpoint: string) => async <R>(
   url: string,
-  { body, json = true, cache = false, expiry = DEFAULT_CACHE_TIMEOUT, unauthorizedInterceptor = true, ...rawOpts }: FetchOptions = {}
-): Promise<FetchResult<R>> {
+  { body, json = true, cache = false, expiry = DEFAULT_CACHE_TIMEOUT, unauthorizedInterceptor = true, query = {}, ...rawOpts }: FetchOptions = {}
+): Promise<FetchResult<R>> => {
   const opts = buildOptions(rawOpts, GLOBAL_HEADERS, body, json);
 
-  const finalURL = `${API_ENDPOINT}/${url}`;
+  const finalURL = `${apiEndpoint}/${url}${Object.keys(query).length ? Query.stringify(query) : ''}`;
 
   if (cache && REQUEST_CACHE.has(finalURL)) {
     const cacheData = REQUEST_CACHE.get(finalURL);
@@ -36,7 +37,7 @@ async function rawFetch<R>(
   const resBody = parseResponseBody<R>(resText, json);
 
   if (unauthorizedInterceptor && res.status === StatusCode.UNAUTHORIZED) {
-    await unauthorizedHandler?.(API_ENDPOINT);
+    await unauthorizedHandler?.(apiEndpoint);
   }
 
   if (res.status >= StatusCode.BAD_REQUEST) {
@@ -56,6 +57,6 @@ async function rawFetch<R>(
   }
 
   return response;
-}
+};
 
-export default rawFetch;
+export default createRawFetch;

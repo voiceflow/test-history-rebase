@@ -13,6 +13,8 @@
     "@typescript-eslint/parser",
     "stylelint*",
     "babel-*",
+    "@babel/preset-es2015",
+    "@babel/preset-typescript",
     "eslint-*",
     "css-loader",
     "postcss-loader",
@@ -32,6 +34,8 @@
     "ignore-styles",
     "mock-local-storage",
     "istanbul-instrumenter-loader",
-    "tslib"
+    "tslib",
+    "ts-loader",
+    "node-noop"
   ]
 }

@@ -1,5 +1,6 @@
-import suite from '@/../test/_suite';
 import client from '@/client';
+
+import suite from './_suite';
 
 suite('Client - Root', ({ expect }) => {
   it('should have expected keys', () => {

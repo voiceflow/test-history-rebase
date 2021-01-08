@@ -1,19 +1,10 @@
 {
   "extension": [".ts", ".tsx", ".js", ".jsx"],
+  "include": ["src/**"],
   "exclude": [
-    "coverage/**",
-    "test/**",
-    ".storybook/**",
-    "build/**",
-    "scratch.js",
-    "index.js",
-    ".*.js",
-    "src/**/*.it.*",
-    "src/**/*.story.*",
-    "public/**",
-    "scripts/**",
-    "config/**"
+    "**/*.it.*",
+    "**/*.story.*"
   ],
-  "reporter": ["html", "text-summary", "lcov"],
+  "reporter": ["html", "text", "text-summary", "lcov"],
   "report-dir": "nyc_coverage"
 }

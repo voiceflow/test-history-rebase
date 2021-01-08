@@ -16,6 +16,7 @@ import PrototypeDeveloperSettings from '@/pages/Prototype/components/PrototypeDe
 import PrototypeDisplaySettings from '@/pages/Prototype/components/PrototypeDisplaySettings';
 import PrototypeSidebar from '@/pages/Prototype/components/PrototypeSidebar';
 import PrototypeVisualCanvas from '@/pages/Prototype/components/PrototypeVisualCanvas';
+import ReadOnlyBadge from '@/pages/Prototype/components/ReadOnlyBadge';
 import { useAnyModeOpen, useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import DesignMenu from '@/pages/Skill/menus/DesignMenu';
 import MarkupMenu from '@/pages/Skill/menus/MarkupMenu';
@@ -54,9 +55,10 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, pr
   return (
     <>
       {isCanvasEditable && <DiagramSync diagramID={diagramID} />}
-
       <ManagerProvider value={getManager as any}>
         {!isDesignMode && <TopPrompt />}
+
+        <ReadOnlyBadge />
 
         {/* always render the canvas, hide with CSS */}
         <Canvas />

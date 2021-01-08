@@ -6,7 +6,8 @@ import CommentBlock from '@/pages/Canvas/components/CommentBlock';
 import { useNodeDrag, useNodeInstance } from '@/pages/Canvas/components/Node/hooks';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
-import { useEditingMode } from '@/pages/Skill/hooks';
+import { READONLY_CLICK_EVENT_NAME } from '@/pages/Prototype/components/ReadOnlyBadge';
+import { useEditingMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { Container, Lifecycle, NodeBlock, NodeStartBlock, Styles } from './components';
@@ -16,6 +17,8 @@ const Node: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const isEditingMode = useEditingMode();
+  const isPrototypingMode = usePrototypingMode();
+
   const contextMenu = React.useContext(ContextMenuContext)!;
   const instance = useNodeInstance<HTMLDivElement>();
   const { isFocused } = nodeEntity.useState((e) => ({
@@ -34,6 +37,13 @@ const Node: React.FC = () => {
     [isEditingMode]
   );
 
+  const onClickHandler = (e: React.MouseEvent) => {
+    onClick(e);
+    if (isPrototypingMode) {
+      const event = new Event(READONLY_CLICK_EVENT_NAME);
+      window.dispatchEvent(event);
+    }
+  };
   const onDoubleClick = React.useCallback(() => {
     if (engine.comment.isActive) return;
 
@@ -74,7 +84,7 @@ const Node: React.FC = () => {
         isTransform={!isPresentationMode}
         onMouseDown={onMouseDown}
         onDragStart={onDragStart}
-        onClick={onClick}
+        onClick={onClickHandler}
         onContextMenu={onRightClick}
         onDoubleClick={onDoubleClick}
         ref={instance.ref}

@@ -70,6 +70,7 @@ export { default as emptyCheckbox } from './images/icons/empty.svg';
 export { default as echoShow } from './echo-show.svg';
 export { default as echoSpot } from './echo-spot.svg';
 export { default as export } from './export.svg';
+export { default as eye } from './eye.svg';
 
 // f
 export { default as frame } from './frame.svg';

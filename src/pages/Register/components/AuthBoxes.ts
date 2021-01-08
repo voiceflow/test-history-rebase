@@ -144,6 +144,10 @@ export const SocialLoginContainer = styled.div`
     &:hover {
       background-image: linear-gradient(-180deg, rgba(238, 244, 246, 0.85), #eef4f6);
     }
+
+    :not(:last-child) {
+      margin-right: 14px;
+    }
   }
 
   .social-button-light {

@@ -19,6 +19,7 @@ export enum RootRoute {
 
 export enum LoginRoute {
   SSO = 'sso',
+  MATTEL = 'mattel',
 }
 
 export enum SSORoute {
@@ -79,6 +80,7 @@ export const Path = {
   RESET_PASSWORD: toPath(RootRoute.RESET, ':id'),
 
   LOGIN: toPath(RootRoute.LOGIN),
+  LOGIN_MATTEL: toPath(RootRoute.LOGIN, LoginRoute.MATTEL),
   LOGIN_SSO_CALLBACK: toPath(RootRoute.LOGIN, LoginRoute.SSO, SSORoute.CALLBACK),
 
   SIGNUP: toPath(RootRoute.SIGNUP),

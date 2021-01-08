@@ -12,7 +12,7 @@ import { useAsyncMountUnmount } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import * as Query from '@/utils/query';
 
-import PublicSignupForm from './PublicSignupForm';
+import { PublicSignupForm } from './components';
 
 export type SignupFormProps = RouteComponentProps & {
   promo?: boolean;

@@ -23,7 +23,6 @@ context('Main', () => {
     it('show social signup options', () => {
       signupPage.el.googleLogin.should('be.visible');
       signupPage.el.facebookLogin.should('be.visible');
-      signupPage.el.ssoLogin.should('be.visible');
     });
   });
 
@@ -39,7 +38,6 @@ context('Main', () => {
     it('show social signup options', () => {
       loginPage.el.googleLogin.should('be.visible');
       loginPage.el.facebookLogin.should('be.visible');
-      loginPage.el.ssoLogin.should('be.visible');
     });
   });
 

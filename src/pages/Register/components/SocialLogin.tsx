@@ -5,14 +5,12 @@ import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props
 import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse } from 'react-google-login';
 
 import Button, { ButtonVariant } from '@/components/Button';
-import { FlexApart } from '@/components/Flex';
-import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID, IS_PRIVATE_CLOUD, OKTA_CLIENT_ID, OKTA_DOMAIN, OKTA_SCOPES } from '@/config';
+import Flex from '@/components/Flex';
+import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID, IS_PRIVATE_CLOUD } from '@/config';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useTeardown } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
-import OKTA from '@/utils/okta';
 
 import { SocialLoginContainer } from './AuthBoxes';
 
@@ -22,17 +20,8 @@ export type SocialLoginProps = {
   disabled?: boolean;
 };
 
-const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({ light, coupon, disabled, ssoLogin, googleLogin, facebookLogin }) => {
+const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({ light, coupon, disabled, googleLogin, facebookLogin }) => {
   const [authError, setAuthError] = useState<null | boolean>(null);
-  const okta = React.useMemo(
-    () =>
-      new OKTA({
-        domain: OKTA_DOMAIN,
-        scopes: OKTA_SCOPES,
-        clientID: OKTA_CLIENT_ID,
-      }),
-    []
-  );
 
   const triggerGoogleLogin = (userProfile: GoogleLoginResponse) => {
     googleLogin({
@@ -61,16 +50,6 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({ l
     return false;
   };
 
-  const onSSOLogin = async () => {
-    try {
-      const { code } = await okta.login(`${window.location.origin}/login/sso/callback`);
-
-      await ssoLogin({ code, coupon: coupon || undefined });
-    } catch (err) {
-      setAuthError(err);
-    }
-  };
-
   useEffect(() => {
     if (authError) {
       const timeout = setTimeout(() => {
@@ -83,17 +62,13 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({ l
     return undefined;
   }, [authError]);
 
-  useTeardown(() => {
-    okta.closeChannel();
-  });
-
   if (IS_PRIVATE_CLOUD) {
     return null;
   }
 
   return (
     <SocialLoginContainer>
-      <FlexApart fullWidth>
+      <Flex>
         <GoogleLogin
           clientId={GOOGLE_CLIENT_ID}
           render={(renderProps) => (
@@ -125,11 +100,7 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({ l
           )}
           callback={triggerFbLogin}
         />
-
-        <Button icon="lock" variant={ButtonVariant.SECONDARY} onClick={onSSOLogin} className={cn('social-button', { 'social-button-light': light })}>
-          SSO
-        </Button>
-      </FlexApart>
+      </Flex>
 
       {authError && (
         <div className="errorContainer row">
@@ -144,7 +115,6 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({ l
 };
 
 const mapDispatchToProps = {
-  ssoLogin: Session.ssoLogin,
   googleLogin: Session.googleLogin,
   facebookLogin: Session.facebookLogin,
 };

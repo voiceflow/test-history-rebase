@@ -9,8 +9,7 @@ import { FormGroup, Input } from 'reactstrap';
 import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
 
-import { AuthBox } from './AuthBoxes';
-import AuthenticationContainer from './AuthenticationWrapper';
+import { AuthBox, AuthenticationContainer } from './components';
 
 export type ResetPasswordState = {
   password: string;

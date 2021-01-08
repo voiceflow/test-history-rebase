@@ -6,7 +6,7 @@ import client from '@/client';
 import { facebookLogin, googleLogin } from '@/ducks/session';
 
 import { LoginForm } from '../LoginForm';
-import { PublicSignupForm } from '../PublicSignupForm';
+import { PublicSignupForm } from '../components/PublicSignupForm';
 
 const TEST_EMAIL = 'tests@getvoiceflow.com';
 

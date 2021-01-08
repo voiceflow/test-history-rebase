@@ -12,10 +12,10 @@ import { useEnableDisable } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import * as Query from '@/utils/query';
 
+import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
-import AuthenticationContainer from './AuthenticationWrapper';
+import AuthenticationContainer from './AuthenticationContainer';
 import SocialLogin from './SocialLogin';
-import { replaceSpaceWithPlus } from './utils';
 
 export type PublicSignupFormProps = RouteComponentProps & {
   promo?: boolean;

@@ -12,10 +12,10 @@ import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 import * as Query from '@/utils/query';
 
-import { AuthBox, AuthenticationContainer, SocialLogin } from './components';
+import { AuthBox, AuthenticationContainer, SSOLogin } from './components';
 import { replaceSpaceWithPlus } from './utils';
 
-export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> = ({ basicAuthLogin, history, location }) => {
+export const MattelLoginForm: React.FC<RouteComponentProps & ConnectedMattelLoginFormProps> = ({ basicAuthLogin, history, location }) => {
   const query = Query.parse(location.search);
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email) : '');
   const [password, setPassword] = React.useState('');
@@ -93,7 +93,7 @@ export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> 
           </div>
         </Form>
 
-        <SocialLogin light />
+        <SSOLogin light />
       </AuthBox>
     </AuthenticationContainer>
   );
@@ -103,6 +103,6 @@ const mapDispatchToProps = {
   basicAuthLogin: Session.basicAuthLogin,
 };
 
-type ConnectedLoginFormProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+type ConnectedMattelLoginFormProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(LoginForm);
+export default connect(null, mapDispatchToProps)(MattelLoginForm);

@@ -32,6 +32,15 @@ const AUDIO_INTENTS = [
   },
 ];
 
+const getPlatformBuiltInIntents = (lang: string, platform: PlatformType) => {
+  const defaultIntents = [...constants.intents.DEFAULT_INTENTS[lang].defaults, ...AUDIO_INTENTS];
+  const allPlatformIntents = platform === PlatformType.ALEXA ? constants.intents.BUILT_IN_INTENTS_ALEXA : constants.intents.BUILT_IN_INTENTS_GOOGLE;
+
+  const platformIntents = allPlatformIntents.filter((intent) => !defaultIntents.some((defaultIntent) => defaultIntent.name === intent.name));
+
+  return [...defaultIntents, ...platformIntents];
+};
+
 export const initializePrototype = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const [locale] = activeLocalesSelector(state);
@@ -41,7 +50,7 @@ export const initializePrototype = (): SyncThunk => (dispatch, getState) => {
   const isGeneral = platform === PlatformType.GENERAL;
   const lang = locale.slice(0, 2);
 
-  const builtInIntents = isGeneral ? DEFAULT_INTENTS_MAP[lang] : [...constants.intents.DEFAULT_INTENTS[lang].defaults, ...AUDIO_INTENTS];
+  const builtInIntents = isGeneral ? DEFAULT_INTENTS_MAP[lang] : getPlatformBuiltInIntents(lang, platform);
 
   const nlc = createAndRegister({ slots, intents, builtInIntents });
 

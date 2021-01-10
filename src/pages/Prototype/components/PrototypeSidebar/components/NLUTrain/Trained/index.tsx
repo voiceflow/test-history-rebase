@@ -79,7 +79,8 @@ const Trained: React.FC<ConnectedTrainedProps & TrainedProps> = ({ openTraining,
       </Text>
 
       <Text fontSize={13} color="#62778c" fontWeight={500} mt={16} mb={27} lineHeight={1.54}>
-        Train your assistant for the highest fidelity testing experience. <Link href="">Learn more.</Link>
+        Train your assistant for the highest fidelity testing experience.{' '}
+        <Link href="https://docs.voiceflow.com/quickstart/testing?id=assistant-training">Learn more.</Link>
       </Text>
 
       <Button variant={ButtonVariant.TERTIARY} disabled={isTrained} onClick={onStartTraining}>

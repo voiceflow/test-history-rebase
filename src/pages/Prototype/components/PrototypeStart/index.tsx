@@ -15,7 +15,7 @@ import { ConnectedProps } from '@/types';
 
 import { Container, ContainerV2 } from './components';
 
-const PROTOTYPING_HELP_LINK = 'https://docs.voiceflow.com/#/platform/prototyping';
+const PROTOTYPING_HELP_LINK = 'https://docs.voiceflow.com/quickstart/testing';
 
 export type PrototypeStartProps = {
   debug: boolean;

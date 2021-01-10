@@ -11,9 +11,10 @@ import { FeatureFlag } from '@/config/features';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as Diagram from '@/ducks/diagram';
 import * as PrototypeDuck from '@/ducks/prototype';
+import { PrototypeStatus } from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import { connect } from '@/hocs';
-import { useEventualEngine, useFeature } from '@/hooks';
+import { useDidUpdateEffect, useEventualEngine, useFeature } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import Prototype from '@/pages/Prototype';
 import PrototypeDeveloperSettings from '@/pages/Prototype/components/PrototypeDeveloperSettings';
@@ -52,6 +53,24 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   const engine = useEventualEngine();
   const [atTop, setAtTop] = React.useState(true);
   const notStarted = (status as any) === PMStatus.IDLE;
+
+  const closeTraining = () => {
+    if (trainingOpen) {
+      toggleTrainingOpen();
+    }
+  };
+
+  const openTraining = () => {
+    if (!trainingOpen) {
+      toggleTrainingOpen();
+    }
+  };
+
+  useDidUpdateEffect(() => {
+    if (status === PrototypeStatus.ACTIVE) {
+      closeTraining();
+    }
+  }, [status]);
 
   React.useEffect(() => {
     // Reset the custom styling of the header when reset
@@ -123,7 +142,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
                     </TrainFadeDown>
                   ) : (
                     <TrainFadeDown key="trained">
-                      <Trained />
+                      <Trained openTraining={openTraining} />
                     </TrainFadeDown>
                   )}
                 </TrainContainer>
@@ -135,7 +154,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
               customHeaderStyling={{
                 background: generalPrototypeEnabled || (!atTop && !notStarted) ? '#fff' : '#FDFDFD',
               }}
-              isRounded={generalPrototypeEnabled && notStarted}
+              isRounded
               suffix={
                 <Flex>
                   <div style={{ display: 'inline-block', marginRight: '15px' }}>

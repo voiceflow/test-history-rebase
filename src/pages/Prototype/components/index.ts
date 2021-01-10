@@ -16,7 +16,7 @@ export const InnerChatContainer = styled.div<{ atTop: boolean }>`
 
   overflow: auto;
   height: 100%;
-  background: #fdfdfd;
+  background: white;
   border-top: 1px solid transparent;
 
   ${({ atTop }) =>

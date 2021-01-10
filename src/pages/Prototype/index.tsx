@@ -43,6 +43,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
 }) => {
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
+
   const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audioInstance, onStepBack, onStepForward } = usePrototype(
     status,
     debug,

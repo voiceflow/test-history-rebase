@@ -6,6 +6,8 @@ import Text, { Link } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import { PlatformType } from '@/constants';
 import { NLPTrainStageType } from '@/constants/platforms';
+import * as PrototypeDuck from '@/ducks/prototype';
+import { PrototypeStatus } from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useSetup, useTrackingEvents } from '@/hooks';
@@ -21,8 +23,11 @@ const TRAIN_ASSISTANT_TEXT = {
   [PlatformType.GOOGLE]: 'Train Google Action',
   [PlatformType.GENERAL]: 'Train Assistant',
 };
+type TrainedProps = {
+  openTraining: () => void;
+};
 
-const Trained: React.FC<ConnectedTrainedProps> = ({ platform, versionID, projectID }) => {
+const Trained: React.FC<ConnectedTrainedProps & TrainedProps> = ({ openTraining, status, platform, versionID, projectID }) => {
   const nlp = React.useContext(NLPContext)!;
   const [trackingEvents] = useTrackingEvents();
   const [modelDiff, setModelDiff] = React.useState<ModelDiff>({
@@ -51,6 +56,12 @@ const Trained: React.FC<ConnectedTrainedProps> = ({ platform, versionID, project
   });
 
   const isTrained = !isModelChanged(modelDiff) && (!nlp.job || nlp.job.stage.type === NLPTrainStageType.SUCCESS);
+
+  React.useEffect(() => {
+    if (status === PrototypeStatus.IDLE && !isTrained) {
+      openTraining();
+    }
+  }, [status]);
 
   React.useEffect(() => {
     if (nlp.job?.stage.type === NLPTrainStageType.ERROR) {
@@ -82,8 +93,9 @@ const mapStateToProps = {
   platform: Skill.activePlatformSelector,
   versionID: Skill.activeSkillIDSelector,
   projectID: Skill.activeProjectIDSelector,
+  status: PrototypeDuck.prototypeStatusSelector,
 };
 
 type ConnectedTrainedProps = ConnectedProps<typeof mapStateToProps>;
 
-export default connect(mapStateToProps)(Trained) as React.FC;
+export default connect(mapStateToProps)(Trained) as React.FC<TrainedProps>;

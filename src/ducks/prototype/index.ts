@@ -11,6 +11,7 @@ import {
   UpdatePrototypeStatus,
   UpdatePrototypeVisualDevice,
   UpdatePrototypeVisualSource,
+  UpdatePrototypeWebhookData,
 } from './actions';
 import { INITIAL_STATE } from './constants';
 import { PrototypeState } from './types';
@@ -78,6 +79,14 @@ const updatePrototypeContextStoreReducer: Reducer<PrototypeState, UpdatePrototyp
   },
 });
 
+const updateWebhookDataReducer: Reducer<PrototypeState, UpdatePrototypeWebhookData> = (state, { payload }) => ({
+  ...state,
+  webhook: {
+    ...state.webhook,
+    ...payload,
+  },
+});
+
 const prototypeReducer: RootReducer<PrototypeState, AnyPrototypeAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case PrototypeAction.UPDATE_TEST:
@@ -96,6 +105,8 @@ const prototypeReducer: RootReducer<PrototypeState, AnyPrototypeAction> = (state
       return updatePrototypeContextReducer(state, action);
     case PrototypeAction.UPDATE_TEST_CONTEXT_STORE:
       return updatePrototypeContextStoreReducer(state, action);
+    case PrototypeAction.UPDATE_WEBHOOK:
+      return updateWebhookDataReducer(state, action);
     default:
       return state;
   }

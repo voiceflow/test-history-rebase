@@ -28,4 +28,5 @@ export const INITIAL_STATE: PrototypeState = {
     storage: {},
     variables: {},
   },
+  webhook: {},
 };

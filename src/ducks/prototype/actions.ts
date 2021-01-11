@@ -4,7 +4,7 @@ import { Store } from '@/models';
 import { DeviceType } from '@/pages/Prototype/constants';
 import { Action } from '@/store/types';
 
-import { Context, PrototypeMode, PrototypeState, PrototypeStatus } from './types';
+import { Context, PrototypeMode, PrototypeState, PrototypeStatus, WebhookData } from './types';
 
 // actions
 
@@ -18,6 +18,7 @@ export enum PrototypeAction {
   UPDATE_TEST_TIME = 'TEST:TIME:UPDATE',
   UPDATE_TEST_VISUAL_DEVICE = 'TEST:VISUAL_DEVICE:UPDATE',
   UPDATE_TEST_VISUAL_SOURCE = 'TEST:VISUAL_SOURCE:UPDATE',
+  UPDATE_WEBHOOK = 'TEST:WEBHOOK:UPDATE',
 }
 
 // action types
@@ -37,6 +38,8 @@ export type UpdatePrototypeContext = Action<PrototypeAction.UPDATE_TEST_CONTEXT,
 
 export type UpdatePrototypeContextStore = Action<PrototypeAction.UPDATE_TEST_CONTEXT_STORE, { store: StoreType; payload: Partial<Store> }>;
 
+export type UpdatePrototypeWebhookData = Action<PrototypeAction.UPDATE_WEBHOOK, WebhookData>;
+
 export type AnyPrototypeAction =
   | UpdatePrototype
   | PushContextHistory
@@ -45,7 +48,8 @@ export type AnyPrototypeAction =
   | UpdatePrototypeVisualDevice
   | UpdatePrototypeVisualSource
   | UpdatePrototypeContext
-  | UpdatePrototypeContextStore;
+  | UpdatePrototypeContextStore
+  | UpdatePrototypeWebhookData;
 
 // action creators
 export const updatePrototype = (payload: Partial<PrototypeState>): UpdatePrototype => createAction(PrototypeAction.UPDATE_TEST, payload);
@@ -67,6 +71,8 @@ export const updatePrototypeContext = (payload: Partial<Context>): UpdatePrototy
 
 export const updatePrototypeContextStore = (store: StoreType) => (payload: Partial<Store>): UpdatePrototypeContextStore =>
   createAction(PrototypeAction.UPDATE_TEST_CONTEXT_STORE, { store, payload });
+
+export const udpatePrototypeWebhookData = (payload: WebhookData): UpdatePrototypeWebhookData => createAction(PrototypeAction.UPDATE_WEBHOOK, payload);
 
 export const updateVariables = updatePrototypeContextStore(StoreType.VARIABLES);
 export const updateTurn = updatePrototypeContextStore(StoreType.TURN);

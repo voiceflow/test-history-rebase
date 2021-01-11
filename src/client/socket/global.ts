@@ -1,5 +1,5 @@
 import { DBWorkspace } from '@/models';
-import { Callback } from '@/types';
+import { AnyFunction, Callback } from '@/types';
 
 import client, { SocketStatus } from './client';
 import { ServerEvent, SocketEvent } from './constants';
@@ -16,6 +16,8 @@ const globalSocketClient = {
   watchForReconnected: (handler: Callback) => client.watch(SocketEvent.INITIALIZE, handler),
 
   watchForConnectionError: (handler: Callback) => client.watch(SocketEvent.CONNECT_ERROR, handler),
+
+  watchForPrototypeWebhook: (handler: AnyFunction) => client.watch(ServerEvent.PROTOTYPE_WEBHOOK, handler),
 
   handleDisconnect: (onDisconnect: Callback, onReconnect: Callback) => {
     if (client.status === SocketStatus.RECONNECTING) return;

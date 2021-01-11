@@ -41,6 +41,8 @@ export enum ServerEvent {
   NEW_REPLY = 'comment:created',
   COMMENT_UPDATED = 'comment:updated',
   COMMENT_DELETED = 'comment:deleted',
+
+  PROTOTYPE_WEBHOOK = 'prototype:webhook',
 }
 
 export enum ClientEvent {

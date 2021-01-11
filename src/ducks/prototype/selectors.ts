@@ -42,3 +42,5 @@ export const prototypeVisualSourceIDSelector = createSelector([prototypeVisualSe
 export const activePathBlockIDsSelector = createSelector([prototypeSelector], ({ activePathBlockIDs }) => activePathBlockIDs);
 
 export const activePathLinkIDsSelector = createSelector([prototypeSelector], ({ activePathLinkIDs }) => activePathLinkIDs);
+
+export const prototypeWebhookDataSelector = createSelector([prototypeSelector], ({ webhook }) => webhook);

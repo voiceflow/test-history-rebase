@@ -30,6 +30,10 @@ export enum PrototypeMode {
   SETTINGS = 'Settings',
 }
 
+export type WebhookData = {
+  utterance?: string;
+};
+
 export interface PrototypeState {
   ID: string | null;
   nlc: NLC | null;
@@ -50,4 +54,5 @@ export interface PrototypeState {
     device: DeviceType | null;
     sourceID: string | null;
   };
+  webhook: WebhookData;
 }

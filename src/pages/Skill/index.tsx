@@ -18,6 +18,7 @@ import Business from '@/pages/Business';
 import CanvasHeader from '@/pages/Canvas/header';
 import InactivityModal from '@/pages/Inactivity';
 import Migrate from '@/pages/Migrate';
+import PrototypeWebhook from '@/pages/PrototypeWebhook';
 import Publish from '@/pages/Publish';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { isOnlyViewerSelector } from '@/store/selectors';
@@ -116,6 +117,8 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
                 <PrivateRoute path={Path.PROJECT_TOOLS} component={Business} />
 
                 <PrivateRoute path={Path.PROJECT_MIGRATE} component={Migrate} />
+
+                <PrivateRoute path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
 
                 <PrivateRoute path={Path.PROJECT_PUBLISH} component={Publish} />
 

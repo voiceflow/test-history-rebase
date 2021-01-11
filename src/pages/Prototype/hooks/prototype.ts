@@ -2,6 +2,7 @@ import NLC from '@voiceflow/natural-language-commander';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Modal from '@/ducks/modal';
@@ -26,6 +27,7 @@ const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boo
   const activePathBlockIDs = useSelector(Prototype.activePathBlockIDsSelector);
   const getLinksByPortID = useSelector(Creator.linksByPortIDSelector);
   const contextHistory = useSelector(Prototype.prototypeContextHistorySelector);
+  const webhook = useSelector(Prototype.prototypeWebhookDataSelector);
   const activeDiagramID = useSelector(Skill.activeDiagramIDSelector);
   const flowIDHistory = useSelector(Prototype.prototypeFlowIDHistorySelector);
   const getNodeByID = useSelector(Creator.nodeByIDSelector);
@@ -91,6 +93,15 @@ const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boo
   }, [status]);
 
   React.useEffect(() => () => prototype.stop(), []);
+
+  React.useEffect(() => {
+    if (webhook?.utterance) {
+      if (!status || status === PMStatus.IDLE) {
+        toast.info('Please start the test.');
+      }
+      onInteraction(webhook.utterance);
+    }
+  }, [webhook]);
 
   const onInteraction = React.useCallback((input: string) => prototype.interact(input), [prototype]);
   const onPlay = React.useCallback(

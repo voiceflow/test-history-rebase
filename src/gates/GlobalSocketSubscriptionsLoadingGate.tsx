@@ -1,29 +1,60 @@
 import React from 'react';
 
 import client from '@/client';
+import { toast } from '@/components/Toast';
+import * as Account from '@/ducks/account';
+import * as Prototype from '@/ducks/prototype';
+import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { ConnectedProps } from '@/types';
 
 const GlobalSocketSubscriptionsLoadingGate: React.FC<ConnectedGlobalSocketSubscriptionsLoadingGateProps> = ({
   children,
   patchWorkspace,
   ejectFromWorkspace,
+  setWebhookData,
+  activeProjectID,
+  currentUserID,
 }) => {
+  const isPrototypingMode = usePrototypingMode();
+
   React.useEffect(() => client.socket.global.watchForceRefresh(() => window.location.reload(true)));
   React.useEffect(() => client.socket.global.watchWorkspaceMembers(({ workspaceID, members }) => patchWorkspace(workspaceID, { members })));
   React.useEffect(() =>
     client.socket.global.watchForMembershipRevoked(({ workspaceId, workspaceName }) => ejectFromWorkspace(workspaceId, workspaceName))
   );
+  React.useEffect(() =>
+    client.socket.global.watchForPrototypeWebhook(({ payload, projectID, creatorID }) => {
+      if (currentUserID === creatorID) {
+        if (activeProjectID === projectID) {
+          if (isPrototypingMode) {
+            setWebhookData(payload);
+          } else {
+            toast.error('Please go to Test tool.');
+          }
+        } else {
+          toast.error('Project ID does not match.');
+        }
+      }
+    })
+  );
 
   return <>{children}</>;
+};
+
+const mapStateToProps = {
+  activeProjectID: Skill.activeProjectIDSelector,
+  currentUserID: Account.userIDSelector,
 };
 
 const mapDispatchToProps = {
   patchWorkspace: Workspace.patchWorkspace,
   ejectFromWorkspace: Workspace.ejectFromWorkspace,
+  setWebhookData: Prototype.udpatePrototypeWebhookData,
 };
 
-type ConnectedGlobalSocketSubscriptionsLoadingGateProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+type ConnectedGlobalSocketSubscriptionsLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(GlobalSocketSubscriptionsLoadingGate);
+export default connect(mapStateToProps, mapDispatchToProps)(GlobalSocketSubscriptionsLoadingGate);

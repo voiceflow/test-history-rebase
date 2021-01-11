@@ -33,6 +33,7 @@ export enum ProjectRoute {
   MIGRATE = 'migrate',
   PUBLISH = 'publish',
   SETTINGS = 'settings',
+  PROTOTYPE_WEBHOOK = 'prototype_webhook',
 }
 
 export enum CanvasRoute {
@@ -120,6 +121,8 @@ export const Path = {
 
   PUBLISH_GOOGLE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.GOOGLE),
   PUBLISH_ALEXA: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.ALEXA),
+
+  PROTOTYPE_WEBHOOK: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE_WEBHOOK),
 };
 
 export const LegacyPath = {

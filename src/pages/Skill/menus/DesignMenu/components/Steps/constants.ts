@@ -3,7 +3,7 @@ import { NodeData } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { Icon } from '@/svgs/types';
 
-type MenuStep = {
+export type MenuStep = {
   type: BlockType;
   icon: Icon | React.FC;
   label: string;

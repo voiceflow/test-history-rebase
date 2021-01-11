@@ -19,6 +19,7 @@ export enum Identifier {
   ADD_COLLABORATORS = 'vf-add-collaborators',
   THREAD_HISTORY_DRAWER = 'vf-thread-history-drawer',
   ESCAPE_MODE_PROMPT = 'vf-escape-mode-prompt',
+  SPOTLIGHT = 'vf-spotlight',
 }
 
 export enum ClassName {

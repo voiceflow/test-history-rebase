@@ -6,7 +6,8 @@ import { BlockType } from '@/constants';
 import { useDidUpdateEffect, useFeature, useTrackingEvents } from '@/hooks';
 import { NodeData } from '@/models';
 import { EngineContext, PlatformContext, SpotlightContext } from '@/pages/Canvas/contexts';
-import { PLATFORM_SECTIONS } from '@/pages/Skill/menus/DesignMenu/components/Steps/constants';
+import { MenuStep, PLATFORM_SECTIONS } from '@/pages/Skill/menus/DesignMenu/components/Steps/constants';
+import { Identifier } from '@/styles/constants';
 
 import { Container, Select } from './components';
 
@@ -49,7 +50,7 @@ const Spotlight = () => {
   }
 
   return (
-    <Container>
+    <Container id={Identifier.SPOTLIGHT}>
       <Select
         onKeyDown={(event: React.KeyboardEvent) => {
           if (event.key === 'Escape') {
@@ -61,7 +62,7 @@ const Spotlight = () => {
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
         classNamePrefix="spotlight"
-        onChange={(selected: { value: BlockType; factoryData?: Partial<NodeData<unknown>> }) => addBlock(selected.value, selected.factoryData)}
+        onChange={(selected: MenuStep) => addBlock(selected.type, selected.factoryData)}
         options={options}
         maxMenuHeight={124}
         value={null}

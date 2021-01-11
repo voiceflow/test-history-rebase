@@ -87,9 +87,9 @@ function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWor
 
         if (cloning) {
           trackEvents.trackProjectClone({
-            template_id: importedProject.id,
-            template_name: importedProject.name,
-            workspace_id: workspaceId,
+            templateID: importedProject.id,
+            templateName: importedProject.name,
+            workspaceID: workspaceId,
           });
         }
       } catch (e) {

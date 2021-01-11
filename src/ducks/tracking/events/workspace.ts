@@ -4,22 +4,17 @@ import { EventName } from '@/ducks/tracking/constants';
 import { Workspace } from '@/models';
 import { getHostName } from '@/utils/window';
 
+import { createWorkspaceEventPayload } from '../utils';
+
 export const trackWorkspace = (workspace: Workspace) => () => {
-  client.analytics.track(EventName.WORKSPACE_SESSION_BEGIN, {
-    teamhashed: ['workspace_id'],
-    properties: {
-      workspace_id: workspace.id,
-      creator_version: getHostName(),
-    },
-  });
+  client.analytics.track(
+    EventName.WORKSPACE_SESSION_BEGIN,
+    createWorkspaceEventPayload({ workspaceID: workspace.id }, { creator_version: getHostName() })
+  );
+
   client.analytics.identifyWorkspace(workspace);
 };
 
 export const trackWorkspaceDelete = (workspaceID: string) => () => {
-  client.analytics.track(EventName.WORKSPACE_DELETE, {
-    teamhashed: ['workspace_id'],
-    properties: {
-      workspace_id: workspaceID,
-    },
-  });
+  client.analytics.track(EventName.WORKSPACE_DELETE, createWorkspaceEventPayload({ workspaceID }));
 };

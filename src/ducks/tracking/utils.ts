@@ -24,7 +24,7 @@ export const createWorkspaceEventPayload = <T extends WorkspaceEventInfo, D exte
   data: D = {} as D,
   { hashed = [], teamhashed = [] }: { hashed?: K[]; teamhashed?: K[] } = {}
 ) => ({
-  hashed: ([...hashed] as any) as keyof D & keyof K,
+  hashed,
   teamhashed: (['workspace_id', ...teamhashed] as any) as keyof D & keyof K,
   properties: {
     ...data,
@@ -53,7 +53,7 @@ export const createProjectEventPayload = <T extends ProjectEventInfo, D extends 
   data: D = {} as D,
   { hashed = [], teamhashed = [] }: { hashed?: K[]; teamhashed?: K[] } = {}
 ) => ({
-  hashed: (['skill_id', 'project_id', ...hashed] as any) as keyof D & keyof K,
+  hashed,
   teamhashed: (['workspace_id', ...teamhashed] as any) as keyof D & keyof K,
   properties: {
     ...data,

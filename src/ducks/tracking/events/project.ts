@@ -3,7 +3,7 @@ import { PrototypeMode } from '@/ducks/prototype/types';
 
 import { EventName } from '../constants';
 import { ProjectEventInfo } from '../types';
-import { createProjectEventPayload, createProjectEventTracker } from '../utils';
+import { createProjectEventPayload, createProjectEventTracker, createWorkspaceEventPayload } from '../utils';
 
 export const trackActiveProjectSessionBegin = (options: ProjectEventInfo) => () =>
   client.analytics.track(EventName.PROJECT_SESSION_BEGIN, createProjectEventPayload(options));
@@ -48,19 +48,15 @@ export const trackProjectTrainAssistant = createProjectEventTracker((options) =>
 );
 
 export const trackProjectClone = ({
-  template_id,
-  template_name,
-  workspace_id,
+  templateID,
+  workspaceID,
+  templateName,
 }: {
-  template_id: string;
-  template_name: string;
-  workspace_id: string;
+  templateID: string;
+  workspaceID: string;
+  templateName: string;
 }) => () =>
-  client.analytics.track(EventName.CLONE_PROJECT, {
-    teamhashed: ['workspace_id', 'template_id'],
-    properties: {
-      template_id,
-      template_name,
-      workspace_id,
-    },
-  });
+  client.analytics.track(
+    EventName.CLONE_PROJECT,
+    createWorkspaceEventPayload({ workspaceID }, { template_id: templateID, template_name: templateName }, { teamhashed: ['template_id'] })
+  );

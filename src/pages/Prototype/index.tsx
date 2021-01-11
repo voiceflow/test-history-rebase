@@ -68,6 +68,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   const scrollToBottom = () => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
   React.useEffect(() => {
     scrollToBottom();
   }, [messages.length, interactions]);

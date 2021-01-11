@@ -30,6 +30,8 @@ export enum EventName {
   PROJECT_PUBLISH_SUCCESS = 'Publish Success',
   PROJECT_TRAIN_ASSISTANT = 'Train Assistant',
 
+  PROTOTYPE_MANUAL_NAVIGATION = 'Manual Navigation',
+
   CANVAS_MENU_LOCK = 'Canvas Menu Lock',
   CANVAS_SPOTLIGHT_OPENED = 'Spotlight Opened',
   CANVAS_CONTROL_HELP_MENU = 'Canvas Control Help Menu',

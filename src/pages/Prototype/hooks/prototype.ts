@@ -8,7 +8,7 @@ import * as Creator from '@/ducks/creator';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
-import { useEventualEngine, useFeature } from '@/hooks';
+import { useEventualEngine, useFeature, useTrackingEvents } from '@/hooks';
 import { Slot } from '@/models';
 import { Dispatch } from '@/store/types';
 
@@ -37,6 +37,7 @@ const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boo
   const [status, setStatus] = React.useState<PMStatus | null>(null);
   const [messages, updateMessages] = React.useState<Message[]>([]);
   const [interactions, setInteractions] = React.useState<Interaction[]>([]);
+  const [trackingEvents] = useTrackingEvents();
   const engine = useEventualEngine()()!;
 
   const cacheData: PrototypeToolProps = {
@@ -115,9 +116,13 @@ const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boo
     setStatus(PMStatus.WAITING_USER_INTERACTION);
     dispatch(Prototype.updatePrototypeStatus(Prototype.PrototypeStatus.ACTIVE));
     prototype.stepBack();
+    trackingEvents.trackPrototypeManualNavBackwardButton();
   }, [prototype]);
 
-  const onStepForward = React.useCallback(() => prototype.stepForward(), [prototype]);
+  const onStepForward = React.useCallback(() => {
+    prototype.stepForward();
+    trackingEvents.trackPrototypeManualNavForwardButton();
+  }, [prototype]);
 
   return {
     status,

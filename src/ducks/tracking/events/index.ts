@@ -6,3 +6,4 @@ export * from './invitation';
 export * from './onboarding';
 export * from './workspace';
 export * from './upgrade';
+export * from './prototype';

@@ -15,6 +15,7 @@ function MenuOptions({
   onSelect,
   autoWidth,
   onItemRef,
+  placement,
   searchLabel,
   optionsPath,
   onFocusItem,
@@ -70,7 +71,7 @@ function MenuOptions({
                 options={option.options}
                 onSelect={onSelect}
                 autoWidth={autoWidth}
-                placement="right-start"
+                placement={placement || 'right-start'}
                 searchLabel={searchLabel}
                 optionsPath={[...optionsPath, i]}
                 getOptionKey={getOptionKey}

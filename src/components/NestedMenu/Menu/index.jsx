@@ -258,8 +258,8 @@ function BaseNestedMenu({
   return (
     <Portal portalNode={portalNode || document.body}>
       <Popper placement={placement} modifiers={popoverModifiers}>
-        {({ ref, style }) => (
-          <MenuPopoverContainer ref={ref} style={style} autoWidth={autoWidth} onMouseMove={onMouseMove}>
+        {({ ref, style, placement: parentPlacement }) => (
+          <MenuPopoverContainer ref={ref} style={style} isRoot={isRoot} autoWidth={autoWidth} onMouseMove={onMouseMove}>
             <Menu
               id={id}
               ref={menuRef}
@@ -293,6 +293,7 @@ function BaseNestedMenu({
                 options={options}
                 grouped={grouped}
                 onSelect={onSelect}
+                placement={isRoot ? undefined : parentPlacement}
                 autoWidth={autoWidth}
                 onItemRef={onItemRef}
                 searchLabel={searchLabel}

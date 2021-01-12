@@ -58,6 +58,7 @@ const SSML = (
   const hasProjectLevelVoice = platform === PlatformType.GOOGLE;
 
   const handleDefaultVoice = (option) => {
+    if (option.options?.length) return;
     option?.value === defaultVoice ? stopPropagation(onChangeDefaultVoice(null)) : onChangeDefaultVoice(option?.value ?? null);
   };
 

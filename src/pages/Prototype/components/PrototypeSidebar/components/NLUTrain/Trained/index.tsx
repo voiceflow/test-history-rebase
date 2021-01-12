@@ -66,7 +66,22 @@ const Trained: React.FC<ConnectedTrainedProps & TrainedProps> = ({ openTraining,
   React.useEffect(() => {
     if (nlp.job?.stage.type === NLPTrainStageType.ERROR) {
       logger.warn('Train error', nlp.job.stage.data);
-      toast.error('An error occurred while training the model.');
+
+      let message: string;
+      const nlpMessage = nlp.job.stage.data?.error?.message;
+
+      // eslint-disable-next-line sonarjs/no-small-switch
+      switch (nlpMessage) {
+        case 'Training failed with reason: FewLabels':
+          message =
+            'Your Assistant was unable to be trained because you have Slot(s) set as required, but you have not provided any Response Utterances. Please fix this and try training again.';
+          break;
+
+        default:
+          message = `An error occurred while training the model. ${nlpMessage || ''}`;
+      }
+
+      toast.error(message);
     }
   }, [nlp.job?.stage.type]);
 

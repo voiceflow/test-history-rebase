@@ -62,6 +62,7 @@ export const createProject = ({ platform, name, largeIcon, listID }: Partial<Cre
 
   try {
     const newProject = await client.platform(platform!).project.copy(templateProjectID, { name, image: largeIcon, teamID });
+
     if (listID) {
       await dispatch(addProjectToList(listID, newProject._id));
     }

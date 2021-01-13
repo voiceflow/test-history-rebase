@@ -1,4 +1,4 @@
-import { Language } from '@voiceflow/google-types';
+import { Locale as GeneralLocale } from '@voiceflow/general-types';
 import _constant from 'lodash/constant';
 import React from 'react';
 
@@ -9,6 +9,7 @@ import Input from '@/components/Input';
 import Select from '@/components/Select';
 import Icon from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
+import { GENERAL_LOCALES_OPTIONS, GENERAL_LOCALE_NAME_MAP } from '@/constants/platforms';
 import { PLATFORM_META } from '@/pages/NewProject/Steps/constants';
 import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
@@ -28,32 +29,39 @@ import { SectionDescription, SectionErrorMessage, SectionTitle } from '../compon
 const UnTypedDropdownMultiselect: any = DropdownMultiselect;
 
 type PlatformSettingsProps = {
-  selectedPlatform: PlatformType;
+  alexaLocales: string[];
+  generalLocale: GeneralLocale;
   invocationName: string;
-  setInvocationName: (name: string) => void;
-  selectedLocales: string[];
-  setSelectedLocales: (locales: string[]) => void;
-  finalizeCreation: () => void;
+  googleLanguage: string;
   creatingProject: boolean;
-  mainLanguage: string;
-  setMainLanguage: (val: string) => void;
+  setAlexaLocales: (locales: string[]) => void;
+  setGeneralLocale: (locale: string) => void;
+  finalizeCreation: () => void;
+  selectedPlatform: PlatformType;
+  setInvocationName: (name: string) => void;
+  setGoogleLanguage: (val: string) => void;
 };
 
 const ProjectSettings: React.FC<PlatformSettingsProps> = ({
+  alexaLocales,
+  generalLocale,
+  invocationName,
+  googleLanguage,
+  creatingProject,
+  setAlexaLocales,
+  finalizeCreation,
+  setGeneralLocale,
   selectedPlatform,
   setInvocationName,
-  creatingProject,
-  invocationName,
-  selectedLocales,
-  setSelectedLocales,
-  finalizeCreation,
-  mainLanguage,
-  setMainLanguage,
+  setGoogleLanguage,
 }) => {
-  const alexaDisplayName =
-    selectedPlatform === PlatformType.ALEXA
-      ? selectedLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')
-      : '';
+  const isAlexa = selectedPlatform === PlatformType.ALEXA;
+  const isGeneral = selectedPlatform === PlatformType.GENERAL;
+
+  const alexaDisplayName = isAlexa
+    ? alexaLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')
+    : '';
+
   const invocationError =
     invocationName &&
     getPlatformValue<(name?: string, locales?: any[]) => string | null>(
@@ -63,70 +71,96 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
         [PlatformType.GOOGLE]: getGoogleInvocationNameError,
       },
       _constant(null)
-    )(invocationName, selectedLocales);
-  const canContinue = !invocationError && (!!selectedLocales.length || !!mainLanguage);
-  const InvocationDescriptionComponent: React.FC = PLATFORM_META[selectedPlatform].invocationDescription!;
-  const LanguageDescriptionComponent: React.FC = PLATFORM_META[selectedPlatform].localesDescription!;
+    )(invocationName, alexaLocales);
+
+  const canContinue = !invocationError && (!!alexaLocales.length || !!googleLanguage || !!generalLocale);
+  const InvocationDescriptionComponent = PLATFORM_META[selectedPlatform].invocationDescription!;
+  const LanguageDescriptionComponent = PLATFORM_META[selectedPlatform].localesDescription!;
 
   return (
     <Container width={420} textAlign="left">
-      <FieldsContainer>
-        <SectionTitle>Invocation Name</SectionTitle>
-        <Input
-          error={!!invocationError}
-          placeholder="Enter invocation name"
-          value={invocationName}
-          onChange={(e) => setInvocationName(e.target.value)}
-        />
-        {invocationError && invocationName ? (
-          <SectionErrorMessage>{invocationError}</SectionErrorMessage>
-        ) : (
-          <SectionDescription>
-            <InvocationDescriptionComponent />
-          </SectionDescription>
-        )}
-      </FieldsContainer>
+      {!isGeneral && (
+        <FieldsContainer>
+          <SectionTitle>Invocation Name</SectionTitle>
+
+          <Input
+            error={!!invocationError}
+            placeholder="Enter invocation name"
+            value={invocationName}
+            onChange={(e) => setInvocationName(e.target.value)}
+          />
+
+          {invocationError && invocationName ? (
+            <SectionErrorMessage>{invocationError}</SectionErrorMessage>
+          ) : (
+            <SectionDescription>
+              <InvocationDescriptionComponent />
+            </SectionDescription>
+          )}
+        </FieldsContainer>
+      )}
+
       <FieldsContainer>
         <SectionTitle>{PLATFORM_META[selectedPlatform].localesText}</SectionTitle>
-        {selectedPlatform === PlatformType.GOOGLE ? (
-          <Select
-            placeholder="Language"
-            value={FORMATTED_GOOGLE_LOCALES_LABELS[mainLanguage]}
-            options={FORMATTED_LOCALES}
-            onSelect={(val: any) => {
-              setMainLanguage(val as Language);
-            }}
-            getOptionValue={(option) => option?.value || ''}
-            renderOptionLabel={(option) => option.name}
-          />
-        ) : (
-          <UnTypedDropdownMultiselect
-            placeholder={`Select ${PLATFORM_META[selectedPlatform].localesText}`}
-            buttonLabel="Unselect All"
-            buttonClick={() => setSelectedLocales([])}
-            options={LOCALE_MAP}
-            autoWidth
-            onSelect={(val: string) => {
-              const newLocales = selectedLocales.includes(val) ? without(selectedLocales, selectedLocales.indexOf(val)) : [...selectedLocales, val];
-              setSelectedLocales(newLocales);
-            }}
-            selectedItems={selectedLocales}
-            selectedValue={alexaDisplayName}
-            withCaret
-            dropdownActive
-          />
-        )}
+
+        {getPlatformValue<() => React.ReactNode>(
+          selectedPlatform,
+          {
+            // eslint-disable-next-line react/display-name
+            [PlatformType.ALEXA]: () => (
+              <UnTypedDropdownMultiselect
+                options={LOCALE_MAP}
+                autoWidth
+                withCaret
+                onSelect={(val: string) =>
+                  setAlexaLocales(alexaLocales.includes(val) ? without(alexaLocales, alexaLocales.indexOf(val)) : [...alexaLocales, val])
+                }
+                placeholder={`Select ${PLATFORM_META[selectedPlatform].localesText}`}
+                buttonLabel="Unselect All"
+                buttonClick={() => setAlexaLocales([])}
+                selectedItems={alexaLocales}
+                selectedValue={alexaDisplayName}
+                dropdownActive
+              />
+            ),
+            // eslint-disable-next-line react/display-name
+            [PlatformType.GOOGLE]: () => (
+              <Select
+                value={FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage]}
+                options={FORMATTED_LOCALES}
+                onSelect={setGoogleLanguage}
+                placeholder="Language"
+                getOptionValue={(option) => option?.value || ''}
+                renderOptionLabel={(option) => option.name}
+              />
+            ),
+            // eslint-disable-next-line react/display-name
+            [PlatformType.GENERAL]: () => (
+              <Select
+                value={generalLocale}
+                options={GENERAL_LOCALES_OPTIONS}
+                onSelect={setGeneralLocale}
+                placeholder="Locale"
+                getOptionValue={(option) => option?.value || GeneralLocale.EN_US}
+                getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as GeneralLocale] ?? ''}
+                renderOptionLabel={(option) => option.name}
+              />
+            ),
+          },
+          // eslint-disable-next-line lodash/prefer-constant
+          () => null
+        )()}
+
         <SectionDescription>
           <LanguageDescriptionComponent />
         </SectionDescription>
       </FieldsContainer>
+
       <FlexCenter>
         {creatingProject ? (
-          <>
-            <LoadingButton variant="primary" square>
-              <Icon icon="publishSpin" size={24} spin />
-            </LoadingButton>
-          </>
+          <LoadingButton variant="primary" square>
+            <Icon icon="publishSpin" size={24} spin />
+          </LoadingButton>
         ) : (
           <Button variant={ButtonVariant.PRIMARY} disabled={!canContinue} onClick={finalizeCreation}>
             Create Project

@@ -338,10 +338,10 @@ const Select = <O, V = O>({
   const onIconClick = React.useCallback(() => {
     if (clearable) {
       (onSelect as (value: Nullable<V>, optionsPath: number[]) => void)(null, []);
-    } else {
+    } else if (!disabled || !searchable) {
       onOpenMenu();
     }
-  }, [clearable, onOpenMenu, onSelect]);
+  }, [clearable, onOpenMenu, onSelect, disabled, searchable]);
 
   React.useEffect(() => {
     if (inline && inputWrapperRef) {

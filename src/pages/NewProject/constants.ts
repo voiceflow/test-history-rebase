@@ -15,7 +15,7 @@ export enum StepID {
 
 type StepMetaProps = {
   title: (platform?: PlatformType) => string;
-  component: React.FC;
+  component: React.FC<any>;
 };
 
 export const StepMeta = <Record<StepID, StepMetaProps>>{

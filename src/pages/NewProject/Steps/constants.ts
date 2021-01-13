@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PlatformType } from '@/constants';
 import { AmazonInvocationName, GoogleInvocationName } from '@/pages/NewProject/DescriptionElements/InvocationName';
-import { AmazonLanguage, GoogleLanguage } from '@/pages/NewProject/DescriptionElements/Languages';
+import { AmazonLanguage, GeneralLanguage, GoogleLanguage } from '@/pages/NewProject/DescriptionElements/Languages';
 import { Icon } from '@/svgs/types';
 
 export enum PlatformFeature {
@@ -91,9 +91,11 @@ export const PLATFORM_META: PlatformMetaProps = {
     company: '',
     description: 'Design, prototype and share conversational apps and dialogs.',
     features: [PlatformFeature.DESIGN_AND_PROTO],
+    localesText: 'Language',
+    localesDescription: GeneralLanguage,
     icon: 'speak',
     iconColor: '#6E849A',
-    platformAppType: '',
+    platformAppType: 'Assistant',
     platformName: PlatformType.GENERAL,
     platform: PlatformType.GENERAL,
     iconType: IconType.ICON,

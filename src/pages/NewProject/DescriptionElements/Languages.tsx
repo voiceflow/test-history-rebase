@@ -1,5 +1,9 @@
 import React from 'react';
 
+export const GeneralLanguage: React.FC = () => {
+  return <span>Choose the language your Assistant will support. This cannot be changed later.</span>;
+};
+
 export const GoogleLanguage: React.FC = () => {
   return <span>Choose the language your Google Action will support. This can be changed later.</span>;
 };

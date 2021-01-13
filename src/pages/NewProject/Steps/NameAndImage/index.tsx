@@ -12,9 +12,9 @@ type NameAndImageProps = {
   setName: (name: string) => void;
   smallIcon: string;
   largeIcon: string;
+  onContinue: () => void;
   setSmallIcon: (url: string) => void;
   setLargeIcon: (url: string) => void;
-  onContinue: () => void;
 };
 
 const NameAndImage: React.FC<NameAndImageProps> = ({ name, setName, largeIcon, setSmallIcon, setLargeIcon, onContinue }) => {

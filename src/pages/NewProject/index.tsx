@@ -1,10 +1,10 @@
-import { Language, LanguageToLocale } from '@voiceflow/google-types';
+import { Locale as AlexaLocale } from '@voiceflow/alexa-types';
+import { Locale as GeneralLocale } from '@voiceflow/general-types';
+import { Language as GoogleLanguage, LanguageToLocale } from '@voiceflow/google-types';
 import React from 'react';
 
 import client from '@/client';
-import InnerContainer from '@/components/CreationSteps/components/Containers/InnerContainer';
-import OuterContainer from '@/components/CreationSteps/components/Containers/OuterContainer';
-import CreationHeader from '@/components/CreationSteps/components/Header';
+import { CreationHeader, InnerContainer, OuterContainer } from '@/components/CreationSteps';
 import { FlexCenter } from '@/components/Flex';
 import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
@@ -28,16 +28,17 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   // Once this starts getting more complex, we should move all this logic to a context, but right now that's overkill
   const [stepStack, setStepStack] = React.useState<StepID[]>([StepID.NAME_AND_IMAGE]);
   const currentStep = stepStack[0];
+
   const [name, setName] = React.useState('');
   const [smallIcon, setSmallIcon] = React.useState('');
   const [largeIcon, setLargeIcon] = React.useState('');
   const [invocationName, setInvocationName] = React.useState('');
   const [selectedPlatform, setSelectedPlatform] = React.useState<PlatformType>();
-  const [selectedLocales, setSelectedLocales] = React.useState([LOCALE_MAP[0].value]);
-  // For Google only
-  const [mainLanguage, setMainLanguage] = React.useState<Language>(Language.EN);
+  const [alexaLocales, setAlexaLocales] = React.useState<[AlexaLocale, ...AlexaLocale[]]>([LOCALE_MAP[0].value]);
+  const [googleLanguage, setGoogleLanguage] = React.useState<GoogleLanguage>(GoogleLanguage.EN);
+  const [generalLocale, setGeneralLocale] = React.useState<GeneralLocale>(GeneralLocale.EN_US);
   const [creatingProject, setCreatingProject] = React.useState(false);
-  const CurrentStep: React.FC<any> = StepMeta[currentStep].component;
+  const CurrentStep = StepMeta[currentStep].component;
 
   const finalizeCreation = async () => {
     setCreatingProject(true);
@@ -51,19 +52,24 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
         await client.platform.alexa.version.updatePublishing(project.versionID, {
           invocationName,
           invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
-          locales: selectedLocales as any,
+          locales: alexaLocales,
           largeIcon,
           smallIcon,
         });
       } else if (selectedPlatform === PlatformType.GOOGLE) {
         await client.platform.google.version.updatePublishing(project.versionID, {
-          locales: LanguageToLocale[mainLanguage],
+          locales: LanguageToLocale[googleLanguage],
           smallLogoImage: smallIcon,
           displayName: name,
           pronunciation: invocationName,
           sampleInvocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
         });
+      } else if (selectedPlatform === PlatformType.GENERAL) {
+        await client.platform.general.version.updateSettings(project.versionID, {
+          locales: [generalLocale],
+        });
       }
+
       goToCanvas(project.versionID);
     } finally {
       setCreatingProject(false);
@@ -71,18 +77,17 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   };
 
   const stepBack = () => {
-    const [, ...remainingStack] = stepStack;
-    setStepStack([...remainingStack]);
+    setStepStack(([, ...remainingStack]) => [...remainingStack]);
   };
 
   const onContinue = () => {
-    if (stepStack.length === NUMBER_OF_STEPS || selectedPlatform === PlatformType.GENERAL) {
+    if (stepStack.length === NUMBER_OF_STEPS) {
       finalizeCreation();
     } else {
       if (currentStep === StepID.NAME_AND_IMAGE) {
-        setStepStack([StepID.PLATFORM_SELECT, ...stepStack]);
+        setStepStack((prevStepSTack) => [StepID.PLATFORM_SELECT, ...prevStepSTack]);
       } else if (currentStep === StepID.PLATFORM_SELECT) {
-        setStepStack([StepID.PROJECT_SETTINGS, ...stepStack]);
+        setStepStack((prevStepSTack) => [StepID.PROJECT_SETTINGS, ...prevStepSTack]);
       }
     }
   };
@@ -102,35 +107,37 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
       <InnerContainer>
         <CreationHeader
           title={StepMeta[currentStep].title(selectedPlatform)}
-          numberOfSteps={NUMBER_OF_STEPS}
-          stepStack={stepStack}
-          hasBackButton={stepStack.length > 1}
+          onCancel={goToDashboard}
           stepBack={stepBack}
           canCancel
-          onCancel={goToDashboard}
-          hasSkipButton={false}
+          stepStack={stepStack}
           onSkipClick={noop}
+          numberOfSteps={NUMBER_OF_STEPS}
+          hasBackButton={stepStack.length > 1}
+          hasSkipButton={false}
         />
 
         <FlexCenter>
           <CurrentStep
-            mainLanguage={mainLanguage}
-            setMainLanguage={setMainLanguage}
-            creatingProject={creatingProject}
-            invocationName={invocationName}
-            setInvocationName={setInvocationName}
-            selectedLocales={selectedLocales}
-            setSelectedLocales={setSelectedLocales}
             name={name}
             setName={setName}
             smallIcon={smallIcon}
             largeIcon={largeIcon}
+            onContinue={onContinue}
             setSmallIcon={setSmallIcon}
             setLargeIcon={setLargeIcon}
+            alexaLocales={alexaLocales}
+            generalLocale={generalLocale}
+            invocationName={invocationName}
+            googleLanguage={googleLanguage}
+            creatingProject={creatingProject}
+            setAlexaLocales={setAlexaLocales}
+            setGeneralLocale={setGeneralLocale}
             finalizeCreation={finalizeCreation}
-            onContinue={onContinue}
-            setSelectedPlatform={setSelectedPlatform}
             selectedPlatform={selectedPlatform}
+            setGoogleLanguage={setGoogleLanguage}
+            setInvocationName={setInvocationName}
+            setSelectedPlatform={setSelectedPlatform}
           />
         </FlexCenter>
       </InnerContainer>
@@ -139,8 +146,8 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
 };
 
 const mapDispatchToPrpos = {
-  goToDashboard: Router.goToDashboard,
   goToCanvas: Router.goToCanvas,
+  goToDashboard: Router.goToDashboard,
   createProject: Project.createProject,
 };
 

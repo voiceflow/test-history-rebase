@@ -12,8 +12,13 @@ export type SelectWrapperProps = {
 const SelectWrapper = styled.div<SelectWrapperProps>`
   position: relative;
   outline: none;
-  cursor: pointer;
   color: #132144;
+
+  ${({ onClick, onFocus }) =>
+    !!(onClick || onFocus) &&
+    css`
+      cursor: pointer;
+    `};
 
   ${({ minWidth }) =>
     minWidth &&

@@ -4,12 +4,11 @@ import Button, { ButtonVariant } from '@/components/Button';
 import Dropdown from '@/components/Dropdown';
 import { ModalFooter } from '@/components/LegacyModal';
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useFeature, usePermission, useSmartReducerV2 } from '@/hooks';
+import { useGeneralPrototype, usePermission, useSmartReducerV2 } from '@/hooks';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps, Nullable } from '@/types';
@@ -31,7 +30,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   renderPrototype,
   renderPrototypeV2,
 }) => {
-  const generalPrototype = useFeature(FeatureFlag.GENERAL_PROTOTYPE);
+  const generalPrototype = useGeneralPrototype();
 
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);

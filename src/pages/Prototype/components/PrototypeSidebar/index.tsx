@@ -7,14 +7,13 @@ import Flex, { FlexCenter } from '@/components/Flex';
 import { LoadCircle } from '@/components/Loader';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
-import { FeatureFlag } from '@/config/features';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as Diagram from '@/ducks/diagram';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useEventualEngine, useFeature } from '@/hooks';
+import { useDidUpdateEffect, useEventualEngine, useGeneralPrototype } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import Prototype from '@/pages/Prototype';
 import { useResetPrototype } from '@/pages/Prototype/hooks';
@@ -41,7 +40,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   status,
 }) => {
   const theme = useTheme() as Theme;
-  const generalPrototypeEnabled = useFeature(FeatureFlag.GENERAL_PROTOTYPE).isEnabled;
+  const generalPrototypeEnabled = useGeneralPrototype().isEnabled;
 
   const [trainingOpen, toggleTrainingOpen] = useToggle(true);
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);

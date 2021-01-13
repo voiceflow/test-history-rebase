@@ -8,7 +8,7 @@ import * as Creator from '@/ducks/creator';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
-import { useEventualEngine, useFeature, useTrackingEvents } from '@/hooks';
+import { useEventualEngine, useGeneralPrototype, useTrackingEvents } from '@/hooks';
 import { Slot } from '@/models';
 import { Dispatch } from '@/store/types';
 
@@ -18,7 +18,7 @@ import { Interaction, Message, PMStatus } from '../types';
 const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boolean, slots: Array<Slot>, isPublic?: boolean) => {
   const dispatch = useDispatch() as Dispatch;
 
-  const generalPrototype = useFeature(FeatureFlag.GENERAL_PROTOTYPE);
+  const generalPrototype = useGeneralPrototype();
 
   const nlc = useSelector(Prototype.prototypeNLCSelector) as NLC;
   const variables = useSelector(Prototype.prototypeVariablesSelector);

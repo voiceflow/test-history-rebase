@@ -4,10 +4,9 @@ import Button, { ButtonVariant } from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import Text, { Link } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
-import { FeatureFlag } from '@/config/features';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useFeature, useTrackingEvents } from '@/hooks';
+import { useGeneralPrototype, useTrackingEvents } from '@/hooks';
 import PrototypeContainer from '@/pages/Prototype/components/PrototypeContainer';
 import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
@@ -32,7 +31,7 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
   device,
   isModelTraining,
 }) => {
-  const generalPrototype = useFeature(FeatureFlag.GENERAL_PROTOTYPE);
+  const generalPrototype = useGeneralPrototype();
   const [, trackEventsWrapper] = useTrackingEvents();
   const start = React.useCallback(() => {
     if (isPublic) {

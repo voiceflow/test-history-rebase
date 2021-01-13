@@ -17,7 +17,7 @@
     "@voiceflow/draft-js-buttons": "3.3.19",
     "@voiceflow/draft-js-mention-plugin": "3.3.15",
     "@voiceflow/draft-js-static-toolbar-plugin": "3.3.19",
-    "@voiceflow/general-types": "1.15.0",
+    "@voiceflow/general-types": "1.16.1",
     "@voiceflow/google-types": "1.12.1",
     "@voiceflow/natural-language-commander": "^0.5.0",
     "@welldone-software/why-did-you-render": "^4.3.1",

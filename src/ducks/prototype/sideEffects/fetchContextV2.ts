@@ -37,14 +37,16 @@ const fetchContext = (request: GeneralRequest): Thunk<Context | null> => async (
     newState.previousContextDiagramID = currentDiagramID;
     newState.targetContextDiagramID = getTargetFlowID(trace) || currentDiagramID;
 
-    dispatch(updatePrototype({ contextStep: contextStep + 1 }));
-    dispatch(updatePrototypeContext(newState));
-    dispatch(pushContextHistory(newState));
-
-    return {
+    const newStateObj = {
       ...newState,
       trace: trace?.map((t) => ({ ...t, id: cuid() })) ?? [],
     };
+
+    dispatch(updatePrototype({ contextStep: contextStep + 1 }));
+    dispatch(updatePrototypeContext(newStateObj));
+    dispatch(pushContextHistory(newStateObj));
+
+    return newStateObj;
   } catch (err) {
     log.error(err);
 

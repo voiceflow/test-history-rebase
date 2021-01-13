@@ -297,7 +297,7 @@
     "webpack-merge": "^5.7.3",
     "webpack-nano": "^1.0.0",
     "webpack-plugin-serve": "^1.0.1",
-    "webpackbar": "^3.2.0"
+    "webpackbar": "^4.0.0"
   },
   "husky": {
     "hooks": {

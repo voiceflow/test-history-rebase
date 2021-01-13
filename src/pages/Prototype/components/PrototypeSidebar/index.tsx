@@ -17,7 +17,6 @@ import { connect } from '@/hocs';
 import { useDidUpdateEffect, useEventualEngine, useFeature } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import Prototype from '@/pages/Prototype';
-import PrototypeDeveloperSettings from '@/pages/Prototype/components/PrototypeDeveloperSettings';
 import { useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import { NLPContext } from '@/pages/Skill/contexts';
@@ -42,10 +41,8 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   status,
 }) => {
   const theme = useTheme() as Theme;
-  const visualPrototype = useFeature(FeatureFlag.VISUAL_PROTOTYPE);
   const generalPrototypeEnabled = useFeature(FeatureFlag.GENERAL_PROTOTYPE).isEnabled;
 
-  const [settingsOpen, toggleSettingsOpen] = useToggle();
   const [trainingOpen, toggleTrainingOpen] = useToggle(true);
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
   const resetPrototype = useResetPrototype();
@@ -98,7 +95,6 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
     return () => {
       renderAbortControl.aborted = true;
 
-      toggleSettingsOpen(false);
       resetPrototype();
     };
   }, [open]);
@@ -107,8 +103,6 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
 
   return (
     <>
-      <PrototypeDeveloperSettings open={!visualPrototype.isEnabled && settingsOpen} />
-
       <Drawer open={open} width={theme.components.prototypeSidebar.width} direction={SlideOutDirection.LEFT}>
         {loading ? (
           <FlexCenter style={{ height: '100%' }}>
@@ -116,15 +110,6 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
           </FlexCenter>
         ) : (
           <Container generalPrototypeEnabled={generalPrototypeEnabled}>
-            {!visualPrototype.isEnabled && !generalPrototypeEnabled && (
-              <Section
-                header="SETTINGS"
-                variant={SectionVariant.PROTOTYPE}
-                collapseVariant={SectionToggleVariant.ARROW}
-                onClick={toggleSettingsOpen}
-                isCollapsed={!settingsOpen}
-              />
-            )}
             {generalPrototypeEnabled && (
               <Section
                 header="TRAINING"

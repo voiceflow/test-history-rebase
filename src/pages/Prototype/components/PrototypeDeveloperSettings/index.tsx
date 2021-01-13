@@ -6,11 +6,9 @@ import Input from '@/components/Input';
 import Section, { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
 import Tooltip from '@/components/TippyTooltip';
 import { VariableTag } from '@/components/VariableTag';
-import { FeatureFlag } from '@/config/features';
 import * as Prototype from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
 import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
@@ -29,15 +27,14 @@ const PrototypeDeveloperSettings: React.FC<PrototypeDeveloperSettingsProps & Con
   open = false,
 }) => {
   const theme = useTheme() as Theme;
-  const visualPrototype = useFeature(FeatureFlag.VISUAL_PROTOTYPE);
 
   return (
     <Drawer
       as="section"
       open={open}
-      width={theme.components[visualPrototype.isEnabled ? 'developerSettings' : 'prototypeSidebar'].width}
-      offset={theme.components[visualPrototype.isEnabled ? 'subMenu' : 'prototypeSidebar'].width}
-      direction={visualPrototype.isEnabled ? SlideOutDirection.RIGHT : SlideOutDirection.LEFT}
+      width={theme.components.developerSettings.width}
+      offset={theme.components.subMenu.width}
+      direction={SlideOutDirection.RIGHT}
     >
       <Container>
         <Section header="VARIABLES" borderBottom variant={SectionVariant.PROTOTYPE} />

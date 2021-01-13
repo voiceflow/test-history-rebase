@@ -2,11 +2,10 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { RemoveIntercom } from '@/components/IntercomChat';
-import { FeatureFlag } from '@/config/features';
 import * as Prototype from '@/ducks/prototype';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useEventualEngine, useFeature, useTeardown } from '@/hooks';
+import { useEventualEngine, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
 import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import TopPrompt from '@/pages/Canvas/components/TopPrompt';
@@ -32,13 +31,12 @@ export type DiagramProps = RouteComponentProps & {
 };
 
 const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, prototypeMode, canvasOnly }) => {
-  const visualPrototype = useFeature(FeatureFlag.VISUAL_PROTOTYPE);
   const engine = useEventualEngine();
   const isPrototypingMode = usePrototypingMode();
   const isMarkupMode = useMarkupMode();
   const isDesignMode = !useAnyModeOpen();
 
-  const isCanvasVisible = !isPrototypingMode || !visualPrototype.isEnabled || prototypeMode !== Prototype.PrototypeMode.DISPLAY;
+  const isCanvasVisible = !isPrototypingMode || prototypeMode !== Prototype.PrototypeMode.DISPLAY;
   const isCanvasEditable = !isPrototypingMode;
 
   React.useEffect(() => {
@@ -63,7 +61,7 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, pr
         {/* always render the canvas, hide with CSS */}
         <Canvas />
 
-        {(!visualPrototype.isEnabled || isDesignMode) && <CanvasControls render={!canvasOnly} />}
+        {!isPrototypingMode && <CanvasControls render={!canvasOnly} />}
 
         {/* design mode */}
         {isDesignMode && (
@@ -83,8 +81,8 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, pr
 
         {/* prototyping mode */}
         <PrototypeSidebar open={isPrototypingMode} />
-        <PrototypeMenu open={isPrototypingMode && visualPrototype.isEnabled} />
-        {isPrototypingMode && visualPrototype.isEnabled && (
+        <PrototypeMenu open={isPrototypingMode} />
+        {isPrototypingMode && (
           <>
             <PrototypeDeveloperSettings open={prototypeMode === Prototype.PrototypeMode.DEVELOPER} />
 

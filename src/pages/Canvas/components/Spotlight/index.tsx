@@ -8,6 +8,7 @@ import { NodeData } from '@/models';
 import { EngineContext, PlatformContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { MenuStep, PLATFORM_SECTIONS } from '@/pages/Skill/menus/DesignMenu/components/Steps/constants';
 import { Identifier } from '@/styles/constants';
+import { preventDefault } from '@/utils/dom';
 
 import { Container, Select } from './components';
 
@@ -50,7 +51,7 @@ const Spotlight = () => {
   }
 
   return (
-    <Container id={Identifier.SPOTLIGHT}>
+    <Container id={Identifier.SPOTLIGHT} onClick={preventDefault()}>
       <Select
         onKeyDown={(event: React.KeyboardEvent) => {
           if (event.key === 'Escape') {
@@ -62,7 +63,10 @@ const Spotlight = () => {
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
         classNamePrefix="spotlight"
-        onChange={(selected: MenuStep) => addBlock(selected.type, selected.factoryData)}
+        onChange={(selected: MenuStep) => {
+          addBlock(selected.type, selected.factoryData);
+          spotlight?.hide();
+        }}
         options={options}
         maxMenuHeight={124}
         value={null}

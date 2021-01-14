@@ -1,5 +1,5 @@
 import { Version } from '@voiceflow/api-sdk';
-import { GeneralVersionData } from '@voiceflow/general-types';
+import { GeneralVersionData, Locale } from '@voiceflow/general-types';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { BUILT_IN_VARIABLES, PlatformType } from '@/constants';
@@ -16,7 +16,7 @@ const generalVersionAdapter = createAdapter<Version<GeneralVersionData>, FullSki
     rootDiagramID,
     diagramID: rootDiagramID,
     platform: PlatformType.GENERAL,
-    locales: ['en-US'] as any,
+    locales: settings.locales?.length ? settings.locales : [Locale.EN_US],
     globalVariables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
     publishInfo: {
       [PlatformType.ALEXA]: {

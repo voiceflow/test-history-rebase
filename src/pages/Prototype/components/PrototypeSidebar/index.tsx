@@ -98,7 +98,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
     };
   }, [open]);
 
-  const isModelTraining = nlp.job?.stage.type === NLPTrainStageType.PROGRESS || nlp.job?.stage.type === NLPTrainStageType.IDLE;
+  const isModelTraining = nlp.publishing || nlp.job?.stage.type === NLPTrainStageType.PROGRESS || nlp.job?.stage.type === NLPTrainStageType.IDLE;
 
   return (
     <>

@@ -13,6 +13,7 @@ export type NLPContextValue = {
   job: Nullable<NLPTrainJob.AnyJob>;
   cancel: () => Promise<void>;
   publish: () => Promise<void>;
+  publishing: boolean;
 };
 
 export const NLPContext = React.createContext<Nullable<NLPContextValue>>(null);
@@ -23,6 +24,7 @@ const PULL_TIMEOUT = 3000; // 3s
 export const NLPProvider: React.FC = ({ children }) => {
   const pullTimeout = React.useRef<number>();
   const [job, setJob] = React.useState<Nullable<NLPTrainJob.AnyJob>>(null);
+  const [publishing, setPublishing] = React.useState<boolean>(false);
 
   const projectID = useSelector(Skill.activeProjectIDSelector);
 
@@ -33,9 +35,18 @@ export const NLPProvider: React.FC = ({ children }) => {
   }, [projectID]);
 
   const publish = React.useCallback(async () => {
-    const result = await client.platform.general.nlp.publish(projectID);
+    setPublishing(true);
 
-    setJob(result?.job || null);
+    try {
+      const result = await client.platform.general.nlp.publish(projectID);
+
+      setJob(result?.job || null);
+      setPublishing(false);
+    } catch (err) {
+      setPublishing(false);
+
+      throw err;
+    }
   }, [projectID]);
 
   const stopPulling = React.useCallback(() => {
@@ -88,7 +99,7 @@ export const NLPProvider: React.FC = ({ children }) => {
     stopPulling();
   });
 
-  return <NLPContext.Provider value={{ job, cancel, publish }}>{children}</NLPContext.Provider>;
+  return <NLPContext.Provider value={{ job, cancel, publish, publishing }}>{children}</NLPContext.Provider>;
 };
 
 export const withNLP = withContext(NLPContext, 'nlp');

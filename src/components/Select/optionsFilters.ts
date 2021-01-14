@@ -2,10 +2,12 @@ import _shuffle from 'lodash/shuffle';
 
 import type { GetOptionLabel, GetOptionValue, GroupedOption, MultiLevelOption } from './index';
 
-const matchOption = <O, V>(label: undefined | string, getOptionLabel: GetOptionLabel<V>, getOptionValue: GetOptionValue<O, V>) => (option?: O) =>
-  getOptionLabel(getOptionValue(option))
-    ?.toLowerCase()
-    ?.includes(label?.toLowerCase() ?? '');
+const matchOption = <O, V>(label: undefined | string, getOptionLabel: GetOptionLabel<V>, getOptionValue: GetOptionValue<O, V>) => (
+  option?: O & { label?: string }
+) => {
+  const searchString = getOptionLabel(getOptionValue(option));
+  return searchString?.toLowerCase()?.includes(label?.toLowerCase() ?? '');
+};
 
 const multilevelSearch = <O, V>(
   matched: MultiLevelOption<O>[],
@@ -18,8 +20,7 @@ const multilevelSearch = <O, V>(
     matched.push(option);
   } else {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    const { matchedOptions } = searchableOptionsFilter(option.options ?? [], searchLabel, params);
-
+    const { matchedOptions } = searchableOptionsFilter(option.options ?? [], searchLabel, { ...params, multiLevelDropdown: true });
     if (matchedOptions.length) {
       matched.push({ ...option, options: matchedOptions });
     } else {
@@ -88,7 +89,6 @@ export const searchableOptionsFilter = <O, V>(
       }
 
       searchFunction(matched, notMatched, searchLabel, option, { getOptionLabel, getOptionValue });
-
       return [matched, notMatched];
     },
     [[], []]

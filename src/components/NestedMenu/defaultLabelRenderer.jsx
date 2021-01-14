@@ -30,7 +30,6 @@ const getFormatedLabel = (label, searchLabel) => {
 
 const defaultLabelRenderer = (option, searchLabel, getOptionLabel, getOptionValue) => {
   const label = getOptionLabel(getOptionValue(option));
-
   return <span>{getFormatedLabel(label, searchLabel)}</span>;
 };
 

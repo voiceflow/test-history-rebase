@@ -1,9 +1,17 @@
 import { constants } from '@voiceflow/common';
-import { Locale, LocaleToVoiceLanguageCode, VoiceLanguageCodeToVoice, VoiceType } from '@voiceflow/google-types/build/constants/index';
+import {
+  Locale,
+  LocaleCodeToCountryLanguage,
+  LocaleToVoiceLanguageCode,
+  VoiceLanguageCodeToVoice,
+  VoiceType,
+} from '@voiceflow/google-types/build/constants/index';
 import _constant from 'lodash/constant';
 
 import { PlatformType } from '@/constants';
 import { capitalizeFirstLetter } from '@/utils/string';
+
+import { prettifyGoogleVoicesShort } from './utils';
 
 const PROSODY_RATE_REGEXP = /^\d+(m?s)?$/;
 const PROSODY_PITCH_REGEXP = /^(\+|-)\d+(\.\d+)?%$/;
@@ -765,7 +773,7 @@ export const PLATFORM_SSML_META = {
       return localeMeta?.map((meta) => {
         return {
           value: meta.locale,
-          label: meta.locale,
+          label: LocaleCodeToCountryLanguage[meta.locale] || meta.locale,
           options: [].concat(
             ...VoiceLanguageCodeToVoice[meta.languageCode].map((voiceMeta) => {
               return voiceMeta.voiceName
@@ -775,7 +783,7 @@ export const PLATFORM_SSML_META = {
                 .map((voiceName) => {
                   return {
                     value: voiceName,
-                    label: voiceName,
+                    label: prettifyGoogleVoicesShort(voiceName),
                   };
                 });
             })

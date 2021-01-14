@@ -34,9 +34,11 @@ const PrototypeInput = <L extends string>({
   stepForward,
   status,
   stepBack,
+  contextStep,
 }: PrototypeInputProps<L> & ConnectedPrototypeInputProps) => {
   const resetPrototype = useResetPrototype();
   const [value, setValue] = React.useState('');
+  const goBackDisabled = contextStep <= 1;
 
   const sendTextHandler = preventDefault(() => {
     if (!disabled) {
@@ -65,9 +67,10 @@ const PrototypeInput = <L extends string>({
         showChips={showChips}
         setShowChips={setShowChips}
         inputRef={inputRef}
+        goBackDisabled={goBackDisabled}
       />
       {status === Prototype.PrototypeStatus.ENDED ? (
-        <Reset onClick={resetPrototype} />
+        <Reset onClick={resetPrototype} stepBack={stepBack} goBackDisabled={goBackDisabled} />
       ) : (
         <InputContainer>
           {inputMode === Prototype.InputMode.TEXT ? (
@@ -100,6 +103,7 @@ const PrototypeInput = <L extends string>({
 };
 
 const mapStateToProps = {
+  contextStep: Prototype.prototypeContextStepSelector,
   inputMode: Prototype.prototypeInputModeSelector,
   showChips: Prototype.prototypeShowChipsSelector,
   status: Prototype.prototypeStatusSelector,

@@ -18,6 +18,7 @@ export type ControlCenterProps = {
   stepBack: () => void;
   stepForward: () => void;
   inputRef: React.RefObject<HTMLInputElement>;
+  goBackDisabled: boolean;
 };
 
 const ICON_COLOR = '#99a8b8';
@@ -32,8 +33,8 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
   setInputMode,
   inputRef,
   contextStep,
+  goBackDisabled,
 }) => {
-  const goBackDisabled = contextStep <= 1;
   const goForwardDisabled = contextStep === history.length - 1;
 
   const handleOnForward = React.useCallback(() => {

@@ -7,6 +7,8 @@ import { Identifier } from '@/styles/constants';
 
 export type PrototypeResetProps = {
   onClick: React.MouseEventHandler<HTMLSpanElement>;
+  stepBack: () => void;
+  goBackDisabled: boolean;
 };
 
 const Container = styled(FlexCenter)`
@@ -15,8 +17,19 @@ const Container = styled(FlexCenter)`
   background: white;
 `;
 
-const PrototypeReset: React.FC<PrototypeResetProps> = ({ onClick }) => (
+const Splitter = styled.div`
+  height: 16px;
+  width: 1px;
+  background: #dfe3ed;
+  margin: 0 12px;
+`;
+
+const PrototypeReset: React.FC<PrototypeResetProps> = ({ onClick, stepBack, goBackDisabled }) => (
   <Container>
+    <Button variant={ButtonVariant.TERTIARY} disabled={goBackDisabled} onClick={stepBack}>
+      Go Back
+    </Button>
+    <Splitter />
     <Button variant={ButtonVariant.TERTIARY} id={Identifier.PROTOTYPE_RESET} onClick={onClick}>
       Reset Test
     </Button>

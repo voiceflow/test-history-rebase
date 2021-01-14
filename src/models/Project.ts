@@ -11,8 +11,7 @@ export type Project = {
   created: string;
   isLive: boolean;
   versionID: string;
-  smallIcon: string | null;
-  largeIcon: string | null;
+  image: string | null;
   platform: PlatformType;
   privacy?: ProjectPrivacy;
 };
@@ -29,8 +28,7 @@ export type DBProject = {
   platform: PlatformType;
   created: string;
   islive: boolean;
-  small_icon: string | null;
-  large_icon: string | null;
+  image: string | undefined;
 };
 
 export type Price = {

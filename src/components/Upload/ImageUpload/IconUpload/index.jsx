@@ -11,12 +11,20 @@ import { stopPropagation } from '@/utils/dom';
 
 import { ErrorText, IconUploadContainer, IconUploadInput, ImageContainer } from './components';
 
-const SIZE_VARIANT = {
-  xlarge: 150,
-  large: 120,
-  medium: 100,
-  small: 80,
-  xsmall: 42,
+export const UploadIconVariant = {
+  EXTRA_SMALL: 'xsmall',
+  SMALL: 'small',
+  MEDIUM: 'medium',
+  LARGE: 'large',
+  EXTRA_LARGE: 'xlarge',
+};
+
+export const SIZE_VARIANT = {
+  [UploadIconVariant.EXTRA_LARGE]: 150,
+  [UploadIconVariant.LARGE]: 120,
+  [UploadIconVariant.MEDIUM]: 100,
+  [UploadIconVariant.SMALL]: 80,
+  [UploadIconVariant.EXTRA_SMALL]: 42,
 };
 
 const MINIMUM_ICON_SIZE = 14;

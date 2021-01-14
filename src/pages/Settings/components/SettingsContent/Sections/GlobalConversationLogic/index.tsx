@@ -287,7 +287,6 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   saveSettings: Skill.saveSettings,
   updateSettings: Skill.updateSettings,
-  saveProjectName: Skill.saveProjectName,
 };
 
 type ConnectedGlobalConversationLogic = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

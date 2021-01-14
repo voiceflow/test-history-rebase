@@ -9,7 +9,7 @@ import { PLATFORM_SETTINGS_META, SettingSections, SettingsTabsType } from '@/pag
 import ProjectVersions from '../ProjectVersions';
 import { Basic, Canvas, DangerZone, GlobalConversationLogic } from './Sections';
 
-const SectionComponents: Record<SettingSections, React.FC<{ platform: PlatformType; title: string; platformMeta: any }>> = {
+const SectionComponents: Record<SettingSections, React.FC<{ platform: PlatformType; title: SettingSections; platformMeta: any }>> = {
   [SettingSections.BASIC]: Basic,
   [SettingSections.CANVAS]: Canvas,
   [SettingSections.GLOBAL_CONVERSATION_LOGIC]: GlobalConversationLogic,

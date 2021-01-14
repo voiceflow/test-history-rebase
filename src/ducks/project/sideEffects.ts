@@ -38,7 +38,7 @@ export const setupProjectSocketConnection = (projectID: string) => async () => {
 export type CreateProjectParams = {
   platform: PlatformType;
   name: string;
-  largeIcon: string;
+  image: string;
   listID?: string;
 };
 
@@ -47,7 +47,7 @@ export const importProject = (workspaceID: string, data: string): Thunk<Project>
   return projectAdapter.fromDB(project);
 };
 
-export const createProject = ({ platform, name, largeIcon, listID }: Partial<CreateProjectParams>, templateTag?: string): Thunk<Project> => async (
+export const createProject = ({ platform, name, image, listID }: Partial<CreateProjectParams>, templateTag?: string): Thunk<Project> => async (
   dispatch,
   getState
 ) => {
@@ -61,8 +61,7 @@ export const createProject = ({ platform, name, largeIcon, listID }: Partial<Cre
   }
 
   try {
-    const newProject = await client.platform(platform!).project.copy(templateProjectID, { name, image: largeIcon, teamID });
-
+    const newProject = await client.platform(platform!).project.copy(templateProjectID, { name, image, teamID });
     if (listID) {
       await dispatch(addProjectToList(listID, newProject._id));
     }
@@ -81,4 +80,10 @@ export const updateProjectPrivacy = (projectID: string, privacy: ProjectPrivacy)
     await client.api.project.update(projectID, { privacy });
     dispatch(updateProject(projectID, { privacy }, true));
   }
+};
+
+export const updateProjectImage = (projectID: string, image: string): Thunk => async (dispatch) => {
+  await client.api.project.update(projectID, { image });
+
+  dispatch(updateProject(projectID, { image }, true));
 };

@@ -22,8 +22,7 @@ const projectAdapter = createAdapter<
     platform: platform as PlatformType,
     diagramID: '',
     versionID: devVersion!,
-    smallIcon: image,
-    largeIcon: image,
+    image,
     privacy,
   }),
   () => {

@@ -4,12 +4,15 @@ import { Language, LanguageToLocale, Locale as GoogleLocale } from '@voiceflow/g
 import _constant from 'lodash/constant';
 import React, { ChangeEvent } from 'react';
 
+import Box, { Flex } from '@/components/Box';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import Input from '@/components/Input';
 import Section, { SectionVariant } from '@/components/Section';
 import Select from '@/components/Select';
+import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { PlatformType } from '@/constants';
 import { GENERAL_LOCALES_OPTIONS, GENERAL_LOCALE_NAME_MAP } from '@/constants/platforms';
+import * as Project from '@/ducks/project';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
@@ -22,13 +25,14 @@ import {
   getLocaleLanguage,
 } from '@/pages/Publish/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
-import { ConnectedProps } from '@/types';
+import { ConnectedProps, MergeArguments } from '@/types';
 import { without } from '@/utils/array';
 import { getPlatformValue } from '@/utils/platform';
 
 import { PlatformSettingsMetaProps, SettingSections } from '../../../constants';
 
 const UnTypedDropdownMultiselect: any = DropdownMultiselect;
+const UnTypedUploadJustIcon: any = UploadJustIcon;
 
 type BasicProps = {
   title: SettingSections;
@@ -43,10 +47,12 @@ const sectionStyling = {
 const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   meta,
   skill,
+  project,
   platform,
   platformMeta,
   saveLocales,
   saveProjectName,
+  updateProjectImage,
   saveInvocationName,
 }) => {
   const { invName } = meta;
@@ -56,6 +62,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 
   const [newInvocation, setNewInvocation] = React.useState(invName);
   const [newProjectName, setNewProjectName] = React.useState(name);
+  const [projectImage, setProjectImage] = React.useState(project.image);
 
   const [alexaLocales, setAlexaLocales] = React.useState<Locale[]>((locales || []) as Locale[]);
   const [generalLocale, setGeneralLocale] = React.useState<GeneralLocale>((locales as GeneralLocale[])[0]);
@@ -81,6 +88,10 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     saveProjectName(newProjectName);
     saveInvocationName(newInvocation);
 
+    if (projectImage) {
+      updateProjectImage(project.id, projectImage);
+    }
+
     if (platform === PlatformType.ALEXA) {
       saveLocales(alexaLocales as Locale[]);
     } else {
@@ -90,12 +101,17 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 
   useDidUpdateEffect(() => {
     saveSettings();
-  }, [alexaLocales, googleLanguage, generalLocale]);
+  }, [alexaLocales, googleLanguage, generalLocale, projectImage]);
 
   return (
     <>
       <Section customContentStyling={sectionStyling} variant={SectionVariant.QUATERNARY} contentSuffix={projectName} header="Project Name">
-        <Input value={newProjectName} onChange={(e: ChangeEvent<HTMLInputElement>) => setNewProjectName(e.target.value)} onBlur={saveSettings} />
+        <Flex>
+          <Input value={newProjectName} onChange={(e: ChangeEvent<HTMLInputElement>) => setNewProjectName(e.target.value)} onBlur={saveSettings} />
+          <Box ml={16}>
+            <UnTypedUploadJustIcon size={UploadIconVariant.EXTRA_SMALL} update={setProjectImage} image={projectImage} endpoint="/image" />
+          </Box>
+        </Flex>
       </Section>
 
       {platform !== PlatformType.GENERAL && (
@@ -182,14 +198,20 @@ const mapStateToProps = {
   meta: Skill.skillMetaSelector,
   skill: Skill.activeSkillSelector,
   versionID: Skill.activeSkillIDSelector,
+  project: Project.projectByIDSelector,
 };
 
 const mapDispatchToProps = {
   saveInvocationName: Skill.saveInvocationName,
   saveProjectName: Skill.saveProjectName,
   saveLocales: Skill.saveLocales,
+  updateProjectImage: Project.updateProjectImage,
 };
 
-type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+const mergeProps = (...[{ skill, project: projectByIDSelector }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
+  project: projectByIDSelector(skill.projectID),
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Basic);
+type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Basic);

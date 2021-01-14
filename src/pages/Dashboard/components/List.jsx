@@ -158,13 +158,7 @@ export function List(props) {
                     <ul className="projects-list">
                       {projects.map((project, i) => {
                         if (!project) return null;
-                        let icon;
-                        const { smallIcon, largeIcon } = project;
-                        if (largeIcon) {
-                          icon = largeIcon;
-                        } else if (smallIcon) {
-                          icon = smallIcon;
-                        }
+
                         return (
                           <li key={project.id} className="projects-list__list-item">
                             <Item
@@ -174,7 +168,7 @@ export function List(props) {
                               listId={id}
                               created={project.created}
                               isFB={false}
-                              avatarUrl={icon}
+                              avatarUrl={project.image}
                               name={project.name}
                               diagram={project.diagramID}
                               platform={project.platform}

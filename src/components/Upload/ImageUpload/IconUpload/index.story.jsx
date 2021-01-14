@@ -20,6 +20,8 @@ export default {
   component: IconUpload,
 };
 
+export const xsmall = () => <IconUpload size="xsmall" {...getProps()} />;
+
 export const small = () => <IconUpload size="small" {...getProps()} />;
 
 export const medium = () => <IconUpload size="medium" {...getProps()} />;

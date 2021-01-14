@@ -63,7 +63,6 @@ export const exportCanvas = (type: ExportFormat): Thunk => async (dispatch, getS
   const options = {
     token: getAuthCookie()!,
     canvasURL: `https://${window.location.host}/project/${skillID}/export/${diagramID}`,
-    persistedToken: 'persistedToken', // remove later after updating voiceflow/canvas-export
     persistedTabID: sessionStorage.getItem('persist:session:tab_id')!,
     persistedBrowserID: localStorage.getItem('persist:session:browser_id')!,
   };

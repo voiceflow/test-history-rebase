@@ -1,18 +1,17 @@
 import React from 'react';
 
-import Button, { ButtonVariant } from '@/components/Button';
 import Dropdown from '@/components/Dropdown';
 import { FlexApart } from '@/components/Flex';
 import { ModalFooter } from '@/components/LegacyModal';
 import { MenuContainer } from '@/components/Menu';
 import { Link } from '@/components/Text';
 import Tooltip from '@/components/TippyTooltip';
-import { Permission } from '@/config/permissions';
-import { ExportFormat, ModalType } from '@/constants';
+import { ExportFormat } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useModals, usePermission, useTrackingEvents } from '@/hooks';
+import { useTrackingEvents } from '@/hooks';
 import { ExportItem } from '@/pages/Canvas/header/ActionGroup/components/ShareProject/components';
+import UploadButton from '@/pages/Canvas/header/ActionGroup/components/UploadButton';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 import { stopImmediatePropagation } from '@/utils/dom';
@@ -22,19 +21,13 @@ import { ExportIcon } from './components';
 const EXPORT_HELP_LINK = 'https://docs.voiceflow.com/#/features/sharing-features?id=export-your-canvas-as-pdfpng';
 
 const ExportProjectButton: React.FC<ConnectedExportProjectButtonProps> = ({ isExporting, exportCanvas }) => {
-  const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
   const [trackingEvents] = useTrackingEvents();
-  const [canExport] = usePermission(Permission.CANVAS_EXPORT);
   const [selectedExportType, setSelectedExportType] = React.useState(ExportFormat.PNG);
 
   const onClick = () => {
     trackingEvents.trackExportButtonClick({ format: selectedExportType });
 
-    if (canExport) {
-      exportCanvas(selectedExportType);
-    } else {
-      openPaymentModal();
-    }
+    exportCanvas(selectedExportType);
   };
 
   return (
@@ -43,24 +36,13 @@ const ExportProjectButton: React.FC<ConnectedExportProjectButtonProps> = ({ isEx
       zIndex={999}
       preventOverflow={{ padding: 16, boundariesElement: document.body }}
       menu={() => (
-        <MenuContainer noBottomPadding>
+        <MenuContainer fullWidth noBottomPadding>
           <FadeDownDelayedContainer>
-            <span>
-              <ExportItem updateType={setSelectedExportType} />
-            </span>
+            <ExportItem exportType={selectedExportType} updateType={setSelectedExportType} />
             <ModalFooter onClick={stopImmediatePropagation()}>
               <FlexApart fullWidth>
                 <Link href={EXPORT_HELP_LINK}>Learn More</Link>
-
-                {isExporting ? (
-                  <Button variant={ButtonVariant.PRIMARY} icon="publishSpin" disabled>
-                    Export
-                  </Button>
-                ) : (
-                  <Button variant={ButtonVariant.PRIMARY} icon={canExport ? 'sync' : null} onClick={stopImmediatePropagation(onClick)}>
-                    {canExport ? 'Export' : 'Upgrade'}
-                  </Button>
-                )}
+                <UploadButton isActive={!!isExporting} label="Export" icon="publishSpin" onClick={stopImmediatePropagation(onClick)} />
               </FlexApart>
             </ModalFooter>
           </FadeDownDelayedContainer>

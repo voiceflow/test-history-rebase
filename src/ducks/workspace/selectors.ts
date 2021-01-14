@@ -30,7 +30,7 @@ export const workspaceNumberOfSeatsSelector = createSelector([activeWorkspaceSel
 
 export const planTypeSelector = createSelector([activeWorkspaceSelector], (workspace) => workspace?.plan);
 
-export const isOnPaidPlanSelector = createSelector([planTypeSelector], (plan) => plan !== PlanType.STARTER);
+export const isOnPaidPlanSelector = createSelector([planTypeSelector], (plan) => plan !== PlanType.STARTER && plan !== PlanType.OLD_STARTER);
 
 export const activeWorkspaceMembersSelector = createSelector([activeWorkspaceSelector], (activeWorkspace) => activeWorkspace?.members || []);
 

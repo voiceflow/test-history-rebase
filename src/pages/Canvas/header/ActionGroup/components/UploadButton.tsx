@@ -48,19 +48,20 @@ const UploadButton = styled(Button).attrs({ speed: 2000 })<UploadButtonProps>`
 `;
 
 type UploadButtonContainerProps = {
-  onClick: () => void;
-  isActive: boolean;
-  label: string;
+  icon?: SvgIcon.Icon;
+  label?: string;
+  onClick: React.MouseEventHandler;
   tooltip?: string;
+  isActive: boolean;
 };
 
-const UploadButtonContainer: React.FC<UploadButtonContainerProps> = ({ onClick, isActive, label = 'Export', tooltip, children }) => {
+const UploadButtonContainer: React.FC<UploadButtonContainerProps> = ({ icon = 'rocket', onClick, isActive, label = 'Export', tooltip, children }) => {
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
   const component = (
     <>
       {children || (
-        <UploadButton icon={isActive ? 'publishSpin' : 'rocket'} id={Identifier.UPLOAD} onClick={onClick} isUploading={isActive}>
+        <UploadButton icon={isActive ? 'publishSpin' : icon} id={Identifier.UPLOAD} onClick={onClick} isUploading={isActive}>
           {label}
         </UploadButton>
       )}

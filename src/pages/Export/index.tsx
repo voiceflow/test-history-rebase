@@ -1,26 +1,19 @@
+/* eslint-disable xss/no-mixed-html */
 import _isNumber from 'lodash/isNumber';
-import _noop from 'lodash/noop';
 import React from 'react';
 
 import client from '@/client';
 import creatorAdapter from '@/client/adapters/creator';
-import Canvas from '@/components/Canvas';
-import { RenderLayer } from '@/components/Canvas/components';
 import { MARKUP_NODES, ROOT_NODES } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Skill from '@/ducks/skill';
-import { ProjectLoadingGate } from '@/gates';
-import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
-import { connect, styled, withBatchLoadingGate } from '@/hocs';
+import * as Workspace from '@/ducks/workspace';
+import { ProjectLoadingGate, WorkspaceLoadingGate } from '@/gates';
+import { connect, withBatchLoadingGate } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { Node } from '@/models';
-import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
-import DragTarget from '@/pages/Canvas/components/DragTarget';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
-import LinkLayerSvg from '@/pages/Canvas/components/LinkLayer/components/LinkLayerSvg';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
-import { Container as MarkupChildNodeContainer } from '@/pages/Canvas/components/MarkupNode/components';
-import NodeContainer from '@/pages/Canvas/components/Node/components/NodeContainer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
 import useEngine from '@/pages/Canvas/engine';
@@ -30,72 +23,27 @@ import { BLOCK_WIDTH } from '@/styles/theme';
 import { Point } from '@/types';
 import { compose } from '@/utils/functional';
 
-import ExportStyle from './ExportStyle';
+import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark, MockRealtimeGate } from './components';
 
-const EXPORT_MARGIN = 40;
-
-const ExportCanvasDiagram = styled(Canvas as any)`
-  height: auto;
-  width: auto;
-  overflow: visible;
-  position: static;
-  user-select: auto;
-  margin-top: ${EXPORT_MARGIN}px;
-  margin-left: ${EXPORT_MARGIN}px;
-
-  ${RenderLayer} {
-    position: relative;
-    transform: translate(0, 0) !important;
-    pointer-events: none;
-  }
-
-  ${LinkLayerSvg} {
-    flex: 1;
-    height: auto;
-    width: auto;
-  }
-
-  ${NodeContainer} {
-    margin-bottom: ${EXPORT_MARGIN}px;
-
-    ${BlockContainer} {
-      margin-right: ${EXPORT_MARGIN}px;
-      position: relative;
-      transform: none;
-    }
-  }
-
-  ${DragTarget} {
-    margin-bottom: ${EXPORT_MARGIN}px;
-
-    ${MarkupChildNodeContainer} {
-      margin-right: ${EXPORT_MARGIN}px;
-      position: relative;
-    }
-  }
-`;
-
-const MockRealtimeGate: React.FC<{ children: () => React.ReactElement }> = ({ children }) => (
-  <RealtimeSubscriptionContext.Provider value={{ onUpdate: _noop as any, destroy: _noop as any, on: _noop as any }}>
-    {children}
-  </RealtimeSubscriptionContext.Provider>
-);
-
-const ExportCanvas: React.FC<{ diagramID: string; initialize: (diagramID: string) => void }> = ({ diagramID, initialize }) => {
+const ExportCanvas: React.FC<{ isOnPaidPlan: boolean; diagramID: string; initialize: (diagramID: string) => void }> = ({
+  diagramID,
+  initialize,
+  isOnPaidPlan,
+}) => {
   const engine = useEngine();
+  const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
 
   React.useEffect(() => {
     initialize(diagramID);
   }, []);
-
-  const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
 
   return (
     <PresentationModeProvider>
       <MarkupModeProvider>
         <ManagerProvider value={getManager as any}>
           <CanvasProviders engine={engine}>
-            <ExportStyle />
+            <ExportGlobalStyle />
+            <ExportWatermark isOnPaidPlan={isOnPaidPlan} />
             <ExportCanvasDiagram onRegister={registerCanvas}>
               <MarkupLayer />
               <LinkLayer />
@@ -141,11 +89,20 @@ const initialize = (diagramID: string) => async (dispatch: any, getState: any) =
   dispatch(Creator.initializeCreator({ ...creator, diagramID }));
 };
 
+const mapStateToProps = {
+  isOnPaidPlan: Workspace.isOnPaidPlanSelector,
+};
+
+const mapDispatchToProps = {
+  initialize,
+};
+
 export default compose(
   removeIntercom,
   React.memo,
-  connect(null, { initialize }),
+  connect(mapStateToProps, mapDispatchToProps),
   withBatchLoadingGate(
+    WorkspaceLoadingGate,
     [
       ProjectLoadingGate,
       ({ match }: { match: any }) => ({

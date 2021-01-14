@@ -1,6 +1,6 @@
 import { createGlobalStyle } from '@/hocs';
 
-const ExportStyle = createGlobalStyle`
+const ExportGlobalStyle = createGlobalStyle`
   html, body, #root {
     position: unset !important;
     top: unset !important;
@@ -16,4 +16,4 @@ const ExportStyle = createGlobalStyle`
   }
 `;
 
-export default ExportStyle;
+export default ExportGlobalStyle;

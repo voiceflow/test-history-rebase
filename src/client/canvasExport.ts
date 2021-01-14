@@ -5,7 +5,6 @@ import { CANVAS_EXPORT_ENDPOINT } from '@/config';
 type Options = {
   token: string;
   canvasURL: string;
-  persistedToken: string;
   persistedTabID: string;
   persistedBrowserID: string;
 };

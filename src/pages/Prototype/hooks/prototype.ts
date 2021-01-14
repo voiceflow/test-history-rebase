@@ -1,3 +1,4 @@
+import { GeneralRequest } from '@voiceflow/general-types';
 import NLC from '@voiceflow/natural-language-commander';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -96,15 +97,15 @@ const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boo
   React.useEffect(() => () => prototype.stop(), []);
 
   React.useEffect(() => {
-    if (webhook?.utterance) {
-      if (!status || status === PMStatus.IDLE) {
-        toast.info('Please start the test.');
-      }
-      onInteraction(webhook.utterance);
+    if (!(webhook?.type && webhook.payload)) return;
+
+    if (!status || status === PMStatus.IDLE) {
+      toast.info('Please start the test.');
     }
+    onInteraction(webhook);
   }, [webhook]);
 
-  const onInteraction = React.useCallback((input: string) => prototype.interact(input), [prototype]);
+  const onInteraction = React.useCallback((request: GeneralRequest | string) => prototype.interact(request), [prototype]);
   const onPlay = React.useCallback(
     (src: string) => {
       prototype.play(src);

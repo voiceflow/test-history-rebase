@@ -1,3 +1,4 @@
+import { GeneralRequest } from '@voiceflow/general-types';
 import NLC from '@voiceflow/natural-language-commander';
 
 import { PrototypeContext } from '@/models';
@@ -54,5 +55,5 @@ export interface PrototypeState {
     device: DeviceType | null;
     sourceID: string | null;
   };
-  webhook: WebhookData;
+  webhook: GeneralRequest;
 }

@@ -1,4 +1,6 @@
+import { GeneralRequest, RequestType, TextRequest } from '@voiceflow/general-types';
 import cuid from 'cuid';
+import _ from 'lodash';
 
 import { FeatureFlag } from '@/config/features';
 
@@ -68,16 +70,24 @@ class PrototypeTool {
     this.trace?.historyStep(StepDirection.FORWARD);
   }
 
-  public async interact(input: string) {
+  public async interact(request: GeneralRequest | string = null) {
     this.audio!.stop();
     await this.trace?.emptyTrace();
     this.trace?.resetInteractions();
 
+    const formattedRequest = _.isString(request)
+      ? ({
+          type: RequestType.TEXT,
+          payload: request,
+        } as TextRequest)
+      : request;
+
+    const input = formattedRequest?.type === RequestType.TEXT ? formattedRequest?.payload : JSON.stringify(formattedRequest?.payload, null, 2);
     this.message?.user(cuid(), input);
 
     try {
       if (this.props[FeatureFlag.GENERAL_PROTOTYPE]) {
-        await this.trace!.nextV2(input);
+        await this.trace!.nextV2(formattedRequest);
         return;
       }
 

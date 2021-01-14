@@ -1,10 +1,12 @@
+import { GeneralRequest } from '@voiceflow/general-types';
+
 import { StoreType } from '@/constants/prototype';
 import { createAction } from '@/ducks/utils';
 import { Store } from '@/models';
 import { DeviceType } from '@/pages/Prototype/constants';
 import { Action } from '@/store/types';
 
-import { Context, PrototypeMode, PrototypeState, PrototypeStatus, WebhookData } from './types';
+import { Context, PrototypeMode, PrototypeState, PrototypeStatus } from './types';
 
 // actions
 
@@ -38,7 +40,7 @@ export type UpdatePrototypeContext = Action<PrototypeAction.UPDATE_TEST_CONTEXT,
 
 export type UpdatePrototypeContextStore = Action<PrototypeAction.UPDATE_TEST_CONTEXT_STORE, { store: StoreType; payload: Partial<Store> }>;
 
-export type UpdatePrototypeWebhookData = Action<PrototypeAction.UPDATE_WEBHOOK, WebhookData>;
+export type UpdatePrototypeWebhookData = Action<PrototypeAction.UPDATE_WEBHOOK, GeneralRequest>;
 
 export type AnyPrototypeAction =
   | UpdatePrototype
@@ -72,7 +74,8 @@ export const updatePrototypeContext = (payload: Partial<Context>): UpdatePrototy
 export const updatePrototypeContextStore = (store: StoreType) => (payload: Partial<Store>): UpdatePrototypeContextStore =>
   createAction(PrototypeAction.UPDATE_TEST_CONTEXT_STORE, { store, payload });
 
-export const udpatePrototypeWebhookData = (payload: WebhookData): UpdatePrototypeWebhookData => createAction(PrototypeAction.UPDATE_WEBHOOK, payload);
+export const updatePrototypeWebhookData = (payload: GeneralRequest): UpdatePrototypeWebhookData =>
+  createAction(PrototypeAction.UPDATE_WEBHOOK, payload);
 
 export const updateVariables = updatePrototypeContextStore(StoreType.VARIABLES);
 export const updateTurn = updatePrototypeContextStore(StoreType.TURN);

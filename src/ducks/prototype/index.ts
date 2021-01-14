@@ -81,10 +81,7 @@ const updatePrototypeContextStoreReducer: Reducer<PrototypeState, UpdatePrototyp
 
 const updateWebhookDataReducer: Reducer<PrototypeState, UpdatePrototypeWebhookData> = (state, { payload }) => ({
   ...state,
-  webhook: {
-    ...state.webhook,
-    ...payload,
-  },
+  webhook: payload,
 });
 
 const prototypeReducer: RootReducer<PrototypeState, AnyPrototypeAction> = (state = INITIAL_STATE, action) => {

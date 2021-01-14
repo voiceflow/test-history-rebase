@@ -33,7 +33,7 @@ export enum ProjectRoute {
   MIGRATE = 'migrate',
   PUBLISH = 'publish',
   SETTINGS = 'settings',
-  PROTOTYPE_WEBHOOK = 'prototype_webhook',
+  PROTOTYPE_WEBHOOK = 'webhook', // TODO: temporary page, remove after updated
 }
 
 export enum CanvasRoute {

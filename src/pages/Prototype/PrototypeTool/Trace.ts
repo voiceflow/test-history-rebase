@@ -1,4 +1,4 @@
-import { GeneralRequest, RequestType, TextRequest } from '@voiceflow/general-types';
+import { GeneralRequest } from '@voiceflow/general-types';
 import NLC from '@voiceflow/natural-language-commander';
 import cuid from 'cuid';
 import _ from 'lodash';
@@ -159,7 +159,7 @@ class TraceController {
     }
   };
 
-  public nextV2 = async (input?: string) => {
+  public nextV2 = async (request: GeneralRequest = null) => {
     const currentContextStep = this.props.contextStep;
     const contextHistory = this.props.contextHistory;
     const historyLength = contextHistory.length;
@@ -171,8 +171,6 @@ class TraceController {
     }
 
     this.props.updateStatus(PMStatus.FETCHING_CONTEXT);
-
-    const request: TextRequest | null = _.isString(input) ? { type: RequestType.TEXT, payload: input } : null;
 
     this.context = await this.props.fetchContextV2(request);
 

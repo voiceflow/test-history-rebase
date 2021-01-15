@@ -65,6 +65,7 @@ const findLastBlockTrace = (trace: Trace[]) => [...trace].reverse().find((traceF
 
 const WAIT_ENTITY_TIME = 200;
 const MIN_FOCUSED_NODE_TIME = 500;
+const WAIT_DISPLAY_TIME = 1000;
 
 class TraceController {
   private trace: Trace[] = [];
@@ -336,7 +337,7 @@ class TraceController {
     const node = this.props.engine?.getNodeByID(trace.payload.blockID);
 
     if (node) {
-      this.updateVisual(node);
+      await this.updateVisual(node);
 
       if (!this.isPublicPrototype) {
         await this.highlightBlock(node);
@@ -350,9 +351,10 @@ class TraceController {
     await this.timeout.set(MIN_FOCUSED_NODE_TIME);
   }
 
-  private updateVisual(node: Node) {
+  private async updateVisual(node: Node) {
     if (node.type === BlockType.DISPLAY) {
       this.props.engine?.store.dispatch(Prototype.updatePrototypeVisualSource(node.id));
+      await this.timeout.set(WAIT_DISPLAY_TIME);
     }
   }
 

@@ -1,8 +1,9 @@
 import { constants } from '@voiceflow/common';
 import _ from 'lodash';
 
-import { PlatformType, SLOT_REGEXP, SLOT_TYPES, VARIABLE_STRING_REGEXP } from '@/constants';
+import { CUSTOM_SLOT_TYPE, PlatformType, SLOT_REGEXP, SLOT_TYPES, VARIABLE_STRING_REGEXP } from '@/constants';
 import { GOOGLE_SLOT_TYPES } from '@/constants/platforms';
+import { Intent, Slot } from '@/models';
 import { Nullable } from '@/types';
 
 export const getSlotTypes = <L extends string>({
@@ -64,3 +65,45 @@ export const transformVariablesFromReadableWithoutTrim = (text = '') => text.rep
 export const transformVariablesFromReadable = (text: string) => transformVariablesFromReadableWithoutTrim(text).trim();
 
 export const isVariable = (text?: string | null) => !!(text && text.match(VARIABLE_STRING_REGEXP));
+
+export const validateSlotName = ({
+  slots,
+  intents,
+  slotName,
+  slotType,
+  notEmptyValues,
+}: {
+  slots: Slot[];
+  intents: Intent[];
+  slotName: string;
+  slotType: string;
+  notEmptyValues?: boolean;
+}) => {
+  if (!slotName.trim()) {
+    return 'Slot must have a name';
+  }
+
+  if (slotName.length > 32) {
+    return 'Slot name cannot exceed 32 characters';
+  }
+
+  if (!slotType) {
+    return 'Slot must have a type';
+  }
+
+  if (slotType === CUSTOM_SLOT_TYPE && !notEmptyValues) {
+    return 'Custom slot needs at least one value';
+  }
+
+  const lowerCasedSlotName = slotName.toLowerCase();
+
+  if (slots.some(({ name }) => name.toLowerCase() === lowerCasedSlotName)) {
+    return `The '${slotName}' slot already exists.`;
+  }
+
+  if (intents.some(({ name }) => name.toLowerCase() === lowerCasedSlotName)) {
+    return `You have an intent defined with the '${slotName}' name already. Intern/slot name must be unique.`;
+  }
+
+  return null;
+};

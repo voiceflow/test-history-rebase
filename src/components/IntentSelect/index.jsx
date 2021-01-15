@@ -3,10 +3,12 @@ import _toLower from 'lodash/toLower';
 import React from 'react';
 
 import Select from '@/components/Select';
+import { toast } from '@/components/Toast';
 import { SPACE_REGEXP } from '@/constants';
 import * as Intent from '@/ducks/intent';
+import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
-import { filterIntents, formatIntentName, prettifyIntentName, prettifyIntentNames } from '@/utils/intent';
+import { filterIntents, formatIntentName, prettifyIntentName, prettifyIntentNames, validateIntentName } from '@/utils/intent';
 import { removeTrailingUnderscores } from '@/utils/string';
 
 import { MissingIntentMessage, Option } from './components';
@@ -46,7 +48,7 @@ const optionsFilter = (options, searchLabel, { maxSize = options.length, getOpti
   return { filteredOptions, matchedOptions, notMatchedOptions };
 };
 
-function IntentSelect({ intent, intents, onChange, newIntent }) {
+function IntentSelect({ slots, intent, intents, onChange, newIntent }) {
   const intentID = intent?.id;
 
   const filteredIntents = React.useMemo(() => prettifyIntentNames(filterIntents(intents, intent)), [intents, intent]);
@@ -74,7 +76,17 @@ function IntentSelect({ intent, intents, onChange, newIntent }) {
       const preparedName = removeTrailingUnderscores(prettifyIntentName(name));
       const intent = filteredIntents.find(({ name }) => removeTrailingUnderscores(name) === preparedName);
 
-      onSelectIntent(intent ? intent.id : newIntent({ name: preparedName }));
+      if (intent) {
+        return onSelectIntent(intent.id);
+      }
+
+      const error = validateIntentName(preparedName, intents, slots);
+
+      if (error) {
+        toast.error(error);
+      } else {
+        onSelectIntent(newIntent({ name: preparedName }));
+      }
     },
     [newIntent, intentLookup, onSelectIntent]
   );
@@ -104,6 +116,7 @@ function IntentSelect({ intent, intents, onChange, newIntent }) {
 }
 
 const mapStateToProps = {
+  slots: Slot.allSlotsSelector,
   intents: Intent.allPlatformIntentsSelector,
 };
 

@@ -9,10 +9,11 @@ import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
 import { ClickableText } from '@/components/Text';
 import * as Intents from '@/ducks/intent';
+import * as Slot from '@/ducks/slot';
 import { compose, connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { formatIntentName } from '@/utils/intent';
+import { formatIntentName, validateIntentName } from '@/utils/intent';
 import { removeTrailingUnderscores } from '@/utils/string';
 
 export type ManagerProps = {
@@ -21,53 +22,45 @@ export type ManagerProps = {
 };
 
 const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, ManagerProps & ConnectedManagerProps> = (
-  { id, intent: selectedIntent, removeIntent, updateIntent, allIntents },
+  { id, intent: selectedIntent, slots, removeIntent, updateIntent, allIntents },
   ref
 ) => {
   const [name, setName] = React.useState(selectedIntent?.name ?? '');
   const [path, setPath] = React.useState<{ type: string | null }>({ type: null });
   const resetPath = React.useCallback(() => setPath({ type: null }), []);
-  const [nameError, setNameError] = React.useState(false);
+  const [nameError, setNameError] = React.useState<string | null>(null);
 
-  const existingIntentNames: string[] = React.useMemo(
-    () => allIntents.filter((intent) => intent.id !== selectedIntent.id).map((intent) => intent.name),
-    [allIntents, selectedIntent.id]
-  );
+  const validateName = (intentName: string) =>
+    validateIntentName(
+      intentName,
+      allIntents.filter((intent) => intent.id !== selectedIntent.id),
+      slots
+    );
 
   const onBlur = () => {
-    if (nameError) {
-      return;
+    const formattedName = removeTrailingUnderscores(name);
+    const error = validateName(formattedName);
+
+    setName(formattedName);
+
+    if (error) {
+      return setNameError(error);
     }
 
-    setName(removeTrailingUnderscores(name));
-    updateIntent(id, { id, name: removeTrailingUnderscores(name) }, true);
+    setNameError(null);
+    updateIntent(id, { id, name: formattedName }, true);
   };
 
   const localNameUpdate = ({ value }: { value: string }) => {
-    const formattedIntentName = formatIntentName(value);
-    validateName(removeTrailingUnderscores(formattedIntentName));
-    setName(formattedIntentName);
-  };
-
-  const validateName = (newName: string) => {
-    if (existingIntentNames.includes(newName)) {
-      setNameError(true);
-    } else {
-      setNameError(false);
-    }
+    setNameError(null);
+    setName(formatIntentName(value));
   };
 
   React.useEffect(() => {
-    validateName(selectedIntent.name);
+    setNameError(validateName(selectedIntent.name));
   }, [selectedIntent.id]);
 
-  React.useImperativeHandle(
-    ref,
-    () => ({
-      resetPath,
-    }),
-    []
-  );
+  React.useImperativeHandle(ref, () => ({ resetPath }), []);
 
   React.useEffect(() => {
     resetPath();
@@ -81,7 +74,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
       <Section>
         <FlexApart onClick={resetPath}>
           <Input
-            error={nameError}
+            error={!!nameError}
             value={name}
             onBlur={onBlur}
             onChange={({ currentTarget }) => localNameUpdate(currentTarget)}
@@ -89,9 +82,10 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
           />
           <RemoveDropdown onRemove={() => removeIntent(id)} />
         </FlexApart>
+
         {nameError && (
           <FadeLeftContainer>
-            <ErrorMessage style={{ marginBottom: '0px', paddingTop: '10px' }}>This intent name already exists</ErrorMessage>
+            <ErrorMessage style={{ marginBottom: '0px', paddingTop: '10px' }}>{nameError}</ErrorMessage>
           </FadeLeftContainer>
         )}
       </Section>
@@ -99,6 +93,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
       <FadeLeftContainer key={(!slotEdit).toString()}>
         {slotEdit ? <StandaloneIntentSlotForm key={id} activePath={path} /> : <IntentForm key={id} intent={selectedIntent} pushToPath={setPath} />}
       </FadeLeftContainer>
+
       {slotEdit && (
         <Section>
           <ClickableText onClick={resetPath}>Back to Intent</ClickableText>
@@ -109,6 +104,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 };
 
 const mapStateToProps = {
+  slots: Slot.allSlotsSelector,
   intent: Intents.intentByIDSelector,
   allIntents: Intents.allIntentsSelector,
 };

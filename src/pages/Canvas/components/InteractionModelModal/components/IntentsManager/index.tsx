@@ -66,7 +66,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
     [onDelete, intents]
   );
 
-  const onFilter = React.useCallback(
+  const onChange = React.useCallback(
     (_, items: Intent[]) => {
       if (!items.some(({ id }) => id === selectedID)) {
         updateSelected(items[0]?.id);
@@ -105,9 +105,9 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
               ref={scrollbarsRef}
               items={intents}
               onAdd={addNewIntent}
-              addMessage="New Intent"
-              onChange={onFilter}
+              onChange={onChange}
               getLabel={getItemLabel}
+              addMessage="New Intent"
               renderItem={(item, index) => renderItem({ key: item.id, itemKey: item.id, item, index })}
               formatValue={formatIntentName}
               placeholder="Search Intents"

@@ -13,6 +13,7 @@ import { ClickableText } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
 import { toast } from '@/components/Toast';
 import { CUSTOM_SLOT_TYPE, ModalType, PlanType, SLOT_COLORS } from '@/constants';
+import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import * as Workspace from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
@@ -21,6 +22,7 @@ import { activeSlotTypesSelector } from '@/store/selectors';
 import { replace, without } from '@/utils/array';
 import { stopPropagation } from '@/utils/dom';
 import { formatIntentName } from '@/utils/intent';
+import { validateSlotName } from '@/utils/slot';
 import { removeTrailingUnderscores } from '@/utils/string';
 
 import { ColorSelector, SlotTag } from './components';
@@ -44,7 +46,9 @@ function SlotEdit({
   type,
   color = _sample(SLOT_COLORS),
   inputs = [],
+  slots,
   onSave,
+  intents,
   onRemove,
   isCreate,
   onDelete,
@@ -71,18 +75,22 @@ function SlotEdit({
   const notEmptyValues = React.useMemo(() => customLines.some(({ value, synonyms }) => value.trim() || synonyms.trim()), [customLines]);
 
   const updateSlot = () => {
-    if (!slotName.trim()) {
-      toast.error('Slot must have a name');
-    } else if (slotName.length > 32) {
-      toast.error('Slot name cannot exceed 32 characters');
-    } else if (!slotType) {
-      toast.error('Slot must have a type');
-    } else if (slotType === CUSTOM_SLOT_TYPE && !notEmptyValues) {
-      toast.error('Custom slot needs at least one value');
+    const formattedSlotName = removeTrailingUnderscores(slotName);
+
+    const error = validateSlotName({
+      slots: slots.filter((slot) => slot.id !== id),
+      intents,
+      slotName: formattedSlotName,
+      slotType,
+      notEmptyValues,
+    });
+
+    if (error) {
+      toast.error(error);
     } else {
       onSave?.({
         type: slotType,
-        name: removeTrailingUnderscores(slotName),
+        name: formattedSlotName,
         color: selectedColor,
         inputs: customLines,
       });
@@ -247,6 +255,8 @@ function SlotEdit({
 }
 const mapStateToProps = {
   plan: Workspace.planTypeSelector,
+  slots: Slot.allSlotsSelector,
+  intents: Intent.allIntentsSelector,
   slotTypes: activeSlotTypesSelector,
   intentsUsingSlot: Slot.intentsUsingSlotSelector,
 };

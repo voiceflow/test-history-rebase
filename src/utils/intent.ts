@@ -1,7 +1,7 @@
 import { constants } from '@voiceflow/common';
 
 import { FILTERED_AMAZON_INTENTS, PlatformType, SLOT_REGEXP } from '@/constants';
-import { Intent } from '@/models';
+import { Intent, Slot } from '@/models';
 
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
@@ -56,6 +56,20 @@ export const intentFactory = (platform: PlatformType) => (intent: { name: string
     inputs: [{ text: '', slots: intent.slots || [] }],
     platform,
   };
+};
+
+export const validateIntentName = (intentName: string, intents: Intent[], slots: Slot[]) => {
+  const lowerCasedIntentName = intentName.toLowerCase();
+
+  if (intents.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {
+    return `The '${intentName}' intent already exists.`;
+  }
+
+  if (slots.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {
+    return `You have a slot defined with the '${intentName}' name already. Intern/slot name must be unique.`;
+  }
+
+  return null;
 };
 
 export const ALEXA_BUILT_INS = constants.intents.BUILT_IN_INTENTS_ALEXA.map(intentFactory(PlatformType.ALEXA));

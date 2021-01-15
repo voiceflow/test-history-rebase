@@ -25,13 +25,13 @@ export const STATIC_RESOURCES: StaticResource[] = [
   },
   {
     icon: 'template',
-    link: 'https://airtable.com/shr36HKRwmglhZ5Lr/tblpYysnQuzqzmL0f?blocks=hide', // eslint-disable-line no-secrets/no-secrets
+    link: 'https://docs.voiceflow.com/#/platform/project-creation/project-creation?id=start-with-a-template', // eslint-disable-line no-secrets/no-secrets
     label: 'Templates',
     resourceName: Tracking.CanvasControlHelpMenuResource.TUTORIALS,
   },
   {
     icon: 'community',
-    link: 'https://www.facebook.com/groups/199476704186240/',
+    link: 'https://forum.voiceflow.com/',
     label: 'Community',
     resourceName: Tracking.CanvasControlHelpMenuResource.COMMUNITY,
   },

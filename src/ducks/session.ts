@@ -235,10 +235,12 @@ export const ssoLogin = (data: { code: string; coupon?: string }): Thunk => asyn
   await dispatch(setSession({ user, token }));
 };
 
-const createSession = (sessionType: SessionType) => (authRequest: unknown): Thunk => async (dispatch) => {
+const createSession = (sessionType: SessionType) => (authRequest: unknown): Thunk<Models.Account> => async (dispatch) => {
   const { user, token } = await client.session.create(sessionType, authRequest);
 
   await dispatch(setSession({ user, token }));
+
+  return user;
 };
 
 export const signup = createSession(SessionType.SIGN_UP);

@@ -45,7 +45,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, p
               iconColor={isAudio && !random ? ICON_COLOR[DialogType.AUDIO] : ICON_COLOR[DialogType.VOICE]}
               labelVariant={isAudio ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
               multilineLabel={!isAudio}
-              labelLineClamp={10}
+              labelLineClamp={100}
             />
           ))
         ) : (

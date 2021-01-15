@@ -12,6 +12,7 @@ import { PlatformType } from '@/constants';
 import { useFeature } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { stopPropagation } from '@/utils/dom';
+import { capitalizeFirstLetter } from '@/utils/string';
 
 import { DefaultVoiceContainer, Editor, Speaker, VoiceItem, VoiceSelect } from './components';
 import { PLATFORM_SSML_META, VOICES } from './constants';
@@ -69,9 +70,11 @@ const SSML = (
     displayedVoiceString = prettifyGoogleVoicesLong(voice);
   }
 
-  const voiceSelectLabel = hasProjectLevelVoice ? prettifyGoogleVoicesLong(defaultVoice) : displayedVoiceString || 'Select Voice';
+  const voiceSelectLabel = capitalizeFirstLetter(
+    hasProjectLevelVoice ? prettifyGoogleVoicesLong(defaultVoice) : displayedVoiceString || 'Select Voice'
+  );
   if (ttsVoices.isEnabled && platform !== PlatformType.ALEXA) {
-    // When removing the ttsVoices FF, update the PLATFORM_SSML_META const to return true for all platforms' canChangeVoice
+    // When removing the ttsVoices FF, update the PLATFORM_SSML_META const to return true for all platforms'  canChangeVoice
     canChangeVoice = true;
   }
 

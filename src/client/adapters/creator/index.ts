@@ -10,7 +10,7 @@ import { getCurrentTimestamp } from '@/utils/time';
 import nodeAdapter from './node';
 import { isBlock } from './utils';
 
-// we will be doing a patch request
+// we will be doing a patch request.
 export type DBCreatorDiagram = Omit<Diagram, 'created' | 'creatorID' | 'variables' | 'versionID' | 'name'>;
 
 const creatorAdapter = createSimpleAdapter<

@@ -17,6 +17,7 @@ import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
+import * as Prototype from '@/ducks/prototype';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
@@ -25,6 +26,7 @@ import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
 import { NodeData } from '@/models';
 import { storeLogger } from '@/store/utils';
+import { regexVariables } from '@/utils/string';
 
 import { Thunk } from './types';
 
@@ -132,13 +134,18 @@ export const resolveAPL = ({
   displayType,
   splashHeader,
   backgroundImage,
-}: NodeData<NodeData.Display>): Thunk<{ apl: string; data: string; commands: string }> => async () => {
+}: NodeData<NodeData.Display>): Thunk<{ apl: string; data: string; commands: string }> => async (_, getState) => {
+  const state = getState();
+  const variables = Prototype.prototypeVariablesSelector(state);
   const commands = aplCommands || '';
+
   let data = dataSource || '';
   let apl = document || '';
 
   if (displayType === DisplayType.SPLASH) {
     ({ document: apl, datasource: data } = await client.platform.alexa.handlers.getDisplayWithDatasource(splashHeader || '', backgroundImage || ''));
+  } else if (displayType === DisplayType.ADVANCED) {
+    data = variables && data ? regexVariables(data, variables) : data;
   }
 
   return { commands, data, apl };

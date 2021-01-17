@@ -67,7 +67,7 @@ export const deepVariableSearch = (object) => {
 
 const replacer = (match, inner, variablesMap, uriEncode = false) => {
   if (inner in variablesMap) {
-    return uriEncode ? encodeURI(variablesMap[inner]) : variablesMap[inner];
+    return uriEncode ? encodeURI(decodeURI(variablesMap[inner])) : variablesMap[inner];
   }
   return match;
 };

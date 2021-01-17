@@ -93,7 +93,7 @@ function APITestModal({ data, closeTestModal, testModalOpened }) {
         mappedVars.push({
           path,
           var: mappedOutput.var,
-          value: findPath(path, responseData),
+          value: JSON.stringify(findPath(path, responseData)),
         });
       } catch (error) {
         mappedVars.push({

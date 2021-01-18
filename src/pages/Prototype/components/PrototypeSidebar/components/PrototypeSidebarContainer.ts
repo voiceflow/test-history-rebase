@@ -1,11 +1,7 @@
 import { ContentContainer, Header } from '@/components/Section';
-import { css, styled, units } from '@/hocs';
+import { styled, units } from '@/hocs';
 
-type PrototypeSidebarContainerProps = {
-  generalPrototypeEnabled?: boolean;
-};
-
-const PrototypeSidebarContainer = styled.div<PrototypeSidebarContainerProps>`
+const PrototypeSidebarContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -17,12 +13,8 @@ const PrototypeSidebarContainer = styled.div<PrototypeSidebarContainerProps>`
     padding-left: ${units(3)}px;
   }
 
-  ${({ generalPrototypeEnabled }) =>
-    generalPrototypeEnabled &&
-    css`
-      background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.5), rgba(238, 244, 246, 0.7)),
-        linear-gradient(to bottom, var(--white), var(--white));
-    `}
+  background-color: #fff;
+  background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.5), rgba(238, 244, 246, 0.7));
 `;
 
 export default PrototypeSidebarContainer;

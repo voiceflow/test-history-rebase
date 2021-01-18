@@ -5,9 +5,10 @@ import { useSelector } from 'react-redux';
 
 import Canvas from '@/components/Canvas';
 import Crosshair from '@/components/Crosshair';
-import { DragItem, HOVER_THROTTLE_TIMEOUT, MarkupModeType } from '@/constants';
+import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, MarkupModeType } from '@/constants';
 import { canvasNavigationSelector } from '@/ducks/ui';
 import { connect } from '@/hocs';
+import { NodeData } from '@/models';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import MergeLayer from '@/pages/Canvas/components/MergeLayer';
@@ -85,7 +86,11 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
     [isEditingMode]
   );
 
-  const [, connectBlockDrop] = useDrop({
+  const [, connectBlockDrop] = useDrop<
+    { clientOffset: { x: number; y: number }; blockType: BlockType; factoryData?: Partial<NodeData<unknown>>; type: string },
+    {},
+    {}
+  >({
     accept: DragItem.BLOCK_MENU,
     drop: async ({ clientOffset, blockType, factoryData }, monitor) => {
       if (monitor.didDrop() && monitor.getDropResult().captured) return;

@@ -2,8 +2,7 @@
 
 import './utils/mockAudio';
 
-import NLC from '@voiceflow/natural-language-commander';
-import { IIntent } from '@voiceflow/natural-language-commander/dist/lib/nlcInterfaces';
+import { IntentName, RequestType } from '@voiceflow/general-types';
 import { SinonSpy, SinonStub } from 'sinon';
 
 import { createSuite } from '@/../test/_suite';
@@ -35,12 +34,7 @@ enum TraceMethods {
 }
 
 const suite = createSuite(({ spy, stub, expect }) => ({
-  createController({
-    debug = false,
-    intents = [],
-    context,
-  }: { debug?: boolean; intents?: Omit<IIntent, 'callback'>[]; context?: { trace: Trace[] } } = {}) {
-    const nlc = ({ getIntents: stub().returns(intents) } as any) as NLC;
+  createController({ debug = false, context }: { debug?: boolean; context?: { trace: Trace[] } } = {}) {
     const engine = ({
       node: { center: stub(), ports: { out: ['1'] } },
       nodes: [{ 1: { type: BlockType.START } }],
@@ -62,7 +56,6 @@ const suite = createSuite(({ spy, stub, expect }) => ({
 
     const controller = new TraceController({
       props: {
-        nlc,
         debug,
         engine,
         setError: stub(),
@@ -335,24 +328,18 @@ suite(
       });
 
       it('should process choice trace', async () => {
+        const choices = [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }];
+
         const controller = createController({
-          intents: [
-            { intent: 'name_1', utterances: ['name 1'] },
-            { intent: 'name_3', utterances: ['name 3'] },
-          ],
           context: {
-            trace: [
-              traceFactory(TraceType.CHOICE, {
-                choices: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }],
-              }),
-            ],
+            trace: [traceFactory(TraceType.CHOICE, { choices })],
           },
         });
 
         await controller.next();
 
         expectProcessSingleTrace(controller, TraceMethods.CHOICE);
-        expectSetInteractions(controller, [{ name: 'name 1' }, { name: 'name_2' }, { name: 'name 3' }]);
+        expectSetInteractions(controller, choices);
       });
 
       it('should process flow trace', async () => {
@@ -386,7 +373,7 @@ suite(
       it('should process stream play', async () => {
         const controller = createController();
 
-        const getNextStateRequest = spy(TraceController, 'getNextStateRequest');
+        const next = spy(controller, 'next');
 
         emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: StreamTraceAction.PLAY, token: '1' })] });
 
@@ -397,7 +384,7 @@ suite(
         expectSetInteractions(controller, [{ name: 'next' }, { name: 'previous' }, { name: 'pause' }]);
         expectUpdateStatus(controller).to.be.calledWith(PMStatus.WAITING_USER_INTERACTION);
         expectAudioPlay(controller).to.be.calledWithMatch(SRC);
-        expect(getNextStateRequest).to.be.calledWith({ intent: 'AMAZON.NextIntent' });
+        expect(next).to.be.calledWith({ type: RequestType.TEXT, payload: IntentName.NEXT });
         expectProcessSingleTrace(controller, TraceMethods.STREAM);
       });
 
@@ -406,7 +393,7 @@ suite(
 
         emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: StreamTraceAction.PAUSE, token: '1' })] });
 
-        const getNextStateRequest = spy(TraceController, 'getNextStateRequest');
+        const next = spy(controller, 'next');
 
         await controller.next();
 
@@ -415,7 +402,7 @@ suite(
         expectUpdateStatus(controller).to.be.calledWith(PMStatus.WAITING_USER_INTERACTION);
         expectAudioStop(controller).to.be.calledTwice;
         expectAudioPlay(controller).not.to.be.calledWithMatch(SRC);
-        expect(getNextStateRequest).not.to.be.calledWith({ intent: 'AMAZON.NextIntent' });
+        expect(next).not.to.be.calledWith({ type: RequestType.TEXT, payload: IntentName.NEXT });
         expectProcessSingleTrace(controller, TraceMethods.STREAM);
       });
 
@@ -446,14 +433,14 @@ suite(
       it('should process stream audio reject', async () => {
         const controller = createController();
 
-        const getNextStateRequest = spy(TraceController, 'getNextStateRequest');
+        const next = spy(controller, 'next');
 
         emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: StreamTraceAction.PLAY, token: '1' })] });
         emulateAudioReject(controller);
 
         await controller.next();
 
-        expect(getNextStateRequest).not.to.be.calledWith({ intent: 'AMAZON.NextIntent' });
+        expect(next).not.to.be.calledWith({ type: RequestType.TEXT, payload: IntentName.NEXT });
       });
 
       it('should process debug trace', async () => {
@@ -487,12 +474,7 @@ suite(
       });
 
       it('should process all traces', async () => {
-        const controller = createController({
-          intents: [
-            { intent: 'name_1', utterances: ['name 1'] },
-            { intent: 'name_3', utterances: ['name 3'] },
-          ],
-        });
+        const controller = createController();
 
         emulateFetchContext(
           controller,
@@ -553,12 +535,7 @@ suite(
 
     describe('emptyTrace()', () => {
       it('should only log messages', async () => {
-        const controller = createController({
-          intents: [
-            { intent: 'name_1', utterances: ['name 1'] },
-            { intent: 'name_3', utterances: ['name 3'] },
-          ],
-        });
+        const controller = createController();
 
         controller['trace'] = [
           traceFactory(TraceType.BLOCK, { blockID: BLOCK_ID }),

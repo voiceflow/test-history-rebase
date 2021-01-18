@@ -1,14 +1,5 @@
 import { SpeakTraceAudioType, StoreType, StreamTraceAction, TraceType } from '@/constants/prototype';
 
-export type StateRequest = {
-  type: 'INTENT';
-  payload: {
-    type: 'IntentRequest';
-    intent: unknown;
-    input: unknown;
-  };
-};
-
 // trace types
 
 export type TraceGeneric<T, P = {}> = {

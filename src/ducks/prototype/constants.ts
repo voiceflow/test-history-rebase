@@ -4,7 +4,6 @@ export const STATE_KEY = 'prototype';
 
 export const INITIAL_STATE: PrototypeState = {
   ID: null,
-  nlc: null,
   status: PrototypeStatus.IDLE,
   muted: false,
   startTime: 0,

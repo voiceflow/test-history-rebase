@@ -1,23 +1,20 @@
-import { GeneralRequest } from '@voiceflow/general-types';
-import NLC from '@voiceflow/natural-language-commander';
+import { GeneralRequest, IntentName, RequestType } from '@voiceflow/general-types';
 import cuid from 'cuid';
 import _ from 'lodash';
 
 import { IS_TEST } from '@/config';
-import { FeatureFlag } from '@/config/features';
 import { BlockType, START_BLOCK_ID } from '@/constants';
 import { SpeakTraceAudioType, StreamTraceAction, TraceType } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
-import { BlockTrace, ChoiceTrace, EndTrace, FlowTrace, Link, Node, SpeakTrace, StateRequest, StreamTrace, Trace } from '@/models';
+import { BlockTrace, ChoiceTrace, EndTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
 import { unique } from '@/utils/array';
 
-import { Interaction, NLCIntent, PMStatus, TMAmazonIntent } from '../types';
+import { Interaction, PMStatus } from '../types';
 import AudioController from './Audio';
 import MessageController from './Message';
 import TimeoutController from './Timeout';
 import { getUpdatedContextHistory } from './utils/activePath';
-import { getNLCIntentSlotsMap, getUtteranceChoices } from './utils/intent';
 
 export enum StepDirection {
   FORWARD = 'forward',
@@ -25,27 +22,24 @@ export enum StepDirection {
 }
 
 export type TraceControllerProps = {
-  activePathLinkIDs: string[];
-  activePathBlockIDs: string[];
-  nlc: NLC;
   debug: boolean;
-  flowIDHistory: string[];
   engine?: null | Engine;
   setError: (error: string) => void;
+  isPublic?: boolean;
   enterFlow: (diagramID: string) => void;
-  fetchContext: (request?: StateRequest) => Promise<Prototype.Context | null>;
-  updateStatus: (status: PMStatus) => void;
-  setInteractions: (interactions: Interaction[]) => void;
-  updatePrototype: (payload: Partial<Prototype.PrototypeState>) => void;
-  getLinksByPortID: (portID: string) => Link[];
-  activeDiagramID: string;
-  contextHistory: Partial<Prototype.Context>[];
   contextStep: number;
   getNodeByID: (targetBlockID: string) => Node;
+  updateStatus: (status: PMStatus) => void;
+  fetchContext: (request: GeneralRequest) => Promise<Prototype.Context | null>;
+  flowIDHistory: string[];
+  contextHistory: Partial<Prototype.Context>[];
+  activeDiagramID: string;
+  setInteractions: (interactions: Interaction[]) => void;
+  updatePrototype: (payload: Partial<Prototype.PrototypeState>) => void;
   getJoiningLinks: (lhsNodeID: string, rhsNodeID: string) => Link[];
-  isPublic?: boolean;
-  [FeatureFlag.GENERAL_PROTOTYPE]: boolean;
-  fetchContextV2: (request: GeneralRequest) => Promise<Prototype.Context | null>;
+  getLinksByPortID: (portID: string) => Link[];
+  activePathLinkIDs: string[];
+  activePathBlockIDs: string[];
 };
 
 type Options = {
@@ -98,24 +92,6 @@ class TraceController {
     this.props.setInteractions([]);
   }
 
-  public static getNextStateRequest(nlcIntent?: NLCIntent | null, input?: string): StateRequest {
-    let intent;
-
-    if (nlcIntent) {
-      intent = {
-        name: nlcIntent.intent,
-        slots: getNLCIntentSlotsMap(nlcIntent),
-      };
-    } else {
-      intent = { name: 'AMAZON.FallbackIntent' };
-    }
-
-    return {
-      type: 'INTENT',
-      payload: { type: 'IntentRequest', intent, input },
-    };
-  }
-
   constructor({ audio, props, message, timeout }: Options) {
     this.props = props;
     this.audio = audio;
@@ -123,7 +99,7 @@ class TraceController {
     this.message = message;
   }
 
-  public next = async (request?: StateRequest) => {
+  public next = async (request: GeneralRequest = null) => {
     const currentContextStep = this.props.contextStep;
     const contextHistory = this.props.contextHistory;
     const historyLength = contextHistory.length;
@@ -137,43 +113,6 @@ class TraceController {
     this.props.updateStatus(PMStatus.FETCHING_CONTEXT);
 
     this.context = await this.props.fetchContext(request);
-
-    if (this.stopped) {
-      return;
-    }
-
-    if (!this.context) {
-      this.setError('Unable to fetch response');
-      return;
-    }
-
-    if (!this.context.trace.length) {
-      return;
-    }
-
-    this.audio.stop();
-
-    if (IS_TEST) {
-      await this.processTrace(this.context.trace);
-    } else {
-      this.processTrace(this.context.trace);
-    }
-  };
-
-  public nextV2 = async (request: GeneralRequest = null) => {
-    const currentContextStep = this.props.contextStep;
-    const contextHistory = this.props.contextHistory;
-    const historyLength = contextHistory.length;
-
-    // Remove any forward history
-    if (currentContextStep !== historyLength - 1) {
-      const newHistoryArray = contextHistory.slice(0, currentContextStep + 1);
-      this.props.updatePrototype({ contextHistory: newHistoryArray });
-    }
-
-    this.props.updateStatus(PMStatus.FETCHING_CONTEXT);
-
-    this.context = await this.props.fetchContextV2(request);
 
     if (this.stopped) {
       return;
@@ -307,16 +246,7 @@ class TraceController {
   }
 
   private processChoiceTrace({ payload: { choices } }: ChoiceTrace) {
-    if (this.props[FeatureFlag.GENERAL_PROTOTYPE]) {
-      return this.props.setInteractions(choices);
-    }
-
-    const intents = this.props.nlc.getIntents();
-
-    // if the choices are intent names, replace with the first utterance of that intent
-    const utteranceChoices = getUtteranceChoices(choices, intents);
-
-    this.props.setInteractions(utteranceChoices);
+    this.props.setInteractions(choices);
   }
 
   private saveActivePathBlock(node: Node) {
@@ -415,7 +345,7 @@ class TraceController {
       return;
     }
 
-    await this.next(TraceController.getNextStateRequest({ intent: TMAmazonIntent.NEXT }));
+    await this.next({ type: RequestType.TEXT, payload: IntentName.NEXT });
   }
 
   private async processSpeakTrace(
@@ -430,9 +360,7 @@ class TraceController {
 
     // For handling reprompts
     if (choices) {
-      const intents = this.props.nlc.getIntents();
-      const utteranceChoices = getUtteranceChoices(choices, intents);
-      this.props.setInteractions(utteranceChoices);
+      this.props.setInteractions(choices);
     }
 
     if (onlyMessage) {

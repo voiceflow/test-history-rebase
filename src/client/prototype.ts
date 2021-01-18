@@ -3,30 +3,18 @@ import axios from 'axios';
 
 import legacySkillAdapter, { extractIntents, extractSlots } from '@/client/adapters/legacy/skill';
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
-import { PrototypeContext, StateRequest, Store } from '@/models';
+import { PrototypeContext } from '@/models';
 
-import { api, apiV2 } from './fetch';
+import { api } from './fetch';
 
 export const LEGACY_TESTING_PATH = 'test';
 export const PROTOTYPE_PATH = 'prototype';
 
 const prototypeClient = {
-  interact: (body: { state: Omit<PrototypeContext, 'trace'>; request?: StateRequest }, locale: string) =>
-    api.post<PrototypeContext>(`${PROTOTYPE_PATH}/interact?locale=${locale}`, body),
-
-  interactV2: (versionID: string, body: { state: Omit<PrototypeContext, 'trace'>; request: GeneralRequest }) =>
+  interact: (versionID: string, body: { state: Omit<PrototypeContext, 'trace'>; request: GeneralRequest }) =>
     axios
       .post<{ state: PrototypeContext; trace: PrototypeContext['trace'] }>(`${GENERAL_RUNTIME_ENDPOINT}/interact/${versionID}`, body)
       .then(({ data }) => data),
-
-  getInfo: (configID: string) =>
-    api.get<{ skill: unknown; globals: Partial<Store> }>(`${LEGACY_TESTING_PATH}/getInfo/${configID}`).then((data) => {
-      const skill = legacySkillAdapter.fromDB(data.skill);
-      const intents = extractIntents(data.skill);
-      const slots = extractSlots(data.skill);
-
-      return { skill, intents, slots, testVariableValues: data.globals };
-    }),
 
   getLegacyInfo: (configID: string) =>
     api.get(`${LEGACY_TESTING_PATH}/getInfo/${configID}`).then((data: any) => {
@@ -49,9 +37,6 @@ const prototypeClient = {
         },
       };
     }),
-
-  createInfo: (versionID: string, diagramID: string, variables: Record<string, any>) =>
-    apiV2.post<string>(`versions/${versionID}/test`, { diagramID, variables }),
 
   getSpeakAudio: ({ ssml, voice }: { ssml: string; voice: string }) => api.post<string>(`${LEGACY_TESTING_PATH}/speak`, { ssml, voice }),
 };

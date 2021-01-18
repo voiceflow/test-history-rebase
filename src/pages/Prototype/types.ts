@@ -1,13 +1,3 @@
-export type NLCIntentSlot = {
-  name: string;
-  value?: any;
-};
-
-export type NLCIntent = {
-  intent: string;
-  slots?: NLCIntentSlot[];
-};
-
 export enum PMStatus {
   IDLE = 'IDLE',
   ERROR = 'ERROR',
@@ -17,15 +7,6 @@ export enum PMStatus {
   DIALOG_PROCESSING = 'DIALOG_PROCESSING',
   WAITING_USER_INTERACTION = 'WAITING_USER_INTERACTION',
   DIALOG_WAITING_USER_INTERACTION = 'DIALOG_WAITING_USER_INTERACTION',
-}
-
-export enum TMAmazonIntent {
-  NEXT = 'AMAZON.NextIntent',
-  PAUSE = 'AMAZON.PauseIntent',
-  RESUME = 'AMAZON.ResumeIntent',
-  PREVIOUS = 'AMAZON.PreviousIntent',
-  YES = 'AMAZON.YesIntent',
-  NO = 'AMAZON.NoIntent',
 }
 
 export enum MessageType {

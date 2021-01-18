@@ -29,27 +29,25 @@ export type PrototypeProps = {
 };
 
 const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
+  atTop,
+  debug,
   locale,
   status,
   isPublic,
-  debug,
+  autoplay,
+  setAtTop,
   showChips,
   updatePrototype,
-  atTop,
-  setAtTop,
-  autoplay,
-  slots,
   isModelTraining,
 }) => {
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
 
-  const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audioInstance, onStepBack, onStepForward } = usePrototype(
-    status,
+  const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audioInstance, onStepBack, onStepForward } = usePrototype({
     debug,
-    slots,
-    isPublic
-  );
+    isPublic,
+    prototypeStatus: status,
+  });
   const location = useLocation();
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [updatedAudioInstance, setUpdatedAudioInstance] = React.useState<TAudio | null>(audioInstance);

@@ -3,7 +3,7 @@ class TimeoutController {
   private timeouts: Map<number, number> = new Map<number, number>();
 
   public async set(timeout: number) {
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       const timeoutID = setTimeout(() => {
         this.timeouts.delete(timeoutID);
 

@@ -1,14 +1,18 @@
-import Flex from '@/components/Flex';
+import { FlexCenter } from '@/components/Flex';
+import Text from '@/components/Text';
 import { styled } from '@/hocs';
 
-const Container = styled(Flex).attrs({ column: true })`
-  height: 100%;
-  padding-top: 100px;
-  color: #62778c;
-  background-color: #fdfdfd;
+const Container = styled(FlexCenter).attrs({ column: true })`
+  top: 15%;
+  position: relative;
+  justify-content: center;
+  align-items: center;
 
-  & > * {
-    margin-bottom: 20px;
+  ${Text} {
+    text-align: center;
+    white-space: pre-line;
+    min-width: 271px;
+    max-width: 271px;
   }
 `;
 

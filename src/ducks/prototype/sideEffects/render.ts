@@ -5,29 +5,38 @@ import { Thunk } from '@/store/types';
 import { AbortControl, waitJobFinished } from '@/utils/job';
 
 import { log } from '../utils';
-import initializePrototype from './initialize';
+import resetPrototype from './reset';
 
 const MAX_CHECKS = 30;
 
 const renderPrototype = (abortControl: AbortControl): Thunk => async (dispatch, getState) => {
-  const projectID = Skill.activeProjectIDSelector(getState());
+  const state = getState();
+  const platform = Skill.activePlatformSelector(state);
+  const projectID = Skill.activeProjectIDSelector(state);
+  const versionID = Skill.activeSkillIDSelector(state);
 
   if (!projectID) {
     return;
   }
 
   try {
-    await client.platform.alexa.prototype.run(projectID);
+    const platformPrototypeService = client.platform[platform].prototype;
+
+    await platformPrototypeService.run(projectID);
 
     await waitJobFinished({
-      fetchJob: () => client.platform.alexa.prototype.getStatus(projectID),
+      fetchJob: () => platformPrototypeService.getStatus(projectID),
       maxChecks: MAX_CHECKS,
       abortControl,
     });
 
     if (abortControl.aborted) return;
 
-    dispatch(initializePrototype());
+    const prototype = await client.api.version.getPrototype(versionID);
+
+    if (!prototype) throw new Error('version prototype not found');
+
+    dispatch(resetPrototype());
   } catch (err) {
     log.error(err);
     dispatch(Modal.setError('Could Not Render Your Test Project'));

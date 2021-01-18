@@ -1,9 +1,10 @@
+import { GeneralRequest } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import client from '@/client';
 import { TraceType } from '@/constants/prototype';
 import * as Skill from '@/ducks/skill';
-import { StateRequest, Trace } from '@/models';
+import { Trace } from '@/models';
 import { Thunk } from '@/store/types';
 
 import { pushContextHistory, updatePrototype, updatePrototypeContext } from '../actions';
@@ -21,27 +22,31 @@ const getTargetFlowID = (trace: Trace[]) => {
   return null;
 };
 
-const fetchContext = (request?: StateRequest): Thunk<Context | null> => async (dispatch, getState) => {
-  const state = getState();
-  const { trace, ...context } = prototypeContextSelector(state);
-  const { contextStep } = prototypeSelector(state);
-  const currentDiagramID = Skill.activeDiagramIDSelector(state);
-  const [locale] = Skill.activeLocalesSelector(state);
+const fetchContext = (request: GeneralRequest): Thunk<Context | null> => async (dispatch, getState) => {
+  const reduxState = getState();
+  const { trace: _oldTrace, ...state } = prototypeContextSelector(reduxState);
+  const { contextStep } = prototypeSelector(reduxState);
+  const versionID = Skill.activeSkillIDSelector(reduxState);
+  const currentDiagramID = Skill.activeDiagramIDSelector(reduxState);
 
   try {
-    const newContext: Context = await client.prototype.interact({ state: context, request }, locale);
+    const { state: _state, trace } = await client.prototype.interact(versionID, { state, request });
 
-    newContext.previousContextDiagramID = currentDiagramID;
-    newContext.targetContextDiagramID = getTargetFlowID(newContext.trace) || currentDiagramID;
+    const newState: Context = _state;
+
+    newState.previousContextDiagramID = currentDiagramID;
+    newState.targetContextDiagramID = getTargetFlowID(trace) || currentDiagramID;
+
+    const newStateObj = {
+      ...newState,
+      trace: trace?.map((t) => ({ ...t, id: cuid() })) ?? [],
+    };
 
     dispatch(updatePrototype({ contextStep: contextStep + 1 }));
-    dispatch(updatePrototypeContext(newContext));
-    dispatch(pushContextHistory(newContext));
+    dispatch(updatePrototypeContext(newStateObj));
+    dispatch(pushContextHistory(newStateObj));
 
-    return {
-      ...newContext,
-      trace: newContext.trace?.map((trace) => ({ ...trace, id: cuid() })) ?? [],
-    };
+    return newStateObj;
   } catch (err) {
     log.error(err);
 

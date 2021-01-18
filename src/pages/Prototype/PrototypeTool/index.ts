@@ -2,16 +2,12 @@ import { GeneralRequest, RequestType, TextRequest } from '@voiceflow/general-typ
 import cuid from 'cuid';
 import _ from 'lodash';
 
-import { FeatureFlag } from '@/config/features';
-
-import { NLCIntent } from '../types';
 import AudioController from './Audio';
-import DialogController, { DialogControllerProps } from './Dialog';
 import MessageController, { MessageControllerProps } from './Message';
 import TimeoutController from './Timeout';
 import TraceController, { StepDirection, TraceControllerProps } from './Trace';
 
-export type PrototypeToolProps = MessageControllerProps & TraceControllerProps & DialogControllerProps;
+export type PrototypeToolProps = MessageControllerProps & TraceControllerProps;
 
 class PrototypeTool {
   private props: PrototypeToolProps;
@@ -19,8 +15,6 @@ class PrototypeTool {
   public audio?: AudioController;
 
   private trace?: TraceController;
-
-  private dialog?: DialogController;
 
   private message?: MessageController;
 
@@ -37,22 +31,16 @@ class PrototypeTool {
     this.message!.session(cuid(), 'New session started');
     this.trace!.start();
 
-    if (this.props[FeatureFlag.GENERAL_PROTOTYPE]) {
-      this.trace!.nextV2();
-    } else {
-      this.trace!.next();
-    }
+    this.trace!.next();
   }
 
   public stop() {
     this.audio?.stop();
     this.trace?.stop();
-    this.dialog?.stop();
     this.timeout?.clearAll();
 
     this.audio = undefined;
     this.trace = undefined;
-    this.dialog = undefined;
     this.message = undefined;
     this.timeout = undefined;
   }
@@ -72,45 +60,27 @@ class PrototypeTool {
 
   public async interact(request: GeneralRequest | string = null) {
     this.audio!.stop();
+
     await this.trace?.emptyTrace();
+
     this.trace?.resetInteractions();
 
-    const formattedRequest = _.isString(request)
-      ? ({
-          type: RequestType.TEXT,
-          payload: request,
-        } as TextRequest)
-      : request;
+    const formattedRequest = _.isString(request) ? ({ type: RequestType.TEXT, payload: request } as TextRequest) : request;
 
     const input = formattedRequest?.type === RequestType.TEXT ? formattedRequest?.payload : JSON.stringify(formattedRequest?.payload, null, 2);
+
     this.message?.user(cuid(), input);
 
-    try {
-      if (this.props[FeatureFlag.GENERAL_PROTOTYPE]) {
-        await this.trace!.nextV2(formattedRequest);
-        return;
-      }
-
-      const intent = await this.dialog?.handle(input);
-
-      await this.trace!.next(TraceController.getNextStateRequest(intent as NLCIntent, input));
-    } catch {
-      // no action, dialog may throw
-    }
+    await this.trace?.next(formattedRequest);
   }
 
   private createController() {
     this.audio = new AudioController();
+
     this.timeout = new TimeoutController();
 
     this.message = new MessageController({
       props: this.props,
-    });
-
-    this.dialog = new DialogController({
-      props: this.props,
-      audio: this.audio,
-      message: this.message,
     });
 
     this.trace = new TraceController({

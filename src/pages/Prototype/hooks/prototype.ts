@@ -1,30 +1,22 @@
 import { GeneralRequest } from '@voiceflow/general-types';
-import NLC from '@voiceflow/natural-language-commander';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
-import { useEventualEngine, useGeneralPrototype, useTrackingEvents } from '@/hooks';
-import { Slot } from '@/models';
+import { useEventualEngine, useTrackingEvents } from '@/hooks';
 import { Dispatch } from '@/store/types';
 import * as Utils from '@/utils/string';
 
 import PrototypeTool, { PrototypeToolProps } from '../PrototypeTool';
 import { Interaction, Message, PMStatus } from '../types';
 
-const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boolean, slots: Array<Slot>, isPublic?: boolean) => {
+const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; isPublic?: boolean; prototypeStatus: Prototype.PrototypeStatus }) => {
   const dispatch = useDispatch() as Dispatch;
 
-  const generalPrototype = useGeneralPrototype();
-
-  const nlc = useSelector(Prototype.prototypeNLCSelector) as NLC;
-  const variables = useSelector(Prototype.prototypeVariablesSelector);
-  const [locale] = useSelector(Skill.activeLocalesSelector) as string[];
   const activePathLinkIDs = useSelector(Prototype.activePathLinkIDsSelector);
   const activePathBlockIDs = useSelector(Prototype.activePathBlockIDsSelector);
   const getLinksByPortID = useSelector(Creator.linksByPortIDSelector);
@@ -43,31 +35,25 @@ const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boo
   const engine = useEventualEngine()()!;
 
   const cacheData: PrototypeToolProps = {
-    nlc,
     debug,
-    locale,
     engine,
-    variables,
     isPublic,
-    contextHistory,
-    contextStep,
-    slots,
-    activeDiagramID,
-    flowIDHistory,
-    getNodeByID,
-    getJoiningLinks: (sourceNodeID, targetNodeID) => getJoiningLinkIDs(sourceNodeID, targetNodeID, true).map(getLinkByID),
-    updatePrototype: (payload) => dispatch(Prototype.updatePrototype(payload)),
     setError: (error) => dispatch(Modal.setError(error)),
     enterFlow: (diagramID) => dispatch(Skill.updateDiagramID(diagramID)),
+    contextStep,
+    getNodeByID,
     updateStatus: setStatus,
     fetchContext: (request) => dispatch(Prototype.fetchContext(request)),
-    fetchContextV2: (request) => dispatch(Prototype.fetchContextV2(request)),
     addToMessages: (message) => updateMessages([...messages, message]),
+    flowIDHistory,
+    contextHistory,
+    activeDiagramID,
+    getJoiningLinks: (sourceNodeID, targetNodeID) => getJoiningLinkIDs(sourceNodeID, targetNodeID, true).map(getLinkByID),
+    updatePrototype: (payload) => dispatch(Prototype.updatePrototype(payload)),
     setInteractions,
-    activePathLinkIDs,
     getLinksByPortID,
+    activePathLinkIDs,
     activePathBlockIDs,
-    [FeatureFlag.GENERAL_PROTOTYPE]: generalPrototype.isEnabled,
   };
 
   const cache = React.useRef(cacheData);
@@ -79,15 +65,15 @@ const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boo
   const audioInstance = prototype.audio?.audio || null;
 
   React.useEffect(() => {
-    if (prototypeToolStatus === Prototype.PrototypeStatus.IDLE) {
+    if (prototypeStatus === Prototype.PrototypeStatus.IDLE) {
       setStatus(null);
       updateMessages([]);
       setInteractions([]);
       prototype.stop();
-    } else if (prototypeToolStatus === Prototype.PrototypeStatus.ACTIVE && status !== PMStatus.WAITING_USER_INTERACTION) {
+    } else if (prototypeStatus === Prototype.PrototypeStatus.ACTIVE && status !== PMStatus.WAITING_USER_INTERACTION) {
       prototype.start();
     }
-  }, [prototypeToolStatus]);
+  }, [prototypeStatus]);
 
   React.useEffect(() => {
     if (status === PMStatus.ENDED) {

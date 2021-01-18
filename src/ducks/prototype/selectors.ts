@@ -5,8 +5,6 @@ import { STATE_KEY } from './constants';
 
 export const prototypeSelector = createRootSelector(STATE_KEY);
 
-export const prototypeNLCSelector = createSelector([prototypeSelector], ({ nlc }) => nlc);
-
 export const prototypeStatusSelector = createSelector([prototypeSelector], ({ status }) => status);
 
 export const prototypeAutoplaySelector = createSelector([prototypeSelector], ({ autoplay }) => autoplay);

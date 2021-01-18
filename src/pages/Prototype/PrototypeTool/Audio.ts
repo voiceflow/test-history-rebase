@@ -62,11 +62,11 @@ class AudioController {
   ) {
     this.stop();
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this.audio.VF_REJECT = reject;
       this.audio.VF_ON_PAUSE = onPause;
 
-      this.audio.onended = resolve;
+      this.audio.onended = () => resolve();
       this.audio.muted = muted;
       this.audio.onerror = () => {
         onError?.();

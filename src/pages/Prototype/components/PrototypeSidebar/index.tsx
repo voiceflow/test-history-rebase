@@ -2,6 +2,7 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 import { useTheme } from 'styled-components';
 
+import Box from '@/components/Box';
 import Drawer from '@/components/Drawer';
 import Flex, { FlexCenter } from '@/components/Flex';
 import { LoadCircle } from '@/components/Loader';
@@ -34,7 +35,6 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   settings,
   saveActiveDiagram,
   renderPrototype,
-  renderPrototypeV2,
   isMuted,
   updatePrototype,
   status,
@@ -86,10 +86,8 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
     // eslint-disable-next-line promise/catch-or-return
     saveActiveDiagram()
       .catch((err) => console.error(err))
-      .finally(async () => {
-        await (generalPrototypeEnabled ? renderPrototypeV2(renderAbortControl) : renderPrototype(renderAbortControl));
-        disableLoading();
-      });
+      .then(() => renderPrototype(renderAbortControl))
+      .then(disableLoading);
 
     return () => {
       renderAbortControl.aborted = true;
@@ -108,7 +106,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
             <LoadCircle />
           </FlexCenter>
         ) : (
-          <Container generalPrototypeEnabled={generalPrototypeEnabled}>
+          <Container>
             {generalPrototypeEnabled && (
               <Section
                 header="TRAINING"
@@ -132,6 +130,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
                 </TrainContainer>
               </Section>
             )}
+
             <Section
               header="DIALOG"
               variant={SectionVariant.PROTOTYPE}
@@ -141,12 +140,13 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
               isRounded
               suffix={
                 <Flex>
-                  <div style={{ display: 'inline-block', marginRight: '15px' }}>
+                  <Box display="inline-block" mr={15}>
                     <Tooltip title={isMuted ? 'Unmute Dialog Audio' : 'Mute Dialog Audio'}>
                       <SvgIcon icon={isMuted ? 'soundOff' : 'sound'} clickable onClick={() => updatePrototype({ muted: !isMuted })} />
                     </Tooltip>
-                  </div>
-                  <div style={{ display: 'inline-block' }}>
+                  </Box>
+
+                  <Box display="inline-block">
                     <Tooltip title="Reset Test">
                       <SvgIcon
                         icon="restart"
@@ -155,11 +155,12 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
                         onClick={() => (notStarted ? null : resetPrototype())}
                       />
                     </Tooltip>
-                  </div>
+                  </Box>
                 </Flex>
               }
             />
-            <EmbedContainer generalPrototypeEnabled={generalPrototypeEnabled}>
+
+            <EmbedContainer>
               <Prototype debug={settings.debug} atTop={atTop} setAtTop={setAtTop} isModelTraining={isModelTraining} />
             </EmbedContainer>
           </Container>
@@ -170,16 +171,15 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
 };
 
 const mapStateToProps = {
-  settings: Recent.recentPrototypeSelector,
-  isMuted: PrototypeDuck.prototypeMutedSelector,
   status: PrototypeDuck.prototypeStatusSelector,
+  isMuted: PrototypeDuck.prototypeMutedSelector,
+  settings: Recent.recentPrototypeSelector,
 };
 
 const mapDispatchToProps = {
   renderPrototype: PrototypeDuck.renderPrototype,
-  renderPrototypeV2: PrototypeDuck.renderPrototypeV2,
-  saveActiveDiagram: Diagram.saveActiveDiagram,
   updatePrototype: PrototypeDuck.updatePrototype,
+  saveActiveDiagram: Diagram.saveActiveDiagram,
 };
 
 type ConnectedPrototypeSidebarProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

@@ -8,7 +8,7 @@ import { Permission } from '@/config/permissions';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useGeneralPrototype, usePermission, useSmartReducerV2 } from '@/hooks';
+import { usePermission, useSmartReducerV2 } from '@/hooks';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps, Nullable } from '@/types';
@@ -23,15 +23,7 @@ type ShareProjectProps = {
   render: boolean;
 };
 
-const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({
-  render,
-  sharePrototype,
-  versionID,
-  renderPrototype,
-  renderPrototypeV2,
-}) => {
-  const generalPrototype = useGeneralPrototype();
-
+const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({ render, versionID, renderPrototype }) => {
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canInviteByLink] = usePermission(Permission.INVITE_BY_LINK);
@@ -44,41 +36,27 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   });
 
   const onClickPrototype = async () => {
-    if (render) {
-      if (canSharePrototype) {
-        generalPrototype.isEnabled ? renderPrototypeV2({ aborted: false }) : renderPrototype({ aborted: false });
-        await copyTestableLink();
-        toast.success('Link copied to clipboard');
-      }
-    } else {
+    if (render && canSharePrototype) {
+      renderPrototype({ aborted: false });
+
+      await copyTestableLink();
+
+      toast.success('Link copied to clipboard');
+    } else if (!render) {
       toast.error('Unable to copy link to clipboard, please try again or contact support');
     }
   };
 
   const copyTestableLink = async () => {
     await loadTestableLink();
+
     copy(state.testableLink);
   };
 
   const loadTestableLink = async () => {
-    if (state.testableLink) {
-      return;
+    if (!state.testableLink) {
+      stateApi.update({ testableLink: `${window.location.origin}/prototype/${versionID}` });
     }
-    if (generalPrototype.isEnabled) {
-      stateApi.update({
-        testableLink: `${window.location.origin}/prototype/${versionID}`,
-      });
-      return;
-    }
-
-    stateApi.loadingTestableLink.set(true);
-
-    const demoID = await sharePrototype();
-
-    stateApi.update({
-      testableLink: `${window.location.origin}/demo/${demoID}`,
-      loadingTestableLink: false,
-    });
   };
 
   const wrapToggleShare = (prevIsOpen: boolean, onToggle: () => void) => () => {
@@ -136,9 +114,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  sharePrototype: Prototype.sharePrototype,
   renderPrototype: Prototype.renderPrototype,
-  renderPrototypeV2: Prototype.renderPrototypeV2,
 };
 
 type ConnectedShareProjectProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

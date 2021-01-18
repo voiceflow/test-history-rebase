@@ -4570,10 +4570,10 @@
     "@types/koa-compose" "*"
     "@types/node" "*"
 
-"@types/lodash@^4.14.106":
-  version "4.14.149"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.149.tgz#1342d63d948c6062838fbf961012f74d4e638440"
-  integrity sha512-ijGqzZt/b7BfzcK9vTrS6MFljQRPn5BFWOx8oE0GYxribu6uV+aA9zZuXI1zc/etK9E8nrgdoF2+LgUw7+9tJQ==
+"@types/lodash@^4.14.167":
+  version "4.14.167"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.167.tgz#ce7d78553e3c886d4ea643c37ec7edc20f16765e"
+  integrity sha512-w7tQPjARrvdeBkX/Rwg95S592JwxqOjmms3zWQ0XZgSyxSLdzWaYH3vErBhdVS/lRBX7F8aBYcYJYTr5TMGOzw==
 
 "@types/loglevel@^1.6.3":
   version "1.6.3"
@@ -5393,17 +5393,6 @@
     "@zerollup/ts-transform-paths" "^1.7.18"
     express-pino-logger "^4.0.0"
     pino "^5.14.0"
-
-"@voiceflow/natural-language-commander@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/natural-language-commander/-/natural-language-commander-0.5.0.tgz#c64a28e6c772cd22dd4b20e87746158fe7827999"
-  integrity sha512-ONZjNW5O99BITyHOS+JcO1D59yrYnDBP2L8Vm7TYJS3pTGFQPKGAtbVVlRvqVteEd9uemYlm+Wu2+LMGJpR6TA==
-  dependencies:
-    "@types/lodash" "^4.14.106"
-    babel-runtime "^6.9.2"
-    lodash "^4.17.5"
-    moment "^2.22.0"
-    moment-timezone "^0.5.14"
 
 "@voiceflow/pino-pretty@^3.5.0":
   version "3.5.0"
@@ -7413,7 +7402,7 @@ babel-preset-react@^6.24.1:
     babel-plugin-transform-react-jsx-source "^6.22.0"
     babel-preset-flow "^6.23.0"
 
-babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0, babel-runtime@^6.9.2:
+babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -17098,14 +17087,7 @@ moize@^5.4.7:
     fast-stringify "^1.1.0"
     micro-memoize "^2.1.1"
 
-moment-timezone@^0.5.14:
-  version "0.5.28"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.28.tgz#f093d789d091ed7b055d82aa81a82467f72e4338"
-  integrity sha512-TDJkZvAyKIVWg5EtVqRzU97w0Rb0YVbfpqyjgu6GwXCAohVRqwZjf4fOzDE6p1Ch98Sro/8hQQi65WDXW5STPw==
-  dependencies:
-    moment ">= 2.9.0"
-
-"moment@>= 2.9.0", moment@^2.22.0, moment@^2.22.2, moment@^2.24.0, moment@^2.27.0, moment@^2.29.0:
+moment@^2.22.2, moment@^2.24.0, moment@^2.27.0, moment@^2.29.0:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==

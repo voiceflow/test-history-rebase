@@ -6,6 +6,7 @@ export { cuid };
 
 const TAGS_REGEXP = /(<([^>]+)>)/gi;
 const TRAILING_UNDERSCORES_REGEXP = /^_+|_+$/g;
+const SPECIAL_CHARACTERS_REGEXP = /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_{|}]+/;
 
 export const createNextName = (prefix: string, items: string[]) => {
   let counter = 1;
@@ -41,3 +42,7 @@ export const arrayStringReplace = (targetString: string, newString: string, stri
 export const stripHTMLTags = (str: string) => str.replace(TAGS_REGEXP, '');
 
 export const removeTrailingUnderscores = (str: string) => str.replace(TRAILING_UNDERSCORES_REGEXP, '');
+
+export const checkForSpecialCharacters = (str: string) => str.match(SPECIAL_CHARACTERS_REGEXP);
+
+export const removeSpecialCharacters = (str: string) => str.replace(SPECIAL_CHARACTERS_REGEXP, '');

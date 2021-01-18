@@ -12,6 +12,7 @@ import * as Skill from '@/ducks/skill';
 import { useEventualEngine, useGeneralPrototype, useTrackingEvents } from '@/hooks';
 import { Slot } from '@/models';
 import { Dispatch } from '@/store/types';
+import * as Utils from '@/utils/string';
 
 import PrototypeTool, { PrototypeToolProps } from '../PrototypeTool';
 import { Interaction, Message, PMStatus } from '../types';
@@ -105,7 +106,17 @@ const usePrototype = (prototypeToolStatus: Prototype.PrototypeStatus, debug: boo
     onInteraction(webhook);
   }, [webhook]);
 
-  const onInteraction = React.useCallback((request: GeneralRequest | string) => prototype.interact(request), [prototype]);
+  const onInteraction = React.useCallback(
+    (request: GeneralRequest | string) => {
+      if (Utils.checkForSpecialCharacters(request as string)) {
+        toast.warn('Your response contains special character. Certain locales and platforms does not support utterances with special characters.');
+
+        return prototype.interact(Utils.removeSpecialCharacters(request as string));
+      }
+      return prototype.interact(request);
+    },
+    [prototype]
+  );
   const onPlay = React.useCallback(
     (src: string) => {
       prototype.play(src);

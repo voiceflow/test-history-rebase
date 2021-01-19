@@ -50,7 +50,7 @@ const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProj
   };
 
   return (
-    <TippyTooltip title="Import" position="bottom">
+    <TippyTooltip title="Import .vf file" position="bottom">
       <IconButton preventFocusStyle variant={IconButtonVariant.OUTLINE} icon="download" large onClick={onClickHandler} />
     </TippyTooltip>
   );

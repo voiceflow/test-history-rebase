@@ -50,6 +50,8 @@ export enum EventName {
   REFERRAL_SIGNUP = 'Referral Signup',
 
   EXPORT_BUTTON_CLICK = 'Export Button Click',
+  UPGRADE_PROMPT = 'Upgrade Prompt',
+  UPGRADE_MODAL = 'Upgrade Modal',
 
   UPGRADE = 'Upgrade',
 }
@@ -71,4 +73,9 @@ export enum CanvasControlHelpMenuResource {
   TEMPLATES = 'Templates',
   COMMUNITY = 'Community',
   SHORTCUTS = 'Shortcuts',
+}
+
+export enum UpgradePrompt {
+  REAL_TIME_COLLABORATION = 'Real Time Collaboration',
+  PROJECT_LIMIT = 'Project Limit',
 }

@@ -1,13 +1,21 @@
 import React from 'react';
 
 import { ModalType } from '@/constants';
-import { useModals } from '@/hooks';
+import { UpgradePrompt } from '@/ducks/tracking';
+import { useModals, useTrackingEvents } from '@/hooks';
 import { BoldText } from '@/pages/Dashboard/components/ModalComponents';
 
 import BaseModal from '../components/RedirectToPaymentBaseModal';
 
 const FreeProjectLimitModal: React.FC = () => {
-  const { data } = useModals<{ projects?: number; message?: string }>(ModalType.FREE_PROJECT_LIMIT);
+  const { data, isOpened } = useModals<{ projects?: number; message?: string }>(ModalType.FREE_PROJECT_LIMIT);
+  const [trackingEvents] = useTrackingEvents();
+
+  React.useEffect(() => {
+    if (!isOpened) return;
+
+    trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.PROJECT_LIMIT });
+  }, [isOpened]);
 
   return (
     <BaseModal

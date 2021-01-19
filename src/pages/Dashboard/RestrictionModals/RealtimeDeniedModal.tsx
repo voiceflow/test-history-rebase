@@ -1,10 +1,21 @@
 import React from 'react';
 
 import { ModalType } from '@/constants';
+import { UpgradePrompt } from '@/ducks/tracking';
+import { useModals, useTrackingEvents } from '@/hooks';
 import { BoldText } from '@/pages/Dashboard/components/ModalComponents';
 import BaseModal from '@/pages/Dashboard/components/RedirectToPaymentBaseModal';
 
 const RealtimeDeniedModal: React.FC = () => {
+  const { isOpened } = useModals(ModalType.REALTIME_DENIED);
+  const [trackingEvents] = useTrackingEvents();
+
+  React.useEffect(() => {
+    if (!isOpened) return;
+
+    trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.REAL_TIME_COLLABORATION });
+  }, [isOpened]);
+
   return (
     <BaseModal
       modalType={ModalType.REALTIME_DENIED}

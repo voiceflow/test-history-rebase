@@ -1,7 +1,7 @@
 import client from '@/client';
 import { BillingPeriod, PERIOD_NAME, PlanType } from '@/constants';
 
-import { EventName } from '../constants';
+import { EventName, UpgradePrompt } from '../constants';
 import { createWorkspaceEventPayload, createWorkspaceEventTracker } from '../utils';
 
 type TrackUpgradeOptions = {
@@ -21,4 +21,21 @@ export const trackUpgrade = createWorkspaceEventTracker<TrackUpgradeOptions>((op
       coupon: options.coupon,
     })
   )
+);
+
+type TrackUpgradePromptOptions = {
+  promptType: UpgradePrompt;
+};
+
+export const trackUpgradePrompt = createWorkspaceEventTracker<TrackUpgradePromptOptions>((options) =>
+  client.analytics.track(
+    EventName.UPGRADE_PROMPT,
+    createWorkspaceEventPayload(options, {
+      prompt_type: options.promptType,
+    })
+  )
+);
+
+export const trackUpgradeModal = createWorkspaceEventTracker((options) =>
+  client.analytics.track(EventName.UPGRADE_MODAL, createWorkspaceEventPayload(options))
 );

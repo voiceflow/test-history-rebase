@@ -115,3 +115,13 @@ export function validateUtterance(utterance: string, intentID: string, intents: 
 
   return err;
 }
+
+export const removeSlotRefFromInput = (text: string, slotDetails: Slot) => {
+  return text.replace(SLOT_REGEXP, (match, inner) => {
+    if (inner.match(slotDetails.name)) {
+      return slotDetails.name;
+    }
+
+    return match;
+  });
+};

@@ -34,6 +34,7 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, intents
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
   const { toggle: toggleSlotEdit, close: closeSlotEdit, isInStack: slotEditOpen } = useModals(ModalType.SLOT_EDIT);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
+
   const onUpdateUtterances = React.useCallback((inputs) => updateIntent(intentID, { inputs }, true), [intentID, updateIntent]);
 
   const warnNoUtterances = () => {

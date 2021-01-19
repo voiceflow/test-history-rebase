@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { allIntentsSelector } from '@/ducks/intent';
+import { allIntentsSelector } from '@/ducks/intent/selectors';
 import { Slot } from '@/models';
 
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from './utils/crud';

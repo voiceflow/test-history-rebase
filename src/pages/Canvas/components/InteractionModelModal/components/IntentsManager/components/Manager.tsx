@@ -30,6 +30,8 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
   const resetPath = React.useCallback(() => setPath({ type: null }), []);
   const [nameError, setNameError] = React.useState<string | null>(null);
 
+  const slotEdit = path.type === 'slot';
+
   const validateName = (intentName: string) =>
     validateIntentName(
       intentName,
@@ -66,8 +68,6 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
     resetPath();
     setName(selectedIntent?.name || '');
   }, [id]);
-
-  const slotEdit = path.type === 'slot';
 
   return !selectedIntent ? null : (
     <>

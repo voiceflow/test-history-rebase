@@ -2,10 +2,12 @@ import cuid from 'cuid';
 import _pick from 'lodash/pick';
 
 import { activePlatformSelector } from '@/ducks/skill/skill/selectors';
+import { slotByIDSelector } from '@/ducks/slot';
 import { createCRUDActionCreators } from '@/ducks/utils/crud';
-import { Intent, IntentSlot, IntentSlotDialog } from '@/models';
+import { Intent, IntentInput, IntentSlot, IntentSlotDialog } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
-import { getNormalizedByKey, patchNormalizedByKey } from '@/utils/normalized';
+import { removeSlotRefFromInput } from '@/utils/intent';
+import { getNormalizedByKey, patchNormalizedByKey, removeNormalizedByKey } from '@/utils/normalized';
 import { createNextName } from '@/utils/string';
 
 import { addIntent } from './actions';
@@ -52,6 +54,26 @@ export const updateIntentSlot = (id: string, slotId: string, data: Partial<Inten
   const { slots } = intentByIDSelector(getState())(id);
 
   return dispatch(updateIntent(id, { slots: patchNormalizedByKey(slots, slotId, data) }, true));
+};
+
+export const removeIntentSlot = (id: string, slotId: string): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const { slots, inputs } = intentByIDSelector(state)(id);
+
+  const sanitizedInputs: IntentInput[] = inputs.map((input: IntentInput) => {
+    if (input?.slots && input.slots.length > 0) {
+      const slotDetails = slotByIDSelector(state)(slotId);
+
+      return {
+        text: removeSlotRefFromInput(input.text, slotDetails),
+        slots: input.slots.filter((slot) => slot !== slotId),
+      };
+    }
+
+    return input;
+  });
+
+  return dispatch(updateIntent(id, { slots: removeNormalizedByKey(slots, slotId), inputs: sanitizedInputs }, true));
 };
 
 export const updateIntentSlotDialog = (id: string, slotId: string, dialog: IntentSlotDialog): SyncThunk => (dispatch, getState) => {

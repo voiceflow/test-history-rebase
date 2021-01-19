@@ -5,9 +5,10 @@ import { PlatformType } from '@/constants';
 import { Intent, IntentInput, IntentSlot } from '@/models';
 import { denormalize, normalize } from '@/utils/normalized';
 
-const IntentInputSanitizer = ({ text, slots }: IntentInput): IntentInput => ({
+const IntentInputSanitizer = ({ text, slots, voice }: IntentInput) => ({
   text: text || '',
   slots: slots || [],
+  voice,
 });
 
 const IntentSlotSanitizer = ({

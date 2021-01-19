@@ -5,6 +5,7 @@ import Badge from '@/components/Badge';
 import ChatWithUsLink from '@/components/ChatLink';
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
 import ListManager from '@/components/ListManager';
+import SSMLWithSlots from '@/components/SSMLWithSlots';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import Utterance from '@/components/Utterance';
 import { SlotTag } from '@/components/VariableTag';
@@ -27,8 +28,8 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
     required,
     dialog: {
       utterances,
-      prompt: [{ text: promptText }],
-      confirm: [{ text: confirmText }],
+      prompt: [{ text: promptText, slots: promptSlots, voice: promptVoice }],
+      confirm: [{ text: confirmText, slots: confirmSlots, voice: confirmVoice }],
     },
   } = intentSlot;
   const [isResponseUtteranceEmpty, updateIsResponseUtteranceEmpty] = React.useState(true);
@@ -38,17 +39,27 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
     return Object.values(slotsNameMap);
   }, [intent.slots.allKeys, slotsMap]);
 
-  const onChangePrompt = React.useCallback((prompt) => updateIntentSlotDialog(intent.id, slot.id, { prompt: [prompt] }), [
+  const onChangePrompt = React.useCallback((prompt) => updateIntentSlotDialog(intent.id, slot.id, { prompt: [{ voice: promptVoice, ...prompt }] }), [
     slot.id,
     intent.id,
     updateIntentSlotDialog,
+    promptVoice,
   ]);
 
-  const onChangeConfirm = React.useCallback((confirm) => updateIntentSlotDialog(intent.id, slot.id, { confirm: [confirm] }), [
-    slot.id,
-    intent.id,
-    updateIntentSlotDialog,
-  ]);
+  const onChangeConfirm = React.useCallback(
+    (confirm) => updateIntentSlotDialog(intent.id, slot.id, { confirm: [{ voice: confirmVoice, ...confirm }] }),
+    [slot.id, intent.id, updateIntentSlotDialog, confirmVoice]
+  );
+
+  const onChangePromptVoice = React.useCallback(
+    (voice) => updateIntentSlotDialog(intent.id, slot.id, { prompt: [{ text: promptText, slots: promptSlots, voice }] }),
+    [slot.id, intent.id, updateIntentSlotDialog, promptText, promptSlots]
+  );
+
+  const onChangeConfirmVoice = React.useCallback(
+    (voice) => updateIntentSlotDialog(intent.id, slot.id, { confirm: [{ text: confirmText, slots: confirmSlots, voice }] }),
+    [slot.id, intent.id, updateIntentSlotDialog, confirmText, confirmSlots]
+  );
 
   const onUpdateUtterances = React.useCallback((utterances) => updateIntentSlotDialog(intent.id, slot.id, { utterances }), [
     slot.id,
@@ -86,14 +97,14 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
             dividerIsNested
           >
             <FormControl>
-              <Utterance
-                space
+              <SSMLWithSlots
+                icon={null}
+                voice={promptVoice}
                 slots={variablesSlots}
                 value={promptText || ''}
                 onBlur={onChangePrompt}
-                creatable={false}
+                onChangeVoice={onChangePromptVoice}
                 placeholder="What question will we ask the user to fill this slot?"
-                dividerIsNested
               />
             </FormControl>
 
@@ -173,14 +184,14 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
               collapseVariant={SectionToggleVariant.TOGGLE}
             >
               <FormControl>
-                <Utterance
-                  space
+                <SSMLWithSlots
+                  icon={null}
+                  voice={confirmVoice}
                   slots={variablesSlots}
                   value={confirmText || ''}
                   onBlur={onChangeConfirm}
-                  creatable={false}
+                  onChangeVoice={onChangeConfirmVoice}
                   placeholder="What yes/no question will we ask to confirm the slot?"
-                  dividerIsNested
                 />
               </FormControl>
             </UncontrolledSection>

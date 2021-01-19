@@ -233,9 +233,14 @@ const SSML = (
     [additionalXMLControlsRenderer, space, variables, creatable, characters, onAddVariable, createInputPlaceholder, withVariablesPlugin, platformTags]
   );
 
-  const onBlurCallback = React.useCallback(({ text }) => onBlur?.({ text }), [onBlur]);
+  const onBlurCallback = React.useCallback(({ text, pluginsData }) => onBlur?.({ text, slots: pluginsData[PluginType.VARIABLES]?.variables || [] }), [
+    onBlur,
+  ]);
 
-  const onEnterPressCallback = React.useCallback(({ text }) => onEnterPress?.({ text }), [onEnterPress]);
+  const onEnterPressCallback = React.useCallback(
+    ({ text, pluginsData }) => onEnterPress?.({ text, slots: pluginsData[PluginType.VARIABLES]?.variables || [] }),
+    [onEnterPress]
+  );
 
   return (
     <Editor

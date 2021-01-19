@@ -3,6 +3,7 @@ import { Normalized } from '@/utils/normalized';
 
 export type IntentInput = {
   text: string;
+  voice?: string;
   slots?: string[];
 };
 

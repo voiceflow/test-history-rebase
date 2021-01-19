@@ -1,9 +1,10 @@
 /* eslint-disable camelcase */
-import { PermissionType } from '@voiceflow/alexa-types';
+import { PermissionType, Voice as AlexaVoices } from '@voiceflow/alexa-types';
 import { constants } from '@voiceflow/common';
-import { IS_VARIABLE_REGEXP, IntegrationType, READABLE_VARIABLE_REGEXP } from '@voiceflow/general-types';
+import { IS_VARIABLE_REGEXP, IntegrationType, READABLE_VARIABLE_REGEXP, Voice as GeneralVoices } from '@voiceflow/general-types';
 import { APIActionType, APIBodyType } from '@voiceflow/general-types/build/nodes/api';
 import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
+import { Voice as GoogleVoices } from '@voiceflow/google-types';
 
 import { NodeData } from '@/models';
 import { Icon } from '@/svgs/types';
@@ -59,6 +60,12 @@ export enum PlatformType {
   GOOGLE = 'google',
   GENERAL = 'general',
 }
+
+export const DefaultVoice = {
+  [PlatformType.ALEXA]: AlexaVoices.ALEXA,
+  [PlatformType.GOOGLE]: GoogleVoices.DEFAULT,
+  [PlatformType.GENERAL]: GeneralVoices.DEFAULT,
+};
 
 export const PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.GENERAL];
 

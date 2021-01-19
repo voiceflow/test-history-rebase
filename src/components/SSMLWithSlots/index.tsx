@@ -7,6 +7,8 @@ import { connect } from '@/hocs';
 import { Slot } from '@/models';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
+import { isSlotsInRepromptValid } from './utils';
+
 /**
  * A component that implements a text input for SSML strings and customization of the voice
  * that will speak the SSML string. Similar to SSMLWithSlots, but cannot create arbitrary
@@ -62,6 +64,7 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps> = ({
       space
       creatable={false}
       onChangeDefaultVoice={onChangeDefaultVoice}
+      withVariablesPlugin={isSlotsInRepromptValid(platform)}
       {...props}
     />
   );

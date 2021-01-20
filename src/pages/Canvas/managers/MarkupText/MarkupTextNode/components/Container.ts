@@ -3,7 +3,7 @@ import { DraftJSEditorContainer } from '@/components/DraftJSEditor';
 import { css, styled } from '@/hocs';
 import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME, NODE_FOCUSED_CLASSNAME } from '@/pages/Canvas/constants';
 
-export const Container = styled.div<{ activated: boolean }>`
+export const Container = styled.div<{ activated: boolean; isNew?: boolean }>`
   border: solid 1px transparent;
 
   min-height: 30px;
@@ -46,6 +46,15 @@ export const Container = styled.div<{ activated: boolean }>`
     border: solid 1px transparent !important;
 
     pointer-events: auto;
+  }
+
+  .public-DraftStyleDefault-block {
+    ${({ isNew }) =>
+      isNew &&
+      css`
+        display: inline-block;
+        white-space: nowrap;
+      `}
   }
 `;
 

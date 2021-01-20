@@ -35,6 +35,8 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
   const editorRef = React.useRef<BaseDraftJSEditor>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const draggableParentsCache = React.useRef<HTMLElement[]>([]);
+  const isNew = React.useMemo(() => !data.content.blocks.length || (data.content.blocks.length === 1 && !data.content.blocks[0].text), []);
+  const [isInitialWidthApplied, setIsInitialWidthApplied] = React.useState(false);
   const [editorState, setEditorState] = React.useState(() => createEditorState(data.content));
   const selectionCache = React.useRef<{ focusKey: string; anchorKey: string; anchorOffset: number; focusOffset: number }>({
     focusKey: '',
@@ -60,15 +62,22 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
     draggableParentsCache.current = draggableParents;
   };
 
-  const onBlur = React.useCallback(() => {
+  const onBlur = React.useCallback(async () => {
     const content = getRawContent(editorState);
+
     if (!editorState.getCurrentContent().getPlainText().trim()) {
       engine.node.remove(node.id);
 
       return;
     }
 
-    engine.node.updateData(node.id, { content });
+    if (!isInitialWidthApplied && isNew) {
+      setIsInitialWidthApplied(true);
+      await engine.node.updateData(node.id, { content });
+      engine.node.api(nodeEntity.nodeID)?.instance?.applyTransformations?.();
+    } else {
+      engine.node.updateData(node.id, { content });
+    }
 
     if (isFirefox) {
       draggableParentsCache.current?.forEach((parentNode) => parentNode.setAttribute('draggable', 'true'));
@@ -197,6 +206,29 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
     }
   }, [data.content, isFocused]);
 
+  useDidUpdateEffect(() => {
+    if (!isInitialWidthApplied && isNew && isFocused) {
+      const isEmpty = !editorState.getCurrentContent().hasText();
+
+      let clientWidth: number | undefined;
+
+      if (isEmpty) {
+        // getting placeholder width
+        // eslint-disable-next-line xss/no-mixed-html
+        clientWidth = containerRef.current?.querySelector<HTMLElement>('.public-DraftEditorPlaceholder-root')?.clientWidth;
+      } else {
+        // getting the text width, can't use `clientWidth` it is 0 for the inline nodes
+        // eslint-disable-next-line xss/no-mixed-html
+        clientWidth = containerRef.current?.querySelector<HTMLElement>('.public-DraftStyleDefault-block')?.offsetWidth;
+      }
+
+      const zoom = engine.canvas?.getZoom() ?? 1;
+      const width = Math.max(((clientWidth ?? 0) + (isEmpty ? 70 : 10)) * zoom, 40 * zoom);
+
+      engine.node.api(nodeEntity.nodeID)?.instance?.scaleText?.(width, [0, 0]);
+    }
+  }, [editorState]);
+
   React.useEffect(() => {
     if (isFocused && !editorState.getSelection().getHasFocus() && !editorState.getCurrentContent().isEmpty()) {
       engine.transformation.initialize(nodeEntity.nodeID);
@@ -213,13 +245,12 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
 
   return (
     <Container
-      onMouseUp={(e) => {
-        e.preventDefault();
-      }}
+      ref={composeRefs(containerRef, blockAPI.ref)}
+      isNew={isNew && !isInitialWidthApplied}
       activated={isActivated}
+      onMouseUp={(e) => e.preventDefault()}
       draggable
       onDragStart={onDragStart}
-      ref={composeRefs(containerRef, blockAPI.ref)}
     >
       <DraftJSEditor
         ref={editorRef}

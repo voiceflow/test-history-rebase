@@ -48,7 +48,7 @@ class MarkupEngine extends EngineConsumer {
       textAlignment: TextAlignment.LEFT,
       scale: 1,
       rotate: 0,
-      overrideWidth: null,
+      overrideWidth: 160,
     };
 
     const nodeID = await this.engine.node.add(

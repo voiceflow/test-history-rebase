@@ -4630,10 +4630,10 @@
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.48.tgz#3523b126a0b049482e1c3c11877460f76622ffab"
   integrity sha512-nlK/iyETgafGli8Zh9zJVCTicvU3iajSkRwOh3Hhiva598CMqNJ4NcVCGMTGKpGpTYj/9R8RLzS9NAykSSCqGw==
 
-"@types/mousetrap@^1.6.4":
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.4.tgz#32503197fca4168b10bf251c1d677a9b5b1c2415"
-  integrity sha512-+Y900DGhe+f+4lRwHm9krsKfsiXcbdOhzTsLbytU4MiG8wE9xOw7CFKtgYKfqEAcUdWEGZRyuTxoyFl2Gx6Rdg==
+"@types/mousetrap@^1.6.5":
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.5.tgz#e95569aa6273dbe0ed1814f86287547cc06e93c9"
+  integrity sha512-OwVhKFim9Y/MprzCe4I6a59p31pMy8+LrtP6qS7J0kaOxYmW6VVJPBw5NYm+g7nSbgPUz22FvqU1F1hC5YGTfg==
 
 "@types/node@*":
   version "14.0.27"

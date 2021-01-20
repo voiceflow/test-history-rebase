@@ -322,7 +322,7 @@
     "gen-certs:e2e": "scripts/generate_e2e_certs.sh",
     "lint": "yarn lint:js && yarn lint:css",
     "lint:css": "stylelint src/**/*.css",
-    "lint:dockerfiles": "hadolint --ignore DL3018 ./Dockerfile ./cache.dockerfile ./admin.dockerfile ./storybook.dockerfile",
+    "lint:dockerfiles": "hadolint --ignore DL3018 ./app.dockerfile ./admin.dockerfile ./storybook.dockerfile",
     "lint:js": "eslint \"src/**/*.{js,ts,jsx,tsx}\"",
     "lint:js:fix": "eslint \"src/**/*.{js,ts,jsx,tsx}\" --fix --rule 'react-hooks/exhaustive-deps: off'",
     "lint:quiet": "yarn lint:js --quiet && yarn lint:css --quiet",

@@ -5,7 +5,7 @@ import { SyncThunk } from '@/store/types';
 
 import { updatePrototype, updatePrototypeContext, updatePrototypeStatus } from '../actions';
 import { prototypeVisualSelector } from '../selectors';
-import { PrototypeMode, PrototypeStatus } from '../types';
+import { PrototypeStatus } from '../types';
 import { log } from '../utils';
 
 const resetPrototype = (): SyncThunk => (dispatch, getState) => {
@@ -52,7 +52,6 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
       activePathBlockIDs: [],
       autoplay: false,
       visual: { ...visualState, sourceID: null },
-      mode: PrototypeMode.CANVAS,
     })
   );
 };

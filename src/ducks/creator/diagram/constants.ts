@@ -18,4 +18,5 @@ export const INITIAL_DIAGRAM_STATE: DiagramStateType = {
   sections: {},
   markupNodeIDs: [],
   diagramState: DiagramState.IDLE,
+  hidden: false,
 };

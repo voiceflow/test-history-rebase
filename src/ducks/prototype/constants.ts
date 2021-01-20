@@ -1,4 +1,4 @@
-import { InputMode, PrototypeMode, PrototypeState, PrototypeStatus } from './types';
+import { InputMode, PrototypeState, PrototypeStatus } from './types';
 
 export const STATE_KEY = 'prototype';
 
@@ -12,7 +12,7 @@ export const INITIAL_STATE: PrototypeState = {
   activePathLinkIDs: [],
   showChips: true,
   autoplay: false,
-  mode: PrototypeMode.CANVAS,
+  mode: {},
   visual: {
     device: null,
     sourceID: null,

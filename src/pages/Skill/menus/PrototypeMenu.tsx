@@ -13,12 +13,13 @@ type PrototypeMenuProps = {
   open: boolean;
 };
 
-const PrototypeMenu: React.FC<PrototypeMenuProps & ConnectedPrototypeMenuProps> = ({ open, platform, updatePrototypeMode }) => {
+const PrototypeMenu: React.FC<PrototypeMenuProps & ConnectedPrototypeMenuProps> = ({ open, platform, mode, updatePrototypeMode }) => {
   const visualPrototype = useFeature(FeatureFlag.VISUAL_PROTOTYPE);
 
   return (
     <SubMenu
       open={open}
+      selected={mode}
       options={PROTOTYPE_MENU_OPTIONS[platform]
         .filter(({ value }) => visualPrototype.isEnabled || value !== Prototype.PrototypeMode.DISPLAY)
         .map((option: SubMenuItem) => option)}
@@ -31,10 +32,11 @@ const PrototypeMenu: React.FC<PrototypeMenuProps & ConnectedPrototypeMenuProps> 
 
 const mapStateToProps = {
   platform: Skill.activePlatformSelector,
+  mode: Prototype.activePrototypeModeSelector,
 };
 
 const mapDispatchToProps = {
-  updatePrototypeMode: Prototype.updatePrototypeMode,
+  updatePrototypeMode: Prototype.updateActivePrototypeMode,
 };
 
 type ConnectedPrototypeMenuProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

@@ -3,7 +3,7 @@ import undoable, { includeAction } from 'redux-undo';
 
 import { DiagramState } from '@/constants';
 import { NodeData } from '@/models';
-import { ActionReducer, Reducer, RootReducer } from '@/store/types';
+import { Reducer, RootReducer } from '@/store/types';
 import { compose } from '@/utils/functional';
 import { normalize } from '@/utils/normalized';
 
@@ -17,6 +17,7 @@ import {
   ReorderPorts,
   SetDiagramState,
   SetSectionState,
+  UpdateHidden,
   UpdateNodeData,
   UpdateNodeLocation,
 } from '../actions';
@@ -43,9 +44,11 @@ import unmergeNodeReducer from './unmergeNode';
 
 // reducers
 
-export const initializeCreatorReducer: ActionReducer<DiagramStateType, InitializeCreator> = ({
-  payload: { diagramID, rootNodeIDs, nodes, links, ports, data, markupNodeIDs },
-}) => ({
+export const initializeCreatorReducer: Reducer<DiagramStateType, InitializeCreator> = (
+  state,
+  { payload: { diagramID, rootNodeIDs, nodes, links, ports, data, markupNodeIDs } }
+) => ({
+  ...state,
   diagramID,
   rootNodeIDs,
   data,
@@ -107,18 +110,21 @@ export const setSectionStateReducer: Reducer<DiagramStateType, SetSectionState> 
   };
 };
 
-export const setDiagramState: Reducer<DiagramStateType, SetDiagramState> = (state, { payload }) => {
-  return {
-    ...state,
-    diagramState: payload,
-  };
-};
+export const setDiagramStateReducer: Reducer<DiagramStateType, SetDiagramState> = (state, { payload }) => ({
+  ...state,
+  diagramState: payload,
+});
+
+export const updateHiddenReducer: Reducer<DiagramStateType, UpdateHidden> = (state, { payload }) => ({
+  ...state,
+  hidden: payload,
+});
 
 const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | AnyCreatorAction> = (state = INITIAL_DIAGRAM_STATE, action) => {
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
     case CreatorAction.INITIALIZE_CREATOR:
-      return initializeCreatorReducer(action);
+      return initializeCreatorReducer(state, action);
     case CreatorAction.RESET_CREATOR:
       return INITIAL_DIAGRAM_STATE;
     case DiagramAction.UPDATE_NODE_DATA:
@@ -154,7 +160,9 @@ const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | An
     case DiagramAction.SET_SECTION_STATE:
       return setSectionStateReducer(state, action);
     case DiagramAction.SET_DIAGRAM_STATE:
-      return setDiagramState(state, action);
+      return setDiagramStateReducer(state, action);
+    case DiagramAction.UPDATE_HIDDEN:
+      return updateHiddenReducer(state, action);
     default:
       return state;
   }

@@ -17,6 +17,7 @@ export type DiagramState = {
   sections: Record<string, unknown>;
   markupNodeIDs: string[];
   diagramState: DState;
+  hidden: boolean;
 };
 
 export type NodeDescriptor = Overwrite<Node, { ports: Record<'in' | 'out', PartialModel<Port>[]> }>;

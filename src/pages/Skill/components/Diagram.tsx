@@ -2,6 +2,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { RemoveIntercom } from '@/components/IntercomChat';
+import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
@@ -30,7 +31,7 @@ export type DiagramProps = RouteComponentProps & {
   diagramID: string;
 };
 
-const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, prototypeMode, canvasOnly }) => {
+const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, prototypeMode, canvasOnly, showCanvas, hideCanvas }) => {
   const engine = useEventualEngine();
   const isPrototypingMode = usePrototypingMode();
   const isMarkupMode = useMarkupMode();
@@ -42,8 +43,11 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, pr
   React.useEffect(() => {
     if (isCanvasVisible) return undefined;
 
-    engine()?.hideCanvas();
-    return () => engine()?.showCanvas();
+    hideCanvas();
+
+    return () => {
+      showCanvas();
+    };
   }, [isCanvasVisible]);
 
   useTeardown(() => {
@@ -99,9 +103,14 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, pr
 
 const mapStateToProps = {
   canvasOnly: UI.isCanvasOnlyShowingSelector,
-  prototypeMode: Prototype.prototypeModeSelector,
+  prototypeMode: Prototype.activePrototypeModeSelector,
 };
 
-type ConnectedDiagramProps = ConnectedProps<typeof mapStateToProps>;
+const mapDispatchToProps = {
+  hideCanvas: Creator.hideCanvas,
+  showCanvas: Creator.showCanvas,
+};
 
-export default connect(mapStateToProps)(Diagram) as React.FC<DiagramProps>;
+type ConnectedDiagramProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Diagram) as React.FC<DiagramProps>;

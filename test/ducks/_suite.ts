@@ -66,7 +66,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
         return [stub, effect];
       },
 
-      applyEffect: async (sideEffect: AnyThunk, rootState?: Partial<State>) => {
+      applyEffect: async (sideEffect: AnyThunk, rootState?: DeepPartial<State>) => {
         const dispatch = utils.spy();
         const getState: () => any = utils.spy(() => ({ [Duck.STATE_KEY]: state, ...rootState }));
         const expectDispatch = (action: { type: string } | AnyAction | AnyThunk) => utils.expect(dispatch).to.be.calledWithExactly(action);
@@ -103,7 +103,9 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
 
     const testIgnoreOtherActions = () => {
       it('should ignore other actions', () => {
-        utils.expect(Duck.default(state, NOOP_ACTION)).to.eq(state);
+        const result = Duck.default(state, NOOP_ACTION);
+
+        utils.expect(result).to.eql(state);
       });
     };
 

@@ -8,6 +8,8 @@ export type Normalized<T> = {
   allKeys: string[];
 };
 
+export const EMPTY: Normalized<any> = { byKey: {}, allKeys: [] };
+
 export type NormalizedValue<T> = T extends Normalized<infer R> ? R : never;
 
 export type GetKey<T> = (obj: T, index?: number, array?: T[]) => string;

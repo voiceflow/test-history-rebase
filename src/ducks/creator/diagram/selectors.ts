@@ -79,3 +79,5 @@ export const sectionStateSelector = createSelector([rootSelector], ({ sections }
 export const markupNodeIDsSelector = createSelector([rootSelector], ({ markupNodeIDs }) => markupNodeIDs);
 
 export const diagramStateSelector = createSelector([rootSelector], ({ diagramState }) => diagramState);
+
+export const isHiddenSelector = createSelector([rootSelector], ({ hidden }) => hidden);

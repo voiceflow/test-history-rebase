@@ -60,7 +60,14 @@ const Wrapper = styled.div<{ markupMode: MarkupModeType | null }>`
   }
 `;
 
-const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory, redoHistory, children, focusedNode, clearFocus }) => {
+const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({
+  undoHistory,
+  redoHistory,
+  children,
+  focusedNode,
+  clearFocus,
+  isCanvasHidden,
+}) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const engine = React.useContext(EngineContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
@@ -118,6 +125,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
     <Wrapper
       id={Identifier.CANVAS_CONTAINER}
       className={cn({
+        [CANVAS_HIDDEN_CLASSNAME]: isCanvasHidden,
         [CANVAS_COMMENTING_ENABLED_CLASSNAME]: isCommentingMode,
         [CANVAS_MARKUP_ENABLED_CLASSNAME]: isMarkupMode,
         [CANVAS_PROTOTYPE_ENABLED_CLASSNAME]: isPrototypingMode,
@@ -132,6 +140,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
 };
 
 const mapStateToProps = {
+  isCanvasHidden: Creator.isHiddenSelector,
   focusedNode: Creator.focusedNodeSelector,
 };
 

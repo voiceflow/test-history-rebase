@@ -28,7 +28,7 @@ export type UpdatePrototype = Action<PrototypeAction.UPDATE_TEST, Partial<Protot
 
 export type UpdatePrototypeStatus = Action<PrototypeAction.UPDATE_TEST_STATUS, PrototypeStatus>;
 
-export type UpdatePrototypeMode = Action<PrototypeAction.UPDATE_TEST_MODE, PrototypeMode>;
+export type UpdatePrototypeMode = Action<PrototypeAction.UPDATE_TEST_MODE, { projectID: string; mode: PrototypeMode }>;
 
 export type PushContextHistory = Action<PrototypeAction.ADD_TEST_CONTEXT_HISTORY, Context>;
 
@@ -58,7 +58,8 @@ export const updatePrototype = (payload: Partial<PrototypeState>): UpdatePrototy
 
 export const updatePrototypeStatus = (payload: PrototypeStatus): UpdatePrototypeStatus => createAction(PrototypeAction.UPDATE_TEST_STATUS, payload);
 
-export const updatePrototypeMode = (payload: PrototypeMode): UpdatePrototypeMode => createAction(PrototypeAction.UPDATE_TEST_MODE, payload);
+export const updatePrototypeMode = (projectID: string, mode: PrototypeMode): UpdatePrototypeMode =>
+  createAction(PrototypeAction.UPDATE_TEST_MODE, { projectID, mode });
 
 export const pushContextHistory = (payload: Context): PushContextHistory => createAction(PrototypeAction.ADD_TEST_CONTEXT_HISTORY, payload);
 

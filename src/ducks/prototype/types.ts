@@ -48,7 +48,10 @@ export interface PrototypeState {
   contextStep: number;
   contextHistory: Partial<Context>[];
   context: Context;
-  mode: PrototypeMode;
+  /**
+   * map of project IDs to prototype nodes, so that each project can persist a different active mode
+   */
+  mode: Record<string, PrototypeMode>;
   visual: {
     device: DeviceType | null;
     sourceID: string | null;

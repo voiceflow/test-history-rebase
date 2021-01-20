@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect';
 
+import * as Skill from '../skill';
 import { createRootSelector } from '../utils';
 import { STATE_KEY } from './constants';
+import { PrototypeMode } from './types';
 
 export const prototypeSelector = createRootSelector(STATE_KEY);
 
@@ -30,6 +32,11 @@ export const prototypeInputModeSelector = createSelector([prototypeSelector], ({
 export const prototypeShowChipsSelector = createSelector([prototypeSelector], ({ showChips }) => showChips);
 
 export const prototypeModeSelector = createSelector([prototypeSelector], ({ mode }) => mode);
+
+export const activePrototypeModeSelector = createSelector(
+  [Skill.activeProjectIDSelector, prototypeModeSelector],
+  (projectID, mode) => mode[projectID] || PrototypeMode.CANVAS
+);
 
 export const prototypeVisualSelector = createSelector([prototypeSelector], ({ visual }) => visual);
 

@@ -28,6 +28,7 @@ export enum DiagramAction {
   SAVE_HISTORY = 'CREATOR:HISTORY:SAVE',
   SET_SECTION_STATE = 'CREATOR:SECTION_STATE:SET',
   SET_DIAGRAM_STATE = 'CREATOR:DIAGRAM_STATE:SET',
+  UPDATE_HIDDEN = 'CREATOR:HIDDEN:UPDATE',
 }
 
 // action types
@@ -83,6 +84,8 @@ export type SetSectionState = Action<DiagramAction.SET_SECTION_STATE, { key: str
 
 export type SetDiagramState = Action<DiagramAction.SET_DIAGRAM_STATE, DiagramState>;
 
+export type UpdateHidden = Action<DiagramAction.UPDATE_HIDDEN, boolean>;
+
 export type AnyDiagramAction =
   | UpdateNodeData
   | UpdateNodeLocation
@@ -103,7 +106,8 @@ export type AnyDiagramAction =
   | RedoHistory
   | SaveHistory
   | SetSectionState
-  | SetDiagramState;
+  | SetDiagramState
+  | UpdateHidden;
 
 // action creators
 
@@ -163,3 +167,7 @@ export const saveHistory = ({ force, preventUpdate }: { force?: boolean; prevent
 export const setSectionState = (key: string, value: unknown): SetSectionState => createAction(DiagramAction.SET_SECTION_STATE, { key, value });
 
 export const setDiagramState = (state: DiagramState): SetDiagramState => createAction(DiagramAction.SET_DIAGRAM_STATE, state);
+
+export const showCanvas = (): UpdateHidden => createAction(DiagramAction.UPDATE_HIDDEN, false);
+
+export const hideCanvas = (): UpdateHidden => createAction(DiagramAction.UPDATE_HIDDEN, true);

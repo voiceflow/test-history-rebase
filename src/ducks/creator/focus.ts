@@ -16,7 +16,7 @@ export type FocusState = {
 
 export const FOCUS_STATE_KEY = 'focus';
 
-const INITIAL_FOCUS_STATE = {
+export const INITIAL_FOCUS_STATE = {
   target: null,
   isActive: false,
   renameActiveRevision: null,

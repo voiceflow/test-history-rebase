@@ -20,7 +20,7 @@ import * as Thread from '@/ducks/thread';
 import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { useMouseMove } from '@/hooks';
 import { NodeData } from '@/models';
-import { CANVAS_HIDDEN_CLASSNAME, CanvasAction } from '@/pages/Canvas/constants';
+import { CanvasAction } from '@/pages/Canvas/constants';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { Selector, Store } from '@/store/types';
 import { Pair, Point } from '@/types';
@@ -263,11 +263,11 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   }
 
   showCanvas() {
-    this.removeClass(CANVAS_HIDDEN_CLASSNAME);
+    this.store.dispatch(Creator.showCanvas());
   }
 
   hideCanvas() {
-    this.addClass(CANVAS_HIDDEN_CLASSNAME);
+    this.store.dispatch(Creator.hideCanvas());
   }
 
   /**

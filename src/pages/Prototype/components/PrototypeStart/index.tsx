@@ -76,7 +76,7 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
 };
 
 const mapStateToProps = {
-  mode: Prototype.prototypeModeSelector,
+  mode: Prototype.activePrototypeModeSelector,
   device: Prototype.prototypeVisualDeviceSelector,
 };
 

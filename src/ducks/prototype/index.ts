@@ -1,3 +1,6 @@
+import { persistReducer } from 'redux-persist';
+import storageLocal from 'redux-persist/lib/storage';
+
 import { Reducer, RootReducer } from '@/store/types';
 
 import {
@@ -13,7 +16,7 @@ import {
   UpdatePrototypeVisualSource,
   UpdatePrototypeWebhookData,
 } from './actions';
-import { INITIAL_STATE } from './constants';
+import { INITIAL_STATE, STATE_KEY } from './constants';
 import { PrototypeState } from './types';
 
 export * from './actions';
@@ -21,6 +24,12 @@ export * from './constants';
 export * from './types';
 export * from './selectors';
 export * from './sideEffects';
+
+const PERSIST_CONFIG = {
+  key: STATE_KEY,
+  storage: storageLocal,
+  whitelist: ['mode'],
+};
 
 // reducers
 
@@ -34,9 +43,12 @@ const updatePrototypeStatusReducer: Reducer<PrototypeState, UpdatePrototypeStatu
   status,
 });
 
-const updatePrototypeModeReducer: Reducer<PrototypeState, UpdatePrototypeMode> = (state, { payload: mode }) => ({
+const updatePrototypeModeReducer: Reducer<PrototypeState, UpdatePrototypeMode> = (state, { payload: { projectID, mode } }) => ({
   ...state,
-  mode,
+  mode: {
+    ...state.mode,
+    [projectID]: mode,
+  },
 });
 
 const pushContextHistoryReducer: Reducer<PrototypeState, PushContextHistory> = (state, { payload }) => ({
@@ -109,4 +121,4 @@ const prototypeReducer: RootReducer<PrototypeState, AnyPrototypeAction> = (state
   }
 };
 
-export default prototypeReducer;
+export default persistReducer(PERSIST_CONFIG, prototypeReducer);

@@ -5,6 +5,7 @@ import { useSelector, useStore } from 'react-redux';
 
 import { CanvasAPI } from '@/components/Canvas';
 import { MovementCalculator } from '@/components/Canvas/types';
+import { isDebug } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { BlockType, COPY_NODES } from '@/constants';
 import { MousePositionContext } from '@/contexts';
@@ -56,6 +57,12 @@ const expireInstance = (entities: Map<string, { api: { instanceID: string } }>, 
     entities.delete(entityID);
   }
 };
+
+declare global {
+  interface Window {
+    vf_engine?: Engine | null;
+  }
+}
 
 export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> {
   log = logger.child('engine');
@@ -137,6 +144,10 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   constructor(public store: Store, public mousePosition: React.RefObject<Point>, realtimeSubscription: RealtimeSubscriptionValue) {
     super();
+
+    if (isDebug()) {
+      window.vf_engine = this;
+    }
 
     // do not change these to property declarations, they depend on this.store being set
     this.realtime = new RealtimeEngine(realtimeSubscription, this);
@@ -406,6 +417,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
     await this.reset();
     await Promise.all(this.services.map((service) => service.teardown()));
+    window.vf_engine = null;
 
     this.log.info(this.log.reset('engine shut down'));
   }

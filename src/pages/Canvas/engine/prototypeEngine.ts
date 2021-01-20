@@ -57,14 +57,7 @@ class PrototypeEngine extends EngineConsumer {
     this.highlightedLinkIDs = highlightedLinkIDs;
 
     nodeDiff.forEach((id) => this.engine.node.redraw(id));
-    linkDiff.forEach((id) => {
-      const link = this.engine.getLinkByID(id);
-
-      this.engine.link.redraw(id);
-      if (link) {
-        this.engine.link.redrawPorts(link);
-      }
-    });
+    linkDiff.forEach((id) => this.engine.link.redrawLinked(id));
   }
 
   reset() {
@@ -80,8 +73,8 @@ class PrototypeEngine extends EngineConsumer {
     this.dispatch(Prototype.resetPrototype());
     this.engine.activation.reset();
     this.engine.removeClass(CANVAS_PROTOTYPE_RUNNING_CLASSNAME);
-    nodeIDs.forEach((nodeID) => this.engine.node.redraw(nodeID));
-    linkIDs.forEach((linkID) => this.engine.link.redraw(linkID));
+    nodeIDs.forEach((id) => this.engine.node.redraw(id));
+    linkIDs.forEach((id) => this.engine.link.redrawLinked(id));
 
     this.log.info(this.log.reset('reset prototype'));
   }

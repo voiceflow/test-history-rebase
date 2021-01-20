@@ -25,8 +25,6 @@ const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; is
   const activeDiagramID = useSelector(Skill.activeDiagramIDSelector);
   const flowIDHistory = useSelector(Prototype.prototypeFlowIDHistorySelector);
   const getNodeByID = useSelector(Creator.nodeByIDSelector);
-  const getLinkByID = useSelector(Creator.linkByIDSelector);
-  const getJoiningLinkIDs = useSelector(Creator.joiningLinkIDsSelector);
   const contextStep = useSelector(Prototype.prototypeContextStepSelector);
   const [status, setStatus] = React.useState<PMStatus | null>(null);
   const [messages, updateMessages] = React.useState<Message[]>([]);
@@ -48,7 +46,6 @@ const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; is
     flowIDHistory,
     contextHistory,
     activeDiagramID,
-    getJoiningLinks: (sourceNodeID, targetNodeID) => getJoiningLinkIDs(sourceNodeID, targetNodeID, true).map(getLinkByID),
     updatePrototype: (payload) => dispatch(Prototype.updatePrototype(payload)),
     setInteractions,
     getLinksByPortID,

@@ -13,6 +13,8 @@ export const DEVICE_INFO = {
 // Container env var-based configuration overrides
 declare global {
   interface Window {
+    VF_DEBUG?: boolean; // enter into debugging mode
+
     VF_OVERRIDE_API_HOST?: string; // API_HOST URL
     VF_OVERRIDE_CANVAS_EXPORT_ENDPOINT?: string; // CANVAS_ENDPOINT URL
     VF_OVERRIDE_APP_ENV?: string; // creator-app runtime environment
@@ -46,6 +48,8 @@ export const NODE_ENV = process.env.NODE_ENV!;
 export const IS_PRODUCTION = NODE_ENV === 'production';
 export const IS_DEVELOPMENT = NODE_ENV === 'development';
 export const IS_TEST = NODE_ENV === 'test';
+
+export const isDebug = () => IS_DEVELOPMENT || !!window.VF_DEBUG;
 
 export const APP_ENV = window.VF_OVERRIDE_APP_ENV || process.env.APP_ENV!;
 export const IS_PRODUCTION_ENV = APP_ENV === 'production';

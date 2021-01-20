@@ -3,6 +3,7 @@ import React from 'react';
 import Box from '@/components/Box';
 import Button from '@/components/Button';
 import { ButtonVariant } from '@/components/Button/constants';
+import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import Reset from '@/pages/Prototype/components/PrototypeReset';
@@ -32,6 +33,7 @@ const PrototypeInput = <L extends string>({
   setShowChips,
   onUserInput,
   stepForward,
+  diagramID,
   status,
   stepBack,
   contextStep,
@@ -55,7 +57,7 @@ const PrototypeInput = <L extends string>({
 
   React.useEffect(() => {
     inputRef.current?.focus();
-  }, []);
+  }, [diagramID]);
 
   return (
     <>
@@ -107,6 +109,7 @@ const mapStateToProps = {
   inputMode: Prototype.prototypeInputModeSelector,
   showChips: Prototype.prototypeShowChipsSelector,
   status: Prototype.prototypeStatusSelector,
+  diagramID: Creator.creatorDiagramIDSelector,
 };
 
 const mapDispatchToProps = {

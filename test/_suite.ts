@@ -15,7 +15,10 @@ export const createSuite = <T = {}>(createUtils?: (utils: Utils) => T) =>
   mochaSuite<T & Utils, void>((tests) => {
     const sandbox = sinon.createSandbox();
 
-    afterEach(() => sandbox.restore());
+    afterEach(() => {
+      sandbox.restore();
+      global.localStorage.clear();
+    });
 
     const utils: Utils = {
       spy: sandbox.spy.bind(sandbox),

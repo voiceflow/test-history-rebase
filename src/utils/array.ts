@@ -23,6 +23,12 @@ export const head = <T>(items: T[]): [T, T[]] => {
   return [first, rest];
 };
 
+export const tail = <T>(items: T[]): [T[], T] => {
+  const last = items[items.length - 1];
+  const rest = items.slice(0, -1);
+  return [rest, last];
+};
+
 export const reorder = <T>(items: T[], fromIndex: number, toIndex: number) => {
   if (fromIndex < 0 || fromIndex >= items.length) {
     return items;

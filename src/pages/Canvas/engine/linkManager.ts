@@ -93,8 +93,10 @@ class LinkManager extends EngineConsumer {
     const link = this.engine.getLinkByID(linkID);
 
     this.redraw(linkID);
-    this.engine.port.redraw(link.source.portID);
-    this.engine.node.redraw(link.target.nodeID);
+
+    if (link) {
+      this.redrawPorts(link);
+    }
   }
 
   redrawPorts({ source: { portID: sourcePortID }, target: { portID: targetPortID } }: Link) {

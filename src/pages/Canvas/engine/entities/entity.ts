@@ -3,6 +3,7 @@ import shallowEqual from 'shallowequal';
 
 import { useTeardown } from '@/hooks';
 import { objectID } from '@/utils';
+import { append, withoutValue } from '@/utils/array';
 import Logger from '@/utils/logger';
 
 import { EntityType } from '../constants';
@@ -20,6 +21,8 @@ const isDirectlyEqual = <T>(lhs: T, rhs: T) => lhs === rhs;
 export abstract class Entity<T extends EntityInstance = EntityInstance> {
   instanceID = objectID();
 
+  classNames: string[] = [];
+
   handlers: ((entity: this) => any)[] = [];
 
   public instance: T | null = null;
@@ -27,9 +30,20 @@ export abstract class Entity<T extends EntityInstance = EntityInstance> {
   // eslint-disable-next-line no-useless-constructor
   constructor(protected type: EntityType, protected engine: Engine, protected log: typeof Logger) {}
 
+  #addClass = (className: string) => {
+    this.classNames = append(this.classNames, className);
+    this.instance?.addClass(className);
+  };
+
+  #removeClass = (className: string) => {
+    this.classNames = withoutValue(this.classNames, className);
+    this.instance?.removeClass(className);
+  };
+
   useInstance(instance: T) {
     React.useEffect(() => {
       this.instance = instance;
+      this.classNames.forEach((className) => this.instance?.addClass(className));
     }, [instance]);
 
     useTeardown(() => {
@@ -84,13 +98,13 @@ export abstract class Entity<T extends EntityInstance = EntityInstance> {
   useConditionalStyle(className: string, isActive: boolean) {
     React.useEffect(() => {
       if (isActive) {
-        this.instance?.addClass(className);
+        this.#addClass(className);
       } else {
-        this.instance?.removeClass(className);
+        this.#removeClass(className);
       }
     }, [isActive]);
 
-    useTeardown(() => this.instance?.removeClass(className));
+    useTeardown(() => this.#removeClass(className));
   }
 }
 

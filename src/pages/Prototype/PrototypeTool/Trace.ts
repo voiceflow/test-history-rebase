@@ -5,10 +5,11 @@ import _ from 'lodash';
 import { IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
 import { SpeakTraceAudioType, StreamTraceAction, TraceType } from '@/constants/prototype';
+import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import { BlockTrace, ChoiceTrace, EndTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
-import { unique } from '@/utils/array';
+import { tail, unique } from '@/utils/array';
 
 import { Interaction, PMStatus } from '../types';
 import AudioController from './Audio';
@@ -36,7 +37,6 @@ export type TraceControllerProps = {
   activeDiagramID: string;
   setInteractions: (interactions: Interaction[]) => void;
   updatePrototype: (payload: Partial<Prototype.PrototypeState>) => void;
-  getJoiningLinks: (lhsNodeID: string, rhsNodeID: string) => Link[];
   getLinksByPortID: (portID: string) => Link[];
   activePathLinkIDs: string[];
   activePathBlockIDs: string[];
@@ -289,19 +289,19 @@ class TraceController {
   }
 
   private async highlightBlock(node: Node) {
-    const hasParent = !!node?.parentNode;
+    const hasParent = !!node.parentNode;
+
+    const [, sourceNodeID] = tail(this.props.engine?.select(Prototype.activePathBlockIDsSelector) || []);
 
     if (hasParent) {
-      this.saveActivePathBlock(node!);
+      this.saveActivePathBlock(node);
     }
 
-    const previousNodeID = this.props.engine?.selection.getTargets()?.[0];
-    const nextStepID = node.id;
-    const parentID = node?.parentNode;
+    this.saveActivePathLink(sourceNodeID, node);
 
-    this.saveActivePathLink(nextStepID, previousNodeID!, node, parentID);
-
-    this.focusNode(nextStepID, parentID);
+    if (hasParent) {
+      this.focusNode(node.parentNode!);
+    }
   }
 
   private async processStreamTrace(
@@ -430,34 +430,37 @@ class TraceController {
     this.props.setError(message);
   };
 
-  private saveActivePathLink(nodeID: string, previousNodeID: string, node: Node, parentID?: string | null) {
-    // Combined blocks and first step IDs must be checked as the inPort
-    const targetNodeIDs = [nodeID];
-    if (parentID) {
-      const isFirstStep = this.props.engine?.getNodeByID(parentID)?.combinedNodes[0] === nodeID;
-      if (isFirstStep) {
-        targetNodeIDs.push(parentID);
-      }
-    }
+  private findLinkBetween(sourceID: string, targetID: string): string | null {
+    const source = this.props.engine?.getNodeByID(sourceID);
+    const [, sourceLastChild] = tail(source?.combinedNodes ?? []);
+    const sourceIDs = [sourceID, ...(sourceLastChild ? [sourceLastChild] : [])];
 
-    const activePathLink: Link | undefined = targetNodeIDs.reduce<Link[]>(
-      (acc, targetNodeID) => [...acc, ...this.props.getJoiningLinks(previousNodeID, targetNodeID)],
-      []
-    )[0];
+    const target = this.props.engine?.getNodeByID(targetID);
+    const [targetFirstChild] = target?.parentNode ? this.props.engine?.getNodeByID(target.parentNode).combinedNodes ?? [] : [];
+    const targetIDs = [targetID, ...(targetID === targetFirstChild ? [target!.parentNode!] : [])];
+
+    const getJoiningLinks = this.props.engine?.select(Creator.joiningLinkIDsSelector);
+    const [linkID] = sourceIDs.flatMap((id) => targetIDs.flatMap((linkTargetID) => getJoiningLinks?.(id, linkTargetID, true) ?? []));
+
+    return linkID ?? null;
+  }
+
+  private saveActivePathLink(sourceNodeID: string, targetNode: Node) {
+    const activePathLinkID = this.findLinkBetween(sourceNodeID, targetNode.id);
 
     let flowOutLink: string[] = [];
     // We need to prematurely highlight the out link of a node block (if it exists)
     // because the regular active path logic doesn't account for that case
-    if (node.type === BlockType.FLOW) {
-      const outPort: string = node.ports.out[0];
+    if (targetNode.type === BlockType.FLOW) {
+      const outPort: string = targetNode.ports.out[0];
       const linksByPortID = this.props.getLinksByPortID(outPort);
       const flowOutLinkID = linksByPortID?.[0]?.id;
       flowOutLink = flowOutLinkID ? [flowOutLinkID] : [];
     }
 
     let activePathLinkArray = this.props.activePathLinkIDs;
-    if (activePathLink) {
-      activePathLinkArray = unique([...this.props.activePathLinkIDs, ...flowOutLink, activePathLink.id]);
+    if (activePathLinkID) {
+      activePathLinkArray = unique([...this.props.activePathLinkIDs, ...flowOutLink, activePathLinkID]);
     }
     const updatedContextHistory = getUpdatedContextHistory(
       this.props.contextStep,
@@ -469,12 +472,8 @@ class TraceController {
     this.props.updatePrototype({ activePathLinkIDs: activePathLinkArray, contextHistory: updatedContextHistory });
   }
 
-  private focusNode(nodeID: string, parentID?: string | null) {
-    this.props.engine?.selection.replace([nodeID]);
-
-    if (parentID) {
-      this.props.engine?.node.center(parentID);
-    }
+  private focusNode(parentID: string) {
+    this.props.engine?.node.center(parentID);
   }
 
   private async waitNode(nodeID: string) {

@@ -38,6 +38,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
     const engine = ({
       node: { center: stub(), ports: { out: ['1'] } },
       nodes: [{ 1: { type: BlockType.START } }],
+      select: stub(),
       selection: { replace: stub(), getTargets: stub(), reset: stub() },
       getPrototypeMuted: stub(),
       getNodeByID: stub().returns({ id: STEP_ID, parentNode: BLOCK_ID, combinedNodes: ['1'] }),
@@ -68,7 +69,6 @@ const suite = createSuite(({ spy, stub, expect }) => ({
         activePathLinkIDs: [],
         activePathBlockIDs: [],
         getLinksByPortID: stub(),
-        getJoiningLinks: stub().returns([]),
         updatePrototype: stub(),
         contextStep: 1,
         activeDiagramID: '',
@@ -152,8 +152,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
     return expect(controller['props']['enterFlow']);
   },
 
-  expectFocusNode(controller: TraceController, nodeID: string) {
-    expect(controller['props']['engine']!['selection']['replace']).to.be.calledWith([nodeID]);
+  expectFocusNode(controller: TraceController) {
     return expect(controller['props']['engine']!['node']['center']);
   },
 
@@ -228,7 +227,7 @@ suite(
 
         await controller.next();
 
-        expectFocusNode(controller, STEP_ID).to.be.calledOnceWith(BLOCK_ID);
+        expectFocusNode(controller).to.be.calledOnceWith(BLOCK_ID);
         expectSetTimeout(controller).not.to.be.called;
         expectProcessSingleTrace(controller, TraceMethods.BLOCK);
       });
@@ -238,7 +237,7 @@ suite(
 
         await controller.next();
 
-        expectFocusNode(controller, STEP_ID).calledOnce;
+        expectFocusNode(controller).calledOnce;
         expectSetTimeout(controller).to.be.called;
         expectProcessSingleTrace(controller, TraceMethods.BLOCK);
       });

@@ -2,7 +2,7 @@ import { GeneralRequest, IntentName, RequestType } from '@voiceflow/general-type
 import cuid from 'cuid';
 import _ from 'lodash';
 
-import { IS_TEST } from '@/config';
+import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
 import { SpeakTraceAudioType, StreamTraceAction, TraceType } from '@/constants/prototype';
 import * as Creator from '@/ducks/creator';
@@ -119,7 +119,12 @@ class TraceController {
     }
 
     if (!this.context) {
-      this.setError('Unable to fetch response');
+      if (GENERAL_RUNTIME_ENDPOINT && !GENERAL_RUNTIME_ENDPOINT.includes('voiceflow')) {
+        this.setError(`Unable to fetch response from custom endpoint: ${GENERAL_RUNTIME_ENDPOINT}`);
+      } else {
+        this.setError('Unable to fetch response');
+      }
+
       return;
     }
 

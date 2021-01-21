@@ -1,4 +1,5 @@
 import { GeneralRequest } from '@voiceflow/general-types';
+import _isString from 'lodash/isString';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -91,10 +92,9 @@ const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; is
 
   const onInteraction = React.useCallback(
     (request: GeneralRequest | string) => {
-      if (Utils.checkForSpecialCharacters(request as string)) {
+      if (_isString(request) && Utils.checkForSpecialCharacters(request)) {
         toast.warn('Your response contains special character. Certain locales and platforms does not support utterances with special characters.');
-
-        return prototype.interact(Utils.removeSpecialCharacters(request as string));
+        return prototype.interact(Utils.removeSpecialCharacters(request));
       }
       return prototype.interact(request);
     },

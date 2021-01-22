@@ -295,7 +295,7 @@
     "webpack-bundle-analyzer": "^3.6.0",
     "webpack-manifest-plugin": "^2.2.0",
     "webpack-merge": "^5.7.3",
-    "webpack-nano": "^1.0.0",
+    "webpack-nano": "^1.1.1",
     "webpack-plugin-serve": "^1.2.1",
     "webpackbar": "^4.0.0"
   },

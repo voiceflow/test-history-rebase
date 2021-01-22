@@ -24718,15 +24718,15 @@ webpack-merge@^5.7.3:
     clone-deep "^4.0.1"
     wildcard "^2.0.0"
 
-webpack-nano@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/webpack-nano/-/webpack-nano-1.0.0.tgz#70439871ea17465eec9f09bf9d07129074c4a44b"
-  integrity sha512-1LJ5KHB/5vSX0sMneyEv182kHrnj86QL+zncPnOWRNvAqp7uB8uqpNigWCnO/ma5pUrWrMNDIZRHxJpNPMACBA==
+webpack-nano@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/webpack-nano/-/webpack-nano-1.1.1.tgz#63fb3973a6b6267163cc9f641241987f80f7d7ab"
+  integrity sha512-3dypjHtWQylpgsYmaovsUgFmXmDBoArq8aNMvDjmhVRpaA8MQsYxMiXgsp09GYL3n5y+1PfscytrFW3IXknlIQ==
   dependencies:
-    chalk "^3.0.0"
+    chalk "^4.1.0"
     import-local "^3.0.2"
     rechoir "^0.7.0"
-    yargs-parser "^18.1.1"
+    yargs-parser "^20.2.1"
 
 webpack-plugin-ramdisk@^0.1.2:
   version "0.1.4"
@@ -25177,7 +25177,7 @@ yargs-parser@13.1.2, yargs-parser@^13.1.2:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
-yargs-parser@20.x, yargs-parser@^20.2.2, yargs-parser@^20.2.3:
+yargs-parser@20.x, yargs-parser@^20.2.1, yargs-parser@^20.2.2, yargs-parser@^20.2.3:
   version "20.2.4"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.4.tgz#b42890f14566796f85ae8e3a25290d205f154a54"
   integrity sha512-WOkpgNhPTlE73h4VFAFsOnomJVaovO8VqLDzy5saChRBFQFBoMYirowyW+Q9HB4HFF4Z7VZTiG3iSzJJA29yRA==
@@ -25189,7 +25189,7 @@ yargs-parser@^10.0.0:
   dependencies:
     camelcase "^4.1.0"
 
-yargs-parser@^18.1.1, yargs-parser@^18.1.2, yargs-parser@^18.1.3:
+yargs-parser@^18.1.2, yargs-parser@^18.1.3:
   version "18.1.3"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-18.1.3.tgz#be68c4975c6b2abf469236b0c870362fab09a7b0"
   integrity sha512-o50j0JeToy/4K6OZcaQmW6lyXXKhq7csREXcDwk2omFPJEwUNOVtJKvmDr9EI1fAJZUyZcRF7kxGBWmRXudrCQ==

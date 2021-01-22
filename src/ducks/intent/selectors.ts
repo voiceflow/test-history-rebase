@@ -33,7 +33,7 @@ export const allPlatformIntentsSelector = createSelector(
     if (platform === PlatformType.GENERAL) {
       const lang = (locales[0] ?? GeneralLocale.EN_US).split('-')[0];
 
-      return [...intents, ...GENERAL_BUILT_INS_MAP[lang]];
+      return [...intents, ...(GENERAL_BUILT_INS_MAP[lang] || GENERAL_BUILT_INS_MAP.en)];
     }
 
     return [...intents, ...BUILT_IN_INTENTS[platform]];

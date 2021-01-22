@@ -1,7 +1,9 @@
 import { constants } from '@voiceflow/common';
+import { DEFAULT_INTENTS_MAP, DefaultIntent, Locale as GeneralLocale } from '@voiceflow/general-types';
 
 import { FILTERED_AMAZON_INTENTS, PlatformType, SLOT_REGEXP } from '@/constants';
 import { Intent, Slot } from '@/models';
+import { capitalizeFirstLetter } from '@/utils/string';
 
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
@@ -58,6 +60,15 @@ export const intentFactory = (platform: PlatformType) => (intent: { name: string
   };
 };
 
+export const generalIntentFactory = (generalIntent: DefaultIntent): Intent => {
+  const intent = intentFactory(PlatformType.GENERAL)(generalIntent);
+
+  return {
+    ...intent,
+    name: capitalizeFirstLetter(generalIntent.samples[0] ?? intent.name),
+  };
+};
+
 export const validateIntentName = (intentName: string, intents: Intent[], slots: Slot[]) => {
   const lowerCasedIntentName = intentName.toLowerCase();
 
@@ -76,10 +87,15 @@ export const ALEXA_BUILT_INS = constants.intents.BUILT_IN_INTENTS_ALEXA.map(inte
 
 export const GOOGLE_BUILT_INS = constants.intents.BUILT_IN_INTENTS_GOOGLE.map(intentFactory(PlatformType.GOOGLE));
 
+export const GENERAL_BUILT_INS_MAP = Object.keys(DEFAULT_INTENTS_MAP).reduce<Record<string, Intent[]>>(
+  (acc, key) => Object.assign(acc, { [key]: DEFAULT_INTENTS_MAP[key].map(generalIntentFactory) }),
+  {}
+);
+
 export const BUILT_IN_INTENTS = {
   [PlatformType.ALEXA]: ALEXA_BUILT_INS,
   [PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
-  [PlatformType.GENERAL]: [],
+  [PlatformType.GENERAL]: GENERAL_BUILT_INS_MAP[GeneralLocale.EN_US],
 };
 
 export const isBuiltInIntent = (intentID: string) => [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS].some((intent) => intent.id === intentID);

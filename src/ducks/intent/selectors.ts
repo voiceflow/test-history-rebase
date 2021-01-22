@@ -1,11 +1,12 @@
+import { Locale as GeneralLocale } from '@voiceflow/general-types';
 import _uniq from 'lodash/uniq';
 import { createSelector } from 'reselect';
 
 import { PlatformType } from '@/constants';
-import { activePlatformSelector } from '@/ducks/skill/skill/selectors';
+import { activeLocalesSelector, activePlatformSelector } from '@/ducks/skill/skill/selectors';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 import { Intent } from '@/models';
-import { BUILT_IN_INTENTS } from '@/utils/intent';
+import { BUILT_IN_INTENTS, GENERAL_BUILT_INS_MAP } from '@/utils/intent';
 
 import { STATE_KEY } from './constants';
 
@@ -26,8 +27,17 @@ export const allSlotsByIntentIDSelector = createSelector([intentByIDSelector], (
   return !intent ? [] : _uniq(intent.inputs.flatMap(({ slots }) => slots ?? '')).filter((s) => !!s);
 });
 
-export const allPlatformIntentsSelector = createSelector([allIntentsSelector, activePlatformSelector], (intents, platform: PlatformType) =>
-  intents.concat(BUILT_IN_INTENTS[platform] || [])
+export const allPlatformIntentsSelector = createSelector(
+  [allIntentsSelector, activePlatformSelector, activeLocalesSelector],
+  (intents, platform, locales) => {
+    if (platform === PlatformType.GENERAL) {
+      const lang = (locales[0] ?? GeneralLocale.EN_US).split('-')[0];
+
+      return [...intents, ...GENERAL_BUILT_INS_MAP[lang]];
+    }
+
+    return [...intents, ...BUILT_IN_INTENTS[platform]];
+  }
 );
 
 export const mapPlatformIntentsSelector = createSelector([allPlatformIntentsSelector], (intents) =>

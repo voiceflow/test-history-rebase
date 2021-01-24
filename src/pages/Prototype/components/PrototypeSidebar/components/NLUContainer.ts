@@ -7,7 +7,7 @@ type NLUContainerProps = {
 };
 
 const NLUContainer = styled(FlexCenter).attrs({ column: true })<NLUContainerProps>`
-  ${Text} {
+  & > ${Text} {
     text-align: center;
     white-space: pre-line;
     min-width: 270px;

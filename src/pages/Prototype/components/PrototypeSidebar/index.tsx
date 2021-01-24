@@ -6,7 +6,7 @@ import Box from '@/components/Box';
 import Drawer from '@/components/Drawer';
 import Flex, { FlexCenter } from '@/components/Flex';
 import { LoadCircle } from '@/components/Loader';
-import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
+import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as Diagram from '@/ducks/diagram';
@@ -24,7 +24,7 @@ import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
 
-import { Container, EmbedContainer, TrainContainer, TrainFadeDown, Trained, Training } from './components';
+import { Container, EmbedContainer, TrainingSection } from './components';
 
 export type PrototypeSidebarProps = {
   open: boolean;
@@ -108,27 +108,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
         ) : (
           <Container>
             {generalPrototypeEnabled && (
-              <Section
-                header="TRAINING"
-                onClick={toggleTrainingOpen}
-                isCollapsed={!trainingOpen}
-                collapseVariant={SectionToggleVariant.ARROW}
-                variant={SectionVariant.PROTOTYPE}
-                customHeaderStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
-                customContentStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
-              >
-                <TrainContainer isModelTraining={isModelTraining}>
-                  {isModelTraining ? (
-                    <TrainFadeDown key="training">
-                      <Training />
-                    </TrainFadeDown>
-                  ) : (
-                    <TrainFadeDown key="trained">
-                      <Trained openTraining={openTraining} />
-                    </TrainFadeDown>
-                  )}
-                </TrainContainer>
-              </Section>
+              <TrainingSection isOpen={trainingOpen} onOpen={openTraining} isTraining={isModelTraining} toggleOpen={toggleTrainingOpen} />
             )}
 
             <Section

@@ -7,17 +7,18 @@ import { getAbbrevatedFormat, getTimeDuration } from '@/utils/time';
 const DURATION_TIMEOUT = 30000;
 
 type DurationProps = {
-  time: string;
+  time: string | number;
   short?: boolean;
+  color?: string;
 };
 
-const Duration: React.FC<DurationProps> = ({ time, short = false }) => {
-  const [duration, setDuration] = React.useState<string>(getTimeDuration(time));
+const Duration: React.FC<DurationProps> = ({ time, short = false, color = '#8da2b5' }) => {
+  const [duration, setDuration] = React.useState<string>(() => getTimeDuration(time));
 
   useInterval(() => setDuration(getTimeDuration(time)), DURATION_TIMEOUT);
 
   return (
-    <Text color="#8da2b5" fontSize={13}>
+    <Text color={color} fontSize={13}>
       {short ? getAbbrevatedFormat(duration) : `${duration} ago`}
     </Text>
   );

@@ -1,0 +1,11 @@
+import { MenuContainer } from '@/components/Menu';
+import { styled } from '@/hocs';
+
+const TooltipContent = styled(MenuContainer)`
+  color: #62778c;
+  font-size: 15px;
+  padding: 17px 24px;
+  background-color: rgba(255, 255, 255, 0.9);
+`;
+
+export default TooltipContent;

@@ -1,0 +1,183 @@
+import { PrototypeModel } from '@voiceflow/api-sdk';
+import React from 'react';
+
+import client from '@/client';
+import Flex from '@/components/Flex';
+import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
+import TippyTooltip from '@/components/TippyTooltip';
+import { toast } from '@/components/Toast';
+import { NLPTrainStageType } from '@/constants/platforms';
+import * as PrototypeDuck from '@/ducks/prototype';
+import { PrototypeStatus } from '@/ducks/prototype';
+import * as Skill from '@/ducks/skill';
+import { connect } from '@/hocs';
+import { useSmartReducerV2, useTrackingEvents } from '@/hooks';
+import { NLPContext } from '@/pages/Skill/contexts';
+import { ConnectedProps } from '@/types';
+import logger from '@/utils/logger';
+import { ModelDiff, getModelsDiffs, isModelChanged } from '@/utils/prototypeModel';
+
+import TrainContainer from './TrainContainer';
+import TrainFadeDown from './TrainFadeDown';
+import Trained from './Trained';
+import Training from './Training';
+import TrainingSectionTitle, { TrainingSectionTitleVariant } from './TrainingSectionTitle';
+
+export type TrainingSectionProps = {
+  isOpen: boolean;
+  onOpen: () => void;
+  isTraining: boolean;
+  toggleOpen: () => void;
+};
+
+const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionProps> = ({
+  isOpen,
+  status,
+  onOpen,
+  platform,
+  projectID,
+  versionID,
+  isTraining,
+  toggleOpen,
+}) => {
+  const nlp = React.useContext(NLPContext)!;
+  const [trackingEvents] = useTrackingEvents();
+  const [state, stateApi] = useSmartReducerV2({
+    diff: {
+      slots: { new: [], deleted: [], updated: [] },
+      intents: { new: [], deleted: [], updated: [] },
+    } as ModelDiff,
+    fetching: false,
+    trainedModel: null as PrototypeModel | null,
+    lastTrainedTime: 0,
+  });
+
+  const onStartTraining = async () => {
+    trackingEvents.trackProjectTrainAssistant();
+
+    try {
+      await nlp.publish();
+    } catch (err) {
+      logger.warn('Train error', err);
+      toast.error('An error occurred while training the model.');
+    }
+  };
+
+  const getDiff = async () => {
+    try {
+      stateApi.update({ fetching: true });
+
+      const [projectPrototype, versionPrototype] = await Promise.all([
+        client.api.project.getPrototype(projectID),
+        client.api.version.getPrototype(versionID),
+      ] as const);
+
+      stateApi.update({
+        diff: getModelsDiffs(projectPrototype?.trainedModel ?? { slots: [], intents: [] }, versionPrototype.model),
+        fetching: false,
+        trainedModel: projectPrototype?.trainedModel ?? null,
+        lastTrainedTime: projectPrototype?.lastTrainedTime ?? Date.now(),
+      });
+    } catch {
+      stateApi.update({ fetching: false });
+    }
+  };
+
+  React.useEffect(() => {
+    if (!isTraining) {
+      getDiff();
+    }
+  }, [isTraining]);
+
+  const isTrained = !isModelChanged(state.diff) && (!nlp.job || nlp.job.stage.type === NLPTrainStageType.SUCCESS);
+
+  React.useEffect(() => {
+    if (status === PrototypeStatus.IDLE && !isTrained) {
+      onOpen();
+    }
+  }, [status]);
+
+  React.useEffect(() => {
+    if (nlp.job?.stage.type === NLPTrainStageType.ERROR) {
+      logger.warn('Train error', nlp.job.stage.data);
+
+      let message: string;
+      const nlpMessage = nlp.job.stage.data?.error?.message;
+
+      // eslint-disable-next-line sonarjs/no-small-switch
+      switch (nlpMessage) {
+        case 'Training failed with reason: FewLabels':
+          message =
+            'Your Assistant was unable to be trained because you have Slot(s) set as required, but you have not provided any Response Utterances. Please fix this and try training again.';
+          break;
+
+        default:
+          message = `An error occurred while training the model. ${nlpMessage || ''}`;
+      }
+
+      toast.error(message);
+    }
+  }, [nlp.job?.stage.type]);
+
+  return (
+    <Section
+      header={
+        <TippyTooltip title={!isTrained ? 'Assistant needs training' : 'Assistant fully trained'} disabled={isOpen}>
+          <Flex>
+            <TrainingSectionTitle
+              variant={
+                // eslint-disable-next-line no-nested-ternary
+                !state.trainedModel
+                  ? TrainingSectionTitleVariant.IDLE
+                  : isTrained
+                  ? TrainingSectionTitleVariant.TRAINED
+                  : TrainingSectionTitleVariant.UNTRAINED
+              }
+              statusVisible={!isOpen}
+            >
+              <span>TRAINING</span>
+            </TrainingSectionTitle>
+          </Flex>
+        </TippyTooltip>
+      }
+      variant={SectionVariant.PROTOTYPE}
+      onClick={toggleOpen}
+      isCollapsed={!isOpen}
+      collapseVariant={SectionToggleVariant.ARROW}
+      customHeaderStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
+      customContentStyling={{ backgroundColor: 'rgba(238, 244, 246, 0.5)' }}
+    >
+      <TrainContainer isModelTraining={isTraining}>
+        {isTraining ? (
+          <TrainFadeDown key="training">
+            <Training />
+          </TrainFadeDown>
+        ) : (
+          !state.fetching && (
+            <TrainFadeDown key="trained">
+              <Trained
+                diff={state.diff}
+                platform={platform}
+                isTrained={isTrained}
+                trainedModel={state.trainedModel}
+                lastTrainedTime={state.lastTrainedTime}
+                onStartTraining={onStartTraining}
+              />
+            </TrainFadeDown>
+          )
+        )}
+      </TrainContainer>
+    </Section>
+  );
+};
+
+const mapStateToProps = {
+  status: PrototypeDuck.prototypeStatusSelector,
+  platform: Skill.activePlatformSelector,
+  versionID: Skill.activeSkillIDSelector,
+  projectID: Skill.activeProjectIDSelector,
+};
+
+type ConnectedTrainingSectionProps = ConnectedProps<typeof mapStateToProps>;
+
+export default connect(mapStateToProps)(TrainingSection) as React.FC<TrainingSectionProps>;

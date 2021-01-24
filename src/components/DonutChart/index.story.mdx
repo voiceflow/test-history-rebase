@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import DonutChart from '.';
+
+<Meta title="DonutChart" component={DonutChart} />
+
+# Donut Chart
+
+<Preview>
+  <Story name="normal">{stories.normal()}</Story>
+  <Story name="tooltip">{stories.tooltip()}</Story>
+  <Story name="multiple pices">{stories.multiplePieces()}</Story>
+</Preview>

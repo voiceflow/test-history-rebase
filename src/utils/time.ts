@@ -3,7 +3,7 @@ import moment from 'moment';
 
 export const getCurrentTimestamp = () => Math.floor(Date.now() / 1000);
 
-export const getTimeDuration = (pastTime: string) => {
+export const getTimeDuration = (pastTime: string | number) => {
   const diff = moment().utc().diff(pastTime);
 
   return moment.duration(diff).humanize();

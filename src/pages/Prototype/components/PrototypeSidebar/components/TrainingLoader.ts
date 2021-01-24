@@ -1,6 +1,6 @@
 import { styled } from '@/hocs';
 
-const Loader = styled.div`
+const TrainingLoader = styled.div`
   position: relative;
   width: 50%;
   height: 4px;
@@ -24,13 +24,15 @@ const Loader = styled.div`
     0% {
       left: -10%;
     }
+
     50% {
       left: 90%;
     }
+
     100% {
       left: -10%;
     }
   }
 `;
 
-export default Loader;
+export default TrainingLoader;

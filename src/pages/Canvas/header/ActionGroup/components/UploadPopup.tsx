@@ -16,7 +16,7 @@ export type UploadPopupProps = {
 const UploadPopup: React.FC<UploadPopupProps> = ({ open, onClose, children, jobStage, multiSelect }) => {
   return (
     <PopupContainer open={open} jobStage={jobStage} multiSelect={multiSelect}>
-      {jobStage !== GoogleStageType.WAIT_PROJECT && <PopupCloseIcon onClick={onClose} />}
+      <PopupCloseIcon onClick={onClose} />
       <PopupTransition>{children}</PopupTransition>
     </PopupContainer>
   );

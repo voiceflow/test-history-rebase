@@ -21,3 +21,7 @@ export const prettifyGoogleVoicesLong = (voiceCode: string) => {
   const voiceType = `${capitalizeFirstLetter(splitCode[2])} ${splitCode[3]}`;
   return `${LocaleCodeToCountryLanguage[localeCode as Locale] || ''} ${voiceType}`;
 };
+
+export const prettifyAzureVoiceID = (voiceID: string) => {
+  return voiceID.split('-')[3].replace('RUS', '').replace('azure-', '');
+};

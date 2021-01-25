@@ -1,4 +1,5 @@
 import { constants } from '@voiceflow/common';
+import { AZURE_LOCALE_VOICE_META } from '@voiceflow/general-types/build/constants/index';
 import {
   Locale,
   LocaleCodeToCountryLanguage,
@@ -11,7 +12,7 @@ import _constant from 'lodash/constant';
 import { PlatformType } from '@/constants';
 import { capitalizeFirstLetter } from '@/utils/string';
 
-import { prettifyGoogleVoicesShort } from './utils';
+import { prettifyAzureVoiceID, prettifyGoogleVoicesShort } from './utils';
 
 const PROSODY_RATE_REGEXP = /^\d+(m?s)?$/;
 const PROSODY_PITCH_REGEXP = /^(\+|-)\d+(\.\d+)?%$/;
@@ -118,7 +119,7 @@ export const UNIVERSAL_TAGS = {
 };
 
 export const ALEXA_DEFAULT_TAGS = {
-  // 'amazon:domain': {
+  //  'amazon:domain': {
   //   color: '#e26d5a',
   //   attributes: {
   //     name: {
@@ -687,16 +688,16 @@ export const ALEXA_ADD_OPTIONS = [
         options: [
           {
             tag: 'say-as',
-            name: 'Interjection',
+            name: 'Expletive',
             attributes: {
-              'interpret-as': 'interjection',
+              'interpret-as': 'expletive',
             },
           },
           {
             tag: 'say-as',
-            name: 'Expletive',
+            name: 'Interjection',
             attributes: {
-              'interpret-as': 'expletive',
+              'interpret-as': 'interjection',
             },
           },
         ],
@@ -802,14 +803,30 @@ export const PLATFORM_SSML_META = {
       const allGoogleLocales = Object.values(Locale);
       return [
         {
-          value: capitalizeFirstLetter(PlatformType.ALEXA),
-          label: capitalizeFirstLetter(PlatformType.ALEXA),
+          value: 'Amazon',
+          label: 'Amazon',
           options: PLATFORM_SSML_META[PlatformType.ALEXA].voiceOptions(),
         },
         {
           value: capitalizeFirstLetter(PlatformType.GOOGLE),
           label: capitalizeFirstLetter(PlatformType.GOOGLE),
           options: PLATFORM_SSML_META[PlatformType.GOOGLE].voiceOptions(allGoogleLocales, useWavenet),
+        },
+        {
+          value: 'Microsoft',
+          label: 'Microsoft',
+          options: Object.values(AZURE_LOCALE_VOICE_META).map((meta) => {
+            return {
+              value: meta.language,
+              label: meta.language,
+              options: meta.voices.map((voice) => {
+                return {
+                  value: voice.voiceID,
+                  label: prettifyAzureVoiceID(voice.voiceID),
+                };
+              }),
+            };
+          }),
         },
       ];
     },

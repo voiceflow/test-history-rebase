@@ -10,6 +10,7 @@ export const Container = styled(Flex)<{ runBlink: boolean }>`
   bottom: 12px;
   right: 425px;
   padding: 10px;
+  z-index: 1;
 
   ${SvgIconContainer} {
     ${transition('color')}

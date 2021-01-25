@@ -10,6 +10,7 @@ const VoiceItem = styled(Flex)`
   padding-right: 56px;
   flex: 1;
   height: 100%;
+  min-width: 175px;
 
   &:hover {
     ${DefaultVoiceContainer} {

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { prettifyVoice } from '@/components/SSML/utils';
 import { SSML_TAG_REGEX } from '@/constants';
 import { styled } from '@/hocs';
 
@@ -20,7 +21,7 @@ const Speak: React.FC<SpeakProps> = ({ voice, message, ...props }) => {
   const noSSMLMessage = message.replace(SSML_TAG_REGEX, '');
   return noSSMLMessage ? (
     <Message {...props}>
-      {voice && <Voice>{voice}</Voice>}
+      {voice && <Voice>{prettifyVoice(voice)}</Voice>}
       {noSSMLMessage}
     </Message>
   ) : null;

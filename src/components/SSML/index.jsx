@@ -2,7 +2,7 @@ import cn from 'classnames';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import { prettifyGoogleVoicesLong } from '@/components/SSML/utils';
+import { prettifyGoogleVoicesLong, prettifyVoice } from '@/components/SSML/utils';
 import { defaultLabelRenderer } from '@/components/Select';
 import SvgIcon from '@/components/SvgIcon';
 import { PluginType } from '@/components/TextEditor';
@@ -64,14 +64,8 @@ const SSML = (
     option?.value === defaultVoice ? stopPropagation(onChangeDefaultVoice(null)) : onChangeDefaultVoice(option?.value ?? null);
   };
 
-  let displayedVoiceString = voice;
-  const isGoogleVoice = voice.includes('standard') || voice.includes('wavenet');
-  if (isGoogleVoice) {
-    displayedVoiceString = prettifyGoogleVoicesLong(voice);
-  }
-
   const voiceSelectLabel = capitalizeFirstLetter(
-    hasProjectLevelVoice ? prettifyGoogleVoicesLong(defaultVoice) : displayedVoiceString || 'Select Voice'
+    hasProjectLevelVoice ? prettifyGoogleVoicesLong(defaultVoice) : prettifyVoice(voice) || 'Select Voice'
   );
   if (ttsVoices.isEnabled && platform !== PlatformType.ALEXA) {
     // When removing the ttsVoices FF, update the PLATFORM_SSML_META const to return true for all platforms'  canChangeVoice

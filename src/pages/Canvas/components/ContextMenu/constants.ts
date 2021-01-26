@@ -53,7 +53,7 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   },
 ];
 
-const BLOCKS_WITHOUT_RENAME = [BlockType.START, BlockType.COMMENT];
+const BLOCKS_WITH_RENAME = [BlockType.COMBINED, BlockType.COMMAND];
 
 const isBlock = (nodeID: string, engine: Engine) => {
   const node = engine.getNodeByID(nodeID);
@@ -69,8 +69,7 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     value: CanvasAction.RENAME_BLOCK,
     shouldRender: ({ target: nodeID }, { engine }) => {
       const node = engine.getNodeByID(nodeID!);
-
-      return node && !BLOCKS_WITHOUT_RENAME.includes(node.type);
+      return node && BLOCKS_WITH_RENAME.includes(node.type);
     },
   },
   {

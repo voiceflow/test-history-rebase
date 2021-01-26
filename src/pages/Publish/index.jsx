@@ -63,7 +63,7 @@ function Publish(props) {
   const codeExport = useFeature(FeatureFlag.CODE_EXPORT);
   let tabOptions = [...TABS[platform]];
 
-  if (codeExport.isEnabled && platform !== PlatformType.GOOGLE) {
+  if (codeExport.isEnabled) {
     tabOptions = [...tabOptions, CODE_EXPORT_TAB];
   }
 

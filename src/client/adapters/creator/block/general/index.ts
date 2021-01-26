@@ -14,6 +14,7 @@ import randomAdapter from './random';
 import setAdapter from './set';
 import speakAdapter from './speak';
 import streamAdapter, { streamPortsAdapter } from './stream';
+import visualAdapter from './visual';
 
 export const generalBlockAdapter = {
   // internal
@@ -28,6 +29,7 @@ export const generalBlockAdapter = {
   [BlockType.SPEAK]: speakAdapter,
   [BlockType.STREAM]: streamAdapter,
   [BlockType.PROMPT]: promptAdapter,
+  [BlockType.VISUAL]: visualAdapter,
   [BlockType.INTENT]: intentAdapter,
   [BlockType.CHOICE]: interactionAdapter,
   [BlockType.RANDOM]: randomAdapter,

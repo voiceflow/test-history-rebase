@@ -32,6 +32,7 @@ import SpeakManager from './Speak';
 import StartManager from './Start';
 import StreamManager from './Stream';
 import UserInfoManager from './UserInfo';
+import VisualManager from './Visual';
 
 export const MANAGERS_BY_TYPE = {
   [BlockType.START]: StartManager,
@@ -64,6 +65,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.PROMPT]: PromptManager,
   [BlockType.DEPRECATED]: DeprecatedManager,
   [BlockType.INVALID_PLATFORM]: InvalidPlatformManager,
+  [BlockType.VISUAL]: VisualManager,
   [BlockType.MARKUP_TEXT]: MarkupTextManager,
   [BlockType.MARKUP_IMAGE]: MarkupImageManager,
 };

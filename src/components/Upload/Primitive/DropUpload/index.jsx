@@ -12,6 +12,8 @@ import { UploadMode } from './constants';
 
 function DropUpload({
   label,
+  height,
+  isImage,
   onDropAccepted,
   onUpdate,
   onValidateLink,
@@ -61,7 +63,16 @@ function DropUpload({
   }
 
   return (
-    <Container isDragReject={isDragReject} error={error} active={isDragActive} {...getRootProps()} className={className} mode={uploadMode}>
+    <Container
+      height={height}
+      isDragReject={isDragReject}
+      error={error}
+      isImage={isImage}
+      active={isDragActive}
+      {...getRootProps()}
+      className={className}
+      mode={uploadMode}
+    >
       <input {...getInputProps()} />
       {content}
     </Container>

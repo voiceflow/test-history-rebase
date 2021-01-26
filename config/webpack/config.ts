@@ -16,6 +16,7 @@ import {
   ff_generalPlatform,
   ff_generalPrototype,
   ff_visualPrototype,
+  ff_visualStep,
   ff_wavenetVoices,
   ga,
   intercom,
@@ -72,6 +73,7 @@ export const ENV = {
   FF_GENERAL_PROTOTYPE: ff_generalPrototype && 'true',
   FF_CODE_EXPORT: ff_codeExport && 'true',
   FF_VISUAL_PROTOTYPE: ff_visualPrototype && 'true',
+  FF_VISUAL_STEP: ff_visualStep && 'true',
   FF_WAVENET_VOICES: ff_wavenetVoices && 'true',
 
   API_HOST: 'localhost',

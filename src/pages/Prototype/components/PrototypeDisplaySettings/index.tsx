@@ -6,7 +6,7 @@ import SvgIcon from '@/components/SvgIcon';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { DEVICE_LIST, DeviceType } from '@/pages/Prototype/constants';
+import { DEVICE_LIST } from '@/pages/Prototype/constants';
 import { FadeRightContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
@@ -18,28 +18,28 @@ const PrototypeDisplaySettings: React.FC<ConnectedPrototypeDisplaySettingsProps>
   React.useEffect(() => {
     // should default to option at the top of the list
     if (!device) {
-      updateDevice(Object.keys(deviceList)[0] as DeviceType);
+      updateDevice(deviceList[0].type);
     }
   }, []);
 
-  const selectedDeviceInfo = Object.entries(deviceList).find(([deviceType]) => deviceType === device)?.[1];
+  const deviceInfo = React.useMemo(() => deviceList.find(({ type }) => type === device), [device, deviceList]);
 
   return (
     <FadeRightContainer>
       <Section
         header={device}
-        prefix={<SvgIcon icon={selectedDeviceInfo?.icon || 'echoShow'} />}
-        variant={SectionVariant.DEVICE}
-        initialOpen={true}
         headerToggle
+        prefix={<SvgIcon icon={deviceInfo?.icon || 'echoShow'} />}
         collapseVariant={SectionToggleVariant.ARROW}
+        initialOpen={true}
+        variant={SectionVariant.DEVICE}
       >
         <Box minWidth="100%" pb="9">
-          {Object.entries(deviceList as Required<typeof deviceList>).map(([deviceType, { name, dimension }]) => {
-            const selected = device === deviceType;
+          {deviceList.map(({ name, type, dimension }) => {
+            const selected = device === type;
 
             return (
-              <Item key={name} isActive={selected} onClick={() => updateDevice(deviceType as DeviceType)}>
+              <Item key={name} isActive={selected} onClick={() => updateDevice(type)}>
                 <Name>{name}</Name>
 
                 <Dimension selected={selected}>

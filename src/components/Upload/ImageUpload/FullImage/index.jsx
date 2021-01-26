@@ -40,7 +40,7 @@ export const validateLink = (link = '') => {
   return null;
 };
 
-function FullImage({ image, update, setError, isLoading, error, onDropAccepted, onDropRejected, showRemove = true, imageHeight = 230 }) {
+function FullImage({ image, update, setError, isLoading, error, onDropAccepted, onDropRejected, showRemove = true, imageHeight, canUseLink = true }) {
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
     accept: IMAGE_FILE_FORMATS,
     onDropAccepted,
@@ -95,7 +95,9 @@ function FullImage({ image, update, setError, isLoading, error, onDropAccepted, 
   ) : (
     <DropUpload
       onUpdate={update}
+      height={imageHeight}
       label="image"
+      isImage
       linkPlaceholder="Add link or Variable using '{'"
       clearError={() => setError(null)}
       onValidateLink={validateLink}
@@ -105,6 +107,7 @@ function FullImage({ image, update, setError, isLoading, error, onDropAccepted, 
       isLoading={isLoading}
       error={error}
       withVariables
+      canUseLink={canUseLink}
     />
   );
 }

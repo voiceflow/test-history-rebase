@@ -5407,10 +5407,10 @@
   dependencies:
     "@voiceflow/api-sdk" "1.20.0"
 
-"@voiceflow/general-types@1.18.0":
-  version "1.18.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.18.0.tgz#836b1d070e616f23b0409f428f32d83bac273629"
-  integrity sha512-cmHA7/lerVy5yMN7PxGdkLQPGoGhCP40llNg70RXYeo6No62Pax+0L+JQdLdqzG/jccrGX7jGflblQU0PKD8ag==
+"@voiceflow/general-types@1.19.0":
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.19.0.tgz#75034f0cd5646d45bacf2afc71ceb5fa298e4c47"
+  integrity sha512-gDxA7l27PGxNGq98BHGzWsC9WIv8ynemRk+FsbTXepMKdNhQNIfLVvPc38T9mDY/IUocowpVG2G1FuBrGB8WcA==
   dependencies:
     "@voiceflow/api-sdk" "1.22.0"
 

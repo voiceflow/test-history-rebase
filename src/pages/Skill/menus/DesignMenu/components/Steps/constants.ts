@@ -202,6 +202,13 @@ const DIRECTIVE_STEP: MenuStep = {
   iconColor: getManager(BlockType.DIRECTIVE).iconColor,
 };
 
+const VISUAL_STEP: MenuStep = {
+  type: BlockType.VISUAL,
+  icon: getManager(BlockType.VISUAL).icon!,
+  label: getManager(BlockType.VISUAL).label,
+  iconColor: getManager(BlockType.VISUAL).iconColor,
+};
+
 // alexa menu sections
 export const ALEXA_SECTIONS = [
   {
@@ -260,7 +267,7 @@ export const GENERAL_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, AUDIO_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,

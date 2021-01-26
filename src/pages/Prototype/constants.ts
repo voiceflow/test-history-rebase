@@ -1,3 +1,5 @@
+import { DeviceType, Dimensions } from '@voiceflow/general-types';
+
 import { SubMenuItem } from '@/components/SubMenu';
 import { Icon } from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
@@ -30,87 +32,57 @@ export const PROTOTYPE_MENU_OPTIONS = {
   [PlatformType.GENERAL]: GENERAL_PROTOTYPE_MENU_OPTIONS,
 };
 
-export enum DeviceType {
-  ECHO_SHOW_10 = 'Echo Show 10',
-  ECHO_SHOW_8 = 'Echo Show 8',
-  ECHO_SPOT = 'Echo Spot',
-  FIRE_TV_CUBE = 'Fire TV Cube',
-  FIRE_HD_8 = 'Fire HD 8',
-  FIRE_HD_10 = 'Fire HD 10',
-}
-
-export type Dimension = {
-  density: number;
-  width: number;
-  height: number;
-};
-
 export type DeviceInfo = {
   name: string;
-  dimension: Dimension;
   icon: Icon;
+  type: DeviceType;
+  dimension: Dimensions & { density: number };
 };
 
-export const ALEXA_DEVICE_LIST: Record<DeviceType, DeviceInfo> = {
-  [DeviceType.ECHO_SHOW_8]: {
+export const ALEXA_DEVICE_LIST: DeviceInfo[] = [
+  {
+    type: DeviceType.ECHO_SHOW_8,
     name: 'Echo Show 8',
-    dimension: {
-      density: 160,
-      width: 1024,
-      height: 600,
-    },
     icon: 'echoShow',
+    dimension: { width: 1024, height: 600, density: 160 },
   },
-  [DeviceType.ECHO_SHOW_10]: {
-    name: 'Echo Show 10',
-    dimension: {
-      density: 126,
-      width: 1280,
-      height: 800,
-    },
-    icon: 'echoShow',
-  },
-  [DeviceType.ECHO_SPOT]: {
-    name: 'Echo Spot',
-    dimension: {
-      density: 192,
-      width: 480,
-      height: 480,
-    },
-    icon: 'echoSpot',
-  },
-  [DeviceType.FIRE_TV_CUBE]: {
-    name: 'Fire TV Cube',
-    dimension: {
-      // chosen as it's the average recommended TV pixel density
-      density: 110,
-      width: 1920,
-      height: 1080,
-    },
-    icon: 'fireTV',
-  },
-  [DeviceType.FIRE_HD_8]: {
-    name: 'Fire HD 8',
-    dimension: {
-      density: 150,
-      width: 1200,
-      height: 800,
-    },
-    icon: 'fireHD8',
-  },
-  [DeviceType.FIRE_HD_10]: {
-    name: 'Fire HD 10',
-    dimension: {
-      density: 190,
-      width: 1920,
-      height: 1200,
-    },
-    icon: 'fireHD10',
-  },
-};
 
-export const DEVICE_LIST: Record<PlatformType, Partial<Record<DeviceType, DeviceInfo>>> = {
+  {
+    type: DeviceType.ECHO_SHOW_10,
+    name: 'Echo Show 10',
+    icon: 'echoShow',
+    dimension: { width: 1280, height: 800, density: 126 },
+  },
+
+  {
+    type: DeviceType.ECHO_SPOT,
+    name: 'Echo Spot',
+    icon: 'echoSpot',
+    dimension: { width: 480, height: 480, density: 192 },
+  },
+  {
+    type: DeviceType.FIRE_TV_CUBE,
+    name: 'Fire TV Cube',
+    icon: 'fireTV',
+    // chosen as it's the average recommended TV pixel density
+    dimension: { width: 1920, height: 1080, density: 110 },
+  },
+  {
+    type: DeviceType.FIRE_HD_8,
+    name: 'Fire HD 8',
+    icon: 'fireHD8',
+    dimension: { width: 1200, height: 800, density: 150 },
+  },
+  {
+    type: DeviceType.FIRE_HD_10,
+    name: 'Fire HD 10',
+    icon: 'fireHD10',
+    dimension: { width: 1920, height: 1200, density: 190 },
+  },
+];
+
+export const DEVICE_LIST: Record<PlatformType, DeviceInfo[]> = {
   [PlatformType.ALEXA]: ALEXA_DEVICE_LIST,
-  [PlatformType.GOOGLE]: {},
-  [PlatformType.GENERAL]: {},
+  [PlatformType.GOOGLE]: [],
+  [PlatformType.GENERAL]: [],
 };

@@ -1,9 +1,8 @@
-import { GeneralRequest } from '@voiceflow/general-types';
+import { DeviceType, GeneralRequest } from '@voiceflow/general-types';
 
 import { StoreType } from '@/constants/prototype';
 import { createAction } from '@/ducks/utils';
 import { Store } from '@/models';
-import { DeviceType } from '@/pages/Prototype/constants';
 import { Action } from '@/store/types';
 
 import { Context, PrototypeMode, PrototypeState, PrototypeStatus } from './types';

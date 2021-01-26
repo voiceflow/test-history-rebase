@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { PermissionType, Voice as AlexaVoices } from '@voiceflow/alexa-types';
 import { constants } from '@voiceflow/common';
-import { IS_VARIABLE_REGEXP, IntegrationType, READABLE_VARIABLE_REGEXP, Voice as GeneralVoices } from '@voiceflow/general-types';
+import { DeviceType, IS_VARIABLE_REGEXP, IntegrationType, READABLE_VARIABLE_REGEXP, Voice as GeneralVoices } from '@voiceflow/general-types';
 import { APIActionType, APIBodyType } from '@voiceflow/general-types/build/nodes/api';
 import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
 import { Voice as GoogleVoices } from '@voiceflow/google-types';
@@ -132,6 +132,7 @@ export enum BlockType {
   PROMPT = 'prompt',
   // visuals
   CARD = 'card',
+  VISUAL = 'visual',
   DISPLAY = 'display',
   // user
   PERMISSION = 'permission',
@@ -562,3 +563,19 @@ export const GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES = [
 ];
 
 export const START_BLOCK_ID = 'start00000000000000000000';
+
+export const DEVICE_LABEL_MAP: Record<DeviceType, string> = {
+  [DeviceType.MOBILE]: 'Mobile',
+  [DeviceType.TABLET]: 'Tablet',
+  [DeviceType.DESKTOP]: 'Desktop',
+  [DeviceType.SMART_WATCH]: 'Smart Watch',
+  [DeviceType.TELEVISION]: 'Television',
+  [DeviceType.IN_CAR_DISPLAY]: 'In-Car Display',
+  [DeviceType.ECHO_SPOT]: 'Echo Spot',
+  [DeviceType.ECHO_SHOW_8]: 'Echo Show 8',
+  [DeviceType.ECHO_SHOW_10]: 'Echo Show 10',
+  [DeviceType.FIRE_HD_8]: 'Fire HD 8',
+  [DeviceType.FIRE_HD_10]: 'Fire HD 10',
+  [DeviceType.FIRE_TV_CUBE]: 'Fire TV Cube',
+  [DeviceType.GOOGLE_NEST_HUB]: 'Google Nest Hub',
+};

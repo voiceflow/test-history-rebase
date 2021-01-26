@@ -1,3 +1,4 @@
+import { DeviceType } from '@voiceflow/general-types';
 import React from 'react';
 import { useTheme } from 'styled-components';
 
@@ -11,7 +12,7 @@ import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect, useLinkedState } from '@/hooks';
 import { NodeData } from '@/models';
-import { DEVICE_LIST, DeviceType } from '@/pages/Prototype/constants';
+import { DEVICE_LIST } from '@/pages/Prototype/constants';
 import * as SideEffects from '@/store/sideEffects';
 import { Theme } from '@/styles/theme';
 import { ConnectedProps, MergeArguments } from '@/types';
@@ -22,10 +23,10 @@ const DEFAULT_FILL_RATIO = 0.8;
 const DEFAULT_FRAME_DIMENSION = 400;
 
 const PrototypeVisualCanvas: React.FC<ConnectedPrototypeVisualCanvasProps> = ({ device, platform, sourceData, controlScheme, resolveAPL }) => {
+  const theme = useTheme() as Theme;
   const [aplContext, setAPLContext] = React.useState<{ apl: string; data: string; commands: string } | null>(null);
   const rendererRef = React.useRef<BaseRendererAPI | null>(null);
-  const deviceInfo = DEVICE_LIST[platform][device as DeviceType];
-  const theme = useTheme() as Theme;
+  const deviceInfo = React.useMemo(() => DEVICE_LIST[platform].find(({ type }) => type === device), [platform, device]);
 
   React.useEffect(() => {
     if (sourceData) {
@@ -108,11 +109,11 @@ const PrototypeVisualCanvas: React.FC<ConnectedPrototypeVisualCanvasProps> = ({ 
 };
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
-  controlScheme: UI.canvasNavigationSelector,
   device: Prototype.prototypeVisualDeviceSelector,
+  platform: Skill.activePlatformSelector,
   sourceID: Prototype.prototypeVisualSourceIDSelector,
   sourceData: Creator.dataByNodeIDSelector,
+  controlScheme: UI.canvasNavigationSelector,
 };
 
 const mapDispatchToProps = {

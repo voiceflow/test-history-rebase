@@ -1,7 +1,6 @@
-import { GeneralRequest } from '@voiceflow/general-types';
+import { DeviceType, GeneralRequest } from '@voiceflow/general-types';
 
 import { PrototypeContext } from '@/models';
-import { DeviceType } from '@/pages/Prototype/constants';
 
 // context types
 export interface Context extends PrototypeContext {

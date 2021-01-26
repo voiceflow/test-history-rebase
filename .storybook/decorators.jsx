@@ -8,6 +8,7 @@ import '@/App.css';
 import React from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import { MemoryRouter } from 'react-router-dom';
 
 import { ModalBackdrop } from '@/components/LegacyModal';
 import { DragProvider, IdentityContext, ModalsContext } from '@/contexts';
@@ -90,6 +91,8 @@ export const withStoryDetails = (Component) => (
 
 export const withContext = (Context, value) => (story) => () => <Context.Provider value={value}>{story()}</Context.Provider>;
 
+export const withRouter = () => (story) => () => <MemoryRouter>{story()}</MemoryRouter>;
+
 const mockLogger = {
   child: () => mockLogger,
   debug: noop,
@@ -109,6 +112,8 @@ export const withEngine = (engine) =>
 
 export const withStepContext = ({ withPorts = true, isActive = false, isConnected = false, lockOwner = null } = {}) =>
   composeDecorators2(
+    withRouter(),
+    withContext(IdentityContext, { activeRole: null, activePlan: null }),
     withContext(StepAPIContext, {
       isActive,
       withPorts,
@@ -131,6 +136,9 @@ export const withStepContext = ({ withPorts = true, isActive = false, isConnecte
       },
       port: {
         redrawLinks: noop,
+      },
+      prototype: {
+        isPortHighlighted: () => false,
       },
     })
   );

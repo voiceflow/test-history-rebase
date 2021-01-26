@@ -13,12 +13,14 @@ export * from './types';
 
 export type BaseStepProps = {
   image?: string | null;
+  imagePosition?: string;
+  imageAspectRatio?: number | null;
   disableHighlightStyle?: boolean;
 };
 
 export type StepProps = BaseStepProps;
 
-const Step: React.FC<StepProps> = ({ image, disableHighlightStyle, children }) => {
+const Step: React.FC<StepProps> = ({ image, disableHighlightStyle, children, imagePosition, imageAspectRatio }) => {
   const stepAPI = React.useContext(StepAPIContext);
   const isEditingMode = useEditingMode();
 
@@ -34,8 +36,8 @@ const Step: React.FC<StepProps> = ({ image, disableHighlightStyle, children }) =
         {stepAPI?.lockOwner && <User user={stepAPI.lockOwner} />}
         {children}
         {image && (
-          <ImageContainer>
-            <Image image={image} />
+          <ImageContainer aspectRatio={imageAspectRatio}>
+            <Image position={imagePosition} image={image} />
           </ImageContainer>
         )}
       </Container>

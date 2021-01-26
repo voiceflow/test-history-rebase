@@ -3,7 +3,7 @@ import { css, styled } from '@/hocs';
 
 const Container = styled(Flex)`
   border-radius: 5px;
-  height: ${({ height }) => `${height}px`};
+  height: ${({ height, theme }) => `${height || theme.components.imageUpload.height}px`};
   position: relative;
   color: #62778c;
 

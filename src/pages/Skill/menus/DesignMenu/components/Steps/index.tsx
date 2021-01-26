@@ -19,6 +19,7 @@ import { StepDragItem } from './types';
 
 const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expandedSections }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
+  const visualStep = useFeature(FeatureFlag.VISUAL_STEP);
 
   const sections = React.useMemo(() => {
     const platformSections = PLATFORM_SECTIONS[platform];
@@ -27,6 +28,7 @@ const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expande
       ...platformSection,
       steps: platformSection.steps.filter((step) => {
         if (!gadgets.isEnabled && [BlockType.EVENT, BlockType.DIRECTIVE].includes(step.type)) return false;
+        if (!visualStep.isEnabled && step.type === BlockType.VISUAL) return false;
         if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
         return true;
       }),

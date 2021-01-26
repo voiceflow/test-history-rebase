@@ -7,6 +7,7 @@ export const CODE_EXPORT_ENABLED = process.env.FF_CODE_EXPORT === 'true';
 export const GENERAL_PLATFORM_ENABLED = process.env.FF_GENERAL_PLATFORM === 'true';
 export const GENERAL_PROTOTYPE_ENABLED = process.env.FF_GENERAL_PROTOTYPE === 'true';
 export const VISUAL_PROTOTYPE_ENABLED = process.env.FF_VISUAL_PROTOTYPE === 'true';
+export const VISUAL_STEP_ENABLED = process.env.FF_VISUAL_STEP === 'true';
 export const WAVENET_VOICES_ENABLED = process.env.FF_WAVENET_VOICES === 'true';
 
 export enum FeatureFlag {
@@ -16,6 +17,7 @@ export enum FeatureFlag {
   GENERAL_PLATFORM = 'general_platform',
   GENERAL_PROTOTYPE = 'general_prototype',
   WAVENET_VOICES = 'wavenet_voices',
+  VISUAL_STEP = 'visual_step',
 
   // permanent circuit breakers for vendor integrations
   INTERCOM_INTEGRATION = 'intercom_integration',
@@ -29,4 +31,5 @@ export const LOCAL_FEATURE_OVERRIDES = {
   [FeatureFlag.GENERAL_PLATFORM]: GENERAL_PLATFORM_ENABLED,
   [FeatureFlag.GENERAL_PROTOTYPE]: GENERAL_PROTOTYPE_ENABLED,
   [FeatureFlag.WAVENET_VOICES]: WAVENET_VOICES_ENABLED,
+  [FeatureFlag.VISUAL_STEP]: VISUAL_STEP_ENABLED,
 };

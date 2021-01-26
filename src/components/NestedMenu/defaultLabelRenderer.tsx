@@ -1,14 +1,14 @@
 import _toLower from 'lodash/toLower';
 import React from 'react';
 
-const getFormatedLabel = (label, searchLabel) => {
-  const substrs = (searchLabel && _toLower(label)?.split(_toLower(searchLabel))) || [];
+const getFormattedLabel = (label: string | null | undefined, searchLabel: string) => {
+  const substrs = (searchLabel && _toLower(label ?? '')?.split(_toLower(searchLabel))) || [];
 
-  if (substrs.length < 2) {
+  if (substrs.length < 2 || !label) {
     return label;
   }
 
-  const { res: strsToRender } = substrs.reduce(
+  const { res: strsToRender } = substrs.reduce<{ res: string[]; length: number }>(
     (acc, str, i) => {
       if (i === 0) {
         acc.res.push(label.substr(0, str.length));
@@ -28,9 +28,17 @@ const getFormatedLabel = (label, searchLabel) => {
   return strsToRender.map((str, i) => (i % 2 === 0 ? str : <b key={i}>{str}</b>));
 };
 
-const defaultLabelRenderer = (option, searchLabel, getOptionLabel, getOptionValue) => {
+const defaultLabelRenderer = <O, V>(
+  option: O,
+  searchLabel: string,
+  getOptionLabel: (value?: V) => string | undefined | null,
+  getOptionValue: (option?: O) => V,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _config: { isFocused: boolean; optionsPath: number[] }
+) => {
   const label = getOptionLabel(getOptionValue(option));
-  return <span>{getFormatedLabel(label, searchLabel)}</span>;
+
+  return <span>{getFormattedLabel(label, searchLabel)}</span>;
 };
 
 export default defaultLabelRenderer;

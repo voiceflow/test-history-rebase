@@ -87,6 +87,9 @@ const THEME = {
     audioPlayer: {
       height: 108,
     },
+    imageUpload: {
+      height: 230,
+    },
     leftSidebar: {
       width: 250,
       hiddenWidth: 16,

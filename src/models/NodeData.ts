@@ -1,8 +1,10 @@
 import { PermissionType } from '@voiceflow/alexa-types';
-import { ExpressionType, IntegrationUser, SlotMapping } from '@voiceflow/general-types';
+import { SlotMapping } from '@voiceflow/api-sdk';
+import { ExpressionType, IntegrationUser } from '@voiceflow/general-types';
 import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
 import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/general-types/build/nodes/googleSheets';
 import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
+import { StepData as VisualStepData } from '@voiceflow/general-types/build/nodes/visual';
 
 import { BlockType, CardType, DialogType, DisplayType, IntegrationType, PlatformType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
@@ -304,6 +306,8 @@ export namespace NodeData {
   };
 
   export type Exit = {};
+
+  export type Visual = VisualStepData;
 }
 
 export namespace DBNodeData {

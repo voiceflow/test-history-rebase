@@ -6,7 +6,7 @@ import { styled, transition } from '@/hocs';
 import { UploadMode } from '../constants';
 
 const Container = styled(FlexCenter)`
-  height: ${({ theme }) => theme.components.audioPlayer.height}px;
+  height: ${({ height, theme, isImage }) => height || (isImage ? theme.components.imageUpload.height : theme.components.audioPlayer.height)}px;
   border: 1px dashed #d4d9e6;
   border-radius: 5px;
   padding: 0 16px;

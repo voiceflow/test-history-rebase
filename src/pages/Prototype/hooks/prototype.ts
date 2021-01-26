@@ -93,7 +93,6 @@ const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; is
   const onInteraction = React.useCallback(
     (request: GeneralRequest | string) => {
       if (_isString(request) && Utils.checkForSpecialCharacters(request)) {
-        toast.warn('Your response contains special character. Certain locales and platforms does not support utterances with special characters.');
         return prototype.interact(Utils.removeSpecialCharacters(request));
       }
       return prototype.interact(request);

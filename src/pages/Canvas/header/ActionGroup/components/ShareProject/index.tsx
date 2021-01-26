@@ -48,15 +48,17 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   };
 
   const copyTestableLink = async () => {
-    await loadTestableLink();
-
-    copy(state.testableLink);
+    const link = await loadTestableLink();
+    copy(link);
   };
 
   const loadTestableLink = async () => {
     if (!state.testableLink) {
-      stateApi.update({ testableLink: `${window.location.origin}/prototype/${versionID}` });
+      const link = `${window.location.origin}/prototype/${versionID}`;
+      stateApi.update({ testableLink: link });
+      return link;
     }
+    return state.testableLink;
   };
 
   const wrapToggleShare = (prevIsOpen: boolean, onToggle: () => void) => () => {

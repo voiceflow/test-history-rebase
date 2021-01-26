@@ -16,9 +16,9 @@ export type RealtimeOverlayState = {
 
 export type RealtimeViewer = DBWorkspace.Member & { color: string };
 
-abstract class AbstractOverlay<T extends RealtimeCursorOverlayAPI | RealtimeLinkOverlayAPI> extends React.PureComponent<
-  ConnectedRealtimeOverlayProps
-> {
+abstract class AbstractOverlay<
+  T extends RealtimeCursorOverlayAPI | RealtimeLinkOverlayAPI
+> extends React.PureComponent<ConnectedRealtimeOverlayProps> {
   state: RealtimeOverlayState = {
     items: [],
   };

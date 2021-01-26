@@ -37,9 +37,9 @@ export const activeWorkspaceMembersSelector = createSelector([activeWorkspaceSel
 export const activeWorkspaceCommentingMembersSelector = createSelector(
   [activeWorkspaceMembersSelector],
   (members) =>
-    members.filter((member: Workspace.Member) => member.name && hasRolePermission(Permission.COMMENTING, member.role)) as NonNullableRecord<
-      Workspace.Member
-    >[]
+    members.filter(
+      (member: Workspace.Member) => member.name && hasRolePermission(Permission.COMMENTING, member.role)
+    ) as NonNullableRecord<Workspace.Member>[]
 );
 
 export const seatLimitsSelector = createSelector([activeWorkspaceSelector], (workspace) => workspace?.seatLimits);

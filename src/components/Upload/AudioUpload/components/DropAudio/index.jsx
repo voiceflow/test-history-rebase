@@ -36,22 +36,20 @@ const validateURL = (value) => {
   return null;
 };
 
-function DropAudio({ isLoading, onDropAccepted, onDropRejected, error, setError, update, withVariables }) {
-  return (
-    <DropUpload
-      withVariables={withVariables}
-      linkPlaceholder={withVariables ? "Add link or Variable using '{'" : 'Add link'}
-      onDropAccepted={onDropAccepted}
-      clearError={() => setError(null)}
-      onDropRejected={onDropRejected}
-      isLoading={isLoading}
-      className={CONTEXT_MENU_IGNORED_CLASS_NAME}
-      error={error}
-      label="audio file"
-      onUpdate={update}
-      onValidateLink={validateURL}
-    />
-  );
-}
+const DropAudio = ({ isLoading, onDropAccepted, onDropRejected, error, setError, update, withVariables }) => (
+  <DropUpload
+    withVariables={withVariables}
+    linkPlaceholder={withVariables ? "Add link or Variable using '{'" : 'Add link'}
+    onDropAccepted={onDropAccepted}
+    clearError={() => setError(null)}
+    onDropRejected={onDropRejected}
+    isLoading={isLoading}
+    className={CONTEXT_MENU_IGNORED_CLASS_NAME}
+    error={error}
+    label="audio file"
+    onUpdate={update}
+    onValidateLink={validateURL}
+  />
+);
 
 export default withUpload(DropAudio, { fileType: 'audio', clientFunc: 'uploadAudio', validate });

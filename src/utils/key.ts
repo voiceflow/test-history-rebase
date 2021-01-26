@@ -31,9 +31,7 @@ function getKey(object: any, cache: Map<any, string>) {
   }
 }
 
-export function generateKey(object: any) {
-  return getKey(object, globalCache);
-}
+export const generateKey = (object: any) => getKey(object, globalCache);
 
 export function generateLocalKey() {
   const cache = new Map();

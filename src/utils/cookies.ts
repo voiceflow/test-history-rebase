@@ -36,6 +36,4 @@ export const getAuthCookie = () => {
 // TODO: is this still needed?
 export const removeLastSessionCookie = () => remove('last_session');
 
-export function getMaintenanceCookie() {
-  return getByName<string | undefined>(MAINTENANCE_COOKIE);
-}
+export const getMaintenanceCookie = () => getByName<string | undefined>(MAINTENANCE_COOKIE);

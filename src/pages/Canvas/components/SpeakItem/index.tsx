@@ -37,9 +37,7 @@ export type SpeakItemProps = {
   };
 };
 
-function isVoice(item: SpeakData): item is SSMLData {
-  return item.type === DialogType.VOICE;
-}
+const isVoice = (item: SpeakData): item is SSMLData => item.type === DialogType.VOICE;
 
 const AnySSML = SSMLWithVars as any;
 const AnyEditorSection = EditorSection as any;

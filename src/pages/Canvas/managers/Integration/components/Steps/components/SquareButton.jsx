@@ -28,17 +28,13 @@ const HelpIcon = styled(Tooltip)`
   height: 25px;
 `;
 
-function Help({ tooltip }) {
-  return <HelpIcon title={tooltip}>?</HelpIcon>;
-}
+const Help = ({ tooltip }) => <HelpIcon title={tooltip}>?</HelpIcon>;
 
-function SquareButton({ text, tooltip, onClick }) {
-  return (
-    <SquareButtonContainer onClick={onClick}>
-      {text}
-      {tooltip && <Help tooltip={tooltip} />}
-    </SquareButtonContainer>
-  );
-}
+const SquareButton = ({ text, tooltip, onClick }) => (
+  <SquareButtonContainer onClick={onClick}>
+    {text}
+    {tooltip && <Help tooltip={tooltip} />}
+  </SquareButtonContainer>
+);
 
 export default SquareButton;

@@ -58,25 +58,15 @@ const diagramSocketClient = {
     client.emit(ClientEvent.DIAGRAM_HEARTBEAT);
   },
 
-  watchForceRefresh(callback: Callback) {
-    return client.watchOnce(ServerEvent.DIAGRAM_REFRESH, callback);
-  },
+  watchForceRefresh: (callback: Callback) => client.watchOnce(ServerEvent.DIAGRAM_REFRESH, callback),
 
-  watchForUpdate(callback: Function<[DiagramUpdateEvent]>) {
-    return client.watch(ServerEvent.UPDATE_DIAGRAM, callback);
-  },
+  watchForUpdate: (callback: Function<[DiagramUpdateEvent]>) => client.watch(ServerEvent.UPDATE_DIAGRAM, callback),
 
-  watchForVolatileUpdate(callback: Function<[DiagramUpdateEvent]>) {
-    return client.watch(ServerEvent.VOLATILE_UPDATE_DIAGRAM, callback);
-  },
+  watchForVolatileUpdate: (callback: Function<[DiagramUpdateEvent]>) => client.watch(ServerEvent.VOLATILE_UPDATE_DIAGRAM, callback),
 
-  watchForRecover(callback: Function<[string[]]>) {
-    return client.watch(ServerEvent.DIAGRAM_RECOVER, callback);
-  },
+  watchForRecover: (callback: Function<[string[]]>) => client.watch(ServerEvent.DIAGRAM_RECOVER, callback),
 
-  terminate() {
-    return client.call(ClientEvent.LEAVE_DIAGRAM);
-  },
+  terminate: () => client.call(ClientEvent.LEAVE_DIAGRAM),
 
   async switch(skillID: string, diagramID: string) {
     const prevStatus = client.status;

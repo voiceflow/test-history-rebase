@@ -34,15 +34,13 @@ const Container = styled(InputGroup)`
   }
 `;
 
-function PrefixInput({ prefix, onChange }) {
-  return (
-    <Container className="mb-2">
-      <InputGroupAddon addonType="prepend">
-        <InputGroupText>{prefix}</InputGroupText>
-      </InputGroupAddon>
-      <InputSection className="form-control form-control-border right" placeholder="Enter value" onChange={onChange} />
-    </Container>
-  );
-}
+const PrefixInput = ({ prefix, onChange }) => (
+  <Container className="mb-2">
+    <InputGroupAddon addonType="prepend">
+      <InputGroupText>{prefix}</InputGroupText>
+    </InputGroupAddon>
+    <InputSection className="form-control form-control-border right" placeholder="Enter value" onChange={onChange} />
+  </Container>
+);
 
 export default PrefixInput;

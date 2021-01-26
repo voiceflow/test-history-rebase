@@ -23,26 +23,24 @@ const ValueContainer = styled.div`
   width: calc(100% - 130px);
 `;
 
-function DeleteSheets({ data, onChange, openNextStep }) {
-  return (
-    <>
-      <div>
-        <LineItemContainer>
-          <Label>Start Row</Label>
-          <ValueContainer>
-            <VariablesInput value={data.start_row} onBlur={({ text }) => onChange({ start_row: text })} placeholder="Row Number to Start Delete" />
-          </ValueContainer>
-        </LineItemContainer>
-        <LineItemContainer>
-          <Label>End Row</Label>
-          <ValueContainer>
-            <VariablesInput value={data.end_row} onBlur={({ text }) => onChange({ end_row: text })} placeholder="Row Number to End Delete" />
-          </ValueContainer>
-        </LineItemContainer>
-      </div>
-      <NextStepButton openNextStep={openNextStep} />
-    </>
-  );
-}
+const DeleteSheets = ({ data, onChange, openNextStep }) => (
+  <>
+    <div>
+      <LineItemContainer>
+        <Label>Start Row</Label>
+        <ValueContainer>
+          <VariablesInput value={data.start_row} onBlur={({ text }) => onChange({ start_row: text })} placeholder="Row Number to Start Delete" />
+        </ValueContainer>
+      </LineItemContainer>
+      <LineItemContainer>
+        <Label>End Row</Label>
+        <ValueContainer>
+          <VariablesInput value={data.end_row} onBlur={({ text }) => onChange({ end_row: text })} placeholder="Row Number to End Delete" />
+        </ValueContainer>
+      </LineItemContainer>
+    </div>
+    <NextStepButton openNextStep={openNextStep} />
+  </>
+);
 
 export default DeleteSheets;

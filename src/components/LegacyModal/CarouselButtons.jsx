@@ -39,13 +39,11 @@ const RightButton = styled(CarouselButton)`
   }
 `;
 
-function CarouselButtons({ onLeftClick, onRightClick, disableLeft, disableRight }) {
-  return (
-    <Container>
-      <LeftButton large icon="arrowLeft" size={13} onClick={onLeftClick} disabled={disableLeft} />
-      <RightButton large icon="arrowRight" size={13} onClick={onRightClick} disabled={disableRight} />
-    </Container>
-  );
-}
+const CarouselButtons = ({ onLeftClick, onRightClick, disableLeft, disableRight }) => (
+  <Container>
+    <LeftButton large icon="arrowLeft" size={13} onClick={onLeftClick} disabled={disableLeft} />
+    <RightButton large icon="arrowRight" size={13} onClick={onRightClick} disabled={disableRight} />
+  </Container>
+);
 
 export default CarouselButtons;

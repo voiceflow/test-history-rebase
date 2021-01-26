@@ -40,22 +40,20 @@ const HeaderKeyContainer = styled.div`
   margin-bottom: 12px;
 `;
 
-function MetaDataLineItem({ value, keyPlaceholder, onUpdate, onRemove, children, onlyItem }) {
-  return (
-    <Container>
-      <LeftSection>
-        <HeaderKeyContainer>
-          <VariablesInput space={false} placeholder={keyPlaceholder} value={value} onBlur={({ text }) => onUpdate(text)} />
-        </HeaderKeyContainer>
+const MetaDataLineItem = ({ value, keyPlaceholder, onUpdate, onRemove, children, onlyItem }) => (
+  <Container>
+    <LeftSection>
+      <HeaderKeyContainer>
+        <VariablesInput space={false} placeholder={keyPlaceholder} value={value} onBlur={({ text }) => onUpdate(text)} />
+      </HeaderKeyContainer>
 
-        {children}
-      </LeftSection>
+      {children}
+    </LeftSection>
 
-      <RightSection>
-        <Minus disabled={onlyItem} onClick={() => !onlyItem && onRemove()} />
-      </RightSection>
-    </Container>
-  );
-}
+    <RightSection>
+      <Minus disabled={onlyItem} onClick={() => !onlyItem && onRemove()} />
+    </RightSection>
+  </Container>
+);
 
 export default MetaDataLineItem;

@@ -19,14 +19,12 @@ const Container = styled.td`
 
 const structureVar = (variable) => (variable.length <= MAX_VAR_LENGTH ? `{${variable}}` : `{${variable.substring(0, 6)}...}`);
 
-function Item({ value, variable }) {
-  return (
-    <Container>
-      <div>
-        <Tooltip html={value}>{variable ? <VariableTag>{structureVar(value)}</VariableTag> : <span>{value}</span>}</Tooltip>
-      </div>
-    </Container>
-  );
-}
+const Item = ({ value, variable }) => (
+  <Container>
+    <div>
+      <Tooltip html={value}>{variable ? <VariableTag>{structureVar(value)}</VariableTag> : <span>{value}</span>}</Tooltip>
+    </div>
+  </Container>
+);
 
 export default Item;

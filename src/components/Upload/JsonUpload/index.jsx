@@ -10,22 +10,20 @@ const Drop = styled(DropUpload)`
 
 const ACCEPTED_FILE_TYPES = '.json,.JSON,application/json';
 
-function JsonUpload({ file, customOnDropAccept, isLoading, onDropRejected, error, setError, onRemove }) {
-  return (
-    <Drop
-      acceptedFileTypes={ACCEPTED_FILE_TYPES}
-      onDropAccepted={customOnDropAccept}
-      clearError={() => setError(null)}
-      onDropRejected={onDropRejected}
-      isLoading={isLoading}
-      onSuccessClose={onRemove}
-      error={error}
-      success={!!file}
-      successLabel={file}
-      label="JSON"
-      canUseLink={false}
-    />
-  );
-}
+const JsonUpload = ({ file, customOnDropAccept, isLoading, onDropRejected, error, setError, onRemove }) => (
+  <Drop
+    acceptedFileTypes={ACCEPTED_FILE_TYPES}
+    onDropAccepted={customOnDropAccept}
+    clearError={() => setError(null)}
+    onDropRejected={onDropRejected}
+    isLoading={isLoading}
+    onSuccessClose={onRemove}
+    error={error}
+    success={!!file}
+    successLabel={file}
+    label="JSON"
+    canUseLink={false}
+  />
+);
 
 export default withUpload(JsonUpload, { fileType: 'json', clientFunc: 'uploadJson', validate: _.noop });

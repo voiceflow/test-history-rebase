@@ -27,8 +27,6 @@ const OPERATORS = {
   [ExpressionType.ADVANCE]: <span>Expression</span>,
 };
 
-function ExpressionOperator({ type }) {
-  return <Wrapper className={ExpressionType.PLUS}>{OPERATORS[type]}</Wrapper>;
-}
+const ExpressionOperator = ({ type }) => <Wrapper className={ExpressionType.PLUS}>{OPERATORS[type]}</Wrapper>;
 
 export default React.memo(ExpressionOperator);

@@ -9,21 +9,19 @@ import ImageContainer from './IntegrationImageContainer';
 import Name from './IntegrationName';
 import ZapierImg from './IntegrationZapierImg';
 
-function Integration({ data, onClick }) {
-  return (
-    <Container className="d-flex flex-column align-items-center" onClick={() => onClick(data.type)}>
-      <HelpIcon title={data.tooltip} position="left">
-        ?
-      </HelpIcon>
+const Integration = ({ data, onClick }) => (
+  <Container className="d-flex flex-column align-items-center" onClick={() => onClick(data.type)}>
+    <HelpIcon title={data.tooltip} position="left">
+      ?
+    </HelpIcon>
 
-      <ImageContainer>
-        <Icon icon={data.icon} size={70} />
-        {data.type === IntegrationType.ZAPIER && <ZapierImg src="/zapier.png" alt="Zapier" height="50" />}
-      </ImageContainer>
+    <ImageContainer>
+      <Icon icon={data.icon} size={70} />
+      {data.type === IntegrationType.ZAPIER && <ZapierImg src="/zapier.png" alt="Zapier" height="50" />}
+    </ImageContainer>
 
-      <Name>{data.text}</Name>
-    </Container>
-  );
-}
+    <Name>{data.text}</Name>
+  </Container>
+);
 
 export default Integration;

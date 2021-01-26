@@ -14,7 +14,7 @@ const ReadOnlyBadge: React.FC = () => {
   const isPrototypingMode = usePrototypingMode();
   const [blinking, enableBlinking, disableBlinking] = useEnableDisable(false);
 
-  React.useEffect(function setupListener() {
+  React.useEffect(() => {
     const runBlinkAnimation = () => {
       enableBlinking();
       setTimeout(() => {

@@ -33,21 +33,19 @@ export function removeNestedNode(state: DiagramState, node: Node) {
   )(state);
 }
 
-export function removeSingleNode(nodeID: string) {
-  return (state: DiagramState) => {
-    const node = getNormalizedByKey(state.nodes, nodeID);
+export const removeSingleNode = (nodeID: string) => (state: DiagramState) => {
+  const node = getNormalizedByKey(state.nodes, nodeID);
 
-    if (node.type === BlockType.COMBINED) {
-      return removeCombinedNode(state, node);
-    }
+  if (node.type === BlockType.COMBINED) {
+    return removeCombinedNode(state, node);
+  }
 
-    if (node.parentNode) {
-      return removeNestedNode(state, node);
-    }
+  if (node.parentNode) {
+    return removeNestedNode(state, node);
+  }
 
-    return removeBlockFromState(node)(state);
-  };
-}
+  return removeBlockFromState(node)(state);
+};
 
 export const removeManyNodesReducer: Reducer<DiagramState, RemoveManyNodes> = (state, { payload: nodeIDs }) =>
   compose(...nodeIDs.map(removeSingleNode))(state);

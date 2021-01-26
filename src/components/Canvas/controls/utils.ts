@@ -8,9 +8,7 @@ export abstract class BaseControls {
   constructor(protected handle: (action: ControlAction) => void) {}
 }
 
-export function transformStyle(position: Point, zoom: number) {
-  return `translate(${position[0]}px, ${position[1]}px) scale(${zoom / ZOOM_FACTOR})`;
-}
+export const transformStyle = (position: Point, zoom: number) => `translate(${position[0]}px, ${position[1]}px) scale(${zoom / ZOOM_FACTOR})`;
 
 export function getScrollDelta(event: WheelEvent) {
   const scrollDelta = event.deltaY;
@@ -23,9 +21,7 @@ export function getScrollDelta(event: WheelEvent) {
   return scrollDelta / SCROLL_FACTOR;
 }
 
-export function normalizeZoom(zoom: number) {
-  return Math.min(Math.max(zoom, MIN_ZOOM), MAX_ZOOM);
-}
+export const normalizeZoom = (zoom: number) => Math.min(Math.max(zoom, MIN_ZOOM), MAX_ZOOM);
 
 // eslint-disable-next-line max-params
 export function calculateScrollTranslation(

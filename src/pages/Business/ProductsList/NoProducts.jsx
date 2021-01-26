@@ -28,17 +28,15 @@ const Description = styled.p`
   text-align: center;
 `;
 
-function NoProducts({ onClick }) {
-  return (
-    <Container>
-      <img src="/images/safe.svg" alt="no products" height={100} />
-      <Title>No products exists</Title>
-      <Description>Monetize your project with in skill purchases such as consumables and subscriptions.</Description>
-      <Button isPrimary varient="contained" color="publish" onClick={onClick}>
-        Create a product
-      </Button>
-    </Container>
-  );
-}
+const NoProducts = ({ onClick }) => (
+  <Container>
+    <img src="/images/safe.svg" alt="no products" height={100} />
+    <Title>No products exists</Title>
+    <Description>Monetize your project with in skill purchases such as consumables and subscriptions.</Description>
+    <Button isPrimary varient="contained" color="publish" onClick={onClick}>
+      Create a product
+    </Button>
+  </Container>
+);
 
 export default NoProducts;

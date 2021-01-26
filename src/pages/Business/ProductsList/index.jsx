@@ -12,34 +12,32 @@ import NoProducts from './NoProducts';
 import ProductCard from './ProductCard';
 import { List } from './components';
 
-function ProductList({ products, goToNewProduct, goToCurrentCanvas }) {
-  return (
-    <>
-      <BackButtonContainer>
-        <BackLink onClick={goToCurrentCanvas}>
-          <SvgIcon icon="arrowLeft" color="currentColor" />
-          Return to Canvas
-        </BackLink>
-      </BackButtonContainer>
+const ProductList = ({ products, goToNewProduct, goToCurrentCanvas }) => (
+  <>
+    <BackButtonContainer>
+      <BackLink onClick={goToCurrentCanvas}>
+        <SvgIcon icon="arrowLeft" color="currentColor" />
+        Return to Canvas
+      </BackLink>
+    </BackButtonContainer>
 
-      {products.length === 0 ? (
-        <NoProducts onClick={goToNewProduct} />
-      ) : (
-        <Container>
-          <List>
-            {products.map((product, index) => (
-              <ProductCard key={index} productID={product.id} product={product} />
-            ))}
-          </List>
+    {products.length === 0 ? (
+      <NoProducts onClick={goToNewProduct} />
+    ) : (
+      <Container>
+        <List>
+          {products.map((product, index) => (
+            <ProductCard key={index} productID={product.id} product={product} />
+          ))}
+        </List>
 
-          <Button isPrimary iconPosition="right" onClick={goToNewProduct}>
-            Add Product
-          </Button>
-        </Container>
-      )}
-    </>
-  );
-}
+        <Button isPrimary iconPosition="right" onClick={goToNewProduct}>
+          Add Product
+        </Button>
+      </Container>
+    )}
+  </>
+);
 
 const mapStateToProps = {
   products: Product.allProductsSelector,

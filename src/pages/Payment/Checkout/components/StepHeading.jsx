@@ -30,22 +30,20 @@ const Divider = styled.span`
   color: #d4d9e6;
 `;
 
-function StepHeading({ heading, actions = [], noBottomPadding, className }) {
-  return (
-    <Container className={className} noBottomPadding={noBottomPadding}>
-      <HeadingText>{heading}</HeadingText>
-      <div>
-        {actions.map((action, index) => (
-          <React.Fragment key={index}>
-            <ActionText onClick={action.action}>
-              <Text>{action.label}</Text>
-            </ActionText>
-            {index !== actions.length - 1 && <Divider> | </Divider>}
-          </React.Fragment>
-        ))}
-      </div>
-    </Container>
-  );
-}
+const StepHeading = ({ heading, actions = [], noBottomPadding, className }) => (
+  <Container className={className} noBottomPadding={noBottomPadding}>
+    <HeadingText>{heading}</HeadingText>
+    <div>
+      {actions.map((action, index) => (
+        <React.Fragment key={index}>
+          <ActionText onClick={action.action}>
+            <Text>{action.label}</Text>
+          </ActionText>
+          {index !== actions.length - 1 && <Divider> | </Divider>}
+        </React.Fragment>
+      ))}
+    </div>
+  </Container>
+);
 
 export default StepHeading;

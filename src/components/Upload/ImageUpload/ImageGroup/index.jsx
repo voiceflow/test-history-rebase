@@ -22,13 +22,11 @@ const hasError = (acceptedFiles) => {
  * all props are being passed down from hoc - withUpload
  * required props: update, image
  */
-function ImageGroup({ update, image, setError, ...props }) {
-  return (
-    <Flex>
-      {!image && <DropUpload onUpdate={update} label="image" clearError={() => setError(null)} acceptedFileTypes={IMAGE_FILE_FORMATS} {...props} />}
-      <Icon image={image} update={update} acceptedFileTypes={IMAGE_FILE_FORMATS} canRemove {...props} />
-    </Flex>
-  );
-}
+const ImageGroup = ({ update, image, setError, ...props }) => (
+  <Flex>
+    {!image && <DropUpload onUpdate={update} label="image" clearError={() => setError(null)} acceptedFileTypes={IMAGE_FILE_FORMATS} {...props} />}
+    <Icon image={image} update={update} acceptedFileTypes={IMAGE_FILE_FORMATS} canRemove {...props} />
+  </Flex>
+);
 
 export default withUpload(ImageGroup, { fileType: 'image', clientFunc: 'uploadImage', validate: hasError });

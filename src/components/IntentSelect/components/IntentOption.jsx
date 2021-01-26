@@ -38,14 +38,12 @@ const getFormatedLabel = (label, searchLabel) => {
   return strsToRender.map((str, i) => (i % 2 === 0 ? str : <b key={i}>{str}</b>));
 };
 
-function IntentOption({ option, searchLabel, getOptionLabel, getOptionValue }) {
-  return (
-    <FlexApart fullWidth>
-      <span>{getFormatedLabel(getOptionLabel(getOptionValue(option)), searchLabel)}</span>
+const IntentOption = ({ option, searchLabel, getOptionLabel, getOptionValue }) => (
+  <FlexApart fullWidth>
+    <span>{getFormatedLabel(getOptionLabel(getOptionValue(option)), searchLabel)}</span>
 
-      {option.builtIn && <SvgIcon icon={PLATFORM_ICONS[option.platform]} color="#BECEDC" />}
-    </FlexApart>
-  );
-}
+    {option.builtIn && <SvgIcon icon={PLATFORM_ICONS[option.platform]} color="#BECEDC" />}
+  </FlexApart>
+);
 
 export default IntentOption;

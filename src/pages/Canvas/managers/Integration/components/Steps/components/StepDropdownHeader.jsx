@@ -13,8 +13,6 @@ const Container = styled.div`
   }
 `;
 
-function StepDropdownHeader({ children, onClick }) {
-  return <Container onClick={onClick}>{children}</Container>;
-}
+const StepDropdownHeader = ({ children, onClick }) => <Container onClick={onClick}>{children}</Container>;
 
 export default StepDropdownHeader;

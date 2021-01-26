@@ -66,13 +66,12 @@ export const filterEntries = (obj, predicate) =>
   }, {});
 
 export const getDiff = (object, base) => {
-  function changes(object, base) {
-    return _.transform(object, function (result, value, key) {
+  const changes = (object, base) =>
+    _.transform(object, (result, value, key) => {
       if (value !== base[key]) {
         result[key] = _.isObject(value) && _.isObject(base[key]) ? changes(value, base[key]) : value;
       }
     });
-  }
   return changes(object, base);
 };
 

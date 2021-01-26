@@ -87,3 +87,7 @@ scratch.js
 # cypress test artifacts
 cypress/videos/
 cypress/screenshots/
+
+
+#Sonar report
+sonar/

@@ -19,8 +19,8 @@ const REGEX_SINGLE_TAG = /<([^ /]+)([^>]+?)\/>/g;
 const createSupportedOpenTagsRegex = (tags) => new RegExp(`(<)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
 const createSupportedCloseTagsRegex = (tags) => new RegExp(`(</)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
 
-function removeFunkyCharactersAndUnsupportedTags(value, tags) {
-  return value
+const removeFunkyCharactersAndUnsupportedTags = (value, tags) =>
+  value
     .replace(REGEX_CR, '')
     .replace(REGEX_NBSP, SPACE)
     .replace(REGEX_CARRIAGE, '')
@@ -28,7 +28,6 @@ function removeFunkyCharactersAndUnsupportedTags(value, tags) {
     .replace(REGEX_SINGLE_TAG, '<$1$2></$1>')
     .replace(createSupportedOpenTagsRegex(Object.keys(tags)), '&lt;')
     .replace(createSupportedCloseTagsRegex(Object.keys(tags)), '&lt;/');
-}
 
 function getSafeBodyFromHTML(html) {
   let doc;

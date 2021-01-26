@@ -30,13 +30,11 @@ const Container = styled(Flex)`
   }
 `;
 
-function PrefixVariableInput({ value, onChange, prefix, placeholder }) {
-  return (
-    <Container>
-      <PrefixText>{prefix}</PrefixText>
-      <PrefixedInput space={false} placeholder={placeholder} value={value} onBlur={({ text }) => onChange(text)} />
-    </Container>
-  );
-}
+const PrefixVariableInput = ({ value, onChange, prefix, placeholder }) => (
+  <Container>
+    <PrefixText>{prefix}</PrefixText>
+    <PrefixedInput space={false} placeholder={placeholder} value={value} onBlur={({ text }) => onChange(text)} />
+  </Container>
+);
 
 export default PrefixVariableInput;

@@ -28,23 +28,21 @@ const INTEGRATION_OPTIONS = {
   },
 };
 
-function ChoseIntegration({ onChange }) {
-  return (
-    <Content>
-      <Section>
-        <Title>Choose an integration</Title>
+const ChoseIntegration = ({ onChange }) => (
+  <Content>
+    <Section>
+      <Title>Choose an integration</Title>
 
-        <Flex>
-          <Integration data={INTEGRATION_OPTIONS.CUSTOM_API} onClick={() => onChange(INTEGRATION_DATA_MODELS.CUSTOM_API)} />
-        </Flex>
+      <Flex>
+        <Integration data={INTEGRATION_OPTIONS.CUSTOM_API} onClick={() => onChange(INTEGRATION_DATA_MODELS.CUSTOM_API)} />
+      </Flex>
 
-        <Flex>
-          <Integration data={INTEGRATION_OPTIONS.GOOGLE_SHEETS} onClick={() => onChange(INTEGRATION_DATA_MODELS.GOOGLE_SHEETS)} />
-          <Integration data={INTEGRATION_OPTIONS.ZAPIER} onClick={() => onChange(INTEGRATION_DATA_MODELS.ZAPIER)} />
-        </Flex>
-      </Section>
-    </Content>
-  );
-}
+      <Flex>
+        <Integration data={INTEGRATION_OPTIONS.GOOGLE_SHEETS} onClick={() => onChange(INTEGRATION_DATA_MODELS.GOOGLE_SHEETS)} />
+        <Integration data={INTEGRATION_OPTIONS.ZAPIER} onClick={() => onChange(INTEGRATION_DATA_MODELS.ZAPIER)} />
+      </Flex>
+    </Section>
+  </Content>
+);
 
 export default ChoseIntegration;

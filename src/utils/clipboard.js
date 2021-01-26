@@ -13,13 +13,12 @@ export function copy(text) {
   clipboardEl.remove();
 }
 
-export function serialize(data) {
-  return JSON.stringify({
+export const serialize = (data) =>
+  JSON.stringify({
     $type: CLIPBOARD_TYPE,
     $version: VERSION,
     data,
   });
-}
 
 export function deserialize(text) {
   try {

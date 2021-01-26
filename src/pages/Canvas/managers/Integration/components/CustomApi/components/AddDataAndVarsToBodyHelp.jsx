@@ -18,34 +18,32 @@ const jsonExample3 = `{
     }
 }`;
 
-function AddDataAndVarsToBodyHelp() {
-  return (
-    <>
-      <Paragraph marginBottomUnits={2}>
-        Let’s say your skill collects the customer’s name and saves it to the <b>{'{FirstName}'}</b> variable.
-      </Paragraph>
+const AddDataAndVarsToBodyHelp = () => (
+  <>
+    <Paragraph marginBottomUnits={2}>
+      Let’s say your skill collects the customer’s name and saves it to the <b>{'{FirstName}'}</b> variable.
+    </Paragraph>
 
-      <Paragraph marginBottomUnits={2}>To send the name via POST request, you need to enter the following body:</Paragraph>
+    <Paragraph marginBottomUnits={2}>To send the name via POST request, you need to enter the following body:</Paragraph>
 
-      <Section marginBottomUnits={2}>
-        <JSONCode html={jsonExample1} />
-      </Section>
+    <Section marginBottomUnits={2}>
+      <JSONCode html={jsonExample1} />
+    </Section>
 
-      <Paragraph marginBottomUnits={2}>
-        To add custom data to the POST body (e.g., customer’s country for the US only skill), you can use the following structure:
-      </Paragraph>
+    <Paragraph marginBottomUnits={2}>
+      To add custom data to the POST body (e.g., customer’s country for the US only skill), you can use the following structure:
+    </Paragraph>
 
-      <Section marginBottomUnits={2}>
-        <JSONCode html={jsonExample2} />
-      </Section>
+    <Section marginBottomUnits={2}>
+      <JSONCode html={jsonExample2} />
+    </Section>
 
-      <Paragraph marginBottomUnits={2}>To add a parent object for user details, you may stick to the following pattern:</Paragraph>
+    <Paragraph marginBottomUnits={2}>To add a parent object for user details, you may stick to the following pattern:</Paragraph>
 
-      <Section>
-        <JSONCode html={jsonExample3} />
-      </Section>
-    </>
-  );
-}
+    <Section>
+      <JSONCode html={jsonExample3} />
+    </Section>
+  </>
+);
 
 export default AddDataAndVarsToBodyHelp;

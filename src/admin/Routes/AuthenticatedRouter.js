@@ -5,13 +5,11 @@ import Admin from '@/admin/Admin';
 
 import StrictRouter from './StrictRouter';
 
-function AuthenticatedRouter() {
-  return (
-    <StrictRouter>
-      <Redirect path="/" exact to="/admin" />
-      <Route path="/admin" component={Admin} />
-    </StrictRouter>
-  );
-}
+const AuthenticatedRouter = () => (
+  <StrictRouter>
+    <Redirect path="/" exact to="/admin" />
+    <Route path="/admin" component={Admin} />
+  </StrictRouter>
+);
 
 export default AuthenticatedRouter;

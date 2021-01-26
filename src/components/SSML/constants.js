@@ -761,7 +761,7 @@ export const PLATFORM_SSML_META = {
   [PlatformType.GOOGLE]: {
     // eslint-disable-next-line lodash/prefer-constant
     fallbackPlaceholder: () => 'Enter what Google will say',
-    canChangeVoice: false,
+    canChangeVoice: true,
     platformTags: GOOGLE_DEFAULT_TAGS,
     addOptions: UNIVERSAL_ADD_OPTIONS,
     voiceOptions: (locales, useWavenet) => {
@@ -796,7 +796,7 @@ export const PLATFORM_SSML_META = {
   [PlatformType.GENERAL]: {
     // eslint-disable-next-line lodash/prefer-constant
     fallbackPlaceholder: () => 'What should the assistant say?',
-    canChangeVoice: false,
+    canChangeVoice: true,
     platformTags: ALEXA_DEFAULT_TAGS,
     addOptions: ALEXA_ADD_OPTIONS,
     voiceOptions: (locales, useWavenet) => {

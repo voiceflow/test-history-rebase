@@ -37,8 +37,6 @@ const prototypeClient = {
         },
       };
     }),
-
-  getSpeakAudio: ({ ssml, voice }: { ssml: string; voice: string }) => api.post<string>(`${LEGACY_TESTING_PATH}/speak`, { ssml, voice }),
 };
 
 export default prototypeClient;

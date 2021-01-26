@@ -15,7 +15,6 @@ import {
   ff_gadgets,
   ff_generalPlatform,
   ff_generalPrototype,
-  ff_ttsVoices,
   ff_visualPrototype,
   ff_wavenetVoices,
   ga,
@@ -73,7 +72,6 @@ export const ENV = {
   FF_GENERAL_PROTOTYPE: ff_generalPrototype && 'true',
   FF_CODE_EXPORT: ff_codeExport && 'true',
   FF_VISUAL_PROTOTYPE: ff_visualPrototype && 'true',
-  FF_TTS_VOICES: ff_ttsVoices && 'true',
   FF_WAVENET_VOICES: ff_wavenetVoices && 'true',
 
   API_HOST: 'localhost',

@@ -3,9 +3,7 @@ import { Tooltip } from 'react-tippy';
 
 import client from '@/client';
 import SvgIcon from '@/components/SvgIcon';
-import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
-import { useFeature } from '@/hooks';
 import { useEnableDisable } from '@/hooks/toggle';
 import { ClassName } from '@/styles/constants';
 
@@ -25,7 +23,6 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, setError, getSSMLToP
   const cashedSSML = React.useRef('');
   const [loading, enableLoading, disableLoading] = useEnableDisable(false);
   const [playing, enablePlaying, disablePlaying] = useEnableDisable(false);
-  const ttsVoices = useFeature(FeatureFlag.TTS_VOICES);
 
   const onSpeak = async () => {
     if (playing) {
@@ -59,24 +56,17 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, setError, getSSMLToP
     enableLoading();
 
     try {
-      let src;
+      const audioDataArray = await client.platform.general.tts.convert({ ssml, voiceID: voice, platform });
+      const audioSrcArray: string[] = [];
 
-      if (ttsVoices.isEnabled) {
-        const audioDataArray = await client.platform.general.tts.convert({ ssml, voiceID: voice, platform });
-        const audioSrcArray: string[] = [];
+      audioDataArray?.forEach((data) => {
+        if (data?.src) {
+          audioSrcArray.push(data.src);
+        }
+      });
 
-        audioDataArray?.forEach((data) => {
-          if (data?.src) {
-            audioSrcArray.push(data.src);
-          }
-        });
-
-        setAudioArray(audioSrcArray);
-        audio.src = audioSrcArray[currentAudioIndex];
-      } else {
-        src = await client.prototype.getSpeakAudio({ ssml, voice: voice === 'Alexa' ? '_DEFAULT' : voice });
-        audio.src = src;
-      }
+      setAudioArray(audioSrcArray);
+      audio.src = audioSrcArray[currentAudioIndex];
 
       enablePlaying();
 

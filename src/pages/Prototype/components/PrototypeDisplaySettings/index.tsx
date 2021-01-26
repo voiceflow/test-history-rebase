@@ -1,30 +1,18 @@
 import React from 'react';
-import { useTheme } from 'styled-components';
 
-import Drawer from '@/components/Drawer';
+import Box from '@/components/Box';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { DEVICE_LIST, DeviceType } from '@/pages/Prototype/constants';
-import { Theme } from '@/styles/theme';
-import { SlideOutDirection } from '@/styles/transitions';
+import { FadeRightContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
 import { Dimension, Item, Name } from './components';
 
-type PrototypeDisplaySettingsProps = {
-  open?: boolean;
-};
-
-const PrototypeDisplaySettings: React.FC<PrototypeDisplaySettingsProps & ConnectedPrototypeDisplaySettingsProps> = ({
-  open = false,
-  device,
-  platform,
-  updateDevice,
-}) => {
-  const theme = useTheme() as Theme;
+const PrototypeDisplaySettings: React.FC<ConnectedPrototypeDisplaySettingsProps> = ({ device, platform, updateDevice }) => {
   const deviceList = DEVICE_LIST[platform];
 
   React.useEffect(() => {
@@ -37,36 +25,32 @@ const PrototypeDisplaySettings: React.FC<PrototypeDisplaySettingsProps & Connect
   const selectedDeviceInfo = Object.entries(deviceList).find(([deviceType]) => deviceType === device)?.[1];
 
   return (
-    <Drawer
-      as="section"
-      open={open}
-      width={theme.components.displaySettings.width}
-      offset={theme.components.subMenu.width}
-      direction={SlideOutDirection.RIGHT}
-    >
+    <FadeRightContainer>
       <Section
         header={device}
-        headerToggle
         prefix={<SvgIcon icon={selectedDeviceInfo?.icon || 'echoShow'} />}
-        collapseVariant={SectionToggleVariant.ARROW}
-        initialOpen={true}
         variant={SectionVariant.DEVICE}
+        initialOpen={true}
+        headerToggle
+        collapseVariant={SectionToggleVariant.ARROW}
       >
-        <div style={{ minWidth: '100%', paddingBottom: '9px' }}>
+        <Box minWidth="100%" pb="9">
           {Object.entries(deviceList as Required<typeof deviceList>).map(([deviceType, { name, dimension }]) => {
             const selected = device === deviceType;
+
             return (
-              <Item key={name} selected={selected} onClick={() => updateDevice(deviceType as DeviceType)}>
+              <Item key={name} isActive={selected} onClick={() => updateDevice(deviceType as DeviceType)}>
                 <Name>{name}</Name>
+
                 <Dimension selected={selected}>
                   {dimension.width} x {dimension.height}
                 </Dimension>
               </Item>
             );
           })}
-        </div>
+        </Box>
       </Section>
-    </Drawer>
+    </FadeRightContainer>
   );
 };
 
@@ -81,4 +65,4 @@ const mapStateToDispatch = {
 
 type ConnectedPrototypeDisplaySettingsProps = ConnectedProps<typeof mapStateToProps, typeof mapStateToDispatch>;
 
-export default connect(mapStateToProps, mapStateToDispatch)(PrototypeDisplaySettings) as React.FC<PrototypeDisplaySettingsProps>;
+export default connect(mapStateToProps, mapStateToDispatch)(PrototypeDisplaySettings) as React.FC;

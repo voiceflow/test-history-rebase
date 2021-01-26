@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SubMenu, { SubMenuItem } from '@/components/SubMenu';
+import SubMenu from '@/components/SubMenu';
 import { FeatureFlag } from '@/config/features';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
@@ -19,10 +19,8 @@ const PrototypeMenu: React.FC<PrototypeMenuProps & ConnectedPrototypeMenuProps> 
   return (
     <SubMenu
       open={open}
+      options={PROTOTYPE_MENU_OPTIONS[platform].filter(({ value }) => visualPrototype.isEnabled || value !== Prototype.PrototypeMode.DISPLAY)}
       selected={mode}
-      options={PROTOTYPE_MENU_OPTIONS[platform]
-        .filter(({ value }) => visualPrototype.isEnabled || value !== Prototype.PrototypeMode.DISPLAY)
-        .map((option: SubMenuItem) => option)}
       onChange={(value) => {
         updatePrototypeMode(value as Prototype.PrototypeMode);
       }}

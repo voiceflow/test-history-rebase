@@ -8,7 +8,7 @@ import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions';
 
 import Drawer from '../Drawer';
-import { Container, MenuItem } from './components';
+import { ActiveIndicator, Container, MenuItem } from './components';
 
 export type SubMenuItem = {
   icon: Icon;
@@ -25,6 +25,7 @@ export type SubMenuProps = {
 const SubMenu: React.FC<SubMenuProps> = ({ open, options, selected, onChange }) => {
   const theme = useTheme() as Theme;
   const [selectedOption, setSelectedOption] = React.useState(selected || options?.[0].value || '');
+  const selectedIndex = React.useMemo(() => options.findIndex((option) => option.value === selectedOption), [options, selected]);
 
   const onSubMenuItemClick = (value: string) => {
     setSelectedOption(value);
@@ -34,16 +35,19 @@ const SubMenu: React.FC<SubMenuProps> = ({ open, options, selected, onChange }) 
   return (
     <Drawer as="section" open={open} width={theme.components.subMenu.width} direction={SlideOutDirection.RIGHT} zIndex={25}>
       <Container>
-        {options.map((option: SubMenuItem, i) => {
-          const isSelectedOption = option.value === selectedOption;
+        {options.map((option, index) => {
+          const isSelectedOption = index === selectedIndex;
+
           return (
-            <MenuItem key={i} selected={isSelectedOption} onClick={() => onSubMenuItemClick(option.value)}>
+            <MenuItem key={index} selected={isSelectedOption} onClick={() => onSubMenuItemClick(option.value)}>
               <TippyTooltip title={option.value} position="right">
-                <SvgIcon icon={option.icon} color={isSelectedOption ? '#132144' : '#6e849a'} />
+                <SvgIcon icon={option.icon} color={isSelectedOption ? '#132144' : '#6e849a'} transition="color" />
               </TippyTooltip>
             </MenuItem>
           );
         })}
+
+        <ActiveIndicator activeIndex={selectedIndex} />
       </Container>
     </Drawer>
   );

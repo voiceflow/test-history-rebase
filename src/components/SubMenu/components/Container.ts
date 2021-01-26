@@ -2,6 +2,7 @@ import { FlexCenter } from '@/components/Flex';
 import { styled } from '@/hocs';
 
 const MenuContainer = styled(FlexCenter)`
+  position: relative;
   flex-direction: column;
   justify-content: flex-start;
   width: 65px;

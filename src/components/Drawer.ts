@@ -1,11 +1,12 @@
-import { css, styled } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 import { SlideOut, SlideOutDirection } from '@/styles/transitions';
 
 export type DrawerDirection = SlideOutDirection;
 
 export type DrawerProps = {
-  scrollable?: boolean;
   zIndex?: number;
+  scrollable?: boolean;
+  animatedWidth?: boolean;
 };
 
 const Drawer = styled(SlideOut)<DrawerProps>`
@@ -40,6 +41,12 @@ const Drawer = styled(SlideOut)<DrawerProps>`
     scrollable &&
     css`
       overflow-y: scroll;
+    `}
+
+  ${({ animatedWidth }) =>
+    animatedWidth &&
+    css`
+      ${transition('width')}
     `}
 `;
 

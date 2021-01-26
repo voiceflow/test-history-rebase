@@ -14,7 +14,7 @@ export type SvgIconContainerProps = {
   height?: number | string;
   variant?: IconVariant;
   clickable?: boolean;
-  transition?: string;
+  transition?: string | string[];
   ignoreEvents?: boolean;
   inline?: boolean;
   rotation?: number;

@@ -1,28 +1,18 @@
-import { Flex } from '@/components/Box';
-import { css, styled } from '@/hocs';
+import { SearchableListItemContainer } from '@/components/SearchableList';
+import { styled } from '@/hocs';
 
-export type DeviceItemProps = {
-  selected?: boolean;
-};
-
-const DeviceItem = styled(Flex)<DeviceItemProps>`
-  justify-content: space-between;
+const DeviceItem = styled(SearchableListItemContainer)`
   height: 42px;
   padding: 12px 32px;
-  cursor: pointer;
-  position: relative;
   font-size: 13px;
 
-  :hover {
-    background-color: #eef4f6;
+  & * {
+    z-index: 1;
   }
 
-  ${({ selected }) =>
-    selected &&
-    css`
-      border: solid 1px #dfe3ed;
-      background-color: #eef4f6;
-    `}
+  &:before {
+    z-index: 0;
+  }
 `;
 
 export default DeviceItem;

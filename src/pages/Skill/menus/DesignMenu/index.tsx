@@ -39,7 +39,7 @@ const DesignMenu: React.FC<ConnectedDesignMenuProps> = ({
   }, [activeTab, isViewerOrLibraryRole]);
   const [events] = useTrackingEvents();
 
-  React.useEffect(() => {
+  useDidUpdateEffect(() => {
     if (canvasOnly) {
       hideCreatorMenu(); // canvas only mode should unlock the step menu
     } else {

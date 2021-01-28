@@ -3,9 +3,12 @@ import React from 'react';
 import Flex from '@/components/Flex';
 import Menu from '@/components/Menu';
 import { toast } from '@/components/Toast';
+import { FeatureFlag } from '@/config/features';
 import { UserRole } from '@/constants';
+import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { useFeature } from '@/hooks';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import { Container, DropdownIcon, DropdownItem, MemberName, PermissionDropdown, PermissionsDropdownButton, UserIcon } from './components';
@@ -17,9 +20,11 @@ const isVerifiedMember = (member) => {
 const getRoleVerb = (role) => {
   switch (role) {
     case UserRole.ADMIN:
-      return 'Owner';
+      return 'Admin';
     case UserRole.EDITOR:
       return 'Can edit';
+    case UserRole.OWNER:
+      return 'Can manage';
     case UserRole.VIEWER:
     default:
       return 'Can view';
@@ -28,7 +33,7 @@ const getRoleVerb = (role) => {
 
 const MemberRow = ({
   member,
-  isOwner,
+  isAdmin,
   pending,
   resendInvite,
   numberOfUsedEditorSeats,
@@ -39,13 +44,21 @@ const MemberRow = ({
   updateInvite,
   seatLimits,
   seats,
+  role,
+  userId,
 }) => {
+  const userIsMember = userId === member.creator_id;
+  const ownerRole = useFeature(FeatureFlag.OWNER_ROLE);
+
+  const allowDropdown =
+    !userIsMember && !isAdmin && !(role === UserRole.EDITOR && (member.role === UserRole.OWNER || member.role === UserRole.ADMIN));
+
   const changePermission = (role) => {
     if (role === member.role) {
       return;
     }
 
-    if (role === UserRole.EDITOR && numberOfUsedEditorSeats >= seats) {
+    if ((role === UserRole.EDITOR || role === UserRole.OWNER) && numberOfUsedEditorSeats >= seats) {
       return toast.error('You have reached your max editor seats usage.');
     }
     if (role === UserRole.VIEWER && numberOfUsedViewerSeats >= seatLimits.viewer) {
@@ -81,26 +94,36 @@ const MemberRow = ({
       <PermissionDropdown
         menu={
           <Menu>
-            <DropdownItem onClick={() => changePermission(UserRole.EDITOR)} active={member.role === UserRole.EDITOR}>
-              Can Edit
-            </DropdownItem>
-            <DropdownItem onClick={() => changePermission(UserRole.VIEWER)} active={member.role === UserRole.VIEWER}>
-              Can View
-            </DropdownItem>
+            <>
+              <DropdownItem onClick={() => changePermission(UserRole.EDITOR)} active={member.role === UserRole.EDITOR}>
+                Can Edit
+              </DropdownItem>
+              <DropdownItem onClick={() => changePermission(UserRole.VIEWER)} active={member.role === UserRole.VIEWER}>
+                Can View
+              </DropdownItem>
+            </>
+            {(role === UserRole.OWNER || role === UserRole.ADMIN) && ownerRole.isEnabled && (
+              <>
+                <DropdownItem onClick={() => changePermission(UserRole.OWNER)} active={member.role === UserRole.OWNER}>
+                  Can Manage
+                </DropdownItem>
+              </>
+            )}
             <DropdownItem divider />
+
             {pending && <DropdownItem onClick={() => resendInvite(member.email, null)}>Resend Invite</DropdownItem>}
             <DropdownItem onClick={remove}>{pending ? 'Cancel Invite' : 'Remove Access'}</DropdownItem>
           </Menu>
         }
       >
         {(ref, onToggle) => (
-          <PermissionsDropdownButton ref={ref} onClick={() => !isOwner && onToggle()}>
-            {isOwner ? (
-              <span> Owner</span>
+          <PermissionsDropdownButton ref={ref} onClick={() => allowDropdown && onToggle()}>
+            {isAdmin ? (
+              <span>Admin</span>
             ) : (
               <>
                 {getRoleVerb(member.role)}
-                <DropdownIcon size={8} icon="caretDown" />
+                {allowDropdown && <DropdownIcon size={8} icon="caretDown" />}
               </>
             )}
           </PermissionsDropdownButton>
@@ -112,6 +135,8 @@ const MemberRow = ({
 
 const mapStateToProps = {
   numberOfUsedEditorSeats: Workspace.usedEditorSeatsSelector,
+  role: Workspace.userRoleSelector,
+  userId: Account.userIDSelector,
   numberOfUsedViewerSeats: Workspace.usedViewerSeatsSelector,
   seatLimits: Workspace.seatLimitsSelector,
   seats: Workspace.workspaceNumberOfSeatsSelector,

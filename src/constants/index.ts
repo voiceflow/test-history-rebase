@@ -393,6 +393,7 @@ export enum UserRole {
   EDITOR = 'editor',
   VIEWER = 'viewer',
   LIBRARY = 'library',
+  OWNER = 'owner',
 }
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];

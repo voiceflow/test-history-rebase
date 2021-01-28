@@ -6,6 +6,7 @@ import Menu, { MenuItem } from '@/components/Menu';
 import PlanBubble from '@/components/PlanBubble';
 import SvgIcon from '@/components/SvgIcon';
 import { IS_PRIVATE_CLOUD } from '@/config';
+import { UserRole } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as WorkspaceDuck from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -29,9 +30,11 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
   goToWorkspace,
   isAdminOfAnyWorkspace,
   goTo,
+  role,
   plan,
 }) => {
-  const showCreateWorkspaceButton = !IS_PRIVATE_CLOUD || isAdminOfAnyWorkspace;
+  const privateCloudCreateCondition = isAdminOfAnyWorkspace || role === UserRole.OWNER;
+  const showCreateWorkspaceButton = !IS_PRIVATE_CLOUD || privateCloudCreateCondition;
 
   return (
     <>
@@ -83,6 +86,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
 
 const mapStateToProps = {
   plan: WorkspaceDuck.planTypeSelector,
+  role: WorkspaceDuck.userRoleSelector,
   isTemplateWorkspace: WorkspaceDuck.isTemplateWorkspaceSelector,
   isAdminOfAnyWorkspace: WorkspaceDuck.isAdminOfAnyWorkspaceSelector,
 };

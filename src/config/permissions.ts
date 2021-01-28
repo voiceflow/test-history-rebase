@@ -37,24 +37,24 @@ export enum Permission {
 }
 
 export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
-  [Permission.ADD_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR],
-  [Permission.VIEW_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER],
+  [Permission.ADD_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
+  [Permission.VIEW_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
 
-  [Permission.INVITE_BY_LINK]: [UserRole.ADMIN, UserRole.EDITOR],
+  [Permission.INVITE_BY_LINK]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
 
   [Permission.CONFIGURE_WORKSPACE]: [UserRole.ADMIN],
-  [Permission.UPGRADE_WORKSPACE]: [UserRole.ADMIN, UserRole.EDITOR],
+  [Permission.UPGRADE_WORKSPACE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
 
-  [Permission.MANAGE_PROJECTS]: [UserRole.ADMIN, UserRole.EDITOR],
+  [Permission.MANAGE_PROJECTS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
   [Permission.MANAGE_PROJECT_LISTS]: [UserRole.ADMIN, UserRole.EDITOR],
   [Permission.CLONE_PROJECT]: [UserRole.LIBRARY],
 
-  [Permission.EDIT_CANVAS]: [UserRole.ADMIN, UserRole.EDITOR],
-  [Permission.CANVAS_MARKUP]: [UserRole.ADMIN, UserRole.EDITOR],
-  [Permission.CANVAS_REALTIME]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER],
-  [Permission.COMMENTING]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER],
+  [Permission.EDIT_CANVAS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
+  [Permission.CANVAS_MARKUP]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
+  [Permission.CANVAS_REALTIME]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
+  [Permission.COMMENTING]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
 
-  [Permission.HINT_FEATURES]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER],
+  [Permission.HINT_FEATURES]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
 };
 
 export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {

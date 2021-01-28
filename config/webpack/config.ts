@@ -15,6 +15,7 @@ import {
   ff_gadgets,
   ff_generalPlatform,
   ff_generalPrototype,
+  ff_ownerRole,
   ff_visualPrototype,
   ff_visualStep,
   ff_wavenetVoices,
@@ -75,6 +76,7 @@ export const ENV = {
   FF_VISUAL_PROTOTYPE: ff_visualPrototype && 'true',
   FF_VISUAL_STEP: ff_visualStep && 'true',
   FF_WAVENET_VOICES: ff_wavenetVoices && 'true',
+  FF_OWNER_ROLE: ff_ownerRole && 'true',
 
   API_HOST: 'localhost',
   ...EXTRACTED_ENV,

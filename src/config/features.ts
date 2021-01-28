@@ -9,6 +9,7 @@ export const GENERAL_PROTOTYPE_ENABLED = process.env.FF_GENERAL_PROTOTYPE === 't
 export const VISUAL_PROTOTYPE_ENABLED = process.env.FF_VISUAL_PROTOTYPE === 'true';
 export const VISUAL_STEP_ENABLED = process.env.FF_VISUAL_STEP === 'true';
 export const WAVENET_VOICES_ENABLED = process.env.FF_WAVENET_VOICES === 'true';
+export const OWNER_ROLE_ENABLED = process.env.FF_OWNER_ROLE === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
@@ -17,6 +18,7 @@ export enum FeatureFlag {
   GENERAL_PLATFORM = 'general_platform',
   GENERAL_PROTOTYPE = 'general_prototype',
   WAVENET_VOICES = 'wavenet_voices',
+  OWNER_ROLE = 'owner_role',
   VISUAL_STEP = 'visual_step',
 
   // permanent circuit breakers for vendor integrations
@@ -31,5 +33,6 @@ export const LOCAL_FEATURE_OVERRIDES = {
   [FeatureFlag.GENERAL_PLATFORM]: GENERAL_PLATFORM_ENABLED,
   [FeatureFlag.GENERAL_PROTOTYPE]: GENERAL_PROTOTYPE_ENABLED,
   [FeatureFlag.WAVENET_VOICES]: WAVENET_VOICES_ENABLED,
+  [FeatureFlag.OWNER_ROLE]: OWNER_ROLE_ENABLED,
   [FeatureFlag.VISUAL_STEP]: VISUAL_STEP_ENABLED,
 };

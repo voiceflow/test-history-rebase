@@ -5971,10 +5971,10 @@
   dependencies:
     "@voiceflow/api-sdk" "1.20.0"
 
-"@voiceflow/general-types@1.19.0":
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.19.0.tgz#75034f0cd5646d45bacf2afc71ceb5fa298e4c47"
-  integrity sha512-gDxA7l27PGxNGq98BHGzWsC9WIv8ynemRk+FsbTXepMKdNhQNIfLVvPc38T9mDY/IUocowpVG2G1FuBrGB8WcA==
+"@voiceflow/general-types@1.20.1":
+  version "1.20.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.20.1.tgz#7fa6219604a26db067d072f603486a34f27be1de"
+  integrity sha512-4M2JGvEf2/FZhRFTRwfWfPDT6vev/uAnO0RsdURH2hyb/nXsGdET5LEEG8TfxGU2JkhNUsdX792H3n0PImdbBQ==
   dependencies:
     "@voiceflow/api-sdk" "1.22.0"
 

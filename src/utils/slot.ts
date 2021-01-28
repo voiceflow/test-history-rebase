@@ -2,7 +2,7 @@ import { constants } from '@voiceflow/common';
 import _ from 'lodash';
 
 import { CUSTOM_SLOT_TYPE, PlatformType, SLOT_REGEXP, SLOT_TYPES, VARIABLE_STRING_REGEXP } from '@/constants';
-import { GOOGLE_SLOT_TYPES } from '@/constants/platforms';
+import { GENERAL_SLOT_TYPES, GOOGLE_SLOT_TYPES } from '@/constants/platforms';
 import { Intent, Slot } from '@/models';
 import { Nullable } from '@/types';
 
@@ -13,11 +13,16 @@ export const getSlotTypes = <L extends string>({
   locales: L[];
   platform: PlatformType;
   publishInfo: Nullable<Record<PlatformType, any>>;
-}) => {
+}): { value?: string; label: string }[] => {
   const customSlotType = SLOT_TYPES[0];
+  const language = locales[0]?.substring(0, 2);
 
   if (platform === PlatformType.GOOGLE) {
     return [{ value: customSlotType.label, label: customSlotType.label }, ...GOOGLE_SLOT_TYPES];
+  }
+
+  if (platform === PlatformType.GENERAL) {
+    return [{ value: customSlotType.label, label: customSlotType.label }, ...(GENERAL_SLOT_TYPES[language!] || [])];
   }
 
   let slots: constants.Slot[] = [];

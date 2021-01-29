@@ -11,12 +11,14 @@ const captureAdapter = createBlockAdapter<StepData<Voice>, NodeData.Capture>(
     variable,
     examples: slotInputs,
     reprompt: reprompt && repromptAdapter.fromDB(reprompt),
+    chips: null, // no chips on alexa
   }),
   ({ slot, variable, reprompt, examples }) => ({
     slot,
     variable,
     reprompt: reprompt && repromptAdapter.toDB(reprompt),
     slotInputs: examples,
+    chips: null,
   })
 );
 

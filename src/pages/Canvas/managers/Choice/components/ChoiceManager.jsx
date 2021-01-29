@@ -4,12 +4,15 @@ import React from 'react';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { HelpTooltip } from '@/components/IntentForm';
 import OverflowMenu from '@/components/OverflowMenu';
+import { PlatformType } from '@/constants';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { activePlatformSelector } from '@/ducks/skill';
+import { useIsPlatform } from '@/ducks/skill/hooks';
 import { connect } from '@/hocs';
 import { useManager, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
+import SuggestionChips, { chipFactory } from '@/pages/Canvas/components/SuggestionChips';
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import ElseResponse from '@/pages/Canvas/managers/Choice/components/ElseResponse';
@@ -33,6 +36,9 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
     hasNoReplyResponse,
     onChange,
   ]);
+
+  const hasChips = !!data.chips;
+  const toggleChips = React.useCallback(() => onChange({ chips: hasChips ? null : chipFactory() }), [hasChips, onChange]);
 
   const { onAdd, mapManaged, onRemove, onReorder, latestCreatedKey, items } = useManager(choices, updateChoices, {
     factory: choiceFactory,
@@ -58,6 +64,8 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
     [onReorder, engine.port, focusedNode.id]
   );
 
+  const isAlexa = useIsPlatform(PlatformType.ALEXA);
+
   return (
     <Content
       footer={({ scrollToBottom }) =>
@@ -68,9 +76,17 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
                 placement="top-end"
                 options={[
                   {
-                    label: hasNoReplyResponse ? 'Remove No Reply Response' : 'Add  No Reply Response',
+                    label: hasNoReplyResponse ? 'Remove No Reply Response' : 'Add No Reply Response',
                     onClick: toggleReprompt,
                   },
+                  ...(!isAlexa
+                    ? [
+                        {
+                          label: hasChips ? 'Remove Suggestion Chips' : 'Add Suggestion Chips',
+                          onClick: toggleChips,
+                        },
+                      ]
+                    : []),
                 ]}
               />
             }
@@ -99,6 +115,7 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
           <>
             <ElseResponse pushToPath={pushToPath} editorStatus={data.else.type} />
             {hasNoReplyResponse && <NoReplyResponse pushToPath={pushToPath} />}
+            {hasChips && <SuggestionChips pushToPath={pushToPath} />}
           </>
         }
         onDelete={onRemove}

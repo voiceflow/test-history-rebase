@@ -3,15 +3,17 @@ import cuid from 'cuid';
 import { BlockType, DialogType } from '@/constants';
 import { NodeData } from '@/models';
 import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
+import { ChipForm } from '@/pages/Canvas/components/SuggestionChips';
 
 import { NodeConfig } from '../types';
+import { RepromptsForm } from './components';
 import PromptEditor from './PromptEditor';
 import PromptStep from './PromptStep';
-import { RepromptsForm } from './components';
 
 const EDITORS_BY_PATH = {
   reprompts: RepromptsForm,
   noReplyResponse: NoReplyResponseForm,
+  chips: ChipForm,
 };
 
 const PromptManager: NodeConfig<NodeData.Prompt> = {
@@ -48,6 +50,7 @@ const PromptManager: NodeConfig<NodeData.Prompt> = {
         ],
       },
       reprompt: null,
+      chips: null,
     },
   }),
 };

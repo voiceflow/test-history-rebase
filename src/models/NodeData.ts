@@ -1,6 +1,6 @@
 import { PermissionType } from '@voiceflow/alexa-types';
 import { SlotMapping } from '@voiceflow/api-sdk';
-import { ExpressionType, IntegrationUser } from '@voiceflow/general-types';
+import { Chip, ExpressionType, IntegrationUser } from '@voiceflow/general-types';
 import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
 import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/general-types/build/nodes/googleSheets';
 import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
@@ -69,6 +69,7 @@ export namespace NodeData {
     else: InteractionElse;
     choices: Record<PlatformType, InteractionChoice>[];
     reprompt: Reprompt | null;
+    chips: Chip[] | null;
   };
 
   export type ChoiceOld = {
@@ -82,6 +83,7 @@ export namespace NodeData {
       reprompts: SpeakData[];
     };
     reprompt: Reprompt | null;
+    chips: Chip[] | null;
   };
 
   export type Command = Record<PlatformType, Command.PlatformData> & { name: string };
@@ -106,6 +108,7 @@ export namespace NodeData {
     variable: string | null;
     examples: string[];
     reprompt: Reprompt | null;
+    chips: Chip[] | null;
   };
 
   export type Speak = {

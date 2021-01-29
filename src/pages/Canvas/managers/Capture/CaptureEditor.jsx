@@ -6,9 +6,11 @@ import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import SlotSelect from '@/components/SlotSelect';
 import VariableSelect from '@/components/VariableSelect';
-import { CUSTOM_SLOT_TYPE } from '@/constants';
+import { CUSTOM_SLOT_TYPE, PlatformType } from '@/constants';
+import { useIsPlatform } from '@/ducks/skill/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
+import SuggestionChips, { chipFactory } from '@/pages/Canvas/components/SuggestionChips';
 
 import HelpTooltip from './components/HelpTooltip';
 
@@ -25,7 +27,12 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
     onChange,
   ]);
 
+  const hasChips = !!data.chips;
+  const toggleChips = React.useCallback(() => onChange({ chips: hasChips ? null : chipFactory() }), [hasChips, onChange]);
+
   const optionsFilter = React.useCallback((slotType) => slotType?.value !== SEARCH_QUERY_SLOT, []);
+
+  const isAlexa = useIsPlatform(PlatformType.ALEXA);
 
   return (
     <Content
@@ -39,6 +46,14 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
                   label: hasNoReplyResponse ? 'Remove No Reply Response' : 'Add  No Reply Response',
                   onClick: toggleReprompt,
                 },
+                ...(!isAlexa
+                  ? [
+                      {
+                        label: hasChips ? 'Remove Suggestion Chips' : 'Add Suggestion Chips',
+                        onClick: toggleChips,
+                      },
+                    ]
+                  : []),
               ]}
             />
           }
@@ -92,6 +107,7 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
         </FormControl>
       </Section>
       {hasNoReplyResponse && <NoReplyResponse pushToPath={pushToPath} />}
+      {hasChips && <SuggestionChips pushToPath={pushToPath} />}
     </Content>
   );
 }

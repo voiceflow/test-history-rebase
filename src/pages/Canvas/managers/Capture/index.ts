@@ -1,6 +1,7 @@
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
 import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
+import { ChipForm } from '@/pages/Canvas/components/SuggestionChips';
 
 import { NodeConfig } from '../types';
 import CaptureEditor from './CaptureEditor';
@@ -8,6 +9,7 @@ import CaptureStep from './CaptureStep';
 
 const EDITORS_BY_PATH = {
   noReplyResponse: NoReplyResponseForm,
+  chips: ChipForm,
 };
 
 const CaptureManager: NodeConfig<NodeData.Capture> = {
@@ -37,6 +39,7 @@ const CaptureManager: NodeConfig<NodeData.Capture> = {
       variable: null,
       examples: [],
       reprompt: null,
+      chips: null,
     },
   }),
 };

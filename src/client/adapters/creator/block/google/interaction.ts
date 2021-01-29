@@ -20,7 +20,7 @@ const choiceAdapter = createAdapter<Choice, NodeData.InteractionChoice>(
 );
 
 const interactionAdapter = createBlockAdapter<StepData<Voice>, NodeData.Interaction>(
-  ({ name, else: elseData, choices, reprompt }) => ({
+  ({ name, else: elseData, choices, reprompt, chips = null }) => ({
     name,
     else: elseAdapter.fromDB(elseData),
     choices: choices.map((choice) => ({
@@ -28,12 +28,14 @@ const interactionAdapter = createBlockAdapter<StepData<Voice>, NodeData.Interact
       [PlatformType.GOOGLE]: choiceAdapter.fromDB(choice),
     })),
     reprompt: reprompt && repromptAdapter.fromDB(reprompt),
+    chips,
   }),
-  ({ name, else: elseData, choices, reprompt }) => ({
+  ({ name, else: elseData, choices, reprompt, chips }) => ({
     name,
     else: elseAdapter.toDB(elseData),
     choices: choices.map(({ [PlatformType.GOOGLE]: data }) => choiceAdapter.toDB(data)),
     reprompt: reprompt && repromptAdapter.toDB(reprompt),
+    chips,
   })
 );
 

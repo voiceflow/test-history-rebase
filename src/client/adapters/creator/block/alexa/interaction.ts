@@ -28,12 +28,14 @@ const interactionAdapter = createBlockAdapter<StepData<Voice>, NodeData.Interact
       [PlatformType.ALEXA]: choiceAdapter.fromDB(choice),
     })),
     reprompt: reprompt && repromptAdapter.fromDB(reprompt),
+    chips: null, // no chips on alexa
   }),
   ({ name, else: elseData, choices, reprompt }) => ({
     name,
     else: elseAdapter.toDB(elseData),
     choices: choices.map(({ [PlatformType.ALEXA]: data }) => choiceAdapter.toDB(data)),
     reprompt: reprompt && repromptAdapter.toDB(reprompt),
+    chips: null,
   })
 );
 

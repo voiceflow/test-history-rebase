@@ -9,11 +9,13 @@ const promptAdapter = createBlockAdapter<StepData<Voice>, NodeData.Prompt>(
   ({ reprompt, noMatches }) => ({
     reprompt: reprompt && repromptAdapter.fromDB(reprompt),
     noMatchReprompt: noMatchAdapter.fromDB(noMatches),
+    chips: null, // no chips on alexa
   }),
   ({ reprompt, noMatchReprompt }) => ({
     ports: [],
     reprompt: reprompt && repromptAdapter.toDB(reprompt),
     noMatches: noMatchAdapter.toDB(noMatchReprompt),
+    chips: null,
   })
 );
 

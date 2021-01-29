@@ -2,9 +2,7 @@ import React from 'react';
 
 import { FlexCenter } from '@/components/Flex';
 import Icon from '@/components/SvgIcon';
-import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
-import { useFeature } from '@/hooks';
 import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 
 import { PLATFORM_META_ARRAY } from '../constants';
@@ -22,22 +20,16 @@ const PlatformSelect: React.FC<PlatformSelectProps> = ({ setSelectedPlatform, cr
     setSelectedPlatform(null);
   }, []);
 
-  const generalPlatform = useFeature(FeatureFlag.GENERAL_PLATFORM);
-
   return (
     <Container width={980}>
       <FlexCenter>
         <div>
           <QuestionContainer>What channel do you want to create for?</QuestionContainer>
-          <InstructionContainer>
-            {generalPlatform.isEnabled
-              ? 'Select between Amazon Alexa, Google Assistant, or a General Assistant project type'
-              : 'Select between Amazon Alexa or Google Assistant'}
-          </InstructionContainer>
+          <InstructionContainer>Select between Amazon Alexa, Google Assistant, or a General Assistant project type</InstructionContainer>
         </div>
       </FlexCenter>
       <PlatformCardsContainer>
-        {PLATFORM_META_ARRAY.filter(({ platform }) => platform !== PlatformType.GENERAL || generalPlatform.isEnabled).map((meta, index) => {
+        {PLATFORM_META_ARRAY.map((meta, index) => {
           return (
             <PlatformCard
               key={index}

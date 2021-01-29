@@ -294,8 +294,6 @@ yarn start --ff_someFeature
 #### Available Flags and Environment Variables
 
 - `ff_gadgets` / `VF_APP_FF_GADGETS`: enable alexa gadgets interface
-- `ff_generalPlatform` / `VF_APP_FF_GENERAL_PLATFORM`: general platform
-- `ff_generalPrototype` / `VF_APP_FF_GENERAL_PLATFORM`: general platform
 - `ff_visualPrototype` / `VF_APP_FF_VISUAL_PROTOTYPE`: visuals in prototyping test tools
 - `ff_visualStep` / `VF_APP_FF_VISUAL_STEP`: visuals step
 

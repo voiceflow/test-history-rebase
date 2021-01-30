@@ -17,7 +17,7 @@ import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import * as Workspace from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
-import { useDidUpdateEffect, useModals } from '@/hooks';
+import { useDidUpdateEffect, useModals, useTeardown } from '@/hooks';
 import { activeSlotTypesSelector } from '@/store/selectors';
 import { replace, without } from '@/utils/array';
 import { stopPropagation } from '@/utils/dom';
@@ -162,11 +162,11 @@ function SlotEdit({
     }
   }, []);
 
-  useDidUpdateEffect(() => {
+  useTeardown(() => {
     if (isInteraction) {
       updateSlot();
     }
-  }, [slotType, selectedColor, customLines.length]);
+  }, [updateSlot]);
 
   return (
     <>

@@ -24,6 +24,7 @@ const SSML = React.lazy(() => import('@/pages/SSML'));
 const Legal = React.lazy(() => import('@/components/Legal'));
 const Skill = React.lazy(() => import('@/pages/Skill'));
 const Account = React.lazy(() => import('@/pages/Account'));
+const Runtime = React.lazy(() => import('@/pages/Runtime'));
 const Page404 = React.lazy(() => import('@/components/ErrorPages/404'));
 const PublicPrototype = React.lazy(() => import('@/pages/PublicPrototype'));
 const Workspace = React.lazy(() => import('@/pages/Workspace'));
@@ -72,6 +73,7 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => {
         <PrivateRoute path={LegacyPath.PROJECT_VERSION} component={Skill} />
 
         <PrivateRoute path={Path.ACCOUNT} name="Account" component={Account} />
+        <PrivateRoute path={Path.RUNTIME} name="Runtime" component={Runtime} />
 
         <Route
           exact

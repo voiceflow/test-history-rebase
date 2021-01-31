@@ -33,7 +33,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ open, options, selected, onChange }) 
   };
 
   return (
-    <Drawer as="section" open={open} width={theme.components.subMenu.width} direction={SlideOutDirection.RIGHT} zIndex={25}>
+    <Drawer open={open} width={theme.components.subMenu.width} direction={SlideOutDirection.RIGHT} zIndex={25}>
       <Container>
         {options.map((option, index) => {
           const isSelectedOption = index === selectedIndex;

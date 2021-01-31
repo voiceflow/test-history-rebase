@@ -1,7 +1,9 @@
 import { FlexCenter } from '@/components/Flex';
 import { styled } from '@/hocs';
+import { FadeRight } from '@/styles/animations';
 
 const MenuContainer = styled(FlexCenter)`
+  ${FadeRight};
   position: relative;
   flex-direction: column;
   justify-content: flex-start;

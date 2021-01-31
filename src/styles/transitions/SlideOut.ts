@@ -17,36 +17,35 @@ export const SlideOut = styled.div<SlideOutProps>`
   position: absolute;
   width: ${({ width }) => width}px;
   background-color: inherit;
+  transform: translateX(0);
   z-index: 20;
 
   ${({ disableAnimation }) =>
     !disableAnimation &&
     css`
       ${transition('transform')}
+      will-change: transform;
     `}
 
   ${({ open, width, offset = 0, direction = SlideOutDirection.RIGHT }) => {
     if (direction === SlideOutDirection.RIGHT) {
       return css`
-        left: 0;
-        ${open
-          ? css`
-              transform: translate3d(${offset}px, 0, 0);
-            `
-          : css`
-              transform: translate3d(-${width}px, 0, 0);
-            `};
+        left: -${width}px;
+
+        ${open &&
+        css`
+          transform: translateX(${offset + width}px);
+        `};
       `;
     }
 
-    return open
-      ? css`
-          right: 0;
-          transform: translate3d(-${offset}px, 0, 0);
-        `
-      : css`
-          right: 0;
-          transform: translate3d(${width}px, 0, 0);
-        `;
+    return css`
+      right: ${-width}px;
+
+      ${open &&
+      css`
+        transform: translateX(-${offset + width}px);
+      `};
+    `;
   }}
 `;

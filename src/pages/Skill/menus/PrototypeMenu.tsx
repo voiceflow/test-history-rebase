@@ -29,8 +29,8 @@ const PrototypeMenu: React.FC<PrototypeMenuProps & ConnectedPrototypeMenuProps> 
 };
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
   mode: Prototype.activePrototypeModeSelector,
+  platform: Skill.activePlatformSelector,
 };
 
 const mapDispatchToProps = {

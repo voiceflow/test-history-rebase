@@ -45,11 +45,11 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps & ConnectedT
   return (
     <Drawer
       id={Identifier.THREAD_HISTORY_DRAWER}
-      scrollable
       width={theme.components.historyDrawer.width}
       open={isCommentingMode}
-      direction={SlideOutDirection.LEFT}
       onPaste={stopImmediatePropagation()}
+      direction={SlideOutDirection.LEFT}
+      scrollable
     >
       <HeaderContainer>
         <Text fontSize={18} fontWeight={600}>

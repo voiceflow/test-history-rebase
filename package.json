@@ -300,7 +300,7 @@
     "webpack-manifest-plugin": "^2.2.0",
     "webpack-merge": "^5.7.3",
     "webpack-nano": "^1.1.1",
-    "webpack-plugin-serve": "^1.2.1",
+    "webpack-plugin-serve": "1.0.1",
     "webpackbar": "^4.0.0"
   },
   "homepage": "https://github.com/voiceflow/creator-app#readme",

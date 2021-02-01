@@ -9,13 +9,18 @@ import { initializeCreatorForDiagram } from '@/store/sideEffects';
 import { Action } from '@/store/types';
 import { ConnectedProps, MergeArguments } from '@/types';
 
-const RawDiagramLoadingGate: React.FC<ConnectedDiagramLoadingGateProps> = ({
+type DiagramLoadingGate = {
+  withoutSpinner?: boolean;
+};
+
+const RawDiagramLoadingGate: React.FC<DiagramLoadingGate & ConnectedDiagramLoadingGateProps> = ({
+  children,
   diagramID,
-  creatorDiagramID,
-  isDiagramLoaded,
   loadDiagram,
   clearHistory,
-  children,
+  withoutSpinner,
+  isDiagramLoaded,
+  creatorDiagramID,
 }) => {
   const prevDiagramID = React.useRef(diagramID);
 
@@ -28,7 +33,7 @@ const RawDiagramLoadingGate: React.FC<ConnectedDiagramLoadingGateProps> = ({
   }, [isDiagramLoaded, creatorDiagramID, clearHistory]);
 
   return (
-    <LoadingGate label="Diagrams" isLoaded={isDiagramLoaded} load={loadDiagram}>
+    <LoadingGate label="Diagrams" isLoaded={isDiagramLoaded} load={loadDiagram} withoutSpinner={withoutSpinner}>
       {children}
     </LoadingGate>
   );
@@ -51,6 +56,6 @@ const mergeProps = (...[{ diagramID, creatorDiagramID }, { loadDiagram }]: Merge
 
 type ConnectedDiagramLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
 
-const DiagramLoadingGate = connect(mapStateToProps, mapDispatchToProps, mergeProps)(RawDiagramLoadingGate);
+const DiagramLoadingGate = connect(mapStateToProps, mapDispatchToProps, mergeProps)(RawDiagramLoadingGate) as React.FC<DiagramLoadingGate>;
 
 export default DiagramLoadingGate;

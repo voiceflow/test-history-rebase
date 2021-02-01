@@ -1,6 +1,6 @@
-import { Locale } from '@voiceflow/alexa-types';
+import { getInvocationNameError as getAlexaInvocationNameError, Locale as AlexaLocale } from '@voiceflow/alexa-types';
 import { Locale as GeneralLocale } from '@voiceflow/general-types';
-import { Language, LanguageToLocale, Locale as GoogleLocale } from '@voiceflow/google-types';
+import { getInvocationNameError as getGoogleInvocationNameError, Language, LanguageToLocale, Locale as GoogleLocale } from '@voiceflow/google-types';
 import _constant from 'lodash/constant';
 import React, { ChangeEvent } from 'react';
 
@@ -11,19 +11,13 @@ import Section, { SectionVariant } from '@/components/Section';
 import Select from '@/components/Select';
 import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { PlatformType } from '@/constants';
-import { GENERAL_LOCALES_OPTIONS, GENERAL_LOCALE_NAME_MAP } from '@/constants/platforms';
+import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
 import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
-import {
-  FORMATTED_GOOGLE_LOCALES_LABELS,
-  FORMATTED_LOCALES,
-  getAmazonInvocationNameError,
-  getGoogleInvocationNameError,
-  getLocaleLanguage,
-} from '@/pages/Publish/utils';
+import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { without } from '@/utils/array';
@@ -64,7 +58,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   const [newProjectName, setNewProjectName] = React.useState(name);
   const [projectImage, setProjectImage] = React.useState(project.image);
 
-  const [alexaLocales, setAlexaLocales] = React.useState<Locale[]>((locales || []) as Locale[]);
+  const [alexaLocales, setAlexaLocales] = React.useState<AlexaLocale[]>((locales || []) as AlexaLocale[]);
   const [generalLocale, setGeneralLocale] = React.useState<GeneralLocale>((locales as GeneralLocale[])[0]);
   const [googleLanguage, setGoogleLanguage] = React.useState<string | Language>(() => getLocaleLanguage(locales as GoogleLocale[]));
 
@@ -78,7 +72,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     getPlatformValue<(name?: string, locales?: any[]) => string | null>(
       platform,
       {
-        [PlatformType.ALEXA]: getAmazonInvocationNameError,
+        [PlatformType.ALEXA]: getAlexaInvocationNameError,
         [PlatformType.GOOGLE]: getGoogleInvocationNameError,
       },
       _constant(null)
@@ -93,7 +87,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     }
 
     if (platform === PlatformType.ALEXA) {
-      saveLocales(alexaLocales as Locale[]);
+      saveLocales(alexaLocales as AlexaLocale[]);
     } else {
       saveLocales(LanguageToLocale[googleLanguage as Language]);
     }
@@ -147,7 +141,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
             [PlatformType.ALEXA]: () => (
               <UnTypedDropdownMultiselect
                 options={LOCALE_MAP}
-                onSelect={(val: Locale) =>
+                onSelect={(val: AlexaLocale) =>
                   setAlexaLocales(alexaLocales.includes(val) ? without(alexaLocales, alexaLocales.indexOf(val)) : [...alexaLocales, val])
                 }
                 autoWidth

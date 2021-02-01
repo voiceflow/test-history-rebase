@@ -1,4 +1,4 @@
-import { Locale } from '@voiceflow/alexa-types';
+import { getInvocationNameError as getAlexaInvocationNameError, Locale } from '@voiceflow/alexa-types';
 import React from 'react';
 import { Assign } from 'utility-types';
 
@@ -12,7 +12,6 @@ import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useSmartReducerV2 } from '@/hooks';
 import { AlexaExportJob, AlexaPublishJob } from '@/models';
-import { getAmazonInvocationNameError } from '@/pages/Publish/utils';
 import { ConnectedProps, Nullable } from '@/types';
 
 import { ButtonContainer, Description, LoaderStage, StageContainer } from '../components';
@@ -38,7 +37,7 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
   const updateName = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     api.update({
       name: target.value,
-      error: getAmazonInvocationNameError(target.value, locales),
+      error: getAlexaInvocationNameError(target.value, locales),
     });
   };
 

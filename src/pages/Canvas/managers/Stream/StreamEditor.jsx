@@ -1,3 +1,4 @@
+import { SLOT_REGEXP } from '@voiceflow/common';
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
@@ -5,7 +6,7 @@ import { ErrorMessageWithDivider } from '@/components/ErrorPages/ErrorMessage';
 import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
-import { HTTPS_URL_REGEX, PlatformType, SLOT_REGEXP } from '@/constants';
+import { HTTPS_URL_REGEX, PlatformType } from '@/constants';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { activePlatformSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';

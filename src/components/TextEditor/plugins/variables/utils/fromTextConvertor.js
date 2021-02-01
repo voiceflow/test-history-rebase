@@ -1,7 +1,7 @@
+import { SLOT_REGEXP } from '@voiceflow/common';
 import { genKey } from 'draft-js';
 import _isString from 'lodash/isString';
 
-import { SLOT_REGEXP } from '@/constants';
 import { transformVariablesFromReadable, transformVariablesFromReadableWithoutTrim } from '@/utils/slot';
 
 import { EntityType, Mutability } from '../../constants';

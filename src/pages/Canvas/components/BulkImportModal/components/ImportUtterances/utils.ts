@@ -1,12 +1,12 @@
+import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
 import _isString from 'lodash/isString';
 import _trim from 'lodash/trim';
 
 import { matchVariables } from '@/client/adapters/textEditor';
-import { VARIABLE_STRING_REGEXP } from '@/constants';
 import { Intent, Slot } from '@/models';
 import { validateUtterance } from '@/utils/intent';
 
-export const getUniqSlots = (value: string) => [...new Set([...value.matchAll(VARIABLE_STRING_REGEXP)].map((res) => res[1]))];
+export const getUniqSlots = (value: string) => [...new Set([...value.matchAll(READABLE_VARIABLE_REGEXP)].map((res) => res[1]))];
 export const getUtterances = (value: string) => value.split('\n').map(_trim).filter(Boolean);
 
 // eslint-disable-next-line import/prefer-default-export

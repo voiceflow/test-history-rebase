@@ -1,7 +1,9 @@
-import { constants } from '@voiceflow/common';
+import { BUILT_IN_INTENTS as ALEXA_BUILT_IN_INTENTS } from '@voiceflow/alexa-types';
+import { SLOT_REGEXP } from '@voiceflow/common';
 import { DEFAULT_INTENTS_MAP, DefaultIntent, Locale as GeneralLocale } from '@voiceflow/general-types';
+import { BUILT_IN_INTENTS as GOOGLE_BUILT_IN_INTENTS } from '@voiceflow/google-types';
 
-import { FILTERED_AMAZON_INTENTS, PlatformType, SLOT_REGEXP } from '@/constants';
+import { FILTERED_AMAZON_INTENTS, PlatformType } from '@/constants';
 import { Intent, Slot } from '@/models';
 import { capitalizeFirstLetter } from '@/utils/string';
 
@@ -44,18 +46,15 @@ export const filterIntents = (intents: Intent[], activeIntent: Intent) => {
   });
 };
 
-export const intentFactory = (platform: PlatformType) => (intent: { name: string; slots?: never }): Intent => {
+export const intentFactory = (platform: PlatformType) => (intent: { name: string; slots?: string[] }): Intent => {
   const truncatedName = intent.name.split('.')[1];
 
   return {
     id: intent.name,
     name: truncatedName ?? intent.name,
-    slots: {
-      byKey: {},
-      allKeys: [],
-    },
+    slots: { byKey: {}, allKeys: [] },
+    inputs: [{ text: '', slots: intent.slots ?? [] }],
     builtIn: true,
-    inputs: [{ text: '', slots: intent.slots || [] }],
     platform,
   };
 };
@@ -83,9 +82,9 @@ export const validateIntentName = (intentName: string, intents: Intent[], slots:
   return null;
 };
 
-export const ALEXA_BUILT_INS = constants.intents.BUILT_IN_INTENTS_ALEXA.map(intentFactory(PlatformType.ALEXA));
+export const ALEXA_BUILT_INS = ALEXA_BUILT_IN_INTENTS.map(intentFactory(PlatformType.ALEXA));
 
-export const GOOGLE_BUILT_INS = constants.intents.BUILT_IN_INTENTS_GOOGLE.map(intentFactory(PlatformType.GOOGLE));
+export const GOOGLE_BUILT_INS = GOOGLE_BUILT_IN_INTENTS.map(intentFactory(PlatformType.GOOGLE));
 
 export const GENERAL_BUILT_INS_MAP = Object.keys(DEFAULT_INTENTS_MAP).reduce<Record<string, Intent[]>>(
   (acc, key) => Object.assign(acc, { [key]: DEFAULT_INTENTS_MAP[key].map(generalIntentFactory) }),

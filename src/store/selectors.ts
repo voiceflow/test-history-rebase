@@ -34,9 +34,7 @@ export const allVariablesSelector = createSelector(
   (globalVariables, activeDiagramVariables, slotNames) => _uniq([...slotNames, ...BUILT_IN_VARIABLES, ...globalVariables, ...activeDiagramVariables])
 );
 
-export const activeSlotTypesSelector = createSelector([Skill.activeSkillSelector], ({ locales, platform, publishInfo }) =>
-  getSlotTypes({ locales, platform, publishInfo })
-);
+export const activeSlotTypesSelector = createSelector([Skill.activeSkillSelector], ({ locales, platform }) => getSlotTypes({ locales, platform }));
 
 export const activeProjectSelector = createSelector(Skill.activeProjectIDSelector, Project.projectByIDSelector, (projectID, getProject) =>
   getProject(projectID)

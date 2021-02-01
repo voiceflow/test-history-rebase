@@ -1,3 +1,4 @@
+import { IS_VARIABLE_REGEXP } from '@voiceflow/common';
 import axios from 'axios';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
@@ -5,7 +6,7 @@ import { Input } from 'reactstrap';
 
 import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
-import { HTTPS_URL_REGEX, VARIABLE_REGEXP } from '@/constants';
+import { HTTPS_URL_REGEX } from '@/constants';
 
 const MAX_SIZE = 5 * 1024 * 1024;
 class Image extends Component {
@@ -99,7 +100,7 @@ class Image extends Component {
         </Dropzone>
       );
     } else if (this.props.image && typeof this.props.image === 'string') {
-      if (this.props.image.match(VARIABLE_REGEXP)) {
+      if (this.props.image.match(IS_VARIABLE_REGEXP)) {
         render = (
           <div className="image-box super-center d-flex">
             <div>{this.props.image}</div>

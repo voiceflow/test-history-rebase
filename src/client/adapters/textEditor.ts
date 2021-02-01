@@ -1,8 +1,7 @@
+import { SLOT_REGEXP } from '@voiceflow/common';
 import _isString from 'lodash/isString';
 
-import { SLOT_REGEXP } from '@/constants';
-
-import { VFContent, VFDraftState, draftJSContentAdapter } from './draft';
+import { draftJSContentAdapter, VFContent, VFDraftState } from './draft';
 
 export const matchVariables = (text = ''): VFContent => {
   if (Array.isArray(text)) {

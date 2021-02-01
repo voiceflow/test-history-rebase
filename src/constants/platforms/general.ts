@@ -1,9 +1,7 @@
-import { Locale, SlotTypes } from '@voiceflow/general-types';
+import { BuiltinSlot } from '@voiceflow/common';
+import { Language, Locale, SlotType, SlotTypes } from '@voiceflow/general-types';
 
-export const GENERAL_SLOT_TYPES = Object.keys(SlotTypes).reduce<Record<string, { label: string; value: string }[]>>((acc, language) => {
-  acc[language] = SlotTypes[language].map((slot) => ({ label: slot.label, value: slot.name }));
-  return acc;
-}, {});
+export const GENERAL_SLOT_TYPES = SlotTypes[Language.EN].map<BuiltinSlot<SlotType, never>>((slot) => ({ type: slot.name, label: slot.label }));
 
 export enum GeneralStageType {
   IDLE = 'IDLE',

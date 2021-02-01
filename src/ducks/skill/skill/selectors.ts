@@ -1,12 +1,10 @@
-import { constants } from '@voiceflow/common';
+import { Locale as AlexaLocale } from '@voiceflow/alexa-types';
 import { createSelector } from 'reselect';
 
 import { projectByIDSelector } from '@/ducks/project/selectors';
 import { createRootSelector } from '@/ducks/utils';
 
 import { STATE_KEY } from './constants';
-
-const { LOCALES } = constants.locales;
 
 export const activeSkillSelector = createRootSelector(STATE_KEY);
 
@@ -38,7 +36,7 @@ export const activeSkillMetaSelector = createSelector(activeSkillSelector, ({ me
 export const parentCtrlSelector = createSelector(
   activeLocalesSelector,
   activeSkillMetaSelector,
-  (locales, meta) => meta.copa && locales.includes(LOCALES.US)
+  (locales, meta) => meta.copa && locales.includes(AlexaLocale.EN_US)
 );
 
 export const isRootDiagramSelector = createSelector(activeSkillSelector, ({ diagramID, rootDiagramID }) => diagramID === rootDiagramID);

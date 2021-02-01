@@ -1,12 +1,6 @@
-import { constants } from '@voiceflow/common';
-import { AZURE_LOCALE_VOICE_META } from '@voiceflow/general-types/build/constants/index';
-import {
-  Locale,
-  LocaleCodeToCountryLanguage,
-  LocaleToVoiceLanguageCode,
-  VoiceLanguageCodeToVoice,
-  VoiceType,
-} from '@voiceflow/google-types/build/constants/index';
+import { REGIONAL_VOICE as ALEXA_REGIONAL_VOICE } from '@voiceflow/alexa-types';
+import { AZURE_LOCALE_VOICE_META } from '@voiceflow/general-types';
+import { Locale, LocaleCodeToCountryLanguage, LocaleToVoiceLanguageCode, VoiceLanguageCodeToVoice, VoiceType } from '@voiceflow/google-types';
 import _constant from 'lodash/constant';
 
 import { PlatformType } from '@/constants';
@@ -17,8 +11,6 @@ import { prettifyAzureVoiceID, prettifyGoogleVoicesShort } from './utils';
 const PROSODY_RATE_REGEXP = /^\d+(m?s)?$/;
 const PROSODY_PITCH_REGEXP = /^(\+|-)\d+(\.\d+)?%$/;
 const PROSODY_VOLUME_REGEXP = /^(\+|-)\d+(\.\d+)?dB$/;
-
-export const VOICES = constants.voices;
 
 const UNIVERSAL_SAY_AS_OPTS = ['cardinal', 'ordinal', 'characters', 'fraction', 'expletive', 'unit', 'spell-out', 'date', 'telephone'];
 
@@ -751,12 +743,7 @@ export const PLATFORM_SSML_META = {
     platformTags: ALEXA_DEFAULT_TAGS,
     addOptions: ALEXA_ADD_OPTIONS,
     voiceOptions: () =>
-      VOICES.map((voice) => {
-        return {
-          value: voice.label,
-          ...voice,
-        };
-      }),
+      ALEXA_REGIONAL_VOICE.map(({ label, options }) => ({ label, options: options.map((voice) => ({ label: voice, value: voice })) })),
   },
   [PlatformType.GOOGLE]: {
     // eslint-disable-next-line lodash/prefer-constant
@@ -765,32 +752,21 @@ export const PLATFORM_SSML_META = {
     platformTags: GOOGLE_DEFAULT_TAGS,
     addOptions: UNIVERSAL_ADD_OPTIONS,
     voiceOptions: (locales, useWavenet) => {
-      const localeMeta = locales?.map((locale) => {
-        return {
-          locale,
-          languageCode: LocaleToVoiceLanguageCode[locale],
-        };
-      });
-      return localeMeta?.map((meta) => {
-        return {
-          value: meta.locale,
-          label: LocaleCodeToCountryLanguage[meta.locale] || meta.locale,
-          options: [].concat(
-            ...VoiceLanguageCodeToVoice[meta.languageCode].map((voiceMeta) => {
-              return voiceMeta.voiceName
-                .filter((voiceName) => {
-                  return useWavenet ? voiceName.includes(VoiceType.WAVENET) : voiceName.includes(VoiceType.STANDARD);
-                })
-                .map((voiceName) => {
-                  return {
-                    value: voiceName,
-                    label: prettifyGoogleVoicesShort(voiceName),
-                  };
-                });
-            })
-          ),
-        };
-      });
+      const localeMeta = locales?.map((locale) => ({ locale, languageCode: LocaleToVoiceLanguageCode[locale] }));
+
+      return localeMeta?.map((meta) => ({
+        label: LocaleCodeToCountryLanguage[meta.locale] || meta.locale,
+        options: VoiceLanguageCodeToVoice[meta.languageCode]
+          .map((voiceMeta) =>
+            voiceMeta.voiceName
+              .filter((voiceName) => useWavenet || voiceName.includes(VoiceType.STANDARD))
+              .map((voiceName) => ({
+                value: voiceName,
+                label: prettifyGoogleVoicesShort(voiceName),
+              }))
+          )
+          .flat(),
+      }));
     },
   },
   [PlatformType.GENERAL]: {
@@ -801,6 +777,7 @@ export const PLATFORM_SSML_META = {
     addOptions: ALEXA_ADD_OPTIONS,
     voiceOptions: (locales, useWavenet) => {
       const allGoogleLocales = Object.values(Locale);
+
       return [
         {
           value: 'Amazon',
@@ -815,18 +792,11 @@ export const PLATFORM_SSML_META = {
         {
           value: 'Microsoft',
           label: 'Microsoft',
-          options: Object.values(AZURE_LOCALE_VOICE_META).map((meta) => {
-            return {
-              value: meta.language,
-              label: meta.language,
-              options: meta.voices.map((voice) => {
-                return {
-                  value: voice.voiceID,
-                  label: prettifyAzureVoiceID(voice.voiceID),
-                };
-              }),
-            };
-          }),
+          options: Object.values(AZURE_LOCALE_VOICE_META).map((meta) => ({
+            value: meta.language,
+            label: meta.language,
+            options: meta.voices.map((voice) => ({ value: voice.voiceID, label: prettifyAzureVoiceID(voice.voiceID) })),
+          })),
         },
       ];
     },

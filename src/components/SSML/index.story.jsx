@@ -5,7 +5,7 @@ import React from 'react';
 
 import { ToastContainer } from '@/components/Toast';
 
-import SSML, { VOICES } from '.';
+import SSML from '.';
 
 const SLOT_COLORS = ['#5D9DF5', '#F5A623', '#4E6FF9', '#E72D75', '#33E5BD', '#0F7EC0', '#8DA2B5', '#132144'];
 const DEFAULT_SLOTS = (length) => Array.from({ length }, (_, i) => ({ id: i, name: `slot${i}`, color: SLOT_COLORS[i % SLOT_COLORS.length] }));
@@ -48,7 +48,7 @@ export const normal = () => {
   const space = boolean('space', true);
   const error = boolean('error', false);
   const slots = object('slots', DEFAULT_SLOTS(5));
-  const [voice, setVoice] = React.useState(VOICES[0].options[0].value);
+  const [voice, setVoice] = React.useState('Alexa');
   const [newSlots, addSlot] = React.useState([]);
   const memoisedSlots = React.useMemo(() => [...slots, ...newSlots], [slots, newSlots]);
 

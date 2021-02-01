@@ -1,4 +1,4 @@
-import { utils } from '@voiceflow/common';
+import { deepVariableSubstitution } from '@voiceflow/common';
 import { GoogleSheetsActionType } from '@voiceflow/general-types/build/nodes/googleSheets';
 import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
 import update from 'immutability-helper';
@@ -16,7 +16,7 @@ import { connect } from '@/hocs';
 import IntegrationsService from '@/services/Integrations';
 import { copyJSONPath } from '@/utils/dom';
 
-const { deepDraftToMarkdown, deepVariableSubstitution } = utils.intent;
+import { deepDraftToMarkdown } from '../../utils';
 
 const SERVICES_MAP = {
   [IntegrationType.GOOGLE_SHEETS]: {

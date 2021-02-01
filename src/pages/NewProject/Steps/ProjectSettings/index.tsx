@@ -1,4 +1,6 @@
+import { getInvocationNameError as getAlexaInvocationNameError } from '@voiceflow/alexa-types';
 import { Locale as GeneralLocale } from '@voiceflow/general-types';
+import { getInvocationNameError as getGoogleInvocationNameError } from '@voiceflow/google-types';
 import _constant from 'lodash/constant';
 import React from 'react';
 
@@ -9,17 +11,12 @@ import Input from '@/components/Input';
 import Select from '@/components/Select';
 import Icon from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
-import { GENERAL_LOCALES_OPTIONS, GENERAL_LOCALE_NAME_MAP } from '@/constants/platforms';
+import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import { PLATFORM_META } from '@/pages/NewProject/Steps/constants';
-import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
+import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import { LoadingButton } from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components';
-import {
-  FORMATTED_GOOGLE_LOCALES_LABELS,
-  FORMATTED_LOCALES,
-  getAmazonInvocationNameError,
-  getGoogleInvocationNameError,
-} from '@/pages/Publish/utils';
+import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES } from '@/pages/Publish/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { without } from '@/utils/array';
 import { getPlatformValue } from '@/utils/platform';
@@ -67,7 +64,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
     getPlatformValue<(name?: string, locales?: any[]) => string | null>(
       selectedPlatform,
       {
-        [PlatformType.ALEXA]: getAmazonInvocationNameError,
+        [PlatformType.ALEXA]: getAlexaInvocationNameError,
         [PlatformType.GOOGLE]: getGoogleInvocationNameError,
       },
       _constant(null)

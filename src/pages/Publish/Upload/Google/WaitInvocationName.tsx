@@ -1,4 +1,4 @@
-import { Locale } from '@voiceflow/google-types';
+import { getInvocationNameError as getGoogleInvocationNameError, Locale } from '@voiceflow/google-types';
 import React from 'react';
 import { Assign } from 'utility-types';
 
@@ -12,7 +12,6 @@ import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useSmartReducerV2 } from '@/hooks';
 import { GoogleExportJob, GooglePublishJob } from '@/models';
-import { getGoogleInvocationNameError } from '@/pages/Publish/utils';
 import { ConnectedProps, Nullable } from '@/types';
 
 import { ButtonContainer, Description, LoaderStage, StageContainer } from '../components';

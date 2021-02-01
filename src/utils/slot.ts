@@ -1,10 +1,11 @@
-import { constants } from '@voiceflow/common';
+import { BUILT_IN_SLOTS as ALEXA_BUILT_IN_SLOTS } from '@voiceflow/alexa-types';
+import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
+import { BUILT_IN_SLOTS as GOOGLE_BUILT_IN_SLOTS } from '@voiceflow/google-types';
 import _ from 'lodash';
 
-import { CUSTOM_SLOT_TYPE, PlatformType, SLOT_REGEXP, SLOT_TYPES, VARIABLE_STRING_REGEXP } from '@/constants';
-import { GENERAL_SLOT_TYPES, GOOGLE_SLOT_TYPES } from '@/constants/platforms';
+import { CUSTOM_SLOT_TYPE, PlatformType } from '@/constants';
+import { GENERAL_SLOT_TYPES } from '@/constants/platforms';
 import { Intent, Slot } from '@/models';
-import { Nullable } from '@/types';
 
 export const getSlotTypes = <L extends string>({
   locales,
@@ -12,64 +13,34 @@ export const getSlotTypes = <L extends string>({
 }: {
   locales: L[];
   platform: PlatformType;
-  publishInfo: Nullable<Record<PlatformType, any>>;
-}): { value?: string; label: string }[] => {
-  const customSlotType = SLOT_TYPES[0];
-  const language = locales[0]?.substring(0, 2);
+}): { label: string; value: string }[] => {
+  let builtInSlots: BuiltinSlot<string, string | L>[];
 
-  if (platform === PlatformType.GOOGLE) {
-    return [{ value: customSlotType.label, label: customSlotType.label }, ...GOOGLE_SLOT_TYPES];
+  switch (platform) {
+    case PlatformType.GOOGLE:
+      builtInSlots = [...GOOGLE_BUILT_IN_SLOTS];
+      break;
+    case PlatformType.ALEXA:
+      builtInSlots = [...ALEXA_BUILT_IN_SLOTS];
+      break;
+    default:
+      builtInSlots = [...GENERAL_SLOT_TYPES];
   }
 
-  if (platform === PlatformType.GENERAL) {
-    return [{ value: customSlotType.label, label: customSlotType.label }, ...(GENERAL_SLOT_TYPES[language!] || [])];
-  }
+  builtInSlots = builtInSlots
+    .filter((slot) => !slot.locales || locales.every((locale) => slot.locales!.includes(locale)))
+    .sort((lSlot, rSlot) => lSlot.label.localeCompare(rSlot.label));
 
-  let slots: constants.Slot[] = [];
+  builtInSlots = [CustomSlot, ...builtInSlots];
 
-  // eslint-disable-next-line no-restricted-syntax
-  Object.values(SLOT_TYPES).forEach((slot) => {
-    if (!slot.type[platform]) return;
-
-    const slotLocales = (slot.locales[platform] || []) as L[];
-
-    if (platform === PlatformType.ALEXA && (!slotLocales || (locales && _.intersection(slotLocales, locales).length === locales.length))) {
-      slots.push(slot);
-    }
-  });
-
-  slots = [
-    customSlotType,
-    ...slots.sort((lhs, rhs) => {
-      if (lhs.type.google && lhs.type.alexa && !(rhs.type.google && rhs.type.alexa)) {
-        return -1;
-      }
-      if (rhs.type.google && rhs.type.alexa && !(lhs.type.google && lhs.type.alexa)) {
-        return 1;
-      }
-      return lhs.label.localeCompare(rhs.label);
-    }),
-  ];
-
-  return slots.map((type) => {
-    let value;
-    if ((type.type.alexa && type.type.google) || (!type.type.alexa && !type.type.google)) {
-      value = type.label;
-    } else if (type.type.alexa && !type.type.google) {
-      value = type.type.alexa;
-    } else if (!type.type.alexa && type.type.google) {
-      value = type.type.google;
-    }
-
-    return { label: type.label, value };
-  });
+  return builtInSlots.map((slot) => ({ label: slot.label, value: slot.type }));
 };
 
 export const transformVariablesToReadable = (text?: string) => text?.replace(SLOT_REGEXP, '{$1}').trim() || '';
-export const transformVariablesFromReadableWithoutTrim = (text = '') => text.replace(VARIABLE_STRING_REGEXP, '{{[$1].$1}}');
+export const transformVariablesFromReadableWithoutTrim = (text = '') => text.replace(READABLE_VARIABLE_REGEXP, '{{[$1].$1}}');
 export const transformVariablesFromReadable = (text: string) => transformVariablesFromReadableWithoutTrim(text).trim();
 
-export const isVariable = (text?: string | null) => !!(text && text.match(VARIABLE_STRING_REGEXP));
+export const isVariable = (text?: string | null) => !!(text && text.match(READABLE_VARIABLE_REGEXP));
 
 export const validateSlotName = ({
   slots,

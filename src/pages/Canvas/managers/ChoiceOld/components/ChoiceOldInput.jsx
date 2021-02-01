@@ -1,4 +1,4 @@
-import { constants } from '@voiceflow/common';
+import { VALID_SAMPLE_UTTERANCE } from '@voiceflow/common';
 import React from 'react';
 
 import Input from '@/components/Input';
@@ -6,11 +6,10 @@ import ListManager from '@/components/ListManager';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
 const TOKEN_PATTERN = /({{\[)|(].[\dA-Za-z]+}})/g;
-const { sampleUtteranceRegex } = constants.regex;
 
 const validateFormValue = (value) => {
   const escapedValue = value.replace(TOKEN_PATTERN, '');
-  if (escapedValue.match(sampleUtteranceRegex)) {
+  if (escapedValue.match(VALID_SAMPLE_UTTERANCE)) {
     return {
       valid: false,
       error:

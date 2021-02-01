@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import { PermissionType, Voice as AlexaVoices } from '@voiceflow/alexa-types';
-import { constants } from '@voiceflow/common';
-import { DeviceType, IS_VARIABLE_REGEXP, IntegrationType, READABLE_VARIABLE_REGEXP, Voice as GeneralVoices } from '@voiceflow/general-types';
+import { DeviceType, IntegrationType, Voice as GeneralVoices } from '@voiceflow/general-types';
 import { APIActionType, APIBodyType } from '@voiceflow/general-types/build/nodes/api';
 import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
 import { Voice as GoogleVoices } from '@voiceflow/google-types';
@@ -10,14 +9,13 @@ import { NodeData } from '@/models';
 import { Icon } from '@/svgs/types';
 import { Pair } from '@/types';
 
-export { SLOT_REGEXP, IntegrationType } from '@voiceflow/general-types';
+export { IntegrationType } from '@voiceflow/general-types';
 
 export const USER_INFO_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
 export const ACTION_BUILDER_SCOPE = 'https://www.googleapis.com/auth/actions.builder';
 export const CLOUD_RESOURCE_SCOPE = 'https://www.googleapis.com/auth/cloudplatformprojects.readonly';
 export const GOOGLE_OAUTH_SCOPES = [CLOUD_RESOURCE_SCOPE, ACTION_BUILDER_SCOPE, USER_INFO_SCOPE];
 
-export const SLOT_TYPES = constants.slots;
 export const CUSTOM_SLOT_TYPE = 'Custom';
 export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';
 
@@ -420,8 +418,6 @@ export const SSML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,10}\b([\w#%&+-./:=?@~]*)/;
 
 export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
-export const VARIABLE_REGEXP = IS_VARIABLE_REGEXP;
-export const VARIABLE_STRING_REGEXP = READABLE_VARIABLE_REGEXP;
 
 export const FILTERED_AMAZON_INTENTS = [
   'ScrollUpIntent',

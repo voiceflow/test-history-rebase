@@ -1,8 +1,9 @@
+import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
 import React from 'react';
 
 import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@/components/ContextMenu';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
-import { HTTPS_URL_REGEX, VARIABLE_STRING_REGEXP } from '@/constants';
+import { HTTPS_URL_REGEX } from '@/constants';
 import { withUpload } from '@/hocs';
 
 const MAX_SIZE = 10 * 1024 * 1024;
@@ -29,7 +30,7 @@ const validate = (acceptedFiles) => {
 };
 
 const validateURL = (value) => {
-  if (!value.match(VARIABLE_STRING_REGEXP) && !value.match(HTTPS_URL_REGEX)) {
+  if (!value.match(READABLE_VARIABLE_REGEXP) && !value.match(HTTPS_URL_REGEX)) {
     return LINK_ERROR.INVALID_URL;
   }
 

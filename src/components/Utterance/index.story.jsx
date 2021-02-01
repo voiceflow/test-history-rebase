@@ -1,13 +1,11 @@
 /* eslint-disable sonarjs/no-identical-functions */
 import { action } from '@storybook/addon-actions';
 import { boolean, object } from '@storybook/addon-knobs';
-import { constants } from '@voiceflow/common';
+import { VALID_SPOKEN_CHARACTER } from '@voiceflow/common';
 import _sample from 'lodash/sample';
 import React from 'react';
 
 import Utterance from '.';
-
-const { validSpokenCharacters } = constants.regex;
 
 const SLOT_COLORS = ['#5D9DF5', '#F5A623', '#4E6FF9', '#E72D75', '#33E5BD', '#0F7EC0', '#8DA2B5', '#132144'];
 
@@ -88,7 +86,7 @@ export const internationalJapanese = () => {
 
   return (
     <div style={{ width: '300px' }}>
-      <Utterance {...getSlotProps()} value={value} onChange={setValue} characters={validSpokenCharacters} />
+      <Utterance {...getSlotProps()} value={value} onChange={setValue} characters={VALID_SPOKEN_CHARACTER} />
     </div>
   );
 };
@@ -98,7 +96,7 @@ export const internationalHindi = () => {
 
   return (
     <div style={{ width: '300px' }}>
-      <Utterance {...getSlotProps()} value={value} onChange={setValue} characters={validSpokenCharacters} />
+      <Utterance {...getSlotProps()} value={value} onChange={setValue} characters={VALID_SPOKEN_CHARACTER} />
     </div>
   );
 };

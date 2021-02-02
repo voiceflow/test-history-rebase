@@ -116,6 +116,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({ theme }) => {
   return (
     <SidebarProvider>
       <Drawer
+        as="section"
         key={focus.target ?? undefined} // required to fix layout issue - key cannot be `null` so change it to `undefined` if it is
         style={{ overflow: 'hidden' }}
         open={isOpen}

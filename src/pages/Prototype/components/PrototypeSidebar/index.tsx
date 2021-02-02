@@ -20,7 +20,6 @@ import Prototype from '@/pages/Prototype';
 import { useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import { NLPContext } from '@/pages/Skill/contexts';
-import { FadeLeftContainer } from '@/styles/animations';
 import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
@@ -104,9 +103,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
       <Drawer open={open} width={theme.components.prototypeSidebar.width} direction={SlideOutDirection.LEFT}>
         {loading ? (
           <FlexCenter style={{ height: '100%' }}>
-            <FadeLeftContainer>
-              <LoadCircle />
-            </FadeLeftContainer>
+            <LoadCircle />
           </FlexCenter>
         ) : (
           <Container>

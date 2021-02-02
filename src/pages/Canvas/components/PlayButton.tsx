@@ -54,9 +54,7 @@ const PlayButton: React.FC<ConnectedPlayButtonProps & PlayButtonProps> = ({ node
           icon="play"
           clickable
           color={theme.components.block.variants[variant || BlockVariant.STANDARD].color}
-          onClick={(e) => {
-            e.stopPropagation();
-
+          onClick={() => {
             updatePrototype({ autoplay: true });
             goToPrototype(nodeID);
           }}

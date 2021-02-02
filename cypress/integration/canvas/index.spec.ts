@@ -27,7 +27,7 @@ context('Canvas', () => {
   it('drag block on canvas', () => {
     cy.awaitCanvasAnimation();
 
-    canvasPage.el.node.should('have.coords', [768, 441]).dragNode(200, 200).should('have.coords', [968, 524]);
+    canvasPage.el.node.should('have.coords', [400, 304]).dragNode(200, 200).should('have.coords', [600, 504]);
   });
 
   it('add block to canvas using spotlight', () => {
@@ -36,16 +36,16 @@ context('Canvas', () => {
     cy.sendHotkey('{shift} ');
     cy.get('#vf-spotlight input').type('audio{enter}');
 
-    canvasPage.el.node.should('have.length', 2).and('have.coords', [768, 441]);
+    canvasPage.el.node.should('have.length', 2).and('have.coords', [400, 304]);
   });
 
   it('drag canvas', () => {
     cy.awaitCanvasAnimation();
 
-    canvasPage.el.canvas.children().should('have.coords', [480, 345]);
+    canvasPage.el.canvas.children().should('have.coords', [112, 208]);
 
     cy.dragCanvas(200, -20);
 
-    canvasPage.el.canvas.children().should('have.coords', [680, 325]);
+    canvasPage.el.canvas.children().should('have.coords', [312, 188]);
   });
 });

@@ -90,7 +90,7 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, pr
         <ReadOnlyBadge />
 
         {/* always render the canvas, hide with CSS */}
-        <Canvas />
+        <Canvas isPrototypingMode={isPrototypingMode} />
 
         {!isPrototypingMode && <CanvasControls render={!canvasOnly} />}
 
@@ -111,15 +111,18 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, pr
         )}
 
         {/* prototyping mode */}
-        <PrototypeSidebar open={isPrototypingMode} />
-        <PrototypeMenu open={isPrototypingMode} />
+        {isPrototypingMode && (
+          <>
+            <PrototypeSidebar open />
+            <PrototypeMenu open />
+          </>
+        )}
 
         {isPrototypingMode && (
           <>
             {isPrototypeDisplay && <PrototypeVisualCanvas />}
 
             <Drawer
-              as="section"
               open={isPrototypeSettingsOpened}
               width={widthRef.current}
               offset={theme.components.subMenu.width}

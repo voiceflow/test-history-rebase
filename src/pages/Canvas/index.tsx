@@ -2,12 +2,13 @@ import React from 'react';
 
 import { DiagramLoadingGate } from '@/gates';
 import { withLoadingGate } from '@/hocs';
-import { useSetup } from '@/hooks';
+import { useDidUpdateEffect, useSetup } from '@/hooks';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
 import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
 import DisplayPreviewModal from '@/pages/Canvas/managers/Display/components/PreviewModal';
+import THEME from '@/styles/theme';
 import { compose } from '@/utils/functional';
 
 import Container from './components/CanvasContainer';
@@ -22,7 +23,11 @@ import { CanvasAction } from './constants';
 import { CanvasProviders } from './contexts';
 import useEngine from './engine';
 
-const Canvas: React.FC = () => {
+type CanvasProps = {
+  isPrototypingMode?: boolean;
+};
+
+const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const engine = useEngine();
 
   React.useEffect(() => {
@@ -30,6 +35,15 @@ const Canvas: React.FC = () => {
       engine.focusHome();
     }
   }, [engine]);
+
+  useDidUpdateEffect(() => {
+    const position = engine.canvas?.getPosition();
+    const { height } = THEME.components.subHeader;
+
+    if (position) {
+      engine.canvas?.setPosition([position[0], position[1] + (isPrototypingMode ? height : -height)]);
+    }
+  }, [isPrototypingMode]);
 
   useSetup(() => engine.emitter.emit(CanvasAction.RENDERED));
 
@@ -39,10 +53,15 @@ const Canvas: React.FC = () => {
         <ContextMenu />
         <CanvasDiagram />
         <RealtimeOverlay />
-        <EditSidebar />
-        <Spotlight />
-        <ThreadLayer />
-        <ThreadHistoryDrawer />
+
+        {!isPrototypingMode && (
+          <>
+            <EditSidebar />
+            <Spotlight />
+            <ThreadLayer />
+            <ThreadHistoryDrawer />
+          </>
+        )}
       </Container>
 
       <ShortcutsModal />
@@ -55,4 +74,4 @@ const Canvas: React.FC = () => {
   );
 };
 
-export default compose(React.memo, withLoadingGate(DiagramLoadingGate))(Canvas);
+export default compose(React.memo, withLoadingGate(DiagramLoadingGate))(Canvas) as React.FC<CanvasProps>;

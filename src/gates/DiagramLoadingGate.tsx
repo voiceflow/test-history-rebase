@@ -3,22 +3,19 @@ import { ActionCreators } from 'redux-undo';
 
 import LoadingGate from '@/components/LoadingGate';
 import * as Creator from '@/ducks/creator';
+import * as Prototype from '@/ducks/prototype';
 import { activeDiagramIDSelector } from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { initializeCreatorForDiagram } from '@/store/sideEffects';
 import { Action } from '@/store/types';
 import { ConnectedProps, MergeArguments } from '@/types';
 
-type DiagramLoadingGate = {
-  withoutSpinner?: boolean;
-};
-
-const RawDiagramLoadingGate: React.FC<DiagramLoadingGate & ConnectedDiagramLoadingGateProps> = ({
+const RawDiagramLoadingGate: React.FC<ConnectedDiagramLoadingGateProps> = ({
   children,
   diagramID,
   loadDiagram,
   clearHistory,
-  withoutSpinner,
+  prototypeMode,
   isDiagramLoaded,
   creatorDiagramID,
 }) => {
@@ -33,7 +30,7 @@ const RawDiagramLoadingGate: React.FC<DiagramLoadingGate & ConnectedDiagramLoadi
   }, [isDiagramLoaded, creatorDiagramID, clearHistory]);
 
   return (
-    <LoadingGate label="Diagrams" isLoaded={isDiagramLoaded} load={loadDiagram} withoutSpinner={withoutSpinner}>
+    <LoadingGate label="Diagrams" isLoaded={isDiagramLoaded} load={loadDiagram} withoutSpinner={prototypeMode === Prototype.PrototypeMode.DISPLAY}>
       {children}
     </LoadingGate>
   );
@@ -42,6 +39,7 @@ const RawDiagramLoadingGate: React.FC<DiagramLoadingGate & ConnectedDiagramLoadi
 const mapStateToProps = {
   diagramID: activeDiagramIDSelector,
   creatorDiagramID: Creator.creatorDiagramIDSelector,
+  prototypeMode: Prototype.activePrototypeModeSelector,
 };
 
 const mapDispatchToProps = {
@@ -56,6 +54,6 @@ const mergeProps = (...[{ diagramID, creatorDiagramID }, { loadDiagram }]: Merge
 
 type ConnectedDiagramLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
 
-const DiagramLoadingGate = connect(mapStateToProps, mapDispatchToProps, mergeProps)(RawDiagramLoadingGate) as React.FC<DiagramLoadingGate>;
+const DiagramLoadingGate = connect(mapStateToProps, mapDispatchToProps, mergeProps)(RawDiagramLoadingGate);
 
 export default DiagramLoadingGate;

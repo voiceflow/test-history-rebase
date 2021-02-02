@@ -71,9 +71,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
     ${transition('box-shadow')}
   }
 
-  #${Identifier.CANVAS_CONTAINER}:not(.${CANVAS_SELECTING_GROUP_CLASSNAME})
-    .${ClassName.CANVAS_NODE}:not(.${NODE_DISABLED_CLASSNAME}):not(.${NODE_FOCUSED_CLASSNAME})
-    &:hover::before {
+  &:hover::before {
     box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.2);
     border-color: ${withBlockVariantStyle((variant) => variant.activeBorderColor)};
   }
@@ -89,7 +87,6 @@ const BlockContainer = styled.div<BlockContainerProps>`
 
   .${NODE_FOCUSED_CLASSNAME} &::before {
     box-shadow: 0 12px 32px 0 rgba(17, 49, 96, 0.2);
-    border-color: ${withBlockVariantStyle((variant) => variant.activeBorderColor)};
   }
 
   .${NODE_SELECTED_CLASSNAME} &,
@@ -130,6 +127,18 @@ const BlockContainer = styled.div<BlockContainerProps>`
     left: 6px;
     transform: translate(-50%, -50%);
     z-index: 99;
+  }
+
+  #${Identifier.CANVAS_CONTAINER}.${CANVAS_SELECTING_GROUP_CLASSNAME} {
+    .${ClassName.CANVAS_NODE}:not(.${NODE_FOCUSED_CLASSNAME}) &:hover::before {
+      box-shadow: none;
+      border-color: #fff;
+    }
+
+    .${ClassName.CANVAS_NODE}:not(.${NODE_DISABLED_CLASSNAME}) &:hover::before {
+      box-shadow: none;
+      border-color: #fff;
+    }
   }
 `;
 

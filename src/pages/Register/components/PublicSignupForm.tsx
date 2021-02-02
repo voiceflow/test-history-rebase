@@ -54,7 +54,7 @@ export const PublicSignupForm: React.FC<PublicSignupFormProps & ConnectedPublicS
         email,
         password,
         coupon: coupon.toLowerCase(),
-        referralCode: query.code,
+        referralCode: query.referral,
       }).catch((err) => {
         setSignupError(err.body.data);
       });

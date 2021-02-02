@@ -43,3 +43,7 @@ export const trackProjectClone = ({
     EventName.CLONE_PROJECT,
     createWorkspaceEventPayload({ workspaceID }, { template_id: templateID, template_name: templateName }, { teamhashed: ['template_id'] })
   );
+
+export const trackTestableLinkCopy = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.SHARE_PROTOTYPE_LINK, createProjectEventPayload(options))
+);

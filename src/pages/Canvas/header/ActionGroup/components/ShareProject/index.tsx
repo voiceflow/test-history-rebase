@@ -8,7 +8,7 @@ import { Permission } from '@/config/permissions';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { usePermission, useSmartReducerV2 } from '@/hooks';
+import { usePermission, useSmartReducerV2, useTrackingEvents } from '@/hooks';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps, Nullable } from '@/types';
@@ -27,6 +27,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canInviteByLink] = usePermission(Permission.INVITE_BY_LINK);
+  const [trackingEvents] = useTrackingEvents();
 
   const isPrototypingMode = usePrototypingMode();
 
@@ -40,6 +41,8 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
       renderPrototype({ aborted: false });
 
       await copyTestableLink();
+
+      trackingEvents.trackTestableLinkCopy();
 
       toast.success('Link copied to clipboard');
     } else if (!render) {

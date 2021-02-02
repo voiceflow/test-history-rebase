@@ -29,6 +29,7 @@ export enum EventName {
   PROJECT_PUBLISH_ATTEMPT = 'Publish Attempt',
   PROJECT_PUBLISH_SUCCESS = 'Publish Success',
   PROJECT_TRAIN_ASSISTANT = 'Train Assistant',
+  SHARE_PROTOTYPE_LINK = 'Testable Link Button',
 
   PROTOTYPE_MANUAL_NAVIGATION = 'Manual Navigation',
 

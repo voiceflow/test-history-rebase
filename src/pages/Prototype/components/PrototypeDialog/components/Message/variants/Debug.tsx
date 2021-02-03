@@ -17,6 +17,12 @@ const SubjectText = styled.div`
   strong {
     color: #e91e63;
   }
+
+  em {
+    font-weight: bold;
+    font-style: normal;
+    color: #132144;
+  }
 `;
 
 type DebugProps = Omit<MessageProps, 'iconProps'> & {

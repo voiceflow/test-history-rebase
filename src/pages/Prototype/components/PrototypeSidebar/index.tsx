@@ -8,13 +8,15 @@ import Flex, { FlexCenter } from '@/components/Flex';
 import { LoadCircle } from '@/components/Loader';
 import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
+import { PlatformType } from '@/constants';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as Diagram from '@/ducks/diagram';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useEventualEngine, useGeneralPrototype } from '@/hooks';
+import { useDidUpdateEffect, useEventualEngine } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import Prototype from '@/pages/Prototype';
 import { useResetPrototype } from '@/pages/Prototype/hooks';
@@ -39,9 +41,10 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   isMuted,
   updatePrototype,
   status,
+  platform,
 }) => {
   const theme = useTheme() as Theme;
-  const generalPrototypeEnabled = useGeneralPrototype().isEnabled;
+  const isGeneralPlatform = platform === PlatformType.GENERAL;
 
   const [trainingOpen, toggleTrainingOpen] = useToggle(true);
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
@@ -110,7 +113,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
           </FlexCenter>
         ) : (
           <Container>
-            {generalPrototypeEnabled && (
+            {isGeneralPlatform && (
               <TrainingSection isOpen={trainingOpen} onOpen={openTraining} isTraining={isModelTraining} toggleOpen={toggleTrainingOpen} />
             )}
 
@@ -118,7 +121,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
               header="DIALOG"
               variant={SectionVariant.PROTOTYPE}
               customHeaderStyling={{
-                background: generalPrototypeEnabled || (!atTop && !notStarted) ? '#fff' : '#FDFDFD',
+                background: isGeneralPlatform || (!atTop && !notStarted) ? '#fff' : '#FDFDFD',
               }}
               isRounded
               suffix={
@@ -157,6 +160,7 @@ const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
   isMuted: PrototypeDuck.prototypeMutedSelector,
   settings: Recent.recentPrototypeSelector,
+  platform: Skill.activePlatformSelector,
 };
 
 const mapDispatchToProps = {

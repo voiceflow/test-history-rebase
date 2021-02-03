@@ -55,7 +55,7 @@ const VisualEditor: NodeEditor<NodeData.Visual> = ({ data, onChange }) => {
     <Content
       footer={() => (
         <Controls>
-          <Link href="https://docs.voiceflow.com/#/">How it Works</Link>
+          <Link href="https://docs.voiceflow.com/#/platform/steps/response-steps/response?id=visuals-step">How it Works</Link>
         </Controls>
       )}
     >

@@ -10,7 +10,7 @@ const Training: React.FC = () => (
     <TrainingLoader />
 
     <Text fontSize={13} color="#8da2b5" fontWeight={500} mt={16} mb={27} lineHeight="18px">
-      This may take a few minutes. <Link href="">Learn more.</Link>
+      This may take a few minutes. <Link href="https://docs.voiceflow.com/#/platform/testing/testing?id=train-voiceflow-assistant">Learn more.</Link>
     </Text>
   </NLUContainer>
 );

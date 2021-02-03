@@ -140,18 +140,16 @@ const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ google
     job?.stage.type === GoogleStageType.IDLE ||
     job?.stage.type === GoogleStageType.PROGRESS ||
     job?.stage.type === GoogleStageType.WAIT_ACCOUNT;
-  const popup = (
-    <UploadPopup open={opened && !noPopup} onClose={onClose} jobStage={job?.stage.type}>
-      {!noPopup && <Google />}
-    </UploadPopup>
-  );
+
   return (
     <>
       {isCanvasMode ? <GoogleButton /> : <Button onClick={onClick} isActive={isRunning(job)} />}
       {job?.stage.type === GoogleStageType.WAIT_PROJECT ? (
         <WaitProjectStage open={opened && !noPopup} onClose={onClose} updateCurrentStage={updateCurrentStage} cancel={cancel} />
       ) : (
-        popup
+        <UploadPopup open={opened && !noPopup} onClose={onClose} jobStage={job?.stage.type}>
+          {!noPopup && <Google />}
+        </UploadPopup>
       )}
     </>
   );

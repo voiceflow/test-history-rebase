@@ -40,7 +40,7 @@ const PopupContainer = styled.div<PopupContainerProps>`
     position: absolute;
     top: 0px;
     right: 0px;
-    padding: 18px;
+    padding: 24px;
     z-index: 100;
   }
 

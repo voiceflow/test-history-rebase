@@ -2,7 +2,7 @@ import React from 'react';
 
 import client from '@/client';
 import AlertMessage, { AlertMessageVariant } from '@/components/AlertMessage';
-import { Flex } from '@/components/Box';
+import Box, { Flex } from '@/components/Box';
 import Button, { ButtonVariant } from '@/components/Button';
 import { ModalFooter } from '@/components/LegacyModal';
 import { BlockText, Link, Text } from '@/components/Text';
@@ -53,7 +53,7 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
       {state.loading ? (
         <LoaderStage>Loading Projects</LoaderStage>
       ) : (
-        <StageContainer>
+        <StageContainer noPadding>
           {/* eslint-disable-next-line no-nested-ternary */}
           {state.error ? (
             <StageContainer>
@@ -63,30 +63,25 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
             </StageContainer>
           ) : projects.length ? (
             <StageContainer noPadding>
-              <Flex fullWidth height={42} mt={8} padding="12px 21px 10px 24px">
-                <Text textAlign="left" mb={11} fontWeight={600} fontSize={15}>
+              <Box height={42} display="flex" mb={12} alignItems="flex-end" pl={24}>
+                <Text fontWeight={600} fontSize={15}>
                   Select Project
                 </Text>
-              </Flex>
+              </Box>
 
-              <Flex maxHeight={400} column style={{ overflow: 'auto' }}>
+              <Box maxHeight={400} style={{ overflow: 'auto' }}>
                 {projects.map(({ id, name }) => (
                   <Flex key={id} fullWidth height={42} onClick={() => updateCurrentStage(id)}>
                     <ProjectItem>{name || id}</ProjectItem>
                   </Flex>
                 ))}
-              </Flex>
-              <Flex
-                fullWidth
-                mt={9}
-                height={68}
-                padding="24px 60px"
-                style={{ border: '1px solid #f9f9f9', overflow: 'hidden', whiteSpace: 'nowrap' }}
-              >
+              </Box>
+
+              <Box mt={9} height={68} padding="24px 60px" style={{ border: '1px solid #f9f9f9', overflow: 'hidden', whiteSpace: 'nowrap' }}>
                 <Link href="https://console.actions.google.com/" onClick={cancel}>
                   Create New Project
                 </Link>
-              </Flex>
+              </Box>
             </StageContainer>
           ) : (
             <StageContainer noPadding>

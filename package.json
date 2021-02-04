@@ -67,7 +67,6 @@
     "prettysize": "^2.0.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.13.7",
-    "randomstring": "^1.1.5",
     "rc-slider": "^9.7.1",
     "react": "^16.13.1",
     "react-ace": "^6.2.0",
@@ -348,6 +347,7 @@
     "test": "yarn test:unit && yarn test:integration",
     "test:dependencies": "depcheck",
     "test:integration": "NODE_ENV=test jest --config config/test/integration/jest.config.js",
-    "test:unit": "NODE_ENV=test nyc ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml"
+    "test:unit": "NODE_ENV=test nyc ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml",
+    "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   }
 }

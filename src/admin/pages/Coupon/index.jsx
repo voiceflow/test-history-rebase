@@ -71,7 +71,7 @@ class Coupon extends React.Component {
   render() {
     return (
       <>
-        <AdminTitle>Coupons</AdminTitle>
+        <AdminTitle>Coupons (Deprecated, please refer to Referrals)</AdminTitle>
         <hr />
         <div>
           <Form>

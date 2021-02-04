@@ -105,7 +105,7 @@ class SkillLookup extends React.Component {
     return (
       <>
         <AdminTitle>
-          Legacy Lookup Tool{' '}
+          Legacy Lookup Tool (Deprecated)
           <span className="admin_highlight_emoji">
             <span role="img" aria-label="old man">
               👨🏻‍🦳

@@ -5,7 +5,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
-import { connect } from '@/hocs/connect';
+import { connect } from '@/hocs';
 
 const GOOGLE_SHEETS = 'Google Sheets';
 

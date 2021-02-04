@@ -44,7 +44,14 @@ import {
 
 export const GET_PRICE_WITHOUT_TEAM_ID_CONST = 'none';
 
-const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces, workspaceByID, creatorID, workspaceSelector }) => {
+const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({
+  workspaces,
+  workspaceByID,
+  creatorID,
+  workspaceSelector,
+  referrerID,
+  referralCode,
+}) => {
   const { state, actions } = useContext(OnboardingContext);
 
   const { plan, couponCode, period } = state.paymentMeta;
@@ -112,6 +119,15 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
     [setPrice, setCouponError, setPriceError, setCouponError, selectedPlan]
   );
 
+  const prePopulateCoupon = async () => {
+    const stripePromotion = await client.user.getReferralCouponCode(referrerID!);
+
+    if (stripePromotion) {
+      toggleCoupon();
+      setCoupon(referralCode!);
+    }
+  };
+
   // effects
   React.useEffect(() => {
     getPrice(selectedPlan!, seatCount, paymentPeriod, coupon);
@@ -132,7 +148,13 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({ workspaces
     setSeatCount(newSeatCount);
   }, [selectedWorkspaceId]);
 
-  // component configs
+  // pre-populate stripe coupon or promotion code
+  React.useEffect(() => {
+    if (referrerID && referralCode) {
+      prePopulateCoupon();
+    }
+  }, [referrerID, referralCode]);
+
   const dropdownConfig = !selectableWorkspace
     ? {
         text: `${selectedPlan} PLAN`,
@@ -263,6 +285,8 @@ const mapStateToProps = {
   workspaceSelector: Workspace.workspaceByIDSelector,
   creatorID: Account.userIDSelector,
   workspaceByID: Workspace.workspaceByIDSelector,
+  referrerID: Account.referrerIDSelector,
+  referralCode: Account.referralCodeSelector,
 };
 
 type ConnectedPaymentProps = ConnectedProps<typeof mapStateToProps>;

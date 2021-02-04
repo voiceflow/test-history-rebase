@@ -7,8 +7,8 @@ import { RealtimeCursorOverlayAPI, RealtimeLinkOverlayAPI } from '@/pages/Canvas
 import { ActionPayload } from '@/store/types';
 import { Pair } from '@/types';
 
-import { EngineConsumer } from './utils';
 import type { Engine } from '.';
+import { EngineConsumer } from './utils';
 
 class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCursorOverlayAPI; [OverlayType.LINK]: RealtimeLinkOverlayAPI }> {
   log = this.engine.log.child('realtime');

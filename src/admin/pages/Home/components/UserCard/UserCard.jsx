@@ -1,10 +1,12 @@
 import moment from 'moment';
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import * as AdminV2 from '@/admin/store/ducks/adminV2';
+import { connect } from '@/hocs';
+
 import User from '../User';
-import { Card, Footer, LeftPanel, LeftPanelText, RightPanel, RightPanelHeader, RightPanelText, UserCardWrapper, linkStyles } from './components';
+import { Card, Footer, LeftPanel, LeftPanelText, linkStyles, RightPanel, RightPanelHeader, RightPanelText, UserCardWrapper } from './components';
 
 class UserCard extends React.Component {
   render() {
@@ -36,8 +38,8 @@ class UserCard extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  creator: state.admin.creator,
-});
+const mapStateToProps = {
+  creator: AdminV2.creatorSelector,
+};
 
 export default connect(mapStateToProps)(UserCard);

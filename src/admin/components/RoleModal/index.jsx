@@ -1,13 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-import * as Admin from '@/admin/store/ducks/admin';
+import * as Admin from '@/admin/store/ducks/adminV2';
 import Box from '@/components/Box';
 import Button from '@/components/Button';
 import { FlexEnd } from '@/components/Flex';
 import Select from '@/components/Select';
 import { UserRole } from '@/constants';
+import { connect } from '@/hocs';
 
 const RoleModal = ({ isOpen, workspaceID, creator, activeRole, toggleModal, updateWorkspaceMemberRole }) => {
   const [role, setRole] = React.useState(activeRole);
@@ -56,9 +56,9 @@ const RoleModal = ({ isOpen, workspaceID, creator, activeRole, toggleModal, upda
   );
 };
 
-const mapStateToProps = (state) => ({
-  creator: state.admin.creator,
-});
+const mapStateToProps = {
+  creator: Admin.creatorSelector,
+};
 
 const mapDispatchToProps = {
   updateWorkspaceMemberRole: Admin.updateWorkspaceMemberRole,

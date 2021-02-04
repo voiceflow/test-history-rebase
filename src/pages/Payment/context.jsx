@@ -7,9 +7,10 @@ import client from '@/client';
 import { ButtonVariant } from '@/components/Button';
 import { toast } from '@/components/Toast';
 import { BillingPeriod, ModalType, UNLIMITED_EDITORS_CONST, UserRole } from '@/constants';
+import { referralCodeSelector, referrerIDSelector } from '@/ducks/account';
 import { activeWorkspaceIDSelector, activeWorkspaceSelector, fetchWorkspace } from '@/ducks/workspace';
 import { connect, withContext, withProvider, withStripe } from '@/hocs';
-import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSmartReducer } from '@/hooks';
+import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSetup, useSmartReducer } from '@/hooks';
 
 export const PaymentContext = React.createContext(null);
 export const { Consumer: PaymentContextConsumer } = PaymentContext;
@@ -21,10 +22,13 @@ export const VIEWS = {
 
 const PRICE_UPDATE_DEBOUNCE_TIMEOUT = 300;
 
-const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, checkChargeable, updateWorkspace }) => {
+const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, checkChargeable, updateWorkspace, referrerID, referralCode }) => {
   const [checkingOut, startCheckingOut, stopCheckingOut] = useEnableDisable(false);
   const [fetchingPrice, startFetchingPrice, stopFetchingPrice] = useEnableDisable(false);
   const [loadingPlan, startloadingPlan, stoploadingPlan] = useEnableDisable(true);
+
+  const checkHash = React.useRef(null);
+
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
   const { close: closePaymentsModal } = useModals(ModalType.PAYMENT);
 
@@ -45,7 +49,14 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
     stripeCompleted: false,
   });
 
-  const checkHash = React.useRef(null);
+  const prePopulateCoupon = async () => {
+    const stripePromotion = await client.user.getReferralCouponCode(referrerID);
+
+    if (stripePromotion) {
+      actions.toggleUsingCoupon();
+      actions.setCoupon(referralCode);
+    }
+  };
 
   const updatePrice = useDebouncedCallback(
     PRICE_UPDATE_DEBOUNCE_TIMEOUT,
@@ -54,6 +65,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
         const hash = cuid.slug();
         checkHash.current = hash;
         startFetchingPrice();
+
         const { price, errors, discount } = await client.workspace.calculatePrice(workspaceID, {
           plan,
           seats,
@@ -193,6 +205,13 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
     }
   }, [state.seats, state.coupon, state.usingCoupon]);
 
+  // pre-populate referral code
+  useSetup(() => {
+    if (referrerID && referralCode) {
+      prePopulateCoupon();
+    }
+  }, [referrerID, referralCode]);
+
   const showDetails = React.useCallback(() => actions.setView(VIEWS.details), []);
   const showCheckout = React.useCallback(() => actions.setView(VIEWS.checkout), []);
 
@@ -220,6 +239,8 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
 const mapStateToProps = {
   workspaceID: activeWorkspaceIDSelector,
   workspace: activeWorkspaceSelector,
+  referrerID: referrerIDSelector,
+  referralCode: referralCodeSelector,
 };
 
 const mapDispatchToProps = {

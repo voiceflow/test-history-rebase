@@ -297,9 +297,10 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     if (hasPaymentStep) {
       try {
         await handlePayment(workspace.id, source);
-      } catch (e) {
-        toast.error('Something went wrong when checking out, please try again later');
+      } catch (err) {
+        toast.error(err?.data || err?.message || err?.data?.data);
         goToDashboard();
+
         return null;
       }
     }

@@ -4,7 +4,7 @@ import * as Creator from '@/ducks/creator';
 import { EntityMap, Link, Node, NodeData, NodeWithData, Port } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptor } from '@/pages/Canvas/managers/types';
-import { DispatchResult, Dispatchable, Dispatcher, Selector } from '@/store/types';
+import { Dispatchable, Dispatcher, DispatchResult, Selector } from '@/store/types';
 import { NullableRecord, Pair, Point } from '@/types';
 import { objectID } from '@/utils';
 import { asyncForEach, unique } from '@/utils/array';

@@ -6,17 +6,17 @@ import type { State } from '@/ducks/_root';
 import { Action, RootReducer, Selector } from '@/store/types';
 import { reorder } from '@/utils/array';
 import {
-  GetKey,
-  Normalized,
-  NormalizedValue,
-  ObjectWithId,
   addAllNormalizedByKeys,
   addNormalizedByKey,
   addToStartNormalizedByKey,
   defaultGetKey,
   denormalize,
+  GetKey,
   getNormalizedByKey,
   normalize,
+  Normalized,
+  NormalizedValue,
+  ObjectWithId,
   removeAllNormalizedByKeys,
   removeNormalizedByKey,
   reorderKeys,

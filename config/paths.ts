@@ -14,7 +14,7 @@ const PATHS = {
 };
 
 const ADMIN_PATHS = {
-  entrypoint: `${sourceDir}admin/index.jsx`,
+  entrypoint: `${sourceDir}admin/index.tsx`,
   buildDir: 'admin_build/',
 };
 

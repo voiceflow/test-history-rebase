@@ -4,14 +4,14 @@ import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import DayPicker from 'react-day-picker';
-import { connect } from 'react-redux';
 import { Modal, ModalBody } from 'reactstrap';
 
-import * as Admin from '@/admin/store/ducks/admin';
+import * as Admin from '@/admin/store/ducks/adminV2';
 import Button from '@/components/Button';
 import { FlexApart } from '@/components/Flex';
 import Select from '@/components/Select';
 import { PlanType } from '@/constants';
+import { connect } from '@/hocs';
 
 class PlanModal extends React.Component {
   constructor(props) {

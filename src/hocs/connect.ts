@@ -3,7 +3,6 @@ import { getDisplayName } from 'recompose';
 import { createStructuredSelector } from 'reselect';
 
 import { IS_PRODUCTION } from '@/config';
-import type { State } from '@/ducks/_root';
 import { Dispatch } from '@/store/types';
 import {
   ActionCreatorLookup,
@@ -22,13 +21,13 @@ type MergePropsType<T extends AnyFunction> = T extends (...args: MergeArguments<
 type ConnectOptions = { debug?: boolean; removeDispatch?: boolean; merge?: boolean } & Omit<ReactRedux.Options, 'forwardRef'>;
 
 type Connect = {
-  <S extends SelectorLookup, D extends ActionCreatorLookup, M extends (...args: MergeArguments<S, D, any>) => any>(
+  <S extends SelectorLookup<any>, D extends ActionCreatorLookup, M extends (...args: MergeArguments<S, D, any>) => any>(
     mapStateToProps: S | null,
     mapDispatchToProps?: D | null,
     mergeProps?: M | null,
     options?: ConnectOptions & { forwardRef?: false }
   ): <P extends object>(component: React.FC<P & ConnectedProps<S, D, M>>) => React.FC<Omit<P, keyof ConnectedProps<S, D, M>>>;
-  <S extends SelectorLookup, D extends ActionCreatorLookup, M extends (...args: MergeArguments<S, D, any>) => any>(
+  <S extends SelectorLookup<any>, D extends ActionCreatorLookup, M extends (...args: MergeArguments<S, D, any>) => any>(
     mapStateToProps: S | null,
     mapDispatchToProps?: D | null,
     mergeProps?: M | null,
@@ -40,7 +39,7 @@ type Connect = {
 
 // eslint-disable-next-line import/prefer-default-export
 export const connect: Connect = (
-  mapStateToProps: SelectorLookup | null,
+  mapStateToProps: SelectorLookup<any> | null,
   mapDispatchToProps: ActionCreatorLookup | null = null,
   mergeProps: Function<MergeArguments<any, any, any>, any> | null = null,
   options: ConnectOptions = {}
@@ -51,9 +50,9 @@ export const connect: Connect = (
   const log = Logger.child(`connect(${getDisplayName(component)})`);
 
   return ReactRedux.connect(
-    (typeof mapStateToProps === 'function' ? mapStateToProps : mapStateToProps && createStructuredSelector<State, any>(mapStateToProps)) || null,
+    (typeof mapStateToProps === 'function' ? mapStateToProps : mapStateToProps && createStructuredSelector(mapStateToProps)) || null,
 
-    (mapDispatchToProps as any) || null,
+    mapDispatchToProps || null,
 
     mergeProps || isDebug || removeDispatch
       ? (
@@ -65,7 +64,7 @@ export const connect: Connect = (
             log.debug('connect() was called', { stateProps, dispatchProps, props });
           }
 
-          const mergedProps = mergeProps?.(stateProps, dispatchProps as any, props);
+          const mergedProps = mergeProps?.(stateProps, dispatchProps, props);
 
           return shouldMerge
             ? {

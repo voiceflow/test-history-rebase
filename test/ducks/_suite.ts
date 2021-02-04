@@ -6,7 +6,7 @@ import type { State } from '@/ducks/_root';
 import { createAction } from '@/ducks/utils';
 import * as CRUD from '@/ducks/utils/crud';
 import { AnyAction, AnyThunk, RootReducer, Selector } from '@/store/types';
-import { Normalized, getNormalizedByKey } from '@/utils/normalized';
+import { getNormalizedByKey, Normalized } from '@/utils/normalized';
 
 type ReduxDuck<S, A extends AnyAction> = {
   default: RootReducer<S, A>;

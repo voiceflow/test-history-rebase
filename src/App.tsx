@@ -21,6 +21,7 @@ import { AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadin
 import { withBatchLoadingGate } from '@/hocs';
 import { useSessionTracking } from '@/hooks';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
+import ImportModal from '@/pages/Dashboard/components/ImportModal';
 import {
   CanvasExportModal,
   CanvasMarkupModal,
@@ -30,14 +31,13 @@ import {
   RealtimeDeniedModal,
   TestableLinkModal,
 } from '@/pages/Dashboard/RestrictionModals';
-import ImportModal from '@/pages/Dashboard/components/ImportModal';
 import BillingModal from '@/pages/Payment/BillingModal';
 import PaymentModal from '@/pages/Payment/PaymentModal';
 import LoginModal from '@/pages/Publish/Upload/common/LoginModal';
 import { compose } from '@/utils/functional';
 
-import Routes from './Routes';
 import { GlobalProvidersProps, withGlobalProviders } from './contexts/GlobalProviders';
+import Routes from './Routes';
 
 const App = () => {
   useSessionTracking();

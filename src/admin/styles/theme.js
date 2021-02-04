@@ -1,4 +1,4 @@
-import { THEMES } from '@/admin/store/ducks/admin';
+import { THEMES } from '@/admin/store/ducks/adminV2';
 
 export const mainTheme = {
   palette: {

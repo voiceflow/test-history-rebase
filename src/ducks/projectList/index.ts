@@ -2,7 +2,7 @@ import createCRUDReducer, * as CRUD from '@/ducks/utils/crud';
 import { ProjectList } from '@/models';
 import { Reducer, RootReducer } from '@/store/types';
 import { insert, reorder, withoutValue } from '@/utils/array';
-import { Normalized, getNormalizedByKey, patchNormalizedByKey } from '@/utils/normalized';
+import { getNormalizedByKey, Normalized, patchNormalizedByKey } from '@/utils/normalized';
 
 import { AddProjectToList, AnyProjectListAction, ProjectListAction, RemoveProjectFromList, TransplantProject } from './actions';
 import { STATE_KEY } from './constants';

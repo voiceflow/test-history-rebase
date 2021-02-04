@@ -1,19 +1,21 @@
-import axios from 'axios';
 import Markdown from 'markdown-to-jsx';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Form, FormGroup, Input, Label } from 'reactstrap';
 
+import { Admin } from '@/admin/client';
+import { UpdateType } from '@/admin/models';
+import * as Account from '@/admin/store/ducks/accountV2';
 import { AdminTitle } from '@/admin/styles';
 import Button from '@/components/LegacyButton';
 import { toast } from '@/components/Toast';
+import { connect } from '@/hocs';
 
 class ProductUpdates extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      type: 'FEATURE',
+      type: UpdateType.FEATURE,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -26,18 +28,17 @@ class ProductUpdates extends Component {
     });
   }
 
-  createNewUpdate() {
-    axios
-      .post('/product_updates', {
+  async createNewUpdate() {
+    try {
+      await Admin.setProductUpdate({
         type: this.state.type,
         details: this.state.details,
-      })
-      .then(() => {
-        toast.success('Product update successfully added');
-      })
-      .catch(() => {
-        toast.error('Fields not Complete!');
       });
+    } catch (err) {
+      toast.error('Fields not Complete!');
+    }
+
+    toast.success('Product update successfully added');
   }
 
   render() {
@@ -52,9 +53,9 @@ class ProductUpdates extends Component {
             <FormGroup>
               <Label for="type">What type of update is it</Label>
               <Input type="select" name="type" id="type" onChange={this.handleChange}>
-                <option>FEATURE</option>
-                <option>UPDATE</option>
-                <option>CHANGE</option>
+                <option>{UpdateType.FEATURE}</option>
+                <option>{UpdateType.UPDATE}</option>
+                <option>{UpdateType.CHANGE}</option>
               </Input>
             </FormGroup>
             <FormGroup>
@@ -100,8 +101,8 @@ class ProductUpdates extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-});
+const mapStateToProps = {
+  user: Account.accountSelector,
+};
 
 export default connect(mapStateToProps)(ProductUpdates);

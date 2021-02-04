@@ -1,7 +1,9 @@
 import './ChargeList.css';
 
 import React from 'react';
-import { connect } from 'react-redux';
+
+import * as AdminV2 from '@/admin/store/ducks/adminV2';
+import { connect } from '@/hocs';
 
 import ChargeTeamGroup from '../ChargeTeamGroup/ChargeTeamGroup';
 
@@ -30,8 +32,8 @@ class ChargeList extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  charges: state.admin.charges,
-});
+const mapStateToProps = {
+  charges: AdminV2.chargesSelector,
+};
 
 export default connect(mapStateToProps)(ChargeList);

@@ -5,7 +5,7 @@ import suite from './_suite';
 
 suite('Client - User', ({ expect, stubFetch }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['get', 'updateProfilePicture']);
+    expect(Object.keys(client)).to.have.members(['get', 'updateProfilePicture', 'getReferralCouponCode']);
   });
 
   describe('get()', () => {

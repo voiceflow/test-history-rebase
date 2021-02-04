@@ -22,6 +22,8 @@ export const INITIAL_STATE: AccountState = {
   amazon: null,
   google: null,
   created: null,
+  referrer_id: null,
+  referral_code: null,
 };
 
 // reducers

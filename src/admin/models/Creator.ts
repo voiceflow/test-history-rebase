@@ -1,0 +1,19 @@
+export type Creator = {
+  name: string;
+  email: string;
+  creator_id: number;
+  admin: number;
+  password: string | null;
+  created: string;
+  stripe_id: string | null;
+  subscription: string | null;
+  gid: string | null;
+  fid: string | null;
+  verified: boolean;
+  gaction_token: string | null;
+  image: string;
+  api_key: string;
+  last_checked: string;
+  referrer_id: number | null;
+  okta_id: string | null;
+};

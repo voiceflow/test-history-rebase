@@ -4,10 +4,10 @@ import { createSelector } from 'reselect';
 
 import { Action, Reducer, RootReducer } from '@/store/types';
 import { Viewport } from '@/types';
-import { Normalized, addNormalizedByKey, getNormalizedByKey } from '@/utils/normalized';
+import { addNormalizedByKey, getNormalizedByKey, Normalized } from '@/utils/normalized';
 
 import { createAction } from './utils';
-import createCRUDReducer, { AnyCRUDAction, INITIAL_STATE as INITIAL_CRUD_STATE, createCRUDActionCreators, createCRUDSelectors } from './utils/crud';
+import createCRUDReducer, { AnyCRUDAction, createCRUDActionCreators, createCRUDSelectors, INITIAL_STATE as INITIAL_CRUD_STATE } from './utils/crud';
 
 export const STATE_KEY = 'viewport';
 const PERSIST_CONFIG = {

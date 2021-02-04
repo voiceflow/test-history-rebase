@@ -1,15 +1,17 @@
 /* eslint no-restricted-globals: ["error", "isFinite"] */
-import axios from 'axios';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
+import { Label } from 'reactstrap';
 
+import { Admin } from '@/admin/client';
 import { CopyContent, CopyFields, ToField } from '@/admin/pages/Copy/styles';
+import * as Account from '@/admin/store/ducks/accountV2';
 import { AdminTitle } from '@/admin/styles';
 import client from '@/client';
 import Button from '@/components/LegacyButton';
 import { toast } from '@/components/Toast';
+import { connect } from '@/hocs';
 
 function preventDefaultOnEnter(e) {
   if (e.charCode === 13) {
@@ -37,8 +39,7 @@ class Copy extends Component {
       return;
     }
 
-    axios
-      .get(`/admin-api/${this.state.creator}`)
+    Admin.getCreatorByID(this.state.creator)
       .then((res) => {
         this.setState({
           creator_skills: Object.values(res.data.boards)
@@ -57,19 +58,24 @@ class Copy extends Component {
       });
   }
 
-  onUserInput() {
+  async onUserInput() {
     const target = this.state.target_user;
     if (isNaN(target)) {
       return;
     }
-    axios.get(`/teams/${target}`).then((res) => {
+
+    try {
+      const { data } = await Admin.getUserTeams(target);
+
       this.setState({
-        boards: res.data.map((t) => ({
+        boards: data.map((t) => ({
           label: `${t.name} - ${t.team_id}`,
           value: t.team_id,
         })),
       });
-    });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   copy = async () => {
@@ -97,7 +103,7 @@ class Copy extends Component {
 
         <CopyContent>
           <CopyFields>
-            <label>COPY</label>
+            <Label>COPY</Label>
             <input
               placeholder="Enter Creator ID"
               type="text"
@@ -123,7 +129,7 @@ class Copy extends Component {
             )}
           </CopyFields>
           <CopyFields>
-            <label>TO</label>
+            <Label>TO</Label>
             <ToField>
               <input
                 placeholder="Enter Target User ID"
@@ -161,9 +167,8 @@ class Copy extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.account,
-  teams: state.workspace,
-});
+const mapStateToProps = {
+  user: Account.accountSelector,
+};
 
 export default connect(mapStateToProps)(Copy);

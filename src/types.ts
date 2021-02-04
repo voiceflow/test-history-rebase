@@ -2,8 +2,6 @@ import React from 'react';
 import { RGBColor } from 'react-color';
 import { Overwrite } from 'utility-types';
 
-import type { State } from '@/ducks/_root';
-
 import { AnyThunk, Dispatchable, ThunkResult } from './store/types';
 
 export type Color = Required<RGBColor>;
@@ -69,24 +67,24 @@ export type AnyFunction = Function<any[], any>;
 
 export type Callback = Function<[], void>;
 
-export type SelectorLookup = Record<string, (state: State) => any>;
+export type SelectorLookup<S> = Record<string, (state: S) => any>;
 
 export type ActionCreatorLookup = Record<string, (...args: any[]) => Dispatchable>;
 
-export type MappedStateProps<T extends SelectorLookup> = { [K in keyof T]: ReturnType<T[K]> };
+export type MappedStateProps<T extends SelectorLookup<any>> = { [K in keyof T]: ReturnType<T[K]> };
 
 export type MappedDispatchProps<T extends ActionCreatorLookup> = {
   [K in keyof T]: ReturnType<T[K]> extends AnyThunk ? (...args: Parameters<T[K]>) => ThunkResult<ReturnType<T[K]>> : T[K];
 };
 
-export type MergeArguments<S extends SelectorLookup = {}, D extends ActionCreatorLookup = {}, P extends object = {}> = [
+export type MergeArguments<S extends SelectorLookup<any> = {}, D extends ActionCreatorLookup = {}, P extends object = {}> = [
   MappedStateProps<S>,
   MappedDispatchProps<D>,
   P
 ];
 
 export type ConnectedProps<
-  S extends SelectorLookup = {},
+  S extends SelectorLookup<any> = {},
   D extends ActionCreatorLookup = {},
   M extends Function<MergeArguments<S, D, any>, object> = () => {}
 > = Overwrite<Overwrite<MappedStateProps<S> & MappedDispatchProps<D>, MappedDispatchProps<D>> & ReturnType<M>, ReturnType<M>>;

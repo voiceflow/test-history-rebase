@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import client from '@/client';
 import * as AccountDuck from '@/ducks/account';
 import { Thunk } from '@/store/types';

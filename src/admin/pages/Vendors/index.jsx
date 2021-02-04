@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import React from 'react';
-import { connect } from 'react-redux';
 
-import { findCreator, getVendors } from '@/admin/store/ducks/admin';
+import * as Admin from '@/admin/store/ducks/adminV2';
 import { AdminTitle } from '@/admin/styles';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
+import { connect } from '@/hocs';
 
 import VendorList from './components/VendorList/VendorList';
 
@@ -28,7 +28,7 @@ class Vendors extends React.Component {
       // Get the charges for the user
       this.props.getVendors(setCreatorId);
       if (this.props.creator.creator_id && this.props.creator.creator_id.toString() !== setCreatorId) {
-        this.props.findCreator(setCreatorId);
+        this.props.findCreator({ userID: setCreatorId });
       }
     }
   }
@@ -84,8 +84,13 @@ class Vendors extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  creator: state.admin.creator,
-});
+const mapStateToProps = {
+  creator: Admin.creatorSelector,
+};
 
-export default connect(mapStateToProps, { findCreator, getVendors })(Vendors);
+const mapDispatchToProps = {
+  findCreator: Admin.findCreator,
+  getVendors: Admin.getVendors,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Vendors);

@@ -60,7 +60,7 @@ export type SelectProps<O, V> = {
   placement?: PopperProps['placement'];
   autoWidth?: boolean;
   fullWidth?: boolean;
-  clearable?: false | never;
+  clearable?: boolean | never;
   autoFocus?: boolean;
   maxHeight?: number | string;
   className?: string;

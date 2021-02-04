@@ -6,6 +6,7 @@ import {
   PositionProps,
   SpaceProps,
   TypographyProps,
+  border,
   borderRadius,
   color,
   flexbox,
@@ -15,7 +16,7 @@ import {
   typography,
 } from 'styled-system';
 
-import { flexApartStyles, flexStyles } from '@/components/Flex';
+import { flexApartStyles, flexCenterStyles, flexEndStyles, flexStartStyles, flexStyles } from '@/components/Flex';
 import { styled } from '@/hocs';
 
 export type BoxProps = ColorProps &
@@ -28,7 +29,7 @@ export type BoxProps = ColorProps &
     cursor?: string;
   };
 
-export const Box = styled.div<BoxProps>(space, color, layout, position, flexbox, typography, borderRadius);
+export const Box = styled.div<BoxProps>(space, color, layout, position, flexbox, typography, borderRadius, border);
 
 export const Flex = styled(Box)`
   ${flexStyles}
@@ -36,6 +37,18 @@ export const Flex = styled(Box)`
 
 export const FlexApart = styled(Box)`
   ${flexApartStyles}
+`;
+
+export const FlexCenter = styled(Box)`
+  ${flexCenterStyles}
+`;
+
+export const FlexEnd = styled(Box)`
+  ${flexEndStyles}
+`;
+
+export const FlexStart = styled(Box)`
+  ${flexStartStyles}
 `;
 
 export const ButtonBox = styled(Box)`

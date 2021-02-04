@@ -7,6 +7,8 @@ export type Account = {
   image: string;
   created: string;
   first_login?: boolean;
+  referrer_id?: number;
+  referral_code?: string;
 };
 
 export type LockOwner = Account & {

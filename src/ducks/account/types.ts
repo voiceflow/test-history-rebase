@@ -7,4 +7,6 @@ export type AccountState = NullableRecord<Account> & {
   amazon: Account.Amazon | null;
   google: Account.Google | null;
   first_login: boolean;
+  referrer_id: number | null;
+  referral_code: string | null;
 };

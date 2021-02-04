@@ -18,3 +18,7 @@ export const amazonVendorsSelector = createSelector([amazonAccountSelector], (am
 export const googleAccountSelector = createSelector([userSelector], ({ google }) => google);
 
 export const googleEmailSelector = createSelector([googleAccountSelector], (google) => google?.profile?.email || '0');
+
+export const referrerIDSelector = createSelector([userSelector], ({ referrer_id }) => referrer_id);
+
+export const referralCodeSelector = createSelector([userSelector], ({ referral_code }) => referral_code);

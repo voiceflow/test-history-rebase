@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
@@ -11,11 +10,14 @@ import Coupon from '@/admin/pages/Coupon';
 import FinanceBoard from '@/admin/pages/Finance';
 import Home from '@/admin/pages/Home';
 import ProductUpdates from '@/admin/pages/ProductUpdates';
+import Referral from '@/admin/pages/Referral';
 import SkillLookup from '@/admin/pages/SkillLookup';
 import Template from '@/admin/pages/Templates';
 import Vendors from '@/admin/pages/Vendors';
-import { checkSession } from '@/admin/store/ducks/account';
+import * as Account from '@/admin/store/ducks/accountV2';
+import * as AdminDuck from '@/admin/store/ducks/adminV2';
 import { mainTheme, mappedThemes } from '@/admin/styles/theme';
+import { connect } from '@/hocs';
 import theme from '@/styles/theme';
 
 import { AdminWrapper, PageWrapper } from './styles';
@@ -46,6 +48,7 @@ class Admin extends React.Component {
               <Route exact path="/admin/charges" component={FinanceBoard} />
               <Route path="/admin/lookup/:project_id" component={SkillLookup} />
               <Route exact path="/admin/lookup" component={SkillLookup} />
+              <Route exact path="/admin/referral" component={Referral} />
               <Route path="/admin/vendors/:creator_id" component={Vendors} />
               <Route exact path="/admin/vendors" component={Vendors} />
               <Route path="/admin/beta" component={BetaProgram} />
@@ -59,9 +62,13 @@ class Admin extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  dark: state.admin.dark,
-  theme: state.admin.theme,
-});
+const mapStateToProps = {
+  theme: AdminDuck.themeSelector,
+  dark: AdminDuck.darkSelector,
+};
 
-export default connect(mapStateToProps, { checkSession })(Admin);
+const mapDispatchToProps = {
+  checkSession: Account.checkSession,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Admin);

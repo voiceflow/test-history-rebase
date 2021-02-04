@@ -1,10 +1,10 @@
 import cn from 'classnames';
 import React, { useEffect, useState } from 'react';
 import GoogleLogin from 'react-google-login';
-import { connect } from 'react-redux';
 
-import { fbLogin, googleLogin } from '@/admin/store/ducks/account';
+import * as AccountV2 from '@/admin/store/ducks/accountV2';
 import { GOOGLE_CLIENT_ID } from '@/config';
+import { connect } from '@/hocs';
 
 import { SocialLoginContainer } from './AuthBoxes';
 
@@ -57,9 +57,9 @@ const SocialLogin = ({ entryText, light, googleLogin }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  fbLogin: (user) => dispatch(fbLogin(user)),
-  googleLogin: (user) => dispatch(googleLogin(user)),
-});
+const mapDispatchToProps = {
+  fbLogin: AccountV2.fbLogin,
+  googleLogin: AccountV2.googleLogin,
+};
 
 export default connect(null, mapDispatchToProps)(SocialLogin);

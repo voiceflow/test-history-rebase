@@ -5,7 +5,7 @@ import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
-import { connect } from '@/hocs/connect';
+import { connect } from '@/hocs';
 
 class FeedAddUserModal extends Component {
   constructor(props) {

@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import { Form, FormGroup, Input } from 'reactstrap';
 
-import { login } from '@/admin/store/ducks/account';
+import * as AccountV2 from '@/admin/store/ducks/accountV2';
 import Button from '@/components/LegacyButton';
+import { connect } from '@/hocs';
 
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationWrapper';
@@ -99,4 +99,8 @@ const LoginForm = ({ login, location }) => {
   );
 };
 
-export default connect(null, { login })(LoginForm);
+const mapDispatchToProps = {
+  login: AccountV2.login,
+};
+
+export default connect(null, mapDispatchToProps)(LoginForm);

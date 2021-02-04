@@ -40,6 +40,7 @@ export default merge(commonConfig, {
               'pages/Canvas/managers/Display/templates/*.json',
               'pages/Canvas/managers/Integration/zapier.png',
               '**/types.ts',
+              'store/types/**/*.ts',
               'models/**/*',
 
               // TODO: delete when SubMenu gets used

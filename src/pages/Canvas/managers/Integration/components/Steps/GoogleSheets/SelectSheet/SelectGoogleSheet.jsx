@@ -4,8 +4,7 @@ import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
 
 import { setError } from '@/ducks/modal';
-import { styled } from '@/hocs';
-import { connect } from '@/hocs/connect';
+import { connect, styled } from '@/hocs';
 import IntegrationsService from '@/services/Integrations';
 
 const SpreadSheetIcon = styled.img`

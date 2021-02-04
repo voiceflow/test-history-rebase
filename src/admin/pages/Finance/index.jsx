@@ -2,12 +2,12 @@ import './FinanceBoard.css';
 
 import _ from 'lodash';
 import React from 'react';
-import { connect } from 'react-redux';
 
-import { findCreator, getCharges } from '@/admin/store/ducks/admin';
+import * as Admin from '@/admin/store/ducks/adminV2';
 import { AdminTitle } from '@/admin/styles';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
+import { connect } from '@/hocs';
 
 import ChargeList from './components/ChargeList/ChargeList';
 
@@ -30,7 +30,7 @@ class FinanceBoard extends React.Component {
       // Get the charges for the user
       this.props.getCharges(setCreatorId);
       if (this.props.creator.creator_id && this.props.creator.creator_id.toString() !== setCreatorId) {
-        this.props.findCreator(setCreatorId);
+        this.props.findCreator({ userID: setCreatorId });
       }
     }
   }
@@ -80,8 +80,13 @@ class FinanceBoard extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  creator: state.admin.creator,
-});
+const mapStateToProps = {
+  creator: Admin.creatorSelector,
+};
 
-export default connect(mapStateToProps, { findCreator, getCharges })(FinanceBoard);
+const mapDispatchToProps = {
+  findCreator: Admin.findCreator,
+  getCharges: Admin.getCharges,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FinanceBoard);

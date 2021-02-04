@@ -15,35 +15,35 @@ class MessageController {
     this.props = props;
   }
 
-  public trackStartTime() {
+  public trackStartTime(): void {
     this.startTime = Date.now();
   }
 
-  public session(id: string, message: string) {
+  public session(id: string, message: string): void {
     this.add({ id, type: MessageType.SESSION, message } as TypedMessage<MessageType.SESSION>);
   }
 
-  public stream(id: string, data: Omit<TypedMessage<MessageType.STREAM>, 'id' | 'type' | 'startTime'>) {
+  public stream(id: string, data: Omit<TypedMessage<MessageType.STREAM>, 'id' | 'type' | 'startTime'>): void {
     this.add({ id, type: MessageType.STREAM, ...data } as TypedMessage<MessageType.STREAM>);
   }
 
-  public speak(id: string, data: Omit<TypedMessage<MessageType.SPEAK>, 'id' | 'type' | 'startTime'>) {
+  public speak(id: string, data: Omit<TypedMessage<MessageType.SPEAK>, 'id' | 'type' | 'startTime'>): void {
     this.add({ id, type: MessageType.SPEAK, ...data });
   }
 
-  public audio(id: string, data: Omit<TypedMessage<MessageType.AUDIO>, 'id' | 'type' | 'startTime'>) {
+  public audio(id: string, data: Omit<TypedMessage<MessageType.AUDIO>, 'id' | 'type' | 'startTime'>): void {
     this.add({ id, type: MessageType.AUDIO, ...data });
   }
 
-  public debug(id: string, data: Omit<TypedMessage<MessageType.DEBUG>, 'id' | 'type' | 'startTime'>) {
+  public debug(id: string, data: Omit<TypedMessage<MessageType.DEBUG>, 'id' | 'type' | 'startTime'>): void {
     this.add({ id, type: MessageType.DEBUG, ...data });
   }
 
-  public user(id: string, input: string) {
+  public user(id: string, input: string): void {
     this.add({ id, type: MessageType.USER, input } as TypedMessage<MessageType.USER>);
   }
 
-  private add(message: Omit<Message, 'startTime'>) {
+  private add(message: Omit<Message, 'startTime'>): void {
     this.props.addToMessages({ ...message, startTime: this.getFormattedStartTime() } as Message);
   }
 

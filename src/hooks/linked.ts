@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { noop } from '@/utils/functional';
-
 /**
  * ref that is reset when the external value changes without side-effects
  */
@@ -23,27 +21,27 @@ export const useLinkedRef = <T>(externalValue: T) => {
  * local state value that is reset when the external value changes
  * without additional side-effects or state changes
  */
-export const useLinkedState = <T>(externalValue: T): [T, (value: T) => void] => {
+export const useLinkedState = <T>(externalValue: T, resetKey?: string): [T, (value: T) => void] => {
   const [stateValue, setState] = React.useState(externalValue);
-  const cachedExternalValue = React.useRef(externalValue);
-  const updateCache = React.useRef(noop);
-  let currValue = stateValue;
+  const cache = React.useRef({
+    resetKey,
+    stateValue,
+    currentValue: stateValue,
+    externalValue,
+  });
 
-  // override the local state value as long as the external value is fresher
-  if (externalValue !== cachedExternalValue.current) {
-    currValue = externalValue;
+  // override the current value as long as value state value is changed
+  if (stateValue !== cache.current.stateValue) {
+    cache.current.currentValue = stateValue;
+    cache.current.stateValue = stateValue;
   }
 
-  // ensure the latest externalValue is used, without re-memoizing updateValue()
-  updateCache.current = () => {
-    cachedExternalValue.current = externalValue;
-  };
+  // override the current state value as long as the external value or resetKey is fresher
+  if (externalValue !== cache.current.externalValue || resetKey !== cache.current.resetKey) {
+    cache.current.resetKey = resetKey;
+    cache.current.currentValue = externalValue;
+    cache.current.externalValue = externalValue;
+  }
 
-  const updateValue = React.useCallback((nextValue: T) => {
-    // update cachedExternalValue to return to using local state
-    updateCache.current();
-    setState(nextValue);
-  }, []);
-
-  return [currValue, updateValue];
+  return [cache.current.currentValue, setState];
 };

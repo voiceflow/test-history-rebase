@@ -4,8 +4,8 @@ import React from 'react';
 import { CONTEXT_MENU_IGNORED_CLASS_NAME } from '@/components/ContextMenu';
 import { ClassName } from '@/styles/constants';
 
-import TextEditor from './TextEditor';
 import { Input } from './components';
+import TextEditor from './TextEditor';
 
 export { PluginType } from './plugins';
 

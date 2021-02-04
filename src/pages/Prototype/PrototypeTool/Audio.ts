@@ -14,7 +14,7 @@ export class TAudio extends Audio {
     }
   }
 
-  pause() {
+  pause(): void {
     this.VF_ON_PAUSE?.(this);
 
     super.pause();
@@ -27,7 +27,7 @@ class AudioController {
   /**
    * Pauses PrototypeMachine audio and replaces it with external audio before resuming again
    */
-  public playExternal(src: string, muted = false) {
+  public playExternal(src: string, muted = false): void {
     const externalAudio = new TAudio(src);
     externalAudio.muted = muted;
     const currentAudio = this.audio;
@@ -50,7 +50,7 @@ class AudioController {
   }
 
   public async play(
-    src: string,
+    src: undefined | null | string,
     {
       play = true,
       muted = false,
@@ -59,10 +59,14 @@ class AudioController {
       onError,
       onPause,
     }: { offset?: number; play?: boolean; muted?: boolean; loop?: boolean; onError?: () => void; onPause?: (audio: TAudio) => void } = {}
-  ) {
+  ): Promise<void> {
     this.stop();
 
     return new Promise<void>((resolve, reject) => {
+      if (!src) {
+        return resolve();
+      }
+
       this.audio.VF_REJECT = reject;
       this.audio.VF_ON_PAUSE = onPause;
 
@@ -85,7 +89,7 @@ class AudioController {
     });
   }
 
-  public stop() {
+  public stop(): void {
     this.audio.pause();
     this.audio.VF_REJECT?.();
 

@@ -24,9 +24,9 @@ type GenericMessage<T extends MessageType, D = {}> = { id: string; type: T; star
 
 export type UserMessage = GenericMessage<MessageType.USER, { input: string }>;
 
-export type AudioMessage = GenericMessage<MessageType.AUDIO, { name: string; src: string }>;
+export type AudioMessage = GenericMessage<MessageType.AUDIO, { name: string; src?: string | null }>;
 
-export type SpeakMessage = GenericMessage<MessageType.SPEAK, { message: string; voice?: string; src: string }>;
+export type SpeakMessage = GenericMessage<MessageType.SPEAK, { message: string; voice?: string; src?: string | null }>;
 
 export type DebugMessage = GenericMessage<MessageType.DEBUG, { message: string }>;
 

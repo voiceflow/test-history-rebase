@@ -14,8 +14,8 @@ export const INITIAL_STATE: PrototypeState = {
   autoplay: false,
   mode: {},
   visual: {
+    data: null,
     device: null,
-    sourceID: null,
   },
   contextStep: 0,
   contextHistory: [],

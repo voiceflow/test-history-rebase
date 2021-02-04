@@ -1,11 +1,13 @@
-import { BlockType, DisplayType, PlatformType } from '@/constants';
+import { APLType, VisualType } from '@voiceflow/general-types/build/nodes/visual';
+
+import { BlockType, PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
-import DisplayEditor from './DisplayEditor';
-import DisplayStep from './DisplayStep';
+import VisualEditor from '../Visual/VisualEditor';
+import VisualStep from '../Visual/VisualStep';
 
-const DisplayManager: NodeConfig<NodeData.Display> = {
+const DisplayManager: NodeConfig<NodeData.Visual> = {
   type: BlockType.DISPLAY,
   platforms: [PlatformType.ALEXA],
   icon: 'blocks',
@@ -14,8 +16,8 @@ const DisplayManager: NodeConfig<NodeData.Display> = {
   label: 'Display',
   tip: 'Show a Multimodal Display on the screen using APL',
 
-  step: DisplayStep,
-  editor: DisplayEditor,
+  step: VisualStep,
+  editor: VisualEditor,
 
   factory: () => ({
     node: {
@@ -26,14 +28,13 @@ const DisplayManager: NodeConfig<NodeData.Display> = {
     },
     data: {
       name: 'Display',
-      type: 'display',
-      displayType: DisplayType.SPLASH,
+      title: '',
+      aplType: APLType.SPLASH,
+      visualType: VisualType.APL,
+      imageURL: '',
+      document: '',
       datasource: '',
-      aplCommands: '',
-      updateOnChange: false,
-      backgroundImage: null,
-      splashHeader: '',
-      jsonFileName: null,
+      jsonFileName: '',
     },
   }),
 };

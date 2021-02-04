@@ -361,7 +361,7 @@ export enum ModalType {
   SLOT_EDIT = 'slot-edit',
   INTERACTION_MODEL = 'interaction-model',
 
-  DISPLAY_PREVIEW = 'display-preview',
+  APL_PREVIEW = 'apl-preview',
 
   ONBOARDING = 'onboarding',
 
@@ -441,11 +441,6 @@ export enum IconVariant {
 
 export enum KeyCode {
   ENTER = 13,
-}
-
-export enum DisplayType {
-  SPLASH = 'splash',
-  ADVANCED = 'advanced',
 }
 
 export const UNLIMITED_EDITORS_CONST = 100;

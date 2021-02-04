@@ -5829,14 +5829,14 @@
   resolved "https://registry.yarnpkg.com/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
   integrity sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==
 
-"@voiceflow/alexa-types@1.38.0":
-  version "1.38.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.38.0.tgz#896efa600b584c4191132b0ec5d893730a4649f4"
-  integrity sha512-pGytPCQ5KcEeaGIRN/dJOakYzbjMxW4uESAIsJmJ66Mk6GfiolsrocdcJeshXytbeZbQSqrBwGH/7aRVzzAu/w==
+"@voiceflow/alexa-types@^1.40.0":
+  version "1.40.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.40.0.tgz#183b2da00ba492ff3da58b5154964bb781b6309f"
+  integrity sha512-N30S6O3bVrTDA7IM+EwKrX4ye39FtHpMAVcAiKyoHquErYMsNnv5+kafcYLbqxQKdkB8y3nVKEz5c3Vb9OIciA==
   dependencies:
     "@voiceflow/api-sdk" "1.22.0"
     "@voiceflow/common" "6.5.0"
-    "@voiceflow/general-types" "1.22.0"
+    "@voiceflow/general-types" "1.24.0"
     ask-smapi-model "^1.11.0"
     eslint-plugin-prettier "^3.1.4"
 
@@ -5853,31 +5853,6 @@
     io-ts "^2.2.8"
     regenerator-runtime "^0.13.5"
     superstruct "^0.10.12"
-
-"@voiceflow/apl-renderer@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/apl-renderer/-/apl-renderer-1.0.0.tgz#8adfe323417b21f2831ae6ed6e80e9cde4a9c4ba"
-  integrity sha512-rLiMDRrySre8oPNEP82HnnXpNmbtN+qsQWTpwuWMcF7fQmq9HHd5r/XxXged02JyKQx6sjgtdmAHvCxityET4A==
-  dependencies:
-    ajv "^6.10.0"
-    hls.js "^0.12.4"
-    image-scale "git+https://github.com/gestixi/image-scale.git"
-    jquery "^3.4.1"
-    jquery-touchswipe "^1.6.19"
-    lodash "^4.17.11"
-    lodash.clone "^4.5.0"
-    lodash.clonedeep "^4.5.0"
-    lodash.throttle "^4.1.1"
-    lodash.values "^4.3.0"
-    loglevel "^1.6.2"
-    mp3-parser "^0.3.0"
-    nouislider "^13.1.5"
-    path-browserify "^1.0.0"
-    perfect-scrollbar "^1.4.0"
-    spatial-navigation-js "^1.0.0"
-    utf8-decode "^1.0.2"
-    uuid "^3.3.2"
-    xmldom "^0.1.27"
 
 "@voiceflow/commitlint-config@^1.0.1":
   version "1.0.1"
@@ -5947,10 +5922,17 @@
     eslint-plugin-xss "^0.1.9"
     typescript "^3.9.7"
 
-"@voiceflow/general-types@1.22.0":
-  version "1.22.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.22.0.tgz#3c6775b87945253502f13ba6b8583f09233ff395"
-  integrity sha512-D0/9gk3SNsLdkoeyUm7LWdVNBnB8d2nzT4ZpdmDEKsh78oTkBXEGVBd5ns/kojw+MJfKy/F+J2t6XlRsvRnLbQ==
+"@voiceflow/general-types@1.24.0":
+  version "1.24.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.24.0.tgz#83a32b620e5c46bb5406d2e49f097561f1b0ca41"
+  integrity sha512-nis6jFTppbTygZpL5RaaEgpv9crsAkDWeAI3FaatBv5XI0qKcsQSsTYllowyV8aOwEgedhqB8DPBsPQGDeOGBw==
+  dependencies:
+    "@voiceflow/api-sdk" "1.22.0"
+
+"@voiceflow/general-types@^1.25.2":
+  version "1.25.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.25.2.tgz#fca14bd452b4102e47bafd3bb9218a1c19b1654e"
+  integrity sha512-drx3ijuLB62QFe3FhOsdWW95v7Yf5g9ljgWe973SUAoaGjBM/EpqUhR6fCWGR8FQBHIkAYCpGEBvKYwCW9n46g==
   dependencies:
     "@voiceflow/api-sdk" "1.22.0"
 
@@ -5961,14 +5943,14 @@
   dependencies:
     current-git-branch "^1.1.0"
 
-"@voiceflow/google-types@1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.16.0.tgz#d5fb80a8f8263e3ac9f00e8b963c2a9e4d3e4cc7"
-  integrity sha512-vpByREKc22xQzHfLEQhFMWjq9mPyQUf5fwMfDWjWUAGFUAYqSySoTsf7p/Zr3//XZTZynbYc+vbFxyikVRLaoA==
+"@voiceflow/google-types@1.17.0":
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.17.0.tgz#5bf39d9c46d0f8687259f0fe3a23b31c61e6a6b1"
+  integrity sha512-sqM5cyMvi3CZVFlALQ+NyZd32n4yCNT9DLkXZTIMBSMbNXA7pXwxaf5jyGRElXWTTAzTAP+KIHwyblvOwX0GyA==
   dependencies:
     "@voiceflow/api-sdk" "1.22.0"
     "@voiceflow/common" "6.5.0"
-    "@voiceflow/general-types" "1.22.0"
+    "@voiceflow/general-types" "1.24.0"
     googleapis "^60.0.1"
 
 "@voiceflow/logger@^1.1.10":
@@ -6563,6 +6545,11 @@ anymatch@^3.0.3, anymatch@~3.1.1:
   dependencies:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
+
+apl-viewhost-web@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/apl-viewhost-web/-/apl-viewhost-web-1.5.0.tgz#2ca71e133f274ece39104dd159a1919af8c200a3"
+  integrity sha512-uzJCPslnwJlZ3F1R3oIV3f48G498+1cMl8NZq7bytD2kUHZhMpiI6jj2A5TwzeIlUF1JMvmqgtHc5gLDqyzLnw==
 
 app-root-dir@^1.0.2:
   version "1.0.2"
@@ -12079,11 +12066,6 @@ eventemitter2@^6.4.2:
   resolved "https://registry.yarnpkg.com/eventemitter2/-/eventemitter2-6.4.3.tgz#35c563619b13f3681e7eb05cbdaf50f56ba58820"
   integrity sha512-t0A2msp6BzOf+QAcI6z9XMktLj52OjGQg+8SJH6v5+3uxNpWYRR3wQmfA+6xtMU9kOC59qk9licus5dYcrYkMQ==
 
-eventemitter3@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.0.tgz#090b4d6cdbd645ed10bf750d4b5407942d7ba163"
-  integrity sha512-ivIvhpq/Y0uSjcHDcOIccjmYjGLcP09MFGE7ysAwkAvkXfpZlC985pH2/ui64DKazbTW/4kN3yqozUxlXzI6cA==
-
 eventemitter3@^4.0.0, eventemitter3@^4.0.7:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
@@ -13895,14 +13877,6 @@ history@^4.9.0:
     tiny-warning "^1.0.0"
     value-equal "^0.4.0"
 
-hls.js@^0.12.4:
-  version "0.12.4"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.12.4.tgz#c155b7b2825a11117c111b781973c0ffa759006b"
-  integrity sha512-e8OPxQ60dBVsdkv4atdxR21KzC1mgwspM41qpozpj3Uv1Fz4CaeQy3FWoaV2O+QKKbNRvV5hW+/LipCWdrwnMQ==
-  dependencies:
-    eventemitter3 "3.1.0"
-    url-toolkit "^2.1.6"
-
 hmac-drbg@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
@@ -14263,10 +14237,6 @@ ignore@^5.0.4, ignore@^5.0.5, ignore@^5.1.2, ignore@^5.1.4, ignore@^5.1.8:
   version "5.1.8"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.1.8.tgz#f150a8b50a34289b33e22f5889abd4d8016f0e57"
   integrity sha512-BMpfD7PpiETpBl/A6S498BaIJ6Y/ABT93ETbby2fP00v4EbvPBXWEoaR1UBPKs3iR53pJY7EtZk5KACI57i1Uw==
-
-"image-scale@git+https://github.com/gestixi/image-scale.git":
-  version "2.2.0"
-  resolved "git+https://github.com/gestixi/image-scale.git#c0f389761861d61512379e2138a99d550562a27f"
 
 immer@1.10.0:
   version "1.10.0"
@@ -15820,16 +15790,6 @@ joycon@^2.2.5:
   resolved "https://registry.yarnpkg.com/joycon/-/joycon-2.2.5.tgz#8d4cf4cbb2544d7b7583c216fcdfec19f6be1615"
   integrity sha512-YqvUxoOcVPnCp0VU1/56f+iKSdvIRJYPznH22BdXV3xMk75SFXhWeJkZ8C9XxUWt1b5x2X1SxuFygW1U0FmkEQ==
 
-jquery-touchswipe@^1.6.19:
-  version "1.6.19"
-  resolved "https://registry.yarnpkg.com/jquery-touchswipe/-/jquery-touchswipe-1.6.19.tgz#dfd5ddaec0b78212dd500d29707129b9c7fd6cd4"
-  integrity sha512-b0BGje9reNRU3u6ksAK9QqnX7yBRgLNe/wYG7DOfyDlhBlYjayIT8bSOHmcuvptIDW/ubM9CTW/mnZf9Rohuow==
-
-jquery@^3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
-  integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
-
 js-base64@^2.1.9:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.1.tgz#1efa39ef2c5f7980bb1784ade4a8af2de3291121"
@@ -16624,12 +16584,7 @@ lodash.camelcase@4.3.0, lodash.camelcase@^4.3.0:
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
   integrity sha1-soqmKIorn8ZRA1x3EfZathkDMaY=
 
-lodash.clone@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.clone/-/lodash.clone-4.5.0.tgz#195870450f5a13192478df4bc3d23d2dea1907b6"
-  integrity sha1-GVhwRQ9aExkkeN9Lw9I9LeoZB7Y=
-
-lodash.clonedeep@4.5.0, lodash.clonedeep@^4.5.0:
+lodash.clonedeep@4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
@@ -16757,11 +16712,6 @@ lodash.upperfirst@4.3.1:
   resolved "https://registry.yarnpkg.com/lodash.upperfirst/-/lodash.upperfirst-4.3.1.tgz#1365edf431480481ef0d1c68957a5ed99d49f7ce"
   integrity sha1-E2Xt9DFIBIHvDRxolXpe2Z1J984=
 
-lodash.values@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/lodash.values/-/lodash.values-4.3.0.tgz#a3a6c2b0ebecc5c2cba1c17e6e620fe81b53d347"
-  integrity sha1-o6bCsOvsxcLLocF+bmIP6BtT00c=
-
 lodash@4.17.11:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
@@ -16820,7 +16770,7 @@ loglevel-colored-level-prefix@^1.0.0:
     chalk "^1.1.3"
     loglevel "^1.4.1"
 
-loglevel@*, loglevel@^1.4.1, loglevel@^1.6.2, loglevel@^1.7.1:
+loglevel@*, loglevel@^1.4.1, loglevel@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.7.1.tgz#005fde2f5e6e47068f935ff28573e125ef72f197"
   integrity sha512-Hesni4s5UkWkwCGJMQGAh71PaLUmKFM60dHvq0zi/vDhhrzuk+4GgNbTXJ12YYQJn6ZKBDNIjYcuQGKudvqrIw==
@@ -17745,11 +17695,6 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
-mp3-parser@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/mp3-parser/-/mp3-parser-0.3.0.tgz#f659268afb8326ded5cda302eda3ba52b0f61874"
-  integrity sha1-9lkmivuDJt7VzaMC7aO6UrD2GHQ=
-
 mri@1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/mri/-/mri-1.1.4.tgz#7cb1dd1b9b40905f1fac053abe25b6720f44744a"
@@ -18060,11 +18005,6 @@ normalize-url@^3.0.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
-
-nouislider@^13.1.5:
-  version "13.1.5"
-  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-13.1.5.tgz#3a0f3004159b9a77ebc07c3bedc26c97327d3522"
-  integrity sha512-RZMuNW1Z4PcxC5q7wUKbr5EweCEnEUii3f2XtjS38VWcG5QjN11zvveRld+lrUwHIOKgfRWeIddZm5Xxfr7zCQ==
 
 npm-run-path@^2.0.0:
   version "2.0.2"
@@ -18724,11 +18664,6 @@ path-browserify@0.0.1, path-browserify@~0.0.0:
   resolved "https://registry.yarnpkg.com/path-browserify/-/path-browserify-0.0.1.tgz#e6c4ddd7ed3aa27c68a20cc4e50e1a4ee83bbc4a"
   integrity sha512-BapA40NHICOS+USX9SN4tyhq+A2RrN/Ws5F0Z5aMHDp98Fl86lX8Oti8B7uN93L4Ifv4fHOEA+pQw87gmMO/lQ==
 
-path-browserify@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/path-browserify/-/path-browserify-1.0.0.tgz#40702a97af46ae00b0ea6fa8998c0b03c0af160d"
-  integrity sha512-Hkavx/nY4/plImrZPHRk2CL9vpOymZLgEbMNX1U0bjcBL7QN9wODxyx0yaMZURSQaUtSEvDrfAvxa9oPb0at9g==
-
 path-dirname@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/path-dirname/-/path-dirname-1.0.2.tgz#cc33d24d525e099a5388c0336c6e32b9160609e0"
@@ -18841,11 +18776,6 @@ pend@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
-
-perfect-scrollbar@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/perfect-scrollbar/-/perfect-scrollbar-1.4.0.tgz#5d014ef9775e1f43058a1dbae9ed1daf0e7091f1"
-  integrity sha512-/2Sk/khljhdrsamjJYS5NjrH+GKEHEwh7zFSiYyxROyYKagkE4kSn2zDQDRTOMo8mpT2jikxx6yI1dG7lNP/hw==
 
 performance-now@^2.1.0:
   version "2.1.0"
@@ -22845,11 +22775,6 @@ space-separated-tokens@^1.0.0, space-separated-tokens@^1.1.2:
   resolved "https://registry.yarnpkg.com/space-separated-tokens/-/space-separated-tokens-1.1.5.tgz#85f32c3d10d9682007e917414ddc5c26d1aa6899"
   integrity sha512-q/JSVd1Lptzhf5bkYm4ob4iWPjx0KiRe3sRFBNrVqbJkFaBm5vbbowy1mymoPNLRa52+oadOhJ+K49wsSeSjTA==
 
-spatial-navigation-js@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/spatial-navigation-js/-/spatial-navigation-js-1.0.0.tgz#d499149ff44ddae200c02c7ae7952ce8b4d17cf5"
-  integrity sha512-RZ0/q7LCL/x4Hz8oUEwkkBIOx4YZt6Nn6o1YhXm6bVDjxZykJQ2tDeVZrYCbq+jDaneszRctl55WedO+l1LePg==
-
 spawn-wrap@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/spawn-wrap/-/spawn-wrap-2.0.0.tgz#103685b8b8f9b79771318827aa78650a610d457e"
@@ -24918,11 +24843,6 @@ url-template@^2.0.8:
   resolved "https://registry.yarnpkg.com/url-template/-/url-template-2.0.8.tgz#fc565a3cccbff7730c775f5641f9555791439f21"
   integrity sha1-/FZaPMy/93MMd19WQflVV5FDnyE=
 
-url-toolkit@^2.1.6:
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/url-toolkit/-/url-toolkit-2.1.6.tgz#6d03246499e519aad224c44044a4ae20544154f2"
-  integrity sha512-UaZ2+50am4HwrV2crR/JAf63Q4VvPYphe63WGeoJxeu8gmOm0qxPt+KsukfakPNrX9aymGNEkkaoICwn+OuvBw==
-
 url@^0.11.0, url@~0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/url/-/url-0.11.0.tgz#3838e97cfc60521eb73c525a8e55bfdd9e2e28f1"
@@ -24953,11 +24873,6 @@ userflow.js@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/userflow.js/-/userflow.js-1.8.0.tgz#38aa0984734c4b93af2054e0914a125ce072ec7a"
   integrity sha512-DXz8AaDFNYkv/RVUGU8BSyrY5wIc+TCs953j8qeXeis8c6WjA7QnzXb3Y8Lf3rpFKtAQ9haL8jteuF25MoYuMQ==
-
-utf8-decode@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/utf8-decode/-/utf8-decode-1.0.2.tgz#406500f54a5fb35b9e00adda1684dcc764aa8393"
-  integrity sha1-QGUA9Upfs1ueAK3aFoTcx2Sqg5M=
 
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
@@ -25758,11 +25673,6 @@ xmlchars@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
-
-xmldom@^0.1.27:
-  version "0.1.27"
-  resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.27.tgz#d501f97b3bdb403af8ef9ecc20573187aadac0e9"
-  integrity sha1-1QH5ezvbQDr4757MIFcxh6rawOk=
 
 xmlhttprequest-ssl@~1.5.4:
   version "1.5.5"

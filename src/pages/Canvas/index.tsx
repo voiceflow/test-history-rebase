@@ -3,11 +3,11 @@ import React from 'react';
 import { DiagramLoadingGate } from '@/gates';
 import { withLoadingGate } from '@/hocs';
 import { useDidUpdateEffect, useSetup } from '@/hooks';
+import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
 import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
-import DisplayPreviewModal from '@/pages/Canvas/managers/Display/components/PreviewModal';
 import THEME from '@/styles/theme';
 import { compose } from '@/utils/functional';
 
@@ -65,7 +65,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
       </Container>
 
       <ShortcutsModal />
-      <DisplayPreviewModal />
+      <APLPreviewModal />
       <SlotEditModal />
       <BulkImportSlots />
       <BulkImportUtterances />

@@ -2,13 +2,14 @@
 
 import './utils/mockAudio';
 
-import { IntentName, RequestType } from '@voiceflow/general-types';
+import { IntentName, RequestType, TraceType } from '@voiceflow/general-types';
+import { TraceStreamAction } from '@voiceflow/general-types/build/nodes/stream';
 import { SinonSpy, SinonStub } from 'sinon';
 
 import { createSuite } from '@/../test/_suite';
 import { BlockType } from '@/constants';
-import { SpeakTraceAudioType, StreamTraceAction, TraceType } from '@/constants/prototype';
-import { Trace, TraceMap } from '@/models';
+import { SpeakTraceAudioType } from '@/constants/prototype';
+import { Trace } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
 import AudioController from '@/pages/Prototype/PrototypeTool/Audio';
 import MessageController from '@/pages/Prototype/PrototypeTool/Message';
@@ -22,7 +23,7 @@ const MESSAGE = 'message';
 const BLOCK_ID = 'block-id';
 const STEP_ID = 'step-id';
 
-const traceFactory = <T extends TraceType>(type: T, payload: TraceMap[T]['payload']): Trace => ({ id: ID, type, payload } as any);
+const traceFactory = <T extends TraceType>(type: T, payload: unknown): Trace => ({ id: ID, type, payload } as any);
 
 enum TraceMethods {
   END = 'processEndTrace',
@@ -92,17 +93,13 @@ const suite = createSuite(({ spy, stub, expect }) => ({
     return controller;
   },
 
-  emulateAudioError(controller: TraceController) {
-    return ((controller['audio']['play'] as any) as SinonStub).callsFake(async (_: any, { onError }: { onError: Function }) => onError());
-  },
+  emulateAudioError: (controller: TraceController) =>
+    ((controller['audio']['play'] as any) as SinonStub).callsFake(async (_: any, { onError }: { onError: Function }) => onError()),
 
-  emulateAudioPause(controller: TraceController, audio: any) {
-    return ((controller['audio']['play'] as any) as SinonStub).callsFake(async (_: any, { onPause }: { onPause: Function }) => onPause(audio));
-  },
+  emulateAudioPause: (controller: TraceController, audio: any) =>
+    ((controller['audio']['play'] as any) as SinonStub).callsFake(async (_: any, { onPause }: { onPause: Function }) => onPause(audio)),
 
-  emulateAudioReject(controller: TraceController) {
-    return ((controller['audio']['play'] as any) as SinonStub).returns(Promise.reject());
-  },
+  emulateAudioReject: (controller: TraceController) => ((controller['audio']['play'] as any) as SinonStub).returns(Promise.reject()),
 
   emulateFetchContext(controller: TraceController, ...data: any[]) {
     let fetchContextDataCallCount = 0;
@@ -110,33 +107,21 @@ const suite = createSuite(({ spy, stub, expect }) => ({
     return ((controller['props']['fetchContext'] as any) as SinonStub).callsFake(() => data[fetchContextDataCallCount++]);
   },
 
-  expectSetTimeout(controller: TraceController) {
-    return expect(controller['timeout']['set']);
-  },
+  expectSetTimeout: (controller: TraceController) => expect(controller['timeout']['set']),
 
-  expectAudioPlay(controller: TraceController) {
-    return expect(controller['audio']['play']);
-  },
+  expectAudioPlay: (controller: TraceController) => expect(controller['audio']['play']),
 
-  expectAudioStop(controller: TraceController) {
-    return expect(controller['audio']['stop']);
-  },
+  expectAudioStop: (controller: TraceController) => expect(controller['audio']['stop']),
 
-  expectAudioPlayExternal(controller: TraceController) {
-    return expect(controller['audio']['playExternal']);
-  },
+  expectAudioPlayExternal: (controller: TraceController) => expect(controller['audio']['playExternal']),
 
-  expectMessage<T extends Exclude<keyof MessageController, 'trackStartTime'>>(
+  expectMessage: <T extends Exclude<keyof MessageController, 'trackStartTime'>>(
     controller: TraceController,
     method: T,
     ...data: Parameters<MessageController[T]>
-  ) {
-    return expect(controller['message'][method]).to.be.calledWith(...data);
-  },
+  ) => expect(controller['message'][method]).to.be.calledWith(...data),
 
-  expectUpdateStatus(controller: TraceController) {
-    return expect(controller['props']['updateStatus']);
-  },
+  expectUpdateStatus: (controller: TraceController) => expect(controller['props']['updateStatus']),
 
   expectSetError(controller: TraceController) {
     expect(controller['props']['updateStatus']).to.be.calledWith(PMStatus.ERROR);
@@ -144,21 +129,14 @@ const suite = createSuite(({ spy, stub, expect }) => ({
     return expect(controller['props']['setError']);
   },
 
-  expectSetInteractions(controller: TraceController, interactions: { name: string }[]) {
-    return expect(controller['props']['setInteractions']).to.be.calledWith(interactions);
-  },
+  expectSetInteractions: (controller: TraceController, interactions: { name: string }[]) =>
+    expect(controller['props']['setInteractions']).to.be.calledWith(interactions),
 
-  expectEnterFlow(controller: TraceController) {
-    return expect(controller['props']['enterFlow']);
-  },
+  expectEnterFlow: (controller: TraceController) => expect(controller['props']['enterFlow']),
 
-  expectFocusNode(controller: TraceController) {
-    return expect(controller['props']['engine']!['node']['center']);
-  },
+  expectFocusNode: (controller: TraceController) => expect(controller['props']['engine']!['node']['center']),
 
-  expectProcessTrace(controller: TraceController) {
-    return expect(controller['processTrace']);
-  },
+  expectProcessTrace: (controller: TraceController) => expect(controller['processTrace']),
 
   expectProcessSingleTrace(controller: TraceController, methodName?: TraceMethods, { onlyMessage = false }: { onlyMessage?: boolean } = {}) {
     Object.values(TraceMethods)
@@ -374,7 +352,7 @@ suite(
 
         const next = spy(controller, 'next');
 
-        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: StreamTraceAction.PLAY, token: '1' })] });
+        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PLAY, token: '1' })] });
 
         await controller.next();
 
@@ -390,7 +368,7 @@ suite(
       it('should process stream pause', async () => {
         const controller = createController();
 
-        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: StreamTraceAction.PAUSE, token: '1' })] });
+        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PAUSE, token: '1' })] });
 
         const next = spy(controller, 'next');
 
@@ -408,7 +386,7 @@ suite(
       it('should process stream audio pause', async () => {
         const controller = createController();
 
-        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: StreamTraceAction.PLAY, token: '1' })] });
+        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PLAY, token: '1' })] });
 
         emulateAudioPause(controller, { currentTime: 10 });
 
@@ -420,7 +398,7 @@ suite(
       it('should process stream audio error', async () => {
         const controller = createController();
 
-        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: StreamTraceAction.PLAY, token: '1' })] });
+        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PLAY, token: '1' })] });
         emulateAudioError(controller);
 
         await controller.next();
@@ -434,7 +412,7 @@ suite(
 
         const next = spy(controller, 'next');
 
-        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: StreamTraceAction.PLAY, token: '1' })] });
+        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PLAY, token: '1' })] });
         emulateAudioReject(controller);
 
         await controller.next();
@@ -487,7 +465,7 @@ suite(
                 message: MESSAGE,
                 choices: [],
               }),
-              traceFactory(TraceType.STREAM, { src: SRC, action: StreamTraceAction.PLAY, token: '1' }),
+              traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PLAY, token: '1' }),
             ],
           },
           {
@@ -545,7 +523,7 @@ suite(
             message: MESSAGE,
             choices: [],
           }),
-          traceFactory(TraceType.STREAM, { src: SRC, action: StreamTraceAction.PLAY, token: '1' }),
+          traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PLAY, token: '1' }),
           traceFactory(TraceType.CHOICE, { choices: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }] }),
           traceFactory(TraceType.FLOW, { diagramID: 'diagramID' }),
           traceFactory(TraceType.END, {}),

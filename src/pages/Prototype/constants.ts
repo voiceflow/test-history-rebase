@@ -24,7 +24,7 @@ const ALEXA_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, displayIcon, de
 
 const GOOGLE_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, developerIcon];
 
-const GENERAL_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, developerIcon];
+const GENERAL_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, displayIcon, developerIcon];
 
 export const PROTOTYPE_MENU_OPTIONS = {
   [PlatformType.ALEXA]: ALEXA_PROTOTYPE_MENU_OPTIONS,
@@ -51,33 +51,33 @@ export const ALEXA_DEVICE_LIST: DeviceInfo[] = [
     type: DeviceType.ECHO_SHOW_10,
     name: 'Echo Show 10',
     icon: 'echoShow',
-    dimension: { width: 1280, height: 800, density: 126 },
+    dimension: { width: 1280, height: 800, density: 160 },
   },
 
   {
     type: DeviceType.ECHO_SPOT,
     name: 'Echo Spot',
     icon: 'echoSpot',
-    dimension: { width: 480, height: 480, density: 192 },
+    dimension: { width: 480, height: 480, density: 160 },
   },
   {
     type: DeviceType.FIRE_TV_CUBE,
     name: 'Fire TV Cube',
     icon: 'fireTV',
     // chosen as it's the average recommended TV pixel density
-    dimension: { width: 1920, height: 1080, density: 110 },
+    dimension: { width: 1920, height: 1080, density: 160 },
   },
   {
     type: DeviceType.FIRE_HD_8,
     name: 'Fire HD 8',
     icon: 'fireHD8',
-    dimension: { width: 1200, height: 800, density: 150 },
+    dimension: { width: 1200, height: 800, density: 160 },
   },
   {
     type: DeviceType.FIRE_HD_10,
     name: 'Fire HD 10',
     icon: 'fireHD10',
-    dimension: { width: 1920, height: 1200, density: 190 },
+    dimension: { width: 1920, height: 1200, density: 160 },
   },
 ];
 

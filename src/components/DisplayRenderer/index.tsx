@@ -1,12 +1,39 @@
-import { DeviceConfig, DeviceType, devices } from '@voiceflow/apl-renderer';
+import { APL_DEVICE_CONFIG, APLDeviceType } from '@voiceflow/alexa-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 import { Alert } from 'reactstrap';
 
-import { BaseRenderer } from './components';
-import { BaseRendererAPI } from './components/BaseRenderer';
+import { APLRendererProps } from '../APLRenderer';
+import { BaseRenderer, Container } from './components';
 
-const CONTAINER_WIDTH = 455;
+const CONTAINER_WIDTH = 452;
+const SMALL_HUB_SCALE = 0.8;
+
+const DEVICES = [
+  APLDeviceType.SMALL_ROUND_HUB,
+  APLDeviceType.SMALL_RECT_HUB,
+  APLDeviceType.MEDIUM_HUB,
+  APLDeviceType.LARGE_HUB,
+  APLDeviceType.LARGE_TV,
+];
+
+const getDeviceInfo = (type: APLDeviceType) => {
+  // const device = new DeviceConfig(devices[type]);
+  const { height, width, density } = APL_DEVICE_CONFIG[type];
+  const scale = CONTAINER_WIDTH / width;
+  const isSmallHub = type === 'smallHub';
+
+  return {
+    viewport: {
+      height,
+      width,
+      dpi: density,
+      isRound: isSmallHub,
+    },
+    device: type,
+    scale: isSmallHub ? SMALL_HUB_SCALE : scale,
+  };
+};
 
 type DisplayRendererProps = {
   apl: string;
@@ -16,8 +43,8 @@ type DisplayRendererProps = {
 };
 
 type DisplayRendererState = {
-  device: DeviceType;
-  height: number;
+  device: APLDeviceType;
+  viewport: APLRendererProps['viewport'];
   scale: number;
   error: Error | null;
 };
@@ -30,31 +57,18 @@ class DisplayRenderer extends React.Component<DisplayRendererProps, DisplayRende
   };
 
   state: DisplayRendererState = {
-    device: 'medHub',
-    height: 266,
-    scale: 0.44,
+    ...getDeviceInfo(APLDeviceType.MEDIUM_HUB),
     error: null,
   };
 
-  rendererRef = React.createRef<BaseRendererAPI>();
-
-  device = new DeviceConfig(devices.medHub);
-
   setError = (error: Error) => this.setState({ error });
 
-  changeDevice = async (device: DeviceType) => {
-    this.device = new DeviceConfig(devices[device]);
-    const renderer = this.rendererRef.current;
+  changeDevice = async (device: APLDeviceType) => this.setState(getDeviceInfo(device));
 
-    renderer?.setDeviceConfiguration(this.device);
-    await renderer?.renderPreview();
-
-    let scale = Math.min(CONTAINER_WIDTH / this.device.getDpWidth(), 1);
-    if (device === 'smallHub') {
-      scale = 0.3;
-    }
-    this.setState({ height: this.device.getDpHeight() * scale, scale, device });
-  };
+  componentDidCatch(error: Error) {
+    // for some reason the APLRenderer always throws an error when unmounting
+    this.setError(error);
+  }
 
   render() {
     if (this.state.error) {
@@ -69,26 +83,26 @@ class DisplayRenderer extends React.Component<DisplayRendererProps, DisplayRende
 
     return (
       <>
-        <div style={{ height: `${this.state.height}px`, overflow: 'hidden' }}>
+        <Container height={this.state.viewport.height * this.state.scale}>
           <BaseRenderer
             apl={this.props.apl}
             data={this.props.data!}
             commands={this.props.commands!}
+            viewport={this.state.viewport}
             scale={this.state.scale}
             onFail={this.setError}
-            ref={this.rendererRef}
           />
-        </div>
+        </Container>
         {this.props.withControls && (
           <div className="d-flex justify-content-center pt-2">
-            {Object.values(devices).map((device) => (
-              <Tooltip title={device.name} position="bottom" animation="fade" arrow key={device.id}>
+            {DEVICES.map((type) => [type, APL_DEVICE_CONFIG[type]] as const).map(([type, device]) => (
+              <Tooltip title={device.name} position="bottom" animation="fade" arrow key={type}>
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions,jsx-a11y/click-events-have-key-events */}
                 <div
-                  className={device.id === this.state.device ? 'svg-active' : ''}
+                  className={type === this.state.device ? 'svg-active' : ''}
                   // eslint-disable-next-line xss/no-mixed-html
                   dangerouslySetInnerHTML={{ __html: device.svgIcon }}
-                  onClick={() => this.changeDevice(device.id)}
+                  onClick={() => this.changeDevice(type)}
                 />
               </Tooltip>
             ))}

@@ -1,8 +1,7 @@
-import { GeneralRequest } from '@voiceflow/general-types';
+import { GeneralRequest, TraceType } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import client from '@/client';
-import { TraceType } from '@/constants/prototype';
 import * as Skill from '@/ducks/skill';
 import { Trace } from '@/models';
 import { Thunk } from '@/store/types';

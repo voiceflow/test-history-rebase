@@ -53,8 +53,8 @@ const PrototypeDialog: React.FC<DialogProps> = ({
                 isFirstInSeries={isFirstInSeries}
                 key={message.id}
                 {...message}
-                audioSrc={message.src}
-                onPlay={() => onPlay(message.src)}
+                audioSrc={message.src ?? ''}
+                onPlay={() => onPlay(message.src ?? '')}
                 isCurrent={isCurrent}
                 audioInstance={audioInstance}
                 setForceAutoUpdate={setForceAutoUpdate}
@@ -68,7 +68,7 @@ const PrototypeDialog: React.FC<DialogProps> = ({
                 key={message.id}
                 userSpeak={userSpeak}
                 {...message}
-                onClick={() => onPlay(message.src)}
+                onClick={() => onPlay(message.src ?? '')}
                 isLast={isLast}
               />
             );

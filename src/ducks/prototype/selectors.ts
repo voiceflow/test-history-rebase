@@ -42,7 +42,7 @@ export const prototypeVisualSelector = createSelector([prototypeSelector], ({ vi
 
 export const prototypeVisualDeviceSelector = createSelector([prototypeVisualSelector], ({ device }) => device);
 
-export const prototypeVisualSourceIDSelector = createSelector([prototypeVisualSelector], ({ sourceID }) => sourceID);
+export const prototypeVisualDataSelector = createSelector([prototypeVisualSelector], ({ data }) => data);
 
 export const activePathBlockIDsSelector = createSelector([prototypeSelector], ({ activePathBlockIDs }) => activePathBlockIDs);
 

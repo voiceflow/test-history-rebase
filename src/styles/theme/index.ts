@@ -116,7 +116,10 @@ const THEME = {
       width: 400,
     },
     get usedPrototypeDisplayCanvasWidth() {
-      return this.displaySettings.width + this.subMenu.width + this.prototypeSidebar.width;
+      return this.displaySettings.width + this.usedGeneralPrototypeDisplayCanvasWidth;
+    },
+    get usedGeneralPrototypeDisplayCanvasWidth() {
+      return this.subMenu.width + this.prototypeSidebar.width;
     },
     get usedPrototypeDisplayCanvasHeight() {
       return this.header.height;

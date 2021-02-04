@@ -4,8 +4,8 @@ import _isObject from 'lodash/isObject';
 import React from 'react';
 
 import { matchVariables } from '@/components/TextEditor/plugins/variables/utils/fromTextConvertor';
-import { VariableTag } from '@/components/VariableTag';
 import VariablesInput from '@/components/VariablesInput';
+import { VariableTag } from '@/components/VariableTag';
 
 import FormContainer from './FormContainer';
 import OperatorButton from './OperatorButton';

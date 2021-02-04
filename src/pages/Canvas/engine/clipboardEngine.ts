@@ -27,8 +27,6 @@ type ClipboardContext = {
   slots: Models.Slot[];
   intents: Models.Intent[];
   products: Models.Product[];
-  // TODO: remove when DATA_REFACTOR feature flag is removed
-  displays: Models.Display[];
   diagrams: Models.Diagram[];
   platform: PlatformType;
 };
@@ -90,7 +88,6 @@ class ClipboardEngine extends EngineConsumer {
         nodes: copiedNodes,
         ports,
         links,
-        displays: [],
         products,
         diagrams,
         intents,

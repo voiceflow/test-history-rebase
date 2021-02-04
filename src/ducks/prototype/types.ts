@@ -1,4 +1,5 @@
 import { DeviceType, GeneralRequest } from '@voiceflow/general-types';
+import { StepData } from '@voiceflow/general-types/build/nodes/visual';
 
 import { PrototypeContext } from '@/models';
 
@@ -52,8 +53,8 @@ export interface PrototypeState {
    */
   mode: Record<string, PrototypeMode>;
   visual: {
+    data: StepData | null;
     device: DeviceType | null;
-    sourceID: string | null;
   };
   webhook: GeneralRequest;
 }

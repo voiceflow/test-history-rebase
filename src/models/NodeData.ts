@@ -4,9 +4,9 @@ import { Chip, ExpressionType, IntegrationUser } from '@voiceflow/general-types'
 import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
 import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/general-types/build/nodes/googleSheets';
 import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
-import { StepData as VisualStepData } from '@voiceflow/general-types/build/nodes/visual';
+import { APLStepData, StepData as VisualStepData } from '@voiceflow/general-types/build/nodes/visual';
 
-import { BlockType, CardType, DialogType, DisplayType, IntegrationType, PlatformType, RepromptType } from '@/constants';
+import { BlockType, CardType, DialogType, IntegrationType, PlatformType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 
 import { SpeakData } from './Speak';
@@ -253,18 +253,6 @@ export namespace NodeData {
 
   export type CancelPayment = {
     productID: string | null;
-  };
-
-  export type Display = {
-    displayType?: DisplayType;
-    displayID?: string | null | undefined;
-    dataSource?: string;
-    document?: string;
-    aplCommands?: string;
-    backgroundImage?: string | null;
-    splashHeader?: string;
-    jsonFileName?: string | null;
-    updateOnChange?: boolean;
   };
 
   export type IntegrationDefaultProps<T extends IntegrationType> = {

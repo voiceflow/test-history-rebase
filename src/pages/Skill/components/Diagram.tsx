@@ -4,8 +4,10 @@ import { useTheme } from 'styled-components';
 
 import Drawer from '@/components/Drawer';
 import { RemoveIntercom } from '@/components/IntercomChat';
+import { PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
+import * as Skill from '@/ducks/skill';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { useEventualEngine, useTeardown } from '@/hooks';
@@ -35,7 +37,7 @@ export type DiagramProps = RouteComponentProps & {
   diagramID: string;
 };
 
-const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, prototypeMode, canvasOnly, showCanvas, hideCanvas }) => {
+const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ platform, diagramID, prototypeMode, canvasOnly, showCanvas, hideCanvas }) => {
   const theme = useTheme() as Theme;
   const engine = useEventualEngine();
   const isMarkupMode = useMarkupMode();
@@ -78,7 +80,8 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, pr
 
   widthRef.current = getPrototypeSettingsWidth();
 
-  const isPrototypeSettingsOpened = isPrototypeDisplay || isPrototypeDeveloper;
+  const isGeneral = platform === PlatformType.GENERAL;
+  const isPrototypeSidebarOpened = isPrototypeDeveloper || (isPrototypeDisplay && !isGeneral);
 
   return (
     <>
@@ -123,7 +126,7 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, pr
             {isPrototypeDisplay && <PrototypeVisualCanvas />}
 
             <Drawer
-              open={isPrototypeSettingsOpened}
+              open={isPrototypeSidebarOpened}
               width={widthRef.current}
               offset={theme.components.subMenu.width}
               direction={SlideOutDirection.RIGHT}
@@ -141,6 +144,7 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, pr
 };
 
 const mapStateToProps = {
+  platform: Skill.activePlatformSelector,
   canvasOnly: UI.isCanvasOnlyShowingSelector,
   prototypeMode: Prototype.activePrototypeModeSelector,
 };

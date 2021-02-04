@@ -6,8 +6,6 @@ import { NonNullishRecord } from '@/types';
 
 const checkNodeType = <T>(type: BlockType) => (data: { type: BlockType }): data is NodeData<T> => data.type === type;
 
-export const isDisplayNode = checkNodeType<NodeData.Display>(BlockType.DISPLAY);
-
 export const isFlowNode = checkNodeType<NodeData.Flow>(BlockType.FLOW);
 
 export const isLinkedFlowNode = (

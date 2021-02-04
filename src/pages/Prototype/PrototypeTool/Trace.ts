@@ -1,13 +1,14 @@
-import { GeneralRequest, IntentName, RequestType } from '@voiceflow/general-types';
+import { GeneralRequest, IntentName, RequestType, TraceType } from '@voiceflow/general-types';
+import { TraceStreamAction } from '@voiceflow/general-types/build/nodes/stream';
 import cuid from 'cuid';
 import _ from 'lodash';
 
 import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
-import { SpeakTraceAudioType, StreamTraceAction, TraceType } from '@/constants/prototype';
+import { SpeakTraceAudioType } from '@/constants/prototype';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
-import { BlockTrace, ChoiceTrace, EndTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace } from '@/models';
+import { BlockTrace, ChoiceTrace, EndTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace, VisualTrace } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
 import { tail, unique } from '@/utils/array';
 
@@ -80,15 +81,15 @@ class TraceController {
 
   private streamState: StreamState = { src: null, offset: 0, token: null };
 
-  get isPublicPrototype() {
+  get isPublicPrototype(): boolean {
     return !!this.props.isPublic;
   }
 
-  public start() {
+  public start(): void {
     this.ended = false;
   }
 
-  public resetInteractions() {
+  public resetInteractions(): void {
     this.props.setInteractions([]);
   }
 
@@ -99,7 +100,7 @@ class TraceController {
     this.message = message;
   }
 
-  public next = async (request: GeneralRequest = null) => {
+  public next = async (request: GeneralRequest = null): Promise<void> => {
     const currentContextStep = this.props.contextStep;
     const contextHistory = this.props.contextHistory;
     const historyLength = contextHistory.length;
@@ -141,7 +142,7 @@ class TraceController {
     }
   };
 
-  public historyStep = async (direction: StepDirection) => {
+  public historyStep = async (direction: StepDirection): Promise<void> => {
     const offset = direction === StepDirection.BACK ? -1 : 1;
     const currentContextStep = this.props.contextStep;
     const newContextStepNumber = currentContextStep + offset;
@@ -184,19 +185,20 @@ class TraceController {
     } as Prototype.Context;
   };
 
-  public stop() {
+  public stop(): void {
     this.trace = [];
     this.stopped = true;
   }
 
-  public async emptyTrace() {
+  public async emptyTrace(): Promise<void> {
     await this.processTrace(this.trace, { onlyMessage: true });
   }
 
-  private async processTrace(trace: Trace[], { onlyMessage = false }: { onlyMessage?: boolean } = {}) {
+  private async processTrace(trace: Trace[], { onlyMessage = false }: { onlyMessage?: boolean } = {}): Promise<void> {
     if (this.stopped) {
       return;
     }
+
     const [topTrace, ...tailTrace] = trace;
 
     if (!topTrace) {
@@ -237,6 +239,10 @@ class TraceController {
         await this.processEndTrace(topTrace);
         break;
       }
+      case TraceType.VISUAL: {
+        await this.processVisual(topTrace);
+        break;
+      }
       case TraceType.DEBUG: {
         await this.message.debug(topTrace.id, { message: topTrace.payload.message });
         break;
@@ -272,8 +278,6 @@ class TraceController {
     const node = this.props.engine?.getNodeByID(trace.payload.blockID);
 
     if (node) {
-      await this.updateVisual(node);
-
       if (!this.isPublicPrototype) {
         await this.highlightBlock(node);
       }
@@ -286,11 +290,10 @@ class TraceController {
     await this.timeout.set(MIN_FOCUSED_NODE_TIME);
   }
 
-  private async updateVisual(node: Node) {
-    if (node.type === BlockType.DISPLAY) {
-      this.props.engine?.store.dispatch(Prototype.updatePrototypeVisualSource(node.id));
-      await this.timeout.set(WAIT_DISPLAY_TIME);
-    }
+  private async processVisual(trace: VisualTrace) {
+    this.props.engine?.store.dispatch(Prototype.updatePrototypeVisualData(trace.payload));
+
+    await this.timeout.set(WAIT_DISPLAY_TIME);
   }
 
   private async highlightBlock(node: Node) {
@@ -315,7 +318,7 @@ class TraceController {
   ) {
     this.message.stream(id, { audio: src });
 
-    const pausing = action === StreamTraceAction.PAUSE;
+    const pausing = action === TraceStreamAction.PAUSE;
 
     this.props.setInteractions([{ name: 'next' }, { name: 'previous' }, { name: pausing ? 'resume' : 'pause' }]);
 
@@ -339,7 +342,7 @@ class TraceController {
     try {
       await this.audio.play(src, {
         muted,
-        loop: action === StreamTraceAction.LOOP,
+        loop: action === TraceStreamAction.LOOP,
         offset: this.streamState.offset,
         onPause: (audio) => {
           this.streamState.offset = audio.currentTime;
@@ -353,19 +356,11 @@ class TraceController {
     await this.next({ type: RequestType.TEXT, payload: IntentName.NEXT });
   }
 
-  private async processSpeakTrace(
-    { id, payload: { src, type, voice, message, choices } }: SpeakTrace,
-    { onlyMessage }: { onlyMessage?: boolean } = {}
-  ) {
+  private async processSpeakTrace({ id, payload: { src, type, voice, message } }: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
     if (type === SpeakTraceAudioType.AUDIO) {
       this.message.audio(id, { name: message, src });
     } else {
       this.message.speak(id, { message, voice, src });
-    }
-
-    // For handling reprompts
-    if (choices) {
-      this.props.setInteractions(choices);
     }
 
     if (onlyMessage) {

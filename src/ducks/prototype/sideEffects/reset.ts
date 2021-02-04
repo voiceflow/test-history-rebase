@@ -51,7 +51,7 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
       activePathLinkIDs: [],
       activePathBlockIDs: [],
       autoplay: false,
-      visual: { ...visualState, sourceID: null },
+      visual: { ...visualState, data: null },
     })
   );
 };

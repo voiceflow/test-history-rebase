@@ -1,129 +1,108 @@
-import { DeviceType } from '@voiceflow/general-types';
+import { DEVICE_SIZE_MAP } from '@voiceflow/general-types';
+import { VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import cuid from 'cuid';
 import React from 'react';
 import { useTheme } from 'styled-components';
 
+import Box from '@/components/Box';
 import Canvas from '@/components/Canvas';
 import { ZOOM_FACTOR } from '@/components/Canvas/constants';
-import BaseRenderer, { BaseRendererAPI } from '@/components/DisplayRenderer/components/BaseRenderer';
-import * as Creator from '@/ducks/creator';
+import { PlatformType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useLinkedState } from '@/hooks';
-import { NodeData } from '@/models';
+import { useLinkedState } from '@/hooks';
 import { DEVICE_LIST } from '@/pages/Prototype/constants';
-import * as SideEffects from '@/store/sideEffects';
 import { Theme } from '@/styles/theme';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { ConnectedProps, Pair } from '@/types';
 
-import { Container, Frame, FrameTitle, PlaceHolder } from './components';
+import { APL, Image } from './components';
 
 const DEFAULT_FILL_RATIO = 0.8;
 const DEFAULT_FRAME_DIMENSION = 400;
 
-const PrototypeVisualCanvas: React.FC<ConnectedPrototypeVisualCanvasProps> = ({ device, platform, sourceData, controlScheme, resolveAPL }) => {
+const PrototypeVisualCanvas: React.FC<ConnectedPrototypeVisualCanvasProps> = ({ data, device, platform, controlScheme }) => {
   const theme = useTheme() as Theme;
-  const [aplContext, setAPLContext] = React.useState<{ apl: string; data: string; commands: string } | null>(null);
-  const rendererRef = React.useRef<BaseRendererAPI | null>(null);
-  const deviceInfo = React.useMemo(() => DEVICE_LIST[platform].find(({ type }) => type === device), [platform, device]);
 
-  React.useEffect(() => {
-    if (sourceData) {
-      resolveAPL(sourceData).then(setAPLContext);
-    } else {
-      setAPLContext(null);
+  const dimension = React.useMemo(() => {
+    if (data?.visualType === VisualType.IMAGE) {
+      return data.device
+        ? DEVICE_SIZE_MAP[data.device]
+        : {
+            width: data.dimensions?.width ?? DEFAULT_FRAME_DIMENSION,
+            height: data.dimensions?.height ?? DEFAULT_FRAME_DIMENSION,
+          };
     }
-  }, [sourceData]);
+
+    const deviceInfo = DEVICE_LIST[platform].find(({ type }) => type === device);
+
+    return {
+      width: deviceInfo?.dimension.width ?? DEFAULT_FRAME_DIMENSION,
+      height: deviceInfo?.dimension.height ?? DEFAULT_FRAME_DIMENSION,
+    };
+  }, [platform, device, data]);
 
   const { zoom: initialZoom, offset, dimensions } = React.useMemo(() => {
     const bodyWidth = document.body.clientWidth;
-    const canvasWidth = bodyWidth - theme.components.usedPrototypeDisplayCanvasWidth;
+    const isGeneral = platform === PlatformType.GENERAL;
+    const usedWidth = isGeneral ? theme.components.usedGeneralPrototypeDisplayCanvasWidth : theme.components.usedPrototypeDisplayCanvasWidth;
+    const canvasWidth = bodyWidth - usedWidth;
     const canvasHeight = document.body.clientHeight - theme.components.usedPrototypeDisplayCanvasHeight;
 
-    const frameWidth = deviceInfo?.dimension.width ?? DEFAULT_FRAME_DIMENSION;
-    const frameHeight = deviceInfo?.dimension.height ?? DEFAULT_FRAME_DIMENSION;
+    const frameWidth = dimension.width;
+    const frameHeight = dimension.height;
 
-    const scale = (canvasWidth * DEFAULT_FILL_RATIO) / frameWidth;
+    const scaleX = Math.min((canvasWidth * DEFAULT_FILL_RATIO) / frameWidth, 2);
+    const scaleY = Math.min((canvasHeight * DEFAULT_FILL_RATIO) / frameHeight, 2);
+    const scale = Math.min(scaleX, scaleY);
 
-    const offsetXOffset = theme.components.prototypeSidebar.width - (theme.components.subMenu.width + theme.components.displaySettings.width);
+    const settingsWidth = isGeneral ? 0 : theme.components.displaySettings.width;
+    const offsetXOffset = theme.components.prototypeSidebar.width - (theme.components.subMenu.width + settingsWidth);
     const offsetX = (Math.abs(bodyWidth - frameWidth * scale) - offsetXOffset) / 2;
     const offsetY = Math.abs(canvasHeight - frameHeight * scale) / 2;
 
     return {
       zoom: scale * ZOOM_FACTOR,
-      offset: [offsetX, offsetY],
-      dimensions: [frameWidth, frameHeight],
+      offset: [offsetX, offsetY] as Pair<number>,
+      dimensions: [frameWidth, frameHeight] as Pair<number>,
     };
-  }, [deviceInfo?.dimension]);
+  }, [dimension, data, platform]);
 
-  const renderKey = React.useMemo(() => Math.random(), [aplContext, deviceInfo?.dimension]);
+  const key = React.useMemo(() => cuid(), [data, device]);
 
-  const isRound = device === DeviceType.ECHO_SPOT;
+  const [zoom, setZoom] = useLinkedState(initialZoom, key);
 
-  useDidUpdateEffect(() => {
-    rendererRef.current?.renderPreview();
-  }, [renderKey]);
-
-  const [zoom, setZoom] = useLinkedState(initialZoom);
-
-  const showPreview = !!aplContext;
+  const visualRenderProps = {
+    zoom,
+    device,
+    platform,
+    dimensions,
+  };
 
   return (
-    <Container>
+    <Box height="100%">
       <Canvas
-        controlScheme={controlScheme}
+        key={key}
         viewport={{ zoom, x: offset[0], y: offset[1] }}
         onChange={(viewport) => setZoom(viewport.zoom)}
         scrollTimeout={100}
-        key={renderKey}
+        controlScheme={controlScheme}
       >
-        <div style={{ position: 'relative' }}>
-          {showPreview && (
-            <FrameTitle>
-              {deviceInfo?.name}
-              <span>{zoom.toFixed(0)}% zoom</span>
-            </FrameTitle>
-          )}
-          <Frame isRound={isRound}>
-            {showPreview ? (
-              <BaseRenderer
-                overrideDevice={{ width: dimensions[0], height: dimensions[1], density: deviceInfo!.dimension.density }}
-                isRound={isRound}
-                apl={aplContext!.apl}
-                data={aplContext!.data}
-                commands={aplContext!.commands}
-                scale={1}
-                onFail={console.error}
-                ref={rendererRef}
-                key={renderKey}
-              />
-            ) : (
-              <PlaceHolder width={dimensions[0]} height={dimensions[1]} />
-            )}
-          </Frame>
-        </div>
+        {data?.visualType === VisualType.IMAGE && <Image key={key} {...visualRenderProps} data={data} />}
+        {data?.visualType === VisualType.APL && <APL key={key} {...visualRenderProps} data={data} />}
       </Canvas>
-    </Container>
+    </Box>
   );
 };
 
 const mapStateToProps = {
+  data: Prototype.prototypeVisualDataSelector,
   device: Prototype.prototypeVisualDeviceSelector,
   platform: Skill.activePlatformSelector,
-  sourceID: Prototype.prototypeVisualSourceIDSelector,
-  sourceData: Creator.dataByNodeIDSelector,
   controlScheme: UI.canvasNavigationSelector,
 };
 
-const mapDispatchToProps = {
-  resolveAPL: SideEffects.resolveAPL,
-};
+type ConnectedPrototypeVisualCanvasProps = ConnectedProps<typeof mapStateToProps, {}>;
 
-const mergeProps = (...[{ sourceID, sourceData: getDataByNodeID }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
-  sourceData: sourceID ? (getDataByNodeID(sourceID) as NodeData<NodeData.Display>) : null,
-});
-
-type ConnectedPrototypeVisualCanvasProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(PrototypeVisualCanvas as any) as React.FC;
+export default connect(mapStateToProps, null)(PrototypeVisualCanvas as any) as React.FC;

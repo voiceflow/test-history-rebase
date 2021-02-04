@@ -18,7 +18,11 @@ const PrototypeDisplaySettings: React.FC<ConnectedPrototypeDisplaySettingsProps>
   React.useEffect(() => {
     // should default to option at the top of the list
     if (!device) {
-      updateDevice(deviceList[0].type);
+      const type = deviceList[0]?.type;
+
+      if (type) {
+        updateDevice(type);
+      }
     }
   }, []);
 

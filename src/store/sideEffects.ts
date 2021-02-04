@@ -1,5 +1,7 @@
 import { AlexaProjectData, AlexaProjectMemberData, AlexaVersionData } from '@voiceflow/alexa-types';
 import { Member } from '@voiceflow/api-sdk';
+import { replaceVariables } from '@voiceflow/common';
+import { APLStepData, APLType } from '@voiceflow/general-types/build/nodes/visual';
 import { GoogleProjectData, GoogleProjectMemberData, GoogleVersionData } from '@voiceflow/google-types';
 
 import client from '@/client';
@@ -8,7 +10,7 @@ import intentAdapter from '@/client/adapters/intent';
 import projectAdapter, { productAdapter } from '@/client/adapters/project';
 import slotAdapter from '@/client/adapters/slot';
 import versionAdapter from '@/client/adapters/version';
-import { DisplayType, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
@@ -24,9 +26,7 @@ import * as Slot from '@/ducks/slot';
 import * as Viewport from '@/ducks/viewport';
 import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
-import { NodeData } from '@/models';
 import { storeLogger } from '@/store/utils';
-import { regexVariables } from '@/utils/string';
 
 import { Thunk } from './types';
 
@@ -128,25 +128,27 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
 };
 
 export const resolveAPL = ({
+  title,
+  aplType,
+  imageURL,
   document,
+  datasource,
   aplCommands,
-  dataSource,
-  displayType,
-  splashHeader,
-  backgroundImage,
-}: NodeData<NodeData.Display>): Thunk<{ apl: string; data: string; commands: string }> => async (_, getState) => {
+}: APLStepData): Thunk<{ apl: string; data: string; commands: string }> => async (_, getState) => {
   const state = getState();
   const variables = Prototype.prototypeVariablesSelector(state);
   const commands = aplCommands || '';
 
-  let data = dataSource || '';
+  let data = datasource || '';
   let apl = document || '';
 
-  if (displayType === DisplayType.SPLASH) {
-    ({ document: apl, datasource: data } = await client.platform.alexa.handlers.getDisplayWithDatasource(splashHeader || '', backgroundImage || ''));
-  } else if (displayType === DisplayType.ADVANCED) {
-    data = variables && data ? regexVariables(data, variables) : data;
+  if (aplType === APLType.SPLASH) {
+    ({ document: apl, datasource: data } = await client.platform.alexa.handlers.getDisplayWithDatasource(title || '', imageURL || ''));
   }
 
-  return { commands, data, apl };
+  if (variables && data) {
+    data = replaceVariables(data, variables);
+  }
+
+  return { apl, data, commands };
 };

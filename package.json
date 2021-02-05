@@ -278,7 +278,7 @@
     "sinon": "^9.2.4",
     "sinon-chai": "^3.5.0",
     "style-loader": "1.2.1",
-    "stylelint": "^13.8.0",
+    "stylelint": "^13.9.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^20.0.0",

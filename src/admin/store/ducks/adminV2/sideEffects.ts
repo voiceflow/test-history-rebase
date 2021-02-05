@@ -7,10 +7,11 @@ import { Creator, Workspace } from '@/admin/models';
 import { getUserInfoType } from '@/admin/store/utils';
 import { toast } from '@/components/Toast';
 import { SyncThunk, Thunk } from '@/store/types';
+import { Nullable } from '@/types';
 
 import * as Actions from './actions';
 
-export const findCreator = (user: string): Thunk<Creator> => async (dispatch) => {
+export const findCreator = (user: string): Thunk<Nullable<Creator>> => async (dispatch) => {
   const { email, userID } = getUserInfoType(user);
 
   if (!(email || userID)) {
@@ -27,13 +28,13 @@ export const findCreator = (user: string): Thunk<Creator> => async (dispatch) =>
     }
 
     // Set our creator object as well as their boards in the reducer
-    dispatch(Actions.setCreator({ creator: response.data.creator, boards: _.values(response.data.boards) }));
+    dispatch(Actions.setCreator({ creator: response?.creator, boards: _.values(response?.boards) }));
   } catch (err) {
     toast.error('Error fetching creator');
     dispatch(Actions.findCreatorFailed({ error: { errorMessage: 'Could not find user, something went wrong', errorReturned: err } }));
   }
 
-  return response?.data.creator;
+  return response?.creator ?? null;
 };
 
 export const getCharges = (creatorInfo: string): Thunk => async (dispatch) => {
@@ -41,15 +42,20 @@ export const getCharges = (creatorInfo: string): Thunk => async (dispatch) => {
     return;
   }
 
-  const { creator_id: creatorID } = await dispatch(findCreator(creatorInfo));
+  const creator = await dispatch(findCreator(creatorInfo));
 
-  try {
-    const response = await Admin.getCharges(creatorID);
-    dispatch(Actions.setCharges({ charges: response.data.teams }));
-    toast.success('Charges found for user');
-  } catch (err) {
-    toast.error('Fetch charges failed');
-    console.error('Error when getting charges for user: ', err);
+  if (creator) {
+    try {
+      const response = await Admin.getCharges(creator.creator_id);
+
+      dispatch(Actions.setCharges({ charges: response.teams }));
+      toast.success('Charges found for user');
+    } catch (err) {
+      toast.error('Fetch charges failed');
+      console.error('Error when getting charges for user: ', err);
+    }
+  } else {
+    toast.error('Unable to find the user');
   }
 };
 
@@ -58,15 +64,19 @@ export const getVendors = (creatorInfo: string): Thunk => async (dispatch) => {
     return;
   }
 
-  const { creator_id: creatorID } = await dispatch(findCreator(creatorInfo));
+  const creator = await dispatch(findCreator(creatorInfo));
 
-  try {
-    const response = await Admin.getVendors(creatorID);
-    dispatch(Actions.setVendors({ vendors: response.data.vendors }));
-    toast.success('Vendors found for user');
-  } catch (err) {
-    toast.error('Fetch vendors failed');
-    console.error('Error when getting vendors for user: ', err);
+  if (creator) {
+    try {
+      const response = await Admin.getVendors(creator.creator_id);
+      dispatch(Actions.setVendors({ vendors: response.vendors }));
+      toast.success('Vendors found for user');
+    } catch (err) {
+      toast.error('Fetch vendors failed');
+      console.error('Error when getting vendors for user: ', err);
+    }
+  } else {
+    toast.error('Unable to find the user');
   }
 };
 
@@ -181,8 +191,8 @@ export const updateWorkspaceMemberRole = ({
 
 export const getBetaUsers = (): Thunk => async (dispatch) => {
   try {
-    const { data } = await Admin.getBetaUsers();
-    dispatch(Actions.setAllBetaUsers({ users: data.users }));
+    const users = await Admin.getBetaUsers();
+    dispatch(Actions.setAllBetaUsers({ users }));
   } catch (err) {
     toast.error('There was an error finding the beta user list');
   }
@@ -197,7 +207,7 @@ export const findBetaCreator = (email: string): Thunk => async (dispatch) => {
     const response = await Admin.getCreatorByEmail(email);
     dispatch(
       Actions.setBetaCreator({
-        betaCreator: response.data.creator,
+        betaCreator: response.creator,
       })
     );
   } catch (err) {

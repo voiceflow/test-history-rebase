@@ -8,3 +8,5 @@ export * from './Workspace';
 export * from './StripeCoupon';
 export * from './StripeProduct';
 export * from './ProductUpdates';
+export * from './Team';
+export * from './Charge';

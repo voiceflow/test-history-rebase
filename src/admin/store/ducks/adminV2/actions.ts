@@ -1,4 +1,4 @@
-import { Board, Creator, Error, Workspace } from '@/admin/models';
+import { Board, Creator, Error, Team, Workspace } from '@/admin/models';
 import { createAction } from '@/ducks/utils';
 import { Action, ActionPayload } from '@/store/types';
 
@@ -26,9 +26,9 @@ export type ClearBetaCreator = Action<AdminAction.CLEAR_BETA_CREATOR>;
 
 export type SetAllBetaUsers = Action<AdminAction.SET_ALL_BETA_USERS, { users: any[] }>;
 
-export type SetCharges = Action<AdminAction.SET_CHARGES, { charges: any }>;
+export type SetCharges = Action<AdminAction.SET_CHARGES, { charges: Team[] }>;
 
-export type SetVendors = Action<AdminAction.SET_VENDORS, { vendors: any }>;
+export type SetVendors = Action<AdminAction.SET_VENDORS, { vendors: any[] }>;
 
 export type UpdateWorkspace = Action<AdminAction.UPDATE_WORKSPACE, { workspaceID: number; data: Partial<Workspace> }>;
 

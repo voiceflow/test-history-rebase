@@ -24,8 +24,7 @@ const LoginForm = ({ login, location }) => {
       email,
       password,
     }).catch((err) => {
-      const errText = _.get(err, ['response', 'data', 'data']) || err;
-
+      const errText = _.get(err, ['body', 'data']) || err;
       setLoginError(errText);
     });
     return false;

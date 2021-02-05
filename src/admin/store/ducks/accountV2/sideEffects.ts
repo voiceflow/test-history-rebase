@@ -12,7 +12,7 @@ import * as Actions from './actions';
 
 export const checkSession = (): Thunk => async (dispatch) => {
   try {
-    const { data: user } = await Account.getSession();
+    const user = await Account.getSession();
 
     dispatch(Actions.updateAccount(user));
   } catch (err) {
@@ -24,7 +24,7 @@ export const checkSession = (): Thunk => async (dispatch) => {
 
 export const getUser = (): Thunk => async (dispatch) => {
   try {
-    const { data: user } = await Account.getUser();
+    const user = await Account.getUser();
 
     dispatch(Actions.updateAccount(user));
   } catch (err) {
@@ -48,7 +48,7 @@ export const logout = (): Thunk => async (dispatch) => {
 
 export const getVendors = (): Thunk => async (dispatch) => {
   try {
-    const { data: vendors } = await Account.getVendors();
+    const vendors = await Account.getVendors();
 
     if (Array.isArray(vendors)) {
       dispatch(Actions.UpdateVendors(vendors));
@@ -62,28 +62,23 @@ const createSession = (sessionType: SessionType) => (authRequest: unknown): Thun
   const state = getState();
 
   try {
-    const {
-      data: {
-        user: { id, ...restUser },
-        token,
-      },
-    } = await Account.createSession(sessionType, authRequest);
+    const { user, token } = await Account.createSession(sessionType, authRequest);
 
     Cookies.setAuthCookie(token);
     Cookies.removeLastSessionCookie();
 
-    dispatch(Actions.updateAccount({ ...restUser, creator_id: id }));
+    dispatch(Actions.updateAccount(user));
 
     const location = state.router.location;
     const search = queryString.parse(location.search);
 
     // Ensure the user has admin credentials
-    if (restUser.admin < 100) {
+    if ((user.admin ?? 0) < 100) {
       // eslint-disable-next-line prefer-promise-reject-errors
       return Promise.reject('User is not an admin');
     }
 
-    if (search.invite || !restUser.first_login) {
+    if (search.invite || !user?.first_login) {
       dispatch(
         push({
           pathname: '/admin',

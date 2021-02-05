@@ -16,4 +16,5 @@ export type Creator = {
   last_checked: string;
   referrer_id: number | null;
   okta_id: string | null;
+  first_login?: boolean;
 };

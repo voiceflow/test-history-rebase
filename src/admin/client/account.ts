@@ -1,5 +1,5 @@
-import axios from 'axios';
-
+import { SessionUser } from '@/admin/models';
+import { api } from '@/client/fetch';
 import { SessionType } from '@/constants';
 
 const SESSION_API = 'session';
@@ -14,12 +14,12 @@ const SESSION_ENDPOINTS = {
 };
 
 const accountClient = {
-  getSession: () => axios.get(`${SESSION_API}`),
-  getUser: () => axios.get(`${USER_API}`),
-  logout: () => axios.delete(`${SESSION_API}`),
-  getVendors: () => axios.get(`${SESSION_API}/vendor?all=true`),
-
-  createSession: (type: Partial<SessionType>, user: unknown) => axios.put(SESSION_ENDPOINTS[type], { user }),
+  getSession: (): Promise<SessionUser> => api.get(`${SESSION_API}`),
+  getUser: (): Promise<SessionUser> => api.get(`${USER_API}`),
+  logout: () => api.delete(`${SESSION_API}`),
+  getVendors: () => api.get(`${SESSION_API}/vendor?all=true`),
+  createSession: (type: Partial<SessionType>, user: unknown): Promise<{ user: SessionUser; token: string }> =>
+    api.put(SESSION_ENDPOINTS[type], { user }),
 };
 
 export default accountClient;

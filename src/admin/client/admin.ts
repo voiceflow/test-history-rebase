@@ -1,30 +1,28 @@
-import axios from 'axios';
-
-import { UpdateType } from '@/admin/models';
+import { Board, Creator, Team, UpdateType } from '@/admin/models';
+import { api } from '@/client/fetch';
 
 const ADMIN_API = 'admin-api';
 
 const adminClient = {
-  getCreatorByEmail: (email: string) => axios.get(`${ADMIN_API}/email/${email}`),
-  getCreatorByID: (userID: number) => axios.get(`${ADMIN_API}/${userID}`),
-  getCharges: (creatorID: number) => axios.get(`${ADMIN_API}/charges/${creatorID}`),
-  getVendors: (creatorID: number) => axios.get(`${ADMIN_API}/vendors/${creatorID}`),
-  setTrial: (workspaceID: number, date = 0) => axios.post(`${ADMIN_API}/trial/${workspaceID}/${date}`),
+  getCreatorByEmail: (email: string): Promise<{ creator: Creator; boards: Board[] }> => api.get(`${ADMIN_API}/email/${email}`),
+  getCreatorByID: (userID: number): Promise<{ creator: Creator; boards: Board[] }> => api.get(`${ADMIN_API}/${userID}`),
+  getCharges: (creatorID: number): Promise<{ teams: Team[] }> => api.get(`${ADMIN_API}/charges/${creatorID}`),
+  getVendors: (creatorID: number): Promise<{ vendors: any[] }> => api.get(`${ADMIN_API}/vendors/${creatorID}`),
+  setTrial: (workspaceID: number, date = 0) => api.post(`${ADMIN_API}/trial/${workspaceID}/${date}`),
   refund: ({ workspaceID, chargeID, chargeAmount }: { workspaceID: number; chargeID: string; chargeAmount: number }) =>
-    axios.post(`${ADMIN_API}/refund/${workspaceID}/${chargeID}/${chargeAmount}`),
-  cancelSubscription: (workspaceID: number, subscriptionID: string) => axios.post(`${ADMIN_API}/cancel/${workspaceID}/${subscriptionID}`),
-  updateWorkspace: (workspaceID: number, data: any) => axios.patch(`${ADMIN_API}/workspace/${workspaceID}`, data),
+    api.post(`${ADMIN_API}/refund/${workspaceID}/${chargeID}/${chargeAmount}`),
+  cancelSubscription: (workspaceID: number, subscriptionID: string) => api.post(`${ADMIN_API}/cancel/${workspaceID}/${subscriptionID}`),
+  updateWorkspace: (workspaceID: number, data: any) => api.patch(`${ADMIN_API}/workspace/${workspaceID}`, data),
   updateMemberRole: ({ workspaceID, creatorID, role }: { workspaceID: number; creatorID: number; role: string }) =>
-    axios.patch(`${ADMIN_API}/workspace/${workspaceID}/members/${creatorID}`, { role }),
-  getCoupons: () => axios.get(`${ADMIN_API}/stripe/coupons`),
+    api.patch(`${ADMIN_API}/workspace/${workspaceID}/members/${creatorID}`, { role }),
   /*
    * there is no endpoint to get beta users,
    * this call was added by Frank and Eric more than a year ago.
    * there is no reference to why this was added
    */
-  getBetaUsers: () => axios.get(`${ADMIN_API}`),
-  getUserTeams: (user: number) => axios.get(`/teams/${user}`),
-  setProductUpdate: (update: { type: UpdateType; details: unknown }) => axios.post('/product_updates', update),
+  getBetaUsers: (): Promise<Creator[]> => api.get(`${ADMIN_API}`),
+  getUserTeams: (user: number): Promise<Team[]> => api.get(`teams/${user}`),
+  setProductUpdate: (update: { type: UpdateType; details: unknown }) => api.post('product_updates', update),
 };
 
 export default adminClient;

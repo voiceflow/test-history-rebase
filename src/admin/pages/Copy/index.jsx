@@ -42,7 +42,7 @@ class Copy extends Component {
     Admin.getCreatorByID(this.state.creator)
       .then((res) => {
         this.setState({
-          creator_skills: Object.values(res.data.boards)
+          creator_skills: Object.values(res.boards)
             .map(({ projects }) =>
               projects.map((project) => ({
                 label: `${project.name} - ${project._id} ${project.version?.platformData?.status?.stage === 'LIVE' ? '(Live)' : ''}`,
@@ -65,10 +65,10 @@ class Copy extends Component {
     }
 
     try {
-      const { data } = await Admin.getUserTeams(target);
+      const teams = await Admin.getUserTeams(target);
 
       this.setState({
-        boards: data.map((t) => ({
+        boards: teams.map((t) => ({
           label: `${t.name} - ${t.team_id}`,
           value: t.team_id,
         })),

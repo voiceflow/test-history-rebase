@@ -11,7 +11,7 @@ export type IntentStepProps = {
 export const EventStep: React.FC<IntentStepProps> = ({ portID, label }) => (
   <Step>
     <Section>
-      <Item label={label} portID={portID} icon="next" iconColor="#5589eb" placeholder="Add Alexa Event" />
+      <Item label={label} portID={portID} icon="event" iconColor="#5589eb" placeholder="Add Alexa Event" />
     </Section>
   </Step>
 );

@@ -15,7 +15,7 @@ export const DirectiveStep: React.FC<DirectiveStepProps> = ({ portID }) => (
         portID={portID}
         label="Directive"
         labelVariant={StepLabelVariant.SECONDARY}
-        icon="back"
+        icon="directive"
         iconColor="#5589eb"
         placeholder="Send Alexa Directive"
       />

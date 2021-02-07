@@ -1,4 +1,5 @@
 import { Permission } from '@/config/permissions';
+import { DOCS_LINK } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { Icon } from '@/svgs/types';
 
@@ -13,7 +14,7 @@ export type StaticResource = {
 export const STATIC_RESOURCES: StaticResource[] = [
   {
     icon: 'support',
-    link: 'https://docs.voiceflow.com/',
+    link: DOCS_LINK,
     label: 'Docs',
     resourceName: Tracking.CanvasControlHelpMenuResource.DOCS,
   },

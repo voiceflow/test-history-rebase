@@ -7,7 +7,7 @@ import EventStep from './EventStep';
 
 const EventManager: NodeConfig<NodeData.Event> = {
   type: BlockType.EVENT,
-  icon: 'next',
+  icon: 'event',
   iconColor: '#5589eb',
 
   label: 'Event',

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
+import Box from '@/components/Box';
 import ChatWithUsLink from '@/components/ChatLink';
 import OverflowMenu from '@/components/OverflowMenu';
 import { BUILT_IN_VARIABLES } from '@/constants';
@@ -8,7 +9,7 @@ import { connect } from '@/hocs';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { allVariablesSelector } from '@/store/selectors';
 
-import { EditorContainer, HelpTooltip } from './components';
+import { HelpTooltip } from './components';
 
 function CodeEditor({ data, onChange, onExpand, expanded, variables }) {
   const editorRef = React.useRef();
@@ -60,7 +61,7 @@ function CodeEditor({ data, onChange, onExpand, expanded, variables }) {
       hideFooter={expanded}
       fillHeight
     >
-      <EditorContainer>
+      <Box width="100%" height="100%" position="relative">
         <AceEditor
           fullHeight={!expanded}
           placeholder="Enter Javascript code here"
@@ -79,7 +80,7 @@ function CodeEditor({ data, onChange, onExpand, expanded, variables }) {
             useWorker: false,
           }}
         />
-      </EditorContainer>
+      </Box>
     </Content>
   );
 }

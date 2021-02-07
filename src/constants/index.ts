@@ -571,3 +571,5 @@ export const DEVICE_LABEL_MAP: Record<DeviceType, string> = {
   [DeviceType.FIRE_TV_CUBE]: 'Fire TV Cube',
   [DeviceType.GOOGLE_NEST_HUB]: 'Google Nest Hub',
 };
+
+export const DOCS_LINK = 'https://docs.voiceflow.com';

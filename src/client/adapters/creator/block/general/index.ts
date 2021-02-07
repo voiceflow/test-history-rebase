@@ -3,6 +3,7 @@ import { BlockType } from '@/constants';
 import captureAdapter from './capture';
 import codeAdapter from './code';
 import commandAdapter from './command';
+import directiveAdapter from './directive';
 import exitAdapter from './exit';
 import flowAdapter from './flow';
 import ifAdapter from './if';
@@ -34,6 +35,7 @@ export const generalBlockAdapter = {
   [BlockType.CHOICE]: interactionAdapter,
   [BlockType.RANDOM]: randomAdapter,
   [BlockType.CAPTURE]: captureAdapter,
+  [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.INTEGRATION]: integrationAdapter,
 };
 

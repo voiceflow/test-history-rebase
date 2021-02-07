@@ -5,7 +5,6 @@ import cancelPaymentAdapter from './cancelPayment';
 import captureAdapter from './capture';
 import cardAdapter from './card';
 import commandAdapter from './command';
-import directiveAdapter from './directive';
 import displayAdapter from './display';
 import eventAdapter from './event';
 import intentAdapter from './intent';
@@ -35,7 +34,6 @@ export const alexaBlockAdapter = {
   [BlockType.PAYMENT]: paymentAdapter,
   [BlockType.REMINDER]: reminderAdapter,
   [BlockType.USER_INFO]: userInfoAdapter,
-  [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.PERMISSION]: permissionAdapter,
   [BlockType.CANCEL_PAYMENT]: cancelPaymentAdapter,
   [BlockType.ACCOUNT_LINKING]: accountLinkingAdapter,

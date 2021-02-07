@@ -27,7 +27,7 @@ const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expande
     return platformSections.map((platformSection) => ({
       ...platformSection,
       steps: platformSection.steps.filter((step) => {
-        if (!gadgets.isEnabled && [BlockType.EVENT, BlockType.DIRECTIVE].includes(step.type)) return false;
+        if (!gadgets.isEnabled && [BlockType.EVENT].includes(step.type)) return false;
         if (!visualStep.isEnabled && step.type === BlockType.VISUAL) return false;
         if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
         return true;

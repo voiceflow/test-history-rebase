@@ -34,7 +34,7 @@ const Spotlight = () => {
       PLATFORM_SECTIONS[platform]
         .flatMap((section) => section.steps)
         .filter((option) => {
-          if (!gadgets.isEnabled && [BlockType.DIRECTIVE, BlockType.EVENT].includes(option.type)) return false;
+          if (!gadgets.isEnabled && [BlockType.EVENT].includes(option.type)) return false;
           if (!visualStep.isEnabled && option.type === BlockType.VISUAL) return false;
           if (IS_PRIVATE_CLOUD && option.publicOnly) return false;
           return true;

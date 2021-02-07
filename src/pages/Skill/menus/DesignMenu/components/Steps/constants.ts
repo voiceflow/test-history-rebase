@@ -229,12 +229,12 @@ export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.INTEGRATION,
     label: 'Integration',
-    steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP, DIRECTIVE_STEP],
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP],
   },
   {
     type: BlockCategory.CHANNEL,
     label: 'Channel',
-    steps: [PURCHASE_STEP, CANCEL_PURCHASE_STEP, REMINDER_STEP, USER_INFO_STEP, PERMISSIONS_STEP, ACCOUNT_LINKING_STEP],
+    steps: [PURCHASE_STEP, CANCEL_PURCHASE_STEP, REMINDER_STEP, USER_INFO_STEP, PERMISSIONS_STEP, ACCOUNT_LINKING_STEP, DIRECTIVE_STEP],
   },
 ];
 
@@ -259,6 +259,11 @@ export const GOOGLE_SECTIONS = [
     type: BlockCategory.INTEGRATION,
     label: 'Integration',
     steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP],
+  },
+  {
+    type: BlockCategory.CHANNEL,
+    label: 'Channel',
+    steps: [DIRECTIVE_STEP],
   },
 ];
 

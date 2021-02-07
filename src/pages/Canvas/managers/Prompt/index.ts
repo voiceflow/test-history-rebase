@@ -19,7 +19,7 @@ const EDITORS_BY_PATH = {
 const PromptManager: NodeConfig<NodeData.Prompt> = {
   type: BlockType.PROMPT,
   icon: 'prompt',
-  iconColor: '#4D5CAD',
+  iconColor: '#5C6BC0',
 
   mergeTerminator: true,
 

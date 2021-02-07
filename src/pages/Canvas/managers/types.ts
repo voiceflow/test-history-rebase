@@ -21,6 +21,8 @@ export type NodeEditorPropsType<T> = {
   pushToPath?: ({ type, label }: { type: string; label: string }) => void;
   focusedNode?: NodeDescriptor;
   isOpen?: boolean;
+  expanded: boolean;
+  onExpand: () => void;
 };
 
 export type NodeEditor<T> = React.FC<NodeEditorPropsType<T>>;

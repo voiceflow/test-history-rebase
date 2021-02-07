@@ -56,6 +56,7 @@ export { default as docs } from './docs.svg';
 export { default as divide } from './divide.svg';
 export { default as developer } from './developer.svg';
 export { default as download } from './download.svg';
+export { default as directive } from './directive.svg';
 
 // e
 export { default as equals } from './equals.svg';
@@ -71,6 +72,7 @@ export { default as echoShow } from './echo-show.svg';
 export { default as echoSpot } from './echo-spot.svg';
 export { default as export } from './export.svg';
 export { default as eye } from './eye.svg';
+export { default as event } from './event.svg';
 
 // f
 export { default as frame } from './frame.svg';

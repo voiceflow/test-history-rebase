@@ -8,7 +8,7 @@ import DirectiveStep from './DirectiveStep';
 const DirectiveManager: NodeConfig<NodeData.Directive> = {
   type: BlockType.DIRECTIVE,
   editor: DirectiveEditor,
-  icon: 'back',
+  icon: 'directive',
   iconColor: '#5589eb',
 
   step: DirectiveStep,

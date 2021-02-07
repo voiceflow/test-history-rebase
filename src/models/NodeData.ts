@@ -4,7 +4,7 @@ import { Chip, ExpressionType, IntegrationUser } from '@voiceflow/general-types'
 import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
 import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/general-types/build/nodes/googleSheets';
 import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
-import { APLStepData, StepData as VisualStepData } from '@voiceflow/general-types/build/nodes/visual';
+import { StepData as VisualStepData } from '@voiceflow/general-types/build/nodes/visual';
 
 import { BlockType, CardType, DialogType, IntegrationType, PlatformType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';

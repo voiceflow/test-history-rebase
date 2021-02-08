@@ -49,15 +49,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
     stripeCompleted: false,
   });
 
-  const prePopulateCoupon = async () => {
-    const stripePromotion = await client.user.getReferralCouponCode(referrerID);
-
-    if (stripePromotion) {
-      actions.toggleUsingCoupon();
-      actions.setCoupon(referralCode);
-    }
-  };
-
+  // methods
   const updatePrice = useDebouncedCallback(
     PRICE_UPDATE_DEBOUNCE_TIMEOUT,
     async ({ plan, seats, period, coupon }) => {
@@ -145,6 +137,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
     return paidPlans.filter(({ legacy, hidden }) => !(legacy || hidden));
   };
 
+  // side effects
   useAsyncMountUnmount(async () => {
     startloadingPlan();
     const plans = await getPlans();
@@ -155,10 +148,16 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
       const { plan, period, seats, source } = await client.workspace.getPlan(workspaceID);
 
       let numberOfSeats = seats;
+      let stripePromotion = '';
       if (numberOfSeats === UNLIMITED_EDITORS_CONST) {
         const editorCount = workspace.members.filter(({ role, creator_id }) => !!creator_id && (role === UserRole.EDITOR || role === UserRole.ADMIN))
           .length;
         numberOfSeats = editorCount;
+      }
+
+      // fetch promo code associated with referral code
+      if (referrerID && referralCode) {
+        stripePromotion = await client.user.getReferralCouponCode(referrerID, referralCode);
       }
 
       actions.update({
@@ -168,6 +167,8 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
         seats: numberOfSeats || 1,
         source: source || null,
         usingExistingSource: !!source,
+        usingCoupon: !!stripePromotion,
+        coupon: stripePromotion ? referralCode : '',
       });
     } catch (err) {
       console.error(err);
@@ -204,13 +205,6 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
       actions.setPrice(null);
     }
   }, [state.seats, state.coupon, state.usingCoupon]);
-
-  // pre-populate referral code
-  useSetup(() => {
-    if (referrerID && referralCode) {
-      prePopulateCoupon();
-    }
-  }, [referrerID, referralCode]);
 
   const showDetails = React.useCallback(() => actions.setView(VIEWS.details), []);
   const showCheckout = React.useCallback(() => actions.setView(VIEWS.checkout), []);

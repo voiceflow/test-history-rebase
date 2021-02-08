@@ -30,4 +30,19 @@ suite('Client - User', ({ expect, stubFetch }) => {
       expect(fetch).to.be.calledWithExactly(`${USER_PATH}/profilePictureURL`, { url });
     });
   });
+
+  describe('getReferralCouponCode', () => {
+    it('should fetch stripe promo code', async () => {
+      const referrerID = 1;
+      const referralCode = 'code';
+      const stripePromotion = 'promo';
+
+      const fetch = stubFetch('api', 'get').resolves(stripePromotion);
+
+      const result = await client.getReferralCouponCode(referrerID, referralCode);
+
+      expect(result).to.eq(stripePromotion);
+      expect(fetch).to.be.calledWithExactly(`${USER_PATH}/referral/${referrerID}/${referralCode}`);
+    });
+  });
 });

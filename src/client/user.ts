@@ -9,7 +9,7 @@ const userClient = {
 
   updateProfilePicture: (url: string) => api.post(`${USER_PATH}/profilePictureURL`, { url }),
 
-  getReferralCouponCode: (referrerID: number) => api.get<string | null>(`${USER_PATH}/referral/${referrerID}`),
+  getReferralCouponCode: (referrerID: number, referralCode: string) => api.get<string | null>(`${USER_PATH}/referral/${referrerID}/${referralCode}`),
 };
 
 export default userClient;

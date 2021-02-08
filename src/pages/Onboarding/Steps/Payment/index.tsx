@@ -120,7 +120,7 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({
   );
 
   const prePopulateCoupon = async () => {
-    const stripePromotion = await client.user.getReferralCouponCode(referrerID!);
+    const stripePromotion = await client.user.getReferralCouponCode(referrerID!, referralCode!);
 
     if (stripePromotion) {
       toggleCoupon();

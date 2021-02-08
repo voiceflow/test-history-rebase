@@ -3,10 +3,11 @@ import { withProps } from 'recompose';
 
 import Badge from '@/components/Badge';
 import ChatWithUsLink from '@/components/ChatLink';
+import ErrorMessage from '@/components/ErrorPages/ErrorMessage';
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
 import ListManager from '@/components/ListManager';
-import SSMLWithSlots from '@/components/SSMLWithSlots';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
+import SSMLWithSlots from '@/components/SSMLWithSlots';
 import Utterance from '@/components/Utterance';
 import { SlotTag } from '@/components/VariableTag';
 import { PlatformType } from '@/constants';
@@ -17,6 +18,7 @@ import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
+import { slotToString } from '@/utils/slot';
 
 import { ResponseUtterancesTooltip, SlotConfirmationTooltip, SlotPromptTooltip, SlotRequiredMessage } from './components';
 
@@ -34,10 +36,18 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
   } = intentSlot;
   const [isResponseUtteranceEmpty, updateIsResponseUtteranceEmpty] = React.useState(true);
 
+  const strSlot = slotToString(slot);
+
   const variablesSlots = React.useMemo(() => {
     const slotsNameMap = intent.slots.allKeys.reduce((acc, key) => Object.assign(acc, { [key]: slotsMap[key] }), {});
     return Object.values(slotsNameMap);
   }, [intent.slots.allKeys, slotsMap]);
+
+  const utterancesWithDefault = React.useMemo(() => {
+    const utterancesWithoutDefault = utterances.filter(({ text }) => text?.trim() !== strSlot);
+
+    return [...utterancesWithoutDefault, { text: strSlot, slots: [slot.id] }];
+  }, [utterances]);
 
   const onChangePrompt = React.useCallback((prompt) => updateIntentSlotDialog(intent.id, slot.id, { prompt: [{ voice: promptVoice, ...prompt }] }), [
     slot.id,
@@ -67,7 +77,22 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
     updateIntentSlotDialog,
   ]);
 
-  const addValidation = React.useCallback(({ text }) => ({ valid: !!text }), []);
+  const addValidation = React.useCallback(
+    ({ text }) => {
+      const trimmedText = text?.trim();
+
+      if (!trimmedText) {
+        return { valid: false };
+      }
+
+      if (utterancesWithDefault.some((utterance) => utterance.text?.trim() === trimmedText)) {
+        return { valid: false, error: 'The utterance is already defined.' };
+      }
+
+      return { valid: true };
+    },
+    [utterancesWithDefault]
+  );
 
   const Wrapper = standalone ? React.Fragment : Content;
 
@@ -112,7 +137,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
               <EditorSection
                 namespace="responseUtterances"
                 header="Response Utterances"
-                count={utterances.length}
+                count={utterancesWithDefault.length}
                 tooltip={<ResponseUtterancesTooltip />}
                 headerToggle
                 tooltipProps={{
@@ -129,36 +154,48 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
                 <FormControl>
                   <ListManagerWrapper>
                     <ListManager
-                      items={utterances}
+                      items={utterancesWithDefault}
                       addToStart
                       beforeAdd={() => utteranceRef.current.forceUpdate()}
-                      renderForm={({ value, onAdd, onChange }) => (
-                        <Utterance
-                          ref={utteranceRef}
-                          icon="user"
-                          space
-                          slots={variablesSlots}
-                          value={value?.text || ''}
-                          onBlur={onChange}
-                          onEmpty={updateIsResponseUtteranceEmpty}
-                          creatable={false}
-                          iconProps={{ variant: 'blue' }}
-                          rightAction={
-                            !isResponseUtteranceEmpty && (
-                              <Badge slide onClick={() => onAdd(utteranceRef.current.getCurrentValue())}>
-                                Enter
-                              </Badge>
-                            )
-                          }
-                          placeholder="What might the user say to the above question?"
-                          onEnterPress={onAdd}
-                          addValidation={addValidation}
-                        />
+                      renderForm={({ value, onAdd, onChange, addError }) => (
+                        <>
+                          <Utterance
+                            ref={utteranceRef}
+                            icon="user"
+                            space
+                            slots={variablesSlots}
+                            value={value?.text || ''}
+                            onBlur={onChange}
+                            onEmpty={updateIsResponseUtteranceEmpty}
+                            creatable={false}
+                            iconProps={{ variant: 'blue' }}
+                            rightAction={
+                              !isResponseUtteranceEmpty && (
+                                <Badge slide onClick={() => onAdd(utteranceRef.current.getCurrentValue())}>
+                                  Enter
+                                </Badge>
+                              )
+                            }
+                            placeholder="What might the user say to the above question?"
+                            onEnterPress={onAdd}
+                          />
+                          {!!addError && <ErrorMessage>{addError}</ErrorMessage>}
+                        </>
                       )}
                       onUpdate={onUpdateUtterances}
-                      renderItem={(item, { onUpdate }) => (
-                        <Utterance space slots={variablesSlots} value={item.text} onBlur={onUpdate} onEnterPress={onUpdate} creatable={false} />
+                      renderItem={(item, { index, onUpdate }) => (
+                        <Utterance
+                          space
+                          slots={variablesSlots}
+                          value={item.text}
+                          onBlur={onUpdate}
+                          onEnterPress={onUpdate}
+                          creatable={false}
+                          disabled={index === utterancesWithDefault.length - 1}
+                        />
                       )}
+                      addValidation={addValidation}
+                      requiredItemIndex={utterancesWithDefault.length - 1}
                     />
                   </ListManagerWrapper>
                 </FormControl>

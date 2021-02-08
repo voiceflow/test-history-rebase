@@ -41,6 +41,7 @@ export const transformVariablesFromReadableWithoutTrim = (text = '') => text.rep
 export const transformVariablesFromReadable = (text: string) => transformVariablesFromReadableWithoutTrim(text).trim();
 
 export const isVariable = (text?: string | null) => !!(text && text.match(READABLE_VARIABLE_REGEXP));
+export const slotToString = <T extends { id: string; name: string }>(slot: T): string => `{{[${slot.name}].${slot.id}}}`;
 
 export const validateSlotName = ({
   slots,

@@ -1,8 +1,9 @@
+import _isNumber from 'lodash/isNumber';
 import React from 'react';
 
 import { useManager } from '@/hooks';
 
-import { ItemWrapper, RemoveIcon } from './components/styled';
+import { ItemWrapper, RemoveIcon } from './components';
 
 type RenderForm<I> = {
   value?: I | null;
@@ -11,35 +12,43 @@ type RenderForm<I> = {
   addError?: string;
 };
 
+type ItemOptions<I> = {
+  key: string;
+  index: number;
+  onUpdate: (value: I) => void;
+};
+
 type ListManagerProps<I> = React.PropsWithChildren<{
   items: I[];
+  divider?: boolean;
   onUpdate: (items: I[]) => void;
   beforeAdd?: (value: I) => void;
   renderForm: React.FC<RenderForm<I>>;
-  renderItem?: (item: I, options: { onUpdate: (value: I) => void }) => React.ReactElement;
+  renderItem?: (item: I, options: ItemOptions<I>) => React.ReactElement;
   renderList?: React.FC<any>;
   addToStart?: boolean;
   addValidation?: (value: I) => { valid: boolean; error?: string };
-  divider?: boolean;
+  requiredItemIndex?: number;
 }>;
 
 function ListManager<I>({
   items = [],
+  divider = true,
+  onUpdate,
+  beforeAdd,
   renderForm,
   renderItem,
   renderList,
-  onUpdate,
-  divider = true,
   addToStart,
   addValidation,
-  beforeAdd,
+  requiredItemIndex,
 }: ListManagerProps<I>): React.ReactElement {
   const [addError, setAddError] = React.useState<string>();
   const [formValue, onChangeFormValue] = React.useState<I | null>();
   const { items: managedItems, onAdd, onAddToStart, onRemove, onReorder, toggleOpen, mapManaged, latestCreatedKey } = useManager(items, onUpdate);
 
   const onAddItem = (value: I) => {
-    const { valid, error } = addValidation ? addValidation(value) : { valid: true, error: undefined };
+    const { valid, error } = addValidation ? addValidation(value) : { valid: true, error: null };
 
     if (valid) {
       onChangeFormValue(null);
@@ -51,10 +60,10 @@ function ListManager<I>({
     }
   };
 
-  const itemRenderer = (item: I, options: any) => (
+  const itemRenderer = (item: I, options: ItemOptions<I>) => (
     <ItemWrapper key={options.key}>
       {renderItem!(item, options)}
-      <RemoveIcon onClick={() => onRemove(options.key)} />
+      <RemoveIcon isHidden={_isNumber(requiredItemIndex) && options.index === requiredItemIndex} onClick={() => onRemove(options.key)} />
     </ItemWrapper>
   );
 

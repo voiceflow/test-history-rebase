@@ -38,7 +38,7 @@
     "core-js": "^3.8.3",
     "cross-fetch": "^3.0.6",
     "crypto-js": "^4.0.0",
-    "csstype": "^3.0.4",
+    "csstype": "^3.0.6",
     "cuid": "^2.1.8",
     "draft-js": "^0.11.2",
     "draft-js-plugins-editor": "3.0.0",

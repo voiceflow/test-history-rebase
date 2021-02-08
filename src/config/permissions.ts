@@ -15,6 +15,9 @@ export enum Permission {
   CLONE_PROJECT = 'project.CLONE',
   SHARE_PROJECT = 'project.SHARE',
 
+  // export
+  CODE_EXPORT = 'export.CODE',
+
   // prototype
   SHARE_PROTOTYPE = 'prototype.SHARE',
 
@@ -92,6 +95,7 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
     PlanType.OLD_TEAM,
     PlanType.CREATOR,
   ],
+  [Permission.CODE_EXPORT]: [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
 };
 
 export const hasRolePermission = (permission: Permission, role: UserRole) =>

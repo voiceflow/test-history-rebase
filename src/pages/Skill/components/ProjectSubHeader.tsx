@@ -2,13 +2,13 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import Tabs from '@/components/Tabs';
-import { FeatureFlag } from '@/config/features';
+import { Permission } from '@/config/permissions';
 import { PlatformType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useHotKeys } from '@/hooks';
+import { useHotKeys, usePermission } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useMarkupMode } from '@/pages/Skill/hooks';
 import { ConnectedProps } from '@/types';
@@ -44,15 +44,13 @@ const ProjectSubHeader: React.FC<ProjectSubHeaderProps & ConnectedSkillSubHeader
   goToPublish,
   isViewerOrLibraryRole,
 }) => {
-  const codeExport = useFeature(FeatureFlag.CODE_EXPORT);
+  const [codeExport] = usePermission(Permission.CODE_EXPORT);
 
   const headerOptions = TABS.filter((tab) => {
     return tab.value !== 'prototype';
   });
   const options =
-    showPublish && !(platform === PlatformType.GENERAL && !codeExport.isEnabled)
-      ? headerOptions
-      : headerOptions.filter((tab) => tab.value !== 'publish');
+    showPublish && !(platform === PlatformType.GENERAL && !codeExport) ? headerOptions : headerOptions.filter((tab) => tab.value !== 'publish');
 
   const isMarkupMode = useMarkupMode();
 

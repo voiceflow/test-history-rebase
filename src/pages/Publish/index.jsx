@@ -3,23 +3,23 @@ import './Skill.css';
 import React from 'react';
 import { NavLink, Redirect, Switch } from 'react-router-dom';
 
-import PrivateRoute from '@/Routes/PrivateRoute';
 import Flex from '@/components/Flex';
-import { FeatureFlag } from '@/config/features';
+import { Permission } from '@/config/permissions';
 import { PublishRoute } from '@/config/routes';
 import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
+import { usePermission } from '@/hooks';
+import PrivateRoute from '@/Routes/PrivateRoute';
 
 import PublishAmazon from './Amazon';
-import Export from './Export';
-import PublishGoogle from './Google';
 import Container from './components/PublishContainer';
 import PlatformContainer from './components/PublishPlatformContainer';
 import Sidebar from './components/PublishSidebar';
 import SidebarItem from './components/PublishSidebarItem';
+import Export from './Export';
+import PublishGoogle from './Google';
 
 const updateLink = (link, versionID) => {
   return link.replace(':versionID', versionID);
@@ -60,10 +60,11 @@ function Publish(props) {
     ...ownProps
   } = props;
 
-  const codeExport = useFeature(FeatureFlag.CODE_EXPORT);
+  const [codeExport] = usePermission(Permission.CODE_EXPORT);
+
   let tabOptions = [...TABS[platform]];
 
-  if (codeExport.isEnabled) {
+  if (codeExport) {
     tabOptions = [...tabOptions, CODE_EXPORT_TAB];
   }
 

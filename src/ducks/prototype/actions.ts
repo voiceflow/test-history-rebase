@@ -19,6 +19,8 @@ export enum PrototypeAction {
   UPDATE_TEST_CONTEXT_STORE = 'TEST:CONTEXT:STORE:UPDATE',
   UPDATE_TEST_TIME = 'TEST:TIME:UPDATE',
   UPDATE_TEST_VISUAL_DATA = 'TEST:VISUAL_DATA:UPDATE',
+  ADD_TEST_VISUAL_DATA_HISTORY = 'TEST:VISUAL_DATA_HISTORY:ADD',
+  UPDATE_TEST_VISUAL_DATA_HISTORY = 'TEST:VISUAL_DATA_HISTORY:UPDATE',
   UPDATE_TEST_VISUAL_DEVICE = 'TEST:VISUAL_DEVICE:UPDATE',
   UPDATE_WEBHOOK = 'TEST:WEBHOOK:UPDATE',
 }
@@ -34,7 +36,11 @@ export type PushContextHistory = Action<PrototypeAction.ADD_TEST_CONTEXT_HISTORY
 
 export type UpdatePrototypeVisualDevice = Action<PrototypeAction.UPDATE_TEST_VISUAL_DEVICE, DeviceType>;
 
-export type UpdatePrototypeVisualData = Action<PrototypeAction.UPDATE_TEST_VISUAL_DATA, StepData>;
+export type UpdatePrototypeVisualData = Action<PrototypeAction.UPDATE_TEST_VISUAL_DATA, null | StepData>;
+
+export type PushPrototypeVisualDataHistory = Action<PrototypeAction.ADD_TEST_VISUAL_DATA_HISTORY, null | StepData>;
+
+export type UpdatePrototypeVisualDataHistory = Action<PrototypeAction.UPDATE_TEST_VISUAL_DATA_HISTORY, (null | StepData)[]>;
 
 export type UpdatePrototypeContext = Action<PrototypeAction.UPDATE_TEST_CONTEXT, Partial<Context>>;
 
@@ -49,6 +55,8 @@ export type AnyPrototypeAction =
   | UpdatePrototypeMode
   | UpdatePrototypeVisualDevice
   | UpdatePrototypeVisualData
+  | PushPrototypeVisualDataHistory
+  | UpdatePrototypeVisualDataHistory
   | UpdatePrototypeContext
   | UpdatePrototypeContextStore
   | UpdatePrototypeWebhookData;
@@ -66,7 +74,14 @@ export const pushContextHistory = (payload: Context): PushContextHistory => crea
 export const updatePrototypeVisualDevice = (payload: DeviceType): UpdatePrototypeVisualDevice =>
   createAction(PrototypeAction.UPDATE_TEST_VISUAL_DEVICE, payload);
 
-export const updatePrototypeVisualData = (data: StepData): UpdatePrototypeVisualData => createAction(PrototypeAction.UPDATE_TEST_VISUAL_DATA, data);
+export const updatePrototypeVisualData = (data: null | StepData): UpdatePrototypeVisualData =>
+  createAction(PrototypeAction.UPDATE_TEST_VISUAL_DATA, data);
+
+export const pushPrototypeVisualDataHistory = (data: null | StepData): PushPrototypeVisualDataHistory =>
+  createAction(PrototypeAction.ADD_TEST_VISUAL_DATA_HISTORY, data);
+
+export const updatePrototypeVisualDataHistory = (data: (null | StepData)[]): UpdatePrototypeVisualDataHistory =>
+  createAction(PrototypeAction.UPDATE_TEST_VISUAL_DATA_HISTORY, data);
 
 export const updatePrototypeContext = (payload: Partial<Context>): UpdatePrototypeContext =>
   createAction(PrototypeAction.UPDATE_TEST_CONTEXT, payload);

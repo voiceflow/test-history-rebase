@@ -24,15 +24,22 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
   const [dimensions, setDimensions] = React.useState<null | { width: string; height: string }>(() =>
     data.dimensions ? { width: String(data.dimensions.width), height: String(data.dimensions.height) } : null
   );
+  const cache = React.useRef({ preDimensions: data.dimensions, prevDevice: data.device });
   const frameType = data.dimensions ? FrameType.CUSTOM_SIZE : FrameType.DEVICE;
 
   const onChangeFrameType = (newFrameType: FrameType) => {
     if (newFrameType === FrameType.CUSTOM_SIZE) {
-      setDimensions({ width: `${DEFAULT_DIMENSIONS.width}`, height: `${DEFAULT_DIMENSIONS.height}` });
-      onChange({ device: null, dimensions: DEFAULT_DIMENSIONS });
+      cache.current.prevDevice = data.device;
+
+      const newDimensions = cache.current.preDimensions ?? DEFAULT_DIMENSIONS;
+
+      setDimensions({ width: `${newDimensions.width}`, height: `${newDimensions.height}` });
+      onChange({ device: null, dimensions: newDimensions });
     } else {
+      cache.current.preDimensions = data.dimensions;
+
       setDimensions(null);
-      onChange({ device: null, dimensions: null });
+      onChange({ device: cache.current.prevDevice, dimensions: null });
     }
   };
 

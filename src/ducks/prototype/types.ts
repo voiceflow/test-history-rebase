@@ -5,10 +5,10 @@ import { PrototypeContext } from '@/models';
 
 // context types
 export interface Context extends PrototypeContext {
-  previousContextDiagramID?: string;
-  targetContextDiagramID?: string;
-  activePathBlockIDs?: string[];
   activePathLinkIDs?: string[];
+  activePathBlockIDs?: string[];
+  targetContextDiagramID?: string;
+  previousContextDiagramID?: string;
 }
 
 // redux
@@ -55,6 +55,7 @@ export interface PrototypeState {
   visual: {
     data: StepData | null;
     device: DeviceType | null;
+    dataHistory: (StepData | null)[];
   };
   webhook: GeneralRequest;
 }

@@ -4,7 +4,7 @@ import { activeDiagramIDSelector, activeProjectIDSelector } from '@/ducks/skill'
 import { Node } from '@/models';
 import { SyncThunk, ThunkDispatch } from '@/store/types';
 
-import { pushContextHistory, updatePrototype } from '../actions';
+import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype } from '../actions';
 import { prototypeVariablesSelector } from '../selectors';
 import { Context, PrototypeStatus } from '../types';
 
@@ -80,6 +80,7 @@ const startPrototype = (diagramID?: string | null, nodeID?: string | null): Sync
 
   dispatch(updatePrototype({ activePathBlockIDs: [prototypeStartNodeID!] }));
   dispatch(pushContextHistory(context));
+  dispatch(pushPrototypeVisualDataHistory(null));
   dispatch(updatePrototype({ status: PrototypeStatus.ACTIVE, autoplay: false, context, startTime: Date.now(), flowIDHistory: [activeDiagramID] }));
 };
 

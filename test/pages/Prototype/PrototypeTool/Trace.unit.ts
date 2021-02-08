@@ -41,8 +41,8 @@ const suite = createSuite(({ spy, stub, expect }) => ({
       nodes: [{ 1: { type: BlockType.START } }],
       select: stub(),
       selection: { replace: stub(), getTargets: stub(), reset: stub() },
-      getPrototypeMuted: stub(),
       getNodeByID: stub().returns({ id: STEP_ID, parentNode: BLOCK_ID, combinedNodes: ['1'] }),
+      getPrototypeMuted: stub(),
     } as any) as Engine;
 
     const audio = new AudioController();
@@ -74,6 +74,9 @@ const suite = createSuite(({ spy, stub, expect }) => ({
         contextStep: 1,
         activeDiagramID: '',
         contextHistory: [{}],
+        visualDataHistory: [null],
+        updatePrototypeVisualsData: stub(),
+        updatePrototypeVisualsDataHistory: stub(),
       },
       audio,
       timeout,

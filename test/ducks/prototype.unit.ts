@@ -24,6 +24,7 @@ const MOCK_STATE = {
   startTime: 1,
   contextStep: 2,
   contextHistory: [],
+  visualDataHistory: [],
   context: {} as any,
   webhook: {} as any,
   _persist: { version: 1, rehydrated: false },

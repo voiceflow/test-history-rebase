@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components';
 import Box from '@/components/Box';
 import Canvas from '@/components/Canvas';
 import { ZOOM_FACTOR } from '@/components/Canvas/constants';
+import SvgIcon from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
@@ -17,12 +18,22 @@ import { DEVICE_LIST } from '@/pages/Prototype/constants';
 import { Theme } from '@/styles/theme';
 import { ConnectedProps, Pair } from '@/types';
 
-import { APL, Image } from './components';
+import { APL, Image, PlaceholderIconContainer } from './components';
 
 const DEFAULT_FILL_RATIO = 0.8;
 const DEFAULT_FRAME_DIMENSION = 400;
 
-const PrototypeVisualCanvas: React.FC<ConnectedPrototypeVisualCanvasProps> = ({ data, device, platform, controlScheme }) => {
+type PrototypeVisualCanvasProps = {
+  isShown: boolean;
+};
+
+const PrototypeVisualCanvas: React.FC<PrototypeVisualCanvasProps & ConnectedPrototypeVisualCanvasProps> = ({
+  data,
+  device,
+  isShown,
+  platform,
+  controlScheme,
+}) => {
   const theme = useTheme() as Theme;
 
   const dimension = React.useMemo(() => {
@@ -43,7 +54,7 @@ const PrototypeVisualCanvas: React.FC<ConnectedPrototypeVisualCanvasProps> = ({ 
     };
   }, [platform, device, data]);
 
-  const { zoom: initialZoom, offset, dimensions } = React.useMemo(() => {
+  const { zoom: initialZoom, offset: initialOffset, dimensions, canvasWidth } = React.useMemo(() => {
     const bodyWidth = document.body.clientWidth;
     const isGeneral = platform === PlatformType.GENERAL;
     const usedWidth = isGeneral ? theme.components.usedGeneralPrototypeDisplayCanvasWidth : theme.components.usedPrototypeDisplayCanvasWidth;
@@ -66,12 +77,15 @@ const PrototypeVisualCanvas: React.FC<ConnectedPrototypeVisualCanvasProps> = ({ 
       zoom: scale * ZOOM_FACTOR,
       offset: [offsetX, offsetY] as Pair<number>,
       dimensions: [frameWidth, frameHeight] as Pair<number>,
+      canvasWidth,
     };
-  }, [dimension, data, platform]);
+  }, [dimension.width, dimension.height]);
 
-  const key = React.useMemo(() => cuid(), [data, device]);
+  const canvasKey = React.useMemo(() => cuid(), [dimension.width, dimension.height]);
+  const contentKey = React.useMemo(() => cuid(), [device, data]);
 
-  const [zoom, setZoom] = useLinkedState(initialZoom, key);
+  const [zoom, setZoom] = useLinkedState(initialZoom, canvasKey);
+  const [offset, setOffset] = useLinkedState(initialOffset, canvasKey);
 
   const visualRenderProps = {
     zoom,
@@ -80,18 +94,27 @@ const PrototypeVisualCanvas: React.FC<ConnectedPrototypeVisualCanvasProps> = ({ 
     dimensions,
   };
 
-  return (
+  return !isShown ? null : (
     <Box height="100%">
       <Canvas
-        key={key}
+        key={canvasKey}
         viewport={{ zoom, x: offset[0], y: offset[1] }}
-        onChange={(viewport) => setZoom(viewport.zoom)}
+        onChange={(viewport) => {
+          setZoom(viewport.zoom);
+          setOffset([viewport.x, viewport.y]);
+        }}
         scrollTimeout={100}
         controlScheme={controlScheme}
       >
-        {data?.visualType === VisualType.IMAGE && <Image key={key} {...visualRenderProps} data={data} />}
-        {data?.visualType === VisualType.APL && <APL key={key} {...visualRenderProps} data={data} />}
+        {data?.visualType === VisualType.IMAGE && <Image key={contentKey} {...visualRenderProps} data={data} />}
+        {data?.visualType === VisualType.APL && <APL key={contentKey} {...visualRenderProps} data={data} />}
       </Canvas>
+
+      {!data?.visualType && (
+        <PlaceholderIconContainer width={canvasWidth}>
+          <SvgIcon icon="visualsPlaceholder" width={100} height={100} />
+        </PlaceholderIconContainer>
+      )}
     </Box>
   );
 };
@@ -105,4 +128,4 @@ const mapStateToProps = {
 
 type ConnectedPrototypeVisualCanvasProps = ConnectedProps<typeof mapStateToProps, {}>;
 
-export default connect(mapStateToProps, null)(PrototypeVisualCanvas as any) as React.FC;
+export default connect(mapStateToProps, null)(PrototypeVisualCanvas as any) as React.FC<PrototypeVisualCanvasProps>;

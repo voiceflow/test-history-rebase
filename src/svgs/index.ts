@@ -217,6 +217,7 @@ export { default as variable } from './var.svg';
 export { default as volume } from './volume.svg';
 export { default as voiceflowV } from './V.svg';
 export { default as visuals } from './visuals.svg';
+export { default as visualsPlaceholder } from './visuals-placeholder.svg';
 
 // w
 export { default as warning } from './warning.svg';

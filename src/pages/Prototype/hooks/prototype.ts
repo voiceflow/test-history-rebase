@@ -22,6 +22,7 @@ const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; is
   const activePathBlockIDs = useSelector(Prototype.activePathBlockIDsSelector);
   const getLinksByPortID = useSelector(Creator.linksByPortIDSelector);
   const contextHistory = useSelector(Prototype.prototypeContextHistorySelector);
+  const visualDataHistory = useSelector(Prototype.prototypeVisualDataHistorySelector);
   const webhook = useSelector(Prototype.prototypeWebhookDataSelector);
   const activeDiagramID = useSelector(Skill.activeDiagramIDSelector);
   const flowIDHistory = useSelector(Prototype.prototypeFlowIDHistorySelector);
@@ -51,7 +52,10 @@ const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; is
     setInteractions,
     getLinksByPortID,
     activePathLinkIDs,
+    visualDataHistory,
     activePathBlockIDs,
+    updatePrototypeVisualsData: (data) => dispatch(Prototype.updatePrototypeVisualData(data)),
+    updatePrototypeVisualsDataHistory: (dataHistory) => dispatch(Prototype.updatePrototypeVisualDataHistory(dataHistory)),
   };
 
   const cache = React.useRef(cacheData);

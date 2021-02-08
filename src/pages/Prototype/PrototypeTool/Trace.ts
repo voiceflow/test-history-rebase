@@ -1,5 +1,6 @@
 import { GeneralRequest, IntentName, RequestType, TraceType } from '@voiceflow/general-types';
 import { TraceStreamAction } from '@voiceflow/general-types/build/nodes/stream';
+import { StepData as VisualData } from '@voiceflow/general-types/build/nodes/visual';
 import cuid from 'cuid';
 import _ from 'lodash';
 
@@ -40,7 +41,10 @@ export type TraceControllerProps = {
   updatePrototype: (payload: Partial<Prototype.PrototypeState>) => void;
   getLinksByPortID: (portID: string) => Link[];
   activePathLinkIDs: string[];
+  visualDataHistory: (null | VisualData)[];
   activePathBlockIDs: string[];
+  updatePrototypeVisualsData: (data: null | VisualData) => void;
+  updatePrototypeVisualsDataHistory: (dataHistory: (null | VisualData)[]) => void;
 };
 
 type Options = {
@@ -103,12 +107,16 @@ class TraceController {
   public next = async (request: GeneralRequest = null): Promise<void> => {
     const currentContextStep = this.props.contextStep;
     const contextHistory = this.props.contextHistory;
+    const visualDataHistory = this.props.visualDataHistory;
     const historyLength = contextHistory.length;
 
     // Remove any forward history
     if (currentContextStep !== historyLength - 1) {
       const newHistoryArray = contextHistory.slice(0, currentContextStep + 1);
+      const newVisualsDataArray = visualDataHistory.slice(0, currentContextStep + 1);
+
       this.props.updatePrototype({ contextHistory: newHistoryArray });
+      this.props.updatePrototypeVisualsDataHistory(newVisualsDataArray);
     }
 
     this.props.updateStatus(PMStatus.FETCHING_CONTEXT);
@@ -147,6 +155,7 @@ class TraceController {
     const currentContextStep = this.props.contextStep;
     const newContextStepNumber = currentContextStep + offset;
     const contextHistory = this.props.contextHistory;
+    const visualDataHistory = this.props.visualDataHistory;
     const targetDiagramID =
       direction === StepDirection.BACK
         ? contextHistory[currentContextStep].previousContextDiagramID
@@ -169,6 +178,7 @@ class TraceController {
     });
 
     const targetContext = contextHistory[newContextStepNumber];
+    const targetVisualData = visualDataHistory[newContextStepNumber];
     const targetTrace = targetContext!.trace;
     const targetBlockTraceFrame = findLastBlockTrace(targetTrace!) as BlockTrace;
     const targetStepTrace = targetTrace![targetTrace!.length - 1];
@@ -177,7 +187,9 @@ class TraceController {
     // wait for the block to render (to account for switching between flows)
     await this.waitNode(targetBlockID);
     await this.processTrace([targetBlockTraceFrame, targetStepTrace]);
+
     this.props.updatePrototype({ context: targetContext as Prototype.Context });
+    this.props.updatePrototypeVisualsData(targetVisualData);
 
     this.context = {
       ...targetContext,

@@ -44,6 +44,8 @@ export const prototypeVisualDeviceSelector = createSelector([prototypeVisualSele
 
 export const prototypeVisualDataSelector = createSelector([prototypeVisualSelector], ({ data }) => data);
 
+export const prototypeVisualDataHistorySelector = createSelector([prototypeVisualSelector], ({ dataHistory }) => dataHistory);
+
 export const activePathBlockIDsSelector = createSelector([prototypeSelector], ({ activePathBlockIDs }) => activePathBlockIDs);
 
 export const activePathLinkIDsSelector = createSelector([prototypeSelector], ({ activePathLinkIDs }) => activePathLinkIDs);

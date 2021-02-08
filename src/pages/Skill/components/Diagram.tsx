@@ -123,7 +123,7 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ platform, dia
 
         {isPrototypingMode && (
           <>
-            {isPrototypeDisplay && <PrototypeVisualCanvas />}
+            <PrototypeVisualCanvas isShown={isPrototypeDisplay} />
 
             <Drawer
               open={isPrototypeSidebarOpened}

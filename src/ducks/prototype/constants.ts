@@ -16,6 +16,7 @@ export const INITIAL_STATE: PrototypeState = {
   visual: {
     data: null,
     device: null,
+    dataHistory: [],
   },
   contextStep: 0,
   contextHistory: [],

@@ -31,7 +31,7 @@ const PrototypeDisplaySettings: React.FC<ConnectedPrototypeDisplaySettingsProps>
   return (
     <FadeRightContainer>
       <Section
-        header={device}
+        header={deviceInfo?.name}
         headerToggle
         prefix={<SvgIcon icon={deviceInfo?.icon || 'echoShow'} />}
         collapseVariant={SectionToggleVariant.ARROW}

@@ -12,11 +12,22 @@ import { ConnectedProps } from '@/types';
 import Frame from './Frame';
 import { VisualRenderProps } from './types';
 
+const MemoizedBaseRenderer = React.memo(BaseRenderer);
+
 type APLProps = VisualRenderProps<APLStepData>;
 
 const APL: React.FC<APLProps & ConnectedAPLProps> = ({ zoom, data, device, platform, resolveAPL, dimensions }) => {
   const [aplContext, setAPLContext] = React.useState<{ apl: string; data: string; commands: string } | null>(null);
+
+  const isRound = device === DeviceType.ECHO_SPOT;
+  const renderAPL = !!aplContext;
+
   const deviceInfo = React.useMemo(() => DEVICE_LIST[platform].find(({ type }) => type === device), [platform, device]);
+  const viewport = React.useMemo(() => ({ dpi: deviceInfo!.dimension.density, width: dimensions[0], height: dimensions[1], isRound }), [
+    deviceInfo,
+    dimensions,
+    isRound,
+  ]);
 
   React.useEffect(() => {
     if (data) {
@@ -40,24 +51,16 @@ const APL: React.FC<APLProps & ConnectedAPLProps> = ({ zoom, data, device, platf
     }
   }, [data]);
 
-  const isRound = device === DeviceType.ECHO_SPOT;
-  const renderAPL = !!aplContext;
-
   return (
     <Frame zoom={zoom} title={renderAPL ? deviceInfo?.name : null} isRound={isRound} width={dimensions[0]} height={dimensions[1]}>
       {!renderAPL ? null : (
-        <BaseRenderer
+        <MemoizedBaseRenderer
           apl={aplContext!.apl}
           data={aplContext!.data}
           scale={1}
           onFail={console.error}
           commands={aplContext!.commands}
-          viewport={{
-            width: dimensions[0],
-            height: dimensions[1],
-            dpi: deviceInfo!.dimension.density,
-            isRound,
-          }}
+          viewport={viewport}
         />
       )}
     </Frame>

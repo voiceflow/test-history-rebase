@@ -1,4 +1,4 @@
-import { SpaceProps, space } from 'styled-system';
+import { space, SpaceProps } from 'styled-system';
 
 import { css, keyframes, styled } from '@/hocs';
 import { ANIMATION_SPEED } from '@/styles/theme';

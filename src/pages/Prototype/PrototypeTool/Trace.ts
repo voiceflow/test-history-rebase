@@ -1,4 +1,5 @@
 import { GeneralRequest, IntentName, RequestType, TraceType } from '@voiceflow/general-types';
+import { SpeakType } from '@voiceflow/general-types/build/nodes/speak';
 import { TraceStreamAction } from '@voiceflow/general-types/build/nodes/stream';
 import { StepData as VisualData } from '@voiceflow/general-types/build/nodes/visual';
 import cuid from 'cuid';
@@ -6,7 +7,6 @@ import _ from 'lodash';
 
 import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
-import { SpeakTraceAudioType } from '@/constants/prototype';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import { BlockTrace, ChoiceTrace, EndTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace, VisualTrace } from '@/models';
@@ -369,7 +369,7 @@ class TraceController {
   }
 
   private async processSpeakTrace({ id, payload: { src, type, voice, message } }: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
-    if (type === SpeakTraceAudioType.AUDIO) {
+    if (type === SpeakType.AUDIO) {
       this.message.audio(id, { name: message, src });
     } else {
       this.message.speak(id, { message, voice, src });

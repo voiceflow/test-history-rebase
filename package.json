@@ -95,7 +95,7 @@
     "react-speech-recognition": "^2.0.1",
     "react-stripe-elements": "5.1.0",
     "react-table-6": "^6.11.0",
-    "react-textarea-autosize": "^7.0.4",
+    "react-textarea-autosize": "^7.1.2",
     "react-tippy": "1.4.0",
     "react-toastify": "^5.1.1",
     "react-toggle": "^4.1.1",

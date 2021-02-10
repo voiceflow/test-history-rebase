@@ -56,6 +56,10 @@ const PrototypeInput = <L extends string>({
   };
 
   React.useEffect(() => {
+    // For some ODD reason, focusing the input on a diagram change
+    // sets the focus correctly, but it doesn't set the cursor in the input
+    // so we have to blur it first, then re focus to get the cursor to show up
+    inputRef.current?.blur();
     inputRef.current?.focus();
   }, [diagramID]);
 

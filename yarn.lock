@@ -4936,10 +4936,10 @@
   resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-2.0.1.tgz#e18eb8b069e442f7b956d313f4fadd3ef887354e"
   integrity sha512-g1QUuhYVVAamfCifK7oB7G3aIl4BbOyzDOqVyUfEr4tfBKrXfeH+M+Tg7HKCXSrbzxYdhyCP7z9WbKo0R2hBCw==
 
-"@types/gapi.auth2@^0.0.52":
-  version "0.0.52"
-  resolved "https://registry.yarnpkg.com/@types/gapi.auth2/-/gapi.auth2-0.0.52.tgz#da859ac501e48f97f212ee4782840e8c9adc5082"
-  integrity sha512-Q9OEsiLXQ3fWv93voIDr4tXpiO0zNFx2RPK+9wj21LY3ydyx/CtoXQgbf+6iNSTuyHUDF4J/c74maKghtPbbaA==
+"@types/gapi.auth2@^0.0.53":
+  version "0.0.53"
+  resolved "https://registry.yarnpkg.com/@types/gapi.auth2/-/gapi.auth2-0.0.53.tgz#5171ef99f4b88fd8d6478254c0da8370d288b4f8"
+  integrity sha512-Ktd4EE6FUxs7aco8F/3jyOMqamoYTzaH9UjirxEZwQ/BpAzlXhzNhdcK/9aoiCaRRRYwggTv/ZlwQVU7lK7Ilw==
   dependencies:
     "@types/gapi" "*"
 

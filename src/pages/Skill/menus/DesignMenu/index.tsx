@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
+import { useTheme } from 'styled-components';
 
 import { Permission } from '@/config/permissions';
 import { DragItem } from '@/constants';
@@ -11,10 +12,13 @@ import { useDidUpdateEffect, useEnableDisable, useHotKeys, usePermission, useTra
 import { Hotkey } from '@/keymap';
 import { useAnyModeOpen } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
+import { Theme } from '@/styles/theme';
 import { ConnectedProps } from '@/types';
 
 import { Container, Content, Flows, Header, Steps } from './components';
-import { TABS, Tab } from './constants';
+import { Tab, TABS } from './constants';
+
+const SIDEBAR_CALCULATION_BUFFER = 50;
 
 const DesignMenu: React.FC<ConnectedDesignMenuProps> = ({
   isHidden,
@@ -29,6 +33,21 @@ const DesignMenu: React.FC<ConnectedDesignMenuProps> = ({
   const [isEditingMode] = usePermission(Permission.EDIT_CANVAS);
   const isAnyModeOpen = useAnyModeOpen();
   const [isOpenByHover, openByHover, closeByLoseHover] = useEnableDisable(false);
+  const designMenuRef = React.useRef<HTMLDivElement>(null);
+  const theme = useTheme() as Theme;
+
+  const mouseLeaveHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const menuRect = designMenuRef?.current?.getBoundingClientRect() || null;
+
+    // Add a small buffer space because sometimes the mouse moves too fast and without the buffer, the mouse out calculation won't trigger
+    if (
+      e.clientX > theme.components.leftSidebar.width - SIDEBAR_CALCULATION_BUFFER ||
+      e.clientY < (menuRect?.top || 0) ||
+      e.clientY > (menuRect?.bottom || 0)
+    ) {
+      closeByLoseHover();
+    }
+  };
 
   const selectedTab = React.useMemo(() => {
     if (isViewerOrLibraryRole) {
@@ -104,12 +123,12 @@ const DesignMenu: React.FC<ConnectedDesignMenuProps> = ({
       id={Identifier.DESIGN_MENU}
       isOpen={isOpen}
       onMouseEnter={canBeOpened ? openByHover : undefined}
-      onMouseLeave={canBeOpened ? closeByLoseHover : undefined}
+      onMouseLeave={canBeOpened ? mouseLeaveHandler : undefined}
       tabIndex={-1}
       ref={dropRef}
       canvasOnly={canvasOnly}
     >
-      <Content isOpen={isOpen} activeTab={selectedTab}>
+      <Content isOpen={isOpen} activeTab={selectedTab} ref={designMenuRef}>
         <Header
           tabs={isViewerOrLibraryRole ? TABS.filter((tab) => tab.value === Tab.FLOWS) : TABS}
           locked={!isHidden}

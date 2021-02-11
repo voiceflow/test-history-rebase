@@ -7,14 +7,13 @@ import MetaDataLineItem from '../../MetaDataLineItem';
 import LineItemsSection from './LineItemsSection';
 
 function MappingOutput({ mapping, onChange, factory }) {
-  const { items, onAdd, mapManaged } = useManager(mapping, (mapping) => onChange({ mapping }), { factory });
+  const { onAdd, mapManaged } = useManager(mapping, (mapping) => onChange({ mapping }), { factory });
 
   return (
     <LineItemsSection header="Transform into Variables" onAdd={onAdd} dividers>
       {mapManaged((map, { key, onUpdate, onRemove }) => (
         <MetaDataLineItem
           prefix="PATH"
-          onlyItem={items.length === 1}
           keyPlaceholder="Enter object path"
           onRemove={onRemove}
           onUpdate={(path) => onUpdate({ path })}

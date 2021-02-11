@@ -4,14 +4,14 @@ import { Add } from '@/components/InteractiveIcon';
 import Section from '@/components/Section';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
-function LineItemsSection({ header, dividers = false, onAdd, children }) {
+const LineItemsSection = ({ header, dividers = false, onAdd, children }) => {
   const AddLineItemButton = <Add onClick={onAdd} />;
 
   return (
     <Section dividers={dividers} variant="subsection" header={header} status={AddLineItemButton}>
-      <FormControl>{children}</FormControl>
+      <FormControl contentBottomUnits={React.Children.count(children) ? 2 : 1}>{children}</FormControl>
     </Section>
   );
-}
+};
 
 export default LineItemsSection;

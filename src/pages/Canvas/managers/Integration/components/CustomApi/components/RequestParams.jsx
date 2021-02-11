@@ -7,14 +7,13 @@ import PrefixVariableInput from '../../PrefixVariableInput';
 import LineItemsSection from './LineItemsSection';
 
 function RequestParams({ parameters, onChange, factory }) {
-  const { items, onAdd, mapManaged } = useManager(parameters, (parameters) => onChange({ parameters }), { factory });
+  const { onAdd, mapManaged } = useManager(parameters, (parameters) => onChange({ parameters }), { factory });
 
   return (
     <LineItemsSection header="Parameter Assignments" onAdd={onAdd} dividers>
       {mapManaged((param, { key, onRemove, onUpdate }) => (
         <MetaDataLineItem
           prefix="KEY"
-          onlyItem={items.length === 1}
           keyPlaceholder="Enter Parameter Key"
           onRemove={onRemove}
           onUpdate={(key) => onUpdate({ key })}

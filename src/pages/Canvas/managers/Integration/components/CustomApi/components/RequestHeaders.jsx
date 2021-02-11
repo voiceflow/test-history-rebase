@@ -7,7 +7,7 @@ import PrefixVariableInput from '../../PrefixVariableInput';
 import LineItemsSection from './LineItemsSection';
 
 function RequestHeaders({ headers, onChange, factory }) {
-  const { items, onAdd, mapManaged } = useManager(headers, (headers) => onChange({ headers }), { factory });
+  const { onAdd, mapManaged } = useManager(headers, (headers) => onChange({ headers }), { factory });
 
   return (
     <LineItemsSection header="Header Assignments" onAdd={onAdd} dividers>
@@ -16,7 +16,6 @@ function RequestHeaders({ headers, onChange, factory }) {
           key={key}
           prefix="KEY"
           value={header.key}
-          onlyItem={items.length === 1}
           onRemove={onRemove}
           onUpdate={(key) => onUpdate({ key })}
           keyPlaceholder="Enter HTTP Header"

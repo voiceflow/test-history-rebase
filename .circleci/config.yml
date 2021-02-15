@@ -2,8 +2,7 @@ version: 2.1
 
 orbs:
   codecov: codecov/codecov@1.1.1
-  vfcommon: voiceflow/common@0.0.64
-  slack: circleci/slack@4.1.1
+  vfcommon: voiceflow/common@0.0.66
   sonarcloud: sonarsource/sonarcloud@1.0.2
   validate-title: qventus/validate-title@0.0.4
 
@@ -15,6 +14,14 @@ defaults:
         ignore: /.*/
       tags:
         only: /^v[0-9]*(\.[0-9]*)*$/
+  slack-fail-post-step: &slack-fail-post-step
+    post-steps:
+      - vfcommon/notify_slack:
+          channel: dev_general
+          event: fail
+          mentions: "@eng_creator"
+          template: basic_fail_1
+          branch_pattern: master
 
 jobs:
   build-app:
@@ -139,17 +146,6 @@ jobs:
           name: Wait for deployment rollout
           command: |
             sleep 120
-      - slack/notify:
-          channel: product_releases
-          event: pass
-          template: success_tagged_deploy_1
-          branch_pattern: ".*"
-      - slack/notify:
-          channel: product_releases
-          event: fail
-          mentions: "@engteam"
-          template: basic_fail_1
-          branch_pattern: ".*"
 
   build-deploy-storybook-dev-environment:
     executor: vfcommon/build-executor
@@ -310,6 +306,7 @@ workflows:
   admin:
     jobs:
       - build-admin:
+          <<: *slack-fail-post-step
           context: dev-test
           filters:
             branches:
@@ -327,6 +324,7 @@ workflows:
   storybook:
     jobs:
       - build-storybook:
+          <<: *slack-fail-post-step
           context: dev-test
           filters:
             branches:
@@ -345,6 +343,7 @@ workflows:
   test-and-release-app:
     jobs:
       - test-integration:
+          <<: *slack-fail-post-step
           context: dev-test
           filters:
             branches:
@@ -352,6 +351,7 @@ workflows:
                 - /env-.*/
                 - staging
       - test:
+          <<: *slack-fail-post-step
           context: dev-test
           filters:
             branches:
@@ -362,12 +362,14 @@ workflows:
           github_username: GITHUB_USERNAME
           github_token: GITHUB_READ_TOKEN
           creator_app_commit: CIRCLE_SHA1
+          <<: *slack-fail-post-step
           filters:
             branches:
               ignore:
                 - /env-.*/
                 - staging
       - build-app:
+          <<: *slack-fail-post-step
           context: dev-test
           filters:
             branches:
@@ -375,6 +377,7 @@ workflows:
                 - /env-.*/
                 - staging
       - vfcommon/release:
+          <<: *slack-fail-post-step
           context: dev-test
           requires:
             - test

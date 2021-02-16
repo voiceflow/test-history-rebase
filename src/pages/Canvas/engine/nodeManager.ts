@@ -590,6 +590,7 @@ class NodeManager extends EngineConsumer {
 
   redrawNestedLinks(parentNodeID: string) {
     const node = this.engine.getNodeByID(parentNodeID);
+
     node?.combinedNodes.forEach((nodeID) => this.redrawLinks(nodeID));
   }
 

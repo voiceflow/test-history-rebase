@@ -39,6 +39,7 @@ declare module 'webpack-nano/argv' {
     ff_visualStep: boolean;
     ff_wavenetVoices: boolean;
     ff_ownerRole: boolean;
+    ff_straightLines: boolean;
   }>;
 
   export = argv;

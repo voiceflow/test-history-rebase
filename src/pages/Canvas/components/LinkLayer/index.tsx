@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { allLinkIDsSelector } from '@/ducks/creator';
+import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import Link, { HeadMarker } from '@/pages/Canvas/components/Link';
 import NewLink from '@/pages/Canvas/components/NewLink';
@@ -14,17 +14,19 @@ const LinkLayer: React.FC<ConnectedLinkLayerProps> = ({ linkIDs }) => (
     <defs>
       <HeadMarker />
     </defs>
+
     {linkIDs.map((linkID) => (
       <LinkEntityProvider id={linkID} key={linkID}>
         <Link />
       </LinkEntityProvider>
     ))}
+
     <NewLink />
   </LinkLayerSvg>
 );
 
 const mapStateToProps = {
-  linkIDs: allLinkIDsSelector,
+  linkIDs: Creator.allLinkIDsSelector,
 };
 
 type ConnectedLinkLayerProps = ConnectedProps<typeof mapStateToProps>;

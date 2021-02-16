@@ -1,5 +1,5 @@
 import { AlexaProject, AlexaProjectData, AlexaProjectMemberData } from '@voiceflow/alexa-types';
-import { ProjectPrivacy } from '@voiceflow/api-sdk';
+import { ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
 
 import client from '@/client';
 import projectAdapter from '@/client/adapters/project';
@@ -86,4 +86,10 @@ export const updateProjectImage = (projectID: string, image: string): Thunk => a
   await client.api.project.update(projectID, { image });
 
   dispatch(updateProject(projectID, { image }, true));
+};
+
+export const updateProjectLinkType = (projectID: string, linkType: ProjectLinkType): Thunk => async (dispatch) => {
+  await client.api.project.update(projectID, { linkType });
+
+  dispatch(updateProject(projectID, { linkType }, true));
 };

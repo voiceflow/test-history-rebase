@@ -3,10 +3,10 @@ import React from 'react';
 import { useSetup, useTeardown } from '@/hooks';
 import * as Models from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
-import { Pair } from '@/types';
+import { Pair, Point } from '@/types';
 
-import { EntityType } from '../constants';
 import type { Engine } from '..';
+import { EntityType } from '../constants';
 import { EntityInstance, ResourceEntity } from './entity';
 
 export type LinkInstance = EntityInstance & {
@@ -19,6 +19,10 @@ export type LinkInstance = EntityInstance & {
    * check if the provided element is part of this link
    */
   containsElement: (node: Node) => boolean;
+};
+
+export type PortLinkInstance = {
+  updatePosition: (points: Pair<Point> | null) => void;
 };
 
 class LinkEntity extends ResourceEntity<Models.Link, LinkInstance> {
@@ -36,6 +40,10 @@ class LinkEntity extends ResourceEntity<Models.Link, LinkInstance> {
 
   get isSupported() {
     return this.engine.link.isSupported(this.linkID);
+  }
+
+  get portLinkInstance() {
+    return this.engine.portLinkInstances.get(this.linkID);
   }
 
   constructor(engine: Engine, public linkID: string) {

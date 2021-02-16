@@ -4,8 +4,9 @@ import { BlockVariant } from '@/constants/canvas';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import { compose, connect } from '@/hocs';
+import { useDidUpdateEffect } from '@/hooks';
 import PlayButton from '@/pages/Canvas/components/PlayButton';
-import { NodeEntityContext, NodeEntityProvider, PlatformContext } from '@/pages/Canvas/contexts';
+import { EngineContext, NodeEntityContext, NodeEntityProvider, PlatformContext } from '@/pages/Canvas/contexts';
 import { FlowStartBlock, HomeStartBlock } from '@/pages/Canvas/managers/Start/StartBlock';
 import { BlockAPI } from '@/pages/Canvas/types';
 import { ConnectedProps, MergeArguments } from '@/types';
@@ -18,6 +19,7 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
   { invocationName, isRootDiagram, diagram },
   ref
 ) => {
+  const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const platform = React.useContext(PlatformContext)!;
   const { outPortID, combinedNodes, lockOwner } = nodeEntity.useState((e) => {
@@ -28,6 +30,11 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
       lockOwner: e.lockOwner,
     };
   });
+
+  useDidUpdateEffect(() => {
+    engine.node.redrawLinks(nodeEntity.nodeID);
+  }, [combinedNodes]);
+
   const commands = combinedNodes.length
     ? combinedNodes.map((commandNodeID) => (
         <NodeEntityProvider id={commandNodeID} key={commandNodeID}>
@@ -35,6 +42,7 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
         </NodeEntityProvider>
       ))
     : null;
+
   const actions = <PlayButton nodeID={nodeEntity.nodeID} />;
 
   if (isRootDiagram) {

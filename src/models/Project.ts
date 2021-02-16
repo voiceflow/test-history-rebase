@@ -1,4 +1,4 @@
-import { ProjectPrivacy } from '@voiceflow/api-sdk';
+import { ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
 
 import { PlatformType } from '@/constants';
 
@@ -14,6 +14,7 @@ export type Project = {
   image: string | null;
   platform: PlatformType;
   privacy?: ProjectPrivacy;
+  linkType: ProjectLinkType;
 };
 
 export namespace Project {}

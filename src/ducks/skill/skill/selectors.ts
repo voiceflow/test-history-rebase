@@ -1,4 +1,5 @@
 import { Locale as AlexaLocale } from '@voiceflow/alexa-types';
+import { ProjectLinkType } from '@voiceflow/api-sdk';
 import { createSelector } from 'reselect';
 
 import { projectByIDSelector } from '@/ducks/project/selectors';
@@ -26,6 +27,13 @@ export const activeProjectNameSelector = createSelector(
   [activeProjectIDSelector, projectByIDSelector],
   (projectID, getProjectByID) => getProjectByID(projectID)?.name
 );
+
+export const activeProjectLinkTypeSelector = createSelector(
+  [activeProjectIDSelector, projectByIDSelector],
+  (projectID, getProjectByID) => getProjectByID(projectID)?.linkType
+);
+
+export const activeProjectStraightLinkSelector = createSelector([activeProjectLinkTypeSelector], (linkType) => linkType === ProjectLinkType.STRAIGHT);
 
 export const activeSkillCreatorIDSelector = createSelector(activeSkillSelector, ({ creatorID }) => creatorID);
 

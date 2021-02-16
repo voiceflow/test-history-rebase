@@ -15,7 +15,6 @@ export const usePortInstance = <T extends HTMLElement>() => {
   return React.useMemo<InternalPortInstance<T>>(
     () => ({
       ...elementInstance,
-
       ref,
       getRect: () => ref.current!.getBoundingClientRect(),
     }),

@@ -4,8 +4,7 @@ import { PORT_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
 import { PortEntityContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
 
-import { Container, Lifecycle, Link, LinkPath } from './components';
-import { LINK_WIDTH } from './constants';
+import { Container, Lifecycle, Link } from './components';
 import { useHandlers, usePortInstance } from './hooks';
 
 export type PortProps = {
@@ -15,9 +14,9 @@ export type PortProps = {
 const Port: React.FC<PortProps> = ({ color }) => {
   const portEntity = React.useContext(PortEntityContext)!;
   const instance = usePortInstance<HTMLDivElement>();
-  const { isHighlighted, isConnected } = portEntity.useState((e) => ({
-    isHighlighted: e.isHighlighted || e.isPrototypeHighlighted,
+  const { isConnected, isHighlighted } = portEntity.useState((e) => ({
     isConnected: e.isConnected,
+    isHighlighted: e.isHighlighted || e.isPrototypeHighlighted,
   }));
   const { onMouseDown, onMouseUp } = useHandlers();
 
@@ -28,19 +27,17 @@ const Port: React.FC<PortProps> = ({ color }) => {
   return (
     <>
       <Lifecycle />
+
       <Container
-        className={ClassName.CANVAS_PORT}
-        onMouseDown={onMouseDown}
-        onMouseUp={onMouseUp}
-        color={color}
-        isConnected={isConnected}
         ref={instance.ref}
+        color={color}
+        className={ClassName.CANVAS_PORT}
+        onMouseUp={onMouseUp}
+        isConnected={isConnected}
+        onMouseDown={onMouseDown}
       />
-      {(isHighlighted || isConnected) && (
-        <Link>
-          <LinkPath isHighlighted={isHighlighted} d={`M 0 4 L ${LINK_WIDTH} 4`} />
-        </Link>
-      )}
+
+      {(isHighlighted || isConnected) && <Link key={portEntity.linkID} linkID={portEntity.linkID} isHighlighted={isHighlighted} />}
     </>
   );
 };

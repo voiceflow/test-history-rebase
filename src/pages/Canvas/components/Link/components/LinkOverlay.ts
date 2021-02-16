@@ -5,7 +5,6 @@ const LinkOverlay = styled.path`
   stroke-width: 15px;
   fill: transparent;
   pointer-events: auto;
-  transition: ease 0.15s all;
 
   @keyframes dash {
     to {

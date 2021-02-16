@@ -33,7 +33,7 @@ import CommentEngine from './commentEngine';
 import DiagramEngine from './diagramEngine';
 import Dispatcher from './dispatcher';
 import DragEngine from './dragEngine';
-import LinkEntity from './entities/linkEntity';
+import LinkEntity, { PortLinkInstance } from './entities/linkEntity';
 import NodeEntity from './entities/nodeEntity';
 import PortEntity from './entities/portEntity';
 import ThreadEntity from './entities/threadEntity';
@@ -111,6 +111,8 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   threads = new Map<string, { api: ThreadEntity }>();
 
+  portLinkInstances = new Map<string, { api: PortLinkInstance }>();
+
   supportedLinks: string[] = [];
 
   canvas: CanvasAPI | null = null;
@@ -176,7 +178,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   hasLinksByPortID = (portID: string) => this.select(Creator.hasLinksByPortIDSelector)(portID);
 
-  hasLinksByNodeID = (portID: string) => this.select(Creator.hasLinksByNodeIDSelector)(portID);
+  hasLinksByNodeID = (nodeID: string) => this.select(Creator.hasLinksByNodeIDSelector)(nodeID);
 
   getThreadIDsByNodeID = (nodeID: string) => this.select(Thread.threadIDsByNodeIDSelector)(nodeID);
 
@@ -197,6 +199,8 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   getPrototypeMuted = () => this.select(Prototype.prototypeMutedSelector);
 
   isFeatureEnabled = (featureID: FeatureFlag) => this.select(Feature.isFeatureEnabledSelector)(featureID);
+
+  isStraightLinks = () => this.select(Skill.activeProjectStraightLinkSelector);
 
   // entity registration methods
 
@@ -240,6 +244,14 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   expireThread(threadID: string, instanceID: string) {
     expireInstance(this.threads, threadID, instanceID);
+  }
+
+  registerPortLinkInstance(linkID: string, api: PortLinkInstance) {
+    this.portLinkInstances.set(linkID, { api });
+  }
+
+  expirePortLinkInstance(linkID: string) {
+    this.portLinkInstances.delete(linkID);
   }
 
   // canvas orchestration methods

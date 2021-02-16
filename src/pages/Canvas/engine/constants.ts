@@ -8,4 +8,5 @@ export enum EntityType {
   PORT = 'port',
   LINK = 'link',
   THREAD = 'thread',
+  PORT_LINK = 'port-link',
 }

@@ -80,7 +80,7 @@ export const PLATFORM_SETTINGS_META = <Record<PlatformType, PlatformSettingsMeta
   },
   [PlatformType.GENERAL]: {
     name: 'General',
-    sections: [SettingSections.BASIC, SettingSections.DANGER_ZONE],
+    sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
     descriptors: {
       projectName: General.ProjectName,
     },

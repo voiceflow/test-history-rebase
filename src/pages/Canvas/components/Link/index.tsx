@@ -6,7 +6,7 @@ import { ClassName } from '@/styles/constants';
 
 import { Group, HeadMarker, Overlay, Path, RemoveButton, Styles } from './components';
 import { useLinkHandlers, useLinkInstance } from './hooks';
-import { buildHeadMarker } from './utils';
+import { buildHeadMarker, getVirtualPoints } from './utils';
 
 export * from './constants';
 export * from './components';
@@ -18,7 +18,8 @@ const Link: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
   const instance = useLinkInstance();
-  const { isSupported, isHighlighted } = linkEntity.useState((e) => ({
+  const { points, isSupported, isHighlighted } = linkEntity.useState((e) => ({
+    points: e.getPoints(),
     isSupported: e.isSupported,
     isHighlighted: e.isHighlighted || e.isPrototypeHighlighted,
   }));
@@ -26,6 +27,10 @@ const Link: React.FC = () => {
 
   linkEntity.useInstance(instance);
   linkEntity.useLifecycle();
+
+  React.useEffect(() => {
+    linkEntity.portLinkInstance?.api.updatePosition(getVirtualPoints(points));
+  }, [points]);
 
   if (!isSupported) return null;
 
@@ -41,7 +46,7 @@ const Link: React.FC = () => {
     <>
       <Styles />
       <Group className={ClassName.CANVAS_LINK} isVisible={isVisible} ref={instance.containerRef}>
-        <HeadMarker id={linkEntity.linkID} isHighlighted={isHighlighted} />
+        <HeadMarker id={linkEntity.linkID} ref={instance.markerRef} isHighlighted={isHighlighted} {...instance.getMarkerAttrs()} />
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
         <Overlay d={path} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={instance.hiddenPathRef} />
         <Path d={path} markerEnd={buildHeadMarker(linkEntity.linkID)} ref={instance.pathRef} />

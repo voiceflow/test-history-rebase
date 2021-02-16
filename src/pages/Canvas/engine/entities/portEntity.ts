@@ -4,8 +4,8 @@ import { useSetup } from '@/hooks';
 import { Port } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 
-import { EntityType } from '../constants';
 import type { Engine } from '..';
+import { EntityType } from '../constants';
 import { EntityInstance, ResourceEntity } from './entity';
 
 export type PortInstance = EntityInstance & {
@@ -26,6 +26,12 @@ class PortEntity extends ResourceEntity<Port, PortInstance> {
 
   get isConnected() {
     return !!this.engine.getLinkIDsByPortID(this.portID).length;
+  }
+
+  get linkID() {
+    const linksIDs = this.engine.getLinkIDsByPortID(this.portID);
+
+    return linksIDs[0] ?? null;
   }
 
   constructor(engine: Engine, public portID: string) {

@@ -13,6 +13,7 @@ import {
   env,
   ff_gadgets,
   ff_ownerRole,
+  ff_straightLines,
   ff_visualPrototype,
   ff_visualStep,
   ff_wavenetVoices,
@@ -69,6 +70,7 @@ export const ENV = {
   FF_GADGETS: ff_gadgets && 'true',
   FF_VISUAL_PROTOTYPE: ff_visualPrototype && 'true',
   FF_VISUAL_STEP: ff_visualStep && 'true',
+  FF_STRAIGHT_LINES: ff_straightLines && 'true',
   FF_WAVENET_VOICES: ff_wavenetVoices && 'true',
   FF_OWNER_ROLE: ff_ownerRole && 'true',
 

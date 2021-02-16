@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { HeadMarker, Path, buildHeadMarker, buildPath } from '@/pages/Canvas/components/Link';
+import { FeatureFlag } from '@/config/features';
+import { buildHeadMarker, buildPath, HeadMarker, Path } from '@/pages/Canvas/components/Link';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { RealtimeLinkOverlayAPI } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
 
-import AbstractOverlay, { ConnectedRealtimeOverlayProps, RealtimeViewer, connectOverlay } from './AbstractOverlay';
+import AbstractOverlay, { ConnectedRealtimeOverlayProps, connectOverlay, RealtimeViewer } from './AbstractOverlay';
 import LinkOverlaySvg from './RealtimeOverlayLinkPathSvg';
 
 const DEFAULT_STROKE_COLOR = '#f8758f';
@@ -28,7 +29,10 @@ class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
       this.animateElement(tabID, (linkEl) => {
         if (!linkEl) return;
 
-        linkEl.setAttribute('d', buildPath(nextPoint)!);
+        linkEl.setAttribute(
+          'd',
+          buildPath(nextPoint, { straight: engine.isFeatureEnabled(FeatureFlag.STRAIGHT_LINES) && engine.isStraightLinks(), unconnected: true })
+        );
       });
     },
 
@@ -51,7 +55,10 @@ class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
     if (!linkLocation) return null;
 
     const strokeColor = viewer.color.includes('|') ? `#${viewer.color.split('|')[0]}` : DEFAULT_STROKE_COLOR;
-    const path = buildPath(linkLocation)!;
+    const path = buildPath(linkLocation, {
+      straight: this.props.engine.isFeatureEnabled(FeatureFlag.STRAIGHT_LINES) && this.props.engine.isStraightLinks(),
+      unconnected: true,
+    });
 
     return (
       <LinkOverlaySvg key={tabID}>

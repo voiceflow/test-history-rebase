@@ -1,5 +1,5 @@
 import { AlexaProjectData, AlexaProjectMemberData } from '@voiceflow/alexa-types';
-import { BasePlatformData, Project as DBProject } from '@voiceflow/api-sdk';
+import { BasePlatformData, Project as DBProject, ProjectLinkType } from '@voiceflow/api-sdk';
 import { GoogleProjectData, GoogleProjectMemberData } from '@voiceflow/google-types';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
@@ -12,7 +12,7 @@ const projectAdapter = createAdapter<
   DBProject<AlexaProjectData | GoogleProjectData | BasePlatformData, AlexaProjectMemberData | GoogleProjectMemberData | BasePlatformData>,
   Project
 >(
-  ({ _id, name, devVersion, platform, privacy, image = null, liveVersion }) => ({
+  ({ _id, name, devVersion, platform, privacy, image = null, liveVersion, linkType = ProjectLinkType.CURVED }) => ({
     id: _id,
     name,
     isLive: !!liveVersion,
@@ -24,6 +24,7 @@ const projectAdapter = createAdapter<
     versionID: devVersion!,
     image,
     privacy,
+    linkType,
   }),
   () => {
     throw new AdapterNotImplementedError();

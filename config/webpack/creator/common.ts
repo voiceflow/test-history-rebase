@@ -43,6 +43,9 @@ export default merge(commonConfig, {
               'store/types/**/*.ts',
               'models/**/*',
 
+              // TODO: remove when new share system splash screens gets used
+              'components/ShareSplashScreen/**/*',
+
               // TODO: delete when SubMenu gets used
               'components/SubMenu/**/*',
 

@@ -1,0 +1,15 @@
+import { Meta, Preview, Story } from '@/../.storybook';
+
+import * as stories from './index.story';
+
+import ShareSplashScreen from '.';
+
+<Meta title="ShareSplashScreen" component={ShareSplashScreen} />
+
+# Share Splash Screens
+
+<Preview>
+  <Story name="withDialog">{stories.withDialog()}</Story>
+  <Story name="mobile">{stories.mobile()}</Story>
+  <Story name="mobileInstruction">{stories.mobileInstruction()}</Story>
+</Preview>

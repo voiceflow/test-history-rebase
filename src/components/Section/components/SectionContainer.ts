@@ -170,7 +170,12 @@ const SectionContainer = styled.div<SectionContainerProps>`
     if (variant === SectionVariant.SUBSECTION) {
       return css`
         ${Header} {
-          padding-bottom: 11px;
+          padding-bottom: 0px;
+          margin-bottom: 11px;
+        }
+
+        ${ContentContainer} {
+          padding-bottom: ${units(2.5)}px;
         }
       `;
     }

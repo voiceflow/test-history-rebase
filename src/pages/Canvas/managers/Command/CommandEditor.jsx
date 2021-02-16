@@ -51,11 +51,11 @@ function CommandEditor({ data, diagram, goToDiagram, platform, intent, onChange,
         />
       }
     >
-      <Section variant={SectionVariant.TERTIARY} header="Flow" tooltip={<FlowTooltip />}>
+      <Section variant={SectionVariant.SUBSECTION} header="Flow" tooltip={<FlowTooltip />}>
         <Flow data={{ ...data, ...data[platform] }} diagram={diagram} onChange={onChangeData} isCommand enterOnCreate={false} />
       </Section>
 
-      <Section variant={SectionVariant.TERTIARY} header="Intent" tooltip={<IntentTooltip />}>
+      <Section isDividerNested variant={SectionVariant.SUBSECTION} header="Intent" tooltip={<IntentTooltip />}>
         <IntentSelect intent={intent} onChange={({ intent }) => onChangeData({ intent })} />
       </Section>
       <IntentForm intent={intent} pushToPath={pushToPath} />

@@ -356,6 +356,8 @@ export enum ModalType {
   BOARD_DELETE = 'board-delete',
   BOARD_SETTINGS = 'board-settings',
 
+  API_KEY_CREATE = 'api-key-create',
+
   SUCCESS = 'success',
 
   SLOT_EDIT = 'slot-edit',

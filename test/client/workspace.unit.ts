@@ -33,6 +33,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
       'sendInvite',
       'acceptInvite',
       'getInviteLink',
+      'listAPIKeys',
     ]);
   });
 

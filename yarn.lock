@@ -5874,6 +5874,17 @@
     axios "^0.21.1"
     superstruct "^0.10.12"
 
+"@voiceflow/api-sdk@1.26.0":
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.26.0.tgz#10033ea78c736434b6d51bccb848b941e33bcb2f"
+  integrity sha512-J44y2y3wvsYMLFdCTm/VAqOk3HLTYGPHBSycnna/ZYI3tiFsrKF1foR7xyST/OsH2+5LLti+Gpl83WxNq2V7ew==
+  dependencies:
+    "@types/atob" "^2.1.2"
+    "@voiceflow/logger" "^1.4.2"
+    atob "^2.1.2"
+    axios "^0.21.1"
+    superstruct "^0.10.12"
+
 "@voiceflow/commitlint-config@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/commitlint-config/-/commitlint-config-1.0.1.tgz#e9513aa348d5e88ff064022e2dae8d0d7e227f6a"

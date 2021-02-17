@@ -32,11 +32,11 @@ import { copy } from '@/utils/clipboard';
 import * as Query from '@/utils/query';
 import * as Userflow from '@/vendors/userflow';
 
-import DashboardHeader from './Header';
 import BoardDeleteModal from './components/BoardDeleteModal';
 import BoardSettingsModal from './components/BoardSettingsModal';
 import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
+import DashboardHeader from './Header';
 
 const getBoardFilteredProjects = (projectsIDs: string[], projectsMap: Record<string, Models.Project>, filter: string) => {
   const filtered: Models.Project[] = [];

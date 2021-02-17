@@ -1,11 +1,12 @@
 import { BillingPeriod, PlanType, UserRole } from '@/constants';
 import { DBWorkspace, Price } from '@/models';
+import { APIKey } from '@/models/APIKey';
 import { DBBilling } from '@/models/Billing';
 
 import invoiceAdapter from './adapters/invoice';
 import memberAdapter from './adapters/member';
 import workspaceAdapter from './adapters/workspace';
-import fetch from './fetch';
+import fetch, { apiV2 } from './fetch';
 
 export const LEGACY_WORKSPACE_PATH = 'team';
 export const WORKSPACES_PATH = 'workspaces';
@@ -79,6 +80,8 @@ const workspaceClient = {
     fetch.post<DBWorkspace.Member | void>(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
 
   getInviteLink: (workspaceID: string, role: UserRole) => fetch.post<string>(`${WORKSPACES_PATH}/${workspaceID}/inviteLink`, { role }),
+
+  listAPIKeys: (workspaceID: string) => apiV2.get<APIKey[]>(`${WORKSPACES_PATH}/${workspaceID}/api-keys`),
 };
 
 export default workspaceClient;

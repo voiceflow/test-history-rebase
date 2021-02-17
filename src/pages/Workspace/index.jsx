@@ -2,20 +2,22 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import { compose } from 'recompose';
 
-import PrivateRoute from '@/Routes/PrivateRoute';
 import Button from '@/components/LegacyButton';
 import { Path } from '@/config/routes';
 import { goTo } from '@/ducks/router';
 import { allWorkspacesSelector } from '@/ducks/workspace';
 import { WorkspacesLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
+import APIKeys from '@/pages/APIKeys';
 import Dashboard from '@/pages/Dashboard';
 import NewProject from '@/pages/NewProject';
+import PrivateRoute from '@/Routes/PrivateRoute';
 import { getActivePageAndMatch } from '@/utils/routes';
 
 const PAGES_MATCHES = {
   template: [Path.WORKSPACE_TEMPLATE, `${Path.WORKSPACE_TEMPLATE}/:workspaceID`],
   dashboard: [`${Path.WORKSPACE}/:workspaceID`, Path.DASHBOARD],
+  apikeys: [`${Path.WORKSPACE}/:workspaceID/api-keys`],
   onboarding: [Path.ONBOARDING],
 };
 
@@ -46,6 +48,7 @@ function Workspace({ workspaces, goTo }) {
   return (
     <Switch>
       <PrivateRoute exact path={[Path.WORKSPACE_TEMPLATE, `${Path.WORKSPACE_TEMPLATE}/:listID`]} component={NewProject} />
+      <PrivateRoute exact path={[`${Path.WORKSPACE}/:workspaceID/api-keys`]} component={APIKeys} />
       <PrivateRoute exact path={[`${Path.WORKSPACE}/:workspaceID`, Path.DASHBOARD]} component={Dashboard} />
     </Switch>
   );

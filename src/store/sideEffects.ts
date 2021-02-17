@@ -90,8 +90,10 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
   const [dbVersion] = await Promise.all([
     client.api.version.get<AlexaVersionData | GoogleVersionData>(versionID),
     dispatch(Diagram.loadVersionDiagrams(versionID)),
-    dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users')),
   ] as const);
+
+  // not a dependency for project to load
+  dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));
 
   const dbProject = await client.api.project.get<AlexaProjectData | GoogleProjectData, AlexaProjectMemberData | GoogleProjectMemberData>(
     dbVersion.projectID

@@ -43,6 +43,7 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   isCollapsed?: boolean;
   headerToggle?: boolean;
   tooltipProps?: any; // TODO: replace with real props
+  nestedIntend?: boolean;
   collapseVariant?: SectionToggleVariant | null;
   isDividerNested?: boolean;
   isDraggingPreview?: boolean;
@@ -78,6 +79,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
     isCollapsed,
     headerToggle = false,
     tooltipProps,
+    nestedIntend,
     collapseVariant = null,
     isDividerNested = false,
     isDraggingPreview = false,
@@ -114,7 +116,14 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
       {...props}
     >
       {hasHeader && (
-        <Header ref={headerRef} isDragging={isDragging} containerToggle={!!clickHandler} onClick={clickHandler} style={customHeaderStyling}>
+        <Header
+          ref={headerRef}
+          isDragging={isDragging}
+          containerToggle={!!clickHandler}
+          onClick={clickHandler}
+          style={customHeaderStyling}
+          nestedIntend={nestedIntend}
+        >
           {(prefix || header || tooltip || dropdown) && (
             <HeaderContent>
               {prefix && <FixNode fixNode={prefix} color="#787878" />}

@@ -40,6 +40,7 @@ declare module 'webpack-nano/argv' {
     ff_wavenetVoices: boolean;
     ff_ownerRole: boolean;
     ff_straightLines: boolean;
+    ff_sharePrototypeView: boolean;
   }>;
 
   export = argv;

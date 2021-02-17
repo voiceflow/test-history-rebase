@@ -1,6 +1,6 @@
 import { css, styled } from '@/hocs';
 
-const Header = styled.div<{ marginBottom?: number }>`
+const Header = styled.div<{ marginBottom?: number; secondary?: boolean }>`
   font-size: 15px;
   font-weight: 600;
   color: #132144;
@@ -15,6 +15,12 @@ const Header = styled.div<{ marginBottom?: number }>`
     marginBottom &&
     css`
       margin-bottom: ${marginBottom}px;
+    `}
+
+  ${({ secondary }) =>
+    secondary &&
+    css`
+      color: #62778c;
     `}
 `;
 

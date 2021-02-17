@@ -1,4 +1,4 @@
-import { InputMode, PrototypeState, PrototypeStatus } from './types';
+import { InputMode, PrototypeLayout, PrototypeState, PrototypeStatus } from './types';
 
 export const STATE_KEY = 'prototype';
 
@@ -29,4 +29,7 @@ export const INITIAL_STATE: PrototypeState = {
     variables: {},
   },
   webhook: null,
+  settings: {
+    layout: PrototypeLayout.TEXT_DIALOG,
+  },
 };

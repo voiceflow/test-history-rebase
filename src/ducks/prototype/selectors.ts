@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import * as Skill from '../skill';
 import { createRootSelector } from '../utils';
 import { STATE_KEY } from './constants';
-import { PrototypeMode } from './types';
+import { PrototypeLayout, PrototypeMode } from './types';
 
 export const prototypeSelector = createRootSelector(STATE_KEY);
 
@@ -51,3 +51,5 @@ export const activePathBlockIDsSelector = createSelector([prototypeSelector], ({
 export const activePathLinkIDsSelector = createSelector([prototypeSelector], ({ activePathLinkIDs }) => activePathLinkIDs);
 
 export const prototypeWebhookDataSelector = createSelector([prototypeSelector], ({ webhook }) => webhook);
+
+export const prototypeLayoutSelector = createSelector([prototypeSelector], ({ settings }) => settings.layout || PrototypeLayout.TEXT_DIALOG);

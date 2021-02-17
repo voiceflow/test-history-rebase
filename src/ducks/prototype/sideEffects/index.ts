@@ -1,8 +1,10 @@
+import client from '@/client';
+import { toast } from '@/components/Toast';
 import * as Skill from '@/ducks/skill';
 import { SyncThunk } from '@/store/types';
 
-import { updatePrototypeMode } from '../actions';
-import { PrototypeMode } from '../types';
+import { updatePrototypeMode, updatePrototypeSettings } from '../actions';
+import { PrototypeMode, PrototypeShareViewSettings } from '../types';
 
 export { default as startPrototype } from './start';
 export { default as resetPrototype } from './reset';
@@ -13,4 +15,16 @@ export const updateActivePrototypeMode = (mode: PrototypeMode): SyncThunk => (di
   const projectID = Skill.activeProjectIDSelector(getState());
 
   dispatch(updatePrototypeMode(projectID, mode));
+};
+
+export const updateSharePrototypeSettings = (data: Partial<PrototypeShareViewSettings>): SyncThunk => async (dispatch, getState) => {
+  const versionID = Skill.activeSkillIDSelector(getState());
+
+  try {
+    await client.api.version.updatePrototypeSettings(versionID, data);
+
+    dispatch(updatePrototypeSettings(data));
+  } catch (e) {
+    toast.error('Something went wrong');
+  }
 };

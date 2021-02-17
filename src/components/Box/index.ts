@@ -1,19 +1,19 @@
 import {
-  BordersProps,
-  ColorProps,
-  FlexboxProps,
-  LayoutProps,
-  PositionProps,
-  SpaceProps,
-  TypographyProps,
   border,
   borderRadius,
+  BordersProps,
   color,
+  ColorProps,
   flexbox,
+  FlexboxProps,
   layout,
+  LayoutProps,
   position,
+  PositionProps,
   space,
+  SpaceProps,
   typography,
+  TypographyProps,
 } from 'styled-system';
 
 import { flexApartStyles, flexCenterStyles, flexEndStyles, flexStartStyles, flexStyles } from '@/components/Flex';

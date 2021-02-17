@@ -34,6 +34,19 @@ export type WebhookData = {
   utterance?: string;
 };
 
+export enum PrototypeLayout {
+  TEXT_DIALOG = 'text-and-dialog',
+  VOICE_DIALOG = 'voice-and-dialog',
+  VOICE_VISUALS = 'voice-and-visuals',
+}
+
+export type PrototypeShareViewSettings = {
+  layout?: PrototypeLayout;
+  brandColor?: string;
+  brandImage?: string;
+  avatar?: string;
+};
+
 export interface PrototypeState {
   ID: string | null;
   muted: boolean;
@@ -58,4 +71,5 @@ export interface PrototypeState {
     dataHistory: (StepData | null)[];
   };
   webhook: GeneralRequest;
+  settings: PrototypeShareViewSettings;
 }

@@ -2,18 +2,23 @@ import React from 'react';
 
 import Button, { ButtonVariant } from '@/components/Button';
 import { Link } from '@/components/Text';
+import { FeatureFlag } from '@/config/features';
+import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
-import { useModals } from '@/hooks';
+import { useFeature, useModals, usePermission } from '@/hooks';
 import { Container, DropdownContainer } from '@/pages/Collaborators/components/InviteByLink/components';
 
 type SharePrototypeProps = {
   isAllowed: boolean;
   onClick: () => void;
   noIcon?: boolean;
+  link: string | null;
 };
 
-const SharePrototype: React.FC<SharePrototypeProps> = ({ isAllowed, onClick }) => {
+const SharePrototype: React.FC<SharePrototypeProps> = ({ isAllowed, onClick, link }) => {
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
+  const sharePrototypeView = useFeature(FeatureFlag.SHARE_PROTOTYPE_VIEW);
+  const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
 
   const handleCopyLink = () => {
     if (!isAllowed) {
@@ -27,7 +32,11 @@ const SharePrototype: React.FC<SharePrototypeProps> = ({ isAllowed, onClick }) =
     <Container>
       <DropdownContainer>
         <span>
-          <Link href="https://docs.voiceflow.com/#/quickstart/testable-links">Learn More</Link>
+          {canSharePrototype && sharePrototypeView.isEnabled && link ? (
+            <Link href={link!}>Open in a new tab</Link>
+          ) : (
+            <Link href="https://docs.voiceflow.com/#/quickstart/testable-links">Learn More</Link>
+          )}
         </span>
       </DropdownContainer>
       <Button variant={ButtonVariant.PRIMARY} icon={isAllowed ? 'link' : null} onClick={handleCopyLink}>

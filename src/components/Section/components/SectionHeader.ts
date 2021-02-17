@@ -4,6 +4,7 @@ import { css, styled, transition, units } from '@/hocs';
 type SectionHeaderProps = {
   isDragging?: boolean;
   containerToggle?: boolean;
+  nestedIntend?: boolean;
 };
 
 const SectionHeader = styled(FlexApart)<SectionHeaderProps>`
@@ -13,6 +14,12 @@ const SectionHeader = styled(FlexApart)<SectionHeaderProps>`
   cursor: default;
 
   ${transition('background')};
+
+  ${({ nestedIntend }) =>
+    nestedIntend &&
+    css`
+      padding-left: 0;
+    `}
 
   ${({ containerToggle }) =>
     containerToggle &&

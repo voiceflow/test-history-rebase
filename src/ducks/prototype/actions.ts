@@ -6,7 +6,7 @@ import { createAction } from '@/ducks/utils';
 import { Store } from '@/models';
 import { Action } from '@/store/types';
 
-import { Context, PrototypeMode, PrototypeState, PrototypeStatus } from './types';
+import { Context, PrototypeMode, PrototypeShareViewSettings, PrototypeState, PrototypeStatus } from './types';
 
 // actions
 
@@ -23,6 +23,7 @@ export enum PrototypeAction {
   UPDATE_TEST_VISUAL_DATA_HISTORY = 'TEST:VISUAL_DATA_HISTORY:UPDATE',
   UPDATE_TEST_VISUAL_DEVICE = 'TEST:VISUAL_DEVICE:UPDATE',
   UPDATE_WEBHOOK = 'TEST:WEBHOOK:UPDATE',
+  UPDATE_PROTOTYPE_SETTINGS = 'TEST:PROTOTYPE_SETTINGS:UPDATE',
 }
 
 // action types
@@ -48,6 +49,8 @@ export type UpdatePrototypeContextStore = Action<PrototypeAction.UPDATE_TEST_CON
 
 export type UpdatePrototypeWebhookData = Action<PrototypeAction.UPDATE_WEBHOOK, GeneralRequest>;
 
+export type UpdatePrototypeSettings = Action<PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, PrototypeShareViewSettings>;
+
 export type AnyPrototypeAction =
   | UpdatePrototype
   | PushContextHistory
@@ -59,6 +62,7 @@ export type AnyPrototypeAction =
   | UpdatePrototypeVisualDataHistory
   | UpdatePrototypeContext
   | UpdatePrototypeContextStore
+  | UpdatePrototypeSettings
   | UpdatePrototypeWebhookData;
 
 // action creators
@@ -91,6 +95,9 @@ export const updatePrototypeContextStore = (store: StoreType) => (payload: Parti
 
 export const updatePrototypeWebhookData = (payload: GeneralRequest): UpdatePrototypeWebhookData =>
   createAction(PrototypeAction.UPDATE_WEBHOOK, payload);
+
+export const updatePrototypeSettings = (payload: PrototypeShareViewSettings): UpdatePrototypeSettings =>
+  createAction(PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, payload);
 
 export const updateVariables = updatePrototypeContextStore(StoreType.VARIABLES);
 export const updateTurn = updatePrototypeContextStore(StoreType.TURN);

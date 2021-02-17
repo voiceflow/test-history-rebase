@@ -56,23 +56,33 @@ export const uploadStyles = css`
 `;
 
 export const dividersStyles = css<SectionContainerProps>`
-  &::before {
-    position: absolute;
-    left: ${({ isDividerNested, theme }) => (isDividerNested ? theme.unit * 4 : 0)}px;
-    right: 0;
-    display: block;
-    height: 1px;
-    background-color: #eaeff4;
-    content: '';
+  position: absolute;
+  left: ${({ isDividerNested, theme }) => (isDividerNested ? theme.unit * 4 : 0)}px;
+  right: 0;
+  display: block;
+  height: 1px;
+  background-color: #eaeff4;
+  content: '';
 
-    ${({ isDividerBottom }) =>
-      isDividerBottom
-        ? css`
-            bottom: 0;
-          `
-        : css`
-            top: 0;
-          `}
+  ${({ isDividerBottom }) =>
+    isDividerBottom
+      ? css`
+          bottom: 0;
+        `
+      : css`
+          top: 0;
+        `}
+`;
+
+export const beforeDividersStyle = css<SectionContainerProps>`
+  &::before {
+    ${dividersStyles}
+  }
+`;
+
+export const afterDividersStyle = css<SectionContainerProps>`
+  &::after {
+    ${dividersStyles}
   }
 `;
 
@@ -84,10 +94,10 @@ const SectionContainer = styled.div<SectionContainerProps>`
     dividers &&
     !isRounded &&
     (isNested || isDividerNested || forceDividers
-      ? dividersStyles
+      ? beforeDividersStyle
       : css`
           :not(${isDividerBottom ? ':last-child' : ':first-child'}) {
-            ${dividersStyles}
+            ${beforeDividersStyle}
           }
         `)}
 

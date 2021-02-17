@@ -7,7 +7,14 @@ export const CaretIcon = styled(SvgIcon)`
   display: inline-block;
 `;
 
-export const ButtonContainer = styled.div<{ isOpen: boolean; padding?: string; disabled?: boolean; variant: TextVariant }>`
+export const ButtonContainer = styled.div<{
+  isOpen: boolean;
+  padding?: string;
+  disabled?: boolean;
+  fullWidth?: boolean;
+  border?: string;
+  variant: TextVariant;
+}>`
   cursor: pointer;
   display: inline-block;
 
@@ -30,14 +37,29 @@ export const ButtonContainer = styled.div<{ isOpen: boolean; padding?: string; d
       padding: ${padding};
     `}
 
+   ${({ border }) =>
+    border &&
+    css`
+      border: ${border};
+      border-radius: 5px;
+      padding: 12px 16px;
+    `}
+
     ${({ disabled }) =>
     disabled &&
     css`
       pointer-events: none;
     `}
+
+    ${({ fullWidth }) =>
+    fullWidth &&
+    css`
+      display: flex;
+      align-items: center;
+    `}
 `;
 
-export const TextContainer = styled.div<{ capitalized?: boolean }>`
+export const TextContainer = styled.div<{ capitalized?: boolean; fullWidth?: boolean }>`
   display: inline-block;
   margin-right: 10px;
 
@@ -46,6 +68,12 @@ export const TextContainer = styled.div<{ capitalized?: boolean }>`
     capitalized &&
     css`
       text-transform: uppercase;
+    `}
+
+  ${({ fullWidth }) =>
+    fullWidth &&
+    css`
+      flex: 1;
     `}
 `;
 

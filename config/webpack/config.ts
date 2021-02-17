@@ -13,6 +13,7 @@ import {
   env,
   ff_gadgets,
   ff_ownerRole,
+  ff_sharePrototypeView,
   ff_straightLines,
   ff_visualPrototype,
   ff_visualStep,
@@ -73,6 +74,7 @@ export const ENV = {
   FF_STRAIGHT_LINES: ff_straightLines && 'true',
   FF_WAVENET_VOICES: ff_wavenetVoices && 'true',
   FF_OWNER_ROLE: ff_ownerRole && 'true',
+  FF_SHARE_PROTOTYPE_VIEW: ff_sharePrototypeView && 'true',
 
   API_HOST: 'localhost',
   ...EXTRACTED_ENV,

@@ -6,3 +6,4 @@ export { default as Header } from './Header';
 export { default as Description } from './Description';
 export { default as SharePrototype } from './SharePrototype';
 export { default as ExportItem } from './ExportItem';
+export { default as MenuContent } from './MenuContent';

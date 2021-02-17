@@ -3,9 +3,9 @@ import { styled } from '@/hocs';
 
 const MenuContainer = styled(Menu)`
   /* to override default Popovercontainer width styling */
-  max-width: 456px;
-  width: 456px;
-  max-height: 500px;
+  max-width: 438px;
+  width: 438px;
+  max-height: 506px;
   padding-bottom: 0;
 `;
 

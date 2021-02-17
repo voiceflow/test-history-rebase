@@ -66,13 +66,14 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.COMMENTING]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.BULK_UPLOAD]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.SHARE_PROTOTYPE]: [
-    PlanType.STUDENT,
-    PlanType.OLD_STARTER,
     PlanType.PRO,
-    PlanType.OLD_PRO,
     PlanType.TEAM,
+    PlanType.STARTER,
+    PlanType.STUDENT,
+    PlanType.OLD_PRO,
     PlanType.OLD_TEAM,
     PlanType.ENTERPRISE,
+    PlanType.OLD_STARTER,
     PlanType.OLD_ENTERPRISE,
   ],
   [Permission.SHARE_PROJECT]: [

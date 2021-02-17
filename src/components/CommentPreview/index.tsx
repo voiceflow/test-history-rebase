@@ -3,10 +3,9 @@ import React from 'react';
 import Text from '@/components/Text';
 import * as Workspace from '@/ducks/workspace';
 import { UNKNOWN_MEMBER_DATA } from '@/ducks/workspace/constants';
-import { connect, withTheme } from '@/hocs';
-import { Theme } from '@/styles/theme';
+import { connect } from '@/hocs';
+import { useTheme } from '@/hooks';
 import { ConnectedProps } from '@/types';
-import { compose } from '@/utils/functional';
 
 import { Container } from './components';
 
@@ -15,7 +14,6 @@ const MENTION_REGEX = /(@[^\]]+)/g;
 
 export type CommentPreviewProps = {
   text?: string;
-  theme?: Theme;
 };
 
 const extractUserID = (text: string) => {
@@ -24,7 +22,8 @@ const extractUserID = (text: string) => {
 
 const UNKNOWN_MEMBER_MENTION = UNKNOWN_MEMBER_DATA.name.replace(' ', '').toLowerCase();
 
-const CommentPreview: React.FC<CommentPreviewProps & ConnectedCommentPreviewProps> = ({ theme, text = '', hasMember }) => {
+const CommentPreview: React.FC<CommentPreviewProps & ConnectedCommentPreviewProps> = ({ text = '', hasMember }) => {
+  const theme = useTheme();
   const formattedText = React.useMemo(() => {
     return text.replace(MENTION_MARKUP_REGEX, (str: string) => {
       const userID = extractUserID(str);
@@ -36,7 +35,7 @@ const CommentPreview: React.FC<CommentPreviewProps & ConnectedCommentPreviewProp
   const styledText = React.useMemo(
     () =>
       formattedText.split(' ').map((str: string, index: number) => (
-        <Text key={index} color={str.startsWith('@') ? theme?.colors.blue : theme?.colors.primary} fontSize={15}>
+        <Text key={index} color={str.startsWith('@') ? theme.colors.blue : theme.colors.primary} fontSize={15}>
           {`${str} `}
         </Text>
       )),
@@ -52,4 +51,4 @@ const mapStateToProps = {
 
 type ConnectedCommentPreviewProps = ConnectedProps<typeof mapStateToProps>;
 
-export default compose(connect(mapStateToProps), withTheme)(CommentPreview) as React.FC<CommentPreviewProps>;
+export default connect(mapStateToProps)(CommentPreview) as React.FC<CommentPreviewProps>;

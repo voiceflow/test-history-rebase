@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTheme } from 'styled-components';
 
 import SvgIcon from '@/components/SvgIcon';
 import TippyTooltip from '@/components/TippyTooltip';
@@ -7,8 +6,8 @@ import { BlockVariant } from '@/constants/canvas';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import { connect, styled, transition } from '@/hocs';
+import { useTheme } from '@/hooks';
 import { ClassName } from '@/styles/constants';
-import { Theme } from '@/styles/theme';
 import { ConnectedProps } from '@/types';
 
 import {
@@ -45,7 +44,7 @@ type PlayButtonProps = {
 };
 
 const PlayButton: React.FC<ConnectedPlayButtonProps & PlayButtonProps> = ({ nodeID, variant, updatePrototype, goToPrototype }) => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
 
   return (
     <Container>

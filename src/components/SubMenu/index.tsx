@@ -1,10 +1,9 @@
 import React from 'react';
-import { useTheme } from 'styled-components';
 
 import SvgIcon, { Icon } from '@/components/SvgIcon';
 import TippyTooltip from '@/components/TippyTooltip';
 import { PrototypeMode } from '@/ducks/prototype/types';
-import { Theme } from '@/styles/theme';
+import { useTheme } from '@/hooks';
 import { SlideOutDirection } from '@/styles/transitions';
 
 import Drawer from '../Drawer';
@@ -23,7 +22,7 @@ export type SubMenuProps = {
 };
 
 const SubMenu: React.FC<SubMenuProps> = ({ open, options, selected, onChange }) => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   const [selectedOption, setSelectedOption] = React.useState(selected || options?.[0].value || '');
   const selectedIndex = React.useMemo(() => options.findIndex((option) => option.value === selectedOption), [options, selected]);
 

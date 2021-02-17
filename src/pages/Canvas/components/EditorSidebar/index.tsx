@@ -1,22 +1,19 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { withTheme } from 'styled-components';
 
 import Drawer from '@/components/Drawer';
 import { RemoveIntercom } from '@/components/IntercomChat';
 import { BlockType, MARKUP_NODES } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
-import { useEnableDisable } from '@/hooks';
+import { useEnableDisable, useTheme } from '@/hooks';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { ManagerContext, PlatformContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
 import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
 import { useEditingMode } from '@/pages/Skill/hooks';
-import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut.ts';
 import { stopImmediatePropagation } from '@/utils/dom';
-import { compose } from '@/utils/functional';
 
 import EditorModal from './components/EditorModal';
 import { SidebarProvider } from './contexts';
@@ -25,11 +22,8 @@ import { useEditorPath, useUpdateData } from './hooks';
 
 const UNEDITABLE_BLOCKS = [BlockType.COMMENT, BlockType.MARKUP_IMAGE];
 
-type EditSidebarProps = {
-  theme: Theme;
-};
-
-const EditSidebar: React.FC<EditSidebarProps> = ({ theme }) => {
+const EditSidebar = () => {
+  const theme = useTheme();
   const focus = useSelector(Creator.creatorFocusSelector);
   const focusedNodeData = useSelector(Creator.focusedNodeDataSelector);
 
@@ -133,4 +127,4 @@ const EditSidebar: React.FC<EditSidebarProps> = ({ theme }) => {
   );
 };
 
-export default compose(withTheme, React.memo)(EditSidebar) as React.FC;
+export default React.memo(EditSidebar);

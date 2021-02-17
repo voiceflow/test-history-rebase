@@ -2,7 +2,6 @@ import { DEVICE_SIZE_MAP } from '@voiceflow/general-types';
 import { VisualType } from '@voiceflow/general-types/build/nodes/visual';
 import cuid from 'cuid';
 import React from 'react';
-import { useTheme } from 'styled-components';
 
 import Box from '@/components/Box';
 import Canvas from '@/components/Canvas';
@@ -13,9 +12,8 @@ import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useLinkedState } from '@/hooks';
+import { useLinkedState, useTheme } from '@/hooks';
 import { DEVICE_LIST } from '@/pages/Prototype/constants';
-import { Theme } from '@/styles/theme';
 import { ConnectedProps, Pair } from '@/types';
 
 import { APL, Image, PlaceholderIconContainer } from './components';
@@ -34,7 +32,7 @@ const PrototypeVisualCanvas: React.FC<PrototypeVisualCanvasProps & ConnectedProt
   platform,
   controlScheme,
 }) => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
 
   const dimension = React.useMemo(() => {
     if (data?.visualType === VisualType.IMAGE) {

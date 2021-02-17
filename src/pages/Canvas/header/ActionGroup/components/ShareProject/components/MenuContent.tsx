@@ -1,5 +1,4 @@
 import React from 'react';
-import { withTheme } from 'styled-components';
 
 import Box from '@/components/Box';
 // import Divider from '@/components/Divider';
@@ -11,18 +10,13 @@ import { ScrollContextProvider } from '@/contexts';
 // import { useModals } from '@/hooks';
 import { useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
 import { useToggle } from '@/hooks/toggle';
-import { Theme } from '@/styles/theme';
 
 import Description from './Description';
 import Header from './Header';
 import MenuContentHeader from './MenuContentHeader';
 import PrototypeLayoutSelect from './PrototypeLayoutSelect';
 
-export type MenuContentProps = {
-  theme: Theme;
-};
-
-const MenuContent: React.FC<MenuContentProps> = () => {
+const MenuContent: React.FC = () => {
   const [isExpanded] = useToggle(false);
   // const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
 
@@ -79,4 +73,4 @@ const MenuContent: React.FC<MenuContentProps> = () => {
   );
 };
 
-export default withTheme(MenuContent);
+export default MenuContent;

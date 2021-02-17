@@ -3,7 +3,7 @@ import { DeviceType, Dimensions } from '@voiceflow/general-types';
 import { SubMenuItem } from '@/components/SubMenu';
 import { Icon } from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
-import { PrototypeMode } from '@/ducks/prototype/types';
+import { PrototypeMode } from '@/ducks/prototype';
 
 const canvasIcon: SubMenuItem = {
   value: PrototypeMode.CANVAS,

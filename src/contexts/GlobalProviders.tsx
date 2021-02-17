@@ -11,7 +11,7 @@ import { APLRendererProvider } from '@/components/APLRenderer';
 import { INTERCOM_APP_ID, IS_PRODUCTION_ENV } from '@/config';
 import { MaintenanceGate } from '@/gates';
 import { Store } from '@/store/types';
-import theme from '@/styles/theme';
+import THEME from '@/styles/theme';
 
 import { DragProvider } from './DragContext';
 import { EventualEngineProvider } from './EventualEngineContext';
@@ -40,7 +40,7 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
   return (
     <StoreProvider store={store} persistor={persistor}>
       <DndProvider backend={HTML5Backend}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={THEME}>
           <IntercomProvider appId={INTERCOM_APP_ID}>
             <TextEditorVariablesPopoverProvider value={document.body}>
               <MousePositionProvider>

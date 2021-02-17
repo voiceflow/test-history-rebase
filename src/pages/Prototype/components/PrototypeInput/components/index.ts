@@ -4,7 +4,6 @@ import Flex, { FlexCenter } from '@/components/Flex';
 import SvgIconContainer from '@/components/SvgIcon/components/SvgIconContainer';
 import TextArea from '@/components/TextArea';
 import { css, styled, transition } from '@/hocs';
-import THEME from '@/styles/theme';
 
 // eslint-disable-next-line xss/no-mixed-html
 export const InputArea = styled(TextArea)<{ inputRef: ((node: HTMLTextAreaElement) => void) | React.RefObject<HTMLTextAreaElement> }>`
@@ -23,7 +22,7 @@ export const InputArea = styled(TextArea)<{ inputRef: ((node: HTMLTextAreaElemen
 
 export const ControlsContainer = styled(Flex)`
   padding: 10px 24px;
-  background: ${THEME.backgrounds.white};
+  background: ${({ theme }) => theme.backgrounds.white};
   border-top: 1px solid #e2e9ec !important;
 `;
 
@@ -31,7 +30,7 @@ export const InputContainer = styled.div`
   position: relative;
   min-height: 70px;
   border-top: 1px solid #e2e9ec !important;
-  background: ${THEME.backgrounds.white};
+  background: ${({ theme }) => theme.backgrounds.white};
 `;
 
 const activeButtonStyle = css`

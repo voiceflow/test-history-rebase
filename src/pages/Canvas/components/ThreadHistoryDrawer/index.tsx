@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { withTheme } from 'styled-components';
 
 import Drawer from '@/components/Drawer';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
@@ -8,15 +7,14 @@ import BaseMenu, { MenuItem } from '@/components/Menu';
 import Text from '@/components/Text';
 import * as Thread from '@/ducks/thread';
 import { connect } from '@/hocs';
+import { useTheme } from '@/hooks';
 import { Thread as ThreadType } from '@/models';
 import { EditorContentAnimation } from '@/pages/Canvas/components/Editor';
 import { useCommentingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
-import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut.ts';
 import { ConnectedProps } from '@/types';
 import { stopImmediatePropagation } from '@/utils/dom';
-import { compose } from '@/utils/functional';
 
 import { Container as HeaderContainer, NoThreads, ThreadItem } from './components';
 import { FILTER_LABELS, FilterType } from './constants';
@@ -24,15 +22,11 @@ import { FILTER_LABELS, FilterType } from './constants';
 const Menu: any = BaseMenu;
 
 export type ThreadHistoryDrawerProps = {
-  theme: Theme;
   focusedTarget?: string | null;
 };
 
-export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps & ConnectedThreadHistoryDrawerProps> = ({
-  openThreads,
-  resolvedThreads,
-  theme,
-}) => {
+export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps & ConnectedThreadHistoryDrawerProps> = ({ openThreads, resolvedThreads }) => {
+  const theme = useTheme();
   const [filter, updateFilter] = React.useState<FilterType>(FilterType.OPEN);
   const threads = filter === FilterType.RESOLVED ? resolvedThreads : openThreads;
   const label = FILTER_LABELS[filter];
@@ -88,6 +82,4 @@ const mapStateToProps = {
 
 export type ConnectedThreadHistoryDrawerProps = ConnectedProps<typeof mapStateToProps>;
 
-export default compose(connect(mapStateToProps), withTheme, React.memo)(ThreadHistoryDrawer as any) as React.FC<
-  Omit<ThreadHistoryDrawerProps, 'theme'>
->;
+export default connect(mapStateToProps)(ThreadHistoryDrawer) as React.FC<ThreadHistoryDrawerProps>;

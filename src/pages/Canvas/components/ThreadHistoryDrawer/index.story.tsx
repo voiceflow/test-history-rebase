@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Box from '@/components/Box';
-import Theme from '@/styles/theme';
+import THEME from '@/styles/theme';
 
 import { ThreadHistoryDrawer } from '.';
 
@@ -51,7 +51,7 @@ const RESOLVED_THREADS = [
   },
 ];
 
-export const getProps: any = () => ({ theme: Theme });
+export const getProps: any = () => ({ theme: THEME });
 
 export default {
   title: 'Thread History Drawer',

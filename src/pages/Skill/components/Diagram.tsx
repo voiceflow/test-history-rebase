@@ -1,6 +1,5 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { useTheme } from 'styled-components';
 
 import Drawer from '@/components/Drawer';
 import { RemoveIntercom } from '@/components/IntercomChat';
@@ -10,7 +9,7 @@ import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useEventualEngine, useTeardown } from '@/hooks';
+import { useEventualEngine, useTeardown, useTheme } from '@/hooks';
 import Canvas from '@/pages/Canvas';
 import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import TopPrompt from '@/pages/Canvas/components/TopPrompt';
@@ -25,7 +24,6 @@ import { useAnyModeOpen, useMarkupMode, usePrototypingMode } from '@/pages/Skill
 import DesignMenu from '@/pages/Skill/menus/DesignMenu';
 import MarkupMenu from '@/pages/Skill/menus/MarkupMenu';
 import PrototypeMenu from '@/pages/Skill/menus/PrototypeMenu';
-import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
 
@@ -38,7 +36,7 @@ export type DiagramProps = RouteComponentProps & {
 };
 
 const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ platform, diagramID, prototypeMode, canvasOnly, showCanvas, hideCanvas }) => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   const engine = useEventualEngine();
   const isMarkupMode = useMarkupMode();
   const isDesignMode = !useAnyModeOpen();

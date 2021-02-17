@@ -2,13 +2,12 @@ import React from 'react';
 
 import { DiagramLoadingGate } from '@/gates';
 import { withLoadingGate } from '@/hocs';
-import { useDidUpdateEffect, useSetup } from '@/hooks';
+import { useDidUpdateEffect, useSetup, useTheme } from '@/hooks';
 import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
 import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
-import THEME from '@/styles/theme';
 import { compose } from '@/utils/functional';
 
 import Container from './components/CanvasContainer';
@@ -29,6 +28,7 @@ type CanvasProps = {
 
 const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const engine = useEngine();
+  const theme = useTheme();
 
   React.useEffect(() => {
     if (engine.getRootNodeIDs().length === 1 && !engine.comment.isActive) {
@@ -38,7 +38,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
 
   useDidUpdateEffect(() => {
     const position = engine.canvas?.getPosition();
-    const { height } = THEME.components.subHeader;
+    const { height } = theme.components.subHeader;
 
     if (position) {
       engine.canvas?.setPosition([position[0], position[1] + (isPrototypingMode ? height : -height)]);

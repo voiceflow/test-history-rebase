@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
-import { useTheme } from 'styled-components';
 
 import { Permission } from '@/config/permissions';
 import { DragItem } from '@/constants';
@@ -8,11 +7,10 @@ import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useEnableDisable, useHotKeys, usePermission, useTrackingEvents } from '@/hooks';
+import { useDidUpdateEffect, useEnableDisable, useHotKeys, usePermission, useTheme, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useAnyModeOpen } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
-import { Theme } from '@/styles/theme';
 import { ConnectedProps } from '@/types';
 
 import { Container, Content, Flows, Header, Steps } from './components';
@@ -34,7 +32,7 @@ const DesignMenu: React.FC<ConnectedDesignMenuProps> = ({
   const isAnyModeOpen = useAnyModeOpen();
   const [isOpenByHover, openByHover, closeByLoseHover] = useEnableDisable(false);
   const designMenuRef = React.useRef<HTMLDivElement>(null);
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
 
   const mouseLeaveHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const menuRect = designMenuRef?.current?.getBoundingClientRect() || null;

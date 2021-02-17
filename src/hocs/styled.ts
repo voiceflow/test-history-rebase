@@ -1,10 +1,10 @@
 import _styled, {
+  css as _css,
   ThemedCssFunction,
   ThemedStyledInterface,
   ThemedStyledProps,
-  WithThemeFnInterface,
-  css as _css,
   withTheme as _withTheme,
+  WithThemeFnInterface,
 } from 'styled-components';
 import { ValuesType } from 'utility-types';
 

@@ -1,17 +1,17 @@
 import React from 'react';
-import { withTheme } from 'styled-components';
 
 import Box, { Flex } from '@/components/Box';
-import { Theme } from '@/styles/theme';
+import { useTheme } from '@/hooks';
 
 export type PrototypeLayoutItemProps = {
   src?: string;
   title?: string;
   description?: string;
-  theme: Theme;
 };
 
-const PrototypeLayoutItem: React.FC<PrototypeLayoutItemProps> = ({ src, title, description, theme }) => {
+const PrototypeLayoutItem: React.FC<PrototypeLayoutItemProps> = ({ src, title, description }) => {
+  const theme = useTheme();
+
   return (
     <Flex>
       <Box mr={16} height={42}>
@@ -29,4 +29,4 @@ const PrototypeLayoutItem: React.FC<PrototypeLayoutItemProps> = ({ src, title, d
   );
 };
 
-export default withTheme(PrototypeLayoutItem);
+export default PrototypeLayoutItem;

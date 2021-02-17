@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-import { useTheme } from 'styled-components';
 
 import Box from '@/components/Box';
 import Drawer from '@/components/Drawer';
@@ -16,14 +15,13 @@ import { PrototypeStatus } from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useEventualEngine } from '@/hooks';
+import { useDidUpdateEffect, useEventualEngine, useTheme } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import Prototype from '@/pages/Prototype';
 import { useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import { NLPContext } from '@/pages/Skill/contexts';
 import { FadeLeftContainer } from '@/styles/animations';
-import { Theme } from '@/styles/theme';
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
 
@@ -43,7 +41,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   status,
   platform,
 }) => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   const isGeneralPlatform = platform === PlatformType.GENERAL;
 
   const [trainingOpen, toggleTrainingOpen] = useToggle(true);

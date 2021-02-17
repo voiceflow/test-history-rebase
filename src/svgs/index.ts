@@ -85,6 +85,7 @@ export { default as flag } from './flag.svg';
 export { default as fireHD8 } from './fire-hd-8.svg';
 export { default as fireHD10 } from './fire-hd-10.svg';
 export { default as fireTV } from './fire-tv.svg';
+export { default as fullscreen } from './fullscreen.svg';
 
 // g
 export { default as globe } from './images/globe.svg';

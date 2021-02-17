@@ -43,6 +43,8 @@ export default merge(commonConfig, {
               'store/types/**/*.ts',
               'models/**/*',
 
+              // TODO: remove when new share system footer gets used
+              'components/SharePrototypeFooter/**/*',
               // TODO: remove when new share system splash screens gets used
               'components/ShareSplashScreen/**/*',
 

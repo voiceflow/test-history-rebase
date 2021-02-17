@@ -138,7 +138,7 @@
     "@cypress/code-coverage": "^3.8.5",
     "@hot-loader/react-dom": "^16.13.0",
     "@storybook/addon-actions": "^5.3.0-beta.31",
-    "@storybook/addon-docs": "^5.3.0-beta.31",
+    "@storybook/addon-docs": "^5.3.21",
     "@storybook/addon-knobs": "^5.3.0-beta.31",
     "@storybook/addon-storysource": "^5.3.21",
     "@storybook/react": "^5.3.0-beta.31",

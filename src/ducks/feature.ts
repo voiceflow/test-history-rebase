@@ -3,9 +3,10 @@ import { createSelector } from 'reselect';
 import client from '@/client';
 import { IS_PRODUCTION } from '@/config';
 import { FeatureFlag, LOCAL_FEATURE_OVERRIDES } from '@/config/features';
+import * as Session from '@/ducks/session';
 import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 
-import { createAction, createRootSelector, duckLogger } from './utils';
+import { createAction, createRootSelector } from './utils';
 
 export type FeatureState = {
   isLoaded: boolean;
@@ -13,7 +14,6 @@ export type FeatureState = {
     string,
     {
       isEnabled: boolean;
-      lastUpdated: number;
     }
   >;
 };
@@ -24,31 +24,24 @@ export const INITIAL_STATE: FeatureState = {
   features: {},
 };
 
-const FEATURE_REFRESH_TIMEOUT = 60 * 1000;
-
-const log = duckLogger.child(STATE_KEY);
-
 // actions
 
 export enum FeatureAction {
-  UPDATE_FEATURE_STATUS = 'FEATURE:UPDATE_STATUS',
+  UPDATE_ALL_STATUSES = 'FEATURE:STATUS:UPDATE_ALL',
   SET_FEATURES_LOADED = 'FEATURE:SET_LOADED',
 }
 
-export type UpdateFeatureStatus = Action<FeatureAction.UPDATE_FEATURE_STATUS, { featureID: FeatureFlag; isEnabled: boolean; lastUpdated: number }>;
+export type UpdateAllStatuses = Action<FeatureAction.UPDATE_ALL_STATUSES, Record<FeatureFlag, { isEnabled: boolean }>>;
 
-export type SetFeaturesLoaded = Action<FeatureAction.SET_FEATURES_LOADED>;
+export type SetFeaturesLoaded = Action<FeatureAction.SET_FEATURES_LOADED, boolean>;
 
-type AnyFeatureAction = UpdateFeatureStatus | SetFeaturesLoaded;
+type AnyFeatureAction = UpdateAllStatuses | SetFeaturesLoaded | Session.SetAuthToken;
 
 // reducers
 
-const updateFeatureStatusReducer: Reducer<FeatureState, UpdateFeatureStatus> = (state, { payload: { featureID, isEnabled, lastUpdated } }) => ({
+const updateAllStatusesReducer: Reducer<FeatureState, UpdateAllStatuses> = (state, { payload: features }) => ({
   ...state,
-  features: {
-    ...state.features,
-    [featureID]: { isEnabled, lastUpdated },
-  },
+  features,
 });
 
 const setFeaturesLoadedReducer: Reducer<FeatureState> = (state) => ({
@@ -56,12 +49,19 @@ const setFeaturesLoadedReducer: Reducer<FeatureState> = (state) => ({
   isLoaded: true,
 });
 
+const accountChangeReducer: Reducer<FeatureState> = (state) => ({
+  ...state,
+  isLoaded: false,
+});
+
 const featureReducer: RootReducer<FeatureState, AnyFeatureAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case FeatureAction.UPDATE_FEATURE_STATUS:
-      return updateFeatureStatusReducer(state, action);
+    case FeatureAction.UPDATE_ALL_STATUSES:
+      return updateAllStatusesReducer(state, action);
     case FeatureAction.SET_FEATURES_LOADED:
       return setFeaturesLoadedReducer(state);
+    case Session.SessionAction.SET_AUTH_TOKEN:
+      return accountChangeReducer(state);
     default:
       return state;
   }
@@ -83,33 +83,15 @@ export const isLoadedSelector = createSelector([rootSelector], ({ isLoaded }) =>
 
 // action creators
 
-export const updateFeatureStatus = (featureID: FeatureFlag, isEnabled: boolean): UpdateFeatureStatus =>
-  createAction(FeatureAction.UPDATE_FEATURE_STATUS, { featureID, isEnabled, lastUpdated: Date.now() });
+export const updateAllStatuses = (features: FeatureState['features']): UpdateAllStatuses => createAction(FeatureAction.UPDATE_ALL_STATUSES, features);
 
 export const setFeaturesLoaded = (): SetFeaturesLoaded => createAction(FeatureAction.SET_FEATURES_LOADED);
 
 // side effects
 
-export const refreshFeature = (featureID: FeatureFlag): Thunk => async (dispatch, getState) => {
-  const { isEnabled, lastUpdated } = featureSelector(getState())(featureID);
-
-  if (Date.now() - lastUpdated < FEATURE_REFRESH_TIMEOUT) return;
-
-  try {
-    const isRemoteEnabled = await client.feature.isEnabled(featureID);
-
-    if (isRemoteEnabled !== isEnabled) {
-      dispatch(updateFeatureStatus(featureID, isRemoteEnabled));
-    }
-  } catch (e) {
-    log.error('failed to synchronize feature flag', log.value(featureID), e);
-  }
-};
-
 export const loadFeatures = (): Thunk => async (dispatch) => {
-  const features = await client.feature.find();
+  const features = await client.feature.getStatuses();
 
-  await Promise.all(features.map((featureID) => dispatch(refreshFeature(featureID as FeatureFlag))));
-
+  dispatch(updateAllStatuses(features));
   dispatch(setFeaturesLoaded());
 };

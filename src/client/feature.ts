@@ -1,9 +1,7 @@
 import fetch from './fetch';
 
 const featureClient = {
-  isEnabled: (featureID: string) => fetch.get<{ status: boolean }>(`feature/${featureID}`).then(({ status }) => status),
-
-  find: () => fetch.get<string[]>('features'),
+  getStatuses: () => fetch.get<Record<string, { isEnabled: boolean }>>('features/status'),
 };
 
 export default featureClient;

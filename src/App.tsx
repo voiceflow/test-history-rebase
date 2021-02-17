@@ -77,5 +77,5 @@ const App = () => {
 export default compose(
   hot,
   withGlobalProviders,
-  withBatchLoadingGate(SocketLoadingGate, AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadingGate)
+  withBatchLoadingGate(FeatureLoadingGate, SocketLoadingGate, AccountLoadingGate, GlobalSocketSubscriptionsLoadingGate)
 )(App) as React.FC<GlobalProvidersProps>;

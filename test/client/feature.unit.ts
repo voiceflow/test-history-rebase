@@ -5,30 +5,18 @@ import suite from './_suite';
 
 suite('Client - Feature', ({ expect, stubFetch }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['isEnabled', 'find']);
+    expect(Object.keys(client)).to.have.members(['getStatuses']);
   });
 
-  describe('find()', () => {
-    it('should find all features', async () => {
-      const features = generate.array();
+  describe('getStatuses()', () => {
+    it('should get all feature statuses', async () => {
+      const features = generate.object();
       const fetch = stubFetch('api').resolves(features);
 
-      const result = await client.find();
+      const result = await client.getStatuses();
 
       expect(result).to.eq(features);
-      expect(fetch).to.be.calledWithExactly('features');
-    });
-  });
-
-  describe('isEnabled()', () => {
-    it('should return the feature status', async () => {
-      const featureID = 'abc';
-      const fetch = stubFetch('api').resolves({ status: true });
-
-      const result = await client.isEnabled(featureID);
-
-      expect(result).to.be.true;
-      expect(fetch).to.be.calledWithExactly(`feature/${featureID}`);
+      expect(fetch).to.be.calledWithExactly('features/status');
     });
   });
 });

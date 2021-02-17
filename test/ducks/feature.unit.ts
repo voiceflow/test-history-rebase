@@ -1,4 +1,3 @@
-import client from '@/client';
 import * as Feature from '@/ducks/feature';
 import { generate } from '@/utils/testing';
 
@@ -15,16 +14,16 @@ const MOCK_STATE: Feature.FeatureState = {
   } as any,
 };
 
-suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, stub, mockDate, describeReducer, describeSelectors, describeSideEffects }) => {
+suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, mockDate, describeReducer, describeSelectors }) => {
   describeReducer(({ expectAction }) => {
-    describe('updateFeatureStatus()', () => {
-      it('should update the feature status', () => {
+    describe('updateAllStatuses()', () => {
+      it('should update all feature statuses', () => {
         const featureID: any = generate.id();
         const timestamp = TIMESTAMP + 1000;
         mockDate(timestamp);
 
-        expectAction(Feature.updateFeatureStatus(featureID, false)).toModify({
-          features: { ...MOCK_STATE.features, [featureID]: { isEnabled: false, lastUpdated: timestamp } },
+        expectAction(Feature.updateAllStatuses({ [featureID]: { isEnabled: true } })).toModify({
+          features: { [featureID]: { isEnabled: true } },
         });
       });
     });
@@ -62,50 +61,6 @@ suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, stub, mockDate, describ
     describe('isLoadedSelector()', () => {
       it('should select whether features are loaded', () => {
         expect(select(Feature.isLoadedSelector)).to.be.true;
-      });
-    });
-  });
-
-  describeSideEffects(({ applyEffect }) => {
-    describe('refreshFeature()', () => {
-      it('should not refresh feature if not enough time has passed', async () => {
-        const isEnabled = stub(client.feature, 'isEnabled');
-        mockDate(TIMESTAMP);
-
-        await applyEffect(Feature.refreshFeature(FEATURE_ID));
-
-        expect(isEnabled).to.not.be.called;
-      });
-
-      it('should not refresh feature if remote value has not changed', async () => {
-        const isEnabled = stub(client.feature, 'isEnabled').resolves(true);
-        mockDate(TIMESTAMP + 1000000);
-
-        const { dispatch } = await applyEffect(Feature.refreshFeature(FEATURE_ID));
-
-        expect(isEnabled).to.be.calledWithExactly(FEATURE_ID);
-        expect(dispatch).to.not.be.called;
-      });
-
-      it('should refresh feature if remote value has changed', async () => {
-        stub(client.feature, 'isEnabled').resolves(false);
-        mockDate(TIMESTAMP + 1000000);
-
-        const { dispatch } = await applyEffect(Feature.refreshFeature(FEATURE_ID));
-
-        expect(dispatch).to.be.calledWithExactly(Feature.updateFeatureStatus(FEATURE_ID, false));
-      });
-    });
-
-    describe.skip('loadFeatures()', () => {
-      it('should not refresh feature if not enough time has passed', async () => {
-        const features: any[] = ['abc', 'def', 'ghi'];
-        const findFeatures = stub(client.feature, 'find').resolves(features);
-
-        const { dispatch } = await applyEffect(Feature.loadFeatures());
-
-        expect(findFeatures).to.be.called;
-        features.forEach((featureID) => expect(dispatch).to.be.calledWithExactly(Feature.refreshFeature(featureID)));
       });
     });
   });

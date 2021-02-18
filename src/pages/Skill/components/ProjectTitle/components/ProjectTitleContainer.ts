@@ -2,25 +2,18 @@ import styled from 'styled-components';
 
 import FlexCenter from '@/components/Flex';
 
-import TitleInput from './TitleInput';
-
 const ProjectTitleContainer = styled(FlexCenter)`
   font-size: 18px;
   height: inherit;
-  flex: 1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+  display: flex;
+  width: 100%;
 
-  ${TitleInput}, ${TitleInput} input {
-    cursor: text;
+  input {
+    margin-top: -2px;
+    width: 100%;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-  }
-
-  ${TitleInput} + * {
-    margin-right: 14px;
   }
 `;
 

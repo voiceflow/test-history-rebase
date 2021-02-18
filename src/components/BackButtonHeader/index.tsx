@@ -71,6 +71,7 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHead
               style={{
                 padding: 'none',
                 alignItems: 'center',
+                width: '100%',
                 marginRight: '32px',
                 minHeight: '100%',
                 height: '100%',

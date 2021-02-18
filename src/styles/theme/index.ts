@@ -18,6 +18,10 @@ const THEME = {
     offWhiteBlue: '#FAFAFC',
     white: '#ffffff',
   },
+  iconColors: {
+    disabled: '#BECEDC',
+    active: '#6e849a',
+  },
   colors: {
     primary: '#132144',
     secondary: '#62778c',
@@ -27,6 +31,7 @@ const THEME = {
     green: '#279745',
     blue: COLOR_BLUE,
     darkBlue: '#4886da',
+    borders: '#dfe3ed',
   },
   space: {
     xs: 4,

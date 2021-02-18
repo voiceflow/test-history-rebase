@@ -53,3 +53,5 @@ export const activePathLinkIDsSelector = createSelector([prototypeSelector], ({ 
 export const prototypeWebhookDataSelector = createSelector([prototypeSelector], ({ webhook }) => webhook);
 
 export const prototypeLayoutSelector = createSelector([prototypeSelector], ({ settings }) => settings.layout || PrototypeLayout.TEXT_DIALOG);
+
+export const prototypeBrandInfoSelector = createSelector([prototypeSelector], ({ settings: { layout: _, ...brandSettings } }) => brandSettings);

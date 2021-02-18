@@ -8,15 +8,13 @@ import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useDidUpdateEffect, useTeardown } from '@/hooks';
-import { useDebouncedCallback } from '@/hooks/callback';
 import { Interactions } from '@/pages/Prototype/components/PrototypeDialog/components';
-import { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';
 import * as Query from '@/utils/query';
 
-import { Container, Dialog, InnerChatContainer, Input, OutterChatContainer, Start, UserSaysContainer } from './components';
+import { ChatDisplay, Container, Input, Start, UserSaysContainer } from './components';
 import { usePrototype, useResetPrototype, useStartPrototype } from './hooks';
 import { PMStatus } from './types';
 
@@ -49,27 +47,11 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     prototypeStatus: status,
   });
   const location = useLocation();
-  const scrollRef = React.useRef<HTMLDivElement>(null);
-  const [updatedAudioInstance, setUpdatedAudioInstance] = React.useState<TAudio | null>(audioInstance);
-  const [forceAudioUpdate, setForceAutoUpdate] = React.useState(0);
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
-  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING, PMStatus.FORCED_DELAY);
-  const chatScrollRef = React.useRef<HTMLDivElement>(null);
+  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
   const intialLoadFinished = React.useRef(false);
 
   const { nodeID } = Query.parse(location?.search);
-
-  React.useEffect(() => {
-    setUpdatedAudioInstance(audioInstance);
-  }, [messages, audioInstance, forceAudioUpdate]);
-
-  const scrollToBottom = () => {
-    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  React.useEffect(() => {
-    scrollToBottom();
-  }, [messages.length, interactions]);
 
   React.useEffect(() => {
     if ((nodeID || autoplay) && !!intialLoadFinished.current) {
@@ -92,18 +74,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     updatePrototype({ showChips: val });
   };
 
-  const onScrollHandler = useDebouncedCallback(
-    30,
-    () => {
-      if (chatScrollRef?.current?.scrollTop === 0) {
-        return setAtTop?.(true);
-      }
-
-      return setAtTop?.(false);
-    },
-    []
-  );
-
   if (!intialLoadFinished.current) {
     return null;
   }
@@ -114,23 +84,21 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
 
   return (
     <Container id={Identifier.PROTOTYPE} isPublic={isPublic}>
-      <OutterChatContainer>
-        <InnerChatContainer onScroll={onScrollHandler} ref={chatScrollRef} atTop={atTop}>
-          <Dialog
-            status={status}
-            isPublic={isPublic}
-            isLoading={isLoading}
-            messages={messages}
-            onInteraction={onInteraction}
-            onPlay={onPlay}
-            debug={debug}
-            audioInstance={updatedAudioInstance}
-            setForceAutoUpdate={setForceAutoUpdate}
-            bottomScrollRef={scrollRef}
-          />
-          {showChips && <Interactions interactions={interactions} onInteraction={onInteraction} />}
-        </InnerChatContainer>
-      </OutterChatContainer>
+      <ChatDisplay
+        atTop={atTop}
+        setAtTop={setAtTop}
+        isPublic={isPublic}
+        isLoading={isLoading}
+        messages={messages}
+        onInteraction={onInteraction}
+        onPlay={onPlay}
+        debug={debug}
+        audioInstance={audioInstance}
+        interactions={interactions}
+        status={status}
+      >
+        {showChips && <Interactions interactions={interactions} onInteraction={onInteraction} />}
+      </ChatDisplay>
       <UserSaysContainer>
         <Input
           stepBack={onStepBack}

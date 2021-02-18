@@ -9,7 +9,7 @@ export default {
 };
 
 const createStory = (props?: Pick<PrototypeSpeechBarProps, 'isPublic'>) => () => (
-  <SpeechBar locale="en-US" onTranscript={action('onTranscript')} onToggleListening={action('onToggleListening')} {...props} />
+  <SpeechBar locale="en-US" onTranscript={action('onTranscript')} {...props} />
 );
 
 export const base = createStory();

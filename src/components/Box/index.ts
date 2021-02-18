@@ -1,7 +1,10 @@
+import * as CSS from 'csstype';
 import {
   border,
   borderRadius,
   BordersProps,
+  boxShadow,
+  BoxShadowProps,
   color,
   ColorProps,
   flexbox,
@@ -12,12 +15,14 @@ import {
   PositionProps,
   space,
   SpaceProps,
+  textShadow,
+  TextShadowProps,
   typography,
   TypographyProps,
 } from 'styled-system';
 
 import { flexApartStyles, flexCenterStyles, flexEndStyles, flexStartStyles, flexStyles } from '@/components/Flex';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 export type BoxProps = ColorProps &
   LayoutProps &
@@ -25,11 +30,27 @@ export type BoxProps = ColorProps &
   PositionProps &
   FlexboxProps &
   TypographyProps &
-  BordersProps & {
-    cursor?: string;
+  BordersProps &
+  BoxShadowProps &
+  TextShadowProps & {
+    cursor?: CSS.Property.Cursor;
   };
 
-export const Box = styled.div<BoxProps>(space, color, layout, position, flexbox, typography, borderRadius, border);
+export const Box = styled.div<BoxProps>(
+  space,
+  color,
+  layout,
+  position,
+  flexbox,
+  typography,
+  borderRadius,
+  border,
+  boxShadow,
+  textShadow,
+  css`
+    cursor: ${(props: BoxProps) => props.cursor || 'default'};
+  `
+);
 
 export const Flex = styled(Box)`
   ${flexStyles}
@@ -51,8 +72,12 @@ export const FlexStart = styled(Box)`
   ${flexStartStyles}
 `;
 
-export const ButtonBox = styled(Box)`
-  cursor: ${({ cursor = 'default' }) => cursor};
+export const FlexAlignStart = styled(Flex)`
+  align-items: flex-start;
+`;
+
+export const FlexAlignEnd = styled(Flex)`
+  align-items: flex-end;
 `;
 
 export default Box;

@@ -1,10 +1,11 @@
 import { css, styled } from '@/hocs';
 
-export type InputProps = {
+export type InlineInputProps = {
   fullWidth?: boolean;
+  noOverflow?: boolean;
 };
 
-const Input = styled.input<InputProps>`
+const Input = styled.input<InlineInputProps>`
   ${({ fullWidth }) =>
     fullWidth &&
     css`
@@ -16,6 +17,14 @@ const Input = styled.input<InputProps>`
   border: none;
   padding: 0;
   border-radius: 0;
+
+  ${({ noOverflow }) =>
+    noOverflow &&
+    css`
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    `}
 `;
 
 export default Input;

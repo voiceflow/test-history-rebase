@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ControlledInput, DefaultInput, InlineInput } from './components';
+import { InlineInputProps } from './components/InlineInput';
 import { InputVariant } from './constants';
 
 export * from './constants';
@@ -11,7 +12,7 @@ const INPUT_VARIANTS = {
   [InputVariant.INLINE]: InlineInput,
 };
 
-export type InputProps = {
+export type InputProps = InlineInputProps & {
   variant?: InputVariant;
 };
 

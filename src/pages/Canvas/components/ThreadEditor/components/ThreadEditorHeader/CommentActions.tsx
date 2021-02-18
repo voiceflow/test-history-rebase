@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ButtonBox, Flex } from '@/components/Box';
+import { Box, Flex } from '@/components/Box';
 import Dropdown from '@/components/Dropdown';
 import { FlexEnd } from '@/components/Flex';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
@@ -85,7 +85,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
         </TippyTooltip>
       )}
       {!isPosted && (
-        <ButtonBox
+        <Box
           ml={10}
           onClick={isDisabled ? undefined : preventDefault(onPost)}
           color="#62778c"
@@ -100,7 +100,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
         >
           {/* eslint-disable-next-line no-nested-ternary */}
           {hovered ? hotKey : commentID && isEditing ? 'Done' : 'Post'}
-        </ButtonBox>
+        </Box>
       )}
     </FlexEnd>
   );

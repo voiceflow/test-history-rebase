@@ -1,6 +1,7 @@
+import Box from '@/components/Box';
 import { styled, transition } from '@/hocs';
 
-const Container = styled.div`
+const Container = styled(Box)`
   width: 100%;
   margin: 0 auto;
   min-height: 178px;

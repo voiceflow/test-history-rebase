@@ -12,12 +12,14 @@ export type PrototypeSpeechBarProps = {
   locale: string;
   isPublic?: boolean;
   onTranscript: (input: string) => void;
+  className?: string;
 };
 
 const PrototypeSpeechBar: React.FC<ReactSpeechRecognitionProps & PrototypeSpeechBarProps> = ({
   locale,
   listening,
   transcript,
+  className,
   recognition,
   onTranscript,
   stopListening,
@@ -28,12 +30,15 @@ const PrototypeSpeechBar: React.FC<ReactSpeechRecognitionProps & PrototypeSpeech
   browserSupportsSpeechRecognition,
 }) => {
   const [isMicrophoneAvailable, setMicrophoneAvailable] = React.useState(false);
+  // TODO: use platform device type logic from CORE-5029 by Evgeny
+  const isMobile = false;
 
   const dataCache = React.useRef({
     locale,
     listening,
     transcript,
     recognition,
+    className,
     onTranscript,
     finalTranscript,
     stopListening,
@@ -48,6 +53,7 @@ const PrototypeSpeechBar: React.FC<ReactSpeechRecognitionProps & PrototypeSpeech
     listening,
     transcript,
     recognition,
+    className,
     onTranscript,
     stopListening,
     startListening,
@@ -101,7 +107,7 @@ const PrototypeSpeechBar: React.FC<ReactSpeechRecognitionProps & PrototypeSpeech
 
   if (!browserSupportsSpeechRecognition) {
     return (
-      <Container style={{ cursor: 'default' }}>
+      <Container cursor="default" className={className}>
         <SpeechText> Browser doesn't support speech recognition</SpeechText>
       </Container>
     );
@@ -117,7 +123,7 @@ const PrototypeSpeechBar: React.FC<ReactSpeechRecognitionProps & PrototypeSpeech
   } else if (!listening) {
     text = (
       <>
-        Hold <BlueText> spacebar </BlueText> for Voice Input
+        Hold <BlueText>{isMobile ? 'here' : 'spacebar'}</BlueText> for Voice Input
       </>
     );
   } else if (listening) {
@@ -135,7 +141,7 @@ const PrototypeSpeechBar: React.FC<ReactSpeechRecognitionProps & PrototypeSpeech
   }
 
   return (
-    <Container onMouseDown={onListen} onMouseUp={onStop}>
+    <Container onMouseDown={onListen} onMouseUp={onStop} className={className}>
       <SpeechText>{text}</SpeechText>
     </Container>
   );

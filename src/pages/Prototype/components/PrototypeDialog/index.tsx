@@ -22,6 +22,8 @@ type DialogProps = {
   status: PrototypeStatus;
 };
 
+// TODO: pass in brandColor from redux store using selector CORE-4968
+
 const PrototypeDialog: React.FC<DialogProps> = ({
   setForceAutoUpdate,
   isPublic,

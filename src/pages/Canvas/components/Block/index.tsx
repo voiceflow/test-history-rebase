@@ -71,15 +71,7 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
       ref={blockAPI.ref}
     >
       {lockOwner && <User user={lockOwner} />}
-      <Section
-        variant={variant}
-        isDisabled={isDisabled}
-        isLocked={isLocked}
-        isEditing={blockAPI.isEditing}
-        setIsEditing={blockAPI.setIsEditing}
-        titleRef={blockAPI.titleRef}
-        {...props}
-      >
+      <Section variant={variant} isDisabled={isDisabled} isLocked={isLocked} titleRef={blockAPI.titleRef} {...props}>
         {children}
       </Section>
       {sections.map((section, index) => (

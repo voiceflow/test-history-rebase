@@ -1,33 +1,29 @@
 import React from 'react';
 
+import { EditableTextAPI } from '@/components/EditableText';
+
 import { BlockAPI } from '../../types';
 
 export type InternalBlockAPI<T extends HTMLElement = HTMLElement> = BlockAPI<T> & {
-  titleRef: React.RefObject<HTMLInputElement>;
-  isEditing: boolean;
-  setIsEditing: (isEditing: boolean) => void;
+  titleRef: React.RefObject<EditableTextAPI>;
 };
 
 // eslint-disable-next-line import/prefer-default-export
 export const useBlockAPI = () => {
   const ref = React.useRef<HTMLDivElement>(null);
-  const titleRef = React.useRef<HTMLInputElement>(null);
-  const [isEditing, setIsEditing] = React.useState(false);
+  const titleRef = React.useRef<EditableTextAPI | null>(null);
 
   return React.useMemo<InternalBlockAPI<HTMLDivElement>>(
     () => ({
       ref,
       titleRef,
-      isEditing,
       getRect: () => ref.current!.getBoundingClientRect(),
       rename: () => {
-        setIsEditing(true);
-        titleRef.current?.focus();
+        titleRef.current?.startEditing();
       },
       addEventListener: (event, listener) => ref.current?.addEventListener(event, listener),
       removeEventListener: (event, listener) => ref.current?.removeEventListener(event, listener),
-      setIsEditing,
     }),
-    [isEditing]
+    []
   );
 };

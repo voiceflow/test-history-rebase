@@ -631,14 +631,6 @@ small {
                                    supported by Chrome and Opera */
 }
 
-.edit-input {
-  margin-top: -5px;
-  margin-left: -1px;
-  background: none;
-  border: none;
-  outline: none;
-}
-
 .borderless-input {
   padding: 0;
   letter-spacing: inherit;

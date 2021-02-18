@@ -46,7 +46,7 @@ context('Team Dashboard', () => {
 
     dashboardPage.el.projectListItem.click();
 
-    canvasPage.el.projectTitle.should('have.value', 'my other project');
+    canvasPage.el.projectTitle.should('have.text', 'my other project');
 
     cy.title().should('eq', 'my other project');
   });

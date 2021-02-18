@@ -44,7 +44,6 @@ const BlockContainer = styled.div<BlockContainerProps>`
   background-image: ${withBlockVariantStyle((variant) => variant.backgroundImage)};
   position: relative;
   opacity: 1;
-  border-color: none;
 
   .${CANVAS_COMMENTING_ENABLED_CLASSNAME} & {
     cursor: crosshair;

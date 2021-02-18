@@ -4,14 +4,11 @@ import { Permission } from '@/config/permissions';
 import * as Realtime from '@/ducks/realtime';
 import { connect } from '@/hocs';
 import { usePermission } from '@/hooks';
-import { useEnableDisable } from '@/hooks/toggle';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
-import ExportProjectButton from './ExportProjectButton';
-import ProjectTitleContainer from './ProjectTitleContainer';
-import { TitleInput } from './components';
+import { ExportProjectButton, ProjectTitleContainer, TitleInput } from './components';
 
 const EMPTY_TITLE_DEFAULT = 'Untitled Project';
 
@@ -34,7 +31,6 @@ const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = (
   unlockResource,
   isLockedSelector,
 }) => {
-  const [isEditing, enableEditing, disableEditing] = useEnableDisable(false);
   const [formValue, updateFormValue] = React.useState(title);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const isPrototypingMode = usePrototypingMode();
@@ -48,14 +44,11 @@ const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = (
     updateFormValue(validateTitle(formValue));
     onChange(validateTitle(formValue));
 
-    disableEditing();
     unlockResource();
   };
 
-  const onDoubleClick = (event: React.MouseEvent) => {
-    if (!isEditing && !isLocked && !isPrototypingMode && canEditCanvas) {
-      enableEditing();
-      (event.target as HTMLInputElement).select();
+  const onFocus = () => {
+    if (!isLocked && !isPrototypingMode && canEditCanvas) {
       lockResource();
     }
   };
@@ -67,15 +60,14 @@ const ProjectTitle: React.FC<ProjectTitleProps & ConnectedProjectTitleProps> = (
   };
 
   return (
-    <ProjectTitleContainer id="project-title">
+    <ProjectTitleContainer>
       <TitleInput
         id={Identifier.PROJECT_TITLE}
-        onDoubleClick={onDoubleClick}
-        className="edit-input"
-        readOnly={!isEditing}
+        readOnly={isLocked || isPrototypingMode || !canEditCanvas}
         value={formValue}
-        onChange={({ target }) => updateFormValue(target.value)}
+        onChange={updateFormValue}
         onBlur={onBlur}
+        onFocus={onFocus}
         onKeyPress={handleEnterPress}
         disabled={isLocked || !canEditCanvas}
       />

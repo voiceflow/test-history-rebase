@@ -59,7 +59,7 @@
     "description": "Create a stateful react component"
   },
   "React Styled Component": {
-    "scope": "javascript,javascriptreact",
+    "scope": "typescript,typescriptreact",
     "prefix": "rsc",
     "body": [
       "import { styled } from '@/hocs';",

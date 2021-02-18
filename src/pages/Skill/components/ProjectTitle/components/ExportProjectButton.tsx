@@ -16,7 +16,7 @@ import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 import { stopImmediatePropagation } from '@/utils/dom';
 
-import { ExportIcon } from './components';
+import ExportIcon from './ExportIcon';
 
 const EXPORT_HELP_LINK = 'https://docs.voiceflow.com/#/features/sharing-features?id=export-your-canvas-as-pdfpng';
 

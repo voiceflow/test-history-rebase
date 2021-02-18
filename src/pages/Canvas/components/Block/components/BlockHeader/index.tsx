@@ -1,11 +1,12 @@
 import React from 'react';
 
+import { EditableTextAPI } from '@/components/EditableText';
 import SvgIcon from '@/components/SvgIcon';
 import { BlockVariant } from '@/constants/canvas';
 import { BLOCK_SECTION_TITLE_CLASSNAME } from '@/pages/Canvas/constants';
 import { useEditingMode } from '@/pages/Skill/hooks';
 import { Icon } from '@/svgs/types';
-import { preventDefault, unhighlightAllText, withEnterPress } from '@/utils/dom';
+import { preventDefault, withEnterPress } from '@/utils/dom';
 
 import { Container, IconContainer, Input } from './components';
 
@@ -13,33 +14,19 @@ export type BlockHeaderProps = {
   variant: BlockVariant;
   name?: string;
   icon?: Icon;
-  isEditing?: boolean;
   isDisabled?: boolean;
   isLocked?: boolean;
   canEditTitle?: boolean;
   updateName?: (value: string) => void;
-  setIsEditing?: (value: boolean) => void;
-  titleRef?: React.MutableRefObject<HTMLInputElement | null>;
+  titleRef?: React.Ref<EditableTextAPI | null>;
   actions?: JSX.Element;
 };
 
-const BlockHeader: React.FC<BlockHeaderProps> = ({
-  name,
-  canEditTitle,
-  isEditing,
-  setIsEditing,
-  icon,
-  updateName,
-  variant,
-  isDisabled,
-  isLocked,
-  titleRef,
-  actions,
-}) => {
+const BlockHeader: React.FC<BlockHeaderProps> = ({ name, canEditTitle, icon, updateName, variant, isDisabled, isLocked, titleRef, actions }) => {
   const isEditingMode = useEditingMode();
 
   const [blockLabel, setBlockLabel] = React.useState(name ?? '');
-  const readOnly = !isEditing || isDisabled || !canEditTitle;
+  const readOnly = isDisabled || !canEditTitle;
 
   const saveLabel = () => {
     if (blockLabel.trim() === '') {
@@ -47,19 +34,6 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({
     } else {
       updateName?.(blockLabel);
     }
-    setIsEditing?.(false);
-  };
-
-  const updateLabel: React.ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
-    setBlockLabel(currentTarget.value);
-  };
-
-  const startEditMode: React.MouseEventHandler<HTMLInputElement> = ({ currentTarget }) => {
-    if (!canEditTitle) {
-      return;
-    }
-    setIsEditing?.(true);
-    currentTarget.select();
   };
 
   const handleEnterPress: React.KeyboardEventHandler<HTMLInputElement> = async ({ currentTarget }) => {
@@ -77,12 +51,6 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({
     }
   }, [isDisabled]);
 
-  React.useEffect(() => {
-    if (readOnly) {
-      unhighlightAllText();
-    }
-  }, [readOnly]);
-
   return (
     <Container>
       {icon && (
@@ -94,20 +62,15 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({
         className={BLOCK_SECTION_TITLE_CLASSNAME}
         viewOnlyMode={!isEditingMode}
         canEdit={canEditTitle}
-        onClick={startEditMode}
         onMouseUp={preventDefault()}
         onBlur={saveLabel}
         readOnly={readOnly}
-        onChange={updateLabel}
+        onChange={setBlockLabel}
         value={blockLabel}
         variant={variant}
         tabIndex={-1}
         onKeyPress={withEnterPress(handleEnterPress)}
-        inputRef={(ref: HTMLInputElement | null) => {
-          if (titleRef) {
-            titleRef.current = ref;
-          }
-        }}
+        ref={titleRef}
       />
       <IconContainer side="right">
         {isLocked && <SvgIcon icon="lock" />}

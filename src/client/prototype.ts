@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import legacySkillAdapter, { extractIntents, extractSlots } from '@/client/adapters/legacy/skill';
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
+import { PrototypeLayout } from '@/ducks/prototype/types';
 import { PrototypeContext } from '@/models';
 
 import { api } from './fetch';
@@ -34,6 +35,9 @@ const prototypeClient = {
         model: {
           slots,
           intents,
+        },
+        settings: {
+          layout: PrototypeLayout.TEXT_DIALOG as PrototypeLayout,
         },
       };
     }),

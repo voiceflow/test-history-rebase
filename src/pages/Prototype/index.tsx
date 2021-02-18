@@ -2,9 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import * as PrototypeDuck from '@/ducks/prototype';
-import * as Recent from '@/ducks/recent';
 import * as Skill from '@/ducks/skill';
-import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useDidUpdateEffect, useTeardown } from '@/hooks';
@@ -20,8 +18,9 @@ import { PMStatus } from './types';
 
 export type PrototypeProps = {
   debug: boolean;
-  isPublic?: boolean;
   atTop: boolean;
+  // TODO: remove when public prototype v2 released
+  isPublic?: boolean;
   setAtTop?: (val: boolean) => void;
   isModelTraining?: boolean;
 };
@@ -41,24 +40,25 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
 
-  const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audioInstance, onStepBack, onStepForward } = usePrototype({
+  const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay, onStepBack, onStepForward } = usePrototype({
     debug,
     isPublic,
     prototypeStatus: status,
   });
   const location = useLocation();
+
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
-  const intialLoadFinished = React.useRef(false);
+  const initialLoadFinished = React.useRef(false);
 
   const { nodeID } = Query.parse(location?.search);
 
   React.useEffect(() => {
-    if ((nodeID || autoplay) && !!intialLoadFinished.current) {
-      startPrototype(null, nodeID!);
+    if ((nodeID || autoplay) && !!initialLoadFinished.current) {
+      startPrototype(null, nodeID ?? null);
     }
-    intialLoadFinished.current = true;
-  }, [intialLoadFinished.current]);
+    initialLoadFinished.current = true;
+  }, [initialLoadFinished.current]);
 
   useTeardown(() => {
     resetPrototype();
@@ -66,7 +66,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
 
   useDidUpdateEffect(() => {
     if (autoplay) {
-      startPrototype(null, nodeID!);
+      startPrototype(null, nodeID ?? null);
     }
   }, [autoplay]);
 
@@ -74,7 +74,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     updatePrototype({ showChips: val });
   };
 
-  if (!intialLoadFinished.current) {
+  if (!initialLoadFinished.current) {
     return null;
   }
 
@@ -93,7 +93,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         onInteraction={onInteraction}
         onPlay={onPlay}
         debug={debug}
-        audioInstance={audioInstance}
         interactions={interactions}
         status={status}
       >
@@ -117,10 +116,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
 const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
   locales: Skill.activeLocalesSelector,
-  settings: Recent.recentPrototypeSelector,
-  slots: Slot.allSlotsSelector,
-  showChips: PrototypeDuck.prototypeShowChipsSelector,
   autoplay: PrototypeDuck.prototypeAutoplaySelector,
+  showChips: PrototypeDuck.prototypeShowChipsSelector,
 };
 
 const mapDispatchProps = {

@@ -1,0 +1,15 @@
+import Box from '@/components/Box';
+import { styled, transition } from '@/hocs';
+
+type ScaleContainerProps = {
+  scale: number;
+  isMobile?: boolean;
+};
+
+const ScaleContainer = styled(Box)<ScaleContainerProps>`
+  ${transition('transform')};
+  transform: ${({ scale }) => `scale(${scale})`};
+  transform-origin: ${({ isMobile }) => (isMobile ? 'top' : 'center')};
+`;
+
+export default ScaleContainer;

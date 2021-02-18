@@ -2,7 +2,6 @@ import React from 'react';
 
 import { PrototypeStatus } from '@/ducks/prototype';
 import { useDebouncedCallback } from '@/hooks/callback';
-import { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 
 import { Interaction, Message } from '../../types';
 import Dialog from '../PrototypeDialog';
@@ -17,7 +16,6 @@ export type PrototypeChatDisplayProps = {
   setAtTop?: (val: boolean) => void;
   onPlay: (src: string) => void;
   debug?: boolean;
-  audioInstance: TAudio | null;
   interactions: Interaction[];
   status: PrototypeStatus;
 };
@@ -31,15 +29,12 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   onInteraction,
   onPlay,
   debug,
-  audioInstance,
   interactions = [],
   status,
   children,
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
-  const [updatedAudioInstance, setUpdatedAudioInstance] = React.useState<TAudio | null>(audioInstance);
-  const [forceAudioUpdate, setForceAutoUpdate] = React.useState(0);
 
   const onScrollHandler = useDebouncedCallback(
     30,
@@ -52,10 +47,6 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
     },
     []
   );
-
-  React.useEffect(() => {
-    setUpdatedAudioInstance(audioInstance);
-  }, [messages, audioInstance, forceAudioUpdate]);
 
   const scrollToBottom = () => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -75,8 +66,6 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
           onInteraction={onInteraction}
           onPlay={onPlay}
           debug={debug}
-          audioInstance={updatedAudioInstance}
-          setForceAutoUpdate={setForceAutoUpdate}
           bottomScrollRef={scrollRef}
           status={status}
         />

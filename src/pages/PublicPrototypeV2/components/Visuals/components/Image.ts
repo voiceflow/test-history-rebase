@@ -1,0 +1,15 @@
+import Box from '@/components/Box';
+import { styled } from '@/hocs';
+
+type ImageProps = {
+  url?: string | null;
+};
+
+const Image = styled(Box)<ImageProps>`
+  background-image: url(${({ url }) => url});
+  background-position: top;
+  background-size: contain;
+  background-repeat: no-repeat;
+`;
+
+export default Image;

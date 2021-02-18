@@ -1,40 +1,25 @@
 import React from 'react';
 
 import Divider from '@/components/Divider';
-import { PrototypeStatus } from '@/ducks/prototype';
-import { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
+import * as Prototype from '@/ducks/prototype';
 
 import { Message, MessageType } from '../../types';
 import { Container } from './components';
 import { Audio, Debug, Loading, Speak, User } from './components/Message';
 import { checkIfFirstInSeries } from './utils';
 
-type DialogProps = {
+type DialogPrototypeProps = {
   debug?: boolean;
   onPlay: (src: string) => void;
   messages: Message[];
+  isPublic?: boolean;
   isLoading?: boolean;
   onInteraction: (input: string) => void;
-  audioInstance: TAudio | null;
-  setForceAutoUpdate: (val: number) => void;
   bottomScrollRef: React.Ref<HTMLElement>;
-  isPublic?: boolean;
-  status: PrototypeStatus;
+  status: Prototype.PrototypeStatus;
 };
 
-// TODO: pass in brandColor from redux store using selector CORE-4968
-
-const PrototypeDialog: React.FC<DialogProps> = ({
-  setForceAutoUpdate,
-  isPublic,
-  bottomScrollRef,
-  audioInstance,
-  messages,
-  debug,
-  onPlay,
-  status,
-  isLoading,
-}) => {
+const PrototypeDialog: React.FC<DialogPrototypeProps> = ({ isPublic, bottomScrollRef, messages, debug, onPlay, isLoading, status }) => {
   return (
     <Container isPublic={isPublic}>
       {messages.map((message: Message, index) => {
@@ -61,8 +46,6 @@ const PrototypeDialog: React.FC<DialogProps> = ({
                 audioSrc={message.src ?? ''}
                 onPlay={() => onPlay(message.src ?? '')}
                 isCurrent={isCurrent}
-                audioInstance={audioInstance}
-                setForceAutoUpdate={setForceAutoUpdate}
                 isLast={isLast}
               />
             );
@@ -92,8 +75,6 @@ const PrototypeDialog: React.FC<DialogProps> = ({
                 {...message}
                 onPlay={() => onPlay(message.audio)}
                 isCurrent={isCurrent}
-                audioInstance={audioInstance}
-                setForceAutoUpdate={setForceAutoUpdate}
                 isLast={isLast}
               />
             );
@@ -101,7 +82,7 @@ const PrototypeDialog: React.FC<DialogProps> = ({
             return null;
         }
       })}
-      {status === PrototypeStatus.ENDED && (
+      {status === Prototype.PrototypeStatus.ENDED && (
         <Divider key="ended" isLast={true}>
           Session ended
         </Divider>

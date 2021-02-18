@@ -2,12 +2,13 @@
 import Bowser from 'bowser';
 import loglevel from 'loglevel';
 
-const { browser, os } = Bowser.parse(window.navigator.userAgent);
+const { browser, os, platform } = Bowser.parse(window.navigator.userAgent);
 
 export const DEVICE_INFO = {
   os: os.name,
   version: os.version,
   browser: browser.name,
+  platform: platform.type,
 };
 
 // Container env var-based configuration overrides
@@ -34,6 +35,8 @@ declare global {
     VF_OVERRIDE_OKTA_CLIENT_ID?: string;
   }
 }
+
+export const isMobile = DEVICE_INFO.platform === 'mobile';
 
 export const isMac = DEVICE_INFO.os === 'macOS';
 export const isWindows = DEVICE_INFO.os === 'Windows';

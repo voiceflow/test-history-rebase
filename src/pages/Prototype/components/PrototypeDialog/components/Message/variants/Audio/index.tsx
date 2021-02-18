@@ -5,7 +5,6 @@ import { formatTime } from '@/components/AudioPlayer/index';
 import Box from '@/components/Box';
 import Flex from '@/components/Flex';
 import useAudioPlayer from '@/hooks/audioPlayer';
-import { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 
 import { Message } from '../../components';
 import { MessageProps } from '../../components/Message';
@@ -16,12 +15,10 @@ type AudioProps = Omit<MessageProps, 'iconProps'> & {
   name: string;
   isCurrent: boolean;
   onPlay: () => void;
-  audioInstance: TAudio | null;
   audioSrc: string;
-  setForceAutoUpdate: (val: number) => void;
 };
 
-const Audio: React.FC<AudioProps> = ({ setForceAutoUpdate, onPlay, audioSrc, audioInstance, name, isCurrent, ...props }) => {
+const Audio: React.FC<AudioProps> = ({ onPlay, audioSrc, name, isCurrent, ...props }) => {
   const { ref, curTime, playing, duration, setPlaying, restart } = useAudioPlayer({ autoplay: true });
   const audioRef: any = ref;
 

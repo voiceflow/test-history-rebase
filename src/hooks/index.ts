@@ -29,3 +29,5 @@ export * from './state';
 export * from './google';
 export * from './engine';
 export * from './theme';
+export * from './microphone';
+export * from './speechRecognition';

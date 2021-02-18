@@ -5353,6 +5353,11 @@
     "@types/react-dom" "*"
     "@types/react-transition-group" "*"
 
+"@types/react-speech-recognition@^3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@types/react-speech-recognition/-/react-speech-recognition-3.6.0.tgz#3c52e2d3e2306d8fb0f54a769586221cdba4e35b"
+  integrity sha512-nFXlBxhz5Wnz/P7AQenmaG7r9MGBmvZhTW/MLPEPd1CYLgB+6jg0GygIYYM5LR+K1WyZ3+jXGhGszxoLQQkHXQ==
+
 "@types/react-syntax-highlighter@11.0.4":
   version "11.0.4"
   resolved "https://registry.yarnpkg.com/@types/react-syntax-highlighter/-/react-syntax-highlighter-11.0.4.tgz#d86d17697db62f98046874f62fdb3e53a0bbc4cd"
@@ -20961,10 +20966,10 @@ react-sizeme@^2.6.7:
     shallowequal "^1.1.0"
     throttle-debounce "^2.1.0"
 
-react-speech-recognition@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-speech-recognition/-/react-speech-recognition-2.0.1.tgz#ffa7a713468bb60b52ce43d2f0f853993e2d1057"
-  integrity sha512-1KloNSBTKn3gRkbJ7Fy19/sKILS5BitX/MsIqsnI9lXadEooLzutdrgpDBKK7dLKJ9UnOhbW3lCIpQm561GyPw==
+react-speech-recognition@3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/react-speech-recognition/-/react-speech-recognition-3.6.0.tgz#fa1e2248772ff6646175e6bb40b2f39cfa207cb5"
+  integrity sha512-rxm3+R8Jo2FWjy9w1oYyamnuDzTNrqWHvMX7VkBVI+HsYNWMS5sWP2QEMSM5uOVK2cV/EJU9q7MS7VYMoZ2ODQ==
 
 react-stripe-elements@5.1.0:
   version "5.1.0"
@@ -21449,7 +21454,7 @@ regenerator-runtime@^0.12.0:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz#fa1a71544764c036f8c49b13a08b2594c9f8a0de"
   integrity sha512-odxIc1/vDlo4iZcfXqRYFj0vpXFNoGdKMAUieAlFYO6m/nl5e9KR/beGf41z4a1FI+aQgtjhuaSlDxQ0hmkrHg==
 
-regenerator-runtime@^0.13.2, regenerator-runtime@^0.13.3, regenerator-runtime@^0.13.4:
+regenerator-runtime@^0.13.2, regenerator-runtime@^0.13.3, regenerator-runtime@^0.13.4, regenerator-runtime@^0.13.7:
   version "0.13.7"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.7.tgz#cac2dacc8a1ea675feaabaeb8ae833898ae46f55"
   integrity sha512-a54FxoJDIr27pgf7IgeQGxmqUNYrcV338lf/6gH456HZ/PhX+5BcwHXG9ajESmwe6WRO0tAzRUrRmNONWgkrew==

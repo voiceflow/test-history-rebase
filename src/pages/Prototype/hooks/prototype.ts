@@ -64,8 +64,6 @@ const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; is
 
   const prototype = React.useMemo(() => new PrototypeTool(cache.current), []);
 
-  const audioInstance = prototype.audio?.audio || null;
-
   React.useEffect(() => {
     if (prototypeStatus === Prototype.PrototypeStatus.IDLE) {
       setStatus(null);
@@ -128,7 +126,6 @@ const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; is
     interactions,
     onInteraction,
     onPlay,
-    audioInstance,
     onStepBack,
     onStepForward,
   };

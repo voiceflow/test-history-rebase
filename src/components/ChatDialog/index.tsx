@@ -24,7 +24,7 @@ export type ChatDialogProps = ActionButtonsProps & {
 const ChatDialog: React.FC<ChatDialogProps> = ({ input = '', onInputChange, suggestions = [], layout, locale, prototypeStatus, ...props }) => {
   const theme = useTheme();
 
-  const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audioInstance } = usePrototype({
+  const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay } = usePrototype({
     prototypeStatus,
     debug: false,
   });
@@ -37,7 +37,6 @@ const ChatDialog: React.FC<ChatDialogProps> = ({ input = '', onInputChange, sugg
       <DisplayContainer showSuggestions={suggestions.length > 0}>
         <ChatDisplay
           isLoading={isLoading}
-          audioInstance={audioInstance}
           messages={messages}
           interactions={interactions}
           onPlay={onPlay}

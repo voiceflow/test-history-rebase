@@ -30,6 +30,7 @@ export enum Hotkey {
   MOVE_FORWARD = 'MOVE_FORWARD',
   MOVE_BACKWARD = 'MOVE_BACKWARD',
   TEST_MODE = 'TEST_MODE',
+  PROTOTYPE_CLOSE_FULL_SCREEN = 'PROTOTYPE_CLOSE_FULL_SCREEN',
 }
 
 /**
@@ -68,6 +69,7 @@ const HOTKEY_MAPPING = {
   [Hotkey.MOVE_FORWARD]: ['right'],
   [Hotkey.MOVE_BACKWARD]: ['left'],
   [Hotkey.TEST_MODE]: 't',
+  [Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN]: 'esc',
 };
 
 export default HOTKEY_MAPPING;

@@ -304,7 +304,7 @@ class TraceController {
   }
 
   private async processVisual(trace: VisualTrace) {
-    this.props.engine?.store.dispatch(Prototype.updatePrototypeVisualData(trace.payload));
+    this.props.updatePrototypeVisualsData(trace.payload);
 
     await this.timeout.set(WAIT_DISPLAY_TIME);
   }

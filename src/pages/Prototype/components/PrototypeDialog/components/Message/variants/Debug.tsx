@@ -40,7 +40,7 @@ export const Debug: React.FC<DebugProps> = ({ message, getDiagram, ...props }) =
     return message;
   }, [message]);
   return (
-    <Box mt={8} mb={16} fontSize={13} style={{ textAlign: 'center' }} {...props}>
+    <Box mt={8} mb={12} fontSize={13} style={{ textAlign: 'center' }} {...props}>
       <SubjectText>
         <Markdown>{debugMessage}</Markdown>
       </SubjectText>

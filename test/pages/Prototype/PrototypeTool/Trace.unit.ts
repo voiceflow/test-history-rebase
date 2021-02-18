@@ -219,7 +219,6 @@ suite(
         await controller.next();
 
         expectFocusNode(controller).calledOnce;
-        expectSetTimeout(controller).to.be.called;
         expectProcessSingleTrace(controller, TraceMethods.BLOCK);
       });
 
@@ -441,7 +440,6 @@ suite(
 
         await controller.next();
 
-        expectMessage(controller, 'session', ID, 'Session ended');
         expectUpdateStatus(controller).to.be.calledWith(PMStatus.ENDED);
       });
 
@@ -483,7 +481,6 @@ suite(
         await controller.next();
 
         Object.values(TraceMethods).forEach((method) => expect(controller[method]).to.be.called);
-        expectMessage(controller, 'session', ID, 'Session ended');
         expectUpdateStatus(controller).to.be.calledWith(PMStatus.ENDED);
       });
 
@@ -536,7 +533,6 @@ suite(
 
         expectMessage(controller, 'speak', ID, { src: SRC, voice: 'voice', message: MESSAGE });
         expectMessage(controller, 'stream', ID, { audio: SRC });
-        expectMessage(controller, 'session', ID, 'Session ended');
         expectAudioPlay(controller).not.to.be.called;
       });
     });

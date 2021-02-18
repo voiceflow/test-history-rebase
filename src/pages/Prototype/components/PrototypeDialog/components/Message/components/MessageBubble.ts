@@ -8,7 +8,7 @@ const Container = styled.div<{ clickable?: boolean; isFirstInSeries?: boolean; r
   color: #132144;
   text-align: left;
   word-break: break-word;
-  font-size: 14px;
+  font-size: 15px;
   border-radius: 15px;
   min-height: 45px;
 

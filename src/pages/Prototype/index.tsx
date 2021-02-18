@@ -53,7 +53,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   const [updatedAudioInstance, setUpdatedAudioInstance] = React.useState<TAudio | null>(audioInstance);
   const [forceAudioUpdate, setForceAutoUpdate] = React.useState(0);
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
-  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
+  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING, PMStatus.FORCED_DELAY);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
   const intialLoadFinished = React.useRef(false);
 
@@ -117,6 +117,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
       <OutterChatContainer>
         <InnerChatContainer onScroll={onScrollHandler} ref={chatScrollRef} atTop={atTop}>
           <Dialog
+            status={status}
             isPublic={isPublic}
             isLoading={isLoading}
             messages={messages}

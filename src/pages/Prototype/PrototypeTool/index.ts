@@ -29,8 +29,6 @@ class PrototypeTool {
 
     this.message!.trackStartTime();
     this.message!.session(cuid(), 'New session started');
-    this.trace!.start();
-
     this.trace!.next();
   }
 

@@ -118,10 +118,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
             <Section
               header="DIALOG"
               variant={SectionVariant.PROTOTYPE}
-              customHeaderStyling={{
-                background: isGeneralPlatform || (!atTop && !notStarted) ? '#fff' : '#FDFDFD',
-              }}
-              isRounded
+              isRounded={isGeneralPlatform}
               suffix={
                 <Flex>
                   <Box display="inline-block" mr={15}>

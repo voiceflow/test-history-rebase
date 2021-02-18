@@ -9,7 +9,7 @@ import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
-import { BlockTrace, ChoiceTrace, EndTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace, VisualTrace } from '@/models';
+import { BlockTrace, ChoiceTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace, VisualTrace } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
 import { tail, unique } from '@/utils/array';
 
@@ -75,8 +75,6 @@ class TraceController {
 
   private stopped = false;
 
-  private ended = false;
-
   private message: Options['message'];
 
   private timeout: Options['timeout'];
@@ -87,10 +85,6 @@ class TraceController {
 
   get isPublicPrototype(): boolean {
     return !!this.props.isPublic;
-  }
-
-  public start(): void {
-    this.ended = false;
   }
 
   public resetInteractions(): void {
@@ -248,7 +242,7 @@ class TraceController {
         break;
       }
       case TraceType.END: {
-        await this.processEndTrace(topTrace);
+        await this.processEndTrace();
         break;
       }
       case TraceType.VISUAL: {
@@ -281,7 +275,10 @@ class TraceController {
       updatedActivePathBlockArray
     );
 
-    const updatePrototypeData = { activePathBlockIDs: updatedActivePathBlockArray, contextHistory: updatedContextHistory };
+    const updatePrototypeData = {
+      activePathBlockIDs: updatedActivePathBlockArray,
+      contextHistory: updatedContextHistory,
+    };
 
     this.props.updatePrototype(updatePrototypeData);
   }
@@ -299,6 +296,10 @@ class TraceController {
       return;
     }
 
+    const isLast = this.trace.length === 1;
+    if (!isLast) {
+      this.props.updateStatus(PMStatus.FORCED_DELAY);
+    }
     await this.timeout.set(MIN_FOCUSED_NODE_TIME);
   }
 
@@ -426,13 +427,7 @@ class TraceController {
     this.props.updatePrototype(updatePrototypeData);
   }
 
-  private async processEndTrace(topTrace: EndTrace) {
-    // Only show this message once (end trace can get hit multiple times, with an exit block in a flow)
-    if (!this.ended) {
-      this.message.session(topTrace.id, 'Session ended');
-    }
-
-    this.ended = true;
+  private async processEndTrace() {
     this.props.engine?.selection.reset();
     this.props.updateStatus(PMStatus.ENDED);
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Divider from '@/components/Divider';
+import { PrototypeStatus } from '@/ducks/prototype';
 import { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 
 import { Message, MessageType } from '../../types';
@@ -18,6 +19,7 @@ type DialogProps = {
   setForceAutoUpdate: (val: number) => void;
   bottomScrollRef: React.Ref<HTMLElement>;
   isPublic?: boolean;
+  status: PrototypeStatus;
 };
 
 const PrototypeDialog: React.FC<DialogProps> = ({
@@ -28,6 +30,7 @@ const PrototypeDialog: React.FC<DialogProps> = ({
   messages,
   debug,
   onPlay,
+  status,
   isLoading,
 }) => {
   return (
@@ -96,6 +99,11 @@ const PrototypeDialog: React.FC<DialogProps> = ({
             return null;
         }
       })}
+      {status === PrototypeStatus.ENDED && (
+        <Divider key="ended" isLast={true}>
+          Session ended
+        </Divider>
+      )}
       <Loading isLoading={isLoading} />
       <span ref={bottomScrollRef} />
     </Container>

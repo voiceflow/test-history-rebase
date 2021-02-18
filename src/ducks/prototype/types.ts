@@ -1,7 +1,10 @@
+import { VersionPrototype } from '@voiceflow/api-sdk';
 import { DeviceType, GeneralRequest } from '@voiceflow/general-types';
 import { StepData } from '@voiceflow/general-types/build/nodes/visual';
 
 import { PrototypeContext } from '@/models';
+
+export type PrototypeSettings = Omit<VersionPrototype['settings'], 'layout'> & { layout: PrototypeLayout };
 
 // context types
 export interface Context extends PrototypeContext {

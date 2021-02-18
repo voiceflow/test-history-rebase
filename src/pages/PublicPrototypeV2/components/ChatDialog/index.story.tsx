@@ -7,6 +7,11 @@ import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
 
 import ChatDialog, { ChatDialogProps } from '.';
 
+export default {
+  title: 'PublicPrototype/ChatDialog',
+  component: ChatDialog,
+};
+
 const withDecorators = composeDecorators(
   withRedux({
     prototype: {
@@ -30,7 +35,7 @@ const withDecorators = composeDecorators(
   })
 );
 
-const Component = ({ title, ...props }: { title: string } & ChatDialogProps) => (
+const Component = (props: ChatDialogProps) => (
   <Flex height={800} width={654} backgroundColor="#fff" justifyContent="center" flexDirection="column" margin="0 auto">
     <ChatDialog {...props} />
   </Flex>
@@ -46,15 +51,15 @@ export const standard = withDecorators(() => {
 
   return (
     <Component
-      color={customized && '#5c6bc0'}
-      canRestart={!!userResponse}
+      color={customized ? '#5c6bc0' : undefined}
       input={userResponse}
-      testEnded={testEnded}
       isMute={isMute}
+      canRestart={!!userResponse}
+      testEnded={testEnded}
       onMute={() => setMute(!isMute)}
       onReset={() => setResponse('')}
       suggestions={withChips ? ['Transfer Funds', 'Account Balance', 'Open New Account', 'Order Pizza', 'Open story'] : []}
-      onInputChange={(e: any) => setResponse(e.target.value)}
+      onInputChange={setResponse}
       locale="EN-US"
       layout={layout}
       prototypeStatus={userResponse ? PrototypeStatus.ACTIVE : PrototypeStatus.IDLE}

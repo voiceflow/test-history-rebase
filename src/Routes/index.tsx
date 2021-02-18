@@ -33,7 +33,7 @@ const PublicPrototypeV2 = React.lazy(() => import('@/pages/PublicPrototypeV2'));
 const Workspace = React.lazy(() => import('@/pages/Workspace'));
 const NewWorkspace = React.lazy(() => import('@/pages/Dashboard/NewWorkspace'));
 
-const PublicPrototoypeRoute: React.FC = (props) => {
+const PublicPrototypeRoute: React.FC = (props) => {
   const sharePrototypeView = useFeature(FeatureFlag.SHARE_PROTOTYPE_VIEW);
 
   return sharePrototypeView.isEnabled ? <PublicPrototypeV2 {...props} /> : <PublicPrototype {...props} />;
@@ -61,7 +61,7 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => {
         <PrivateRoute path={[Path.WORKSPACE, Path.DASHBOARD]} component={Workspace} />
 
         <Redirect exact from={Path.PROJECT_DEMO} to={Path.PUBLIC_PROTOTYPE} />
-        <Route path={Path.PUBLIC_PROTOTYPE} component={PublicPrototoypeRoute} />
+        <Route path={Path.PUBLIC_PROTOTYPE} component={PublicPrototypeRoute} />
 
         <Redirect from={LegacyPath.WORKSPACE_DASHBOARD} to={Path.WORKSPACE_DASHBOARD} />
         <Redirect from={LegacyPath.CANVAS_DIAGRAM} to={Path.PROJECT_CANVAS} />

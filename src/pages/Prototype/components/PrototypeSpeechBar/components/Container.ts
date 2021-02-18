@@ -1,7 +1,7 @@
 import Box from '@/components/Box';
-import { styled, transition } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const Container = styled(Box)`
+const Container = styled(Box)<{ disabled?: boolean }>`
   width: 100%;
   margin: 0 auto;
   min-height: 178px;
@@ -10,7 +10,11 @@ const Container = styled(Box)`
   cursor: pointer;
   user-select: none;
 
-  ${transition('transform')}
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      pointer-events: none;
+    `}
 `;
 
 export default Container;

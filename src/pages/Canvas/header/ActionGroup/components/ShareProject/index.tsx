@@ -9,10 +9,10 @@ import { Permission } from '@/config/permissions';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useFeature, usePermission, useSmartReducerV2, useTrackingEvents } from '@/hooks';
+import { useFeature, usePermission, useTrackingEvents } from '@/hooks';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
-import { ConnectedProps, Nullable } from '@/types';
+import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
 import { stopImmediatePropagation } from '@/utils/dom';
 
@@ -33,16 +33,15 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 
   const isPrototypingMode = usePrototypingMode();
 
-  const [state, stateApi] = useSmartReducerV2({
-    testableLink: null as Nullable<string>,
-    loadingTestableLink: false,
-  });
+  const testableLink = canShareProject || canSharePrototype ? `${window.location.origin}/prototype/${versionID}` : null;
 
-  const onClickPrototype = async () => {
+  const onRenderPrototype = () => renderPrototype({ aborted: false });
+
+  const onClickPrototype = () => {
     if (render && canSharePrototype) {
-      renderPrototype({ aborted: false });
+      onRenderPrototype();
 
-      await copyTestableLink();
+      copy(testableLink);
 
       trackingEvents.trackTestableLinkCopy();
 
@@ -50,28 +49,6 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     } else if (!render) {
       toast.error('Unable to copy link to clipboard, please try again or contact support');
     }
-  };
-
-  const copyTestableLink = async () => {
-    const link = await loadTestableLink();
-    copy(link);
-  };
-
-  const loadTestableLink = async () => {
-    if (!state.testableLink) {
-      const link = `${window.location.origin}/prototype/${versionID}`;
-      stateApi.update({ testableLink: link });
-      return link;
-    }
-    return state.testableLink;
-  };
-
-  const wrapToggleShare = (prevIsOpen: boolean, onToggle: () => void) => () => {
-    if (!prevIsOpen && (canShareProject || canSharePrototype)) {
-      loadTestableLink();
-    }
-
-    onToggle();
   };
 
   return (
@@ -94,7 +71,12 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
               )}
               {canInviteByLink && (
                 <Footer onClick={stopImmediatePropagation()}>
-                  <SharePrototype isAllowed={canSharePrototype} onClick={onClickPrototype} link={state?.testableLink ?? null} />
+                  <SharePrototype
+                    link={testableLink}
+                    onClick={onClickPrototype}
+                    isAllowed={canSharePrototype}
+                    onRenderPrototype={onRenderPrototype}
+                  />
                 </Footer>
               )}
             </>
@@ -108,12 +90,12 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
             ref={ref}
             variant={ButtonVariant.PRIMARY}
             icon="link"
-            onClick={canSharePrototype && !sharePrototypeView.isEnabled ? onClickPrototype : wrapToggleShare(isOpen, onToggle)}
+            onClick={canSharePrototype && !sharePrototypeView.isEnabled ? onClickPrototype : onToggle}
           >
             Share Prototype
           </Button>
         ) : (
-          <Button ref={ref} preventFocusStyle variant={ButtonVariant.QUATERNARY} large onClick={wrapToggleShare(isOpen, onToggle)} isActive={isOpen}>
+          <Button ref={ref} preventFocusStyle variant={ButtonVariant.QUATERNARY} large onClick={onToggle} isActive={isOpen}>
             Share
           </Button>
         )

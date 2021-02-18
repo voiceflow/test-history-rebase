@@ -27,6 +27,7 @@ export enum StepDirection {
 export type TraceControllerProps = {
   debug: boolean;
   engine?: null | Engine;
+  isMuted: boolean;
   setError: (error: string) => void;
   isPublic?: boolean;
   enterFlow: (diagramID: string) => void;
@@ -350,12 +351,10 @@ class TraceController {
       this.streamState = { src, token, offset: 0 };
     }
 
-    const muted = this.props.engine?.getPrototypeMuted();
-
     try {
       await this.audio.play(src, {
-        muted,
         loop: action === TraceStreamAction.LOOP,
+        muted: this.props.isMuted,
         offset: this.streamState.offset,
         onPause: (audio) => {
           this.streamState.offset = audio.currentTime;
@@ -380,9 +379,7 @@ class TraceController {
       return;
     }
 
-    const muted = this.props.engine?.getPrototypeMuted();
-
-    await this.audio.play(src, { muted, onError: () => this.setError() }).catch(_.noop);
+    await this.audio.play(src, { muted: this.props.isMuted, onError: () => this.setError() }).catch(_.noop);
   }
 
   private async processFlowTrace({ payload: { diagramID } }: FlowTrace) {

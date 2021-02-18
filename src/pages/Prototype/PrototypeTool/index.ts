@@ -44,8 +44,7 @@ class PrototypeTool {
   }
 
   public play(src: string) {
-    const muted = this.props.engine?.getPrototypeMuted();
-    this.audio?.playExternal(src, muted);
+    this.audio?.playExternal(src, this.props.isMuted);
   }
 
   public stepBack() {

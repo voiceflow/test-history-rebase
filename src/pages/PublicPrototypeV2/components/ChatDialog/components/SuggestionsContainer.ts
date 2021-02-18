@@ -8,8 +8,6 @@ const SuggestionsContainer = styled(Flex)`
   overflow-x: auto;
   overflow-y: hidden;
   width: 100%;
-  position: absolute;
-  bottom: 80px;
 `;
 
 export default SuggestionsContainer;

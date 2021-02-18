@@ -1,6 +1,6 @@
 import _isNumber from 'lodash/isNumber';
 import _isString from 'lodash/isString';
-import { SpaceProps, space } from 'styled-system';
+import { space, SpaceProps } from 'styled-system';
 
 import { IconVariant } from '@/constants';
 import { css, styled, transition } from '@/hocs';

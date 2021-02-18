@@ -6,9 +6,17 @@ import { useTeardown } from './lifecycle';
 import { useMicrophonePermission } from './microphone';
 
 // eslint-disable-next-line import/prefer-default-export
-export const useSpeechRecognition = ({ locale, onTranscript }: { locale?: string; onTranscript: (text: string) => void }) => {
-  const [microphonePermissionGranted, checkMicrophonePermission] = useMicrophonePermission();
-  const { listening, transcript, interimTranscript, finalTranscript } = useReactSpeechRecognition();
+export const useSpeechRecognition = ({
+  locale,
+  askOnSetup,
+  onTranscript,
+}: {
+  locale?: string;
+  askOnSetup?: boolean;
+  onTranscript: (text: string) => void;
+}) => {
+  const [microphonePermissionGranted, checkMicrophonePermission] = useMicrophonePermission({ askOnSetup });
+  const { listening, transcript, interimTranscript, finalTranscript, resetTranscript } = useReactSpeechRecognition({ clearTranscriptOnListen: true });
 
   const cache = useCache({
     locale,
@@ -37,7 +45,8 @@ export const useSpeechRecognition = ({ locale, onTranscript }: { locale?: string
   const onStopListening = React.useCallback(() => {
     const trimmedTranscript = cache.current.transcript?.trim();
 
-    SpeechRecognition.stopListening();
+    SpeechRecognition.abortListening();
+    resetTranscript();
 
     if (trimmedTranscript.trim()) {
       cache.current.onTranscript(trimmedTranscript);

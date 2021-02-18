@@ -1,21 +1,17 @@
 import React from 'react';
 
-import { ClickableText } from '@/components/Text/components/ClickableText';
-import { useHotKeys, useSpeechRecognition } from '@/hooks';
-import { Hotkey } from '@/keymap';
+import { useSpeechRecognition } from '@/hooks';
 
-import { BlueText, Container, SpeechText, SpokenText } from './components';
+import { UncontrolledSpeechBar } from './components';
+
+export { UncontrolledSpeechBar } from './components';
 
 export type PrototypeSpeechBarProps = {
   locale: string;
   onTranscript: (input: string) => void;
-  className?: string;
 };
 
-const PrototypeSpeechBar: React.FC<PrototypeSpeechBarProps> = ({ locale, onTranscript, className }) => {
-  // TODO: use platform device type logic from CORE-5029 by Evgeny
-  const isMobile = false;
-
+const PrototypeSpeechBar: React.FC<PrototypeSpeechBarProps> = ({ locale, onTranscript }) => {
   const {
     isListening,
     isSupported,
@@ -27,51 +23,21 @@ const PrototypeSpeechBar: React.FC<PrototypeSpeechBarProps> = ({ locale, onTrans
     isMicrophonePermissionGranted,
   } = useSpeechRecognition({
     locale,
+    askOnSetup: true,
     onTranscript,
   });
 
-  useHotKeys(Hotkey.USER_SPEECH, onStopListening, { action: 'keyup' });
-  useHotKeys(Hotkey.USER_SPEECH, onStartListening, { action: 'keydown' });
-
-  if (!isSupported) {
-    return (
-      <Container cursor="default" className={className}>
-        <SpeechText>Browser doesn't support speech recognition</SpeechText>
-      </Container>
-    );
-  }
-
-  let text;
-  if (!isMicrophonePermissionGranted) {
-    text = (
-      <>
-        Please <ClickableText onClick={onCheckMicrophonePermission}>enable</ClickableText> microphone access
-      </>
-    );
-  } else if (!isListening) {
-    text = (
-      <>
-        Hold <BlueText>{isMobile ? 'here' : 'spacebar'}</BlueText> for Voice Input
-      </>
-    );
-  } else {
-    if (finalTranscript || interimTranscript) {
-      text = (
-        <>
-          <SpokenText>
-            {finalTranscript} {interimTranscript}
-          </SpokenText>
-        </>
-      );
-    } else {
-      text = 'Say something...';
-    }
-  }
-
   return (
-    <Container onMouseDown={onStartListening} onMouseUp={onStopListening} className={className}>
-      <SpeechText>{text}</SpeechText>
-    </Container>
+    <UncontrolledSpeechBar
+      isListening={isListening}
+      isSupported={isSupported}
+      finalTranscript={finalTranscript}
+      onStopListening={onStopListening}
+      onStartListening={onStartListening}
+      interimTranscript={interimTranscript}
+      onCheckMicrophonePermission={onCheckMicrophonePermission}
+      isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+    />
   );
 };
 

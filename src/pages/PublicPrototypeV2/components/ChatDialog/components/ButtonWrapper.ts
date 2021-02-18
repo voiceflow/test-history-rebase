@@ -1,13 +1,14 @@
 import Box from '@/components/Box';
-import { css, styled } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 import { changeColorShade } from '@/utils/colors';
 
 const ButtonWrapper = styled(Box)<{ color?: string; disabled?: boolean }>`
+  ${transition('color')}
   margin-left: 24px;
 
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
-  ${({ color }) =>
+  ${({ color, disabled }) =>
     color &&
     css`
       background-color: ${color};
@@ -15,7 +16,7 @@ const ButtonWrapper = styled(Box)<{ color?: string; disabled?: boolean }>`
       border-radius: 12px;
 
       :hover {
-        background-color: ${changeColorShade(color, -20)};
+        background-color: ${disabled ? color : changeColorShade(color, -20)};
       }
     `};
 `;

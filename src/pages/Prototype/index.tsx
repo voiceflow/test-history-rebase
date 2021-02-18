@@ -90,7 +90,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         isPublic={isPublic}
         isLoading={isLoading}
         messages={messages}
-        onInteraction={onInteraction}
         onPlay={onPlay}
         debug={debug}
         interactions={interactions}
@@ -98,6 +97,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
       >
         {showChips && <Interactions interactions={interactions} onInteraction={onInteraction} />}
       </ChatDisplay>
+
       <UserSaysContainer>
         <Input
           stepBack={onStepBack}

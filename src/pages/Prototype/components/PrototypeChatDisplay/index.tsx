@@ -12,12 +12,12 @@ export type PrototypeChatDisplayProps = {
   isLoading?: boolean;
   atTop?: boolean;
   messages: Message[];
-  onInteraction: (input: string) => void;
   setAtTop?: (val: boolean) => void;
   onPlay: (src: string) => void;
   debug?: boolean;
   interactions: Interaction[];
   status: PrototypeStatus;
+  hideSessionMessages?: boolean;
 };
 
 const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
@@ -26,12 +26,12 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   isPublic,
   isLoading,
   messages = [],
-  onInteraction,
   onPlay,
   debug,
   interactions = [],
   status,
   children,
+  hideSessionMessages,
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
@@ -60,14 +60,14 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
     <OutterChatContainer>
       <InnerChatContainer onScroll={onScrollHandler} ref={chatScrollRef} atTop={atTop}>
         <Dialog
-          isPublic={isPublic}
-          isLoading={isLoading}
-          messages={messages}
-          onInteraction={onInteraction}
-          onPlay={onPlay}
           debug={debug}
-          bottomScrollRef={scrollRef}
           status={status}
+          onPlay={onPlay}
+          isPublic={isPublic}
+          messages={messages}
+          isLoading={isLoading}
+          bottomScrollRef={scrollRef}
+          hideSessionMessages={hideSessionMessages}
         />
         {children}
       </InnerChatContainer>

@@ -4,46 +4,68 @@ import * as PrototypeDuck from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useDidUpdateEffect, useSpeechRecognition, useTeardown } from '@/hooks';
+import { useCache, useDidUpdateEffect, useSpeechRecognition, useTeardown } from '@/hooks';
+import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import { usePrototype, useResetPrototype, useStartPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
+import ChatDialog from '@/pages/PublicPrototypeV2/components/ChatDialog';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';
 
+import Footer from '../Footer';
 import Layout from '../Layout';
+import SplashScreen from '../SplashScreen';
 import Visuals from '../Visuals';
 
 type PrototypeProps = {
-  layout: PrototypeDuck.PrototypeLayout;
+  settings: PrototypeDuck.PrototypeSettings;
 };
 
-const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ layout, locale, status, autoplay }) => {
+const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, locale, status, isMuted, settings, autoplay, updatePrototype }) => {
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
 
-  const { status: prototypeMachineStatus, messages, interactions, onInteraction } = usePrototype({
+  const [input, setInput] = React.useState<string>('');
+  const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay } = usePrototype({
     debug: false,
     isPublic: true,
     prototypeStatus: status,
   });
 
-  const { isListening, onStartListening, onStopListening } = useSpeechRecognition({ locale, onTranscript: onInteraction });
+  const isVoicePrototype = React.useMemo(
+    () => [PrototypeDuck.PrototypeLayout.VOICE_VISUALS, PrototypeDuck.PrototypeLayout.VOICE_DIALOG].includes(settings.layout),
+    [settings.layout]
+  );
 
-  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const {
+    isListening,
+    isSupported: isSpeechSpeechRecognitionSupported,
+    finalTranscript,
+    onStopListening,
+    onStartListening,
+    interimTranscript,
+    onCheckMicrophonePermission,
+    isMicrophonePermissionGranted,
+  } = useSpeechRecognition({ locale, onTranscript: onInteraction, askOnSetup: isVoicePrototype });
+
+  const cache = useCache({ input });
+
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  // TODO: use this to dive loading indicator
-  const _isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
-  const isSplashScreenPassed = status !== PrototypeDuck.PrototypeStatus.IDLE;
+  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
+  const isIdle = status === PrototypeDuck.PrototypeStatus.IDLE;
+  const isFinished = status === PrototypeDuck.PrototypeStatus.ENDED;
 
-  const scrollToBottom = () => {
-    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const sendInteraction = (customInput?: string) => {
+    onInteraction(customInput || cache.current.input);
+    setInput('');
   };
 
-  React.useEffect(() => {
-    scrollToBottom();
-  }, [messages.length, interactions]);
+  const resetState = () => {
+    resetPrototype();
+    setInput('');
+  };
+
+  const onMute = () => updatePrototype({ muted: !isMuted });
 
   useTeardown(() => {
     resetPrototype();
@@ -55,43 +77,76 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ layout,
     }
   }, [autoplay]);
 
-  // TODO: replace with the splash screen
-  const isVisuals = layout === PrototypeDuck.PrototypeLayout.VOICE_VISUALS;
+  useDidUpdateEffect(() => {
+    if (isFinished) {
+      onStopListening();
+    }
+  }, [isFinished]);
+
+  const isVisuals = settings.layout === PrototypeDuck.PrototypeLayout.VOICE_VISUALS;
 
   return (
     <Layout
       isVisuals={isVisuals}
       isListening={isListening}
-      renderSplashScreen={() => (
-        <div>
-          this is a Splash screen, press
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <a
-            href=""
-            onClick={(e) => {
-              e.preventDefault();
-              startPrototype();
-            }}
-          >
-            Start
-          </a>{' '}
-          to try visuals
-        </div>
+      renderSplashScreen={({ isMobile }) => (
+        <SplashScreen
+          logoURL={settings.branchImage}
+          onStart={startPrototype}
+          colorScheme={settings.brandColor}
+          isMobile={isMobile}
+          isVisuals={isVisuals}
+          projectName={name}
+          withStartButton={isIdle}
+        />
       )}
-      splashScreenPassed={isSplashScreenPassed}
-      // TODO: replace with the visuals footer
-      renderVisualsFooter={({ toggleFullScreen }) => <div onClick={toggleFullScreen}>Footer</div>}
+      splashScreenPassed={!isIdle}
+      renderVisualsFooter={({ toggleFullScreen }) => (
+        <Footer onMute={onMute} isMuted={isMuted} onReset={resetPrototype} onFullScreen={toggleFullScreen}>
+          <UncontrolledSpeechBar
+            disabled={isIdle}
+            isListening={isListening}
+            isSupported={isSpeechSpeechRecognitionSupported}
+            finalTranscript={finalTranscript}
+            onStopListening={onStopListening}
+            onStartListening={onStartListening}
+            interimTranscript={interimTranscript}
+            onCheckMicrophonePermission={onCheckMicrophonePermission}
+            isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+          />
+        </Footer>
+      )}
     >
       {({ isMobile, isFullScreen }) =>
         isVisuals ? (
-          <Visuals
-            isMobile={isMobile}
-            onMouseUp={() => (isMobile || isFullScreen) && onStopListening()}
-            onMouseDown={() => (isMobile || isFullScreen) && onStartListening()}
-            isFullScreen={isFullScreen}
-          />
+          <Visuals isMobile={isMobile} isFullScreen={isFullScreen} onStopListening={onStopListening} onStartListening={onStartListening} />
         ) : (
-          <div>children</div>
+          <ChatDialog
+            input={input}
+            color={settings.brandColor}
+            layout={settings.layout}
+            onMute={onMute}
+            isIdle={isIdle}
+            onSend={sendInteraction}
+            isMuted={isMuted}
+            onReset={resetState}
+            onPlay={onPlay}
+            messages={messages}
+            isMobile={isMobile}
+            isLoading={isLoading}
+            testEnded={isFinished}
+            isListening={isListening}
+            interactions={interactions}
+            onInputChange={setInput}
+            prototypeStatus={status}
+            finalTranscript={finalTranscript}
+            onStopListening={onStopListening}
+            onStartListening={onStartListening}
+            interimTranscript={interimTranscript}
+            onCheckMicrophonePermission={onCheckMicrophonePermission}
+            isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+            isSpeechSpeechRecognitionSupported={isSpeechSpeechRecognitionSupported}
+          />
         )
       }
     </Layout>
@@ -99,7 +154,9 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ layout,
 };
 
 const mapStateToProps = {
+  name: Skill.activeNameSelector,
   status: PrototypeDuck.prototypeStatusSelector,
+  isMuted: PrototypeDuck.prototypeMutedSelector,
   locales: Skill.activeLocalesSelector,
   autoplay: PrototypeDuck.prototypeAutoplaySelector,
 };

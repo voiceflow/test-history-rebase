@@ -5,3 +5,4 @@ export { default as Chips } from './Chips';
 export { default as InputContainer } from './InputContainer';
 export { default as DisplayContainer } from './DisplayContainer';
 export { default as SuggestionsContainer } from './SuggestionsContainer';
+export { default as SpeechBarContainer } from './SpeechBarContainer';

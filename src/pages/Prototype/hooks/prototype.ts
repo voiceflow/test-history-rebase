@@ -18,6 +18,7 @@ import { Interaction, Message, PMStatus } from '../types';
 const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; isPublic?: boolean; prototypeStatus: Prototype.PrototypeStatus }) => {
   const dispatch = useDispatch() as Dispatch;
 
+  const isMuted = useSelector(Prototype.prototypeMutedSelector);
   const activePathLinkIDs = useSelector(Prototype.activePathLinkIDsSelector);
   const activePathBlockIDs = useSelector(Prototype.activePathBlockIDsSelector);
   const getLinksByPortID = useSelector(Creator.linksByPortIDSelector);
@@ -37,6 +38,7 @@ const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; is
   const cacheData: PrototypeToolProps = {
     debug,
     engine,
+    isMuted,
     isPublic,
     setError: (error) => dispatch(Modal.setError(error)),
     enterFlow: (diagramID) => dispatch(Skill.updateDiagramID(diagramID)),

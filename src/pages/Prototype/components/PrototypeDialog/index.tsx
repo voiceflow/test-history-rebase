@@ -11,15 +11,24 @@ import { checkIfFirstInSeries } from './utils';
 type DialogPrototypeProps = {
   debug?: boolean;
   onPlay: (src: string) => void;
+  status: Prototype.PrototypeStatus;
   messages: Message[];
   isPublic?: boolean;
   isLoading?: boolean;
-  onInteraction: (input: string) => void;
   bottomScrollRef: React.Ref<HTMLElement>;
-  status: Prototype.PrototypeStatus;
+  hideSessionMessages?: boolean;
 };
 
-const PrototypeDialog: React.FC<DialogPrototypeProps> = ({ isPublic, bottomScrollRef, messages, debug, onPlay, isLoading, status }) => {
+const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
+  isPublic,
+  bottomScrollRef,
+  messages,
+  debug,
+  onPlay,
+  isLoading,
+  status,
+  hideSessionMessages,
+}) => {
   return (
     <Container isPublic={isPublic}>
       {messages.map((message: Message, index) => {
@@ -31,7 +40,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({ isPublic, bottomScrol
 
         switch (message.type) {
           case MessageType.SESSION:
-            return (
+            return hideSessionMessages ? null : (
               <Divider key={message.id} isLast={isLast && messages.length > 1}>
                 {message.message}
               </Divider>
@@ -82,7 +91,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({ isPublic, bottomScrol
             return null;
         }
       })}
-      {status === Prototype.PrototypeStatus.ENDED && (
+      {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && (
         <Divider key="ended" isLast={true}>
           Session ended
         </Divider>

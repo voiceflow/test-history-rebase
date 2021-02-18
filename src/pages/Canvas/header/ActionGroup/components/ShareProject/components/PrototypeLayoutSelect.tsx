@@ -6,6 +6,7 @@ import Menu, { MenuItem } from '@/components/Menu';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeLayout } from '@/ducks/prototype/types';
 import { connect } from '@/hocs';
+import { useDidUpdateEffect } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 import PrototypeLayoutItem from './PrototypeLayoutItem';
@@ -32,9 +33,11 @@ const OPTION_DETAILS: Record<PrototypeLayout, Record<string, string>> = {
 };
 
 const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ layout, updateSettings }) => {
-  const onClick = (option: PrototypeLayout, cb: () => void) => async () => {
-    await updateSettings({ layout: option });
+  const [localLayout, setLocalLayout] = React.useState(layout);
 
+  const onClick = (option: PrototypeLayout, cb: () => void) => async () => {
+    setLocalLayout(option);
+    updateSettings({ layout: option });
     cb();
   };
 
@@ -42,6 +45,12 @@ const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ 
     () => [PrototypeLayout.TEXT_DIALOG, PrototypeLayout.VOICE_DIALOG, PrototypeLayout.VOICE_VISUALS].filter((option) => option !== layout),
     [layout]
   );
+
+  useDidUpdateEffect(() => {
+    if (layout !== localLayout) {
+      setLocalLayout(layout);
+    }
+  }, [layout]);
 
   return (
     <Box pb={24} pr={32}>
@@ -54,7 +63,7 @@ const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ 
                 <PrototypeLayoutItem
                   title={OPTION_DETAILS[option].title}
                   description={OPTION_DETAILS[option].description}
-                  src={option === layout ? OPTION_DETAILS[option].activeImg : OPTION_DETAILS[option].inactiveImg}
+                  src={option === localLayout ? OPTION_DETAILS[option].activeImg : OPTION_DETAILS[option].inactiveImg}
                 />
               </MenuItem>
             ))}
@@ -64,9 +73,9 @@ const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ 
         placement="bottom-start"
         text={
           <PrototypeLayoutItem
-            title={OPTION_DETAILS[layout].title}
-            description={OPTION_DETAILS[layout].description}
-            src={OPTION_DETAILS[layout].activeImg}
+            title={OPTION_DETAILS[localLayout].title}
+            description={OPTION_DETAILS[localLayout].description}
+            src={OPTION_DETAILS[localLayout].activeImg}
           />
         }
       />

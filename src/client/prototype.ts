@@ -37,7 +37,10 @@ const prototypeClient = {
           intents,
         },
         settings: {
-          layout: PrototypeLayout.TEXT_DIALOG as PrototypeLayout,
+          layout: PrototypeLayout.TEXT_DIALOG,
+          avatar: undefined,
+          brandColor: undefined,
+          branchImage: undefined,
         },
       };
     }),

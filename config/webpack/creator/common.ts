@@ -42,15 +42,6 @@ export default merge(commonConfig, {
               '**/types.ts',
               'store/types/**/*.ts',
               'models/**/*',
-
-              // TODO: remove when new share system footer gets used
-              'components/SharePrototypeFooter/**/*',
-              // TODO: remove when new share system splash screens gets used
-              'components/ShareSplashScreen/**/*',
-
-              // TODO: delete when SubMenu gets used
-              'components/SubMenu/**/*',
-
               // TODO: validate whether these components will be used
               'components/LegacyUpload/**/*',
               'components/DropdownButton/**/*',

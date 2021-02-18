@@ -8,27 +8,28 @@ import SvgIcon from '@/components/SvgIcon';
 import * as Prototype from '@/ducks/prototype';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useCache, useDidUpdateEffect, useSetup } from '@/hooks';
+import { useCache, useDidUpdateEffect } from '@/hooks';
 import { useDeviceDimension } from '@/pages/Prototype/components/PrototypeVisualCanvas/hooks';
 import { FadeContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
+import { preventDefault } from '@/utils/dom';
 
 import { APL, Container, Image, PlaceholderContainer, ScaleContainer } from './components';
 import { getScale } from './utils';
 
 type VisualsProps = {
   isMobile?: boolean;
-  onMouseUp?: () => void;
-  onMouseDown?: () => void;
   isFullScreen?: boolean;
+  onStopListening: () => void;
+  onStartListening: () => void;
 };
 
-const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({ data, device, isMobile, isFullScreen, onMouseUp, onMouseDown }) => {
+const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({ data, device, isMobile, isFullScreen, onStopListening, onStartListening }) => {
   const dimension = useDeviceDimension({ data, device: device || DeviceType.ECHO_SHOW_10 });
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [scale, setScale] = React.useState(1);
 
-  const cache = useCache({ dimension });
+  const cache = useCache({ dimension, onStopListening, onStartListening });
 
   const contentKey = React.useMemo(() => cuid(), [dimension.width, dimension.height]);
 
@@ -37,24 +38,34 @@ const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({ data, device,
     setScale(getScale(node, cache.current.dimension));
   }, []);
 
-  useSetup(() => {
-    const onResize = _throttle(() => {
-      setScale(getScale(containerRef.current, cache.current.dimension));
-    }, 30);
-
-    window.addEventListener('resize', onResize);
-
-    onResize();
-
-    return () => window.removeEventListener('resize', onResize);
-  });
-
   useDidUpdateEffect(() => {
     setScale(getScale(containerRef.current, dimension));
   }, [dimension.width, dimension.height, isFullScreen]);
 
+  React.useEffect(() => {
+    const onResize = _throttle(() => setScale(getScale(containerRef.current, cache.current.dimension)), 30);
+    const onPreventDefaultedStopListening = preventDefault(() => cache.current.onStopListening());
+    const onPreventDefaultedStartListening = preventDefault(() => cache.current.onStartListening());
+
+    window.addEventListener('resize', onResize);
+
+    if (isMobile) {
+      containerRef.current?.addEventListener('touchend', onPreventDefaultedStopListening);
+      containerRef.current?.addEventListener('touchstart', onPreventDefaultedStartListening);
+    }
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+
+      if (isMobile) {
+        containerRef.current?.removeEventListener('touchend', onPreventDefaultedStopListening);
+        containerRef.current?.removeEventListener('touchstart', onPreventDefaultedStartListening);
+      }
+    };
+  }, []);
+
   return (
-    <Container ref={onContainerRef} isMobile={isMobile} onMouseUp={onMouseUp} onMouseDown={onMouseDown}>
+    <Container ref={onContainerRef} isMobile={isMobile}>
       {!!containerRef.current && (
         <>
           {data?.visualType === VisualType.IMAGE && (

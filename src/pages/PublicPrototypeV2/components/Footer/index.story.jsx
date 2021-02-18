@@ -7,6 +7,11 @@ import { styled } from '@/hocs';
 
 import Footer from '.';
 
+export default {
+  title: 'PublicPrototype/Footer',
+  component: Footer,
+};
+
 const TextContainer = styled.div`
   color: #a8b6c3;
   font-weight: 500;

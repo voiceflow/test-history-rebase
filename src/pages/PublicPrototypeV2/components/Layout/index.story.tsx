@@ -33,4 +33,4 @@ const createStory = ({ children, ...props }: Partial<LayoutProps> = {}) => (
 export const basic = () => createStory();
 export const splashScreenPassed = () => createStory({ splashScreenPassed: true });
 export const visuals = () => createStory({ isVisuals: true });
-export const visualsSplashScreenPassed = () => createStory({ isVisuals: true, splashScreenPassed: true, isVisualsListening: true });
+export const visualsSplashScreenPassed = () => createStory({ isVisuals: true, splashScreenPassed: true, isListening: true });

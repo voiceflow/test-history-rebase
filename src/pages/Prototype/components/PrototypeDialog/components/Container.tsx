@@ -3,13 +3,17 @@ import React from 'react';
 import Box from '@/components/Box';
 import { css, styled } from '@/hocs';
 
-export const Outter = styled.div`
+export const Outter = styled.div<{ isPublic?: boolean }>`
   position: relative;
   display: flex;
   flex: 1;
-  max-width: 500px;
   height: 100%;
   padding-top: 0;
+  ${({ isPublic }) =>
+    isPublic &&
+    css`
+      max-width: 500px;
+    `}
 `;
 
 export const Middle = styled.div<{ isPublic?: boolean }>`
@@ -29,7 +33,7 @@ export const Middle = styled.div<{ isPublic?: boolean }>`
 
 const Container: React.FC<{ isPublic?: boolean }> = ({ children, isPublic }) => {
   return (
-    <Outter>
+    <Outter isPublic={isPublic}>
       <Middle isPublic={isPublic}>
         <Box pb={20} width="100%">
           {children}

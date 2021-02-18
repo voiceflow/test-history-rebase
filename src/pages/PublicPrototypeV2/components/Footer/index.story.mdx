@@ -1,10 +1,8 @@
 import { Meta, Preview, Story } from '@/../.storybook';
 
-import * as stories from './index.story';
+import story, * as stories from './index.story';
 
-import SharePrototypeFooter from '.';
-
-<Meta title="PrototypeFooter" component={SharePrototypeFooter} />
+<Meta title={story.title} component={story.component} />
 
 # Footer for Prototype Share View
 

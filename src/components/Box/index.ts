@@ -48,7 +48,7 @@ export const Box = styled.div<BoxProps>(
   boxShadow,
   textShadow,
   css`
-    cursor: ${(props: BoxProps) => props.cursor || 'default'};
+    cursor: ${(props: BoxProps) => props.cursor};
   `
 );
 

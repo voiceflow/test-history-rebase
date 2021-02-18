@@ -31,6 +31,7 @@ const Layout: React.FC<LayoutProps> = ({ children, isVisuals, isListening, rende
   const [isMobileSize, toggleIsMobileSize] = useToggle(window.innerWidth <= MAX_MOBILE_WIDTH);
   const [isFullScreen, toggleFullScreen] = useToggle(false);
 
+  useHotKeys(Hotkey.PROTOTYPE_FULL_SCREEN, () => toggleFullScreen(true));
   useHotKeys(Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN, () => toggleFullScreen(false));
 
   useSetup(() => {

@@ -1,5 +1,6 @@
 export * from './compose';
 export * from './connect';
+export * from './lazy';
 export * from './styled';
 export * from './withBatchLoadingGate';
 export * from './withContext';

@@ -18,7 +18,7 @@ const GlobalSocketSubscriptionsLoadingGate: React.FC<ConnectedGlobalSocketSubscr
 }) => {
   const isPrototypingMode = usePrototypingMode();
 
-  React.useEffect(() => client.socket.global.watchForceRefresh(() => window.location.reload(true)));
+  React.useEffect(() => client.socket.global.watchForceRefresh(() => window.location.reload()));
   React.useEffect(() => client.socket.global.watchWorkspaceMembers(({ workspaceID, members }) => patchWorkspace(workspaceID, { members })));
   React.useEffect(() =>
     client.socket.global.watchForMembershipRevoked(({ workspaceId, workspaceName }) => ejectFromWorkspace(workspaceId, workspaceName))

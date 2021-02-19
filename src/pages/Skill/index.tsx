@@ -11,7 +11,7 @@ import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as SkillDuck from '@/ducks/skill';
 import { PlanRestrictionGate, ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
-import { connect, withBatchLoadingGate } from '@/hocs';
+import { connect, lazy, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable, usePermission } from '@/hooks';
 import CanvasHeader from '@/pages/Canvas/header';
 import InactivityModal from '@/pages/Inactivity';
@@ -28,10 +28,10 @@ import ProjectTitle from './components/ProjectTitle';
 import { PAGES_MATCHES, TIMEOUT_COUNT } from './constants';
 import { ExportProvider, MarkupModeProvider, NLPProvider, PublishProvider } from './contexts';
 
-const Diagram = React.lazy(() => import(/* webpackPrefetch: true */ './components/Diagram'));
-const Business = React.lazy(() => import('@/pages/Business'));
-const Migrate = React.lazy(() => import('@/pages/Migrate'));
-const Publish = React.lazy(() => import('@/pages/Publish'));
+const Diagram = lazy(() => import(/* webpackPrefetch: true */ './components/Diagram'));
+const Business = lazy(() => import('@/pages/Business'));
+const Migrate = lazy(() => import('@/pages/Migrate'));
+const Publish = lazy(() => import('@/pages/Publish'));
 
 export type SkillProps = RouteComponentProps;
 

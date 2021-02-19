@@ -9,7 +9,7 @@ import { PublishRoute } from '@/config/routes';
 import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Skill from '@/ducks/skill';
-import { connect } from '@/hocs';
+import { connect, lazy } from '@/hocs';
 import { usePermission } from '@/hooks';
 import PrivateRoute from '@/Routes/PrivateRoute';
 
@@ -18,9 +18,9 @@ import PlatformContainer from './components/PublishPlatformContainer';
 import Sidebar from './components/PublishSidebar';
 import SidebarItem from './components/PublishSidebarItem';
 
-const PublishAmazon = React.lazy(() => import('./Amazon'));
-const PublishGoogle = React.lazy(() => import('./Google'));
-const Export = React.lazy(() => import('./Export'));
+const PublishAmazon = lazy(() => import('./Amazon'));
+const PublishGoogle = lazy(() => import('./Google'));
+const Export = lazy(() => import('./Export'));
 
 const updateLink = (link, versionID) => link.replace(':versionID', versionID);
 

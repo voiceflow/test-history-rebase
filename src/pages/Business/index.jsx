@@ -5,14 +5,14 @@ import { ToolsRoute } from '@/config/routes';
 import * as Account from '@/ducks/account';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
-import { connect } from '@/hocs';
+import { connect, lazy } from '@/hocs';
 import { LockedResourceOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import PrivateRoute from '@/Routes/PrivateRoute';
 
 import { PageContainer } from './components';
 
-const Product = React.lazy(() => import('./Product'));
-const ProductsList = React.lazy(() => import('./ProductsList'));
+const Product = lazy(() => import('./Product'));
+const ProductsList = lazy(() => import('./ProductsList'));
 
 function Business(props) {
   const {

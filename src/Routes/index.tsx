@@ -5,7 +5,7 @@ import { FullSpinner } from '@/components/Spinner';
 import { FeatureFlag } from '@/config/features';
 import { LegacyPath, Path } from '@/config/routes';
 import { authTokenSelector } from '@/ducks/session';
-import { connect } from '@/hocs';
+import { connect, lazy } from '@/hocs';
 import { useFeature } from '@/hooks';
 import Export from '@/pages/Export';
 import Onboarding from '@/pages/Onboarding';
@@ -22,16 +22,16 @@ import * as Query from '@/utils/query';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
-const SSML = React.lazy(() => import('@/pages/SSML'));
-const Legal = React.lazy(() => import('@/components/Legal'));
-const Skill = React.lazy(() => import(/* webpackPrefetch: true */ '@/pages/Skill'));
-const Account = React.lazy(() => import('@/pages/Account'));
-const Runtime = React.lazy(() => import('@/pages/Runtime'));
-const Page404 = React.lazy(() => import('@/components/ErrorPages/404'));
-const PublicPrototype = React.lazy(() => import('@/pages/PublicPrototype'));
-const PublicPrototypeV2 = React.lazy(() => import('@/pages/PublicPrototypeV2'));
-const Workspace = React.lazy(() => import('@/pages/Workspace'));
-const NewWorkspace = React.lazy(() => import('@/pages/Dashboard/NewWorkspace'));
+const SSML = lazy(() => import('@/pages/SSML'));
+const Legal = lazy(() => import('@/components/Legal'));
+const Skill = lazy(() => import(/* webpackPrefetch: true */ '@/pages/Skill'));
+const Account = lazy(() => import('@/pages/Account'));
+const Runtime = lazy(() => import('@/pages/Runtime'));
+const Page404 = lazy(() => import('@/components/ErrorPages/404'));
+const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));
+const PublicPrototypeV2 = lazy(() => import('@/pages/PublicPrototypeV2'));
+const Workspace = lazy(() => import('@/pages/Workspace'));
+const NewWorkspace = lazy(() => import('@/pages/Dashboard/NewWorkspace'));
 
 const PublicPrototypeRoute: React.FC = (props) => {
   const sharePrototypeView = useFeature(FeatureFlag.SHARE_PROTOTYPE_VIEW);

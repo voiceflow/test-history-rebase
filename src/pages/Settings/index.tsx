@@ -19,7 +19,7 @@ const Settings: React.FC<ConnectedSettings> = ({ platform, goToDesign }) => {
   const [selectedTab, setSelectedTab] = React.useState(SettingsTabsType.GENERAL);
 
   return (
-    <Page navigateBackText="Back" onNavigateBack={goToDesign} headerChildren={<SettingsHeader />}>
+    <Page navigateBackText="Back" onNavigateBack={goToDesign} header={<SettingsHeader>Project Settings</SettingsHeader>}>
       <span id="vf-settings-page">
         <InnerContainer>
           <LeftSection>

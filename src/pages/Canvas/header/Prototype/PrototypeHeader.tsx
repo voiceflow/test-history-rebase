@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Flex } from '@/components/Box';
 import { FlexCenter } from '@/components/Flex';
 import { PrototypeStatus, prototypeStatusSelector } from '@/ducks/prototype';
 import { connect, styled } from '@/hocs';
@@ -15,7 +14,7 @@ const TimerContainer = styled(FlexCenter)`
 `;
 
 const PrototypeHeader = ({ status }: { status: PrototypeStatus }) => (
-  <Flex style={{ height: '100%', minHeight: '100%' }}>
+  <>
     <TimerContainer>
       {status === PrototypeStatus.ENDED && (
         <>
@@ -25,7 +24,7 @@ const PrototypeHeader = ({ status }: { status: PrototypeStatus }) => (
       <PrototypeTimer />
     </TimerContainer>
     <ShareProject render />
-  </Flex>
+  </>
 );
 
 const mapStateToProps = {

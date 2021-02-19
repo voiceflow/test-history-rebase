@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Flex } from '@/components/Box';
-import { FlexCenter, FlexEnd } from '@/components/Flex';
+import { FlexApart, FlexEnd } from '@/components/Flex';
 import { BackButton } from '@/components/Header/components';
 import SvgIcon from '@/components/SvgIcon';
 import * as Router from '@/ducks/router';
@@ -59,7 +59,7 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHead
       {publishContextValue?.job?.stage.data && <ProgressStage progress={(publishContextValue.job.stage.data as any).progress} />}
       <HeaderContainer style={{ minWidth: '100%' }}>
         <Flex style={{ padding: 'none', height: '70px', backgroundColor: '#fff' }}>
-          <FlexCenter style={{ minWidth: '100%', height: '100%', padding: 'none' }}>
+          <FlexApart style={{ minWidth: '100%', height: '100%', padding: 'none' }}>
             {onNavigateBack && (
               <BackButtonComp hasBackText={!!navigateBackText} onClick={onNavigateBack} id={Identifier.HEADER_BACK}>
                 <SvgIcon icon={ArrowLeftIcon} size={14} className="icon-back" />
@@ -71,7 +71,6 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHead
               style={{
                 padding: 'none',
                 alignItems: 'center',
-                width: '100%',
                 marginRight: '32px',
                 minHeight: '100%',
                 height: '100%',
@@ -79,7 +78,7 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHead
             >
               {children}
             </FlexEnd>
-          </FlexCenter>
+          </FlexApart>
         </Flex>
         {subHeader && <SubHeader>{subHeader}</SubHeader>}
       </HeaderContainer>

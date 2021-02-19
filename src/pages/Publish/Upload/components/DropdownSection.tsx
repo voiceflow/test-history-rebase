@@ -8,23 +8,21 @@ type DropdownSectionProps = {
   isDividerBottom?: boolean;
 };
 
-const DropdownSection: React.FC<DropdownSectionProps> = ({ title, isDividerBottom, children }) => {
-  return (
-    <Section
-      header={title}
-      headerToggle
-      collapseVariant={SectionToggleVariant.ARROW}
-      initialOpen={false}
-      variant={SectionVariant.UPLOAD}
-      customContentStyling={{ padding: '0 30px 0 0' }}
-      isDividerBottom={isDividerBottom}
-      customHeaderStyling={{ paddingRight: '32px' }}
-    >
-      <Box mb={16} style={{ textAlign: 'left' }}>
-        {children}
-      </Box>
-    </Section>
-  );
-};
+const DropdownSection: React.FC<DropdownSectionProps> = ({ title, isDividerBottom, children }) => (
+  <Section
+    header={title}
+    headerToggle
+    collapseVariant={SectionToggleVariant.ARROW}
+    initialOpen={false}
+    variant={SectionVariant.UPLOAD}
+    customContentStyling={{ padding: '0 30px 0 0' }}
+    isDividerBottom={isDividerBottom}
+    customHeaderStyling={{ paddingRight: '32px' }}
+  >
+    <Box mb={16} style={{ textAlign: 'left' }}>
+      {children}
+    </Box>
+  </Section>
+);
 
 export default DropdownSection;

@@ -3,10 +3,10 @@ import { combineReducers } from 'redux';
 import diagram, * as Diagram from './diagram';
 import focus, * as Focus from './focus';
 
-export * from './focus';
-export * from './diagram';
-export * from './constants';
 export * from './actions';
+export * from './constants';
+export * from './diagram';
+export * from './focus';
 export * from './selectors';
 export * from './sideEffects';
 

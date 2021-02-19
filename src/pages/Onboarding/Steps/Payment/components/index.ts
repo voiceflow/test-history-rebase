@@ -2,9 +2,9 @@ import Flex from '@/components/Flex';
 import { styled } from '@/hocs';
 
 export { default as Container } from './Container';
-export { default as SubHeader } from './SubHeader';
 export { default as InfoBubble } from './InfoBubble';
 export { default as PaymentDetailsContainer } from './PaymentDetailsContainer';
+export { default as SubHeader } from './SubHeader';
 
 export const EditorSeatsText = styled.div`
   color: #132144;

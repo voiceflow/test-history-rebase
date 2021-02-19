@@ -1,19 +1,16 @@
 import axios from 'axios';
-import _isNil from 'lodash/isNil';
 import React from 'react';
 import { Alert } from 'reactstrap';
 
 const MISSING_PARAM_ERR = 'Parameters missing, please ensure all sections are completed';
 
 const customAPICall = async (params) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const resp = await axios.post('/integrations/custom/make_test_api_call', params);
-      resolve(resp.data);
-    } catch (e) {
-      reject(new Error(`${e.message}. ${e.response.data}`));
-    }
-  });
+  try {
+    const resp = await axios.post('/integrations/custom/make_test_api_call', params);
+    return resp.data;
+  } catch (e) {
+    throw new Error(`${e.message}. ${e.response.data}`);
+  }
 };
 
 export default {
@@ -40,106 +37,79 @@ export default {
   googleSheets: {
     getSpreadsheets: async (query, user) => {
       if (!user) throw new Error(MISSING_PARAM_ERR);
-      return new Promise(async (resolve, reject) => {
-        try {
-          const resp = await axios.post('/integrations/google_sheets/spreadsheets', {
-            query,
-            user,
-          });
-          resolve(resp.data);
-        } catch (e) {
-          reject(e);
-        }
+
+      const resp = await axios.post('/integrations/google_sheets/spreadsheets', {
+        query,
+        user,
       });
+      return resp.data;
     },
     getSpreadsheetSheets: async (spreadsheet, user) => {
       if (!user) throw new Error(MISSING_PARAM_ERR);
-      return new Promise(async (resolve, reject) => {
-        try {
-          const resp = await axios.post('/integrations/google_sheets/sheets', {
-            spreadsheet,
-            user,
-          });
-          resolve(resp.data);
-        } catch (e) {
-          reject(e);
-        }
+
+      const resp = await axios.post('/integrations/google_sheets/sheets', {
+        spreadsheet,
+        user,
       });
+      return resp.data;
     },
     getSheetHeaders: async (spreadsheet, sheet, user) => {
       if (!user) throw new Error(MISSING_PARAM_ERR);
-      return new Promise(async (resolve, reject) => {
-        try {
-          const resp = await axios.post('/integrations/google_sheets/sheet_headers', {
-            sheet,
-            spreadsheet,
-            user,
-          });
-          resolve(resp.data);
-        } catch (e) {
-          reject(e);
-        }
+
+      const resp = await axios.post('/integrations/google_sheets/sheet_headers', {
+        sheet,
+        spreadsheet,
+        user,
       });
+      return resp.data;
     },
     retrieveData: async (params) => {
       const { spreadsheet, sheet, user } = params;
 
       params.resultsByHeaderName = true;
 
-      if (!(user && !_isNil(spreadsheet) && !_isNil(sheet))) throw new Error(MISSING_PARAM_ERR);
-      return new Promise(async (resolve, reject) => {
-        try {
-          const resp = await axios.post('/integrations/google_sheets/retrieve_data', params);
-          resolve(resp.data);
-        } catch (e) {
-          reject(e);
-        }
-      });
+      if (!(user && spreadsheet != null && sheet != null)) {
+        throw new Error(MISSING_PARAM_ERR);
+      }
+
+      const resp = await axios.post('/integrations/google_sheets/retrieve_data', params);
+      return resp.data;
     },
     createData: async (params) => {
       const { spreadsheet, sheet, row_values, user } = params;
 
-      if (!user && !_isNil(spreadsheet) && !_isNil(sheet) && row_values) throw new Error(MISSING_PARAM_ERR);
-      return new Promise(async (resolve, reject) => {
-        try {
-          const resp = await axios.post('/integrations/google_sheets/create_data', params);
-          resolve(resp.data);
-        } catch (e) {
-          reject(e);
-        }
-      });
+      if (!user && spreadsheet != null && sheet != null && row_values) {
+        throw new Error(MISSING_PARAM_ERR);
+      }
+
+      const resp = await axios.post('/integrations/google_sheets/create_data', params);
+      return resp.data;
     },
     updateData: async (params) => {
       const { spreadsheet, sheet, row_values, user, row_number } = params;
 
-      if (!user && !_isNil(spreadsheet) && !_isNil(sheet) && row_values && row_number) throw new Error(MISSING_PARAM_ERR);
-      return new Promise(async (resolve, reject) => {
-        try {
-          const resp = await axios.post('/integrations/google_sheets/update_data', {
-            spreadsheet,
-            sheet,
-            row_values,
-            user,
-            row_number,
-          });
-          resolve(resp.data);
-        } catch (e) {
-          reject(e);
-        }
+      if (!user && spreadsheet != null && sheet != null && row_values && row_number) {
+        throw new Error(MISSING_PARAM_ERR);
+      }
+
+      const resp = await axios.post('/integrations/google_sheets/update_data', {
+        spreadsheet,
+        sheet,
+        row_values,
+        user,
+        row_number,
       });
+      return resp.data;
     },
     deleteData: async (params) => {
       const { spreadsheet, sheet, user, start_row, end_row } = params;
 
-      if (!user && !_isNil(spreadsheet) && !_isNil(sheet) && start_row && end_row) throw new Error(MISSING_PARAM_ERR);
-      return new Promise(async (resolve, reject) => {
-        try {
-          const resp = await axios.post('/integrations/google_sheets/delete_data', params);
-          resolve(resp.data);
-        } catch (e) {
-          reject(e);
-        }
-      });
+      if (!user && spreadsheet != null && sheet != null && start_row && end_row) {
+        throw new Error(MISSING_PARAM_ERR);
+      }
+
+      const resp = await axios.post('/integrations/google_sheets/delete_data', params);
+      return resp.data;
     },
   },
   custom: {
@@ -151,14 +121,9 @@ export default {
   },
   zapier: {
     createMessage: async (params) => {
-      return new Promise(async (resolve, reject) => {
-        try {
-          await axios.post('/integrations/zapier/trigger', params);
-          resolve(<Alert className="text-center">Successfully Triggered Zap</Alert>);
-        } catch (e) {
-          reject(e);
-        }
-      });
+      await axios.post('/integrations/zapier/trigger', params);
+
+      return <Alert className="text-center">Successfully Triggered Zap</Alert>;
     },
   },
 };

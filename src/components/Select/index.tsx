@@ -11,7 +11,7 @@ import { Nullable } from '@/types';
 import { InlineInputValue, PrefixContainer, SearchInput, SearchInputIcon, SelectWrapper } from './components';
 import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
 
-export { defaultOptionsFilter, searchableOptionsFilter, defaultLabelRenderer };
+export { defaultLabelRenderer, defaultOptionsFilter, searchableOptionsFilter };
 
 export type GetOptionLabel<V> = (value?: V) => string | undefined | null;
 

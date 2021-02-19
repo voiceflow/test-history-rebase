@@ -6,7 +6,7 @@ function withDropdownSteps(WrappedComponent, defaultStep) {
       super(props);
 
       let isNew;
-      const selectedAction = this.props.data.selectedAction;
+      const { selectedAction } = this.props.data;
       if (!selectedAction) isNew = true;
       else isNew = false;
 

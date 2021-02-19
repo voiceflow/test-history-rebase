@@ -46,9 +46,7 @@ const ProjectSubHeader: React.FC<ProjectSubHeaderProps & ConnectedSkillSubHeader
 }) => {
   const [codeExport] = usePermission(Permission.CODE_EXPORT);
 
-  const headerOptions = TABS.filter((tab) => {
-    return tab.value !== 'prototype';
-  });
+  const headerOptions = TABS.filter((tab) => tab.value !== 'prototype');
   const options =
     showPublish && !(platform === PlatformType.GENERAL && !codeExport) ? headerOptions : headerOptions.filter((tab) => tab.value !== 'publish');
 

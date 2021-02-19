@@ -180,7 +180,6 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
               />
             ),
           },
-          // eslint-disable-next-line lodash/prefer-constant
           () => null
         )()}
       </Section>

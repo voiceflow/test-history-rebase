@@ -1,6 +1,6 @@
 import _isFunction from 'lodash/isFunction';
 import React, { Fragment } from 'react';
-import { Manager, Popper, PopperProps, RefHandler, Reference } from 'react-popper';
+import { Manager, Popper, PopperProps, Reference, RefHandler } from 'react-popper';
 
 import Menu, { MenuOption, MenuProps } from '@/components/Menu';
 import Portal from '@/components/Portal';

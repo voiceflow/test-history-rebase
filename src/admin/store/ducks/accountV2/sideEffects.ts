@@ -69,7 +69,7 @@ const createSession = (sessionType: SessionType) => (authRequest: unknown): Thun
 
     dispatch(Actions.updateAccount(user));
 
-    const location = state.router.location;
+    const { location } = state.router;
     const search = queryString.parse(location.search);
 
     // Ensure the user has admin credentials
@@ -102,6 +102,4 @@ export const googleLogin = createSession(SessionType.GOOGLE);
 export const fbLogin = createSession(SessionType.FACEBOOK);
 
 // Non Action functions
-export const getAuth = () => {
-  return cookies.get(Cookies.AUTH_COOKIE);
-};
+export const getAuth = () => cookies.get(Cookies.AUTH_COOKIE);

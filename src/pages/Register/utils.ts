@@ -1,8 +1,6 @@
 import { toast } from '@/components/Toast';
 
-export const replaceSpaceWithPlus = (email?: string) => {
-  return email?.replace(' ', '+') || email;
-};
+export const replaceSpaceWithPlus = (email?: string) => email?.replace(' ', '+') || email;
 
 export const inviteEmailMatches = (query: { invite?: string; email?: string }, emailField: string | undefined) => {
   const { invite, email } = query;

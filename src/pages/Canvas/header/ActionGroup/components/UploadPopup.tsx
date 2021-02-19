@@ -13,13 +13,11 @@ export type UploadPopupProps = {
   multiSelect?: boolean;
 };
 
-const UploadPopup: React.FC<UploadPopupProps> = ({ open, onClose, children, jobStage, multiSelect }) => {
-  return (
-    <PopupContainer open={open} jobStage={jobStage} multiSelect={multiSelect}>
-      <PopupCloseIcon onClick={onClose} />
-      <PopupTransition>{children}</PopupTransition>
-    </PopupContainer>
-  );
-};
+const UploadPopup: React.FC<UploadPopupProps> = ({ open, onClose, children, jobStage, multiSelect }) => (
+  <PopupContainer open={open} jobStage={jobStage} multiSelect={multiSelect}>
+    <PopupCloseIcon onClick={onClose} />
+    <PopupTransition>{children}</PopupTransition>
+  </PopupContainer>
+);
 
 export default UploadPopup;

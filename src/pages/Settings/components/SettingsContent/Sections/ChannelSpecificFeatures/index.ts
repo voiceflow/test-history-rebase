@@ -8,9 +8,7 @@ export type ChannelSpecificFeaturesProps = { platformMeta: PlatformSettingsMetaP
 
 const ChannelSpecificFeatures = createPlatformComponent<ChannelSpecificFeaturesProps>('ChannelSpecificFeatures', {
   [PlatformType.ALEXA]: AlexaFeatures,
-  // eslint-disable-next-line lodash/prefer-constant
   [PlatformType.GOOGLE]: () => null,
-  // eslint-disable-next-line lodash/prefer-constant
   [PlatformType.GENERAL]: () => null,
 });
 

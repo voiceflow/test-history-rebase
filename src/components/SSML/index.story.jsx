@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-identical-functions */
 import { boolean, object } from '@storybook/addon-knobs';
 import _sample from 'lodash/sample';
 import React from 'react';

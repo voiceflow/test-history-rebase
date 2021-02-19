@@ -5,14 +5,12 @@ import { AdminTitle } from '@/admin/styles';
 import InternalLookup from './components/InternalLookup/InternalLookup';
 import { HomeWrapper } from './styles';
 
-const Home = () => {
-  return (
-    <HomeWrapper>
-      <AdminTitle>Admin Lookup Emporium</AdminTitle>
-      <hr />
-      <InternalLookup />
-    </HomeWrapper>
-  );
-};
+const Home = () => (
+  <HomeWrapper>
+    <AdminTitle>Admin Lookup Emporium</AdminTitle>
+    <hr />
+    <InternalLookup />
+  </HomeWrapper>
+);
 
 export default Home;

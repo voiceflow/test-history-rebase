@@ -7,7 +7,7 @@ import { denormalize, getAllNormalizedByKeys, getNormalizedByKey } from '@/utils
 
 import { creatorStateSelector } from '../selectors';
 import { DIAGRAM_STATE_KEY } from './constants';
-import { getJoiningLinkIDs, getLinkIDsByNodeID, getLinkIDsByPortID, getLinkedNodeIDsByNodeID } from './utils';
+import { getJoiningLinkIDs, getLinkedNodeIDsByNodeID, getLinkIDsByNodeID, getLinkIDsByPortID } from './utils';
 
 const rootHistorySelector = createKeyedSelector(creatorStateSelector, DIAGRAM_STATE_KEY);
 

@@ -28,24 +28,22 @@ const RadioGroup = <T extends any>({
   onChange,
   className,
   ...props
-}: RadioGroupProps<T>) => {
-  return (
-    <Container className={className}>
-      {options.map((option, index) => {
-        const { id, label, customCheckedCondition } = option;
+}: RadioGroupProps<T>) => (
+  <Container className={className}>
+    {options.map((option, index) => {
+      const { id, label, customCheckedCondition } = option;
 
-        const isChecked = customCheckedCondition ? customCheckedCondition(checked) : checked === id;
+      const isChecked = customCheckedCondition ? customCheckedCondition(checked) : checked === id;
 
-        return (
-          <RadioButtonContainer key={index}>
-            <Checkbox {...props} type={CheckboxType.RADIO} value={id as any} checked={isChecked} onChange={() => onChange(id)} isFlat>
-              <div>{label}</div>
-            </Checkbox>
-          </RadioButtonContainer>
-        );
-      })}
-    </Container>
-  );
-};
+      return (
+        <RadioButtonContainer key={index}>
+          <Checkbox {...props} type={CheckboxType.RADIO} value={id as any} checked={isChecked} onChange={() => onChange(id)} isFlat>
+            <div>{label}</div>
+          </Checkbox>
+        </RadioButtonContainer>
+      );
+    })}
+  </Container>
+);
 
 export default RadioGroup;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Permission, hasPermission } from '@/config/permissions';
+import { hasPermission, Permission } from '@/config/permissions';
 import { IdentityContext, IdentityContextValue } from '@/contexts';
 
 // eslint-disable-next-line import/prefer-default-export

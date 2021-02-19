@@ -26,7 +26,6 @@ import { useCursorControls } from './hooks';
 
 const withInitialViewport = connect({ viewport: activeDiagramViewportSelector }, null, null, {
   // ignore all further updates to the viewport
-  // eslint-disable-next-line lodash/prefer-constant
   areStatesEqual: () => true,
 });
 

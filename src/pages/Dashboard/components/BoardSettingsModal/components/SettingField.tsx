@@ -8,23 +8,21 @@ export type SettingFieldProps = {
   description?: React.ReactNode;
 };
 
-const SettingField: React.FC<SettingFieldProps> = ({ hr, label, children, description }) => {
-  return (
-    <>
-      <label>{label}</label>
+const SettingField: React.FC<SettingFieldProps> = ({ hr, label, children, description }) => (
+  <>
+    <label>{label}</label>
 
-      {children}
+    {children}
 
-      {description && (
-        <>
-          <br />
-          <small className="text-muted">{description}</small>
-        </>
-      )}
+    {description && (
+      <>
+        <br />
+        <small className="text-muted">{description}</small>
+      </>
+    )}
 
-      {hr && <hr />}
-    </>
-  );
-};
+    {hr && <hr />}
+  </>
+);
 
 export default SettingField;

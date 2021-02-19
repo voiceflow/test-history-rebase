@@ -13,7 +13,6 @@ export default {
   component: CanvasControls,
 };
 
-// eslint-disable-next-line react/display-name
 const createStory = (isTemplates = false) =>
   composeDecorators(
     withRedux({

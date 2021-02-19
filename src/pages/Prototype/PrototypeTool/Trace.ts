@@ -101,8 +101,8 @@ class TraceController {
 
   public next = async (request: GeneralRequest = null): Promise<void> => {
     const currentContextStep = this.props.contextStep;
-    const contextHistory = this.props.contextHistory;
-    const visualDataHistory = this.props.visualDataHistory;
+    const { contextHistory } = this.props;
+    const { visualDataHistory } = this.props;
     const historyLength = contextHistory.length;
 
     // Remove any forward history
@@ -149,8 +149,8 @@ class TraceController {
     const offset = direction === StepDirection.BACK ? -1 : 1;
     const currentContextStep = this.props.contextStep;
     const newContextStepNumber = currentContextStep + offset;
-    const contextHistory = this.props.contextHistory;
-    const visualDataHistory = this.props.visualDataHistory;
+    const { contextHistory } = this.props;
+    const { visualDataHistory } = this.props;
     const targetDiagramID =
       direction === StepDirection.BACK
         ? contextHistory[currentContextStep].previousContextDiagramID
@@ -287,10 +287,8 @@ class TraceController {
   private async processBlockTrace(trace: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {
     const node = this.props.engine?.getNodeByID(trace.payload.blockID);
 
-    if (node) {
-      if (!this.isPublicPrototype) {
-        await this.highlightBlock(node);
-      }
+    if (node && !this.isPublicPrototype) {
+      await this.highlightBlock(node);
     }
 
     if (onlyMessage || !this.props.debug) {

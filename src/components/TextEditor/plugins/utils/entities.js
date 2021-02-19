@@ -47,9 +47,7 @@ export const getEntitySelectionByKey = (editorState, entityKey) => {
   let entitySelection = null;
 
   block.findEntityRanges(
-    (character) => {
-      return !!entityKey && character.getEntity() === entityKey;
-    },
+    (character) => !!entityKey && character.getEntity() === entityKey,
     (start, end) => {
       entitySelection = selection.merge({ focusOffset: end, anchorOffset: start });
     }

@@ -1,5 +1,5 @@
-export { default as toTextAdapter } from './toTextAdapter';
 export { default as fromTextConvertor } from './fromTextConvertor';
+export { default as toTextAdapter } from './toTextAdapter';
 
 const SPACE_REGEXP = /\s/g;
 

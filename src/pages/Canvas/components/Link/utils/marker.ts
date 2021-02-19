@@ -22,9 +22,7 @@ const REVERTED_MARKER_ATTRS = { orient: '180deg' };
 export const getMarkerAttrs = (
   points: Pair<Point> | null,
   { straight = false, unconnected = false, targetIsBlock = false }: { straight?: boolean; unconnected?: boolean; targetIsBlock?: boolean }
-): MarkerAttrs => {
-  return !points || !straight ? DEFAULT_MARKER_ATTRS : getStraightMarkerAttrs(points, { unconnected, targetIsBlock });
-};
+): MarkerAttrs => (!points || !straight ? DEFAULT_MARKER_ATTRS : getStraightMarkerAttrs(points, { unconnected, targetIsBlock }));
 
 const getStraightMarkerAttrs = (points: Pair<Point>, { unconnected, targetIsBlock }: { unconnected: boolean; targetIsBlock: boolean }): MarkerAttrs =>
   unconnected ? getStraightUnconnectedMarkerAttrs(points) : getStraightConnectedMarkerAttrs(points, { targetIsBlock });

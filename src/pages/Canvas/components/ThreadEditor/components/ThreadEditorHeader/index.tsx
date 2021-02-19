@@ -12,14 +12,12 @@ export type ThreadEditorHeaderProps = CommentActionsProps & {
   postedTime?: string;
 };
 
-const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps & ConnectedThreadEditorHeaderProps> = ({ currentUser, postedTime, ...actionProps }) => {
-  return (
-    <Flex justifyContent="space-between" height={33}>
-      <Commenter creatorID={actionProps.creatorID || currentUser.creator_id!} time={postedTime} />
-      <CommentActions currentUser={currentUser.creator_id!} {...actionProps} />
-    </Flex>
-  );
-};
+const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps & ConnectedThreadEditorHeaderProps> = ({ currentUser, postedTime, ...actionProps }) => (
+  <Flex justifyContent="space-between" height={33}>
+    <Commenter creatorID={actionProps.creatorID || currentUser.creator_id!} time={postedTime} />
+    <CommentActions currentUser={currentUser.creator_id!} {...actionProps} />
+  </Flex>
+);
 
 const mapStateToProps = {
   currentUser: Account.userSelector,

@@ -57,9 +57,9 @@ const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expande
                 onToggle={() => toggleSection(type)}
                 iconProps={{ size: 9 }}
               >
-                {steps.map((step) => {
-                  return <Item key={`${step.type}-${step.label}`} {...step} />;
-                })}
+                {steps.map((step) => (
+                  <Item key={`${step.type}-${step.label}`} {...step} />
+                ))}
               </UncontrolledCollapse>
             ) : null
           )}

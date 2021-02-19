@@ -91,12 +91,10 @@ export const removeNormalizedByKey = <T>({ allKeys, byKey }: Normalized<T>, targ
   };
 };
 
-export const reorderKeys = <T>(newKeyArray: string[], byKey: Record<string, T>): Normalized<T> => {
-  return {
-    allKeys: newKeyArray,
-    byKey,
-  };
-};
+export const reorderKeys = <T>(newKeyArray: string[], byKey: Record<string, T>): Normalized<T> => ({
+  allKeys: newKeyArray,
+  byKey,
+});
 
 export const removeAllNormalizedByKeys = <T>({ allKeys, byKey }: Normalized<T>, targetKeys: string[]): Normalized<T> => {
   const filteredKeys = allKeys.filter((key) => !targetKeys.includes(key));

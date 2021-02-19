@@ -31,16 +31,14 @@ export const Middle = styled.div<{ isPublic?: boolean }>`
     `}
 `;
 
-const Container: React.FC<{ isPublic?: boolean }> = ({ children, isPublic }) => {
-  return (
-    <Outter isPublic={isPublic}>
-      <Middle isPublic={isPublic}>
-        <Box pb={20} width="100%">
-          {children}
-        </Box>
-      </Middle>
-    </Outter>
-  );
-};
+const Container: React.FC<{ isPublic?: boolean }> = ({ children, isPublic }) => (
+  <Outter isPublic={isPublic}>
+    <Middle isPublic={isPublic}>
+      <Box pb={20} width="100%">
+        {children}
+      </Box>
+    </Middle>
+  </Outter>
+);
 
 export default Container;

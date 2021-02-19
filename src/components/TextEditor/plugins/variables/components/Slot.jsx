@@ -28,23 +28,21 @@ const Text = styled.span`
   }
 `;
 
-const Slot = ({ children, mention, goInteractionModelEntity }, ref) => {
-  return (
-    <Text
-      ref={ref}
-      color={mention.color}
-      onClick={swallowEvent(
-        () => goInteractionModelEntity(mention.isVariable ? InteractionModelTabType.VARIABLES : InteractionModelTabType.SLOTS, mention.id),
-        true
-      )}
-      onMouseUp={swallowEvent(null, true)}
-      onMouseDown={swallowEvent(null, true)}
-      isVariable={mention.isVariable}
-    >
-      {children}
-    </Text>
-  );
-};
+const Slot = ({ children, mention, goInteractionModelEntity }, ref) => (
+  <Text
+    ref={ref}
+    color={mention.color}
+    onClick={swallowEvent(
+      () => goInteractionModelEntity(mention.isVariable ? InteractionModelTabType.VARIABLES : InteractionModelTabType.SLOTS, mention.id),
+      true
+    )}
+    onMouseUp={swallowEvent(null, true)}
+    onMouseDown={swallowEvent(null, true)}
+    isVariable={mention.isVariable}
+  >
+    {children}
+  </Text>
+);
 
 const mapDispatchToProps = {
   goInteractionModelEntity: Router.goToCurrentCanvasInteractionModelEntity,

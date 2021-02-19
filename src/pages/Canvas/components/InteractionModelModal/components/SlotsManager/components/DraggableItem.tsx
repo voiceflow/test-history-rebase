@@ -20,22 +20,20 @@ export type DraggableItemProps = {
 const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableItemProps> = (
   { item, isDragging, isDraggingPreview, selectedID, withoutHover, onSelectSlot, onContextMenu, isContextMenuOpen },
   ref
-) => {
-  return (
-    <SearchableListItemContainer
-      ref={ref}
-      onClick={() => onSelectSlot(item.id)}
-      isActive={selectedID === item.id}
-      isDragging={isDragging}
-      withoutHover={withoutHover}
-      onContextMenu={onContextMenu}
-      isDraggingPreview={isDraggingPreview}
-      isContextMenuOpen={isContextMenuOpen}
-    >
-      <SlotTag color={item.color}>{item.name}</SlotTag>
-      <ItemCount>{item.type?.replace('AMAZON.', '') ?? ''}</ItemCount>
-    </SearchableListItemContainer>
-  );
-};
+) => (
+  <SearchableListItemContainer
+    ref={ref}
+    onClick={() => onSelectSlot(item.id)}
+    isActive={selectedID === item.id}
+    isDragging={isDragging}
+    withoutHover={withoutHover}
+    onContextMenu={onContextMenu}
+    isDraggingPreview={isDraggingPreview}
+    isContextMenuOpen={isContextMenuOpen}
+  >
+    <SlotTag color={item.color}>{item.name}</SlotTag>
+    <ItemCount>{item.type?.replace('AMAZON.', '') ?? ''}</ItemCount>
+  </SearchableListItemContainer>
+);
 
 export default React.forwardRef(DraggableItem);

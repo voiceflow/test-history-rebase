@@ -12,8 +12,8 @@ import { Container, Section } from './components';
 import { BlockSectionProps } from './components/BlockSection';
 import { useBlockAPI } from './hooks';
 
-export * from './types';
 export * from './constants';
+export * from './types';
 
 export type BlockProps = WithOptional<BlockSectionProps, 'variant'> & {
   sections?: {

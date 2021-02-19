@@ -64,7 +64,7 @@ export const initializeCreatorReducer: Reducer<DiagramStateType, InitializeCreat
 });
 
 export const updateNodeDataReducer: Reducer<DiagramStateType, UpdateNodeData> = (state, { payload: { nodeID, data, patch } }) => {
-  if (state.data.hasOwnProperty(nodeID)) {
+  if (Object.prototype.hasOwnProperty.call(state.data, nodeID)) {
     return {
       ...state,
       data: {

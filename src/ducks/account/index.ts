@@ -5,11 +5,11 @@ import { RootReducer } from '@/store/types';
 import { AccountAction, AnyAccountAction } from './actions';
 import { AccountState } from './types';
 
-export * from './types';
 export * from './actions';
+export { STATE_KEY } from './constants';
 export * from './selectors';
 export * from './sideEffects';
-export { STATE_KEY } from './constants';
+export * from './types';
 
 export const INITIAL_STATE: AccountState = {
   loading: false,

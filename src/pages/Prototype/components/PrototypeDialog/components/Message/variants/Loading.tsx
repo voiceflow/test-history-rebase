@@ -70,12 +70,10 @@ const Component = styled(Message)<{ isLoading?: boolean }>`
   }
 `;
 
-const Loading: React.FC<{ isLoading?: boolean }> = ({ isLoading }) => {
-  return (
-    <Component withLogo isFirstInSeries withAnimation isLoading={isLoading}>
-      <div className="dot-flashing"></div>
-    </Component>
-  );
-};
+const Loading: React.FC<{ isLoading?: boolean }> = ({ isLoading }) => (
+  <Component withLogo isFirstInSeries withAnimation isLoading={isLoading}>
+    <div className="dot-flashing"></div>
+  </Component>
+);
 
 export default Loading;

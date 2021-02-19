@@ -6,8 +6,8 @@ import { objectID } from '@/utils';
 import { append, withoutValue } from '@/utils/array';
 import Logger from '@/utils/logger';
 
-import { EntityType } from '../constants';
 import type { Engine } from '..';
+import { EntityType } from '../constants';
 
 export type EntityInstance = {
   isReady: () => boolean;
@@ -55,7 +55,7 @@ export abstract class Entity<T extends EntityInstance = EntityInstance> {
     return !!this.instance?.isReady();
   }
 
-  // eslint-disable-next-line class-methods-use-this, lodash/prefer-constant
+  // eslint-disable-next-line class-methods-use-this
   shouldUpdate() {
     return true;
   }

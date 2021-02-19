@@ -86,18 +86,16 @@ const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
         Hold <Text color="#5d9df5">{isMobile ? 'here' : 'spacebar'}</Text> for Voice Input
       </>
     );
+  } else if (finalTranscript || interimTranscript) {
+    text = (
+      <>
+        <Box color="#132144" display="inline-block">
+          {finalTranscript} {interimTranscript}
+        </Box>
+      </>
+    );
   } else {
-    if (finalTranscript || interimTranscript) {
-      text = (
-        <>
-          <Box color="#132144" display="inline-block">
-            {finalTranscript} {interimTranscript}
-          </Box>
-        </>
-      );
-    } else {
-      text = 'Say something...';
-    }
+    text = 'Say something...';
   }
 
   return (

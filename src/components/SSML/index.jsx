@@ -67,7 +67,7 @@ const SSML = (
   const platformSSMLMeta = PLATFORM_SSML_META[platform];
   const wavenetVoices = useFeature(FeatureFlag.WAVENET_VOICES);
   const SSMLPlaceholder = placeholder ?? platformSSMLMeta.fallbackPlaceholder(voice);
-  const canChangeVoice = platformSSMLMeta.canChangeVoice;
+  const { canChangeVoice } = platformSSMLMeta;
   const voiceOptions = React.useMemo(() => platformSSMLMeta.voiceOptions(locales, wavenetVoices.isEnabled), [locales, wavenetVoices.isEnabled]);
   const hasProjectLevelVoice = platform === PlatformType.GOOGLE;
 
@@ -147,7 +147,7 @@ const SSML = (
     [voice, platform, onChangeVoice, getOptionValue, getOptionLabel, defaultVoice, onChangeDefaultVoice]
   );
 
-  const platformTags = platformSSMLMeta.platformTags;
+  const { platformTags } = platformSSMLMeta;
 
   const pluginProps = React.useMemo(
     () => ({

@@ -47,9 +47,7 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Return to Home',
     value: CanvasAction.RETURN_TO_HOME,
-    shouldRender: (_, { engine }) => {
-      return !(engine.markup.isActive || engine.comment.isActive);
-    },
+    shouldRender: (_, { engine }) => !(engine.markup.isActive || engine.comment.isActive),
   },
 ];
 
@@ -75,24 +73,18 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Duplicate',
     value: CanvasAction.DUPLICATE_BLOCK,
-    shouldRender: ({ target: nodeID }, { engine }) => {
-      return isBlock(nodeID!, engine);
-    },
+    shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID!, engine),
   },
   {
     label: 'Copy',
     value: CanvasAction.COPY_BLOCK,
-    shouldRender: ({ target: nodeID }, { engine }) => {
-      return isBlock(nodeID!, engine);
-    },
+    shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID!, engine),
   },
   {
     label: 'Color',
     value: CanvasAction.COLOR_BLOCK,
     options: BLOCK_COLORS,
-    shouldRender: ({ target: nodeID }, { engine }) => {
-      return isBlock(nodeID!, engine);
-    },
+    shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID!, engine),
   },
   {
     label: 'Delete',

@@ -49,9 +49,7 @@ const modifyInlineStyle = (contentState: ContentState, selectionState: Selection
   }) as ContentState;
 };
 
-export const getRawContent = (editorState: EditorState) => {
-  return convertToRaw(editorState.getCurrentContent());
-};
+export const getRawContent = (editorState: EditorState) => convertToRaw(editorState.getCurrentContent());
 
 export const createPrefixedInlineStyle = (prefix: InlineStylePrefix, value: string) => `${prefix}${INLINE_STYLE_SEPARATOR}${value}`;
 

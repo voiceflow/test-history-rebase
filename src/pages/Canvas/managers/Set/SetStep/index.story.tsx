@@ -7,9 +7,9 @@ import { ExpressionPreviewContainer } from '@/pages/Canvas/managers/If/IfStep/co
 
 import { SetStep, SetStepProps } from '.';
 
-const generateSetLabel = ({ expression, variable }: any) => {
-  return <ExpressionPreview prefix={`{${variable}} = `} expression={expression} container={ExpressionPreviewContainer} />;
-};
+const generateSetLabel = ({ expression, variable }: any) => (
+  <ExpressionPreview prefix={`{${variable}} = `} expression={expression} container={ExpressionPreviewContainer} />
+);
 
 const SETS = [
   {

@@ -52,8 +52,8 @@ export const trackOnboardingIdentify = ({
   channels: string[];
   teamSize: string;
   workspaceIDs: string[];
-}) => () => {
-  return client.analytics.identify({
+}) => () =>
+  client.analytics.identify({
     traits: {
       name,
       role,
@@ -64,4 +64,3 @@ export const trackOnboardingIdentify = ({
     },
     teamhashed: ['workspace_id'],
   });
-};

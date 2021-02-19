@@ -1,6 +1,5 @@
 import _isNumber from 'lodash/isNumber';
 import _isString from 'lodash/isString';
-import _isUndefined from 'lodash/isUndefined';
 
 import { KeyCode } from '@/constants';
 import { Pair, Point } from '@/types';
@@ -126,13 +125,9 @@ const _getOffsetToNode = (node: HTMLElement, body: HTMLElement, key: keyof HTMLE
   return offset;
 };
 
-export const getOffsetToNode = (node: HTMLElement, body: HTMLElement) => {
-  return _getOffsetToNode(node, body, 'offsetTop');
-};
+export const getOffsetToNode = (node: HTMLElement, body: HTMLElement) => _getOffsetToNode(node, body, 'offsetTop');
 
-export const getOffsetLeftToNode = (node: HTMLElement, body: HTMLElement) => {
-  return _getOffsetToNode(node, body, 'offsetLeft');
-};
+export const getOffsetLeftToNode = (node: HTMLElement, body: HTMLElement) => _getOffsetToNode(node, body, 'offsetLeft');
 
 /**
  * Smart scroll to the node, uses scrollTo method or scrollTop|scrollLeft
@@ -217,7 +212,7 @@ export const moveCursorToEnd = (el: HTMLInputElement) => {
     const valueLength = el.value.length;
     el.selectionStart = valueLength;
     el.selectionEnd = valueLength;
-  } else if (_isUndefined(el.createTextRange)) {
+  } else if (el.createTextRange === undefined) {
     el.focus();
     const range = el.createTextRange!();
     range.collapse(false);

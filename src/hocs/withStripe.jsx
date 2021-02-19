@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name, import/prefer-default-export */
 import React from 'react';
-import { Elements, StripeProvider, injectStripe } from 'react-stripe-elements';
+import { Elements, injectStripe, StripeProvider } from 'react-stripe-elements';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
 import { IS_TEST, STRIPE_KEY } from '@/config';

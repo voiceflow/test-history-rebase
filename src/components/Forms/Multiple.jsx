@@ -15,13 +15,13 @@ class Multiple extends Component {
   }
 
   handleChange(e) {
-    const list = this.props.list;
+    const { list } = this.props;
     list[e.target.name] = e.target.value;
     this.props.update(list);
   }
 
   delete(i) {
-    const list = this.props.list;
+    const { list } = this.props;
 
     if (list.length > 1) {
       list.splice(i, 1);
@@ -30,7 +30,7 @@ class Multiple extends Component {
   }
 
   add() {
-    const list = this.props.list;
+    const { list } = this.props;
     list.push('');
     this.props.update(list);
   }

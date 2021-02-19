@@ -79,12 +79,10 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   const onContinue = () => {
     if (stepStack.length === NUMBER_OF_STEPS) {
       finalizeCreation();
-    } else {
-      if (currentStep === StepID.NAME_AND_IMAGE) {
-        setStepStack((prevStepSTack) => [StepID.PLATFORM_SELECT, ...prevStepSTack]);
-      } else if (currentStep === StepID.PLATFORM_SELECT) {
-        setStepStack((prevStepSTack) => [StepID.PROJECT_SETTINGS, ...prevStepSTack]);
-      }
+    } else if (currentStep === StepID.NAME_AND_IMAGE) {
+      setStepStack((prevStepSTack) => [StepID.PLATFORM_SELECT, ...prevStepSTack]);
+    } else if (currentStep === StepID.PLATFORM_SELECT) {
+      setStepStack((prevStepSTack) => [StepID.PROJECT_SETTINGS, ...prevStepSTack]);
     }
   };
 

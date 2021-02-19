@@ -31,9 +31,9 @@ class Coupon extends React.Component {
   }
 
   handleInputChange(event) {
-    const target = event.target;
-    const name = target.name;
-    const value = target.value;
+    const { target } = event;
+    const { name } = target;
+    const { value } = target;
     this.setState((s) => ({ coupon: { ...s.coupon, [name]: value } }));
   }
 

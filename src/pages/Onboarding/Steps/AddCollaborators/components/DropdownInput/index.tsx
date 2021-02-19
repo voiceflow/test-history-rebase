@@ -33,38 +33,36 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
   autoFocus,
   isDisabled,
   ...props
-}) => {
-  return (
-    <Container orientation={OrientationType.LEFT} isInvalid={!!hasError} isDisabled={isDisabled}>
-      <TextInputContainer>
-        <Input
-          // eslint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus={autoFocus}
+}) => (
+  <Container orientation={OrientationType.LEFT} isInvalid={!!hasError} isDisabled={isDisabled}>
+    <TextInputContainer>
+      <Input
+        // eslint-disable-next-line jsx-a11y/no-autofocus
+        autoFocus={autoFocus}
+        orientation={OrientationType.LEFT}
+        value={inputValue}
+        placeholder="name@example.com"
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange(e.target.value)}
+        showdropdown={showDropdown}
+        error={hasError}
+        disabled={isDisabled}
+        {...props}
+      />
+    </TextInputContainer>
+    {showDropdown && (
+      <InputGroupAddon orientation={OrientationType.LEFT} addonType="prepend">
+        <PermissionsDropdown
           orientation={OrientationType.LEFT}
-          value={inputValue}
-          placeholder="name@example.com"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange(e.target.value)}
-          showdropdown={showDropdown}
-          error={hasError}
-          disabled={isDisabled}
-          {...props}
+          options={options}
+          onSelect={onDropdownChange}
+          onRemove={removeCollaborator}
+          selectedValue={dropdownValue}
+          hasError={hasError}
+          isDisabled={isDisabled}
         />
-      </TextInputContainer>
-      {showDropdown && (
-        <InputGroupAddon orientation={OrientationType.LEFT} addonType="prepend">
-          <PermissionsDropdown
-            orientation={OrientationType.LEFT}
-            options={options}
-            onSelect={onDropdownChange}
-            onRemove={removeCollaborator}
-            selectedValue={dropdownValue}
-            hasError={hasError}
-            isDisabled={isDisabled}
-          />
-        </InputGroupAddon>
-      )}
-    </Container>
-  );
-};
+      </InputGroupAddon>
+    )}
+  </Container>
+);
 
 export default DropdownInput;

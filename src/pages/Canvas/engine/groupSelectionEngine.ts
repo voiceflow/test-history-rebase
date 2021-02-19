@@ -5,7 +5,7 @@ import { diff } from '@/utils/array';
 import { buildVirtualDOMRect } from '@/utils/dom';
 
 import { CANVAS_SELECTING_GROUP_CLASSNAME } from '../constants';
-import { EngineConsumer, NodeCandidate, getCandidates } from './utils';
+import { EngineConsumer, getCandidates, NodeCandidate } from './utils';
 
 class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionMarqueeAPI }> {
   log = this.engine.log.child('group-selection');

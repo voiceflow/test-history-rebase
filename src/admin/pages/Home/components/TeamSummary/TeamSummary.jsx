@@ -33,24 +33,19 @@ class TeamSummary extends React.Component {
     }));
   };
 
-  renderSkillPreviews = () => {
-    return this.props.board.projects.map((skill) => {
-      return (
-        <>
-          <Link key={skill._id} to={`/admin/lookup/${skill._id}`}>
-            {skill.name}
-          </Link>
-          {' | '}
-        </>
-      );
-    });
-  };
+  renderSkillPreviews = () =>
+    this.props.board.projects.map((skill) => (
+      <>
+        <Link key={skill._id} to={`/admin/lookup/${skill._id}`}>
+          {skill.name}
+        </Link>
+        {' | '}
+      </>
+    ));
 
   renderSkills = () => {
     if (this.props.board) {
-      return this.props.board.projects.map((skill) => {
-        return <SkillDetail skill={skill} key={skill._id} />;
-      });
+      return this.props.board.projects.map((skill) => <SkillDetail skill={skill} key={skill._id} />);
     }
   };
 

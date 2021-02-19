@@ -3,9 +3,9 @@ import React from 'react';
 
 import PublishGoogleForm from './Form';
 
-export const PublishGoogle = () => {
+export const PublishGoogle = () => (
   // TODO: implement google publish form V2 (reference alexa)
-  return <PublishGoogleForm />;
-};
+  <PublishGoogleForm />
+);
 
 export default PublishGoogle;

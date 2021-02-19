@@ -22,7 +22,6 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
   const [collaborators, setCollaborators] = React.useState(() =>
     withPlaceholderCollaborators(addCollaboratorMeta.collaborators.length ? addCollaboratorMeta.collaborators : data.collaborators)
   );
-  // eslint-disable-next-line lodash/prefer-constant
   const [errors, updateErrors] = React.useState<string[]>(() => collaborators.map(() => ''));
 
   const hasErrors = React.useMemo(() => errors.some(Boolean), [errors]);

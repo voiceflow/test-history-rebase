@@ -1,7 +1,6 @@
 import _filter from 'lodash/filter';
 import _find from 'lodash/find';
 import _isEmpty from 'lodash/isEmpty';
-import _isNull from 'lodash/isNull';
 import React from 'react';
 
 import Input from '@/components/Input';
@@ -48,7 +47,7 @@ function AccountLinkingEditor({ data, isOpen, setError, getAccountLinking, saveA
     try {
       const accountLinking = await getLinking();
 
-      if (!_isEmpty(accountLinking) && !_isNull(accountLinking)) {
+      if (!_isEmpty(accountLinking) && accountLinking !== null) {
         actions.set(accountLinking);
       } else {
         actions.set(EMPTY_ACCOUNT_DATA);

@@ -1,8 +1,8 @@
 import { text } from '@storybook/addon-knobs';
 import React from 'react';
 
-import { Debug } from './variants/Debug';
 import Message, { Audio, Loading, Speak, User } from '.';
+import { Debug } from './variants/Debug';
 
 export default {
   title: 'Prototype/Message',

@@ -14,7 +14,7 @@ import { stringify } from '@/utils/functional';
 
 import { ButtonContainer, Container, Item, itemStyles } from './components';
 
-export { Item as MenuItem, Container as MenuContainer, itemStyles as menuItemStyles };
+export { Container as MenuContainer, Item as MenuItem, itemStyles as menuItemStyles };
 
 export type MenuOption<T> = T extends undefined
   ? { value?: never; label: React.ReactNode; onClick?: (e: React.MouseEvent) => void }

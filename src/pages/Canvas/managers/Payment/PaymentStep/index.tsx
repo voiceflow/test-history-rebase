@@ -15,38 +15,36 @@ export type PaymentStepProps = {
   failurePortID: string;
 };
 
-export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, withPorts, successPortID, failurePortID }) => {
-  return (
-    <Step>
-      <Section>
-        <Item label={label} labelVariant={StepLabelVariant.SECONDARY} icon="purchase" iconColor="#558B2F" placeholder="Select a product" />
-      </Section>
-      {label && (
-        <>
-          <Section>
-            <Item icon="alexa" iconColor="#616c60" label={upsellMessage} placeholder="Add Upsell Message" />
-          </Section>
-          <Section>
-            {withPorts && (
-              <>
-                <SuccessItem label="Purchased" portID={successPortID} />
-                <FailureItem
-                  label={
-                    <>
-                      <VariableLabel>Declined</VariableLabel> or <VariableLabel>Error</VariableLabel>
-                    </>
-                  }
-                  labelVariant={StepLabelVariant.SECONDARY}
-                  portID={failurePortID}
-                />
-              </>
-            )}
-          </Section>
-        </>
-      )}
-    </Step>
-  );
-};
+export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, withPorts, successPortID, failurePortID }) => (
+  <Step>
+    <Section>
+      <Item label={label} labelVariant={StepLabelVariant.SECONDARY} icon="purchase" iconColor="#558B2F" placeholder="Select a product" />
+    </Section>
+    {label && (
+      <>
+        <Section>
+          <Item icon="alexa" iconColor="#616c60" label={upsellMessage} placeholder="Add Upsell Message" />
+        </Section>
+        <Section>
+          {withPorts && (
+            <>
+              <SuccessItem label="Purchased" portID={successPortID} />
+              <FailureItem
+                label={
+                  <>
+                    <VariableLabel>Declined</VariableLabel> or <VariableLabel>Error</VariableLabel>
+                  </>
+                }
+                labelVariant={StepLabelVariant.SECONDARY}
+                portID={failurePortID}
+              />
+            </>
+          )}
+        </Section>
+      </>
+    )}
+  </Step>
+);
 
 const ConnectedPaymentStep: React.FC<ConnectedStepProps<Models.NodeData.Payment> & ConnectedPaymentStepProps> = ({ node, withPorts, product }) => {
   const [successPortID, failurePortID] = node.ports.out;

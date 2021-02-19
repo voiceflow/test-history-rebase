@@ -1,11 +1,11 @@
-export { default as ErrorStage } from './ErrorStage';
+export { default as ButtonContainer } from './ButtonContainer';
 export { default as ButtonLink } from './ButtonLink';
 export { default as Description } from './Description';
+export { default as DownloadStage } from './DownloadStage';
+export { default as DropdownSection } from './DropdownSection';
+export { default as ErrorStage } from './ErrorStage';
 export { default as LoaderStage } from './LoaderStage';
 export { default as ProgressStage } from './ProgressStage';
-export { default as DownloadStage } from './DownloadStage';
-export { default as StageContainer } from './StageContainer';
-export { default as ButtonContainer } from './ButtonContainer';
-export { default as StageHeader } from './StageHeader';
-export { default as DropdownSection } from './DropdownSection';
 export { default as ProjectItem } from './ProjectItem';
+export { default as StageContainer } from './StageContainer';
+export { default as StageHeader } from './StageHeader';

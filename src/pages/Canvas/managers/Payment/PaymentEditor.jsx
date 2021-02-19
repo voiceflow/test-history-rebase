@@ -13,8 +13,8 @@ import ProductTile from '@/pages/Canvas/components/ProductTile';
 import { FadeLeftContainer } from '@/styles/animations';
 import { stopPropagation } from '@/utils/dom';
 
-import SelectedProduct from './SelectedProduct';
 import { AllProductsLink } from './components';
+import SelectedProduct from './SelectedProduct';
 
 function PaymentEditor({ selectedProduct, goToEditProduct, goToProducts, goToNewProduct, onChange, hasProducts, products }) {
   const updateProduct = useCurried(onChange);

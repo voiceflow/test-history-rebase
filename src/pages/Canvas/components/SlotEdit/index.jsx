@@ -17,7 +17,7 @@ import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import * as Workspace from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
-import { useDidUpdateEffect, useModals, useTeardown } from '@/hooks';
+import { useModals, useTeardown } from '@/hooks';
 import { activeSlotTypesSelector } from '@/store/selectors';
 import { replace, without } from '@/utils/array';
 import { stopPropagation } from '@/utils/dom';

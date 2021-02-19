@@ -3,4 +3,4 @@ import QuaternaryButton from './QuaternaryButton';
 import SecondaryButton from './SecondaryButton';
 import TertiaryButton from './TertiaryButton';
 
-export { PrimaryButton, SecondaryButton, TertiaryButton, QuaternaryButton };
+export { PrimaryButton, QuaternaryButton, SecondaryButton, TertiaryButton };

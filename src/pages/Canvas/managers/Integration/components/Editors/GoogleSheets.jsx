@@ -1,6 +1,5 @@
 import { GoogleSheetsActionType } from '@voiceflow/general-types/build/nodes/googleSheets';
 import _isEmpty from 'lodash/isEmpty';
-import _isNil from 'lodash/isNil';
 import React, { useCallback, useEffect } from 'react';
 
 import { setError } from '@/ducks/modal';
@@ -57,7 +56,7 @@ function GoogleSheetsEditor({ data, onChange, creator_id, skill_id, setError, cu
     const sheetId = data.sheet && data.sheet.value;
     const integrationsUser = data.user;
 
-    if (_isNil(spreadSheetId) || _isNil(sheetId) || _isNil(integrationsUser)) return;
+    if (spreadSheetId == null || sheetId == null || integrationsUser == null) return;
 
     try {
       const headers = await IntegrationsService.googleSheets.getSheetHeaders(spreadSheetId, sheetId, integrationsUser, creator_id, skill_id);

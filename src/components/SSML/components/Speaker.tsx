@@ -93,13 +93,14 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, setError, getSSMLToP
     };
   }, [audioArray, currentAudioIndex]);
 
-  React.useEffect(() => {
-    return () => {
+  React.useEffect(
+    () => () => {
       audio.pause();
       audio.removeAttribute('src');
       audio.load();
-    };
-  }, [audio, disablePlaying]);
+    },
+    [audio, disablePlaying]
+  );
 
   // eslint-disable-next-line no-nested-ternary
   const icon = loading ? 'loader' : playing ? 'stopCircle' : 'sound';

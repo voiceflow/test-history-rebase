@@ -3,9 +3,8 @@ import { styled } from '@/hocs';
 
 import GridContainer from './GridContainer';
 
-export { default as WeeklySelection } from './WeeklySelection';
-
 export { default as ReminderContent } from './ReminderContent';
+export { default as WeeklySelection } from './WeeklySelection';
 
 export const TimeContainer = styled(GridContainer)`
   margin-bottom: 0px;

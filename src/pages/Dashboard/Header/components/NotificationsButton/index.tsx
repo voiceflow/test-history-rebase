@@ -38,45 +38,43 @@ const NotificationsButton: React.FC<ConnectedNotificationsButton> = ({ notificat
         }
         placement="bottom-end"
       >
-        {(ref, onToggle, isOpen) => {
-          return (
-            <div style={{ position: 'relative' }} onMouseEnter={toggleUpdatesHover} onMouseLeave={toggleUpdatesHover}>
-              {/* if updates available show notifications bubble and expand it on hover */}
-              {newNotifications.length > 0 ? (
-                <>
-                  <UpdateBubble
-                    ref={ref}
-                    onClick={stopPropagation(() => {
-                      onToggle();
-                      readNotifications();
-                    })}
-                    expand={onHover || isOpen}
-                  >
-                    <span>{newNotifications.length}</span>
-                  </UpdateBubble>
-
-                  <Numbered>
-                    <SvgIcon icon="notifications" size={15} />
-                  </Numbered>
-                </>
-              ) : (
-                // else just show button with notifications icon
-                <IconButton
+        {(ref, onToggle, isOpen) => (
+          <div style={{ position: 'relative' }} onMouseEnter={toggleUpdatesHover} onMouseLeave={toggleUpdatesHover}>
+            {/* if updates available show notifications bubble and expand it on hover */}
+            {newNotifications.length > 0 ? (
+              <>
+                <UpdateBubble
                   ref={ref}
-                  variant={IconButtonVariant.OUTLINE}
-                  active={isOpen}
-                  icon="notifications"
-                  onClick={() => {
+                  onClick={stopPropagation(() => {
                     onToggle();
                     readNotifications();
-                  }}
-                  iconProps={{ width: 16, height: 15 }}
-                  large
-                />
-              )}
-            </div>
-          );
-        }}
+                  })}
+                  expand={onHover || isOpen}
+                >
+                  <span>{newNotifications.length}</span>
+                </UpdateBubble>
+
+                <Numbered>
+                  <SvgIcon icon="notifications" size={15} />
+                </Numbered>
+              </>
+            ) : (
+              // else just show button with notifications icon
+              <IconButton
+                ref={ref}
+                variant={IconButtonVariant.OUTLINE}
+                active={isOpen}
+                icon="notifications"
+                onClick={() => {
+                  onToggle();
+                  readNotifications();
+                }}
+                iconProps={{ width: 16, height: 15 }}
+                large
+              />
+            )}
+          </div>
+        )}
       </Dropdown>
     </TippyTooltip>
   );

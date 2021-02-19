@@ -13,26 +13,24 @@ export type FormSectionProps = {
   tooltip?: string;
 };
 
-const FormSection: React.FC<FormSectionProps> = ({ label, labelFor, mandatory = false, optional = false, tooltip, children }) => {
-  return (
-    <FormGroup row>
-      <Label for={labelFor} sm={2}>
-        <Flex>
-          {label}
-          {mandatory && ' (Required)'}
-          {optional && ' (Optional)'}
-          {tooltip && (
-            <Tooltip title={tooltip}>
-              <Box ml={8}>
-                <SvgIcon icon="info" size={12} color="#6E849A" />
-              </Box>
-            </Tooltip>
-          )}
-        </Flex>
-      </Label>
-      <Col sm={10}>{children}</Col>
-    </FormGroup>
-  );
-};
+const FormSection: React.FC<FormSectionProps> = ({ label, labelFor, mandatory = false, optional = false, tooltip, children }) => (
+  <FormGroup row>
+    <Label for={labelFor} sm={2}>
+      <Flex>
+        {label}
+        {mandatory && ' (Required)'}
+        {optional && ' (Optional)'}
+        {tooltip && (
+          <Tooltip title={tooltip}>
+            <Box ml={8}>
+              <SvgIcon icon="info" size={12} color="#6E849A" />
+            </Box>
+          </Tooltip>
+        )}
+      </Flex>
+    </Label>
+    <Col sm={10}>{children}</Col>
+  </FormGroup>
+);
 
 export default FormSection;

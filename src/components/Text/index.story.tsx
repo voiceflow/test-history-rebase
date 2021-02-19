@@ -17,13 +17,9 @@ export default {
   component: Text,
 };
 
-export const TextStory = () => {
-  return <Text {...getProps()} />;
-};
+export const TextStory = () => <Text {...getProps()} />;
 
-export const ClickableTextStory = () => {
-  return <ClickableText {...getProps()} />;
-};
+export const ClickableTextStory = () => <ClickableText {...getProps()} />;
 
 export const OverflowTextStory = () => {
   const width = number('overflow width', 150);

@@ -12,9 +12,7 @@ const Icon = styled(IconUpload)`
   margin-left: 16px;
 `;
 
-const hasError = (acceptedFiles) => {
-  return !IMAGE_FILE_FORMATS.includes(acceptedFiles[0].type);
-};
+const hasError = (acceptedFiles) => !IMAGE_FILE_FORMATS.includes(acceptedFiles[0].type);
 
 /**
  * This is a basic component for image icon upload

@@ -7,9 +7,9 @@ import {
   isTargetPortWithoutTopOffsetUnderSourcePortWithDoubleOffset,
 } from './path';
 
-export * from './path';
 export * from './center';
 export * from './marker';
+export * from './path';
 
 export const getVirtualPoints = (points: Pair<Point> | null): Pair<Point> | null => {
   if (!points) return null;

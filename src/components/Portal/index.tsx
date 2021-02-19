@@ -6,8 +6,6 @@ export type PortalProps = {
   portalNode?: HTMLElement;
 };
 
-const Portal: React.FC<PortalProps> = ({ children, portalNode = rootNode }) => {
-  return createPortal(children, portalNode);
-};
+const Portal: React.FC<PortalProps> = ({ children, portalNode = rootNode }) => createPortal(children, portalNode);
 
 export default Portal;

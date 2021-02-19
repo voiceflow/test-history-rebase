@@ -1,8 +1,8 @@
 import { TrackingState } from './types';
 
+export * from './constants';
 export * from './events';
 export * from './selectors';
-export * from './constants';
 
 const INITIAL_STATE: TrackingState = {};
 

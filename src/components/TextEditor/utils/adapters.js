@@ -1,4 +1,4 @@
-import { EditorState, convertFromRaw, convertToRaw, genKey } from 'draft-js';
+import { convertFromRaw, convertToRaw, EditorState, genKey } from 'draft-js';
 
 import { ENTITY_TYPE_PLUGIN_TYPE } from '../plugins';
 

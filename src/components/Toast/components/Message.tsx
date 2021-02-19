@@ -19,14 +19,12 @@ export type MessageProps = React.PropsWithChildren<{
   iconColor?: string;
 }>;
 
-const Message: React.FC<MessageProps> = ({ icon, children, iconColor }) => {
-  return (
-    <MessageWrapper>
-      {!!icon && <MessageIcon icon={icon} color={iconColor} size={16} />}
-      <div>{children}</div>
-    </MessageWrapper>
-  );
-};
+const Message: React.FC<MessageProps> = ({ icon, children, iconColor }) => (
+  <MessageWrapper>
+    {!!icon && <MessageIcon icon={icon} color={iconColor} size={16} />}
+    <div>{children}</div>
+  </MessageWrapper>
+);
 
 Message.propTypes = {
   icon: PropTypes.string as any,

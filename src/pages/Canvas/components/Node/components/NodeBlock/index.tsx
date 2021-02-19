@@ -86,9 +86,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
 
         return false;
       },
-      onMove: () => {
-        return engine.linkCreation.isDrawing;
-      },
+      onMove: () => engine.linkCreation.isDrawing,
       onEnd: () => {
         if (!hasNestedInPort) {
           clearLinkWarning();

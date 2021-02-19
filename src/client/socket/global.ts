@@ -33,13 +33,12 @@ const globalSocketClient = {
     });
   },
 
-  watchForFailure: (callback: Callback) => {
-    return client.watch(SocketEvent.FAIL, (error?: { code?: number }) => {
+  watchForFailure: (callback: Callback) =>
+    client.watch(SocketEvent.FAIL, (error?: { code?: number }) => {
       if (client.status !== SocketStatus.TRANSFERRING && typeof error === 'object' && (error?.code ?? 0 >= 400)) {
         return callback();
       }
-    });
-  },
+    }),
 };
 
 export default globalSocketClient;

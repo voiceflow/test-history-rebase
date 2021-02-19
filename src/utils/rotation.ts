@@ -42,16 +42,14 @@ export enum RotationDirection {
  * @param vec the vector / point that must be rotated
  * @param angle the amount (in radians) to rotate counter-clockwise
  */
-const applyCCWRotationMatrix = ([x, y]: Point, angle: number): Point => {
+const applyCCWRotationMatrix = ([x, y]: Point, angle: number): Point =>
   /**
    * We matrix multiply the point [x, y] by a counter-clockwise Rotation Matrix where theta = `angle` to
    * obtain the coordinates of the rotated point.
    *
    * See here: https://en.wikipedia.org/wiki/Rotation_matrix
    */
-  return [x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle)];
-};
-
+  [x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle)];
 /**
  * Given a vector/point `vec` and an `angle`, rotates the `vec` about the origin of its coordinate
  * system clockwise by `angle` radians, and returns the coordinates of the resulting
@@ -60,16 +58,14 @@ const applyCCWRotationMatrix = ([x, y]: Point, angle: number): Point => {
  * @param vec the vector / point that must be rotated
  * @param angle the amount (in radians) to rotate clockwise
  */
-const applyCWRotationMatrix = (vec: Point, angle: number): Point => {
+const applyCWRotationMatrix = (vec: Point, angle: number): Point =>
   /**
    * We matrix multiply the point [x, y] by a clockwise Rotation Matrix where theta = `angle` to
    * obtain the coordinates of the rotated point.
    *
    * See here: https://en.wikipedia.org/wiki/Rotation_matrix (Ctrl-F for "clockwise")
    */
-  return applyCCWRotationMatrix(vec, -angle);
-};
-
+  applyCCWRotationMatrix(vec, -angle);
 /** ----------------------------------- API implementations -----------------------------------
  *
  * These functions are the implementations of the API. These functions assume that "up" is the

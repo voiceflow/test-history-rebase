@@ -6,7 +6,7 @@ const Legal = ({ location }) => {
   const name = values.name || 'John Doe';
   const skill = values.skill || 'Skill';
   const date = values.date || 'November 14, 2019';
-  const children = values.children;
+  const { children } = values;
 
   return (
     <div className="overflow-auto p-2">

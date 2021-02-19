@@ -6,59 +6,57 @@ import { allVariablesSelector } from '@/store/selectors';
 
 import { ButtonContainer, Container, DeleteButton, MappingContainer, RegularSelect, VariableDropdown, VariableMappingContainer } from './components';
 
-const MappingVariables = ({ mapManaged, reverse, items, activeVariables, flowVariables, addVariableToFlow }) => {
-  return (
-    <Container>
-      {mapManaged((mapping, { key, onUpdate, onRemove }) => {
-        const updateFrom = (from) => onUpdate({ from });
-        const updateTo = (to) => onUpdate({ to });
-        const GlobalVariableSelectComponent = !reverse ? RegularSelect : VariableDropdown;
-        const FlowVariableSelectComponent = !reverse ? VariableDropdown : RegularSelect;
-        const disabledRemove = items.length === 1;
+const MappingVariables = ({ mapManaged, reverse, items, activeVariables, flowVariables, addVariableToFlow }) => (
+  <Container>
+    {mapManaged((mapping, { key, onUpdate, onRemove }) => {
+      const updateFrom = (from) => onUpdate({ from });
+      const updateTo = (to) => onUpdate({ to });
+      const GlobalVariableSelectComponent = !reverse ? RegularSelect : VariableDropdown;
+      const FlowVariableSelectComponent = !reverse ? VariableDropdown : RegularSelect;
+      const disabledRemove = items.length === 1;
 
-        const globalVariableSelect = (
-          <GlobalVariableSelectComponent
-            value={mapping.from}
-            onChange={updateFrom}
-            fullWidth
-            searchable
-            placeholder={activeVariables.length > 0 ? 'Select Variable' : 'No Var..'}
-            options={activeVariables}
-          />
-        );
+      const globalVariableSelect = (
+        <GlobalVariableSelectComponent
+          value={mapping.from}
+          onChange={updateFrom}
+          fullWidth
+          searchable
+          placeholder={activeVariables.length > 0 ? 'Select Variable' : 'No Var..'}
+          options={activeVariables}
+        />
+      );
 
-        const onCreateFlowVariable = async (item) => {
-          await addVariableToFlow(item);
-          updateTo(item);
-        };
+      const onCreateFlowVariable = async (item) => {
+        await addVariableToFlow(item);
+        updateTo(item);
+      };
 
-        const flowVariableSelect = (
-          <FlowVariableSelectComponent
-            value={mapping.to}
-            onChange={updateTo}
-            placeholder="Select Variable"
-            options={flowVariables}
-            fullWidth
-            onCreate={onCreateFlowVariable}
-            creatable={false}
-          />
-        );
+      const flowVariableSelect = (
+        <FlowVariableSelectComponent
+          value={mapping.to}
+          onChange={updateTo}
+          placeholder="Select Variable"
+          options={flowVariables}
+          fullWidth
+          onCreate={onCreateFlowVariable}
+          creatable={false}
+        />
+      );
 
-        return (
-          <VariableMappingContainer key={key}>
-            <MappingContainer>
-              {reverse ? flowVariableSelect : globalVariableSelect}
-              {reverse ? globalVariableSelect : flowVariableSelect}
-            </MappingContainer>
-            <ButtonContainer>
-              <DeleteButton disabled={disabledRemove} onClick={() => !disabledRemove && onRemove()} />
-            </ButtonContainer>
-          </VariableMappingContainer>
-        );
-      })}
-    </Container>
-  );
-};
+      return (
+        <VariableMappingContainer key={key}>
+          <MappingContainer>
+            {reverse ? flowVariableSelect : globalVariableSelect}
+            {reverse ? globalVariableSelect : flowVariableSelect}
+          </MappingContainer>
+          <ButtonContainer>
+            <DeleteButton disabled={disabledRemove} onClick={() => !disabledRemove && onRemove()} />
+          </ButtonContainer>
+        </VariableMappingContainer>
+      );
+    })}
+  </Container>
+);
 
 const mapStateToProps = {
   flowVariables: Diagram.diagramVariablesSelector,

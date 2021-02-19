@@ -1,4 +1,3 @@
-import _uniq from 'lodash/uniq';
 import { createSelector } from 'reselect';
 
 import { BUILT_IN_VARIABLES } from '@/constants';
@@ -12,6 +11,7 @@ import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import * as Viewport from '@/ducks/viewport';
 import * as Workspace from '@/ducks/workspace';
+import { unique } from '@/utils/array';
 import { getAlternativeColor } from '@/utils/colors';
 import { getSlotTypes } from '@/utils/slot';
 
@@ -31,7 +31,7 @@ export const allVariablesSelector = createSelector(
   Skill.globalVariablesSelector,
   activeDiagramVariablesSelector,
   Slot.slotNamesSelector,
-  (globalVariables, activeDiagramVariables, slotNames) => _uniq([...slotNames, ...BUILT_IN_VARIABLES, ...globalVariables, ...activeDiagramVariables])
+  (globalVariables, activeDiagramVariables, slotNames) => unique([...slotNames, ...BUILT_IN_VARIABLES, ...globalVariables, ...activeDiagramVariables])
 );
 
 export const activeSlotTypesSelector = createSelector([Skill.activeSkillSelector], ({ locales, platform }) => getSlotTypes({ locales, platform }));

@@ -1,8 +1,8 @@
 import { styled } from '@/hocs';
 
 export { default as App } from './App';
-export { default as Page } from './Page';
 export { default as CodeContainer } from './CodeContainer';
+export { default as Page } from './Page';
 
 export const CopiedMessaged = styled.span`
   color: #5d9df5;

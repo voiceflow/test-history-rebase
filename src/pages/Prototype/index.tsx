@@ -7,6 +7,7 @@ import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useDidUpdateEffect, useTeardown } from '@/hooks';
 import { Interactions } from '@/pages/Prototype/components/PrototypeDialog/components';
+import { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';

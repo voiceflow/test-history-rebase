@@ -12,7 +12,7 @@ import { ManagerContext, PlatformContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
 import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
 import { useEditingMode } from '@/pages/Skill/hooks';
-import { SlideOutDirection } from '@/styles/transitions/SlideOut.ts';
+import { SlideOutDirection } from '@/styles/transitions/SlideOut';
 import { stopImmediatePropagation } from '@/utils/dom';
 
 import EditorModal from './components/EditorModal';

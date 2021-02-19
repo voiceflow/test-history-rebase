@@ -1,10 +1,9 @@
-/* eslint-disable lodash/prefer-constant */
 import React from 'react';
 
 import { OnboardingProps } from '@/pages/Onboarding/types';
 
-import { AddCollaborators, CreateWorkspace, JoinWorkspace, Payment, PersonalizeWorkspace, Welcome } from '../../Steps';
 import { StepID } from '../../constants';
+import { AddCollaborators, CreateWorkspace, JoinWorkspace, Payment, PersonalizeWorkspace, Welcome } from '../../Steps';
 
 export type StepComponentProps = Record<StepID, React.FC<OnboardingProps>>;
 

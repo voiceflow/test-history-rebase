@@ -76,14 +76,12 @@ export const normal = withDecorators(() => (
               <FormControl>{LOREM_IPSUM}</FormControl>
             </Section>
             <Section variant="tertiary" tooltip="Whats gewchi" collapseVariant={SectionToggleVariant.TOGGLE} count={3} header="Toggle in Child">
-              {({ toggle }) => {
-                return (
-                  <FormControl>
-                    <button onClick={toggle}>Click me to toggle</button>
-                    {LOREM_IPSUM}
-                  </FormControl>
-                );
-              }}
+              {({ toggle }) => (
+                <FormControl>
+                  <button onClick={toggle}>Click me to toggle</button>
+                  {LOREM_IPSUM}
+                </FormControl>
+              )}
             </Section>
             <Section opened prefix={<span style={{ border: '1px solid black' }}>Prefix Elmnt</span>} header="No Collapse Section">
               <FormControl>{LOREM_IPSUM}</FormControl>

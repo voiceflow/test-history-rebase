@@ -76,18 +76,16 @@ class WorkspacesLoadingGate extends Component<WorkspacesLoadingGateProps & Conne
     await this.props.fetchWorkspaces();
 
     if (this.props.workspaces.length > 0) {
-      const urlWorkspaceID = this.props.urlWorkspaceID;
+      const { urlWorkspaceID } = this.props;
       if (!this.props.workspaceID) {
         this.props.updateCurrentWorkspace(urlWorkspaceID || this.props.workspaces[0]?.id);
       }
       if (!urlWorkspaceID && this.props.activePage !== 'template') this.updateWorkspace(this.props.workspaceID!);
-    } else {
-      if (this.props.location.pathname !== DASHBOARD_PATH)
-        this.props.history.push({
-          pathname: DASHBOARD_PATH,
-          search: this.props.location.search,
-        });
-    }
+    } else if (this.props.location.pathname !== DASHBOARD_PATH)
+      this.props.history.push({
+        pathname: DASHBOARD_PATH,
+        search: this.props.location.search,
+      });
 
     this.setState({ loaded: true });
   };

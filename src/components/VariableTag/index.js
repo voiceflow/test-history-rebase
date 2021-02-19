@@ -1,2 +1,2 @@
-export * from './VariableTag';
 export * from './SlotTag';
+export * from './VariableTag';

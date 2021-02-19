@@ -91,24 +91,22 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, curren
                   <span>Name</span>
                   <span>Version</span>
                 </TableHeader>
-                {versions.map((version, index) => {
-                  return (
-                    <TableRow key={index}>
-                      <span>{moment(version.created).fromNow()}</span>
-                      <span style={{ color: '#62778c' }}>
-                        <SvgIcon size={12} icon={version.platform === PlatformType.GOOGLE ? 'google' : 'amazon'} />
-                        Automatic
-                      </span>
-                      <span>
-                        {version.versionID === currentVersionID ? (
-                          'Current'
-                        ) : (
-                          <ClickableText onClick={() => confirmRestore(version.versionID)}>Restore</ClickableText>
-                        )}
-                      </span>
-                    </TableRow>
-                  );
-                })}
+                {versions.map((version, index) => (
+                  <TableRow key={index}>
+                    <span>{moment(version.created).fromNow()}</span>
+                    <span style={{ color: '#62778c' }}>
+                      <SvgIcon size={12} icon={version.platform === PlatformType.GOOGLE ? 'google' : 'amazon'} />
+                      Automatic
+                    </span>
+                    <span>
+                      {version.versionID === currentVersionID ? (
+                        'Current'
+                      ) : (
+                        <ClickableText onClick={() => confirmRestore(version.versionID)}>Restore</ClickableText>
+                      )}
+                    </span>
+                  </TableRow>
+                ))}
               </>
             ) : (
               <IconContainer>

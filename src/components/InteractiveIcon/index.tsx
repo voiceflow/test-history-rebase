@@ -30,15 +30,13 @@ export const ButtonContainer = styled.div<{ disabled?: boolean }>`
   }
 `;
 
-const InteractiveIcon: React.FC<InteractiveIconProps> = ({ onClick, icon, disabled, className, message }) => {
-  return (
-    <ButtonContainer onClick={onClick} disabled={disabled} className={className}>
-      <Tooltip title={message}>
-        <SvgIcon color="#fff" icon={icon as any} size={11} />
-      </Tooltip>
-    </ButtonContainer>
-  );
-};
+const InteractiveIcon: React.FC<InteractiveIconProps> = ({ onClick, icon, disabled, className, message }) => (
+  <ButtonContainer onClick={onClick} disabled={disabled} className={className}>
+    <Tooltip title={message}>
+      <SvgIcon color="#fff" icon={icon as any} size={11} />
+    </Tooltip>
+  </ButtonContainer>
+);
 
 export const Add = withProps({ icon: 'zoomIn' })(InteractiveIcon);
 export const Minus = withProps({ icon: 'zoomOut' })(InteractiveIcon);

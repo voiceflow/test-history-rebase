@@ -29,18 +29,16 @@ const PlatformSelect: React.FC<PlatformSelectProps> = ({ setSelectedPlatform, cr
         </div>
       </FlexCenter>
       <PlatformCardsContainer>
-        {PLATFORM_META_ARRAY.map((meta, index) => {
-          return (
-            <PlatformCard
-              key={index}
-              platformMeta={meta}
-              onClick={() => {
-                if (creatingSkill) return;
-                setSelectedPlatform(meta.platform);
-              }}
-            />
-          );
-        })}
+        {PLATFORM_META_ARRAY.map((meta, index) => (
+          <PlatformCard
+            key={index}
+            platformMeta={meta}
+            onClick={() => {
+              if (creatingSkill) return;
+              setSelectedPlatform(meta.platform);
+            }}
+          />
+        ))}
       </PlatformCardsContainer>
       <FlexCenter style={{ marginTop: '32px' }}>{creatingSkill && <Icon icon="publishSpin" color="#92a3b3" size={36} spin />}</FlexCenter>
     </Container>

@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { PlatformType } from '@/constants';
-import AlexaFeatures from '@/pages/Settings/components/SettingsContent/Sections/ChannelSpecificFeatures';
-import { ContentSection } from '@/pages/Settings/components/SettingsContent/components';
 import { SectionVariants } from '@/pages/Settings/components/constants';
+import { ContentSection } from '@/pages/Settings/components/SettingsContent/components';
+import AlexaFeatures from '@/pages/Settings/components/SettingsContent/Sections/ChannelSpecificFeatures';
 import { PLATFORM_SETTINGS_META, SettingSections, SettingsTabsType } from '@/pages/Settings/constants';
 
 import ProjectVersions from '../ProjectVersions';
@@ -23,7 +23,7 @@ type SettingsContentType = {
 };
 
 const SettingsContent: React.FC<SettingsContentType> = ({ platform, selectedTab }) => {
-  const sections = PLATFORM_SETTINGS_META[platform].sections;
+  const { sections } = PLATFORM_SETTINGS_META[platform];
 
   return selectedTab === SettingsTabsType.GENERAL ? (
     <>

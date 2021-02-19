@@ -16,7 +16,6 @@ type Generate = {
   array: <T = string>(length?: number, factory?: () => T) => T[];
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const generate: Generate = {
   oneOf: (options) => options[generate.number(0, options.length - 1)],
 

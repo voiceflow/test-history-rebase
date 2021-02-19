@@ -19,13 +19,11 @@ const SettingsTabs: React.FC<SettingsTabsProps> = ({ selectedTab, setSelectedTab
     <StickyContainer top={144} width={200}>
       <FadeLeftContainer>
         <SectionBox>
-          {settingsTabs.map((tab, index) => {
-            return (
-              <SettingsTab key={index} selected={tab === selectedTab} onClick={() => setSelectedTab(tab)}>
-                {tab}
-              </SettingsTab>
-            );
-          })}
+          {settingsTabs.map((tab, index) => (
+            <SettingsTab key={index} selected={tab === selectedTab} onClick={() => setSelectedTab(tab)}>
+              {tab}
+            </SettingsTab>
+          ))}
         </SectionBox>
       </FadeLeftContainer>
     </StickyContainer>

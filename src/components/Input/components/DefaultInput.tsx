@@ -6,7 +6,7 @@ import { styled } from '@/hocs';
 import { useCombinedRefs } from '@/hooks/ref';
 import { Either } from '@/types';
 
-import { StyledInputProps, inputStyle } from '../styles';
+import { inputStyle, StyledInputProps } from '../styles';
 import ChildInput from './ChildInput';
 import InlineInput from './InlineInput';
 import InputWrapper, { InputWrapperProps } from './InputWrapper';

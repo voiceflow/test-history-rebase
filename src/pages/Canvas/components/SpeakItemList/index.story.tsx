@@ -53,16 +53,14 @@ const speakItems: SpeakData[] = [
   },
 ];
 
-export const basic = withDecorators(() => {
-  return (
-    <SpeakItemList
-      platform={PlatformType.ALEXA}
-      changeRandomize={action('changed randomize')}
-      changeSpeakItems={action('changed speak items')}
-      itemComponent={MockItem}
-      maxItems={5}
-      speakItems={speakItems}
-      randomize={false}
-    />
-  );
-});
+export const basic = withDecorators(() => (
+  <SpeakItemList
+    platform={PlatformType.ALEXA}
+    changeRandomize={action('changed randomize')}
+    changeSpeakItems={action('changed speak items')}
+    itemComponent={MockItem}
+    maxItems={5}
+    speakItems={speakItems}
+    randomize={false}
+  />
+));

@@ -1,6 +1,6 @@
 export { default as AddCollaborators } from './AddCollaborators';
 export { default as CreateWorkspace } from './CreateWorkspace';
-export { default as PersonalizeWorkspace } from './PersonalizeWorkspace';
 export { default as JoinWorkspace } from './JoinWorkspace';
 export { default as Payment } from './Payment';
+export { default as PersonalizeWorkspace } from './PersonalizeWorkspace';
 export { default as Welcome } from './Welcome';

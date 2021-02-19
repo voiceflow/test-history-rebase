@@ -2,7 +2,7 @@
 import { MarkupTransform } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
 
-import { HORIZONTAL_HANDLES, HandlePosition, SCALE_HANDLES, VERTICAL_HANDLES, X_INVERTED_HANDLES, Y_INVERTED_HANDLES } from './constants';
+import { HandlePosition, HORIZONTAL_HANDLES, SCALE_HANDLES, VERTICAL_HANDLES, X_INVERTED_HANDLES, Y_INVERTED_HANDLES } from './constants';
 import { AxialTransformation } from './types';
 
 export const getScaleTransformations = (

@@ -4,12 +4,12 @@ import React from 'react';
 import BaseMenu from '@/components/Menu';
 import { setRef } from '@/utils/refs';
 
+import defaultLabelRenderer from './defaultLabelRenderer';
 import AdvancedMenu, { DEFAULT_PATH } from './Menu';
 import MenuHeader from './MenuHeader';
 import MenuOptions from './MenuOptions';
-import defaultLabelRenderer from './defaultLabelRenderer';
 
-export { AdvancedMenu, MenuHeader, MenuOptions, defaultLabelRenderer };
+export { AdvancedMenu, defaultLabelRenderer, MenuHeader, MenuOptions };
 
 const defaultGetter = (option) => option;
 const POPOVER_MODIFIERS = { autoSizing: { enabled: true, fn: null, order: 840 }, preventOverflow: { enabled: false }, hide: { enabled: false } };

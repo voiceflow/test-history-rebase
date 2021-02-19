@@ -26,7 +26,6 @@ const getProps = () => {
   };
 };
 
-// eslint-disable-next-line sonarjs/no-identical-functions
 const render = (props?: Partial<SpeakStepProps>) => () => (
   <Block name="Speak Block">
     <SpeakStep {...getProps()} {...props} />

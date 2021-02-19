@@ -7,8 +7,8 @@ import { getNormalizedByKey, Normalized, patchNormalizedByKey } from '@/utils/no
 import { AddProjectToList, AnyProjectListAction, ProjectListAction, RemoveProjectFromList, TransplantProject } from './actions';
 import { STATE_KEY } from './constants';
 
-export * from './constants';
 export * from './actions';
+export * from './constants';
 export * from './selectors';
 export * from './sideEffects';
 

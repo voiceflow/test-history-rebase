@@ -17,32 +17,30 @@ export type ChoiceStepProps = {
   elsePortID: string;
 };
 
-export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, elsePortID }) => {
-  return (
-    <Step>
-      {!!choices.length && (
-        <Section>
-          {choices.map(({ label, portID }, index) => (
-            <Item
-              icon={index === 0 ? 'choice' : null}
-              iconColor="#3a5999"
-              portID={portID}
-              label={label}
-              placeholder={`Path ${index + 1}`}
-              key={portID}
-            />
-          ))}
-        </Section>
-      )}
-      {isPath && <ElseItem portID={elsePortID} />}
-      {!isPath && choices.length === 0 && (
-        <Section>
-          <Item icon="else" iconColor="#6e849a" portID={null} label="Reprompt" labelVariant={StepLabelVariant.SECONDARY} />
-        </Section>
-      )}
-    </Step>
-  );
-};
+export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, elsePortID }) => (
+  <Step>
+    {!!choices.length && (
+      <Section>
+        {choices.map(({ label, portID }, index) => (
+          <Item
+            icon={index === 0 ? 'choice' : null}
+            iconColor="#3a5999"
+            portID={portID}
+            label={label}
+            placeholder={`Path ${index + 1}`}
+            key={portID}
+          />
+        ))}
+      </Section>
+    )}
+    {isPath && <ElseItem portID={elsePortID} />}
+    {!isPath && choices.length === 0 && (
+      <Section>
+        <Item icon="else" iconColor="#6e849a" portID={null} label="Reprompt" labelVariant={StepLabelVariant.SECONDARY} />
+      </Section>
+    )}
+  </Step>
+);
 
 const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction> & ConnectedChoiceStepProps> = ({ node, data, platform, intentsMap }) => {
   const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);

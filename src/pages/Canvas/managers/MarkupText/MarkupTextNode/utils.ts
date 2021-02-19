@@ -1,4 +1,4 @@
-import { DraftInlineStyle, EditorState, RawDraftContentState, convertFromRaw } from 'draft-js';
+import { convertFromRaw, DraftInlineStyle, EditorState, RawDraftContentState } from 'draft-js';
 import { CSSProperties } from 'react';
 
 import { DraftBuiltInStyle, InlineStylePrefix } from '../constants';

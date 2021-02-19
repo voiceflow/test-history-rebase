@@ -10,7 +10,7 @@ import { BillingPeriod, ModalType, UNLIMITED_EDITORS_CONST, UserRole } from '@/c
 import { referralCodeSelector, referrerIDSelector } from '@/ducks/account';
 import { activeWorkspaceIDSelector, activeWorkspaceSelector, fetchWorkspace } from '@/ducks/workspace';
 import { connect, withContext, withProvider, withStripe } from '@/hocs';
-import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSetup, useSmartReducer } from '@/hooks';
+import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSmartReducer } from '@/hooks';
 
 export const PaymentContext = React.createContext(null);
 export const { Consumer: PaymentContextConsumer } = PaymentContext;

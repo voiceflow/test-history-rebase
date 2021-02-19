@@ -79,7 +79,6 @@ export const PublishProvider: React.FC = ({ children }) => {
     setJob(null);
   }, [projectID, platformClient]);
 
-  // eslint-disable-next-line lodash/prefer-constant
   useSetup(getJob);
 
   useDidUpdateEffect(() => {

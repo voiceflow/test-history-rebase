@@ -1,7 +1,7 @@
 import { button, text } from '@storybook/addon-knobs';
 import React from 'react';
 
-import { ToastContainer, toast } from '.';
+import { toast, ToastContainer } from '.';
 
 export default {
   title: 'Toast',

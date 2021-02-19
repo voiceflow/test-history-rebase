@@ -14,25 +14,23 @@ type UncontrolledCollapseProps = {
   iconProps?: Partial<SvgIconProps>;
 };
 
-export const UncontrolledCollapse: React.FC<UncontrolledCollapseProps> = ({ title, isOpen, onToggle, rightIcon = false, children, iconProps }) => {
-  return (
-    <Container>
-      {!!title && (
-        <Header onClick={onToggle} rightIcon={rightIcon}>
-          {!rightIcon && <HeaderIcon size={10} icon="caretDown" color="#6E849A" rotate={isOpen} {...iconProps} />}
+export const UncontrolledCollapse: React.FC<UncontrolledCollapseProps> = ({ title, isOpen, onToggle, rightIcon = false, children, iconProps }) => (
+  <Container>
+    {!!title && (
+      <Header onClick={onToggle} rightIcon={rightIcon}>
+        {!rightIcon && <HeaderIcon size={10} icon="caretDown" color="#6E849A" rotate={isOpen} {...iconProps} />}
 
-          <span>{title}</span>
+        <span>{title}</span>
 
-          {rightIcon && <HeaderIcon size={10} icon="caretDown" color="#6E849A" rotate={isOpen} rightIcon={rightIcon} {...iconProps} />}
-        </Header>
-      )}
+        {rightIcon && <HeaderIcon size={10} icon="caretDown" color="#6E849A" rotate={isOpen} rightIcon={rightIcon} {...iconProps} />}
+      </Header>
+    )}
 
-      <Collapse isOpen={isOpen}>
-        <Content>{children}</Content>
-      </Collapse>
-    </Container>
-  );
-};
+    <Collapse isOpen={isOpen}>
+      <Content>{children}</Content>
+    </Collapse>
+  </Container>
+);
 
 type ControlledCollapseProps = { opened?: boolean } & Omit<UncontrolledCollapseProps, 'onToggle' | 'isOpen'>;
 

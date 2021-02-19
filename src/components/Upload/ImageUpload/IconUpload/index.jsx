@@ -29,9 +29,7 @@ export const SIZE_VARIANT = {
 
 const MINIMUM_ICON_SIZE = 14;
 
-const hasError = (acceptedFiles) => {
-  return !IMAGE_FILE_FORMATS.includes(acceptedFiles[0].type);
-};
+const hasError = (acceptedFiles) => !IMAGE_FILE_FORMATS.includes(acceptedFiles[0].type);
 
 const Icon = React.forwardRef(
   (
@@ -89,9 +87,9 @@ const Icon = React.forwardRef(
 );
 
 // Have to have a separate export for a withUpload connected instance of Icon, because Icon is being used in its default form in ImageGroup component without withUpload
-const JustIcon = React.forwardRef(({ update, image, ...props }, ref) => {
-  return <Icon image={image} update={update} acceptedFileTypes={IMAGE_FILE_FORMATS} {...props} ref={ref} />;
-});
+const JustIcon = React.forwardRef(({ update, image, ...props }, ref) => (
+  <Icon image={image} update={update} acceptedFileTypes={IMAGE_FILE_FORMATS} {...props} ref={ref} />
+));
 
 export const UploadJustIcon = withUpload(JustIcon, { fileType: 'image', clientFunc: 'uploadImage', validate: hasError });
 

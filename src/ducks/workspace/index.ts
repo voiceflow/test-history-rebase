@@ -6,9 +6,9 @@ import { RootReducer } from '@/store/types';
 import { AnyWorkspaceAction, WorkspaceAction } from './actions';
 import { STATE_KEY } from './constants';
 
+export * from './actions';
 export * from './constants';
 export * from './selectors';
-export * from './actions';
 export * from './sideEffects';
 export * from './types';
 

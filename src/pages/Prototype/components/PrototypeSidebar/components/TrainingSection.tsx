@@ -15,11 +15,11 @@ import { useSmartReducerV2, useTrackingEvents } from '@/hooks';
 import { NLPContext } from '@/pages/Skill/contexts';
 import { ConnectedProps } from '@/types';
 import logger from '@/utils/logger';
-import { ModelDiff, getModelsDiffs, isModelChanged } from '@/utils/prototypeModel';
+import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
 
 import TrainContainer from './TrainContainer';
-import TrainFadeDown from './TrainFadeDown';
 import Trained from './Trained';
+import TrainFadeDown from './TrainFadeDown';
 import Training from './Training';
 import TrainingSectionTitle, { TrainingSectionTitleVariant } from './TrainingSectionTitle';
 

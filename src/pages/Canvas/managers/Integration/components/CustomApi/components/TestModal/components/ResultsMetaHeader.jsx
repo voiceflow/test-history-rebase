@@ -42,10 +42,6 @@ const DetermineStatusMeta = (firstNumberOfStatus) => {
       statusIcon = 'info';
       break;
     case '4':
-      statusMessage = 'Request failed';
-      statusColor = COLOR_CODES.RED;
-      statusIcon = 'error';
-      break;
     case '5':
       statusMessage = 'Request failed';
       statusColor = COLOR_CODES.RED;

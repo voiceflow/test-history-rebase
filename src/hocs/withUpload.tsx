@@ -43,11 +43,7 @@ export const withUpload = <C extends Config, P extends RequiredProps<C['clientFu
 
         try {
           if (Array.isArray(endpoint)) {
-            Promise.all(
-              endpoint.map(async (item: string) => {
-                return onUpload(item, acceptedFiles[0]);
-              })
-            )
+            Promise.all(endpoint.map(async (item: string) => onUpload(item, acceptedFiles[0])))
               .then((urls: string[]) => {
                 update(urls);
               })

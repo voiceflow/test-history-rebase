@@ -12,8 +12,8 @@ import { MarkupTransform } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
-import { EntityType } from '../constants';
 import type { Engine } from '..';
+import { EntityType } from '../constants';
 import { EntityInstance, ResourceEntity } from './entity';
 
 export type NodeInstance = EntityInstance & {

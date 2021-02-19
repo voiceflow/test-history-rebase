@@ -7,14 +7,12 @@ import { ImageStep, ImageStepProps } from '.';
 
 const VISUAL_IMAGE = 'https://www.sundaypost.com/wp-content/uploads/sites/13/2017/04/Glenfinnan-viaduct.jpg.jpg';
 
-const getProps = () => {
-  return {
-    label: 'Mobile Mockup',
-    image: VISUAL_IMAGE,
-    portID: 'visual-block',
-    aspectRatio: 0.4618226600985222,
-  };
-};
+const getProps = () => ({
+  label: 'Mobile Mockup',
+  image: VISUAL_IMAGE,
+  portID: 'visual-block',
+  aspectRatio: 0.4618226600985222,
+});
 
 export default {
   title: 'Creator/Steps/Visual/Image Step',

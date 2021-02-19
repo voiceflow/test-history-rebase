@@ -1,4 +1,4 @@
-import { AlexaVersionPublishing, Locale, defaultAlexaVersionPublishing } from '@voiceflow/alexa-types';
+import { AlexaVersionPublishing, defaultAlexaVersionPublishing, Locale } from '@voiceflow/alexa-types';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { FullSkill } from '@/models';

@@ -14,7 +14,6 @@ export const ReduxProvider = ({ state = {}, children }) => {
   return <ReactRedux.Provider store={store}>{children}</ReactRedux.Provider>;
 };
 
-// eslint-disable-next-line react/display-name
 export default (state = {}) => (Component) => (props) => (
   <ReduxProvider state={state}>
     <Component {...props} />

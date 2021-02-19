@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { GOOGLE_SERVICE_ENDPOINT } from '@/config';
 
-import { PROJECT_RESOURCE_ENDPOINT, createProjectService } from '../utils';
+import { createProjectService, PROJECT_RESOURCE_ENDPOINT } from '../utils';
 
 const projectGoogleService = {
   ...createProjectService<GoogleProject>(GOOGLE_SERVICE_ENDPOINT),

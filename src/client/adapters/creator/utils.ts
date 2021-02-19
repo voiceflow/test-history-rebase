@@ -16,13 +16,9 @@ export const getInPortID = (nodeID: string) => `${nodeID}${IN_PORT_KEY}`;
 
 export const getAlternativePlatform = (platform: PlatformType) => (platform === PlatformType.ALEXA ? PlatformType.GOOGLE : PlatformType.ALEXA);
 
-export const isBlock = (node: DiagramNode): node is Block => {
-  return Array.isArray(node.data.steps) && !!node.coords;
-};
+export const isBlock = (node: DiagramNode): node is Block => Array.isArray(node.data.steps) && !!node.coords;
 
-export const isStep = (node: DiagramNode): node is Step => {
-  return Array.isArray(node.data.ports);
-};
+export const isStep = (node: DiagramNode): node is Step => Array.isArray(node.data.ports);
 
 export const generateInPort = (nodeID: string, { platform = null, virtual = false, label = '' }: Partial<Port> = {}): Port => ({
   platform,

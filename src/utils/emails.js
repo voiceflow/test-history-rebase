@@ -1,7 +1,4 @@
-/* eslint-disable import/prefer-default-export */
+const FORMAT = /^\w+(['+-.]\w+)*@\w+([.-]\w+)*\.\w+([.-]\w+)*$/;
 
-const FORMAT = /^\w+(['+-.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-
-export const isValidEmail = (email) => {
-  return email.match(FORMAT);
-};
+// eslint-disable-next-line import/prefer-default-export
+export const isValidEmail = (email) => email.match(FORMAT);

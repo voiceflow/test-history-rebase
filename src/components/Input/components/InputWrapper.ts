@@ -1,7 +1,7 @@
 import Badge from '@/components/Badge';
 import { styled } from '@/hocs';
 
-import { StyledInputProps, inputDisabled, inputStyle } from '../styles';
+import { inputDisabled, inputStyle, StyledInputProps } from '../styles';
 
 export type InputWrapperProps = StyledInputProps & {
   disabled?: boolean;

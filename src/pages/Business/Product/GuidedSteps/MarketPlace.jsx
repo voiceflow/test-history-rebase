@@ -62,8 +62,8 @@ class MarketPlace extends React.PureComponent {
             <SubSection flex topAlign>
               <AvailabilitySubSection size="25%">
                 <label>Pricing</label>
-                {MarketPlaceAvailability.map(({ marketPlace: place, icon, min, max }, index) => {
-                  return (
+                {MarketPlaceAvailability.map(
+                  ({ marketPlace: place, icon, min, max }, index) =>
                     this.selectedPlaces.includes(place) && (
                       <div key={index}>
                         <SubSection flex>
@@ -84,14 +84,13 @@ class MarketPlace extends React.PureComponent {
                         )}
                       </div>
                     )
-                  );
-                })}
+                )}
               </AvailabilitySubSection>
 
               <AvailabilitySubSection size="75%">
                 <label>Distribution Countries & Regions</label>
-                {MarketPlaceAvailability.map(({ marketPlace: place, countries: allCountries }, index) => {
-                  return (
+                {MarketPlaceAvailability.map(
+                  ({ marketPlace: place, countries: allCountries }, index) =>
                     this.selectedPlaces.includes(place) && (
                       <div key={index}>
                         <DropdownMultiselect
@@ -108,8 +107,7 @@ class MarketPlace extends React.PureComponent {
                         />
                       </div>
                     )
-                  );
-                })}
+                )}
               </AvailabilitySubSection>
             </SubSection>
           )}
@@ -128,16 +126,14 @@ class MarketPlace extends React.PureComponent {
     if (this.selectedPlaces.length === 0) {
       updateProduct({
         ...product,
-        marketPlaces: MarketPlaceAvailability.map(({ marketPlace, currency, min }) => {
-          return {
-            [marketPlace]: {
-              ...product.marketPlaces[marketPlace],
-              currency,
-              price: min,
-              countries: [],
-            },
-          };
-        }).reduce((r, c) => Object.assign(r, c), {}),
+        marketPlaces: MarketPlaceAvailability.map(({ marketPlace, currency, min }) => ({
+          [marketPlace]: {
+            ...product.marketPlaces[marketPlace],
+            currency,
+            price: min,
+            countries: [],
+          },
+        })).reduce((r, c) => Object.assign(r, c), {}),
       });
     } else {
       updateProduct({ ...product, marketPlaces: {} });

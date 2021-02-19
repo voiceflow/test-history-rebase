@@ -9,7 +9,7 @@ import { stopPropagation } from '@/utils/dom';
 
 import { Container, JSONCode, Paragraph, Section, Title } from './components';
 
-export { Title, Section, Paragraph, JSONCode };
+export { JSONCode, Paragraph, Section, Title };
 
 export default function Tooltip({ anchorRenderer, placement = 'auto-end', children, portalNode }) {
   const [isOpen, onToggle] = useDismissable(false, null, false);

@@ -1,6 +1,7 @@
 import { styled } from '@/hocs';
 import { LogoContainer } from '@/pages/Onboarding/Steps/Welcome/components';
 
+// eslint-disable-next-line import/prefer-default-export
 export const LogoCircle = styled(LogoContainer)`
   position: absolute;
   top: 8px;

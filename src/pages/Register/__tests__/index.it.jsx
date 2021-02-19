@@ -5,8 +5,8 @@ import React from 'react';
 import client from '@/client';
 import { facebookLogin, googleLogin } from '@/ducks/session';
 
-import { LoginForm } from '../LoginForm';
 import { PublicSignupForm } from '../components/PublicSignupForm';
+import { LoginForm } from '../LoginForm';
 
 const TEST_EMAIL = 'tests@getvoiceflow.com';
 

@@ -16,32 +16,30 @@ export type DefaultModalProps = {
   content: React.ReactNode;
 };
 
-const DefaultModal: React.FC<DefaultModalProps> = ({ open, toggle, header, content, noPadding, hideFooter, close_button_text }) => {
-  return (
-    <ModalComponent isOpen={open} toggle={toggle}>
-      <ModalHeader toggle={toggle} header={header} />
-      <ModalBody
-        style={{
-          padding: noPadding ? '0' : undefined,
-          border: '0',
-          overflow: 'none',
-        }}
-      >
-        {content}
-      </ModalBody>
-      {!hideFooter && (
-        <ModalFooter className="super-center">
-          {close_button_text ? (
-            <Button onClick={toggle}>{close_button_text}</Button>
-          ) : (
-            <Button variant="tertiary" onClick={toggle}>
-              Close
-            </Button>
-          )}
-        </ModalFooter>
-      )}
-    </ModalComponent>
-  );
-};
+const DefaultModal: React.FC<DefaultModalProps> = ({ open, toggle, header, content, noPadding, hideFooter, close_button_text }) => (
+  <ModalComponent isOpen={open} toggle={toggle}>
+    <ModalHeader toggle={toggle} header={header} />
+    <ModalBody
+      style={{
+        padding: noPadding ? '0' : undefined,
+        border: '0',
+        overflow: 'none',
+      }}
+    >
+      {content}
+    </ModalBody>
+    {!hideFooter && (
+      <ModalFooter className="super-center">
+        {close_button_text ? (
+          <Button onClick={toggle}>{close_button_text}</Button>
+        ) : (
+          <Button variant="tertiary" onClick={toggle}>
+            Close
+          </Button>
+        )}
+      </ModalFooter>
+    )}
+  </ModalComponent>
+);
 
 export default DefaultModal;

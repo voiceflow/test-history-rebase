@@ -40,9 +40,8 @@ export type AnyRecentAction = UpdateRecentPrototype;
 
 // reducers
 
-export const updateRecentPrototypeReducer: Reducer<RecentState, UpdateRecentPrototype> = (state, { payload }) => {
-  return update(state, { prototype: { $merge: payload } });
-};
+export const updateRecentPrototypeReducer: Reducer<RecentState, UpdateRecentPrototype> = (state, { payload }) =>
+  update(state, { prototype: { $merge: payload } });
 
 const recentReducer: RootReducer<RecentState, AnyRecentAction> = (state = INITIAL_STATE, action) => {
   // eslint-disable-next-line sonarjs/no-small-switch

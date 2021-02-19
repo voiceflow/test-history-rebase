@@ -14,26 +14,24 @@ const TutorialTooltip = ({
   portalNode,
   anchorRenderer,
   contentBottomUnits = 3,
-}) => {
-  return (
-    <Tooltip
-      placement={placement}
-      portalNode={portalNode}
-      anchorRenderer={({ ref, isOpen, onToggle }) => (
-        <AnchorContainer opened={isOpen} onClick={stopPropagation(onToggle)} ref={ref}>
-          {anchorRenderer({ isOpen })}
-        </AnchorContainer>
-      )}
-    >
-      {title && <Title>{title}</Title>}
+}) => (
+  <Tooltip
+    placement={placement}
+    portalNode={portalNode}
+    anchorRenderer={({ ref, isOpen, onToggle }) => (
+      <AnchorContainer opened={isOpen} onClick={stopPropagation(onToggle)} ref={ref}>
+        {anchorRenderer({ isOpen })}
+      </AnchorContainer>
+    )}
+  >
+    {title && <Title>{title}</Title>}
 
-      <Section marginBottomUnits={contentBottomUnits}>{children}</Section>
+    <Section marginBottomUnits={contentBottomUnits}>{children}</Section>
 
-      {!!helpTitle && <Title>{helpTitle}</Title>}
+    {!!helpTitle && <Title>{helpTitle}</Title>}
 
-      {!!helpMessage && <Section>{helpMessage}</Section>}
-    </Tooltip>
-  );
-};
+    {!!helpMessage && <Section>{helpMessage}</Section>}
+  </Tooltip>
+);
 
 export default TutorialTooltip;

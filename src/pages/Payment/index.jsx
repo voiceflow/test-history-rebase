@@ -4,9 +4,9 @@ import { Spinner } from '@/components/Spinner';
 import { compose } from '@/utils/functional';
 
 import Checkout from './Checkout';
-import Details from './Details';
 import PaymentContainer from './components/PaymentContainer';
 import { VIEWS, withPayment, withPaymentProvider } from './context';
+import Details from './Details';
 
 const Payment = ({
   payment: {

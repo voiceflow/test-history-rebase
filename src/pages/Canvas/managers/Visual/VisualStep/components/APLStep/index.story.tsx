@@ -7,14 +7,12 @@ import { APLStep, APLStepProps } from '.';
 
 const APL_IMAGE = 'https://www.sundaypost.com/wp-content/uploads/sites/13/2017/04/Glenfinnan-viaduct.jpg.jpg';
 
-const getProps = () => {
-  return {
-    // withPorts: true,
-    portID: 'apl-block',
-    label: 'Hi {name}, welcome to Adidas.',
-    image: APL_IMAGE,
-  };
-};
+const getProps = () => ({
+  // withPorts: true,
+  portID: 'apl-block',
+  label: 'Hi {name}, welcome to Adidas.',
+  image: APL_IMAGE,
+});
 
 export default {
   title: 'Creator/Steps/Visual/APL Step',

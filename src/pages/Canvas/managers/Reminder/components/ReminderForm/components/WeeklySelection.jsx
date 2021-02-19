@@ -55,18 +55,16 @@ function WeeklySelection({ recurrence, onChange }) {
     <WeeklyContainer>
       {recurrence.freq === RecurrenceType.WEEKLY && (
         <ButtonGroup>
-          {weekArray.map((day, index) => {
-            return (
-              <DayButton
-                key={index}
-                selected={recurrence.byDay === day.val}
-                onClick={() => setRecurrenceDay(day.val)}
-                disabled={recurrence.byDay === day.val}
-              >
-                {day.text}
-              </DayButton>
-            );
-          })}
+          {weekArray.map((day, index) => (
+            <DayButton
+              key={index}
+              selected={recurrence.byDay === day.val}
+              onClick={() => setRecurrenceDay(day.val)}
+              disabled={recurrence.byDay === day.val}
+            >
+              {day.text}
+            </DayButton>
+          ))}
         </ButtonGroup>
       )}
     </WeeklyContainer>

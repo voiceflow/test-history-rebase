@@ -2,7 +2,7 @@ import { PermissionType } from '@voiceflow/alexa-types';
 import React from 'react';
 
 import Select from '@/components/Select';
-import { PERMISSIONS, PERMISSION_LABELS } from '@/constants';
+import { PERMISSION_LABELS, PERMISSIONS } from '@/constants';
 
 const PermissionSelect = ({ value, onChange, disabledOptions }) => (
   <Select

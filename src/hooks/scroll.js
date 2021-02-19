@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useRef } from 'react';
 
 import { ScrollContext } from '@/contexts';
 import { getOffsetLeftToNode, getOffsetToNode, scrollTo, setScrollbarOffset } from '@/utils/dom';
+import { xnor, xor } from '@/utils/logic';
 
 import { useToggle } from './toggle';
 
@@ -68,20 +69,14 @@ export const useScrollShadows = (bodyRef, updateByProps = []) => {
         current: { scrollTop, clientHeight, scrollHeight },
       } = bodyRef;
 
-      if (scrollTop && !isHeaderShadowShown) {
-        toggleHeaderShadowShown();
-      } else if (!scrollTop && isHeaderShadowShown) {
+      if (xor(scrollTop, isHeaderShadowShown)) {
         toggleHeaderShadowShown();
       }
 
       const isScrollExists = scrollHeight > clientHeight;
       const clientHeightWithScrollTop = clientHeight + scrollTop;
 
-      if (!isScrollExists && isFooterShadowShown) {
-        toggleFooterShadowShown();
-      } else if (isScrollExists && clientHeightWithScrollTop === scrollHeight && isFooterShadowShown) {
-        toggleFooterShadowShown();
-      } else if (isScrollExists && clientHeightWithScrollTop !== scrollHeight && !isFooterShadowShown) {
+      if (isScrollExists ? xnor(clientHeightWithScrollTop === scrollHeight, isFooterShadowShown) : isFooterShadowShown) {
         toggleFooterShadowShown();
       }
     });

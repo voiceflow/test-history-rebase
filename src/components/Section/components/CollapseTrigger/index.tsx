@@ -13,22 +13,20 @@ type CollapseTriggerProps = {
   isCollapsed?: boolean;
 };
 
-const CollapseTrigger: React.FC<CollapseTriggerProps> = ({ onToggle, isCollapsed, variant }) => {
-  return (
-    <div>
-      {variant === SectionToggleVariant.ARROW && (
-        <ToggleArrowContainer onClick={onToggle} isCollapsed={isCollapsed}>
-          <SvgIcon variant={IconVariant.TERTIARY} icon="arrowLeft" size={12} />
-        </ToggleArrowContainer>
-      )}
+const CollapseTrigger: React.FC<CollapseTriggerProps> = ({ onToggle, isCollapsed, variant }) => (
+  <div>
+    {variant === SectionToggleVariant.ARROW && (
+      <ToggleArrowContainer onClick={onToggle} isCollapsed={isCollapsed}>
+        <SvgIcon variant={IconVariant.TERTIARY} icon="arrowLeft" size={12} />
+      </ToggleArrowContainer>
+    )}
 
-      {variant === SectionToggleVariant.TOGGLE && (
-        <ToggleSwitchContainer>
-          <Toggle checked={!isCollapsed} onChange={onToggle} />
-        </ToggleSwitchContainer>
-      )}
-    </div>
-  );
-};
+    {variant === SectionToggleVariant.TOGGLE && (
+      <ToggleSwitchContainer>
+        <Toggle checked={!isCollapsed} onChange={onToggle} />
+      </ToggleSwitchContainer>
+    )}
+  </div>
+);
 
 export default CollapseTrigger;

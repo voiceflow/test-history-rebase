@@ -1,19 +1,49 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 require('ts-node/register/transpile-only');
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-extraneous-dependencies
+// eslint-disable-next-line import/no-extraneous-dependencies
 const path = require('path');
 
 module.exports = {
-  extends: ['@voiceflow/eslint-config/frontend', 'plugin:@typescript-eslint/recommended'],
-  parser: '@typescript-eslint/parser',
-  plugins: ['prettier', 'react-hooks', '@typescript-eslint'],
+  extends: ['@voiceflow/eslint-config', '@voiceflow/eslint-config/frontend', '@voiceflow/eslint-config/typescript'],
   rules: {
-    'lodash/import-scope': 'error',
+    // error
+    'no-secrets/no-secrets': ['error', { tolerance: 4.45 }],
 
-    // disabled temporarily by setting as warnings
-    'optimize-regex/optimize-regex': 'warn',
-    'simple-import-sort/sort': 'warn',
+    // warn until fixed
+    camelcase: 'warn',
+    'consistent-return': 'warn',
+    'max-classes-per-file': 'warn',
+    'no-console': 'warn',
+    'no-param-reassign': 'warn',
+    'no-shadow': 'warn',
+    'no-underscore-dangle': 'warn',
+    'no-unused-expressions': 'warn',
+    'lines-between-class-members': 'warn',
+
+    'promise/catch-or-return': 'warn',
+    'promise/always-return': 'warn',
+
+    'import/no-named-as-default': 'warn',
+    'import/prefer-default-export': 'warn',
+
+    'eslint-comments/disable-enable-pair': 'warn',
+    'eslint-comments/no-unused-disable': 'warn',
+
+    'sonarjs/cognitive-complexity': 'warn',
+
+    'you-dont-need-lodash-underscore/last': 'warn',
+    'you-dont-need-lodash-underscore/throttle': 'warn',
+    'you-dont-need-lodash-underscore/to-lower': 'warn',
+    'you-dont-need-lodash-underscore/is-string': 'warn',
+    'you-dont-need-lodash-underscore/is-function': 'warn',
+
+    // reports false positives
+    'no-use-before-define': 'off',
+
+    // high performance overhead
+    'import/named': 'off',
+    'import/no-cycle': 'off',
   },
   settings: {
     'import/resolver': {
@@ -24,43 +54,48 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.story.*', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/**/*', 'config/**/*'],
+      files: ['*.story.*', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/**/*', 'cypress/**/*', 'config/**/*', 'webpack.config.js'],
+      extends: ['@voiceflow/eslint-config/utility'],
       rules: {
-        'import/no-extraneous-dependencies': [
-          'error',
-          {
-            devDependencies: true,
-          },
-        ],
+        // off
+        'no-use-before-define': 'off',
+
         'no-secrets/no-secrets': 'off',
+
         'xss/no-mixed-html': 'off',
+
         'react-hooks/rules-of-hooks': 'off',
-        'react/display-name': 'off',
-        'lodash/prefer-constant': 'off',
+
         'import/prefer-default-export': 'off',
-        '@typescript-eslint/no-var-requires': 'off',
-      },
-    },
-    {
-      files: ['webpack.config.js', 'config/**/*'],
-      rules: {
-        '@typescript-eslint/no-var-requires': 'off',
-        'import/no-extraneous-dependencies': 'off',
+        'import/no-cycle': 'off',
       },
     },
     {
       files: ['**/_suite.js', '*.unit.*'],
+      extends: ['@voiceflow/eslint-config/mocha'],
+    },
+    {
+      files: ['*.it.*'],
+      extends: ['@voiceflow/eslint-config/jest'],
+    },
+    {
+      files: ['cypress/**/*'],
+      extends: ['@voiceflow/eslint-config/cypress'],
+    },
+    {
+      files: ['*.jsx', '*.tsx'],
       rules: {
-        'jest/valid-expect': 'off',
+        // off
+        'import/no-named-as-default': 'off',
+        'import/no-named-as-default-member': 'off',
       },
     },
     {
       files: ['*.ts', '*.tsx'],
-      extends: ['@voiceflow/eslint-config/typescript'],
       rules: {
-        '@typescript-eslint/no-empty-function': ['off'],
+        // off
+        '@typescript-eslint/no-empty-function': 'off',
         '@typescript-eslint/ban-types': 'off',
-        'lines-between-class-members': 'off',
         '@typescript-eslint/no-namespace': 'off',
       },
     },

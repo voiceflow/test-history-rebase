@@ -25,8 +25,8 @@ type ConnectButtonProps = {
   onClick: () => void;
 };
 
-const ConnectButton: React.FC<ConnectButtonProps & ConnectedConnectButtonProps> = ({ platform, onClick }) => {
-  return CONNECT_ICON[platform] ? (
+const ConnectButton: React.FC<ConnectButtonProps & ConnectedConnectButtonProps> = ({ platform, onClick }) =>
+  CONNECT_ICON[platform] ? (
     <TippyTooltip title={CONNECT_MESSAGE[platform]} position="bottom">
       <IconButton
         id={Identifier.UPLOAD}
@@ -39,7 +39,6 @@ const ConnectButton: React.FC<ConnectButtonProps & ConnectedConnectButtonProps> 
       />
     </TippyTooltip>
   ) : null;
-};
 
 const mapStateToProps = {
   platform: Skill.activePlatformSelector,

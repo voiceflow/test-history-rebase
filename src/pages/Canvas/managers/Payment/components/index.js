@@ -4,7 +4,7 @@ import { css, styled, units } from '@/hocs';
 import ProductDetails from './ProductDetails';
 import ProductTileContainer from './ProductTileContainer';
 
-export { ProductTileContainer, ProductDetails };
+export { ProductDetails, ProductTileContainer };
 
 export const fontStyles = css`
   font-size: 15px;

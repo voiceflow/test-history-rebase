@@ -116,12 +116,10 @@ const mapDispatchToProps = {
   goToEditProduct: Router.goToEditProduct,
 };
 
-const mergeProps = ({ skillID }, { copyProduct, deleteProduct, goToEditProduct }, { productID }) => {
-  return {
-    copyProduct: () => copyProduct(productID),
-    deleteProduct: () => deleteProduct(productID),
-    goToEditProduct: () => goToEditProduct(skillID, productID),
-  };
-};
+const mergeProps = ({ skillID }, { copyProduct, deleteProduct, goToEditProduct }, { productID }) => ({
+  copyProduct: () => copyProduct(productID),
+  deleteProduct: () => deleteProduct(productID),
+  goToEditProduct: () => goToEditProduct(skillID, productID),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ProductCard);

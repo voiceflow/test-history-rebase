@@ -1,7 +1,7 @@
 import React from 'react';
 
-import SSMLWithVars from '@/components/SSMLWithVars';
 import Section from '@/components/Section';
+import SSMLWithVars from '@/components/SSMLWithVars';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
 const ReminderContent = ({ value, voice, onChange }) => {

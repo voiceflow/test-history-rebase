@@ -15,13 +15,13 @@ import { EngineProvider } from './EngineContext';
 import { FocusThreadProvider } from './FocusThreadContext';
 import { SpotlightProvider } from './SpotlightContext';
 
-export * from './EngineContext';
-export * from './EntityContexts';
 export * from './ClipboardContext';
 export * from './ContextMenuContext';
-export * from './SpotlightContext';
-export * from './PresentationModeContext';
+export * from './EngineContext';
+export * from './EntityContexts';
 export * from './FocusThreadContext';
+export * from './PresentationModeContext';
+export * from './SpotlightContext';
 
 export const PlatformContext = React.createContext<PlatformType | null>(null);
 export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = PlatformContext;

@@ -13,9 +13,7 @@ import { FadeLeftContainer } from '@/styles/animations';
 
 import { Container, DropdownIcon, DropdownItem, MemberName, PermissionDropdown, PermissionsDropdownButton, UserIcon } from './components';
 
-const isVerifiedMember = (member) => {
-  return !!member.creator_id;
-};
+const isVerifiedMember = (member) => !!member.creator_id;
 
 const getRoleVerb = (role) => {
   switch (role) {

@@ -35,9 +35,9 @@ const Audio: React.FC<AudioProps> = ({ onPlay, audioSrc, name, isCurrent, ...pro
       {playing && <ProgressBar percent={percent} style={{ backgroundColor: WAVE_COLOR, opacity: 0.12, top: 0 }} />}
       <Flex style={{ position: 'relative' }}>
         <WaveContainer playing={playing}>
-          {RECTANGLE_CLASS_ARRAY.map((val, index) => {
-            return <div key={index} className={`rectangle-${val}`} />;
-          })}
+          {RECTANGLE_CLASS_ARRAY.map((val, index) => (
+            <div key={index} className={`rectangle-${val}`} />
+          ))}
         </WaveContainer>
         <Box color="#8f8e94" fontSize={14}>
           {formatTime(curTime)}

@@ -4,9 +4,9 @@ import { Link, Node, NodeData, PartialModel, Port } from '@/models';
 import { findUnion, reorder, withoutValue } from '@/utils/array';
 import { compose } from '@/utils/functional';
 import {
-  Normalized,
   addNormalizedByKey,
   getNormalizedByKey,
+  Normalized,
   patchNormalizedByKey,
   removeNormalizedByKey,
   safeAdd,
@@ -43,7 +43,7 @@ export const getOutgoingLinkIDs = (state: DiagramState, node: Node) => node.port
 export const getIncomingLinkIDs = (state: DiagramState, node: Node) => node.ports.in.flatMap((portID) => getLinkIDsByPortID(state)(portID));
 
 export const getNestedOutgoingLinkIDs = (state: DiagramState, node: Node) => {
-  const combinedNodes = node.combinedNodes;
+  const { combinedNodes } = node;
   const lastNodeID = combinedNodes[combinedNodes.length - 1];
   const lastNode = getNormalizedByKey(state.nodes, lastNodeID);
 

@@ -7,7 +7,7 @@ import Flex from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
 import { useEnableDisable, useToggle } from '@/hooks';
 
-import { StripeCardElementWrapper, Wrapper, stripeInputStyle } from './styled';
+import { StripeCardElementWrapper, stripeInputStyle, Wrapper } from './styled';
 
 const getColor = (error, complete, focused) => {
   switch (true) {

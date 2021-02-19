@@ -45,110 +45,98 @@ export const updateAccount = (payload) => ({
   payload,
 });
 
-export const checkSession = () => {
-  return async (dispatch) => {
-    try {
-      const user = (await axios.get('/session')).data;
-      dispatch(updateAccount(user));
-      return Promise.resolve(user);
-    } catch (err) {
-      removeAuthCookie();
-      dispatch(resetAccount());
-      return Promise.reject(err);
-    }
-  };
-};
-
-export const getUser = () => {
-  return async (dispatch) => {
-    try {
-      const user = (await axios.get('/user')).data;
-      dispatch(updateAccount(user));
-
-      return Promise.resolve(user);
-    } catch (err) {
-      removeAuthCookie();
-      dispatch(resetAccount());
-      return Promise.reject(err);
-    }
-  };
-};
-
-export const logout = () => {
-  return async (dispatch) => {
-    try {
-      await axios.delete('/session');
-    } catch (err) {
-      console.error(err);
-    }
+export const checkSession = () => async (dispatch) => {
+  try {
+    const user = (await axios.get('/session')).data;
+    dispatch(updateAccount(user));
+    return Promise.resolve(user);
+  } catch (err) {
     removeAuthCookie();
-    localStorage.clear();
     dispatch(resetAccount());
+    return Promise.reject(err);
+  }
+};
+
+export const getUser = () => async (dispatch) => {
+  try {
+    const user = (await axios.get('/user')).data;
+    dispatch(updateAccount(user));
+
+    return Promise.resolve(user);
+  } catch (err) {
+    removeAuthCookie();
+    dispatch(resetAccount());
+    return Promise.reject(err);
+  }
+};
+
+export const logout = () => async (dispatch) => {
+  try {
+    await axios.delete('/session');
+  } catch (err) {
+    console.error(err);
+  }
+  removeAuthCookie();
+  localStorage.clear();
+  dispatch(resetAccount());
+
+  return Promise.resolve();
+};
+
+export const getVendors = () => async (dispatch) => {
+  try {
+    const vendors = (await axios.get('/session/vendor?all=true')).data;
+    if (Array.isArray(vendors)) {
+      dispatch(
+        updateAccount({
+          vendors,
+        })
+      );
+    }
+  } catch (err) {
+    console.error(err);
+  }
+  Promise.resolve();
+};
+
+const createSession = (endpoint) => (user) => async (dispatch, getState) => {
+  try {
+    const { data } = await axios.put(endpoint, { user });
+    if (data.user.id) {
+      data.user.creator_id = data.user.id;
+      delete data.user.id;
+    }
+
+    setAuthCookie(data.token);
+    removeLastSessionCookie();
+
+    dispatch(updateAccount(data.user));
+
+    const { location } = getState().router;
+    const search = queryString.parse(location.search);
+
+    // Ensure the user has admin credentials
+    if (data.user.admin < 100) {
+      // eslint-disable-next-line prefer-promise-reject-errors
+      return Promise.reject('User is not an admin');
+    }
+
+    if (search.invite || !data.user.first_login) {
+      dispatch(
+        push({
+          pathname: '/admin',
+          search: location.search,
+          state: { from: location },
+        })
+      );
+    } else {
+      dispatch(push('/workspace/onboarding'));
+    }
 
     return Promise.resolve();
-  };
-};
-
-export const getVendors = () => {
-  return async (dispatch) => {
-    try {
-      const vendors = (await axios.get('/session/vendor?all=true')).data;
-      if (Array.isArray(vendors)) {
-        dispatch(
-          updateAccount({
-            vendors,
-          })
-        );
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    Promise.resolve();
-  };
-};
-
-const createSession = (endpoint) => {
-  return (user) => {
-    return async (dispatch, getState) => {
-      try {
-        const data = (await axios.put(endpoint, { user })).data;
-        if (data.user.id) {
-          data.user.creator_id = data.user.id;
-          delete data.user.id;
-        }
-
-        setAuthCookie(data.token);
-        removeLastSessionCookie();
-
-        dispatch(updateAccount(data.user));
-
-        const location = getState().router.location;
-        const search = queryString.parse(location.search);
-
-        // Ensure the user has admin credentials
-        if (data.user.admin < 100) {
-          // eslint-disable-next-line prefer-promise-reject-errors
-          return Promise.reject('User is not an admin');
-        }
-
-        if (search.invite || !data.user.first_login) {
-          dispatch(
-            push({
-              pathname: '/admin',
-              search: location.search,
-              state: { from: location },
-            })
-          );
-        } else {
-          dispatch(push('/workspace/onboarding'));
-        }
-
-        return Promise.resolve();
-      } catch (err) {
-        return Promise.reject(err);
-      }
-    };
-  };
+  } catch (err) {
+    return Promise.reject(err);
+  }
 };
 
 export const signup = createSession('/user');
@@ -157,6 +145,4 @@ export const googleLogin = createSession('/googleLogin');
 export const fbLogin = createSession('/fbLogin');
 
 // Non Action functions
-export const getAuth = () => {
-  return cookies.get(AUTH_COOKIE);
-};
+export const getAuth = () => cookies.get(AUTH_COOKIE);

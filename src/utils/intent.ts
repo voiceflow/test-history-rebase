@@ -23,15 +23,14 @@ export const prettifyIntentName = (name = '') =>
     .replace(/([a-z])([A-Z]+)(?=[A-Z])/g, '$1 $2') // camelCaseSHORT => camel Case SHORT
     .trim();
 
-export const prettifyIntentNames = (intents: Intent[]) => {
-  return intents.map((intent) => ({
+export const prettifyIntentNames = (intents: Intent[]) =>
+  intents.map((intent) => ({
     ...intent,
     name: prettifyIntentName(intent.name),
   }));
-};
 
-export const filterIntents = (intents: Intent[], activeIntent: Intent) => {
-  return intents.filter((intent) => {
+export const filterIntents = (intents: Intent[], activeIntent: Intent) =>
+  intents.filter((intent) => {
     const isActiveIntent = intent.id === activeIntent?.id;
 
     if (isActiveIntent) {
@@ -44,7 +43,6 @@ export const filterIntents = (intents: Intent[], activeIntent: Intent) => {
 
     return true;
   });
-};
 
 export const intentFactory = (platform: PlatformType) => (intent: { name: string; slots?: string[] }): Intent => {
   const truncatedName = intent.name.split('.')[1];
@@ -131,12 +129,11 @@ export function validateUtterance(utterance: string, intentID: string, intents: 
   return err;
 }
 
-export const removeSlotRefFromInput = (text: string, slotDetails: Slot) => {
-  return text.replace(SLOT_REGEXP, (match, inner) => {
+export const removeSlotRefFromInput = (text: string, slotDetails: Slot) =>
+  text.replace(SLOT_REGEXP, (match, inner) => {
     if (inner.match(slotDetails.name)) {
       return slotDetails.name;
     }
 
     return match;
   });
-};

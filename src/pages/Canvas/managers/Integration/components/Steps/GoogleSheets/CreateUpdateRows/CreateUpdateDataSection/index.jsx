@@ -28,24 +28,22 @@ class CreateUpdateDataSection extends React.PureComponent {
                 </ValueContainer>
               </RowNumberContainer>
             )}
-            {sheet_headers.map((header, i) => {
-              return (
-                <LineItemContainer key={i}>
-                  <Label>{header.label}</Label>
-                  <ValueContainer>
-                    <VariablesInput
-                      value={this.props.data.row_values[i]}
-                      onBlur={({ text }) => {
-                        this.props.onChange({
-                          row_values: update(this.props.data.row_values, { [i]: { $set: text } }),
-                        });
-                      }}
-                      placeholder="Column Value to Create"
-                    />
-                  </ValueContainer>
-                </LineItemContainer>
-              );
-            })}
+            {sheet_headers.map((header, i) => (
+              <LineItemContainer key={i}>
+                <Label>{header.label}</Label>
+                <ValueContainer>
+                  <VariablesInput
+                    value={this.props.data.row_values[i]}
+                    onBlur={({ text }) => {
+                      this.props.onChange({
+                        row_values: update(this.props.data.row_values, { [i]: { $set: text } }),
+                      });
+                    }}
+                    placeholder="Column Value to Create"
+                  />
+                </ValueContainer>
+              </LineItemContainer>
+            ))}
           </>
         )}
         {sheet_headers && sheet_headers.length === 0 && <div className="text-center">No Sheet Headers Found</div>}

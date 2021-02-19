@@ -1,4 +1,4 @@
-import { AlexaVersionSettings, Locale, Voice, defaultAlexaVersionSettings } from '@voiceflow/alexa-types';
+import { AlexaVersionSettings, defaultAlexaVersionSettings, Locale, Voice } from '@voiceflow/alexa-types';
 import { RepeatType } from '@voiceflow/general-types';
 import _invert from 'lodash/invert';
 

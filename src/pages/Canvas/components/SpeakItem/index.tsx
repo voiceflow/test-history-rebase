@@ -1,13 +1,13 @@
 import React from 'react';
 
 import Box from '@/components/Box';
-import SSMLWithVars from '@/components/SSMLWithVars';
 import { SectionToggleVariant } from '@/components/Section';
+import SSMLWithVars from '@/components/SSMLWithVars';
 import SvgIcon from '@/components/SvgIcon';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import VariablesInput from '@/components/VariablesInput';
 import { DialogType, PlatformType } from '@/constants';
-import { SSMLData, SpeakData } from '@/models';
+import { SpeakData, SSMLData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { getAudioTitle } from '@/utils/audio';

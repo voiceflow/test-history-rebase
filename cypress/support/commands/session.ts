@@ -1,5 +1,3 @@
-/* eslint-disable promise/catch-or-return */
-
 export const TOKEN_KEY = 'token';
 export const CREATOR_ID_KEY = 'creatorID';
 export const TAB_ID_KEY = 'tabID';
@@ -8,9 +6,9 @@ export const PROJECT_ID_KEY = 'projectID';
 export const VERSION_ID_KEY = 'versionID';
 export const DIAGRAM_ID_KEY = 'diagramID';
 
-// eslint-disable-next-line compat/compat
 export const SESSION_CONTEXT = new Map();
 
-Cypress.Commands.add('getSession', () =>
-  Array.from(SESSION_CONTEXT.entries()).reduce((acc, [key, value]) => Object.assign(acc, { [key]: value }), {})
+Cypress.Commands.add(
+  'getSession',
+  () => Array.from(SESSION_CONTEXT.entries()).reduce((acc, [key, value]) => Object.assign(acc, { [key]: value }), {}) as any
 );

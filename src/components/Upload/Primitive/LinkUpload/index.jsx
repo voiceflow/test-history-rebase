@@ -14,7 +14,6 @@ const validURL = (text) => {
   return null;
 };
 
-// eslint-disable-next-line lodash/prefer-constant
 function LinkUpload({ onUpdate, onBack, validate = validURL, placeholder, withVariables }) {
   const [value, setValue] = React.useState('');
   const [error, setError] = React.useState(null);

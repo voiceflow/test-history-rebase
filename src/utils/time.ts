@@ -9,8 +9,8 @@ export const getTimeDuration = (pastTime: string | number) => {
   return moment.duration(diff).humanize();
 };
 
-export const getAbbrevatedFormat = (time: string) => {
-  return time
+export const getAbbrevatedFormat = (time: string) =>
+  time
     .split(' ')
     .map((str: string) => {
       if (str.includes('day')) {
@@ -35,4 +35,3 @@ export const getAbbrevatedFormat = (time: string) => {
     })
     .filter(Boolean)
     .join('');
-};

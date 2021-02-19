@@ -64,9 +64,9 @@ class TrackPadControls extends MouseControls {
   };
 
   wheel = preventDefault((event: WheelEvent & { wheelDeltaX?: number; wheelDeltaY?: number }) => {
-    const deltaMode = event.deltaMode;
-    let deltaX = event.deltaX;
-    let deltaY = event.deltaY;
+    const { deltaMode } = event;
+    let { deltaX } = event;
+    let { deltaY } = event;
 
     if (!isMac && event.shiftKey) {
       const temp = deltaY;
@@ -89,7 +89,7 @@ class TrackPadControls extends MouseControls {
     }
 
     if (isWindows && isChrome) {
-      const devicePixelRatio = window.devicePixelRatio;
+      const { devicePixelRatio } = window;
       deltaX /= devicePixelRatio;
       deltaY /= devicePixelRatio;
       wheelDeltaX /= devicePixelRatio;

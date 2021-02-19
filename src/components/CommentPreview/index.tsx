@@ -16,21 +16,21 @@ export type CommentPreviewProps = {
   text?: string;
 };
 
-const extractUserID = (text: string) => {
-  return text.split('user:')[1].replace(')', '');
-};
+const extractUserID = (text: string) => text.split('user:')[1].replace(')', '');
 
 const UNKNOWN_MEMBER_MENTION = UNKNOWN_MEMBER_DATA.name.replace(' ', '').toLowerCase();
 
 const CommentPreview: React.FC<CommentPreviewProps & ConnectedCommentPreviewProps> = ({ text = '', hasMember }) => {
   const theme = useTheme();
-  const formattedText = React.useMemo(() => {
-    return text.replace(MENTION_MARKUP_REGEX, (str: string) => {
-      const userID = extractUserID(str);
-      const memberExists = hasMember(userID);
-      return memberExists ? str.match(MENTION_REGEX)![0] : `@${UNKNOWN_MEMBER_MENTION}`;
-    });
-  }, [text]);
+  const formattedText = React.useMemo(
+    () =>
+      text.replace(MENTION_MARKUP_REGEX, (str: string) => {
+        const userID = extractUserID(str);
+        const memberExists = hasMember(userID);
+        return memberExists ? str.match(MENTION_REGEX)![0] : `@${UNKNOWN_MEMBER_MENTION}`;
+      }),
+    [text]
+  );
 
   const styledText = React.useMemo(
     () =>

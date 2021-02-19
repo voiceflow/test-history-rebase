@@ -37,7 +37,7 @@ function getSafeBodyFromHTML(html) {
   if (document.implementation && document.implementation.createHTMLDocument) {
     doc = document.implementation.createHTMLDocument('foo');
     doc.documentElement.innerHTML = html;
-    root = doc.getElementsByTagName('body')[0];
+    [root] = doc.getElementsByTagName('body');
   }
 
   return root;
@@ -53,7 +53,7 @@ const fromTextConvertor = () => ({ tags }) => (next) => (value, { cursor, entity
   }
 
   const processTextNode = (node) => {
-    let textContent = node.textContent;
+    let { textContent } = node;
     let addedText = '';
 
     const trimmedText = textContent.trim();
@@ -79,7 +79,7 @@ const fromTextConvertor = () => ({ tags }) => (next) => (value, { cursor, entity
   const processTagNode = (node, nodeName) => {
     const validAttributes = tags[nodeName].attributes;
 
-    const isSingle = tags[nodeName].isSingle;
+    const { isSingle } = tags[nodeName];
 
     const attributes = [...(node.attributes || [])]
       .filter((attr) => !!validAttributes[_toLower(attr.name)])

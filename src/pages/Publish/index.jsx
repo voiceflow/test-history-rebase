@@ -22,9 +22,7 @@ const PublishAmazon = React.lazy(() => import('./Amazon'));
 const PublishGoogle = React.lazy(() => import('./Google'));
 const Export = React.lazy(() => import('./Export'));
 
-const updateLink = (link, versionID) => {
-  return link.replace(':versionID', versionID);
-};
+const updateLink = (link, versionID) => link.replace(':versionID', versionID);
 
 const TABS = {
   [PlatformType.ALEXA]: [

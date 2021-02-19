@@ -11,8 +11,8 @@ import { buildVirtualDOMRect } from '@/utils/dom';
 
 import NodeLifecycle from '../NodeLifecycle';
 import NodePort from '../NodePort';
-import Styles from './NodeStepStyles';
 import { useNodeInstance, useStepAPI } from './hooks';
+import Styles from './NodeStepStyles';
 
 export type NodeStepProps = {
   isLast: boolean;

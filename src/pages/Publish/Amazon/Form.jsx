@@ -36,9 +36,8 @@ import amazonFormAdapter from './adapter';
 
 const DEFAULT_TERM_ENDPOINT = 'https://creator.voiceflow.com/creator';
 const PUBLISH_AMAZON_FORM = 'publish_amazon_form';
-const generateTerms = (name, skill, children) => {
-  return `${DEFAULT_TERM_ENDPOINT}/terms?name=${encodeURI(name)}&skill=${encodeURI(skill)}${_isBoolean(children) ? `&children=${children}` : ''}`;
-};
+const generateTerms = (name, skill, children) =>
+  `${DEFAULT_TERM_ENDPOINT}/terms?name=${encodeURI(name)}&skill=${encodeURI(skill)}${_isBoolean(children) ? `&children=${children}` : ''}`;
 
 class PublishAmazonForm extends Component {
   state = {
@@ -54,10 +53,10 @@ class PublishAmazonForm extends Component {
 
     // read version publishing info
     const version = await client.api.version.get(skillID);
-    const projectID = version.projectID;
+    const { projectID } = version;
 
     const dbProject = await client.api.project.get(version.projectID);
-    const publishing = version.platformData.publishing;
+    const { publishing } = version.platformData;
 
     const skill = alexaPublishingAdapter.fromDB(publishing);
     const projectName = dbProject.name;

@@ -12,8 +12,8 @@ import { Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
 import * as Query from '@/utils/query';
 
-import { EntityType } from '../constants';
 import type { Engine } from '..';
+import { EntityType } from '../constants';
 import { EntityInstance, ResourceEntity } from './entity';
 
 export type ThreadInstance = EntityInstance & {

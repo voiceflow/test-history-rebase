@@ -12,7 +12,7 @@ import { Thread as ThreadType } from '@/models';
 import { EditorContentAnimation } from '@/pages/Canvas/components/Editor';
 import { useCommentingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
-import { SlideOutDirection } from '@/styles/transitions/SlideOut.ts';
+import { SlideOutDirection } from '@/styles/transitions/SlideOut';
 import { ConnectedProps } from '@/types';
 import { stopImmediatePropagation } from '@/utils/dom';
 

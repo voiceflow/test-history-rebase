@@ -24,7 +24,6 @@ export interface Compose {
 export const compose: Compose = (...transforms: Transform[]) => <T extends object>(value: T): T =>
   [...transforms].reverse().reduce((acc, transform) => transform(acc), value);
 
-// eslint-disable-next-line lodash/prefer-noop, @typescript-eslint/no-empty-function
 export const noop = () => {};
 
 export const identity = <T>(value: T): T => value;

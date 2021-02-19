@@ -1,3 +1,1 @@
-export const getHostName = () => {
-  return window.location.hostname;
-};
+export const getHostName = () => window.location.hostname;

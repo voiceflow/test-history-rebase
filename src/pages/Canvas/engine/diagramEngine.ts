@@ -4,7 +4,7 @@ import { Pair } from '@/types';
 import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
 
-import { EngineConsumer, cloneEntityMap, mergeEntityMaps } from './utils';
+import { cloneEntityMap, EngineConsumer, mergeEntityMaps } from './utils';
 
 const DUPLICATE_OFFSET: Pair<number> = [40, 40];
 

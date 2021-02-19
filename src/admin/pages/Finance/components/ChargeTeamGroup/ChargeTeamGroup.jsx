@@ -73,16 +73,14 @@ class ChargeTeamGroup extends React.Component {
       this.setState({
         refundAmountError: 'Amount must be an integer',
       });
+    } else if (parseInt(amount, 10) > this.state.showRefundCharge.amount) {
+      this.setState({
+        refundAmountError: 'Refund amount must be less than or equal to the charge amount',
+      });
     } else {
-      if (parseInt(amount, 10) > this.state.showRefundCharge.amount) {
-        this.setState({
-          refundAmountError: 'Refund amount must be less than or equal to the charge amount',
-        });
-      } else {
-        this.setState({
-          refundAmount: amount,
-        });
-      }
+      this.setState({
+        refundAmount: amount,
+      });
     }
   };
 

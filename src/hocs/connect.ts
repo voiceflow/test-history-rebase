@@ -45,7 +45,7 @@ export const connect: Connect = (
   options: ConnectOptions = {}
 ) => (component: React.FC<any>) => {
   const isDebug = !IS_PRODUCTION && options.debug;
-  const removeDispatch = options.removeDispatch;
+  const { removeDispatch } = options;
   const shouldMerge = options.merge ?? true;
   const log = Logger.child(`connect(${getDisplayName(component)})`);
 

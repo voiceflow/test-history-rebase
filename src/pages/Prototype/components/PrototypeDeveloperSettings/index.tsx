@@ -11,42 +11,40 @@ import { ConnectedProps } from '@/types';
 
 import { Container, Variables } from './components';
 
-const PrototypeDeveloperSettings: React.FC<ConnectedPrototypeDeveloperSettingsProps> = ({ settings, variables, updateSettings, updateVariables }) => {
-  return (
-    <Container>
-      <Section header="VARIABLES" borderBottom variant={SectionVariant.PROTOTYPE} />
+const PrototypeDeveloperSettings: React.FC<ConnectedPrototypeDeveloperSettingsProps> = ({ settings, variables, updateSettings, updateVariables }) => (
+  <Container>
+    <Section header="VARIABLES" borderBottom variant={SectionVariant.PROTOTYPE} />
 
-      <Variables>
-        {Object.keys(variables).map((name) => {
-          const value = variables[name];
-          return (
-            <Input
-              key={name}
-              leftAction={
-                <VariableTag isPrototypeSettings style={{ maxWidth: '75%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  <Tooltip delay={500} distance={6} title={name} position="top">
-                    {name}
-                  </Tooltip>
-                </VariableTag>
-              }
-              value={value}
-              onChange={(e) => updateVariables({ [name]: e.target.value })}
-              placeholder="Enter value"
-            />
-          );
-        })}
-      </Variables>
+    <Variables>
+      {Object.keys(variables).map((name) => {
+        const value = variables[name];
+        return (
+          <Input
+            key={name}
+            leftAction={
+              <VariableTag isPrototypeSettings style={{ maxWidth: '75%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <Tooltip delay={500} distance={6} title={name} position="top">
+                  {name}
+                </Tooltip>
+              </VariableTag>
+            }
+            value={value}
+            onChange={(e) => updateVariables({ [name]: e.target.value })}
+            placeholder="Enter value"
+          />
+        );
+      })}
+    </Variables>
 
-      <UncontrolledSection
-        header="Debug Mode"
-        isCollapsed={!settings.debug}
-        onClick={() => updateSettings({ debug: !settings.debug })}
-        collapseVariant={SectionToggleVariant.TOGGLE}
-        tooltip="Debug mode shows you the paths, variables, and flows you’re using as you’re testing your project"
-      />
-    </Container>
-  );
-};
+    <UncontrolledSection
+      header="Debug Mode"
+      isCollapsed={!settings.debug}
+      onClick={() => updateSettings({ debug: !settings.debug })}
+      collapseVariant={SectionToggleVariant.TOGGLE}
+      tooltip="Debug mode shows you the paths, variables, and flows you’re using as you’re testing your project"
+    />
+  </Container>
+);
 
 const mapStateToProps = {
   settings: Recent.recentPrototypeSelector,

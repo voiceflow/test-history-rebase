@@ -19,14 +19,12 @@ type UpdatesPopoverTypes = {
   notifications: Notifications.Notification[];
 };
 
-const UpdatesPopover: React.FC<UpdatesPopoverTypes> = ({ notifications }) => {
-  return (
-    <NotificationContainer>
-      {notifications.map((notification, i) => {
-        return <Notification data={notification} key={i} />;
-      })}
-    </NotificationContainer>
-  );
-};
+const UpdatesPopover: React.FC<UpdatesPopoverTypes> = ({ notifications }) => (
+  <NotificationContainer>
+    {notifications.map((notification, i) => (
+      <Notification data={notification} key={i} />
+    ))}
+  </NotificationContainer>
+);
 
 export default UpdatesPopover;

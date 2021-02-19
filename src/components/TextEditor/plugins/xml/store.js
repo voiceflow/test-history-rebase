@@ -27,9 +27,7 @@ class XMLStore extends Store {
     this.tags.delete(`linked-key-${linkedKey}`);
   };
 
-  getTagsToHistory = () => {
-    return [...this.tagsHistory];
-  };
+  getTagsToHistory = () => [...this.tagsHistory];
 
   addTagToHistory = (tagData) => {
     this.tagsHistory.unshift(tagData);

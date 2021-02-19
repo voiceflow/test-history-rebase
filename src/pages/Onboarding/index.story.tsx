@@ -17,10 +17,6 @@ const getProps = () => ({
   data: { collaborators: [{ email: 'abc@test.com', permission: UserRole.ADMIN }] },
 });
 
-export const createWorkspace = withDecorators(() => {
-  return <Onboarding {...getProps()} />;
-});
+export const createWorkspace = withDecorators(() => <Onboarding {...getProps()} />);
 
-export const joinWorkspace = withDecorators(() => {
-  return <Onboarding {...getProps()} location={{ search: `flow=${OnboardingType.join}` }} />;
-});
+export const joinWorkspace = withDecorators(() => <Onboarding {...getProps()} location={{ search: `flow=${OnboardingType.join}` }} />);

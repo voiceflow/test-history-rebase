@@ -19,7 +19,7 @@ class StartTrigger extends Component {
     const { userChanged: propsUserChanged } = this.props;
     if (!user) return;
 
-    const data = this.props.data;
+    const { data } = this.props;
     const userChanged = user.user_id !== (data.user && data.user.user_id);
     this.props.onChange({
       user,
@@ -38,7 +38,7 @@ class StartTrigger extends Component {
     const { setConfirm, clearModal, deleteUser, skill_id, integration_user_error, setError } = this.props;
     ev.stopPropagation();
 
-    const data = this.props.data;
+    const { data } = this.props;
 
     setConfirm({
       text: 'Are you sure you want to remove this trigger?',
@@ -54,12 +54,10 @@ class StartTrigger extends Component {
           await deleteUser(data.selectedIntegration, targetTrigger);
           if (integration_user_error) {
             setError(integration_user_error);
-          } else {
-            if (targetTrigger.user.integration_user_id === data.user.integration_user_id) {
-              this.props.onChange({
-                user: {},
-              });
-            }
+          } else if (targetTrigger.user.integration_user_id === data.user.integration_user_id) {
+            this.props.onChange({
+              user: {},
+            });
           }
         } catch (e) {
           setError(e);
@@ -84,7 +82,7 @@ class StartTrigger extends Component {
     const { add_user_modal, integration_users_loading } = this.state;
 
     const users = integration_users[this.props.data.selectedIntegration] || [];
-    const user = this.props.user;
+    const { user } = this.props;
 
     return (
       <>
@@ -126,25 +124,23 @@ class StartTrigger extends Component {
         <div className="d-flex align-items-center flex-column w-100 actions-section">
           {!props_integration_users_loading &&
             users &&
-            users.map((e, i) => {
-              return (
-                <div
-                  key={i}
-                  className={cn('btn', 'btn-clear', 'btn-block', {
-                    active: user && user.user_id === e.user_id,
-                  })}
-                  onClick={() => this.selectUser(e)}
-                >
-                  <div className="close mt-1" onClick={(ev) => this.deleteUser(ev, e)} />
-                  <div className="d-flex flex-row">
-                    <div className="flex-row align-self-center" />
-                    <div className="text-left">
-                      <b>{e.user_data && e.user_data.name}</b>
-                    </div>
+            users.map((e, i) => (
+              <div
+                key={i}
+                className={cn('btn', 'btn-clear', 'btn-block', {
+                  active: user && user.user_id === e.user_id,
+                })}
+                onClick={() => this.selectUser(e)}
+              >
+                <div className="close mt-1" onClick={(ev) => this.deleteUser(ev, e)} />
+                <div className="d-flex flex-row">
+                  <div className="flex-row align-self-center" />
+                  <div className="text-left">
+                    <b>{e.user_data && e.user_data.name}</b>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           {props_integration_users_loading && <Spinner isEmpty />}
           <div className="btn btn-clear btn-lg btn-block" onClick={() => this.addUser()}>
             Create Trigger

@@ -13,15 +13,15 @@ const DEFAULT_OPTIONS_WITH_ICONS = Array.from({ length: 10 }, (_, i) => ({ label
 const DEFAULT_GROUPED_MULTILEVEL_OPTIONS = Array.from({ length: 5 }, (_, i) => ({
   value: `${i}`,
   label: `option ${i}`,
-  options: Array.from({ length: 5 }, (_, j) => ({
+  options: Array.from({ length: 5 }, (_jOpt, j) => ({
     value: `${i}-${j}`,
     label: `option ${i}-${j}`,
-    options: Array.from({ length: 5 }, (_, k) => ({ value: `${i}-${j}-${k}`, label: `option ${i}-${j}-${k}` })),
+    options: Array.from({ length: 5 }, (_kOpt, k) => ({ value: `${i}-${j}-${k}`, label: `option ${i}-${j}-${k}` })),
   })),
 }));
 const GROUPED_OPTION_LABELS = DEFAULT_GROUPED_MULTILEVEL_OPTIONS.flatMap(({ label, value, options }) => [
   { value, label },
-  ...options.flatMap(({ label, value, options }) => [{ value, label }, ...options]),
+  ...options.flatMap((option) => [{ value: option.value, label: option.label }, ...option.options]),
 ]).reduce((obj, option) => Object.assign(obj, { [option.value]: option.label }), {});
 
 const getProps = () => {

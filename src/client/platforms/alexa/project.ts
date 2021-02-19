@@ -4,7 +4,7 @@ import axios from 'axios';
 import { ALEXA_SERVICE_ENDPOINT } from '@/config';
 import { Nullable } from '@/types';
 
-import { PROJECT_RESOURCE_ENDPOINT, createProjectService } from '../utils';
+import { createProjectService, PROJECT_RESOURCE_ENDPOINT } from '../utils';
 
 const projectAlexaService = {
   ...createProjectService<AlexaProject>(ALEXA_SERVICE_ENDPOINT),

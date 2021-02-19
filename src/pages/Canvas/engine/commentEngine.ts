@@ -10,7 +10,7 @@ import { DraftCommentType, NewCommentAPI } from '@/pages/Canvas/types';
 import { Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
 
-import { EngineConsumer, NodeCandidate, getCandidates } from './utils';
+import { EngineConsumer, getCandidates, NodeCandidate } from './utils';
 
 export const NewCommentID = 'new';
 export const NEW_COMMENT = { text: '', mentions: [] };
@@ -215,7 +215,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     const threadID = this.dragTarget;
     if (!threadID) return;
 
-    const targetNodeID = this.targetNodeID;
+    const { targetNodeID } = this;
     const thread = this.thread(threadID);
 
     this.dragTarget = null;
@@ -302,7 +302,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   }
 
   resetTarget() {
-    const target = this.target;
+    const { target } = this;
     if (target) {
       this.target = null;
       this.redrawThread(target);
@@ -325,7 +325,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
     this.dragTarget = null;
 
-    const focusTarget = this.focusTarget;
+    const { focusTarget } = this;
     if (!focusTarget) return;
 
     this.log.debug(this.log.pending('resetting comment target'), this.log.slug(focusTarget));

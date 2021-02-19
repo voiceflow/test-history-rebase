@@ -14,17 +14,15 @@ export type PrimaryButtonProps = PrimaryButtonContainerProps & {
 const PrimaryButton: React.ForwardRefRenderFunction<HTMLButtonElement, PrimaryButtonProps> = (
   { icon, children, iconProps, isLoading, ...props },
   ref
-) => {
-  return (
-    <Container ref={ref} {...props}>
-      <Label isLoading={isLoading}>{children}</Label>
-      {icon && (
-        <Icon>
-          <SvgIcon icon={icon} color="#FFF" size={16} {...iconProps} />
-        </Icon>
-      )}
-    </Container>
-  );
-};
+) => (
+  <Container ref={ref} {...props}>
+    <Label isLoading={isLoading}>{children}</Label>
+    {icon && (
+      <Icon>
+        <SvgIcon icon={icon} color="#FFF" size={16} {...iconProps} />
+      </Icon>
+    )}
+  </Container>
+);
 
 export default React.forwardRef(PrimaryButton);

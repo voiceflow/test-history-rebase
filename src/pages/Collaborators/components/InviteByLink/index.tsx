@@ -75,14 +75,12 @@ const InviteByLinkFooter: React.FC<{ noIcon?: boolean } & ConnectedSeatSummaryPr
         <DropdownWithCaret
           padding="0px 7px"
           alwaysBlue
-          menu={(onToggle: () => void) => {
-            return (
-              <Menu>
-                <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.EDITOR)}>can edit</MenuItem>
-                <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.VIEWER)}>can view</MenuItem>
-              </Menu>
-            );
-          }}
+          menu={(onToggle: () => void) => (
+            <Menu>
+              <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.EDITOR)}>can edit</MenuItem>
+              <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.VIEWER)}>can view</MenuItem>
+            </Menu>
+          )}
           text={PermissionText[linkInvitePermission]}
         />
       </DropdownContainer>

@@ -10,9 +10,8 @@ import { Icon } from '@/svgs/types';
 import { Container } from './components';
 import { SvgIconContainerProps } from './components/SvgIconContainer';
 
-export { IconVariant } from '@/constants';
-
 export * from './components';
+export { IconVariant } from '@/constants';
 
 export { Icon };
 

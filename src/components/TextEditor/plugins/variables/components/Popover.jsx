@@ -55,49 +55,47 @@ export default React.forwardRef(
       onChangeVariableName,
     },
     ref
-  ) => {
-    return (
-      <TextEditorVariablesPopoverConsumer>
-        {(portalNode) => (
-          <Portal portalNode={portalNode}>
-            <PopoverContainer ref={ref} onClick={stopPropagation()}>
-              <MenuContainer onBlur={creatable ? onBlurInput : undefined}>
-                <FadeDownDelayedContainer>
-                  {creatable && (
-                    <>
-                      <Header focused={isFocused} onMouseEnter={onHover}>
-                        <StyledInput
-                          value={variableName}
-                          variant="inline"
-                          onChange={onChangeVariableName}
-                          onKeyPress={withKeyPress(13, onCreateMention)}
-                          placeholder={placeholder}
-                          onMouseDown={onFocusInput}
-                        />
+  ) => (
+    <TextEditorVariablesPopoverConsumer>
+      {(portalNode) => (
+        <Portal portalNode={portalNode}>
+          <PopoverContainer ref={ref} onClick={stopPropagation()}>
+            <MenuContainer onBlur={creatable ? onBlurInput : undefined}>
+              <FadeDownDelayedContainer>
+                {creatable && (
+                  <>
+                    <Header focused={isFocused} onMouseEnter={onHover}>
+                      <StyledInput
+                        value={variableName}
+                        variant="inline"
+                        onChange={onChangeVariableName}
+                        onKeyPress={withKeyPress(13, onCreateMention)}
+                        placeholder={placeholder}
+                        onMouseDown={onFocusInput}
+                      />
 
-                        <Button
-                          isBtn
-                          onClick={preventDefault(onCreateMention)}
-                          disabled={!variableName || !!variablesMap[variableName]}
-                          className="pointer"
-                          isLinkLarge
-                          onMouseDown={preventDefault()}
-                        >
-                          Create
-                        </Button>
-                      </Header>
+                      <Button
+                        isBtn
+                        onClick={preventDefault(onCreateMention)}
+                        disabled={!variableName || !!variablesMap[variableName]}
+                        className="pointer"
+                        isLinkLarge
+                        onMouseDown={preventDefault()}
+                      >
+                        Create
+                      </Button>
+                    </Header>
 
-                      <Hr />
-                    </>
-                  )}
+                    <Hr />
+                  </>
+                )}
 
-                  {children}
-                </FadeDownDelayedContainer>
-              </MenuContainer>
-            </PopoverContainer>
-          </Portal>
-        )}
-      </TextEditorVariablesPopoverConsumer>
-    );
-  }
+                {children}
+              </FadeDownDelayedContainer>
+            </MenuContainer>
+          </PopoverContainer>
+        </Portal>
+      )}
+    </TextEditorVariablesPopoverConsumer>
+  )
 );

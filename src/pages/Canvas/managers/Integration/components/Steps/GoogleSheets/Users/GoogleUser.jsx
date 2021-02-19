@@ -65,13 +65,11 @@ function AddGoogleUser({
 
           if (integration_user_error) {
             setError(integration_user_error);
+          } else if (targetUser.user_data?.email === data?.user?.user_data?.email) {
+            onChange({ user: {} });
+            onChange({ ...INTEGRATION_DATA_MODELS.GOOGLE_SHEETS, selectedAction: data.selectedAction });
           } else {
-            if (targetUser.user_data?.email === data?.user?.user_data?.email) {
-              onChange({ user: {} });
-              onChange({ ...INTEGRATION_DATA_MODELS.GOOGLE_SHEETS, selectedAction: data.selectedAction });
-            } else {
-              onChange({ ...INTEGRATION_DATA_MODELS.GOOGLE_SHEETS, user: data.user, selectedAction: data.selectedAction });
-            }
+            onChange({ ...INTEGRATION_DATA_MODELS.GOOGLE_SHEETS, user: data.user, selectedAction: data.selectedAction });
           }
         } catch (e) {
           setError(e);
@@ -89,31 +87,29 @@ function AddGoogleUser({
       {deletingUser ? (
         <Spinner isEmpty />
       ) : (
-        users.map((e, i) => {
-          return (
-            <div
-              key={i}
-              className={cn('btn', 'btn-clear', 'btn-block', {
-                active: user && user.user_id === e.user_id,
-              })}
-              onClick={() => selectUser(e)}
-            >
-              <div className="close mt-3" onClick={(ev) => deleteUser(ev, e)} />
-              <div className="d-flex flex-row">
-                <div className="flex-row align-self-center" />
-                <div className="text-left">
-                  <b>{e.user_data && e.user_data.name}</b>
-                  {e.user_data && e.user_data.email && (
-                    <>
-                      <br />
-                      <small>{e.user_data && e.user_data.email}</small>
-                    </>
-                  )}
-                </div>
+        users.map((e, i) => (
+          <div
+            key={i}
+            className={cn('btn', 'btn-clear', 'btn-block', {
+              active: user && user.user_id === e.user_id,
+            })}
+            onClick={() => selectUser(e)}
+          >
+            <div className="close mt-3" onClick={(ev) => deleteUser(ev, e)} />
+            <div className="d-flex flex-row">
+              <div className="flex-row align-self-center" />
+              <div className="text-left">
+                <b>{e.user_data && e.user_data.name}</b>
+                {e.user_data && e.user_data.email && (
+                  <>
+                    <br />
+                    <small>{e.user_data && e.user_data.email}</small>
+                  </>
+                )}
               </div>
             </div>
-          );
-        })
+          </div>
+        ))
       )}
       <DefaultModal
         open={addUserModalOpened}

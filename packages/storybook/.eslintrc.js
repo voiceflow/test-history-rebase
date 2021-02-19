@@ -1,20 +1,13 @@
-const path = require('path')
-
 module.exports = {
-  extends: ['../../.eslintrc'],
+  extends: ['../../.eslintrc', '@voiceflow/eslint-config/utility'],
   rules: {
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: true,
-      },
-    ],
+    // off
     'no-secrets/no-secrets': 'off',
+
     'xss/no-mixed-html': 'off',
+
     'react-hooks/rules-of-hooks': 'off',
-    'react/display-name': 'off',
-    'lodash/prefer-constant': 'off',
+
     'import/prefer-default-export': 'off',
-    '@typescript-eslint/no-var-requires': 'off',
   },
 };

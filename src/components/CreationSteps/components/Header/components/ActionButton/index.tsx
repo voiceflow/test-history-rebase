@@ -11,20 +11,18 @@ type ActionButtonProps = {
   onClick: () => void;
 };
 
-const ActionButton: React.FC<ActionButtonProps> = ({ shouldRender, icon, label, onClick }) => {
-  return (
-    <Container>
-      {shouldRender && (
-        <InnerContainer onClick={onClick}>
-          <IconContainer>
-            <SvgIcon icon={icon} color="#becedc" />
-          </IconContainer>
+const ActionButton: React.FC<ActionButtonProps> = ({ shouldRender, icon, label, onClick }) => (
+  <Container>
+    {shouldRender && (
+      <InnerContainer onClick={onClick}>
+        <IconContainer>
+          <SvgIcon icon={icon} color="#becedc" />
+        </IconContainer>
 
-          <Label>{label}</Label>
-        </InnerContainer>
-      )}
-    </Container>
-  );
-};
+        <Label>{label}</Label>
+      </InnerContainer>
+    )}
+  </Container>
+);
 
 export default ActionButton;

@@ -8,9 +8,9 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 
 import { BackButtonContainer, BackLink, Container } from '../components';
+import { List } from './components';
 import NoProducts from './NoProducts';
 import ProductCard from './ProductCard';
-import { List } from './components';
 
 const ProductList = ({ products, goToNewProduct, goToCurrentCanvas }) => (
   <>

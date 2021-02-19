@@ -1,12 +1,12 @@
 import Flex from '@/components/Flex';
 import { css, styled, transition } from '@/hocs';
 
-export { default as SelectOption } from './SelectOption';
 export { default as FullWidthWrapper } from './FullWidthWrapper';
-export { default as TagsSelect } from './TagsSelect';
 export { default as SelectInputOption } from './SelectInputOption';
 export { default as SelectInputOptionWrapper } from './SelectInputOptionWrapper';
 export { default as SelectInputOptionWrapperAbsolute } from './SelectInputOptionWrapperAbsolute';
+export { default as SelectOption } from './SelectOption';
+export { default as TagsSelect } from './TagsSelect';
 
 export const Wrapper = styled.div`
   height: ${({ theme }) => theme.components.input.height}px;

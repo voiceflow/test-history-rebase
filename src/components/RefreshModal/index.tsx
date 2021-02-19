@@ -25,7 +25,6 @@ const RefreshModal: React.FC = () => {
   const { open } = useModals(ModalType.REFRESH);
 
   const fetchPage = React.useCallback(async () => {
-    // eslint-disable-next-line compat/compat
     const res = await fetch('/');
 
     return res.text();

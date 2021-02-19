@@ -5,7 +5,7 @@ import React from 'react';
 
 import Select from '@/components/Select';
 
-import { FONTS_LABELS, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, Font, FontWeight, InlineStylePrefix } from '../../constants';
+import { Font, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, FONTS_LABELS, FontWeight, InlineStylePrefix } from '../../constants';
 import {
   applyFakeSelectionStyle,
   getInlineStylePrefixAndValue,

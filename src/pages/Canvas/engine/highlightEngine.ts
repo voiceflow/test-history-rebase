@@ -69,8 +69,8 @@ class HighlightEngine extends EngineConsumer {
   reset() {
     if (!this.target) return;
 
-    const target = this.target;
-    const type = this.type;
+    const { target } = this;
+    const { type } = this;
 
     this.log.debug(this.log.pending(`resetting ${type} highlight`), this.log.slug(target));
 

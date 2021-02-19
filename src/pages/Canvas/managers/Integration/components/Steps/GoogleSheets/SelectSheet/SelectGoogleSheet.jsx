@@ -1,5 +1,4 @@
 import _isEqual from 'lodash/isEqual';
-import _isNil from 'lodash/isNil';
 import React from 'react';
 import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
@@ -31,7 +30,7 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
     setSheetList([]);
 
     const spreadsheet_id = data.spreadsheet && data.spreadsheet.value;
-    if (_isNil(spreadsheet_id)) return;
+    if (spreadsheet_id == null) return;
     setSheetsLoading(true);
 
     try {
@@ -47,7 +46,7 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
   const openSpreadsheetLink = () => {
     const spreadsheet_id = data.spreadsheet && data.spreadsheet.value;
     const sheet_id = data.sheet && data.sheet.value;
-    if (_isNil(spreadsheet_id) || _isNil(sheet_id)) return;
+    if (spreadsheet_id == null || sheet_id == null) return;
     const url = `https://docs.google.com/spreadsheets/d/${spreadsheet_id}/edit#gid=${sheet_id}`;
     const win = window.open(url, '_blank');
     win.focus();

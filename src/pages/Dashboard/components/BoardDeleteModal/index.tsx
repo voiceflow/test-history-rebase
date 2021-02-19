@@ -1,5 +1,3 @@
-import _lowerCase from 'lodash/lowerCase';
-import _trim from 'lodash/trim';
 import React from 'react';
 import { Input } from 'reactstrap';
 
@@ -61,7 +59,7 @@ export const BoardDeleteModal: React.FC<BoardDeleteModalProps & ConnectedBoardDe
             <label>Workspace name</label>
             <Input name="input" onChange={onNameChange} value={name} placeholder="Workspace Name" />
             <div className="mt-3 mb-2 text-center">
-              <Button isBtn isPrimary disabled={_lowerCase(_trim(name)) !== _lowerCase(_trim(workspace.name))} onClick={onDeleteWorkspace}>
+              <Button isBtn isPrimary disabled={name.trim().toLowerCase() !== workspace.name.trim().toLowerCase()} onClick={onDeleteWorkspace}>
                 Delete forever
               </Button>
             </div>

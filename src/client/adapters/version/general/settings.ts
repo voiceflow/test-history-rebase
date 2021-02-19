@@ -1,4 +1,4 @@
-import { GeneralVersionSettings, Locale, RepeatType, Voice, defaultGeneralVersionSettings } from '@voiceflow/general-types';
+import { defaultGeneralVersionSettings, GeneralVersionSettings, Locale, RepeatType, Voice } from '@voiceflow/general-types';
 import _invert from 'lodash/invert';
 
 import { createAdapter } from '@/client/adapters/utils';

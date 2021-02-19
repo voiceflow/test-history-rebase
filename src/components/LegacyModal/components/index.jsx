@@ -39,4 +39,4 @@ const Modal = ({ className, ...props }) => {
 
 export default Modal;
 
-export { ModalHeader, ModalBackdrop, Modal, ModalBody, ModalFooter };
+export { Modal, ModalBackdrop, ModalBody, ModalFooter, ModalHeader };

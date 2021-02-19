@@ -29,9 +29,7 @@ import {
   TabsContainer,
 } from './components';
 
-const modulo = (a, b) => {
-  return ((a % b) + b) % b;
-};
+const modulo = (a, b) => ((a % b) + b) % b;
 
 function PlansDetails({
   payment: {
@@ -49,14 +47,12 @@ function PlansDetails({
   };
 
   const selectPlan = (planId) => {
-    const selectedPlanObject = plans.filter((plan) => {
-      return plan.id === planId;
-    })[0];
+    const selectedPlanObject = plans.filter((plan) => plan.id === planId)[0];
     setPlan(selectedPlanObject);
   };
 
-  const tabsOptions = React.useMemo(() => {
-    return plans
+  const tabsOptions = React.useMemo(() =>
+    plans
       .filter(({ id }) => id !== PlanType.ENTERPRISE || id !== PlanType.OLD_ENTERPRISE)
       .map((option) => {
         const price = option.pricing?.YR?.price;
@@ -78,8 +74,8 @@ function PlansDetails({
           ),
           color: option.color,
         };
-      });
-  });
+      })
+  );
   return (
     <div>
       <CarouselButtons

@@ -144,7 +144,6 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
               />
             ),
           },
-          // eslint-disable-next-line lodash/prefer-constant
           () => null
         )()}
 

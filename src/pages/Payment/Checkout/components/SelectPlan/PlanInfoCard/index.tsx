@@ -41,14 +41,14 @@ const PlanInfoCard: React.FC<PlanInfoCardProps> = ({ plan, period }) => {
       <FeatureListContainer>
         <FlexApart>
           <FeatureListColumn>
-            {leftSideHighlights.map((highlight: string, index: number) => {
-              return <FeatureItem key={`left-${index}`}>{highlight}</FeatureItem>;
-            })}
+            {leftSideHighlights.map((highlight: string, index: number) => (
+              <FeatureItem key={`left-${index}`}>{highlight}</FeatureItem>
+            ))}
           </FeatureListColumn>
           <FeatureListColumn>
-            {rightSideHighlights.map((highlight: string, index: number) => {
-              return <FeatureItem key={`right-${index}`}>{highlight}</FeatureItem>;
-            })}
+            {rightSideHighlights.map((highlight: string, index: number) => (
+              <FeatureItem key={`right-${index}`}>{highlight}</FeatureItem>
+            ))}
           </FeatureListColumn>
         </FlexApart>
       </FeatureListContainer>

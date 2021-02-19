@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteComponentProps, matchPath, withRouter } from 'react-router-dom';
+import { matchPath, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import Tabs from '@/components/Tabs';
 import { Path } from '@/config/routes';

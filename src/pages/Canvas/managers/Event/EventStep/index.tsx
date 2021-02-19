@@ -16,8 +16,8 @@ export const EventStep: React.FC<IntentStepProps> = ({ portID, label }) => (
   </Step>
 );
 
-const ConnectedEventStep: React.FC<ConnectedStepProps<NodeData.Event>> = ({ node, data }) => {
-  return <EventStep portID={node.ports.out[0]} label={data.requestName} />;
-};
+const ConnectedEventStep: React.FC<ConnectedStepProps<NodeData.Event>> = ({ node, data }) => (
+  <EventStep portID={node.ports.out[0]} label={data.requestName} />
+);
 
 export default ConnectedEventStep;

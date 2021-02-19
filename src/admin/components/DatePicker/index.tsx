@@ -23,8 +23,8 @@ export type DayPickerInputProps = {
 };
 
 const DayPickerInput = ({ date, onChange, addOffSet, addOffSetBy, substactOffSet, substactOffSetBy }: DayPickerInputProps) => {
-  const dayPickerRef = React.useRef<HTMLDivElement>(null);
-  const inputRef = React.useRef<{ blur: Function; getEditorState: Function }>(null);
+  const dayPickerRef = React.useRef<HTMLElement | null>(null);
+  const inputRef = React.useRef<{ blur: Function; getEditorState: Function } | null>(null);
 
   const [error, setError, clearError] = useEnableDisable(false);
   const [isShown, onShow, onHide] = useEnableDisable(false);
@@ -82,6 +82,7 @@ const DayPickerInput = ({ date, onChange, addOffSet, addOffSetBy, substactOffSet
     const clickHandler = (e: MouseEvent) => {
       const isEditorFocused = inputRef.current?.getEditorState?.().getSelection().hasFocus;
 
+      // eslint-disable-next-line xss/no-mixed-html
       if (isEditorFocused || (e.currentTarget && dayPickerRef.current?.contains(e.target as HTMLElement))) {
         return;
       }
@@ -105,8 +106,6 @@ const DayPickerInput = ({ date, onChange, addOffSet, addOffSetBy, substactOffSet
           <div ref={ref} onClick={onShow}>
             <InputComponent
               ref={(editor: { blur: Function; getEditorState: Function }) => {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 inputRef.current = editor;
               }}
               value={formattedDate}
@@ -124,8 +123,6 @@ const DayPickerInput = ({ date, onChange, addOffSet, addOffSetBy, substactOffSet
         <Portal>
           <Popper
             innerRef={(node) => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
               dayPickerRef.current = node;
             }}
             placement="bottom-start"

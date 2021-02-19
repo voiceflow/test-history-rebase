@@ -1,11 +1,11 @@
 import { Locale as GeneralLocale } from '@voiceflow/general-types';
-import _uniq from 'lodash/uniq';
 import { createSelector } from 'reselect';
 
 import { PlatformType } from '@/constants';
 import { activeLocalesSelector, activePlatformSelector } from '@/ducks/skill/skill/selectors';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 import { Intent } from '@/models';
+import { unique } from '@/utils/array';
 import { BUILT_IN_INTENTS, GENERAL_BUILT_INS_MAP } from '@/utils/intent';
 
 import { STATE_KEY } from './constants';
@@ -24,7 +24,7 @@ export const allIntentIDsSelector = createSelector([allIntentsSelector], (intent
 export const allSlotsByIntentIDSelector = createSelector([intentByIDSelector], (getIntentByID) => (id: string): string[] => {
   const intent = getIntentByID(id);
 
-  return !intent ? [] : _uniq(intent.inputs.flatMap(({ slots }) => slots ?? '')).filter((s) => !!s);
+  return !intent ? [] : unique(intent.inputs.flatMap(({ slots }) => slots ?? '')).filter((s) => !!s);
 });
 
 export const allPlatformIntentsSelector = createSelector(

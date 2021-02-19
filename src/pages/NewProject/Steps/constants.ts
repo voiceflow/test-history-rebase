@@ -58,7 +58,6 @@ export const PLATFORM_META: PlatformMetaProps = {
     name: 'Amazon Alexa',
     company: 'Amazon',
     description: 'Design, prototype and publish Alexa Skills for Amazon Alexa.',
-    // eslint-disable-next-line lodash/prefer-constant
     invocationDescription: AmazonInvocationName,
     localesDescription: AmazonLanguage,
     localesText: 'Locales',

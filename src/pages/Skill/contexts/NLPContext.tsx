@@ -65,7 +65,6 @@ export const NLPProvider: React.FC = ({ children }) => {
     setJob(null);
   }, [projectID]);
 
-  // eslint-disable-next-line lodash/prefer-constant
   useSetup(getJob);
 
   useDidUpdateEffect(() => {

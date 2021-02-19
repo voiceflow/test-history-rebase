@@ -4,7 +4,7 @@ import _isString from 'lodash/isString';
 import { createSimpleAdapter } from '@/client/adapters/utils';
 import { DIAGRAM_REFERENCE_NODES, MARKUP_NODES, PlatformType } from '@/constants';
 import { CreatorDiagram, Link, Node, NodeData, Port } from '@/models';
-import { Normalized, denormalize } from '@/utils/normalized';
+import { denormalize, Normalized } from '@/utils/normalized';
 import { getCurrentTimestamp } from '@/utils/time';
 
 import nodeAdapter from './node';

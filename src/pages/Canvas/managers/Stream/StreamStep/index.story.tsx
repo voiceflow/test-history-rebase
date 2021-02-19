@@ -6,15 +6,13 @@ import Block from '@/pages/Canvas/components/Block';
 
 import { StreamStep, StreamStepProps } from '.';
 
-const getProps = () => {
-  return {
-    audio: 'How_to_train_your_dragon.mp3',
-    withPorts: true,
-    portIDs: ['abc', 'def', 'ghi', 'jkl'],
-    customPause: false,
-    platform: PlatformType.ALEXA,
-  };
-};
+const getProps = () => ({
+  audio: 'How_to_train_your_dragon.mp3',
+  withPorts: true,
+  portIDs: ['abc', 'def', 'ghi', 'jkl'],
+  customPause: false,
+  platform: PlatformType.ALEXA,
+});
 
 const render = (props?: Partial<StreamStepProps>) => () => (
   <Block name="Payment Block">

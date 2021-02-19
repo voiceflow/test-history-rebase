@@ -16,8 +16,8 @@ export default class MouseMovement {
   track(event: MouseEvent) {
     const { clientX, clientY, movementX, movementY } = event;
 
-    const prevClientX = this.prevClientX;
-    const prevClientY = this.prevClientY;
+    const { prevClientX } = this;
+    const { prevClientY } = this;
 
     this.prevClientX = clientX;
     this.prevClientY = clientY;

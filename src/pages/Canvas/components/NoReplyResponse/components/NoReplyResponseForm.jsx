@@ -2,8 +2,8 @@ import React from 'react';
 import { createSelector } from 'reselect';
 
 import Box from '@/components/Box';
-import SSMLWithVars from '@/components/SSMLWithVars';
 import Section from '@/components/Section';
+import SSMLWithVars from '@/components/SSMLWithVars';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import VariablesInput from '@/components/VariablesInput';
 import { PlatformType, RepromptType } from '@/constants';

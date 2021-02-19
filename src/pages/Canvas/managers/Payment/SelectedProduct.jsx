@@ -71,14 +71,12 @@ const mapDispatchToProps = {
   uploadProduct: Product.uploadProduct,
 };
 
-const mergeProps = ({ product: productByIDSelector }, { updateProduct, uploadProduct }, { productID }) => {
-  return {
-    product: productByIDSelector(productID),
-    updateProduct: (values) => {
-      updateProduct(productID, values);
-      uploadProduct(productID);
-    },
-  };
-};
+const mergeProps = ({ product: productByIDSelector }, { updateProduct, uploadProduct }, { productID }) => ({
+  product: productByIDSelector(productID),
+  updateProduct: (values) => {
+    updateProduct(productID, values);
+    uploadProduct(productID);
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SelectedProduct);

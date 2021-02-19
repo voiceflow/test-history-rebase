@@ -6,7 +6,7 @@ import { StatusCode } from '@/client/fetch';
 import Button from '@/components/Button';
 import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
 import { toast } from '@/components/Toast';
-import { Permission, hasPermission } from '@/config/permissions';
+import { hasPermission, Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { userIDSelector } from '@/ducks/account';
 import { goToWorkspace } from '@/ducks/router';
@@ -38,9 +38,9 @@ function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWor
   React.useEffect(() => {
     if (!projectID) return;
     // get a list of workspaces with editor/owner/admin role
-    const authorizedWorkspaces = workspaces.filter((workspace) => {
-      return workspace.members.some((member) => member.creator_id === creatorId && allowedToClone(workspace, creatorId));
-    });
+    const authorizedWorkspaces = workspaces.filter((workspace) =>
+      workspace.members.some((member) => member.creator_id === creatorId && allowedToClone(workspace, creatorId))
+    );
     // If user has 0 workspaces with Editor/Admin/Owner role, show toast
     if (authorizedWorkspaces.length === 0) {
       setMultipleWorkspaces(false);

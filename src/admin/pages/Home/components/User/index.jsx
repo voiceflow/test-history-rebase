@@ -11,7 +11,7 @@ const User = ({ user, className }) => {
     const colors = user.image.split('|');
     style.backgroundColor = `#${colors[1]}`;
     style.color = `#${colors[0]}`;
-    letter = user.name[0];
+    [letter] = user.name;
   } else {
     style.backgroundImage = `url(${user.image})`;
   }

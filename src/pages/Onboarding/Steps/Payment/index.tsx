@@ -168,22 +168,20 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({
         text: selectedWorkspaceId ? `Workspace: ${workspaceSelector!(selectedWorkspaceId).name}` : 'Select a Workspace',
         menu: (
           <Menu>
-            {workspaces!.map((workspace) => {
-              return (
-                <MenuItem
-                  key={workspace.id}
-                  onClick={() => {
-                    if (isWorkspaceAdmin(workspace.id)) {
-                      setSelectedWorkspaceId(workspace.id);
-                    } else {
-                      toast.error('You are not the Admin of this workspace');
-                    }
-                  }}
-                >
-                  {workspace.name}
-                </MenuItem>
-              );
-            })}
+            {workspaces!.map((workspace) => (
+              <MenuItem
+                key={workspace.id}
+                onClick={() => {
+                  if (isWorkspaceAdmin(workspace.id)) {
+                    setSelectedWorkspaceId(workspace.id);
+                  } else {
+                    toast.error('You are not the Admin of this workspace');
+                  }
+                }}
+              >
+                {workspace.name}
+              </MenuItem>
+            ))}
           </Menu>
         ),
       };

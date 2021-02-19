@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-identical-functions */
 import { action } from '@storybook/addon-actions';
 import { boolean, object } from '@storybook/addon-knobs';
 import { VALID_SPOKEN_CHARACTER } from '@voiceflow/common';

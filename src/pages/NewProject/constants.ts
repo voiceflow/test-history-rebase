@@ -20,12 +20,10 @@ type StepMetaProps = {
 
 export const StepMeta = <Record<StepID, StepMetaProps>>{
   [StepID.NAME_AND_IMAGE]: {
-    // eslint-disable-next-line lodash/prefer-constant
     title: () => 'New Project',
     component: NameAndImage,
   },
   [StepID.PLATFORM_SELECT]: {
-    // eslint-disable-next-line lodash/prefer-constant
     title: () => 'Select Channel',
     component: PlatformSelect,
   },

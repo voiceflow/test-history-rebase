@@ -6,12 +6,10 @@ type StickyContainerProps = {
   top?: number;
   width?: number;
 };
-const StickyContainer: React.FC<StickyContainerProps> = ({ top, width, children }) => {
-  return (
-    <Container top={top} width={width}>
-      {children}
-    </Container>
-  );
-};
+const StickyContainer: React.FC<StickyContainerProps> = ({ top, width, children }) => (
+  <Container top={top} width={width}>
+    {children}
+  </Container>
+);
 
 export default StickyContainer;

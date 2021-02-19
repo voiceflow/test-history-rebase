@@ -97,13 +97,11 @@ const PersonalizeWorkspace: React.FC = () => {
       <Label>How big is your team?</Label>
       <TeamSizeContainer>
         <SizeRow>
-          {TEAM_SIZES.map((size, index) => {
-            return (
-              <SizeButton onClick={() => setTeamSize(size)} selected={teamSize === size} key={index}>
-                {size}
-              </SizeButton>
-            );
-          })}
+          {TEAM_SIZES.map((size, index) => (
+            <SizeButton onClick={() => setTeamSize(size)} selected={teamSize === size} key={index}>
+              {size}
+            </SizeButton>
+          ))}
         </SizeRow>
       </TeamSizeContainer>
       <FlexCenter>

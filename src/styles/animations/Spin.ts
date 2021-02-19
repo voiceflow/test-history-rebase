@@ -10,7 +10,6 @@ export type SpinProps = {
   speed?: number;
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const Spin = css<SpinProps>`
   animation: ${SpinKeyframes} ${({ speed = 1000 }) => speed}ms linear infinite;
 `;

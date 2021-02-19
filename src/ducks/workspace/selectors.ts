@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { Permission, hasRolePermission } from '@/config/permissions';
+import { hasRolePermission, Permission } from '@/config/permissions';
 import { EDITOR_SEAT_ROLES, PlanType, UserRole } from '@/constants';
 import { userIDSelector } from '@/ducks/account/selectors';
 import { activeProjectIDSelector } from '@/ducks/skill/skill/selectors';
@@ -110,8 +110,6 @@ export const isAdminOfAnyWorkspaceSelector = createSelector([allWorkspacesSelect
   workspaces.some(({ members }) => members.some(({ creator_id, role }) => userId === creator_id && role === UserRole.ADMIN))
 );
 
-export const workspaceByProjectIDSelector = createSelector([allWorkspacesSelector, activeProjectIDSelector], (workspaces, projectID) => {
-  return workspaces.find(({ boards }) => {
-    return boards.find(({ projects }) => projects.includes(projectID));
-  });
-});
+export const workspaceByProjectIDSelector = createSelector([allWorkspacesSelector, activeProjectIDSelector], (workspaces, projectID) =>
+  workspaces.find(({ boards }) => boards.find(({ projects }) => projects.includes(projectID)))
+);

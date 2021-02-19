@@ -42,7 +42,7 @@ const User = React.forwardRef<HTMLDivElement, UserProps>(({ user, className, pen
     const colors = user.color ? user.color.split('|') : user.image.split('|');
     style.backgroundColor = `#${colors[1]}`;
     style.color = `#${colors[0]}`;
-    letter = user.name[0];
+    [letter] = user.name;
   } else {
     style.backgroundImage = `url(${user.image})`;
   }

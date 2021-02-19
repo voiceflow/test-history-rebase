@@ -17,14 +17,12 @@ export default {
   component: ContextMenu,
 };
 
-export const base = () => {
-  return (
-    <ContextMenu {...getProps()}>
-      {({ isOpen, onContextMenu }) => (
-        <div style={{ padding: '20px' }} onContextMenu={onContextMenu}>
-          {isOpen ? 'Open Menu' : 'Menu is opened'}
-        </div>
-      )}
-    </ContextMenu>
-  );
-};
+export const base = () => (
+  <ContextMenu {...getProps()}>
+    {({ isOpen, onContextMenu }) => (
+      <div style={{ padding: '20px' }} onContextMenu={onContextMenu}>
+        {isOpen ? 'Open Menu' : 'Menu is opened'}
+      </div>
+    )}
+  </ContextMenu>
+);

@@ -36,9 +36,7 @@ function AudioPlayer({ link, onClose, autoplay = false, showDuration = false }) 
     setClickedTime(timePercent * duration);
   };
 
-  const audioDuration = React.useMemo(() => {
-    return duration;
-  }, [duration]);
+  const audioDuration = React.useMemo(() => duration, [duration]);
 
   const percent = (curTime / audioDuration) * 100;
 

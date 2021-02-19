@@ -17,29 +17,27 @@ export type ManagerProps = {
   removeVariable: () => void;
 };
 
-const Manager: React.FC<ManagerProps> = ({ variable, isBuiltIn, description, removeVariable }) => {
-  return (
-    <FadeLeftContainer mt={10}>
-      <Section
-        status={
-          <Box mr={isBuiltIn ? 0 : 44}>
-            <VariableTag>{`{${variable}}`}</VariableTag>
-          </Box>
-        }
-        dividers={false}
-        variant={SectionVariant.TERTIARY}
-        header="Variable Name"
-      >
-        <FlexApart>
-          <Input value={variable} disabled />
+const Manager: React.FC<ManagerProps> = ({ variable, isBuiltIn, description, removeVariable }) => (
+  <FadeLeftContainer mt={10}>
+    <Section
+      status={
+        <Box mr={isBuiltIn ? 0 : 44}>
+          <VariableTag>{`{${variable}}`}</VariableTag>
+        </Box>
+      }
+      dividers={false}
+      variant={SectionVariant.TERTIARY}
+      header="Variable Name"
+    >
+      <FlexApart>
+        <Input value={variable} disabled />
 
-          {!isBuiltIn && <RemoveDropdown onRemove={removeVariable} />}
-        </FlexApart>
-      </Section>
+        {!isBuiltIn && <RemoveDropdown onRemove={removeVariable} />}
+      </FlexApart>
+    </Section>
 
-      {description && <Description>{description}</Description>}
-    </FadeLeftContainer>
-  );
-};
+    {description && <Description>{description}</Description>}
+  </FadeLeftContainer>
+);
 
 export default Manager;

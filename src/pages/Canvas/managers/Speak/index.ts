@@ -4,9 +4,9 @@ import { BlockType, DialogType } from '@/constants';
 import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
+import { ICON, ICON_COLOR, NAME } from './constants';
 import SpeakEditor from './SpeakEditor';
 import SpeakStep from './SpeakStep';
-import { ICON, ICON_COLOR, NAME } from './constants';
 
 const SpeakManager: NodeConfig<NodeData.Speak> = {
   type: BlockType.SPEAK,

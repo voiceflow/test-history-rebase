@@ -1,17 +1,17 @@
-/* eslint-disable simple-import-sort/sort */
+/* eslint-disable simple-import-sort/imports */
 import AceEditor, { AceEditorProps as AceEditorBaseProps } from 'react-ace';
 
 import 'brace/ext/language_tools';
 import 'brace/mode/javascript';
 import 'brace/mode/json';
+// eslint-disable-next-line import/extensions
 import 'brace/mode/json_custom';
 import 'brace/theme/chrome';
-
 import './modes/slot';
 import './modes/utterance';
-/* eslint-enable simple-import-sort/sort */
 
-import { styled, css } from '@/hocs';
+/* eslint-enable simple-import-sort/imports */
+import { css, styled } from '@/hocs';
 
 export const ACE_EDITOR_OPTIONS = {
   enableBasicAutocompletion: true,

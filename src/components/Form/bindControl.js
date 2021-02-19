@@ -10,8 +10,6 @@ const WrappedComponent = (props) => {
   const { error, touched, warning, name } = meta;
   return <Component {...input} {...outerProps} error={error} touched={touched} warning={warning} name={name} />;
 };
-const bindControl = (Component) => (props) => {
-  return <Field component={WrappedComponent} ogComponent={Component} outerProps={props} {...props} />;
-};
+const bindControl = (Component) => (props) => <Field component={WrappedComponent} ogComponent={Component} outerProps={props} {...props} />;
 
 export default bindControl;

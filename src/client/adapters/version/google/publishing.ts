@@ -1,4 +1,4 @@
-import { GoogleVersionPublishing, Locale, defaultGoogleVersionPublishing } from '@voiceflow/google-types';
+import { defaultGoogleVersionPublishing, GoogleVersionPublishing, Locale } from '@voiceflow/google-types';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { FullSkill } from '@/models';

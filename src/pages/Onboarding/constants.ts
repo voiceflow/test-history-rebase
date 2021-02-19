@@ -1,5 +1,3 @@
-/* eslint-disable lodash/prefer-constant, lodash/prefer-noop */
-
 import * as Tracking from '@/ducks/tracking';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
 
@@ -47,9 +45,7 @@ export const STEP_META: StepMetaProps = {
     trackStep: () => Tracking.trackOnboardingPersonalize(),
   },
   [StepID.ADD_COLLABORATORS]: {
-    title: (workspaceName) => {
-      return !workspaceName ? 'Invite teammates' : `Invite teammates to ${workspaceName}`;
-    },
+    title: (workspaceName) => (!workspaceName ? 'Invite teammates' : `Invite teammates to ${workspaceName}`),
     canBack: true,
     canSkip: true,
     skipTo: StepID.PAYMENT,

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 
@@ -31,7 +30,7 @@ class Updater extends PureComponent {
     onUpdateProps && onUpdateProps(id, data);
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
+  // eslint-disable-next-line class-methods-use-this
   render() {
     return null;
   }

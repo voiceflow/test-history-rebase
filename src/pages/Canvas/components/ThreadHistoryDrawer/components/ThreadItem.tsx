@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Box, { FlexApart } from '@/components/Box';
-import CommentPreview from '@/components/CommentPreview';
 import Commenter from '@/components/Commenter';
+import CommentPreview from '@/components/CommentPreview';
 import Duration from '@/components/Duration';
 import Flex from '@/components/Flex';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';

@@ -2,9 +2,9 @@ import React from 'react';
 
 import { DescriptorContainer, DescriptorVariant } from '@/pages/Settings/components/ContentDescriptors/components';
 
-const ProjectName: React.FC = () => {
-  return <DescriptorContainer>Your project name is the name of the project that you will see on your workspace dashboard.</DescriptorContainer>;
-};
+const ProjectName: React.FC = () => (
+  <DescriptorContainer>Your project name is the name of the project that you will see on your workspace dashboard.</DescriptorContainer>
+);
 
 const RepeatDialog = (
   <DescriptorContainer variant={DescriptorVariant.SUFFIX}>

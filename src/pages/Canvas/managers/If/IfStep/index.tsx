@@ -21,19 +21,17 @@ export const IfStep: React.FC<IfStepProps> = ({ expressions, elsePortID }) => (
   <Step>
     <Section>
       {expressions.length ? (
-        expressions.map(({ label, portID }, index) => {
-          return (
-            <Item
-              key={portID}
-              icon={index === 0 ? 'if' : null}
-              label={label}
-              labelVariant={StepLabelVariant.SECONDARY}
-              iconColor="#f86683"
-              portID={portID}
-              placeholder="Add IF statement"
-            />
-          );
-        })
+        expressions.map(({ label, portID }, index) => (
+          <Item
+            key={portID}
+            icon={index === 0 ? 'if' : null}
+            label={label}
+            labelVariant={StepLabelVariant.SECONDARY}
+            iconColor="#f86683"
+            portID={portID}
+            placeholder="Add IF statement"
+          />
+        ))
       ) : (
         <Item icon="if" iconColor="#f86683" placeholder="Add IF statement" />
       )}

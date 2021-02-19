@@ -11,7 +11,6 @@ const UploadGroup = createPlatformComponent('UploadGroup', {
   [PlatformType.ALEXA]: () => <AlexaUploadGroup />,
   // eslint-disable-next-line react/display-name
   [PlatformType.GOOGLE]: () => <GoogleUploadGroup />,
-  // eslint-disable-next-line lodash/prefer-constant
   [PlatformType.GENERAL]: () => null,
 });
 

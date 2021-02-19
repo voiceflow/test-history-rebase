@@ -44,9 +44,7 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
   GLOBAL_HEADERS.set('tabid', tabID);
 
   axios.interceptors.response.use(
-    (response) => {
-      return response;
-    },
+    (response) => response,
     async (error) => {
       if (error.response?.status === StatusCode.UNAUTHORIZED) {
         await logoutHandler(error.config.baseURL);

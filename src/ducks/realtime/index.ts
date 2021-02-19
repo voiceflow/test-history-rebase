@@ -19,9 +19,9 @@ import { AnyNodeLock, RealtimeLocks, RealtimeState } from './types';
 
 export * from './actions';
 export * from './constants';
-export * from './socket';
-export * from './sideEffects';
 export * from './selectors';
+export * from './sideEffects';
+export * from './socket';
 export * from './types';
 
 export const INITIAL_STATE: RealtimeState = {

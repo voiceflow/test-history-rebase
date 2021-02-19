@@ -42,9 +42,7 @@ class BetaUsersList extends React.Component {
 
   search = (searchTerm) => {
     const term = searchTerm.target.value;
-    const filteredUsers = this.state.users.filter((user) => {
-      return user.email.includes(term) || user.name.includes(term);
-    });
+    const filteredUsers = this.state.users.filter((user) => user.email.includes(term) || user.name.includes(term));
     this.setState({
       searchVal: term,
       filteredUsers,

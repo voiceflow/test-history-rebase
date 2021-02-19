@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import type { AnchorPlugin, AnchorPluginConfig } from '@voiceflow/draft-js-anchor-plugin';
 import createAnchorPlugin from '@voiceflow/draft-js-anchor-plugin';
 import type { StaticToolBarPlugin } from '@voiceflow/draft-js-static-toolbar-plugin';
 import createStaticToolbarPlugin from '@voiceflow/draft-js-static-toolbar-plugin';
 import { createMatchSelector } from 'connected-react-router';
-import { EditorState, convertToRaw } from 'draft-js';
+import { convertToRaw, EditorState } from 'draft-js';
 import React from 'react';
 
 import { Path } from '@/config/routes';

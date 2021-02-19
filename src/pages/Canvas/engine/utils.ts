@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { CanvasAPI } from '@/components/Canvas';
 import { BlockType, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -157,7 +158,7 @@ export const clonePort = ({ getNodeID, getPortID }: CloneUtils) => (port: Port):
 };
 
 const getOrCreateID = (lookup: Record<string, string>) => (id: string) => {
-  if (lookup.hasOwnProperty(id)) {
+  if (Object.prototype.hasOwnProperty.call(lookup, id)) {
     return lookup[id];
   }
 
@@ -261,7 +262,7 @@ export const getCopiedNodeDataIDs = (nodeData: Record<string, NodeData<unknown>>
 
     if (isChoiceNode(data)) {
       data.choices.forEach((choice) => {
-        const intent = choice[platform].intent;
+        const { intent } = choice[platform];
 
         if (intent) {
           intents.push(intent);

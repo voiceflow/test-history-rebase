@@ -5,7 +5,6 @@ import { reorder, without } from '@/utils/array';
 
 import DraggableList, { DeleteComponent } from '.';
 
-// eslint-disable-next-line react/display-name
 const ItemComponent = React.forwardRef<HTMLDivElement, any>(({ item: { text }, index, style }, ref) => (
   <div
     ref={ref}
@@ -32,7 +31,6 @@ const PreviewComponent = (props: any) => (
   />
 );
 
-// eslint-disable-next-line react/display-name
 const CustomDeleteComponent = React.forwardRef<HTMLDivElement, any>((props, ref) => (
   <div
     {...props}

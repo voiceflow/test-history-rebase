@@ -1,12 +1,10 @@
-import _uniq from 'lodash/uniq';
-
 import client from '@/client';
 import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import { duckLogger } from '@/ducks/utils';
 import { ProjectList } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
-import { replace } from '@/utils/array';
+import { replace, unique } from '@/utils/array';
 import { cuid } from '@/utils/string';
 
 import { addProjectList, addProjectToList, removeProjectFromList, removeProjectList, replaceProjectLists } from './actions';
@@ -26,7 +24,7 @@ export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch)
     // determine if there are any projects not on a board
     const usedProjects = new Set();
     let normalizedLists = lists.map((list) => {
-      const projects = _uniq(list.projects).filter((projectID) => projectIDs.includes(projectID) && !usedProjects.has(projectID));
+      const projects = unique(list.projects).filter((projectID) => projectIDs.includes(projectID) && !usedProjects.has(projectID));
 
       projects.forEach((projectID) => usedProjects.add(projectID));
 
@@ -44,7 +42,7 @@ export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch)
       const defaultList = normalizedLists.find((list) => list.name === DEFAULT_LIST_NAME);
 
       if (defaultList) {
-        const projects = _uniq([...defaultList.projects, ...unusedProjectIDs]);
+        const projects = unique([...defaultList.projects, ...unusedProjectIDs]);
         normalizedLists = replace(normalizedLists, normalizedLists.indexOf(defaultList), { ...defaultList, projects });
       } else {
         normalizedLists.push({

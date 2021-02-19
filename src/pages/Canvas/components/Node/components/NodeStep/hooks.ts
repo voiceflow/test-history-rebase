@@ -57,11 +57,9 @@ export const useNodeInstance = () => {
 
 export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, withPorts: boolean, isDraggable: boolean) => {
   const nodeEntity = React.useContext(NodeEntityContext)!;
-  const { lockOwner } = nodeEntity.useState((e) => {
-    return {
-      lockOwner: e.lockOwner,
-    };
-  });
+  const { lockOwner } = nodeEntity.useState((e) => ({
+    lockOwner: e.lockOwner,
+  }));
   const isEditingMode = useEditingMode();
   const contextMenu = React.useContext(ContextMenuContext)!;
   const engine = React.useContext(EngineContext)!;

@@ -91,7 +91,7 @@ class DragEngine extends EngineConsumer {
     }
 
     if (this.group) {
-      const group = this.group;
+      const { group } = this;
       this.group = null;
 
       this.log.debug(this.log.pending('resetting drag group'), group);

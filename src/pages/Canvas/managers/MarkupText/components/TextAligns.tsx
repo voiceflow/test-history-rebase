@@ -4,22 +4,20 @@ import React from 'react';
 
 import IconButton from './IconButton';
 
-const TextAligns: React.FC<Omit<DraftJsBlockAlignmentButtonProps, 'children'>> = (props) => {
-  return (
-    <>
-      <AlignBlockLeftButton {...props}>
-        {({ isActive, ...buttonProps }) => <IconButton {...buttonProps} active={isActive} icon="textAlignLeft" />}
-      </AlignBlockLeftButton>
+const TextAligns: React.FC<Omit<DraftJsBlockAlignmentButtonProps, 'children'>> = (props) => (
+  <>
+    <AlignBlockLeftButton {...props}>
+      {({ isActive, ...buttonProps }) => <IconButton {...buttonProps} active={isActive} icon="textAlignLeft" />}
+    </AlignBlockLeftButton>
 
-      <AlignBlockCenterButton {...props}>
-        {({ isActive, ...buttonProps }) => <IconButton {...buttonProps} active={isActive} icon="textAlignCenter" />}
-      </AlignBlockCenterButton>
+    <AlignBlockCenterButton {...props}>
+      {({ isActive, ...buttonProps }) => <IconButton {...buttonProps} active={isActive} icon="textAlignCenter" />}
+    </AlignBlockCenterButton>
 
-      <AlignBlockRightButton {...props}>
-        {({ isActive, ...buttonProps }) => <IconButton {...buttonProps} active={isActive} icon="textAlignRight" />}
-      </AlignBlockRightButton>
-    </>
-  );
-};
+    <AlignBlockRightButton {...props}>
+      {({ isActive, ...buttonProps }) => <IconButton {...buttonProps} active={isActive} icon="textAlignRight" />}
+    </AlignBlockRightButton>
+  </>
+);
 
 export default TextAligns;

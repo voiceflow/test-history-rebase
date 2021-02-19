@@ -8,8 +8,8 @@ import { Group, HeadMarker, Overlay, Path, RemoveButton, Styles } from './compon
 import { useLinkHandlers, useLinkInstance } from './hooks';
 import { buildHeadMarker, getVirtualPoints } from './utils';
 
-export * from './constants';
 export * from './components';
+export * from './constants';
 export * from './utils';
 
 const Link: React.FC = () => {

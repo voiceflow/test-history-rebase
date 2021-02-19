@@ -189,7 +189,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     const stripeSource = await stripe.createSource({
       type: 'card',
     });
-    const source = stripeSource.source;
+    const { source } = stripeSource;
     if (!source) {
       throw new Error(stripeSource.error?.message || 'Invalid Card Information');
     }
@@ -249,7 +249,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     const hasPaymentStep = stepStack.includes(StepID.PAYMENT);
 
     const name = createWorkspaceMeta.workspaceName;
-    const workspaceImage = createWorkspaceMeta.workspaceImage;
+    const { workspaceImage } = createWorkspaceMeta;
     let source;
 
     if (hasPaymentStep) {
@@ -271,7 +271,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     if (!workspace) {
       try {
         if (usedSignupCoupon) {
-          workspace = nonTemplateWorkspaces[0];
+          [workspace] = nonTemplateWorkspaces;
           updateWorkspaceName(name);
           updateWorkspaceImage(workspaceImage);
         } else {

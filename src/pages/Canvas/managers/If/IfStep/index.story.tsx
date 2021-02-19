@@ -7,9 +7,7 @@ import Block from '@/pages/Canvas/components/Block';
 import { IfStep, IfStepProps } from '.';
 import { ExpressionPreviewContainer } from './components';
 
-const generateExpressionLabel = (expression: any) => {
-  return <ExpressionPreview expression={expression} container={ExpressionPreviewContainer} />;
-};
+const generateExpressionLabel = (expression: any) => <ExpressionPreview expression={expression} container={ExpressionPreviewContainer} />;
 
 const value = {
   type: 'less',
@@ -37,27 +35,25 @@ const value2 = {
   ],
 };
 
-const getProps = () => {
-  return {
-    expressions: [
-      {
-        label: generateExpressionLabel(value),
-        portID: '123',
-      },
-      {
-        label: generateExpressionLabel(value2),
-        portID: 'w24',
-      },
-      {
-        label: generateExpressionLabel(value),
-        portID: 'w243g',
-      },
-    ],
-    isActive: false,
-    elsePortID: 'srh123',
-    withPorts: true,
-  };
-};
+const getProps = () => ({
+  expressions: [
+    {
+      label: generateExpressionLabel(value),
+      portID: '123',
+    },
+    {
+      label: generateExpressionLabel(value2),
+      portID: 'w24',
+    },
+    {
+      label: generateExpressionLabel(value),
+      portID: 'w243g',
+    },
+  ],
+  isActive: false,
+  elsePortID: 'srh123',
+  withPorts: true,
+});
 
 const render = (props?: Partial<IfStepProps>) => () => (
   <Block name="If Block">

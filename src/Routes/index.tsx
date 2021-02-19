@@ -39,84 +39,82 @@ const PublicPrototypeRoute: React.FC = (props) => {
   return sharePrototypeView.isEnabled ? <PublicPrototypeV2 {...props} /> : <PublicPrototype {...props} />;
 };
 
-const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => {
-  return (
-    <Suspense fallback={<FullSpinner name="Assets" />}>
-      <Switch>
-        <Route exact path={Path.SSML} component={SSML} />
+const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => (
+  <Suspense fallback={<FullSpinner name="Assets" />}>
+    <Switch>
+      <Route exact path={Path.SSML} component={SSML} />
 
-        <PublicRoute exact path={Path.RESET_PASSWORD} name="Reset Password" component={ResetPassword} />
-        <PublicRoute exact path={Path.RESET} name="Reset" component={Reset} />
-        <PublicRoute exact path={Path.LOGIN} name="Login" component={LoginForm} />
-        <PublicRoute exact path={Path.LOGIN_MATTEL} name="Login - Mattel" component={MattelLoginForm} />
-        <PublicRoute exact path={Path.LOGIN_SSO_CALLBACK} name="Login SSO Callback" component={LoginSSOCallback} />
-        <PublicRoute exact path={Path.PROMO_SIGNUP} name="SignUpPromo" component={SignupForm} promo />
-        <PublicRoute exact path={Path.SIGNUP} name="SignUp" component={SignupForm} />
-        <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
+      <PublicRoute exact path={Path.RESET_PASSWORD} name="Reset Password" component={ResetPassword} />
+      <PublicRoute exact path={Path.RESET} name="Reset" component={Reset} />
+      <PublicRoute exact path={Path.LOGIN} name="Login" component={LoginForm} />
+      <PublicRoute exact path={Path.LOGIN_MATTEL} name="Login - Mattel" component={MattelLoginForm} />
+      <PublicRoute exact path={Path.LOGIN_SSO_CALLBACK} name="Login SSO Callback" component={LoginSSOCallback} />
+      <PublicRoute exact path={Path.PROMO_SIGNUP} name="SignUpPromo" component={SignupForm} promo />
+      <PublicRoute exact path={Path.SIGNUP} name="SignUp" component={SignupForm} />
+      <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
 
-        <Route exact path={Path.CREATOR_TERMS} name="Privacy Policy" component={Legal} />
+      <Route exact path={Path.CREATOR_TERMS} name="Privacy Policy" component={Legal} />
 
-        <Redirect exact from={Path.WORKSPACE} to={Path.DASHBOARD} />
-        <PrivateRoute exact path={Path.NEW_WORKSPACE} component={NewWorkspace} />
-        <PrivateRoute path={[Path.WORKSPACE, Path.DASHBOARD]} component={Workspace} />
+      <Redirect exact from={Path.WORKSPACE} to={Path.DASHBOARD} />
+      <PrivateRoute exact path={Path.NEW_WORKSPACE} component={NewWorkspace} />
+      <PrivateRoute path={[Path.WORKSPACE, Path.DASHBOARD]} component={Workspace} />
 
-        <Redirect exact from={Path.PROJECT_DEMO} to={Path.PUBLIC_PROTOTYPE} />
-        <Route path={Path.PUBLIC_PROTOTYPE} component={PublicPrototypeRoute} />
+      <Redirect exact from={Path.PROJECT_DEMO} to={Path.PUBLIC_PROTOTYPE} />
+      <Route path={Path.PUBLIC_PROTOTYPE} component={PublicPrototypeRoute} />
 
-        <Redirect from={LegacyPath.WORKSPACE_DASHBOARD} to={Path.WORKSPACE_DASHBOARD} />
-        <Redirect from={LegacyPath.CANVAS_DIAGRAM} to={Path.PROJECT_CANVAS} />
-        <Redirect from={LegacyPath.CANVAS_PREVIEW} to={Path.PROJECT_CANVAS} />
-        <Redirect from={LegacyPath.CANVAS_TEST} to={Path.PROJECT_PROTOTYPE} />
-        <Redirect from={LegacyPath.PROJECT_TEST} to={Path.PROJECT_PROTOTYPE} />
-        <Redirect from={LegacyPath.PRODUCT_DETAILS} to={Path.PRODUCT_DETAILS} />
-        <Redirect from={LegacyPath.PRODUCT_LIST} to={Path.PRODUCT_LIST} />
-        <Redirect from={LegacyPath.TOOLS} to={Path.PROJECT_TOOLS} />
-        <Redirect from={LegacyPath.MIGRATE} to={Path.PROJECT_MIGRATE} />
-        <Redirect from={LegacyPath.PUBLISH_GOOGLE} to={Path.PUBLISH_GOOGLE} />
-        <Redirect from={LegacyPath.PUBLISH_ALEXA} to={Path.PUBLISH_ALEXA} />
-        <Redirect from={LegacyPath.PUBLISH} to={Path.PUBLISH_ALEXA} />
-        <Redirect exact from={LegacyPath.PROJECT_PUBLISH} to={Path.PUBLISH_ALEXA} />
+      <Redirect from={LegacyPath.WORKSPACE_DASHBOARD} to={Path.WORKSPACE_DASHBOARD} />
+      <Redirect from={LegacyPath.CANVAS_DIAGRAM} to={Path.PROJECT_CANVAS} />
+      <Redirect from={LegacyPath.CANVAS_PREVIEW} to={Path.PROJECT_CANVAS} />
+      <Redirect from={LegacyPath.CANVAS_TEST} to={Path.PROJECT_PROTOTYPE} />
+      <Redirect from={LegacyPath.PROJECT_TEST} to={Path.PROJECT_PROTOTYPE} />
+      <Redirect from={LegacyPath.PRODUCT_DETAILS} to={Path.PRODUCT_DETAILS} />
+      <Redirect from={LegacyPath.PRODUCT_LIST} to={Path.PRODUCT_LIST} />
+      <Redirect from={LegacyPath.TOOLS} to={Path.PROJECT_TOOLS} />
+      <Redirect from={LegacyPath.MIGRATE} to={Path.PROJECT_MIGRATE} />
+      <Redirect from={LegacyPath.PUBLISH_GOOGLE} to={Path.PUBLISH_GOOGLE} />
+      <Redirect from={LegacyPath.PUBLISH_ALEXA} to={Path.PUBLISH_ALEXA} />
+      <Redirect from={LegacyPath.PUBLISH} to={Path.PUBLISH_ALEXA} />
+      <Redirect exact from={LegacyPath.PROJECT_PUBLISH} to={Path.PUBLISH_ALEXA} />
 
-        <PrivateRoute path={LegacyPath.PROJECT_EXPORT} component={Export} />
-        <PrivateRoute path={Path.PROJECT_SETTINGS} component={Settings} />
-        <PrivateRoute path={LegacyPath.PROJECT_VERSION} component={Skill} />
+      <PrivateRoute path={LegacyPath.PROJECT_EXPORT} component={Export} />
+      <PrivateRoute path={Path.PROJECT_SETTINGS} component={Settings} />
+      <PrivateRoute path={LegacyPath.PROJECT_VERSION} component={Skill} />
 
-        <PrivateRoute path={Path.ACCOUNT} name="Account" component={Account} />
-        <PrivateRoute path={Path.RUNTIME} name="Runtime" component={Runtime} />
+      <PrivateRoute path={Path.ACCOUNT} name="Account" component={Account} />
+      <PrivateRoute path={Path.RUNTIME} name="Runtime" component={Runtime} />
 
-        <Route
-          exact
-          path={Path.INVITE}
-          render={(props) => {
-            const parsed = Query.parse(props.location.search);
-            const inviteCode = parsed.invite_code;
-            const email = parsed.email;
-            const signupLink = email ? `${Path.SIGNUP}?invite=${inviteCode}&email=${email}` : `${Path.SIGNUP}?invite=${inviteCode}`;
+      <Route
+        exact
+        path={Path.INVITE}
+        render={(props) => {
+          const parsed = Query.parse(props.location.search);
+          const inviteCode = parsed.invite_code;
+          const { email } = parsed;
+          const signupLink = email ? `${Path.SIGNUP}?invite=${inviteCode}&email=${email}` : `${Path.SIGNUP}?invite=${inviteCode}`;
 
-            if (inviteCode) {
-              return authToken ? <Redirect to={`${Path.DASHBOARD}?invite=${inviteCode}`} /> : <Redirect to={signupLink} />;
-            }
-            const code = props.match.params.invite_code;
-            return authToken ? (
-              <Redirect to={`${Path.DASHBOARD}?invite=${code}`} />
-            ) : (
-              <Redirect to={`${Path.SIGNUP}?invite=${code}${props.location.search}`} />
-            );
-          }}
-        />
-        <Route
-          exact
-          path={Path.HOME}
-          render={() =>
-            authToken ? <Redirect to={`${Path.DASHBOARD}${window.location.search}`} /> : <Redirect to={`${Path.SIGNUP}${window.location.search}`} />
+          if (inviteCode) {
+            return authToken ? <Redirect to={`${Path.DASHBOARD}?invite=${inviteCode}`} /> : <Redirect to={signupLink} />;
           }
-        />
+          const code = props.match.params.invite_code;
+          return authToken ? (
+            <Redirect to={`${Path.DASHBOARD}?invite=${code}`} />
+          ) : (
+            <Redirect to={`${Path.SIGNUP}?invite=${code}${props.location.search}`} />
+          );
+        }}
+      />
+      <Route
+        exact
+        path={Path.HOME}
+        render={() =>
+          authToken ? <Redirect to={`${Path.DASHBOARD}${window.location.search}`} /> : <Redirect to={`${Path.SIGNUP}${window.location.search}`} />
+        }
+      />
 
-        <Route component={Page404} />
-      </Switch>
-    </Suspense>
-  );
-};
+      <Route component={Page404} />
+    </Switch>
+  </Suspense>
+);
 
 const mapStateToProps = {
   authToken: authTokenSelector,

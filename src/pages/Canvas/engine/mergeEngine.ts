@@ -6,7 +6,7 @@ import { CANVAS_MERGING_CLASSNAME } from '@/pages/Canvas/constants';
 import { MergeLayerAPI } from '@/pages/Canvas/types';
 import { withoutValue } from '@/utils/array';
 
-import { EngineConsumer, NodeCandidate, createBoundaryTest, getCandidates } from './utils';
+import { createBoundaryTest, EngineConsumer, getCandidates, NodeCandidate } from './utils';
 
 const UNMERGEABLE_NODES = [BlockType.START, BlockType.COMMENT];
 
@@ -23,7 +23,6 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
 
   targetNodeID: string | null = null;
 
-  // eslint-disable-next-line lodash/prefer-constant
   isWithinTarget: ((point: [number, number]) => boolean) | null = null;
 
   get hasSource() {
@@ -167,7 +166,7 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
 
     if (!this.targetNodeID) return;
 
-    const targetNodeID = this.targetNodeID;
+    const { targetNodeID } = this;
 
     this.log.debug(this.log.pending('clearing merge target block'), this.log.slug(targetNodeID));
     this.targetNodeID = null;

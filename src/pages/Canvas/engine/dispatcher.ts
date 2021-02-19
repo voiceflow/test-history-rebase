@@ -1,9 +1,9 @@
 import EventEmitter from 'eventemitter3';
 import React from 'react';
 
+import type { Engine } from '.';
 import { EntityType } from './constants';
 import { EngineConsumer } from './utils';
-import type { Engine } from '.';
 
 class Dispatcher extends EngineConsumer {
   log = this.engine.log.child('dispatcher');
@@ -33,6 +33,7 @@ class Dispatcher extends EngineConsumer {
   }
 
   useSubscription(type: EntityType, id: string, handler: (isForced: boolean) => void) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useEffect(() => this.subscribe(type, id, handler), []);
   }
 

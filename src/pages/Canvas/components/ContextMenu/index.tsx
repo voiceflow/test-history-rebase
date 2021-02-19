@@ -81,7 +81,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ className, isTemplateWorkspac
   };
 
   React.useEffect(() => {
-    const onHide = contextMenu.onHide;
+    const { onHide } = contextMenu;
 
     document.addEventListener('mousedown', onHide);
 

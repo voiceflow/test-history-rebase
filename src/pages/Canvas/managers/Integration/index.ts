@@ -4,9 +4,9 @@ import { NodeData } from '@/models';
 import GlobeIcon from '@/svgs/solid/globe.svg';
 
 import { NodeConfig } from '../types';
+import { ICON, ICON_COLOR } from './constants';
 import IntegrationEditor from './IntegrationEditor';
 import IntegrationStep from './IntegrationStep';
-import { ICON, ICON_COLOR } from './constants';
 
 const getDefaultData = ({ selectedIntegration }: Partial<NodeData.Integration>) => {
   switch (selectedIntegration) {

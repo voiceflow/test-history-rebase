@@ -1,4 +1,4 @@
-import { EditorState, Modifier, convertFromRaw, genKey } from 'draft-js';
+import { convertFromRaw, EditorState, genKey, Modifier } from 'draft-js';
 
 const createRowState = (value, convertor) => {
   const cursor = 0;

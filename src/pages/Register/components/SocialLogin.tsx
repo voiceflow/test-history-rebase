@@ -33,7 +33,6 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
   const [authError, setAuthError] = useState<null | boolean>(null);
 
   const saveSocialProfilePicture = async (imageUrl: string) => {
-    // eslint-disable-next-line compat/compat
     const blob = await fetch(imageUrl).then((r) => r.blob());
     const data = new FormData();
     data.append('image', blob);

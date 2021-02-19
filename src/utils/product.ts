@@ -1,4 +1,4 @@
-import { Locale, ProductType, decodeMarketPlaceKey, encodeMarketPlaceKey } from '@voiceflow/alexa-types';
+import { decodeMarketPlaceKey, encodeMarketPlaceKey, Locale, ProductType } from '@voiceflow/alexa-types';
 import { MarketPlace } from '@voiceflow/alexa-types/build/project/product';
 import moment from 'moment';
 

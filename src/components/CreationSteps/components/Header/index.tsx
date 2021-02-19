@@ -24,18 +24,16 @@ const CreationHeader: React.FC<CreationHeaderProps> = ({
   title,
   numberOfSteps,
   stepStack,
-}) => {
-  return (
-    <Container>
-      <ActionButton shouldRender={hasBackButton} icon="back" onClick={stepBack} label="back" />
-      <StepStatus title={title} numberOfSteps={numberOfSteps} stepStack={stepStack} />
-      {canCancel ? (
-        <ActionButton shouldRender icon="close" label="cancel" onClick={onCancel} />
-      ) : (
-        <ActionButton shouldRender={hasSkipButton} icon="next" label="skip" onClick={onSkipClick} />
-      )}
-    </Container>
-  );
-};
+}) => (
+  <Container>
+    <ActionButton shouldRender={hasBackButton} icon="back" onClick={stepBack} label="back" />
+    <StepStatus title={title} numberOfSteps={numberOfSteps} stepStack={stepStack} />
+    {canCancel ? (
+      <ActionButton shouldRender icon="close" label="cancel" onClick={onCancel} />
+    ) : (
+      <ActionButton shouldRender={hasSkipButton} icon="next" label="skip" onClick={onSkipClick} />
+    )}
+  </Container>
+);
 
 export default CreationHeader;

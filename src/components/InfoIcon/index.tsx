@@ -30,21 +30,19 @@ export type InfoIconProps = {
   tooltipProps?: any;
 };
 
-const InfoIcon: React.FC<InfoIconProps> = ({ children, placement = 'bottom-start', tooltipProps }) => {
-  return (
-    <TutorialTooltip
-      {...tooltipProps}
-      placement={placement}
-      portalNode={document.body}
-      anchorRenderer={({ isOpen }: { isOpen: boolean }) => (
-        <IconContainer isOpen={isOpen}>
-          <Icon size={16} icon="info" />
-        </IconContainer>
-      )}
-    >
-      {children}
-    </TutorialTooltip>
-  );
-};
+const InfoIcon: React.FC<InfoIconProps> = ({ children, placement = 'bottom-start', tooltipProps }) => (
+  <TutorialTooltip
+    {...tooltipProps}
+    placement={placement}
+    portalNode={document.body}
+    anchorRenderer={({ isOpen }: { isOpen: boolean }) => (
+      <IconContainer isOpen={isOpen}>
+        <Icon size={16} icon="info" />
+      </IconContainer>
+    )}
+  >
+    {children}
+  </TutorialTooltip>
+);
 
 export default InfoIcon;

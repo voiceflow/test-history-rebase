@@ -27,8 +27,6 @@ const ProgressBar = styled.div<ProgressStageProps>`
   background-color: #5d9df5;
 `;
 
-const ProgressStage: React.FC<ProgressStageProps> = ({ progress }) => {
-  return <ProgressBar progress={progress} />;
-};
+const ProgressStage: React.FC<ProgressStageProps> = ({ progress }) => <ProgressBar progress={progress} />;
 
 export default ProgressStage;

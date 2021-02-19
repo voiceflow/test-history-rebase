@@ -1,8 +1,8 @@
 import React from 'react';
 
 import DropdownHeader from '../../components/StepDropdown';
-import StartTriggerSection from './StartTriggerSection';
 import FeedAddUserModal from './addUserModal';
+import StartTriggerSection from './StartTriggerSection';
 
 function StartTrigger({ data, onChange, isOpened, toggleStep, openNextStep }) {
   const triggerUser = data.user?.user_id || '';

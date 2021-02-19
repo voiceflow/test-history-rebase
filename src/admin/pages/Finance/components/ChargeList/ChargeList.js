@@ -11,13 +11,11 @@ class ChargeList extends React.Component {
   renderTeams() {
     const { charges } = this.props;
     if (charges.length > 0) {
-      return charges.map((team) => {
-        return (
-          <div className="cl__team_wrapper" key={team.team_id}>
-            <ChargeTeamGroup team={team} />
-          </div>
-        );
-      });
+      return charges.map((team) => (
+        <div className="cl__team_wrapper" key={team.team_id}>
+          <ChargeTeamGroup team={team} />
+        </div>
+      ));
     }
     return (
       <div className="cl__no_charges">

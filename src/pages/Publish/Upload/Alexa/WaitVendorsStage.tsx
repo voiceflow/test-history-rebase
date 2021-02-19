@@ -8,20 +8,18 @@ type WaitVendorsStageProps = {
   cancel: () => void;
 };
 
-const WaitVendorsStage: React.FC<WaitVendorsStageProps> = ({ cancel }) => {
-  return (
-    <StageContainer>
-      <img src="/Support.svg" alt="" />
+const WaitVendorsStage: React.FC<WaitVendorsStageProps> = ({ cancel }) => (
+  <StageContainer>
+    <img src="/Support.svg" alt="" />
 
-      <Description>Looks like you don't have a developer account, create one to get started!</Description>
+    <Description>Looks like you don't have a developer account, create one to get started!</Description>
 
-      <ButtonContainer>
-        <ButtonLink href="https://developer.amazon.com/login.html" onClick={cancel}>
-          <Button variant={ButtonVariant.PRIMARY}>Developer Sign Up</Button>
-        </ButtonLink>
-      </ButtonContainer>
-    </StageContainer>
-  );
-};
+    <ButtonContainer>
+      <ButtonLink href="https://developer.amazon.com/login.html" onClick={cancel}>
+        <Button variant={ButtonVariant.PRIMARY}>Developer Sign Up</Button>
+      </ButtonLink>
+    </ButtonContainer>
+  </StageContainer>
+);
 
 export default WaitVendorsStage;

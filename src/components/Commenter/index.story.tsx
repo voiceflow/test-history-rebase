@@ -20,26 +20,20 @@ export default {
   component: Commenter,
 };
 
-export const basic = () => {
-  return (
-    <Box m={30}>
-      <Commenter {...getProps()} />
-    </Box>
-  );
-};
+export const basic = () => (
+  <Box m={30}>
+    <Commenter {...getProps()} />
+  </Box>
+);
 
-export const withTime = () => {
-  return (
-    <Box m={30}>
-      <Commenter {...getProps()} time="2020-07-02T18:07:31.215Z" />
-    </Box>
-  );
-};
+export const withTime = () => (
+  <Box m={30}>
+    <Commenter {...getProps()} time="2020-07-02T18:07:31.215Z" />
+  </Box>
+);
 
-export const longName = () => {
-  return (
-    <Box m={30}>
-      <Commenter {...({ user: { ...USER, name: 'Michael Anderson Scott' } } as any)} time="2020-07-02T18:07:31.215Z" />
-    </Box>
-  );
-};
+export const longName = () => (
+  <Box m={30}>
+    <Commenter {...({ user: { ...USER, name: 'Michael Anderson Scott' } } as any)} time="2020-07-02T18:07:31.215Z" />
+  </Box>
+);

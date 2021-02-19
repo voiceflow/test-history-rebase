@@ -1,6 +1,5 @@
 /* eslint no-restricted-globals: ["error", "isFinite"] */
 import axios from 'axios';
-import _values from 'lodash/values';
 import moment from 'moment';
 
 import { toast } from '@/components/Toast';
@@ -91,12 +90,10 @@ export default function adminReducer(state = ADMIN_INITIAL_STATE, action) {
   }
 }
 
-export const toggleTheme = (theme) => {
-  return {
-    type: TOGGLE_THEME,
-    theme,
-  };
-};
+export const toggleTheme = (theme) => ({
+  type: TOGGLE_THEME,
+  theme,
+});
 
 export const findBetaCreator = (creatorEmail) => async (dispatch) => {
   if (!creatorEmail) {
@@ -153,7 +150,7 @@ export const findCreator = (creatorInfo) => async (dispatch) => {
       type: SET_CREATOR,
       payload: {
         creator: response.data.creator,
-        boards: _values(response.data.boards),
+        boards: Object.values(response.data.boards),
       },
     });
   } catch (err) {
@@ -183,7 +180,7 @@ export const getCharges = (creatorInfo) => async (dispatch) => {
       type: SET_CREATOR,
       payload: {
         creator: response.data.creator,
-        boards: _values(response.data.boards),
+        boards: Object.values(response.data.boards),
       },
     });
   } else {
@@ -217,7 +214,7 @@ export const getVendors = (creatorInfo) => async (dispatch) => {
       type: SET_CREATOR,
       payload: {
         creator: response.data.creator,
-        boards: _values(response.data.boards),
+        boards: Object.values(response.data.boards),
       },
     });
   } else {

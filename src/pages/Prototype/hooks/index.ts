@@ -1,2 +1,2 @@
-export { default as usePrototype } from './prototype';
 export * from './controls';
+export { default as usePrototype } from './prototype';

@@ -8,8 +8,8 @@ type ProgressStatusProps = {
   stepStack: any[];
 };
 
-const ProgressStatus: React.FC<ProgressStatusProps> = ({ title, numberOfSteps, stepStack }) => {
-  return <StepStatus title={title} numberOfSteps={numberOfSteps} stepStack={stepStack} />;
-};
+const ProgressStatus: React.FC<ProgressStatusProps> = ({ title, numberOfSteps, stepStack }) => (
+  <StepStatus title={title} numberOfSteps={numberOfSteps} stepStack={stepStack} />
+);
 
 export default ProgressStatus;

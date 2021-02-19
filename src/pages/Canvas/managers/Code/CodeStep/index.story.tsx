@@ -5,14 +5,12 @@ import Block from '@/pages/Canvas/components/Block';
 
 import { CodeStep, CodeStepProps } from '.';
 
-const getProps = () => {
-  return {
-    codeAdded: true,
-    withPorts: true,
-    successPortID: 'abc',
-    failurePortID: 'abc',
-  };
-};
+const getProps = () => ({
+  codeAdded: true,
+  withPorts: true,
+  successPortID: 'abc',
+  failurePortID: 'abc',
+});
 
 const render = (props?: Partial<CodeStepProps>) => () => (
   <Block name="Code Block">

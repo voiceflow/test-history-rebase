@@ -14,20 +14,18 @@ type MenuItemProps = {
   isAllowed: boolean;
 };
 
-const MenuItem: React.FC<MenuItemProps> = ({ title, description, isAllowed }) => {
-  return (
-    <MenuItemContainer onClick={stopImmediatePropagation()}>
-      <div>
-        <Header marginBottom={12}>
-          <span>{title}</span>
-          {!isAllowed && <PlanBubble plan={PlanType.PRO} />}
-        </Header>
-        <Description fontSize={15} lineHeight="normal">
-          <span>{description}</span>
-        </Description>
-      </div>
-    </MenuItemContainer>
-  );
-};
+const MenuItem: React.FC<MenuItemProps> = ({ title, description, isAllowed }) => (
+  <MenuItemContainer onClick={stopImmediatePropagation()}>
+    <div>
+      <Header marginBottom={12}>
+        <span>{title}</span>
+        {!isAllowed && <PlanBubble plan={PlanType.PRO} />}
+      </Header>
+      <Description fontSize={15} lineHeight="normal">
+        <span>{description}</span>
+      </Description>
+    </div>
+  </MenuItemContainer>
+);
 
 export default MenuItem;

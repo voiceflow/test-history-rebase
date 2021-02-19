@@ -18,13 +18,11 @@ const UPLOAD_MESSAGE: Record<PlatformType, string> = {
   [PlatformType.GENERAL]: '',
 };
 
-const UploadButton: React.FC<UploadButtonProps & ConnectedUploadButtonProps> = ({ isJobActive, platform, onClick }) => {
-  return (
-    <TippyTooltip title={UPLOAD_MESSAGE[platform]} position="bottom">
-      <IconButton preventFocusStyle variant={IconButtonVariant.ACTION} icon="loader" large onClick={onClick} active={isJobActive} />
-    </TippyTooltip>
-  );
-};
+const UploadButton: React.FC<UploadButtonProps & ConnectedUploadButtonProps> = ({ isJobActive, platform, onClick }) => (
+  <TippyTooltip title={UPLOAD_MESSAGE[platform]} position="bottom">
+    <IconButton preventFocusStyle variant={IconButtonVariant.ACTION} icon="loader" large onClick={onClick} active={isJobActive} />
+  </TippyTooltip>
+);
 
 const mapStateToProps = {
   platform: Skill.activePlatformSelector,

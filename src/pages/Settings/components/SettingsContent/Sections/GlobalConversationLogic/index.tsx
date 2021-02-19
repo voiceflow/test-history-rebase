@@ -4,9 +4,9 @@ import { Voice as GoogleVoice } from '@voiceflow/google-types';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
-import SSML from '@/components/SSML';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
 import Select from '@/components/Select';
+import SSML from '@/components/SSML';
 import { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';

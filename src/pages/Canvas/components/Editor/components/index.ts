@@ -1,9 +1,9 @@
 export { default as Container } from './EditorContainer';
 export { default as Content } from './EditorContent';
+export { default as EditorContentAnimation } from './EditorContentAnimation';
 export { default as Controls } from './EditorControls';
 export { default as Footer } from './EditorFooter';
 export { default as FormControl } from './EditorFormControl';
 export { default as Header } from './EditorHeader';
 export { default as Tutorial } from './EditorTutorial';
 export { default as MaxOptionsMessage } from './MaxOptionsMessage';
-export { default as EditorContentAnimation } from './EditorContentAnimation';

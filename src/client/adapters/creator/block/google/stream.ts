@@ -5,7 +5,7 @@ import { PortType } from '@/constants/canvas';
 import { NodeData } from '@/models';
 
 import { generateOutPort } from '../../utils';
-import { PortsAdapter, createBlockAdapter, getPortByLabel } from '../utils';
+import { createBlockAdapter, getPortByLabel, PortsAdapter } from '../utils';
 
 const streamAdapter = createBlockAdapter<StepData, NodeData.Stream>(
   ({ loop, audio, title, iconImage, description, backgroundImage }) => ({

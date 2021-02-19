@@ -44,9 +44,7 @@ class InternalLookup extends React.Component {
         });
 
         filtered_boards.map((board) => {
-          board.projects = board.projects.filter((proj) => {
-            return proj.name.includes(event.target.value);
-          });
+          board.projects = board.projects.filter((proj) => proj.name.includes(event.target.value));
           return board;
         });
 
@@ -73,9 +71,7 @@ class InternalLookup extends React.Component {
     if (this.props.boards.length > 0) {
       let displayBoards = this.props.boards;
       if (this.state.filtered_boards) displayBoards = this.state.filtered_boards;
-      return displayBoards.map((board) => {
-        return <TeamSummary board={board} key={board.team_id} expand_all={this.state.expand_all_boards} />;
-      });
+      return displayBoards.map((board) => <TeamSummary board={board} key={board.team_id} expand_all={this.state.expand_all_boards} />);
     }
     return null;
   };

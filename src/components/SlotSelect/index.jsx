@@ -5,15 +5,11 @@ import Select from '@/components/Select';
 import { connect } from '@/hocs';
 import { activeSlotTypesSelector } from '@/store/selectors';
 
-const slotOptionRenderer = (option) => {
-  return <FlexApart fullWidth>{option.label}</FlexApart>;
-};
+const slotOptionRenderer = (option) => <FlexApart fullWidth>{option.label}</FlexApart>;
 
 const SlotSelect = ({ value, onChange, className, slotTypes, filter, ...props }) => {
   const selected = slotTypes.find((slotType) => slotType.value === value) || null;
-  const options = React.useMemo(() => {
-    return filter ? slotTypes.filter(filter) : slotTypes;
-  }, [slotTypes, filter]);
+  const options = React.useMemo(() => (filter ? slotTypes.filter(filter) : slotTypes), [slotTypes, filter]);
 
   return (
     <Select

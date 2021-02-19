@@ -4,11 +4,11 @@ import { AnyReferralAction, ReferralAction } from './actions';
 import { INITIAL_STATE } from './constants';
 import { ReferralState } from './types';
 
-export * from './types';
 export * from './actions';
 export * from './constants';
-export * from './sideEffects';
 export * from './selectors';
+export * from './sideEffects';
+export * from './types';
 
 // reducers
 

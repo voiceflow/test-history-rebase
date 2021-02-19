@@ -1,5 +1,5 @@
 import { RepeatType } from '@voiceflow/general-types';
-import { GoogleVersionSettings, Locale, Voice, defaultGoogleVersionSettings } from '@voiceflow/google-types';
+import { defaultGoogleVersionSettings, GoogleVersionSettings, Locale, Voice } from '@voiceflow/google-types';
 import _invert from 'lodash/invert';
 
 import { createAdapter } from '@/client/adapters/utils';

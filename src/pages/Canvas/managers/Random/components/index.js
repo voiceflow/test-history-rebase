@@ -8,4 +8,4 @@ const RandomEditorCheckbox = styled(Checkbox)`
   float: left;
 `;
 
-export { InfoTooltip, Button, RandomEditorCheckbox as Checkbox };
+export { Button, RandomEditorCheckbox as Checkbox, InfoTooltip };

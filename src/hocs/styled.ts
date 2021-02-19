@@ -11,7 +11,7 @@ import { ValuesType } from 'utility-types';
 import { BlockVariant } from '@/constants/canvas';
 import { Theme } from '@/styles/theme';
 
-export { keyframes, createGlobalStyle } from 'styled-components';
+export { createGlobalStyle, keyframes } from 'styled-components';
 
 export type StyledProps<P> = ThemedStyledProps<P, Theme>;
 

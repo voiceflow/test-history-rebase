@@ -6,4 +6,4 @@ import RegularSelect from './RegularSelect';
 import VariableDropdown from './VariableDropdown';
 import VariableMappingContainer from './VariableMappingContainer';
 
-export { ButtonContainer, Container, DeleteButton, MappingContainer, RegularSelect, VariableMappingContainer, VariableDropdown };
+export { ButtonContainer, Container, DeleteButton, MappingContainer, RegularSelect, VariableDropdown, VariableMappingContainer };

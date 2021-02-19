@@ -6,8 +6,8 @@ import IconButtonComponent, * as IconButton from '@/components/IconButton';
 import { styled } from '@/hocs';
 import { stopPropagation } from '@/utils/dom';
 
-import { CanvasContext } from './contexts';
 import Canvas from '.';
+import { CanvasContext } from './contexts';
 
 const ZOOM_DELTA = 10;
 

@@ -4,11 +4,11 @@ import { AccountAction, AnyAccountAction } from './actions';
 import { INITIAL_STATE } from './constants';
 import { AccountState } from './types';
 
-export * from './types';
 export * from './actions';
 export * from './constants';
-export * from './sideEffects';
 export * from './selectors';
+export * from './sideEffects';
+export * from './types';
 
 // reducers
 const accountReducer: RootReducer<AccountState, AnyAccountAction> = (state = INITIAL_STATE, action) => {

@@ -4,9 +4,9 @@ import Modal, { ModalFooter, ModalHeader } from '@/components/LegacyModal';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 
+import Collaborators from '.';
 import BodyContainer from './components/BodyContainer';
 import InviteByLink from './components/InviteByLink';
-import Collaborators from '.';
 
 const MODAL_TITLE = 'ADD COLLABORATORS';
 

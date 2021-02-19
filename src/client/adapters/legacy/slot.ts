@@ -37,19 +37,18 @@ const slotAdapter = createAdapter<LegacyDBSlot, Slot>(
   })
 );
 
-export const spreadSynonyms = (slot: LegacyDBSlot) => {
-  return {
-    ...slot,
-    inputs: slot.inputs.reduce<string[]>((acc, input) => {
-      return [
-        ...acc,
-        ...input
-          .split(',')
-          .map((value) => value.trim())
-          .filter(Boolean),
-      ];
-    }, []),
-  };
-};
+export const spreadSynonyms = (slot: LegacyDBSlot) => ({
+  ...slot,
+  inputs: slot.inputs.reduce<string[]>(
+    (acc, input) => [
+      ...acc,
+      ...input
+        .split(',')
+        .map((value) => value.trim())
+        .filter(Boolean),
+    ],
+    []
+  ),
+});
 
 export default slotAdapter;

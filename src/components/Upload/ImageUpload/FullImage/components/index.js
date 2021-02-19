@@ -4,4 +4,4 @@ import Image from './Image';
 import ImageContainer from './ImageContainer';
 import ImageUploadInput from './ImageUploadInput';
 
-export { Image, Container, ImageUploadInput, ImageContainer, RemoveButton };
+export { Container, Image, ImageContainer, ImageUploadInput, RemoveButton };

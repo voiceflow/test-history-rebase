@@ -24,9 +24,9 @@ import { PrototypeState } from './types';
 
 export * from './actions';
 export * from './constants';
-export * from './types';
 export * from './selectors';
 export * from './sideEffects';
+export * from './types';
 
 const PERSIST_CONFIG = {
   key: STATE_KEY,

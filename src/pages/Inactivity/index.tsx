@@ -12,13 +12,11 @@ import { BodyContainer } from './components/BodyContainer';
 
 const TIMER_COUNT = 5 * 60 * 1000;
 
-const countdownRenderer = ({ minutes, seconds }: { minutes: number; seconds: number }) => {
-  return (
-    <span>
-      {` ${minutes}`}:{seconds > 9 ? seconds : `0${seconds}`}.
-    </span>
-  );
-};
+const countdownRenderer = ({ minutes, seconds }: { minutes: number; seconds: number }) => (
+  <span>
+    {` ${minutes}`}:{seconds > 9 ? seconds : `0${seconds}`}.
+  </span>
+);
 
 const ModalComponent: React.FC<any> = Modal;
 
@@ -27,27 +25,25 @@ export type InactivityModalProps = {
   onActive: Callback;
 };
 
-const InactivityModal: React.FC<InactivityModalProps & ConnectedInactivityModalProps> = ({ open, onActive, goToDashboard }) => {
-  return (
-    <ModalComponent isOpen={open} toggle={onActive}>
-      <ModalHeader toggle={onActive} header="INACTIVITY" />
-      <ModalBody>
-        <BodyContainer>
-          <SvgIcon size={100} icon="globe" />
-          <div>
-            Your session is about to expire due to inactivity. You will be returned to the dashboard in
-            <Countdown onComplete={goToDashboard} date={Date.now() + TIMER_COUNT} renderer={countdownRenderer} />
-          </div>
-        </BodyContainer>
-      </ModalBody>
-      <ModalFooter>
-        <Button className="btn-tertiary tertiary" onClick={onActive}>
-          Dismiss
-        </Button>
-      </ModalFooter>
-    </ModalComponent>
-  );
-};
+const InactivityModal: React.FC<InactivityModalProps & ConnectedInactivityModalProps> = ({ open, onActive, goToDashboard }) => (
+  <ModalComponent isOpen={open} toggle={onActive}>
+    <ModalHeader toggle={onActive} header="INACTIVITY" />
+    <ModalBody>
+      <BodyContainer>
+        <SvgIcon size={100} icon="globe" />
+        <div>
+          Your session is about to expire due to inactivity. You will be returned to the dashboard in
+          <Countdown onComplete={goToDashboard} date={Date.now() + TIMER_COUNT} renderer={countdownRenderer} />
+        </div>
+      </BodyContainer>
+    </ModalBody>
+    <ModalFooter>
+      <Button className="btn-tertiary tertiary" onClick={onActive}>
+        Dismiss
+      </Button>
+    </ModalFooter>
+  </ModalComponent>
+);
 
 const mapDispatchToProps = {
   goToDashboard: Router.goToDashboard,

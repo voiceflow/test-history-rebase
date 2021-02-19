@@ -23,21 +23,16 @@ const LOCALE_DISPLAY_NAMES: Record<Google.Language, string> = {
   [Google.Language.TR]: 'Turkish (tr)',
 };
 
-export const FORMATTED_LOCALES: { value: Google.Language; name: string }[] = Object.keys(Google.Language).map((key) => {
-  return {
-    value: Google.Language[key as keyof typeof Google.Language],
-    name: LOCALE_DISPLAY_NAMES[Google.Language[key as keyof typeof Google.Language]],
-  };
-});
+export const FORMATTED_LOCALES: { value: Google.Language; name: string }[] = Object.keys(Google.Language).map((key) => ({
+  value: Google.Language[key as keyof typeof Google.Language],
+  name: LOCALE_DISPLAY_NAMES[Google.Language[key as keyof typeof Google.Language]],
+}));
 
 export const FORMATTED_GOOGLE_LOCALES_LABELS: Record<string, string> = FORMATTED_LOCALES.reduce<Record<string, string>>(
   (acc, locale) => Object.assign(acc, { [locale.value]: locale.name }),
   {}
 );
 
-export const getLocaleLanguage = (locales: Google.Locale[] = []) => {
-  return (
-    Object.keys(Google.LanguageToLocale).find((language) => Google.LanguageToLocale[language as Google.Language].includes(locales?.[0])) ||
-    (Google.Language.EN as Google.Language)
-  );
-};
+export const getLocaleLanguage = (locales: Google.Locale[] = []) =>
+  Object.keys(Google.LanguageToLocale).find((language) => Google.LanguageToLocale[language as Google.Language].includes(locales?.[0])) ||
+  (Google.Language.EN as Google.Language);

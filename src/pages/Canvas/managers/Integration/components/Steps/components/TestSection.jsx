@@ -44,13 +44,9 @@ class TestSection extends Component {
 
         actionsData.header_column = data.header_column;
       } else if (selected_action === GoogleSheetsActionType.CREATE_DATA) {
-        actionsData.row_values = data.row_values.map((rowVal) => {
-          return textEditorContentAdapter.toDB(rowVal);
-        });
+        actionsData.row_values = data.row_values.map((rowVal) => textEditorContentAdapter.toDB(rowVal));
       } else if (selected_action === GoogleSheetsActionType.UPDATE_DATA) {
-        actionsData.row_values = data.row_values.map((rowVal) => {
-          return textEditorContentAdapter.toDB(rowVal);
-        });
+        actionsData.row_values = data.row_values.map((rowVal) => textEditorContentAdapter.toDB(rowVal));
         actionsData.row_number = textEditorContentAdapter.toDB(data.row_number);
       } else if (selected_action === GoogleSheetsActionType.DELETE_DATA) {
         actionsData.start_row = textEditorContentAdapter.toDB(data.start_row);
@@ -73,8 +69,8 @@ class TestSection extends Component {
 
   checkVariables = async () => {
     const { data } = this.props;
-    const selectedIntegration = data.selectedIntegration;
-    const selectedAction = data.selectedAction;
+    const { selectedIntegration } = data;
+    const { selectedAction } = data;
 
     const actionsData = {
       user: data.user,

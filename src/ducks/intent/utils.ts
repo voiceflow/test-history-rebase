@@ -11,7 +11,7 @@ export const newSlotsCreator = (id: string): IntentSlot => ({
 });
 
 export const intentProcessor = ({ inputs = [], ...intent }: Intent): Intent => {
-  let slots = intent.slots;
+  let { slots } = intent;
 
   if (!_isPlainObject(slots)) {
     const allKeys = getUniqSlots(inputs);

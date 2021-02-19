@@ -6,7 +6,7 @@ class MaintenanceController {
 
   end = -1;
 
-  timeout: number | null = null;
+  timeout: NodeJS.Timeout | null = null;
 
   intervals: number[];
 

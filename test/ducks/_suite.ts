@@ -66,8 +66,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
         return [stub, effect];
       },
 
-      applyEffect: async (sideEffect: AnyThunk, rootState?: DeepPartial<State>) => {
-        const dispatch = utils.spy();
+      applyEffect: async (sideEffect: AnyThunk, rootState?: DeepPartial<State>, dispatch: (action: AnyAction) => void = utils.spy()) => {
         const getState: () => any = utils.spy(() => ({ [Duck.STATE_KEY]: state, ...rootState }));
         const expectDispatch = (action: { type: string } | AnyAction | AnyThunk) => utils.expect(dispatch).to.be.calledWithExactly(action);
         const expectStubCalled = ([stub, effect]: [SinonStub, SinonSpy], ...args: any[]) => {
@@ -75,7 +74,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
           utils.expect(stub).to.be.calledWithExactly(...args);
         };
 
-        const result = await sideEffect(dispatch, getState);
+        const result = await sideEffect(dispatch as any, getState);
 
         return {
           result,

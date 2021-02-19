@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import _isEqual from 'lodash/isEqual';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
@@ -33,7 +33,7 @@ type ConnectedAccountLinkingStepProps = ConnectedStepProps & {
 };
 
 const ConnectedAccountLinkingStep: React.FC<ConnectedAccountLinkingStepProps> = ({ node, accountLinkingData }) => {
-  const notEmpty = !isEqual(accountLinkingData, EMPTY_ACCOUNT_DATA);
+  const notEmpty = !_isEqual(accountLinkingData, EMPTY_ACCOUNT_DATA);
 
   return <AccountLinkingStep portID={node.ports.out[0]} isConfigured={!!accountLinkingData && notEmpty} />;
 };

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _isFunction from 'lodash/isFunction';
 import React from 'react';
 import { Collapse } from 'reactstrap';
 import { CSSProperties } from 'styled-components';
@@ -6,6 +6,7 @@ import { CSSProperties } from 'styled-components';
 import InfoIcon from '@/components/InfoIcon';
 import SvgIcon, { Icon } from '@/components/SvgIcon';
 import { swallowEvent } from '@/utils/dom';
+import { noop } from '@/utils/functional';
 
 import { SectionToggleVariant, SectionVariant } from '../constants';
 import CollapseTrigger from './CollapseTrigger';
@@ -153,7 +154,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
               {(isLink || status) && <StatusContainer>{isLink ? <SvgIcon icon="arrowRight" size={10} /> : status}</StatusContainer>}
               {!!count && Number.isInteger(count) && <NumberContainer>{count}</NumberContainer>}
               {suffix && <FixNode fixNode={suffix} color="#becedc" />}
-              {collapseVariant && <CollapseTrigger onToggle={clickHandler ? _.noop : toggle} isCollapsed={isCollapsed} variant={collapseVariant} />}
+              {collapseVariant && <CollapseTrigger onToggle={clickHandler ? noop : toggle} isCollapsed={isCollapsed} variant={collapseVariant} />}
             </StatusContent>
           )}
         </Header>
@@ -161,7 +162,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
       {(children || emptyChildren) && (
         <ContentContainer noHeader={!hasHeader} style={customContentStyling}>
           <ContentPrefixComponent />
-          <Collapse isOpen={!isCollapsed}>{_.isFunction(children) ? children({ isCollapsed, toggle }) : children}</Collapse>
+          <Collapse isOpen={!isCollapsed}>{_isFunction(children) ? children({ isCollapsed, toggle }) : children}</Collapse>
           <ContentSuffixComponent />
         </ContentContainer>
       )}

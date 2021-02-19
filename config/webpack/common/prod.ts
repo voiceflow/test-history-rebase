@@ -1,17 +1,17 @@
-import InlineSourcePlugin from 'html-webpack-inline-source-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import HTMLPlugin from 'html-webpack-plugin';
+import MiniCSSExtractPlugin from 'mini-css-extract-plugin';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
-import safePostCssParser from 'postcss-safe-parser';
-import PreloadWebpackPlugin from 'preload-webpack-plugin';
+import safePostCSSParser from 'postcss-safe-parser';
+import PreloadPlugin from 'preload-webpack-plugin';
+import InlineChunkHTMLPlugin from 'react-dev-utils/InlineChunkHtmlPlugin';
 import TerserPlugin from 'terser-webpack-plugin';
-import ManifestPlugin from 'webpack-manifest-plugin';
 
 import paths from '../../paths';
 
 export default {
   output: {
-    filename: `${paths.staticJS}[name].[hash:8].js`,
-    chunkFilename: `${paths.staticJS}[name].[chunkhash:8].chunk.js`,
+    filename: `${paths.staticJS}[name].[contenthash].js`,
+    chunkFilename: `${paths.staticJS}[name].[contenthash].chunk.js`,
   },
 
   stats: 'minimal',
@@ -24,11 +24,10 @@ export default {
       new TerserPlugin({
         terserOptions: {
           parse: {
-            ecma: 8,
+            ecma: 2017,
           },
           compress: {
             ecma: 5,
-            warnings: false,
             comparisons: false,
             inline: 2,
           },
@@ -43,12 +42,10 @@ export default {
         },
 
         parallel: true,
-        cache: true,
-        sourceMap: true,
       }),
       new OptimizeCSSAssetsPlugin({
         cssProcessorOptions: {
-          parser: safePostCssParser,
+          parser: safePostCSSParser,
           map: { inline: false, annotation: true },
         },
       }),
@@ -56,15 +53,11 @@ export default {
 
     splitChunks: {
       chunks: 'all',
-      name: false,
-      minChunks: 2,
     },
-
-    runtimeChunk: true,
   },
 
   plugins: [
-    new PreloadWebpackPlugin({
+    new PreloadPlugin({
       as(entry) {
         if (/\.css$/.test(entry)) return 'style';
         if (/\.(woff|woff2|otf|ttf|eot)$/.test(entry)) return 'font';
@@ -73,15 +66,12 @@ export default {
       rel: 'preload',
       include: 'initial',
       exclude: 'runtime',
-      fileBlacklist: [/\.map$/, /runtime.+js/],
+      fileBlacklist: [/\.map$/, /runtime/],
     }),
-    new InlineSourcePlugin(),
-    new MiniCssExtractPlugin({
-      filename: `${paths.staticCSS}[name].[contenthash:8].css`,
-      chunkFilename: `${paths.staticCSS}[name].[contenthash:8].chunk.css`,
-    }),
-    new ManifestPlugin({
-      fileName: 'asset-manifest.json',
+    new InlineChunkHTMLPlugin(HTMLPlugin, [/runtime/]),
+    new MiniCSSExtractPlugin({
+      filename: `${paths.staticCSS}[name].[contenthash].css`,
+      chunkFilename: `${paths.staticCSS}[name].[contenthash].chunk.css`,
     }),
   ],
 };

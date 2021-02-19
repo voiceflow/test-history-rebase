@@ -1,7 +1,7 @@
+import { composeDecorators, withIdentityContext, withModalContext, withRedux } from '_storybook';
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { composeDecorators, withIdentityContext, withModalContext, withRedux } from '@/../.storybook';
 import { ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import { EventualEngineProvider, RegisterEngine } from '@/contexts/EventualEngineContext';

@@ -1,4 +1,6 @@
-import _ from 'lodash';
+import _get from 'lodash/get';
+import _isBoolean from 'lodash/isBoolean';
+import _without from 'lodash/without';
 import React, { Component } from 'react';
 import Select from 'react-select';
 import { Button, ButtonGroup, Collapse, FormFeedback, FormGroup, Input, Label } from 'reactstrap';
@@ -35,7 +37,7 @@ import amazonFormAdapter from './adapter';
 const DEFAULT_TERM_ENDPOINT = 'https://creator.voiceflow.com/creator';
 const PUBLISH_AMAZON_FORM = 'publish_amazon_form';
 const generateTerms = (name, skill, children) => {
-  return `${DEFAULT_TERM_ENDPOINT}/terms?name=${encodeURI(name)}&skill=${encodeURI(skill)}${_.isBoolean(children) ? `&children=${children}` : ''}`;
+  return `${DEFAULT_TERM_ENDPOINT}/terms?name=${encodeURI(name)}&skill=${encodeURI(skill)}${_isBoolean(children) ? `&children=${children}` : ''}`;
 };
 
 class PublishAmazonForm extends Component {
@@ -132,13 +134,13 @@ class PublishAmazonForm extends Component {
 
   getFormValueObj = () => {
     const { amazonForm } = this.props;
-    const name = _.get(amazonForm, ['name'], null);
-    const summary = _.get(amazonForm, ['summary'], null);
-    const description = _.get(amazonForm, ['description'], null);
-    const updatesDescription = _.get(amazonForm, ['updatesDescription'], null);
-    const keywords = _.get(amazonForm, ['keywords'], null);
-    const invName = _.get(amazonForm, ['inv_name'], null);
-    const instructions = _.get(amazonForm, ['instructions'], null);
+    const name = _get(amazonForm, ['name'], null);
+    const summary = _get(amazonForm, ['summary'], null);
+    const description = _get(amazonForm, ['description'], null);
+    const updatesDescription = _get(amazonForm, ['updatesDescription'], null);
+    const keywords = _get(amazonForm, ['keywords'], null);
+    const invName = _get(amazonForm, ['inv_name'], null);
+    const instructions = _get(amazonForm, ['instructions'], null);
     return {
       name,
       summary,
@@ -198,7 +200,7 @@ class PublishAmazonForm extends Component {
 
     if (locales.includes(locale)) {
       if (locales.length > 1) {
-        locales = _.without(locales, locale);
+        locales = _without(locales, locale);
       }
     } else {
       locales.push(locale);

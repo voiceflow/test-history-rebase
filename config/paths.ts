@@ -7,7 +7,7 @@ const staticDir = 'static/';
 const PATHS = {
   pkg: 'package.json',
   entrypoint: `${sourceDir}index.tsx`,
-  indexHTML: `${publicDir}index.html`,
+  indexHTML: `${sourceDir}index.html`,
   sourceDir,
   publicDir,
   buildDir: 'build/',

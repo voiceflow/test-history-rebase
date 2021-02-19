@@ -8,11 +8,12 @@ import { goTo } from '@/ducks/router';
 import { allWorkspacesSelector } from '@/ducks/workspace';
 import { WorkspacesLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
-import APIKeys from '@/pages/APIKeys';
-import Dashboard from '@/pages/Dashboard';
-import NewProject from '@/pages/NewProject';
 import PrivateRoute from '@/Routes/PrivateRoute';
 import { getActivePageAndMatch } from '@/utils/routes';
+
+const APIKeys = React.lazy(() => import('@/pages/APIKeys'));
+const NewProject = React.lazy(() => import('@/pages/NewProject'));
+const Dashboard = React.lazy(() => import('@/pages/Dashboard'));
 
 const PAGES_MATCHES = {
   template: [Path.WORKSPACE_TEMPLATE, `${Path.WORKSPACE_TEMPLATE}/:workspaceID`],

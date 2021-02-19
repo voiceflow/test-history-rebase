@@ -1,7 +1,7 @@
+import { composeDecorators, withRedux } from '_storybook';
 import { boolean, select } from '@storybook/addon-knobs';
 import React from 'react';
 
-import { composeDecorators, withRedux } from '@/../.storybook';
 import { Flex } from '@/components/Box';
 import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
 

@@ -22,5 +22,5 @@ module.exports = {
   },
   transformIgnorePatterns: ['/node_modules/'],
   coverageDirectory: 'jest_coverage',
-  coveragePathIgnorePatterns: ['/node_modules/', '/.storybook/', '/^.+\\.svg$/', '/src\\/.+\\.it\\..+$/', '/src\\/.+\\.story\\..+$/'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/^.+\\.svg$/', '/src\\/.+\\.it\\..+$/', '/src\\/.+\\.story\\..+$/'],
 };

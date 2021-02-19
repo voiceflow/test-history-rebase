@@ -1,11 +1,11 @@
+import { withStepContext } from '_storybook';
 import React from 'react';
 
-import { withStepContext } from '@/../.storybook';
 import ExpressionPreview from '@/components/ExpressionEditor/components/ExpressionPreview';
 import Block from '@/pages/Canvas/components/Block';
 
-import { ExpressionPreviewContainer } from './components';
 import { IfStep, IfStepProps } from '.';
+import { ExpressionPreviewContainer } from './components';
 
 const generateExpressionLabel = (expression: any) => {
   return <ExpressionPreview expression={expression} container={ExpressionPreviewContainer} />;

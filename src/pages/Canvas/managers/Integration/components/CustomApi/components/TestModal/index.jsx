@@ -1,5 +1,6 @@
 import axios from 'axios';
-import _ from 'lodash';
+import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import pretty from 'prettysize';
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
@@ -113,7 +114,7 @@ function APITestModal({ data, closeTestModal, testModalOpened }) {
     const VariableDropdown = dropdownRef?.current;
     const initTime = Date.now();
     setSendingRequest(true);
-    if (dropdownRef && !_.isEmpty(variableValues) && VariableDropdown.state.isOpened === true) {
+    if (dropdownRef && !_isEmpty(variableValues) && VariableDropdown.state.isOpened === true) {
       VariableDropdown.toggle();
     }
 
@@ -136,7 +137,7 @@ function APITestModal({ data, closeTestModal, testModalOpened }) {
         setSendingRequest(false);
 
         const status = err.response ? err.response.status : err.status;
-        const error = _.get(err, ['response', 'data']);
+        const error = _get(err, ['response', 'data']);
         const responseMeta = {
           status,
           time: Date.now() - initTime,
@@ -165,7 +166,7 @@ function APITestModal({ data, closeTestModal, testModalOpened }) {
     <Modal toggle={closeTestModal} isOpen={testModalOpened} onClosed={closeTestModal} size="lg" onOpened={initialize}>
       <ModalHeader toggle={closeTestModal} header="API TEST" />
       <ModalBody>
-        {!_.isEmpty(variableValues) && (
+        {!_isEmpty(variableValues) && (
           <DropdownCollapseContainer>
             <DropdownCollapse text="Set Variable Values" ref={dropdownRef}>
               <div className="pb-2">

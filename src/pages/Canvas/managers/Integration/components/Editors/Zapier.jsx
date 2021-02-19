@@ -1,13 +1,13 @@
-import _ from 'lodash';
+import _isEmpty from 'lodash/isEmpty';
 import React, { useEffect } from 'react';
 
 import client from '@/client';
 import { Content } from '@/pages/Canvas/components/Editor';
 
+import TestDropdown from '../Steps/components/TestDropdown';
 import SetupDropdown from '../Steps/Zapier/Setup/SetupDropdown';
 import StartTrigger from '../Steps/Zapier/StartTrigger/StartTriggerDropdown';
 import WithMessage from '../Steps/Zapier/WithMessage/WithMessageDropdown';
-import TestDropdown from '../Steps/components/TestDropdown';
 import DropdownStepEditor from './components/DropdownStepEditor';
 
 const Step = {
@@ -28,7 +28,7 @@ function ZapierEditor({ data, onChange, currentStep, toggleStep, setStep }) {
     fetchToken();
   }, []);
 
-  const hasSelectedTrigger = data.user && !_.isEmpty(data.user);
+  const hasSelectedTrigger = data.user && !_isEmpty(data.user);
 
   return (
     <Content>

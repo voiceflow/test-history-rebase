@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import _isEmpty from 'lodash/isEmpty';
+import _isString from 'lodash/isString';
 
 const amazonAdapter = {
   toStore: (state, form) => ({
@@ -15,9 +16,9 @@ const amazonAdapter = {
       invocations: state.invocations,
       smallIcon: state.smallIcon,
       largeIcon: state.largeIcon,
-      category: _.isString(state.category) ? state.category : state.category?.value,
+      category: _isString(state.category) ? state.category : state.category?.value,
       copa: state.copa,
-      privacyPolicy: !_.isEmpty(state.privacyPolicy) ? state.privacyPolicy : '',
+      privacyPolicy: !_isEmpty(state.privacyPolicy) ? state.privacyPolicy : '',
       termsAndCond: state.termsAndCond,
       purchase: state.purchase,
       personal: state.personal,
@@ -37,9 +38,9 @@ const amazonAdapter = {
     invocations: state.invocations,
     smallIcon: state.smallIcon,
     largeIcon: state.largeIcon,
-    category: _.isString(state.category) ? state.category : state.category?.value,
+    category: _isString(state.category) ? state.category : state.category?.value,
     copa: state.copa,
-    privacyPolicy: !_.isEmpty(state.privacyPolicy) ? state.privacyPolicy : '',
+    privacyPolicy: !_isEmpty(state.privacyPolicy) ? state.privacyPolicy : '',
     termsAndCond: state.termsAndCond,
     purchase: state.purchase,
     personal: state.personal,

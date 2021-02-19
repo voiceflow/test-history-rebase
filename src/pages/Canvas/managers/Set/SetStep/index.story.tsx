@@ -1,6 +1,6 @@
+import { withStepContext } from '_storybook';
 import React from 'react';
 
-import { withStepContext } from '@/../.storybook';
 import ExpressionPreview from '@/components/ExpressionEditor/components/ExpressionPreview';
 import Block from '@/pages/Canvas/components/Block';
 import { ExpressionPreviewContainer } from '@/pages/Canvas/managers/If/IfStep/components';

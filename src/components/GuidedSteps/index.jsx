@@ -1,7 +1,6 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */
 import cn from 'classnames';
-import _ from 'lodash';
+import _cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
@@ -70,7 +69,7 @@ class GuidedSteps extends React.Component {
     // Check if the last step was a valid step, if no step check function is provided, default to true
     const stepValid = this.props.checkStep ? this.props.checkStep(prevStep) : true;
 
-    const stepStatus = _.cloneDeep(this.state.stepStatus);
+    const stepStatus = _cloneDeep(this.state.stepStatus);
     if (nextStep - prevStep > 1 && this.props.checkStep) {
       // If we jumped steps we want to check all the steps inbetween
       for (let i = prevStep; i < nextStep; i++) {
@@ -113,7 +112,7 @@ class GuidedSteps extends React.Component {
   };
 
   render() {
-    const stepStatus = _.cloneDeep(this.state.stepStatus);
+    const stepStatus = _cloneDeep(this.state.stepStatus);
     const { disabled, blocks, noDetail, submitText, haveFooter, step, preventSubmit } = this.props;
 
     // Check if the for is valid up until now

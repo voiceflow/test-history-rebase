@@ -1,5 +1,5 @@
 import axios from 'axios';
-import _ from 'lodash';
+import _isNil from 'lodash/isNil';
 import React from 'react';
 import { Alert } from 'reactstrap';
 
@@ -86,7 +86,7 @@ export default {
 
       params.resultsByHeaderName = true;
 
-      if (!(user && !_.isNil(spreadsheet) && !_.isNil(sheet))) throw new Error(MISSING_PARAM_ERR);
+      if (!(user && !_isNil(spreadsheet) && !_isNil(sheet))) throw new Error(MISSING_PARAM_ERR);
       return new Promise(async (resolve, reject) => {
         try {
           const resp = await axios.post('/integrations/google_sheets/retrieve_data', params);
@@ -99,7 +99,7 @@ export default {
     createData: async (params) => {
       const { spreadsheet, sheet, row_values, user } = params;
 
-      if (!user && !_.isNil(spreadsheet) && !_.isNil(sheet) && row_values) throw new Error(MISSING_PARAM_ERR);
+      if (!user && !_isNil(spreadsheet) && !_isNil(sheet) && row_values) throw new Error(MISSING_PARAM_ERR);
       return new Promise(async (resolve, reject) => {
         try {
           const resp = await axios.post('/integrations/google_sheets/create_data', params);
@@ -112,7 +112,7 @@ export default {
     updateData: async (params) => {
       const { spreadsheet, sheet, row_values, user, row_number } = params;
 
-      if (!user && !_.isNil(spreadsheet) && !_.isNil(sheet) && row_values && row_number) throw new Error(MISSING_PARAM_ERR);
+      if (!user && !_isNil(spreadsheet) && !_isNil(sheet) && row_values && row_number) throw new Error(MISSING_PARAM_ERR);
       return new Promise(async (resolve, reject) => {
         try {
           const resp = await axios.post('/integrations/google_sheets/update_data', {
@@ -131,7 +131,7 @@ export default {
     deleteData: async (params) => {
       const { spreadsheet, sheet, user, start_row, end_row } = params;
 
-      if (!user && !_.isNil(spreadsheet) && !_.isNil(sheet) && start_row && end_row) throw new Error(MISSING_PARAM_ERR);
+      if (!user && !_isNil(spreadsheet) && !_isNil(sheet) && start_row && end_row) throw new Error(MISSING_PARAM_ERR);
       return new Promise(async (resolve, reject) => {
         try {
           const resp = await axios.post('/integrations/google_sheets/delete_data', params);

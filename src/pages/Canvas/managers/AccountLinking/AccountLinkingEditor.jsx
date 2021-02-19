@@ -1,4 +1,7 @@
-import _ from 'lodash';
+import _filter from 'lodash/filter';
+import _find from 'lodash/find';
+import _isEmpty from 'lodash/isEmpty';
+import _isNull from 'lodash/isNull';
 import React from 'react';
 
 import Input from '@/components/Input';
@@ -45,7 +48,7 @@ function AccountLinkingEditor({ data, isOpen, setError, getAccountLinking, saveA
     try {
       const accountLinking = await getLinking();
 
-      if (!_.isEmpty(accountLinking) && !_.isNull(accountLinking)) {
+      if (!_isEmpty(accountLinking) && !_isNull(accountLinking)) {
         actions.set(accountLinking);
       } else {
         actions.set(EMPTY_ACCOUNT_DATA);
@@ -87,7 +90,7 @@ function AccountLinkingEditor({ data, isOpen, setError, getAccountLinking, saveA
   const handleAdd = React.useCallback((type) => actions.update({ [type]: [''].concat(state[type]) }), [actions, state]);
 
   const handleRemove = React.useCallback(
-    (index, type) => actions.update({ [type]: _.filter(state[type], (p, predictIndex) => index !== predictIndex) }),
+    (index, type) => actions.update({ [type]: _filter(state[type], (p, predictIndex) => index !== predictIndex) }),
     [actions, state]
   );
 
@@ -146,7 +149,7 @@ function AccountLinkingEditor({ data, isOpen, setError, getAccountLinking, saveA
                 <Select
                   value={CLIENT_AUTH_SCHEMES.find(({ value }) => value === state.accessTokenScheme)?.label}
                   placeholder={
-                    _.find(CLIENT_AUTH_SCHEMES, {
+                    _find(CLIENT_AUTH_SCHEMES, {
                       value: 'HTTP_BASIC',
                     }).label
                   }

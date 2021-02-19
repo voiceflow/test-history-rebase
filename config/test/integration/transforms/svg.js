@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies, @typescript-eslint/no-var-requires */
 const path = require('path');
-const babel = require('babel-core');
-const reactPreset = require('babel-preset-react');
+const babel = require('@babel/core');
+const reactPreset = require('@babel/preset-react');
 const escapeFileName = require('jest-svg-transformer/lib/escape-file-name').default;
 
 module.exports = {

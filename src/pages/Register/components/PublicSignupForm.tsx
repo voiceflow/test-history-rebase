@@ -35,7 +35,7 @@ export const PublicSignupForm: React.FC<PublicSignupFormProps & ConnectedPublicS
 
   const isSignupDisabled = !!coupon && !couponValid;
 
-  let timeout: number | undefined;
+  let timeout: NodeJS.Timeout | undefined;
 
   const openLogin = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -93,7 +93,11 @@ export const PublicSignupForm: React.FC<PublicSignupFormProps & ConnectedPublicS
       setSignupError(false);
     }, 5000);
 
-    return () => clearTimeout(timeout);
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
   });
 
   React.useEffect(() => {

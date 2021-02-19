@@ -7,7 +7,7 @@ import { FadeLeftContainer } from '@/styles/animations';
 
 import { Container } from './style';
 
-const blinkDuration = 2000;
+const BLINK_DURATION = 2000;
 export const READONLY_CLICK_EVENT_NAME = 'prototypeReadOnlyClick';
 
 const ReadOnlyBadge: React.FC = () => {
@@ -19,7 +19,7 @@ const ReadOnlyBadge: React.FC = () => {
       enableBlinking();
       setTimeout(() => {
         disableBlinking();
-      }, [blinkDuration]);
+      }, BLINK_DURATION);
     };
     window.addEventListener(READONLY_CLICK_EVENT_NAME, runBlinkAnimation);
 

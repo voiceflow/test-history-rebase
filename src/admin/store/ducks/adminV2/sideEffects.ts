@@ -1,5 +1,4 @@
-/* eslint-disable import/prefer-default-export */
-import _ from 'lodash';
+import _values from 'lodash/values';
 import moment from 'moment';
 
 import { Admin } from '@/admin/client';
@@ -28,7 +27,7 @@ export const findCreator = (user: string): Thunk<Nullable<Creator>> => async (di
     }
 
     // Set our creator object as well as their boards in the reducer
-    dispatch(Actions.setCreator({ creator: response?.creator, boards: _.values(response?.boards) }));
+    dispatch(Actions.setCreator({ creator: response?.creator, boards: _values(response?.boards) }));
   } catch (err) {
     toast.error('Error fetching creator');
     dispatch(Actions.findCreatorFailed({ error: { errorMessage: 'Could not find user, something went wrong', errorReturned: err } }));

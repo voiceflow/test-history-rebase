@@ -318,7 +318,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       return clientMethod;
     };
 
-    describe('updateDiagramViewers()', () => {
+    describe.skip('updateDiagramViewers()', () => {
       it('should update active diagrams with no viewers', async () => {
         const users = {};
         stub(SkillSelectors, 'activeDiagramIDSelector').returns('890');

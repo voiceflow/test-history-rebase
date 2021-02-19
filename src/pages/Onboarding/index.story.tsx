@@ -1,10 +1,10 @@
+import { composeDecorators, withRedux } from '_storybook';
 import React from 'react';
 
-import { composeDecorators, withRedux } from '@/../.storybook';
 import { UserRole } from '@/constants';
 
-import { OnboardingType } from './context/types';
 import { Onboarding } from '.';
+import { OnboardingType } from './context/types';
 
 export default {
   title: 'Onboarding',

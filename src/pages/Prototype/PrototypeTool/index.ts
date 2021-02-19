@@ -1,6 +1,6 @@
 import { GeneralRequest, RequestType, TextRequest } from '@voiceflow/general-types';
 import cuid from 'cuid';
-import _ from 'lodash';
+import _isString from 'lodash/isString';
 
 import AudioController from './Audio';
 import MessageController, { MessageControllerProps } from './Message';
@@ -62,7 +62,7 @@ class PrototypeTool {
 
     this.trace?.resetInteractions();
 
-    const formattedRequest = _.isString(request) ? ({ type: RequestType.TEXT, payload: request } as TextRequest) : request;
+    const formattedRequest = _isString(request) ? ({ type: RequestType.TEXT, payload: request } as TextRequest) : request;
 
     const input = formattedRequest?.type === RequestType.TEXT ? formattedRequest?.payload : JSON.stringify(formattedRequest?.payload, null, 2);
 

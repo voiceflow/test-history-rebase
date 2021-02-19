@@ -1,5 +1,6 @@
 import { GoogleSheetsActionType } from '@voiceflow/general-types/build/nodes/googleSheets';
-import _ from 'lodash';
+import _isEmpty from 'lodash/isEmpty';
+import _isNil from 'lodash/isNil';
 import React, { useCallback, useEffect } from 'react';
 
 import { setError } from '@/ducks/modal';
@@ -8,6 +9,7 @@ import { connect } from '@/hocs';
 import { Content } from '@/pages/Canvas/components/Editor';
 import IntegrationsService from '@/services/Integrations';
 
+import TestDropdown from '../Steps/components/TestDropdown';
 import GoogleRequestType from '../Steps/GoogleSheets/ActionSelect/GoogleRequestTypeDropdown';
 import WithValues from '../Steps/GoogleSheets/CreateUpdateRows/WithValuesDropdown';
 import DeleteSettings from '../Steps/GoogleSheets/DeleteRows/DeleteSettingsDropdown';
@@ -15,7 +17,6 @@ import SheetsOutputMapping from '../Steps/GoogleSheets/Mapping/MappingOutputDrop
 import RetrieveSettings from '../Steps/GoogleSheets/RetrieveRows/RetrieveSettingsDropdown';
 import UsingGoogleSheet from '../Steps/GoogleSheets/SelectSheet/UsingGoogleSheetDropdown';
 import GoogleUsers from '../Steps/GoogleSheets/Users/GoogleUser';
-import TestDropdown from '../Steps/components/TestDropdown';
 import DropdownStepEditor from './components/DropdownStepEditor';
 
 const Step = {
@@ -56,7 +57,7 @@ function GoogleSheetsEditor({ data, onChange, creator_id, skill_id, setError, cu
     const sheetId = data.sheet && data.sheet.value;
     const integrationsUser = data.user;
 
-    if (_.isNil(spreadSheetId) || _.isNil(sheetId) || _.isNil(integrationsUser)) return;
+    if (_isNil(spreadSheetId) || _isNil(sheetId) || _isNil(integrationsUser)) return;
 
     try {
       const headers = await IntegrationsService.googleSheets.getSheetHeaders(spreadSheetId, sheetId, integrationsUser, creator_id, skill_id);
@@ -71,8 +72,8 @@ function GoogleSheetsEditor({ data, onChange, creator_id, skill_id, setError, cu
   }, [data.sheet, data.user, updateHeaders]);
 
   const hasSelectedAction = data.selectedAction;
-  const hasUser = data.user && !_.isEmpty(data.user);
-  const hasSelectedSheet = data.sheet && !_.isEmpty(data.sheet);
+  const hasUser = data.user && !_isEmpty(data.user);
+  const hasSelectedSheet = data.sheet && !_isEmpty(data.sheet);
 
   return (
     <Content>

@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import _ from 'lodash';
+import _get from 'lodash/get';
 import React from 'react';
 
 import DefaultModal from '@/components/LegacyModal/DefaultModal';
@@ -82,7 +82,7 @@ function AddGoogleUser({
   };
 
   const users = integration_users['Google Sheets'] || [];
-  const selectedUserEmail = _.get(data, ['user', 'user_data', 'email'], '');
+  const selectedUserEmail = _get(data, ['user', 'user_data', 'email'], '');
 
   return (
     <DropdownHeader headerText="As user" headerSuffixText={selectedUserEmail} isOpened={isOpened} toggle={toggle}>

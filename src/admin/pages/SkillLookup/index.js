@@ -2,7 +2,7 @@
 import './react-table.css';
 
 import axios from 'axios';
-import _ from 'lodash';
+import _get from 'lodash/get';
 import moment from 'moment';
 import React from 'react';
 import ReactTable from 'react-table-6';
@@ -61,7 +61,7 @@ class SkillLookup extends React.Component {
       loading: false,
       project: null,
       versions: [],
-      projectID: _.get(props, ['match', 'params', 'project_id']) || '',
+      projectID: _get(props, ['match', 'params', 'project_id']) || '',
     };
   }
 

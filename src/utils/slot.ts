@@ -1,7 +1,6 @@
 import { BUILT_IN_SLOTS as ALEXA_BUILT_IN_SLOTS } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
 import { BUILT_IN_SLOTS as GOOGLE_BUILT_IN_SLOTS } from '@voiceflow/google-types';
-import _ from 'lodash';
 
 import { CUSTOM_SLOT_TYPE, PlatformType } from '@/constants';
 import { GENERAL_SLOT_TYPES } from '@/constants/platforms';

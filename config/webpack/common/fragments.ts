@@ -1,21 +1,23 @@
-import ForkTSCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { TransformOptions } from '@babel/core';
+import ForkTSCheckerPlugin from 'fork-ts-checker-webpack-plugin';
+import MiniCSSExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
+import TSConfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import webpack from 'webpack';
 
 import paths from '../../paths';
 import { IS_PRODUCTION } from '../config';
 
-export const typecheckPlugin = new ForkTSCheckerWebpackPlugin({
+export const typecheckPlugin = new ForkTSCheckerPlugin({
   typescript: {
     configFile: path.resolve(__dirname, '../../../tsconfig.build.json'),
-    configOverwrite: {
-      compilerOptions: { skipLibCheck: true },
-    },
-    diagnosticOptions: {
-      syntactic: false,
-    },
+    mode: 'write-references',
   },
+});
+
+export const tsConfigPathsPlugin = new TSConfigPathsPlugin({
+  configFile: path.resolve(__dirname, '../../../tsconfig.build.json'),
+  extensions: ['.ts', '.tsx', '.js', '.jsx'],
 });
 
 export const babelLoader: webpack.RuleSetRule = {
@@ -24,7 +26,6 @@ export const babelLoader: webpack.RuleSetRule = {
   options: {
     cacheDirectory: true,
     cacheCompression: IS_PRODUCTION,
-    compact: IS_PRODUCTION,
   },
 };
 
@@ -39,52 +40,64 @@ export const typescriptLoader: webpack.RuleSetRule = {
   },
 };
 
-export const svgLoader: webpack.RuleSetRule = {
+export const svgLoader = (options?: TransformOptions): webpack.RuleSetRule => ({
   test: /\.svg$/,
   include: path.resolve(paths.sourceDir, 'svgs'),
-  use: ({ resource }) => ({
-    loader: '@svgr/webpack',
-    options: {
-      svgoConfig: {
-        plugins: [
-          {
-            cleanupIDs: {
-              prefix: `ID-${resource}`,
-            },
-          },
-        ],
+  use: ({ resource }) => [
+    {
+      loader: 'babel-loader',
+      options: {
+        ...options,
+        sourceMaps: false,
       },
     },
-  }),
-};
+    {
+      loader: '@svgr/webpack',
+      options: {
+        babel: false,
+        svgoConfig: {
+          plugins: [
+            {
+              cleanupIDs: {
+                prefix: `ID-${resource}`,
+              },
+            },
+          ],
+        },
+      },
+    },
+  ],
+});
 
 export const styleLoader: webpack.RuleSetRule = {
   test: /\.css$/,
   use: [
-    IS_PRODUCTION ? MiniCssExtractPlugin.loader : 'style-loader',
+    IS_PRODUCTION ? MiniCSSExtractPlugin.loader : 'style-loader',
     {
       loader: 'css-loader',
       options: {
+        url: false,
         importLoaders: 1,
-        sourceMap: IS_PRODUCTION,
       },
     },
     {
       loader: 'postcss-loader',
       options: {
-        ident: 'postcss',
-        plugins: () => [
-          // eslint-disable-next-line global-require
-          require('postcss-flexbugs-fixes'),
-          // eslint-disable-next-line global-require
-          require('postcss-preset-env')({
-            autoprefixer: {
-              flexbox: 'no-2009',
-            },
-            stage: 3,
-          }),
-        ],
-        sourceMap: IS_PRODUCTION,
+        postcssOptions: {
+          ident: 'postcss',
+          plugins: [
+            'postcss-flexbugs-fixes',
+            [
+              'postcss-preset-env',
+              {
+                autoprefixer: {
+                  flexbox: 'no-2009',
+                },
+                stage: 3,
+              },
+            ],
+          ],
+        },
       },
     },
   ],
@@ -95,6 +108,6 @@ export const fileLoader: webpack.RuleSetRule = {
   loader: 'file-loader',
   exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
   options: {
-    name: `${paths.staticMedia}[name].[hash:8].[ext]`,
+    name: `${paths.staticMedia}[name].[contenthash].[ext]`,
   },
 };

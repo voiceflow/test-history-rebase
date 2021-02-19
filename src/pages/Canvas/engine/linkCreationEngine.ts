@@ -16,7 +16,7 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
 
   isCompleting = false;
 
-  unpinTimeout = 0;
+  unpinTimeout: NodeJS.Timeout | null = null;
 
   get isDrawing() {
     return !!this.sourcePortID;
@@ -92,7 +92,7 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
 
   pin(targetPortID: string, position: [number, number]) {
     this.log.debug(this.log.pending('pinning to port'), this.log.slug(targetPortID));
-    clearTimeout(this.unpinTimeout);
+    this.clearUnpinTimeout();
 
     this.activeTargetPortID = targetPortID;
     this.components.newLink?.pin(position);
@@ -101,7 +101,7 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
   }
 
   unpin() {
-    clearTimeout(this.unpinTimeout);
+    this.clearUnpinTimeout();
 
     this.unpinTimeout = setTimeout(() => {
       if (!this.activeTargetPortID) return;
@@ -128,9 +128,20 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     return [this.engine.canvas!.transformPoint(startPoint), this.engine.canvas!.transformPoint(endPoint, { relative: true })];
   }
 
+  clearUnpinTimeout() {
+    if (this.unpinTimeout) {
+      clearTimeout(this.unpinTimeout);
+      this.unpinTimeout = null;
+    }
+  }
+
   reset() {
     this.log.debug(this.log.pending('resetting link creation'));
-    clearTimeout(this.unpinTimeout);
+
+    if (this.unpinTimeout) {
+      clearTimeout(this.unpinTimeout);
+      this.unpinTimeout = null;
+    }
 
     this.engine.highlight.reset();
     this.engine.removeClass(CANVAS_CREATING_LINK_CLASSNAME);

@@ -1,6 +1,6 @@
 /* eslint no-restricted-globals: ["error", "isFinite"] */
 import axios from 'axios';
-import _ from 'lodash';
+import _values from 'lodash/values';
 import moment from 'moment';
 
 import { toast } from '@/components/Toast';
@@ -153,7 +153,7 @@ export const findCreator = (creatorInfo) => async (dispatch) => {
       type: SET_CREATOR,
       payload: {
         creator: response.data.creator,
-        boards: _.values(response.data.boards),
+        boards: _values(response.data.boards),
       },
     });
   } catch (err) {
@@ -183,7 +183,7 @@ export const getCharges = (creatorInfo) => async (dispatch) => {
       type: SET_CREATOR,
       payload: {
         creator: response.data.creator,
-        boards: _.values(response.data.boards),
+        boards: _values(response.data.boards),
       },
     });
   } else {
@@ -217,7 +217,7 @@ export const getVendors = (creatorInfo) => async (dispatch) => {
       type: SET_CREATOR,
       payload: {
         creator: response.data.creator,
-        boards: _.values(response.data.boards),
+        boards: _values(response.data.boards),
       },
     });
   } else {

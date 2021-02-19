@@ -16,12 +16,13 @@ export default (port: number, buildDirectory = paths.buildDir) => ({
     },
   },
 
+  devtool: 'eval-cheap-module-source-map',
+
   plugins: [
     new WebpackPluginServe({
       port,
       host: host || 'localhost',
       open: open ?? true,
-      hmr: true,
       historyFallback: true,
       progress: 'minimal',
 

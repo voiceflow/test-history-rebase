@@ -1,7 +1,7 @@
+import { withModalContext } from '_storybook';
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { withModalContext } from '@/../.storybook';
 import { ModalType } from '@/constants';
 
 import { BoardDeleteModal } from '.';

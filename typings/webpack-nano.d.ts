@@ -9,6 +9,10 @@ declare module 'webpack-nano/argv' {
     open: boolean;
 
     instrument: boolean;
+    validate: boolean;
+    analyze: boolean;
+    typecheck: boolean;
+    strict: boolean;
 
     // debugging
     debug: boolean;

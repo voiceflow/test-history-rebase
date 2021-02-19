@@ -1,6 +1,6 @@
 import './FinanceBoard.css';
 
-import _ from 'lodash';
+import _has from 'lodash/has';
 import React from 'react';
 
 import * as Admin from '@/admin/store/ducks/adminV2';
@@ -21,7 +21,7 @@ class FinanceBoard extends React.Component {
   }
 
   componentDidMount() {
-    if (_.has(this.props, ['match', 'params', 'creator_id'])) {
+    if (_has(this.props, ['match', 'params', 'creator_id'])) {
       // The creator id we are looking for
       const setCreatorId = this.props.match.params.creator_id;
       this.setState({

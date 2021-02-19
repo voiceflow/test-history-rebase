@@ -8,7 +8,7 @@ Cypress.Commands.add('shouldBeOn', (page) => {
 });
 
 Cypress.Commands.add('awaitLoaded', () => {
-  cy.get('.vf-loader').should('not.be.visible');
+  cy.get('.vf-loader').should('not.exist');
 });
 
 Cypress.Commands.add('setup', () => {

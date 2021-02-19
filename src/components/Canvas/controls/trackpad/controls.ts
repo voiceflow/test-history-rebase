@@ -14,9 +14,7 @@ class TrackPadControls extends MouseControls {
 
   lastDirectionY = 0;
 
-  scrollComplete: number | null = null;
-
-  animateCompleteEarly: number | null = null;
+  animateCompleteEarly: NodeJS.Timeout | null = null;
 
   lastScale = 1;
 

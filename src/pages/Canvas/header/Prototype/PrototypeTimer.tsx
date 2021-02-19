@@ -23,14 +23,21 @@ const PrototypeTimer: React.FC<PrototypeTimerProps> = ({ status, startTime }) =>
   const [duration, setDuration] = React.useState(INITIAL_TIME);
 
   React.useEffect(() => {
-    let interval = -1;
+    let interval: NodeJS.Timer | null = null;
+
     if (status === PrototypeStatus.ACTIVE) {
       interval = setInterval(() => setDuration(getDuration(startTime)), 1000);
     }
+
     if (status === PrototypeStatus.IDLE) {
       setDuration(INITIAL_TIME);
     }
-    return () => clearInterval(interval);
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
   }, [status]);
 
   return <Timer>{duration}</Timer>;

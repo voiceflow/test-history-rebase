@@ -22,7 +22,7 @@ export const { Consumer: NLPConsumer } = NLPContext;
 const PULL_TIMEOUT = 3000; // 3s
 
 export const NLPProvider: React.FC = ({ children }) => {
-  const pullTimeout = React.useRef<number>();
+  const pullTimeout = React.useRef<NodeJS.Timeout>();
   const [job, setJob] = React.useState<Nullable<NLPTrainJob.AnyJob>>(null);
   const [publishing, setPublishing] = React.useState<boolean>(false);
 
@@ -50,7 +50,9 @@ export const NLPProvider: React.FC = ({ children }) => {
   }, [projectID]);
 
   const stopPulling = React.useCallback(() => {
-    clearTimeout(pullTimeout.current);
+    if (pullTimeout.current) {
+      clearTimeout(pullTimeout.current);
+    }
 
     pullTimeout.current = undefined;
   }, []);

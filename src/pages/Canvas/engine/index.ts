@@ -204,6 +204,9 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   registerCanvas(canvas: CanvasAPI | null) {
     this.canvas = canvas;
 
+    if (canvas) {
+      this.emitter.emit(CanvasAction.RENDERED);
+    }
     this.log.debug(this.log.init(canvas ? 'registered' : 'expired'), this.log.value('<Canvas>'));
   }
 

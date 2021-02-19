@@ -1,7 +1,7 @@
+import { composeDecorators, withRedux } from '_storybook';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { composeDecorators, withRedux } from '@/../.storybook';
 import * as Creator from '@/ducks/creator';
 import { EngineProvider } from '@/pages/Canvas/contexts';
 import { objectID } from '@/utils';

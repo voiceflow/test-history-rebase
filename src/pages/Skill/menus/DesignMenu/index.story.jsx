@@ -1,7 +1,7 @@
+import { composeDecorators, withDnD, withModalContext, withRedux } from '_storybook';
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { composeDecorators, withDnD, withModalContext, withRedux } from '@/../.storybook';
 import { ConfirmModal, ErrorModal } from '@/components/LegacyModal';
 import { ModalType, UserRole } from '@/constants';
 import { EventualEngineProvider, IdentityProvider, OverlayProvider, RegisterEngine } from '@/contexts';

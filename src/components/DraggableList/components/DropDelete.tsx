@@ -31,7 +31,11 @@ const DropDelete = <I extends unknown>({ type, deleteComponent: Delete, handlers
   React.useEffect(() => {
     const timeout = renderDelayed ? setTimeout(() => setRendered(true), 100) : undefined;
 
-    return () => clearTimeout(timeout);
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
   }, []);
 
   const connectTarget = connectDrop(rootRef);

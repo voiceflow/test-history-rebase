@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { get as _get } from 'lodash';
+import _get from 'lodash/get';
 import { createSelector } from 'reselect';
 
 import { createAction, createRootSelector } from '@/ducks/utils';

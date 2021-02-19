@@ -1,13 +1,13 @@
 import './Button.css';
 
 import cn from 'classnames';
-import _ from 'lodash';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import SvgIcon from '@/components/SvgIcon';
+import { noop } from '@/utils/functional';
 import { track } from '@/utils/tracker';
 
 import Loader from '../Loader';
@@ -44,7 +44,7 @@ export default class Button extends Component {
   };
 
   static defaultProps = {
-    onRef: _.noop,
+    onRef: noop,
     trackEvent: 'Button Click',
     iconPosition: 'right',
   };

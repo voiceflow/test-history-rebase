@@ -1,3 +1,4 @@
+// eslint-disable-next-line lodash/import-scope
 import type { DebounceSettings, ThrottleSettings } from 'lodash';
 import _debounce from 'lodash/debounce';
 import _throttle from 'lodash/throttle';

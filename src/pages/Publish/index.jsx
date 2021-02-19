@@ -13,13 +13,14 @@ import { connect } from '@/hocs';
 import { usePermission } from '@/hooks';
 import PrivateRoute from '@/Routes/PrivateRoute';
 
-import PublishAmazon from './Amazon';
 import Container from './components/PublishContainer';
 import PlatformContainer from './components/PublishPlatformContainer';
 import Sidebar from './components/PublishSidebar';
 import SidebarItem from './components/PublishSidebarItem';
-import Export from './Export';
-import PublishGoogle from './Google';
+
+const PublishAmazon = React.lazy(() => import('./Amazon'));
+const PublishGoogle = React.lazy(() => import('./Google'));
+const Export = React.lazy(() => import('./Export'));
 
 const updateLink = (link, versionID) => {
   return link.replace(':versionID', versionID);

@@ -1,6 +1,6 @@
+import { composeDecorators, withDnD, withModalContext, withRedux } from '_storybook';
 import React from 'react';
 
-import { composeDecorators, withDnD, withModalContext, withRedux } from '@/../.storybook';
 import { ToastContainer } from '@/components/Toast';
 import { ModalType } from '@/constants';
 import { OverlayProvider } from '@/contexts/OverlayContext';

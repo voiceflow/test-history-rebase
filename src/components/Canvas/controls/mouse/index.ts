@@ -1,6 +1,5 @@
-import _ from 'lodash';
-
 import { ControlScheme } from '@/components/Canvas/constants';
+import { noop } from '@/utils/functional';
 
 import { GenerateControlInterface } from '../types';
 import Controls from './controls';
@@ -17,8 +16,8 @@ const MouseInterface: GenerateControlInterface = (handle) => {
     mousedown: controls.mousedown,
     dragstart: controls.dragstart,
     wheel: controls.wheel,
-    gesturestart: _.noop,
-    gesturechange: _.noop,
+    gesturestart: noop,
+    gesturechange: noop,
     keyup: controls.keyup,
     keydown: controls.keydown,
   };

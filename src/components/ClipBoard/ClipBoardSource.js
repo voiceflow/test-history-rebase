@@ -1,8 +1,9 @@
 import Clipboard from 'clipboard';
-import _ from 'lodash';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React from 'react';
+
+import { noop } from '@/utils/functional';
 
 class ClipboardButton extends React.Component {
   static propTypes = {
@@ -27,7 +28,7 @@ class ClipboardButton extends React.Component {
   };
 
   static defaultProps = {
-    onClick: _.noop,
+    onClick: noop,
   };
 
   /* Returns a object with all props that fulfill a certain naming pattern

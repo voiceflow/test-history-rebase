@@ -1,6 +1,6 @@
+import { withStepContext } from '_storybook';
 import React from 'react';
 
-import { withStepContext } from '@/../.storybook';
 import { StepLabelVariant } from '@/constants/canvas';
 
 import Block from '../Block';

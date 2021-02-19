@@ -1,12 +1,14 @@
 import { text } from '@storybook/addon-knobs';
-import _ from 'lodash';
+import _constant from 'lodash/constant';
 import React from 'react';
+
+import { noop } from '@/utils/functional';
 
 import LinkUpload from '.';
 
 const getProps = () => ({
   placeholder: text('Placeholder', 'placeholder'),
-  validate: _.constant('Error message'),
+  validate: _constant('Error message'),
 });
 
 export default {
@@ -14,6 +16,6 @@ export default {
   component: LinkUpload,
 };
 
-export const withBackButton = () => <LinkUpload onBack={_.noop} {...getProps()} />;
+export const withBackButton = () => <LinkUpload onBack={noop} {...getProps()} />;
 
 export const withoutBackButton = () => <LinkUpload {...getProps()} />;

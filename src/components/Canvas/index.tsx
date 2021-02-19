@@ -65,7 +65,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
 
   controlTeardownHandlers: (() => void)[] = [];
 
-  applyTransitionTimeout: number | null = null;
+  applyTransitionTimeout: NodeJS.Timeout | null = null;
 
   rect: DOMRect | null = null;
 

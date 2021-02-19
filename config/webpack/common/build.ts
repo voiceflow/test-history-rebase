@@ -1,9 +1,8 @@
-import { BaseHrefWebpackPlugin } from 'base-href-webpack-plugin';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import { CleanWebpackPlugin as CleanPlugin } from 'clean-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
+import HTMLPlugin from 'html-webpack-plugin';
 import merge from 'webpack-merge';
-import { instrument } from 'webpack-nano/argv';
+import { instrument, strict, typecheck } from 'webpack-nano/argv';
 
 import paths from '../../paths';
 import { BASE_HREF, ENV, IS_ADMIN, IS_PRODUCTION, IS_SERVING } from '../config';
@@ -12,9 +11,8 @@ import { babelLoader, fileLoader, styleLoader, svgLoader, typecheckPlugin } from
 export default merge(
   {
     plugins: [
-      new CleanWebpackPlugin() as any,
-      ...(instrument ? [] : [typecheckPlugin]),
-      new HtmlWebpackPlugin({
+      ...((typecheck || strict) && !instrument ? [typecheckPlugin] : []),
+      new HTMLPlugin({
         inject: true,
         template: paths.indexHTML,
         ...(IS_PRODUCTION && {
@@ -30,27 +28,45 @@ export default merge(
             removeRedundantAttributes: true,
             removeStyleLinkTypeAttributes: true,
           },
-          inlineSource: 'runtime~.+\\.js',
         }),
-        templateParameters: (compilation) => {
-          return {
-            compilation,
-            ...ENV,
-          };
+        templateParameters: {
+          ...ENV,
+          base: BASE_HREF,
         },
       }),
-      new BaseHrefWebpackPlugin({ baseHref: BASE_HREF }),
 
-      ...(IS_SERVING ? [] : [new CopyPlugin({ patterns: [{ from: paths.publicDir, to: IS_ADMIN ? paths.admin.buildDir : paths.buildDir }] })]),
+      ...(IS_SERVING
+        ? []
+        : [
+            new CleanPlugin(),
+            new CopyPlugin({
+              patterns: [
+                {
+                  from: paths.publicDir,
+                  to: IS_ADMIN ? paths.admin.buildDir : paths.buildDir,
+                  globOptions: {
+                    dot: false,
+                  },
+                },
+              ],
+            }),
+          ]),
     ],
 
     module: {
       strictExportPresence: true,
 
       rules: [
-        { parser: { requireEnsure: false } },
         {
-          oneOf: [{ ...babelLoader, include: paths.sourceDir }, svgLoader, styleLoader, fileLoader],
+          oneOf: [
+            {
+              ...babelLoader,
+              include: paths.sourceDir,
+            },
+            svgLoader(),
+            styleLoader,
+            fileLoader,
+          ],
         },
         // {
         //   rules: instrument
@@ -70,6 +86,6 @@ export default merge(
       ],
     },
   },
-  // eslint-disable-next-line import/no-dynamic-require, global-require
+  // eslint-disable-next-line import/no-dynamic-require, global-require, @typescript-eslint/no-var-requires
   require(IS_PRODUCTION ? './prod' : './dev').default
 );

@@ -1,11 +1,10 @@
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
-import path from 'path';
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import webpack from 'webpack';
 import { action } from 'webpack-nano/argv';
 import WebpackBar from 'webpackbar';
 
-import { BASE_HREF, ENV, IS_PRODUCTION } from '../config';
+import { BASE_HREF, ENV, IS_CI, IS_PRODUCTION } from '../config';
+import { tsConfigPathsPlugin } from './fragments';
 
 const commonConfig: webpack.Configuration = {
   output: {
@@ -14,43 +13,31 @@ const commonConfig: webpack.Configuration = {
 
   resolve: {
     extensions: ['.js', '.json', '.jsx', '.ts', '.tsx', '.css'],
-    alias: {
-      lodash: 'lodash-es',
-    },
-    plugins: [
-      new TsconfigPathsPlugin({
-        configFile: path.resolve(__dirname, '../../../tsconfig.build.json'),
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],
-      }),
-    ],
+    plugins: [tsConfigPathsPlugin as any],
+    symlinks: !!IS_CI,
   },
 
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': Object.keys(ENV).reduce<Record<string, string>>((acc, key) => {
-        acc[key] = JSON.stringify(ENV[key as keyof typeof ENV]);
+      ...Object.keys(ENV).reduce<Record<string, string>>((acc, key) => {
+        acc[`process.env.${key}`] = JSON.stringify(ENV[key as keyof typeof ENV]);
 
         return acc;
       }, {}),
+      'process.browser': JSON.stringify(true),
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new WebpackBar({ name: `Voiceflow Creator - ${action || 'build'}` }),
     new webpack.BannerPlugin(`Voiceflow ${ENV.VERSION}`),
 
-    ...(IS_PRODUCTION
-      ? [new webpack.optimize.ModuleConcatenationPlugin(), new webpack.HashedModuleIdsPlugin()]
-      : [new webpack.NamedModulesPlugin(), new CaseSensitivePathsPlugin()]),
+    ...(IS_PRODUCTION ? [] : [new CaseSensitivePathsPlugin()]),
   ],
 
   mode: IS_PRODUCTION ? 'production' : 'development',
   bail: IS_PRODUCTION,
 
-  node: {
-    dgram: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty',
+  optimization: {
+    runtimeChunk: 'single',
   },
 };
 

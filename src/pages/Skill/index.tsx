@@ -4,7 +4,6 @@ import IdleTimer from 'react-idle-timer';
 import { Redirect, RouteComponentProps, Switch } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 
-import PrivateRoute from '@/Routes/PrivateRoute';
 import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
@@ -14,23 +13,25 @@ import * as SkillDuck from '@/ducks/skill';
 import { PlanRestrictionGate, ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable, usePermission } from '@/hooks';
-import Business from '@/pages/Business';
 import CanvasHeader from '@/pages/Canvas/header';
 import InactivityModal from '@/pages/Inactivity';
-import Migrate from '@/pages/Migrate';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
-import Publish from '@/pages/Publish';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
+import PrivateRoute from '@/Routes/PrivateRoute';
 import { isOnlyViewerSelector } from '@/store/selectors';
 import { ConnectedProps } from '@/types';
 import { compose } from '@/utils/functional';
 import { getActivePageAndMatch } from '@/utils/routes';
 
-import Diagram from './components/Diagram';
 import ProjectSubHeader from './components/ProjectSubHeader';
 import ProjectTitle from './components/ProjectTitle';
 import { PAGES_MATCHES, TIMEOUT_COUNT } from './constants';
 import { ExportProvider, MarkupModeProvider, NLPProvider, PublishProvider } from './contexts';
+
+const Diagram = React.lazy(() => import(/* webpackPrefetch: true */ './components/Diagram'));
+const Business = React.lazy(() => import('@/pages/Business'));
+const Migrate = React.lazy(() => import('@/pages/Migrate'));
+const Publish = React.lazy(() => import('@/pages/Publish'));
 
 export type SkillProps = RouteComponentProps;
 

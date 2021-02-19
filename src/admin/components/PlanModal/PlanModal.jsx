@@ -1,6 +1,6 @@
 import './PlanModal.css';
 
-import _ from 'lodash';
+import _upperFirst from 'lodash/upperFirst';
 import moment from 'moment';
 import React from 'react';
 import DayPicker from 'react-day-picker';
@@ -125,13 +125,13 @@ class PlanModal extends React.Component {
             <hr />
 
             <label>
-              Set Plan to: (currently <b>{_.upperFirst(workspace.plan || 'Starter')}</b>)
+              Set Plan to: (currently <b>{_upperFirst(workspace.plan || 'Starter')}</b>)
             </label>
 
             <Select
               value={workspace.plan || PlanType.STARTER}
               options={[PlanType.STARTER, PlanType.STUDENT, PlanType.PRO, PlanType.ENTERPRISE]}
-              getOptionLabel={_.upperFirst}
+              getOptionLabel={_upperFirst}
               onSelect={this.updatePlan}
             />
           </ModalBody>

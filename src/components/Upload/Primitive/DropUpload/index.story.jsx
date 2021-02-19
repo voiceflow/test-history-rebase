@@ -1,8 +1,8 @@
 import { boolean, text } from '@storybook/addon-knobs';
-import _ from 'lodash';
 import React from 'react';
 
 import { styled } from '@/hocs';
+import { noop } from '@/utils/functional';
 
 import DropUpload from '.';
 
@@ -27,12 +27,12 @@ export default {
 export const normal = () => (
   <Container>
     <DropUpload
-      onDropAccepted={_.noop}
-      clearError={() => _.noop}
-      onDropRejected={_.noop}
-      switchMode={_.noop}
+      onDropAccepted={noop}
+      clearError={() => noop}
+      onDropRejected={noop}
+      switchMode={noop}
       cornerIcon="star"
-      cornerAction={_.noop}
+      cornerAction={noop}
       successLabel="Foo.mp3"
       acceptedFileTypes="audio/mpeg"
       {...getProps()}

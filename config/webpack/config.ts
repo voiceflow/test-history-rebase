@@ -28,7 +28,7 @@ import {
   userflow,
 } from 'webpack-nano/argv';
 
-const { NODE_ENV } = process.env;
+const { NODE_ENV, CI, CIRCLE_SHA1, CIRCLE_BRANCH, CIRCLE_TAG } = process.env;
 const ENV_PREFIX = 'VF_APP_';
 
 const EXTRACTED_ENV = Object.keys(process.env).reduce<Record<string, string | undefined>>((acc, key) => {
@@ -40,6 +40,7 @@ const EXTRACTED_ENV = Object.keys(process.env).reduce<Record<string, string | un
 }, {});
 
 export const IS_PRODUCTION = NODE_ENV === 'production';
+export const IS_CI = !!CI;
 export const IS_SERVING = action === 'serve' || action === 'admin-serve';
 export const IS_ADMIN = action === 'admin' || action === 'admin-serve';
 export const BASE_HREF = '/';
@@ -77,8 +78,10 @@ export const ENV = {
   FF_SHARE_PROTOTYPE_VIEW: ff_sharePrototypeView && 'true',
 
   API_HOST: 'localhost',
+  ROOT_DOMAIN: '',
+  MAINTENANCE_STATUS_SOURCE: '',
   ...EXTRACTED_ENV,
-  VERSION: EXTRACTED_ENV.VERSION || `(${branch.sync()})`,
+  VERSION: EXTRACTED_ENV.VERSION || CIRCLE_TAG || `(${CIRCLE_BRANCH || CIRCLE_SHA1 || branch.sync()})`,
   ...(debug
     ? {
         DEBUG_NETWORK: true,

@@ -1,6 +1,5 @@
+import { withRedux } from '_storybook';
 import React from 'react';
-
-import { withRedux } from '@/../.storybook';
 
 import Header from '.';
 

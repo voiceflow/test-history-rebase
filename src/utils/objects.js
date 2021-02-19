@@ -1,9 +1,10 @@
-import _ from 'lodash';
-import cloneDeep from 'lodash/cloneDeep';
-import toPath from 'lodash/toPath';
+import _cloneDeep from 'lodash/cloneDeep';
+import _isObject from 'lodash/isObject';
+import _toPath from 'lodash/toPath';
+import _transform from 'lodash/transform';
 
 export const getIn = (rawObj, key, def, index = 0) => {
-  const path = toPath(key);
+  const path = _toPath(key);
   let obj = rawObj;
   let i = index;
 
@@ -16,7 +17,7 @@ export const getIn = (rawObj, key, def, index = 0) => {
 
 export const setIn = (obj, path, value) => {
   const res = {};
-  const pathArray = toPath(path);
+  const pathArray = _toPath(path);
   let resVal = res;
   let i = 0;
 
@@ -27,7 +28,7 @@ export const setIn = (obj, path, value) => {
     if (resVal[currentPath]) {
       resVal = resVal[currentPath];
     } else if (currentObj) {
-      resVal[currentPath] = cloneDeep(currentObj);
+      resVal[currentPath] = _cloneDeep(currentObj);
       resVal = resVal[currentPath];
     } else {
       const nextPath = pathArray[i + 1];
@@ -67,9 +68,9 @@ export const filterEntries = (obj, predicate) =>
 
 export const getDiff = (object, base) => {
   const changes = (object, base) =>
-    _.transform(object, (result, value, key) => {
+    _transform(object, (result, value, key) => {
       if (value !== base[key]) {
-        result[key] = _.isObject(value) && _.isObject(base[key]) ? changes(value, base[key]) : value;
+        result[key] = _isObject(value) && _isObject(base[key]) ? changes(value, base[key]) : value;
       }
     });
   return changes(object, base);
@@ -77,7 +78,7 @@ export const getDiff = (object, base) => {
 
 export const getTopLevelDiff = (object, base) => {
   const changes = (object, base) =>
-    _.transform(object, (result, value, key) => {
+    _transform(object, (result, value, key) => {
       if (value !== base[key]) {
         result[key] = value;
       }

@@ -1,7 +1,7 @@
+import { composeDecorators2, withContext, withStepContext } from '_storybook';
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { composeDecorators2, withContext, withStepContext } from '@/../.storybook';
 import { PLATFORMS } from '@/constants';
 import { NodeEntityContext } from '@/pages/Canvas/contexts';
 import { CommandStep } from '@/pages/Canvas/managers/Command/CommandStep';

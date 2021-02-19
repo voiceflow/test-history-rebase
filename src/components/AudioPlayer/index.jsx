@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _isNumber from 'lodash/isNumber';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
@@ -15,7 +15,7 @@ const formatDigit = (number) => {
 };
 
 export const formatTime = (num) => {
-  if (!_.isNumber(num)) {
+  if (!_isNumber(num)) {
     return '00:00';
   }
   const minutes = formatDigit(Math.floor(num / 60 / 60));

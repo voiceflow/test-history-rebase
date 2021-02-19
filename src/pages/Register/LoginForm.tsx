@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import _ from 'lodash';
+import _get from 'lodash/get';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
@@ -33,7 +33,7 @@ export const LoginForm: React.FC<RouteComponentProps & ConnectedLoginFormProps> 
       email,
       password,
     }).catch((error) => {
-      const errText = _.get(error, ['body', 'data']) || false;
+      const errText = _get(error, ['body', 'data']) || false;
       toast.error(errText);
     });
     return false;

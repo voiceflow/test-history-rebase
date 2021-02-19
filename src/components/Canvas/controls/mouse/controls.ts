@@ -9,7 +9,7 @@ class Controls extends BaseControls {
 
   isDragging = false;
 
-  scrollComplete: number | null = null;
+  scrollComplete: NodeJS.Timeout | null = null;
 
   mouseMovement = new MouseMovement();
 

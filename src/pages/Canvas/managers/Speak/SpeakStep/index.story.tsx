@@ -1,7 +1,7 @@
+import { withStepContext } from '_storybook';
 import { select } from '@storybook/addon-knobs';
 import React from 'react';
 
-import { withStepContext } from '@/../.storybook';
 import { PLATFORMS, PlatformType } from '@/constants';
 import Block from '@/pages/Canvas/components/Block';
 

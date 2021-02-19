@@ -24,7 +24,7 @@ import PublicRoute from './PublicRoute';
 
 const SSML = React.lazy(() => import('@/pages/SSML'));
 const Legal = React.lazy(() => import('@/components/Legal'));
-const Skill = React.lazy(() => import('@/pages/Skill'));
+const Skill = React.lazy(() => import(/* webpackPrefetch: true */ '@/pages/Skill'));
 const Account = React.lazy(() => import('@/pages/Account'));
 const Runtime = React.lazy(() => import('@/pages/Runtime'));
 const Page404 = React.lazy(() => import('@/components/ErrorPages/404'));

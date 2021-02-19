@@ -1,4 +1,4 @@
-import { isString } from 'lodash';
+import _isString from 'lodash/isString';
 
 export type Transform<T = any, R = T> = (value: T) => R;
 
@@ -29,7 +29,7 @@ export const noop = () => {};
 
 export const identity = <T>(value: T): T => value;
 
-export const stringify = (value: any): string => (isString(value) ? value : String(value));
+export const stringify = (value: any): string => (_isString(value) ? value : String(value));
 
 export const withEffect = <T>(callback: (value: T) => void) => (value: T) => {
   callback(value);

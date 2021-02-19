@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import _ from 'lodash';
+import _constant from 'lodash/constant';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
@@ -19,7 +19,7 @@ import Item from './Item';
 
 const DropContainer = withDraggable({
   name: 'dashboard-item',
-  canDrag: _.constant(false),
+  canDrag: _constant(false),
   onDropKey: 'onDrop',
   onMoveKey: 'onMove',
 })(({ children, className, connectDropTarget }) => connectDropTarget && connectDropTarget(<div className={className}>{children}</div>));
@@ -217,7 +217,7 @@ export default withDraggable({
   name: 'dashboard-list',
   styles: { display: 'flex' },
   canDrag: (props) => !props.disableDragging,
-  canDrop: _.constant(true),
+  canDrop: _constant(true),
   onMoveKey: 'onMove',
   onDropKey: 'onDrop',
   allowXTransform: true,

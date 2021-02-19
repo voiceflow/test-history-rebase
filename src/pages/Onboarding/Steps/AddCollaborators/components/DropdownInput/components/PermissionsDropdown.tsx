@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _constant from 'lodash/constant';
 import React from 'react';
 
 import BaseDropdown from '@/components/Dropdown';
@@ -52,7 +52,7 @@ const PermissionsDropdown: React.FC<PermissionDropdownProps> = ({
       }
     >
       {(ref, onToggle, isOpen) => (
-        <DropdownButton orientation={orientation} ref={ref} onClick={isDisabled ? _.constant(null) : onToggle} error={hasError} active={isOpen}>
+        <DropdownButton orientation={orientation} ref={ref} onClick={isDisabled ? _constant(null) : onToggle} error={hasError} active={isOpen}>
           {dropdownValue?.label?.toUpperCase()}
           {!isDisabled && <Icon icon={SectionToggleVariant.TOGGLE as any} size={10} color="currentColor" />}
         </DropdownButton>

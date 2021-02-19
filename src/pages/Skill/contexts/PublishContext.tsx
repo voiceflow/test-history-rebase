@@ -23,7 +23,7 @@ export const { Consumer: PublishConsumer } = PublishContext;
 const PULL_TIMEOUT = 3000; // 3s
 
 export const PublishProvider: React.FC = ({ children }) => {
-  const pullTimeout = React.useRef<number>();
+  const pullTimeout = React.useRef<NodeJS.Timeout>();
   const [job, setJob] = React.useState<Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>>(null);
 
   const platform = useSelector(Skill.activePlatformSelector);
@@ -64,7 +64,9 @@ export const PublishProvider: React.FC = ({ children }) => {
   );
 
   const stopPulling = React.useCallback(() => {
-    clearTimeout(pullTimeout.current);
+    if (pullTimeout.current) {
+      clearTimeout(pullTimeout.current);
+    }
 
     pullTimeout.current = undefined;
   }, []);

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _get from 'lodash/get';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
 import { Form, FormGroup, Input } from 'reactstrap';
@@ -24,7 +24,8 @@ const LoginForm = ({ login, location }) => {
       email,
       password,
     }).catch((err) => {
-      const errText = _.get(err, ['body', 'data']) || err;
+      const errText = _get(err, ['body', 'data']) || err;
+
       setLoginError(errText);
     });
     return false;

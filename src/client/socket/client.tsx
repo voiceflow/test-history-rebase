@@ -134,7 +134,7 @@ class SocketClient {
     // log socket error events
     this.#setupErrorHandlers();
 
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       this.once(SocketEvent.CONNECT, () => {
         this.status = SocketStatus.CONNECTED;
 

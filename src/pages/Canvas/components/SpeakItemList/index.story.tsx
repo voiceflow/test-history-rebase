@@ -1,10 +1,10 @@
+import { composeDecorators, withDnD, withRedux } from '_storybook';
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { composeDecorators, withDnD, withRedux } from '@/../.storybook';
 import { DialogType, PlatformType } from '@/constants';
 import { styled } from '@/hocs';
-import { SSMLData, SpeakData } from '@/models';
+import { SpeakData, SSMLData } from '@/models';
 
 import SpeakItemList from '.';
 

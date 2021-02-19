@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import _isEmpty from 'lodash/isEmpty';
 import React, { useContext } from 'react';
 
 import client from '@/client';
@@ -109,7 +109,7 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({
         coupon: coupon || undefined,
       });
 
-      if (isEmpty(errors)) {
+      if (_isEmpty(errors)) {
         setPrice(price);
         setCouponError('');
       } else {

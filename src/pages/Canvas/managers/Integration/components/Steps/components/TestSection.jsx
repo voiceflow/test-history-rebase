@@ -2,7 +2,8 @@ import { deepVariableSubstitution } from '@voiceflow/common';
 import { GoogleSheetsActionType } from '@voiceflow/general-types/build/nodes/googleSheets';
 import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
 import update from 'immutability-helper';
-import _ from 'lodash';
+import _cloneDeep from 'lodash/cloneDeep';
+import _isEmpty from 'lodash/isEmpty';
 import React, { Component } from 'react';
 import ReactJson from 'react-json-view';
 import { Button, Input, InputGroup, InputGroupAddon } from 'reactstrap';
@@ -82,7 +83,7 @@ class TestSection extends Component {
 
     this.generateLegacyActionsDataStructure(selectedIntegration, selectedAction, data, actionsData);
 
-    const params = _.cloneDeep(actionsData);
+    const params = _isEmpty(actionsData);
     const { variables } = deepDraftToMarkdown(params);
 
     if (variables && variables.length > 0) {
@@ -132,10 +133,10 @@ class TestSection extends Component {
           return setError(new Error(`No test found for action "${selected_action}" and integration "${selected_integration}"`));
         }
 
-        let params = _.cloneDeep(actionsData);
+        let params = _cloneDeep(actionsData);
         const { result } = deepDraftToMarkdown(params);
         result.user = {}; // If i dont make user empty, deepVariableSubstitution will throw an error
-        if (!_.isEmpty(variableValues)) {
+        if (!_isEmpty(variableValues)) {
           params = deepVariableSubstitution(result, variableValues);
         } else {
           params = result;
@@ -235,7 +236,7 @@ class TestSection extends Component {
           }
           content={
             <div style={{ padding: '0 2em 2em 2em' }}>
-              {!_.isEmpty(variables) && (
+              {!_isEmpty(variables) && (
                 <>
                   <Button color="primary" onClick={() => this.resolveModalPromise()} className="mt-2 mb-2">
                     Run Integration
@@ -243,7 +244,7 @@ class TestSection extends Component {
                   <br />
                   <label>Your parameters for this action contain variables. Please provide them with values to proceed.</label>
                   <br />
-                  {_.map(variables, (val, key) => (
+                  {variables.map((val, key) => (
                     <React.Fragment key={key}>
                       <InputGroup className="mb-2">
                         <InputGroupAddon addonType="prepend">{val}</InputGroupAddon>

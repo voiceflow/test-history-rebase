@@ -7,11 +7,11 @@ import { Pair, Point } from '@/types';
 import { preventDefault } from '@/utils/dom';
 
 import { ANIMATION_DURATION, CURSOR_EXPIRY_TIMEOUT } from '../constants';
-import AbstractOverlay, { ConnectedRealtimeOverlayProps, RealtimeViewer, connectOverlay } from './AbstractOverlay';
+import AbstractOverlay, { ConnectedRealtimeOverlayProps, connectOverlay, RealtimeViewer } from './AbstractOverlay';
 import Cursor from './RealtimeOverlayCursor';
 import Nametag from './RealtimeOverlayNametag';
 
-function clearTimer(timers: Record<string, number | null>, id: string) {
+function clearTimer(timers: Record<string, NodeJS.Timeout | null>, id: string) {
   if (timers[id] !== null) {
     clearTimeout(timers[id]!);
     timers[id] = null;
@@ -21,9 +21,9 @@ function clearTimer(timers: Record<string, number | null>, id: string) {
 class RealtimeCursorOverlay extends AbstractOverlay<RealtimeCursorOverlayAPI> {
   cursorLocations: Record<string, Point | null> = {};
 
-  cursorTimers: Record<string, number | null> = {};
+  cursorTimers: Record<string, NodeJS.Timeout | null> = {};
 
-  cursorAnimationTimers: Record<string, number | null> = {};
+  cursorAnimationTimers: Record<string, NodeJS.Timeout | null> = {};
 
   api: RealtimeCursorOverlayAPI = {
     moveMouse: (tabID, location) => {

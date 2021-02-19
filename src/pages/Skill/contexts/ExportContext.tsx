@@ -22,7 +22,7 @@ export const { Consumer: ExportConsumer } = ExportContext;
 const PULL_TIMEOUT = 1500; // 1.5s
 
 export const ExportProvider: React.FC = ({ children }) => {
-  const pullTimeout = React.useRef<number>();
+  const pullTimeout = React.useRef<NodeJS.Timeout>();
   const [job, setJob] = React.useState<Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob | GeneralJob.AnyJob>>(null);
 
   const platform = useSelector(Skill.activePlatformSelector);
@@ -55,7 +55,9 @@ export const ExportProvider: React.FC = ({ children }) => {
   );
 
   const stopPulling = React.useCallback(() => {
-    clearTimeout(pullTimeout.current);
+    if (pullTimeout.current) {
+      clearTimeout(pullTimeout.current);
+    }
 
     pullTimeout.current = undefined;
   }, []);

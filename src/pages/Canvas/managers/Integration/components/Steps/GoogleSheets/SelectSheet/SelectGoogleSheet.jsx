@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import _isEqual from 'lodash/isEqual';
+import _isNil from 'lodash/isNil';
 import React from 'react';
 import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
@@ -30,7 +31,7 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
     setSheetList([]);
 
     const spreadsheet_id = data.spreadsheet && data.spreadsheet.value;
-    if (_.isNil(spreadsheet_id)) return;
+    if (_isNil(spreadsheet_id)) return;
     setSheetsLoading(true);
 
     try {
@@ -46,7 +47,7 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
   const openSpreadsheetLink = () => {
     const spreadsheet_id = data.spreadsheet && data.spreadsheet.value;
     const sheet_id = data.sheet && data.sheet.value;
-    if (_.isNil(spreadsheet_id) || _.isNil(sheet_id)) return;
+    if (_isNil(spreadsheet_id) || _isNil(sheet_id)) return;
     const url = `https://docs.google.com/spreadsheets/d/${spreadsheet_id}/edit#gid=${sheet_id}`;
     const win = window.open(url, '_blank');
     win.focus();
@@ -71,7 +72,7 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
             className="auth-dropdown"
             value={data.spreadsheet || null}
             onChange={(v) => {
-              if (!_.isEqual(v, data.spreadsheet)) {
+              if (!_isEqual(v, data.spreadsheet)) {
                 onChange({
                   spreadsheet: v,
                   sheet: [],
@@ -98,7 +99,7 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
             value={data.sheet || null}
             placeholder="Select..."
             onChange={(v) => {
-              if (!_.isEqual(v, data.sheet)) {
+              if (!_isEqual(v, data.sheet)) {
                 onChange({
                   sheet: v,
                   header_column: null,

@@ -1,8 +1,8 @@
+import { composeDecorators, withModalContext, withRedux } from '_storybook';
 import { action } from '@storybook/addon-actions';
 import { button } from '@storybook/addon-knobs';
 import React from 'react';
 
-import { composeDecorators, withModalContext, withRedux } from '@/../.storybook';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 

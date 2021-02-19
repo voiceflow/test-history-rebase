@@ -1,7 +1,6 @@
-!/.storybook/*
-
 /node_modules
 /public
+/packages/**/*
 /src/assets
 
 /scripts/*

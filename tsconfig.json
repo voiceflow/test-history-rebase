@@ -38,6 +38,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "_storybook": [
+        "./packages/storybook/.storybook/utils"
       ]
     }
   },

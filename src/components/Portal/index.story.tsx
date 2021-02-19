@@ -1,6 +1,5 @@
+import { PortalContainer } from '_storybook';
 import React from 'react';
-
-import { PortalContainer } from '@/../.storybook';
 
 import Portal from '.';
 

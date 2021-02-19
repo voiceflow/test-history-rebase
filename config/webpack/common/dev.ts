@@ -1,13 +1,10 @@
+import paths from '../../paths';
+
 export default {
   output: {
-    filename: 'js/bundle.js',
-    chunkFilename: 'js/[name].chunk.js',
-    pathinfo: true,
+    filename: `${paths.staticJS}[name].js`,
+    chunkFilename: `${paths.staticJS}[name].chunk.js`,
   },
 
   devtool: 'eval-source-map',
-
-  performance: {
-    hints: false,
-  },
 };

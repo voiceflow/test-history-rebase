@@ -1,22 +1,23 @@
+import { append, withoutValue } from '@/utils/array';
+
 class TimeoutController {
-  // eslint-disable-next-line compat/compat
-  private timeouts: Map<number, number> = new Map<number, number>();
+  private timeouts: NodeJS.Timeout[] = [];
 
   public async set(timeout: number) {
     return new Promise<void>((resolve) => {
       const timeoutID = setTimeout(() => {
-        this.timeouts.delete(timeoutID);
+        this.timeouts = withoutValue(this.timeouts, timeoutID);
 
         resolve();
       }, timeout);
 
-      this.timeouts.set(timeoutID, timeoutID);
+      this.timeouts = append(this.timeouts, timeoutID);
     });
   }
 
   public clearAll() {
     this.timeouts.forEach((timeoutID) => clearTimeout(timeoutID));
-    this.timeouts.clear();
+    this.timeouts = [];
   }
 }
 

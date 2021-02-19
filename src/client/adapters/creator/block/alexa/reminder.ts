@@ -1,6 +1,6 @@
 import type { StepData as ReminderData } from '@voiceflow/alexa-types/build/nodes/reminder';
 import { ReminderClientType, ReminderType } from '@voiceflow/alexa-types/build/nodes/reminder';
-import _ from 'lodash';
+import _isString from 'lodash/isString';
 
 import { NodeData } from '@/models';
 import { transformVariablesFromReadable, transformVariablesToReadable } from '@/utils/slot';
@@ -27,7 +27,7 @@ const reminderDataAdapter = createBlockAdapter<ReminderData, NodeData.Reminder>(
     minutes: m,
     seconds: s,
 
-    date: _.isString(date) ? transformVariablesToReadable(date) : date,
+    date: _isString(date) ? transformVariablesToReadable(date) : date,
     timezone: timezone || 'User Timezone',
     recurrence,
     recurrenceBool,
@@ -46,7 +46,7 @@ const reminderDataAdapter = createBlockAdapter<ReminderData, NodeData.Reminder>(
           s: seconds,
         },
         ...(!isTimer && {
-          date: _.isString(date) ? transformVariablesFromReadable(date) : date,
+          date: _isString(date) ? transformVariablesFromReadable(date) : date,
           timezone: timezone === 'User Timezone' ? null : timezone,
         }),
         recurrence,

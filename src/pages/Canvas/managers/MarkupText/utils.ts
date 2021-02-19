@@ -1,4 +1,4 @@
-import { CharacterMetadata, ContentBlock, ContentState, EditorState, SelectionState, convertToRaw } from 'draft-js';
+import { CharacterMetadata, ContentBlock, ContentState, convertToRaw, EditorState, SelectionState } from 'draft-js';
 import { Map } from 'immutable';
 
 import { InlineStylePrefix } from './constants';

@@ -7,7 +7,7 @@ export default {
 
   el: {
     get projectSettings() {
-      return cy.get('[data-original-title="Settings"]');
+      return cy.get('[data-original-title="Settings"]').find('button');
     },
     get projectTitle() {
       return cy.get('#vf-project-title');

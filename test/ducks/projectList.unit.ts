@@ -151,23 +151,17 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
     describe('deleteProjectList()', () => {
       it('should remove a project list and all the projects in it', async () => {
-        const deleteProject = stubEffect(Project, 'deleteProject');
+        const { dispatch } = await applyEffect(ProjectList.deleteProjectList(LIST_ID));
 
-        const { expectDispatch, expectStubCalled } = await applyEffect(ProjectList.deleteProjectList(LIST_ID));
-
-        LIST.projects.forEach((projectID) => expectStubCalled(deleteProject, projectID));
-        expectDispatch(ProjectList.removeProjectList(LIST_ID));
+        expect(dispatch).to.be.calledWithExactly(ProjectList.removeProjectList(LIST_ID));
       });
     });
 
     describe('deleteProjectFromList()', () => {
       it('should the the projects in the list', async () => {
-        const deleteProject = stubEffect(Project, 'deleteProject');
+        const { dispatch } = await applyEffect(ProjectList.deleteProjectFromList(LIST_ID, PROJECT_ID));
 
-        const { expectDispatch, expectStubCalled } = await applyEffect(ProjectList.deleteProjectFromList(LIST_ID, PROJECT_ID));
-
-        expectStubCalled(deleteProject, PROJECT_ID);
-        expectDispatch(ProjectList.removeProjectFromList(LIST_ID, PROJECT_ID));
+        expect(dispatch).to.be.calledWithExactly(ProjectList.removeProjectFromList(LIST_ID, PROJECT_ID));
       });
     });
   });

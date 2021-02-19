@@ -1,7 +1,6 @@
+import { composeDecorators, withRedux } from '_storybook';
 import { action } from '@storybook/addon-actions';
 import React from 'react';
-
-import { composeDecorators, withRedux } from '@/../.storybook';
 
 import { Message, MessageType } from '../../types';
 import Dialog from '.';

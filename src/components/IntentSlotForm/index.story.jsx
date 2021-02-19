@@ -1,6 +1,5 @@
+import { composeDecorators, withRedux } from '_storybook';
 import React from 'react';
-
-import { composeDecorators, withRedux } from '@/../.storybook';
 
 import IntentSlotForm from '.';
 

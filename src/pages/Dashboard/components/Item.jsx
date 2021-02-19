@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _constant from 'lodash/constant';
 import map from 'lodash/map';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
@@ -150,7 +150,7 @@ export function Item(props) {
 export default withDraggable({
   name: 'dashboard-item',
   canDrag: (props) => !props.disableDragging,
-  canDrop: _.constant(true),
+  canDrop: _constant(true),
   onDropKey: 'onDrop',
   onMoveKey: 'onMove',
   allowXTransform: true,

@@ -1,11 +1,16 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 require('ts-node/register/transpile-only');
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-extraneous-dependencies
+const path = require('path');
+
 module.exports = {
   extends: ['@voiceflow/eslint-config/frontend', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
   plugins: ['prettier', 'react-hooks', '@typescript-eslint'],
   rules: {
+    'lodash/import-scope': 'error',
+
     // disabled temporarily by setting as warnings
     'optimize-regex/optimize-regex': 'warn',
     'simple-import-sort/sort': 'warn',
@@ -13,13 +18,13 @@ module.exports = {
   settings: {
     'import/resolver': {
       webpack: {
-        config: 'config/webpack/common',
+        config: path.join(__dirname, 'config/webpack/common'),
       },
     },
   },
   overrides: [
     {
-      files: ['*.story.*', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/**/*', 'config/**/*', '.storybook/**/*'],
+      files: ['*.story.*', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/**/*', 'config/**/*'],
       rules: {
         'import/no-extraneous-dependencies': [
           'error',

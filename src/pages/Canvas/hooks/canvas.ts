@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { MovementCalculator } from '@/components/Canvas/types';
+import { useTeardown } from '@/hooks';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Pair } from '@/types';
@@ -9,18 +10,18 @@ import { Coords } from '@/utils/geometry';
 export const useCanvasRendered = () => {
   const engine = React.useContext(EngineContext)!;
   const [isRendered, setRendered] = React.useState(!!engine.canvas);
+  const renderHandler = React.useCallback(() => setRendered(true), []);
 
-  React.useEffect(() => {
-    if (isRendered) return undefined;
+  const initialRender = React.useRef(false);
+  if (!initialRender.current && !isRendered) {
+    engine.emitter.once(CanvasAction.RENDERED, renderHandler);
+  }
 
-    const handler = () => setRendered(true);
+  initialRender.current = true;
 
-    engine.emitter.once(CanvasAction.RENDERED, handler);
-
-    return () => {
-      engine.emitter.off(CanvasAction.RENDERED, handler);
-    };
-  }, []);
+  useTeardown(() => {
+    engine.emitter.off(CanvasAction.RENDERED, renderHandler);
+  });
 
   return isRendered;
 };

@@ -3,7 +3,6 @@ import { SpeakType } from '@voiceflow/general-types/build/nodes/speak';
 import { TraceStreamAction } from '@voiceflow/general-types/build/nodes/stream';
 import { StepData as VisualData } from '@voiceflow/general-types/build/nodes/visual';
 import cuid from 'cuid';
-import _ from 'lodash';
 
 import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
@@ -12,6 +11,7 @@ import * as Prototype from '@/ducks/prototype';
 import { BlockTrace, ChoiceTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace, VisualTrace } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
 import { tail, unique } from '@/utils/array';
+import { noop } from '@/utils/functional';
 
 import { Interaction, PMStatus } from '../types';
 import AudioController from './Audio';
@@ -379,7 +379,7 @@ class TraceController {
       return;
     }
 
-    await this.audio.play(src, { muted: this.props.isMuted, onError: () => this.setError() }).catch(_.noop);
+    await this.audio.play(src, { muted: this.props.isMuted, onError: () => this.setError() }).catch(noop);
   }
 
   private async processFlowTrace({ payload: { diagramID } }: FlowTrace) {

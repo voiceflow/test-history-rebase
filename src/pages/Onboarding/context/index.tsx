@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import _ from 'lodash';
+import _constant from 'lodash/constant';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -36,18 +36,18 @@ const toast: any = toastNotif;
 
 export const OnboardingContext = React.createContext<OnboardingContextProps>({
   actions: {
-    stepBack: _.constant(null),
-    stepForward: _.constant(null),
-    closeOnboarding: _.constant(null),
-    setCreateWorkspaceMeta: _.constant(null),
-    setPersonalizeWorkspaceMeta: _.constant(null),
-    setPaymentMeta: _.constant(null),
-    setJoinWorkspaceMeta: _.constant(null),
-    setAddCollaboratorMeta: _.constant(null),
-    finishCreateOnboarding: _.constant(null),
-    finishJoiningWorkspace: _.constant(null),
-    onCancel: _.constant(null),
-    getNumberOfEditors: _.constant(0),
+    stepBack: _constant(null),
+    stepForward: _constant(null),
+    closeOnboarding: _constant(null),
+    setCreateWorkspaceMeta: _constant(null),
+    setPersonalizeWorkspaceMeta: _constant(null),
+    setPaymentMeta: _constant(null),
+    setJoinWorkspaceMeta: _constant(null),
+    setAddCollaboratorMeta: _constant(null),
+    finishCreateOnboarding: _constant(null),
+    finishJoiningWorkspace: _constant(null),
+    onCancel: _constant(null),
+    getNumberOfEditors: _constant(0),
   },
   state: {
     selectableWorkspace: false,

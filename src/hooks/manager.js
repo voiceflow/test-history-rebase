@@ -1,6 +1,6 @@
 import cuid from 'cuid';
-import _ from 'lodash';
-import debounce from 'lodash/debounce';
+import _debounce from 'lodash/debounce';
+import _isObject from 'lodash/isObject';
 import moize from 'moize';
 import React from 'react';
 
@@ -53,7 +53,7 @@ export const useManager = (items = [], onChange, { factory = identity, getKey, a
   };
 
   const debouncedOnChange = React.useMemo(
-    () => (debounced ? debounce((...args) => cachedOnChange.current(...args), DEBOUNCE_TIMEOUT) : cachedOnChange.current),
+    () => (debounced ? _debounce((...args) => cachedOnChange.current(...args), DEBOUNCE_TIMEOUT) : cachedOnChange.current),
     [debounced]
   );
 
@@ -126,7 +126,7 @@ export const useManager = (items = [], onChange, { factory = identity, getKey, a
       const updated = updateNormalizedByKey(
         normalized.current,
         key,
-        currValue && !Array.isArray(currValue) && _.isObject(currValue) ? { ...currValue, ...value } : value
+        currValue && !Array.isArray(currValue) && _isObject(currValue) ? { ...currValue, ...value } : value
       );
       const index = getIndex(key);
       keyLookup.current.delete(generateLookupKey(currValue, index));

@@ -1,6 +1,6 @@
 import './InternalLookup.css';
 
-import _ from 'lodash';
+import _cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 import { Input } from 'reactstrap';
 
@@ -33,7 +33,7 @@ class InternalLookup extends React.Component {
       if (event.target.value === '') {
         this.clearSearch();
       } else {
-        let filtered_boards = _.cloneDeep(this.props.boards);
+        let filtered_boards = _cloneDeep(this.props.boards);
         // Need to reduce the boards array
         filtered_boards = filtered_boards.filter((board) => {
           let found = false;

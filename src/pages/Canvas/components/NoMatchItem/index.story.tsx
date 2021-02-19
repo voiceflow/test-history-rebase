@@ -1,7 +1,7 @@
+import { withRedux } from '_storybook';
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { withRedux } from '@/../.storybook';
 import { DialogType, PlatformType } from '@/constants';
 
 import NoMatchItem from '.';

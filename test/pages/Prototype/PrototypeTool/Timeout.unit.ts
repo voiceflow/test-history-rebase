@@ -13,7 +13,7 @@ suite('Prototype/PrototypeTool/Timeout', ({ spy, expect }) => {
       controller.set(0);
       controller.set(900);
 
-      expect(controller['timeouts'].size).to.be.eq(2);
+      expect(controller['timeouts'].length).to.be.eq(2);
     });
 
     it('should resolved async', async () => {
@@ -43,7 +43,7 @@ suite('Prototype/PrototypeTool/Timeout', ({ spy, expect }) => {
       controller.clearAll();
 
       expect(clearTimeout).to.be.calledTwice;
-      expect(controller['timeouts'].size).to.be.eq(0);
+      expect(controller['timeouts'].length).to.be.eq(0);
     });
   });
 });

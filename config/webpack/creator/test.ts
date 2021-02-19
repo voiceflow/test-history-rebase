@@ -11,7 +11,7 @@ export default {
   module: {
     rules: [
       {
-        oneOf: [typescriptLoader, svgLoader],
+        oneOf: [typescriptLoader, svgLoader()],
       },
     ],
   },

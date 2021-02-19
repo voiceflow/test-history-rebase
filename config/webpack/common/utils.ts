@@ -1,4 +1,7 @@
 import CircularDependencyPlugin from 'circular-dependency-plugin';
+import DeadCodePlugin from 'webpack-deadcode-plugin';
+
+import { IS_PRODUCTION } from '../config';
 
 export const circularDependencyPlugin = (opts: CircularDependencyPlugin.Options = {}) =>
   new CircularDependencyPlugin({
@@ -10,3 +13,9 @@ export const circularDependencyPlugin = (opts: CircularDependencyPlugin.Options 
     },
     ...opts,
   });
+
+export const deadCodePlugin = (opts: DeadCodePlugin['options'] = {}) =>
+  new DeadCodePlugin({
+    failOnHint: IS_PRODUCTION,
+    ...opts,
+  }) as any;

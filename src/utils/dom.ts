@@ -1,4 +1,6 @@
-import _ from 'lodash';
+import _isNumber from 'lodash/isNumber';
+import _isString from 'lodash/isString';
+import _isUndefined from 'lodash/isUndefined';
 
 import { KeyCode } from '@/constants';
 import { Pair, Point } from '@/types';
@@ -211,11 +213,11 @@ export const copyJSONPath = (copy_event: { name: string; namespace: string[] }) 
 };
 
 export const moveCursorToEnd = (el: HTMLInputElement) => {
-  if (_.isNumber(el.selectionStart)) {
+  if (_isNumber(el.selectionStart)) {
     const valueLength = el.value.length;
     el.selectionStart = valueLength;
     el.selectionEnd = valueLength;
-  } else if (_.isUndefined(el.createTextRange)) {
+  } else if (_isUndefined(el.createTextRange)) {
     el.focus();
     const range = el.createTextRange!();
     range.collapse(false);
@@ -236,7 +238,7 @@ export const readFileAsync = (file: File): Promise<string> =>
     const reader = new FileReader();
 
     reader.onload = () => {
-      if (_.isString(reader.result)) {
+      if (_isString(reader.result)) {
         resolve(reader.result);
       } else {
         reject();

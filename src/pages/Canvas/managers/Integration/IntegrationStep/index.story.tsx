@@ -1,6 +1,6 @@
+import { withStepContext } from '_storybook';
 import React from 'react';
 
-import { withStepContext } from '@/../.storybook';
 import { INTEGRATION_DATA_MODELS, IntegrationType } from '@/constants';
 import { NodeData } from '@/models';
 import Block from '@/pages/Canvas/components/Block';

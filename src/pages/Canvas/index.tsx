@@ -2,7 +2,7 @@ import React from 'react';
 
 import { DiagramLoadingGate } from '@/gates';
 import { withLoadingGate } from '@/hocs';
-import { useDidUpdateEffect, useSetup, useTheme } from '@/hooks';
+import { useDidUpdateEffect, useTheme } from '@/hooks';
 import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
@@ -18,7 +18,6 @@ import RealtimeOverlay from './components/RealtimeOverlay';
 import Spotlight from './components/Spotlight';
 import ThreadHistoryDrawer from './components/ThreadHistoryDrawer';
 import ThreadLayer from './components/ThreadLayer';
-import { CanvasAction } from './constants';
 import { CanvasProviders } from './contexts';
 import useEngine from './engine';
 
@@ -44,8 +43,6 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
       engine.canvas?.setPosition([position[0], position[1] + (isPrototypingMode ? height : -height)]);
     }
   }, [isPrototypingMode]);
-
-  useSetup(() => engine.emitter.emit(CanvasAction.RENDERED));
 
   return (
     <CanvasProviders engine={engine}>

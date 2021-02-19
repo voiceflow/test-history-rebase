@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import { useDropzone } from 'react-dropzone10';
 
@@ -8,6 +7,7 @@ import { RemoveButton } from '@/components/Upload/ImageUpload/FullImage/componen
 import { IMAGE_FILE_FORMATS } from '@/constants';
 import { withUpload } from '@/hocs';
 import { stopPropagation } from '@/utils/dom';
+import { noop } from '@/utils/functional';
 
 import { ErrorText, IconUploadContainer, IconUploadInput, ImageContainer } from './components';
 
@@ -41,7 +41,7 @@ const Icon = React.forwardRef(
     const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
       accept: acceptedFileTypes,
       onDropAccepted,
-      onDropRejected: _.noop(),
+      onDropRejected: noop,
       disabled: isLoading,
     });
     const iconSize = SIZE_VARIANT[size];

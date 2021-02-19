@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _constant from 'lodash/constant';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -26,8 +26,8 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
 
     try {
       const prototype = await (isLegacyVersion
-        ? client.prototype.getLegacyInfo(versionID).catch(_.constant(null))
-        : client.api.version.getPrototype(versionID).catch(_.constant(null)));
+        ? client.prototype.getLegacyInfo(versionID).catch(_constant(null))
+        : client.api.version.getPrototype(versionID).catch(_constant(null)));
 
       if (!prototype) {
         throw new Error("Prototype doesn't exist");

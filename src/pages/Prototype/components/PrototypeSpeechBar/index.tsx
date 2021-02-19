@@ -1,8 +1,11 @@
+import Bowser from 'bowser';
 import React from 'react';
 
-import { useSpeechRecognition } from '@/hooks';
+import { isChrome } from '@/config';
+import { FeatureFlag } from '@/config/features';
+import { useFeature, useSpeechRecognition } from '@/hooks';
 
-import { UncontrolledSpeechBar } from './components';
+import { ASRSpeechbar, UncontrolledSpeechBar } from './components';
 
 export { UncontrolledSpeechBar } from './components';
 
@@ -12,6 +15,13 @@ export type PrototypeSpeechBarProps = {
 };
 
 const PrototypeSpeechBar: React.FC<PrototypeSpeechBarProps> = ({ locale, onTranscript }) => {
+  const isMobile = Bowser.parse(window.navigator.userAgent).platform.type === 'mobile';
+  const isTablet = Bowser.parse(window.navigator.userAgent).platform.type === 'tablet';
+  const googleASR = useFeature(FeatureFlag.GOOGLE_STT);
+  const asrBypass = useFeature(FeatureFlag.ASR_BYPASS);
+  // Let everyone who is not on web chrome and mobile/tablet devices use ASR (unless they are specifically FFed)
+  const canUseASR = (!isMobile && !isTablet && !isChrome && googleASR.isEnabled) || asrBypass.isEnabled;
+
   const {
     isListening,
     isSupported,
@@ -26,6 +36,17 @@ const PrototypeSpeechBar: React.FC<PrototypeSpeechBarProps> = ({ locale, onTrans
     askOnSetup: true,
     onTranscript,
   });
+
+  if (canUseASR) {
+    return (
+      <ASRSpeechbar
+        onTranscript={onTranscript}
+        onCheckMicrophonePermission={onCheckMicrophonePermission}
+        locale={locale}
+        isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+      />
+    );
+  }
 
   return (
     <UncontrolledSpeechBar

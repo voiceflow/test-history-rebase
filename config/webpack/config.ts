@@ -11,7 +11,9 @@ import {
   debugRealtime,
   debugSocket,
   env,
+  ff_asrBypass,
   ff_gadgets,
+  ff_googleSTT,
   ff_ownerRole,
   ff_sharePrototypeView,
   ff_straightLines,
@@ -75,6 +77,8 @@ export const ENV = {
   FF_STRAIGHT_LINES: ff_straightLines && 'true',
   FF_WAVENET_VOICES: ff_wavenetVoices && 'true',
   FF_OWNER_ROLE: ff_ownerRole && 'true',
+  FF_ASR_BYPASS: ff_asrBypass && 'true',
+  FF_GOOGLE_STT: ff_googleSTT && 'true',
   FF_SHARE_PROTOTYPE_VIEW: ff_sharePrototypeView && 'true',
 
   API_HOST: 'localhost',

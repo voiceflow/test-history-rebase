@@ -68,7 +68,7 @@ const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
   if (!isSupported) {
     return (
       <Container cursor="default">
-        <Text color="#8da2b5">Browser doesn't support speech recognition</Text>
+        <Text color="#8da2b5">{isMobile ? 'Speech recognition not available on mobile' : "Browser doesn't support speech recognition"}</Text>
       </Container>
     );
   }

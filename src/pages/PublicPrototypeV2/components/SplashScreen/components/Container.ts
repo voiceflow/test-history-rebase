@@ -11,7 +11,7 @@ const Container = styled(FlexApart).attrs({ column: true })<ContainerProps>`
   height: 100%;
   padding: ${({ isMobile, isVisuals }) =>
     // eslint-disable-next-line no-nested-ternary
-    isMobile ? 32 : isVisuals ? 0 : 48}px;
+    isMobile ? '32px' : isVisuals ? 0 : '48px 48px 28px 48px'};
   background-color: white;
 `;
 

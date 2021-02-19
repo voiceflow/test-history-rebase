@@ -32,6 +32,7 @@ export type TraceControllerProps = {
   isPublic?: boolean;
   enterFlow: (diagramID: string) => void;
   contextStep: number;
+  waitVisuals: boolean;
   getNodeByID: (targetBlockID: string) => Node;
   updateStatus: (status: PMStatus) => void;
   fetchContext: (request: GeneralRequest) => Promise<Prototype.Context | null>;
@@ -296,16 +297,20 @@ class TraceController {
     }
 
     const isLast = this.trace.length === 1;
+
     if (!isLast) {
       this.props.updateStatus(PMStatus.FORCED_DELAY);
     }
+
     await this.timeout.set(MIN_FOCUSED_NODE_TIME);
   }
 
   private async processVisual(trace: VisualTrace) {
     this.props.updatePrototypeVisualsData(trace.payload);
 
-    await this.timeout.set(WAIT_DISPLAY_TIME);
+    if (this.props.waitVisuals) {
+      await this.timeout.set(WAIT_DISPLAY_TIME);
+    }
   }
 
   private async highlightBlock(node: Node) {

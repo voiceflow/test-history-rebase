@@ -21,7 +21,7 @@ import {
   TypographyProps,
 } from 'styled-system';
 
-import { flexApartStyles, flexCenterStyles, flexEndStyles, flexStartStyles, flexStyles } from '@/components/Flex';
+import { flexApartStyles, flexAroundStyles, flexCenterStyles, flexEndStyles, flexStartStyles, flexStyles } from '@/components/Flex';
 import { css, styled } from '@/hocs';
 
 export type BoxProps = ColorProps &
@@ -58,6 +58,10 @@ export const Flex = styled(Box)`
 
 export const FlexApart = styled(Box)`
   ${flexApartStyles}
+`;
+
+export const FlexAround = styled(Box)`
+  ${flexAroundStyles}
 `;
 
 export const FlexCenter = styled(Box)`

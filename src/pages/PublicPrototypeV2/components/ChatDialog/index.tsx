@@ -90,7 +90,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
         </SuggestionsContainer>
       )}
 
-      <InputContainer>
+      <InputContainer isMobile={isMobile}>
         {layout === PrototypeLayout.TEXT_DIALOG && (
           <>
             <UserInput isIdle={isIdle} testEnded={testEnded} value={input} onEnterPress={() => onSend()} onChange={onInputChange} />
@@ -103,6 +103,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
               onReset={onReset}
               disabled={isIdle}
               testEnded={testEnded}
+              isMobile={isMobile}
             />
           </>
         )}
@@ -141,6 +142,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
               onReset={onReset}
               disabled={isIdle}
               testEnded={testEnded}
+              isMobile={isMobile}
             />
           </>
         )}

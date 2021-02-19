@@ -17,6 +17,7 @@ export type ActionButtonsProps = {
   isMuted?: boolean;
   disabled?: boolean;
   testEnded?: boolean;
+  isMobile?: boolean;
 };
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({
@@ -28,6 +29,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   isMuted = false,
   disabled,
   testEnded = false,
+  isMobile,
 }) => {
   const theme = useTheme();
 
@@ -37,7 +39,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         <>
           <Tooltip title="Reset Test" disabled={disabled}>
             <ButtonWrapper disabled={disabled} onClick={disabled ? undefined : onReset}>
-              <SvgIcon icon="restart" variant={IconVariant.TERTIARY} clickable={!disabled} />
+              <SvgIcon icon="restart" variant={disabled ? IconVariant.TERTIARY : IconVariant.STANDARD} clickable={!disabled} />
             </ButtonWrapper>
           </Tooltip>
 
@@ -54,13 +56,14 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           color={disabled ? theme?.iconColors.disabled : color || theme?.colors.blue}
           onClick={() => !disabled && onSend()}
           disabled={disabled}
+          isMobile={isMobile}
         >
           <SvgIcon icon="send" color={theme?.backgrounds.white} />
         </ButtonWrapper>
       )}
 
       {testEnded && (
-        <ButtonWrapper color={color || theme?.colors.blue} onClick={onReset}>
+        <ButtonWrapper color={color || theme?.colors.blue} onClick={onReset} isMobile={isMobile}>
           <SvgIcon icon="restart" color={theme?.backgrounds.white} />
         </ButtonWrapper>
       )}

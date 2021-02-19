@@ -26,9 +26,13 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
   const resetPrototype = useResetPrototype();
 
   const [input, setInput] = React.useState<string>('');
+
+  const isVisuals = settings.layout === PrototypeDuck.PrototypeLayout.VOICE_VISUALS;
+
   const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay } = usePrototype({
     debug: false,
     isPublic: true,
+    waitVisuals: isVisuals,
     prototypeStatus: status,
   });
 
@@ -82,8 +86,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
       onStopListening();
     }
   }, [isFinished]);
-
-  const isVisuals = settings.layout === PrototypeDuck.PrototypeLayout.VOICE_VISUALS;
 
   return (
     <Layout

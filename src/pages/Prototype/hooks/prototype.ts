@@ -15,7 +15,17 @@ import * as Utils from '@/utils/string';
 import PrototypeTool, { PrototypeToolProps } from '../PrototypeTool';
 import { Interaction, Message, PMStatus } from '../types';
 
-const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; isPublic?: boolean; prototypeStatus: Prototype.PrototypeStatus }) => {
+const usePrototype = ({
+  debug,
+  isPublic,
+  waitVisuals = true,
+  prototypeStatus,
+}: {
+  debug: boolean;
+  isPublic?: boolean;
+  waitVisuals?: boolean;
+  prototypeStatus: Prototype.PrototypeStatus;
+}) => {
   const dispatch = useDispatch() as Dispatch;
 
   const isMuted = useSelector(Prototype.prototypeMutedSelector);
@@ -42,6 +52,7 @@ const usePrototype = ({ debug, isPublic, prototypeStatus }: { debug: boolean; is
     isPublic,
     setError: (error) => dispatch(Modal.setError(error)),
     enterFlow: (diagramID) => dispatch(Skill.updateDiagramID(diagramID)),
+    waitVisuals,
     contextStep,
     getNodeByID,
     updateStatus: setStatus,

@@ -35,16 +35,16 @@ const ShareSplashScreen: React.FC<ShareSplashScreenProps> = ({
 
   return (
     <Container isVisuals={isVisuals} isMobile={isMobile}>
-      <ContentContainer centerAlign={centerAlign}>
-        <Box mb={50}>
-          <BoxLogo url={logoURL} size={logoSize} />
+      <ContentContainer centerAlign={centerAlign} isMobile={isMobile}>
+        <BoxLogo url={logoURL} size={logoSize} isMobile={isMobile} />
 
+        <Box>
           <Box fontSize={24}>
             You've been invited to have a conversation with <Text color="#5D9DF5">{projectName}</Text>
           </Box>
 
           <Box fontSize={15} mt={16} mb={32} color="#62778c">
-            Want to create your own? <Link href="/">Get Started.</Link>
+            Want to create your own? <Link href="https://www.voiceflow.com/">Get Started.</Link>
           </Box>
 
           {withStartButton && (

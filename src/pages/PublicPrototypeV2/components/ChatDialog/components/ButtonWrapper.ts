@@ -2,7 +2,7 @@ import Box from '@/components/Box';
 import { css, styled, transition } from '@/hocs';
 import { changeColorShade } from '@/utils/colors';
 
-const ButtonWrapper = styled(Box)<{ color?: string; disabled?: boolean }>`
+const ButtonWrapper = styled(Box)<{ color?: string; disabled?: boolean; isMobile?: boolean }>`
   ${transition('color')}
   margin-left: 24px;
 
@@ -19,6 +19,12 @@ const ButtonWrapper = styled(Box)<{ color?: string; disabled?: boolean }>`
         background-color: ${disabled ? color : changeColorShade(color, -20)};
       }
     `};
+
+  ${({ isMobile }) =>
+    isMobile &&
+    css`
+      padding: 10px;
+    `}
 `;
 
 export default ButtonWrapper;

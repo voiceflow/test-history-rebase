@@ -52,7 +52,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
 
   const resizeObserver = React.useMemo(
     () =>
-      new ResizeObserver((entries) =>
+      new ResizeObserver((entries: ResizeObserverEntry[]) =>
         entries.forEach((entry) => {
           const nextHeight = entry.contentRect.height;
           if (nextHeight !== heightCache.current) {

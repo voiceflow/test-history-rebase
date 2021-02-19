@@ -1,8 +1,5 @@
 import * as ConnectedReactRouter from 'connected-react-router';
 import cuid from 'cuid';
-import { PersistConfig, PersistPartial, persistReducer } from 'redux-persist';
-import storageLocal from 'redux-persist/lib/storage';
-import storageSession from 'redux-persist/lib/storage/session';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
@@ -18,28 +15,21 @@ import * as Userflow from '@/vendors/userflow';
 
 import { goToDashboardWithSearch, goToLogin, goToOnboarding } from './router/actions';
 import { compositeReducer, createAction, createRootSelector, duckLogger } from './utils';
+import { createPersistor, Persistor } from './utils/persist';
 
 export const STATE_KEY = 'session';
 
-const BROWSER_ID_PERSIST_CONFIG = {
-  key: `${STATE_KEY}:browser_id`,
-  storage: storageLocal,
-  whitelist: ['value'],
-};
-const TAB_ID_PERSIST_CONFIG = {
-  key: `${STATE_KEY}:tab_id`,
-  storage: storageSession,
-  whitelist: ['value'],
-};
+export const tabIDPersistor = createPersistor<Storage, { value: string }>(sessionStorage, `persist:${STATE_KEY}:tab_id`);
+export const browserIDPersistor = createPersistor<Storage, { value: string }>(localStorage, `persist:${STATE_KEY}:browser_id`);
 
 const log = duckLogger.child(STATE_KEY);
 
 export type SessionState = {
-  websocketsEnabled: boolean;
+  token: { value: string | null };
+  tabID: { value: string };
+  browserID: { value: string };
   intercomVisible: boolean;
-  token: { value: string | null } & PersistPartial;
-  browserID: { value: string } & PersistPartial;
-  tabID: { value: string } & PersistPartial;
+  websocketsEnabled: boolean;
 };
 
 const INITIAL_STATE: Omit<SessionState, 'token' | 'browserID' | 'tabID'> = {
@@ -99,13 +89,37 @@ const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INI
   }
 };
 
-const sessionBoundReducer = <T>(config: PersistConfig, initialValue: T) =>
-  persistReducer<{ value: T }, AnySessionAction>(config, (state = { value: initialValue }) => state);
+const sessionBoundReducer = (persistor: Persistor<{ value: string }>, initialValue: string) => (state: { value?: string } | undefined) => {
+  if (state?.value) {
+    return state;
+  }
+
+  let persistedState = persistor.get();
+
+  if (persistedState?.value) {
+    // migrate redux-persist
+    if ('_persist' in persistedState) {
+      try {
+        persistedState = { value: JSON.parse((persistedState as any).value) };
+        persistor.set(persistedState);
+        // eslint-disable-next-line no-empty
+      } catch {}
+    } else {
+      return persistedState;
+    }
+  }
+
+  persistedState = { value: initialValue };
+
+  persistor.set(persistedState);
+
+  return persistedState;
+};
 
 export default compositeReducer(sessionReducer, {
   token: authTokenReducer,
-  browserID: sessionBoundReducer(BROWSER_ID_PERSIST_CONFIG, cuid()),
-  tabID: sessionBoundReducer(TAB_ID_PERSIST_CONFIG, cuid()),
+  tabID: sessionBoundReducer(tabIDPersistor, cuid()),
+  browserID: sessionBoundReducer(browserIDPersistor, cuid()),
 });
 
 // selectors

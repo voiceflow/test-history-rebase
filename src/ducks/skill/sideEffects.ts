@@ -15,6 +15,7 @@ import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
+import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
 import * as Models from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
@@ -63,8 +64,8 @@ export const exportCanvas = (type: ExportFormat): Thunk => async (dispatch, getS
   const options = {
     token: getAuthCookie()!,
     canvasURL: `https://${window.location.host}/project/${skillID}/export/${diagramID}`,
-    persistedTabID: sessionStorage.getItem('persist:session:tab_id')!,
-    persistedBrowserID: localStorage.getItem('persist:session:browser_id')!,
+    persistedTabID: Session.tabIDPersistor.getRaw()!,
+    persistedBrowserID: Session.browserIDPersistor.getRaw()!,
   };
 
   try {

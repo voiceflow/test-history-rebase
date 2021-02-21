@@ -17,4 +17,5 @@ export const InstructionContainer = styled.div`
 export const PlatformCardsContainer = styled(Flex)`
   flex-direction: row;
   margin-top: 40px;
+  flex-wrap: wrap;
 `;

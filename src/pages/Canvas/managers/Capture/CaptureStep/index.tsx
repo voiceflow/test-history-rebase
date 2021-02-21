@@ -5,13 +5,14 @@ import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
 
 export type CaptureStepProps = {
+  nodeID: string;
   portID: string;
   fromVariable: string | null;
   toVariable: string | null;
 };
 
-export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariable, portID }) => (
-  <Step>
+export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariable, nodeID, portID }) => (
+  <Step nodeID={nodeID}>
     <Section>
       <Item
         label={

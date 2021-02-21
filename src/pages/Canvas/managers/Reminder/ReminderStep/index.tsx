@@ -8,12 +8,13 @@ import { transformVariablesToReadable } from '@/utils/slot';
 export type ReminderStepProps = {
   label: string;
   withPorts: boolean;
+  nodeID: string;
   successPortID: string;
   failurePortID: string;
 };
 
-export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, successPortID, failurePortID }) => (
-  <Step>
+export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, nodeID, successPortID, failurePortID }) => (
+  <Step nodeID={nodeID}>
     <Section>
       <Item icon="reminder" iconColor="#c998a4" label={label} labelVariant={StepLabelVariant.SECONDARY} placeholder="Set a reminder" />
     </Section>
@@ -32,7 +33,13 @@ const ConnectedReminderStep: React.FC<ConnectedStepProps<NodeData.Reminder>> = (
   const [successPortID, failurePortID] = node.ports.out;
 
   return (
-    <ReminderStep label={transformVariablesToReadable(data.text)} successPortID={successPortID} failurePortID={failurePortID} withPorts={withPorts} />
+    <ReminderStep
+      label={transformVariablesToReadable(data.text)}
+      nodeID={node.id}
+      successPortID={successPortID}
+      failurePortID={failurePortID}
+      withPorts={withPorts}
+    />
   );
 };
 

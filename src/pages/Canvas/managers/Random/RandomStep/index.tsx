@@ -5,11 +5,12 @@ import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
 export type RandomStepProps = {
+  nodeID: string;
   ports: string[];
 };
 
-export const RandomStep: React.FC<RandomStepProps> = ({ ports }) => (
-  <Step>
+export const RandomStep: React.FC<RandomStepProps> = ({ nodeID, ports }) => (
+  <Step nodeID={nodeID}>
     <Section>
       {ports.map((portID, index) => (
         <Item
@@ -25,6 +26,6 @@ export const RandomStep: React.FC<RandomStepProps> = ({ ports }) => (
   </Step>
 );
 
-const ConnectedRandomStep: React.FC<ConnectedStepProps<NodeData.Random>> = ({ node }) => <RandomStep ports={node.ports.out} />;
+const ConnectedRandomStep: React.FC<ConnectedStepProps<NodeData.Random>> = ({ node }) => <RandomStep nodeID={node.id} ports={node.ports.out} />;
 
 export default ConnectedRandomStep;

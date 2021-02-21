@@ -11,15 +11,16 @@ export type StreamStepProps = {
   audio: string;
   platform: PlatformType;
   customPause: boolean;
+  nodeID: string;
   portIDs: string[];
 };
 
-export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customPause, portIDs }) => {
+export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customPause, nodeID, portIDs }) => {
   const isGoogle = platform === PlatformType.GOOGLE;
   const [nextPortID, previousPortID, pausePortID] = portIDs;
 
   return (
-    <Step>
+    <Step nodeID={nodeID}>
       <Section>
         <Item
           icon="audioPlayer"
@@ -48,6 +49,7 @@ const ConnectedStreamStep: React.FC<ConnectedStepProps<NodeData.Stream>> = ({ no
     <StreamStep
       audio={data.audio && transformVariablesToReadable(data.audio)}
       customPause={data.customPause}
+      nodeID={node.id}
       portIDs={node.ports.out.filter(portFilter)}
       platform={platform}
     />

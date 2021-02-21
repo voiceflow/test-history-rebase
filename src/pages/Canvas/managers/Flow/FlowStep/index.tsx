@@ -11,12 +11,13 @@ import { stopPropagation } from '@/utils/dom';
 
 export type FlowStepProps = {
   label: string | null;
+  nodeID: string;
   portID: string;
   onClickFlow?: () => void;
 };
 
-export const FlowStep: React.FC<FlowStepProps> = ({ label, portID, onClickFlow }) => (
-  <Step>
+export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, portID, onClickFlow }) => (
+  <Step nodeID={nodeID}>
     <Section>
       <Item
         label={label}
@@ -32,7 +33,7 @@ export const FlowStep: React.FC<FlowStepProps> = ({ label, portID, onClickFlow }
 );
 
 const ConnectedFlowStep: React.FC<ConnectedStepProps<NodeData.Flow> & ConnectedFlowStepProps> = ({ diagramName, node, goToDiagram }) => (
-  <FlowStep label={diagramName} portID={node.ports.out[0]} onClickFlow={goToDiagram} />
+  <FlowStep label={diagramName} nodeID={node.id} portID={node.ports.out[0]} onClickFlow={goToDiagram} />
 );
 
 const mapStateToProps = {

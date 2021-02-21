@@ -5,11 +5,12 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 
 export type IntentStepProps = {
   label?: string | null;
+  nodeID: string;
   portID?: string;
 };
 
-export const EventStep: React.FC<IntentStepProps> = ({ portID, label }) => (
-  <Step>
+export const EventStep: React.FC<IntentStepProps> = ({ nodeID, portID, label }) => (
+  <Step nodeID={nodeID}>
     <Section>
       <Item label={label} portID={portID} icon="event" iconColor="#5589eb" placeholder="Add Alexa Event" />
     </Section>
@@ -17,7 +18,7 @@ export const EventStep: React.FC<IntentStepProps> = ({ portID, label }) => (
 );
 
 const ConnectedEventStep: React.FC<ConnectedStepProps<NodeData.Event>> = ({ node, data }) => (
-  <EventStep portID={node.ports.out[0]} label={data.requestName} />
+  <EventStep nodeID={node.id} portID={node.ports.out[0]} label={data.requestName} />
 );
 
 export default ConnectedEventStep;

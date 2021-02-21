@@ -22,13 +22,14 @@ export type SpeakStepProps = {
   random?: boolean;
   platform: PlatformType;
   portID: string;
+  nodeID: string;
 };
 
-export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, portID }) => {
+export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, nodeID, portID }) => {
   const itemsToRender = random && items.length ? [items[0]] : items;
 
   return (
-    <Step>
+    <Step nodeID={nodeID}>
       <Section>
         {itemsToRender.length ? (
           itemsToRender.map(({ content, isAudio }, index) => (
@@ -70,7 +71,7 @@ const ConnectedSpeakStep: React.FC<ConnectedStepProps<NodeData.Speak>> = ({ node
     isAudio: dialog.type === DialogType.AUDIO,
   }));
 
-  return <SpeakStep items={items} platform={platform} random={data.randomize} portID={node.ports.out[0]} />;
+  return <SpeakStep items={items} platform={platform} random={data.randomize} nodeID={node.id} portID={node.ports.out[0]} />;
 };
 
 export default ConnectedSpeakStep;

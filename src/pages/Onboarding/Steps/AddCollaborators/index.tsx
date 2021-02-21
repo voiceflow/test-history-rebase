@@ -5,7 +5,9 @@ import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import Icon from '@/components/SvgIcon';
 import { ClickableText } from '@/components/Text';
+import { FeatureFlag } from '@/config/features';
 import { UserRole } from '@/constants';
+import { useFeature } from '@/hooks';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { CollaboratorType, OnboardingProps } from '@/pages/Onboarding/types';
 
@@ -15,9 +17,10 @@ import { getError, withPlaceholderCollaborators } from './utils';
 
 const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
   const {
-    state: { addCollaboratorMeta, sendingRequests },
+    state: { addCollaboratorMeta, sendingRequests, justCreatingWorkspace },
     actions: { setAddCollaboratorMeta, stepForward },
   } = React.useContext(OnboardingContext);
+  const platformOnboarding = useFeature(FeatureFlag.PLATFORM_ONBOARDING);
 
   const [collaborators, setCollaborators] = React.useState(() =>
     withPlaceholderCollaborators(addCollaboratorMeta.collaborators.length ? addCollaboratorMeta.collaborators : data.collaborators)
@@ -43,9 +46,12 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
     setCollaborators(members);
   };
 
+  const advanceToNextStep = () =>
+    justCreatingWorkspace || !platformOnboarding.isEnabled ? stepForward(StepID.PAYMENT) : stepForward(StepID.SELECT_CHANNEL);
+
   const onContinue = () => {
     setAddCollaboratorMeta({ collaborators: collaborators.filter(({ email }) => !!email) });
-    stepForward(StepID.PAYMENT);
+    advanceToNextStep();
   };
 
   React.useEffect(() => {
@@ -66,7 +72,7 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
           {sendingRequests ? <Icon icon="publishSpin" size={24} spin /> : 'Send Invites'}
         </Button>
 
-        <ClickableText onClick={() => stepForward(StepID.PAYMENT)} mt={16}>
+        <ClickableText onClick={advanceToNextStep} mt={16}>
           Skip for now
         </ClickableText>
       </FlexCenter>

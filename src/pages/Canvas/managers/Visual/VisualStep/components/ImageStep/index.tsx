@@ -11,12 +11,13 @@ import { getLabel } from './utils';
 export type ImageStepProps = {
   image: string | null;
   label: string | null;
+  nodeID: string;
   portID?: string;
   aspectRatio: number | null;
 };
 
-export const ImageStep: React.FC<ImageStepProps> = ({ label, portID, image, aspectRatio }) => (
-  <Step image={image} imageAspectRatio={aspectRatio} imagePosition="top center">
+export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, portID, image, aspectRatio }) => (
+  <Step nodeID={nodeID} image={image} imageAspectRatio={aspectRatio} imagePosition="top center">
     <Section>
       <Item
         icon="display"
@@ -36,7 +37,7 @@ const ConnectedImageStep: React.FC<ConnectedStepProps<ImageStepData>> = ({ node,
   const image = isVariable(data.image) ? null : data.image;
   const aspectRatio = size && data.canvasVisibility === CanvasVisibility.FULL ? size.width / size.height : null;
 
-  return <ImageStep portID={node.ports.out[0]} label={label} image={image} aspectRatio={aspectRatio} />;
+  return <ImageStep nodeID={node.id} portID={node.ports.out[0]} label={label} image={image} aspectRatio={aspectRatio} />;
 };
 
 export default ConnectedImageStep;

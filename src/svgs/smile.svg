@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 18 18">
+  <defs>
+    <linearGradient id="cxovu12smb" x1="50%" x2="50%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="currentColor" stop-opacity=".85"/>
+      <stop offset="100%" stop-color="currentColor"/>
+    </linearGradient>
+    <path id="w9yheiwpia" d="M9 0C4.05 0 0 4.05 0 9s4.05 9 9 9 9-4.05 9-9-4.05-9-9-9zm3.15 5.4c.72 0 1.35.63 1.35 1.35 0 .72-.63 1.35-1.35 1.35-.72 0-1.35-.63-1.35-1.35 0-.72.63-1.35 1.35-1.35zm-6.3 0c.72 0 1.35.63 1.35 1.35 0 .72-.63 1.35-1.35 1.35-.72 0-1.35-.63-1.35-1.35 0-.72.63-1.35 1.35-1.35zm3.15 9c-2.34 0-4.32-1.53-5.04-3.6h10.08c-.72 2.07-2.7 3.6-5.04 3.6z"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <g>
+      <g>
+        <g>
+          <g>
+            <g>
+              <g>
+                <path d="M0 0H18V18H0z" transform="translate(-915 -309) translate(286 167) translate(0 106) translate(593) translate(24 24) translate(12 12)"/>
+                <g fill-rule="nonzero" transform="translate(-915 -309) translate(286 167) translate(0 106) translate(593) translate(24 24) translate(12 12)">
+                  <use fill="#FFF" xlink:href="#w9yheiwpia"/>
+                  <use fill="url(#cxovu12smb)" xlink:href="#w9yheiwpia"/>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

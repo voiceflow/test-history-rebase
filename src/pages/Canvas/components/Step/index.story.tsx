@@ -18,7 +18,7 @@ export default {
 
 const render = (props?: Partial<ItemProps> & Partial<BaseStepProps>) => () => (
   <Block name="Block">
-    <Step image={props?.image}>
+    <Step nodeID="foo" image={props?.image}>
       <Section>
         <Item {...getProps()} {...props} />
       </Section>
@@ -44,7 +44,7 @@ export const withUserLock = withStepContext({ lockOwner: true })(render());
 
 export const withMultipleSections = withStepContext()(() => (
   <Block name="Block">
-    <Step>
+    <Step nodeID="foo">
       <Section>
         <Item icon="code" iconColor="red" {...getProps()} />
       </Section>
@@ -61,7 +61,7 @@ export const withMultipleSections = withStepContext()(() => (
 
 export const withElse = withStepContext()(() => (
   <Block name="Block">
-    <Step>
+    <Step nodeID="foo">
       <Section>
         <Item icon="code" iconColor="red" {...getProps()} />
       </Section>
@@ -72,7 +72,7 @@ export const withElse = withStepContext()(() => (
 
 export const withSuccessFail = withStepContext()(() => (
   <Block name="Block">
-    <Step>
+    <Step nodeID="foo">
       <Section>
         <Item {...getProps()} />
       </Section>
@@ -86,13 +86,13 @@ export const withSuccessFail = withStepContext()(() => (
 
 export const withCustomSuccessFail = withStepContext({ isConnected: true })(() => (
   <Block name="Block">
-    <Step>
+    <Step nodeID="foo">
       <Section>
         <Item {...getProps()} />
       </Section>
       <Section>
-        <FailureItem label="Declined" {...getProps()} />
-        <SuccessItem label="Successfully Cancelled" {...getProps()} />
+        <FailureItem {...getProps()} label="Declined" />
+        <SuccessItem {...getProps()} label="Successfully Cancelled" />
       </Section>
     </Step>
   </Block>

@@ -70,7 +70,17 @@ export const getSpecificFlowType = (query: Query, flow: OnboardingType, loginFlo
   return SpecificFlowType.create_workspace;
 };
 
-export const getNumberOfSteps = (specificFlowType: SpecificFlowType, hasPresetSeats: boolean, hasWorkspaces: boolean) => {
+export const getNumberOfSteps = ({
+  specificFlowType,
+  hasPresetSeats,
+  hasWorkspaces,
+  platformOnboardingEnabled,
+}: {
+  specificFlowType: SpecificFlowType;
+  hasPresetSeats: boolean;
+  hasWorkspaces: boolean;
+  platformOnboardingEnabled: boolean;
+}) => {
   switch (specificFlowType) {
     case SpecificFlowType.login_invite:
       return 1;
@@ -85,7 +95,7 @@ export const getNumberOfSteps = (specificFlowType: SpecificFlowType, hasPresetSe
     case SpecificFlowType.login_payment_new:
       return 5;
     case SpecificFlowType.login_vanilla_new:
-      return !hasWorkspaces ? 4 : 5;
+      return platformOnboardingEnabled || hasWorkspaces ? 5 : 4;
     default:
       return 4;
   }

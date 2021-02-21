@@ -1,4 +1,5 @@
 import client from '@/client';
+import { PlatformType } from '@/constants';
 
 import { EventName } from '../constants';
 
@@ -28,6 +29,9 @@ export const trackOnboardingPay = (properties: { skip: boolean; plan: string }) 
 
 export const trackOnboardingJoin = (properties: { skip: boolean; role: string }) => () =>
   client.analytics.track(EventName.ONBOARDING_JOIN, { properties });
+
+export const trackOnboardingSelectChannel = (properties: { skip: boolean; platform: PlatformType }) => () =>
+  client.analytics.track(EventName.ONBOARDING_SELECT_CHANNEL, { properties });
 
 export const trackOnboardingComplete = ({ skip, workspaceID }: { skip: boolean; workspaceID: string }) => () =>
   client.analytics.track(EventName.ONBOARDING_COMPLETE, {

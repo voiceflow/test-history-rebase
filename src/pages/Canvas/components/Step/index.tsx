@@ -12,6 +12,7 @@ export * from './components';
 export * from './types';
 
 export type BaseStepProps = {
+  nodeID?: string;
   image?: string | null;
   imagePosition?: string;
   imageAspectRatio?: number | null;
@@ -20,13 +21,14 @@ export type BaseStepProps = {
 
 export type StepProps = BaseStepProps;
 
-const Step: React.FC<StepProps> = ({ image, disableHighlightStyle, children, imagePosition, imageAspectRatio }) => {
+const Step: React.FC<StepProps> = ({ nodeID, image, disableHighlightStyle, children, imagePosition, imageAspectRatio }) => {
   const stepAPI = React.useContext(StepAPIContext);
   const isEditingMode = useEditingMode();
 
   const element = (
     <HoverContainer
       className={ClassName.CANVAS_STEP}
+      data-node-id={nodeID}
       {...stepAPI?.handlers}
       ref={stepAPI?.ref}
       onMouseDown={stopPropagation(null, true)}

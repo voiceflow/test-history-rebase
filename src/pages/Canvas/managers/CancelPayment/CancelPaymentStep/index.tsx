@@ -10,12 +10,13 @@ import { ConnectedProps, MergeArguments } from '@/types';
 export type CancelPaymentStepProps = {
   label?: string;
   withPorts: boolean;
+  nodeID: string;
   successPortID: string;
   failurePortID: string;
 };
 
-export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, successPortID, failurePortID, withPorts }) => (
-  <Step>
+export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, nodeID, successPortID, failurePortID, withPorts }) => (
+  <Step nodeID={nodeID}>
     <Section>
       <Item label={label} labelVariant={StepLabelVariant.SECONDARY} icon="trash" iconColor="#d94c4c" placeholder="Select a product to cancel" />
     </Section>
@@ -39,7 +40,9 @@ const ConnectedCancelPaymentStep: React.FC<ConnectedStepProps<Models.NodeData.Ca
 }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
-  return <CancelPaymentStep label={product?.name} successPortID={successPortID} failurePortID={failurePortID} withPorts={withPorts} />;
+  return (
+    <CancelPaymentStep label={product?.name} nodeID={node.id} successPortID={successPortID} failurePortID={failurePortID} withPorts={withPorts} />
+  );
 };
 
 const mapStateToProps = {

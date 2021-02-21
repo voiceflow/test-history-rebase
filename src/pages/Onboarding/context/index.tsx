@@ -7,14 +7,16 @@ import client from '@/client';
 import { ButtonVariant } from '@/components/Button/constants';
 import { toast as toastNotif } from '@/components/Toast';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
-import { BillingPeriod, ModalType, PlanType, PlatformType, UserRole } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { BillingPeriod, ChannelType, ModalType, PlanType, UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
-import { useModals, useSmartReducer, useTrackingEvents } from '@/hooks';
+import { useFeature, useModals, useSmartReducer, useTrackingEvents } from '@/hooks';
+import { CHANNEL_META } from '@/pages/NewProject/Steps/constants';
 import { ConnectedProps } from '@/types';
 import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
@@ -43,6 +45,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     setPersonalizeWorkspaceMeta: _constant(null),
     setPaymentMeta: _constant(null),
     setJoinWorkspaceMeta: _constant(null),
+    setSelectChannelMeta: _constant(null),
     setAddCollaboratorMeta: _constant(null),
     finishCreateOnboarding: _constant(null),
     finishJoiningWorkspace: _constant(null),
@@ -67,7 +70,9 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     joinWorkspaceMeta: {
       role: '',
     },
-    onboardingComplete: false,
+    selectChannelMeta: {
+      channel: ChannelType.ALEXA_ASSISTANT,
+    },
     sendingRequests: false,
     workspaceId: '',
     justCreatingWorkspace: false,
@@ -109,6 +114,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const { plan, period, couponCode, flow, seats } = Utils.extractQueryParams(query);
   const isFirstSession = firstLogin;
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
+  const platformOnboarding = useFeature(FeatureFlag.PLATFORM_ONBOARDING);
 
   // if the user has existing workspaces they are owners of
   const hasWorkspaces = React.useMemo(
@@ -124,7 +130,12 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   );
   const specificFlowType = Utils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
-  const numberOfSteps = Utils.getNumberOfSteps(specificFlowType, !!seats, hasWorkspaces);
+  const numberOfSteps = Utils.getNumberOfSteps({
+    specificFlowType,
+    hasPresetSeats: !!seats,
+    hasWorkspaces,
+    platformOnboardingEnabled: platformOnboarding.isEnabled,
+  });
   const firstStep = Utils.getFirstStep({
     flow,
     isLoginFlow,
@@ -151,7 +162,9 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     joinWorkspaceMeta: {
       role: '',
     },
-    onboardingComplete: false,
+    selectChannelMeta: {
+      channel: ChannelType.ALEXA_ASSISTANT,
+    },
     sendingRequests: false,
     workspaceId: '',
     justCreatingWorkspace: !isLoginFlow,
@@ -160,7 +173,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   });
 
   const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests, usedSignupCoupon } = state;
-  const { setStepStack, setOnboardingComplete, setSendingRequests } = actions;
+  const { setStepStack, setSendingRequests } = actions;
 
   const cache = React.useRef({ stepStack, state, skipped: false });
 
@@ -236,7 +249,6 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
 
       goToDashboard();
       trackInvitationAccepted(newWorkspaceID, query.email, inviteSource);
-      setOnboardingComplete(true);
 
       toastNotif.success('Successfully joined workspace');
     }
@@ -315,8 +327,6 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       }
     });
 
-    setOnboardingComplete(true);
-
     const { role, channels, teamSize } = state.personalizeWorkspaceMeta;
     const { email, name: userName } = account;
 
@@ -343,7 +353,10 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
-          const { versionID } = await createProject({ platform: PlatformType.ALEXA }, 'onboarding');
+          const { versionID } = await createProject(
+            { platform: CHANNEL_META[state.selectChannelMeta.channel as ChannelType].platform },
+            `onboarding:${state.selectChannelMeta.channel}`
+          );
           await goToCanvas(versionID!);
           await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
         }
@@ -371,7 +384,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const handleLastStep = async (currentStepID: StepID) => {
     let workspaceId: string | null = null;
 
-    if (currentStepID === StepID.ADD_COLLABORATORS || currentStepID === StepID.PAYMENT) {
+    if (currentStepID === StepID.ADD_COLLABORATORS || currentStepID === StepID.PAYMENT || currentStepID === StepID.SELECT_CHANNEL) {
       const workspace = await finishCreateOnboarding();
       workspaceId = workspace?.id ?? null;
     } else if (currentStepID === StepID.JOIN_WORKSPACE) {

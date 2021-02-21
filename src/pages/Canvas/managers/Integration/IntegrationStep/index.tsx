@@ -81,15 +81,16 @@ const IntegrationsStepMeta: IntegrationsStepMetaType = {
 export type IntegrationStepProps = {
   data: NodeData.Integration;
   withPorts: boolean;
+  nodeID: string;
   successPortID: string;
   failurePortID: string;
 };
 
-export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPorts, successPortID, failurePortID }) => {
+export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPorts, nodeID, successPortID, failurePortID }) => {
   const step = IntegrationsStepMeta[data.selectedIntegration] as StepMeta<typeof data.selectedIntegration>;
 
   return (
-    <Step>
+    <Step nodeID={nodeID}>
       <Section>
         <Item
           label={step.getLabel(data)}
@@ -114,7 +115,7 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPort
 const ConnectedIntegrationStep: React.FC<ConnectedStepProps<NodeData.Integration>> = ({ node, data, withPorts }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
-  return <IntegrationStep data={data} successPortID={successPortID} failurePortID={failurePortID} withPorts={withPorts} />;
+  return <IntegrationStep data={data} nodeID={node.id} successPortID={successPortID} failurePortID={failurePortID} withPorts={withPorts} />;
 };
 
 export default ConnectedIntegrationStep;

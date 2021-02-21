@@ -8,12 +8,13 @@ import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, Vari
 export type UserInfoStepProps = {
   userPermissions: (string | null)[];
   withPorts: boolean;
+  nodeID: string;
   successPortID: string;
   failurePortID: string;
 };
 
-export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, withPorts, successPortID, failurePortID }) => (
-  <Step>
+export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, withPorts, nodeID, successPortID, failurePortID }) => (
+  <Step nodeID={nodeID}>
     <Section>
       <Item
         icon="barGraph"
@@ -47,6 +48,7 @@ const ConnectedUserInfoStep: React.FC<ConnectedStepProps<NodeData.UserInfo>> = (
   return (
     <UserInfoStep
       userPermissions={data.permissions.map((permission) => PERMISSION_LABELS[permission.selected!]).filter(Boolean)}
+      nodeID={node.id}
       successPortID={successPortID}
       failurePortID={failurePortID}
       withPorts={withPorts}

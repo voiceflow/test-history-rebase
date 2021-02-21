@@ -7,10 +7,13 @@ export const Container = styled.div<{ disabled?: boolean }>`
   ${transition()};
   border: solid 1px #dfe3ed;
   border-radius: 8px;
-  flex: 1;
   padding: 24px;
-  margin-right: 20px;
+  margin: 10px;
   box-shadow: none;
+  height: 198px;
+  flex-basis: 26%;
+  box-sizing: content-box;
+
   :hover {
     cursor: pointer;
     box-shadow: 0 8px 16px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.06);

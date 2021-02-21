@@ -11,11 +11,12 @@ const PLATFORM_LABELS = {
 };
 
 export type ExitStepProps = {
+  nodeID: string;
   platform: PlatformType;
 };
 
-export const ExitStep: React.FC<ExitStepProps> = ({ platform }) => (
-  <Step>
+export const ExitStep: React.FC<ExitStepProps> = ({ nodeID, platform }) => (
+  <Step nodeID={nodeID}>
     <Section>
       <Item
         label={`${PLATFORM_LABELS[platform]} ends in current state`}
@@ -28,6 +29,6 @@ export const ExitStep: React.FC<ExitStepProps> = ({ platform }) => (
   </Step>
 );
 
-const ConnectedExitStep: React.FC<ConnectedStepProps> = ({ platform }) => <ExitStep platform={platform} />;
+const ConnectedExitStep: React.FC<ConnectedStepProps> = ({ node, platform }) => <ExitStep nodeID={node.id} platform={platform} />;
 
 export default ConnectedExitStep;

@@ -6,7 +6,6 @@ import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
 import { Voice as GoogleVoices } from '@voiceflow/google-types';
 
 import { NodeData } from '@/models';
-import { Icon } from '@/svgs/types';
 import { Pair } from '@/types';
 
 export { IntegrationType } from '@voiceflow/general-types';
@@ -59,6 +58,15 @@ export enum PlatformType {
   GENERAL = 'general',
 }
 
+export enum ChannelType {
+  ALEXA_ASSISTANT = 'alexa_assistant',
+  GOOGLE_ASSISTANT = 'google_assistant',
+  CUSTOM_ASSISTANT = 'custom_assistant',
+  IVR = 'ivr',
+  CHATBOT = 'chatbot',
+  MOBILE_APP = 'mobile_app',
+}
+
 export const DefaultVoice = {
   [PlatformType.ALEXA]: AlexaVoices.ALEXA,
   [PlatformType.GOOGLE]: GoogleVoices.DEFAULT,
@@ -67,22 +75,7 @@ export const DefaultVoice = {
 
 export const PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.GENERAL];
 
-export const PLATFORM_META: Record<PlatformType, { icon: Icon; hidden: boolean }> = {
-  [PlatformType.ALEXA]: {
-    icon: 'amazonAlexa',
-    hidden: false,
-  },
-  [PlatformType.GOOGLE]: {
-    icon: 'googleAssistant',
-    hidden: false,
-  },
-  [PlatformType.GENERAL]: {
-    icon: 'inFlow',
-    hidden: false,
-  },
-};
-
-export const PLATFORM_APP_NAME = <Record<PlatformType, string>>{
+export const PLATFORM_APP_NAME: Record<PlatformType, string> = {
   [PlatformType.ALEXA]: 'Alexa Skill',
   [PlatformType.GOOGLE]: 'Google Action',
   [PlatformType.GENERAL]: 'General Project',

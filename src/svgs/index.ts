@@ -24,6 +24,7 @@ export { default as barGraph } from './bar-graph.svg';
 export { default as blocks } from './blocks.svg';
 
 // c
+export { default as call } from './call.svg';
 export { default as cancelPayment } from './cancel-payment.svg';
 export { default as canvas } from './canvas.svg';
 export { default as card } from './card.svg';
@@ -135,6 +136,7 @@ export { default as longArrowRight } from './solid/long-arrow-right.svg';
 export { default as mail } from './mail.svg';
 export { default as markupImage } from './markup-image.svg';
 export { default as minus } from './minus.svg';
+export { default as mobile } from './mobile.svg';
 export { default as microphone } from './solid/microphone.svg';
 
 // n
@@ -180,6 +182,7 @@ export { default as search } from './search.svg';
 export { default as send } from './send.svg';
 export { default as share } from './share.svg';
 export { default as shortcuts } from './shortcuts.svg';
+export { default as smile } from './smile.svg';
 export { default as sound } from './sound.svg';
 export { default as soundOff } from './soundOff.svg';
 export { default as speak } from './speak.svg';

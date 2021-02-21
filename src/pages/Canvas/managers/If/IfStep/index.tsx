@@ -10,6 +10,7 @@ import { head } from '@/utils/array';
 import { ExpressionPreviewContainer } from './components';
 
 export type IfStepProps = {
+  nodeID: string;
   elsePortID: string;
   expressions: {
     label: JSX.Element;
@@ -17,8 +18,8 @@ export type IfStepProps = {
   }[];
 };
 
-export const IfStep: React.FC<IfStepProps> = ({ expressions, elsePortID }) => (
-  <Step>
+export const IfStep: React.FC<IfStepProps> = ({ expressions, nodeID, elsePortID }) => (
+  <Step nodeID={nodeID}>
     <Section>
       {expressions.length ? (
         expressions.map(({ label, portID }, index) => (
@@ -57,7 +58,7 @@ const ConnectedIfStep: React.FC<ConnectedIfStepProps> = ({ node, data }) => {
       };
     });
 
-  return <IfStep expressions={expressions} elsePortID={elsePortID} />;
+  return <IfStep expressions={expressions} nodeID={node.id} elsePortID={elsePortID} />;
 };
 
 export default ConnectedIfStep;

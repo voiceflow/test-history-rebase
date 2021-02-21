@@ -14,11 +14,12 @@ import { prettifyIntentName } from '@/utils/intent';
 export type ChoiceStepProps = {
   isPath: boolean;
   choices: { label: string | null; portID: string }[];
+  nodeID: string;
   elsePortID: string;
 };
 
-export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, elsePortID }) => (
-  <Step>
+export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID, elsePortID }) => (
+  <Step nodeID={nodeID}>
     {!!choices.length && (
       <Section>
         {choices.map(({ label, portID }, index) => (
@@ -64,7 +65,7 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction> & C
     [platform, choicesByPortID, nodeOutPorts, intentsMap]
   );
 
-  return <ChoiceStep choices={choices} elsePortID={elsePortID} isPath={isPath} />;
+  return <ChoiceStep choices={choices} nodeID={node.id} elsePortID={elsePortID} isPath={isPath} />;
 };
 
 const mapStateToProps = {

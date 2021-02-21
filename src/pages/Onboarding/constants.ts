@@ -1,5 +1,8 @@
+import { ChannelType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
+
+import { CHANNEL_META } from '../NewProject/Steps/constants';
 
 export const ONBOARDING_PROJECT_NAME = 'First Project';
 
@@ -10,6 +13,7 @@ export enum StepID {
   ADD_COLLABORATORS = 'add_collaborators',
   PAYMENT = 'payment',
   JOIN_WORKSPACE = 'join_workspace',
+  SELECT_CHANNEL = 'select_channel',
 }
 
 export type StepMetaPropsType = {
@@ -76,6 +80,17 @@ export const STEP_META: StepMetaProps = {
       Tracking.trackOnboardingJoin({
         skip,
         role: joinWorkspaceMeta.role,
+      }),
+  },
+  [StepID.SELECT_CHANNEL]: {
+    title: () => 'Select Channel',
+    canBack: true,
+    canSkip: false,
+    skipTo: null,
+    trackStep: ({ selectChannelMeta }, { skip }) =>
+      Tracking.trackOnboardingSelectChannel({
+        skip,
+        platform: CHANNEL_META[selectChannelMeta.channel as ChannelType].platform,
       }),
   },
 };

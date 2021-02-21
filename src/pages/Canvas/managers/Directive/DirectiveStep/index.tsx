@@ -5,11 +5,12 @@ import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
 export type DirectiveStepProps = {
+  nodeID: string;
   portID: string;
 };
 
-export const DirectiveStep: React.FC<DirectiveStepProps> = ({ portID }) => (
-  <Step>
+export const DirectiveStep: React.FC<DirectiveStepProps> = ({ nodeID, portID }) => (
+  <Step nodeID={nodeID}>
     <Section>
       <Item
         portID={portID}
@@ -23,6 +24,8 @@ export const DirectiveStep: React.FC<DirectiveStepProps> = ({ portID }) => (
   </Step>
 );
 
-const ConnectedCardStep: React.FC<ConnectedStepProps<NodeData.Directive>> = ({ node }) => <DirectiveStep portID={node.ports.out[0]} />;
+const ConnectedCardStep: React.FC<ConnectedStepProps<NodeData.Directive>> = ({ node }) => (
+  <DirectiveStep nodeID={node.id} portID={node.ports.out[0]} />
+);
 
 export default ConnectedCardStep;

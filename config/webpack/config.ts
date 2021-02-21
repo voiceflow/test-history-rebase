@@ -15,6 +15,7 @@ import {
   ff_gadgets,
   ff_googleSTT,
   ff_ownerRole,
+  ff_platformOnboarding,
   ff_sharePrototypeView,
   ff_straightLines,
   ff_visualPrototype,
@@ -80,6 +81,7 @@ export const ENV = {
   FF_ASR_BYPASS: ff_asrBypass && 'true',
   FF_GOOGLE_STT: ff_googleSTT && 'true',
   FF_SHARE_PROTOTYPE_VIEW: ff_sharePrototypeView && 'true',
+  FF_PLATFORM_ONBOARDING: ff_platformOnboarding && 'true',
 
   API_HOST: 'localhost',
   ROOT_DOMAIN: '',

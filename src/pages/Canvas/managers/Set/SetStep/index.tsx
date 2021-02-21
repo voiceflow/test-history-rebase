@@ -8,11 +8,12 @@ import { ExpressionPreviewContainer } from '@/pages/Canvas/managers/If/IfStep/co
 
 export type SetStepProps = {
   expressions: (JSX.Element | null)[];
+  nodeID: string;
   portID: string;
 };
 
-export const SetStep: React.FC<SetStepProps> = ({ expressions, portID }) => (
-  <Step>
+export const SetStep: React.FC<SetStepProps> = ({ expressions, nodeID, portID }) => (
+  <Step nodeID={nodeID}>
     <Section>
       {expressions.length ? (
         expressions.map((label, index) => (
@@ -40,7 +41,7 @@ const ConnectedSetStep: React.FC<ConnectedSetStepProps> = ({ data, node }) => {
     variable ? <ExpressionPreview prefix={`{${variable}} = `} expression={expression} container={ExpressionPreviewContainer} singleLine /> : null
   );
 
-  return <SetStep expressions={expressions} portID={node.ports.out[0]} />;
+  return <SetStep expressions={expressions} nodeID={node.id} portID={node.ports.out[0]} />;
 };
 
 export default ConnectedSetStep;

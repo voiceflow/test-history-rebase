@@ -8,11 +8,12 @@ import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 export type APLStepProps = {
   image?: string | null;
   label?: string | null;
+  nodeID: string;
   portID?: string;
 };
 
-export const APLStep: React.FC<APLStepProps> = ({ label, portID, image }) => (
-  <Step image={image}>
+export const APLStep: React.FC<APLStepProps> = ({ label, nodeID, portID, image }) => (
+  <Step nodeID={nodeID} image={image}>
     <Section>
       <Item
         icon="blocks"
@@ -30,7 +31,7 @@ const ConnectedAPLStep: React.FC<ConnectedStepProps<APLStepData>> = ({ node, dat
   const label = data.aplType === APLType.SPLASH ? transformVariablesToReadable(data.title) : data.jsonFileName;
   const image = isVariable(data.imageURL) ? null : data.imageURL;
 
-  return <APLStep portID={node.ports.out[0]} label={label} image={image} />;
+  return <APLStep nodeID={node.id} portID={node.ports.out[0]} label={label} image={image} />;
 };
 
 export default ConnectedAPLStep;

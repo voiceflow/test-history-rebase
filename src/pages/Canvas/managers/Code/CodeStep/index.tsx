@@ -7,12 +7,13 @@ import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } fro
 export type CodeStepProps = {
   codeAdded: boolean;
   withPorts: boolean;
+  nodeID: string;
   successPortID: string;
   failurePortID: string;
 };
 
-export const CodeStep: React.FC<CodeStepProps> = ({ codeAdded, withPorts, successPortID, failurePortID }) => (
-  <Step>
+export const CodeStep: React.FC<CodeStepProps> = ({ codeAdded, withPorts, nodeID, successPortID, failurePortID }) => (
+  <Step nodeID={nodeID}>
     <Section>
       <Item
         icon="power"
@@ -36,7 +37,7 @@ export const CodeStep: React.FC<CodeStepProps> = ({ codeAdded, withPorts, succes
 const ConnectedCodeStep: React.FC<ConnectedStepProps<NodeData.Code>> = ({ node, data, withPorts }) => {
   const [successPortID, failurePortID] = node.ports.out;
 
-  return <CodeStep codeAdded={!!data.code} withPorts={withPorts} successPortID={successPortID} failurePortID={failurePortID} />;
+  return <CodeStep codeAdded={!!data.code} withPorts={withPorts} nodeID={node.id} successPortID={successPortID} failurePortID={failurePortID} />;
 };
 
 export default ConnectedCodeStep;

@@ -73,10 +73,10 @@ const getMultiSectionProps = () => ({
 const MOCK_STEPS_LOCKED = (
   <>
     <StepAPIProvider value={{ wrapElement: identity } as StepAPI}>
-      <Step>Order Pizza</Step>
+      <Step nodeID="foo">Order Pizza</Step>
     </StepAPIProvider>
     <StepAPIProvider value={{ lockOwner: getUserProps(), wrapElement: identity } as any}>
-      <Step>New Order</Step>
+      <Step nodeID="bar">New Order</Step>
     </StepAPIProvider>
   </>
 );
@@ -148,7 +148,7 @@ export const stateTransitions = () => {
 
   return (
     <div className={activeClassname}>
-      <Block name="Block 1" {...getProps()} />
+      <Block {...getProps()} />
     </div>
   );
 };

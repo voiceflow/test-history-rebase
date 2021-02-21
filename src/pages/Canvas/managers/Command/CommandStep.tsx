@@ -9,20 +9,21 @@ import { ConnectedProps, MergeArguments } from '@/types';
 import { stopPropagation } from '@/utils/dom';
 
 export type CommandStepProps = {
+  nodeID: string;
   name?: string;
   onCommandClick: () => void;
 };
 
-export const CommandStep: React.FC<CommandStepProps> = ({ name, onCommandClick }) => (
-  <Step>
+export const CommandStep: React.FC<CommandStepProps> = ({ nodeID, name, onCommandClick }) => (
+  <Step nodeID={nodeID}>
     <Section>
       <Item icon="flow" iconColor="#3c6997" label={name} onClick={stopPropagation(onCommandClick)} />
     </Section>
   </Step>
 );
 
-const ConnectedCommandStep: React.FC<ConnectedStepProps<NodeData.Command> & ConnectedCommandStepProps> = ({ data, goToDiagram }) => (
-  <CommandStep onCommandClick={goToDiagram} name={data.name} />
+const ConnectedCommandStep: React.FC<ConnectedStepProps<NodeData.Command> & ConnectedCommandStepProps> = ({ node, data, goToDiagram }) => (
+  <CommandStep nodeID={node.id} onCommandClick={goToDiagram} name={data.name} />
 );
 
 const mapDispatchToProps = {

@@ -11,12 +11,13 @@ export type PaymentStepProps = {
   label?: string;
   withPorts: boolean;
   upsellMessage?: string | null;
+  nodeID: string;
   successPortID: string;
   failurePortID: string;
 };
 
-export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, withPorts, successPortID, failurePortID }) => (
-  <Step>
+export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, withPorts, nodeID, successPortID, failurePortID }) => (
+  <Step nodeID={nodeID}>
     <Section>
       <Item label={label} labelVariant={StepLabelVariant.SECONDARY} icon="purchase" iconColor="#558B2F" placeholder="Select a product" />
     </Section>
@@ -53,6 +54,7 @@ const ConnectedPaymentStep: React.FC<ConnectedStepProps<Models.NodeData.Payment>
     <PaymentStep
       label={product?.name}
       upsellMessage={product?.purchasePrompt}
+      nodeID={node.id}
       successPortID={successPortID}
       failurePortID={failurePortID}
       withPorts={withPorts}

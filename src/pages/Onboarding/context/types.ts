@@ -1,4 +1,4 @@
-import { BillingPeriod, PlanType } from '@/constants';
+import { BillingPeriod, ChannelType, PlanType } from '@/constants';
 import { Query } from '@/models';
 
 import { StepID } from '../constants';
@@ -51,7 +51,9 @@ export type OnboardingContextState = {
   joinWorkspaceMeta: {
     role: string;
   };
-  onboardingComplete: boolean;
+  selectChannelMeta: {
+    channel: ChannelType;
+  };
   sendingRequests: boolean;
   workspaceId: string;
   justCreatingWorkspace: boolean;
@@ -62,15 +64,16 @@ export type OnboardingContextState = {
 export type OnboardingContextActions = {
   stepBack: () => null;
   stepForward: (stepID: StepID | null, options?: { skip: boolean }) => void;
-  closeOnboarding: () => void;
+  closeOnboarding: VoidFunction;
   setCreateWorkspaceMeta: (data: unknown) => void;
   setPersonalizeWorkspaceMeta: (data: unknown) => void;
   setPaymentMeta: (data: unknown) => void;
   setJoinWorkspaceMeta: (data: unknown) => void;
+  setSelectChannelMeta: (data: OnboardingContextState['selectChannelMeta']) => void;
   setAddCollaboratorMeta: (data: unknown) => void;
-  finishCreateOnboarding: () => void;
-  finishJoiningWorkspace: () => void;
-  onCancel: () => void;
+  finishCreateOnboarding: VoidFunction;
+  finishJoiningWorkspace: VoidFunction;
+  onCancel: VoidFunction;
   getNumberOfEditors: () => number;
 };
 

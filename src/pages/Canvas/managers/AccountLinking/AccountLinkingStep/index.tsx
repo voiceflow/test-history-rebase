@@ -9,12 +9,13 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 import { EMPTY_ACCOUNT_DATA } from '@/pages/Canvas/managers/AccountLinking/constants';
 
 export type AccountLinkingStepProps = {
+  nodeID: string;
   portID: string;
   isConfigured: boolean;
 };
 
-export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfigured, portID }) => (
-  <Step>
+export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfigured, nodeID, portID }) => (
+  <Step nodeID={nodeID}>
     <Section>
       <Item
         label={isConfigured && 'Sending Account Linking card'}
@@ -35,7 +36,7 @@ type ConnectedAccountLinkingStepProps = ConnectedStepProps & {
 const ConnectedAccountLinkingStep: React.FC<ConnectedAccountLinkingStepProps> = ({ node, accountLinkingData }) => {
   const notEmpty = !_isEqual(accountLinkingData, EMPTY_ACCOUNT_DATA);
 
-  return <AccountLinkingStep portID={node.ports.out[0]} isConfigured={!!accountLinkingData && notEmpty} />;
+  return <AccountLinkingStep nodeID={node.id} portID={node.ports.out[0]} isConfigured={!!accountLinkingData && notEmpty} />;
 };
 
 const mapStateToProps = {

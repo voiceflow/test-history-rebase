@@ -8,10 +8,11 @@ import { PERMISSION_LABELS } from '../constants';
 
 export type PermissionStepProps = {
   permissions: string[];
+  nodeID: string;
   portID: string;
 };
 
-export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, portID }) => {
+export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nodeID, portID }) => {
   const labelText = (
     <>
       <VariableLabel>Request:</VariableLabel>
@@ -20,7 +21,7 @@ export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, por
   );
 
   return (
-    <Step>
+    <Step nodeID={nodeID}>
       <Section>
         <Item
           label={permissions.length ? labelText : null}
@@ -36,7 +37,7 @@ export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, por
 };
 
 const ConnectedPermissionStep: React.FC<ConnectedStepProps<NodeData.Permission>> = ({ node, data }) => (
-  <PermissionStep permissions={data.permissions.map((permissionID) => PERMISSION_LABELS[permissionID])} portID={node.ports.out[0]} />
+  <PermissionStep permissions={data.permissions.map((permissionID) => PERMISSION_LABELS[permissionID])} nodeID={node.id} portID={node.ports.out[0]} />
 );
 
 export default ConnectedPermissionStep;

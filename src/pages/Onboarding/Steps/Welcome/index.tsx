@@ -31,7 +31,7 @@ const Welcome: React.FC = () => {
             <Title>Welcome to Voiceflow</Title>
           </FadeDownContainer>
           <FadeDownContainer delay={0.24} {...fadeConfig}>
-            <Description>Collaboratively design, prototype and build voice applications for Amazon Alexa and Google Assistant.</Description>
+            <Description>Collaboratively design, prototype and build conversational apps across voice and chat channels.</Description>
           </FadeDownContainer>
           <FadeDownContainer delay={0.36} {...fadeConfig}>
             <FlexCenter>

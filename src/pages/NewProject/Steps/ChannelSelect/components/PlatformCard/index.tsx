@@ -3,31 +3,31 @@ import { Tooltip } from 'react-tippy';
 
 import SvgIcon from '@/components/SvgIcon';
 
-import { IconType, PLATFORM_FEATURE_META, PlatformMetaType } from '../../../constants';
+import { ChannelMetaType, IconType, PLATFORM_FEATURE_META } from '../../../constants';
 import { Container, FeaturesContainer, IconImage, PlatformDescription, PlatformFeatureBubble, PlatformIcon, PlatformName } from './components';
 
 type PlatformCard = {
-  platformMeta: PlatformMetaType;
+  channel: ChannelMetaType;
   onClick: () => void;
   disabled?: boolean;
 };
 
-const PlatformCard: React.FC<PlatformCard> = ({ platformMeta, onClick, disabled }) => (
+const PlatformCard: React.FC<PlatformCard> = ({ channel, onClick, disabled }) => (
   <Container onClick={onClick} disabled={disabled}>
     <PlatformIcon>
-      {platformMeta.iconType === IconType.ICON ? (
-        <SvgIcon icon={platformMeta.icon || 'speak'} size={platformMeta.iconSize} color={platformMeta.iconColor} />
+      {channel.iconType === IconType.ICON ? (
+        <SvgIcon icon={channel.icon || 'speak'} size={channel.iconSize} color={channel.iconColor} />
       ) : (
-        <IconImage src={platformMeta.icon} size={platformMeta.iconSize} alt="platformIcon" />
+        <IconImage src={channel.icon} size={channel.iconSize} alt="platformIcon" />
       )}
     </PlatformIcon>
-    <PlatformName>{platformMeta.name}</PlatformName>
-    <PlatformDescription>{platformMeta.description}</PlatformDescription>
+    <PlatformName>{channel.name}</PlatformName>
+    <PlatformDescription>{channel.description}</PlatformDescription>
     <FeaturesContainer>
-      {platformMeta.features.map((featureID) => {
+      {channel.features.map((featureID) => {
         const { color, borderColor, name, description } = PLATFORM_FEATURE_META[featureID];
         return (
-          <Tooltip key={featureID} title={description(platformMeta.platformName)} position="top">
+          <Tooltip key={featureID} title={description(channel.channel)} position="top">
             <PlatformFeatureBubble color={color} borderColor={borderColor}>
               {name}{' '}
             </PlatformFeatureBubble>

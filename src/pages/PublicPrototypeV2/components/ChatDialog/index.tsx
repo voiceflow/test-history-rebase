@@ -3,9 +3,9 @@ import React from 'react';
 import Box, { Flex } from '@/components/Box';
 import Text from '@/components/Text';
 import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
-import { useTheme } from '@/hooks';
+import { useCanASR, useTheme } from '@/hooks';
 import { ChatDisplay } from '@/pages/Prototype/components';
-import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
+import { ASRSpeechbar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import { Interaction, Message } from '@/pages/Prototype/types';
 
 import { ActionButtons, Chips, DisplayContainer, InputContainer, SpeechBarContainer, SuggestionsContainer, UserInput } from './components';
@@ -23,6 +23,7 @@ export type ChatDialogProps = {
   messages: Message[];
   isMobile?: boolean;
   isLoading?: boolean;
+  onTranscript: (request: string) => Promise<void>;
   testEnded?: boolean;
   isListening?: boolean;
   interactions: Interaction[];
@@ -31,6 +32,7 @@ export type ChatDialogProps = {
   finalTranscript: string;
   onStopListening: () => void;
   onStartListening: () => void;
+  locale: string;
   interimTranscript: string;
   onCheckMicrophonePermission?: () => void;
   isMicrophonePermissionGranted?: boolean;
@@ -56,6 +58,8 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   onInputChange,
   prototypeStatus,
   finalTranscript,
+  onTranscript,
+  locale,
   onStopListening,
   onStartListening,
   interimTranscript,
@@ -64,6 +68,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   isSpeechSpeechRecognitionSupported,
 }) => {
   const theme = useTheme();
+  const [canUseASR] = useCanASR();
 
   return (
     <Box height="100%" width="100%">
@@ -118,18 +123,27 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
               </Flex>
             ) : (
               <SpeechBarContainer>
-                <UncontrolledSpeechBar
-                  disabled={isIdle}
-                  isMobile={isMobile}
-                  isListening={isListening}
-                  isSupported={isSpeechSpeechRecognitionSupported}
-                  finalTranscript={finalTranscript}
-                  onStopListening={onStopListening}
-                  onStartListening={onStartListening}
-                  interimTranscript={interimTranscript}
-                  onCheckMicrophonePermission={onCheckMicrophonePermission}
-                  isMicrophonePermissionGranted={isMicrophonePermissionGranted}
-                />
+                {canUseASR ? (
+                  <ASRSpeechbar
+                    onTranscript={onTranscript}
+                    onCheckMicrophonePermission={onCheckMicrophonePermission}
+                    isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+                    locale={locale}
+                  />
+                ) : (
+                  <UncontrolledSpeechBar
+                    disabled={isIdle}
+                    isMobile={isMobile}
+                    isListening={isListening}
+                    isSupported={isSpeechSpeechRecognitionSupported}
+                    finalTranscript={finalTranscript}
+                    onStopListening={onStopListening}
+                    onStartListening={onStartListening}
+                    interimTranscript={interimTranscript}
+                    onCheckMicrophonePermission={onCheckMicrophonePermission}
+                    isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+                  />
+                )}
               </SpeechBarContainer>
             )}
 

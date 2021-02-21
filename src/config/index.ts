@@ -37,6 +37,7 @@ declare global {
 }
 
 export const isMobile = DEVICE_INFO.platform === 'mobile';
+export const isTablet = DEVICE_INFO.platform === 'tablet';
 
 export const isMac = DEVICE_INFO.os === 'macOS';
 export const isWindows = DEVICE_INFO.os === 'Windows';

@@ -20,6 +20,7 @@ export enum FeatureFlag {
   WAVENET_VOICES = 'wavenet_voices',
   OWNER_ROLE = 'owner_role',
   GOOGLE_STT = 'google_stt',
+  ASR_BYPASS = 'asr_bypass',
   STRAIGHT_LINES = 'straight_lines',
   SHARE_PROTOTYPE_VIEW = 'share_prototype_view',
   PLATFORM_ONBOARDING = 'platform_onboarding',
@@ -39,4 +40,5 @@ export const LOCAL_FEATURE_OVERRIDES = {
   [FeatureFlag.STRAIGHT_LINES]: STRAIGHT_LINES_ENABLED,
   [FeatureFlag.SHARE_PROTOTYPE_VIEW]: SHARE_PROTOTYPE_VIEW_ENABLED,
   [FeatureFlag.PLATFORM_ONBOARDING]: PLATFORM_ONBOARDING_ENABLED,
+  [FeatureFlag.ASR_BYPASS]: ASR_BYPASS_ENABLED,
 };

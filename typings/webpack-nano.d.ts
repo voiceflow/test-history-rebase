@@ -45,6 +45,7 @@ declare module 'webpack-nano/argv' {
     ff_ownerRole: boolean;
     ff_straightLines: boolean;
     ff_googleSTT: boolean;
+    ff_asrBypass: boolean;
     ff_sharePrototypeView: boolean;
     ff_platformOnboarding: boolean;
   }>;

@@ -7,8 +7,8 @@ import ASRContent from '@/pages/Prototype/components/PrototypeSpeechBar/componen
 
 type ASRSpeechBarProps = {
   onTranscript: (text: string) => void;
-  onCheckMicrophonePermission: () => void;
-  isMicrophonePermissionGranted: boolean;
+  onCheckMicrophonePermission?: () => void;
+  isMicrophonePermissionGranted?: boolean;
   locale: string;
 };
 

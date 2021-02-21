@@ -6,13 +6,13 @@ import { preventDefault } from '@/utils/dom';
 import Container from './Container';
 
 type ASRContentProps = {
-  isMicrophoneAvailable: boolean;
+  isMicrophoneAvailable?: boolean;
   listeningASR: boolean;
   processingTranscription: boolean;
   isMobile: boolean;
   onListen: () => void;
   onStop: () => void;
-  onCheckMicrophonePermission: () => void;
+  onCheckMicrophonePermission?: () => void;
 };
 
 const ASRContent: React.FC<ASRContentProps> = ({

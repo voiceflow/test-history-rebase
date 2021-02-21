@@ -18,6 +18,7 @@ export type PrototypeChatDisplayProps = {
   interactions: Interaction[];
   status: PrototypeStatus;
   hideSessionMessages?: boolean;
+  isMobile?: boolean;
 };
 
 const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
@@ -31,6 +32,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   interactions = [],
   status,
   children,
+  isMobile,
   hideSessionMessages,
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
@@ -64,6 +66,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
           status={status}
           onPlay={onPlay}
           isPublic={isPublic}
+          isMobile={isMobile}
           messages={messages}
           isLoading={isLoading}
           bottomScrollRef={scrollRef}

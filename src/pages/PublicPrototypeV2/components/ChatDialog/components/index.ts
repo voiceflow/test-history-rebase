@@ -4,5 +4,6 @@ export { default as Chips } from './Chips';
 export { default as DisplayContainer } from './DisplayContainer';
 export { default as UserInput } from './Input';
 export { default as InputContainer } from './InputContainer';
+export { default as InteractionContainer } from './InteractionContainer';
 export { default as SpeechBarContainer } from './SpeechBarContainer';
 export { default as SuggestionsContainer } from './SuggestionsContainer';

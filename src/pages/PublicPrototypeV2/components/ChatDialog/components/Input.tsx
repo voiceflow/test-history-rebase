@@ -10,9 +10,10 @@ export type UserInputProps = {
   onChange: (value: string) => void;
   testEnded?: boolean;
   onEnterPress: () => void;
+  isMobile?: boolean;
 };
 
-const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, isIdle, testEnded }) => (
+const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, isIdle, testEnded, isMobile }) => (
   <Flex flex={1} fontSize={15}>
     <Input
       key={String(!isIdle)}
@@ -26,6 +27,11 @@ const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, is
       noOverflow
       onKeyPress={withEnterPress(onEnterPress)}
       placeholder={testEnded ? 'This conversation has ended' : 'Type a message...'}
+      {...(isMobile && {
+        onBlur: ({ target }) => {
+          target.focus();
+        },
+      })}
     />
   </Flex>
 );

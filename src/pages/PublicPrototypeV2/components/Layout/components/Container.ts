@@ -5,6 +5,7 @@ type ContainerProps = {
   isVisuals?: boolean;
   isFullScreen?: boolean;
   splashScreenPassed?: boolean;
+  height?: string;
 };
 
 const Container = styled.div<ContainerProps>`

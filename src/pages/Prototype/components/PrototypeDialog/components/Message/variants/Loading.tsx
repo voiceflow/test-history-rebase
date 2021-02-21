@@ -13,7 +13,7 @@ const Component = styled(Message)<{ isLoading?: boolean }>`
   ${({ isLoading }) =>
     !isLoading &&
     css`
-      visibility: hidden;
+      display: none;
     `}
 
   .dot-flashing {

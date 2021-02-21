@@ -41,7 +41,9 @@ const Layout: React.FC<LayoutProps> = ({ children, isVisuals, isListening, rende
   useSetup(() => {
     const onResize = _throttle(() => toggleIsMobileSize(window.innerWidth <= MAX_MOBILE_WIDTH), 100);
 
-    window.addEventListener('resize', onResize);
+    window.addEventListener('resize', () => {
+      onResize();
+    });
 
     onResize();
 

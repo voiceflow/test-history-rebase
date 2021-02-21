@@ -16,7 +16,7 @@ export const Outter = styled.div<{ isPublic?: boolean }>`
     `}
 `;
 
-export const Middle = styled.div<{ isPublic?: boolean }>`
+export const Middle = styled.div<{ isPublic?: boolean; isMobile?: boolean }>`
   position: absolute;
   display: flex;
   flex: 1;
@@ -29,11 +29,18 @@ export const Middle = styled.div<{ isPublic?: boolean }>`
     css`
       padding-top: 20px;
     `}
+
+  ${({ isMobile }) =>
+    isMobile &&
+    css`
+      justify-content: flex-end;
+      padding-bottom: 0;
+    `}
 `;
 
-const Container: React.FC<{ isPublic?: boolean }> = ({ children, isPublic }) => (
+const Container: React.FC<{ isPublic?: boolean; isMobile?: boolean }> = ({ children, isPublic, isMobile }) => (
   <Outter isPublic={isPublic}>
-    <Middle isPublic={isPublic}>
+    <Middle isPublic={isPublic} isMobile={isMobile}>
       <Box pb={20} width="100%">
         {children}
       </Box>

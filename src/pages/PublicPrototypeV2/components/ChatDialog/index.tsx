@@ -8,7 +8,16 @@ import { ChatDisplay } from '@/pages/Prototype/components';
 import { ASRSpeechbar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import { Interaction, Message } from '@/pages/Prototype/types';
 
-import { ActionButtons, Chips, DisplayContainer, InputContainer, SpeechBarContainer, SuggestionsContainer, UserInput } from './components';
+import {
+  ActionButtons,
+  Chips,
+  DisplayContainer,
+  InputContainer,
+  InteractionContainer,
+  SpeechBarContainer,
+  SuggestionsContainer,
+  UserInput,
+} from './components';
 
 export type ChatDialogProps = {
   input: string;
@@ -71,7 +80,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   const [canUseASR] = useCanASR();
 
   return (
-    <Box height="100%" width="100%">
+    <Box height="100%" width="100%" position="relative">
       <DisplayContainer isMobile={isMobile} showSuggestions={interactions.length > 0}>
         <ChatDisplay
           onPlay={onPlay}
@@ -79,88 +88,98 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
           messages={messages}
           isLoading={isLoading}
           interactions={interactions}
+          isMobile={isMobile}
           hideSessionMessages
         />
       </DisplayContainer>
 
-      {interactions.length > 0 && (
-        <SuggestionsContainer>
-          <Flex p="0 32px" flexWrap="nowrap" justifyContent="center">
-            {interactions.map(({ name }) => (
-              <Chips key={name} color={color} onClick={() => onSend(name)}>
-                {name}
-              </Chips>
-            ))}
-          </Flex>
-        </SuggestionsContainer>
-      )}
-
-      <InputContainer isMobile={isMobile}>
-        {layout === PrototypeLayout.TEXT_DIALOG && (
-          <>
-            <UserInput isIdle={isIdle} testEnded={testEnded} value={input} onEnterPress={() => onSend()} onChange={onInputChange} />
-
-            <ActionButtons
-              color={color}
-              onMute={onMute}
-              onSend={onSend}
-              isMuted={isMuted}
-              onReset={onReset}
-              disabled={isIdle}
-              testEnded={testEnded}
-              isMobile={isMobile}
-            />
-          </>
+      <InteractionContainer isMobile={isMobile} showSuggestions={interactions.length > 0}>
+        {interactions.length > 0 && (
+          <SuggestionsContainer>
+            <Flex p="0 32px" flexWrap="nowrap" justifyContent="center">
+              {interactions.map(({ name }) => (
+                <Chips key={name} color={color} onClick={() => onSend(name)}>
+                  {name}
+                </Chips>
+              ))}
+            </Flex>
+          </SuggestionsContainer>
         )}
 
-        {layout === PrototypeLayout.VOICE_DIALOG && (
-          <>
-            {testEnded ? (
-              <Flex flex={1}>
-                <Text fontSize={15} color={theme.colors.tertiary}>
-                  This conversation has ended
-                </Text>
-              </Flex>
-            ) : (
-              <SpeechBarContainer>
-                {canUseASR ? (
-                  <ASRSpeechbar
-                    onTranscript={onTranscript}
-                    onCheckMicrophonePermission={onCheckMicrophonePermission}
-                    isMicrophonePermissionGranted={isMicrophonePermissionGranted}
-                    locale={locale}
-                  />
-                ) : (
-                  <UncontrolledSpeechBar
-                    disabled={isIdle}
-                    isMobile={isMobile}
-                    isListening={isListening}
-                    isSupported={isSpeechSpeechRecognitionSupported}
-                    finalTranscript={finalTranscript}
-                    onStopListening={onStopListening}
-                    onStartListening={onStartListening}
-                    interimTranscript={interimTranscript}
-                    onCheckMicrophonePermission={onCheckMicrophonePermission}
-                    isMicrophonePermissionGranted={isMicrophonePermissionGranted}
-                  />
-                )}
-              </SpeechBarContainer>
-            )}
+        <InputContainer isMobile={isMobile}>
+          {layout === PrototypeLayout.TEXT_DIALOG && (
+            <>
+              <UserInput
+                isIdle={isIdle}
+                isMobile={isMobile}
+                testEnded={testEnded}
+                value={input}
+                onEnterPress={() => onSend()}
+                onChange={onInputChange}
+              />
 
-            <ActionButtons
-              color={color}
-              onMute={onMute}
-              onSend={onSend}
-              noSend
-              isMuted={isMuted}
-              onReset={onReset}
-              disabled={isIdle}
-              testEnded={testEnded}
-              isMobile={isMobile}
-            />
-          </>
-        )}
-      </InputContainer>
+              <ActionButtons
+                color={color}
+                onMute={onMute}
+                onSend={onSend}
+                isMuted={isMuted}
+                onReset={onReset}
+                disabled={isIdle}
+                testEnded={testEnded}
+                isMobile={isMobile}
+              />
+            </>
+          )}
+
+          {layout === PrototypeLayout.VOICE_DIALOG && (
+            <>
+              {testEnded ? (
+                <Flex flex={1}>
+                  <Text fontSize={15} color={theme.colors.tertiary}>
+                    This conversation has ended
+                  </Text>
+                </Flex>
+              ) : (
+                <SpeechBarContainer>
+                  {canUseASR ? (
+                    <ASRSpeechbar
+                      onTranscript={onTranscript}
+                      onCheckMicrophonePermission={onCheckMicrophonePermission}
+                      isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+                      locale={locale}
+                    />
+                  ) : (
+                    <UncontrolledSpeechBar
+                      disabled={isIdle}
+                      isMobile={isMobile}
+                      isListening={isListening}
+                      isSupported={isSpeechSpeechRecognitionSupported}
+                      finalTranscript={finalTranscript}
+                      onStopListening={onStopListening}
+                      onStartListening={onStartListening}
+                      interimTranscript={interimTranscript}
+                      onCheckMicrophonePermission={onCheckMicrophonePermission}
+                      isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+                    />
+                  )}
+                </SpeechBarContainer>
+              )}
+
+              <ActionButtons
+                color={color}
+                onMute={onMute}
+                onSend={onSend}
+                noSend
+                isMuted={isMuted}
+                onReset={onReset}
+                disabled={isIdle}
+                testEnded={testEnded}
+                isMobile={isMobile}
+              />
+            </>
+          )}
+        </InputContainer>
+      </InteractionContainer>
     </Box>
   );
 };

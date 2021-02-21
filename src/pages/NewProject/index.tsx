@@ -32,7 +32,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   const [name, setName] = React.useState('');
   const [projectImage, setProjectImage] = React.useState('');
   const [invocationName, setInvocationName] = React.useState('');
-  const [selectedPlatform, setSelectedPlatform] = React.useState<PlatformType>();
+  const [selectedPlatform, setSelectedPlatform] = React.useState<PlatformType | null>(null);
   const [alexaLocales, setAlexaLocales] = React.useState<[AlexaLocale, ...AlexaLocale[]]>([LOCALE_MAP[0].value]);
   const [googleLanguage, setGoogleLanguage] = React.useState<GoogleLanguage>(GoogleLanguage.EN);
   const [generalLocale, setGeneralLocale] = React.useState<GeneralLocale>(GeneralLocale.EN_US);
@@ -100,7 +100,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
     <OuterContainer>
       <InnerContainer>
         <CreationHeader
-          title={StepMeta[currentStep].title(selectedPlatform)}
+          title={StepMeta[currentStep].title(selectedPlatform!)}
           onCancel={goToDashboard}
           stepBack={stepBack}
           canCancel

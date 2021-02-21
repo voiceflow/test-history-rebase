@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { PlatformType } from '@/constants';
-import { PLATFORM_META } from '@/pages/NewProject/Steps/constants';
+import { CHANNEL_META, PLATFORM_META } from '@/pages/NewProject/Steps/constants';
 
 import ChannelSelect from './Steps/ChannelSelect';
 import NameAndImage from './Steps/NameAndImage';
@@ -14,7 +14,7 @@ export enum StepID {
 }
 
 type StepMetaProps = {
-  title: (platform?: PlatformType) => string;
+  title: (platform: PlatformType) => string;
   component: React.FC<any>;
 };
 
@@ -25,10 +25,12 @@ export const StepMeta: Record<StepID, StepMetaProps> = {
   },
   [StepID.PLATFORM_SELECT]: {
     title: () => 'Select Channel',
-    component: ({ setSelectedPlatform, creatingSkill }) => <ChannelSelect onSelect={setSelectedPlatform} isLoading={creatingSkill} />,
+    component: ({ setSelectedPlatform, creatingSkill }) => (
+      <ChannelSelect onSelect={(channel) => setSelectedPlatform(channel ? CHANNEL_META[channel].platform : null)} isLoading={creatingSkill} />
+    ),
   },
   [StepID.PROJECT_SETTINGS]: {
-    title: (platform) => `${PLATFORM_META[platform!].platformAppType} Settings`,
+    title: (platform) => `${PLATFORM_META[platform].platformAppType} Settings`,
     component: ProjectSettings,
   },
 };

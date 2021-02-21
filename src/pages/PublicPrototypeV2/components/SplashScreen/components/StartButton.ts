@@ -1,9 +1,8 @@
 import { styled, transition } from '@/hocs';
-
-const DEFAULT_COLOR_SCHEME = '#539af5';
+import { changeColorShade } from '@/utils/colors';
 
 const StartButton = styled.button<{ color?: string }>`
-  ${transition('opacity')};
+  ${transition('color')};
 
   min-width: 260px;
   padding: 20px 48px;
@@ -13,11 +12,10 @@ const StartButton = styled.button<{ color?: string }>`
   font-size: 18px;
   border: none;
   border-radius: 12px;
-  opacity: 0.8;
-  background-color: ${({ color = DEFAULT_COLOR_SCHEME }) => color};
+  background-color: ${({ color, theme }) => color || theme.colors.blue};
 
   &:hover {
-    opacity: 1;
+    background-color: ${({ color, theme }) => changeColorShade(color || theme.colors.blue, -20)};
   }
 `;
 

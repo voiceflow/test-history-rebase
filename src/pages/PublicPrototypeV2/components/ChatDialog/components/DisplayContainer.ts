@@ -1,11 +1,12 @@
+/* eslint-disable no-nested-ternary */
+
 import { styled } from '@/hocs';
 
 import { DESKTOP_INPUT_CONTAINER_HEIGHT, MOBILE_INPUT_CONTAINER_HEIGHT } from './InputContainer';
 import { SUGGESTION_HEIGHT } from './SuggestionsContainer';
 
-const DisplayContainer = styled.div<{ showSuggestions?: boolean; isMobile?: boolean }>`
+const DisplayContainer = styled.div<{ showSuggestions?: boolean; isMobile?: boolean; noPadding?: boolean }>`
   display: flex;
-  padding-top: ${({ isMobile }) => (isMobile ? 20 : 40)}px;
 
   height: ${({ isMobile, showSuggestions }) => {
     if (isMobile) {

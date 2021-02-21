@@ -29,7 +29,7 @@ const MenuContent: React.FC = () => {
   return (
     <ScrollContextProvider value={scrollHelpers}>
       <MenuContentHeader scrolling={!!isHeaderShadowShown}>
-        <Header marginBottom={12}>Share your Assistant with Testers</Header>
+        <Header marginBottom={12}>Share Assistant with Testers</Header>
         <Description fontSize={15} lineHeight="normal">
           <span>Share a testable version of your project in the browser on web or mobile. </span>
           <Link href="https://docs.voiceflow.com/#/quickstart/testable-links">Learn More</Link>

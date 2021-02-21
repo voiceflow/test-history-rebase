@@ -16,6 +16,7 @@ export type MenuContainerProps = {
   noBottomPadding?: boolean;
   maxVisibleItems?: number;
   disableAnimation?: boolean;
+  width?: number;
 };
 
 const MenuContainer = styled.ul<MenuContainerProps>`
@@ -24,6 +25,7 @@ const MenuContainer = styled.ul<MenuContainerProps>`
   max-height: ${({ theme, maxVisibleItems }) => theme.components.menuItem.height * (maxVisibleItems || MAX_VISIBLE_ITEMS)}px;
   min-width: 100px;
   ${({ fullWidth }) => (fullWidth ? '' : 'max-width: 400px;')}
+  ${({ width }) => (width ? `width: ${width}px;` : '')}
   margin-top: 5px;
   margin-bottom: 5px;
   padding: 8px 0;

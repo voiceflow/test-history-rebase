@@ -17,6 +17,7 @@ type DialogPrototypeProps = {
   isLoading?: boolean;
   bottomScrollRef: React.Ref<HTMLElement>;
   hideSessionMessages?: boolean;
+  showPadding?: boolean;
   isMobile?: boolean;
 };
 
@@ -29,9 +30,10 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   isLoading,
   status,
   hideSessionMessages,
+  showPadding,
   isMobile,
 }) => (
-  <Container isPublic={isPublic} isMobile={isMobile}>
+  <Container isPublic={isPublic} showPadding={showPadding} isMobile={isMobile}>
     {messages.map((message: Message, index) => {
       const previousMessage = messages[index - 1];
       const userSpeak = message.type === MessageType.USER;

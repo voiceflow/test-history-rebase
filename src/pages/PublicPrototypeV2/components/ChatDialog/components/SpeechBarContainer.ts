@@ -3,7 +3,7 @@ import PrototypeSpeechBarContainer from '@/pages/Prototype/components/PrototypeS
 
 const SpeechBarContainer = styled.div`
   margin: -16px 0 -16px -24px;
-  flex: 1;
+  flex: 2;
 
   ${PrototypeSpeechBarContainer} {
     padding: 16px 0 16px 24px;

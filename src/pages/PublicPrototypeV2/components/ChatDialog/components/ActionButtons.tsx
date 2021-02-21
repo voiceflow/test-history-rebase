@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Flex } from '@/components/Box';
+import { FlexEnd } from '@/components/Box';
 import SvgIcon from '@/components/SvgIcon';
 import Tooltip from '@/components/TippyTooltip';
 import { IconVariant } from '@/constants';
@@ -34,7 +34,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   const theme = useTheme();
 
   return (
-    <Flex>
+    <FlexEnd flex={1}>
       {!testEnded && (
         <>
           <Tooltip title="Reset Test" disabled={disabled}>
@@ -67,7 +67,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           <SvgIcon icon="restart" color={theme?.backgrounds.white} />
         </ButtonWrapper>
       )}
-    </Flex>
+    </FlexEnd>
   );
 };
 

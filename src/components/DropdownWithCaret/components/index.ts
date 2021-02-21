@@ -7,6 +7,12 @@ export const CaretIcon = styled(SvgIcon)`
   display: inline-block;
 `;
 
+/**
+ *  style guildeline:
+ * if a user passes a border
+ * 1. caret color should not change when menu opens
+ * 2. border color changes to blue when menu opens
+ * */
 export const ButtonContainer = styled.div<{
   isOpen: boolean;
   padding?: string;
@@ -18,11 +24,11 @@ export const ButtonContainer = styled.div<{
   cursor: pointer;
   display: inline-block;
 
-  ${({ variant, isOpen }) =>
+  ${({ variant, isOpen, theme }) =>
     variant === TextVariant.secondary &&
     !isOpen &&
     css`
-      color: #62778c;
+      color: ${theme.colors.secondary};
     `}
 
   ${({ isOpen }) =>
@@ -37,10 +43,11 @@ export const ButtonContainer = styled.div<{
       padding: ${padding};
     `}
 
-   ${({ border }) =>
+  
+   ${({ border, isOpen, theme }) =>
     border &&
     css`
-      border: ${border};
+      border: ${isOpen ? `1px solid ${theme.colors.blue}` : border};
       border-radius: 5px;
       padding: 12px 16px;
     `}

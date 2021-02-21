@@ -25,6 +25,7 @@ export type MenuProps<T> = {
   disabled?: boolean;
   maxHeight?: number | string;
   fullWidth?: boolean;
+  width?: number;
   searchable?: React.ReactNode;
   scrollbarsRef?: React.Ref<Scrollbars>;
   maxVisibleItems?: number;
@@ -50,6 +51,7 @@ const Menu = <T,>(
     children,
     maxHeight,
     fullWidth,
+    width,
     searchable,
     scrollbarsRef,
     maxVisibleItems,
@@ -93,6 +95,7 @@ const Menu = <T,>(
       ref={menuRef}
       className={ClassName.MENU}
       fullWidth={fullWidth}
+      width={width}
       maxVisibleItems={maxVisibleItems}
       nativeScrollbar={scrollBarWidth === 0}
       noBottomPadding={noBottomPadding}

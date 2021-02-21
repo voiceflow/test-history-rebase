@@ -2,6 +2,7 @@ import React from 'react';
 
 import Box from '@/components/Box';
 import { Link, Text } from '@/components/Text/components';
+import Tooltip from '@/components/TippyTooltip';
 import { preventDefault } from '@/utils/dom';
 
 import { BoxLogo, Container, ContentContainer, MobileVoiceInstruction, StartButton, WaterMark } from './components';
@@ -40,7 +41,20 @@ const ShareSplashScreen: React.FC<ShareSplashScreenProps> = ({
 
         <Box>
           <Box fontSize={24}>
-            You've been invited to have a conversation with <Text color="#5D9DF5">{projectName}</Text>
+            You've been invited to have a conversation with
+            {projectName.length > 120 ? (
+              <Text color="#5D9DF5" trim>
+                <Tooltip title={projectName}>
+                  <Box width={120} noOverflow ml={5}>
+                    {projectName}
+                  </Box>
+                </Tooltip>
+              </Text>
+            ) : (
+              <Text color="#5D9DF5" ml={5}>
+                {projectName}
+              </Text>
+            )}
           </Box>
 
           <Box fontSize={15} mt={16} mb={32} color="#62778c">

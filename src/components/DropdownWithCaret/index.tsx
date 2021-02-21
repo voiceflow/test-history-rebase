@@ -51,7 +51,7 @@ const DropdownWithCaret: React.FC<DropdownWithCaretProps> = ({
             <TextContainer color={isOpen ? '#5190e6' : inactiveColor} capitalized={capitalized} fullWidth={fullWidth}>
               {text}
             </TextContainer>
-            <CaretIcon icon="caretDown" color={isOpen ? '#5d9df5' : inactiveColor} size={9} />
+            <CaretIcon icon="caretDown" color={isOpen && !border ? '#5d9df5' : inactiveColor} size={9} />
           </ButtonContainer>
         </DisabledWrapper>
       )}

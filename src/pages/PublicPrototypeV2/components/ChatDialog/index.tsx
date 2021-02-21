@@ -90,6 +90,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
           interactions={interactions}
           isMobile={isMobile}
           hideSessionMessages
+          showPadding
         />
       </DisplayContainer>
 
@@ -110,8 +111,8 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
           {layout === PrototypeLayout.TEXT_DIALOG && (
             <>
               <UserInput
-                isIdle={isIdle}
                 isMobile={isMobile}
+                isIdle={isIdle}
                 testEnded={testEnded}
                 value={input}
                 onEnterPress={() => onSend()}

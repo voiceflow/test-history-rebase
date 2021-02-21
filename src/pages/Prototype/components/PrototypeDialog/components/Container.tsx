@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 
 import Box from '@/components/Box';
@@ -16,7 +17,7 @@ export const Outter = styled.div<{ isPublic?: boolean }>`
     `}
 `;
 
-export const Middle = styled.div<{ isPublic?: boolean; isMobile?: boolean }>`
+export const Middle = styled.div<{ isPublic?: boolean; showPadding?: boolean; isMobile?: boolean }>`
   position: absolute;
   display: flex;
   flex: 1;
@@ -24,6 +25,8 @@ export const Middle = styled.div<{ isPublic?: boolean; isMobile?: boolean }>`
   width: 100%;
   height: 100%;
   padding: 0 24px 20px;
+  padding-top: ${({ showPadding, isMobile }) => (showPadding ? (isMobile ? '20px' : '40px') : 0)};
+
   ${({ isPublic }) =>
     isPublic &&
     css`
@@ -38,9 +41,9 @@ export const Middle = styled.div<{ isPublic?: boolean; isMobile?: boolean }>`
     `}
 `;
 
-const Container: React.FC<{ isPublic?: boolean; isMobile?: boolean }> = ({ children, isPublic, isMobile }) => (
+const Container: React.FC<{ isPublic?: boolean; showPadding?: boolean; isMobile?: boolean }> = ({ children, isPublic, showPadding, isMobile }) => (
   <Outter isPublic={isPublic}>
-    <Middle isPublic={isPublic} isMobile={isMobile}>
+    <Middle isPublic={isPublic} showPadding={showPadding} isMobile={isMobile}>
       <Box pb={20} width="100%">
         {children}
       </Box>

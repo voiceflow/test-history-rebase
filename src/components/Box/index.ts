@@ -34,6 +34,7 @@ export type BoxProps = ColorProps &
   BoxShadowProps &
   TextShadowProps & {
     cursor?: CSS.Property.Cursor;
+    noOverflow?: boolean;
   };
 
 export const Box = styled.div<BoxProps>(
@@ -49,6 +50,14 @@ export const Box = styled.div<BoxProps>(
   textShadow,
   css`
     cursor: ${(props: BoxProps) => props.cursor};
+
+    ${(props: BoxProps) =>
+      props.noOverflow &&
+      css`
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      `}
   `
 );
 

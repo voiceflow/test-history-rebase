@@ -31,6 +31,11 @@ const OPTION_DETAILS: Record<PrototypeLayout, Record<string, string>> = {
     inactiveImg: '/icon-voice-visuals-inactive.svg',
   },
 };
+/**
+ *  width is calculated from parent popup width and padding
+ * to account for caret
+ *  */
+const CUSTOM_MENU_WIDTH = 374;
 
 const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ layout, updateSettings }) => {
   const [localLayout, setLocalLayout] = React.useState(layout);
@@ -57,7 +62,7 @@ const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ 
       <DropdownWithCaret
         fullWidth
         menu={(onToggle: () => void) => (
-          <Menu fullWidth>
+          <Menu width={CUSTOM_MENU_WIDTH}>
             {getOptions().map((option: PrototypeLayout) => (
               <MenuItem onClick={onClick(option, onToggle)} key={option} style={{ paddingTop: '12px', paddingBottom: '12px', height: 'auto' }}>
                 <PrototypeLayoutItem

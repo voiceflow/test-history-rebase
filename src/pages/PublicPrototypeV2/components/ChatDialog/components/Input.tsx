@@ -7,14 +7,15 @@ import { withEnterPress } from '@/utils/dom';
 export type UserInputProps = {
   value: string;
   isIdle?: boolean;
+  isMobile?: boolean;
   onChange: (value: string) => void;
   testEnded?: boolean;
   onEnterPress: () => void;
-  isMobile?: boolean;
 };
 
 const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, isIdle, testEnded, isMobile }) => (
-  <Flex flex={1} fontSize={15}>
+  // mobile browsers will zoom and make css look bad if font-size is less than 16px
+  <Flex flex={2} fontSize={isMobile ? 16 : 15} maxWidth={isMobile ? 130 : '100%'}>
     <Input
       key={String(!isIdle)}
       value={value}
@@ -23,7 +24,6 @@ const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, is
       disabled={isIdle || testEnded}
       // eslint-disable-next-line jsx-a11y/no-autofocus
       autoFocus={!isIdle || testEnded}
-      fullWidth
       noOverflow
       onKeyPress={withEnterPress(onEnterPress)}
       placeholder={testEnded ? 'This conversation has ended' : 'Type a message...'}

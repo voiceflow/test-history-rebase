@@ -1,8 +1,11 @@
 import _throttle from 'lodash/throttle';
 import React from 'react';
 
-import Box from '@/components/Box';
+import Box, { FlexCenter } from '@/components/Box';
+import SvgIcon from '@/components/SvgIcon';
+import Text from '@/components/Text';
 import { isMobile as isMobileDevice } from '@/config';
+import * as PrototypeDuck from '@/ducks/prototype';
 import { useHotKeys, useSetup, useToggle } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
@@ -19,6 +22,7 @@ type RendererOptions = {
 };
 
 export type LayoutProps = {
+  layout: PrototypeDuck.PrototypeLayout;
   children: (options: RendererOptions) => React.ReactNode;
   isVisuals: boolean;
   isListening?: boolean;
@@ -27,7 +31,7 @@ export type LayoutProps = {
   renderVisualsFooter?: (options: RendererOptions) => React.ReactNode;
 };
 
-const Layout: React.FC<LayoutProps> = ({ children, isVisuals, isListening, renderSplashScreen, splashScreenPassed, renderVisualsFooter }) => {
+const Layout: React.FC<LayoutProps> = ({ children, isVisuals, isListening, renderSplashScreen, splashScreenPassed, renderVisualsFooter, layout }) => {
   const [isMobileSize, toggleIsMobileSize] = useToggle(window.innerWidth <= MAX_MOBILE_WIDTH);
   const [isFullScreen, toggleFullScreen] = useToggle(false);
 
@@ -56,29 +60,40 @@ const Layout: React.FC<LayoutProps> = ({ children, isVisuals, isListening, rende
 
   return (
     <Container isMobile={isMobile} isVisuals={isVisuals} isFullScreen={isFullScreen} splashScreenPassed={splashScreenPassed}>
-      <ContentContainer isMobile={isMobile} isVisuals={isVisuals} isFullScreen={isFullScreen} splashScreenPassed={splashScreenPassed}>
-        {isVisuals || isMobile ? (
-          <Box width="100%" height="100%">
-            {!splashScreenPassed ? renderSplashScreen(rendererOptions) : children(rendererOptions)}
+      {layout !== PrototypeDuck.PrototypeLayout.TEXT_DIALOG && isMobile ? (
+        <FlexCenter width="100%" height="100%" column p={32}>
+          <SvgIcon icon="info" color="#e5b813" size={32} />
+          <Box mt={16} textAlign="center">
+            <Text fontSize={22}>Mobile support for prototypes are comming soon. Please test on desktop.</Text>
           </Box>
-        ) : (
-          <>
-            <Box width="40%" height="100%" borderRight="1px solid  #dfe3ed;">
-              {renderSplashScreen(rendererOptions)}
-            </Box>
+        </FlexCenter>
+      ) : (
+        <>
+          <ContentContainer isMobile={isMobile} isVisuals={isVisuals} isFullScreen={isFullScreen} splashScreenPassed={splashScreenPassed}>
+            {isVisuals || isMobile ? (
+              <Box width="100%" height="100%">
+                {!splashScreenPassed ? renderSplashScreen(rendererOptions) : children(rendererOptions)}
+              </Box>
+            ) : (
+              <>
+                <Box width="40%" height="100%" borderRight="1px solid  #dfe3ed;">
+                  {renderSplashScreen(rendererOptions)}
+                </Box>
 
-            <Box width="60%" height="100%">
-              {children(rendererOptions)}
-            </Box>
-          </>
-        )}
-      </ContentContainer>
+                <Box width="60%" height="100%">
+                  {children(rendererOptions)}
+                </Box>
+              </>
+            )}
+          </ContentContainer>
 
-      {isVisuals && splashScreenPassed && !isMobile && renderVisualsFooter && (
-        <FooterContainer isHidden={isFullScreen}>{renderVisualsFooter(rendererOptions)}</FooterContainer>
+          {isVisuals && splashScreenPassed && !isMobile && renderVisualsFooter && (
+            <FooterContainer isHidden={isFullScreen}>{renderVisualsFooter(rendererOptions)}</FooterContainer>
+          )}
+
+          {isVisuals && splashScreenPassed && <VisualsBorder isActive={isListening} />}
+        </>
       )}
-
-      {isVisuals && splashScreenPassed && <VisualsBorder isActive={isListening} />}
     </Container>
   );
 };

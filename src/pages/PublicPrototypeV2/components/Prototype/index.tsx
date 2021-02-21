@@ -89,6 +89,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
 
   return (
     <Layout
+      layout={settings.layout}
       isVisuals={isVisuals}
       isListening={isListening}
       renderSplashScreen={({ isMobile }) => (

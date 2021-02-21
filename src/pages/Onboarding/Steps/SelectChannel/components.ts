@@ -1,4 +1,4 @@
-import Flex, { flexStyles } from '@/components/Flex';
+import { flexStyles } from '@/components/Flex';
 import { styled, units } from '@/hocs';
 
 export const DocsLink = styled.a`

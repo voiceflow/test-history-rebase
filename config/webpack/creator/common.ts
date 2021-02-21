@@ -23,7 +23,18 @@ export default merge(commonConfig, {
           }),
           deadCodePlugin({
             context: 'src',
-            exclude: ['**/README.md', '**/__mocks__/**/*', '**/*.story.*', '**/*.unit.*', '**/*.it.*', '**/src/admin/**/*.*'],
+            exclude: [
+              '**/README.md',
+              '**/__mocks__/**/*',
+              '**/*.story.*',
+              '**/*.unit.*',
+              '**/*.it.*',
+              '**/src/admin/**/*',
+              '**/src/models/**/*',
+              '**/src/utils/testing/**/*',
+              '**/src/store/types/**/*',
+              '**/src/**/types.ts',
+            ],
           }),
         ]
       : []),

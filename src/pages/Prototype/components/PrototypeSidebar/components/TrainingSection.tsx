@@ -4,11 +4,13 @@ import React from 'react';
 import client from '@/client';
 import Flex from '@/components/Flex';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
+import { ClickableText } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
 import { toast } from '@/components/Toast';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
+import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useSmartReducerV2, useTrackingEvents } from '@/hooks';
@@ -37,8 +39,11 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
   platform,
   projectID,
   versionID,
+  diagramID,
   isTraining,
   toggleOpen,
+  validateModel,
+  goToInteractionModel,
 }) => {
   const nlp = React.useContext(NLPContext)!;
   const [trackingEvents] = useTrackingEvents();
@@ -56,7 +61,18 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
     trackingEvents.trackProjectTrainAssistant();
 
     try {
-      await nlp.publish();
+      const { invalid } = await validateModel();
+      if (invalid.slots.length) {
+        toast.warn(
+          <>
+            Your slots <b>({invalid.slots.map(({ name }) => name).join(', ')})</b> require custom values in order to be properly recognized during
+            testing. Update the{' '}
+            <ClickableText onClick={() => goToInteractionModel(versionID, diagramID, 'slots', invalid.slots[0].key)}>Interaction Model</ClickableText>{' '}
+            and train your assistant again.
+          </>
+        );
+      }
+      // await nlp.publish();
     } catch (err) {
       logger.warn('Train error', err);
       toast.error('An error occurred while training the model.');
@@ -175,9 +191,15 @@ const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
   platform: Skill.activePlatformSelector,
   versionID: Skill.activeSkillIDSelector,
+  diagramID: Skill.activeDiagramIDSelector,
   projectID: Skill.activeProjectIDSelector,
 };
 
-type ConnectedTrainingSectionProps = ConnectedProps<typeof mapStateToProps>;
+const mapDispatchToProps = {
+  validateModel: PrototypeDuck.validateModel,
+  goToInteractionModel: Router.goToInteractionModel,
+};
 
-export default connect(mapStateToProps)(TrainingSection) as React.FC<TrainingSectionProps>;
+type ConnectedTrainingSectionProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrainingSection) as React.FC<TrainingSectionProps>;

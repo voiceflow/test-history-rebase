@@ -7,13 +7,11 @@ import Flex, { FlexCenter } from '@/components/Flex';
 import { LoadCircle } from '@/components/Loader';
 import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
-import { PlatformType } from '@/constants';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as Diagram from '@/ducks/diagram';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
-import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect, useEventualEngine, useTheme } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
@@ -39,10 +37,8 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   isMuted,
   updatePrototype,
   status,
-  platform,
 }) => {
   const theme = useTheme();
-  const isGeneralPlatform = platform === PlatformType.GENERAL;
 
   const [trainingOpen, toggleTrainingOpen] = useToggle(true);
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
@@ -111,14 +107,11 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
           </FlexCenter>
         ) : (
           <Container>
-            {isGeneralPlatform && (
-              <TrainingSection isOpen={trainingOpen} onOpen={openTraining} isTraining={isModelTraining} toggleOpen={toggleTrainingOpen} />
-            )}
+            <TrainingSection isOpen={trainingOpen} onOpen={openTraining} isTraining={isModelTraining} toggleOpen={toggleTrainingOpen} />
 
             <Section
               header="DIALOG"
               variant={SectionVariant.PROTOTYPE}
-              isRounded={isGeneralPlatform}
               suffix={
                 <Flex>
                   <Box display="inline-block" mr={15}>
@@ -155,7 +148,6 @@ const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
   isMuted: PrototypeDuck.prototypeMutedSelector,
   settings: Recent.recentPrototypeSelector,
-  platform: Skill.activePlatformSelector,
 };
 
 const mapDispatchToProps = {

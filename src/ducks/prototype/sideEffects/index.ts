@@ -11,6 +11,7 @@ export { default as renderPrototype } from './render';
 export { default as resetPrototype } from './reset';
 export { default as setupPublicPrototype } from './setupPublicPrototype';
 export { default as startPrototype } from './start';
+export { default as validateModel } from './validateModel';
 
 export const updateActivePrototypeMode = (mode: PrototypeMode): SyncThunk => (dispatch, getState) => {
   const projectID = Skill.activeProjectIDSelector(getState());

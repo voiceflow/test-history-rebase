@@ -6,6 +6,7 @@ import Tabs from '@/components/Tabs';
 import { Path } from '@/config/routes';
 import { IconVariant, InteractionModelTabType, ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
+import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import { compose, connect } from '@/hocs';
 import { useDidUpdateEffect, useModals } from '@/hooks';
@@ -18,6 +19,7 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
   match,
   history,
   location,
+  renderProtoytpe,
   goToCurrentCanvas,
   goInteractionModel,
   goInteractionModelEntity,
@@ -49,6 +51,11 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
     [activeTab]
   );
 
+  const openExportModal = async () => {
+    toggleExportModel();
+    await renderProtoytpe({ aborted: false });
+  };
+
   React.useEffect(() => {
     if (!!modelMatch && !isInStack) {
       open();
@@ -70,7 +77,7 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
       id={ModalType.INTERACTION_MODEL}
       ref={setModalRef}
       title={<Tabs selected={activeTab} options={TABS} onChange={onChangeTab} />}
-      icon={<SvgIcon icon="exportModel" variant={IconVariant.STANDARD} clickable size={16} onClick={() => toggleExportModel()} />}
+      icon={<SvgIcon icon="exportModel" variant={IconVariant.STANDARD} clickable size={16} onClick={openExportModal} />}
       isSmall={false}
     >
       {!!modalRef && (
@@ -96,6 +103,7 @@ const mapDispatchToProps = {
   goToCurrentCanvas: Router.goToCurrentCanvas,
   goInteractionModel: Router.goToCurrentCanvasInteractionModel,
   goInteractionModelEntity: Router.goToCurrentCanvasInteractionModelEntity,
+  renderProtoytpe: Prototype.renderPrototype,
 };
 
 export type InteractionModelModalConnectedProps = ConnectedProps<{}, typeof mapDispatchToProps>;

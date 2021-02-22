@@ -6,18 +6,28 @@ import React from 'react';
 import client from '@/client';
 import { CreationHeader, InnerContainer, OuterContainer } from '@/components/CreationSteps';
 import { FlexCenter } from '@/components/Flex';
-import { PlatformType } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { ChannelType, PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect } from '@/hooks';
+import { useDidUpdateEffect, useFeature } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
 
 import { StepID, StepMeta } from './constants';
+import { CHANNEL_META } from './Steps/constants';
 
 const NUMBER_OF_STEPS = 3;
+const TEMPLATE_TAG = {
+  [ChannelType.ALEXA_ASSISTANT]: 'default',
+  [ChannelType.GOOGLE_ASSISTANT]: 'default',
+  [ChannelType.CUSTOM_ASSISTANT]: 'default',
+  [ChannelType.CHATBOT]: `default:${ChannelType.CHATBOT}`,
+  [ChannelType.IVR]: `default:${ChannelType.IVR}`,
+  [ChannelType.MOBILE_APP]: `default:${ChannelType.MOBILE_APP}`,
+};
 
 const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?: { listID: string } } }> = ({
   computedMatch,
@@ -32,35 +42,40 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   const [name, setName] = React.useState('');
   const [projectImage, setProjectImage] = React.useState('');
   const [invocationName, setInvocationName] = React.useState('');
-  const [selectedPlatform, setSelectedPlatform] = React.useState<PlatformType | null>(null);
+  const [selectedChannel, setSelectedChannel] = React.useState<ChannelType | null>(null);
   const [alexaLocales, setAlexaLocales] = React.useState<[AlexaLocale, ...AlexaLocale[]]>([LOCALE_MAP[0].value]);
   const [googleLanguage, setGoogleLanguage] = React.useState<GoogleLanguage>(GoogleLanguage.EN);
   const [generalLocale, setGeneralLocale] = React.useState<GeneralLocale>(GeneralLocale.EN_US);
   const [creatingProject, setCreatingProject] = React.useState(false);
   const CurrentStep = StepMeta[currentStep].component;
+  const platform = selectedChannel ? CHANNEL_META[selectedChannel].platform : null;
+  const platformOnboarding = useFeature(FeatureFlag.PLATFORM_ONBOARDING);
 
   const finalizeCreation = async () => {
     setCreatingProject(true);
     const listID = computedMatch?.params?.listID;
 
     try {
-      const project = await createProject({ platform: selectedPlatform!, name, image: projectImage, listID });
+      const project = await createProject(
+        { platform: platform!, name, image: projectImage, listID },
+        platformOnboarding.isEnabled ? TEMPLATE_TAG[selectedChannel!] : undefined
+      );
 
       // TODO: in the future make new project parameters much more platform specific
-      if (selectedPlatform === PlatformType.ALEXA) {
+      if (platform === PlatformType.ALEXA) {
         await client.platform.alexa.version.updatePublishing(project.versionID, {
           invocationName,
           invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
           locales: alexaLocales,
         });
-      } else if (selectedPlatform === PlatformType.GOOGLE) {
+      } else if (platform === PlatformType.GOOGLE) {
         await client.platform.google.version.updatePublishing(project.versionID, {
           locales: LanguageToLocale[googleLanguage],
           displayName: name,
           pronunciation: invocationName,
           sampleInvocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
         });
-      } else if (selectedPlatform === PlatformType.GENERAL) {
+      } else if (platform === PlatformType.GENERAL) {
         await client.platform.general.version.updateSettings(project.versionID, {
           locales: [generalLocale],
         });
@@ -87,10 +102,10 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   };
 
   useDidUpdateEffect(() => {
-    if (selectedPlatform) {
+    if (selectedChannel) {
       onContinue();
     }
-  }, [selectedPlatform]);
+  }, [selectedChannel]);
 
   useDidUpdateEffect(() => {
     setInvocationName(name);
@@ -100,7 +115,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
     <OuterContainer>
       <InnerContainer>
         <CreationHeader
-          title={StepMeta[currentStep].title(selectedPlatform!)}
+          title={StepMeta[currentStep].title(platform!)}
           onCancel={goToDashboard}
           stepBack={stepBack}
           canCancel
@@ -126,10 +141,10 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
             projectImage={projectImage}
             setProjectImage={setProjectImage}
             finalizeCreation={finalizeCreation}
-            selectedPlatform={selectedPlatform}
+            selectedChannel={selectedChannel}
             setGoogleLanguage={setGoogleLanguage}
             setInvocationName={setInvocationName}
-            setSelectedPlatform={setSelectedPlatform}
+            setSelectedChannel={setSelectedChannel}
           />
         </FlexCenter>
       </InnerContainer>

@@ -10,7 +10,14 @@ import { CHANNEL_META } from '../constants';
 import { InstructionContainer, PlatformCardsContainer, QuestionContainer } from './components';
 import PlatformCard from './components/PlatformCard';
 
-export const DEFAULT_OPTIONS = [ChannelType.ALEXA_ASSISTANT, ChannelType.GOOGLE_ASSISTANT, ChannelType.CUSTOM_ASSISTANT];
+const OPTIONS = [
+  ChannelType.ALEXA_ASSISTANT,
+  ChannelType.GOOGLE_ASSISTANT,
+  ChannelType.CUSTOM_ASSISTANT,
+  ChannelType.IVR,
+  ChannelType.CHATBOT,
+  ChannelType.MOBILE_APP,
+];
 
 const Container = styled(CreateWorkspaceContainer)`
   padding-top: 0;
@@ -20,14 +27,12 @@ type ChannelSelectProps = {
   onSelect: (channel: ChannelType | null) => void;
   isLoading: boolean;
   instruction?: string;
-  options?: ChannelType[];
 };
 
 const ChannelSelect: React.FC<ChannelSelectProps> = ({
   onSelect,
   isLoading,
   instruction = 'Select between Amazon Alexa, Google Assistant, or a General Assistant project type',
-  options = DEFAULT_OPTIONS,
 }) => {
   // When the user clicks back on the following step, reset platform
   React.useEffect(() => {
@@ -43,7 +48,7 @@ const ChannelSelect: React.FC<ChannelSelectProps> = ({
         </div>
       </FlexCenter>
       <PlatformCardsContainer>
-        {options.map((channel, index) => (
+        {OPTIONS.map((channel, index) => (
           <PlatformCard
             key={index}
             channel={CHANNEL_META[channel]}

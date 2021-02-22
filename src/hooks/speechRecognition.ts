@@ -7,7 +7,6 @@ import { GENERAL_SERVICE_ENDPOINT } from '@/config';
 import { BCP_LANGUAGE_CODE } from '@/constants';
 
 import { useCache } from './cache';
-import { useTeardown } from './lifecycle';
 import { useMicrophonePermission } from './microphone';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -58,7 +57,14 @@ export const useSpeechRecognition = ({
     }
   }, []);
 
-  useTeardown(() => SpeechRecognition.abortListening());
+  React.useEffect(() => {
+    resetTranscript();
+
+    return () => {
+      SpeechRecognition.abortListening();
+      resetTranscript();
+    };
+  }, []);
 
   return {
     transcript,

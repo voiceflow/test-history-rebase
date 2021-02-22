@@ -72,7 +72,7 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
           </>
         );
       }
-      // await nlp.publish();
+      await nlp.publish();
     } catch (err) {
       logger.warn('Train error', err);
       toast.error('An error occurred while training the model.');

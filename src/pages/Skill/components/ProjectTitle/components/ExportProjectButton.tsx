@@ -42,7 +42,12 @@ const ExportProjectButton: React.FC<ConnectedExportProjectButtonProps> = ({ isEx
             <ModalFooter onClick={stopImmediatePropagation()}>
               <FlexApart fullWidth>
                 <Link href={EXPORT_HELP_LINK}>Learn More</Link>
-                <UploadButton isActive={!!isExporting} label="Export" icon="publishSpin" onClick={stopImmediatePropagation(onClick)} />
+                <UploadButton
+                  isActive={!!isExporting}
+                  label="Export"
+                  icon="publishSpin"
+                  onClick={stopImmediatePropagation(isExporting ? undefined : onClick)}
+                />
               </FlexApart>
             </ModalFooter>
           </FadeDownDelayedContainer>

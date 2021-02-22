@@ -13,6 +13,7 @@ export enum SkillAction {
   REPLACE_GLOBAL_VARIABLES = 'SKILL:GLOBAL_VARIABLES:REPLACE',
   REMOVE_GLOBAL_VARIABLE = 'SKILL:GLOBAL_VARIABLE:REMOVE',
   SET_EXPORTING_CANVAS = 'SKILL:SET_EXPORTING_CANVAS',
+  SET_EXPORTING_MODEL = 'SKILL:SET_EXPORTING_MODEL',
   SET_CANVAS_ONLY = 'SKILL:SET_CANVAS_ONLY',
 }
 
@@ -32,6 +33,8 @@ export type RemoveGlobalVariablesAction = Action<SkillAction.REMOVE_GLOBAL_VARIA
 
 export type SetExportingCanvasAction = Action<SkillAction.SET_EXPORTING_CANVAS, boolean>;
 
+export type SetExportingModelAction = Action<SkillAction.SET_EXPORTING_MODEL, boolean>;
+
 export type AnySkillAction =
   | SetActiveSkillAction
   | UpdateActiveSkillAction
@@ -39,7 +42,8 @@ export type AnySkillAction =
   | ReplaceGlobalVariablesAction
   | RemoveGlobalVariablesAction
   | AddGlobalVariablesAction
-  | SetExportingCanvasAction;
+  | SetExportingCanvasAction
+  | SetExportingModelAction;
 
 // action creators
 
@@ -61,3 +65,5 @@ export const addGlobalVariableAC = (variable: string): AddGlobalVariablesAction 
 export const removeGlobalVariable = (variable: string): RemoveGlobalVariablesAction => createAction(SkillAction.REMOVE_GLOBAL_VARIABLE, variable);
 
 export const setExportingCanvas = (exporting: boolean): SetExportingCanvasAction => createAction(SkillAction.SET_EXPORTING_CANVAS, exporting);
+
+export const setExportingModel = (exporting: boolean): SetExportingModelAction => createAction(SkillAction.SET_EXPORTING_MODEL, exporting);

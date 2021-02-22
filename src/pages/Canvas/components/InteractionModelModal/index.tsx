@@ -1,9 +1,10 @@
 import React from 'react';
 import { matchPath, RouteComponentProps, withRouter } from 'react-router-dom';
 
+import SvgIcon from '@/components/SvgIcon';
 import Tabs from '@/components/Tabs';
 import { Path } from '@/config/routes';
-import { InteractionModelTabType, ModalType } from '@/constants';
+import { IconVariant, InteractionModelTabType, ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import * as Router from '@/ducks/router';
 import { compose, connect } from '@/hocs';
@@ -32,6 +33,7 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
   const activeTab = modelMatch?.params.modelType ?? InteractionModelTabType.INTENTS;
 
   const { open, close, isInStack } = useModals(ModalType.INTERACTION_MODEL);
+  const { toggle: toggleExportModel } = useModals(ModalType.EXPORT_MODEL);
 
   const onChangeTab = React.useCallback(
     (nextTab: string) => {
@@ -68,6 +70,7 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
       id={ModalType.INTERACTION_MODEL}
       ref={setModalRef}
       title={<Tabs selected={activeTab} options={TABS} onChange={onChangeTab} />}
+      icon={<SvgIcon icon="exportModel" variant={IconVariant.STANDARD} clickable size={16} onClick={() => toggleExportModel()} />}
       isSmall={false}
     >
       {!!modalRef && (

@@ -1,8 +1,15 @@
 import { Method } from './constants';
 
+export enum MessageFormat {
+  BLOB = 'blob',
+  TEXT = 'text',
+  JSON = 'json',
+}
+
 export type FetchOptions = Pick<RequestInit, 'credentials' | 'mode'> & {
   method?: Method;
   json?: boolean;
+  returns?: MessageFormat;
   cache?: boolean;
   expiry?: number | false;
   body?: string | object;

@@ -266,9 +266,9 @@ export const upload = (onChange: (files: FileList) => void, options: { accept?: 
   document.body.removeChild(element);
 };
 
-export const download = (filename: string, text: string, data = DataTypes.TEXT) => {
+export const downloadFromURL = (filename: string, url: string) => {
   const element = document.createElement('a');
-  element.setAttribute('href', `data:${data},${encodeURIComponent(text)}`);
+  element.setAttribute('href', url);
   element.setAttribute('download', filename);
 
   element.style.display = 'none';
@@ -277,6 +277,10 @@ export const download = (filename: string, text: string, data = DataTypes.TEXT) 
   element.click();
 
   document.body.removeChild(element);
+};
+
+export const download = (filename: string, text: string, data = DataTypes.TEXT) => {
+  downloadFromURL(filename, `data:${data},${encodeURIComponent(text)}`);
 };
 
 export const buildVirtualDOMRect = ([x, y]: Point, [width, height]: Pair<number> = [0, 0]) => ({

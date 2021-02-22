@@ -2,7 +2,7 @@ import _fetch from 'cross-fetch';
 
 import { clientLogger } from '../utils';
 import { DEFAULT_FETCH_OPTIONS } from './constants';
-import { FetchResult } from './types';
+import { FetchResult, MessageFormat } from './types';
 
 export { _fetch };
 
@@ -41,16 +41,35 @@ export const buildOptions = (rawOpts: RequestInit, globalHeaders: Map<string, st
   return opts;
 };
 
-export const parseResponseBody = <R>(body: string, json: boolean): R => {
+export const parseResponse = async <R>(res: Response, format: MessageFormat): Promise<{ body: R; size: number }> => {
+  if (format === MessageFormat.BLOB) {
+    const blob = await res.blob();
+
+    return {
+      body: blob as any,
+      size: blob.size,
+    };
+  }
+
+  const text = await res.text();
+
   try {
-    if (json && body) {
-      return JSON.parse(body);
+    if (format === MessageFormat.JSON && text) {
+      const json = JSON.parse(text);
+
+      return {
+        body: json as any,
+        size: text.length,
+      };
     }
   } catch {
     // do nothing
   }
 
-  return body as any;
+  return {
+    body: text as any,
+    size: text.length,
+  };
 };
 
 export const extractBody = <R>({ body }: FetchResult<R>) => body;

@@ -9,6 +9,7 @@ import {
   ReplaceGlobalVariablesAction,
   SetActiveSkillAction,
   SetExportingCanvasAction,
+  SetExportingModelAction,
   SkillAction,
   UpdateActiveSkillAction,
   UpdateDiagramIDAction,
@@ -56,6 +57,11 @@ export const setExportingCanvasReducer: Reducer<SkillState<string>, SetExporting
   canvasExporting: exporting,
 });
 
+export const setExportingModelReducer: Reducer<SkillState<string>, SetExportingModelAction> = (state, { payload: exporting }) => ({
+  ...state,
+  modelExporting: exporting,
+});
+
 const skillReducer: RootReducer<SkillState<string>, AnySkillAction> = (state = {} as any, action) => {
   switch (action.type) {
     case SkillAction.SET_ACTIVE_SKILL:
@@ -72,6 +78,8 @@ const skillReducer: RootReducer<SkillState<string>, AnySkillAction> = (state = {
       return replaceGlobalVariablesReducer(state, action);
     case SkillAction.SET_EXPORTING_CANVAS:
       return setExportingCanvasReducer(state, action);
+    case SkillAction.SET_EXPORTING_MODEL:
+      return setExportingModelReducer(state, action);
     default:
       return state;
   }

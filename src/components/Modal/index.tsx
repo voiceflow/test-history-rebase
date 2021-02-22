@@ -5,18 +5,19 @@ import SvgIcon from '@/components/SvgIcon';
 import { IconVariant, ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 
-import { Container, Content, Header, Root } from './components';
+import { Close, Container, Content, Header, Icon, Root } from './components';
 
 export { Body as ModalBody, Footer as ModalFooter } from './components';
 
 export type ModalProps = {
   id: ModalType;
   title: React.ReactNode;
+  icon?: React.ReactNode;
   isSmall?: boolean;
   className?: string;
 };
 
-const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id, title, isSmall = true, children, className }, ref) => {
+const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id, title, icon, isSmall = true, children, className }, ref) => {
   const { fade, isOpened, close, isInStack } = useModals(id);
 
   // eslint-disable-next-line xss/no-mixed-html
@@ -27,7 +28,12 @@ const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id,
           <Header>
             {title}
 
-            <SvgIcon icon="close" variant={IconVariant.STANDARD} clickable size={12} onClick={close} />
+            <div>
+              <Icon>{icon}</Icon>
+              <Close>
+                <SvgIcon icon="close" variant={IconVariant.STANDARD} clickable size={12} onClick={close} />
+              </Close>
+            </div>
           </Header>
 
           <Content>{children}</Content>

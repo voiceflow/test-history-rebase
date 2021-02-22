@@ -50,3 +50,5 @@ export const parentCtrlSelector = createSelector(
 export const isRootDiagramSelector = createSelector(activeSkillSelector, ({ diagramID, rootDiagramID }) => diagramID === rootDiagramID);
 
 export const isCanvasExportingSelector = createSelector(activeSkillSelector, ({ canvasExporting }) => canvasExporting);
+
+export const isModelExportingSelector = createSelector(activeSkillSelector, ({ modelExporting }) => modelExporting);

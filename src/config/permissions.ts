@@ -17,6 +17,7 @@ export enum Permission {
 
   // export
   CODE_EXPORT = 'export.CODE',
+  MODEL_EXPORT = 'export.MODEL',
 
   // prototype
   SHARE_PROTOTYPE = 'prototype.SHARE',
@@ -65,6 +66,16 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.CANVAS_EXPORT]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.COMMENTING]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.BULK_UPLOAD]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
+  [Permission.MODEL_EXPORT]: [
+    PlanType.STUDENT,
+    PlanType.PRO,
+    PlanType.OLD_PRO,
+    PlanType.TEAM,
+    PlanType.OLD_TEAM,
+    PlanType.ENTERPRISE,
+    PlanType.OLD_ENTERPRISE,
+    PlanType.CREATOR,
+  ],
   [Permission.SHARE_PROTOTYPE]: [
     PlanType.PRO,
     PlanType.TEAM,

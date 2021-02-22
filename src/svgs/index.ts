@@ -72,6 +72,7 @@ export { default as event } from './event.svg';
 export { default as exit } from './exit.svg';
 export { default as exitFullscreen } from './exit-fullscreen.svg';
 export { default as export } from './export.svg';
+export { default as exportModel } from './export-model.svg';
 export { default as eye } from './eye.svg';
 export { default as emptyCheckbox } from './images/icons/empty.svg';
 

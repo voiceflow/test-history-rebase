@@ -5,6 +5,7 @@ import { withLoadingGate } from '@/hocs';
 import { useDidUpdateEffect, useTheme } from '@/hooks';
 import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
+import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
 import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
@@ -67,6 +68,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
       <BulkImportSlots />
       <BulkImportUtterances />
       <InteractionModelModal />
+      <ExportModelModal />
     </CanvasProviders>
   );
 };

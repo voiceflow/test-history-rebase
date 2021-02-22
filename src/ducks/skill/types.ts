@@ -6,4 +6,5 @@ export type SkillState<L extends string> = Skill<L> & {
   meta: any;
   publishInfo: Nullable<Record<PlatformType, any>>;
   canvasExporting?: boolean;
+  modelExporting?: boolean;
 };

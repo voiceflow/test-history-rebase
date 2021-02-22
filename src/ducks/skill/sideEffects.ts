@@ -20,7 +20,7 @@ import * as Slot from '@/ducks/slot';
 import * as Models from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { getAuthCookie } from '@/utils/cookies';
-import { DataTypes, download } from '@/utils/dom';
+import { DataTypes, download, downloadFromURL } from '@/utils/dom';
 import { isChoiceNode, isFlowNode, isIntentNode, isProductLinkedNode } from '@/utils/node';
 import { arrayStringReplace } from '@/utils/string';
 
@@ -85,6 +85,35 @@ export const exportCanvas = (type: ExportFormat): Thunk => async (dispatch, getS
   }
 
   dispatch(Skill.setExportingCanvas(false));
+};
+
+export const exportModel = (platform: PlatformType): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const versionID = Skill.activeSkillIDSelector(state);
+
+  dispatch(Skill.setExportingModel(true));
+
+  try {
+    let data: string;
+    const name = Skill.activeNameSelector(state).replace(/ /g, '_');
+
+    if (platform === PlatformType.ALEXA) {
+      data = await client.platform.alexa.modelExport.export(versionID, 'ask');
+      download(`${name}-alexa-model.json`, data, DataTypes.JSON);
+    } else if (platform === PlatformType.GOOGLE) {
+      data = await client.platform.google.modelExport.export(versionID, 'dialogflow/es');
+      downloadFromURL(`${name}-dialogflow-es-model.zip`, data);
+      URL.revokeObjectURL(data);
+    } else {
+      data = await client.platform.general.modelExport.export(versionID, 'luis');
+      download(`${name}-general-model.json`, data, DataTypes.JSON);
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error('Model export failed');
+  }
+
+  dispatch(Skill.setExportingModel(false));
 };
 
 export const saveInvocationName = (invocationName: string): Thunk => async (dispatch, getState) => {

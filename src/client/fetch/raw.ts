@@ -4,8 +4,8 @@ import { DEBUG_HTTP } from '@/config';
 import * as Query from '@/utils/query';
 
 import { DEFAULT_CACHE_TIMEOUT, GLOBAL_HEADERS, MAX_CACHE_SIZE, Method, NetworkError, REQUEST_CACHE, StatusCode } from './constants';
-import { FetchOptions, FetchResult } from './types';
-import { _fetch, buildOptions, debugRequest, log, parseResponseBody } from './utils';
+import { FetchOptions, FetchResult, MessageFormat } from './types';
+import { _fetch, buildOptions, debugRequest, log, parseResponse } from './utils';
 
 let unauthorizedHandler: (endpoint: string) => void;
 
@@ -15,7 +15,16 @@ export const setUnauthorizedHandler = (handler: (endpoint: string) => void) => {
 
 const createRawFetch = (apiEndpoint: string) => async <R>(
   url: string,
-  { body, json = true, cache = false, expiry = DEFAULT_CACHE_TIMEOUT, unauthorizedInterceptor = true, query = {}, ...rawOpts }: FetchOptions = {}
+  {
+    body,
+    json = true,
+    returns = MessageFormat.JSON,
+    cache = false,
+    expiry = DEFAULT_CACHE_TIMEOUT,
+    unauthorizedInterceptor = true,
+    query = {},
+    ...rawOpts
+  }: FetchOptions = {}
 ): Promise<FetchResult<R>> => {
   const opts = buildOptions(rawOpts, GLOBAL_HEADERS, body, json);
 
@@ -32,9 +41,7 @@ const createRawFetch = (apiEndpoint: string) => async <R>(
 
   const res = await _fetch(finalURL, opts);
 
-  const resText = await res.text();
-  const resSize = resText.length;
-  const resBody = parseResponseBody<R>(resText, json);
+  const { body: resBody, size: resSize } = await parseResponse<R>(res, returns);
 
   if (unauthorizedInterceptor && res.status === StatusCode.UNAUTHORIZED) {
     await unauthorizedHandler?.(apiEndpoint);

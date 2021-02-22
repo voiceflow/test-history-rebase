@@ -1,4 +1,4 @@
-import { API_ENDPOINT, API_V2_ENDPOINT } from '@/config';
+import { ALEXA_SERVICE_ENDPOINT, API_ENDPOINT, API_V2_ENDPOINT, GENERAL_SERVICE_ENDPOINT, GOOGLE_SERVICE_ENDPOINT } from '@/config';
 
 import { Method } from './constants';
 import createRawFetch from './raw';
@@ -29,8 +29,14 @@ export const createFetch = (apiEndpoint: string) => {
 
 const fetch = createFetch(API_ENDPOINT);
 
+export type Fetch = typeof fetch;
+
 export default fetch;
 
 export const api = fetch;
 
 export const apiV2 = createFetch(API_V2_ENDPOINT);
+
+export const alexaService = createFetch(ALEXA_SERVICE_ENDPOINT);
+export const googleService = createFetch(GOOGLE_SERVICE_ENDPOINT);
+export const generalService = createFetch(GENERAL_SERVICE_ENDPOINT);

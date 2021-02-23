@@ -5026,10 +5026,12 @@
     axios "^0.21.1"
     superstruct "^0.10.12"
 
-"@voiceflow/commitlint-config@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/commitlint-config/-/commitlint-config-1.0.1.tgz#e9513aa348d5e88ff064022e2dae8d0d7e227f6a"
-  integrity sha512-7amH9jUarcsB5CXmYNOeejQXtCs7kdyETjPp6q2x0y1mNGWfhqzWZ/FySP+wkvFytXyu46PADH29rBw3p2zGdw==
+"@voiceflow/commitlint-config@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/commitlint-config/-/commitlint-config-1.0.2.tgz#c64b2b4b2375c2c8d44e605439849256a37e419c"
+  integrity sha512-kbx6eDBG4eRLGlK28axL1zHHhMT0t08KlDW0389oBCI/q558opsBRIPs8hYGugfFqT/slAKqMP3Kevj928VtyA==
+  dependencies:
+    "@commitlint/config-conventional" "^11.0.0"
 
 "@voiceflow/common@6.5.0":
   version "6.5.0"

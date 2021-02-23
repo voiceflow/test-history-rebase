@@ -139,6 +139,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
             onTranscript={onInteraction}
             locale={locale}
             input={input}
+            onStart={startPrototype}
             color={settings.brandColor}
             layout={settings.layout}
             onMute={onMute}

@@ -24,6 +24,7 @@ export type ChatDialogProps = {
   color?: string;
   isIdle?: boolean;
   layout: PrototypeLayout;
+  onStart: () => void;
   onMute: () => void;
   onSend: (text?: string) => void;
   onPlay: (src: string) => void;
@@ -56,6 +57,8 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   onPlay,
   layout,
   onSend,
+  locale,
+  onStart,
   isMuted,
   onReset,
   messages,
@@ -68,7 +71,6 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   prototypeStatus,
   finalTranscript,
   onTranscript,
-  locale,
   onStopListening,
   onStartListening,
   interimTranscript,
@@ -117,6 +119,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                 value={input}
                 onEnterPress={() => onSend()}
                 onChange={onInputChange}
+                onStart={onStart}
               />
 
               <ActionButtons

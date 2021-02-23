@@ -8,6 +8,7 @@ module.exports = {
   extends: ['@voiceflow/eslint-config', '@voiceflow/eslint-config/frontend', '@voiceflow/eslint-config/typescript'],
   rules: {
     // error
+    'no-process-env': 'error',
     'no-secrets/no-secrets': ['error', { tolerance: 4.45 }],
 
     // warn until fixed

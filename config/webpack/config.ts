@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires, camelcase */
+/* eslint-disable no-process-env, camelcase */
 
 import branch from 'git-branch';
 import {
@@ -13,13 +13,7 @@ import {
   env,
   ff_asrBypass,
   ff_gadgets,
-  ff_googleSTT,
   ff_ownerRole,
-  ff_platformOnboarding,
-  ff_sharePrototypeView,
-  ff_straightLines,
-  ff_visualPrototype,
-  ff_visualStep,
   ff_wavenetVoices,
   ga,
   intercom,
@@ -73,15 +67,9 @@ export const ENV = {
 
   // feature flags
   FF_GADGETS: ff_gadgets && 'true',
-  FF_VISUAL_PROTOTYPE: ff_visualPrototype && 'true',
-  FF_VISUAL_STEP: ff_visualStep && 'true',
-  FF_STRAIGHT_LINES: ff_straightLines && 'true',
   FF_WAVENET_VOICES: ff_wavenetVoices && 'true',
   FF_OWNER_ROLE: ff_ownerRole && 'true',
   FF_ASR_BYPASS: ff_asrBypass && 'true',
-  FF_GOOGLE_STT: ff_googleSTT && 'true',
-  FF_SHARE_PROTOTYPE_VIEW: ff_sharePrototypeView && 'true',
-  FF_PLATFORM_ONBOARDING: ff_platformOnboarding && 'true',
 
   API_HOST: 'localhost',
   ROOT_DOMAIN: '',

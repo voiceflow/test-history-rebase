@@ -1,6 +1,12 @@
+import * as CSS from 'csstype';
+
 import { styled } from '@/hocs';
 
-const ModalFooter = styled.div`
+export type ModalFooterProps = {
+  justifyContent?: CSS.Property.JustifyContent;
+};
+
+const ModalFooter = styled.div<ModalFooterProps>`
   display: flex;
   align-items: center;
   justify-content: ${({ justifyContent }) => justifyContent || 'flex-end'};

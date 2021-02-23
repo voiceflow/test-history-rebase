@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useFeature, useToggle } from '@/hooks';
+import { useDidUpdateEffect, useToggle } from '@/hooks';
 import { isPortLinkReversed } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { ConnectedProps, Pair, Point } from '@/types';
@@ -22,7 +21,6 @@ const PortLink: React.FC<PortProps & ConnectedPortProps> = ({ linkID, isStraight
   const ref = React.useRef<SVGSVGElement>(null);
   const [reversed, toggleReversed] = useToggle(false);
   const engine = React.useContext(EngineContext)!;
-  const straightLines = useFeature(FeatureFlag.STRAIGHT_LINES);
   const targetNodeIsBlock = React.useMemo(() => {
     if (linkID) {
       const link = engine.getLinkByID(linkID);
@@ -46,7 +44,7 @@ const PortLink: React.FC<PortProps & ConnectedPortProps> = ({ linkID, isStraight
       targetIsBlock = node.type === BlockType.COMBINED;
     }
 
-    toggleReversed(isPortLinkReversed(points, { straight: straightLines.isEnabled && cache.current.isStraightLinks, targetIsBlock }));
+    toggleReversed(isPortLinkReversed(points, { straight: cache.current.isStraightLinks, targetIsBlock }));
   }, []);
 
   const api = React.useMemo(() => ({ updatePosition: onReverseUpdate }), []);

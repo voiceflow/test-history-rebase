@@ -9,7 +9,7 @@ import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpe
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
-import ChatDialog from '@/pages/PublicPrototypeV2/components/ChatDialog';
+import ChatDialog from '@/pages/PublicPrototype/components/ChatDialog';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';
 

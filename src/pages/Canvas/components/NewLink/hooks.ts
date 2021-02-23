@@ -1,10 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Realtime from '@/ducks/realtime';
-import { useFeature } from '@/hooks';
 import { buildPath, getMarkerAttrs, getVirtualPoints } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
@@ -28,7 +26,6 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const removeEventListeners = React.useRef(noop);
   const engine = React.useContext(EngineContext)!;
   const [isVisible, setVisible] = React.useState(false);
-  const straightLines = useFeature(FeatureFlag.STRAIGHT_LINES);
 
   const moveLink = React.useCallback(
     (...args: Parameters<typeof Realtime['moveLink']>) => dispatch(Realtime.sendRealtimeVolatileUpdate(Realtime.moveLink(...args))),
@@ -52,10 +49,10 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
     const markerEl = markerRef.current!;
 
     window.requestAnimationFrame(() => {
-      const straightLinks = engine.isStraightLinks();
-      const marketAttrs = getMarkerAttrs(virtualPoints, { straight: straightLines.isEnabled && straightLinks, unconnected: true });
+      const straight = engine.isStraightLinks();
+      const marketAttrs = getMarkerAttrs(virtualPoints, { straight, unconnected: true });
 
-      linkEl.setAttribute('d', buildPath(virtualPoints, { straight: straightLines.isEnabled && straightLinks, unconnected: true }));
+      linkEl.setAttribute('d', buildPath(virtualPoints, { straight, unconnected: true }));
 
       Object.keys(marketAttrs).forEach((attr) => markerEl.setAttribute(attr, marketAttrs[attr as keyof typeof marketAttrs]));
 
@@ -109,7 +106,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
         const [start] = points.current!;
         const nextPoints: Pair<Point> = [start, position];
         const virtualPoints = getVirtualPoints(nextPoints)!;
-        const straightLinks = engine.isStraightLinks();
+        const straight = engine.isStraightLinks();
         const targetPort = engine.linkCreation.activeTargetPortID ? engine.getPortByID(engine.linkCreation.activeTargetPortID) : null;
         const sourcePort = engine.linkCreation.sourcePortID ? engine.getPortByID(engine.linkCreation.sourcePortID) : null;
         const targetNode = targetPort ? engine.getNodeByID(targetPort.nodeID) : null;
@@ -136,11 +133,11 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
 
         window.requestAnimationFrame(() => {
           const path = buildPath(virtualPoints, {
-            straight: straightLines.isEnabled && straightLinks,
+            straight,
             targetIsBlock,
             sourceBlockEndY: getSourceBlockEndY(),
           });
-          const marketAttrs = getMarkerAttrs(virtualPoints, { straight: straightLines.isEnabled && straightLinks, targetIsBlock });
+          const marketAttrs = getMarkerAttrs(virtualPoints, { straight, targetIsBlock });
 
           linkEl.setAttribute('d', path);
           Object.keys(marketAttrs).forEach((attr) => markerEl.setAttribute(attr, marketAttrs[attr as keyof typeof marketAttrs]));

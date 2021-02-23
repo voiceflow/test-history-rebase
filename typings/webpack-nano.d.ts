@@ -39,15 +39,9 @@ declare module 'webpack-nano/argv' {
 
     // feature flags
     ff_gadgets: boolean;
-    ff_visualPrototype: boolean;
-    ff_visualStep: boolean;
     ff_wavenetVoices: boolean;
     ff_ownerRole: boolean;
-    ff_straightLines: boolean;
-    ff_googleSTT: boolean;
     ff_asrBypass: boolean;
-    ff_sharePrototypeView: boolean;
-    ff_platformOnboarding: boolean;
   }>;
 
   export = argv;

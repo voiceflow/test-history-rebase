@@ -1,10 +1,8 @@
-import _isNumber from 'lodash/isNumber';
 import moize from 'moize';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
-import { useFeature, useLinkedRef } from '@/hooks';
+import { useLinkedRef } from '@/hooks';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { Pair, Point } from '@/types';
@@ -23,7 +21,6 @@ export const useLinkInstance = () => {
     computedPoints: e.getPoints(),
   }));
   const points = useLinkedRef(computedPoints);
-  const straightLines = useFeature(FeatureFlag.STRAIGHT_LINES);
   const elementInstance = useElementInstance(containerRef);
 
   return React.useMemo<InternalLinkInstance>(() => {
@@ -32,7 +29,7 @@ export const useLinkInstance = () => {
     const link = engine.getLinkByID(linkEntity.linkID);
     const targetNode = engine.getNodeByID(link.target.nodeID);
     const sourceNode = engine.getNodeByID(link.source.nodeID);
-    const straightLinks = engine.isStraightLinks();
+    const straight = engine.isStraightLinks();
     const targetNodeIsBlock = targetNode.type === BlockType.COMBINED;
 
     const getSourceBlockEndY = () => {
@@ -56,11 +53,11 @@ export const useLinkInstance = () => {
 
       window.requestAnimationFrame(() => {
         const nextPath = buildPath(nextPoints, {
-          straight: straightLines.isEnabled && straightLinks,
+          straight,
           targetIsBlock: targetNodeIsBlock,
           sourceBlockEndY: getSourceBlockEndY(),
         });
-        const nextMarketAttrs = getMarkerAttrs(nextPoints, { straight: straightLines.isEnabled && straightLinks, targetIsBlock: targetNodeIsBlock })!;
+        const nextMarketAttrs = getMarkerAttrs(nextPoints, { straight, targetIsBlock: targetNodeIsBlock })!;
 
         pathEl.setAttribute('d', nextPath);
         hiddenPathEl.setAttribute('d', nextPath);
@@ -101,21 +98,21 @@ export const useLinkInstance = () => {
 
       getPath: () =>
         buildPath(getMemoizedVirtualPoints(points.current), {
-          straight: straightLines.isEnabled && straightLinks,
+          straight,
           targetIsBlock: targetNodeIsBlock,
           sourceBlockEndY: getSourceBlockEndY(),
         }),
 
       getCenter: () =>
         buildCenter(getMemoizedVirtualPoints(points.current), {
-          straight: straightLines.isEnabled && straightLinks,
+          straight,
           targetIsBlock: targetNodeIsBlock,
           sourceBlockEndY: getSourceBlockEndY(),
         }),
 
       getMarkerAttrs: () =>
         getMarkerAttrs(getMemoizedVirtualPoints(points.current), {
-          straight: straightLines.isEnabled && straightLinks,
+          straight,
           targetIsBlock: targetNodeIsBlock,
         }),
     };

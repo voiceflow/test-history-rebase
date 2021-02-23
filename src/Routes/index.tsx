@@ -2,11 +2,9 @@ import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { FullSpinner } from '@/components/Spinner';
-import { FeatureFlag } from '@/config/features';
 import { LegacyPath, Path } from '@/config/routes';
 import { authTokenSelector } from '@/ducks/session';
 import { connect, lazy } from '@/hocs';
-import { useFeature } from '@/hooks';
 import Export from '@/pages/Export';
 import Onboarding from '@/pages/Onboarding';
 import LoginForm from '@/pages/Register/LoginForm';
@@ -29,15 +27,8 @@ const Account = lazy(() => import('@/pages/Account'));
 const Runtime = lazy(() => import('@/pages/Runtime'));
 const Page404 = lazy(() => import('@/components/ErrorPages/404'));
 const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));
-const PublicPrototypeV2 = lazy(() => import('@/pages/PublicPrototypeV2'));
 const Workspace = lazy(() => import('@/pages/Workspace'));
 const NewWorkspace = lazy(() => import('@/pages/Dashboard/NewWorkspace'));
-
-const PublicPrototypeRoute: React.FC = (props) => {
-  const sharePrototypeView = useFeature(FeatureFlag.SHARE_PROTOTYPE_VIEW);
-
-  return sharePrototypeView.isEnabled ? <PublicPrototypeV2 {...props} /> : <PublicPrototype {...props} />;
-};
 
 const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => (
   <Suspense fallback={<FullSpinner name="Assets" />}>
@@ -60,7 +51,7 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => (
       <PrivateRoute path={[Path.WORKSPACE, Path.DASHBOARD]} component={Workspace} />
 
       <Redirect exact from={Path.PROJECT_DEMO} to={Path.PUBLIC_PROTOTYPE} />
-      <Route path={Path.PUBLIC_PROTOTYPE} component={PublicPrototypeRoute} />
+      <Route path={Path.PUBLIC_PROTOTYPE} component={PublicPrototype} />
 
       <Redirect from={LegacyPath.WORKSPACE_DASHBOARD} to={Path.WORKSPACE_DASHBOARD} />
       <Redirect from={LegacyPath.CANVAS_DIAGRAM} to={Path.PROJECT_CANVAS} />

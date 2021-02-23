@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import * as Skill from '@/ducks/skill';
 import { compose, connect } from '@/hocs';
-import { useFeature, useRegistration, useTeardown } from '@/hooks';
+import { useRegistration, useTeardown } from '@/hooks';
 import { buildHeadMarker, buildPath, getMarkerAttrs, getVirtualPoints, HeadMarker, Path } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { ConnectedProps } from '@/types';
@@ -14,10 +13,9 @@ import { useNewLinkAPI } from './hooks';
 const NEW_LINK_ID = 'newLink';
 const HEAD_MARKER = buildHeadMarker(NEW_LINK_ID);
 
-const NewLink: React.FC<ConnectedNewLink> = ({ isStraightLinks }) => {
+const NewLink: React.FC<ConnectedNewLink> = ({ straight }) => {
   const engine = React.useContext(EngineContext)!;
   const api = useNewLinkAPI<SVGPathElement>();
-  const straightLines = useFeature(FeatureFlag.STRAIGHT_LINES);
   const points = api.getPoints();
 
   useRegistration(() => engine.linkCreation.register('newLink', api), [api]);
@@ -27,8 +25,8 @@ const NewLink: React.FC<ConnectedNewLink> = ({ isStraightLinks }) => {
 
   const virtualPoints = getVirtualPoints(points);
 
-  const path = buildPath(virtualPoints, { straight: straightLines.isEnabled && isStraightLinks, unconnected: true });
-  const markerAttrs = getMarkerAttrs(virtualPoints, { straight: straightLines.isEnabled && isStraightLinks, unconnected: true });
+  const path = buildPath(virtualPoints, { straight, unconnected: true });
+  const markerAttrs = getMarkerAttrs(virtualPoints, { straight, unconnected: true });
 
   return (
     <Container>
@@ -39,7 +37,7 @@ const NewLink: React.FC<ConnectedNewLink> = ({ isStraightLinks }) => {
 };
 
 const mapStateToProps = {
-  isStraightLinks: Skill.activeProjectStraightLinkSelector,
+  straight: Skill.activeProjectStraightLinkSelector,
 };
 
 type ConnectedNewLink = ConnectedProps<typeof mapStateToProps>;

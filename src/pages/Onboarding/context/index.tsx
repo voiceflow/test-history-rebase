@@ -7,7 +7,6 @@ import client from '@/client';
 import { ButtonVariant } from '@/components/Button/constants';
 import { toast as toastNotif } from '@/components/Toast';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
-import { FeatureFlag } from '@/config/features';
 import { BillingPeriod, ChannelType, ModalType, PlanType, UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
@@ -15,7 +14,7 @@ import * as Router from '@/ducks/router';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
-import { useFeature, useModals, useSmartReducer, useTrackingEvents } from '@/hooks';
+import { useModals, useSmartReducer, useTrackingEvents } from '@/hooks';
 import { CHANNEL_META } from '@/pages/NewProject/Steps/constants';
 import { ConnectedProps } from '@/types';
 import { asyncForEach } from '@/utils/array';
@@ -114,7 +113,6 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   const { plan, period, couponCode, flow, seats } = Utils.extractQueryParams(query);
   const isFirstSession = firstLogin;
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
-  const platformOnboarding = useFeature(FeatureFlag.PLATFORM_ONBOARDING);
 
   // if the user has existing workspaces they are owners of
   const hasWorkspaces = React.useMemo(
@@ -134,7 +132,6 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     specificFlowType,
     hasPresetSeats: !!seats,
     hasWorkspaces,
-    platformOnboardingEnabled: platformOnboarding.isEnabled,
   });
   const firstStep = Utils.getFirstStep({
     flow,

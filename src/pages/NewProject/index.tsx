@@ -6,12 +6,11 @@ import React from 'react';
 import client from '@/client';
 import { CreationHeader, InnerContainer, OuterContainer } from '@/components/CreationSteps';
 import { FlexCenter } from '@/components/Flex';
-import { FeatureFlag } from '@/config/features';
 import { ChannelType, PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useFeature } from '@/hooks';
+import { useDidUpdateEffect } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
@@ -49,17 +48,13 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   const [creatingProject, setCreatingProject] = React.useState(false);
   const CurrentStep = StepMeta[currentStep].component;
   const platform = selectedChannel ? CHANNEL_META[selectedChannel].platform : null;
-  const platformOnboarding = useFeature(FeatureFlag.PLATFORM_ONBOARDING);
 
   const finalizeCreation = async () => {
     setCreatingProject(true);
     const listID = computedMatch?.params?.listID;
 
     try {
-      const project = await createProject(
-        { platform: platform!, name, image: projectImage, listID },
-        platformOnboarding.isEnabled ? TEMPLATE_TAG[selectedChannel!] : undefined
-      );
+      const project = await createProject({ platform: platform!, name, image: projectImage, listID }, TEMPLATE_TAG[selectedChannel!]);
 
       // TODO: in the future make new project parameters much more platform specific
       if (platform === PlatformType.ALEXA) {

@@ -4,12 +4,11 @@ import Button, { ButtonVariant } from '@/components/Button';
 import Dropdown from '@/components/Dropdown';
 import { ModalFooter } from '@/components/LegacyModal';
 import { toast } from '@/components/Toast';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { useFeature, usePermission, useTrackingEvents } from '@/hooks';
+import { usePermission, useTrackingEvents } from '@/hooks';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
@@ -17,8 +16,6 @@ import { copy } from '@/utils/clipboard';
 import { stopImmediatePropagation } from '@/utils/dom';
 
 import { MenuContainer, MenuContent, MenuItemV2, SharePrototype } from './components';
-
-const Footer = ModalFooter as React.FC<any>;
 
 type ShareProjectProps = {
   render: boolean;
@@ -29,7 +26,6 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canInviteByLink] = usePermission(Permission.INVITE_BY_LINK);
   const [trackingEvents] = useTrackingEvents();
-  const sharePrototypeView = useFeature(FeatureFlag.SHARE_PROTOTYPE_VIEW);
 
   const isPrototypingMode = usePrototypingMode();
 
@@ -60,24 +56,24 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
         <MenuContainer onClick={stopImmediatePropagation()}>
           <FadeDownDelayedContainer>
             <>
-              {canSharePrototype && sharePrototypeView.isEnabled ? (
+              {canSharePrototype ? (
                 <MenuContent />
               ) : (
                 <MenuItemV2
-                  isAllowed={canSharePrototype}
+                  isAllowed={false}
                   title="Share Prototype"
                   description="Share a testable version of your project that can be prototyped using voice, chat, or chip input."
                 />
               )}
               {canInviteByLink && (
-                <Footer onClick={stopImmediatePropagation()}>
+                <ModalFooter onClick={stopImmediatePropagation()}>
                   <SharePrototype
                     link={testableLink}
                     onClick={onClickPrototype}
                     isAllowed={canSharePrototype}
                     onRenderPrototype={onRenderPrototype}
                   />
-                </Footer>
+                </ModalFooter>
               )}
             </>
           </FadeDownDelayedContainer>
@@ -86,12 +82,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     >
       {(ref, onToggle, isOpen) =>
         isPrototypingMode ? (
-          <Button
-            ref={ref}
-            variant={ButtonVariant.PRIMARY}
-            icon="link"
-            onClick={canSharePrototype && !sharePrototypeView.isEnabled ? onClickPrototype : onToggle}
-          >
+          <Button ref={ref} variant={ButtonVariant.PRIMARY} icon="link" onClick={onToggle}>
             Share Prototype
           </Button>
         ) : (

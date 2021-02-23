@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { buildHeadMarker, buildPath, HeadMarker, Path } from '@/pages/Canvas/components/Link';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { RealtimeLinkOverlayAPI } from '@/pages/Canvas/types';
@@ -29,10 +28,7 @@ class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
       this.animateElement(tabID, (linkEl) => {
         if (!linkEl) return;
 
-        linkEl.setAttribute(
-          'd',
-          buildPath(nextPoint, { straight: engine.isFeatureEnabled(FeatureFlag.STRAIGHT_LINES) && engine.isStraightLinks(), unconnected: true })
-        );
+        linkEl.setAttribute('d', buildPath(nextPoint, { straight: engine.isStraightLinks(), unconnected: true }));
       });
     },
 
@@ -56,7 +52,7 @@ class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
 
     const strokeColor = viewer.color.includes('|') ? `#${viewer.color.split('|')[0]}` : DEFAULT_STROKE_COLOR;
     const path = buildPath(linkLocation, {
-      straight: this.props.engine.isFeatureEnabled(FeatureFlag.STRAIGHT_LINES) && this.props.engine.isStraightLinks(),
+      straight: this.props.engine.isStraightLinks(),
       unconnected: true,
     });
 

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import { FlexLabel } from '@/components/Flex';
-import { useDidUpdateEffect } from '@/hooks';
+import { useDidUpdateEffect, useTheme } from '@/hooks';
 import { useCombinedRefs } from '@/hooks/ref';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
@@ -12,7 +12,7 @@ import { Either } from '@/types';
 import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@/utils/dom';
 import { stringify } from '@/utils/functional';
 
-import { ButtonContainer, Container, Item, itemStyles } from './components';
+import { ButtonContainer, Container, getItemsContainer, Item, itemStyles, MAX_VISIBLE_ITEMS } from './components';
 
 export { Container as MenuContainer, Item as MenuItem, itemStyles as menuItemStyles };
 
@@ -54,7 +54,7 @@ const Menu = <T,>(
     width,
     searchable,
     scrollbarsRef,
-    maxVisibleItems,
+    maxVisibleItems = MAX_VISIBLE_ITEMS,
     noBottomPadding,
     disableAnimation = false,
     multiSelectProps,
@@ -64,6 +64,7 @@ const Menu = <T,>(
   const menuRef = useCombinedRefs(ref);
   const [visibleOptions, setVisibleOptions] = React.useState(options || []);
   const scrollBarWidth = React.useMemo(() => getScrollbarWidth(), []);
+  const theme = useTheme();
 
   const onItemClick = (value?: T, onClick?: (e: React.MouseEvent) => void) =>
     stopPropagation<React.MouseEvent>((e) => {
@@ -104,7 +105,14 @@ const Menu = <T,>(
       <FadeDownDelayedContainer duration={disableAnimation ? 0 : undefined} delay={disableAnimation ? 0 : undefined}>
         {searchable}
 
-        <Scrollbars ref={scrollbarsRef} className="scrollbars" autoHeight autoHide autoHeightMax={maxHeight} hideTracksWhenNotNeeded>
+        <Scrollbars
+          ref={scrollbarsRef}
+          className="scrollbars"
+          autoHeight
+          autoHide
+          autoHeightMax={maxHeight ?? getItemsContainer(theme.components.menuItem.height, maxVisibleItems)}
+          hideTracksWhenNotNeeded
+        >
           {children ||
             visibleOptions.map(({ value, label, onClick }, index) => (
               <Item key={`${index}-${label}`} className={ClassName.MENU_ITEM} onClick={onItemClick(value, onClick)}>

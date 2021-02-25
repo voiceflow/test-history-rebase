@@ -22,6 +22,7 @@ const SimpleNestedMenu = ({
   onSelect,
   grouped,
   multiLevelDropdown = true,
+  maxVisibleItems,
   getOptionValue = defaultGetter,
   getOptionLabel = defaultGetter,
   getOptionKey = getOptionValue,
@@ -46,7 +47,7 @@ const SimpleNestedMenu = ({
   );
 
   return (
-    <BaseMenu fullWidth ref={menuRef}>
+    <BaseMenu fullWidth ref={menuRef} maxVisibleItems={maxVisibleItems}>
       <MenuOptions
         options={options}
         onSelect={onSelect}

@@ -2,13 +2,16 @@ import { cardStyles } from '@/components/Card';
 import { css, styled } from '@/hocs';
 import { SlideDown } from '@/styles/animations';
 
-const MAX_VISIBLE_ITEMS = 7.5;
+export const MAX_VISIBLE_ITEMS = 7.5;
+const VERTICAL_PADDING = 8;
 
 const nativeScrollbarsStyle = css`
   .scrollbars > div {
     overflow: auto !important;
   }
 `;
+
+export const getItemsContainer = (itemHeight: number, maxVisibleItems: number = MAX_VISIBLE_ITEMS): number => itemHeight * maxVisibleItems;
 
 export type MenuContainerProps = {
   fullWidth?: boolean;
@@ -22,13 +25,13 @@ export type MenuContainerProps = {
 const MenuContainer = styled.ul<MenuContainerProps>`
   ${cardStyles}
 
-  max-height: ${({ theme, maxVisibleItems }) => theme.components.menuItem.height * (maxVisibleItems || MAX_VISIBLE_ITEMS)}px;
+  max-height: ${({ theme, maxVisibleItems }) => getItemsContainer(theme.components.menuItem.height, maxVisibleItems) + VERTICAL_PADDING * 2}px;
   min-width: 100px;
   ${({ fullWidth }) => (fullWidth ? '' : 'max-width: 400px;')}
   ${({ width }) => (width ? `width: ${width}px;` : '')}
   margin-top: 5px;
   margin-bottom: 5px;
-  padding: 8px 0;
+  padding: ${VERTICAL_PADDING}px 0;
   border-radius: 5px;
   background: #fff;
   color: #132144;

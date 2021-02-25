@@ -96,7 +96,13 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ className, isTemplateWorkspac
     <Popper referenceElement={buildVirtualElement(contextMenu.position!)} placement="right-start" positionFixed>
       {({ ref, style, placement }) => (
         <div ref={ref} style={style} data-placement={placement} className={className}>
-          <NestedContextMenu options={options} onSelect={onSelect} getOptionValue={getOptionValue} getOptionLabel={getOptionLabel} />
+          <NestedContextMenu
+            options={options}
+            onSelect={onSelect}
+            getOptionValue={getOptionValue}
+            getOptionLabel={getOptionLabel}
+            maxVisibleItems={7}
+          />
         </div>
       )}
     </Popper>

@@ -1,5 +1,5 @@
 import ButtonContainer from './ButtonContainer';
-import Container from './MenuContainer';
+import Container, { getItemsContainer, MAX_VISIBLE_ITEMS } from './MenuContainer';
 import Item, { itemStyles } from './MenuItem';
 
-export { ButtonContainer, Container, Item, itemStyles };
+export { ButtonContainer, Container, getItemsContainer, Item, itemStyles, MAX_VISIBLE_ITEMS };

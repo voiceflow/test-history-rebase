@@ -42,6 +42,7 @@ declare module 'webpack-nano/argv' {
     ff_wavenetVoices: boolean;
     ff_ownerRole: boolean;
     ff_asrBypass: boolean;
+    ff_natoApco: boolean;
   }>;
 
   export = argv;

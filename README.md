@@ -297,6 +297,7 @@ yarn start --ff_someFeature
 - `ff_visualPrototype` / `VF_APP_FF_VISUAL_PROTOTYPE`: visuals in prototyping test tools
 - `ff_visualStep` / `VF_APP_FF_VISUAL_STEP`: visuals step
 - `ff_straightLines` / `VF_APP_FF_STRAIGHT_LINES`: straight lines
+- `ff_natoApco` / `VF_APP_FF_NATO_APCO`: nato apco slot type
 
 ### Environment variable overrides
 

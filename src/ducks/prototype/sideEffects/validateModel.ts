@@ -26,7 +26,7 @@ const validateModel = (): Thunk<Validation> => async (_, getState) => {
   const { slots, intents } = prototype.model;
 
   // determine if there are slots with no values
-  const invalidSlots = slots.filter((slot) => !slot.inputs.length);
+  const invalidSlots = slots.filter((slot) => !slot.inputs.length && !slot.type.value?.startsWith(VOICEFLOW_PREBUILT_PREFIX));
 
   const invalidIntents = intents.filter(
     ({ key, inputs }) => !inputs.length || (PREBUILT_INTENT_REGEX.test(key) && !key.startsWith(VOICEFLOW_PREBUILT_PREFIX))

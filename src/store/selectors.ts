@@ -4,6 +4,7 @@ import { BUILT_IN_VARIABLES } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
+import * as Feature from '@/ducks/feature';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
@@ -34,7 +35,10 @@ export const allVariablesSelector = createSelector(
   (globalVariables, activeDiagramVariables, slotNames) => unique([...slotNames, ...BUILT_IN_VARIABLES, ...globalVariables, ...activeDiagramVariables])
 );
 
-export const activeSlotTypesSelector = createSelector([Skill.activeSkillSelector], ({ locales, platform }) => getSlotTypes({ locales, platform }));
+export const activeSlotTypesSelector = createSelector(
+  [Skill.activeSkillSelector, Feature.isFeatureEnabledSelector],
+  ({ locales, platform }, featureSelector) => getSlotTypes({ locales, platform }, featureSelector)
+);
 
 export const activeProjectSelector = createSelector(Skill.activeProjectIDSelector, Project.projectByIDSelector, (projectID, getProject) =>
   getProject(projectID)

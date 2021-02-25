@@ -4978,10 +4978,10 @@
   dependencies:
     "@voiceflow/api-sdk" "1.25.0"
 
-"@voiceflow/general-types@^1.30.0":
-  version "1.30.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.30.0.tgz#c5bf1aeb001aa164cfdf2709acdf1e49543026e1"
-  integrity sha512-zocfHMD7Aj1GTRLBadIQBGRpSiS7UKH4iMpqDnaAQMHbMCxWxrgzVkYGS/9wbE2ZnpmuWf/8Lm8Rl5lPOFVTaQ==
+"@voiceflow/general-types@^1.31.0":
+  version "1.31.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.31.0.tgz#54162f021033ed62773e24a4a4b48cdd34147ada"
+  integrity sha512-fzL7rx3LyHh9YIFkQ+SDy8REof3zpV7NlevjBMVdyyHfy4ETnFKnB50TPGYEvMe7J9tFqGtCTWXPskP8rZu9Pg==
   dependencies:
     "@voiceflow/api-sdk" "1.25.0"
 

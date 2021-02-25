@@ -1,7 +1,8 @@
 import { BuiltinSlot } from '@voiceflow/common';
 import { Language, Locale, SlotType, SlotTypes } from '@voiceflow/general-types';
 
-export const GENERAL_SLOT_TYPES = SlotTypes[Language.EN].map<BuiltinSlot<SlotType, never>>((slot) => ({ type: slot.name, label: slot.label }));
+export const generalSlotTypesByLanguage = (language: string = Language.EN) =>
+  SlotTypes[language]?.map<BuiltinSlot<SlotType, never>>((slot) => ({ type: slot.name, label: slot.label })) || [];
 
 export enum GeneralStageType {
   IDLE = 'IDLE',

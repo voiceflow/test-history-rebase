@@ -13,6 +13,7 @@ import {
   env,
   ff_asrBypass,
   ff_gadgets,
+  ff_natoApco,
   ff_ownerRole,
   ff_wavenetVoices,
   ga,
@@ -70,6 +71,7 @@ export const ENV = {
   FF_WAVENET_VOICES: ff_wavenetVoices && 'true',
   FF_OWNER_ROLE: ff_ownerRole && 'true',
   FF_ASR_BYPASS: ff_asrBypass && 'true',
+  FF_NATO_ACPO: ff_natoApco && 'true',
 
   API_HOST: 'localhost',
   ROOT_DOMAIN: '',

@@ -1,18 +1,23 @@
 import { BUILT_IN_SLOTS as ALEXA_BUILT_IN_SLOTS } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
+import { SlotType } from '@voiceflow/general-types';
 import { BUILT_IN_SLOTS as GOOGLE_BUILT_IN_SLOTS } from '@voiceflow/google-types';
 
+import { FeatureFlag } from '@/config/features';
 import { CUSTOM_SLOT_TYPE, PlatformType } from '@/constants';
-import { GENERAL_SLOT_TYPES } from '@/constants/platforms';
+import { generalSlotTypesByLanguage } from '@/constants/platforms';
 import { Intent, Slot } from '@/models';
 
-export const getSlotTypes = <L extends string>({
-  locales,
-  platform,
-}: {
-  locales: L[];
-  platform: PlatformType;
-}): { label: string; value: string }[] => {
+export const getSlotTypes = <L extends string>(
+  {
+    locales,
+    platform,
+  }: {
+    locales: L[];
+    platform: PlatformType;
+  },
+  featureSelector?: (ff: FeatureFlag) => boolean
+): { label: string; value: string }[] => {
   let builtInSlots: BuiltinSlot<string, string | L>[];
 
   switch (platform) {
@@ -21,14 +26,16 @@ export const getSlotTypes = <L extends string>({
       break;
     case PlatformType.ALEXA:
       builtInSlots = [...ALEXA_BUILT_IN_SLOTS];
+      builtInSlots = builtInSlots
+        .filter((slot) => !slot.locales || locales.every((locale) => slot.locales!.includes(locale)))
+        .sort((lSlot, rSlot) => lSlot.label.localeCompare(rSlot.label));
       break;
     default:
-      builtInSlots = [...GENERAL_SLOT_TYPES];
+      builtInSlots = generalSlotTypesByLanguage(locales[0]?.substring(0, 2));
+      if (!featureSelector?.(FeatureFlag.NATO_APCO)) {
+        builtInSlots = builtInSlots.filter((slot) => slot.type !== SlotType.NATOAPCO);
+      }
   }
-
-  builtInSlots = builtInSlots
-    .filter((slot) => !slot.locales || locales.every((locale) => slot.locales!.includes(locale)))
-    .sort((lSlot, rSlot) => lSlot.label.localeCompare(rSlot.label));
 
   builtInSlots = [CustomSlot, ...builtInSlots];
 

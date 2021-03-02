@@ -10,7 +10,7 @@ import { DialogType, PlatformType } from '@/constants';
 import { SpeakData, SSMLData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
-import { getAudioTitle } from '@/utils/audio';
+import { prettifyBucketURL } from '@/utils/audio';
 import { compose } from '@/utils/functional';
 import { ObjectWithId } from '@/utils/normalized';
 
@@ -79,7 +79,7 @@ const SpeakItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakItemProps> 
       ref={ref}
       namespace={['speakItem', item.id]}
       initialOpen={isNew || isOnlyItem}
-      header={header || (isVoice(item) ? 'System Says' : getAudioTitle(item.url) || 'Audio')}
+      header={header || (isVoice(item) ? 'System Says' : prettifyBucketURL(item.url) || 'Audio')}
       prefix={<SvgIcon icon={isVoice(item) ? 'alexa' : AudioIcon} />}
       suffix={isRandomized && 'randomLoop'}
       isDragging={isDragging}

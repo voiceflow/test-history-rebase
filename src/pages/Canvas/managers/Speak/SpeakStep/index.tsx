@@ -4,7 +4,7 @@ import { DialogType, PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
-import { getAudioTitle } from '@/utils/audio';
+import { prettifyBucketURL } from '@/utils/audio';
 import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
 import { stripHTMLTags } from '@/utils/string';
@@ -67,7 +67,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
 
 const ConnectedSpeakStep: React.FC<ConnectedStepProps<NodeData.Speak>> = ({ node, data, platform }) => {
   const items = data.dialogs.map((dialog) => ({
-    content: dialog.content || getAudioTitle(dialog.url),
+    content: dialog.content || prettifyBucketURL(dialog.url),
     isAudio: dialog.type === DialogType.AUDIO,
   }));
 

@@ -4,7 +4,7 @@ import { Tooltip } from 'react-tippy';
 
 import Flex from '@/components/Flex';
 import useAudioPlayer from '@/hooks/audioPlayer';
-import { getAudioTitle } from '@/utils/audio';
+import { prettifyBucketURL } from '@/utils/audio';
 import { swallowEvent } from '@/utils/dom';
 
 import { CloseButton, Container, DurationText, FileNameContainer, PausePlayButton, ProgressBar } from './components';
@@ -48,7 +48,7 @@ function AudioPlayer({ link, onClose, autoplay = false, showDuration = false }) 
         <PausePlayButton large onClick={swallowEvent(() => setPlaying(!playing))} icon={playing ? 'pause' : 'play'} />
 
         <FileNameContainer>
-          <Tooltip title={link}>{getAudioTitle(link) || 'Audio'}</Tooltip>
+          <Tooltip title={prettifyBucketURL(link)}>{prettifyBucketURL(link) || 'Audio'}</Tooltip>
         </FileNameContainer>
       </Flex>
 

@@ -61,7 +61,9 @@ export const createProject = ({ platform, name, image, listID }: Partial<CreateP
   }
 
   try {
-    const newProject = await client.platform(platform!).project.copy(templateProjectID, { name, image, teamID });
+    const newProject = await client
+      .platform(platform!)
+      .project.copy(templateProjectID, { name, image, teamID }, { channel: templateTag?.split(':')[1] });
     if (listID) {
       await dispatch(addProjectToList(listID, newProject._id));
     }

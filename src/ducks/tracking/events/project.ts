@@ -1,4 +1,5 @@
 import client from '@/client';
+import { NLPProvider } from '@/constants';
 
 import { EventName } from '../constants';
 import { ProjectEventInfo } from '../types';
@@ -28,6 +29,10 @@ export const trackActiveProjectPublishAttempt = createProjectEventTracker((optio
 
 export const trackActiveProjectPublishSuccess = createProjectEventTracker((options) =>
   client.analytics.track(EventName.PROJECT_PUBLISH_SUCCESS, createProjectEventPayload(options))
+);
+
+export const trackActiveProjectExportInteractionModel = createProjectEventTracker((options: ProjectEventInfo & { nlpProvider: NLPProvider }) =>
+  client.analytics.track(EventName.INTERACTION_MODEL_EXPORTED, createProjectEventPayload(options, { nlp_provider: options.nlpProvider }))
 );
 
 export const trackProjectClone = ({

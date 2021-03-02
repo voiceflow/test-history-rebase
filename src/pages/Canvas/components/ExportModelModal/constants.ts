@@ -1,17 +1,17 @@
-import { PlatformType } from '@/constants';
+import { NLPProvider } from '@/constants';
 
 export const EXPORT_TYPES = [
   {
     label: 'Amazon Alexa',
-    value: PlatformType.ALEXA,
+    value: NLPProvider.ALEXA,
   },
   {
     label: 'Dialogflow ES',
-    value: PlatformType.GOOGLE,
+    value: NLPProvider.DIALOGFLOW_ES,
   },
   {
     label: 'Microsoft LUIS',
-    value: PlatformType.GENERAL,
+    value: NLPProvider.LUIS,
   },
 ];
 

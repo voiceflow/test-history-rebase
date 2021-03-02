@@ -32,7 +32,7 @@ const defaultLabelRenderer = <O, V>(
   option: O,
   searchLabel: string,
   getOptionLabel: (value?: V) => string | undefined | null,
-  getOptionValue: (option?: O) => V,
+  getOptionValue: (option?: O) => V | undefined,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _config: { isFocused: boolean; optionsPath: number[] }
 ) => {

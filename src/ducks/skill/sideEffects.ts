@@ -10,13 +10,14 @@ import accountLinkingAdapter from '@/client/adapters/version/alexa/accountLinkin
 import alexaSettingsAdapter, { SkillSettings } from '@/client/adapters/version/alexa/settings';
 import googleSettingsAdapter from '@/client/adapters/version/google/settings';
 import { toast } from '@/components/Toast';
-import { ExportFormat, PlatformType, VALID_VARIABLE_NAME } from '@/constants';
+import { ExportFormat, NLPProvider, PlatformType, VALID_VARIABLE_NAME } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
+import * as Tracking from '@/ducks/tracking';
 import * as Models from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { getAuthCookie } from '@/utils/cookies';
@@ -87,7 +88,7 @@ export const exportCanvas = (type: ExportFormat): Thunk => async (dispatch, getS
   dispatch(Skill.setExportingCanvas(false));
 };
 
-export const exportModel = (platform: PlatformType): Thunk => async (dispatch, getState) => {
+export const exportModel = (nlpProvider: NLPProvider): Thunk => async (dispatch, getState) => {
   const state = getState();
   const versionID = Skill.activeSkillIDSelector(state);
 
@@ -97,10 +98,10 @@ export const exportModel = (platform: PlatformType): Thunk => async (dispatch, g
     let data: string;
     const name = Skill.activeNameSelector(state).replace(/ /g, '_');
 
-    if (platform === PlatformType.ALEXA) {
+    if (nlpProvider === NLPProvider.ALEXA) {
       data = await client.platform.alexa.modelExport.export(versionID, 'ask');
       download(`${name}-alexa-model.json`, data, DataTypes.JSON);
-    } else if (platform === PlatformType.GOOGLE) {
+    } else if (nlpProvider === NLPProvider.DIALOGFLOW_ES) {
       data = await client.platform.google.modelExport.export(versionID, 'dialogflow/es');
       downloadFromURL(`${name}-dialogflow-es-model.zip`, data);
       URL.revokeObjectURL(data);
@@ -108,6 +109,8 @@ export const exportModel = (platform: PlatformType): Thunk => async (dispatch, g
       data = await client.platform.general.modelExport.export(versionID, 'luis');
       download(`${name}-general-model.json`, data, DataTypes.JSON);
     }
+
+    dispatch(Tracking.trackActiveProjectExportInteractionModel({ nlpProvider }));
   } catch (error) {
     console.error(error);
     toast.error('Model export failed');

@@ -15,7 +15,7 @@ export { defaultLabelRenderer, defaultOptionsFilter, searchableOptionsFilter };
 
 export type GetOptionLabel<V> = (value?: V) => string | undefined | null;
 
-export type GetOptionValue<O, V> = (option?: O) => V;
+export type GetOptionValue<O, V> = (option?: O) => V | undefined;
 
 export type GroupedOption<O> = O & { options?: O[] };
 

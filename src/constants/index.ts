@@ -58,6 +58,12 @@ export enum PlatformType {
   GENERAL = 'general',
 }
 
+export enum NLPProvider {
+  LUIS = 'luis',
+  ALEXA = 'alexa',
+  DIALOGFLOW_ES = 'diagflow-es',
+}
+
 export enum ChannelType {
   ALEXA_ASSISTANT = 'alexa_assistant',
   GOOGLE_ASSISTANT = 'google_assistant',

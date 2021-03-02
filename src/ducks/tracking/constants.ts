@@ -28,6 +28,7 @@ export enum EventName {
   PROJECT_NEW_THREAD_REPLY = 'New Thread Reply Created',
   PROJECT_PUBLISH_ATTEMPT = 'Publish Attempt',
   PROJECT_PUBLISH_SUCCESS = 'Publish Success',
+  INTERACTION_MODEL_EXPORTED = 'Interaction Model Exported',
   PROJECT_TRAIN_ASSISTANT = 'Train Assistant',
   SHARE_PROTOTYPE_LINK = 'Testable Link Button',
 

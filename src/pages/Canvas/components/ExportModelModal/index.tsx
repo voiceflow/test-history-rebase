@@ -10,7 +10,7 @@ import Select from '@/components/Select';
 import { BlockText, Link } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import { Permission } from '@/config/permissions';
-import { ModalType, PLAN_TYPE_META, PlanType } from '@/constants';
+import { ModalType, NLPProvider, PLAN_TYPE_META, PlanType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
@@ -21,11 +21,11 @@ import { stopImmediatePropagation } from '@/utils/dom';
 import { EXPORT_HELP_LINK, EXPORT_TYPES } from './constants';
 
 const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ isExporting, exportModel }) => {
-  const [exportType, setExportType] = React.useState<string>();
+  const [exportNLPProvider, setExportNLPProvider] = React.useState<NLPProvider | undefined>(undefined);
   const [canExport] = usePermission(Permission.MODEL_EXPORT);
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
 
-  const verifyType = (type: string | undefined) => {
+  const verifyType = (type: NLPProvider | undefined) => {
     if (!type) {
       return 'Model must have a type';
     }
@@ -34,14 +34,12 @@ const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ isExportin
   };
 
   const onClick = () => {
-    const error = verifyType(exportType);
+    const error = verifyType(exportNLPProvider);
 
     if (error) {
       toast.error(error);
     } else {
-      const { value } = EXPORT_TYPES.filter((types) => exportType === types.label)[0];
-
-      exportModel(value);
+      exportModel(exportNLPProvider!);
     }
   };
 
@@ -51,11 +49,13 @@ const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ isExportin
         <ModalBody>
           <label>Export For {!canExport && <BubbleText color={PLAN_TYPE_META[PlanType.PRO].color}>PRO</BubbleText>}</label>
           <Select
-            value={exportType}
-            options={EXPORT_TYPES.map((type) => type.label)}
-            onSelect={setExportType}
+            value={exportNLPProvider}
+            options={EXPORT_TYPES}
+            onSelect={setExportNLPProvider}
             searchable
             placeholder="Select an option"
+            getOptionLabel={(value) => EXPORT_TYPES.find((option) => option.value === value)?.label}
+            getOptionValue={(option) => option?.value}
           />
           <BlockText fontSize={13} color="#62778c" lineHeight="normal" marginTop={12}>
             <span>Don't see the export format you're looking for? </span>

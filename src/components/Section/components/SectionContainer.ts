@@ -90,6 +90,10 @@ const SectionContainer = styled.div<SectionContainerProps>`
   position: relative;
   background-color: #fff;
 
+  & & {
+    background-color: transparent;
+  }
+
   ${({ dividers, isRounded, forceDividers, isDividerNested, isNested, isDividerBottom }) =>
     dividers &&
     !isRounded &&

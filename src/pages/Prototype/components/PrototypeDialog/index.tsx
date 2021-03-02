@@ -4,7 +4,7 @@ import Divider from '@/components/Divider';
 import * as Prototype from '@/ducks/prototype';
 
 import { Message, MessageType } from '../../types';
-import { Container } from './components';
+import { Container, Ended } from './components';
 import { Audio, Debug, Loading, Speak, User } from './components/Message';
 import { checkIfFirstInSeries } from './utils';
 
@@ -94,11 +94,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
           return null;
       }
     })}
-    {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && (
-      <Divider key="ended" isLast={true}>
-        Session ended
-      </Divider>
-    )}
+    {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && <Ended messages={messages} />}
     <Loading isLoading={isLoading} />
     <span ref={bottomScrollRef} />
   </Container>

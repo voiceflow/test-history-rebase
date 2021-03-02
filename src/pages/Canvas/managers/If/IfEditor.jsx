@@ -1,5 +1,3 @@
-import { ExpressionType } from '@voiceflow/general-types';
-import cuid from 'cuid';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -11,24 +9,9 @@ import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
 import { DraggableItem, HelpTooltip } from './components';
+import { NODE_CONFIG } from './constants';
 
-const expressionFactory = () => ({
-  id: cuid.slug(),
-  type: ExpressionType.EQUALS,
-  depth: 0,
-  value: [
-    {
-      depth: 1,
-      type: ExpressionType.VARIABLE,
-      value: null,
-    },
-    {
-      depth: 1,
-      type: ExpressionType.VALUE,
-      value: '',
-    },
-  ],
-});
+const expressionFactory = () => NODE_CONFIG.factory().data.expressions[0];
 
 function IfEditor({ data, onChange, focusedNode }) {
   const [isDragging, toggleDragging] = useToggle(false);

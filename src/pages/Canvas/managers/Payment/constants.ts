@@ -1,3 +1,8 @@
+import { BlockType } from '@/constants';
+import { NodeData } from '@/models';
+
+import { NodeConfig } from '../types';
+
 export const UPSELL_REQUIREMENTS =
   'Upsell Message - a product suggestion that fits the current user context. It should always end with an explicit (Yes/No) confirmation question.';
 
@@ -18,3 +23,23 @@ export const DONTS = [
 
 export const WARNING =
   'Be careful not to reference the price, subscription term, or free trial length in any of the skill content. Amazon handles the voice interaction model and all the mechanics of the purchase, as well as obtaining the product description and price.';
+
+export const NODE_CONFIG: NodeConfig<NodeData.Payment> = {
+  type: BlockType.PAYMENT,
+
+  icon: 'purchase',
+  iconColor: '#558B2F',
+
+  factory: () => ({
+    node: {
+      ports: {
+        in: [{}],
+        out: [{}, { label: 'fail' }],
+      },
+    },
+    data: {
+      name: 'Payment',
+      productID: null,
+    },
+  }),
+};

@@ -73,12 +73,12 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
             onChange={(v) => {
               if (!_isEqual(v, data.spreadsheet)) {
                 onChange({
-                  spreadsheet: v,
                   sheet: [],
+                  row_values: '',
+                  row_number: '',
+                  match_value: '',
+                  spreadsheet: v,
                   header_column: null,
-                  match_value: [],
-                  row_values: [],
-                  row_number: [],
                 });
                 updateHeaders();
               }
@@ -102,9 +102,9 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
                 onChange({
                   sheet: v,
                   header_column: null,
-                  match_value: [],
+                  match_value: '',
                   row_values: [],
-                  row_number: [],
+                  row_number: '',
                 });
                 updateHeaders();
                 openNextStep();

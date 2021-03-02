@@ -1,3 +1,5 @@
+import _isFunction from 'lodash/isFunction';
+
 import { BlockCategory, BlockType, DialogType, IntegrationType, PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
@@ -5,209 +7,90 @@ import { Icon } from '@/svgs/types';
 
 export type MenuStep = {
   type: BlockType;
-  icon: Icon | React.FC;
+  icon: Icon;
   label: string;
   iconColor?: string;
-  factoryData?: NodeData<any>;
   publicOnly?: boolean;
+  factoryData?: NodeData<any>;
 };
 
-// steps
-const INTENT_STEP: MenuStep = {
-  type: BlockType.INTENT,
-  icon: 'user',
-  label: 'Intent',
-  iconColor: getManager(BlockType.INTENT).iconColor,
+const createMenuStep = (
+  type: Exclude<BlockType, BlockType.START | BlockType.COMBINED | BlockType.COMMENT | BlockType.MARKUP_IMAGE | BlockType.MARKUP_TEXT>,
+  { publicOnly, factoryData }: { publicOnly?: boolean; factoryData?: NodeData<any> } = {}
+): MenuStep => {
+  const manager = getManager(type);
+
+  return {
+    type,
+    icon: (_isFunction(manager.getIcon) && factoryData && manager.getIcon(factoryData)) || manager.icon!,
+    label: (_isFunction(manager.getDataLabel) && factoryData && manager.getDataLabel(factoryData)) || manager.label,
+    iconColor: (_isFunction(manager.getIconColor) && factoryData && manager.getIconColor(factoryData)) || manager.iconColor,
+    publicOnly,
+    factoryData,
+  };
 };
 
-const SPEAK_STEP: MenuStep = {
-  type: BlockType.SPEAK,
-  label: 'Speak',
-  icon: getManager(BlockType.SPEAK).getIcon!({ dialogs: [{ type: DialogType.VOICE }] } as NodeData.Speak),
-  iconColor: getManager(BlockType.SPEAK).getIconColor!({ dialogs: [{ type: DialogType.VOICE }] } as NodeData.Speak),
-  factoryData: { dialogs: [{ type: DialogType.VOICE }] },
-};
+// STEPS
 
-const AUDIO_STEP: MenuStep = {
-  type: BlockType.SPEAK,
-  label: 'Audio',
-  icon: getManager(BlockType.SPEAK).getIcon!({ dialogs: [{ type: DialogType.AUDIO }] } as NodeData.Speak),
-  iconColor: getManager(BlockType.SPEAK).getIconColor!({ dialogs: [{ type: DialogType.AUDIO }] } as NodeData.Speak),
-  factoryData: { dialogs: [{ type: DialogType.AUDIO }] },
-};
+const ACCOUNT_LINKING_STEP = createMenuStep(BlockType.ACCOUNT_LINKING);
 
-const PROMPT_STEP: MenuStep = {
-  type: BlockType.PROMPT,
-  icon: 'prompt',
-  label: 'Prompt',
-  iconColor: getManager(BlockType.PROMPT).iconColor,
-};
+const CANCEL_PURCHASE_STEP = createMenuStep(BlockType.CANCEL_PAYMENT);
 
-const CHOICE_STEP: MenuStep = {
-  type: BlockType.CHOICE,
-  icon: 'choice',
-  label: 'Choice',
-  iconColor: getManager(BlockType.CHOICE).iconColor,
-};
+const CAPTURE_STEP = createMenuStep(BlockType.CAPTURE);
 
-const CONDITION_STEP: MenuStep = {
-  type: BlockType.IF,
-  icon: 'if',
-  label: 'Condition',
-  iconColor: getManager(BlockType.IF).iconColor,
-};
+const CARD_STEP = createMenuStep(BlockType.CARD);
 
-const SET_STEP: MenuStep = {
-  type: BlockType.SET,
-  icon: 'code',
-  label: 'Set',
-  iconColor: getManager(BlockType.SET).iconColor,
-};
+const CHOICE_STEP = createMenuStep(BlockType.CHOICE);
 
-const CAPTURE_STEP: MenuStep = {
-  type: BlockType.CAPTURE,
-  icon: 'microphone',
-  label: 'Capture',
-  iconColor: getManager(BlockType.CAPTURE).iconColor,
-};
+const CODE_STEP = createMenuStep(BlockType.CODE);
 
-const RANDOM_STEP: MenuStep = {
-  type: BlockType.RANDOM,
-  icon: 'randomLoop',
-  label: 'Random',
-  iconColor: getManager(BlockType.RANDOM).iconColor,
-};
+const DIRECTIVE_STEP = createMenuStep(BlockType.DIRECTIVE);
 
-const FLOW_STEP: MenuStep = {
-  type: BlockType.FLOW,
-  icon: 'flow',
-  label: 'Flow',
-  iconColor: getManager(BlockType.FLOW).iconColor,
-};
+const DISPLAY_STEP = createMenuStep(BlockType.DISPLAY);
 
-const EXIT_STEP: MenuStep = {
-  type: BlockType.EXIT,
-  icon: 'exit',
-  label: 'Exit',
-  iconColor: getManager(BlockType.EXIT).iconColor,
-};
+const EVENT_STEP = createMenuStep(BlockType.EVENT);
 
-const API_STEP: MenuStep = {
-  type: BlockType.INTEGRATION,
-  icon: getManager(BlockType.INTEGRATION).getIcon!({ selectedIntegration: IntegrationType.CUSTOM_API }),
-  label: 'API',
-  iconColor: getManager(BlockType.INTEGRATION).getIconColor!({ selectedIntegration: IntegrationType.CUSTOM_API }),
-  factoryData: { selectedIntegration: IntegrationType.CUSTOM_API },
-};
+const CONDITION_STEP = createMenuStep(BlockType.IF);
 
-const GOOGLE_SHEETS_STEP: MenuStep = {
-  type: BlockType.INTEGRATION,
-  icon: getManager(BlockType.INTEGRATION).getIcon!({ selectedIntegration: IntegrationType.GOOGLE_SHEETS } as NodeData.Integration),
-  label: 'Google Sheets',
-  iconColor: getManager(BlockType.INTEGRATION).getIconColor!({ selectedIntegration: IntegrationType.GOOGLE_SHEETS } as NodeData.Integration),
-  factoryData: { selectedIntegration: IntegrationType.GOOGLE_SHEETS },
+const EXIT_STEP = createMenuStep(BlockType.EXIT);
+
+const FLOW_STEP = createMenuStep(BlockType.FLOW);
+
+const API_STEP = createMenuStep(BlockType.INTEGRATION, { factoryData: { selectedIntegration: IntegrationType.CUSTOM_API } });
+
+const ZAPIER_STEP = createMenuStep(BlockType.INTEGRATION, {
   publicOnly: true,
-};
-
-const ZAPIER_STEP: MenuStep = {
-  type: BlockType.INTEGRATION,
-  icon: getManager(BlockType.INTEGRATION).getIcon!({ selectedIntegration: IntegrationType.ZAPIER }),
-  label: 'Zapier',
-  iconColor: getManager(BlockType.INTEGRATION).getIconColor!({ selectedIntegration: IntegrationType.ZAPIER }),
   factoryData: { selectedIntegration: IntegrationType.ZAPIER },
+});
+
+const GOOGLE_SHEETS_STEP = createMenuStep(BlockType.INTEGRATION, {
   publicOnly: true,
-};
+  factoryData: { selectedIntegration: IntegrationType.GOOGLE_SHEETS },
+});
 
-const CODE_STEP: MenuStep = {
-  type: BlockType.CODE,
-  icon: 'power',
-  label: 'Custom Code',
-  iconColor: getManager(BlockType.CODE).iconColor,
-};
+const INTENT_STEP = createMenuStep(BlockType.INTENT);
 
-const STREAM_STEP: MenuStep = {
-  type: BlockType.STREAM,
-  icon: 'audioPlayer',
-  label: 'Stream',
-  iconColor: getManager(BlockType.STREAM).iconColor,
-};
+const PURCHASE_STEP = createMenuStep(BlockType.PAYMENT);
 
-const CARD_STEP: MenuStep = {
-  type: BlockType.CARD,
-  icon: 'logs',
-  label: 'Card',
-  iconColor: getManager(BlockType.CARD).iconColor,
-};
+const PERMISSIONS_STEP = createMenuStep(BlockType.PERMISSION);
 
-const EVENT_STEP: MenuStep = {
-  type: BlockType.EVENT,
-  icon: getManager(BlockType.EVENT).icon!,
-  label: getManager(BlockType.EVENT).label,
-  iconColor: getManager(BlockType.EVENT).iconColor,
-};
+const PROMPT_STEP = createMenuStep(BlockType.PROMPT);
 
-const DISPLAY_STEP: MenuStep = {
-  type: BlockType.DISPLAY,
-  icon: 'blocks',
-  label: 'Display',
-  iconColor: getManager(BlockType.DISPLAY).iconColor,
-};
+const RANDOM_STEP = createMenuStep(BlockType.RANDOM);
 
-const PURCHASE_STEP: MenuStep = {
-  type: BlockType.PAYMENT,
-  icon: 'purchase',
-  label: 'Purchase',
-  iconColor: getManager(BlockType.PAYMENT).iconColor,
-};
+const REMINDER_STEP = createMenuStep(BlockType.REMINDER);
 
-const CANCEL_PURCHASE_STEP: MenuStep = {
-  type: BlockType.CANCEL_PAYMENT,
-  icon: 'trash',
-  label: 'Cancel Purchase',
-  iconColor: getManager(BlockType.CANCEL_PAYMENT).iconColor,
-};
+const SET_STEP = createMenuStep(BlockType.SET);
 
-const REMINDER_STEP: MenuStep = {
-  type: BlockType.REMINDER,
-  icon: 'reminder',
-  label: 'Reminder',
-  iconColor: getManager(BlockType.REMINDER).iconColor,
-};
+const SPEAK_STEP = createMenuStep(BlockType.SPEAK, { factoryData: { dialogs: [{ type: DialogType.VOICE }] } });
 
-const USER_INFO_STEP: MenuStep = {
-  type: BlockType.USER_INFO,
-  icon: 'barGraph',
-  label: 'User Info',
-  iconColor: getManager(BlockType.USER_INFO).iconColor,
-};
+const AUDIO_STEP = createMenuStep(BlockType.SPEAK, { factoryData: { dialogs: [{ type: DialogType.AUDIO }] } });
 
-const PERMISSIONS_STEP: MenuStep = {
-  type: BlockType.PERMISSION,
-  icon: 'openLock',
-  label: 'Permissions',
-  iconColor: getManager(BlockType.PERMISSION).iconColor,
-};
+const STREAM_STEP = createMenuStep(BlockType.STREAM);
 
-const ACCOUNT_LINKING_STEP: MenuStep = {
-  type: BlockType.ACCOUNT_LINKING,
-  icon: 'accountLinking',
-  label: 'Account Linking',
-  iconColor: getManager(BlockType.ACCOUNT_LINKING).iconColor,
-};
+const USER_INFO_STEP = createMenuStep(BlockType.USER_INFO);
 
-const DIRECTIVE_STEP: MenuStep = {
-  type: BlockType.DIRECTIVE,
-  icon: getManager(BlockType.DIRECTIVE).icon!,
-  label: getManager(BlockType.DIRECTIVE).label,
-  iconColor: getManager(BlockType.DIRECTIVE).iconColor,
-};
-
-const VISUAL_STEP: MenuStep = {
-  type: BlockType.VISUAL,
-  icon: getManager(BlockType.VISUAL).icon!,
-  label: getManager(BlockType.VISUAL).label,
-  iconColor: getManager(BlockType.VISUAL).iconColor,
-};
+const VISUAL_STEP = createMenuStep(BlockType.VISUAL);
 
 // alexa menu sections
 export const ALEXA_SECTIONS = [

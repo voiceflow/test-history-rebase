@@ -6,7 +6,8 @@ import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { AccountLinking } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
-import { EMPTY_ACCOUNT_DATA } from '@/pages/Canvas/managers/AccountLinking/constants';
+
+import { EMPTY_ACCOUNT_DATA, NODE_CONFIG } from '../constants';
 
 export type AccountLinkingStepProps = {
   nodeID: string;
@@ -19,11 +20,11 @@ export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfig
     <Section>
       <Item
         label={isConfigured && 'Sending Account Linking card'}
-        labelVariant={StepLabelVariant.SECONDARY}
-        icon="accountLinking"
-        iconColor="#645f5f"
         portID={portID}
+        icon={NODE_CONFIG.icon}
+        iconColor={NODE_CONFIG.iconColor}
         placeholder="Configure Account Linking"
+        labelVariant={StepLabelVariant.SECONDARY}
       />
     </Section>
   </Step>

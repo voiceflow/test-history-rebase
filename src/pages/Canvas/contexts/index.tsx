@@ -7,7 +7,7 @@ import { connect } from '@/hocs';
 import { withContext } from '@/hocs/withContext';
 import { Markup } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
-import { NodeConfig } from '@/pages/Canvas/managers/types';
+import { NodeManagerConfig } from '@/pages/Canvas/managers/types';
 
 import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
@@ -28,7 +28,7 @@ export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = Platfo
 
 export const withPlatform = withContext(PlatformContext, 'platform');
 
-export type ManagerGetter = <T extends object | Markup.AnyNodeData>(type: BlockType) => NodeConfig<T>;
+export type ManagerGetter = <T extends object | Markup.AnyNodeData>(type: BlockType) => NodeManagerConfig<T>;
 export const ManagerContext = React.createContext<ManagerGetter | null>(null);
 export const { Provider: ManagerProvider, Consumer: ManagerConsumer } = ManagerContext;
 

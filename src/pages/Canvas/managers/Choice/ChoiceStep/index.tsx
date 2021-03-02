@@ -11,6 +11,8 @@ import { ConnectedProps } from '@/types';
 import { head } from '@/utils/array';
 import { prettifyIntentName } from '@/utils/intent';
 
+import { NODE_CONFIG } from '../constants';
+
 export type ChoiceStepProps = {
   isPath: boolean;
   choices: { label: string | null; portID: string }[];
@@ -24,12 +26,12 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID,
       <Section>
         {choices.map(({ label, portID }, index) => (
           <Item
-            icon={index === 0 ? 'choice' : null}
-            iconColor="#3a5999"
-            portID={portID}
-            label={label}
-            placeholder={`Path ${index + 1}`}
             key={portID}
+            icon={index === 0 ? NODE_CONFIG.icon : null}
+            label={label}
+            portID={portID}
+            iconColor={NODE_CONFIG.iconColor}
+            placeholder={`Path ${index + 1}`}
           />
         ))}
       </Section>

@@ -2,9 +2,10 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import Section from '@/components/Section';
-import { INTEGRATION_DATA_MODELS } from '@/constants';
+import { IntegrationType } from '@/constants';
 import { Content } from '@/pages/Canvas/components/Editor';
 
+import { DEFAULT_DATA } from '../../constants';
 import { Integration, Title } from './components';
 
 const INTEGRATION_OPTIONS = {
@@ -34,12 +35,12 @@ const ChoseIntegration = ({ onChange }) => (
       <Title>Choose an integration</Title>
 
       <Flex>
-        <Integration data={INTEGRATION_OPTIONS.CUSTOM_API} onClick={() => onChange(INTEGRATION_DATA_MODELS.CUSTOM_API)} />
+        <Integration data={INTEGRATION_OPTIONS.CUSTOM_API} onClick={() => onChange(DEFAULT_DATA[IntegrationType.CUSTOM_API])} />
       </Flex>
 
       <Flex>
-        <Integration data={INTEGRATION_OPTIONS.GOOGLE_SHEETS} onClick={() => onChange(INTEGRATION_DATA_MODELS.GOOGLE_SHEETS)} />
-        <Integration data={INTEGRATION_OPTIONS.ZAPIER} onClick={() => onChange(INTEGRATION_DATA_MODELS.ZAPIER)} />
+        <Integration data={INTEGRATION_OPTIONS.GOOGLE_SHEETS} onClick={() => onChange(DEFAULT_DATA[IntegrationType.GOOGLE_SHEETS])} />
+        <Integration data={INTEGRATION_OPTIONS.ZAPIER} onClick={() => onChange(DEFAULT_DATA[IntegrationType.ZAPIER])} />
       </Flex>
     </Section>
   </Content>

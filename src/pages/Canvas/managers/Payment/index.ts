@@ -1,34 +1,20 @@
-import { BlockType, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
+import { NODE_CONFIG } from './constants';
 import PaymentEditor from './PaymentEditor';
 import PaymentStep from './PaymentStep';
 
-const PaymentManager: NodeConfig<NodeData.Payment> = {
-  type: BlockType.PAYMENT,
-  icon: 'purchase',
-  iconColor: '#558B2F',
-  platforms: [PlatformType.ALEXA],
+const PaymentManager: NodeManagerConfig<NodeData.Payment> = {
+  ...NODE_CONFIG,
 
-  label: 'Purchase',
   tip: 'Request payment from user',
+  label: 'Purchase',
+  platforms: [PlatformType.ALEXA],
 
   step: PaymentStep,
   editor: PaymentEditor,
-
-  factory: () => ({
-    node: {
-      ports: {
-        in: [{}],
-        out: [{}, { label: 'fail' }],
-      },
-    },
-    data: {
-      name: 'Payment',
-      productID: null,
-    },
-  }),
 };
 
 export default PaymentManager;

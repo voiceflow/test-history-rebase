@@ -3,6 +3,8 @@ import React from 'react';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
+import { NODE_CONFIG } from '../constants';
+
 export type IntentStepProps = {
   label?: string | null;
   nodeID: string;
@@ -12,7 +14,7 @@ export type IntentStepProps = {
 export const EventStep: React.FC<IntentStepProps> = ({ nodeID, portID, label }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item label={label} portID={portID} icon="event" iconColor="#5589eb" placeholder="Add Alexa Event" />
+      <Item label={label} portID={portID} icon={NODE_CONFIG.icon} iconColor={NODE_CONFIG.iconColor} placeholder="Add Alexa Event" />
     </Section>
   </Step>
 );

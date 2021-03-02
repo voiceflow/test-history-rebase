@@ -1,4 +1,3 @@
-import cuid from 'cuid';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -6,17 +5,11 @@ import { useManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 
 import { DraggableItem, HelpMessage, HelpTooltip } from './components';
+import { NODE_CONFIG } from './constants';
 
 const MAX_SETS = 20;
 
-const setFactory = () => ({
-  id: cuid.slug(),
-  expression: {
-    type: 'value',
-    value: '',
-    depth: 0,
-  },
-});
+const setFactory = () => NODE_CONFIG.factory().data.sets[0];
 
 function SetEditor({ data, onChange }) {
   const [isDragging, toggleDragging] = useToggle(false);

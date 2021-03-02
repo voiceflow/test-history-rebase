@@ -1,9 +1,9 @@
 import { BlockType } from '@/constants';
 
-import { BasicNodeConfig } from '../types';
+import { BasicNodeManagerConfig } from '../types';
 import StartEditor from './StartEditor';
 
-const StartManager: BasicNodeConfig = {
+const StartManager: BasicNodeManagerConfig = {
   type: BlockType.START,
   editor: StartEditor,
 

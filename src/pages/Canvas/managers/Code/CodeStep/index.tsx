@@ -4,6 +4,8 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 
+import { NODE_CONFIG } from '../constants';
+
 export type CodeStepProps = {
   codeAdded: boolean;
   withPorts: boolean;
@@ -16,9 +18,9 @@ export const CodeStep: React.FC<CodeStepProps> = ({ codeAdded, withPorts, nodeID
   <Step nodeID={nodeID}>
     <Section>
       <Item
-        icon="power"
+        icon={NODE_CONFIG.icon}
         label={codeAdded ? 'Custom code added' : null}
-        iconColor="#cdad32"
+        iconColor={NODE_CONFIG.iconColor}
         labelVariant={StepLabelVariant.SECONDARY}
         placeholder="Enter custom code snippet"
       />

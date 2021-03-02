@@ -3,7 +3,7 @@ import { NodeData } from '@/models';
 import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
 import ProjectDiagramIcon from '@/svgs/solid/project-diagram.svg';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
 import ChoiceOldEditor from './ChoiceOldEditor';
 import ChoiceOldStep from './ChoiceOldStep';
 
@@ -11,11 +11,11 @@ const EDITORS_BY_PATH = {
   noReplyResponse: NoReplyResponseForm,
 };
 
-const ChoiceOldManager: NodeConfig<NodeData.ChoiceOld> = {
+const ChoiceOldManager: NodeManagerConfig<NodeData.ChoiceOld> = {
   type: BlockType.CHOICE_OLD,
-  icon: ProjectDiagramIcon,
-  reprompt: true,
+  icon: ProjectDiagramIcon as any,
   chips: true,
+  reprompt: true,
   mergeTerminator: true,
 
   step: ChoiceOldStep,

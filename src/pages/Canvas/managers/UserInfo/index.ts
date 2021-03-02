@@ -1,43 +1,20 @@
-import cuid from 'cuid';
-
-import { BlockType, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
+import { NODE_CONFIG } from './constants';
 import UserInfoEditor from './UserInfoEditor';
 import UserInfoStep from './UserInfoStep';
 
-const UserInfoManager: NodeConfig<NodeData.UserInfo> = {
-  type: BlockType.USER_INFO,
-  icon: 'barGraph',
-  iconColor: '#3C6997',
-  platforms: [PlatformType.ALEXA],
+const UserInfoManager: NodeManagerConfig<NodeData.UserInfo> = {
+  ...NODE_CONFIG,
 
-  label: 'User Info',
   tip: 'Get User Information and check Permissions',
+  label: 'User Info',
+  platforms: [PlatformType.ALEXA],
 
   step: UserInfoStep,
   editor: UserInfoEditor,
-
-  factory: () => ({
-    node: {
-      ports: {
-        in: [{}],
-        out: [{}, { label: 'fail' }],
-      },
-    },
-    data: {
-      name: 'User Info',
-      permissions: [
-        {
-          id: cuid.slug(),
-          selected: null,
-          mapTo: null,
-          product: null,
-        },
-      ],
-    },
-  }),
 };
 
 export default UserInfoManager;

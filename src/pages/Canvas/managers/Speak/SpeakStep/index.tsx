@@ -9,20 +9,22 @@ import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
 import { stripHTMLTags } from '@/utils/string';
 
-import { ICON, ICON_COLOR } from '../constants';
+import { NODE_CONFIG } from '../constants';
 
 export type SpeakStepItem = {
-  content?: string;
+  id: string;
   url?: string;
+  type: DialogType;
+  content?: string;
   isAudio?: boolean;
 };
 
 export type SpeakStepProps = {
   items: SpeakStepItem[];
   random?: boolean;
-  platform: PlatformType;
   portID: string;
   nodeID: string;
+  platform: PlatformType;
 };
 
 export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, nodeID, portID }) => {
@@ -32,18 +34,21 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
     <Step nodeID={nodeID}>
       <Section>
         {itemsToRender.length ? (
-          itemsToRender.map(({ content, isAudio }, index) => (
+          itemsToRender.map(({ id, type, content, isAudio }, index) => (
             <Item
               placeholder={getPlatformValue(platform, {
                 [PlatformType.ALEXA]: isAudio ? 'Upload audio file' : 'What will Alexa say?',
                 [PlatformType.GOOGLE]: 'What will Google say?',
                 [PlatformType.GENERAL]: 'What will the assistant say?',
               })}
-              key={`${index}`}
+              key={String(index)}
               label={content ? stripHTMLTags(transformVariablesToReadable(content)) : null}
-              icon={random ? 'speakRandomized' : isAudio ? ICON[DialogType.AUDIO] : ICON[DialogType.VOICE]} // eslint-disable-line no-nested-ternary
+              icon={random ? 'speakRandomized' : NODE_CONFIG.getIcon!({ dialogs: [{ id, type }], randomize: false })}
               portID={index === itemsToRender.length - 1 ? portID : null}
-              iconColor={isAudio && !random ? ICON_COLOR[DialogType.AUDIO] : ICON_COLOR[DialogType.VOICE]}
+              iconColor={NODE_CONFIG.getIconColor!({
+                dialogs: [{ id, type: isAudio && !random ? DialogType.AUDIO : DialogType.VOICE }],
+                randomize: false,
+              })}
               labelVariant={isAudio ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
               multilineLabel={!isAudio}
               labelLineClamp={100}
@@ -56,8 +61,8 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
               [PlatformType.GOOGLE]: 'What will Google say?',
               [PlatformType.GENERAL]: 'What will the assistant say?',
             })}
-            icon={ICON[DialogType.VOICE]}
-            iconColor={ICON_COLOR[DialogType.VOICE]}
+            icon={NODE_CONFIG.getIcon!({ dialogs: [{ id: '', type: DialogType.VOICE }], randomize: false })}
+            iconColor={NODE_CONFIG.getIconColor!({ dialogs: [{ id: '', type: DialogType.VOICE }], randomize: false })}
           />
         )}
       </Section>
@@ -66,9 +71,11 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
 };
 
 const ConnectedSpeakStep: React.FC<ConnectedStepProps<NodeData.Speak>> = ({ node, data, platform }) => {
-  const items = data.dialogs.map((dialog) => ({
-    content: dialog.content || prettifyBucketURL(dialog.url),
-    isAudio: dialog.type === DialogType.AUDIO,
+  const items = data.dialogs.map(({ id, url, type, content }) => ({
+    id,
+    type,
+    content: content || prettifyBucketURL(url),
+    isAudio: type === DialogType.AUDIO,
   }));
 
   return <SpeakStep items={items} platform={platform} random={data.randomize} nodeID={node.id} portID={node.ports.out[0]} />;

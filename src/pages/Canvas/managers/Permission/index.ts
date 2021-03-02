@@ -1,35 +1,20 @@
-import { BlockType, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
+import { NODE_CONFIG } from './constants';
 import PermissionEditor from './PermissionEditor';
 import PermissionStep from './PermissionStep';
 
-const PermissionManager: NodeConfig<NodeData.Permission> = {
-  type: BlockType.PERMISSION,
-  icon: 'openLock',
-  iconColor: '#6e849a',
-  platforms: [PlatformType.ALEXA],
+const PermissionManager: NodeManagerConfig<NodeData.Permission> = {
+  ...NODE_CONFIG,
 
-  label: 'Permissions',
   tip: 'Ask users to enable permissions (User Info, Reminders, etc.)',
+  label: 'Permissions',
+  platforms: [PlatformType.ALEXA],
 
   step: PermissionStep,
   editor: PermissionEditor,
-
-  factory: () => ({
-    node: {
-      ports: {
-        in: [{}],
-        out: [{}],
-      },
-    },
-    data: {
-      name: 'Permission',
-      permissions: [],
-      custom: false,
-    },
-  }),
 };
 
 export default PermissionManager;

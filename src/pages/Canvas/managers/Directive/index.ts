@@ -1,32 +1,18 @@
-import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
+import { NODE_CONFIG } from './constants';
 import DirectiveEditor from './DirectiveEditor';
 import DirectiveStep from './DirectiveStep';
 
-const DirectiveManager: NodeConfig<NodeData.Directive> = {
-  type: BlockType.DIRECTIVE,
-  editor: DirectiveEditor,
-  icon: 'directive',
-  iconColor: '#5589eb',
+const DirectiveManager: NodeManagerConfig<NodeData.Directive> = {
+  ...NODE_CONFIG,
+
+  tip: 'send directive to alexa',
+  label: 'Directive',
 
   step: DirectiveStep,
-  label: 'Directive',
-  tip: 'send directive to alexa',
-
-  factory: () => ({
-    node: {
-      ports: {
-        in: [{}],
-        out: [{}],
-      },
-    },
-    data: {
-      name: 'Directive',
-      directive: '',
-    },
-  }),
+  editor: DirectiveEditor,
 };
 
 export default DirectiveManager;

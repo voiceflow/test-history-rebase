@@ -1,37 +1,18 @@
-import { BlockType, CardType } from '@/constants';
 import { NodeData } from '@/models';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
 import CardEditor from './CardEditor';
 import CardStep from './CardStep';
+import { NODE_CONFIG } from './constants';
 
-const CardManager: NodeConfig<NodeData.Card> = {
-  type: BlockType.CARD,
-  editor: CardEditor,
-  icon: 'logs',
-  iconColor: '#616c60',
+const CardManager: NodeManagerConfig<NodeData.Card> = {
+  ...NODE_CONFIG,
+
+  tip: 'Tell Alexa to show a card',
+  label: 'Card',
 
   step: CardStep,
-  label: 'Card',
-  tip: 'Tell Alexa to show a card',
-
-  factory: () => ({
-    node: {
-      ports: {
-        in: [{}],
-        out: [{}],
-      },
-    },
-    data: {
-      name: 'Card',
-      cardType: CardType.SIMPLE,
-      title: '',
-      content: '',
-      largeImage: null,
-      smallImage: null,
-      hasSmallImage: false,
-    },
-  }),
+  editor: CardEditor,
 };
 
 export default CardManager;

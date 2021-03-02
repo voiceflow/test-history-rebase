@@ -4,7 +4,7 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
 
-import { PERMISSION_LABELS } from '../constants';
+import { NODE_CONFIG, PERMISSION_LABELS } from '../constants';
 
 export type PermissionStepProps = {
   permissions: string[];
@@ -25,11 +25,11 @@ export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nod
       <Section>
         <Item
           label={permissions.length ? labelText : null}
-          labelVariant={StepLabelVariant.SECONDARY}
+          icon={NODE_CONFIG.icon}
           portID={portID}
-          icon="openLock"
-          iconColor="#6e849a"
+          iconColor={NODE_CONFIG.iconColor}
           placeholder="Send a permissions card"
+          labelVariant={StepLabelVariant.SECONDARY}
         />
       </Section>
     </Step>

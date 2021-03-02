@@ -1,10 +1,10 @@
 import { BlockType } from '@/constants';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
 import InvalidPlatformEditor from './InvalidPlatformEditor';
 import InvalidPlatformStep from './InvalidPlatformStep';
 
-const InvalidPlatformManager: NodeConfig<{}> = {
+const InvalidPlatformManager: NodeManagerConfig<{}> = {
   type: BlockType.INVALID_PLATFORM,
   mergeTerminator: true,
 

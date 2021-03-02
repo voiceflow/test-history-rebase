@@ -7,6 +7,8 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 import { ConnectedProps } from '@/types';
 import { prettifyIntentName } from '@/utils/intent';
 
+import { NODE_CONFIG } from '../constants';
+
 export type IntentStepProps = {
   label?: string | null;
   nodeID: string;
@@ -16,7 +18,7 @@ export type IntentStepProps = {
 export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, portID, label }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item label={label} portID={portID} icon="user" iconColor="#5589eb" placeholder="Create or select an intent" />
+      <Item label={label} portID={portID} icon={NODE_CONFIG.icon} iconColor={NODE_CONFIG.iconColor} placeholder="Create or select an intent" />
     </Section>
   </Step>
 );

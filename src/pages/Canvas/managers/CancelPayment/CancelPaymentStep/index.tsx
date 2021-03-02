@@ -7,6 +7,8 @@ import * as Models from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 import { ConnectedProps, MergeArguments } from '@/types';
 
+import { NODE_CONFIG } from '../constants';
+
 export type CancelPaymentStepProps = {
   label?: string;
   withPorts: boolean;
@@ -18,8 +20,15 @@ export type CancelPaymentStepProps = {
 export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, nodeID, successPortID, failurePortID, withPorts }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item label={label} labelVariant={StepLabelVariant.SECONDARY} icon="trash" iconColor="#d94c4c" placeholder="Select a product to cancel" />
+      <Item
+        label={label}
+        icon={NODE_CONFIG.icon}
+        iconColor={NODE_CONFIG.iconColor}
+        placeholder="Select a product to cancel"
+        labelVariant={StepLabelVariant.SECONDARY}
+      />
     </Section>
+
     {label && (
       <Section>
         {withPorts && (

@@ -1,14 +1,16 @@
 import { withStepContext } from '_storybook';
 import React from 'react';
 
-import { INTEGRATION_DATA_MODELS, IntegrationType } from '@/constants';
+import { IntegrationType } from '@/constants';
 import { NodeData } from '@/models';
 import Block from '@/pages/Canvas/components/Block';
 
+import { DEFAULT_DATA } from '../constants';
 import { IntegrationStep, IntegrationStepProps } from '.';
 
 const getProps = (): Omit<IntegrationStepProps, 'data'> => ({
   withPorts: true,
+  nodeID: '111',
   successPortID: 'abc',
   failurePortID: 'abc',
 });
@@ -27,8 +29,7 @@ export default {
 export const apiEmpty = withStepContext()(
   render({
     data: {
-      integrationType: IntegrationType.CUSTOM_API,
-      ...INTEGRATION_DATA_MODELS.CUSTOM_API,
+      ...DEFAULT_DATA[IntegrationType.CUSTOM_API],
     } as NodeData.CustomApi,
   })
 );
@@ -36,8 +37,7 @@ export const apiEmpty = withStepContext()(
 export const apiFilled = withStepContext()(
   render({
     data: {
-      integrationType: IntegrationType.CUSTOM_API,
-      ...INTEGRATION_DATA_MODELS.CUSTOM_API,
+      ...DEFAULT_DATA[IntegrationType.CUSTOM_API],
       url: 'http://awesome-link.com',
     } as NodeData.CustomApi,
   })
@@ -46,8 +46,7 @@ export const apiFilled = withStepContext()(
 export const googleEmpty = withStepContext()(
   render({
     data: {
-      integrationType: IntegrationType.GOOGLE_SHEETS,
-      ...INTEGRATION_DATA_MODELS.GOOGLE_SHEETS,
+      ...DEFAULT_DATA[IntegrationType.GOOGLE_SHEETS],
     } as NodeData.GoogleSheets,
   })
 );
@@ -55,10 +54,9 @@ export const googleEmpty = withStepContext()(
 export const googleFilled = withStepContext()(
   render({
     data: {
-      integrationType: IntegrationType.GOOGLE_SHEETS,
-      ...INTEGRATION_DATA_MODELS.GOOGLE_SHEETS,
+      ...DEFAULT_DATA[IntegrationType.GOOGLE_SHEETS],
+      sheet: { value: 20, label: 'Voiceflow MRR' },
       selectedAction: 'Create Data',
-      sheet: { value: 'abc', label: 'Voiceflow MRR' },
     } as NodeData.GoogleSheets,
   })
 );
@@ -66,8 +64,7 @@ export const googleFilled = withStepContext()(
 export const zapierEmpty = withStepContext()(
   render({
     data: {
-      integrationType: IntegrationType.ZAPIER,
-      ...INTEGRATION_DATA_MODELS.ZAPIER,
+      ...DEFAULT_DATA[IntegrationType.ZAPIER],
     } as NodeData.Zapier,
   })
 );
@@ -75,8 +72,7 @@ export const zapierEmpty = withStepContext()(
 export const zapierFilled = withStepContext()(
   render({
     data: {
-      integrationType: IntegrationType.ZAPIER,
-      ...INTEGRATION_DATA_MODELS.ZAPIER,
+      ...DEFAULT_DATA[IntegrationType.ZAPIER],
       value: 'Send Slack Message',
     } as NodeData.Zapier,
   })
@@ -86,8 +82,7 @@ export const noConnector = withStepContext()(
   render({
     withPorts: false,
     data: {
-      integrationType: IntegrationType.CUSTOM_API,
-      ...INTEGRATION_DATA_MODELS.CUSTOM_API,
+      ...DEFAULT_DATA[IntegrationType.CUSTOM_API],
       url: 'http://awesome-link.com',
     } as NodeData.CustomApi,
   })
@@ -96,8 +91,7 @@ export const noConnector = withStepContext()(
 export const active = withStepContext({ isActive: true })(
   render({
     data: {
-      integrationType: IntegrationType.ZAPIER,
-      ...INTEGRATION_DATA_MODELS.ZAPIER,
+      ...DEFAULT_DATA[IntegrationType.ZAPIER],
       value: 'Send Slack Message',
     } as NodeData.Zapier,
   })
@@ -106,10 +100,9 @@ export const active = withStepContext({ isActive: true })(
 export const connected = withStepContext({ isConnected: true })(
   render({
     data: {
-      integrationType: IntegrationType.GOOGLE_SHEETS,
-      ...INTEGRATION_DATA_MODELS.GOOGLE_SHEETS,
+      ...DEFAULT_DATA[IntegrationType.GOOGLE_SHEETS],
       selectedAction: 'Create Data',
-      sheet: { value: 'abc', label: 'Voiceflow MRR' },
+      sheet: { value: 0, label: 'Voiceflow MRR' },
     } as NodeData.GoogleSheets,
   })
 );
@@ -117,10 +110,9 @@ export const connected = withStepContext({ isConnected: true })(
 export const longLabel = withStepContext()(
   render({
     data: {
-      integrationType: IntegrationType.GOOGLE_SHEETS,
-      ...INTEGRATION_DATA_MODELS.GOOGLE_SHEETS,
+      ...DEFAULT_DATA[IntegrationType.GOOGLE_SHEETS],
       selectedAction: 'Create Data',
-      sheet: { value: 'abc', label: 'Voiceflow Monthly Recurring Revenue' },
+      sheet: { value: 0, label: 'Voiceflow Monthly Recurring Revenue' },
     } as NodeData.GoogleSheets,
   })
 );

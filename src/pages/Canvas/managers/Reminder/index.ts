@@ -1,39 +1,18 @@
-import { BlockType, PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
+import { NODE_CONFIG } from './constants';
 import ReminderEditor from './ReminderEditor';
 import ReminderStep from './ReminderStep';
 
-const ReminderManager: NodeConfig<NodeData.Reminder> = {
-  type: BlockType.REMINDER,
-  icon: 'reminder',
-  iconColor: '#c998a4',
-  platforms: [PlatformType.ALEXA],
+const ReminderManager: NodeManagerConfig<NodeData.Reminder> = {
+  ...NODE_CONFIG,
 
-  label: 'Reminder',
   tip: 'Send a remind to the user in a set amount of time',
+  label: 'Reminder',
 
   step: ReminderStep,
   editor: ReminderEditor,
-
-  factory: () => ({
-    node: {
-      ports: {
-        in: [{}],
-        out: [{}, { label: 'fail' }],
-      },
-    },
-    data: {
-      name: 'Reminder',
-      reminderType: 'timer',
-      text: '',
-      hours: '',
-      minutes: '',
-      seconds: '',
-      recurrenceBool: false,
-    },
-  }),
 };
 
 export default ReminderManager;

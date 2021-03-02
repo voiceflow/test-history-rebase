@@ -4,6 +4,8 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
+import { NODE_CONFIG } from '../constants';
+
 export type RandomStepProps = {
   nodeID: string;
   ports: string[];
@@ -17,8 +19,8 @@ export const RandomStep: React.FC<RandomStepProps> = ({ nodeID, ports }) => (
           portID={portID}
           label={`Path ${index + 1}`}
           labelVariant={StepLabelVariant.SECONDARY}
-          icon={index === 0 ? 'randomLoop' : null}
-          iconColor="#616c60"
+          icon={index === 0 ? NODE_CONFIG.icon : null}
+          iconColor={NODE_CONFIG.iconColor}
           key={portID}
         />
       ))}

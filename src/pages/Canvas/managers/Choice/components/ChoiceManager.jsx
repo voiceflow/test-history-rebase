@@ -1,4 +1,3 @@
-import cuid from 'cuid';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -16,11 +15,11 @@ import SuggestionChips, { chipFactory } from '@/pages/Canvas/components/Suggesti
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import ElseResponse from '@/pages/Canvas/managers/Choice/components/ElseResponse';
-import { defaultPlatformsData } from '@/utils/platform';
 
+import { NODE_CONFIG } from '../constants';
 import DraggableItem from './DraggableItem';
 
-const choiceFactory = () => defaultPlatformsData({ id: cuid.slug(), intent: null, mappings: [] });
+const choiceFactory = () => NODE_CONFIG.factory().data.choices[0];
 
 function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
   const { choices } = data;

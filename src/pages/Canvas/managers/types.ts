@@ -29,25 +29,14 @@ export type NodeEditor<T> = React.FC<NodeEditorPropsType<T>>;
 
 export type NodeConfig<T extends object | Markup.AnyNodeData> = {
   type: BlockType;
-  icon?: Icon | React.FC;
+
+  icon?: Icon;
+  getIcon?: (data: T) => Icon;
   iconColor?: string;
-  getIcon?: (data: T) => Icon | React.FC;
   getIconColor?: (data: T) => string;
-  reprompt?: boolean;
-  chips?: boolean;
-  mergeInitializer?: boolean;
+
   mergeTerminator?: boolean;
-  platformDependent?: boolean;
-  nameEditable?: boolean;
-  platforms?: PlatformType[];
-
-  label: string;
-  tip?: string;
-
-  step: React.FC<ConnectedStepProps<T>>;
-  editor: NodeEditor<T>;
-  markupNode?: T extends Markup.AnyNodeData ? React.FC<ConnectedMarkupNodeProps<T>> : never;
-  editorsByPath?: Record<string, React.FC<any>>;
+  mergeInitializer?: boolean;
 
   factory: (
     data?: Partial<T>,
@@ -58,4 +47,20 @@ export type NodeConfig<T extends object | Markup.AnyNodeData> = {
   };
 };
 
-export type BasicNodeConfig<T extends object | Markup.AnyNodeData = {}> = WithRequired<Partial<NodeConfig<T>>, 'type'>;
+export type NodeManagerConfig<T extends object | Markup.AnyNodeData> = NodeConfig<T> & {
+  tip?: string;
+  label: string;
+  getDataLabel?: (data: T) => string;
+
+  chips?: boolean;
+  reprompt?: boolean;
+  platforms?: PlatformType[];
+  nameEditable?: boolean;
+
+  step: React.FC<ConnectedStepProps<T>>;
+  editor: NodeEditor<T>;
+  markupNode?: T extends Markup.AnyNodeData ? React.FC<ConnectedMarkupNodeProps<T>> : never;
+  editorsByPath?: Record<string, React.FC<any>>;
+};
+
+export type BasicNodeManagerConfig<T extends object | Markup.AnyNodeData = {}> = WithRequired<Partial<NodeManagerConfig<T>>, 'type'>;

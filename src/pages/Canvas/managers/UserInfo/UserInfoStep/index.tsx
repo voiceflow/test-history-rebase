@@ -5,6 +5,8 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
 
+import { NODE_CONFIG } from '../constants';
+
 export type UserInfoStepProps = {
   userPermissions: (string | null)[];
   withPorts: boolean;
@@ -17,8 +19,8 @@ export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, wit
   <Step nodeID={nodeID}>
     <Section>
       <Item
-        icon="barGraph"
-        iconColor="#3C6997"
+        icon={NODE_CONFIG.icon}
+        iconColor={NODE_CONFIG.iconColor}
         label={
           userPermissions.length > 0 && (
             <>

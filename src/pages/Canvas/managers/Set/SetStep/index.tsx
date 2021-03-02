@@ -6,6 +6,8 @@ import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { ExpressionPreviewContainer } from '@/pages/Canvas/managers/If/IfStep/components';
 
+import { NODE_CONFIG } from '../constants';
+
 export type SetStepProps = {
   expressions: (JSX.Element | null)[];
   nodeID: string;
@@ -20,15 +22,15 @@ export const SetStep: React.FC<SetStepProps> = ({ expressions, nodeID, portID })
           <Item
             label={label}
             labelVariant={StepLabelVariant.SECONDARY}
-            icon={index === 0 ? 'code' : null}
-            iconColor="#5590b5"
+            icon={index === 0 ? NODE_CONFIG.icon : null}
+            iconColor={NODE_CONFIG.iconColor}
             key={index}
             portID={index === expressions.length - 1 ? portID : null}
             placeholder="Set variable to..."
           />
         ))
       ) : (
-        <Item icon="code" iconColor="#5590b5" placeholder="Set variable to..." portID={portID} />
+        <Item icon={NODE_CONFIG.icon} iconColor={NODE_CONFIG.iconColor} placeholder="Set variable to..." portID={portID} />
       )}
     </Section>
   </Step>

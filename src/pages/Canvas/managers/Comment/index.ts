@@ -1,14 +1,12 @@
 import { BlockType } from '@/constants';
 
-import { BasicNodeConfig } from '../types';
+import { BasicNodeManagerConfig } from '../types';
 
-const CommentManager: BasicNodeConfig = {
+const CommentManager: BasicNodeManagerConfig = {
   type: BlockType.COMMENT,
 
   factory: () => ({
-    node: {
-      ports: {},
-    },
+    node: { ports: {} },
     data: {
       name: 'New Comment',
     },

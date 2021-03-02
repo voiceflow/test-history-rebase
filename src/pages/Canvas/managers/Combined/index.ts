@@ -1,9 +1,9 @@
 import { BlockType } from '@/constants';
 
-import { BasicNodeConfig } from '../types';
+import { BasicNodeManagerConfig } from '../types';
 import CombinedEditor from './CombinedEditor';
 
-const CombinedManager: BasicNodeConfig = {
+const CombinedManager: BasicNodeManagerConfig = {
   type: BlockType.COMBINED,
   nameEditable: true,
 

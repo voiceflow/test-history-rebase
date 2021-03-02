@@ -4,11 +4,13 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
 
+import { NODE_CONFIG } from '../constants';
+
 export type CaptureStepProps = {
   nodeID: string;
   portID: string;
-  fromVariable: string | null;
   toVariable: string | null;
+  fromVariable: string | null;
 };
 
 export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariable, nodeID, portID }) => (
@@ -23,11 +25,11 @@ export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariab
             </>
           )
         }
-        labelVariant={StepLabelVariant.SECONDARY}
+        icon={NODE_CONFIG.icon}
         portID={portID}
-        icon="microphone"
-        iconColor="#58457a"
+        iconColor={NODE_CONFIG.iconColor}
         placeholder="Capture a user response"
+        labelVariant={StepLabelVariant.SECONDARY}
       />
     </Section>
   </Step>

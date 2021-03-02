@@ -1,28 +1,18 @@
-import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
+import { NODE_CONFIG } from './constants';
 import DeprecatedEditor from './DeprecatedEditor';
 import DeprecatedStep from './DeprecatedStep';
 
-const DeprecatedManager: NodeConfig<NodeData.Deprecated> = {
-  type: BlockType.DEPRECATED,
-  icon: 'warning',
-  mergeTerminator: true,
+const DeprecatedManager: NodeManagerConfig<NodeData.Deprecated> = {
+  ...NODE_CONFIG,
 
   label: 'Deprecated',
+  mergeTerminator: true,
 
   step: DeprecatedStep,
   editor: DeprecatedEditor,
-
-  factory: () => ({
-    node: {
-      ports: {},
-    },
-    data: {
-      name: 'Deprecated Block',
-    },
-  }),
 };
 
 export default DeprecatedManager;

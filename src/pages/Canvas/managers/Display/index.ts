@@ -1,42 +1,20 @@
-import { APLType, VisualType } from '@voiceflow/general-types/build/nodes/visual';
-
-import { BlockType, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
 import VisualEditor from '../Visual/VisualEditor';
 import VisualStep from '../Visual/VisualStep';
+import { NODE_CONFIG } from './constants';
 
-const DisplayManager: NodeConfig<NodeData.Visual> = {
-  type: BlockType.DISPLAY,
-  platforms: [PlatformType.ALEXA],
-  icon: 'blocks',
-  iconColor: '#3c6997',
+const DisplayManager: NodeManagerConfig<NodeData.Visual> = {
+  ...NODE_CONFIG,
 
-  label: 'Display',
   tip: 'Show a Multimodal Display on the screen using APL',
+  label: 'Display',
+  platforms: [PlatformType.ALEXA],
 
   step: VisualStep,
   editor: VisualEditor,
-
-  factory: () => ({
-    node: {
-      ports: {
-        in: [{}],
-        out: [{}],
-      },
-    },
-    data: {
-      name: 'Display',
-      title: '',
-      aplType: APLType.SPLASH,
-      visualType: VisualType.APL,
-      imageURL: '',
-      document: '',
-      datasource: '',
-      jsonFileName: '',
-    },
-  }),
 };
 
 export default DisplayManager;

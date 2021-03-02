@@ -4,6 +4,8 @@ import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 
+import { NODE_CONFIG } from '../constants';
+
 export type DirectiveStepProps = {
   nodeID: string;
   portID: string;
@@ -13,12 +15,12 @@ export const DirectiveStep: React.FC<DirectiveStepProps> = ({ nodeID, portID }) 
   <Step nodeID={nodeID}>
     <Section>
       <Item
-        portID={portID}
+        icon={NODE_CONFIG.icon}
         label="Directive"
-        labelVariant={StepLabelVariant.SECONDARY}
-        icon="directive"
-        iconColor="#5589eb"
+        portID={portID}
+        iconColor={NODE_CONFIG.iconColor}
         placeholder="Send Alexa Directive"
+        labelVariant={StepLabelVariant.SECONDARY}
       />
     </Section>
   </Step>

@@ -7,6 +7,8 @@ import * as Models from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
 import { ConnectedProps, MergeArguments } from '@/types';
 
+import { NODE_CONFIG } from '../constants';
+
 export type PaymentStepProps = {
   label?: string;
   withPorts: boolean;
@@ -19,7 +21,13 @@ export type PaymentStepProps = {
 export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, withPorts, nodeID, successPortID, failurePortID }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item label={label} labelVariant={StepLabelVariant.SECONDARY} icon="purchase" iconColor="#558B2F" placeholder="Select a product" />
+      <Item
+        icon={NODE_CONFIG.icon}
+        label={label}
+        iconColor={NODE_CONFIG.iconColor}
+        placeholder="Select a product"
+        labelVariant={StepLabelVariant.SECONDARY}
+      />
     </Section>
     {label && (
       <>

@@ -1,34 +1,20 @@
-import { BlockType, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
 import CancelPaymentEditor from './CancelPaymentEditor';
 import CancelPaymentStep from './CancelPaymentStep';
+import { NODE_CONFIG } from './constants';
 
-const CancelPaymentManager: NodeConfig<NodeData.CancelPayment> = {
-  type: BlockType.CANCEL_PAYMENT,
-  icon: 'trash',
-  iconColor: '#d94c4c',
-  platforms: [PlatformType.ALEXA],
+const CancelPaymentManager: NodeManagerConfig<NodeData.CancelPayment> = {
+  ...NODE_CONFIG,
 
-  label: 'Cancel Purchase',
   tip: "Refund a purchase or cancel an user's subscription",
+  label: 'Cancel Purchase',
+  platforms: [PlatformType.ALEXA],
 
   step: CancelPaymentStep,
   editor: CancelPaymentEditor,
-
-  factory: () => ({
-    node: {
-      ports: {
-        in: [{}],
-        out: [{}, { label: 'fail' }],
-      },
-    },
-    data: {
-      name: 'Cancel Payment',
-      productID: null,
-    },
-  }),
 };
 
 export default CancelPaymentManager;

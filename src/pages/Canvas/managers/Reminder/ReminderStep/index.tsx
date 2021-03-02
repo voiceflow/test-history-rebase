@@ -5,6 +5,8 @@ import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 import { transformVariablesToReadable } from '@/utils/slot';
 
+import { NODE_CONFIG } from '../constants';
+
 export type ReminderStepProps = {
   label: string;
   withPorts: boolean;
@@ -16,7 +18,13 @@ export type ReminderStepProps = {
 export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, nodeID, successPortID, failurePortID }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item icon="reminder" iconColor="#c998a4" label={label} labelVariant={StepLabelVariant.SECONDARY} placeholder="Set a reminder" />
+      <Item
+        icon={NODE_CONFIG.icon}
+        label={label}
+        iconColor={NODE_CONFIG.iconColor}
+        placeholder="Set a reminder"
+        labelVariant={StepLabelVariant.SECONDARY}
+      />
     </Section>
     <Section>
       {withPorts && (

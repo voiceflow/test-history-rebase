@@ -1,8 +1,9 @@
 import IntentSlotForm from '@/components/IntentSlotForm';
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
+import { defaultPlatformsData } from '@/utils/platform';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
 import CommandEditor from './CommandEditor';
 import CommandStep from './CommandStep';
 
@@ -10,7 +11,7 @@ const EDITORS_BY_PATH = {
   slot: IntentSlotForm,
 };
 
-const CommandManager: NodeConfig<NodeData.Command> = {
+const CommandManager: NodeManagerConfig<NodeData.Command> = {
   type: BlockType.COMMAND,
   label: BlockType.COMMAND,
   nameEditable: true,
@@ -23,24 +24,12 @@ const CommandManager: NodeConfig<NodeData.Command> = {
     node: {},
     data: {
       name: 'New Command',
-      alexa: {
+      ...defaultPlatformsData({
         intent: null,
-        diagramID: null,
-        mappings: [],
         resume: true,
-      },
-      google: {
-        intent: null,
-        diagramID: null,
         mappings: [],
-        resume: true,
-      },
-      general: {
-        intent: null,
         diagramID: null,
-        mappings: [],
-        resume: true,
-      },
+      }),
     },
   }),
 };

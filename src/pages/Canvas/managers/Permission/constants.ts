@@ -1,3 +1,8 @@
+import { BlockType } from '@/constants';
+import { NodeData } from '@/models';
+
+import { NodeConfig } from '../types';
+
 export const PERMISSIONS = [
   { label: 'Reminders', value: 'alexa::alerts:reminders:skill:readwrite' },
   { label: 'Lists Read', value: 'alexa::household:lists:read' },
@@ -16,3 +21,24 @@ export const PERMISSION_LABELS = PERMISSIONS.reduce<Record<string, string>>((acc
 
   return acc;
 }, {});
+
+export const NODE_CONFIG: NodeConfig<NodeData.Permission> = {
+  type: BlockType.PERMISSION,
+
+  icon: 'openLock',
+  iconColor: '#6e849a',
+
+  factory: () => ({
+    node: {
+      ports: {
+        in: [{}],
+        out: [{}],
+      },
+    },
+    data: {
+      name: 'Permission',
+      custom: false,
+      permissions: [],
+    },
+  }),
+};

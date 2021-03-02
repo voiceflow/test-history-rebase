@@ -1,5 +1,28 @@
 import { AccountLinking, AccountLinkingAccessTokenScheme, AccountLinkingType } from '@voiceflow/alexa-types';
 
+import { BlockType } from '@/constants';
+
+import { NodeConfig } from '../types';
+
+export const NODE_CONFIG: NodeConfig<{}> = {
+  type: BlockType.ACCOUNT_LINKING,
+
+  icon: 'accountLinking',
+  iconColor: '#645f5f',
+
+  factory: () => ({
+    node: {
+      ports: {
+        in: [{}],
+        out: [{}],
+      },
+    },
+    data: {
+      name: 'Account Linking',
+    },
+  }),
+};
+
 export const TABS = [
   {
     value: 'client',

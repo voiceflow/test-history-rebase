@@ -1,11 +1,8 @@
 /* eslint-disable camelcase */
 import { PermissionType, Voice as AlexaVoices } from '@voiceflow/alexa-types';
-import { DeviceType, IntegrationType, Voice as GeneralVoices } from '@voiceflow/general-types';
-import { APIActionType, APIBodyType } from '@voiceflow/general-types/build/nodes/api';
-import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
+import { DeviceType, Voice as GeneralVoices } from '@voiceflow/general-types';
 import { Voice as GoogleVoices } from '@voiceflow/google-types';
 
-import { NodeData } from '@/models';
 import { Pair } from '@/types';
 
 export { IntegrationType } from '@voiceflow/general-types';
@@ -232,49 +229,6 @@ export enum VoiceType {
 
 export const KeyCodes = {
   ENTER: 13,
-};
-
-const EMPTY_KEY_VALUE_ITEM = {
-  key: '',
-  val: '',
-};
-
-// Integration default data models
-export const INTEGRATION_DATA_MODELS = {
-  CUSTOM_API: {
-    url: '',
-    body: [EMPTY_KEY_VALUE_ITEM],
-    name: IntegrationType.CUSTOM_API,
-    headers: [EMPTY_KEY_VALUE_ITEM],
-    mapping: [{ path: '', var: null }],
-    content: '',
-    parameters: [EMPTY_KEY_VALUE_ITEM],
-    bodyInputType: APIBodyType.FORM_DATA,
-    selectedAction: APIActionType.GET,
-    selectedIntegration: IntegrationType.CUSTOM_API,
-  } as NodeData.CustomApi,
-  GOOGLE_SHEETS: {
-    name: IntegrationType.GOOGLE_SHEETS,
-    selectedIntegration: IntegrationType.GOOGLE_SHEETS,
-    selectedAction: '',
-    user: {},
-    spreadsheet: null,
-    sheet: null,
-    header_column: null,
-    match_value: [],
-    row_values: [],
-    row_number: [],
-    mapping: [],
-    start_row: [],
-    end_row: [],
-  },
-  ZAPIER: {
-    name: IntegrationType.ZAPIER,
-    user: {},
-    value: '',
-    selectedAction: ZapierActionType.START_A_ZAP,
-    selectedIntegration: IntegrationType.ZAPIER,
-  } as NodeData.Zapier,
 };
 
 export const PLAN_INFO_LINK = 'https://www.voiceflow.com/pricing';

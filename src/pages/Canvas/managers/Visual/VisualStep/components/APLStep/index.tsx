@@ -3,6 +3,7 @@ import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import { NODE_CONFIG } from '@/pages/Canvas/managers/Display/constants';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
 export type APLStepProps = {
@@ -16,10 +17,10 @@ export const APLStep: React.FC<APLStepProps> = ({ label, nodeID, portID, image }
   <Step nodeID={nodeID} image={image}>
     <Section>
       <Item
-        icon="blocks"
+        icon={NODE_CONFIG.icon}
         label={label}
         portID={portID}
-        iconColor="#3c6997"
+        iconColor={NODE_CONFIG.iconColor}
         placeholder="Add a multimodal display"
         labelVariant={StepLabelVariant.SECONDARY}
       />

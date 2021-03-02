@@ -7,6 +7,8 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 import { usePortFilter } from '@/pages/Canvas/hooks';
 import { transformVariablesToReadable } from '@/utils/slot';
 
+import { NODE_CONFIG } from '../constants';
+
 export type StreamStepProps = {
   audio: string;
   platform: PlatformType;
@@ -23,14 +25,15 @@ export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customP
     <Step nodeID={nodeID}>
       <Section>
         <Item
-          icon="audioPlayer"
-          iconColor="#4f98c6"
+          icon={NODE_CONFIG.icon}
+          iconColor={NODE_CONFIG.iconColor}
           label={audio}
           placeholder="Add an Audio file, URL or variable"
           labelVariant={StepLabelVariant.SECONDARY}
           portID={isGoogle ? nextPortID : undefined}
         />
       </Section>
+
       {!isGoogle && (
         <Section>
           <Item icon="choice" iconColor="#3a5999" label="Next" portID={nextPortID} />

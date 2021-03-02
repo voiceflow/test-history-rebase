@@ -4,7 +4,7 @@ import React from 'react';
 
 import DefaultModal from '@/components/LegacyModal/DefaultModal';
 import { Spinner } from '@/components/Spinner';
-import { INTEGRATION_DATA_MODELS } from '@/constants';
+import { IntegrationType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import * as Modal from '@/ducks/modal';
@@ -12,6 +12,7 @@ import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks/toggle';
 
+import { DEFAULT_DATA } from '../../../../constants';
 import SquareButton from '../../components/SquareButton';
 import DropdownHeader from '../../components/StepDropdown';
 import AddGoogleUserModal from './AddGoogleUserModal';
@@ -44,7 +45,7 @@ function AddGoogleUser({
 
     if (user !== data.user) {
       // Reset all data except selected Action and set user
-      onChange({ ...INTEGRATION_DATA_MODELS.GOOGLE_SHEETS, user, selectedAction: data.selectedAction });
+      onChange({ ...DEFAULT_DATA[IntegrationType.GOOGLE_SHEETS], user, selectedAction: data.selectedAction });
       openNextStep();
     }
   };
@@ -67,9 +68,9 @@ function AddGoogleUser({
             setError(integration_user_error);
           } else if (targetUser.user_data?.email === data?.user?.user_data?.email) {
             onChange({ user: {} });
-            onChange({ ...INTEGRATION_DATA_MODELS.GOOGLE_SHEETS, selectedAction: data.selectedAction });
+            onChange({ ...DEFAULT_DATA[IntegrationType.GOOGLE_SHEETS], selectedAction: data.selectedAction });
           } else {
-            onChange({ ...INTEGRATION_DATA_MODELS.GOOGLE_SHEETS, user: data.user, selectedAction: data.selectedAction });
+            onChange({ ...DEFAULT_DATA[IntegrationType.GOOGLE_SHEETS], user: data.user, selectedAction: data.selectedAction });
           }
         } catch (e) {
           setError(e);

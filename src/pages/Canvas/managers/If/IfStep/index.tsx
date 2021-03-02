@@ -7,6 +7,7 @@ import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
 import { head } from '@/utils/array';
 
+import { NODE_CONFIG } from '../constants';
 import { ExpressionPreviewContainer } from './components';
 
 export type IfStepProps = {
@@ -25,10 +26,10 @@ export const IfStep: React.FC<IfStepProps> = ({ expressions, nodeID, elsePortID 
         expressions.map(({ label, portID }, index) => (
           <Item
             key={portID}
-            icon={index === 0 ? 'if' : null}
+            icon={index === 0 ? NODE_CONFIG.icon : null}
             label={label}
             labelVariant={StepLabelVariant.SECONDARY}
-            iconColor="#f86683"
+            iconColor={NODE_CONFIG.iconColor}
             portID={portID}
             placeholder="Add IF statement"
           />

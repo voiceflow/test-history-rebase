@@ -6,6 +6,7 @@ import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { isVariable } from '@/utils/slot';
 
+import { NODE_CONFIG } from '../../../constants';
 import { getLabel } from './utils';
 
 export type ImageStepProps = {
@@ -20,10 +21,10 @@ export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, portID, ima
   <Step nodeID={nodeID} image={image} imageAspectRatio={aspectRatio} imagePosition="top center">
     <Section>
       <Item
-        icon="display"
+        icon={NODE_CONFIG.icon}
         label={label}
         portID={portID}
-        iconColor="#3C6997"
+        iconColor={NODE_CONFIG.iconColor}
         placeholder="Add visual mockup"
         labelVariant={StepLabelVariant.SECONDARY}
       />

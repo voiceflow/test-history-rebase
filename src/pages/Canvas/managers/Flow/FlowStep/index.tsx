@@ -9,6 +9,8 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 import { ConnectedProps, MergeArguments } from '@/types';
 import { stopPropagation } from '@/utils/dom';
 
+import { NODE_CONFIG } from '../constants';
+
 export type FlowStepProps = {
   label: string | null;
   nodeID: string;
@@ -24,8 +26,8 @@ export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, portID, onCli
         portID={portID}
         onClick={label ? stopPropagation(onClickFlow) : undefined}
         labelVariant={StepLabelVariant.SECONDARY}
-        icon="flow"
-        iconColor="#3c6997"
+        icon={NODE_CONFIG.icon}
+        iconColor={NODE_CONFIG.iconColor}
         placeholder="Connect a flow to this step"
       />
     </Section>

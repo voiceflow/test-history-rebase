@@ -1,32 +1,19 @@
-import { BlockType, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 
-import { NodeConfig } from '../types';
+import { NodeManagerConfig } from '../types';
 import AccountLinkingEditor from './AccountLinkingEditor';
 import AccountLinkingStep from './AccountLinkingStep';
+import { NODE_CONFIG } from './constants';
 
-const AccountLinkingManager: NodeConfig<{}> = {
-  type: BlockType.ACCOUNT_LINKING,
-  icon: 'accountLinking',
-  iconColor: '#645f5f',
-  platforms: [PlatformType.ALEXA],
+const AccountLinkingManager: NodeManagerConfig<{}> = {
+  ...NODE_CONFIG,
 
-  label: 'Account Linking',
   tip: 'Account Linking tips',
+  label: 'Account Linking',
+  platforms: [PlatformType.ALEXA],
 
   step: AccountLinkingStep,
   editor: AccountLinkingEditor,
-
-  factory: () => ({
-    node: {
-      ports: {
-        in: [{}],
-        out: [{}],
-      },
-    },
-    data: {
-      name: 'Account Linking',
-    },
-  }),
 };
 
 export default AccountLinkingManager;

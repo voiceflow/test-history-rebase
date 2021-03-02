@@ -17,8 +17,9 @@ type DialogPrototypeProps = {
   isLoading?: boolean;
   bottomScrollRef: React.Ref<HTMLElement>;
   hideSessionMessages?: boolean;
-  showPadding?: boolean;
   isMobile?: boolean;
+  showPadding?: boolean;
+  withInteractions?: boolean;
 };
 
 const PrototypeDialog: React.FC<DialogPrototypeProps> = ({

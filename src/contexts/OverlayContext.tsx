@@ -2,16 +2,20 @@ import React from 'react';
 
 import { withContext } from '@/hocs/withContext';
 
-export type OverlayValue = {
-  setHandler: (handler: (() => void) | null) => void;
+export type OverlayValue<T extends HTMLElement | Document = Document> = {
   canOpen: () => boolean;
   dismiss: () => void;
+  rootNode: T;
+  setHandler: (handler: (() => void) | null) => void;
 };
 
-export const OverlayContext = React.createContext<OverlayValue | null>(null);
+export const OverlayContext = React.createContext<OverlayValue<HTMLElement | Document> | null>(null);
 export const { Consumer: OverlayConsumer } = OverlayContext;
 
-export const OverlayProvider: React.FC = ({ children }) => {
+export const OverlayProvider = <T extends HTMLElement | Document = Document>({
+  children,
+  rootNode = document as any,
+}: React.PropsWithChildren<{ rootNode?: T }>) => {
   const dismissHandler = React.useRef<(() => void) | null>(null);
 
   const setHandler = React.useCallback((handler) => {
@@ -25,17 +29,9 @@ export const OverlayProvider: React.FC = ({ children }) => {
     setHandler(null);
   }, []);
 
-  return (
-    <OverlayContext.Provider
-      value={{
-        setHandler,
-        canOpen,
-        dismiss,
-      }}
-    >
-      {children}
-    </OverlayContext.Provider>
-  );
+  const value: OverlayValue<T> = { canOpen, dismiss, rootNode, setHandler };
+
+  return <OverlayContext.Provider value={value}>{children}</OverlayContext.Provider>;
 };
 
 export const withOverlay = withContext(OverlayContext, 'overlay');

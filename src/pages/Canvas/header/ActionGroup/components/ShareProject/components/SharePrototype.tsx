@@ -32,7 +32,7 @@ const SharePrototype: React.FC<SharePrototypeProps> = ({ link, onClick, isAllowe
         <span>
           {canSharePrototype && link ? (
             <Link href={link} onClick={onRenderPrototype}>
-              Open link in a new tab
+              Open link in new tab
             </Link>
           ) : (
             <Link href="https://docs.voiceflow.com/#/quickstart/testable-links">Learn More</Link>

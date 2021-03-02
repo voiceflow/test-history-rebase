@@ -5,19 +5,11 @@ import Text from '@/components/Text';
 import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
 import { useCanASR, useTheme } from '@/hooks';
 import { ChatDisplay } from '@/pages/Prototype/components';
+import Interactions from '@/pages/Prototype/components/PrototypeDialog/components/Interactions';
 import { ASRSpeechbar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import { Interaction, Message } from '@/pages/Prototype/types';
 
-import {
-  ActionButtons,
-  Chips,
-  DisplayContainer,
-  InputContainer,
-  InteractionContainer,
-  SpeechBarContainer,
-  SuggestionsContainer,
-  UserInput,
-} from './components';
+import { ActionButtons, DisplayContainer, InputContainer, InteractionContainer, SpeechBarContainer, UserInput } from './components';
 
 export type ChatDialogProps = {
   input: string;
@@ -26,14 +18,13 @@ export type ChatDialogProps = {
   layout: PrototypeLayout;
   onStart: () => void;
   onMute: () => void;
-  onSend: (text?: string) => void;
+  onSend: (text: string) => void;
   onPlay: (src: string) => void;
   isMuted?: boolean;
   onReset: () => void;
   messages: Message[];
   isMobile?: boolean;
   isLoading?: boolean;
-  onTranscript: (request: string) => Promise<void>;
   testEnded?: boolean;
   isListening?: boolean;
   interactions: Interaction[];
@@ -70,7 +61,6 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   onInputChange,
   prototypeStatus,
   finalTranscript,
-  onTranscript,
   onStopListening,
   onStartListening,
   interimTranscript,
@@ -83,7 +73,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
 
   return (
     <Box height="100%" width="100%" position="relative">
-      <DisplayContainer isMobile={isMobile} showSuggestions={interactions.length > 0}>
+      <DisplayContainer isMobile={isMobile}>
         <ChatDisplay
           onPlay={onPlay}
           status={prototypeStatus}
@@ -93,22 +83,12 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
           isMobile={isMobile}
           hideSessionMessages
           showPadding
-        />
+        >
+          <Interactions interactions={interactions} onInteraction={onSend} />
+        </ChatDisplay>
       </DisplayContainer>
 
-      <InteractionContainer isMobile={isMobile} showSuggestions={interactions.length > 0}>
-        {interactions.length > 0 && (
-          <SuggestionsContainer>
-            <Flex p="0 32px" flexWrap="nowrap" justifyContent="center">
-              {interactions.map(({ name }) => (
-                <Chips key={name} color={color} onClick={() => onSend(name)}>
-                  {name}
-                </Chips>
-              ))}
-            </Flex>
-          </SuggestionsContainer>
-        )}
-
+      <InteractionContainer isMobile={isMobile}>
         <InputContainer isMobile={isMobile}>
           {layout === PrototypeLayout.TEXT_DIALOG && (
             <>
@@ -117,7 +97,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                 isIdle={isIdle}
                 testEnded={testEnded}
                 value={input}
-                onEnterPress={() => onSend()}
+                onEnterPress={() => onSend(input)}
                 onChange={onInputChange}
                 onStart={onStart}
               />
@@ -125,7 +105,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
               <ActionButtons
                 color={color}
                 onMute={onMute}
-                onSend={onSend}
+                onSend={() => onSend(input)}
                 isMuted={isMuted}
                 onReset={onReset}
                 disabled={isIdle}
@@ -147,7 +127,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                 <SpeechBarContainer>
                   {canUseASR ? (
                     <ASRSpeechbar
-                      onTranscript={onTranscript}
+                      onTranscript={onSend}
                       onCheckMicrophonePermission={onCheckMicrophonePermission}
                       isMicrophonePermissionGranted={isMicrophonePermissionGranted}
                       locale={locale}
@@ -172,7 +152,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
               <ActionButtons
                 color={color}
                 onMute={onMute}
-                onSend={onSend}
+                onSend={() => onSend(input)}
                 noSend
                 isMuted={isMuted}
                 onReset={onReset}

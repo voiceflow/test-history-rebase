@@ -83,10 +83,10 @@ export function getCSSValue(node: Element | null, property: string) {
  * Set the offset of the element depending on the width of the scroll
  */
 export const setScrollbarOffset = (
-  scrollableNode: HTMLElement,
-  offsetNode: HTMLElement,
+  scrollableNode: HTMLElement | null,
+  offsetNode: HTMLElement | null,
   property = 'margin-right',
-  styleImportant: boolean,
+  styleImportant = false,
   initialValue = 0
 ) => {
   const SCROLLBAR_WIDTH = getScrollbarWidth();
@@ -108,7 +108,7 @@ export const setScrollbarOffset = (
   }
 };
 
-const _getOffsetToNode = (node: HTMLElement, body: HTMLElement, key: keyof HTMLElement) => {
+const _getOffsetToNode = (node: HTMLElement | null, body: HTMLElement | null, key: keyof HTMLElement) => {
   let obj: HTMLElement | null = node;
   let offset = 0;
 
@@ -125,14 +125,18 @@ const _getOffsetToNode = (node: HTMLElement, body: HTMLElement, key: keyof HTMLE
   return offset;
 };
 
-export const getOffsetToNode = (node: HTMLElement, body: HTMLElement) => _getOffsetToNode(node, body, 'offsetTop');
+export const getOffsetToNode = (node: HTMLElement | null, body: HTMLElement | null) => _getOffsetToNode(node, body, 'offsetTop');
 
-export const getOffsetLeftToNode = (node: HTMLElement, body: HTMLElement) => _getOffsetToNode(node, body, 'offsetLeft');
+export const getOffsetLeftToNode = (node: HTMLElement | null, body: HTMLElement | null) => _getOffsetToNode(node, body, 'offsetLeft');
 
 /**
  * Smart scroll to the node, uses scrollTo method or scrollTop|scrollLeft
  */
-export const scrollTo = (node: HTMLElement, { top = 0, left = 0, ...opts } = {}) => {
+export const scrollTo = (node: HTMLElement | null, { top = 0, left = 0, ...opts } = {}) => {
+  if (!node) {
+    return;
+  }
+
   if (node.scrollTo) {
     node.scrollTo({ top, left, ...opts });
   } else {

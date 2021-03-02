@@ -13,9 +13,10 @@ export function useDismissable(
 ): [boolean, () => void, (event?: MouseEvent) => void] {
   const overlay = React.useContext(OverlayContext);
   const [isOpen, setOpen, setClosed] = useEnableDisable(defaultValue);
+  const rootNode = overlay?.rootNode ?? document;
 
   const handleClose = React.useCallback(
-    (event?: MouseEvent) => {
+    (event?: Event) => {
       if (event?.defaultPrevented) return;
       if (ref?.current?.contains?.(event?.target as Element)) {
         return;
@@ -32,7 +33,7 @@ export function useDismissable(
     [onClose, autoDismiss, overlay?.setHandler]
   );
 
-  const removeRootListener = React.useCallback(() => document.removeEventListener('click', handleClose), [handleClose]);
+  const removeRootListener = React.useCallback(() => rootNode.removeEventListener('click', handleClose), [rootNode, handleClose]);
 
   const handleOpen = React.useCallback(() => {
     if (autoDismiss && !overlay?.canOpen()) {
@@ -55,7 +56,7 @@ export function useDismissable(
 
   React.useEffect(() => {
     if (isOpen) {
-      document.addEventListener('click', handleClose);
+      rootNode.addEventListener('click', handleClose);
 
       return () => {
         if (autoDismiss) {
@@ -69,7 +70,7 @@ export function useDismissable(
     removeRootListener();
 
     return undefined;
-  }, [isOpen]);
+  }, [isOpen, rootNode]);
 
   return [isOpen, onToggle, handleClose];
 }

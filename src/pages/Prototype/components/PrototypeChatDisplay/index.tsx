@@ -60,6 +60,12 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
     scrollToBottom();
   }, [messages.length, interactions]);
 
+  React.useEffect(() => {
+    if (isLoading) {
+      scrollToBottom();
+    }
+  }, [isLoading]);
+
   return (
     <OutterChatContainer>
       <InnerChatContainer onScroll={onScrollHandler} ref={chatScrollRef} atTop={atTop}>
@@ -71,9 +77,9 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
           isMobile={isMobile}
           messages={messages}
           isLoading={isLoading}
+          showPadding={showPadding}
           bottomScrollRef={scrollRef}
           hideSessionMessages={hideSessionMessages}
-          showPadding={showPadding}
         />
         {children}
       </InnerChatContainer>

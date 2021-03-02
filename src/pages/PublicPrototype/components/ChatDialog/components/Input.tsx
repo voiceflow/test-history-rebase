@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Flex } from '@/components/Box';
 import Input, { InputVariant } from '@/components/Input';
-import { withEnterPress } from '@/utils/dom';
+import { swallowEvent, withEnterPress } from '@/utils/dom';
 
 export type UserInputProps = {
   value: string;
@@ -16,23 +16,22 @@ export type UserInputProps = {
 
 const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, isIdle, testEnded, isMobile, onStart }) => (
   // mobile browsers will zoom and make css look bad if font-size is less than 16px
-  <Flex flex={2} fontSize={isMobile ? 16 : 15} maxWidth={isMobile ? 130 : '100%'} onClick={onStart}>
+  <Flex flex={2} fontSize={isMobile ? 16 : 15} maxWidth={isMobile ? 130 : '100%'} onClick={() => isIdle && onStart()}>
     <Input
       key={String(!isIdle)}
       value={value}
+      fullWidth
       variant={InputVariant.INLINE}
       onChange={({ currentTarget }) => onChange(currentTarget.value)}
       disabled={isIdle || testEnded}
       // eslint-disable-next-line jsx-a11y/no-autofocus
       autoFocus={!isIdle || testEnded}
       noOverflow
-      onKeyPress={withEnterPress(onEnterPress)}
+      onKeyPress={withEnterPress(swallowEvent(onEnterPress))}
       placeholder={testEnded ? 'This conversation has ended' : 'Type a message...'}
       // keeps virtual keyboard on mobile view open
       {...(isMobile && {
-        onBlur: ({ target }) => {
-          target.focus();
-        },
+        onBlur: ({ target }) => target.focus(),
       })}
     />
   </Flex>

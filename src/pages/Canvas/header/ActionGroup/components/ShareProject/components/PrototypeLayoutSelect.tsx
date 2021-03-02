@@ -76,11 +76,12 @@ const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ 
         )}
         border="1px solid #d4d9e6"
         placement="bottom-start"
+        autoDismiss
         text={
           <PrototypeLayoutItem
+            src={OPTION_DETAILS[localLayout].activeImg}
             title={OPTION_DETAILS[localLayout].title}
             description={OPTION_DETAILS[localLayout].description}
-            src={OPTION_DETAILS[localLayout].activeImg}
           />
         }
       />

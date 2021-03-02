@@ -19,6 +19,7 @@ const Container = styled.div<{ hasInteractions: boolean }>`
     css`
       background-image: linear-gradient(to bottom, rgba(253, 253, 253, 0), rgba(253, 253, 253, 0.29) 28%, #fdfdfd 85%);
     `}
+
   & > span {
     margin: 5px 5px 0 5px;
   }
@@ -29,7 +30,7 @@ const InnerContainer = styled(SimpleBar)`
 `;
 
 const Chip = styled(FadeLeftContainer)`
-  ${transition()};
+  ${transition('color', 'background')};
   border-radius: 25px;
   box-shadow: 0 1px 1px 0 rgba(17, 49, 96, 0.06);
   border: solid 1px rgba(93, 157, 245, 0.4);

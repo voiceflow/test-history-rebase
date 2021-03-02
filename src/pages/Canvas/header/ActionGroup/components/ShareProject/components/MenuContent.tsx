@@ -6,7 +6,7 @@ import Box from '@/components/Box';
 // import SvgIcon from '@/components/SvgIcon';
 import { Link } from '@/components/Text';
 // import { ModalType } from '@/constants';
-import { ScrollContextProvider } from '@/contexts';
+import { OverlayProvider, ScrollContextProvider } from '@/contexts';
 // import { useModals } from '@/hooks';
 import { useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
 import { useToggle } from '@/hooks/toggle';
@@ -18,33 +18,38 @@ import PrototypeLayoutSelect from './PrototypeLayoutSelect';
 
 const MenuContent: React.FC = () => {
   const [isExpanded] = useToggle(false);
+  const [contentNode, setContentNode] = React.useState<HTMLDivElement | null>(null);
   // const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
 
-  const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
-
-  const [onScroll, isHeaderShadowShown]: any = useScrollShadows(bodyRef, [isExpanded]);
+  const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
+  const [onScroll, isHeaderShadowShown] = useScrollShadows(bodyRef, [isExpanded]);
 
   //  TODO: enable commented code after initial release
 
   return (
     <ScrollContextProvider value={scrollHelpers}>
-      <MenuContentHeader scrolling={!!isHeaderShadowShown}>
-        <Header marginBottom={12}>Share Assistant with Testers</Header>
-        <Description fontSize={15} lineHeight="normal">
-          <span>Share a testable version of your project in the browser on web or mobile. </span>
-          <Link href="https://docs.voiceflow.com/#/quickstart/testable-links">Learn More</Link>
-        </Description>
-      </MenuContentHeader>
-      {/* TODO: change height back to 215px */}
-      <div ref={bodyRef} onScroll={onScroll} style={{ overflowX: 'hidden', overflowY: 'auto', height: '122px' }}>
-        <Box ref={innerRef} pl={32}>
-          <Box>
-            <Header secondary marginBottom={12}>
-              Test Type
-            </Header>
-            <PrototypeLayoutSelect />
-          </Box>
-          {/* <UncontrolledSection
+      <div ref={setContentNode}>
+        <OverlayProvider rootNode={contentNode || undefined}>
+          <MenuContentHeader scrolling={!!isHeaderShadowShown}>
+            <Header marginBottom={12}>Share Assistant with Testers</Header>
+
+            <Description fontSize={15} lineHeight="normal">
+              <span>Share a testable version of your project in the browser on web or mobile. </span>
+              <Link href="https://docs.voiceflow.com/#/quickstart/testable-links">Learn More</Link>
+            </Description>
+          </MenuContentHeader>
+
+          {/* TODO: change height back to 215px */}
+          <div ref={bodyRef} onScroll={onScroll} style={{ overflowX: 'hidden', overflowY: 'auto', height: '122px' }}>
+            <Box ref={innerRef} pl={32}>
+              <Box>
+                <Header secondary marginBottom={12}>
+                  Test Type
+                </Header>
+
+                <PrototypeLayoutSelect />
+              </Box>
+              {/* <UncontrolledSection
             nestedIntend
             header="Appearance and Branding"
             collapseVariant={SectionToggleVariant.ARROW}
@@ -56,9 +61,9 @@ const MenuContent: React.FC = () => {
             </Box>
           </UncontrolledSection>
           <Divider style={{ marginTop: 0, marginBottom: '32px' }} /> */}
-        </Box>
-      </div>
-      {/* <Box>
+            </Box>
+          </div>
+          {/* <Box>
         <Flex pt={15} pr={32} pb={15} pl={32} borderTop="1px solid #efefef">
           <SvgIcon icon="upgrade" color={theme.colors.green} />
           <Text fontSize={13} ml={16} color={theme.colors.secondary} mr={5}>
@@ -69,6 +74,8 @@ const MenuContent: React.FC = () => {
           </ClickableText>
         </Flex>
       </Box> */}
+        </OverlayProvider>
+      </div>
     </ScrollContextProvider>
   );
 };

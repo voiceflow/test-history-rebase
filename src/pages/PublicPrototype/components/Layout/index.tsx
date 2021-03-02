@@ -35,7 +35,11 @@ const Layout: React.FC<LayoutProps> = ({ children, isVisuals, isListening, rende
   const [isMobileSize, toggleIsMobileSize] = useToggle(window.innerWidth <= MAX_MOBILE_WIDTH);
   const [isFullScreen, toggleFullScreen] = useToggle(false);
 
-  useHotKeys(Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE, () => toggleFullScreen());
+  const isMobile = isMobileSize || isMobileDevice;
+  const isDesktopVisualsScreen = isVisuals && !isMobile && splashScreenPassed;
+
+  useHotKeys(Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN, () => toggleFullScreen(false), { disable: !isDesktopVisualsScreen });
+  useHotKeys(Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE, () => toggleFullScreen(), { disable: !isDesktopVisualsScreen });
 
   useSetup(() => {
     const onResize = _throttle(() => toggleIsMobileSize(window.innerWidth <= MAX_MOBILE_WIDTH), 100);
@@ -48,8 +52,6 @@ const Layout: React.FC<LayoutProps> = ({ children, isVisuals, isListening, rende
 
     return () => window.removeEventListener('resize', onResize);
   });
-
-  const isMobile = isMobileSize || isMobileDevice;
 
   const rendererOptions: RendererOptions = {
     isMobile,

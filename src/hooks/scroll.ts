@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useRef } from 'react';
+import React from 'react';
 
 import { ScrollContext } from '@/contexts';
 import { getOffsetLeftToNode, getOffsetToNode, scrollTo, setScrollbarOffset } from '@/utils/dom';
@@ -6,29 +6,33 @@ import { xnor, xor } from '@/utils/logic';
 
 import { useToggle } from './toggle';
 
-export const useScrollHelpers = ({ enableScrollbarOffset } = {}) => {
-  const bodyRef = useRef(null);
-  const innerRef = useRef(null);
+export const useScrollHelpers = <B extends HTMLElement, I extends HTMLElement>({
+  enableScrollbarOffset,
+}: { enableScrollbarOffset?: boolean } = {}) => {
+  const bodyRef = React.useRef<B>(null);
+  const innerRef = React.useRef<I>(null);
 
-  const scrollHelpers = useRef({
-    scrollToNode(node, padding = 0) {
+  const scrollHelpers = React.useRef({
+    scrollToNode(node: HTMLElement, padding = 0) {
       const offset = getOffsetToNode(node, bodyRef.current);
 
       scrollTo(bodyRef.current, { top: offset - padding });
     },
 
     setScrollBarOffset() {
-      enableScrollbarOffset && requestAnimationFrame(() => setScrollbarOffset(bodyRef.current, innerRef.current));
+      if (enableScrollbarOffset) {
+        requestAnimationFrame(() => setScrollbarOffset(bodyRef.current, innerRef.current));
+      }
     },
 
-    scrollHorizontalToNode(node, padding = 0) {
+    scrollHorizontalToNode(node: HTMLElement, padding = 0) {
       const offset = getOffsetLeftToNode(node, bodyRef.current);
 
       scrollTo(bodyRef.current, { left: offset - padding });
     },
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     scrollHelpers.current.setScrollBarOffset();
   });
 
@@ -39,12 +43,16 @@ export const useScrollHelpers = ({ enableScrollbarOffset } = {}) => {
   };
 };
 
-export const useScrollContext = () => useContext(ScrollContext);
+export const useScrollContext = () => React.useContext(ScrollContext);
 
-export const useHorizontalScrollToNode = (ref, condition, recallEffectFields) => {
-  const { scrollHorizontalToNode } = useContext(ScrollContext);
+export const useHorizontalScrollToNode = <T extends HTMLElement>(
+  ref: React.RefObject<T>,
+  condition?: boolean,
+  recallEffectFields: unknown[] = []
+) => {
+  const { scrollHorizontalToNode } = React.useContext(ScrollContext)!;
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!condition || !ref.current) {
       return;
     }
@@ -55,11 +63,11 @@ export const useHorizontalScrollToNode = (ref, condition, recallEffectFields) =>
   return scrollHorizontalToNode;
 };
 
-export const useScrollShadows = (bodyRef, updateByProps = []) => {
+export const useScrollShadows = <T extends HTMLElement>(bodyRef: React.RefObject<T>, updateByProps: unknown[] = []) => {
   const [isHeaderShadowShown, toggleHeaderShadowShown] = useToggle(false);
   const [isFooterShadowShown, toggleFooterShadowShown] = useToggle(false);
 
-  const onScroll = useCallback(() => {
+  const onScroll = React.useCallback(() => {
     const aRef = requestAnimationFrame(() => {
       if (!bodyRef.current) {
         return;
@@ -69,7 +77,7 @@ export const useScrollShadows = (bodyRef, updateByProps = []) => {
         current: { scrollTop, clientHeight, scrollHeight },
       } = bodyRef;
 
-      if (xor(scrollTop, isHeaderShadowShown)) {
+      if (xor(!!scrollTop, isHeaderShadowShown)) {
         toggleHeaderShadowShown();
       }
 
@@ -84,7 +92,7 @@ export const useScrollShadows = (bodyRef, updateByProps = []) => {
     return () => cancelAnimationFrame(aRef);
   }, [isHeaderShadowShown, isFooterShadowShown]);
 
-  useEffect(onScroll, updateByProps);
+  React.useEffect(onScroll, updateByProps);
 
-  return [onScroll, isHeaderShadowShown, isFooterShadowShown];
+  return [onScroll, isHeaderShadowShown, isFooterShadowShown] as const;
 };

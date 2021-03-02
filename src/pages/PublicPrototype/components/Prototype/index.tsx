@@ -4,7 +4,7 @@ import * as PrototypeDuck from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useCache, useCanASR, useDidUpdateEffect, useSpeechRecognition, useTeardown } from '@/hooks';
+import { useCanASR, useDidUpdateEffect, useSpeechRecognition, useTeardown } from '@/hooks';
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPrototype } from '@/pages/Prototype/hooks';
@@ -54,15 +54,13 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
     isMicrophonePermissionGranted,
   } = useSpeechRecognition({ locale, onTranscript: onInteraction, askOnSetup: isVoicePrototype });
 
-  const cache = useCache({ input });
-
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
   const isIdle = status === PrototypeDuck.PrototypeStatus.IDLE;
   const isFinished = status === PrototypeDuck.PrototypeStatus.ENDED;
 
-  const sendInteraction = (customInput?: string) => {
-    onInteraction(customInput || cache.current.input);
+  const sendInteraction = (customInput: string) => {
+    onInteraction(customInput);
     setInput('');
   };
 
@@ -136,7 +134,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
           <Visuals isMobile={isMobile} isFullScreen={isFullScreen} onStopListening={onStopListening} onStartListening={onStartListening} />
         ) : (
           <ChatDialog
-            onTranscript={onInteraction}
             locale={locale}
             input={input}
             onStart={startPrototype}

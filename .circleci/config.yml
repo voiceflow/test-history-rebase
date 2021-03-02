@@ -13,6 +13,23 @@ defaults:
         ignore: /.*/
       tags:
         only: /^v[0-9]*(\.[0-9]*)*$/
+
+  ignore_dev_env_autorebase_filters: &ignore_dev_env_autorebase_filters
+    branches:
+      ignore:
+        - /rebase-pull-request-.*/
+        - /cherry-pick-rebase-pull-request-.*/
+        - /env-.*/
+
+  ignore_dev_env_autorebase_staging_filters:
+    &ignore_dev_env_autorebase_staging_filters
+    branches:
+      ignore:
+        - /rebase-pull-request-.*/
+        - /cherry-pick-rebase-pull-request-.*/
+        - /env-.*/
+        - staging
+
   slack-fail-post-step: &slack-fail-post-step
     post-steps:
       - vfcommon/notify_slack:
@@ -304,9 +321,8 @@ workflows:
           <<: *slack-fail-post-step
           context: dev-test
           filters:
-            branches:
-              ignore:
-                - /env-.*/
+            <<: *ignore_dev_env_autorebase_filters
+
       - build-deploy-admin-image:
           context: dev-test
           requires:
@@ -322,9 +338,8 @@ workflows:
           <<: *slack-fail-post-step
           context: dev-test
           filters:
-            branches:
-              ignore:
-                - /env-.*/
+            <<: *ignore_dev_env_autorebase_filters
+
       - build-deploy-storybook-image:
           context: dev-test
           requires:
@@ -341,37 +356,29 @@ workflows:
           <<: *slack-fail-post-step
           context: dev-test
           filters:
-            branches:
-              ignore:
-                - /env-.*/
-                - staging
+            <<: *ignore_dev_env_autorebase_staging_filters
+
       - test:
           <<: *slack-fail-post-step
           context: dev-test
           filters:
-            branches:
-              ignore:
-                - /env-.*/
-                - staging
+            <<: *ignore_dev_env_autorebase_staging_filters
+
       - vfcommon/test_e2e:
           github_username: GITHUB_USERNAME
           github_token: GITHUB_READ_TOKEN
           creator_app_commit: CIRCLE_SHA1
           <<: *slack-fail-post-step
           filters:
-            branches:
-              ignore:
-                - /env-.*/
-                - staging
+            <<: *ignore_dev_env_autorebase_staging_filters
+
       - build-app:
           <<: *slack-fail-post-step
           context: dev-test
           strict: true
           filters:
-            branches:
-              ignore:
-                - /env-.*/
-                - staging
+            <<: *ignore_dev_env_autorebase_staging_filters
+
       - vfcommon/release:
           <<: *slack-fail-post-step
           context: dev-test

@@ -1,6 +1,7 @@
 import { Voice } from '@voiceflow/alexa-types';
 import { DiagramNode as DBNode, Port as DBPort } from '@voiceflow/api-sdk';
 import { NoMatches, Prompt } from '@voiceflow/general-types';
+import cuid from 'cuid';
 
 import { createAdapter, createSimpleAdapter } from '@/client/adapters/utils';
 import { DialogType, RepromptType } from '@/constants';
@@ -35,8 +36,8 @@ export const repromptAdapter = createAdapter<Prompt<any>, NodeData.Reprompt>(
 export const noMatchRepromptAdapter = createAdapter<Prompt<any>, SpeakData>(
   (reprompt) =>
     reprompt.voice === Voice.AUDIO
-      ? { url: reprompt.content, type: DialogType.AUDIO }
-      : { type: DialogType.VOICE, voice: reprompt.voice, content: reprompt.content },
+      ? { url: reprompt.content, type: DialogType.AUDIO, id: cuid() }
+      : { type: DialogType.VOICE, voice: reprompt.voice, content: reprompt.content, id: cuid() },
   (reprompt) => ({
     voice: reprompt.type === DialogType.AUDIO ? Voice.AUDIO : (reprompt.voice as Voice | undefined) ?? Voice.ALEXA,
     content: reprompt.type === DialogType.AUDIO ? reprompt.url : reprompt.content,

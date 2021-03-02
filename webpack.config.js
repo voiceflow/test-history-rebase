@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved, global-require */
+/* eslint-disable no-process-env, import/no-unresolved, global-require */
 require('ts-node/register/transpile-only');
 
 const dotenv = require('dotenv');
@@ -8,13 +8,13 @@ const { action, env, prod } = require('webpack-nano/argv');
 
 process.env.NODE_ENV = prod ? 'production' : 'development';
 
-dotenv.config();
-
 const environment = env || process.env.VF_APP_BUILD_ENV || 'local';
 const envFile = path.resolve(process.cwd(), `.env${environment ? `.${environment}` : ''}`);
 if (fs.existsSync(envFile)) {
   dotenv.config({ path: envFile });
 }
+
+dotenv.config();
 
 module.exports = () => {
   switch (action) {

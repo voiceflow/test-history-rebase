@@ -73,7 +73,7 @@ const SSOLogin: React.FC<SSOLoginProps & ConnectedSSOLoginProps> = ({ light, cou
           <div className="col-1">
             <img src="/error.svg" alt="" />
           </div>
-          <div className="col-11">An unexpected error occurred. Please try again or use a different sign up method.</div>
+          <div className="col-11">An unexpected error occurred: {authError}</div>
         </div>
       )}
     </SocialLoginContainer>

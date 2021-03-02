@@ -154,7 +154,9 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
               {(isLink || status) && <StatusContainer>{isLink ? <SvgIcon icon="arrowRight" size={10} /> : status}</StatusContainer>}
               {!!count && Number.isInteger(count) && <NumberContainer>{count}</NumberContainer>}
               {suffix && <FixNode fixNode={suffix} color="#becedc" />}
-              {collapseVariant && <CollapseTrigger onToggle={clickHandler ? noop : toggle} isCollapsed={isCollapsed} variant={collapseVariant} />}
+              {collapseVariant && (
+                <CollapseTrigger disabled={disabled} onToggle={clickHandler ? noop : toggle} isCollapsed={isCollapsed} variant={collapseVariant} />
+              )}
             </StatusContent>
           )}
         </Header>

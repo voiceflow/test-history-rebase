@@ -28,10 +28,10 @@ const PrototypeEnded: React.FC<PrototypeEndedProps> = ({ messages }) => {
 
   return (
     <>
-      <Box textAlign="center" fontSize={13} pt={8}>
+      <Divider isLast={true}>Session ended</Divider>
+      <Box textAlign="center" fontSize={13}>
         {reason}
       </Box>
-      <Divider isLast={true}>Session ended</Divider>
     </>
   );
 };

@@ -17,6 +17,7 @@ import {
   ff_ownerRole,
   ff_wavenetVoices,
   ga,
+  host,
   intercom,
   logFilter,
   logLevel,
@@ -73,7 +74,7 @@ export const ENV = {
   FF_ASR_BYPASS: ff_asrBypass && 'true',
   FF_NATO_ACPO: ff_natoApco && 'true',
 
-  API_HOST: 'localhost',
+  API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',
   MAINTENANCE_STATUS_SOURCE: '',
   ...EXTRACTED_ENV,

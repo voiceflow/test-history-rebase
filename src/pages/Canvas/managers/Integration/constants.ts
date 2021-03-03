@@ -31,6 +31,12 @@ const EMPTY_KEY_VALUE_ITEM = { key: '', val: '' };
 
 export const DEFAULT_DATA: Record<IntegrationType, NodeData.Integration> = {
   [IntegrationType.ZAPIER]: {
+    user: {},
+    value: '',
+    selectedAction: ZapierActionType.START_A_ZAP,
+    selectedIntegration: IntegrationType.ZAPIER,
+  },
+  [IntegrationType.CUSTOM_API]: {
     url: '',
     body: [EMPTY_KEY_VALUE_ITEM],
     headers: [EMPTY_KEY_VALUE_ITEM],
@@ -40,12 +46,6 @@ export const DEFAULT_DATA: Record<IntegrationType, NodeData.Integration> = {
     bodyInputType: APIBodyType.FORM_DATA,
     selectedAction: APIActionType.GET,
     selectedIntegration: IntegrationType.CUSTOM_API,
-  },
-  [IntegrationType.CUSTOM_API]: {
-    user: {},
-    value: '',
-    selectedAction: ZapierActionType.START_A_ZAP,
-    selectedIntegration: IntegrationType.ZAPIER,
   },
   [IntegrationType.GOOGLE_SHEETS]: {
     user: {},

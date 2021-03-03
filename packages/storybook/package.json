@@ -10,7 +10,8 @@
     "@storybook/source-loader": "^6.1.15"
   },
   "devDependencies": {
-    "webpack": "^4.46.0"
+    "webpack": "^4.46.0",
+    "nyc": "^15.1.0"
   },
   "license": "MIT",
   "main": "index.js",

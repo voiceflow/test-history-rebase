@@ -90,6 +90,8 @@ jobs:
       - checkout
       - vfcommon/install_node_modules:
           avoid_post_install_scripts: false
+      - vfcommon/install_node_modules:
+          avoid_post_install_scripts: false
           working_directory: ~/voiceflow/packages/storybook
           yarn_lock_restore_cache_directory: ~/voiceflow/packages/storybook
       - run:

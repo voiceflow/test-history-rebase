@@ -2,6 +2,7 @@ import { Chip } from '@voiceflow/general-types';
 import React from 'react';
 import { createSelector } from 'reselect';
 
+import Badge from '@/components/Badge';
 import Box from '@/components/Box';
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
 import ListManager from '@/components/ListManager';
@@ -25,6 +26,7 @@ const ChipForm: React.FC<ConnectedChipFormProps> = ({ focus, chips }) => {
   const inputRef = React.useRef();
   const updateData = useUpdateData(focus.target || undefined);
   const updateChips = React.useCallback((chips) => updateData({ chips }), [updateData]);
+  const [isEmpty, updateIsEmpty] = React.useState(true);
 
   if (!chips) return null;
 
@@ -42,6 +44,14 @@ const ChipForm: React.FC<ConnectedChipFormProps> = ({ focus, chips }) => {
                 placeholder="Add suggestion chip"
                 value={value?.label}
                 onBlur={variableInputToChip(onChange)}
+                onEmpty={updateIsEmpty}
+                rightAction={
+                  !isEmpty && (
+                    <Badge slide onClick={() => variableInputToChip(onAdd)((inputRef as any).current.getCurrentValue())}>
+                      Enter
+                    </Badge>
+                  )
+                }
                 onEnterPress={variableInputToChip(onAdd)}
               />
             )}

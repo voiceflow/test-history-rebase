@@ -47,8 +47,8 @@ export const PLATFORM_META: Record<PlatformType, PlatformMetaType> = {
     company: '',
     localesText: 'Language',
     localesDescription: GeneralLanguage,
-    icon: 'speak',
-    iconColor: '#6E849A',
+    icon: 'inFlow',
+    iconColor: '#279745',
     platformAppType: 'Assistant',
   },
 };

@@ -76,6 +76,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     workspaceId: '',
     justCreatingWorkspace: false,
     hasFixedPeriod: false,
+    hasWorkspaces: false,
   },
 });
 
@@ -167,6 +168,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     justCreatingWorkspace: !isLoginFlow,
     hasFixedPeriod,
     usedSignupCoupon: false,
+    hasWorkspaces,
   });
 
   const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests, usedSignupCoupon } = state;
@@ -225,6 +227,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
 
   const handlePayment = async (workspaceID: string, source: any) => {
     const { plan, period, couponCode, seats } = paymentMeta;
+
     await client.workspace.checkout(workspaceID, {
       plan,
       seats,

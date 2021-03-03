@@ -5,17 +5,18 @@ import SvgIcon from '@/components/SvgIcon';
 import { ChannelType } from '@/constants';
 import ChannelSelect from '@/pages/NewProject/Steps/ChannelSelect';
 
+import { StepID } from '../../constants';
 import { OnboardingContext } from '../../context';
 import { DocsLink } from './components';
 
 const SelectChannel: React.FC = () => {
-  const { actions } = React.useContext(OnboardingContext);
+  const { state, actions } = React.useContext(OnboardingContext);
 
   const onContinue = (channel: ChannelType | null) => {
     if (!channel) return;
 
     actions.setSelectChannelMeta({ channel });
-    actions.stepForward(null);
+    actions.stepForward(state.justCreatingWorkspace && !state.hasWorkspaces ? null : StepID.PAYMENT);
   };
 
   return (

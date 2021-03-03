@@ -59,6 +59,7 @@ export type OnboardingContextState = {
   justCreatingWorkspace: boolean;
   hasFixedPeriod: boolean;
   usedSignupCoupon?: boolean;
+  hasWorkspaces?: boolean;
 };
 
 export type OnboardingContextActions = {

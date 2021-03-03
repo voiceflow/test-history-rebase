@@ -15,7 +15,7 @@ import { getError, withPlaceholderCollaborators } from './utils';
 
 const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
   const {
-    state: { addCollaboratorMeta, sendingRequests, justCreatingWorkspace },
+    state: { addCollaboratorMeta, sendingRequests },
     actions: { setAddCollaboratorMeta, stepForward },
   } = React.useContext(OnboardingContext);
 
@@ -43,7 +43,7 @@ const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
     setCollaborators(members);
   };
 
-  const advanceToNextStep = () => (justCreatingWorkspace ? stepForward(StepID.PAYMENT) : stepForward(StepID.SELECT_CHANNEL));
+  const advanceToNextStep = () => stepForward(StepID.SELECT_CHANNEL);
 
   const onContinue = () => {
     setAddCollaboratorMeta({ collaborators: collaborators.filter(({ email }) => !!email) });

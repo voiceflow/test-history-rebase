@@ -84,14 +84,14 @@ export const getNumberOfSteps = ({
       return 1;
     case SpecificFlowType.login_student_existing:
     case SpecificFlowType.login_creator_existing:
-      return hasPresetSeats ? 1 : 2;
+      return hasPresetSeats ? 2 : 3;
     case SpecificFlowType.create_workspace:
-      return !hasWorkspaces || IS_PRIVATE_CLOUD ? 2 : 3;
-    case SpecificFlowType.login_student_new:
+      return !hasWorkspaces || IS_PRIVATE_CLOUD ? 3 : 4;
     case SpecificFlowType.login_creator_new:
       return 5;
+    case SpecificFlowType.login_student_new:
     case SpecificFlowType.login_payment_new:
-      return 5;
+      return 6;
     case SpecificFlowType.login_vanilla_new:
       return 5;
     default:

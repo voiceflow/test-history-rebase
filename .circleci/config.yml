@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   codecov: codecov/codecov@1.1.1
-  vfcommon: voiceflow/common@0.0.68
+  vfcommon: voiceflow/common@0.0.70
   sonarcloud: sonarsource/sonarcloud@1.0.2
 
 # Reusable YAML chunks
@@ -59,7 +59,8 @@ jobs:
             - vfcommon/install_aws_cli
             - vfcommon/check_image_exists:
                 image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
-      - vfcommon/install_node_modules
+      - vfcommon/install_node_modules:
+          avoid_post_install_scripts: false
       - run:
           name: Build app, if docker container does not exist
           command: |
@@ -87,8 +88,8 @@ jobs:
     executor: vfcommon/node-executor
     steps:
       - checkout
-      - vfcommon/install_node_modules
       - vfcommon/install_node_modules:
+          avoid_post_install_scripts: false
           working_directory: ~/voiceflow/packages/storybook
           yarn_lock_restore_cache_directory: ~/voiceflow/packages/storybook
       - run:
@@ -105,7 +106,8 @@ jobs:
     executor: vfcommon/node-executor
     steps:
       - checkout
-      - vfcommon/install_node_modules
+      - vfcommon/install_node_modules:
+          avoid_post_install_scripts: false
       - run:
           name: Build admin static artifacts
           command: |

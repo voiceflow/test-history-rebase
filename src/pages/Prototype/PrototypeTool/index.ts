@@ -10,9 +10,9 @@ import TraceController, { StepDirection, TraceControllerProps } from './Trace';
 export type PrototypeToolProps = MessageControllerProps & TraceControllerProps;
 
 class PrototypeTool {
-  private props: PrototypeToolProps;
+  public audio: AudioController = new AudioController();
 
-  public audio?: AudioController;
+  private props: PrototypeToolProps;
 
   private trace?: TraceController;
 
@@ -37,7 +37,8 @@ class PrototypeTool {
     this.trace?.stop();
     this.timeout?.clearAll();
 
-    this.audio = undefined;
+    this.audio = new AudioController();
+
     this.trace = undefined;
     this.message = undefined;
     this.timeout = undefined;
@@ -72,8 +73,6 @@ class PrototypeTool {
   }
 
   private createController() {
-    this.audio = new AudioController();
-
     this.timeout = new TimeoutController();
 
     this.message = new MessageController({

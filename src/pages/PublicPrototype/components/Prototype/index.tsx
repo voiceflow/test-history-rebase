@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { isIOS } from '@/config';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -17,6 +18,7 @@ import Footer from '../Footer';
 import Layout from '../Layout';
 import SplashScreen from '../SplashScreen';
 import Visuals from '../Visuals';
+import fakeAudio from './fakeAudio';
 
 type PrototypeProps = {
   settings: PrototypeDuck.PrototypeSettings;
@@ -31,7 +33,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
 
   const isVisuals = settings.layout === PrototypeDuck.PrototypeLayout.VOICE_VISUALS;
 
-  const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay } = usePrototype({
+  const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audio } = usePrototype({
     debug: false,
     isPublic: true,
     waitVisuals: isVisuals,
@@ -71,6 +73,14 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
 
   const onMute = () => updatePrototype({ muted: !isMuted });
 
+  const onStart = () => {
+    if (isIOS) {
+      audio.play(fakeAudio);
+    }
+
+    startPrototype();
+  };
+
   useTeardown(() => {
     resetPrototype();
   }, []);
@@ -95,7 +105,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
       renderSplashScreen={({ isMobile }) => (
         <SplashScreen
           logoURL={settings.branchImage}
-          onStart={startPrototype}
+          onStart={onStart}
           colorScheme={settings.brandColor}
           isMobile={isMobile}
           isVisuals={isVisuals}
@@ -136,7 +146,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
           <ChatDialog
             locale={locale}
             input={input}
-            onStart={startPrototype}
+            onStart={onStart}
             color={settings.brandColor}
             layout={settings.layout}
             onMute={onMute}

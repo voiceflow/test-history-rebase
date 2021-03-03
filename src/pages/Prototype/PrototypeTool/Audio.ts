@@ -1,3 +1,5 @@
+import { isIOS } from '@/config';
+
 const SOUND_BANK_PREFIX = 'soundbank://soundlibrary/';
 const SOUND_BANK_MIRROR = 'https://d3qhmae9zx9eb.cloudfront.net/';
 
@@ -100,7 +102,10 @@ class AudioController {
     this.audio.onerror = null;
     this.audio.loop = false;
 
-    this.audio = new TAudio();
+    // do not recreate an audio on iOS, since the first message will not be played
+    if (!isIOS) {
+      this.audio = new TAudio();
+    }
   }
 }
 

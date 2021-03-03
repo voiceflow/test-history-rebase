@@ -40,6 +40,7 @@ export const isMobile = DEVICE_INFO.platform === 'mobile';
 export const isTablet = DEVICE_INFO.platform === 'tablet';
 
 export const isMac = DEVICE_INFO.os === 'macOS';
+export const isIOS = DEVICE_INFO.os === 'iOS';
 export const isWindows = DEVICE_INFO.os === 'Windows';
 export const isChromeOS = DEVICE_INFO.os === 'Chrome OS';
 

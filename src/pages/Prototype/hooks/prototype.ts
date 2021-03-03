@@ -134,6 +134,7 @@ const usePrototype = ({
   }, [prototype]);
 
   return {
+    audio: prototype.audio,
     status,
     messages,
     interactions,

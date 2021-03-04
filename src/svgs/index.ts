@@ -41,6 +41,7 @@ export { default as cloudUpload } from './cloud-upload.svg';
 export { default as code } from './code.svg';
 export { default as cog } from './cog.svg';
 export { default as comment } from './comment.svg';
+export { default as commentReply } from './comment-reply.svg';
 export { default as community } from './community.svg';
 export { default as connectGoogle } from './connect-google.svg';
 export { default as creditCard } from './credit-card.svg';

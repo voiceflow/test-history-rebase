@@ -46,7 +46,7 @@ const ReplySection: React.FC<ReplySectionProps> = ({ threadID }) => {
   ) : (
     <ReplySectionContainer className={REPLY_CLASSNAME} onClick={onClick}>
       <Text color="#8da2b5">Reply</Text>
-      <SvgIcon icon="prompt" color="#becedc" />
+      <SvgIcon icon="commentReply" color="#becedc" />
     </ReplySectionContainer>
   );
 };

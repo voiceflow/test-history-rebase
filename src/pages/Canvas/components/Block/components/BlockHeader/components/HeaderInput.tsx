@@ -13,6 +13,7 @@ import {
 } from '@/pages/Canvas/constants';
 
 type HeaderInputProps = EditableTextProps & {
+  nodeID: string;
   canEdit?: boolean;
   variant: BlockVariant;
   viewOnlyMode: boolean;
@@ -51,7 +52,7 @@ const HeaderInput = styled(
     cursor: default;
   }
 
-  .${NODE_ACTIVE_CLASSNAME} & {
+  .${NODE_ACTIVE_CLASSNAME}[data-node-id="${({ nodeID }) => nodeID}"] & {
     color: ${withBlockVariantStyle((variant) => variant.activeColor)};
   }
 

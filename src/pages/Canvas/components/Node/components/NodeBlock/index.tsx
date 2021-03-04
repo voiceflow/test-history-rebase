@@ -175,6 +175,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
       )}
       {wrapElement(
         <Block
+          nodeID={nodeEntity.nodeID}
           name={name}
           isDisabled={isDisabled}
           isLocked={nodeEntity.isLocked}

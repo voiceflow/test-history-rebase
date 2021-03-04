@@ -24,6 +24,7 @@ export type BlockProps = WithOptional<BlockSectionProps, 'variant'> & {
   actions?: JSX.Element;
   lockOwner?: LockOwner | null;
   blockColor?: string;
+  nodeID: string;
   isDisabled?: boolean;
   isLocked?: boolean;
   showMergeOverlay?: boolean;
@@ -50,6 +51,7 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
     onClick,
     isDisabled,
     isLocked,
+    nodeID,
     className,
     ...props
   },
@@ -71,11 +73,11 @@ const Block: React.ForwardRefRenderFunction<BlockAPI, React.PropsWithChildren<Bl
       ref={blockAPI.ref}
     >
       {lockOwner && <User user={lockOwner} />}
-      <Section variant={variant} isDisabled={isDisabled} isLocked={isLocked} titleRef={blockAPI.titleRef} {...props}>
+      <Section nodeID={nodeID} variant={variant} isDisabled={isDisabled} isLocked={isLocked} titleRef={blockAPI.titleRef} {...props}>
         {children}
       </Section>
       {sections.map((section, index) => (
-        <Section variant={variant} isDisabled={isDisabled} {...section} key={index} />
+        <Section nodeID={nodeID} variant={variant} isDisabled={isDisabled} {...section} key={index} />
       ))}
     </Container>
   );

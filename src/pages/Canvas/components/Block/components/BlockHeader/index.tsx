@@ -14,6 +14,7 @@ export type BlockHeaderProps = {
   variant: BlockVariant;
   name?: string;
   icon?: Icon;
+  nodeID: string;
   isDisabled?: boolean;
   isLocked?: boolean;
   canEditTitle?: boolean;
@@ -22,7 +23,18 @@ export type BlockHeaderProps = {
   actions?: JSX.Element;
 };
 
-const BlockHeader: React.FC<BlockHeaderProps> = ({ name, canEditTitle, icon, updateName, variant, isDisabled, isLocked, titleRef, actions }) => {
+const BlockHeader: React.FC<BlockHeaderProps> = ({
+  name,
+  nodeID,
+  canEditTitle,
+  icon,
+  updateName,
+  variant,
+  isDisabled,
+  isLocked,
+  titleRef,
+  actions,
+}) => {
   const isEditingMode = useEditingMode();
 
   const [blockLabel, setBlockLabel] = React.useState(name ?? '');
@@ -71,6 +83,7 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({ name, canEditTitle, icon, upd
         tabIndex={-1}
         onKeyPress={withEnterPress(handleEnterPress)}
         ref={titleRef}
+        nodeID={nodeID}
       />
       <IconContainer side="right">
         {isLocked && <SvgIcon icon="lock" />}

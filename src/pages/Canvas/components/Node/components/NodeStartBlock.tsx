@@ -48,6 +48,7 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
   if (isRootDiagram) {
     return (
       <HomeStartBlock
+        nodeID={nodeEntity.nodeID}
         portID={outPortID}
         platform={platform}
         invocationName={invocationName}
@@ -59,7 +60,17 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
     );
   }
 
-  return <FlowStartBlock portID={outPortID} name={diagram?.name} commands={commands} actions={actions} lockOwner={lockOwner} ref={ref} />;
+  return (
+    <FlowStartBlock
+      nodeID={nodeEntity.nodeID}
+      portID={outPortID}
+      name={diagram?.name}
+      commands={commands}
+      actions={actions}
+      lockOwner={lockOwner}
+      ref={ref}
+    />
+  );
 };
 
 const mapStateToProps = {

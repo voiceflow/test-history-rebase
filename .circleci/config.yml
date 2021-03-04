@@ -369,8 +369,9 @@ workflows:
             <<: *ignore_dev_env_autorebase_staging_filters
 
       - vfcommon/test_e2e:
+          context: dev-test
           github_username: GITHUB_USERNAME
-          github_token: GITHUB_READ_TOKEN
+          github_token: GITHUB_TOKEN
           creator_app_commit: CIRCLE_SHA1
           <<: *slack-fail-post-step
           filters:

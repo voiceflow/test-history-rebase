@@ -6,7 +6,7 @@ import SvgIcon from '@/components/SvgIcon';
 import Text from '@/components/Text';
 import { isMobile as isMobileDevice } from '@/config';
 import * as PrototypeDuck from '@/ducks/prototype';
-import { useHotKeys, useSetup, useToggle } from '@/hooks';
+import { useHotKeys, useSetup, useToggle, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import { Container, ContentContainer, FooterContainer, VisualsBorder } from './components';
@@ -34,13 +34,23 @@ export type LayoutProps = {
 const Layout: React.FC<LayoutProps> = ({ children, isVisuals, isListening, renderSplashScreen, splashScreenPassed, renderVisualsFooter, layout }) => {
   const [isMobileSize, toggleIsMobileSize] = useToggle(window.innerWidth <= MAX_MOBILE_WIDTH);
   const [isFullScreen, toggleFullScreen] = useToggle(false);
+  const [trackingEvents] = useTrackingEvents();
 
   const isMobile = isMobileSize || isMobileDevice;
   const isDesktopVisualsScreen = isVisuals && !isMobile && splashScreenPassed;
 
+  const rendererOptions: RendererOptions = {
+    isMobile,
+    isVisuals,
+    isFullScreen,
+    toggleFullScreen,
+    splashScreenPassed,
+  };
+
   useHotKeys(Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN, () => toggleFullScreen(false), { disable: !isDesktopVisualsScreen });
   useHotKeys(Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE, () => toggleFullScreen(), { disable: !isDesktopVisualsScreen });
 
+  useSetup(() => trackingEvents.trackPrototypeShareViewSession({ layout, isMobile }));
   useSetup(() => {
     const onResize = _throttle(() => toggleIsMobileSize(window.innerWidth <= MAX_MOBILE_WIDTH), 100);
 
@@ -52,14 +62,6 @@ const Layout: React.FC<LayoutProps> = ({ children, isVisuals, isListening, rende
 
     return () => window.removeEventListener('resize', onResize);
   });
-
-  const rendererOptions: RendererOptions = {
-    isMobile,
-    isVisuals,
-    isFullScreen,
-    toggleFullScreen,
-    splashScreenPassed,
-  };
 
   return (
     <Container isMobile={isMobile} isVisuals={isVisuals} isFullScreen={isFullScreen} splashScreenPassed={splashScreenPassed}>

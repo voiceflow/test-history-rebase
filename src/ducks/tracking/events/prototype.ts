@@ -1,5 +1,5 @@
 import client from '@/client';
-import { PrototypeMode } from '@/ducks/prototype/types';
+import { PrototypeLayout, PrototypeMode } from '@/ducks/prototype/types';
 
 import { EventName } from '../constants';
 import { ProjectEventInfo } from '../types';
@@ -27,4 +27,11 @@ export const trackActiveProjectPrototypeTestStart = createProjectEventTracker<{ 
       EventName.PROJECT_PROTOTYPE_TEST_START,
       createProjectEventPayload(options, { debug: options.debug, display: options.display, mode: options.mode })
     )
+);
+
+export const trackPrototypeShareViewSession = createProjectEventTracker<{ layout: PrototypeLayout; isMobile: boolean }>((options) =>
+  client.analytics.track(
+    EventName.PROTOTYPE_SHARE_VIEW_SESSION,
+    createProjectEventPayload(options, { layout: options.layout, device: options.isMobile ? 'Mobile or Tablet' : 'Desktop' })
+  )
 );

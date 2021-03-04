@@ -33,6 +33,7 @@ export enum EventName {
   SHARE_PROTOTYPE_LINK = 'Testable Link Button',
 
   PROTOTYPE_MANUAL_NAVIGATION = 'Manual Navigation',
+  PROTOTYPE_SHARE_VIEW_SESSION = 'Share View Session',
 
   CANVAS_MENU_LOCK = 'Canvas Menu Lock',
   CANVAS_SPOTLIGHT_OPENED = 'Spotlight Opened',

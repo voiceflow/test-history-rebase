@@ -21,7 +21,7 @@ type ShareProjectProps = {
   render: boolean;
 };
 
-const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({ render, versionID, renderPrototype, layout }) => {
+const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({ render, versionID, renderPrototype }) => {
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canInviteByLink] = usePermission(Permission.INVITE_BY_LINK);
@@ -39,7 +39,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 
       copy(testableLink);
 
-      trackingEvents.trackTestableLinkCopy({ layout });
+      trackingEvents.trackTestableLinkCopy();
 
       toast.success('Link copied to clipboard');
     } else if (!render) {
@@ -71,10 +71,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
                     link={testableLink}
                     onClick={onClickPrototype}
                     isAllowed={canSharePrototype}
-                    onRenderPrototype={() => {
-                      onRenderPrototype();
-                      trackingEvents.trackTestableLinkCopy({ layout });
-                    }}
+                    onRenderPrototype={onRenderPrototype}
                   />
                 </ModalFooter>
               )}
@@ -100,7 +97,6 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 
 const mapStateToProps = {
   versionID: Skill.activeSkillIDSelector,
-  layout: Prototype.prototypeLayoutSelector,
 };
 
 const mapDispatchToProps = {

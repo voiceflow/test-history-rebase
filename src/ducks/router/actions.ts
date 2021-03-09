@@ -1,28 +1,34 @@
 import { CALL_HISTORY_METHOD, push, replace } from 'connected-react-router';
 import { generatePath } from 'react-router-dom';
 
-import { Path, RootRoute } from '@/config/routes';
+import { Path } from '@/config/routes';
 import { PlatformType } from '@/constants';
 import { Action } from '@/store/types';
+import { Struct } from '@/types';
 import * as Query from '@/utils/query';
 
 export type RouterAction = Action<typeof CALL_HISTORY_METHOD, unknown>;
 
-export const goTo = (path: string, state = null) => push(path.startsWith('/') ? path : `/${path}`, state) as RouterAction;
+export const goTo = <T extends Struct>(path: string, state: T | null = null) => push(path.startsWith('/') ? path : `/${path}`, state) as RouterAction;
 
-export const redirectTo = (path: string, state = null) => replace(path.startsWith('/') ? path : `/${path}`, state) as RouterAction;
+export const redirectTo = <T extends Struct>(path: string, state: T | null = null) =>
+  replace(path.startsWith('/') ? path : `/${path}`, state) as RouterAction;
 
 export const goToHome = () => goTo('');
 
-export const goToLogin = () => goTo(RootRoute.LOGIN);
+export const goToLogin = (search?: string) => goTo(`${Path.LOGIN}${search ?? ''}`);
+
+export const goToSignup = (search?: string) => goTo(`${Path.SIGNUP}${search ?? ''}`);
+
+export const goToAdoptSSO = (email: string) => goTo(Path.SSO_ADOPT, { email });
 
 export const goToWorkspace = (workspaceID?: string) => goTo(generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID }));
 
-export const goToDashboard = () => goTo(RootRoute.DASHBOARD);
+export const goToDashboard = () => goTo(Path.DASHBOARD);
 
-export const goToDashboardWithSearch = (search: string) => goTo(`${RootRoute.DASHBOARD}${search}`);
+export const goToDashboardWithSearch = (search: string) => goTo(`${Path.DASHBOARD}${search}`);
 
-export const goToOnboarding = () => goTo(`${RootRoute.ONBOARDING}${window.location.search}`);
+export const goToOnboarding = () => goTo(`${Path.ONBOARDING}${window.location.search}`);
 
 export const goToPrototype = (versionID: string, nodeID?: string) =>
   goTo(`${generatePath(Path.PROJECT_PROTOTYPE, { versionID })}${nodeID ? Query.stringify({ nodeID }) : ''}`);

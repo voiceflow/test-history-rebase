@@ -6,8 +6,7 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import rootReducer from '@/ducks/_root';
 import createMiddleware from '@/store/middleware';
 
-export const ReduxProvider = ({ state = {}, children }) => {
-  const history = createMemoryHistory();
+export const ReduxProvider = ({ state = {}, history = createMemoryHistory(), children }) => {
   const middleware = createMiddleware(history);
   const store = createStore(rootReducer(history), state, compose(applyMiddleware(...middleware)));
 

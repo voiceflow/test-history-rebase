@@ -12,14 +12,14 @@ import { useAsyncMountUnmount } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import * as Query from '@/utils/query';
 
-import { PublicSignupForm } from './components';
+import { SignupForm } from './components';
 
-export type SignupFormProps = RouteComponentProps & {
+export type SignupProps = RouteComponentProps & {
   promo?: boolean;
 };
 
-export const SignupForm: React.FC<ConnectedSignupFormProps & SignupFormProps> = ({ validateInvite, ...props }) => {
-  const query = Query.parse(props.location.search);
+const Signup: React.FC<ConnectedSignupFormProps & SignupProps> = ({ validateInvite, location, ...props }) => {
+  const query = Query.parse(location.search);
 
   const [isValid, setValid] = React.useState<boolean | null>(null);
 
@@ -42,7 +42,7 @@ export const SignupForm: React.FC<ConnectedSignupFormProps & SignupFormProps> = 
     if (!isValid) return <Redirect to={RootRoute.LOGIN} />;
   }
 
-  return <PublicSignupForm {...props} />;
+  return <SignupForm query={query} {...props} />;
 };
 
 const mapDispatchToProps = {
@@ -51,4 +51,4 @@ const mapDispatchToProps = {
 
 type ConnectedSignupFormProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(SignupForm) as React.FC<SignupFormProps>;
+export default connect(null, mapDispatchToProps)(Signup) as React.FC<SignupProps>;

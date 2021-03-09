@@ -6,12 +6,8 @@ export type AuthenticationContainerProps = {
 
 const AuthenticationContainer = styled.div<AuthenticationContainerProps>`
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
   align-items: center;
-  -webkit-justify-content: center;
   justify-content: center;
   height: 100%;
   -webkit-box-orient: vertical;

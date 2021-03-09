@@ -1,0 +1,94 @@
+import { getSearch } from 'connected-react-router';
+import _get from 'lodash/get';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Form, FormGroup } from 'reactstrap';
+
+import Button from '@/components/LegacyButton';
+import { toast } from '@/components/Toast';
+import { IS_PRIVATE_CLOUD } from '@/config';
+import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
+import { connect } from '@/hocs';
+import { useToggle } from '@/hooks';
+import { Query } from '@/models';
+import { ConnectedProps, MergeArguments } from '@/types';
+import { preventDefault } from '@/utils/dom';
+
+import { replaceSpaceWithPlus } from '../utils';
+import { AuthBox } from './AuthBoxes';
+import AuthenticationContainer from './AuthenticationContainer';
+import EmailInput from './EmailInput';
+import PasswordInput from './PasswordInput';
+import ShowPasswordIcon from './ShowPasswordIcon';
+
+export type LoginFormProps = {
+  query: Query.Auth;
+};
+
+export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ basicAuthLogin, goToSignup, query, children }) => {
+  const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
+  const [password, setPassword] = React.useState('');
+  const [showPassword, toggleShowPassword] = useToggle();
+
+  const loginSubmit = () =>
+    basicAuthLogin({
+      email,
+      password,
+    }).catch((error) => {
+      const errText = _get(error, ['body', 'data']) || false;
+      toast.error(errText);
+    });
+
+  return (
+    <AuthenticationContainer>
+      <AuthBox>
+        <Form onSubmit={preventDefault(loginSubmit)}>
+          <img className="auth-logo" src="/logo.png" alt="logo" />
+          <div className="auth-form-wrapper">
+            <FormGroup>
+              <EmailInput value={email} onChange={setEmail} />
+            </FormGroup>
+            <FormGroup className="passwordInput">
+              <PasswordInput value={password} onChange={setPassword} showPassword={showPassword} />
+              {password.length !== 0 && <ShowPasswordIcon showPassword={showPassword} onClick={() => toggleShowPassword()} />}
+              <Link className="forgotLink" to="/reset">
+                Forgot password?
+              </Link>
+            </FormGroup>
+            <div className="row">
+              <div className="col-7 auth__link">
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                {IS_PRIVATE_CLOUD ? <span /> : <a onClick={goToSignup}>Don't have an account?</a>}
+              </div>
+              <div className="col-5">
+                <Button isPrimary isBlock type="submit">
+                  {query.invite ? 'Join Team' : 'Sign in'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Form>
+
+        {children}
+      </AuthBox>
+    </AuthenticationContainer>
+  );
+};
+
+const mapStateToProps = {
+  search: getSearch,
+};
+
+const mapDispatchToProps = {
+  basicAuthLogin: Session.basicAuthLogin,
+  goToSignup: Router.goToSignup,
+};
+
+const mergeProps = (...[{ search }, { goToSignup }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
+  goToSignup: () => goToSignup(search),
+});
+
+type ConnectedLoginFormProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(LoginForm) as React.FC<LoginFormProps>;

@@ -42,7 +42,6 @@ export enum DragItem {
 }
 
 export enum SessionType {
-  SSO = 'sso',
   GOOGLE = 'google',
   FACEBOOK = 'facebook',
   BASIC_AUTH = 'session',

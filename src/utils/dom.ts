@@ -319,3 +319,5 @@ export const unhighlightAllText = () => {
     document.selection.empty();
   }
 };
+
+export const getTargetValue = (callback: (value: string) => void) => (event: React.ChangeEvent<HTMLInputElement>) => callback(event.target.value);

@@ -1,14 +1,19 @@
 import * as ConnectedReactRouter from 'connected-react-router';
-import { shallow } from 'enzyme/build';
+import { mount } from 'enzyme/build';
+import { createMemoryHistory } from 'history';
 import React from 'react';
+import * as ReactRedux from 'react-redux';
+import { Router } from 'react-router-dom';
 
 import client from '@/client';
 import { facebookLogin, googleLogin } from '@/ducks/session';
+import { noop } from '@/utils/functional';
 
-import { PublicSignupForm } from '../components/PublicSignupForm';
-import { LoginForm } from '../LoginForm';
+import { LoginForm } from '../components/LoginForm';
+import { SignupForm } from '../components/SignupForm';
 
 const TEST_EMAIL = 'tests@getvoiceflow.com';
+const FORM_WRAPPER_CLASS = '.auth-form-wrapper';
 
 require('dotenv').config({ path: './.env.test' });
 
@@ -16,6 +21,16 @@ jest.mock('react-ga');
 jest.mock('@/client');
 jest.mock('universal-cookie');
 jest.mock('connected-react-router');
+
+const mountWithProviders = (jsx) => {
+  const history = createMemoryHistory();
+
+  return mount(
+    <ReactRedux.Provider store={{ getState: () => ({}), subscribe: noop, dispatch: noop }}>
+      <Router history={history}>{jsx}</Router>
+    </ReactRedux.Provider>
+  );
+};
 const mockDispatch = jest.fn();
 const mockGetState = jest.fn(() => ({ router: { location: 'test location' }, session: { tabID: { value: 'foo' }, browserID: { value: 'bar' } } }));
 
@@ -29,21 +44,13 @@ afterEach(() => {
 });
 
 describe('Onboarding', () => {
-  const location = {
-    hash: '',
-    key: 'i4q8aw',
-    pathname: '/login',
-    search: '',
-  };
-  const formWrapperClass = '.auth-form-wrapper';
-
   it('creates accounts on signup', () => {
-    const app = shallow(<PublicSignupForm location={location} />);
+    const app = mountWithProviders(<SignupForm query={{}} />);
 
-    app.find(`${formWrapperClass} Input[name="name"]`).simulate('change', { target: { value: 'Voiceflow Tester' } });
-    app.find(`${formWrapperClass} Input[name="email"]`).simulate('change', { target: { value: TEST_EMAIL } });
-    app.find(`${formWrapperClass} Input[name="password"]`).simulate('change', { target: { value: 'password' } });
-    app.find(`${formWrapperClass} Button[type="submit"]`).simulate('click');
+    app.find(`${FORM_WRAPPER_CLASS} Input[name="name"]`).simulate('change', { target: { value: 'Voiceflow Tester' } });
+    app.find(`${FORM_WRAPPER_CLASS} Input[name="email"]`).simulate('change', { target: { value: TEST_EMAIL } });
+    app.find(`${FORM_WRAPPER_CLASS} Input[name="password"]`).simulate('change', { target: { value: 'password' } });
+    app.find(`${FORM_WRAPPER_CLASS} Button[type="submit"]`).simulate('click');
 
     setTimeout(() => {
       expect(app.exists('.onboarding-survey')).toBe(true);
@@ -51,24 +58,24 @@ describe('Onboarding', () => {
   });
 
   it('disallows duplicate accounts', () => {
-    const app = shallow(<PublicSignupForm location={location} />);
+    const app = mountWithProviders(<SignupForm query={{}} />);
 
-    app.find(`${formWrapperClass} Input[name="name"]`).simulate('change', { target: { value: 'Voiceflow Tester' } });
-    app.find(`${formWrapperClass} Input[name="email"]`).simulate('change', { target: { value: TEST_EMAIL } });
-    app.find(`${formWrapperClass} Input[name="password"]`).simulate('change', { target: { value: 'password' } });
-    app.find(`${formWrapperClass} Button[type="submit"]`).simulate('click');
+    app.find(`${FORM_WRAPPER_CLASS} Input[name="name"]`).simulate('change', { target: { value: 'Voiceflow Tester' } });
+    app.find(`${FORM_WRAPPER_CLASS} Input[name="email"]`).simulate('change', { target: { value: TEST_EMAIL } });
+    app.find(`${FORM_WRAPPER_CLASS} Input[name="password"]`).simulate('change', { target: { value: 'password' } });
+    app.find(`${FORM_WRAPPER_CLASS} Button[type="submit"]`).simulate('click');
 
     setTimeout(() => {
-      expect(app.exists(`${formWrapperClass} .errorContainer`)).toBe(true);
+      expect(app.exists(`${FORM_WRAPPER_CLASS} .errorContainer`)).toBe(true);
     }, 500);
   });
 
   it('onboards on first login', () => {
-    const app = shallow(<LoginForm location={location} />);
+    const app = mountWithProviders(<LoginForm query={{}} />);
 
-    app.find(`${formWrapperClass} Input[name="email"]`).simulate('change', { target: { value: TEST_EMAIL } });
-    app.find(`${formWrapperClass} Input[name="password"]`).simulate('change', { target: { value: 'password' } });
-    app.find(`${formWrapperClass} Button[type="submit"]`).simulate('click');
+    app.find(`${FORM_WRAPPER_CLASS} Input[name="email"]`).simulate('change', { target: { value: TEST_EMAIL } });
+    app.find(`${FORM_WRAPPER_CLASS} Input[name="password"]`).simulate('change', { target: { value: 'password' } });
+    app.find(`${FORM_WRAPPER_CLASS} Button[type="submit"]`).simulate('click');
 
     setTimeout(() => {
       expect(app.exists('.onboarding-survey')).toBe(true);

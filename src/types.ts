@@ -24,6 +24,8 @@ export type Eventual<T> = Promise<T> | T;
 
 export type Point = Pair<number>;
 
+export type Struct = Record<string, unknown>;
+
 export type Viewport = {
   x: number;
   y: number;
@@ -92,3 +94,8 @@ export type ConnectedProps<
 export type HOC<I extends object, O extends object> = (component: React.ComponentType<I>) => React.FC<O>;
 
 export type NonNullableRecord<T extends object> = { [K in keyof T]: NonNullable<T[K]> };
+
+export type ControlProps<T> = {
+  value: T;
+  onChange: (value: T) => void;
+};

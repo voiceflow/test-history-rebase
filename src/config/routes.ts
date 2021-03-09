@@ -16,6 +16,7 @@ export enum RootRoute {
   CANVAS = 'canvas',
   INVITE = 'invite',
   RUNTIME = 'runtime',
+  SSO = 'sso',
 }
 
 export enum LoginRoute {
@@ -25,6 +26,7 @@ export enum LoginRoute {
 
 export enum SSORoute {
   CALLBACK = 'callback',
+  ADOPT = 'adopt',
 }
 
 export enum ProjectRoute {
@@ -84,6 +86,8 @@ export const Path = {
   LOGIN: toPath(RootRoute.LOGIN),
   LOGIN_MATTEL: toPath(RootRoute.LOGIN, LoginRoute.MATTEL),
   LOGIN_SSO_CALLBACK: toPath(RootRoute.LOGIN, LoginRoute.SSO, SSORoute.CALLBACK),
+
+  SSO_ADOPT: toPath(RootRoute.SSO, SSORoute.ADOPT),
 
   SIGNUP: toPath(RootRoute.SIGNUP),
   PROMO_SIGNUP: toPath(RootRoute.SIGNUP, SignupRoute.PROMO),

@@ -34,6 +34,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
       'acceptInvite',
       'getInviteLink',
       'listAPIKeys',
+      'validateCoupon',
     ]);
   });
 
@@ -102,6 +103,18 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
       await client.updateMembers(WORKSPACE_ID, payload);
 
       expect(fetch).to.be.calledWithExactly(`${LEGACY_WORKSPACE_PATH}/${WORKSPACE_ID}/members`, payload);
+    });
+  });
+
+  describe('validateCoupon()', () => {
+    it('check if coupon is valid', async () => {
+      const couponCode = generate.id();
+      const fetch = stubFetch('api', 'get').resolves(true);
+
+      const result = await client.validateCoupon(couponCode);
+
+      expect(result).to.be.true;
+      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/coupon/${couponCode}`);
     });
   });
 });

@@ -31,17 +31,10 @@ label {
 
 .error {
   display: block !important;
-
-  /* z-index: 1000; */
-
-  /* position: absolute; */
-  display: block;
   margin-bottom: 10px;
   padding: 0.5em 1.2em;
   color: white;
   font-size: 13px;
-
-  /* min-width: 100px; */
   text-align: center;
   background: #dc3545;
   border-radius: 8px;

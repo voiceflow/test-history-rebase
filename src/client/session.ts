@@ -7,7 +7,6 @@ import { api } from './fetch';
 export const SESSION_PATH = 'session';
 
 export const SESSION_ENDPOINTS = {
-  [SessionType.SSO]: 'ssoLogin',
   [SessionType.GOOGLE]: 'googleLogin',
   [SessionType.FACEBOOK]: 'fbLogin',
   [SessionType.BASIC_AUTH]: 'session',

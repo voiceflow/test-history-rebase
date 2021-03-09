@@ -10,7 +10,6 @@ const SESSION_ENDPOINTS = {
   [SessionType.FACEBOOK]: 'fbLogin',
   [SessionType.BASIC_AUTH]: 'session',
   [SessionType.SIGN_UP]: 'user',
-  [SessionType.SSO]: 'ssoLogin',
 };
 
 const accountClient = {

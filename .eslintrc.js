@@ -74,6 +74,9 @@ module.exports = {
     {
       files: ['**/_suite.js', '*.unit.*'],
       extends: ['@voiceflow/eslint-config/mocha'],
+      rules: {
+        'no-unused-expressions': 'off',
+      },
     },
     {
       files: ['*.it.*'],

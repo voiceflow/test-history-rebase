@@ -1,30 +1,36 @@
-import axios from 'axios';
-import throttle from 'lodash/throttle';
+import { getSearch } from 'connected-react-router';
+import _throttle from 'lodash/throttle';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import { Form, FormGroup, Input } from 'reactstrap';
 
+import client from '@/client';
 import { ControlledInput } from '@/components/Input';
 import Button from '@/components/LegacyButton';
+import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
-import { ConnectedProps } from '@/types';
-import * as Query from '@/utils/query';
+import { Query } from '@/models';
+import { ConnectedProps, MergeArguments } from '@/types';
+import { preventDefault } from '@/utils/dom';
 
+import { useErrorTimeout } from '../hooks';
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationContainer';
+import EmailInput from './EmailInput';
+import ErrorMessage from './ErrorMessage';
+import PasswordInput from './PasswordInput';
 import SocialLogin from './SocialLogin';
 
-export type PublicSignupFormProps = RouteComponentProps & {
+export type SignupFormProps = {
+  query: Query.Auth;
   promo?: boolean;
 };
 
-export const PublicSignupForm: React.FC<PublicSignupFormProps & ConnectedPublicSignupFormProps> = ({ signup, history, promo, location }) => {
-  const query = Query.parse(location.search);
+export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormProps> = ({ signup, promo, query, goToLogin }) => {
   const [signupError, setSignupError] = React.useState<string | boolean | null>(null);
-  const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email) : '');
+  const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
   const [password, setPassword] = React.useState('');
   const [name, setName] = React.useState(query.name ? query.name : '');
 
@@ -35,18 +41,8 @@ export const PublicSignupForm: React.FC<PublicSignupFormProps & ConnectedPublicS
 
   const isSignupDisabled = !!coupon && !couponValid;
 
-  let timeout: NodeJS.Timeout | undefined;
-
-  const openLogin = (event: React.MouseEvent) => {
-    event.preventDefault();
-    history.push(`/login${location.search}`);
-    return false;
-  };
-
-  const signupSubmit = async (event: React.FormEvent) => {
+  const signupSubmit = async () => {
     onDisable();
-
-    event.preventDefault();
 
     if (!isDisabled) {
       await signup({
@@ -61,19 +57,17 @@ export const PublicSignupForm: React.FC<PublicSignupFormProps & ConnectedPublicS
 
       onEnable();
     }
-
-    return false;
   };
 
   const verifyCoupon = React.useCallback(
-    throttle<(input?: string) => Promise<void>>(async (input) => {
+    _throttle<(input?: string) => Promise<void>>(async (input) => {
       setCouponValid(false);
 
       if (!input) return;
 
-      const { data } = await axios.get(`/workspaces/coupon/${input}`);
+      const isValid = await client.workspace.validateCoupon(input);
 
-      if (data) {
+      if (isValid) {
         setCouponValid(true);
       }
     }, 1000),
@@ -88,17 +82,7 @@ export const PublicSignupForm: React.FC<PublicSignupFormProps & ConnectedPublicS
     [verifyCoupon]
   );
 
-  React.useEffect(() => {
-    timeout = setTimeout(() => {
-      setSignupError(false);
-    }, 5000);
-
-    return () => {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-    };
-  });
+  useErrorTimeout(!!signupError, () => setSignupError(false));
 
   React.useEffect(() => {
     if (promo && query.coupon) {
@@ -109,7 +93,7 @@ export const PublicSignupForm: React.FC<PublicSignupFormProps & ConnectedPublicS
   return (
     <AuthenticationContainer dark>
       <AuthBox>
-        <Form onSubmit={signupSubmit}>
+        <Form onSubmit={preventDefault(signupSubmit)}>
           <img className="auth-logo" src="/logo-white.svg" alt="logo" />
           <div className="auth-form-wrapper">
             <FormGroup>
@@ -127,28 +111,10 @@ export const PublicSignupForm: React.FC<PublicSignupFormProps & ConnectedPublicS
               />
             </FormGroup>
             <FormGroup>
-              <Input
-                className="form-bg"
-                type="email"
-                name="email"
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email address"
-                required
-                minLength={6}
-                value={email}
-              />
+              <EmailInput value={email} onChange={setEmail} placeholder="Email address" />
             </FormGroup>
             <FormGroup>
-              <Input
-                className="form-bg"
-                type="password"
-                name="password"
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-                minLength={8}
-                value={password}
-              />
+              <PasswordInput value={password} onChange={setPassword} />
             </FormGroup>
             {promo && (
               <FormGroup>
@@ -166,7 +132,7 @@ export const PublicSignupForm: React.FC<PublicSignupFormProps & ConnectedPublicS
             <div className="row">
               <div className="col-6 auth__link">
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a onClick={openLogin}>Have an account?</a>
+                <a onClick={goToLogin}>Have an account?</a>
               </div>
               <div className="col-6">
                 <Button isPrimary isLarge isBlock type="submit" disabled={isSignupDisabled}>
@@ -179,23 +145,25 @@ export const PublicSignupForm: React.FC<PublicSignupFormProps & ConnectedPublicS
 
         <SocialLogin coupon={coupon} disabled={isSignupDisabled} />
 
-        {signupError && (
-          <div className="errorContainer row">
-            <div className="col-1">
-              <img src="/error.svg" alt="" />
-            </div>
-            <div className="col-11">{signupError}</div>
-          </div>
-        )}
+        {signupError && <ErrorMessage>{signupError}</ErrorMessage>}
       </AuthBox>
     </AuthenticationContainer>
   );
 };
 
-const mapDispatchToProps = {
-  signup: Session.signup,
+const mapStateToProps = {
+  search: getSearch,
 };
 
-type ConnectedPublicSignupFormProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+const mapDispatchToProps = {
+  signup: Session.signup,
+  goToLogin: Router.goToLogin,
+};
 
-export default connect(null, mapDispatchToProps)(PublicSignupForm) as React.FC<PublicSignupFormProps>;
+const mergeProps = (...[{ search }, { goToLogin }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
+  goToLogin: () => goToLogin(search),
+});
+
+type ConnectedPublicSignupFormProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SignupForm) as React.FC<SignupFormProps>;

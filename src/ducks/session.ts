@@ -261,3 +261,15 @@ export const signup = createSession(SessionType.SIGN_UP);
 export const basicAuthLogin = createSession(SessionType.BASIC_AUTH);
 export const googleLogin = createSession(SessionType.GOOGLE);
 export const facebookLogin = createSession(SessionType.FACEBOOK);
+
+const createAdoptSSO = (sessionType: SessionType) => (oktaCode: string, authCode: string): Thunk<Models.Account> => async (dispatch) => {
+  const { user, token } = await client.sso.convert(sessionType, { oktaCode, authCode });
+
+  await dispatch(setSession({ user, token }));
+
+  return user;
+};
+
+export const basicAuthAdoptSSO = createAdoptSSO(SessionType.BASIC_AUTH);
+export const googleAdoptSSO = createAdoptSSO(SessionType.GOOGLE);
+export const facebookAdoptSSO = createAdoptSSO(SessionType.FACEBOOK);

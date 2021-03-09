@@ -5,14 +5,15 @@ import { FullSpinner } from '@/components/Spinner';
 import { LegacyPath, Path } from '@/config/routes';
 import { authTokenSelector } from '@/ducks/session';
 import { connect, lazy } from '@/hocs';
+import AdoptSSO from '@/pages/Auth/AdoptSSO';
+import Login from '@/pages/Auth/Login';
+import LoginSSOCallback from '@/pages/Auth/LoginSSOCallback';
+import MattelLogin from '@/pages/Auth/MattelLoginForm';
+import ResetEmail from '@/pages/Auth/ResetEmail';
+import ResetPassword from '@/pages/Auth/ResetPassword';
+import Signup from '@/pages/Auth/Signup';
 import Export from '@/pages/Export';
 import Onboarding from '@/pages/Onboarding';
-import LoginForm from '@/pages/Register/LoginForm';
-import LoginSSOCallback from '@/pages/Register/LoginSSOCallback';
-import MattelLoginForm from '@/pages/Register/MattelLoginForm';
-import Reset from '@/pages/Register/Reset';
-import ResetPassword from '@/pages/Register/ResetPassword';
-import SignupForm from '@/pages/Register/SignupForm';
 import Settings from '@/pages/Settings';
 import { ConnectedProps } from '@/types';
 import * as Query from '@/utils/query';
@@ -36,12 +37,13 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => (
       <Route exact path={Path.SSML} component={SSML} />
 
       <PublicRoute exact path={Path.RESET_PASSWORD} name="Reset Password" component={ResetPassword} />
-      <PublicRoute exact path={Path.RESET} name="Reset" component={Reset} />
-      <PublicRoute exact path={Path.LOGIN} name="Login" component={LoginForm} />
-      <PublicRoute exact path={Path.LOGIN_MATTEL} name="Login - Mattel" component={MattelLoginForm} />
+      <PublicRoute exact path={Path.RESET} name="Reset" component={ResetEmail} />
+      <PublicRoute exact path={Path.LOGIN} name="Login" component={Login} />
+      <PublicRoute exact path={Path.LOGIN_MATTEL} name="Login - Mattel" component={MattelLogin} />
       <PublicRoute exact path={Path.LOGIN_SSO_CALLBACK} name="Login SSO Callback" component={LoginSSOCallback} />
-      <PublicRoute exact path={Path.PROMO_SIGNUP} name="SignUpPromo" component={SignupForm} promo />
-      <PublicRoute exact path={Path.SIGNUP} name="SignUp" component={SignupForm} />
+      <PublicRoute exact path={Path.SSO_ADOPT} name="Adopt SSO" component={AdoptSSO} />
+      <PublicRoute exact path={Path.PROMO_SIGNUP} name="SignUpPromo" component={Signup} promo />
+      <PublicRoute exact path={Path.SIGNUP} name="SignUp" component={Signup} />
       <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
 
       <Route exact path={Path.CREATOR_TERMS} name="Privacy Policy" component={Legal} />

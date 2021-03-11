@@ -23,6 +23,9 @@ type JSONEditorProps = {
 };
 
 const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplCommands = '', jsonFileName, document: documentData = '' }) => {
+  const [localDatasource, setLocalDatasource] = React.useState(datasource);
+  const [localAPL, setLocalAPL] = React.useState(aplCommands);
+
   const removeFile = () => {
     onChange({ document: '', datasource: '', jsonFileName: '' });
   };
@@ -80,8 +83,9 @@ const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplC
               <AceEditor
                 name="datasourceEditor"
                 mode="json"
-                value={datasource}
-                onChange={(value) => onChange({ datasource: value })}
+                value={localDatasource}
+                onChange={(value) => setLocalDatasource(value)}
+                onBlur={() => onChange({ datasource: localDatasource })}
                 fontSize={14}
                 showGutter
                 setOptions={{ tabSize: 2 }}
@@ -96,8 +100,9 @@ const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplC
               <AceEditor
                 name="aplCommandEditor"
                 mode="json"
-                value={aplCommands}
-                onChange={(value) => onChange({ aplCommands: value })}
+                value={localAPL}
+                onChange={(value) => setLocalAPL(value)}
+                onBlur={() => onChange({ aplCommands: localAPL })}
                 fontSize={14}
                 showGutter
                 setOptions={{ tabSize: 2 }}

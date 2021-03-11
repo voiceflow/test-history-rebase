@@ -8,6 +8,7 @@ import intentAdapter from '@/client/adapters/intent';
 import slotAdapter from '@/client/adapters/slot';
 import accountLinkingAdapter from '@/client/adapters/version/alexa/accountLinking';
 import alexaSettingsAdapter, { SkillSettings } from '@/client/adapters/version/alexa/settings';
+import generalSettingsAdapter, { GeneralSkillSettings } from '@/client/adapters/version/general/settings';
 import googleSettingsAdapter from '@/client/adapters/version/google/settings';
 import { toast } from '@/components/Toast';
 import { ExportFormat, NLPProvider, PlatformType, VALID_VARIABLE_NAME } from '@/constants';
@@ -156,7 +157,6 @@ export const saveSettings = (settings: Partial<SkillSettings>, properties?: stri
   const state = getState();
   const skillID = Skill.activeSkillIDSelector(state)!;
   const platform = Skill.activePlatformSelector(state)!;
-
   // only certain adapted properties as specified by "properties"
   if (platform === PlatformType.ALEXA) {
     const alexaSettings = alexaSettingsAdapter.toDB(settings as SkillSettings);
@@ -166,6 +166,9 @@ export const saveSettings = (settings: Partial<SkillSettings>, properties?: stri
     const googleSettings = googleSettingsAdapter.toDB(settings as SkillSettings);
     await client.platform.google.version.updateSettings(skillID, properties ? _pick(googleSettings, properties) : googleSettings);
     dispatch(Meta.updateSkillMeta(settings));
+  } else if (platform === PlatformType.GENERAL) {
+    const generalSettings = generalSettingsAdapter.toDB(settings as GeneralSkillSettings);
+    await client.platform.general.version.updateSettings(skillID, properties ? _pick(generalSettings, properties) : generalSettings);
   }
 };
 

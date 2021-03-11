@@ -6,7 +6,7 @@ import { FullSkill } from '@/models';
 
 import { createErrorPromptAdapter, createRestartAdapter } from '../utils';
 
-export type SkillSettings = Pick<FullSkill<string>['meta'], 'repeat' | 'settings' | 'restart' | 'resumePrompt' | 'errorPrompt' | 'locales'>;
+export type GeneralSkillSettings = Pick<FullSkill<string>['meta'], 'repeat' | 'settings' | 'restart' | 'resumePrompt' | 'errorPrompt' | 'locales'>;
 
 export const restartAdapter = createRestartAdapter<Voice>({ defaultVoice: Voice.DEFAULT });
 export const errorPromptAdapter = createErrorPromptAdapter<Voice>({ defaultVoice: Voice.DEFAULT });
@@ -17,10 +17,9 @@ export const RepeatMap = {
   [RepeatType.OFF]: 0,
 };
 
-const generalSettingsAdapter = createAdapter<GeneralVersionSettings, SkillSettings>(
+const generalSettingsAdapter = createAdapter<GeneralVersionSettings, GeneralSkillSettings>(
   (settings) => {
     const { error, session, repeat, locales, defaultVoice } = defaultGeneralVersionSettings(settings);
-
     return {
       repeat: RepeatMap[repeat],
       locales,

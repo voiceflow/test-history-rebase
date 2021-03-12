@@ -51,6 +51,13 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
     [activeTab]
   );
 
+  const onSetSelectedTypeAndID = React.useCallback(
+    (type: InteractionModelTabType, id: string) => {
+      goInteractionModelEntity(type, id);
+    },
+    [activeTab]
+  );
+
   const openExportModal = async () => {
     toggleExportModel();
     await renderProtoytpe({ aborted: false });
@@ -90,7 +97,11 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
               <IntentsManager selectedID={modelMatch?.params.modelEntityID} setSelectedID={onSetSelectedID} />
             )}
             {activeTab === InteractionModelTabType.VARIABLES && (
-              <VariablesManager selectedID={modelMatch?.params.modelEntityID} setSelectedID={onSetSelectedID} />
+              <VariablesManager
+                selectedID={modelMatch?.params.modelEntityID}
+                setSelectedID={onSetSelectedID}
+                setSelectedTypeAndID={onSetSelectedTypeAndID}
+              />
             )}
           </ModalContent>
         </TextEditorVariablesPopoverProvider>

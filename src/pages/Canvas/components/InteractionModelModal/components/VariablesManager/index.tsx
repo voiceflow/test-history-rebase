@@ -3,11 +3,12 @@ import React from 'react';
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
-import { BUILT_IN_VARIABLES } from '@/constants';
+import { BUILT_IN_VARIABLES, InteractionModelTabType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
+import * as SlotDuck from '@/ducks/slot';
 import { connect } from '@/hocs';
-import { useEnableDisable } from '@/hooks';
+import { useEnableDisable, useSetup } from '@/hooks';
 import * as Selectors from '@/store/selectors';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { reorder as reorderArray } from '@/utils/array';
@@ -22,18 +23,21 @@ import { addPrefix } from './utils';
 export type VariablesManagerProps = {
   selectedID?: string;
   setSelectedID: (id: string) => void;
+  setSelectedTypeAndID: (type: InteractionModelTabType, id: string) => void;
 };
 
 const createVariablesList = (type: VariableType, variables: string[]) =>
   variables.map((variable) => ({ id: addPrefix(type, variable), name: variable, type }));
 
 const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManagerProps> = ({
+  slots,
   selectedID,
   setSelectedID,
   localVariables,
   globalVariables,
   removeLocalVariable,
   removeGlobalVariable,
+  setSelectedTypeAndID,
   replaceLocalVariables,
   replaceGlobalVariables,
 }) => {
@@ -112,6 +116,20 @@ const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManag
     replaceLocalVariables,
   ]);
 
+  useSetup(() => {
+    if (selectedID && !selectedID.match(new RegExp(`(${Object.values(VariableType).join('|')}):.+`))) {
+      if (mergedVariablesMap[addPrefix(VariableType.LOCAL, selectedID)]) {
+        setSelectedID(addPrefix(VariableType.LOCAL, selectedID));
+      } else if (mergedVariablesMap[addPrefix(VariableType.GLOBAL, selectedID)]) {
+        setSelectedID(addPrefix(VariableType.GLOBAL, selectedID));
+      } else if (mergedVariablesMap[addPrefix(VariableType.BUILT_IN, selectedID)]) {
+        setSelectedID(addPrefix(VariableType.BUILT_IN, selectedID));
+      } else if (slots.find((slot) => slot.name === selectedID)) {
+        setSelectedTypeAndID(InteractionModelTabType.SLOTS, slots.find((slot) => slot.name === selectedID)!.id);
+      }
+    }
+  });
+
   return (
     <>
       <LeftColumn isDragging={isDragging}>
@@ -188,6 +206,7 @@ const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManag
 };
 
 const mapStateToProps = {
+  slots: SlotDuck.allSlotsSelector,
   diagramID: Skill.activeDiagramIDSelector,
   localVariables: Selectors.activeDiagramVariablesSelector,
   globalVariables: Skill.globalVariablesSelector,

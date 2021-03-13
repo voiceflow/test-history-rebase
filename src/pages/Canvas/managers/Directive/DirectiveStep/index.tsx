@@ -26,8 +26,8 @@ export const DirectiveStep: React.FC<DirectiveStepProps> = ({ nodeID, portID }) 
   </Step>
 );
 
-const ConnectedCardStep: React.FC<ConnectedStepProps<NodeData.Directive>> = ({ node }) => (
+const ConnectedTraceStep: React.FC<ConnectedStepProps<NodeData.Directive>> = ({ node }) => (
   <DirectiveStep nodeID={node.id} portID={node.ports.out[0]} />
 );
 
-export default ConnectedCardStep;
+export default ConnectedTraceStep;

@@ -298,6 +298,7 @@ yarn start --ff_someFeature
 - `ff_visualStep` / `VF_APP_FF_VISUAL_STEP`: visuals step
 - `ff_straightLines` / `VF_APP_FF_STRAIGHT_LINES`: straight lines
 - `ff_natoApco` / `VF_APP_FF_NATO_APCO`: nato apco slot type
+- `ff_trace` / `VF_APP_FF_TRACE`: nato apco slot type
 
 ### Environment variable overrides
 

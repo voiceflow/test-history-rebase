@@ -21,6 +21,7 @@ const Spotlight = () => {
   const [trackingEvents] = useTrackingEvents();
   const engine = React.useContext(EngineContext)!;
   const gadgets = useFeature(FeatureFlag.GADGETS);
+  const trace = useFeature(FeatureFlag.TRACE);
   const isVisible = !!spotlight?.isVisible;
 
   const addBlock = async (blockType: BlockType, factoryData?: Partial<NodeData<unknown>>) => {
@@ -34,6 +35,7 @@ const Spotlight = () => {
         .flatMap((section) => section.steps)
         .filter((option) => {
           if (!gadgets.isEnabled && [BlockType.EVENT].includes(option.type)) return false;
+          if (!trace.isEnabled && [BlockType.TRACE].includes(option.type)) return false;
           if (IS_PRIVATE_CLOUD && option.publicOnly) return false;
           return true;
         }),

@@ -8,7 +8,6 @@ import { BidirectionalAdapter } from '@/client/adapters/utils';
 import { BlockType, IntegrationType, PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 
-import { generateOutPort } from '../utils';
 import { alexaBlockAdapter, alexaPortsAdapter } from './alexa';
 import blockDataAdapter from './block';
 import { generalBlockAdapter, generalPortsAdapter } from './general';
@@ -93,11 +92,4 @@ export const getPortsAdapter = moize(
     } as PlatformPortsAdapter)
 );
 
-export const defaultPortAdapter: PortsAdapter = {
-  toDB: (ports) => ports.map(({ port, target }) => ({ type: port.label || '', target, id: port.id })),
-  fromDB: (ports, node) =>
-    ports.map((port) => ({
-      port: generateOutPort(node.nodeID, port, { label: port.type }),
-      target: port.target,
-    })),
-};
+export { defaultPortAdapter } from './utils';

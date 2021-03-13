@@ -217,6 +217,12 @@ export namespace NodeData {
     directive: any;
   };
 
+  export type Trace = {
+    name: string;
+    body: string;
+    paths: { label: string; isDefault?: boolean }[];
+  };
+
   export type Stream = {
     loop: boolean;
     audio: string;

@@ -15,6 +15,7 @@ import randomAdapter from './random';
 import setAdapter from './set';
 import speakAdapter from './speak';
 import streamAdapter, { streamPortsAdapter } from './stream';
+import traceAdapter, { tracePortsAdapter } from './trace';
 import visualAdapter from './visual';
 
 export const generalBlockAdapter = {
@@ -28,6 +29,7 @@ export const generalBlockAdapter = {
   [BlockType.CODE]: codeAdapter,
   [BlockType.FLOW]: flowAdapter,
   [BlockType.SPEAK]: speakAdapter,
+  [BlockType.TRACE]: traceAdapter,
   [BlockType.STREAM]: streamAdapter,
   [BlockType.PROMPT]: promptAdapter,
   [BlockType.VISUAL]: visualAdapter,
@@ -41,4 +43,5 @@ export const generalBlockAdapter = {
 
 export const generalPortsAdapter = {
   [BlockType.STREAM]: streamPortsAdapter,
+  [BlockType.TRACE]: tracePortsAdapter,
 };

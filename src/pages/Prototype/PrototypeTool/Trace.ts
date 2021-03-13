@@ -1,4 +1,4 @@
-import { GeneralRequest, IntentName, RequestType, TraceType } from '@voiceflow/general-types';
+import { IntentName, Request, RequestType, TraceType } from '@voiceflow/general-types';
 import { SpeakType } from '@voiceflow/general-types/build/nodes/speak';
 import { TraceStreamAction } from '@voiceflow/general-types/build/nodes/stream';
 import { StepData as VisualData } from '@voiceflow/general-types/build/nodes/visual';
@@ -35,7 +35,7 @@ export type TraceControllerProps = {
   waitVisuals: boolean;
   getNodeByID: (targetBlockID: string) => Node;
   updateStatus: (status: PMStatus) => void;
-  fetchContext: (request: GeneralRequest) => Promise<Prototype.Context | null>;
+  fetchContext: (request: Request | null) => Promise<Prototype.Context | null>;
   flowIDHistory: string[];
   contextHistory: Partial<Prototype.Context>[];
   activeDiagramID: string;
@@ -100,7 +100,7 @@ class TraceController {
     this.message = message;
   }
 
-  public next = async (request: GeneralRequest = null): Promise<void> => {
+  public next = async (request: Request | null = null): Promise<void> => {
     const currentContextStep = this.props.contextStep;
     const { contextHistory } = this.props;
     const { visualDataHistory } = this.props;

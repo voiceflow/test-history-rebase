@@ -8,10 +8,12 @@ import { DialogType, RepromptType } from '@/constants';
 import { Node, NodeData, Port } from '@/models';
 import { SpeakData } from '@/models/Speak';
 
+import { generateOutPort } from '../utils';
+
 export const createBlockAdapter = createSimpleAdapter;
 
-export type PortsAdapter = {
-  toDB: (ports: { port: Port; target: string | null }[], node: Node) => DBPort[];
+export type PortsAdapter<D = unknown> = {
+  toDB: (ports: { port: Port; target: string | null }[], node: Node, data: D) => DBPort[];
   fromDB: (ports: DBPort[], node: DBNode) => { port: Port; target: string | null }[];
 };
 
@@ -54,5 +56,14 @@ export const noMatchAdapter = createAdapter<NoMatches<any>, NodeData.NoMatches>(
     reprompts: noMatchRepromptAdapter.mapToDB(reprompts),
   })
 );
+
+export const defaultPortAdapter: PortsAdapter = {
+  toDB: (ports) => ports.map(({ port, target }) => ({ type: port.label || '', target, id: port.id })),
+  fromDB: (ports, node) =>
+    ports.map((port) => ({
+      port: generateOutPort(node.nodeID, port, { label: port.type }),
+      target: port.target,
+    })),
+};
 
 export const getPortByLabel = (ports: { port: Port; target: string | null }[], label: string) => ports.find(({ port }) => port.label === label);

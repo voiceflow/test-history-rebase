@@ -123,6 +123,7 @@ export enum BlockType {
   CODE = 'code',
   EXIT = 'exit',
   PROMPT = 'prompt',
+  TRACE = 'trace',
   // visuals
   CARD = 'card',
   VISUAL = 'visual',

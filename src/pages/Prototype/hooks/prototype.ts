@@ -1,4 +1,4 @@
-import { GeneralRequest } from '@voiceflow/general-types';
+import { Request } from '@voiceflow/general-types';
 import _isString from 'lodash/isString';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -106,7 +106,7 @@ const usePrototype = ({
   }, [webhook]);
 
   const onInteraction = React.useCallback(
-    (request: GeneralRequest | string) => {
+    (request: Request | string) => {
       if (_isString(request) && Utils.checkForSpecialCharacters(request)) {
         return prototype.interact(Utils.removeSpecialCharacters(request));
       }

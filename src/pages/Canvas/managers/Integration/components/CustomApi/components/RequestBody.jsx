@@ -63,6 +63,7 @@ function RequestBody({ body, content, bodyInputType, onChange, factory }) {
         onBlur={() => onChange({ content: aceContent })}
         name="code"
         mode="javascript"
+        hasBorder
         setOptions={ACE_EDITOR_OPTIONS}
       />
     );

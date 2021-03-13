@@ -1,10 +1,15 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const ListContainer = styled.div`
+const ListContainer = styled.div<{ fullHeight?: boolean }>`
   position: relative;
   width: 100%;
-  height: 100%;
-  min-height: 100%;
+
+  ${({ fullHeight }) =>
+    fullHeight &&
+    css`
+      height: 100%;
+      min-height: 100%;
+    `};
 `;
 
 export default ListContainer;

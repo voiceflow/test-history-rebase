@@ -21,6 +21,7 @@ export type DraggableListProps<I> = {
   itemProps?: any;
   onEndDrag?: (...args: any[]) => unknown;
   onReorder?: (dragIndex: number, hoverIndex: number) => void;
+  fullHeight?: boolean;
   getItemKey?: (item: I) => string;
   onStartDrag?: (...args: any[]) => void;
   deleteProps?: Record<string, any>;
@@ -59,6 +60,7 @@ const DraggableList = <I extends unknown>({
   itemProps,
   onEndDrag,
   onReorder,
+  fullHeight = true,
   getItemKey = (item) => item as string,
   onStartDrag,
   deleteProps,
@@ -130,7 +132,7 @@ const DraggableList = <I extends unknown>({
   );
 
   return (
-    <ListContainer ref={connectDrop}>
+    <ListContainer ref={connectDrop} fullHeight={fullHeight}>
       {!props.children &&
         (props.mapManaged
           ? props.mapManaged((item, { key, index, onRemove, onUpdate }) => {

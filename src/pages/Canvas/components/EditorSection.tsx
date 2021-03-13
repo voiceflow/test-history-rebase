@@ -8,6 +8,7 @@ import { compose, noop } from '@/utils/functional';
 type EditorSectionProps = Omit<UncontrolledSectionProps, 'isCollapsed' | 'toggle'> & {
   autoSave?: boolean;
   initialOpen?: boolean;
+  onContextMenu?: React.MouseEventHandler;
 };
 
 const EditorSection: React.ForwardRefRenderFunction<HTMLDivElement, EditorSectionProps> = (

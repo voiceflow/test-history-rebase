@@ -15,6 +15,7 @@ import {
   ff_gadgets,
   ff_natoApco,
   ff_ownerRole,
+  ff_trace,
   ff_wavenetVoices,
   ga,
   host,
@@ -69,6 +70,7 @@ export const ENV = {
 
   // feature flags
   FF_GADGETS: ff_gadgets && 'true',
+  FF_TRACE: ff_trace && 'true',
   FF_WAVENET_VOICES: ff_wavenetVoices && 'true',
   FF_OWNER_ROLE: ff_ownerRole && 'true',
   FF_ASR_BYPASS: ff_asrBypass && 'true',

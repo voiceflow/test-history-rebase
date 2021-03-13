@@ -105,7 +105,8 @@ const nodeAdapter = createAdapter<
           port: portMap[portID],
           target: portToTargets[portID] || stepMap[node.id] || null,
         })),
-        node
+        node,
+        data
       );
     }
 

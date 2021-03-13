@@ -1,4 +1,4 @@
-import { GeneralRequest, RequestType, TextRequest } from '@voiceflow/general-types';
+import { Request, RequestType, TextRequest } from '@voiceflow/general-types';
 import cuid from 'cuid';
 import _isString from 'lodash/isString';
 
@@ -56,7 +56,7 @@ class PrototypeTool {
     this.trace?.historyStep(StepDirection.FORWARD);
   }
 
-  public async interact(request: GeneralRequest | string = null) {
+  public async interact(request: Request | string | null = null) {
     this.audio!.stop();
 
     await this.trace?.emptyTrace();
@@ -65,7 +65,10 @@ class PrototypeTool {
 
     const formattedRequest = _isString(request) ? ({ type: RequestType.TEXT, payload: request } as TextRequest) : request;
 
-    const input = formattedRequest?.type === RequestType.TEXT ? formattedRequest?.payload : JSON.stringify(formattedRequest?.payload, null, 2);
+    const input =
+      formattedRequest?.type === RequestType.TEXT && _isString(formattedRequest.payload)
+        ? formattedRequest?.payload
+        : JSON.stringify(formattedRequest?.payload, null, 2);
 
     this.message?.user(cuid(), input);
 

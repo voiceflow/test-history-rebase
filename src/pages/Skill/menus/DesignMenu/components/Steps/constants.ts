@@ -92,12 +92,14 @@ const USER_INFO_STEP = createMenuStep(BlockType.USER_INFO);
 
 const VISUAL_STEP = createMenuStep(BlockType.VISUAL);
 
+const TRACE_STEP = createMenuStep(BlockType.TRACE);
+
 // alexa menu sections
 export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARD_STEP, STREAM_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARD_STEP, STREAM_STEP, TRACE_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
@@ -126,7 +128,7 @@ export const GOOGLE_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, AUDIO_STEP, CARD_STEP, STREAM_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, CARD_STEP, STREAM_STEP, TRACE_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
@@ -155,7 +157,7 @@ export const GENERAL_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP, TRACE_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,

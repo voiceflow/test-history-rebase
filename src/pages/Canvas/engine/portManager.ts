@@ -37,7 +37,7 @@ class PortManager extends EngineConsumer {
     return this.api(portID)?.instance?.getRect();
   }
 
-  async add(nodeID: string, port: PartialModel<Port>) {
+  async add(nodeID: string, port: Partial<Port>) {
     const portID = objectID();
     const augmentedPort = { ...port, id: portID };
 

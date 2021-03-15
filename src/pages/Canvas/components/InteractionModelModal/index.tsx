@@ -1,5 +1,5 @@
 import React from 'react';
-import { matchPath, RouteComponentProps, withRouter } from 'react-router-dom';
+import { matchPath, RouteComponentProps, useLocation } from 'react-router-dom';
 
 import SvgIcon from '@/components/SvgIcon';
 import Tabs from '@/components/Tabs';
@@ -8,7 +8,7 @@ import { IconVariant, InteractionModelTabType, ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
-import { compose, connect } from '@/hocs';
+import { connect } from '@/hocs';
 import { useDidUpdateEffect, useModals } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
@@ -16,14 +16,12 @@ import { IntentsManager, Modal, ModalContent, SlotsManager, VariablesManager } f
 import { TABS } from './constants';
 
 const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: InteractionModelTabType }> & InteractionModelModalConnectedProps> = ({
-  match,
-  history,
-  location,
   renderProtoytpe,
   goToCurrentCanvas,
   goInteractionModel,
   goInteractionModelEntity,
 }) => {
+  const location = useLocation();
   const [modalRef, setModalRef] = React.useState<HTMLDivElement | null>(null);
   const modelMatch = React.useMemo(
     () =>
@@ -32,17 +30,15 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
       }),
     [location.pathname]
   );
+
   const activeTab = modelMatch?.params.modelType ?? InteractionModelTabType.INTENTS;
 
   const { open, close, isInStack } = useModals(ModalType.INTERACTION_MODEL);
   const { toggle: toggleExportModel } = useModals(ModalType.EXPORT_MODEL);
 
-  const onChangeTab = React.useCallback(
-    (nextTab: string) => {
-      goInteractionModel(nextTab as InteractionModelTabType);
-    },
-    [match, history]
-  );
+  const onChangeTab = React.useCallback((nextTab: string) => {
+    goInteractionModel(nextTab as InteractionModelTabType);
+  }, []);
 
   const onSetSelectedID = React.useCallback(
     (id: string) => {
@@ -51,12 +47,9 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
     [activeTab]
   );
 
-  const onSetSelectedTypeAndID = React.useCallback(
-    (type: InteractionModelTabType, id: string) => {
-      goInteractionModelEntity(type, id);
-    },
-    [activeTab]
-  );
+  const onSetSelectedTypeAndID = React.useCallback((type: InteractionModelTabType, id: string) => {
+    goInteractionModelEntity(type, id);
+  }, []);
 
   const openExportModal = async () => {
     toggleExportModel();
@@ -73,7 +66,7 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
 
   useDidUpdateEffect(() => {
     if (isInStack && !modelMatch) {
-      goInteractionModel(match.params.modelType);
+      goInteractionModel(InteractionModelTabType.INTENTS);
     } else if (!isInStack && modelMatch) {
       goToCurrentCanvas();
     }
@@ -119,4 +112,4 @@ const mapDispatchToProps = {
 
 export type InteractionModelModalConnectedProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
-export default compose(connect(null, mapDispatchToProps), withRouter as any)(InteractionModelModal) as React.FC;
+export default connect(null, mapDispatchToProps)(InteractionModelModal) as React.FC;

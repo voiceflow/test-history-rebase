@@ -4,6 +4,7 @@ import React from 'react';
 import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 
 import CustomScrollbars, { Scrollbars } from '@/components/CustomScrollbars';
+import { useDidUpdateEffect } from '@/hooks';
 
 import { AddButton, Container, ScrollContainer, SearchContainer, SearchInput, WindowScrollerContainer } from './components';
 
@@ -67,7 +68,7 @@ const SearchableList: React.ForwardRefRenderFunction<Scrollbars, SearchableListP
     [onChange]
   );
 
-  React.useEffect(() => {
+  useDidUpdateEffect(() => {
     onChange?.(searchValue, filteredItems);
   }, [filteredItems]);
 

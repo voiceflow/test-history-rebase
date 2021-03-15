@@ -52,7 +52,7 @@ const HeaderInput = styled(
     cursor: default;
   }
 
-  .${NODE_ACTIVE_CLASSNAME}[data-node-id="${({ nodeID }) => nodeID}"] & {
+  .${NODE_ACTIVE_CLASSNAME}[data-node-id="${({ nodeID }) => nodeID}"] && {
     color: ${withBlockVariantStyle((variant) => variant.activeColor)};
   }
 

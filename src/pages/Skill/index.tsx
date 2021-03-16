@@ -45,13 +45,12 @@ export type InjectedSkillProps = {
 
 const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = ({
   error,
-  versionID,
   diagramID,
   activePage,
   activeSkill,
   goToDashboard,
-  goToCanvas,
   saveProjectName,
+  goToDesign,
   isOnlyViewer,
 }) => {
   const [isIdle, onIdle, onActive] = useEnableDisable();
@@ -101,7 +100,7 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
               headerChildren={<CanvasHeader />}
               onNavigateBack={() => {
                 if (isPrototypingMode) {
-                  goToCanvas(versionID, diagramID);
+                  goToDesign();
                 } else {
                   goToDashboard();
                 }
@@ -142,7 +141,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   saveProjectName: SkillDuck.saveProjectName,
   goToDashboard: Router.goToDashboard,
-  goToCanvas: Router.goToCanvas,
+  goToDesign: Router.goToCurrentCanvas,
 };
 
 type ConnectedSkillProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

@@ -2,7 +2,7 @@ import { BLOCK_WIDTH } from '@/styles/theme';
 import { Pair, Point } from '@/types';
 import { pathBuilder } from '@/utils/svg';
 
-import { PATH_CURVE_MIN_OFFSET, PATH_INFLECTION_OFFSET, STRAIGHT_PATH_OFFSET, STRAIGHT_PATH_RADIUS } from '../constants';
+import { PATH_INFLECTION_OFFSET, PATH_MIN_OFFSET, STRAIGHT_PATH_OFFSET, STRAIGHT_PATH_RADIUS } from '../constants';
 
 export const TOP_PORT_OFFSET = 32;
 export const HALF_BLOCK_WIDTH = BLOCK_WIDTH / 2;
@@ -31,7 +31,7 @@ export const buildPath = (
 const buildCurvePath = (points: Pair<Point>): string => {
   const [[startX, startY], [endX, endY]] = points;
 
-  const inflectionOffset = Math.abs(endY - startY) > PATH_CURVE_MIN_OFFSET ? PATH_INFLECTION_OFFSET : 0;
+  const inflectionOffset = Math.abs(endY - startY) > PATH_MIN_OFFSET ? PATH_INFLECTION_OFFSET : 0;
 
   return `M ${startX} ${startY} C ${startX + inflectionOffset} ${startY}, ${endX - inflectionOffset} ${endY}, ${endX} ${endY}`;
 };
@@ -46,6 +46,7 @@ export const getOffset = (end: number, start: number): number => end - start;
 const getRadiusY = (offsetY: number): number => Math.max(Math.min(Math.abs(offsetY) / 2, STRAIGHT_PATH_RADIUS), 0);
 
 const isTargetPortUnderTheSourcePort = (endY: number, startY: number): boolean => endY > startY;
+const isLessThanMinPathOffset = (endY: number, startY: number): boolean => Math.abs(endY - startY) <= PATH_MIN_OFFSET;
 
 const buildRightZLikePath = ([[startX, startY], [endX, endY]]: Pair<Point>): string => {
   const offsetX = getOffset(endX, startX);
@@ -56,6 +57,10 @@ const buildRightZLikePath = ([[startX, startY], [endX, endY]]: Pair<Point>): str
   const targetUnderSource = isTargetPortUnderTheSourcePort(endY, startY);
 
   const startXWithHalfOffsetX = startX + halfOffsetX;
+
+  if (isLessThanMinPathOffset(endY, startY)) {
+    return pathBuilder(startX, startY).lineTo(endX, endY).toString();
+  }
 
   return pathBuilder(startX, startY)
     .lineTo(startXWithHalfOffsetX - radiusY, startY)
@@ -93,6 +98,10 @@ const buildRightSLikePath = ([[startX, startY], [endX, endY]]: Pair<Point>): str
 
   const halfRadiusX = radiusX / 2;
   const halfRadiusY = radiusY / 2;
+
+  if (isLessThanMinPathOffset(endY, startY)) {
+    return pathBuilder(startX, startY).lineTo(endX, endY).toString();
+  }
 
   return pathBuilder(startX, startY)
     .lineTo(startXWithPathOffset - radiusY, startY)
@@ -294,6 +303,10 @@ const buildLeftSLikePath = ([[startX, startY], [endX, endY]]: Pair<Point>): stri
   const halfRadiusX = radiusX / 2;
   const halfRadiusY = radiusY / 2;
 
+  if (isLessThanMinPathOffset(endY, startY)) {
+    return pathBuilder(startXWithoutBlockWidth, startY).lineTo(endXWithBlockWidth, endY).toString();
+  }
+
   return pathBuilder(startXWithoutBlockWidth, startY)
     .lineTo(startXWithoutBlockWidthAndPathOffset + radiusY, startY)
     .cubicCurveTo(
@@ -385,6 +398,10 @@ const buildLeftZLikePath = ([[startX, startY], [endX, endY]]: Pair<Point>): stri
 
   const halfOffsetX = (startXWithoutBlockWidth - endXWithBlockWidth) / 2;
   const startWithoutBlockWidthAndHalfOffsetX = startXWithoutBlockWidth - halfOffsetX;
+
+  if (isLessThanMinPathOffset(endY, startY)) {
+    return pathBuilder(startXWithoutBlockWidth, startY).lineTo(endXWithBlockWidth, endY).toString();
+  }
 
   return pathBuilder(startXWithoutBlockWidth, startY)
     .lineTo(startWithoutBlockWidthAndHalfOffsetX + radiusY, startY)

@@ -1,8 +1,8 @@
 import { styled } from '@/hocs';
 
-const Container = styled.div`
+const Container = styled.div<{ width?: number }>`
   display: flex;
-  width: 215px;
+  width: ${({ width = 215 }) => `${width}px`};
   flex-direction: column;
   border-radius: 5px;
   background-color: #f6f6f6;

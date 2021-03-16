@@ -14,7 +14,13 @@ import withHexColor from './withHexColor';
 
 const removeHash = (hex: string) => hex.substr(1);
 
-const ColorPicker = (props: InjectedColorProps) => {
+export type ColorPickerProps = {
+  width?: number;
+  alphaSlider?: boolean;
+  hexInput?: boolean;
+};
+
+const ColorPicker = ({ alphaSlider = true, hexInput = true, ...props }: ColorPickerProps & InjectedColorProps) => {
   const [localHex, setLocalHex] = React.useState(() => removeHash(props.hex!));
 
   const onSubmitHexColor = (hex: string) => {
@@ -35,7 +41,7 @@ const ColorPicker = (props: InjectedColorProps) => {
   }, [props.hex]);
 
   return !props.onChange ? null : (
-    <Container>
+    <Container width={props.width}>
       <SaturationContainer>
         <Saturation onChange={props.onChange} {...props} />
       </SaturationContainer>
@@ -44,20 +50,24 @@ const ColorPicker = (props: InjectedColorProps) => {
         <Hue onChange={props.onChange} pointer={() => <PickerPointer />} {...props} />
       </HueContainer>
 
-      <AlphaContainer>
-        <Alpha onChange={props.onChange} pointer={() => <PickerPointer />} {...props} />
-      </AlphaContainer>
+      {alphaSlider && (
+        <AlphaContainer>
+          <Alpha onChange={props.onChange} pointer={() => <PickerPointer />} {...props} />
+        </AlphaContainer>
+      )}
 
-      <InputContainer>
-        <Input
-          value={localHex}
-          onBlur={() => onSubmitHexColor(`#${localHex}`)}
-          onChange={({ currentTarget }) => setLocalHex(currentTarget.value)}
-          leftAction={<InputAction>HEX</InputAction>}
-          maxLength={6}
-          onKeyPress={withEnterPress(() => onSubmitHexColor(`#${localHex}`))}
-        />
-      </InputContainer>
+      {hexInput && (
+        <InputContainer>
+          <Input
+            value={localHex}
+            onBlur={() => onSubmitHexColor(`#${localHex}`)}
+            onChange={({ currentTarget }) => setLocalHex(currentTarget.value)}
+            leftAction={<InputAction>HEX</InputAction>}
+            maxLength={6}
+            onKeyPress={withEnterPress(() => onSubmitHexColor(`#${localHex}`))}
+          />
+        </InputContainer>
+      )}
 
       <Colors
         onSelect={(color: string) => {

@@ -6,11 +6,12 @@ import { InteractionModelTabType } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import * as Realtime from '@/ducks/realtime';
 import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector, activeSkillSelector } from '@/ducks/skill/skill/selectors';
+import { activeWorkspaceIDSelector } from '@/ducks/workspace';
 import { Skill as SkillModel } from '@/models';
 import { GetState, SyncThunk, Thunk, ThunkDispatch } from '@/store/types';
 import * as Query from '@/utils/query';
 
-import { goTo, goToCanvasCommenting, goToPrototype, goToPublish, goToSettings, redirectToCanvasCommenting } from './actions';
+import { goTo, goToCanvasCommenting, goToPrototype, goToPublish, goToSettings, goToWorkspaceSettings, redirectToCanvasCommenting } from './actions';
 
 const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versionID: string, diagramID: string, isNewDiagram?: boolean) => {
   const state = getState();
@@ -127,4 +128,10 @@ export const goToCurrentCanvasInteractionModelEntity = (entityType: InteractionM
   const diagramID = activeDiagramIDSelector(state);
 
   dispatch(goTo(generatePath(Path.CANVAS_MODEL_ENTITY, { versionID, diagramID, modelType: entityType, modelEntityID: entityID })));
+};
+
+export const goToCurrentWorkspaceSettings = (): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const workspaceID = activeWorkspaceIDSelector(state)!;
+  dispatch(goToWorkspaceSettings(workspaceID));
 };

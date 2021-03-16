@@ -32,8 +32,6 @@ import { copy } from '@/utils/clipboard';
 import * as Query from '@/utils/query';
 import * as Userflow from '@/vendors/userflow';
 
-import BoardDeleteModal from './components/BoardDeleteModal';
-import BoardSettingsModal from './components/BoardSettingsModal';
 import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
 import DashboardHeader from './Header';
@@ -197,119 +195,114 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
   const filter = filter_text.trim().toLowerCase();
 
   return (
-    <>
-      <BoardDeleteModal workspace={props.workspace!} />
-      <BoardSettingsModal user={props.user} workspace={props.workspace!} />
+    <div id="app" className="dashboard">
+      <DashboardHeader handleFilterText={handleFilterText} workspaces={props.workspaces} workspace={props.workspace} loadingProjects={loading} />
 
-      <div id="app" className="dashboard">
-        <DashboardHeader handleFilterText={handleFilterText} workspaces={props.workspaces} workspace={props.workspace} loadingProjects={loading} />
+      {LOCKED && (
+        <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
+          {/* TODO: flush out subscription failed logic */}
+          <Alert color="danger" className="pointer text-center py-3">
+            <SvgIcon icon="ban" size={32} inline />
+            <br />
+            Your subscription has failed
+            <br />
+            Please update your payment to continue
+          </Alert>
+        </div>
+      )}
 
-        {LOCKED && (
-          <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
-            {/* TODO: flush out subscription failed logic */}
-            <Alert color="danger" className="pointer text-center py-3">
-              <SvgIcon icon="ban" size={32} inline />
-              <br />
-              Your subscription has failed
-              <br />
-              Please update your payment to continue
-            </Alert>
-          </div>
-        )}
-
-        {loading ? (
-          <FullSpinner name="Projects" />
-        ) : (
-          <div
-            id="dashboard"
-            className={cn({ 'thanos-ed': LOCKED })}
-            onClickCapture={(e) => {
-              // prevent all click events
-              if (LOCKED) {
-                e.preventDefault();
-                e.stopPropagation();
-              }
-            }}
-          >
-            {props.projects.length === 0 ? (
-              <div className="h-100 d-flex justify-content-center">
-                <div className="align-self-center">
-                  <div className="text-center">
-                    <img src="/create.svg" alt="skill-icon" width="80" height="80" className="mb-3" />
-                  </div>
-                  <label className="dark text-center mb-3">No Projects Found</label>
-                  <div className="text-muted mb-2">This workspace has no projects, create one.</div>
-                  <Link to="/workspace/template" className="no-underline super-center">
-                    <Button isPrimary className="mt-3" id="createskill">
-                      New Project
-                    </Button>
-                  </Link>
+      {loading ? (
+        <FullSpinner name="Projects" />
+      ) : (
+        <div
+          id="dashboard"
+          className={cn({ 'thanos-ed': LOCKED })}
+          onClickCapture={(e) => {
+            // prevent all click events
+            if (LOCKED) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
+        >
+          {props.projects.length === 0 ? (
+            <div className="h-100 d-flex justify-content-center">
+              <div className="align-self-center">
+                <div className="text-center">
+                  <img src="/create.svg" alt="skill-icon" width="80" height="80" className="mb-3" />
                 </div>
+                <label className="dark text-center mb-3">No Projects Found</label>
+                <div className="text-muted mb-2">This workspace has no projects, create one.</div>
+                <Link to="/workspace/template" className="no-underline super-center">
+                  <Button isPrimary className="mt-3" id="createskill">
+                    New Project
+                  </Button>
+                </Link>
               </div>
-            ) : (
-              <div className="board-container-body">
-                <div className="board-container-body-inner">
-                  <ScrollContextProvider value={scrollHelpers}>
-                    <div ref={bodyRef} className="main-lists">
-                      <div ref={innerRef} className="main-lists-inner">
-                        {props.projectLists.map((list, idx) => {
-                          const projects = getBoardFilteredProjects(list.projects, props.projectsMap, filter);
-                          if (filter && !projects.length) {
-                            return null;
+            </div>
+          ) : (
+            <div className="board-container-body">
+              <div className="board-container-body-inner">
+                <ScrollContextProvider value={scrollHelpers}>
+                  <div ref={bodyRef} className="main-lists">
+                    <div ref={innerRef} className="main-lists-inner">
+                      {props.projectLists.map((list, idx) => {
+                        const projects = getBoardFilteredProjects(list.projects, props.projectsMap, filter);
+                        if (filter && !projects.length) {
+                          return null;
+                        }
+                        return (
+                          <List
+                            id={list.id}
+                            key={list.id}
+                            isNew={list.isNew}
+                            index={idx}
+                            name={list.name}
+                            onRename={props.renameList}
+                            onRemove={onDeleteBoard}
+                            projects={projects}
+                            onCopyProject={onCopyProject}
+                            onDownloadProject={onDownloadProject}
+                            onDeleteProject={onDeleteProject(list.id)}
+                            createProject={onCreateProject}
+                            onMove={onMove}
+                            onMoveProject={onMoveProject}
+                            clearNewBoard={props.clearNewList}
+                            disableDragging={!!filter}
+                          />
+                        );
+                      })}
+
+                      <DragLayer withMemo>
+                        {(item: any) => {
+                          if (item.dragType === 'dashboard-list') {
+                            return <SimpleList {...item} />;
                           }
-                          return (
-                            <List
-                              id={list.id}
-                              key={list.id}
-                              isNew={list.isNew}
-                              index={idx}
-                              name={list.name}
-                              onRename={props.renameList}
-                              onRemove={onDeleteBoard}
-                              projects={projects}
-                              onCopyProject={onCopyProject}
-                              onDownloadProject={onDownloadProject}
-                              onDeleteProject={onDeleteProject(list.id)}
-                              createProject={onCreateProject}
-                              onMove={onMove}
-                              onMoveProject={onMoveProject}
-                              clearNewBoard={props.clearNewList}
-                              disableDragging={!!filter}
-                            />
-                          );
-                        })}
 
-                        <DragLayer withMemo>
-                          {(item: any) => {
-                            if (item.dragType === 'dashboard-list') {
-                              return <SimpleList {...item} />;
-                            }
+                          if (item.dragType === 'dashboard-item') {
+                            return <ListItem {...item} />;
+                          }
 
-                            if (item.dragType === 'dashboard-item') {
-                              return <ListItem {...item} />;
-                            }
+                          return null;
+                        }}
+                      </DragLayer>
 
-                            return null;
-                          }}
-                        </DragLayer>
-
-                        {canManageLists && (
-                          <Flex style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}>
-                            <TippyTooltip distance={8} title="Add new list" position="bottom">
-                              <IconButton large icon="addStep" onClick={props.createNewList} size={13} />
-                            </TippyTooltip>
-                          </Flex>
-                        )}
-                      </div>
+                      {canManageLists && (
+                        <Flex style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}>
+                          <TippyTooltip distance={8} title="Add new list" position="bottom">
+                            <IconButton large icon="addStep" onClick={props.createNewList} size={13} />
+                          </TippyTooltip>
+                        </Flex>
+                      )}
                     </div>
-                  </ScrollContextProvider>
-                </div>
+                  </div>
+                </ScrollContextProvider>
               </div>
-            )}
-          </div>
-        )}
-      </div>
-    </>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -3,11 +3,11 @@ import React from 'react';
 import client from '@/client';
 import Box, { Flex } from '@/components/Box';
 import Button, { ButtonVariant } from '@/components/Button';
+import { SettingsSection } from '@/components/Settings';
 import { Link } from '@/components/Text';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
-import { ContentSection } from '@/pages/Settings/components/SettingsContent/components';
 import { ConnectedProps } from '@/types';
 
 import { Container } from './components';
@@ -22,7 +22,7 @@ const GooglePublish: React.FC<ConnectedGooglePublishProps> = ({ projectID }) => 
 
   return (
     <Container>
-      <ContentSection title="Publish">
+      <SettingsSection title="Publish">
         <Box alignItems="flex-end" display="flex">
           <Box m={32}>
             <Box mb={16} color="tertiary">
@@ -38,7 +38,7 @@ const GooglePublish: React.FC<ConnectedGooglePublishProps> = ({ projectID }) => 
             </Link>
           </Flex>
         </Box>
-      </ContentSection>
+      </SettingsSection>
     </Container>
   );
 };

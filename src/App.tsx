@@ -31,7 +31,6 @@ import {
   RealtimeDeniedModal,
   TestableLinkModal,
 } from '@/pages/Dashboard/RestrictionModals';
-import BillingModal from '@/pages/Payment/BillingModal';
 import PaymentModal from '@/pages/Payment/PaymentModal';
 import LoginModal from '@/pages/Publish/Upload/common/LoginModal';
 import { compose } from '@/utils/functional';
@@ -66,7 +65,6 @@ const App = () => {
       <RealtimeDeniedModal />
       <ImportBulkDeniedModal />
       <CanvasMarkupModal />
-      <BillingModal />
       <PaymentModal />
       <RefreshModal />
       <LoginModal />

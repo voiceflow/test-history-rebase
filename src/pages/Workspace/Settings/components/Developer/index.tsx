@@ -1,0 +1,115 @@
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import client from '@/client';
+import Box, { FlexApart } from '@/components/Box';
+import Dropdown from '@/components/Dropdown';
+import IconButton, { IconButtonVariant } from '@/components/IconButton';
+import { SettingsSection } from '@/components/Settings';
+import { Spinner } from '@/components/Spinner';
+import { TableContainer, TableRow } from '@/components/Table';
+import Text, { ClickableText } from '@/components/Text';
+import { toast } from '@/components/Toast';
+import { ModalType } from '@/constants';
+import { setConfirm } from '@/ducks/modal';
+import * as Workspace from '@/ducks/workspace';
+import { useModals } from '@/hooks';
+import { APIKey } from '@/models/APIKey';
+
+import CreateAPIKeyModal from './modal';
+
+const APIKeyPage: React.FC = () => {
+  const dispatch = useDispatch();
+  const workspaceID = useSelector(Workspace.activeWorkspaceIDSelector)!;
+
+  const { open: openCreateModal } = useModals(ModalType.API_KEY_CREATE);
+
+  const [apiKeys, setAPIKeys] = React.useState<APIKey[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  const fetchAPIKeys = React.useCallback(async () => {
+    try {
+      setAPIKeys(await client.workspace.listAPIKeys(workspaceID));
+    } catch (error) {
+      toast.error(error);
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [workspaceID]);
+
+  const deleteKey = React.useCallback(async (key: string) => {
+    await client.api.apiKey.delete(key);
+    fetchAPIKeys();
+  }, []);
+
+  const confirmDeleteKey = React.useCallback(
+    (key: string) => () =>
+      dispatch(
+        setConfirm({
+          text: 'Are you sure you want to delete this API key? Any services consuming this key will fail.',
+          warning: true,
+          confirm: () => deleteKey(key),
+        })
+      ),
+    []
+  );
+
+  React.useEffect(() => {
+    fetchAPIKeys();
+  }, []);
+
+  if (loading) {
+    return (
+      <SettingsSection title="API Keys">
+        <Spinner isMd />
+      </SettingsSection>
+    );
+  }
+
+  return (
+    <SettingsSection title="API Keys">
+      <FlexApart px={32} py={24}>
+        <Text color="secondary">({apiKeys.length}) Existing API Keys</Text>
+        <ClickableText
+          onClick={() =>
+            openCreateModal({
+              workspaceID,
+              onCreate: fetchAPIKeys,
+            })
+          }
+        >
+          Create New API Key
+        </ClickableText>
+      </FlexApart>
+      {!!apiKeys.length && (
+        <TableContainer topBorder columns={[1]}>
+          {apiKeys.map(({ _id: keyID, name }) => (
+            <TableRow key={keyID}>
+              <Box py={16}>
+                {name}
+                <Box color="secondary" mt={6}>{`VF.${keyID}.XXX...`}</Box>
+              </Box>
+              <Dropdown
+                options={[
+                  {
+                    label: 'Delete',
+                    onClick: confirmDeleteKey(keyID),
+                  },
+                ]}
+                placement="bottom-end"
+              >
+                {(ref, onToggle, isOpen) => (
+                  <IconButton icon="elipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
+                )}
+              </Dropdown>
+            </TableRow>
+          ))}
+        </TableContainer>
+      )}
+      <CreateAPIKeyModal />
+    </SettingsSection>
+  );
+};
+
+export default APIKeyPage;

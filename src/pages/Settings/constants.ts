@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Tab } from '@/components/Settings/components/SettingsTabs';
 import { PlatformType } from '@/constants';
 
 import { Alexa, General, Google, Universal } from './components/ContentDescriptors';
@@ -12,10 +13,10 @@ export enum SettingSections {
   DANGER_ZONE = 'Danger Zone',
 }
 
-export enum SettingsTabsType {
-  GENERAL = 'general',
-  VERSIONS = 'versions',
-}
+export const Tabs = {
+  GENERAL: { label: 'General', path: 'general' },
+  VERSIONS: { label: 'Versions', path: 'version' },
+};
 
 export type PlatformSettingsMetaProps = {
   name: string;
@@ -33,7 +34,7 @@ export type PlatformSettingsMetaProps = {
     modelSensitivity?: React.FC | string;
     defaultVoice?: React.FC | string;
   };
-  tabs: SettingsTabsType[];
+  tabs: Tab[];
   localeText?: string;
 };
 
@@ -60,7 +61,7 @@ export const PLATFORM_SETTINGS_META = <Record<PlatformType, PlatformSettingsMeta
       modelSensitivity: Alexa.ModelSensitivity,
       defaultVoice: Universal.DefaultVoice,
     },
-    tabs: [SettingsTabsType.GENERAL, SettingsTabsType.VERSIONS],
+    tabs: [Tabs.GENERAL, Tabs.VERSIONS],
     localeText: 'Locales',
   },
   [PlatformType.GOOGLE]: {
@@ -75,7 +76,7 @@ export const PLATFORM_SETTINGS_META = <Record<PlatformType, PlatformSettingsMeta
       repeatDialog: General.RepeatDialog,
       repeatEverything: General.RepeatEverything,
     },
-    tabs: [SettingsTabsType.GENERAL, SettingsTabsType.VERSIONS],
+    tabs: [Tabs.GENERAL, Tabs.VERSIONS],
     localeText: 'Language',
   },
   [PlatformType.GENERAL]: {
@@ -84,6 +85,6 @@ export const PLATFORM_SETTINGS_META = <Record<PlatformType, PlatformSettingsMeta
     descriptors: {
       projectName: General.ProjectName,
     },
-    tabs: [SettingsTabsType.GENERAL],
+    tabs: [Tabs.GENERAL],
   },
 };

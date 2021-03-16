@@ -24,6 +24,8 @@ export const goToAdoptSSO = (email: string) => goTo(Path.SSO_ADOPT, { email });
 
 export const goToWorkspace = (workspaceID?: string) => goTo(generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID }));
 
+export const goToWorkspaceSettings = (workspaceID?: string) => goTo(generatePath(Path.WORKSPACE_SETTINGS, { workspaceID }));
+
 export const goToDashboard = () => goTo(Path.DASHBOARD);
 
 export const goToDashboardWithSearch = (search: string) => goTo(`${Path.DASHBOARD}${search}`);

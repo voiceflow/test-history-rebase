@@ -72,6 +72,7 @@ export enum CreatorRoute {
 
 export enum WorkspaceRoute {
   NEW = 'new',
+  SETTINGS = 'settings',
   TEMPLATE = 'template',
 }
 
@@ -98,6 +99,7 @@ export const Path = {
 
   WORKSPACE: toPath(RootRoute.WORKSPACE),
   WORKSPACE_DASHBOARD: toPath(RootRoute.WORKSPACE, ':workspaceID?'),
+  WORKSPACE_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID?', WorkspaceRoute.SETTINGS),
   NEW_WORKSPACE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.NEW),
   WORKSPACE_TEMPLATE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.TEMPLATE),
 

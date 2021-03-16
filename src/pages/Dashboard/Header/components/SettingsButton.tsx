@@ -7,15 +7,15 @@ import ClickableText from '@/components/Text/components/ClickableText';
 import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import { ModalType, PLAN_TYPE_META, PlanType, UserRole } from '@/constants';
+import * as Router from '@/ducks/router';
 import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
-const SettingsButton: React.FC<ConnectedSettingsButton> = ({ plan, leaveWorkspace }) => {
+const SettingsButton: React.FC<ConnectedSettingsButton> = ({ plan, goToWorkspaceSettings, leaveWorkspace }) => {
   const { toggle: togglePayment } = useModals(ModalType.PAYMENT);
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
-  const { toggle: toggleWorkspaceSettings } = useModals(ModalType.BOARD_SETTINGS);
   const [canConfigureWorkspace, { activeRole }] = usePermission(Permission.CONFIGURE_WORKSPACE);
   const { open: openUpgrade } = useModals(ModalType.PAYMENT);
 
@@ -30,7 +30,7 @@ const SettingsButton: React.FC<ConnectedSettingsButton> = ({ plan, leaveWorkspac
             {canConfigureWorkspace ? (
               <>
                 <MenuItem onClick={toggleCollaborators}>Manage Collaborators</MenuItem>
-                <MenuItem onClick={toggleWorkspaceSettings}>Workspace Settings</MenuItem>
+                <MenuItem onClick={goToWorkspaceSettings}>Workspace Settings</MenuItem>
                 <MenuItem divider />
                 {plan ? (
                   <MenuItem disabled capitalize teamItem>
@@ -89,6 +89,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   leaveWorkspace,
+  goToWorkspaceSettings: Router.goToCurrentWorkspaceSettings,
 };
 
 type ConnectedSettingsButton = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

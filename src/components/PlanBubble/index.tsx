@@ -6,15 +6,19 @@ import { ModalType, PLAN_TYPE_META, PlanType } from '@/constants';
 import { useModals, usePermission } from '@/hooks';
 
 type PlanBubble = {
-  plan: PlanType;
+  plan?: PlanType | null;
+  disabled?: boolean;
 };
 
-const PlanBubble: React.FC<PlanBubble> = ({ plan }) => {
-  const { color, label } = PLAN_TYPE_META[plan];
+const PlanBubble: React.FC<PlanBubble> = ({ plan, disabled }) => {
   const [canUpgrade] = usePermission(Permission.UPGRADE_WORKSPACE);
   const [canManageBilling] = usePermission(Permission.MANAGE_BILLING);
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
-  const allowedToClick = canUpgrade && canManageBilling;
+  const allowedToClick = !disabled && canUpgrade && canManageBilling;
+
+  if (!plan) return null;
+
+  const { color, label } = PLAN_TYPE_META[plan];
 
   const onClick = () => {
     if (allowedToClick) {

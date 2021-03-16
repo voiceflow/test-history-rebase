@@ -3,9 +3,11 @@ import moment from 'moment';
 import React from 'react';
 
 import client from '@/client';
-import { FlexCenter } from '@/components/Flex';
+import Box, { FlexCenter } from '@/components/Box';
 import { LoadCircle } from '@/components/Loader';
+import { SettingsSection } from '@/components/Settings';
 import SvgIcon from '@/components/SvgIcon';
+import { Descriptor, TableContainer, TableHeader, TableRow } from '@/components/Table';
 import { ClickableText } from '@/components/Text/components/ClickableText';
 import { toast } from '@/components/Toast';
 import { PlatformType } from '@/constants';
@@ -13,12 +15,9 @@ import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { ContentSection } from '@/pages/Settings/components/SettingsContent/components';
 import { PLATFORM_SETTINGS_META } from '@/pages/Settings/constants';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
-
-import { Descriptor, IconContainer, TableContainer, TableHeader, TableRow } from './components';
 
 type ProjectVersion = {
   versionID: string;
@@ -75,53 +74,51 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, curren
   }, []);
 
   return (
-    <ContentSection title="All Versions">
+    <SettingsSection title="All Versions">
       <Descriptor>New versions are created every time your project is uploaded to {name}.</Descriptor>
-      <TableContainer>
-        {loading ? (
-          <IconContainer>
-            <LoadCircle />
-          </IconContainer>
-        ) : (
-          <FadeLeftContainer>
-            {versions.length ? (
-              <>
-                <TableHeader>
-                  <span>Date</span>
-                  <span>Name</span>
-                  <span>Version</span>
-                </TableHeader>
-                {versions.map((version, index) => (
-                  <TableRow key={index}>
-                    <span>{moment(version.created).fromNow()}</span>
-                    <span style={{ color: '#62778c' }}>
+      {loading ? (
+        <FlexCenter minHeight={320}>
+          <LoadCircle />
+        </FlexCenter>
+      ) : (
+        <FadeLeftContainer>
+          {versions.length ? (
+            <TableContainer topBorder columns={[3, 8, 2]} minHeight={320}>
+              <TableHeader>
+                <span>Date</span>
+                <span>Name</span>
+                <span>Version</span>
+              </TableHeader>
+              {versions.map((version, index) => (
+                <TableRow key={index}>
+                  <span>{moment(version.created).fromNow()}</span>
+                  <span style={{ color: '#62778c' }}>
+                    <Box display="inline-block" mr={6} mb={-1}>
                       <SvgIcon size={12} icon={version.platform === PlatformType.GOOGLE ? 'google' : 'amazon'} />
-                      Automatic
-                    </span>
-                    <span>
-                      {version.versionID === currentVersionID ? (
-                        'Current'
-                      ) : (
-                        <ClickableText onClick={() => confirmRestore(version.versionID)}>Restore</ClickableText>
-                      )}
-                    </span>
-                  </TableRow>
-                ))}
-              </>
-            ) : (
-              <IconContainer>
-                <div>
-                  <FlexCenter>
-                    <img src="/images/no-intents.svg" height={64} alt="no intents" />
-                  </FlexCenter>
-                  <FlexCenter style={{ marginTop: '10px' }}>No versions exist</FlexCenter>
-                </div>
-              </IconContainer>
-            )}
-          </FadeLeftContainer>
-        )}
-      </TableContainer>
-    </ContentSection>
+                    </Box>
+                    Automatic
+                  </span>
+                  <span>
+                    {version.versionID === currentVersionID ? (
+                      'Current'
+                    ) : (
+                      <ClickableText onClick={() => confirmRestore(version.versionID)}>Restore</ClickableText>
+                    )}
+                  </span>
+                </TableRow>
+              ))}
+            </TableContainer>
+          ) : (
+            <FlexCenter minHeight={320}>
+              <Box textAlign="center">
+                <img src="/images/no-intents.svg" height={64} alt="no intents" />
+                <Box mt={10}>No versions exist</Box>
+              </Box>
+            </FlexCenter>
+          )}
+        </FadeLeftContainer>
+      )}
+    </SettingsSection>
   );
 };
 

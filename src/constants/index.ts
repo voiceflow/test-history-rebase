@@ -304,10 +304,8 @@ export const AV_FORMATS_STREAMING = [...AV_FILE_FORMATS, 'audio/x-mpegurl', 'app
 export enum ModalType {
   PAYMENT = 'payment',
   COLLABORATORS = 'collaborators',
-  BILLING = 'billing',
 
   BOARD_DELETE = 'board-delete',
-  BOARD_SETTINGS = 'board-settings',
 
   API_KEY_CREATE = 'api-key-create',
 

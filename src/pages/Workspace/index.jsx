@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Redirect, Switch } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import Button from '@/components/LegacyButton';
@@ -11,7 +11,7 @@ import { connect, lazy, withBatchLoadingGate } from '@/hocs';
 import PrivateRoute from '@/Routes/PrivateRoute';
 import { getActivePageAndMatch } from '@/utils/routes';
 
-const APIKeys = lazy(() => import('@/pages/APIKeys'));
+const Settings = lazy(() => import('@/pages/Workspace/Settings'));
 const NewProject = lazy(() => import('@/pages/NewProject'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
 
@@ -49,7 +49,8 @@ function Workspace({ workspaces, goTo }) {
   return (
     <Switch>
       <PrivateRoute exact path={[Path.WORKSPACE_TEMPLATE, `${Path.WORKSPACE_TEMPLATE}/:listID`]} component={NewProject} />
-      <PrivateRoute exact path={[`${Path.WORKSPACE}/:workspaceID/api-keys`]} component={APIKeys} />
+      <PrivateRoute path={[`${Path.WORKSPACE}/:workspaceID/settings`]} component={Settings} />
+      <Redirect exact from={`${Path.WORKSPACE}/:workspaceID/api-keys`} to={`${Path.WORKSPACE}/:workspaceID/settings/developer`} />
       <PrivateRoute exact path={[`${Path.WORKSPACE}/:workspaceID`, Path.DASHBOARD]} component={Dashboard} />
     </Switch>
   );

@@ -3,15 +3,18 @@ import SimpleBar from 'simplebar-react';
 
 import { css, styled, transition } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
+import { preventDefault } from '@/utils/dom';
 
 import { Interaction } from '../../../types';
+
+export const INTERACTIONS_CONTAINER_HEIGHT = 72;
 
 const Container = styled.div<{ hasInteractions: boolean }>`
   position: absolute;
   width: 100%;
   bottom: 0;
   overflow-y: hidden;
-  height: 72px;
+  height: ${INTERACTIONS_CONTAINER_HEIGHT}px;
   white-space: nowrap;
 
   ${({ hasInteractions }) =>
@@ -66,7 +69,7 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
         {hasInteractions && (
           <>
             {interactions.map(({ name }) => (
-              <Chip key={name} onClick={() => onInteraction(name)}>
+              <Chip key={name} onMouseDown={preventDefault()} onClick={() => onInteraction(name)}>
                 {name}
               </Chip>
             ))}

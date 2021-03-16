@@ -32,9 +32,10 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   status,
   hideSessionMessages,
   showPadding,
+  withInteractions,
   isMobile,
 }) => (
-  <Container isPublic={isPublic} showPadding={showPadding} isMobile={isMobile}>
+  <Container isPublic={isPublic} showPadding={showPadding} isMobile={isMobile} withInteractions={withInteractions}>
     {messages.map((message: Message, index) => {
       const previousMessage = messages[index - 1];
       const userSpeak = message.type === MessageType.USER;

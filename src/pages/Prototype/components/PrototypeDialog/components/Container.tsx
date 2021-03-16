@@ -3,11 +3,13 @@ import React from 'react';
 
 import { css, styled } from '@/hocs';
 
-export const Outter = styled.div<{ isPublic?: boolean }>`
+import { INTERACTIONS_CONTAINER_HEIGHT } from './Interactions';
+
+export const Outter = styled.div<{ isPublic?: boolean; withInteractions?: boolean }>`
   position: relative;
   display: flex;
   flex: 1;
-  height: 100%;
+  height: ${({ withInteractions }) => `calc(100% - ${withInteractions ? INTERACTIONS_CONTAINER_HEIGHT : 0}px)`};
   padding-top: 0;
   ${({ isPublic }) =>
     isPublic &&
@@ -43,8 +45,14 @@ const Content = styled.div<{ showPadding?: boolean; isMobile?: boolean }>`
   -webkit-overflow-scrolling: touch;
 `;
 
-const Container: React.FC<{ isPublic?: boolean; showPadding?: boolean; isMobile?: boolean }> = ({ children, isPublic, showPadding, isMobile }) => (
-  <Outter isPublic={isPublic}>
+const Container: React.FC<{ isPublic?: boolean; showPadding?: boolean; isMobile?: boolean; withInteractions?: boolean }> = ({
+  children,
+  isPublic,
+  showPadding,
+  withInteractions,
+  isMobile,
+}) => (
+  <Outter isPublic={isPublic} withInteractions={withInteractions}>
     <Middle isMobile={isMobile}>
       <Content showPadding={showPadding} isMobile={isMobile} className="chat-dialog-content">
         {children}

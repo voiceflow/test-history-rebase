@@ -5,6 +5,7 @@ import SvgIcon from '@/components/SvgIcon';
 import Tooltip from '@/components/TippyTooltip';
 import { IconVariant } from '@/constants';
 import { useTheme } from '@/hooks';
+import { preventDefault } from '@/utils/dom';
 
 import ButtonWrapper from './ButtonWrapper';
 
@@ -44,7 +45,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           </Tooltip>
 
           <Tooltip title="Mute Dialog Audio" disabled={disabled}>
-            <ButtonWrapper onClick={disabled ? undefined : onMute} disabled={disabled}>
+            <ButtonWrapper onMouseDown={preventDefault()} onClick={disabled ? undefined : onMute} disabled={disabled}>
               <SvgIcon icon={isMuted ? 'soundOff' : 'sound'} variant={disabled ? IconVariant.TERTIARY : IconVariant.STANDARD} clickable={!disabled} />
             </ButtonWrapper>
           </Tooltip>
@@ -54,6 +55,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       {!noSend && !testEnded && (
         <ButtonWrapper
           color={disabled ? theme?.iconColors.disabled : color || theme?.colors.blue}
+          onMouseDown={preventDefault()}
           onClick={() => !disabled && onSend()}
           disabled={disabled}
           isMobile={isMobile}

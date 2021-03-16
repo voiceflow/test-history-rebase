@@ -36,9 +36,13 @@ const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, is
 
   React.useEffect(() => () => document.querySelector('#root')!.removeEventListener('touchmove', preventIOSBodyScrolling), []);
 
+  React.useEffect(() => {
+    (document.activeElement as HTMLElement)?.blur();
+  }, [testEnded]);
+
   return (
     // mobile browsers will zoom and make css look bad if font-size is less than 16px
-    <Flex flex={2} fontSize={isMobile ? 16 : 15} maxWidth={isMobile ? 130 : '100%'} onClick={() => isIdle && onStart()}>
+    <Flex flex={2} fontSize={isMobile ? 16 : 15} maxWidth="100%" onClick={() => isIdle && onStart()}>
       <Input
         key={String(!isIdle)}
         value={value}

@@ -80,6 +80,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
           showPadding={showPadding}
           bottomScrollRef={scrollRef}
           hideSessionMessages={hideSessionMessages}
+          withInteractions={!!interactions.length}
         />
         {children}
       </InnerChatContainer>

@@ -12,6 +12,7 @@ import {
   debugSocket,
   env,
   ff_asrBypass,
+  ff_conditionsBuilder,
   ff_gadgets,
   ff_natoApco,
   ff_ownerRole,
@@ -75,6 +76,7 @@ export const ENV = {
   FF_OWNER_ROLE: ff_ownerRole && 'true',
   FF_ASR_BYPASS: ff_asrBypass && 'true',
   FF_NATO_ACPO: ff_natoApco && 'true',
+  FF_CONDITIONS_BUILDER: ff_conditionsBuilder && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

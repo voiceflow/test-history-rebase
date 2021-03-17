@@ -8,6 +8,7 @@ const OWNER_ROLE_ENABLED = process.env.FF_OWNER_ROLE === 'true';
 const ASR_BYPASS_ENABLED = process.env.FF_ASR_BYPASS === 'true';
 const NATO_APCO_ENABLED = process.env.FF_NATO_ACPO === 'true';
 const TRACE_ENABLED = process.env.FF_TRACE === 'true';
+const CONDITIONS_BUILDER_ENABLED = process.env.FF_CONDITIONS_BUILDER === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
@@ -16,6 +17,7 @@ export enum FeatureFlag {
   ASR_BYPASS = 'asr_bypass',
   NATO_APCO = 'nato_apco',
   TRACE = 'trace',
+  CONDITIONS_BUILDER = 'conditions_builder',
 
   // permanent circuit breakers for vendor integrations
   INTERCOM_INTEGRATION = 'intercom_integration',
@@ -29,4 +31,5 @@ export const LOCAL_FEATURE_OVERRIDES = {
   [FeatureFlag.ASR_BYPASS]: ASR_BYPASS_ENABLED,
   [FeatureFlag.NATO_APCO]: NATO_APCO_ENABLED,
   [FeatureFlag.TRACE]: TRACE_ENABLED,
+  [FeatureFlag.CONDITIONS_BUILDER]: CONDITIONS_BUILDER_ENABLED,
 };

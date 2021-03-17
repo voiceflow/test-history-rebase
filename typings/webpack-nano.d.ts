@@ -41,6 +41,7 @@ declare module 'webpack-nano/argv' {
     ff_gadgets: boolean;
     ff_trace: boolean;
     ff_wavenetVoices: boolean;
+    ff_conditionsBuilder: boolean;
     ff_ownerRole: boolean;
     ff_asrBypass: boolean;
     ff_natoApco: boolean;

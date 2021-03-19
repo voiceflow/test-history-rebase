@@ -17,6 +17,7 @@ export type PopupContainerProps = {
   open?: boolean;
   jobStage?: AlexaStageType | GoogleStageType | null;
   multiSelect?: boolean;
+  width?: number;
 };
 
 const PopupContainer = styled.div<PopupContainerProps>`
@@ -28,7 +29,7 @@ const PopupContainer = styled.div<PopupContainerProps>`
   flex-direction: column;
   align-items: center;
   min-width: 350px;
-  max-width: 350px;
+  max-width: ${({ width = 350 }) => `${width}px`};
   white-space: normal;
   background-color: #fff;
   border-radius: 5px;

@@ -1,27 +1,29 @@
 import React from 'react';
 
 import Button, { ButtonVariant } from '@/components/Button';
-import Dropdown from '@/components/Dropdown';
 import { ModalFooter } from '@/components/LegacyModal';
 import { toast } from '@/components/Toast';
 import { Permission } from '@/config/permissions';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { usePermission, useTrackingEvents } from '@/hooks';
+import { useEnableDisable, usePermission, useTrackingEvents } from '@/hooks';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
-import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
 import { stopImmediatePropagation } from '@/utils/dom';
 
-import { MenuContainer, MenuContent, MenuItemV2, SharePrototype } from './components';
+import PopupCloseIcon from '../PopupCloseIcon';
+import PopupContainer from '../PopupContainer';
+import PopupTransition from '../PopupTransition';
+import { MenuContent, MenuItemV2, SharePrototype } from './components';
 
 type ShareProjectProps = {
   render: boolean;
 };
 
 const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({ render, versionID, renderPrototype }) => {
+  const [open, onOpen, onClose] = useEnableDisable(false);
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canInviteByLink] = usePermission(Permission.INVITE_BY_LINK);
@@ -48,50 +50,39 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   };
 
   return (
-    <Dropdown
-      placement="bottom"
-      zIndex={999}
-      preventOverflow={{ padding: 10, boundariesElement: document.body }}
-      menu={() => (
-        <MenuContainer onClick={stopImmediatePropagation()}>
-          <FadeDownDelayedContainer>
-            <>
-              {canSharePrototype ? (
-                <MenuContent />
-              ) : (
-                <MenuItemV2
-                  isAllowed={false}
-                  title="Share Prototype"
-                  description="Share a testable version of your project that can be prototyped using voice, chat, or chip input."
-                />
-              )}
-              {canInviteByLink && (
-                <ModalFooter onClick={stopImmediatePropagation()}>
-                  <SharePrototype
-                    link={testableLink}
-                    onClick={onClickPrototype}
-                    isAllowed={canSharePrototype}
-                    onRenderPrototype={onRenderPrototype}
-                  />
-                </ModalFooter>
-              )}
-            </>
-          </FadeDownDelayedContainer>
-        </MenuContainer>
+    <>
+      {isPrototypingMode ? (
+        <Button variant={ButtonVariant.PRIMARY} icon="link" onClick={onOpen}>
+          Share Prototype
+        </Button>
+      ) : (
+        <Button preventFocusStyle variant={ButtonVariant.QUATERNARY} large onClick={onOpen} isActive={open}>
+          Share
+        </Button>
       )}
-    >
-      {(ref, onToggle, isOpen) =>
-        isPrototypingMode ? (
-          <Button ref={ref} variant={ButtonVariant.PRIMARY} icon="link" onClick={onToggle}>
-            Share Prototype
-          </Button>
-        ) : (
-          <Button ref={ref} preventFocusStyle variant={ButtonVariant.QUATERNARY} large onClick={onToggle} isActive={isOpen}>
-            Share
-          </Button>
-        )
-      }
-    </Dropdown>
+
+      <PopupContainer open={open} width={438}>
+        <PopupCloseIcon onClick={onClose} />
+        <PopupTransition>
+          <>
+            {canSharePrototype ? (
+              <MenuContent />
+            ) : (
+              <MenuItemV2
+                isAllowed={false}
+                title="Share Prototype"
+                description="Share a testable version of your project that can be prototyped using voice, chat, or chip input."
+              />
+            )}
+            {canInviteByLink && (
+              <ModalFooter onClick={stopImmediatePropagation()}>
+                <SharePrototype link={testableLink} onClick={onClickPrototype} isAllowed={canSharePrototype} onRenderPrototype={onRenderPrototype} />
+              </ModalFooter>
+            )}
+          </>
+        </PopupTransition>
+      </PopupContainer>
+    </>
   );
 };
 

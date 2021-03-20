@@ -67,7 +67,7 @@ const Layout: React.FC<LayoutProps> = ({ children, isVisuals, isListening, rende
         <FlexCenter width="100%" height="100%" column p={32}>
           <SvgIcon icon="info" color="#e5b813" size={32} />
           <Box mt={16} textAlign="center">
-            <Text fontSize={22}>Mobile support for prototypes are comming soon. Please test on desktop.</Text>
+            <Text fontSize={22}>Mobile support for prototypes is coming soon. Please test on desktop.</Text>
           </Box>
         </FlexCenter>
       ) : (

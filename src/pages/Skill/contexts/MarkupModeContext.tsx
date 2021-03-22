@@ -37,18 +37,34 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
 
   const [trackEvents] = useTrackingEvents();
 
-  const setCreatingModeType = (type: MarkupModeType | null) => {
-    const isNextCreating = !!type;
+  const onSetModeType = React.useCallback(
+    (type: MarkupModeType | null) => {
+      getEngine()?.markup.setModeTypeAndCreating(type, isCreating);
 
-    setModeType(type);
-    setCreating(isNextCreating);
-    getEngine()?.canvas?.setBusy(isNextCreating);
-  };
+      setModeType(type);
+    },
+    [getEngine]
+  );
 
-  const finishCreating = () => setCreatingModeType(null);
+  const setCreatingModeType = React.useCallback(
+    (type: MarkupModeType | null) => {
+      const engine = getEngine();
+      const isNextCreating = !!type;
+
+      engine?.canvas?.setBusy(isNextCreating);
+      engine?.markup.setModeTypeAndCreating(type, isNextCreating);
+
+      setModeType(type);
+      setCreating(isNextCreating);
+    },
+    [getEngine]
+  );
+
+  const finishCreating = React.useCallback(() => setCreatingModeType(null), [setCreatingModeType]);
+  getEngine()?.markup.setFinishCreating(finishCreating);
 
   // TODO: we should probably move these to the markup engine / manager
-  const onAddImage = () => {
+  const onAddImage = React.useCallback(() => {
     setCreatingModeType(null);
 
     const input = document.createElement('input');
@@ -65,7 +81,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
       }
 
       try {
-        setModeType(MarkupModeType.IMAGE);
+        onSetModeType(MarkupModeType.IMAGE);
 
         const engine = getEngine()!;
 
@@ -85,7 +101,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
         toast.error('There was an error');
       }
 
-      setModeType(null);
+      onSetModeType(null);
     };
 
     input.type = 'file';
@@ -94,7 +110,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
     input.addEventListener('change', listener, { once: true });
 
     input.click();
-  };
+  }, [getEngine, setCreatingModeType, onSetModeType, onUpload]);
 
   const trackMarkupTime = React.useCallback(() => {
     if (startTimeCache.current) {
@@ -144,7 +160,7 @@ export const MarkupModeProvider: React.FC = ({ children }) => {
         modeType,
         onAddImage,
         isCreating,
-        setModeType,
+        setModeType: onSetModeType,
         finishCreating,
         isUploadingImage,
         setCreatingModeType,

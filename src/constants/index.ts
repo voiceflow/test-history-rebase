@@ -369,6 +369,7 @@ export const SPACE_REGEXP = / /g;
 
 export const SSML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 
+export const URL_REGEX = /((https?:)?\/\/)?(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,10}\b([\w#%&+-./:=?@~]*)/;
 export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+-.:=@~]{2,256}\.[a-z]{2,10}\b([\w#%&+-./:=?@~]*)/;
 
 export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
@@ -393,8 +394,19 @@ export enum IconVariant {
   WHITE = 'white',
 }
 
+/** @deprecated Use KeyName instead */
 export enum KeyCode {
   ENTER = 13,
+}
+
+export enum KeyName {
+  TAB = 'Tab',
+  ENTER = 'Enter',
+  ESCAPE = 'Escape',
+  ARROW_UP = 'ArrowUp',
+  ARROW_DOWN = 'ArrowDown',
+  ARROW_LEFT = 'ArrowLeft',
+  ARROW_RIGHT = 'ArrowRight',
 }
 
 export const UNLIMITED_EDITORS_CONST = 100;
@@ -461,12 +473,6 @@ export enum ExportFormat {
   PDF = 'pdf',
   JSON = 'json',
   VF = 'vf',
-}
-
-export enum TextAlignment {
-  LEFT = 'left',
-  RIGHT = 'right',
-  CENTER = 'center',
 }
 
 export enum DiagramState {

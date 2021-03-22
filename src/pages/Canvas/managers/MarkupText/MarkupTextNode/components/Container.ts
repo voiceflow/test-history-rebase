@@ -1,12 +1,15 @@
 import { CANVAS_SHIFT_PRESSED_CLASSNAME } from '@/components/Canvas/constants';
-import { DraftJSEditorContainer } from '@/components/DraftJSEditor';
+import { MarkupModeType } from '@/constants';
 import { css, styled } from '@/hocs';
-import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME, NODE_FOCUSED_CLASSNAME } from '@/pages/Canvas/constants';
+import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_CREATING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
 
-export const Container = styled.div<{ activated: boolean; isNew?: boolean }>`
-  border: solid 1px transparent;
+import { SLATE_EDITOR_CLASS_NAME } from '../../constants';
+import Border from './Border';
 
+export const Container = styled.div<{ editable?: boolean; activated?: boolean; isNew?: boolean; focused?: boolean }>`
+  position: relative;
   min-height: 30px;
+  overflow: hidden;
 
   /* default text editor styles */
   color: #132144;
@@ -14,46 +17,75 @@ export const Container = styled.div<{ activated: boolean; isNew?: boolean }>`
   font-family: Open Sans;
   font-weight: 400;
 
-  ${DraftJSEditorContainer} {
-    border: solid 1px transparent;
+  .${SLATE_EDITOR_CLASS_NAME} {
+    border: solid 10px transparent;
     pointer-events: none;
   }
 
-  .${CANVAS_MARKUP_ENABLED_CLASSNAME}:not(.${CANVAS_DRAGGING_CLASSNAME}) &:not(:focus-within):hover {
-    border: solid 1px #5d9df5;
+  .${CANVAS_MARKUP_ENABLED_CLASSNAME} &:hover {
+    cursor: grab;
+  }
+
+  .${CANVAS_SHIFT_PRESSED_CLASSNAME} &:hover {
+    cursor: pointer;
+  }
+
+  .${CANVAS_MARKUP_ENABLED_CLASSNAME}:not(.${CANVAS_DRAGGING_CLASSNAME}) &:not(:focus-within):hover ${Border} {
+    color: #5d9df5;
+  }
+
+  .${CANVAS_MARKUP_CREATING_CLASSNAME}[data-markup="${MarkupModeType.TEXT}"] & {
+    &:hover ${Border} {
+      color: #5d9df5;
+    }
+
+    .${SLATE_EDITOR_CLASS_NAME} {
+      pointer-events: auto;
+      cursor: text;
+    }
   }
 
   ${({ activated }) =>
-    activated
-      ? css`
-          border: solid 1px #5d9df5;
+    activated &&
+    css`
+      & ${Border} {
+        color: #5d9df5;
+      }
+    `}
 
-          .${CANVAS_SHIFT_PRESSED_CLASSNAME} &:hover {
-            cursor: pointer;
-          }
-        `
-      : css`
-          .${CANVAS_MARKUP_ENABLED_CLASSNAME} &:hover {
-            cursor: grab;
-          }
+  ${({ editable }) =>
+    editable &&
+    css`
+      & ${Border} {
+        color: #5d9df5;
+      }
 
-          .${CANVAS_SHIFT_PRESSED_CLASSNAME} &:hover {
-            cursor: pointer;
-          }
-        `}
+      & .${SLATE_EDITOR_CLASS_NAME} {
+        cursor: text;
+        pointer-events: auto;
+      }
+    `}
 
-  .${NODE_FOCUSED_CLASSNAME} & ${DraftJSEditorContainer} {
-    border: solid 1px transparent !important;
-
-    pointer-events: auto;
+  .${CANVAS_MARKUP_ENABLED_CLASSNAME}.${CANVAS_DRAGGING_CLASSNAME} & {
+    ${({ activated, focused }) =>
+      activated &&
+      focused &&
+      css`
+        ${Border} {
+          color: transparent !important;
+        }
+      `}
   }
 
-  .public-DraftStyleDefault-block {
+  [data-slate-node='element'] {
     ${({ isNew }) =>
       isNew &&
       css`
-        display: inline-block;
-        white-space: nowrap;
+        width: fit-content;
+
+        & [data-slate-node='text'] {
+          white-space: pre;
+        }
       `}
   }
 `;

@@ -15,6 +15,7 @@ export type IconButtonProps = Pick<SvgIconProps, 'icon' | 'size'> &
   Either<ContainerProps, OutlineContainerProps> & {
     variant?: IconButtonVariant;
     onClick?: React.ReactEventHandler;
+    onMouseDown?: React.ReactEventHandler;
     onBlur?: React.ReactEventHandler;
     iconProps?: Omit<SvgIconProps, 'icon' | 'size'>;
     id?: string;

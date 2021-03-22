@@ -52,7 +52,7 @@ const Dropdown = <T extends any = undefined>({
 }: DropdownProps<T>) => {
   const containerRef = React.useRef<Nullable<HTMLDivElement>>(null);
 
-  const [isOpen, onToggle] = useDismissable(false, onClose, autoDismiss, selfDismiss ? containerRef : undefined);
+  const [isOpen, onToggle] = useDismissable(false, { onClose, autoDismiss, ref: selfDismiss ? containerRef : undefined });
   const [childRef, setChildRef] = React.useState<Nullable<HTMLElement>>(null);
 
   const onComputedStyle = React.useCallback(

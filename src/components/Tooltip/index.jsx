@@ -12,7 +12,7 @@ import { Container, JSONCode, Paragraph, Section, Title } from './components';
 export { JSONCode, Paragraph, Section, Title };
 
 export default function Tooltip({ anchorRenderer, placement = 'auto-end', children, portalNode }) {
-  const [isOpen, onToggle] = useDismissable(false, null, false);
+  const [isOpen, onToggle] = useDismissable(false);
 
   return (
     <Manager>

@@ -1,16 +1,13 @@
-import { RawDraftContentState } from 'draft-js';
-
-import { TextAlignment } from '@/constants';
+import { Node } from 'slate';
 
 export namespace Markup {
   export type Color = { r: number; g: number; b: number; a: number };
 
   export namespace NodeData {
     export type Text = {
-      content: RawDraftContentState;
-      textAlignment: TextAlignment;
       scale: number;
       rotate: number;
+      content: Node[];
       overrideWidth: number | null /* Used to implement horizontal + vertical resizing of Markup Text */;
     };
 

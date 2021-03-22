@@ -132,6 +132,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({
         [CANVAS_MARKUP_CREATING_CLASSNAME]: isMarkupCreating,
       })}
       markupMode={markupModeType}
+      data-markup={markupModeType}
       ref={ref}
     >
       {children}

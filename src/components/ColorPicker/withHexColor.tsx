@@ -9,18 +9,30 @@ type ExportedProps = ColorPickerProps & {
   onChange: (color: Required<RGBColor>) => void;
 };
 
-// eslint-disable-next-line react/display-name
-const withHexColor = (Component: React.ComponentClass<ExportedColorProps>) => ({ color, onChange, ...props }: ExportedProps) => {
+const withHexColor = <P extends object>(Component: React.ComponentClass<P & ExportedColorProps>) => ({
+  color,
+  onChange,
+  ...props
+}: P & ExportedProps) => {
   const [rgba, setRGBa] = React.useState(color);
 
   const onLocalChange = React.useCallback<ColorChangeHandler>(({ rgb }) => setRGBa({ ...rgb, a: rgb.a ?? 1 }), []);
   const onChangeComplete = React.useCallback<ColorChangeHandler>(({ rgb }) => onChange({ ...rgb, a: rgb.a ?? 1 }), [onChange]);
+  const onChangeCompleted = React.useCallback(
+    (rgb: RGBColor) => {
+      setRGBa({ ...rgb, a: rgb.a ?? 1 });
+      onChange({ ...rgb, a: rgb.a ?? 1 });
+    },
+    [onChange]
+  );
 
   React.useEffect(() => {
     setRGBa(color);
   }, [color]);
 
-  return <Component color={rgba} onChange={onLocalChange} onChangeComplete={onChangeComplete} {...props} />;
+  return (
+    <Component {...(props as P)} color={rgba} onChange={onLocalChange} onChangeComplete={onChangeComplete} onChangeCompleted={onChangeCompleted} />
+  );
 };
 
 export default withHexColor;

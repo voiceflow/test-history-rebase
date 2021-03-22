@@ -1,10 +1,9 @@
-import { EditorState } from 'draft-js';
 import React from 'react';
 
 import { FlexAround } from '@/components/Flex';
-import { MarkupModeType, TextAlignment } from '@/constants';
+import { MarkupModeType } from '@/constants';
 import { withRequiredEngine } from '@/contexts';
-import { useDidUpdateEffect, useSetup, useTeardown } from '@/hooks';
+import { useSetup } from '@/hooks';
 import { Markup } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
 import Section from '@/pages/Canvas/components/MarkupSection';
@@ -13,98 +12,38 @@ import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 import { MarkupModeContext } from '@/pages/Skill/contexts';
 
 import { FontStyles, Hyperlink, IconButtonSeparator, TextAligns, TextColor, TextStyles } from './components';
-import { getRawContent } from './utils';
 
-export const MarkupTextEditor: React.FC<NodeEditorPropsType<Markup.NodeData.Text> & { engine: Engine }> = ({
-  data,
-  nodeID,
-  onChange,
-  isOpen,
-  engine,
-}) => {
+export const MarkupTextEditor: React.FC<NodeEditorPropsType<Markup.NodeData.Text> & { engine: Engine }> = ({ nodeID, engine }) => {
   const { setModeType } = React.useContext(MarkupModeContext)!;
-  const { toolbarPlugin, anchorPlugin } = engine.markup.getPluginsByNodeID(nodeID);
-  const [textAlignment, setTextAlignment] = React.useState(data.textAlignment);
 
-  const onSetAlignment = (alignment: TextAlignment) => {
-    setTextAlignment(alignment);
-    onChange({ textAlignment: alignment });
-  };
-
-  const saveEditorState = (state: EditorState) => {
-    onChange({ content: getRawContent(state) });
-  };
-
-  const wrapSetEditorStateToSave = (setEditorState: (state: EditorState) => void) => (state: EditorState) => {
-    setEditorState(state);
-    onChange({ content: getRawContent(state) });
-  };
+  const editor = engine.markup.useTextEditor(nodeID);
 
   useSetup(() => setModeType(MarkupModeType.TEXT));
 
-  useTeardown(() => {
-    const state = toolbarPlugin.store.getItem<() => EditorState>('getEditorState')?.();
+  return !editor ? null : (
+    <Content>
+      <Section>
+        <FontStyles editor={editor} />
+      </Section>
 
-    if (state?.getCurrentContent().getPlainText().trim() === '' && engine?.getNodeByID(nodeID)) {
-      engine?.node.remove(nodeID);
-    }
-  });
+      <Section>
+        <FlexAround>
+          <TextAligns editor={editor} />
 
-  useDidUpdateEffect(() => {
-    const state = toolbarPlugin.store.getItem<() => EditorState>('getEditorState')?.();
+          <IconButtonSeparator />
 
-    if (!isOpen && state?.getCurrentContent().getPlainText().trim() === '') {
-      engine?.node.remove(nodeID);
-    }
+          <TextStyles editor={editor} />
 
-    if (!isOpen) {
-      setModeType(null);
-    } else {
-      setModeType(MarkupModeType.TEXT);
-    }
-  }, [isOpen]);
+          <IconButtonSeparator />
 
-  useDidUpdateEffect(() => {
-    if (textAlignment !== data.textAlignment) {
-      setTextAlignment(data.textAlignment);
-    }
-  }, [data.textAlignment]);
+          <Hyperlink editor={editor} />
+        </FlexAround>
+      </Section>
 
-  return (
-    <toolbarPlugin.Toolbar>
-      {({ getEditorState, setEditorState }) => (
-        <Content>
-          <Section>
-            <FontStyles key={String(isOpen)} setEditorState={setEditorState} getEditorState={getEditorState} saveEditorState={saveEditorState} />
-          </Section>
-
-          <Section>
-            <FlexAround>
-              <TextAligns alignment={textAlignment} setAlignment={onSetAlignment} />
-
-              <IconButtonSeparator />
-
-              <TextStyles setEditorState={wrapSetEditorStateToSave(setEditorState)} getEditorState={getEditorState} />
-
-              <IconButtonSeparator />
-
-              <Hyperlink
-                key={String(isOpen)}
-                setEditorState={wrapSetEditorStateToSave(setEditorState)}
-                getEditorState={getEditorState}
-                saveEditorState={saveEditorState}
-                createLinkAtSelection={anchorPlugin.createLinkAtSelection}
-                removeLinkAtSelection={anchorPlugin.removeLinkAtSelection}
-              />
-            </FlexAround>
-          </Section>
-
-          <Section>
-            <TextColor key={String(isOpen)} setEditorState={setEditorState} getEditorState={getEditorState} saveEditorState={saveEditorState} />
-          </Section>
-        </Content>
-      )}
-    </toolbarPlugin.Toolbar>
+      <Section>
+        <TextColor editor={editor} />
+      </Section>
+    </Content>
   );
 };
 

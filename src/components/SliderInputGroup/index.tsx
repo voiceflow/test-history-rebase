@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Box from '@/components/Box';
 import FormGroup from '@/components/FormGroup';
 import Slider, { SliderProps } from '@/components/Slider';
 
@@ -14,7 +15,7 @@ export type SliderInputGroupProps = {
   sliderPrefix: React.ReactNode;
   onChangeInput: React.ChangeEventHandler<HTMLInputElement>;
   onChangeSlider: (value: number) => void;
-  onAfterChangeSlider?: (value: number) => void;
+  onSliderContainerMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 };
 
 const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
@@ -26,13 +27,15 @@ const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
   sliderPrefix,
   onChangeInput,
   onChangeSlider,
-  onAfterChangeSlider,
+  onSliderContainerMouseDown,
 }) => (
   <FormGroup
     leftColumn={
       <>
         <SliderPrefixContainer>{sliderPrefix}</SliderPrefixContainer>
-        <Slider {...sliderProps} value={sliderValue} onChange={onChangeSlider} onAfterChange={onAfterChangeSlider} />
+        <Box width="100%" onMouseDown={onSliderContainerMouseDown}>
+          <Slider {...sliderProps} value={sliderValue} onChange={onChangeSlider} />
+        </Box>
       </>
     }
     rightColumn={

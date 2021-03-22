@@ -1,77 +1,33 @@
-import type { DraftJsBlockStyleButtonProps } from '@voiceflow/draft-js-buttons';
-import { EditorState } from 'draft-js';
-import _last from 'lodash/last';
 import React from 'react';
+import { unstable_batchedUpdates } from 'react-dom';
 
 import Select from '@/components/Select';
+import { preventDefault } from '@/utils/dom';
 
-import { Font, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, FONTS_LABELS, FontWeight, InlineStylePrefix } from '../../constants';
-import {
-  applyFakeSelectionStyle,
-  getInlineStylePrefixAndValue,
-  getSelectionPrefixedInlineStyle,
-  removeFakeSelectionStyle,
-  togglePrefixedInlineStyle,
-} from '../../utils';
+import { Font, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, FONTS_LABELS, FontWeight, LeafProperty } from '../../constants';
+import MarkupSlateEditor, { MarkupEditor } from '../../MarkupSlateEditor';
 import { FormGroup } from './components';
 
-type FontStylesProps = Omit<DraftJsBlockStyleButtonProps, 'children'> & {
-  saveEditorState: (state: EditorState) => void;
+type FontStylesProps = {
+  editor: MarkupEditor;
 };
 
-const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState, saveEditorState }) => {
-  const { fontWeight, fontFamily } = React.useMemo(() => {
-    const editorState = getEditorState?.();
-
-    const fontWeightValue = FontWeight.REGULAR;
-    const fontFamilyValue = Font.OPEN_SANS;
-
-    if (!editorState) {
-      return {
-        fontWeight: fontWeightValue,
-        fontFamily: fontFamilyValue,
-      };
-    }
-
-    const fontFamilyStyle = _last(getSelectionPrefixedInlineStyle(editorState, InlineStylePrefix.FONT_FAMILY));
-    const fontWeightStyle = _last(getSelectionPrefixedInlineStyle(editorState, InlineStylePrefix.FONT_WEIGHT));
-
-    return {
-      fontFamily: (getInlineStylePrefixAndValue(fontFamilyStyle)[1] as Font) || Font.OPEN_SANS,
-      fontWeight: (getInlineStylePrefixAndValue(fontWeightStyle)[1] as FontWeight) || FontWeight.REGULAR,
-    };
-  }, [getEditorState?.()]);
-
-  const onShowFakeSelection = () => {
-    setEditorState(applyFakeSelectionStyle(getEditorState()));
-  };
-
-  const onHideFakeSelection = () => {
-    setTimeout(() => {
-      setEditorState(removeFakeSelectionStyle(getEditorState()));
-    }, 100);
-  };
+const FontStyles: React.FC<FontStylesProps> = ({ editor }) => {
+  const fontFamily = MarkupSlateEditor.leafProperty<Font>(editor, LeafProperty.FONT_FAMILY) || Font.OPEN_SANS;
+  const fontWeight = MarkupSlateEditor.leafProperty<FontWeight>(editor, LeafProperty.FONT_WEIGHT) || FontWeight.REGULAR;
 
   const onChangeFontWeight = (value: FontWeight) => {
-    let state = getEditorState();
-
-    state = togglePrefixedInlineStyle(state, InlineStylePrefix.FONT_WEIGHT, value);
-
-    setEditorState(state);
-    saveEditorState(state);
+    MarkupSlateEditor.setLeafProperty(editor, LeafProperty.FONT_WEIGHT, value);
   };
 
   const onChangeFontFamily = (value: Font) => {
-    let state = getEditorState();
+    unstable_batchedUpdates(() => {
+      MarkupSlateEditor.setLeafProperty(editor, LeafProperty.FONT_FAMILY, value);
 
-    state = togglePrefixedInlineStyle(state, InlineStylePrefix.FONT_FAMILY, value);
-
-    if (!FONT_WEIGHTS_PER_FONT_FAMILY[value].includes(fontWeight)) {
-      state = togglePrefixedInlineStyle(state, InlineStylePrefix.FONT_WEIGHT, FONT_WEIGHTS_PER_FONT_FAMILY[value][0]);
-    }
-
-    setEditorState(state);
-    saveEditorState(state);
+      if (!FONT_WEIGHTS_PER_FONT_FAMILY[value].includes(fontWeight)) {
+        MarkupSlateEditor.setLeafProperty(editor, LeafProperty.FONT_WEIGHT, FONT_WEIGHTS_PER_FONT_FAMILY[value][0]);
+      }
+    });
   };
 
   return (
@@ -79,11 +35,10 @@ const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState,
       leftColumn={
         <Select
           value={fontFamily}
-          onOpen={onShowFakeSelection}
-          onClose={onHideFakeSelection}
           options={Object.values(Font)}
           onSelect={onChangeFontFamily}
           minWidth={false}
+          onMouseDown={preventDefault()}
           getOptionLabel={(value) => FONTS_LABELS[value!]}
           optionsMaxSize={Object.values(Font).length}
         />
@@ -91,11 +46,10 @@ const FontStyles: React.FC<FontStylesProps> = ({ getEditorState, setEditorState,
       rightColumn={
         <Select
           value={fontWeight}
-          onOpen={onShowFakeSelection}
-          onClose={onHideFakeSelection}
           options={FONT_WEIGHTS_PER_FONT_FAMILY[fontFamily]}
           onSelect={onChangeFontWeight}
           minWidth={false}
+          onMouseDown={preventDefault()}
           getOptionLabel={(value) => FONT_WEIGHTS_LABELS[value!]}
           optionsMaxSize={FONT_WEIGHTS_PER_FONT_FAMILY[fontFamily].length}
         />

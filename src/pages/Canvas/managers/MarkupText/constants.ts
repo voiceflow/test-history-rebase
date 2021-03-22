@@ -1,4 +1,29 @@
 export const UPDATE_DATA_TIMEOUT = 300;
+export const SLATE_EDITOR_CLASS_NAME = 'slate-editor';
+
+export const DEFAULT_LINK_COLOR = { r: 93, g: 157, b: 245, a: 1 };
+
+export enum BlockType {
+  LINK = 'link',
+}
+
+export enum BlockProperty {
+  TEXT_ALIGN = 'textAlign',
+}
+
+export enum LeafProperty {
+  COLOR = 'color',
+  ITALIC = 'italic',
+  UNDERLINE = 'underline',
+  FONT_WEIGHT = 'fontWeight',
+  FONT_FAMILY = 'fontFamily',
+}
+
+export enum TextAlign {
+  LEFT = 'left',
+  RIGHT = 'right',
+  CENTER = 'center',
+}
 
 export enum Font {
   OPEN_SANS = 'Open Sans',
@@ -39,16 +64,3 @@ export const FONT_WEIGHTS_PER_FONT_FAMILY: Record<Font, FontWeight[]> = {
   [Font.GEORGIA]: [FontWeight.REGULAR, FontWeight.BOLD],
   [Font.COURIER_NEW]: [FontWeight.REGULAR, FontWeight.BOLD],
 };
-
-export enum DraftBuiltInStyle {
-  ITALIC = 'ITALIC',
-  UNDERLINE = 'UNDERLINE',
-}
-
-export enum InlineStylePrefix {
-  COLOR = 'COLOR',
-  FONT_SIZE = 'FONT_SIZE',
-  FONT_WEIGHT = 'FONT_WEIGHT',
-  FONT_FAMILY = 'FONT_FAMILY',
-  FAKE_SELECTION = 'FAKE_SELECTION',
-}

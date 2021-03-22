@@ -75,6 +75,7 @@ function BaseNestedMenu({
   const onMouseMove = React.useCallback(() => {
     cachedRef.current.blockOptionHover = false;
   }, []);
+
   const onChildFocusItemIndex = React.useCallback(
     (index) => {
       const i = index >= focusedItemOptions.length ? 0 : index;

@@ -68,6 +68,7 @@ export type SelectProps<O, V> = {
   searchable?: boolean;
   rightAction?: React.ReactNode;
   placeholder?: string;
+  onMouseDown?: React.MouseEventHandler;
   renderAsSpan?: boolean;
   getOptionKey?: (option: O) => string;
   optionsFilter?: OptionsFilter<O, V>;
@@ -146,6 +147,7 @@ const Select = <O, V = O>({
   borderLess,
   searchable,
   rightAction,
+  onMouseDown,
   placeholder,
   getOptionValue = defaultGetter as GetOptionValue<O, V>,
   getOptionKey = (getOptionValue as any) as (option: O) => string,
@@ -192,6 +194,7 @@ const Select = <O, V = O>({
     getOptionLabel,
     optionsMaxSize,
     getOptionValue,
+    labelSearchable,
     inputWrapperRef,
     firstOptionIndex: (isDropdown && searchable) || creatable ? 1 : 0,
     multiLevelDropdown,
@@ -251,7 +254,10 @@ const Select = <O, V = O>({
   const onOpenMenu = React.useCallback(
     (e?: React.MouseEvent | React.FocusEvent) => {
       e?.stopPropagation();
-      inputRef.current?.focus?.();
+
+      if (cache.current.searchable) {
+        inputRef.current?.focus?.();
+      }
 
       if (!cache.current.opened) {
         updateOpened(true);
@@ -263,7 +269,9 @@ const Select = <O, V = O>({
   );
 
   const onHideMenu = React.useCallback(() => {
-    inputRef.current?.blur?.();
+    if (cache.current.searchable) {
+      inputRef.current?.blur?.();
+    }
 
     if (cache.current.searchable && cache.current.searchLabel !== cache.current.optionLabel) {
       updateSearchLabel(cache.current.optionLabel);
@@ -365,6 +373,7 @@ const Select = <O, V = O>({
     isDropdown: !!label,
     borderLess,
     placeholder,
+    onMouseDown: searchable ? onMouseDown : undefined,
     rightAction,
     isDropDownOpened,
   };
@@ -384,6 +393,7 @@ const Select = <O, V = O>({
             className={className}
             fullWidth={fullWidth}
             clearable={clearable}
+            onMouseDown={!labelSearchable ? onMouseDown : undefined}
           >
             {triggerRenderer ? (
               triggerRenderer({
@@ -417,7 +427,6 @@ const Select = <O, V = O>({
       {opened && (
         <AnyAdvancedMenu
           id={id}
-          withSearchIcon={withSearchIcon}
           onHide={onHideMenu}
           grouped={grouped}
           options={optionsToRender}
@@ -429,13 +438,14 @@ const Select = <O, V = O>({
           placement={placement}
           searchable={searchable}
           isDropdown={isDropdown}
-          formatInputValue={formatInputValue}
           searchLabel={searchLabel}
           getOptionKey={getOptionKey}
           onFocusOption={onFocusOption}
+          withSearchIcon={withSearchIcon}
           getOptionValue={getOptionValue}
           getOptionLabel={getOptionLabel}
           inputWrapperRef={inputWrapperRef}
+          formatInputValue={formatInputValue}
           firstOptionIndex={cache.current.firstOptionIndex}
           isButtonDisabled={isButtonDisabled}
           popoverModifiers={menuPopoverModifiers}

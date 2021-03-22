@@ -150,7 +150,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
        * Used at the end of a transformation to publish the final state of the node into
        * the Redux store.
        */
-      applyTransformations: () => {
+      applyTransformations: async () => {
         const data = engine.getDataByNodeID<any>(nodeEntity.nodeID);
         const [scaleX, scaleY] = scale.current!;
         const angle = rotation.current;
@@ -161,23 +161,23 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
           heightCache.current = null;
         }
 
-        scale.current = [1, 1];
-        rotation.current = 0;
-        textWidth.current = null;
-
         if (isResizableShape(data)) {
-          engine.node.updateData<ResizableMarkupNodeData>(nodeEntity.nodeID, {
+          await engine.node.updateData<ResizableMarkupNodeData>(nodeEntity.nodeID, {
             width: data.width * scaleX,
             height: data.height * scaleY,
             rotate: angle % (2 * Math.PI),
           });
         } else if (isText(data)) {
-          engine.node.updateData<Markup.NodeData.Text>(nodeEntity.nodeID, {
+          await engine.node.updateData<Markup.NodeData.Text>(nodeEntity.nodeID, {
             scale: scaleX,
             rotate: angle % (2 * Math.PI),
             ...(maxWidth !== null && { overrideWidth: maxWidth }),
           });
         }
+
+        scale.current = [1, 1];
+        rotation.current = 0;
+        textWidth.current = null;
       },
       /**
        * Accumulates the effects of a rotation operation and applies the changes so far as a style

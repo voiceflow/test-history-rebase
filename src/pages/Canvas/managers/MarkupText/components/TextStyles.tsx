@@ -1,17 +1,34 @@
-import type { DraftJsBlockStyleButtonProps } from '@voiceflow/draft-js-buttons';
-import { ItalicButton, UnderlineButton } from '@voiceflow/draft-js-buttons';
 import React from 'react';
 
+import { preventDefault } from '@/utils/dom';
+
+import { LeafProperty } from '../constants';
+import MarkupSlateEditor, { MarkupEditor } from '../MarkupSlateEditor';
 import IconButton from './IconButton';
 
-const TextStyles: React.FC<Omit<DraftJsBlockStyleButtonProps, 'children'>> = (props) => (
-  <>
-    <ItalicButton {...props}>{({ isActive, ...buttonProps }) => <IconButton {...buttonProps} icon="italic" active={isActive} />}</ItalicButton>
+type TextStylesProps = {
+  editor: MarkupEditor;
+};
 
-    <UnderlineButton {...props}>
-      {({ isActive, ...buttonProps }) => <IconButton {...buttonProps} icon="underline" active={isActive} />}
-    </UnderlineButton>
-  </>
-);
+const TextStyles: React.FC<TextStylesProps> = ({ editor }) => {
+  const isItalicActive = MarkupSlateEditor.isLeafPropertyActive(editor, LeafProperty.ITALIC, true);
+  const isUnderlineActive = MarkupSlateEditor.isLeafPropertyActive(editor, LeafProperty.UNDERLINE, true);
+
+  return (
+    <>
+      <IconButton
+        icon="italic"
+        active={isItalicActive}
+        onMouseDown={preventDefault(() => MarkupSlateEditor.setLeafProperty(editor, LeafProperty.ITALIC, !isItalicActive))}
+      />
+
+      <IconButton
+        icon="underline"
+        active={isUnderlineActive}
+        onMouseDown={preventDefault(() => MarkupSlateEditor.setLeafProperty(editor, LeafProperty.UNDERLINE, !isUnderlineActive))}
+      />
+    </>
+  );
+};
 
 export default TextStyles;

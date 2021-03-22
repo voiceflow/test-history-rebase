@@ -1,30 +1,30 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import type { AnchorPlugin, AnchorPluginConfig } from '@voiceflow/draft-js-anchor-plugin';
-import createAnchorPlugin from '@voiceflow/draft-js-anchor-plugin';
-import type { StaticToolBarPlugin } from '@voiceflow/draft-js-static-toolbar-plugin';
-import createStaticToolbarPlugin from '@voiceflow/draft-js-static-toolbar-plugin';
 import { createMatchSelector } from 'connected-react-router';
-import { convertToRaw, EditorState } from 'draft-js';
 import React from 'react';
+import { unstable_batchedUpdates } from 'react-dom';
 
 import { Path } from '@/config/routes';
-import { BlockType, MARKUP_NODES, TextAlignment } from '@/constants';
+import { BlockType, MARKUP_NODES, MarkupModeType } from '@/constants';
 import * as Router from '@/ducks/router';
-import { useSetup, useTeardown } from '@/hooks';
+import { useForceUpdate, useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
+import MarkupSlateEditor, { createSlateEditor, MarkupEditor } from '@/pages/Canvas/managers/MarkupText/MarkupSlateEditor';
 import { objectID } from '@/utils';
 
 import { EngineConsumer } from './utils';
 
-type Plugins = {
-  anchorPlugin: AnchorPlugin;
-  toolbarPlugin: StaticToolBarPlugin;
-};
-
 class MarkupEngine extends EngineConsumer {
   log = this.engine.log.child('markup');
 
-  pluginsByNodeID: Record<string, Plugins> = {};
+  textEditorsMap: Map<string, MarkupEditor> = new Map();
+
+  textEditorsOnChangeMap: Map<string, () => void> = new Map();
+
+  modeType: MarkupModeType | null = null;
+
+  isCreating = false;
+
+  finishCreating: (() => void) | null = null;
 
   get isActive() {
     return !!this.select(createMatchSelector(Path.CANVAS_MARKUP));
@@ -39,61 +39,78 @@ class MarkupEngine extends EngineConsumer {
     return !!node && MARKUP_NODES.includes(node.type);
   }
 
+  setModeTypeAndCreating(modeType: MarkupModeType | null, creating: boolean) {
+    this.modeType = modeType;
+    this.isCreating = creating;
+  }
+
+  setFinishCreating(callback: (() => void) | null) {
+    this.finishCreating = callback;
+  }
+
   activate() {
     return this.dispatch(Router.goToCurrentCanvasMarkup());
   }
 
-  async addTextNode() {
+  async addTextNode(): Promise<void> {
     const nodeData: Markup.NodeData.Text = {
-      content: convertToRaw(EditorState.createEmpty().getCurrentContent()),
-      textAlignment: TextAlignment.LEFT,
       scale: 1,
       rotate: 0,
-      overrideWidth: 160,
+      content: MarkupSlateEditor.getEmptyState(),
+      overrideWidth: 178,
     };
 
     const nodeID = await this.engine.node.add(
       BlockType.MARKUP_TEXT,
-      this.engine.getMouseCoords(),
+      this.engine.getMouseCoords().sub([12 * (this.engine.canvas?.getZoom() ?? 1), 26 * (this.engine.canvas?.getZoom() ?? 1)]),
       nodeData as NodeData<Markup.NodeData.Text>,
       objectID(),
       false
     );
 
-    let editorState = this.pluginsByNodeID[nodeID].toolbarPlugin.store.getItem<() => EditorState>('getEditorState')();
-
-    editorState = EditorState.forceSelection(
-      EditorState.push(editorState, editorState.getCurrentContent(), 'apply-entity'),
-      editorState.getSelection()
-    );
-
-    this.pluginsByNodeID[nodeID].toolbarPlugin.store.getItem<(state: EditorState) => void>('setEditorState')(editorState);
-
     this.engine.focus.set(nodeID);
   }
 
-  useSetupPlugins(nodeID: string, { anchorOptions }: { anchorOptions: AnchorPluginConfig }) {
-    const plugins = React.useMemo(
-      () => ({
-        anchorPlugin: createAnchorPlugin(anchorOptions),
-        toolbarPlugin: createStaticToolbarPlugin(),
-      }),
-      []
-    );
+  useSetupTextEditor(nodeID: string): MarkupEditor {
+    const editor = React.useMemo(() => {
+      const editor = createSlateEditor();
+
+      const { onChange } = editor;
+
+      editor.onChange = () => {
+        unstable_batchedUpdates(() => {
+          this.textEditorsOnChangeMap.get(nodeID)?.();
+          onChange();
+        });
+      };
+
+      return editor;
+    }, []);
 
     useSetup(() => {
-      this.pluginsByNodeID[nodeID] = plugins;
+      this.textEditorsMap.set(nodeID, editor);
     });
 
     useTeardown(() => {
-      delete this.pluginsByNodeID[nodeID];
+      this.textEditorsMap.delete(nodeID);
     });
 
-    return plugins;
+    return editor;
   }
 
-  getPluginsByNodeID(nodeID: string) {
-    return this.pluginsByNodeID[nodeID];
+  useTextEditor(nodeID: string): MarkupEditor | undefined {
+    const [forceUpdate] = useForceUpdate();
+    const editor = this.textEditorsMap.get(nodeID);
+
+    useSetup(() => {
+      this.textEditorsOnChangeMap.set(nodeID, forceUpdate);
+    });
+
+    useTeardown(() => {
+      this.textEditorsOnChangeMap.delete(nodeID);
+    });
+
+    return editor;
   }
 }
 

@@ -7,7 +7,7 @@ import { useSwallowZoom } from '../hooks';
 import CircularHandle from './CircularHandle';
 
 const OffsetCircularHandle = styled(CircularHandle)`
-  top: -20px;
+  top: -24px;
   left: 50%;
   transform: translateX(-50%);
 `;

@@ -100,7 +100,7 @@ export default {
           return cy.get('.vf-canvas__node--markup_text');
         },
         get markupTextInput() {
-          return this.markupText.find('.DraftEditor-editorContainer');
+          return this.markupText.find('.slate-editor');
         },
         get markupImage() {
           return cy.get('.vf-canvas__node--markup_image');

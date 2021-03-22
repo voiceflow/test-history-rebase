@@ -1,22 +1,35 @@
-import type { DraftJsBlockAlignmentButtonProps } from '@voiceflow/draft-js-buttons';
-import { AlignBlockCenterButton, AlignBlockLeftButton, AlignBlockRightButton } from '@voiceflow/draft-js-buttons';
 import React from 'react';
 
+import { preventDefault } from '@/utils/dom';
+
+import { BlockProperty, TextAlign } from '../constants';
+import MarkupSlateEditor, { MarkupEditor } from '../MarkupSlateEditor';
 import IconButton from './IconButton';
 
-const TextAligns: React.FC<Omit<DraftJsBlockAlignmentButtonProps, 'children'>> = (props) => (
+type TextAlignsProps = {
+  editor: MarkupEditor;
+};
+
+const TextAligns: React.FC<TextAlignsProps> = ({ editor }) => (
   <>
-    <AlignBlockLeftButton {...props}>
-      {({ isActive, ...buttonProps }) => <IconButton {...buttonProps} active={isActive} icon="textAlignLeft" />}
-    </AlignBlockLeftButton>
-
-    <AlignBlockCenterButton {...props}>
-      {({ isActive, ...buttonProps }) => <IconButton {...buttonProps} active={isActive} icon="textAlignCenter" />}
-    </AlignBlockCenterButton>
-
-    <AlignBlockRightButton {...props}>
-      {({ isActive, ...buttonProps }) => <IconButton {...buttonProps} active={isActive} icon="textAlignRight" />}
-    </AlignBlockRightButton>
+    <IconButton
+      icon="textAlignLeft"
+      active={
+        MarkupSlateEditor.isBlockPropertyActive(editor, BlockProperty.TEXT_ALIGN, undefined) ||
+        MarkupSlateEditor.isBlockPropertyActive(editor, BlockProperty.TEXT_ALIGN, TextAlign.LEFT)
+      }
+      onMouseDown={preventDefault(() => MarkupSlateEditor.setBlockProperty(editor, BlockProperty.TEXT_ALIGN, TextAlign.LEFT))}
+    />
+    <IconButton
+      icon="textAlignCenter"
+      active={MarkupSlateEditor.isBlockPropertyActive(editor, BlockProperty.TEXT_ALIGN, TextAlign.CENTER)}
+      onMouseDown={preventDefault(() => MarkupSlateEditor.setBlockProperty(editor, BlockProperty.TEXT_ALIGN, TextAlign.CENTER))}
+    />
+    <IconButton
+      icon="textAlignRight"
+      active={MarkupSlateEditor.isBlockPropertyActive(editor, BlockProperty.TEXT_ALIGN, TextAlign.RIGHT)}
+      onMouseDown={preventDefault(() => MarkupSlateEditor.setBlockProperty(editor, BlockProperty.TEXT_ALIGN, TextAlign.RIGHT))}
+    />
   </>
 );
 

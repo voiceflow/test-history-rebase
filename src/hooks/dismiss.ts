@@ -7,9 +7,12 @@ import { useEnableDisable } from './toggle';
 // eslint-disable-next-line import/prefer-default-export
 export function useDismissable(
   defaultValue = false,
-  onClose?: null | (() => void),
-  autoDismiss = false,
-  ref?: React.RefObject<Element>
+  {
+    ref,
+    onClose,
+    autoDismiss = false,
+    dismissEvent = 'click',
+  }: { ref?: React.RefObject<Element>; onClose?: null | (() => void); autoDismiss?: boolean; dismissEvent?: 'click' | 'mousedown' } = {}
 ): [boolean, () => void, (event?: MouseEvent) => void] {
   const overlay = React.useContext(OverlayContext);
   const [isOpen, setOpen, setClosed] = useEnableDisable(defaultValue);
@@ -33,7 +36,7 @@ export function useDismissable(
     [onClose, autoDismiss, overlay?.setHandler]
   );
 
-  const removeRootListener = React.useCallback(() => rootNode.removeEventListener('click', handleClose), [rootNode, handleClose]);
+  const removeRootListener = React.useCallback(() => rootNode.removeEventListener(dismissEvent, handleClose), [rootNode, handleClose]);
 
   const handleOpen = React.useCallback(() => {
     if (autoDismiss && !overlay?.canOpen()) {
@@ -56,7 +59,7 @@ export function useDismissable(
 
   React.useEffect(() => {
     if (isOpen) {
-      rootNode.addEventListener('click', handleClose);
+      rootNode.addEventListener(dismissEvent, handleClose);
 
       return () => {
         if (autoDismiss) {

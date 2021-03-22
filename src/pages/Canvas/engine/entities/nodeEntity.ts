@@ -80,7 +80,7 @@ export type NodeInstance = EntityInstance & {
    *
    * only Markup nodes can be transformed
    */
-  applyTransformations?: () => void;
+  applyTransformations?: () => Promise<void>;
 
   /**
    * for de-focusing blocks

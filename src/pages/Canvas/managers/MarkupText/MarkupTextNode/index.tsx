@@ -1,272 +1,248 @@
 import composeRefs from '@seznam/compose-react-refs';
-import { DraftHandleValue, EditorState, RichUtils } from 'draft-js';
-import type BaseDraftJSEditor from 'draft-js-plugins-editor';
-import _last from 'lodash/last';
 import React from 'react';
+import { Node, Transforms } from 'slate';
+import { Editable, RenderElementProps, RenderLeafProps, Slate } from 'slate-react';
 
-import DraftJSEditor from '@/components/DraftJSEditor';
-import { deleteHandler } from '@/components/TextEditor/plugins/base/utils';
-import { isFirefox } from '@/config';
+import { KeyName } from '@/constants';
 import { isNodeEditLockedSelector } from '@/ducks/realtime';
 import { compose, connect } from '@/hocs';
-import { useDidUpdateEffect } from '@/hooks';
+import { useCache, useDebouncedCallback, useDidUpdateEffect } from '@/hooks';
 import { Markup } from '@/models';
 import { useBlockAPI } from '@/pages/Canvas/components/Block/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { BlockAPI } from '@/pages/Canvas/types';
 
-import { FontWeight, InlineStylePrefix } from '../constants';
-import {
-  getInlineStylePrefixAndValue,
-  getRawContent,
-  getSelectionPrefixedInlineStyle,
-  removeFakeSelectionStyle,
-  togglePrefixedInlineStyle,
-} from '../utils';
-import { Container, Link } from './components';
-import { createEditorState, customStyleFn, findAllDraggableParents } from './utils';
+import { BlockType, Font, FONT_WEIGHTS_PER_FONT_FAMILY, FontWeight, LeafProperty, SLATE_EDITOR_CLASS_NAME } from '../constants';
+import MarkupSlateEditor from '../MarkupSlateEditor';
+import { Border, BorderPosition, Container, DefaultElement, Leaf, LinkElement } from './components';
+import { addDraggableAttr, findAllDraggableParents, removeDraggableAttr } from './utils';
 
 type MarkupProps = ConnectedMarkupNodeProps<Markup.NodeData.Text> & {
   isNodeLocked: (nodeID: string) => boolean;
 };
 
 const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({ node, data, isNodeLocked }, ref) => {
-  const editorRef = React.useRef<BaseDraftJSEditor>(null);
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const draggableParentsCache = React.useRef<HTMLElement[]>([]);
-  const isNew = React.useMemo(() => !data.content.blocks.length || (data.content.blocks.length === 1 && !data.content.blocks[0].text), []);
-  const [isInitialWidthApplied, setIsInitialWidthApplied] = React.useState(false);
-  const [editorState, setEditorState] = React.useState(() => createEditorState(data.content));
-  const selectionCache = React.useRef<{ focusKey: string; anchorKey: string; anchorOffset: number; focusOffset: number }>({
-    focusKey: '',
-    anchorKey: '',
-    focusOffset: 0,
-    anchorOffset: 0,
-  });
+  const isNew = React.useMemo(() => MarkupSlateEditor.isNewState(data.content), []);
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [editable, setEditable] = React.useState(isNew);
+  const [value, setValue] = React.useState<Node[]>(data.content);
+  const draggableParentsCache = React.useRef<HTMLElement[]>([]);
+  const [isInitialWidthApplied, setIsInitialWidthApplied] = React.useState(false);
+
+  const cache = useCache({ value, skipEditableFocus: false }, { value });
+
+  const updateContentDebounced = useDebouncedCallback(300, () => engine.node.updateData(node.id, { content: cache.current.value }), []);
+
   const { isFocused, isActivated } = nodeEntity.useState((e) => ({
     isFocused: e.isFocused,
     isActivated: e.isActive,
   }));
 
-  const pluginsObj = engine.markup.useSetupPlugins(node.id, { anchorOptions: { Link } });
-  const plugins = React.useMemo(() => Object.values(pluginsObj), [pluginsObj]);
+  const editor = engine.markup.useSetupTextEditor(node.id);
+  const blockAPI = useBlockAPI();
 
-  const removeDraggables = () => {
-    const draggableParents = findAllDraggableParents(containerRef.current!);
+  const removeDraggableParents = React.useCallback(() => {
+    const draggableParents = findAllDraggableParents(containerRef.current);
 
-    draggableParents.forEach((parentNode) => parentNode.removeAttribute('draggable'));
+    removeDraggableAttr(draggableParents);
 
     draggableParentsCache.current = draggableParents;
-  };
+  }, []);
+
+  const onMouseUp = React.useCallback((event: React.MouseEvent) => event.preventDefault(), []);
+
+  const onDragStart = React.useCallback(
+    (event: React.DragEvent) => {
+      if (MarkupSlateEditor.isFocused(editor)) {
+        event.stopPropagation();
+      }
+    },
+    [editor]
+  );
+
+  const onFocus = React.useCallback(() => {
+    if (draggableParentsCache?.current?.length === 0) {
+      removeDraggableParents();
+    }
+
+    if (engine.markup.isCreating) {
+      cache.current.skipEditableFocus = true;
+
+      setEditable(true);
+      engine.markup.finishCreating?.();
+    }
+  }, [engine]);
 
   const onBlur = React.useCallback(async () => {
-    const content = getRawContent(editorState);
-
-    if (!editorState.getCurrentContent().getPlainText().trim()) {
+    if (!MarkupSlateEditor.serialize(cache.current.value)) {
       engine.node.remove(node.id);
 
       return;
     }
 
+    setEditable(false);
+
     if (!isInitialWidthApplied && isNew) {
       setIsInitialWidthApplied(true);
-      await engine.node.updateData(node.id, { content });
-      engine.node.api(nodeEntity.nodeID)?.instance?.applyTransformations?.();
+
+      await engine.node.updateData(node.id, { content: cache.current.value });
+      await engine.node.api(nodeEntity.nodeID)?.instance?.applyTransformations?.();
+
+      engine.transformation.initialize(nodeEntity.nodeID);
     } else {
-      engine.node.updateData(node.id, { content });
+      engine.node.updateData(node.id, { content: cache.current.value });
     }
 
-    if (isFirefox) {
-      draggableParentsCache.current?.forEach((parentNode) => parentNode.setAttribute('draggable', 'true'));
-      draggableParentsCache.current = [];
-    }
-  }, [editorState, nodeEntity.isFocused]);
-
-  const keyBindingFn = React.useCallback(
-    (e: React.KeyboardEvent) => {
-      const getEditorState = pluginsObj.toolbarPlugin.store.getItem<() => EditorState>('getEditorState');
-      const resetEditorState = pluginsObj.toolbarPlugin.store.getItem<(state: EditorState) => void>('setEditorState');
-
-      // delete
-      if (e.keyCode === 127 || e.keyCode === 8) {
-        deleteHandler({
-          getEditorState,
-          setEditorState: resetEditorState,
-        })(e);
-
-        return 'handled';
-      }
-
-      // esc
-      if (e.keyCode === 27) {
-        editorRef.current?.blur();
-      }
-
-      const state = getEditorState();
-
-      // bold
-      if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
-        const fontWeightStyle = _last(getSelectionPrefixedInlineStyle(state, InlineStylePrefix.FONT_WEIGHT));
-        const fontWeight = (getInlineStylePrefixAndValue(fontWeightStyle)[1] as FontWeight) || FontWeight.REGULAR;
-        const newFontWeight = fontWeight === FontWeight.REGULAR ? FontWeight.BOLD : FontWeight.REGULAR;
-
-        resetEditorState(togglePrefixedInlineStyle(state, InlineStylePrefix.FONT_WEIGHT, newFontWeight));
-
-        return 'change-inline-style';
-      }
-
-      // italic
-      if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
-        resetEditorState(RichUtils.toggleInlineStyle(state, 'ITALIC'));
-
-        return 'italic';
-      }
-
-      // underline
-      if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
-        resetEditorState(RichUtils.toggleInlineStyle(state, 'UNDERLINE'));
-
-        return 'underline';
-      }
-
-      return null;
-    },
-    [pluginsObj]
-  );
-
-  const handleReturn = React.useCallback((_, state: EditorState) => {
-    setEditorState(RichUtils.insertSoftNewline(state));
-
-    return 'handled' as DraftHandleValue;
+    addDraggableAttr(draggableParentsCache.current);
+    draggableParentsCache.current = [];
   }, []);
 
-  const onChange = React.useCallback(
-    (state: EditorState) => {
-      const selection = state.getSelection();
+  const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+    const isActionKey = event.ctrlKey || event.metaKey;
 
-      const focusKey = selection.getFocusKey();
-      const anchorKey = selection.getAnchorKey();
-      const focusOffset = selection.getFocusOffset();
-      const anchorOffset = selection.getAnchorOffset();
+    if (event.key === KeyName.ESCAPE) {
+      editor.removeFakeSelection();
+      MarkupSlateEditor.deselect(editor);
+      MarkupSlateEditor.blur(editor);
+    } else if (isActionKey && event.key === 'b') {
+      const fontFamily = MarkupSlateEditor.leafProperty<Font>(editor, LeafProperty.FONT_FAMILY) || Font.OPEN_SANS;
+      const fontWeight = MarkupSlateEditor.leafProperty<FontWeight>(editor, LeafProperty.FONT_WEIGHT) || FontWeight.REGULAR;
 
-      const selectionChanged =
-        selectionCache.current.focusKey !== focusKey ||
-        selectionCache.current.anchorKey !== anchorKey ||
-        selectionCache.current.focusOffset !== focusOffset ||
-        selectionCache.current.anchorOffset !== anchorOffset;
+      const nextFontWeight = fontWeight === FontWeight.REGULAR ? FontWeight.BOLD : FontWeight.REGULAR;
 
-      if (isFocused && selection.getHasFocus() && selectionChanged) {
-        setEditorState(removeFakeSelectionStyle(state));
-      } else {
-        setEditorState(state);
+      if ((FONT_WEIGHTS_PER_FONT_FAMILY[fontFamily] || FONT_WEIGHTS_PER_FONT_FAMILY[Font.OPEN_SANS])?.includes(nextFontWeight)) {
+        MarkupSlateEditor.setLeafProperty(editor, LeafProperty.FONT_WEIGHT, nextFontWeight);
       }
+    } else if (isActionKey && event.key === 'i') {
+      const isItalicActive = MarkupSlateEditor.isLeafPropertyActive(editor, LeafProperty.ITALIC, true);
 
-      if (!selection.getHasFocus()) {
-        selectionCache.current.focusKey = focusKey;
-        selectionCache.current.anchorKey = anchorKey;
-        selectionCache.current.focusOffset = focusOffset;
-        selectionCache.current.anchorOffset = anchorOffset;
-      }
+      MarkupSlateEditor.setLeafProperty(editor, LeafProperty.ITALIC, !isItalicActive);
+    } else if (isActionKey && event.key === 'u') {
+      const isUnderlineActive = MarkupSlateEditor.isLeafPropertyActive(editor, LeafProperty.UNDERLINE, true);
 
-      // for some reason onFocus event is not triggered when setting focus manually via setEditorState
-      if (isFirefox && selection.getHasFocus() && draggableParentsCache?.current?.length === 0) {
-        removeDraggables();
-      }
-    },
-    [isFocused]
-  );
-
-  const onFocus = React.useCallback(() => {
-    engine.transformation.reset();
-
-    if (isFirefox && draggableParentsCache?.current?.length === 0) {
-      removeDraggables();
+      MarkupSlateEditor.setLeafProperty(editor, LeafProperty.UNDERLINE, !isUnderlineActive);
     }
   }, []);
 
-  const onDragStart = React.useCallback(
-    (event: React.DragEvent) => {
-      const hasFocus = editorState.getSelection().getHasFocus();
+  const renderElement = React.useCallback((props: RenderElementProps) => {
+    if (props.element.type === BlockType.LINK) {
+      return <LinkElement {...props} />;
+    }
 
-      if (hasFocus) {
-        event.stopPropagation();
-      }
-    },
-    [editorState]
-  );
+    return <DefaultElement {...props} />;
+  }, []);
+
+  const onContainerDoubleClick = React.useCallback(() => {
+    if (editable) {
+      return;
+    }
+
+    setEditable(true);
+  }, [editable]);
+
+  const renderLeaf = React.useCallback((props: RenderLeafProps) => <Leaf {...props} />, []);
+
+  React.useImperativeHandle(ref, () => blockAPI, [blockAPI]);
+
+  useDidUpdateEffect(() => {
+    if (isFocused && !MarkupSlateEditor.isFocused(editor) && MarkupSlateEditor.serialize(value)) {
+      engine.transformation.initialize(nodeEntity.nodeID);
+    }
+
+    if (!isFocused) {
+      setEditable(false);
+      editor.removeFakeSelection();
+      MarkupSlateEditor.deselect(editor);
+      MarkupSlateEditor.blur(editor);
+    }
+  }, [isFocused]);
+
+  useDidUpdateEffect(() => {
+    if (editor.isFakeSelectionApplied() && engine.transformation.isTarget(nodeEntity.nodeID)) {
+      engine.transformation.reset();
+    }
+  }, [editor.isFakeSelectionApplied()]);
 
   useDidUpdateEffect(() => {
     const isLocked = !!isNodeLocked?.(nodeEntity.nodeID);
 
     if (!isFocused || isLocked) {
-      setEditorState(removeFakeSelectionStyle(createEditorState(data.content)));
+      setValue(data.content);
     }
-  }, [data.content, isFocused]);
+  }, [data.content]);
 
   useDidUpdateEffect(() => {
+    if (value !== data.content && !MarkupSlateEditor.isFocused(editor)) {
+      updateContentDebounced();
+    }
+  }, [value]);
+
+  useDidUpdateEffect(() => {
+    if (editable && !cache.current.skipEditableFocus) {
+      const [node, path] = Node.last(editor, []);
+
+      MarkupSlateEditor.focus(editor);
+      Transforms.select(editor, {
+        anchor: { path, offset: MarkupSlateEditor.serialize([node]).length },
+        focus: { path, offset: MarkupSlateEditor.serialize([node]).length },
+      });
+    } else if (cache.current.skipEditableFocus) {
+      cache.current.skipEditableFocus = false;
+    }
+  }, [editable]);
+
+  React.useEffect(() => {
+    if (isNew && isFocused && isActivated && !isInitialWidthApplied) {
+      MarkupSlateEditor.focus(editor);
+    }
+  }, [isNew, isActivated, isFocused]);
+
+  React.useLayoutEffect(() => {
     if (!isInitialWidthApplied && isNew && isFocused) {
-      const isEmpty = !editorState.getCurrentContent().hasText();
-
-      let clientWidth: number | undefined;
-
-      if (isEmpty) {
-        // getting placeholder width
-        // eslint-disable-next-line xss/no-mixed-html
-        clientWidth = containerRef.current?.querySelector<HTMLElement>('.public-DraftEditorPlaceholder-root')?.clientWidth;
-      } else {
-        // getting the text width, can't use `clientWidth` it is 0 for the inline nodes
-        // eslint-disable-next-line xss/no-mixed-html
-        clientWidth = containerRef.current?.querySelector<HTMLElement>('.public-DraftStyleDefault-block')?.offsetWidth;
-      }
+      const isEmpty = MarkupSlateEditor.isNewState(value);
+      const slateNodes = Array.from(containerRef.current?.querySelectorAll<HTMLElement>('[data-slate-node="element"]') ?? []);
+      const maxWidth = Math.max(0, ...slateNodes.map(({ clientWidth }) => clientWidth));
 
       const zoom = engine.canvas?.getZoom() ?? 1;
-      const width = Math.max(((clientWidth ?? 0) + (isEmpty ? 70 : 10)) * zoom, 40 * zoom);
+      const width = Math.max((maxWidth + (isEmpty ? 178 : 28)) * zoom, 40 * zoom);
 
       engine.node.api(nodeEntity.nodeID)?.instance?.scaleText?.(width, [0, 0]);
     }
-  }, [editorState]);
 
-  React.useEffect(() => {
-    if (isFocused && !editorState.getSelection().getHasFocus() && !editorState.getCurrentContent().isEmpty()) {
-      engine.transformation.initialize(nodeEntity.nodeID);
-    }
-
-    if (!isFocused) {
-      editorRef.current?.blur();
-    }
-  }, [isFocused]);
-
-  const blockAPI = useBlockAPI();
-
-  React.useImperativeHandle(ref, () => blockAPI, [blockAPI]);
+    engine.transformation.reinitialize();
+  }, [value]);
 
   return (
     <Container
       ref={composeRefs(containerRef, blockAPI.ref)}
       isNew={isNew && !isInitialWidthApplied}
-      activated={isActivated}
-      onMouseUp={(e) => e.preventDefault()}
+      focused={isFocused}
+      editable={editable}
+      onMouseUp={onMouseUp}
       draggable
+      activated={isActivated}
       onDragStart={onDragStart}
+      onDoubleClick={onContainerDoubleClick}
     >
-      <DraftJSEditor
-        ref={editorRef}
-        ariaMultiline
-        onBlur={onBlur}
-        plugins={plugins}
-        onFocus={onFocus}
-        onChange={onChange}
-        editorState={editorState}
-        placeholder="Type something"
-        handleReturn={handleReturn}
-        keyBindingFn={keyBindingFn}
-        customStyleFn={customStyleFn}
-        textAlignment={data.textAlignment}
-        stripPastedStyles
-      />
+      <Border scale={data.scale} position={BorderPosition.TOP} />
+      <Border scale={data.scale} position={BorderPosition.RIGHT} />
+      <Border scale={data.scale} position={BorderPosition.BOTTOM} />
+      <Border scale={data.scale} position={BorderPosition.LEFT} />
+
+      <Slate editor={editor} value={value} onChange={setValue}>
+        <Editable
+          onBlur={onBlur}
+          onFocus={onFocus}
+          onKeyDown={onKeyDown}
+          className={SLATE_EDITOR_CLASS_NAME}
+          renderLeaf={renderLeaf}
+          placeholder="Type something"
+          renderElement={renderElement}
+        />
+      </Slate>
     </Container>
   );
 };

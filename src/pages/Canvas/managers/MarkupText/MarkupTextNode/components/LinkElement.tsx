@@ -1,28 +1,31 @@
 import React from 'react';
+import { RenderElementProps } from 'slate-react';
 
-import { ClickableText } from '@/components/Text';
 import { styled } from '@/hocs';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
-type LinkProps = {
-  href: string;
-};
-
-const ClickableLink = styled(ClickableText)`
+const ClickableLink = styled.span`
   display: inline;
+  cursor: pointer;
   pointer-events: all;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
-const Link: React.FC<LinkProps> = ({ href, children }) => {
+const LinkElement: React.FC<RenderElementProps> = ({ attributes, children, element }) => {
   const engine = React.useContext(EngineContext)!;
 
+  const href = element.url as string;
+
   const onClick = React.useCallback(
-    (e: React.MouseEvent) => {
-      const withoutExtraKeys = !(e.metaKey || e.ctrlKey || e.shiftKey);
+    (event: React.MouseEvent) => {
+      const withoutExtraKeys = !(event.metaKey || event.ctrlKey || event.shiftKey);
 
       if (!engine.markup.isActive || withoutExtraKeys) {
-        e.stopPropagation();
-        e.preventDefault();
+        event.stopPropagation();
+        event.preventDefault();
       }
 
       if (withoutExtraKeys) {
@@ -35,7 +38,11 @@ const Link: React.FC<LinkProps> = ({ href, children }) => {
     [href]
   );
 
-  return <ClickableLink onMouseDown={onClick}>{children}</ClickableLink>;
+  return (
+    <ClickableLink {...attributes} style={{ position: 'relative' }} onMouseDown={onClick}>
+      {children}
+    </ClickableLink>
+  );
 };
 
-export default Link;
+export default LinkElement;

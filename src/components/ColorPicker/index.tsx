@@ -1,4 +1,4 @@
-import { rgba } from 'polished';
+import { parseToRgb, rgba } from 'polished';
 import React from 'react';
 import { RGBColor } from 'react-color';
 import Alpha from 'react-color/lib/components/common/Alpha';
@@ -18,22 +18,58 @@ export type ColorPickerProps = {
   width?: number;
   alphaSlider?: boolean;
   hexInput?: boolean;
+  onInputBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onInputFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onChangeCompleted?: (color: RGBColor) => void;
 };
 
-const ColorPicker = ({ alphaSlider = true, hexInput = true, ...props }: ColorPickerProps & InjectedColorProps) => {
+const ColorPicker = ({
+  alphaSlider = true,
+  hexInput = true,
+  onInputBlur,
+  onInputFocus,
+  onChangeCompleted,
+  ...props
+}: ColorPickerProps & InjectedColorProps) => {
   const [localHex, setLocalHex] = React.useState(() => removeHash(props.hex!));
 
-  const onSubmitHexColor = (hex: string) => {
-    let color: string | RGBColor;
+  const onSubmitHexColor = (hex: string, { completed }: { completed?: boolean } = {}) => {
+    let color: string;
 
     try {
       color = rgba(hex, props.rgb!.a ?? 1);
     } catch {
-      color = props.rgb!;
+      color = props.hex!;
       setLocalHex(removeHash(props.hex!));
     }
 
-    props.onChange?.(color);
+    if (completed) {
+      const rgba = parseToRgb(color);
+
+      onChangeCompleted?.({
+        r: rgba.red,
+        g: rgba.green,
+        b: rgba.blue,
+        a: ('alpha' in rgba && rgba.alpha) || 1,
+      });
+    } else {
+      props.onChange?.(color);
+    }
+  };
+
+  const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    onSubmitHexColor(`#${localHex}`, { completed: true });
+    onInputBlur?.(event);
+  };
+
+  const onEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    event.currentTarget?.blur();
+  };
+
+  const onSelectColor = (color: string) => {
+    setLocalHex(removeHash(color));
+    onSubmitHexColor(color);
   };
 
   React.useEffect(() => {
@@ -60,21 +96,17 @@ const ColorPicker = ({ alphaSlider = true, hexInput = true, ...props }: ColorPic
         <InputContainer>
           <Input
             value={localHex}
-            onBlur={() => onSubmitHexColor(`#${localHex}`)}
+            onBlur={onBlur}
+            onFocus={onInputFocus}
             onChange={({ currentTarget }) => setLocalHex(currentTarget.value)}
-            leftAction={<InputAction>HEX</InputAction>}
             maxLength={6}
-            onKeyPress={withEnterPress(() => onSubmitHexColor(`#${localHex}`))}
+            leftAction={<InputAction>HEX</InputAction>}
+            onKeyPress={withEnterPress(onEnterPress)}
           />
         </InputContainer>
       )}
 
-      <Colors
-        onSelect={(color: string) => {
-          setLocalHex(removeHash(color));
-          onSubmitHexColor(color);
-        }}
-      />
+      <Colors onSelect={onSelectColor} />
     </Container>
   );
 };

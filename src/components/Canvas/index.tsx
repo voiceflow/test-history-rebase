@@ -265,7 +265,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
   setZoom = (newZoom: number, { origin = [this.rootRef.current!.clientWidth / 2, this.rootRef.current!.clientHeight / 2] }: ZoomOptions = {}) => {
     const prevZoom = this.zoom / ZOOM_FACTOR;
     const nextZoom = normalizeZoom(newZoom);
-    const zoomDiffFactor = newZoom / this.zoom;
+    const zoomDiffFactor = nextZoom / this.zoom;
 
     if (nextZoom === this.zoom) return;
 
@@ -274,6 +274,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
     const [x, y] = this.position;
     const [moveX, moveY] = this.getScrollTranslation(origin, prevZoom, nextZoom, zoomDiffFactor);
     const nextPosition: Point = [x + moveX, y + moveY];
+
     this.position = nextPosition;
 
     this.styleRenderLayer({ zoom: nextZoom, position: nextPosition });

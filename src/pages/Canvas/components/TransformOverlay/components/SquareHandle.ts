@@ -8,13 +8,23 @@ export type SquareHandleProps = {
 
 const SquareHandle = styled.div<SquareHandleProps>`
   position: absolute;
-  width: 8px;
-  height: 8px;
-  background: #fff;
+  width: 16px;
+  height: 16px;
   z-index: 110;
   pointer-events: all;
-  border-radius: 1px;
-  box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.08), 0 0 1px 1px rgba(17, 49, 96, 0.16);
+
+  &:before {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    background: #fff;
+    border-radius: 1px;
+    box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.08), 0 0 1px 1px rgba(17, 49, 96, 0.16);
+
+    content: '';
+  }
 
   ${({ position }) => {
     switch (position) {

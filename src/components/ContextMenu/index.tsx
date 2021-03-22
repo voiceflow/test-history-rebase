@@ -19,7 +19,7 @@ type ContextMenuProps<T> = {
 
 const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...props }: ContextMenuProps<T>) => {
   const [virtualElememt, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement> | null>(null);
-  const [isOpen, onToggle] = useDismissable(false, null, true);
+  const [isOpen, onToggle] = useDismissable(false, { autoDismiss: true });
 
   const onContextMenu = (event: React.MouseEvent<HTMLElement>) => {
     const target: any = event?.target;

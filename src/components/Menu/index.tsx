@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-autofocus */
-
 import React, { useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
@@ -78,7 +76,10 @@ const Menu = <T,>(
 
   useEffect(() => {
     const wheelCallback = (event: WheelEvent) => event.stopImmediatePropagation();
-    const mouseDownCallback = (event: MouseEvent) => event.stopPropagation();
+    const mouseDownCallback = (event: MouseEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
 
     const node = menuRef.current;
 

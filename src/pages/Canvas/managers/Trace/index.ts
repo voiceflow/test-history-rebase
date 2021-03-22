@@ -8,8 +8,8 @@ import TraceStep from './TraceStep';
 const TraceManager: NodeManagerConfig<NodeData.Trace> = {
   type: BlockType.TRACE,
   editor: TraceEditor,
-  icon: 'inFlow',
-  iconColor: '#5589eb',
+  icon: 'search',
+  iconColor: '#3A5999',
 
   step: TraceStep,
   label: 'Trace',

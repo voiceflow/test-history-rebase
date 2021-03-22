@@ -109,7 +109,7 @@ const TraceEditor: React.FC<NodeEditorPropsType<NodeData.Trace>> = ({ data, onCh
         type="trace-editor"
         items={items}
         itemProps={{ updateDefaultPath }}
-        onDelete={onRemove}
+        onDelete={items.length > 1 ? onRemove : undefined}
         onReorder={reorderPaths}
         onEndDrag={toggleDragging}
         mapManaged={mapManaged}
@@ -118,7 +118,7 @@ const TraceEditor: React.FC<NodeEditorPropsType<NodeData.Trace>> = ({ data, onCh
         deleteComponent={DeleteComponent}
         partialDragItem
         previewComponent={DraggableItem}
-        withContextMenuDelete
+        withContextMenuDelete={items.length > 1}
         fullHeight={false}
       />
     </Content>

@@ -7,6 +7,7 @@ import Input from '@/components/Input';
 import Tooltip from '@/components/TippyTooltip';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
+import { convertToWord } from '@/utils/number';
 
 type DraggableItemProps = {
   index: number;
@@ -29,6 +30,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
     ref={ref}
     namespace={['traceItem', item.id]}
     prefix={<Badge>{index + 1}</Badge>}
+    header={<span style={{ textTransform: 'capitalize' }}>Path {convertToWord(index + 1)}</span>}
     isDragging={isDragging}
     isDraggingPreview={isDraggingPreview}
     headerToggle
@@ -37,8 +39,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
     isContextMenuOpen={isContextMenuOpen}
     suffix={
       <Flex>
-        {item.isDefault && <Box mr={8}>Default</Box>}{' '}
-        <Tooltip title="Set Default Path" position="bottom" disabled={item.isDefault}>
+        {item.isDefault && <Box mr={8}>Default</Box>}
+        <Tooltip title={item.isDefault ? 'Default Path' : 'Assign as default path'} position="bottom">
           <Checkbox checked={item.isDefault} onChange={() => updateDefaultPath(index)} />
         </Tooltip>
       </Flex>

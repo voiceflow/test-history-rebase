@@ -14,7 +14,7 @@ export type TraceStepProps = {
 export const TraceStep: React.FC<TraceStepProps> = ({ nodeID, name, paths, withPorts }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item icon="inFlow" iconColor="#5589eb" label={name} placeholder="Enter Trace Name" multilineLabel />
+      <Item icon="search" iconColor="#3A5999" label={name} placeholder="Enter Trace Name" multilineLabel />
     </Section>
     {withPorts && (
       <Section>

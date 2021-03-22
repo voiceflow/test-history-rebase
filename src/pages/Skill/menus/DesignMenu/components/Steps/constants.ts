@@ -99,7 +99,7 @@ export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARD_STEP, STREAM_STEP, TRACE_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARD_STEP, STREAM_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
@@ -114,7 +114,7 @@ export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.INTEGRATION,
     label: 'Integration',
-    steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP],
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP, TRACE_STEP],
   },
   {
     type: BlockCategory.CHANNEL,
@@ -128,7 +128,7 @@ export const GOOGLE_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, AUDIO_STEP, CARD_STEP, STREAM_STEP, TRACE_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, CARD_STEP, STREAM_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
@@ -143,7 +143,7 @@ export const GOOGLE_SECTIONS = [
   {
     type: BlockCategory.INTEGRATION,
     label: 'Integration',
-    steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP],
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP, TRACE_STEP],
   },
   {
     type: BlockCategory.CHANNEL,
@@ -157,7 +157,7 @@ export const GENERAL_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP, TRACE_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
@@ -172,7 +172,7 @@ export const GENERAL_SECTIONS = [
   {
     type: BlockCategory.INTEGRATION,
     label: 'Integration',
-    steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP],
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP, TRACE_STEP],
   },
 ];
 

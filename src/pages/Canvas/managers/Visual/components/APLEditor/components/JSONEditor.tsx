@@ -44,6 +44,7 @@ const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplC
         const datasourceString = JSON.stringify(data.datasources, null, '\t');
 
         onChange({ jsonFileName: fileName, datasource: datasourceString, document: documentString });
+        setLocalDatasource(datasourceString);
       } catch {
         toast.error('Invalid JSON Format');
       }

@@ -96,6 +96,7 @@ class LinkManager extends EngineConsumer {
 
     if (link) {
       this.redrawPorts(link);
+      this.engine.node.redraw(link.target.nodeID);
     }
   }
 

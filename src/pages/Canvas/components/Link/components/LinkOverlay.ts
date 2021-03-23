@@ -1,10 +1,11 @@
 import { styled } from '@/hocs';
 
 const LinkOverlay = styled.path`
-  stroke: transparent;
-  stroke-width: 15px;
-  fill: transparent;
-  pointer-events: auto;
+  fill: none;
+  stroke: white;
+  stroke-width: 13.15px;
+  pointer-events: stroke;
+  visibility: hidden;
 
   @keyframes dash {
     to {

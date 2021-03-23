@@ -45,6 +45,7 @@ const Link: React.FC = () => {
   return (
     <>
       <Styles />
+
       <Group className={ClassName.CANVAS_LINK} isVisible={isVisible} ref={instance.containerRef}>
         <HeadMarker id={linkEntity.linkID} ref={instance.markerRef} isHighlighted={isHighlighted} {...instance.getMarkerAttrs()} />
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}

@@ -9,7 +9,7 @@ import { BlockType, START_BLOCK_ID } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import { BlockTrace, ChoiceTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace, VisualTrace } from '@/models';
-import type { Engine } from '@/pages/Canvas/engine';
+import { Engine } from '@/pages/Canvas/engine';
 import { tail, unique } from '@/utils/array';
 import { noop } from '@/utils/functional';
 
@@ -67,6 +67,21 @@ const findLastBlockTrace = (trace: Trace[]) => [...trace].reverse().find((traceF
 const WAIT_ENTITY_TIME = 200;
 const MIN_FOCUSED_NODE_TIME = 500;
 const WAIT_DISPLAY_TIME = 1000;
+
+const NO_FOCUS_NODE_TYPES = [
+  BlockType.USER_INFO,
+  BlockType.CARD,
+  BlockType.IF,
+  BlockType.SET,
+  BlockType.RANDOM,
+  BlockType.INTEGRATION,
+  BlockType.CANCEL_PAYMENT,
+  BlockType.PAYMENT,
+  BlockType.REMINDER,
+  BlockType.PERMISSION,
+  BlockType.ACCOUNT_LINKING,
+  BlockType.DIRECTIVE,
+];
 
 class TraceController {
   private trace: Trace[] = [];
@@ -315,6 +330,7 @@ class TraceController {
 
   private async highlightBlock(node: Node) {
     const hasParent = !!node.parentNode;
+    const nodeType = node?.type;
 
     const [, sourceNodeID] = tail(this.props.engine?.select(Prototype.activePathBlockIDsSelector) || []);
 
@@ -324,7 +340,7 @@ class TraceController {
 
     this.saveActivePathLink(sourceNodeID, node);
 
-    if (hasParent) {
+    if ((hasParent && !NO_FOCUS_NODE_TYPES.includes(nodeType)) || this.props.debug) {
       this.focusNode(node.parentNode!);
     }
   }

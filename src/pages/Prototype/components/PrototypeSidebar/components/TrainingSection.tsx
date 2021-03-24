@@ -79,6 +79,10 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
     }
   };
 
+  const onCancelTraining = async () => {
+    await nlp.cancel();
+  };
+
   const getDiff = async () => {
     try {
       stateApi.update({ fetching: true });
@@ -166,7 +170,7 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
       <TrainContainer isModelTraining={isTraining}>
         {isTraining ? (
           <TrainFadeDown key="training">
-            <Training />
+            <Training onCancelTraining={onCancelTraining} />
           </TrainFadeDown>
         ) : (
           !state.fetching && (

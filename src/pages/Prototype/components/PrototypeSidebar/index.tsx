@@ -7,7 +7,6 @@ import Flex, { FlexCenter } from '@/components/Flex';
 import { LoadCircle } from '@/components/Loader';
 import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
-import { NLPTrainStageType } from '@/constants/platforms';
 import * as Diagram from '@/ducks/diagram';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
@@ -94,7 +93,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
     };
   }, [open]);
 
-  const isModelTraining = nlp.publishing || nlp.job?.stage.type === NLPTrainStageType.PROGRESS || nlp.job?.stage.type === NLPTrainStageType.IDLE;
+  const isModelTraining = nlp.publishing || !!nlp.job;
 
   return (
     <>

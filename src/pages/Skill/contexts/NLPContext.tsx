@@ -77,10 +77,7 @@ export const NLPProvider: React.FC = ({ children }) => {
   useDidUpdateEffect(() => {
     // stop pulling when job is finished or job was canceled
     if (!job || job.status === JobStatus.FINISHED) {
-      stopPulling();
-
-      client.platform.general.nlp.cancel(projectID);
-
+      cancel();
       return;
     }
 

@@ -30,6 +30,7 @@ export { default as canvas } from './canvas.svg';
 export { default as card } from './card.svg';
 export { default as caretDown } from './caret-down.svg';
 export { default as caretRight } from './caret-right.svg';
+export { default as chatBubbles } from './chat-bubbles.svg';
 export { default as check } from './check.svg';
 export { default as check2 } from './check-2.svg';
 export { default as checkmark } from './checkmark.svg';

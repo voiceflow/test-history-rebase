@@ -75,7 +75,7 @@ export const CHANNEL_META: Record<ChannelType, ChannelMetaType> = {
     iconType: IconType.ICON,
     icon: 'amazonAlexa',
     iconColor: '#5fcaf4',
-    iconSize: 28,
+    iconSize: 26,
   },
   [ChannelType.GOOGLE_ASSISTANT]: {
     name: 'Google Assistant',
@@ -85,18 +85,18 @@ export const CHANNEL_META: Record<ChannelType, ChannelMetaType> = {
     channel: ChannelType.GOOGLE_ASSISTANT,
     iconType: IconType.ICON,
     icon: 'googleAssistant',
-    iconSize: 26,
+    iconSize: 24,
   },
   [ChannelType.CUSTOM_ASSISTANT]: {
     name: 'Custom Assistant',
     description: 'Design, prototype and export for any conversational channel.',
     features: [PlatformFeature.DESIGN_AND_PROTO],
-    icon: 'smile',
+    icon: 'chatBubbles',
     iconColor: '#4f9ed1',
     platform: PlatformType.GENERAL,
     channel: ChannelType.CUSTOM_ASSISTANT,
     iconType: IconType.ICON,
-    iconSize: 18,
+    iconSize: 20,
   },
   [ChannelType.IVR]: {
     name: 'IVR',
@@ -107,7 +107,7 @@ export const CHANNEL_META: Record<ChannelType, ChannelMetaType> = {
     platform: PlatformType.GENERAL,
     channel: ChannelType.IVR,
     iconType: IconType.ICON,
-    iconSize: 18,
+    iconSize: 20,
   },
   [ChannelType.CHATBOT]: {
     name: 'Chatbot',
@@ -118,7 +118,7 @@ export const CHANNEL_META: Record<ChannelType, ChannelMetaType> = {
     platform: PlatformType.GENERAL,
     channel: ChannelType.CHATBOT,
     iconType: IconType.ICON,
-    iconSize: 18,
+    iconSize: 20,
   },
   [ChannelType.MOBILE_APP]: {
     name: 'Mobile App',
@@ -129,7 +129,7 @@ export const CHANNEL_META: Record<ChannelType, ChannelMetaType> = {
     platform: PlatformType.GENERAL,
     channel: ChannelType.MOBILE_APP,
     iconType: IconType.ICON,
-    iconSize: 18,
+    iconSize: 20,
   },
 };
 

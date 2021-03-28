@@ -303,6 +303,9 @@ class TraceController {
   private async processBlockTrace(trace: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {
     const node = this.props.engine?.getNodeByID(trace.payload.blockID);
 
+    if (node?.id) {
+      this.props.engine?.selection.replace([node.id]);
+    }
     if (node && !this.isPublicPrototype) {
       await this.highlightBlock(node);
     }

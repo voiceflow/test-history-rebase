@@ -25,7 +25,7 @@ import {
   logLevel,
   logrocket,
   privateCloud,
-  tracking,
+  sentry,
   userflow,
 } from 'webpack-nano/argv';
 
@@ -59,13 +59,13 @@ export const ENV = {
 
   // analytics
   GA_ENABLED: ga && 'true',
-  TRACKING_ENABLED: tracking && 'true',
   GOOGLE_TAG_MANAGER_ID: '',
 
   // vendors
   LOGROCKET_ENABLED: logrocket && 'true',
   INTERCOM_ENABLED: intercom && 'true',
   USERFLOW_ENABLED: userflow && 'true',
+  SENTRY_ENABLED: sentry && 'true',
 
   CLOUD_ENV: privateCloud || '',
 

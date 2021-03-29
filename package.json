@@ -12,6 +12,8 @@
     }
   },
   "dependencies": {
+    "@sentry/react": "^6.2.3",
+    "@sentry/tracing": "^6.2.3",
     "@seznam/compose-react-refs": "^1.0.5",
     "@voiceflow/alexa-types": "^1.45.0",
     "@voiceflow/api-sdk": "1.28.0",

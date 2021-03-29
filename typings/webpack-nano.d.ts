@@ -31,8 +31,8 @@ declare module 'webpack-nano/argv' {
     ga: boolean;
     intercom: boolean;
     logrocket: boolean;
-    tracking: boolean;
     userflow: boolean;
+    sentry: boolean;
 
     // configuration
     privateCloud: boolean;

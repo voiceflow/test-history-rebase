@@ -26,6 +26,12 @@ export const isNodeLockedSelector = createSelector([realtimeLocksSelector], (loc
   !!locks?.blocks[lockType]?.[nodeID]
 );
 
+export const isTabRegisteredSelector = createSelector([realtimeLocksSelector], (locks) => (tabID: string) =>
+  Object.values(locks?.users ?? {})
+    .flatMap(Object.keys)
+    .some((id) => id === tabID)
+);
+
 export const isNodeMovementLockedSelector = createSelector([isNodeLockedSelector], (isNodeLocked) => (nodeID: string) =>
   isNodeLocked(LockType.MOVEMENT, nodeID)
 );

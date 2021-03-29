@@ -33,6 +33,7 @@ declare global {
     VF_OVERRIDE_GENERAL_RUNTIME_ENDPOINT?: string;
     VF_OVERRIDE_OKTA_DOMAIN?: string;
     VF_OVERRIDE_OKTA_CLIENT_ID?: string;
+    VF_OVERRIDE_SENTRY_DSN?: string;
   }
 }
 
@@ -122,11 +123,8 @@ const GOOGLE_DEV_CLIENT_ID = process.env.GOOGLE_DEV_CLIENT_ID!;
 const _GOOGLE_CLIENT_ID = IS_PRODUCTION_ENV ? GOOGLE_PROD_CLIENT_ID : GOOGLE_DEV_CLIENT_ID;
 export const GOOGLE_CLIENT_ID = window.VF_OVERRIDE_GOOGLE_CLIENT_ID || _GOOGLE_CLIENT_ID;
 
-// tracking
-export const TRACKING_ENABLED = IS_PRODUCTION || process.env.TRACKING_ENABLED === 'true';
-
 // google analytics
-export const GA_ENABLED = TRACKING_ENABLED || process.env.GA_ENABLED === 'true';
+export const GA_ENABLED = IS_PRODUCTION || process.env.GA_ENABLED === 'true';
 export const GOOGLE_ANALYTICS_ID = window.VF_OVERRIDE_GOOGLE_ANALYTICS_ID || process.env.GOOGLE_ANALYTICS_ID!;
 
 // zapier
@@ -159,6 +157,10 @@ export const LOGROCKET_PROJECT = process.env.LOGROCKET_PROJECT!;
 // intercom
 export const INTERCOM_ENABLED = IS_PRODUCTION || process.env.INTERCOM_ENABLED === 'true';
 export const INTERCOM_APP_ID = window.VF_OVERRIDE_INTERCOM_APP_ID || process.env.INTERCOM_APP_ID!;
+
+// sentry
+export const SENTRY_ENABLED = IS_PRODUCTION || process.env.SENTRY_ENABLED === 'true';
+export const SENTRY_DSN = window.VF_OVERRIDE_SENTRY_DSN || process.env.SENTRY_DSN!;
 
 // maintenance
 export const MAINTENANCE_STATUS_SOURCE = window.VF_OVERRIDE_MAINTENANCE_STATUS_SOURCE || process.env.MAINTENANCE_STATUS_SOURCE!;

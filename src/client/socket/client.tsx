@@ -2,6 +2,7 @@ import moize from 'moize';
 import io from 'socket.io-client';
 
 import { API_ENDPOINT, DEBUG_SOCKET, DEVICE_INFO } from '@/config';
+import * as Sentry from '@/vendors/sentry';
 
 import { clientLogger } from '../utils';
 import { AnySocketEvent, CALL_MAP, SocketEvent } from './constants';
@@ -136,6 +137,8 @@ class SocketClient {
 
     return new Promise<void>((resolve) => {
       this.once(SocketEvent.CONNECT, () => {
+        Sentry.breadcrumb('socket', 'Connected to websocket');
+
         this.status = SocketStatus.CONNECTED;
 
         this.on(SocketEvent.DISCONNECT, () => {
@@ -152,6 +155,7 @@ class SocketClient {
   disconnect = () => {
     if (!this.socket.connected) return;
 
+    Sentry.breadcrumb('socket', 'Disconnecting from websocket');
     this.status = SocketStatus.TERMINATED;
     this.socket.disconnect();
   };
@@ -184,6 +188,7 @@ class SocketClient {
 
   #onReconnect = () => {
     if (this.authProfile) {
+      Sentry.breadcrumb('socket', 'Reconnecting to websocket');
       this.#initializeConnection(this.authProfile);
     }
   };
@@ -199,7 +204,12 @@ class SocketClient {
     this.#handleError(SocketEvent.CONNECT_FAILED);
   };
 
-  #handleError = (event: SocketEvent) => this.on(event, (data) => log.error('socket failure from event', log.value(event), data));
+  #handleError = (event: SocketEvent) =>
+    this.on(event, (data) => {
+      Sentry.breadcrumb('socket', `Received '${event}' error`, data as any);
+
+      return log.error('socket failure from event', log.value(event), data);
+    });
 }
 
 export default new SocketClient();

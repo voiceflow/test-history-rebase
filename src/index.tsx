@@ -8,10 +8,14 @@ import ReactDOM from 'react-dom';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { setConfig } from 'react-hot-loader';
 
+import * as Sentry from '@/vendors/sentry';
+
 import App from './App';
 import createStore from './store';
 
 setConfig({ reloadHooks: false });
+
+Sentry.init();
 
 const history = createBrowserHistory();
 const { store, persistor } = createStore(history);

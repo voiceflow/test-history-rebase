@@ -21,6 +21,8 @@ export enum Permission {
 
   // prototype
   SHARE_PROTOTYPE = 'prototype.SHARE',
+  TRAIN_PROTOTYPE = 'prototype.TRAIN',
+  RENDER_PROTOTYPE = 'prototype.RENDER',
 
   // project list
   MANAGE_PROJECT_LISTS = 'project_list.MANAGE',
@@ -57,6 +59,9 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.CANVAS_MARKUP]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
   [Permission.CANVAS_REALTIME]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
   [Permission.COMMENTING]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
+  [Permission.SHARE_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
+  [Permission.TRAIN_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
+  [Permission.RENDER_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
 
   [Permission.HINT_FEATURES]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
 };

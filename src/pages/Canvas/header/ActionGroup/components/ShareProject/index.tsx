@@ -4,6 +4,7 @@ import Button, { ButtonVariant } from '@/components/Button';
 import { ModalFooter } from '@/components/LegacyModal';
 import { toast } from '@/components/Toast';
 import { Permission } from '@/config/permissions';
+import { UserRole } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -25,7 +26,7 @@ type ShareProjectProps = {
 const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({ render, versionID, renderPrototype }) => {
   const [open, onOpen, onClose] = useEnableDisable(false);
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
-  const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
+  const [canSharePrototype, { activeRole }] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canInviteByLink] = usePermission(Permission.INVITE_BY_LINK);
   const [trackingEvents] = useTrackingEvents();
 
@@ -49,14 +50,16 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
     }
   };
 
+  const isViewer = activeRole === UserRole.VIEWER;
+
   return (
     <>
       {isPrototypingMode ? (
-        <Button variant={ButtonVariant.PRIMARY} icon="link" onClick={onOpen}>
+        <Button disabled={isViewer} variant={ButtonVariant.PRIMARY} icon="link" onClick={onOpen}>
           Share Prototype
         </Button>
       ) : (
-        <Button preventFocusStyle variant={ButtonVariant.QUATERNARY} large onClick={onOpen} isActive={open}>
+        <Button disabled={isViewer} preventFocusStyle variant={ButtonVariant.QUATERNARY} large onClick={onOpen} isActive={open}>
           Share
         </Button>
       )}
@@ -74,6 +77,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
                 description="Share a testable version of your project that can be prototyped using voice, chat, or chip input."
               />
             )}
+
             {canInviteByLink && (
               <ModalFooter onClick={stopImmediatePropagation()}>
                 <SharePrototype link={testableLink} onClick={onClickPrototype} isAllowed={canSharePrototype} onRenderPrototype={onRenderPrototype} />

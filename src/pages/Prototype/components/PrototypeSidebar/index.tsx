@@ -7,12 +7,13 @@ import Flex, { FlexCenter } from '@/components/Flex';
 import { LoadCircle } from '@/components/Loader';
 import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
+import { Permission } from '@/config/permissions';
 import * as Diagram from '@/ducks/diagram';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useEventualEngine, useTheme } from '@/hooks';
+import { useDidUpdateEffect, useEventualEngine, usePermission, useTheme } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import Prototype from '@/pages/Prototype';
 import { useResetPrototype } from '@/pages/Prototype/hooks';
@@ -38,6 +39,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   status,
 }) => {
   const theme = useTheme();
+  const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
 
   const [trainingOpen, toggleTrainingOpen] = useToggle(true);
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
@@ -78,13 +80,18 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
     const renderAbortControl = { aborted: false };
 
     engine()?.focus.reset();
-    enableLoading();
 
-    // eslint-disable-next-line promise/catch-or-return
-    saveActiveDiagram()
-      .catch((err) => console.error(err))
-      .then(() => renderPrototype(renderAbortControl))
-      .then(disableLoading);
+    if (canRenderPrototype) {
+      enableLoading();
+
+      // eslint-disable-next-line promise/catch-or-return
+      saveActiveDiagram()
+        .catch((err) => console.error(err))
+        .then(() => renderPrototype(renderAbortControl))
+        .then(disableLoading);
+    } else {
+      disableLoading();
+    }
 
     return () => {
       renderAbortControl.aborted = true;
@@ -106,7 +113,9 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
           </FlexCenter>
         ) : (
           <Container>
-            <TrainingSection isOpen={trainingOpen} onOpen={openTraining} isTraining={isModelTraining} toggleOpen={toggleTrainingOpen} />
+            {canRenderPrototype && (
+              <TrainingSection isOpen={trainingOpen} onOpen={openTraining} isTraining={isModelTraining} toggleOpen={toggleTrainingOpen} />
+            )}
 
             <Section
               header="DIALOG"

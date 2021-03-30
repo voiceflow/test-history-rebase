@@ -150,8 +150,6 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
   }
 
   sendVolatileUpdate(action: Realtime.AnySocketAction) {
-    Sentry.breadcrumb('realtime', 'Sending volatile update', { type: action.type });
-
     return this.dispatch(Realtime.sendRealtimeVolatileUpdate(action));
   }
 

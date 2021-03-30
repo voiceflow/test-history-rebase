@@ -6,6 +6,7 @@
     "@commitlint/*",
     "@types/*",
     "@voiceflow/commitlint-config",
+    "@voiceflow/semantic-release-config",
     "@voiceflow/git-branch-check",
     "@typescript-eslint/eslint-plugin",
     "@typescript-eslint/parser",

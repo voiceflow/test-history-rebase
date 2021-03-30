@@ -19284,10 +19284,10 @@ react-hot-loader@^4.13.0:
     shallowequal "^1.1.0"
     source-map "^0.7.3"
 
-react-idle-timer@^4.5.4:
-  version "4.5.4"
-  resolved "https://registry.yarnpkg.com/react-idle-timer/-/react-idle-timer-4.5.4.tgz#bfc7e68e697e3a4c7b8086a9381ffaeb9975ea23"
-  integrity sha512-80cvzmAeK571oQ8V9k1143gaqC+5lj2k5kewqRK9ochc9jV4bZsddwuTXA9QSvY1oO25asvGYaVV3VXSb/2r1A==
+react-idle-timer@^4.5.6:
+  version "4.5.6"
+  resolved "https://registry.yarnpkg.com/react-idle-timer/-/react-idle-timer-4.5.6.tgz#b3c541ba0526220f71f5820a81c0e1b2c55b0e73"
+  integrity sha512-7+sdN78SWu2vZpQsPWDbrgfZWkSqzzXeq5/bC3wvlRLj6xVTA1fA+8Qy0vJmNONz5UXu8Ymrj6rn6DFhcxgssg==
 
 react-input-autosize@^2.2.2:
   version "2.2.2"

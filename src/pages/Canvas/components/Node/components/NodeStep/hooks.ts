@@ -119,8 +119,7 @@ export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, w
         onMouseUp: (event: React.MouseEvent) => {
           if (!nodeEntity.inPortID || !engine.linkCreation.canTargetNode(nodeEntity.nodeID)) return;
 
-          event.stopPropagation();
-          event.nativeEvent.stopImmediatePropagation();
+          event.preventDefault();
           engine.linkCreation.complete(nodeEntity.inPortID);
         },
         onDragStart: async (dragEvent: React.DragEvent) => {

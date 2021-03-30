@@ -60,7 +60,11 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
     });
   }, [buildPath]);
 
-  const onMouseUp = React.useCallback((event) => {
+  const onMouseUp = React.useCallback((event: MouseEvent) => {
+    if (event.defaultPrevented) {
+      return;
+    }
+
     if (engine.linkCreation.activeTargetPortID) {
       engine.linkCreation.complete(engine.linkCreation.activeTargetPortID);
     } else if (!engine.linkCreation.isCompleting) {

@@ -7,6 +7,7 @@ export const VARIABLE_DESCRIPTION = {
   [BuiltInVariable.TIMESTAMP]: 'UNIX timestamp (number of seconds since January 1st, 1970 at UTC.)',
   [BuiltInVariable.PLATFORM]: 'The platform your skill is running on ("alexa" or "google")',
   [BuiltInVariable.LOCALE]: 'The locale of the user (eg en-US, en-CA, it-IT, fr-FR ...)',
+  [BuiltInVariable.INTENT_CONFIDENCE]: 'The confidence interval for the most recently matched intent during a test',
 };
 
 export enum VariableType {

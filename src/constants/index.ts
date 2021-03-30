@@ -89,6 +89,7 @@ export const BuiltInVariable = {
   TIMESTAMP: 'timestamp',
   PLATFORM: 'platform',
   LOCALE: 'locale',
+  INTENT_CONFIDENCE: 'intent_confidence',
 };
 
 export const BUILT_IN_VARIABLES = [
@@ -97,6 +98,7 @@ export const BUILT_IN_VARIABLES = [
   BuiltInVariable.TIMESTAMP,
   BuiltInVariable.PLATFORM,
   BuiltInVariable.LOCALE,
+  BuiltInVariable.INTENT_CONFIDENCE,
 ];
 
 export enum BlockType {

@@ -1,3 +1,4 @@
+import { BuiltInVariable } from '@/constants';
 import { activePlatformSelector, activeProjectIDSelector, globalVariablesSelector } from '@/ducks/skill';
 import { slotNamesSelector } from '@/ducks/slot';
 import { Store } from '@/models';
@@ -22,10 +23,11 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
 
   variables = {
     ...variables,
-    timestamp: 0,
-    sessions: 1,
-    user_id: 'TEST_USER',
-    platform,
+    [BuiltInVariable.USER_ID]: 'TEST_USER',
+    [BuiltInVariable.PLATFORM]: platform,
+    [BuiltInVariable.SESSIONS]: 1,
+    [BuiltInVariable.TIMESTAMP]: 0,
+    [BuiltInVariable.INTENT_CONFIDENCE]: 0,
   };
 
   const projectID = activeProjectIDSelector(state);

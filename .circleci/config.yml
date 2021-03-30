@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   codecov: codecov/codecov@1.1.1
-  vfcommon: voiceflow/common@0.0.72
+  vfcommon: voiceflow/common@0.0.82
   sonarcloud: sonarsource/sonarcloud@1.0.2
 
 # Reusable YAML chunks
@@ -158,6 +158,10 @@ jobs:
         description: Running on a git tag?
         type: boolean
         default: false
+      sentry:
+        description: Report deploy to sentry?
+        type: boolean
+        default: false
     executor: vfcommon/build-executor
     steps:
       - attach_workspace:
@@ -171,6 +175,7 @@ jobs:
           namespace: "voiceflow-v1"
           target: "statefulset/creator-app"
           tagged: << parameters.tagged >>
+          sentry: << parameters.sentry >>
       - run:
           name: Wait for deployment rollout
           command: |
@@ -386,6 +391,7 @@ workflows:
 
       - vfcommon/release:
           <<: *slack-fail-post-step
+          sentry_project: creator-app
           context: dev-test
           requires:
             - test
@@ -404,6 +410,7 @@ workflows:
       - build-deploy-app-image:
           <<: *prod_deploy_filters
           tagged: true
+          sentry: true
           context: dev-test
           requires:
             - build-app

@@ -1,6 +1,4 @@
 {
-  "release": {
-    "branch": "master"
-  },
+  "extends": ["@voiceflow/semantic-release-config"],
   "npmPublish": false
 }

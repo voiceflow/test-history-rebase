@@ -1,3 +1,4 @@
+import { SlotType } from '@voiceflow/alexa-types';
 import React from 'react';
 import { withProps } from 'recompose';
 
@@ -44,9 +45,10 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
   }, [intent.slots.allKeys, slotsMap]);
 
   const utterancesWithDefault = React.useMemo(() => {
-    const utterancesWithoutDefault = utterances.filter(({ text }) => text?.trim() !== strSlot);
+    const defaultSlotText = slot.type === SlotType.SEARCHQUERY ? `search ${strSlot}` : strSlot;
+    const utterancesWithoutDefault = utterances.filter(({ text }) => text?.trim() !== defaultSlotText);
 
-    return [...utterancesWithoutDefault, { text: strSlot, slots: [slot.id] }];
+    return [...utterancesWithoutDefault, { text: defaultSlotText, slots: [slot.id] }];
   }, [utterances]);
 
   const onChangePrompt = React.useCallback((prompt) => updateIntentSlotDialog(intent.id, slot.id, { prompt: [{ voice: promptVoice, ...prompt }] }), [

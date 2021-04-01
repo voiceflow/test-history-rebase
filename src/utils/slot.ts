@@ -85,7 +85,7 @@ export const validateSlotName = ({
   }
 
   if (intents.some(({ name }) => name.toLowerCase() === lowerCasedSlotName)) {
-    return `You have an intent defined with the '${slotName}' name already. Intern/slot name must be unique.`;
+    return `You have an intent defined with the '${slotName}' name already. Intent/slot name must be unique.`;
   }
 
   return null;

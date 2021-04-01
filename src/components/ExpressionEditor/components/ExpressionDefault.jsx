@@ -19,6 +19,8 @@ function ExpressionDefault({
   parentType,
   onUpdateType,
   expressionify,
+  maxLineLength,
+  inEditor,
   formComponent: FormComponent,
 }) {
   const sameLevel = LEVELS[type]?.has?.(parentType);
@@ -26,13 +28,13 @@ function ExpressionDefault({
 
   if (isPreview) {
     if (ARITHMETIC.includes(type)) {
-      let first = expressionify(value[0], { parentType: type, depth: depth + 1 });
+      let first = expressionify(value[0], { parentType: type, depth: depth + 1, maxLineLength, inEditor });
 
       if (first.props.className && !first.props.className.startsWith('math')) {
         first = <span className="NaN" />;
       }
 
-      let second = expressionify(value[1], { parentType: type, depth: depth + 1 });
+      let second = expressionify(value[1], { parentType: type, depth: depth + 1, maxLineLength, inEditor });
       if (second.props.className && !second.props.className.startsWith('math')) {
         second = <span className="NaN" />;
       }
@@ -50,13 +52,13 @@ function ExpressionDefault({
       return (
         <span className="brackets">
           {withParenthesis && <span className="parenthesis">( </span>}
-          {expressionify(value[0], { parentType: type, depth: depth + 1 })}
+          {expressionify(value[0], { parentType: type, depth: depth + 1, maxLineLength, inEditor })}
           <span> </span>
           <span className={type}>
             <ExpressionOperator type={type} />
           </span>
           <span> </span>
-          {expressionify(value[1], { parentType: type, depth: depth + 1 })}
+          {expressionify(value[1], { parentType: type, depth: depth + 1, maxLineLength, inEditor })}
           {withParenthesis && <span className="parenthesis"> )</span>}
         </span>
       );

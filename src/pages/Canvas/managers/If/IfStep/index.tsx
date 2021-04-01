@@ -54,7 +54,7 @@ const ConnectedIfStep: React.FC<ConnectedIfStepProps> = ({ node, data }) => {
       const expression = expressionsByPortID[portID];
 
       return {
-        label: <ExpressionPreview expression={expression} container={ExpressionPreviewContainer} singleLine />,
+        label: <ExpressionPreview expression={expression} container={ExpressionPreviewContainer} singleLine maxLineLength={25} />,
         portID,
       };
     });

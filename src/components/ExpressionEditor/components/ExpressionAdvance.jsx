@@ -5,14 +5,14 @@ import React from 'react';
 
 import { matchVariables } from '@/components/TextEditor/plugins/variables/utils/fromTextConvertor';
 import VariablesInput from '@/components/VariablesInput';
-import { VariableTag } from '@/components/VariableTag';
+import { OverflowVariableTag } from '@/components/VariableTag';
 
 import FormContainer from './FormContainer';
 import OperatorButton from './OperatorButton';
 
 const BLANK_SPACE_PATTERN = /^\s+$/;
 
-function ExpressionAdvance({ value, depth, onChange, isPreview, onUpdateType }) {
+function ExpressionAdvance({ value, depth, onChange, isPreview, onUpdateType, maxLineLength }) {
   if (isPreview) {
     const matched = _isObject(value) ? value : matchVariables(value);
 
@@ -22,7 +22,7 @@ function ExpressionAdvance({ value, depth, onChange, isPreview, onUpdateType }) 
       <span className="math brackets">
         {matched.map((valuePart, index) =>
           _isObject(valuePart) ? (
-            <VariableTag key={{ index }}>{`{${valuePart.name}}`}</VariableTag>
+            <OverflowVariableTag key={{ index }} variableName={valuePart.name} maxLineLength={maxLineLength} />
           ) : (
             valuePart
               ?.split('\n')

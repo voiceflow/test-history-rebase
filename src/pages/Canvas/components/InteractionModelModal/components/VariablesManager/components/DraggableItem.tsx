@@ -2,6 +2,7 @@ import React from 'react';
 
 import { SearchableListItemContainer } from '@/components/SearchableList';
 import { VariableTag } from '@/components/VariableTag';
+import { abbreviate } from '@/utils/string';
 
 import ItemCount from '../../ItemCount';
 import { VariableType } from '../constants';
@@ -16,14 +17,27 @@ export type DraggableItemProps = {
   selectedVariableID?: string;
   isContextMenuOpen?: boolean;
   isDraggingPreview?: boolean;
+  maxVarNameLength?: number;
 };
 
 const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableItemProps> = (
-  { item, isDragging, withoutHover, onContextMenu, onSelectVariableID, selectedVariableID, isContextMenuOpen, isDraggingPreview },
+  {
+    item,
+    isDragging,
+    withoutHover,
+    onContextMenu,
+    onSelectVariableID,
+    selectedVariableID,
+    isContextMenuOpen,
+    isDraggingPreview,
+    maxVarNameLength = 20,
+  },
   ref
 ) => {
   const isLocal = item.type === VariableType.LOCAL;
   const isBuiltIn = item.type === VariableType.BUILT_IN;
+
+  const displayName = React.useMemo(() => abbreviate(item.name, maxVarNameLength), [item.name, maxVarNameLength]);
 
   return (
     <SearchableListItemContainer
@@ -36,7 +50,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
       isDraggingPreview={isDraggingPreview}
       isContextMenuOpen={isContextMenuOpen}
     >
-      <VariableTag>{`{${item.name}}`}</VariableTag>
+      <VariableTag>{`{${displayName}}`}</VariableTag>
       {(isLocal || isBuiltIn) && <ItemCount>{isBuiltIn ? 'Built In' : 'Flow'}</ItemCount>}
     </SearchableListItemContainer>
   );

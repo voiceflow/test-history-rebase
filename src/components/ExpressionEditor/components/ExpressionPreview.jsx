@@ -9,7 +9,7 @@ import ExpressionValue from './ExpressionValue';
 import ExpressionVariable from './ExpressionVariable';
 import PreviewContainer from './PreviewContainer';
 
-const expressionify = (expression, { parentType, depth = 0 } = {}) => {
+const expressionify = (expression, { parentType, maxLineLength, inEditor = false, depth = 0 } = {}) => {
   if (!expression) {
     return <div>err</div>;
   }
@@ -20,11 +20,11 @@ const expressionify = (expression, { parentType, depth = 0 } = {}) => {
 
   switch (expression.type) {
     case ExpressionType.ADVANCE:
-      return <ExpressionAdvance depth={depth} value={expression.value} isPreview />;
+      return <ExpressionAdvance depth={depth} value={expression.value} maxLineLength={maxLineLength} isPreview />;
     case ExpressionType.VALUE:
       return <ExpressionValue depth={depth} value={expression.value} isPreview />;
     case ExpressionType.VARIABLE:
-      return <ExpressionVariable depth={depth} value={expression.value} isPreview />;
+      return <ExpressionVariable depth={depth} value={expression.value} maxLineLength={maxLineLength} isPreview inEditor={inEditor} />;
     case ExpressionType.NOT:
       return (
         <ExpressionNot
@@ -33,6 +33,8 @@ const expressionify = (expression, { parentType, depth = 0 } = {}) => {
           value={expression.value}
           isPreview
           parentType={parentType}
+          maxLineLength={maxLineLength}
+          inEditor={inEditor}
           expressionify={expressionify}
         />
       );
@@ -44,18 +46,20 @@ const expressionify = (expression, { parentType, depth = 0 } = {}) => {
           value={expression.value || ''}
           isPreview
           parentType={parentType}
+          maxLineLength={maxLineLength}
+          inEditor={inEditor}
           expressionify={expressionify}
         />
       );
   }
 };
 
-function ExpressionPreview({ expression, container: Container = PreviewContainer, prefix = null, ...props }) {
+function ExpressionPreview({ expression, maxLineLength = 24, inEditor = false, container: Container = PreviewContainer, prefix = null, ...props }) {
   if (!expression) return null;
 
   return (
     <Container className="expressionfy" {...props}>
-      {prefix} {expressionify(expression)}
+      {prefix} {expressionify(expression, { maxLineLength, inEditor })}
     </Container>
   );
 }

@@ -13,7 +13,7 @@ export function ExpressionEditor({ expression, ...props }) {
 
   return (
     <>
-      {showPreview && <ExpressionPreview expression={expression} />}
+      {showPreview && <ExpressionPreview expression={expression} maxLineLength={48} inEditor={true} />}
       <ExpressionForm expression={expression} {...props} />
     </>
   );

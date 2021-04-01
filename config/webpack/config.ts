@@ -19,6 +19,7 @@ import {
   ff_trace,
   ff_wavenetVoices,
   ga,
+  growsurf,
   host,
   intercom,
   logFilter,
@@ -66,6 +67,7 @@ export const ENV = {
   INTERCOM_ENABLED: intercom && 'true',
   USERFLOW_ENABLED: userflow && 'true',
   SENTRY_ENABLED: sentry && 'true',
+  GROWSURF_ENABLED: growsurf && 'true',
 
   CLOUD_ENV: privateCloud || '',
 

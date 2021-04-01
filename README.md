@@ -277,6 +277,21 @@ You are also able to use the flag `--sentry` to enable it from the command line.
 yarn start --sentry
 ```
 
+### Growsurf
+
+To enable growsurf integration when running locally, set the environment variable `VF_APP_GROWSURF_ENABLED` to `"true"`
+in the `.env.local` file in this directory. If this file doesn't exist then create one.
+
+```sh
+VF_APP_GROWSURF_ENABLED='true'
+```
+
+You are also able to use the flag `--growsurf` to enable it from the command line.
+
+```sh
+yarn start --growsurf
+```
+
 ### Private Cloud
 
 Some features are disabled when running on a private cloud.

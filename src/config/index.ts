@@ -34,6 +34,7 @@ declare global {
     VF_OVERRIDE_OKTA_DOMAIN?: string;
     VF_OVERRIDE_OKTA_CLIENT_ID?: string;
     VF_OVERRIDE_SENTRY_DSN?: string;
+    VF_OVERRIDE_GROWSURF_CAMPAIGN_ID?: string;
   }
 }
 
@@ -210,3 +211,7 @@ export const TRUSTED_ENDPOINTS = [API_ENDPOINT, ALEXA_SERVICE_ENDPOINT, GOOGLE_S
 export const OKTA_DOMAIN = window.VF_OVERRIDE_OKTA_DOMAIN || process.env.OKTA_DOMAIN!;
 export const OKTA_SCOPES = ['openid', 'profile', 'email', 'offline_access'];
 export const OKTA_CLIENT_ID = window.VF_OVERRIDE_OKTA_CLIENT_ID || process.env.OKTA_CLIENT_ID!;
+
+// growsurf
+export const GROWSURF_ENABLED = IS_PRODUCTION || process.env.GROWSURF_ENABLED === 'true';
+export const GROWSURF_CAMPAIGN_ID = window.VF_OVERRIDE_GROWSURF_CAMPAIGN_ID || process.env.GROWSURF_CAMPAIGN_ID!;

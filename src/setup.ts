@@ -11,6 +11,7 @@ import { API_ENDPOINT, TRUSTED_ENDPOINTS, VERSION } from './config';
 import { clearPersistedLogs } from './utils/logger';
 import * as Google from './vendors/google';
 import * as GoogleAnalytics from './vendors/googleAnalytics';
+import * as Growsurf from './vendors/growsurf';
 import * as LogRocket from './vendors/logRocket';
 import * as Userflow from './vendors/userflow';
 
@@ -72,6 +73,8 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
   GoogleAnalytics.initialize(history);
 
   Userflow.initialize();
+
+  Growsurf.initialize();
 
   // eslint-disable-next-line no-console
   console.info(

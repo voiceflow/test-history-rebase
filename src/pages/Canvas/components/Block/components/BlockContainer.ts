@@ -76,7 +76,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
   }
 
   .${NODE_HIGHLIGHTED_CLASSNAME} &,
-  .${NODE_HOVERED_CLASSNAME} & {
+  .${CANVAS_CREATING_LINK_CLASSNAME} .${NODE_HOVERED_CLASSNAME} & {
     cursor: copy;
   }
 
@@ -92,7 +92,7 @@ const BlockContainer = styled.div<BlockContainerProps>`
   .${NODE_PROTOTYPE_HIGHLIGHTED_CLASSNAME} &,
   .${NODE_HIGHLIGHTED_CLASSNAME} &,
   .${NODE_THREAD_TARGET_CLASSNAME} &,
-  .${NODE_HOVERED_CLASSNAME}:not(.${NODE_DISABLED_CLASSNAME}) & {
+  .${CANVAS_CREATING_LINK_CLASSNAME} .${NODE_HOVERED_CLASSNAME}:not(.${NODE_DISABLED_CLASSNAME}) & {
     border-color: #5d9df5;
 
     ::before {

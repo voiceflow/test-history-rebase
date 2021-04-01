@@ -34,6 +34,9 @@ export default merge(commonConfig, {
               '**/src/utils/testing/**/*',
               '**/src/store/types/**/*',
               '**/src/**/types.ts',
+              '**/src/components/ConditionsBuilder/**/*',
+              '**/src/components/Label.tsx',
+              '**/src/pages/Canvas/managers/If/IfEditorV2.tsx',
             ],
           }),
         ]

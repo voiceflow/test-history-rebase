@@ -129,6 +129,7 @@ export const useManager = (items = [], onChange, { factory = identity, getKey, a
         currValue && !Array.isArray(currValue) && _isObject(currValue) ? { ...currValue, ...value } : value
       );
       const index = getIndex(key);
+
       keyLookup.current.delete(generateLookupKey(currValue, index));
       keyLookup.current.set(generateLookupKey(updated.byKey[key], index), key);
       onSave(updated, { update: true });

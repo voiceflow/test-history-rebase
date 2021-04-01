@@ -19,7 +19,7 @@
     "@voiceflow/api-sdk": "1.28.0",
     "@voiceflow/common": "6.5.0",
     "@voiceflow/draft-js-mention-plugin": "3.3.15",
-    "@voiceflow/general-types": "^1.36.0",
+    "@voiceflow/general-types": "^1.39.1",
     "@voiceflow/google-types": "1.22.0",
     "@welldone-software/why-did-you-render": "^4.3.1",
     "apl-viewhost-web": "^1.5.0",

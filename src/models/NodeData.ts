@@ -166,6 +166,7 @@ export namespace NodeData {
     permissions: UserInfoPermission[];
   };
 
+  // TODO: remove below expression type definition when Conditons builder is released to prod
   export type GenericExpression<T extends ExpressionType, V> = {
     id: string;
     type: T;

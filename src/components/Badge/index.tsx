@@ -1,6 +1,6 @@
 import { css, styled, units } from '@/hocs';
 
-type Badge = { onClick?: any; slide?: boolean; marginLeft?: number; color?: string };
+type Badge = { onClick?: any; slide?: boolean; marginLeft?: number; color?: string; isVisible?: boolean };
 
 const Badge = styled.div<Badge>`
   ${({ marginLeft }) =>
@@ -48,6 +48,12 @@ const Badge = styled.div<Badge>`
           border: 1px solid #d4d9e6;
           color: #62778c;
         `}
+
+  ${({ isVisible }) =>
+    !isVisible &&
+    css`
+      display: none;
+    `}
 `;
 
 export default Badge;

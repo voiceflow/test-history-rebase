@@ -15,6 +15,7 @@ const VariablesInput = (
   {
     space = false,
     onBlur,
+    fullWidth = false,
     multiline = false,
     variables,
     creatable,
@@ -72,7 +73,7 @@ const VariablesInput = (
   );
 
   return (
-    <Container ref={containerRef} multiline={multiline}>
+    <Container ref={containerRef} multiline={multiline} fullWidth={fullWidth}>
       <TextEditor
         {...props}
         ref={ref}

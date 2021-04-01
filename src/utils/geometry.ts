@@ -51,7 +51,9 @@ export class Vector {
   }
 
   add(vector: Vector): this;
+
   add(delta: Point, plane?: CartesianPlane): this;
+
   add(vecOrDelta: Vector | Point, plane = this.plane) {
     const [deltaX, deltaY] = Vector.from(vecOrDelta, plane);
 
@@ -59,7 +61,9 @@ export class Vector {
   }
 
   sub(vector: Vector): this;
+
   sub(delta: Point, plane?: CartesianPlane): this;
+
   sub(vecOrDelta: Vector | Point, plane = this.plane) {
     const [deltaX, deltaY] = Vector.from(vecOrDelta, plane);
 
@@ -67,7 +71,9 @@ export class Vector {
   }
 
   mul(vector: Vector): Vector;
+
   mul(factor: Pair<number>, plane?: CartesianPlane): Vector;
+
   mul(vecOrFactor: Vector | Pair<number>, plane = this.plane) {
     const [factorX, factorY] = Vector.from(vecOrFactor, plane);
 
@@ -78,7 +84,9 @@ export class Vector {
   }
 
   div(vector: Vector): Vector;
+
   div(factor: Pair<number>, plane?: CartesianPlane): Vector;
+
   div(vecOrFactor: Vector | Pair<number>, plane = this.plane) {
     const [factorX, factorY] = Vector.from(vecOrFactor, plane);
 

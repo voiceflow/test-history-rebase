@@ -20,6 +20,8 @@ export type MenuContainerProps = {
   maxVisibleItems?: number;
   disableAnimation?: boolean;
   width?: number;
+  padding?: string;
+  height?: number;
 };
 
 const MenuContainer = styled.ul<MenuContainerProps>`
@@ -29,9 +31,15 @@ const MenuContainer = styled.ul<MenuContainerProps>`
   min-width: 100px;
   ${({ fullWidth }) => (fullWidth ? '' : 'max-width: 400px;')}
   ${({ width }) => (width ? `width: ${width}px;` : '')}
+  ${({ height }) =>
+    height &&
+    css`
+      height: ${height}px;
+      max-height: ${height}px;
+    `}
   margin-top: 5px;
   margin-bottom: 5px;
-  padding: ${VERTICAL_PADDING}px 0;
+  padding: ${({ padding }) => padding || `${VERTICAL_PADDING}px 0`};
   border-radius: 5px;
   background: #fff;
   color: #132144;

@@ -5164,6 +5164,17 @@
     axios "^0.21.1"
     superstruct "^0.10.12"
 
+"@voiceflow/api-sdk@1.28.2":
+  version "1.28.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.28.2.tgz#62836be46d6be8699a3e0cffc3bb4d6850e33d27"
+  integrity sha512-yxwaYRIotrf6nYSCduuRoGtj4lWHqnxJ0yoHbZ2E9vseYSNqvRl/JOB4VO4PKiCrOlX4pn8UllHcTPyFFvG4KQ==
+  dependencies:
+    "@types/atob" "^2.1.2"
+    "@voiceflow/logger" "^1.5.2"
+    atob "^2.1.2"
+    axios "^0.21.1"
+    superstruct "^0.10.12"
+
 "@voiceflow/commitlint-config@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@voiceflow/commitlint-config/-/commitlint-config-1.0.2.tgz#c64b2b4b2375c2c8d44e605439849256a37e419c"
@@ -5218,12 +5229,19 @@
     eslint-plugin-xss "^0.1.9"
     eslint-plugin-you-dont-need-lodash-underscore "^6.11.0"
 
-"@voiceflow/general-types@1.36.0", "@voiceflow/general-types@^1.36.0":
+"@voiceflow/general-types@1.36.0":
   version "1.36.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.36.0.tgz#d0c831989dcbfe0cacfb7babcde24e4f675d9bc1"
   integrity sha512-HVCsVjoJs89OkN5Xlf98Kc0uTIHzqB3ioAy7ux+2gNeoSFwMwb+INWcCFDJsBaR1ImcZj8ExP8mhaLPFWCBwtA==
   dependencies:
     "@voiceflow/api-sdk" "1.28.0"
+
+"@voiceflow/general-types@^1.39.1":
+  version "1.39.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.39.1.tgz#866a5407f6327cd2f621164411efc7a6d9b94239"
+  integrity sha512-TWUdIf7XL5zlMzgaeVuP4Pzpqwlwe+2jzXLaHrE83MrEiIOxOTRNmhYK6+quG6bBkY69WyY61KmNpeF7yqKexg==
+  dependencies:
+    "@voiceflow/api-sdk" "1.28.2"
 
 "@voiceflow/git-branch-check@^1.1.3":
   version "1.1.3"

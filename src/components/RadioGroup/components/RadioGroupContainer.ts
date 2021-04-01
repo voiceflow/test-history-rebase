@@ -1,8 +1,8 @@
 import { styled } from '@/hocs';
 
-const RadioGroupContainer = styled.div`
+const RadioGroupContainer = styled.div<{ column?: boolean }>`
   display: flex;
-  flex-direction: row;
+  flex-direction: ${({ column }) => (column ? 'column' : 'row')};
   flex-wrap: wrap;
 `;
 

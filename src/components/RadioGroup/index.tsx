@@ -20,6 +20,7 @@ export type RadioGroupProps<T extends any> = Omit<CheckboxProps, 'type' | 'value
   options?: RadioOption<T>[];
   checked: T;
   onChange: (value: T) => void;
+  column?: boolean;
 };
 
 const RadioGroup = <T extends any>({
@@ -27,16 +28,17 @@ const RadioGroup = <T extends any>({
   checked,
   onChange,
   className,
+  column,
   ...props
 }: RadioGroupProps<T>) => (
-  <Container className={className}>
+  <Container className={className} column={column}>
     {options.map((option, index) => {
       const { id, label, customCheckedCondition } = option;
 
       const isChecked = customCheckedCondition ? customCheckedCondition(checked) : checked === id;
 
       return (
-        <RadioButtonContainer key={index}>
+        <RadioButtonContainer key={index} column={column}>
           <Checkbox {...props} type={CheckboxType.RADIO} value={id as any} checked={isChecked} onChange={() => onChange(id)} isFlat>
             <div>{label}</div>
           </Checkbox>

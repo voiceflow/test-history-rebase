@@ -23,5 +23,11 @@ export const Container = styled.div`
       .public-DraftStyleDefault-block > span {
         white-space: pre;
       }
+    `};
+
+  ${({ fullWidth }) =>
+    fullWidth &&
+    css`
+      width: 100%;
     `}
 `;

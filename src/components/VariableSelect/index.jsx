@@ -27,7 +27,6 @@ export const VariableSelect = ({ value, variables, addVariable, onChange, ...pro
       searchable
       placeholder="Select Variable"
       createInputPlaceholder="Variable"
-      placement="bottom-end"
       {...props}
     />
   );

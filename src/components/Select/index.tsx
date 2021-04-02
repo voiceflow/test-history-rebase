@@ -203,8 +203,8 @@ const Select = <O, V = O>({
 
   const menuPopoverModifiers = React.useMemo(() => {
     const onComputedStyle = (data: { styles: Record<string, unknown> }) => {
-      if (['bottom-start', 'bottom-end'].includes(placement) && inputWrapperRef) {
-        data.styles.minWidth = inputWrapperRef.getBoundingClientRect().width;
+      if (placement === 'bottom-start' && inputWrapperRef) {
+        data.styles.width = inputWrapperRef.getBoundingClientRect().width;
       }
 
       return data;

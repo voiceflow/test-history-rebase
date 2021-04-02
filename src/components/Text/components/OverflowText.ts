@@ -6,7 +6,6 @@ export const overflowTextStyles = css`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  word-break: break-word;
 `;
 
 const OverflowText = styled(Text)`

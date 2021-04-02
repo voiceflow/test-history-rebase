@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box } from '@/components/Box';
 import Input from '@/components/Input';
 import Section, { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
 import Tooltip from '@/components/TippyTooltip';
@@ -24,25 +23,7 @@ const PrototypeDeveloperSettings: React.FC<ConnectedPrototypeDeveloperSettingsPr
             key={name}
             leftAction={
               <VariableTag isPrototypeSettings style={{ maxWidth: '75%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                <Tooltip
-                  delay={500}
-                  distance={6}
-                  html={
-                    <Box style={{ wordWrap: 'break-word' }} maxWidth={550} textAlign="left">
-                      {name}
-                    </Box>
-                  }
-                  position="top"
-                  popperOptions={{
-                    modifiers: {
-                      preventOverflow: {
-                        // Popper v1.x - Default behaviour has overflow leftward, we want to make overflow rightward
-                        // https://popper.js.org/docs/v1/#preventoverflowpriority
-                        priority: ['right', 'left', 'top', 'bottom'],
-                      },
-                    },
-                  }}
-                >
+                <Tooltip delay={500} distance={6} title={name} position="top">
                   {name}
                 </Tooltip>
               </VariableTag>

@@ -20,8 +20,6 @@ function ExpressionNot({
   onCollapse,
   onUpdateType,
   expressionify,
-  maxLineLength,
-  inEditor,
   formComponent: FormComponent,
 }) {
   const sameLevel = LEVELS[type]?.has?.(parentType);
@@ -30,7 +28,7 @@ function ExpressionNot({
     return (
       <span className="brackets">
         {!sameLevel && <span className="parenthesis">( </span>}
-        <span className="not">NOT</span> {expressionify(value, { parentType: type, depth: depth + 1, maxLineLength, inEditor })}
+        <span className="not">NOT</span> {expressionify(value, { parentType: type, depth: depth + 1 })}
         {!sameLevel && <span className="parenthesis"> )</span>}
       </span>
     );

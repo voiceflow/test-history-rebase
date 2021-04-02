@@ -274,10 +274,7 @@ export const PERIOD_NAME = {
   [BillingPeriod.ANNUALLY]: 'Annually',
 };
 
-export const VALID_VARIABLE_NAME_MAX_LENGTH = 64;
-
-// Has >= 1 char, which must be a letter, then remaining 63 allowed chars are allowed to be letters or underscore.
-export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,63}$/;
+export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,16}$/;
 
 export const AUDIO_FILE_BUCKET_NAME = 'https://s3.amazonaws.com/com.getstoryflow.audio.sandbox';
 

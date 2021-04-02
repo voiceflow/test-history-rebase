@@ -3,22 +3,14 @@ import cn from 'classnames';
 import React from 'react';
 
 import VariableSelect from '@/components/VariableSelect';
-import { OverflowVariableTag, VariableTag } from '@/components/VariableTag';
+import { VariableTag } from '@/components/VariableTag';
 
 import FlexFormContainer from './FlexFormContainer';
 import OperatorButton from './OperatorButton';
 
-function ExpressionVariable({ value, depth, onChange, isPreview, onUpdateType, inEditor = false, maxLineLength = 48 }) {
+function ExpressionVariable({ value, depth, onChange, isPreview, onUpdateType }) {
   if (isPreview) {
-    if (!value) {
-      return <span className="math unknown">?</span>;
-    }
-
-    if (inEditor) {
-      return <VariableTag>{`{${value.length <= maxLineLength ? value : `${value.substr(0, maxLineLength - 3)}...`}}`}</VariableTag>;
-    }
-
-    return <OverflowVariableTag variableName={value} maxLineLength={maxLineLength} />;
+    return value ? <VariableTag>{`{${value}}`}</VariableTag> : <span className="math unknown">?</span>;
   }
 
   return (

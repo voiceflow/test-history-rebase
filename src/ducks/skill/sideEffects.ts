@@ -11,7 +11,7 @@ import alexaSettingsAdapter, { SkillSettings } from '@/client/adapters/version/a
 import generalSettingsAdapter, { GeneralSkillSettings } from '@/client/adapters/version/general/settings';
 import googleSettingsAdapter from '@/client/adapters/version/google/settings';
 import { toast } from '@/components/Toast';
-import { ExportFormat, NLPProvider, PlatformType, VALID_VARIABLE_NAME, VALID_VARIABLE_NAME_MAX_LENGTH } from '@/constants';
+import { ExportFormat, NLPProvider, PlatformType, VALID_VARIABLE_NAME } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
@@ -34,7 +34,7 @@ export const addGlobalVariable = (variable: string | null): SyncThunk => (dispat
     const variables = Skill.globalVariablesSelector(getState());
 
     if (!variable.match(VALID_VARIABLE_NAME)) {
-      throw new Error(`Variable contains invalid characters or is greater than ${VALID_VARIABLE_NAME_MAX_LENGTH} characters`);
+      throw new Error('Variable contains invalid characters or is greater than 16 characters');
     } else if (variables.includes(variable)) {
       throw new Error(`No duplicate variables: ${variable}`);
     }

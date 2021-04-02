@@ -30,5 +30,3 @@ export const removeTrailingUnderscores = (str: string) => str.replace(TRAILING_U
 export const checkForSpecialCharacters = (str: string) => str.match(SPECIAL_CHARACTERS_REGEXP);
 
 export const removeSpecialCharacters = (str: string) => str.replace(SPECIAL_CHARACTERS_REGEXP, '');
-
-export const abbreviate = (name: string, maxLength: number) => (name.length <= maxLength ? name : name.substr(0, maxLength).concat('...'));

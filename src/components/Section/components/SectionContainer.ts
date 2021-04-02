@@ -174,7 +174,7 @@ const SectionContainer = styled.div<SectionContainerProps>`
     if (variant === SectionVariant.TERTIARY) {
       return css`
         ${Header} {
-          min-height: ${units(5)}px;
+          height: ${units(5)}px;
         }
         ${ContentContainer} {
           padding-bottom: ${units(2)}px;

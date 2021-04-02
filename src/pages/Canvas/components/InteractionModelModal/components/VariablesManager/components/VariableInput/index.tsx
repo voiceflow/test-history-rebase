@@ -7,7 +7,6 @@ import InfoIcon from '@/components/InfoIcon';
 import Input from '@/components/Input';
 import SvgIcon from '@/components/SvgIcon';
 import { toast } from '@/components/Toast';
-import { VALID_VARIABLE_NAME_MAX_LENGTH } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -87,7 +86,7 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
         value={value}
         onChange={(e: any) => setValue(e.target.value)}
         {...props}
-        maxLength={VALID_VARIABLE_NAME_MAX_LENGTH}
+        maxLength={16}
         rightAction={
           !!value.length && (
             <Badge slide onClick={onAdd}>

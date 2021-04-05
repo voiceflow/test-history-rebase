@@ -5,7 +5,7 @@ import * as PrototypeDuck from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useCanASR, useDidUpdateEffect, useSpeechRecognition, useTeardown } from '@/hooks';
+import { useASR, useCanASR, useDidUpdateEffect, useSpeechRecognition, useTeardown } from '@/hooks';
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPrototype } from '@/pages/Prototype/hooks';
@@ -55,6 +55,11 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
     onCheckMicrophonePermission,
     isMicrophonePermissionGranted,
   } = useSpeechRecognition({ locale, onTranscript: onInteraction, askOnSetup: isVoicePrototype });
+
+  const { onStopListening: onStopListeningASR, onStartListening: onStartListeningASR, listening: listeningASR } = useASR({
+    onTranscript: onInteraction,
+    locale,
+  });
 
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
@@ -143,7 +148,13 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
     >
       {({ isMobile, isFullScreen }) =>
         isVisuals ? (
-          <Visuals isMobile={isMobile} isFullScreen={isFullScreen} onStopListening={onStopListening} onStartListening={onStartListening} />
+          <Visuals
+            listeningASR={listeningASR}
+            isMobile={isMobile}
+            isFullScreen={isFullScreen}
+            onStopListening={isMobile ? onStopListeningASR : onStopListening}
+            onStartListening={isMobile ? onStartListeningASR : onStartListening}
+          />
         ) : (
           <ChatDialog
             locale={locale}

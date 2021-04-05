@@ -112,6 +112,7 @@ const _ADMIN_HOST =
     : IS_PRODUCTION_ENV
     ? 'https://admin.voiceflow.com'
     : 'https://admin.development.voiceflow.com';
+
 export const ADMIN_HOST = window.VF_OVERRIDE_ADMIN_HOST || _ADMIN_HOST;
 
 // amazon

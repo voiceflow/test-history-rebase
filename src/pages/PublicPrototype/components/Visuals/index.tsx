@@ -14,7 +14,7 @@ import { FadeContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 import { preventDefault } from '@/utils/dom';
 
-import { APL, Container, Image, PlaceholderContainer, ScaleContainer } from './components';
+import { APL, Container, Image, ListenerContainer, PlaceholderContainer, ScaleContainer } from './components';
 import { getScale } from './utils';
 
 type VisualsProps = {
@@ -22,9 +22,18 @@ type VisualsProps = {
   isFullScreen?: boolean;
   onStopListening: () => void;
   onStartListening: () => void;
+  listeningASR: boolean;
 };
 
-const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({ data, device, isMobile, isFullScreen, onStopListening, onStartListening }) => {
+const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({
+  data,
+  device,
+  isMobile,
+  isFullScreen,
+  onStopListening,
+  onStartListening,
+  listeningASR,
+}) => {
   const dimension = useDeviceDimension({ data, device: device || DeviceType.ECHO_SHOW_10 });
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [scale, setScale] = React.useState(1);
@@ -66,6 +75,7 @@ const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({ data, device,
 
   return (
     <Container ref={onContainerRef} isMobile={isMobile}>
+      {isMobile && <ListenerContainer listeningASR={listeningASR} />}
       {!!containerRef.current && (
         <>
           {data?.visualType === VisualType.IMAGE && (

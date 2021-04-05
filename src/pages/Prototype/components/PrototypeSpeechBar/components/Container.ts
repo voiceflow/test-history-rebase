@@ -8,6 +8,7 @@ const Container = styled(Box)<{ disabled?: boolean }>`
   padding: 24px;
   position: relative;
   cursor: pointer;
+  color: #8da2b5;
   user-select: none;
 
   ${({ disabled }) =>

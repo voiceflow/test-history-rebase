@@ -52,7 +52,7 @@ const ASRContent: React.FC<ASRContentProps> = ({
     );
   } else if (!listeningASR && !processingTranscription) {
     if (isMobile) {
-      content = <div>Hold down for Voice Input</div>;
+      content = 'Hold down for Voice Input';
     } else {
       content = (
         <>
@@ -62,7 +62,6 @@ const ASRContent: React.FC<ASRContentProps> = ({
     }
   } else if (listeningASR) {
     content = 'Listening...';
-    // }
   } else if (processingTranscription) {
     content = <>Processing...</>;
   }
@@ -72,7 +71,7 @@ const ASRContent: React.FC<ASRContentProps> = ({
       onMouseUp={isMobile ? undefined : preventDefault(onStop)}
       onMouseDown={isMobile ? undefined : preventDefault(onListen)}
     >
-      <Text color="#8da2b5">{content}</Text>
+      {content}
     </Container>
   );
 };

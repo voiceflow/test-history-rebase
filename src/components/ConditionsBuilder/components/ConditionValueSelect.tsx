@@ -41,10 +41,14 @@ const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value, onCh
       onFocus={onShow}
       onKeyPress={withKeyPress(13, onEnter)}
       rightAction={
-        <Badge slide onClick={onEnter} isVisible={!!(show && data)}>
-          Enter
-        </Badge>
+        show &&
+        data && (
+          <Badge slide onClick={onEnter}>
+            Enter
+          </Badge>
+        )
       }
+      nested
     />
   );
 };

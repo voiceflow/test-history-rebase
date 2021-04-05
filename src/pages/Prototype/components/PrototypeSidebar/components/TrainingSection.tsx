@@ -87,6 +87,8 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
     try {
       stateApi.update({ fetching: true });
 
+      await client.platform.general.nlp.getApp(projectID);
+
       const [projectPrototype, versionPrototype] = await Promise.all([
         client.api.project.getPrototype(projectID),
         client.api.version.getPrototype(versionID),

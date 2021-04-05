@@ -10,6 +10,8 @@ const createNLPService = (serviceEndpoint: string) => ({
   status: (projectID: string) => axios.get<Nullable<NLPTrainJob.AnyJob>>(`${serviceEndpoint}/nlp/${projectID}/status`).then((res) => res.data),
 
   cancel: (projectID: string) => axios.post<void>(`${serviceEndpoint}/nlp/${projectID}/cancel`).then((res) => res.data),
+
+  getApp: (projectID: string) => axios.get<void>(`${serviceEndpoint}/nlp/${projectID}`).then((res) => res.data),
 });
 
 export default createNLPService;

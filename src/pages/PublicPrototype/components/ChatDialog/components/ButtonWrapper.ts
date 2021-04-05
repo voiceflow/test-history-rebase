@@ -14,6 +14,7 @@ const ButtonWrapper = styled(Box)<{ color?: string; disabled?: boolean; isMobile
       background-color: ${color};
       padding: 16px;
       border-radius: 12px;
+      transition: 0.15s ease all;
 
       :hover {
         background-color: ${disabled ? color : changeColorShade(color, -20)};

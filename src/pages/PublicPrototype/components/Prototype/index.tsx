@@ -104,7 +104,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
       isListening={isListening}
       renderSplashScreen={({ isMobile }) => (
         <SplashScreen
-          logoURL={settings.branchImage}
+          logoURL={settings.brandImage}
           onStart={onStart}
           colorScheme={settings.brandColor}
           isMobile={isMobile}
@@ -134,10 +134,12 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
               interimTranscript={interimTranscript}
               onCheckMicrophonePermission={onCheckMicrophonePermission}
               isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+              colorScheme={settings.brandColor}
             />
           )}
         </Footer>
       )}
+      colorScheme={settings.brandColor}
     >
       {({ isMobile, isFullScreen }) =>
         isVisuals ? (
@@ -148,6 +150,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
             input={input}
             onStart={onStart}
             color={settings.brandColor}
+            avatarURL={settings.avatar}
             layout={settings.layout}
             onMute={onMute}
             isIdle={isIdle}

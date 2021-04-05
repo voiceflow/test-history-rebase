@@ -19,7 +19,9 @@ const BoxLogo = styled.div<BoxLogoProps>`
   border: solid 2px white;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
   background: url('${({ url = VF_LOGO }) => url}');
-  background-size: contain;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 
   ${({ isMobile }) =>
     isMobile &&

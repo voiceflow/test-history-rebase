@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Avatar from '@/components/Avatar';
 import SvgIcon from '@/components/SvgIcon';
 import TippyTooltip from '@/components/TippyTooltip';
 import { FadeDownContainer } from '@/styles/animations';
@@ -17,6 +18,8 @@ export type MessageProps = {
   userSpeak?: boolean;
   withAnimation?: boolean;
   isLast?: boolean;
+  color?: string;
+  avatarURL?: string;
 };
 
 const Message: React.FC<MessageProps> = ({
@@ -28,6 +31,8 @@ const Message: React.FC<MessageProps> = ({
   startTime,
   withAnimation = false,
   isLast,
+  color,
+  avatarURL,
   ...props
 }) => {
   const InnerContainer = React.useMemo(() => (!rightAlign && isFirstInSeries && !withAnimation ? React.Fragment : FadeDownContainer), []);
@@ -36,13 +41,13 @@ const Message: React.FC<MessageProps> = ({
     <Container rightAlign={rightAlign} {...props}>
       <InnerContainer>
         {withLogo && isFirstInSeries && (
-          <LogoCircle shadow={false} size={32}>
-            <SvgIcon icon="voiceflowV" size={16} color="black" />
+          <LogoCircle shadow={false} size={32} forAvatar={!!avatarURL}>
+            {avatarURL ? <Avatar noHover noShadow url={avatarURL} name="" color="red" /> : <SvgIcon icon="voiceflowV" size={16} color="black" />}
           </LogoCircle>
         )}
 
         <TippyTooltip distance={8} position="top" title={startTime} disabled={!startTime}>
-          <Bubble rightAlign={rightAlign} onClick={onClick} clickable={!!onClick} isFirstInSeries={isFirstInSeries}>
+          <Bubble rightAlign={rightAlign} color={color} onClick={onClick} clickable={!!onClick} isFirstInSeries={isFirstInSeries}>
             {children}
           </Bubble>
         </TippyTooltip>

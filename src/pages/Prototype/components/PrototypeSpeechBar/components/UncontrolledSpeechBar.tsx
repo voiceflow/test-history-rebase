@@ -19,6 +19,7 @@ export type UncontrolledSpeechBarProps = {
   interimTranscript: string;
   onCheckMicrophonePermission?: () => void;
   isMicrophonePermissionGranted?: boolean;
+  colorScheme?: string;
 };
 
 const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
@@ -32,6 +33,7 @@ const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
   interimTranscript,
   onCheckMicrophonePermission,
   isMicrophonePermissionGranted,
+  colorScheme = '#5D9DF5',
 }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const cache = useCache({ onStopListening, onStartListening });
@@ -77,13 +79,17 @@ const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
   if (!isMicrophonePermissionGranted) {
     text = (
       <>
-        Please <ClickableText onClick={onCheckMicrophonePermission}>enable</ClickableText> microphone access
+        Please{' '}
+        <ClickableText color={colorScheme} onClick={onCheckMicrophonePermission}>
+          enable
+        </ClickableText>{' '}
+        microphone access
       </>
     );
   } else if (!isListening) {
     text = (
       <>
-        Hold <Text color="#5d9df5">{isMobile ? 'here' : 'spacebar'}</Text> for Voice Input
+        Hold <Text color={colorScheme}>{isMobile ? 'here' : 'spacebar'}</Text> for Voice Input
       </>
     );
   } else if (finalTranscript || interimTranscript) {

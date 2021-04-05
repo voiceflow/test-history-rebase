@@ -3,11 +3,21 @@ import { css } from 'styled-components';
 import { FlexCenter } from '@/components/Flex';
 import { styled, transition } from '@/hocs';
 
-const ImageContainer = styled(FlexCenter)`
+type ImageContainerProps = {
+  size: number;
+  image: string;
+  isLoading: boolean;
+  error: any;
+  notAccepted: boolean;
+  isSquare?: boolean;
+  disabled?: boolean;
+};
+
+const ImageContainer = styled(FlexCenter)<ImageContainerProps>`
   ${transition('background-color', 'border')}
-  border-radius: 50%;
+  border-radius: ${({ isSquare }) => (isSquare ? '20%' : '50%')};
   border: 1px solid #d4d9e6;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   position: relative;
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
@@ -15,6 +25,7 @@ const ImageContainer = styled(FlexCenter)`
   background-position: center center;
   background-size: cover;
   background-image: ${({ image }) => image && `url(${image})`};
+  opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 
   &:hover {
     background-color: #f1f3f8;
@@ -23,7 +34,7 @@ const ImageContainer = styled(FlexCenter)`
   &:before {
     background: none;
     border: 2px solid #fff;
-    border-radius: 50%;
+    border-radius: ${({ isSquare }) => (isSquare ? '20%' : '50%')};
     content: '';
     display: block;
     position: absolute;

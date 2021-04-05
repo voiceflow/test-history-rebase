@@ -49,7 +49,7 @@ export type UpdatePrototypeContextStore = Action<PrototypeAction.UPDATE_TEST_CON
 
 export type UpdatePrototypeWebhookData = Action<PrototypeAction.UPDATE_WEBHOOK, Request>;
 
-export type UpdatePrototypeSettings = Action<PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, PrototypeShareViewSettings>;
+export type UpdatePrototypeSettings = Action<PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, { settings: PrototypeShareViewSettings; patch: boolean }>;
 
 export type AnyPrototypeAction =
   | UpdatePrototype
@@ -95,8 +95,8 @@ export const updatePrototypeContextStore = (store: StoreType) => (payload: Parti
 
 export const updatePrototypeWebhookData = (payload: Request): UpdatePrototypeWebhookData => createAction(PrototypeAction.UPDATE_WEBHOOK, payload);
 
-export const updatePrototypeSettings = (payload: PrototypeShareViewSettings): UpdatePrototypeSettings =>
-  createAction(PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, payload);
+export const updatePrototypeSettings = (settings: PrototypeShareViewSettings, patch = true): UpdatePrototypeSettings =>
+  createAction(PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, { settings, patch });
 
 export const updateVariables = updatePrototypeContextStore(StoreType.VARIABLES);
 export const updateTurn = updatePrototypeContextStore(StoreType.TURN);

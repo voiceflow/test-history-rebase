@@ -2,6 +2,7 @@ import { css, styled, transition } from '@/hocs';
 
 type ContainerProps = {
   isActive?: boolean;
+  colorScheme?: string;
 };
 
 const Container = styled.div<ContainerProps>`
@@ -15,7 +16,7 @@ const Container = styled.div<ContainerProps>`
   z-index: 2;
 
   pointer-events: none;
-  border: 5px solid #5d9df5;
+  border: 5px solid ${({ colorScheme }) => colorScheme ?? '#5d9df5'};
   opacity: 0;
 
   ${({ isActive }) =>

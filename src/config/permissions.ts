@@ -23,6 +23,7 @@ export enum Permission {
   SHARE_PROTOTYPE = 'prototype.SHARE',
   TRAIN_PROTOTYPE = 'prototype.TRAIN',
   RENDER_PROTOTYPE = 'prototype.RENDER',
+  CUSTOMIZE_PROTOTYPE = 'prototype.CUSTOMIZE',
 
   // project list
   MANAGE_PROJECT_LISTS = 'project_list.MANAGE',
@@ -90,6 +91,15 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
     PlanType.OLD_TEAM,
     PlanType.ENTERPRISE,
     PlanType.OLD_STARTER,
+    PlanType.OLD_ENTERPRISE,
+  ],
+  [Permission.CUSTOMIZE_PROTOTYPE]: [
+    PlanType.PRO,
+    PlanType.TEAM,
+    PlanType.STUDENT,
+    PlanType.OLD_PRO,
+    PlanType.OLD_TEAM,
+    PlanType.ENTERPRISE,
     PlanType.OLD_ENTERPRISE,
   ],
   [Permission.SHARE_PROJECT]: [

@@ -29,9 +29,19 @@ export type LayoutProps = {
   renderSplashScreen: (options: RendererOptions) => React.ReactNode;
   splashScreenPassed: boolean;
   renderVisualsFooter?: (options: RendererOptions) => React.ReactNode;
+  colorScheme?: string;
 };
 
-const Layout: React.FC<LayoutProps> = ({ children, isVisuals, isListening, renderSplashScreen, splashScreenPassed, renderVisualsFooter, layout }) => {
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  isVisuals,
+  isListening,
+  renderSplashScreen,
+  splashScreenPassed,
+  renderVisualsFooter,
+  layout,
+  colorScheme,
+}) => {
   const [isMobileSize, toggleIsMobileSize] = useToggle(window.innerWidth <= MAX_MOBILE_WIDTH);
   const [isFullScreen, toggleFullScreen] = useToggle(false);
 
@@ -94,7 +104,7 @@ const Layout: React.FC<LayoutProps> = ({ children, isVisuals, isListening, rende
             <FooterContainer isHidden={isFullScreen}>{renderVisualsFooter(rendererOptions)}</FooterContainer>
           )}
 
-          {isVisuals && splashScreenPassed && <VisualsBorder isActive={isListening} />}
+          {isVisuals && splashScreenPassed && <VisualsBorder isActive={isListening} colorScheme={colorScheme} />}
         </>
       )}
     </Container>

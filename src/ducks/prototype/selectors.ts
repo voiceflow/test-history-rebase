@@ -54,4 +54,10 @@ export const prototypeWebhookDataSelector = createSelector([prototypeSelector], 
 
 export const prototypeLayoutSelector = createSelector([prototypeSelector], ({ settings }) => settings.layout || PrototypeLayout.TEXT_DIALOG);
 
+export const prototypeBrandColorSelector = createSelector([prototypeSelector], ({ settings }) => settings.brandColor || '#5D9DF5');
+
+export const prototypeBrandImageSelector = createSelector([prototypeSelector], ({ settings }) => settings.brandImage || '');
+
+export const prototypeAvatarSelector = createSelector([prototypeSelector], ({ settings }) => settings.avatar || '');
+
 export const prototypeBrandInfoSelector = createSelector([prototypeSelector], ({ settings: { layout: _, ...brandSettings } }) => brandSettings);

@@ -20,6 +20,8 @@ type DialogPrototypeProps = {
   isMobile?: boolean;
   showPadding?: boolean;
   withInteractions?: boolean;
+  color?: string;
+  avatarURL?: string;
 };
 
 const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
@@ -34,6 +36,8 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   showPadding,
   withInteractions,
   isMobile,
+  color,
+  avatarURL,
 }) => (
   <Container isPublic={isPublic} showPadding={showPadding} isMobile={isMobile} withInteractions={withInteractions}>
     {messages.map((message: Message, index) => {
@@ -61,6 +65,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
               onPlay={() => onPlay(message.src ?? '')}
               isCurrent={isCurrent}
               isLast={isLast}
+              avatarURL={avatarURL}
             />
           );
         case MessageType.SPEAK:
@@ -72,12 +77,13 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
               {...message}
               onClick={() => onPlay(message.src ?? '')}
               isLast={isLast}
+              avatarURL={avatarURL}
             />
           );
         case MessageType.DEBUG:
           return debug ? <Debug key={message.id} {...message} /> : null;
         case MessageType.USER:
-          return <User isFirstInSeries={isFirstInSeries} userSpeak={userSpeak} key={message.id} {...message} />;
+          return <User isFirstInSeries={isFirstInSeries} userSpeak={userSpeak} key={message.id} color={color} {...message} />;
         case MessageType.STREAM:
           return (
             <Audio
@@ -90,6 +96,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
               onPlay={() => onPlay(message.audio)}
               isCurrent={isCurrent}
               isLast={isLast}
+              avatarURL={avatarURL}
             />
           );
         default:
@@ -97,7 +104,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
       }
     })}
     {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && <Ended messages={messages} />}
-    <Loading isLoading={isLoading} />
+    <Loading isLoading={isLoading} avatarURL={avatarURL} />
     <span ref={bottomScrollRef} />
   </Container>
 );

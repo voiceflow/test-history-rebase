@@ -1,6 +1,13 @@
 import { css, styled } from '@/hocs';
 
-const Container = styled.div<{ clickable?: boolean; isFirstInSeries?: boolean; rightAlign?: boolean }>`
+type ContainerProps = {
+  clickable?: boolean;
+  isFirstInSeries?: boolean;
+  rightAlign?: boolean;
+  color?: string;
+};
+
+const Container = styled.div<ContainerProps>`
   position: relative;
   max-width: 100%;
   padding: 12px 16px;
@@ -21,10 +28,10 @@ const Container = styled.div<{ clickable?: boolean; isFirstInSeries?: boolean; r
       cursor: pointer;
     `}
 
-  ${({ rightAlign = false }) =>
+  ${({ rightAlign = false, color }) =>
     rightAlign
       ? css`
-          background-color: #5d9df5;
+          background-color: ${({ theme }) => color ?? theme.colors.blue};
           color: white;
           border-bottom-right-radius: 5px;
         `

@@ -1,6 +1,7 @@
-import { color, layout, space } from 'styled-system';
+import { layout, space } from 'styled-system';
 
 import { styled } from '@/hocs';
+import { changeColorShade } from '@/utils/colors';
 
 import { TextProps } from '../types';
 
@@ -14,15 +15,14 @@ const Link = styled.a.attrs<LinkProps>(({ link, href, target = '_blank', rel = '
   rel,
   href: link || href,
 }))<LinkProps>`
-  color: ${({ theme }) => theme.colors.blue};
+  color: ${({ color, theme }) => color ?? theme.colors.blue};
 
   :hover {
-    color: ${({ theme }) => theme.colors.darkBlue};
+    color: ${({ color, theme }) => changeColorShade(color || theme.colors.blue, -40)};
     ${({ textDecoration }) => !textDecoration && 'text-decoration: none !important;'}
   }
 
   ${space}
-  ${color}
   ${layout}
 `;
 

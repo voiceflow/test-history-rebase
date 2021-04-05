@@ -64,28 +64,35 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
         </Button>
       )}
 
-      <PopupContainer open={open} width={438}>
-        <PopupCloseIcon onClick={onClose} />
-        <PopupTransition>
-          <>
-            {canSharePrototype ? (
-              <MenuContent />
-            ) : (
-              <MenuItemV2
-                isAllowed={false}
-                title="Share Prototype"
-                description="Share a testable version of your project that can be prototyped using voice, chat, or chip input."
-              />
-            )}
+      {open && (
+        <PopupContainer open={true} width={438}>
+          <PopupCloseIcon onClick={onClose} />
+          <PopupTransition>
+            <>
+              {canSharePrototype ? (
+                <MenuContent />
+              ) : (
+                <MenuItemV2
+                  isAllowed={false}
+                  title="Share Prototype"
+                  description="Share a testable version of your project that can be prototyped using voice, chat, or chip input."
+                />
+              )}
 
-            {canInviteByLink && (
-              <ModalFooter onClick={stopImmediatePropagation()}>
-                <SharePrototype link={testableLink} onClick={onClickPrototype} isAllowed={canSharePrototype} onRenderPrototype={onRenderPrototype} />
-              </ModalFooter>
-            )}
-          </>
-        </PopupTransition>
-      </PopupContainer>
+              {canInviteByLink && (
+                <ModalFooter onClick={stopImmediatePropagation()}>
+                  <SharePrototype
+                    link={testableLink}
+                    onClick={onClickPrototype}
+                    isAllowed={canSharePrototype}
+                    onRenderPrototype={onRenderPrototype}
+                  />
+                </ModalFooter>
+              )}
+            </>
+          </PopupTransition>
+        </PopupContainer>
+      )}
     </>
   );
 };

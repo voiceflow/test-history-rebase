@@ -1,10 +1,11 @@
 import Badge from '@/components/Badge';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 import { inputDisabled, inputStyle, StyledInputProps } from '../styles';
 
 export type InputWrapperProps = StyledInputProps & {
   disabled?: boolean;
+  disabledBorderColor?: string;
 };
 
 const InputWrapper = styled.div<InputWrapperProps>`
@@ -19,6 +20,12 @@ const InputWrapper = styled.div<InputWrapperProps>`
     input {
       ${inputDisabled}
     }
+
+    ${({ disabledBorderColor }) =>
+      disabledBorderColor &&
+      css`
+        border: solid 1px ${disabledBorderColor};
+      `}
   }
 
   & > * {

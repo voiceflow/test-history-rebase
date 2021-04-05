@@ -33,7 +33,19 @@ const hasError = (acceptedFiles) => !IMAGE_FILE_FORMATS.includes(acceptedFiles[0
 
 const Icon = React.forwardRef(
   (
-    { image, size = 'small', isLoading, error, onDropAccepted, canRemove = false, update, acceptedFileTypes = IMAGE_FILE_FORMATS, className },
+    {
+      image,
+      size = 'small',
+      isLoading,
+      error,
+      onDropAccepted,
+      canRemove = false,
+      update,
+      acceptedFileTypes = IMAGE_FILE_FORMATS,
+      className,
+      isSquare,
+      disabled,
+    },
     ref
   ) => {
     const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
@@ -47,7 +59,7 @@ const Icon = React.forwardRef(
     const iconUploadInput = React.useRef();
 
     const clickIconInput = () => {
-      if (isLoading) return;
+      if (disabled || isLoading) return;
       iconUploadInput.current?.click();
     };
 
@@ -64,7 +76,7 @@ const Icon = React.forwardRef(
 
     return (
       <IconUploadContainer className={className} {...getRootProps()} isActive={isDragActive}>
-        <IconUploadInput onChange={onDropAccepted} ref={iconUploadInput} type="file" accept={acceptedFileTypes} {...getInputProps()} />
+        {!disabled && <IconUploadInput onChange={onDropAccepted} ref={iconUploadInput} type="file" accept={acceptedFileTypes} {...getInputProps()} />}
         <ImageContainer
           ref={ref}
           isLoading={isLoading}
@@ -73,6 +85,8 @@ const Icon = React.forwardRef(
           image={image}
           notAccepted={isDragReject}
           error={error}
+          isSquare={isSquare}
+          disabled={disabled}
         >
           {canRemove && image && (
             <RemoveButton top={0} right={0} onClick={stopPropagation(() => update(''))}>

@@ -4,8 +4,8 @@ import { COLORS } from '@/styles/colors';
 
 import { Container } from './components';
 
-const Avatar = ({ url, name, color, noHover }) => (
-  <Container avatarUrl={url} color={COLORS[color]} noHover={noHover}>
+const Avatar = ({ url, name, color, noHover, noShadow }) => (
+  <Container avatarUrl={url} color={COLORS[color]} noHover={noHover} noShadow={noShadow}>
     {' '}
     {!url && name.toUpperCase().charAt(0)}{' '}
   </Container>

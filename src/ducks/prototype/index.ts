@@ -115,9 +115,9 @@ const updateWebhookDataReducer: Reducer<PrototypeState, UpdatePrototypeWebhookDa
   webhook: payload,
 });
 
-const updatePrototypeSettingsReducer: Reducer<PrototypeState, UpdatePrototypeSettings> = (state, { payload }) => ({
+const updatePrototypeSettingsReducer: Reducer<PrototypeState, UpdatePrototypeSettings> = (state, { payload: { settings, patch } }) => ({
   ...state,
-  settings: { ...state.settings, ...payload },
+  settings: patch ? { ...state.settings, ...settings } : settings,
 });
 
 const prototypeReducer: RootReducer<PrototypeState, AnyPrototypeAction> = (state = INITIAL_STATE, action) => {

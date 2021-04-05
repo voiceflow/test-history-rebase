@@ -7,12 +7,11 @@ import Hue from 'react-color/lib/components/common/Hue';
 import Saturation from 'react-color/lib/components/common/Saturation';
 
 import Input from '@/components/Input';
+import { removeHash } from '@/utils/colors';
 import { withEnterPress } from '@/utils/dom';
 
 import { AlphaContainer, Colors, Container, HueContainer, InputAction, InputContainer, PickerPointer, SaturationContainer } from './components';
 import withHexColor from './withHexColor';
-
-const removeHash = (hex: string) => hex.substr(1);
 
 export type ColorPickerProps = {
   width?: number;

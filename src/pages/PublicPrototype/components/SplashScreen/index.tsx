@@ -43,7 +43,7 @@ const ShareSplashScreen: React.FC<ShareSplashScreenProps> = ({
           <Box fontSize={24}>
             You've been invited to have a conversation with
             {projectName.length > 120 ? (
-              <Text color="#5D9DF5" trim>
+              <Text color={colorScheme} trim>
                 <Tooltip title={projectName}>
                   <Box width={120} noOverflow ml={5}>
                     {projectName}
@@ -51,14 +51,17 @@ const ShareSplashScreen: React.FC<ShareSplashScreenProps> = ({
                 </Tooltip>
               </Text>
             ) : (
-              <Text color="#5D9DF5" ml={5}>
+              <Text color={colorScheme} ml={5}>
                 {projectName}
               </Text>
             )}
           </Box>
 
           <Box fontSize={15} mt={16} mb={32} color="#62778c">
-            Want to create your own? <Link href="https://www.voiceflow.com/">Get Started.</Link>
+            Want to create your own?{' '}
+            <Link color={colorScheme} href="https://www.voiceflow.com/">
+              Get Started.
+            </Link>
           </Box>
 
           {withStartButton && (
@@ -77,7 +80,10 @@ const ShareSplashScreen: React.FC<ShareSplashScreenProps> = ({
         <span role="img" aria-label="powered">
           ⚡
         </span>{' '}
-        by <Link href="https://voiceflow.com">Voiceflow</Link>
+        by{' '}
+        <Link color={colorScheme} href="https://voiceflow.com">
+          Voiceflow
+        </Link>
       </WaterMark>
     </Container>
   );

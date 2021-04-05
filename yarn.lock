@@ -5164,6 +5164,17 @@
     axios "^0.21.1"
     superstruct "^0.10.12"
 
+"@voiceflow/api-sdk@1.28.1":
+  version "1.28.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.28.1.tgz#e450b1eb9094e4693f122e58d8e9c703f3a53ba5"
+  integrity sha512-Ug5mwX1U5ctDJ7EFOgK11n4oBN2maD6VbnthJNxdp+n9dfRKZ+CGogwMAtVbBkUtnqrxghanAgTZDkG94coVFg==
+  dependencies:
+    "@types/atob" "^2.1.2"
+    "@voiceflow/logger" "^1.5.2"
+    atob "^2.1.2"
+    axios "^0.21.1"
+    superstruct "^0.10.12"
+
 "@voiceflow/api-sdk@1.29.0":
   version "1.29.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.29.0.tgz#8368427f13357507e5009d5b92086264bd890229"

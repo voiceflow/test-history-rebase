@@ -1,36 +1,35 @@
 import React from 'react';
 
 import Box from '@/components/Box';
-// import Divider from '@/components/Divider';
-// import { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
-// import SvgIcon from '@/components/SvgIcon';
+import Divider from '@/components/Divider';
+import { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import { Link } from '@/components/Text';
-// import { ModalType } from '@/constants';
+import Upgrade from '@/components/Upgrade';
+import { Permission } from '@/config/permissions';
 import { OverlayProvider, ScrollContextProvider } from '@/contexts';
-// import { useModals } from '@/hooks';
+import { usePermission } from '@/hooks';
 import { useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
 import { useToggle } from '@/hooks/toggle';
 
+import { AppearanceAndBranding } from './AppearanceAndBranding';
 import Description from './Description';
 import Header from './Header';
 import MenuContentHeader from './MenuContentHeader';
 import PrototypeLayoutSelect from './PrototypeLayoutSelect';
 
 const MenuContent: React.FC = () => {
-  const [isExpanded] = useToggle(false);
+  const [isExpanded, toggleIsExpanded] = useToggle(false);
   const [contentNode, setContentNode] = React.useState<HTMLDivElement | null>(null);
-  // const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
+  const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
 
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const [onScroll, isHeaderShadowShown] = useScrollShadows(bodyRef, [isExpanded]);
-
-  //  TODO: enable commented code after initial release
 
   return (
     <ScrollContextProvider value={scrollHelpers}>
       <div ref={setContentNode}>
         <OverlayProvider rootNode={contentNode || undefined}>
-          <MenuContentHeader scrolling={!!isHeaderShadowShown}>
+          <MenuContentHeader isScrolling={!!isHeaderShadowShown}>
             <Header marginBottom={12}>Share Assistant with Testers</Header>
 
             <Description fontSize={15} lineHeight="normal">
@@ -39,8 +38,7 @@ const MenuContent: React.FC = () => {
             </Description>
           </MenuContentHeader>
 
-          {/* TODO: change height back to 215px */}
-          <div ref={bodyRef} onScroll={onScroll} style={{ overflowX: 'hidden', overflowY: 'auto', height: '122px' }}>
+          <div ref={bodyRef} onScroll={onScroll} style={{ overflowX: 'hidden', overflowY: 'auto', height: '224px' }}>
             <Box ref={innerRef} pl={32}>
               <Box>
                 <Header secondary marginBottom={12}>
@@ -49,31 +47,21 @@ const MenuContent: React.FC = () => {
 
                 <PrototypeLayoutSelect />
               </Box>
-              {/* <UncontrolledSection
-            nestedIntend
-            header="Appearance and Branding"
-            collapseVariant={SectionToggleVariant.ARROW}
-            isCollapsed={!isExpanded}
-            toggle={toggle}
-          >
-            <Box pt={42} pb={42}>
-              Image and Color selection goes here
-            </Box>
-          </UncontrolledSection>
-          <Divider style={{ marginTop: 0, marginBottom: '32px' }} /> */}
+              <UncontrolledSection
+                nestedIntend
+                header="Appearance and Branding"
+                headerToggle
+                collapseVariant={SectionToggleVariant.ARROW}
+                isCollapsed={!isExpanded}
+                toggle={toggleIsExpanded}
+                customContentStyling={{ paddingLeft: 0 }}
+              >
+                <AppearanceAndBranding isAllowed={canCustomize} />
+              </UncontrolledSection>
+              {!isExpanded && <Divider style={{ marginTop: 0, marginBottom: '32px' }} />}
             </Box>
           </div>
-          {/* <Box>
-        <Flex pt={15} pr={32} pb={15} pl={32} borderTop="1px solid #efefef">
-          <SvgIcon icon="upgrade" color={theme.colors.green} />
-          <Text fontSize={13} ml={16} color={theme.colors.secondary} mr={5}>
-            Customize prototype style and branding.
-          </Text>
-          <ClickableText fontSize={13} onClick={openPaymentsModal}>
-            Upgrade.
-          </ClickableText>
-        </Flex>
-      </Box> */}
+          {!canCustomize && <Upgrade>Customize prototype style and branding.</Upgrade>}
         </OverlayProvider>
       </div>
     </ScrollContextProvider>

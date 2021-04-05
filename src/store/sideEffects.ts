@@ -126,10 +126,13 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
   dispatch(Project.addProject(project.id, project));
   dispatch(Skill.setActiveSkill(skill, diagramID));
   dispatch(
-    Prototype.updatePrototypeSettings({
-      ...dbVersion.prototype?.settings,
-      layout: dbVersion.prototype?.settings.layout ?? Prototype.PrototypeLayout.TEXT_DIALOG,
-    } as Prototype.PrototypeSettings)
+    Prototype.updatePrototypeSettings(
+      {
+        ...dbVersion.prototype?.settings,
+        layout: dbVersion.prototype?.settings.layout ?? Prototype.PrototypeLayout.TEXT_DIALOG,
+      } as Prototype.PrototypeSettings,
+      false
+    )
   );
 
   return skill;

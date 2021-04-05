@@ -1,4 +1,5 @@
 import { styled, transition } from '@/hocs';
+import { changeColorShade } from '@/utils/colors';
 
 import { TextProps } from '../types';
 import Text from './Text';
@@ -6,12 +7,12 @@ import Text from './Text';
 export const ClickableText = styled(Text)<TextProps>`
   ${transition('color')}
   display: inline-block;
-  color: ${({ theme }) => theme.colors.blue};
+  color: ${({ color, theme }) => color ?? theme.colors.blue};
   cursor: pointer;
   user-select: none;
 
   :hover {
-    color: ${({ theme }) => theme.colors.darkBlue};
+    color: ${({ color, theme }) => (color ? changeColorShade(color, -20) : theme.colors.darkBlue)};
   }
 `;
 

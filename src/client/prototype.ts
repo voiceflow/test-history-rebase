@@ -40,7 +40,7 @@ const prototypeClient = {
           layout: PrototypeLayout.TEXT_DIALOG,
           avatar: undefined,
           brandColor: undefined,
-          branchImage: undefined,
+          brandImage: undefined,
         },
       };
     }),

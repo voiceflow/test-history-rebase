@@ -1,17 +1,15 @@
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
-import SvgIcon from '@/components/SvgIcon';
-import { ClickableText } from '@/components/Text';
+import Upgrade from '@/components/Upgrade';
 import { Permission } from '@/config/permissions';
-import { ExportFormat, ModalType } from '@/constants';
-import { useModals, usePermission } from '@/hooks';
+import { ExportFormat } from '@/constants';
+import { usePermission } from '@/hooks';
 import { stopImmediatePropagation } from '@/utils/dom';
 
 import Description from './Description';
 import Header from './Header';
 import MenuItemContainer from './MenuItemContainer';
-import Upgrade from './Upgrade';
 
 export const EXPORT_OPTIONS = [
   { id: ExportFormat.PNG, label: 'Image' },
@@ -25,7 +23,6 @@ export type ExportItemProps = {
 };
 
 const ExportItem: React.FC<ExportItemProps> = ({ updateType, exportType }) => {
-  const { toggle: togglePayment } = useModals(ModalType.PAYMENT);
   const [canExport] = usePermission(Permission.CANVAS_EXPORT);
 
   return (
@@ -48,12 +45,7 @@ const ExportItem: React.FC<ExportItemProps> = ({ updateType, exportType }) => {
         </div>
       </MenuItemContainer>
 
-      {!canExport && (
-        <Upgrade onClick={stopImmediatePropagation()}>
-          <SvgIcon icon="upgrade" color="#279745" mr={16} />
-          Remove branding from PNG & PDF exports.&nbsp;<ClickableText onClick={togglePayment}>Upgrade.</ClickableText>
-        </Upgrade>
-      )}
+      {!canExport && <Upgrade>Remove branding from PNG & PDF exports.</Upgrade>}
     </>
   );
 };

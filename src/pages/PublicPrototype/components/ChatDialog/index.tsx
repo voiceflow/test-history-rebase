@@ -14,6 +14,7 @@ import { ActionButtons, DisplayContainer, InputContainer, InteractionContainer, 
 export type ChatDialogProps = {
   input: string;
   color?: string;
+  avatarURL?: string;
   isIdle?: boolean;
   layout: PrototypeLayout;
   onStart: () => void;
@@ -43,6 +44,7 @@ export type ChatDialogProps = {
 const ChatDialog: React.FC<ChatDialogProps> = ({
   input,
   color,
+  avatarURL,
   onMute,
   isIdle,
   onPlay,
@@ -83,8 +85,10 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
           isMobile={isMobile}
           hideSessionMessages
           showPadding
+          color={color}
+          avatarURL={avatarURL}
         >
-          <Interactions interactions={interactions} onInteraction={onSend} />
+          <Interactions interactions={interactions} onInteraction={onSend} color={color} />
         </ChatDisplay>
       </DisplayContainer>
 
@@ -144,6 +148,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                       interimTranscript={interimTranscript}
                       onCheckMicrophonePermission={onCheckMicrophonePermission}
                       isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+                      colorScheme={color}
                     />
                   )}
                 </SpeechBarContainer>

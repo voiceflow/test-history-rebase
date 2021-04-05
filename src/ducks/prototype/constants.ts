@@ -30,6 +30,9 @@ export const INITIAL_STATE: PrototypeState = {
   },
   webhook: null,
   settings: {
+    brandColor: undefined,
+    brandImage: undefined,
+    avatar: undefined,
     layout: PrototypeLayout.TEXT_DIALOG,
   },
 };

@@ -3,6 +3,8 @@ import SimpleBar from 'simplebar-react';
 
 import { css, styled, transition } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
+import { Color } from '@/types';
+import { hexToRGBA, toRGBAString } from '@/utils/colors';
 import { preventDefault } from '@/utils/dom';
 
 import { Interaction } from '../../../types';
@@ -32,12 +34,16 @@ const InnerContainer = styled(SimpleBar)`
   padding: 16px 20px;
 `;
 
-const Chip = styled(FadeLeftContainer)`
+type ChipProps = {
+  rgbaColor: Color;
+};
+
+const Chip = styled(FadeLeftContainer)<ChipProps>`
   ${transition('color', 'background')};
   border-radius: 25px;
   box-shadow: 0 1px 1px 0 rgba(17, 49, 96, 0.06);
-  border: solid 1px rgba(93, 157, 245, 0.4);
-  color: #5d9df5;
+  border: solid 1px ${({ rgbaColor }) => toRGBAString({ ...rgbaColor, a: 0.4 })};
+  color: ${({ rgbaColor }) => toRGBAString(rgbaColor)};
   background: white;
   cursor: pointer;
   margin-right: 10px;
@@ -48,16 +54,17 @@ const Chip = styled(FadeLeftContainer)`
   :hover,
   :active {
     color: white;
-    background: #5d9df5;
+    background: ${({ rgbaColor }) => toRGBAString(rgbaColor)};
   }
 `;
 
 interface InteractionsProps {
   interactions: Interaction[];
   onInteraction: (input: string) => void;
+  color?: string;
 }
 
-const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction }) => {
+const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction, color }) => {
   const hasInteractions = !!interactions.length;
   if (!hasInteractions) {
     return null;
@@ -69,7 +76,7 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
         {hasInteractions && (
           <>
             {interactions.map(({ name }) => (
-              <Chip key={name} onMouseDown={preventDefault()} onClick={() => onInteraction(name)}>
+              <Chip key={name} onMouseDown={preventDefault()} onClick={() => onInteraction(name)} rgbaColor={hexToRGBA(color ?? '#5D9DF5')}>
                 {name}
               </Chip>
             ))}

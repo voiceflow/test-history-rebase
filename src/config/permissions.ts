@@ -92,16 +92,9 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
     PlanType.ENTERPRISE,
     PlanType.OLD_STARTER,
     PlanType.OLD_ENTERPRISE,
+    PlanType.CREATOR,
   ],
-  [Permission.CUSTOMIZE_PROTOTYPE]: [
-    PlanType.PRO,
-    PlanType.TEAM,
-    PlanType.STUDENT,
-    PlanType.OLD_PRO,
-    PlanType.OLD_TEAM,
-    PlanType.ENTERPRISE,
-    PlanType.OLD_ENTERPRISE,
-  ],
+  [Permission.CUSTOMIZE_PROTOTYPE]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
   [Permission.SHARE_PROJECT]: [
     PlanType.STUDENT,
     PlanType.OLD_STARTER,
@@ -112,6 +105,7 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
     PlanType.OLD_TEAM,
     PlanType.ENTERPRISE,
     PlanType.OLD_ENTERPRISE,
+    PlanType.CREATOR,
   ],
   [Permission.MANAGE_BILLING]: [
     PlanType.STARTER,

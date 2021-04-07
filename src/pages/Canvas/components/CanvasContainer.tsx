@@ -6,6 +6,7 @@ import { toast } from '@/components/Toast';
 import { isSafari } from '@/config';
 import { MARKUP_NODES, MarkupModeType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as Prototype from '@/ducks/prototype';
 import { connect, css, styled } from '@/hocs';
 import { useActiveModal, useHotKeys, useRegistration, useSetup } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -22,6 +23,7 @@ import {
   CANVAS_MARKUP_CREATING_CLASSNAME,
   CANVAS_MARKUP_ENABLED_CLASSNAME,
   CANVAS_PROTOTYPE_ENABLED_CLASSNAME,
+  CANVAS_PROTOTYPE_RUNNING_CLASSNAME,
   CANVAS_THREAD_OPEN_CLASSNAME,
 } from '../constants';
 
@@ -66,6 +68,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({
   children,
   focusedNode,
   clearFocus,
+  prototypeStatus,
   isCanvasHidden,
 }) => {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -130,6 +133,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({
         [CANVAS_MARKUP_ENABLED_CLASSNAME]: isMarkupMode,
         [CANVAS_PROTOTYPE_ENABLED_CLASSNAME]: isPrototypingMode,
         [CANVAS_MARKUP_CREATING_CLASSNAME]: isMarkupCreating,
+        [CANVAS_PROTOTYPE_RUNNING_CLASSNAME]: prototypeStatus === Prototype.PrototypeStatus.ACTIVE,
       })}
       markupMode={markupModeType}
       data-markup={markupModeType}
@@ -143,6 +147,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({
 const mapStateToProps = {
   isCanvasHidden: Creator.isHiddenSelector,
   focusedNode: Creator.focusedNodeSelector,
+  prototypeStatus: Prototype.prototypeStatusSelector,
 };
 
 const mapDispatchToProps = {

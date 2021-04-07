@@ -1,5 +1,4 @@
 import * as Prototype from '@/ducks/prototype';
-import { CANVAS_PROTOTYPE_RUNNING_CLASSNAME } from '@/pages/Canvas/constants';
 import { diff } from '@/utils/array';
 import { noop } from '@/utils/functional';
 
@@ -39,7 +38,6 @@ class PrototypeEngine extends EngineConsumer {
 
   start(diagramID?: string | null, nodeID?: string | null) {
     this.log.debug(this.log.pending('initializing prototype'));
-    this.engine.addClass(CANVAS_PROTOTYPE_RUNNING_CLASSNAME);
     this.dispatch(Prototype.startPrototype(diagramID, nodeID));
     this.teardownSubscription = this.engine.store.subscribe(() => this.redrawHighlighted());
 
@@ -72,7 +70,6 @@ class PrototypeEngine extends EngineConsumer {
 
     this.dispatch(Prototype.resetPrototype());
     this.engine.activation.reset();
-    this.engine.removeClass(CANVAS_PROTOTYPE_RUNNING_CLASSNAME);
     nodeIDs.forEach((id) => this.engine.node.redraw(id));
     linkIDs.forEach((id) => this.engine.link.redrawLinked(id));
 

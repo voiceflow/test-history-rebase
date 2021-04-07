@@ -4,6 +4,7 @@ orbs:
   codecov: codecov/codecov@1.1.1
   vfcommon: voiceflow/common@0.0.82
   sonarcloud: sonarsource/sonarcloud@1.0.2
+  jira: circleci/jira@1.3.1
 
 # Reusable YAML chunks
 defaults:
@@ -277,6 +278,11 @@ workflows:
                 - /env-.*/
       - deploy-app-dev-environment:
           context: dev-test
+          post-steps:
+            - jira/notify:
+                environment: ${CIRCLE_BRANCH%%_*}
+                environment_type: testing
+                job_type: deployment
           requires:
             - build-app
           filters:
@@ -386,6 +392,8 @@ workflows:
           <<: *slack-fail-post-step
           context: dev-test
           strict: true
+          post-steps:
+            - jira/notify
           filters:
             <<: *ignore_dev_env_autorebase_staging_filters
 
@@ -407,11 +415,18 @@ workflows:
       - build-app:
           <<: *prod_deploy_filters
           context: dev-test
+          post-steps:
+            - jira/notify
       - build-deploy-app-image:
           <<: *prod_deploy_filters
           tagged: true
           sentry: true
           context: dev-test
+          post-steps:
+            - jira/notify:
+                environment: public
+                environment_type: production
+                job_type: deployment
           requires:
             - build-app
 
@@ -425,6 +440,11 @@ workflows:
                 - staging
       - build-deploy-app-image:
           context: dev-test
+          post-steps:
+            - jira/notify:
+                environment: staging
+                environment_type: staging
+                job_type: deployment
           requires:
             - build-app
           filters:

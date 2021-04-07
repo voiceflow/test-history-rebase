@@ -116,7 +116,6 @@ const SSML = (
               minWidth={false}
               autoWidth={false}
               borderLess
-              searchable={true}
               optionsFilter={optionsFilter}
               getOptionValue={getOptionValue}
               getOptionLabel={getOptionLabel}
@@ -138,7 +137,6 @@ const SSML = (
                   )}
                 </VoiceItem>
               )}
-              createInputPlaceholder="Search Voice"
             />
           </Tooltip>
         )}

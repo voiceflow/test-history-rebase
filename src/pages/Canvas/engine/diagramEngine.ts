@@ -25,6 +25,9 @@ class DiagramEngine extends EngineConsumer {
     const data = this.engine.getDataByNodeID(nodeID);
     const newNodeID = objectID();
 
+    const inPorts = node.ports.in.map((portID) => ({ ...this.engine.getPortByID(portID), id: objectID(), nodeID: newNodeID }));
+    const outPorts = node.ports.out.map((portID) => ({ ...this.engine.getPortByID(portID), id: objectID(), nodeID: newNodeID }));
+
     return {
       nodesWithData: [
         {
@@ -32,6 +35,10 @@ class DiagramEngine extends EngineConsumer {
             ...node,
             ...nodeOverrides,
             id: newNodeID,
+            ports: {
+              in: inPorts.map(({ id }) => id),
+              out: outPorts.map(({ id }) => id),
+            },
           },
           data: {
             ...data,
@@ -40,7 +47,7 @@ class DiagramEngine extends EngineConsumer {
           },
         },
       ],
-      ports: [...node.ports.in, ...node.ports.out].map(this.engine.getPortByID),
+      ports: [...inPorts, ...outPorts],
       links: [],
     };
   }

@@ -3,7 +3,7 @@ import Utf8 from 'crypto-js/enc-utf8';
 import { get, set } from 'idb-keyval';
 
 import { toast } from '@/components/Toast';
-import { BlockType, CLIPBOARD_DATA_KEY, COPY_NODES, PlatformType } from '@/constants';
+import { BlockType, CLIPBOARD_DATA_KEY, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Diagrams from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
@@ -43,9 +43,10 @@ class ClipboardEngine extends EngineConsumer {
   internal = {
     storeData: async (nodeIDs: string[], keyToStore: string, keyToEncrypt: string) => {
       const state = this.engine.store.getState();
-      const creator = Creator.creatorDiagramSelector(state);
       const platform = Skill.activePlatformSelector(state);
-      const { data } = Creator.creatorDiagramSelector(state);
+      const {
+        data: { ...data }, // cloning data to modify it later
+      } = Creator.creatorDiagramSelector(state);
 
       const skillID = Skill.activeSkillIDSelector(state);
 
@@ -53,23 +54,47 @@ class ClipboardEngine extends EngineConsumer {
         (node) => node.type !== BlockType.START && node.type !== BlockType.COMMAND
       );
       const soloNodes = allNodes.filter((node) => !node.parentNode);
-      const orphanedNodes = allNodes
-        .filter((node) => node.parentNode && !nodeIDs.includes(node.parentNode))
-        .map<Models.Node>(({ parentNode, ...nestedNode }) => ({ ...nestedNode, parentNode: null }));
       const nestedNodes = soloNodes.flatMap(({ combinedNodes }) => (combinedNodes.length ? Creator.allNodesByIDsSelector(state)(combinedNodes) : []));
+      const orphanedNodes: Models.Node[] = [];
+
+      const extraLinks: Models.Link[] = [];
+      const extraPorts: Models.Port[] = [];
+
+      allNodes
+        .filter((node) => node.parentNode && !nodeIDs.includes(node.parentNode))
+        .forEach(({ id, parentNode: parentNodeID, ...nestedNode }) => {
+          const parentNode = this.engine.getNodeByID(parentNodeID!);
+
+          const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [id] };
+
+          const entities = this.engine.diagram.getParentEntities(parentNodeID!, true, nodeOverrides);
+
+          entities.nodesWithData.forEach(({ data: nodeData }) => {
+            data[nodeData.nodeID] = nodeData;
+          });
+
+          soloNodes.push(...entities.nodesWithData.map(({ node }) => node));
+          extraLinks.push(...entities.links);
+          extraPorts.push(...entities.ports);
+
+          const newParentNodeID = entities.nodesWithData[0].node.id;
+
+          orphanedNodes.push({ id, ...nestedNode, parentNode: newParentNodeID });
+        });
 
       const copiedNodes = [...soloNodes, ...orphanedNodes, ...nestedNodes];
       const copiedNodeIDs = copiedNodes.map(({ id }) => id);
 
       // Block includes all the nodes - parent and nested
-      const copiedBlocks = copiedNodes.filter((node) => COPY_NODES.includes(node.type));
+      const copiedBlocks = copiedNodes.filter((node) => !node.parentNode);
 
-      const ports = Creator.allPortsByIDsSelector(state)(copiedNodes.flatMap((node) => [...node.ports.in, ...node.ports.out]));
+      const ports = Creator.allPortsByIDsSelector(state)(copiedNodes.flatMap((node) => [...node.ports.in, ...node.ports.out])).filter(Boolean);
 
       const links = copiedNodes.reduce<Models.Link[]>((acc, node) => {
         const nodeLinks = Creator.linksByNodeIDSelector(state)(node.id).filter(
           (link) => !acc.includes(link) && copiedNodeIDs.includes(link.source.nodeID) && copiedNodeIDs.includes(link.target.nodeID)
         );
+
         acc.push(...nodeLinks);
 
         return acc;
@@ -84,10 +109,10 @@ class ClipboardEngine extends EngineConsumer {
 
       const copyData: ClipboardContext = {
         skillID,
-        data: creator.data,
+        data,
         nodes: copiedNodes,
-        ports,
-        links,
+        ports: [...ports, ...extraPorts],
+        links: [...links, ...extraLinks],
         products,
         diagrams,
         intents,
@@ -157,9 +182,7 @@ class ClipboardEngine extends EngineConsumer {
     },
   };
 
-  copy(unfilteredNodeIDs: string[]) {
-    const nodeIDs = unfilteredNodeIDs.filter((nodeID) => COPY_NODES.includes(this.engine.getNodeByID(nodeID).type));
-
+  copy(nodeIDs: string[]) {
     if (!nodeIDs.length) return;
 
     this.log.debug(this.log.pending('copying to buffer'), nodeIDs);
@@ -173,7 +196,7 @@ class ClipboardEngine extends EngineConsumer {
     // we do no need await here since copying is a background job, .encrypt called here to increase the complexity of debugging
     this.internal.storeData(nodeIDs, keyToStore, keyToEncrypt);
 
-    this.log.info(this.log.success('copied to buffer'), this.log.value(unfilteredNodeIDs.length));
+    this.log.info(this.log.success('copied to buffer'), this.log.value(nodeIDs.length));
   }
 
   async paste(pastedText: string, coords: Coords) {

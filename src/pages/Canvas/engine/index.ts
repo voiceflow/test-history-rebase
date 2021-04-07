@@ -7,7 +7,7 @@ import { CanvasAPI } from '@/components/Canvas';
 import { MovementCalculator } from '@/components/Canvas/types';
 import { isDebug } from '@/config';
 import { FeatureFlag } from '@/config/features';
-import { BlockType, COPY_NODES } from '@/constants';
+import { BlockType } from '@/constants';
 import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
@@ -360,7 +360,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
    * copy the active nodes to the clipboard
    */
   copyActive(nodeID?: string) {
-    if (nodeID && COPY_NODES.includes(this.getNodeByID(nodeID).type)) {
+    if (nodeID) {
       this.clipboard.copy([nodeID]);
     } else if (this.activation.hasTargets) {
       this.clipboard.copy(this.activation.getTargets());

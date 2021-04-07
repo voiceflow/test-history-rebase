@@ -73,12 +73,10 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Duplicate',
     value: CanvasAction.DUPLICATE_BLOCK,
-    shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID!, engine),
   },
   {
     label: 'Copy',
     value: CanvasAction.COPY_BLOCK,
-    shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID!, engine),
   },
   {
     label: 'Color',

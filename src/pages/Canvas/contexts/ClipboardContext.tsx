@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { withContext } from '@/hocs';
+import { SLATE_EDITOR_CLASS_NAME } from '@/pages/Canvas/managers/MarkupText/constants';
 
 import { EngineContext } from './EngineContext';
 
@@ -24,7 +25,9 @@ export const ClipboardProvider: React.FC = ({ children }) => {
 
   React.useEffect(() => {
     const handlePaste = (event: ClipboardEvent) => {
-      if (IGNORED_TAGS.includes((event.target as Element).nodeName)) {
+      const target = event.target as Element;
+
+      if (IGNORED_TAGS.includes(target.nodeName) || target.closest(`.${SLATE_EDITOR_CLASS_NAME}`)) {
         return;
       }
 

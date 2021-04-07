@@ -90,8 +90,6 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
 
       await engine.node.updateData(node.id, { content: cache.current.value });
       await engine.node.api(nodeEntity.nodeID)?.instance?.applyTransformations?.();
-
-      engine.transformation.initialize(nodeEntity.nodeID);
     } else {
       engine.node.updateData(node.id, { content: cache.current.value });
     }
@@ -212,7 +210,11 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
       engine.node.api(nodeEntity.nodeID)?.instance?.scaleText?.(width, [0, 0]);
     }
 
-    engine.transformation.reinitialize();
+    if (!isNew && isFocused && engine.transformation.isTarget(nodeEntity.nodeID)) {
+      engine.transformation.reinitialize();
+    } else if (!isNew && isFocused) {
+      engine.transformation.initialize(nodeEntity.nodeID);
+    }
   }, [value]);
 
   return (

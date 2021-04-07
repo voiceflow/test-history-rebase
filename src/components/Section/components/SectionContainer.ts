@@ -128,7 +128,7 @@ const SectionContainer = styled.div<SectionContainerProps>`
 
   ${({ isDraggingPreview }) => isDraggingPreview && draggingPreviewStyles}
 
-  ${HeaderLabel} {
+  ${HeaderLabel}${({ isNested }) => (isNested ? HeaderLabel : '')} {
     ${({ variant, isCollapsed }) => {
       switch (variant) {
         case SectionVariant.TERTIARY:

@@ -1,6 +1,7 @@
 import { BlockType } from '@/constants';
 
 import AccountLinkingManager from './AccountLinking';
+import ActionManager from './Action';
 import CancelPaymentManager from './CancelPayment';
 import CaptureManager from './Capture';
 import CardManager from './Card';
@@ -31,7 +32,6 @@ import SetManager from './Set';
 import SpeakManager from './Speak';
 import StartManager from './Start';
 import StreamManager from './Stream';
-import TraceManager from './Trace';
 import UserInfoManager from './UserInfo';
 import VisualManager from './Visual';
 
@@ -63,7 +63,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.REMINDER]: ReminderManager,
   [BlockType.EVENT]: EventManager,
   [BlockType.DIRECTIVE]: DirectiveManager,
-  [BlockType.TRACE]: TraceManager,
+  [BlockType.TRACE]: ActionManager,
   [BlockType.PROMPT]: PromptManager,
   [BlockType.DEPRECATED]: DeprecatedManager,
   [BlockType.INVALID_PLATFORM]: InvalidPlatformManager,

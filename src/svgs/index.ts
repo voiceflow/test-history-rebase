@@ -2,6 +2,7 @@
 
 // a
 export { default as accountLinking } from './account-linking.svg';
+export { default as action } from './action.svg';
 export { default as add } from './add.svg';
 export { default as addBoard } from './add-board.svg';
 export { default as addStep } from './add-step.svg';

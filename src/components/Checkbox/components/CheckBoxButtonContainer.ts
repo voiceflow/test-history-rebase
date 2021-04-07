@@ -1,11 +1,17 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const CheckBoxButtonContainer = styled.div`
+const CheckBoxButtonContainer = styled.div<{ padding?: boolean }>`
   flex: 0 0 auto;
-  min-width: 0;
-  margin-right: 6px;
-  padding: 4px;
-  padding-left: 0;
+
+  ${({ padding }) =>
+    padding &&
+    css`
+      min-width: 0;
+      margin-right: 6px;
+      padding: 4px;
+      padding-left: 0;
+    `}
+
   color: #8da2b5;
 
   span {

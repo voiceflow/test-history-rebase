@@ -19,7 +19,7 @@ export const ButtonContainer = styled.div<{ disabled?: boolean }>`
   height: 17px;
   margin: 0 4px;
   padding: 3px;
-  display: inline-block;
+  display: block;
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   transition: all 0.1s linear;
   opacity: 0.85;

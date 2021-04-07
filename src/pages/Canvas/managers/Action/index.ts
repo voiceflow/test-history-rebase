@@ -2,18 +2,18 @@ import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
 
 import { NodeManagerConfig } from '../types';
-import TraceEditor from './TraceEditor';
-import TraceStep from './TraceStep';
+import ActionEditor from './ActionEditor';
+import ActionStep from './ActionStep';
 
 const TraceManager: NodeManagerConfig<NodeData.Trace> = {
   type: BlockType.TRACE,
-  editor: TraceEditor,
-  icon: 'search',
+  editor: ActionEditor,
+  icon: 'action',
   iconColor: '#3A5999',
 
-  step: TraceStep,
-  label: 'Trace',
-  tip: 'output a custom trace',
+  step: ActionStep,
+  label: 'Custom Action',
+  tip: 'mock an example action',
 
   factory: () => ({
     node: {

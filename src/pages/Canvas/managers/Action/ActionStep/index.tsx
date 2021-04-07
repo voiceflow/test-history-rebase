@@ -4,30 +4,30 @@ import { useSyncedLookup } from '@/hooks';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 
-export type TraceStepProps = {
+export type ActionStepProps = {
   nodeID: string;
   name: string;
   paths: { label: string; isDefault?: boolean; portID: string }[];
   withPorts: boolean;
 };
 
-export const TraceStep: React.FC<TraceStepProps> = ({ nodeID, name, paths, withPorts }) => (
+export const ActionStep: React.FC<ActionStepProps> = ({ nodeID, name, paths, withPorts }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item icon="search" iconColor="#3A5999" label={name} placeholder="Enter Trace Name" multilineLabel />
+      <Item icon="action" iconColor="#3A5999" label={name} placeholder="Enter custom action name" multilineLabel />
     </Section>
     {withPorts && (
       <Section>
         {paths.map((path) => {
           const Container = path.isDefault ? SuccessItem : Item;
-          return <Container key={path.portID} label={path.label} placeholder="Enter Path Name" portID={path.portID} multilineLabel />;
+          return <Container key={path.portID} label={path.label} placeholder="Enter path name" portID={path.portID} multilineLabel />;
         })}
       </Section>
     )}
   </Step>
 );
 
-const ConnectedTraceStep: React.FC<ConnectedStepProps<NodeData.Trace>> = ({ node, data, withPorts }) => {
+const ConnectedActionStep: React.FC<ConnectedStepProps<NodeData.Trace>> = ({ node, data, withPorts }) => {
   const pathsByPortID = useSyncedLookup(node.ports.out, data.paths);
 
   const paths = React.useMemo(
@@ -41,7 +41,7 @@ const ConnectedTraceStep: React.FC<ConnectedStepProps<NodeData.Trace>> = ({ node
     [pathsByPortID, node.ports.out, data.paths]
   );
 
-  return <TraceStep nodeID={node.id} name={data.name} paths={paths} withPorts={withPorts} />;
+  return <ActionStep nodeID={node.id} name={data.name} paths={paths} withPorts={withPorts} />;
 };
 
-export default ConnectedTraceStep;
+export default ConnectedActionStep;

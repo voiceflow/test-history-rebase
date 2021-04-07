@@ -1,10 +1,9 @@
 import cn from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { NetworkError } from '@/client/fetch';
 import Button, { ButtonVariant } from '@/components/Button';
 import { FlexApart } from '@/components/Flex';
-import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
@@ -15,38 +14,36 @@ import { SocialLoginContainer } from './AuthBoxes';
 import ErrorMessage from './ErrorMessage';
 
 export type SSOLoginProps = {
+  domain: string;
+  clientID: string;
   light?: boolean;
   coupon?: string;
   disabled?: boolean;
 };
 
-const SSOLogin: React.FC<SSOLoginProps & ConnectedSSOLoginProps> = ({ light, coupon, ssoLogin, goToAdoptSSO }) => {
-  const [authError, setAuthError] = useState<null | boolean>(null);
-  const oktaLogin = useOktaLogin();
+const SSOLogin: React.FC<SSOLoginProps & ConnectedSSOLoginProps> = ({ domain, clientID, light, coupon, ssoLogin, goToAdoptSSO }) => {
+  const [authError, setAuthError] = React.useState(false);
+  const oktaLogin = useOktaLogin(domain, clientID);
 
   const onSSOLogin = async () => {
     try {
       const code = await oktaLogin();
 
       try {
-        await ssoLogin({ code, coupon: coupon || undefined });
+        await ssoLogin({ domain, code, coupon: coupon || undefined });
       } catch (err) {
         if (err instanceof NetworkError && err.statusCode === 409) {
-          goToAdoptSSO(err.body.email);
+          goToAdoptSSO({ domain, clientID, email: err.body.email });
         } else {
           throw err;
         }
       }
     } catch (err) {
-      setAuthError(err);
+      setAuthError(true);
     }
   };
 
   useErrorTimeout(!!authError, () => setAuthError(false));
-
-  if (IS_PRIVATE_CLOUD) {
-    return null;
-  }
 
   return (
     <SocialLoginContainer>
@@ -56,7 +53,7 @@ const SSOLogin: React.FC<SSOLoginProps & ConnectedSSOLoginProps> = ({ light, cou
         </Button>
       </FlexApart>
 
-      {authError && <ErrorMessage>An unexpected error occurred: {authError}</ErrorMessage>}
+      {authError && <ErrorMessage>An unexpected error occurred</ErrorMessage>}
     </SocialLoginContainer>
   );
 };

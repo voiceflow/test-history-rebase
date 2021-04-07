@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
-import { OKTA_CLIENT_ID, OKTA_DOMAIN, OKTA_SCOPES } from '@/config';
+import { OKTA_SCOPES } from '@/config';
 import { useTeardown } from '@/hooks';
 import OKTA from '@/utils/okta';
 
@@ -14,23 +14,19 @@ export const useErrorTimeout = (hasError: boolean, clearError: () => void) => {
   }, [hasError]);
 };
 
-export const useOktaLogin = () => {
-  const okta = useMemo(
-    () =>
-      new OKTA({
-        domain: OKTA_DOMAIN,
-        scopes: OKTA_SCOPES,
-        clientID: OKTA_CLIENT_ID,
-      }),
-    []
-  );
+export const useOktaLogin = (domain: string, clientID: string) => {
+  const okta = useMemo(() => new OKTA(OKTA_SCOPES), []);
 
   useTeardown(() => {
     okta.closeChannel();
   });
 
   return async () => {
-    const { code } = await okta.login(`${window.location.origin}/login/sso/callback`);
+    const { code } = await okta.login({
+      domain,
+      clientID,
+      redirectURI: `${window.location.origin}/login/sso/callback`,
+    });
 
     return code;
   };

@@ -1,4 +1,4 @@
-/* eslint-disable prefer-destructuring, no-process-env */
+/* eslint-disable no-process-env, @typescript-eslint/no-non-null-assertion */
 import Bowser from 'bowser';
 import loglevel from 'loglevel';
 
@@ -31,10 +31,13 @@ declare global {
     VF_OVERRIDE_ADMIN_HOST?: string;
     VF_OVERRIDE_MAINTENANCE_STATUS_SOURCE?: string;
     VF_OVERRIDE_GENERAL_RUNTIME_ENDPOINT?: string;
-    VF_OVERRIDE_OKTA_DOMAIN?: string;
-    VF_OVERRIDE_OKTA_CLIENT_ID?: string;
     VF_OVERRIDE_SENTRY_DSN?: string;
     VF_OVERRIDE_GROWSURF_CAMPAIGN_ID?: string;
+
+    VF_OVERRIDE_OKTA_DOMAIN?: string;
+    VF_OVERRIDE_OKTA_CLIENT_ID?: string;
+    VF_OVERRIDE_OKTA_OIN_DOMAIN?: string;
+    VF_OVERRIDE_OKTA_OIN_CLIENT_ID?: string;
   }
 }
 
@@ -61,8 +64,10 @@ export const isDebug = () => IS_DEVELOPMENT || !!window.VF_DEBUG;
 export const APP_ENV = window.VF_OVERRIDE_APP_ENV || process.env.APP_ENV!;
 export const IS_PRODUCTION_ENV = APP_ENV === 'production';
 
-export const CLOUD_ENV = window.VF_OVERRIDE_CLOUD_ENV || process.env.CLOUD_ENV || 'public';
-export const IS_PRIVATE_CLOUD = IS_PRODUCTION && CLOUD_ENV !== 'public';
+const PUBLIC_CLOUD = 'public';
+export const CLOUD_ENV = window.VF_OVERRIDE_CLOUD_ENV || process.env.CLOUD_ENV || PUBLIC_CLOUD;
+export const IS_PRIVATE_CLOUD = CLOUD_ENV !== PUBLIC_CLOUD;
+export const IS_MOTOROLA_PRIVATE_CLOUD = IS_PRIVATE_CLOUD && CLOUD_ENV === 'motorola';
 
 export const CREATOR_URL = 'creator.voiceflow.com';
 export const LEGACY_URL = 'creator.getvoiceflow.com';
@@ -208,11 +213,15 @@ if (!GENERAL_RUNTIME_STORAGE_ENDPOINT) {
 
 export const TRUSTED_ENDPOINTS = [API_ENDPOINT, ALEXA_SERVICE_ENDPOINT, GOOGLE_SERVICE_ENDPOINT, GENERAL_SERVICE_ENDPOINT];
 
-// okta
-export const OKTA_DOMAIN = window.VF_OVERRIDE_OKTA_DOMAIN || process.env.OKTA_DOMAIN!;
-export const OKTA_SCOPES = ['openid', 'profile', 'email', 'offline_access'];
-export const OKTA_CLIENT_ID = window.VF_OVERRIDE_OKTA_CLIENT_ID || process.env.OKTA_CLIENT_ID!;
-
 // growsurf
 export const GROWSURF_ENABLED = IS_PRODUCTION || process.env.GROWSURF_ENABLED === 'true';
 export const GROWSURF_CAMPAIGN_ID = window.VF_OVERRIDE_GROWSURF_CAMPAIGN_ID || process.env.GROWSURF_CAMPAIGN_ID!;
+
+// okta
+export const OKTA_SCOPES = ['openid', 'profile', 'email', 'offline_access'];
+// okta
+export const OKTA_DOMAIN = window.VF_OVERRIDE_OKTA_DOMAIN || process.env.OKTA_DOMAIN!;
+export const OKTA_CLIENT_ID = window.VF_OVERRIDE_OKTA_CLIENT_ID || process.env.OKTA_CLIENT_ID!;
+// okta oin
+export const OKTA_OIN_DOMAIN = window.VF_OVERRIDE_OKTA_OIN_DOMAIN || process.env.OKTA_OIN_DOMAIN!;
+export const OKTA_OIN_CLIENT_ID = window.VF_OVERRIDE_OKTA_OIN_CLIENT_ID || process.env.OKTA_OIN_CLIENT_ID!;

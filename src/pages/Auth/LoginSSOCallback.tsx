@@ -1,15 +1,11 @@
 import React from 'react';
 
-import { OKTA_CLIENT_ID, OKTA_DOMAIN, OKTA_SCOPES } from '@/config';
+import { OKTA_SCOPES } from '@/config';
 import OKTA from '@/utils/okta';
 
-const LoginSSOCallback = () => {
+const LoginSSOCallback: React.FC = () => {
   React.useEffect(() => {
-    const okta = new OKTA({
-      domain: OKTA_DOMAIN,
-      scopes: OKTA_SCOPES,
-      clientID: OKTA_CLIENT_ID,
-    });
+    const okta = new OKTA(OKTA_SCOPES);
 
     okta.handleLogin();
   }, []);

@@ -3,6 +3,7 @@ import cuid from 'cuid';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
+import { SSOConvertPayload, SSOLoginPayload } from '@/client/sso';
 import { SessionType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Models from '@/models';
@@ -243,7 +244,7 @@ const setSession = ({ token, user }: { token: string; user: Models.Account }): T
   await dispatch(identifyUser(user));
 };
 
-export const ssoLogin = (data: { code: string; coupon?: string }): Thunk => async (dispatch) => {
+export const ssoLogin = (data: SSOLoginPayload): Thunk => async (dispatch) => {
   const { user, token } = await client.sso.login(data);
 
   await dispatch(setSession({ user, token }));
@@ -262,8 +263,8 @@ export const basicAuthLogin = createSession(SessionType.BASIC_AUTH);
 export const googleLogin = createSession(SessionType.GOOGLE);
 export const facebookLogin = createSession(SessionType.FACEBOOK);
 
-const createAdoptSSO = (sessionType: SessionType) => (oktaCode: string, authCode: string): Thunk<Models.Account> => async (dispatch) => {
-  const { user, token } = await client.sso.convert(sessionType, { oktaCode, authCode });
+const createAdoptSSO = (sessionType: SessionType) => (payload: SSOConvertPayload): Thunk<Models.Account> => async (dispatch) => {
+  const { user, token } = await client.sso.convert(sessionType, payload);
 
   await dispatch(setSession({ user, token }));
 

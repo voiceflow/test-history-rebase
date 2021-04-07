@@ -14,6 +14,7 @@ import {
   ff_asrBypass,
   ff_conditionsBuilder,
   ff_gadgets,
+  ff_motorolaSSO,
   ff_natoApco,
   ff_ownerRole,
   ff_trace,
@@ -79,6 +80,7 @@ export const ENV = {
   FF_ASR_BYPASS: ff_asrBypass && 'true',
   FF_NATO_ACPO: ff_natoApco && 'true',
   FF_CONDITIONS_BUILDER: ff_conditionsBuilder && 'true',
+  FF_MOTOROLA_SSO: ff_motorolaSSO && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

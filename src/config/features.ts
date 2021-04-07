@@ -9,15 +9,19 @@ const ASR_BYPASS_ENABLED = process.env.FF_ASR_BYPASS === 'true';
 const NATO_APCO_ENABLED = process.env.FF_NATO_ACPO === 'true';
 const TRACE_ENABLED = process.env.FF_TRACE === 'true';
 const CONDITIONS_BUILDER_ENABLED = process.env.FF_CONDITIONS_BUILDER === 'true';
+const MOTOROLA_SSO_ENABLED = process.env.FF_MOTOROLA_SSO === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
   WAVENET_VOICES = 'wavenet_voices',
-  OWNER_ROLE = 'owner_role',
   ASR_BYPASS = 'asr_bypass',
   NATO_APCO = 'nato_apco',
   TRACE = 'trace',
   CONDITIONS_BUILDER = 'conditions_builder',
+  MOTOROLA_SSO = 'motorola_sso',
+
+  // used by select private cloud instances to add a new role type
+  OWNER_ROLE = 'owner_role',
 
   // permanent circuit breakers for vendor integrations
   INTERCOM_INTEGRATION = 'intercom_integration',
@@ -32,4 +36,5 @@ export const LOCAL_FEATURE_OVERRIDES = {
   [FeatureFlag.NATO_APCO]: NATO_APCO_ENABLED,
   [FeatureFlag.TRACE]: TRACE_ENABLED,
   [FeatureFlag.CONDITIONS_BUILDER]: CONDITIONS_BUILDER_ENABLED,
+  [FeatureFlag.MOTOROLA_SSO]: MOTOROLA_SSO_ENABLED,
 };

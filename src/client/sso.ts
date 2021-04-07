@@ -11,10 +11,22 @@ const CONVERT_ENDPOINTS = {
   [SessionType.FACEBOOK]: 'facebook',
 };
 
-const ssoClient = {
-  login: (data: { code: string; coupon?: string }) => apiV2.post<{ token: string; user: Account }>(`${SSO_PATH}/login`, data),
+export type SSOLoginPayload = {
+  domain: string;
+  code: string;
+  coupon?: string;
+};
 
-  convert: (session: SessionType, data: { oktaCode: string; authCode: string }) => {
+export type SSOConvertPayload = {
+  domain: string;
+  oktaCode: string;
+  authCode: string;
+};
+
+const ssoClient = {
+  login: (data: SSOLoginPayload) => apiV2.post<{ token: string; user: Account }>(`${SSO_PATH}/login`, data),
+
+  convert: (session: SessionType, data: SSOConvertPayload) => {
     if (session === SessionType.SIGN_UP) {
       throw new Error('unable to convert account for this session type');
     }

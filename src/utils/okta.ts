@@ -5,28 +5,17 @@ import * as Query from '@/utils/query';
 
 type OKTAOptions = {
   domain: string;
-  scopes: string[];
+
   clientID: string;
+  redirectURI: string;
 };
 
 class OKTA {
-  private domain: string;
-
-  private scopes: string[];
-
-  private clientID: string;
-
   private channel = new BroadcastChannel<{ code?: string; state?: string; error?: string }>('voiceflow-login-sso');
 
-  constructor({ domain, scopes, clientID }: OKTAOptions) {
-    this.domain = domain;
+  constructor(private scopes: string[]) {}
 
-    this.scopes = scopes;
-
-    this.clientID = clientID;
-  }
-
-  public login(redirectURI: string): Promise<{ code: string }> {
+  public login({ clientID, domain, redirectURI }: OKTAOptions): Promise<{ code: string }> {
     return new Promise((resolve, reject) => {
       const state = `state-${cuid()}`;
 
@@ -47,7 +36,7 @@ class OKTA {
       };
 
       window.open(
-        `https://${this.domain}/oauth2/default/v1/authorize?client_id=${this.clientID}&response_type=code&scope=${this.scopes.join(
+        `https://${domain}/oauth2/default/v1/authorize?client_id=${clientID}&response_type=code&scope=${this.scopes.join(
           ' '
         )}&state=${state}&redirect_uri=${encodeURIComponent(redirectURI)}`
       );

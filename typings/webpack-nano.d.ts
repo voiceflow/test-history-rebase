@@ -46,6 +46,7 @@ declare module 'webpack-nano/argv' {
     ff_ownerRole: boolean;
     ff_asrBypass: boolean;
     ff_natoApco: boolean;
+    ff_motorolaSSO: boolean;
   }>;
 
   export = argv;

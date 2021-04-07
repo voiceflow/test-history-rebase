@@ -8,7 +8,9 @@ import { connect, lazy } from '@/hocs';
 import AdoptSSO from '@/pages/Auth/AdoptSSO';
 import Login from '@/pages/Auth/Login';
 import LoginSSOCallback from '@/pages/Auth/LoginSSOCallback';
-import MattelLogin from '@/pages/Auth/MattelLoginForm';
+import MattelLogin from '@/pages/Auth/MattelLogin';
+import MotorolaLogin from '@/pages/Auth/MotorolaLogin';
+import OINLogin from '@/pages/Auth/OINLogin';
 import ResetEmail from '@/pages/Auth/ResetEmail';
 import ResetPassword from '@/pages/Auth/ResetPassword';
 import Signup from '@/pages/Auth/Signup';
@@ -40,6 +42,8 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => (
       <PublicRoute exact path={Path.RESET} name="Reset" component={ResetEmail} />
       <PublicRoute exact path={Path.LOGIN} name="Login" component={Login} />
       <PublicRoute exact path={Path.LOGIN_MATTEL} name="Login - Mattel" component={MattelLogin} />
+      <PublicRoute exact path={Path.LOGIN_MOTOROLA} name="Login - Motorola" component={MotorolaLogin} />
+      <PublicRoute exact path={Path.LOGIN_OIN} name="Login - OIN" component={OINLogin} />
       <PublicRoute exact path={Path.LOGIN_SSO_CALLBACK} name="Login SSO Callback" component={LoginSSOCallback} />
       <PublicRoute exact path={Path.SSO_ADOPT} name="Adopt SSO" component={AdoptSSO} />
       <PublicRoute exact path={Path.PROMO_SIGNUP} name="SignUpPromo" component={Signup} promo />

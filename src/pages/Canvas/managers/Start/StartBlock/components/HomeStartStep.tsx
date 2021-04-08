@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Text from '@/components/Text';
 import { PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
@@ -19,9 +20,9 @@ const HomeStartStep: React.FC<HomeStartStepProps> = ({ platform, invocationName,
         icon={PLATFORM_META[platform].icon}
         iconColor={PLATFORM_META[platform].iconColor}
         label={getPlatformValue(platform, {
-          [PlatformType.ALEXA]: `Alexa, open ${invocationName}`,
-          [PlatformType.GOOGLE]: `Hey Google, start ${invocationName}`,
-          [PlatformType.GENERAL]: 'Project starts here',
+          [PlatformType.ALEXA]: <Text color="#132144">Alexa, open {invocationName}</Text>,
+          [PlatformType.GOOGLE]: <Text color="#132144">Hey Google, start {invocationName}</Text>,
+          [PlatformType.GENERAL]: <>Project starts here</>,
         })}
         labelVariant={PlatformType.GENERAL ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
         portID={portID}

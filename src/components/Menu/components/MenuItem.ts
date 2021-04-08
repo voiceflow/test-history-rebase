@@ -71,7 +71,6 @@ export const itemStyles = css<MenuItemProps>`
     css`
       background: rgb(243, 248, 249);
       color: #62778c;
-      margin-top: -6px;
       height: 52px;
       padding-bottom: 2px;
     `}

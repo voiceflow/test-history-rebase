@@ -20,18 +20,19 @@ const SettingsButton: React.FC<ConnectedSettingsButton> = ({ plan, goToWorkspace
   const { open: openUpgrade } = useModals(ModalType.PAYMENT);
 
   const isEditor = activeRole === UserRole.EDITOR;
-  const isViewer = activeRole === UserRole.VIEWER || activeRole === UserRole.LIBRARY;
+  const isLibrary = activeRole === UserRole.LIBRARY;
+  const isViewer = isLibrary || activeRole === UserRole.VIEWER;
 
   return (
     <TippyTooltip title="Settings" position="bottom">
       <Dropdown
         menu={
-          <Menu noBottomPadding>
+          <Menu noBottomPadding noTopPadding={!canConfigureWorkspace && isLibrary}>
             {canConfigureWorkspace ? (
               <>
                 <MenuItem onClick={toggleCollaborators}>Manage Collaborators</MenuItem>
                 <MenuItem onClick={goToWorkspaceSettings}>Workspace Settings</MenuItem>
-                <MenuItem divider />
+                <MenuItem divider style={{ marginBottom: 0 }} />
                 {plan ? (
                   <MenuItem disabled capitalize teamItem>
                     {PLAN_TYPE_META[plan].label} Plan
@@ -50,10 +51,12 @@ const SettingsButton: React.FC<ConnectedSettingsButton> = ({ plan, goToWorkspace
               </>
             ) : (
               <>
-                <MenuItem onClick={leaveWorkspace}>Leave Workspace</MenuItem>
+                {!isLibrary && <MenuItem onClick={leaveWorkspace}>Leave Workspace</MenuItem>}
+
                 {(isEditor || isViewer) && (
                   <>
-                    <MenuItem divider />
+                    {!isLibrary && <MenuItem divider style={{ marginBottom: 0 }} />}
+
                     <MenuItem disabled teamItem>
                       Workspace {isEditor ? 'Editor' : 'Viewer'}
                     </MenuItem>

@@ -16,6 +16,7 @@ export const getItemsContainer = (itemHeight: number, maxVisibleItems: number = 
 export type MenuContainerProps = {
   fullWidth?: boolean;
   nativeScrollbar?: boolean;
+  noTopPadding?: boolean;
   noBottomPadding?: boolean;
   maxVisibleItems?: number;
   disableAnimation?: boolean;
@@ -57,6 +58,12 @@ const MenuContainer = styled.ul<MenuContainerProps>`
     !disableAnimation &&
     css`
       animation: fadein 0.15s ease, movein 0.15s ease, scaleY 0.1s ease;
+    `}
+
+  ${({ noTopPadding }) =>
+    noTopPadding &&
+    css`
+      padding-top: 0;
     `}
 
   ${({ noBottomPadding }) =>

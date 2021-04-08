@@ -27,6 +27,7 @@ export type MenuProps<T> = {
   searchable?: React.ReactNode;
   scrollbarsRef?: React.Ref<Scrollbars>;
   maxVisibleItems?: number;
+  noTopPadding?: boolean;
   noBottomPadding?: boolean;
   multiSelectProps?: { buttonClick: React.MouseEventHandler; buttonLabel: React.ReactNode };
   disableAnimation?: boolean;
@@ -53,6 +54,7 @@ const Menu = <T,>(
     searchable,
     scrollbarsRef,
     maxVisibleItems = MAX_VISIBLE_ITEMS,
+    noTopPadding,
     noBottomPadding,
     disableAnimation = false,
     multiSelectProps,
@@ -100,6 +102,7 @@ const Menu = <T,>(
       width={width}
       maxVisibleItems={maxVisibleItems}
       nativeScrollbar={scrollBarWidth === 0}
+      noTopPadding={noTopPadding}
       noBottomPadding={noBottomPadding}
       disableAnimation={disableAnimation}
     >

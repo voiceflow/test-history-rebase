@@ -255,7 +255,7 @@
     "node-noop": "^1.0.0",
     "nyc": "^15.1.0",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
-    "patch-package": "^6.2.2",
+    "patch-package": "^6.4.7",
     "postcss": "^8.2.9",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^5.0.0",

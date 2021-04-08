@@ -13,13 +13,13 @@ import PrototypeLayoutItem from './PrototypeLayoutItem';
 
 const OPTION_DETAILS: Record<PrototypeLayout, Record<string, string>> = {
   [PrototypeLayout.TEXT_DIALOG]: {
-    title: 'Text and Dialog',
+    title: 'Text and Transcript',
     description: 'Testers will use text and chips input',
     activeImg: '/icon-text-dialog.svg',
     inactiveImg: '/icon-text-dialog-inactive.svg',
   },
   [PrototypeLayout.VOICE_DIALOG]: {
-    title: 'Voice and Dialog',
+    title: 'Voice and Transcript',
     description: 'Testers will use voice and chips input',
     activeImg: '/icon-text-dialog.svg',
     inactiveImg: '/icon-text-dialog-inactive.svg',

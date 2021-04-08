@@ -146,7 +146,9 @@ jobs:
       - codecov/upload:
           file: nyc_coverage/lcov.info
           flags: unit
-      - vfcommon/lint_source
+      - run:
+          name: Lint Styles
+          command: yarn lint:css --quiet
       - vfcommon/lint_report
       - vfcommon/lint_dockerfile
       - vfcommon/dependency_tests:

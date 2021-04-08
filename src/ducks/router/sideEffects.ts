@@ -11,7 +11,16 @@ import { Skill as SkillModel } from '@/models';
 import { GetState, SyncThunk, Thunk, ThunkDispatch } from '@/store/types';
 import * as Query from '@/utils/query';
 
-import { goTo, goToCanvasCommenting, goToPrototype, goToPublish, goToSettings, goToWorkspaceSettings, redirectToCanvasCommenting } from './actions';
+import {
+  goTo,
+  goToCanvasCommenting,
+  goToPrototype,
+  goToPublish,
+  goToSettings,
+  goToWorkspaceSettings,
+  redirectTo,
+  redirectToCanvasCommenting,
+} from './actions';
 
 const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versionID: string, diagramID: string, isNewDiagram?: boolean) => {
   const state = getState();
@@ -38,10 +47,19 @@ const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versi
 export const goToCanvas = (versionID: string, diagramID?: string) =>
   goTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
 
+export const redirectToCanvas = (versionID: string, diagramID?: string) =>
+  redirectTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
+
 export const goToCanvasSwitchRealtime = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch, getState) => {
   await switchRealtime(dispatch, getState, versionID, diagramID, isNewDiagram);
 
   dispatch(goToCanvas(versionID, diagramID));
+};
+
+export const redirectToCanvasSwitchRealtime = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch, getState) => {
+  await switchRealtime(dispatch, getState, versionID, diagramID, isNewDiagram);
+
+  dispatch(redirectToCanvas(versionID, diagramID));
 };
 
 export const goToCurrentCanvas = (): Thunk => async (dispatch, getState) => {
@@ -80,6 +98,12 @@ export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
   const skill = activeSkillSelector(getState()) as SkillModel<string>;
 
   await dispatch(goToCanvasSwitchRealtime(skill.id, skill.rootDiagramID));
+};
+
+export const redirectToRootDiagram = (): Thunk => async (dispatch, getState) => {
+  const skill = activeSkillSelector(getState()) as SkillModel<string>;
+
+  await dispatch(redirectToCanvasSwitchRealtime(skill.id, skill.rootDiagramID));
 };
 
 export const goToDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {

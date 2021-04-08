@@ -9,10 +9,15 @@ type DiagramSyncProps = {
   diagramID: string;
 };
 
-const DiagramSync: React.FC<DiagramSyncProps & ConnectedDiagramSyncProps> = ({ isDiagramSynced, diagramID, goToRootDiagram, updateDiagramID }) => {
+const DiagramSync: React.FC<DiagramSyncProps & ConnectedDiagramSyncProps> = ({
+  isDiagramSynced,
+  diagramID,
+  redirectToRootDiagram,
+  updateDiagramID,
+}) => {
   React.useEffect(() => {
     if (!diagramID) {
-      goToRootDiagram();
+      redirectToRootDiagram();
     } else if (!isDiagramSynced) {
       updateDiagramID(diagramID);
     }
@@ -27,7 +32,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   updateDiagramID: Skill.updateDiagramID,
-  goToRootDiagram: Router.goToRootDiagram,
+  redirectToRootDiagram: Router.redirectToRootDiagram,
 };
 
 const mergeProps = (...[{ activeSkill }, , { diagramID }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, DiagramSyncProps>) => ({

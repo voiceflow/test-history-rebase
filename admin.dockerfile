@@ -1,6 +1,6 @@
 FROM nginx:stable
 
-ENV PORT=80
+ENV VF_ENV_PORT=80
 
 COPY ./admin_build /var/www
 COPY ./config/start.sh /var/www

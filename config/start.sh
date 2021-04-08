@@ -13,4 +13,6 @@ do
   echo $replaceStr >> /var/www/static.js
 done
 
+envsubst < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf
+
 nginx -g "daemon off;"

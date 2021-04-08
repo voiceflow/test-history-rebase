@@ -98,7 +98,7 @@
     "react-tippy": "1.4.0",
     "react-toastify": "^5.5.0",
     "react-toggle": "^4.1.1",
-    "react-use-intercom": "^1.1.5",
+    "react-use-intercom": "^1.1.9",
     "react-virtualized": "^9.22.3",
     "reactstrap": "^8.6.0",
     "recompose": "^0.30.0",

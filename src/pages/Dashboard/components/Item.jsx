@@ -50,10 +50,13 @@ export function Item(props) {
   const [isDropdownOpened, toggleDropdownOpened] = useToggle();
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
   const [canCloneProject] = usePermission(Permission.CLONE_PROJECT);
-
+  const titleRef = React.useRef(null);
+  const [titleOverflowing, setTitleOverflowing] = React.useState(false);
   const { open: openCloneModal } = useModals(ModalType.IMPORT_PROJECT);
   const dateFromID = new Date(parseInt(id.substring(0, 8), 16));
   const color = PROJECT_COLORS[dateFromID.getTime() % PROJECT_COLORS.length] || PROJECT_COLORS[0];
+
+  const TitleWrapper = titleOverflowing ? Tooltip : React.Fragment;
   const options = canManageProjects
     ? [
         {
@@ -84,6 +87,10 @@ export function Item(props) {
     };
     options.push(cloneOption);
   }
+
+  React.useEffect(() => {
+    setTitleOverflowing(titleRef?.current?.scrollWidth > titleRef?.current?.clientWidth);
+  }, [titleRef]);
 
   const hasOptions = !!options.length;
 
@@ -121,7 +128,11 @@ export function Item(props) {
         </Dropdown>
         <ProjectNameWrapper>
           <ProjectTitleDetails>
-            <ProjectTitle className="projects-list__item-title">{name}</ProjectTitle>
+            <TitleWrapper title={name}>
+              <ProjectTitle ref={titleRef} className="projects-list__item-title">
+                {name}
+              </ProjectTitle>
+            </TitleWrapper>
             <ProjectTitleCaption>
               <span>
                 {PLATFORM_APP_NAME[platform]} {!!language.length && '-'}{' '}

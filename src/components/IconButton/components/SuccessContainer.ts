@@ -18,15 +18,21 @@ const SuccessContainer = styled(Container)`
 
   z-index: 1;
   background: linear-gradient(-180deg, rgba(39, 151, 69, 0.08) 0%, rgba(39, 151, 69, 0.16) 100%);
+
   &:before {
     background: linear-gradient(-180deg, rgba(39, 151, 69, 0.04) 0%, rgba(39, 151, 69, 0.08) 100%);
   }
+
   &:active {
     color: rgba(110, 132, 154, 0.8);
     border-color: rgba(39, 151, 69, 0.5);
     transition: opacity 0.12s linear, border-color 0.16s linear, box-shadow 0.12s linear;
     box-shadow: none !important;
     background: linear-gradient(-180deg, rgba(39, 151, 69, 0.08) 0%, rgba(39, 151, 69, 0.16) 100%);
+
+    &:hover {
+      color: rgba(110, 132, 154, 0.8);
+    }
   }
 `;
 

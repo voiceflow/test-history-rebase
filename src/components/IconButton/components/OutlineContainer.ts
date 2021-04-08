@@ -12,6 +12,10 @@ const activeStyle = css`
   color: rgba(19, 33, 68, 0.85);
   box-shadow: none !important;
   border: 1px solid #dfe3ed;
+
+  &:hover {
+    color: rgba(19, 33, 68, 0.85);
+  }
 `;
 
 const OutlineContainer = styled(Container)<OutlineContainerProps>`

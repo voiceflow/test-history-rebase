@@ -22,6 +22,10 @@ const activeStyle = css`
   border: 1px solid #fff;
   color: #5d9df5;
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
+
+  &:hover {
+    color: #5d9df5;
+  }
 `;
 
 const Container = styled(ButtonContainer)<ContainerProps>`
@@ -58,7 +62,7 @@ const Container = styled(ButtonContainer)<ContainerProps>`
           color: rgba(110, 132, 154, 0.75);
           box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
 
-          &:hover:not(&:active) {
+          &:hover {
             color: rgba(110, 132, 154, 1);
           }
         `}

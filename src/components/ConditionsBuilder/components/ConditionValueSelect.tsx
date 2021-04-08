@@ -1,55 +1,85 @@
+import { ExpressionTypeV2 } from '@voiceflow/general-types';
+import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
 import Badge from '@/components/Badge';
-import Input from '@/components/Input';
+import Box from '@/components/Box';
+import VariablesInput from '@/components/VariablesInput';
 import { useEnableDisable } from '@/hooks';
-import { withKeyPress } from '@/utils/dom';
+import { swallowEvent } from '@/utils/dom';
+
+import { isValidExpressionValue, isVariable } from '../utils';
+
+const AnyVariablesInput: any = VariablesInput;
 
 export type ConditionValueSelectProps = {
   value?: string;
-  onChange: (data: { value: string }) => void;
+  onChange: (data: { value: string; type: ExpressionTypeV2.VARIABLE | ExpressionTypeV2.VALUE }) => void;
 };
 
-/**
- * TODO: replace input component with variable component CORE-5570
- * once above component is implemented,
- * following should be done before sending data to onChange
- *
- * the type of the expression should be set automatically under the hood based on the input value
- * variable -> type: variable
- * string/number -> type: value
- *
- * expected
- * onChange({ value, type })
- *
- */
-
-const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value, onChange }) => {
-  const [data, setData] = React.useState(value || '');
+const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '', onChange }) => {
+  const inputRef = React.useRef<{ blur: () => {}; getCurrentValue: () => { text: string } }>(null);
+  const [error, setError, resetError] = useEnableDisable(false);
   const [show, onShow, onHide] = useEnableDisable(false);
+  const [empty, updateIsEmpty] = React.useState(true);
 
-  const onEnter = React.useCallback(() => {
-    onHide();
-    onChange({ value: data });
-  }, [onChange]);
+  const onUpdate = React.useCallback(
+    (value: string) => {
+      if (isEmpty(value)) {
+        setError();
+        return;
+      }
+
+      if (!isValidExpressionValue(value)) {
+        setError();
+        return;
+      }
+
+      onChange({
+        value,
+        type: isVariable(value) ? ExpressionTypeV2.VARIABLE : ExpressionTypeV2.VALUE,
+      });
+
+      resetError();
+      onHide();
+    },
+    [onChange]
+  );
+
+  const onSave = ({ text }: { text: string }) => onUpdate(text.trim());
+
+  const onEnter = ({ text }: { text: string }) => {
+    onUpdate(text.trim());
+    inputRef?.current?.blur();
+  };
 
   return (
-    <Input
-      value={data}
-      onBlur={onEnter}
-      onChange={(e) => setData(e.target.value)}
-      onFocus={onShow}
-      onKeyPress={withKeyPress(13, onEnter)}
-      rightAction={
-        show &&
-        data && (
-          <Badge slide onClick={onEnter}>
-            Enter
-          </Badge>
-        )
-      }
-      nested
-    />
+    <>
+      <AnyVariablesInput
+        fullWidth
+        ref={inputRef}
+        value={value}
+        error={error}
+        onFocus={onShow}
+        onBlur={onSave}
+        onEmpty={updateIsEmpty}
+        onEnterPress={onEnter}
+        placeholder="Enter value or {variable}"
+        rightAction={
+          !empty &&
+          show && (
+            <Badge slide onClick={swallowEvent(() => onEnter(inputRef.current!.getCurrentValue()))}>
+              Enter
+            </Badge>
+          )
+        }
+      />
+      {error && (
+        <Box fontSize={13} color="#e91e63" mt={16}>
+          Input can only contain values or a variable, not both. No empty values.
+        </Box>
+      )}
+    </>
   );
 };
 

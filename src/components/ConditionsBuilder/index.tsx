@@ -14,13 +14,11 @@ export type ConditionsBuilderProps = {
 const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, expression }) => {
   const addNewCondition = (logicInterface: ConditionsLogicInterface) => {
     const values: any = getDefaultValue(logicInterface);
-
     onChange({ ...expression, value: [{ ...values }] } as ExpressionData);
   };
 
   const addAdditionalCondition = (logicInterface: ConditionsLogicInterface) => {
     const values: any = getDefaultValue(logicInterface);
-
     onChange(getAddionalLogicData(expression!, values));
   };
 

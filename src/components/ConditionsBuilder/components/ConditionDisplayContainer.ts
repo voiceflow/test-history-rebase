@@ -8,7 +8,7 @@ const ConditionDisplayContainer = styled(FlexCenter)<{ isActive?: boolean; isInv
   border-radius: 5px;
   padding: 9px 0 9px 16px;
   position: relative;
-  align-items: baseline;
+  align-items: center;
   margin-left: 16px;
   max-width: 320px;
   flex-wrap: nowrap;

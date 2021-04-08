@@ -1,4 +1,4 @@
-import { ExpressionTupleV2, ExpressionTypeV2 } from '@voiceflow/general-types';
+import { ConditionsLogicInterface, ExpressionTupleV2, ExpressionTypeV2 } from '@voiceflow/general-types';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
@@ -8,7 +8,7 @@ import Checkbox, { CheckboxType } from '@/components/Checkbox';
 import { MenuContainer } from '@/components/Menu';
 import Portal from '@/components/Portal';
 import Text from '@/components/Text';
-import { useEnableDisable, useSetup } from '@/hooks';
+import { useEnableDisable } from '@/hooks';
 import { useDismissable } from '@/hooks/dismiss';
 import { stopPropagation } from '@/utils/dom';
 
@@ -20,6 +20,8 @@ import ConditionLogicSelect from './ConditionLogicSelect';
 import ConditionValueSelect from './ConditionValueSelect';
 import ConditionVariableSelect from './ConditionVariableSelect';
 
+export type ValueSelectExpressionType = ExpressionTypeV2.VARIABLE | ExpressionTypeV2.VALUE;
+
 export type ConditionDataSelectProps = {
   expression: LogicUnitDataType;
 
@@ -29,27 +31,10 @@ export type ConditionDataSelectProps = {
 
 const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, onChange, onDelete }) => {
   const popperRef = React.useRef<HTMLElement>(null);
-  const [isShown, onToggle] = useDismissable(false, { autoDismiss: true, ref: popperRef });
+  const [isShown, onToggle] = useDismissable(false, { autoDismiss: false, ref: popperRef });
   const [invalidCondition, setInvalidCondition, setValidCondition] = useEnableDisable(false);
 
-  useSetup(() => {
-    if (expression.logicInterface && isEmpty(expression.value[0]?.value)) {
-      onToggle();
-    }
-  }, [expression.logicInterface]);
-
-  React.useEffect(() => {
-    // if pop-up is open remove error
-    if (isShown && invalidCondition) {
-      setValidCondition();
-    }
-
-    // if pop-up is close show error
-    if (!isShown && isConditionInvalid(expression)) {
-      setInvalidCondition();
-    }
-  }, [isShown, invalidCondition]);
-
+  // methods
   const onValueUpdate = React.useCallback(
     (key: number) => (values: { value: string }) => {
       onChange({
@@ -59,7 +44,6 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, o
     },
     [onChange]
   );
-
   const onLogicUpdate = React.useCallback(
     (logic: ExpressionDataLogicType) => {
       onChange({ ...expression, type: logic });
@@ -67,11 +51,29 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, o
     [onChange]
   );
 
+  // side effects
+  React.useEffect(() => {
+    if (expression.logicInterface && isEmpty(expression.value[0]?.value)) {
+      onToggle();
+    }
+  }, [expression.logicInterface, popperRef]);
+
+  React.useEffect(() => {
+    // if pop-up is open remove error
+    if (isShown && invalidCondition) {
+      setValidCondition();
+    }
+    // if pop-up is close show error
+    if (!isShown && isConditionInvalid(expression)) {
+      setInvalidCondition();
+    }
+  }, [isShown, invalidCondition]);
+
   return (
     <Manager>
       <Reference>
         {({ ref }) => (
-          <Box ref={ref} onClick={stopPropagation(onToggle)}>
+          <Box ref={ref} onClick={onToggle}>
             <ConditionDisplay error={invalidCondition} expression={expression} onDelete={onDelete} />
           </Box>
         )}
@@ -96,12 +98,12 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, o
                 >
                   {/* to add left side value */}
                   <>
-                    {expression.value[0]?.type === ExpressionTypeV2.VARIABLE && (
-                      <ConditionVariableSelect value={expression.value[0].value} onChange={onValueUpdate(0)} />
+                    {expression.logicInterface === ConditionsLogicInterface.VARIABLE && (
+                      <ConditionVariableSelect value={expression.value[0]?.value as string} onChange={onValueUpdate(0)} />
                     )}
 
-                    {expression.value[0]?.type === ExpressionTypeV2.VALUE && (
-                      <ConditionValueSelect value={expression.value[0].value} onChange={onValueUpdate(0)} />
+                    {expression.logicInterface === ConditionsLogicInterface.VALUE && (
+                      <ConditionValueSelect value={expression.value[0]?.value as string} onChange={onValueUpdate(0)} />
                     )}
                   </>
 
@@ -110,12 +112,11 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, o
                     {expression.value[0]?.value && (
                       <Box mb={16} mt={24}>
                         <Flex mb={12}>
-                          <Checkbox type={CheckboxType.RADIO} value={expression.type} checked />
+                          <Checkbox type={CheckboxType.RADIO} value={expression.type} checked readOnly />
                           <Text>{ExpressionDisplayLabel[expression.type]}</Text>
                         </Flex>
 
                         <Box mb={16}>
-                          {/* casting as string because the value will always be string */}
                           <ConditionValueSelect value={expression.value[1]?.value as string} onChange={onValueUpdate(1)} />
                         </Box>
 

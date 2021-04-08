@@ -1,6 +1,6 @@
 import { DiagramState } from '@/constants';
 import { createAction } from '@/ducks/utils';
-import { EntityMap, NodeData, PartialModel, Port } from '@/models';
+import { EntityMap, LinkData, NodeData, PartialModel, Port } from '@/models';
 import { Action } from '@/store/types';
 import { Point } from '@/types';
 
@@ -29,6 +29,8 @@ export enum DiagramAction {
   SET_SECTION_STATE = 'CREATOR:SECTION_STATE:SET',
   SET_DIAGRAM_STATE = 'CREATOR:DIAGRAM_STATE:SET',
   UPDATE_HIDDEN = 'CREATOR:HIDDEN:UPDATE',
+  UPDATE_LINK_DATA = 'CREATOR:NODE:UPDATE_LINK_DATA',
+  UPDATE_LINK_DATA_MANY = 'CREATOR:NODE:UPDATE_LINK_DATA_MANY',
 }
 
 // action types
@@ -39,6 +41,10 @@ export type UpdateNodeData = Action<
 >;
 
 export type UpdateNodeLocation = Action<DiagramAction.UPDATE_NODE_LOCATION, { nodeID: string; x: number; y: number }>;
+
+export type UpdateLinkData = Action<DiagramAction.UPDATE_LINK_DATA, { linkID: string; data: Partial<LinkData> }>;
+
+export type UpdateLinkDataMany = Action<DiagramAction.UPDATE_LINK_DATA_MANY, { linkID: string; data: Partial<LinkData> }[]>;
 
 export type UnmergeNode = Action<DiagramAction.UNMERGE_NODE, { nodeID: string; position: Point; parentNode: ParentNodeDescriptor }>;
 
@@ -89,6 +95,8 @@ export type UpdateHidden = Action<DiagramAction.UPDATE_HIDDEN, boolean>;
 export type AnyDiagramAction =
   | UpdateNodeData
   | UpdateNodeLocation
+  | UpdateLinkData
+  | UpdateLinkDataMany
   | UnmergeNode
   | InsertNestedNode
   | AddNode
@@ -118,6 +126,12 @@ export const updateNodeData: {
 
 export const updateNodeLocation = (nodeID: string, [x, y]: Point): UpdateNodeLocation =>
   createAction(DiagramAction.UPDATE_NODE_LOCATION, { nodeID, x, y });
+
+export const updateLinkData = (linkID: string, data: Partial<LinkData>): UpdateLinkData =>
+  createAction(DiagramAction.UPDATE_LINK_DATA, { linkID, data });
+
+export const updateLinkDataMany = (payload: { linkID: string; data: Partial<LinkData> }[]): UpdateLinkDataMany =>
+  createAction(DiagramAction.UPDATE_LINK_DATA_MANY, payload);
 
 export const unmergeNode = (nodeID: string, position: Point, parentNode: ParentNodeDescriptor): UnmergeNode =>
   createAction(DiagramAction.UNMERGE_NODE, { nodeID, position, parentNode });

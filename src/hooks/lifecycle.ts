@@ -1,10 +1,10 @@
 import React from 'react';
 
-const LifecyclePhase = {
-  MOUNTING: 'mounting',
-  MOUNTED: 'mounted',
-  UNMOUNTING: 'unmounting',
-};
+export enum LifecyclePhase {
+  MOUNTING = 'mounting',
+  MOUNTED = 'mounted',
+  UNMOUNTING = 'unmounting',
+}
 
 export const useLifecycle = () => {
   const phase = React.useRef(LifecyclePhase.MOUNTING);

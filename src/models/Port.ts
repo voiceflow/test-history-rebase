@@ -1,11 +1,14 @@
 import { PlatformType } from '@/constants';
 
+import { LinkData } from './Link';
+
 export type Port = {
   id: string;
   nodeID: string;
   label: string | null;
   platform: PlatformType | null;
   virtual: boolean;
+  linkData?: LinkData;
 };
 
 export type DBPort = {
@@ -16,4 +19,5 @@ export type DBPort = {
   in?: boolean;
   hidden?: boolean;
   virtual?: boolean;
+  linkData?: LinkData;
 };

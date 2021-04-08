@@ -1,7 +1,7 @@
 import { PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
-import { Link } from '@/models';
+import { Link, LinkData } from '@/models';
 import { Pair } from '@/types';
 
 import { EngineConsumer, extractPoints } from './utils';
@@ -25,6 +25,14 @@ class LinkManager extends EngineConsumer {
       }
 
       this.dispatch(Creator.removeLink(linkID));
+    },
+
+    updateData: (linkID: string, data: Partial<LinkData>) => {
+      this.dispatch(Creator.updateLinkData(linkID, data));
+    },
+
+    updateDataMany: (payload: { linkID: string; data: Partial<LinkData> }[]) => {
+      this.dispatch(Creator.updateLinkDataMany(payload));
     },
   };
 
@@ -52,7 +60,7 @@ class LinkManager extends EngineConsumer {
     return !sourcePort.platform || sourcePort.platform === platform;
   }
 
-  getPoints(linkID: string) {
+  getSourceTargetPoints(linkID: string) {
     const link = this.engine.getLinkByID(linkID);
     const getPortRect = (relationship: 'source' | 'target') => this.engine.port.getRect(link[relationship].portID);
 
@@ -79,10 +87,32 @@ class LinkManager extends EngineConsumer {
     this.log.info(this.log.success('removed link'), this.log.slug(linkID));
   }
 
-  translatePoint(linkID: string, movement: Pair<number>, isSource: boolean) {
-    this.api(linkID)?.instance?.translatePoint(movement, isSource);
+  async updateLinkData(linkID: string, data: Partial<LinkData>) {
+    this.log.debug(this.log.pending('updated data'), this.log.slug(linkID));
+    this.internal.updateData(linkID, data);
+    await this.engine.realtime.sendUpdate(Realtime.updateLinkData(linkID, data));
+    this.engine.saveHistory();
 
-    this.log.debug(`translated ${isSource ? 'source' : 'target'} point`, this.log.value(linkID));
+    this.log.info(this.log.success('updated data'), this.log.slug(linkID));
+  }
+
+  async updateLinkDataMany(payload: { linkID: string; data: Partial<LinkData> }[]) {
+    this.internal.updateDataMany(payload);
+    await this.engine.realtime.sendUpdate(Realtime.updateLinkDataMany(payload));
+  }
+
+  async savePointsMany(linkIDs: string[]) {
+    const payload = linkIDs
+      .map((linkID) => ({ linkID, data: { points: this.api(linkID)?.instance?.getPoints().current ?? null } }))
+      .filter(({ data }) => data.points);
+
+    await this.updateLinkDataMany(payload);
+  }
+
+  translatePoint(linkID: string, movement: Pair<number>, data: { isSource: boolean; reposition: boolean; sourceAndTargetSelected: boolean }) {
+    this.api(linkID)?.instance?.translatePoint(movement, data);
+
+    this.log.debug(`translated ${data.isSource ? 'source' : 'target'} point`, this.log.value(linkID));
   }
 
   redraw(linkID: string) {

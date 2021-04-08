@@ -22,7 +22,17 @@ export type Quad<T> = [T, T, T, T];
 
 export type Eventual<T> = Promise<T> | T;
 
-export type Point = Pair<number>;
+export type Point = [x: number, y: number];
+
+export type PathPoint = {
+  point: Point;
+  toTop: boolean;
+  locked: boolean;
+  reversed: boolean;
+  allowedToTop: boolean;
+};
+
+export type PathPoints = PathPoint[];
 
 export type Struct = Record<string, unknown>;
 

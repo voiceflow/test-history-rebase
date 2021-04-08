@@ -30,9 +30,11 @@ export const tracePortsAdapter: PortsAdapter<NodeData.Trace> = {
     return dbPorts.map((port, index) => {
       const label = data.paths[index]?.label;
       const event = label ? { type: label } : undefined;
+
       return {
         ...port,
         data: {
+          ...port.data,
           event,
         },
       };

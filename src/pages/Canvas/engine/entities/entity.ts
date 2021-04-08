@@ -16,7 +16,7 @@ export type EntityInstance = {
   removeClass: (className: string) => void;
 };
 
-const isDirectlyEqual = <T>(lhs: T, rhs: T) => lhs === rhs;
+export const isDirectlyEqual = <T>(lhs: T, rhs: T) => lhs === rhs;
 
 export abstract class Entity<T extends EntityInstance = EntityInstance> {
   instanceID = objectID();

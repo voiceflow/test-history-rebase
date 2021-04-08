@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 
 import { BlockType } from '@/constants';
 import * as Realtime from '@/ducks/realtime';
-import { buildPath, getMarkerAttrs, getVirtualPoints } from '@/pages/Canvas/components/Link';
+import { useRAF } from '@/hooks';
+import { buildPath, getMarkerAttrs, getPathPoints, getVirtualPoints } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
@@ -12,7 +13,7 @@ import { noop } from '@/utils/functional';
 type NewLinkInstance<T extends SVGElement> = NewLinkAPI & {
   ref: React.RefObject<T>;
   markerRef: React.RefObject<SVGMarkerElement>;
-  getPoints: () => Pair<Point> | null;
+  getSourceTargetPoints: () => Pair<Point> | null;
   isVisible: boolean;
 };
 
@@ -26,6 +27,9 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const removeEventListeners = React.useRef(noop);
   const engine = React.useContext(EngineContext)!;
   const [isVisible, setVisible] = React.useState(false);
+
+  const [mouseMoveStylesScheduler] = useRAF();
+  const [pinStylesScheduler] = useRAF();
 
   const moveLink = React.useCallback(
     (...args: Parameters<typeof Realtime['moveLink']>) => dispatch(Realtime.sendRealtimeVolatileUpdate(Realtime.moveLink(...args))),
@@ -41,6 +45,8 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
 
     const nextPoints: Pair<Point> = [start, [endX, endY]];
     const virtualPoints = getVirtualPoints(nextPoints)!;
+    const straight = engine.isStraightLinks();
+    const pathPoints = getPathPoints(virtualPoints, { straight });
 
     points.current = nextPoints;
     moveLink({ points: virtualPoints });
@@ -48,15 +54,16 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
     const linkEl = ref.current!;
     const markerEl = markerRef.current!;
 
-    window.requestAnimationFrame(() => {
-      const straight = engine.isStraightLinks();
-      const marketAttrs = getMarkerAttrs(virtualPoints, { straight, unconnected: true });
+    mouseMoveStylesScheduler(() => {
+      const marketAttrs = getMarkerAttrs(pathPoints, straight);
 
-      linkEl.setAttribute('d', buildPath(virtualPoints, { straight, unconnected: true }));
+      const path = buildPath(pathPoints, straight);
+
+      linkEl.setAttribute('d', path);
 
       Object.keys(marketAttrs).forEach((attr) => markerEl.setAttribute(attr, marketAttrs[attr as keyof typeof marketAttrs]));
 
-      engine.portLinkInstances.get(engine.linkCreation.sourcePortID!)?.api.updatePosition(virtualPoints);
+      engine.portLinkInstances.get(engine.linkCreation.sourcePortID!)?.api.updatePosition(pathPoints);
     });
   }, [buildPath]);
 
@@ -80,7 +87,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
       markerRef,
       isVisible,
       isPinned: () => isPinned.current,
-      getPoints: () => points.current,
+      getSourceTargetPoints: () => points.current,
       show: () => {
         const nextPoints = engine.linkCreation.getLinkPoints();
 
@@ -135,18 +142,16 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
           return null;
         };
 
-        window.requestAnimationFrame(() => {
-          const path = buildPath(virtualPoints, {
-            straight,
-            targetIsBlock,
-            sourceBlockEndY: getSourceBlockEndY(),
-          });
-          const marketAttrs = getMarkerAttrs(virtualPoints, { straight, targetIsBlock });
+        pinStylesScheduler(() => {
+          const pathPoints = getPathPoints(virtualPoints, { straight, connected: true, targetIsBlock, sourceBlockEndY: getSourceBlockEndY() });
+
+          const path = buildPath(pathPoints, straight);
+          const marketAttrs = getMarkerAttrs(pathPoints, straight);
 
           linkEl.setAttribute('d', path);
           Object.keys(marketAttrs).forEach((attr) => markerEl.setAttribute(attr, marketAttrs[attr as keyof typeof marketAttrs]));
 
-          engine.portLinkInstances.get(engine.linkCreation.sourcePortID!)?.api.updatePosition(virtualPoints);
+          engine.portLinkInstances.get(engine.linkCreation.sourcePortID!)?.api.updatePosition(pathPoints);
         });
       },
       unpin: () => {

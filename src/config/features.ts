@@ -9,6 +9,7 @@ const ASR_BYPASS_ENABLED = process.env.FF_ASR_BYPASS === 'true';
 const NATO_APCO_ENABLED = process.env.FF_NATO_ACPO === 'true';
 const CONDITIONS_BUILDER_ENABLED = process.env.FF_CONDITIONS_BUILDER === 'true';
 const MOTOROLA_SSO_ENABLED = process.env.FF_MOTOROLA_SSO === 'true';
+const LINK_CUSTOMIZATION_ENABLED = process.env.FF_LINK_CUSTOMIZATION === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
@@ -17,6 +18,7 @@ export enum FeatureFlag {
   NATO_APCO = 'nato_apco',
   CONDITIONS_BUILDER = 'conditions_builder',
   MOTOROLA_SSO = 'motorola_sso',
+  LINK_CUSTOMIZATION = 'link_customization',
 
   // used by select private cloud instances to add a new role type
   OWNER_ROLE = 'owner_role',
@@ -34,4 +36,5 @@ export const LOCAL_FEATURE_OVERRIDES = {
   [FeatureFlag.NATO_APCO]: NATO_APCO_ENABLED,
   [FeatureFlag.CONDITIONS_BUILDER]: CONDITIONS_BUILDER_ENABLED,
   [FeatureFlag.MOTOROLA_SSO]: MOTOROLA_SSO_ENABLED,
+  [FeatureFlag.LINK_CUSTOMIZATION]: LINK_CUSTOMIZATION_ENABLED,
 };

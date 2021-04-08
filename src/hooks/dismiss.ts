@@ -12,7 +12,16 @@ export function useDismissable(
     onClose,
     autoDismiss = false,
     dismissEvent = 'click',
-  }: { ref?: React.RefObject<Element>; onClose?: null | (() => void); autoDismiss?: boolean; dismissEvent?: 'click' | 'mousedown' } = {}
+    disabledOverlay = false,
+    skipDefaultPrevented = true,
+  }: {
+    ref?: React.RefObject<Element>;
+    onClose?: null | (() => void);
+    autoDismiss?: boolean;
+    dismissEvent?: 'click' | 'mousedown';
+    disabledOverlay?: boolean;
+    skipDefaultPrevented?: boolean;
+  } = {}
 ): [boolean, () => void, (event?: MouseEvent) => void] {
   const overlay = React.useContext(OverlayContext);
   const [isOpen, setOpen, setClosed] = useEnableDisable(defaultValue);
@@ -20,7 +29,7 @@ export function useDismissable(
 
   const handleClose = React.useCallback(
     (event?: Event) => {
-      if (event?.defaultPrevented) return;
+      if (skipDefaultPrevented && event?.defaultPrevented) return;
       if (ref?.current?.contains?.(event?.target as Element)) {
         return;
       }
@@ -29,7 +38,7 @@ export function useDismissable(
 
       setClosed();
 
-      if (autoDismiss) {
+      if (!disabledOverlay && autoDismiss) {
         overlay?.setHandler(null);
       }
     },
@@ -39,13 +48,13 @@ export function useDismissable(
   const removeRootListener = React.useCallback(() => rootNode.removeEventListener(dismissEvent, handleClose), [rootNode, handleClose]);
 
   const handleOpen = React.useCallback(() => {
-    if (autoDismiss && !overlay?.canOpen()) {
+    if (autoDismiss && !disabledOverlay && !overlay?.canOpen()) {
       return;
     }
 
     setOpen();
 
-    if (autoDismiss) {
+    if (!disabledOverlay && autoDismiss) {
       overlay?.setHandler(() => {
         handleClose();
         removeRootListener();
@@ -62,7 +71,7 @@ export function useDismissable(
       rootNode.addEventListener(dismissEvent, handleClose);
 
       return () => {
-        if (autoDismiss) {
+        if (!disabledOverlay && autoDismiss) {
           overlay?.setHandler(null);
         }
 

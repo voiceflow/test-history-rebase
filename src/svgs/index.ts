@@ -125,6 +125,9 @@ export { default as jump } from './jump.svg';
 // l
 export { default as less } from './less.svg';
 export { default as line } from './line.svg';
+export { default as lineCurved } from './line-curved.svg';
+export { default as lineStraight } from './line-straight.svg';
+export { default as lineText } from './line-text.svg';
 export { default as live } from './live.svg';
 export { default as loader } from './loader.svg';
 export { default as loader2 } from './loader-2.svg';

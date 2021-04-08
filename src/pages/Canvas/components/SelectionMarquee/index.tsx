@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useMouseMove, useRegistration } from '@/hooks';
+import { useMouseMove, useRAF, useRegistration } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Point } from '@/types';
 
@@ -11,16 +11,22 @@ import { useSelectionMarqueeAPI } from './hooks';
 const SelectionMarquee: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const api = useSelectionMarqueeAPI();
+  const [stylesScheduler] = useRAF();
 
   useMouseMove(({ clientX, clientY }) => {
     if (engine.groupSelection.isDrawing) {
-      const origin = engine.groupSelection.mouseOrigin!;
-      const rootEl = api.ref.current!;
-
       const nextSelection: Point = [clientX, clientY];
 
       engine.groupSelection.updateCandidates(nextSelection);
-      window.requestAnimationFrame(() => {
+
+      stylesScheduler(() => {
+        const origin = engine.groupSelection.mouseOrigin;
+        const rootEl = api.ref.current;
+
+        if (!origin || !rootEl) {
+          return;
+        }
+
         const [originX, originY] = engine.canvas!.transformPoint(origin);
         const [selectX, selectY] = engine.canvas!.transformPoint([clientX, clientY]);
 

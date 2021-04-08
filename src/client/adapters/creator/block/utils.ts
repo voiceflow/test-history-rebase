@@ -5,7 +5,7 @@ import cuid from 'cuid';
 
 import { createAdapter, createSimpleAdapter } from '@/client/adapters/utils';
 import { DialogType, RepromptType } from '@/constants';
-import { Node, NodeData, Port } from '@/models';
+import { Link, LinkData, Node, NodeData, Port } from '@/models';
 import { SpeakData } from '@/models/Speak';
 
 import { generateOutPort } from '../utils';
@@ -13,8 +13,8 @@ import { generateOutPort } from '../utils';
 export const createBlockAdapter = createSimpleAdapter;
 
 export type PortsAdapter<D = unknown> = {
-  toDB: (ports: { port: Port; target: string | null }[], node: Node, data: D) => DBPort[];
-  fromDB: (ports: DBPort[], node: DBNode) => { port: Port; target: string | null }[];
+  toDB: (ports: { port: Port; target: string | null; link?: Link }[], node: Node, data: D) => DBPort<LinkData>[];
+  fromDB: (ports: DBPort<LinkData>[], node: DBNode) => { port: Port; target: string | null }[];
 };
 
 // TODO: refactor merge repromptAdapter and noMatchRepromptAdapter to use the same types
@@ -58,7 +58,7 @@ export const noMatchAdapter = createAdapter<NoMatches<any>, NodeData.NoMatches>(
 );
 
 export const defaultPortAdapter: PortsAdapter = {
-  toDB: (ports) => ports.map(({ port, target }) => ({ type: port.label || '', target, id: port.id })),
+  toDB: (ports) => ports.map(({ port, target, link }) => ({ type: port.label || '', target, id: port.id, data: link?.data })),
   fromDB: (ports, node) =>
     ports.map((port) => ({
       port: generateOutPort(node.nodeID, port, { label: port.type }),
@@ -66,4 +66,5 @@ export const defaultPortAdapter: PortsAdapter = {
     })),
 };
 
-export const getPortByLabel = (ports: { port: Port; target: string | null }[], label: string) => ports.find(({ port }) => port.label === label);
+export const getPortByLabel = (ports: { port: Port; target: string | null; link?: Link }[], label: string) =>
+  ports.find(({ port }) => port.label === label);

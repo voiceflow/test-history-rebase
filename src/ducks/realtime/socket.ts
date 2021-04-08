@@ -1,6 +1,6 @@
 import * as Creator from '@/ducks/creator';
 import { createAction } from '@/ducks/utils';
-import { EntityMap, NodeData, PartialModel, Port } from '@/models';
+import { EntityMap, LinkData, NodeData, PartialModel, Port } from '@/models';
 import { Action, ActionPayload } from '@/store/types';
 import { Either, Pair, Point } from '@/types';
 
@@ -30,6 +30,8 @@ export enum SocketAction {
   MOVE_LINK = 'REALTIME:SOCKET:LINK:MOVE',
   ADD_LINK = 'REALTIME:SOCKET:LINK:ADD',
   REMOVE_LINK = 'REALTIME:SOCKET:LINK:REMOVE',
+  UPDATE_LINK_DATA = 'REALTIME:SOCKET:LINK:UPDATE_DATA',
+  UPDATE_LINK_DATA_MANY = 'REALTIME:SOCKET:LINK:UPDATE_DATA_MANY',
 
   MOVE_MOUSE = 'REALTIME:SOCKET:MOUSE:MOVE',
 
@@ -86,6 +88,10 @@ export type MoveLink = Action<SocketAction.MOVE_LINK, Either<{ reset: true }, { 
 
 export type AddLink = Action<SocketAction.ADD_LINK, ActionPayload<Creator.AddLink>>;
 
+export type UpdateLinkData = Action<SocketAction.UPDATE_LINK_DATA, ActionPayload<Creator.UpdateLinkData>>;
+
+export type UpdateLinkDataMany = Action<SocketAction.UPDATE_LINK_DATA_MANY, ActionPayload<Creator.UpdateLinkDataMany>>;
+
 export type RemoveLink = Action<SocketAction.REMOVE_LINK, ActionPayload<Creator.RemoveLink>>;
 
 export type MoveMouse = Action<SocketAction.MOVE_MOUSE, Point>;
@@ -115,6 +121,8 @@ export type AnySocketAction =
   | ReorderPorts
   | MoveLink
   | AddLink
+  | UpdateLinkData
+  | UpdateLinkDataMany
   | RemoveLink
   | MoveMouse
   | LockResource
@@ -183,6 +191,12 @@ export const moveLink = (linkData: Either<{ reset: true }, { points: Pair<Point>
 
 export const addLink = (sourcePortID: string, targetPortID: string, linkID: string): AddLink =>
   createAction(SocketAction.ADD_LINK, { sourcePortID, targetPortID, linkID });
+
+export const updateLinkData = (linkID: string, data: Partial<LinkData>): UpdateLinkData =>
+  createAction(SocketAction.UPDATE_LINK_DATA, { data, linkID });
+
+export const updateLinkDataMany = (payload: { linkID: string; data: Partial<LinkData> }[]): UpdateLinkDataMany =>
+  createAction(SocketAction.UPDATE_LINK_DATA_MANY, payload);
 
 export const removeLink = (linkID: string): RemoveLink => createAction(SocketAction.REMOVE_LINK, linkID);
 

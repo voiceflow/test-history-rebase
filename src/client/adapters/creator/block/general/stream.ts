@@ -36,16 +36,19 @@ export const streamPortsAdapter: PortsAdapter = {
         type: PortType.NEXT,
         target: nextPort?.target || null,
         id: nextPort!.port.id,
+        data: nextPort?.link?.data,
       },
       {
         type: PortType.PREVIOUS,
         target: previousPort?.target || null,
         id: previousPort!.port.id,
+        data: previousPort?.link?.data,
       },
       {
         type: PortType.PAUSE,
         target: pausePort?.target || null,
         id: pausePort!.port.id,
+        data: pausePort?.link?.data,
       },
     ];
   },

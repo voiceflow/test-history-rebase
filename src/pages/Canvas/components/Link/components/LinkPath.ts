@@ -1,21 +1,29 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 import { LINK_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
 
-import { HIGHLIGHT_COLOR } from '../constants';
+import { HIGHLIGHT_COLOR, STROKE_DEFAULT_COLOR } from '../constants';
 
 export type LinkPathProps = {
-  strokeColor?: string;
+  strokeColor: string;
   isHighlighted?: boolean;
 };
 
+export const getHighlightedStrokeColor = ({ strokeColor }: LinkPathProps): string =>
+  strokeColor === STROKE_DEFAULT_COLOR ? HIGHLIGHT_COLOR : strokeColor;
+
 const LinkPath = styled.path<LinkPathProps>`
   fill: none;
-  stroke: ${({ isHighlighted, strokeColor = isHighlighted ? HIGHLIGHT_COLOR : 'rgb(141, 162, 181)' }) => strokeColor};
+  stroke: ${({ strokeColor }) => strokeColor};
   stroke-width: 2px;
-  pointer-events: stroke;
 
-  .${LINK_HIGHLIGHTED_CLASSNAME} & {
-    stroke: ${HIGHLIGHT_COLOR};
+  ${({ strokeColor, isHighlighted }) =>
+    isHighlighted &&
+    css`
+      stroke: ${getHighlightedStrokeColor({ strokeColor })};
+    `}
+
+  .${LINK_HIGHLIGHTED_CLASSNAME} && {
+    stroke: ${getHighlightedStrokeColor};
   }
 `;
 

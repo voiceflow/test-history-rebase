@@ -228,6 +228,16 @@ export const addPortToBlockInState = (port: Port) => (state: DiagramState) => {
   return compose(patchNodeInState(port.nodeID, { ports: { ...node.ports, out: [...node.ports.out, port.id] } }), addPortToState(port))(state);
 };
 
+export const patchPortInState = (portID: string, portPatch: Partial<Port>) => (state: DiagramState) => ({
+  ...state,
+  ports: patchNormalizedByKey(state.ports, portID, portPatch),
+});
+
+export const patchLinkInState = (linkID: string, linkPatch: Partial<Link>) => (state: DiagramState) => ({
+  ...state,
+  links: patchNormalizedByKey(state.links, linkID, linkPatch),
+});
+
 export const updateLinkPort = (link: Link, relationship: 'source' | 'target', nodeID: string, portID: string) => ({
   ...link,
   [relationship]: {

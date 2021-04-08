@@ -1,12 +1,16 @@
 import React from 'react';
 
+import Portal from '@/components/Portal';
+import { FeatureFlag } from '@/config/features';
+import { useDidUpdateEffect, useFeature } from '@/hooks';
 import { EngineContext, LinkEntityContext, PlatformContext } from '@/pages/Canvas/contexts';
 import { useEditingMode } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
+import { swallowEvent } from '@/utils/dom';
 
-import { Group, HeadMarker, Overlay, Path, RemoveButton, Styles } from './components';
+import { Caption, Group, HeadMarker, Overlay, Path, RemoveButton, Settings, Styles } from './components';
 import { useLinkHandlers, useLinkInstance } from './hooks';
-import { buildHeadMarker, getVirtualPoints } from './utils';
+import { buildHeadMarker, getPathPointsCenter } from './utils';
 
 export * from './components';
 export * from './constants';
@@ -17,29 +21,50 @@ const Link: React.FC = () => {
   const isEditingMode = useEditingMode();
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
-  const instance = useLinkInstance();
-  const { points, isSupported, isHighlighted } = linkEntity.useState((e) => ({
-    points: e.getPoints(),
+  const linkCustomization = useFeature(FeatureFlag.LINK_CUSTOMIZATION);
+  const { linkData, isSupported, isHighlighted, sourceTargetPoints } = linkEntity.useState((e) => ({
+    linkData: e.resolve().data ?? null,
     isSupported: e.isSupported,
     isHighlighted: e.isHighlighted || e.isPrototypeHighlighted,
+    sourceTargetPoints: e.getSourceTargetPoints(),
   }));
-  const { onMouseEnter, onMouseLeave, onRemove } = useLinkHandlers();
+
+  const instance = useLinkInstance();
+  const {
+    isActive,
+    onClick,
+    onRemove,
+    onMouseMove,
+    onMouseDown,
+    onMouseEnter,
+    onChangeType,
+    onMouseLeave,
+    onChangeColor,
+    onChangeCaption,
+    isCaptionEditing,
+    onToggleCaptionEditing,
+  } = useLinkHandlers(instance);
 
   linkEntity.useInstance(instance);
   linkEntity.useLifecycle();
 
-  React.useEffect(() => {
-    linkEntity.portLinkInstance?.api.updatePosition(getVirtualPoints(points));
-  }, [points]);
+  React.useLayoutEffect(() => {
+    linkEntity.portLinkInstance?.api.updatePosition(instance.getPoints().current);
+  }, [linkData?.points, sourceTargetPoints]);
+
+  useDidUpdateEffect(() => {
+    if (!isActive && isCaptionEditing) {
+      onToggleCaptionEditing(false);
+    }
+  }, [isActive]);
 
   if (!isSupported) return null;
 
   const path = instance.getPath();
-  const center = instance.getCenter();
+  const points = instance.getPoints();
 
-  if (!path || !center) return null;
+  if (!path) return null;
 
-  const [centerX, centerY] = center;
   const isVisible = engine.link.isVisible(linkEntity.linkID, platform);
 
   return (
@@ -47,12 +72,67 @@ const Link: React.FC = () => {
       <Styles />
 
       <Group className={ClassName.CANVAS_LINK} isVisible={isVisible} ref={instance.containerRef}>
-        <HeadMarker id={linkEntity.linkID} ref={instance.markerRef} isHighlighted={isHighlighted} {...instance.getMarkerAttrs()} />
-        {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
-        <Overlay d={path} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={instance.hiddenPathRef} />
-        <Path d={path} markerEnd={buildHeadMarker(linkEntity.linkID)} ref={instance.pathRef} />
-        {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
-        {isEditingMode && <RemoveButton x={centerX} y={centerY} isHovering={isHighlighted} onMouseLeave={onMouseLeave} onClick={onRemove} />}
+        {isEditingMode && (
+          <Overlay
+            d={path}
+            id={linkEntity.linkID}
+            ref={instance.hiddenPathRef}
+            onClick={onClick}
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            onContextMenu={swallowEvent(onClick)}
+            isEditingMode={isEditingMode}
+          />
+        )}
+
+        <Path d={path} ref={instance.pathRef} markerEnd={buildHeadMarker(linkEntity.linkID)} strokeColor={instance.getLinkColor()} />
+
+        {linkCustomization.isEnabled && isEditingMode && (isCaptionEditing || !!linkData?.caption) && (
+          <Caption
+            color={instance.getLinkColor()}
+            linkID={linkEntity.linkID}
+            onChange={onChangeCaption}
+            instance={instance}
+            isEditing={isCaptionEditing}
+            isLineActive={isActive}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            isHighlighted={isHighlighted}
+            onToggleActive={onClick}
+            onToggleEditing={onToggleCaptionEditing}
+          />
+        )}
+
+        <HeadMarker
+          id={linkEntity.linkID}
+          ref={instance.markerRef}
+          color={instance.getLinkColor()}
+          isHighlighted={isHighlighted}
+          {...instance.getMarkerAttrs()}
+        />
+
+        {!linkCustomization.isEnabled && isEditingMode && isHighlighted && !!points.current && (
+          <RemoveButton
+            onClick={onRemove}
+            position={getPathPointsCenter(points.current, { straight: instance.isStraight() })}
+            onMouseLeave={onMouseLeave}
+          />
+        )}
+
+        {linkCustomization.isEnabled && isEditingMode && isActive && (
+          <Portal>
+            <Settings
+              instance={instance}
+              onRemove={onRemove}
+              onToggleText={onToggleCaptionEditing}
+              onChangeType={onChangeType}
+              onChangeColor={onChangeColor}
+              isTextActive={isCaptionEditing}
+            />
+          </Portal>
+        )}
       </Group>
     </>
   );

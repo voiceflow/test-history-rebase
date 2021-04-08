@@ -1,0 +1,29 @@
+import { FlexCenter } from '@/components/Box';
+import { css, styled, transition } from '@/hocs';
+
+const SettingsButtonContainer = styled(FlexCenter)<{ isActive?: boolean; isSimple?: boolean }>`
+  ${transition('color', 'background-color', 'opacity')}
+
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  color: #6e849a;
+  cursor: pointer;
+  opacity: 0.8;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: ${({ isSimple }) => (isSimple ? 'transparent' : '#eef4f6')};
+    opacity: 1;
+  }
+
+  ${({ isActive, isSimple }) =>
+    isActive &&
+    css`
+      color: ${isSimple ? '#3d82e2' : '#132144'};
+      opacity: 1;
+      background-color: ${isSimple ? 'transparent' : '#eef4f6'};
+    `}
+`;
+
+export default SettingsButtonContainer;

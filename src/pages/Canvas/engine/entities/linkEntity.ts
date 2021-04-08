@@ -3,7 +3,7 @@ import React from 'react';
 import { useSetup, useTeardown } from '@/hooks';
 import * as Models from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
-import { Pair, Point } from '@/types';
+import { Pair, PathPoints } from '@/types';
 
 import type { Engine } from '..';
 import { EntityType } from '../constants';
@@ -11,18 +11,18 @@ import { EntityInstance, ResourceEntity } from './entity';
 
 export type LinkInstance = EntityInstance & {
   /**
-   * translate one of the link's points
+   * get the link's path points
    */
-  translatePoint: (movement: Pair<number>, isSource: boolean) => void;
+  getPoints: () => React.MutableRefObject<PathPoints | null>;
 
   /**
-   * check if the provided element is part of this link
+   * translate one of the link's points
    */
-  containsElement: (node: Node) => boolean;
+  translatePoint: (movement: Pair<number>, data: { isSource: boolean; reposition: boolean; sourceAndTargetSelected: boolean }) => void;
 };
 
 export type PortLinkInstance = {
-  updatePosition: (points: Pair<Point> | null) => void;
+  updatePosition: (points: PathPoints | null) => void;
 };
 
 class LinkEntity extends ResourceEntity<Models.Link, LinkInstance> {
@@ -52,8 +52,8 @@ class LinkEntity extends ResourceEntity<Models.Link, LinkInstance> {
     this.log.debug(this.log.init('constructed link'), this.log.slug(linkID));
   }
 
-  getPoints() {
-    return this.engine.link.getPoints(this.linkID);
+  getSourceTargetPoints() {
+    return this.engine.link.getSourceTargetPoints(this.linkID);
   }
 
   resolve() {

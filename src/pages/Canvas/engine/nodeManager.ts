@@ -13,6 +13,7 @@ import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
 import { isCommandNode } from '@/utils/node';
 import { getPlatformDefaultVoice } from '@/utils/platform';
+import reduxBatchUndo from '@/utils/reduxBatchUndo';
 
 import { EngineConsumer, nodeFactory } from './utils';
 
@@ -124,6 +125,14 @@ class NodeManager extends EngineConsumer {
       return {
         defaultVoice: defaultVoice || getPlatformDefaultVoice(platform),
       };
+    },
+
+    saveLocation: (nodeID: string) => {
+      if (!this.engine.nodes.has(nodeID)) return;
+
+      const { x, y } = this.engine.nodes.get(nodeID)!;
+
+      this.dispatch(Creator.updateNodeLocation(nodeID, [x, y]));
     },
   };
 
@@ -463,9 +472,12 @@ class NodeManager extends EngineConsumer {
   saveLocation(nodeID: string) {
     if (!this.engine.nodes.has(nodeID)) return;
 
-    const { x, y } = this.engine.nodes.get(nodeID)!;
+    reduxBatchUndo.start();
 
-    this.dispatch(Creator.updateNodeLocation(nodeID, [x, y]));
+    this.saveLinks(nodeID);
+    this.internal.saveLocation(nodeID);
+
+    reduxBatchUndo.end();
 
     this.log.debug('location saved', this.log.slug(nodeID));
   }
@@ -488,28 +500,43 @@ class NodeManager extends EngineConsumer {
     }
   }
 
-  translateAllLinks(nodeID: string, movement: Pair<number>) {
+  translateAllLinks(nodeID: string, movement: Pair<number>, { reposition = false }: { reposition?: boolean } = {}) {
     const node = this.engine.getNodeByID(nodeID);
 
     if (!node) return;
 
     if (node.type === BlockType.COMBINED) {
-      [nodeID, ...node.combinedNodes].forEach((combinedNodeID) => this.translateLinks(combinedNodeID, movement));
+      [nodeID, ...node.combinedNodes].forEach((combinedNodeID) => this.translateLinks(combinedNodeID, movement, { reposition }));
     } else {
-      this.translateLinks(nodeID, movement);
+      this.translateLinks(nodeID, movement, { reposition });
     }
   }
 
-  translateLinks(nodeID: string, movement: Pair<number>) {
+  translateLinks(nodeID: string, movement: Pair<number>, { reposition }: { reposition: boolean }) {
     const node = this.engine.getNodeByID(nodeID);
 
     this.engine.getLinkIDsByNodeID(node.id).forEach((linkID) => {
       if (this.engine.links.has(linkID)) {
         const link = this.engine.getLinkByID(linkID);
+        const isSource = link.source.nodeID === nodeID;
+        const linkedNode = this.engine.getNodeByID(isSource ? link.target.nodeID : link.source.nodeID);
 
-        this.engine.link.translatePoint(linkID, movement, link.source.nodeID === nodeID);
+        this.engine.link.translatePoint(linkID, movement, {
+          isSource,
+          reposition,
+          sourceAndTargetSelected: !!linkedNode && this.engine.drag.isInGroup(linkedNode.parentNode || linkedNode.id),
+        });
       }
     });
+  }
+
+  saveLinks(nodeID: string) {
+    const node = this.engine.getNodeByID(nodeID);
+    const nodeLinkIDs = this.engine.getLinkIDsByNodeID(nodeID);
+    const combinedNodes = node.combinedNodes.flatMap((childNodeID) => this.engine.getLinkIDsByNodeID(childNodeID));
+    const linkIDs = [...nodeLinkIDs, ...combinedNodes].filter((linkID) => this.engine.links.has(linkID));
+
+    this.engine.link.savePointsMany(linkIDs);
   }
 
   translateAllThreads(nodeID: string, movement: Pair<number>) {

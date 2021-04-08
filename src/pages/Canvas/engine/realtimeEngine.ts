@@ -97,7 +97,7 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
 
       if (!options?.volatile) {
         Sentry.breadcrumb('realtime', 'Remote user finished moving node', { tabID });
-        this.engine.node.saveLocation(nodeID);
+        this.engine.node.internal.saveLocation(nodeID);
       }
     },
     [Realtime.SocketAction.MOVE_MANY_NODES]: ({ nodeIDs, movement, origins }: ActionPayload<Realtime.MoveManyNodes>, tabID, options) => {
@@ -105,7 +105,7 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
 
       if (!options?.volatile) {
         Sentry.breadcrumb('realtime', 'Remote user finished moving multiple nodes', { tabID });
-        nodeIDs.forEach((nodeID) => this.engine.node.saveLocation(nodeID));
+        nodeIDs.forEach((nodeID) => this.engine.node.internal.saveLocation(nodeID));
       }
     },
 
@@ -114,6 +114,19 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
 
       return this.engine.link.internal.add(sourcePortID, targetPortID, linkID);
     },
+
+    [Realtime.SocketAction.UPDATE_LINK_DATA]: ({ linkID, data }: ActionPayload<Realtime.UpdateLinkData>, tabID) => {
+      Sentry.breadcrumb('realtime', 'Remote user update link data', { tabID });
+
+      return this.engine.link.internal.updateData(linkID, data);
+    },
+
+    [Realtime.SocketAction.UPDATE_LINK_DATA_MANY]: (payload: ActionPayload<Realtime.UpdateLinkDataMany>, tabID) => {
+      Sentry.breadcrumb('realtime', 'Remote user update link data many', { tabID });
+
+      return this.engine.link.internal.updateDataMany(payload);
+    },
+
     [Realtime.SocketAction.REMOVE_LINK]: (linkID: ActionPayload<Realtime.RemoveLink>, tabID) => {
       Sentry.breadcrumb('realtime', 'Remote user removed link', { tabID });
 

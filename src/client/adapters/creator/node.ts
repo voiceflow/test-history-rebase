@@ -13,7 +13,7 @@ const nodeAdapter = createAdapter<
   DiagramNode,
   { node: Node; data: NodeData<unknown>; ports: Port[] },
   [{ parentNode: Block | null; links: Link[]; platform: PlatformType }],
-  [{ portToTargets: Record<string, NodeID>; stepMap: Record<NodeID, NodeID>; platform: PlatformType }]
+  [{ portToTargets: Record<string, NodeID>; stepMap: Record<NodeID, NodeID>; platform: PlatformType; portLinksMap: Record<string, Link> }]
 >(
   (dbNode, { parentNode, links, platform }) => {
     const siblingSteps = parentNode?.data.steps ?? [];
@@ -54,6 +54,7 @@ const nodeAdapter = createAdapter<
             nodeID: target,
             portID: getInPortID(target),
           },
+          data: port.linkData,
         });
       }
     };
@@ -86,7 +87,7 @@ const nodeAdapter = createAdapter<
       ports,
     };
   },
-  ({ node, data, ports }, { portToTargets, stepMap, platform }) => {
+  ({ node, data, ports }, { portToTargets, stepMap, platform, portLinksMap }) => {
     const portMap = ports.reduce<Record<string, Port>>((acc, port) => ({ ...acc, [port.id]: port }), {});
     const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform });
 
@@ -103,6 +104,7 @@ const nodeAdapter = createAdapter<
       diagramNode.data.ports = adapter.toDB(
         node.ports.out.map((portID) => ({
           port: portMap[portID],
+          link: portLinksMap[portID],
           target: portToTargets[portID] || stepMap[node.id] || null,
         })),
         node,

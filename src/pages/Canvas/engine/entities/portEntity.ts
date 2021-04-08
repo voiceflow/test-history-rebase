@@ -6,7 +6,7 @@ import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 
 import type { Engine } from '..';
 import { EntityType } from '../constants';
-import { EntityInstance, ResourceEntity } from './entity';
+import { EntityInstance, isDirectlyEqual, ResourceEntity } from './entity';
 
 export type PortInstance = EntityInstance & {
   /**
@@ -40,8 +40,31 @@ class PortEntity extends ResourceEntity<Port, PortInstance> {
     this.log.debug(this.log.init('constructed port'), this.log.slug(portID));
   }
 
+  useLinkSubscription<T>(id: string, selector: () => T, isEqual: (lhs: T | null, rhs: T | null) => boolean = isDirectlyEqual) {
+    let prevState: T | null = null;
+
+    return this.engine.dispatcher.useSubscription(EntityType.LINK, id, (isForced) => {
+      const state = selector();
+
+      this.log.debug(this.log.pending('redrawing link'));
+
+      if (isForced || !this.instance?.isReady() || !isEqual(state, prevState)) {
+        this.handlers.forEach((handler) => handler(this));
+        prevState = state;
+
+        this.log.debug(this.log.success('redraw link complete'), this.log.value(this.handlers.length));
+      } else {
+        this.log.debug(this.log.failure('redraw link skipped'));
+      }
+    });
+  }
+
   resolve() {
     return this.engine.getPortByID(this.portID);
+  }
+
+  resolveLink() {
+    return this.engine.getLinkByID(this.linkID);
   }
 
   useInstance(instance: PortInstance) {
@@ -49,6 +72,7 @@ class PortEntity extends ResourceEntity<Port, PortInstance> {
 
     super.useInstance(instance);
     this.useSubscription(this.portID, () => this.resolve());
+    this.useLinkSubscription(this.linkID, () => this.resolveLink());
 
     React.useEffect(() => {
       engine.registerPort(this.portID, this);

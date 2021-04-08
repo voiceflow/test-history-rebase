@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import { useMouseMove } from '@/hooks';
+import { useMouseMove, useRAF } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { useCanvasIdle } from '@/pages/Canvas/hooks';
 import { MarkupTransform, TransformOverlayAPI } from '@/pages/Canvas/types';
@@ -31,6 +31,10 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
   const isRotating = React.useRef(false);
   const zoom = React.useRef(0);
 
+  const [panStylesScheduler] = useRAF();
+  const [resetStylesScheduler] = useRAF();
+  const [initializeStylesScheduler] = useRAF();
+
   const state: OverlayState = {
     ref,
     handlePosition,
@@ -54,9 +58,9 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
 
       position.current = [nextX, nextY];
 
-      window.requestAnimationFrame(() => {
-        el.style.left = `${nextX}px`;
-        el.style.top = `${nextY}px`;
+      panStylesScheduler(() => {
+        el.style.left = `${position.current![0]}px`;
+        el.style.top = `${position.current![1]}px`;
       });
     },
     [nodeType]
@@ -113,13 +117,13 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
         size.current = [transform.width, transform.height];
         zoom.current = 1;
 
-        window.requestAnimationFrame(() => {
+        initializeStylesScheduler(() => {
           el.style.display = 'block';
-          el.style.left = `${rawOrigin[0]}px`;
-          el.style.top = `${rawOrigin[1]}px`;
-          el.style.width = `${transform.width}px`;
-          el.style.height = `${transform.height}px`;
-          el.style.transform = `rotate(${transform.rotate}rad)`;
+          el.style.left = `${position.current![0]}px`;
+          el.style.top = `${position.current![1]}px`;
+          el.style.width = `${snapshot.current!.width}px`;
+          el.style.height = `${snapshot.current!.height}px`;
+          el.style.transform = `rotate(${rotation.current}rad)`;
         });
       },
 
@@ -170,7 +174,7 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
         zoom.current = 0;
         isRotating.current = false;
 
-        window.requestAnimationFrame(() => {
+        resetStylesScheduler(() => {
           el.style.display = 'none';
           el.style.transform = '';
         });

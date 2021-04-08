@@ -2,7 +2,7 @@ import React from 'react';
 import { AutosizeInputProps } from 'react-input-autosize';
 import { Assign } from 'utility-types';
 
-import { useEnableDisable } from '@/hooks';
+import { useDidUpdateEffect, useEnableDisable } from '@/hooks';
 
 import { UnstyledInput, UnstyledText } from './components';
 
@@ -19,24 +19,32 @@ export type EditableTextProps = Assign<
 >;
 
 export type EditableTextAPI = {
+  stopEditing: VoidFunction;
   startEditing: VoidFunction;
 };
 
 // eslint-disable-next-line react/display-name
 const EditableText = React.forwardRef<EditableTextAPI, EditableTextProps>(({ value, onChange, onBlur, onFocus, id, className, ...props }, ref) => {
   const [isEditing, startEditing, stopEditing] = useEnableDisable();
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  const api = React.useMemo(() => ({ startEditing }), []);
+  const api = React.useMemo(() => ({ startEditing, stopEditing }), []);
 
   React.useImperativeHandle(ref, () => api, [api]);
 
+  useDidUpdateEffect(() => {
+    if (isEditing) {
+      inputRef.current?.select();
+    }
+  }, [isEditing]);
+
   return isEditing ? (
     <UnstyledInput
-      // eslint-disable-next-line jsx-a11y/no-autofocus
-      autoFocus
       value={value}
+      inputRef={(node) => {
+        inputRef.current = node;
+      }}
       onChange={(event) => onChange(event.target.value)}
-      onFocus={(event) => event.target.select()}
       onBlur={() => {
         stopEditing();
         onBlur?.();

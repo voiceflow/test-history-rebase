@@ -10,7 +10,7 @@ class DragEngine extends EngineConsumer {
 
   target: string | null = null;
 
-  group: string[] | null = null;
+  group: Record<string, string> | null = null;
 
   get hasTarget() {
     return this.target !== null;
@@ -24,8 +24,12 @@ class DragEngine extends EngineConsumer {
     return this.target === nodeID;
   }
 
+  isInGroup(nodeID: string) {
+    return !!this.group?.[nodeID];
+  }
+
   isTarget(nodeID: string) {
-    return this.isSoleTarget(nodeID) || !!this.group?.includes(nodeID);
+    return this.isSoleTarget(nodeID) || this.isInGroup(nodeID);
   }
 
   addStyle() {
@@ -39,7 +43,7 @@ class DragEngine extends EngineConsumer {
   async setGroup(nodeIDs: string[]) {
     if (this.group) return;
 
-    this.group = nodeIDs;
+    this.group = nodeIDs.reduce<Record<string, string>>((acc, nodeID) => Object.assign(acc, { [nodeID]: nodeID }), {});
 
     this.log.debug(this.log.pending('setting drag group'), nodeIDs);
     nodeIDs.forEach((nodeID) => this.engine.node.redraw(nodeID));
@@ -91,7 +95,7 @@ class DragEngine extends EngineConsumer {
     }
 
     if (this.group) {
-      const { group } = this;
+      const group = Object.values(this.group);
       this.group = null;
 
       this.log.debug(this.log.pending('resetting drag group'), group);

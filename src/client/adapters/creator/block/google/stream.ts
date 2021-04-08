@@ -34,6 +34,7 @@ export const streamPortsAdapter: PortsAdapter = {
       type: PortType.NEXT,
       target: getPortByLabel(ports, PortType.NEXT)?.target || ports[0].target || null,
       id: ports[0].port.id,
+      data: ports[0]?.link?.data,
     },
   ],
   fromDB: (ports, { nodeID }) => [

@@ -1,57 +1,43 @@
+import { ProjectLinkType } from '@voiceflow/api-sdk';
 import React from 'react';
 
-import { BlockType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect, useToggle } from '@/hooks';
-import { isPortLinkReversed } from '@/pages/Canvas/components/Link';
-import { EngineContext } from '@/pages/Canvas/contexts';
-import { ConnectedProps, Pair, Point } from '@/types';
+import { STROKE_DEFAULT_COLOR } from '@/pages/Canvas/components/Link';
+import { EngineContext, PortEntityContext } from '@/pages/Canvas/contexts';
+import { ConnectedProps, PathPoints } from '@/types';
 
 import { LINK_WIDTH } from '../constants';
 import LinkPath from './PortLinkPath';
 import LinkSvg from './PortLinkSvg';
 
-export type PortProps = {
+export type PortLinkProps = {
   linkID?: string;
   isHighlighted: boolean;
 };
 
-const PortLink: React.FC<PortProps & ConnectedPortProps> = ({ linkID, isStraightLinks, isHighlighted }) => {
+const PortLink: React.FC<PortLinkProps & ConnectedPortProps> = ({ linkID, isStraightLinks, isHighlighted }) => {
   const ref = React.useRef<SVGSVGElement>(null);
-  const [reversed, toggleReversed] = useToggle(false);
   const engine = React.useContext(EngineContext)!;
-  const targetNodeIsBlock = React.useMemo(() => {
-    if (linkID) {
-      const link = engine.getLinkByID(linkID);
-      const node = engine.getNodeByID(link.target.nodeID);
+  const portEntity = React.useContext(PortEntityContext)!;
+  const { link } = portEntity.useState((e) => ({ link: e.resolveLink() }));
 
-      return node.type === BlockType.COMBINED;
-    }
+  const [reversed, toggleReversed] = useToggle(false);
 
-    return false;
-  }, []);
+  const straight = link?.data?.type ? link.data.type === ProjectLinkType.STRAIGHT : isStraightLinks;
 
-  const cache = React.useRef({ isStraightLinks });
-
-  const onReverseUpdate = React.useCallback((points: Pair<Point> | null) => {
-    let targetIsBlock = targetNodeIsBlock;
-
-    if (!linkID && engine.linkCreation.sourcePortID && engine.linkCreation.activeTargetPortID) {
-      const port = engine.getPortByID(engine.linkCreation.activeTargetPortID);
-      const node = engine.getNodeByID(port.nodeID);
-
-      targetIsBlock = node.type === BlockType.COMBINED;
-    }
-
-    toggleReversed(isPortLinkReversed(points, { straight: cache.current.isStraightLinks, targetIsBlock }));
+  const onReverseUpdate = React.useCallback((points: PathPoints | null) => {
+    toggleReversed(points?.[0].reversed ?? false);
   }, []);
 
   const api = React.useMemo(() => ({ updatePosition: onReverseUpdate }), []);
 
   useDidUpdateEffect(() => {
-    onReverseUpdate((linkID && engine.link.api(linkID)?.getPoints()) || null);
-  }, [isStraightLinks]);
+    const points = link?.data?.points || null;
+
+    onReverseUpdate(points);
+  }, [straight, link?.data?.points]);
 
   React.useEffect(() => {
     const id = linkID || engine.linkCreation.sourcePortID;
@@ -59,8 +45,6 @@ const PortLink: React.FC<PortProps & ConnectedPortProps> = ({ linkID, isStraight
     if (id) {
       engine.registerPortLinkInstance(id, api);
     }
-
-    onReverseUpdate((linkID && engine.link.api(linkID)?.getPoints()) || null);
 
     return () => {
       if (id) {
@@ -70,8 +54,8 @@ const PortLink: React.FC<PortProps & ConnectedPortProps> = ({ linkID, isStraight
   }, []);
 
   return (
-    <LinkSvg ref={ref} reversed={reversed}>
-      <LinkPath isHighlighted={isHighlighted} d={`M 0 4 L ${LINK_WIDTH} 4`} />
+    <LinkSvg ref={ref} reversed={reversed} shapeRendering="geometricPrecision">
+      <LinkPath strokeColor={link?.data?.color ?? STROKE_DEFAULT_COLOR} isHighlighted={isHighlighted} d={`M 0 4 L ${LINK_WIDTH} 4`} />
     </LinkSvg>
   );
 };
@@ -80,6 +64,6 @@ const mapStateToProps = {
   isStraightLinks: Skill.activeProjectStraightLinkSelector,
 };
 
-type ConnectedPortProps = ConnectedProps<typeof mapStateToProps>;
+type ConnectedPortProps = ConnectedProps<typeof mapStateToProps, {}>;
 
-export default connect(mapStateToProps)(PortLink) as React.FC<PortProps>;
+export default connect(mapStateToProps)(PortLink as any) as React.FC<PortLinkProps>;

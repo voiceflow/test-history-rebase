@@ -1,6 +1,7 @@
+import moize from 'moize';
 import React from 'react';
 
-import { buildHeadMarker, buildPath, HeadMarker, Path } from '@/pages/Canvas/components/Link';
+import { buildHeadMarker, buildPath, getPathPoints, HeadMarker, Path } from '@/pages/Canvas/components/Link';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { RealtimeLinkOverlayAPI } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
@@ -28,7 +29,11 @@ class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
       this.animateElement(tabID, (linkEl) => {
         if (!linkEl) return;
 
-        linkEl.setAttribute('d', buildPath(nextPoint, { straight: engine.isStraightLinks(), unconnected: true }));
+        const straight = engine.isStraightLinks();
+
+        const path = buildPath(getPathPoints(nextPoint, { straight }), straight);
+
+        linkEl.setAttribute('d', path);
       });
     },
 
@@ -38,6 +43,12 @@ class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
   constructor(props: ConnectedRealtimeOverlayProps) {
     super(OverlayType.LINK, props);
   }
+
+  buildMoizedPath = moize.simple((points: Pair<Point> | null) => {
+    const straight = this.props.engine.isStraightLinks();
+
+    return buildPath(getPathPoints(points, { straight }), straight);
+  });
 
   removeLink(tabID: string) {
     this.linkLocations[tabID] = null;
@@ -51,16 +62,14 @@ class RealtimeLinksOverlay extends AbstractOverlay<RealtimeLinkOverlayAPI> {
     if (!linkLocation) return null;
 
     const strokeColor = viewer.color.includes('|') ? `#${viewer.color.split('|')[0]}` : DEFAULT_STROKE_COLOR;
-    const path = buildPath(linkLocation, {
-      straight: this.props.engine.isStraightLinks(),
-      unconnected: true,
-    });
+    const path = this.buildMoizedPath(linkLocation);
 
     return (
       <LinkOverlaySvg key={tabID}>
         <defs>
           <HeadMarker id={tabID} color={strokeColor} />
         </defs>
+
         <Path ref={ref} strokeColor={strokeColor} d={path} markerEnd={buildHeadMarker(tabID)} />
       </LinkOverlaySvg>
     );

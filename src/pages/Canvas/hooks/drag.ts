@@ -1,37 +1,38 @@
 import React from 'react';
 
-import { useTeardown } from '@/hooks';
+import { useRAF, useTeardown } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Pair, Point } from '@/types';
 import { noop } from '@/utils/functional';
 import { Coords, Vector } from '@/utils/geometry';
 import MouseMovement from '@/utils/mouseMovement';
 
-export const updateTransform = <T extends HTMLElement>(ref: React.RefObject<T | null>, [x, y]: Point) => {
-  const targetEl = ref.current!;
+export const useDragTranslate = <T extends HTMLElement>(ref: React.RefObject<T | null>, position: React.MutableRefObject<Point>) => {
+  const [stylesScheduler] = useRAF();
 
-  window.requestAnimationFrame(() => {
-    targetEl.style.transform = `translate(${x}px, ${y}px)`;
-  });
-};
-
-export const useDragTranslate = <T extends HTMLElement>(ref: React.RefObject<T | null>, position: React.MutableRefObject<Point>) =>
-  React.useCallback(([movementX, movementY]: Pair<number>) => {
+  return React.useCallback(([movementX, movementY]: Pair<number>) => {
     const [posX, posY] = position.current!;
-    const nextPosition: Point = [posX + movementX, posY + movementY];
-    position.current = nextPosition;
 
-    updateTransform(ref, nextPosition);
+    position.current = [posX + movementX, posY + movementY];
+
+    stylesScheduler(() => {
+      ref.current!.style.transform = `translate(${position.current[0]}px, ${position.current[1]}px)`;
+    });
   }, []);
+};
 
 export const useVectorDragTranslate = <T extends HTMLElement>(
   ref: React.RefObject<T | null>,
   coords: React.MutableRefObject<Coords>
 ): [(movement: Vector) => Coords, (coords: Coords) => void] => {
+  const [stylesScheduler] = useRAF();
+
   const update = React.useCallback((nextCoords: Coords) => {
     coords.current = nextCoords;
 
-    updateTransform(ref, nextCoords.point);
+    stylesScheduler(() => {
+      ref.current!.style.transform = `translate(${coords.current.point[0]}px, ${coords.current.point[1]}px)`;
+    });
   }, []);
 
   const translate = React.useCallback((movement: Vector) => {

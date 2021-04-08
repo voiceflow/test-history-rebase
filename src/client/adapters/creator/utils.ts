@@ -3,7 +3,7 @@ import _isString from 'lodash/isString';
 
 import { adapterLogger } from '@/client/adapters/utils';
 import { BlockType, PlatformType } from '@/constants';
-import { Port } from '@/models';
+import { LinkData, Port } from '@/models';
 import { objectID } from '@/utils';
 
 import { IN_PORT_KEY } from './constants';
@@ -28,7 +28,8 @@ export const generateInPort = (nodeID: string, { platform = null, virtual = fals
   nodeID,
 });
 
-export const generateOutPort = (nodeID: string, port: DBPort, settings?: Partial<Port>): Port => ({
+export const generateOutPort = (nodeID: string, port: DBPort<LinkData>, settings?: Partial<Port>): Port => ({
   ...generateInPort(nodeID, settings),
   id: (_isString(port.id) && port.id) || objectID(),
+  linkData: port.data,
 });

@@ -319,6 +319,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     if (this.selection.hasTargets) {
       this.selection.getTargets().forEach((nodeID) => this.node.saveLocation(nodeID));
     }
+
     if (this.drag.hasTarget) {
       this.node.saveLocation(this.drag.target!);
     }

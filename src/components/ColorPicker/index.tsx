@@ -15,16 +15,18 @@ import withHexColor from './withHexColor';
 
 export type ColorPickerProps = {
   width?: number;
-  alphaSlider?: boolean;
+  colors?: boolean;
   hexInput?: boolean;
+  alphaSlider?: boolean;
   onInputBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onInputFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onChangeCompleted?: (color: RGBColor) => void;
 };
 
 const ColorPicker = ({
-  alphaSlider = true,
+  colors = true,
   hexInput = true,
+  alphaSlider = true,
   onInputBlur,
   onInputFocus,
   onChangeCompleted,
@@ -105,7 +107,7 @@ const ColorPicker = ({
         </InputContainer>
       )}
 
-      <Colors onSelect={onSelectColor} />
+      {colors && <Colors onSelect={onSelectColor} />}
     </Container>
   );
 };

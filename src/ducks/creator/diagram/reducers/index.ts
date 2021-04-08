@@ -6,6 +6,7 @@ import { NodeData } from '@/models';
 import { Reducer, RootReducer } from '@/store/types';
 import { compose } from '@/utils/functional';
 import { normalize } from '@/utils/normalized';
+import reduxBatchUndo from '@/utils/reduxBatchUndo';
 
 import { AnyCreatorAction, CreatorAction, InitializeCreator } from '../../actions';
 import {
@@ -18,6 +19,8 @@ import {
   SetDiagramState,
   SetSectionState,
   UpdateHidden,
+  UpdateLinkData,
+  UpdateLinkDataMany,
   UpdateNodeData,
   UpdateNodeLocation,
 } from '../actions';
@@ -30,7 +33,9 @@ import {
   buildLinksByNodeID,
   buildLinksByPortID,
   getLinkIDsByPortID,
+  patchLinkInState,
   patchNodeInState,
+  patchPortInState,
   removeAllLinksFromState,
   removeLinkFromState,
   removePortFromBlockInState,
@@ -79,6 +84,25 @@ export const updateNodeDataReducer: Reducer<DiagramStateType, UpdateNodeData> = 
 
 export const updateNodeLocationReducer: Reducer<DiagramStateType, UpdateNodeLocation> = (state, { payload: { nodeID, x, y } }) =>
   patchNodeInState(nodeID, { x, y })(state);
+
+export const updateLinkDataReducer: Reducer<DiagramStateType, UpdateLinkData> = (state, { payload: { linkID, data } }) => {
+  const link = state.links.byKey[linkID];
+
+  return compose(
+    patchLinkInState(linkID, { data: { ...link.data, ...data } }),
+    patchPortInState(link.source.portID, { linkData: { ...link.data, ...data } })
+  )(state);
+};
+
+export const updateLinkDataManyReducer: Reducer<DiagramStateType, UpdateLinkDataMany> = (state, { payload }) =>
+  payload.reduce((nextState, { linkID, data }) => {
+    const link = nextState.links.byKey[linkID];
+
+    return compose(
+      patchLinkInState(linkID, { data: { ...link.data, ...data } }),
+      patchPortInState(link.source.portID, { linkData: { ...link.data, ...data } })
+    )(nextState);
+  }, state);
 
 export const addPortReducer: Reducer<DiagramStateType, AddPort> = (state, { payload: { nodeID, port } }) =>
   addPortToBlockInState(portFactory(nodeID, port.id, port))(state);
@@ -131,6 +155,10 @@ const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | An
       return updateNodeDataReducer(state, action);
     case DiagramAction.UPDATE_NODE_LOCATION:
       return updateNodeLocationReducer(state, action);
+    case DiagramAction.UPDATE_LINK_DATA:
+      return updateLinkDataReducer(state, action);
+    case DiagramAction.UPDATE_LINK_DATA_MANY:
+      return updateLinkDataManyReducer(state, action);
     case DiagramAction.UNMERGE_NODE:
       return unmergeNodeReducer(state, action);
     case DiagramAction.INSERT_NESTED_NODE:
@@ -169,9 +197,10 @@ const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | An
 };
 
 export default undoable(creatorDiagramReducer as Redux.Reducer<DiagramStateType>, {
+  filter: includeAction(DiagramAction.SAVE_HISTORY),
+  groupBy: reduxBatchUndo.init(),
   undoType: DiagramAction.UNDO_HISTORY,
   redoType: DiagramAction.REDO_HISTORY,
   initTypes: ['@@redux-undo/INIT', CreatorAction.RESET_CREATOR],
-  filter: includeAction(DiagramAction.SAVE_HISTORY),
   ignoreInitialState: true,
 });

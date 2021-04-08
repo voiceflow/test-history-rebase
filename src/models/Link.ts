@@ -1,3 +1,20 @@
+import { ProjectLinkType } from '@voiceflow/api-sdk';
+
+import { Nullable, PathPoints } from '@/types';
+
+export type LinkDataCaption = {
+  value: string;
+  width: number;
+  height: number;
+};
+
+export type LinkData = {
+  type?: Nullable<ProjectLinkType>;
+  color?: Nullable<string>;
+  points?: Nullable<PathPoints>;
+  caption?: Nullable<LinkDataCaption>;
+};
+
 export type Link = {
   id: string;
   source: {
@@ -8,6 +25,7 @@ export type Link = {
     nodeID: string;
     portID: string;
   };
+  data?: LinkData;
 };
 
 export type DBLink = {

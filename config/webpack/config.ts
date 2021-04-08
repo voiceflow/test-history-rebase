@@ -15,6 +15,7 @@ import {
   ff_conditionsBuilder,
   ff_gadgets,
   ff_motorolaSSO,
+  ff_linkCustomization,
   ff_natoApco,
   ff_ownerRole,
   ff_trace,
@@ -80,6 +81,7 @@ export const ENV = {
   FF_NATO_ACPO: ff_natoApco && 'true',
   FF_CONDITIONS_BUILDER: ff_conditionsBuilder && 'true',
   FF_MOTOROLA_SSO: ff_motorolaSSO && 'true',
+  FF_LINK_CUSTOMIZATION: ff_linkCustomization && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

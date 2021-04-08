@@ -1,11 +1,12 @@
 import { styled } from '@/hocs';
 
-const LinkOverlay = styled.path`
+const LinkOverlay = styled.path<{ isEditingMode?: boolean }>`
   fill: none;
   stroke: white;
-  stroke-width: 13.15px;
-  pointer-events: stroke;
+  stroke-width: 12px;
+  pointer-events: ${({ isEditingMode }) => (isEditingMode ? 'stroke' : 'none')};
   visibility: hidden;
+  cursor: pointer;
 
   @keyframes dash {
     to {

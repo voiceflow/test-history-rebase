@@ -21,10 +21,10 @@ export enum Permission {
 
   // prototype
   SHARE_PROTOTYPE = 'prototype.SHARE',
-  SHARE_PROTOTYPE_PASSWORD = 'prototype.SHARE_PASSWORD',
   TRAIN_PROTOTYPE = 'prototype.TRAIN',
   RENDER_PROTOTYPE = 'prototype.RENDER',
   CUSTOMIZE_PROTOTYPE = 'prototype.CUSTOMIZE',
+  SHARE_PROTOTYPE_PASSWORD = 'prototype.SHARE_PASSWORD',
 
   // project list
   MANAGE_PROJECT_LISTS = 'project_list.MANAGE',
@@ -71,30 +71,21 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.HINT_FEATURES]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
 };
 
-const ALL_PLANS = Object.values(PlanType);
+const ALL_PERMISSIONS = Object.values(PlanType);
 
-const ALL_NONSTARTER_PLANS = ALL_PLANS.filter((type) => type !== PlanType.STARTER && type !== PlanType.OLD_STARTER);
+const ALL_BUT_STARTER_PERMISSIONS = ALL_PERMISSIONS.filter((plan) => plan !== PlanType.STARTER && plan !== PlanType.OLD_STARTER);
+
+const PTE_PERMISSIONS = [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE];
 
 export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.CANVAS_MARKUP]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.CANVAS_EXPORT]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.COMMENTING]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.BULK_UPLOAD]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
-  [Permission.MODEL_EXPORT]: ALL_NONSTARTER_PLANS,
-  [Permission.SHARE_PROTOTYPE_PASSWORD]: ALL_NONSTARTER_PLANS,
-  [Permission.SHARE_PROTOTYPE]: [
-    PlanType.PRO,
-    PlanType.TEAM,
-    PlanType.STARTER,
-    PlanType.STUDENT,
-    PlanType.OLD_PRO,
-    PlanType.OLD_TEAM,
-    PlanType.ENTERPRISE,
-    PlanType.OLD_STARTER,
-    PlanType.OLD_ENTERPRISE,
-    PlanType.CREATOR,
-  ],
-  [Permission.CUSTOMIZE_PROTOTYPE]: [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
+  [Permission.MODEL_EXPORT]: ALL_BUT_STARTER_PERMISSIONS,
+  [Permission.SHARE_PROTOTYPE]: ALL_PERMISSIONS,
+  [Permission.SHARE_PROTOTYPE_PASSWORD]: PTE_PERMISSIONS,
+  [Permission.CUSTOMIZE_PROTOTYPE]: PTE_PERMISSIONS,
   [Permission.SHARE_PROJECT]: [
     PlanType.STUDENT,
     PlanType.OLD_STARTER,

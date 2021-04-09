@@ -8,6 +8,7 @@ import { useDismissable } from '@/hooks';
 import { ColorPreview } from './components';
 
 export type ColorSelectProps = React.ComponentProps<typeof ColorPicker> & {
+  disabled?: boolean;
   onShow?: () => void;
   onClose?: () => void;
   onPickerPreviewMouseDown?: (event: React.MouseEvent<HTMLDivElement>) => void;
@@ -15,6 +16,7 @@ export type ColorSelectProps = React.ComponentProps<typeof ColorPicker> & {
 };
 
 const ColorSelect: React.FC<ColorSelectProps> = ({
+  disabled,
   onShow,
   onClose,
   children: _,
@@ -27,11 +29,13 @@ const ColorSelect: React.FC<ColorSelectProps> = ({
   const [open, toggleOpen] = useDismissable(false, { onClose, autoDismiss: true, ref: popperRef, dismissEvent: 'mousedown' });
 
   const onOpen = () => {
-    if (!open) {
-      onShow?.();
-    }
+    if (!disabled) {
+      if (!open) {
+        onShow?.();
+      }
 
-    toggleOpen();
+      toggleOpen();
+    }
   };
 
   return (
@@ -43,6 +47,7 @@ const ColorSelect: React.FC<ColorSelectProps> = ({
             style={{
               color: `rgba(${colorPickerProps.color.r}, ${colorPickerProps.color.g}, ${colorPickerProps.color.b}, ${colorPickerProps.color.a})`,
             }}
+            disabled={disabled}
             onClick={onOpen}
             onMouseDown={onPickerPreviewMouseDown}
           />

@@ -1,3 +1,5 @@
+import { system } from 'styled-system';
+
 import { css } from '@/hocs';
 
 export const inputFocus = css`
@@ -8,7 +10,16 @@ export const inputFocus = css`
 
 export const inputDisabled = css`
   color: #949db0;
-  pointer-events: none;
+  ${system({
+    pointerEvents: {
+      property: 'pointerEvents',
+      transform: (value) => value || 'none',
+    },
+    cursor: {
+      property: 'cursor',
+      transform: (value) => value || 'auto',
+    },
+  })}
 `;
 
 export type StyledInputProps = {

@@ -51,11 +51,19 @@ const ColorInput: React.FC<ColorInputProps & ConnectedColorInputProps> = ({ isAl
       onBlur={() => onSubmitHexColor()}
       onChange={({ currentTarget }) => setHex(currentTarget.value)}
       leftAction={<InputAction>HEX</InputAction>}
-      rightAction={<ColorSelect alphaSlider={false} hexInput={false} color={color} onChange={(nextColor: RGBColor) => onSubmitColor(nextColor)} />}
+      rightAction={
+        <ColorSelect
+          alphaSlider={false}
+          hexInput={false}
+          color={color}
+          disabled={!isAllowed}
+          onChange={(nextColor: RGBColor) => onSubmitColor(nextColor)}
+        />
+      }
       maxLength={6}
       onKeyPress={withEnterPress(() => onSubmitHexColor())}
       disabled={!isAllowed}
-      wrapperProps={{ disabledBorderColor }}
+      wrapperProps={{ disabledBorderColor, cursor: isAllowed ? 'auto' : 'not-allowed' }}
     />
   );
 };

@@ -9,21 +9,36 @@ import { Permission } from '@/config/permissions';
 import { OverlayProvider, ScrollContextProvider } from '@/contexts';
 import { usePermission } from '@/hooks';
 import { useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
-import { useToggle } from '@/hooks/toggle';
 
 import { AppearanceAndBranding } from './AppearanceAndBranding';
 import Description from './Description';
 import Header from './Header';
 import MenuContentHeader from './MenuContentHeader';
 import PrototypeLayoutSelect from './PrototypeLayoutSelect';
+import PrototypePasswordInput from './PrototypePasswordInput';
+
+enum ActiveModal {
+  NONE = 'none',
+  APPEARANCE = 'appearance',
+  PASSWORD = 'password',
+}
 
 const MenuContent: React.FC = () => {
-  const [isExpanded, toggleIsExpanded] = useToggle(false);
   const [contentNode, setContentNode] = React.useState<HTMLDivElement | null>(null);
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
 
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
-  const [onScroll, isHeaderShadowShown] = useScrollShadows(bodyRef, [isExpanded]);
+  const [onScroll, isHeaderShadowShown] = useScrollShadows(bodyRef, []);
+
+  const [activeModal, setActiveModal] = React.useState(ActiveModal.NONE);
+
+  const onTogglePassword = React.useCallback(() => {
+    setActiveModal((prev) => (prev === ActiveModal.PASSWORD ? ActiveModal.NONE : ActiveModal.PASSWORD));
+  }, [setActiveModal]);
+
+  const onToggleAppearance = React.useCallback(() => {
+    setActiveModal((prev) => (prev === ActiveModal.APPEARANCE ? ActiveModal.NONE : ActiveModal.APPEARANCE));
+  }, [setActiveModal]);
 
   return (
     <ScrollContextProvider value={scrollHelpers}>
@@ -38,7 +53,7 @@ const MenuContent: React.FC = () => {
             </Description>
           </MenuContentHeader>
 
-          <div ref={bodyRef} onScroll={onScroll} style={{ overflowX: 'hidden', overflowY: 'auto', height: '224px' }}>
+          <div ref={bodyRef} onScroll={onScroll} style={{ overflowX: 'hidden', overflowY: 'auto', height: '286px' }}>
             <Box ref={innerRef} pl={32}>
               <Box>
                 <Header secondary marginBottom={12}>
@@ -52,14 +67,15 @@ const MenuContent: React.FC = () => {
                 header="Appearance and Branding"
                 headerToggle
                 collapseVariant={SectionToggleVariant.ARROW}
-                isCollapsed={!isExpanded}
-                toggle={toggleIsExpanded}
+                isCollapsed={activeModal !== ActiveModal.APPEARANCE}
+                toggle={onToggleAppearance}
                 customContentStyling={{ paddingLeft: 0 }}
               >
                 <AppearanceAndBranding isAllowed={canCustomize} />
               </UncontrolledSection>
-              {!isExpanded && <Divider style={{ marginTop: 0, marginBottom: '32px' }} />}
             </Box>
+            <PrototypePasswordInput isCollapsed={activeModal !== ActiveModal.PASSWORD} onToggleCollapse={onTogglePassword} />
+            <Divider style={{ marginTop: 0, marginBottom: '32px', position: 'relative', top: 0, left: '32px' }} />
           </div>
           {!canCustomize && <Upgrade>Customize prototype style and branding.</Upgrade>}
         </OverlayProvider>

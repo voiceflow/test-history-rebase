@@ -61,3 +61,5 @@ export const prototypeBrandImageSelector = createSelector([prototypeSelector], (
 export const prototypeAvatarSelector = createSelector([prototypeSelector], ({ settings }) => settings.avatar || '');
 
 export const prototypeBrandInfoSelector = createSelector([prototypeSelector], ({ settings: { layout: _, ...brandSettings } }) => brandSettings);
+
+export const prototypePasswordSelector = createSelector([prototypeSelector], ({ settings }) => settings.password || '');

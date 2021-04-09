@@ -80,12 +80,6 @@ export const beforeDividersStyle = css<SectionContainerProps>`
   }
 `;
 
-export const afterDividersStyle = css<SectionContainerProps>`
-  &::after {
-    ${dividersStyles}
-  }
-`;
-
 const SectionContainer = styled.div<SectionContainerProps>`
   position: relative;
   background-color: #fff;

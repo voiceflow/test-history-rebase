@@ -15,6 +15,12 @@ const PlainInput = styled.input<StyledInputProps>`
   ${inputStyle}
 `;
 
+export enum NestedInputIconPosition {
+  LEFT = 'left',
+  RIGHT = 'right',
+  NONE = 'none',
+}
+
 export type NestedInputProps = Omit<React.ComponentProps<'input'>, 'ref'> & {
   className?: string;
   icon?: Icon | React.ComponentType;
@@ -23,25 +29,47 @@ export type NestedInputProps = Omit<React.ComponentProps<'input'>, 'ref'> & {
   leftAction?: React.ReactNode;
   rightAction?: React.ReactNode;
   iconProps?: Partial<SvgIconProps>;
+  iconPosition?: NestedInputIconPosition;
   wrapperProps?: InputWrapperProps;
   children?: (props: { ref: React.Ref<HTMLInputElement> }) => React.ReactElement;
+  onCustomFocus?: () => void;
 };
 
 // eslint-disable-next-line react/display-name
 export const NestedInput = React.forwardRef<HTMLInputElement, NestedInputProps>(
-  ({ icon, error, iconProps, wrapperProps, disabled, children, leftAction, rightAction, className, ...props }, ref) => {
+  (
+    {
+      icon,
+      error,
+      iconProps,
+      wrapperProps,
+      disabled,
+      children,
+      leftAction,
+      rightAction,
+      className,
+      iconPosition = NestedInputIconPosition.LEFT,
+      onCustomFocus,
+      ...props
+    },
+    ref
+  ) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
     const combinedRef = useCombinedRefs<HTMLInputElement>(ref, inputRef);
 
     const onClick = () => {
       inputRef.current?.focus?.();
+      onCustomFocus?.();
     };
+
+    const iconComponent = _isString(icon) && <SvgIcon icon={icon} {...iconProps} />;
 
     return (
       <InputWrapper onClick={onClick} disabled={disabled} {...wrapperProps} error={error} className={className}>
         {leftAction}
-        {_isString(icon) && <SvgIcon icon={icon} {...iconProps} />}
+        {iconPosition === NestedInputIconPosition.LEFT && iconComponent}
         <ChildInput>{children ? children({ ref: combinedRef }) : <InlineInput {...props} ref={combinedRef} disabled={disabled} />}</ChildInput>
+        {iconPosition === NestedInputIconPosition.RIGHT && iconComponent}
         {rightAction}
       </InputWrapper>
     );

@@ -6,6 +6,8 @@ import { inputDisabled, inputStyle, StyledInputProps } from '../styles';
 export type InputWrapperProps = StyledInputProps & {
   disabled?: boolean;
   disabledBorderColor?: string;
+  pointerEvents?: string;
+  cursor?: string;
 };
 
 const InputWrapper = styled.div<InputWrapperProps>`

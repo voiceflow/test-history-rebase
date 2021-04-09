@@ -48,6 +48,7 @@ export type PrototypeShareViewSettings = {
   brandColor?: string;
   brandImage?: string;
   avatar?: string;
+  password?: string;
 };
 
 export interface PrototypeState {

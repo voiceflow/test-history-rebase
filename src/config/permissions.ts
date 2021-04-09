@@ -21,6 +21,7 @@ export enum Permission {
 
   // prototype
   SHARE_PROTOTYPE = 'prototype.SHARE',
+  SHARE_PROTOTYPE_PASSWORD = 'prototype.SHARE_PASSWORD',
   TRAIN_PROTOTYPE = 'prototype.TRAIN',
   RENDER_PROTOTYPE = 'prototype.RENDER',
   CUSTOMIZE_PROTOTYPE = 'prototype.CUSTOMIZE',
@@ -43,6 +44,8 @@ export enum Permission {
   BULK_UPLOAD = 'feature.BULK_UPLOAD',
 }
 
+const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.GUEST, UserRole.OWNER];
+
 export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.ADD_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
   [Permission.VIEW_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
@@ -61,27 +64,24 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.CANVAS_REALTIME]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
   [Permission.COMMENTING]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
   [Permission.SHARE_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
+  [Permission.SHARE_PROTOTYPE_PASSWORD]: ALL_USER_ROLES,
   [Permission.TRAIN_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
   [Permission.RENDER_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
 
   [Permission.HINT_FEATURES]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
 };
 
+const ALL_PLANS = Object.values(PlanType);
+
+const ALL_NONSTARTER_PLANS = ALL_PLANS.filter((type) => type !== PlanType.STARTER && type !== PlanType.OLD_STARTER);
+
 export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.CANVAS_MARKUP]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.CANVAS_EXPORT]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.COMMENTING]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.BULK_UPLOAD]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
-  [Permission.MODEL_EXPORT]: [
-    PlanType.STUDENT,
-    PlanType.PRO,
-    PlanType.OLD_PRO,
-    PlanType.TEAM,
-    PlanType.OLD_TEAM,
-    PlanType.ENTERPRISE,
-    PlanType.OLD_ENTERPRISE,
-    PlanType.CREATOR,
-  ],
+  [Permission.MODEL_EXPORT]: ALL_NONSTARTER_PLANS,
+  [Permission.SHARE_PROTOTYPE_PASSWORD]: ALL_NONSTARTER_PLANS,
   [Permission.SHARE_PROTOTYPE]: [
     PlanType.PRO,
     PlanType.TEAM,

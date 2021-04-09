@@ -11,7 +11,7 @@ const setupPublicPrototype = (versionID: string): Thunk<PrototypeSettings> => as
 
   const prototype = await (isLegacyVersion
     ? client.prototype.getLegacyInfo(versionID).catch(_constant(null))
-    : client.api.version.getPrototype(versionID).catch(_constant(null)));
+    : client.api.version.getPrototype(versionID, { isPublic: true }).catch(_constant(null)));
 
   if (!prototype) {
     throw new Error("Prototype doesn't exist");
@@ -31,6 +31,7 @@ const setupPublicPrototype = (versionID: string): Thunk<PrototypeSettings> => as
 
   return {
     ...prototype?.settings,
+    hasPassword: prototype?.settings.hasPassword ?? false,
     layout: prototype?.settings.layout ?? PrototypeLayout.TEXT_DIALOG,
   } as PrototypeSettings;
 };

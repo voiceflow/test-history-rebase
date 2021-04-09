@@ -47,7 +47,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
       const result = await client.find();
 
       expect(result).to.eq(workspaces);
-      expect(fetch).to.be.calledWithExactly(WORKSPACES_PATH);
+      expect(fetch.args[0]).to.eql([WORKSPACES_PATH, undefined]);
       expect(mapWorkspacesFromDB).to.be.calledWithExactly(dbWorkspaces);
     });
   });

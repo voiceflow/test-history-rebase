@@ -41,6 +41,7 @@ const prototypeClient = {
           avatar: undefined,
           brandColor: undefined,
           brandImage: undefined,
+          hasPassword: false,
         },
       };
     }),

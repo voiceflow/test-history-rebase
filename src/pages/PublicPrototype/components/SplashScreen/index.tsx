@@ -1,11 +1,7 @@
 import React from 'react';
 
-import Box from '@/components/Box';
-import { Link, Text } from '@/components/Text/components';
-import Tooltip from '@/components/TippyTooltip';
-import { preventDefault } from '@/utils/dom';
-
-import { BoxLogo, Container, ContentContainer, MobileVoiceInstruction, StartButton, WaterMark } from './components';
+import FullPageTemplate from '../FullPageTemplate';
+import { MobileVoiceInstruction, StartConversation } from './components';
 
 type ShareSplashScreenProps = {
   onStart: () => void;
@@ -17,6 +13,7 @@ type ShareSplashScreenProps = {
   colorScheme?: string;
   withStartButton?: boolean;
 };
+
 const ShareSplashScreen: React.FC<ShareSplashScreenProps> = ({
   onStart,
   logoURL,
@@ -28,64 +25,30 @@ const ShareSplashScreen: React.FC<ShareSplashScreenProps> = ({
   withStartButton = true,
 }) => {
   const [visualsWelcomeScreenPassed, setVisualsWelcomeScreenPassed] = React.useState(false);
-  const centerAlign = isMobile || isVisuals;
 
   if (isVisuals && isMobile && visualsWelcomeScreenPassed) {
     return <MobileVoiceInstruction onStart={onStart} colorScheme={colorScheme} />;
   }
 
   return (
-    <Container isVisuals={isVisuals} isMobile={isMobile}>
-      <ContentContainer centerAlign={centerAlign} isMobile={isMobile}>
-        <BoxLogo url={logoURL} size={logoSize} isMobile={isMobile} />
-
-        <Box>
-          <Box fontSize={24}>
-            You've been invited to have a conversation with
-            {projectName.length > 120 ? (
-              <Text color={colorScheme} trim>
-                <Tooltip title={projectName}>
-                  <Box width={120} noOverflow ml={5}>
-                    {projectName}
-                  </Box>
-                </Tooltip>
-              </Text>
-            ) : (
-              <Text color={colorScheme} ml={5}>
-                {projectName}
-              </Text>
-            )}
-          </Box>
-
-          <Box fontSize={15} mt={16} mb={32} color="#62778c">
-            Want to create your own?{' '}
-            <Link color={colorScheme} href="https://www.voiceflow.com/">
-              Get Started.
-            </Link>
-          </Box>
-
-          {withStartButton && (
-            <StartButton
-              color={colorScheme}
-              onClick={preventDefault(() => (isVisuals && isMobile ? setVisualsWelcomeScreenPassed(true) : onStart()))}
-            >
-              Start Conversation
-            </StartButton>
-          )}
-        </Box>
-      </ContentContainer>
-
-      <WaterMark color="#8da2b5" width="100%" display="inline-block" textAlign={centerAlign ? 'center' : undefined}>
-        Conversation{' '}
-        <span role="img" aria-label="powered">
-          ⚡
-        </span>{' '}
-        by{' '}
-        <Link color={colorScheme} href="https://voiceflow.com">
-          Voiceflow
-        </Link>
-      </WaterMark>
-    </Container>
+    <FullPageTemplate
+      colorScheme={colorScheme}
+      centerAlign={isVisuals || isMobile}
+      isVisuals={isVisuals}
+      isMobile={isMobile}
+      logoSize={logoSize}
+      logoURL={logoURL}
+    >
+      <StartConversation
+        projectName={projectName}
+        isMobile={isMobile}
+        setVisualsWelcomeScreenPassed={setVisualsWelcomeScreenPassed}
+        onStart={onStart}
+        isVisuals={isVisuals}
+        withStartButton={withStartButton}
+        colorScheme={colorScheme}
+      />
+    </FullPageTemplate>
   );
 };
 

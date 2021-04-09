@@ -3,11 +3,12 @@ import React from 'react';
 import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
+import { Description, Title } from '@/components/Text';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { FadeDownContainer } from '@/styles/animations';
 
 import { StepID } from '../../constants';
-import { Container, Description, LogoContainer, Title } from './components';
+import { Container, LogoContainer } from './components';
 
 const fadeConfig = {
   height: -30,
@@ -28,10 +29,12 @@ const Welcome: React.FC = () => {
             </LogoContainer>
           </FadeDownContainer>
           <FadeDownContainer delay={0.12} {...fadeConfig}>
-            <Title>Welcome to Voiceflow</Title>
+            <Title mb={16}>Welcome to Voiceflow</Title>
           </FadeDownContainer>
           <FadeDownContainer delay={0.24} {...fadeConfig}>
-            <Description>Collaboratively design, prototype and build conversational apps across voice and chat channels.</Description>
+            <Description width={370} lineHeight={1.47} textAlign="center" mb={40}>
+              Collaboratively design, prototype and build conversational apps across voice and chat channels.
+            </Description>
           </FadeDownContainer>
           <FadeDownContainer delay={0.36} {...fadeConfig}>
             <FlexCenter>

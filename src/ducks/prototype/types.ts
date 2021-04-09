@@ -4,7 +4,7 @@ import { StepData } from '@voiceflow/general-types/build/nodes/visual';
 
 import { PrototypeContext } from '@/models';
 
-export type PrototypeSettings = Omit<VersionPrototype['settings'], 'layout'> & { layout: PrototypeLayout };
+export type PrototypeSettings = Omit<VersionPrototype['settings'], 'layout'> & { layout: PrototypeLayout; hasPassword: boolean };
 
 // context types
 export interface Context extends PrototypeContext {

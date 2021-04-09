@@ -6,6 +6,7 @@ import { SyncThunk } from '@/store/types';
 import { updatePrototypeMode, updatePrototypeSettings } from '../actions';
 import { PrototypeMode, PrototypeShareViewSettings } from '../types';
 
+export { default as checkSharedProtoPassword } from './checkSharedProtoPassword';
 export { default as fetchContext } from './fetchContext';
 export { default as renderPrototype } from './render';
 export { default as resetPrototype } from './reset';

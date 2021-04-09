@@ -1,4 +1,5 @@
 import { css, styled } from '@/hocs';
+import { breakpoints } from '@/styles/breakpoints';
 
 // eslint-disable-next-line no-secrets/no-secrets
 const VF_LOGO = 'https://res-3.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco/dohvpzgjnwzndaen346r';
@@ -29,6 +30,18 @@ const BoxLogo = styled.div<BoxLogoProps>`
       position: absolute;
       top: 0;
     `}
+
+  ${({ isMobile }) =>
+    typeof isMobile === 'undefined' && // used for PasswordScreen only - TODO and remove all `isMobile` CSS to use media-queries instead.
+    breakpoints({
+      xs: css`
+        position: absolute;
+        top: 32px;
+      `,
+      sm: css`
+        position: static;
+      `,
+    })}
 `;
 
 export default BoxLogo;

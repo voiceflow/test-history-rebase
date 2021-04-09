@@ -7,12 +7,13 @@ import invoiceAdapter from './adapters/invoice';
 import memberAdapter from './adapters/member';
 import workspaceAdapter from './adapters/workspace';
 import { api, apiV2 } from './fetch';
+import { FetchOptions } from './fetch/types';
 
 export const LEGACY_WORKSPACE_PATH = 'team';
 export const WORKSPACES_PATH = 'workspaces';
 
 const workspaceClient = {
-  find: () => api.get<DBWorkspace[]>(WORKSPACES_PATH).then(workspaceAdapter.mapFromDB),
+  find: (opt?: FetchOptions) => api.get<DBWorkspace[]>(WORKSPACES_PATH, opt).then(workspaceAdapter.mapFromDB),
 
   // TODO: seems legacy
   fetchWorkspace: (workspaceID: string) => api.get<DBWorkspace>(`${WORKSPACES_PATH}/${workspaceID}`).then((data) => [workspaceAdapter.fromDB(data)]),

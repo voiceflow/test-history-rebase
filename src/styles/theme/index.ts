@@ -43,6 +43,7 @@ const THEME = {
   fontSizes: {
     s: 13,
     m: 15,
+    l: 28,
   },
   components: {
     button: {

@@ -348,6 +348,7 @@ export enum UserRole {
   VIEWER = 'viewer',
   LIBRARY = 'library',
   OWNER = 'owner',
+  GUEST = 'guest', // use for "side-apps" like Prototype Share that do not require login
 }
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];

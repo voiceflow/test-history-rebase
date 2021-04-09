@@ -56,12 +56,14 @@ export const deleteWorkspace = (workspaceID: string): Thunk => async (dispatch) 
   }
 };
 
-export const fetchWorkspaces = (): Thunk => async (dispatch, getState) => {
+export const fetchWorkspaces = (isPublicUser = false): Thunk => async (dispatch, getState) => {
   try {
     const state = getState();
     const activeWorkspaceID = activeWorkspaceIDSelector(state)!;
 
-    const workspaces = await client.workspace.find();
+    const workspaces = await client.workspace.find({
+      query: { isPublic: isPublicUser },
+    });
     const sorted = workspaces.sort((l, r) => (l.templates && 1) || (r.templates && -1) || 0).map((workspace) => ({ ...workspace }));
     const normalized = normalize(sorted);
 

@@ -1,0 +1,16 @@
+import { Title as BaseTitle } from '@/components/Text';
+import { css, styled } from '@/hocs';
+import { breakpoints } from '@/styles/breakpoints';
+
+const Title = styled(BaseTitle)`
+  ${breakpoints({
+    xs: css`
+      max-width: 320px;
+    `,
+    sm: css`
+      min-width: 420px;
+    `,
+  })}
+`;
+
+export default Title;

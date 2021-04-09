@@ -3,8 +3,7 @@ import React from 'react';
 import Box from '@/components/Box';
 import { preventDefault } from '@/utils/dom';
 
-import Container from './Container';
-import ContentContainer from './ContentContainer';
+import { Container, ContentContainer } from '../../common';
 import StartButton from './StartButton';
 
 type MobileVoiceInstructionProps = {

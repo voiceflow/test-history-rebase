@@ -54,6 +54,7 @@ const StartConversation: React.FC<StartConversationProps> = ({
 
       <Box fontSize={15} mt={16} mb={32} color="#62778c">
         Want to create your own?
+        {' ' /* Need this space for formatting */}
         <Link color={colorScheme} href="https://www.voiceflow.com/">
           Get Started.
         </Link>

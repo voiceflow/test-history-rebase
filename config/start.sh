@@ -13,6 +13,6 @@ do
   echo $replaceStr >> /var/www/static.js
 done
 
-sed "s/VF_ENV_PORT/${VF_ENV_PORT}/g" /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf
+sed "s/PORT/${PORT}/g" /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf
 
 nginx -g "daemon off;"

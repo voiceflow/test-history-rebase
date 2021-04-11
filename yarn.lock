@@ -4618,6 +4618,13 @@
   dependencies:
     "@types/pino" "*"
 
+"@types/pino-pretty@*":
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/@types/pino-pretty/-/pino-pretty-4.7.0.tgz#e4a18541f8464d1cc48216f5593cc6a0e62dc2c3"
+  integrity sha512-fIZ+VXf9gJoJR4tiiM7G+j/bZkPoZEfFGzA4d8tAWCTpTVyvVaBwnmdLs3wEXYpMjw8eXulrOzNCjmGHT3FgHw==
+  dependencies:
+    "@types/pino" "*"
+
 "@types/pino-std-serializers@*":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@types/pino-std-serializers/-/pino-std-serializers-2.4.1.tgz#f8bd52a209c8b3c97d1533b1ba27f57c816382bf"
@@ -4626,11 +4633,12 @@
     "@types/node" "*"
 
 "@types/pino@*", "@types/pino@^6.3.6":
-  version "6.3.6"
-  resolved "https://registry.yarnpkg.com/@types/pino/-/pino-6.3.6.tgz#3aa928bcbd30dc0c6a0ec2e9302cabd5dee6e832"
-  integrity sha512-yVgSyMGzNDYe/XNMJyuIkklDeZbFdGAxRztYLoN1QQrrgiLJ1oJPmnS8Ge5xpzI9ODKEddKH97VFQ7cWO6Pumw==
+  version "6.3.7"
+  resolved "https://registry.yarnpkg.com/@types/pino/-/pino-6.3.7.tgz#0ccef98a159230cb3fa2589c7e8b00a7550a69f6"
+  integrity sha512-v7FdDXVEL0Zx1zcCf0cJZMojChnF+O0ujDKV1UdocsLuUhENjdtNIaanCZK1zRELp35x//bI2/IHtYUK0vmRvw==
   dependencies:
     "@types/node" "*"
+    "@types/pino-pretty" "*"
     "@types/pino-std-serializers" "*"
     "@types/sonic-boom" "*"
 
@@ -5201,14 +5209,14 @@
   resolved "https://registry.yarnpkg.com/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
   integrity sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==
 
-"@voiceflow/alexa-types@^1.47.0":
-  version "1.47.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.47.0.tgz#ecfe10d7a9d6d2c307e0c5cd0fbef0e5c2a1ae13"
-  integrity sha512-KNc9lnYlbJFKVCxE+BGjH2XHtVdHMLKqFMUl0L8eAgFBfFqWZ8VXQ5o/wnFhbD1FE5kS+OSiuhFVLcYCejN5kA==
+"@voiceflow/alexa-types@1.47.2":
+  version "1.47.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.47.2.tgz#c3839c4b798c6c5cd152d2d91a0dbcf0b1dddb71"
+  integrity sha512-iSnmx6WlkKBRmoOKaQ3Z5gjDNldyqd3L8N4dpixS4CSJ/zrc4jdI1qA1UdOrJRYAB7Rywg4AqTLGyG7sPed3jg==
   dependencies:
-    "@voiceflow/api-sdk" "1.29.0"
+    "@voiceflow/api-sdk" "1.29.1"
     "@voiceflow/common" "6.5.0"
-    "@voiceflow/general-types" "1.40.0"
+    "@voiceflow/general-types" "1.41.1"
     ask-smapi-model "^1.11.0"
     eslint-plugin-prettier "^3.1.4"
 
@@ -5295,10 +5303,10 @@
   dependencies:
     "@voiceflow/api-sdk" "1.29.0"
 
-"@voiceflow/general-types@^1.41.0":
-  version "1.41.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.41.0.tgz#782313f7ce7169308b0f78b32632769b62846e6a"
-  integrity sha512-AHOdOyFMeYW6OajMGH9eGFiEOqgEQtLw5FANbdBwAZ06kLf4Qgb6HHF3iBHzx8BLce+hS7hxcAfxwHXOdYGC/g==
+"@voiceflow/general-types@1.41.1":
+  version "1.41.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.41.1.tgz#70d54f467bb314e8c30a747e17a8f6d813d950f1"
+  integrity sha512-hCD71vfIkR3nMXTjxKgiyEviSkNr/1IfE9SVoJi+6JB2ynYhPAL4kptKuQAHCIc0xjx876HVWrBf6yoUZLrkQQ==
   dependencies:
     "@voiceflow/api-sdk" "1.29.1"
 
@@ -21224,9 +21232,9 @@ socks@~2.3.2:
     smart-buffer "^4.1.0"
 
 sonic-boom@^1.0.2:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/sonic-boom/-/sonic-boom-1.4.0.tgz#d6d35196c32609b46193145afc1174a8c692d21e"
-  integrity sha512-1xUAszhQBOrjk7uisbStQZYkZxD3vkYlCUw5qzOblWQ1ILN5v0dVPAs+QPgszzoPmbdWx6jyT9XiLJ95JdlLiQ==
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/sonic-boom/-/sonic-boom-1.4.1.tgz#d35d6a74076624f12e6f917ade7b9d75e918f53e"
+  integrity sha512-LRHh/A8tpW7ru89lrlkU4AszXt1dbwSjVWguGrmlxE7tawVmDBlI1PILMkXAxJTwqhgsEeTHzj36D5CmHgQmNg==
   dependencies:
     atomic-sleep "^1.0.0"
     flatstr "^1.0.12"

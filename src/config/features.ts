@@ -9,7 +9,7 @@ const ASR_BYPASS_ENABLED = process.env.FF_ASR_BYPASS === 'true';
 const NATO_APCO_ENABLED = process.env.FF_NATO_ACPO === 'true';
 const CONDITIONS_BUILDER_ENABLED = process.env.FF_CONDITIONS_BUILDER === 'true';
 const MOTOROLA_SSO_ENABLED = process.env.FF_MOTOROLA_SSO === 'true';
-const LINK_CUSTOMIZATION_ENABLED = process.env.FF_LINK_CUSTOMIZATION === 'true';
+const LINK_CUSTOMIZATION_ENABLED = !!window.Cypress || process.env.FF_LINK_CUSTOMIZATION === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',

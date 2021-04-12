@@ -8,6 +8,7 @@ import { useCache, useHotKeys, useToggle } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
+import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { stopPropagation } from '@/utils/dom';
 
@@ -138,7 +139,7 @@ const Settings: React.FC<SettingsProps & ConnectedSettingsProps> = ({
   const linkColor = instance.getLinkColor();
 
   return (
-    <Container ref={containerRef} onClick={stopPropagation(null, true)}>
+    <Container ref={containerRef} className={ClassName.LINK_SETTINGS} onClick={stopPropagation(null, true)}>
       <Content>
         <SettingsColor
           color={linkColor}

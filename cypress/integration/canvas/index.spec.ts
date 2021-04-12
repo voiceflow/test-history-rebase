@@ -18,27 +18,6 @@ context('Canvas', () => {
     canvasPage.el.settingsPage.should('have.length', 1);
   });
 
-  it('has a home block', () => {
-    canvasPage.el.node.should('have.length', 1);
-    canvasPage.el.homeBlock.should('be.visible');
-    canvasPage.el.homeBlock.find('.vf-canvas__block__section__title').first().should('be.visible').should('have.text', 'Start');
-  });
-
-  it('drag block on canvas', () => {
-    cy.awaitCanvasAnimation();
-
-    canvasPage.el.node.should('have.coords', [400, 304]).dragNode(200, 200).should('have.coords', [600, 504]);
-  });
-
-  it('add block to canvas using spotlight', () => {
-    cy.awaitCanvasAnimation();
-
-    cy.sendHotkey('{shift} ');
-    cy.get('#vf-spotlight input').type('audio{enter}');
-
-    canvasPage.el.node.should('have.length', 2).and('have.coords', [400, 304]);
-  });
-
   it('drag canvas', () => {
     cy.awaitCanvasAnimation();
 

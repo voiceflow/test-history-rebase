@@ -27,7 +27,7 @@ export const ClipboardProvider: React.FC = ({ children }) => {
     const handlePaste = (event: ClipboardEvent) => {
       const target = event.target as Element;
 
-      if (IGNORED_TAGS.includes(target.nodeName) || target.closest(`.${SLATE_EDITOR_CLASS_NAME}`)) {
+      if (IGNORED_TAGS.includes(target.nodeName) || target.closest?.(`.${SLATE_EDITOR_CLASS_NAME}`)) {
         return;
       }
 

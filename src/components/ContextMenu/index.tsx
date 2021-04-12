@@ -4,6 +4,7 @@ import { Popper, PopperProps } from 'react-popper';
 import Menu, { MenuProps } from '@/components/Menu';
 import Portal from '@/components/Portal';
 import { useDismissable } from '@/hooks/dismiss';
+import { Identifier } from '@/styles/constants';
 import { Point } from '@/types';
 import { buildVirtualElement } from '@/utils/dom';
 
@@ -47,7 +48,7 @@ const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...p
         <Portal portalNode={document.body}>
           <Popper referenceElement={virtualElememt!} placement={placement}>
             {({ ref, style, placement }) => (
-              <div ref={ref} style={{ ...style, zIndex: 1100 }} data-placement={placement}>
+              <div id={Identifier.CONTEXT_MENU} ref={ref} style={{ ...style, zIndex: 1100 }} data-placement={placement}>
                 <Menu {...(props as any)} />
               </div>
             )}

@@ -59,7 +59,9 @@ const expireInstance = (entities: Map<string, { api: { instanceID: string } }>, 
 
 declare global {
   interface Window {
+    Cypress?: boolean;
     vf_engine?: Engine | null;
+    cypress_clipboard?: string | null; // store clipboard data into window to access it in cypress
   }
 }
 

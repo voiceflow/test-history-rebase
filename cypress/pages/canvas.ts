@@ -21,6 +21,12 @@ export default {
     get node() {
       return cy.get('.vf-canvas__node');
     },
+    get link() {
+      return cy.get('.vf-canvas__link');
+    },
+    get linkSettings() {
+      return cy.get('.vf-link-settings');
+    },
     get homeBlock() {
       return cy.get('.vf-canvas__block--home');
     },
@@ -38,6 +44,12 @@ export default {
     },
     get markupModeControl() {
       return cy.get('.vf-canvas__control--markup button');
+    },
+    get designMenu() {
+      return cy.get('#vf-design-menu');
+    },
+    get stepMenu() {
+      return cy.get('#vf-step-menu');
     },
   },
 

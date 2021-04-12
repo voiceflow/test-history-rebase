@@ -20,6 +20,7 @@ export enum Identifier {
   THREAD_HISTORY_DRAWER = 'vf-thread-history-drawer',
   ESCAPE_MODE_PROMPT = 'vf-escape-mode-prompt',
   SPOTLIGHT = 'vf-spotlight',
+  CONTEXT_MENU = 'vf-context-menu',
 }
 
 export enum ClassName {
@@ -46,4 +47,5 @@ export enum ClassName {
   SVG_ICON = 'vf-svg-icon',
   MODAL = 'vf-modal',
   THREAD_EDITOR = 'vf-thread-editor',
+  LINK_SETTINGS = 'vf-link-settings',
 }

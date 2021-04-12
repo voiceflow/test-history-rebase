@@ -6,6 +6,10 @@ export function copy(text) {
   const clipboardEl = document.createElement('textarea');
   clipboardEl.value = text;
 
+  if (window.Cypress) {
+    window.cypress_clipboard = text;
+  }
+
   document.body.appendChild(clipboardEl);
   clipboardEl.select();
   document.execCommand('copy');

@@ -1,6 +1,8 @@
+import './helpsers';
 import './session';
 import './fixtures';
 import './auth';
+import './reactDnD';
 import './canvas';
 
 Cypress.Commands.add('shouldBeOn', (page) => {

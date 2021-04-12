@@ -8,6 +8,7 @@ import * as Workspace from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
 import { ClipboardContext, ClipboardContextValue, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import type { Engine } from '@/pages/Canvas/engine';
+import { Identifier } from '@/styles/constants';
 import { buildVirtualElement } from '@/utils/dom';
 import { Coords } from '@/utils/geometry';
 
@@ -95,7 +96,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ className, isTemplateWorkspac
   return (
     <Popper referenceElement={buildVirtualElement(contextMenu.position!)} placement="right-start" positionFixed>
       {({ ref, style, placement }) => (
-        <div ref={ref} style={style} data-placement={placement} className={className}>
+        <div id={Identifier.CONTEXT_MENU} ref={ref} style={style} data-placement={placement} className={className}>
           <NestedContextMenu
             options={options}
             onSelect={onSelect}

@@ -1,16 +1,49 @@
 /// <reference types="cypress" />
 
 declare namespace Cypress {
+  type Coords = [x: number, y: number];
+
   type PageModel = {
     meta: {
       route: string | RegExp;
     };
   };
 
+  type VFWindow = Cypress.AUTWindow & {
+    cypress_clipboard?: string;
+  };
+
   interface Chainable {
     setup(): Chainable;
 
     teardown(): Chainable;
+
+    // OVERRIDES
+
+    /**
+     * override window method to add custom properties
+     */
+    window(options?: Partial<Loggable & Timeoutable>): Chainable<VFWindow>;
+
+    // HELPERS
+
+    /**
+     * Get data from the window.cypress_clipboard
+     */
+    clipboard(): Chainable<string | undefined>;
+
+    /**
+     * Emulate react Drag and Drop behavior
+     */
+    reactDnD<E extends Node = HTMLElement>(
+      targetNodeSelector: string,
+      { offsetX, offsetY }: { offsetX: number; offsetY: number }
+    ): Chainable<JQuery<E>>;
+
+    /**
+     * get element's clientRect
+     */
+    boundingClientRect(): Chainable<DOMRect>;
 
     /**
      * complete signup flow using configured name, email + password
@@ -60,7 +93,7 @@ declare namespace Cypress {
     /**
      * drag a node by the specified amounts
      */
-    dragNode(movementX: number, movementY: number): Chainable;
+    dragNode<E extends Node = HTMLElement>(movementX: number, movementY: number): Chainable<JQuery<E>>;
 
     /**
      * drag the canvas by specified amounts
@@ -71,6 +104,23 @@ declare namespace Cypress {
      * send a hotkey event to the canvas
      */
     sendHotkey(hotkey: string): Chainable;
+    sendHotkey<E extends Node = HTMLElement>(hotkey: string): Chainable<E>;
+
+    /**
+     * add block by name to canvas via spotlight
+     */
+    addBlockToCanvasViaSpotlight(blockName: string): Chainable;
+
+    /**
+     * add block by name to canvas via step menu
+     */
+    addBlockToCanvasViaStepMenu(blockName: string, coords: Coords): Chainable;
+
+    /**
+     * select all nodes
+     */
+
+    selectAllCanvasNodes(): Chainable;
 
     /**
      * get stored session information
@@ -115,7 +165,7 @@ declare namespace Cypress {
     cy.get('.node').should('have.coords', [123, 456])
     ```
     * */
-    (chainer: 'have.coords', coords: [number, number]): Chainable<Subject>;
+    (chainer: 'have.coords', coords: Coords): Chainable<Subject>;
 
     /**
      * check to see if the element is at the provided coords

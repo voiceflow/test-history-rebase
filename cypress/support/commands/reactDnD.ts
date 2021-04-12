@@ -1,0 +1,64 @@
+/* eslint-disable promise/always-return */
+class DndSimulatorDataTransfer {
+  data: Record<string, unknown> = {};
+
+  files: unknown[] = [];
+
+  items: unknown[] = [];
+
+  types: string[] = [];
+
+  dropEffect = 'move';
+
+  effectAllowed = 'all';
+
+  clearData(format?: string) {
+    if (format) {
+      delete this.data[format];
+
+      const index = this.types.indexOf(format);
+
+      delete this.types[index];
+      delete this.data[index];
+    } else {
+      this.data = {};
+    }
+  }
+
+  setData(format: string, data: unknown) {
+    this.data[format] = data;
+    this.items.push(data);
+    this.types.push(format);
+  }
+
+  getData(format: string) {
+    if (format in this.data) {
+      return this.data[format];
+    }
+
+    return '';
+  }
+
+  // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
+  setDragImage(img: string, xOffset: number, yOffset: number) {}
+}
+
+Cypress.Commands.add(
+  'reactDnD',
+  { prevSubject: 'element' },
+  ($node: Cypress.Chainable<JQuery<HTMLElement>>, targetNodeSelector: string, { offsetX, offsetY }: { offsetX: number; offsetY: number }) => {
+    const dataTransfer = new DndSimulatorDataTransfer();
+
+    cy.wrap($node).trigger('mousedown', { which: 1 }).trigger('dragstart', { dataTransfer }).trigger('drag', {});
+
+    cy.get(targetNodeSelector).then(($el) => {
+      const { x, y } = $el.get(0).getBoundingClientRect();
+
+      cy.wrap($el.get(0))
+        .trigger('dragover', { dataTransfer })
+        .trigger('drop', { dataTransfer, clientX: x + offsetX, clientY: y + offsetY })
+        .trigger('dragend', { dataTransfer })
+        .trigger('mouseup', { which: 1 });
+    });
+  }
+);

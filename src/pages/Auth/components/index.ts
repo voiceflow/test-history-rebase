@@ -1,7 +1,6 @@
 export * from './AuthBoxes';
 export { default as AuthenticationContainer } from './AuthenticationContainer';
 export { default as EmailInput } from './EmailInput';
-export { default as ErrorMessage } from './ErrorMessage';
 export { default as FacebookLoginButton } from './FacebookLoginButton';
 export { default as GoogleLoginButton } from './GoogleLoginButton';
 export { default as LoginForm } from './LoginForm';

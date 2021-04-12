@@ -5,17 +5,16 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
-import { AuthBox, AuthenticationContainer, ErrorMessage } from '../components';
+import { AuthBox, AuthenticationContainer } from '../components';
 import { ResetEmailForm } from './components';
 import { ResetEmailStage } from './constants';
 
 const ResetEmail: React.FC<ConnectedResetEmailProps> = ({ goToLogin }) => {
   const [email, setEmail] = React.useState('');
   const [stage, setStage] = React.useState(ResetEmailStage.IDLE);
-  const [error, setError] = React.useState<string | null>(null);
 
   const stages = {
-    [ResetEmailStage.IDLE]: <ResetEmailForm email={email} setEmail={setEmail} setStage={setStage} setError={setError} />,
+    [ResetEmailStage.IDLE]: <ResetEmailForm email={email} setEmail={setEmail} setStage={setStage} />,
 
     [ResetEmailStage.PENDING]: <Spinner message="Sending Email" />,
 
@@ -36,7 +35,6 @@ const ResetEmail: React.FC<ConnectedResetEmailProps> = ({ goToLogin }) => {
     <AuthenticationContainer>
       <AuthBox>
         <div className="auth-form-wrapper">{stages[stage] ?? null}</div>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
       </AuthBox>
     </AuthenticationContainer>
   );

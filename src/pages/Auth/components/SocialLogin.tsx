@@ -3,15 +3,15 @@ import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import { GoogleLoginResponse } from 'react-google-login';
 
 import Flex from '@/components/Flex';
+import { toast } from '@/components/Toast';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Creator from '@/ducks/creator';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
+import { Account } from '@/models';
 import { ConnectedProps } from '@/types';
 
-import { useErrorTimeout } from '../hooks';
 import { SocialLoginContainer } from './AuthBoxes';
-import ErrorMessage from './ErrorMessage';
 import FacebookLoginButton from './FacebookLoginButton';
 import GoogleLoginButton from './GoogleLoginButton';
 
@@ -29,44 +29,46 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
   facebookLogin,
   saveSocialProfilePicture,
 }) => {
-  const [authError, setAuthError] = React.useState(false);
-
   const onGoogleLogin = async (userProfile: GoogleLoginResponse) => {
-    const user = await googleLogin({
-      name: userProfile.profileObj.name,
-      email: userProfile.profileObj.email,
-      googleId: userProfile.profileObj.googleId,
-      token: userProfile.tokenId,
-      coupon,
-    }).catch(() => {
-      setAuthError(true);
-      return undefined;
-    });
+    let user: Account | undefined;
+
+    try {
+      await googleLogin({
+        name: userProfile.profileObj.name,
+        email: userProfile.profileObj.email,
+        googleId: userProfile.profileObj.googleId,
+        token: userProfile.tokenId,
+        coupon,
+      });
+    } catch {
+      toast.error('An unexpected error occurred. Please try again or use a different sign up method.');
+    }
 
     if (user?.first_login && userProfile.profileObj.imageUrl) {
-      saveSocialProfilePicture(userProfile.profileObj.imageUrl);
+      await saveSocialProfilePicture(userProfile.profileObj.imageUrl);
     }
   };
 
   const onFacebookLogin = async (fbUser: ReactFacebookLoginInfo) => {
-    const user = await facebookLogin({
-      name: fbUser.name,
-      email: fbUser.email,
-      fbId: fbUser.id,
-      code: fbUser.accessToken,
-      uri: window.location.href,
-      coupon,
-    }).catch(() => {
-      setAuthError(true);
-      return undefined;
-    });
+    let user: Account | undefined;
+
+    try {
+      await facebookLogin({
+        name: fbUser.name,
+        email: fbUser.email,
+        fbId: fbUser.id,
+        code: fbUser.accessToken,
+        uri: window.location.href,
+        coupon,
+      });
+    } catch {
+      toast.error('An unexpected error occurred. Please try again or use a different sign up method.');
+    }
 
     if (user?.first_login && fbUser.picture?.data.url) {
       await saveSocialProfilePicture(fbUser.picture.data.url);
     }
   };
-
-  useErrorTimeout(!!authError, () => setAuthError(false));
 
   if (IS_PRIVATE_CLOUD) {
     return null;
@@ -78,8 +80,6 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
         <GoogleLoginButton disabled={disabled} light={light} onLogin={onGoogleLogin} />
         <FacebookLoginButton disabled={disabled} light={light} onLogin={onFacebookLogin} />
       </Flex>
-
-      {authError && <ErrorMessage>An unexpected error occurred. Please try again or use a different sign up method.</ErrorMessage>}
     </SocialLoginContainer>
   );
 };

@@ -4,6 +4,7 @@ import { FormGroup } from 'reactstrap';
 import client from '@/client';
 import { NetworkError } from '@/client/fetch';
 import Button from '@/components/LegacyButton';
+import { toast } from '@/components/Toast';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
@@ -16,10 +17,9 @@ export type ResetEmailFormProps = {
   email: string;
   setEmail: (email: string) => void;
   setStage: (stage: ResetEmailStage) => void;
-  setError: (error: string) => void;
 };
 
-const ResetEmailForm: React.FC<ResetEmailFormProps & ConnectedResetEmailFormProps> = ({ email, goToLogin, setEmail, setStage, setError }) => {
+const ResetEmailForm: React.FC<ResetEmailFormProps & ConnectedResetEmailFormProps> = ({ email, goToLogin, setEmail, setStage }) => {
   const resetEmail = async () => {
     setStage(ResetEmailStage.PENDING);
 
@@ -29,9 +29,9 @@ const ResetEmailForm: React.FC<ResetEmailFormProps & ConnectedResetEmailFormProp
       setStage(ResetEmailStage.SUCCESSFUL);
     } catch (err) {
       if (err instanceof NetworkError && err.statusCode === 409) {
-        setError('Too many password reset attempts - Wait 24 hours before the next attempt');
+        toast.error('Too many password reset attempts - Wait 24 hours before the next attempt');
       } else {
-        setError('Something went wrong, please wait and retry or contact support');
+        toast.error('Something went wrong, please wait and retry or contact support');
       }
 
       setStage(ResetEmailStage.IDLE);

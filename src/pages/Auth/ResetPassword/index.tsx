@@ -4,23 +4,23 @@ import { RouteComponentProps } from 'react-router-dom';
 import client from '@/client';
 import { NetworkError } from '@/client/fetch';
 import { Spinner } from '@/components/Spinner';
+import { toast } from '@/components/Toast';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
-import { AuthBox, AuthenticationContainer, ErrorMessage } from '../components';
+import { AuthBox, AuthenticationContainer } from '../components';
 import { InvalidResetLink, ResetPasswordForm } from './components';
 import { ResetPasswordStage } from './constants';
 
 const ResetPassword: React.FC<RouteComponentProps<{ id: string }> & ConnectedResetPasswordProps> = ({ match, goToLogin }) => {
   const [stage, setStage] = React.useState(ResetPasswordStage.VALIDATING);
-  const [error, setError] = React.useState<string | null>(null);
 
   const stages = {
     [ResetPasswordStage.VALIDATING]: <Spinner message="Checking token" />,
 
-    [ResetPasswordStage.IDLE]: <ResetPasswordForm resetCode={match.params.id} setStage={setStage} setError={setError} />,
+    [ResetPasswordStage.IDLE]: <ResetPasswordForm resetCode={match.params.id} setStage={setStage} />,
 
     [ResetPasswordStage.PENDING]: <Spinner message="Reseting Password" />,
 
@@ -36,7 +36,7 @@ const ResetPassword: React.FC<RouteComponentProps<{ id: string }> & ConnectedRes
       </div>
     ),
 
-    [ResetPasswordStage.FAILED]: <InvalidResetLink setStage={setStage} setError={setError} />,
+    [ResetPasswordStage.FAILED]: <InvalidResetLink setStage={setStage} />,
 
     [ResetPasswordStage.DONE]: (
       <>
@@ -58,7 +58,7 @@ const ResetPassword: React.FC<RouteComponentProps<{ id: string }> & ConnectedRes
       setStage(ResetPasswordStage.IDLE);
     } catch (err) {
       if (!(err instanceof NetworkError) || err.statusCode >= 500) {
-        setError('Whoops, something went wrong with the server');
+        toast.error('Whoops, something went wrong with the server');
       }
       setStage(ResetPasswordStage.FAILED);
     }
@@ -68,7 +68,6 @@ const ResetPassword: React.FC<RouteComponentProps<{ id: string }> & ConnectedRes
     <AuthenticationContainer>
       <AuthBox>
         <div className="auth-form-wrapper">{stages[stage] ?? null}</div>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
       </AuthBox>
     </AuthenticationContainer>
   );

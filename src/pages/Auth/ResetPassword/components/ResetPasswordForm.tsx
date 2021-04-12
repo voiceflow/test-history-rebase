@@ -3,6 +3,7 @@ import { FormGroup } from 'reactstrap';
 
 import client from '@/client';
 import Button from '@/components/LegacyButton';
+import { toast } from '@/components/Toast';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
@@ -14,16 +15,16 @@ import { ResetPasswordStage } from '../constants';
 export type ResetPasswordFormProps = {
   resetCode: string;
   setStage: (stage: ResetPasswordStage) => void;
-  setError: (error: string) => void;
 };
 
-const ResetPasswordForm: React.FC<ResetPasswordFormProps & ConnectedResetPasswordFormProps> = ({ resetCode, goToLogin, setStage, setError }) => {
+const ResetPasswordForm: React.FC<ResetPasswordFormProps & ConnectedResetPasswordFormProps> = ({ resetCode, goToLogin, setStage }) => {
   const [password, setPassword] = React.useState('');
   const [confirm, setConfirm] = React.useState('');
 
   const resetPassword = async () => {
     if (password !== confirm) {
-      return setError('Passwords do not match');
+      toast.error('Passwords do not match');
+      return;
     }
 
     setStage(ResetPasswordStage.PENDING);
@@ -33,7 +34,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps & ConnectedResetPasswor
 
       setStage(ResetPasswordStage.SUCCESSFUL);
     } catch {
-      setError('Whoops, something went wrong with the server');
+      toast.error('Whoops, something went wrong with the server');
       setStage(ResetPasswordStage.FAILED);
     }
   };

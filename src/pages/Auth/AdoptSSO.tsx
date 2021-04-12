@@ -6,6 +6,7 @@ import { Form, FormGroup } from 'reactstrap';
 
 import Flex from '@/components/Flex';
 import Button from '@/components/LegacyButton';
+import { toast } from '@/components/Toast';
 import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -17,7 +18,6 @@ import { preventDefault } from '@/utils/dom';
 import {
   AuthBox,
   AuthenticationContainer,
-  ErrorMessage,
   FacebookLoginButton,
   GoogleLoginButton,
   PasswordInput,
@@ -28,7 +28,6 @@ import { useOktaLogin } from './hooks';
 
 const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleAdoptSSO, facebookAdoptSSO, email, domain, clientID }) => {
   const [password, setPassword] = React.useState('');
-  const [authError, setAuthError] = React.useState(false);
   const [showPassword, toggleShowPassword] = useToggle();
   const oktaLogin = useOktaLogin(domain || '', clientID || '');
   const hasValidState = !!email && !!domain && !!clientID;
@@ -42,19 +41,21 @@ const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleA
   const onGoogleLogin = async (userProfile: GoogleLoginResponse) => {
     const oktaCode = await oktaLogin();
 
-    await googleAdoptSSO({ domain: domain!, oktaCode, authCode: userProfile.tokenId }).catch(() => {
-      setAuthError(true);
-      return undefined;
-    });
+    try {
+      await googleAdoptSSO({ domain: domain!, oktaCode, authCode: userProfile.tokenId });
+    } catch {
+      toast.error('An unexpected error occurred. Please try again or use a different sign up method.');
+    }
   };
 
   const onFacebookLogin = async (fbUser: ReactFacebookLoginInfo) => {
     const oktaCode = await oktaLogin();
 
-    await facebookAdoptSSO({ domain: domain!, oktaCode, authCode: fbUser.accessToken }).catch(() => {
-      setAuthError(true);
-      return undefined;
-    });
+    try {
+      await facebookAdoptSSO({ domain: domain!, oktaCode, authCode: fbUser.accessToken });
+    } catch {
+      toast.error('An unexpected error occurred. Please try again or use a different sign up method.');
+    }
   };
 
   if (!hasValidState) return <Redirect to={Path.SIGNUP} />;
@@ -90,8 +91,6 @@ const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleA
             <GoogleLoginButton light onLogin={onGoogleLogin} />
             <FacebookLoginButton light onLogin={onFacebookLogin} />
           </Flex>
-
-          {authError && <ErrorMessage>An unexpected error occurred. Please try again or use a different sign up method.</ErrorMessage>}
         </SocialLoginContainer>
       </AuthBox>
     </AuthenticationContainer>

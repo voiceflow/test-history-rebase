@@ -6,6 +6,7 @@ import { Form, FormGroup, Input } from 'reactstrap';
 import client from '@/client';
 import { ControlledInput } from '@/components/Input';
 import Button from '@/components/LegacyButton';
+import { toast } from '@/components/Toast';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
@@ -14,12 +15,10 @@ import { Query } from '@/models';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { preventDefault } from '@/utils/dom';
 
-import { useErrorTimeout } from '../hooks';
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationContainer';
 import EmailInput from './EmailInput';
-import ErrorMessage from './ErrorMessage';
 import PasswordInput from './PasswordInput';
 import SocialLogin from './SocialLogin';
 
@@ -29,7 +28,6 @@ export type SignupFormProps = {
 };
 
 export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormProps> = ({ signup, promo, query, goToLogin }) => {
-  const [signupError, setSignupError] = React.useState<string | boolean | null>(null);
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
   const [password, setPassword] = React.useState('');
   const [name, setName] = React.useState(query.name ? query.name : '');
@@ -45,15 +43,17 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
     onDisable();
 
     if (!isDisabled) {
-      await signup({
-        name,
-        email,
-        password,
-        coupon: coupon.toLowerCase(),
-        referralCode: query.referral,
-      }).catch((err) => {
-        setSignupError(err.body.data);
-      });
+      try {
+        await signup({
+          name,
+          email,
+          password,
+          coupon: coupon.toLowerCase(),
+          referralCode: query.referral,
+        });
+      } catch (err) {
+        toast.error(err.body.data);
+      }
 
       onEnable();
     }
@@ -81,8 +81,6 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
     },
     [verifyCoupon]
   );
-
-  useErrorTimeout(!!signupError, () => setSignupError(false));
 
   React.useEffect(() => {
     if (promo && query.coupon) {
@@ -144,8 +142,6 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
         </Form>
 
         <SocialLogin coupon={coupon} disabled={isSignupDisabled} />
-
-        {signupError && <ErrorMessage>{signupError}</ErrorMessage>}
       </AuthBox>
     </AuthenticationContainer>
   );

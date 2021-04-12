@@ -168,20 +168,15 @@ ul {
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 
   /* stylelint-disable */
-  -webkit-transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
+  -webkit-transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
     -webkit-box-shadow 0.12s linear;
-  -o-transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+  -o-transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
-  transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
     -webkit-box-shadow 0.12s linear;
-  transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
-  transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear, -webkit-box-shadow 0.12s linear;
   /* stylelint-enable */
 }
@@ -217,20 +212,15 @@ ul {
   box-shadow: inset 0 0 5px 5px #fff !important;
 
   /* stylelint-disable */
-  -webkit-transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
+  -webkit-transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
     -webkit-box-shadow 0.12s linear;
-  -o-transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+  -o-transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
-  transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, padding 0.12s linear, max-height 0.12s linear,
     -webkit-box-shadow 0.12s linear;
-  transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear;
-  transition:
-    background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
+  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, padding 0.12s linear,
     max-height 0.12s linear, -webkit-box-shadow 0.12s linear;
   /* stylelint-enable */
 }
@@ -2230,20 +2220,6 @@ kbd {
 
 .scaleY {
   animation: fadein 0.15s ease both;
-}
-
-.flowbar {
-  animation: flowbar 0.5s ease;
-}
-
-@keyframes flowbar {
-  from {
-    transform: translateY(50px);
-  }
-
-  to {
-    transform: translateY(0);
-  }
 }
 
 @keyframes scaleY {

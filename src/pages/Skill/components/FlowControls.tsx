@@ -3,7 +3,6 @@ import React from 'react';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { CanvasGoHome } from '@/pages/Canvas/components/CanvasControls/components';
-import FlowBar from '@/pages/Canvas/components/FlowBar';
 import { useEditingMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import { activeFlowStructureSelector } from '@/store/selectors';
 import { ConnectedProps } from '@/types';
@@ -22,7 +21,6 @@ const FlowControls: React.FC<FlowControlsProps & ConnectedFlowControlsProps> = (
   return (
     <>
       <CanvasGoHome withMenu={false} withDrawer={isEditingMode} />
-      <FlowBar flow={flow} />
     </>
   );
 };

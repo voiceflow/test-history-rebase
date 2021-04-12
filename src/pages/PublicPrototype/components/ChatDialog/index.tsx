@@ -112,8 +112,10 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                 onSend={() => onSend(input)}
                 isMuted={isMuted}
                 onReset={onReset}
-                disabled={isIdle}
                 testEnded={testEnded}
+                disabled={isIdle}
+                isIdle={isIdle}
+                onStart={onStart}
                 isMobile={isMobile}
               />
             </>
@@ -162,6 +164,8 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                 isMuted={isMuted}
                 onReset={onReset}
                 disabled={isIdle}
+                isIdle={isIdle}
+                onStart={onStart}
                 testEnded={testEnded}
                 isMobile={isMobile}
               />

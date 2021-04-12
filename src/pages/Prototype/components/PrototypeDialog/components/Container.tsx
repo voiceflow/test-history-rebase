@@ -3,13 +3,11 @@ import React from 'react';
 
 import { css, styled } from '@/hocs';
 
-import { INTERACTIONS_CONTAINER_HEIGHT } from './Interactions';
-
 export const Outter = styled.div<{ isPublic?: boolean; withInteractions?: boolean }>`
   position: relative;
   display: flex;
   flex: 1;
-  height: ${({ withInteractions }) => `calc(100% - ${withInteractions ? INTERACTIONS_CONTAINER_HEIGHT : 0}px)`};
+  height: ${({ withInteractions }) => `calc(100% + ${withInteractions ? 50 : 0}px)`};
   padding-top: 0;
   ${({ isPublic }) =>
     isPublic &&

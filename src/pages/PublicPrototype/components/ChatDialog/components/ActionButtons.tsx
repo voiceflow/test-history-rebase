@@ -13,6 +13,8 @@ export type ActionButtonsProps = {
   color?: string;
   onMute: () => void;
   onSend: () => void;
+  onStart: () => void;
+  isIdle?: boolean;
   noSend?: boolean;
   onReset: () => void;
   isMuted?: boolean;
@@ -26,7 +28,9 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   noSend = false,
   onMute,
   onSend,
+  isIdle = false,
   onReset,
+  onStart,
   isMuted = false,
   disabled,
   testEnded = false,
@@ -54,11 +58,10 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
 
       {!noSend && !testEnded && (
         <ButtonWrapper
-          color={disabled ? theme?.iconColors.disabled : color || theme?.colors.blue}
-          onMouseDown={preventDefault()}
-          onClick={() => !disabled && onSend()}
-          disabled={disabled}
+          color={color || theme?.colors.blue}
+          onClick={() => (isIdle ? onStart() : onSend())}
           isMobile={isMobile}
+          onMouseDown={preventDefault()}
         >
           <SvgIcon icon="send" color={theme?.backgrounds.white} />
         </ButtonWrapper>

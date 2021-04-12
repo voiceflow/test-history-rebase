@@ -1,8 +1,12 @@
+import React from 'react';
+
+import SvgIcon from '@/components/SvgIcon';
 import { ChannelType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
 
 import { CHANNEL_META } from '../NewProject/Steps/constants';
+import DocsLink from './components/DocsLink';
 
 export const ONBOARDING_PROJECT_NAME = 'First Project';
 
@@ -22,6 +26,7 @@ export type StepMetaPropsType = {
   canSkip: boolean;
   skipTo: StepID | null;
   trackStep: (props: any, options: { skip: boolean }) => void;
+  docsLink?: React.ReactNode;
 };
 
 export type StepMetaProps = Record<StepID, StepMetaPropsType>;
@@ -87,6 +92,12 @@ export const STEP_META: StepMetaProps = {
     canBack: true,
     canSkip: false,
     skipTo: null,
+    docsLink: (
+      <DocsLink href="https://docs.voiceflow.com/#/platform/project-creation/project-creation?id=differences-between-channels">
+        <SvgIcon icon="information" />
+        Compare channel types
+      </DocsLink>
+    ),
     trackStep: ({ selectChannelMeta }, { skip }) =>
       Tracking.trackOnboardingSelectChannel({
         skip,

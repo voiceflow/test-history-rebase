@@ -24,10 +24,12 @@ const CreationHeader: React.FC<CreationHeaderProps> = ({
   title,
   numberOfSteps,
   stepStack,
+  children,
 }) => (
   <Container>
     <ActionButton shouldRender={hasBackButton} icon="back" onClick={stepBack} label="back" />
     <StepStatus title={title} numberOfSteps={numberOfSteps} stepStack={stepStack} />
+    {children}
     {canCancel ? (
       <ActionButton shouldRender icon="close" label="cancel" onClick={onCancel} />
     ) : (

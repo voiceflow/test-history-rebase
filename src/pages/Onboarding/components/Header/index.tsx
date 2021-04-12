@@ -42,7 +42,9 @@ const OnboardingHeader: React.FC = () => {
       onCancel={onCancel}
       hasSkipButton={hasSkipButton}
       onSkipClick={() => stepForward(currentStepMeta?.skipTo, { skip: true })}
-    />
+    >
+      {STEP_META[currentStepID].docsLink}
+    </CreationHeader>
   );
 };
 

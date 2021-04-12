@@ -4,11 +4,9 @@ import { RouteComponentProps } from 'react-router-dom';
 import { RemoveIntercom } from '@/components/IntercomChat';
 import { FullSpinner } from '@/components/Spinner';
 import { toast } from '@/components/Toast';
-import { Permission } from '@/config/permissions';
 import * as PrototypeDuck from '@/ducks/prototype';
-import * as WorkspaceDuck from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useGuestPermission, useSetup, useToggle } from '@/hooks';
+import { useSetup, useToggle } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 import { Prototype } from './components';
@@ -17,7 +15,6 @@ import PasswordScreen from './components/PasswordScreen';
 const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentProps<{ versionID: string }>> = ({
   match,
   setupPublicPrototype,
-  fetchWorkspaces,
   checkSharedProtoPassword,
 }) => {
   const [isLoaded, toggleLoaded] = useToggle(false);
@@ -27,8 +24,7 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
   });
   const [isAuthenticated, setAuthenticated] = React.useState<boolean>(false);
 
-  const [hasPermission] = useGuestPermission(Permission.SHARE_PROTOTYPE_PASSWORD);
-  const canUseSharedPassword = React.useMemo(() => hasPermission && settings.hasPassword, [hasPermission, settings.hasPassword]);
+  const canUseSharedPassword = React.useMemo(() => settings.hasPassword, [settings.hasPassword]);
 
   useSetup(async () => {
     const { versionID } = match.params;
@@ -39,12 +35,6 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
       setSettings(prototypeLayout);
     } catch {
       toast.error("Prototype hasn't been shared or doesn't exist");
-    }
-
-    try {
-      await fetchWorkspaces(true);
-    } catch {
-      toast.error('Unable to fetch workspace permissions');
     }
 
     toggleLoaded(true);
@@ -71,7 +61,6 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
 
 const mapDispatchToProps = {
   setupPublicPrototype: PrototypeDuck.setupPublicPrototype,
-  fetchWorkspaces: WorkspaceDuck.fetchWorkspaces,
   checkSharedProtoPassword: PrototypeDuck.checkSharedProtoPassword,
 };
 

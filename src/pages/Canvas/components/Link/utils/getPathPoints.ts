@@ -309,7 +309,10 @@ const getLeftZLikePathPoints = ([[startX, startY], [endX, endY]]: Pair<Point>, {
   const startWithoutBlockWidthAndHalfOffsetX = startXWithoutBlockWidth - halfOffsetX;
 
   if (isLessThanMinPathOffset(startY, endY)) {
-    return [createPoint(startXWithoutBlockWidth, startY), createPoint(endXWithBlockWidth, endY, { allowedToTop: targetIsBlock })];
+    return [
+      createPoint(startXWithoutBlockWidth, startY, { reversed: true }),
+      createPoint(endXWithBlockWidth, endY, { reversed: true, allowedToTop: targetIsBlock }),
+    ];
   }
 
   return [

@@ -191,7 +191,7 @@ suite(
 
         await controller.next();
 
-        expectSetError(controller).to.be.calledWith('Unable to fetch response from custom endpoint: https://localhost:4000');
+        expectSetError(controller).to.be.calledWith('Unable to fetch response from custom endpoint: https://localhost:8005');
       });
 
       it('should not process trace', async () => {

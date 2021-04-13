@@ -10,4 +10,4 @@ chai.use(chaiAsPromised);
 // env variables
 
 // can be removed when runtime endpoint feature is moved to a form element (CORE-4990)
-process.env.GENERAL_RUNTIME_CLOUD_ENDPOINT = 'https://localhost:4000';
+process.env.GENERAL_RUNTIME_CLOUD_ENDPOINT = 'https://localhost:8005';

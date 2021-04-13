@@ -1,8 +1,6 @@
 /* eslint-disable promise/no-nesting */
 import { CREATOR_ID_KEY, DIAGRAM_ID_KEY, PROJECT_ID_KEY, SESSION_CONTEXT, TEAM_ID_KEY, VERSION_ID_KEY } from './session';
-
-const API_URL = 'https://localhost:8080';
-const PLATFORM_SERVICE_URL = 'https://localhost:6969';
+import { API_URL, PLATFORM_SERVICE_URL } from '../../config';
 
 Cypress.Commands.add('createProject', (platform: 'alexa' | 'google' = 'alexa') => {
   cy.request('POST', `${API_URL}/workspaces`, {

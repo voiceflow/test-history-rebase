@@ -1,11 +1,9 @@
 /* eslint-disable promise/catch-or-return */
 import cuid from 'cuid';
 
-import { POSTGRES_DB, POSTGRES_HOST, POSTGRES_USER, TEST_EMAIL, TEST_PASSWORD, TEST_USER } from '../../config';
+import { POSTGRES_DB, POSTGRES_HOST, POSTGRES_USER, TEST_EMAIL, TEST_PASSWORD, TEST_USER, API_URL } from '../../config';
 import signupPage from '../../pages/signup';
 import { CREATOR_ID_KEY, SESSION_CONTEXT, TAB_ID_KEY, TOKEN_KEY } from './session';
-
-const API_URL = 'https://localhost:8080';
 
 const PSQL = `PGPASSFILE=.pgpass psql -h ${POSTGRES_HOST} -d ${POSTGRES_DB} -U ${POSTGRES_USER}`;
 

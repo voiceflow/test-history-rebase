@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-  codecov: codecov/codecov@1.1.1
   vfcommon: voiceflow/common@0.0.91
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
@@ -132,9 +131,6 @@ jobs:
       - vfcommon/integration_tests:
           step_name: Integration Tests
           extra_args: --coverage --detectOpenHandles
-      - codecov/upload:
-          file: jest_coverage/lcov.info
-          flags: integration
 
   test: # Main unit, style, and dependency tests
     executor: vfcommon/node-executor
@@ -143,9 +139,6 @@ jobs:
       - vfcommon/install_node_modules
       - vfcommon/unit_tests:
           step_name: Unit Tests
-      - codecov/upload:
-          file: nyc_coverage/lcov.info
-          flags: unit
       - run:
           name: Lint Styles
           command: yarn lint:css --quiet

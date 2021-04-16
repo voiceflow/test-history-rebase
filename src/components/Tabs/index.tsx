@@ -1,7 +1,7 @@
 import React from 'react';
 
 import TippyTooltip from '@/components/TippyTooltip';
-import { useKeygen } from '@/hooks';
+import { useDidUpdateEffect, useKeygen, useOnScreen } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { ActiveLine, Tab, Wrapper } from './components';
@@ -30,8 +30,10 @@ const Tabs: React.FC<TabsProps> = ({ as = 'button', options, selected, onChange,
   const onRef = (value: string) => (node: HTMLElement | null) => {
     tabsRef.current[value] = node;
   };
+  const ref = React.useRef<HTMLDivElement>(null);
+  const isVisible = useOnScreen(ref);
 
-  React.useEffect(() => {
+  useDidUpdateEffect(() => {
     const selectedOption = options.find(({ value }) => value === selected);
     const selectedNode = selectedOption ? tabsRef.current[selectedOption.value] : null;
     let animationFrame: number;
@@ -59,10 +61,10 @@ const Tabs: React.FC<TabsProps> = ({ as = 'button', options, selected, onChange,
         cancelAnimationFrame(animationFrame);
       }
     };
-  }, [options, selected]);
+  }, [options, selected, isVisible]);
 
   return (
-    <Wrapper className={ClassName.TABS}>
+    <Wrapper ref={ref} className={ClassName.TABS}>
       {options.map(({ value, label, color, tooltip, ...tabProps }) => {
         const tab = (
           <Tab

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export enum LifecyclePhase {
   MOUNTING = 'mounting',
@@ -63,4 +63,20 @@ export const useDidUpdateEffect = (callback: () => void, dependencies: any[] = [
       didMount.current = true;
     }
   }, dependencies);
+};
+
+export const useOnScreen = (ref: React.RefObject<any>) => {
+  const [isIntersecting, setIntersecting] = useState(false);
+
+  const observer = new IntersectionObserver(([entry]) => setIntersecting(entry.isIntersecting));
+
+  useEffect(() => {
+    observer.observe(ref?.current);
+    // Remove the observer as soon as the component is unmounted
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  return isIntersecting;
 };

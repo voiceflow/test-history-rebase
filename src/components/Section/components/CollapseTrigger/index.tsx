@@ -5,7 +5,7 @@ import Toggle from '@/components/Toggle';
 import { IconVariant } from '@/constants';
 
 import { SectionToggleVariant } from '../../constants';
-import { Container, ToggleArrowContainer, ToggleSwitchContainer } from './components';
+import { Container, ToggleArrowContainer } from './components';
 
 type CollapseTriggerProps = {
   variant: SectionToggleVariant;
@@ -22,11 +22,7 @@ const CollapseTrigger: React.FC<CollapseTriggerProps> = ({ disabled, onToggle, i
       </ToggleArrowContainer>
     )}
 
-    {variant === SectionToggleVariant.TOGGLE && (
-      <ToggleSwitchContainer>
-        <Toggle checked={!isCollapsed} onChange={onToggle} />
-      </ToggleSwitchContainer>
-    )}
+    {variant === SectionToggleVariant.TOGGLE && <Toggle checked={!isCollapsed} onChange={onToggle} small />}
   </Container>
 );
 

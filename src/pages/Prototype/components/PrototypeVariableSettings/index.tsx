@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Input from '@/components/Input';
-import Section, { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
+import Section, { SectionVariant } from '@/components/Section';
 import Tooltip from '@/components/TippyTooltip';
 import { VariableTag } from '@/components/VariableTag';
 import * as Prototype from '@/ducks/prototype';
@@ -9,10 +9,11 @@ import * as Recent from '@/ducks/recent';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
-import { Container, Variables } from './components';
+import { Drawer } from '../PrototypeContainer';
+import { Variables } from './components';
 
-const PrototypeDeveloperSettings: React.FC<ConnectedPrototypeDeveloperSettingsProps> = ({ settings, variables, updateSettings, updateVariables }) => (
-  <Container>
+const PrototypeVariableSettings: React.FC<ConnectedPrototypeVariableSettingsProps> = ({ variables, updateVariables }) => (
+  <Drawer>
     <Section header="VARIABLES" borderBottom variant={SectionVariant.PROTOTYPE} />
 
     <Variables>
@@ -35,15 +36,7 @@ const PrototypeDeveloperSettings: React.FC<ConnectedPrototypeDeveloperSettingsPr
         );
       })}
     </Variables>
-
-    <UncontrolledSection
-      header="Debug Mode"
-      isCollapsed={!settings.debug}
-      onClick={() => updateSettings({ debug: !settings.debug })}
-      collapseVariant={SectionToggleVariant.TOGGLE}
-      tooltip="Debug mode shows you the paths, variables, and flows you’re using as you’re testing your project"
-    />
-  </Container>
+  </Drawer>
 );
 
 const mapStateToProps = {
@@ -56,6 +49,6 @@ const mapDispatchToProps = {
   updateVariables: Prototype.updateVariables,
 };
 
-type ConnectedPrototypeDeveloperSettingsProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+type ConnectedPrototypeVariableSettingsProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(PrototypeDeveloperSettings) as React.FC;
+export default connect(mapStateToProps, mapDispatchToProps)(PrototypeVariableSettings) as React.FC;

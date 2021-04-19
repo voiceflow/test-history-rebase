@@ -1,4 +1,4 @@
-import { Request } from '@voiceflow/general-types';
+import { Config, Request } from '@voiceflow/general-types';
 import axios from 'axios';
 
 import legacySkillAdapter, { extractIntents, extractSlots } from '@/client/adapters/legacy/skill';
@@ -12,7 +12,7 @@ export const LEGACY_TESTING_PATH = 'test';
 export const PROTOTYPE_PATH = 'prototype';
 
 const prototypeClient = {
-  interact: (versionID: string, body: { state: Omit<PrototypeContext, 'trace'>; request: Request | null }) =>
+  interact: (versionID: string, body: { state: Omit<PrototypeContext, 'trace'>; request: Request | null; config?: Config }) =>
     axios
       .post<{ state: PrototypeContext; trace: PrototypeContext['trace'] }>(`${GENERAL_RUNTIME_ENDPOINT}/interact/${versionID}`, body)
       .then(({ data }) => data),

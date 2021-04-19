@@ -1,0 +1,101 @@
+import React from 'react';
+
+import Drawer from '@/components/Drawer';
+import { PlatformType } from '@/constants';
+import * as Creator from '@/ducks/creator';
+import * as Prototype from '@/ducks/prototype';
+import * as Skill from '@/ducks/skill';
+import { connect } from '@/hocs';
+import { useTheme } from '@/hooks';
+import PrototypeDisplaySettings from '@/pages/Prototype/components/PrototypeDisplaySettings';
+import PrototypeSettings from '@/pages/Prototype/components/PrototypeSettings';
+import PrototypeSidebar from '@/pages/Prototype/components/PrototypeSidebar';
+import PrototypeVariableSettings from '@/pages/Prototype/components/PrototypeVariableSettings';
+import PrototypeVisualCanvas from '@/pages/Prototype/components/PrototypeVisualCanvas';
+import { usePrototypingMode } from '@/pages/Skill/hooks';
+import PrototypeMenu from '@/pages/Skill/menus/PrototypeMenu';
+import { SlideOutDirection } from '@/styles/transitions';
+import { ConnectedProps } from '@/types';
+
+const PrototypeOverlay: React.FC<ConnectedDiagramProps> = ({ platform, prototypeMode, showCanvas, hideCanvas }) => {
+  const theme = useTheme();
+  const isPrototypingMode = usePrototypingMode();
+
+  const widthRef = React.useRef(0);
+
+  const isCanvasVisible = !isPrototypingMode || prototypeMode !== Prototype.PrototypeMode.DISPLAY;
+
+  React.useEffect(() => {
+    if (isCanvasVisible) return undefined;
+
+    hideCanvas();
+
+    return () => {
+      showCanvas();
+    };
+  }, [isCanvasVisible]);
+
+  const isPrototypeDisplay = prototypeMode === Prototype.PrototypeMode.DISPLAY;
+  const isPrototypeVariables = prototypeMode === Prototype.PrototypeMode.VARIABLES;
+  const isPrototypeSettings = prototypeMode === Prototype.PrototypeMode.SETTINGS;
+
+  const getPrototypeSettingsWidth = () => {
+    if (isPrototypeDisplay) {
+      return theme.components.displaySettings.width;
+    }
+
+    if (isPrototypeVariables || isPrototypeSettings) {
+      return theme.components.developerSettings.width;
+    }
+
+    return widthRef.current;
+  };
+
+  widthRef.current = getPrototypeSettingsWidth();
+
+  const isGeneral = platform === PlatformType.GENERAL;
+  const isPrototypeSidebarOpened = isPrototypeVariables || isPrototypeSettings || (isPrototypeDisplay && !isGeneral);
+
+  return (
+    <>
+      {/* prototyping mode */}
+      {isPrototypingMode && (
+        <>
+          <PrototypeSidebar open />
+          <PrototypeMenu open />
+        </>
+      )}
+
+      {isPrototypingMode && (
+        <>
+          <PrototypeVisualCanvas isShown={isPrototypeDisplay} />
+
+          <Drawer
+            open={isPrototypeSidebarOpened}
+            width={widthRef.current}
+            offset={theme.components.subMenu.width}
+            direction={SlideOutDirection.RIGHT}
+          >
+            {isPrototypeVariables && <PrototypeVariableSettings />}
+            {isPrototypeDisplay && <PrototypeDisplaySettings />}
+            {isPrototypeSettings && <PrototypeSettings />}
+          </Drawer>
+        </>
+      )}
+    </>
+  );
+};
+
+const mapStateToProps = {
+  platform: Skill.activePlatformSelector,
+  prototypeMode: Prototype.activePrototypeModeSelector,
+};
+
+const mapDispatchToProps = {
+  hideCanvas: Creator.hideCanvas,
+  showCanvas: Creator.showCanvas,
+};
+
+type ConnectedDiagramProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(PrototypeOverlay) as React.FC;

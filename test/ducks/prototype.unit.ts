@@ -35,7 +35,7 @@ suite(Prototype, MOCK_STATE)('Ducks - Prototype', ({ expect, describeReducer, de
     describe('updatePrototypeMode()', () => {
       it('should replace the prototype mode for the specified project', () => {
         const projectID = generate.id();
-        const mode = Prototype.PrototypeMode.DEVELOPER;
+        const mode = Prototype.PrototypeMode.VARIABLES;
 
         expectAction(Prototype.updatePrototypeMode(projectID, mode)).toModify({ mode: { ...MOCK_STATE.mode, [projectID]: mode } });
       });

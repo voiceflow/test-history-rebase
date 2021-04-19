@@ -9,7 +9,6 @@ import { Audio, Debug, Loading, Speak, User } from './components/Message';
 import { checkIfFirstInSeries } from './utils';
 
 type DialogPrototypeProps = {
-  debug?: boolean;
   onPlay: (src: string) => void;
   status: Prototype.PrototypeStatus;
   messages: Message[];
@@ -28,7 +27,6 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   isPublic,
   bottomScrollRef,
   messages,
-  debug,
   onPlay,
   isLoading,
   status,
@@ -81,7 +79,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
             />
           );
         case MessageType.DEBUG:
-          return debug ? <Debug key={message.id} {...message} /> : null;
+          return <Debug key={message.id} {...message} />;
         case MessageType.USER:
           return <User isFirstInSeries={isFirstInSeries} userSpeak={userSpeak} key={message.id} color={color} {...message} />;
         case MessageType.STREAM:

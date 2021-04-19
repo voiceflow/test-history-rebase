@@ -9,6 +9,8 @@ import { createAction, createRootSelector } from './utils';
 
 export type PrototypeConfig = {
   debug: boolean;
+  intent: boolean;
+  guided: boolean;
 };
 
 export type RecentState = {
@@ -25,6 +27,8 @@ const PERSIST_CONFIG = {
 export const INITIAL_STATE: RecentState = {
   prototype: {
     debug: false,
+    intent: false,
+    guided: true,
   },
 };
 

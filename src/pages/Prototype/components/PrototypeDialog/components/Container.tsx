@@ -7,7 +7,7 @@ export const Outter = styled.div<{ isPublic?: boolean; withInteractions?: boolea
   position: relative;
   display: flex;
   flex: 1;
-  height: ${({ withInteractions }) => `calc(100% + ${withInteractions ? 50 : 0}px)`};
+  height: 100%;
   padding-top: 0;
   ${({ isPublic }) =>
     isPublic &&

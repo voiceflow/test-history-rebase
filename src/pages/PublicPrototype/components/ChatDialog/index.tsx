@@ -1,3 +1,4 @@
+import { Request } from '@voiceflow/general-types';
 import React from 'react';
 
 import Box, { Flex } from '@/components/Box';
@@ -19,7 +20,7 @@ export type ChatDialogProps = {
   layout: PrototypeLayout;
   onStart: () => void;
   onMute: () => void;
-  onSend: (text: string) => void;
+  onSend: (request: string | Request) => void;
   onPlay: (src: string) => void;
   isMuted?: boolean;
   onReset: () => void;

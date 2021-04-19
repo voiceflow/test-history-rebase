@@ -29,7 +29,7 @@ export enum InputMode {
 export enum PrototypeMode {
   CANVAS = 'Canvas',
   DISPLAY = 'Display',
-  DEVELOPER = 'Developer',
+  VARIABLES = 'Variables',
   SETTINGS = 'Settings',
 }
 

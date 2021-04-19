@@ -91,7 +91,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         isLoading={isLoading}
         messages={messages}
         onPlay={onPlay}
-        debug={debug}
         interactions={interactions}
         status={status}
       >

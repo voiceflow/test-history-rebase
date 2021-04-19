@@ -1,11 +1,12 @@
 import Flex from '@/components/Flex';
 import { css, styled } from '@/hocs';
+import { FadeRightContainer } from '@/styles/animations';
 
 type ContainerProps = {
   isPublic?: boolean;
 };
 
-const Container = styled(Flex).attrs({ column: true })<ContainerProps>`
+export const Container = styled(Flex).attrs({ column: true })<ContainerProps>`
   height: 100%;
   width: 100%;
   display: flex;
@@ -24,6 +25,12 @@ const Container = styled(Flex).attrs({ column: true })<ContainerProps>`
       margin: auto;
       box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
     `}
+`;
+
+export const Drawer = styled(FadeRightContainer)`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 `;
 
 export default Container;

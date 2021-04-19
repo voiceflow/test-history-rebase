@@ -31,7 +31,6 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   isLoading,
   messages = [],
   onPlay,
-  debug,
   interactions = [],
   status,
   children,
@@ -74,7 +73,6 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
     <OutterChatContainer>
       <InnerChatContainer onScroll={onScrollHandler} ref={chatScrollRef} atTop={atTop}>
         <Dialog
-          debug={debug}
           status={status}
           onPlay={onPlay}
           isPublic={isPublic}

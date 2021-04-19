@@ -107,12 +107,21 @@ const usePrototype = ({
 
   const onInteraction = React.useCallback(
     (request: Request | string) => {
-      if (_isString(request) && Utils.checkForSpecialCharacters(request)) {
-        return prototype.interact(Utils.removeSpecialCharacters(request));
+      if (_isString(request)) {
+        if (Utils.checkForSpecialCharacters(request)) {
+          request = Utils.removeSpecialCharacters(request);
+        }
+
+        const match = request.toLowerCase().trim();
+        const chip = interactions.find((interaction) => match === interaction.name.toLowerCase().trim());
+        if (chip?.request) {
+          request = chip.request;
+        }
       }
+
       return prototype.interact(request);
     },
-    [prototype]
+    [prototype, interactions]
   );
   const onPlay = React.useCallback(
     (src: string) => {

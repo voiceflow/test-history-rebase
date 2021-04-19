@@ -3,6 +3,7 @@ import { TraceFrame as VisualTrace } from '@voiceflow/general-types/build/nodes/
 import cuid from 'cuid';
 
 import client from '@/client';
+import * as Recent from '@/ducks/recent';
 import * as Skill from '@/ducks/skill';
 import { Trace } from '@/models';
 import { Thunk } from '@/store/types';
@@ -26,12 +27,13 @@ const fetchContext = (request: Request | null): Thunk<Context | null> => async (
   const reduxState = getState();
   const { trace: _oldTrace, ...state } = prototypeContextSelector(reduxState);
   const { contextStep } = prototypeSelector(reduxState);
+  const settings = Recent.recentPrototypeSelector(reduxState);
   const currentVisualData = prototypeVisualDataSelector(reduxState);
   const versionID = Skill.activeSkillIDSelector(reduxState);
   const currentDiagramID = Skill.activeDiagramIDSelector(reduxState);
 
   try {
-    const { state: _state, trace } = await client.prototype.interact(versionID, { state, request });
+    const { state: _state, trace } = await client.prototype.interact(versionID, { state, request, config: { stopAll: !!settings.guided } });
 
     const newState: Context = _state;
     const lastVisual = [...trace].reverse().find(({ type }) => type === TraceType.VISUAL) as VisualTrace;

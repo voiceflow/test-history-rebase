@@ -68,7 +68,7 @@ class PrototypeTool {
     const input =
       formattedRequest?.type === RequestType.TEXT && _isString(formattedRequest.payload)
         ? formattedRequest?.payload
-        : JSON.stringify(formattedRequest?.payload, null, 2);
+        : `[Action] ${formattedRequest?.type}`;
 
     this.message?.user(cuid(), input);
 

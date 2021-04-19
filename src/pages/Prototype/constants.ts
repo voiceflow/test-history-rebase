@@ -16,15 +16,20 @@ const displayIcon: SubMenuItem = {
 };
 
 const developerIcon: SubMenuItem = {
-  value: PrototypeMode.DEVELOPER,
-  icon: 'developer',
+  value: PrototypeMode.VARIABLES,
+  icon: 'code',
 };
 
-const ALEXA_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, displayIcon, developerIcon];
+const settingsIcon: SubMenuItem = {
+  value: PrototypeMode.SETTINGS,
+  icon: 'cog',
+};
 
-const GOOGLE_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, developerIcon];
+const ALEXA_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];
 
-const GENERAL_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, displayIcon, developerIcon];
+const GOOGLE_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, developerIcon, settingsIcon];
+
+const GENERAL_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];
 
 export const PROTOTYPE_MENU_OPTIONS = {
   [PlatformType.ALEXA]: ALEXA_PROTOTYPE_MENU_OPTIONS,

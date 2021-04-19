@@ -8,7 +8,7 @@ import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType, START_BLOCK_ID } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
-import { BlockTrace, ChoiceTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace, VisualTrace } from '@/models';
+import { BlockTrace, ChoiceTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace, V1Trace, VisualTrace } from '@/models';
 import { Engine } from '@/pages/Canvas/engine';
 import { tail, unique } from '@/utils/array';
 import { noop } from '@/utils/functional';
@@ -17,7 +17,7 @@ import { Interaction, PMStatus } from '../types';
 import AudioController from './Audio';
 import MessageController from './Message';
 import TimeoutController from './Timeout';
-import { getUpdatedContextHistory } from './utils/activePath';
+import { getUpdatedContextHistory, isV1Trace } from './utils';
 
 export enum StepDirection {
   FORWARD = 'forward',
@@ -271,7 +271,11 @@ class TraceController {
         break;
       }
       default:
-        console.warn('Unsupported trace found!', topTrace); // eslint-disable-line no-console
+        if (isV1Trace(topTrace) && !tailTrace.length) {
+          this.processPathTrace(topTrace);
+        } else {
+          console.warn('Unsupported trace found!', topTrace); // eslint-disable-line no-console
+        }
     }
 
     if (this.trace === tailTrace) {
@@ -281,6 +285,18 @@ class TraceController {
 
   private processChoiceTrace({ payload: { choices } }: ChoiceTrace) {
     this.props.setInteractions(choices);
+  }
+
+  private processPathTrace(trace: V1Trace) {
+    this.props.setInteractions(
+      trace.paths.reduce<Interaction[]>((acc, path) => {
+        if (path.event) {
+          const { type } = path.event;
+          acc.push({ name: type, request: { type, payload: undefined } });
+        }
+        return acc;
+      }, [])
+    );
   }
 
   private saveActivePathBlock(node: Node) {

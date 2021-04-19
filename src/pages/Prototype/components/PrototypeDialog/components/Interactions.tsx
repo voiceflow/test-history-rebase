@@ -1,3 +1,4 @@
+import { Request } from '@voiceflow/general-types';
 import React from 'react';
 import SimpleBar from 'simplebar-react';
 
@@ -58,9 +59,22 @@ const Chip = styled(FadeLeftContainer)<ChipProps>`
   }
 `;
 
+const ActionChip = styled(Chip)`
+  ${transition('border')};
+  border: solid 1px rgba(141, 162, 181, 0.4);
+  color: #132144;
+
+  :hover,
+  :active {
+    color: #132144;
+    background: white;
+    border: solid 1px rgba(141, 162, 181, 0.6);
+  }
+`;
+
 interface InteractionsProps {
   interactions: Interaction[];
-  onInteraction: (input: string) => void;
+  onInteraction: (request: string | Request) => void;
   color?: string;
 }
 
@@ -75,11 +89,19 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
       <InnerContainer>
         {hasInteractions && (
           <>
-            {interactions.map(({ name }) => (
-              <Chip key={name} onMouseDown={preventDefault()} onClick={() => onInteraction(name)} rgbaColor={hexToRGBA(color ?? '#5D9DF5')}>
-                {name}
-              </Chip>
-            ))}
+            {interactions.map(({ name, request }) => {
+              const ChipElement = request ? ActionChip : Chip;
+              return (
+                <ChipElement
+                  key={name}
+                  onMouseDown={preventDefault()}
+                  onClick={() => onInteraction(request || name)}
+                  rgbaColor={hexToRGBA(color ?? '#5D9DF5')}
+                >
+                  {name}
+                </ChipElement>
+              );
+            })}
           </>
         )}
       </InnerContainer>

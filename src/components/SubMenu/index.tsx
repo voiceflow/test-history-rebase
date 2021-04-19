@@ -12,6 +12,7 @@ import { ActiveIndicator, Container, MenuItem } from './components';
 export type SubMenuItem = {
   icon: Icon;
   value: PrototypeMode;
+  label?: string;
 };
 
 export type SubMenuProps = {
@@ -39,7 +40,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ open, options, selected, onChange }) 
 
           return (
             <MenuItem key={index} selected={isSelectedOption} onClick={() => onSubMenuItemClick(option.value)}>
-              <TippyTooltip title={option.value} position="right">
+              <TippyTooltip title={option.label || option.value} position="right">
                 <SvgIcon icon={option.icon} color={isSelectedOption ? '#132144' : '#6e849a'} transition="color" />
               </TippyTooltip>
             </MenuItem>

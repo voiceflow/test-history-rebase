@@ -3,7 +3,9 @@ import React from 'react';
 
 import Box from '@/components/Box';
 import * as Diagram from '@/ducks/diagram';
+import * as Recent from '@/ducks/recent';
 import { connect, styled } from '@/hocs';
+import { ConnectedProps } from '@/types';
 
 import { MessageProps } from '../components/Message';
 
@@ -27,10 +29,9 @@ const SubjectText = styled.div`
 
 type DebugProps = Omit<MessageProps, 'iconProps'> & {
   message: string;
-  getDiagram: (id: string) => { name: string };
 };
 
-export const Debug: React.FC<DebugProps> = ({ message, getDiagram, ...props }) => {
+export const Debug: React.FC<DebugProps & ConnectedDebugProps> = ({ message, settings, getDiagram, ...props }) => {
   const debugMessage = React.useMemo(() => {
     if (message.includes('entering flow')) {
       const flowID = message.split(' ')[2].replace(/`/g, '');
@@ -39,6 +40,15 @@ export const Debug: React.FC<DebugProps> = ({ message, getDiagram, ...props }) =
     }
     return message;
   }, [message]);
+
+  if (message.startsWith('matched intent')) {
+    if (!settings.intent) {
+      return null;
+    }
+  } else if (!settings.debug) {
+    return null;
+  }
+
   return (
     <Box mt={8} mb={12} fontSize={13} style={{ textAlign: 'center' }} {...props}>
       <SubjectText>
@@ -50,6 +60,9 @@ export const Debug: React.FC<DebugProps> = ({ message, getDiagram, ...props }) =
 
 const mapStateToProps = {
   getDiagram: Diagram.diagramByIDSelector,
+  settings: Recent.recentPrototypeSelector,
 };
+
+type ConnectedDebugProps = ConnectedProps<typeof mapStateToProps>;
 
 export default connect(mapStateToProps)(Debug);

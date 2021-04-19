@@ -1,3 +1,5 @@
+import { Request } from '@voiceflow/general-types';
+
 export enum PMStatus {
   IDLE = 'IDLE',
   ERROR = 'ERROR',
@@ -50,4 +52,5 @@ export type TypedMessage<T extends MessageType> = MessageMap[T];
 
 export interface Interaction {
   name: string;
+  request?: Request;
 }

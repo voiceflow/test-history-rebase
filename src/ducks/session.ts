@@ -22,6 +22,7 @@ export const STATE_KEY = 'session';
 
 export const tabIDPersistor = createPersistor<Storage, { value: string }>(sessionStorage, `persist:${STATE_KEY}:tab_id`);
 export const browserIDPersistor = createPersistor<Storage, { value: string }>(localStorage, `persist:${STATE_KEY}:browser_id`);
+export const intercomUserHMACPersistor = createPersistor<Storage, null | string>(localStorage, `persist:${STATE_KEY}:intercom_user_hmac`);
 
 const log = duckLogger.child(STATE_KEY);
 
@@ -30,18 +31,21 @@ export type SessionState = {
   tabID: { value: string };
   browserID: { value: string };
   intercomVisible: boolean;
+  intercomUserHMAC: null | string;
   websocketsEnabled: boolean;
 };
 
 const INITIAL_STATE: Omit<SessionState, 'token' | 'browserID' | 'tabID'> = {
-  websocketsEnabled: true,
   intercomVisible: true,
+  intercomUserHMAC: intercomUserHMACPersistor.get(),
+  websocketsEnabled: true,
 };
 
 export enum SessionAction {
   SET_AUTH_TOKEN = 'SESSION:SET_AUTH_TOKEN',
   DISABLE_WEBSOCKETS = 'SESSION:DISABLE_WEBSOCKETS',
   SET_INTERCOM_VISIBLE = 'SESSION:INTERCOM_VISIBLE:SET',
+  SET_INTERCOM_USER_HMAC = 'SESSION:INTERCOM_USER_HMAC:SET',
 }
 
 // action types
@@ -52,13 +56,13 @@ export type DisableWebsockets = Action<SessionAction.DISABLE_WEBSOCKETS>;
 
 export type SetIntercomVisible = Action<SessionAction.SET_INTERCOM_VISIBLE, boolean>;
 
-type AnySessionAction = SetAuthToken | DisableWebsockets | SetIntercomVisible;
+export type SetIntercomUserHMAC = Action<SessionAction.SET_INTERCOM_USER_HMAC, string | null>;
+
+type AnySessionAction = SetAuthToken | DisableWebsockets | SetIntercomVisible | SetIntercomUserHMAC;
 
 // reducers
 
-const DefaultAuthTokenState = () => ({
-  value: Cookies.getAuthCookie() || null,
-});
+const DefaultAuthTokenState = () => ({ value: Cookies.getAuthCookie() || null });
 
 export const authTokenReducer: RootReducer<{ value: string | null }, SetAuthToken> = (state = DefaultAuthTokenState(), action) => {
   if (action.type === SessionAction.SET_AUTH_TOKEN) {
@@ -78,6 +82,15 @@ export const setIntercomVisibleReducer: Reducer<SessionState, SetIntercomVisible
   intercomVisible: payload,
 });
 
+export const setIntercomUserHMACReducer: Reducer<SessionState, SetIntercomUserHMAC> = (state, { payload }) => {
+  intercomUserHMACPersistor.set(payload);
+
+  return {
+    ...state,
+    intercomUserHMAC: payload,
+  };
+};
+
 const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INITIAL_STATE as SessionState, action) => {
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
@@ -85,6 +98,8 @@ const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INI
       return disableWebsocketsReducer(state);
     case SessionAction.SET_INTERCOM_VISIBLE:
       return setIntercomVisibleReducer(state, action);
+    case SessionAction.SET_INTERCOM_USER_HMAC:
+      return setIntercomUserHMACReducer(state, action);
     default:
       return state;
   }
@@ -137,6 +152,8 @@ export const isWebsocketsEnabledSelector = createSelector([rootSelector], ({ web
 
 export const isIntercomVisibleSelector = createSelector([rootSelector], ({ intercomVisible }) => intercomVisible);
 
+export const intercomUserHMACSelector = createSelector([rootSelector], ({ intercomUserHMAC }) => intercomUserHMAC);
+
 export const isLoggedInSelector = createSelector([authTokenSelector, Account.userIDSelector], (authToken, userID) => !!(authToken && userID));
 
 // action creators
@@ -146,6 +163,8 @@ export const setAuthToken = (token: string | null): SetAuthToken => createAction
 export const disableWebsockets = (): DisableWebsockets => createAction(SessionAction.DISABLE_WEBSOCKETS);
 
 export const setIntercomVisible = (isVisible: boolean): SetIntercomVisible => createAction(SessionAction.SET_INTERCOM_VISIBLE, isVisible);
+export const setIntercomUserHMAC = (intercomUserHMAC: string | null): SetIntercomUserHMAC =>
+  createAction(SessionAction.SET_INTERCOM_USER_HMAC, intercomUserHMAC);
 export const showIntercom = () => setIntercomVisible(true);
 export const hideIntercom = () => setIntercomVisible(false);
 
@@ -166,6 +185,7 @@ export const updateAuthToken = (token: string | null): SyncThunk => (dispatch) =
 
 export const resetSession = (): Thunk => async (dispatch) => {
   dispatch(updateAuthToken(null));
+  dispatch(setIntercomUserHMAC(null));
   dispatch(Account.resetAccount());
   await client.socket.logout().catch(console.error);
   dispatch(goToLogin());
@@ -219,7 +239,10 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
   }
 };
 
-const setSession = ({ token, user }: { token: string; user: Models.Account }): Thunk => async (dispatch, getState) => {
+const setSession = ({ token, user, intercomUserHMAC }: { token: string; user: Models.Account; intercomUserHMAC: string | null }): Thunk => async (
+  dispatch,
+  getState
+) => {
   const state = getState();
   const tabID = tabIDSelector(state);
   const browserID = browserIDSelector(state);
@@ -227,6 +250,7 @@ const setSession = ({ token, user }: { token: string; user: Models.Account }): T
   dispatch(updateAuthToken(token));
 
   await client.socket!.auth(token, browserID, tabID);
+  dispatch(setIntercomUserHMAC(intercomUserHMAC));
   dispatch(Account.updateAccount(user));
 
   const location = ConnectedReactRouter.getLocation(state);
@@ -245,15 +269,15 @@ const setSession = ({ token, user }: { token: string; user: Models.Account }): T
 };
 
 export const ssoLogin = (data: SSOLoginPayload): Thunk => async (dispatch) => {
-  const { user, token } = await client.sso.login(data);
+  const { user, token, intercomUserHMAC = null } = await client.sso.login(data);
 
-  await dispatch(setSession({ user, token }));
+  await dispatch(setSession({ user, token, intercomUserHMAC }));
 };
 
 const createSession = (sessionType: SessionType) => (authRequest: unknown): Thunk<Models.Account> => async (dispatch) => {
-  const { user, token } = await client.session.create(sessionType, authRequest);
+  const { user, token, intercomUserHMAC = null } = await client.session.create(sessionType, authRequest);
 
-  await dispatch(setSession({ user, token }));
+  await dispatch(setSession({ user, token, intercomUserHMAC }));
 
   return user;
 };
@@ -264,9 +288,9 @@ export const googleLogin = createSession(SessionType.GOOGLE);
 export const facebookLogin = createSession(SessionType.FACEBOOK);
 
 const createAdoptSSO = (sessionType: SessionType) => (payload: SSOConvertPayload): Thunk<Models.Account> => async (dispatch) => {
-  const { user, token } = await client.sso.convert(sessionType, payload);
+  const { user, token, intercomUserHMAC = null } = await client.sso.convert(sessionType, payload);
 
-  await dispatch(setSession({ user, token }));
+  await dispatch(setSession({ user, token, intercomUserHMAC }));
 
   return user;
 };

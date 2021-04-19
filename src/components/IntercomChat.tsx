@@ -13,7 +13,7 @@ import { generateID } from '@/utils/env';
 import * as Intercom from '@/vendors/intercom';
 import * as LogRocket from '@/vendors/logRocket';
 
-export const IntercomChat: React.FC<ConnectedIntercomChatProps> = ({ user, workspace, isVisible, isLoggedIn }) => {
+export const IntercomChat: React.FC<ConnectedIntercomChatProps> = ({ user, workspace, isVisible, isLoggedIn, intercomUserHMAC }) => {
   const isRunning = React.useRef(false);
   const intercom = useIntercom();
   const intercomIntegration = useFeature(FeatureFlag.INTERCOM_INTEGRATION);
@@ -31,7 +31,7 @@ export const IntercomChat: React.FC<ConnectedIntercomChatProps> = ({ user, works
 
   React.useEffect(() => {
     if (showIntercom) {
-      intercom.boot(Intercom.createProps(user, workspace!));
+      intercom.boot(Intercom.createProps(user, workspace!, intercomUserHMAC));
       LogRocket.getSessionURL((sessionURL) => intercom.trackEvent('LogRocket', { sessionURL, company_id: generateID(workspace!.id) }));
 
       isRunning.current = true;
@@ -44,10 +44,11 @@ export const IntercomChat: React.FC<ConnectedIntercomChatProps> = ({ user, works
 };
 
 const mapStateToProps = {
-  isVisible: Session.isIntercomVisibleSelector,
-  isLoggedIn: Session.isLoggedInSelector,
-  workspace: Workspace.activeWorkspaceSelector,
   user: Account.userSelector,
+  isVisible: Session.isIntercomVisibleSelector,
+  workspace: Workspace.activeWorkspaceSelector,
+  isLoggedIn: Session.isLoggedInSelector,
+  intercomUserHMAC: Session.intercomUserHMACSelector,
 };
 
 type ConnectedIntercomChatProps = ConnectedProps<typeof mapStateToProps>;

@@ -7,7 +7,7 @@ import { NullableRecord } from '@/types';
 import { generateID } from '@/utils/env';
 
 // eslint-disable-next-line import/prefer-default-export
-export function createProps(user: NullableRecord<Account>, workspace: Workspace = {} as Workspace): IntercomProps {
+export function createProps(user: NullableRecord<Account>, workspace: Workspace = {} as Workspace, intercomUserHMAC: string | null): IntercomProps {
   if (!user.creator_id) return {};
 
   const intercomID = generateID(String(user.creator_id));
@@ -17,6 +17,7 @@ export function createProps(user: NullableRecord<Account>, workspace: Workspace 
     userId: intercomID,
     name: user.name!,
     email: user.email!,
+    userHash: intercomUserHMAC ?? undefined,
     // active workspace info
     customAttributes: {
       workspace: workspace.name,

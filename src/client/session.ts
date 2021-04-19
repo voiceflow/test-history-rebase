@@ -16,7 +16,8 @@ export const SESSION_ENDPOINTS = {
 const sessionClient = {
   delete: () => api.delete(SESSION_PATH),
 
-  create: (type: SessionType, user: unknown) => api.put<{ user: Account; token: string }>(SESSION_ENDPOINTS[type], { user, device: DEVICE_INFO }),
+  create: (type: SessionType, user: unknown) =>
+    api.put<{ user: Account; token: string; intercomUserHMAC?: string }>(SESSION_ENDPOINTS[type], { user, device: DEVICE_INFO }),
 };
 
 export default sessionClient;

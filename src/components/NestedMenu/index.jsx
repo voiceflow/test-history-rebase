@@ -12,7 +12,12 @@ import MenuOptions from './MenuOptions';
 export { AdvancedMenu, defaultLabelRenderer, MenuHeader, MenuOptions };
 
 const defaultGetter = (option) => option;
-const POPOVER_MODIFIERS = { autoSizing: { enabled: true, fn: null, order: 840 }, preventOverflow: { enabled: false }, hide: { enabled: false } };
+
+export const POPOVER_MODIFIERS = {
+  hide: { enabled: false },
+  autoSizing: { enabled: true, fn: null, order: 840 },
+  preventOverflow: { enabled: true, boundariesElement: document.body },
+};
 
 /* this component can be used in a Popper w/o Manager
  * (e.g. Canvas ContextMenu component implementation)
@@ -26,6 +31,7 @@ const SimpleNestedMenu = ({
   getOptionValue = defaultGetter,
   getOptionLabel = defaultGetter,
   getOptionKey = getOptionValue,
+  popoverModifiers = POPOVER_MODIFIERS,
   renderOptionLabel = defaultLabelRenderer,
   ...props
 }) => {
@@ -34,7 +40,6 @@ const SimpleNestedMenu = ({
   const [focusedOptionIndex, updateFocusedOptionIndex] = React.useState(multiLevelDropdown ? null : 0);
   const [childFocusItemIndex, setChildFocusItemIndex] = React.useState(null);
   const focusedItemOptions = options[focusedOptionIndex - firstOptionIndex]?.options;
-  const menuPopoverModifiers = React.useMemo(() => POPOVER_MODIFIERS, []);
   const onItemRef = (_, ref) => (node) => setRef(ref, node);
   const onFocusItem = React.useCallback((index) => updateFocusedOptionIndex(index), [updateFocusedOptionIndex]);
   const onChildFocusItemIndex = React.useCallback(
@@ -59,14 +64,14 @@ const SimpleNestedMenu = ({
         getOptionValue={getOptionValue}
         getOptionLabel={getOptionLabel}
         firstOptionIndex={firstOptionIndex}
-        popoverModifiers={menuPopoverModifiers}
+        popoverModifiers={popoverModifiers}
         renderOptionLabel={renderOptionLabel}
         focusedOptionIndex={focusedOptionIndex}
         multiLevelDropdown={multiLevelDropdown}
         childFocusItemIndex={childFocusItemIndex}
         onChildFocusItemIndex={onChildFocusItemIndex}
         {...props}
-      ></MenuOptions>
+      />
     </BaseMenu>
   );
 };

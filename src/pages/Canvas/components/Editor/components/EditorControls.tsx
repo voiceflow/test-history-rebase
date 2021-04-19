@@ -15,6 +15,7 @@ export type ControlOptions = {
   onClick: React.MouseEventHandler;
   variant?: ButtonVariant;
   disabled?: boolean;
+  iconProps?: Omit<SvgIconProps, 'icon'>;
 };
 
 export type EditorControlsProps = {
@@ -49,8 +50,8 @@ const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutor
       <div>{children}</div>
       <ControlsContainer>
         {menu}
-        {options.map(({ label, icon, onClick, variant = ButtonVariant.SECONDARY, disabled = false }) => (
-          <Button variant={variant} icon={icon} onClick={onClick} key={label} disabled={disabled}>
+        {options.map(({ label, icon, onClick, variant = ButtonVariant.SECONDARY, disabled = false, iconProps }) => (
+          <Button variant={variant} icon={icon} onClick={onClick} key={label} disabled={disabled} iconProps={iconProps}>
             {label}
           </Button>
         ))}

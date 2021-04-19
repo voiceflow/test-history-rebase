@@ -11,3 +11,5 @@ export const settingsSelector = createSelector(skillMetaSelector, ({ settings })
 export const defaultVoiceSelector = createSelector(settingsSelector, (settings) => settings?.defaultVoice);
 
 export const accountLinkingSelector = createSelector(skillMetaSelector, ({ accountLinking }) => accountLinking);
+
+export const defaultCanvasNodeVisibilitySelector = createSelector(settingsSelector, (settings) => settings?.defaultCanvasNodeVisibility);

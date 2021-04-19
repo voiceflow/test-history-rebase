@@ -6,7 +6,7 @@ import { DialogType, PlatformType } from '@/constants';
 import { styled } from '@/hocs';
 import { SpeakData, SSMLData } from '@/models';
 
-import SpeakItemList from '.';
+import SpeakAndAudioList from '.';
 
 const withDecorators = composeDecorators(withDnD, withRedux());
 
@@ -54,7 +54,7 @@ const speakItems: SpeakData[] = [
 ];
 
 export const basic = withDecorators(() => (
-  <SpeakItemList
+  <SpeakAndAudioList
     platform={PlatformType.ALEXA}
     changeRandomize={action('changed randomize')}
     changeSpeakItems={action('changed speak items')}

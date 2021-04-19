@@ -1,28 +1,29 @@
 import _throttle from 'lodash/throttle';
 import React from 'react';
-import { useDrag, useDrop } from 'react-dnd';
+import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
+import { DragContextPreviewProps } from '@/contexts';
 
 import { Handlers, InternalItem } from './types';
 
-const useDragAndDrop = <I extends { id: string }>(
+const useDragAndDrop = <I extends { id: string } | any>(
   type: string,
-  handlers: { current: Handlers },
-  props: InternalItem<I>,
+  handlers: { current: Handlers<I> },
+  props: Omit<InternalItem<I>, 'type'>,
   { partialDrag, unmountableDuringDrag }: { partialDrag?: boolean; unmountableDuringDrag?: boolean }
-): [boolean, React.ReactElement | null, React.ReactElement | null] => {
+): [boolean, React.RefObject<HTMLElement>, React.RefObject<HTMLElement>] => {
   const rootRef = React.useRef<HTMLElement>(null);
   const dragRef = React.useRef<HTMLElement>(null);
-  const cacheRef = React.useRef<{ id: string; styles: { width?: number; height?: number } }>({ id: props.item.id, styles: {} });
+  const cacheRef = React.useRef<{ id: string; styles: { width?: number; height?: number } }>({ id: '', styles: {} });
 
-  cacheRef.current.id = props.item.id ?? props.item;
+  cacheRef.current.id = (props.item as any).id ?? props.item;
 
-  const [, connectDrop] = useDrop({
-    drop: (...args) => handlers.current.onDrop?.(...args),
+  const [, connectDrop] = useDrop<InternalItem<I>, void, void>({
+    drop: (item, monitor) => handlers.current.onDrop?.(item, monitor),
     accept: type,
-    hover: _throttle((item, monitor) => {
+    hover: _throttle((item: InternalItem<I>, monitor: DropTargetMonitor) => {
       item.deleteHovered = false;
 
       if (!rootRef.current) {
@@ -60,7 +61,11 @@ const useDragAndDrop = <I extends { id: string }>(
     }, HOVER_THROTTLE_TIMEOUT),
   });
 
-  const [{ isDragging }, connectDrag, connectPreview] = useDrag({
+  const [{ isDragging }, connectDrag, connectPreview] = useDrag<
+    InternalItem<I> & { getStyle: DragContextPreviewProps['getStyle'] },
+    void,
+    { isDragging: boolean }
+  >({
     item: {
       ...props,
       type,
@@ -75,8 +80,8 @@ const useDragAndDrop = <I extends { id: string }>(
         return cacheRef.current.styles;
       },
     },
-    end: (...args) => handlers.current.onDragEnd?.(...args),
-    begin: (...args) => handlers.current.onDragStart?.(...args),
+    end: (result, monitor) => handlers.current.onDragEnd?.(result, monitor),
+    begin: (monitor) => handlers.current.onDragStart?.(monitor),
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     isDragging: unmountableDuringDrag ? (monitor) => cacheRef.current.id === (monitor.getItem().item.id ?? monitor.getItem().item) : undefined,
   });
@@ -88,7 +93,7 @@ const useDragAndDrop = <I extends { id: string }>(
   const connectedRootRef = partialDrag ? connectDrop(rootRef) : connectDrag(connectDrop(rootRef));
   const connectedDragRef = partialDrag ? connectDrag(dragRef) : null;
 
-  return [isDragging, connectedRootRef, connectedDragRef];
+  return [isDragging, connectedRootRef as any, connectedDragRef as any];
 };
 
 export default useDragAndDrop;

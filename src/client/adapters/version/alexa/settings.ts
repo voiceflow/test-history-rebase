@@ -34,6 +34,7 @@ const alexaSettingsAdapter = createAdapter<AlexaVersionSettings, SkillSettings>(
       permissions,
       modelSensitivity,
       defaultVoice,
+      defaultCanvasNodeVisibility,
     } = defaultAlexaVersionSettings(settings);
 
     return {
@@ -44,6 +45,7 @@ const alexaSettingsAdapter = createAdapter<AlexaVersionSettings, SkillSettings>(
         defaultVoice,
         customInterface,
         modelSensitivity,
+        defaultCanvasNodeVisibility,
       },
       alexa_permissions: permissions,
       errorPrompt: errorPromptAdapter.fromDB(error),
@@ -53,7 +55,7 @@ const alexaSettingsAdapter = createAdapter<AlexaVersionSettings, SkillSettings>(
   ({
     restart,
     repeat,
-    settings: { customInterface = false, modelSensitivity = null, defaultVoice = null } = {},
+    settings: { customInterface = false, modelSensitivity = null, defaultVoice = null, defaultCanvasNodeVisibility = null } = {},
     errorPrompt,
     alexaEvents,
     resumePrompt,
@@ -69,6 +71,7 @@ const alexaSettingsAdapter = createAdapter<AlexaVersionSettings, SkillSettings>(
     accountLinking: accountLinking && accountLinkingAdapter.toDB(accountLinking),
     customInterface,
     modelSensitivity,
+    defaultCanvasNodeVisibility,
   })
 );
 

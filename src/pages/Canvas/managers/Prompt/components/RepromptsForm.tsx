@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { NodeData } from '@/models';
+import { NodeData, SpeakData } from '@/models';
 import NoMatchItem from '@/pages/Canvas/components/NoMatchItem';
-import SpeakItemList from '@/pages/Canvas/components/SpeakItemList';
+import SpeakAndAudioList from '@/pages/Canvas/components/SpeakAndAudioList';
 import { PlatformContext } from '@/pages/Canvas/contexts';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
 
@@ -20,19 +20,19 @@ const RepromptsForm: React.FC<RepromptsFormProps> = ({ data, onChange }) => {
 
   const platform = React.useContext(PlatformContext)!;
 
-  const changeRandomize = React.useCallback((randomize) => onChange({ noMatchReprompt: { randomize, reprompts } }), [reprompts]);
-  const changeReprompts = React.useCallback((reprompts) => onChange({ noMatchReprompt: { randomize, reprompts } }), [randomize]);
+  const changeRandomize = React.useCallback((randomize: boolean) => onChange({ noMatchReprompt: { randomize, reprompts } }), [reprompts]);
+  const changeReprompts = React.useCallback((reprompts: SpeakData[]) => onChange({ noMatchReprompt: { randomize, reprompts } }), [randomize]);
 
   return (
-    <SpeakItemList
+    <SpeakAndAudioList
+      items={reprompts}
       platform={platform}
-      changeRandomize={changeRandomize}
-      changeSpeakItems={changeReprompts}
-      itemComponent={NoMatchItem}
-      maxItems={MAX_REPROMPTS}
-      speakItems={reprompts}
-      randomize={randomize}
       itemName="reprompts"
+      maxItems={MAX_REPROMPTS}
+      randomize={randomize}
+      itemComponent={NoMatchItem}
+      onChangeItems={changeReprompts}
+      onChangeRandomize={changeRandomize}
     />
   );
 };

@@ -8,7 +8,7 @@ import { connect } from '@/hocs';
 import { Node, NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import NoMatchItem from '@/pages/Canvas/components/NoMatchItem';
-import SpeakItemList from '@/pages/Canvas/components/SpeakItemList';
+import SpeakAndAudioList from '@/pages/Canvas/components/SpeakAndAudioList';
 import { EngineContext, PlatformContext } from '@/pages/Canvas/contexts';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { head } from '@/utils/array';
@@ -62,15 +62,15 @@ const RepromptResponseForm: React.FC<NodeEditorPropsType<NodeData.Interaction> &
         </FormControl>
       </Section>
       {type === InteractionElseType.REPROMPT && (
-        <SpeakItemList
+        <SpeakAndAudioList
+          items={cachedData.else.data.reprompts}
           platform={platform}
-          changeRandomize={changeRandomize}
-          changeSpeakItems={changeReprompts}
-          itemComponent={NoMatchItem}
           maxItems={MAX_REPROMPTS}
-          speakItems={cachedData.else.data.reprompts}
-          randomize={cachedData.else.randomize}
           itemName="reprompts"
+          randomize={cachedData.else.randomize}
+          itemComponent={NoMatchItem}
+          onChangeItems={changeReprompts}
+          onChangeRandomize={changeRandomize}
         />
       )}
     </>

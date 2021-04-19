@@ -4,9 +4,9 @@ import { flexStyles } from '@/components/Flex';
 
 export type MenuItemProps = {
   active?: boolean;
+  ending?: boolean;
   divider?: boolean;
   disabled?: boolean;
-  teamItem?: boolean;
   capitalize?: boolean;
   bottomAction?: boolean;
 };
@@ -66,12 +66,11 @@ export const itemStyles = css<MenuItemProps>`
       padding: 24px 46px;
     `}
 
-  ${({ teamItem }) =>
-    teamItem &&
+  ${({ ending }) =>
+    ending &&
     css`
-      background: rgb(243, 248, 249);
-      color: #62778c;
       height: 52px;
+      background: #fbfbfb !important;
       padding-bottom: 2px;
     `}
 `;

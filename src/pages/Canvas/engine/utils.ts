@@ -1,3 +1,5 @@
+import { CanvasNodeVisibility } from '@voiceflow/general-types';
+
 /* eslint-disable max-classes-per-file */
 import { CanvasAPI } from '@/components/Canvas';
 import { BlockType, PlatformType } from '@/constants';
@@ -85,7 +87,7 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
 export function nodeFactory(
   type: BlockType,
   factoryData?: Partial<NodeData<unknown>>,
-  options?: { defaultVoice: string }
+  options?: { defaultVoice: string; canvasNodeVisibility: CanvasNodeVisibility }
 ): { node: Omit<Creator.NodeDescriptor, 'id'>; data: Creator.DataDescriptor } {
   const config = getManager(type);
 

@@ -61,6 +61,7 @@ function BaseNestedMenu({
   onChangeSearchLabel,
   createInputPlaceholder,
   portalNode,
+  menuProps,
 }) {
   const cachedRef = React.useRef({ blockOptionHover: false, scrollToFocusedOption: true });
   const menuRef = React.useRef();
@@ -77,16 +78,29 @@ function BaseNestedMenu({
   }, []);
 
   const onChildFocusItemIndex = React.useCallback(
-    (index) => {
-      const i = index >= focusedItemOptions.length ? 0 : index;
+    (nextIndex) => {
+      let index = nextIndex >= focusedItemOptions.length ? 0 : nextIndex;
 
-      setChildFocusItemIndex(i < 0 ? focusedItemOptions.length - 1 : i);
+      index = index < 0 ? focusedItemOptions.length - 1 : index;
+
+      if (focusedItemOptions[index]?.disabled) {
+        return;
+      }
+
+      setChildFocusItemIndex(index);
     },
     [focusedItemOptions, firstOptionIndex] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const onFocusItem = React.useCallback(
     (index) => {
+      let nextIndex = index >= cachedRef.current.options?.length ? 0 : index;
+      nextIndex = nextIndex < 0 ? cachedRef.current.options?.length - 1 : nextIndex;
+
+      if (cachedRef.current.options?.[nextIndex]?.disabled) {
+        return;
+      }
+
       setChildFocusItemIndex(null);
       onFocusOption(index);
 
@@ -202,11 +216,14 @@ function BaseNestedMenu({
           swallowEvent(null, true)(e);
           onCreate(nextValue);
         } else if (
-          (!isInput || inputWrapperRef.contains(e.target) || (creatable && searchable) || (isDropdown && searchable)) &&
+          (!isInput || inputWrapperRef?.contains(e.target) || (creatable && searchable) || (isDropdown && searchable)) &&
           (!creatable || focusedIndex > 0)
         ) {
           swallowEvent(null, true)(e);
-          onSelect(cachedRef.current.getOptionValue(flatOptions[focusedIndex - firstOptionIndex]), optionsPath);
+
+          const option = flatOptions[focusedIndex - firstOptionIndex];
+
+          !option?.disabled && onSelect(cachedRef.current.getOptionValue(flatOptions[focusedIndex - firstOptionIndex]), optionsPath);
         }
       } else if (e.key === KeyCodes.ESCAPE) {
         swallowEvent(null, true)(e);
@@ -288,6 +305,7 @@ function BaseNestedMenu({
               }
               scrollbarsRef={scrollbarsRef}
               disableAnimation={disableAnimation}
+              {...menuProps}
             >
               <MenuOptions
                 onHide={onHide}

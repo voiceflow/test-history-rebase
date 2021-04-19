@@ -1,12 +1,12 @@
 import { PermissionType } from '@voiceflow/alexa-types';
 import { SlotMapping } from '@voiceflow/api-sdk';
-import { Chip, ExpressionType, IntegrationUser } from '@voiceflow/general-types';
+import { CanvasNodeVisibility, Chip, ExpressionType, IntegrationUser } from '@voiceflow/general-types';
 import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
 import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/general-types/build/nodes/googleSheets';
 import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
 import { StepData as VisualStepData } from '@voiceflow/general-types/build/nodes/visual';
 
-import { BlockType, CardType, DialogType, IntegrationType, PlatformType, RepromptType } from '@/constants';
+import { BlockType, CardType, IntegrationType, PlatformType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 
 import { SpeakData } from './Speak';
@@ -113,19 +113,9 @@ export namespace NodeData {
 
   export type Speak = {
     randomize: boolean;
-    dialogs: Speak.Dialog[];
+    dialogs: SpeakData[];
+    canvasVisibility?: CanvasNodeVisibility;
   };
-
-  export namespace Speak {
-    export type Dialog = {
-      id: string;
-      content?: string;
-      type: DialogType;
-      voice?: string;
-      url?: string;
-      desc?: string;
-    };
-  }
 
   export type Card = {
     cardType: CardType;

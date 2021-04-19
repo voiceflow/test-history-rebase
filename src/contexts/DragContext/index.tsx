@@ -2,32 +2,30 @@ import React from 'react';
 
 import Portal from '@/components/Portal';
 
-import DragLayer from './DragLayer';
+import DragLayer, { PreviewOptions } from './DragLayer';
 
 export type DragContextPreviewProps = {
   getStyle: () => { width?: number; height?: number };
-  [key: string]: any;
 };
 
 export type DragContextType = null | {
-  getOptions: (type: string) => Record<string, any> | undefined;
   isRegistered: (type: string) => boolean;
-  renderPreview: (type: string, props: DragContextPreviewProps) => React.ReactNode;
-  registerPreview: (type: string, component: React.FC<DragContextPreviewProps>, options: Record<string, any>) => void;
+  renderPreview: <T>(type: string, props: T & DragContextPreviewProps) => React.ReactNode;
+  registerPreview: <T>(type: string, component: React.FC<T & DragContextPreviewProps>, options?: Partial<PreviewOptions>) => void;
 };
 
 export const DragContext = React.createContext<DragContextType>(null);
 export const { Consumer: DragConsumer } = DragContext;
 
 export const DragProvider: React.FC = ({ children }) => {
-  const previewComponents = React.useRef<Record<string, [React.FC<DragContextPreviewProps>, Record<string, any>] | null>>({});
+  const previewComponents = React.useRef<Record<string, [React.FC<any>, Partial<PreviewOptions>] | null>>({});
 
-  const registerPreview = (type: string, component: React.FC<DragContextPreviewProps>, options: Record<string, any> = {}) => {
+  const registerPreview = <T extends any>(type: string, component: React.FC<T & DragContextPreviewProps>, options: Partial<PreviewOptions> = {}) => {
     previewComponents.current[type] = component ? [component, options] : null;
   };
 
-  const renderPreview = (type: string, props: DragContextPreviewProps) => {
-    const preview = previewComponents.current[type];
+  const renderPreview = <T extends any>(type: string, props: T & DragContextPreviewProps) => {
+    const preview = type && previewComponents.current[type];
 
     if (!preview) {
       return null;
@@ -42,10 +40,10 @@ export const DragProvider: React.FC = ({ children }) => {
   const getOptions = (type: string) => previewComponents.current[type]?.[1];
 
   const context = {
-    registerPreview,
-    renderPreview,
     getOptions,
     isRegistered,
+    renderPreview,
+    registerPreview,
   };
 
   return (

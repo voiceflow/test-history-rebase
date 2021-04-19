@@ -1,22 +1,22 @@
-export const unique = <T>(items: T[]) => Array.from(new Set(items));
+export const unique = <T>(items: T[]): T[] => Array.from(new Set(items));
 
-export const without = <T>(items: T[], index: number) => (index === -1 ? items : [...items.slice(0, index), ...items.slice(index + 1)]);
+export const without = <T>(items: T[], index: number): T[] => (index === -1 ? items : [...items.slice(0, index), ...items.slice(index + 1)]);
 
-export const withoutValue = <T>(items: T[], value: T) => without(items, items.indexOf(value));
+export const withoutValue = <T>(items: T[], value: T): T[] => without(items, items.indexOf(value));
 
-export const replace = <T>(items: T[], index: number, item: T) => [...items.slice(0, index), item, ...items.slice(index + 1)];
+export const replace = <T>(items: T[], index: number, item: T): T[] => [...items.slice(0, index), item, ...items.slice(index + 1)];
 
-export const insert = <T>(items: T[], index: number, item: T) => [...items.slice(0, index), item, ...items.slice(index)];
+export const insert = <T>(items: T[], index: number, item: T): T[] => [...items.slice(0, index), item, ...items.slice(index)];
 
-export const insertAll = <T>(items: T[], index: number, additionalItems: T[]) => [
+export const insertAll = <T>(items: T[], index: number, additionalItems: T[]): T[] => [
   ...items.slice(0, index),
   ...additionalItems,
   ...items.slice(index),
 ];
 
-export const append = <T>(items: T[], item: T) => (items.includes(item) ? items : [...items, item]);
+export const append = <T>(items: T[], item: T): T[] => (items.includes(item) ? items : [...items, item]);
 
-export const toggleMembership = <T>(items: T[], item: T) => (items.includes(item) ? withoutValue(items, item) : [...items, item]);
+export const toggleMembership = <T>(items: T[], item: T): T[] => (items.includes(item) ? withoutValue(items, item) : [...items, item]);
 
 export const head = <T>(items: T[]): [T, T[]] => {
   const [first, ...rest] = items;
@@ -29,7 +29,7 @@ export const tail = <T>(items: T[]): [T[], T] => {
   return [rest, last];
 };
 
-export const reorder = <T>(items: T[], fromIndex: number, toIndex: number) => {
+export const reorder = <T>(items: T[], fromIndex: number, toIndex: number): T[] => {
   if (fromIndex < 0 || fromIndex >= items.length) {
     return items;
   }
@@ -45,7 +45,7 @@ export const reorder = <T>(items: T[], fromIndex: number, toIndex: number) => {
   return insert(without(items, fromIndex), toIndex, items[fromIndex]);
 };
 
-export const separate = <T>(items: T[], predicate: (item: T, index: number) => boolean) =>
+export const separate = <T>(items: T[], predicate: (item: T, index: number) => boolean): [T[], T[]] =>
   items.reduce<[T[], T[]]>(
     ([passAcc, failAcc], item, index) => {
       if (predicate(item, index)) {
@@ -59,7 +59,7 @@ export const separate = <T>(items: T[], predicate: (item: T, index: number) => b
     [[], []]
   );
 
-export const findUnion = <T>(lhs: T[], rhs: T[]) => {
+export const findUnion = <T>(lhs: T[], rhs: T[]): { rhsOnly: T[]; lhsOnly: T[]; union: T[] } => {
   const unique = new Set([...lhs, ...rhs]);
 
   return Array.from(unique).reduce<{ lhsOnly: T[]; rhsOnly: T[]; union: T[] }>(
@@ -80,13 +80,13 @@ export const findUnion = <T>(lhs: T[], rhs: T[]) => {
   );
 };
 
-export const diff = <T>(lhs: T[], rhs: T[]) => {
+export const diff = <T>(lhs: T[], rhs: T[]): T[] => {
   const { lhsOnly, rhsOnly } = findUnion(lhs, rhs);
 
   return [...lhsOnly, ...rhsOnly];
 };
 
-export const hasIdenticalMembers = <T>(lhs: T[], rhs: T[]) => {
+export const hasIdenticalMembers = <T>(lhs: T[], rhs: T[]): boolean => {
   if (lhs.length !== rhs.length) {
     return false;
   }
@@ -98,7 +98,7 @@ export const hasIdenticalMembers = <T>(lhs: T[], rhs: T[]) => {
   return !lhs.some((value) => !rhs.includes(value));
 };
 
-export const asyncForEach = async <T>(array: T[], callback: (item: T, index: number, array: T[]) => Promise<void>) => {
+export const asyncForEach = async <T>(array: T[], callback: (item: T, index: number, array: T[]) => Promise<void>): Promise<void> => {
   for (let index = 0; index < array.length; index++) {
     // eslint-disable-next-line callback-return,no-await-in-loop
     await callback(array[index], index, array);

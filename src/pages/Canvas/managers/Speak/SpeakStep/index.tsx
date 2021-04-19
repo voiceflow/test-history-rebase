@@ -1,3 +1,4 @@
+import { CanvasNodeVisibility } from '@voiceflow/general-types';
 import React from 'react';
 
 import { DialogType, PlatformType } from '@/constants';
@@ -9,7 +10,7 @@ import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
 import { stripHTMLTags } from '@/utils/string';
 
-import { NODE_CONFIG } from '../constants';
+import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '../constants';
 
 export type SpeakStepItem = {
   id: string;
@@ -34,21 +35,18 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
     <Step nodeID={nodeID}>
       <Section>
         {itemsToRender.length ? (
-          itemsToRender.map(({ id, type, content, isAudio }, index) => (
+          itemsToRender.map(({ id, content, isAudio }, index) => (
             <Item
+              key={id}
               placeholder={getPlatformValue(platform, {
                 [PlatformType.ALEXA]: isAudio ? 'Upload audio file' : 'What will Alexa say?',
                 [PlatformType.GOOGLE]: 'What will Google say?',
                 [PlatformType.GENERAL]: 'What will the assistant say?',
               })}
-              key={String(index)}
               label={content ? stripHTMLTags(transformVariablesToReadable(content)) : null}
-              icon={random ? 'speakRandomized' : NODE_CONFIG.getIcon!({ dialogs: [{ id, type }], randomize: false })}
+              icon={NODE_CONFIG.getIcon!(isAudio ? AUDIO_MOCK_DATA : VOICE_MOCK_DATA)}
               portID={index === itemsToRender.length - 1 ? portID : null}
-              iconColor={NODE_CONFIG.getIconColor!({
-                dialogs: [{ id, type: isAudio && !random ? DialogType.AUDIO : DialogType.VOICE }],
-                randomize: false,
-              })}
+              iconColor={NODE_CONFIG.getIconColor!(isAudio ? AUDIO_MOCK_DATA : VOICE_MOCK_DATA)}
               labelVariant={isAudio ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
               multilineLabel={!isAudio}
               labelLineClamp={100}
@@ -61,8 +59,8 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
               [PlatformType.GOOGLE]: 'What will Google say?',
               [PlatformType.GENERAL]: 'What will the assistant say?',
             })}
-            icon={NODE_CONFIG.getIcon!({ dialogs: [{ id: '', type: DialogType.VOICE }], randomize: false })}
-            iconColor={NODE_CONFIG.getIconColor!({ dialogs: [{ id: '', type: DialogType.VOICE }], randomize: false })}
+            icon={NODE_CONFIG.getIcon!(VOICE_MOCK_DATA)}
+            iconColor={NODE_CONFIG.getIconColor!(VOICE_MOCK_DATA)}
           />
         )}
       </Section>
@@ -71,14 +69,22 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
 };
 
 const ConnectedSpeakStep: React.FC<ConnectedStepProps<NodeData.Speak>> = ({ node, data, platform }) => {
-  const items = data.dialogs.map(({ id, url, type, content }) => ({
-    id,
-    type,
-    content: content || prettifyBucketURL(url),
-    isAudio: type === DialogType.AUDIO,
+  const items = data.dialogs.map((item) => ({
+    id: item.id,
+    type: item.type,
+    content: item.type === DialogType.AUDIO ? prettifyBucketURL(item.url) : item.content,
+    isAudio: item.type === DialogType.AUDIO,
   }));
 
-  return <SpeakStep items={items} platform={platform} random={data.randomize} nodeID={node.id} portID={node.ports.out[0]} />;
+  return (
+    <SpeakStep
+      items={items}
+      random={!data.canvasVisibility ? data.randomize : data.canvasVisibility === CanvasNodeVisibility.PREVIEW}
+      nodeID={node.id}
+      portID={node.ports.out[0]}
+      platform={platform}
+    />
+  );
 };
 
 export default ConnectedSpeakStep;

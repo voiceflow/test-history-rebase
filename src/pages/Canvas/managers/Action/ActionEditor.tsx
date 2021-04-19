@@ -26,7 +26,7 @@ const ActionEditor: React.FC<NodeEditorPropsType<NodeData.Trace>> = ({ data, onC
   const updatePaths = React.useCallback((paths) => onChange({ paths }), [onChange]);
   const onRemovePath = React.useCallback((_, index) => engine.port.remove(focusedNode.ports.out[index]), [engine.port, focusedNode.ports.out]);
 
-  const { items, onAdd, mapManaged } = (useManager as any)(data.paths, updatePaths, {
+  const { items, onAdd, mapManaged } = useManager(data.paths, updatePaths, {
     factory: () => ({ label: '' }),
     autosave: false,
     handleRemove: onRemovePath,

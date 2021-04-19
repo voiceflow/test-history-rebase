@@ -79,13 +79,13 @@ function MenuOptions({
                 getOptionValue={getOptionValue}
                 getOptionLabel={getOptionLabel}
                 inputWrapperRef={inputWrapperRef}
-                disableAnimation
                 popoverModifiers={popoverModifiers}
                 renderOptionLabel={renderOptionLabel}
                 focusedOptionIndex={childFocusItemIndex}
                 multiLevelDropdown={!!option.options}
                 onBackFocusToParent={onBackFocus}
                 portalNode={portalNode}
+                menuProps={option.menuProps}
               />
             )}
           </Manager>
@@ -98,10 +98,12 @@ function MenuOptions({
           key={getOptionKey(option)}
           ref={onItemRef(index)}
           // to prevent parent popper from closing onSelect
-          onClick={stopImmediatePropagation(() => onSelect(getOptionValue(option), [...optionsPath, i]))}
+          onClick={stopImmediatePropagation(() => !option?.disabled && onSelect(getOptionValue(option), [...optionsPath, i]))}
           isNested={grouped}
+          disabled={option.disabled}
           isFocused={focusedOptionIndex === index}
           onMouseEnter={() => onFocusItem?.(index)}
+          {...option.menuItemProps}
         >
           {renderOptionLabel(option, searchLabel, getOptionLabel, getOptionValue, {
             isFocused: focusedOptionIndex === index,

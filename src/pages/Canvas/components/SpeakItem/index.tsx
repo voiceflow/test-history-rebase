@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Box from '@/components/Box';
+import { DragPreviewComponentProps, ItemComponentProps, MappedItemProps } from '@/components/DraggableList';
 import { SectionToggleVariant } from '@/components/Section';
 import SSMLWithVars from '@/components/SSMLWithVars';
 import SvgIcon from '@/components/SvgIcon';
@@ -10,32 +11,22 @@ import { DialogType, PlatformType } from '@/constants';
 import { SpeakData, SSMLData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
+import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '@/pages/Canvas/managers/Speak/constants';
 import { prettifyBucketURL } from '@/utils/audio';
 import { compose } from '@/utils/functional';
-import { ObjectWithId } from '@/utils/normalized';
-
-import AudioIcon from './AudioIcon';
 
 const VariablesInputComponent: React.FC<any> = VariablesInput;
 
-export type SpeakItemProps = {
-  item: ObjectWithId & SpeakData;
-  itemKey: any;
-  onUpdate: (newState: any) => void;
-  platform: PlatformType;
-  isOnlyItem: boolean;
-  isDragging: boolean;
-  isRandomized: boolean;
-  onContextMenu: (e: React.MouseEvent) => void;
-  latestCreatedKey: React.Ref<any /* useManager normalized store key */>;
-  connectedDragRef: React.Ref<HTMLDivElement>;
-  isDraggingPreview: boolean;
-  isContextMenuOpen: boolean;
-  header: React.ReactNode;
-  formControlProps?: {
-    contentBottomUnits?: number;
+export type SpeakItemProps = ItemComponentProps<SpeakData> &
+  MappedItemProps<SpeakData> &
+  DragPreviewComponentProps & {
+    header: React.ReactNode;
+    platform: PlatformType;
+    isOnlyItem: boolean;
+    isRandomized?: boolean;
+    latestCreatedKey?: string;
+    formControlProps?: { contentBottomUnits?: number };
   };
-};
 
 const isVoice = (item: SpeakData): item is SSMLData => item.type === DialogType.VOICE;
 
@@ -45,6 +36,7 @@ const AnyEditorSection = EditorSection as any;
 const SpeakItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakItemProps> = (
   {
     item,
+    header,
     itemKey,
     onUpdate,
     platform,
@@ -56,7 +48,6 @@ const SpeakItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakItemProps> 
     connectedDragRef,
     isDraggingPreview,
     isContextMenuOpen,
-    header,
     formControlProps,
   },
   ref
@@ -80,7 +71,12 @@ const SpeakItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakItemProps> 
       namespace={['speakItem', item.id]}
       initialOpen={isNew || isOnlyItem}
       header={header || (isVoice(item) ? 'System Says' : prettifyBucketURL(item.url) || 'Audio')}
-      prefix={<SvgIcon icon={isVoice(item) ? 'alexa' : AudioIcon} />}
+      prefix={
+        <SvgIcon
+          icon={NODE_CONFIG.getIcon!(isVoice(item) ? VOICE_MOCK_DATA : AUDIO_MOCK_DATA)}
+          color={NODE_CONFIG.getIconColor!(isVoice(item) ? VOICE_MOCK_DATA : AUDIO_MOCK_DATA)}
+        />
+      }
       suffix={isRandomized && 'randomLoop'}
       isDragging={isDragging}
       headerRef={connectedDragRef}

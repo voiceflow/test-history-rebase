@@ -5,25 +5,24 @@ import { useDragPreview } from '@/hooks';
 import { Handlers } from '../types';
 import DragPreviewWrapper from './DragPreviewWrapper';
 
-export type DragPreviewProps = {
-  type: string;
-  options: any;
-  handlers: { current: Handlers };
-  component: React.FC<{ isDraggingPreview: boolean; [key: string]: any }>;
+export type DragPreviewComponentProps = {
+  isDraggingPreview?: boolean;
 };
 
-const DragPreview: React.FC<DragPreviewProps> = ({ type, component: Preview, options, handlers }) => {
-  useDragPreview(
-    type,
-    ({ getStyle, ...props }) => (
-      <DragPreviewWrapper style={getStyle()} deleteHovered={handlers.current.deleteHovered}>
-        <Preview {...props} isDraggingPreview />
-      </DragPreviewWrapper>
-    ),
-    options
-  );
+export type DragPreviewProps<P extends {}> = {
+  type: string;
+  handlers: { current: Handlers<any> };
+  component: React.FC<P & DragPreviewComponentProps>;
+};
+
+const DragPreview = <P extends {}>({ type, component: Preview, handlers }: DragPreviewProps<P>) => {
+  useDragPreview<P>(type, ({ getStyle, ...props }) => (
+    <DragPreviewWrapper style={getStyle()} deleteHovered={handlers.current.deleteHovered}>
+      <Preview {...(props as P)} isDraggingPreview />
+    </DragPreviewWrapper>
+  ));
 
   return null;
 };
 
-export default React.memo(DragPreview);
+export default React.memo(DragPreview) as <P extends {}>(props: DragPreviewProps<P>) => JSX.Element;

@@ -1,3 +1,4 @@
+import { CanvasNodeVisibility } from '@voiceflow/general-types';
 import _partition from 'lodash/partition';
 import { batch } from 'react-redux';
 
@@ -119,11 +120,13 @@ class NodeManager extends EngineConsumer {
     },
 
     getNodeFactoryOptions: () => {
-      const defaultVoice = this.select(Skill.defaultVoiceSelector);
       const platform = this.select(Skill.activePlatformSelector);
+      const defaultVoice = this.select(Skill.defaultVoiceSelector);
+      const canvasNodeVisibility = this.select(Skill.defaultCanvasNodeVisibilitySelector);
 
       return {
         defaultVoice: defaultVoice || getPlatformDefaultVoice(platform),
+        canvasNodeVisibility: canvasNodeVisibility || CanvasNodeVisibility.PREVIEW,
       };
     },
 

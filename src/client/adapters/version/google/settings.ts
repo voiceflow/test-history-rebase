@@ -23,24 +23,26 @@ export const RepeatMap = {
 
 const googleSettingsAdapter = createAdapter<GoogleVersionSettings, SkillSettings>(
   (settings) => {
-    const { error, session, repeat, defaultVoice } = defaultGoogleVersionSettings(settings);
+    const { error, session, repeat, defaultVoice, defaultCanvasNodeVisibility } = defaultGoogleVersionSettings(settings);
     return {
       repeat: RepeatMap[repeat],
       accountLinking: null,
       alexaEvents: '',
       settings: {
         defaultVoice,
+        defaultCanvasNodeVisibility,
       },
       alexa_permissions: [],
       errorPrompt: errorPromptAdapter.fromDB(error),
       ...restartAdapter.fromDB(session),
     };
   },
-  ({ resumePrompt, errorPrompt, restart, repeat, settings: { defaultVoice = null } = {} }) => ({
+  ({ resumePrompt, errorPrompt, restart, repeat, settings: { defaultVoice = null, defaultCanvasNodeVisibility = null } = {} }) => ({
     session: restartAdapter.toDB({ restart, resumePrompt }),
     error: errorPromptAdapter.toDB(errorPrompt),
     repeat: (_invert(RepeatMap)[repeat] as RepeatType) || RepeatType.DIALOG,
     defaultVoice: defaultVoice as Voice | null,
+    defaultCanvasNodeVisibility,
   })
 );
 

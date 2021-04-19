@@ -1,3 +1,4 @@
+import { CanvasNodeVisibility } from '@voiceflow/general-types';
 import React from 'react';
 import { Overwrite } from 'utility-types';
 
@@ -25,7 +26,7 @@ export type NodeEditorPropsType<T> = {
   onExpand: () => void;
 };
 
-export type NodeEditor<T> = React.FC<NodeEditorPropsType<T>>;
+export type NodeEditor<T, E = {}> = React.FC<NodeEditorPropsType<T> & E>;
 
 export type NodeConfig<T extends object | Markup.AnyNodeData> = {
   type: BlockType;
@@ -40,7 +41,7 @@ export type NodeConfig<T extends object | Markup.AnyNodeData> = {
 
   factory: (
     data?: Partial<T>,
-    options?: { defaultVoice: string }
+    options?: { defaultVoice: string; canvasNodeVisibility?: CanvasNodeVisibility }
   ) => {
     node: NodeDescriptor;
     data: Creator.DataDescriptor<T>;

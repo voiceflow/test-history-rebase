@@ -6,28 +6,27 @@ import { MenuOption } from '@/types';
 import { Handlers, InternalItem } from '../types';
 import useDragAndDrop from '../useDragAndDrop';
 
-type ItemComponentProps = {
-  ref: React.ReactElement | null;
-  style: object;
-  onRemove: (item: any) => void;
+export type ItemComponentProps<I> = Omit<InternalItem<I>, 'type'> & {
+  style: { opacity: number };
+  onRemove: (() => void) | ((props: Omit<InternalItem<I>, 'type'>) => void);
   isDragging: boolean;
   onContextMenu?: (event: React.MouseEvent<HTMLElement>) => void;
-  connectedDragRef: React.ReactElement | null;
+  connectedDragRef: React.RefObject<HTMLElement | null>;
   isContextMenuOpen?: boolean;
 };
 
-export type DnDItemProps<I extends unknown> = InternalItem<I> & {
+export type DnDItemProps<I> = InternalItem<I> & {
   type: string;
-  onRemove: (item: any) => void;
-  handlers: { current: Handlers };
+  onRemove: (() => void) | ((props: Omit<InternalItem<I>, 'type'>) => void);
+  handlers: { current: Handlers<I> };
   partialDrag?: boolean;
-  itemComponent: React.FC<ItemComponentProps>;
+  itemComponent: React.NamedExoticComponent<React.PropsWithoutRef<ItemComponentProps<I>> & React.RefAttributes<HTMLElement>>;
   contextMenuOptions?: MenuOption[];
   withContextMenuDelete?: boolean;
   unmountableDuringDrag?: boolean;
 };
 
-const DnDItem = <I extends unknown>({
+const DnDItem = <P extends DnDItemProps<any>>({
   type,
   handlers,
   onRemove,
@@ -37,8 +36,8 @@ const DnDItem = <I extends unknown>({
   withContextMenuDelete,
   unmountableDuringDrag,
   ...props
-}: DnDItemProps<I>) => {
-  const [isDragging, connectedRootRef, connectedDragRef] = useDragAndDrop(type, handlers, props as any, { partialDrag, unmountableDuringDrag });
+}: P) => {
+  const [isDragging, connectedRootRef, connectedDragRef] = useDragAndDrop(type, handlers, props, { partialDrag, unmountableDuringDrag });
 
   const menuOptions = React.useMemo(() => {
     const options = [];
@@ -74,4 +73,4 @@ const DnDItem = <I extends unknown>({
   return <Item {...itemProps} />;
 };
 
-export default React.memo(DnDItem);
+export default React.memo(DnDItem) as <P extends DnDItemProps<any>>(props: P) => JSX.Element;

@@ -5,8 +5,9 @@ export type DBAudioData = {
 };
 
 export type AudioData = {
-  type: DialogType.AUDIO;
+  id: string;
   url: string;
+  type: DialogType.AUDIO;
   desc?: string;
 };
 
@@ -15,6 +16,7 @@ export type DBSSMLData = {
 };
 
 export type SSMLData = {
+  id: string;
   type: DialogType.VOICE;
   voice: string;
   content: string; // instead of draftJS object just use the raw string (diff from speak block)

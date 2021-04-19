@@ -1,4 +1,5 @@
 import { ModelSensitivity } from '@voiceflow/alexa-types';
+import { CanvasNodeVisibility } from '@voiceflow/general-types';
 
 import { PlatformType } from '@/constants';
 
@@ -57,6 +58,7 @@ export type FullSkill<L extends string> = Skill<L> & {
       defaultVoice?: null | string;
       customInterface?: boolean;
       modelSensitivity?: null | ModelSensitivity;
+      defaultCanvasNodeVisibility: null | CanvasNodeVisibility;
     };
     invName: string;
     smallIcon: string;

@@ -19,24 +19,32 @@ export const RepeatMap = {
 
 const generalSettingsAdapter = createAdapter<GeneralVersionSettings, GeneralSkillSettings>(
   (settings) => {
-    const { error, session, repeat, locales, defaultVoice } = defaultGeneralVersionSettings(settings);
+    const { error, session, repeat, locales, defaultVoice, defaultCanvasNodeVisibility } = defaultGeneralVersionSettings(settings);
     return {
       repeat: RepeatMap[repeat],
       locales,
       accountLinking: null,
       alexaEvents: '',
-      settings: { defaultVoice },
+      settings: { defaultVoice, defaultCanvasNodeVisibility },
       alexa_permissions: [],
       errorPrompt: errorPromptAdapter.fromDB(error),
       ...restartAdapter.fromDB(session),
     };
   },
-  ({ locales = [Locale.EN_US], resumePrompt, errorPrompt, restart, repeat, settings: { defaultVoice = null } = {} }) => ({
+  ({
+    locales = [Locale.EN_US],
+    resumePrompt,
+    errorPrompt,
+    restart,
+    repeat,
+    settings: { defaultVoice = null, defaultCanvasNodeVisibility = null } = {},
+  }) => ({
     locales: locales as Locale[],
     session: restartAdapter.toDB({ restart, resumePrompt }),
     error: errorPromptAdapter.toDB(errorPrompt),
     repeat: (_invert(RepeatMap)[repeat] as RepeatType) || RepeatType.DIALOG,
     defaultVoice: defaultVoice as Voice | null,
+    defaultCanvasNodeVisibility,
   })
 );
 

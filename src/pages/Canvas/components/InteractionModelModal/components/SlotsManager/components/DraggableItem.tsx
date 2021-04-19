@@ -1,21 +1,18 @@
 import React from 'react';
 
+import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import { SearchableListItemContainer } from '@/components/SearchableList';
 import { SlotTag } from '@/components/VariableTag';
 import { Slot } from '@/models';
 
 import ItemCount from '../../ItemCount';
 
-export type DraggableItemProps = {
-  item: Slot;
-  isDragging?: boolean;
-  selectedID: string;
-  onSelectSlot: (id: string) => void;
-  withoutHover?: boolean;
-  onContextMenu?: React.MouseEventHandler;
-  isContextMenuOpen?: boolean;
-  isDraggingPreview?: boolean;
-};
+export type DraggableItemProps = ItemComponentProps<Slot> &
+  DragPreviewComponentProps & {
+    selectedID?: string;
+    onSelectSlot?: (id: string) => void;
+    withoutHover?: boolean;
+  };
 
 const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableItemProps> = (
   { item, isDragging, isDraggingPreview, selectedID, withoutHover, onSelectSlot, onContextMenu, isContextMenuOpen },
@@ -23,7 +20,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
 ) => (
   <SearchableListItemContainer
     ref={ref}
-    onClick={() => onSelectSlot(item.id)}
+    onClick={() => onSelectSlot?.(item.id)}
     isActive={selectedID === item.id}
     isDragging={isDragging}
     withoutHover={withoutHover}
@@ -36,4 +33,4 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
   </SearchableListItemContainer>
 );
 
-export default React.forwardRef(DraggableItem);
+export default React.forwardRef<HTMLElement, DraggableItemProps>(DraggableItem as any);

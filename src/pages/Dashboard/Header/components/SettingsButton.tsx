@@ -3,7 +3,7 @@ import React from 'react';
 import Dropdown from '@/components/Dropdown';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import Menu, { MenuItem } from '@/components/Menu';
-import ClickableText from '@/components/Text/components/ClickableText';
+import { ClickableText, Text } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import { ModalType, PLAN_TYPE_META, PlanType, UserRole } from '@/constants';
@@ -34,14 +34,12 @@ const SettingsButton: React.FC<ConnectedSettingsButton> = ({ plan, goToWorkspace
                 <MenuItem onClick={goToWorkspaceSettings}>Workspace Settings</MenuItem>
                 <MenuItem divider style={{ marginBottom: 0 }} />
                 {plan ? (
-                  <MenuItem disabled capitalize teamItem>
-                    {PLAN_TYPE_META[plan].label} Plan
-                    <>
-                      &nbsp;-&nbsp;{' '}
-                      <ClickableText onClick={openUpgrade}>
-                        {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? <span>Upgrade</span> : <span>Manage</span>}
-                      </ClickableText>
-                    </>
+                  <MenuItem disabled capitalize ending>
+                    <Text color="#62778c">{PLAN_TYPE_META[plan].label} Plan &nbsp;-&nbsp; </Text>
+
+                    <ClickableText onClick={openUpgrade}>
+                      {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? <span>Upgrade</span> : <span>Manage</span>}
+                    </ClickableText>
                   </MenuItem>
                 ) : (
                   <MenuItem onClick={togglePayment} style={{ color: '#279745' }}>
@@ -57,8 +55,8 @@ const SettingsButton: React.FC<ConnectedSettingsButton> = ({ plan, goToWorkspace
                   <>
                     {!isLibrary && <MenuItem divider style={{ marginBottom: 0 }} />}
 
-                    <MenuItem disabled teamItem>
-                      Workspace {isEditor ? 'Editor' : 'Viewer'}
+                    <MenuItem disabled ending>
+                      <Text color="#62778c">Workspace {isEditor ? 'Editor' : 'Viewer'}</Text>
                     </MenuItem>
                   </>
                 )}

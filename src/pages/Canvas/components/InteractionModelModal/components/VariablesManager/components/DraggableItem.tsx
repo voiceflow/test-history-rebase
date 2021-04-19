@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import { SearchableListItemContainer } from '@/components/SearchableList';
 import { VariableTag } from '@/components/VariableTag';
 
@@ -7,16 +8,12 @@ import ItemCount from '../../ItemCount';
 import { VariableType } from '../constants';
 import { Variable } from '../types';
 
-export type DraggableItemProps = {
-  item: Variable;
-  isDragging?: boolean;
-  withoutHover?: boolean;
-  onContextMenu?: React.MouseEventHandler;
-  onSelectVariableID: (id: string) => void;
-  selectedVariableID?: string;
-  isContextMenuOpen?: boolean;
-  isDraggingPreview?: boolean;
-};
+export type DraggableItemProps = Omit<ItemComponentProps<Variable>, 'connectedDragRef' | 'onRemove'> &
+  DragPreviewComponentProps & {
+    withoutHover?: boolean;
+    onSelectVariableID?: (id: string) => void;
+    selectedVariableID?: string;
+  };
 
 const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableItemProps> = (
   { item, isDragging, withoutHover, onContextMenu, onSelectVariableID, selectedVariableID, isContextMenuOpen, isDraggingPreview },
@@ -28,7 +25,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
   return (
     <SearchableListItemContainer
       ref={ref}
-      onClick={() => onSelectVariableID(item.id)}
+      onClick={() => onSelectVariableID?.(item.id)}
       isActive={selectedVariableID === item.id}
       isDragging={isDragging}
       withoutHover={withoutHover}
@@ -42,4 +39,4 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
   );
 };
 
-export default React.forwardRef(DraggableItem);
+export default React.forwardRef<HTMLElement, DraggableItemProps>(DraggableItem as any);

@@ -8,16 +8,20 @@ import { NodeData } from '@/models';
 import { createBlockAdapter } from '../utils';
 
 const speakAdapter = createBlockAdapter<StepData<Voice>, NodeData.Speak>(
-  ({ randomize, dialogs }) => ({
+  ({ randomize, dialogs, canvasVisibility }) => ({
     randomize,
+    canvasVisibility,
     dialogs: dialogs.map(({ voice, content }) =>
       voice === Voice.AUDIO ? { id: cuid.slug(), url: content, type: DialogType.AUDIO } : { id: cuid.slug(), type: DialogType.VOICE, voice, content }
     ),
   }),
-  ({ randomize, dialogs }) => ({
+  ({ randomize, dialogs, canvasVisibility }) => ({
     randomize,
-    dialogs: dialogs.map(({ content = '', type, url = '', voice = Voice.DEFAULT }) =>
-      type === DialogType.AUDIO ? { voice: Voice.AUDIO, content: url } : { voice: voice as Voice, content }
+    canvasVisibility,
+    dialogs: dialogs.map((data) =>
+      data.type === DialogType.AUDIO
+        ? { voice: Voice.AUDIO, content: data.url ?? '' }
+        : { voice: (data.voice as Voice) ?? Voice.DEFAULT, content: data.content ?? '' }
     ),
   })
 );

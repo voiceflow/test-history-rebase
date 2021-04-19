@@ -3,16 +3,19 @@ import React from 'react';
 import { hasIdenticalMembers } from '@/utils/array';
 
 // eslint-disable-next-line import/prefer-default-export
-export const useLazy = (callback, dependencies = [], compareDependencies = hasIdenticalMembers) => {
-  const prevDependencies = React.useRef(null);
+export const useLazy = <T extends any[] | never[]>(
+  callback: () => void,
+  dependencies: T = [] as T,
+  compareDependencies: (dependencies: T, prevDependencies: T) => boolean = hasIdenticalMembers
+): ((dependencies: T) => void) => {
+  const prevDependencies = React.useRef<T | null>(null);
 
-  const setDependencies = React.useCallback((nextDependencies) => {
+  const setDependencies = React.useCallback((nextDependencies: T) => {
     prevDependencies.current = nextDependencies;
   }, []);
 
   const update = React.useCallback(() => {
     setDependencies(dependencies);
-    // eslint-disable-next-line callback-return
     callback();
   }, [callback]);
 

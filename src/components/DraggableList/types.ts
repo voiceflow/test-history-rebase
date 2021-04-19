@@ -1,19 +1,20 @@
-export type Handlers = {
-  onDrop?: (...args: any[]) => void;
-  onDragEnd?: (...args: any[]) => void;
-  onReorder?: (...args: any[]) => void;
-  onDragStart?: (...args: any[]) => void;
-  onDeleteDrop?: (...args: any[]) => void;
-  onToggleHoverDelete?: (...args: any[]) => void;
+import { DragSourceMonitor, DropTargetMonitor } from 'react-dnd';
 
-  deleteHovered?: boolean;
-};
-
-export type InternalItem<I extends unknown> = {
+export type InternalItem<I> = {
   key: string;
   type: string;
   item: I;
   index: number;
   itemKey: string;
+  deleteHovered?: boolean;
+};
+
+export type Handlers<I> = {
+  onDrop?: (item: InternalItem<I>, monitor: DropTargetMonitor) => void;
+  onDragEnd?: (result: void, monitor: DragSourceMonitor) => void;
+  onReorder?: (from: number, to: number) => void;
+  onDragStart?: (monitor: DragSourceMonitor) => void;
+  onDeleteDrop?: (item: InternalItem<I>, monitor?: DropTargetMonitor) => void;
+
   deleteHovered?: boolean;
 };

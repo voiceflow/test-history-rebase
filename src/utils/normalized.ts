@@ -13,6 +13,7 @@ export const EMPTY: Normalized<any> = { byKey: {}, allKeys: [] };
 export type NormalizedValue<T> = T extends Normalized<infer R> ? R : never;
 
 export type GetKey<T> = (obj: T, index?: number, array?: T[]) => string;
+export type GetKeyFromMap<T> = (obj: T, index: number, array: T[]) => string;
 
 export const defaultGetKey = <T extends ObjectWithId>(obj: T) => stringify(obj.id);
 
@@ -31,12 +32,12 @@ export const buildLookup = <T>(allKeys: string[], getValue: (key: string, index:
     return acc;
   }, {});
 
-export const normalize = <T extends ObjectWithId | unknown, K extends GetKey<T> = (obj: T) => string>(items: T[], getKey?: K) => {
-  const allKeys = items.map(getKey ?? ((defaultGetKey as unknown) as K));
+export const normalize = <T extends ObjectWithId | unknown>(items: T[], getKey?: GetKeyFromMap<T>): Normalized<T> => {
+  const allKeys = items.map(getKey ?? (defaultGetKey as GetKeyFromMap<T>));
 
   return {
-    allKeys,
     byKey: buildLookup<T>(allKeys, getByIndex<T>(items)),
+    allKeys,
   };
 };
 

@@ -1,35 +1,40 @@
 import _throttle from 'lodash/throttle';
 import React from 'react';
-import { useDrop } from 'react-dnd';
+import { DragSourceMonitor, useDrop } from 'react-dnd';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
-import { MapManaged, MenuOption } from '@/types';
+import { MapManaged } from '@/hooks';
+import { MenuOption } from '@/types';
 
-import { DeleteComponent, DnDItem, DragPreview, DropDelete, ListContainer } from './components';
+import { DeleteComponent, DnDItem, DragPreview, DragPreviewComponentProps, DropDelete, ItemComponentProps, ListContainer } from './components';
 import { Handlers, InternalItem } from './types';
 
 export { DeleteComponent };
+export type { DragPreviewComponentProps, ItemComponentProps };
 
-type RenderItem<I extends unknown> = (data: Omit<InternalItem<I>, 'type'>) => React.ReactNode;
+export type BaseItemData<I> = Omit<InternalItem<I>, 'type'>;
 
-export type DraggableListProps<I> = {
+export type MappedItemProps<I> = {
+  onRemove: () => void;
+  onUpdate: (value: Partial<I>) => void;
+};
+
+export type MappedItemData<I> = BaseItemData<I> & MappedItemProps<I>;
+
+export type DraggableListProps<I, D, C> = {
   type: string;
   filter?: (item: I) => boolean;
   footer?: React.ReactNode;
   onDrop?: (item: InternalItem<I>) => unknown;
-  onDelete?: (key: string | number, item: InternalItem<I>) => void;
-  itemProps?: any;
-  onEndDrag?: (...args: any[]) => unknown;
+  itemProps?: C;
+  onEndDrag?: (result: void, monitor: DragSourceMonitor) => unknown;
   onReorder?: (dragIndex: number, hoverIndex: number) => void;
   fullHeight?: boolean;
   getItemKey?: (item: I) => string;
-  onStartDrag?: (...args: any[]) => void;
-  deleteProps?: Record<string, any>;
-  itemComponent: React.FC<any>;
-  previewOptions?: Record<string, any>;
-  deleteComponent: React.FC<any>;
+  onStartDrag?: (monitor: DragSourceMonitor) => void;
+  deleteProps?: D;
+  deleteComponent?: React.NamedExoticComponent<React.PropsWithoutRef<D> & React.RefAttributes<any>>;
   partialDragItem?: boolean;
-  previewComponent: React.FC<any>;
   contextMenuOptions?: MenuOption[];
   renderDeleteDelayed?: boolean;
   unmountableDuringDrag?: boolean;
@@ -37,22 +42,33 @@ export type DraggableListProps<I> = {
 } & (
   | {
       items: I[];
+      onDelete?: (key: number, item: BaseItemData<I>) => void;
       children?: never;
       mapManaged?: never;
+      itemComponent: React.NamedExoticComponent<React.PropsWithoutRef<ItemComponentProps<I> & C> & React.RefAttributes<HTMLElement>>;
+      previewComponent: React.NamedExoticComponent<ItemComponentProps<I> & C & DragPreviewComponentProps>;
     }
   | {
       items?: never;
-      children: ({ renderItem }: { renderItem: RenderItem<I> }) => React.ReactNode;
+      children: (options: { renderItem: (data: BaseItemData<I>) => React.ReactNode }) => React.ReactNode;
+      onDelete?: (index: number, item: BaseItemData<I>) => void;
       mapManaged?: never;
+      itemComponent: React.NamedExoticComponent<React.PropsWithoutRef<ItemComponentProps<I> & C> & React.RefAttributes<HTMLElement>>;
+      previewComponent: React.NamedExoticComponent<ItemComponentProps<I> & C & DragPreviewComponentProps>;
     }
   | {
       items?: never;
       children?: never;
+      onDelete?: (key: string, item: BaseItemData<I>) => void;
       mapManaged: MapManaged<I>;
+      itemComponent: React.NamedExoticComponent<
+        React.PropsWithoutRef<ItemComponentProps<I> & MappedItemProps<I> & C> & React.RefAttributes<HTMLElement>
+      >;
+      previewComponent: React.NamedExoticComponent<ItemComponentProps<I> & MappedItemProps<I> & C & DragPreviewComponentProps>;
     }
 );
 
-const DraggableList = <I extends unknown>({
+const DraggableList = <I, D, C>({
   type,
   footer = null,
   filter,
@@ -61,11 +77,10 @@ const DraggableList = <I extends unknown>({
   onEndDrag,
   onReorder,
   fullHeight = true,
-  getItemKey = (item) => item as string,
+  getItemKey = (item) => item as any,
   onStartDrag,
   deleteProps,
   itemComponent,
-  previewOptions,
   deleteComponent,
   partialDragItem,
   previewComponent,
@@ -73,8 +88,8 @@ const DraggableList = <I extends unknown>({
   unmountableDuringDrag,
   withContextMenuDelete,
   ...props
-}: DraggableListProps<I>): JSX.Element => {
-  const handlers = React.useRef<Handlers>({});
+}: DraggableListProps<I, D, C>): JSX.Element => {
+  const handlers = React.useRef<Handlers<I>>({});
   const [dragging, updateDragging] = React.useState(false);
   const [deleteHovered, updateDeleteHovered] = React.useState(false);
 
@@ -93,31 +108,35 @@ const DraggableList = <I extends unknown>({
   });
 
   const onDeleteDrop = React.useCallback(
-    (item: InternalItem<I>) => {
+    (item: BaseItemData<I>) => {
       updateDeleteHovered(false);
-      props.onDelete?.(props.mapManaged ? item.itemKey : item.index, item);
+
+      if (props.mapManaged) {
+        props.onDelete?.(item.itemKey, item);
+      } else {
+        props.onDelete?.(item.index, item);
+      }
     },
     [props.onDelete, props.mapManaged]
   );
   const onDragEnd = React.useCallback(
-    (...args) => {
+    (result: void, monitor: DragSourceMonitor) => {
       updateDragging(false);
-      onEndDrag?.(...args);
+      onEndDrag?.(result, monitor);
     },
     [onEndDrag]
   );
   const onDragStart = React.useCallback(
-    (...args) => {
+    (monitor: DragSourceMonitor) => {
       updateDragging(true);
-      onStartDrag?.(...args);
+      onStartDrag?.(monitor);
     },
     [onStartDrag]
   );
-  const onToggleHoverDelete = React.useCallback((value) => updateDeleteHovered(value), [updateDeleteHovered]);
 
-  handlers.current = { onDrop, onDragEnd, onReorder, onDragStart, onToggleHoverDelete, onDeleteDrop, deleteHovered };
+  handlers.current = { onDrop, onDragEnd, onReorder, onDragStart, onDeleteDrop, deleteHovered };
 
-  const renderItem: RenderItem<I> = (data) => (
+  const renderItem = (data: MappedItemData<I> | BaseItemData<I>) => (
     <DnDItem
       {...itemProps}
       onRemove={onDeleteDrop}
@@ -125,7 +144,7 @@ const DraggableList = <I extends unknown>({
       type={type}
       handlers={handlers}
       partialDrag={partialDragItem}
-      itemComponent={itemComponent}
+      itemComponent={itemComponent as any}
       unmountableDuringDrag={unmountableDuringDrag}
       withContextMenuDelete={withContextMenuDelete}
     />
@@ -136,7 +155,7 @@ const DraggableList = <I extends unknown>({
       {!props.children &&
         (props.mapManaged
           ? props.mapManaged((item, { key, index, onRemove, onUpdate }) => {
-              const itemData = {
+              const itemData: MappedItemData<I> = {
                 key,
                 item,
                 index,
@@ -153,10 +172,10 @@ const DraggableList = <I extends unknown>({
             })
           : props.items.map((item, index) => {
               const itemData = {
-                key: getItemKey(item) as string,
+                key: getItemKey(item),
                 item,
                 index,
-                itemKey: getItemKey(item) as string,
+                itemKey: getItemKey(item),
               };
 
               if (filter) {
@@ -170,7 +189,7 @@ const DraggableList = <I extends unknown>({
 
       {footer}
 
-      <DragPreview type={type} options={previewOptions} component={previewComponent} handlers={handlers} />
+      <DragPreview<I> type={type} component={previewComponent as any} handlers={handlers} />
 
       {!!deleteComponent && dragging && (
         <DropDelete type={type} handlers={handlers} renderDelayed={renderDeleteDelayed} deleteComponent={deleteComponent} deleteProps={deleteProps} />

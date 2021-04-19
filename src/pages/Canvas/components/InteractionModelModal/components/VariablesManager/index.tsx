@@ -181,7 +181,16 @@ const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManag
                       ) : index < mergedVariables.length - BUILT_IN_VARIABLES.length ? (
                         renderGlobalItem({ key: item.id, itemKey: item.id, item, index: index - localVariables.length })
                       ) : (
-                        <DraggableItem key={item.id} item={item} selectedVariableID={selectedVariableID} onSelectVariableID={setSelectedID} />
+                        <DraggableItem
+                          key={item.id}
+                          item={item}
+                          index={index}
+                          style={{ opacity: 1 }}
+                          itemKey={item.id}
+                          isDragging={false}
+                          selectedVariableID={selectedVariableID}
+                          onSelectVariableID={setSelectedID}
+                        />
                       )
                     }
                     placeholder="Search Variables"

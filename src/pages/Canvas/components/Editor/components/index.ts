@@ -1,6 +1,7 @@
 export { default as Container } from './EditorContainer';
 export { default as Content } from './EditorContent';
 export { default as EditorContentAnimation } from './EditorContentAnimation';
+export type { ControlOptions } from './EditorControls';
 export { default as Controls } from './EditorControls';
 export { default as Footer } from './EditorFooter';
 export { default as FormControl } from './EditorFormControl';

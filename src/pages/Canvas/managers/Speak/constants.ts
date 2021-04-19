@@ -21,14 +21,16 @@ const ICON_COLOR_MAP: Record<DialogType, string> = {
   [DialogType.VOICE]: '#8f8e94',
 };
 
-// eslint-disable-next-line import/prefer-default-export
+export const AUDIO_MOCK_DATA = { dialogs: [{ id: '', type: DialogType.AUDIO as const, url: '' }], randomize: true };
+export const VOICE_MOCK_DATA = { dialogs: [{ id: '', type: DialogType.VOICE as const, voice: '', content: '' }], randomize: true };
+
 export const NODE_CONFIG: NodeConfig<NodeData.Speak> = {
   type: BlockType.SPEAK,
 
   getIcon: (data) => ICON_MAP[data?.dialogs[0]?.type ?? DialogType.VOICE],
   getIconColor: (data) => ICON_COLOR_MAP[data?.dialogs[0]?.type ?? DialogType.VOICE],
 
-  factory: (data, options) => ({
+  factory: ({ dialogs: [data] = [] } = {}, options) => ({
     node: {
       ports: {
         in: [{}],
@@ -36,15 +38,23 @@ export const NODE_CONFIG: NodeConfig<NodeData.Speak> = {
       },
     },
     data: {
-      name: NAME_MAP[data?.dialogs?.[0]?.type ?? DialogType.VOICE],
-      randomize: false,
+      name: NAME_MAP[data?.type ?? DialogType.VOICE],
+      randomize: true,
+      canvasVisibility: options?.canvasNodeVisibility,
       dialogs: [
-        {
-          id: cuid.slug(),
-          type: data?.dialogs?.[0]?.type ?? DialogType.VOICE,
-          voice: options?.defaultVoice ?? '',
-          content: '',
-        },
+        data?.type === DialogType.AUDIO
+          ? {
+              id: cuid.slug(),
+              url: data?.url ?? '',
+              type: DialogType.AUDIO,
+              desc: data?.desc ?? '',
+            }
+          : {
+              id: cuid.slug(),
+              type: DialogType.VOICE,
+              voice: data?.voice ?? options?.defaultVoice ?? '',
+              content: data?.content ?? '',
+            },
       ],
     },
   }),

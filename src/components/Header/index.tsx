@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
+import { ClassName } from '@/styles/constants';
 import LeftIcon from '@/svgs/arrow-left.svg';
 
 import {
@@ -42,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({
   logoAssetPath,
 }) => (
   <HeaderContainer>
-    <PrimaryHeader>
+    <PrimaryHeader className={ClassName.PRIMARY_NAV}>
       {withLogo && <Logo src={logoAssetPath || '/vf-logo-dashboard.svg'} alt="logo" draggable="false" />}
       {onBackClick && (
         <BackButton>
@@ -54,14 +55,14 @@ const Header: React.FC<HeaderProps> = ({
         {title}
       </HeaderNavigation>
       <HeaderActions>
-        <CenterGroup>{centerRenderer && centerRenderer()}</CenterGroup>
+        <CenterGroup className={ClassName.HEADER_ACTIONS_CENTER}>{centerRenderer && centerRenderer()}</CenterGroup>
         <JustifiedHeaderActions>
-          {rightRenderer && <TitleGroup>{rightRenderer()}</TitleGroup>}
+          {rightRenderer && <TitleGroup className={ClassName.HEADER_ACTIONS_RIGHT}>{rightRenderer()}</TitleGroup>}
           {withUserMenu && <UserMenu />}
         </JustifiedHeaderActions>
       </HeaderActions>
     </PrimaryHeader>
-    {subHeaderRenderer && <SecondaryNavWrapper>{subHeaderRenderer()}</SecondaryNavWrapper>}
+    {subHeaderRenderer && <SecondaryNavWrapper className={ClassName.SECONDARY_NAV}>{subHeaderRenderer()}</SecondaryNavWrapper>}
   </HeaderContainer>
 );
 

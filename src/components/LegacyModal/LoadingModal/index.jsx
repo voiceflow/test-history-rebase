@@ -10,7 +10,7 @@ const LoadingModal = () => {
   const { isOpened, toggle } = useModals(ModalType.LOADING);
 
   return (
-    <Modal isOpen={isOpened} toggle={toggle} centered size="sm">
+    <Modal isOpen={isOpened} toggle={toggle} centered size="sm" modalname="loading">
       <ModalBody className="text-center my-4">
         <Spinner message="Loading" />
       </ModalBody>

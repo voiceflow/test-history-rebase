@@ -17,7 +17,7 @@ const BaseModal = styled(({ modalWidth, ...props }) => <ReactstrapModal {...prop
   ${({ modalname, theme }) =>
     modalname &&
     css`
-      max-width: ${theme.components.modals[modalname].width}px !important;
+      max-width: ${theme.components.modals[modalname]?.width}px !important;
     `}
 
   ${({ notAllowed }) => notAllowed && 'cursor: not-allowed'};
@@ -29,7 +29,7 @@ const Modal = ({ className, ...props }) => {
   return (
     <BaseModal
       {...props}
-      className={cn(ClassName.MODAL, className)}
+      className={cn(ClassName.MODAL, className, `${ClassName.MODAL}--${props.modalname}`)}
       fade={_isBoolean(props.fade) ? props.fade && fade : fade}
       onPaste={stopImmediatePropagation()}
       backdropClassName={openedId ? 'modal-backdrop-invisible' : ''}

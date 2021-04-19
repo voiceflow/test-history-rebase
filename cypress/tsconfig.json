@@ -4,16 +4,8 @@
     "esModuleInterop": true,
     "baseUrl": "../node_modules",
     "target": "es5",
-    "lib": [
-      "es6",
-      "dom"
-    ],
-    "types": [
-      "cypress"
-    ]
+    "lib": ["es6", "dom"],
+    "types": ["cypress", "cypress-real-events"]
   },
-  "include": [
-    "**/*.ts",
-    "support/index.js"
-  ]
+  "include": ["**/*.ts", "support/index.js"]
 }

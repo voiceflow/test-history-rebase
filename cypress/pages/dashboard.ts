@@ -1,3 +1,6 @@
+import { ClassName, DashboardClassName } from '../../src/styles/constants';
+import { getClass } from './utils';
+
 export default {
   el: {
     get newProjectButton() {
@@ -6,14 +9,29 @@ export default {
     get workspaceDropdownButton() {
       return cy.get('#workspaceDropdown');
     },
+    get headerPrimaryNav() {
+      return cy.get(getClass(ClassName.PRIMARY_NAV));
+    },
+    get headerSecondaryNav() {
+      return cy.get(getClass(ClassName.SECONDARY_NAV));
+    },
+    get projectListsContainer() {
+      return cy.get(getClass(DashboardClassName.LISTS_INNER));
+    },
     get projectList() {
-      return cy.get('.main-list');
+      return cy.get(getClass(DashboardClassName.LIST));
+    },
+    get projectListHeader() {
+      return cy.get(getClass(DashboardClassName.LIST_HEADER));
     },
     get projectListItem() {
-      return cy.get('.projects-list__list-item');
+      return cy.get(getClass(DashboardClassName.PROJECTS_LIST_ITEM));
     },
     get projectListItemTitle() {
-      return cy.get('.projects-list__item-title');
+      return cy.get(getClass(DashboardClassName.PROJECTS_LIST_ITEM_TITLE));
+    },
+    get projectListItemActionButton() {
+      return cy.get(getClass(DashboardClassName.PROJECTS_LIST_ITEM_ACTIONS));
     },
   },
 

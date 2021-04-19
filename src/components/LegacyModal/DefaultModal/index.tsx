@@ -17,7 +17,7 @@ export type DefaultModalProps = {
 };
 
 const DefaultModal: React.FC<DefaultModalProps> = ({ open, toggle, header, content, noPadding, hideFooter, close_button_text }) => (
-  <ModalComponent isOpen={open} toggle={toggle}>
+  <ModalComponent isOpen={open} toggle={toggle} modalname="default">
     <ModalHeader toggle={toggle} header={header} />
     <ModalBody
       style={{

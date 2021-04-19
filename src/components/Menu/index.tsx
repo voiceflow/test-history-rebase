@@ -119,7 +119,7 @@ const Menu = <T,>(
         >
           {children ||
             visibleOptions.map(({ value, label, onClick }, index) => (
-              <Item key={`${index}-${label}`} className={ClassName.MENU_ITEM} onClick={onItemClick(value, onClick)}>
+              <Item key={`${index}-${label}`} onClick={onItemClick(value, onClick)}>
                 <FlexLabel>{label || stringify(value)}</FlexLabel>
               </Item>
             ))}

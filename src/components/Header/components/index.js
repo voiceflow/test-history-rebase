@@ -9,13 +9,6 @@ export const HeaderContainer = styled.header`
   border-bottom: 1px solid #dfe3ed;
 `;
 
-export const CenterGroup = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 250px;
-`;
-
 export const PrimaryHeader = styled.div`
   display: flex;
   align-items: center;
@@ -41,6 +34,13 @@ export const HeaderActions = styled.div`
   height: inherit;
 `;
 
+export const CenterGroup = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
+`;
+
 export const JustifiedHeaderActions = styled.div`
   display: flex;
   flex-grow: 1;
@@ -48,6 +48,13 @@ export const JustifiedHeaderActions = styled.div`
   justify-content: flex-end;
   height: inherit;
   white-space: nowrap;
+`;
+
+export const TitleGroup = styled.div`
+  display: flex;
+  align-items: center;
+  height: inherit;
+  user-select: none;
 `;
 
 export const BackButton = styled.span`
@@ -94,11 +101,4 @@ export const SecondaryNavWrapper = styled.div`
   & > * {
     height: inherit;
   }
-`;
-
-export const TitleGroup = styled.div`
-  display: flex;
-  align-items: center;
-  height: inherit;
-  user-select: none;
 `;

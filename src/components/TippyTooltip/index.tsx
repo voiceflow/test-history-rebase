@@ -2,6 +2,7 @@ import React from 'react';
 import { Tooltip, TooltipProps } from 'react-tippy';
 
 import { IS_TEST, isMac } from '@/config';
+import { ClassName } from '@/styles/constants';
 
 import { HotkeyLabel } from './components';
 
@@ -19,6 +20,7 @@ const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChild
   // eslint-disable-next-line xss/no-mixed-html
   return (
     <Tooltip
+      className={ClassName.TOOLTIP}
       ref={ref}
       html={
         withHotkey ? (

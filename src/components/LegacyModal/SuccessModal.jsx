@@ -20,7 +20,7 @@ export const SuccessModal = () => {
   const { message, title, icon, variant = ButtonVariant.PRIMARY } = data;
 
   return (
-    <Modal isOpen={isOpened} toggle={toggle} className="max-w-400">
+    <Modal isOpen={isOpened} toggle={toggle} className="max-w-400" modalname="success">
       <ModalHeader header={title} toggle={toggle} />
       <BodyContainer>
         <Flex column>

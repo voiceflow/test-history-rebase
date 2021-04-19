@@ -15,6 +15,7 @@ import withDraggable from '@/hocs/withDraggable';
 import { useModals, usePermission } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
 import { PROJECT_COLORS } from '@/styles/colors';
+import { DashboardClassName } from '@/styles/constants';
 import { stopPropagation } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
 
@@ -108,6 +109,7 @@ export function Item(props) {
           {(ref, onToggle) =>
             hasOptions ? (
               <DropdownIconWrapper
+                className={DashboardClassName.PROJECTS_LIST_ITEM_ACTIONS}
                 onClick={stopPropagation(() => {
                   toggleDropdownOpened();
                   onToggle();
@@ -120,16 +122,17 @@ export function Item(props) {
                 </ProjectListItemActions>
               </DropdownIconWrapper>
             ) : (
-              <DropdownIconWrapper>
+              <DropdownIconWrapper className={DashboardClassName.PROJECTS_LIST_ITEM_ACTIONS}>
                 <Avatar noHover url={avatarUrl} name={name} color={color} />
               </DropdownIconWrapper>
             )
           }
         </Dropdown>
+
         <ProjectNameWrapper>
           <ProjectTitleDetails>
-            <TitleWrapper title={name}>
-              <ProjectTitle ref={titleRef} className="projects-list__item-title">
+            <TitleWrapper {...(titleOverflowing ? { title: name } : {})}>
+              <ProjectTitle ref={titleRef} className={DashboardClassName.PROJECTS_LIST_ITEM_TITLE}>
                 {name}
               </ProjectTitle>
             </TitleWrapper>
@@ -141,7 +144,7 @@ export function Item(props) {
             </ProjectTitleCaption>
           </ProjectTitleDetails>
 
-          <Tooltip position="top" title={isLive ? 'Live' : 'Development'} className="projects-list__item-status" distance={10}>
+          <Tooltip position="top" title={isLive ? 'Live' : 'Development'} className={DashboardClassName.PROJECTS_LIST_ITEM_STATUS} distance={10}>
             <SvgIcon
               icon={isLive ? 'outlinedFilledCircle' : 'outlinedCircle'}
               color={isLive ? '#43A047' : '#059fe4'}
@@ -151,6 +154,7 @@ export function Item(props) {
           </Tooltip>
         </ProjectNameWrapper>
       </ProjectListItem>
+
       {isDragging && <ProjectListDragZone />}
     </div>
   );

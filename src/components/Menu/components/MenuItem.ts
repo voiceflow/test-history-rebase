@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import { flexStyles } from '@/components/Flex';
+import { ClassName } from '@/styles/constants';
 
 export type MenuItemProps = {
   active?: boolean;
@@ -75,7 +76,9 @@ export const itemStyles = css<MenuItemProps>`
     `}
 `;
 
-const MenuItem = styled.li<MenuItemProps>`
+const MenuItem = styled.li.attrs(() => ({
+  className: ClassName.MENU_ITEM,
+}))<MenuItemProps>`
   ${itemStyles}
 `;
 

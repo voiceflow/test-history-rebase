@@ -28,6 +28,7 @@ import { connect } from '@/hocs';
 import { useModals, usePermission, useScrollHelpers, useSetup, useTrackingEvents, useWorkspaceTracking } from '@/hooks';
 import * as Models from '@/models';
 import { copyProject } from '@/store/sideEffects';
+import { DashboardClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
 import * as Query from '@/utils/query';
@@ -196,7 +197,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
   const filter = filter_text.trim().toLowerCase();
 
   return (
-    <div id="app" className="dashboard">
+    <div id="app" className={DashboardClassName.DASHBOARD}>
       <DashboardHeader handleFilterText={handleFilterText} workspaces={props.workspaces} workspace={props.workspace} loadingProjects={loading} />
 
       {LOCKED && (
@@ -245,11 +246,11 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
                   </div>
                 </div>
               ) : (
-                <div className="board-container-body">
-                  <div className="board-container-body-inner">
+                <div className={DashboardClassName.LISTS_CONTAINER}>
+                  <div className={DashboardClassName.LISTS_CONTAINER_INNER}>
                     <ScrollContextProvider value={scrollHelpers}>
-                      <div ref={bodyRef} className="main-lists">
-                        <div ref={innerRef} className="main-lists-inner">
+                      <div ref={bodyRef} className={DashboardClassName.LISTS}>
+                        <div ref={innerRef} className={DashboardClassName.LISTS_INNER}>
                           {props.projectLists.map((list, idx) => {
                             const projects = getBoardFilteredProjects(list.projects, props.projectsMap, filter);
                             if (filter && !projects.length) {
@@ -292,7 +293,10 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
                           </DragLayer>
 
                           {canManageLists && (
-                            <Flex style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}>
+                            <Flex
+                              className={DashboardClassName.ADD_LIST_BUTTON}
+                              style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}
+                            >
                               <TippyTooltip distance={8} title="Add new list" position="bottom">
                                 <IconButton large icon="addStep" onClick={props.createNewList} size={13} />
                               </TippyTooltip>

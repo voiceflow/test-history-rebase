@@ -13,7 +13,7 @@ export const ErrorModal = ({ error, dismiss }) => {
   }
 
   return (
-    <Modal isOpen={!!error} centered modalWidth={350}>
+    <Modal isOpen={!!error} centered modalWidth={350} modalname="error">
       <ModalHeader header="ERROR OCCURED" toggle={dismiss} />
       <ModalBody className="text-center">
         <img src="/images/connect-support.svg" alt="Support" height={80} />

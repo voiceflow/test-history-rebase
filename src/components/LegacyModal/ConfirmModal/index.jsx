@@ -14,7 +14,7 @@ export const ConfirmModal = ({ toggle, confirm }) => {
   const cancel = confirm.cancel === undefined || confirm.cancel;
 
   return (
-    <Modal isOpen={!!confirm} toggle={toggle} centered size={confirm.size || 'sm'}>
+    <Modal modalname="confirm" isOpen={!!confirm} toggle={toggle} centered size={confirm.size || 'sm'}>
       {confirm.header && <ModalHeader toggle={toggle}>{confirm.header}</ModalHeader>}
       <ModalBody className="text-center">{confirm.text}</ModalBody>
       <ModalFooter>

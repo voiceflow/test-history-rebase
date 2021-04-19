@@ -14,6 +14,7 @@ import withDraggable from '@/hocs/withDraggable';
 import { usePermission } from '@/hooks';
 import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
 import { useToggle } from '@/hooks/toggle';
+import { DashboardClassName } from '@/styles/constants';
 
 import Item from './Item';
 
@@ -74,7 +75,7 @@ export function List(props) {
   const list = (
     <div
       style={{ cursor: !canManageLists ? 'default' : undefined }}
-      className={cn('main-list', {
+      className={cn(DashboardClassName.LIST, {
         '__is-draggable __is-dragging': isDraggingPreview,
       })}
     >
@@ -99,22 +100,22 @@ export function List(props) {
 
           return (
             <ScrollContextProvider value={scrollHelpers}>
-              {isDragging && <div style={{ top: 0, left: 0, right: 0, bottom: 0 }} className="h-pos-a main-list-dropzone" />}
+              {isDragging && <div style={{ top: 0, left: 0, right: 0, bottom: 0 }} className={cn('h-pos-a', DashboardClassName.LIST_DROPZONE)} />}
 
               <DropContainer
                 id={0}
                 index={0}
                 listId={id}
                 onMove={onMoveProject}
-                className={cn('main-list-header', {
+                className={cn(DashboardClassName.LIST_HEADER, {
                   'h-o-0': isDragging,
                   __scrolling: isHeaderShadowShown,
                 })}
               >
-                <div className="main-list-header__main">
+                <div className={DashboardClassName.LIST_HEADER_MAIN}>
                   <input
                     ref={inputRef}
-                    className="borderless-input main-list-header__title"
+                    className={cn('borderless-input', DashboardClassName.LIST_HEADER_TITLE)}
                     value={values.name}
                     onBlur={onInputNameBlur}
                     selected
@@ -127,7 +128,7 @@ export function List(props) {
                 </div>
 
                 {canManageLists && (
-                  <div className="main-list-header__aside">
+                  <div className={DashboardClassName.LIST_HEADER_ASIDE}>
                     <Dropdown
                       options={[
                         {
@@ -149,18 +150,18 @@ export function List(props) {
                 <div
                   ref={bodyRef}
                   onScroll={onScroll}
-                  className={cn('main-list-body', {
+                  className={cn(DashboardClassName.LIST_BODY, {
                     'h-o-0': isDragging,
                     still: !moving,
                   })}
                 >
-                  <div ref={innerRef} className="main-list-body-inner">
-                    <ul className="projects-list">
+                  <div ref={innerRef} className={DashboardClassName.LIST_BODY_INNER}>
+                    <ul className={DashboardClassName.PROJECTS_LIST}>
                       {projects.map((project, i) => {
                         if (!project) return null;
 
                         return (
-                          <li key={project.id} className="projects-list__list-item">
+                          <li key={project.id} className={DashboardClassName.PROJECTS_LIST_ITEM}>
                             <Item
                               index={i}
                               id={project.id}
@@ -190,12 +191,12 @@ export function List(props) {
               )}
               {canManageProjects && (
                 <div
-                  className={cn('main-list-footer', {
+                  className={cn(DashboardClassName.LIST_FOOTER, {
                     'h-o-0': isDragging,
                     __scrolling: isFooterShadowShown,
                   })}
                 >
-                  <div className="main-list-footer-center">
+                  <div className={DashboardClassName.LIST_FOOTER_CENTER}>
                     <Button isFlat isBtn onClick={() => createProject(id)}>
                       Create Project
                     </Button>
@@ -206,7 +207,7 @@ export function List(props) {
           );
         }}
       </Form>
-      {isDragging && <div className="main-list__dragzone" />}
+      {isDragging && <div className={DashboardClassName.LIST_DRAGZONE} />}
     </div>
   );
 

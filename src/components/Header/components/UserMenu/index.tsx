@@ -7,6 +7,7 @@ import SvgIcon from '@/components/SvgIcon';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { connect, styled } from '@/hocs';
+import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { preventDefault } from '@/utils/dom';
 
@@ -34,7 +35,7 @@ export const UserMenu: React.FC<ConnectedUserMenuProps> = ({ user, logout }) => 
       placement="bottom-end"
     >
       {(ref, onToggle, isOpen) => (
-        <UserNameContainer onClick={onToggle} ref={ref} isOpen={isOpen}>
+        <UserNameContainer className={ClassName.HEADER_USER_MENU} onClick={onToggle} ref={ref} isOpen={isOpen}>
           <div>{user.name}</div>
           <SvgIcon icon="caretDown" color={isOpen ? '#5d9df5' : '#6e849a'} size={9} />
         </UserNameContainer>

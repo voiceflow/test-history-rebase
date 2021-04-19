@@ -8,7 +8,7 @@ import { MARKUP_NODES, ROOT_NODES } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
-import { ProjectLoadingGate, WorkspaceLoadingGate } from '@/gates';
+import { ProjectLoadingGate, WorkspaceFeatureLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { Node } from '@/models';
@@ -103,6 +103,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withBatchLoadingGate(
     WorkspaceLoadingGate,
+    WorkspaceFeatureLoadingGate,
     [
       ProjectLoadingGate,
       ({ match }: { match: any }) => ({

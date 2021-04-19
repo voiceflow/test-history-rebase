@@ -4,64 +4,72 @@ import client from '@/client';
 import { IS_PRODUCTION } from '@/config';
 import { FeatureFlag, LOCAL_FEATURE_OVERRIDES } from '@/config/features';
 import * as Session from '@/ducks/session';
+import * as Workspace from '@/ducks/workspace';
 import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 
 import { createAction, createRootSelector } from './utils';
 
 export type FeatureState = {
+  features: Record<string, { isEnabled: boolean }>;
   isLoaded: boolean;
-  features: Record<
-    string,
-    {
-      isEnabled: boolean;
-    }
-  >;
+  isWorkspaceLoaded: boolean;
 };
 
 export const STATE_KEY = 'feature';
 export const INITIAL_STATE: FeatureState = {
-  isLoaded: false,
   features: {},
+  isLoaded: false,
+  isWorkspaceLoaded: false,
 };
 
 // actions
 
 export enum FeatureAction {
-  UPDATE_ALL_STATUSES = 'FEATURE:STATUS:UPDATE_ALL',
   SET_FEATURES_LOADED = 'FEATURE:SET_LOADED',
+  SET_WORKSPACE_FEATURES_LOADED = 'FEATURE:SET_WORKSPACE_LOADED',
 }
 
-export type UpdateAllStatuses = Action<FeatureAction.UPDATE_ALL_STATUSES, Record<FeatureFlag, { isEnabled: boolean }>>;
+export type SetFeaturesLoaded = Action<FeatureAction.SET_FEATURES_LOADED, Record<FeatureFlag, { isEnabled: boolean }>>;
 
-export type SetFeaturesLoaded = Action<FeatureAction.SET_FEATURES_LOADED, boolean>;
+export type SetWorkspaceFeaturesLoaded = Action<FeatureAction.SET_WORKSPACE_FEATURES_LOADED, Record<FeatureFlag, { isEnabled: boolean }>>;
 
-type AnyFeatureAction = UpdateAllStatuses | SetFeaturesLoaded | Session.SetAuthToken;
+type AnyFeatureAction = SetFeaturesLoaded | SetWorkspaceFeaturesLoaded | Session.SetAuthToken | Workspace.UpdateCurrentWorkspace;
 
 // reducers
 
-const updateAllStatusesReducer: Reducer<FeatureState, UpdateAllStatuses> = (state, { payload: features }) => ({
+const setFeaturesLoadedReducer: Reducer<FeatureState, SetFeaturesLoaded> = (state, { payload: features }) => ({
   ...state,
   features,
+  isLoaded: true,
 });
 
-const setFeaturesLoadedReducer: Reducer<FeatureState> = (state) => ({
+const setWorkspaceFeaturesLoadedReducer: Reducer<FeatureState, SetWorkspaceFeaturesLoaded> = (state, { payload: features }) => ({
   ...state,
-  isLoaded: true,
+  features,
+  isWorkspaceLoaded: true,
 });
 
 const accountChangeReducer: Reducer<FeatureState> = (state) => ({
   ...state,
   isLoaded: false,
+  isWorkspaceLoaded: false,
+});
+
+const workspaceChangeReducer: Reducer<FeatureState> = (state) => ({
+  ...state,
+  isWorkspaceLoaded: false,
 });
 
 const featureReducer: RootReducer<FeatureState, AnyFeatureAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case FeatureAction.UPDATE_ALL_STATUSES:
-      return updateAllStatusesReducer(state, action);
     case FeatureAction.SET_FEATURES_LOADED:
-      return setFeaturesLoadedReducer(state);
+      return setFeaturesLoadedReducer(state, action);
+    case FeatureAction.SET_WORKSPACE_FEATURES_LOADED:
+      return setWorkspaceFeaturesLoadedReducer(state, action);
     case Session.SessionAction.SET_AUTH_TOKEN:
       return accountChangeReducer(state);
+    case Workspace.WorkspaceAction.UPDATE_CURRENT_WORKSPACE:
+      return workspaceChangeReducer(state);
     default:
       return state;
   }
@@ -81,17 +89,31 @@ export const isFeatureEnabledSelector = createSelector([featureSelector], (getFe
 
 export const isLoadedSelector = createSelector([rootSelector], ({ isLoaded }) => isLoaded);
 
+export const isWorkspaceLoadedSelector = createSelector([rootSelector], ({ isWorkspaceLoaded }) => isWorkspaceLoaded);
+
 // action creators
 
-export const updateAllStatuses = (features: FeatureState['features']): UpdateAllStatuses => createAction(FeatureAction.UPDATE_ALL_STATUSES, features);
+export const setFeaturesLoaded = (features: FeatureState['features']): SetFeaturesLoaded => createAction(FeatureAction.SET_FEATURES_LOADED, features);
 
-export const setFeaturesLoaded = (): SetFeaturesLoaded => createAction(FeatureAction.SET_FEATURES_LOADED);
+export const setWorkspaceFeaturesLoaded = (features: FeatureState['features']): SetWorkspaceFeaturesLoaded =>
+  createAction(FeatureAction.SET_WORKSPACE_FEATURES_LOADED, features);
 
 // side effects
 
 export const loadFeatures = (): Thunk => async (dispatch) => {
   const features = await client.feature.getStatuses();
 
-  dispatch(updateAllStatuses(features));
-  dispatch(setFeaturesLoaded());
+  dispatch(setFeaturesLoaded(features));
+};
+
+export const loadWorkspaceFeatures = (): Thunk => async (dispatch, getState) => {
+  const workspaceID = Workspace.activeWorkspaceIDSelector(getState());
+
+  if (!workspaceID) {
+    return;
+  }
+
+  const features = await client.feature.getStatuses({ workspaceID });
+
+  dispatch(setWorkspaceFeaturesLoaded(features));
 };

@@ -8,6 +8,7 @@ const TIMESTAMP = 1234500000;
 const FEATURE = { isEnabled: true, lastUpdated: TIMESTAMP };
 const MOCK_STATE: Feature.FeatureState = {
   isLoaded: true,
+  isWorkspaceLoaded: true,
   features: {
     [FEATURE_ID]: FEATURE,
     ghi: { isEnabled: false },
@@ -16,23 +17,27 @@ const MOCK_STATE: Feature.FeatureState = {
 
 suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, mockDate, describeReducer, describeSelectors }) => {
   describeReducer(({ expectAction }) => {
-    describe('updateAllStatuses()', () => {
-      it('should update all feature statuses', () => {
+    describe('setFeaturesLoaded()', () => {
+      it('should mark the features as loaded', () => {
         const featureID: any = generate.id();
         const timestamp = TIMESTAMP + 1000;
         mockDate(timestamp);
 
-        expectAction(Feature.updateAllStatuses({ [featureID]: { isEnabled: true } })).toModify({
-          features: { [featureID]: { isEnabled: true } },
-        });
+        expectAction(Feature.setFeaturesLoaded({ [featureID]: { isEnabled: true } }))
+          .withState({ isLoaded: false } as Feature.FeatureState)
+          .toModify({ isLoaded: true, features: { [featureID]: { isEnabled: true } } });
       });
     });
 
-    describe('setFeaturesLoaded()', () => {
-      it('should mark the features as loaded', () => {
-        expectAction(Feature.setFeaturesLoaded())
-          .withState({ isLoaded: false } as Feature.FeatureState)
-          .toModify({ isLoaded: true });
+    describe('setWorkspaceFeaturesLoaded()', () => {
+      it('should mark the workspace features as loaded', () => {
+        const featureID: any = generate.id();
+        const timestamp = TIMESTAMP + 1000;
+        mockDate(timestamp);
+
+        expectAction(Feature.setWorkspaceFeaturesLoaded({ [featureID]: { isEnabled: true } }))
+          .withState({ isWorkspaceLoaded: false } as Feature.FeatureState)
+          .toModify({ isWorkspaceLoaded: true, features: { [featureID]: { isEnabled: true } } });
       });
     });
   });
@@ -61,6 +66,12 @@ suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, mockDate, describeReduc
     describe('isLoadedSelector()', () => {
       it('should select whether features are loaded', () => {
         expect(select(Feature.isLoadedSelector)).to.be.true;
+      });
+    });
+
+    describe('isWorkspaceLoadedSelector()', () => {
+      it('should select whether workspace features are loaded', () => {
+        expect(select(Feature.isWorkspaceLoadedSelector)).to.be.true;
       });
     });
   });

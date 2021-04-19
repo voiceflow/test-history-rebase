@@ -9,6 +9,8 @@ import { SettingsContainer, SettingsHeader } from '@/components/Settings';
 import { userSelector } from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import { activeWorkspaceSelector } from '@/ducks/workspace';
+import { WorkspaceFeatureLoadingGate } from '@/gates';
+import { withBatchLoadingGate } from '@/hocs';
 import PrivateRoute from '@/Routes/PrivateRoute';
 
 import Billing from './components/Billing';
@@ -65,4 +67,4 @@ const Settings: React.FC = () => {
   );
 };
 
-export default Settings;
+export default withBatchLoadingGate(WorkspaceFeatureLoadingGate)(Settings);

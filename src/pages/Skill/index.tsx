@@ -10,7 +10,14 @@ import { Path } from '@/config/routes';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as SkillDuck from '@/ducks/skill';
-import { PlanRestrictionGate, ProjectLoadingGate, ProjectLockGate, RealtimeLoadingGate, WorkspaceLoadingGate } from '@/gates';
+import {
+  PlanRestrictionGate,
+  ProjectLoadingGate,
+  ProjectLockGate,
+  RealtimeLoadingGate,
+  WorkspaceFeatureLoadingGate,
+  WorkspaceLoadingGate,
+} from '@/gates';
 import { connect, lazy, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable, usePermission } from '@/hooks';
 import CanvasHeader from '@/pages/Canvas/header';
@@ -164,6 +171,7 @@ export default compose(
     PlanRestrictionGate,
     ProjectLockGate,
     WorkspaceLoadingGate,
+    WorkspaceFeatureLoadingGate,
     RealtimeLoadingGate
   )
 )(Skill as any) as React.FC<SkillProps>;

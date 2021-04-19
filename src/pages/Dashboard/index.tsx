@@ -23,6 +23,7 @@ import * as Notifications from '@/ducks/notifications';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as Workspace from '@/ducks/workspace';
+import { WorkspaceFeatureLoadingGate } from '@/gates';
 import { connect } from '@/hocs';
 import { useModals, usePermission, useScrollHelpers, useSetup, useTrackingEvents, useWorkspaceTracking } from '@/hooks';
 import * as Models from '@/models';
@@ -211,97 +212,102 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
         </div>
       )}
 
-      {loading ? (
-        <FullSpinner name="Projects" />
-      ) : (
-        <div
-          id="dashboard"
-          className={cn({ 'thanos-ed': LOCKED })}
-          onClickCapture={(e) => {
-            // prevent all click events
-            if (LOCKED) {
-              e.preventDefault();
-              e.stopPropagation();
-            }
-          }}
-        >
-          {props.projects.length === 0 ? (
-            <div className="h-100 d-flex justify-content-center">
-              <div className="align-self-center">
-                <div className="text-center">
-                  <img src="/create.svg" alt="skill-icon" width="80" height="80" className="mb-3" />
-                </div>
-                <label className="dark text-center mb-3">No Projects Found</label>
-                <div className="text-muted mb-2">This workspace has no projects, create one.</div>
-                <Link to="/workspace/template" className="no-underline super-center">
-                  <Button isPrimary className="mt-3" id="createskill">
-                    New Project
-                  </Button>
-                </Link>
-              </div>
-            </div>
+      {/* using loading gate here instead of hock to escape header blinking  */}
+      <WorkspaceFeatureLoadingGate>
+        {() =>
+          loading ? (
+            <FullSpinner name="Projects" />
           ) : (
-            <div className="board-container-body">
-              <div className="board-container-body-inner">
-                <ScrollContextProvider value={scrollHelpers}>
-                  <div ref={bodyRef} className="main-lists">
-                    <div ref={innerRef} className="main-lists-inner">
-                      {props.projectLists.map((list, idx) => {
-                        const projects = getBoardFilteredProjects(list.projects, props.projectsMap, filter);
-                        if (filter && !projects.length) {
-                          return null;
-                        }
-                        return (
-                          <List
-                            id={list.id}
-                            key={list.id}
-                            isNew={list.isNew}
-                            index={idx}
-                            name={list.name}
-                            onRename={props.renameList}
-                            onRemove={onDeleteBoard}
-                            projects={projects}
-                            onCopyProject={onCopyProject}
-                            onDownloadProject={onDownloadProject}
-                            onDeleteProject={onDeleteProject(list.id)}
-                            createProject={onCreateProject}
-                            onMove={onMove}
-                            onMoveProject={onMoveProject}
-                            clearNewBoard={props.clearNewList}
-                            disableDragging={!!filter}
-                          />
-                        );
-                      })}
-
-                      <DragLayer withMemo>
-                        {(item: any) => {
-                          if (item.dragType === 'dashboard-list') {
-                            return <SimpleList {...item} />;
-                          }
-
-                          if (item.dragType === 'dashboard-item') {
-                            return <ListItem {...item} />;
-                          }
-
-                          return null;
-                        }}
-                      </DragLayer>
-
-                      {canManageLists && (
-                        <Flex style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}>
-                          <TippyTooltip distance={8} title="Add new list" position="bottom">
-                            <IconButton large icon="addStep" onClick={props.createNewList} size={13} />
-                          </TippyTooltip>
-                        </Flex>
-                      )}
+            <div
+              id="dashboard"
+              className={cn({ 'thanos-ed': LOCKED })}
+              onClickCapture={(e) => {
+                // prevent all click events
+                if (LOCKED) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }
+              }}
+            >
+              {props.projects.length === 0 ? (
+                <div className="h-100 d-flex justify-content-center">
+                  <div className="align-self-center">
+                    <div className="text-center">
+                      <img src="/create.svg" alt="skill-icon" width="80" height="80" className="mb-3" />
                     </div>
+                    <label className="dark text-center mb-3">No Projects Found</label>
+                    <div className="text-muted mb-2">This workspace has no projects, create one.</div>
+                    <Link to="/workspace/template" className="no-underline super-center">
+                      <Button isPrimary className="mt-3" id="createskill">
+                        New Project
+                      </Button>
+                    </Link>
                   </div>
-                </ScrollContextProvider>
-              </div>
+                </div>
+              ) : (
+                <div className="board-container-body">
+                  <div className="board-container-body-inner">
+                    <ScrollContextProvider value={scrollHelpers}>
+                      <div ref={bodyRef} className="main-lists">
+                        <div ref={innerRef} className="main-lists-inner">
+                          {props.projectLists.map((list, idx) => {
+                            const projects = getBoardFilteredProjects(list.projects, props.projectsMap, filter);
+                            if (filter && !projects.length) {
+                              return null;
+                            }
+                            return (
+                              <List
+                                id={list.id}
+                                key={list.id}
+                                isNew={list.isNew}
+                                index={idx}
+                                name={list.name}
+                                onRename={props.renameList}
+                                onRemove={onDeleteBoard}
+                                projects={projects}
+                                onCopyProject={onCopyProject}
+                                onDownloadProject={onDownloadProject}
+                                onDeleteProject={onDeleteProject(list.id)}
+                                createProject={onCreateProject}
+                                onMove={onMove}
+                                onMoveProject={onMoveProject}
+                                clearNewBoard={props.clearNewList}
+                                disableDragging={!!filter}
+                              />
+                            );
+                          })}
+
+                          <DragLayer withMemo>
+                            {(item: any) => {
+                              if (item.dragType === 'dashboard-list') {
+                                return <SimpleList {...item} />;
+                              }
+
+                              if (item.dragType === 'dashboard-item') {
+                                return <ListItem {...item} />;
+                              }
+
+                              return null;
+                            }}
+                          </DragLayer>
+
+                          {canManageLists && (
+                            <Flex style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}>
+                              <TippyTooltip distance={8} title="Add new list" position="bottom">
+                                <IconButton large icon="addStep" onClick={props.createNewList} size={13} />
+                              </TippyTooltip>
+                            </Flex>
+                          )}
+                        </div>
+                      </div>
+                    </ScrollContextProvider>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      )}
+          )
+        }
+      </WorkspaceFeatureLoadingGate>
     </div>
   );
 };

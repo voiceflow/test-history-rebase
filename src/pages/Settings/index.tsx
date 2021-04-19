@@ -5,7 +5,7 @@ import Page from '@/components/Page';
 import { SettingsContainer, SettingsHeader } from '@/components/Settings';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
-import { ProjectLoadingGate } from '@/gates';
+import { ProjectLoadingGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
 import { ConnectedProps } from '@/types';
 import { compose } from '@/utils/functional';
@@ -44,7 +44,7 @@ type ConnectedSettings = ConnectedProps<typeof mapStateToProps, typeof mapDispat
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withBatchLoadingGate([
+  withBatchLoadingGate(WorkspaceFeatureLoadingGate, [
     ProjectLoadingGate,
     ({ match }: { match: any }) => ({
       versionID: match.params?.versionID,

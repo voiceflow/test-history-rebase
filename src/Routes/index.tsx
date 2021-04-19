@@ -100,6 +100,7 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => (
           );
         }}
       />
+
       <Route
         exact
         path={Path.HOME}

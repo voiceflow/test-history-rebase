@@ -18,5 +18,15 @@ suite('Client - Feature', ({ expect, stubFetch }) => {
       expect(result).to.eq(features);
       expect(fetch).to.be.calledWithExactly('features/status');
     });
+
+    it('should get all feature statuses with context', async () => {
+      const features = generate.object();
+      const fetch = stubFetch('api').resolves(features);
+
+      const result = await client.getStatuses({ workspaceID: '123' });
+
+      expect(result).to.eq(features);
+      expect(fetch).to.be.calledWithExactly('features/status?workspaceID=123');
+    });
   });
 });

@@ -4742,6 +4742,14 @@
   resolved "https://registry.yarnpkg.com/@types/react-speech-recognition/-/react-speech-recognition-3.6.0.tgz#3c52e2d3e2306d8fb0f54a769586221cdba4e35b"
   integrity sha512-nFXlBxhz5Wnz/P7AQenmaG7r9MGBmvZhTW/MLPEPd1CYLgB+6jg0GygIYYM5LR+K1WyZ3+jXGhGszxoLQQkHXQ==
 
+"@types/react-stripe-elements@^6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@types/react-stripe-elements/-/react-stripe-elements-6.0.4.tgz#0931064941b4f74e25edb8955703eee90774a057"
+  integrity sha512-EzEeBiOwQJ0fPzZhtg9zqyy5GJbEbi0sFNFCowFXmRwraRcMRyZ4p2UK8nylzfCR2KtMPZ2fgUVH9xD/VL/StQ==
+  dependencies:
+    "@types/react" "*"
+    "@types/stripe-v3" "*"
+
 "@types/react-syntax-highlighter@11.0.4":
   version "11.0.4"
   resolved "https://registry.yarnpkg.com/@types/react-syntax-highlighter/-/react-syntax-highlighter-11.0.4.tgz#d86d17697db62f98046874f62fdb3e53a0bbc4cd"
@@ -4894,6 +4902,11 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.0.tgz#7036640b4e21cc2f259ae826ce843d277dad8cff"
   integrity sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==
+
+"@types/stripe-v3@*":
+  version "3.1.23"
+  resolved "https://registry.yarnpkg.com/@types/stripe-v3/-/stripe-v3-3.1.23.tgz#ef8bab5448f610e2d0467bea0a59881e69e2c4e4"
+  integrity sha512-fqCnai832M6o6qH6A+Dqk1I/SXAzx629bknbrDigyvkuAPGZGrjkLCMxfnrtWswHXNPjj/TtuGf4lQnDXc815w==
 
 "@types/styled-components@^5.1.7":
   version "5.1.7"

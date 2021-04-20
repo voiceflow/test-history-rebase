@@ -6,7 +6,6 @@ import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { useModals, usePermission } from '@/hooks';
 import { Workspace } from '@/models';
-import { noop } from '@/utils/functional';
 
 import { ProjectSearchContainer, ProjectSearchInput } from './components';
 
@@ -33,7 +32,7 @@ const SecondaryNav: React.FC<SecondaryNavProps> = ({ workspace: selectedWorkspac
 
       <FlexCenter>
         {selectedWorkspace && canViewCollaborators && (
-          <Members members={selectedWorkspace.members} onAdd={canAddCollaborators ? () => toggleCollaborators() : noop} />
+          <Members members={selectedWorkspace.members} onAdd={canAddCollaborators ? () => toggleCollaborators() : undefined} />
         )}
       </FlexCenter>
     </>

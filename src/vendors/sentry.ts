@@ -9,7 +9,7 @@ export const init = () => {
   Sentry.init({
     dsn: SENTRY_DSN,
     integrations: [new Integrations.BrowserTracing()],
-    tracesSampleRate: 1,
+    tracesSampleRate: 0.1,
     environment: IS_PRODUCTION ? CLOUD_ENV : APP_ENV,
   });
 };

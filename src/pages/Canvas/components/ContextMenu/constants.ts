@@ -34,7 +34,7 @@ export const BLOCK_COLORS: ContextMenuOption<BlockVariant>[] = [
   },
   {
     value: BlockVariant.STANDARD,
-    label: 'Default',
+    label: 'Gray',
   },
 ];
 

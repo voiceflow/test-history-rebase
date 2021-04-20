@@ -7,6 +7,7 @@ import * as Workspace from '@/ducks/workspace';
 import PermissionGate from '@/gates/PermissionGate';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
+import { Identifier } from '@/styles/constants';
 
 import { Container, UpgradeIcon, UpgradeText } from './components';
 
@@ -17,7 +18,7 @@ function UpgradeButton({ isOnPaidPlan }) {
     <PermissionGate permission={Permission.UPGRADE_WORKSPACE}>
       <>
         {!isOnPaidPlan ? (
-          <Container onClick={openPaymentsModal}>
+          <Container id={Identifier.UPGRADE_BUTTON} onClick={openPaymentsModal}>
             <UpgradeIcon variant="flat" large icon="upgrade" />
             <UpgradeText>UPGRADE WORKSPACE</UpgradeText>
           </Container>

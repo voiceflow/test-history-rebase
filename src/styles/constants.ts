@@ -20,6 +20,18 @@ export enum Identifier {
   THREAD_HISTORY_DRAWER = 'vf-thread-history-drawer',
   ESCAPE_MODE_PROMPT = 'vf-escape-mode-prompt',
   SPOTLIGHT = 'vf-spotlight',
+  UPGRADE_BUTTON = 'vf-upgrade-button',
+  PAYMENT_DETAILS_SECTION = 'vf-payment-details-section',
+  PAYMENT_UPGRADE_BUTTON = 'vf-payment-upgrade-button',
+  MODAL_CLOSE_BUTTON_REGULAR = 'vf-close-button-regular',
+  MODAL_TITLE_CONTAINER = 'vf-modal-title-container',
+  PAYMENT_MODAL_BILLING_CYCLE_DROPDOWN = 'vf-payment-modal-billing-cycle-dropdown',
+  PAYMENT_SEATS_INPUT = 'vf-input-seats-input',
+  COLLAB_SEND_INVITE_BUTTON = 'vf-collab-invite-button',
+  MEMBERS_CONTAINER = 'vf-members-container',
+  COPY_INVITE_BUTTON = 'vf-copy-invite-button',
+  UPGRADE_PLAN_SECTION = 'vf-upgrade-plan-section',
+  PAYMENT_MODAL_UNIT_COST_CONTAINER = 'vf-payment-modal-unit-cost-conatiner',
   CONTEXT_MENU = 'vf-context-menu',
 }
 
@@ -48,13 +60,14 @@ export enum ClassName {
   SVG_ICON = 'vf-svg-icon',
   MODAL = 'vf-modal',
   THREAD_EDITOR = 'vf-thread-editor',
+  COLLABORATOR_LINE_ITEM = 'vf-collaborator-line-item',
+  MEMBER_ROLE_BUTTON = 'vf-member-role-button',
   LINK_SETTINGS = 'vf-link-settings',
   PRIMARY_NAV = 'vf-header_primary-nav',
   SECONDARY_NAV = 'vf-header_secondary-nav',
   HEADER_ACTIONS_CENTER = 'vf-header_primary-nav__center',
   HEADER_ACTIONS_RIGHT = 'vf-header_primary-nav__right',
   HEADER_USER_MENU = 'vf-header_user-menu',
-  PLAN_BUBBLE = 'vf-bubble',
 }
 
 export enum DashboardClassName {
@@ -80,4 +93,5 @@ export enum DashboardClassName {
   PROJECTS_LIST_ITEM_ACTIONS = 'projects-list__item-actions',
   PROJECTS_LIST_ITEM_STATUS = 'projects-list__item-status',
   ADD_LIST_BUTTON = 'list__add-button',
+  PLAN_BUBBLE = 'vf-plan-bubble',
 }

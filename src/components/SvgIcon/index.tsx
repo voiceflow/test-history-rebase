@@ -16,6 +16,7 @@ export { IconVariant } from '@/constants';
 export { Icon };
 
 export type SvgIconProps = Partial<SvgIconContainerProps> & {
+  id?: string;
   icon: Icon | React.ComponentType;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
   className?: string;

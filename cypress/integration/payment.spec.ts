@@ -1,0 +1,110 @@
+import collaboratorHelper from '../pages/collaboration';
+import paymentHelper from '../pages/payment';
+
+context('Payment and Collaborators', () => {
+  beforeEach(() => cy.removeTestAccount());
+
+  describe('dashboard upgrade payment', () => {
+    it('free to pro yearly', () => {
+      paymentHelper.setup();
+      paymentHelper.openPaymentModal();
+      paymentHelper.fillCreditCard();
+      paymentHelper.confirmUpgrade();
+      paymentHelper.checkAndCloseSuccessModal();
+    });
+
+    it('free to pro monthly', () => {
+      paymentHelper.setup();
+      paymentHelper.openPaymentModal();
+      paymentHelper.changeAndCheckPeriodPrice();
+
+      paymentHelper.fillCreditCard();
+      paymentHelper.confirmUpgrade();
+      paymentHelper.checkAndCloseSuccessModal();
+    });
+
+    it('multiple seats (12) upgrade (Yearly)', () => {
+      paymentHelper.setup();
+      paymentHelper.openPaymentModal();
+      paymentHelper.increaseEditors();
+      paymentHelper.fillCreditCard();
+      paymentHelper.confirmUpgrade();
+      paymentHelper.checkAndCloseSuccessModal();
+    });
+
+    it('multiple seats (12) upgrade (Monthly)', () => {
+      paymentHelper.setup();
+      paymentHelper.openPaymentModal();
+      paymentHelper.changeToMonthlyPayments();
+      paymentHelper.increaseEditors();
+      paymentHelper.fillCreditCard();
+      paymentHelper.confirmUpgrade();
+      paymentHelper.checkAndCloseSuccessModal();
+    });
+  });
+
+  describe('collaborators', () => {
+    const testInviteEmail = 'yeet@voiceflow.com';
+    const testInviteEmail2 = 'yee2t@voiceflow.com';
+    const memberRoleDropdownCanEditString = 'Can edit';
+    const memberRoleDropdownCanViewString = 'Can view';
+
+    it('free plan, invite by email, editor', () => {
+      collaboratorHelper.setup();
+      collaboratorHelper.openCollabModal();
+      collaboratorHelper.sendEmailInvite(testInviteEmail);
+      collaboratorHelper.assertInvite(testInviteEmail, memberRoleDropdownCanEditString);
+    });
+
+    it('free plan, invite by email, viewer', () => {
+      collaboratorHelper.setup();
+      collaboratorHelper.openCollabModal();
+      collaboratorHelper.setInviteEmailToViewer();
+      collaboratorHelper.sendEmailInvite(testInviteEmail);
+      collaboratorHelper.assertInvite(testInviteEmail, memberRoleDropdownCanViewString);
+    });
+
+    it('free plan, invite by email, viewer and editor', () => {
+      collaboratorHelper.setup();
+      collaboratorHelper.openCollabModal();
+      // Editor
+      collaboratorHelper.sendEmailInvite(testInviteEmail);
+      collaboratorHelper.assertInvite(testInviteEmail, memberRoleDropdownCanEditString);
+
+      // Viewer
+      collaboratorHelper.setInviteEmailToViewer();
+      collaboratorHelper.sendEmailInvite(testInviteEmail2);
+      collaboratorHelper.assertInvite(testInviteEmail2, memberRoleDropdownCanViewString);
+    });
+
+    it('copy share link', () => {
+      collaboratorHelper.setup();
+      collaboratorHelper.openCollabModal();
+      collaboratorHelper.clickSaveShareLink();
+      collaboratorHelper.assertSuccessToast();
+    });
+
+    it('upgrade to pro with 1 seat and invite editor', () => {
+      paymentHelper.setup();
+      paymentHelper.openPaymentModal();
+      paymentHelper.fillCreditCard();
+      paymentHelper.confirmUpgrade();
+      paymentHelper.checkAndCloseSuccessModal();
+      collaboratorHelper.openCollabModal();
+      collaboratorHelper.sendEmailInvite(testInviteEmail);
+      paymentHelper.assertPaymentModal();
+    });
+
+    it('upgrade to pro with multiple seats and invite editor', () => {
+      paymentHelper.setup();
+      paymentHelper.openPaymentModal();
+      paymentHelper.increaseEditors();
+      paymentHelper.fillCreditCard();
+      paymentHelper.confirmUpgrade();
+      paymentHelper.checkAndCloseSuccessModal();
+      collaboratorHelper.openCollabModal();
+      collaboratorHelper.sendEmailInvite(testInviteEmail);
+      collaboratorHelper.assertInvite(testInviteEmail, memberRoleDropdownCanEditString);
+    });
+  });
+});

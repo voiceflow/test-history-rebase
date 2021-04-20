@@ -100,7 +100,7 @@ context('Team Dashboard', () => {
     });
 
     it('show payment modal if starter', () => {
-      dashboardPage.el.headerPrimaryNav.find(getClass(ClassName.PLAN_BUBBLE)).should('have.text', 'Free');
+      dashboardPage.el.headerPrimaryNav.find(getClass(DashboardClassName.PLAN_BUBBLE)).should('have.text', 'Free');
       dashboardPage.el.headerPrimaryNav.find(getClass(ClassName.HEADER_ACTIONS_CENTER)).should('be.visible').click();
       paymentModal.el.root.should('be.visible');
     });

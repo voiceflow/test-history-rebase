@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { UserRole } from '@/constants';
+import { Identifier } from '@/styles/constants';
 
 import Container from './components/Container';
 import MemberRow from './components/MemberRow';
 
 const MemberSection = ({ members, removeMember, resendInvite }) => (
-  <Container>
+  <Container id={Identifier.MEMBERS_CONTAINER}>
     {members.map((member, i) => (
       <MemberRow
         key={`${member.email}-${i}`}

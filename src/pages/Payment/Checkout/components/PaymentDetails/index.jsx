@@ -5,6 +5,7 @@ import Input, { ControlledInput } from '@/components/Input';
 import { CardElement } from '@/components/Stripe';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';
+import { Identifier } from '@/styles/constants';
 
 import StepHeading from '../StepHeading';
 
@@ -37,7 +38,7 @@ function PaymentDetails({
   return (
     <>
       <StepHeading heading="Payment details" actions={actions} noBottomPadding />
-      <StepSection>
+      <StepSection id={Identifier.PAYMENT_DETAILS_SECTION}>
         <Collapsable opened={usingCoupon}>
           <ControlledInput
             maxLength={16}

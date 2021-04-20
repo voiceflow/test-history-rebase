@@ -4,6 +4,7 @@ import React from 'react';
 import Flex from '@/components/Flex';
 import InfoIcon from '@/components/InfoIcon';
 import Icon from '@/components/SvgIcon';
+import { Identifier } from '@/styles/constants';
 
 import { HeaderTextContainer, ModalHeaderContainer } from './components';
 
@@ -19,11 +20,11 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({ header, toggle, children, cla
   <ModalHeaderContainer className={className}>
     {children || (
       <Flex as="h5">
-        <HeaderTextContainer>{header}</HeaderTextContainer>
+        <HeaderTextContainer id={Identifier.MODAL_TITLE_CONTAINER}>{header}</HeaderTextContainer>
         {tooltip && <InfoIcon tooltipProps={{ portalNode: window.document.body }}>{tooltip}</InfoIcon>}
       </Flex>
     )}
-    <Icon icon="close" onClick={toggle} size={12} />
+    <Icon id={Identifier.MODAL_CLOSE_BUTTON_REGULAR} icon="close" onClick={toggle} size={12} />
   </ModalHeaderContainer>
 );
 

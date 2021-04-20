@@ -7,8 +7,8 @@ import { CREATOR_ID_KEY, SESSION_CONTEXT, TAB_ID_KEY, TOKEN_KEY } from './sessio
 
 const PSQL = `PGPASSFILE=.pgpass psql -h ${POSTGRES_HOST} -d ${POSTGRES_DB} -U ${POSTGRES_USER}`;
 
-Cypress.Commands.add('signup', () => {
-  cy.visit('/signup');
+Cypress.Commands.add('signup', (queryString = '') => {
+  cy.visit(`/signup${queryString}`);
 
   signupPage.setName(TEST_USER);
   signupPage.setEmail(TEST_EMAIL);
@@ -52,6 +52,13 @@ Cypress.Commands.add('createTestAccount', () => {
   }).then((res) => {
     SESSION_CONTEXT.set(TOKEN_KEY, res.body.token);
     SESSION_CONTEXT.set(CREATOR_ID_KEY, res.body.user.creator_id);
+    SESSION_CONTEXT.get(CREATOR_ID_KEY);
+  });
+});
+
+Cypress.Commands.add('createWorkspace', (name = 'Test Workspace') => {
+  cy.request('POST', `${API_URL}/workspaces`, {
+    name,
   });
 });
 

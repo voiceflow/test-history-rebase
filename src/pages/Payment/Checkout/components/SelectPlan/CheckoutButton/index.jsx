@@ -7,6 +7,7 @@ import { BillingPeriod } from '@/constants';
 import { useTrackingEvents } from '@/hooks';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';
+import { Identifier } from '@/styles/constants';
 
 import { CostText, LoadingButton } from './components';
 
@@ -41,7 +42,7 @@ function CheckoutButton({ payment: { state, checkout } }) {
   const paymentReady = stripeCompleted || usingExistingSource;
 
   return (
-    <Button variant="primary" onClick={onUpgradeClick} disabled={!_isEmpty(errors) || !paymentReady}>
+    <Button id={Identifier.PAYMENT_UPGRADE_BUTTON} variant="primary" onClick={onUpgradeClick} disabled={!_isEmpty(errors) || !paymentReady}>
       Upgrade{' '}
       {paymentReady && (
         <CostText>

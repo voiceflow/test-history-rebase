@@ -9,6 +9,7 @@ import { ModalType, UserRole } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
 
@@ -84,7 +85,7 @@ const InviteByLinkFooter: React.FC<{ noIcon?: boolean } & ConnectedSeatSummaryPr
           text={PermissionText[linkInvitePermission]}
         />
       </DropdownContainer>
-      <Button variant={ButtonVariant.PRIMARY} icon={noIcon ? null : 'link'} onClick={handleCopyLink}>
+      <Button id={Identifier.COPY_INVITE_BUTTON} variant={ButtonVariant.PRIMARY} icon={noIcon ? null : 'link'} onClick={handleCopyLink}>
         <span>Copy Invite Link</span>
       </Button>
     </Container>

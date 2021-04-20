@@ -4,7 +4,7 @@ import BubbleText from '@/components/BubbleText';
 import { Permission } from '@/config/permissions';
 import { ModalType, PLAN_TYPE_META, PlanType } from '@/constants';
 import { useModals, usePermission } from '@/hooks';
-import { ClassName } from '@/styles/constants';
+import { DashboardClassName } from '@/styles/constants';
 
 type PlanBubble = {
   plan?: PlanType | null;
@@ -27,7 +27,7 @@ const PlanBubble: React.FC<PlanBubble> = ({ plan, disabled }) => {
     }
   };
   return (
-    <BubbleText onClick={onClick} color={color} clickable={allowedToClick} className={ClassName.PLAN_BUBBLE}>
+    <BubbleText className={DashboardClassName.PLAN_BUBBLE} onClick={onClick} color={color} clickable={allowedToClick}>
       {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? 'Free' : label}
     </BubbleText>
   );

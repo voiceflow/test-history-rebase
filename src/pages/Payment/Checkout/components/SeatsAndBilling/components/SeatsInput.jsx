@@ -4,6 +4,7 @@ import { Tooltip } from 'react-tippy';
 import Input from '@/components/Input';
 import { styled, transition } from '@/hocs';
 import { withPayment } from '@/pages/Payment/context';
+import { Identifier } from '@/styles/constants';
 
 export const BILLING_SEATS_ELEMENT = 'seats';
 
@@ -59,6 +60,7 @@ const SeatsInput = ({
       distance={5}
     >
       <SeatsInputBox
+        id={Identifier.PAYMENT_SEATS_INPUT}
         ref={inputRef}
         onFocus={() => setHasFocus(true)}
         onBlur={() => setHasFocus(false)}

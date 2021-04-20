@@ -9,6 +9,7 @@ import { BillingPeriod, PERIOD_NAME } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';
+import { Identifier } from '@/styles/constants';
 
 import BillingDropdown from './components/BillingDropdown';
 import DiscountMessageContainer from './components/DiscountMessageContainer';
@@ -65,7 +66,13 @@ function SeatsAndBilling({
               >
                 {(ref, onToggle, isOpen) => (
                   <Tooltip disabled={!periodError} title={periodError} position="top-start" theme="warning" distance={5}>
-                    <BillingDropdown ref={ref} onClick={onToggle} error={periodError} isOpen={isOpen}>
+                    <BillingDropdown
+                      id={Identifier.PAYMENT_MODAL_BILLING_CYCLE_DROPDOWN}
+                      ref={ref}
+                      onClick={onToggle}
+                      error={periodError}
+                      isOpen={isOpen}
+                    >
                       Billed {PERIOD_NAME[period]}
                       <SvgIcon icon="caretDown" color={isOpen ? '5D9DF5' : null} size={7} />
                     </BillingDropdown>
@@ -78,7 +85,9 @@ function SeatsAndBilling({
             <PriceBox>
               <>
                 <div>$</div>
-                {!plan.pricing || !_isNumber(price) || loading.price ? <div>&nbsp;--&nbsp;</div> : <div>{price}</div>}
+                <span id={Identifier.PAYMENT_MODAL_UNIT_COST_CONTAINER}>
+                  {!plan.pricing || !_isNumber(price) || loading.price ? <div>&nbsp;--&nbsp;</div> : <div>{price}</div>}
+                </span>
                 <div>/ month</div>
               </>
             </PriceBox>

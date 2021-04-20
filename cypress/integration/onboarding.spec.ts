@@ -1,60 +1,122 @@
 import canvasPage from '../pages/canvas';
-import onboardingPage from '../pages/onboarding';
+import dashboard from '../pages/dashboard';
+import onboarding from '../pages/onboarding';
 
-// TODO: redo with new onboarding
 context('Onboarding', () => {
-  beforeEach(() => cy.removeTestAccount());
-  afterEach(() => cy.removeTestAccount());
-
-  it.skip('hobbyist', () => {
+  const regularFlow = (projectType?: string) => {
     cy.signup();
 
-    cy.shouldBeOn(onboardingPage);
-
-    onboardingPage.el.greeting.should('have.text', 'Hi, Test Account');
-
-    onboardingPage.continue();
-
-    onboardingPage.el.soloProjectButton.click();
-
-    onboardingPage.continue();
-
-    onboardingPage.el.buildAndPublishButton.click();
-
-    onboardingPage.continue();
-
-    onboardingPage.el.highExperienceButton.click();
-
-    onboardingPage.continue();
-
+    cy.shouldBeOn(onboarding);
+    onboarding.el.getStartedButton.click();
+    onboarding.completeProfile();
+    onboarding.continueStep();
+    onboarding.completeCreateWorkspace();
+    onboarding.continueStep();
+    onboarding.completeInvites();
+    onboarding.completeSelectChannel(projectType);
     cy.shouldBeOn(canvasPage);
+  };
 
-    canvasPage.el.projectTitle.should('have.value', 'My First Project');
+  describe('regular new user flow', () => {
+    beforeEach(() => cy.removeTestAccount());
+
+    it('alexa project', () => {
+      regularFlow();
+    });
+
+    it('google project', () => {
+      regularFlow('Google Assistant');
+    });
+
+    it('general project', () => {
+      regularFlow('Custom Assistant');
+    });
+
+    it('chatbot project', () => {
+      regularFlow('Chatbot');
+    });
+
+    it('Mobile App project', () => {
+      regularFlow('Mobile App');
+    });
+
+    it('IVR project', () => {
+      regularFlow('IVR');
+    });
   });
 
-  it.skip('professional', () => {
-    cy.signup();
+  describe('Student promo plan', () => {
+    beforeEach(() => cy.removeTestAccount());
 
-    cy.shouldBeOn(onboardingPage);
+    it('new user', () => {
+      cy.signup('?promo=student');
 
-    onboardingPage.el.greeting.should('have.text', 'Hi, Test Account');
+      cy.shouldBeOn(onboarding);
+      onboarding.el.getStartedButton.click();
+      onboarding.completeProfile();
+      onboarding.continueStep();
+      onboarding.completeCreateWorkspace();
+      onboarding.continueStep();
+      onboarding.completeInvites();
+      onboarding.completeSelectChannel();
+      onboarding.enterCreditCard();
+      cy.get('button.vf-button').click();
+      cy.shouldBeOn(canvasPage);
+    });
 
-    onboardingPage.continue();
+    it('existing user', () => {
+      regularFlow();
+      cy.visit(`/onboarding?promo=student`);
+      onboarding.completeInvites();
+      onboarding.completeSelectChannel();
+      onboarding.enterCreditCard();
+      onboarding.selectWorkspace();
+      cy.get('button.vf-button').click();
 
-    onboardingPage.el.teamProjectButton.click();
+      cy.shouldBeOn(dashboard);
+      onboarding.assert.planBubble('Student');
+    });
+  });
 
-    onboardingPage.continue();
+  describe('Creator promo plan', () => {
+    beforeEach(() => cy.removeTestAccount());
 
-    onboardingPage.setCompanyName('storyflow');
+    it('new user creator signup flow', () => {
+      cy.signup('?ob_payment=true&ob_plan=creator&ob_period=MO');
 
-    onboardingPage.selectRole('Developer');
+      cy.shouldBeOn(onboarding);
+      onboarding.el.getStartedButton.click();
+      onboarding.completeProfile();
+      onboarding.continueStep();
+      onboarding.completeCreateWorkspace();
+      onboarding.continueStep();
+      onboarding.completeInvites();
+      onboarding.completeSelectChannel();
+      onboarding.enterCreditCard();
+      cy.get('button.vf-button').click();
+      cy.shouldBeOn(canvasPage);
+      cy.visit(`/dashboard`);
+      onboarding.assert.planBubble('Creator');
+    });
 
-    onboardingPage.setCompanySize(3);
+    it('existing user creator signup flow', () => {
+      cy.signup();
 
-    onboardingPage.continue();
+      cy.visit('?ob_payment=true&ob_plan=creator&ob_period=MO');
 
-    cy.shouldBeOn(canvasPage);
-
-    canvasPage.el.projectTitle.should('have.value', 'My First Project');
+      cy.shouldBeOn(onboarding);
+      onboarding.el.getStartedButton.click();
+      onboarding.completeProfile();
+      onboarding.continueStep();
+      onboarding.completeCreateWorkspace();
+      onboarding.continueStep();
+      onboarding.completeInvites();
+      onboarding.completeSelectChannel();
+      onboarding.enterCreditCard();
+      cy.get('button.vf-button').click();
+      cy.shouldBeOn(canvasPage);
+      cy.visit(`/dashboard`);
+      onboarding.assert.planBubble('Creator');
+    });
   });
 });

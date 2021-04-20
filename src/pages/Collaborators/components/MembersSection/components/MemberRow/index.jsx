@@ -10,6 +10,7 @@ import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { FadeLeftContainer } from '@/styles/animations';
+import { ClassName } from '@/styles/constants';
 
 import { Container, DropdownIcon, DropdownItem, MemberName, PermissionDropdown, PermissionsDropdownButton, UserIcon } from './components';
 
@@ -81,7 +82,7 @@ const MemberRow = ({
   };
 
   return (
-    <Container>
+    <Container className={ClassName.COLLABORATOR_LINE_ITEM} data-email={member.email}>
       <FadeLeftContainer>
         <Flex>
           <UserIcon pending={pending} user={member} />
@@ -115,7 +116,7 @@ const MemberRow = ({
         }
       >
         {(ref, onToggle) => (
-          <PermissionsDropdownButton ref={ref} onClick={() => allowDropdown && onToggle()}>
+          <PermissionsDropdownButton className={ClassName.MEMBER_ROLE_BUTTON} ref={ref} onClick={() => allowDropdown && onToggle()}>
             {isAdmin ? (
               <span>Admin</span>
             ) : (

@@ -4,7 +4,6 @@ export default {
       return cy.get('#createWorkspace');
     },
   },
-
   meta: {
     route: /\/dashboard/,
   },

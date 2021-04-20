@@ -8,6 +8,7 @@ import { ModalType, UserRole } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useEnableDisable, useModals } from '@/hooks';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { isValidEmail } from '@/utils/emails';
 
@@ -80,7 +81,7 @@ const SendInvite: React.FC<SendInviteProps & ConnectedSendInviteProps> = ({
           onFocus={setValid}
         />
 
-        <SendInviteButton onClick={onSendInviteClick} variant="secondary" disabled={isInvalid}>
+        <SendInviteButton id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} variant="secondary" disabled={isInvalid}>
           Send Invite
         </SendInviteButton>
       </Flex>

@@ -42,14 +42,19 @@ declare namespace Cypress {
     ): Chainable<JQuery<E>>;
 
     /**
+     * complete signup flow using configured name, email + password, with optional queryString
+     */
+    signup(queryString?: string): Chainable;
+
+    /**
+     * create workspace, needs to be called after signup()
+     */
+    createWorkspace(): Chainable;
+
+    /**
      * get element's clientRect
      */
     boundingClientRect(): Chainable<DOMRect>;
-
-    /**
-     * complete signup flow using configured name, email + password
-     */
-    signup(): Chainable;
 
     /**
      * set the auth token cookie
@@ -80,6 +85,11 @@ declare namespace Cypress {
      * create a new project
      */
     createProject(platform?: 'alexa' | 'google'): Chainable;
+
+    /**
+     Fills stripe input
+     */
+    fillElementsInput(field: string, value: string): Chainable;
 
     /**
      * create a new thread

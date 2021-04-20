@@ -5,6 +5,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { PLAN_INFO_LINK, PlanType } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';
+import { Identifier } from '@/styles/constants';
 
 import StepHeading from '../StepHeading';
 import PlanInfoCard from './PlanInfoCard';
@@ -15,7 +16,7 @@ const SelectPlan = ({
     actions: { setPlan },
   },
 }) => (
-  <>
+  <span id={Identifier.UPGRADE_PLAN_SECTION}>
     <StepHeading
       heading="UPGRADE PLAN"
       actions={[
@@ -39,7 +40,7 @@ const SelectPlan = ({
           ))}
       </Flex>
     </StepSection>
-  </>
+  </span>
 );
 
 export default withPayment(SelectPlan);

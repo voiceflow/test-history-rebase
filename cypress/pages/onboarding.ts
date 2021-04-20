@@ -1,45 +1,85 @@
-export default {
-  continue: () => cy.get('.btn-primary').click(),
+import { DashboardClassName } from '../../src/styles/constants';
 
-  setCompanyName: (name: string) => cy.get('input[name="company_name"]').type(name),
+const TARGET_ELEMENT_TEXT = {
+  RoleDropdown: 'Select your role',
+  ChannelDropdown: 'Choose all that apply',
+  OnlyMeButton: 'Only Me',
+  ContinueButton: 'Continue',
+  GetStartedButton: 'Get Started',
+  GiveWorkspaceName: 'Give your workspace a name',
+  InviteEmailExample: 'name@example.com',
+  SendInviteButton: 'Send Invites',
+  SkipInvites: 'Skip for now',
+};
 
-  setCompanySize: (size: number) => cy.get('input[name="company_size"]').type(String(size)),
+const exampleEmail = 'yeet@voiceflow.com';
 
-  selectRole: (role: 'Developer') => {
-    cy.get('.select-box__control').click();
+const helper = {
+  getInputByPlaceholder: (placeholder: string) => cy.get(`input[placeholder="${placeholder}"]`),
+  getDivByText: (text: string) => cy.get('div')?.contains(text),
+  getSpanByText: (text: string) => cy.get('span')?.contains(text),
+  getButtonByText: (text: string) => cy.get('div')?.contains(text),
 
-    cy.get('.select-box__menu .select-box__option').contains(role).click();
+  uploadImage: () => {
+    cy.get('input[type="file"]').attachFile({
+      filePath: 'image.png',
+    });
   },
 
   el: {
-    get greeting() {
-      return cy.get('.modal-bg-txt');
+    get getStartedButton() {
+      return cy.get('button').contains(TARGET_ELEMENT_TEXT.GetStartedButton);
     },
-    get surveyOption() {
-      return cy.get('.button-card');
-    },
-    get soloProjectButton() {
-      return this.surveyOption.first();
-    },
-    get teamProjectButton() {
-      return this.surveyOption.last();
-    },
-    get designAndPrototypeButton() {
-      return this.surveyOption.first();
-    },
-    get buildAndPublishButton() {
-      return this.surveyOption.last();
-    },
-    get lowExperienceButton() {
-      return this.surveyOption.eq(0);
-    },
-    get midExperienceButton() {
-      return this.surveyOption.eq(1);
-    },
-    get highExperienceButton() {
-      return this.surveyOption.eq(2);
+
+    get activeDropdown() {
+      return cy.get('.vf-menu');
     },
   },
+};
+
+export default {
+  completeProfile: () => {
+    helper.getInputByPlaceholder(TARGET_ELEMENT_TEXT.RoleDropdown).parent().click();
+    helper.el.activeDropdown.get('li').first().click();
+    helper.getDivByText(TARGET_ELEMENT_TEXT.ChannelDropdown).parent().click();
+    helper.el.activeDropdown.get('li').first().click();
+    helper.getDivByText('Amazon Alexa').click();
+    helper.getDivByText(TARGET_ELEMENT_TEXT.OnlyMeButton).click();
+  },
+  completeCreateWorkspace: () => {
+    helper.getInputByPlaceholder(TARGET_ELEMENT_TEXT.GiveWorkspaceName).focus().type('Yeet');
+    // For some reason the backend validators doesn't like the format of the localhost image url
+    // it doesn't get past the isURL() check which then causes the workspace creation to fail
+
+    // helper.uploadImage();
+    // cy.get('div[size=120] > span').should('not.exist');
+  },
+  completeInvites: (skip = false) => {
+    helper.getInputByPlaceholder(TARGET_ELEMENT_TEXT.InviteEmailExample).first().type(exampleEmail);
+    skip ? helper.getSpanByText(TARGET_ELEMENT_TEXT.SkipInvites).click() : helper.getButtonByText(TARGET_ELEMENT_TEXT.SendInviteButton).click();
+  },
+  completeSelectChannel: (channel = 'Amazon Alexa') => {
+    helper.getDivByText(channel).click();
+  },
+  enterCreditCard: () => {
+    cy.fillElementsInput('cardNumber', '4242424242424242');
+    cy.fillElementsInput('cardExpiry', '1025');
+    cy.fillElementsInput('cardCvc', '123');
+    cy.fillElementsInput('postalCode', '90210');
+  },
+  continueStep: () => {
+    helper.getButtonByText(TARGET_ELEMENT_TEXT.ContinueButton).click();
+  },
+  selectWorkspace: () => {
+    helper.getDivByText('Select a Workspace').click();
+    helper.el.activeDropdown.get('li').first().click();
+  },
+  assert: {
+    planBubble: (planString = 'Free') => {
+      cy.get(`.${DashboardClassName.PLAN_BUBBLE}`).contains(planString);
+    },
+  },
+  el: helper.el,
 
   meta: {
     route: '/onboarding',

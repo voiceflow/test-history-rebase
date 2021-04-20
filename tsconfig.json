@@ -42,7 +42,8 @@
       "_storybook": [
         "./packages/storybook/.storybook/utils"
       ]
-    }
+    },
+    "types": ["cypress", "cypress-plugin-stripe-elements", "gapi", "gapi.auth2", "resize-observer-browser", "webpack-env"]
   },
   "compileOnSave": false,
   "include": [

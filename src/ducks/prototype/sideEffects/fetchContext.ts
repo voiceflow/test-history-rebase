@@ -33,7 +33,11 @@ const fetchContext = (request: Request | null): Thunk<Context | null> => async (
   const currentDiagramID = Skill.activeDiagramIDSelector(reduxState);
 
   try {
-    const { state: _state, trace } = await client.prototype.interact(versionID, { state, request, config: { stopAll: !!settings.guided } });
+    const { state: _state, trace } = await client.prototype.interact(versionID, {
+      state,
+      request,
+      config: { stopAll: !!settings.guided, excludeTypes: [] },
+    });
 
     const newState: Context = _state;
     const lastVisual = [...trace].reverse().find(({ type }) => type === TraceType.VISUAL) as VisualTrace;

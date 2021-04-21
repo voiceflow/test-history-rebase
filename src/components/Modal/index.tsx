@@ -26,7 +26,7 @@ const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id,
       <Root ref={ref} hidden={!isOpened}>
         <Container fade={fade} isSmall={isSmall} className={className}>
           <Header>
-            <span>{title}</span>
+            {title}
 
             <div>
               <Icon>{icon}</Icon>

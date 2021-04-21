@@ -63,7 +63,9 @@ export default persistReducer(PERSIST_CONFIG, recentReducer);
 
 const rootSelector = createRootSelector(STATE_KEY);
 
-export const recentPrototypeSelector = createSelector(rootSelector, ({ prototype }) => prototype);
+export const recentPrototypeSelector = createSelector([rootSelector], ({ prototype }) => prototype);
+
+export const prototypeDebugSelector = createSelector([recentPrototypeSelector], ({ debug }) => debug);
 
 //  action creators
 

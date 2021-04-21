@@ -11,12 +11,11 @@ import { Permission } from '@/config/permissions';
 import * as Diagram from '@/ducks/diagram';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
-import * as Recent from '@/ducks/recent';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect, useEventualEngine, usePermission, useTheme } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import Prototype from '@/pages/Prototype';
-import { useResetPrototype } from '@/pages/Prototype/hooks';
+import { useDebug, useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import { NLPContext } from '@/pages/Skill/contexts';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -31,7 +30,6 @@ export type PrototypeSidebarProps = {
 
 const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSidebarProps> = ({
   open,
-  settings,
   saveActiveDiagram,
   renderPrototype,
   isMuted,
@@ -39,6 +37,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   status,
 }) => {
   const theme = useTheme();
+  const debugEnabled = useDebug();
   const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
 
   const [trainingOpen, toggleTrainingOpen] = useToggle(true);
@@ -143,7 +142,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
             />
 
             <EmbedContainer>
-              <Prototype debug={settings.debug} atTop={atTop} setAtTop={setAtTop} isModelTraining={isModelTraining} />
+              <Prototype debug={debugEnabled} atTop={atTop} setAtTop={setAtTop} isModelTraining={isModelTraining} />
             </EmbedContainer>
           </Container>
         )}
@@ -155,7 +154,6 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
 const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
   isMuted: PrototypeDuck.prototypeMutedSelector,
-  settings: Recent.recentPrototypeSelector,
 };
 
 const mapDispatchToProps = {

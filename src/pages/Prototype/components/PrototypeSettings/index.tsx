@@ -3,20 +3,23 @@ import React from 'react';
 import Section, { SectionVariant } from '@/components/Section';
 import * as Recent from '@/ducks/recent';
 import { connect } from '@/hocs';
+import { useDebug } from '@/pages/Prototype/hooks';
 import { ConnectedProps } from '@/types';
 
 import { Drawer } from '../PrototypeContainer';
 import SettingsSection from './components/SettingsSection';
 
 const PrototypeSettings: React.FC<ConnectedPrototypeSettingsProps> = ({ settings, updateSettings }) => {
-  const toggleDebug = () => updateSettings({ debug: !settings.debug });
+  const debugEnabled = useDebug();
+
+  const toggleDebug = () => updateSettings({ debug: !debugEnabled });
   const toggleIntentScore = () => updateSettings({ intent: !settings.intent });
   const toggleGuidedNav = () => updateSettings({ guided: !settings.guided });
 
   return (
     <Drawer>
       <Section header="TEST SETTINGS" variant={SectionVariant.PROTOTYPE} />
-      <SettingsSection header="Debug Mode" toggle={toggleDebug} value={settings.debug}>
+      <SettingsSection header="Debug Mode" toggle={toggleDebug} value={debugEnabled}>
         Show the paths, variables and flows you're using while you test
       </SettingsSection>
       <SettingsSection header="Intent Confidence Score" toggle={toggleIntentScore} value={settings.intent} isDividerNested>

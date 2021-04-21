@@ -5,7 +5,6 @@ import Section, { SectionVariant } from '@/components/Section';
 import Tooltip from '@/components/TippyTooltip';
 import { VariableTag } from '@/components/VariableTag';
 import * as Prototype from '@/ducks/prototype';
-import * as Recent from '@/ducks/recent';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
@@ -40,12 +39,10 @@ const PrototypeVariableSettings: React.FC<ConnectedPrototypeVariableSettingsProp
 );
 
 const mapStateToProps = {
-  settings: Recent.recentPrototypeSelector,
   variables: Prototype.prototypeVariablesSelector,
 };
 
 const mapDispatchToProps = {
-  updateSettings: Recent.updateRecentPrototype,
   updateVariables: Prototype.updateVariables,
 };
 

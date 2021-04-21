@@ -5,6 +5,7 @@ import Box from '@/components/Box';
 import * as Diagram from '@/ducks/diagram';
 import * as Recent from '@/ducks/recent';
 import { connect, styled } from '@/hocs';
+import { useDebug } from '@/pages/Prototype/hooks';
 import { ConnectedProps } from '@/types';
 
 import { MessageProps } from '../components/Message';
@@ -32,6 +33,8 @@ type DebugProps = Omit<MessageProps, 'iconProps'> & {
 };
 
 export const Debug: React.FC<DebugProps & ConnectedDebugProps> = ({ message, settings, getDiagram, ...props }) => {
+  const debugEnabled = useDebug();
+
   const debugMessage = React.useMemo(() => {
     if (message.includes('entering flow')) {
       const flowID = message.split(' ')[2].replace(/`/g, '');
@@ -45,7 +48,7 @@ export const Debug: React.FC<DebugProps & ConnectedDebugProps> = ({ message, set
     if (!settings.intent) {
       return null;
     }
-  } else if (!settings.debug) {
+  } else if (!debugEnabled) {
     return null;
   }
 

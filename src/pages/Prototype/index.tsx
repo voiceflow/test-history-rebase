@@ -14,7 +14,7 @@ import * as Query from '@/utils/query';
 
 import { ChatDisplay, Container, Input, Start, UserSaysContainer } from './components';
 import { usePrototype, useResetPrototype, useStartPrototype } from './hooks';
-import { PMStatus } from './types';
+import { BotMessageTypes, MessageType, PMStatus } from './types';
 
 export type PrototypeProps = {
   debug: boolean;
@@ -50,6 +50,10 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
   const initialLoadFinished = React.useRef(false);
+  const isBubbleMessageShown = React.useMemo(
+    () => messages.some((message) => BotMessageTypes.includes(message.type) || message.type === MessageType.USER),
+    [messages]
+  );
 
   const { nodeID } = Query.parse(location?.search);
 
@@ -88,7 +92,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         atTop={atTop}
         setAtTop={setAtTop}
         isPublic={isPublic}
-        isLoading={isLoading}
+        // to show loader until first bubble message is up or "waiting for user interaction"
+        isLoading={isLoading || (!isBubbleMessageShown && prototypeMachineStatus !== PMStatus.WAITING_USER_INTERACTION)}
         messages={messages}
         onPlay={onPlay}
         interactions={interactions}

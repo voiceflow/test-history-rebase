@@ -3,6 +3,7 @@ import React from 'react';
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
+import { facebookLogo } from '@/assets';
 import Button, { ButtonVariant } from '@/components/Button';
 import { FACEBOOK_APP_ID } from '@/config';
 
@@ -22,7 +23,7 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProps> = ({ light, disabl
         onClick={() => !disabled && renderProps!.onClick()}
         className={cn('social-button', { 'social-button-light': light })}
       >
-        <img src="/facebook.svg" alt="Facebook Login" />
+        <img src={facebookLogo} alt="Facebook Login" />
         Facebook
       </Button>
     )}

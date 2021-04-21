@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { supportGraphicSmall } from '@/assets';
 import Button, { ButtonVariant } from '@/components/Button';
 
 import { ButtonContainer, ButtonLink, Description, StageContainer } from '../components';
@@ -10,7 +11,7 @@ type WaitVendorsStageProps = {
 
 const WaitVendorsStage: React.FC<WaitVendorsStageProps> = ({ cancel }) => (
   <StageContainer>
-    <img src="/Support.svg" alt="" />
+    <img src={supportGraphicSmall} alt="" />
 
     <Description>Looks like you don't have a developer account, create one to get started!</Description>
 

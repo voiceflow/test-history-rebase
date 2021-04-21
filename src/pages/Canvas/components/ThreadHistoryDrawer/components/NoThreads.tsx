@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { noIntentsGraphic } from '@/assets';
 import Box, { Flex } from '@/components/Box';
 import Text from '@/components/Text';
 
@@ -18,7 +19,7 @@ const NoComments: React.FC<NoCommentsProps> = ({ type }) => {
 
   return (
     <Flex column pl={57} pr={57}>
-      <Box as="img" alt="No Comments" height={80} src="/images/no-intents.svg" mt={90} />
+      <Box as="img" alt="No Comments" height={80} src={noIntentsGraphic} mt={90} />
       <Text mt={20} fontWeight={600} fontSize={15}>
         {mainText}
       </Text>

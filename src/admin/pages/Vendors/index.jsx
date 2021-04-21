@@ -1,10 +1,10 @@
 import _has from 'lodash/has';
 import React from 'react';
 
+import SearchInput from '@/admin/components/SearchInput';
 import * as Admin from '@/admin/store/ducks/adminV2';
 import { AdminTitle } from '@/admin/styles';
 import Button from '@/components/Button';
-import Input from '@/components/Input';
 import { connect } from '@/hocs';
 
 import VendorList from './components/VendorList/VendorList';
@@ -49,8 +49,8 @@ class Vendors extends React.Component {
           <div>
             <div className="row">
               <div className="col-sm-8">
-                <Input
-                  className="search-input form-control-2"
+                <SearchInput
+                  className="form-control-2"
                   placeholder="Find creator by id or email"
                   onChange={this.handleSearch}
                   onEnterPress={() => {

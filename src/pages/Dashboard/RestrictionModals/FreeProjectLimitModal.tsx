@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { projectLimitGraphic } from '@/assets';
 import { ModalType } from '@/constants';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { useModals, useTrackingEvents } from '@/hooks';
@@ -21,7 +22,7 @@ const FreeProjectLimitModal: React.FC = () => {
     <BaseModal
       modalType={ModalType.FREE_PROJECT_LIMIT}
       header="Free Project Limit"
-      icon="/project-limit.svg"
+      icon={projectLimitGraphic}
       bodyContent={
         <>
           {data.message || `You've reached your ${data.projects} free project limit`}. Upgrade to <BoldText>unlock unlimited projects.</BoldText>

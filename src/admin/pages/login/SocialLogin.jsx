@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import GoogleLogin from 'react-google-login';
 
 import * as AccountV2 from '@/admin/store/ducks/accountV2';
+import { errorIcon, googleLogo } from '@/assets';
 import { GOOGLE_CLIENT_ID } from '@/config';
 import { connect } from '@/hocs';
 
@@ -39,7 +40,7 @@ const SocialLogin = ({ entryText, light, googleLogin }) => {
         clientId={GOOGLE_CLIENT_ID}
         render={(renderProps) => (
           <div onClick={renderProps.onClick} className={cn('social-button', { 'social-button-light': light })}>
-            <img src="/google.svg" alt="" />
+            <img src={googleLogo} alt="" />
             Google
           </div>
         )}
@@ -48,7 +49,7 @@ const SocialLogin = ({ entryText, light, googleLogin }) => {
       {authError && (
         <div className="errorContainer row">
           <div className="col-1">
-            <img src="/error.svg" alt="" />
+            <img src={errorIcon} alt="" />
           </div>
           <div className="col-11">An unexpected error occurred. Please try again or use a different sign up method.</div>
         </div>

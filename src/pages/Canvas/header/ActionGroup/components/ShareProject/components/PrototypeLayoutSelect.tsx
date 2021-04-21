@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { textAndDialogGraphic, textAndDialogGraphicInactive, voiceAndVisualsGraphic, voiceAndVisualsGraphicInactive } from '@/assets';
 import Box from '@/components/Box';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import Menu, { MenuItem } from '@/components/Menu';
@@ -15,20 +16,20 @@ const OPTION_DETAILS: Record<PrototypeLayout, Record<string, string>> = {
   [PrototypeLayout.TEXT_DIALOG]: {
     title: 'Text and Transcript',
     description: 'Testers will use text and chips input',
-    activeImg: '/icon-text-dialog.svg',
-    inactiveImg: '/icon-text-dialog-inactive.svg',
+    activeImg: textAndDialogGraphic,
+    inactiveImg: textAndDialogGraphicInactive,
   },
   [PrototypeLayout.VOICE_DIALOG]: {
     title: 'Voice and Transcript',
     description: 'Testers will use voice and chips input',
-    activeImg: '/icon-text-dialog.svg',
-    inactiveImg: '/icon-text-dialog-inactive.svg',
+    activeImg: textAndDialogGraphic,
+    inactiveImg: textAndDialogGraphic,
   },
   [PrototypeLayout.VOICE_VISUALS]: {
     title: 'Voice and Visuals',
     description: 'Testers will only use voice input',
-    activeImg: '/icon-voice-visuals.svg',
-    inactiveImg: '/icon-voice-visuals-inactive.svg',
+    activeImg: voiceAndVisualsGraphic,
+    inactiveImg: voiceAndVisualsGraphicInactive,
   },
 };
 /**

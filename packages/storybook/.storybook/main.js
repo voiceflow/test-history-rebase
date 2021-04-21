@@ -2,7 +2,7 @@
 require('ts-node/register/transpile-only');
 
 const path = require('path');
-const { tsConfigPathsPlugin, svgLoader } = require('../../../config/webpack/common/fragments');
+const { tsConfigPathsPlugin, svgLoader, staticSVGLoader, assetLoader } = require('../../../config/webpack/common/fragments');
 
 const svgPath = path.resolve(__dirname, '../../../src/svgs');
 
@@ -25,9 +25,12 @@ module.exports = {
     config.resolve.modules = ['node_modules', 'packages/storybook/node_modules'];
     config.resolve.alias.brace = path.resolve(__dirname, '../../../node_modules/brace');
 
-    const svgRule = config.module.rules.find(rule => rule.test.test('.svg'));
-    svgRule.exclude = svgPath;
+    config.module.rules = config.module.rules.filter(rule => !rule.test.test('.svg'));
 
+    config.module.rules.push({
+      test: [assetLoader.test, staticSVGLoader.test],
+      loader: 'url-loader'
+    });
     config.module.rules.push({
       ...svgLoader(babelOptions),
       include: svgPath,

@@ -8,6 +8,8 @@ import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
 import { HTTPS_URL_REGEX } from '@/constants';
 
+import ImageDropzone from './ImageDropzone';
+
 const MAX_SIZE = 5 * 1024 * 1024;
 class Image extends Component {
   constructor(props) {
@@ -148,8 +150,8 @@ class Image extends Component {
       );
     } else {
       render = (
-        <Dropzone
-          className="dropzone image-upload-icon"
+        <ImageDropzone
+          className="dropzone"
           activeClassName="active"
           rejectClassName="reject"
           multiple={false}
@@ -178,7 +180,7 @@ class Image extends Component {
             </div>
             <div className="rejected-file text-danger text-center">File not Accepted</div>
           </div>
-        </Dropzone>
+        </ImageDropzone>
       );
     }
 

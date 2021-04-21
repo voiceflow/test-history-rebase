@@ -5,13 +5,14 @@ import { SidebarWrapper } from '@/admin/components/Sidebar/styles';
 import { history } from '@/admin/store';
 import * as Account from '@/admin/store/ducks/accountV2';
 import * as AdminV2 from '@/admin/store/ducks/adminV2';
+import { wordmark, wordmarkLight } from '@/assets';
 import Toggle from '@/components/Toggle';
 import { connect } from '@/hocs';
 
 const Sidebar = (props) => (
   <SidebarWrapper>
     <div className="logo" onClick={() => history.push('/')}>
-      <img src={props.theme === AdminV2.THEMES.dark ? '/logo-white.svg' : '/logo.png'} alt="" />
+      <img src={props.theme === AdminV2.THEMES.dark ? wordmarkLight : wordmark} alt="" />
       <div className="admin-icon">Internal</div>
     </div>
     <div className="stack-large">

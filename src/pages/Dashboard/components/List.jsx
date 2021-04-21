@@ -1,6 +1,5 @@
 import cn from 'classnames';
 import _constant from 'lodash/constant';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -16,6 +15,7 @@ import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from '@
 import { useToggle } from '@/hooks/toggle';
 import { DashboardClassName } from '@/styles/constants';
 
+import DragZone from './DragZone';
 import Item from './Item';
 
 const DropContainer = withDraggable({
@@ -207,7 +207,7 @@ export function List(props) {
           );
         }}
       </Form>
-      {isDragging && <div className={DashboardClassName.LIST_DRAGZONE} />}
+      {isDragging && <DragZone className={DashboardClassName.LIST_DRAGZONE} />}
     </div>
   );
 

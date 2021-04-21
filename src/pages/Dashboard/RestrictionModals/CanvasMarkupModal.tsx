@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { canvasMarkupGraphic } from '@/assets';
 import { ModalType } from '@/constants';
 import { BoldText } from '@/pages/Dashboard/components/ModalComponents';
 import BaseModal from '@/pages/Dashboard/components/RedirectToPaymentBaseModal';
@@ -10,7 +11,7 @@ const CanvasMarkupModal: React.FC = () => (
     modalType={ModalType.CANVAS_MARKUP}
     className={`${ClassName.MODAL}--markup`}
     header="Canvas Markup"
-    icon="/canvas-markup.svg"
+    icon={canvasMarkupGraphic}
     helpLink="https://docs.voiceflow.com/#/features/markup"
     bodyContent={
       <>

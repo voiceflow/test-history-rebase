@@ -1,6 +1,7 @@
 import pluralize from 'pluralize';
 import React from 'react';
 
+import { utteranceUploadExampleCSV } from '@/assets';
 import Box from '@/components/Box';
 import Button, { ButtonVariant } from '@/components/Button';
 import Checkbox from '@/components/Checkbox';
@@ -191,7 +192,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
           ) : (
             <Text color="#62778c" fontSize={13}>
               One sample utterance per row, wrap slots in {'{}'}.{' '}
-              <Link download target="" href="/utterance-upload-example.csv">
+              <Link download target="" href={utteranceUploadExampleCSV}>
                 Download template
               </Link>
             </Text>

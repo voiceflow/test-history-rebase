@@ -1,6 +1,7 @@
 import _isEmpty from 'lodash/isEmpty';
 import React, { useContext } from 'react';
 
+import { teamGraphic } from '@/assets';
 import client from '@/client';
 import Button from '@/components/Button';
 import Collapsable from '@/components/Collapsable';
@@ -200,7 +201,7 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({
           />
         </FlexCenter>
         <InfoBubble>
-          <img src="/images/team-group.svg" alt="team" height={64} />
+          <img src={teamGraphic} alt="team" height={64} />
           <BubbleTextContainer column>
             <EditorSeatsText>{seatCount} Editor Seats</EditorSeatsText>
             <PeriodDropdownContainer>

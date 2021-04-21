@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 import * as AccountV2 from '@/admin/store/ducks/accountV2';
+import { errorIcon, wordmark } from '@/assets';
 import Button from '@/components/LegacyButton';
 import { connect } from '@/hocs';
 
@@ -44,7 +45,7 @@ const LoginForm = ({ login, location }) => {
       <AuthBox>
         <Form onSubmit={loginSubmit}>
           <div className="logo">
-            <img className="auth-logo" src="/logo.png" alt="logo" />
+            <img className="auth-logo" src={wordmark} alt="logo" />
             <div className="admin-icon">Internal</div>
           </div>
           <div className="auth-form-wrapper">
@@ -89,7 +90,7 @@ const LoginForm = ({ login, location }) => {
         {loginError && (
           <div className="errorContainer row">
             <div className="col-1">
-              <img src="/error.svg" alt="" />
+              <img src={errorIcon} alt="" />
             </div>
             <div className="col-11">{loginError}</div>
           </div>

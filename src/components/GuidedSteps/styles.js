@@ -1,4 +1,4 @@
-/* eslint-disable no-secrets/no-secrets */
+import { cancelIcon } from '@/assets';
 import { css, styled } from '@/hocs';
 
 const GuidedStepsWrapper = styled.div`
@@ -106,7 +106,7 @@ const GuidedStepsWrapper = styled.div`
 
   .gs__steps-list__list-item.gs__is-error {
     &:before {
-      background: url('cancel-copy.svg');
+      background: url(${cancelIcon});
       background-size: 8px 8px;
       background-repeat: no-repeat;
       background-position: 50% 50%;

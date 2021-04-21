@@ -4,6 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Form, FormGroup } from 'reactstrap';
 
+import { wordmark } from '@/assets';
 import Button from '@/components/LegacyButton';
 import { toast } from '@/components/Toast';
 import { IS_PRIVATE_CLOUD } from '@/config';
@@ -44,7 +45,7 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
     <AuthenticationContainer>
       <AuthBox>
         <Form onSubmit={preventDefault(loginSubmit)}>
-          <img className="auth-logo" src="/logo.png" alt="logo" />
+          <img className="auth-logo" src={wordmark} alt="logo" />
           <div className="auth-form-wrapper">
             <FormGroup>
               <EmailInput value={email} onChange={setEmail} />

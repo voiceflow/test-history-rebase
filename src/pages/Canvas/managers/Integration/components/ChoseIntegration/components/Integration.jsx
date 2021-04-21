@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { zapierWordmark } from '@/assets';
 import { IntegrationType } from '@/constants';
 
 import Container from './IntegrationContainer';
@@ -17,7 +18,7 @@ const Integration = ({ data, onClick }) => (
 
     <ImageContainer>
       <Icon icon={data.icon} size={70} />
-      {data.type === IntegrationType.ZAPIER && <ZapierImg src="/zapier.png" alt="Zapier" height="50" />}
+      {data.type === IntegrationType.ZAPIER && <ZapierImg src={zapierWordmark} alt="Zapier" height="50" />}
     </ImageContainer>
 
     <Name>{data.text}</Name>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect, Switch } from 'react-router-dom';
 import { compose } from 'recompose';
 
+import { conversationGraphic } from '@/assets';
 import Button from '@/components/LegacyButton';
 import { Path } from '@/config/routes';
 import { goTo } from '@/ducks/router';
@@ -27,7 +28,7 @@ function Workspace({ workspaces, goTo }) {
     return (
       <div className="h-100 d-flex justify-content-center">
         <div className="align-self-center text-center">
-          <img src="/images/icons/conversation.svg" alt="skill-icon" width="160" height="105" className="mb-1" />
+          <img src={conversationGraphic} alt="skill-icon" width="160" height="105" className="mb-1" />
           <br />
           <label className="dark">Create a Workspace</label>
           <span className="text-muted">

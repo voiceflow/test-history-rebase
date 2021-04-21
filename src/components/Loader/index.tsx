@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import React from 'react';
 
+import { loader2Icon } from '@/assets';
 import { css, styled } from '@/hocs/styled';
 import { ClassName } from '@/styles/constants';
 
@@ -29,7 +30,7 @@ export const LoadCircle = styled.span<LoaderProps>`
   ${spinnerStyles}
   line-height: 1;
   background-color: ${({ color }) => color || '#fff'};
-  background-image: url('/loader-2.svg');
+  background-image: url(${loader2Icon});
   background-repeat: no-repeat;
   background-position: center;
   background-size: 75%;

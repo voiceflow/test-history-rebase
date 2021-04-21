@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { linkGraphic } from '@/assets';
 import AlertMessage, { AlertMessageVariant } from '@/components/AlertMessage';
 import Box from '@/components/Box';
 import Button, { ButtonVariant } from '@/components/Button';
@@ -104,7 +105,7 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
                 </>
               ) : (
                 <>
-                  <img src="/testable-link.svg" alt="plan restriction" height={80} />
+                  <img src={linkGraphic} alt="plan restriction" height={80} />
 
                   <ContentContainer>
                     Please connect your <BoldText>Amazon Developer</BoldText> account to upload your skill to Alexa.
@@ -147,7 +148,7 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
                 </>
               ) : (
                 <>
-                  <img src="/testable-link.svg" alt="plan restriction" height={80} />
+                  <img src={linkGraphic} alt="plan restriction" height={80} />
 
                   <ContentContainer>
                     Please connect your <BoldText>Google Developer</BoldText> account to upload your Action.

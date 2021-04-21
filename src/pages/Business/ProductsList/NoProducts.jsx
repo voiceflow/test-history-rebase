@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { safeGraphic } from '@/assets';
 import Button from '@/components/LegacyButton';
 import { styled } from '@/hocs';
 
@@ -30,7 +31,7 @@ const Description = styled.p`
 
 const NoProducts = ({ onClick }) => (
   <Container>
-    <img src="/images/safe.svg" alt="no products" height={100} />
+    <img src={safeGraphic} alt="no products" height={100} />
     <Title>No products exists</Title>
     <Description>Monetize your project with in skill purchases such as consumables and subscriptions.</Description>
     <Button isPrimary varient="contained" color="publish" onClick={onClick}>

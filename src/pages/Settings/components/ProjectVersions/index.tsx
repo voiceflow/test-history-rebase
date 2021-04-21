@@ -2,6 +2,7 @@ import ObjectID from 'bson-objectid';
 import moment from 'moment';
 import React from 'react';
 
+import { noIntentsGraphic } from '@/assets';
 import client from '@/client';
 import Box, { FlexCenter } from '@/components/Box';
 import { LoadCircle } from '@/components/Loader';
@@ -111,7 +112,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, curren
           ) : (
             <FlexCenter minHeight={320}>
               <Box textAlign="center">
-                <img src="/images/no-intents.svg" height={64} alt="no intents" />
+                <img src={noIntentsGraphic} height={64} alt="no intents" />
                 <Box mt={10}>No versions exist</Box>
               </Box>
             </FlexCenter>

@@ -3,6 +3,7 @@ import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { compose } from 'recompose';
 
+import { receiptGraphic } from '@/assets';
 import client from '@/client';
 import { ButtonVariant } from '@/components/Button';
 import { toast } from '@/components/Toast';
@@ -115,7 +116,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
         ? `Your Voiceflow ${state.plan.name} subscription has been activated.`
         : 'Your workspace has been successfully updated. Thank you.';
 
-      openSuccessModal({ title: 'Payment Successful', message, icon: '/receipt.svg', variant: ButtonVariant.TERTIARY });
+      openSuccessModal({ title: 'Payment Successful', message, icon: receiptGraphic, variant: ButtonVariant.TERTIARY });
     } catch (err) {
       stopCheckingOut();
       let error;

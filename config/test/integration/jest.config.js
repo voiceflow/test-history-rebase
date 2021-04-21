@@ -6,6 +6,9 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/config/test/integration/setup.js'],
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
+    '\\.csv$': '<rootDir>/config/test/integration/assetPlaceholder.js',
+    '\\.png$': '<rootDir>/config/test/integration/assetPlaceholder.js',
+    'assets/.*\\.svg$': '<rootDir>/config/test/integration/assetPlaceholder.js',
     '^@/(.*)': '<rootDir>/src/$1',
     '^dnd-core$': 'dnd-core/dist/cjs',
     '^react-dnd$': 'react-dnd/dist/cjs',

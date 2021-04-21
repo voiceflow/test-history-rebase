@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { testingGraphic } from '@/assets';
 import Button, { ButtonVariant } from '@/components/Button';
 import Text, { Link } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
@@ -44,7 +45,7 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
     <PrototypeContainer id={Identifier.PROTOTYPE} isPublic={isPublic}>
       <FadeDownContainer style={{ height: '100%' }}>
         <Container>
-          <img src="/Testing.svg" alt="user" width="80" />
+          <img src={testingGraphic} alt="user" width="80" />
 
           <Text fontSize={16} color="#132144" fontWeight={600} mt={16}>
             Test your project

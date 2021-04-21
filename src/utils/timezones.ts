@@ -1,4 +1,14 @@
-let timezone_groups = [
+interface Timezone {
+  value: string;
+  name: string;
+}
+
+interface TimezoneGroup {
+  group: string;
+  zones: Timezone[];
+}
+
+const timezoneGroups: TimezoneGroup[] = [
   {
     group: 'US (Common)',
     zones: [
@@ -2026,12 +2036,6 @@ let timezone_groups = [
   },
 ];
 
-function getTimezones() {
-  let timezones = [];
-  timezone_groups.forEach((group) => {
-    timezones = timezones.concat(group.zones.map((zone) => zone.value));
-  });
-  return timezones;
-}
+const getTimezones = () => timezoneGroups.flatMap((group) => group.zones.map((zone) => zone.value));
 
-exports.TIMEZONES = getTimezones();
+export const TIMEZONES = getTimezones();

@@ -2,6 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 import { Tooltip } from 'react-tippy';
 
+import { equalsIcon } from '@/assets';
 import VariablesInput from '@/components/VariablesInput';
 
 import NextStepButton from '../../components/NextStepButton';
@@ -37,7 +38,7 @@ const RetrieveData = ({ headers_list, onChange, headers_loading, data, openNextS
         position="bottom"
         theme="block"
       >
-        <img src="/equals.svg" alt="comment" className="mr-2 ml-2" width="10px" />
+        <img src={equalsIcon} alt="comment" className="mr-2 ml-2" width="10px" />
       </Tooltip>
       <div className="column-input" style={{ width: '45%' }}>
         <VariablesInput

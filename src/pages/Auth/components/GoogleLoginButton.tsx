@@ -2,6 +2,7 @@ import cn from 'classnames';
 import React from 'react';
 import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse } from 'react-google-login';
 
+import { googleLogo } from '@/assets';
 import Button, { ButtonVariant } from '@/components/Button';
 import { GOOGLE_CLIENT_ID } from '@/config';
 import { noop } from '@/utils/functional';
@@ -21,7 +22,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ light, disabled, 
         onClick={() => !disabled && renderProps!.onClick()}
         className={cn('social-button', { 'social-button-light': light })}
       >
-        <img src="/google.svg" alt="Google Login" />
+        <img src={googleLogo} alt="Google Login" />
         Google
       </Button>
     )}

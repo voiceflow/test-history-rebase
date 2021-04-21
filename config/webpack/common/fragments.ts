@@ -40,6 +40,16 @@ export const typescriptLoader: webpack.RuleSetRule = {
   },
 };
 
+export const staticSVGLoader: webpack.RuleSetRule = {
+  test: /assets\/.*\.svg$/,
+  type: 'asset/inline',
+};
+
+export const assetLoader: webpack.RuleSetRule = {
+  test: /assets\/.*\.(png|csv)$/,
+  type: 'asset/resource',
+};
+
 export const svgLoader = (options?: TransformOptions): webpack.RuleSetRule => ({
   test: /\.svg$/,
   include: path.resolve(paths.sourceDir, 'svgs'),

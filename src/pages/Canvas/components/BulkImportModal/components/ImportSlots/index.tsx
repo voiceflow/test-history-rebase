@@ -3,6 +3,7 @@ import Papa from 'papaparse';
 import pluralize from 'pluralize';
 import React from 'react';
 
+import { slotUploadExampleCSV } from '@/assets';
 import Box from '@/components/Box';
 import Button, { ButtonVariant } from '@/components/Button';
 import Checkbox from '@/components/Checkbox';
@@ -192,7 +193,7 @@ const ImportSlots: React.FC = () => {
           ) : (
             <Text color="#62778c" fontSize={13}>
               One slot per row (value,synonym 1,synonym 2,...).{' '}
-              <Link download target="" href="/slot-upload-example.csv">
+              <Link download target="" href={slotUploadExampleCSV}>
                 Download template
               </Link>
             </Text>

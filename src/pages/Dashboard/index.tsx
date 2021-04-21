@@ -6,6 +6,7 @@ import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 
+import { createGraphic } from '@/assets';
 import { Flex } from '@/components/Box';
 import DragLayer from '@/components/DragLayer';
 import IconButton from '@/components/IconButton';
@@ -234,7 +235,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
                 <div className="h-100 d-flex justify-content-center">
                   <div className="align-self-center">
                     <div className="text-center">
-                      <img src="/create.svg" alt="skill-icon" width="80" height="80" className="mb-3" />
+                      <img src={createGraphic} alt="skill-icon" width="80" height="80" className="mb-3" />
                     </div>
                     <label className="dark text-center mb-3">No Projects Found</label>
                     <div className="text-muted mb-2">This workspace has no projects, create one.</div>

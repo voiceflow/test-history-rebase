@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { wordmarkDark } from '@/assets';
+
 import ImageIcon from '.';
 
 export default {
@@ -8,4 +10,4 @@ export default {
 };
 
 export const normal = () => <ImageIcon />;
-export const custom = () => <ImageIcon background="/logo_bubble_Small.png" size={100} />;
+export const custom = () => <ImageIcon background={wordmarkDark} size={100} />;

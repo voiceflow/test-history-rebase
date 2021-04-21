@@ -3,6 +3,7 @@ import React from 'react';
 import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
 
+import { logsIcon } from '@/assets';
 import { setError } from '@/ducks/modal';
 import { connect, styled } from '@/hocs';
 import IntegrationsService from '@/services/Integrations';
@@ -116,7 +117,7 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
           />
         </div>
         <SpreadSheetIcon
-          src="/logs.svg"
+          src={logsIcon}
           className={`ml-3 text-muted spreadsheet-link ${data.spreadsheet && data.sheet ? '' : 'disabled'}`}
           onClick={openSpreadsheetLink}
         />

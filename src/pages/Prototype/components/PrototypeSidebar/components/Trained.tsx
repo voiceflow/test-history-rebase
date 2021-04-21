@@ -1,6 +1,7 @@
 import { PrototypeModel } from '@voiceflow/api-sdk';
 import React from 'react';
 
+import { lightbulbGraphic } from '@/assets';
 import Box from '@/components/Box';
 import Button, { ButtonVariant } from '@/components/Button';
 import Text, { Link } from '@/components/Text';
@@ -29,7 +30,7 @@ const Trained: React.FC<TrainedProps> = ({ diff, platform, isTrained, trainedMod
   <NLUContainer fullWidth>
     {trainedModel === null ? (
       <>
-        <img src="/lightbulb.svg" alt="user" width="80" />
+        <img src={lightbulbGraphic} alt="user" width="80" />
 
         <Text fontSize={16} color="#132144" fontWeight={600} mt={16}>
           Your assistant needs training

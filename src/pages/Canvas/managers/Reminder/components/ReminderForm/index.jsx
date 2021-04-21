@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { TIMEZONES } from '@/assets/timezones';
 import DayPickerInput from '@/components/DayPickerInput';
 import InfoIcon from '@/components/InfoIcon';
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
 import { FormControl } from '@/pages/Canvas/components/Editor';
+import { TIMEZONES } from '@/utils/timezones';
 
 import {
   RecurrenceContainer,

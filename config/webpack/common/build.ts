@@ -6,7 +6,7 @@ import { instrument, strict, typecheck } from 'webpack-nano/argv';
 
 import paths from '../../paths';
 import { BASE_HREF, ENV, IS_ADMIN, IS_PRODUCTION, IS_SERVING } from '../config';
-import { babelLoader, fileLoader, styleLoader, svgLoader, typecheckPlugin } from './fragments';
+import { assetLoader, babelLoader, fileLoader, staticSVGLoader, styleLoader, svgLoader, typecheckPlugin } from './fragments';
 
 export default merge(
   {
@@ -63,6 +63,8 @@ export default merge(
               ...babelLoader,
               include: paths.sourceDir,
             },
+            assetLoader,
+            staticSVGLoader,
             svgLoader(),
             styleLoader,
             fileLoader,
@@ -86,6 +88,6 @@ export default merge(
       ],
     },
   },
-  // eslint-disable-next-line import/no-dynamic-require, global-require, @typescript-eslint/no-var-requires
+  // eslint-disable-next-line import/no-dynamic-require, global-require
   require(IS_PRODUCTION ? './prod' : './dev').default
 );

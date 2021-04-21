@@ -1,8 +1,8 @@
-/* eslint-disable no-nested-ternary */
 import _constant from 'lodash/constant';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
+import { receiptGraphic } from '@/assets';
 import client from '@/client';
 import { ButtonVariant } from '@/components/Button/constants';
 import { toast as toastNotif } from '@/components/Toast';
@@ -366,7 +366,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         if (!IS_PRIVATE_CLOUD && hasWorkspaces) {
           const message = `Your Voiceflow ${state.paymentMeta.plan} subscription has been activated.`;
 
-          openSuccessModal({ title: 'Payment Successful', message, icon: '/receipt.svg', variant: ButtonVariant.TERTIARY });
+          openSuccessModal({ title: 'Payment Successful', message, icon: receiptGraphic, variant: ButtonVariant.TERTIARY });
         }
       }
       toastNotif.success('Successfully created workspace');

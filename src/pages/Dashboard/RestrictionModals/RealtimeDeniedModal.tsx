@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { teamGraphic } from '@/assets';
 import { ModalType } from '@/constants';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { useModals, useTrackingEvents } from '@/hooks';
@@ -20,7 +21,7 @@ const RealtimeDeniedModal: React.FC = () => {
     <BaseModal
       modalType={ModalType.REALTIME_DENIED}
       header="Realtime Collaboration"
-      icon="/team-feature.svg"
+      icon={teamGraphic}
       bodyContent={
         <>
           A teammate is actively editing this project. Real-time collaboration is a <BoldText>Pro</BoldText> feature, please upgrade your plan to

@@ -1,6 +1,7 @@
 import cuid from 'cuid';
 import React from 'react';
 
+import { noSlotsGraphic } from '@/assets';
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
@@ -127,7 +128,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
       <RightColumn>
         {!slots.length ? (
           <EmptyContainer>
-            <img src="/images/no-slots.svg" height={64} alt="no slots" />
+            <img src={noSlotsGraphic} height={64} alt="no slots" />
             <p>Your project doesn’t contain any Slots</p>
           </EmptyContainer>
         ) : (

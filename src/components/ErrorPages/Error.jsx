@@ -1,8 +1,10 @@
 import React from 'react';
 
+import { error500Graphic } from '@/assets';
+
 import { Message, Page404Wrapper } from './styled';
 
-const Error = ({ icon = <img src="/images/500.svg" height={80} alt="500 Error" />, title = 'Alexa, what happened?', message, children }) => (
+const Error = ({ icon = <img src={error500Graphic} height={80} alt="500 Error" />, title = 'Alexa, what happened?', message, children }) => (
   <Page404Wrapper>
     <div>{icon}</div>
 

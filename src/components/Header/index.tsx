@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { logoDark } from '@/assets';
 import SvgIcon from '@/components/SvgIcon';
 import { ClassName } from '@/styles/constants';
 import LeftIcon from '@/svgs/arrow-left.svg';
@@ -44,7 +45,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => (
   <HeaderContainer>
     <PrimaryHeader className={ClassName.PRIMARY_NAV}>
-      {withLogo && <Logo src={logoAssetPath || '/vf-logo-dashboard.svg'} alt="logo" draggable="false" />}
+      {withLogo && <Logo src={logoAssetPath || logoDark} alt="logo" draggable="false" />}
       {onBackClick && (
         <BackButton>
           <SvgIcon icon={LeftIcon} size={3} className="icon-back" onClick={onBackClick} />

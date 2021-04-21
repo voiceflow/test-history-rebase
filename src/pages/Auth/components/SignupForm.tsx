@@ -3,6 +3,7 @@ import _throttle from 'lodash/throttle';
 import React from 'react';
 import { Form, FormGroup, Input } from 'reactstrap';
 
+import { wordmarkLight } from '@/assets';
 import client from '@/client';
 import { ControlledInput } from '@/components/Input';
 import Button from '@/components/LegacyButton';
@@ -92,7 +93,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
     <AuthenticationContainer dark>
       <AuthBox>
         <Form onSubmit={preventDefault(signupSubmit)}>
-          <img className="auth-logo" src="/logo-white.svg" alt="logo" />
+          <img className="auth-logo" src={wordmarkLight} alt="logo" />
           <div className="auth-form-wrapper">
             <FormGroup>
               <Input

@@ -1,7 +1,6 @@
 require:
   - source-map-support/register
   - mock-local-storage
-  - ignore-styles
 
 timeout: 4000
 exit: true

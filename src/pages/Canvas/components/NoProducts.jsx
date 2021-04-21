@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { safeGraphic } from '@/assets';
 import Button from '@/components/Button';
 import { stopPropagation } from '@/utils/dom';
 
@@ -7,7 +8,7 @@ import { NoProductLabel, NoProductMessage, PaymentContainer } from '../managers/
 
 const NoProducts = ({ goToNewProduct }) => (
   <PaymentContainer column>
-    <img src="/images/safe.svg" alt="no products" height={48} />
+    <img src={safeGraphic} alt="no products" height={48} />
     <NoProductLabel>No Products Exist</NoProductLabel>
     <NoProductMessage>Create a product to add it to this block</NoProductMessage>
     <Button variant="secondary" onClick={stopPropagation(goToNewProduct)}>

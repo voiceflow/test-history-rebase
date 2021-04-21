@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { noIntentsGraphic } from '@/assets';
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
@@ -119,7 +120,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
       <RightColumn>
         {!intents.length ? (
           <EmptyContainer>
-            <img src="/images/no-intents.svg" height={64} alt="no intents" />
+            <img src={noIntentsGraphic} height={64} alt="no intents" />
             <p>Your project doesn’t contain any Intents</p>
           </EmptyContainer>
         ) : (

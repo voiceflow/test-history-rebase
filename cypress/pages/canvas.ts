@@ -1,3 +1,5 @@
+import { Identifier } from '../../src/styles/constants';
+
 export default {
   goToCanvas: () => cy.getSession().then(({ versionID, diagramID }) => cy.visit(`/project/${versionID}/canvas/${diagramID}`)),
 
@@ -50,6 +52,17 @@ export default {
     },
     get stepMenu() {
       return cy.get('#vf-step-menu');
+    },
+    tabs: {
+      get designTab() {
+        return cy.get('#design-tab');
+      },
+      get launchTab() {
+        return cy.get('#launch-tab');
+      },
+    },
+    get uploadButton() {
+      return cy.get(`#${Identifier.UPLOAD}`);
     },
   },
 

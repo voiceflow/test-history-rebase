@@ -7,6 +7,7 @@ import { ClassName } from '@/styles/constants';
 import { ActiveLine, Tab, Wrapper } from './components';
 
 export type Tab = {
+  id?: string;
   value: string;
   label: React.ReactNode;
   color?: string;

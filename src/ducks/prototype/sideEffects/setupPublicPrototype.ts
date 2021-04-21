@@ -7,14 +7,16 @@ import { Thunk } from '@/store/types';
 import { PrototypeLayout, PrototypeSettings } from '../types';
 
 const setupPublicPrototype = (versionID: string): Thunk<PrototypeSettings> => async (dispatch) => {
-  const isLegacyVersion = versionID.length !== 24; // check if object ID
-
-  const prototype = await (isLegacyVersion
-    ? client.prototype.getLegacyInfo(versionID).catch(_constant(null))
-    : client.api.version.getPrototype(versionID, { isPublic: true }).catch(_constant(null)));
+  const prototype = await client.api.version.getPrototype(versionID).catch(_constant(null));
 
   if (!prototype) {
     throw new Error("Prototype doesn't exist");
+  }
+
+  const { plan } = (await client.api.version.getPrototypePlan(versionID).catch(_constant(null))) || {};
+
+  if (!plan) {
+    throw new Error('Could not retrieve permissions for prototype share');
   }
 
   dispatch(
@@ -33,6 +35,7 @@ const setupPublicPrototype = (versionID: string): Thunk<PrototypeSettings> => as
     ...prototype?.settings,
     hasPassword: prototype?.settings.hasPassword ?? false,
     layout: prototype?.settings.layout ?? PrototypeLayout.TEXT_DIALOG,
+    plan,
   } as PrototypeSettings;
 };
 

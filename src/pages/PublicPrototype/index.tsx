@@ -4,9 +4,11 @@ import { RouteComponentProps } from 'react-router-dom';
 import { RemoveIntercom } from '@/components/IntercomChat';
 import { FullSpinner } from '@/components/Spinner';
 import { toast } from '@/components/Toast';
+import { Permission } from '@/config/permissions';
+import { PlanType } from '@/constants';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useSetup, useToggle } from '@/hooks';
+import { useGuestPermission, useSetup, useToggle } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 import { Prototype } from './components';
@@ -21,10 +23,12 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
   const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings>({
     layout: PrototypeDuck.PrototypeLayout.TEXT_DIALOG,
     hasPassword: false,
+    plan: PlanType.STARTER,
   });
   const [isAuthenticated, setAuthenticated] = React.useState<boolean>(false);
 
-  const canUseSharedPassword = React.useMemo(() => settings.hasPassword, [settings.hasPassword]);
+  const [isAllowedPassword] = useGuestPermission(settings.plan, Permission.SHARE_PROTOTYPE_PASSWORD);
+  const canUseSharedPassword = React.useMemo(() => isAllowedPassword && settings.hasPassword, [isAllowedPassword && settings]);
 
   useSetup(async () => {
     const { versionID } = match.params;

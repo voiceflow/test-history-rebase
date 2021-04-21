@@ -4153,12 +4153,12 @@
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.15.tgz#b7a6d263c2cecf44b6de9a051cf496249b154553"
   integrity sha512-rYff6FI+ZTKAPkJUoyz7Udq3GaoDZnxYDEvdEdFZASiA7PoErltHezDishqQiSDWrGxvxmplH304jyzQmjp0AQ==
 
-"@types/circular-dependency-plugin@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@types/circular-dependency-plugin/-/circular-dependency-plugin-5.0.1.tgz#7d9313b78192395b74a05f78778ac91d0a1e8e1f"
-  integrity sha512-FdtMz/DdrqeSTTXwvb7SRUF+Lmh8a8snyGDb7+1+SxxgjHUScyZQDq/1RcL2JCmPAhbNODfqxgRNkB1HWLcZnQ==
+"@types/circular-dependency-plugin@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@types/circular-dependency-plugin/-/circular-dependency-plugin-5.0.2.tgz#aed25a69e3026d52a5289e739d5a984203c77f77"
+  integrity sha512-A58L+pweMRIZK8yA3pN5j5bg9C8JWdoWQ9Bol7Dg7VB4sTOLkJcCGrImP4H2AwKDbC9glMoZbr5WEj3DBsuP+w==
   dependencies:
-    "@types/webpack" "*"
+    "@types/webpack" "^4"
 
 "@types/classnames@^2.2.11":
   version "2.2.11"

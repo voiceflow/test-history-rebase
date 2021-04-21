@@ -25,9 +25,8 @@ const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id,
     <Portal portalNode={document.body}>
       <Root ref={ref} hidden={!isOpened}>
         <Container fade={fade} isSmall={isSmall} className={className}>
-          <Header className="modal-header">
+          <Header>
             {title}
-
             <div>
               <Icon>{icon}</Icon>
               <Close>

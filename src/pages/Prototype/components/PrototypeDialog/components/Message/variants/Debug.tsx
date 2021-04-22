@@ -38,7 +38,7 @@ export const Debug: React.FC<DebugProps & ConnectedDebugProps> = ({ message, set
   const debugMessage = React.useMemo(() => {
     if (message.includes('entering flow')) {
       const flowID = message.split(' ')[2].replace(/`/g, '');
-      const { name } = getDiagram(flowID);
+      const name = getDiagram(flowID)?.name || flowID;
       return `entering flow \`${name}\``;
     }
     return message;

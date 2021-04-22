@@ -25,16 +25,14 @@ const Coupon: React.FC = () => {
 
   const options = filteredCoupons.map((coupon) => ({ value: coupon.id, label: coupon.name || coupon.id }));
 
-  const onChange = (coupon = '') => actions.update({ coupon });
+  const onChange = React.useCallback((coupon = '') => actions.update({ coupon }), [actions.update]);
   const onBlur = ({ currentTarget: { value } }: React.FocusEvent<HTMLInputElement>) => {
-    const allCoupons = options.map((option) => option.value);
+    const allCoupons = options.map((option) => option.label);
 
     // save only if valid coupon else empty
     if (allCoupons.includes(value)) {
-      onChange(value);
+      onChange(options.find((option) => option.label === value)?.value);
     }
-
-    onChange();
   };
 
   const getValueLabel = React.useCallback((value) => options.find((option) => option.value === value)?.label, [state]);

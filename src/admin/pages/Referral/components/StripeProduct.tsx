@@ -24,21 +24,19 @@ const StripeProduct: React.FC = () => {
 
   const onChange = (product = '') => actions.update({ product });
   const onBlur = ({ currentTarget: { value } }: React.FocusEvent<HTMLInputElement>) => {
-    const allProducts = options.map((option) => option.value);
+    const allProducts = options.map((option) => option.label);
 
     // save only if valid coupon else empty
     if (allProducts.includes(value)) {
-      onChange(value);
+      onChange(options.find((option) => option.label === value)?.value);
     }
-
-    onChange();
   };
 
   const getValueLabel = React.useCallback((value) => options.find((option) => option.value === value)?.label, [state]);
 
   return (
-    <Flex>
-      <Box ml={20} style={{ cursor: state.coupon ? 'not-allowed' : 'default ' }}>
+    <Flex cursor={state.coupon ? 'not-allowed' : 'default '}>
+      <Box ml={20}>
         {products.length ? (
           <Container maxWidth={300}>
             <Select

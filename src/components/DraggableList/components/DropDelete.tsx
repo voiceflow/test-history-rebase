@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
-import { Handlers, InternalItem } from '../types';
+import { DnDHandlers, DnDItem } from '../types';
 
 export type DropDeleteProps<I, P> = {
   type: string;
-  handlers: React.RefObject<Handlers<I>>;
+  handlers: React.RefObject<DnDHandlers<I>>;
   deleteProps?: P;
   renderDelayed?: boolean;
   deleteComponent: React.NamedExoticComponent<React.PropsWithoutRef<P> & React.RefAttributes<any>>;
@@ -15,7 +15,7 @@ const DropDelete = <I, P>({ type, handlers, deleteProps, renderDelayed, deleteCo
   const rootRef = React.useRef(null);
   const [rendered, setRendered] = React.useState(!renderDelayed);
 
-  const [, connectDrop] = useDrop<InternalItem<I>, unknown, unknown>({
+  const [, connectDrop] = useDrop<DnDItem<I>, unknown, unknown>({
     drop: (item, monitor) => {
       item.deleteHovered = false;
       handlers.current?.onDeleteDrop?.(item, monitor);

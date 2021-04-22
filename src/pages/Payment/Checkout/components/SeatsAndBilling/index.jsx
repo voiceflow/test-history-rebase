@@ -85,9 +85,11 @@ function SeatsAndBilling({
             <PriceBox>
               <>
                 <div>$</div>
-                <span id={Identifier.PAYMENT_MODAL_UNIT_COST_CONTAINER}>
-                  {!plan.pricing || !_isNumber(price) || loading.price ? <div>&nbsp;--&nbsp;</div> : <div>{price}</div>}
-                </span>
+                {!plan.pricing || !_isNumber(price) || loading.price ? (
+                  <div>&nbsp;--&nbsp;</div>
+                ) : (
+                  <div id={Identifier.PAYMENT_MODAL_UNIT_COST_CONTAINER}>{price}</div>
+                )}
                 <div>/ month</div>
               </>
             </PriceBox>

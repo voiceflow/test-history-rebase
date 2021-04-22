@@ -21,6 +21,7 @@ export type SectionContainerProps = {
   isDraggingPreview?: boolean;
   headerToggle?: boolean;
   isRounded?: boolean;
+  fullWidth?: boolean;
 };
 
 export const draggingStyles = css`
@@ -83,6 +84,12 @@ export const beforeDividersStyle = css<SectionContainerProps>`
 const SectionContainer = styled.div<SectionContainerProps>`
   position: relative;
   background-color: #fff;
+
+  ${({ fullWidth }) =>
+    fullWidth &&
+    css`
+      width: 100%;
+    `}
 
   & & {
     background-color: transparent;

@@ -2,9 +2,11 @@ import { CanvasNodeVisibility } from '@voiceflow/general-types';
 import _partition from 'lodash/partition';
 import { batch } from 'react-redux';
 
+import { FeatureFlag } from '@/config/features';
 import { BlockType, MARKUP_NODES } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
+import * as Feature from '@/ducks/feature';
 import { clearModal, setConfirm } from '@/ducks/modal';
 import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
@@ -121,12 +123,14 @@ class NodeManager extends EngineConsumer {
 
     getNodeFactoryOptions: () => {
       const platform = this.select(Skill.activePlatformSelector);
+      const conditionsBuilderEnabled = this.select(Feature.isFeatureEnabledSelector)(FeatureFlag.CONDITIONS_BUILDER);
       const defaultVoice = this.select(Skill.defaultVoiceSelector);
       const canvasNodeVisibility = this.select(Skill.defaultCanvasNodeVisibilitySelector);
 
       return {
         defaultVoice: defaultVoice || getPlatformDefaultVoice(platform),
         canvasNodeVisibility: canvasNodeVisibility || CanvasNodeVisibility.PREVIEW,
+        conditionsBuilderEnabled,
       };
     },
 

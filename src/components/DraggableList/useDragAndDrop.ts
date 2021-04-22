@@ -6,11 +6,11 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { DragContextPreviewProps } from '@/contexts';
 
-import { Handlers, InternalItem } from './types';
+import { DnDHandlers, DnDItem, InternalItem } from './types';
 
 const useDragAndDrop = <I extends { id: string } | any>(
   type: string,
-  handlers: { current: Handlers<I> },
+  handlers: { current: DnDHandlers<I> },
   props: Omit<InternalItem<I>, 'type'>,
   { partialDrag, unmountableDuringDrag }: { partialDrag?: boolean; unmountableDuringDrag?: boolean }
 ): [boolean, React.RefObject<HTMLElement>, React.RefObject<HTMLElement>] => {
@@ -20,10 +20,10 @@ const useDragAndDrop = <I extends { id: string } | any>(
 
   cacheRef.current.id = (props.item as any).id ?? props.item;
 
-  const [, connectDrop] = useDrop<InternalItem<I>, void, void>({
+  const [, connectDrop] = useDrop<DnDItem<I>, void, void>({
     drop: (item, monitor) => handlers.current.onDrop?.(item, monitor),
     accept: type,
-    hover: _throttle((item: InternalItem<I>, monitor: DropTargetMonitor) => {
+    hover: _throttle((item: DnDItem<I>, monitor: DropTargetMonitor) => {
       item.deleteHovered = false;
 
       if (!rootRef.current) {
@@ -62,7 +62,7 @@ const useDragAndDrop = <I extends { id: string } | any>(
   });
 
   const [{ isDragging }, connectDrag, connectPreview] = useDrag<
-    InternalItem<I> & { getStyle: DragContextPreviewProps['getStyle'] },
+    DnDItem<I> & { getStyle: DragContextPreviewProps['getStyle'] },
     void,
     { isDragging: boolean }
   >({

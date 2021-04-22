@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Box from '@/components/Box';
-import { DragPreviewComponentProps, ItemComponentProps, MappedItemProps } from '@/components/DraggableList';
+import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import { SectionToggleVariant } from '@/components/Section';
 import SSMLWithVars from '@/components/SSMLWithVars';
 import SvgIcon from '@/components/SvgIcon';
@@ -18,7 +18,7 @@ import { compose } from '@/utils/functional';
 const VariablesInputComponent: React.FC<any> = VariablesInput;
 
 export type SpeakItemProps = ItemComponentProps<SpeakData> &
-  MappedItemProps<SpeakData> &
+  MappedItemComponentHandlers<SpeakData> &
   DragPreviewComponentProps & {
     header: React.ReactNode;
     platform: PlatformType;

@@ -6,26 +6,29 @@ import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { MapManaged } from '@/hooks';
 import { MenuOption } from '@/types';
 
-import { DeleteComponent, DnDItem, DragPreview, DragPreviewComponentProps, DropDelete, ItemComponentProps, ListContainer } from './components';
-import { Handlers, InternalItem } from './types';
+import {
+  DeleteComponent,
+  DnDItem,
+  DragPreview,
+  DragPreviewComponentProps,
+  DropDelete,
+  ItemComponentHandlers,
+  ItemComponentProps,
+  ListContainer,
+  MappedItemComponentHandlers,
+} from './components';
+import { DnDHandlers, DnDItem as DnDInternalItem, InternalItem } from './types';
 
 export { DeleteComponent };
-export type { DragPreviewComponentProps, ItemComponentProps };
+export type { DragPreviewComponentProps, ItemComponentHandlers, ItemComponentProps, MappedItemComponentHandlers };
 
 export type BaseItemData<I> = Omit<InternalItem<I>, 'type'>;
-
-export type MappedItemProps<I> = {
-  onRemove: () => void;
-  onUpdate: (value: Partial<I>) => void;
-};
-
-export type MappedItemData<I> = BaseItemData<I> & MappedItemProps<I>;
 
 export type DraggableListProps<I, D, C> = {
   type: string;
   filter?: (item: I) => boolean;
   footer?: React.ReactNode;
-  onDrop?: (item: InternalItem<I>) => unknown;
+  onDrop?: (item: DnDInternalItem<I>) => unknown;
   itemProps?: C;
   onEndDrag?: (result: void, monitor: DragSourceMonitor) => unknown;
   onReorder?: (dragIndex: number, hoverIndex: number) => void;
@@ -45,16 +48,20 @@ export type DraggableListProps<I, D, C> = {
       onDelete?: (key: number, item: BaseItemData<I>) => void;
       children?: never;
       mapManaged?: never;
-      itemComponent: React.NamedExoticComponent<React.PropsWithoutRef<ItemComponentProps<I> & C> & React.RefAttributes<HTMLElement>>;
-      previewComponent: React.NamedExoticComponent<ItemComponentProps<I> & C & DragPreviewComponentProps>;
+      itemComponent: React.NamedExoticComponent<
+        React.PropsWithoutRef<ItemComponentProps<I> & ItemComponentHandlers<I> & C> & React.RefAttributes<HTMLElement>
+      >;
+      previewComponent: React.NamedExoticComponent<ItemComponentProps<I> & ItemComponentHandlers<I> & C & DragPreviewComponentProps>;
     }
   | {
       items?: never;
       children: (options: { renderItem: (data: BaseItemData<I>) => React.ReactNode }) => React.ReactNode;
       onDelete?: (index: number, item: BaseItemData<I>) => void;
       mapManaged?: never;
-      itemComponent: React.NamedExoticComponent<React.PropsWithoutRef<ItemComponentProps<I> & C> & React.RefAttributes<HTMLElement>>;
-      previewComponent: React.NamedExoticComponent<ItemComponentProps<I> & C & DragPreviewComponentProps>;
+      itemComponent: React.NamedExoticComponent<
+        React.PropsWithoutRef<ItemComponentProps<I> & ItemComponentHandlers<I> & C> & React.RefAttributes<HTMLElement>
+      >;
+      previewComponent: React.NamedExoticComponent<ItemComponentProps<I> & ItemComponentHandlers<I> & C & DragPreviewComponentProps>;
     }
   | {
       items?: never;
@@ -62,9 +69,9 @@ export type DraggableListProps<I, D, C> = {
       onDelete?: (key: string, item: BaseItemData<I>) => void;
       mapManaged: MapManaged<I>;
       itemComponent: React.NamedExoticComponent<
-        React.PropsWithoutRef<ItemComponentProps<I> & MappedItemProps<I> & C> & React.RefAttributes<HTMLElement>
+        React.PropsWithoutRef<ItemComponentProps<I> & MappedItemComponentHandlers<I> & C> & React.RefAttributes<HTMLElement>
       >;
-      previewComponent: React.NamedExoticComponent<ItemComponentProps<I> & MappedItemProps<I> & C & DragPreviewComponentProps>;
+      previewComponent: React.NamedExoticComponent<ItemComponentProps<I> & MappedItemComponentHandlers<I> & C & DragPreviewComponentProps>;
     }
 );
 
@@ -89,7 +96,7 @@ const DraggableList = <I, D, C>({
   withContextMenuDelete,
   ...props
 }: DraggableListProps<I, D, C>): JSX.Element => {
-  const handlers = React.useRef<Handlers<I>>({});
+  const handlers = React.useRef<DnDHandlers<I>>({});
   const [dragging, updateDragging] = React.useState(false);
   const [deleteHovered, updateDeleteHovered] = React.useState(false);
 
@@ -136,7 +143,7 @@ const DraggableList = <I, D, C>({
 
   handlers.current = { onDrop, onDragEnd, onReorder, onDragStart, onDeleteDrop, deleteHovered };
 
-  const renderItem = (data: MappedItemData<I> | BaseItemData<I>) => (
+  const renderItem = (data: (BaseItemData<I> & MappedItemComponentHandlers<I>) | BaseItemData<I>) => (
     <DnDItem
       {...itemProps}
       onRemove={onDeleteDrop}
@@ -155,7 +162,7 @@ const DraggableList = <I, D, C>({
       {!props.children &&
         (props.mapManaged
           ? props.mapManaged((item, { key, index, onRemove, onUpdate }) => {
-              const itemData: MappedItemData<I> = {
+              const itemData: BaseItemData<I> & MappedItemComponentHandlers<I> = {
                 key,
                 item,
                 index,
@@ -171,7 +178,7 @@ const DraggableList = <I, D, C>({
               return renderItem(itemData);
             })
           : props.items.map((item, index) => {
-              const itemData = {
+              const itemData: BaseItemData<I> = {
                 key: getItemKey(item),
                 item,
                 index,

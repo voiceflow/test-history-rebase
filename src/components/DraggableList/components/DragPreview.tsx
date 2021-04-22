@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useDragPreview } from '@/hooks';
 
-import { Handlers } from '../types';
+import { DnDHandlers } from '../types';
 import DragPreviewWrapper from './DragPreviewWrapper';
 
 export type DragPreviewComponentProps = {
@@ -11,7 +11,7 @@ export type DragPreviewComponentProps = {
 
 export type DragPreviewProps<P extends {}> = {
   type: string;
-  handlers: { current: Handlers<any> };
+  handlers: { current: DnDHandlers<any> };
   component: React.FC<P & DragPreviewComponentProps>;
 };
 

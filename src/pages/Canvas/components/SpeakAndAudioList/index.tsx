@@ -1,7 +1,12 @@
 import cuid from 'cuid';
 import React from 'react';
 
-import DraggableList, { DeleteComponent, DragPreviewComponentProps, ItemComponentProps, MappedItemProps } from '@/components/DraggableList';
+import DraggableList, {
+  DeleteComponent,
+  DragPreviewComponentProps,
+  ItemComponentProps,
+  MappedItemComponentHandlers,
+} from '@/components/DraggableList';
 import OverflowMenu from '@/components/OverflowMenu';
 import { DialogType, PlatformType } from '@/constants';
 import * as Skill from '@/ducks/skill';
@@ -30,7 +35,7 @@ export const audioFactory = (): SpeakData => ({
 const speakAudioFactory = ({ defaultVoice }: { defaultVoice: string }) => (type: DialogType): SpeakData =>
   type === DialogType.VOICE ? speakFactory({ defaultVoice }) : audioFactory();
 
-type ItemExtraProps = DragPreviewComponentProps & {
+export type ItemExtraProps = DragPreviewComponentProps & {
   platform: PlatformType;
   isOnlyItem: boolean;
   isRandomized?: boolean;
@@ -39,7 +44,7 @@ type ItemExtraProps = DragPreviewComponentProps & {
 };
 
 type ItemComponent = React.NamedExoticComponent<
-  React.PropsWithoutRef<ItemComponentProps<SpeakData> & MappedItemProps<SpeakData> & ItemExtraProps> & React.RefAttributes<HTMLElement>
+  React.PropsWithoutRef<ItemComponentProps<SpeakData> & MappedItemComponentHandlers<SpeakData> & ItemExtraProps> & React.RefAttributes<HTMLElement>
 >;
 
 export type SpeakAndAudioListProps = {

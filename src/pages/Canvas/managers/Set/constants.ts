@@ -10,13 +10,23 @@ export const HELP_LINK = 'https://docs.voiceflow.com/#/steps/set';
 
 export const VIDEO_LINK = 'https://www.youtube.com/embed/6xgr-7GPZzU';
 
+export const defaultExpression = (conditionsBuilderEnabled = false) =>
+  conditionsBuilderEnabled
+    ? null
+    : {
+        id: cuid.slug(),
+        type: ExpressionType.VALUE,
+        value: '',
+        depth: 0,
+      };
+
 export const NODE_CONFIG: NodeConfig<NodeData.Set> = {
   type: BlockType.SET,
 
   icon: 'code',
   iconColor: '#5590b5',
 
-  factory: () => ({
+  factory: (_data, options) => ({
     node: {
       ports: {
         in: [{}],
@@ -25,16 +35,13 @@ export const NODE_CONFIG: NodeConfig<NodeData.Set> = {
     },
     data: {
       name: 'Set',
+      title: '',
       sets: [
         {
           id: cuid.slug(),
           variable: null,
-          expression: {
-            id: cuid.slug(),
-            type: ExpressionType.VALUE,
-            value: '',
-            depth: 0,
-          },
+          // Temporary force typing, need to merge the new expression adapter, then we can remove this
+          expression: defaultExpression(options?.conditionsBuilderEnabled) as NodeData.Expression,
         },
       ],
     },

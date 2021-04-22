@@ -1,11 +1,13 @@
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
-import { useManager, useToggle } from '@/hooks';
+import { FeatureFlag } from '@/config/features';
+import { useFeature, useManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 
 import { DraggableItem, HelpMessage, HelpTooltip } from './components';
 import { NODE_CONFIG } from './constants';
+import SetEditorV2 from './SetEditorV2';
 
 const MAX_SETS = 20;
 
@@ -66,4 +68,13 @@ function SetEditor({ data, onChange }) {
   );
 }
 
-export default SetEditor;
+const ConditionalSetEditor = (props) => {
+  const conditionsBuilder = useFeature(FeatureFlag.CONDITIONS_BUILDER);
+
+  if (conditionsBuilder.isEnabled) {
+    return <SetEditorV2 {...props} />;
+  }
+
+  return <SetEditor {...props} />;
+};
+export default ConditionalSetEditor;

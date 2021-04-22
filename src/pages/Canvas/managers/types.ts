@@ -41,7 +41,7 @@ export type NodeConfig<T extends object | Markup.AnyNodeData> = {
 
   factory: (
     data?: Partial<T>,
-    options?: { defaultVoice: string; canvasNodeVisibility?: CanvasNodeVisibility }
+    options?: { defaultVoice?: string; canvasNodeVisibility?: CanvasNodeVisibility; conditionsBuilderEnabled?: boolean }
   ) => {
     node: NodeDescriptor;
     data: Creator.DataDescriptor<T>;

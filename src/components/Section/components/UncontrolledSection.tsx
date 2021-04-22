@@ -38,11 +38,12 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   isNested?: boolean;
   disabled?: boolean;
   dropdown?: React.ReactNode;
-  headerRef?: React.Ref<HTMLDivElement>;
+  headerRef?: React.Ref<HTMLElement>;
   className?: string;
   isDragging?: boolean;
   isCollapsed?: boolean;
   headerToggle?: boolean;
+  fullWidth?: boolean;
   tooltipProps?: any; // TODO: replace with real props
   nestedIntend?: boolean;
   collapseVariant?: SectionToggleVariant | null;
@@ -65,6 +66,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
     toggle,
     isLink = false,
     header,
+    fullWidth,
     status,
     tooltip,
     variant = SectionVariant.PRIMARY,
@@ -100,6 +102,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
   const ContentPrefixComponent = contentPrefix;
   const ContentSuffixComponent = contentSuffix;
 
+  // eslint-disable-next-line xss/no-mixed-html
   return (
     <Container
       ref={ref}
@@ -114,11 +117,12 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
       isDividerNested={isDividerNested}
       isLink={isLink}
       isRounded={isRounded}
+      fullWidth={fullWidth}
       {...props}
     >
       {hasHeader && (
         <Header
-          ref={headerRef}
+          ref={headerRef as React.Ref<HTMLDivElement>}
           isDragging={isDragging}
           containerToggle={!!clickHandler}
           onClick={clickHandler}

@@ -196,12 +196,17 @@ export namespace NodeData {
     | AdvancedExpression
     | VariableExpression;
 
+  export type NewExpressionType = string | null;
+
+  export type SetExpression = {
+    expression: Expression | NewExpressionType;
+    id: string;
+    variable?: string | null;
+  };
+
   export type Set = {
-    sets: {
-      expression: Expression;
-      id: string;
-      variable?: string | null;
-    }[];
+    title?: string;
+    sets: SetExpression[];
   };
 
   export type Directive = {

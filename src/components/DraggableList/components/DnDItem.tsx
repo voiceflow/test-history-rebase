@@ -3,33 +3,44 @@ import React from 'react';
 import ContextMenu from '@/components/ContextMenu';
 import { MenuOption } from '@/types';
 
-import { Handlers, InternalItem } from '../types';
+import { DnDHandlers, InternalItem } from '../types';
 import useDragAndDrop from '../useDragAndDrop';
 
-export type ItemComponentProps<I> = Omit<InternalItem<I>, 'type'> & {
-  style: { opacity: number };
-  onRemove: (() => void) | ((props: Omit<InternalItem<I>, 'type'>) => void);
+type InternalWithoutType<I> = Omit<InternalItem<I>, 'type'>;
+
+export type ItemComponentHandlers<I> = {
+  onRemove: (props: InternalWithoutType<I>) => void;
+  onUpdate?: never;
+};
+
+export type MappedItemComponentHandlers<I> = {
+  onRemove: () => void;
+  onUpdate: (value: Partial<I>) => void;
+};
+
+export type ItemComponentProps<I> = InternalWithoutType<I> & {
+  style?: { opacity: number };
   isDragging: boolean;
   onContextMenu?: (event: React.MouseEvent<HTMLElement>) => void;
-  connectedDragRef: React.RefObject<HTMLElement | null>;
+  connectedDragRef: React.RefObject<HTMLElement>;
   isContextMenuOpen?: boolean;
 };
 
 export type DnDItemProps<I> = InternalItem<I> & {
   type: string;
-  onRemove: (() => void) | ((props: Omit<InternalItem<I>, 'type'>) => void);
-  handlers: { current: Handlers<I> };
+  handlers: { current: DnDHandlers<I> };
   partialDrag?: boolean;
-  itemComponent: React.NamedExoticComponent<React.PropsWithoutRef<ItemComponentProps<I>> & React.RefAttributes<HTMLElement>>;
+  itemComponent: React.NamedExoticComponent<
+    React.PropsWithoutRef<ItemComponentProps<I> & (ItemComponentHandlers<I> | MappedItemComponentHandlers<I>)> & React.RefAttributes<HTMLElement>
+  >;
   contextMenuOptions?: MenuOption[];
   withContextMenuDelete?: boolean;
   unmountableDuringDrag?: boolean;
-};
+} & (ItemComponentHandlers<I> | MappedItemComponentHandlers<I>);
 
 const DnDItem = <P extends DnDItemProps<any>>({
   type,
   handlers,
-  onRemove,
   partialDrag,
   itemComponent: Item,
   contextMenuOptions,
@@ -47,20 +58,19 @@ const DnDItem = <P extends DnDItemProps<any>>({
     }
 
     if (withContextMenuDelete) {
-      options.push({ label: 'Delete', onClick: () => onRemove(props) });
+      options.push({ label: 'Delete', onClick: () => props.onRemove(props) });
     }
 
     return options;
-  }, [onRemove, withContextMenuDelete, contextMenuOptions]);
+  }, [props.onRemove, withContextMenuDelete, contextMenuOptions]);
 
   const itemProps = {
     ...props,
     ref: connectedRootRef,
     style: { opacity: isDragging ? 0 : 1 },
-    onRemove,
     isDragging,
     connectedDragRef,
-  };
+  } as ItemComponentProps<any> & (ItemComponentHandlers<any> | MappedItemComponentHandlers<any>);
 
   if (menuOptions.length) {
     return (

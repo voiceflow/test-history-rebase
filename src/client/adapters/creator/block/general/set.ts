@@ -17,7 +17,7 @@ const setAdapter = createBlockAdapter<StepData, NodeData.Set>(
   ({ sets }) => ({
     sets: sets.map(({ expression, variable }) => ({
       variable: variable ?? null,
-      expression: expressionAdapter.toDB(expression),
+      expression: expressionAdapter.toDB(expression as any),
     })),
   })
 );

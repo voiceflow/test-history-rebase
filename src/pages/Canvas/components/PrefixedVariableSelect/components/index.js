@@ -10,6 +10,7 @@ export const Select = styled(VariableSelect)`
 
   ${SearchInput} {
     padding-left: 90px;
+    padding-bottom: 12px;
   }
 `;
 

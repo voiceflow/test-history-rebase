@@ -50,4 +50,5 @@ export const WorkspaceItemNameWrapper = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   margin-right: 10px;
+  line-height: 20px;
 `;

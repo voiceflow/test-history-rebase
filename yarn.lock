@@ -5279,10 +5279,10 @@
   dependencies:
     current-git-branch "^1.1.0"
 
-"@voiceflow/google-types@1.26.0":
-  version "1.26.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.26.0.tgz#351c2dc5e07fc01ccea65fb816e0936715b18f9d"
-  integrity sha512-apihJ5W25mPyX2NbR8t1PmGcX+7qnIwZ265ph3f10ons1QRjV/nsO7MfugIb+b9Wl7PoHyLHlAU4CQwNkn9W+Q==
+"@voiceflow/google-types@1.26.1":
+  version "1.26.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.26.1.tgz#655dce683ab5670e631f5ecd4c113875b4f73f44"
+  integrity sha512-YwxBnyr/SYzr303bP3CDCsRxidU7ecbRgXEgSTibhMBABEakHDOxaky+LeVvDFIuV3Ym6GAjEVwtAHYMvglPgg==
   dependencies:
     "@voiceflow/api-sdk" "1.30.0"
     "@voiceflow/common" "6.5.0"

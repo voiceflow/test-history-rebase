@@ -3,7 +3,7 @@ import React from 'react';
 import FullPageTemplate from '../FullPageTemplate';
 import { MobileVoiceInstruction, StartConversation } from './components';
 
-type ShareSplashScreenProps = {
+interface ShareSplashScreenProps {
   onStart: () => void;
   logoURL?: string;
   isMobile?: boolean;
@@ -11,8 +11,9 @@ type ShareSplashScreenProps = {
   isVisuals?: boolean;
   projectName: string;
   colorScheme?: string;
+  hideVFBranding?: boolean;
   withStartButton?: boolean;
-};
+}
 
 const ShareSplashScreen: React.FC<ShareSplashScreenProps> = ({
   onStart,
@@ -22,6 +23,7 @@ const ShareSplashScreen: React.FC<ShareSplashScreenProps> = ({
   isVisuals,
   colorScheme,
   projectName,
+  hideVFBranding,
   withStartButton = true,
 }) => {
   const [visualsWelcomeScreenPassed, setVisualsWelcomeScreenPassed] = React.useState(false);
@@ -38,6 +40,7 @@ const ShareSplashScreen: React.FC<ShareSplashScreenProps> = ({
       isMobile={isMobile}
       logoSize={logoSize}
       logoURL={logoURL}
+      hideVFBranding={hideVFBranding}
     >
       <StartConversation
         projectName={projectName}
@@ -47,6 +50,7 @@ const ShareSplashScreen: React.FC<ShareSplashScreenProps> = ({
         isVisuals={isVisuals}
         withStartButton={withStartButton}
         colorScheme={colorScheme}
+        hideVFBranding={hideVFBranding}
       />
     </FullPageTemplate>
   );

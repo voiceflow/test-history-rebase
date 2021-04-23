@@ -13,6 +13,7 @@ export type StartConversationProps = {
   isVisuals?: boolean;
   isMobile?: boolean;
   colorScheme?: string;
+  hideVFBranding?: boolean;
   setVisualsWelcomeScreenPassed: (val: boolean) => void;
   onStart: () => void;
 };
@@ -25,6 +26,7 @@ const StartConversation: React.FC<StartConversationProps> = ({
   colorScheme,
   setVisualsWelcomeScreenPassed,
   onStart,
+  hideVFBranding,
 }) => {
   const onClick = React.useMemo(() => preventDefault(() => (isVisuals && isMobile ? setVisualsWelcomeScreenPassed(true) : onStart())), [
     isVisuals,
@@ -53,11 +55,15 @@ const StartConversation: React.FC<StartConversationProps> = ({
       </Box>
 
       <Box fontSize={15} mt={16} mb={32} color="#62778c">
-        Want to create your own?
-        {' ' /* Need this space for formatting */}
-        <Link color={colorScheme} href="https://www.voiceflow.com/">
-          Get Started.
-        </Link>
+        {!hideVFBranding && (
+          <>
+            Want to create your own?
+            {' ' /* Need this space for formatting */}
+            <Link color={colorScheme} href="https://www.voiceflow.com/">
+              Get Started.
+            </Link>
+          </>
+        )}
       </Box>
 
       {withStartButton && (

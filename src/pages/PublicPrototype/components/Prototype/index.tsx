@@ -2,11 +2,12 @@ import { Request } from '@voiceflow/general-types';
 import React from 'react';
 
 import { isIOS } from '@/config';
+import { Permission } from '@/config/permissions';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useASR, useCanASR, useDidUpdateEffect, useSpeechRecognition, useTeardown } from '@/hooks';
+import { useASR, useCanASR, useDidUpdateEffect, useGuestPermission, useSpeechRecognition, useTeardown } from '@/hooks';
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPrototype } from '@/pages/Prototype/hooks';
@@ -29,6 +30,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
   const [canUseASR] = useCanASR();
+  const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);
 
   const [input, setInput] = React.useState<string>('');
 
@@ -103,6 +105,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
     }
   }, [isFinished]);
 
+  const brandColor = isCustomizedPrototypeAllowed ? settings.brandColor : undefined;
+
   return (
     <Layout
       layout={settings.layout}
@@ -110,12 +114,13 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
       isListening={isListening}
       renderSplashScreen={({ isMobile }) => (
         <SplashScreen
-          logoURL={settings.brandImage}
+          logoURL={isCustomizedPrototypeAllowed ? settings.brandImage : undefined}
           onStart={onStart}
-          colorScheme={settings.brandColor}
+          colorScheme={brandColor}
           isMobile={isMobile}
           isVisuals={isVisuals}
           projectName={name}
+          hideVFBranding={isCustomizedPrototypeAllowed}
           withStartButton={isIdle}
         />
       )}
@@ -140,12 +145,12 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
               interimTranscript={interimTranscript}
               onCheckMicrophonePermission={onCheckMicrophonePermission}
               isMicrophonePermissionGranted={isMicrophonePermissionGranted}
-              colorScheme={settings.brandColor}
+              colorScheme={brandColor}
             />
           )}
         </Footer>
       )}
-      colorScheme={settings.brandColor}
+      colorScheme={brandColor}
     >
       {({ isMobile, isFullScreen }) =>
         isVisuals ? (
@@ -161,8 +166,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
             locale={locale}
             input={input}
             onStart={onStart}
-            color={settings.brandColor}
-            avatarURL={settings.avatar}
+            color={brandColor}
+            avatarURL={isCustomizedPrototypeAllowed ? settings.avatar : undefined}
             layout={settings.layout}
             onMute={onMute}
             isIdle={isIdle}

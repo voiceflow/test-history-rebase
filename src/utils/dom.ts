@@ -321,3 +321,11 @@ export const unhighlightAllText = () => {
 };
 
 export const getTargetValue = (callback: (value: string) => void) => (event: React.ChangeEvent<HTMLInputElement>) => callback(event.target.value);
+
+export const loadImage = (src: string) =>
+  new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = resolve;
+    img.onerror = reject;
+    img.src = src;
+  });

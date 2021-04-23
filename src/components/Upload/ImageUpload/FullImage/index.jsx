@@ -41,7 +41,19 @@ export const validateLink = (link = '') => {
   return null;
 };
 
-function FullImage({ image, update, setError, isLoading, error, onDropAccepted, onDropRejected, showRemove = true, imageHeight, canUseLink = true }) {
+function FullImage({
+  image,
+  update,
+  setError,
+  isLoading,
+  error,
+  onDropAccepted,
+  onDropRejected,
+  showRemove = true,
+  imageHeight,
+  canUseLink = true,
+  ratio,
+}) {
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
     accept: IMAGE_FILE_FORMATS,
     onDropAccepted,
@@ -76,11 +88,18 @@ function FullImage({ image, update, setError, isLoading, error, onDropAccepted, 
   } else if (loadError) {
     content = <Tooltip title={image}>{image}</Tooltip>;
   } else if (image) {
-    content = <Image src={image} onError={(err) => setLoadError(err)} />;
+    content = <Image src={image} onError={(err) => setLoadError(err)} ratio={ratio} />;
   }
 
   return image ? (
-    <Container onMouseEnter={showRemoveButton} onMouseLeave={hideRemoveButton} {...getRootProps()} isActive={isDragActive} height={imageHeight}>
+    <Container
+      onMouseEnter={showRemoveButton}
+      onMouseLeave={hideRemoveButton}
+      {...getRootProps()}
+      isActive={isDragActive}
+      height={imageHeight}
+      autoHeight={!!ratio}
+    >
       <ImageUploadInput onChange={onDropAccepted} ref={imageUploadRef} type="file" accept={IMAGE_FILE_FORMATS} {...getInputProps()} />
 
       <>

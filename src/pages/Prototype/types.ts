@@ -1,4 +1,5 @@
 import { Request } from '@voiceflow/general-types';
+import { ImageStepData } from '@voiceflow/general-types/build/nodes/visual';
 
 export enum PMStatus {
   IDLE = 'IDLE',
@@ -19,9 +20,10 @@ export enum MessageType {
   DEBUG = 'DEBUG',
   STREAM = 'STREAM',
   SESSION = 'SESSION',
+  VISUAL = 'VISUAL',
 }
 
-export const BotMessageTypes = [MessageType.AUDIO, MessageType.SPEAK, MessageType.STREAM];
+export const BotMessageTypes = [MessageType.AUDIO, MessageType.SPEAK, MessageType.STREAM, MessageType.VISUAL];
 
 type GenericMessage<T extends MessageType, D = {}> = { id: string; type: T; startTime: string } & D;
 
@@ -37,6 +39,8 @@ export type StreamMessage = GenericMessage<MessageType.STREAM, { audio: string }
 
 export type SessionMessage = GenericMessage<MessageType.SESSION, { message: string }>;
 
+export type VisualMessage = GenericMessage<MessageType.VISUAL, ImageStepData>;
+
 export type MessageMap = {
   [MessageType.USER]: UserMessage;
   [MessageType.AUDIO]: AudioMessage;
@@ -44,9 +48,10 @@ export type MessageMap = {
   [MessageType.DEBUG]: DebugMessage;
   [MessageType.STREAM]: StreamMessage;
   [MessageType.SESSION]: SessionMessage;
+  [MessageType.VISUAL]: VisualMessage;
 };
 
-export type Message = UserMessage | AudioMessage | SpeakMessage | DebugMessage | SessionMessage | StreamMessage;
+export type Message = UserMessage | AudioMessage | SpeakMessage | DebugMessage | SessionMessage | StreamMessage | VisualMessage;
 
 export type TypedMessage<T extends MessageType> = MessageMap[T];
 

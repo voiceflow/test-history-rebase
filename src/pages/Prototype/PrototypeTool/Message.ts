@@ -1,4 +1,8 @@
+import { VisualType } from '@voiceflow/general-types/build/nodes/visual';
 import moment from 'moment';
+
+import { VisualTrace } from '@/models';
+import { loadImage } from '@/utils/dom';
 
 import { Message, MessageType, TypedMessage } from '../types';
 
@@ -37,6 +41,15 @@ class MessageController {
 
   public debug(id: string, data: Omit<TypedMessage<MessageType.DEBUG>, 'id' | 'type' | 'startTime'>): void {
     this.add({ id, type: MessageType.DEBUG, ...data });
+  }
+
+  public async visual(id: string, payload: VisualTrace['payload']): Promise<void> {
+    if (payload.visualType !== VisualType.IMAGE || !payload.image) {
+      return;
+    }
+    // preload image
+    await loadImage(payload.image).catch(() => null);
+    this.add({ id, type: MessageType.VISUAL, ...payload });
   }
 
   public user(id: string, input: string): void {

@@ -340,6 +340,8 @@ class TraceController {
   }
 
   private async processVisual(trace: VisualTrace) {
+    await this.message.visual(trace.id, trace.payload);
+
     this.props.updatePrototypeVisualsData(trace.payload);
 
     if (this.props.waitVisuals) {

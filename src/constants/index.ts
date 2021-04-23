@@ -278,7 +278,7 @@ export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,16}$/;
 
 export const AUDIO_FILE_BUCKET_NAME = 'https://s3.amazonaws.com/com.getstoryflow.audio.sandbox';
 
-export const IMAGE_FILE_FORMATS = ['image/jpeg', 'image/png'];
+export const IMAGE_FILE_FORMATS = ['image/jpeg', 'image/png', 'image/gif'];
 
 export const AV_FILE_FORMATS = [
   'audio/pcm',

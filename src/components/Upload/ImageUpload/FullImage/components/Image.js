@@ -1,10 +1,20 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const Image = styled.img`
+const Image = styled.div`
   width: 100%;
-  height: 100%;
   border-radius: 5px;
-  object-fit: cover;
+  background-size: cover;
+  background-position: top center;
+
+  min-height: 30px;
+
+  background-image: url(${({ src }) => src});
+
+  ${({ ratio }) =>
+    ratio &&
+    css`
+      padding-bottom: ${ratio}%;
+    `};
 `;
 
 export default Image;

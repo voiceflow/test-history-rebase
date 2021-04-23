@@ -58,6 +58,8 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
     });
   };
 
+  const ratio = (Number(dimensions?.height) / Number(dimensions?.width)) * 100 || 0;
+
   return (
     <Content
       footer={() => (
@@ -148,7 +150,7 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
           }
           contentBottomUnits={0}
         >
-          <AnyFullImage update={(url?: string) => onChange({ image: url ?? null })} image={data.image} canUseLink={false} />
+          <AnyFullImage update={(url?: string) => onChange({ image: url ?? null })} image={data.image} canUseLink={false} ratio={ratio} />
 
           {!data.image && (
             <BlockText fontSize={13} color="#62778c" mt={16}>

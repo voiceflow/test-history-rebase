@@ -18,6 +18,7 @@ export type MessageProps = {
   userSpeak?: boolean;
   withAnimation?: boolean;
   isLast?: boolean;
+  bubble?: boolean;
   color?: string;
   avatarURL?: string;
 };
@@ -32,6 +33,7 @@ const Message: React.FC<MessageProps> = ({
   withAnimation = false,
   isLast,
   color,
+  bubble = true,
   avatarURL,
   ...props
 }) => {
@@ -47,9 +49,13 @@ const Message: React.FC<MessageProps> = ({
         )}
 
         <TippyTooltip distance={8} position="top" title={startTime} disabled={!startTime}>
-          <Bubble rightAlign={rightAlign} color={color} onClick={onClick} clickable={!!onClick} isFirstInSeries={isFirstInSeries}>
-            {children}
-          </Bubble>
+          {bubble ? (
+            <Bubble rightAlign={rightAlign} color={color} onClick={onClick} clickable={!!onClick} isFirstInSeries={isFirstInSeries}>
+              {children}
+            </Bubble>
+          ) : (
+            children
+          )}
         </TippyTooltip>
       </InnerContainer>
     </Container>

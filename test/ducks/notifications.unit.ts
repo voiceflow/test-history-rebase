@@ -110,7 +110,7 @@ suite(Notifications, MOCK_STATE)(
 
           const { expectDispatch } = await applyEffect(Notifications.fetchNotifications(), rootState);
 
-          expect(get).to.be.calledWithExactly(`/product_updates/${userID}`);
+          expect(get).to.be.calledWithExactly(`/product_updates`);
           expectDispatch(
             Notifications.setNotifications([
               { ...notifications[0], isNew: true },
@@ -138,12 +138,10 @@ suite(Notifications, MOCK_STATE)(
         const rootState = { account: { creator_id: userID } } as State;
 
         it('should mark old notifcations as read', async () => {
-          const post = stub(axios, 'post');
-          stub(Account, 'userIDSelector').returns(userID);
-
+          const patch = stub(axios, 'patch');
           const { expectDispatch } = await applyEffect(Notifications.readNotifications(), rootState);
 
-          expect(post).to.be.calledWithExactly(`/product_updates/${userID}`);
+          expect(patch).to.be.calledWithExactly(`/product_updates`);
           expectDispatch(Notifications.markNotificationAsRead());
         });
       });

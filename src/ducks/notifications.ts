@@ -6,8 +6,6 @@ import { createAction, createRootSelector } from '@/ducks/utils';
 import { Action, RootReducer, SyncThunk, Thunk } from '@/store/types';
 import { MD5 } from '@/utils/crypto';
 
-import * as Account from './account';
-
 export enum NotificationType {
   FEATURE = 'FEATURE',
   UPDATE = 'UPDATE',
@@ -114,12 +112,10 @@ export const forceNotificationIfNew = (notification: Notification): SyncThunk =>
   dispatch(forceNotification(notification, isNew));
 };
 
-export const fetchNotifications = (): Thunk => async (dispatch, getState) => {
-  const userID = Account.userIDSelector(getState());
-
+export const fetchNotifications = (): Thunk => async (dispatch) => {
   let {
     data: { rows: notifications, last_checked: lastChecked },
-  } = await axios.get(`/product_updates/${userID}`);
+  } = await axios.get(`/product_updates`);
 
   lastChecked = lastChecked ? moment(lastChecked).unix() : 0;
 
@@ -131,10 +127,8 @@ export const fetchNotifications = (): Thunk => async (dispatch, getState) => {
   dispatch(setNotifications(notifications));
 };
 
-export const readNotifications = (): SyncThunk => (dispatch, getState) => {
-  const userID = Account.userIDSelector(getState());
-
-  axios.post(`/product_updates/${userID}`);
+export const readNotifications = (): SyncThunk => (dispatch) => {
+  axios.patch(`/product_updates`);
 
   dispatch(markNotificationAsRead());
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ChannelType } from '@/constants';
+import { PlatformType } from '@/constants';
 import ChannelSelect from '@/pages/NewProject/Steps/ChannelSelect';
 
 import { StepID } from '../../constants';
@@ -9,7 +9,7 @@ import { OnboardingContext } from '../../context';
 const SelectChannel: React.FC = () => {
   const { state, actions } = React.useContext(OnboardingContext);
 
-  const onContinue = (channel: ChannelType | null) => {
+  const onContinue = (channel: PlatformType | null) => {
     if (!channel) return;
 
     actions.setSelectChannelMeta({ channel });

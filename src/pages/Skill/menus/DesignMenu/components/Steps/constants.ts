@@ -181,4 +181,7 @@ export const PLATFORM_SECTIONS = {
   [PlatformType.ALEXA]: ALEXA_SECTIONS,
   [PlatformType.GOOGLE]: GOOGLE_SECTIONS,
   [PlatformType.GENERAL]: GENERAL_SECTIONS,
+  [PlatformType.IVR]: GENERAL_SECTIONS,
+  [PlatformType.CHATBOT]: GENERAL_SECTIONS,
+  [PlatformType.MOBILE_APP]: GENERAL_SECTIONS,
 };

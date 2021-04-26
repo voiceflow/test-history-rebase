@@ -52,21 +52,15 @@ export enum PlatformType {
   ALEXA = 'alexa',
   GOOGLE = 'google',
   GENERAL = 'general',
+  IVR = 'ivr',
+  CHATBOT = 'chatbot',
+  MOBILE_APP = 'mobile_app',
 }
 
 export enum NLPProvider {
   LUIS = 'luis',
   ALEXA = 'alexa',
   DIALOGFLOW_ES = 'diagflow-es',
-}
-
-export enum ChannelType {
-  ALEXA_ASSISTANT = 'alexa_assistant',
-  GOOGLE_ASSISTANT = 'google_assistant',
-  CUSTOM_ASSISTANT = 'custom_assistant',
-  IVR = 'ivr',
-  CHATBOT = 'chatbot',
-  MOBILE_APP = 'mobile_app',
 }
 
 export const DefaultVoice = {
@@ -81,6 +75,9 @@ export const PLATFORM_APP_NAME: Record<PlatformType, string> = {
   [PlatformType.ALEXA]: 'Alexa Skill',
   [PlatformType.GOOGLE]: 'Google Action',
   [PlatformType.GENERAL]: 'General Project',
+  [PlatformType.IVR]: 'IVR Project',
+  [PlatformType.CHATBOT]: 'Chatbot Project',
+  [PlatformType.MOBILE_APP]: 'Mobile App Project',
 };
 
 export const BuiltInVariable = {

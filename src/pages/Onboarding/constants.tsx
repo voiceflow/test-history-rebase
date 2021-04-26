@@ -1,14 +1,12 @@
 import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
-import { ChannelType } from '@/constants';
+import { PlatformType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
 
 import { CHANNEL_META } from '../NewProject/Steps/constants';
 import DocsLink from './components/DocsLink';
-
-export const ONBOARDING_PROJECT_NAME = 'First Project';
 
 export enum StepID {
   WELCOME = 'welcome',
@@ -101,7 +99,7 @@ export const STEP_META: StepMetaProps = {
     trackStep: ({ selectChannelMeta }, { skip }) =>
       Tracking.trackOnboardingSelectChannel({
         skip,
-        platform: CHANNEL_META[selectChannelMeta.channel as ChannelType].platform,
+        platform: CHANNEL_META[selectChannelMeta.channel as PlatformType].platform,
       }),
   },
 };

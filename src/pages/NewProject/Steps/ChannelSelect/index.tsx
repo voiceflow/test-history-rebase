@@ -2,7 +2,7 @@ import React from 'react';
 
 import { FlexCenter } from '@/components/Flex';
 import Icon from '@/components/SvgIcon';
-import { ChannelType } from '@/constants';
+import { PlatformType } from '@/constants';
 import { styled } from '@/hocs';
 import { Container as CreateWorkspaceContainer } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 
@@ -10,21 +10,14 @@ import { CHANNEL_META } from '../constants';
 import { InstructionContainer, PlatformCardsContainer, QuestionContainer } from './components';
 import PlatformCard from './components/PlatformCard';
 
-const OPTIONS = [
-  ChannelType.ALEXA_ASSISTANT,
-  ChannelType.GOOGLE_ASSISTANT,
-  ChannelType.CUSTOM_ASSISTANT,
-  ChannelType.IVR,
-  ChannelType.CHATBOT,
-  ChannelType.MOBILE_APP,
-];
+const OPTIONS = [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.GENERAL, PlatformType.IVR, PlatformType.CHATBOT, PlatformType.MOBILE_APP];
 
 const Container = styled(CreateWorkspaceContainer)`
   padding-top: 0;
 `;
 
 type ChannelSelectProps = {
-  onSelect: (channel: ChannelType | null) => void;
+  onSelect: (channel: PlatformType | null) => void;
   isLoading: boolean;
   instruction?: string;
 };

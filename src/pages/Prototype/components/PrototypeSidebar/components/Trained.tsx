@@ -15,6 +15,9 @@ const TRAIN_ASSISTANT_TEXT = {
   [PlatformType.ALEXA]: 'Train Alexa Skill',
   [PlatformType.GOOGLE]: 'Train Google Action',
   [PlatformType.GENERAL]: 'Train Assistant',
+  [PlatformType.IVR]: 'Train Assistant',
+  [PlatformType.CHATBOT]: 'Train Assistant',
+  [PlatformType.MOBILE_APP]: 'Train Assistant',
 };
 
 type TrainedProps = {

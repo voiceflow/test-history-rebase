@@ -7,7 +7,7 @@ import client from '@/client';
 import { ButtonVariant } from '@/components/Button/constants';
 import { toast as toastNotif } from '@/components/Toast';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
-import { BillingPeriod, ChannelType, ModalType, PlanType, UserRole } from '@/constants';
+import { BillingPeriod, ModalType, PlanType, PlatformType, UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
@@ -70,7 +70,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
       role: '',
     },
     selectChannelMeta: {
-      channel: ChannelType.ALEXA_ASSISTANT,
+      channel: PlatformType.ALEXA,
     },
     sendingRequests: false,
     workspaceId: '',
@@ -161,7 +161,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       role: '',
     },
     selectChannelMeta: {
-      channel: ChannelType.ALEXA_ASSISTANT,
+      channel: PlatformType.ALEXA,
     },
     sendingRequests: false,
     workspaceId: '',
@@ -350,12 +350,23 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
 
     try {
       if (isLoginFlow) {
+        let templateTag = `onboarding:${state.selectChannelMeta.channel}`;
+        const platform = state.selectChannelMeta.channel;
+
+        if (platform === PlatformType.GENERAL) {
+          templateTag = `onboarding:custom_assistant`;
+        } else if (platform === PlatformType.ALEXA) {
+          templateTag = 'onboarding:alexa_assistant';
+        } else if (platform === PlatformType.GOOGLE) {
+          templateTag = 'onboarding:google_assistant';
+        }
+
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
           const { versionID } = await createProject(
-            { platform: CHANNEL_META[state.selectChannelMeta.channel as ChannelType].platform },
-            `onboarding:${state.selectChannelMeta.channel}`
+            { platform: CHANNEL_META[state.selectChannelMeta.channel as PlatformType].platform },
+            templateTag
           );
           await goToCanvas(versionID!);
           await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);

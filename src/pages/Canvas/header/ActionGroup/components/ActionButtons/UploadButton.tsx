@@ -16,6 +16,9 @@ const UPLOAD_MESSAGE: Record<PlatformType, string> = {
   [PlatformType.ALEXA]: 'Upload to Alexa',
   [PlatformType.GOOGLE]: 'Upload to Google',
   [PlatformType.GENERAL]: '',
+  [PlatformType.IVR]: '',
+  [PlatformType.CHATBOT]: '',
+  [PlatformType.MOBILE_APP]: '',
 };
 
 const UploadButton: React.FC<UploadButtonProps & ConnectedUploadButtonProps> = ({ isJobActive, platform, onClick }) => (

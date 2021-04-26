@@ -93,6 +93,9 @@ export const BUILT_IN_INTENTS = {
   [PlatformType.ALEXA]: ALEXA_BUILT_INS,
   [PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
   [PlatformType.GENERAL]: GENERAL_BUILT_INS_MAP[GeneralLocale.EN_US],
+  [PlatformType.IVR]: GENERAL_BUILT_INS_MAP[GeneralLocale.EN_US],
+  [PlatformType.MOBILE_APP]: GENERAL_BUILT_INS_MAP[GeneralLocale.EN_US],
+  [PlatformType.CHATBOT]: GENERAL_BUILT_INS_MAP[GeneralLocale.EN_US],
 };
 
 export const isBuiltInIntent = (intentID: string) => [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS].some((intent) => intent.id === intentID);

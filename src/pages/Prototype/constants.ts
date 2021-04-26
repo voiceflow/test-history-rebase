@@ -35,6 +35,9 @@ export const PROTOTYPE_MENU_OPTIONS = {
   [PlatformType.ALEXA]: ALEXA_PROTOTYPE_MENU_OPTIONS,
   [PlatformType.GOOGLE]: GOOGLE_PROTOTYPE_MENU_OPTIONS,
   [PlatformType.GENERAL]: GENERAL_PROTOTYPE_MENU_OPTIONS,
+  [PlatformType.IVR]: GENERAL_PROTOTYPE_MENU_OPTIONS,
+  [PlatformType.CHATBOT]: GENERAL_PROTOTYPE_MENU_OPTIONS,
+  [PlatformType.MOBILE_APP]: GENERAL_PROTOTYPE_MENU_OPTIONS,
 };
 
 export type DeviceInfo = {
@@ -90,4 +93,7 @@ export const DEVICE_LIST: Record<PlatformType, DeviceInfo[]> = {
   [PlatformType.ALEXA]: ALEXA_DEVICE_LIST,
   [PlatformType.GOOGLE]: [],
   [PlatformType.GENERAL]: [],
+  [PlatformType.IVR]: [],
+  [PlatformType.CHATBOT]: [],
+  [PlatformType.MOBILE_APP]: [],
 };

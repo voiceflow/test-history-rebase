@@ -10,7 +10,7 @@ import { FlexCenter } from '@/components/Flex';
 import Input from '@/components/Input';
 import Select from '@/components/Select';
 import Icon from '@/components/SvgIcon';
-import { ChannelType, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import { CHANNEL_META, PLATFORM_META } from '@/pages/NewProject/Steps/constants';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
@@ -34,7 +34,7 @@ type PlatformSettingsProps = {
   setAlexaLocales: (locales: string[]) => void;
   setGeneralLocale: (locale: string) => void;
   finalizeCreation: () => void;
-  selectedChannel: ChannelType;
+  selectedChannel: PlatformType;
   setInvocationName: (name: string) => void;
   setGoogleLanguage: (val: string) => void;
 };

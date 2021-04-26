@@ -44,6 +44,9 @@ const platformBlockAdapter = {
   [PlatformType.ALEXA]: alexaBlockAdapter,
   [PlatformType.GOOGLE]: googleBlockAdapter,
   [PlatformType.GENERAL]: generalBlockAdapter,
+  [PlatformType.IVR]: generalBlockAdapter,
+  [PlatformType.MOBILE_APP]: generalBlockAdapter,
+  [PlatformType.CHATBOT]: generalBlockAdapter,
 };
 
 const commonBlockAdapter = {
@@ -64,6 +67,9 @@ const platformPortsAdapter = {
   [PlatformType.ALEXA]: alexaPortsAdapter,
   [PlatformType.GOOGLE]: googlePortsAdapter,
   [PlatformType.GENERAL]: generalPortsAdapter,
+  [PlatformType.CHATBOT]: generalPortsAdapter,
+  [PlatformType.IVR]: generalPortsAdapter,
+  [PlatformType.MOBILE_APP]: generalPortsAdapter,
 };
 
 export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);

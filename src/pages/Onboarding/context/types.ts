@@ -1,4 +1,4 @@
-import { BillingPeriod, ChannelType, PlanType } from '@/constants';
+import { BillingPeriod, PlanType, PlatformType } from '@/constants';
 import { Query } from '@/models';
 
 import { StepID } from '../constants';
@@ -52,7 +52,7 @@ export type OnboardingContextState = {
     role: string;
   };
   selectChannelMeta: {
-    channel: ChannelType;
+    channel: PlatformType;
   };
   sendingRequests: boolean;
   workspaceId: string;

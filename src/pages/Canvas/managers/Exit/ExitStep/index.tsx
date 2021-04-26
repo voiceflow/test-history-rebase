@@ -10,6 +10,9 @@ const PLATFORM_LABELS = {
   [PlatformType.ALEXA]: 'Skill',
   [PlatformType.GOOGLE]: 'Google Action',
   [PlatformType.GENERAL]: 'Project',
+  [PlatformType.IVR]: 'Project',
+  [PlatformType.MOBILE_APP]: 'Project',
+  [PlatformType.CHATBOT]: 'Project',
 };
 
 export type ExitStepProps = {

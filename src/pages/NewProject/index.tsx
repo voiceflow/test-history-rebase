@@ -6,7 +6,7 @@ import React from 'react';
 import client from '@/client';
 import { CreationHeader, InnerContainer, OuterContainer } from '@/components/CreationSteps';
 import { FlexCenter } from '@/components/Flex';
-import { ChannelType, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
@@ -19,13 +19,14 @@ import { StepID, StepMeta } from './constants';
 import { CHANNEL_META } from './Steps/constants';
 
 const NUMBER_OF_STEPS = 3;
+
 const TEMPLATE_TAG = {
-  [ChannelType.ALEXA_ASSISTANT]: 'default',
-  [ChannelType.GOOGLE_ASSISTANT]: 'default',
-  [ChannelType.CUSTOM_ASSISTANT]: 'default',
-  [ChannelType.CHATBOT]: `default:${ChannelType.CHATBOT}`,
-  [ChannelType.IVR]: `default:${ChannelType.IVR}`,
-  [ChannelType.MOBILE_APP]: `default:${ChannelType.MOBILE_APP}`,
+  [PlatformType.ALEXA]: 'default',
+  [PlatformType.GOOGLE]: 'default',
+  [PlatformType.GENERAL]: 'default',
+  [PlatformType.CHATBOT]: `default:${PlatformType.CHATBOT}`,
+  [PlatformType.IVR]: `default:${PlatformType.IVR}`,
+  [PlatformType.MOBILE_APP]: `default:${PlatformType.MOBILE_APP}`,
 };
 
 const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?: { listID: string } } }> = ({
@@ -41,7 +42,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   const [name, setName] = React.useState('');
   const [projectImage, setProjectImage] = React.useState('');
   const [invocationName, setInvocationName] = React.useState('');
-  const [selectedChannel, setSelectedChannel] = React.useState<ChannelType | null>(null);
+  const [selectedChannel, setSelectedChannel] = React.useState<PlatformType | null>(null);
   const [alexaLocales, setAlexaLocales] = React.useState<[AlexaLocale, ...AlexaLocale[]]>([LOCALE_MAP[0].value]);
   const [googleLanguage, setGoogleLanguage] = React.useState<GoogleLanguage>(GoogleLanguage.EN);
   const [generalLocale, setGeneralLocale] = React.useState<GeneralLocale>(GeneralLocale.EN_US);

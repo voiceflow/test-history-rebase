@@ -13,12 +13,18 @@ const CONNECT_ICON: Record<PlatformType, Icon | null> = {
   [PlatformType.ALEXA]: 'amazonAlexa',
   [PlatformType.GOOGLE]: 'googleAssistantNoColor',
   [PlatformType.GENERAL]: null,
+  [PlatformType.IVR]: null,
+  [PlatformType.CHATBOT]: null,
+  [PlatformType.MOBILE_APP]: null,
 };
 
 const CONNECT_MESSAGE: Record<PlatformType, string> = {
   [PlatformType.ALEXA]: 'Connect to Alexa',
   [PlatformType.GOOGLE]: 'Connect to Google',
   [PlatformType.GENERAL]: '',
+  [PlatformType.IVR]: '',
+  [PlatformType.CHATBOT]: '',
+  [PlatformType.MOBILE_APP]: '',
 };
 
 type ConnectButtonProps = {

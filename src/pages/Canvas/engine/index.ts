@@ -392,6 +392,18 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     }
   }
 
+  centerHome(): void {
+    const startNode = Array.from(this.nodes.entries()).find(([, { type }]) => type === BlockType.START);
+
+    if (startNode) {
+      const [nodeID] = startNode;
+
+      this.node.center(nodeID, !this.comment.isActive);
+      this.comment.forceRedrawThreads();
+      this.log.info(this.log.success('centered on the home block'));
+    }
+  }
+
   saveHistory() {
     this.store.dispatch(Creator.saveHistory());
     this.log.debug(this.log.success('history saved'));

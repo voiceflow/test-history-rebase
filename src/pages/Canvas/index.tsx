@@ -32,7 +32,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
 
   React.useEffect(() => {
     if (engine.getRootNodeIDs().length === 1 && !engine.comment.isActive) {
-      engine.focusHome();
+      engine.centerHome();
     }
   }, [engine]);
 

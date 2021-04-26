@@ -119,6 +119,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
             <Section
               header="DIALOG"
               variant={SectionVariant.PROTOTYPE}
+              isRounded={canRenderPrototype}
               suffix={
                 <Flex>
                   <Box display="inline-block" mr={15}>

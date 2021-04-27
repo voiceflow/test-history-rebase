@@ -250,7 +250,7 @@
     "jsdom-global": "^3.0.2",
     "levenary": "^1.1.1",
     "lint-staged": "^10.5.3",
-    "mini-css-extract-plugin": "^1.4.1",
+    "mini-css-extract-plugin": "^1.5.0",
     "mocha": "^8.2.1",
     "mocha-suite": "^1.0.11",
     "mock-local-storage": "^1.1.17",

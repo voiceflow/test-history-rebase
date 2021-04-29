@@ -1,7 +1,42 @@
 version: 2.1
 
+parameters:
+  container-image-url-creator-app:
+    type: string
+    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
+  container-image-url-admin-ui:
+    type: string
+    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin"
+  container-image-url-storybook:
+    type: string
+    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook"
+  k8s-asset-storybook:
+    type: string
+    default: "deployment/storybook"
+  k8s-asset-admin-ui:
+    type: string
+    default: "deployment/admin-ui"
+  k8s-asset-creator-app:
+    type: string
+    default: "statefulset/creator-app"
+  k8s-namespace:
+    type: string
+    default: "voiceflow-v1" # This is usually voiceflow-v1
+  ssh-fingerprint:
+    type: string
+    default: "93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a"
+  track-component-creator-app:
+    type: string
+    default: "creator-app"
+  track-component-admin-ui:
+    type: string
+    default: "admin-ui"
+  track-component-storybook:
+    type: string
+    default: "storybook"
+
 orbs:
-  vfcommon: voiceflow/common@0.0.91
+  vfcommon: voiceflow/common@0.0.116
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 
@@ -14,20 +49,17 @@ defaults:
       tags:
         only: /^v[0-9]*(\.[0-9]*)*$/
 
-  ignore_dev_env_autorebase_filters: &ignore_dev_env_autorebase_filters
+  ignore_autorebase_filters: &ignore_autorebase_filters
     branches:
       ignore:
         - /rebase-pull-request-.*/
         - /cherry-pick-rebase-pull-request-.*/
-        - /env-.*/
 
-  ignore_dev_env_autorebase_staging_filters:
-    &ignore_dev_env_autorebase_staging_filters
+  ignore_autorebase_staging_filters: &ignore_autorebase_staging_filters
     branches:
       ignore:
         - /rebase-pull-request-.*/
         - /cherry-pick-rebase-pull-request-.*/
-        - /env-.*/
         - staging
 
   slack-fail-post-step: &slack-fail-post-step
@@ -58,7 +90,7 @@ jobs:
           steps:
             - vfcommon/install_aws_cli
             - vfcommon/check_image_exists:
-                image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
+                image_repo: << pipeline.parameters.container-image-url-creator-app >>
       - vfcommon/install_node_modules:
           avoid_post_install_scripts: false
       - run:
@@ -163,13 +195,13 @@ jobs:
       - attach_workspace:
           at: /tmp/vf-build
       - vfcommon/build_push_image:
-          image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
+          image_repo: << pipeline.parameters.track-component-creator-app >>
           dockerfile: app.dockerfile
           checkout: false
       - vfcommon/deploy_image:
-          image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
-          namespace: "voiceflow-v1"
-          target: "statefulset/creator-app"
+          image_repo: << pipeline.parameters.track-component-creator-app >>
+          namespace: << pipeline.parameters.k8s-namespace >>
+          target: << pipeline.parameters.k8s-asset-creator-app >>
           tagged: << parameters.tagged >>
           sentry: << parameters.sentry >>
       - run:
@@ -177,41 +209,21 @@ jobs:
           command: |
             sleep 120
 
-  build-deploy-storybook-dev-environment:
-    executor: vfcommon/build-executor
-    steps:
-      - vfcommon/build_deploy_dev_env:
-          image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook"
-          component: "storybook"
-          ssh_key: "93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a"
-          dockerfile: dockerfile
-          clean_dev_env_branch: false
-
   build-deploy-storybook-image:
     executor: vfcommon/build-executor
     steps:
       - attach_workspace:
           at: /tmp/vf-build
       - vfcommon/build_push_image:
-          image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook"
+          image_repo: << pipeline.parameters.container-image-url-storybook >>
           dockerfile: dockerfile
           checkout: false
       - vfcommon/deploy_image:
-          image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook"
-          namespace: "voiceflow-v1"
-          target: "deployment/storybook"
+          image_repo: << pipeline.parameters.container-image-url-storybook >>
+          namespace: << pipeline.parameters.k8s-namespace >>
+          target: << pipeline.parameters.k8s-asset-storybook >>
           container_name: storybook
           tagged: false
-
-  build-deploy-admin-dev-environment:
-    executor: vfcommon/build-executor
-    steps:
-      - vfcommon/build_deploy_dev_env:
-          image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin"
-          component: "adminui"
-          ssh_key: "93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a"
-          dockerfile: admin.dockerfile
-          clean_dev_env_branch: false
 
   build-deploy-admin-image:
     executor: vfcommon/build-executor
@@ -219,59 +231,49 @@ jobs:
       - attach_workspace:
           at: /tmp/vf-build
       - vfcommon/build_push_image:
-          image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin"
+          image_repo: << pipeline.parameters.container-image-url-admin-ui >>
           dockerfile: admin.dockerfile
           checkout: false
       - vfcommon/deploy_image:
-          image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin"
-          namespace: "voiceflow-v1"
-          target: "deployment/admin-ui"
+          image_repo: << pipeline.parameters.container-image-url-admin-ui >>
+          namespace: << pipeline.parameters.k8s-namespace >>
+          target: << pipeline.parameters.k8s-asset-admin-ui >>
           tagged: false
 
-  deploy-app-dev-environment:
+  update-track-creator-app:
     executor: vfcommon/build-executor
     steps:
-      - vfcommon/build_deploy_dev_env:
-          image_repo: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
-          component: "creatorapp"
-          ssh_key: "93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a"
+      - vfcommon/update_track:
+          image_repo: << pipeline.parameters.container-image-url-creator-app >>
+          component: << pipeline.parameters.track-component-creator-app >>
           dockerfile: app.dockerfile
-          clean_dev_env_branch: false
-      - run:
-          name: "Notify Slack (if applicable)"
-          command: |
-            set +e
-            aws s3 cp s3://com.voiceflow.ci.states/github-actions/dev-env/creator-app-notify-$CIRCLE_SHA1.json state.json
-            CHANNEL=$(cat state.json | jq -r '.channel')
-            set -e
-            if [[ $CHANNEL != "" ]]; then
-              echo "Notifying slack..."
-              MESSAGE=$(cat state.json | jq -r '.message')
-              curl -O https://raw.githubusercontent.com/rockymadden/slack-cli/master/src/slack
-              chmod +x ./slack
-              ./slack chat send "$MESSAGE" "#${CHANNEL}"
-              aws s3 rm s3://com.voiceflow.ci.states/github-actions/dev-env/creator-app-notify-$CIRCLE_SHA1.json
-            fi
 
-  delete-branch:
+  update-track-admin-ui:
     executor: vfcommon/build-executor
     steps:
-      - checkout
-      - vfcommon/delete_branch:
-          branch_name: $CIRCLE_BRANCH
-          ssh_key: "93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a"
+      - vfcommon/update_track:
+          image_repo: << pipeline.parameters.container-image-url-admin-ui >>
+          component: << pipeline.parameters.track-component-admin-ui >>
+          dockerfile: admin.dockerfile
+
+  update-track-storybook:
+    executor: vfcommon/build-executor
+    steps:
+      - vfcommon/update_track:
+          image_repo: << pipeline.parameters.container-image-url-storybook >>
+          component: << pipeline.parameters.track-component-storybook >>
+          dockerfile: dockerfile
 
 workflows:
-  dev-environment:
+  update-tracks:
     jobs:
       - build-app:
           check_image: true
           context: dev-test
           filters:
-            branches:
-              only:
-                - /env-.*/
-      - deploy-app-dev-environment:
+            tags:
+              ignore: /.*/
+      - update-track-creator-app:
           context: dev-test
           post-steps:
             - jira/notify:
@@ -281,57 +283,42 @@ workflows:
           requires:
             - build-app
           filters:
-            branches:
-              only:
-                - /env-.*/
-
-      - build-storybook:
-          context: dev-test
-          filters:
-            branches:
-              only:
-                - /env-.*/
-      - build-deploy-storybook-dev-environment:
-          context: dev-test
-          requires:
-            - build-storybook
-          filters:
-            branches:
-              only:
-                - /env-.*/
+            tags:
+              ignore: /.*/
 
       - build-admin:
           context: dev-test
           filters:
-            branches:
-              only:
-                - /env-.*/
-      - build-deploy-admin-dev-environment:
+            tags:
+              ignore: /.*/
+      - update-track-admin-ui:
           context: dev-test
           requires:
             - build-admin
           filters:
-            branches:
-              only:
-                - /env-.*/
+            tags:
+              ignore: /.*/
 
-      - delete-branch:
+      - build-storybook:
+          context: dev-test
+          filters:
+            tags:
+              ignore: /.*/
+      - update-track-storybook:
           context: dev-test
           requires:
-            - build-deploy-admin-dev-environment
-            - build-deploy-storybook-dev-environment
-            - deploy-app-dev-environment
+            - build-storybook
           filters:
-            branches:
-              only:
-                - /env-.*/
+            tags:
+              ignore: /.*/
+
   admin:
     jobs:
       - build-admin:
           <<: *slack-fail-post-step
           context: dev-test
           filters:
-            <<: *ignore_dev_env_autorebase_filters
+            <<: *ignore_autorebase_filters
 
       - build-deploy-admin-image:
           context: dev-test
@@ -348,7 +335,7 @@ workflows:
           <<: *slack-fail-post-step
           context: dev-test
           filters:
-            <<: *ignore_dev_env_autorebase_filters
+            <<: *ignore_autorebase_filters
 
       - build-deploy-storybook-image:
           context: dev-test
@@ -366,13 +353,13 @@ workflows:
           <<: *slack-fail-post-step
           context: dev-test
           filters:
-            <<: *ignore_dev_env_autorebase_staging_filters
+            <<: *ignore_autorebase_staging_filters
 
       - test:
           <<: *slack-fail-post-step
           context: dev-test
           filters:
-            <<: *ignore_dev_env_autorebase_staging_filters
+            <<: *ignore_autorebase_staging_filters
 
       - vfcommon/test_e2e:
           context: dev-test
@@ -381,7 +368,7 @@ workflows:
           creator_app_commit: CIRCLE_SHA1
           <<: *slack-fail-post-step
           filters:
-            <<: *ignore_dev_env_autorebase_staging_filters
+            <<: *ignore_autorebase_staging_filters
 
       - build-app:
           <<: *slack-fail-post-step
@@ -390,7 +377,7 @@ workflows:
           post-steps:
             - jira/notify
           filters:
-            <<: *ignore_dev_env_autorebase_staging_filters
+            <<: *ignore_autorebase_staging_filters
 
       - vfcommon/release:
           <<: *slack-fail-post-step

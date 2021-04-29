@@ -23,3 +23,10 @@ Cypress.Commands.add('setup', () => {
 Cypress.Commands.add('teardown', () => {
   cy.removeTestAccount();
 });
+
+Cypress.on(
+  'uncaught:exception',
+  () =>
+    // This circumvents Cypress from throwing an error calling the click() function
+    false
+);

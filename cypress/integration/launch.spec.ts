@@ -16,7 +16,7 @@ context('Launch', () => {
       cy.intercept('POST', '/image/small_icon').as('uploadSmallIcon');
       cy.intercept('POST', '/image/large_icon').as('uploadLargeIcon');
 
-      cy.intercept('GET', 'https://localhost:3000/testable-link.svg').as('alexaUploadReady');
+      cy.intercept('GET', 'https://localhost:3002/testable-link.svg').as('alexaUploadReady');
     });
 
     it('happy path', () => {

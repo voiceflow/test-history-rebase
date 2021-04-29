@@ -195,11 +195,11 @@ jobs:
       - attach_workspace:
           at: /tmp/vf-build
       - vfcommon/build_push_image:
-          image_repo: << pipeline.parameters.track-component-creator-app >>
+          image_repo: << pipeline.parameters.container-image-url-creator-app >>
           dockerfile: app.dockerfile
           checkout: false
       - vfcommon/deploy_image:
-          image_repo: << pipeline.parameters.track-component-creator-app >>
+          image_repo: << pipeline.parameters.container-image-url-creator-app >>
           namespace: << pipeline.parameters.k8s-namespace >>
           target: << pipeline.parameters.k8s-asset-creator-app >>
           tagged: << parameters.tagged >>

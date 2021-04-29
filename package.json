@@ -322,6 +322,7 @@
     "cypress:ci": "NODE_ENV=test cypress run --env CI=true --config defaultCommandTimeout=20000",
     "cypress:run": "NODE_ENV=test cypress run",
     "dev-server": "node server",
+    "e2e:check-deps": "until [[ $(curl -I --silent -o /dev/null -w %{http_code} https://localhost:8003/health) =~ 2[0-9][0-9]  ]] ;do sleep 5;done",
     "gen-certs:e2e": "scripts/generate_e2e_certs.sh",
     "kill:e2e": "kill -9 $(lsof -t -i tcp:3002) || true",
     "lint": "yarn lint:js && yarn lint:css",

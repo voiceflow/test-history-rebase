@@ -22,7 +22,7 @@ export default (port: number) => ({
     host: host || 'localhost',
     open: false,
     historyApiFallback: true,
-    disableHostCheck: isE2E,
+    disableHostCheck: true,
     https: isE2E
       ? {
           key: fs.readFileSync(path.resolve(__dirname, '../../../certs/localhost.key')),

@@ -318,6 +318,7 @@
     "build:dev": "patch-package && wp",
     "build:e2e": "patch-package && wp --instrument",
     "commit": "cz",
+    "connect:cli": "vfcli mesh connect creator-app -c \"/bin/bash\"",
     "cypress": "NODE_ENV=test cypress open",
     "cypress:ci": "NODE_ENV=test cypress run --env CI=true --config defaultCommandTimeout=20000",
     "cypress:run": "NODE_ENV=test cypress run",

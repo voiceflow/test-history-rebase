@@ -23,6 +23,7 @@ export default (port: number) => ({
     open: false,
     historyApiFallback: true,
     disableHostCheck: true,
+    public: 'creator-local.development.voiceflow.com:3002',
     https: isE2E
       ? {
           key: fs.readFileSync(path.resolve(__dirname, '../../../certs/localhost.key')),

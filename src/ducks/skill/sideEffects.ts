@@ -103,12 +103,18 @@ export const exportModel = (nlpProvider: NLPProvider): Thunk => async (dispatch,
       data = await client.platform.alexa.modelExport.export(versionID, 'ask');
       download(`${name}-alexa-model.json`, data, DataTypes.JSON);
     } else if (nlpProvider === NLPProvider.DIALOGFLOW_ES) {
-      data = await client.platform.google.modelExport.export(versionID, 'dialogflow/es');
+      data = await client.platform.google.modelExport.exportBlob(versionID, 'dialogflow/es');
       downloadFromURL(`${name}-dialogflow-es-model.zip`, data);
       URL.revokeObjectURL(data);
-    } else {
+    } else if (nlpProvider === NLPProvider.RASA) {
+      data = await client.platform.general.modelExport.exportBlob(versionID, 'rasa');
+      downloadFromURL(`${name}-rasa-model.zip`, data);
+      URL.revokeObjectURL(data);
+    } else if (nlpProvider === NLPProvider.LUIS) {
       data = await client.platform.general.modelExport.export(versionID, 'luis');
       download(`${name}-general-model.json`, data, DataTypes.JSON);
+    } else {
+      throw new Error(`no provider matched: ${nlpProvider}`);
     }
 
     dispatch(Tracking.trackActiveProjectExportInteractionModel({ nlpProvider }));

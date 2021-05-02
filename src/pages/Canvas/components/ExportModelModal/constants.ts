@@ -13,6 +13,10 @@ export const EXPORT_TYPES = [
     label: 'Microsoft LUIS',
     value: NLPProvider.LUIS,
   },
+  {
+    label: 'Rasa',
+    value: NLPProvider.RASA,
+  },
 ];
 
 export const EXPORT_HELP_LINK = 'https://docs.voiceflow.com/#/platform/interaction-model/model-manager?id=model-export';

@@ -1,16 +1,23 @@
 import { GoogleVersionData, GoogleVersionPublishing, GoogleVersionSettings } from '@voiceflow/google-types';
 
+import { googleService } from '@/client/fetch';
 import { GOOGLE_SERVICE_ENDPOINT } from '@/config';
 import { GoogleStageType } from '@/constants/platforms';
 import { Account, GeneralJob, GoogleExportJob, GooglePublishJob } from '@/models';
 
-import { createExportService, createPrototypeService, createPublishService, createSessionService, createVersionService } from '../utils';
-import modelExport from './modelExport';
+import {
+  createExportService,
+  createModelExportService,
+  createPrototypeService,
+  createPublishService,
+  createSessionService,
+  createVersionService,
+} from '../utils';
 import projectService from './project';
 
 const googleServiceClient = {
   export: createExportService<GoogleExportJob.AnyJob, GoogleStageType>(GOOGLE_SERVICE_ENDPOINT),
-  modelExport,
+  modelExport: createModelExportService(googleService),
   project: projectService,
   publish: createPublishService<GooglePublishJob.AnyJob, GoogleStageType>(GOOGLE_SERVICE_ENDPOINT),
   session: createSessionService<Account.Google, { code: string }>(GOOGLE_SERVICE_ENDPOINT),

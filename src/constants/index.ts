@@ -61,6 +61,7 @@ export enum NLPProvider {
   LUIS = 'luis',
   ALEXA = 'alexa',
   DIALOGFLOW_ES = 'diagflow-es',
+  RASA = 'rasa',
 }
 
 export const DefaultVoice = {

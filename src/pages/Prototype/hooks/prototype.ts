@@ -10,7 +10,6 @@ import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { useEventualEngine, useTrackingEvents } from '@/hooks';
 import { Dispatch } from '@/store/types';
-import * as Utils from '@/utils/string';
 
 import PrototypeTool, { PrototypeToolProps } from '../PrototypeTool';
 import { Interaction, Message, PMStatus } from '../types';
@@ -108,10 +107,6 @@ const usePrototype = ({
   const onInteraction = React.useCallback(
     (request: Request | string) => {
       if (_isString(request)) {
-        if (Utils.checkForSpecialCharacters(request)) {
-          request = Utils.removeSpecialCharacters(request);
-        }
-
         const match = request.toLowerCase().trim();
         const chip = interactions.find((interaction) => match === interaction.name.toLowerCase().trim());
         if (chip?.request) {

@@ -103,7 +103,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
               />
             );
           case MessageType.VISUAL:
-            return <Visual isFirstInSeries={isFirstInSeries} key={message.id} visual={message} />;
+            return <Visual isFirstInSeries={isFirstInSeries} key={message.id} visual={message} avatarURL={avatarURL} />;
           default:
             return null;
         }

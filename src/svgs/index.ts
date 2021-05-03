@@ -68,7 +68,6 @@ export { default as echoSpot } from './echo-spot.svg';
 export { default as editName } from './edit-name.svg';
 export { default as elipsis } from './elipsis.svg';
 export { default as else } from './else.svg';
-export { default as emptyState } from './empty-state.svg';
 export { default as equals } from './equals.svg';
 export { default as error } from './error.svg';
 export { default as event } from './event.svg';

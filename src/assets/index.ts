@@ -44,6 +44,7 @@ export { default as voiceAndVisualsGraphicInactive } from '@/assets/svgs/voice-a
 export { default as imageDropzoneGraphic } from '@/assets/svgs/image-dropzone.svg';
 
 // placeholders
+export { default as emptyState } from '@/assets/svgs/empty-state.svg';
 export { default as itemDragPlaceholder } from '@/assets/svgs/item-drag-placeholder.svg';
 export { default as listDragPlaceholder } from '@/assets/svgs/list-drag-placeholder.svg';
 

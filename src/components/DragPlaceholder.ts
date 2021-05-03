@@ -1,7 +1,8 @@
+import { emptyState } from '@/assets';
 import { css, styled } from '@/hocs';
 
 export const dragPlaceholderStyles = css`
-  background-image: url('/empty-state.svg');
+  background-image: url(${emptyState});
   background-repeat: no-repeat;
   background-size: cover;
 `;

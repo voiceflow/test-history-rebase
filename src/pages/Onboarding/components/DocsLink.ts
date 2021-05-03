@@ -6,8 +6,6 @@ const DocsLink = styled(Link)`
   ${flexStyles};
 
   position: relative;
-  margin-left: -136px;
-  margin-right: -60px;
   color: #62778c;
   align-items: start;
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ActionButton, Container, StepStatus } from './components';
+import { ActionButton, Container, Content, StepStatus } from './components';
 
 type CreationHeaderProps = {
   hasBackButton: boolean;
@@ -29,7 +29,9 @@ const CreationHeader: React.FC<CreationHeaderProps> = ({
   <Container>
     <ActionButton shouldRender={hasBackButton} icon="back" onClick={stepBack} label="back" />
     <StepStatus title={title} numberOfSteps={numberOfSteps} stepStack={stepStack} />
-    {children}
+
+    {!!children && <Content withOffset={!!canCancel || hasSkipButton}>{children}</Content>}
+
     {canCancel ? (
       <ActionButton shouldRender icon="close" label="cancel" onClick={onCancel} />
     ) : (

@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 
 import * as Prototype from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
-import { useDebug } from '@/pages/Prototype/hooks';
+import { useDebug, usePublic } from '@/pages/Prototype/hooks';
 
 import { Message, MessageType } from '../../types';
 
@@ -16,18 +16,20 @@ const VisualFilter = (): Filter => {
 
 const DebugFilter = (): Filter => {
   const settings = useSelector(Recent.recentPrototypeSelector);
+  const isPublic = usePublic();
   const debugEnabled = useDebug();
 
   return (message: Message) => {
     if (message.type !== MessageType.DEBUG) return true;
 
     if (message.message.startsWith('matched intent')) {
-      if (!settings.intent) {
+      if (!settings.intent || isPublic) {
         return false;
       }
     } else if (!debugEnabled) {
       return false;
     }
+
     return true;
   };
 };

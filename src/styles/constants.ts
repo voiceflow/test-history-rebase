@@ -33,6 +33,9 @@ export enum Identifier {
   UPGRADE_PLAN_SECTION = 'vf-upgrade-plan-section',
   PAYMENT_MODAL_UNIT_COST_CONTAINER = 'vf-payment-modal-unit-cost-conatiner',
   CONTEXT_MENU = 'vf-context-menu',
+  DESIGN_TAB = 'vf-design-tab',
+  LAUNCH_TAB = 'vf-launch-tab',
+  SETTINGS_PAGE = 'vf-settings-page',
 }
 
 export enum ClassName {
@@ -60,6 +63,11 @@ export enum ClassName {
   SVG_ICON = 'vf-svg-icon',
   MODAL = 'vf-modal',
   THREAD_EDITOR = 'vf-thread-editor',
+  THREAD_EDITOR_REPLY = 'vf-thread-editor__reply',
+  THREAD_EDITOR_NEW = 'vf-thread-editor--new',
+  THREAD_EDITOR_COMMENT = 'vf-thread-editor__comment-editor',
+  THREAD = 'vf-canvas__thread',
+  THREAD_INDICATOR = 'vf-canvas__thread__indicator',
   COLLABORATOR_LINE_ITEM = 'vf-collaborator-line-item',
   MEMBER_ROLE_BUTTON = 'vf-member-role-button',
   LINK_SETTINGS = 'vf-link-settings',
@@ -68,6 +76,17 @@ export enum ClassName {
   HEADER_ACTIONS_CENTER = 'vf-header_primary-nav__center',
   HEADER_ACTIONS_RIGHT = 'vf-header_primary-nav__right',
   HEADER_USER_MENU = 'vf-header_user-menu',
+  SVG_ICON_CLOSE = 'vf-svg-icon--close',
+  HOME_BLOCK = 'vf-canvas__block--home',
+  MARKUP_MODE = 'vf-canvas__control--markup',
+  COMMENTING_MODE = 'vf-canvas__control--commenting',
+  MENTION_INPUT = 'mentionInput',
+}
+
+export enum ExternalClassName {
+  MODAL_HEADER = 'modal-header',
+  MODAL_DIALOG = 'modal-dialog',
+  MODAL_CONTENT = 'modal-content',
 }
 
 export enum DashboardClassName {

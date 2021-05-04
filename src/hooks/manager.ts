@@ -45,12 +45,14 @@ export const useManager = <T extends {}, F extends any[]>(
   items: T[] = [],
   onChange: (items: T[], save?: boolean) => void,
   {
+    clone = identity,
     getKey,
     factory = identity as any,
     autosave = true,
     debounced = true,
     handleRemove,
   }: {
+    clone?: (initVal: T, targetVal: T) => T;
     getKey?: (value: T) => string;
     factory?: (...args: F) => T;
     autosave?: boolean;
@@ -114,37 +116,74 @@ export const useManager = <T extends {}, F extends any[]>(
     [debouncedOnChange, forceUpdate]
   );
 
-  const onAdd = React.useCallback(
+  const createKeyValue = React.useCallback(
     (...args: F) => {
       const value = factory(...args);
       const key = generateKey(value);
+
+      return { key, value };
+    },
+    [factory, generateKey]
+  );
+
+  const duplicateKeyValue = React.useCallback(
+    (item: any, ...args: F) => {
+      const value = clone(factory(...args), item.item);
+      const key = generateKey(value);
+
+      return { key, value };
+    },
+    [factory, generateKey, clone]
+  );
+
+  const commitInsert = React.useCallback(
+    (key, value, index, updated) => {
+      keyLookup.current!.set(generateLookupKey(value, index), key);
+      latestCreatedKey.current = key;
+      onSave(updated, { save: autosave });
+    },
+    [onSave, generateLookupKey]
+  );
+
+  const onAdd = React.useCallback(
+    (...args: F) => {
+      const { key, value } = createKeyValue(...args);
+
       const updated = addNormalizedByKey(normalized.current!, key, value);
       const index = updated.allKeys.length - 1;
 
-      keyLookup.current!.set(generateLookupKey(value, index), key);
-
-      latestCreatedKey.current = key;
-
-      onSave(updated, { save: autosave });
+      commitInsert(key, value, index, updated);
     },
-    [autosave, factory, generateKey, generateLookupKey, onSave]
+    [createKeyValue, commitInsert]
   );
 
   const onAddToStart = React.useCallback(
     (...args: F) => {
-      const index = 0;
-      const value = factory(...args);
+      const { key, value } = createKeyValue(...args);
 
-      const key = generateKey(value);
       const updated = addToStartNormalizedByKey(normalized.current!, key, value);
+      const index = 0;
 
-      keyLookup.current!.set(generateLookupKey(value, index), key);
-
-      latestCreatedKey.current = key;
-
-      onSave(updated, { save: autosave });
+      commitInsert(key, value, index, updated);
     },
-    [autosave, factory, generateKey, generateLookupKey, onSave]
+    [createKeyValue, commitInsert]
+  );
+
+  const onDuplicate = React.useCallback(
+    (to: number, item: T, ...args: F) => {
+      const { key, value: dupVal } = duplicateKeyValue(item, ...args);
+
+      const withDupVal = addToStartNormalizedByKey(normalized.current!, key, dupVal);
+      const dupIndex = to + 1;
+
+      const updated = {
+        ...withDupVal,
+        allKeys: reorder(withDupVal.allKeys, 0, dupIndex),
+      };
+
+      commitInsert(key, dupVal, dupIndex, updated);
+    },
+    [duplicateKeyValue, commitInsert]
   );
 
   const onReorder = React.useCallback(
@@ -224,6 +263,7 @@ export const useManager = <T extends {}, F extends any[]>(
     onReorder,
     toggleOpen,
     mapManaged,
+    onDuplicate,
     onAddToStart,
     latestCreatedKey: latestCreatedKey.current,
   };

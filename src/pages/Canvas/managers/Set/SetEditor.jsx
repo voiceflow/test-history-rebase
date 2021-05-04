@@ -11,13 +11,24 @@ import SetEditorV2 from './SetEditorV2';
 
 const MAX_SETS = 20;
 
+const setClone = (initVal, targetVal) => ({
+  ...initVal,
+  variable: targetVal.variable,
+  expression: {
+    ...targetVal.expression,
+    id: initVal.expression.id,
+  },
+});
+
 const setFactory = () => NODE_CONFIG.factory().data.sets[0];
 
 function SetEditor({ data, onChange }) {
   const [isDragging, toggleDragging] = useToggle(false);
   const updateSets = React.useCallback((sets) => onChange({ sets }), [onChange]);
   const onRemoveSets = React.useCallback((_, index) => onChange(data.sets.splice(index, 1)), [data.sets, onChange]);
-  const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(data.sets, updateSets, {
+
+  const { items, onAdd, onRemove, onDuplicate, mapManaged, onReorder, latestCreatedKey } = useManager(data.sets, updateSets, {
+    clone: setClone,
     factory: setFactory,
     handleRemove: onRemoveSets,
   });
@@ -29,6 +40,8 @@ function SetEditor({ data, onChange }) {
     },
     [onAdd]
   );
+
+  const duplicateSet = React.useCallback((_, item) => onDuplicate(item.index, item), [onDuplicate]);
 
   return (
     <Content
@@ -53,6 +66,7 @@ function SetEditor({ data, onChange }) {
         type="set-editor"
         items={items}
         onDelete={onRemove}
+        onDuplicate={duplicateSet}
         onReorder={onReorder}
         onEndDrag={toggleDragging}
         itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
@@ -63,6 +77,7 @@ function SetEditor({ data, onChange }) {
         partialDragItem
         previewComponent={DraggableItem}
         withContextMenuDelete
+        withContextMenuDuplicate
       />
     </Content>
   );

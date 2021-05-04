@@ -1,4 +1,4 @@
-import { Identifier } from '../../src/styles/constants';
+import { ClassName, ExternalClassName, Identifier } from '../../src/styles/constants';
 
 export default {
   goToCanvas: () => cy.getSession().then(({ versionID, diagramID }) => cy.visit(`/project/${versionID}/canvas/${diagramID}`)),
@@ -12,53 +12,53 @@ export default {
       return cy.get('[data-original-title="Settings"]').find('button');
     },
     get projectTitle() {
-      return cy.get('#vf-project-title');
+      return cy.get(`#${Identifier.PROJECT_TITLE}`);
     },
     get modal() {
-      return cy.get('.modal-dialog');
+      return cy.get(`.${ExternalClassName.MODAL_DIALOG}`);
     },
     get modalTitle() {
-      return cy.get('.modal-content h5');
+      return cy.get(`.${ExternalClassName.MODAL_CONTENT} h5`);
     },
     get node() {
-      return cy.get('.vf-canvas__node');
+      return cy.get(`.${ClassName.CANVAS_NODE}`);
     },
     get link() {
-      return cy.get('.vf-canvas__link');
+      return cy.get(`.${ClassName.CANVAS_LINK}`);
     },
     get linkSettings() {
-      return cy.get('.vf-link-settings');
+      return cy.get(`.${ClassName.LINK_SETTINGS}`);
     },
     get homeBlock() {
-      return cy.get('.vf-canvas__block--home');
+      return cy.get(`.${ClassName.HOME_BLOCK}`);
     },
     get settingsPage() {
-      return cy.get('#vf-settings-page');
+      return cy.get(`#${Identifier.SETTINGS_PAGE}`);
     },
     get canvas() {
-      return cy.get('#vf-canvas');
+      return cy.get(`#${Identifier.CANVAS}`);
     },
     get escapeModePrompt() {
-      return cy.get('#vf-escape-mode-prompt');
+      return cy.get(`#${Identifier.ESCAPE_MODE_PROMPT}`);
     },
     get commentingModeControl() {
-      return cy.get('.vf-canvas__control--commenting button');
+      return cy.get(`.${ClassName.COMMENTING_MODE} button`);
     },
     get markupModeControl() {
-      return cy.get('.vf-canvas__control--markup button');
+      return cy.get(`.${ClassName.MARKUP_MODE} button`);
     },
     get designMenu() {
-      return cy.get('#vf-design-menu');
+      return cy.get(`#${Identifier.DESIGN_MENU}`);
     },
     get stepMenu() {
-      return cy.get('#vf-step-menu');
+      return cy.get(`#${Identifier.STEP_MENU}`);
     },
     tabs: {
       get designTab() {
-        return cy.get('#design-tab');
+        return cy.get(`#${Identifier.DESIGN_TAB}`);
       },
       get launchTab() {
-        return cy.get('#launch-tab');
+        return cy.get(`#${Identifier.LAUNCH_TAB}`);
       },
     },
     get uploadButton() {
@@ -72,31 +72,31 @@ export default {
 
       el: {
         get historyDrawer() {
-          return cy.get('#vf-thread-history-drawer');
+          return cy.get(`#${Identifier.THREAD_HISTORY_DRAWER}`);
         },
         get thread() {
-          return cy.get('.vf-canvas__thread');
+          return cy.get(`.${ClassName.THREAD}`);
         },
         get threadIndicator() {
-          return cy.get('.vf-canvas__thread__indicator');
+          return cy.get(`.${ClassName.THREAD_INDICATOR}`);
         },
         get newThreadEditor() {
-          return cy.get('.vf-thread-editor--new');
+          return cy.get(`.${ClassName.THREAD_EDITOR_NEW}`);
         },
         get newTreadEditorInput() {
-          return this.newThreadEditor.find('.mentionInput textarea');
+          return this.newThreadEditor.find(`.${ClassName.MENTION_INPUT} textarea`);
         },
         get threadEditor() {
-          return cy.get('.vf-thread-editor:not(.vf-thread-editor--new)');
+          return cy.get(`.${ClassName.THREAD_EDITOR}:not(.vf-thread-editor--new)`);
         },
         get threadReply() {
-          return cy.get('.vf-thread-editor__reply');
+          return cy.get(`.${ClassName.THREAD_EDITOR_REPLY}`);
         },
         get threadEditorInput() {
-          return this.threadEditor.find('.mentionInput textarea');
+          return this.threadEditor.find(`.${ClassName.MENTION_INPUT} textarea`);
         },
         get threadComments() {
-          return this.threadEditor.find('.vf-thread-editor__comment-editor');
+          return this.threadEditor.find(`.${ClassName.THREAD_EDITOR_COMMENT}`);
         },
       },
 

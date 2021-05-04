@@ -17,17 +17,17 @@ import CanvasViewers from './CanvasViewers';
 
 const TABS = [
   {
-    id: 'design-tab',
+    id: 'vf-design-tab',
     value: 'canvas',
     label: 'design',
   },
   {
-    id: 'prototype-tab',
+    id: 'vf-prototype-tab',
     value: 'prototype',
     label: 'prototype',
   },
   {
-    id: 'launch-tab',
+    id: 'vf-launch-tab',
     value: 'publish',
     label: 'launch',
   },

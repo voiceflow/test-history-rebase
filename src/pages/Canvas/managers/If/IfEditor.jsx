@@ -11,6 +11,7 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { DraggableItem, HelpTooltip } from './components';
 import { NODE_CONFIG } from './constants';
 
+const expressionClone = (initVal, targetVal) => ({ ...initVal, type: targetVal.type, value: targetVal.value });
 const expressionFactory = () => NODE_CONFIG.factory().data.expressions[0];
 
 function IfEditor({ data, onChange, focusedNode }) {
@@ -22,7 +23,8 @@ function IfEditor({ data, onChange, focusedNode }) {
     focusedNode.ports.out,
   ]);
 
-  const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(data.expressions, updateExpressions, {
+  const { items, onAdd, onRemove, onDuplicate, mapManaged, onReorder, latestCreatedKey } = useManager(data.expressions, updateExpressions, {
+    clone: expressionClone,
     factory: expressionFactory,
     autosave: false,
     handleRemove: onRemoveExpression,
@@ -44,6 +46,14 @@ function IfEditor({ data, onChange, focusedNode }) {
       engine.port.reorder(focusedNode.id, from + 1, to + 1);
     },
     [onReorder, engine.port, focusedNode.id]
+  );
+
+  const duplicateExpression = React.useCallback(
+    (_, item) => {
+      onDuplicate(item.index, item);
+      engine.port.add(focusedNode.id, { label: items.length + 1 });
+    },
+    [onDuplicate, focusedNode.id]
   );
 
   return (
@@ -82,6 +92,7 @@ function IfEditor({ data, onChange, focusedNode }) {
         type="if-editor"
         items={items}
         onDelete={onRemove}
+        onDuplicate={duplicateExpression}
         onReorder={reorderExpression}
         onEndDrag={toggleDragging}
         itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
@@ -92,6 +103,7 @@ function IfEditor({ data, onChange, focusedNode }) {
         partialDragItem
         previewComponent={DraggableItem}
         withContextMenuDelete
+        withContextMenuDuplicate
       />
     </Content>
   );

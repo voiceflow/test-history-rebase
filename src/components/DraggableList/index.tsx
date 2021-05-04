@@ -24,6 +24,9 @@ export type { DragPreviewComponentProps, ItemComponentHandlers, ItemComponentPro
 
 export type BaseItemData<I> = Omit<InternalItem<I>, 'type'>;
 
+export type MapManagedEditActionHandler<I> = (key: string, item: BaseItemData<I>) => void;
+export type IndexableEditActionHandler<I> = (index: number, item: BaseItemData<I>) => void;
+
 export type DraggableListProps<I, D, C> = {
   type: string;
   filter?: (item: I) => boolean;
@@ -42,12 +45,14 @@ export type DraggableListProps<I, D, C> = {
   renderDeleteDelayed?: boolean;
   unmountableDuringDrag?: boolean;
   withContextMenuDelete?: boolean;
+  withContextMenuDuplicate?: boolean;
 } & (
   | {
       items: I[];
-      onDelete?: (key: number, item: BaseItemData<I>) => void;
+      onDelete?: IndexableEditActionHandler<I>;
       children?: never;
       mapManaged?: never;
+      onDuplicate?: IndexableEditActionHandler<I>;
       itemComponent: React.NamedExoticComponent<
         React.PropsWithoutRef<ItemComponentProps<I> & ItemComponentHandlers<I> & C> & React.RefAttributes<HTMLElement>
       >;
@@ -56,8 +61,9 @@ export type DraggableListProps<I, D, C> = {
   | {
       items?: never;
       children: (options: { renderItem: (data: BaseItemData<I>) => React.ReactNode }) => React.ReactNode;
-      onDelete?: (index: number, item: BaseItemData<I>) => void;
+      onDelete?: IndexableEditActionHandler<I>;
       mapManaged?: never;
+      onDuplicate?: IndexableEditActionHandler<I>;
       itemComponent: React.NamedExoticComponent<
         React.PropsWithoutRef<ItemComponentProps<I> & ItemComponentHandlers<I> & C> & React.RefAttributes<HTMLElement>
       >;
@@ -66,8 +72,9 @@ export type DraggableListProps<I, D, C> = {
   | {
       items?: never;
       children?: never;
-      onDelete?: (key: string, item: BaseItemData<I>) => void;
+      onDelete?: MapManagedEditActionHandler<I>;
       mapManaged: MapManaged<I>;
+      onDuplicate?: MapManagedEditActionHandler<I>;
       itemComponent: React.NamedExoticComponent<
         React.PropsWithoutRef<ItemComponentProps<I> & MappedItemComponentHandlers<I> & C> & React.RefAttributes<HTMLElement>
       >;
@@ -94,6 +101,7 @@ const DraggableList = <I, D, C>({
   renderDeleteDelayed,
   unmountableDuringDrag,
   withContextMenuDelete,
+  withContextMenuDuplicate,
   ...props
 }: DraggableListProps<I, D, C>): JSX.Element => {
   const handlers = React.useRef<DnDHandlers<I>>({});
@@ -126,6 +134,16 @@ const DraggableList = <I, D, C>({
     },
     [props.onDelete, props.mapManaged]
   );
+  const onItemDuplicate = React.useCallback(
+    (item: BaseItemData<I>) => {
+      if (props.mapManaged) {
+        props.onDuplicate?.(item.itemKey, item);
+      } else {
+        props.onDuplicate?.(item.index, item);
+      }
+    },
+    [props.onDuplicate]
+  );
   const onDragEnd = React.useCallback(
     (result: void, monitor: DragSourceMonitor) => {
       updateDragging(false);
@@ -147,6 +165,7 @@ const DraggableList = <I, D, C>({
     <DnDItem
       {...itemProps}
       onRemove={onDeleteDrop}
+      onDuplicate={onItemDuplicate}
       {...data}
       type={type}
       handlers={handlers}
@@ -154,6 +173,7 @@ const DraggableList = <I, D, C>({
       itemComponent={itemComponent as any}
       unmountableDuringDrag={unmountableDuringDrag}
       withContextMenuDelete={withContextMenuDelete}
+      withContextMenuDuplicate={withContextMenuDuplicate}
     />
   );
 

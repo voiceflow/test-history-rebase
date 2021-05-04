@@ -11,11 +11,13 @@ type InternalWithoutType<I> = Omit<InternalItem<I>, 'type'>;
 export type ItemComponentHandlers<I> = {
   onRemove: (props: InternalWithoutType<I>) => void;
   onUpdate?: never;
+  onDuplicate?: (props: InternalWithoutType<I>) => void;
 };
 
 export type MappedItemComponentHandlers<I> = {
   onRemove: () => void;
   onUpdate: (value: Partial<I>) => void;
+  onDuplicate?: (props: InternalWithoutType<I>) => void;
 };
 
 export type ItemComponentProps<I> = InternalWithoutType<I> & {
@@ -36,6 +38,7 @@ export type DnDItemProps<I> = InternalItem<I> & {
   contextMenuOptions?: MenuOption[];
   withContextMenuDelete?: boolean;
   unmountableDuringDrag?: boolean;
+  withContextMenuDuplicate?: boolean;
 } & (ItemComponentHandlers<I> | MappedItemComponentHandlers<I>);
 
 const DnDItem = <P extends DnDItemProps<any>>({
@@ -46,6 +49,7 @@ const DnDItem = <P extends DnDItemProps<any>>({
   contextMenuOptions,
   withContextMenuDelete,
   unmountableDuringDrag,
+  withContextMenuDuplicate,
   ...props
 }: P) => {
   const [isDragging, connectedRootRef, connectedDragRef] = useDragAndDrop(type, handlers, props, { partialDrag, unmountableDuringDrag });
@@ -57,12 +61,16 @@ const DnDItem = <P extends DnDItemProps<any>>({
       options.push(...contextMenuOptions);
     }
 
+    if (withContextMenuDuplicate) {
+      options.push({ label: 'Duplicate', onClick: () => props.onDuplicate?.(props) });
+    }
+
     if (withContextMenuDelete) {
       options.push({ label: 'Delete', onClick: () => props.onRemove(props) });
     }
 
     return options;
-  }, [props.onRemove, withContextMenuDelete, contextMenuOptions]);
+  }, [props.onRemove, props.onDuplicate, withContextMenuDelete, contextMenuOptions, props.item]);
 
   const itemProps = {
     ...props,

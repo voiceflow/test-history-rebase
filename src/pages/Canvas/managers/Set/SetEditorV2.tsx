@@ -17,7 +17,13 @@ const MAX_SETS = 20;
 
 const setFactory = (conditionsBuilderEnabled?: boolean) => NODE_CONFIG.factory(undefined, { conditionsBuilderEnabled }).data.sets[0];
 
-const SetEditor: NodeEditor<NodeData.Set> = ({ data, onChange }) => {
+const setClone = (initVal: any, targetVal: NodeData.SetExpression) => ({
+  ...initVal,
+  variable: targetVal.variable,
+  expression: targetVal.expression,
+});
+
+const SetEditorV2: NodeEditor<NodeData.Set> = ({ data, onChange }) => {
   const conditionsBuilder = useFeature(FeatureFlag.CONDITIONS_BUILDER);
   const [isDragging, toggleDragging] = useToggle(false);
 
@@ -28,8 +34,9 @@ const SetEditor: NodeEditor<NodeData.Set> = ({ data, onChange }) => {
     [onChange]
   );
 
-  const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(data.sets, updateSets, {
+  const { items, onAdd, onRemove, mapManaged, onDuplicate, onReorder, latestCreatedKey } = useManager(data.sets, updateSets, {
     factory: () => setFactory(conditionsBuilder.isEnabled),
+    clone: setClone,
   });
 
   const [stepName, setStepName] = React.useState(data.title);
@@ -40,6 +47,13 @@ const SetEditor: NodeEditor<NodeData.Set> = ({ data, onChange }) => {
       scrollToBottom();
     },
     [onAdd]
+  );
+
+  const duplicateSet = React.useCallback(
+    (_, item) => {
+      onDuplicate(item.index, item);
+    },
+    [onDuplicate]
   );
 
   return (
@@ -81,6 +95,7 @@ const SetEditor: NodeEditor<NodeData.Set> = ({ data, onChange }) => {
             type="set-editor"
             onDelete={onRemove}
             onReorder={onReorder}
+            onDuplicate={duplicateSet}
             onEndDrag={toggleDragging}
             itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
             mapManaged={mapManaged}
@@ -90,6 +105,7 @@ const SetEditor: NodeEditor<NodeData.Set> = ({ data, onChange }) => {
             partialDragItem
             previewComponent={DraggableItemV2}
             withContextMenuDelete
+            withContextMenuDuplicate
           />
         </Flex>
       </>
@@ -97,4 +113,4 @@ const SetEditor: NodeEditor<NodeData.Set> = ({ data, onChange }) => {
   );
 };
 
-export default SetEditor;
+export default SetEditorV2;

@@ -32,6 +32,7 @@ export default merge(commonConfig, {
               '**/src/admin/**/*',
               '**/src/models/**/*',
               '**/src/utils/testing/**/*',
+              '**/src/utils/mathjsConversion.ts',
               '**/src/store/types/**/*',
               '**/src/**/types.ts',
               '**/src/components/ConditionsBuilder/**/*',

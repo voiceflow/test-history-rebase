@@ -1,20 +1,18 @@
 import { ExpressionV2 } from '@voiceflow/general-types';
 import React from 'react';
 
+import AceEditor from '@/components/AceEditor';
 import Box, { Flex } from '@/components/Box';
 import Dropdown from '@/components/Dropdown';
 import Label from '@/components/Label';
 import { MenuContainer } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
 import Text from '@/components/Text';
-import VariablesInput from '@/components/VariablesInput';
 import { useEnableDisable } from '@/hooks';
 
 import { SupportedOperations } from '../constants';
 import { isValidExpression } from '../utils';
 import ListItem from './ListItem';
-
-const AnyVariablesInput: any = VariablesInput;
 
 export type ConditionExpressionProps = {
   expression: ExpressionV2;
@@ -78,13 +76,7 @@ const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, o
 
       <Flex>
         <Flex flex={1}>
-          <AnyVariablesInput
-            fullWidth
-            error={error}
-            value={expression.value}
-            onBlur={({ text }: { text: string }) => onUpdate(text)}
-            placeholder="Enter expression"
-          />
+          <AceEditor value={expression.value as string} onChange={onUpdate} />
         </Flex>
         <Flex ml={16} onClick={onDelete}>
           <SvgIcon icon="remove" color="#6e849a" clickable />

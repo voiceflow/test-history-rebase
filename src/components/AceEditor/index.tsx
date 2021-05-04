@@ -13,6 +13,10 @@ import './modes/utterance';
 /* eslint-enable simple-import-sort/imports */
 import { css, styled } from '@/hocs';
 
+export enum InputMode {
+  INPUT = 'input',
+}
+
 export const ACE_EDITOR_OPTIONS = {
   enableBasicAutocompletion: true,
   enableLiveAutocompletion: true,
@@ -27,6 +31,7 @@ export type AceEditorProps = AceEditorBaseProps & {
   fullHeight?: boolean;
   placeholder?: string;
   hasBorder?: boolean;
+  inputMode?: InputMode;
 };
 
 export default styled(AceEditor).attrs<AceEditorProps>({
@@ -84,6 +89,21 @@ export default styled(AceEditor).attrs<AceEditorProps>({
   .ace_slot {
     font-weight: 600;
   }
+
+  ${({ inputMode }) =>
+    inputMode === InputMode.INPUT &&
+    css`
+      .ace_layer .ace_active-line {
+        background-color: #fff !important;
+      }
+      .ace_scroller .ace_layer.ace_text-layer,
+      .ace_scroller .ace_comment.ace_placeholder {
+        padding-left: 4px !important;
+      }
+      .ace_hidden-cursors .ace_cursor {
+        opacity: 0 !important;
+      }
+    `}
 
   ${({ variant }) => {
     // eslint-disable-next-line sonarjs/no-small-switch

@@ -7,6 +7,7 @@ import { CreatorDiagram, Link, Node, NodeData, Port } from '@/models';
 import { denormalize, Normalized } from '@/utils/normalized';
 import { getCurrentTimestamp } from '@/utils/time';
 
+import { cleanupDBNodes } from './cleanup';
 import nodeAdapter from './node';
 import { isBlock } from './utils';
 
@@ -38,7 +39,9 @@ const creatorAdapter = createSimpleAdapter<
     const data: Record<string, NodeData<unknown>> = {};
     const markupNodeIDs: string[] = [];
 
-    const parentNodes = Object.values(diagram.nodes).reduce<Record<string, Block>>((acc, node) => {
+    const nodeList = cleanupDBNodes(diagram.nodes);
+
+    const parentNodes = nodeList.reduce<Record<string, Block>>((acc, node) => {
       if (isBlock(node)) {
         node.data.steps.forEach((stepID) => {
           acc[stepID] = node;
@@ -72,7 +75,7 @@ const creatorAdapter = createSimpleAdapter<
       }
     };
 
-    Object.values(diagram.nodes).forEach(registerNode);
+    nodeList.forEach(registerNode);
 
     // extra safeguard against targeting non-existent nodes or ports
     const validLinks = links.filter(

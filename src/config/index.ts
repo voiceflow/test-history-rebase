@@ -33,6 +33,7 @@ declare global {
     VF_OVERRIDE_GENERAL_RUNTIME_ENDPOINT?: string;
     VF_OVERRIDE_SENTRY_DSN?: string;
     VF_OVERRIDE_GROWSURF_CAMPAIGN_ID?: string;
+    VF_OVERRIDE_IS_PRIVATE_CLOUD?: string;
 
     VF_OVERRIDE_OKTA_DOMAIN?: string;
     VF_OVERRIDE_OKTA_CLIENT_ID?: string;
@@ -66,7 +67,7 @@ export const IS_PRODUCTION_ENV = APP_ENV === 'production';
 
 const PUBLIC_CLOUD = 'public';
 export const CLOUD_ENV = window.VF_OVERRIDE_CLOUD_ENV || process.env.CLOUD_ENV || PUBLIC_CLOUD;
-export const IS_PRIVATE_CLOUD = CLOUD_ENV !== PUBLIC_CLOUD;
+export const IS_PRIVATE_CLOUD = window.VF_OVERRIDE_IS_PRIVATE_CLOUD ? window.VF_OVERRIDE_IS_PRIVATE_CLOUD === 'true' : CLOUD_ENV !== PUBLIC_CLOUD;
 export const IS_MOTOROLA_PRIVATE_CLOUD = IS_PRIVATE_CLOUD && CLOUD_ENV === 'motorola';
 
 export const CREATOR_URL = 'creator.voiceflow.com';

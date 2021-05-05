@@ -271,7 +271,7 @@
     "prettier-stylelint": "^0.4.2",
     "react-dev-utils": "^11.0.4",
     "react-hot-loader": "^4.13.0",
-    "react-test-renderer": "^17.0.1",
+    "react-test-renderer": "^17.0.2",
     "sinon": "^10.0.0",
     "sinon-chai": "^3.5.0",
     "style-loader": "^2.0.0",

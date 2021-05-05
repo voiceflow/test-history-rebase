@@ -9,7 +9,7 @@ export const variableStyle = css<VariableTagProps>`
   padding: 0px 4px 1px 4px;
   color: #62778c;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   background-color: #eef4f6a8;
   border-radius: 7px;
   border: 1px solid #dfe5ea;

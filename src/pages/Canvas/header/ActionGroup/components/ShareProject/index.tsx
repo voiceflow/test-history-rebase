@@ -10,6 +10,7 @@ import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useEnableDisable, usePermission, useTrackingEvents } from '@/hooks';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
 import { stopImmediatePropagation } from '@/utils/dom';
@@ -55,11 +56,19 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   return (
     <>
       {isPrototypingMode ? (
-        <Button disabled={isViewer} variant={ButtonVariant.PRIMARY} icon="link" onClick={onOpen}>
+        <Button id={Identifier.SHARE_BUTTON} disabled={isViewer} variant={ButtonVariant.PRIMARY} icon="link" onClick={onOpen}>
           Share Prototype
         </Button>
       ) : (
-        <Button disabled={isViewer} preventFocusStyle variant={ButtonVariant.QUATERNARY} large onClick={onOpen} isActive={open}>
+        <Button
+          id={Identifier.SHARE_BUTTON}
+          disabled={isViewer}
+          preventFocusStyle
+          variant={ButtonVariant.QUATERNARY}
+          large
+          onClick={onOpen}
+          isActive={open}
+        >
           Share
         </Button>
       )}

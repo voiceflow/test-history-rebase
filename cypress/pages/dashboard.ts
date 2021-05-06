@@ -1,4 +1,4 @@
-import { ClassName, DashboardClassName } from '../../src/styles/constants';
+import { ClassName, DashboardClassName, Identifier } from '../../src/styles/constants';
 import { getClass } from './utils';
 
 export default {
@@ -32,6 +32,12 @@ export default {
     },
     get projectListItemActionButton() {
       return cy.get(getClass(DashboardClassName.PROJECTS_LIST_ITEM_ACTIONS));
+    },
+    get userMenu() {
+      return cy.get(`.${ClassName.HEADER_USER_MENU}`);
+    },
+    get logoutButton() {
+      return cy.get(`.${ClassName.MENU}`).find('li').contains('Logout');
     },
   },
 

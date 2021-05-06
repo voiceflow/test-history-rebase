@@ -4,6 +4,7 @@ import Box from '@/components/Box';
 import { ClickableText, Text } from '@/components/Text';
 import { useCache, useDebouncedCallback, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
+import { Identifier } from '@/styles/constants';
 import { preventDefault } from '@/utils/dom';
 
 import Container from './Container';
@@ -61,7 +62,6 @@ const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
       };
     }
 
-    // eslint-disable-next-line lodash/prefer-noop
     return () => {
       // to fix react error
     };
@@ -106,6 +106,7 @@ const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
 
   return (
     <Container
+      id={Identifier.SPEECH_BAR}
       ref={containerRef}
       disabled={disabled}
       onMouseUp={isMobile ? undefined : preventDefault(onDebouncedStopListening)}

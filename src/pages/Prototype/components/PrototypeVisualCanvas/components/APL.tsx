@@ -7,6 +7,7 @@ import BaseRenderer from '@/components/DisplayRenderer/components/BaseRenderer';
 import { connect } from '@/hocs';
 import { DEVICE_LIST } from '@/pages/Prototype/constants';
 import * as SideEffects from '@/store/sideEffects';
+import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 import Frame from './Frame';
@@ -52,7 +53,14 @@ const APL: React.FC<APLProps & ConnectedAPLProps> = ({ zoom, data, device, platf
   }, [data]);
 
   return (
-    <Frame zoom={zoom} title={renderAPL ? deviceInfo?.name : null} isRound={isRound} width={dimensions[0]} height={dimensions[1]}>
+    <Frame
+      className={ClassName.VISUAL_APL}
+      zoom={zoom}
+      title={renderAPL ? deviceInfo?.name : null}
+      isRound={isRound}
+      width={dimensions[0]}
+      height={dimensions[1]}
+    >
       {!renderAPL ? null : (
         <MemoizedBaseRenderer
           apl={aplContext!.apl}

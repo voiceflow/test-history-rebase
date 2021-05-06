@@ -64,6 +64,33 @@ export default {
     get uploadButton() {
       return cy.get(`#${Identifier.UPLOAD}`);
     },
+    get shareButton() {
+      return cy.get(`#${Identifier.SHARE_BUTTON}`);
+    },
+    get testButton() {
+      return cy.get(`#${Identifier.TEST}`);
+    },
+    get speakBlockTextInput() {
+      return cy.get('.DraftEditor-root');
+    },
+    get choiceBlockTextInput() {
+      return cy.get('input').eq(1).should('have.attr', 'placeholder', 'Name new intent or select existing intent');
+    },
+    get userInputToggle() {
+      return cy.get('span').contains('User Input');
+    },
+    get testTypeSelector() {
+      return cy.get(`#${Identifier.TEST_TYPE_SELECTOR}`);
+    },
+    get voiceAndTranscriptTestTypeOption() {
+      return cy.get(`.${ClassName.TEST_TYPE_OPTION}`).contains('Voice and Transcript');
+    },
+    get voiceAndVisualsTestTypeOption() {
+      return cy.get(`.${ClassName.TEST_TYPE_OPTION}`).contains('Voice and Visuals');
+    },
+    get startPrototypeButton() {
+      return cy.get('#vf-prototype__start');
+    },
   },
 
   mode: {

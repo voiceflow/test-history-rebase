@@ -3,6 +3,7 @@ import React from 'react';
 import Box from '@/components/Box';
 import { Link, Text } from '@/components/Text/components';
 import Tooltip from '@/components/TippyTooltip';
+import { Identifier } from '@/styles/constants';
 import { preventDefault } from '@/utils/dom';
 
 import StartButton from './StartButton';
@@ -67,7 +68,7 @@ const StartConversation: React.FC<StartConversationProps> = ({
       </Box>
 
       {withStartButton && (
-        <StartButton color={colorScheme} onClick={onClick}>
+        <StartButton id={Identifier.PROTOTYPE_START} color={colorScheme} onClick={onClick}>
           Start Conversation
         </StartButton>
       )}

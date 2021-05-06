@@ -1,7 +1,6 @@
-/* eslint-disable promise/catch-or-return */
 import cuid from 'cuid';
 
-import { POSTGRES_DB, POSTGRES_HOST, POSTGRES_USER, TEST_EMAIL, TEST_PASSWORD, TEST_USER, API_URL } from '../../config';
+import { API_URL, POSTGRES_DB, POSTGRES_HOST, POSTGRES_USER, TEST_EMAIL, TEST_PASSWORD, TEST_USER } from '../../config';
 import signupPage from '../../pages/signup';
 import { CREATOR_ID_KEY, SESSION_CONTEXT, TAB_ID_KEY, TOKEN_KEY } from './session';
 
@@ -17,7 +16,7 @@ Cypress.Commands.add('signup', (queryString = '') => {
   signupPage.submit();
 });
 
-Cypress.Commands.add('setAuthToken', () => {
+Cypress.Commands.add('setAuth', () => {
   const token = SESSION_CONTEXT.get(TOKEN_KEY);
 
   cy.setCookie(
@@ -33,6 +32,11 @@ Cypress.Commands.add('setAuthToken', () => {
       JSON.stringify({ value: SESSION_CONTEXT.get(TAB_ID_KEY), _persist: { version: -1, rehydrated: true } })
     )
   );
+});
+
+Cypress.Commands.add('clearAuth', () => {
+  cy.clearCookies();
+  cy.clearLocalStorage();
 });
 
 Cypress.Commands.add('createTestAccount', () => {

@@ -36,6 +36,9 @@ export enum Identifier {
   DESIGN_TAB = 'vf-design-tab',
   LAUNCH_TAB = 'vf-launch-tab',
   SETTINGS_PAGE = 'vf-settings-page',
+  TEST_TYPE_SELECTOR = 'vf-test-type-selector',
+  SHARE_BUTTON = 'vf-share-button',
+  SPEECH_BAR = 'vf-speech-bar',
 }
 
 export enum ClassName {
@@ -71,6 +74,7 @@ export enum ClassName {
   COLLABORATOR_LINE_ITEM = 'vf-collaborator-line-item',
   MEMBER_ROLE_BUTTON = 'vf-member-role-button',
   LINK_SETTINGS = 'vf-link-settings',
+  TEST_TYPE_OPTION = 'vf-test-type-option',
   PRIMARY_NAV = 'vf-header_primary-nav',
   SECONDARY_NAV = 'vf-header_secondary-nav',
   HEADER_ACTIONS_CENTER = 'vf-header_primary-nav__center',
@@ -81,6 +85,12 @@ export enum ClassName {
   MARKUP_MODE = 'vf-canvas__control--markup',
   COMMENTING_MODE = 'vf-canvas__control--commenting',
   MENTION_INPUT = 'mentionInput',
+  CHAT_DIALOG_MESSAGE = 'vf-chat-dialog__message',
+  CHAT_DIALOG_LOADING_MESSAGE = 'vf-chat-dialog__message--loading',
+  CHAT_DIALOG_SPEAK_MESSAGE = 'vf-chat-dialog__message--speak',
+  VISUAL = 'vf-visual',
+  VISUAL_IMAGE = 'vf-visual--image',
+  VISUAL_APL = 'vf-visual--apl',
 }
 
 export enum ExternalClassName {

@@ -1,8 +1,8 @@
-/* eslint-disable promise/no-nesting */
+/* eslint-disable promise/always-return, promise/no-nesting */
+import { API_URL, PLATFORM_SERVICE_URLS } from '../../config';
 import { CREATOR_ID_KEY, DIAGRAM_ID_KEY, PROJECT_ID_KEY, SESSION_CONTEXT, TEAM_ID_KEY, VERSION_ID_KEY } from './session';
-import { API_URL, PLATFORM_SERVICE_URL } from '../../config';
 
-Cypress.Commands.add('createProject', (platform: 'alexa' | 'google' = 'alexa') => {
+Cypress.Commands.add('createProject', (platform: 'alexa' | 'google' | 'general' = 'alexa', tag?: string) => {
   cy.request('POST', `${API_URL}/workspaces`, {
     name: 'my workspace',
   }).then((res) => {
@@ -10,12 +10,12 @@ Cypress.Commands.add('createProject', (platform: 'alexa' | 'google' = 'alexa') =
 
     SESSION_CONTEXT.set(TEAM_ID_KEY, teamID);
 
-    cy.request(`${API_URL}/v2/templates/${platform}`).then((res) => {
+    cy.request(`${API_URL}/v2/templates/${platform}${tag ? `?tag=${encodeURIComponent(tag)}` : ''}`).then((res) => {
       const moduleID = res.body;
 
       cy.log('moduleID', moduleID);
 
-      cy.request('POST', `${PLATFORM_SERVICE_URL}/project/${moduleID}/copy`, {
+      cy.request('POST', `${PLATFORM_SERVICE_URLS[platform]}/project/${moduleID}/copy`, {
         image: '',
         name: 'my other project',
         teamID,
@@ -33,6 +33,40 @@ Cypress.Commands.add('createProject', (platform: 'alexa' | 'google' = 'alexa') =
       });
     });
   });
+});
+
+Cypress.Commands.add('renderTest', (platform: 'alexa' | 'google' | 'general') => {
+  const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);
+
+  const getStatus = (): Cypress.Chainable<any> =>
+    cy.request('GET', `${PLATFORM_SERVICE_URLS[platform]}/prototype/${projectID}/status`).then((res) => {
+      const { status, stage } = res.body;
+
+      if (status === 'FINISHED') {
+        if (stage.type === 'ERROR') {
+          throw new Error('prototype render failed');
+        } else {
+          return;
+        }
+      }
+
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(1000);
+
+      return getStatus();
+    });
+
+  cy.request({
+    method: 'POST',
+    url: `${PLATFORM_SERVICE_URLS[platform]}/prototype/${projectID}/render`,
+    timeout: 5000,
+  }).then(() => getStatus());
+});
+
+Cypress.Commands.add('configurePrototype', (settings: Partial<{ layout: 'voice-and-dialog' | 'text-and-dialog' | 'voice-and-visuals' }>) => {
+  const versionID = SESSION_CONTEXT.get(VERSION_ID_KEY);
+
+  cy.request('PATCH', `${API_URL}/v2/versions/${versionID}/prototype?path=settings`, settings);
 });
 
 Cypress.Commands.add('createThread', (text: string) => {

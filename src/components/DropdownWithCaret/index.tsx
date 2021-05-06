@@ -2,6 +2,7 @@ import React from 'react';
 
 import Dropdown, { DropdownPlacement } from '@/components/Dropdown';
 import { ButtonContainer, CaretIcon, DisabledWrapper, TextContainer } from '@/components/DropdownWithCaret/components';
+import { Identifier } from '@/styles/constants';
 
 import { TextVariant } from './types';
 
@@ -41,6 +42,7 @@ const DropdownWithCaret: React.FC<DropdownWithCaretProps> = ({
       {(ref, onToggle, isOpen) => (
         <DisabledWrapper disabled={disabled}>
           <ButtonContainer
+            id={Identifier.TEST_TYPE_SELECTOR}
             variant={textVariant}
             disabled={disabled}
             padding={padding}

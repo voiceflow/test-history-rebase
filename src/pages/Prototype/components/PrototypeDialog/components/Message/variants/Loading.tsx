@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { css, styled } from '@/hocs';
+import { ClassName } from '@/styles/constants';
 
 import { Message } from '../components';
 import Bubble from '../components/MessageBubble';
@@ -71,7 +72,7 @@ const Component = styled(Message)<{ isLoading?: boolean }>`
 `;
 
 const Loading: React.FC<{ isLoading?: boolean; avatarURL?: string }> = ({ isLoading, avatarURL }) => (
-  <Component withLogo isFirstInSeries withAnimation isLoading={isLoading} avatarURL={avatarURL}>
+  <Component className={ClassName.CHAT_DIALOG_LOADING_MESSAGE} withLogo isFirstInSeries withAnimation isLoading={isLoading} avatarURL={avatarURL}>
     <div className="dot-flashing"></div>
   </Component>
 );

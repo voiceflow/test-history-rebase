@@ -1,6 +1,8 @@
+import cn from 'classnames';
 import React from 'react';
 
 import Box from '@/components/Box';
+import { ClassName } from '@/styles/constants';
 
 import { ContentContainer, Placeholder, Title } from './components';
 
@@ -11,9 +13,10 @@ type FrameProps = {
   height: number;
   isRound?: boolean;
   placeholderImage?: null | string;
+  className?: string;
 };
 
-const Frame: React.FC<FrameProps> = ({ zoom, width, title, height, isRound, children, placeholderImage }) => {
+const Frame: React.FC<FrameProps> = ({ zoom, width, title, height, isRound, children, placeholderImage, className }) => {
   const scale = Math.min(1 / Math.abs(zoom / 100), 8);
   const translate = 100 * (1 - scale);
 
@@ -30,7 +33,9 @@ const Frame: React.FC<FrameProps> = ({ zoom, width, title, height, isRound, chil
         </Title>
       )}
 
-      <ContentContainer isRound={isRound}>{children || <Placeholder width={width} height={height} image={placeholderImage} />}</ContentContainer>
+      <ContentContainer className={cn(className, ClassName.VISUAL)} isRound={isRound}>
+        {children || <Placeholder width={width} height={height} image={placeholderImage} />}
+      </ContentContainer>
     </Box>
   );
 };

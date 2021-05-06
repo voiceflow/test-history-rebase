@@ -8,6 +8,7 @@ import * as Prototype from '@/ducks/prototype';
 import { PrototypeLayout } from '@/ducks/prototype/types';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 import PrototypeLayoutItem from './PrototypeLayoutItem';
@@ -65,7 +66,12 @@ const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ 
         menu={(onToggle: () => void) => (
           <Menu width={CUSTOM_MENU_WIDTH}>
             {getOptions().map((option: PrototypeLayout) => (
-              <MenuItem onClick={onClick(option, onToggle)} key={option} style={{ paddingTop: '12px', paddingBottom: '12px', height: 'auto' }}>
+              <MenuItem
+                className={ClassName.TEST_TYPE_OPTION}
+                onClick={onClick(option, onToggle)}
+                key={option}
+                style={{ paddingTop: '12px', paddingBottom: '12px', height: 'auto' }}
+              >
                 <PrototypeLayoutItem
                   title={OPTION_DETAILS[option].title}
                   description={OPTION_DETAILS[option].description}

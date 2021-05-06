@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import styled, { css } from 'styled-components';
 
 import { flexStyles } from '@/components/Flex';
@@ -10,6 +11,7 @@ export type MenuItemProps = {
   disabled?: boolean;
   capitalize?: boolean;
   bottomAction?: boolean;
+  className?: string;
 };
 
 export const itemStyles = css<MenuItemProps>`
@@ -76,8 +78,8 @@ export const itemStyles = css<MenuItemProps>`
     `}
 `;
 
-const MenuItem = styled.li.attrs(() => ({
-  className: ClassName.MENU_ITEM,
+const MenuItem = styled.li.attrs<MenuItemProps>(({ className }) => ({
+  className: cn(className, ClassName.MENU_ITEM),
 }))<MenuItemProps>`
   ${itemStyles}
 `;

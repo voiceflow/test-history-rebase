@@ -1,5 +1,6 @@
 import { DeviceType } from '@voiceflow/general-types';
 import { VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import cn from 'classnames';
 import cuid from 'cuid';
 import _throttle from 'lodash/throttle';
 import React from 'react';
@@ -11,6 +12,7 @@ import { connect } from '@/hocs';
 import { useCache, useDidUpdateEffect } from '@/hooks';
 import { useDeviceDimension } from '@/pages/Prototype/components/PrototypeVisualCanvas/hooks';
 import { FadeContainer } from '@/styles/animations';
+import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { preventDefault } from '@/utils/dom';
 
@@ -79,14 +81,14 @@ const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({
       {!!containerRef.current && (
         <>
           {data?.visualType === VisualType.IMAGE && (
-            <FadeContainer key={contentKey}>
+            <FadeContainer className={cn(ClassName.VISUAL, ClassName.VISUAL_IMAGE)} key={contentKey}>
               <ScaleContainer width={dimension.width} height={dimension.height} scale={scale} isMobile={isMobile}>
                 <Image url={data.image} width={dimension.width} height={dimension.height} />
               </ScaleContainer>
             </FadeContainer>
           )}
           {data?.visualType === VisualType.APL && (
-            <FadeContainer key={contentKey}>
+            <FadeContainer className={cn(ClassName.VISUAL, ClassName.VISUAL_APL)} key={contentKey}>
               <ScaleContainer width={dimension.width} height={dimension.height} scale={scale} isMobile={isMobile}>
                 <APL data={data} device={device} dimension={dimension} />
               </ScaleContainer>

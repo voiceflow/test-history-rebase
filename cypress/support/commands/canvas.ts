@@ -65,3 +65,35 @@ Cypress.Commands.add('addBlockToCanvasViaStepMenu', (blockName: string, [offsetX
 Cypress.Commands.add('selectAllCanvasNodes', () => {
   canvasPage.el.node.each(($node) => cy.wrap($node).click({ shiftKey: true, force: true }));
 });
+
+Cypress.Commands.add('addSpeakAndChoiceBlocks', (speakBlockMessage: string) => {
+  cy.awaitCanvasAnimation();
+  cy.addBlockToCanvasViaStepMenu('Speak', [400, 120]);
+  canvasPage.el.speakBlockTextInput.type(speakBlockMessage);
+
+  cy.selectAllCanvasNodes();
+
+  canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click();
+  canvasPage.el.node.eq(1).click();
+
+  canvasPage.el.userInputToggle.click();
+
+  cy.addBlockToCanvasViaStepMenu('Choice', [400, 20]);
+  canvasPage.el.choiceBlockTextInput.type('yes{enter}');
+
+  cy.selectAllCanvasNodes();
+  canvasPage.el.node.eq(1).find('.vf-canvas__step .vf-canvas__port').eq(0).click();
+  canvasPage.el.node.eq(2).click();
+});
+
+Cypress.Commands.add('addVisualBlock', () => {
+  cy.addBlockToCanvasViaStepMenu('Display', [400, 400]);
+
+  cy.get('input[type="file"]').attachFile({
+    filePath: 'image.png',
+  });
+
+  cy.selectAllCanvasNodes();
+  canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click();
+  canvasPage.el.node.eq(1).click();
+});

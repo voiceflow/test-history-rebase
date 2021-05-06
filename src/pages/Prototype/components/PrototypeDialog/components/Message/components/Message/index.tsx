@@ -1,9 +1,11 @@
+import cn from 'classnames';
 import React from 'react';
 
 import Avatar from '@/components/Avatar';
 import SvgIcon from '@/components/SvgIcon';
 import TippyTooltip from '@/components/TippyTooltip';
 import { FadeDownContainer } from '@/styles/animations';
+import { ClassName } from '@/styles/constants';
 
 import Bubble from '../MessageBubble';
 import Container from '../MessageContainer';
@@ -21,6 +23,7 @@ export type MessageProps = {
   bubble?: boolean;
   color?: string;
   avatarURL?: string;
+  className?: string;
 };
 
 const Message: React.FC<MessageProps> = ({
@@ -35,12 +38,13 @@ const Message: React.FC<MessageProps> = ({
   color,
   bubble = true,
   avatarURL,
+  className,
   ...props
 }) => {
   const InnerContainer = React.useMemo(() => (!rightAlign && isFirstInSeries && !withAnimation ? React.Fragment : FadeDownContainer), []);
 
   return (
-    <Container rightAlign={rightAlign} {...props}>
+    <Container className={cn(ClassName.CHAT_DIALOG_MESSAGE, className)} rightAlign={rightAlign} {...props}>
       <InnerContainer>
         {withLogo && isFirstInSeries && (
           <LogoCircle shadow={false} size={32} forAvatar={!!avatarURL}>

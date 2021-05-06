@@ -7,4 +7,9 @@ export const TEST_USER = 'Test Account';
 export const TEST_PASSWORD = 'th1s1smys4f3p4ssw0rd';
 
 export const API_URL = 'https://localhost:8003';
-export const PLATFORM_SERVICE_URL = 'https://localhost:8001';
+
+export const PLATFORM_SERVICE_URLS = {
+  alexa: 'https://localhost:8001',
+  general: 'https://localhost:8006',
+  google: 'https://localhost:8008',
+};

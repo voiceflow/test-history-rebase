@@ -57,9 +57,14 @@ declare namespace Cypress {
     boundingClientRect(): Chainable<DOMRect>;
 
     /**
-     * set the auth token cookie
+     * set auth cookies and other identification settings
      */
-    setAuthToken(): Chainable;
+    setAuth(): Chainable;
+
+    /**
+     * clear cookies and localStorage
+     */
+    clearAuth(): Chainable;
 
     /**
      * create a test account using configured name, email + password
@@ -84,7 +89,17 @@ declare namespace Cypress {
     /**
      * create a new project
      */
-    createProject(platform?: 'alexa' | 'google'): Chainable;
+    createProject(platform?: 'alexa' | 'google' | 'general', tag?: string): Chainable;
+
+    /**
+     * render a project for testing
+     */
+    renderTest(platform: 'alexa' | 'google' | 'general'): Chainable;
+
+    /**
+     * configure the public prototype experience
+     */
+    configurePrototype(settings: Partial<{ layout: 'voice-and-dialog' | 'text-and-dialog' | 'voice-and-visuals' }>): Chainable;
 
     /**
      Fills stripe input
@@ -130,8 +145,17 @@ declare namespace Cypress {
     /**
      * select all nodes
      */
-
     selectAllCanvasNodes(): Chainable;
+
+    /**
+     * add speak and choice blocks that are linked with the start block
+     */
+    addSpeakAndChoiceBlocks(speakBlockMessage: string): Chainable;
+
+    /**
+     * add a visual block that is linked with the start block
+     */
+    addVisualBlock(): Chainable;
 
     /**
      * get stored session information

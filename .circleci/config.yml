@@ -56,6 +56,12 @@ defaults:
         - /cherry-pick-rebase-pull-request-.*/
         - staging
 
+  ignore_autorebase_filters: &ignore_autorebase_filters
+    branches:
+      ignore:
+        - /rebase-pull-request-.*/
+        - /cherry-pick-rebase-pull-request-.*/
+
   slack-fail-post-step: &slack-fail-post-step
     post-steps:
       - vfcommon/notify_slack:
@@ -261,6 +267,7 @@ workflows:
           check_image: true
           context: dev-test
           filters:
+            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
       - update-track-creator-app:
@@ -273,12 +280,14 @@ workflows:
           requires:
             - build-app
           filters:
+            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
 
       - build-admin:
           context: dev-test
           filters:
+            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
       - update-track-admin-ui:
@@ -286,12 +295,14 @@ workflows:
           requires:
             - build-admin
           filters:
+            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
 
       - build-storybook:
           context: dev-test
           filters:
+            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
       - update-track-storybook:
@@ -299,6 +310,7 @@ workflows:
           requires:
             - build-storybook
           filters:
+            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
 

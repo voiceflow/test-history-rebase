@@ -36,7 +36,7 @@ parameters:
     default: "storybook"
 
 orbs:
-  vfcommon: voiceflow/common@0.0.117
+  vfcommon: voiceflow/common@0.0.122
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 
@@ -48,12 +48,6 @@ defaults:
         ignore: /.*/
       tags:
         only: /^v[0-9]*(\.[0-9]*)*$/
-
-  ignore_autorebase_filters: &ignore_autorebase_filters
-    branches:
-      ignore:
-        - /rebase-pull-request-.*/
-        - /cherry-pick-rebase-pull-request-.*/
 
   ignore_autorebase_staging_filters: &ignore_autorebase_staging_filters
     branches:
@@ -182,10 +176,6 @@ jobs:
 
   build-deploy-app-image:
     parameters:
-      tagged:
-        description: Running on a git tag?
-        type: boolean
-        default: false
       sentry:
         description: Report deploy to sentry?
         type: boolean
@@ -202,8 +192,8 @@ jobs:
           image_repo: << pipeline.parameters.container-image-url-creator-app >>
           namespace: << pipeline.parameters.k8s-namespace >>
           target: << pipeline.parameters.k8s-asset-creator-app >>
-          tagged: << parameters.tagged >>
           sentry: << parameters.sentry >>
+          tagged: true
       - run:
           name: Wait for deployment rollout
           command: |
@@ -223,7 +213,7 @@ jobs:
           namespace: << pipeline.parameters.k8s-namespace >>
           target: << pipeline.parameters.k8s-asset-storybook >>
           container_name: storybook
-          tagged: false
+          tagged: true
 
   build-deploy-admin-image:
     executor: vfcommon/build-executor
@@ -238,7 +228,7 @@ jobs:
           image_repo: << pipeline.parameters.container-image-url-admin-ui >>
           namespace: << pipeline.parameters.k8s-namespace >>
           target: << pipeline.parameters.k8s-asset-admin-ui >>
-          tagged: false
+          tagged: true
 
   update-track-creator-app:
     executor: vfcommon/build-executor
@@ -312,41 +302,6 @@ workflows:
             tags:
               ignore: /.*/
 
-  admin:
-    jobs:
-      - build-admin:
-          <<: *slack-fail-post-step
-          context: dev-test
-          filters:
-            <<: *ignore_autorebase_filters
-
-      - build-deploy-admin-image:
-          context: dev-test
-          requires:
-            - build-admin
-          filters:
-            branches:
-              only:
-                - master
-
-  storybook:
-    jobs:
-      - build-storybook:
-          <<: *slack-fail-post-step
-          context: dev-test
-          filters:
-            <<: *ignore_autorebase_filters
-
-      - build-deploy-storybook-image:
-          context: dev-test
-          requires:
-            - build-storybook
-          filters:
-            branches:
-              only:
-                - master
-                - staging
-
   test-and-release-app:
     jobs:
       - test-integration:
@@ -392,6 +347,7 @@ workflows:
             branches:
               only: master
 
+  # Deploy services
   deploy-app:
     jobs:
       - build-app:
@@ -401,7 +357,6 @@ workflows:
             - jira/notify
       - build-deploy-app-image:
           <<: *prod_deploy_filters
-          tagged: true
           sentry: true
           context: dev-test
           post-steps:
@@ -412,24 +367,24 @@ workflows:
           requires:
             - build-app
 
-  app-staging:
+  deploy-admin:
     jobs:
-      - build-app:
+      - build-admin:
+          <<: *prod_deploy_filters
           context: dev-test
-          filters:
-            branches:
-              only:
-                - staging
-      - build-deploy-app-image:
+      - build-deploy-admin-image:
+          <<: *prod_deploy_filters
           context: dev-test
-          post-steps:
-            - jira/notify:
-                environment: staging
-                environment_type: staging
-                job_type: deployment
           requires:
-            - build-app
-          filters:
-            branches:
-              only:
-                - staging
+            - build-admin
+
+  deploy-storybook:
+    jobs:
+      - build-storybook:
+          <<: *prod_deploy_filters
+          context: dev-test
+      - build-deploy-storybook-image:
+          <<: *prod_deploy_filters
+          context: dev-test
+          requires:
+            - build-storybook

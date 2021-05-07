@@ -7,13 +7,7 @@ import Input from '@/components/Input';
 import Page from '@/components/Page';
 import { ClickableText, Link, Text } from '@/components/Text';
 import { toast } from '@/components/Toast';
-import {
-  API_ENDPOINT,
-  GENERAL_RUNTIME_CLOUD_ENDPOINT,
-  GENERAL_RUNTIME_ENDPOINT,
-  GENERAL_RUNTIME_ENDPOINT_TAG,
-  GENERAL_SERVICE_ENDPOINT,
-} from '@/config';
+import { API_ENDPOINT, GENERAL_RUNTIME_ENDPOINT_TAG, GENERAL_SERVICE_ENDPOINT } from '@/config';
 import * as Router from '@/ducks/router';
 import { copy } from '@/utils/clipboard';
 import * as Cookies from '@/utils/cookies';
@@ -22,7 +16,7 @@ const GENERAL_RUNTIME_REPO = 'https://github.com/voiceflow/general-runtime';
 
 const RuntimeConfig: React.FC = () => {
   const auth = React.useMemo(() => Cookies.getAuthCookie(), []);
-  const [runtimeEndpoint, updateRuntimeEndpoint] = React.useState(localStorage.getItem(GENERAL_RUNTIME_ENDPOINT_TAG) || GENERAL_RUNTIME_ENDPOINT);
+  const [runtimeEndpoint, updateRuntimeEndpoint] = React.useState(localStorage.getItem(GENERAL_RUNTIME_ENDPOINT_TAG) || '');
 
   const dispatch = useDispatch();
   const goToDashboard = () => dispatch(Router.goToDashboard());
@@ -46,14 +40,17 @@ const RuntimeConfig: React.FC = () => {
           <Link href={GENERAL_RUNTIME_REPO}>{GENERAL_RUNTIME_REPO}</Link>
         </Box>
         <Text>
-          Update the General Runtime Endpoint to run the Voiceflow prototype tool off a custom general-runtime
-          <br />
-          Default Voiceflow General Runtime Endpoint: <b>{GENERAL_RUNTIME_CLOUD_ENDPOINT}</b>
+          Update the General Runtime Endpoint to run the Voiceflow prototype tool off a custom general-runtime, or leave empty to default to Voiceflow
+          hosted endpoint.
         </Text>
 
         <Box my={16}>
           <label>General Runtime Endpoint</label>
-          <Input value={runtimeEndpoint} onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateRuntime(e.target.value)} />
+          <Input
+            value={runtimeEndpoint}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateRuntime(e.target.value)}
+            placeholder="General Runtime Service Endpoint"
+          />
         </Box>
         <Alert>
           Refresh Page to Apply Changes to <b>General Runtime Endpoint</b>

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
+import * as Documentation from '@/config/documentation';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useManager, useToggle } from '@/hooks';
@@ -74,7 +75,7 @@ function IfEditor({ data, onChange, focusedNode }) {
               helpMessage: (
                 <>
                   Check out this{' '}
-                  <a href="https://docs.voiceflow.com/#/steps/condition" target="_blank" rel="noopener noreferrer">
+                  <a href={Documentation.CONDITION_STEP} target="_blank" rel="noopener noreferrer">
                     doc
                   </a>{' '}
                   that goes over using IF blocks inside Voiceflow.

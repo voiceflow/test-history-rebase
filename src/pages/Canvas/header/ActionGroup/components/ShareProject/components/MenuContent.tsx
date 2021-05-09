@@ -5,6 +5,7 @@ import Divider from '@/components/Divider';
 import { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import { Link } from '@/components/Text';
 import Upgrade from '@/components/Upgrade';
+import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { OverlayProvider, ScrollContextProvider } from '@/contexts';
 import { usePermission } from '@/hooks';
@@ -49,7 +50,7 @@ const MenuContent: React.FC = () => {
 
             <Description fontSize={15} lineHeight="normal">
               <span>Share a testable version of your project in the browser on web or mobile. </span>
-              <Link href="https://docs.voiceflow.com/#/quickstart/testable-links">Learn More</Link>
+              <Link href={Documentation.PROTOTYPE_SHARE}>Learn More</Link>
             </Description>
           </MenuContentHeader>
 

@@ -1,5 +1,6 @@
+import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
-import { DOCS_LINK } from '@/constants';
+import { DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { Icon } from '@/svgs/types';
 
@@ -10,7 +11,6 @@ export type StaticResource = {
   resourceName: Tracking.CanvasControlHelpMenuResource;
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const STATIC_RESOURCES: StaticResource[] = [
   {
     icon: 'support',
@@ -20,19 +20,19 @@ export const STATIC_RESOURCES: StaticResource[] = [
   },
   {
     icon: 'youtube',
-    link: 'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ', // eslint-disable-line no-secrets/no-secrets
+    link: YOUTUBE_CHANNEL_LINK,
     label: 'Tutorials',
     resourceName: Tracking.CanvasControlHelpMenuResource.TUTORIALS,
   },
   {
     icon: 'template',
-    link: 'https://docs.voiceflow.com/#/platform/project-creation/project-creation?id=start-with-a-template', // eslint-disable-line no-secrets/no-secrets
+    link: Documentation.USE_A_TEMPLATE,
     label: 'Templates',
     resourceName: Tracking.CanvasControlHelpMenuResource.TUTORIALS,
   },
   {
     icon: 'community',
-    link: 'https://forum.voiceflow.com/',
+    link: FORUM_LINK,
     label: 'Community',
     resourceName: Tracking.CanvasControlHelpMenuResource.COMMUNITY,
   },

@@ -4,6 +4,7 @@ import { testingGraphic } from '@/assets';
 import Button, { ButtonVariant } from '@/components/Button';
 import Text, { Link } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
+import * as Documentation from '@/config/documentation';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import { useTrackingEvents } from '@/hooks';
@@ -13,8 +14,6 @@ import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 import { Container } from './components';
-
-const PROTOTYPING_HELP_LINK = 'https://docs.voiceflow.com/quickstart/testing';
 
 export type PrototypeStartProps = {
   debug: boolean;
@@ -52,7 +51,7 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
           </Text>
 
           <Text fontSize={13} color="#62778c" fontWeight={500} mt={16} mb={16} lineHeight={1.54}>
-            Start a test to interact with your project using text, voice or chips. <Link href={PROTOTYPING_HELP_LINK}>Learn more.</Link>
+            Start a test to interact with your project using text, voice or chips. <Link href={Documentation.PROTOTYPING}>Learn more.</Link>
           </Text>
 
           {isModelTraining ? (

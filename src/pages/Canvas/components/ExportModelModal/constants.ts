@@ -18,5 +18,3 @@ export const EXPORT_TYPES = [
     value: NLPProvider.RASA,
   },
 ];
-
-export const EXPORT_HELP_LINK = 'https://docs.voiceflow.com/#/platform/interaction-model/model-manager?id=model-export';

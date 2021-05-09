@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button, { ButtonVariant } from '@/components/Button';
 import { Link } from '@/components/Text';
+import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { useModals, usePermission } from '@/hooks';
@@ -35,7 +36,7 @@ const SharePrototype: React.FC<SharePrototypeProps> = ({ link, onClick, isAllowe
               Open link in new tab
             </Link>
           ) : (
-            <Link href="https://docs.voiceflow.com/#/quickstart/testable-links">Learn More</Link>
+            <Link href={Documentation.PROTOTYPE_SHARE}>Learn More</Link>
           )}
         </span>
       </DropdownContainer>

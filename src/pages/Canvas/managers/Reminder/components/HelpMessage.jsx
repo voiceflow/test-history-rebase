@@ -2,14 +2,13 @@ import React from 'react';
 
 import ChatWithUsLink from '@/components/ChatLink';
 import { Paragraph } from '@/components/Tooltip';
-
-import { HELP_LINK } from '../constants';
+import * as Documentation from '@/config/documentation';
 
 export default function HelpMessage() {
   return (
     <Paragraph>
       Read more about reminders{' '}
-      <a href={HELP_LINK} rel="noopener noreferrer" target="_blank">
+      <a href={Documentation.REMINDER_STEP} rel="noopener noreferrer" target="_blank">
         here
       </a>
       . Or, start a <ChatWithUsLink>chat</ChatWithUsLink> with someone from the Voiceflow team!

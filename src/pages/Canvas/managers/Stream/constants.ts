@@ -4,8 +4,7 @@ import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
-export const HELP_LINK = 'https://docs.voiceflow.com/#/alexa/stream-block';
-
+// eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<NodeData.Stream> = {
   type: BlockType.STREAM,
 

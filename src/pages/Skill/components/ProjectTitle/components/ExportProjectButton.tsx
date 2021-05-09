@@ -6,6 +6,7 @@ import { ModalFooter } from '@/components/LegacyModal';
 import { MenuContainer } from '@/components/Menu';
 import { Link } from '@/components/Text';
 import Tooltip from '@/components/TippyTooltip';
+import * as Documentation from '@/config/documentation';
 import { ExportFormat } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
@@ -17,8 +18,6 @@ import { ConnectedProps } from '@/types';
 import { stopImmediatePropagation } from '@/utils/dom';
 
 import ExportIcon from './ExportIcon';
-
-const EXPORT_HELP_LINK = 'https://docs.voiceflow.com/#/features/sharing-features?id=export-your-canvas-as-pdfpng';
 
 const ExportProjectButton: React.FC<ConnectedExportProjectButtonProps> = ({ isExporting, exportCanvas }) => {
   const [trackingEvents] = useTrackingEvents();
@@ -41,7 +40,7 @@ const ExportProjectButton: React.FC<ConnectedExportProjectButtonProps> = ({ isEx
             <ExportItem exportType={selectedExportType} updateType={setSelectedExportType} />
             <ModalFooter onClick={stopImmediatePropagation()}>
               <FlexApart fullWidth>
-                <Link href={EXPORT_HELP_LINK}>Learn More</Link>
+                <Link href={Documentation.PROJECT_EXPORT}>Learn More</Link>
                 <UploadButton
                   isActive={!!isExporting}
                   label="Export"

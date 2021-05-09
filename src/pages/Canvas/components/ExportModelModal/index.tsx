@@ -9,6 +9,7 @@ import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import Select from '@/components/Select';
 import { BlockText, Link } from '@/components/Text';
 import { toast } from '@/components/Toast';
+import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { ModalType, NLPProvider, PLAN_TYPE_META, PlanType } from '@/constants';
 import * as Skill from '@/ducks/skill';
@@ -18,7 +19,7 @@ import UploadButton from '@/pages/Canvas/header/ActionGroup/components/UploadBut
 import { ConnectedProps } from '@/types';
 import { stopImmediatePropagation } from '@/utils/dom';
 
-import { EXPORT_HELP_LINK, EXPORT_TYPES } from './constants';
+import { EXPORT_TYPES } from './constants';
 
 const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ isExporting, exportModel }) => {
   const [exportNLPProvider, setExportNLPProvider] = React.useState<NLPProvider | undefined>(undefined);
@@ -64,7 +65,7 @@ const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ isExportin
         </ModalBody>
         <ModalFooter onClick={stopImmediatePropagation()}>
           <FlexApart fullWidth>
-            <Link href={EXPORT_HELP_LINK}>Learn More</Link>
+            <Link href={Documentation.MODEL_EXPORT}>Learn More</Link>
             {!canExport && (
               <Button variant="primary" onClick={openPaymentsModal}>
                 Upgrade

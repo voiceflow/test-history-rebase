@@ -6,6 +6,7 @@ import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import SlotSelect from '@/components/SlotSelect';
 import VariableSelect from '@/components/VariableSelect';
+import * as Documentation from '@/config/documentation';
 import { CUSTOM_SLOT_TYPE, PlatformType } from '@/constants';
 import { useIsPlatform } from '@/ducks/skill/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
@@ -14,7 +15,6 @@ import SuggestionChips, { chipFactory } from '@/pages/Canvas/components/Suggesti
 
 import HelpTooltip from './components/HelpTooltip';
 
-const DOCUMENTATION_LINK = 'https://docs.voiceflow.com/#/steps/capture';
 const SEARCH_QUERY_SLOT = 'AMAZON.SearchQuery';
 
 function CaptureEdtitor({ data, onChange, pushToPath }) {
@@ -63,7 +63,7 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
             helpMessage: (
               <>
                 Check out further documentation on the capture block{' '}
-                <a href={DOCUMENTATION_LINK} rel="noopener noreferrer" target="_blank">
+                <a href={Documentation.CAPTURE_STEP} rel="noopener noreferrer" target="_blank">
                   here
                 </a>
                 .

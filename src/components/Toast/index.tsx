@@ -27,7 +27,8 @@ const wrapWithMessage: (method: ToastMethod, icon?: Icon, color?: string) => Toa
     }
   );
 
-const toast = wrapWithMessage(Toastify.toast) as ToastMethod & Overwrite<Toastify.Toast, Record<ToastMethodName, ToastMethod>>;
+const toast = wrapWithMessage(Toastify.toast) as ToastMethod &
+  Overwrite<Toastify.Toast, Record<ToastMethodName, ToastMethod>> & { genericError: VoidFunction };
 
 (Object.keys(Toastify.toast) as any[]).forEach((methodName: keyof Toastify.Toast) => {
   toast[methodName] = Toastify.toast[methodName] as any;
@@ -37,6 +38,8 @@ toast.info = wrapWithMessage(Toastify.toast.info, 'info', '#5D9DF5');
 toast.error = wrapWithMessage(Toastify.toast.error, 'error', '#E91E63');
 toast.success = wrapWithMessage(Toastify.toast.success, 'checkmark', '#42B761');
 toast.warn = wrapWithMessage(Toastify.toast.warn, 'warning', '#E5B813');
+
+toast.genericError = () => toast.error('Something went wrong. Please try again');
 
 const ToastGlobalStyles = createGlobalStyle`
   .Toastify {

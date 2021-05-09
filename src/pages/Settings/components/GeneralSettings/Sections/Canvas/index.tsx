@@ -3,6 +3,7 @@ import React from 'react';
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionVariant } from '@/components/Section';
 import { Link } from '@/components/Text';
+import * as Documentation from '@/config/documentation';
 import * as Project from '@/ducks/project';
 import * as Skill from '@/ducks/skill';
 import * as UI from '@/ducks/ui';
@@ -27,7 +28,7 @@ const Canvas: React.FC<ConnectedBasicProps> = ({ project, canvasNavigation, setC
         variant={SectionVariant.QUATERNARY}
         contentSuffix={() => (
           <DescriptorContainer>
-            {NAVIGATION_DESCRIPTIONS[canvasNavigation]} <Link href="https://docs.voiceflow.com/#/platform/settings">See more.</Link>
+            {NAVIGATION_DESCRIPTIONS[canvasNavigation]} <Link href={Documentation.CANVAS_CONTROLS}>See more.</Link>
           </DescriptorContainer>
         )}
         customContentStyling={{ paddingBottom: '24px' }}
@@ -42,8 +43,7 @@ const Canvas: React.FC<ConnectedBasicProps> = ({ project, canvasNavigation, setC
         isDividerNested
         contentSuffix={() => (
           <DescriptorContainer>
-            Choose between straight or curved connection lines between blocks.{' '}
-            <Link href="https://docs.voiceflow.com/#/platform/canvas/the-canvas?id=change-your-path-mode">See more.</Link>
+            Choose between straight or curved connection lines between blocks. <Link href={Documentation.LINK_TYPE}>See more.</Link>
           </DescriptorContainer>
         )}
         customContentStyling={{ paddingBottom: '24px' }}

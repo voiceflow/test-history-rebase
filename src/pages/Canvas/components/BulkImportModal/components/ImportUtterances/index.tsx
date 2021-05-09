@@ -10,6 +10,7 @@ import RadioGroup from '@/components/RadioGroup';
 import Text, { Link } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
+import * as Documentation from '@/config/documentation';
 import { ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
@@ -224,7 +225,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
 
         <ModalFooter>
           <Box flex={1}>
-            <Link href="https://docs.voiceflow.com/#/features/bulk-import-utterances">See tutorial</Link>
+            <Link href={Documentation.BULK_IMPORT_UTTERANCES}>See tutorial</Link>
           </Box>
 
           <Box mr={12}>

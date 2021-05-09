@@ -534,6 +534,9 @@ export const DEVICE_LABEL_MAP: Record<DeviceType, string> = {
 };
 
 export const DOCS_LINK = 'https://docs.voiceflow.com';
+export const FORUM_LINK = 'https://forum.voiceflow.com/';
+// eslint-disable-next-line no-secrets/no-secrets
+export const YOUTUBE_CHANNEL_LINK = 'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ';
 
 export enum BCP_LANGUAGE_CODE {
   AR_SA = 'ar-SA',

@@ -1,14 +1,13 @@
 import React from 'react';
 
 import { Paragraph } from '@/components/Tooltip';
-
-import { HELP_LINK } from '../constants';
+import * as Documentation from '@/config/documentation';
 
 export default function HelpMessage() {
   return (
     <Paragraph>
       Read more about about the stream step{' '}
-      <a href={HELP_LINK} target="_blank" rel="noopener noreferrer">
+      <a href={Documentation.STREAM_STEP} target="_blank" rel="noopener noreferrer">
         here
       </a>
       .

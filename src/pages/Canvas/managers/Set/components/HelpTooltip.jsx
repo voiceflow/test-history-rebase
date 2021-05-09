@@ -2,13 +2,12 @@ import React from 'react';
 
 import { Paragraph, Section, Title } from '@/components/Tooltip';
 import VideoPlayer from '@/components/VideoPlayer';
-
-import { VIDEO_LINK } from '../constants';
+import * as Documentation from '@/config/documentation';
 
 const HelpTooltip = () => (
   <>
     <Section marginBottomUnits={2.5}>
-      <VideoPlayer link={VIDEO_LINK} height="210px" />
+      <VideoPlayer link={Documentation.SET_STEP_VIDEO} height="210px" />
     </Section>
     <Paragraph marginBottomUnits={2}>Set blocks can be used to manipulate variables based on actions a user has taken with your project.</Paragraph>
     <Title>Example</Title>

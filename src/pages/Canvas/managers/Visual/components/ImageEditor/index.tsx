@@ -10,6 +10,7 @@ import Section from '@/components/Section';
 import Select, { defaultLabelRenderer } from '@/components/Select';
 import Text, { BlockText, Link } from '@/components/Text';
 import FullImage from '@/components/Upload/ImageUpload/FullImage';
+import * as Documentation from '@/config/documentation';
 import { DEVICE_LABEL_MAP } from '@/constants';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
@@ -64,7 +65,7 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
     <Content
       footer={() => (
         <Controls>
-          <Link href="https://docs.voiceflow.com/#/platform/steps/response-steps/response?id=visuals-step">How it Works</Link>
+          <Link href={Documentation.VISUALS_STEP}>How it Works</Link>
         </Controls>
       )}
     >

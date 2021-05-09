@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
+import * as Documentation from '@/config/documentation';
 import { PlatformType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
@@ -91,7 +92,7 @@ export const STEP_META: StepMetaProps = {
     canSkip: false,
     skipTo: null,
     docsLink: (
-      <DocsLink href="https://docs.voiceflow.com/#/platform/project-creation/project-creation?id=differences-between-channels">
+      <DocsLink href={Documentation.CHANNEL_DIFFERENCES}>
         <SvgIcon icon="information" />
         Compare channel types
       </DocsLink>

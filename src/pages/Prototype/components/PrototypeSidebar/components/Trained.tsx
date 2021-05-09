@@ -5,6 +5,7 @@ import { lightbulbGraphic } from '@/assets';
 import Box from '@/components/Box';
 import Button, { ButtonVariant } from '@/components/Button';
 import Text, { Link } from '@/components/Text';
+import * as Documentation from '@/config/documentation';
 import { PlatformType } from '@/constants';
 import { ModelDiff } from '@/utils/prototypeModel';
 
@@ -40,8 +41,7 @@ const Trained: React.FC<TrainedProps> = ({ diff, platform, isTrained, trainedMod
         </Text>
 
         <Text fontSize={13} color="#62778c" fontWeight={500} mt={16} mb={27} lineHeight={1.54}>
-          Train your assistant for the highest fidelity testing experience.{' '}
-          <Link href="https://docs.voiceflow.com/quickstart/testing?id=assistant-training">Learn more.</Link>
+          Train your assistant for the highest fidelity testing experience. <Link href={Documentation.ASSISTANT_TRAINING}>Learn more.</Link>
         </Text>
       </>
     ) : (

@@ -6,6 +6,7 @@ import Box, { Flex } from '@/components/Box';
 import Button, { ButtonVariant } from '@/components/Button';
 import { ModalFooter } from '@/components/LegacyModal';
 import { BlockText, Link, Text } from '@/components/Text';
+import * as Documentation from '@/config/documentation';
 import { GoogleStageType } from '@/constants/platforms';
 import { useAsyncMountUnmount, useSmartReducerV2 } from '@/hooks';
 import UploadPopup from '@/pages/Canvas/header/ActionGroup/components/UploadPopup';
@@ -117,7 +118,7 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
                 <Container>
                   <DropdownContainer>
                     <span>
-                      <Link href="https://docs.voiceflow.com/#/quickstart/testable-links">The Tutorial</Link>
+                      <Link href={Documentation.PROTOTYPE_SHARE}>The Tutorial</Link>
                     </span>
                   </DropdownContainer>
                   <ButtonLink href="https://console.actions.google.com/" onClick={cancel}>

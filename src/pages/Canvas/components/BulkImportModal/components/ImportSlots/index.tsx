@@ -12,6 +12,7 @@ import RadioGroup from '@/components/RadioGroup';
 import Text, { Link } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
+import * as Documentation from '@/config/documentation';
 import { ModalType } from '@/constants';
 import { useDebouncedCallback, useDidUpdateEffect, useModals, useSmartReducerV2 } from '@/hooks';
 import { readFileAsText } from '@/utils/file';
@@ -218,7 +219,7 @@ const ImportSlots: React.FC = () => {
 
         <ModalFooter>
           <Box flex={1}>
-            <Link href="https://docs.voiceflow.com/#/features/bulk-import-slots">See tutorial</Link>
+            <Link href={Documentation.BULK_IMPORT_SLOTS}>See tutorial</Link>
           </Box>
 
           <Box mr={12}>

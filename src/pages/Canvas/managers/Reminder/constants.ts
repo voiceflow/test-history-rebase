@@ -19,8 +19,6 @@ export const REMINDER_ROUTES = [
   },
 ];
 
-export const HELP_LINK = 'https://docs.voiceflow.com/#/alexa/reminder-block';
-
 export const NODE_CONFIG: NodeConfig<NodeData.Reminder> = {
   type: BlockType.REMINDER,
 

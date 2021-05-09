@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Link } from '@/components/Text';
 import { Paragraph, Title } from '@/components/Tooltip';
+import * as Documentation from '@/config/documentation';
 
 const HelpTooltip = () => (
   <>
@@ -13,8 +14,7 @@ const HelpTooltip = () => (
     <Paragraph marginBottomUnits={2}>Flows can be nested for further compartmentalization of your project.</Paragraph>
     <Title>Learn More</Title>
     <Paragraph>
-      To learn more about flows, and how they can be used check our documentation{' '}
-      <Link href="https://docs.voiceflow.com/#/blocks/flow-block">here.</Link>
+      To learn more about flows, and how they can be used check our documentation <Link href={Documentation.FLOW_STEP}>here.</Link>
     </Paragraph>
   </>
 );

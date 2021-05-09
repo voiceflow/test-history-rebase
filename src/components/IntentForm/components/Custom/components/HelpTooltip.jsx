@@ -3,11 +3,12 @@ import React from 'react';
 import Collapsable from '@/components/Collapsable';
 import { Paragraph, Section, Title } from '@/components/Tooltip';
 import VideoPlayer from '@/components/VideoPlayer';
+import * as Documentation from '@/config/documentation';
 
 const HelpTooltip = () => (
   <>
     <Section marginBottomUnits={2.5}>
-      <VideoPlayer link="https://www.youtube.com/embed/vuEmXn-lGK0" height="210px" />
+      <VideoPlayer link={Documentation.INTENTS_VIDEO} height="210px" />
     </Section>
     <Title isSubtitle>Tutorial Recap</Title>
     <Collapsable title="Intents">

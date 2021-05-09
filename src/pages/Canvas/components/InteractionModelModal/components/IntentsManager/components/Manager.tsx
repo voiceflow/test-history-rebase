@@ -9,11 +9,13 @@ import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
 import { ClickableText } from '@/components/Text';
 import * as Intents from '@/ducks/intent';
+import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
+import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import { compose, connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { formatIntentName, validateIntentName } from '@/utils/intent';
+import { formatIntentName, isCustomizeableBuiltInIntent, validateIntentName } from '@/utils/intent';
 import { removeTrailingUnderscores } from '@/utils/string';
 
 export type ManagerProps = {
@@ -29,6 +31,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
   const [path, setPath] = React.useState<{ type: string | null }>({ type: null });
   const resetPath = React.useCallback(() => setPath({ type: null }), []);
   const [nameError, setNameError] = React.useState<string | null>(null);
+  const isBuiltIn = isCustomizeableBuiltInIntent(selectedIntent);
 
   const slotEdit = path.type === 'slot';
 
@@ -79,8 +82,9 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
             onBlur={onBlur}
             onChange={({ currentTarget }) => localNameUpdate(currentTarget)}
             placeholder="Intent Name"
+            disabled={isCustomizeableBuiltInIntent(selectedIntent)}
           />
-          <RemoveDropdown onRemove={() => removeIntent(id)} />
+          <RemoveDropdown deleteText={isBuiltIn ? 'Remove' : undefined} onRemove={() => removeIntent(id)} />
         </FlexApart>
 
         {nameError && (
@@ -107,6 +111,7 @@ const mapStateToProps = {
   slots: Slot.allSlotsSelector,
   intent: Intents.intentByIDSelector,
   allIntents: Intents.allIntentsSelector,
+  platform: Skill.activePlatformSelector,
 };
 
 const mapDispatchToProps = {
@@ -114,9 +119,9 @@ const mapDispatchToProps = {
 };
 
 const mergeProps = (
-  ...[{ intent: intentByIDSelector }, , { id }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, ManagerProps>
+  ...[{ intent: intentByIDSelector, platform }, , { id }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, ManagerProps>
 ) => ({
-  intent: intentByIDSelector(id),
+  intent: applySingleIntentNameFormatting(intentByIDSelector(id), platform),
 });
 
 type ConnectedManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;

@@ -5,7 +5,7 @@ import TextEditor, { PluginType } from '@/components/TextEditor';
 const pluginsTypes = [PluginType.VARIABLES];
 
 const Utterance = (
-  { space, slots, creatable, onAddSlot, characters, createInputPlaceholder = 'New Slot', onBlur, onEnterPress, ...props },
+  { space, slots, creatable, noSlots, onAddSlot, characters, createInputPlaceholder = 'New Slot', onBlur, onEnterPress, ...props },
   forwardedRef
 ) => {
   const pluginProps = React.useMemo(
@@ -45,8 +45,8 @@ const Utterance = (
       ref={onUtteranceRef}
       onBlur={onBlurCallback}
       onEnterPress={onEnterPressCallback}
-      pluginsTypes={pluginsTypes}
-      pluginsProps={pluginProps}
+      pluginsTypes={!noSlots ? pluginsTypes : []}
+      pluginsProps={!noSlots ? pluginProps : {}}
     />
   );
 };

@@ -17,6 +17,7 @@ import { connect } from '@/hocs';
 import { useDebouncedCallback, useDidUpdateEffect, useModals, useSmartReducerV2 } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { readFileAsText } from '@/utils/file';
+import { isCustomizeableBuiltInIntent } from '@/utils/intent';
 
 import { ACCEPTED_FILE_TYPES, FILE_SIZE_LIMIT_BYTES, FILE_SIZE_LIMIT_KB, UPLOAD_VARIANTS, UploadType } from '../../constants';
 import AceEditor from '../AceEditor';
@@ -29,7 +30,7 @@ const DEBOUNCE_TIMEOUT = 300;
 // TODO: remove what convert DropUpload to TS
 const PartialDropUpload = DropUpload as React.ComponentType<Partial<React.ComponentProps<typeof DropUpload>>>;
 
-const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, intents }) => {
+const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, intentByID, intents }) => {
   const [state, stateApi] = useSmartReducerV2({
     errors: null as null | Map<number, string>,
     slotsCount: 0,
@@ -47,6 +48,8 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
   const { close, data, isOpened } = useModals<{ intentID: string; onUpload: (utterances: { text: string; slots: string[] }[]) => void }>(
     ModalType.IMPORT_UTTERANCES
   );
+
+  const builtIn = isCustomizeableBuiltInIntent(intentByID(data.intentID));
 
   const findSlotsAndUtterances = useDebouncedCallback(
     DEBOUNCE_TIMEOUT,
@@ -123,7 +126,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
   }, []);
 
   const onUpload = React.useCallback(() => {
-    const [errors, validUtterances] = validateUtterances(getUtterances(state.editorValue), data.intentID, intents, slots);
+    const [errors, validUtterances] = validateUtterances(getUtterances(state.editorValue), data.intentID, intents, slots, builtIn);
 
     if (errors.size && !state.ignoreErrors) {
       stateApi.update({ errors, validUtterances, uploadDisabled: true });
@@ -138,7 +141,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
 
       stateApi.reset();
     }
-  }, [state, data, slots, intents]);
+  }, [state, data, slots, intents, builtIn]);
 
   const onChangeIgnoreErrors = React.useCallback(() => {
     stateApi.update({
@@ -165,12 +168,12 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
             {isInline || state.editorValue ? (
               <AceEditor
                 key={String(isInline)}
-                mode="utterance"
+                mode={builtIn ? ' ' : 'utterance'}
                 value={state.editorValue}
                 focus
                 onLoad={onLoad}
                 onChange={onChange}
-                placeholder="One utterance per line, wrap slots in {}"
+                placeholder={builtIn ? 'One utterance per line, built-in intents do not support slots' : 'One utterance per line, wrap slots in {}'}
               />
             ) : (
               <PartialDropUpload
@@ -186,12 +189,16 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
 
           {isInline || state.editorValue ? (
             <Text>
-              {state.utterancesCount} <Text color="#62778c">{pluralize('utterance', state.utterancesCount)} with</Text> {state.slotsCount}{' '}
-              <Text color="#62778c">{pluralize('slot', state.slotsCount)} included.</Text>
+              {state.utterancesCount} <Text color="#62778c">{pluralize('utterance', state.utterancesCount)} </Text>
+              {!builtIn && (
+                <>
+                  <Text>with</Text> {state.slotsCount} <Text color="#62778c">{pluralize('slot', state.slotsCount)} included.</Text>
+                </>
+              )}
             </Text>
           ) : (
             <Text color="#62778c" fontSize={13}>
-              One sample utterance per row, wrap slots in {'{}'}.{' '}
+              {builtIn ? <>On sample utterance per row. </> : <> One sample utterance per row, wrap slots in {'{}'}. </>}
               <Link download target="" href={utteranceUploadExampleCSV}>
                 Download template
               </Link>
@@ -238,6 +245,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
 const mapStateToProps = {
   slots: Slot.allSlotsSelector,
   intents: Intent.allIntentsSelector,
+  intentByID: Intent.intentByIDSelector,
 };
 
 type ConnectedImportUtterancesProps = ConnectedProps<typeof mapStateToProps>;

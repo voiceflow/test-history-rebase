@@ -4,11 +4,18 @@ import React from 'react';
 
 import Select from '@/components/Select';
 import { toast } from '@/components/Toast';
-import { SPACE_REGEXP } from '@/constants';
+import { CUSTOMIZABLE_INTENT_PREFIXS, SPACE_REGEXP } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
-import { filterIntents, formatIntentName, prettifyIntentName, prettifyIntentNames, validateIntentName } from '@/utils/intent';
+import {
+  filterIntents,
+  formatIntentName,
+  isCustomizeableBuiltInIntent,
+  prettifyIntentName,
+  prettifyIntentNames,
+  validateIntentName,
+} from '@/utils/intent';
 import { removeTrailingUnderscores } from '@/utils/string';
 
 import { MissingIntentMessage, Option } from './components';
@@ -48,9 +55,8 @@ const optionsFilter = (options, searchLabel, { maxSize = options.length, getOpti
   return { filteredOptions, matchedOptions, notMatchedOptions };
 };
 
-function IntentSelect({ slots, intent, intents, onChange, newIntent }) {
+function IntentSelect({ slots, intent, intents, onChange, intentsMap, newIntent }) {
   const intentID = intent?.id;
-
   const filteredIntents = React.useMemo(() => prettifyIntentNames(filterIntents(intents, intent)), [intents, intent]);
   const intentLookup = React.useMemo(
     () =>
@@ -61,7 +67,7 @@ function IntentSelect({ slots, intent, intents, onChange, newIntent }) {
       }, {}),
     [filteredIntents]
   );
-  const intentMissing = intent?.id && !intentLookup[intent?.id] && !intent?.builtIn;
+  const intentMissing = intent?.id && !intentLookup[intent?.id] && !isCustomizeableBuiltInIntent(intent);
 
   const getOptionLabel = React.useCallback((value) => intentLookup[value], [intentLookup]);
   const isButtonDisabled = React.useCallback(
@@ -69,7 +75,17 @@ function IntentSelect({ slots, intent, intents, onChange, newIntent }) {
     [filteredIntents]
   );
 
-  const onSelectIntent = React.useCallback((value) => onChange({ intent: value }), [onChange]);
+  const onSelectIntent = React.useCallback(
+    (value) => {
+      const intentID = value;
+      const isDefaultBuiltIn = CUSTOMIZABLE_INTENT_PREFIXS.includes(value?.split('.')[0]);
+      if (isDefaultBuiltIn && !intentsMap[intentID]) {
+        newIntent({ id: intentID, name: value, builtIn: true });
+      }
+      onChange({ intent: intentID });
+    },
+    [onChange]
+  );
 
   const onCreate = React.useCallback(
     (name) => {
@@ -90,6 +106,12 @@ function IntentSelect({ slots, intent, intents, onChange, newIntent }) {
     },
     [newIntent, intentLookup, onSelectIntent]
   );
+
+  React.useEffect(() => {
+    if (intent.id && !intentsMap[intent.id]) {
+      onChange({ intent: null });
+    }
+  }, [intentsMap]);
 
   return (
     <>
@@ -118,6 +140,7 @@ function IntentSelect({ slots, intent, intents, onChange, newIntent }) {
 const mapStateToProps = {
   slots: Slot.allSlotsSelector,
   intents: Intent.allPlatformIntentsSelector,
+  intentsMap: Intent.mapCustomIntentsSelector,
 };
 
 const mapDispatchToProps = {

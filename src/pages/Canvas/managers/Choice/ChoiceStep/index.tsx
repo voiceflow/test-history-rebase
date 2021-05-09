@@ -71,7 +71,7 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction> & C
 };
 
 const mapStateToProps = {
-  intentsMap: Intent.mapPlatformIntentsSelector,
+  intentsMap: Intent.mapCustomIntentsSelector,
 };
 
 type ConnectedChoiceStepProps = ConnectedProps<typeof mapStateToProps>;

@@ -132,7 +132,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
 };
 
 const mapStateToProps = {
-  intents: IntentDuck.allIntentsSelector,
+  intents: IntentDuck.allCustomIntentsSelector,
   intentsMap: IntentDuck.mapIntentsSelector,
   intentsIDs: IntentDuck.allIntentIDsSelector,
 };

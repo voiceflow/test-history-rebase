@@ -32,7 +32,7 @@ const ConnectedIntentStep: React.FC<ConnectedStepProps<NodeData.Intent> & Connec
 };
 
 const mapStateToProps = {
-  intentsMap: Intent.mapPlatformIntentsSelector,
+  intentsMap: Intent.mapCustomIntentsSelector,
 };
 
 type ConnectedIntentStepProps = ConnectedProps<typeof mapStateToProps>;

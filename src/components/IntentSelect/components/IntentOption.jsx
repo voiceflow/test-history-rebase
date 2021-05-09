@@ -4,6 +4,9 @@ import React from 'react';
 import { FlexApart } from '@/components/Flex';
 import SvgIcon from '@/components/SvgIcon';
 import { PlatformType, SPACE_REGEXP } from '@/constants';
+import * as Skill from '@/ducks/skill';
+import { connect } from '@/hocs';
+import { isCustomizeableBuiltInIntent } from '@/utils/intent';
 
 const PLATFORM_ICONS = {
   [PlatformType.ALEXA]: 'amazon',
@@ -38,12 +41,16 @@ const getFormatedLabel = (label, searchLabel) => {
   return strsToRender.map((str, i) => (i % 2 === 0 ? str : <b key={i}>{str}</b>));
 };
 
-const IntentOption = ({ option, searchLabel, getOptionLabel, getOptionValue }) => (
+const IntentOption = ({ option, searchLabel, platform, getOptionLabel, getOptionValue }) => (
   <FlexApart fullWidth>
     <span>{getFormatedLabel(getOptionLabel(getOptionValue(option)), searchLabel)}</span>
 
-    {option.builtIn && <SvgIcon icon={PLATFORM_ICONS[option.platform]} color="#BECEDC" />}
+    {isCustomizeableBuiltInIntent(option) && <SvgIcon icon={PLATFORM_ICONS[platform]} color="#BECEDC" />}
   </FlexApart>
 );
 
-export default IntentOption;
+const mapStateToProps = {
+  platform: Skill.activePlatformSelector,
+};
+
+export default connect(mapStateToProps)(IntentOption);

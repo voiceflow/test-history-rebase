@@ -574,3 +574,5 @@ export enum BCP_LANGUAGE_CODE {
   ZH_HK = 'zh-HK',
   ZH_TW = 'zh-TW',
 }
+
+export const CUSTOMIZABLE_INTENT_PREFIXS = ['AMAZON', 'VF'];

@@ -7,11 +7,12 @@ import { Container } from './components';
 
 export type RemoveDropDownProps = {
   onRemove: () => void;
+  deleteText?: string;
 };
 
-const RemoveDropDown: React.FC<RemoveDropDownProps> = ({ onRemove }) => (
+const RemoveDropDown: React.FC<RemoveDropDownProps> = ({ onRemove, deleteText = 'Delete' }) => (
   <Container>
-    <Dropdown options={[{ label: 'Delete', onClick: onRemove }]}>
+    <Dropdown options={[{ label: deleteText, onClick: onRemove }]}>
       {(ref, onToggle, isOpen) => <IconButton icon="elipsis" variant={IconButtonVariant.FLAT} active={isOpen} onClick={onToggle} ref={ref} />}
     </Dropdown>
   </Container>

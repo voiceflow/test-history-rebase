@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { UtteranceManager } from '@/components/IntentForm/components/Custom/components';
+import { isCustomizeableBuiltInIntent } from '@/utils/intent';
+
 import CustomIntentForm from './components/Custom';
 
 export { HelpTooltip } from './components/Custom/components';
@@ -10,9 +13,8 @@ const IntentForm = ({ intent, ...props }) => {
     return null;
   }
 
-  if (intent.builtIn) {
-    // TODO: component to display built-in intent properties
-    return null;
+  if (isCustomizeableBuiltInIntent(intent)) {
+    return <UtteranceManager intent={intent} isNested={!!props.isNested} />;
   }
 
   return <CustomIntentForm intent={intent} {...props} />;

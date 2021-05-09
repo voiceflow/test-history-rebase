@@ -13,7 +13,7 @@ export const getUtterances = (value: string) =>
     .filter(Boolean);
 
 // eslint-disable-next-line import/prefer-default-export
-export const validateUtterances = (utterances: string[], intentID: string, intents: Intent[], slots: Slot[]) => {
+export const validateUtterances = (utterances: string[], intentID: string, intents: Intent[], slots: Slot[], builtIn: boolean) => {
   const errors = new Map<number, string>();
   const slotsMap = slots.reduce<Record<string, string>>((acc, slot) => Object.assign(acc, { [slot.name]: slot.id }), {});
   const validUtterances: { text: string; slots: string[] }[] = [];
@@ -30,8 +30,9 @@ export const validateUtterances = (utterances: string[], intentID: string, inten
     }
 
     const uniqSlot = getUniqSlots(utterance);
-
-    if (uniqSlot.some((slotName) => !slotsMap[slotName])) {
+    if (builtIn && uniqSlot.length) {
+      errors.set(index, `Built-in intents cannot have slots`);
+    } else if (uniqSlot.some((slotName) => !slotsMap[slotName])) {
       const slotName = uniqSlot.find((slotName) => !slotsMap[slotName]);
 
       errors.set(index, `The Slot "${slotName}" does not exist, please create the slot in Voiceflow and re-upload.`);

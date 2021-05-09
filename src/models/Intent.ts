@@ -25,6 +25,5 @@ export type Intent = {
   name: string;
   slots: Normalized<IntentSlot>;
   inputs: IntentInput[];
-  builtIn?: boolean;
   platform: PlatformType;
 };

@@ -1,6 +1,6 @@
-import { BUILT_IN_INTENTS as ALEXA_BUILT_IN_INTENTS } from '@voiceflow/alexa-types';
+import { AmazonIntent, BUILT_IN_INTENTS as ALEXA_BUILT_IN_INTENTS } from '@voiceflow/alexa-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
-import { DEFAULT_INTENTS_MAP, DefaultIntent, Locale as GeneralLocale } from '@voiceflow/general-types';
+import { DEFAULT_INTENTS_MAP, DefaultIntent, IntentName as GeneralIntents, Locale as GeneralLocale } from '@voiceflow/general-types';
 import { BUILT_IN_INTENTS as GOOGLE_BUILT_IN_INTENTS } from '@voiceflow/google-types';
 
 import { FILTERED_AMAZON_INTENTS, PlatformType } from '@/constants';
@@ -8,6 +8,11 @@ import { Intent, Slot } from '@/models';
 import { capitalizeFirstLetter } from '@/utils/string';
 
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
+
+const AmazonBuiltInIntentsArray = Object.values(AmazonIntent) as string[];
+const GeneralBuiltInIntentsArray = Object.values(GeneralIntents) as string[];
+
+export const isCustomizeableBuiltInIntent = (intent: Intent) => !![...AmazonBuiltInIntentsArray, ...GeneralBuiltInIntentsArray].includes(intent?.id);
 
 export const formatIntentName = (name = '') =>
   name
@@ -37,7 +42,7 @@ export const filterIntents = (intents: Intent[], activeIntent: Intent) =>
       return true;
     }
 
-    if (intent.builtIn) {
+    if (isCustomizeableBuiltInIntent(intent)) {
       return !FILTERED_AMAZON_INTENTS.includes(intent.name.replace(AMAZON_INTENT_PREFIX, ''));
     }
 
@@ -52,7 +57,6 @@ export const intentFactory = (platform: PlatformType) => (intent: { name: string
     name: truncatedName ?? intent.name,
     slots: { byKey: {}, allKeys: [] },
     inputs: [{ text: '', slots: intent.slots ?? [] }],
-    builtIn: true,
     platform,
   };
 };
@@ -140,3 +144,12 @@ export const removeSlotRefFromInput = (text: string, slotDetails: Slot) =>
 
     return match;
   });
+
+export const removeBuiltInPrefix = (name: string) => {
+  let newName = name;
+  if (name.includes('.')) {
+    // eslint-disable-next-line prefer-destructuring
+    newName = name.split('.')[1];
+  }
+  return newName;
+};

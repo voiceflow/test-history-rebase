@@ -1,6 +1,7 @@
 import _isNumber from 'lodash/isNumber';
 import _isString from 'lodash/isString';
 
+import { IS_E2E_TEST } from '@/config';
 import { KeyCode } from '@/constants';
 import { Pair, Point } from '@/types';
 
@@ -265,9 +266,11 @@ export const upload = (onChange: (files: FileList) => void, options: { accept?: 
 
   document.body.appendChild(element);
 
-  element.click();
+  if (!IS_E2E_TEST) {
+    element.click();
 
-  document.body.removeChild(element);
+    document.body.removeChild(element);
+  }
 };
 
 export const downloadFromURL = (filename: string, url: string) => {

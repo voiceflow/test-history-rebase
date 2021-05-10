@@ -13,23 +13,24 @@ import { ClassName } from '@/styles/constants';
 import { Container, Lifecycle, NodeBlock, NodeStartBlock, Styles } from './components';
 
 const Node: React.FC = () => {
-  const isPresentationMode = React.useContext(PresentationModeContext);
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+  const contextMenu = React.useContext(ContextMenuContext)!;
+  const isPresentationMode = React.useContext(PresentationModeContext);
+
+  const instance = useNodeInstance<HTMLDivElement>();
   const isEditingMode = useEditingMode();
   const isPrototypingMode = usePrototypingMode();
-
-  const contextMenu = React.useContext(ContextMenuContext)!;
-  const instance = useNodeInstance<HTMLDivElement>();
-  const { isFocused } = nodeEntity.useState((e) => ({
-    isFocused: e.isFocused,
-  }));
-  const shouldRender = nodeEntity.nodeType !== BlockType.COMMAND;
   const { onMouseDown, onClick, onDragStart } = useNodeDrag();
+
+  const { isFocused } = nodeEntity.useState((e) => ({ isFocused: e.isFocused }));
+
+  const shouldRender = nodeEntity.nodeType !== BlockType.COMMAND;
 
   const onRightClick = React.useCallback(
     (event: React.MouseEvent) => {
       event.stopPropagation();
+
       if (nodeEntity.nodeType !== BlockType.START && isEditingMode) {
         contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
       }
@@ -44,6 +45,7 @@ const Node: React.FC = () => {
       window.dispatchEvent(event);
     }
   };
+
   const onDoubleClick = React.useCallback(() => {
     if (engine.comment.isActive) return;
 

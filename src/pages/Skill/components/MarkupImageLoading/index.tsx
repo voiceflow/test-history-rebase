@@ -1,15 +1,14 @@
 import React from 'react';
 
-import { MarkupModeContext } from '@/pages/Skill/contexts';
+import { BlockType } from '@/constants';
+import { MarkupContext } from '@/pages/Skill/contexts';
 
 import { Container, Loader, LoadingContainer } from './components';
 
 const ImageLoading: React.FC = () => {
-  const { isUploadingImage } = React.useContext(MarkupModeContext)!;
+  const markup = React.useContext(MarkupContext)!;
 
-  if (!isUploadingImage) return null;
-
-  return (
+  return markup.creatingType !== BlockType.MARKUP_IMAGE ? null : (
     <Container>
       <LoadingContainer>
         <Loader borderLess />

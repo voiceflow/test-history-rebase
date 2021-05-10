@@ -19,11 +19,14 @@ const HomeStartStep: React.FC<HomeStartStepProps> = ({ platform, invocationName,
       <Item
         icon={PLATFORM_META[platform].icon}
         iconColor={PLATFORM_META[platform].iconColor}
-        label={getPlatformValue(platform, {
-          [PlatformType.ALEXA]: <Text color="#132144">Alexa, open {invocationName}</Text>,
-          [PlatformType.GOOGLE]: <Text color="#132144">Hey Google, start {invocationName}</Text>,
-          [PlatformType.GENERAL]: <>Project starts here</>,
-        })}
+        label={getPlatformValue(
+          platform,
+          {
+            [PlatformType.ALEXA]: <Text color="#132144">Alexa, open {invocationName}</Text>,
+            [PlatformType.GOOGLE]: <Text color="#132144">Hey Google, start {invocationName}</Text>,
+          },
+          <>Project starts here</>
+        )}
         labelVariant={PlatformType.GENERAL ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
         portID={portID}
       />

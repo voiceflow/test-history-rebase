@@ -1,7 +1,8 @@
-import { BlockType, MARKUP_AND_COMBINED_NODES } from '@/constants';
+import { BlockType } from '@/constants';
 import { Reducer } from '@/store/types';
 import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
+import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
 import { AddManyNodes, AddNestedNode, AddNode, AddWrappedNode } from '../actions';
 import { blockNodeDataFactory, nodeFactory } from '../factories';
@@ -84,7 +85,7 @@ export const addManyNodesReducer: Reducer<DiagramState, AddManyNodes> = (
     },
   }
 ) => {
-  const combinedAndMarkupNodes = nodesWithData.filter(({ node }) => MARKUP_AND_COMBINED_NODES.includes(node.type));
+  const combinedAndMarkupNodes = nodesWithData.filter(({ node }) => isMarkupOrCombinedBlockType(node.type));
   const nodeXs = combinedAndMarkupNodes.map(({ node: { x } }) => x);
   const nodeYs = combinedAndMarkupNodes.map(({ node: { y } }) => y);
   const minX = Math.min(...nodeXs);

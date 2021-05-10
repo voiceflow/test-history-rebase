@@ -1,10 +1,8 @@
-/* eslint-disable xss/no-mixed-html */
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
 
 import client from '@/client';
 import creatorAdapter from '@/client/adapters/creator';
-import { MARKUP_NODES, ROOT_NODES } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
@@ -18,10 +16,11 @@ import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
 import useEngine from '@/pages/Canvas/engine';
 import { getManager } from '@/pages/Canvas/managers';
-import { MarkupModeProvider } from '@/pages/Skill/contexts';
+import { MarkupProvider } from '@/pages/Skill/contexts';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { Point } from '@/types';
 import { compose } from '@/utils/functional';
+import { isMarkupBlockType, isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
 import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark, MockRealtimeGate } from './components';
 
@@ -39,7 +38,7 @@ const ExportCanvas: React.FC<{ isOnPaidPlan: boolean; diagramID: string; initial
 
   return (
     <PresentationModeProvider>
-      <MarkupModeProvider>
+      <MarkupProvider>
         <ManagerProvider value={getManager as any}>
           <CanvasProviders engine={engine}>
             <ExportGlobalStyle />
@@ -51,13 +50,13 @@ const ExportCanvas: React.FC<{ isOnPaidPlan: boolean; diagramID: string; initial
             </ExportCanvasDiagram>
           </CanvasProviders>
         </ManagerProvider>
-      </MarkupModeProvider>
+      </MarkupProvider>
     </PresentationModeProvider>
   );
 };
 
 const findCanvasExportOffsets = (nodes: Node[]): Point => {
-  const rootNodes = nodes.filter(({ type }) => ROOT_NODES.includes(type) || MARKUP_NODES.includes(type));
+  const rootNodes = nodes.filter(({ type }) => isRootOrMarkupBlockType(type));
 
   const xValues = rootNodes.map((node) => node.x);
   const yValues = rootNodes.map((node) => node.y);
@@ -71,7 +70,7 @@ const findCanvasExportOffsets = (nodes: Node[]): Point => {
 const applyCanvasExportOffsets = (nodes: Node[], [offsetX, offsetY]: Point) =>
   nodes.map((node) => ({
     ...node,
-    x: node.x + offsetX + (MARKUP_NODES.includes(node.type) ? BLOCK_WIDTH / 2 : 0),
+    x: node.x + offsetX + (isMarkupBlockType(node.type) ? BLOCK_WIDTH / 2 : 0),
     y: node.y + offsetY,
   }));
 

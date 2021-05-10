@@ -455,19 +455,25 @@ export const PLAN_TYPE_META = {
   },
 };
 
-export enum MarkupModeType {
-  TEXT = 'text',
-  IMAGE = 'image',
-}
+export type RootBlockType = BlockType.COMBINED | BlockType.START | BlockType.COMMENT;
+export const ROOT_NODES: ReadonlyArray<RootBlockType> = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
+export const isRootBlockType = (type: BlockType): type is RootBlockType => ROOT_NODES.includes(type as any);
 
-export const ROOT_NODES = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
-export const INTERNAL_NODES = [BlockType.DEPRECATED, BlockType.COMMAND, ...ROOT_NODES];
+export type InternalBlockType = BlockType.DEPRECATED | BlockType.COMMAND | RootBlockType;
+export const INTERNAL_NODES: ReadonlyArray<InternalBlockType> = [BlockType.DEPRECATED, BlockType.COMMAND, ...ROOT_NODES];
+export const isInternalBlockType = (type: BlockType): type is InternalBlockType => INTERNAL_NODES.includes(type as any);
 
-export const MARKUP_NODES = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE];
+export type MarkupBlockType = BlockType.MARKUP_TEXT | BlockType.MARKUP_IMAGE;
+export const MARKUP_NODES: ReadonlyArray<MarkupBlockType> = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE];
 
-export const MARKUP_AND_COMBINED_NODES = [...MARKUP_NODES, BlockType.COMBINED];
+export type RootOrMarkupBlockType = RootBlockType | MarkupBlockType;
+export const ROOT_AND_MARKUP_NODES: ReadonlyArray<RootOrMarkupBlockType> = [...ROOT_NODES, ...MARKUP_NODES];
 
-export const DIAGRAM_REFERENCE_NODES = [BlockType.COMMAND, BlockType.FLOW];
+export type MarkupOrCombinedBlockType = BlockType.COMBINED | MarkupBlockType;
+export const MARKUP_AND_COMBINED_NODES: ReadonlyArray<MarkupOrCombinedBlockType> = [BlockType.COMBINED, ...MARKUP_NODES];
+
+export type DiagramReferenceBlockType = BlockType.COMMAND | BlockType.FLOW;
+export const DIAGRAM_REFERENCE_NODES: ReadonlyArray<DiagramReferenceBlockType> = [BlockType.COMMAND, BlockType.FLOW];
 
 export enum ExportFormat {
   PNG = 'png',

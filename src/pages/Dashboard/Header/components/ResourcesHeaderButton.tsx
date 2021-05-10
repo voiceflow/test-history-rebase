@@ -7,10 +7,11 @@ import SvgIcon, { Icon } from '@/components/SvgIcon';
 import { ModalType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { useModals, useTrackingEvents } from '@/hooks';
-import { OptionLabel } from '@/pages/Canvas/components/CanvasControls/components/ResourcesDropdown/components';
 import { STATIC_RESOURCES, StaticResource } from '@/pages/Canvas/components/CanvasControls/constants';
 import { useDashboardMode } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
+
+import OptionLabel from './ResourceOptionLabel';
 
 type Option = {
   link?: string;

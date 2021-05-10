@@ -1,34 +1,28 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { createMatchSelector } from 'connected-react-router';
+
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
-import { Path } from '@/config/routes';
-import { BlockType, MARKUP_NODES, MarkupModeType } from '@/constants';
-import * as Router from '@/ducks/router';
+import { BlockType, MarkupBlockType } from '@/constants';
 import { useForceUpdate, useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
 import MarkupSlateEditor, { createSlateEditor, MarkupEditor } from '@/pages/Canvas/managers/MarkupText/MarkupSlateEditor';
+import { Nullable } from '@/types';
 import { objectID } from '@/utils';
+import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import { EngineConsumer } from './utils';
 
 class MarkupEngine extends EngineConsumer {
   log = this.engine.log.child('markup');
 
+  creatingType: Nullable<MarkupBlockType> = null;
+
   textEditorsMap: Map<string, MarkupEditor> = new Map();
-
-  textEditorsOnChangeMap: Map<string, () => void> = new Map();
-
-  modeType: MarkupModeType | null = null;
-
-  isCreating = false;
 
   finishCreating: (() => void) | null = null;
 
-  get isActive() {
-    return !!this.select(createMatchSelector(Path.CANVAS_MARKUP));
-  }
+  textEditorsOnChangeMap: Map<string, () => void> = new Map();
 
   get hasFocus() {
     if (!this.engine.focus.hasTarget) return false;
@@ -36,20 +30,15 @@ class MarkupEngine extends EngineConsumer {
     const nodeID = this.engine.focus.getTarget()!;
     const node = this.engine.getNodeByID(nodeID);
 
-    return !!node && MARKUP_NODES.includes(node.type);
+    return !!node && isMarkupBlockType(node.type);
   }
 
-  setModeTypeAndCreating(modeType: MarkupModeType | null, creating: boolean) {
-    this.modeType = modeType;
-    this.isCreating = creating;
+  setCreatingType(type: Nullable<MarkupBlockType>) {
+    this.creatingType = type;
   }
 
   setFinishCreating(callback: (() => void) | null) {
     this.finishCreating = callback;
-  }
-
-  activate() {
-    return this.dispatch(Router.goToCurrentCanvasMarkup());
   }
 
   async addTextNode(): Promise<void> {

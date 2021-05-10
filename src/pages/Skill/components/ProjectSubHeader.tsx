@@ -10,7 +10,6 @@ import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useHotKeys, usePermission } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { useMarkupMode } from '@/pages/Skill/hooks';
 import { ConnectedProps } from '@/types';
 
 import CanvasViewers from './CanvasViewers';
@@ -53,8 +52,6 @@ const ProjectSubHeader: React.FC<ProjectSubHeaderProps & ConnectedSkillSubHeader
   const options =
     showPublish && !(platform === PlatformType.GENERAL && !codeExport) ? headerOptions : headerOptions.filter((tab) => tab.value !== 'publish');
 
-  const isMarkupMode = useMarkupMode();
-
   const onChange = React.useCallback(
     (value) => {
       switch (value) {
@@ -70,14 +67,7 @@ const ProjectSubHeader: React.FC<ProjectSubHeaderProps & ConnectedSkillSubHeader
     [goToDesign, goToPrototype, goToPublish]
   );
 
-  useHotKeys(
-    Hotkey.TEST_MODE,
-    () => {
-      if (!isMarkupMode) goToPrototype();
-    },
-    { preventDefault: true },
-    [isMarkupMode]
-  );
+  useHotKeys(Hotkey.TEST_MODE, () => goToPrototype(), { preventDefault: true });
   useHotKeys(Hotkey.DESIGN_PAGE, () => goToDesign());
   useHotKeys(Hotkey.LAUNCH_PAGE, () => !isViewerOrLibraryRole && goToPublish());
 

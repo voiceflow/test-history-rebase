@@ -86,14 +86,6 @@ export const redirectToCurrentCanvasCommenting = (): Thunk => async (dispatch, g
   dispatch(redirectToCanvasCommenting(versionID, diagramID));
 };
 
-export const goToCurrentCanvasMarkup = (): Thunk => async (dispatch, getState) => {
-  const state = getState();
-  const versionID = activeSkillIDSelector(state);
-  const diagramID = activeDiagramIDSelector(state);
-
-  dispatch(goTo(`${generatePath(Path.CANVAS_MARKUP, { versionID, diagramID })}${window.location.search}`));
-};
-
 export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
   const skill = activeSkillSelector(getState()) as SkillModel<string>;
 

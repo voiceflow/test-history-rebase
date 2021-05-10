@@ -82,7 +82,6 @@ export enum ClassName {
   HEADER_USER_MENU = 'vf-header_user-menu',
   SVG_ICON_CLOSE = 'vf-svg-icon--close',
   HOME_BLOCK = 'vf-canvas__block--home',
-  MARKUP_MODE = 'vf-canvas__control--markup',
   COMMENTING_MODE = 'vf-canvas__control--commenting',
   MENTION_INPUT = 'mentionInput',
   CHAT_DIALOG_MESSAGE = 'vf-chat-dialog__message',

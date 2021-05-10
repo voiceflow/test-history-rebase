@@ -4,7 +4,7 @@ import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { useCommentingMode, useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
+import { useCommentingMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -20,14 +20,11 @@ const fadeConfig = {
 const TopPrompt: React.FC<ConnectedTopPrompt> = ({ goToDesign }) => {
   const isPrototypingMode = usePrototypingMode();
   const isCommentingMode = useCommentingMode();
-  const isMarkupMode = useMarkupMode();
 
   let modeText = '';
 
   if (isCommentingMode) {
     modeText = 'commenting';
-  } else if (isMarkupMode) {
-    modeText = 'markup';
   } else if (isPrototypingMode) {
     modeText = 'prototyping';
   }

@@ -1,6 +1,7 @@
 import { CANVAS_SHIFT_PRESSED_CLASSNAME } from '@/components/Canvas/constants';
 import { css, styled } from '@/hocs';
-import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
+import { CANVAS_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
+import { Identifier } from '@/styles/constants';
 
 type ContainerProps = {
   url: string;
@@ -22,12 +23,12 @@ export const Container = styled.div.attrs<ContainerProps>(({ width, height }) =>
   border: solid 1px transparent;
   background-repeat: no-repeat;
 
-  .${CANVAS_MARKUP_ENABLED_CLASSNAME}:not(.${CANVAS_DRAGGING_CLASSNAME}) &:hover {
-    border: solid 1px #5d9df5;
+  &:hover {
+    cursor: grab;
   }
 
-  .${CANVAS_MARKUP_ENABLED_CLASSNAME} &:hover {
-    cursor: grab;
+  #${Identifier.CANVAS_CONTAINER}:not(.${CANVAS_DRAGGING_CLASSNAME}) &:hover {
+    border: solid 1px #5d9df5;
   }
 
   .${CANVAS_SHIFT_PRESSED_CLASSNAME} &:hover {

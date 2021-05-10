@@ -6,10 +6,12 @@ import { AlexaFeatures } from './components';
 
 export type ChannelSpecificFeaturesProps = { platformMeta: PlatformSettingsMetaProps };
 
-const ChannelSpecificFeatures = createPlatformComponent<ChannelSpecificFeaturesProps>('ChannelSpecificFeatures', {
-  [PlatformType.ALEXA]: AlexaFeatures,
-  [PlatformType.GOOGLE]: () => null,
-  [PlatformType.GENERAL]: () => null,
-});
+const ChannelSpecificFeatures = createPlatformComponent<ChannelSpecificFeaturesProps>(
+  'ChannelSpecificFeatures',
+  {
+    [PlatformType.ALEXA]: AlexaFeatures,
+  },
+  () => null
+);
 
 export default ChannelSpecificFeatures;

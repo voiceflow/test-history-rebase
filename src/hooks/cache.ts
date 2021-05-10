@@ -1,10 +1,11 @@
-import { useRef } from 'react';
+import React from 'react';
 
-// eslint-disable-next-line import/prefer-default-export
-export const useCache = <T extends Record<string, unknown>>(defaultData: T, dataToUpdate: Partial<T> = defaultData) => {
-  const cache = useRef(defaultData);
+export const useCache = <T extends Record<string, unknown>>(defaultData: T, dataToUpdate: Partial<T> = defaultData): React.MutableRefObject<T> => {
+  const cache = React.useRef(defaultData);
 
   Object.assign(cache.current, dataToUpdate);
 
   return cache;
 };
+
+export const useContextApi = <T extends Record<string, unknown>>(api: T): T => React.useMemo(() => api, Object.values(api));

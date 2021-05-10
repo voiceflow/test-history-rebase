@@ -68,7 +68,7 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
       removeDraggableParents();
     }
 
-    if (engine.markup.isCreating) {
+    if (engine.markup.creatingType) {
       cache.current.skipEditableFocus = true;
 
       setEditable(true);

@@ -33,7 +33,7 @@ import { getActivePageAndMatch } from '@/utils/routes';
 import ProjectSubHeader from './components/ProjectSubHeader';
 import ProjectTitle from './components/ProjectTitle';
 import { PAGES_MATCHES, TIMEOUT_COUNT } from './constants';
-import { ExportProvider, MarkupModeProvider, NLPProvider, PublishProvider } from './contexts';
+import { ExportProvider, MarkupProvider, NLPProvider, PublishProvider } from './contexts';
 
 const Diagram = lazy(() => import(/* webpackPrefetch: true */ './components/Diagram'));
 const Business = lazy(() => import('@/pages/Business'));
@@ -87,7 +87,7 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
   }
 
   return (
-    <MarkupModeProvider>
+    <MarkupProvider>
       <Helmet>
         <title>{activeSkill.name || 'Voiceflow Creator'}</title>
       </Helmet>
@@ -135,7 +135,7 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
           </NLPProvider>
         </ExportProvider>
       </PublishProvider>
-    </MarkupModeProvider>
+    </MarkupProvider>
   );
 };
 

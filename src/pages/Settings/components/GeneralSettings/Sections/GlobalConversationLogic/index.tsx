@@ -41,11 +41,14 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
   const { resumePrompt: resumePromptMeta, repeat: repeatMeta, restart: restartMeta, settings } = meta;
 
   const platformVoices = React.useMemo(() => {
-    const voices = getPlatformValue<string[]>(platform, {
-      [PlatformType.ALEXA]: Object.values(AlexaVoice),
-      [PlatformType.GOOGLE]: Object.values(GoogleVoice),
-      [PlatformType.GENERAL]: Object.values(GeneralVoice),
-    });
+    const voices = getPlatformValue<string[]>(
+      platform,
+      {
+        [PlatformType.ALEXA]: Object.values(AlexaVoice),
+        [PlatformType.GOOGLE]: Object.values(GoogleVoice),
+      },
+      Object.values(GeneralVoice)
+    );
 
     return voices.filter((voice) => voice !== 'audio');
   }, [platform]);

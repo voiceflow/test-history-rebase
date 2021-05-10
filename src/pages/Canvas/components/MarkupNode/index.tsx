@@ -1,15 +1,13 @@
 import cn from 'classnames';
-import _noop from 'lodash/noop';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
 import { BlockType } from '@/constants';
-import { usePermission } from '@/hooks';
 import { Markup } from '@/models';
 import NodeDragTarget from '@/pages/Canvas/components/Node/components/NodeDragTarget';
 import { useNodeDrag } from '@/pages/Canvas/components/Node/hooks';
-import { CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
-import { EngineContext, ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
+import { CANVAS_MARKUP_CREATING_CLASSNAME, ContextMenuTarget } from '@/pages/Canvas/constants';
+import { ContextMenuContext, EngineContext, ManagerContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
+import { useEditingMode } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { Border, Container, NodeStyles } from './components';
@@ -17,12 +15,14 @@ import { useMarkupInstance } from './hooks';
 import { ResizableMarkupNodeData } from './types';
 
 const MarkupNode = () => {
-  const isPresentationMode = React.useContext(PresentationModeContext);
-  const nodeEntity = React.useContext(NodeEntityContext)!;
-  const instance = useMarkupInstance<HTMLDivElement>();
-  const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
-  const [canUseMarkup] = usePermission(Permission.CANVAS_MARKUP);
+  const nodeEntity = React.useContext(NodeEntityContext)!;
+  const getManager = React.useContext(ManagerContext)!;
+  const contextMenu = React.useContext(ContextMenuContext)!;
+  const isPresentationMode = React.useContext(PresentationModeContext);
+
+  const instance = useMarkupInstance<HTMLDivElement>();
+  const isEditingMode = useEditingMode();
 
   const { node, data } = nodeEntity.useState((e) => {
     const resolved = e.resolve<Markup.AnyNodeData>();
@@ -34,23 +34,26 @@ const MarkupNode = () => {
   });
 
   const doubleClickHandler = () => {
-    if (canUseMarkup && !engine.markup.isActive) {
-      engine.markup.activate();
-      engine.setActive(node.id);
-    }
+    engine.setActive(node.id);
   };
 
   const { markupNode: NodeComponent } = getManager(nodeEntity.nodeType)!;
 
-  const skipClick = React.useCallback(() => !engine.markup.isActive, []);
-
   // for optimization reason using query selector to filter click events if markup is not opened
   const skipDrag = React.useCallback(() => !!document.getElementsByClassName(CANVAS_MARKUP_CREATING_CLASSNAME).length, []);
 
-  const { onClick, onMouseDown, onDragStart } = useNodeDrag({ skipClick, skipDrag });
+  const { onClick, onMouseDown, onDragStart } = useNodeDrag({ skipDrag });
 
-  // TODO: implement context menu
-  const onRightClick = React.useCallback(_noop, []);
+  const onRightClick = React.useCallback(
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
+
+      if (isEditingMode) {
+        contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
+      }
+    },
+    [isEditingMode]
+  );
 
   nodeEntity.useInstance(instance);
 

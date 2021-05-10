@@ -1,3 +1,5 @@
+import { isMac } from '@/config';
+
 export enum Hotkey {
   COPY = 'COPY',
   UNDO = 'UNDO',
@@ -6,25 +8,19 @@ export enum Hotkey {
   ZOOM_IN = 'ZOOM_IN',
   ZOOM_OUT = 'ZOOM_OUT',
   SPOTLIGHT = 'SPOTLIGHT',
-  CLOSE_SPOTLIGHT = 'CLOSE_SPOTLIGHT',
   ROOT_NODE = 'ROOT_NODE',
   LAUNCH_PAGE = 'LAUNCH_PAGE',
   DESIGN_PAGE = 'DESIGN_PAGE',
   USER_SPEECH = 'USER_SPEECH',
   OPEN_CMS_MODAL = 'OPEN_CMS_MODAL',
-  OPEN_FLOW_MENU = 'OPEN_FLOW_MENU',
-  OPEN_BLOCK_MENU = 'OPEN_BLOCK_MENU',
-  OPEN_VARIABLE_MENU = 'OPEN_VARIABLE_MENU',
-  OPEN_RESOURCES_DROPDOWN = 'OPEN_RESOURCES_DROPDOWN',
   TOGGLE_LEFT_SIDEBAR_LOCK = 'TOGGLE_LEFT_SIDEBAR_LOCK',
   CLOSE_LEFT_SIDEBAR = 'CLOSE_LEFT_SIDEBAR',
   OPEN_LEFT_SIDEBAR_STEPS_TAB = 'OPEN_LEFT_SIDEBAR_STEPS_TAB',
   OPEN_LEFT_SIDEBAR_FLOWS_TAB = 'OPEN_LEFT_SIDEBAR_FLOWS_TAB',
-  OPEN_MARKUP = 'OPEN_MARKUP',
   OPEN_COMMENTING = 'OPEN_COMMENTING',
   CLOSE_CANVAS_MODE = 'CLOSE_CANVAS_MODE',
-  SELECT_IMAGE_MARKUP = 'SELECT_IMAGE_MARKUP',
-  SELECT_TEXT_MARKUP = 'SELECT_TEXT_MARKUP',
+  ADD_MARKUP_TEXT = 'ADD_MARKUP_TEXT',
+  ADD_MARKUP_IMAGE = 'ADD_MARKUP_IMAGE',
   DUPLICATE = 'DUPLICATE',
   SHOW_HIDE_UI = 'SHOW_HIDE_UI',
   MOVE_FORWARD = 'MOVE_FORWARD',
@@ -34,44 +30,90 @@ export enum Hotkey {
   PROTOTYPE_FULL_SCREEN_TOGGLE = 'PROTOTYPE_FULL_SCREEN_TOGGLE',
 }
 
+enum SpecialKey {
+  ESC = 'esc',
+  LEFT = 'left',
+  META = 'meta',
+  CTRL = 'ctrl',
+  EQUAL = '=',
+  RIGHT = 'right',
+  SHIFT = 'shift',
+  SPACE = 'space',
+  DELETE = 'del',
+  BACKSPACE = 'backspace',
+}
+
 /**
  * syntax for keys can be found here:
  * https://craig.is/killing/mice
  */
-const HOTKEY_MAPPING = {
-  [Hotkey.COPY]: ['ctrl+c', 'meta+c'],
-  [Hotkey.UNDO]: ['ctrl+z', 'meta+z'],
-  [Hotkey.REDO]: ['ctrl+shift+z', 'meta+shift+z'],
-  [Hotkey.DELETE]: ['del', 'backspace'],
-  [Hotkey.ZOOM_IN]: ['=', 'shift+='],
-  [Hotkey.ZOOM_OUT]: ['-', 'shift+-'],
+const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
+  [Hotkey.COPY]: [`${SpecialKey.CTRL}+c`, `${SpecialKey.META}+c`],
+  [Hotkey.UNDO]: [`${SpecialKey.CTRL}+z`, `${SpecialKey.META}+z`],
+  [Hotkey.REDO]: [`${SpecialKey.CTRL}+${SpecialKey.SHIFT}+z`, `${SpecialKey.META}+${SpecialKey.SHIFT}+z`],
+  [Hotkey.DELETE]: [SpecialKey.DELETE, SpecialKey.BACKSPACE],
+  [Hotkey.ZOOM_IN]: [SpecialKey.EQUAL, `${SpecialKey.SHIFT}+${SpecialKey.EQUAL}`],
+  [Hotkey.ZOOM_OUT]: ['-', `${SpecialKey.SHIFT}+-`],
+  [Hotkey.TEST_MODE]: 't',
   [Hotkey.ROOT_NODE]: 's',
-  [Hotkey.SPOTLIGHT]: 'shift+space',
-  [Hotkey.CLOSE_SPOTLIGHT]: 'esc',
-  [Hotkey.USER_SPEECH]: 'space',
-  [Hotkey.OPEN_CMS_MODAL]: 'm',
-  [Hotkey.OPEN_FLOW_MENU]: 'shift+2',
-  [Hotkey.OPEN_BLOCK_MENU]: 'shift+1',
-  [Hotkey.OPEN_VARIABLE_MENU]: 'shift+3',
-  [Hotkey.OPEN_RESOURCES_DROPDOWN]: 'i',
+  [Hotkey.SPOTLIGHT]: `${SpecialKey.SHIFT}+${SpecialKey.SPACE}`,
+  [Hotkey.DUPLICATE]: [`${SpecialKey.CTRL}+d`, `${SpecialKey.META}+d`],
+  [Hotkey.USER_SPEECH]: SpecialKey.SPACE,
   [Hotkey.DESIGN_PAGE]: '1',
   [Hotkey.LAUNCH_PAGE]: '2',
-  [Hotkey.CLOSE_LEFT_SIDEBAR]: ['esc'],
+  [Hotkey.MOVE_FORWARD]: SpecialKey.RIGHT,
+  [Hotkey.SHOW_HIDE_UI]: [`${SpecialKey.CTRL}+\\`, `${SpecialKey.META}+\\`],
+  [Hotkey.MOVE_BACKWARD]: SpecialKey.LEFT,
+  [Hotkey.OPEN_CMS_MODAL]: 'm',
+  [Hotkey.OPEN_COMMENTING]: 'c',
+  [Hotkey.ADD_MARKUP_TEXT]: 'a',
+  [Hotkey.ADD_MARKUP_IMAGE]: 'i',
+  [Hotkey.CLOSE_CANVAS_MODE]: SpecialKey.ESC,
+  [Hotkey.CLOSE_LEFT_SIDEBAR]: SpecialKey.ESC,
   [Hotkey.TOGGLE_LEFT_SIDEBAR_LOCK]: ['/', '?'],
-  [Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB]: ['shift+,', ','],
-  [Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB]: ['shift+.', '.'],
-  [Hotkey.OPEN_MARKUP]: ['a'],
-  [Hotkey.OPEN_COMMENTING]: ['c'],
-  [Hotkey.CLOSE_CANVAS_MODE]: ['esc'],
-  [Hotkey.SELECT_IMAGE_MARKUP]: ['i'],
-  [Hotkey.SELECT_TEXT_MARKUP]: ['t'],
-  [Hotkey.DUPLICATE]: ['ctrl+d', 'meta+d'],
-  [Hotkey.SHOW_HIDE_UI]: ['ctrl+\\', 'meta+\\'],
-  [Hotkey.MOVE_FORWARD]: ['right'],
-  [Hotkey.MOVE_BACKWARD]: ['left'],
-  [Hotkey.TEST_MODE]: 't',
-  [Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN]: 'esc',
+  [Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB]: [',', `${SpecialKey.SHIFT}+,`],
+  [Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB]: ['.', `${SpecialKey.SHIFT}+.`],
+  [Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN]: SpecialKey.ESC,
   [Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE]: 'f',
 };
+
+const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {
+  [SpecialKey.ESC]: 'Esc',
+  [SpecialKey.LEFT]: '<',
+  [SpecialKey.META]: '⌘',
+  [SpecialKey.CTRL]: 'Ctrl',
+  [SpecialKey.EQUAL]: '+',
+  [SpecialKey.RIGHT]: '>',
+  [SpecialKey.SHIFT]: '⇧',
+  [SpecialKey.SPACE]: 'Space',
+  [SpecialKey.DELETE]: 'Del',
+  [SpecialKey.BACKSPACE]: 'Del',
+};
+
+export const PLATFORM_META_KEY = isMac ? SpecialKey.META : SpecialKey.CTRL;
+export const PLATFORM_META_KEY_LABEL = SPECIAL_KEY_LABEL[PLATFORM_META_KEY];
+
+const replaceSpecials = (label: string): string =>
+  (Object.keys(SPECIAL_KEY_LABEL) as SpecialKey[]).reduce<string>(
+    (acc, special) => acc.replace(special.toUpperCase(), SPECIAL_KEY_LABEL[special]),
+    label
+  );
+
+const getHotkeyLabel = (hotkey: Hotkey): string => {
+  let label = HOTKEY_MAPPING[hotkey];
+
+  if (Array.isArray(label)) {
+    const platformLabel = label.find((str) => str.includes(PLATFORM_META_KEY));
+
+    label = platformLabel ?? label[0];
+  }
+
+  return replaceSpecials(label.toUpperCase());
+};
+
+export const HOTKEY_LABEL_MAP = Object.values(Hotkey).reduce<Record<Hotkey, string>>(
+  (acc, hotkey) => Object.assign(acc, { [hotkey]: getHotkeyLabel(hotkey) }),
+  {} as Record<Hotkey, string>
+);
 
 export default HOTKEY_MAPPING;

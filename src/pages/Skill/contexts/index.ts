@@ -1,4 +1,4 @@
 export * from './ExportContext';
-export * from './MarkupModeContext';
+export * from './MarkupContext';
 export * from './NLPContext';
 export * from './PublishContext';

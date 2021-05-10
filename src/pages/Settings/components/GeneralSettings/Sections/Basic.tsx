@@ -165,22 +165,20 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
                 renderOptionLabel={(option) => option.name}
               />
             ),
-            // eslint-disable-next-line react/display-name
-            [PlatformType.GENERAL]: () => (
-              <Select
-                value={generalLocale}
-                options={GENERAL_LOCALES_OPTIONS}
-                disabled
-                onSelect={setGeneralLocale}
-                searchable
-                placeholder="Locale"
-                getOptionValue={(option) => option?.value || GeneralLocale.EN_US}
-                getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as GeneralLocale] ?? ''}
-                renderOptionLabel={(option) => option.name}
-              />
-            ),
           },
-          () => null
+          () => (
+            <Select
+              value={generalLocale}
+              options={GENERAL_LOCALES_OPTIONS}
+              disabled
+              onSelect={setGeneralLocale}
+              searchable
+              placeholder="Locale"
+              getOptionValue={(option) => option?.value || GeneralLocale.EN_US}
+              getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as GeneralLocale] ?? ''}
+              renderOptionLabel={(option) => option.name}
+            />
+          )
         )()}
       </Section>
     </>

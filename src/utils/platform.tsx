@@ -44,22 +44,24 @@ export const platformMissingValuesWarn = <T extends any>(valuesMap: Partial<Reco
   }
 };
 
+const DefaultPlatformComponent = () => <div>Platform Component is not found!</div>;
+
 export const createPlatformComponent = <T extends any>(
   name: string,
   components: Partial<Record<PlatformType, React.FC<T>>>,
-  defaultComponent: React.FC<T> = () => <div>Platform Component is not found!</div>,
-  skipWarning?: boolean
+  defaultComponent?: React.FC<T>,
+  skipWarning = !!defaultComponent
 ) => {
   platformMissingValuesWarn(components, `${name} component has missing components for platforms:`, skipWarning);
 
-  return connect(mapStateToProps)(getPlatformComponentSwitcher(components, defaultComponent)) as React.FC<T>;
+  return connect(mapStateToProps)(getPlatformComponentSwitcher(components, defaultComponent || DefaultPlatformComponent)) as React.FC<T>;
 };
 
 export const getPlatformValue = <T extends any>(
   platform: PlatformType,
   platformValues: Partial<Record<PlatformType, T>>,
   defaultValue?: T,
-  skipWarning?: boolean
+  skipWarning = !!defaultValue
 ) => {
   platformMissingValuesWarn(platformValues, "couldn't find platform values:", skipWarning);
 
@@ -73,8 +75,11 @@ export const defaultPlatformsData = <T,>(data: T) =>
   PLATFORMS.reduce<Record<PlatformType, T>>((acc, platform) => Object.assign(acc, { [platform]: data }), {} as Record<PlatformType, T>);
 
 export const getPlatformDefaultVoice = (platform: PlatformType) =>
-  getPlatformValue<string>(platform, {
-    [PlatformType.ALEXA]: AlexaVoice.ALEXA,
-    [PlatformType.GOOGLE]: GoogleVoice.DEFAULT,
-    [PlatformType.GENERAL]: GeneralVoice.DEFAULT,
-  });
+  getPlatformValue<string>(
+    platform,
+    {
+      [PlatformType.ALEXA]: AlexaVoice.ALEXA,
+      [PlatformType.GOOGLE]: GoogleVoice.DEFAULT,
+    },
+    GeneralVoice.DEFAULT
+  );

@@ -1,105 +1,47 @@
 import canvasPage from '../../pages/canvas';
-import markupModal from '../../pages/modals/markup';
-
-const markupMode = canvasPage.mode.markup;
 
 context('Canvas - Markup', () => {
-  beforeEach(() => cy.setup());
   afterEach(() => cy.teardown());
 
-  describe('starter plan', () => {
-    beforeEach(() => {
-      cy.createProject();
-      canvasPage.goToCanvas();
-    });
-
-    it('show upgrade modal if starter', () => {
-      canvasPage.el.markupModeControl.click();
-
-      markupModal.el.root.should('be.visible');
-    });
+  beforeEach(() => {
+    cy.setup();
+    cy.createProject();
+    canvasPage.goToCanvas();
   });
 
-  describe('pro plan navigate', () => {
-    beforeEach(() => {
-      cy.server();
-      cy.createProject();
-      cy.upgradeTestAccount('pro');
-      canvasPage.route.postDiagram().as('loadDiagram');
-    });
+  it('create new text markup', () => {
+    canvasPage.el.markupTextControl.click();
 
-    it('enter mode with controls', () => {
-      canvasPage.goToCanvas();
-      cy.wait('@loadDiagram');
+    canvasPage.el.canvas.click(500, 100);
 
-      canvasPage.el.markupModeControl.click();
+    canvasPage.el.markupText.should('be.visible').and('have.canvasFocus');
+    canvasPage.el.markupTextInput.type('madagascar');
 
-      cy.shouldBeOn(markupMode);
-    });
+    canvasPage.el.canvas.click(400, 100);
 
-    it('enter mode with hotkey', () => {
-      canvasPage.goToCanvas();
-      cy.wait('@loadDiagram');
-
-      cy.sendHotkey('a');
-
-      cy.shouldBeOn(markupMode);
-    });
-
-    it('navigate with URL', () => {
-      markupMode.goToCanvas();
-      cy.wait('@loadDiagram');
-
-      cy.shouldBeOn(markupMode);
-      canvasPage.el.escapeModePrompt.should('be.visible').and('have.text', 'esc to exit markup');
-      canvasPage.el.markupModeControl.find('.vf-svg-icon--close').should('be.visible');
-    });
+    canvasPage.el.markupText //
+      .should('have.length', 1)
+      .and('not.have.canvasFocus')
+      .and('contain.text', 'madagascar');
   });
 
-  describe('markup mode', () => {
-    // eslint-disable-next-line sonarjs/no-identical-functions
-    beforeEach(() => {
-      cy.server();
-      cy.createProject();
-      cy.upgradeTestAccount('pro');
-      canvasPage.route.postDiagram().as('loadDiagram');
-    });
+  it('create new image markup', () => {
+    cy.server({ method: 'POST' });
+    cy.route({ method: 'POST', url: /\/image/ }).as('upload-image');
 
-    it('create new text markup', () => {
-      markupMode.goToCanvas();
-      cy.wait('@loadDiagram');
+    canvasPage.el.markupImageControl.click();
 
-      markupMode.el.textMenuButton.click();
+    canvasPage.el.markupImageUpload.attachFile({ filePath: 'image.png' }, { subject: 'input', force: true });
 
-      canvasPage.el.canvas.click(100, 100);
+    cy.wait('@upload-image', { requestTimeout: 60000 });
+    cy.server({ enable: false });
 
-      markupMode.el.markupText.should('be.visible').and('have.canvasFocus');
-      markupMode.el.markupTextInput.type('madagascar');
-
-      canvasPage.el.canvas.click(200, 200);
-
-      markupMode.el.markupText //
-        .should('have.length', 1)
-        .and('not.have.canvasFocus')
-        .and('contain.text', 'madagascar');
-    });
-
-    it.skip('create new image markup', () => {
-      markupMode.goToCanvas();
-      cy.wait('@loadDiagram');
-
-      markupMode.el.imageMenuButton.click();
-
-      markupMode.el.imageUpload.attachFile({
-        filePath: 'image.png',
-      });
-
-      markupMode.el.markupImage //
-        .should('have.length', 1)
-        .and('not.have.canvasFocus')
-        .children()
-        .eq(0)
-        .should('have.attr', 'height', '200px');
-    });
+    canvasPage.el.markupImage //
+      .should('have.length', 1)
+      .children()
+      .eq(0)
+      .children()
+      .eq(0)
+      .should('have.attr', 'height', '256');
   });
 });

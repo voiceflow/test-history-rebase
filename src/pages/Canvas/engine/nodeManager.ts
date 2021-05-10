@@ -3,7 +3,7 @@ import _partition from 'lodash/partition';
 import { batch } from 'react-redux';
 
 import { FeatureFlag } from '@/config/features';
-import { BlockType, MARKUP_NODES } from '@/constants';
+import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
@@ -17,6 +17,7 @@ import { Coords } from '@/utils/geometry';
 import { isCommandNode } from '@/utils/node';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 import reduxBatchUndo from '@/utils/reduxBatchUndo';
+import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import { EngineConsumer, nodeFactory } from './utils';
 
@@ -27,7 +28,7 @@ class NodeManager extends EngineConsumer {
     add: (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor) => {
       if (node.type === BlockType.COMMENT) {
         this.dispatch(Creator.addNode(node, data));
-      } else if (MARKUP_NODES.includes(node.type)) {
+      } else if (isMarkupBlockType(node.type)) {
         this.dispatch(Creator.addNode(node, data));
       } else {
         this.dispatch(Creator.addWrappedNode(node, data, parentNode));
@@ -594,7 +595,7 @@ class NodeManager extends EngineConsumer {
     const node = this.engine.getNodeByID(nodeID);
     const center = this.api(nodeID)?.instance?.getCenterPoint();
 
-    if (!center || MARKUP_NODES.includes(node.type)) return;
+    if (!center || isMarkupBlockType(node.type)) return;
 
     this.engine.center(center, animate);
 

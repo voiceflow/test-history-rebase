@@ -1,7 +1,8 @@
 import { CANVAS_SHIFT_PRESSED_CLASSNAME } from '@/components/Canvas/constants';
-import { MarkupModeType } from '@/constants';
+import { BlockType } from '@/constants';
 import { css, styled } from '@/hocs';
-import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_CREATING_CLASSNAME, CANVAS_MARKUP_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
+import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
+import { Identifier } from '@/styles/constants';
 
 import { SLATE_EDITOR_CLASS_NAME } from '../../constants';
 import Border from './Border';
@@ -17,24 +18,24 @@ export const Container = styled.div<{ editable?: boolean; activated?: boolean; i
   font-family: Open Sans;
   font-weight: 400;
 
+  &:hover {
+    cursor: grab;
+  }
+
   .${SLATE_EDITOR_CLASS_NAME} {
     border: solid 10px transparent;
     pointer-events: none;
-  }
-
-  .${CANVAS_MARKUP_ENABLED_CLASSNAME} &:hover {
-    cursor: grab;
   }
 
   .${CANVAS_SHIFT_PRESSED_CLASSNAME} &:hover {
     cursor: pointer;
   }
 
-  .${CANVAS_MARKUP_ENABLED_CLASSNAME}:not(.${CANVAS_DRAGGING_CLASSNAME}) &:not(:focus-within):hover ${Border} {
+  #${Identifier.CANVAS_CONTAINER}:not(.${CANVAS_DRAGGING_CLASSNAME}) &:not(:focus-within):hover ${Border} {
     color: #5d9df5;
   }
 
-  .${CANVAS_MARKUP_CREATING_CLASSNAME}[data-markup="${MarkupModeType.TEXT}"] & {
+  .${CANVAS_MARKUP_CREATING_CLASSNAME}[data-markup-creating-type="${BlockType.MARKUP_TEXT}"] & {
     &:hover ${Border} {
       color: #5d9df5;
     }
@@ -66,7 +67,7 @@ export const Container = styled.div<{ editable?: boolean; activated?: boolean; i
       }
     `}
 
-  .${CANVAS_MARKUP_ENABLED_CLASSNAME}.${CANVAS_DRAGGING_CLASSNAME} & {
+  .${CANVAS_DRAGGING_CLASSNAME} & {
     ${({ activated, focused }) =>
       activated &&
       focused &&

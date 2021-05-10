@@ -47,43 +47,47 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
     }
   }, [job?.status]);
 
-  const ExportPopup = getPlatformValue(platform, {
-    [PlatformType.ALEXA]: Alexa,
-    [PlatformType.GOOGLE]: Google,
-    [PlatformType.GENERAL]: General,
-  });
+  const ExportPopup = getPlatformValue(
+    platform,
+    {
+      [PlatformType.ALEXA]: Alexa,
+      [PlatformType.GOOGLE]: Google,
+    },
+    General
+  );
 
   return (
     <ContentContainer>
       <ContentSection>
         <Section title="Runtime Export">
           <Text>
-            {getPlatformValue(platform, {
-              [PlatformType.ALEXA]: (
-                <>
-                  Upload to Alexa and generate an executable project version to run on your own infrastructure.
-                  <LinkContainer>
-                    <Link href="https://github.com/voiceflow/alexa-runtime#configurations">Learn More</Link>
-                  </LinkContainer>
-                </>
-              ),
-              [PlatformType.GOOGLE]: (
-                <>
-                  Upload to Google and generate an executable project version to run on your own infrastructure.
-                  <LinkContainer>
-                    <Link href="https://github.com/voiceflow/google-runtime#configurations">Learn More</Link>
-                  </LinkContainer>
-                </>
-              ),
-              [PlatformType.GENERAL]: (
-                <>
-                  Generate an executable project version to run on your own infrastructure.
-                  <LinkContainer>
-                    <Link href="https://github.com/voiceflow/general-runtime#configurations">Learn More</Link>
-                  </LinkContainer>
-                </>
-              ),
-            })}
+            {getPlatformValue(
+              platform,
+              {
+                [PlatformType.ALEXA]: (
+                  <>
+                    Upload to Alexa and generate an executable project version to run on your own infrastructure.
+                    <LinkContainer>
+                      <Link href="https://github.com/voiceflow/alexa-runtime#configurations">Learn More</Link>
+                    </LinkContainer>
+                  </>
+                ),
+                [PlatformType.GOOGLE]: (
+                  <>
+                    Upload to Google and generate an executable project version to run on your own infrastructure.
+                    <LinkContainer>
+                      <Link href="https://github.com/voiceflow/google-runtime#configurations">Learn More</Link>
+                    </LinkContainer>
+                  </>
+                ),
+              },
+              <>
+                Generate an executable project version to run on your own infrastructure.
+                <LinkContainer>
+                  <Link href="https://github.com/voiceflow/general-runtime#configurations">Learn More</Link>
+                </LinkContainer>
+              </>
+            )}
           </Text>
 
           <ActionContainer>

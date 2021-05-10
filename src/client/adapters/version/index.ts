@@ -11,11 +11,14 @@ import googleVersionAdapter from './google';
 
 const versionAdapter = createAdapter<Version<VersionPlatformData>, FullSkill<string>, [{ platform: PlatformType }]>(
   (version, { platform = PlatformType.ALEXA }) => {
-    const adapter = getPlatformValue<BidirectionalAdapter<Version<any, any, any>, FullSkill<any>, [], []>>(platform, {
-      [PlatformType.ALEXA]: alexaVersionAdapter,
-      [PlatformType.GOOGLE]: googleVersionAdapter,
-      [PlatformType.GENERAL]: generalVersionAdapter,
-    });
+    const adapter = getPlatformValue<BidirectionalAdapter<Version<any, any, any>, FullSkill<any>, [], []>>(
+      platform,
+      {
+        [PlatformType.ALEXA]: alexaVersionAdapter,
+        [PlatformType.GOOGLE]: googleVersionAdapter,
+      },
+      generalVersionAdapter
+    );
 
     return adapter.fromDB(version);
   },

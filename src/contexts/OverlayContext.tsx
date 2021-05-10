@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { withContext } from '@/hocs/withContext';
+import { useContextApi } from '@/hooks/cache';
 
 export type OverlayValue<T extends HTMLElement | Document = Document> = {
   canOpen: () => boolean;
@@ -29,7 +30,7 @@ export const OverlayProvider = <T extends HTMLElement | Document = Document>({
     setHandler(null);
   }, []);
 
-  const value: OverlayValue<T> = { canOpen, dismiss, rootNode, setHandler };
+  const value = useContextApi<OverlayValue<T>>({ canOpen, dismiss, rootNode, setHandler });
 
   return <OverlayContext.Provider value={value}>{children}</OverlayContext.Provider>;
 };

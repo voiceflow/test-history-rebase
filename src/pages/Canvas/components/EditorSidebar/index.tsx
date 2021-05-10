@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import Drawer from '@/components/Drawer';
 import { RemoveIntercom } from '@/components/IntercomChat';
-import { BlockType, MARKUP_NODES } from '@/constants';
+import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import { useEnableDisable, useTheme } from '@/hooks';
@@ -14,6 +14,7 @@ import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
 import { useEditingMode } from '@/pages/Skill/hooks';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut';
 import { stopImmediatePropagation } from '@/utils/dom';
+import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import EditorModal from './components/EditorModal';
 import { SidebarProvider } from './contexts';
@@ -39,7 +40,7 @@ const EditSidebar = () => {
   const updateData = useUpdateData(node?.id);
   const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
 
-  const isMarkup = !!node && MARKUP_NODES.includes(node?.type);
+  const isMarkup = !!node && isMarkupBlockType(node.type);
 
   let editor = null;
 

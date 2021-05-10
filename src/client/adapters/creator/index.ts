@@ -2,10 +2,11 @@ import { Block, Diagram, DiagramNode, NodeID } from '@voiceflow/api-sdk';
 import _isString from 'lodash/isString';
 
 import { createSimpleAdapter } from '@/client/adapters/utils';
-import { DIAGRAM_REFERENCE_NODES, MARKUP_NODES, PlatformType } from '@/constants';
+import { BlockType, PlatformType } from '@/constants';
 import { CreatorDiagram, Link, Node, NodeData, Port } from '@/models';
 import { denormalize, Normalized } from '@/utils/normalized';
 import { getCurrentTimestamp } from '@/utils/time';
+import { isDiagramReferencesBlockType, isMarkupBlockType } from '@/utils/typeGuards';
 
 import { cleanupDBNodes } from './cleanup';
 import nodeAdapter from './node';
@@ -65,7 +66,7 @@ const creatorAdapter = createSimpleAdapter<
         portIDs.add(port.id);
       });
 
-      if (MARKUP_NODES.includes(node.type)) {
+      if (isMarkupBlockType(node.type)) {
         markupNodeIDs.push(node.id);
         return;
       }
@@ -147,14 +148,15 @@ const creatorAdapter = createSimpleAdapter<
       ),
     };
 
-    const children = Array.from(
-      Object.values(diagram.nodes).reduce((acc, node: any) => {
-        if (DIAGRAM_REFERENCE_NODES.includes(node.type) && _isString(node.data?.diagramID)) {
+    const children = [
+      ...Object.values(diagram.nodes).reduce((acc, node) => {
+        if (isDiagramReferencesBlockType(node.type as BlockType) && _isString(node.data?.diagramID)) {
           acc.add(node.data.diagramID);
         }
+
         return acc;
-      }, new Set<string>())
-    );
+      }, new Set<string>()),
+    ];
 
     return { ...diagram, children };
   }

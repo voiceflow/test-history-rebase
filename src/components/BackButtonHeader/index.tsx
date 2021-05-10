@@ -11,7 +11,6 @@ import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ProgressStage } from '@/pages/Publish/Upload/components';
 import { PublishContext } from '@/pages/Skill/contexts';
-import { useMarkupMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import ArrowLeftIcon from '@/svgs/arrow-left.svg';
 import { ConnectedProps } from '@/types';
@@ -41,16 +40,8 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHead
   isViewerOrLibraryRole,
 }) => {
   const publishContextValue = React.useContext(PublishContext)!;
-  const isMarkupMode = useMarkupMode();
 
-  useHotKeys(
-    Hotkey.TEST_MODE,
-    () => {
-      if (!isMarkupMode) goToPrototype();
-    },
-    { preventDefault: true },
-    [isMarkupMode]
-  );
+  useHotKeys(Hotkey.TEST_MODE, () => goToPrototype(), { preventDefault: true });
   useHotKeys(Hotkey.DESIGN_PAGE, () => goToDesign());
   useHotKeys(Hotkey.LAUNCH_PAGE, () => !isViewerOrLibraryRole && goToPublish());
 

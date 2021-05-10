@@ -3,7 +3,18 @@ import React from 'react';
 import { ModalType } from '@/constants';
 import { ModalContextType, ModalsContext } from '@/contexts';
 
-export const useModals = <T extends object = {}>(modalId: ModalType) => {
+export interface ModalActions<T extends object = {}> {
+  fade: boolean;
+  data: T;
+  open: (data?: T, onClose?: (() => void) | undefined) => void;
+  close: () => void;
+  toggle: (data?: T, onClose?: (() => void) | undefined) => void;
+  update: (data?: any) => void;
+  isOpened: boolean;
+  isInStack: boolean;
+}
+
+export const useModals = <T extends object = {}>(modalId: ModalType): ModalActions<T> => {
   const { fade, open, close, update, toggle, openedId, modalData, stackModalIds } = React.useContext(ModalsContext) as NonNullable<
     ModalContextType<T>
   >;

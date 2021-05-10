@@ -24,7 +24,6 @@ import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
 import ImportModal from '@/pages/Dashboard/components/ImportModal';
 import {
   CanvasExportModal,
-  CanvasMarkupModal,
   ImportBulkDeniedModal,
   ProjectDownloadModal,
   ProjectLimitModal,
@@ -64,7 +63,6 @@ const App = () => {
       <ProjectLimitModal />
       <RealtimeDeniedModal />
       <ImportBulkDeniedModal />
-      <CanvasMarkupModal />
       <PaymentModal />
       <RefreshModal />
       <LoginModal />

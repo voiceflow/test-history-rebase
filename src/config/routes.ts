@@ -124,7 +124,6 @@ export const Path = {
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH),
   PROJECT_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS),
 
-  CANVAS_MARKUP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MARKUP),
   CANVAS_COMMENTING: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.COMMENTING),
   CANVAS_MODEL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType?'),
   CANVAS_MODEL_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType', ':modelEntityID?'),

@@ -60,7 +60,6 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.CLONE_PROJECT]: [UserRole.LIBRARY],
 
   [Permission.EDIT_CANVAS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
-  [Permission.CANVAS_MARKUP]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
   [Permission.CANVAS_REALTIME]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
   [Permission.COMMENTING]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
   [Permission.SHARE_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
@@ -78,7 +77,6 @@ const ALL_BUT_STARTER_PERMISSIONS = ALL_PERMISSIONS.filter((plan) => plan !== Pl
 const PTE_PERMISSIONS = [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE];
 
 export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
-  [Permission.CANVAS_MARKUP]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.CANVAS_EXPORT]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.COMMENTING]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
   [Permission.BULK_UPLOAD]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],

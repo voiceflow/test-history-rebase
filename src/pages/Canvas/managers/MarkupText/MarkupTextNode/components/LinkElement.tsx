@@ -2,7 +2,6 @@ import React from 'react';
 import { RenderElementProps } from 'slate-react';
 
 import { styled } from '@/hocs';
-import { EngineContext } from '@/pages/Canvas/contexts';
 
 const ClickableLink = styled.span`
   display: inline;
@@ -15,15 +14,13 @@ const ClickableLink = styled.span`
 `;
 
 const LinkElement: React.FC<RenderElementProps> = ({ attributes, children, element }) => {
-  const engine = React.useContext(EngineContext)!;
-
   const href = element.url as string;
 
   const onClick = React.useCallback(
     (event: React.MouseEvent) => {
       const withoutExtraKeys = !(event.metaKey || event.ctrlKey || event.shiftKey);
 
-      if (!engine.markup.isActive || withoutExtraKeys) {
+      if (withoutExtraKeys) {
         event.stopPropagation();
         event.preventDefault();
       }

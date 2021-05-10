@@ -1,5 +1,5 @@
 import { css, styled } from '@/hocs';
-import { CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
+import { CANVAS_COMMENTING_ENABLED_CLASSNAME, CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 
 export type ContainerProps = {
   isText: boolean;
@@ -27,6 +27,10 @@ const Container = styled.div<ContainerProps>`
     `}
 
   .${CANVAS_MARKUP_CREATING_CLASSNAME} & {
+    pointer-events: none;
+  }
+
+  .${CANVAS_COMMENTING_ENABLED_CLASSNAME} & {
     pointer-events: none;
   }
 `;

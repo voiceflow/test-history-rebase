@@ -1,8 +1,8 @@
-import { MARKUP_NODES, ROOT_NODES } from '@/constants';
 import { SelectionMarqueeAPI } from '@/pages/Canvas/types';
 import { Point } from '@/types';
 import { diff } from '@/utils/array';
 import { buildVirtualDOMRect } from '@/utils/dom';
+import { isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
 import { CANVAS_SELECTING_GROUP_CLASSNAME } from '../constants';
 import { EngineConsumer, getCandidates, NodeCandidate } from './utils';
@@ -24,13 +24,7 @@ class GroupSelectionEngine extends EngineConsumer<{ selectionMarquee: SelectionM
     this.engine.addClass(CANVAS_SELECTING_GROUP_CLASSNAME);
     this.mouseOrigin = origin;
     this.candidates = getCandidates(
-      Array.from(this.engine.nodes.keys()).filter((nodeID) => {
-        const node = this.engine.getNodeByID(nodeID);
-        if (this.engine.markup.isActive) {
-          return MARKUP_NODES.includes(node.type);
-        }
-        return ROOT_NODES.includes(node.type);
-      }),
+      [...this.engine.nodes.keys()].filter((nodeID) => isRootOrMarkupBlockType(this.engine.getNodeByID(nodeID).type)),
       this.engine
     );
 

@@ -5,7 +5,6 @@ import {
   CANVAS_ACTIVATION_CLASSNAME,
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
   CANVAS_CREATING_LINK_CLASSNAME,
-  CANVAS_MARKUP_ENABLED_CLASSNAME,
   CANVAS_PROTOTYPE_RUNNING_CLASSNAME,
   CANVAS_SELECTING_GROUP_CLASSNAME,
   CANVAS_THREAD_OPEN_CLASSNAME,
@@ -114,10 +113,6 @@ const BlockContainer = styled.div<BlockContainerProps>`
     :not(.${NODE_MERGE_TARGET_CLASSNAME}) &:hover {
       opacity: 1;
     }
-  }
-
-  .${CANVAS_MARKUP_ENABLED_CLASSNAME} & {
-    pointer-events: none !important;
   }
 
   ${MemberIcon} {

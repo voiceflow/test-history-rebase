@@ -1,4 +1,3 @@
-import { MARKUP_NODES } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { Link, Node, NodeData, PartialModel, Port } from '@/models';
 import { findUnion, reorder, withoutValue } from '@/utils/array';
@@ -12,6 +11,7 @@ import {
   safeAdd,
   updateNormalizedByKey,
 } from '@/utils/normalized';
+import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import { nodeFactory, portFactory } from './factories';
 import { DataDescriptor, DiagramState, NodeDescriptor } from './types';
@@ -150,7 +150,7 @@ export const removePortFromBlockInState = (portID: string) =>
 export const removeAllPortsFromBlocksInState = (portIDs: string[]) => compose(...portIDs.map(removePortFromBlockInState));
 
 export const updateRootNodesInState = (nodeID: string, nodePatch: Partial<Node>) => (state: DiagramState) =>
-  !MARKUP_NODES.includes(nodePatch.type ?? getNormalizedByKey(state.nodes, nodeID).type) && 'parentNode' in nodePatch
+  !isMarkupBlockType(nodePatch.type ?? getNormalizedByKey(state.nodes, nodeID).type) && 'parentNode' in nodePatch
     ? {
         ...state,
         rootNodeIDs: nodePatch.parentNode ? withoutValue(state.rootNodeIDs, nodeID) : safeAdd(state.rootNodeIDs, nodeID),
@@ -158,7 +158,7 @@ export const updateRootNodesInState = (nodeID: string, nodePatch: Partial<Node>)
     : state;
 
 export const addNodeToMarkupNodes = (nodeID: string, node: Node) => (state: DiagramState) =>
-  MARKUP_NODES.includes(node.type)
+  isMarkupBlockType(node.type)
     ? {
         ...state,
         markupNodeIDs: safeAdd(state.markupNodeIDs, nodeID),

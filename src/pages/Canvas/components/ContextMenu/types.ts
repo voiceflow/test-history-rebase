@@ -1,19 +1,28 @@
+import { BlockVariant } from '@/constants/canvas';
+import { ModalActions } from '@/hooks';
 import { ContextMenuValue } from '@/pages/Canvas/contexts';
 import { ClipboardContextValue } from '@/pages/Canvas/contexts/ClipboardContext';
 import type { Engine } from '@/pages/Canvas/engine';
+import { MarkupContextType } from '@/pages/Skill/contexts';
 
-export type ContextMenuOption<T> = {
+export interface OptionProps {
+  engine: Engine;
+  markup: MarkupContextType;
+  clipboard: ClipboardContextValue;
+  blockColor?: BlockVariant;
+  isTemplate?: boolean;
+  upgradeModal: ModalActions;
+  toggleCanvasOnly: () => void;
+  showHintFeatures: boolean;
+  canUseCommenting: boolean;
+}
+
+export interface ContextMenuOption<T> {
   value: T;
   label: string;
-
-  shouldRender?: (
-    contextMenu: ContextMenuValue,
-    props: {
-      engine: Engine;
-      clipboard: ClipboardContextValue;
-      isTemplate: boolean;
-    }
-  ) => boolean;
-
+  hotkey?: string;
   options?: ContextMenuOption<any>[];
-};
+  menuItemProps?: { divider?: boolean };
+
+  shouldRender?: (contextMenu: ContextMenuValue, props: OptionProps) => boolean;
+}

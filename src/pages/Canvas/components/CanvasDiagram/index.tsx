@@ -1,11 +1,12 @@
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
+import { NativeTypes } from 'react-dnd-html5-backend';
 import { useSelector } from 'react-redux';
 
 import Canvas from '@/components/Canvas';
 import Crosshair from '@/components/Crosshair';
-import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, MarkupModeType } from '@/constants';
+import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { canvasNavigationSelector } from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { NodeData } from '@/models';
@@ -16,7 +17,7 @@ import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import SelectionMarquee from '@/pages/Canvas/components/SelectionMarquee';
 import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
 import { ContextMenuContext, EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
-import { MarkupModeContext } from '@/pages/Skill/contexts';
+import { MarkupContext } from '@/pages/Skill/contexts';
 import { useCommentingMode, useEditingMode } from '@/pages/Skill/hooks';
 import { activeDiagramViewportSelector } from '@/store/selectors';
 import { Viewport } from '@/types';
@@ -33,12 +34,13 @@ type ConnectedCanvasDiagramProps = {
   viewport: Viewport;
 };
 
+const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU];
+
 const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const engine = React.useContext(EngineContext)!;
+  const markup = React.useContext(MarkupContext)!;
   const focusThread = React.useContext(FocusThreadContext)!;
-
   const contextMenu = React.useContext(ContextMenuContext)!;
-  const { modeType: markupModeType, isCreating: isMarkupCreating, finishCreating: finishMarkupCreating } = React.useContext(MarkupModeContext)!;
 
   const isEditingMode = useEditingMode();
   const isCommentingMode = useCommentingMode();
@@ -60,10 +62,10 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         return;
       }
 
-      if (isMarkupCreating && markupModeType === MarkupModeType.TEXT) {
+      if (markup.creatingType && markup.creatingType === BlockType.MARKUP_TEXT) {
         await engine.markup.addTextNode();
 
-        finishMarkupCreating();
+        markup.finishCreating();
       }
 
       if (isCommentingMode && !engine.comment.hasTarget) {
@@ -75,7 +77,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         }
       }
     },
-    [isCommentingMode, isMarkupCreating, markupModeType]
+    [isCommentingMode, markup]
   );
 
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
@@ -86,12 +88,17 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   );
 
   const [, connectBlockDrop] = useDrop<
-    { clientOffset: { x: number; y: number }; blockType: BlockType; factoryData?: Partial<NodeData<unknown>>; type: string },
+    { files?: File[]; clientOffset: { x: number; y: number }; blockType: BlockType; factoryData?: Partial<NodeData<unknown>>; type: string },
     {},
     {}
   >({
-    accept: DragItem.BLOCK_MENU,
-    drop: async ({ clientOffset, blockType, factoryData }, monitor) => {
+    accept: DROP_TYPES,
+    drop: async ({ clientOffset, blockType, factoryData, files }, monitor) => {
+      if (files) {
+        markup.addImages(files);
+        return;
+      }
+
       if (monitor.didDrop() && monitor.getDropResult().captured) return;
 
       const { x: mouseX, y: mouseY } = monitor.getClientOffset() || clientOffset;

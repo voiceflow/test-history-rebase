@@ -1,7 +1,7 @@
-import { MARKUP_NODES } from '@/constants';
 import { CANVAS_MARKUP_TRANSFORMING_CLASSNAME } from '@/pages/Canvas/constants';
 import { TransformOverlayAPI } from '@/pages/Canvas/types';
 import { Pair } from '@/types';
+import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import { EngineConsumer } from './utils';
 
@@ -16,7 +16,7 @@ class TransformationEngine extends EngineConsumer<{ transformOverlay: TransformO
     const nodeID = this.engine.focus.getTarget();
     const node = nodeID && this.engine.getNodeByID(nodeID);
 
-    return this.isActive && node && MARKUP_NODES.includes(node.type) ? nodeID : null;
+    return this.isActive && node && isMarkupBlockType(node.type) ? nodeID : null;
   }
 
   isTarget(nodeID: string) {

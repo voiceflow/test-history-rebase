@@ -12,9 +12,8 @@ import { ManagerProvider } from '@/pages/Canvas/contexts';
 import { getManager } from '@/pages/Canvas/managers';
 import PrototypeOverlay from '@/pages/Prototype/components/PrototypeOverlay';
 import ReadOnlyBadge from '@/pages/Prototype/components/ReadOnlyBadge';
-import { useAnyModeOpen, useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
+import { useAnyModeOpen, usePrototypingMode } from '@/pages/Skill/hooks';
 import DesignMenu from '@/pages/Skill/menus/DesignMenu';
-import MarkupMenu from '@/pages/Skill/menus/MarkupMenu';
 import { ConnectedProps } from '@/types';
 
 import DiagramSync from './DiagramSync';
@@ -27,7 +26,6 @@ export type DiagramProps = RouteComponentProps & {
 
 const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, canvasOnly }) => {
   const engine = useEventualEngine();
-  const isMarkupMode = useMarkupMode();
   const isDesignMode = !useAnyModeOpen();
   const isPrototypingMode = usePrototypingMode();
 
@@ -56,13 +54,6 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, ca
           <>
             <DesignMenu />
             <FlowControls render={!canvasOnly} />
-          </>
-        )}
-
-        {/* markup mode */}
-        {isMarkupMode && (
-          <>
-            <MarkupMenu />
             <MarkupImageLoading />
           </>
         )}

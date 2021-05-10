@@ -1,3 +1,4 @@
+import { BlockType } from '../../src/constants';
 import { ClassName, ExternalClassName, Identifier } from '../../src/styles/constants';
 
 export default {
@@ -44,8 +45,11 @@ export default {
     get commentingModeControl() {
       return cy.get(`.${ClassName.COMMENTING_MODE} button`);
     },
-    get markupModeControl() {
-      return cy.get(`.${ClassName.MARKUP_MODE} button`);
+    get markupTextControl() {
+      return cy.get(`.${ClassName.CANVAS_CONTROL}--markup-text button`);
+    },
+    get markupImageControl() {
+      return cy.get(`.${ClassName.CANVAS_CONTROL}--markup-image button`);
     },
     get designMenu() {
       return cy.get(`#${Identifier.DESIGN_MENU}`);
@@ -91,6 +95,18 @@ export default {
     get startPrototypeButton() {
       return cy.get('#vf-prototype__start');
     },
+    get markupText() {
+      return cy.get(`.${ClassName.CANVAS_NODE}--${BlockType.MARKUP_TEXT}`);
+    },
+    get markupTextInput() {
+      return this.markupText.find('.slate-editor');
+    },
+    get markupImage() {
+      return cy.get(`.${ClassName.CANVAS_NODE}--${BlockType.MARKUP_IMAGE}`);
+    },
+    get markupImageUpload() {
+      return cy.get('body input[type="file"]');
+    },
   },
 
   mode: {
@@ -129,41 +145,6 @@ export default {
 
       meta: {
         route: /project\/.*\/canvas\/.*?\/commenting/,
-      },
-    },
-
-    markup: {
-      goToCanvas: () => cy.getSession().then(({ versionID, diagramID }) => cy.visit(`/project/${versionID}/canvas/${diagramID}/markup`)),
-
-      el: {
-        get menu() {
-          return cy.get('#vf-markup-menu');
-        },
-        get menuButton() {
-          return this.menu.find('button');
-        },
-        get textMenuButton() {
-          return this.menuButton.eq(0);
-        },
-        get imageMenuButton() {
-          return this.menuButton.eq(1);
-        },
-        get markupText() {
-          return cy.get('.vf-canvas__node--markup_text');
-        },
-        get markupTextInput() {
-          return this.markupText.find('.slate-editor');
-        },
-        get markupImage() {
-          return cy.get('.vf-canvas__node--markup_image');
-        },
-        get imageUpload() {
-          return cy.get('input[type="file"]');
-        },
-      },
-
-      meta: {
-        route: /project\/.*\/canvas\/.*?\/markup/,
       },
     },
   },

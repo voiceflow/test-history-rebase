@@ -1,0 +1,202 @@
+import React from 'react';
+
+import { toast } from '@/components/Toast';
+import { Permission } from '@/config/permissions';
+import { BlockType, MarkupBlockType } from '@/constants';
+import { useCache, useContextApi, useDidUpdateEffect, useEventualEngine, usePermission, useTrackingEvents, useUpload } from '@/hooks';
+import { Markup, NodeData } from '@/models';
+import { useAnyModeOpen } from '@/pages/Skill/hooks';
+import { ClassName, Identifier } from '@/styles/constants';
+import { Nullable } from '@/types';
+import { asyncForEach } from '@/utils/array';
+import { upload } from '@/utils/dom';
+import { imageSizeFromUrl } from '@/utils/file';
+
+const FILE_LIMIT = 2 ** 20 * 4; // 2 ** 20 === 1 mb
+const ALLOWED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png'];
+
+export type MarkupContextType = {
+  imageLimit: number;
+  creatingType: Nullable<MarkupBlockType>;
+  imageAcceptedTypes: string[];
+
+  addImages: (files: Nullable<FileList | File[]>) => Promise<void>;
+  finishCreating: () => void;
+  startTextCreation: () => void;
+  startMarkupSession: () => void;
+  finishMarkupSession: () => void;
+  triggerImagesUpload: () => void;
+};
+
+export const MarkupContext = React.createContext<Nullable<MarkupContextType>>(null);
+export const { Consumer: MarkupConsumer } = MarkupContext;
+
+export const MarkupProvider: React.FC = ({ children }) => {
+  const getEngine = useEventualEngine();
+  const isAnyModeOpen = useAnyModeOpen();
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [creatingType, localSetCreatingType] = React.useState<Nullable<MarkupBlockType>>(null);
+
+  const { onUpload: onUploadImage, isLoading: isImageUploading } = useUpload({ fileType: 'image', clientFunc: 'uploadImage' });
+
+  const cache = useCache({ getEngine, isAnyModeOpen, canEditCanvas, isImageUploading });
+
+  const startTimeCache = React.useRef(0);
+
+  const [trackEvents] = useTrackingEvents();
+
+  const setCreatingType = React.useCallback((type: Nullable<MarkupBlockType>) => {
+    const engine = cache.current.getEngine();
+    const isNextCreating = !!type;
+
+    engine?.canvas?.setBusy(isNextCreating);
+    engine?.markup.setCreatingType(type);
+
+    localSetCreatingType(type);
+  }, []);
+
+  const finishCreating = React.useCallback(() => setCreatingType(null), []);
+
+  const addImages = React.useCallback(async (files: Nullable<FileList | File[]>) => {
+    if (!cache.current.canEditCanvas || !files || !files[0]) {
+      return;
+    }
+
+    const allowedFiles = Array.from(files).filter((file) => ALLOWED_IMAGE_TYPES.includes(`.${file.type.split('/')[1]}`) && file.size <= FILE_LIMIT);
+
+    if (!allowedFiles.length) {
+      toast.error('The file must be less then 4MB');
+      return;
+    }
+
+    setCreatingType(BlockType.MARKUP_IMAGE);
+
+    const engine = cache.current.getEngine()!;
+
+    await asyncForEach(allowedFiles, async (file) => {
+      try {
+        const imageURL = await onUploadImage(null, file);
+        const imageSize = await imageSizeFromUrl(imageURL);
+
+        const rect = engine.canvas!.getRect();
+        const zoom = engine.canvas!.getZoom();
+        const [x, y] = engine.canvas!.getPosition();
+        const offsetX = 0 - x / zoom + (rect.width / zoom - imageSize.width) / 2;
+        const offsetY = 0 - y / zoom + (rect.height / zoom - imageSize.height) / 2;
+
+        const nodeData: Markup.NodeData.Image = { url: imageURL, width: imageSize.width, height: imageSize.height, rotate: 0 };
+
+        engine.node.add(BlockType.MARKUP_IMAGE, engine.canvas!.toCoords([offsetX, offsetY]), nodeData as NodeData<Markup.NodeData.Image>);
+      } catch {
+        toast.error('There was an error');
+      }
+    });
+
+    setCreatingType(null);
+  }, []);
+
+  const startMarkupSession = React.useCallback(() => {
+    trackEvents.trackMarkupOpen();
+    startTimeCache.current = Date.now();
+  }, []);
+
+  const finishMarkupSession = React.useCallback(() => {
+    if (startTimeCache.current) {
+      trackEvents.trackMarkupSessionDuration({ duration: Date.now() - startTimeCache.current });
+      startTimeCache.current = 0;
+    }
+  }, []);
+
+  const startTextCreation = React.useCallback(() => {
+    if (!cache.current.canEditCanvas) {
+      return;
+    }
+
+    if (cache.current.isAnyModeOpen) {
+      cache.current.getEngine()?.disableAllModes();
+    }
+
+    setCreatingType(BlockType.MARKUP_TEXT);
+  }, []);
+
+  const triggerImagesUpload = React.useCallback(() => {
+    if (!cache.current.canEditCanvas || cache.current.isImageUploading) {
+      return;
+    }
+
+    if (cache.current.isAnyModeOpen) {
+      cache.current.getEngine()?.disableAllModes();
+    }
+
+    upload(addImages, { multiple: true, accept: ALLOWED_IMAGE_TYPES.join(',') });
+  }, []);
+
+  useDidUpdateEffect(() => {
+    const engine = getEngine();
+
+    if (creatingType) {
+      startMarkupSession();
+    } else {
+      finishMarkupSession();
+
+      engine?.markup.reset();
+    }
+  }, [creatingType]);
+
+  React.useEffect(() => {
+    window.addEventListener('beforeunload', finishMarkupSession);
+
+    return () => {
+      finishMarkupSession();
+      window.removeEventListener('beforeunload', finishMarkupSession);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (creatingType === BlockType.MARKUP_TEXT) {
+      const handler = (event: MouseEvent) => {
+        // eslint-disable-next-line xss/no-mixed-html
+        const target = event.target as HTMLElement;
+
+        // do not finish creating if clicked to the canvas or markup node
+        if (
+          target.id === Identifier.CANVAS ||
+          target.className.includes(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_TEXT}`) ||
+          target.closest(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_TEXT}`) ||
+          target.className.includes(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_IMAGE}`) ||
+          target.closest(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_IMAGE}`)
+        ) {
+          return;
+        }
+
+        finishCreating();
+      };
+
+      window.document.addEventListener('mouseup', handler);
+      window.document.addEventListener('mousedown', handler);
+
+      return () => {
+        window.document.removeEventListener('mouseup', handler);
+        window.document.removeEventListener('mousedown', handler);
+      };
+    }
+
+    return () => {};
+  }, [creatingType]);
+
+  getEngine()?.markup.setFinishCreating(finishCreating);
+
+  const api = useContextApi({
+    addImages,
+    imageLimit: FILE_LIMIT,
+    creatingType,
+    finishCreating,
+    startTextCreation,
+    startMarkupSession,
+    imageAcceptedTypes: ALLOWED_IMAGE_TYPES,
+    finishMarkupSession,
+    triggerImagesUpload,
+  });
+
+  return <MarkupContext.Provider value={api}>{children}</MarkupContext.Provider>;
+};

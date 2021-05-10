@@ -3,10 +3,11 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import { noInPortTypes } from '@/client/adapters/creator/block';
-import { DragItem, HOVER_THROTTLE_TIMEOUT, MARKUP_NODES } from '@/constants';
+import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { objectID } from '@/utils';
 import { isInRange } from '@/utils/number';
+import { isMarkupBlockType } from '@/utils/typeGuards';
 
 export const useMergeInfo = (index: number) => {
   const getManager = React.useContext(ManagerContext)!;
@@ -33,7 +34,7 @@ export const useMergeInfo = (index: number) => {
 
   const mergeSource = engine.getNodeByID(engine.merge.sourceNodeID!);
 
-  if (!mergeSource || MARKUP_NODES.includes(mergeSource.type)) {
+  if (!mergeSource || isMarkupBlockType(mergeSource.type)) {
     return {
       mustNotBe: true,
     };

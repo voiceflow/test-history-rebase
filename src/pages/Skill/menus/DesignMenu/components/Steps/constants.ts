@@ -1,6 +1,6 @@
 import _isFunction from 'lodash/isFunction';
 
-import { BlockCategory, BlockType, DialogType, IntegrationType, PlatformType } from '@/constants';
+import { BlockCategory, BlockType, DialogType, IntegrationType, PlatformType, RootOrMarkupBlockType } from '@/constants';
 import { NodeData } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { Icon } from '@/svgs/types';
@@ -15,7 +15,7 @@ export type MenuStep = {
 };
 
 const createMenuStep = (
-  type: Exclude<BlockType, BlockType.START | BlockType.COMBINED | BlockType.COMMENT | BlockType.MARKUP_IMAGE | BlockType.MARKUP_TEXT>,
+  type: Exclude<BlockType, RootOrMarkupBlockType>,
   { publicOnly, factoryData }: { publicOnly?: boolean; factoryData?: NodeData<any> } = {}
 ): MenuStep => {
   const manager = getManager(type);

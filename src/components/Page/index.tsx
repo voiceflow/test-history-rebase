@@ -31,13 +31,9 @@ const Page: React.FC<PageProps & ConnectedPageProps> = ({
   children,
   headerChildren,
   canvasOnly,
-  setCanvasOnly,
+  toggleCanvasOnly,
 }) => {
-  const toggleCanvasOnlyMode = React.useCallback(() => {
-    setCanvasOnly(!canvasOnly);
-  }, [canvasOnly]);
-
-  useHotKeys(Hotkey.SHOW_HIDE_UI, toggleCanvasOnlyMode, { preventDefault: true }, [toggleCanvasOnlyMode]);
+  useHotKeys(Hotkey.SHOW_HIDE_UI, toggleCanvasOnly, { preventDefault: true }, [toggleCanvasOnly]);
 
   return (
     <Container>
@@ -63,7 +59,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  setCanvasOnly: UI.setCanvasOnly,
+  toggleCanvasOnly: UI.toggleCanvasOnly,
 };
 
 type ConnectedPageProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

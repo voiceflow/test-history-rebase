@@ -4,16 +4,16 @@ import React from 'react';
 import Drawer from '@/components/Drawer';
 import { toast } from '@/components/Toast';
 import { isSafari } from '@/config';
-import { MARKUP_NODES, MarkupModeType } from '@/constants';
+import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
-import { connect, css, styled } from '@/hocs';
-import { useActiveModal, useHotKeys, useRegistration, useSetup } from '@/hooks';
+import { connect, styled } from '@/hocs';
+import { useActiveModal, useHotKeys, useRegistration } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
-import { MarkupModeContext } from '@/pages/Skill/contexts';
-import { useCommentingMode, useEditingMode, useMarkupMode, usePrototypingMode } from '@/pages/Skill/hooks';
+import { MarkupContext } from '@/pages/Skill/contexts';
+import { useCommentingMode, useEditingMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { Callback, ConnectedProps } from '@/types';
 
@@ -21,29 +21,23 @@ import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
   CANVAS_HIDDEN_CLASSNAME,
   CANVAS_MARKUP_CREATING_CLASSNAME,
-  CANVAS_MARKUP_ENABLED_CLASSNAME,
   CANVAS_PROTOTYPE_ENABLED_CLASSNAME,
   CANVAS_PROTOTYPE_RUNNING_CLASSNAME,
   CANVAS_THREAD_OPEN_CLASSNAME,
 } from '../constants';
 
-export const MARKUP_MODE_CURSORS: Record<MarkupModeType, string> = {
-  [MarkupModeType.TEXT]: 'text',
-  [MarkupModeType.IMAGE]: 'default',
-};
-
-const Wrapper = styled.div<{ markupMode: MarkupModeType | null }>`
+const Wrapper = styled.div`
   width: ${isSafari ? '100vw' : '100%'};
   height: ${isSafari ? 'calc(100vh - 120px)' : '100%'};
   overflow: hidden;
 
-  ${({ markupMode }) =>
-    markupMode &&
-    css`
-      &.${CANVAS_MARKUP_CREATING_CLASSNAME} {
-        cursor: ${MARKUP_MODE_CURSORS[markupMode]};
-      }
-    `}
+  &.${CANVAS_MARKUP_CREATING_CLASSNAME}[data-markup-creating-type="${BlockType.MARKUP_TEXT}"] {
+    cursor: text;
+  }
+
+  &.${CANVAS_MARKUP_CREATING_CLASSNAME}[data-markup-creating-type="${BlockType.MARKUP_IMAGE}"] {
+    cursor: default;
+  }
 
   &.${CANVAS_HIDDEN_CLASSNAME} {
     display: none;
@@ -62,29 +56,20 @@ const Wrapper = styled.div<{ markupMode: MarkupModeType | null }>`
   }
 `;
 
-const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({
-  undoHistory,
-  redoHistory,
-  children,
-  focusedNode,
-  clearFocus,
-  prototypeStatus,
-  isCanvasHidden,
-}) => {
+const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory, redoHistory, children, prototypeStatus, isCanvasHidden }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const engine = React.useContext(EngineContext)!;
+  const markup = React.useContext(MarkupContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const spotlight = React.useContext(SpotlightContext)!;
-  const { isCreating: isMarkupCreating, modeType: markupModeType } = React.useContext(MarkupModeContext)!;
   const isCommentingMode = useCommentingMode();
-  const isMarkupMode = useMarkupMode();
   const isEditingMode = useEditingMode();
   const isPrototypingMode = usePrototypingMode();
 
   const activeModal = useActiveModal();
 
   const canDelete = isEditingMode && !activeModal;
-  const disableSpotlight = !isEditingMode || isMarkupMode || !!activeModal;
+  const disableSpotlight = !isEditingMode || !!activeModal;
 
   const showSpotlight = React.useCallback(() => !disableSpotlight && spotlight.toggle(), [disableSpotlight]);
   const deleteActive = React.useCallback<Callback>(() => canDelete && engine.removeActive(), [canDelete]);
@@ -109,12 +94,6 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({
     }
   }, []);
 
-  useSetup(() => {
-    if (focusedNode && MARKUP_NODES.includes(focusedNode.type)) {
-      clearFocus();
-    }
-  });
-
   useRegistration(() => engine.register('container', api), [api]);
 
   useHotKeys(Hotkey.COPY, () => clipboard.copy(), { preventDefault: true });
@@ -127,17 +106,15 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({
   return (
     <Wrapper
       id={Identifier.CANVAS_CONTAINER}
+      ref={ref}
       className={cn({
         [CANVAS_HIDDEN_CLASSNAME]: isCanvasHidden,
-        [CANVAS_COMMENTING_ENABLED_CLASSNAME]: isCommentingMode,
-        [CANVAS_MARKUP_ENABLED_CLASSNAME]: isMarkupMode,
+        [CANVAS_MARKUP_CREATING_CLASSNAME]: !!markup.creatingType,
         [CANVAS_PROTOTYPE_ENABLED_CLASSNAME]: isPrototypingMode,
-        [CANVAS_MARKUP_CREATING_CLASSNAME]: isMarkupCreating,
         [CANVAS_PROTOTYPE_RUNNING_CLASSNAME]: prototypeStatus === Prototype.PrototypeStatus.ACTIVE,
+        [CANVAS_COMMENTING_ENABLED_CLASSNAME]: isCommentingMode,
       })}
-      markupMode={markupModeType}
-      data-markup={markupModeType}
-      ref={ref}
+      data-markup-creating-type={markup.creatingType}
     >
       {children}
     </Wrapper>
@@ -146,12 +123,10 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({
 
 const mapStateToProps = {
   isCanvasHidden: Creator.isHiddenSelector,
-  focusedNode: Creator.focusedNodeSelector,
   prototypeStatus: Prototype.prototypeStatusSelector,
 };
 
 const mapDispatchToProps = {
-  clearFocus: Creator.clearFocus,
   undoHistory: Creator.undoHistory,
   redoHistory: Creator.redoHistory,
 };

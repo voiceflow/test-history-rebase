@@ -39,6 +39,7 @@ export enum ProjectRoute {
   PUBLISH = 'publish',
   SETTINGS = 'settings',
   PROTOTYPE_WEBHOOK = 'webhook', // TODO: temporary page, remove after updated
+  EXPORT = 'export',
 }
 
 export enum CanvasRoute {
@@ -78,6 +79,12 @@ export enum WorkspaceRoute {
   TEMPLATE = 'template',
 }
 
+export enum WorkspaceSettingsRoute {
+  GENERAL = 'general',
+  BILLING = 'billing',
+  DEVELOPER = 'developer',
+}
+
 export const Path = {
   HOME: '/',
 
@@ -102,8 +109,11 @@ export const Path = {
   CREATOR_TERMS: [toPath(RootRoute.CREATOR, CreatorRoute.TERMS), toPath(RootRoute.CREATOR, CreatorRoute.PRIVACY_POLICY)],
 
   WORKSPACE: toPath(RootRoute.WORKSPACE),
-  WORKSPACE_DASHBOARD: toPath(RootRoute.WORKSPACE, ':workspaceID?'),
-  WORKSPACE_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID?', WorkspaceRoute.SETTINGS),
+  WORKSPACE_DASHBOARD: toPath(RootRoute.WORKSPACE, ':workspaceID'),
+  WORKSPACE_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS),
+  WORKSPACE_GENERAL_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.GENERAL),
+  WORKSPACE_BILLING_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.BILLING),
+  WORKSPACE_DEVELOPER_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.DEVELOPER),
   NEW_WORKSPACE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.NEW),
   WORKSPACE_TEMPLATE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.TEMPLATE),
 
@@ -117,12 +127,16 @@ export const Path = {
 
   PUBLIC_PROTOTYPE: toPath(RootRoute.PROTOTYPE, ':versionID'),
   PROJECT_DEMO: toPath(RootRoute.DEMO, ':versionID'),
+  NEW_INTRO_PROJECT: toPath(RootRoute.WORKSPACE, WorkspaceRoute.TEMPLATE),
+  NEW_PROJECT: toPath(RootRoute.WORKSPACE, WorkspaceRoute.TEMPLATE, ':listID'),
+  PROJECT_VERSION: toPath(RootRoute.PROJECT, ':versionID'),
   PROJECT_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID?'),
   PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE, ':diagramID?'),
   PROJECT_TOOLS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS),
   PROJECT_MIGRATE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.MIGRATE),
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH),
   PROJECT_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS),
+  PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.EXPORT, ':diagramID'),
 
   CANVAS_COMMENTING: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.COMMENTING),
   CANVAS_MODEL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType?'),
@@ -139,6 +153,7 @@ export const Path = {
 
 export const LegacyPath = {
   WORKSPACE_DASHBOARD: toPath('team', ':team_id?'),
+  WORKSPACE_API_KEYS: toPath(RootRoute.WORKSPACE, ':workspaceID', 'api-keys'),
 
   CANVAS_DIAGRAM: toPath('canvas', ':versionID', ':diagramID?'),
   CANVAS_PREVIEW: toPath('preview', ':versionID', ':diagramID?'),
@@ -156,7 +171,5 @@ export const LegacyPath = {
   PUBLISH_ALEXA: toPath('publish', ':versionID', 'alexa'),
 
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', 'publish'),
-  PROJECT_VERSION: toPath(RootRoute.PROJECT, ':versionID'),
   PROJECT_TEST: toPath(RootRoute.PROJECT, ':versionID', 'test', ':diagramID?'),
-  PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', 'export', ':diagramID'),
 };

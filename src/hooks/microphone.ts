@@ -1,5 +1,7 @@
 import React from 'react';
 
+import * as Sentry from '@/vendors/sentry';
+
 import { useSetup } from './lifecycle';
 import { useToggle } from './toggle';
 
@@ -15,7 +17,7 @@ export const useMicrophonePermission = ({ askOnSetup }: { askOnSetup?: boolean }
 
       return true;
     } catch (err) {
-      console.error(err);
+      Sentry.error(err);
       togglePermissionGranted(false);
 
       return false;

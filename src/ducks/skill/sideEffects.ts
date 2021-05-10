@@ -25,6 +25,7 @@ import { getAuthCookie } from '@/utils/cookies';
 import { DataTypes, download, downloadFromURL } from '@/utils/dom';
 import { isChoiceNode, isFlowNode, isIntentNode, isProductLinkedNode } from '@/utils/node';
 import { arrayStringReplace } from '@/utils/string';
+import * as Sentry from '@/vendors/sentry';
 
 import * as Meta from './meta';
 import * as Skill from './skill';
@@ -56,7 +57,7 @@ export const exportCanvas = (type: ExportFormat): Thunk => async (dispatch, getS
       const data = await client.api.version.export(skillID);
       download(`${name.replace(/ /g, '_')}-${skillID}.vf`, JSON.stringify(data, null, 2), DataTypes.JSON);
     } catch (error) {
-      console.error(error);
+      Sentry.error(error);
       toast.error('.VF export failed');
     }
     dispatch(Skill.setExportingCanvas(false));
@@ -119,7 +120,7 @@ export const exportModel = (nlpProvider: NLPProvider): Thunk => async (dispatch,
 
     dispatch(Tracking.trackActiveProjectExportInteractionModel({ nlpProvider }));
   } catch (error) {
-    console.error(error);
+    Sentry.error(error);
     toast.error('Model export failed');
   }
 

@@ -2,12 +2,15 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
+import { toast } from '@/components/Toast';
+import * as Errors from '@/config/errors';
 import { JobStatus } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
 import { useDidUpdateEffect, useSetup, useTeardown } from '@/hooks';
 import { NLPTrainJob } from '@/models';
 import { Nullable } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 export type NLPContextValue = {
   job: Nullable<NLPTrainJob.AnyJob>;
@@ -29,12 +32,24 @@ export const NLPProvider: React.FC = ({ children }) => {
   const projectID = useSelector(Skill.activeProjectIDSelector);
 
   const getJob = React.useCallback(async () => {
+    if (!projectID) {
+      Sentry.error(Errors.noActiveProjectID());
+      toast.genericError();
+      return;
+    }
+
     const currentJob = await client.platform.general.nlp.status(projectID);
 
     setJob(currentJob || null);
   }, [projectID]);
 
   const publish = React.useCallback(async () => {
+    if (!projectID) {
+      Sentry.error(Errors.noActiveProjectID());
+      toast.genericError();
+      return;
+    }
+
     setPublishing(true);
 
     try {

@@ -12,10 +12,11 @@ import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
 import * as Query from '@/utils/query';
 import * as LogRocket from '@/vendors/logRocket';
+import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
 import { goToDashboardWithSearch, goToLogin, goToOnboarding } from './router/actions';
-import { compositeReducer, createAction, createRootSelector, duckLogger } from './utils';
+import { compositeReducer, createAction, createRootSelector } from './utils';
 import { createPersistor, Persistor } from './utils/persist';
 
 export const STATE_KEY = 'session';
@@ -23,8 +24,6 @@ export const STATE_KEY = 'session';
 export const tabIDPersistor = createPersistor<Storage, { value: string }>(sessionStorage, `persist:${STATE_KEY}:tab_id`);
 export const browserIDPersistor = createPersistor<Storage, { value: string }>(localStorage, `persist:${STATE_KEY}:browser_id`);
 export const intercomUserHMACPersistor = createPersistor<Storage, null | string>(localStorage, `persist:${STATE_KEY}:intercom_user_hmac`);
-
-const log = duckLogger.child(STATE_KEY);
 
 export type SessionState = {
   token: { value: string | null };
@@ -187,7 +186,7 @@ export const resetSession = (): Thunk => async (dispatch) => {
   dispatch(updateAuthToken(null));
   dispatch(setIntercomUserHMAC(null));
   dispatch(Account.resetAccount());
-  await client.socket.logout().catch(console.error);
+  await client.socket.logout().catch(Sentry.error);
   dispatch(goToLogin());
 };
 
@@ -196,11 +195,7 @@ export const logout = (): Thunk => async (dispatch, getState) => {
   const token = authTokenSelector(state)!;
 
   if (token) {
-    try {
-      await client.session.delete();
-    } catch (err) {
-      log.error(err);
-    }
+    await client.session.delete().catch(Sentry.error);
   }
 
   localStorage.clear();
@@ -235,6 +230,8 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
       dispatch(goToOnboarding());
     }
   } catch (err) {
+    Sentry.error(err);
+
     await dispatch(resetSession());
   }
 };

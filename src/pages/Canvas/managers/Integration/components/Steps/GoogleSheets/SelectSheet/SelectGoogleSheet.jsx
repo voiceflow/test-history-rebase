@@ -4,9 +4,10 @@ import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
 
 import { logsIcon } from '@/assets';
-import { setError } from '@/ducks/modal';
+import * as Modal from '@/ducks/modal';
 import { connect, styled } from '@/hocs';
 import IntegrationsService from '@/services/Integrations';
+import * as Sentry from '@/vendors/sentry';
 
 const SpreadSheetIcon = styled.img`
   cursor: pointer;
@@ -38,7 +39,7 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
       const sheets = await IntegrationsService.googleSheets.getSpreadsheetSheets(spreadsheet_id, integrationsUser);
       setSheetList(sheets);
     } catch (e) {
-      console.error(e);
+      Sentry.error(e);
       setError(e);
     }
     setSheetsLoading(false);
@@ -127,6 +128,6 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
 }
 
 const mapDispatchToProps = {
-  setError,
+  setError: Modal.setError,
 };
 export default connect(null, mapDispatchToProps)(SelectGoogleSheet);

@@ -4,6 +4,7 @@ import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import { ClickableText } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
 import { toast } from '@/components/Toast';
+import * as Errors from '@/config/errors';
 import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
@@ -13,6 +14,7 @@ import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { readFileAsync, upload } from '@/utils/dom';
+import * as Sentry from '@/vendors/sentry';
 
 const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 
@@ -21,6 +23,13 @@ const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProj
 
   const onUpload = async (files: FileList) => {
     if (!files.length) return;
+
+    if (!workspaceID) {
+      Sentry.error(Errors.noActiveWorkspaceID());
+      toast.genericError();
+
+      return;
+    }
 
     try {
       const file = await readFileAsync(files[0]);
@@ -36,7 +45,7 @@ const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProj
       // reload project list just to be sure
       loadProjectLists(workspaceID!);
     } catch (err) {
-      console.error(err);
+      Sentry.error(err);
       toast.error('.VF file failed to import');
     }
   };

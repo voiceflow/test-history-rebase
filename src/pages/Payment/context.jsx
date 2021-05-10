@@ -12,6 +12,7 @@ import { referralCodeSelector, referrerIDSelector } from '@/ducks/account';
 import { activeWorkspaceIDSelector, activeWorkspaceSelector, fetchWorkspace } from '@/ducks/workspace';
 import { connect, withContext, withProvider, withStripe } from '@/hocs';
 import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSmartReducer } from '@/hooks';
+import * as Sentry from '@/vendors/sentry';
 
 export const PaymentContext = React.createContext(null);
 export const { Consumer: PaymentContextConsumer } = PaymentContext;
@@ -172,7 +173,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
         coupon: stripePromotion ? referralCode : '',
       });
     } catch (err) {
-      console.error(err);
+      Sentry.error(err);
       actions.setPlan(plans[0]);
     }
 

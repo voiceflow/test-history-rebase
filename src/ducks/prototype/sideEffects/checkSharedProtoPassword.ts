@@ -1,5 +1,3 @@
-import _constant from 'lodash/constant';
-
 import client from '@/client';
 import { Thunk } from '@/store/types';
 

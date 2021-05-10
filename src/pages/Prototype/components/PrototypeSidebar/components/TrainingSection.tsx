@@ -7,6 +7,7 @@ import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } 
 import { ClickableText } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
 import { toast } from '@/components/Toast';
+import * as Errors from '@/config/errors';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
@@ -18,6 +19,7 @@ import { NLPContext } from '@/pages/Skill/contexts';
 import { ConnectedProps } from '@/types';
 import logger from '@/utils/logger';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
+import * as Sentry from '@/vendors/sentry';
 
 import TrainContainer from './TrainContainer';
 import Trained from './Trained';
@@ -84,6 +86,18 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
   };
 
   const getDiff = async () => {
+    if (!projectID) {
+      Sentry.error(Errors.noActiveProjectID());
+      toast.genericError();
+      return;
+    }
+
+    if (!versionID) {
+      Sentry.error(Errors.noActiveVersionID());
+      toast.genericError();
+      return;
+    }
+
     try {
       stateApi.update({ fetching: true });
 

@@ -1,6 +1,6 @@
 import { Comment, DBComment } from '@/models';
 
-import { commentAdapter } from './adapters/comment';
+import commentAdapter from './adapters/comment';
 import { api } from './fetch';
 
 export const COMMENTING_PATH = 'commenting/project';

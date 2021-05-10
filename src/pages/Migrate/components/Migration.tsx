@@ -8,12 +8,14 @@ import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Select from '@/components/Select';
 import { toast } from '@/components/Toast';
+import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
 import * as Product from '@/ducks/product';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
 import { ConnectedProps } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 type MigrationProps = {
   onError: (error: string) => void;
@@ -41,6 +43,12 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
   };
 
   useAsyncMountUnmount(async () => {
+    if (!projectID) {
+      Sentry.error(Errors.noActiveProjectID());
+      toast.genericError();
+      return;
+    }
+
     setProjectMember((await client.api.project.member.get<AlexaProjectMemberData>(projectID)).platformData);
   });
 
@@ -50,10 +58,19 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
 
   const save = async () => {
     if (!vendorID) {
+      Sentry.error('invalid vendor');
       toast.error('invalid vendor');
       return;
     }
+
+    if (!projectID) {
+      Sentry.error(Errors.noActiveProjectID());
+      toast.genericError();
+      return;
+    }
+
     if (!skillID.startsWith('amzn1.ask.skill')) {
+      Sentry.error(`invalid skill ID: ${skillID}`);
       toast.error(`invalid skill ID: ${skillID}`);
       return;
     }

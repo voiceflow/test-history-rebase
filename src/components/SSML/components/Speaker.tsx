@@ -6,6 +6,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
 import { useEnableDisable } from '@/hooks/toggle';
 import { ClassName } from '@/styles/constants';
+import * as Sentry from '@/vendors/sentry';
 
 import SpeakerWrapper from './SpeakerWrapper';
 
@@ -49,7 +50,7 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, setError, getSSMLToP
         enablePlaying();
         return;
       } catch (err) {
-        console.error(err);
+        Sentry.error(err);
       }
     }
 

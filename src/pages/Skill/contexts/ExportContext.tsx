@@ -2,12 +2,15 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
+import { toast } from '@/components/Toast';
+import * as Errors from '@/config/errors';
 import { JobStatus } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
 import { useDidUpdateEffect, useTeardown } from '@/hooks';
 import { AlexaExportJob, GeneralJob, GoogleExportJob } from '@/models';
 import { Nullable } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 export type ExportContextValue = {
   job: Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob | GeneralJob.AnyJob>;
@@ -31,12 +34,24 @@ export const ExportProvider: React.FC = ({ children }) => {
   const platformClient = client.platform(platform);
 
   const getJob = React.useCallback(async () => {
+    if (!projectID) {
+      Sentry.error(Errors.noActiveProjectID());
+      toast.genericError();
+      return;
+    }
+
     const currentJob = await platformClient?.export.getStatus(projectID);
 
     setJob(currentJob || null);
   }, [projectID, platformClient]);
 
   const start = React.useCallback(async () => {
+    if (!projectID) {
+      Sentry.error(Errors.noActiveProjectID());
+      toast.genericError();
+      return;
+    }
+
     const result = await platformClient?.export.run(projectID);
 
     setJob(result?.job || null);

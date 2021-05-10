@@ -7,6 +7,7 @@ import Portal from '@/components/Portal';
 import { toast } from '@/components/Toast';
 import { useCache, useDidUpdateEffect } from '@/hooks';
 import { Nullable } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 import { InlineInputValue, PrefixContainer, SearchInput, SearchInputIcon, SelectWrapper } from './components';
 import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
@@ -327,8 +328,8 @@ const Select = <O, V = O>({
         onCreate?.(label);
         onHideMenu();
       } catch (error) {
+        Sentry.error(error);
         toast.warn(error?.message || error?.toString?.() || 'something went wrong');
-        console.error(error);
       }
     },
     [onCreate, onHideMenu]

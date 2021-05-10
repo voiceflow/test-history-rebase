@@ -1,12 +1,13 @@
 import { IS_VARIABLE_REGEXP } from '@voiceflow/common';
-import axios from 'axios';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { Input } from 'reactstrap';
 
+import client from '@/client';
 import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
 import { HTTPS_URL_REGEX } from '@/constants';
+import * as Sentry from '@/vendors/sentry';
 
 import ImageDropzone from './ImageDropzone';
 
@@ -41,15 +42,15 @@ class Image extends Component {
       const data = new FormData();
       data.append('image', files[0]);
       this.setState({ loading: true });
-      axios
-        .post(this.props.path || '/image', data)
+      client.file
+        .uploadImage(this.props.path, data)
         .then((res) => {
           this.setState({ loading: false });
           this.props.update(res.data);
         })
         .catch((err) => {
           this.setState({ loading: false });
-          console.error(err);
+          Sentry.error(err);
           window.alert('Image Upload Error');
         });
     } else if (Array.isArray(rejected) && rejected.length === 1 && rejected[0].size > this.max_size) {

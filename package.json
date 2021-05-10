@@ -201,6 +201,7 @@
     "@types/styled-system": "^5.1.9",
     "@types/terser-webpack-plugin": "^5.0.2",
     "@types/throttle-debounce": "^2.1.0",
+    "@types/valid-url": "^1.0.3",
     "@types/webpack-bundle-analyzer": "^3.9.1",
     "@types/webpack-deadcode-plugin": "^0.1.1",
     "@types/webpack-merge": "^4.1.5",

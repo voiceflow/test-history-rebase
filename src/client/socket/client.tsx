@@ -175,8 +175,8 @@ class SocketClient {
       this.on(SocketEvent.RECONNECT, this.#onReconnect);
 
       this.authProfile = authProfile;
-    } catch {
-      log.error('Unable to connect to Voiceflow');
+    } catch (err) {
+      Sentry.error(err);
     }
   };
 

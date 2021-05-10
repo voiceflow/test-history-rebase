@@ -15,7 +15,6 @@ module.exports = {
     camelcase: 'warn',
     'consistent-return': 'warn',
     'max-classes-per-file': 'warn',
-    'no-console': 'warn',
     'no-param-reassign': 'warn',
     'no-shadow': 'warn',
     'no-underscore-dangle': 'warn',
@@ -97,7 +96,11 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       rules: {
+        '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', ignoreRestSiblings: true }],
+
         // off
+        'no-shadow': 'off',
+
         '@typescript-eslint/no-empty-function': 'off',
         '@typescript-eslint/ban-types': 'off',
         '@typescript-eslint/no-namespace': 'off',

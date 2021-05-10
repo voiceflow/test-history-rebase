@@ -15,6 +15,7 @@ import { setConfirm } from '@/ducks/modal';
 import * as Workspace from '@/ducks/workspace';
 import { useModals } from '@/hooks';
 import { APIKey } from '@/models/APIKey';
+import * as Sentry from '@/vendors/sentry';
 
 import CreateAPIKeyModal from './modal';
 
@@ -31,8 +32,8 @@ const APIKeyPage: React.FC = () => {
     try {
       setAPIKeys(await client.workspace.listAPIKeys(workspaceID));
     } catch (error) {
+      Sentry.error(error);
       toast.error(error);
-      console.error(error);
     } finally {
       setLoading(false);
     }

@@ -21,6 +21,7 @@ import { NLPContext } from '@/pages/Skill/contexts';
 import { FadeLeftContainer } from '@/styles/animations';
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 import { Container, EmbedContainer, TrainingSection } from './components';
 
@@ -85,7 +86,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
 
       // eslint-disable-next-line promise/catch-or-return
       saveActiveDiagram()
-        .catch((err) => console.error(err))
+        .catch(Sentry.error)
         .then(() => renderPrototype(renderAbortControl))
         .then(disableLoading);
     } else {

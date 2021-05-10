@@ -8,6 +8,7 @@ import { connect } from '@/hocs';
 import { DEVICE_LIST } from '@/pages/Prototype/constants';
 import * as SideEffects from '@/store/sideEffects';
 import { ConnectedProps } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 const MemoizedBaseRenderer = React.memo(BaseRenderer);
 
@@ -64,7 +65,7 @@ const APL: React.FC<APLProps & ConnectedAPLProps> = ({ data, device, resolveAPL,
       apl={aplContext!.apl}
       data={aplContext!.data}
       scale={1}
-      onFail={console.error}
+      onFail={Sentry.error}
       commands={aplContext!.commands}
       viewport={viewport}
     />

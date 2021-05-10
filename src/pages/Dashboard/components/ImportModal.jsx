@@ -15,6 +15,7 @@ import { extractMemberById } from '@/ducks/workspace/utils';
 import { connect } from '@/hocs';
 import { useModals, useTrackingEvents } from '@/hooks';
 import { importProject } from '@/store/sideEffects';
+import * as Sentry from '@/vendors/sentry';
 
 import { ImportSelect } from './ModalComponents';
 
@@ -98,7 +99,7 @@ function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWor
           goToWorkspace(workspaceId);
           openProjectLimitModal({ message: 'Project limitations is reached' });
         } else {
-          console.error(e);
+          Sentry.error(e);
           toast.error('unable to access project');
         }
 

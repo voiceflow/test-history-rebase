@@ -3,8 +3,8 @@ import * as Modal from '@/ducks/modal';
 import * as Skill from '@/ducks/skill';
 import { Thunk } from '@/store/types';
 import { AbortControl, waitJobFinished } from '@/utils/job';
+import * as Sentry from '@/vendors/sentry';
 
-import { log } from '../utils';
 import resetPrototype from './reset';
 
 const MAX_CHECKS = 30;
@@ -38,7 +38,7 @@ const renderPrototype = (abortControl: AbortControl): Thunk => async (dispatch, 
 
     dispatch(resetPrototype());
   } catch (err) {
-    log.error(err);
+    Sentry.error(err);
     dispatch(Modal.setError('Could Not Render Your Test Project'));
   }
 };

@@ -13,6 +13,7 @@ import { connect } from '@/hocs';
 import { useSmartReducerV2 } from '@/hooks';
 import { AlexaExportJob, AlexaPublishJob } from '@/models';
 import { ConnectedProps, Nullable } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 import { ButtonContainer, Description, LoaderStage, StageContainer } from '../components';
 
@@ -53,7 +54,7 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
       await saveInvocationName(state.name);
       await updateCurrentStage(state.name);
     } catch (err) {
-      console.error(err);
+      Sentry.error(err);
     }
 
     api.loading.set(false);

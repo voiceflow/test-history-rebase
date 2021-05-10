@@ -3,6 +3,7 @@ import cuid from 'cuid';
 import React from 'react';
 
 import { useEnableDisable } from '@/hooks';
+import * as Sentry from '@/vendors/sentry';
 
 const DEFAULT_VIEWPORT = {
   width: 1024,
@@ -19,7 +20,7 @@ export const APLRendererProvider: React.FC = ({ children }) => {
   React.useEffect(() => {
     APL.initEngine()
       .then(() => initialize())
-      .catch(console.error);
+      .catch(Sentry.error);
   }, []);
 
   return <APLRendererContext.Provider value={isInitialized}>{children}</APLRendererContext.Provider>;

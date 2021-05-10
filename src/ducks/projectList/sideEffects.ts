@@ -1,17 +1,15 @@
 import client from '@/client';
 import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
-import { duckLogger } from '@/ducks/utils';
 import { ProjectList } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { replace, unique } from '@/utils/array';
 import { cuid } from '@/utils/string';
+import * as Sentry from '@/vendors/sentry';
 
 import { addProjectList, addProjectToList, removeProjectFromList, removeProjectList, replaceProjectLists } from './actions';
 import { DEFAULT_LIST_NAME } from './constants';
 import { allProjectListsSelector, defaultProjectListSelector, projectListByIDSelector } from './selectors';
-
-const log = duckLogger.child('projectList');
 
 export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch) => {
   try {
@@ -55,7 +53,7 @@ export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch)
 
     dispatch(replaceProjectLists(normalizedLists));
   } catch (err) {
-    log.error(err);
+    Sentry.error(err);
     dispatch(Modal.setError('Unable to retrieve lists'));
   }
 };
@@ -78,7 +76,7 @@ export const addToListInWorkspace = (workspaceID: string, lists: ProjectList[], 
   try {
     await client.projectList.update(workspaceID, replace(lists, 0, { ...lists[0], projects: [projectID, ...lists[0].projects] }));
   } catch (err) {
-    log.error(err);
+    Sentry.error(err);
     throw err;
   }
 };

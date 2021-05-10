@@ -12,6 +12,7 @@ import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import { ConnectedProps } from '@/types';
 import { getMaintenanceCookie } from '@/utils/cookies';
+import * as Sentry from '@/vendors/sentry';
 
 import MaintenanceController from './MaintenanceController';
 
@@ -98,7 +99,7 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
           }
         }
       } catch (err) {
-        console.error(err);
+        Sentry.error(err);
       }
 
       updateChecked(true);

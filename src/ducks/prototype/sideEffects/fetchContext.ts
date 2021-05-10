@@ -7,11 +7,11 @@ import * as Recent from '@/ducks/recent';
 import * as Skill from '@/ducks/skill';
 import { Trace } from '@/models';
 import { Thunk } from '@/store/types';
+import * as Sentry from '@/vendors/sentry';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype, updatePrototypeContext } from '../actions';
 import { prototypeContextSelector, prototypeSelector, prototypeVisualDataSelector } from '../selectors';
 import { Context } from '../types';
-import { log } from '../utils';
 
 const getTargetFlowID = (trace: Trace[]) => {
   for (let i = trace.length - 1; i >= 0; i--) {
@@ -57,7 +57,7 @@ const fetchContext = (request: Request | null): Thunk<Context | null> => async (
 
     return newStateObj;
   } catch (err) {
-    log.error(err);
+    Sentry.error(err);
 
     return null;
   }

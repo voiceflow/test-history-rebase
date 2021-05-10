@@ -9,6 +9,7 @@ import { DEVICE_LIST } from '@/pages/Prototype/constants';
 import * as SideEffects from '@/store/sideEffects';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 import Frame from './Frame';
 import { VisualRenderProps } from './types';
@@ -66,7 +67,7 @@ const APL: React.FC<APLProps & ConnectedAPLProps> = ({ zoom, data, device, platf
           apl={aplContext!.apl}
           data={aplContext!.data}
           scale={1}
-          onFail={console.error}
+          onFail={Sentry.error}
           commands={aplContext!.commands}
           viewport={viewport}
         />

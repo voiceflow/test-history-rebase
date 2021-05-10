@@ -1,14 +1,15 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import { JobStatus } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
-import { useDidUpdateEffect, useSetup, useTeardown } from '@/hooks';
+import { useDidUpdateEffect, useDispatch, useSetup, useTeardown } from '@/hooks';
 import { AlexaPublishJob, GooglePublishJob } from '@/models';
 import { Nullable } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 export type PublishContextValue = {
   job: Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>;
@@ -27,13 +28,13 @@ export const PublishProvider: React.FC = ({ children }) => {
   const [job, setJob] = React.useState<Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>>(null);
 
   const platform = useSelector(Skill.activePlatformSelector);
-  const projectID = useSelector(Skill.activeProjectIDSelector);
-  const dispatch = useDispatch();
+  const projectID = useSelector(Skill.activeProjectIDSelector)!;
+  const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 
   const platformClient = client.platform(platform);
 
   const getJob = React.useCallback(async () => {
-    const currentJob = await platformClient?.publish.getStatus(projectID);
+    const currentJob = await platformClient.publish.getStatus(projectID);
 
     setJob(currentJob || null);
   }, [projectID, platformClient]);
@@ -41,12 +42,12 @@ export const PublishProvider: React.FC = ({ children }) => {
   const publish = React.useCallback(
     async (submit = false) => {
       try {
-        await dispatch(Diagram.saveActiveDiagram());
+        await saveActiveDiagram();
       } catch (error) {
-        console.error(error);
+        Sentry.error(error);
       }
 
-      const result = await platformClient?.publish.run(projectID, submit);
+      const result = await platformClient.publish.run(projectID, submit);
 
       setJob(result?.job || null);
     },
@@ -57,7 +58,7 @@ export const PublishProvider: React.FC = ({ children }) => {
     async (data: unknown) => {
       if (!job) return;
 
-      await platformClient?.publish.updateStage(projectID, job.stage.type as never, data);
+      await platformClient.publish.updateStage(projectID, job.stage.type as never, data);
       await getJob(); // to fetch updated status
     },
     [projectID, platformClient, job?.stage.type]

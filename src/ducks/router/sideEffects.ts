@@ -10,6 +10,7 @@ import { activeWorkspaceIDSelector } from '@/ducks/workspace';
 import { Skill as SkillModel } from '@/models';
 import { GetState, SyncThunk, Thunk, ThunkDispatch } from '@/store/types';
 import * as Query from '@/utils/query';
+import * as Sentry from '@/vendors/sentry';
 
 import {
   goTo,
@@ -36,7 +37,8 @@ const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versi
 
       dispatch(Realtime.initializeRealtime(diagramID, locks));
     } catch (err) {
-      console.error('error switching flows', err);
+      Sentry.error(err);
+
       if (err) {
         dispatch(Modal.setError('Error Switching Flows'));
       }

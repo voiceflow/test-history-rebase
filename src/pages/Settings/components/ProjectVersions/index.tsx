@@ -11,6 +11,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { Descriptor, TableContainer, TableHeader, TableRow } from '@/components/Table';
 import { ClickableText } from '@/components/Text/components/ClickableText';
 import { toast } from '@/components/Toast';
+import * as Errors from '@/config/errors';
 import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
@@ -19,6 +20,7 @@ import { connect } from '@/hocs';
 import { PLATFORM_SETTINGS_META } from '@/pages/Settings/constants';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 type ProjectVersion = {
   versionID: string;
@@ -26,12 +28,18 @@ type ProjectVersion = {
   platform: PlatformType;
 };
 
-const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, currentVersionID, setConfirm, goToCanvas, platform }) => {
+const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, activeVersionID, setConfirm, goToCanvas, platform }) => {
   const [loading, setLoading] = React.useState(true);
   const [versions, setVersions] = React.useState<ProjectVersion[]>([]);
   const { name } = PLATFORM_SETTINGS_META[platform];
 
   const swapVersions = async (versionId: string) => {
+    if (!projectID) {
+      Sentry.error(Errors.noActiveProjectID());
+      toast.genericError();
+      return;
+    }
+
     try {
       await client.backup.restore(projectID, versionId);
       goToCanvas(versionId);
@@ -51,6 +59,12 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, curren
   };
 
   const fetchBackups = React.useCallback(async () => {
+    if (!projectID) {
+      Sentry.error(Errors.noActiveProjectID());
+      toast.genericError();
+      return;
+    }
+
     try {
       // legacy backup system, requires design and refactor
       const dbVersions = (await client.api.project.getVersions(projectID)).filter(
@@ -100,7 +114,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, curren
                     Automatic
                   </span>
                   <span>
-                    {version.versionID === currentVersionID ? (
+                    {version.versionID === activeVersionID ? (
                       'Current'
                     ) : (
                       <ClickableText onClick={() => confirmRestore(version.versionID)}>Restore</ClickableText>
@@ -124,7 +138,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, curren
 };
 
 const mapStateToProps = {
-  currentVersionID: Skill.activeSkillIDSelector,
+  activeVersionID: Skill.activeSkillIDSelector,
   projectID: Skill.activeProjectIDSelector,
   platform: Skill.activePlatformSelector,
 };

@@ -3,11 +3,11 @@ import { activePlatformSelector, activeProjectIDSelector, globalVariablesSelecto
 import { slotNamesSelector } from '@/ducks/slot';
 import { Store } from '@/models';
 import { SyncThunk } from '@/store/types';
+import * as Sentry from '@/vendors/sentry';
 
 import { updatePrototype, updatePrototypeContext, updatePrototypeStatus } from '../actions';
 import { prototypeVisualSelector } from '../selectors';
 import { PrototypeStatus } from '../types';
-import { log } from '../utils';
 
 const resetPrototype = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
@@ -39,7 +39,7 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
         if (name in variables) variables[name] = savedVariables[name];
       });
     } catch (err) {
-      log.error(err);
+      Sentry.error(err);
     }
   }
 

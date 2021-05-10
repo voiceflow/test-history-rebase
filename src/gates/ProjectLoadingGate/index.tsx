@@ -9,6 +9,7 @@ import * as Thread from '@/ducks/thread';
 import { connect } from '@/hocs';
 import { loadVersion } from '@/store/sideEffects';
 import { ConnectedProps, MergeArguments } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 import CommentingUpdates from './CommentingUpdates';
 
@@ -36,7 +37,7 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
 
       await joinProjectChannel(skill.projectID);
     } catch (e) {
-      console.error(e);
+      Sentry.error(e);
       setError(e);
     }
   }, [loadProject, loadThreads, joinProjectChannel, setError]);

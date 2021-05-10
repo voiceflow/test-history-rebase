@@ -3,6 +3,7 @@ import _constant from 'lodash/constant';
 import React from 'react';
 
 import { UploadConfig, useUpload } from '@/hooks/upload';
+import * as Sentry from '@/vendors/sentry';
 
 type Config = UploadConfig & {
   validate?: (files: Blob[]) => string | null;
@@ -47,9 +48,7 @@ export const withUpload = <C extends Config, P extends RequiredProps<C['clientFu
               .then((urls: string[]) => {
                 update(urls);
               })
-              .catch((error) => {
-                console.error(error);
-              });
+              .catch(Sentry.error);
           } else {
             const url = await onUpload(endpoint, acceptedFiles[0]);
             update(url);

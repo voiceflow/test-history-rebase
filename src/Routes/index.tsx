@@ -73,9 +73,9 @@ const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => (
       <Redirect from={LegacyPath.PUBLISH} to={Path.PUBLISH_ALEXA} />
       <Redirect exact from={LegacyPath.PROJECT_PUBLISH} to={Path.PUBLISH_ALEXA} />
 
-      <PrivateRoute path={LegacyPath.PROJECT_EXPORT} component={Export} />
+      <PrivateRoute path={Path.PROJECT_EXPORT} component={Export} />
       <PrivateRoute path={Path.PROJECT_SETTINGS} component={Settings} />
-      <PrivateRoute path={LegacyPath.PROJECT_VERSION} component={Skill} />
+      <PrivateRoute path={Path.PROJECT_VERSION} component={Skill} />
 
       <PrivateRoute path={Path.ACCOUNT} name="Account" component={Account} />
       <PrivateRoute path={Path.RUNTIME} name="Runtime" component={Runtime} />

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Button from '@/components/Button';
 import { AMAZON_APP_ID } from '@/config';
 import * as Account from '@/ducks/account';
+import * as Sentry from '@/vendors/sentry';
 
 const AmazonLoad = () =>
   new Promise((resolve) => {
@@ -57,7 +58,7 @@ export const AmazonLoginButton = (props) => {
         }
       });
     } catch (err) {
-      console.error(err);
+      Sentry.error(err);
       onFail();
     }
   };

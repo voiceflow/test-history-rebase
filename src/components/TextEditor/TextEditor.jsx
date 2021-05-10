@@ -4,6 +4,7 @@ import lifecycle from 'recompose/lifecycle';
 
 import DraftJSEditor from '@/components/DraftJSEditor';
 import { useEnableDisable, useForceUpdate, useTeardown } from '@/hooks';
+import * as Sentry from '@/vendors/sentry';
 
 import createPlugins, { PluginType } from './plugins';
 import { fromState, toState } from './utils';
@@ -40,7 +41,6 @@ function TextEditor({
     forceBlurOnStateChange,
     resetRecreateEditorState,
     resetForceBlurOnStateChange,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   } = React.useMemo(() => createPlugins(pluginsTypes, pluginsProps, { enableReadOnly, disableReadOnly }, { textValue: value, isEmpty: !value }), []);
 
   const fromStateWithAdapter = React.useMemo(() => fromState(toTextAdapters), [toTextAdapters]);
@@ -154,8 +154,6 @@ function TextEditor({
 
       resetRecreateEditorState();
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, forceUpdateKey]);
 
   React.useEffect(() => {
@@ -192,10 +190,9 @@ function TextEditor({
 
 const TextEditorWithCatch = lifecycle({
   componentDidCatch(err) {
-    console.error(err);
+    Sentry.error(err);
     this.forceUpdate();
   },
 })(TextEditor);
 
-// eslint-disable-next-line react/display-name
 export default React.forwardRef((props, ref) => <TextEditorWithCatch {...props} forwardedRef={ref} />);

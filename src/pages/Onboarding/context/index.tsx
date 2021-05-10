@@ -19,6 +19,7 @@ import { CHANNEL_META } from '@/pages/NewProject/Steps/constants';
 import { ConnectedProps } from '@/types';
 import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
+import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
 import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, STEP_META, StepID } from '../constants';
@@ -383,7 +384,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       toastNotif.success('Successfully created workspace');
     } catch (error) {
       // if it fails to create a project for the user, go to dashboard
-      console.error(error);
+      Sentry.error(error);
       goToDashboard();
     }
 

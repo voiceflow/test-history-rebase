@@ -6,6 +6,7 @@ import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { ConnectedProps } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 const SocketLoadingGate: React.FC<ConnectedSocketLoadingGateProps> = ({ disableWebsockets, children }) => {
   const [isConnected, acknowledgeConnection] = useEnableDisable();
@@ -19,7 +20,7 @@ const SocketLoadingGate: React.FC<ConnectedSocketLoadingGateProps> = ({ disableW
 
       acknowledgeConnection();
     } catch (err) {
-      console.error('failed to connect to socket', err);
+      Sentry.error(err);
     }
   }, []);
 

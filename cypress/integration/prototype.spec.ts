@@ -12,8 +12,7 @@ context('Prototype', () => {
       cy.renderTest('general');
     });
 
-    // TODO Readd, when we fix the builtIn intents in e2e project seed files
-    it.skip('text and transcript', () => {
+    it('text and transcript', () => {
       prototypePage.goToPrototype();
       cy.shouldBeOn(prototypePage);
 

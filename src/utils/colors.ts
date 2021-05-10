@@ -53,4 +53,4 @@ export const changeColorShade = (col: string, amt: number) => {
   return (usePound ? '#' : '') + newColor.substr(newColor.length - 6);
 };
 
-export const removeHash = (hex: string) => hex.substr(1);
+export const removeHash = (hex: string) => (hex.startsWith('#') ? hex.substr(1) : hex);

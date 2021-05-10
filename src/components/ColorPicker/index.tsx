@@ -99,8 +99,7 @@ const ColorPicker = ({
             value={localHex}
             onBlur={onBlur}
             onFocus={onInputFocus}
-            onChange={({ currentTarget }) => setLocalHex(currentTarget.value)}
-            maxLength={6}
+            onChange={({ currentTarget: { value } }) => setLocalHex(removeHash(value).substr(0, 6))}
             leftAction={<InputAction>HEX</InputAction>}
             onKeyPress={withEnterPress(onEnterPress)}
           />

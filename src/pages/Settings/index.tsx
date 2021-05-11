@@ -12,10 +12,10 @@ import { compose } from '@/utils/functional';
 
 import GeneralSettings from './components/GeneralSettings';
 import ProjectVersions from './components/ProjectVersions';
-import { PLATFORM_SETTINGS_META, Tabs } from './constants';
+import { getSettingsMetaProps, Tabs } from './constants';
 
 const Settings: React.FC<ConnectedSettings> = ({ platform, goToDesign }) => {
-  const { tabs } = PLATFORM_SETTINGS_META[platform];
+  const { tabs } = getSettingsMetaProps(platform);
   const { url } = useRouteMatch();
 
   return (

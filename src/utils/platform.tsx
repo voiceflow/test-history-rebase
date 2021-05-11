@@ -1,85 +1,50 @@
 import { Voice as AlexaVoice } from '@voiceflow/alexa-types';
 import { Voice as GeneralVoice } from '@voiceflow/general-types';
 import { Voice as GoogleVoice } from '@voiceflow/google-types';
-import React from 'react';
 
-import { IS_DEVELOPMENT } from '@/config';
-import { PlatformType } from '@/constants';
-import { activePlatformSelector } from '@/ducks/skill/skill';
-import { connect } from '@/hocs';
-import { ConnectedProps } from '@/types';
-import log from '@/utils/logger';
+import { DISTINCT_PLATFORMS, DistinctPlatform, PlatformType } from '@/constants';
 
-const PLATFORMS = Object.values(PlatformType);
+type AnyVoice = AlexaVoice | GoogleVoice | GeneralVoice;
 
-const getPlatformComponentSwitcher = <T,>(
-  components: Partial<Record<PlatformType, React.FC<T>>>,
-  defaultComponent: React.FC<T>
-  // eslint-disable-next-line react/display-name
-): React.FC<PlatformComponentSwitcherProps & T> => ({ platform, ...props }) => {
-  const Component = React.useMemo(() => {
-    if (platform in components) {
-      return components[platform]!;
-    }
-
-    return defaultComponent;
-  }, [platform]);
-
-  return <Component {...(props as T)} />;
-};
-
-const mapStateToProps = {
-  platform: activePlatformSelector,
-};
-
-type PlatformComponentSwitcherProps = ConnectedProps<typeof mapStateToProps>;
-
-export const platformMissingValuesWarn = <T extends any>(valuesMap: Partial<Record<PlatformType, T>>, message: string, skipWarning?: boolean) => {
-  if (!skipWarning && IS_DEVELOPMENT) {
-    const missingPlatforms = Object.values(PlatformType).filter((key: PlatformType) => !valuesMap[key]);
-
-    if (missingPlatforms.length) {
-      log.warn(message, missingPlatforms.join(', '), valuesMap);
-    }
-  }
-};
-
-const DefaultPlatformComponent = () => <div>Platform Component is not found!</div>;
-
-export const createPlatformComponent = <T extends any>(
-  name: string,
-  components: Partial<Record<PlatformType, React.FC<T>>>,
-  defaultComponent?: React.FC<T>,
-  skipWarning = !!defaultComponent
-) => {
-  platformMissingValuesWarn(components, `${name} component has missing components for platforms:`, skipWarning);
-
-  return connect(mapStateToProps)(getPlatformComponentSwitcher(components, defaultComponent || DefaultPlatformComponent)) as React.FC<T>;
-};
-
-export const getPlatformValue = <T extends any>(
-  platform: PlatformType,
-  platformValues: Partial<Record<PlatformType, T>>,
-  defaultValue?: T,
-  skipWarning = !!defaultValue
-) => {
-  platformMissingValuesWarn(platformValues, "couldn't find platform values:", skipWarning);
-
+export const createPlatformSelector: {
+  <T extends any>(platformValues: Record<PlatformType, T>, defaultValue?: T): (platform: PlatformType) => T;
+  <T extends any>(platformValues: Partial<Record<PlatformType, T>>, defaultValue: T): (platform: PlatformType) => T;
+} = <T extends any>(platformValues: Partial<Record<PlatformType, T>>, defaultValue: T | undefined) => (platform: PlatformType) => {
   const value = platform in platformValues ? platformValues[platform] : defaultValue;
-  if (!value) throw new Error('no value for platform');
+  if (value == null) throw new Error('no value for platform');
 
   return value;
 };
 
-export const defaultPlatformsData = <T,>(data: T) =>
-  PLATFORMS.reduce<Record<PlatformType, T>>((acc, platform) => Object.assign(acc, { [platform]: data }), {} as Record<PlatformType, T>);
+export const getPlatformValue: {
+  <T extends any>(platform: PlatformType, platformValues: Record<PlatformType, T>, defaultValue?: T): T;
+  <T extends any>(platform: PlatformType, platformValues: Partial<Record<PlatformType, T>>, defaultValue: T): T;
+} = <T extends any>(platform: PlatformType, platformValues: Partial<Record<PlatformType, T>>, defaultValue: T | undefined) =>
+  createPlatformSelector(platformValues, defaultValue)(platform);
 
-export const getPlatformDefaultVoice = (platform: PlatformType) =>
-  getPlatformValue<string>(
-    platform,
-    {
-      [PlatformType.ALEXA]: AlexaVoice.ALEXA,
-      [PlatformType.GOOGLE]: GoogleVoice.DEFAULT,
-    },
-    GeneralVoice.DEFAULT
-  );
+export const getDistinctPlatformValue = <T extends any>(platform: PlatformType, platformValues: Record<DistinctPlatform, T>): T =>
+  createPlatformSelector(platformValues, platformValues[PlatformType.GENERAL])(platform);
+
+export const setDistinctPlatformValue = <T extends any>(platform: PlatformType, value: T): Partial<Record<DistinctPlatform, T>> => ({
+  [DISTINCT_PLATFORMS.includes(platform) ? platform : PlatformType.GENERAL]: value,
+});
+
+export const distinctPlatformsData = <T extends any>(data: T) =>
+  DISTINCT_PLATFORMS.reduce((acc, platform) => Object.assign(acc, { [platform]: data }), {} as Record<DistinctPlatform, T>);
+
+export const getPlatformDefaultVoice = createPlatformSelector<AnyVoice>(
+  {
+    [PlatformType.ALEXA]: AlexaVoice.ALEXA,
+    [PlatformType.GOOGLE]: GoogleVoice.DEFAULT,
+  },
+  GeneralVoice.DEFAULT
+);
+
+export const getPlatformAppName = createPlatformSelector({
+  [PlatformType.ALEXA]: 'Alexa Skill',
+  [PlatformType.GOOGLE]: 'Google Action',
+  [PlatformType.GENERAL]: 'General Project',
+  [PlatformType.IVR]: 'IVR Project',
+  [PlatformType.CHATBOT]: 'Chatbot Project',
+  [PlatformType.MOBILE_APP]: 'Mobile App Project',
+});

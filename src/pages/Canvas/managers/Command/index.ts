@@ -1,7 +1,7 @@
 import IntentSlotForm from '@/components/IntentSlotForm';
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
-import { defaultPlatformsData } from '@/utils/platform';
+import { distinctPlatformsData } from '@/utils/platform';
 
 import { NodeManagerConfig } from '../types';
 import CommandEditor from './CommandEditor';
@@ -24,7 +24,7 @@ const CommandManager: NodeManagerConfig<NodeData.Command> = {
     node: {},
     data: {
       name: 'New Command',
-      ...defaultPlatformsData({
+      ...distinctPlatformsData({
         intent: null,
         resume: true,
         mappings: [],

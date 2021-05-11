@@ -3,9 +3,9 @@ import { StepData, VisualType } from '@voiceflow/general-types/build/nodes/visua
 import React from 'react';
 
 import { ZOOM_FACTOR } from '@/components/Canvas/constants';
-import { PlatformType } from '@/constants';
+import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
 import { useTheme } from '@/hooks';
-import { DEVICE_LIST } from '@/pages/Prototype/constants';
+import { ALL_DEVICES } from '@/pages/Prototype/constants';
 import { Pair } from '@/types';
 
 const DEFAULT_FILL_RATIO = 0.8;
@@ -27,9 +27,7 @@ export const useDeviceDimension = ({ data, device }: { data: StepData | null; de
           };
     }
 
-    const deviceInfo = Object.values(DEVICE_LIST)
-      .flat()
-      .find(({ type }) => type === device);
+    const deviceInfo = ALL_DEVICES.find(({ type }) => type === device);
 
     return {
       width: deviceInfo?.dimension.width ?? DEFAULT_FRAME_DIMENSION,
@@ -42,7 +40,7 @@ export const useInitialCanvas = ({ platform, dimension }: { platform: PlatformTy
 
   return React.useMemo(() => {
     const bodyWidth = document.body.clientWidth;
-    const isGeneral = platform === PlatformType.GENERAL;
+    const isGeneral = GENERAL_PLATFORMS.includes(platform);
     const usedWidth = isGeneral ? theme.components.usedGeneralPrototypeDisplayCanvasWidth : theme.components.usedPrototypeDisplayCanvasWidth;
     const canvasWidth = bodyWidth - usedWidth;
     const canvasHeight = document.body.clientHeight - theme.components.usedPrototypeDisplayCanvasHeight;

@@ -1,17 +1,14 @@
 import React from 'react';
 
 import { PlatformType } from '@/constants';
-import { createPlatformComponent } from '@/utils/platform';
+import { platformAware } from '@/hocs';
 
 import AlexaUploadGroup from './AlexaUploadGroup';
 import GoogleUploadGroup from './GoogleUploadGroup';
 
-const UploadGroup = createPlatformComponent(
-  'UploadGroup',
+const UploadGroup = platformAware(
   {
-    // eslint-disable-next-line react/display-name
     [PlatformType.ALEXA]: () => <AlexaUploadGroup />,
-    // eslint-disable-next-line react/display-name
     [PlatformType.GOOGLE]: () => <GoogleUploadGroup />,
   },
   () => null

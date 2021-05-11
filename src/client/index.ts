@@ -1,5 +1,3 @@
-import { PlatformType } from '@/constants';
-
 import analytics from './analytics';
 import api from './api';
 import backup from './backup';
@@ -8,7 +6,7 @@ import comment from './comment';
 import feature from './feature';
 import file from './file';
 import integrations from './integrations';
-import platformClients, { platformServicesMap } from './platforms';
+import platformClients, { getPlatformClient } from './platforms';
 import projectList from './projectList';
 import prototype from './prototype';
 import session from './session';
@@ -22,7 +20,7 @@ import workspace from './workspace';
 const client = {
   api,
 
-  platform: Object.assign(<T extends PlatformType>(platform: T) => platformServicesMap[platform], platformClients),
+  platform: Object.assign(getPlatformClient, platformClients),
 
   analytics,
   backup,

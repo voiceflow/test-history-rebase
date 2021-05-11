@@ -13,7 +13,7 @@ import { ClassName } from '@/styles/constants';
 import { capitalizeFirstLetter } from '@/utils/string';
 
 import { DefaultVoiceContainer, Editor, Speaker, VoiceItem, VoiceSelect } from './components';
-import { PLATFORM_SSML_META } from './constants';
+import { getPlatformSSML } from './constants';
 
 const pluginsTypes = [PluginType.XML, PluginType.VARIABLES];
 const pluginsWithoutVariablesTypes = [PluginType.XML];
@@ -64,7 +64,7 @@ const SSML = (
   },
   ref
 ) => {
-  const platformSSMLMeta = PLATFORM_SSML_META[platform];
+  const platformSSMLMeta = getPlatformSSML(platform);
   const wavenetVoices = useFeature(FeatureFlag.WAVENET_VOICES);
   const SSMLPlaceholder = placeholder ?? platformSSMLMeta.fallbackPlaceholder(voice);
   const { canChangeVoice } = platformSSMLMeta;

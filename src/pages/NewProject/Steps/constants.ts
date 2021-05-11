@@ -4,6 +4,7 @@ import { PlatformType } from '@/constants';
 import { AmazonInvocationName, GoogleInvocationName } from '@/pages/NewProject/DescriptionElements/InvocationName';
 import { AmazonLanguage, GeneralLanguage, GoogleLanguage } from '@/pages/NewProject/DescriptionElements/Languages';
 import { Icon } from '@/svgs/types';
+import { createPlatformSelector } from '@/utils/platform';
 
 export enum PlatformFeature {
   DESIGN_AND_PROTO = 'design_and_proto',
@@ -25,7 +26,16 @@ export type PlatformMetaType = {
   localesText?: string;
 };
 
-export const PLATFORM_META: Record<PlatformType, PlatformMetaType> = {
+const GENERAL_PLATFORM_META: PlatformMetaType = {
+  company: '',
+  localesText: 'Language',
+  localesDescription: GeneralLanguage,
+  icon: 'inFlow',
+  iconColor: '#279745',
+  platformAppType: 'Assistant',
+};
+
+export const getPlatformMeta = createPlatformSelector<PlatformMetaType>({
   [PlatformType.ALEXA]: {
     company: 'Amazon',
     invocationDescription: AmazonInvocationName,
@@ -43,122 +53,93 @@ export const PLATFORM_META: Record<PlatformType, PlatformMetaType> = {
     platformAppType: 'Action',
     icon: 'googleAssistant',
   },
-  [PlatformType.GENERAL]: {
-    company: '',
-    localesText: 'Language',
-    localesDescription: GeneralLanguage,
-    icon: 'inFlow',
-    iconColor: '#279745',
-    platformAppType: 'Assistant',
-  },
+  [PlatformType.GENERAL]: GENERAL_PLATFORM_META,
   [PlatformType.IVR]: {
-    company: '',
-    invocationDescription: undefined,
-    localesDescription: undefined,
-    localesText: '',
-    platformAppType: '',
-    icon: undefined,
+    ...GENERAL_PLATFORM_META,
     iconColor: '#5c6bc0',
   },
   [PlatformType.CHATBOT]: {
-    company: '',
-    invocationDescription: undefined,
-    localesDescription: undefined,
-    localesText: '',
-    platformAppType: '',
-    icon: undefined,
+    ...GENERAL_PLATFORM_META,
     iconColor: '#3a7685',
   },
   [PlatformType.MOBILE_APP]: {
-    company: '',
-    invocationDescription: undefined,
-    localesDescription: undefined,
-    localesText: '',
-    platformAppType: '',
-    icon: undefined,
+    ...GENERAL_PLATFORM_META,
     iconColor: '#3a5999',
   },
-};
+});
 
 export type ChannelMetaType = {
   name: string;
   description: string;
   features: PlatformFeature[];
+  platform: PlatformType;
   icon?: Icon;
   iconColor?: string;
-  channel: PlatformType;
-  platform: PlatformType;
   iconType: IconType;
   iconSize: number;
 };
 
-export const CHANNEL_META: Record<PlatformType, ChannelMetaType> = {
+export const getChannelMeta = createPlatformSelector<ChannelMetaType>({
   [PlatformType.ALEXA]: {
+    platform: PlatformType.ALEXA,
     name: 'Amazon Alexa',
     description: 'Design, prototype and publish Alexa Skills for Amazon Alexa.',
     features: [PlatformFeature.DESIGN_AND_PROTO, PlatformFeature.PUBLISH],
-    platform: PlatformType.ALEXA,
-    channel: PlatformType.ALEXA,
     iconType: IconType.ICON,
     icon: 'amazonAlexa',
     iconColor: '#5fcaf4',
     iconSize: 26,
   },
   [PlatformType.GOOGLE]: {
+    platform: PlatformType.GOOGLE,
     name: 'Google Assistant',
     description: 'Design, prototype and publish Google Actions for Google Assistant.',
     features: [PlatformFeature.DESIGN_AND_PROTO, PlatformFeature.PUBLISH],
-    platform: PlatformType.GOOGLE,
-    channel: PlatformType.GOOGLE,
     iconType: IconType.ICON,
     icon: 'googleAssistant',
     iconSize: 24,
   },
   [PlatformType.GENERAL]: {
+    platform: PlatformType.GENERAL,
     name: 'Custom Assistant',
     description: 'Design, prototype and export for any conversational channel.',
     features: [PlatformFeature.DESIGN_AND_PROTO],
     icon: 'chatBubbles',
     iconColor: '#4f9ed1',
-    platform: PlatformType.GENERAL,
-    channel: PlatformType.GENERAL,
     iconType: IconType.ICON,
     iconSize: 20,
   },
   [PlatformType.IVR]: {
+    platform: PlatformType.IVR,
     name: 'IVR',
     description: 'Design, prototype and export a conversational IVR.',
     features: [PlatformFeature.DESIGN_AND_PROTO],
     icon: 'call',
     iconColor: '#5c6bc0',
-    platform: PlatformType.GENERAL,
-    channel: PlatformType.IVR,
     iconType: IconType.ICON,
     iconSize: 20,
   },
   [PlatformType.CHATBOT]: {
+    platform: PlatformType.CHATBOT,
     name: 'Chatbot',
     description: 'Design, prototype and export a conversational chatbot.',
     features: [PlatformFeature.DESIGN_AND_PROTO],
     icon: 'speak',
     iconColor: '#3a7685',
-    platform: PlatformType.GENERAL,
-    channel: PlatformType.CHATBOT,
     iconType: IconType.ICON,
     iconSize: 20,
   },
   [PlatformType.MOBILE_APP]: {
+    platform: PlatformType.MOBILE_APP,
     name: 'Mobile App',
     description: 'Design, prototype and export a mobile voice assistant.',
     features: [PlatformFeature.DESIGN_AND_PROTO],
     icon: 'mobile',
     iconColor: '#3a5999',
-    platform: PlatformType.GENERAL,
-    channel: PlatformType.MOBILE_APP,
     iconType: IconType.ICON,
     iconSize: 20,
   },
-};
+});
 
 export const PLATFORM_FEATURE_META = {
   [PlatformFeature.DESIGN_AND_PROTO]: {
@@ -184,10 +165,10 @@ export const PLATFORM_FEATURE_META = {
     name: 'Publish',
     color: '#558b2f',
     borderColor: { red: 85, green: 139, blue: 47 },
-    description: (channel: PlatformType) => {
-      const platform = PLATFORM_META[CHANNEL_META[channel].platform];
+    description: (platform: PlatformType) => {
+      const platformMeta = getPlatformMeta(platform);
 
-      return `Publish live apps to the ${platform.company} ${platform.platformAppType} store`;
+      return `Publish live apps to the ${platformMeta.company} ${platformMeta.platformAppType} store`;
     },
   },
 };

@@ -1,8 +1,10 @@
 import { Overwrite } from 'utility-types';
 
-import { BlockType, PlatformType } from '@/constants';
+import { BlockType, DistinctPlatform, PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 import { NonNullishRecord } from '@/types';
+
+import { getDistinctPlatformValue } from './platform';
 
 const checkNodeType = <T>(type: BlockType) => (data: { type: BlockType }): data is NodeData<T> => data.type === type;
 
@@ -17,16 +19,16 @@ export const isCommandNode = checkNodeType<NodeData.Command>(BlockType.COMMAND);
 export const isLinkedCommandNode = (
   data: NodeData<unknown>,
   platform: PlatformType
-): data is NodeData<NodeData.Command> & Record<typeof platform, NonNullishRecord<Pick<NodeData.Command.PlatformData, 'diagramID'>>> =>
-  isCommandNode(data) && !!data[platform].diagramID;
+): data is NodeData<NodeData.Command> & Record<DistinctPlatform, NonNullishRecord<Pick<NodeData.Command.PlatformData, 'diagramID'>>> =>
+  isCommandNode(data) && !!getDistinctPlatformValue(platform, data).diagramID;
 
 export const isIntentNode = checkNodeType<NodeData.Intent>(BlockType.INTENT);
 
 export const isLinkedIntentNode = (
   data: NodeData<unknown>,
   platform: PlatformType
-): data is NodeData<NodeData.Intent> & Record<typeof platform, NonNullishRecord<Pick<NodeData.Intent.PlatformData, 'intent'>>> =>
-  isIntentNode(data) && !!data[platform].intent;
+): data is NodeData<NodeData.Intent> & Record<DistinctPlatform, NonNullishRecord<Pick<NodeData.Intent.PlatformData, 'intent'>>> =>
+  isIntentNode(data) && !!getDistinctPlatformValue(platform, data).intent;
 
 export const isChoiceNode = checkNodeType<NodeData.Interaction>(BlockType.CHOICE);
 

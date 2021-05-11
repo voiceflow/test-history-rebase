@@ -1,6 +1,6 @@
+/* eslint-disable max-classes-per-file */
 import { CanvasNodeVisibility } from '@voiceflow/general-types';
 
-/* eslint-disable max-classes-per-file */
 import { CanvasAPI } from '@/components/Canvas';
 import { BlockType, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -14,6 +14,7 @@ import { asyncForEach, unique } from '@/utils/array';
 import { Logger } from '@/utils/logger';
 import { isChoiceNode, isLinkedFlowNode, isLinkedIntentNode, isProductLinkedNode } from '@/utils/node';
 import { isInRange } from '@/utils/number';
+import { getDistinctPlatformValue } from '@/utils/platform';
 
 import type { Engine } from '.';
 
@@ -259,12 +260,12 @@ export const getCopiedNodeDataIDs = (nodeData: Record<string, NodeData<unknown>>
 
   copiedNodesData.forEach((data) => {
     if (isLinkedIntentNode(data, platform)) {
-      intents.push(data[platform].intent);
+      intents.push(getDistinctPlatformValue(platform, data).intent);
     }
 
     if (isChoiceNode(data)) {
       data.choices.forEach((choice) => {
-        const { intent } = choice[platform];
+        const { intent } = getDistinctPlatformValue(platform, choice);
 
         if (intent) {
           intents.push(intent);

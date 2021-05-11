@@ -3,7 +3,7 @@ import cuid from 'cuid';
 
 import { BlockType, DialogType } from '@/constants';
 import { NodeData } from '@/models';
-import { defaultPlatformsData } from '@/utils/platform';
+import { distinctPlatformsData } from '@/utils/platform';
 
 import { NodeConfig } from '../types';
 
@@ -25,7 +25,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Interaction> = {
     },
     data: {
       name: 'Choice',
-      choices: [defaultPlatformsData({ id: cuid.slug(), intent: null, mappings: [] })],
+      choices: [distinctPlatformsData({ id: cuid.slug(), intent: null, mappings: [] })],
       reprompt: null,
       else: {
         type: InteractionElseType.REPROMPT,

@@ -10,9 +10,9 @@ import { FlexCenter } from '@/components/Flex';
 import Input from '@/components/Input';
 import Select from '@/components/Select';
 import Icon from '@/components/SvgIcon';
-import { PlatformType } from '@/constants';
+import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
-import { CHANNEL_META, PLATFORM_META } from '@/pages/NewProject/Steps/constants';
+import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
 import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import { LoadingButton } from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components';
@@ -52,9 +52,8 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
   setInvocationName,
   setGoogleLanguage,
 }) => {
-  const { platform } = CHANNEL_META[selectedChannel];
-  const isAlexa = platform === PlatformType.ALEXA;
-  const isGeneral = platform === PlatformType.GENERAL;
+  const isAlexa = selectedChannel === PlatformType.ALEXA;
+  const isGeneral = GENERAL_PLATFORMS.includes(selectedChannel);
 
   const alexaDisplayName = isAlexa
     ? alexaLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')
@@ -63,7 +62,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
   const invocationError =
     invocationName &&
     getPlatformValue<(name?: string, locales?: any[]) => string | null>(
-      platform,
+      selectedChannel,
       {
         [PlatformType.ALEXA]: getAlexaInvocationNameError,
         [PlatformType.GOOGLE]: getGoogleInvocationNameError,
@@ -72,8 +71,20 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
     )(invocationName, alexaLocales);
 
   const canContinue = !invocationError && (!!alexaLocales.length || !!googleLanguage || !!generalLocale);
-  const InvocationDescriptionComponent = PLATFORM_META[platform].invocationDescription!;
-  const LanguageDescriptionComponent = PLATFORM_META[platform].localesDescription!;
+  const InvocationDescriptionComponent = getPlatformMeta(selectedChannel).invocationDescription!;
+  const LanguageDescriptionComponent = getPlatformMeta(selectedChannel).localesDescription!;
+
+  const GeneralLocalesSelect = () => (
+    <Select
+      value={generalLocale}
+      options={GENERAL_LOCALES_OPTIONS}
+      onSelect={setGeneralLocale}
+      placeholder="Locale"
+      getOptionValue={(option) => option?.value || GeneralLocale.EN_US}
+      getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as GeneralLocale] ?? ''}
+      renderOptionLabel={(option) => option.name}
+    />
+  );
 
   return (
     <Container width={420} textAlign="left">
@@ -99,12 +110,11 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
       )}
 
       <FieldsContainer>
-        <SectionTitle>{PLATFORM_META[platform].localesText}</SectionTitle>
+        <SectionTitle>{getPlatformMeta(selectedChannel).localesText}</SectionTitle>
 
         {getPlatformValue<() => React.ReactNode>(
-          platform,
+          selectedChannel,
           {
-            // eslint-disable-next-line react/display-name
             [PlatformType.ALEXA]: () => (
               <UnTypedDropdownMultiselect
                 options={LOCALE_MAP}
@@ -113,7 +123,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
                 onSelect={(val: string) =>
                   setAlexaLocales(alexaLocales.includes(val) ? without(alexaLocales, alexaLocales.indexOf(val)) : [...alexaLocales, val])
                 }
-                placeholder={`Select ${PLATFORM_META[platform].localesText}`}
+                placeholder={`Select ${getPlatformMeta(PlatformType.ALEXA).localesText}`}
                 buttonLabel="Unselect All"
                 buttonClick={() => setAlexaLocales([])}
                 selectedItems={alexaLocales}
@@ -121,7 +131,6 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
                 dropdownActive
               />
             ),
-            // eslint-disable-next-line react/display-name
             [PlatformType.GOOGLE]: () => (
               <Select
                 value={FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage]}
@@ -132,20 +141,8 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
                 renderOptionLabel={(option) => option.name}
               />
             ),
-            // eslint-disable-next-line react/display-name
-            [PlatformType.GENERAL]: () => (
-              <Select
-                value={generalLocale}
-                options={GENERAL_LOCALES_OPTIONS}
-                onSelect={setGeneralLocale}
-                placeholder="Locale"
-                getOptionValue={(option) => option?.value || GeneralLocale.EN_US}
-                getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as GeneralLocale] ?? ''}
-                renderOptionLabel={(option) => option.name}
-              />
-            ),
           },
-          () => null
+          GeneralLocalesSelect
         )()}
 
         <SectionDescription>

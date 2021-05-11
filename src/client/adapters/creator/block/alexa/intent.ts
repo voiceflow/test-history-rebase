@@ -2,13 +2,13 @@ import { StepData } from '@voiceflow/general-types/build/nodes/jump';
 
 import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';
-import { defaultPlatformsData } from '@/utils/platform';
+import { distinctPlatformsData } from '@/utils/platform';
 
 import { createBlockAdapter } from '../utils';
 
 const intentAdapter = createBlockAdapter<StepData, NodeData.Intent>(
   ({ intent, mappings }) => ({
-    ...defaultPlatformsData({ intent: null, mappings: [] }),
+    ...distinctPlatformsData({ intent: null, mappings: [] }),
     [PlatformType.ALEXA]: { intent, mappings: mappings ?? [] },
   }),
   ({ [PlatformType.ALEXA]: { intent, mappings } }) => ({ intent, mappings })

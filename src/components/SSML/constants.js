@@ -4,6 +4,7 @@ import { Locale, LocaleCodeToCountryLanguage, LocaleToVoiceLanguageCode, VoiceLa
 import _constant from 'lodash/constant';
 
 import { PlatformType } from '@/constants';
+import { createPlatformSelector } from '@/utils/platform';
 import { capitalizeFirstLetter } from '@/utils/string';
 
 import { prettifyAzureVoiceID, prettifyGoogleVoicesShort } from './utils';
@@ -736,69 +737,75 @@ export const ALEXA_ADD_OPTIONS = [
   },
 ];
 
-export const PLATFORM_SSML_META = {
-  [PlatformType.ALEXA]: {
-    fallbackPlaceholder: (voice) => `Enter what ${voice || 'Alexa'} will say`,
-    canChangeVoice: true,
-    platformTags: ALEXA_DEFAULT_TAGS,
-    addOptions: ALEXA_ADD_OPTIONS,
-    voiceOptions: () =>
-      ALEXA_REGIONAL_VOICE.map(({ label, options }) => ({ label, options: options.map((voice) => ({ label: voice, value: voice })) })),
-  },
-  [PlatformType.GOOGLE]: {
-    // eslint-disable-next-line lodash/prefer-constant
-    fallbackPlaceholder: () => 'Enter what Google will say',
-    canChangeVoice: true,
-    platformTags: GOOGLE_DEFAULT_TAGS,
-    addOptions: UNIVERSAL_ADD_OPTIONS,
-    voiceOptions: (locales, useWavenet) => {
-      const localeMeta = locales?.map((locale) => ({ locale, languageCode: LocaleToVoiceLanguageCode[locale] }));
+const ALEXA_SSML_META = {
+  fallbackPlaceholder: (voice) => `Enter what ${voice || 'Alexa'} will say`,
+  canChangeVoice: true,
+  platformTags: ALEXA_DEFAULT_TAGS,
+  addOptions: ALEXA_ADD_OPTIONS,
+  voiceOptions: () =>
+    ALEXA_REGIONAL_VOICE.map(({ label, options }) => ({ label, options: options.map((voice) => ({ label: voice, value: voice })) })),
+};
 
-      return localeMeta?.map((meta) => ({
-        label: LocaleCodeToCountryLanguage[meta.locale] || meta.locale,
-        options: VoiceLanguageCodeToVoice[meta.languageCode]
-          .map((voiceMeta) =>
-            voiceMeta.voiceName
-              .filter((voiceName) => useWavenet || voiceName.includes(VoiceType.STANDARD))
-              .map((voiceName) => ({
-                value: voiceName,
-                label: prettifyGoogleVoicesShort(voiceName),
-              }))
-          )
-          .flat(),
-      }));
-    },
-  },
-  [PlatformType.GENERAL]: {
-    // eslint-disable-next-line lodash/prefer-constant
-    fallbackPlaceholder: () => 'What should the assistant say?',
-    canChangeVoice: true,
-    platformTags: ALEXA_DEFAULT_TAGS,
-    addOptions: ALEXA_ADD_OPTIONS,
-    voiceOptions: (locales, useWavenet) => {
-      const allGoogleLocales = Object.values(Locale);
+const GOOGLE_SSML_META = {
+  fallbackPlaceholder: () => 'Enter what Google will say',
+  canChangeVoice: true,
+  platformTags: GOOGLE_DEFAULT_TAGS,
+  addOptions: UNIVERSAL_ADD_OPTIONS,
+  voiceOptions: (locales, useWavenet) => {
+    const localeMeta = locales?.map((locale) => ({ locale, languageCode: LocaleToVoiceLanguageCode[locale] }));
 
-      return [
-        {
-          value: 'Amazon',
-          label: 'Amazon',
-          options: PLATFORM_SSML_META[PlatformType.ALEXA].voiceOptions(),
-        },
-        {
-          value: capitalizeFirstLetter(PlatformType.GOOGLE),
-          label: capitalizeFirstLetter(PlatformType.GOOGLE),
-          options: PLATFORM_SSML_META[PlatformType.GOOGLE].voiceOptions(allGoogleLocales, useWavenet),
-        },
-        {
-          value: 'Microsoft',
-          label: 'Microsoft',
-          options: Object.values(AZURE_LOCALE_VOICE_META).map((meta) => ({
-            value: meta.language,
-            label: meta.language,
-            options: meta.voices.map((voice) => ({ value: voice.voiceID, label: prettifyAzureVoiceID(voice.voiceID) })),
-          })),
-        },
-      ];
-    },
+    return localeMeta?.map((meta) => ({
+      label: LocaleCodeToCountryLanguage[meta.locale] || meta.locale,
+      options: VoiceLanguageCodeToVoice[meta.languageCode]
+        .map((voiceMeta) =>
+          voiceMeta.voiceName
+            .filter((voiceName) => useWavenet || voiceName.includes(VoiceType.STANDARD))
+            .map((voiceName) => ({
+              value: voiceName,
+              label: prettifyGoogleVoicesShort(voiceName),
+            }))
+        )
+        .flat(),
+    }));
   },
 };
+
+const GENERAL_SSML_META = {
+  fallbackPlaceholder: () => 'What should the assistant say?',
+  canChangeVoice: true,
+  platformTags: ALEXA_DEFAULT_TAGS,
+  addOptions: ALEXA_ADD_OPTIONS,
+  voiceOptions: (locales, useWavenet) => {
+    const allGoogleLocales = Object.values(Locale);
+
+    return [
+      {
+        value: 'Amazon',
+        label: 'Amazon',
+        options: ALEXA_SSML_META.voiceOptions(),
+      },
+      {
+        value: capitalizeFirstLetter(PlatformType.GOOGLE),
+        label: capitalizeFirstLetter(PlatformType.GOOGLE),
+        options: GOOGLE_SSML_META.voiceOptions(allGoogleLocales, useWavenet),
+      },
+      {
+        value: 'Microsoft',
+        label: 'Microsoft',
+        options: Object.values(AZURE_LOCALE_VOICE_META).map((meta) => ({
+          value: meta.language,
+          label: meta.language,
+          options: meta.voices.map((voice) => ({ value: voice.voiceID, label: prettifyAzureVoiceID(voice.voiceID) })),
+        })),
+      },
+    ];
+  },
+};
+
+export const getPlatformSSML = createPlatformSelector(
+  {
+    [PlatformType.ALEXA]: ALEXA_SSML_META,
+    [PlatformType.GOOGLE]: GOOGLE_SSML_META,
+  },
+  GENERAL_SSML_META
+);

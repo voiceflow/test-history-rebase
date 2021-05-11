@@ -1,10 +1,10 @@
 import React from 'react';
 
 import Text from '@/components/Text';
-import { PlatformType } from '@/constants';
+import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
-import { PLATFORM_META } from '@/pages/NewProject/Steps/constants';
+import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
 import { getPlatformValue } from '@/utils/platform';
 
 export type HomeStartStepProps = {
@@ -17,8 +17,8 @@ const HomeStartStep: React.FC<HomeStartStepProps> = ({ platform, invocationName,
   <Step disableHighlightStyle>
     <Section>
       <Item
-        icon={PLATFORM_META[platform].icon}
-        iconColor={PLATFORM_META[platform].iconColor}
+        icon={getPlatformMeta(platform).icon}
+        iconColor={getPlatformMeta(platform).iconColor}
         label={getPlatformValue(
           platform,
           {
@@ -27,7 +27,7 @@ const HomeStartStep: React.FC<HomeStartStepProps> = ({ platform, invocationName,
           },
           <>Project starts here</>
         )}
-        labelVariant={PlatformType.GENERAL ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
+        labelVariant={GENERAL_PLATFORMS.includes(platform) ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
         portID={portID}
       />
     </Section>

@@ -6,7 +6,7 @@ import React from 'react';
 import client from '@/client';
 import { CreationHeader, InnerContainer, OuterContainer } from '@/components/CreationSteps';
 import { FlexCenter } from '@/components/Flex';
-import { PlatformType } from '@/constants';
+import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
@@ -14,25 +14,25 @@ import { useDidUpdateEffect } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
+import { createPlatformSelector } from '@/utils/platform';
 
 import { StepID, StepMeta } from './constants';
-import { CHANNEL_META } from './Steps/constants';
 
 const NUMBER_OF_STEPS = 3;
 
-const TEMPLATE_TAG = {
+const getTemplateTag = createPlatformSelector({
   [PlatformType.ALEXA]: 'default',
   [PlatformType.GOOGLE]: 'default',
   [PlatformType.GENERAL]: 'default',
   [PlatformType.CHATBOT]: `default:${PlatformType.CHATBOT}`,
   [PlatformType.IVR]: `default:${PlatformType.IVR}`,
   [PlatformType.MOBILE_APP]: `default:${PlatformType.MOBILE_APP}`,
-};
+});
 
 const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?: { listID: string } } }> = ({
   computedMatch,
   goToDashboard,
-  goToCanvas,
+  redirectToCanvas,
   createProject,
 }) => {
   // Once this starts getting more complex, we should move all this logic to a context, but right now that's overkill
@@ -48,38 +48,46 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   const [generalLocale, setGeneralLocale] = React.useState<GeneralLocale>(GeneralLocale.EN_US);
   const [creatingProject, setCreatingProject] = React.useState(false);
   const CurrentStep = StepMeta[currentStep].component;
-  const platform = selectedChannel ? CHANNEL_META[selectedChannel].platform : null;
 
   const finalizeCreation = async () => {
     setCreatingProject(true);
     const listID = computedMatch?.params?.listID;
+    let newVersionID: string | null = null;
 
     try {
-      const project = await createProject({ platform: platform!, name, image: projectImage, listID }, TEMPLATE_TAG[selectedChannel!]);
+      // TODO: change this when we have templates for all channels
+      const project = await createProject(
+        { platform: GENERAL_PLATFORMS.includes(selectedChannel!) ? PlatformType.GENERAL : selectedChannel!, name, image: projectImage, listID },
+        getTemplateTag(selectedChannel!)
+      );
 
       // TODO: in the future make new project parameters much more platform specific
-      if (platform === PlatformType.ALEXA) {
+      if (selectedChannel === PlatformType.ALEXA) {
         await client.platform.alexa.version.updatePublishing(project.versionID, {
           invocationName,
           invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
           locales: alexaLocales,
         });
-      } else if (platform === PlatformType.GOOGLE) {
+      } else if (selectedChannel === PlatformType.GOOGLE) {
         await client.platform.google.version.updatePublishing(project.versionID, {
           locales: LanguageToLocale[googleLanguage],
           displayName: name,
           pronunciation: invocationName,
           sampleInvocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
         });
-      } else if (platform === PlatformType.GENERAL) {
+      } else if (GENERAL_PLATFORMS.includes(selectedChannel!)) {
         await client.platform.general.version.updateSettings(project.versionID, {
           locales: [generalLocale],
         });
       }
 
-      goToCanvas(project.versionID);
+      newVersionID = project.versionID;
     } finally {
       setCreatingProject(false);
+    }
+
+    if (newVersionID) {
+      redirectToCanvas(newVersionID);
     }
   };
 
@@ -111,7 +119,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
     <OuterContainer>
       <InnerContainer>
         <CreationHeader
-          title={StepMeta[currentStep].title(platform!)}
+          title={StepMeta[currentStep].title(selectedChannel!)}
           onCancel={goToDashboard}
           stepBack={stepBack}
           canCancel
@@ -148,12 +156,12 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   );
 };
 
-const mapDispatchToPrpos = {
-  goToCanvas: Router.goToCanvas,
+const mapDispatchToProps = {
+  redirectToCanvas: Router.redirectToCanvas,
   goToDashboard: Router.goToDashboard,
   createProject: Project.createProject,
 };
 
-type ConnectedNewProjectProps = ConnectedProps<{}, typeof mapDispatchToPrpos>;
+type ConnectedNewProjectProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToPrpos)(NewProject);
+export default connect(null, mapDispatchToProps)(NewProject);

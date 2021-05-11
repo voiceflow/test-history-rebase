@@ -6,7 +6,7 @@ import { BlockType } from '@/constants';
 import { useDidUpdateEffect, useFeature, useTrackingEvents } from '@/hooks';
 import { NodeData } from '@/models';
 import { EngineContext, PlatformContext, SpotlightContext } from '@/pages/Canvas/contexts';
-import { MenuStep, PLATFORM_SECTIONS } from '@/pages/Skill/menus/DesignMenu/components/Steps/constants';
+import { getSections, MenuStep } from '@/pages/Skill/menus/DesignMenu/components/Steps/constants';
 import { Identifier } from '@/styles/constants';
 import { preventDefault } from '@/utils/dom';
 
@@ -30,7 +30,7 @@ const Spotlight = () => {
 
   const options = React.useMemo(
     () =>
-      PLATFORM_SECTIONS[platform]
+      getSections(platform)
         .flatMap((section) => section.steps)
         .filter((option) => {
           if (!gadgets.isEnabled && [BlockType.EVENT].includes(option.type)) return false;

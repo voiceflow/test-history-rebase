@@ -5,7 +5,7 @@ import { SectionVariants, SettingsSection } from '@/components/Settings';
 import { PlatformType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import AlexaFeatures from '@/pages/Settings/components/GeneralSettings/Sections/ChannelSpecificFeatures';
-import { PLATFORM_SETTINGS_META, SettingSections } from '@/pages/Settings/constants';
+import { getSettingsMetaProps, SettingSections } from '@/pages/Settings/constants';
 
 import { Basic, Canvas, DangerZone, GlobalConversationLogic } from './Sections';
 
@@ -19,17 +19,17 @@ const SectionComponents: Record<SettingSections, React.FC<{ platform: PlatformTy
 
 const SettingsContent: React.FC = () => {
   const platform = useSelector(Skill.activePlatformSelector);
-  const { sections } = PLATFORM_SETTINGS_META[platform];
+  const platformMeta = getSettingsMetaProps(platform);
 
   return (
     <>
-      {sections.map((section: SettingSections, index) => {
+      {platformMeta.sections.map((section: SettingSections, index) => {
         const SectionComponent = SectionComponents[section];
         const variant = section === SettingSections.DANGER_ZONE ? SectionVariants.SECONDARY : SectionVariants.PRIMARY;
 
         return (
           <SettingsSection variant={variant} key={index} title={section}>
-            <SectionComponent platform={platform} title={section} key={index} platformMeta={PLATFORM_SETTINGS_META[platform]} />
+            <SectionComponent platform={platform} title={section} key={index} platformMeta={platformMeta} />
           </SettingsSection>
         );
       })}

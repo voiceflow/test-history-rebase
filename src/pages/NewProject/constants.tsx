@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { PlatformType } from '@/constants';
-import { PLATFORM_META } from '@/pages/NewProject/Steps/constants';
+import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
 
 import ChannelSelect from './Steps/ChannelSelect';
 import NameAndImage from './Steps/NameAndImage';
@@ -26,11 +26,11 @@ export const StepMeta: Record<StepID, StepMetaProps> = {
   [StepID.PLATFORM_SELECT]: {
     title: () => 'Select Channel',
     component: ({ setSelectedChannel, creatingSkill }) => (
-      <ChannelSelect onSelect={(channel) => setSelectedChannel(channel)} isLoading={creatingSkill} />
+      <ChannelSelect onSelect={(platform) => setSelectedChannel(platform)} isLoading={creatingSkill} />
     ),
   },
   [StepID.PROJECT_SETTINGS]: {
-    title: (platform) => `${PLATFORM_META[platform].platformAppType} Settings`,
+    title: (platform) => `${getPlatformMeta(platform).platformAppType} Settings`,
     component: ProjectSettings,
   },
 };

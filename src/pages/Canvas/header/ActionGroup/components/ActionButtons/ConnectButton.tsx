@@ -8,38 +8,37 @@ import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
+import { createPlatformSelector } from '@/utils/platform';
 
-const CONNECT_ICON: Record<PlatformType, Icon | null> = {
-  [PlatformType.ALEXA]: 'amazonAlexa',
-  [PlatformType.GOOGLE]: 'googleAssistantNoColor',
-  [PlatformType.GENERAL]: null,
-  [PlatformType.IVR]: null,
-  [PlatformType.CHATBOT]: null,
-  [PlatformType.MOBILE_APP]: null,
-};
+const getConnectIcon = createPlatformSelector<Icon | null>(
+  {
+    [PlatformType.ALEXA]: 'amazonAlexa',
+    [PlatformType.GOOGLE]: 'googleAssistantNoColor',
+  },
+  null
+);
 
-const CONNECT_MESSAGE: Record<PlatformType, string> = {
-  [PlatformType.ALEXA]: 'Connect to Alexa',
-  [PlatformType.GOOGLE]: 'Connect to Google',
-  [PlatformType.GENERAL]: '',
-  [PlatformType.IVR]: '',
-  [PlatformType.CHATBOT]: '',
-  [PlatformType.MOBILE_APP]: '',
-};
+const getConnectMessage = createPlatformSelector(
+  {
+    [PlatformType.ALEXA]: 'Connect to Alexa',
+    [PlatformType.GOOGLE]: 'Connect to Google',
+  },
+  ''
+);
 
 type ConnectButtonProps = {
   onClick: () => void;
 };
 
 const ConnectButton: React.FC<ConnectButtonProps & ConnectedConnectButtonProps> = ({ platform, onClick }) =>
-  CONNECT_ICON[platform] ? (
-    <TippyTooltip title={CONNECT_MESSAGE[platform]} position="bottom">
+  getConnectIcon(platform) ? (
+    <TippyTooltip title={getConnectMessage(platform)} position="bottom">
       <IconButton
         id={Identifier.UPLOAD}
         iconProps={{ color: '#3D82E2' }}
         preventFocusStyle
         variant={IconButtonVariant.ACTION}
-        icon={CONNECT_ICON[platform] as Icon}
+        icon={getConnectIcon(platform) as Icon}
         large
         onClick={onClick}
       />

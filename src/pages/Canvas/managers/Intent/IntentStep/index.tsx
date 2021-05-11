@@ -6,6 +6,7 @@ import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { ConnectedProps } from '@/types';
 import { prettifyIntentName } from '@/utils/intent';
+import { getDistinctPlatformValue } from '@/utils/platform';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -24,9 +25,7 @@ export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, portID, label })
 );
 
 const ConnectedIntentStep: React.FC<ConnectedStepProps<NodeData.Intent> & ConnectedIntentStepProps> = ({ node, data, platform, intentsMap }) => {
-  const {
-    [platform]: { intent },
-  } = data;
+  const { intent } = getDistinctPlatformValue(platform, data);
 
   return <IntentStep nodeID={node.id} portID={node.ports.out[0]} label={intentsMap[intent!] ? prettifyIntentName(intentsMap[intent!].name) : null} />;
 };

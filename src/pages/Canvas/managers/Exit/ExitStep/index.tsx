@@ -3,17 +3,17 @@ import React from 'react';
 import { PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import { createPlatformSelector } from '@/utils/platform';
 
 import { NODE_CONFIG } from '../constants';
 
-const PLATFORM_LABELS = {
-  [PlatformType.ALEXA]: 'Skill',
-  [PlatformType.GOOGLE]: 'Google Action',
-  [PlatformType.GENERAL]: 'Project',
-  [PlatformType.IVR]: 'Project',
-  [PlatformType.MOBILE_APP]: 'Project',
-  [PlatformType.CHATBOT]: 'Project',
-};
+const getPlatformLabel = createPlatformSelector(
+  {
+    [PlatformType.ALEXA]: 'Skill',
+    [PlatformType.GOOGLE]: 'Google Action',
+  },
+  'Project'
+);
 
 export type ExitStepProps = {
   nodeID: string;
@@ -25,7 +25,7 @@ export const ExitStep: React.FC<ExitStepProps> = ({ nodeID, platform }) => (
     <Section>
       <Item
         icon={NODE_CONFIG.icon}
-        label={`${PLATFORM_LABELS[platform]} ends in current state`}
+        label={`${getPlatformLabel(platform)} ends in current state`}
         portID={null}
         iconColor={NODE_CONFIG.iconColor}
         labelVariant={StepLabelVariant.SECONDARY}

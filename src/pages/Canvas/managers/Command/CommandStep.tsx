@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import React from 'react';
 
 import * as Router from '@/ducks/router';
@@ -7,6 +6,7 @@ import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { stopPropagation } from '@/utils/dom';
+import { getDistinctPlatformValue } from '@/utils/platform';
 
 export type CommandStepProps = {
   nodeID: string;
@@ -33,7 +33,13 @@ const mapDispatchToProps = {
 const mergeProps = (
   ...[, { goToDiagram }, { data, platform }]: MergeArguments<{}, typeof mapDispatchToProps, ConnectedStepProps<NodeData.Command>>
 ) => ({
-  goToDiagram: () => !!data[platform].diagramID && goToDiagram(data[platform].diagramID!),
+  goToDiagram: () => {
+    const platformData = getDistinctPlatformValue(platform, data);
+
+    if (platformData.diagramID) {
+      goToDiagram(platformData.diagramID);
+    }
+  },
 });
 
 export type ConnectedCommandStepProps = ConnectedProps<{}, typeof mapDispatchToProps, typeof mergeProps>;

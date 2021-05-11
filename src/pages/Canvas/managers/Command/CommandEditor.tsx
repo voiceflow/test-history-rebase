@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { ButtonVariant } from '@/components/Button';
 import IntentForm, { HelpTooltip as IntentTooltip, LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import Section, { SectionVariant } from '@/components/Section';
@@ -9,16 +10,31 @@ import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
+import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { withHeaderActions } from '@/pages/Canvas/components/EditorSidebar/hocs';
+import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';
+import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 
 import { Flow, HelpTooltip as FlowTooltip } from '../Flow/components';
+import { NodeEditor, NodeEditorPropsType } from '../types';
 import { HelpMessage, HelpTooltip } from './components';
 
-function CommandEditor({ data, diagram, goToDiagram, platform, intent, onChange, pushToPath, diagramByID }) {
-  const onChangeData = React.useCallback((payload) => onChange({ [platform]: { ...data[platform], ...payload } }), [onChange, platform, data]);
-  const selectedFlowID = data[platform].diagramID;
+const FlowComponent = Flow as React.FC<any>;
+const LegacyMappingsComponent = LegacyMappings as React.FC<any>;
+
+const CommandEditor: NodeEditor<NodeData.Command, ConnectedCommandEditorProps> = ({
+  data,
+  platformData,
+  patchPlatformData,
+  diagram,
+  goToDiagram,
+  intent,
+  onChange,
+  pushToPath,
+  diagramByID,
+}) => {
+  const selectedFlowID = platformData.diagramID;
 
   useDidUpdateEffect(() => {
     if (selectedFlowID) {
@@ -37,7 +53,7 @@ function CommandEditor({ data, diagram, goToDiagram, platform, intent, onChange,
             {
               label: 'Enter Flow',
               onClick: goToDiagram,
-              variant: 'primary',
+              variant: ButtonVariant.PRIMARY,
               disabled: !diagram,
             },
           ]}
@@ -52,21 +68,21 @@ function CommandEditor({ data, diagram, goToDiagram, platform, intent, onChange,
       }
     >
       <Section variant={SectionVariant.SUBSECTION} header="Flow" tooltip={<FlowTooltip />}>
-        <Flow data={{ ...data, ...data[platform] }} diagram={diagram} onChange={onChangeData} isCommand enterOnCreate={false} />
+        <FlowComponent data={{ ...data, ...platformData }} diagram={diagram} onChange={patchPlatformData} isCommand enterOnCreate={false} />
       </Section>
 
       <Section isDividerNested variant={SectionVariant.SUBSECTION} header="Intent" tooltip={<IntentTooltip />}>
-        <IntentSelect intent={intent} onChange={({ intent }) => onChangeData({ intent })} />
+        <IntentSelect intent={intent} onChange={({ intent }: { intent: string | null }) => patchPlatformData({ intent })} />
       </Section>
       <IntentForm intent={intent} pushToPath={pushToPath} />
-      <LegacyMappings intent={intent} mappings={data[platform].mappings} onDelete={() => onChangeData({ mappings: [] })} />
+      <LegacyMappingsComponent intent={intent} mappings={platformData.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
     </Content>
   );
-}
+};
 
 const mapStateToProps = {
-  diagrams: Diagram.allDiagramsSelector,
   platform: Skill.activePlatformSelector,
+  diagrams: Diagram.allDiagramsSelector,
   diagramByID: Diagram.diagramByIDSelector,
   getIntentByID: Intent.platformIntentByIDSelector,
 };
@@ -75,25 +91,35 @@ const mapDispatchToProps = {
   goToDiagram: Router.goToDiagram,
 };
 
-const mergeProps = ({ platform, getIntentByID, diagramByID }, { goToDiagram }, { data }) => {
-  const platformData = data[platform];
+const mergeProps = (
+  ...[{ platform, getIntentByID, diagramByID }, { goToDiagram }, { data, onChange }]: MergeArguments<
+    typeof mapStateToProps,
+    typeof mapDispatchToProps,
+    NodeEditorPropsType<NodeData.Command>
+  >
+) => {
+  const platformData = getDistinctPlatformValue(platform, data);
 
   return {
+    platformData,
+    patchPlatformData: (patch: Partial<NodeData.Command.PlatformData>) => onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch })),
     intent: platformData.intent && getIntentByID(platformData.intent),
     diagram: platformData.diagramID && diagramByID(platformData.diagramID),
-    goToDiagram: () => goToDiagram(platformData.diagramID),
+    goToDiagram: () => goToDiagram(platformData.diagramID!),
     diagramByID,
   };
 };
 
+type ConnectedCommandEditorProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
+
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps, mergeProps),
+  connect(mapStateToProps, mapDispatchToProps, mergeProps)
   // TODO: remove this when duplicate functionality is implemented and we can use defaults
-  withHeaderActions([
-    {
-      value: 'delete_block',
-      label: 'Delete',
-      onClick: ({ data, engine }) => engine.node.remove(data.nodeID),
-    },
-  ])
-)(CommandEditor);
+  // withHeaderActions([
+  //   {
+  //     value: 'delete_block',
+  //     label: 'Delete',
+  //     onClick: ({ data, engine }) => engine.node.remove(data.nodeID),
+  //   },
+  // ])
+)(CommandEditor) as NodeEditor<NodeData.Command>;

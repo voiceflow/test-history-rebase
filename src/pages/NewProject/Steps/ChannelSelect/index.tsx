@@ -6,7 +6,7 @@ import { PlatformType } from '@/constants';
 import { styled } from '@/hocs';
 import { Container as CreateWorkspaceContainer } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 
-import { CHANNEL_META } from '../constants';
+import { getChannelMeta } from '../constants';
 import { InstructionContainer, PlatformCardsContainer, QuestionContainer } from './components';
 import PlatformCard from './components/PlatformCard';
 
@@ -17,7 +17,7 @@ const Container = styled(CreateWorkspaceContainer)`
 `;
 
 type ChannelSelectProps = {
-  onSelect: (channel: PlatformType | null) => void;
+  onSelect: (platform: PlatformType | null) => void;
   isLoading: boolean;
   instruction?: string;
 };
@@ -41,13 +41,13 @@ const ChannelSelect: React.FC<ChannelSelectProps> = ({
         </div>
       </FlexCenter>
       <PlatformCardsContainer>
-        {OPTIONS.map((channel, index) => (
+        {OPTIONS.map((platform, index) => (
           <PlatformCard
             key={index}
-            channel={CHANNEL_META[channel]}
+            channel={getChannelMeta(platform)}
             onClick={() => {
               if (isLoading) return;
-              onSelect(channel);
+              onSelect(platform);
             }}
           />
         ))}

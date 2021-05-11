@@ -17,7 +17,7 @@ import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { PLATFORM_SETTINGS_META } from '@/pages/Settings/constants';
+import { getSettingsMetaProps } from '@/pages/Settings/constants';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
@@ -31,7 +31,7 @@ type ProjectVersion = {
 const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, activeVersionID, setConfirm, goToCanvas, platform }) => {
   const [loading, setLoading] = React.useState(true);
   const [versions, setVersions] = React.useState<ProjectVersion[]>([]);
-  const { name } = PLATFORM_SETTINGS_META[platform];
+  const { name } = getSettingsMetaProps(platform);
 
   const swapVersions = async (versionId: string) => {
     if (!projectID) {

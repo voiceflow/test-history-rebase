@@ -1,7 +1,7 @@
 import update from 'immutability-helper';
 import { createSelector } from 'reselect';
 
-import { PLATFORMS, PlatformType } from '@/constants';
+import { DISTINCT_PLATFORMS, PlatformType } from '@/constants';
 import { createAction } from '@/ducks/utils';
 import { Action, RootReducer } from '@/store/types';
 import { Nullable } from '@/types';
@@ -56,7 +56,7 @@ const createPublishPlatformSelector = (platform: PlatformType) =>
 
 type PublishPlatformSelectors = Record<PlatformType, ReturnType<typeof createPublishPlatformSelector>>;
 
-export const publishPlatformSelectors = PLATFORMS.reduce<PublishPlatformSelectors>(
+export const publishPlatformSelectors = DISTINCT_PLATFORMS.reduce<PublishPlatformSelectors>(
   (selectors, platform) => Object.assign(selectors, { [platform]: createPublishPlatformSelector(platform) }),
   {} as PublishPlatformSelectors
 );
@@ -70,7 +70,7 @@ const createUpdatePublishPlatformAction = <T extends PlatformType>(platform: T) 
 
 type UpdatePublishPlatforms = Record<PlatformType, ReturnType<typeof createUpdatePublishPlatformAction>>;
 
-export const updatePublishPlatforms = PLATFORMS.reduce<UpdatePublishPlatforms>(
+export const updatePublishPlatforms = DISTINCT_PLATFORMS.reduce<UpdatePublishPlatforms>(
   (actions, platform) => Object.assign(actions, { [platform]: createUpdatePublishPlatformAction(platform) }),
   {} as UpdatePublishPlatforms
 );

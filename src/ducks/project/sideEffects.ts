@@ -4,7 +4,7 @@ import { ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
 import client from '@/client';
 import projectAdapter from '@/client/adapters/project';
 import { toast } from '@/components/Toast';
-import { PlatformType } from '@/constants';
+import { DISTINCT_PLATFORMS, PlatformType } from '@/constants';
 import { removeProject, replaceProjects, updateProject } from '@/ducks/project/actions';
 import { addProjectToList } from '@/ducks/projectList/actions';
 import { activeWorkspaceIDSelector } from '@/ducks/workspace/selectors';
@@ -54,7 +54,10 @@ export const createProject = ({ platform, name, image, listID }: Partial<CreateP
   const state = getState();
   const teamID = activeWorkspaceIDSelector(state)!;
 
-  const templateProjectID = await client.template.getPlatformTemplate(platform!, templateTag);
+  // TODO: remove this after SQL `templates` table migration + Mongo template project platform update
+  const distinctPlatform = DISTINCT_PLATFORMS.includes(platform!) ? platform! : PlatformType.GENERAL;
+
+  const templateProjectID = await client.template.getPlatformTemplate(distinctPlatform, templateTag);
   if (!templateProjectID) {
     toast.error(`no project templates exist for platform ${platform}`);
     throw new Error('no platform project template');

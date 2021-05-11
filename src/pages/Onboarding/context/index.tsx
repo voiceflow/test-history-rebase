@@ -15,7 +15,6 @@ import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
 import { useModals, useSmartReducer, useTrackingEvents } from '@/hooks';
-import { CHANNEL_META } from '@/pages/NewProject/Steps/constants';
 import { ConnectedProps } from '@/types';
 import { asyncForEach } from '@/utils/array';
 import { compose } from '@/utils/functional';
@@ -365,10 +364,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
-          const { versionID } = await createProject(
-            { platform: CHANNEL_META[state.selectChannelMeta.channel as PlatformType].platform },
-            templateTag
-          );
+          const { versionID } = await createProject({ platform: state.selectChannelMeta.channel as PlatformType }, templateTag);
           await goToCanvas(versionID!);
           await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
         }

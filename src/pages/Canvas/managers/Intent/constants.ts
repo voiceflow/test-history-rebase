@@ -1,6 +1,6 @@
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
-import { defaultPlatformsData } from '@/utils/platform';
+import { distinctPlatformsData } from '@/utils/platform';
 
 import { NodeConfig } from '../types';
 
@@ -21,7 +21,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Intent> = {
     },
     data: {
       name: 'Intent',
-      ...defaultPlatformsData({ intent: null, mappings: [] }),
+      ...distinctPlatformsData({ intent: null, mappings: [] }),
     },
   }),
 };

@@ -6,14 +6,14 @@ import SvgIcon from '@/components/SvgIcon';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { DEVICE_LIST } from '@/pages/Prototype/constants';
+import { getDeviceList } from '@/pages/Prototype/constants';
 import { FadeRightContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
 import { Dimension, Item, Name } from './components';
 
 const PrototypeDisplaySettings: React.FC<ConnectedPrototypeDisplaySettingsProps> = ({ device, platform, updateDevice }) => {
-  const deviceList = DEVICE_LIST[platform];
+  const deviceList = getDeviceList(platform);
 
   React.useEffect(() => {
     // should default to option at the top of the list

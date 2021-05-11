@@ -10,6 +10,7 @@ import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canva
 import { ConnectedProps } from '@/types';
 import { head } from '@/utils/array';
 import { prettifyIntentName } from '@/utils/intent';
+import { getDistinctPlatformValue } from '@/utils/platform';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -55,9 +56,7 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction> & C
       nodeOutPorts
         .filter((portID) => choicesByPortID[portID])
         .map((portID) => {
-          const {
-            [platform]: { intent },
-          } = choicesByPortID[portID];
+          const { intent } = getDistinctPlatformValue(platform, choicesByPortID[portID]);
 
           return {
             label: intentsMap[intent!] ? prettifyIntentName(intentsMap[intent!].name) : null,

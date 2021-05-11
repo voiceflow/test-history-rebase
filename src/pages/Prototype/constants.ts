@@ -4,6 +4,7 @@ import { SubMenuItem } from '@/components/SubMenu';
 import { Icon } from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
 import { PrototypeMode } from '@/ducks/prototype';
+import { createPlatformSelector } from '@/utils/platform';
 
 const canvasIcon: SubMenuItem = {
   value: PrototypeMode.CANVAS,
@@ -31,14 +32,13 @@ const GOOGLE_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, developerIcon,
 
 const GENERAL_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];
 
-export const PROTOTYPE_MENU_OPTIONS = {
-  [PlatformType.ALEXA]: ALEXA_PROTOTYPE_MENU_OPTIONS,
-  [PlatformType.GOOGLE]: GOOGLE_PROTOTYPE_MENU_OPTIONS,
-  [PlatformType.GENERAL]: GENERAL_PROTOTYPE_MENU_OPTIONS,
-  [PlatformType.IVR]: GENERAL_PROTOTYPE_MENU_OPTIONS,
-  [PlatformType.CHATBOT]: GENERAL_PROTOTYPE_MENU_OPTIONS,
-  [PlatformType.MOBILE_APP]: GENERAL_PROTOTYPE_MENU_OPTIONS,
-};
+export const getMenuOptions = createPlatformSelector(
+  {
+    [PlatformType.ALEXA]: ALEXA_PROTOTYPE_MENU_OPTIONS,
+    [PlatformType.GOOGLE]: GOOGLE_PROTOTYPE_MENU_OPTIONS,
+  },
+  GENERAL_PROTOTYPE_MENU_OPTIONS
+);
 
 export type DeviceInfo = {
   name: string;
@@ -47,7 +47,7 @@ export type DeviceInfo = {
   dimension: Dimensions & { density: number };
 };
 
-export const ALEXA_DEVICE_LIST: DeviceInfo[] = [
+export const ALEXA_DEVICES: DeviceInfo[] = [
   {
     type: DeviceType.ECHO_SHOW_8,
     name: 'Echo Show 8',
@@ -89,11 +89,11 @@ export const ALEXA_DEVICE_LIST: DeviceInfo[] = [
   },
 ];
 
-export const DEVICE_LIST: Record<PlatformType, DeviceInfo[]> = {
-  [PlatformType.ALEXA]: ALEXA_DEVICE_LIST,
-  [PlatformType.GOOGLE]: [],
-  [PlatformType.GENERAL]: [],
-  [PlatformType.IVR]: [],
-  [PlatformType.CHATBOT]: [],
-  [PlatformType.MOBILE_APP]: [],
-};
+export const ALL_DEVICES = [...ALEXA_DEVICES];
+
+export const getDeviceList = createPlatformSelector<DeviceInfo[]>(
+  {
+    [PlatformType.ALEXA]: ALEXA_DEVICES,
+  },
+  []
+);

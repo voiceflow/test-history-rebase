@@ -2,13 +2,13 @@ import { Locale as GeneralLocale } from '@voiceflow/general-types';
 import uniqBy from 'lodash/uniqBy';
 import { createSelector } from 'reselect';
 
-import { PlatformType } from '@/constants';
+import { GENERAL_PLATFORMS } from '@/constants';
 import { applyIntentNameFormatting } from '@/ducks/intent/utils';
 import { activeLocalesSelector, activePlatformSelector } from '@/ducks/skill/skill/selectors';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 import { Intent } from '@/models';
 import { unique } from '@/utils/array';
-import { BUILT_IN_INTENTS, GENERAL_BUILT_INS_MAP } from '@/utils/intent';
+import { GENERAL_BUILT_INS_MAP, getBuiltInIntents } from '@/utils/intent';
 
 import { STATE_KEY } from './constants';
 
@@ -35,13 +35,13 @@ export const allPlatformIntentsSelector = createSelector(
   (intents, platform, locales) => {
     const prettifiedIntents = applyIntentNameFormatting(intents, platform);
 
-    if (platform === PlatformType.GENERAL) {
+    if (GENERAL_PLATFORMS.includes(platform)) {
       const lang = (locales[0] ?? GeneralLocale.EN_US).split('-')[0];
 
       return uniqBy([...prettifiedIntents, ...(GENERAL_BUILT_INS_MAP[lang] || GENERAL_BUILT_INS_MAP.en)], (intent) => intent.id);
     }
 
-    return uniqBy([...prettifiedIntents, ...BUILT_IN_INTENTS[platform]], (intent) => intent.id);
+    return uniqBy([...prettifiedIntents, ...getBuiltInIntents(platform)], (intent) => intent.id);
   }
 );
 

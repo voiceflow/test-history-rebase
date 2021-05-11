@@ -4,6 +4,7 @@ import { BlockCategory, BlockType, DialogType, IntegrationType, PlatformType, Ro
 import { NodeData } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { Icon } from '@/svgs/types';
+import { createPlatformSelector } from '@/utils/platform';
 
 export type MenuStep = {
   type: BlockType;
@@ -176,12 +177,10 @@ export const GENERAL_SECTIONS = [
   },
 ];
 
-// mapping each platform to corresponding list of sections
-export const PLATFORM_SECTIONS = {
-  [PlatformType.ALEXA]: ALEXA_SECTIONS,
-  [PlatformType.GOOGLE]: GOOGLE_SECTIONS,
-  [PlatformType.GENERAL]: GENERAL_SECTIONS,
-  [PlatformType.IVR]: GENERAL_SECTIONS,
-  [PlatformType.CHATBOT]: GENERAL_SECTIONS,
-  [PlatformType.MOBILE_APP]: GENERAL_SECTIONS,
-};
+export const getSections = createPlatformSelector(
+  {
+    [PlatformType.ALEXA]: ALEXA_SECTIONS,
+    [PlatformType.GOOGLE]: GOOGLE_SECTIONS,
+  },
+  GENERAL_SECTIONS
+);

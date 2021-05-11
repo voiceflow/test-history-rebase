@@ -6,7 +6,7 @@ import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } 
 import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
 import { StepData as VisualStepData } from '@voiceflow/general-types/build/nodes/visual';
 
-import { BlockType, CardType, IntegrationType, PlatformType, RepromptType } from '@/constants';
+import { BlockType, CardType, DistinctPlatform, IntegrationType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 
 import { SpeakData } from './Speak';
@@ -67,7 +67,7 @@ export namespace NodeData {
   export type Interaction = {
     name: string;
     else: InteractionElse;
-    choices: Record<PlatformType, InteractionChoice>[];
+    choices: Record<DistinctPlatform, InteractionChoice>[];
     reprompt: Reprompt | null;
     chips: Chip[] | null;
   };
@@ -86,7 +86,7 @@ export namespace NodeData {
     chips: Chip[] | null;
   };
 
-  export type Command = Record<PlatformType, Command.PlatformData> & { name: string };
+  export type Command = Record<DistinctPlatform, Command.PlatformData> & { name: string };
   export namespace Command {
     export type PlatformData = {
       // only added some properties here
@@ -235,7 +235,7 @@ export namespace NodeData {
 
   export type AccountLinking = {};
 
-  export type Intent = Record<PlatformType, Intent.PlatformData>;
+  export type Intent = Record<DistinctPlatform, Intent.PlatformData>;
 
   export namespace Intent {
     export type PlatformData = { intent: string | null; mappings: SlotMapping[] };

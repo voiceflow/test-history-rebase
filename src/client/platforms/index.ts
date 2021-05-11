@@ -1,25 +1,22 @@
 import { PlatformType } from '@/constants';
+import { createPlatformSelector } from '@/utils/platform';
 
 import alexa from './alexa';
 import general from './general';
 import google from './google';
 
-const platformServices = {
+const platformClients = {
   alexa,
   google,
   general,
-  mobile_app: general,
-  ivr: general,
-  chatbot: general,
 };
 
-export const platformServicesMap = {
-  [PlatformType.ALEXA]: alexa,
-  [PlatformType.GOOGLE]: google,
-  [PlatformType.GENERAL]: general,
-  [PlatformType.MOBILE_APP]: general,
-  [PlatformType.IVR]: general,
-  [PlatformType.CHATBOT]: general,
-};
+export const getPlatformClient = createPlatformSelector<typeof alexa | typeof google | typeof general>(
+  {
+    [PlatformType.ALEXA]: alexa,
+    [PlatformType.GOOGLE]: google,
+  },
+  general
+);
 
-export default platformServices;
+export default platformClients;

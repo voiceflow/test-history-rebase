@@ -6,23 +6,23 @@ import { PlatformType } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
+import { createPlatformSelector } from '@/utils/platform';
 
 type UploadButtonProps = {
   isJobActive: boolean;
   onClick: () => void;
 };
 
-const UPLOAD_MESSAGE: Record<PlatformType, string> = {
-  [PlatformType.ALEXA]: 'Upload to Alexa',
-  [PlatformType.GOOGLE]: 'Upload to Google',
-  [PlatformType.GENERAL]: '',
-  [PlatformType.IVR]: '',
-  [PlatformType.CHATBOT]: '',
-  [PlatformType.MOBILE_APP]: '',
-};
+const getUploadMessage = createPlatformSelector(
+  {
+    [PlatformType.ALEXA]: 'Upload to Alexa',
+    [PlatformType.GOOGLE]: 'Upload to Google',
+  },
+  ''
+);
 
 const UploadButton: React.FC<UploadButtonProps & ConnectedUploadButtonProps> = ({ isJobActive, platform, onClick }) => (
-  <TippyTooltip title={UPLOAD_MESSAGE[platform]} position="bottom">
+  <TippyTooltip title={getUploadMessage(platform)} position="bottom">
     <IconButton preventFocusStyle variant={IconButtonVariant.ACTION} icon="loader" large onClick={onClick} active={isJobActive} />
   </TippyTooltip>
 );

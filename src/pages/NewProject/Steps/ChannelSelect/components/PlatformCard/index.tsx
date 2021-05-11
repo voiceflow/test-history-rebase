@@ -27,7 +27,7 @@ const PlatformCard: React.FC<PlatformCard> = ({ channel, onClick, disabled }) =>
       {channel.features.map((featureID) => {
         const { color, borderColor, name, description } = PLATFORM_FEATURE_META[featureID];
         return (
-          <Tooltip key={featureID} title={description(channel.channel)} position="top">
+          <Tooltip key={featureID} title={description(channel.platform)} position="top">
             <PlatformFeatureBubble color={color} borderColor={borderColor}>
               {name}{' '}
             </PlatformFeatureBubble>

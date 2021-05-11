@@ -5,7 +5,7 @@ import cuid from 'cuid';
 import { createAdapter } from '@/client/adapters/utils';
 import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';
-import { defaultPlatformsData } from '@/utils/platform';
+import { distinctPlatformsData } from '@/utils/platform';
 
 import { createBlockAdapter, noMatchAdapter, repromptAdapter } from '../utils';
 
@@ -24,7 +24,7 @@ const interactionAdapter = createBlockAdapter<StepData<Voice>, NodeData.Interact
     name,
     else: elseAdapter.fromDB(elseData),
     choices: choices.map((choice) => ({
-      ...defaultPlatformsData({ id: cuid.slug(), intent: null, mappings: [] }),
+      ...distinctPlatformsData({ id: cuid.slug(), intent: null, mappings: [] }),
       [PlatformType.ALEXA]: choiceAdapter.fromDB(choice),
     })),
     reprompt: reprompt && repromptAdapter.fromDB(reprompt),

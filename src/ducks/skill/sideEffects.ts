@@ -24,6 +24,7 @@ import { SyncThunk, Thunk } from '@/store/types';
 import { getAuthCookie } from '@/utils/cookies';
 import { DataTypes, download, downloadFromURL } from '@/utils/dom';
 import { isChoiceNode, isFlowNode, isIntentNode, isProductLinkedNode } from '@/utils/node';
+import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 import { arrayStringReplace } from '@/utils/string';
 import * as Sentry from '@/vendors/sentry';
 
@@ -249,13 +250,19 @@ export const handlePastedNodes = ({
   if (sourcePlatform !== targetPlatform) {
     mappedNodes = mappedNodes.map((node) => {
       if (isIntentNode(node.data)) {
-        return { ...node, data: { ...node.data, [targetPlatform]: node.data[sourcePlatform] } };
+        return { ...node, data: { ...node.data, ...setDistinctPlatformValue(targetPlatform, getDistinctPlatformValue(sourcePlatform, node.data)) } };
       }
 
       if (isChoiceNode(node.data)) {
         return {
           ...node,
-          data: { ...node.data, choices: node.data.choices.map((choice) => ({ ...choice, [targetPlatform]: choice[sourcePlatform] })) },
+          data: {
+            ...node.data,
+            choices: node.data.choices.map((choice) => ({
+              ...choice,
+              ...setDistinctPlatformValue(targetPlatform, getDistinctPlatformValue(sourcePlatform, choice)),
+            })),
+          },
         };
       }
 

@@ -20,7 +20,7 @@ const renderPrototype = (abortControl: AbortControl): Thunk => async (dispatch, 
   }
 
   try {
-    const platformPrototypeService = client.platform[platform].prototype;
+    const platformPrototypeService = client.platform(platform).prototype;
 
     await platformPrototypeService.run(projectID);
 

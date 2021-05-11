@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import { DiagramNode } from '@voiceflow/api-sdk';
 import { NodeType } from '@voiceflow/general-types';
 import moize from 'moize';
@@ -7,6 +5,7 @@ import moize from 'moize';
 import { BidirectionalAdapter } from '@/client/adapters/utils';
 import { BlockType, IntegrationType, PlatformType } from '@/constants';
 import { NodeData } from '@/models';
+import { createPlatformSelector } from '@/utils/platform';
 
 import { alexaBlockAdapter, alexaPortsAdapter } from './alexa';
 import blockDataAdapter from './block';
@@ -40,14 +39,13 @@ export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: 
   },
 };
 
-const platformBlockAdapter = {
-  [PlatformType.ALEXA]: alexaBlockAdapter,
-  [PlatformType.GOOGLE]: googleBlockAdapter,
-  [PlatformType.GENERAL]: generalBlockAdapter,
-  [PlatformType.IVR]: generalBlockAdapter,
-  [PlatformType.MOBILE_APP]: generalBlockAdapter,
-  [PlatformType.CHATBOT]: generalBlockAdapter,
-};
+const getPlatformAdapter = createPlatformSelector<Partial<Record<BlockType, unknown>>>(
+  {
+    [PlatformType.ALEXA]: alexaBlockAdapter,
+    [PlatformType.GOOGLE]: googleBlockAdapter,
+  },
+  generalBlockAdapter
+);
 
 const commonBlockAdapter = {
   // internal
@@ -63,14 +61,13 @@ const commonBlockAdapter = {
   [BlockType.MARKUP_IMAGE]: markupImageAdapter,
 };
 
-const platformPortsAdapter = {
-  [PlatformType.ALEXA]: alexaPortsAdapter,
-  [PlatformType.GOOGLE]: googlePortsAdapter,
-  [PlatformType.GENERAL]: generalPortsAdapter,
-  [PlatformType.CHATBOT]: generalPortsAdapter,
-  [PlatformType.IVR]: generalPortsAdapter,
-  [PlatformType.MOBILE_APP]: generalPortsAdapter,
-};
+const getPlatformPortsAdapter = createPlatformSelector<typeof alexaPortsAdapter | typeof googlePortsAdapter | typeof generalPortsAdapter>(
+  {
+    [PlatformType.ALEXA]: alexaPortsAdapter,
+    [PlatformType.GOOGLE]: googlePortsAdapter,
+  },
+  generalPortsAdapter
+);
 
 export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);
 
@@ -83,7 +80,7 @@ export const getBlockAdapter = moize(
     (({
       ...commonBlockAdapter,
       ...generalBlockAdapter,
-      ...platformBlockAdapter[platform],
+      ...getPlatformAdapter(platform),
     } as unknown) as PlatformBlockAdapter)
 );
 
@@ -94,7 +91,7 @@ export const getPortsAdapter = moize(
     ({
       ...commonPortsAdapter,
       ...generalPortsAdapter,
-      ...platformPortsAdapter[platform],
+      ...getPlatformPortsAdapter(platform),
     } as PlatformPortsAdapter)
 );
 

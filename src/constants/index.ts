@@ -1,7 +1,5 @@
-/* eslint-disable camelcase */
-import { PermissionType, Voice as AlexaVoices } from '@voiceflow/alexa-types';
-import { DeviceType, Voice as GeneralVoices } from '@voiceflow/general-types';
-import { Voice as GoogleVoices } from '@voiceflow/google-types';
+import { PermissionType } from '@voiceflow/alexa-types';
+import { DeviceType } from '@voiceflow/general-types';
 
 import { Pair } from '@/types';
 
@@ -64,22 +62,11 @@ export enum NLPProvider {
   RASA = 'rasa',
 }
 
-export const DefaultVoice = {
-  [PlatformType.ALEXA]: AlexaVoices.ALEXA,
-  [PlatformType.GOOGLE]: GoogleVoices.DEFAULT,
-  [PlatformType.GENERAL]: GeneralVoices.DEFAULT,
-};
+export const GENERAL_PLATFORMS = [PlatformType.GENERAL, PlatformType.IVR, PlatformType.MOBILE_APP, PlatformType.CHATBOT];
 
-export const PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.GENERAL];
+export const DISTINCT_PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.GENERAL];
 
-export const PLATFORM_APP_NAME: Record<PlatformType, string> = {
-  [PlatformType.ALEXA]: 'Alexa Skill',
-  [PlatformType.GOOGLE]: 'Google Action',
-  [PlatformType.GENERAL]: 'General Project',
-  [PlatformType.IVR]: 'IVR Project',
-  [PlatformType.CHATBOT]: 'Chatbot Project',
-  [PlatformType.MOBILE_APP]: 'Mobile App Project',
-};
+export type DistinctPlatform = PlatformType.ALEXA | PlatformType.GOOGLE | PlatformType.GENERAL;
 
 export const BuiltInVariable = {
   SESSIONS: 'sessions',

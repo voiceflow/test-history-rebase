@@ -5,7 +5,7 @@ import React from 'react';
 import displayAdapter from '@/client/adapters/creator/block/alexa/display';
 import BaseRenderer from '@/components/DisplayRenderer/components/BaseRenderer';
 import { connect } from '@/hocs';
-import { DEVICE_LIST } from '@/pages/Prototype/constants';
+import { ALL_DEVICES } from '@/pages/Prototype/constants';
 import * as SideEffects from '@/store/sideEffects';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
@@ -24,13 +24,7 @@ const APL: React.FC<APLProps & ConnectedAPLProps> = ({ data, device, resolveAPL,
   const isRound = device === DeviceType.ECHO_SPOT;
   const renderAPL = !!aplContext;
 
-  const deviceInfo = React.useMemo(
-    () =>
-      Object.values(DEVICE_LIST)
-        .flat()
-        .find(({ type }) => type === device),
-    [device]
-  );
+  const deviceInfo = React.useMemo(() => ALL_DEVICES.find(({ type }) => type === device), [device]);
   const viewport = React.useMemo(() => ({ dpi: deviceInfo?.dimension.density ?? 160, width: dimension.width, height: dimension.height, isRound }), [
     isRound,
     deviceInfo,

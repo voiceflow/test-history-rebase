@@ -10,7 +10,7 @@ import Dropdown from '@/components/Dropdown';
 import SvgIcon from '@/components/SvgIcon';
 import { Permission } from '@/config/permissions';
 import { RootRoute } from '@/config/routes';
-import { ModalType, PLATFORM_APP_NAME } from '@/constants';
+import { ModalType } from '@/constants';
 import withDraggable from '@/hocs/withDraggable';
 import { useModals, usePermission } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
@@ -18,6 +18,7 @@ import { PROJECT_COLORS } from '@/styles/colors';
 import { DashboardClassName } from '@/styles/constants';
 import { stopPropagation } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
+import { getPlatformAppName } from '@/utils/platform';
 
 import {
   DropdownIconWrapper,
@@ -138,7 +139,7 @@ export function Item(props) {
             </TitleWrapper>
             <ProjectTitleCaption>
               <span>
-                {PLATFORM_APP_NAME[platform]} {!!language.length && '-'}{' '}
+                {getPlatformAppName(platform)} {!!language.length && '-'}
               </span>
               {map(language, (l) => getHumanLanguageName(l)).join(', ')}
             </ProjectTitleCaption>

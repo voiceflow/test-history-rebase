@@ -7,19 +7,19 @@ import Button, { ButtonVariant } from '@/components/Button';
 import Text, { Link } from '@/components/Text';
 import * as Documentation from '@/config/documentation';
 import { PlatformType } from '@/constants';
+import { createPlatformSelector } from '@/utils/platform';
 import { ModelDiff } from '@/utils/prototypeModel';
 
 import ModelState from './ModelState';
 import NLUContainer from './NLUContainer';
 
-const TRAIN_ASSISTANT_TEXT = {
-  [PlatformType.ALEXA]: 'Train Alexa Skill',
-  [PlatformType.GOOGLE]: 'Train Google Action',
-  [PlatformType.GENERAL]: 'Train Assistant',
-  [PlatformType.IVR]: 'Train Assistant',
-  [PlatformType.CHATBOT]: 'Train Assistant',
-  [PlatformType.MOBILE_APP]: 'Train Assistant',
-};
+const getTrainText = createPlatformSelector(
+  {
+    [PlatformType.ALEXA]: 'Train Alexa Skill',
+    [PlatformType.GOOGLE]: 'Train Google Action',
+  },
+  'Train Assistant'
+);
 
 type TrainedProps = {
   diff: ModelDiff;
@@ -57,7 +57,7 @@ const Trained: React.FC<TrainedProps> = ({ diff, platform, isTrained, trainedMod
     )}
 
     <Button variant={ButtonVariant.TERTIARY} disabled={isTrained} onClick={onStartTraining}>
-      {TRAIN_ASSISTANT_TEXT[platform]}
+      {getTrainText(platform)}
     </Button>
   </NLUContainer>
 );

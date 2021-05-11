@@ -4,7 +4,7 @@ import SubMenu from '@/components/SubMenu';
 import * as Prototype from '@/ducks/prototype';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { PROTOTYPE_MENU_OPTIONS } from '@/pages/Prototype/constants';
+import { getMenuOptions } from '@/pages/Prototype/constants';
 import { ConnectedProps } from '@/types';
 
 type PrototypeMenuProps = {
@@ -14,7 +14,7 @@ type PrototypeMenuProps = {
 const PrototypeMenu: React.FC<PrototypeMenuProps & ConnectedPrototypeMenuProps> = ({ open, platform, mode, updatePrototypeMode }) => (
   <SubMenu
     open={open}
-    options={PROTOTYPE_MENU_OPTIONS[platform]}
+    options={getMenuOptions(platform)}
     selected={mode}
     onChange={(value) => {
       updatePrototypeMode(value as Prototype.PrototypeMode);

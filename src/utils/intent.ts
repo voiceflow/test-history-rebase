@@ -7,6 +7,8 @@ import { FILTERED_AMAZON_INTENTS, PlatformType } from '@/constants';
 import { Intent, Slot } from '@/models';
 import { capitalizeFirstLetter } from '@/utils/string';
 
+import { createPlatformSelector } from './platform';
+
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
 const AmazonBuiltInIntentsArray = Object.values(AmazonIntent) as string[];
@@ -93,14 +95,13 @@ export const GENERAL_BUILT_INS_MAP = Object.keys(DEFAULT_INTENTS_MAP).reduce<Rec
   {}
 );
 
-export const BUILT_IN_INTENTS = {
-  [PlatformType.ALEXA]: ALEXA_BUILT_INS,
-  [PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
-  [PlatformType.GENERAL]: GENERAL_BUILT_INS_MAP[GeneralLocale.EN_US],
-  [PlatformType.IVR]: GENERAL_BUILT_INS_MAP[GeneralLocale.EN_US],
-  [PlatformType.MOBILE_APP]: GENERAL_BUILT_INS_MAP[GeneralLocale.EN_US],
-  [PlatformType.CHATBOT]: GENERAL_BUILT_INS_MAP[GeneralLocale.EN_US],
-};
+export const getBuiltInIntents = createPlatformSelector(
+  {
+    [PlatformType.ALEXA]: ALEXA_BUILT_INS,
+    [PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
+  },
+  GENERAL_BUILT_INS_MAP[GeneralLocale.EN_US]
+);
 
 export const isBuiltInIntent = (intentID: string) => [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS].some((intent) => intent.id === intentID);
 

@@ -14,14 +14,14 @@ import { ConnectedProps } from '@/types';
 
 import ScrollbarsContainer from '../ScrollbarsContainer';
 import { Container, Item } from './components';
-import { PLATFORM_SECTIONS } from './constants';
+import { getSections } from './constants';
 import { StepDragItem } from './types';
 
 const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expandedSections }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
 
   const sections = React.useMemo(() => {
-    const platformSections = PLATFORM_SECTIONS[platform];
+    const platformSections = getSections(platform);
 
     return platformSections.map((platformSection) => ({
       ...platformSection,

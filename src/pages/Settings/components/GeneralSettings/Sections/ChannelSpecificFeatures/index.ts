@@ -1,13 +1,12 @@
 import { PlatformType } from '@/constants';
+import { platformAware } from '@/hocs';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
-import { createPlatformComponent } from '@/utils/platform';
 
 import { AlexaFeatures } from './components';
 
 export type ChannelSpecificFeaturesProps = { platformMeta: PlatformSettingsMetaProps };
 
-const ChannelSpecificFeatures = createPlatformComponent<ChannelSpecificFeaturesProps>(
-  'ChannelSpecificFeatures',
+const ChannelSpecificFeatures = platformAware<ChannelSpecificFeaturesProps>(
   {
     [PlatformType.ALEXA]: AlexaFeatures,
   },

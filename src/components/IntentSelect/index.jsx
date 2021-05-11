@@ -108,7 +108,7 @@ function IntentSelect({ slots, intent, intents, onChange, intentsMap, newIntent 
   );
 
   React.useEffect(() => {
-    if (intent.id && !intentsMap[intent.id]) {
+    if (intent?.id && !intentsMap[intent.id]) {
       onChange({ intent: null });
     }
   }, [intentsMap]);

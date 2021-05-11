@@ -172,7 +172,9 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     if (!origin) return;
 
     if (this.targetNodeID) {
-      const offset = this.getCoordsRelativeToNode(origin, this.targetNodeID);
+      // account for zoom / panning after placing the comment
+      const originRelativeToPlane = origin.onPlane(this.engine.canvas!.getPlane());
+      const offset = this.getCoordsRelativeToNode(originRelativeToPlane, this.targetNodeID);
       if (!offset) return;
 
       const thread = await this.dispatch(Thread.createThread({ nodeID: this.targetNodeID, position: offset, data: { text, mentions } }));

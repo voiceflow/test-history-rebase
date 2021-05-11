@@ -36,7 +36,7 @@ const fetchContext = (request: Request | null): Thunk<Context | null> => async (
     const { state: _state, trace } = await client.prototype.interact(versionID, {
       state,
       request,
-      config: { stopAll: !!settings.guided, excludeTypes: [] },
+      config: { stopAll: !!settings.guided, excludeTypes: [], tts: true },
     });
 
     const newState: Context = _state;

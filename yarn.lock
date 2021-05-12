@@ -4832,15 +4832,15 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-dev-utils@^9.0.4":
-  version "9.0.4"
-  resolved "https://registry.yarnpkg.com/@types/react-dev-utils/-/react-dev-utils-9.0.4.tgz#3e4bee79b7536777cef219427ab1d38adc24f3f2"
-  integrity sha512-8cv9rAeSP1EmyRQAbZ/i6uYtai1VoKHGSBwDyCLM82wCkqoh3WPjJgI1pfi2kiLc0C5hNU7DLo7/c4hylfHLWg==
+"@types/react-dev-utils@^9.0.6":
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/@types/react-dev-utils/-/react-dev-utils-9.0.6.tgz#c5d74358786ecd06caea3bd7b3af3195f53c73e4"
+  integrity sha512-CtrGzH+tSw4MCAZ92QzchrCq8kES/NUUu1kAXeeDXJyb7hRzucry0sRk/bcSwBR8dJJY7N7oaEDranyyOcX3hQ==
   dependencies:
     "@types/eslint" "*"
     "@types/express" "*"
     "@types/html-webpack-plugin" "*"
-    "@types/webpack" "*"
+    "@types/webpack" "^4"
     "@types/webpack-dev-server" "*"
 
 "@types/react-dom@*", "@types/react-dom@^17.0.3":

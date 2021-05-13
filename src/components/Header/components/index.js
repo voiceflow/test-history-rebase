@@ -19,7 +19,8 @@ export const PrimaryHeader = styled.div`
 
 export const HeaderNavigation = styled.div`
   display: flex;
-  flex-basis: calc(50% - 100px);
+  flex: 1;
+  flex-basis: calc(50%-100px);
   align-items: center;
   height: inherit;
   overflow-x: hidden;
@@ -28,16 +29,17 @@ export const HeaderNavigation = styled.div`
 
 export const HeaderActions = styled.div`
   display: flex;
-  flex-basis: calc(50% + 260px);
+  flex-basis: calc(50%+250px);
   align-items: center;
   justify-content: flex-end;
   height: inherit;
+  flex: 1;
 `;
 
 export const CenterGroup = styled.div`
   display: flex;
+  left: 40%;
   align-items: center;
-  justify-content: center;
   width: 250px;
 `;
 

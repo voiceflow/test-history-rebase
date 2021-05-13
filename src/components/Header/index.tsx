@@ -55,8 +55,8 @@ const Header: React.FC<HeaderProps> = ({
         {leftRenderer && leftRenderer()}
         {title}
       </HeaderNavigation>
+      <CenterGroup className={ClassName.HEADER_ACTIONS_CENTER}>{centerRenderer && centerRenderer()}</CenterGroup>
       <HeaderActions>
-        <CenterGroup className={ClassName.HEADER_ACTIONS_CENTER}>{centerRenderer && centerRenderer()}</CenterGroup>
         <JustifiedHeaderActions>
           {rightRenderer && <TitleGroup className={ClassName.HEADER_ACTIONS_RIGHT}>{rightRenderer()}</TitleGroup>}
           {withUserMenu && <UserMenu />}

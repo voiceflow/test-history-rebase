@@ -2,11 +2,16 @@ import SvgIconContainer from '@/components/SvgIcon/components/SvgIconContainer';
 import { css, styled } from '@/hocs';
 
 const WorkspaceDropdownContainer = styled.div<{ isLoading: boolean }>`
-  padding: 15px;
+  padding: 20px;
   padding-right: 12px;
   cursor: pointer;
   font-size: 18px;
   color: #132144;
+  align-items: center;
+  height: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   ${({ isLoading }) =>
     isLoading &&
@@ -15,7 +20,9 @@ const WorkspaceDropdownContainer = styled.div<{ isLoading: boolean }>`
     `}
 
   div {
-    display: inline-block;
+    overflow: hidden;
+    width: 90%;
+    display: inline;
   }
 
   ${SvgIconContainer} {

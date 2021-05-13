@@ -1,4 +1,4 @@
-import { DiagramAction } from '@/ducks/creator';
+import { DiagramAction } from '@/ducks/creator/diagram/actions';
 import { AnyAction } from '@/store/types';
 import { filterEntries } from '@/utils/objects';
 

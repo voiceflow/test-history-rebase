@@ -8,7 +8,6 @@ import Button from '@/components/LegacyButton';
 import Page from '@/components/Page';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import * as Account from '@/ducks/account';
-import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
@@ -226,7 +225,7 @@ const mapDispatchToProps = {
   updateAccount: Account.updateAccount,
   setConfirm: Modal.setConfirm,
   setError: Modal.setError,
-  updateProfilePicture: Creator.updateProfilePicture,
+  updateProfilePicture: Account.saveProfilePicture,
   goToDashboard: Router.goToDashboard,
 };
 

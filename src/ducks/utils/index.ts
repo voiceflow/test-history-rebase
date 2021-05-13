@@ -1,6 +1,6 @@
 import moize from 'moize';
 
-import type { State } from '@/ducks/_root';
+import type { State } from '@/ducks';
 import { Action, AnyAction, RootReducer, Selector } from '@/store/types';
 import { storeLogger } from '@/store/utils';
 

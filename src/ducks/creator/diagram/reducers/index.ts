@@ -52,7 +52,7 @@ import unmergeNodeReducer from './unmergeNode';
 export const initializeCreatorReducer: Reducer<DiagramStateType, InitializeCreator> = (
   state,
   { payload: { diagramID, rootNodeIDs, nodes, links, ports, data, markupNodeIDs } }
-) => ({
+): DiagramStateType => ({
   ...state,
   diagramID,
   rootNodeIDs,
@@ -145,7 +145,6 @@ export const updateHiddenReducer: Reducer<DiagramStateType, UpdateHidden> = (sta
 });
 
 const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | AnyCreatorAction> = (state = INITIAL_DIAGRAM_STATE, action) => {
-  // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
     case CreatorAction.INITIALIZE_CREATOR:
       return initializeCreatorReducer(state, action);
@@ -191,6 +190,8 @@ const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | An
       return setDiagramStateReducer(state, action);
     case DiagramAction.UPDATE_HIDDEN:
       return updateHiddenReducer(state, action);
+    case DiagramAction.RESET_LOADED:
+      return { ...state, diagramID: null };
     default:
       return state;
   }
@@ -203,4 +204,5 @@ export default undoable(creatorDiagramReducer as Redux.Reducer<DiagramStateType>
   redoType: DiagramAction.REDO_HISTORY,
   initTypes: ['@@redux-undo/INIT', CreatorAction.RESET_CREATOR],
   ignoreInitialState: true,
+  limit: 25,
 });

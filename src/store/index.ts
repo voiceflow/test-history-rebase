@@ -3,7 +3,7 @@ import * as Redux from 'redux';
 import { persistStore } from 'redux-persist';
 
 import { IS_DEVELOPMENT } from '@/config';
-import createReducer from '@/ducks/_root';
+import createReducer from '@/ducks';
 import createMiddleware from '@/store/middleware';
 
 import { Store } from './types';
@@ -22,7 +22,7 @@ function createStore(history: History) {
   const persistor = persistStore(store);
 
   if (IS_DEVELOPMENT && module.hot) {
-    module.hot.accept('@/ducks/_root', () => store.replaceReducer(createReducer(history)));
+    module.hot.accept('@/ducks', () => store.replaceReducer(createReducer(history)));
   }
 
   window.store = store;

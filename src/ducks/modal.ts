@@ -91,6 +91,8 @@ export const setError = (rawError: string | { message?: unknown; data?: unknown;
   return createAction(ModalAction.SET_ERROR, error);
 };
 
+export const setGenericError = () => setError('Something went wrong - please refresh your page');
+
 export const setModal = (def: unknown): SetModal => createAction(ModalAction.SET_MODAL, def);
 
 export const clearModal = (): ClearModal => createAction(ModalAction.CLEAR_MODAL);

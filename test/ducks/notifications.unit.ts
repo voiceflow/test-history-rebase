@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-import { State } from '@/ducks/_root';
-import * as Account from '@/ducks/account';
+import { State } from '@/ducks';
 import * as Notifications from '@/ducks/notifications';
 import * as crypto from '@/utils/crypto';
 

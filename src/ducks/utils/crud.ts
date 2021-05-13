@@ -1,8 +1,7 @@
-/* eslint-disable lodash/prefer-lodash-typecheck */
 import { createSelector } from 'reselect';
 import { PickByValue } from 'utility-types';
 
-import type { State } from '@/ducks/_root';
+import type { State } from '@/ducks';
 import { Action, RootReducer, Selector } from '@/store/types';
 import { reorder } from '@/utils/array';
 import {

@@ -31,6 +31,7 @@ export enum DiagramAction {
   UPDATE_HIDDEN = 'CREATOR:HIDDEN:UPDATE',
   UPDATE_LINK_DATA = 'CREATOR:NODE:UPDATE_LINK_DATA',
   UPDATE_LINK_DATA_MANY = 'CREATOR:NODE:UPDATE_LINK_DATA_MANY',
+  RESET_LOADED = 'CREATOR:IS_LOADED:RESET',
 }
 
 // action types
@@ -92,6 +93,8 @@ export type SetDiagramState = Action<DiagramAction.SET_DIAGRAM_STATE, DiagramSta
 
 export type UpdateHidden = Action<DiagramAction.UPDATE_HIDDEN, boolean>;
 
+export type ResetLoaded = Action<DiagramAction.RESET_LOADED>;
+
 export type AnyDiagramAction =
   | UpdateNodeData
   | UpdateNodeLocation
@@ -115,7 +118,8 @@ export type AnyDiagramAction =
   | SaveHistory
   | SetSectionState
   | SetDiagramState
-  | UpdateHidden;
+  | UpdateHidden
+  | ResetLoaded;
 
 // action creators
 
@@ -185,3 +189,5 @@ export const setDiagramState = (state: DiagramState): SetDiagramState => createA
 export const showCanvas = (): UpdateHidden => createAction(DiagramAction.UPDATE_HIDDEN, false);
 
 export const hideCanvas = (): UpdateHidden => createAction(DiagramAction.UPDATE_HIDDEN, true);
+
+export const resetLoaded = (): ResetLoaded => createAction(DiagramAction.RESET_LOADED);

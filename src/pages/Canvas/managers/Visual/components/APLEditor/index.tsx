@@ -4,12 +4,11 @@ import React from 'react';
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import { ModalType } from '@/constants';
-import * as Skill from '@/ducks/skill';
+import * as APL from '@/ducks/apl';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
-import * as SideEffects from '@/store/sideEffects';
 import { ConnectedProps } from '@/types';
 
 import { Footer, JSONEditor, SplashEditor } from './components';
@@ -57,14 +56,10 @@ const APLEditor: React.FC<NodeEditorPropsType<APLStepData> & ConnectedAPLEditorP
   );
 };
 
-const mapStateToProps = {
-  skillID: Skill.activeSkillIDSelector,
-};
-
 const mapDispatchToProps = {
-  resolveAPL: SideEffects.resolveAPL,
+  resolveAPL: APL.resolveAPL,
 };
 
-type ConnectedAPLEditorProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+type ConnectedAPLEditorProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(APLEditor) as React.FC<NodeEditorPropsType<APLStepData>>;
+export default connect(null, mapDispatchToProps)(APLEditor) as React.FC<NodeEditorPropsType<APLStepData>>;

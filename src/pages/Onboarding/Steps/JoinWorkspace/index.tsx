@@ -3,7 +3,6 @@ import React from 'react';
 import Button from '@/components/Button';
 import { FlexCenter } from '@/components/Flex';
 import * as Account from '@/ducks/account';
-import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { ConnectedProps } from '@/types';
@@ -58,7 +57,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updateProfilePicture: Creator.updateProfilePicture,
+  updateProfilePicture: Account.saveProfilePicture,
 };
 
 export type ConnectedJoinWorkspaceProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

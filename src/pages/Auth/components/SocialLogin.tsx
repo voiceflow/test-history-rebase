@@ -5,7 +5,7 @@ import { GoogleLoginResponse } from 'react-google-login';
 import Flex from '@/components/Flex';
 import { toast } from '@/components/Toast';
 import { IS_PRIVATE_CLOUD } from '@/config';
-import * as Creator from '@/ducks/creator';
+import * as AccountDuck from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { Account } from '@/models';
@@ -87,7 +87,7 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
 const mapDispatchToProps = {
   googleLogin: Session.googleLogin,
   facebookLogin: Session.facebookLogin,
-  saveSocialProfilePicture: Creator.saveSocialProfilePicture,
+  saveSocialProfilePicture: AccountDuck.saveSocialProfilePicture,
 };
 
 type ConnectedSocialLoginProps = ConnectedProps<{}, typeof mapDispatchToProps>;

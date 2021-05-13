@@ -3,7 +3,7 @@ import React from 'react';
 import * as ReactRedux from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 
-import rootReducer from '@/ducks/_root';
+import rootReducer from '@/ducks';
 import createMiddleware from '@/store/middleware';
 
 export const ReduxProvider = ({ state = {}, history = createMemoryHistory(), children }) => {

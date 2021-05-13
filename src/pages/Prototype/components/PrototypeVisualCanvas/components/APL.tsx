@@ -4,9 +4,9 @@ import React from 'react';
 
 import displayAdapter from '@/client/adapters/creator/block/alexa/display';
 import BaseRenderer from '@/components/DisplayRenderer/components/BaseRenderer';
+import * as APLDuck from '@/ducks/apl';
 import { connect } from '@/hocs';
 import { getDeviceList } from '@/pages/Prototype/constants';
-import * as SideEffects from '@/store/sideEffects';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
@@ -77,7 +77,7 @@ const APL: React.FC<APLProps & ConnectedAPLProps> = ({ zoom, data, device, platf
 };
 
 const mapDispatchToProps = {
-  resolveAPL: SideEffects.resolveAPL,
+  resolveAPL: APLDuck.resolveAPL,
 };
 
 type ConnectedAPLProps = ConnectedProps<{}, typeof mapDispatchToProps>;

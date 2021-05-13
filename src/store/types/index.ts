@@ -1,4 +1,4 @@
-import type { State } from '@/ducks/_root';
+import type { State } from '@/ducks';
 
 import type * as Generics from './generics';
 

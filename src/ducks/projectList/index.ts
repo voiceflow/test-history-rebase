@@ -2,23 +2,25 @@ import createCRUDReducer, * as CRUD from '@/ducks/utils/crud';
 import { ProjectList } from '@/models';
 import { Reducer, RootReducer } from '@/store/types';
 import { insert, reorder, withoutValue } from '@/utils/array';
-import { getNormalizedByKey, Normalized, patchNormalizedByKey } from '@/utils/normalized';
+import { getNormalizedByKey, patchNormalizedByKey } from '@/utils/normalized';
 
 import { AddProjectToList, AnyProjectListAction, ProjectListAction, RemoveProjectFromList, TransplantProject } from './actions';
 import { STATE_KEY } from './constants';
+import { ProjectListState } from './types';
 
 export * from './actions';
 export * from './constants';
 export * from './selectors';
 export * from './sideEffects';
+export * from './types';
 
-export const removeProjectFromListReducer: Reducer<Normalized<ProjectList>, RemoveProjectFromList> = (state, { payload: { listID, projectID } }) => {
+export const removeProjectFromListReducer: Reducer<ProjectListState, RemoveProjectFromList> = (state, { payload: { listID, projectID } }) => {
   const projectList = getNormalizedByKey(state, listID);
 
   return patchNormalizedByKey(state, listID, { projects: withoutValue(projectList.projects, projectID) });
 };
 
-export const transplantProjectReducer: Reducer<Normalized<ProjectList>, TransplantProject> = (state, { payload: { from, to } }) => {
+export const transplantProjectReducer: Reducer<ProjectListState, TransplantProject> = (state, { payload: { from, to } }) => {
   if (from.listID === to.listID) {
     const list = getNormalizedByKey(state, from.listID);
 
@@ -40,10 +42,7 @@ export const transplantProjectReducer: Reducer<Normalized<ProjectList>, Transpla
   };
 };
 
-export const addProjectToListReducer: Reducer<Normalized<ProjectList>, AddProjectToList> = (
-  state,
-  { payload: { listID, projectID, addToStart } }
-) => {
+export const addProjectToListReducer: Reducer<ProjectListState, AddProjectToList> = (state, { payload: { listID, projectID, addToStart } }) => {
   const { projects } = getNormalizedByKey(state, listID);
 
   return patchNormalizedByKey(state, listID, { projects: addToStart ? [projectID, ...projects] : [...projects, projectID] });
@@ -51,7 +50,7 @@ export const addProjectToListReducer: Reducer<Normalized<ProjectList>, AddProjec
 
 export const projectListCRUDReducer = createCRUDReducer<ProjectList>(STATE_KEY);
 
-const projectListReducer: RootReducer<Normalized<ProjectList>, AnyProjectListAction> = (state = CRUD.INITIAL_STATE, action) => {
+const projectListReducer: RootReducer<ProjectListState, AnyProjectListAction> = (state = CRUD.INITIAL_STATE, action) => {
   switch (action.type) {
     case ProjectListAction.REMOVE_PROJECT_FROM_LIST:
       return removeProjectFromListReducer(state, action);

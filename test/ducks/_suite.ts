@@ -2,7 +2,7 @@ import { SinonSpy, SinonStub } from 'sinon';
 import { DeepPartial } from 'utility-types';
 
 import { createSuite } from '@/../test/_suite';
-import type { State } from '@/ducks/_root';
+import type { State } from '@/ducks';
 import { createAction } from '@/ducks/utils';
 import * as CRUD from '@/ducks/utils/crud';
 import { AnyAction, AnyThunk, RootReducer, Selector } from '@/store/types';

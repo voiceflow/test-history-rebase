@@ -62,7 +62,6 @@ export const clearFocusReducer: Reducer<FocusState> = (state) => {
 };
 
 const focusReducer: RootReducer<FocusState, AnyFocusAction | AnyCreatorAction> = (state = INITIAL_FOCUS_STATE, action) => {
-  // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
     case CreatorAction.INITIALIZE_CREATOR:
     case CreatorAction.RESET_CREATOR:

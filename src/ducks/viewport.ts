@@ -2,12 +2,11 @@ import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
 import { createSelector } from 'reselect';
 
+import { createAction } from '@/ducks/utils';
+import createCRUDReducer, * as CRUD from '@/ducks/utils/crud';
 import { Action, Reducer, RootReducer } from '@/store/types';
 import { Viewport } from '@/types';
-import { addNormalizedByKey, getNormalizedByKey, Normalized } from '@/utils/normalized';
-
-import { createAction } from './utils';
-import createCRUDReducer, { AnyCRUDAction, createCRUDActionCreators, createCRUDSelectors, INITIAL_STATE as INITIAL_CRUD_STATE } from './utils/crud';
+import { addNormalizedByKey, getNormalizedByKey } from '@/utils/normalized';
 
 export const STATE_KEY = 'viewport';
 const PERSIST_CONFIG = {
@@ -17,6 +16,8 @@ const PERSIST_CONFIG = {
 
 export type ViewportModel = Viewport & { diagramID: string };
 
+export type ViewportState = CRUD.CRUDState<ViewportModel>;
+
 // actions
 
 export enum ViewportAction {
@@ -25,11 +26,11 @@ export enum ViewportAction {
 
 export type RehydrateViewport = Action<ViewportAction.REHYDRATE_VIEWPORT, { diagramID: string; viewport: Viewport }>;
 
-type AnyViewportAction = AnyCRUDAction<ViewportModel> | RehydrateViewport;
+type AnyViewportAction = CRUD.AnyCRUDAction<ViewportModel> | RehydrateViewport;
 
 // reducers
 
-export const rehydrateViewportReducer: Reducer<Normalized<ViewportModel>, RehydrateViewport> = (state, { payload: { diagramID, viewport } }) => {
+export const rehydrateViewportReducer: Reducer<ViewportState, RehydrateViewport> = (state, { payload: { diagramID, viewport } }) => {
   const currentViewport = getNormalizedByKey(state, diagramID);
 
   if (currentViewport) return state;
@@ -39,7 +40,7 @@ export const rehydrateViewportReducer: Reducer<Normalized<ViewportModel>, Rehydr
 
 const viewportCRUDReducer = createCRUDReducer<ViewportModel>(STATE_KEY, ({ diagramID }) => diagramID);
 
-const viewportReducer: RootReducer<Normalized<ViewportModel>, AnyViewportAction> = (state = INITIAL_CRUD_STATE, action) => {
+const viewportReducer: RootReducer<ViewportState, AnyViewportAction> = (state = CRUD.INITIAL_STATE, action) => {
   // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
     case ViewportAction.REHYDRATE_VIEWPORT:
@@ -53,7 +54,7 @@ export default persistReducer(PERSIST_CONFIG, viewportReducer);
 
 // selectors
 
-const { byID: byIDSelector } = createCRUDSelectors(STATE_KEY);
+const { byID: byIDSelector } = CRUD.createCRUDSelectors(STATE_KEY);
 
 export const viewportByIDSelector = createSelector([byIDSelector], (getViewport) => (viewportID: string) => {
   const { diagramID, ...viewport } = getViewport(viewportID);
@@ -63,7 +64,7 @@ export const viewportByIDSelector = createSelector([byIDSelector], (getViewport)
 
 // action creators
 
-export const { update: updateViewport } = createCRUDActionCreators(STATE_KEY);
+export const { update: updateViewport } = CRUD.createCRUDActionCreators(STATE_KEY);
 
 export const updateViewportForDiagram = (diagramID: string, viewport: Viewport) => updateViewport(diagramID, { ...viewport, diagramID });
 

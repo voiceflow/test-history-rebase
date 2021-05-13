@@ -23,12 +23,14 @@ export type MenuContainerProps = {
   width?: number;
   padding?: string;
   height?: number;
+  withScrollbars?: boolean;
 };
 
 const MenuContainer = styled.ul<MenuContainerProps>`
   ${cardStyles}
 
-  max-height: ${({ theme, maxVisibleItems }) => getItemsContainer(theme.components.menuItem.height, maxVisibleItems) + VERTICAL_PADDING * 2}px;
+  max-height: ${({ theme, withScrollbars, maxVisibleItems }) =>
+    withScrollbars ? 'auto' : getItemsContainer(theme.components.menuItem.height, maxVisibleItems) + VERTICAL_PADDING * 2}px;
   min-width: 100px;
   ${({ fullWidth }) => (fullWidth ? '' : 'max-width: 400px;')}
   ${({ width }) => (width ? `width: ${width}px;` : '')}

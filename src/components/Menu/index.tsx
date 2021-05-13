@@ -105,6 +105,7 @@ const Menu = <T,>(
       noTopPadding={noTopPadding}
       noBottomPadding={noBottomPadding}
       disableAnimation={disableAnimation}
+      withScrollbars
     >
       <FadeDownDelayedContainer duration={disableAnimation ? 0 : undefined} delay={disableAnimation ? 0 : undefined}>
         {searchable}

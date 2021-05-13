@@ -1,7 +1,7 @@
 # creator-app
 
 [![circle ci](https://circleci.com/gh/voiceflow/creator-app/tree/master.svg?style=shield&circle-token=d2fee4e418aa5f2a3499ac21cbc5f86c2e0fcdf4)](https://circleci.com/gh/voiceflow/creator-app/tree/master)
-[![codecov](https://codecov.io/gh/voiceflow/creator-app/branch/master/graph/badge.svg?token=TUP0DNJ4GU)](https://codecov.io/gh/voiceflow/creator-app)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=voiceflow_creator-app&metric=coverage&token=12b0291403fde6d83376469eaf9c2371b8c9685a)](https://sonarcloud.io/dashboard?id=voiceflow_creator-app)
 [![sonar quality gate](https://sonarcloud.io/api/project_badges/measure?project=voiceflow_creator-app&metric=alert_status&token=12b0291403fde6d83376469eaf9c2371b8c9685a)](https://sonarcloud.io/dashboard?id=voiceflow_creator-app)
 
 ## Getting Started

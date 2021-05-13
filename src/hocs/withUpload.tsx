@@ -1,4 +1,4 @@
-/* eslint-disable react/display-name, import/prefer-default-export */
+/* eslint-disable import/prefer-default-export */
 import _constant from 'lodash/constant';
 import React from 'react';
 
@@ -44,17 +44,15 @@ export const withUpload = <C extends Config, P extends RequiredProps<C['clientFu
 
         try {
           if (Array.isArray(endpoint)) {
-            Promise.all(endpoint.map(async (item: string) => onUpload(item, acceptedFiles[0])))
-              .then((urls: string[]) => {
-                update(urls);
-              })
-              .catch(Sentry.error);
+            const urls = await Promise.all(endpoint.map((item) => onUpload(item, acceptedFiles[0])));
+            update(urls);
           } else {
             const url = await onUpload(endpoint, acceptedFiles[0]);
             update(url);
           }
-        } catch {
+        } catch (error) {
           update(null);
+          Sentry.error(error);
           setError(errorMessage || 'There was an error');
         }
       },

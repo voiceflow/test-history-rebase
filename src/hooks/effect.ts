@@ -20,6 +20,11 @@ const getNextScheduledTimeout = (schedule: string[]) => {
   return moment.min(validTimes).valueOf() - now.valueOf();
 };
 
+export const useAsyncEffect = (effect: () => Promise<any>, dependencies: any[] = []) =>
+  useEffect(() => {
+    effect();
+  }, dependencies);
+
 export const useAsyncMountUnmount = (didMount?: () => void, willUnmount?: () => void) => {
   useEffect(() => {
     didMount?.();
@@ -42,7 +47,6 @@ export const useOneTimeEffect = (effect: () => boolean, dependencies: any[] = []
   }, dependencies);
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const useRegistration = (register: () => () => void, dependencies: any[] = []) => {
   const teardownRef = useRef(noop);
 

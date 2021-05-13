@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from '@/hocs';
 
 const PublishSidebarItem = styled.div`
   margin: 8px 0;

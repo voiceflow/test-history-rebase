@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from '@/hocs';
 
 const PublishSidebar = styled.div`
   display: flex;

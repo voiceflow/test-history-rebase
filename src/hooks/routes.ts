@@ -1,0 +1,19 @@
+import { useRouteMatch } from 'react-router-dom';
+
+export const useRouteWorkspaceID = (): string | null => {
+  const { params } = useRouteMatch<{ workspaceID?: string }>();
+
+  return params.workspaceID ?? null;
+};
+
+export const useRouteVersionID = (): string | null => {
+  const { params } = useRouteMatch<{ versionID?: string }>();
+
+  return params.versionID ?? null;
+};
+
+export const useRouteDiagramID = (): string | null => {
+  const { params } = useRouteMatch<{ diagramID?: string }>();
+
+  return params.diagramID ?? null;
+};

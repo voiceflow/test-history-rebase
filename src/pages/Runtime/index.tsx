@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Alert } from 'reactstrap';
 
 import Box from '@/components/Box';
@@ -9,6 +8,7 @@ import { ClickableText, Link, Text } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import { API_ENDPOINT, GENERAL_RUNTIME_ENDPOINT_TAG, GENERAL_SERVICE_ENDPOINT } from '@/config';
 import * as Router from '@/ducks/router';
+import { useDispatch } from '@/hooks';
 import { copy } from '@/utils/clipboard';
 import * as Cookies from '@/utils/cookies';
 
@@ -18,8 +18,7 @@ const RuntimeConfig: React.FC = () => {
   const auth = React.useMemo(() => Cookies.getAuthCookie(), []);
   const [runtimeEndpoint, updateRuntimeEndpoint] = React.useState(localStorage.getItem(GENERAL_RUNTIME_ENDPOINT_TAG) || '');
 
-  const dispatch = useDispatch();
-  const goToDashboard = () => dispatch(Router.goToDashboard());
+  const goToDashboard = useDispatch(Router.goToDashboard);
 
   const updateRuntime = (url: string) => {
     updateRuntimeEndpoint(url);

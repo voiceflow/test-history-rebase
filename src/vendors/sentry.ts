@@ -1,7 +1,8 @@
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 
-import { APP_ENV, CLOUD_ENV, IS_PRODUCTION, SENTRY_DSN, SENTRY_ENABLED } from '@/config';
+import { APP_ENV, CLOUD_ENV, IS_DEVELOPMENT, IS_PRODUCTION, isDebug, SENTRY_DSN, SENTRY_ENABLED } from '@/config';
+import log from '@/utils/logger';
 
 export const init = () => {
   if (!SENTRY_ENABLED) return;
@@ -11,6 +12,7 @@ export const init = () => {
     integrations: [new Integrations.BrowserTracing()],
     tracesSampleRate: 0.1,
     environment: IS_PRODUCTION ? CLOUD_ENV : APP_ENV,
+    logLevel: 1,
   });
 };
 
@@ -26,6 +28,10 @@ export const breadcrumb = (category: string, message: string, data?: Record<stri
 };
 
 export const error = (error: string | Error) => {
+  if (IS_DEVELOPMENT || isDebug()) {
+    log.error(error);
+  }
+
   if (!SENTRY_ENABLED) return;
 
   Sentry.captureException(error);

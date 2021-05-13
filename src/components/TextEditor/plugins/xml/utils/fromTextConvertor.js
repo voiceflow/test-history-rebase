@@ -14,7 +14,7 @@ const REGEX_ZWS = /&#8203;?/g;
 const REGEX_NBSP = /&nbsp;/g;
 const REGEX_CARRIAGE = /&#13;?/g;
 const REGEX_LEADING_LF = /^\n/g;
-const REGEX_SINGLE_TAG = /<([^ /]+)([^>]+?)\/>/g;
+const REGEX_SINGLE_TAG = /<([^ />]+)([^>]+?)\/>/g;
 
 const createSupportedOpenTagsRegex = (tags) => new RegExp(`(<)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
 const createSupportedCloseTagsRegex = (tags) => new RegExp(`(</)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');

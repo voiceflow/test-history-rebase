@@ -155,15 +155,6 @@ jobs:
             - admin.dockerfile
             - config
 
-  test-integration: # Run integration tests in parallel
-    executor: vfcommon/node-executor
-    steps: # a collection of executable commands
-      - checkout
-      - vfcommon/install_node_modules
-      - vfcommon/integration_tests:
-          step_name: Integration Tests
-          extra_args: --coverage --detectOpenHandles
-
   test: # Main unit, style, and dependency tests
     executor: vfcommon/node-executor
     steps: # a collection of executable commands
@@ -173,6 +164,7 @@ jobs:
           step_name: Unit Tests
       - vfcommon/integration_tests:
           step_name: Integration Tests
+          extra_args: --coverage --detectOpenHandles
       - run:
           name: Lint Styles
           command: yarn lint:css --quiet
@@ -318,12 +310,6 @@ workflows:
 
   test-and-release-app:
     jobs:
-      - test-integration:
-          <<: *slack-fail-post-step
-          context: dev-test
-          filters:
-            <<: *ignore_autorebase_staging_filters
-
       - test:
           <<: *slack-fail-post-step
           context: dev-test
@@ -354,7 +340,6 @@ workflows:
           context: dev-test
           requires:
             - test
-            - test-integration
             - vfcommon/test_e2e
             - build-app
           filters:

@@ -75,7 +75,6 @@
   height: 42px;
   color: #279745;
   color: rgba(110, 132, 154, 0.8);
-  color: #279745;
   font-weight: 600;
   font-size: 13px;
   line-height: 38px;
@@ -375,7 +374,7 @@
   color: transparent;
   font-weight: 400;
   font-size: 16px;
-  font-family: storyline-icons !important;
+  font-family: storyline-icons, sans-serif !important;
   font-style: normal;
   font-variant: normal;
   line-height: 1;

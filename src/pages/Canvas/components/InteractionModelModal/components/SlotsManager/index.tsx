@@ -48,7 +48,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
       const activeIntents = intentsUsingSlot(item.id);
 
       if (activeIntents.length > 0) {
-        activeIntents.map((intent) => removeIntentSlot(intent.id, item.id));
+        activeIntents.forEach((intent) => removeIntentSlot(intent.id, item.id));
 
         toast.info('Utterances containing this slot have been modified to remove the slot reference.');
       }

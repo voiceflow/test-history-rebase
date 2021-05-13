@@ -35,7 +35,10 @@ const SelectGoogleSheetNextStep = (data) => {
     case GoogleSheetsActionType.RETRIEVE_DATA:
       nextStep = Step.RETRIEVE_SETTINGS;
       break;
-    case GoogleSheetsActionType.CREATE_DATA || GoogleSheetsActionType.UPDATE_DATA:
+    case GoogleSheetsActionType.CREATE_DATA:
+      nextStep = Step.CREATE_UPDATE_SETTINGS;
+      break;
+    case GoogleSheetsActionType.UPDATE_DATA:
       nextStep = Step.CREATE_UPDATE_SETTINGS;
       break;
     case GoogleSheetsActionType.DELETE_DATA:

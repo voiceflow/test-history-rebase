@@ -10,7 +10,7 @@ body {
   color: #132144 !important;
   font-weight: 400;
   font-size: 15px;
-  font-family: 'Open Sans' !important;
+  font-family: 'Open Sans', sans-serif !important;
   background: #f9f9f9 !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1758,7 +1758,7 @@ kbd {
   color: #62778c;
   font-weight: 600;
   font-size: 13px;
-  font-family: 'Open Sans';
+  font-family: 'Open Sans', sans-serif;
   line-height: 8px;
   text-align: center;
   vertical-align: middle;
@@ -2402,5 +2402,5 @@ kbd {
 }
 
 .Toastify__toast {
-  font-family: 'Open Sans';
+  font-family: 'Open Sans', sans-serif;
 }

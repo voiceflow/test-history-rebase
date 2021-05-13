@@ -8,7 +8,7 @@
 }
 
 font-face {
-  font-family: 'amazon-ember-display';
+  font-family: 'amazon-ember-display', sans-serif;
   src: url('https://d1gkjrhppbyzyh.cloudfront.net/AmazonEmberDisplay_Rg.ttf');
 }
 

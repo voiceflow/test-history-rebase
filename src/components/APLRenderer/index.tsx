@@ -46,39 +46,42 @@ const APLRenderer: React.FC<APLRendererProps> = ({
   const elementID = React.useMemo(() => cuid(), []);
 
   React.useEffect(() => {
-    if (!isInitialized) return undefined;
+    async function rendererCommands() {
+      if (!isInitialized) return undefined;
 
-    const content = APL.Content.create(contentString);
+      const content = APL.Content.create(contentString);
 
-    if (data) {
-      content.addData('payload', data);
-    }
-
-    const renderer = AlexaAPLRenderer.create({
-      content,
-      view: document.getElementById(elementID)!,
-      viewport,
-      environment: {
-        agentName: 'APL Sandbox',
-        agentVersion: '1.0',
-        allowOpenUrl: true,
-        disallowVideo: false,
-      },
-      theme: 'dark',
-      utcTime: Date.now(),
-      localTimeAdjustment: -new Date().getTimezoneOffset() * 60 * 1000,
-    });
-    renderer.init();
-
-    if (commands) {
-      try {
-        renderer.context.executeCommands(commands);
-      } catch (e) {
-        onCommandFail?.(e);
+      if (data) {
+        content.addData('payload', data);
       }
-    }
 
-    return () => renderer.destroy();
+      const renderer = AlexaAPLRenderer.create({
+        content,
+        view: document.getElementById(elementID)!,
+        viewport,
+        environment: {
+          agentName: 'APL Sandbox',
+          agentVersion: '1.0',
+          allowOpenUrl: true,
+          disallowVideo: false,
+        },
+        theme: 'dark',
+        utcTime: Date.now(),
+        localTimeAdjustment: -new Date().getTimezoneOffset() * 60 * 1000,
+      });
+      renderer.init();
+
+      if (commands) {
+        try {
+          await new Promise((resolve) => renderer.context.executeCommands(commands).then(resolve));
+        } catch (e) {
+          onCommandFail?.(e);
+        }
+      }
+
+      return () => renderer.destroy();
+    }
+    rendererCommands();
   }, [isInitialized, data, contentString, viewport]);
 
   return <div id={elementID} {...props} />;

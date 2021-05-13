@@ -3,37 +3,37 @@ version: 2.1
 parameters:
   container-image-url-creator-app:
     type: string
-    default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app'
+    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
   container-image-url-admin-ui:
     type: string
-    default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin'
+    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin"
   container-image-url-storybook:
     type: string
-    default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook'
+    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook"
   k8s-asset-storybook:
     type: string
-    default: 'deployment/storybook'
+    default: "deployment/storybook"
   k8s-asset-admin-ui:
     type: string
-    default: 'deployment/admin-ui'
+    default: "deployment/admin-ui"
   k8s-asset-creator-app:
     type: string
-    default: 'statefulset/creator-app'
+    default: "statefulset/creator-app"
   k8s-namespace:
     type: string
-    default: 'voiceflow-v1' # This is usually voiceflow-v1
+    default: "voiceflow-v1" # This is usually voiceflow-v1
   ssh-fingerprint:
     type: string
-    default: '93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a'
+    default: "93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a"
   track-component-creator-app:
     type: string
-    default: 'creator-app'
+    default: "creator-app"
   track-component-admin-ui:
     type: string
-    default: 'admin-ui'
+    default: "admin-ui"
   track-component-storybook:
     type: string
-    default: 'storybook'
+    default: "storybook"
 
 orbs:
   vfcommon: voiceflow/common@0.0.122
@@ -67,7 +67,7 @@ defaults:
       - vfcommon/notify_slack:
           channel: dev_general
           event: fail
-          mentions: '@eng_creator'
+          mentions: "@eng_creator"
           template: basic_fail_1
           branch_pattern: master
 
@@ -171,6 +171,8 @@ jobs:
       - vfcommon/install_node_modules
       - vfcommon/unit_tests:
           step_name: Unit Tests
+      - vfcommon/integration_tests:
+          step_name: Integration Tests
       - run:
           name: Lint Styles
           command: yarn lint:css --quiet

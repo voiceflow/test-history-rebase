@@ -91,3 +91,4 @@ bundle-report.html
 
 #Sonar report
 sonar/
+nyc_coverage*

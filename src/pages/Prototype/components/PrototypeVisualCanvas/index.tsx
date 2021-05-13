@@ -59,7 +59,7 @@ const PrototypeVisualCanvas: React.FC<PrototypeVisualCanvasProps & ConnectedProt
       </Canvas>
 
       {!data?.visualType && (
-        <PlaceholderIconContainer width={canvasWidth}>
+        <PlaceholderIconContainer platform={platform} width={canvasWidth}>
           <SvgIcon icon="visualsPlaceholder" width={100} height={100} />
         </PlaceholderIconContainer>
       )}

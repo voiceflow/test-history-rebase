@@ -1,3 +1,5 @@
+// TEMPORARY FILE UNTIL https://github.com/voiceflow/creator-app/pull/3340 GETS MERGED
+
 import React from 'react';
 import { Field } from 'redux-form';
 

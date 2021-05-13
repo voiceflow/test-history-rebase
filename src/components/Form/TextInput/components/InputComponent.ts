@@ -2,7 +2,11 @@ import styled, { css } from 'styled-components';
 
 import { inputControlStyles } from '@/components/Form/styles';
 
-const InputComponent = styled.input`
+export interface InputComponentProps extends React.ComponentProps<'input'> {
+  errorBound?: boolean;
+}
+
+const InputComponent = styled.input<InputComponentProps>`
   ${inputControlStyles};
 
   ${({ errorBound }) =>

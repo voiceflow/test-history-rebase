@@ -2,8 +2,9 @@ import React from 'react';
 
 import AvatarContainer from '@/components/Avatar/components/AvatarContainer';
 import DragPlaceholder from '@/components/DragPlaceholder';
-import Link from '@/components/LegacyLink';
 import { css, styled } from '@/hocs';
+
+import Link, { LinkProps } from './Link';
 
 export const ProjectNameWrapper = styled.div`
   display: flex;
@@ -56,7 +57,13 @@ export const ProjectListItemActions = styled.div`
   }
 `;
 
-export const ProjectListItem = styled(({ isActive, hasOptions, ...props }) => <Link {...props} />)`
+export interface ProjectListItemProps extends LinkProps {
+  isActive: boolean;
+  hidden: boolean;
+  hasOptions: boolean;
+}
+
+export const ProjectListItem = styled(({ isActive, hasOptions, ...props }: ProjectListItemProps) => <Link {...props} />)`
   display: flex;
   min-width: 0;
   padding: 15px 23px;

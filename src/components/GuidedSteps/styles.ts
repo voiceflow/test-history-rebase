@@ -1,17 +1,11 @@
 import { cancelIcon } from '@/assets';
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 
-const GuidedStepsWrapper = styled.div`
+const GuidedStepsWrapper = styled.div<{ disabled?: boolean }>`
   max-width: 1040px;
   margin-left: auto;
   margin-right: auto;
   padding: 32px;
-
-  ${({ noDetail }) =>
-    noDetail &&
-    css`
-      max-width: 700px;
-    `}
 
   .alert {
     margin-bottom: 15px;
@@ -195,13 +189,6 @@ const GuidedStepsWrapper = styled.div`
       width: 304px;
       color: #8da2b5;
     }
-    ${({ noDetail }) =>
-      noDetail &&
-      css`
-        .gs__details {
-          display: none;
-        }
-      `};
   }
 
   .publish-info {

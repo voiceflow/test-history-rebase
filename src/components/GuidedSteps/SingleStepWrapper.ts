@@ -1,6 +1,11 @@
 import styled, { css } from 'styled-components';
 
-const SingleStepWrapper = styled.div`
+interface SingleStepWrapperProps {
+  isActive: boolean;
+  height: number | null;
+}
+
+const SingleStepWrapper = styled.div<SingleStepWrapperProps>`
   overflow: hidden;
 
   transition: height 0.2s ease;

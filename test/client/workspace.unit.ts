@@ -60,7 +60,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
       const result = await client.fetchWorkspace(WORKSPACE_ID);
 
-      expect(result).to.eql([workspace]);
+      expect(result).to.eq(workspace);
       expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}`);
       expect(workspaceFromDB).to.be.calledWithExactly(dbWorkspace);
     });

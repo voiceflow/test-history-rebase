@@ -100,7 +100,7 @@ export const fetchWorkspace = (): Thunk => async (dispatch, getState) => {
     const state = getState();
     const activeWorkspaceID = activeWorkspaceIDSelector(state)!;
 
-    const [workspace] = await client.workspace.fetchWorkspace(activeWorkspaceID);
+    const workspace = await client.workspace.fetchWorkspace(activeWorkspaceID);
 
     dispatch(patchWorkspace(activeWorkspaceID, workspace));
   } catch (err) {

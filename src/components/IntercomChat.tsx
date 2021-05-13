@@ -6,7 +6,7 @@ import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { compose, connect } from '@/hocs';
+import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { generateID } from '@/utils/env';
@@ -45,15 +45,15 @@ export const IntercomChat: React.FC<ConnectedIntercomChatProps> = ({ user, works
 
 const mapStateToProps = {
   user: Account.userSelector,
-  isVisible: Session.isIntercomVisibleSelector,
-  workspace: Workspace.activeWorkspaceSelector,
   isLoggedIn: Session.isLoggedInSelector,
+  workspace: Workspace.activeWorkspaceSelector,
+  isVisible: Session.isIntercomVisibleSelector,
   intercomUserHMAC: Session.intercomUserHMACSelector,
 };
 
 type ConnectedIntercomChatProps = ConnectedProps<typeof mapStateToProps>;
 
-export default compose(React.memo, connect(mapStateToProps))(IntercomChat);
+export default connect(mapStateToProps)(IntercomChat);
 
 export const RemoveIntercom: React.FC = ({ children }) => {
   const dispatch = useDispatch();

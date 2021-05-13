@@ -12,8 +12,8 @@ import client from '@/client';
 import alexaPublishingAdapter from '@/client/adapters/version/alexa/publishing';
 import Checkbox from '@/components/Checkbox';
 import { FlexCenter } from '@/components/Flex';
-import { FormTextBox } from '@/components/Form/TextBox';
-import { FormTextInput } from '@/components/Form/TextInput';
+import TextBox from '@/components/Form/TextBox';
+import TextInput from '@/components/Form/TextInput';
 import Multiple from '@/components/Forms/Multiple';
 import GuidedSteps, { GuidedStepsWrapper } from '@/components/GuidedSteps';
 import RadioGroup from '@/components/RadioGroup';
@@ -33,6 +33,11 @@ import LOCALE_MAP from '@/services/LocaleMap';
 import { arrayStringReplace } from '@/utils/string';
 
 import amazonFormAdapter from './adapter';
+import bindControl from './bindControl';
+
+// temporary bindings until version duck PR
+const FormTextBox = bindControl(TextBox);
+const FormTextInput = bindControl(TextInput);
 
 const DEFAULT_TERM_ENDPOINT = 'https://creator.voiceflow.com/creator';
 const PUBLISH_AMAZON_FORM = 'publish_amazon_form';

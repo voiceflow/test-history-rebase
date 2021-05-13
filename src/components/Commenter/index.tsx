@@ -38,7 +38,7 @@ const mapStateToProps = {
 
 // eslint-disable-next-line no-empty-pattern
 const mergeProps = (...[{ user: userSelector }, {}, { creatorID }]: MergeArguments<typeof mapStateToProps, {}, CommenterProps>) => ({
-  user: userSelector(String(creatorID!)),
+  user: userSelector(String(creatorID)),
 });
 
 type ConnectedCommenterProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;

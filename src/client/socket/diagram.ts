@@ -9,7 +9,7 @@ import { ClientEvent, ServerEvent } from './constants';
 import { DiagramUpdateEvent } from './types';
 
 const diagramSocketClient = {
-  initialize(skillID: string, diagramID: string) {
+  initialize(versionID: string, diagramID: string) {
     const handlers: Callback[] = [];
 
     return new Promise<WithOptional<RealtimeLocks, 'users'>>((resolve, reject) => {
@@ -24,7 +24,7 @@ const diagramSocketClient = {
 
       // expect a `diagram:init` event to be sent in return
       client.emit(ClientEvent.CONNECT_DIAGRAM, {
-        skillId: skillID,
+        skillId: versionID,
         diagramId: diagramID,
       });
     }).finally(() => handlers.forEach((teardown) => teardown()));
@@ -68,13 +68,13 @@ const diagramSocketClient = {
 
   terminate: () => client.call(ClientEvent.LEAVE_DIAGRAM),
 
-  async switch(skillID: string, diagramID: string) {
+  async switch(versionID: string, diagramID: string) {
     const prevStatus = client.status;
     client.status = SocketStatus.TRANSFERRING;
 
     await this.terminate();
 
-    const locks = await this.initialize(skillID, diagramID);
+    const locks = await this.initialize(versionID, diagramID);
 
     client.status = prevStatus;
 

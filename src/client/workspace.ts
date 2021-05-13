@@ -15,8 +15,7 @@ export const WORKSPACES_PATH = 'workspaces';
 const workspaceClient = {
   find: (opt?: FetchOptions) => api.get<DBWorkspace[]>(WORKSPACES_PATH, opt).then(workspaceAdapter.mapFromDB),
 
-  // TODO: seems legacy
-  fetchWorkspace: (workspaceID: string) => api.get<DBWorkspace>(`${WORKSPACES_PATH}/${workspaceID}`).then((data) => [workspaceAdapter.fromDB(data)]),
+  fetchWorkspace: (workspaceID: string) => api.get<DBWorkspace>(`${WORKSPACES_PATH}/${workspaceID}`).then(workspaceAdapter.fromDB),
 
   createWorkspace: (data: { name: string; image?: string }) => api.post<DBWorkspace>(WORKSPACES_PATH, data).then(workspaceAdapter.fromDB),
 

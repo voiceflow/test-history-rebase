@@ -7,7 +7,6 @@ import './App.css';
 import 'react-day-picker/lib/style.css';
 
 import React from 'react';
-import { Helmet } from 'react-helmet';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { hot } from 'react-hot-loader/root';
 
@@ -16,7 +15,9 @@ import { ConfirmModal, ErrorModal, ModalBackdrop, SuccessModal } from '@/compone
 import LoadingModal from '@/components/LegacyModal/LoadingModal';
 import Modal from '@/components/LegacyModal/Modal';
 import RefreshModal from '@/components/RefreshModal';
+import SeoHelmet from '@/components/SeoHelmet';
 import { ToastContainer } from '@/components/Toast';
+import { SeoPage } from '@/constants/seo';
 import { AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadingGate, SocketLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
 import { useSessionTracking } from '@/hooks';
@@ -42,9 +43,7 @@ const App = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Voiceflow Creator</title>
-      </Helmet>
+      <SeoHelmet page={SeoPage.ROOT} />
       <SuccessModal />
       <ConfirmModal />
       <ErrorModal />

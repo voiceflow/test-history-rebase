@@ -2,10 +2,12 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { RemoveIntercom } from '@/components/IntercomChat';
+import SeoHelmet from '@/components/SeoHelmet';
 import { FullSpinner } from '@/components/Spinner';
 import { toast } from '@/components/Toast';
 import { Permission } from '@/config/permissions';
 import { PlanType } from '@/constants';
+import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import { useGuestPermission, useSetup, useToggle } from '@/hooks';
@@ -56,6 +58,7 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
   return isLoaded ? (
     <>
       <RemoveIntercom />
+      <SeoHelmet page={SeoPage.PROTOTYPE} />
       {isAuthenticated || !canUseSharedPassword ? <Prototype settings={settings} /> : <PasswordScreen settings={settings} checkLogin={checkLogin} />}
     </>
   ) : (

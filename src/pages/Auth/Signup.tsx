@@ -4,8 +4,10 @@ import _constant from 'lodash/constant';
 import React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 
+import SeoHelmet from '@/components/SeoHelmet';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { RootRoute } from '@/config/routes';
+import { SeoPage } from '@/constants/seo';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
@@ -42,7 +44,12 @@ const Signup: React.FC<ConnectedSignupFormProps & SignupProps> = ({ validateInvi
     if (!isValid) return <Redirect to={RootRoute.LOGIN} />;
   }
 
-  return <SignupForm query={query} {...props} />;
+  return (
+    <>
+      <SeoHelmet page={SeoPage.SIGNUP} />
+      <SignupForm query={query} {...props} />
+    </>
+  );
 };
 
 const mapDispatchToProps = {

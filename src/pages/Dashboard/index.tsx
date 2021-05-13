@@ -11,12 +11,14 @@ import { Flex } from '@/components/Box';
 import DragLayer from '@/components/DragLayer';
 import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
+import SeoHelmet from '@/components/SeoHelmet';
 import { FullSpinner } from '@/components/Spinner';
 import SvgIcon from '@/components/SvgIcon';
 import TippyTooltip from '@/components/TippyTooltip';
 import { toast } from '@/components/Toast';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
+import { SeoPage } from '@/constants/seo';
 import { ScrollContextProvider } from '@/contexts';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
@@ -200,6 +202,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
   return (
     <div id="app" className={DashboardClassName.DASHBOARD}>
       <DashboardHeader handleFilterText={handleFilterText} workspaces={props.workspaces} workspace={props.workspace} loadingProjects={loading} />
+      <SeoHelmet page={SeoPage.DASHBOARD} />
 
       {LOCKED && (
         <div className="w-100 h-100 super-center position-absolute z-hard pb-5">

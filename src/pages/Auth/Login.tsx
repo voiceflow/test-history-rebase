@@ -1,9 +1,11 @@
 import React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 
+import SeoHelmet from '@/components/SeoHelmet';
 import { IS_MOTOROLA_PRIVATE_CLOUD } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
+import { SeoPage } from '@/constants/seo';
 import { useFeature } from '@/hooks';
 import * as Query from '@/utils/query';
 
@@ -19,6 +21,7 @@ const Login: React.FC<RouteComponentProps> = ({ location }) => {
 
   return (
     <LoginForm query={query}>
+      <SeoHelmet page={SeoPage.LOGIN} />
       <SocialLogin light />
     </LoginForm>
   );

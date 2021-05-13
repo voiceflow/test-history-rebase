@@ -5,8 +5,10 @@ import Button from '@/components/Button';
 import { FlexEnd } from '@/components/Flex';
 import Header from '@/components/Header';
 import MadeInVoiceflow from '@/components/MadeInVoiceflow';
+import SeoHelmet from '@/components/SeoHelmet';
 import SSML from '@/components/SSML';
 import { PlatformType } from '@/constants';
+import { SeoPage } from '@/constants/seo';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useDebouncedCallback } from '@/hooks/callback';
 import { useEnableDisable } from '@/hooks/toggle';
@@ -78,6 +80,7 @@ function SSMLPage() {
 
       <App>
         <Page>
+          <SeoHelmet page={SeoPage.SSML} />
           <SSML
             value={ssml}
             voice={state.voice}

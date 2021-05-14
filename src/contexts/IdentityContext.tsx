@@ -2,6 +2,7 @@ import React from 'react';
 
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
+import { useContextApi } from '@/hooks/cache';
 import { ConnectedProps } from '@/types';
 
 export type IdentityContextValue = {
@@ -11,9 +12,11 @@ export type IdentityContextValue = {
 
 export const IdentityContext = React.createContext<IdentityContextValue | null>(null);
 
-const UnconnectedIdentityProvider: React.FC<ConnectedIdentityProviderProps> = ({ activePlan, activeRole, children }) => (
-  <IdentityContext.Provider value={{ activePlan, activeRole }}>{children}</IdentityContext.Provider>
-);
+const UnconnectedIdentityProvider: React.FC<ConnectedIdentityProviderProps> = ({ activePlan, activeRole, children }) => {
+  const api = useContextApi({ activePlan, activeRole });
+
+  return <IdentityContext.Provider value={api}>{children}</IdentityContext.Provider>;
+};
 
 const mapStateToProps = {
   activePlan: Workspace.planTypeSelector,

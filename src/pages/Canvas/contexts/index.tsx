@@ -13,6 +13,7 @@ import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
 import { EngineProvider } from './EngineContext';
 import { FocusThreadProvider } from './FocusThreadContext';
+import { ReduxContextsProviders } from './ReduxContexts';
 import { SpotlightProvider } from './SpotlightContext';
 
 export * from './ClipboardContext';
@@ -21,6 +22,7 @@ export * from './EngineContext';
 export * from './EntityContexts';
 export * from './FocusThreadContext';
 export * from './PresentationModeContext';
+export * from './ReduxContexts';
 export * from './SpotlightContext';
 
 export const PlatformContext = React.createContext<PlatformType | null>(null);
@@ -47,7 +49,9 @@ export const CanvasProviders = connect({
       <ContextMenuProvider>
         <ClipboardProvider>
           <FocusThreadProvider>
-            <SpotlightProvider>{children}</SpotlightProvider>
+            <SpotlightProvider>
+              <ReduxContextsProviders>{children}</ReduxContextsProviders>
+            </SpotlightProvider>
           </FocusThreadProvider>
         </ClipboardProvider>
       </ContextMenuProvider>

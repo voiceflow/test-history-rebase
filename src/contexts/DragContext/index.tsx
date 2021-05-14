@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Portal from '@/components/Portal';
+import { useContextApi } from '@/hooks/cache';
 
 import DragLayer, { PreviewOptions } from './DragLayer';
 
@@ -39,18 +40,18 @@ export const DragProvider: React.FC = ({ children }) => {
 
   const getOptions = (type: string) => previewComponents.current[type]?.[1];
 
-  const context = {
+  const api = useContextApi({
     getOptions,
     isRegistered,
     renderPreview,
     registerPreview,
-  };
+  });
 
   return (
-    <DragContext.Provider value={context}>
+    <DragContext.Provider value={api}>
       {children}
       <Portal portalNode={document.body}>
-        <DragLayer {...context} />
+        <DragLayer {...api} />
       </Portal>
     </DragContext.Provider>
   );

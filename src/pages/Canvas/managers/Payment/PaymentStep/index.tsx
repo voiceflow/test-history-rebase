@@ -1,11 +1,9 @@
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import * as Product from '@/ducks/product';
-import { connect } from '@/hocs';
 import * as Models from '@/models';
 import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { ProductMapContext } from '@/pages/Canvas/contexts';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -55,31 +53,24 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, 
   </Step>
 );
 
-const ConnectedPaymentStep: React.FC<ConnectedStepProps<Models.NodeData.Payment> & ConnectedPaymentStepProps> = ({ node, withPorts, product }) => {
+const MemoizedPaymentStep = React.memo(PaymentStep);
+
+const ConnectedPaymentStep: React.FC<ConnectedStepProps<Models.NodeData.Payment>> = ({ node, data, withPorts }) => {
+  const productMap = React.useContext(ProductMapContext)!;
+  const product = data?.productID ? productMap[data.productID] : null;
+
   const [successPortID, failurePortID] = node.ports.out;
 
   return (
-    <PaymentStep
+    <MemoizedPaymentStep
       label={product?.name}
-      upsellMessage={product?.purchasePrompt}
       nodeID={node.id}
+      withPorts={withPorts}
+      upsellMessage={product?.purchasePrompt}
       successPortID={successPortID}
       failurePortID={failurePortID}
-      withPorts={withPorts}
     />
   );
 };
 
-const mapStateToProps = {
-  product: Product.productByIDSelector,
-};
-
-const mergeProps = (
-  ...[{ product: productByIDSelector }, , { data }]: MergeArguments<typeof mapStateToProps, {}, ConnectedStepProps<Models.NodeData.Payment>>
-) => ({
-  product: data?.productID ? productByIDSelector(data.productID) : null,
-});
-
-type ConnectedPaymentStepProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
-
-export default connect(mapStateToProps, null, mergeProps)<ConnectedStepProps<Models.NodeData.Payment>>(ConnectedPaymentStep as React.FC);
+export default ConnectedPaymentStep;

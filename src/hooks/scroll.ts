@@ -4,6 +4,7 @@ import { ScrollContext } from '@/contexts';
 import { getOffsetLeftToNode, getOffsetToNode, scrollTo, setScrollbarOffset } from '@/utils/dom';
 import { xnor, xor } from '@/utils/logic';
 
+import { useContextApi } from './cache';
 import { useToggle } from './toggle';
 
 export const useScrollHelpers = <B extends HTMLElement, I extends HTMLElement>({
@@ -36,11 +37,11 @@ export const useScrollHelpers = <B extends HTMLElement, I extends HTMLElement>({
     scrollHelpers.current.setScrollBarOffset();
   });
 
-  return {
+  return useContextApi({
     bodyRef,
     innerRef,
     scrollHelpers: scrollHelpers.current,
-  };
+  });
 };
 
 export const useScrollContext = () => React.useContext(ScrollContext);

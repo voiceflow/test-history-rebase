@@ -21,9 +21,11 @@ import NodeStep from '../NodeStep';
 import { ReorderIndicator, SourceReorderIndicator, Styles, TerminalReorderIndicator } from './components';
 
 const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
-  const blockRef = React.useRef<BlockAPI>(null);
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+
+  const blockRef = React.useRef<BlockAPI>(null);
+
   const { name, variant, combinedNodes, lockOwner, isMergeTarget } = nodeEntity.useState((e) => {
     const { node, data } = e.resolve<NodeData.Combined>();
     return {
@@ -162,6 +164,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   }, []);
 
   const isDisabled = isHovered && hasLinkWarning;
+
   nodeEntity.useConditionalStyle(NODE_HOVERED_CLASSNAME, isHovered);
   nodeEntity.useConditionalStyle(NODE_DISABLED_CLASSNAME, isDisabled);
 

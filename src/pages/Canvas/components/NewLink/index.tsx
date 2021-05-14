@@ -1,7 +1,5 @@
 import React from 'react';
 
-import * as Skill from '@/ducks/skill';
-import { compose, connect } from '@/hocs';
 import { useRegistration, useTeardown } from '@/hooks';
 import {
   buildHeadMarker,
@@ -13,8 +11,7 @@ import {
   Path,
   STROKE_DEFAULT_COLOR,
 } from '@/pages/Canvas/components/Link';
-import { EngineContext } from '@/pages/Canvas/contexts';
-import { ConnectedProps } from '@/types';
+import { EngineContext, IsStraightLinksContext } from '@/pages/Canvas/contexts';
 
 import { Container } from './components';
 import { useNewLinkAPI } from './hooks';
@@ -22,17 +19,19 @@ import { useNewLinkAPI } from './hooks';
 const NEW_LINK_ID = 'newLink';
 const HEAD_MARKER = buildHeadMarker(NEW_LINK_ID);
 
-const NewLink: React.FC<ConnectedNewLink> = ({ straight }) => {
+const NewLink: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
+  const isStraightLinks = React.useContext(IsStraightLinksContext)!;
+
   const api = useNewLinkAPI<SVGPathElement>();
   const points = api.getSourceTargetPoints();
 
   useRegistration(() => engine.linkCreation.register('newLink', api), [api]);
   useTeardown(() => api.hide(), [api.hide]);
 
-  const pathPoints = React.useMemo(() => getPathPoints(getVirtualPoints(points), { straight }), [points, straight]);
-  const path = React.useMemo(() => buildPath(pathPoints, straight), [pathPoints]);
-  const markerAttrs = React.useMemo(() => getMarkerAttrs(pathPoints, straight), [pathPoints]);
+  const pathPoints = React.useMemo(() => getPathPoints(getVirtualPoints(points), { straight: isStraightLinks }), [points, isStraightLinks]);
+  const path = React.useMemo(() => buildPath(pathPoints, isStraightLinks), [pathPoints, isStraightLinks]);
+  const markerAttrs = React.useMemo(() => getMarkerAttrs(pathPoints, isStraightLinks), [pathPoints, isStraightLinks]);
 
   if (!points || !api.isVisible) return null;
 
@@ -45,10 +44,4 @@ const NewLink: React.FC<ConnectedNewLink> = ({ straight }) => {
   );
 };
 
-const mapStateToProps = {
-  straight: Skill.activeProjectStraightLinkSelector,
-};
-
-type ConnectedNewLink = ConnectedProps<typeof mapStateToProps>;
-
-export default compose(React.memo, connect(mapStateToProps))(NewLink) as React.FC;
+export default React.memo(NewLink);

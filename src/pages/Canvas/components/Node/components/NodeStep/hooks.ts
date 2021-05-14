@@ -56,14 +56,16 @@ export const useNodeInstance = () => {
 };
 
 export const useStepAPI = <T extends HTMLElement>(stepRef: React.RefObject<T>, withPorts: boolean, isDraggable: boolean) => {
+  const theme = React.useContext(ThemeContext);
+  const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+  const contextMenu = React.useContext(ContextMenuContext)!;
+
   const { lockOwner } = nodeEntity.useState((e) => ({
     lockOwner: e.lockOwner,
   }));
+
   const isEditingMode = useEditingMode();
-  const contextMenu = React.useContext(ContextMenuContext)!;
-  const engine = React.useContext(EngineContext)!;
-  const theme = React.useContext(ThemeContext);
   const [hasLinkWarning, setLinkWarning, clearLinkWarning] = useEnableDisable();
   const [isHovered, wrapElement, hoverHandlers, setHovering] = useHover(
     {

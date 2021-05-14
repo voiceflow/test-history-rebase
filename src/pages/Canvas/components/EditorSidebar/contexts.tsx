@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useContextApi } from '@/hooks/cache';
 import type { NodeData } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
 
@@ -41,5 +42,7 @@ export type SidebarProviderProps = {
 export const SidebarProvider: React.FC<SidebarProviderProps> = ({ headerActions = DEFAULT_SIDEBAR_HEADER_ACTIONS, children }) => {
   const [state, updateState] = React.useState({ headerActions });
 
-  return <SidebarContext.Provider value={{ state, updateState }}>{children}</SidebarContext.Provider>;
+  const api = useContextApi({ state, updateState });
+
+  return <SidebarContext.Provider value={api}>{children}</SidebarContext.Provider>;
 };

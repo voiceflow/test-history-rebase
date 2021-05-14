@@ -35,7 +35,7 @@ const SetEditorV2: NodeEditor<NodeData.Set> = ({ data, onChange }) => {
   );
 
   const { items, onAdd, onRemove, mapManaged, onDuplicate, onReorder, latestCreatedKey } = useManager(data.sets, updateSets, {
-    factory: () => setFactory(conditionsBuilder.isEnabled),
+    factory: () => setFactory(!!conditionsBuilder.isEnabled),
     clone: setClone,
   });
 

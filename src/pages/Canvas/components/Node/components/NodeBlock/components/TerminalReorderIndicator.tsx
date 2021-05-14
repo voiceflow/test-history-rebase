@@ -8,9 +8,10 @@ import { ReorderIndicatorProps } from '../types';
 
 const TerminalReorderIndicator: React.FC<ReorderIndicatorProps> = ({ index, onMouseUp, variant }) => {
   const nodeEntity = React.useContext(NodeEntityContext)!;
+  const getManager = React.useContext(ManagerContext)!;
+
   const { mustNotBe, mustBeFirst } = useMergeInfo(index);
   const [connectBlockDrop, isHovered] = useDnDHoverReorderIndicator(index);
-  const getManager = React.useContext(ManagerContext)!;
 
   const { mergeTerminator } = getManager(nodeEntity.nodeType);
 

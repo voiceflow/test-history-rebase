@@ -1,6 +1,7 @@
 import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
+import { useContextApi } from '@/hooks/cache';
 import type { Engine } from '@/pages/Canvas/engine';
 
 export type EventualEngineContextType = null | {
@@ -19,7 +20,9 @@ export const EventualEngineProvider: React.FC = ({ children }) => {
     engineRef.current = engine;
   }, []);
 
-  return <EventualEngineContext.Provider value={{ get, set }}>{children}</EventualEngineContext.Provider>;
+  const api = useContextApi({ get, set });
+
+  return <EventualEngineContext.Provider value={api}>{children}</EventualEngineContext.Provider>;
 };
 
 export type RegisterEngineProps = {

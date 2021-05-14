@@ -33,7 +33,10 @@ export const activeProjectLinkTypeSelector = createSelector(
   (projectID, getProjectByID) => getProjectByID(projectID)?.linkType
 );
 
-export const activeProjectStraightLinkSelector = createSelector([activeProjectLinkTypeSelector], (linkType) => linkType === ProjectLinkType.STRAIGHT);
+export const activeProjectIsStraightLinksSelector = createSelector(
+  [activeProjectLinkTypeSelector],
+  (linkType) => linkType === ProjectLinkType.STRAIGHT
+);
 
 export const activeSkillCreatorIDSelector = createSelector(activeSkillSelector, ({ creatorID }) => creatorID);
 

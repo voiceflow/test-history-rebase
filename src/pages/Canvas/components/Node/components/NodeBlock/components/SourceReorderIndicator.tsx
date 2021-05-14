@@ -7,13 +7,15 @@ import { useDnDHoverReorderIndicator, useMergeInfo } from '../hooks';
 import { ReorderIndicatorProps } from '../types';
 
 const SourceReorderIndicator: React.FC<ReorderIndicatorProps> = ({ index, onMouseUp, variant }) => {
+  const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+  const getManager = React.useContext(ManagerContext)!;
+
   const { parentNode, type } = nodeEntity.useState((e) => ({
     parentNode: e.resolve().node.parentNode,
     type: e.resolve().node.type,
   }));
-  const engine = React.useContext(EngineContext)!;
-  const getManager = React.useContext(ManagerContext)!;
+
   const { mustNotBe, mustBeLast, mustBeFirst } = useMergeInfo(index);
   const [connectBlockDrop, isHovered] = useDnDHoverReorderIndicator(index);
 

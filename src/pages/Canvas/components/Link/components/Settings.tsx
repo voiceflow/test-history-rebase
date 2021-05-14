@@ -2,14 +2,11 @@ import { ProjectLinkType } from '@voiceflow/api-sdk';
 import React from 'react';
 
 import SvgIcon from '@/components/SvgIcon';
-import * as UI from '@/ducks/ui';
-import { connect } from '@/hocs';
 import { useCache, useHotKeys, useToggle } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
+import { EngineContext, IsCanvasOnlyContext, IsCreatorMenuHiddenContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
 import { ClassName } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
 import { stopPropagation } from '@/utils/dom';
 
 import { InternalLinkInstance } from '../types';
@@ -25,28 +22,23 @@ const SIDEBAR_WIDTH = 250;
 const SETTINGS_WIDTH = 195;
 const SETTINGS_HEIGHT_WITH_OFFSET = 48;
 
-type SettingsProps = {
+interface SettingsProps {
   instance: InternalLinkInstance;
   onRemove: () => void;
   isTextActive: boolean;
   onToggleText: (nextValue?: unknown) => void;
   onChangeType: (type: ProjectLinkType) => void;
   onChangeColor: (color: string) => void;
-};
+}
 
-const Settings: React.FC<SettingsProps & ConnectedSettingsProps> = ({
-  instance,
-  onRemove,
-  isTextActive,
-  onToggleText,
-  onChangeType,
-  isCanvasOnly,
-  onChangeColor,
-  isSidebarHidden,
-}) => {
-  const containerRef = React.useRef<HTMLDivElement>(null);
+const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, onToggleText, onChangeType, onChangeColor }) => {
   const engine = React.useContext(EngineContext)!;
   const linkEntity = React.useContext(LinkEntityContext)!;
+  const isCanvasOnly = React.useContext(IsCanvasOnlyContext)!;
+  const isSidebarHidden = React.useContext(IsCreatorMenuHiddenContext)!;
+
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
   const [colorOpened, toggleColorOpened] = useToggle(false);
   const [linkTypeOpened, toggleLinkTypeOpened] = useToggle(false);
   const [colorPickerOpened, toggleColorPickerOpened] = useToggle(false);
@@ -171,11 +163,4 @@ const Settings: React.FC<SettingsProps & ConnectedSettingsProps> = ({
   );
 };
 
-const mapStateToProps = {
-  isCanvasOnly: UI.isCanvasOnlyShowingSelector,
-  isSidebarHidden: UI.isCreatorMenuHiddenSelector,
-};
-
-type ConnectedSettingsProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(Settings) as React.FC<SettingsProps>;
+export default Settings;

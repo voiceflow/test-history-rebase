@@ -16,7 +16,7 @@ export const getSlotTypes = <L extends string>(
     locales: L[];
     platform: PlatformType;
   },
-  featureSelector?: (ff: FeatureFlag) => boolean
+  featureSelector?: (ff: FeatureFlag) => boolean | null
 ): { label: string; value: string }[] => {
   let builtInSlots: BuiltinSlot<string, string | L>[];
 

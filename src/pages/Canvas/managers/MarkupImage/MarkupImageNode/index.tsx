@@ -10,6 +10,7 @@ import { Container } from './components';
 const MarkupImageNode: React.FC<ConnectedMarkupNodeProps<Markup.NodeData.Image>> = React.forwardRef(({ data }, ref) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+
   const { isFocused, isActivated } = nodeEntity.useState((e) => ({
     isFocused: e.isFocused,
     isActivated: e.isActive,

@@ -7,7 +7,7 @@ import * as Errors from '@/config/errors';
 import { JobStatus } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
-import { useDidUpdateEffect, useSetup, useTeardown } from '@/hooks';
+import { useContextApi, useDidUpdateEffect, useSetup, useTeardown } from '@/hooks';
 import { NLPTrainJob } from '@/models';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
@@ -112,7 +112,9 @@ export const NLPProvider: React.FC = ({ children }) => {
     stopPulling();
   });
 
-  return <NLPContext.Provider value={{ job, cancel, publish, publishing }}>{children}</NLPContext.Provider>;
+  const api = useContextApi({ job, cancel, publish, publishing });
+
+  return <NLPContext.Provider value={api}>{children}</NLPContext.Provider>;
 };
 
 export const withNLP = withContext(NLPContext, 'nlp');

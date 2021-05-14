@@ -1,26 +1,27 @@
 import { ProjectLinkType } from '@voiceflow/api-sdk';
 import React from 'react';
 
-import * as Skill from '@/ducks/skill';
-import { connect } from '@/hocs';
 import { useDidUpdateEffect, useToggle } from '@/hooks';
 import { STROKE_DEFAULT_COLOR } from '@/pages/Canvas/components/Link';
-import { EngineContext, PortEntityContext } from '@/pages/Canvas/contexts';
-import { ConnectedProps, PathPoints } from '@/types';
+import { EngineContext, IsStraightLinksContext, PortEntityContext } from '@/pages/Canvas/contexts';
+import { PathPoints } from '@/types';
 
 import { LINK_WIDTH } from '../constants';
 import LinkPath from './PortLinkPath';
 import LinkSvg from './PortLinkSvg';
 
-export type PortLinkProps = {
+export interface PortLinkProps {
   linkID?: string;
   isHighlighted: boolean;
-};
+}
 
-const PortLink: React.FC<PortLinkProps & ConnectedPortProps> = ({ linkID, isStraightLinks, isHighlighted }) => {
-  const ref = React.useRef<SVGSVGElement>(null);
+const PortLink: React.FC<PortLinkProps> = ({ linkID, isHighlighted }) => {
   const engine = React.useContext(EngineContext)!;
   const portEntity = React.useContext(PortEntityContext)!;
+  const isStraightLinks = React.useContext(IsStraightLinksContext)!;
+
+  const ref = React.useRef<SVGSVGElement>(null);
+
   const { link } = portEntity.useState((e) => ({ link: e.resolveLink() }));
 
   const [reversed, toggleReversed] = useToggle(false);
@@ -60,10 +61,4 @@ const PortLink: React.FC<PortLinkProps & ConnectedPortProps> = ({ linkID, isStra
   );
 };
 
-const mapStateToProps = {
-  isStraightLinks: Skill.activeProjectStraightLinkSelector,
-};
-
-type ConnectedPortProps = ConnectedProps<typeof mapStateToProps, {}>;
-
-export default connect(mapStateToProps)(PortLink as any) as React.FC<PortLinkProps>;
+export default PortLink;

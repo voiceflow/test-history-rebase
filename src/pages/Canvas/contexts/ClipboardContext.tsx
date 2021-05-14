@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { withContext } from '@/hocs';
+import { useContextApi } from '@/hooks';
 import { SLATE_EDITOR_CLASS_NAME } from '@/pages/Canvas/managers/MarkupText/constants';
 
 import { EngineContext } from './EngineContext';
@@ -41,7 +42,9 @@ export const ClipboardProvider: React.FC = ({ children }) => {
     return () => document.removeEventListener('paste', handlePaste);
   }, []);
 
-  return <ClipboardContext.Provider value={{ copy }}>{children}</ClipboardContext.Provider>;
+  const api = useContextApi({ copy });
+
+  return <ClipboardContext.Provider value={api}>{children}</ClipboardContext.Provider>;
 };
 
 export const withClipboard = withContext(ClipboardContext, 'clipboard');

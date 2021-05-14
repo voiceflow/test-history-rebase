@@ -15,6 +15,7 @@ import THEME from '@/styles/theme';
 
 import { DragProvider } from './DragContext';
 import { EventualEngineProvider } from './EventualEngineContext';
+import { FeatureFlagsProvider } from './FeatureFlagsContext';
 import { IdentityProvider } from './IdentityContext';
 import LifecycleProvider from './LifecycleProvider';
 import { ModalsContextProvider } from './ModalsContext';
@@ -39,29 +40,31 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
   // eslint-disable-next-line xss/no-mixed-html
   return (
     <StoreProvider store={store} persistor={persistor}>
-      <DndProvider backend={HTML5Backend}>
-        <ThemeProvider theme={THEME}>
-          <IntercomProvider appId={INTERCOM_APP_ID}>
-            <TextEditorVariablesPopoverProvider value={document.body}>
-              <MousePositionProvider>
-                <DragProvider>
-                  <OverlayProvider>
-                    <EventualEngineProvider>
-                      <IdentityProvider>
-                        <ModalsContextProvider>
-                          <APLRendererProvider>
-                            {IS_PRODUCTION_ENV ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}
-                          </APLRendererProvider>
-                        </ModalsContextProvider>
-                      </IdentityProvider>
-                    </EventualEngineProvider>
-                  </OverlayProvider>
-                </DragProvider>
-              </MousePositionProvider>
-            </TextEditorVariablesPopoverProvider>
-          </IntercomProvider>
-        </ThemeProvider>
-      </DndProvider>
+      <FeatureFlagsProvider>
+        <DndProvider backend={HTML5Backend}>
+          <ThemeProvider theme={THEME}>
+            <IntercomProvider appId={INTERCOM_APP_ID}>
+              <TextEditorVariablesPopoverProvider value={document.body}>
+                <MousePositionProvider>
+                  <DragProvider>
+                    <OverlayProvider>
+                      <EventualEngineProvider>
+                        <IdentityProvider>
+                          <ModalsContextProvider>
+                            <APLRendererProvider>
+                              {IS_PRODUCTION_ENV ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}
+                            </APLRendererProvider>
+                          </ModalsContextProvider>
+                        </IdentityProvider>
+                      </EventualEngineProvider>
+                    </OverlayProvider>
+                  </DragProvider>
+                </MousePositionProvider>
+              </TextEditorVariablesPopoverProvider>
+            </IntercomProvider>
+          </ThemeProvider>
+        </DndProvider>
+      </FeatureFlagsProvider>
     </StoreProvider>
   );
 };

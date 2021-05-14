@@ -7,7 +7,7 @@ import * as Errors from '@/config/errors';
 import { JobStatus } from '@/constants';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
-import { useDidUpdateEffect, useTeardown } from '@/hooks';
+import { useContextApi, useDidUpdateEffect, useTeardown } from '@/hooks';
 import { AlexaExportJob, GeneralJob, GoogleExportJob } from '@/models';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
@@ -112,7 +112,9 @@ export const ExportProvider: React.FC = ({ children }) => {
     stopPulling();
   });
 
-  return <ExportContext.Provider value={{ job, cancel, start, updateCurrentStage }}>{children}</ExportContext.Provider>;
+  const api = useContextApi({ job, cancel, start, updateCurrentStage });
+
+  return <ExportContext.Provider value={api}>{children}</ExportContext.Provider>;
 };
 
 export const withExport = withContext(ExportContext, 'export');

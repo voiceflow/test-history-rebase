@@ -9,8 +9,10 @@ import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 
 import { createAction, createRootSelector } from './utils';
 
+export type FeatureFlagMap = Partial<Record<FeatureFlag, { isEnabled: boolean }>>;
+
 export type FeatureState = {
-  features: Record<string, { isEnabled: boolean }>;
+  features: FeatureFlagMap;
   isLoaded: boolean;
   isWorkspaceLoaded: boolean;
 };
@@ -29,9 +31,9 @@ export enum FeatureAction {
   SET_WORKSPACE_FEATURES_LOADED = 'FEATURE:SET_WORKSPACE_LOADED',
 }
 
-export type SetFeaturesLoaded = Action<FeatureAction.SET_FEATURES_LOADED, Record<FeatureFlag, { isEnabled: boolean }>>;
+export type SetFeaturesLoaded = Action<FeatureAction.SET_FEATURES_LOADED, FeatureFlagMap>;
 
-export type SetWorkspaceFeaturesLoaded = Action<FeatureAction.SET_WORKSPACE_FEATURES_LOADED, Record<FeatureFlag, { isEnabled: boolean }>>;
+export type SetWorkspaceFeaturesLoaded = Action<FeatureAction.SET_WORKSPACE_FEATURES_LOADED, FeatureFlagMap>;
 
 type AnyFeatureAction = SetFeaturesLoaded | SetWorkspaceFeaturesLoaded | Session.SetAuthToken | Workspace.UpdateCurrentWorkspace;
 
@@ -81,7 +83,11 @@ export default featureReducer;
 
 const rootSelector = createRootSelector(STATE_KEY);
 
-export const featureSelector = createSelector([rootSelector], ({ features }) => (featureID: FeatureFlag) => features[featureID] ?? {});
+export const featuresSelector = createSelector([rootSelector], ({ features }) => features);
+
+export const featureSelector = createSelector([featuresSelector], (features) => (featureID: FeatureFlag) =>
+  features[featureID] ?? { isEnabled: null }
+);
 
 export const isFeatureEnabledSelector = createSelector([featureSelector], (getFeature) => (featureID: FeatureFlag) =>
   (!IS_PRODUCTION && LOCAL_FEATURE_OVERRIDES[featureID]) || (getFeature(featureID).isEnabled ?? null)

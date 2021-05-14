@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useContextApi } from '@/hooks/cache';
+
 import { EngineContext } from './EngineContext';
 
 export type FocusThreadContextValue = {
@@ -16,15 +18,20 @@ export const FocusThreadProvider: React.FC = ({ children }) => {
 
   const [focusedID, setFocusedID] = React.useState<string | null>(null);
 
-  const setFocus = async (id: string) => {
-    setFocusedID(id);
-    await engine.comment.setFocus(id);
-  };
+  const setFocus = React.useCallback(
+    async (id: string) => {
+      setFocusedID(id);
+      await engine.comment.setFocus(id);
+    },
+    [engine]
+  );
 
-  const resetFocus = () => {
+  const resetFocus = React.useCallback(() => {
     setFocusedID(null);
     engine.comment.reset();
-  };
+  }, [engine]);
 
-  return <FocusThreadContext.Provider value={{ focusedID, setFocus, resetFocus }}>{children}</FocusThreadContext.Provider>;
+  const api = useContextApi({ focusedID, setFocus, resetFocus });
+
+  return <FocusThreadContext.Provider value={api}>{children}</FocusThreadContext.Provider>;
 };

@@ -6,7 +6,7 @@ import { JobStatus } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
-import { useDidUpdateEffect, useDispatch, useSetup, useTeardown } from '@/hooks';
+import { useContextApi, useDidUpdateEffect, useDispatch, useSetup, useTeardown } from '@/hooks';
 import { AlexaPublishJob, GooglePublishJob } from '@/models';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
@@ -115,7 +115,9 @@ export const PublishProvider: React.FC = ({ children }) => {
     stopPulling();
   });
 
-  return <PublishContext.Provider value={{ job, cancel, publish, updateCurrentStage }}>{children}</PublishContext.Provider>;
+  const api = useContextApi({ job, cancel, publish, updateCurrentStage });
+
+  return <PublishContext.Provider value={api}>{children}</PublishContext.Provider>;
 };
 
 export const withPublish = withContext(PublishContext, 'publish');

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withProvider } from '@/hocs';
-import { useSmartReducerV2 } from '@/hooks';
+import { useContextApi, useSmartReducerV2 } from '@/hooks';
 
 import { ReferralContextAPI } from './types';
 
@@ -21,7 +21,9 @@ export const { Consumer: ReferralContextConsumer } = ReferralContext;
 export const ReferralContextProvider: React.FC = ({ children }) => {
   const [state, actions] = useSmartReducerV2(DEFAULT_STATE);
 
-  return <ReferralContext.Provider value={{ state, actions }}>{children}</ReferralContext.Provider>;
+  const api = useContextApi({ state, actions });
+
+  return <ReferralContext.Provider value={api}>{children}</ReferralContext.Provider>;
 };
 
 export const withReferralProvider = withProvider(ReferralContextProvider);

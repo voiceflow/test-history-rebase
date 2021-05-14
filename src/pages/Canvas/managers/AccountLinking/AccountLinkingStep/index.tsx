@@ -2,18 +2,16 @@ import _isEqual from 'lodash/isEqual';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import * as Skill from '@/ducks/skill';
-import { connect } from '@/hocs';
-import { AccountLinking } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
+import { AccountLinkingContext } from '@/pages/Canvas/contexts';
 
 import { EMPTY_ACCOUNT_DATA, NODE_CONFIG } from '../constants';
 
-export type AccountLinkingStepProps = {
+export interface AccountLinkingStepProps {
   nodeID: string;
   portID: string;
   isConfigured: boolean;
-};
+}
 
 export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfigured, nodeID, portID }) => (
   <Step nodeID={nodeID}>
@@ -30,18 +28,12 @@ export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfig
   </Step>
 );
 
-type ConnectedAccountLinkingStepProps = ConnectedStepProps & {
-  accountLinkingData?: AccountLinking;
-};
+const ConnectedAccountLinkingStep: React.FC<ConnectedStepProps> = ({ node }) => {
+  const accountLinkingData = React.useContext(AccountLinkingContext)!;
 
-const ConnectedAccountLinkingStep: React.FC<ConnectedAccountLinkingStepProps> = ({ node, accountLinkingData }) => {
   const notEmpty = !_isEqual(accountLinkingData, EMPTY_ACCOUNT_DATA);
 
   return <AccountLinkingStep nodeID={node.id} portID={node.ports.out[0]} isConfigured={!!accountLinkingData && notEmpty} />;
 };
 
-const mapStateToProps = {
-  accountLinkingData: Skill.accountLinkingSelector,
-};
-
-export default connect(mapStateToProps)(ConnectedAccountLinkingStep);
+export default ConnectedAccountLinkingStep;

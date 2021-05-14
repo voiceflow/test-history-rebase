@@ -1,12 +1,11 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import * as Diagram from '@/ducks/diagram';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { DiagramMapContext } from '@/pages/Canvas/contexts';
 import { stopPropagation } from '@/utils/dom';
 
 import { NODE_CONFIG } from '../constants';
@@ -34,29 +33,17 @@ export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, portID, onCli
   </Step>
 );
 
-const ConnectedFlowStep: React.FC<ConnectedStepProps<NodeData.Flow> & ConnectedFlowStepProps> = ({ diagramName, node, goToDiagram }) => (
-  <FlowStep label={diagramName} nodeID={node.id} portID={node.ports.out[0]} onClickFlow={goToDiagram} />
-);
+const MemoizedFlowStep = React.memo(FlowStep);
 
-const mapStateToProps = {
-  diagram: Diagram.diagramByIDSelector,
+const ConnectedFlowStep: React.FC<ConnectedStepProps<NodeData.Flow>> = ({ node, data }) => {
+  const dispatch = useDispatch();
+  const diagramMap = React.useContext(DiagramMapContext)!;
+
+  const goToDiagram = React.useCallback(() => data.diagramID && dispatch(Router.goToDiagram(data.diagramID)), [data.diagramID, dispatch]);
+
+  const label = data.diagramID ? diagramMap[data.diagramID]?.name : null;
+
+  return <MemoizedFlowStep label={label} nodeID={node.id} portID={node.ports.out[0]} onClickFlow={goToDiagram} />;
 };
 
-const mapDispatchToProps = {
-  goToDiagram: Router.goToDiagram,
-};
-
-const mergeProps = (
-  ...[{ diagram: getDiagram }, { goToDiagram }, { data }]: MergeArguments<
-    typeof mapStateToProps,
-    typeof mapDispatchToProps,
-    ConnectedStepProps<NodeData.Flow>
-  >
-) => ({
-  goToDiagram: () => data.diagramID && goToDiagram(data.diagramID),
-  diagramName: data.diagramID && getDiagram(data.diagramID)?.name,
-});
-
-type ConnectedFlowStepProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ConnectedFlowStep);
+export default ConnectedFlowStep;

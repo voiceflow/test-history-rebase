@@ -10,9 +10,10 @@ import { isInRange } from '@/utils/number';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 export const useMergeInfo = (index: number) => {
-  const getManager = React.useContext(ManagerContext)!;
   const engine = React.useContext(EngineContext)!;
+  const getManager = React.useContext(ManagerContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+
   const { parentNodeID } = nodeEntity.useState((e) => ({
     parentNodeID: e.resolve().node.parentNode,
   }));

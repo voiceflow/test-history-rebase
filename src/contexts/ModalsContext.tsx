@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ModalType } from '@/constants';
+import { useContextApi } from '@/hooks/cache';
 
 export type ModalContextType<T extends object = object> = null | {
   fade: boolean;
@@ -56,20 +57,16 @@ export const ModalsContextProvider: React.FC = ({ children }) => {
     prevStackRef.current = stack.length;
   }, [stack.length]);
 
-  return (
-    <ModalsContext.Provider
-      value={{
-        fade: stack.length <= 1 && prevStackRef.current <= 1,
-        open,
-        close,
-        toggle,
-        update,
-        openedId: stack[0]?.id,
-        modalData: stack[0]?.data || DEFAULT_DATA,
-        stackModalIds,
-      }}
-    >
-      {children}
-    </ModalsContext.Provider>
-  );
+  const api = useContextApi({
+    fade: stack.length <= 1 && prevStackRef.current <= 1,
+    open,
+    close,
+    toggle,
+    update,
+    openedId: stack[0]?.id,
+    modalData: stack[0]?.data || DEFAULT_DATA,
+    stackModalIds,
+  });
+
+  return <ModalsContext.Provider value={api}>{children}</ModalsContext.Provider>;
 };

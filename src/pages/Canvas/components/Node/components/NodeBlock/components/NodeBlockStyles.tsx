@@ -10,6 +10,7 @@ export type NodeBlockStylesProps = {
 
 const NodeBlockStyles: React.FC<NodeBlockStylesProps> = ({ isHovered, hasLinkWarning }) => {
   const nodeEntity = React.useContext(NodeEntityContext)!;
+
   const isDisabled = isHovered && hasLinkWarning;
 
   nodeEntity.useConditionalStyle(NODE_HOVERED_CLASSNAME, isHovered);

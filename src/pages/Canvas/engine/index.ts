@@ -199,7 +199,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   isFeatureEnabled = (featureID: FeatureFlag) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 
-  isStraightLinks = () => this.select(Skill.activeProjectStraightLinkSelector);
+  isStraightLinks = () => this.select(Skill.activeProjectIsStraightLinksSelector);
 
   // entity registration methods
 

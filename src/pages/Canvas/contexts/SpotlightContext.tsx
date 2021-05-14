@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useDismissable } from '@/hooks';
+import { useContextApi, useDismissable } from '@/hooks';
 
 export type SpotlightContextValue = {
   isVisible: boolean;
@@ -14,5 +14,7 @@ export const { Consumer: SpotlightConsumer } = SpotlightContext;
 export const SpotlightProvider: React.FC = ({ children }) => {
   const [isVisible, toggle, hide] = useDismissable();
 
-  return <SpotlightContext.Provider value={{ isVisible, toggle, hide }}>{children}</SpotlightContext.Provider>;
+  const api = useContextApi({ isVisible, toggle, hide });
+
+  return <SpotlightContext.Provider value={api}>{children}</SpotlightContext.Provider>;
 };

@@ -2,12 +2,10 @@ import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import * as Intent from '@/ducks/intent';
-import { connect } from '@/hocs';
 import { useSyncedLookup } from '@/hooks';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
-import { ConnectedProps } from '@/types';
+import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { head } from '@/utils/array';
 import { prettifyIntentName } from '@/utils/intent';
 import { getDistinctPlatformValue } from '@/utils/platform';
@@ -46,7 +44,9 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID,
   </Step>
 );
 
-const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction> & ConnectedChoiceStepProps> = ({ node, data, platform, intentsMap }) => {
+const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction>> = ({ node, data, platform }) => {
+  const intentsMap = React.useContext(CustomIntentMapContext)!;
+
   const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
   const choicesByPortID = useSyncedLookup(nodeOutPorts, data.choices);
   const isPath = data.else.type === InteractionElseType.PATH;
@@ -69,10 +69,4 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction> & C
   return <ChoiceStep choices={choices} nodeID={node.id} elsePortID={elsePortID} isPath={isPath} />;
 };
 
-const mapStateToProps = {
-  intentsMap: Intent.mapCustomIntentsSelector,
-};
-
-type ConnectedChoiceStepProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(ConnectedChoiceStep) as React.FC<ConnectedStepProps<NodeData.Interaction>>;
+export default ConnectedChoiceStep;

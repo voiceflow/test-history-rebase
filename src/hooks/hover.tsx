@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { HoverContext, HoverProvider } from '@/contexts/HoverContext';
+import { useContextApi } from '@/hooks/cache';
 
 import { useEnableDisable } from './toggle';
 
@@ -66,8 +67,10 @@ export const useHover = (
       onHoverEnd.current = onEnd || null;
     }
   }, dependencies);
-  const value = React.useMemo(() => ({ isHovered, setOverride, clearOverride }), [isHovered, setOverride, clearOverride]);
-  const wrapElement = React.useCallback((el: JSX.Element) => <HoverProvider value={value}>{el}</HoverProvider>, [value]);
+
+  const api = useContextApi({ isHovered, setOverride, clearOverride });
+
+  const wrapElement = React.useCallback((el: JSX.Element) => <HoverProvider value={api}>{el}</HoverProvider>, [api]);
 
   const hoverHandlers = React.useMemo(() => ({ onMouseEnter, onMouseLeave, onMouseMove: onMove ? onMouseMove : undefined }), [
     onMouseEnter,

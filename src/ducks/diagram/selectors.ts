@@ -16,6 +16,7 @@ export const {
   findByIDs: diagramsByIDsSelector,
   has: hasDiagramsSelector,
   allIDs: allDiagramIDsSelector,
+  map: diagramMapSelector,
 } = createCRUDSelectors(STATE_KEY);
 
 export const activeDiagramSelector = createSelector([diagramByIDSelector, creatorDiagramIDSelector], (getDiagram, activeDiagramID) =>

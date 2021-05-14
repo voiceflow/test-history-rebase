@@ -1,10 +1,8 @@
 import React from 'react';
 
-import * as Intent from '@/ducks/intent';
-import { connect } from '@/hocs';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
-import { ConnectedProps } from '@/types';
+import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { prettifyIntentName } from '@/utils/intent';
 import { getDistinctPlatformValue } from '@/utils/platform';
 
@@ -24,16 +22,12 @@ export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, portID, label })
   </Step>
 );
 
-const ConnectedIntentStep: React.FC<ConnectedStepProps<NodeData.Intent> & ConnectedIntentStepProps> = ({ node, data, platform, intentsMap }) => {
+const ConnectedIntentStep: React.FC<ConnectedStepProps<NodeData.Intent>> = ({ node, data, platform }) => {
+  const intentMap = React.useContext(CustomIntentMapContext)!;
+
   const { intent } = getDistinctPlatformValue(platform, data);
 
-  return <IntentStep nodeID={node.id} portID={node.ports.out[0]} label={intentsMap[intent!] ? prettifyIntentName(intentsMap[intent!].name) : null} />;
+  return <IntentStep nodeID={node.id} portID={node.ports.out[0]} label={intentMap[intent!] ? prettifyIntentName(intentMap[intent!].name) : null} />;
 };
 
-const mapStateToProps = {
-  intentsMap: Intent.mapCustomIntentsSelector,
-};
-
-type ConnectedIntentStepProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(ConnectedIntentStep) as React.FC<ConnectedStepProps<NodeData.Intent>>;
+export default ConnectedIntentStep;

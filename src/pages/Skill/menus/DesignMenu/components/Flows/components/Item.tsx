@@ -50,7 +50,11 @@ const Item: React.FC<ItemProps & ConnectedItemProps> = ({
           setConfirm({
             text: <ItemDeleteConfirm />,
             warning: true,
-            confirm: () => deleteDiagram(id).catch((err) => setError(err.message)),
+            confirm: () => {
+              deleteDiagram(id).catch(() => {
+                setError("Another user is currently using this flow. Please wait until they're done before deleting");
+              });
+            },
           });
         },
       },

@@ -3,20 +3,14 @@ import React from 'react';
 import SearchableList from '@/components/SearchableList';
 import { ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
-import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { LockedResourceOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 import { Container, Item } from './components';
 
-type FlowListProps = {
-  isOpen?: boolean;
-};
-
-const FlowList: React.FC<FlowListProps & ConnectedFlowListProps> = ({ isOpen, diagrams, rootDiagramID, activeDiagramID }) => {
+const FlowList: React.FC<ConnectedFlowListProps> = ({ diagrams, rootDiagramID, activeDiagramID }) => {
   const sortedDiagrams = React.useMemo(
     () =>
       diagrams
@@ -35,8 +29,6 @@ const FlowList: React.FC<FlowListProps & ConnectedFlowListProps> = ({ isOpen, di
   return (
     <Container>
       <SearchableList id={Identifier.FLOW_MENU} items={sortedDiagrams} renderItem={renderItem} getLabel={getLabel} placeholder="Search Flows" />
-
-      <LockedResourceOverlay key={activeDiagramID} type={Realtime.ResourceType.FLOWS} disabled={!isOpen} />
     </Container>
   );
 };
@@ -49,4 +41,4 @@ const mapStateToProps = {
 
 type ConnectedFlowListProps = ConnectedProps<typeof mapStateToProps>;
 
-export default connect(mapStateToProps)(FlowList) as React.FC<FlowListProps>;
+export default connect(mapStateToProps)(FlowList);

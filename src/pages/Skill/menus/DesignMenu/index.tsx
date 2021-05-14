@@ -135,7 +135,7 @@ const DesignMenu: React.FC<ConnectedDesignMenuProps> = ({
           selectActiveTab={selectActiveTab}
         />
         {selectedTab === Tab.STEPS && !isViewerOrLibraryRole && <Steps />}
-        {selectedTab === Tab.FLOWS && <Flows isOpen={isOpen} />}
+        {selectedTab === Tab.FLOWS && <Flows />}
       </Content>
     </Container>
   );

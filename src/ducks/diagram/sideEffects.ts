@@ -3,11 +3,11 @@ import creatorAdapter from '@/client/adapters/creator';
 import { userIDSelector } from '@/ducks/account';
 import { creatorDiagramIDSelector } from '@/ducks/creator';
 import * as Creator from '@/ducks/creator';
-import { rtctimestampSelector } from '@/ducks/realtime/selectors';
 import { goToDiagram, goToRootDiagram } from '@/ducks/router';
 import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector } from '@/ducks/skill/skill/selectors';
 import { viewportByIDSelector } from '@/ducks/viewport';
 import { CreatorDiagram } from '@/models';
+import mutableStore from '@/store/mutable';
 import { SyncThunk, Thunk } from '@/store/types';
 import { unique } from '@/utils/array';
 import { getCurrentTimestamp } from '@/utils/time';
@@ -30,7 +30,7 @@ export const saveDiagramVariables = (diagramID: string): Thunk => async (_, getS
   const state = getState();
   const variables = diagramVariablesSelector(state)(diagramID);
 
-  const rtctimestamp = rtctimestampSelector(state);
+  const rtctimestamp = mutableStore.getRTCTimestamp();
   await client.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { variables });
 };
 
@@ -81,9 +81,9 @@ export const adaptActiveDiagram = (): SyncThunk<PrimativeDiagram & { _id: string
   return { ...diagram, variables };
 };
 
-export const saveActiveDiagram = (): Thunk => async (dispatch, getState) => {
+export const saveActiveDiagram = (): Thunk => async (dispatch) => {
   const { _id, ...activeDiagram } = dispatch(adaptActiveDiagram());
-  await client.api.diagram.options({ headers: { rtctimestamp: rtctimestampSelector(getState()) } }).update(_id, activeDiagram);
+  await client.api.diagram.options({ headers: { rtctimestamp: mutableStore.getRTCTimestamp() } }).update(_id, activeDiagram);
 };
 
 export const createNewDiagram = (name: string, diagram: PrimativeDiagram = generateDefaultDiagram()): Thunk<string> => async (dispatch, getState) => {
@@ -136,7 +136,7 @@ export const deleteDiagram = (diagramID: string): Thunk => async (dispatch, getS
   const state = getState();
   const versionID = activeSkillIDSelector(state);
 
-  await client.api.diagram.options({ headers: { rtctimestamp: rtctimestampSelector(state) } }).delete(diagramID);
+  await client.api.diagram.options({ headers: { rtctimestamp: mutableStore.getRTCTimestamp() } }).delete(diagramID);
   await dispatch(loadVersionDiagrams(versionID));
 
   // if the user is on the deleted diagram, redirect to roott
@@ -146,7 +146,7 @@ export const deleteDiagram = (diagramID: string): Thunk => async (dispatch, getS
   }
 };
 
-export const renameDiagram = (diagramID: string, name: string): Thunk => async (dispatch, getState) => {
+export const renameDiagram = (diagramID: string, name: string): Thunk => async (dispatch) => {
   dispatch(updateDiagram(diagramID, { name }, true));
-  await client.api.diagram.options({ headers: { rtctimestamp: rtctimestampSelector(getState()) } }).update(diagramID, { name });
+  await client.api.diagram.options({ headers: { rtctimestamp: mutableStore.getRTCTimestamp() } }).update(diagramID, { name });
 };

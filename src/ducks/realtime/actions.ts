@@ -27,8 +27,6 @@ export type InitializeRealtime = Action<RealtimeAction.INITIALIZE_REALTIME, { di
 
 export type ResetRealtime = Action<RealtimeAction.RESET_REALTIME>;
 
-export type UpdateLastTimestamp = Action<RealtimeAction.UPDATE_LAST_TIMESTAMP, number>;
-
 export type UpdateDiagramViewers = Action<RealtimeAction.UPDATE_DIAGRAM_VIEWERS, RealtimeLocks['users']>;
 
 export type AddNodeLocks = Action<RealtimeAction.ADD_NODE_LOCKS, { types: AnyNodeLock[]; targets: string[]; tabID: string }>;
@@ -54,7 +52,6 @@ export type ResetRestriction = Action<RealtimeAction.RESET_RESTRICTION>;
 export type AnyRealtimeAction =
   | InitializeRealtime
   | ResetRealtime
-  | UpdateLastTimestamp
   | UpdateDiagramViewers
   | AddNodeLocks
   | RemoveNodeLocks
@@ -79,8 +76,6 @@ export const initializeRealtime = (diagramID: string, locks: WithOptional<Realti
   });
 
 export const resetRealtime = (): ResetRealtime => createAction(RealtimeAction.RESET_REALTIME);
-
-export const updateLastTimestamp = (timestamp: number): UpdateLastTimestamp => createAction(RealtimeAction.UPDATE_LAST_TIMESTAMP, timestamp);
 
 export const updateActiveDiagramViewers = (users: RealtimeLocks['users']): UpdateDiagramViewers =>
   createAction(RealtimeAction.UPDATE_DIAGRAM_VIEWERS, users);

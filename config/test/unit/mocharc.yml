@@ -1,6 +1,7 @@
 require:
   - source-map-support/register
   - mock-local-storage
+  - config/test/unit/hooks.ts
 
 timeout: 4000
 exit: true

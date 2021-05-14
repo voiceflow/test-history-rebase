@@ -11,7 +11,6 @@ import {
   RemoveResourceLock,
   SetErrorState,
   UpdateDiagramViewers,
-  UpdateLastTimestamp,
   UpdateRealtimeConnection,
 } from './actions';
 import { ResourceType } from './constants';
@@ -27,7 +26,6 @@ export * from './types';
 export const INITIAL_STATE: RealtimeState = {
   locks: null,
   diagramID: null,
-  lastTimestamp: null,
   connected: false,
   errorState: false,
   sessionBusy: false,
@@ -42,16 +40,10 @@ export const initializeRealtimeReducer: RealtimeReducer<InitializeRealtime> = (s
   ...state,
   diagramID,
   locks,
-  lastTimestamp: null,
   connected: true,
   errorState: false,
   sessionBusy: false,
   restricted: false,
-});
-
-export const updateLastTimestampReducer: RealtimeReducer<UpdateLastTimestamp> = (state, { payload: lastTimestamp }) => ({
-  ...state,
-  lastTimestamp,
 });
 
 export const updateDiagramViewersReducer: RealtimeReducer<UpdateDiagramViewers> = (state, { payload: users }) => {
@@ -153,8 +145,6 @@ const realtimeReducer: RootReducer<RealtimeState, AnyRealtimeAction> = (state = 
   switch (action.type) {
     case RealtimeAction.INITIALIZE_REALTIME:
       return initializeRealtimeReducer(state, action);
-    case RealtimeAction.UPDATE_LAST_TIMESTAMP:
-      return updateLastTimestampReducer(state, action);
     case RealtimeAction.UPDATE_DIAGRAM_VIEWERS:
       return updateDiagramViewersReducer(state, action);
     case RealtimeAction.UPDATE_REALTIME_CONNECTION:

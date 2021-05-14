@@ -8,9 +8,11 @@ import * as RealtimeUtils from '@/ducks/realtime/utils';
 import * as Session from '@/ducks/session';
 import * as SkillSelectors from '@/ducks/skill/skill/selectors';
 import * as Workspace from '@/ducks/workspace';
+import mutableStore from '@/store/mutable';
 
 import suite from './_suite';
 
+const TIMESTAMP = 12345;
 const DIAGRAM_ID = 'abc';
 const USER_LOCKS = {
   [DIAGRAM_ID]: {
@@ -30,7 +32,6 @@ const LOCKS = {
 const MOCK_STATE = {
   locks: LOCKS,
   diagramID: DIAGRAM_ID,
-  lastTimestamp: 12345,
   connected: true,
   sessionBusy: true,
   errorState: true,
@@ -53,7 +54,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
         expectAction(Realtime.initializeRealtime(diagramID, locks)).toModify({
           diagramID,
           locks: { ...locks, users: {} },
-          lastTimestamp: null,
           connected: true,
           errorState: false,
           sessionBusy: false,
@@ -83,14 +83,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     describe('resetRealtime()', () => {
       it('should reset realtime state', () => {
         expectAction(Realtime.resetRealtime()).result.eq(Realtime.INITIAL_STATE);
-      });
-    });
-
-    describe('updateLastTimestamp()', () => {
-      it('should update timestamp of last received update', () => {
-        const timestamp = 40000;
-
-        expectAction(Realtime.updateLastTimestamp(timestamp)).toModify({ lastTimestamp: timestamp });
       });
     });
 
@@ -252,12 +244,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
     });
 
-    describe('lastRealtimeTimestampSelector()', () => {
-      it('should return latest realtime timestamp', () => {
-        expect(select(Realtime.lastRealtimeTimestampSelector)).to.eq(12345);
-      });
-    });
-
     describe('isNodeLockedSelector()', () => {
       it('should return node is locked', () => {
         expect(select(Realtime.isNodeLockedSelector)(Realtime.LockType.EDIT, 'jkl')).to.be.true;
@@ -307,7 +293,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
   describeSideEffects(({ applyEffect, createState, stubEffect }) => {
     const stubSocket = <K extends keyof SocketClient>(name: K, value: Partial<SocketClient[K]>) => {
-      const socket = client.socket;
+      const { socket } = client;
       stub(client, 'socket').get(() => ({ ...socket, [name]: value }));
     };
     const stubSocketClient = <K extends keyof SocketClient>(clientName: K, name: keyof SocketClient[K]) => {
@@ -367,13 +353,17 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       const action: any = { type: 'SOME_ACTION' };
       const serverAction: any = { type: 'server::SOME_ACTION' };
 
+      beforeEach(() => {
+        mutableStore.setLastRealtimeTimestamp(TIMESTAMP);
+      });
+
       it('should send realtime update action when connected', async () => {
         const sendUpdate = stubSocketClient('diagram', 'sendUpdate');
         const createServerAction = stub(RealtimeUtils, 'createServerAction').returns(serverAction);
 
         await applyEffect(Realtime.sendRealtimeUpdate(action));
 
-        expect(sendUpdate).to.be.calledWithExactly(action, MOCK_STATE.lastTimestamp, null, serverAction);
+        expect(sendUpdate).to.be.calledWithExactly(action, TIMESTAMP, null, serverAction);
         expect(createServerAction).to.be.calledWithExactly(action);
       });
 
@@ -385,7 +375,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
         await applyEffect(Realtime.sendRealtimeUpdate(updateLockAction));
 
-        expect(sendUpdate).to.be.calledWithExactly(updateLockAction, MOCK_STATE.lastTimestamp, lockAction, serverAction);
+        expect(sendUpdate).to.be.calledWithExactly(updateLockAction, TIMESTAMP, lockAction, serverAction);
       });
 
       it('should not send realtime update action when disconnected', async () => {
@@ -420,12 +410,16 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     describe('sendRealtimeProjectUpdate()', () => {
       const projectAction: any = { type: 'SOME_ACTION' };
 
+      beforeEach(() => {
+        mutableStore.setLastRealtimeTimestamp(TIMESTAMP);
+      });
+
       it('should send realtime project action when connected', async () => {
         const sendUpdate = stubSocketClient('project', 'sendUpdate');
 
         await applyEffect(Realtime.sendRealtimeProjectUpdate(projectAction));
 
-        expect(sendUpdate).to.be.calledWithExactly(projectAction, MOCK_STATE.lastTimestamp, null);
+        expect(sendUpdate).to.be.calledWithExactly(projectAction, TIMESTAMP, null);
       });
 
       it('should send realtime project action with locks', async () => {
@@ -435,7 +429,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
         await applyEffect(Realtime.sendRealtimeProjectUpdate(projectLockAction));
 
-        expect(sendUpdate).to.be.calledWithExactly(projectLockAction, MOCK_STATE.lastTimestamp, lockAction);
+        expect(sendUpdate).to.be.calledWithExactly(projectLockAction, TIMESTAMP, lockAction);
       });
 
       it('should not send realtime project action when disconnected', async () => {

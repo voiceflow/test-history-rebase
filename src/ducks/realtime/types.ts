@@ -13,7 +13,6 @@ export type RealtimeLocks = {
 export type RealtimeState = {
   locks: RealtimeLocks | null;
   diagramID: string | null;
-  lastTimestamp: number | null;
   connected: boolean;
   errorState: boolean;
   sessionBusy: boolean;

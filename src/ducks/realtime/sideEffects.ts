@@ -5,6 +5,7 @@ import * as Creator from '@/ducks/creator';
 import * as Session from '@/ducks/session';
 import * as SkillSelectors from '@/ducks/skill/skill/selectors';
 import * as Workspace from '@/ducks/workspace';
+import mutableStore from '@/store/mutable';
 import { SyncThunk, Thunk } from '@/store/types';
 
 import {
@@ -18,7 +19,7 @@ import {
   setSessionBusy,
   updateActiveDiagramViewers,
 } from './actions';
-import { isRealtimeConnectedSelector, lastRealtimeTimestampSelector } from './selectors';
+import { isRealtimeConnectedSelector } from './selectors';
 import * as Socket from './socket';
 import { RealtimeLocks } from './types';
 import { createServerAction, removeSelfFromLocks } from './utils';
@@ -47,7 +48,7 @@ export const updateDiagramViewers = (users: RealtimeLocks['users']): Thunk => as
 
 export const sendRealtimeUpdate = (action: Socket.AnySocketAction | AnyRealtimeAction): Thunk => async (_, getState) => {
   const state = getState();
-  const lastTimestamp = lastRealtimeTimestampSelector(state)!;
+  const lastTimestamp = mutableStore.getLastRealtimeTimestamp()!;
   const isConnected = isRealtimeConnectedSelector(state);
 
   if (isConnected) {
@@ -68,7 +69,7 @@ export const sendRealtimeVolatileUpdate = (action: Socket.AnySocketAction): Sync
 
 export const sendRealtimeProjectUpdate = (action: Socket.AnySocketAction): Thunk => async (_, getState) => {
   const state = getState();
-  const lastTimestamp = lastRealtimeTimestampSelector(state)!;
+  const lastTimestamp = mutableStore.getLastRealtimeTimestamp()!;
   const isConnected = isRealtimeConnectedSelector(state);
 
   if (isConnected) {
@@ -85,6 +86,7 @@ export const terminateRealtimeConnection = (): Thunk => async (dispatch) => {
     await client.socket.diagram.terminate();
   }
 
+  mutableStore.setLastRealtimeTimestamp(null);
   dispatch(resetRealtime());
 };
 

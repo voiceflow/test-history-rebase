@@ -14,12 +14,12 @@ class RealtimeSubscription {
   teardownHandlers: (() => void)[] = [];
 
   constructor(private tabID: string, private updateTimestamp: (timestamp: number) => void) {
-    this.teardownHandlers.push(client.socket.diagram.watchForUpdate(this.#handleUpdate));
-    this.teardownHandlers.push(client.socket.diagram.watchForVolatileUpdate(this.#handleVolatile));
-    this.teardownHandlers.push(client.socket.diagram.watchForRecover(this.#handleRecover));
+    this.teardownHandlers.push(client.socket.diagram.watchForUpdate(this.handleUpdate));
+    this.teardownHandlers.push(client.socket.diagram.watchForVolatileUpdate(this.handleVolatile));
+    this.teardownHandlers.push(client.socket.diagram.watchForRecover(this.handleRecover));
   }
 
-  #handleUpdate = (data: DiagramUpdateEvent) => {
+  private handleUpdate = (data: DiagramUpdateEvent) => {
     if (data.timestamp) {
       this.updateTimestamp(data.timestamp);
     }
@@ -34,14 +34,14 @@ class RealtimeSubscription {
     eventHandlers.forEach((handler) => handler(data.action, data.tabId));
   };
 
-  #handleVolatile = (data: DiagramUpdateEvent) => {
+  private handleVolatile = (data: DiagramUpdateEvent) => {
     // ignore our own events
     if (data.tabId === this.tabID) return;
 
     this.updateHandlers.forEach((handler) => handler(data.action, data.tabId, { volatile: true }));
   };
 
-  #handleRecover = (updates: string[]) => {
+  private handleRecover = (updates: string[]) => {
     const { timestamp: lastTimestamp } = JSON.parse(_last(updates)!) as DiagramUpdateEvent;
 
     if (lastTimestamp) {
@@ -50,15 +50,16 @@ class RealtimeSubscription {
 
     updates.forEach((dataStr) => {
       const dataObj = JSON.parse(dataStr) as DiagramUpdateEvent;
-      this.#handleUpdate({ tabId: dataObj.tabId, action: dataObj.action });
+
+      this.handleUpdate({ tabId: dataObj.tabId, action: dataObj.action });
     });
   };
 
-  on = <T extends object>(event: DiagramUpdateAction, callback: ActionHandler<T>) => {
+  on = <T extends object>(event: DiagramUpdateAction, callback: ActionHandler<T>): void => {
     this.handlers[event] = [...(this.handlers[event] || []), callback];
   };
 
-  onUpdate = (callback: UpdateActionHandler) => {
+  onUpdate = (callback: UpdateActionHandler): (() => void) => {
     this.updateHandlers.push(callback);
 
     return () => {
@@ -68,10 +69,10 @@ class RealtimeSubscription {
     };
   };
 
-  onUsersUpdate = (callback: (users: Record<string, Record<string, string>>) => void) =>
+  onUsersUpdate = (callback: (users: Record<string, Record<string, string>>) => void): void =>
     this.on<UsersUpdate>(DiagramUpdateAction.USERS_UPDATE, ({ users }) => callback(users));
 
-  destroy = () => {
+  destroy = (): void => {
     this.teardownHandlers.forEach((callback) => callback());
     this.teardownHandlers = [];
     this.updateHandlers = [];

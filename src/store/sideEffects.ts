@@ -20,12 +20,12 @@ import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as Prototype from '@/ducks/prototype';
-import * as Realtime from '@/ducks/realtime';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import * as Viewport from '@/ducks/viewport';
 import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
+import mutableStore from '@/store/mutable';
 import { storeLogger } from '@/store/utils';
 
 import { Thunk } from './types';
@@ -74,10 +74,11 @@ export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (
 
   const creator = creatorAdapter.fromDB(DBDiagram, { platform });
 
+  mutableStore.setLastRealtimeTimestamp(timestamp);
+
   dispatch(Diagram.updateDiagramVariables(diagramID, variables));
   dispatch(Viewport.rehydrateViewport(diagramID, { x, y, zoom }));
   dispatch(Creator.initializeCreator({ ...creator, diagramID: creator.diagramID !== diagramID ? diagramID : creator.diagramID }));
-  dispatch(Realtime.updateLastTimestamp(timestamp));
   dispatch(Creator.saveHistory());
 };
 

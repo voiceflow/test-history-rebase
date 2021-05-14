@@ -3,6 +3,7 @@ import cuid from 'cuid';
 import React from 'react';
 
 import { useEnableDisable } from '@/hooks';
+import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 const DEFAULT_VIEWPORT = {
@@ -46,16 +47,19 @@ const APLRenderer: React.FC<APLRendererProps> = ({
   const elementID = React.useMemo(() => cuid(), []);
 
   React.useEffect(() => {
-    async function rendererCommands() {
-      if (!isInitialized) return undefined;
+    let renderer: Nullable<AlexaAPLRenderer> = null;
+    let content: Nullable<APL.Content> = null;
 
-      const content = APL.Content.create(contentString);
+    (async () => {
+      if (!isInitialized) return;
+
+      content = APL.Content.create(contentString);
 
       if (data) {
         content.addData('payload', data);
       }
 
-      const renderer = AlexaAPLRenderer.create({
+      renderer = AlexaAPLRenderer.create({
         content,
         view: document.getElementById(elementID)!,
         viewport,
@@ -69,19 +73,22 @@ const APLRenderer: React.FC<APLRendererProps> = ({
         utcTime: Date.now(),
         localTimeAdjustment: -new Date().getTimezoneOffset() * 60 * 1000,
       });
-      renderer.init();
+
+      await renderer.init();
 
       if (commands) {
         try {
-          await new Promise((resolve) => renderer.context.executeCommands(commands).then(resolve));
+          await new Promise((resolve) => renderer?.context.executeCommands(commands).then(resolve));
         } catch (e) {
           onCommandFail?.(e);
         }
       }
+    })();
 
-      return () => renderer.destroy();
-    }
-    rendererCommands();
+    return () => {
+      content?.delete();
+      renderer?.destroy();
+    };
   }, [isInitialized, data, contentString, viewport]);
 
   return <div id={elementID} {...props} />;

@@ -17,23 +17,26 @@ export type DraggableItemProps = ItemComponentProps<Intent> &
 const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableItemProps> = (
   { item, isDragging, isDraggingPreview, selectedID, withoutHover, onSelectIntent, onContextMenu, isContextMenuOpen },
   ref
-) => (
-  <SearchableListItemContainer
-    ref={ref}
-    onClick={() => onSelectIntent?.(item.id)}
-    isActive={selectedID === item.id}
-    isDragging={isDragging}
-    withoutHover={withoutHover}
-    onContextMenu={onContextMenu}
-    isDraggingPreview={isDraggingPreview}
-    isContextMenuOpen={isContextMenuOpen}
-  >
-    <span>{item.name}</span>
-    <ItemCount>
-      {isCustomizeableBuiltInIntent(item) && 'Built-in '}
-      {!!item.inputs?.length && <>{item.inputs.length}</>}
-    </ItemCount>{' '}
-  </SearchableListItemContainer>
-);
+) => {
+  const isBuiltIn = isCustomizeableBuiltInIntent(item);
+  return (
+    <SearchableListItemContainer
+      ref={ref}
+      onClick={() => onSelectIntent?.(item.id)}
+      isActive={selectedID === item.id}
+      isDragging={isDragging}
+      withoutHover={withoutHover}
+      onContextMenu={onContextMenu}
+      isDraggingPreview={isDraggingPreview}
+      isContextMenuOpen={isContextMenuOpen}
+    >
+      <span>{item.name}</span>
+      <ItemCount>
+        {isBuiltIn && 'Built-in '}
+        {!isBuiltIn && !!item.inputs?.length && <>{item.inputs.length}</>}
+      </ItemCount>{' '}
+    </SearchableListItemContainer>
+  );
+};
 
 export default React.forwardRef<HTMLElement, DraggableItemProps>(DraggableItem as any);

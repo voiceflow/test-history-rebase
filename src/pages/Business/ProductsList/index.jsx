@@ -1,10 +1,10 @@
-/* eslint-disable no-shadow */
 import React from 'react';
 
 import Button from '@/components/Button';
 import SvgIcon from '@/components/SvgIcon';
 import * as Product from '@/ducks/product';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 
 import { BackButtonContainer, BackLink, Container } from '../components';
@@ -41,6 +41,7 @@ const ProductList = ({ products, goToNewProduct, goToCurrentCanvas }) => (
 
 const mapStateToProps = {
   products: Product.allProductsSelector,
+  versionID: Session.activeVersionIDSelector,
 };
 
 const mapDispatchToProps = {
@@ -48,8 +49,8 @@ const mapDispatchToProps = {
   goToCurrentCanvas: Router.goToCurrentCanvas,
 };
 
-const mergeProps = (_, { goToNewProduct }, { skillID }) => ({
-  goToNewProduct: () => goToNewProduct(skillID),
+const mergeProps = ({ versionID }, { goToNewProduct }) => ({
+  goToNewProduct: () => goToNewProduct(versionID),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ProductList);

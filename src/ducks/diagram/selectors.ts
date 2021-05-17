@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { creatorDiagramIDSelector } from '@/ducks/creator';
+import { creatorDiagramIDSelector } from '@/ducks/creator/diagram/selectors';
 import { denormalize, getNormalizedByKey } from '@/utils/normalized';
 
 import { createCRUDSelectors } from '../utils/crud';

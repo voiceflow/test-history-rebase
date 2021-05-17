@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import client from '@/client';
 import { JobStatus } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
 import { useContextApi, useDidUpdateEffect, useDispatch, useSetup, useTeardown } from '@/hooks';
@@ -28,7 +29,7 @@ export const PublishProvider: React.FC = ({ children }) => {
   const [job, setJob] = React.useState<Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>>(null);
 
   const platform = useSelector(Skill.activePlatformSelector);
-  const projectID = useSelector(Skill.activeProjectIDSelector)!;
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
   const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 
   const platformClient = client.platform(platform);

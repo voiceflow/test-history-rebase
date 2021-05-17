@@ -17,15 +17,15 @@ import { getAlternativeColor } from '@/utils/colors';
 import { getSlotTypes } from '@/utils/slot';
 
 export const activeDiagramVariablesSelector = createSelector(
-  Skill.activeDiagramIDSelector,
+  Session.activeDiagramIDSelector,
   Diagram.diagramVariablesSelector,
-  (diagramID, getVariables) => getVariables(diagramID)
+  (diagramID, getVariables) => getVariables(diagramID!)
 );
 
 export const activeDiagramViewportSelector = createSelector(
-  Skill.activeDiagramIDSelector,
+  Session.activeDiagramIDSelector,
   Viewport.viewportByIDSelector,
-  (diagramID, getViewportByID) => getViewportByID(diagramID)
+  (diagramID, getViewportByID) => getViewportByID(diagramID!)
 );
 
 export const allVariablesSelector = createSelector(
@@ -40,8 +40,8 @@ export const activeSlotTypesSelector = createSelector(
   ({ locales, platform }, featureSelector) => getSlotTypes({ locales, platform }, featureSelector)
 );
 
-export const activeProjectSelector = createSelector(Skill.activeProjectIDSelector, Project.projectByIDSelector, (projectID, getProject) =>
-  getProject(projectID)
+export const activeProjectSelector = createSelector(Session.activeProjectIDSelector, Project.projectByIDSelector, (projectID, getProject) =>
+  getProject(projectID!)
 );
 
 export const isLoggingInSelector = createSelector(
@@ -91,8 +91,8 @@ export const diagramViewersSelector = createSelector(
 /**
  * gets all members in the active diagram
  */
-export const activeDiagramViewersSelector = createSelector(diagramViewersSelector, Skill.activeDiagramIDSelector, (getViewers, diagramID) =>
-  getViewers(diagramID)
+export const activeDiagramViewersSelector = createSelector(diagramViewersSelector, Session.activeDiagramIDSelector, (getViewers, diagramID) =>
+  getViewers(diagramID!)
 );
 
 // Flow
@@ -104,8 +104,8 @@ export const rootFlowStructureSelector = createSelector(
 
 export const activeFlowStructureSelector = createSelector(
   Diagram.flowStructureSelector,
-  Skill.activeDiagramIDSelector,
-  (getFlowStructure, acitveDiagramID) => getFlowStructure(acitveDiagramID)
+  Session.activeDiagramIDSelector,
+  (getFlowStructure, activeDiagramID) => getFlowStructure(activeDiagramID!)
 );
 
 export const unusedDiagramsSelector = createSelector(

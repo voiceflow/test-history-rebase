@@ -8,7 +8,7 @@ import { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import { API_ENDPOINT } from '@/config';
 import * as Account from '@/ducks/account';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { copy } from '@/utils/clipboard';
 
 const TEXT_PAYLOAD = `{
@@ -28,7 +28,7 @@ const INTENT_PAYLOAD = `{
 `;
 
 const PrototypeWebhook = () => {
-  const projectID = useSelector(Skill.activeProjectIDSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector);
   const userID = useSelector(Account.userIDSelector);
 
   const url = `${API_ENDPOINT}/v2/prototype/webhook/${projectID}/${userID}`;

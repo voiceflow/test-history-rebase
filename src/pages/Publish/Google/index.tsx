@@ -8,7 +8,7 @@ import { Link } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import * as Documentation from '@/config/documentation';
 import * as Errors from '@/config/errors';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
 import { ConnectedProps } from '@/types';
@@ -55,7 +55,7 @@ const GooglePublish: React.FC<ConnectedGooglePublishProps> = ({ projectID }) => 
 };
 
 const mapStateToProps = {
-  projectID: Skill.activeProjectIDSelector,
+  projectID: Session.activeProjectIDSelector,
 };
 
 type ConnectedGooglePublishProps = ConnectedProps<typeof mapStateToProps>;

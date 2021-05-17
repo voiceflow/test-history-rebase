@@ -1,10 +1,9 @@
-/* eslint-disable no-shadow */
 import React from 'react';
 
 import Section from '@/components/Section';
 import * as Product from '@/ducks/product';
 import * as Router from '@/ducks/router';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useCurried } from '@/hooks';
 import { Content } from '@/pages/Canvas/components/Editor';
@@ -42,7 +41,7 @@ function CancelPaymentEditor({ products, onChange, goToNewProduct, goToEditProdu
 }
 
 const mapStateToProps = {
-  skillID: Skill.activeSkillIDSelector,
+  versionID: Session.activeVersionIDSelector,
   selectedProduct: Product.productByIDSelector,
   hasProducts: Product.hasProductsSelector,
   products: Product.allProductsSelector,
@@ -54,11 +53,11 @@ const mapDispatchToProps = {
   goToNewProduct: Router.goToNewProduct,
 };
 
-const mergeProps = ({ selectedProduct: getProductByID, skillID }, { goToEditProduct, goToProducts, goToNewProduct }, { data }) => ({
+const mergeProps = ({ selectedProduct: getProductByID, versionID }, { goToEditProduct, goToProducts, goToNewProduct }, { data }) => ({
   selectedProduct: data.productID && getProductByID(data.productID),
-  goToEditProduct: () => data.productID && goToEditProduct(skillID, data.productID),
-  goToProducts: () => goToProducts(skillID),
-  goToNewProduct: () => goToNewProduct(skillID),
+  goToEditProduct: () => data.productID && goToEditProduct(versionID, data.productID),
+  goToProducts: () => goToProducts(versionID),
+  goToNewProduct: () => goToNewProduct(versionID),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(CancelPaymentEditor);

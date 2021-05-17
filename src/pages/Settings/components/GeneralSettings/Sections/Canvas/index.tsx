@@ -5,7 +5,7 @@ import Section, { SectionVariant } from '@/components/Section';
 import { Link } from '@/components/Text';
 import * as Documentation from '@/config/documentation';
 import * as Project from '@/ducks/project';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
@@ -55,7 +55,7 @@ const Canvas: React.FC<ConnectedBasicProps> = ({ project, canvasNavigation, setC
 };
 
 const mapStateToProps = {
-  projectID: Skill.activeProjectIDSelector,
+  projectID: Session.activeProjectIDSelector,
   canvasNavigation: UI.canvasNavigationSelector,
   projectByIDSelector: Project.projectByIDSelector,
 };
@@ -66,7 +66,7 @@ const mapDispatchToProps = {
 };
 
 const mergeProps = (...[{ projectID, projectByIDSelector }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
-  project: projectByIDSelector(projectID),
+  project: projectByIDSelector(projectID!),
 });
 
 type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;

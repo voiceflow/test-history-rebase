@@ -3,11 +3,13 @@ import Utf8 from 'crypto-js/enc-utf8';
 import { get, set } from 'idb-keyval';
 
 import { toast } from '@/components/Toast';
+import * as Errors from '@/config/errors';
 import { BlockType, CLIPBOARD_DATA_KEY, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Diagrams from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import * as Models from '@/models';
@@ -19,7 +21,7 @@ import { Coords } from '@/utils/geometry';
 import { EngineConsumer, getCopiedNodeDataIDs } from './utils';
 
 type ClipboardContext = {
-  skillID: string;
+  versionID: string;
   nodes: Models.Node[];
   data: Record<string, Models.NodeData<unknown>>;
   ports: Models.Port[];
@@ -48,7 +50,9 @@ class ClipboardEngine extends EngineConsumer {
         data: { ...data }, // cloning data to modify it later
       } = Creator.creatorDiagramSelector(state);
 
-      const skillID = Skill.activeSkillIDSelector(state);
+      const versionID = Session.activeVersionIDSelector(state);
+
+      Errors.assertVersionID(versionID);
 
       const allNodes = Creator.allNodesByIDsSelector(state)(nodeIDs).filter(
         (node) => node.type !== BlockType.START && node.type !== BlockType.COMMAND
@@ -108,7 +112,7 @@ class ClipboardEngine extends EngineConsumer {
       const slots = Slot.findSlotsByIDsSelector(state)(Intent.allSlotsIDsByIntentIDsSelector(state)(intentIDs));
 
       const copyData: ClipboardContext = {
-        skillID,
+        versionID,
         data,
         nodes: copiedNodes,
         ports: [...ports, ...extraPorts],
@@ -201,7 +205,7 @@ class ClipboardEngine extends EngineConsumer {
 
   async paste(pastedText: string, coords: Coords) {
     const state = this.engine.store.getState();
-    const skillID = Skill.activeSkillIDSelector(state);
+    const versionID = Session.activeVersionIDSelector(state);
     const copyBuffer = Clipboard.deserialize(pastedText);
 
     if (copyBuffer) {
@@ -210,9 +214,9 @@ class ClipboardEngine extends EngineConsumer {
 
         const result = await this.internal.extractData(copyBuffer);
 
-        const isSameSkill = result.skillID === skillID;
+        const isSameVersion = result.versionID === versionID;
 
-        const nodesWithData = isSameSkill
+        const nodesWithData = isSameVersion
           ? result.nodes.map((node) => {
               const data = result.data[node.id];
 

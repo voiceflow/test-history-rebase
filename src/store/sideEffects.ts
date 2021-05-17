@@ -3,9 +3,9 @@ import { Member } from '@voiceflow/api-sdk';
 import { replaceVariables } from '@voiceflow/common';
 import { APLStepData, APLType } from '@voiceflow/general-types/build/nodes/visual';
 import { GoogleProjectData, GoogleProjectMemberData, GoogleVersionData } from '@voiceflow/google-types';
+import { batch } from 'react-redux';
 
 import client from '@/client';
-import creatorAdapter from '@/client/adapters/creator';
 import intentAdapter from '@/client/adapters/intent';
 import projectAdapter, { productAdapter } from '@/client/adapters/project';
 import slotAdapter from '@/client/adapters/slot';
@@ -20,12 +20,11 @@ import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as Prototype from '@/ducks/prototype';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
-import * as Viewport from '@/ducks/viewport';
 import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
-import mutableStore from '@/store/mutable';
 import { storeLogger } from '@/store/utils';
 
 import { Thunk } from './types';
@@ -63,23 +62,6 @@ export const copyProject = (projectID: string, workspaceID: string, listID: stri
   dispatch(Project.addProject(copiedProject.id, copiedProject));
 
   if (listID) dispatch(ProjectList.addProjectToList(listID, copiedProject.id));
-};
-
-export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {
-  const state = getState();
-  const platform = Skill.activePlatformSelector(state);
-  const { diagram: DBDiagram, timestamp } = await client.api.diagram.getRTC(diagramID);
-
-  const { offsetX: x, offsetY: y, zoom, variables } = DBDiagram;
-
-  const creator = creatorAdapter.fromDB(DBDiagram, { platform });
-
-  mutableStore.setLastRealtimeTimestamp(timestamp);
-
-  dispatch(Diagram.updateDiagramVariables(diagramID, variables));
-  dispatch(Viewport.rehydrateViewport(diagramID, { x, y, zoom }));
-  dispatch(Creator.initializeCreator({ ...creator, diagramID: creator.diagramID !== diagramID ? diagramID : creator.diagramID }));
-  dispatch(Creator.saveHistory());
 };
 
 // eslint-disable-next-line import/prefer-default-export
@@ -121,20 +103,28 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
   const intents = intentAdapter(platform).mapFromDB(dbVersion.platformData.intents);
   const products = 'products' in dbProject.platformData ? productAdapter.mapFromDB(Object.values(dbProject.platformData.products)) : [];
 
-  dispatch(Product.replaceProducts(products));
-  dispatch(Intent.replaceIntents(intents));
-  dispatch(Slot.replaceSlots(slots));
-  dispatch(Project.addProject(project.id, project));
-  dispatch(Skill.setActiveSkill(skill, diagramID));
-  dispatch(
-    Prototype.updatePrototypeSettings(
-      {
-        ...dbVersion.prototype?.settings,
-        layout: dbVersion.prototype?.settings.layout ?? Prototype.PrototypeLayout.TEXT_DIALOG,
-      } as Prototype.PrototypeSettings,
-      false
-    )
-  );
+  batch(() => {
+    dispatch(Product.replaceProducts(products));
+    dispatch(Intent.replaceIntents(intents));
+    dispatch(Slot.replaceSlots(slots));
+    dispatch(Project.addProject(project.id, project));
+    dispatch(Skill.setActiveSkill(skill, diagramID));
+
+    dispatch(Session.setActiveDiagramID(diagramID || dbVersion.rootDiagramID));
+    dispatch(Session.setActiveProjectID(dbVersion.projectID));
+    dispatch(Session.setActiveVersionID(versionID));
+    dispatch(Session.setActiveWorkspaceID(dbProject.teamID));
+
+    dispatch(
+      Prototype.updatePrototypeSettings(
+        {
+          ...dbVersion.prototype?.settings,
+          layout: dbVersion.prototype?.settings.layout ?? Prototype.PrototypeLayout.TEXT_DIALOG,
+        } as Prototype.PrototypeSettings,
+        false
+      )
+    );
+  });
 
   return skill;
 };

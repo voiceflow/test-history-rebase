@@ -2,6 +2,7 @@ import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
 import * as Realtime from '@/ducks/realtime';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import * as Models from '@/models';
@@ -20,9 +21,11 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
     const getDiagramByID = Diagram.diagramByIDSelector(state);
 
     if (data.some(({ id }) => !getDiagramByID(id))) {
-      const skillID = Skill.activeSkillIDSelector(state);
+      const versionID = Session.activeVersionIDSelector(state);
 
-      await dispatch(Diagram.loadVersionDiagrams(skillID));
+      if (!versionID) return;
+
+      await dispatch(Diagram.loadVersionDiagrams(versionID));
     }
   },
   [Realtime.ResourceType.VARIABLES]: (data: string[], meta: object) => {

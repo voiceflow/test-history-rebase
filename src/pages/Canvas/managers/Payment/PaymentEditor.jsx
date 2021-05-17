@@ -4,7 +4,7 @@ import React from 'react';
 import OverflowMenu from '@/components/OverflowMenu';
 import { allProductsSelector, hasProductsSelector, productByIDSelector } from '@/ducks/product';
 import { goToEditProduct, goToNewProduct, goToProducts } from '@/ducks/router';
-import { activeSkillIDSelector } from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useCurried } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
@@ -55,7 +55,7 @@ function PaymentEditor({ selectedProduct, goToEditProduct, goToProducts, goToNew
 }
 
 const mapStateToProps = {
-  skillID: activeSkillIDSelector,
+  versionID: Session.activeVersionIDSelector,
   selectedProduct: productByIDSelector,
   hasProducts: hasProductsSelector,
   products: allProductsSelector,
@@ -67,11 +67,11 @@ const mapDispatchToProps = {
   goToNewProduct,
 };
 
-const mergeProps = ({ selectedProduct: getProductByID, skillID }, { goToEditProduct, goToProducts, goToNewProduct }, { data }) => ({
+const mergeProps = ({ selectedProduct: getProductByID, versionID }, { goToEditProduct, goToProducts, goToNewProduct }, { data }) => ({
   selectedProduct: data.productID && getProductByID(data.productID),
-  goToEditProduct: () => data.productID && goToEditProduct(skillID, data.productID),
-  goToProducts: () => goToProducts(skillID),
-  goToNewProduct: () => goToNewProduct(skillID),
+  goToEditProduct: () => data.productID && goToEditProduct(versionID, data.productID),
+  goToProducts: () => goToProducts(versionID),
+  goToNewProduct: () => goToNewProduct(versionID),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(PaymentEditor);

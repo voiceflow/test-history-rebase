@@ -3,7 +3,7 @@ import React from 'react';
 import client from '@/client';
 import { toast } from '@/components/Toast';
 import * as Prototype from '@/ducks/prototype';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
@@ -41,7 +41,7 @@ const GlobalSocketSubscriptionsLoadingGate: React.FC<ConnectedGlobalSocketSubscr
 };
 
 const mapStateToProps = {
-  activeProjectID: Skill.activeProjectIDSelector,
+  activeProjectID: Session.activeProjectIDSelector,
 };
 
 const mapDispatchToProps = {

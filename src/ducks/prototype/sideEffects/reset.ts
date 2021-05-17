@@ -1,5 +1,6 @@
 import { BuiltInVariable } from '@/constants';
-import { activePlatformSelector, activeProjectIDSelector, globalVariablesSelector } from '@/ducks/skill';
+import * as Session from '@/ducks/session';
+import { activePlatformSelector, globalVariablesSelector } from '@/ducks/skill';
 import { slotNamesSelector } from '@/ducks/slot';
 import { Store } from '@/models';
 import { SyncThunk } from '@/store/types';
@@ -30,7 +31,7 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
     [BuiltInVariable.INTENT_CONFIDENCE]: 0,
   };
 
-  const projectID = activeProjectIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state);
   const store = localStorage.getItem(`TEST_VARIABLES_${projectID}`);
   if (store) {
     try {

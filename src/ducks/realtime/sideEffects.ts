@@ -1,9 +1,9 @@
 import { ActionCreators } from 'redux-undo';
 
 import client from '@/client';
-import * as Creator from '@/ducks/creator';
+import * as Errors from '@/config/errors';
+import * as Creator from '@/ducks/creator/diagram/actions';
 import * as Session from '@/ducks/session';
-import * as SkillSelectors from '@/ducks/skill/skill/selectors';
 import * as Workspace from '@/ducks/workspace';
 import mutableStore from '@/store/mutable';
 import { SyncThunk, Thunk } from '@/store/types';
@@ -26,8 +26,11 @@ import { createServerAction, removeSelfFromLocks } from './utils';
 
 export const updateDiagramViewers = (users: RealtimeLocks['users']): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const diagramID = SkillSelectors.activeDiagramIDSelector(state);
+  const diagramID = Session.activeDiagramIDSelector(state);
   const hasWorkspaceMemberSelector = Workspace.hasWorkspaceMemberSelector(state);
+
+  Errors.assertDiagramID(diagramID);
+
   const diagramViewers = Object.values(users[diagramID] ?? {});
   const newMembers = diagramViewers.filter((viewer) => !hasWorkspaceMemberSelector(viewer));
 
@@ -119,10 +122,13 @@ export const setupRealtimeConnection = (skillID: string, diagramID: string): Thu
 
 export const setupActiveDiagramConnection = (): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const skillID = SkillSelectors.activeSkillIDSelector(state);
-  const diagramID = SkillSelectors.activeDiagramIDSelector(state);
+  const versionID = Session.activeVersionIDSelector(state);
+  const diagramID = Session.activeDiagramIDSelector(state);
 
-  await dispatch(setupRealtimeConnection(skillID, diagramID));
+  Errors.assertVersionID(versionID);
+  Errors.assertDiagramID(diagramID);
+
+  await dispatch(setupRealtimeConnection(versionID, diagramID));
 };
 
 export const reestablishConnection = (): Thunk => async (dispatch) => {

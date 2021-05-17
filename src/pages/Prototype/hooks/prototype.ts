@@ -7,7 +7,7 @@ import { toast } from '@/components/Toast';
 import * as Creator from '@/ducks/creator';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { useEventualEngine, useTrackingEvents } from '@/hooks';
 import { Dispatch } from '@/store/types';
 
@@ -34,7 +34,7 @@ const usePrototype = ({
   const contextHistory = useSelector(Prototype.prototypeContextHistorySelector);
   const visualDataHistory = useSelector(Prototype.prototypeVisualDataHistorySelector);
   const webhook = useSelector(Prototype.prototypeWebhookDataSelector);
-  const activeDiagramID = useSelector(Skill.activeDiagramIDSelector);
+  const activeDiagramID = useSelector(Session.activeDiagramIDSelector)!;
   const flowIDHistory = useSelector(Prototype.prototypeFlowIDHistorySelector);
   const getNodeByID = useSelector(Creator.nodeByIDSelector);
   const contextStep = useSelector(Prototype.prototypeContextStepSelector);
@@ -50,7 +50,7 @@ const usePrototype = ({
     isMuted,
     isPublic,
     setError: (error) => dispatch(Modal.setError(error)),
-    enterFlow: (diagramID) => dispatch(Skill.updateDiagramID(diagramID)),
+    enterFlow: (diagramID) => dispatch(Session.setActiveDiagramID(diagramID)),
     waitVisuals,
     contextStep,
     getNodeByID,

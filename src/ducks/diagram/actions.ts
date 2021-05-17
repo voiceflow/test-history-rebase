@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { creatorDiagramIDSelector } from '@/ducks/creator';
+import { creatorDiagramIDSelector } from '@/ducks/creator/diagram/selectors';
 import { Thunk } from '@/store/types';
 import { append, unique, withoutValue } from '@/utils/array';
 

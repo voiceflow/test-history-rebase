@@ -53,8 +53,6 @@ export const setActiveSkill = (skill: Skill<string>, diagramID: string): SetActi
 export const updateActiveSkill = (properties: Partial<Skill<string>>, meta?: object): UpdateActiveSkillAction =>
   createAction(SkillAction.UPDATE_ACTIVE_SKILL, { ...properties }, meta);
 
-export const updateDiagramID = (diagramID: string): UpdateDiagramIDAction => createAction(SkillAction.UPDATE_DIAGRAM_ID, diagramID);
-
 export const setActivePlatform = (platform: PlatformType): UpdateActiveSkillAction => createAction(SkillAction.UPDATE_ACTIVE_SKILL, { platform });
 
 export const replaceGlobalVariables = (variables: string[], meta?: object): ReplaceGlobalVariablesAction =>

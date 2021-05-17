@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect';
 
-import { createRootSelector } from '../utils';
+import { authTokenSelector } from '@/ducks/session/selectors';
+import { createRootSelector } from '@/ducks/utils';
+
 import { STATE_KEY } from './constants';
 
 export const userSelector = createRootSelector(STATE_KEY);
@@ -22,3 +24,7 @@ export const googleEmailSelector = createSelector([googleAccountSelector], (goog
 export const referrerIDSelector = createSelector([userSelector], ({ referrer_id }) => referrer_id);
 
 export const referralCodeSelector = createSelector([userSelector], ({ referral_code }) => referral_code);
+
+export const isLoggingInSelector = createSelector([authTokenSelector, userIDSelector], (token, creatorID) => token && creatorID === null);
+
+export const isLoggedInSelector = createSelector([authTokenSelector, userIDSelector], (authToken, creatorID) => !!(authToken && creatorID));

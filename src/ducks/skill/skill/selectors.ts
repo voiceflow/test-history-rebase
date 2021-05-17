@@ -3,34 +3,29 @@ import { ProjectLinkType } from '@voiceflow/api-sdk';
 import { createSelector } from 'reselect';
 
 import { projectByIDSelector } from '@/ducks/project/selectors';
+import { activeProjectIDSelector } from '@/ducks/session/selectors';
 import { createRootSelector } from '@/ducks/utils';
 
 import { STATE_KEY } from './constants';
 
 export const activeSkillSelector = createRootSelector(STATE_KEY);
 
-export const activeSkillIDSelector = createSelector(activeSkillSelector, ({ id }) => id);
-
 export const activeNameSelector = createSelector(activeSkillSelector, ({ name }) => name);
 
 export const activePlatformSelector = createSelector(activeSkillSelector, ({ platform }) => platform);
-
-export const activeDiagramIDSelector = createSelector(activeSkillSelector, ({ diagramID }) => diagramID);
 
 export const rootDiagramIDSelector = createSelector(activeSkillSelector, ({ rootDiagramID }) => rootDiagramID);
 
 export const globalVariablesSelector = createSelector(activeSkillSelector, (skill) => skill?.globalVariables || []);
 
-export const activeProjectIDSelector = createSelector(activeSkillSelector, ({ projectID }) => projectID);
-
 export const activeProjectNameSelector = createSelector(
   [activeProjectIDSelector, projectByIDSelector],
-  (projectID, getProjectByID) => getProjectByID(projectID)?.name
+  (projectID, getProjectByID) => getProjectByID(projectID!)?.name
 );
 
 export const activeProjectLinkTypeSelector = createSelector(
   [activeProjectIDSelector, projectByIDSelector],
-  (projectID, getProjectByID) => getProjectByID(projectID)?.linkType
+  (projectID, getProjectByID) => getProjectByID(projectID!)?.linkType
 );
 
 export const activeProjectIsStraightLinksSelector = createSelector(

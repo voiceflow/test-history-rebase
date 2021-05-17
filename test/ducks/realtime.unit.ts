@@ -6,7 +6,6 @@ import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
 import * as RealtimeUtils from '@/ducks/realtime/utils';
 import * as Session from '@/ducks/session';
-import * as SkillSelectors from '@/ducks/skill/skill/selectors';
 import * as Workspace from '@/ducks/workspace';
 import mutableStore from '@/store/mutable';
 
@@ -307,7 +306,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     describe.skip('updateDiagramViewers()', () => {
       it('should update active diagrams with no viewers', async () => {
         const users = {};
-        stub(SkillSelectors, 'activeDiagramIDSelector').returns('890');
+        stub(Session, 'activeDiagramIDSelector').returns('890');
         stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => false);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(users));
@@ -317,7 +316,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       });
 
       it('should update active diagrams with a single, pre-existing viewer', async () => {
-        stub(SkillSelectors, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
+        stub(Session, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
         stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => true);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(USER_LOCKS));
@@ -337,7 +336,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
           },
         };
         const getMembers = stubEffect(Workspace, 'getMembers');
-        stub(SkillSelectors, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
+        stub(Session, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
         stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => false);
         stub(Workspace, 'activeWorkspaceIDSelector').returns(workspaceID);
 
@@ -466,30 +465,33 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     });
 
     describe('setupRealtimeConnection()', () => {
-      const skillID = '1234';
+      const versionID = '1234';
       const diagramID = '5678';
       const tabID = '90210';
+      const rootState = {
+        session: {
+          tabID,
+        },
+      };
 
       it('should setup a realtime connection', async () => {
         const locks = { blocks: { movement: { def: tabID } } };
         const filteredLocks: any = { blocks: { movement: {} } };
         const initialize = stubSocketClient('diagram', 'initialize').returns(locks);
         const removeSelfFromLocks = stub(RealtimeUtils, 'removeSelfFromLocks').returns(filteredLocks);
-        stub(Session, 'tabIDSelector').returns(tabID);
 
-        const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(skillID, diagramID));
+        const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(versionID, diagramID), rootState);
 
         expectDispatch(Realtime.initializeRealtime(diagramID, filteredLocks));
         expect(dispatch).to.be.calledTwice;
-        expect(initialize).to.be.calledWithExactly(skillID, diagramID);
+        expect(initialize).to.be.calledWithExactly(versionID, diagramID);
         expect(removeSelfFromLocks).to.be.calledWithExactly(locks, tabID);
       });
 
       it('should set session as busy', async () => {
         stubSocketClient('diagram', 'initialize').throws({ browserId: 'abc', device: {} });
-        stub(Session, 'tabIDSelector').returns(tabID);
 
-        const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(skillID, diagramID));
+        const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(versionID, diagramID), rootState);
 
         expectDispatch(Realtime.setSessionBusy());
         expect(dispatch).to.be.calledOnce;
@@ -497,9 +499,8 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
       it('should set realtime restriction', async () => {
         stubSocketClient('diagram', 'initialize').throws({ busyBy: ['11'] });
-        stub(Session, 'tabIDSelector').returns(tabID);
 
-        const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(skillID, diagramID));
+        const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(versionID, diagramID), rootState);
 
         expectDispatch(Realtime.setRealtimeRestriction());
         expect(dispatch).to.be.calledOnce;

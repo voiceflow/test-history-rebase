@@ -1,6 +1,5 @@
 import { AccountLinking, AlexaVersionData, Locale } from '@voiceflow/alexa-types';
 import { Locale as GoogleLocale } from '@voiceflow/google-types';
-import fileSaver from 'file-saver';
 import _pick from 'lodash/pick';
 
 import client from '@/client';
@@ -10,23 +9,18 @@ import accountLinkingAdapter from '@/client/adapters/version/alexa/accountLinkin
 import alexaSettingsAdapter, { SkillSettings } from '@/client/adapters/version/alexa/settings';
 import generalSettingsAdapter, { GeneralSkillSettings } from '@/client/adapters/version/general/settings';
 import googleSettingsAdapter from '@/client/adapters/version/google/settings';
-import { toast } from '@/components/Toast';
-import { ExportFormat, NLPProvider, PlatformType, VALID_VARIABLE_NAME } from '@/constants';
+import { PlatformType, VALID_VARIABLE_NAME } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
-import * as Session from '@/ducks/session';
+import * as Session from '@/ducks/session/selectors';
 import * as Slot from '@/ducks/slot';
-import * as Tracking from '@/ducks/tracking';
 import * as Models from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
-import { getAuthCookie } from '@/utils/cookies';
-import { DataTypes, download, downloadFromURL } from '@/utils/dom';
 import { isChoiceNode, isFlowNode, isIntentNode, isProductLinkedNode } from '@/utils/node';
 import { getDistinctPlatformValue, setDistinctPlatformValue } from '@/utils/platform';
 import { arrayStringReplace } from '@/utils/string';
-import * as Sentry from '@/vendors/sentry';
 
 import * as Meta from './meta';
 import * as Skill from './skill';
@@ -45,92 +39,9 @@ export const addGlobalVariable = (variable: string | null): SyncThunk => (dispat
   }
 };
 
-export const exportCanvas = (type: ExportFormat): Thunk => async (dispatch, getState) => {
-  const state = getState();
-  const skillID = Skill.activeSkillIDSelector(state);
-  const diagramID = Skill.activeDiagramIDSelector(state);
-
-  dispatch(Skill.setExportingCanvas(true));
-
-  if (type === ExportFormat.VF) {
-    const name = Skill.activeNameSelector(state);
-    try {
-      const data = await client.api.version.export(skillID);
-      download(`${name.replace(/ /g, '_')}-${skillID}.vf`, JSON.stringify(data, null, 2), DataTypes.JSON);
-    } catch (error) {
-      Sentry.error(error);
-      toast.error('.VF export failed');
-    }
-    dispatch(Skill.setExportingCanvas(false));
-    return;
-  }
-
-  const options = {
-    token: getAuthCookie()!,
-    canvasURL: `https://${window.location.host}/project/${skillID}/export/${diagramID}`,
-    persistedTabID: Session.tabIDPersistor.getRaw()!,
-    persistedBrowserID: Session.browserIDPersistor.getRaw()!,
-  };
-
-  try {
-    let result: Blob;
-
-    if (type === ExportFormat.PDF) {
-      result = await client.canvasExport.toPDF(options);
-    } else if (type === ExportFormat.PNG) {
-      result = await client.canvasExport.toPNG(options);
-    } else {
-      throw new Error('Unknown export type');
-    }
-
-    fileSaver.saveAs(result, `voiceflow-export-${Date.now()}.${type}`);
-  } catch {
-    toast.error('Something went wrong - please try a bit later');
-  }
-
-  dispatch(Skill.setExportingCanvas(false));
-};
-
-export const exportModel = (nlpProvider: NLPProvider): Thunk => async (dispatch, getState) => {
-  const state = getState();
-  const versionID = Skill.activeSkillIDSelector(state);
-
-  dispatch(Skill.setExportingModel(true));
-
-  try {
-    let data: string;
-    const name = Skill.activeNameSelector(state).replace(/ /g, '_');
-
-    if (nlpProvider === NLPProvider.ALEXA) {
-      data = await client.platform.alexa.modelExport.export(versionID, 'ask');
-      download(`${name}-alexa-model.json`, data, DataTypes.JSON);
-    } else if (nlpProvider === NLPProvider.DIALOGFLOW_ES) {
-      data = await client.platform.google.modelExport.exportBlob(versionID, 'dialogflow/es');
-      downloadFromURL(`${name}-dialogflow-es-model.zip`, data);
-      URL.revokeObjectURL(data);
-    } else if (nlpProvider === NLPProvider.RASA) {
-      data = await client.platform.general.modelExport.exportBlob(versionID, 'rasa');
-      downloadFromURL(`${name}-rasa-model.zip`, data);
-      URL.revokeObjectURL(data);
-    } else if (nlpProvider === NLPProvider.LUIS) {
-      data = await client.platform.general.modelExport.export(versionID, 'luis');
-      download(`${name}-general-model.json`, data, DataTypes.JSON);
-    } else {
-      throw new Error(`no provider matched: ${nlpProvider}`);
-    }
-
-    dispatch(Tracking.trackActiveProjectExportInteractionModel({ nlpProvider }));
-  } catch (error) {
-    Sentry.error(error);
-    toast.error('Model export failed');
-  }
-
-  dispatch(Skill.setExportingModel(false));
-};
-
 export const saveInvocationName = (invocationName: string): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const versionID = Skill.activeSkillIDSelector(state);
+  const versionID = Session.activeVersionIDSelector(state)!;
   const platform = Skill.activePlatformSelector(state);
 
   const meta = Meta.skillMetaSelector(state);
@@ -150,7 +61,7 @@ export const saveInvocationName = (invocationName: string): Thunk => async (disp
 
 export const saveProjectName = (name: string): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const projectID = Skill.activeProjectIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state)!;
   if (name === Skill.activeNameSelector(state)) return;
 
   await client.api.project.update(projectID, { name });
@@ -163,7 +74,7 @@ export const saveProjectName = (name: string): Thunk => async (dispatch, getStat
 // TODO: REFACTOR SETTINGS INTO PLATFORM SPECIFIC CHUNKS
 export const saveSettings = (settings: Partial<SkillSettings>, properties?: string[]): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const skillID = Skill.activeSkillIDSelector(state)!;
+  const skillID = Session.activeVersionIDSelector(state)!;
   const platform = Skill.activePlatformSelector(state)!;
   // only certain adapted properties as specified by "properties"
   if (platform === PlatformType.ALEXA) {
@@ -182,7 +93,7 @@ export const saveSettings = (settings: Partial<SkillSettings>, properties?: stri
 
 export const saveIntentsAndSlots = (): Thunk => async (_dispatch, getState) => {
   const state = getState();
-  const skillID = Skill.activeSkillIDSelector(state);
+  const skillID = Session.activeVersionIDSelector(state)!;
   const platform = Skill.activePlatformSelector(state);
 
   const slots = slotAdapter.mapToDB(Slot.allSlotsSelector(state));
@@ -193,7 +104,7 @@ export const saveIntentsAndSlots = (): Thunk => async (_dispatch, getState) => {
 
 export const saveVariables = (): Thunk => async (_dispatch, getState) => {
   const state = getState();
-  const skillID = Skill.activeSkillIDSelector(state);
+  const skillID = Session.activeVersionIDSelector(state)!;
   const global = Skill.globalVariablesSelector(state);
 
   await client.api.version.update(skillID, { variables: global });
@@ -201,7 +112,7 @@ export const saveVariables = (): Thunk => async (_dispatch, getState) => {
 
 export const saveAccountLinking = (accountLinking: null | AccountLinking): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const skillID = Skill.activeSkillIDSelector(state);
+  const skillID = Session.activeVersionIDSelector(state)!;
 
   await client.platform.alexa.version.updateSettings(skillID, { accountLinking: accountLinking && accountLinkingAdapter.toDB(accountLinking) });
 
@@ -210,7 +121,7 @@ export const saveAccountLinking = (accountLinking: null | AccountLinking): Thunk
 
 export const getAccountLinking = (): Thunk<AccountLinking | null> => async (_dispatch, getState) => {
   const state = getState();
-  const skillID = Skill.activeSkillIDSelector(state);
+  const skillID = Session.activeVersionIDSelector(state)!;
 
   const {
     platformData: {
@@ -225,7 +136,7 @@ export const saveLocales = (locales: Locale[] | GoogleLocale[]): Thunk => async 
   if (locales?.length === 0) return;
   const state = getState();
   const platform = Skill.activePlatformSelector(state);
-  const versionID = Skill.activeSkillIDSelector(state);
+  const versionID = Session.activeVersionIDSelector(state)!;
 
   await client.platform(platform)?.version.updatePublishing(versionID, { locales: locales as any });
 

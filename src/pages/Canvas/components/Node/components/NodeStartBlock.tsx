@@ -2,6 +2,7 @@ import React from 'react';
 
 import { BlockVariant } from '@/constants/canvas';
 import * as Diagram from '@/ducks/diagram';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { compose, connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
@@ -77,12 +78,12 @@ const mapStateToProps = {
   invocationName: Skill.invNameSelector,
   projectName: Skill.activeProjectNameSelector,
   isRootDiagram: Skill.isRootDiagramSelector,
-  activeDiagramID: Skill.activeDiagramIDSelector,
+  activeDiagramID: Session.activeDiagramIDSelector,
   diagram: Diagram.diagramByIDSelector,
 };
 
 const mergeProps = (...[{ diagram: getDiagramByID, activeDiagramID, invocationName, projectName }]: MergeArguments<typeof mapStateToProps>) => ({
-  diagram: getDiagramByID(activeDiagramID),
+  diagram: getDiagramByID(activeDiagramID!),
   invocationName: invocationName || projectName,
 });
 

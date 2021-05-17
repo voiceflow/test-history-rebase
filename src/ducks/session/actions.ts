@@ -1,0 +1,63 @@
+import { createAction } from '@/ducks/utils';
+import { Action } from '@/store/types';
+
+export enum SessionAction {
+  SET_AUTH_TOKEN = 'SESSION:SET_AUTH_TOKEN',
+  DISABLE_WEBSOCKETS = 'SESSION:DISABLE_WEBSOCKETS',
+  SET_INTERCOM_VISIBLE = 'SESSION:INTERCOM_VISIBLE:SET',
+  SET_INTERCOM_USER_HMAC = 'SESSION:INTERCOM_USER_HMAC:SET',
+  SET_ACTIVE_WORKSPACE_ID = 'SESSION:ACTIVE_WORKSPACE_ID:SET',
+  SET_ACTIVE_PROJECT_ID = 'SESSION:ACTIVE_PROJECT_ID:SET',
+  SET_ACTIVE_VERSION_ID = 'SESSION:ACTIVE_VERSION_ID:SET',
+  SET_ACTIVE_DIAGRAM_ID = 'SESSION:ACTIVE_DIAGRAM_ID:SET',
+}
+
+// action types
+
+export type SetAuthToken = Action<SessionAction.SET_AUTH_TOKEN, string | null>;
+
+export type DisableWebsockets = Action<SessionAction.DISABLE_WEBSOCKETS>;
+
+export type SetIntercomVisible = Action<SessionAction.SET_INTERCOM_VISIBLE, boolean>;
+
+export type SetIntercomUserHMAC = Action<SessionAction.SET_INTERCOM_USER_HMAC, string | null>;
+
+export type SetActiveWorkspaceID = Action<SessionAction.SET_ACTIVE_WORKSPACE_ID, string | null>;
+
+export type SetActiveProjectID = Action<SessionAction.SET_ACTIVE_PROJECT_ID, string | null>;
+
+export type SetActiveVersionID = Action<SessionAction.SET_ACTIVE_VERSION_ID, string | null>;
+
+export type SetActiveDiagramID = Action<SessionAction.SET_ACTIVE_DIAGRAM_ID, string | null>;
+
+export type AnySessionAction =
+  | SetAuthToken
+  | DisableWebsockets
+  | SetIntercomVisible
+  | SetIntercomUserHMAC
+  | SetActiveWorkspaceID
+  | SetActiveProjectID
+  | SetActiveVersionID
+  | SetActiveDiagramID;
+
+// action creators
+
+export const setAuthToken = (token: string | null): SetAuthToken => createAction(SessionAction.SET_AUTH_TOKEN, token);
+
+export const disableWebsockets = (): DisableWebsockets => createAction(SessionAction.DISABLE_WEBSOCKETS);
+
+export const setIntercomVisible = (isVisible: boolean): SetIntercomVisible => createAction(SessionAction.SET_INTERCOM_VISIBLE, isVisible);
+export const showIntercom = () => setIntercomVisible(true);
+export const hideIntercom = () => setIntercomVisible(false);
+
+export const setIntercomUserHMAC = (intercomUserHMAC: string | null): SetIntercomUserHMAC =>
+  createAction(SessionAction.SET_INTERCOM_USER_HMAC, intercomUserHMAC);
+
+export const setActiveWorkspaceID = (workspaceID: string | null): SetActiveWorkspaceID =>
+  createAction(SessionAction.SET_ACTIVE_WORKSPACE_ID, workspaceID);
+
+export const setActiveProjectID = (projectID: string | null): SetActiveProjectID => createAction(SessionAction.SET_ACTIVE_PROJECT_ID, projectID);
+
+export const setActiveVersionID = (versionID: string | null): SetActiveVersionID => createAction(SessionAction.SET_ACTIVE_VERSION_ID, versionID);
+
+export const setActiveDiagramID = (diagramID: string | null): SetActiveDiagramID => createAction(SessionAction.SET_ACTIVE_DIAGRAM_ID, diagramID);

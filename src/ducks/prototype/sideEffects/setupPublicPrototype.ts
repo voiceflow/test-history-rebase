@@ -1,6 +1,7 @@
 import _constant from 'lodash/constant';
 
 import client from '@/client';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { Thunk } from '@/store/types';
 
@@ -19,17 +20,21 @@ const setupPublicPrototype = (versionID: string): Thunk<PrototypeSettings> => as
     throw new Error('Could not retrieve permissions for prototype share');
   }
 
+  const rootDiagramID = prototype.context.stack?.[0].programID as string;
+
   dispatch(
     Skill.setActiveSkill(
       {
         id: versionID,
         name: prototype.data.name,
         locales: prototype.data.locales,
-        rootDiagramID: prototype.context.stack?.[0].programID,
+        rootDiagramID,
       } as any,
-      prototype.context.stack?.[0].programID as string
+      rootDiagramID
     )
   );
+  dispatch(Session.setActiveVersionID(versionID));
+  dispatch(Session.setActiveDiagramID(rootDiagramID));
 
   return {
     ...prototype?.settings,

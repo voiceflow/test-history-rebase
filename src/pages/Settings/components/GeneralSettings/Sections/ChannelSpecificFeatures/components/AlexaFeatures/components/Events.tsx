@@ -4,6 +4,7 @@ import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import Section, { SectionVariant } from '@/components/Section';
 import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
@@ -88,7 +89,7 @@ const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({ met
 
 const mapStateToProps = {
   meta: Skill.skillMetaSelector,
-  projectID: Skill.activeProjectIDSelector,
+  projectID: Session.activeProjectIDSelector,
 };
 
 const mapDispatchToProps = {

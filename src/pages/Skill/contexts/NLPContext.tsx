@@ -5,7 +5,7 @@ import client from '@/client';
 import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { JobStatus } from '@/constants';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { withContext } from '@/hocs/withContext';
 import { useContextApi, useDidUpdateEffect, useSetup, useTeardown } from '@/hooks';
 import { NLPTrainJob } from '@/models';
@@ -29,7 +29,7 @@ export const NLPProvider: React.FC = ({ children }) => {
   const [job, setJob] = React.useState<Nullable<NLPTrainJob.AnyJob>>(null);
   const [publishing, setPublishing] = React.useState<boolean>(false);
 
-  const projectID = useSelector(Skill.activeProjectIDSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector);
 
   const getJob = React.useCallback(async () => {
     if (!projectID) {
@@ -75,7 +75,7 @@ export const NLPProvider: React.FC = ({ children }) => {
   const cancel = React.useCallback(async () => {
     stopPulling();
 
-    await client.platform.general.nlp.cancel(projectID);
+    await client.platform.general.nlp.cancel(projectID!);
 
     setJob(null);
   }, [projectID]);

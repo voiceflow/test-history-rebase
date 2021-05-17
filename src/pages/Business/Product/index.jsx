@@ -1,5 +1,4 @@
 /* eslint-disable default-case */
-/* eslint-disable no-shadow */
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 
@@ -9,6 +8,7 @@ import { NEW_PRODUCT_ID } from '@/constants';
 import * as Feature from '@/ducks/feature';
 import * as Product from '@/ducks/product';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { compose } from '@/utils/functional';
 
@@ -190,6 +190,7 @@ ProductEditPage.propTypes = {
 const mapStateToProps = {
   product: Product.productByIDSelector,
   isFeatureEnabled: Feature.isFeatureEnabledSelector,
+  versionID: Session.activeVersionIDSelector,
 };
 
 const mapDispatchToProps = {
@@ -199,13 +200,13 @@ const mapDispatchToProps = {
   uploadProduct: Product.uploadProduct,
 };
 
-const mergeProps = ({ product: productByIDSelector }, { goToProducts, uploadProduct }, { match, skillID }) => {
+const mergeProps = ({ product: getProductByID, versionID }, { goToProducts, uploadProduct }, { match }) => {
   const productID = match.params.id;
 
   return {
     productID,
-    product: productByIDSelector(productID) || {},
-    goToProducts: () => goToProducts(skillID),
+    product: getProductByID(productID) || {},
+    goToProducts: () => goToProducts(versionID),
     uploadProduct: () => uploadProduct(productID),
   };
 };

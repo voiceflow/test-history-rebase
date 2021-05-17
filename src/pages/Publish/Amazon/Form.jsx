@@ -26,6 +26,7 @@ import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
+import * as Session from '@/ducks/session';
 import * as SkillDuck from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { AMAZON_CATEGORIES } from '@/services/Categories';
@@ -742,7 +743,7 @@ const validate = (values) => {
 
 const mapStateToProps = {
   user: Account.userSelector,
-  skillID: SkillDuck.activeSkillIDSelector,
+  skillID: Session.activeVersionIDSelector,
   amazonForm: getFormValues(PUBLISH_AMAZON_FORM),
   feature: Feature.isFeatureEnabledSelector,
   amazonID: SkillDuck.amazonIDSelector,

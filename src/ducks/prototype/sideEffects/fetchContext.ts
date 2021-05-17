@@ -3,8 +3,9 @@ import { TraceFrame as VisualTrace } from '@voiceflow/general-types/build/nodes/
 import cuid from 'cuid';
 
 import client from '@/client';
+import * as Errors from '@/config/errors';
 import * as Recent from '@/ducks/recent';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { Trace } from '@/models';
 import { Thunk } from '@/store/types';
 import * as Sentry from '@/vendors/sentry';
@@ -29,8 +30,11 @@ const fetchContext = (request: Request | null): Thunk<Context | null> => async (
   const { contextStep } = prototypeSelector(reduxState);
   const settings = Recent.recentPrototypeSelector(reduxState);
   const currentVisualData = prototypeVisualDataSelector(reduxState);
-  const versionID = Skill.activeSkillIDSelector(reduxState);
-  const currentDiagramID = Skill.activeDiagramIDSelector(reduxState);
+  const versionID = Session.activeVersionIDSelector(reduxState);
+  const activeDiagramID = Session.activeDiagramIDSelector(reduxState);
+
+  Errors.assertVersionID(versionID);
+  Errors.assertDiagramID(activeDiagramID);
 
   try {
     const { state: _state, trace } = await client.prototype.interact(versionID, {
@@ -42,8 +46,8 @@ const fetchContext = (request: Request | null): Thunk<Context | null> => async (
     const newState: Context = _state;
     const lastVisual = [...trace].reverse().find(({ type }) => type === TraceType.VISUAL) as VisualTrace;
 
-    newState.previousContextDiagramID = currentDiagramID;
-    newState.targetContextDiagramID = getTargetFlowID(trace) || currentDiagramID;
+    newState.previousContextDiagramID = activeDiagramID;
+    newState.targetContextDiagramID = getTargetFlowID(trace) || activeDiagramID;
 
     const newStateObj = {
       ...newState,

@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import * as Creator from '@/ducks/creator';
+import * as Creator from '@/ducks/creator/diagram/selectors';
 import { createRootSelector } from '@/ducks/utils';
 import * as Workspace from '@/ducks/workspace';
 import { getAlternativeColor } from '@/utils/colors';

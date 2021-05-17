@@ -6,7 +6,7 @@ import { toast } from '@/components/Toast';
 import { Permission } from '@/config/permissions';
 import { UserRole } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useEnableDisable, usePermission, useTrackingEvents } from '@/hooks';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
@@ -107,7 +107,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 };
 
 const mapStateToProps = {
-  versionID: Skill.activeSkillIDSelector,
+  versionID: Session.activeVersionIDSelector,
 };
 
 const mapDispatchToProps = {

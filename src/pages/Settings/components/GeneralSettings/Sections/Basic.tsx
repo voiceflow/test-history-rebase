@@ -13,6 +13,7 @@ import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUplo
 import { PlatformType } from '@/constants';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
@@ -188,7 +189,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 const mapStateToProps = {
   meta: Skill.skillMetaSelector,
   skill: Skill.activeSkillSelector,
-  versionID: Skill.activeSkillIDSelector,
+  versionID: Session.activeVersionIDSelector,
   project: Project.projectByIDSelector,
 };
 

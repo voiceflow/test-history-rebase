@@ -45,7 +45,7 @@ export const IntercomChat: React.FC<ConnectedIntercomChatProps> = ({ user, works
 
 const mapStateToProps = {
   user: Account.userSelector,
-  isLoggedIn: Session.isLoggedInSelector,
+  isLoggedIn: Account.isLoggedInSelector,
   workspace: Workspace.activeWorkspaceSelector,
   isVisible: Session.isIntercomVisibleSelector,
   intercomUserHMAC: Session.intercomUserHMACSelector,

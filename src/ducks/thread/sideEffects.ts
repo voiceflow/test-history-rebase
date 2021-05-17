@@ -2,8 +2,9 @@ import client from '@/client';
 import commentAdapter from '@/client/adapters/comment';
 import threadAdapter from '@/client/adapters/thread';
 import { toast } from '@/components/Toast';
+import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { Comment, DBComment, DBThread, NewThread, Thread } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { Pair } from '@/types';
@@ -41,9 +42,13 @@ export const createThread = ({
   position: Pair<number>;
 }): Thunk<Thread> => async (dispatch, getState) => {
   const state = getState();
-  const projectID = Skill.activeProjectIDSelector(state);
-  const diagramID = Skill.activeDiagramIDSelector(state);
-  const creatorID = Account.userIDSelector(state)!;
+  const projectID = Session.activeProjectIDSelector(state);
+  const diagramID = Session.activeDiagramIDSelector(state);
+  const creatorID = Account.userIDSelector(state);
+
+  Errors.assertCreatorID(creatorID);
+  Errors.assertDiagramID(diagramID);
+  Errors.assertProjectID(projectID);
 
   const newComment = { ...data, creatorID };
 
@@ -61,11 +66,11 @@ export const createThread = ({
   try {
     const thread = await client.thread.create(projectID, generatedThread);
 
-    dispatch(ThreadActions.addThread(thread.id!, thread));
+    dispatch(ThreadActions.addThread(thread.id, thread));
 
     return thread;
   } catch (e) {
-    toast.error('Something went wrong. Please try again');
+    toast.genericError();
     throw e;
   }
 };
@@ -75,14 +80,16 @@ export const updateThreadData = (threadID: string, data: Partial<Pick<Thread, 'r
   getState
 ) => {
   const state = getState();
-  const projectID = Skill.activeProjectIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state);
   const thread = ThreadSelectors.threadByIDSelector(state)(threadID);
+
+  Errors.assertProjectID(projectID);
 
   try {
     await client.thread.update(projectID, threadID, { ...thread, ...data });
     dispatch(ThreadActions.updateThread(threadID, data, true));
   } catch (e) {
-    toast.error('Something went wrong. Please try again');
+    toast.genericError();
   }
 };
 
@@ -104,23 +111,28 @@ export const deleteThread = (threadID: string): Thunk => async (dispatch) => {
 
 export const createComment = (threadID: string, data: Partial<Pick<Comment, 'text' | 'mentions'>>): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const projectID = Skill.activeProjectIDSelector(state);
-  const creatorID = Account.userIDSelector(state)!;
+  const projectID = Session.activeProjectIDSelector(state);
+  const creatorID = Account.userIDSelector(state);
   const thread = ThreadSelectors.threadByIDSelector(state)(threadID);
+
+  Errors.assertCreatorID(creatorID);
+  Errors.assertProjectID(projectID);
 
   try {
     const comment = await client.comment.create(projectID, threadID, { ...data, creatorID } as Comment);
 
     dispatch(ThreadActions.updateThread(threadID, { comments: [...thread.comments, comment] }, true));
   } catch (e) {
-    toast.error('Something went wrong. Please try again');
+    toast.genericError();
   }
 };
 
 export const updateComment = (threadID: string, commentID: string, data: Pick<Comment, 'text' | 'mentions'>): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const projectID = Skill.activeProjectIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state);
   const thread = ThreadSelectors.threadByIDSelector(state)(threadID);
+
+  Errors.assertProjectID(projectID);
 
   try {
     await client.comment.update(projectID, commentID, { text: data.text, mentions: data.mentions } as Comment);
@@ -132,14 +144,16 @@ export const updateComment = (threadID: string, commentID: string, data: Pick<Co
       )
     );
   } catch (e) {
-    toast.error('Something went wrong. Please try again');
+    toast.genericError();
   }
 };
 
 export const deleteComment = (threadID: string, commentID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const projectID = Skill.activeProjectIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state);
   const thread = ThreadSelectors.threadByIDSelector(state)(threadID);
+
+  Errors.assertProjectID(projectID);
 
   if (thread.comments.length === 1) {
     dispatch(deleteThread(threadID));
@@ -148,7 +162,7 @@ export const deleteComment = (threadID: string, commentID: string): Thunk => asy
       await client.comment.delete(projectID, commentID);
       dispatch(ThreadActions.updateThread(threadID, { comments: thread.comments.filter((comment) => comment.id !== commentID) }, true));
     } catch (e) {
-      toast.error('Something went wrong. Please try again');
+      toast.genericError();
     }
   }
 };
@@ -159,8 +173,9 @@ export const handleNewThread = (payload: { projectID: string; created: DBThread 
   const state = getState();
   const thread = threadAdapter.fromDB(payload.created);
 
-  const creatorID = Account.userIDSelector(state)!;
+  const creatorID = Account.userIDSelector(state);
 
+  Errors.assertCreatorID(creatorID);
   if (creatorID === thread.creatorID) return;
 
   dispatch(ThreadActions.addThread(thread.id, thread));
@@ -171,8 +186,9 @@ export const handleThreadUpdate = (payload: { projectID: string; updatedThread: 
   const state = getState();
   const { comments, ...thread } = threadAdapter.fromDB({ ...payload.updatedThread, comments: [] });
 
-  const creatorID = Account.userIDSelector(state)!;
+  const creatorID = Account.userIDSelector(state);
 
+  Errors.assertCreatorID(creatorID);
   if (creatorID === thread.creatorID) return;
 
   dispatch(ThreadActions.updateThread(thread.id, thread, true));
@@ -181,8 +197,9 @@ export const handleThreadUpdate = (payload: { projectID: string; updatedThread: 
 export const handleNewReply = (payload: { projectID: string; created: DBComment }): SyncThunk => (dispatch, getState) => {
   const state = getState();
 
-  const creatorID = Account.userIDSelector(state)!;
+  const creatorID = Account.userIDSelector(state);
 
+  Errors.assertCreatorID(creatorID);
   if (creatorID === payload.created.creator_id) return;
 
   const comment = commentAdapter.fromDB(payload.created);
@@ -195,7 +212,9 @@ export const handleNewReply = (payload: { projectID: string; created: DBComment 
 export const handleCommentUpdate = (payload: { projectID: string; updatedComment: DBComment }): SyncThunk => (dispatch, getState) => {
   const state = getState();
 
-  const creatorID = Account.userIDSelector(state)!;
+  const creatorID = Account.userIDSelector(state);
+
+  Errors.assertCreatorID(creatorID);
   if (creatorID === payload.updatedComment.creator_id) return;
 
   const comment = commentAdapter.fromDB(payload.updatedComment);
@@ -213,9 +232,10 @@ export const handleCommentUpdate = (payload: { projectID: string; updatedComment
 export const handleCommentDelete = (payload: { projectID: string; commentID: string; threadID: string }): SyncThunk => (dispatch, getState) => {
   const state = getState();
 
-  const creatorID = Account.userIDSelector(state)!;
+  const creatorID = Account.userIDSelector(state);
   const thread = ThreadSelectors.threadByIDSelector(state)(payload.threadID);
 
+  Errors.assertCreatorID(creatorID);
   if (creatorID === thread.creatorID) return;
 
   dispatch(

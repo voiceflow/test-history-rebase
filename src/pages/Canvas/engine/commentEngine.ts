@@ -3,7 +3,7 @@ import { createMatchSelector } from 'connected-react-router';
 import { Path } from '@/config/routes';
 import * as Creator from '@/ducks/creator';
 import * as Router from '@/ducks/router';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
 import { Comment } from '@/models';
 import { DraftCommentType, NewCommentAPI } from '@/pages/Canvas/types';
@@ -64,8 +64,10 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
     this.focusTarget = threadID;
 
-    if (threadID) {
-      await this.dispatch(Thread.loadThread(this.select(Skill.activeProjectIDSelector), threadID));
+    const projectID = this.select(Session.activeProjectIDSelector);
+
+    if (threadID && projectID) {
+      await this.dispatch(Thread.loadThread(projectID, threadID));
       this.redrawThread(threadID);
       this.log.info(this.log.success('set comment focus'), this.log.slug(threadID));
     }

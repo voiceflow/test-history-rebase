@@ -14,6 +14,7 @@ import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import * as Thread from '@/ducks/thread';
 import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
@@ -156,7 +157,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     this.realtime = new RealtimeEngine(realtimeSubscription, this);
     this.dispatcher = new Dispatcher(this);
 
-    this.log.info(this.log.init('initialized canvas engine'), this.log.value(this.select(Skill.activeSkillIDSelector)));
+    this.log.info(this.log.init('initialized canvas engine'), this.log.value(this.select(Session.activeVersionIDSelector)));
   }
 
   // store accessors
@@ -195,7 +196,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   isRootDiagram = () => this.select(Skill.isRootDiagramSelector);
 
-  getDiagramID = () => this.select(Skill.activeDiagramIDSelector);
+  getDiagramID = () => this.select(Session.activeDiagramIDSelector);
 
   isFeatureEnabled = (featureID: FeatureFlag) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 

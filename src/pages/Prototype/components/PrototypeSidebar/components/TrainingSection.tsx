@@ -12,6 +12,7 @@ import { NLPTrainStageType } from '@/constants/platforms';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useSmartReducerV2, useTrackingEvents } from '@/hooks';
@@ -69,7 +70,9 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
           <>
             Your slots <b>({invalid.slots.map(({ name }) => name).join(', ')})</b> require custom values in order to be properly recognized during
             testing. Update the{' '}
-            <ClickableText onClick={() => goToInteractionModel(versionID, diagramID, 'slots', invalid.slots[0].key)}>Interaction Model</ClickableText>{' '}
+            <ClickableText onClick={() => goToInteractionModel(versionID!, diagramID!, 'slots', invalid.slots[0].key)}>
+              Interaction Model
+            </ClickableText>{' '}
             and train your assistant again.
           </>
         );
@@ -210,9 +213,9 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
 const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
   platform: Skill.activePlatformSelector,
-  versionID: Skill.activeSkillIDSelector,
-  diagramID: Skill.activeDiagramIDSelector,
-  projectID: Skill.activeProjectIDSelector,
+  versionID: Session.activeVersionIDSelector,
+  diagramID: Session.activeDiagramIDSelector,
+  projectID: Session.activeProjectIDSelector,
 };
 
 const mapDispatchToProps = {

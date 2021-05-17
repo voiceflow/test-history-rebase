@@ -11,6 +11,7 @@ export { Factories };
 export * from './actions';
 export * from './constants';
 export * from './selectors';
+export * from './sideEffects';
 export * from './types';
 
 export default diagramReducer;

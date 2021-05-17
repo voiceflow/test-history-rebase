@@ -5,6 +5,7 @@ import client from '@/client';
 import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { JobStatus } from '@/constants';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
 import { useContextApi, useDidUpdateEffect, useTeardown } from '@/hooks';
@@ -29,7 +30,7 @@ export const ExportProvider: React.FC = ({ children }) => {
   const [job, setJob] = React.useState<Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob | GeneralJob.AnyJob>>(null);
 
   const platform = useSelector(Skill.activePlatformSelector);
-  const projectID = useSelector(Skill.activeProjectIDSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector);
 
   const platformClient = client.platform(platform);
 
@@ -63,7 +64,7 @@ export const ExportProvider: React.FC = ({ children }) => {
         return;
       }
 
-      await platformClient?.export.updateStage(projectID, job.stage.type as never, data);
+      await platformClient?.export.updateStage(projectID!, job.stage.type as never, data);
       await getJob(); // to fetch updated status
     },
     [projectID, platformClient, job?.stage.type]
@@ -80,7 +81,7 @@ export const ExportProvider: React.FC = ({ children }) => {
   const cancel = React.useCallback(async () => {
     stopPulling();
 
-    await platformClient?.export.cancel(projectID);
+    await platformClient?.export.cancel(projectID!);
 
     setJob(null);
   }, [projectID, platformClient]);
@@ -90,7 +91,7 @@ export const ExportProvider: React.FC = ({ children }) => {
     if (job === null || job.status === JobStatus.FINISHED) {
       stopPulling();
 
-      platformClient?.export.cancel(projectID);
+      platformClient?.export.cancel(projectID!);
 
       return;
     }

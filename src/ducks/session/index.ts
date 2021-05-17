@@ -1,0 +1,113 @@
+import cuid from 'cuid';
+
+import { compositeReducer } from '@/ducks/utils';
+import { localPersistor, persistReducer, rehydrateReducer, sessionPersistor } from '@/ducks/utils/persist';
+import { Reducer, RootReducer } from '@/store/types';
+import * as Cookies from '@/utils/cookies';
+
+import {
+  AnySessionAction,
+  SessionAction,
+  SetActiveDiagramID,
+  SetActiveProjectID,
+  SetActiveVersionID,
+  SetActiveWorkspaceID,
+  SetAuthToken,
+  SetIntercomUserHMAC,
+  SetIntercomVisible,
+} from './actions';
+import { INITIAL_STATE, STATE_KEY } from './constants';
+import { SessionState } from './types';
+
+export * from './actions';
+export * from './constants';
+export * from './selectors';
+export * from './sideEffects';
+export * from './types';
+
+export const tabIDPersistor = sessionPersistor<string>(STATE_KEY, 'tab_id');
+export const browserIDPersistor = localPersistor<string>(STATE_KEY, 'browser_id');
+export const activeWorkspaceIDPersistor = localPersistor<string | null>(STATE_KEY, 'active_workspace_id');
+export const intercomUserHMACPersistor = localPersistor<string | null>(STATE_KEY, 'intercom_user_hmac');
+
+const createInitialAuthTokenState = () => ({
+  value: Cookies.getAuthCookie() || null,
+});
+
+export const authTokenReducer: RootReducer<{ value: string | null }, SetAuthToken> = (state = createInitialAuthTokenState(), action) => {
+  if (action.type === SessionAction.SET_AUTH_TOKEN) {
+    return { ...state, value: action.payload };
+  }
+
+  return state;
+};
+
+export const disableWebsocketsReducer: Reducer<SessionState> = (state) => ({
+  ...state,
+  websocketsEnabled: false,
+});
+
+export const setIntercomVisibleReducer: Reducer<SessionState, SetIntercomVisible> = (state, { payload }) => ({
+  ...state,
+  intercomVisible: payload,
+});
+
+export const setIntercomUserHMACReducer: RootReducer<string | null, SetIntercomUserHMAC> = (state = null, action) => {
+  // eslint-disable-next-line sonarjs/no-small-switch
+  switch (action.type) {
+    case SessionAction.SET_INTERCOM_USER_HMAC:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const setActiveWorkspaceIDReducer: RootReducer<string | null, SetActiveWorkspaceID> = (state = null, action) => {
+  // eslint-disable-next-line sonarjs/no-small-switch
+  switch (action.type) {
+    case SessionAction.SET_ACTIVE_WORKSPACE_ID:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const setActiveProjectIDReducer: Reducer<SessionState, SetActiveProjectID> = (state, { payload }) => ({
+  ...state,
+  activeProjectID: payload,
+});
+
+export const setActiveVersionIDReducer: Reducer<SessionState, SetActiveVersionID> = (state, { payload }) => ({
+  ...state,
+  activeVersionID: payload,
+});
+
+export const setActiveDiagramIDReducer: Reducer<SessionState, SetActiveDiagramID> = (state, { payload }) => ({
+  ...state,
+  activeDiagramID: payload,
+});
+
+const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INITIAL_STATE as SessionState, action) => {
+  switch (action.type) {
+    case SessionAction.DISABLE_WEBSOCKETS:
+      return disableWebsocketsReducer(state);
+    case SessionAction.SET_INTERCOM_VISIBLE:
+      return setIntercomVisibleReducer(state, action);
+    case SessionAction.SET_ACTIVE_PROJECT_ID:
+      return setActiveProjectIDReducer(state, action);
+    case SessionAction.SET_ACTIVE_VERSION_ID:
+      return setActiveVersionIDReducer(state, action);
+    case SessionAction.SET_ACTIVE_DIAGRAM_ID:
+      return setActiveDiagramIDReducer(state, action);
+    default:
+      return state;
+  }
+};
+
+export default compositeReducer(sessionReducer, {
+  token: authTokenReducer,
+  tabID: rehydrateReducer(tabIDPersistor, cuid()),
+  browserID: rehydrateReducer(browserIDPersistor, cuid()),
+  intercomUserHMAC: persistReducer(intercomUserHMACPersistor, setIntercomUserHMACReducer),
+  activeWorkspaceID: persistReducer(activeWorkspaceIDPersistor, setActiveWorkspaceIDReducer),
+});

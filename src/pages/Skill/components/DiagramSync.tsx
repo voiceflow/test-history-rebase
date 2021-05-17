@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as Router from '@/ducks/router';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { ConnectedProps, MergeArguments } from '@/types';
 
@@ -27,16 +27,18 @@ const DiagramSync: React.FC<DiagramSyncProps & ConnectedDiagramSyncProps> = ({
 };
 
 const mapStateToProps = {
-  activeSkill: Skill.activeSkillSelector,
+  activeDiagramID: Session.activeDiagramIDSelector,
 };
 
 const mapDispatchToProps = {
-  updateDiagramID: Skill.updateDiagramID,
+  updateDiagramID: Session.setActiveDiagramID,
   redirectToRootDiagram: Router.redirectToRootDiagram,
 };
 
-const mergeProps = (...[{ activeSkill }, , { diagramID }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, DiagramSyncProps>) => ({
-  isDiagramSynced: activeSkill.diagramID === diagramID,
+const mergeProps = (
+  ...[{ activeDiagramID }, , { diagramID }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, DiagramSyncProps>
+) => ({
+  isDiagramSynced: activeDiagramID === diagramID,
 });
 
 type ConnectedDiagramSyncProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;

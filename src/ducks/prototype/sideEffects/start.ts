@@ -1,6 +1,7 @@
+import * as Errors from '@/config/errors';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import { activeDiagramIDSelector, activeProjectIDSelector } from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { Node } from '@/models';
 import { SyncThunk, ThunkDispatch } from '@/store/types';
 
@@ -45,14 +46,16 @@ const getValidStartingNode = (
 const startPrototype = (diagramID?: string | null, nodeID?: string | null): SyncThunk => (dispatch, getState) => {
   const state = getState();
 
-  const projectID = activeProjectIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state);
   const variables = prototypeVariablesSelector(state);
-  const activeDiagramID = activeDiagramIDSelector(state);
+  const activeDiagramID = Session.activeDiagramIDSelector(state);
   const linkIDsByNodeID = Creator.linkIDsByNodeIDSelector(state);
   const getLinkedNodeIDsByNodeID = Creator.linkedNodeIDsByNodeIDSelector(state);
   const nodeSelector = Creator.nodeByIDSelector(state);
   const targetNodeID = getValidStartingNode(nodeSelector, getLinkedNodeIDsByNodeID, linkIDsByNodeID, dispatch, nodeID) || undefined;
   const startNodeID = Creator.startNodeIDSelector(state);
+
+  Errors.assertDiagramID(activeDiagramID);
 
   const context: Context = {
     stack: [

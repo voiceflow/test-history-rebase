@@ -1,7 +1,8 @@
 import { Intent, Slot } from '@voiceflow/api-sdk';
 
 import client from '@/client';
-import * as Skill from '@/ducks/skill';
+import * as Errors from '@/config/errors';
+import * as Session from '@/ducks/session';
 import { Thunk } from '@/store/types';
 
 // i.e. AMAZON.ShuffleOffIntent
@@ -18,7 +19,9 @@ export interface Validation {
 // validate if the model will have unexpected side effects during training
 const validateModel = (): Thunk<Validation> => async (_, getState) => {
   const state = getState();
-  const versionID = Skill.activeSkillIDSelector(state);
+  const versionID = Session.activeVersionIDSelector(state);
+
+  Errors.assertVersionID(versionID);
 
   const prototype = await client.api.version.getPrototype(versionID);
   if (!prototype) throw new Error('version prototype not found');

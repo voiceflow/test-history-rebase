@@ -12,7 +12,7 @@ import { toast } from '@/components/Toast';
 import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { ModalType, NLPProvider, PLAN_TYPE_META, PlanType } from '@/constants';
-import * as Skill from '@/ducks/skill';
+import * as Export from '@/ducks/export';
 import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
 import UploadButton from '@/pages/Canvas/header/ActionGroup/components/UploadButton';
@@ -21,7 +21,8 @@ import { stopImmediatePropagation } from '@/utils/dom';
 
 import { EXPORT_TYPES } from './constants';
 
-const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ isExporting, exportModel }) => {
+const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ exportModel }) => {
+  const [isExporting, setExporting] = React.useState(false);
   const [exportNLPProvider, setExportNLPProvider] = React.useState<NLPProvider | undefined>(undefined);
   const [canExport] = usePermission(Permission.MODEL_EXPORT);
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
@@ -40,7 +41,8 @@ const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ isExportin
     if (error) {
       toast.error(error);
     } else {
-      exportModel(exportNLPProvider!);
+      setExporting(true);
+      exportModel(exportNLPProvider!).then(() => setExporting(false));
     }
   };
 
@@ -79,14 +81,10 @@ const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ isExportin
   );
 };
 
-const mapStateToProps = {
-  isExporting: Skill.isModelExportingSelector,
-};
-
 const mapDispatchToProps = {
-  exportModel: Skill.exportModel,
+  exportModel: Export.exportModel,
 };
 
-type ConnectedExportModelModalProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+type ConnectedExportModelModalProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExportModelModal);
+export default connect(null, mapDispatchToProps)(ExportModelModal);

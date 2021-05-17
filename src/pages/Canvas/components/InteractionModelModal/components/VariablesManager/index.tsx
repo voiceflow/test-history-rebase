@@ -5,6 +5,7 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
 import { BUILT_IN_VARIABLES, InteractionModelTabType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import * as SlotDuck from '@/ducks/slot';
 import { connect } from '@/hocs';
@@ -216,7 +217,7 @@ const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManag
 
 const mapStateToProps = {
   slots: SlotDuck.allSlotsSelector,
-  diagramID: Skill.activeDiagramIDSelector,
+  diagramID: Session.activeDiagramIDSelector,
   localVariables: Selectors.activeDiagramVariablesSelector,
   globalVariables: Skill.globalVariablesSelector,
 };
@@ -231,8 +232,8 @@ const mapDispatchToProps = {
 const mergeProps = (
   ...[{ diagramID }, { removeVariableFromDiagram, replaceVariableSetDiagram }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>
 ) => ({
-  removeLocalVariable: (variable: string) => removeVariableFromDiagram(diagramID, variable),
-  replaceLocalVariables: (variables: string[]) => replaceVariableSetDiagram(diagramID, variables),
+  removeLocalVariable: (variable: string) => removeVariableFromDiagram(diagramID!, variable),
+  replaceLocalVariables: (variables: string[]) => replaceVariableSetDiagram(diagramID!, variables),
 });
 
 type ConnectedVariablesManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;

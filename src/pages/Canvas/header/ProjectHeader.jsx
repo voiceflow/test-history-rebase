@@ -4,7 +4,7 @@ import Button from '@/components/Button';
 import Text from '@/components/Text';
 import { DiagramState, ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
@@ -23,12 +23,10 @@ const getStateLabel = (state) => {
   }
 };
 
-const ProjectHeader = ({ isTemplateWorkspace, projectId, diagramState }) => {
+const ProjectHeader = ({ isTemplateWorkspace, projectID, diagramState }) => {
   const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
 
-  const openCloneModal = async () => {
-    openImportModal({ projectID: projectId, cloning: true });
-  };
+  const openCloneModal = () => openImportModal({ projectID, cloning: true });
 
   return isTemplateWorkspace ? (
     <Button onClick={openCloneModal} icon="flows" iconProps={{ size: 13 }}>
@@ -49,10 +47,8 @@ const ProjectHeader = ({ isTemplateWorkspace, projectId, diagramState }) => {
 
 const mapStateToProps = {
   isTemplateWorkspace: Workspace.isTemplateWorkspaceSelector,
-  projectId: Skill.activeProjectIDSelector,
+  projectID: Session.activeProjectIDSelector,
   diagramState: Creator.diagramStateSelector,
 };
 
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectHeader);
+export default connect(mapStateToProps)(ProjectHeader);

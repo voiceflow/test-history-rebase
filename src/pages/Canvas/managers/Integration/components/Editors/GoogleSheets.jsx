@@ -3,7 +3,8 @@ import _isEmpty from 'lodash/isEmpty';
 import React, { useCallback, useEffect } from 'react';
 
 import { setError } from '@/ducks/modal';
-import { activeSkillCreatorIDSelector, activeSkillIDSelector } from '@/ducks/skill';
+import * as Session from '@/ducks/session';
+import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { Content } from '@/pages/Canvas/components/Editor';
 import IntegrationsService from '@/services/Integrations';
@@ -49,7 +50,7 @@ const SelectGoogleSheetNextStep = (data) => {
   return nextStep;
 };
 
-function GoogleSheetsEditor({ data, onChange, creator_id, skill_id, setError, currentStep, toggleStep, setStep }) {
+function GoogleSheetsEditor({ data, onChange, creatorID, versionID, setError, currentStep, toggleStep, setStep }) {
   const [headers_list, setHeadersList] = React.useState([]);
 
   const updateHeaders = useCallback(async () => {
@@ -62,12 +63,12 @@ function GoogleSheetsEditor({ data, onChange, creator_id, skill_id, setError, cu
     if (spreadSheetId == null || sheetId == null || integrationsUser == null) return;
 
     try {
-      const headers = await IntegrationsService.googleSheets.getSheetHeaders(spreadSheetId, sheetId, integrationsUser, creator_id, skill_id);
+      const headers = await IntegrationsService.googleSheets.getSheetHeaders(spreadSheetId, sheetId, integrationsUser, creatorID, versionID);
       setHeadersList(headers);
     } catch (e) {
       setError(new Error('Blank or invalid headers in spreadsheet. The first row of your spreadsheet must be a header row'));
     }
-  }, [creator_id, data.sheet, data.spreadsheet, data.user, setError, skill_id]);
+  }, [creatorID, data.sheet, data.spreadsheet, data.user, setError, versionID]);
 
   useEffect(() => {
     updateHeaders();
@@ -159,8 +160,8 @@ function GoogleSheetsEditor({ data, onChange, creator_id, skill_id, setError, cu
 }
 
 const mapStateToProps = {
-  skill_id: activeSkillIDSelector,
-  creator_id: activeSkillCreatorIDSelector,
+  versionID: Session.activeVersionIDSelector,
+  creatorID: Skill.activeSkillCreatorIDSelector,
 };
 
 const mapDispatchToProps = {

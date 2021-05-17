@@ -182,9 +182,8 @@ const creatorResetMiddleware: StoreMiddleware = (store) => (next) => (action) =>
 
 // only run middleware if logged in
 const createLoggedInMiddleware = (childMiddleware: StoreMiddleware): StoreMiddleware => (store) => (next) => (action) => {
-  const state = store.getState();
-  const loggedIn = !!Account.userIDSelector(state);
-  if (loggedIn) {
+  const isLoggedIn = Account.isLoggedInSelector(store.getState());
+  if (isLoggedIn) {
     return childMiddleware(store)(next)(action);
   }
   return next(action);

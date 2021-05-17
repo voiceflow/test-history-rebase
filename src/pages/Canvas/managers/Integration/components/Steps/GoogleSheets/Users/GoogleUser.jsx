@@ -8,7 +8,7 @@ import { IntegrationType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import * as Modal from '@/ducks/modal';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks/toggle';
 
@@ -29,7 +29,7 @@ function AddGoogleUser({
   setConfirm,
   clearModal,
   deleteUser: deleteIntUser,
-  skill_id,
+  versionID,
 }) {
   const [addUserModalOpened, toggleAddUserModal] = useToggle(false);
   const [deletingUser, setDeletingUser] = React.useState(false);
@@ -60,7 +60,7 @@ function AddGoogleUser({
           await deleteIntUser('Google Sheets', {
             user: targetUser,
             creator_id: targetUser.creator_id,
-            skill_id,
+            skill_id: versionID,
           });
           setDeletingUser(false);
 
@@ -132,7 +132,7 @@ function AddGoogleUser({
               toggleAddUserModal();
               clearModal();
             }}
-            skill_id={skill_id}
+            skill_id={versionID}
           />
         }
         hideFooter={true}
@@ -147,7 +147,7 @@ const mapStateToProps = {
   integration_users: Integration.integrationUsersSelector,
   integration_users_loading: Integration.integrationUsersLoadingSelector,
   integration_user_error: Integration.integrationUsersErrorSelector,
-  skill_id: Skill.activeSkillIDSelector,
+  versionID: Session.activeVersionIDSelector,
   user: Account.userSelector,
 };
 

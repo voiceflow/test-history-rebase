@@ -8,6 +8,7 @@ import Input from '@/components/Input';
 import SvgIcon from '@/components/SvgIcon';
 import { toast } from '@/components/Toast';
 import * as Diagram from '@/ducks/diagram';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { Thunk } from '@/store/types';
@@ -102,7 +103,7 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
 };
 
 const mapStateToProps = {
-  diagramID: Skill.activeDiagramIDSelector,
+  diagramID: Session.activeDiagramIDSelector,
 };
 
 const mapDispatchToProps = {
@@ -111,7 +112,7 @@ const mapDispatchToProps = {
 };
 
 const mergeProps = (...[{ diagramID }, { addFlowVariable }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
-  addFlowVariable: (variable: string) => addFlowVariable(diagramID, variable),
+  addFlowVariable: (variable: string) => addFlowVariable(diagramID!, variable),
 });
 
 type ConnectedVariableInputProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;

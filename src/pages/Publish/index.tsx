@@ -8,6 +8,7 @@ import { Permission } from '@/config/permissions';
 import { PublishRoute } from '@/config/routes';
 import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { connect, lazy } from '@/hocs';
 import { usePermission } from '@/hooks';
@@ -91,7 +92,7 @@ const Publish: React.FC<PublishProps & ConnectedPublishProps> = ({ match: { path
 
 const mapStateToProps = {
   user: Account.userSelector,
-  versionID: Skill.activeSkillIDSelector,
+  versionID: Session.activeVersionIDSelector,
   platform: Skill.activePlatformSelector,
 };
 

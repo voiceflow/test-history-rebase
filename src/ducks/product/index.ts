@@ -2,8 +2,10 @@ import { Locale } from '@voiceflow/alexa-types';
 
 import client from '@/client';
 import { productAdapter } from '@/client/adapters/project';
+import * as Errors from '@/config/errors';
 import { NEW_PRODUCT_ID } from '@/constants';
-import { activeLocalesSelector, activeProjectIDSelector } from '@/ducks/skill/skill/selectors';
+import * as Session from '@/ducks/session';
+import { activeLocalesSelector } from '@/ducks/skill/skill/selectors';
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from '@/ducks/utils/crud';
 import { Product } from '@/models';
 import { Thunk } from '@/store/types';
@@ -47,7 +49,9 @@ export const createProduct = (): Thunk => async (dispatch, getState) => {
 };
 
 export const copyProduct = (productID: string): Thunk => async (dispatch, getState) => {
-  const projectID = activeProjectIDSelector(getState());
+  const projectID = Session.activeProjectIDSelector(getState());
+
+  Errors.assertProjectID(projectID);
 
   const copiedProduct = await client.platform.alexa.project.copyProduct(projectID, productID);
 
@@ -55,7 +59,9 @@ export const copyProduct = (productID: string): Thunk => async (dispatch, getSta
 };
 
 export const deleteProduct = (productID: string): Thunk => async (dispatch, getState) => {
-  const projectID = activeProjectIDSelector(getState());
+  const projectID = Session.activeProjectIDSelector(getState());
+
+  Errors.assertProjectID(projectID);
 
   await client.platform.alexa.project.deleteProduct(projectID, productID);
 
@@ -67,7 +73,9 @@ export const cancelProduct = (): Thunk => (dispatch) => dispatch(removeProduct(N
 export const uploadProduct = (productID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const product = productByIDSelector(state)(productID);
-  const projectID = activeProjectIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state);
+
+  Errors.assertProjectID(projectID);
 
   if (product.id === NEW_PRODUCT_ID) {
     const alexaProduct = await client.platform.alexa.project.createProduct(projectID, productAdapter.toDB(product));
@@ -84,7 +92,7 @@ export const uploadProduct = (productID: string): Thunk => async (dispatch, getS
 export const handleSkillLocaleChange = (locales: Locale[]): Thunk => async (dispatch, getState) => {
   const state = getState();
   const allProducts = allProductsSelector(state);
-  const projectID = activeProjectIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state)!;
 
   if (allProducts.length) {
     allProducts.forEach((product) => dispatch(updateProduct(product.id, { locales }, true)));
@@ -99,7 +107,9 @@ export const handleSkillLocaleChange = (locales: Locale[]): Thunk => async (disp
 
 export const copyNewProduct = (product: Product): Thunk<string> => async (dispatch, getState) => {
   const state = getState();
-  const projectID = activeProjectIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state);
+
+  Errors.assertProjectID(projectID);
 
   const alexaProduct = await client.platform.alexa.project.createProduct(projectID, productAdapter.toDB({ ...product, id: NEW_PRODUCT_ID }));
 

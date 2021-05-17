@@ -11,7 +11,8 @@ const MOCK_STATE = {
   },
   visual: {
     device: null,
-    sourceID: null,
+    data: null,
+    dataHistory: [],
   },
   muted: false,
   showChips: true,
@@ -27,6 +28,7 @@ const MOCK_STATE = {
   visualDataHistory: [],
   context: {} as any,
   webhook: {} as any,
+  settings: {} as any,
   _persist: { version: 1, rehydrated: false },
 };
 
@@ -51,11 +53,13 @@ suite(Prototype, MOCK_STATE)('Ducks - Prototype', ({ expect, describeReducer, de
 
     describe('activePrototypeModeSelector()', () => {
       it('should select the mode of the active project', () => {
-        expect(select(Prototype.activePrototypeModeSelector, { skill: { projectID: MOCK_PROJECT_ID } })).to.eq(Prototype.PrototypeMode.DISPLAY);
+        expect(select(Prototype.activePrototypeModeSelector, { session: { activeProjectID: MOCK_PROJECT_ID } })).to.eq(
+          Prototype.PrototypeMode.DISPLAY
+        );
       });
 
       it('should select the default mode if not found', () => {
-        expect(select(Prototype.activePrototypeModeSelector, { skill: { projectID: generate.id() } })).to.eq(Prototype.PrototypeMode.CANVAS);
+        expect(select(Prototype.activePrototypeModeSelector, { session: { activeProjectID: generate.id() } })).to.eq(Prototype.PrototypeMode.CANVAS);
       });
     });
   });
@@ -65,7 +69,7 @@ suite(Prototype, MOCK_STATE)('Ducks - Prototype', ({ expect, describeReducer, de
       it('should update the mode of the active project', async () => {
         const mode = Prototype.PrototypeMode.SETTINGS;
 
-        const { expectDispatch } = await applyEffect(Prototype.updateActivePrototypeMode(mode), { skill: { projectID: MOCK_PROJECT_ID } });
+        const { expectDispatch } = await applyEffect(Prototype.updateActivePrototypeMode(mode), { session: { activeProjectID: MOCK_PROJECT_ID } });
 
         expectDispatch(Prototype.updatePrototypeMode(MOCK_PROJECT_ID, mode));
       });

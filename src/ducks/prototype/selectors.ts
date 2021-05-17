@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
 
-import * as Skill from '../skill';
-import { createRootSelector } from '../utils';
+import * as Session from '@/ducks/session';
+import { createRootSelector } from '@/ducks/utils';
+
 import { STATE_KEY } from './constants';
 import { PrototypeLayout, PrototypeMode } from './types';
 
@@ -34,8 +35,8 @@ export const prototypeShowChipsSelector = createSelector([prototypeSelector], ({
 export const prototypeModeSelector = createSelector([prototypeSelector], ({ mode }) => mode);
 
 export const activePrototypeModeSelector = createSelector(
-  [Skill.activeProjectIDSelector, prototypeModeSelector],
-  (projectID, mode) => mode[projectID] || PrototypeMode.CANVAS
+  [Session.activeProjectIDSelector, prototypeModeSelector],
+  (projectID, mode) => (projectID && mode[projectID]) || PrototypeMode.CANVAS
 );
 
 export const prototypeVisualSelector = createSelector([prototypeSelector], ({ visual }) => visual);

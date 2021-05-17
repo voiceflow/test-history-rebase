@@ -2,10 +2,8 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 
 import { ToolsRoute } from '@/config/routes';
-import * as Account from '@/ducks/account';
 import * as Realtime from '@/ducks/realtime';
-import * as Skill from '@/ducks/skill';
-import { connect, lazy } from '@/hocs';
+import { lazy } from '@/hocs';
 import { LockedResourceOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import PrivateRoute from '@/Routes/PrivateRoute';
 
@@ -35,10 +33,4 @@ function Business(props) {
   );
 }
 
-const mapStateToProps = {
-  user: Account.userSelector,
-  skillID: Skill.activeSkillIDSelector,
-  projectID: Skill.activeProjectIDSelector,
-};
-
-export default connect(mapStateToProps)(Business);
+export default React.memo(Business);

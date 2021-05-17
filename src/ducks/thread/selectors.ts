@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import * as Creator from '@/ducks/creator';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import * as CRUD from '@/ducks/utils/crud';
 
 import { STATE_KEY } from './constants';
@@ -16,7 +16,7 @@ export const {
   has: hasThreadsSelector,
 } = CRUD.createCRUDSelectors(STATE_KEY);
 
-export const allThreadIdsSelector = createSelector([allThreadsSelector, Skill.activeDiagramIDSelector], (threads, diagramID) =>
+export const allThreadIdsSelector = createSelector([allThreadsSelector, Session.activeDiagramIDSelector], (threads, diagramID) =>
   threads.filter((thread) => thread.diagramID === diagramID).map((thread) => thread.id)
 );
 
@@ -29,7 +29,7 @@ export const resolvedThreads = createSelector([allUndeletedTheads], (threads) =>
 export const hasThreads = createSelector([allThreadsSelector], (threads) => !!threads.filter((thread) => !thread.deleted).length);
 
 export const activeDiagramThreadsSelector = createSelector(
-  [allUndeletedTheads, Skill.activeDiagramIDSelector, Creator.allNodeIDsSelector],
+  [allUndeletedTheads, Session.activeDiagramIDSelector, Creator.allNodeIDsSelector],
   (threads, diagramID, nodeIDs) =>
     threads.filter((thread) => thread.diagramID === diagramID && !thread.resolved && (!thread.nodeID || nodeIDs.includes(thread.nodeID)))
 );

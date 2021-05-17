@@ -8,7 +8,7 @@ import { Link } from '@/components/Text';
 import Tooltip from '@/components/TippyTooltip';
 import * as Documentation from '@/config/documentation';
 import { ExportFormat } from '@/constants';
-import * as Skill from '@/ducks/skill';
+import * as Export from '@/ducks/export';
 import { connect } from '@/hocs';
 import { useTrackingEvents } from '@/hooks';
 import { ExportItem } from '@/pages/Canvas/header/ActionGroup/components/ShareProject/components';
@@ -19,14 +19,18 @@ import { stopImmediatePropagation } from '@/utils/dom';
 
 import ExportIcon from './ExportIcon';
 
-const ExportProjectButton: React.FC<ConnectedExportProjectButtonProps> = ({ isExporting, exportCanvas }) => {
+const ExportProjectButton: React.FC<ConnectedExportProjectButtonProps> = ({ exportCanvas }) => {
+  const [isExporting, setExporting] = React.useState(false);
   const [trackingEvents] = useTrackingEvents();
   const [selectedExportType, setSelectedExportType] = React.useState(ExportFormat.PNG);
 
-  const onClick = () => {
+  const onClick = async () => {
     trackingEvents.trackExportButtonClick({ format: selectedExportType });
+    setExporting(true);
 
-    exportCanvas(selectedExportType);
+    await exportCanvas(selectedExportType);
+
+    setExporting(false);
   };
 
   return (
@@ -62,14 +66,10 @@ const ExportProjectButton: React.FC<ConnectedExportProjectButtonProps> = ({ isEx
   );
 };
 
-const mapStateToProps = {
-  isExporting: Skill.isCanvasExportingSelector,
-};
-
 const mapDispatchToProps = {
-  exportCanvas: Skill.exportCanvas,
+  exportCanvas: Export.exportCanvas,
 };
 
-type ConnectedExportProjectButtonProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+type ConnectedExportProjectButtonProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExportProjectButton);
+export default connect(null, mapDispatchToProps)(ExportProjectButton);

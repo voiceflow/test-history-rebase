@@ -1,10 +1,11 @@
 import client from '@/client';
 import creatorAdapter from '@/client/adapters/creator';
-import { userIDSelector } from '@/ducks/account';
-import { creatorDiagramIDSelector } from '@/ducks/creator';
-import * as Creator from '@/ducks/creator';
+import * as Errors from '@/config/errors';
+import * as Account from '@/ducks/account';
+import * as Creator from '@/ducks/creator/diagram/selectors';
 import { goToDiagram, goToRootDiagram } from '@/ducks/router';
-import { activeDiagramIDSelector, activePlatformSelector, activeSkillIDSelector } from '@/ducks/skill/skill/selectors';
+import * as Session from '@/ducks/session';
+import { activePlatformSelector } from '@/ducks/skill/skill/selectors';
 import { viewportByIDSelector } from '@/ducks/viewport';
 import { CreatorDiagram } from '@/models';
 import mutableStore from '@/store/mutable';
@@ -35,7 +36,7 @@ export const saveDiagramVariables = (diagramID: string): Thunk => async (_, getS
 };
 
 export const saveActiveDiagramVariables = (): Thunk => async (dispatch, getState) => {
-  const diagramID = creatorDiagramIDSelector(getState());
+  const diagramID = Creator.creatorDiagramIDSelector(getState());
   if (!diagramID) return;
 
   await dispatch(saveDiagramVariables(diagramID));
@@ -87,8 +88,12 @@ export const saveActiveDiagram = (): Thunk => async (dispatch) => {
 };
 
 export const createNewDiagram = (name: string, diagram: PrimativeDiagram = generateDefaultDiagram()): Thunk<string> => async (dispatch, getState) => {
-  const versionID = activeSkillIDSelector(getState());
-  const creatorID = userIDSelector(getState()) as number;
+  const state = getState();
+  const versionID = Session.activeVersionIDSelector(state);
+  const creatorID = Account.userIDSelector(state);
+
+  Errors.assertVersionID(versionID);
+  Errors.assertCreatorID(creatorID);
 
   const { _id: diagramID } = await client.api.diagram.create({
     ...diagram,
@@ -107,8 +112,10 @@ export const copyDiagram = (diagramID: string, { openDiagram = false }: { openDi
   getState
 ) => {
   const state = getState();
-  const versionID = activeSkillIDSelector(state);
+  const versionID = Session.activeVersionIDSelector(state);
   const allDiagrams = allDiagramsSelector(state);
+
+  Errors.assertVersionID(versionID);
 
   const { _id, ...diagram } = await client.api.diagram.get(diagramID);
 
@@ -134,13 +141,15 @@ export const copyDiagram = (diagramID: string, { openDiagram = false }: { openDi
 
 export const deleteDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const versionID = activeSkillIDSelector(state);
+  const versionID = Session.activeVersionIDSelector(state);
+
+  Errors.assertVersionID(versionID);
 
   await client.api.diagram.options({ headers: { rtctimestamp: mutableStore.getRTCTimestamp() } }).delete(diagramID);
   await dispatch(loadVersionDiagrams(versionID));
 
   // if the user is on the deleted diagram, redirect to roott
-  const activeDiagramID = activeDiagramIDSelector(state);
+  const activeDiagramID = Session.activeDiagramIDSelector(state);
   if (diagramID === activeDiagramID) {
     await dispatch(goToRootDiagram());
   }

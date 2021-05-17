@@ -1,5 +1,7 @@
 import client from '@/client';
+import * as Errors from '@/config/errors';
 import * as Modal from '@/ducks/modal';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { Thunk } from '@/store/types';
 import { AbortControl, waitJobFinished } from '@/utils/job';
@@ -12,8 +14,11 @@ const MAX_CHECKS = 30;
 const renderPrototype = (abortControl: AbortControl): Thunk => async (dispatch, getState) => {
   const state = getState();
   const platform = Skill.activePlatformSelector(state);
-  const projectID = Skill.activeProjectIDSelector(state);
-  const versionID = Skill.activeSkillIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state);
+  const versionID = Session.activeVersionIDSelector(state);
+
+  Errors.assertProjectID(projectID);
+  Errors.assertVersionID(versionID);
 
   if (!projectID) {
     return;

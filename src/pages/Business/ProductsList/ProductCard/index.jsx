@@ -6,10 +6,9 @@ import { Tooltip } from 'react-tippy';
 import Dropdown from '@/components/Dropdown';
 import IconButton from '@/components/IconButton';
 import SvgIcon from '@/components/SvgIcon';
-import * as Feature from '@/ducks/feature';
 import * as Product from '@/ducks/product';
 import * as Router from '@/ducks/router';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { PRODUCT_TYPES } from '@/pages/Business/Product/GuidedSteps/PricingModel';
 import LocaleMap from '@/services/LocaleMap';
@@ -101,13 +100,12 @@ ProductCard.proptypes = {
   copyProduct: PropTypes.func,
   deleteProduct: PropTypes.func,
   editProduct: PropTypes.func,
-  skillID: PropTypes.string,
+  versionID: PropTypes.string,
   productID: PropTypes.string,
 };
 
 const mapStateToProps = {
-  skillID: Skill.activeSkillIDSelector,
-  isFeatureEnabled: Feature.isFeatureEnabledSelector,
+  versionID: Session.activeVersionIDSelector,
 };
 
 const mapDispatchToProps = {
@@ -116,10 +114,10 @@ const mapDispatchToProps = {
   goToEditProduct: Router.goToEditProduct,
 };
 
-const mergeProps = ({ skillID }, { copyProduct, deleteProduct, goToEditProduct }, { productID }) => ({
+const mergeProps = ({ versionID }, { copyProduct, deleteProduct, goToEditProduct }, { productID }) => ({
   copyProduct: () => copyProduct(productID),
   deleteProduct: () => deleteProduct(productID),
-  goToEditProduct: () => goToEditProduct(skillID, productID),
+  goToEditProduct: () => goToEditProduct(versionID, productID),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ProductCard);

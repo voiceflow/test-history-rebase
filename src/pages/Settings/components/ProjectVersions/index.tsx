@@ -15,6 +15,7 @@ import * as Errors from '@/config/errors';
 import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { getSettingsMetaProps } from '@/pages/Settings/constants';
@@ -138,8 +139,8 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
 };
 
 const mapStateToProps = {
-  activeVersionID: Skill.activeSkillIDSelector,
-  projectID: Skill.activeProjectIDSelector,
+  activeVersionID: Session.activeVersionIDSelector,
+  projectID: Session.activeProjectIDSelector,
   platform: Skill.activePlatformSelector,
 };
 

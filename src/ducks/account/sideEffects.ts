@@ -1,8 +1,8 @@
 import client from '@/client';
 import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';
+import * as Session from '@/ducks/session';
 import * as PublishInfo from '@/ducks/skill/publishInfo';
-import { activeProjectIDSelector } from '@/ducks/skill/skill/selectors';
 import { Account } from '@/models';
 import { Thunk } from '@/store/types';
 import { Nullable } from '@/types';
@@ -89,7 +89,7 @@ export const updateVendorSkillID = (projectID: string, vendorID: string, skillID
 };
 
 export const updateSelectedVendor = (vendorID: string): Thunk => async (dispatch, getState) => {
-  const projectID = activeProjectIDSelector(getState());
+  const projectID = Session.activeProjectIDSelector(getState())!;
 
   const { skillID } = await client.platform.alexa.project.updateSelectedVendor(projectID, vendorID);
 

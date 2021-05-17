@@ -47,7 +47,7 @@ const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({ met
     };
 
     try {
-      saveSettings(settingsObject, ['error', 'events']);
+      await saveSettings(settingsObject, ['error', 'events']);
     } catch (err) {
       toast.error('Settings Save Error');
     }

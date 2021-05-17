@@ -56,7 +56,7 @@ class GuidedSteps extends React.Component {
   };
 
   changeStep = (e, nextStep) => {
-    e ? e.preventDefault() : null;
+    e?.preventDefault();
 
     if (!this.validStepChange(nextStep)) return;
 

@@ -18,7 +18,7 @@ import { ConnectedProps, MergeArguments } from '@/types';
 
 import ItemContainer from './ItemContainer';
 
-type ThreadItemProps = ThreadType & {};
+type ThreadItemProps = ThreadType;
 
 const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: threadID, resolved, comments, user }) => {
   const engine = React.useContext(EngineContext)!;

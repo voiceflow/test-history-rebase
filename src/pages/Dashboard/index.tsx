@@ -55,7 +55,7 @@ const getBoardFilteredProjects = (projectsIDs: string[], projectsMap: Record<str
   return filtered;
 };
 
-export type DashboardProps = RouteComponentProps & {};
+export type DashboardProps = RouteComponentProps;
 
 export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (props) => {
   const query = props.location?.search ? Query.parse(props.location.search) : null;

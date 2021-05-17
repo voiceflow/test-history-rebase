@@ -110,15 +110,7 @@ export const fetchWorkspace = (): Thunk => async (dispatch, getState) => {
   }
 };
 
-export const createWorkspace = (data: { name: string; image?: string }): Thunk<Workspace> => async (dispatch) => {
-  try {
-    return client.workspace.createWorkspace(data);
-  } catch (err) {
-    dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERROR)));
-
-    throw err;
-  }
-};
+export const createWorkspace = (data: { name: string; image?: string }): Thunk<Workspace> => async () => client.workspace.createWorkspace(data);
 
 export const updateMembers = (members: DBWorkspace.Member[]): Thunk => async (dispatch, getState) => {
   try {

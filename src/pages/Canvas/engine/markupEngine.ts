@@ -2,11 +2,12 @@
 
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
+import { Editor } from 'slate';
 
 import { BlockType, MarkupBlockType } from '@/constants';
 import { useForceUpdate, useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
-import MarkupSlateEditor, { createSlateEditor, MarkupEditor } from '@/pages/Canvas/managers/MarkupText/MarkupSlateEditor';
+import MarkupSlateEditor, { createSlateEditor } from '@/pages/Canvas/managers/MarkupText/MarkupSlateEditor';
 import { Nullable } from '@/types';
 import { objectID } from '@/utils';
 import { isMarkupBlockType } from '@/utils/typeGuards';
@@ -18,7 +19,7 @@ class MarkupEngine extends EngineConsumer {
 
   creatingType: Nullable<MarkupBlockType> = null;
 
-  textEditorsMap: Map<string, MarkupEditor> = new Map();
+  textEditorsMap: Map<string, Editor> = new Map();
 
   finishCreating: (() => void) | null = null;
 
@@ -60,7 +61,7 @@ class MarkupEngine extends EngineConsumer {
     this.engine.focus.set(nodeID);
   }
 
-  useSetupTextEditor(nodeID: string): MarkupEditor {
+  useSetupTextEditor(nodeID: string): Editor {
     const editor = React.useMemo(() => {
       const editor = createSlateEditor();
 
@@ -87,7 +88,7 @@ class MarkupEngine extends EngineConsumer {
     return editor;
   }
 
-  useTextEditor(nodeID: string): MarkupEditor | undefined {
+  useTextEditor(nodeID: string): Editor | undefined {
     const [forceUpdate] = useForceUpdate();
     const editor = this.textEditorsMap.get(nodeID);
 

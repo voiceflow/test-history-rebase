@@ -1,5 +1,6 @@
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
+import { Editor } from 'slate';
 
 import ColorSelect from '@/components/ColorSelect';
 import SliderInputGroup from '@/components/SliderInputGroup';
@@ -7,26 +8,24 @@ import { useDidUpdateEffect, useToggle } from '@/hooks';
 import { Markup } from '@/models';
 import { preventDefault, withEnterPress } from '@/utils/dom';
 
-import { LeafProperty } from '../constants';
-import MarkupSlateEditor, { MarkupEditor } from '../MarkupSlateEditor';
+import { DEFAULT_COLOR, TextProperty } from '../constants';
+import MarkupSlateEditor from '../MarkupSlateEditor';
 import OpacitySliderHandle from './OpacitySliderHandle';
 
-export type TextColorProps = {
-  editor: MarkupEditor;
-};
-
-const DEFAULT_COLOR: Markup.Color = { r: 19, g: 33, b: 68, a: 1 };
+export interface TextColorProps {
+  editor: Editor;
+}
 
 const colorAlfaToString = (color: Markup.Color) => `${(color?.a ?? 1) * 100}`;
 
 const TextColor: React.FC<TextColorProps> = ({ editor }) => {
-  const color: Markup.Color = MarkupSlateEditor.leafProperty<Markup.Color>(editor, LeafProperty.COLOR) || DEFAULT_COLOR;
+  const color = MarkupSlateEditor.textProperty(editor, TextProperty.COLOR) || DEFAULT_COLOR;
   const [pickerInputFocused, togglePickerInputFocused] = useToggle();
 
   const [inputOpacity, setInputOpacity] = React.useState(() => colorAlfaToString(color));
 
   const setColor = (nextColor: Markup.Color) => {
-    MarkupSlateEditor.setLeafProperty(editor, LeafProperty.COLOR, nextColor);
+    MarkupSlateEditor.setTextProperty(editor, TextProperty.COLOR, nextColor);
   };
 
   const onChangeColor = (nextColor: Markup.Color) => {

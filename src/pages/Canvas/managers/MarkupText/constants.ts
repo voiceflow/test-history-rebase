@@ -2,16 +2,18 @@ export const UPDATE_DATA_TIMEOUT = 300;
 export const SLATE_EDITOR_CLASS_NAME = 'slate-editor';
 
 export const DEFAULT_LINK_COLOR = { r: 93, g: 157, b: 245, a: 1 };
+export const DEFAULT_COLOR = { r: 19, g: 33, b: 68, a: 1 };
+export const FAKE_SELECTION_PROPERTY_NAME = 'fakeSelection' as const;
 
-export enum BlockType {
+export enum ElementType {
   LINK = 'link',
 }
 
-export enum BlockProperty {
+export enum ElementProperty {
   TEXT_ALIGN = 'textAlign',
 }
 
-export enum LeafProperty {
+export enum TextProperty {
   COLOR = 'color',
   ITALIC = 'italic',
   UNDERLINE = 'underline',

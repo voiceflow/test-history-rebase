@@ -83,6 +83,7 @@ export const Container = styled.div<{ editable?: boolean; activated?: boolean; i
       isNew &&
       css`
         width: fit-content;
+        min-width: 1px;
 
         & [data-slate-node='text'] {
           white-space: pre;

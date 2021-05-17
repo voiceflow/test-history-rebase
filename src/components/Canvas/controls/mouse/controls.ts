@@ -1,3 +1,5 @@
+import { BlockType } from '@/constants';
+import { ClassName } from '@/styles/constants';
 import { preventDefault } from '@/utils/dom';
 import MouseMovement from '@/utils/mouseMovement';
 
@@ -16,15 +18,16 @@ class Controls extends BaseControls {
   spacebarPressed = false;
 
   keydown = (event: KeyboardEvent) => {
-    if (event.code === 'Space') {
+    if (event.code === 'Space' && !(event.target as HTMLElement)?.closest(`.${ClassName.CANVAS_NODE}--${BlockType.MARKUP_TEXT}`)) {
       this.spacebarPressed = true;
       this.handle({ type: ControlType.START_INTERACTION });
     }
   };
 
   keyup = (event: KeyboardEvent) => {
-    if (event.code === 'Space') {
+    if (event.code === 'Space' && !(event.target as HTMLElement)?.closest(`.${ClassName.CANVAS_NODE}--${BlockType.MARKUP_TEXT}`)) {
       this.spacebarPressed = false;
+
       if (!this.isPanning) {
         this.handle({ type: ControlType.END_INTERACTION });
       }

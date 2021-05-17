@@ -10,11 +10,12 @@ class Handle extends RCSliderHandle {
   focus() {}
 }
 
-const OpacitySliderHandle = ({
-  index,
-  dragging,
-  ...restProps
-}: Omit<HandleProps, 'ariaValueTextFormatter'> & { index: number; dragging?: boolean }): React.ReactElement => {
+interface OpacitySliderHandleProps extends Omit<HandleProps, 'ariaValueTextFormatter'> {
+  index: number;
+  dragging?: boolean;
+}
+
+const OpacitySliderHandle = ({ index, dragging, ...restProps }: OpacitySliderHandleProps): React.ReactElement => {
   if (restProps.value === null) {
     return <></>;
   }

@@ -4,7 +4,7 @@ import { parseToRgb } from 'polished';
 import { Element, Text } from 'slate';
 
 import { Markup } from '@/models';
-import { BlockProperty, BlockType, LeafProperty, TextAlign } from '@/pages/Canvas/managers/MarkupText/constants';
+import { ElementProperty, ElementType, TextAlign, TextProperty } from '@/pages/Canvas/managers/MarkupText/constants';
 
 import { createBlockAdapter } from './utils';
 
@@ -70,9 +70,9 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
           const linkText = text.substr(range.offset, range.length);
           const afterText = text.substring(range.offset + range.length, text.length);
 
-          children[children.length - 1].text = beforeText;
+          (children[children.length - 1] as Text).text = beforeText;
           children.push({
-            type: BlockType.LINK,
+            type: ElementType.LINK,
             url,
             children: [{ text: linkText }],
           });
@@ -83,15 +83,16 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
 
       // remove empty text nodes following each other
       children = children.filter(
-        (node, index) => index === 0 || !('text' in node) || node.text !== '' || !('text' in children[index - 1]) || children[index - 1].text !== ''
+        (node, index) =>
+          index === 0 || !('text' in node) || node.text !== '' || !('text' in children[index - 1]) || (children[index - 1] as Text).text !== ''
       );
 
       const getNodeChildrenOffset = (node: Node): number => {
         let offset = 0;
 
         for (const child of children) {
-          if (Array.isArray(child.children)) {
-            for (const grandchild of child.children as Node[]) {
+          if ('children' in child && Array.isArray(child.children)) {
+            for (const grandchild of child.children as Text[]) {
               if (grandchild === node) {
                 return offset;
               }
@@ -103,7 +104,7 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
               return offset;
             }
 
-            offset += (child.text as string)?.length ?? 0;
+            offset += (child as Text).text?.length ?? 0;
           }
         }
 
@@ -112,7 +113,7 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
 
       const addLeafPropertyAtRange = (nodes: Node[], range: RawDraftInlineStyleRange, style: string, value: unknown): Node[] =>
         nodes.flatMap((node) => {
-          if (Array.isArray(node.children)) {
+          if ('children' in node && Array.isArray(node.children)) {
             return {
               ...node,
               children: addLeafPropertyAtRange(node.children, range, style, value),
@@ -120,7 +121,7 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
           }
 
           const nodeOffset = getNodeChildrenOffset(node);
-          const nodeText = (node.text as string) ?? '';
+          const nodeText = (node as Text).text ?? '';
           const nodeLength = nodeText.length;
           const nodeEnd = nodeOffset + nodeLength;
           const rangeEnd = range.offset + range.length;
@@ -164,16 +165,16 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
           // eslint-disable-next-line default-case
           switch (draftProperty) {
             case DraftInlineStyle.ITALIC:
-              children = addLeafPropertyAtRange(children, styleRange, LeafProperty.ITALIC, true);
+              children = addLeafPropertyAtRange(children, styleRange, TextProperty.ITALIC, true);
               break;
             case DraftInlineStyle.UNDERLINE:
-              children = addLeafPropertyAtRange(children, styleRange, LeafProperty.UNDERLINE, true);
+              children = addLeafPropertyAtRange(children, styleRange, TextProperty.UNDERLINE, true);
               break;
             case DraftInlineStyle.FONT_FAMILY:
-              children = addLeafPropertyAtRange(children, styleRange, LeafProperty.FONT_FAMILY, value);
+              children = addLeafPropertyAtRange(children, styleRange, TextProperty.FONT_FAMILY, value);
               break;
             case DraftInlineStyle.FONT_WEIGHT:
-              children = addLeafPropertyAtRange(children, styleRange, LeafProperty.FONT_WEIGHT, value);
+              children = addLeafPropertyAtRange(children, styleRange, TextProperty.FONT_WEIGHT, value);
               break;
             case DraftInlineStyle.COLOR: {
               try {
@@ -186,7 +187,7 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
                   a: 'alpha' in rgb ? rgb.alpha : 1,
                 };
 
-                children = addLeafPropertyAtRange(children, styleRange, LeafProperty.COLOR, rgba);
+                children = addLeafPropertyAtRange(children, styleRange, TextProperty.COLOR, rgba);
               } catch {
                 // empty
               }
@@ -195,7 +196,7 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
         });
 
       return {
-        [BlockProperty.TEXT_ALIGN]: textAlignment || TextAlign.LEFT,
+        [ElementProperty.TEXT_ALIGN]: textAlignment || TextAlign.LEFT,
         children,
       };
     });

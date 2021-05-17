@@ -1,19 +1,20 @@
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Manager, Popper, Reference } from 'react-popper';
+import { Editor } from 'slate';
 
 import Input from '@/components/Input';
 import Portal from '@/components/Portal';
 import { useDismissable } from '@/hooks/dismiss';
 import { preventDefault, withEnterPress } from '@/utils/dom';
 
-import MarkupSlateEditor, { MarkupEditor } from '../../MarkupSlateEditor';
+import MarkupSlateEditor from '../../MarkupSlateEditor';
 import IconButton from '../IconButton';
 import { PopoverContainer, Title } from './components';
 
-export type HyperlinkProps = {
-  editor: MarkupEditor;
-};
+export interface HyperlinkProps {
+  editor: Editor;
+}
 
 const Hyperlink: React.FC<HyperlinkProps> = ({ editor }) => {
   const link = (MarkupSlateEditor.link(editor)?.url ?? '') as string;

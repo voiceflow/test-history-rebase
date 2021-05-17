@@ -1,11 +1,7 @@
-import { Range, Text } from 'slate';
-import { HistoryEditor } from 'slate-history';
-import { ReactEditor } from 'slate-react';
+import { Editor, Range, Text } from 'slate';
 
-import type { MarkupEditor } from '.';
+import { FAKE_SELECTION_PROPERTY_NAME } from '../constants';
 import MarkupSlateEditor from './editor';
-
-const PROPERTY_NAME = 'fakeSelection';
 
 export interface FakeSelectionEditor {
   applyFakeSelection: () => void;
@@ -15,8 +11,7 @@ export interface FakeSelectionEditor {
   isFakeSelectionApplied: () => boolean;
 }
 
-export const withFakeSelection = <T extends ReactEditor & HistoryEditor>(baseEditor: T): MarkupEditor => {
-  const editor = (baseEditor as any) as MarkupEditor;
+export const withFakeSelection = (editor: Editor): Editor => {
   const { onChange } = editor;
 
   let prevSelectionRange: Range | null = null;
@@ -26,7 +21,7 @@ export const withFakeSelection = <T extends ReactEditor & HistoryEditor>(baseEdi
     if (editor.selection && MarkupSlateEditor.isFocused(editor)) {
       if (fakeSelectionRange && editor.selection !== prevSelectionRange) {
         fakeSelectionRange = null;
-        MarkupSlateEditor.unsetLeafPropertyAtAll(editor, PROPERTY_NAME);
+        MarkupSlateEditor.unsetTextPropertyAtAll(editor, FAKE_SELECTION_PROPERTY_NAME);
       }
 
       prevSelectionRange = editor.selection;
@@ -38,7 +33,7 @@ export const withFakeSelection = <T extends ReactEditor & HistoryEditor>(baseEdi
   editor.applyFakeSelection = () => {
     if (fakeSelectionRange) {
       fakeSelectionRange = null;
-      MarkupSlateEditor.unsetLeafPropertyAtAll(editor, PROPERTY_NAME);
+      MarkupSlateEditor.unsetTextPropertyAtAll(editor, FAKE_SELECTION_PROPERTY_NAME);
     }
 
     if (prevSelectionRange && Range.isCollapsed(prevSelectionRange)) {
@@ -50,14 +45,14 @@ export const withFakeSelection = <T extends ReactEditor & HistoryEditor>(baseEdi
 
     const rangeRef = MarkupSlateEditor.rangeRef(editor, fakeSelectionRange);
 
-    MarkupSlateEditor.setLeafPropertyAtRange(editor, fakeSelectionRange, PROPERTY_NAME, true);
+    MarkupSlateEditor.setTextPropertyAtRange(editor, fakeSelectionRange, FAKE_SELECTION_PROPERTY_NAME, true);
 
     fakeSelectionRange = rangeRef.unref();
   };
 
   editor.removeFakeSelection = () => {
     fakeSelectionRange = null;
-    MarkupSlateEditor.unsetLeafPropertyAtAll(editor, PROPERTY_NAME);
+    MarkupSlateEditor.unsetTextPropertyAtAll(editor, FAKE_SELECTION_PROPERTY_NAME);
   };
 
   editor.setFakeSelectionRange = (range: Range) => {
@@ -72,5 +67,5 @@ export const withFakeSelection = <T extends ReactEditor & HistoryEditor>(baseEdi
 };
 
 export const fakeSelectionLeafStyles = (text: Text): { backgroundColor?: string } => ({
-  backgroundColor: text[PROPERTY_NAME] ? 'rgba(0,0,0,0.15)' : undefined,
+  backgroundColor: text[FAKE_SELECTION_PROPERTY_NAME] ? 'rgba(0,0,0,0.15)' : undefined,
 });

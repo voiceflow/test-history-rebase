@@ -3,6 +3,8 @@ import { RenderElementProps } from 'slate-react';
 
 import { styled } from '@/hocs';
 
+import { LinkElement as LinkElementType } from '../../MarkupSlateEditor';
+
 const ClickableLink = styled.span`
   display: inline;
   cursor: pointer;
@@ -13,8 +15,12 @@ const ClickableLink = styled.span`
   }
 `;
 
-const LinkElement: React.FC<RenderElementProps> = ({ attributes, children, element }) => {
-  const href = element.url as string;
+interface LinkElementProps extends Omit<RenderElementProps, 'element'> {
+  element: LinkElementType;
+}
+
+const LinkElement: React.FC<LinkElementProps> = ({ attributes, children, element }) => {
+  const href = element.url;
 
   const onClick = React.useCallback(
     (event: React.MouseEvent) => {
@@ -25,7 +31,7 @@ const LinkElement: React.FC<RenderElementProps> = ({ attributes, children, eleme
         event.preventDefault();
       }
 
-      if (withoutExtraKeys) {
+      if (href && withoutExtraKeys) {
         // not using http/https here since the links can have custom protocols, like zpl://
         const link = href.startsWith('//') || href.includes('://') ? href : `//${href}`;
 

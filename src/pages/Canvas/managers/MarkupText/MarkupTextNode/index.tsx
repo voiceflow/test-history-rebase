@@ -13,7 +13,7 @@ import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/t
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { BlockAPI } from '@/pages/Canvas/types';
 
-import { BlockType, Font, FONT_WEIGHTS_PER_FONT_FAMILY, FontWeight, LeafProperty, SLATE_EDITOR_CLASS_NAME } from '../constants';
+import { Font, FONT_WEIGHTS_PER_FONT_FAMILY, FontWeight, SLATE_EDITOR_CLASS_NAME, TextProperty } from '../constants';
 import MarkupSlateEditor from '../MarkupSlateEditor';
 import { Border, BorderPosition, Container, DefaultElement, Leaf, LinkElement } from './components';
 import { addDraggableAttr, findAllDraggableParents, removeDraggableAttr } from './utils';
@@ -23,14 +23,17 @@ type MarkupProps = ConnectedMarkupNodeProps<Markup.NodeData.Text> & {
 };
 
 const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({ node, data, isNodeLocked }, ref) => {
-  const isNew = React.useMemo(() => MarkupSlateEditor.isNewState(data.content), []);
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const [editable, setEditable] = React.useState(isNew);
+
+  const isNew = React.useMemo(() => MarkupSlateEditor.isNewState(data.content), []);
+
   const [value, setValue] = React.useState<Node[]>(data.content);
-  const draggableParentsCache = React.useRef<HTMLElement[]>([]);
+  const [editable, setEditable] = React.useState(isNew);
   const [isInitialWidthApplied, setIsInitialWidthApplied] = React.useState(false);
+
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const draggableParentsCache = React.useRef<HTMLElement[]>([]);
 
   const cache = useCache({ value, skipEditableFocus: false }, { value });
 
@@ -80,6 +83,9 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
     if (!MarkupSlateEditor.serialize(cache.current.value)) {
       engine.node.remove(node.id);
 
+      addDraggableAttr(draggableParentsCache.current);
+      draggableParentsCache.current = [];
+
       return;
     }
 
@@ -106,31 +112,31 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
       MarkupSlateEditor.deselect(editor);
       MarkupSlateEditor.blur(editor);
     } else if (isActionKey && event.key === 'b') {
-      const fontFamily = MarkupSlateEditor.leafProperty<Font>(editor, LeafProperty.FONT_FAMILY) || Font.OPEN_SANS;
-      const fontWeight = MarkupSlateEditor.leafProperty<FontWeight>(editor, LeafProperty.FONT_WEIGHT) || FontWeight.REGULAR;
+      const fontFamily = MarkupSlateEditor.textProperty(editor, TextProperty.FONT_FAMILY) || Font.OPEN_SANS;
+      const fontWeight = MarkupSlateEditor.textProperty(editor, TextProperty.FONT_WEIGHT) || FontWeight.REGULAR;
 
       const nextFontWeight = fontWeight === FontWeight.REGULAR ? FontWeight.BOLD : FontWeight.REGULAR;
 
       if ((FONT_WEIGHTS_PER_FONT_FAMILY[fontFamily] || FONT_WEIGHTS_PER_FONT_FAMILY[Font.OPEN_SANS])?.includes(nextFontWeight)) {
-        MarkupSlateEditor.setLeafProperty(editor, LeafProperty.FONT_WEIGHT, nextFontWeight);
+        MarkupSlateEditor.setTextProperty(editor, TextProperty.FONT_WEIGHT, nextFontWeight);
       }
     } else if (isActionKey && event.key === 'i') {
-      const isItalicActive = MarkupSlateEditor.isLeafPropertyActive(editor, LeafProperty.ITALIC, true);
+      const isItalicActive = MarkupSlateEditor.isTextPropertyActive(editor, TextProperty.ITALIC, true);
 
-      MarkupSlateEditor.setLeafProperty(editor, LeafProperty.ITALIC, !isItalicActive);
+      MarkupSlateEditor.setTextProperty(editor, TextProperty.ITALIC, !isItalicActive);
     } else if (isActionKey && event.key === 'u') {
-      const isUnderlineActive = MarkupSlateEditor.isLeafPropertyActive(editor, LeafProperty.UNDERLINE, true);
+      const isUnderlineActive = MarkupSlateEditor.isTextPropertyActive(editor, TextProperty.UNDERLINE, true);
 
-      MarkupSlateEditor.setLeafProperty(editor, LeafProperty.UNDERLINE, !isUnderlineActive);
+      MarkupSlateEditor.setTextProperty(editor, TextProperty.UNDERLINE, !isUnderlineActive);
     }
   }, []);
 
-  const renderElement = React.useCallback((props: RenderElementProps) => {
-    if (props.element.type === BlockType.LINK) {
-      return <LinkElement {...props} />;
+  const renderElement = React.useCallback(({ element, ...props }: RenderElementProps) => {
+    if (MarkupSlateEditor.isLink(element)) {
+      return <LinkElement {...props} element={element} />;
     }
 
-    return <DefaultElement {...props} />;
+    return <DefaultElement {...props} element={element} />;
   }, []);
 
   const onContainerDoubleClick = React.useCallback(() => {

@@ -1,31 +1,32 @@
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
+import { Editor } from 'slate';
 
 import Select from '@/components/Select';
 import { preventDefault } from '@/utils/dom';
 
-import { Font, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, FONTS_LABELS, FontWeight, LeafProperty } from '../../constants';
-import MarkupSlateEditor, { MarkupEditor } from '../../MarkupSlateEditor';
+import { Font, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, FONTS_LABELS, FontWeight, TextProperty } from '../../constants';
+import MarkupSlateEditor from '../../MarkupSlateEditor';
 import { FormGroup } from './components';
 
-type FontStylesProps = {
-  editor: MarkupEditor;
-};
+interface FontStylesProps {
+  editor: Editor;
+}
 
 const FontStyles: React.FC<FontStylesProps> = ({ editor }) => {
-  const fontFamily = MarkupSlateEditor.leafProperty<Font>(editor, LeafProperty.FONT_FAMILY) || Font.OPEN_SANS;
-  const fontWeight = MarkupSlateEditor.leafProperty<FontWeight>(editor, LeafProperty.FONT_WEIGHT) || FontWeight.REGULAR;
+  const fontFamily = MarkupSlateEditor.textProperty(editor, TextProperty.FONT_FAMILY) || Font.OPEN_SANS;
+  const fontWeight = MarkupSlateEditor.textProperty(editor, TextProperty.FONT_WEIGHT) || FontWeight.REGULAR;
 
   const onChangeFontWeight = (value: FontWeight) => {
-    MarkupSlateEditor.setLeafProperty(editor, LeafProperty.FONT_WEIGHT, value);
+    MarkupSlateEditor.setTextProperty(editor, TextProperty.FONT_WEIGHT, value);
   };
 
   const onChangeFontFamily = (value: Font) => {
     unstable_batchedUpdates(() => {
-      MarkupSlateEditor.setLeafProperty(editor, LeafProperty.FONT_FAMILY, value);
+      MarkupSlateEditor.setTextProperty(editor, TextProperty.FONT_FAMILY, value);
 
       if (!FONT_WEIGHTS_PER_FONT_FAMILY[value].includes(fontWeight)) {
-        MarkupSlateEditor.setLeafProperty(editor, LeafProperty.FONT_WEIGHT, FONT_WEIGHTS_PER_FONT_FAMILY[value][0]);
+        MarkupSlateEditor.setTextProperty(editor, TextProperty.FONT_WEIGHT, FONT_WEIGHTS_PER_FONT_FAMILY[value][0]);
       }
     });
   };

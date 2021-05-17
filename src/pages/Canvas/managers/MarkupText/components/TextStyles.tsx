@@ -1,31 +1,32 @@
 import React from 'react';
+import { Editor } from 'slate';
 
 import { preventDefault } from '@/utils/dom';
 
-import { LeafProperty } from '../constants';
-import MarkupSlateEditor, { MarkupEditor } from '../MarkupSlateEditor';
+import { TextProperty } from '../constants';
+import MarkupSlateEditor from '../MarkupSlateEditor';
 import IconButton from './IconButton';
 
-type TextStylesProps = {
-  editor: MarkupEditor;
-};
+interface TextStylesProps {
+  editor: Editor;
+}
 
 const TextStyles: React.FC<TextStylesProps> = ({ editor }) => {
-  const isItalicActive = MarkupSlateEditor.isLeafPropertyActive(editor, LeafProperty.ITALIC, true);
-  const isUnderlineActive = MarkupSlateEditor.isLeafPropertyActive(editor, LeafProperty.UNDERLINE, true);
+  const isItalicActive = MarkupSlateEditor.isTextPropertyActive(editor, TextProperty.ITALIC, true);
+  const isUnderlineActive = MarkupSlateEditor.isTextPropertyActive(editor, TextProperty.UNDERLINE, true);
 
   return (
     <>
       <IconButton
         icon="italic"
         active={isItalicActive}
-        onMouseDown={preventDefault(() => MarkupSlateEditor.setLeafProperty(editor, LeafProperty.ITALIC, !isItalicActive))}
+        onMouseDown={preventDefault(() => MarkupSlateEditor.setTextProperty(editor, TextProperty.ITALIC, !isItalicActive))}
       />
 
       <IconButton
         icon="underline"
         active={isUnderlineActive}
-        onMouseDown={preventDefault(() => MarkupSlateEditor.setLeafProperty(editor, LeafProperty.UNDERLINE, !isUnderlineActive))}
+        onMouseDown={preventDefault(() => MarkupSlateEditor.setTextProperty(editor, TextProperty.UNDERLINE, !isUnderlineActive))}
       />
     </>
   );

@@ -118,11 +118,15 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
         zoom.current = 1;
 
         initializeStylesScheduler(() => {
+          if (!position.current || !snapshot.current) {
+            return;
+          }
+
           el.style.display = 'block';
-          el.style.left = `${position.current![0]}px`;
-          el.style.top = `${position.current![1]}px`;
-          el.style.width = `${snapshot.current!.width}px`;
-          el.style.height = `${snapshot.current!.height}px`;
+          el.style.left = `${position.current[0]}px`;
+          el.style.top = `${position.current[1]}px`;
+          el.style.width = `${snapshot.current.width}px`;
+          el.style.height = `${snapshot.current.height}px`;
           el.style.transform = `rotate(${rotation.current}rad)`;
         });
       },

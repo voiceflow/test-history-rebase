@@ -7,9 +7,10 @@ import * as Skill from '@/ducks/skill';
 import { compose, connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
 import PlayButton from '@/pages/Canvas/components/PlayButton';
-import { EngineContext, NodeEntityContext, NodeEntityProvider, PlatformContext } from '@/pages/Canvas/contexts';
+import { EngineContext, NodeEntityContext, NodeEntityProvider } from '@/pages/Canvas/contexts';
 import { FlowStartBlock, HomeStartBlock } from '@/pages/Canvas/managers/Start/StartBlock';
 import { BlockAPI } from '@/pages/Canvas/types';
+import { PlatformContext } from '@/pages/Skill/contexts';
 import { ConnectedProps, MergeArguments } from '@/types';
 
 import NodeStep from './NodeStep';

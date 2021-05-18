@@ -9,19 +9,18 @@ import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
 import SuggestionChips, { chipFactory } from '@/pages/Canvas/components/SuggestionChips';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { useIsPlatform } from '@/pages/Skill/hooks';
+import { PlatformContext } from '@/pages/Skill/contexts';
 
 import { HelpTooltip } from './components';
 
 const PromptEditor: NodeEditor<NodeData.Prompt> = ({ data, onChange, pushToPath }) => {
   const hasReprompt = !!data.reprompt;
+  const isAlexa = React.useContext(PlatformContext) === PlatformType.ALEXA;
   const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasReprompt ? null : repromptFactory() }), [hasReprompt, onChange]);
   const onRepromptClick = React.useCallback(() => pushToPath?.({ type: 'reprompts', label: 'Reprompts' }), [pushToPath]);
 
   const hasChips = !!data.chips;
   const toggleChips = React.useCallback(() => onChange({ chips: hasChips ? null : chipFactory() }), [hasChips, onChange]);
-
-  const isAlexa = useIsPlatform(PlatformType.ALEXA);
 
   return (
     <Content

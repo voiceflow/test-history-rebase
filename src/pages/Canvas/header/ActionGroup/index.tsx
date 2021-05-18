@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { PlatformType } from '@/constants';
-import * as Project from '@/ducks/project';
-import { connect } from '@/hocs';
+import { GENERAL_PLATFORMS } from '@/constants';
 import { ResourcesHeaderButton, SubHeaderItem } from '@/pages/Dashboard/Header/components';
+import { PlatformContext } from '@/pages/Skill/contexts';
 import { useCanvasMode } from '@/pages/Skill/hooks';
 
 import { CanvasSettingsButton, GroupContainer, ShareProject, TestButton, UploadProjectGroup } from './components';
 
-function ActionGroup(props: { platform: PlatformType }) {
+const ActionGroup: React.FC = () => {
   const isCanvasMode = useCanvasMode();
+  const platform = React.useContext(PlatformContext);
 
   return (
     <>
@@ -22,7 +22,7 @@ function ActionGroup(props: { platform: PlatformType }) {
 
       {isCanvasMode ? (
         <>
-          {props.platform === PlatformType.GENERAL ? (
+          {GENERAL_PLATFORMS.includes(platform!) ? (
             <UploadProjectGroup />
           ) : (
             <GroupContainer>
@@ -45,10 +45,6 @@ function ActionGroup(props: { platform: PlatformType }) {
       )}
     </>
   );
-}
-
-const mapStateToProps = {
-  platform: Project.activePlatformSelector,
 };
 
-export default connect(mapStateToProps)(ActionGroup);
+export default ActionGroup;

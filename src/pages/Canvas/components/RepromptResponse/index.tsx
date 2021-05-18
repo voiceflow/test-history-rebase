@@ -9,7 +9,8 @@ import { Node, NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import NoMatchItem from '@/pages/Canvas/components/NoMatchItem';
 import SpeakAndAudioList from '@/pages/Canvas/components/SpeakAndAudioList';
-import { EngineContext, PlatformContext } from '@/pages/Canvas/contexts';
+import { EngineContext } from '@/pages/Canvas/contexts';
+import { PlatformContext } from '@/pages/Skill/contexts';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { head } from '@/utils/array';
 

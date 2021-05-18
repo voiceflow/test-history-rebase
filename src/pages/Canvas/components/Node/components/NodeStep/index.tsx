@@ -6,7 +6,8 @@ import { BlockVariant } from '@/constants/canvas';
 import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import * as Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
-import { EngineContext, ManagerContext, NodeEntityContext, PlatformContext, PortEntityProvider } from '@/pages/Canvas/contexts';
+import { EngineContext, ManagerContext, NodeEntityContext, PortEntityProvider } from '@/pages/Canvas/contexts';
+import { PlatformContext } from '@/pages/Skill/contexts';
 import { buildVirtualDOMRect } from '@/utils/dom';
 
 import NodeLifecycle from '../NodeLifecycle';

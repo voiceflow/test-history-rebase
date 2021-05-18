@@ -3,9 +3,7 @@ import React from 'react';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import TippyTooltip from '@/components/TippyTooltip';
 import { PlatformType } from '@/constants';
-import * as Project from '@/ducks/project';
-import { connect } from '@/hocs';
-import { ConnectedProps } from '@/types';
+import { PlatformContext } from '@/pages/Skill/contexts';
 import { createPlatformSelector } from '@/utils/platform';
 
 type UploadButtonProps = {
@@ -21,16 +19,14 @@ const getUploadMessage = createPlatformSelector(
   ''
 );
 
-const UploadButton: React.FC<UploadButtonProps & ConnectedUploadButtonProps> = ({ isJobActive, platform, onClick }) => (
-  <TippyTooltip title={getUploadMessage(platform)} position="bottom">
-    <IconButton preventFocusStyle variant={IconButtonVariant.ACTION} icon="loader" large onClick={onClick} active={isJobActive} />
-  </TippyTooltip>
-);
+const UploadButton: React.FC<UploadButtonProps> = ({ isJobActive, onClick }) => {
+  const platform = React.useContext(PlatformContext)!;
 
-const mapStateToProps = {
-  platform: Project.activePlatformSelector,
+  return (
+    <TippyTooltip title={getUploadMessage(platform)} position="bottom">
+      <IconButton preventFocusStyle variant={IconButtonVariant.ACTION} icon="loader" large onClick={onClick} active={isJobActive} />
+    </TippyTooltip>
+  );
 };
 
-type ConnectedUploadButtonProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(UploadButton) as React.FC<UploadButtonProps>;
+export default UploadButton;

@@ -7,6 +7,7 @@ import { Alert } from 'reactstrap';
 import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
+import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as SkillDuck from '@/ducks/skill';
@@ -33,7 +34,7 @@ import { getActivePageAndMatch } from '@/utils/routes';
 import ProjectSubHeader from './components/ProjectSubHeader';
 import ProjectTitle from './components/ProjectTitle';
 import { PAGES_MATCHES, TIMEOUT_COUNT } from './constants';
-import { ExportProvider, MarkupProvider, NLPProvider, PublishProvider } from './contexts';
+import { ExportProvider, MarkupProvider, NLPProvider, PlatformProvider, PublishProvider } from './contexts';
 
 const Diagram = lazy(() => import(/* webpackPrefetch: true */ './components/Diagram'));
 const Business = lazy(() => import('@/pages/Business'));
@@ -52,6 +53,7 @@ export type InjectedSkillProps = {
 
 const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = ({
   error,
+  platform,
   diagramID,
   activePage,
   activeSkill,
@@ -88,53 +90,55 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
 
   return (
     <MarkupProvider>
-      <Helmet>
-        <title>{activeSkill.name || 'Voiceflow Creator'}</title>
-      </Helmet>
-      {!isOnlyViewer && (
-        <>
-          <IdleTimer ref={idleTimer} element={document} onIdle={setIdle} debounce={250} timeout={TIMEOUT_COUNT} />
-          <InactivityModal open={isIdle} onActive={setActive} />
-        </>
-      )}
-      <PublishProvider>
-        <ExportProvider>
-          <NLPProvider>
-            <Page
-              header={!isPrototypingMode && <ProjectTitle title={activeSkill.name} onChange={saveProjectName} />}
-              subHeader={!isPrototypingMode && <ProjectSubHeader showPublish={canEditCanvas} activePage={activePage} />}
-              canScroll={false}
-              headerChildren={<CanvasHeader />}
-              onNavigateBack={() => {
-                if (isPrototypingMode) {
-                  goToDesign();
-                } else {
-                  goToDashboard();
-                }
-              }}
-              navigateBackText={isPrototypingMode ? 'Back' : ''}
-            >
-              <Switch>
-                <PrivateRoute
-                  path={[Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
-                  component={Diagram}
-                  diagramID={diagramID}
-                />
+      <PlatformProvider value={platform}>
+        <Helmet>
+          <title>{activeSkill.name || 'Voiceflow Creator'}</title>
+        </Helmet>
+        {!isOnlyViewer && (
+          <>
+            <IdleTimer ref={idleTimer} element={document} onIdle={setIdle} debounce={250} timeout={TIMEOUT_COUNT} />
+            <InactivityModal open={isIdle} onActive={setActive} />
+          </>
+        )}
+        <PublishProvider>
+          <ExportProvider>
+            <NLPProvider>
+              <Page
+                header={!isPrototypingMode && <ProjectTitle title={activeSkill.name} onChange={saveProjectName} />}
+                subHeader={!isPrototypingMode && <ProjectSubHeader showPublish={canEditCanvas} activePage={activePage} />}
+                canScroll={false}
+                headerChildren={<CanvasHeader />}
+                onNavigateBack={() => {
+                  if (isPrototypingMode) {
+                    goToDesign();
+                  } else {
+                    goToDashboard();
+                  }
+                }}
+                navigateBackText={isPrototypingMode ? 'Back' : ''}
+              >
+                <Switch>
+                  <PrivateRoute
+                    path={[Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
+                    component={Diagram}
+                    diagramID={diagramID}
+                  />
 
-                <PrivateRoute path={Path.PROJECT_TOOLS} component={Business} />
+                  <PrivateRoute path={Path.PROJECT_TOOLS} component={Business} />
 
-                <PrivateRoute path={Path.PROJECT_MIGRATE} component={Migrate} />
+                  <PrivateRoute path={Path.PROJECT_MIGRATE} component={Migrate} />
 
-                <PrivateRoute path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
+                  <PrivateRoute path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
 
-                <PrivateRoute path={Path.PROJECT_PUBLISH} component={Publish} />
+                  <PrivateRoute path={Path.PROJECT_PUBLISH} component={Publish} />
 
-                <Redirect to={Path.PROJECT_CANVAS} />
-              </Switch>
-            </Page>
-          </NLPProvider>
-        </ExportProvider>
-      </PublishProvider>
+                  <Redirect to={Path.PROJECT_CANVAS} />
+                </Switch>
+              </Page>
+            </NLPProvider>
+          </ExportProvider>
+        </PublishProvider>
+      </PlatformProvider>
     </MarkupProvider>
   );
 };
@@ -142,6 +146,7 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
 const mapStateToProps = {
   activeSkill: SkillDuck.activeSkillSelector,
   isConnected: Realtime.isRealtimeConnectedSelector,
+  platform: Project.activePlatformSelector,
   isOnlyViewer: isOnlyViewerSelector,
 };
 

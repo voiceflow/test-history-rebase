@@ -8,16 +8,17 @@ import AudioUpload from '@/components/Upload/AudioUpload';
 import VariablesInput from '@/components/VariablesInput';
 import { PlatformType, RepromptType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
+import { PlatformContext } from '@/pages/Skill/contexts';
 
 import ResponseTypeSelect from './ResponseTypeSelect';
 
-const focusedNodeRepromptSelector = createSelector(Creator.focusedNodeDataSelector, (data) => data && data.reprompt);
+const focusedNodeRepromptSelector = createSelector([Creator.focusedNodeDataSelector], (data) => data && data.reprompt);
 
-const NoReplyResponseForm = ({ focus, reprompt, platform }) => {
+const NoReplyResponseForm = ({ focus, reprompt }) => {
+  const platform = React.useContext(PlatformContext);
   const updateData = useUpdateData(focus.target);
   const updateReprompt = React.useCallback((value) => updateData({ reprompt: { ...reprompt, ...value } }), [reprompt, updateData]);
   const isVoice = reprompt?.type === RepromptType.TEXT;
@@ -54,7 +55,6 @@ const NoReplyResponseForm = ({ focus, reprompt, platform }) => {
 };
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
   focus: Creator.creatorFocusSelector,
   reprompt: focusedNodeRepromptSelector,
 };

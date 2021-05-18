@@ -4,8 +4,7 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { HelpTooltip } from '@/components/IntentForm';
 import OverflowMenu from '@/components/OverflowMenu';
 import { PlatformType } from '@/constants';
-import { focusedNodeSelector } from '@/ducks/creator';
-import * as Project from '@/ducks/project';
+import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useManager, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
@@ -14,15 +13,17 @@ import SuggestionChips, { chipFactory } from '@/pages/Canvas/components/Suggesti
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import ElseResponse from '@/pages/Canvas/managers/Choice/components/ElseResponse';
+import { PlatformContext } from '@/pages/Skill/contexts';
 
 import { NODE_CONFIG } from '../constants';
 import DraggableItem from './DraggableItem';
 
 const choiceFactory = () => NODE_CONFIG.factory().data.choices[0];
 
-function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
+function ChoiceManager({ data, onChange, focusedNode, pushToPath }) {
   const { choices } = data;
 
+  const platform = React.useContext(PlatformContext);
   const isAlexa = platform === PlatformType.ALEXA;
   const engine = React.useContext(EngineContext);
   const [isDragging, toggleDragging] = useToggle(false);
@@ -132,8 +133,7 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
 }
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
-  focusedNode: focusedNodeSelector,
+  focusedNode: Creator.focusedNodeSelector,
 };
 
 export default connect(mapStateToProps)(ChoiceManager);

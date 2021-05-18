@@ -3,8 +3,8 @@ import React from 'react';
 import { NodeData, SpeakData } from '@/models';
 import NoMatchItem from '@/pages/Canvas/components/NoMatchItem';
 import SpeakAndAudioList from '@/pages/Canvas/components/SpeakAndAudioList';
-import { PlatformContext } from '@/pages/Canvas/contexts';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
+import { PlatformContext } from '@/pages/Skill/contexts';
 
 const MAX_REPROMPTS = 3;
 

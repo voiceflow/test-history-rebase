@@ -5,6 +5,7 @@ import client from '@/client';
 import creatorAdapter from '@/client/adapters/creator';
 import * as Creator from '@/ducks/creator';
 import * as Project from '@/ducks/project';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { ProjectLoadingGate, WorkspaceFeatureLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
@@ -16,42 +17,42 @@ import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
 import useEngine from '@/pages/Canvas/engine';
 import { getManager } from '@/pages/Canvas/managers';
-import { MarkupProvider } from '@/pages/Skill/contexts';
+import { MarkupProvider, PlatformProvider } from '@/pages/Skill/contexts';
 import { BLOCK_WIDTH } from '@/styles/theme';
-import { Point } from '@/types';
+import { ConnectedProps, Point } from '@/types';
 import { compose } from '@/utils/functional';
 import { isMarkupBlockType, isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
 import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark, MockRealtimeGate } from './components';
 
-const ExportCanvas: React.FC<{ isOnPaidPlan: boolean; diagramID: string; initialize: (diagramID: string) => void }> = ({
-  diagramID,
-  initialize,
-  isOnPaidPlan,
-}) => {
+const ExportCanvas: React.FC<ConnectedExportProps> = ({ platform, diagramID, initialize, isOnPaidPlan }) => {
   const engine = useEngine();
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
 
   React.useEffect(() => {
-    initialize(diagramID);
-  }, []);
+    if (diagramID) {
+      initialize(diagramID);
+    }
+  }, [diagramID]);
 
   return (
-    <PresentationModeProvider>
-      <MarkupProvider>
-        <ManagerProvider value={getManager as any}>
-          <CanvasProviders engine={engine}>
-            <ExportGlobalStyle />
-            <ExportWatermark isOnPaidPlan={isOnPaidPlan} />
-            <ExportCanvasDiagram onRegister={registerCanvas}>
-              <MarkupLayer />
-              <LinkLayer />
-              <NodeLayer />
-            </ExportCanvasDiagram>
-          </CanvasProviders>
-        </ManagerProvider>
-      </MarkupProvider>
-    </PresentationModeProvider>
+    <PlatformProvider value={platform}>
+      <PresentationModeProvider>
+        <MarkupProvider>
+          <ManagerProvider value={getManager as any}>
+            <CanvasProviders engine={engine}>
+              <ExportGlobalStyle />
+              <ExportWatermark isOnPaidPlan={!!isOnPaidPlan} />
+              <ExportCanvasDiagram onRegister={registerCanvas}>
+                <MarkupLayer />
+                <LinkLayer />
+                <NodeLayer />
+              </ExportCanvasDiagram>
+            </CanvasProviders>
+          </ManagerProvider>
+        </MarkupProvider>
+      </PresentationModeProvider>
+    </PlatformProvider>
   );
 };
 
@@ -119,12 +120,16 @@ const initialize = (diagramID: string) => async (dispatch: any, getState: any) =
 };
 
 const mapStateToProps = {
+  diagramID: Session.activeDiagramIDSelector,
   isOnPaidPlan: Workspace.isOnPaidPlanSelector,
+  platform: Project.activePlatformSelector,
 };
 
 const mapDispatchToProps = {
   initialize,
 };
+
+type ConnectedExportProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
 export default compose(
   removeIntercom,

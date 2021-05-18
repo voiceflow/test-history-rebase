@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { EngineContext, PlatformContext } from '@/pages/Canvas/contexts';
+import { EngineContext } from '@/pages/Canvas/contexts';
+import { PlatformContext } from '@/pages/Skill/contexts';
 
 // eslint-disable-next-line import/prefer-default-export
 export function usePortFilter() {

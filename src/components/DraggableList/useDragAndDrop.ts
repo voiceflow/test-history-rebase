@@ -90,6 +90,14 @@ const useDragAndDrop = <I extends { id: string } | any>(
     connectPreview(getEmptyImage(), { captureDraggingState: true });
   }, []);
 
+  React.useEffect(
+    () => () => {
+      connectDrop(null);
+      connectDrag(null);
+    },
+    [connectDrop, connectDrag]
+  );
+
   const connectedRootRef = partialDrag ? connectDrop(rootRef) : connectDrag(connectDrop(rootRef));
   const connectedDragRef = partialDrag ? connectDrag(dragRef) : null;
 

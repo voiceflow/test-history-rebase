@@ -85,7 +85,7 @@ const Item: React.FC<ItemProps & ConnectedItemProps> = ({
           className={ClassName.FLOW_MENU_ITEM}
           onClick={isActive ? undefined : () => goToDiagram(id)}
           isActive={isActive}
-          onContextMenu={onContextMenu}
+          onContextMenu={id !== rootDiagramID ? onContextMenu : undefined}
           isContextMenuOpen={isOpen}
         >
           {renameEnabled ? (

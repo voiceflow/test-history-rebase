@@ -1,10 +1,10 @@
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
-import { PlatformType } from '@/constants';
+import { GENERAL_PLATFORMS } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as Project from '@/ducks/project';
 import * as Prototype from '@/ducks/prototype';
-import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useTheme } from '@/hooks';
 import PrototypeDisplaySettings from '@/pages/Prototype/components/PrototypeDisplaySettings';
@@ -53,7 +53,7 @@ const PrototypeOverlay: React.FC<ConnectedDiagramProps> = ({ platform, prototype
 
   widthRef.current = getPrototypeSettingsWidth();
 
-  const isGeneral = platform === PlatformType.GENERAL;
+  const isGeneral = GENERAL_PLATFORMS.includes(platform);
   const isPrototypeSidebarOpened = isPrototypeVariables || isPrototypeSettings || (isPrototypeDisplay && !isGeneral);
 
   return (
@@ -87,7 +87,7 @@ const PrototypeOverlay: React.FC<ConnectedDiagramProps> = ({ platform, prototype
 };
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
   prototypeMode: Prototype.activePrototypeModeSelector,
 };
 

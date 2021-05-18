@@ -10,7 +10,7 @@ import Section from '@/components/Section';
 import { ClickableText } from '@/components/Text';
 import * as Intents from '@/ducks/intent';
 import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
-import * as Skill from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import * as Slot from '@/ducks/slot';
 import { compose, connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -111,7 +111,7 @@ const mapStateToProps = {
   slots: Slot.allSlotsSelector,
   intent: Intents.intentByIDSelector,
   allIntents: Intents.allIntentsSelector,
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
 };
 
 const mapDispatchToProps = {

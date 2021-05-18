@@ -3,9 +3,9 @@ import React from 'react';
 import Flex from '@/components/Flex';
 import Tabs from '@/components/Tabs';
 import { Permission } from '@/config/permissions';
-import { PlatformType } from '@/constants';
+import { GENERAL_PLATFORMS } from '@/constants';
+import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
-import * as Skill from '@/ducks/skill';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useHotKeys, usePermission } from '@/hooks';
@@ -50,7 +50,7 @@ const ProjectSubHeader: React.FC<ProjectSubHeaderProps & ConnectedSkillSubHeader
 
   const headerOptions = TABS.filter((tab) => tab.value !== 'prototype');
   const options =
-    showPublish && !(platform === PlatformType.GENERAL && !codeExport) ? headerOptions : headerOptions.filter((tab) => tab.value !== 'publish');
+    showPublish && !(GENERAL_PLATFORMS.includes(platform) && !codeExport) ? headerOptions : headerOptions.filter((tab) => tab.value !== 'publish');
 
   const onChange = React.useCallback(
     (value) => {
@@ -82,7 +82,7 @@ const ProjectSubHeader: React.FC<ProjectSubHeaderProps & ConnectedSkillSubHeader
 };
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
   isViewerOrLibraryRole: Workspace.isViewerOrLibraryRoleSelector,
 };
 

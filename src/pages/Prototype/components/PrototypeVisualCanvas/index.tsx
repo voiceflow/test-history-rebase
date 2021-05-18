@@ -5,8 +5,8 @@ import React from 'react';
 import Box from '@/components/Box';
 import Canvas from '@/components/Canvas';
 import SvgIcon from '@/components/SvgIcon';
+import * as Project from '@/ducks/project';
 import * as Prototype from '@/ducks/prototype';
-import * as Skill from '@/ducks/skill';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { useLinkedState } from '@/hooks';
@@ -70,7 +70,7 @@ const PrototypeVisualCanvas: React.FC<PrototypeVisualCanvasProps & ConnectedProt
 const mapStateToProps = {
   data: Prototype.prototypeVisualDataSelector,
   device: Prototype.prototypeVisualDeviceSelector,
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
   controlScheme: UI.canvasNavigationSelector,
 };
 

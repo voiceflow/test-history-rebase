@@ -6,8 +6,8 @@ import creatorAdapter from '@/client/adapters/creator';
 import * as Errors from '@/config/errors';
 import { DiagramState } from '@/constants';
 import * as Diagram from '@/ducks/diagram/actions';
+import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
 import * as Viewport from '@/ducks/viewport';
 import mutableStore from '@/store/mutable';
 import { Dispatchable, Thunk } from '@/store/types';
@@ -32,8 +32,7 @@ export const performSave = (save: Dispatchable): Thunk => async (dispatch) => {
 
 export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const platform = Skill.activePlatformSelector(state);
-
+  const platform = Project.activePlatformSelector(state);
   const { diagram: DBDiagram, timestamp } = await client.api.diagram.getRTC(diagramID);
 
   const { offsetX: x, offsetY: y, zoom, variables } = DBDiagram;

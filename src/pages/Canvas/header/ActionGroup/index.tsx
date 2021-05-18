@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { PlatformType } from '@/constants';
-import * as Skill from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
 import { ResourcesHeaderButton, SubHeaderItem } from '@/pages/Dashboard/Header/components';
 import { useCanvasMode } from '@/pages/Skill/hooks';
@@ -48,7 +48,7 @@ function ActionGroup(props: { platform: PlatformType }) {
 }
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
 };
 
 export default connect(mapStateToProps)(ActionGroup);

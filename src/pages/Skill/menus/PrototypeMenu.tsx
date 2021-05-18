@@ -1,8 +1,8 @@
 import React from 'react';
 
 import SubMenu from '@/components/SubMenu';
+import * as Project from '@/ducks/project';
 import * as Prototype from '@/ducks/prototype';
-import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { getMenuOptions } from '@/pages/Prototype/constants';
 import { ConnectedProps } from '@/types';
@@ -23,7 +23,7 @@ const PrototypeMenu: React.FC<PrototypeMenuProps & ConnectedPrototypeMenuProps> 
 );
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
   mode: Prototype.activePrototypeModeSelector,
 };
 

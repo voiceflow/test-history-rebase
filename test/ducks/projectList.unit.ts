@@ -1,5 +1,4 @@
 import client from '@/client';
-import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListSelectors from '@/ducks/projectList/selectors';
 import { CRUDState } from '@/ducks/utils/crud';
@@ -110,7 +109,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
     });
   });
 
-  describeSideEffects(({ applyEffect, stubEffect }) => {
+  describeSideEffects(({ applyEffect }) => {
     describe('saveProjectListsForWorkspace()', () => {
       it('should save project lists to the DB', async () => {
         const workspaceID = generate.id();
@@ -124,26 +123,26 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
       });
     });
 
-    describe('createNewList()', () => {
+    describe('createProjectList()', () => {
       it('should create a new project list', async () => {
         const listID = generate.id();
         stub(StringUtils, 'cuid').returns(listID);
 
-        const { result, expectDispatch } = await applyEffect(ProjectList.createNewList());
+        const { result, expectDispatch } = await applyEffect(ProjectList.createProjectList());
 
         expect(result).to.eq(listID);
         expectDispatch(ProjectList.addProjectList(listID, { id: listID, name: 'New List', projects: [], isNew: true }));
       });
     });
 
-    describe('addToListInWorkspace()', () => {
+    describe('saveProjectToList()', () => {
       it('should add a project to project list in workspace', async () => {
         const lists: any[] = generate.array();
         const projectID = generate.id();
         const workspaceID = generate.id();
         const updateLists = stub(client.projectList, 'update');
 
-        await applyEffect(ProjectList.addToListInWorkspace(workspaceID, [LIST, ...lists], projectID));
+        await applyEffect(ProjectList.saveProjectToList(workspaceID, [LIST, ...lists], projectID));
 
         expect(updateLists).to.be.calledWithExactly(workspaceID, [{ ...LIST, projects: [projectID, ...LIST.projects] }, ...lists]);
       });

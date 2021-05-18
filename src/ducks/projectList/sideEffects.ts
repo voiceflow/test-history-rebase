@@ -15,7 +15,7 @@ export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch)
   try {
     const lists = await client.projectList.find(workspaceID);
 
-    const rawProjects = await dispatch(Project.loadProjectsForWorkspace(workspaceID));
+    const rawProjects = await dispatch(Project.loadProjectsByWorkspaceID(workspaceID));
 
     const projectIDs = rawProjects.map(({ id }) => id);
 
@@ -58,13 +58,7 @@ export const loadProjectLists = (workspaceID: string): Thunk => async (dispatch)
   }
 };
 
-export const saveProjectListsForWorkspace = (workspaceID: string): Thunk => async (_, getState) => {
-  const projectLists = allProjectListsSelector(getState());
-
-  await client.projectList.update(workspaceID, projectLists);
-};
-
-export const createNewList = (): SyncThunk<string> => (dispatch) => {
+export const createProjectList = (): SyncThunk<string> => (dispatch) => {
   const id = cuid();
 
   dispatch(addProjectList(id, { id, name: 'New List', projects: [], isNew: true }));
@@ -72,7 +66,13 @@ export const createNewList = (): SyncThunk<string> => (dispatch) => {
   return id;
 };
 
-export const addToListInWorkspace = (workspaceID: string, lists: ProjectList[], projectID: string): Thunk => async () => {
+export const saveProjectListsForWorkspace = (workspaceID: string): Thunk => async (_, getState) => {
+  const projectLists = allProjectListsSelector(getState());
+
+  await client.projectList.update(workspaceID, projectLists);
+};
+
+export const saveProjectToList = (workspaceID: string, lists: ProjectList[], projectID: string): Thunk => async () => {
   try {
     await client.projectList.update(workspaceID, replace(lists, 0, { ...lists[0], projects: [projectID, ...lists[0].projects] }));
   } catch (err) {
@@ -84,7 +84,7 @@ export const addToListInWorkspace = (workspaceID: string, lists: ProjectList[], 
 export const addProjectToDefaultList = (projectID: string, addToStart?: boolean): Thunk => async (dispatch, getState) => {
   const defaultList = defaultProjectListSelector(getState());
 
-  const listID = defaultList ? defaultList.id : dispatch(createNewList());
+  const listID = defaultList ? defaultList.id : dispatch(createProjectList());
 
   dispatch(addProjectToList(listID, projectID, addToStart));
 };

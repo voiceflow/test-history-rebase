@@ -2,6 +2,7 @@ import React from 'react';
 
 import SSML from '@/components/SSML';
 import { PlatformType } from '@/constants';
+import * as Project from '@/ducks/project';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { Slot } from '@/models';
@@ -71,7 +72,7 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps> = ({
 };
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
   defaultVoice: Skill.defaultVoiceSelector,
   locales: Skill.activeLocalesSelector,
 };

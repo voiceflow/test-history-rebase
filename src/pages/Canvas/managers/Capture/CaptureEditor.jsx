@@ -8,10 +8,10 @@ import SlotSelect from '@/components/SlotSelect';
 import VariableSelect from '@/components/VariableSelect';
 import * as Documentation from '@/config/documentation';
 import { CUSTOM_SLOT_TYPE, PlatformType } from '@/constants';
-import { useIsPlatform } from '@/ducks/skill/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
 import SuggestionChips, { chipFactory } from '@/pages/Canvas/components/SuggestionChips';
+import { useIsPlatform } from '@/pages/Skill/hooks';
 
 import HelpTooltip from './components/HelpTooltip';
 

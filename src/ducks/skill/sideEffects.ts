@@ -42,7 +42,7 @@ export const addGlobalVariable = (variable: string | null): SyncThunk => (dispat
 export const saveInvocationName = (invocationName: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state)!;
-  const platform = Skill.activePlatformSelector(state);
+  const platform = Project.activePlatformSelector(state);
 
   const meta = Meta.skillMetaSelector(state);
   if (meta.invName === invocationName) return;
@@ -75,7 +75,7 @@ export const saveProjectName = (name: string): Thunk => async (dispatch, getStat
 export const saveSettings = (settings: Partial<SkillSettings>, properties?: string[]): Thunk => async (dispatch, getState) => {
   const state = getState();
   const skillID = Session.activeVersionIDSelector(state)!;
-  const platform = Skill.activePlatformSelector(state)!;
+  const platform = Project.activePlatformSelector(state)!;
   // only certain adapted properties as specified by "properties"
   if (platform === PlatformType.ALEXA) {
     const alexaSettings = alexaSettingsAdapter.toDB(settings as SkillSettings);
@@ -94,7 +94,7 @@ export const saveSettings = (settings: Partial<SkillSettings>, properties?: stri
 export const saveIntentsAndSlots = (): Thunk => async (_dispatch, getState) => {
   const state = getState();
   const skillID = Session.activeVersionIDSelector(state)!;
-  const platform = Skill.activePlatformSelector(state);
+  const platform = Project.activePlatformSelector(state);
 
   const slots = slotAdapter.mapToDB(Slot.allSlotsSelector(state));
   const intents = intentAdapter(platform).mapToDB(Intent.allIntentsSelector(state));
@@ -135,7 +135,7 @@ export const getAccountLinking = (): Thunk<AccountLinking | null> => async (_dis
 export const saveLocales = (locales: Locale[] | GoogleLocale[]): Thunk => async (dispatch, getState) => {
   if (locales?.length === 0) return;
   const state = getState();
-  const platform = Skill.activePlatformSelector(state);
+  const platform = Project.activePlatformSelector(state);
   const versionID = Session.activeVersionIDSelector(state)!;
 
   await client.platform(platform)?.version.updatePublishing(versionID, { locales: locales as any });

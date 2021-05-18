@@ -29,7 +29,7 @@ import { storeLogger } from '@/store/utils';
 
 import { Thunk } from './types';
 
-export const importProject = (projectID: string, workspaceID: string): Thunk<Models.Project> => async (dispatch, getState) => {
+export const importProject = (projectID: string, workspaceID: string): Thunk<Models.AnyProject> => async (dispatch, getState) => {
   const project = await client.api.project.get(projectID);
 
   const activeWorkspaceID = Workspace.activeWorkspaceIDSelector(getState());
@@ -43,7 +43,7 @@ export const importProject = (projectID: string, workspaceID: string): Thunk<Mod
     await dispatch(ProjectList.addProjectToDefaultList(copiedProject.id));
   } else {
     const projectLists = await client.projectList.find(workspaceID);
-    dispatch(ProjectList.addToListInWorkspace(workspaceID, projectLists, copiedProject.id));
+    dispatch(ProjectList.saveProjectToList(workspaceID, projectLists, copiedProject.id));
   }
 
   return copiedProject;
@@ -67,7 +67,7 @@ export const copyProject = (projectID: string, workspaceID: string, listID: stri
 // eslint-disable-next-line import/prefer-default-export
 export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.Skill<string>> => async (dispatch, getState) => {
   const state = getState();
-  const platform = Skill.activePlatformSelector(state);
+  const platform = Project.activePlatformSelector(state);
   const userID = Account.userIDSelector(state);
 
   const [dbVersion] = await Promise.all([

@@ -129,7 +129,7 @@ export const unusedDiagramsSelector = createSelector(
 );
 
 export const hasActiveLinksSelector = createSelector(
-  Skill.activePlatformSelector,
+  Project.activePlatformSelector,
   Creator.portByIDSelector,
   Creator.linksByPortIDSelector,
   (platform, getPortByID, getAllLinksByPortID) => (portID: string) =>

@@ -3,9 +3,9 @@ import creatorAdapter from '@/client/adapters/creator';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator/diagram/selectors';
+import * as Project from '@/ducks/project';
 import { goToDiagram, goToRootDiagram } from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { activePlatformSelector } from '@/ducks/skill/skill/selectors';
 import { viewportByIDSelector } from '@/ducks/viewport';
 import { CreatorDiagram } from '@/models';
 import mutableStore from '@/store/mutable';
@@ -65,7 +65,7 @@ export const adaptActiveDiagram = (): SyncThunk<PrimativeDiagram & { _id: string
   const { rootNodeIDs, nodes, ports, data, markupNodeIDs } = Creator.creatorDiagramSelector(state);
   const links = Creator.allLinksSelector(state);
   const variables = diagramVariablesSelector(state)(diagramID);
-  const platform = activePlatformSelector(state);
+  const platform = Project.activePlatformSelector(state);
 
   const diagram = creatorAdapter.toDB(
     {

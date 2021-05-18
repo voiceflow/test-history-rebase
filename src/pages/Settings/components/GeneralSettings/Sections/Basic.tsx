@@ -47,7 +47,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   platformMeta,
   saveLocales,
   saveProjectName,
-  updateProjectImage,
+  saveProjectImage,
   saveInvocationName,
 }) => {
   const { invName } = meta;
@@ -84,7 +84,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     saveInvocationName(newInvocation);
 
     if (projectImage) {
-      updateProjectImage(project.id, projectImage);
+      saveProjectImage(project.id, projectImage);
     }
 
     if (platform === PlatformType.ALEXA) {
@@ -197,7 +197,7 @@ const mapDispatchToProps = {
   saveInvocationName: Skill.saveInvocationName,
   saveProjectName: Skill.saveProjectName,
   saveLocales: Skill.saveLocales,
-  updateProjectImage: Project.updateProjectImage,
+  saveProjectImage: Project.saveProjectImage,
 };
 
 const mergeProps = (...[{ skill, project: projectByIDSelector }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({

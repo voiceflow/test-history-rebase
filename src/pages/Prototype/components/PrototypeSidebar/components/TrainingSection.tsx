@@ -9,11 +9,11 @@ import TippyTooltip from '@/components/TippyTooltip';
 import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { NLPTrainStageType } from '@/constants/platforms';
+import * as Project from '@/ducks/project';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useSmartReducerV2, useTrackingEvents } from '@/hooks';
 import { NLPContext } from '@/pages/Skill/contexts';
@@ -212,7 +212,7 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
 
 const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
   versionID: Session.activeVersionIDSelector,
   diagramID: Session.activeDiagramIDSelector,
   projectID: Session.activeProjectIDSelector,

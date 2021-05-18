@@ -2,6 +2,7 @@ import React from 'react';
 
 import SSML from '@/components/SSML';
 import { toast } from '@/components/Toast';
+import * as Project from '@/ducks/project';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { allVariablesSelector } from '@/store/selectors';
@@ -53,7 +54,7 @@ const SSMLWithVars = (
 };
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
   variables: allVariablesSelector,
   defaultVoice: Skill.defaultVoiceSelector,
   locales: Skill.activeLocalesSelector,

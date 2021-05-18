@@ -3,8 +3,8 @@ import React from 'react';
 import Box from '@/components/Box';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
+import * as Project from '@/ducks/project';
 import * as Prototype from '@/ducks/prototype';
-import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { getDeviceList } from '@/pages/Prototype/constants';
 import { FadeRightContainer } from '@/styles/animations';
@@ -60,7 +60,7 @@ const PrototypeDisplaySettings: React.FC<ConnectedPrototypeDisplaySettingsProps>
 
 const mapStateToProps = {
   device: Prototype.prototypeVisualDeviceSelector,
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
 };
 
 const mapStateToDispatch = {

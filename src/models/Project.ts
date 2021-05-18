@@ -1,8 +1,9 @@
-import { ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
+import { Member, ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
 
 import { PlatformType } from '@/constants';
+import { Struct } from '@/types';
 
-export type Project = {
+export type Project<D extends Struct, M extends Member<any>> = {
   id: string;
   name: string;
   diagramID: string;
@@ -15,9 +16,11 @@ export type Project = {
   platform: PlatformType;
   privacy?: ProjectPrivacy;
   linkType: ProjectLinkType;
+  members: M[];
+  platformData: D;
 };
 
-export namespace Project {}
+export type AnyProject = Project<any, Member<any>>;
 
 export type DBProject = {
   project_id: string;

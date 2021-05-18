@@ -12,8 +12,6 @@ export const activeSkillSelector = createRootSelector(STATE_KEY);
 
 export const activeNameSelector = createSelector(activeSkillSelector, ({ name }) => name);
 
-export const activePlatformSelector = createSelector(activeSkillSelector, ({ platform }) => platform);
-
 export const rootDiagramIDSelector = createSelector(activeSkillSelector, ({ rootDiagramID }) => rootDiagramID);
 
 export const globalVariablesSelector = createSelector(activeSkillSelector, (skill) => skill?.globalVariables || []);

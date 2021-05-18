@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { PlatformType } from '@/constants';
-import { activePlatformSelector } from '@/ducks/skill/skill/selectors';
+import { activePlatformSelector } from '@/ducks/project/selectors';
 import { ConnectedProps } from '@/types';
 
 import { connect } from './connect';

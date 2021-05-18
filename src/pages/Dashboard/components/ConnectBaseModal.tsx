@@ -11,7 +11,7 @@ import { ModalFooter } from '@/components/Modal';
 import { Link } from '@/components/Text';
 import { GOOGLE_OAUTH_SCOPES, ModalType, PlatformType } from '@/constants';
 import { AlexaStageType, GoogleStageType } from '@/constants/platforms';
-import * as Skill from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
 import { useModals, useSmartReducerV2 } from '@/hooks';
 import { Account } from '@/models';
@@ -28,7 +28,6 @@ import { ConnectedProps, Nullable } from '@/types';
 
 export type ConnectBaseModalProps = {
   modalType: ModalType;
-  platform: PlatformType;
   className?: string;
   helpLink?: string;
 };
@@ -183,7 +182,7 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
 };
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
 };
 
 type ConnectedConnectBaseModalProps = ConnectedProps<typeof mapStateToProps>;

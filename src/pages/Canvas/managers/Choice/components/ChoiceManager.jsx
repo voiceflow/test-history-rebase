@@ -5,8 +5,7 @@ import { HelpTooltip } from '@/components/IntentForm';
 import OverflowMenu from '@/components/OverflowMenu';
 import { PlatformType } from '@/constants';
 import { focusedNodeSelector } from '@/ducks/creator';
-import { activePlatformSelector } from '@/ducks/skill';
-import { useIsPlatform } from '@/ducks/skill/hooks';
+import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
 import { useManager, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
@@ -24,6 +23,7 @@ const choiceFactory = () => NODE_CONFIG.factory().data.choices[0];
 function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
   const { choices } = data;
 
+  const isAlexa = platform === PlatformType.ALEXA;
   const engine = React.useContext(EngineContext);
   const [isDragging, toggleDragging] = useToggle(false);
 
@@ -62,8 +62,6 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
     },
     [onReorder, engine.port, focusedNode.id]
   );
-
-  const isAlexa = useIsPlatform(PlatformType.ALEXA);
 
   return (
     <Content
@@ -134,7 +132,7 @@ function ChoiceManager({ data, platform, onChange, focusedNode, pushToPath }) {
 }
 
 const mapStateToProps = {
-  platform: activePlatformSelector,
+  platform: Project.activePlatformSelector,
   focusedNode: focusedNodeSelector,
 };
 

@@ -7,6 +7,7 @@ import OverflowMenu from '@/components/OverflowMenu';
 import Text from '@/components/Text';
 import { DialogType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as Project from '@/ducks/project';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { NodeData, SpeakData } from '@/models';
@@ -139,7 +140,7 @@ const SpeakEditor: NodeEditor<NodeData.Speak, SpeakEditorConnectedProps> = ({
 };
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
   focusedNode: Creator.focusedNodeSelector,
   defaultCanvasNodeVisibility: Skill.defaultCanvasNodeVisibilitySelector,
 };

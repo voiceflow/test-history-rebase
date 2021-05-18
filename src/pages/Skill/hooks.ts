@@ -1,7 +1,10 @@
+import { useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
+import { PlatformType } from '@/constants';
+import * as Project from '@/ducks/project';
 import { usePermission } from '@/hooks';
 
 export const useCommentingMode = () => !!useRouteMatch(Path.CANVAS_COMMENTING);
@@ -25,4 +28,10 @@ export const useEditingMode = () => {
   const isPrototypingMode = usePrototypingMode();
 
   return canEditCanvas && !isCommentingMode && !isPrototypingMode;
+};
+
+export const useIsPlatform = (platform: PlatformType) => {
+  const activePlatform = useSelector(Project.activePlatformSelector);
+
+  return platform === activePlatform;
 };

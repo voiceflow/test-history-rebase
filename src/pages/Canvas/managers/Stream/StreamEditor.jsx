@@ -8,7 +8,7 @@ import Section from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
 import { HTTPS_URL_REGEX, PlatformType } from '@/constants';
 import { focusedNodeSelector } from '@/ducks/creator';
-import { activePlatformSelector } from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
@@ -83,7 +83,7 @@ function StreamEditor({ data, focusedNode, platform, onChange }) {
 }
 
 const mapStateToProps = {
-  platform: activePlatformSelector,
+  platform: Project.activePlatformSelector,
   focusedNode: focusedNodeSelector,
 };
 

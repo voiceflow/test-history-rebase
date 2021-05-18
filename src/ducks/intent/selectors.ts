@@ -4,7 +4,8 @@ import { createSelector } from 'reselect';
 
 import { GENERAL_PLATFORMS } from '@/constants';
 import { applyIntentNameFormatting } from '@/ducks/intent/utils';
-import { activeLocalesSelector, activePlatformSelector } from '@/ducks/skill/skill/selectors';
+import * as Project from '@/ducks/project';
+import { activeLocalesSelector } from '@/ducks/skill/skill/selectors';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 import { Intent } from '@/models';
 import { unique } from '@/utils/array';
@@ -31,7 +32,7 @@ export const allSlotsByIntentIDSelector = createSelector([intentByIDSelector], (
 
 // This appends the builtIn intent consts to the redux intents
 export const allPlatformIntentsSelector = createSelector(
-  [allIntentsSelector, activePlatformSelector, activeLocalesSelector],
+  [allIntentsSelector, Project.activePlatformSelector, activeLocalesSelector],
   (intents, platform, locales) => {
     const prettifiedIntents = applyIntentNameFormatting(intents, platform);
 
@@ -45,7 +46,7 @@ export const allPlatformIntentsSelector = createSelector(
   }
 );
 
-export const allCustomIntentsSelector = createSelector([allIntentsSelector, activePlatformSelector], (intents, platform) =>
+export const allCustomIntentsSelector = createSelector([allIntentsSelector, Project.activePlatformSelector], (intents, platform) =>
   applyIntentNameFormatting(intents, platform)
 );
 

@@ -41,8 +41,8 @@ import { Item as ListItem } from './components/Item';
 import List, { List as SimpleList } from './components/List';
 import DashboardHeader from './Header';
 
-const getBoardFilteredProjects = (projectsIDs: string[], projectsMap: Record<string, Models.Project>, filter: string) => {
-  const filtered: Models.Project[] = [];
+const getBoardFilteredProjects = (projectsIDs: string[], projectsMap: Record<string, Models.AnyProject>, filter: string) => {
+  const filtered: Models.AnyProject[] = [];
 
   projectsIDs.forEach((id) => {
     const project = projectsMap[id];
@@ -104,23 +104,20 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
     [props.projects, props.workspace, props.workspaceID, props.copyProject]
   );
 
-  const onDownloadProject = React.useCallback(
-    async (projectId) => {
-      if (canShareProject) {
-        try {
-          copy(`${window.location.origin}/dashboard?import=${projectId}`);
-          toast.success('Copied to clipboard');
-          trackingEvents.trackActiveProjectDownloadLinkShare();
-          props.updateProjectPrivacy(projectId, ProjectPrivacy.PUBLIC);
-        } catch {
-          toast.error('Error getting import link');
-        }
-      } else {
-        openProjectDownloadModal();
+  const onDownloadProject = React.useCallback(async (projectID) => {
+    if (canShareProject) {
+      try {
+        copy(`${window.location.origin}/dashboard?import=${projectID}`);
+        toast.success('Copied to clipboard');
+        trackingEvents.trackActiveProjectDownloadLinkShare();
+        props.saveProjectPrivacy(projectID, ProjectPrivacy.PUBLIC);
+      } catch {
+        toast.error('Error getting import link');
       }
-    },
-    [props.updateProjectPrivacy]
-  );
+    } else {
+      openProjectDownloadModal();
+    }
+  }, []);
 
   const onDeleteProject = React.useCallback(
     (boardID: string) => (projectId: string, projectName: string) => {
@@ -302,7 +299,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
                               style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}
                             >
                               <TippyTooltip distance={8} title="Add new list" position="bottom">
-                                <IconButton large icon="addStep" onClick={props.createNewList} size={13} />
+                                <IconButton large icon="addStep" onClick={props.createList} size={13} />
                               </TippyTooltip>
                             </Flex>
                           )}
@@ -333,7 +330,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   loadLists: ProjectList.loadProjectLists,
-  createNewList: ProjectList.createNewList,
+  createList: ProjectList.createProjectList,
   deleteProject: ProjectList.deleteProjectFromList,
   copyProject,
   setConfirm: Modal.setConfirm,
@@ -344,7 +341,7 @@ const mapDispatchToProps = {
   transplantProject: ProjectList.transplantProject,
   moveList: ProjectList.moveProjectList,
   fetchNotifications: Notifications.fetchNotifications,
-  updateProjectPrivacy: Project.updateProjectPrivacy,
+  saveProjectPrivacy: Project.saveProjectPrivacy,
 };
 
 type ConnectedDashboardProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

@@ -9,6 +9,7 @@ import * as Creator from '@/ducks/creator';
 import * as Diagrams from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
+import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
@@ -45,7 +46,7 @@ class ClipboardEngine extends EngineConsumer {
   internal = {
     storeData: async (nodeIDs: string[], keyToStore: string, keyToEncrypt: string) => {
       const state = this.engine.store.getState();
-      const platform = Skill.activePlatformSelector(state);
+      const platform = Project.activePlatformSelector(state);
       const {
         data: { ...data }, // cloning data to modify it later
       } = Creator.creatorDiagramSelector(state);
@@ -156,7 +157,7 @@ class ClipboardEngine extends EngineConsumer {
 
     importClipboardContext: async ({ slots, intents, products, diagrams, nodes, data, platform: sourcePlatform }: ClipboardContext) => {
       const state = this.engine.store.getState();
-      const targetPlatform = Skill.activePlatformSelector(state);
+      const targetPlatform = Project.activePlatformSelector(state);
       const isPlatformConversion = sourcePlatform !== targetPlatform;
       const slotTypes = activeSlotTypesSelector(state).map((slot) => slot.value);
       const validSlots = isPlatformConversion ? slots.filter((slot) => slotTypes.includes(slot.type!)) : slots;

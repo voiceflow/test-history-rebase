@@ -5,8 +5,8 @@ import client from '@/client';
 import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { JobStatus } from '@/constants';
+import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
 import { withContext } from '@/hocs/withContext';
 import { useContextApi, useDidUpdateEffect, useTeardown } from '@/hooks';
 import { AlexaExportJob, GeneralJob, GoogleExportJob } from '@/models';
@@ -29,7 +29,7 @@ export const ExportProvider: React.FC = ({ children }) => {
   const pullTimeout = React.useRef<NodeJS.Timeout>();
   const [job, setJob] = React.useState<Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob | GeneralJob.AnyJob>>(null);
 
-  const platform = useSelector(Skill.activePlatformSelector);
+  const platform = useSelector(Project.activePlatformSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
 
   const platformClient = client.platform(platform);
@@ -41,7 +41,7 @@ export const ExportProvider: React.FC = ({ children }) => {
       return;
     }
 
-    const currentJob = await platformClient?.export.getStatus(projectID);
+    const currentJob = await platformClient.export.getStatus(projectID);
 
     setJob(currentJob || null);
   }, [projectID, platformClient]);
@@ -53,7 +53,7 @@ export const ExportProvider: React.FC = ({ children }) => {
       return;
     }
 
-    const result = await platformClient?.export.run(projectID);
+    const result = await platformClient.export.run(projectID);
 
     setJob(result?.job || null);
   }, [projectID, platformClient]);

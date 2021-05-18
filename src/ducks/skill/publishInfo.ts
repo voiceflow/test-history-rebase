@@ -2,11 +2,12 @@ import update from 'immutability-helper';
 import { createSelector } from 'reselect';
 
 import { DISTINCT_PLATFORMS, PlatformType } from '@/constants';
+import { activePlatformSelector } from '@/ducks/project/selectors';
 import { createAction } from '@/ducks/utils';
 import { Action, RootReducer } from '@/store/types';
 import { Nullable } from '@/types';
 
-import { activePlatformSelector, activeSkillSelector } from './skill';
+import { activeSkillSelector } from './skill';
 
 type State = Nullable<Record<PlatformType, any>>;
 

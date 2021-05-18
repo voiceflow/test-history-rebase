@@ -34,7 +34,7 @@ const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProj
     try {
       const file = await readFileAsync(files[0]);
 
-      const newProject = await importProject(workspaceID!, file);
+      const newProject = await importProject(workspaceID, file);
       toast.success(
         <>
           .VF file successfully imported
@@ -43,7 +43,7 @@ const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProj
       );
 
       // reload project list just to be sure
-      loadProjectLists(workspaceID!);
+      loadProjectLists(workspaceID);
     } catch (err) {
       Sentry.error(err);
       toast.error('.VF file failed to import');
@@ -52,7 +52,7 @@ const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProj
 
   const onClickHandler = () => {
     if (!!workspace && projects.length >= workspace.projects) {
-      openProjectLimitModal({ projects: workspace!.projects });
+      openProjectLimitModal({ projects: workspace.projects });
     } else {
       upload(onUpload, { accept: ACCEPTED_FILE_FORMATS });
     }
@@ -72,7 +72,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  importProject: Project.importProject,
+  importProject: Project.importProjectFromFile,
   loadProjectLists: ProjectList.loadProjectLists,
   goToCanvas: Router.goToCanvas,
 };

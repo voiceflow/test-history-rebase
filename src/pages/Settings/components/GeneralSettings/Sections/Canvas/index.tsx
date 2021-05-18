@@ -1,3 +1,4 @@
+import { ProjectLinkType } from '@voiceflow/api-sdk';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
@@ -8,18 +9,13 @@ import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect } from '@/hooks';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { ConnectedProps } from '@/types';
 
 import { LINK_TYPE_OPTIONS, NAVIGATION_DESCRIPTIONS, NAVIGATION_OPTIONS } from './constants';
 
-const Canvas: React.FC<ConnectedBasicProps> = ({ project, canvasNavigation, setCanvasNavigation, updateProjectLinkType }) => {
-  const [linkType, setLineType] = React.useState(project.linkType);
-
-  useDidUpdateEffect(() => {
-    updateProjectLinkType(project.id, linkType);
-  }, [linkType]);
+const Canvas: React.FC<ConnectedBasicProps> = ({ activeProjectID, activeLinkType, canvasNavigation, setCanvasNavigation, saveProjectLinkType }) => {
+  const setLinkType = React.useCallback((linkType: ProjectLinkType) => saveProjectLinkType(activeProjectID!, linkType), [activeProjectID]);
 
   return (
     <>
@@ -48,27 +44,23 @@ const Canvas: React.FC<ConnectedBasicProps> = ({ project, canvasNavigation, setC
         )}
         customContentStyling={{ paddingBottom: '24px' }}
       >
-        <RadioGroup options={LINK_TYPE_OPTIONS} checked={linkType} onChange={setLineType} />
+        <RadioGroup options={LINK_TYPE_OPTIONS} checked={activeLinkType} onChange={setLinkType} />
       </Section>
     </>
   );
 };
 
 const mapStateToProps = {
-  projectID: Session.activeProjectIDSelector,
   canvasNavigation: UI.canvasNavigationSelector,
-  projectByIDSelector: Project.projectByIDSelector,
+  activeProjectID: Session.activeProjectIDSelector,
+  activeLinkType: Project.activeProjectLinkTypeSelector,
 };
 
 const mapDispatchToProps = {
   setCanvasNavigation: UI.setCanvasNavigation,
-  updateProjectLinkType: Project.updateProjectLinkType,
+  saveProjectLinkType: Project.saveProjectLinkType,
 };
 
-const mergeProps = (...[{ projectID, projectByIDSelector }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
-  project: projectByIDSelector(projectID!),
-});
+type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Canvas);
+export default connect(mapStateToProps, mapDispatchToProps)(Canvas);

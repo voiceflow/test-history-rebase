@@ -3,10 +3,11 @@ import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import Page from '@/components/Page';
 import { SettingsContainer, SettingsHeader } from '@/components/Settings';
+import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
-import * as Skill from '@/ducks/skill';
 import { ProjectLoadingGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { compose } from '@/utils/functional';
 
@@ -14,13 +15,13 @@ import GeneralSettings from './components/GeneralSettings';
 import ProjectVersions from './components/ProjectVersions';
 import { getSettingsMetaProps, Tabs } from './constants';
 
-const Settings: React.FC<ConnectedSettings> = ({ platform, goToDesign }) => {
+const Settings: React.FC<ConnectedSettingsProps> = ({ platform, goToDesign }) => {
   const { tabs } = getSettingsMetaProps(platform);
   const { url } = useRouteMatch();
 
   return (
     <Page navigateBackText="Back" onNavigateBack={goToDesign} header={<SettingsHeader>Project Settings</SettingsHeader>}>
-      <span id="vf-settings-page">
+      <span id={Identifier.SETTINGS_PAGE}>
         <SettingsContainer tabs={tabs}>
           <Switch>
             <Route path={`${url}/${Tabs.GENERAL.path}`} component={GeneralSettings} />
@@ -34,13 +35,14 @@ const Settings: React.FC<ConnectedSettings> = ({ platform, goToDesign }) => {
 };
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
 };
 
 const mapDispatchToProps = {
   goToDesign: Router.goToCurrentCanvas,
 };
-type ConnectedSettings = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+type ConnectedSettingsProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

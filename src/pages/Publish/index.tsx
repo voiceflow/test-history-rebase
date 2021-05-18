@@ -8,8 +8,8 @@ import { Permission } from '@/config/permissions';
 import { PublishRoute } from '@/config/routes';
 import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
+import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
 import { connect, lazy } from '@/hocs';
 import { usePermission } from '@/hooks';
 import PrivateRoute from '@/Routes/PrivateRoute';
@@ -93,7 +93,7 @@ const Publish: React.FC<PublishProps & ConnectedPublishProps> = ({ match: { path
 const mapStateToProps = {
   user: Account.userSelector,
   versionID: Session.activeVersionIDSelector,
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
 };
 
 type ConnectedPublishProps = ConnectedProps<typeof mapStateToProps>;

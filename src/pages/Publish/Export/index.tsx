@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from '@/components/Text';
 import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
-import * as Skill from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount, useToggle } from '@/hooks';
 import AlexaUploadButton from '@/pages/Canvas/header/ActionGroup/components/AlexaUploadGroup/Button';
@@ -38,6 +38,8 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
   };
 
   useAsyncMountUnmount(async () => {
+    if (platform !== PlatformType.ALEXA) return;
+
     await syncSelectedVendor();
   });
 
@@ -111,7 +113,7 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
 };
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
 };
 
 const mapDispatchToProps = {

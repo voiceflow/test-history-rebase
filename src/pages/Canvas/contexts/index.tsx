@@ -2,7 +2,7 @@ import React from 'react';
 
 import { BlockType, PlatformType } from '@/constants';
 import { RegisterEngine } from '@/contexts';
-import { activePlatformSelector } from '@/ducks/skill';
+import { activePlatformSelector } from '@/ducks/project';
 import { connect } from '@/hocs';
 import { withContext } from '@/hocs/withContext';
 import { Markup } from '@/models';

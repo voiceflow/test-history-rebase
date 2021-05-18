@@ -1,4 +1,4 @@
-import { Project } from '@/models';
+import { AnyProject } from '@/models';
 
 import createCRUDReducer from '../utils/crud';
 import { STATE_KEY } from './constants';
@@ -8,6 +8,6 @@ export * from './constants';
 export * from './selectors';
 export * from './sideEffects';
 
-const projectReducer = createCRUDReducer<Project>(STATE_KEY);
+const projectReducer = createCRUDReducer<AnyProject>(STATE_KEY);
 
 export default projectReducer;

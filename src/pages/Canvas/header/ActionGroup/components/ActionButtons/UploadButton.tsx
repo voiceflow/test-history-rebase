@@ -3,7 +3,7 @@ import React from 'react';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import TippyTooltip from '@/components/TippyTooltip';
 import { PlatformType } from '@/constants';
-import * as Skill from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 import { createPlatformSelector } from '@/utils/platform';
@@ -28,7 +28,7 @@ const UploadButton: React.FC<UploadButtonProps & ConnectedUploadButtonProps> = (
 );
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
 };
 
 type ConnectedUploadButtonProps = ConnectedProps<typeof mapStateToProps>;

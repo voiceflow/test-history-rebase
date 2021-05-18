@@ -8,7 +8,7 @@ import AudioUpload from '@/components/Upload/AudioUpload';
 import VariablesInput from '@/components/VariablesInput';
 import { PlatformType, RepromptType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import * as Skill from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
@@ -54,7 +54,7 @@ const NoReplyResponseForm = ({ focus, reprompt, platform }) => {
 };
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
   focus: Creator.creatorFocusSelector,
   reprompt: focusedNodeRepromptSelector,
 };

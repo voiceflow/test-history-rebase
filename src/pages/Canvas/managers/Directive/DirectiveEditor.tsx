@@ -5,7 +5,7 @@ import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import Box from '@/components/Box';
 import ChatWithUsLink from '@/components/ChatLink';
 import OverflowMenu from '@/components/OverflowMenu';
-import * as Skill from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import { NodeData } from '@/models/NodeData';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
@@ -14,7 +14,7 @@ import { HelpTooltip } from './components';
 
 const DirectiveEditor: React.FC<NodeEditorPropsType<NodeData.Directive>> = ({ data, onChange, expanded, onExpand }) => {
   const [value, setValue] = React.useState(data.directive);
-  const platform = useSelector(Skill.activePlatformSelector);
+  const platform = useSelector(Project.activePlatformSelector);
 
   return (
     <Content

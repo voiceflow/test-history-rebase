@@ -14,9 +14,9 @@ import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';
+import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { getSettingsMetaProps } from '@/pages/Settings/constants';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -34,7 +34,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
   const [versions, setVersions] = React.useState<ProjectVersion[]>([]);
   const { name } = getSettingsMetaProps(platform);
 
-  const swapVersions = async (versionId: string) => {
+  const swapVersions = async (versionID: string) => {
     if (!projectID) {
       Sentry.error(Errors.noActiveProjectID());
       toast.genericError();
@@ -42,20 +42,20 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
     }
 
     try {
-      await client.backup.restore(projectID, versionId);
-      goToCanvas(versionId);
+      await client.backup.restore(projectID, versionID);
+      goToCanvas(versionID);
       toast.success('Successfully restored version');
     } catch (err) {
       toast.error('Unable to restore version');
     }
   };
 
-  const confirmRestore = (versionId: string) => {
+  const confirmRestore = (versionID: string) => {
     setConfirm({
       warning: true,
       text:
         "This action can not be undone, will delete all your current work since your last backup, and will not change your skill's Amazon endpoint.",
-      confirm: () => swapVersions(versionId),
+      confirm: () => swapVersions(versionID),
     });
   };
 
@@ -141,7 +141,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
 const mapStateToProps = {
   activeVersionID: Session.activeVersionIDSelector,
   projectID: Session.activeProjectIDSelector,
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
 };
 
 const mapDispatchToProps = {

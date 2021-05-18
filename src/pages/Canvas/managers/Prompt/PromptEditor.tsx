@@ -4,12 +4,12 @@ import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
 import { PlatformType } from '@/constants';
-import { useIsPlatform } from '@/ducks/skill/hooks';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
 import SuggestionChips, { chipFactory } from '@/pages/Canvas/components/SuggestionChips';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
+import { useIsPlatform } from '@/pages/Skill/hooks';
 
 import { HelpTooltip } from './components';
 

@@ -1,39 +1,18 @@
-import { AlexaProject, AlexaProjectData, AlexaProjectMemberData } from '@voiceflow/alexa-types';
 import { ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
 
 import client from '@/client';
 import projectAdapter from '@/client/adapters/project';
 import { toast } from '@/components/Toast';
+import * as Errors from '@/config/errors';
 import { DISTINCT_PLATFORMS, PlatformType } from '@/constants';
-import { removeProject, replaceProjects, updateProject } from '@/ducks/project/actions';
 import { addProjectToList } from '@/ducks/projectList/actions';
+import * as Session from '@/ducks/session';
 import { activeWorkspaceIDSelector } from '@/ducks/workspace/selectors';
-import { Project } from '@/models';
+import { AnyProject } from '@/models';
 import { Thunk } from '@/store/types';
 
-import { projectByIDSelector } from './selectors';
-
-// side effects
-
-export const loadProjectsForWorkspace = (workspaceID: string): Thunk<Project[]> => async (dispatch) => {
-  const dbProjects = await client.api.project.list<AlexaProjectData, AlexaProjectMemberData>(workspaceID);
-
-  const projects = projectAdapter.mapFromDB(dbProjects as AlexaProject[]);
-
-  dispatch(replaceProjects(projects));
-
-  return projects;
-};
-
-export const deleteProject = (projectID: string): Thunk => async (dispatch) => {
-  await client.api.project.delete(projectID);
-
-  await dispatch(removeProject(projectID));
-};
-
-export const setupProjectSocketConnection = (projectID: string) => async () => {
-  await client.socket?.project.initialize(projectID);
-};
+import { addProject, patchProject, removeProject, replaceProjects, updateProjectName } from './actions';
+import { activeProjectNameSelector, projectByIDSelector } from './selectors';
 
 export type CreateProjectParams = {
   platform: PlatformType;
@@ -42,17 +21,36 @@ export type CreateProjectParams = {
   listID?: string;
 };
 
-export const importProject = (workspaceID: string, data: string): Thunk<Project> => async () => {
-  const project = await client.api.version.import(workspaceID, JSON.parse(data));
-  return projectAdapter.fromDB(project);
+// side effects
+
+export const loadProjectByID = (projectID: string): Thunk<AnyProject> => async (dispatch) => {
+  const dbProject = await client.api.project.get(projectID);
+
+  const project = projectAdapter.fromDB(dbProject);
+
+  dispatch(addProject(projectID, project));
+
+  return project;
 };
 
-export const createProject = ({ platform, name, image, listID }: Partial<CreateProjectParams>, templateTag?: string): Thunk<Project> => async (
+export const loadProjectsByWorkspaceID = (workspaceID: string): Thunk<AnyProject[]> => async (dispatch) => {
+  const dbProjects = await client.api.project.list(workspaceID);
+
+  const projects = projectAdapter.mapFromDB(dbProjects);
+
+  dispatch(replaceProjects(projects));
+
+  return projects;
+};
+
+export const createProject = ({ platform, name, image, listID }: Partial<CreateProjectParams>, templateTag?: string): Thunk<AnyProject> => async (
   dispatch,
   getState
 ) => {
   const state = getState();
-  const teamID = activeWorkspaceIDSelector(state)!;
+  const workspaceID = activeWorkspaceIDSelector(state);
+
+  Errors.assertWorkspaceID(workspaceID);
 
   // TODO: remove this after SQL `templates` table migration + Mongo template project platform update
   const distinctPlatform = DISTINCT_PLATFORMS.includes(platform!) ? platform! : PlatformType.GENERAL;
@@ -66,9 +64,9 @@ export const createProject = ({ platform, name, image, listID }: Partial<CreateP
   try {
     const newProject = await client
       .platform(platform!)
-      .project.copy(templateProjectID, { name, image, teamID }, { channel: templateTag?.split(':')[1] });
+      .project.copy(templateProjectID, { name, image, teamID: workspaceID }, { channel: templateTag?.split(':')[1] });
     if (listID) {
-      await dispatch(addProjectToList(listID, newProject._id));
+      dispatch(addProjectToList(listID, newProject._id));
     }
 
     return projectAdapter.fromDB(newProject);
@@ -78,23 +76,73 @@ export const createProject = ({ platform, name, image, listID }: Partial<CreateP
   }
 };
 
-export const updateProjectPrivacy = (projectID: string, privacy: ProjectPrivacy): Thunk => async (dispatch, getState) => {
+export const importProjectFromFile = (workspaceID: string, data: string): Thunk<AnyProject> => async () => {
+  const project = await client.api.version.import(workspaceID, JSON.parse(data));
+  return projectAdapter.fromDB(project);
+};
+
+export const deleteProject = (projectID: string): Thunk => async (dispatch) => {
+  await client.api.project.delete(projectID);
+
+  dispatch(removeProject(projectID));
+};
+
+export const setupProjectSocketConnection = (projectID: string) => async () => {
+  await client.socket?.project.initialize(projectID);
+};
+
+// mutations
+
+export const saveProjectPrivacy = (projectID: string, privacy: ProjectPrivacy): Thunk => async (dispatch, getState) => {
   const project = projectByIDSelector(getState())(projectID);
 
   if (project.privacy !== privacy) {
     await client.api.project.update(projectID, { privacy });
-    dispatch(updateProject(projectID, { privacy }, true));
+    dispatch(patchProject(projectID, { privacy }));
   }
 };
 
-export const updateProjectImage = (projectID: string, image: string): Thunk => async (dispatch) => {
+export const saveProjectImage = (projectID: string, image: string): Thunk => async (dispatch) => {
   await client.api.project.update(projectID, { image });
 
-  dispatch(updateProject(projectID, { image }, true));
+  dispatch(patchProject(projectID, { image }));
 };
 
-export const updateProjectLinkType = (projectID: string, linkType: ProjectLinkType): Thunk => async (dispatch) => {
+export const saveProjectLinkType = (projectID: string, linkType: ProjectLinkType): Thunk => async (dispatch) => {
   await client.api.project.update(projectID, { linkType });
 
-  dispatch(updateProject(projectID, { linkType }, true));
+  dispatch(patchProject(projectID, { linkType }));
+};
+
+// active project
+
+export const loadActiveProject = (): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const projectID = Session.activeProjectIDSelector(state);
+
+  Errors.assertProjectID(projectID);
+
+  await dispatch(loadProjectByID(projectID));
+};
+
+export const saveProjectName = (name: string): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const projectID = Session.activeProjectIDSelector(state);
+
+  Errors.assertProjectID(projectID);
+
+  if (name === activeProjectNameSelector(state)) return;
+
+  await client.api.project.update(projectID, { name });
+
+  dispatch(updateProjectName(projectID, name));
+};
+
+export const updateActiveProjectName = (name: string, meta?: object): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const projectID = Session.activeProjectIDSelector(state);
+
+  Errors.assertProjectID(projectID);
+
+  dispatch(updateProjectName(projectID, name, meta));
 };

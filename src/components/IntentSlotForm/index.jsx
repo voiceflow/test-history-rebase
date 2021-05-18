@@ -11,10 +11,10 @@ import Section, { SectionToggleVariant, UncontrolledSection } from '@/components
 import SSMLWithSlots from '@/components/SSMLWithSlots';
 import Utterance from '@/components/Utterance';
 import { SlotTag } from '@/components/VariableTag';
-import { PlatformType } from '@/constants';
+import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
-import { activePlatformSelector } from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
@@ -25,7 +25,7 @@ import { ResponseUtterancesTooltip, SlotConfirmationTooltip, SlotPromptTooltip, 
 
 function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalone = false, updateIntentSlot, updateIntentSlotDialog }) {
   const isAlexa = platform === PlatformType.ALEXA;
-  const isGeneral = platform === PlatformType.GENERAL;
+  const isGeneral = GENERAL_PLATFORMS.includes(platform);
   const utteranceRef = React.useRef();
   const {
     required,
@@ -242,7 +242,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
 }
 
 const mapStateToProps = {
-  platform: activePlatformSelector,
+  platform: Project.activePlatformSelector,
   slotsMap: Slot.mapSlotsSelector,
   getIntentByID: Intent.intentByIDSelector,
   getIntentSlotByIntentIDSlotID: Intent.intentSlotByIntentIDSlotIDSelector,

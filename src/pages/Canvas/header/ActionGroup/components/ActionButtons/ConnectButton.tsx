@@ -4,7 +4,7 @@ import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import { Icon } from '@/components/SvgIcon';
 import TippyTooltip from '@/components/TippyTooltip';
 import { PlatformType } from '@/constants';
-import * as Skill from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -46,7 +46,7 @@ const ConnectButton: React.FC<ConnectButtonProps & ConnectedConnectButtonProps> 
   ) : null;
 
 const mapStateToProps = {
-  platform: Skill.activePlatformSelector,
+  platform: Project.activePlatformSelector,
 };
 
 type ConnectedConnectButtonProps = ConnectedProps<typeof mapStateToProps>;

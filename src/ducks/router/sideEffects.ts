@@ -5,9 +5,10 @@ import * as Errors from '@/config/errors';
 import { Path } from '@/config/routes';
 import { InteractionModelTabType } from '@/constants';
 import * as Modal from '@/ducks/modal';
+import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
-import { activePlatformSelector, activeSkillSelector } from '@/ducks/skill/skill/selectors';
+import { activeSkillSelector } from '@/ducks/skill/skill/selectors';
 import { activeWorkspaceIDSelector } from '@/ducks/workspace';
 import { Skill as SkillModel } from '@/models';
 import { GetState, SyncThunk, Thunk, ThunkDispatch } from '@/store/types';
@@ -147,7 +148,9 @@ export const goToCurrentSettings = (): SyncThunk => (dispatch, getState) => {
 export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
-  const platform = activePlatformSelector(state);
+  const platform = Project.activePlatformSelector(state);
+
+  Errors.assertVersionID(versionID);
 
   Errors.assertVersionID(versionID);
 

@@ -4,7 +4,7 @@ import React from 'react';
 import client from '@/client';
 import creatorAdapter from '@/client/adapters/creator';
 import * as Creator from '@/ducks/creator';
-import * as Skill from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import * as Workspace from '@/ducks/workspace';
 import { ProjectLoadingGate, WorkspaceFeatureLoadingGate, WorkspaceLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
@@ -103,7 +103,7 @@ const applyOffsetsToLinks = (links: Link[], offsets: Point) =>
 
 const initialize = (diagramID: string) => async (dispatch: any, getState: any) => {
   const state = getState();
-  const platform = Skill.activePlatformSelector(state);
+  const platform = Project.activePlatformSelector(state);
 
   const { viewport, ...creator } = creatorAdapter.fromDB(await client.api.diagram.get(diagramID), { platform });
 

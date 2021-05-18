@@ -15,7 +15,7 @@ import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { MarkupContext } from '@/pages/Skill/contexts';
 import { useCommentingMode, useEditingMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
-import { Callback, ConnectedProps } from '@/types';
+import { ConnectedProps } from '@/types';
 
 import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
@@ -72,7 +72,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   const disableSpotlight = !isEditingMode || !!activeModal;
 
   const showSpotlight = React.useCallback(() => !disableSpotlight && spotlight.toggle(), [disableSpotlight]);
-  const deleteActive = React.useCallback<Callback>(() => canDelete && engine.removeActive(), [canDelete]);
+  const deleteActive = React.useCallback<VoidFunction>(() => canDelete && engine.removeActive(), [canDelete]);
 
   const api = React.useMemo<CanvasContainerAPI>(
     () => ({
@@ -98,8 +98,8 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
 
   useHotKeys(Hotkey.COPY, () => clipboard.copy(), { preventDefault: true });
   useHotKeys(Hotkey.DELETE, deleteActive, { preventDefault: true }, [deleteActive]);
-  useHotKeys(Hotkey.UNDO, undoHistory as Callback, { preventDefault: true });
-  useHotKeys(Hotkey.REDO, redoHistory as Callback, { preventDefault: true });
+  useHotKeys(Hotkey.UNDO, undoHistory as VoidFunction, { preventDefault: true });
+  useHotKeys(Hotkey.REDO, redoHistory as VoidFunction, { preventDefault: true });
   useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { action: 'keyup', preventDefault: true }, [showSpotlight]);
   useHotKeys(Hotkey.DUPLICATE, onDuplicate, { preventDefault: true });
 

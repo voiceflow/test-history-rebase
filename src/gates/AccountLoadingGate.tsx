@@ -1,9 +1,9 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
+import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
-import { isLoggingInSelector } from '@/store/selectors';
 import { ConnectedProps } from '@/types';
 
 const AccountLoadingGate: React.FC<ConnectedAccountLoadingGateProps> = ({ children, isLoggingIn, restoreSession }) => (
@@ -13,7 +13,7 @@ const AccountLoadingGate: React.FC<ConnectedAccountLoadingGateProps> = ({ childr
 );
 
 const mapStateToProps = {
-  isLoggingIn: isLoggingInSelector,
+  isLoggingIn: Account.isLoggingInSelector,
 };
 
 const mapDispatchToProps = {

@@ -7,18 +7,19 @@ import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
 import { HTTPS_URL_REGEX, PlatformType } from '@/constants';
-import { focusedNodeSelector } from '@/ducks/creator';
-import * as Project from '@/ducks/project';
+import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { EngineContext } from '@/pages/Canvas/contexts';
+import { PlatformContext } from '@/pages/Skill/contexts';
 
 import { HelpMessage, HelpTooltip, VisualsForm } from './components';
 
 const isValidURL = (url) => url.match(HTTPS_URL_REGEX) || url.match(SLOT_REGEXP);
 
-function StreamEditor({ data, focusedNode, platform, onChange }) {
+function StreamEditor({ data, focusedNode, onChange }) {
+  const platform = React.useContext(PlatformContext);
   const [invalidAudio, setValidAudio, setInvalidAudio] = useEnableDisable(false);
   const engine = React.useContext(EngineContext);
 
@@ -83,8 +84,7 @@ function StreamEditor({ data, focusedNode, platform, onChange }) {
 }
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
-  focusedNode: focusedNodeSelector,
+  focusedNode: Creator.focusedNodeSelector,
 };
 
 export default connect(mapStateToProps)(StreamEditor);

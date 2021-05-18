@@ -1,14 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import { InfoSection } from '@/components/Section';
-import * as Project from '@/ducks/project';
 import { Content } from '@/pages/Canvas/components/Editor';
+import { PlatformContext } from '@/pages/Skill/contexts';
 
 import { getPlatformLabel } from './constants';
 
 const InvalidPlatformEditor: React.FC = () => {
-  const platform = useSelector(Project.activePlatformSelector);
+  const platform = React.useContext(PlatformContext)!;
 
   return (
     <Content>

@@ -6,7 +6,7 @@ import { Spinner } from '@/components/Spinner';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import * as Modal from '@/ducks/modal';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 
 class StartTrigger extends Component {
@@ -35,7 +35,7 @@ class StartTrigger extends Component {
   }
 
   deleteUser(ev, user) {
-    const { setConfirm, clearModal, deleteUser, skill_id, integration_user_error, setError } = this.props;
+    const { setConfirm, clearModal, deleteUser, versionID, integration_user_error, setError } = this.props;
     ev.stopPropagation();
 
     const { data } = this.props;
@@ -47,7 +47,7 @@ class StartTrigger extends Component {
         const targetTrigger = {
           user,
           creator_id: data.user.creator_id,
-          skill_id,
+          skill_id: versionID,
         };
 
         try {
@@ -76,7 +76,7 @@ class StartTrigger extends Component {
       integration_users,
       setError,
       integration_user_error,
-      skill_id,
+      versionID,
       integration_users_loading: props_integration_users_loading,
     } = this.props;
     const { add_user_modal, integration_users_loading } = this.state;
@@ -114,7 +114,7 @@ class StartTrigger extends Component {
                   add_user_modal: false,
                 })
               }
-              skill_id={skill_id}
+              skill_id={versionID}
             />
           }
           hideFooter={true}
@@ -155,7 +155,7 @@ const mapStateToProps = {
   integration_users: Integration.integrationUsersSelector,
   integration_users_loading: Integration.integrationUsersLoadingSelector,
   integration_user_error: Integration.integrationUsersErrorSelector,
-  skill_id: Skill.activeSkillSelector,
+  versionID: Session.activeVersionIDSelector,
   user: Account.userSelector,
 };
 

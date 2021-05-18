@@ -38,7 +38,7 @@ const PathSection: React.FC<PathSectionProps> = ({ path, index, onUpdate, onRemo
       placeholder="Add path name"
       rightAction={
         <Tooltip title={path.isDefault ? 'Default Path' : 'Assign as default path'} position="top" distance={8}>
-          <Checkbox checked={path.isDefault} onClick={swallowEvent(() => updateDefaultPath(index))} padding={false} />
+          <Checkbox checked={path.isDefault} onChange={swallowEvent(() => updateDefaultPath(index))} padding={false} />
         </Tooltip>
       }
     />

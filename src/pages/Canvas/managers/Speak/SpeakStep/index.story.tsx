@@ -2,7 +2,7 @@ import { withStepContext } from '_storybook';
 import { select } from '@storybook/addon-knobs';
 import React from 'react';
 
-import { PLATFORMS, PlatformType } from '@/constants';
+import { DISTINCT_PLATFORMS, PlatformType } from '@/constants';
 import Block from '@/pages/Canvas/components/Block';
 
 import { SpeakStep, SpeakStepItem, SpeakStepProps } from '.';
@@ -17,7 +17,7 @@ const ITEMS: SpeakStepItem[] = [
 ];
 
 const getProps = () => {
-  const platform = select('platform', PLATFORMS, PlatformType.ALEXA);
+  const platform = select('platform', DISTINCT_PLATFORMS, PlatformType.ALEXA);
 
   return {
     platform,

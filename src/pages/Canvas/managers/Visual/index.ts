@@ -1,4 +1,4 @@
-import { PlatformType } from '@/constants';
+import { GENERAL_PLATFORMS } from '@/constants';
 import { NodeData } from '@/models';
 
 import { NodeManagerConfig } from '../types';
@@ -10,7 +10,7 @@ const VisualManager: NodeManagerConfig<NodeData.Visual> = {
   ...NODE_CONFIG,
 
   label: 'Visuals',
-  platforms: [PlatformType.GENERAL],
+  platforms: GENERAL_PLATFORMS,
 
   step: VisualStep,
   editor: VisualEditor,

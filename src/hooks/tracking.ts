@@ -3,10 +3,8 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import * as Workspace from '@/ducks/workspace';
-import * as Models from '@/models';
 import { ThunkResult } from '@/store/types';
 
 import { useOneTimeEffect } from './effect';
@@ -74,17 +72,18 @@ export const useWorkspaceTracking = () => {
 export const useCanvasTracking = () => {
   const [trackEvents] = useTrackingEvents();
   const store = useStore();
-  const activeSkill = React.useMemo(() => Skill.activeSkillSelector(store.getState()) as Models.Skill<string>, []);
-  const activeWorkspaceID = React.useMemo(() => Workspace.activeWorkspaceIDSelector(store.getState())!, []);
+  const versionID = React.useMemo(() => Session.activeVersionIDSelector(store.getState())!, []);
+  const projectID = React.useMemo(() => Session.activeProjectIDSelector(store.getState())!, []);
+  const workspaceID = React.useMemo(() => Workspace.activeWorkspaceIDSelector(store.getState())!, []);
   const startTime = React.useMemo(() => Date.now(), []);
 
   const trackCanvasTime = React.useCallback(
     () =>
       trackEvents.trackActiveProjectSessionDuration({
-        skillID: activeSkill.id,
+        skillID: versionID,
         duration: Date.now() - startTime,
-        projectID: activeSkill.projectID,
-        workspaceID: activeWorkspaceID,
+        projectID,
+        workspaceID,
       }),
     []
   );
@@ -93,9 +92,9 @@ export const useCanvasTracking = () => {
 
   useSetup(() => {
     trackEvents.trackActiveProjectSessionBegin({
-      skillID: activeSkill.id,
-      projectID: activeSkill.projectID,
-      workspaceID: activeWorkspaceID,
+      skillID: versionID,
+      projectID,
+      workspaceID,
     });
 
     window.addEventListener('beforeunload', trackCanvasTime);

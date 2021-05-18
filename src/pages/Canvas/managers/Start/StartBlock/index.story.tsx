@@ -2,7 +2,7 @@ import { composeDecorators2, withContext, withStepContext } from '_storybook';
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { PLATFORMS } from '@/constants';
+import { DISTINCT_PLATFORMS } from '@/constants';
 import { NodeEntityContext } from '@/pages/Canvas/contexts';
 import { CommandStep } from '@/pages/Canvas/managers/Command/CommandStep';
 
@@ -43,9 +43,9 @@ export default {
   component: StartBlock,
 };
 
-export const alexa = withDecorators()(() => <HomeStartBlock platform={PLATFORMS[0]} invocationName="Headspace" {...getHomeProps()} />);
+export const alexa = withDecorators()(() => <HomeStartBlock platform={DISTINCT_PLATFORMS[0]} invocationName="Headspace" {...getHomeProps()} />);
 
-export const google = withDecorators()(() => <HomeStartBlock platform={PLATFORMS[1]} invocationName="Headspace" {...getHomeProps()} />);
+export const google = withDecorators()(() => <HomeStartBlock platform={DISTINCT_PLATFORMS[1]} invocationName="Headspace" {...getHomeProps()} />);
 
 export const flowStartBlock = withDecorators()(() => <FlowStartBlock name="Flow Name" {...getFlowProps()} commands={null} />);
 

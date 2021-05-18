@@ -1,6 +1,6 @@
+import { CRUDState } from '@/ducks/utils/crud';
 import { Workspace } from '@/models';
-import { Normalized } from '@/utils/normalized';
 
-export type WorkspaceState = Normalized<Workspace> & {
+export type WorkspaceState = CRUDState<Workspace> & {
   activeWorkspaceID: string | null;
 };

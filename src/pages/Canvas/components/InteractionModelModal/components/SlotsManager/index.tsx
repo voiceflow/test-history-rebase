@@ -81,10 +81,10 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
   const addNewSlot = React.useCallback(() => {
     toggleSlotEdit({
       isCreate: true,
-      onSave: async ({ type, name, color, inputs = [] }: Slot) => {
+      onSave: ({ type, name, color, inputs = [] }: Slot) => {
         const id = cuid.slug();
-        await addSlot(id, { id, type, name, color, inputs });
 
+        addSlot(id, { id, type, name, color, inputs });
         closeSlotEdit();
         setSelectedID(id);
       },

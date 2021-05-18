@@ -4,8 +4,10 @@ import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
 import { facebookLogo } from '@/assets';
-import Button, { ButtonVariant } from '@/components/Button';
+import { ButtonVariant } from '@/components/Button';
 import { FACEBOOK_APP_ID } from '@/config';
+
+import SocialButton from './SocialButton';
 
 export type FacebookLoginButtonProps = {
   light?: boolean;
@@ -18,14 +20,14 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProps> = ({ light, disabl
     appId={FACEBOOK_APP_ID}
     fields="name,email,picture"
     render={(renderProps) => (
-      <Button
+      <SocialButton
         variant={ButtonVariant.SECONDARY}
         onClick={() => !disabled && renderProps!.onClick()}
         className={cn('social-button', { 'social-button-light': light })}
       >
         <img src={facebookLogo} alt="Facebook Login" />
         Facebook
-      </Button>
+      </SocialButton>
     )}
     callback={onLogin}
   />

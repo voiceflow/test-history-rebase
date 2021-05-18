@@ -9,3 +9,10 @@ export const CopiedMessaged = styled.span`
   font-size: 13px;
   margin-right: 1rem;
 `;
+
+export const HeaderText = styled.h1`
+  font-size: 18px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: 0;
+`;

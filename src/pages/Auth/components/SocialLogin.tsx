@@ -2,6 +2,7 @@ import React from 'react';
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import { GoogleLoginResponse } from 'react-google-login';
 
+import { Box } from '@/components/Box';
 import Flex from '@/components/Flex';
 import { toast } from '@/components/Toast';
 import { IS_PRIVATE_CLOUD } from '@/config';
@@ -9,6 +10,7 @@ import * as AccountDuck from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { Account } from '@/models';
+import THEME from '@/styles/theme';
 import { ConnectedProps } from '@/types';
 
 import { SocialLoginContainer } from './AuthBoxes';
@@ -19,12 +21,14 @@ export type SocialLoginProps = {
   light?: boolean;
   coupon?: string;
   disabled?: boolean;
+  loginMode?: boolean;
 };
 
 const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
   light,
   coupon,
   disabled,
+  loginMode,
   googleLogin,
   facebookLogin,
   saveSocialProfilePicture,
@@ -77,6 +81,9 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
   return (
     <SocialLoginContainer>
       <Flex>
+        <Box color={loginMode ? THEME.colors.secondary : THEME.colors.tertiary} mr={16}>
+          {loginMode ? 'Or log in with' : 'Or sign up with'}
+        </Box>
         <GoogleLoginButton disabled={disabled} light={light} onLogin={onGoogleLogin} />
         <FacebookLoginButton disabled={disabled} light={light} onLogin={onFacebookLogin} />
       </Flex>

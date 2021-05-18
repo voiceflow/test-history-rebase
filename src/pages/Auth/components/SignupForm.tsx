@@ -20,6 +20,8 @@ import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationContainer';
 import EmailInput from './EmailInput';
+import HeaderBox from './HeaderBox';
+import InputContainer from './InputContainer';
 import PasswordInput from './PasswordInput';
 import SocialLogin from './SocialLogin';
 
@@ -95,7 +97,10 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
         <Form onSubmit={preventDefault(signupSubmit)}>
           <img className="auth-logo" src={wordmarkLight} alt="logo" />
           <div className="auth-form-wrapper">
-            <FormGroup>
+            <HeaderBox>
+              <h1>Create you account</h1>
+            </HeaderBox>
+            <InputContainer>
               <Input
                 className="form-bg"
                 type="text"
@@ -108,15 +113,15 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus
               />
-            </FormGroup>
-            <FormGroup>
+            </InputContainer>
+            <InputContainer>
               <EmailInput value={email} onChange={setEmail} placeholder="Email address" />
-            </FormGroup>
+            </InputContainer>
             <FormGroup>
               <PasswordInput value={password} onChange={setPassword} />
             </FormGroup>
             {promo && (
-              <FormGroup>
+              <InputContainer>
                 <ControlledInput
                   type="text"
                   name="promo"
@@ -126,7 +131,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
                   complete={couponValid}
                   error={isSignupDisabled}
                 />
-              </FormGroup>
+              </InputContainer>
             )}
             <div className="row">
               <div className="col-6 auth__link">

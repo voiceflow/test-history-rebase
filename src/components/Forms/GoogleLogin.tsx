@@ -62,7 +62,7 @@ const GoogleLogin: React.FC<GoogleLoginProps & ConnectedGoogleLoginProps> = ({
   return (
     <GoogleLoginButton className="LoginWithGoogle" onClick={onLogin}>
       <SvgIcon icon="connectGoogle" size={46} />
-      <span>Sign in with Google</span>
+      <span>Log in with Google</span>
     </GoogleLoginButton>
   );
 };

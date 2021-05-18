@@ -3,9 +3,11 @@ import React from 'react';
 import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse } from 'react-google-login';
 
 import { googleLogo } from '@/assets';
-import Button, { ButtonVariant } from '@/components/Button';
+import { ButtonVariant } from '@/components/Button';
 import { GOOGLE_CLIENT_ID } from '@/config';
 import { noop } from '@/utils/functional';
+
+import SocialButton from './SocialButton';
 
 export type GoogleLoginButtonProps = {
   light?: boolean;
@@ -17,14 +19,14 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ light, disabled, 
   <GoogleLogin
     clientId={GOOGLE_CLIENT_ID}
     render={(renderProps) => (
-      <Button
+      <SocialButton
         variant={ButtonVariant.SECONDARY}
         onClick={() => !disabled && renderProps!.onClick()}
         className={cn('social-button', { 'social-button-light': light })}
       >
         <img src={googleLogo} alt="Google Login" />
         Google
-      </Button>
+      </SocialButton>
     )}
     onSuccess={onLogin as GoogleLoginProps['onSuccess']}
     onFailure={noop}

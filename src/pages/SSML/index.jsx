@@ -2,7 +2,7 @@ import { Voice } from '@voiceflow/alexa-types';
 import React from 'react';
 
 import Button from '@/components/Button';
-import { FlexEnd } from '@/components/Flex';
+import { FlexCenter, FlexEnd } from '@/components/Flex';
 import Header from '@/components/Header';
 import MadeInVoiceflow from '@/components/MadeInVoiceflow';
 import SeoHelmet from '@/components/SeoHelmet';
@@ -14,7 +14,7 @@ import { useDebouncedCallback } from '@/hooks/callback';
 import { useEnableDisable } from '@/hooks/toggle';
 import { copy } from '@/utils/clipboard';
 
-import { App, CodeContainer, CopiedMessaged, Page } from './components';
+import { App, CodeContainer, CopiedMessaged, HeaderText, Page } from './components';
 
 function getInitialValue() {
   try {
@@ -75,9 +75,16 @@ function SSMLPage() {
   return (
     <>
       <MadeInVoiceflow />
-
-      <Header withLogo disableLogoClick withUserMenu={false} />
-
+      <Header
+        withLogo
+        disableLogoClick
+        withUserMenu={false}
+        centerRenderer={() => (
+          <FlexCenter>
+            <HeaderText>SSML Editor</HeaderText>
+          </FlexCenter>
+        )}
+      />
       <App>
         <Page>
           <SeoHelmet page={SeoPage.SSML} />

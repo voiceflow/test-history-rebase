@@ -40,7 +40,7 @@ export const CenterGroup = styled.div`
   display: flex;
   left: 40%;
   align-items: center;
-  width: 250px;
+  min-width: 200px;
 `;
 
 export const JustifiedHeaderActions = styled.div`

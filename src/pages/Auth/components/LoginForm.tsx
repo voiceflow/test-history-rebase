@@ -2,7 +2,7 @@ import { getSearch } from 'connected-react-router';
 import _get from 'lodash/get';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Form, FormGroup } from 'reactstrap';
+import { Form } from 'reactstrap';
 
 import { wordmark } from '@/assets';
 import Button from '@/components/LegacyButton';
@@ -13,6 +13,7 @@ import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks';
 import { Query } from '@/models';
+import HeaderBox from '@/pages/Auth/components/HeaderBox';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { preventDefault } from '@/utils/dom';
 
@@ -20,6 +21,7 @@ import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationContainer';
 import EmailInput from './EmailInput';
+import InputContainer from './InputContainer';
 import PasswordInput from './PasswordInput';
 import ShowPasswordIcon from './ShowPasswordIcon';
 
@@ -47,16 +49,19 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
         <Form onSubmit={preventDefault(loginSubmit)}>
           <img className="auth-logo" src={wordmark} alt="logo" />
           <div className="auth-form-wrapper">
-            <FormGroup>
+            <HeaderBox>
+              <h1>Log In to your account</h1>
+            </HeaderBox>
+            <InputContainer>
               <EmailInput value={email} onChange={setEmail} />
-            </FormGroup>
-            <FormGroup className="passwordInput">
+            </InputContainer>
+            <InputContainer className="passwordInput">
               <PasswordInput value={password} onChange={setPassword} showPassword={showPassword} />
               {password.length !== 0 && <ShowPasswordIcon showPassword={showPassword} onClick={() => toggleShowPassword()} />}
               <Link className="forgotLink" to="/reset">
                 Forgot password?
               </Link>
-            </FormGroup>
+            </InputContainer>
             <div className="row">
               <div className="col-7 auth__link">
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -64,7 +69,7 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
               </div>
               <div className="col-5">
                 <Button isPrimary isBlock type="submit">
-                  {query.invite ? 'Join Team' : 'Sign in'}
+                  {query.invite ? 'Join Team' : 'Log In'}
                 </Button>
               </div>
             </div>

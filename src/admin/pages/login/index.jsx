@@ -80,7 +80,7 @@ const LoginForm = ({ login, location }) => {
               </div>
               <div className="col-4">
                 <Button isPrimary isBlock type="submit">
-                  Sign in
+                  Log in
                 </Button>
               </div>
             </div>

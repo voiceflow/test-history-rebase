@@ -22,7 +22,7 @@ const Login: React.FC<RouteComponentProps> = ({ location }) => {
   return (
     <LoginForm query={query}>
       <SeoHelmet page={SeoPage.LOGIN} />
-      <SocialLogin light />
+      <SocialLogin loginMode light />
     </LoginForm>
   );
 };

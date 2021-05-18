@@ -2,12 +2,11 @@ import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { objectID } from '@/utils';
 
-import { PrimativeDiagram } from './types';
+import { PrimitiveDiagram } from './types';
 
 export const STATE_KEY = 'diagram';
 
-// eslint-disable-next-line import/prefer-default-export
-export const generateDefaultDiagram = (): PrimativeDiagram => {
+export const generateDefaultDiagram = (): PrimitiveDiagram => {
   const startNodeID = objectID();
 
   return {

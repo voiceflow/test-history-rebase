@@ -1,7 +1,7 @@
 import { BuiltInVariable } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
-import { globalVariablesSelector } from '@/ducks/skill';
+import { activeGlobalVariablesSelector } from '@/ducks/skill';
 import { slotNamesSelector } from '@/ducks/slot';
 import { Store } from '@/models';
 import { SyncThunk } from '@/store/types';
@@ -14,7 +14,7 @@ import { PrototypeStatus } from '../types';
 const resetPrototype = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const visualState = prototypeVisualSelector(state);
-  const globalVariables = globalVariablesSelector(state);
+  const globalVariables = activeGlobalVariablesSelector(state);
   const slotNames = slotNamesSelector(state);
   const platform = Project.activePlatformSelector(state);
 

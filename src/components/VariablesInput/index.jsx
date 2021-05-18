@@ -2,9 +2,9 @@ import React from 'react';
 
 import TextEditor, { PluginType } from '@/components/TextEditor';
 import { toast } from '@/components/Toast';
+import * as Diagram from '@/ducks/diagram';
 import { addGlobalVariable } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { allVariablesSelector } from '@/store/selectors';
 import { compose } from '@/utils/functional';
 
 import { Container } from './components';
@@ -87,7 +87,7 @@ const VariablesInput = (
 };
 
 const mapStateToProps = {
-  variables: allVariablesSelector,
+  variables: Diagram.activeDiagramAllVariablesSelector,
 };
 
 const mapDispatchToProps = {

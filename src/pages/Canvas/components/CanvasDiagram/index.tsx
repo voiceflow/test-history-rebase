@@ -8,6 +8,7 @@ import Canvas from '@/components/Canvas';
 import Crosshair from '@/components/Crosshair';
 import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { canvasNavigationSelector } from '@/ducks/ui';
+import * as Viewport from '@/ducks/viewport';
 import { connect } from '@/hocs';
 import { NodeData } from '@/models';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
@@ -19,19 +20,18 @@ import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
 import { ContextMenuContext, EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Skill/contexts';
 import { useCommentingMode, useEditingMode } from '@/pages/Skill/hooks';
-import { activeDiagramViewportSelector } from '@/store/selectors';
-import { Viewport } from '@/types';
+import { Viewport as ViewportType } from '@/types';
 import { Coords } from '@/utils/geometry';
 
 import { useCursorControls } from './hooks';
 
-const withInitialViewport = connect({ viewport: activeDiagramViewportSelector }, null, null, {
+const withInitialViewport = connect({ viewport: Viewport.activeDiagramViewportSelector }, null, null, {
   // ignore all further updates to the viewport
   areStatesEqual: () => true,
 });
 
 type ConnectedCanvasDiagramProps = {
-  viewport: Viewport;
+  viewport: ViewportType;
 };
 
 const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU];

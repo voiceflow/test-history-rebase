@@ -5,9 +5,9 @@ import Box from '@/components/Box';
 import ChatWithUsLink from '@/components/ChatLink';
 import OverflowMenu from '@/components/OverflowMenu';
 import { BUILT_IN_VARIABLES } from '@/constants';
+import * as Diagram from '@/ducks/diagram';
 import { connect } from '@/hocs';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { allVariablesSelector } from '@/store/selectors';
 
 import { HelpTooltip } from './components';
 
@@ -86,7 +86,7 @@ function CodeEditor({ data, onChange, onExpand, expanded, variables }) {
 }
 
 const mapStateToProps = {
-  variables: allVariablesSelector,
+  variables: Diagram.activeDiagramAllVariablesSelector,
 };
 
 export default connect(mapStateToProps)(CodeEditor);

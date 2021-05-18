@@ -43,7 +43,7 @@ export const initializeCreatorForDiagram = (diagramID: string): Thunk => async (
 
   batch(() => {
     dispatch(ReduxUndo.ActionCreators.clearHistory());
-    dispatch(Diagram.updateDiagramVariables(diagramID, variables));
+    dispatch(Diagram.replaceLocalVariables(diagramID, variables));
     dispatch(Viewport.rehydrateViewport(diagramID, { x, y, zoom }));
     dispatch(initializeCreator(creator));
     dispatch(saveHistory());

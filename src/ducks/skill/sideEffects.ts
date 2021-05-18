@@ -27,7 +27,7 @@ import * as Skill from './skill';
 
 export const addGlobalVariable = (variable: string | null): SyncThunk => (dispatch, getState) => {
   if (variable) {
-    const variables = Skill.globalVariablesSelector(getState());
+    const variables = Skill.activeGlobalVariablesSelector(getState());
 
     if (!variable.match(VALID_VARIABLE_NAME)) {
       throw new Error('Variable contains invalid characters or is greater than 16 characters');
@@ -105,7 +105,7 @@ export const saveIntentsAndSlots = (): Thunk => async (_dispatch, getState) => {
 export const saveVariables = (): Thunk => async (_dispatch, getState) => {
   const state = getState();
   const skillID = Session.activeVersionIDSelector(state)!;
-  const global = Skill.globalVariablesSelector(state);
+  const global = Skill.activeGlobalVariablesSelector(state);
 
   await client.api.version.update(skillID, { variables: global });
 };

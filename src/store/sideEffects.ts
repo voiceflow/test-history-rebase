@@ -72,7 +72,7 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
 
   const [dbVersion] = await Promise.all([
     client.api.version.get<AlexaVersionData | GoogleVersionData>(versionID),
-    dispatch(Diagram.loadVersionDiagrams(versionID)),
+    dispatch(Diagram.loadDiagrams(versionID)),
   ] as const);
 
   // not a dependency for project to load

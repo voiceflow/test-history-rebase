@@ -23,7 +23,6 @@ import * as Slot from '@/ducks/slot';
 import { CRUDAction } from '@/ducks/utils/crud';
 import * as Workspace from '@/ducks/workspace';
 
-import { activeDiagramViewersSelector } from './selectors';
 import { AnyAction, Dispatchable, Selector, StoreMiddleware, StoreMiddlewareAPI } from './types';
 import { storeLogger } from './utils';
 
@@ -114,7 +113,7 @@ const createRealtimeResourceUpdateMiddleware = <T>(
 
 const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (action) => {
   const state = store.getState();
-  const viewers = activeDiagramViewersSelector(state);
+  const viewers = Realtime.activeDiagramViewersSelector(state);
   const isLibraryRole = Workspace.isLibraryRoleSelector(state);
   const hasViewers = viewers.length > 1;
   const isHistoryAction = CREATOR_HISTORY_ACTIONS.includes(action.type);
@@ -201,8 +200,8 @@ const createMiddleware = (history: History) => {
         Skill.saveIntentsAndSlots
       )
     ),
-    createAutosaveMiddleware(Skill.globalVariablesSelector, Skill.saveVariables, [Skill.SkillAction.SET_ACTIVE_SKILL]),
-    createAutosaveMiddleware(Diagram.activeDiagramVariables, Diagram.saveActiveDiagramVariables, [
+    createAutosaveMiddleware(Skill.activeGlobalVariablesSelector, Skill.saveVariables, [Skill.SkillAction.SET_ACTIVE_SKILL]),
+    createAutosaveMiddleware(Diagram.activeDiagramLocalVariablesSelector, Diagram.saveActiveDiagramVariables, [
       Creator.CreatorAction.INITIALIZE_CREATOR,
       Creator.CreatorAction.RESET_CREATOR,
     ]),
@@ -223,7 +222,7 @@ const createMiddleware = (history: History) => {
     ]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.INTENTS, Intent.allIntentsSelector),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.SLOTS, Slot.allSlotsSelector),
-    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.VARIABLES, Skill.globalVariablesSelector, [
+    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.VARIABLES, Skill.activeGlobalVariablesSelector, [
       Skill.SkillAction.SET_ACTIVE_SKILL,
       Creator.CreatorAction.INITIALIZE_CREATOR,
       Creator.CreatorAction.RESET_CREATOR,

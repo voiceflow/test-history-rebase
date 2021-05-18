@@ -25,7 +25,7 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
 
       if (!versionID) return;
 
-      await dispatch(Diagram.loadVersionDiagrams(versionID));
+      await dispatch(Diagram.loadDiagrams(versionID));
     }
   },
   [Realtime.ResourceType.VARIABLES]: (data: string[], meta: object) => {

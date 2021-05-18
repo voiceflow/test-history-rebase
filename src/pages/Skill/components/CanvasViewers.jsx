@@ -4,10 +4,10 @@ import Flex from '@/components/Flex';
 import { Members } from '@/components/User';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
+import * as Realtime from '@/ducks/realtime';
 import { WorkspaceLoadingGate, WorkspaceMembersLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
-import { activeDiagramViewersSelector } from '@/store/selectors';
 import { compose } from '@/utils/functional';
 
 const CanvasViewers = ({ viewers }) => {
@@ -25,7 +25,7 @@ const CanvasViewers = ({ viewers }) => {
 };
 
 const mapStateToProps = {
-  viewers: activeDiagramViewersSelector,
+  viewers: Realtime.activeDiagramViewersSelector,
 };
 
 export default compose(withBatchLoadingGate(WorkspaceLoadingGate, WorkspaceMembersLoadingGate), connect(mapStateToProps))(CanvasViewers);

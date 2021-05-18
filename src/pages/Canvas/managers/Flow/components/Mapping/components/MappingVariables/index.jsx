@@ -2,11 +2,10 @@ import React from 'react';
 
 import * as Diagram from '@/ducks/diagram';
 import { connect } from '@/hocs';
-import { allVariablesSelector } from '@/store/selectors';
 
 import { ButtonContainer, Container, DeleteButton, MappingContainer, RegularSelect, VariableDropdown, VariableMappingContainer } from './components';
 
-const MappingVariables = ({ mapManaged, reverse, items, activeVariables, flowVariables, addVariableToFlow }) => (
+const MappingVariables = ({ mapManaged, diagramID, reverse, items, activeVariables, getFlowVariables, addLocalVariable }) => (
   <Container>
     {mapManaged((mapping, { key, onUpdate, onRemove }) => {
       const updateFrom = (from) => onUpdate({ from });
@@ -26,8 +25,8 @@ const MappingVariables = ({ mapManaged, reverse, items, activeVariables, flowVar
         />
       );
 
-      const onCreateFlowVariable = async (item) => {
-        await addVariableToFlow(item);
+      const onCreateFlowVariable = (item) => {
+        addLocalVariable(item);
         updateTo(item);
       };
 
@@ -36,7 +35,7 @@ const MappingVariables = ({ mapManaged, reverse, items, activeVariables, flowVar
           value={mapping.to}
           onChange={updateTo}
           placeholder="Select Variable"
-          options={flowVariables}
+          options={getFlowVariables(diagramID)}
           fullWidth
           onCreate={onCreateFlowVariable}
           creatable={false}
@@ -59,17 +58,12 @@ const MappingVariables = ({ mapManaged, reverse, items, activeVariables, flowVar
 );
 
 const mapStateToProps = {
-  flowVariables: Diagram.diagramVariablesSelector,
-  activeVariables: allVariablesSelector,
+  activeVariables: Diagram.activeDiagramAllVariablesSelector,
+  getFlowVariables: Diagram.localVariablesByDiagramIDSelector,
 };
 
 const mapDispatchToProps = {
-  addVariableToDiagram: Diagram.addDiagramVariable,
+  addLocalVariable: Diagram.addActiveDiagramVariable,
 };
 
-const mergeProps = ({ flowVariables: getVariables }, { addVariableToDiagram }, { diagramID }) => ({
-  flowVariables: getVariables(diagramID),
-  addVariableToFlow: (name) => addVariableToDiagram(diagramID, name),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(MappingVariables);
+export default connect(mapStateToProps, mapDispatchToProps)(MappingVariables);

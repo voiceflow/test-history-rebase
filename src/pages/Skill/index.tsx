@@ -26,7 +26,6 @@ import InactivityModal from '@/pages/Inactivity';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import PrivateRoute from '@/Routes/PrivateRoute';
-import { isOnlyViewerSelector } from '@/store/selectors';
 import { ConnectedProps } from '@/types';
 import { compose } from '@/utils/functional';
 import { getActivePageAndMatch } from '@/utils/routes';
@@ -147,7 +146,7 @@ const mapStateToProps = {
   activeSkill: SkillDuck.activeSkillSelector,
   isConnected: Realtime.isRealtimeConnectedSelector,
   platform: Project.activePlatformSelector,
-  isOnlyViewer: isOnlyViewerSelector,
+  isOnlyViewer: Realtime.isOnlyViewerSelector,
 };
 
 const mapDispatchToProps = {

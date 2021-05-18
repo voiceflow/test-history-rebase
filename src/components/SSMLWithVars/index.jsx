@@ -2,10 +2,10 @@ import React from 'react';
 
 import SSML from '@/components/SSML';
 import { toast } from '@/components/Toast';
+import * as Diagram from '@/ducks/diagram';
 import * as Project from '@/ducks/project';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { allVariablesSelector } from '@/store/selectors';
 import { compose } from '@/utils/functional';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
@@ -55,7 +55,7 @@ const SSMLWithVars = (
 
 const mapStateToProps = {
   platform: Project.activePlatformSelector,
-  variables: allVariablesSelector,
+  variables: Diagram.activeDiagramAllVariablesSelector,
   defaultVoice: Skill.defaultVoiceSelector,
   locales: Skill.activeLocalesSelector,
 };

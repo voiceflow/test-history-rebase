@@ -1,14 +1,21 @@
 import { createSelector } from 'reselect';
 
-import { creatorDiagramIDSelector } from '@/ducks/creator/diagram/selectors';
+import creatorAdapter from '@/client/adapters/creator';
+import { BUILT_IN_VARIABLES } from '@/constants';
+import { allLinksSelector, creatorDiagramIDSelector, creatorDiagramSelector } from '@/ducks/creator/diagram/selectors';
+import { activePlatformSelector } from '@/ducks/project';
+import { activeGlobalVariablesSelector } from '@/ducks/skill/skill/selectors';
+import { slotNamesSelector } from '@/ducks/slot';
+import { createCRUDSelectors } from '@/ducks/utils/crud';
+import * as Viewport from '@/ducks/viewport';
+import { CreatorDiagram } from '@/models';
+import { unique } from '@/utils/array';
 import { denormalize, getNormalizedByKey } from '@/utils/normalized';
 
-import { createCRUDSelectors } from '../utils/crud';
 import { STATE_KEY } from './constants';
 import { StructuredFlow } from './types';
 
 // selectors
-
 export const {
   root: rootDiagramsSelector,
   all: allDiagramsSelector,
@@ -19,20 +26,11 @@ export const {
   map: diagramMapSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const activeDiagramSelector = createSelector([diagramByIDSelector, creatorDiagramIDSelector], (getDiagram, activeDiagramID) =>
-  activeDiagramID ? getDiagram(activeDiagramID) : null
-);
-
-export const subDiagramsByIDSelector = createSelector([diagramByIDSelector], (getDiagram) => (diagramID: string) =>
-  getDiagram(diagramID)?.subDiagrams || []
-);
-
-export const flowStructureSelector = createSelector([rootDiagramsSelector], (state) => (diagramID: string) => {
+export const structureSelector = createSelector([rootDiagramsSelector], (state) => (diagramID: string) => {
   const flowIDs = state.allKeys;
   const flows = denormalize(state)
     .map(({ id, name }) => ({ id, name }))
     .reduce<Record<string, StructuredFlow>>((acc, flow) => Object.assign(acc, { [flow.id]: flow }), {});
-
   flowIDs.forEach((id) => {
     flows[id].children = getNormalizedByKey(state, id)
       .subDiagrams.map((subDiagramID) => flows[subDiagramID])
@@ -42,10 +40,61 @@ export const flowStructureSelector = createSelector([rootDiagramsSelector], (sta
       .map((subDiagramID) => flows[subDiagramID])
       .filter(Boolean);
   });
-
   return flows[diagramID];
 });
 
-export const diagramVariablesSelector = createSelector([diagramByIDSelector], (getDiagram) => (diagramID: string) =>
+export const localVariablesByDiagramIDSelector = createSelector([diagramByIDSelector], (getDiagram) => (diagramID: string) =>
   getDiagram(diagramID)?.variables || []
+);
+
+//  active diagram
+
+export const activeDiagramSelector = createSelector([diagramByIDSelector, creatorDiagramIDSelector], (getDiagram, activeDiagramID) =>
+  activeDiagramID ? getDiagram(activeDiagramID) : null
+);
+
+export const activeDiagramStructureSelector = createSelector([structureSelector, creatorDiagramIDSelector], (getFlowStructure, activeDiagramID) =>
+  activeDiagramID ? getFlowStructure(activeDiagramID) : null
+);
+
+export const activeDiagramLocalVariablesSelector = createSelector(
+  [creatorDiagramIDSelector, localVariablesByDiagramIDSelector],
+  (diagramID, variablesByDiagramID) => (diagramID ? variablesByDiagramID(diagramID) : [])
+);
+
+export const activeDiagramAllVariablesSelector = createSelector(
+  [activeGlobalVariablesSelector, activeDiagramLocalVariablesSelector, slotNamesSelector],
+  (globalVariables, activeDiagramVariables, slotNames) => unique([...slotNames, ...BUILT_IN_VARIABLES, ...globalVariables, ...activeDiagramVariables])
+);
+
+export const fullActiveDiagramSelector = createSelector(
+  [
+    creatorDiagramIDSelector,
+    Viewport.viewportByIDSelector,
+    localVariablesByDiagramIDSelector,
+    creatorDiagramSelector,
+    allLinksSelector,
+    activePlatformSelector,
+  ],
+  // eslint-disable-next-line max-params
+  (diagramID, getViewport, getLocalVariables, { rootNodeIDs, nodes, ports, data, markupNodeIDs }, links, platform) => {
+    if (!diagramID) return null;
+
+    const viewport = getViewport(diagramID);
+    const variables = getLocalVariables(diagramID);
+
+    const diagram = creatorAdapter.toDB(
+      {
+        diagramID,
+        viewport,
+        rootNodeIDs,
+        links,
+        data,
+        markupNodeIDs,
+      } as CreatorDiagram,
+      { nodes, ports, platform }
+    );
+
+    return { ...diagram, variables };
+  }
 );

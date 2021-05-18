@@ -61,7 +61,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   goToDiagram: Router.goToDiagram,
-  loadFlowVariables: Diagram.loadDiagramVariables,
+  loadFlowVariables: Diagram.loadLocalVariables,
 };
 
 const mergeProps = ({ diagramByID }, { goToDiagram }, { data }) => ({

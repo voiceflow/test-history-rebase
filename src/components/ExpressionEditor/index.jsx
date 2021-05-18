@@ -1,7 +1,7 @@
 import React from 'react';
 
+import * as Diagram from '@/ducks/diagram';
 import { connect } from '@/hocs';
-import { allVariablesSelector } from '@/store/selectors';
 
 import ExpressionForm from './components/ExpressionForm';
 import ExpressionPreview from './components/ExpressionPreview';
@@ -20,7 +20,7 @@ export function ExpressionEditor({ expression, ...props }) {
 }
 
 const mapStateToProps = {
-  variables: allVariablesSelector,
+  variables: Diagram.activeDiagramAllVariablesSelector,
 };
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(ExpressionEditor);

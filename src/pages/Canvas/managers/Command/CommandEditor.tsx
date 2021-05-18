@@ -112,14 +112,4 @@ const mergeProps = (
 
 type ConnectedCommandEditorProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps, mergeProps)
-  // TODO: remove this when duplicate functionality is implemented and we can use defaults
-  // withHeaderActions([
-  //   {
-  //     value: 'delete_block',
-  //     label: 'Delete',
-  //     onClick: ({ data, engine }) => engine.node.remove(data.nodeID),
-  //   },
-  // ])
-)(CommandEditor) as NodeEditor<NodeData.Command>;
+export default compose(connect(mapStateToProps, mapDispatchToProps, mergeProps))(CommandEditor) as NodeEditor<NodeData.Command>;

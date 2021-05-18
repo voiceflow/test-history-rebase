@@ -10,8 +10,7 @@ import * as Skill from '@/ducks/skill';
 import * as SlotDuck from '@/ducks/slot';
 import { connect } from '@/hocs';
 import { useEnableDisable, useSetup } from '@/hooks';
-import * as Selectors from '@/store/selectors';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { ConnectedProps } from '@/types';
 import { reorder as reorderArray } from '@/utils/array';
 
 import LeftColumn from '../LeftColumn';
@@ -36,10 +35,10 @@ const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManag
   setSelectedID,
   localVariables,
   globalVariables,
-  removeLocalVariable,
+  replaceVariableSetDiagram,
   removeGlobalVariable,
   setSelectedTypeAndID,
-  replaceLocalVariables,
+  removeVariableFromDiagram,
   replaceGlobalVariables,
 }) => {
   const [mergedVariables, mergedVariablesMap] = React.useMemo(() => {
@@ -79,7 +78,7 @@ const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManag
 
   const onDeleteLocal = React.useCallback(
     (_, { item }: { item: Variable }) => {
-      removeLocalVariable(item.name);
+      removeVariableFromDiagram(item.name);
 
       if (selectedVariableID === item.id) {
         const index = mergedVariables.findIndex(({ id }) => id === item.id);
@@ -87,7 +86,7 @@ const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManag
         setSelectedID(mergedVariables[index === 0 ? 1 : 0].id);
       }
     },
-    [removeLocalVariable, mergedVariables, selectedVariableID, setSelectedID]
+    [removeVariableFromDiagram, mergedVariables, selectedVariableID, setSelectedID]
   );
 
   const deleteSelectedVariable = React.useCallback(() => {
@@ -112,9 +111,9 @@ const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManag
     replaceGlobalVariables,
   ]);
 
-  const onReorderLocalVariables = React.useCallback((from: number, to: number) => replaceLocalVariables(reorderArray(localVariables, from, to)), [
+  const onReorderLocalVariables = React.useCallback((from: number, to: number) => replaceVariableSetDiagram(reorderArray(localVariables, from, to)), [
     localVariables,
-    replaceLocalVariables,
+    replaceVariableSetDiagram,
   ]);
 
   useSetup(() => {
@@ -218,24 +217,17 @@ const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManag
 const mapStateToProps = {
   slots: SlotDuck.allSlotsSelector,
   diagramID: Session.activeDiagramIDSelector,
-  localVariables: Selectors.activeDiagramVariablesSelector,
-  globalVariables: Skill.globalVariablesSelector,
+  localVariables: Diagram.activeDiagramLocalVariablesSelector,
+  globalVariables: Skill.activeGlobalVariablesSelector,
 };
 
 const mapDispatchToProps = {
   removeGlobalVariable: Skill.removeGlobalVariable,
   replaceGlobalVariables: Skill.replaceGlobalVariables,
-  removeVariableFromDiagram: Diagram.removeDiagramVariable,
-  replaceVariableSetDiagram: Diagram.updateDiagramVariables,
+  removeVariableFromDiagram: Diagram.removeActiveDiagramVariable,
+  replaceVariableSetDiagram: Diagram.replaceActiveDiagramVariables,
 };
 
-const mergeProps = (
-  ...[{ diagramID }, { removeVariableFromDiagram, replaceVariableSetDiagram }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>
-) => ({
-  removeLocalVariable: (variable: string) => removeVariableFromDiagram(diagramID!, variable),
-  replaceLocalVariables: (variables: string[]) => replaceVariableSetDiagram(diagramID!, variables),
-});
+type ConnectedVariablesManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-type ConnectedVariablesManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(VariablesManager) as React.FC<VariablesManagerProps>;
+export default connect(mapStateToProps, mapDispatchToProps)(VariablesManager) as React.FC<VariablesManagerProps>;

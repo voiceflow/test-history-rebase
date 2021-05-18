@@ -4,20 +4,15 @@ import React from 'react';
 import AceEditor, { InputMode } from '@/components/AceEditor';
 import Box from '@/components/Box';
 import { BUILT_IN_VARIABLES } from '@/constants';
+import * as Diagram from '@/ducks/diagram';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
-import { allVariablesSelector } from '@/store/selectors';
+import { ConnectedProps } from '@/types';
 
 import Container from './Container';
 
-export interface AceEditorInput {
-  value: string;
-  onChange: (val: string) => void;
-  variables: string[];
-}
-
 // ace typings have WorkerClient type under TODO list reference https://github.com/ajaxorg/ace/blob/master/ace.d.ts#L345
-export interface AceEditorRef {
+interface AceEditorRef {
   editor: Ace.Editor & {
     session: Ace.EditSession & {
       $worker: {
@@ -27,7 +22,12 @@ export interface AceEditorRef {
   };
 }
 
-function AceEditorInput({ value, onChange, variables }: AceEditorInput) {
+interface AdvanceExpressionProps extends ConnectedProps<typeof mapStateToProps> {
+  value: string;
+  onChange: (val: string) => void;
+}
+
+const AdvanceExpression: React.FC<AdvanceExpressionProps> = ({ value, onChange, variables }) => {
   const editorRef = React.useRef<AceEditorRef>(null);
   const [error, setError, resetError] = useEnableDisable(false);
 
@@ -36,7 +36,8 @@ function AceEditorInput({ value, onChange, variables }: AceEditorInput) {
     const annotations = editorRef.current?.editor.getSession().getAnnotations();
 
     if (annotations && annotations.length > 0) {
-      return setError();
+      setError();
+      return;
     }
 
     resetError();
@@ -46,16 +47,12 @@ function AceEditorInput({ value, onChange, variables }: AceEditorInput) {
   React.useEffect(() => {
     if (editorRef.current) {
       editorRef.current?.editor?.completers.push({
-        getCompletions: (_editor: any, _session: any, _pos: any, _prefix: any, callback: any) => {
+        getCompletions: (_editor, _session, _pos, _prefix, callback) => {
           const wordList = [...BUILT_IN_VARIABLES, ...variables, 'voiceflow', '_system'];
 
           callback(
             null,
-            wordList.map((word) => ({
-              caption: word,
-              value: word,
-              meta: 'variable',
-            }))
+            wordList.map((word) => ({ meta: 'variable', score: 1, value: word, caption: word }))
           );
         },
       });
@@ -75,8 +72,8 @@ function AceEditorInput({ value, onChange, variables }: AceEditorInput) {
     <>
       <Container error={error}>
         <AceEditor
-          placeholder="Enter Expression"
           ref={editorRef as any}
+          placeholder="Enter Expression"
           value={editorState}
           onChange={(value) => onUpdateEditorState(value)}
           onBlur={onUpdateCode}
@@ -106,10 +103,10 @@ function AceEditorInput({ value, onChange, variables }: AceEditorInput) {
       )}
     </>
   );
-}
-
-const mapStateToProps = {
-  variables: allVariablesSelector,
 };
 
-export default connect(mapStateToProps)(AceEditorInput);
+const mapStateToProps = {
+  variables: Diagram.activeDiagramAllVariablesSelector,
+};
+
+export default connect(mapStateToProps)(AdvanceExpression);

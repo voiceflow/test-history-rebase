@@ -1,10 +1,10 @@
 import React from 'react';
 
+import * as Diagram from '@/ducks/diagram';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { CanvasGoHome } from '@/pages/Canvas/components/CanvasControls/components';
 import { useEditingMode, usePrototypingMode } from '@/pages/Skill/hooks';
-import { activeFlowStructureSelector } from '@/store/selectors';
 import { ConnectedProps } from '@/types';
 
 type FlowControlsProps = {
@@ -26,7 +26,7 @@ const FlowControls: React.FC<FlowControlsProps & ConnectedFlowControlsProps> = (
 };
 
 const mapStateToProps = {
-  flow: activeFlowStructureSelector,
+  flow: Diagram.activeDiagramStructureSelector,
   isRootDiagram: Skill.isRootDiagramSelector,
 };
 

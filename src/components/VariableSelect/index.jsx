@@ -3,9 +3,9 @@ import React from 'react';
 
 import Select from '@/components/Select';
 import { toast } from '@/components/Toast';
+import * as Diagram from '@/ducks/diagram';
 import { addGlobalVariable } from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { allVariablesSelector } from '@/store/selectors';
 
 export const VariableSelect = ({ value, variables, addVariable, onChange, ...props }) => {
   const onCreate = (item) => {
@@ -33,7 +33,7 @@ export const VariableSelect = ({ value, variables, addVariable, onChange, ...pro
 };
 
 const mapStateToProps = {
-  variables: allVariablesSelector,
+  variables: Diagram.activeDiagramAllVariablesSelector,
 };
 
 const mapDispatchToProps = {

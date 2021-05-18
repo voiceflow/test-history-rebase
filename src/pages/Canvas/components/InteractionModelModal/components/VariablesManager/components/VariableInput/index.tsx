@@ -11,8 +11,7 @@ import * as Diagram from '@/ducks/diagram';
 import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
-import { Thunk } from '@/store/types';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { ConnectedProps } from '@/types';
 import { withKeyPress } from '@/utils/dom';
 
 import { VariableType } from '../../constants';
@@ -29,7 +28,12 @@ export type VariableInputProps = {
   children?: never;
 };
 
-const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> = ({ addVariable, addFlowVariable, setSelected, ...props }) => {
+const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> = ({
+  addGlobalVariable,
+  addLocalVariable,
+  setSelected,
+  ...props
+}) => {
   const [value, setValue] = React.useState('');
   const [variableType, setVariableType] = React.useState<VariableType>(VariableType.GLOBAL);
 
@@ -49,20 +53,19 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
     []
   );
 
-  const onAdd = React.useCallback(async () => {
+  const onAdd = React.useCallback(() => {
     if (!value.trim()) return;
+
     try {
       if (isFlow) {
-        await addFlowVariable(value);
+        addLocalVariable(value);
       } else {
-        addVariable(value);
+        addGlobalVariable(value);
       }
 
       setSelected(variableType, value);
       setValue('');
     } catch (err) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       toast.error(err.message);
     }
   }, [value, isFlow]);
@@ -85,7 +88,7 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
       <Input
         placeholder={`Add ${VARIABLE_LABELS[variableType]} Variable`}
         value={value}
-        onChange={(e: any) => setValue(e.target.value)}
+        onChange={({ target }) => setValue(target.value)}
         {...props}
         maxLength={16}
         rightAction={
@@ -107,14 +110,10 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  addVariable: Skill.addGlobalVariable as (variable: string) => Thunk,
-  addFlowVariable: Diagram.addDiagramVariable,
+  addGlobalVariable: Skill.addGlobalVariable,
+  addLocalVariable: Diagram.addActiveDiagramVariable,
 };
 
-const mergeProps = (...[{ diagramID }, { addFlowVariable }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
-  addFlowVariable: (variable: string) => addFlowVariable(diagramID!, variable),
-});
+type ConnectedVariableInputProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-type ConnectedVariableInputProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(VariableInput) as React.FC<VariableInputProps>;
+export default connect(mapStateToProps, mapDispatchToProps)(VariableInput) as React.FC<VariableInputProps>;

@@ -14,7 +14,6 @@ import * as Session from '@/ducks/session';
 import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
 import * as Models from '@/models';
-import { activeSlotTypesSelector } from '@/store/selectors';
 import * as Clipboard from '@/utils/clipboard';
 import { base64, synchronous as synchronousCrypto } from '@/utils/crypto';
 import { Coords } from '@/utils/geometry';
@@ -159,7 +158,7 @@ class ClipboardEngine extends EngineConsumer {
       const state = this.engine.store.getState();
       const targetPlatform = Project.activePlatformSelector(state);
       const isPlatformConversion = sourcePlatform !== targetPlatform;
-      const slotTypes = activeSlotTypesSelector(state).map((slot) => slot.value);
+      const slotTypes = Skill.activeSlotTypesSelector(state).map((slot) => slot.value);
       const validSlots = isPlatformConversion ? slots.filter((slot) => slotTypes.includes(slot.type!)) : slots;
       const isValidSlot = validSlots.reduce<Record<string, boolean>>(
         (acc, slot) => Object.assign(acc, { [slot.id]: slotTypes.includes(slot.type!) }),

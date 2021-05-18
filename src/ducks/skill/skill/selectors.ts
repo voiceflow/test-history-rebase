@@ -2,9 +2,11 @@ import { Locale as AlexaLocale } from '@voiceflow/alexa-types';
 import { ProjectLinkType } from '@voiceflow/api-sdk';
 import { createSelector } from 'reselect';
 
+import * as Feature from '@/ducks/feature';
 import { projectByIDSelector } from '@/ducks/project/selectors';
-import { activeProjectIDSelector } from '@/ducks/session/selectors';
+import { activeDiagramIDSelector, activeProjectIDSelector } from '@/ducks/session/selectors';
 import { createRootSelector } from '@/ducks/utils';
+import { getSlotTypes } from '@/utils/slot';
 
 import { STATE_KEY } from './constants';
 
@@ -14,7 +16,7 @@ export const activeNameSelector = createSelector(activeSkillSelector, ({ name })
 
 export const rootDiagramIDSelector = createSelector(activeSkillSelector, ({ rootDiagramID }) => rootDiagramID);
 
-export const globalVariablesSelector = createSelector(activeSkillSelector, (skill) => skill?.globalVariables || []);
+export const activeGlobalVariablesSelector = createSelector(activeSkillSelector, (skill) => skill?.globalVariables || []);
 
 export const activeProjectNameSelector = createSelector(
   [activeProjectIDSelector, projectByIDSelector],
@@ -43,8 +45,17 @@ export const parentCtrlSelector = createSelector(
   (locales, meta) => meta.copa && locales.includes(AlexaLocale.EN_US)
 );
 
-export const isRootDiagramSelector = createSelector(activeSkillSelector, ({ diagramID, rootDiagramID }) => diagramID === rootDiagramID);
+export const isRootDiagramSelector = createSelector(
+  activeSkillSelector,
+  activeDiagramIDSelector,
+  ({ rootDiagramID }, activeDiagramID) => activeDiagramID === rootDiagramID
+);
 
 export const isCanvasExportingSelector = createSelector(activeSkillSelector, ({ canvasExporting }) => canvasExporting);
 
 export const isModelExportingSelector = createSelector(activeSkillSelector, ({ modelExporting }) => modelExporting);
+
+export const activeSlotTypesSelector = createSelector(
+  [activeSkillSelector, Feature.isFeatureEnabledSelector],
+  ({ locales, platform }, featureSelector) => getSlotTypes({ locales, platform }, featureSelector)
+);

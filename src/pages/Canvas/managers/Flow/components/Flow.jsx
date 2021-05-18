@@ -18,7 +18,7 @@ const buildOptions = (diagrams) =>
       label: diagram.name,
     }));
 
-function Flow({ onChange, diagrams, diagram, diagramID, goToDiagram, enterOnCreate = true, createNewDiagram, saveActiveDiagram }) {
+function Flow({ onChange, diagrams, diagram, diagramID, goToDiagram, enterOnCreate = true, createDiagram, saveActiveDiagram }) {
   const [value, setValue] = React.useState(diagram ? generateDiagramValue(diagram) : null);
   const options = React.useMemo(() => buildOptions(diagrams), [diagrams]);
   const optionsMap = React.useMemo(() => options.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}), [options]);
@@ -45,7 +45,7 @@ function Flow({ onChange, diagrams, diagram, diagramID, goToDiagram, enterOnCrea
   const onCreate = React.useCallback(
     async (name) => {
       await saveActiveDiagram();
-      const newDiagramID = await createNewDiagram(name);
+      const newDiagramID = await createDiagram(name);
 
       setValue(generateDiagramValue({ id: newDiagramID, name }));
       setSelectedDiagram(newDiagramID);
@@ -53,7 +53,7 @@ function Flow({ onChange, diagrams, diagram, diagramID, goToDiagram, enterOnCrea
         goToDiagram(newDiagramID);
       }
     },
-    [options, setSelectedDiagram, goToDiagram, createNewDiagram, saveActiveDiagram, enterOnCreate]
+    [options, setSelectedDiagram, goToDiagram, createDiagram, saveActiveDiagram, enterOnCreate]
   );
 
   const validateCreate = (name) => {
@@ -88,7 +88,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  createNewDiagram: Diagram.createNewDiagram,
+  createDiagram: Diagram.createDiagram,
   saveActiveDiagram: Diagram.saveActiveDiagram,
   goToDiagram: Router.goToDiagram,
 };

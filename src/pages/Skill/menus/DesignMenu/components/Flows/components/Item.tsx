@@ -6,11 +6,11 @@ import { OverflowText } from '@/components/Text';
 import { Members } from '@/components/User';
 import * as Diagram from '@/ducks/diagram';
 import * as Modal from '@/ducks/modal';
+import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks';
-import { diagramViewersSelector } from '@/store/selectors';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { withEnterPress } from '@/utils/dom';
@@ -109,7 +109,7 @@ const Item: React.FC<ItemProps & ConnectedItemProps> = ({
 };
 
 const mapStateToProps = {
-  getDiagramViewers: diagramViewersSelector,
+  getDiagramViewers: Realtime.diagramViewersSelector,
   rootDiagramID: Skill.rootDiagramIDSelector,
 };
 

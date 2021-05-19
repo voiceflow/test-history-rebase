@@ -25,6 +25,8 @@ function DescriptionForm({ product, changeStep, updateProduct }) {
     [updateProduct]
   );
 
+  React.useEffect(() => onChange.clear, [onChange]);
+
   return (
     <AvForm onSubmit={changeStep}>
       <AvGroup>

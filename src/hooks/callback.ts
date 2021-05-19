@@ -3,7 +3,7 @@ import type { DebounceSettings, ThrottleSettings } from 'lodash';
 import _debounce from 'lodash/debounce';
 import _throttle from 'lodash/throttle';
 import moize from 'moize';
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { noop } from '@/utils/functional';
 
@@ -15,8 +15,8 @@ export const useDebouncedCallback = <C extends (...args: any[]) => any>(delay: n
 export const useThrottledCallback = <C extends (...args: any[]) => any>(delay: number, callback: C, deps: any[] = [], options?: ThrottleSettings) =>
   useMemo(() => _throttle(callback, delay, options), deps);
 
-export const useCurried = <S extends any[], D extends any[], R extends any = void>(callback: (...args: S & D) => R, dependencies: any[] = []) =>
-  useMemo(
+export const useCurried = <S extends any[], D extends any[], R extends any = void>(callback: (...args: S & D) => R, dependencies: any[] = []) => {
+  const moized = useMemo(
     () =>
       moize((...staticArgs: S) => (...dynamicArgs: D) =>
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -25,6 +25,11 @@ export const useCurried = <S extends any[], D extends any[], R extends any = voi
       ),
     [callback, ...dependencies]
   );
+
+  useEffect(() => moized.clear, [moized]);
+
+  return moized;
+};
 
 export const useCancellable = <T extends any[]>(effect: (...args: T) => () => void, dependencies: any[] = []): [(...args: T) => void, () => void] => {
   const teardownHandler = useRef(noop);

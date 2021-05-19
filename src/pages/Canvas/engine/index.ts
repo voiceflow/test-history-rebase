@@ -465,6 +465,7 @@ function useEngine() {
   React.useEffect(
     () => () => {
       engine.reset();
+      createEngine.clear();
     },
     [currentDiagramID]
   );

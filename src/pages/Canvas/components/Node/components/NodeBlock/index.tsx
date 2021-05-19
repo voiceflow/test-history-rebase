@@ -118,6 +118,8 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
     [nodeEntity.nodeID]
   );
 
+  React.useEffect(() => onInsert.clear, [onInsert]);
+
   React.useEffect(() => {
     engine.node.redrawNestedLinks(nodeEntity.nodeID);
   }, [isMergeTarget]);

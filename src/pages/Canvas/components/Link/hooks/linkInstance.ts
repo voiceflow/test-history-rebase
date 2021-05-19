@@ -158,6 +158,8 @@ const useLinkInstance = () => {
     Object.keys(nextMarketAttrs).forEach((attr) => markerRef.current!.setAttribute(attr, nextMarketAttrs[attr as keyof typeof nextMarketAttrs]));
   }, []);
 
+  React.useEffect(() => buildPathMemoized.clear, [buildPathMemoized]);
+
   return React.useMemo<InternalLinkInstance>(
     () => ({
       ...elementInstance,

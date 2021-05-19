@@ -1,3 +1,4 @@
+import moize from 'moize';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -6,7 +7,7 @@ import { RemoveIntercom } from '@/components/IntercomChat';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
-import { useEnableDisable, useTheme } from '@/hooks';
+import { useEnableDisable, useTeardown, useTheme } from '@/hooks';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
@@ -39,9 +40,14 @@ const EditSidebar = () => {
   const shouldRender = !!node && !UNEDITABLE_BLOCKS.includes(node.type);
   const isOpen = isEditingMode && shouldRender && focus.isActive && !!focusedNodeData && !isModal;
   const updateData = useUpdateData(node?.id);
+  const withMemoizedManagerProps = React.useMemo(() => moize.simple(withManagerProps as (editor: any) => React.FC), [updateData]);
   const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
 
   const isMarkup = !!node && isMarkupBlockType(node.type);
+
+  useTeardown(() => {
+    withMemoizedManagerProps.clear();
+  });
 
   let editor = null;
 
@@ -50,10 +56,10 @@ const EditSidebar = () => {
     const activePath = path[path.length - 1] || {};
 
     const subManager = activePath.type && editorsByPath?.[activePath.type];
-    let Manager: any = withManagerProps(subManager || rootEditor);
+    let Manager: any = withMemoizedManagerProps(subManager || rootEditor);
 
     if (platforms.length && !platforms.includes(platform)) {
-      Manager = withManagerProps(getManager(BlockType.INVALID_PLATFORM).editor);
+      Manager = withMemoizedManagerProps(getManager(BlockType.INVALID_PLATFORM).editor);
     }
 
     prevAnimationDistance.current =

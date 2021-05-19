@@ -67,8 +67,8 @@ export const useManager = <T extends {}, F extends any[]>(
 
   const [forceUpdate] = useForceUpdate();
 
-  const generateLookupKey = React.useMemo<(value: T, index: number) => T | [T, number]>(
-    () => moize((value, index) => (value !== null && UNIQUE_TYPES.includes(typeof value) ? value : [value, index])),
+  const generateLookupKey = React.useMemo(
+    () => moize((value: T, index: number): T | [T, number] => (value !== null && UNIQUE_TYPES.includes(typeof value) ? value : [value, index])),
     []
   );
 
@@ -253,6 +253,11 @@ export const useManager = <T extends {}, F extends any[]>(
       ),
     [getItem, memoizedUpdate, memoizedRemove, memoizedToggle]
   );
+
+  React.useEffect(() => generateLookupKey.clear, [generateLookupKey]);
+  React.useEffect(() => memoizedUpdate.clear, [memoizedUpdate]);
+  React.useEffect(() => memoizedRemove.clear, [memoizedRemove]);
+  React.useEffect(() => memoizedToggle.clear, [memoizedToggle]);
 
   return {
     keys: normalized.current!.allKeys,

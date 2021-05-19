@@ -82,7 +82,7 @@ export const useEditorPath = () => {
   return { node, path, goToPath, pushToPath, popFromPath };
 };
 
-export const useHeaderActions = (headerActions = DEFAULT_SIDEBAR_HEADER_ACTIONS) => {
+export const useHeaderActions = (headerActions: SidebarHeaderAction[] = DEFAULT_SIDEBAR_HEADER_ACTIONS) => {
   const sidebar = React.useContext(SidebarContext)!;
 
   React.useEffect(() => {

@@ -18,7 +18,7 @@ import { ConnectButton, LoadingButton, SuccessButton, UploadButton } from '../Ac
 import UploadPopup from '../UploadPopup';
 import Button from './Button';
 
-const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ google, diagramState, getGoogleAccount }) => {
+const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ google, diagramState, loadGoogleAccount }) => {
   const isCanvasMode = useCanvasMode();
 
   const { job, publish, updateCurrentStage, cancel } = React.useContext(PublishContext)!;
@@ -109,7 +109,7 @@ const GoogleUploadButton: React.FC<GoogleUploadButtonConnectedProps> = ({ google
   }, [opened, job?.stage.type]);
 
   React.useEffect(() => {
-    getGoogleAccount();
+    loadGoogleAccount();
   }, []);
 
   const GoogleButton = React.useCallback(() => {
@@ -161,7 +161,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  getGoogleAccount: Account.getGoogleAccount,
+  loadGoogleAccount: Account.google.loadAccount,
 };
 
 type GoogleUploadButtonConnectedProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

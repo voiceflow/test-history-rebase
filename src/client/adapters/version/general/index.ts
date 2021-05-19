@@ -18,18 +18,6 @@ const generalVersionAdapter = createAdapter<Version<GeneralVersionData>, FullSki
     platform: PlatformType.GENERAL,
     locales: settings.locales?.length ? settings.locales : [Locale.EN_US],
     globalVariables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
-    publishInfo: {
-      [PlatformType.ALEXA]: {
-        amznID: null,
-        vendorId: null,
-        review: false,
-        live: false,
-      },
-      [PlatformType.GOOGLE]: {
-        googleId: null,
-      },
-      [PlatformType.GENERAL]: {},
-    },
     meta: {
       ...settingsAdapter.fromDB(settings),
       preview: false,

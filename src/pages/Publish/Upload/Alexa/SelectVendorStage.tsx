@@ -15,16 +15,12 @@ type SelectVendorStageProps = {
   setVendorSelected: (vendorSelected: boolean) => void;
 };
 
-const SelectVendorStage: React.FC<SelectVendorStageProps & ConnectedSelectVendorStageProps> = ({
-  setVendorSelected,
-  vendors,
-  updateSelectedVendor,
-}) => {
+const SelectVendorStage: React.FC<SelectVendorStageProps & ConnectedSelectVendorStageProps> = ({ setVendorSelected, vendors, activateVendor }) => {
   const [trackingEvents] = useTrackingEvents();
   const { job, publish } = React.useContext(PublishContext)!;
 
   const onVendorSelect = async (vendorID: string) => {
-    updateSelectedVendor(vendorID);
+    activateVendor(vendorID);
 
     // start the job
     trackingEvents.trackActiveProjectPublishAttempt();
@@ -59,7 +55,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updateSelectedVendor: Account.updateSelectedVendor,
+  activateVendor: Account.amazon.activateVendor,
 };
 
 type ConnectedSelectVendorStageProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

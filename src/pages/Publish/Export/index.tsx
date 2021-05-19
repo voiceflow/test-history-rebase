@@ -117,7 +117,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  syncSelectedVendor: Account.syncSelectedVendor,
+  syncSelectedVendor: Account.amazon.syncSelectedVendor,
 };
 
 type ConnectedExportProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

@@ -3,7 +3,7 @@ import React from 'react';
 import BaseButton from '@/components/Button/components/BaseButton';
 import SvgIcon from '@/components/SvgIcon';
 import { GooglePromptType } from '@/constants';
-import { linkGoogleAccount } from '@/ducks/account';
+import * as Account from '@/ducks/account';
 import { connect, styled } from '@/hocs';
 import { useGoogleLogin } from '@/hooks';
 import * as Models from '@/models';
@@ -62,13 +62,13 @@ const GoogleLogin: React.FC<GoogleLoginProps & ConnectedGoogleLoginProps> = ({
   return (
     <GoogleLoginButton className="LoginWithGoogle" onClick={onLogin}>
       <SvgIcon icon="connectGoogle" size={46} />
-      <span>Log in with Google</span>
+      <span>Sign in with Google</span>
     </GoogleLoginButton>
   );
 };
 
 const mapDispatchToProps = {
-  linkGoogleAccount,
+  linkGoogleAccount: Account.google.linkAccount,
 };
 
 type ConnectedGoogleLoginProps = ConnectedProps<{}, typeof mapDispatchToProps>;

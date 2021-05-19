@@ -12,19 +12,27 @@ import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
+import { ConnectedProps } from '@/types';
 
-class AccountPage extends Component {
+const UploadJustIconComponent = UploadJustIcon as React.FC<any>;
+
+interface AccountPageState {
+  amazonStatus: boolean;
+  googleStatus: boolean;
+}
+
+class AccountPage extends Component<ConnectedAccountPageProps, AccountPageState> {
   state = {
     amazonStatus: false,
     googleStatus: false,
   };
 
   componentDidMount = () => {
-    const { getAmazonAccount, getGoogleAccount } = this.props;
+    const { loadAmazonAccount, loadGoogleAccount } = this.props;
     // eslint-disable-next-line promise/catch-or-return
-    getAmazonAccount().then(() => this.setState({ amazonStatus: true }));
+    loadAmazonAccount().then(() => this.setState({ amazonStatus: true }));
     // eslint-disable-next-line promise/catch-or-return
-    getGoogleAccount().then(() => this.setState({ googleStatus: true }));
+    loadGoogleAccount().then(() => this.setState({ googleStatus: true }));
   };
 
   resetAmazon = () => {
@@ -58,16 +66,6 @@ class AccountPage extends Component {
         this.setState({ googleStatus: true });
       },
     });
-  };
-
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  uploadProfile = (url) => {
-    this.props.updateAccount({ image: url });
   };
 
   amazonButton = () => {
@@ -126,7 +124,7 @@ class AccountPage extends Component {
           <div className="container my-5 pt-4">
             <label className="dark mb-3">Profile</label>
             <div className="mb-5 card d-flex flex-row p-4">
-              <UploadJustIcon image={user.image} update={this.props.updateProfilePicture} size="xlarge" className="mr-3" />
+              <UploadJustIconComponent image={user.image} update={this.props.saveProfilePicture} size="xlarge" className="mr-3" />
               <div className="helper-text super-center border-left pl-4">
                 <div className="col-0">
                   Name:
@@ -218,15 +216,16 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  getAmazonAccount: Account.getAmazonAccount,
-  getGoogleAccount: Account.getGoogleAccount,
-  unlinkAmazonAccount: Account.unlinkAmazonAccount,
-  unlinkGoogleAccount: Account.unlinkGoogleAccount,
-  updateAccount: Account.updateAccount,
+  loadAmazonAccount: Account.amazon.loadAccount,
+  loadGoogleAccount: Account.google.loadAccount,
+  unlinkAmazonAccount: Account.amazon.unlinkAccount,
+  unlinkGoogleAccount: Account.google.unlinkAccount,
   setConfirm: Modal.setConfirm,
   setError: Modal.setError,
-  updateProfilePicture: Account.saveProfilePicture,
+  saveProfilePicture: Account.saveProfilePicture,
   goToDashboard: Router.goToDashboard,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountPage);
+type ConnectedAccountPageProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountPage as any) as React.FC;

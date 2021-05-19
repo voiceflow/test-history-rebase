@@ -746,7 +746,7 @@ const mapStateToProps = {
   skillID: Session.activeVersionIDSelector,
   amazonForm: getFormValues(PUBLISH_AMAZON_FORM),
   feature: Feature.isFeatureEnabledSelector,
-  amazonID: SkillDuck.amazonIDSelector,
+  amazonID: Project.alexa.activeSkillIDSelector,
 };
 
 const mapDispatchToProps = {

@@ -77,7 +77,7 @@ AmazonLoginButton.propTypes = {
 };
 
 const mapDispatchToProps = {
-  linkAmazonAccount: Account.linkAmazonAccount,
+  linkAmazonAccount: Account.amazon.linkAccount,
 };
 
 export default connect(null, mapDispatchToProps)(AmazonLoginButton);

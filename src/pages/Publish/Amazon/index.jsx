@@ -43,7 +43,7 @@ export const PublishAmazon = (props) => {
 };
 
 const mapDispatchToProps = {
-  syncSelectedVendor: Account.syncSelectedVendor,
+  syncSelectedVendor: Account.amazon.syncSelectedVendor,
 };
 
 export default connect(null, mapDispatchToProps)(PublishAmazon);

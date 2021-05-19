@@ -11,8 +11,8 @@ import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
 import * as Product from '@/ducks/product';
+import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
 import { ConnectedProps } from '@/types';
@@ -24,7 +24,7 @@ type MigrationProps = {
 };
 
 const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonAccount, productMap, projectID, selectedVendor, onSuccess }) => {
-  const [vendorID, setVendorID] = React.useState<string>(selectedVendor);
+  const [vendorID, setVendorID] = React.useState<string>(selectedVendor ?? '');
   const [projectMember, setProjectMember] = React.useState<AlexaProjectMemberData | null>(null);
   const [skillID, setSkillID] = React.useState<string>('');
   const [products, setProducts] = React.useState<Record<string, string>>({});
@@ -75,12 +75,12 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
       toast.error(`invalid skill ID: ${skillID}`);
       return;
     }
+
     const sanitizedProducts: Record<string, string> = {};
     // eslint-disable-next-line guard-for-in, no-restricted-syntax
     for (const productID in products) {
       const amazonProductID = products[productID];
       if (!amazonProductID.trim()) {
-        // eslint-disable-next-line no-continue
         continue;
       }
       if (!amazonProductID.startsWith('amzn1.adg.product')) {
@@ -150,12 +150,10 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
 const mapStateToProps = {
   projectID: Session.activeProjectIDSelector,
   amazonAccount: Account.amazonAccountSelector,
-  selectedVendor: Skill.selectedVendorSelector,
+  selectedVendor: Project.alexa.activeVendorIDSelector,
   productMap: Product.productMapSelector,
 };
 
-const mapDispatchToProps = {};
+type ConnectedMigrationProps = ConnectedProps<typeof mapStateToProps>;
 
-type ConnectedMigrationProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(Migration) as React.FC<MigrationProps>;
+export default connect(mapStateToProps)(Migration) as React.FC<MigrationProps>;

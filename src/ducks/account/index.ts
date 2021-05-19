@@ -7,6 +7,7 @@ import { AccountState } from './types';
 
 export * from './actions';
 export { STATE_KEY } from './constants';
+export * from './provider';
 export * from './selectors';
 export * from './sideEffects';
 export * from './types';

@@ -20,17 +20,6 @@ export type Skill<L extends string> = {
 };
 
 export type FullSkill<L extends string> = Skill<L> & {
-  publishInfo: {
-    [PlatformType.GOOGLE]: {
-      googleId: null | string;
-    };
-    [PlatformType.ALEXA]: {
-      amznID: string | null;
-      vendorId: string | null;
-      review: boolean;
-      live: boolean;
-    };
-  };
   meta: {
     created?: string;
     summary: string;

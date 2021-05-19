@@ -181,7 +181,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  syncSelectedVendor: Account.syncSelectedVendor,
+  syncSelectedVendor: Account.amazon.syncSelectedVendor,
 };
 
 type AlexaUploadButtonConnectedProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

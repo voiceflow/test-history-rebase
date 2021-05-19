@@ -19,18 +19,6 @@ const googleVersionAdapter = createAdapter<GoogleVersion, FullSkill<Locale>>(
     platform: PlatformType.GOOGLE,
     locales: localesAdapter(publishing?.locales),
     globalVariables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
-    publishInfo: {
-      [PlatformType.ALEXA]: {
-        amznID: null,
-        vendorId: null,
-        review: false,
-        live: false,
-      },
-      [PlatformType.GOOGLE]: {
-        googleId: null,
-      },
-      [PlatformType.GENERAL]: {},
-    },
     meta: {
       ...publishingAdapter.fromDB(publishing),
       ...settingsAdapter.fromDB(settings),

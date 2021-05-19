@@ -1,5 +1,4 @@
 import { AlexaProjectData, AlexaProjectMemberData, AlexaVersionData } from '@voiceflow/alexa-types';
-import { Member } from '@voiceflow/api-sdk';
 import { replaceVariables } from '@voiceflow/common';
 import { APLStepData, APLType } from '@voiceflow/general-types/build/nodes/visual';
 import { GoogleProjectData, GoogleProjectMemberData, GoogleVersionData } from '@voiceflow/google-types';
@@ -11,7 +10,6 @@ import projectAdapter, { productAdapter } from '@/client/adapters/project';
 import slotAdapter from '@/client/adapters/slot';
 import versionAdapter from '@/client/adapters/version';
 import { PlatformType } from '@/constants';
-import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Integration from '@/ducks/integration';
@@ -68,7 +66,6 @@ export const copyProject = (projectID: string, workspaceID: string, listID: stri
 export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.Skill<string>> => async (dispatch, getState) => {
   const state = getState();
   const platform = Project.activePlatformSelector(state);
-  const userID = Account.userIDSelector(state);
 
   const [dbVersion] = await Promise.all([
     client.api.version.get<AlexaVersionData | GoogleVersionData>(versionID),
@@ -86,16 +83,6 @@ export const loadVersion = (versionID: string, diagramID: string): Thunk<Models.
 
   // use the project name instead of the version name
   const skill = versionAdapter.fromDB({ ...dbVersion, name: project.name }, { platform: dbProject.platform as PlatformType });
-
-  // temporary setup until we refactor the skill duck and move vendor/amazonID to project
-  const member = dbProject.members.find(({ creatorID }) => creatorID === userID);
-  if (member) {
-    const {
-      platformData: { selectedVendor, vendors },
-    } = member as Member<AlexaProjectMemberData>;
-    skill.publishInfo.alexa.amznID = vendors?.find(({ vendorID }) => vendorID === selectedVendor)?.skillID ?? null;
-    skill.publishInfo.alexa.vendorId = selectedVendor;
-  }
 
   dispatch(Creator.resetCreator());
 

@@ -34,7 +34,7 @@ function MigrateStages({ syncSelectedVendor }) {
 }
 
 const mapDispatchToProps = {
-  syncSelectedVendor: Account.syncSelectedVendor,
+  syncSelectedVendor: Account.amazon.syncSelectedVendor,
 };
 
 export default connect(null, mapDispatchToProps)(MigrateStages);

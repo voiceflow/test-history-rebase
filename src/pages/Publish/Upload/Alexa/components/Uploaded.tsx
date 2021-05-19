@@ -5,6 +5,7 @@ import { ThemeContext } from 'styled-components';
 import { FlexStart } from '@/components/Flex';
 import Section from '@/components/Section';
 import { BlockText, Link, Text } from '@/components/Text';
+import * as Project from '@/ducks/project';
 import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { AlexaPublishJob, JobStageData } from '@/models';
@@ -16,13 +17,15 @@ type UploadedProps = {
   stageData: JobStageData<AlexaPublishJob.SuccessStage>;
 };
 
-const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData, locales, updateAlexaPublishInfo }) => {
+const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData, locales, updateActiveVendor }) => {
   const { succeededLocale, amazonID, selectedVendorID } = stageData;
 
   const theme = React.useContext(ThemeContext);
 
   React.useEffect(() => {
-    updateAlexaPublishInfo({ amznID: amazonID, vendorId: selectedVendorID });
+    if (!selectedVendorID) return;
+
+    updateActiveVendor(selectedVendorID, amazonID);
   }, [amazonID]);
 
   // eslint-disable-next-line no-case-declarations
@@ -84,7 +87,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updateAlexaPublishInfo: Skill.updateAlexaPublishInfo,
+  updateActiveVendor: Project.alexa.updateActiveVendor,
 };
 
 export type UploadedConnectedProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

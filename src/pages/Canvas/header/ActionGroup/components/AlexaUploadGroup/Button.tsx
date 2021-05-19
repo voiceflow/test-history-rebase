@@ -4,7 +4,7 @@ import Checkbox from '@/components/Checkbox';
 import DropdownButton from '@/components/DropdownButton';
 import Menu, { MenuItem } from '@/components/Menu';
 import * as Account from '@/ducks/account';
-import * as Skill from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -21,7 +21,7 @@ type ButtonProps = {
   label?: string;
 };
 
-const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorID, amazon, onClick, isActive, label, updateSelectedVendor }) => {
+const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorID, amazon, onClick, isActive, label, activateVendor }) => {
   // show dropdown list for vendors
   const showVendors = vendors.length > 1 && !isActive;
 
@@ -45,7 +45,7 @@ const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorI
               <PartialMenuItem divider />
 
               {vendors.map(({ id, name }) => (
-                <PartialMenuItem key={id} onClick={() => updateSelectedVendor(id)}>
+                <PartialMenuItem key={id} onClick={() => activateVendor(id)}>
                   <Checkbox checked={vendorID === id} readOnly /> {name}
                 </PartialMenuItem>
               ))}
@@ -66,11 +66,11 @@ const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorI
 const mapStateToProps = {
   amazon: Account.amazonAccountSelector,
   vendors: Account.amazonVendorsSelector,
-  vendorID: Skill.selectedVendorSelector,
+  vendorID: Project.alexa.activeVendorIDSelector,
 };
 
 const mapDispatchToProps = {
-  updateSelectedVendor: Account.updateSelectedVendor,
+  activateVendor: Account.amazon.activateVendor,
 };
 
 type ConnectedButtonProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

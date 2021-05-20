@@ -98,7 +98,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
           <img className="auth-logo" src={wordmarkLight} alt="logo" />
           <div className="auth-form-wrapper">
             <HeaderBox>
-              <h1>Create you account</h1>
+              <h1>Create your account</h1>
             </HeaderBox>
             <InputContainer>
               <Input

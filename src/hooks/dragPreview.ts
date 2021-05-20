@@ -8,5 +8,9 @@ export const useDragPreview = <P extends {}>(type: string, component: React.FC<D
 
   React.useEffect(() => {
     registerPreview(type, component as React.FC<DragContextPreviewProps & P>, options);
+
+    return () => {
+      registerPreview(type, null);
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 };

@@ -1,9 +1,11 @@
 import React from 'react';
-import { DragLayerMonitor, useDragLayer, XYCoord } from 'react-dnd';
+import { useDragLayer, XYCoord } from 'react-dnd';
 
 import { useCache } from '@/hooks/cache';
 import { useThrottledCallback } from '@/hooks/callback';
 import { useForceUpdate } from '@/hooks/forceUpdate';
+import { useTeardown } from '@/hooks/lifecycle';
+import { useRAF } from '@/hooks/raf';
 import { Nullable } from '@/types';
 
 const FORCE_UPDATE_THROTTLE_TIME = 200;
@@ -26,6 +28,7 @@ const getPreviewStyle = (initialOffset: Nullable<XYCoord>, currentOffset: Nullab
   const { x, y } = currentOffset;
 
   return {
+    willChange: 'translate',
     transform: `translate(${horizontalEnabled ? x : initialOffset.x}px, ${y}px)`,
   };
 };
@@ -38,31 +41,25 @@ type DragLayerPreviewProps<I> = {
 const DragLayerPreview = <I extends any>({ getOptions, renderPreview }: DragLayerPreviewProps<I>): JSX.Element => {
   const previewRef = React.useRef<HTMLDivElement>(null);
 
-  const [forceUpdate] = useForceUpdate();
-  const cache = useCache(
-    {
-      item: null as Nullable<I>,
-      monitor: null as Nullable<DragLayerMonitor>,
-      itemType: null as Nullable<string | null>,
-      getOptions,
-      renderPreview,
-    },
-    { getOptions, renderPreview }
-  );
+  const [updateStyles] = useRAF();
+  const [forceUpdate, updateKey] = useForceUpdate();
+  const cache = useCache({ getOptions });
 
   const throttledForceUpdate = useThrottledCallback(FORCE_UPDATE_THROTTLE_TIME, forceUpdate, [], { leading: false });
 
   const { item, itemType } = useDragLayer((monitor) => {
     const type = monitor.getItemType() as string;
 
-    cache.current.monitor = monitor;
-
     if (previewRef.current) {
       const options = { ...DEFAULT_OPTIONS, ...cache.current.getOptions(type) };
 
-      Object.assign(previewRef.current.style, getPreviewStyle(monitor.getInitialSourceClientOffset(), monitor.getSourceClientOffset(), options));
+      updateStyles(() => {
+        if (previewRef.current) {
+          Object.assign(previewRef.current.style, getPreviewStyle(monitor.getInitialSourceClientOffset(), monitor.getSourceClientOffset(), options));
 
-      throttledForceUpdate();
+          throttledForceUpdate();
+        }
+      });
     }
 
     return {
@@ -71,9 +68,11 @@ const DragLayerPreview = <I extends any>({ getOptions, renderPreview }: DragLaye
     };
   });
 
-  cache.current = { ...cache.current, item, itemType };
+  const children = React.useMemo(() => renderPreview(itemType, item), [item, renderPreview, itemType, updateKey]);
 
-  return <div ref={previewRef}>{cache.current.renderPreview(cache.current.itemType!, cache.current.item!)}</div>;
+  useTeardown(() => throttledForceUpdate.cancel, [throttledForceUpdate]);
+
+  return <div ref={previewRef}>{children}</div>;
 };
 
 export default DragLayerPreview;

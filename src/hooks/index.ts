@@ -25,7 +25,6 @@ export * from './raf';
 export * from './reducer';
 export * from './reducerV2';
 export * from './redux';
-export * from './reorderable';
 export * from './routes';
 export * from './scroll';
 export * from './speechRecognition';

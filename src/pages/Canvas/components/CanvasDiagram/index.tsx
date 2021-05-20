@@ -126,6 +126,13 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
 
   const navigation = useSelector(canvasNavigationSelector);
 
+  React.useEffect(
+    () => () => {
+      connectBlockDrop(null);
+    },
+    [connectBlockDrop]
+  );
+
   return (
     <>
       <Canvas

@@ -165,6 +165,13 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
     event.nativeEvent.stopImmediatePropagation();
   }, []);
 
+  React.useEffect(
+    () => () => {
+      connectBlockDrop(null);
+    },
+    [connectBlockDrop]
+  );
+
   const isDisabled = isHovered && hasLinkWarning;
 
   nodeEntity.useConditionalStyle(NODE_HOVERED_CLASSNAME, isHovered);

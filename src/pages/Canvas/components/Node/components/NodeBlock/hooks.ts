@@ -108,5 +108,12 @@ export const useDnDHoverReorderIndicator = (index: number) => {
     },
   });
 
+  React.useEffect(
+    () => () => {
+      connectBlockDrop(null);
+    },
+    [connectBlockDrop]
+  );
+
   return [connectBlockDrop, isHovered] as const;
 };

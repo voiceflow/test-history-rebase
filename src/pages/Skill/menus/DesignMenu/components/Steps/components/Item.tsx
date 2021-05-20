@@ -41,6 +41,13 @@ const Item: React.FC<ItemProps> = ({ icon, type, label, iconColor, factoryData, 
     connectPreview(getEmptyImage(), { captureDraggingState: true });
   });
 
+  React.useEffect(
+    () => () => {
+      connectDrag(null);
+    },
+    [connectDrag]
+  );
+
   React.useEffect(() => {
     if (isDragging) {
       clearClickedState();

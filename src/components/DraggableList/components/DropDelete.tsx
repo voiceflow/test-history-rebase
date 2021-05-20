@@ -38,6 +38,13 @@ const DropDelete = <I, P>({ type, handlers, deleteProps, renderDelayed, deleteCo
     };
   }, []);
 
+  React.useEffect(
+    () => () => {
+      connectDrop(null);
+    },
+    [connectDrop]
+  );
+
   const connectTarget = connectDrop(rootRef);
 
   return rendered ? <Delete ref={connectTarget} {...(deleteProps as any)} /> : null;

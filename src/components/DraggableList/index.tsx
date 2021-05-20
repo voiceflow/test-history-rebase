@@ -159,6 +159,13 @@ const DraggableList = <I, D, C>({
     [onStartDrag]
   );
 
+  React.useEffect(
+    () => () => {
+      connectDrop(null);
+    },
+    [connectDrop]
+  );
+
   handlers.current = { onDrop, onDragEnd, onReorder, onDragStart, onDeleteDrop, deleteHovered };
 
   const renderItem = (data: (BaseItemData<I> & MappedItemComponentHandlers<I>) | BaseItemData<I>) => (

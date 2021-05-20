@@ -113,6 +113,13 @@ const DesignMenu: React.FC<ConnectedDesignMenuProps> = ({
   // step menu
   const [, dropRef] = useDrop({ accept: DragItem.BLOCK_MENU });
 
+  React.useEffect(
+    () => () => {
+      dropRef(null);
+    },
+    [dropRef]
+  );
+
   const canBeOpened = !isAnyModeOpen && (isEditingMode || isViewerOrLibraryRole);
   const isOpen = (!isHidden || isOpenByHover) && canBeOpened;
 

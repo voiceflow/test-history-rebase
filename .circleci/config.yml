@@ -36,7 +36,7 @@ parameters:
     default: "storybook"
 
 orbs:
-  vfcommon: voiceflow/common@0.0.122
+  vfcommon: voiceflow/common@0.0.132
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 

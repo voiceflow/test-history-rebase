@@ -16,6 +16,7 @@ declare global {
   interface Window {
     VF_DEBUG?: boolean; // enter into debugging mode
 
+    VF_OVERRIDE_IS_PERFORMANCE_TEST?: string; // API_HOST URL
     VF_OVERRIDE_API_HOST?: string; // API_HOST URL
     VF_OVERRIDE_CANVAS_EXPORT_ENDPOINT?: string; // CANVAS_ENDPOINT URL
     VF_OVERRIDE_APP_ENV?: string; // creator-app runtime environment
@@ -60,6 +61,7 @@ export const IS_PRODUCTION = NODE_ENV === 'production';
 export const IS_DEVELOPMENT = NODE_ENV === 'development';
 export const IS_TEST = NODE_ENV === 'test';
 export const IS_E2E_TEST = !!window.Cypress;
+export const IS_PERFORMANCE_TEST = IS_DEVELOPMENT || !!window.VF_OVERRIDE_IS_PERFORMANCE_TEST;
 
 export const isDebug = () => IS_DEVELOPMENT || !!window.VF_DEBUG;
 

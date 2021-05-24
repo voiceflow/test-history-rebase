@@ -11,9 +11,10 @@ import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useToggle } from '@/hooks';
+import { useSetup, useToggle } from '@/hooks';
 import { Query } from '@/models';
 import HeaderBox from '@/pages/Auth/components/HeaderBox';
+import perf, { PerfAction } from '@/performance';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { preventDefault } from '@/utils/dom';
 
@@ -42,6 +43,10 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
       const errText = _get(error, ['body', 'data']) || false;
       toast.error(errText);
     });
+
+  useSetup(() => {
+    perf.action(PerfAction.LOGIN_RENDERED);
+  });
 
   return (
     <AuthenticationContainer>

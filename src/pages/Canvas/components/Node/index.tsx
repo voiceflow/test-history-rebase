@@ -8,6 +8,7 @@ import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, NodeEntityContext, PresentationModeContext } from '@/pages/Canvas/contexts';
 import { READONLY_CLICK_EVENT_NAME } from '@/pages/Prototype/components/ReadOnlyBadge';
 import { useEditingMode, usePrototypingMode } from '@/pages/Skill/hooks';
+import performance, { PerfAction } from '@/performance';
 import { ClassName } from '@/styles/constants';
 
 import { Container, Lifecycle, NodeBlock, NodeStartBlock, Styles } from './components';
@@ -39,7 +40,10 @@ const Node: React.FC = () => {
   );
 
   const onClickHandler = (e: React.MouseEvent) => {
+    performance.action(PerfAction.BLOCK_CLICK);
+
     onClick(e);
+
     if (isPrototypingMode) {
       const event = new Event(READONLY_CLICK_EVENT_NAME);
       window.dispatchEvent(event);

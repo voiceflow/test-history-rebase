@@ -5,31 +5,38 @@ import Dropdown from '@/components/Dropdown';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
-import type { NodeData } from '@/models';
 import { SidebarContext } from '@/pages/Canvas/components/EditorSidebar/contexts';
 import { EDITOR_BREADCRUMBS_CLASSNAME, EDITOR_HEADER_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
+import { ConnectedProps, Nullable } from '@/types';
 import { preventDefault } from '@/utils/dom';
 
 import { ActiveLabel, Breadcrumbs, Container, Divider, Label, Title, TitleActionsContainer } from './components';
 
-type EditorHeaderProps = {
+export interface HeaderProps {
   path?: { label: string }[];
-  data: NodeData<unknown>;
   onRename: (value: string) => void;
   goToPath: (index: number) => void;
   className?: string;
   hideTitle?: boolean;
-  renameRevision: string;
-};
+  renameRevision?: Nullable<string>;
+}
 
-const EditorHeader: React.FC<EditorHeaderProps> = ({ path = [], data, onRename, className, goToPath, hideTitle, renameRevision }) => {
+const EditorHeader: React.FC<ConnectedHeaderProps & HeaderProps> = ({
+  path = [],
+  data,
+  onRename,
+  className,
+  goToPath,
+  hideTitle,
+  renameRevision,
+}) => {
   const sidebar = React.useContext(SidebarContext)!;
   const engine = React.useContext(EngineContext)!;
   const getManager = React.useContext(ManagerContext)!;
   const { headerActions } = sidebar.state;
 
-  const { nameEditable, label } = getManager(data.type);
+  const { label, nameEditable } = getManager(data!.type);
 
   let fullPath = '';
 
@@ -56,12 +63,12 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ path = [], data, onRename, 
 
       {!hideTitle && (
         <TitleActionsContainer>
-          <Title name={nameEditable ? data.name : label} disabled={!nameEditable} onChange={onRename} renameRevision={renameRevision} />
+          <Title name={nameEditable ? data!.name : label} disabled={!nameEditable} onChange={onRename} renameRevision={renameRevision} />
 
           {!!headerActions.length && (
             <Dropdown
+              options={headerActions.map(({ onClick, ...action }) => ({ ...action, onClick: () => onClick({ data: data!, engine }) }))}
               placement="bottom-end"
-              options={headerActions.map(({ onClick, ...action }) => ({ ...action, onClick: () => onClick({ data, engine }) }))}
             >
               {(ref, onOpen, isOpened) => <IconButton ref={ref} icon="elipsis" variant={IconButtonVariant.FLAT} onClick={onOpen} active={isOpened} />}
             </Dropdown>
@@ -76,4 +83,6 @@ const mapStateToProps = {
   data: Creator.focusedNodeDataSelector,
 };
 
-export default connect(mapStateToProps)(EditorHeader);
+type ConnectedHeaderProps = ConnectedProps<typeof mapStateToProps>;
+
+export default connect(mapStateToProps)(EditorHeader) as React.FC<HeaderProps>;

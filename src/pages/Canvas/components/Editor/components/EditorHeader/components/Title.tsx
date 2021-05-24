@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { EngineContext } from '@/pages/Canvas/contexts';
+import { Nullable } from '@/types';
 
 import TitleInput from './TitleInput';
 
 type TitleProps = {
   name: string;
   onChange: (value: string) => void;
-  renameRevision: string;
   disabled?: boolean;
+  renameRevision?: Nullable<string>;
 };
 
 const Title: React.FC<TitleProps> = ({ name, onChange, renameRevision, disabled }) => {

@@ -10,6 +10,7 @@ import { Store } from './types';
 
 declare global {
   interface Window {
+    store: Store;
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: any;
   }
 }

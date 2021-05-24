@@ -30,6 +30,7 @@ import { WorkspaceFeatureLoadingGate } from '@/gates';
 import { connect } from '@/hocs';
 import { useModals, usePermission, useScrollHelpers, useSetup, useTrackingEvents, useWorkspaceTracking } from '@/hooks';
 import * as Models from '@/models';
+import perf, { PerfAction } from '@/performance';
 import { copyProject } from '@/store/sideEffects';
 import { DashboardClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -174,7 +175,8 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
     updateWorkspace();
   }, [props.workspaceID]);
 
-  React.useEffect(() => {
+  useSetup(() => {
+    perf.action(PerfAction.DASHBOARD_RENDERED);
     props.fetchNotifications();
 
     if (query?.invite_collaborators) {
@@ -182,9 +184,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
     } else if (query?.upgrade_workspace) {
       openPaymentModal();
     }
-  }, []);
 
-  useSetup(() => {
     if (props.hasTemplatesWorkspace) {
       Userflow.track(Userflow.Event.DASHBOARD_VISITED);
     }

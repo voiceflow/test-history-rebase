@@ -10,6 +10,7 @@ import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { canvasNavigationSelector } from '@/ducks/ui';
 import * as Viewport from '@/ducks/viewport';
 import { connect } from '@/hocs';
+import { useSetup } from '@/hooks';
 import { NodeData } from '@/models';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
@@ -20,6 +21,7 @@ import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
 import { ContextMenuContext, EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Skill/contexts';
 import { useCommentingMode, useEditingMode } from '@/pages/Skill/hooks';
+import perf, { PerfAction } from '@/performance';
 import { Viewport as ViewportType } from '@/types';
 import { Coords } from '@/utils/geometry';
 
@@ -125,6 +127,10 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const removeClass = React.useCallback((className: string) => engine.removeClass(className), []);
 
   const navigation = useSelector(canvasNavigationSelector);
+
+  useSetup(() => {
+    perf.action(PerfAction.CANVAS_RENDERED);
+  });
 
   React.useEffect(
     () => () => {

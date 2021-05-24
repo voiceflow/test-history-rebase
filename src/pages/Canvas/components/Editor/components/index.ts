@@ -5,6 +5,7 @@ export type { ControlOptions } from './EditorControls';
 export { default as Controls } from './EditorControls';
 export { default as Footer } from './EditorFooter';
 export { default as FormControl } from './EditorFormControl';
+export type { HeaderProps } from './EditorHeader';
 export { default as Header } from './EditorHeader';
 export { default as Tutorial } from './EditorTutorial';
 export { default as MaxOptionsMessage } from './MaxOptionsMessage';

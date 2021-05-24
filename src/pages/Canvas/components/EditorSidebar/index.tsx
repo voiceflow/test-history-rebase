@@ -100,7 +100,6 @@ const EditSidebar = () => {
             hideTitle={node.type === BlockType.START}
             hideHeader={isModal}
             renameRevision={focus.renameActiveRevision}
-            prevPathLength={prevPathLength.current}
             animationDistance={prevAnimationDistance.current}
           >
             {managerEl}

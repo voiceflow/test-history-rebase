@@ -7,12 +7,6 @@ import * as Sentry from '@/vendors/sentry';
 import { clientLogger } from '../utils';
 import { AnySocketEvent, CALL_MAP, SocketEvent } from './constants';
 
-declare global {
-  interface Window {
-    store?: unknown;
-  }
-}
-
 const SOCKET_INIT_TIMEOUT = 3000;
 const SOCKET_CONNECTION_TIMEOUT = 5000;
 const SOCKET_REPLY_TIMEOUT = 5000;

@@ -17,6 +17,7 @@ import SvgIcon from '@/components/SvgIcon';
 import TippyTooltip from '@/components/TippyTooltip';
 import { toast } from '@/components/Toast';
 import { Permission } from '@/config/permissions';
+import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import { SeoPage } from '@/constants/seo';
 import { ScrollContextProvider } from '@/contexts';
@@ -239,7 +240,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = (pr
                     </div>
                     <label className="dark text-center mb-3">No Projects Found</label>
                     <div className="text-muted mb-2">This workspace has no projects, create one.</div>
-                    <Link to="/workspace/template" className="no-underline super-center">
+                    <Link to={Path.NEW_PROJECT} className="no-underline super-center">
                       <Button isPrimary className="mt-3" id="createskill">
                         New Project
                       </Button>

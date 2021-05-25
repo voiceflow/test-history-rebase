@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { CALL_HISTORY_METHOD, push, replace } from 'connected-react-router';
 import { generatePath } from 'react-router-dom';
 
@@ -8,6 +9,8 @@ import { Struct } from '@/types';
 import * as Query from '@/utils/query';
 
 export type RouterAction = Action<typeof CALL_HISTORY_METHOD, unknown>;
+
+export const clearSearch = () => replace({ search: '' }) as RouterAction;
 
 export const goTo = <T extends Struct>(path: string, state: T | null = null) => push(path.startsWith('/') ? path : `/${path}`, state) as RouterAction;
 
@@ -22,13 +25,22 @@ export const goToSignup = (search?: string) => goTo(`${Path.SIGNUP}${search ?? '
 
 export const goToAdoptSSO = (state: { domain: string; clientID: string; email: string }) => goTo(Path.SSO_ADOPT, state);
 
-export const goToWorkspace = (workspaceID?: string) => goTo(generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID }));
+export const goToWorkspace = (workspaceID: string) => goTo(generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID }));
 
-export const goToWorkspaceSettings = (workspaceID?: string) => goTo(generatePath(Path.WORKSPACE_SETTINGS, { workspaceID }));
+export const goToWorkspaceWithSearch = (workspaceID: string, search: string) =>
+  goTo(`${generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID })}${search}`);
+
+export const goToNewWorkspace = () => goTo(Path.NEW_WORKSPACE);
+
+export const goToWorkspaceSettings = (workspaceID: string) => goTo(generatePath(Path.WORKSPACE_SETTINGS, { workspaceID }));
 
 export const goToDashboard = () => goTo(Path.DASHBOARD);
 
-export const goToDashboardWithSearch = (search: string) => goTo(`${Path.DASHBOARD}${search}`);
+export const goToDashboardWithSearch = (search?: string) => goTo(`${Path.DASHBOARD}${search ?? ''}`);
+
+export const goToNewProject = (listID: string) => goTo(generatePath(Path.NEW_PROJECT, { listID }));
+
+export const goToNewIntroProject = () => goTo(Path.NEW_INTRO_PROJECT);
 
 export const goToOnboarding = () => goTo(`${Path.ONBOARDING}${window.location.search}`);
 
@@ -54,3 +66,7 @@ export const goToCanvasCommenting = (versionID: string, diagramID: string, searc
 
 export const redirectToCanvasCommenting = (versionID: string, diagramID: string) =>
   redirectTo(generatePath(Path.CANVAS_COMMENTING, { versionID, diagramID }));
+
+export const redirectToDashboard = () => redirectTo(Path.DASHBOARD);
+
+export const redirectToWorkspace = (workspaceID: string) => redirectTo(generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID }));

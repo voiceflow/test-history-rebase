@@ -29,7 +29,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
   loadingProjects,
   goToWorkspace,
   isAdminOfAnyWorkspace,
-  goTo,
+  goToNewWorkspace,
   role,
   plan,
 }) => {
@@ -56,7 +56,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
               {showCreateWorkspaceButton && (
                 <>
                   <MenuItem divider />
-                  <MenuItem onClick={() => goTo('workspace/new')} bottomAction id="createWorkspace">
+                  <MenuItem onClick={() => goToNewWorkspace()} bottomAction id="createWorkspace">
                     Create New Workspace
                   </MenuItem>
                 </>
@@ -93,7 +93,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   goToWorkspace: Router.goToWorkspace,
-  goTo: Router.goTo,
+  goToNewWorkspace: Router.goToNewWorkspace,
 };
 
 type ConnectedLeftNavSectionProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

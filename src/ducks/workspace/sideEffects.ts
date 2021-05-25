@@ -30,16 +30,18 @@ export const updateCurrentWorkspaceItem = (payload: Partial<Workspace>): SyncThu
 
 export const removeWorkspace = (workspaceID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
+  const activeWorkspaceID = activeWorkspaceIDSelector(state);
   const workspaceIDs = withoutValue(allWorkspaceIDsSelector(state), workspaceID);
 
   // default to the first existing team
-  const newWorkspace = workspaceIDs.length > 0 ? workspaceIDs[0] : undefined;
+  const newWorkspaceID = workspaceIDs.length > 0 ? workspaceIDs[0] : null;
 
-  if (!newWorkspace) {
-    dispatch(goToWorkspace());
-  } else {
-    dispatch(updateCurrentWorkspace(newWorkspace));
+  if (!newWorkspaceID) {
+    dispatch(goToDashboard());
+  } else if (newWorkspaceID !== activeWorkspaceID) {
+    dispatch(goToWorkspace(newWorkspaceID));
   }
+
   dispatch(crud.remove(workspaceID));
 };
 

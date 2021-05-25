@@ -3,10 +3,12 @@ import { ActionCreators } from 'redux-undo';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Creator from '@/ducks/creator/diagram/actions';
+import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import mutableStore from '@/store/mutable';
 import { SyncThunk, Thunk } from '@/store/types';
+import * as Sentry from '@/vendors/sentry';
 
 import {
   AnyRealtimeAction,
@@ -19,14 +21,38 @@ import {
   setSessionBusy,
   updateActiveDiagramViewers,
 } from './actions';
-import { isRealtimeConnectedSelector } from './selectors';
+import { isRealtimeConnectedSelector, realtimeDiagramIDSelector } from './selectors';
 import * as Socket from './socket';
 import { RealtimeLocks } from './types';
 import { createServerAction, removeSelfFromLocks } from './utils';
 
+export const switchRealtimeDiagram = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const isRealtimeConnected = isRealtimeConnectedSelector(state);
+  const realtimeDiagramID = realtimeDiagramIDSelector(state);
+
+  // switch the realtime connection to a new diagram
+  if (isRealtimeConnected && realtimeDiagramID !== diagramID) {
+    try {
+      const locks = isNewDiagram
+        ? await client.socket.diagram.initialize(versionID, diagramID)
+        : await client.socket.diagram.switch(versionID, diagramID);
+
+      dispatch(initializeRealtime(diagramID, locks));
+    } catch (err) {
+      Sentry.error(err);
+      if (err) {
+        dispatch(Modal.setError('Error Switching Flows'));
+      }
+    }
+  }
+};
+
 export const updateDiagramViewers = (users: RealtimeLocks['users']): Thunk => async (dispatch, getState) => {
   const state = getState();
   const diagramID = Session.activeDiagramIDSelector(state);
+  const workspaceID = Workspace.activeWorkspaceIDSelector(state);
+
   const hasWorkspaceMemberSelector = Workspace.hasWorkspaceMemberSelector(state);
 
   Errors.assertDiagramID(diagramID);
@@ -34,9 +60,7 @@ export const updateDiagramViewers = (users: RealtimeLocks['users']): Thunk => as
   const diagramViewers = Object.values(users[diagramID] ?? {});
   const newMembers = diagramViewers.filter((viewer) => !hasWorkspaceMemberSelector(viewer));
 
-  if (newMembers.length) {
-    const workspaceID = Workspace.activeWorkspaceIDSelector(state)!;
-
+  if (newMembers.length && workspaceID) {
     await dispatch(Workspace.getMembers(workspaceID));
   }
 

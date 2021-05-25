@@ -135,16 +135,5 @@ export default compose(
   removeIntercom,
   React.memo,
   connect(mapStateToProps, mapDispatchToProps),
-  withBatchLoadingGate(
-    WorkspaceLoadingGate,
-    WorkspaceFeatureLoadingGate,
-    [
-      ProjectLoadingGate,
-      ({ match }: { match: any }) => ({
-        versionID: match.params?.versionID,
-        diagramID: match.params?.diagramID,
-      }),
-    ],
-    MockRealtimeGate
-  )
+  withBatchLoadingGate(WorkspaceLoadingGate, WorkspaceFeatureLoadingGate, ProjectLoadingGate, MockRealtimeGate)
 )(ExportCanvas);

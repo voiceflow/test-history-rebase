@@ -2,13 +2,16 @@ import { Locale as AlexaLocale } from '@voiceflow/alexa-types';
 import { Locale as GeneralLocale } from '@voiceflow/general-types';
 import { Language as GoogleLanguage, LanguageToLocale } from '@voiceflow/google-types';
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 import client from '@/client';
 import { CreationHeader, InnerContainer, OuterContainer } from '@/components/CreationSteps';
 import { FlexCenter } from '@/components/Flex';
+import { Path } from '@/config/routes';
 import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
@@ -30,6 +33,7 @@ const getTemplateTag = createPlatformSelector({
 });
 
 const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?: { listID: string } } }> = ({
+  activeWorkspaceID,
   computedMatch,
   goToDashboard,
   redirectToCanvas,
@@ -115,6 +119,10 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
     setInvocationName(name);
   }, [name]);
 
+  if (!activeWorkspaceID) {
+    return <Redirect to={Path.DASHBOARD} />;
+  }
+
   return (
     <OuterContainer>
       <InnerContainer>
@@ -156,12 +164,16 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   );
 };
 
+const mapStateToProps = {
+  activeWorkspaceID: Workspace.activeWorkspaceIDSelector,
+};
+
 const mapDispatchToProps = {
   redirectToCanvas: Router.redirectToCanvas,
   goToDashboard: Router.goToDashboard,
   createProject: Project.createProject,
 };
 
-type ConnectedNewProjectProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+type ConnectedNewProjectProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(NewProject);
+export default connect(mapStateToProps, mapDispatchToProps)(NewProject);

@@ -46,11 +46,5 @@ type ConnectedSettingsProps = ConnectedProps<typeof mapStateToProps, typeof mapD
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withBatchLoadingGate(WorkspaceFeatureLoadingGate, [
-    ProjectLoadingGate,
-    ({ match }: { match: any }) => ({
-      versionID: match.params?.versionID,
-      diagramID: match.params?.diagramID,
-    }),
-  ])
-)(Settings as any);
+  withBatchLoadingGate(ProjectLoadingGate, WorkspaceFeatureLoadingGate)
+)(Settings) as React.FC;

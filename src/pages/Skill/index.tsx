@@ -166,4 +166,4 @@ export default compose(
     WorkspaceFeatureLoadingGate,
     RealtimeLoadingGate
   )
-)(Skill as any) as React.FC<SkillProps>;
+)(Skill) as React.FC<SkillProps>;

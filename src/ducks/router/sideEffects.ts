@@ -1,18 +1,15 @@
 import { generatePath } from 'react-router-dom';
 
-import client from '@/client';
 import * as Errors from '@/config/errors';
 import { Path } from '@/config/routes';
 import { InteractionModelTabType } from '@/constants';
-import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import { activeRootDiagramIDSelector, activeVersionSelector } from '@/ducks/version/selectors';
 import { activeWorkspaceIDSelector } from '@/ducks/workspace';
-import { GetState, SyncThunk, Thunk, ThunkDispatch } from '@/store/types';
+import { SyncThunk, Thunk } from '@/store/types';
 import * as Query from '@/utils/query';
-import * as Sentry from '@/vendors/sentry';
 
 import {
   goTo,
@@ -25,43 +22,20 @@ import {
   redirectToCanvasCommenting,
 } from './actions';
 
-const switchRealtime = async (dispatch: ThunkDispatch, getState: GetState, versionID: string, diagramID: string, isNewDiagram?: boolean) => {
-  const state = getState();
-  const isRealtimeConnected = Realtime.isRealtimeConnectedSelector(state);
-  const realtimeDiagramID = Realtime.realtimeDiagramIDSelector(state);
-
-  // switch the realtime connection to a new diagram
-  if (isRealtimeConnected && realtimeDiagramID !== diagramID) {
-    try {
-      const locks = isNewDiagram
-        ? await client.socket.diagram.initialize(versionID, diagramID)
-        : await client.socket.diagram.switch(versionID, diagramID);
-
-      dispatch(Realtime.initializeRealtime(diagramID, locks));
-    } catch (err) {
-      Sentry.error(err);
-
-      if (err) {
-        dispatch(Modal.setError('Error Switching Flows'));
-      }
-    }
-  }
-};
-
 export const goToCanvas = (versionID: string, diagramID?: string) =>
   goTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
 
 export const redirectToCanvas = (versionID: string, diagramID?: string) =>
   redirectTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
 
-export const goToCanvasSwitchRealtime = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch, getState) => {
-  await switchRealtime(dispatch, getState, versionID, diagramID, isNewDiagram);
+export const goToCanvasSwitchRealtime = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch) => {
+  await dispatch(Realtime.switchRealtimeDiagram(versionID, diagramID, isNewDiagram));
 
   dispatch(goToCanvas(versionID, diagramID));
 };
 
-export const redirectToCanvasSwitchRealtime = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch, getState) => {
-  await switchRealtime(dispatch, getState, versionID, diagramID, isNewDiagram);
+export const redirectToCanvasSwitchRealtime = (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk => async (dispatch) => {
+  await dispatch(Realtime.switchRealtimeDiagram(versionID, diagramID, isNewDiagram));
 
   dispatch(redirectToCanvas(versionID, diagramID));
 };
@@ -131,7 +105,7 @@ export const goToDiagramCommenting = (diagramID: string, threadID?: string): Thu
 
   Errors.assertVersionID(versionID);
 
-  await switchRealtime(dispatch, getState, versionID, diagramID);
+  await dispatch(Realtime.switchRealtimeDiagram(versionID, diagramID));
   dispatch(goToCanvasCommenting(versionID, diagramID, Query.stringify({ thread: threadID })));
 };
 
@@ -186,6 +160,8 @@ export const goToCurrentCanvasInteractionModelEntity = (entityType: InteractionM
 
 export const goToCurrentWorkspaceSettings = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
-  const workspaceID = activeWorkspaceIDSelector(state)!;
+  const workspaceID = activeWorkspaceIDSelector(state);
+
+  Errors.assertWorkspaceID(workspaceID);
   dispatch(goToWorkspaceSettings(workspaceID));
 };

@@ -9,7 +9,7 @@ const LineItemsSection = ({ header, dividers = false, onAdd, children }) => {
 
   return (
     <Section dividers={dividers} variant="subsection" header={header} status={AddLineItemButton}>
-      <FormControl contentBottomUnits={React.Children.count(children) ? 2 : 1}>{children}</FormControl>
+      <FormControl contentBottomUnits={React.Children.count(children) ? 0 : 1}>{children}</FormControl>
     </Section>
   );
 };

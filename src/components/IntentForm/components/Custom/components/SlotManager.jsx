@@ -35,7 +35,7 @@ function SlotManager({ intent, slotsMap, reorderIntentSlots, pushToPath, isNeste
 
   React.useEffect(() => updateReorderableSlots(allSlotKeys || []), [allSlotKeys, updateReorderableSlots]);
 
-  return (
+  return slotCount === 0 ? null : (
     <EditorSection
       namespace="slots"
       header="Slots"

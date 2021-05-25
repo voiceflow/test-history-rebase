@@ -3,12 +3,12 @@ import React, { useContext } from 'react';
 import { FlexCenter } from '@/components/Flex';
 import { StepID } from '@/pages/Onboarding/constants';
 import { OnboardingContext } from '@/pages/Onboarding/context';
-import { OnboardingProps } from '@/pages/Onboarding/types';
+import { OnboardingStepProps } from '@/pages/Onboarding/types';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import { STEP_COMPONENTS } from './constants';
 
-const CurrentStep: React.FC<OnboardingProps> = (props) => {
+const CurrentStep: React.FC<OnboardingStepProps> = (props) => {
   const { state } = useContext(OnboardingContext);
   const { currentStepID } = state;
 

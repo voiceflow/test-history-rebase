@@ -7,13 +7,13 @@ import Icon from '@/components/SvgIcon';
 import { ClickableText } from '@/components/Text';
 import { UserRole } from '@/constants';
 import { OnboardingContext } from '@/pages/Onboarding/context';
-import { CollaboratorType, OnboardingProps } from '@/pages/Onboarding/types';
+import { CollaboratorType, OnboardingStepProps } from '@/pages/Onboarding/types';
 
 import { StepID } from '../../constants';
 import { AddTeamMember, Container, HeaderLabel, Text } from './components';
 import { getError, withPlaceholderCollaborators } from './utils';
 
-const AddCollaborators: React.FC<OnboardingProps> = ({ data }) => {
+const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
   const {
     state: { addCollaboratorMeta, sendingRequests },
     actions: { setAddCollaboratorMeta, stepForward },

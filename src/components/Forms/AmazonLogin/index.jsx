@@ -1,50 +1,33 @@
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import Button from '@/components/Button';
 import { AMAZON_APP_ID } from '@/config';
 import * as Account from '@/ducks/account';
+import { useAsyncMountUnmount } from '@/hooks';
+import { importScript } from '@/utils/dom';
 import * as Sentry from '@/vendors/sentry';
 
-const AmazonLoad = () =>
-  new Promise((resolve) => {
-    // @TODO: handle errors
-    if (document.getElementById('amazon-sdk')) {
-      return resolve();
-    }
-
-    const firstJS = document.getElementsByTagName('script')[0];
-    const js = document.createElement('script');
-
-    js.src = '//api-cdn.amazon.com/sdk/login1.js';
-    js.id = 'amazon-sdk';
-    js.async = true;
-
-    window.onAmazonLoginReady = () => {
-      window.amazon.Login.setClientId(AMAZON_APP_ID);
-
-      return resolve();
-    };
-    if (!firstJS) {
-      document.head.appendChild(js);
-    } else {
-      firstJS.parentNode.appendChild(js);
-    }
-  });
+const ELEMENT_ID = 'amazon-sdk';
+const AWS_LOGIN_URI = '//api-cdn.amazon.com/sdk/login1.js';
+const AUTH_OPTIONS = {
+  response_type: 'code',
+  scope: ['alexa::ask:skills:readwrite', 'alexa::ask:models:readwrite', 'alexa::ask:skills:test', 'profile'].join(' '),
+};
 
 export const AmazonLoginButton = (props) => {
   const { onLoad, onFail, onSuccess, disabled = false, linkAmazonAccount } = props;
 
-  useEffect(() => {
-    AmazonLoad();
-  }, []);
+  useAsyncMountUnmount(async () => {
+    await importScript(ELEMENT_ID, AWS_LOGIN_URI, 'onAmazonLoginReady');
+    window.amazon.Login.setClientId(AMAZON_APP_ID);
+  });
 
   const triggerLogin = async () => {
     onLoad();
     try {
-      const options = { response_type: 'code', scope: 'alexa::ask:skills:readwrite alexa::ask:models:readwrite alexa::ask:skills:test profile' };
-      window.amazon.Login.authorize(options, async (response) => {
+      window.amazon.Login.authorize(AUTH_OPTIONS, async (response) => {
         try {
           if (response.error) {
             throw new Error();

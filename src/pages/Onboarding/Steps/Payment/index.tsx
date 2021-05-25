@@ -23,7 +23,6 @@ import { useDebouncedCallback, useToggle } from '@/hooks';
 import { DBWorkspace } from '@/models';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
-import { OnboardingProps } from '@/pages/Onboarding/types';
 import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
 import CostText from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components/CostText';
 import { ConnectedProps } from '@/types';
@@ -45,14 +44,7 @@ import {
 
 export const GET_PRICE_WITHOUT_TEAM_ID_CONST = 'none';
 
-const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({
-  workspaces,
-  workspaceByID,
-  creatorID,
-  workspaceSelector,
-  referrerID,
-  referralCode,
-}) => {
+const Payment: React.FC<ConnectedPaymentProps> = ({ workspaces, workspaceByID, creatorID, getWorkspaceByID, referrerID, referralCode }) => {
   const { state, actions } = useContext(OnboardingContext);
 
   const { plan, couponCode, period } = state.paymentMeta;
@@ -92,7 +84,7 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({
   };
 
   const isWorkspaceAdmin = (workspaceID: string) => {
-    const targetWorkspaceMembers = workspaceSelector(workspaceID).members;
+    const targetWorkspaceMembers = getWorkspaceByID(workspaceID).members;
     return targetWorkspaceMembers.some((member) => member.creator_id === creatorID && member.role === UserRole.ADMIN);
   };
 
@@ -104,7 +96,7 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({
     500,
     async (selectedPlan: PlanType, seatCount: number, paymentPeriod: BillingPeriod, coupon: string) => {
       const { price, errors } = await client.workspace.calculatePrice(GET_PRICE_WITHOUT_TEAM_ID_CONST, {
-        plan: selectedPlan!,
+        plan: selectedPlan,
         seats: seatCount,
         period: paymentPeriod,
         coupon: coupon || undefined,
@@ -166,10 +158,10 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({
         ),
       }
     : {
-        text: selectedWorkspaceId ? `Workspace: ${workspaceSelector!(selectedWorkspaceId).name}` : 'Select a Workspace',
+        text: selectedWorkspaceId ? `Workspace: ${getWorkspaceByID(selectedWorkspaceId).name}` : 'Select a Workspace',
         menu: (
           <Menu>
-            {workspaces!.map((workspace) => (
+            {workspaces.map((workspace) => (
               <MenuItem
                 key={workspace.id}
                 onClick={() => {
@@ -281,7 +273,7 @@ const Payment: React.FC<OnboardingProps & ConnectedPaymentProps> = ({
 
 const mapStateToProps = {
   workspaces: Workspace.allWorkspacesSelector,
-  workspaceSelector: Workspace.workspaceByIDSelector,
+  getWorkspaceByID: Workspace.workspaceByIDSelector,
   creatorID: Account.userIDSelector,
   workspaceByID: Workspace.workspaceByIDSelector,
   referrerID: Account.referrerIDSelector,

@@ -7,7 +7,7 @@ export type OnboardingDataProps = {
   collaborators: CollaboratorType[];
 };
 
-export type OnboardingProps = {
+export type OnboardingStepProps = {
   data: OnboardingDataProps;
   location?: any;
   firstTime?: boolean;

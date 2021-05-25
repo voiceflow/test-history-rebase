@@ -8,7 +8,7 @@ import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import { ModalType, PLAN_TYPE_META, PlanType, UserRole } from '@/constants';
 import * as Router from '@/ducks/router';
-import { leaveWorkspace, planTypeSelector } from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
 import { ConnectedProps } from '@/types';
@@ -85,11 +85,11 @@ const SettingsButton: React.FC<ConnectedSettingsButton> = ({ plan, goToWorkspace
 };
 
 const mapStateToProps = {
-  plan: planTypeSelector,
+  plan: Workspace.planTypeSelector,
 };
 
 const mapDispatchToProps = {
-  leaveWorkspace,
+  leaveWorkspace: Workspace.leaveWorkspace,
   goToWorkspaceSettings: Router.goToCurrentWorkspaceSettings,
 };
 

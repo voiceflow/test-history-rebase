@@ -54,7 +54,7 @@ export type Function<A extends any[] = any[], R = any> = (...args: A) => R;
 
 export type AnyFunction = Function<any[], any>;
 
-export type Callback = Function<[], void>;
+export type Callback = Function<[], Eventual<void>>;
 
 export type SelectorLookup<S> = Record<string, (state: S) => any>;
 

@@ -11,9 +11,9 @@ import * as Query from '@/utils/query';
 
 import { CurrentStep, Header } from './components';
 import { OnboardingProvider } from './context';
-import { OnboardingDataProps, OnboardingProps } from './types';
+import { OnboardingDataProps, OnboardingStepProps } from './types';
 
-export const Onboarding: React.FC<OnboardingProps> = ({ fetchWorkspaces, data, location, firstTime = true }) => {
+export const Onboarding: React.FC<OnboardingStepProps> = ({ fetchWorkspaces, data, location, firstTime = true }) => {
   const query = Query.parse(location?.search);
   const [finishedFetchingWorkspaces, setFinishedFetchingWorkspaces] = React.useState(false);
 
@@ -38,7 +38,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ fetchWorkspaces, data, l
   ) : null;
 };
 
-const ConnectedOnboarding: React.FC<ConnectedOnboardingProps> = ({ fetchWorkspaces, user, ...props }) => {
+const ConnectedOnboarding: React.FC<ConnectedOnboardingStepProps> = ({ fetchWorkspaces, user, ...props }) => {
   const data: OnboardingDataProps = {
     collaborators: [{ email: user.email!, permission: UserRole.ADMIN }],
   };
@@ -54,6 +54,6 @@ const mapDispatchToProps = {
   fetchWorkspaces: Workspace.fetchWorkspaces,
 };
 
-type ConnectedOnboardingProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+type ConnectedOnboardingStepProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConnectedOnboarding) as React.FC<Omit<OnboardingProps, 'data'>>;
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectedOnboarding) as React.FC<Omit<OnboardingStepProps, 'data'>>;

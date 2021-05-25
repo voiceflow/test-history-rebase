@@ -18,7 +18,12 @@ const RealtimeDiagramLifecycle: React.FC<ConnectedRealtimeDiagramLifecycleProps>
   setRealtimeError,
 }) => {
   React.useEffect(
-    () => client.socket.global.watchForConnectionError(() => client.socket.global.handleDisconnect(disconnectRealtime, reestablishConnection)),
+    () =>
+      client.socket.global.watchForConnectionError(() =>
+        client.socket.global.handleDisconnect(() => {
+          disconnectRealtime();
+        }, reestablishConnection)
+      ),
     [disconnectRealtime, reestablishConnection]
   );
 
@@ -44,7 +49,13 @@ const RealtimeDiagramLifecycle: React.FC<ConnectedRealtimeDiagramLifecycleProps>
     [browserID, goToDashboard, setError]
   );
 
-  React.useEffect(() => client.socket.diagram.watchForceRefresh(setRealtimeError), [setRealtimeError]);
+  React.useEffect(
+    () =>
+      client.socket.diagram.watchForceRefresh(() => {
+        setRealtimeError();
+      }),
+    [setRealtimeError]
+  );
 
   return null;
 };

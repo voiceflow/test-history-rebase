@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { OnboardingProps } from '@/pages/Onboarding/types';
+import { OnboardingStepProps } from '@/pages/Onboarding/types';
 
 import { StepID } from '../../constants';
 import { AddCollaborators, CreateWorkspace, JoinWorkspace, Payment, PersonalizeWorkspace, SelectChannel, Welcome } from '../../Steps';
 
-export type StepComponentProps = Record<StepID, React.FC<OnboardingProps>>;
+export type StepComponentProps = Record<StepID, React.FC<OnboardingStepProps>>;
 
 export const STEP_COMPONENTS: StepComponentProps = {
   [StepID.WELCOME]: Welcome,

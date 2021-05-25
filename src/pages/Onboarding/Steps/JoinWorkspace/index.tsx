@@ -10,7 +10,7 @@ import { ConnectedProps } from '@/types';
 import { FieldsContainer, Label, NameInput, ProfilePicUpload, RoleSelect } from '../components';
 import { Container } from './components';
 
-const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, updateProfilePicture }) => {
+const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, saveProfilePicture }) => {
   const { actions } = React.useContext(OnboardingContext);
 
   const [userRole, setUserRole] = React.useState('');
@@ -20,7 +20,7 @@ const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, updateProf
 
   const onContinue = () => {
     if (userImage) {
-      updateProfilePicture(userImage);
+      saveProfilePicture(userImage);
     }
     actions.setJoinWorkspaceMeta({ role: userRole });
     actions.finishJoiningWorkspace();
@@ -57,7 +57,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updateProfilePicture: Account.saveProfilePicture,
+  saveProfilePicture: Account.saveProfilePicture,
 };
 
 export type ConnectedJoinWorkspaceProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

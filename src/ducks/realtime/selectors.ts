@@ -75,7 +75,9 @@ export const creatorMappingSelector = createSelector(
 export const lockOwnerSelector = createSelector(
   [creatorDiagramIDSelector, creatorMappingSelector, Workspace.distinctWorkspaceMemberSelector],
   (diagramID, getCreatorMapping, getWorkspaceMember) => (lockType: AnyNodeLock, nodeID: string) => {
-    const [tabID, creatorID] = getCreatorMapping(lockType, nodeID, diagramID!);
+    if (!diagramID) return null;
+
+    const [tabID, creatorID] = getCreatorMapping(lockType, nodeID, diagramID);
     return creatorID ? getWorkspaceMember(creatorID, tabID) : null;
   }
 );

@@ -1,6 +1,5 @@
 import _constant from 'lodash/constant';
-import map from 'lodash/map';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
@@ -141,7 +140,7 @@ export function Item(props) {
               <span>
                 {getPlatformAppName(platform)} {!!language.length && '-'}
               </span>
-              {map(language, (l) => getHumanLanguageName(l)).join(', ')}
+              {_map(language, (l) => getHumanLanguageName(l)).join(', ')}
             </ProjectTitleCaption>
           </ProjectTitleDetails>
 

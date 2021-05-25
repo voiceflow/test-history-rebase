@@ -22,7 +22,6 @@ export * from './Project';
 export * from './ProjectList';
 export * from './Prototype';
 export * from './Query';
-export * from './Skill';
 export * from './Slot';
 export * from './Speak';
 export * from './Template';

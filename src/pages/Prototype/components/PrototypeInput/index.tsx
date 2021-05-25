@@ -21,7 +21,6 @@ export type PrototypeInputProps<L> = Pick<ControlCenterProps, 'showChips' | 'set
   locale: L;
   disabled?: boolean;
   onUserInput: (input: string) => void;
-  started?: boolean;
 };
 
 const PrototypeInput = <L extends string>({

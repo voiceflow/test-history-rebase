@@ -3,8 +3,7 @@ import { Voice as GeneralVoice } from '@voiceflow/general-types';
 import { Voice as GoogleVoice } from '@voiceflow/google-types';
 
 import { DISTINCT_PLATFORMS, DistinctPlatform, PlatformType } from '@/constants';
-
-type AnyVoice = AlexaVoice | GoogleVoice | GeneralVoice;
+import { AnyVoice } from '@/ducks/version/types';
 
 export const createPlatformSelector: {
   <T extends any>(platformValues: Record<PlatformType, T>, defaultValue?: T): (platform: PlatformType) => T;

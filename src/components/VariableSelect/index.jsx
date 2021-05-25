@@ -8,6 +8,8 @@ import { connect } from '@/hocs';
 
 export const VariableSelect = ({ value, variables, addVariable, onChange, ...props }) => {
   const onCreate = (item) => {
+    if (!item) return;
+
     try {
       addVariable(item);
       onChange(item);

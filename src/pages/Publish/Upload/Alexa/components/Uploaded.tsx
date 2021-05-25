@@ -28,7 +28,6 @@ const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData,
     updateActiveVendor(selectedVendorID, amazonID);
   }, [amazonID]);
 
-  // eslint-disable-next-line no-case-declarations
   const locale = (succeededLocale || locales[0] || 'en-US').replace('-', '_');
 
   return (

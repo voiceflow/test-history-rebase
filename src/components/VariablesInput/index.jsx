@@ -32,6 +32,8 @@ const VariablesInput = (
 
   const onAddVariable = React.useCallback(
     (name) => {
+      if (!name) return null;
+
       try {
         addGlobalVariable(name);
 

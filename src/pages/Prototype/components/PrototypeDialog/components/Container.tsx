@@ -3,7 +3,7 @@ import React from 'react';
 
 import { css, styled } from '@/hocs';
 
-export const Outter = styled.div<{ isPublic?: boolean; withInteractions?: boolean }>`
+export const Outer = styled.div<{ isPublic?: boolean; withInteractions?: boolean }>`
   position: relative;
   display: flex;
   flex: 1;
@@ -50,13 +50,13 @@ const Container: React.FC<{ isPublic?: boolean; showPadding?: boolean; isMobile?
   withInteractions,
   isMobile,
 }) => (
-  <Outter isPublic={isPublic} withInteractions={withInteractions}>
+  <Outer isPublic={isPublic} withInteractions={withInteractions}>
     <Middle isMobile={isMobile}>
       <Content showPadding={showPadding} isMobile={isMobile} className="chat-dialog-content">
         {children}
       </Content>
     </Middle>
-  </Outter>
+  </Outer>
 );
 
 export default Container;

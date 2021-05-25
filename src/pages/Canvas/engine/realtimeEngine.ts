@@ -10,6 +10,13 @@ import * as Sentry from '@/vendors/sentry';
 import type { Engine } from '.';
 import { EngineConsumer } from './utils';
 
+const SKIP_WARNING_ACTIONS: string[] = [
+  Realtime.SocketAction.LOCK_RESOURCE,
+  Realtime.SocketAction.RECONNECT_NOOP,
+  Realtime.SocketAction.UNLOCK_RESOURCE,
+  Realtime.SocketAction.UPDATE_RESOURCE,
+];
+
 class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCursorOverlayAPI; [OverlayType.LINK]: RealtimeLinkOverlayAPI }> {
   log = this.engine.log.child('realtime');
 
@@ -28,7 +35,7 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
 
       if (action && action.type in this.handlers) {
         await this.handlers[action.type as Realtime.SocketAction]!(action.payload, otherTabID, options);
-      } else {
+      } else if (!action || !SKIP_WARNING_ACTIONS.includes(action.type)) {
         Sentry.error(`Failed to apply unknown realtime action: ${action?.type}`);
       }
     });

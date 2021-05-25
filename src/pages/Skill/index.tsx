@@ -1,14 +1,17 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import IdleTimer from 'react-idle-timer';
+import { batch } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
+import * as Creator from '@/ducks/creator';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import {
   PlanRestrictionGate,
   ProjectLoadingGate,
@@ -18,7 +21,7 @@ import {
   WorkspaceLoadingGate,
 } from '@/gates';
 import { connect, lazy, withBatchLoadingGate } from '@/hocs';
-import { useCanvasTracking, useEnableDisable, usePermission } from '@/hooks';
+import { useCanvasTracking, useEnableDisable, usePermission, useTeardown } from '@/hooks';
 import CanvasHeader from '@/pages/Canvas/header';
 import InactivityModal from '@/pages/Inactivity';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
@@ -47,6 +50,10 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
   saveProjectName,
   goToDesign,
   isOnlyViewer,
+  resetCreator,
+  setActiveDiagramID,
+  setActiveProjectID,
+  setActiveVersionID,
 }) => {
   const [isIdle, onIdle, onActive] = useEnableDisable();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
@@ -66,6 +73,15 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
   }, [onIdle]);
 
   useCanvasTracking();
+
+  useTeardown(() => {
+    batch(() => {
+      resetCreator();
+      setActiveDiagramID(null);
+      setActiveProjectID(null);
+      setActiveVersionID(null);
+    });
+  });
 
   return (
     <MarkupProvider>
@@ -132,6 +148,10 @@ const mapDispatchToProps = {
   saveProjectName: Project.saveProjectName,
   goToDashboard: Router.goToDashboard,
   goToDesign: Router.goToCurrentCanvas,
+  resetCreator: Creator.resetCreator,
+  setActiveDiagramID: Session.setActiveDiagramID,
+  setActiveProjectID: Session.setActiveProjectID,
+  setActiveVersionID: Session.setActiveVersionID,
 };
 
 type ConnectedSkillProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

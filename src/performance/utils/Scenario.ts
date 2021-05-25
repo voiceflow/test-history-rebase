@@ -53,7 +53,7 @@ class Scenario {
     // eslint-disable-next-line callback-return
     callback({ reject: this.rejectPromise });
 
-    setTimeout(() => this.rejectPromise('Rejected by timeout'), this.rejectTimeout);
+    setTimeout(() => this.rejectPromise('Rejected by timeout!'), this.rejectTimeout);
 
     await this.finishPromise;
   }
@@ -64,6 +64,7 @@ class Scenario {
     if (typedAction === this.startMark) {
       if (!this.startMarkTriggered) {
         this.startMarkTriggered = true;
+
         performance.mark(typedAction);
       } else {
         this.logger.warn('The start mark is already set!');

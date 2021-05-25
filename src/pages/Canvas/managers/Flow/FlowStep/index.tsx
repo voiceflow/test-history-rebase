@@ -6,6 +6,7 @@ import * as Router from '@/ducks/router';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { DiagramMapContext } from '@/pages/Canvas/contexts';
+import perf, { PerfAction } from '@/performance';
 import { stopPropagation } from '@/utils/dom';
 
 import { NODE_CONFIG } from '../constants';
@@ -39,7 +40,11 @@ const ConnectedFlowStep: React.FC<ConnectedStepProps<NodeData.Flow>> = ({ node, 
   const dispatch = useDispatch();
   const diagramMap = React.useContext(DiagramMapContext)!;
 
-  const goToDiagram = React.useCallback(() => data.diagramID && dispatch(Router.goToDiagram(data.diagramID)), [data.diagramID, dispatch]);
+  const goToDiagram = React.useCallback(() => {
+    perf.action(PerfAction.FLOW_NODE__LINK_CLICK);
+
+    if (data.diagramID) dispatch(Router.goToDiagram(data.diagramID));
+  }, [data.diagramID, dispatch]);
 
   const label = data.diagramID ? diagramMap[data.diagramID]?.name : null;
 

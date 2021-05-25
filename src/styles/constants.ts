@@ -57,6 +57,8 @@ export enum ClassName {
   CANVAS_THREAD = 'vf-canvas__thread',
   CANVAS_BLOCK = 'vf-canvas__block',
   CANVAS_STEP = 'vf-canvas__step',
+  CANVAS_STEP_ITEM = 'vf-canvas__step-item',
+  CANVAS_STEP_ITEM_LABEL = 'vf-canvas__step-item-label',
   CANVAS_PORT = 'vf-canvas__port',
   CANVAS_LINK = 'vf-canvas__link',
   CANVAS_CONTROL = 'vf-canvas__control',

@@ -1,6 +1,6 @@
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { Identifier } from '@/styles/constants';
+import { ClassName, Identifier } from '@/styles/constants';
 import { delay, rejectIn } from '@/utils/promise';
 
 import { MOCK_DATA, PerfAction, RunnerEvent } from '../constants';
@@ -34,13 +34,13 @@ const createCommands = (runner: Runner) => {
       await commands.waitAction(PerfAction.CANVAS_RENDERED, timeout);
     },
 
-    login: async (timeout = 3000): Promise<void> => {
+    login: async (timeout = 5000): Promise<void> => {
       window.store.dispatch(Session.basicAuthLogin(MOCK_DATA.LOGIN));
 
       await commands.waitAction(PerfAction.DASHBOARD_RENDERED, timeout);
     },
 
-    logout: async (timeout = 3000): Promise<void> => {
+    logout: async (timeout = 5000): Promise<void> => {
       window.store.dispatch(Session.logout());
 
       await commands.waitAction(PerfAction.LOGIN_RENDERED, timeout);
@@ -59,6 +59,10 @@ const createCommands = (runner: Runner) => {
 
       clickNode: (nodeID: string) => {
         $(`[data-node-id="${nodeID}"]`).click();
+      },
+
+      clickFlowStepLink: (nodeID: string) => {
+        $(`[data-node-id="${nodeID}"] .${ClassName.CANVAS_STEP_ITEM_LABEL}`).click();
       },
     },
   };

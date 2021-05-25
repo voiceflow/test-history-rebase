@@ -4,6 +4,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { StepLabelVariant } from '@/constants/canvas';
 import Port from '@/pages/Canvas/components/Port';
 import { PortEntityProvider } from '@/pages/Canvas/contexts';
+import { ClassName } from '@/styles/constants';
 
 import { StepAPIContext } from '../contexts';
 import { ItemProps } from '../types';
@@ -27,13 +28,15 @@ const Item: React.FC<ItemProps> = ({
   const stepAPI = React.useContext(StepAPIContext);
 
   return (
-    <Container>
+    <Container className={ClassName.CANVAS_STEP_ITEM}>
       <IconContainer>{icon && <SvgIcon icon={icon} size={18} color={iconColor} />}</IconContainer>
+
       <StepLabelTextContainer variant={label ? labelVariant : StepLabelVariant.PLACEHOLDER}>
-        <StepLabelText onClick={onClick} multiline={multilineLabel} lineClamp={labelLineClamp}>
+        <StepLabelText onClick={onClick} className={ClassName.CANVAS_STEP_ITEM_LABEL} multiline={multilineLabel} lineClamp={labelLineClamp}>
           {label || placeholder}
         </StepLabelText>
       </StepLabelTextContainer>
+
       {stepAPI?.withPorts && portID && (
         <PortEntityProvider id={portID}>
           <Port color={portColor} />

@@ -219,34 +219,49 @@ export class Runner extends EventEmitter<EventTypes> {
         return;
       }
 
-      await scenario.beforeAll?.();
+      let stage = 'beforeAll';
 
-      await asyncForEach(scenario.iterationData, async (data) => {
-        await scenario.beforeEachIterationData?.(data);
+      try {
+        await scenario.beforeAll?.();
 
-        for (let i = 0; i < scenario.iterationsCount; i++) {
-          // eslint-disable-next-line no-await-in-loop
-          await scenario.beforeEach?.(data);
+        await asyncForEach(scenario.iterationData, async (data) => {
+          stage = 'beforeEachIterationData';
+          await scenario.beforeEachIterationData?.(data);
 
-          try {
-            const activeScenario = new Scenario({ type, prefix: scenario.setPrefix(data), rejectTimeout: scenario.rejectTimeout });
-
-            this.activeScenario = activeScenario;
-
+          for (let i = 0; i < scenario.iterationsCount; i++) {
+            stage = 'beforeEach';
             // eslint-disable-next-line no-await-in-loop
-            await activeScenario.run(() => scenario.unit(data));
-          } catch (err) {
-            logger.error(err);
+            await scenario.beforeEach?.(data);
+
+            const prefix = scenario.setPrefix(data);
+
+            try {
+              const activeScenario = new Scenario({ type, prefix, rejectTimeout: scenario.rejectTimeout });
+
+              this.activeScenario = activeScenario;
+
+              // eslint-disable-next-line no-await-in-loop
+              await activeScenario.run(() => scenario.unit(data));
+            } catch (error) {
+              logger.error({ type, prefix, error });
+            }
+
+            this.activeScenario = undefined;
+
+            stage = 'afterEach';
+            // eslint-disable-next-line no-await-in-loop
+            await scenario.afterEach?.(data);
           }
 
-          // eslint-disable-next-line no-await-in-loop
-          await scenario.afterEach?.(data);
-        }
+          stage = 'afterEachIterationData';
+          await scenario.afterEachIterationData?.(data);
+        });
 
-        await scenario.afterEachIterationData?.(data);
-      });
-
-      await scenario.afterAll?.();
+        stage = 'afterAll';
+        await scenario.afterAll?.();
+      } catch (error) {
+        logger.error({ type, stage, error });
+      }
     });
 
     const measures = this.collectMeasures(scenarios);

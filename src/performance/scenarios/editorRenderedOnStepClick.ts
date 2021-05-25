@@ -4,7 +4,7 @@ import { MOCK_DATA, PerfScenario } from '../constants';
 import { runner } from '../utils';
 
 runner.register<typeof MOCK_DATA.VERSIONS[number]>(
-  PerfScenario.EDITOR_RENDERED_ON_BLOCK_CLICK,
+  PerfScenario.EDITOR_RENDERED_ON_STEP_CLICK,
   async ({ commands, setPrefix, unit, setIterationData, beforeAll, afterAll, afterEach, beforeEachIterationData }) => {
     setPrefix((version) => version.name);
     setIterationData(MOCK_DATA.VERSIONS);
@@ -26,7 +26,7 @@ runner.register<typeof MOCK_DATA.VERSIONS[number]>(
     });
 
     unit(async (version) => {
-      const nodeID = _sample(version.nodeIDs)!;
+      const nodeID = _sample(version.stepIDs)!;
 
       await commands.canvas.clickNode(nodeID);
     });

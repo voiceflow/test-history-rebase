@@ -40,7 +40,7 @@ const Node: React.FC = () => {
   );
 
   const onClickHandler = (e: React.MouseEvent) => {
-    performance.action(PerfAction.BLOCK_CLICK);
+    performance.action(PerfAction.NODE_CLICK);
 
     onClick(e);
 

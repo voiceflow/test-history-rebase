@@ -23,9 +23,8 @@ const APL: React.FC<APLProps & ConnectedAPLProps> = ({ zoom, data, device, platf
 
   const isRound = device === DeviceType.ECHO_SPOT;
   const renderAPL = !!aplContext;
-
   const deviceInfo = React.useMemo(() => getDeviceList(platform).find(({ type }) => type === device), [platform, device]);
-  const viewport = React.useMemo(() => ({ dpi: deviceInfo!.dimension.density, width: dimensions[0], height: dimensions[1], isRound }), [
+  const viewport = React.useMemo(() => ({ dpi: deviceInfo?.dimension.density ?? 0, width: dimensions[0], height: dimensions[1], isRound }), [
     deviceInfo,
     dimensions,
     isRound,

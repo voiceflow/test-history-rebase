@@ -2,7 +2,7 @@ import React from 'react';
 
 import { FlexApart } from '@/components/Flex';
 import Select from '@/components/Select';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 
 const slotOptionRenderer = (option) => <FlexApart fullWidth>{option.label}</FlexApart>;
@@ -26,7 +26,7 @@ const SlotSelect = ({ value, onChange, className, slotTypes, filter, ...props })
 };
 
 const mapStateToProps = {
-  slotTypes: Skill.activeSlotTypesSelector,
+  slotTypes: Version.activeSlotTypesSelector,
 };
 
 export default connect(mapStateToProps)(SlotSelect);

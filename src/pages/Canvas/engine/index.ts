@@ -12,11 +12,12 @@ import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
+import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
 import * as Thread from '@/ducks/thread';
+import * as Version from '@/ducks/version';
 import { RealtimeSubscriptionContext, RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { useMouseMove } from '@/hooks';
 import { NodeData } from '@/models';
@@ -126,10 +127,10 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   get services() {
     return [
       this.drag,
-      this.activation,
       this.focus,
       this.selection,
       this.groupSelection,
+      this.activation,
       this.highlight,
       this.linkCreation,
       this.clipboard,
@@ -194,13 +195,13 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   getDiagramByID = (diagramID: string) => this.select(Diagram.diagramByIDSelector)(diagramID);
 
-  isRootDiagram = () => this.select(Skill.isRootDiagramSelector);
+  isRootDiagram = () => this.select(Version.isRootDiagramActiveSelector);
 
   getDiagramID = () => this.select(Session.activeDiagramIDSelector);
 
   isFeatureEnabled = (featureID: FeatureFlag) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 
-  isStraightLinks = () => this.select(Skill.activeProjectIsStraightLinksSelector);
+  isStraightLinks = () => this.select(Project.isStraightLinksSelector);
 
   // entity registration methods
 
@@ -455,7 +456,7 @@ const createEngine = moize.simple((...args: ConstructorParameters<typeof Engine>
 
 function useEngine() {
   const store = useStore();
-  const currentDiagramID = useSelector(Creator.creatorDiagramIDSelector);
+  const diagramID = useSelector(Creator.creatorDiagramIDSelector);
   const mousePosition = React.useContext(MousePositionContext);
   const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
   const engine = React.useMemo(() => createEngine(store as any, mousePosition!, realtimeSubscription), []);
@@ -467,7 +468,7 @@ function useEngine() {
       engine.reset();
       createEngine.clear();
     },
-    [currentDiagramID]
+    [diagramID]
   );
 
   return engine;

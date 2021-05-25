@@ -16,11 +16,13 @@ import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
+import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as Realtime from '@/ducks/realtime';
-import * as Skill from '@/ducks/skill';
+import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
 import { CRUDAction } from '@/ducks/utils/crud';
+import * as Version from '@/ducks/version';
 import * as Workspace from '@/ducks/workspace';
 
 import { AnyAction, Dispatchable, Selector, StoreMiddleware, StoreMiddlewareAPI } from './types';
@@ -58,13 +60,11 @@ const createAutosaveMiddleware = (
 
     const state = store.getState();
     const currentState = (typeof selector === 'function' ? selector : createStructuredSelector<any, any>(selector))(state);
-    const activeSkill = Skill.activeSkillSelector(state);
     const isLibraryRole = Workspace.isLibraryRoleSelector(state);
 
     if (isLibraryRole) return;
 
     if (
-      activeSkill &&
       !action.meta?.receivedAction && // do not autosave on realtime updates
       !AUTOSAVE_IGNORED_ACTIONS.includes(action.type) &&
       !blacklist.includes(action.type) &&
@@ -197,10 +197,13 @@ const createMiddleware = (history: History) => {
     createLoggedInMiddleware(
       createAutosaveMiddleware(
         createStructuredSelector({ intent: Intent.allIntentsSelector, slot: Slot.allSlotsSelector }),
-        Skill.saveIntentsAndSlots
+        Version.saveIntentsAndSlots
       )
     ),
-    createAutosaveMiddleware(Skill.activeGlobalVariablesSelector, Skill.saveVariables, [Skill.SkillAction.SET_ACTIVE_SKILL]),
+    createAutosaveMiddleware(Version.activeGlobalVariablesSelector, Version.saveGlobalVariables, [
+      CRUDAction.CRUD_REPLACE,
+      Session.SessionAction.SET_ACTIVE_VERSION_ID,
+    ]),
     createAutosaveMiddleware(Diagram.activeDiagramLocalVariablesSelector, Diagram.saveActiveDiagramVariables, [
       Creator.CreatorAction.INITIALIZE_CREATOR,
       Creator.CreatorAction.RESET_CREATOR,
@@ -209,12 +212,14 @@ const createMiddleware = (history: History) => {
     createRealtimeResourceUpdateMiddleware(
       Realtime.ResourceType.SETTINGS,
       createStructuredSelector({
-        meta: Skill.skillMetaSelector,
-        skillName: Skill.activeNameSelector,
+        settings: Version.activeSettingsSelector,
+        publishing: Version.activePublishingSelector,
+        session: Version.activeSessionSelector,
+        name: Project.activeProjectNameSelector,
       }),
-      [Skill.SkillAction.SET_ACTIVE_SKILL]
+      [CRUDAction.CRUD_REPLACE, Session.SessionAction.SET_ACTIVE_VERSION_ID, Session.SessionAction.SET_ACTIVE_PROJECT_ID]
     ),
-    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.FLOWS, Diagram.allDiagramsSelector, [Skill.SkillAction.SET_ACTIVE_SKILL]),
+    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.FLOWS, Diagram.allDiagramsSelector, [CRUDAction.CRUD_REPLACE]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.PRODUCTS, Product.allProductsSelector, [
       CRUDAction.CRUD_UPDATE,
       (action) => action.type === CRUDAction.CRUD_ADD && action.payload?.key === NEW_PRODUCT_ID,
@@ -222,10 +227,9 @@ const createMiddleware = (history: History) => {
     ]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.INTENTS, Intent.allIntentsSelector),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.SLOTS, Slot.allSlotsSelector),
-    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.VARIABLES, Skill.activeGlobalVariablesSelector, [
-      Skill.SkillAction.SET_ACTIVE_SKILL,
-      Creator.CreatorAction.INITIALIZE_CREATOR,
-      Creator.CreatorAction.RESET_CREATOR,
+    createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.VARIABLES, Version.activeGlobalVariablesSelector, [
+      CRUDAction.CRUD_REPLACE,
+      Session.SessionAction.SET_ACTIVE_VERSION_ID,
     ]),
     createRealtimeResourceUpdateMiddleware(Realtime.ResourceType.DIAGRAM, Diagram.activeDiagramSelector, [
       Creator.CreatorAction.INITIALIZE_CREATOR,

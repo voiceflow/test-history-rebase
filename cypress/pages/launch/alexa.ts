@@ -60,10 +60,10 @@ export default {
         return form.skillDescription.root.find('svg').eq(0);
       },
       get categoryDropdown() {
-        return cy.get('.select-box__menu-list > .select-box__option');
+        return cy.get('.vf-menu .vf-menu__item');
       },
       get keywords() {
-        return form.skillDescription.root.find("input[type='text']").eq(2);
+        return form.skillDescription.root.find("input[name='keywords']");
       },
     },
     skillInvocation: {
@@ -90,7 +90,7 @@ export default {
         return form.privacyAndTerms.root.find('input[name="privacyPolicy"]').eq(0);
       },
       get termsAndCond() {
-        return form.privacyAndTerms.root.find('input[name="termsAndCond"]').eq(0);
+        return form.privacyAndTerms.root.find('input[name="termsAndConditions"]').eq(0);
       },
       get toggle() {
         return form.privacyAndTerms.root.find('.react-toggle-thumb').eq(0);

@@ -2,9 +2,9 @@ import React from 'react';
 
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
 import { FeatureFlag } from '@/config/features';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
-import { useFeature, useTeardown } from '@/hooks';
+import { useFeature } from '@/hooks';
 import { Alexa } from '@/pages/Settings/components/ContentDescriptors';
 import { ConnectedProps } from '@/types';
 
@@ -13,16 +13,11 @@ type AlexaGadgetsToggleOwnProps = {
 };
 
 const AlexaGadgetsToggle: React.FC<AlexaGadgetsToggleOwnProps & ConnectedAlexaGadgetsToggleProps> = ({
-  settings,
-  updateSettings,
+  customInterfaceEnabled,
   saveSettings,
   modelSensitivityShown,
 }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
-
-  useTeardown(() => {
-    saveSettings({ settings }, ['customInterface']);
-  }, [settings]);
 
   return (
     <>
@@ -34,8 +29,8 @@ const AlexaGadgetsToggle: React.FC<AlexaGadgetsToggleOwnProps & ConnectedAlexaGa
           headerToggle
           dividers={modelSensitivityShown}
           isDividerNested
-          isCollapsed={!settings.customInterface}
-          onClick={() => updateSettings({ customInterface: !settings.customInterface })}
+          isCollapsed={!customInterfaceEnabled}
+          onClick={() => saveSettings({ customInterface: !customInterfaceEnabled })}
           variant={SectionVariant.SECONDARY}
           collapseVariant={SectionToggleVariant.TOGGLE}
         />
@@ -45,12 +40,11 @@ const AlexaGadgetsToggle: React.FC<AlexaGadgetsToggleOwnProps & ConnectedAlexaGa
 };
 
 const mapStateToProps = {
-  settings: Skill.settingsSelector,
+  customInterfaceEnabled: Version.alexa.activeCustomInterfaceSelector,
 };
 
 const mapDispatchToProps = {
-  saveSettings: Skill.saveSettings,
-  updateSettings: Skill.updateSettings,
+  saveSettings: Version.saveSettings,
 };
 
 type ConnectedAlexaGadgetsToggleProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

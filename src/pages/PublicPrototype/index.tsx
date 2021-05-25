@@ -23,10 +23,13 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
 }) => {
   const [isLoaded, toggleLoaded] = useToggle(false);
   const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings>({
-    layout: PrototypeDuck.PrototypeLayout.TEXT_DIALOG,
-    hasPassword: false,
     plan: PlanType.STARTER,
+    locales: [],
+    layout: PrototypeDuck.PrototypeLayout.TEXT_DIALOG,
+    projectName: '',
+    hasPassword: false,
   });
+
   const [isAuthenticated, setAuthenticated] = React.useState<boolean>(false);
 
   const [isAllowedPassword] = useGuestPermission(settings.plan, Permission.SHARE_PROTOTYPE_PASSWORD);
@@ -49,6 +52,7 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
   const checkLogin = React.useCallback(
     async (password: string) => {
       const isAuth = await checkSharedProtoPassword(match.params.versionID, password);
+
       setAuthenticated(isAuth);
       if (!isAuth) toast.error('Invalid password');
     },

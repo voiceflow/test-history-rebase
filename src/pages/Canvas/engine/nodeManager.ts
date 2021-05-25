@@ -7,10 +7,10 @@ import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
-import { clearModal, setConfirm } from '@/ducks/modal';
+import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { EntityMap, Node, NodeData } from '@/models';
 import { Pair, Point } from '@/types';
 import { objectID } from '@/utils';
@@ -126,8 +126,8 @@ class NodeManager extends EngineConsumer {
     getNodeFactoryOptions: () => {
       const platform = this.select(Project.activePlatformSelector);
       const conditionsBuilderEnabled = this.select(Feature.isFeatureEnabledSelector)(FeatureFlag.CONDITIONS_BUILDER);
-      const defaultVoice = this.select(Skill.defaultVoiceSelector);
-      const canvasNodeVisibility = this.select(Skill.defaultCanvasNodeVisibilitySelector);
+      const defaultVoice = this.select(Version.activeDefaultVoiceSelector);
+      const canvasNodeVisibility = this.select(Version.activeCanvasNodeVisibilitySelector);
 
       return {
         defaultVoice: defaultVoice || getPlatformDefaultVoice(platform),
@@ -258,10 +258,10 @@ class NodeManager extends EngineConsumer {
       const text = unlockedNodesIDs.length ? 'Some blocks' : nodeIDs.length > 1 ? 'These blocks' : 'This block';
 
       this.dispatch(
-        setConfirm({
+        Modal.setConfirm({
           warning: false,
           text: `${text} being actively working on and cannot be deleted`,
-          confirm: () => (unlockedNodesIDs.length ? remove(unlockedNodesIDs) : this.dispatch(clearModal())),
+          confirm: () => (unlockedNodesIDs.length ? remove(unlockedNodesIDs) : this.dispatch(Modal.clearModal())),
         })
       );
       return true;
@@ -290,10 +290,10 @@ class NodeManager extends EngineConsumer {
 
       if (requiredCommand) {
         this.dispatch(
-          setConfirm({
+          Modal.setConfirm({
             warning: false,
             text: `${requiredCommand} is required by default`,
-            confirm: () => this.dispatch(clearModal()),
+            confirm: () => this.dispatch(Modal.clearModal()),
           })
         );
         return requiredCommand;
@@ -314,7 +314,7 @@ class NodeManager extends EngineConsumer {
 
     if (!isSingleCombinedWithSingleStep && removableNodes.some((node) => [BlockType.COMBINED, BlockType.COMMAND].includes(node.type))) {
       this.dispatch(
-        setConfirm({
+        Modal.setConfirm({
           warning: true,
           text: `Are you sure you want to delete ${removableNodeIDs.length > 1 ? 'these blocks?' : 'this block?'}`,
           confirm: () => remove(removableNodeIDs),

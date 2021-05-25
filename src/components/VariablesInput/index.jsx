@@ -3,7 +3,7 @@ import React from 'react';
 import TextEditor, { PluginType } from '@/components/TextEditor';
 import { toast } from '@/components/Toast';
 import * as Diagram from '@/ducks/diagram';
-import { addGlobalVariable } from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { compose } from '@/utils/functional';
 
@@ -91,7 +91,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  addGlobalVariable,
+  addGlobalVariable: Version.addGlobalVariable,
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true }), React.forwardRef)(VariablesInput);

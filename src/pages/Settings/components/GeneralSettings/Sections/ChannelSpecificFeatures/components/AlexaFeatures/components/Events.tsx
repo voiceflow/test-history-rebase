@@ -5,7 +5,7 @@ import Section, { SectionVariant } from '@/components/Section';
 import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -13,15 +13,17 @@ import { SkillEventsErrorMessage } from '@/pages/Settings/components';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { ConnectedProps } from '@/types';
 
-const AceEditorComponent: any = AceEditor;
-
 type AlexaEventsOwnProps = {
   platformMeta: PlatformSettingsMetaProps;
   modelSensitivityShown?: boolean;
 };
 
-const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({ meta, platformMeta, saveSettings, modelSensitivityShown }) => {
-  const { alexaEvents: propAlexaEvents } = meta;
+const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({
+  propAlexaEvents,
+  platformMeta,
+  saveSettings,
+  modelSensitivityShown,
+}) => {
   const { descriptors } = platformMeta;
   const { events } = descriptors;
   const gadgetsFeat = useFeature(FeatureFlag.GADGETS);
@@ -42,12 +44,8 @@ const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({ met
   };
 
   const save = async () => {
-    const settingsObject = {
-      alexaEvents,
-    };
-
     try {
-      await saveSettings(settingsObject, ['error', 'events']);
+      await saveSettings({ events: alexaEvents });
     } catch (err) {
       toast.error('Settings Save Error');
     }
@@ -66,12 +64,11 @@ const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({ met
         </SkillEventsErrorMessage>
       )}
       <FormControl contentBottomUnits={3.2}>
-        <AceEditorComponent
+        <AceEditor
           hasBorder
           onBlur={save}
           name="datasource_editor"
           mode="json"
-          theme="github"
           placeholder="Input skill events JSON configuration"
           onChange={updateAlexaEvents}
           fontSize={14}
@@ -88,12 +85,12 @@ const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({ met
 };
 
 const mapStateToProps = {
-  meta: Skill.skillMetaSelector,
+  propAlexaEvents: Version.alexa.eventsSelector,
   projectID: Session.activeProjectIDSelector,
 };
 
 const mapDispatchToProps = {
-  saveSettings: Skill.saveSettings,
+  saveSettings: Version.alexa.saveSettings,
 };
 
 type ConnectedAlexaEvents = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

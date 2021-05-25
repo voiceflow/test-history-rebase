@@ -8,7 +8,7 @@ import * as Diagram from '@/ducks/diagram';
 import * as Modal from '@/ducks/modal';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks';
 import { ClassName } from '@/styles/constants';
@@ -110,7 +110,7 @@ const Item: React.FC<ItemProps & ConnectedItemProps> = ({
 
 const mapStateToProps = {
   getDiagramViewers: Realtime.diagramViewersSelector,
-  rootDiagramID: Skill.rootDiagramIDSelector,
+  rootDiagramID: Version.activeRootDiagramIDSelector,
 };
 
 const mapDispatchToProps = {

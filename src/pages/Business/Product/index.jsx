@@ -122,7 +122,7 @@ class ProductEditPage extends PureComponent {
           submitText="Save Locale"
           step={step}
           checkStep={this.checkValidStep}
-          setStage={(nextStep) => this.setState({ step: nextStep })}
+          onChangeStep={(nextStep) => this.setState({ step: nextStep })}
           haveFooter
         />
       </>

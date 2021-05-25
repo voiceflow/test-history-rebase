@@ -4,10 +4,7 @@ import Confetti from 'react-dom-confetti';
 import { FlexStart } from '@/components/Flex';
 import Section from '@/components/Section';
 import { Link, Text } from '@/components/Text';
-import * as Skill from '@/ducks/skill';
-import { connect } from '@/hocs';
 import { GooglePublishJob, JobStageData } from '@/models';
-import { ConnectedProps } from '@/types';
 
 import { DropdownSection, StageContainer, StageHeader } from '../../components';
 
@@ -15,7 +12,7 @@ type UploadedProps = {
   stageData: JobStageData<GooglePublishJob.SuccessStage>;
 };
 
-const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData }) => {
+const Uploaded: React.FC<UploadedProps> = ({ stageData }) => {
   const { googleProjectID } = stageData;
 
   return (
@@ -51,10 +48,4 @@ const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData 
   );
 };
 
-const mapStateToProps = {
-  locales: Skill.activeLocalesSelector,
-};
-
-export type UploadedConnectedProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps, null)(Uploaded) as React.FC<UploadedProps>;
+export default Uploaded;

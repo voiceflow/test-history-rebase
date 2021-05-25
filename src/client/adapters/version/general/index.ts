@@ -1,57 +1,36 @@
-import { Version } from '@voiceflow/api-sdk';
-import { GeneralVersionData, Locale } from '@voiceflow/general-types';
+import { defaultGeneralVersionSettings, GeneralVersion, GeneralVersionData, Locale } from '@voiceflow/general-types';
+// eslint-disable-next-line you-dont-need-lodash-underscore/omit
+import _omit from 'lodash/omit';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
-import { BUILT_IN_VARIABLES, PlatformType } from '@/constants';
-import { FullSkill } from '@/models';
+import { BUILT_IN_VARIABLES } from '@/constants';
+import { Version } from '@/models';
 
-import settingsAdapter from './settings';
-
-const generalVersionAdapter = createAdapter<Version<GeneralVersionData>, FullSkill<string>>(
-  ({ name, _id, creatorID, projectID, rootDiagramID, variables, platformData: { settings } }) => ({
-    id: _id,
-    name,
+const generalVersionAdapter = createAdapter<GeneralVersion, Version<GeneralVersionData>>(
+  ({
+    _id,
     creatorID,
     projectID,
     rootDiagramID,
-    diagramID: rootDiagramID,
-    platform: PlatformType.GENERAL,
-    locales: settings.locales?.length ? settings.locales : [Locale.EN_US],
-    globalVariables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
-    meta: {
-      ...settingsAdapter.fromDB(settings),
-      preview: false,
-      fulfillment: {},
-      access_token_variable: null,
-      alexa_permissions: [],
-      alexa_interfaces: null,
-      google_versions: null,
-      updatesDescription: '',
-      summary: '',
-      description: '',
-      keywords: '',
-      locales: [],
-      invocations: [],
-      category: null,
-      purchase: false,
-      personal: false,
-      copa: false,
-      ads: false,
-      export: false,
-      instructions: '',
-      stage: 0,
-      invName: '',
-      smallIcon: '',
-      largeIcon: '',
-      alexaEvents: '',
-      accountLinking: null,
-      privacyPolicy: '',
-      termsAndCond: '',
+    variables,
+    platformData: {
+      settings: { session, ...settings },
+      publishing,
     },
+  }) => ({
+    id: _id,
+    creatorID,
+    projectID,
+    rootDiagramID,
+    locales: settings.locales?.length ? settings.locales : [Locale.EN_US],
+    variables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
+    session: null,
+    settings: _omit(defaultGeneralVersionSettings(settings), 'session'),
+    publishing,
+    status: null,
   }),
   () => {
     throw new AdapterNotImplementedError();
   }
 );
-
 export default generalVersionAdapter;

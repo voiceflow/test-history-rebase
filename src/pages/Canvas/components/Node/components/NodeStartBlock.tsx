@@ -2,8 +2,8 @@ import React from 'react';
 
 import { BlockVariant } from '@/constants/canvas';
 import * as Diagram from '@/ducks/diagram';
-import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
+import * as Project from '@/ducks/project';
+import * as Version from '@/ducks/version';
 import { compose, connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
 import PlayButton from '@/pages/Canvas/components/PlayButton';
@@ -53,7 +53,7 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
         nodeID={nodeEntity.nodeID}
         portID={outPortID}
         platform={platform}
-        invocationName={invocationName}
+        invocationName={invocationName ?? ''}
         commands={commands}
         actions={actions}
         lockOwner={lockOwner}
@@ -76,15 +76,13 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
 };
 
 const mapStateToProps = {
-  invocationName: Skill.invNameSelector,
-  projectName: Skill.activeProjectNameSelector,
-  isRootDiagram: Skill.isRootDiagramSelector,
-  activeDiagramID: Session.activeDiagramIDSelector,
-  diagram: Diagram.diagramByIDSelector,
+  diagram: Diagram.activeDiagramSelector,
+  projectName: Project.activeProjectNameSelector,
+  invocationName: Version.activeInvocationNameSelector,
+  isRootDiagram: Version.isRootDiagramActiveSelector,
 };
 
-const mergeProps = (...[{ diagram: getDiagramByID, activeDiagramID, invocationName, projectName }]: MergeArguments<typeof mapStateToProps>) => ({
-  diagram: getDiagramByID(activeDiagramID!),
+const mergeProps = (...[{ invocationName, projectName }]: MergeArguments<typeof mapStateToProps>) => ({
   invocationName: invocationName || projectName,
 });
 

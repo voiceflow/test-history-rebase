@@ -1,10 +1,11 @@
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
+import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
+import * as Version from '@/ducks/version';
 import * as Models from '@/models';
 import { ActionPayload, AnyAction, Dispatch, GetState } from '@/store/types';
 
@@ -12,9 +13,9 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
   [Realtime.ResourceType.SLOTS]: (data: Models.Slot[], meta: object) => dispatch(Slot.replaceSlots(data, meta)),
   [Realtime.ResourceType.INTENTS]: (data: Models.Intent[], meta: object) => dispatch(Intent.replaceIntents(data, meta)),
   [Realtime.ResourceType.PRODUCTS]: (data: Models.Product[], meta: object) => dispatch(Product.replaceProducts(data, meta)),
-  [Realtime.ResourceType.SETTINGS]: (data: { skillName: string; meta: Partial<Models.FullSkill<string>['meta']> }, meta: object) => {
-    dispatch(Skill.updateSkillMeta(data.meta, meta));
-    dispatch(Skill.updateActiveSkill({ name: data.skillName }, meta));
+  [Realtime.ResourceType.SETTINGS]: (data: { name: string } & Pick<Version.AnyVersion, 'settings' | 'publishing' | 'session'>, meta: object) => {
+    dispatch(Version.patchActiveVersion({ settings: data.settings, publishing: data.publishing, session: data.session }, meta));
+    dispatch(Project.updateActiveProjectName(data.name, meta));
   },
   [Realtime.ResourceType.FLOWS]: async (data: Models.Diagram[]) => {
     const state = getState();
@@ -29,7 +30,7 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
     }
   },
   [Realtime.ResourceType.VARIABLES]: (data: string[], meta: object) => {
-    dispatch(Skill.replaceGlobalVariables(data, meta));
+    dispatch(Version.replaceGlobalVariables(data, meta));
   },
   [Realtime.ResourceType.DIAGRAM]: (data: Models.Diagram | null, meta: object) => {
     if (data) {

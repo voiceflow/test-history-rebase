@@ -6,7 +6,7 @@ import { FlexStart } from '@/components/Flex';
 import Section from '@/components/Section';
 import { BlockText, Link, Text } from '@/components/Text';
 import * as Project from '@/ducks/project';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { AlexaPublishJob, JobStageData } from '@/models';
 import { ConnectedProps } from '@/types';
@@ -83,7 +83,7 @@ const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData,
 };
 
 const mapStateToProps = {
-  locales: Skill.activeLocalesSelector,
+  locales: Version.activeLocalesSelector,
 };
 
 const mapDispatchToProps = {

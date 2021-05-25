@@ -9,7 +9,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { toast } from '@/components/Toast';
 import * as Diagram from '@/ducks/diagram';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 import { withKeyPress } from '@/utils/dom';
@@ -110,7 +110,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  addGlobalVariable: Skill.addGlobalVariable,
+  addGlobalVariable: Version.addGlobalVariable,
   addLocalVariable: Diagram.addActiveDiagramVariable,
 };
 

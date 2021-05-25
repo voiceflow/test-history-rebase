@@ -5,8 +5,8 @@ import { productAdapter } from '@/client/adapters/project';
 import * as Errors from '@/config/errors';
 import { NEW_PRODUCT_ID } from '@/constants';
 import * as Session from '@/ducks/session';
-import { activeLocalesSelector } from '@/ducks/skill/skill/selectors';
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from '@/ducks/utils/crud';
+import { activeLocalesSelector } from '@/ducks/version/selectors';
 import { Product } from '@/models';
 import { Thunk } from '@/store/types';
 
@@ -89,18 +89,23 @@ export const uploadProduct = (productID: string): Thunk => async (dispatch, getS
   }
 };
 
-export const handleSkillLocaleChange = (locales: Locale[]): Thunk => async (dispatch, getState) => {
+export const saveAllProductLocales = (locales: Locale[]): Thunk => async (dispatch, getState) => {
   const state = getState();
   const allProducts = allProductsSelector(state);
-  const projectID = Session.activeProjectIDSelector(state)!;
+  const projectID = Session.activeProjectIDSelector(state);
+
+  Errors.assertProjectID(projectID);
 
   if (allProducts.length) {
-    allProducts.forEach((product) => dispatch(updateProduct(product.id, { locales }, true)));
-
     await Promise.all(
-      allProducts.map((product) =>
-        client.platform.alexa.project.updateProduct(projectID, product.id, { ...productAdapter.toDB(product), productID: product.id })
-      )
+      allProducts.map((product) => {
+        dispatch(updateProduct(product.id, { locales }, true));
+
+        return client.platform.alexa.project.updateProduct(projectID, product.id, {
+          ...productAdapter.toDB({ ...product, locales }),
+          productID: product.id,
+        });
+      })
     );
   }
 };

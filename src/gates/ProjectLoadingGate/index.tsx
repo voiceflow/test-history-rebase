@@ -1,51 +1,55 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
+import { Path } from '@/config/routes';
 import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
-import * as Skill from '@/ducks/skill';
-import * as Thread from '@/ducks/thread';
+import * as Session from '@/ducks/session';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
-import { loadVersion } from '@/store/sideEffects';
+import { useRouteDiagramID, useRouteVersionID } from '@/hooks';
 import { ConnectedProps, MergeArguments } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 import CommentingUpdates from './CommentingUpdates';
 
-export type ProjectLoadingGateProps = {
-  versionID: string;
-  diagramID: string;
-};
-
-const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoadingGateProps> = ({
-  isProjectLoaded,
-  loadProject,
+const ProjectLoadingGate: React.FC<ConnectedProjectLoadingGateProps> = ({
+  activeVersion,
+  activateVersion,
   joinProjectChannel,
-  loadThreads,
   setError,
   children,
 }) => {
+  const versionID = useRouteVersionID();
+  const diagramID = useRouteDiagramID() ?? undefined;
+
   const loadProjectAndJoinChannel = React.useCallback(async () => {
     try {
-      const skill = await loadProject();
+      const version = await activateVersion(versionID!, diagramID);
 
-      if (skill.projectID) {
-        // TODO: move this into loadProject once FF removed
-        await loadThreads(skill.projectID);
-      }
-
-      await joinProjectChannel(skill.projectID);
+      await joinProjectChannel(version.projectID);
     } catch (e) {
       Sentry.error(e);
       setError(e);
     }
-  }, [loadProject, loadThreads, joinProjectChannel, setError]);
+  }, [activateVersion, joinProjectChannel, setError]);
 
-  React.useEffect(() => client.socket.global.watchForReconnected(joinProjectChannel), [joinProjectChannel]);
+  React.useEffect(
+    () =>
+      client.socket.global.watchForReconnected(() => {
+        joinProjectChannel();
+      }),
+    [joinProjectChannel]
+  );
+
+  if (!versionID) {
+    return <Redirect to={Path.DASHBOARD} />;
+  }
 
   return (
-    <LoadingGate label="Project" isLoaded={isProjectLoaded} load={loadProjectAndJoinChannel}>
+    <LoadingGate label="Project" isLoaded={!!activeVersion && versionID === activeVersion.id} load={loadProjectAndJoinChannel}>
       <CommentingUpdates />
       {children}
     </LoadingGate>
@@ -53,31 +57,20 @@ const ProjectLoadingGate: React.FC<ProjectLoadingGateProps & ConnectedProjectLoa
 };
 
 const mapStateToProps = {
-  activeSkill: Skill.activeSkillSelector,
+  activeVersion: Version.activeVersionSelector,
+  activeProjectID: Session.activeProjectIDSelector,
 };
 
 const mapDispatchToProps = {
-  loadProject: loadVersion,
+  activateVersion: Version.activateVersion,
   setError: Modal.setError,
   joinProjectChannel: Project.setupProjectSocketConnection,
-  loadThreads: Thread.loadThreads,
 };
 
-// eslint-disable-next-line no-shadow
-const mergeProps = (
-  ...[{ activeSkill }, { loadProject, joinProjectChannel, setError, loadThreads }, { versionID, diagramID }]: MergeArguments<
-    typeof mapStateToProps,
-    typeof mapDispatchToProps,
-    ProjectLoadingGateProps
-  >
-) => ({
-  setError,
-  loadThreads,
-  isProjectLoaded: !!activeSkill && activeSkill.id === versionID,
-  loadProject: () => loadProject(versionID, diagramID),
-  joinProjectChannel: (projectID = activeSkill.projectID) => joinProjectChannel(projectID),
+const mergeProps = (...[{ activeProjectID }, { joinProjectChannel }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
+  joinProjectChannel: (projectID = activeProjectID) => projectID && joinProjectChannel(projectID),
 });
 
 type ConnectedProjectLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps, { merge: false })(ProjectLoadingGate);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ProjectLoadingGate);

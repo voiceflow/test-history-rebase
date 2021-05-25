@@ -8,7 +8,7 @@ import Input from '@/components/Input';
 import SvgIcon, { IconVariant } from '@/components/SvgIcon';
 import { BlockText } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { useSmartReducerV2 } from '@/hooks';
 import { AlexaExportJob, AlexaPublishJob } from '@/models';
@@ -106,12 +106,12 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
 };
 
 const mapStateToProps = {
-  locales: Skill.activeLocalesSelector,
-  invocationName: Skill.invNameSelector,
+  locales: Version.activeLocalesSelector,
+  invocationName: Version.activeInvocationNameSelector,
 };
 
 const mapDispatchToProps = {
-  saveInvocationName: Skill.saveInvocationName,
+  saveInvocationName: Version.saveInvocationName,
 };
 
 type WaitInvocationNameConnectedProps = Assign<ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>, { locales: Locale[] }>;

@@ -8,7 +8,7 @@ import Text from '@/components/Text';
 import { DialogType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Project from '@/ducks/project';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { NodeData, SpeakData } from '@/models';
 import SpeakItemList from '@/pages/Canvas/components/SpeakAndAudioList';
@@ -43,7 +43,6 @@ const SpeakEditor: NodeEditor<NodeData.Speak, SpeakEditorConnectedProps> = ({
   platform,
   onChange,
   saveSettings,
-  updateSettings,
   defaultCanvasNodeVisibility,
 }) => {
   const defaultCanvasVisibility = defaultCanvasNodeVisibility || CanvasNodeVisibility.PREVIEW;
@@ -56,14 +55,13 @@ const SpeakEditor: NodeEditor<NodeData.Speak, SpeakEditorConnectedProps> = ({
   const updateCanvasVisibility = React.useCallback((value: CanvasNodeVisibility) => onChange({ canvasVisibility: value }), [onChange]);
 
   const updateDefaultCanvasVisibility = React.useCallback((value: CanvasNodeVisibility) => {
-    updateSettings({ defaultCanvasNodeVisibility: value });
-    saveSettings({ settings: { defaultCanvasNodeVisibility: value } }, ['defaultCanvasNodeVisibility']);
+    saveSettings({ defaultCanvasNodeVisibility: value });
   }, []);
 
   const getOptionValue = (option?: MenuOption) => option?.value;
 
   const getOptionLabel = (selectedValue: string) => {
-    const flattenedOptions = OPTIONS!.flatMap(({ label, value, options = [] }) => [{ value, label }, ...options.flatMap((option) => [option])]);
+    const flattenedOptions = OPTIONS.flatMap(({ label, value, options = [] }) => [{ value, label }, ...options.flatMap((option) => [option])]);
 
     const option = flattenedOptions.find((option) => option.value === selectedValue);
     return option?.label;
@@ -142,12 +140,11 @@ const SpeakEditor: NodeEditor<NodeData.Speak, SpeakEditorConnectedProps> = ({
 const mapStateToProps = {
   platform: Project.activePlatformSelector,
   focusedNode: Creator.focusedNodeSelector,
-  defaultCanvasNodeVisibility: Skill.defaultCanvasNodeVisibilitySelector,
+  defaultCanvasNodeVisibility: Version.activeCanvasNodeVisibilitySelector,
 };
 
 const mapDispatchToProps = {
-  saveSettings: Skill.saveSettings,
-  updateSettings: Skill.updateSettings,
+  saveSettings: Version.saveSettings,
 };
 
 type SpeakEditorConnectedProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

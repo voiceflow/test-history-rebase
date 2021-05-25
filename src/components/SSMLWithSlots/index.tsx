@@ -1,11 +1,11 @@
 import React from 'react';
 
 import SSML from '@/components/SSML';
-import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { Slot } from '@/models';
+import { ConnectedProps } from '@/types';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
 import { isSlotsInRepromptValid } from './utils';
@@ -18,7 +18,7 @@ import { isSlotsInRepromptValid } from './utils';
 
 type onBlurParameters = { newValue: string; pluginsData: object };
 
-type SSMLWithSlotsProps = {
+interface SSMLWithSlotsProps {
   // SSML props
   value: string; // the actual SSML text content
   onBlur: (data: onBlurParameters) => void; // executed if input gets unfocused
@@ -28,31 +28,18 @@ type SSMLWithSlotsProps = {
   // SSMLWithVars-specific props, from component attributes
   voice: string; // the choice of who voices the ssmlText
   slots: Slot[]; // data for slot variables in the SSML text content
+}
 
-  // SSMLWithVars-specific props, from Redux connect
-  locales: string;
-  defaultVoice: string;
-  platform: PlatformType;
-  saveSettings: any;
-  updateSettings: any;
-};
-
-export const SSMLWithSlots: React.FC<SSMLWithSlotsProps> = ({
+export const SSMLWithSlots: React.FC<SSMLWithSlotsProps & SSMLWithSlotsConnectedProps> = ({
   voice,
   slots,
   locales,
   defaultVoice,
   platform,
-  updateSettings,
-  saveSettings,
+  saveDefaultVoice,
   ...props
 }) => {
   const platformDefaultVoice = getPlatformDefaultVoice(platform);
-
-  const onChangeDefaultVoice = React.useCallback((value) => {
-    updateSettings({ defaultVoice: value });
-    saveSettings({ settings: { defaultVoice: value } }, ['defaultVoice']);
-  }, []);
 
   return (
     <SSML
@@ -64,7 +51,7 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps> = ({
       platform={platform}
       space
       creatable={false}
-      onChangeDefaultVoice={onChangeDefaultVoice}
+      onChangeDefaultVoice={saveDefaultVoice}
       withVariablesPlugin={isSlotsInRepromptValid(platform)}
       {...props}
     />
@@ -73,13 +60,14 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps> = ({
 
 const mapStateToProps = {
   platform: Project.activePlatformSelector,
-  defaultVoice: Skill.defaultVoiceSelector,
-  locales: Skill.activeLocalesSelector,
+  defaultVoice: Version.activeDefaultVoiceSelector,
+  locales: Version.activeLocalesSelector,
 };
 
 const mapDispatchToProps = {
-  saveSettings: Skill.saveSettings,
-  updateSettings: Skill.updateSettings,
+  saveDefaultVoice: Version.saveDefaultVoice,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps, null)(SSMLWithSlots);
+type SSMLWithSlotsConnectedProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps, null)(SSMLWithSlots) as React.FC<SSMLWithSlotsProps>;

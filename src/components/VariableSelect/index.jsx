@@ -1,10 +1,9 @@
-/* eslint-disable no-shadow */
 import React from 'react';
 
 import Select from '@/components/Select';
 import { toast } from '@/components/Toast';
 import * as Diagram from '@/ducks/diagram';
-import { addGlobalVariable } from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 
 export const VariableSelect = ({ value, variables, addVariable, onChange, ...props }) => {
@@ -37,7 +36,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  addVariable: addGlobalVariable,
+  addVariable: Version.addGlobalVariable,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(VariableSelect);

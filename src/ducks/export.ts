@@ -4,8 +4,8 @@ import client from '@/client';
 import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { ExportFormat, NLPProvider } from '@/constants';
+import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
 import * as Tracking from '@/ducks/tracking';
 import { Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
@@ -20,7 +20,7 @@ export const exportCanvas = (type: ExportFormat): Thunk => async (_, getState) =
   Errors.assertVersionID(versionID);
 
   if (type === ExportFormat.VF) {
-    const projectName = Skill.activeNameSelector(state);
+    const projectName = Project.activeProjectNameSelector(state);
 
     try {
       const data = await client.api.version.export(versionID);
@@ -64,7 +64,7 @@ export const exportModel = (nlpProvider: NLPProvider): Thunk => async (dispatch,
 
   try {
     let data: string;
-    const projectName = Skill.activeNameSelector(state)?.replace(/ /g, '_');
+    const projectName = Project.activeProjectNameSelector(state)?.replace(/ /g, '_');
 
     if (nlpProvider === NLPProvider.ALEXA) {
       data = await client.platform.alexa.modelExport.export(versionID, 'ask');

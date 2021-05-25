@@ -1,34 +1,37 @@
-import { AlexaVersion, Locale } from '@voiceflow/alexa-types';
+import { AlexaVersion, AlexaVersionData, defaultAlexaVersionPublishing, defaultAlexaVersionSettings, Voice } from '@voiceflow/alexa-types';
+// eslint-disable-next-line you-dont-need-lodash-underscore/omit
+import _omit from 'lodash/omit';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { BUILT_IN_VARIABLES, PlatformType } from '@/constants';
-import { FullSkill } from '@/models';
+import { Version } from '@/models';
 
-import publishingAdapter from './publishing';
-import settingsAdapter from './settings';
+import createSessionAdapter from '../session';
 
-const alexaVersionAdapter = createAdapter<AlexaVersion, FullSkill<Locale>>(
-  ({ name, _id, creatorID, projectID, rootDiagramID, variables, platformData: { settings, publishing } }) => ({
-    id: _id,
-    name,
+const sessionAdapter = createSessionAdapter<Voice>({ platform: PlatformType.ALEXA });
+
+const alexaVersionAdapter = createAdapter<AlexaVersion, Version<AlexaVersionData>>(
+  ({
+    _id,
     creatorID,
     projectID,
     rootDiagramID,
-    diagramID: rootDiagramID,
-    platform: PlatformType.ALEXA,
-    locales: publishing?.locales || [Locale.EN_US],
-    globalVariables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
-    meta: {
-      ...publishingAdapter.fromDB(publishing),
-      ...settingsAdapter.fromDB(settings),
-      preview: false,
-      fulfillment: {},
-      access_token_variable: null,
-      alexa_permissions: [],
-      alexa_interfaces: null,
-      google_versions: null,
-      updatesDescription: '',
+    variables,
+    platformData: {
+      settings: { session, ...settings },
+      publishing,
+      status,
     },
+  }) => ({
+    id: _id,
+    creatorID,
+    projectID,
+    rootDiagramID,
+    variables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
+    session: sessionAdapter.fromDB(session, { defaultVoice: settings.defaultVoice }),
+    settings: _omit(defaultAlexaVersionSettings(settings), 'session'),
+    publishing: defaultAlexaVersionPublishing(publishing),
+    status,
   }),
   () => {
     throw new AdapterNotImplementedError();

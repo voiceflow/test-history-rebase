@@ -8,7 +8,6 @@ import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
@@ -52,7 +51,7 @@ const DangerZone: React.FC<ConnectedDangerZoneProps> = ({ projectName, setConfir
 };
 
 const mapStateToProps = {
-  projectName: Skill.activeNameSelector,
+  projectName: Project.activeProjectNameSelector,
   projectID: Session.activeProjectIDSelector,
 };
 

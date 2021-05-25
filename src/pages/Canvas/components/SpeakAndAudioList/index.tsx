@@ -9,7 +9,7 @@ import DraggableList, {
 } from '@/components/DraggableList';
 import OverflowMenu from '@/components/OverflowMenu';
 import { DialogType, PlatformType } from '@/constants';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { useManager, useToggle } from '@/hooks';
 import { SpeakData } from '@/models';
@@ -168,7 +168,7 @@ const SpeakAndAudioList = ({
 };
 
 const mapStateToProps = {
-  defaultVoice: Skill.defaultVoiceSelector,
+  defaultVoice: Version.activeDefaultVoiceSelector,
 };
 
 type ConnectedSpeakAndAudioListProps = ConnectedProps<typeof mapStateToProps, {}>;

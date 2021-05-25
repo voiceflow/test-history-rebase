@@ -1,26 +1,29 @@
-import { Version, VersionPlatformData } from '@voiceflow/api-sdk';
+import { AlexaVersion, AlexaVersionData } from '@voiceflow/alexa-types';
+import { GeneralVersion, GeneralVersionData } from '@voiceflow/general-types';
+import { GoogleVersion, GoogleVersionData } from '@voiceflow/google-types';
 
-import { AdapterNotImplementedError, BidirectionalAdapter, createAdapter } from '@/client/adapters/utils';
+import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { PlatformType } from '@/constants';
-import { FullSkill } from '@/models';
-import { getPlatformValue } from '@/utils/platform';
+import { Version } from '@/models';
 
 import alexaVersionAdapter from './alexa';
 import generalVersionAdapter from './general';
 import googleVersionAdapter from './google';
 
-const versionAdapter = createAdapter<Version<VersionPlatformData>, FullSkill<string>, [{ platform: PlatformType }]>(
-  (version, { platform = PlatformType.ALEXA }) => {
-    const adapter = getPlatformValue<BidirectionalAdapter<Version<any, any, any>, FullSkill<any>, [], []>>(
-      platform,
-      {
-        [PlatformType.ALEXA]: alexaVersionAdapter,
-        [PlatformType.GOOGLE]: googleVersionAdapter,
-      },
-      generalVersionAdapter
-    );
+export type AnyDBVersion = AlexaVersion | GeneralVersion | GoogleVersion;
+type AnyVersion = Version<AlexaVersionData> | Version<GeneralVersionData> | Version<GoogleVersionData>;
 
-    return adapter.fromDB(version);
+const versionAdapter = createAdapter<AnyDBVersion, AnyVersion, [{ platform: PlatformType }]>(
+  (version, { platform = PlatformType.ALEXA }) => {
+    switch (platform) {
+      case PlatformType.ALEXA:
+        return alexaVersionAdapter.fromDB(version as AlexaVersion);
+      case PlatformType.GOOGLE:
+        return googleVersionAdapter.fromDB(version as GoogleVersion);
+      case PlatformType.GENERAL:
+      default:
+        return generalVersionAdapter.fromDB(version as GeneralVersion);
+    }
   },
   () => {
     throw new AdapterNotImplementedError();

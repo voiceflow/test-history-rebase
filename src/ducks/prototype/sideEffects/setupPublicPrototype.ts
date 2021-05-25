@@ -1,8 +1,11 @@
 import _constant from 'lodash/constant';
+import { batch } from 'react-redux';
 
 import client from '@/client';
+import { PlanType } from '@/constants';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
+import { addVersion } from '@/ducks/version/actions';
+import { AnyLocale } from '@/ducks/version/types';
 import { Thunk } from '@/store/types';
 
 import { PrototypeLayout, PrototypeSettings } from '../types';
@@ -22,26 +25,32 @@ const setupPublicPrototype = (versionID: string): Thunk<PrototypeSettings> => as
 
   const rootDiagramID = prototype.context.stack?.[0].programID as string;
 
-  dispatch(
-    Skill.setActiveSkill(
-      {
+  batch(() => {
+    dispatch(
+      addVersion(versionID, {
         id: versionID,
-        name: prototype.data.name,
-        locales: prototype.data.locales,
+        creatorID: null as any,
+        projectID: null as any,
         rootDiagramID,
-      } as any,
-      rootDiagramID
-    )
-  );
-  dispatch(Session.setActiveVersionID(versionID));
-  dispatch(Session.setActiveDiagramID(rootDiagramID));
+        variables: [],
+        settings: {} as any,
+        session: {} as any,
+        publishing: {},
+        status: null,
+      })
+    );
+    dispatch(Session.setActiveVersionID(versionID));
+    dispatch(Session.setActiveDiagramID(rootDiagramID));
+  });
 
   return {
     ...prototype?.settings,
+    plan: plan as PlanType,
+    layout: (prototype?.settings.layout ?? PrototypeLayout.TEXT_DIALOG) as PrototypeLayout,
+    locales: prototype.data.locales as AnyLocale[],
     hasPassword: prototype?.settings.hasPassword ?? false,
-    layout: prototype?.settings.layout ?? PrototypeLayout.TEXT_DIALOG,
-    plan,
-  } as PrototypeSettings;
+    projectName: prototype.data.name,
+  };
 };
 
 export default setupPublicPrototype;

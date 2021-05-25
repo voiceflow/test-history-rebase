@@ -3,8 +3,9 @@ import React from 'react';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
-import * as Skill from '@/ducks/skill';
+import * as Project from '@/ducks/project';
 import * as UI from '@/ducks/ui';
+import * as Version from '@/ducks/version';
 import { createSelectorContext } from '@/utils/redux';
 
 export const { Context: IsCanvasOnlyContext, Provider: IsCanvasOnlyProvider, Consumer: IsCanvasOnlyConsumer } = createSelectorContext(
@@ -18,11 +19,11 @@ export const {
 } = createSelectorContext(UI.isCreatorMenuHiddenSelector);
 
 export const { Context: IsStraightLinksContext, Provider: IsStraightLinksProvider, Consumer: IsStraightLinksConsumer } = createSelectorContext(
-  Skill.activeProjectIsStraightLinksSelector
+  Project.isStraightLinksSelector
 );
 
 export const { Context: AccountLinkingContext, Provider: AccountLinkingProvider, Consumer: AccountLinkingConsumer } = createSelectorContext(
-  Skill.accountLinkingSelector
+  Version.alexa.accountLinkingSelector
 );
 
 export const { Context: ProductMapContext, Provider: ProductMapProvider, Consumer: ProductMapConsumer } = createSelectorContext(

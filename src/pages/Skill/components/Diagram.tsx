@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { RemoveIntercom } from '@/components/IntercomChat';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useEventualEngine, useTeardown } from '@/hooks';
+import { useEventualEngine, useRouteDiagramID, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
 import CanvasControls from '@/pages/Canvas/components/CanvasControls';
 import TopPrompt from '@/pages/Canvas/components/TopPrompt';
@@ -24,10 +24,11 @@ export type DiagramProps = RouteComponentProps & {
   diagramID: string;
 };
 
-const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, canvasOnly }) => {
+const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ canvasOnly }) => {
   const engine = useEventualEngine();
   const isDesignMode = !useAnyModeOpen();
   const isPrototypingMode = usePrototypingMode();
+  const routeDiagramID = useRouteDiagramID();
 
   const isCanvasEditable = !isPrototypingMode;
 
@@ -37,7 +38,7 @@ const Diagram: React.FC<DiagramProps & ConnectedDiagramProps> = ({ diagramID, ca
 
   return (
     <>
-      {isCanvasEditable && <DiagramSync diagramID={diagramID} />}
+      {isCanvasEditable && <DiagramSync diagramID={routeDiagramID} />}
 
       <ManagerProvider value={getManager as any}>
         {!isDesignMode && <TopPrompt />}

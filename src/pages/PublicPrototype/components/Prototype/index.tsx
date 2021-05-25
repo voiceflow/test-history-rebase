@@ -4,7 +4,6 @@ import React from 'react';
 import { isIOS } from '@/config';
 import { Permission } from '@/config/permissions';
 import * as PrototypeDuck from '@/ducks/prototype';
-import * as Skill from '@/ducks/skill';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useASR, useCanASR, useDidUpdateEffect, useGuestPermission, useSpeechRecognition, useTeardown } from '@/hooks';
@@ -13,7 +12,7 @@ import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/compon
 import { usePrototype, useResetPrototype, useStartPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import ChatDialog from '@/pages/PublicPrototype/components/ChatDialog';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { ConnectedProps } from '@/types';
 import { compose } from '@/utils/functional';
 
 import Footer from '../Footer';
@@ -26,7 +25,7 @@ type PrototypeProps = {
   settings: PrototypeDuck.PrototypeSettings;
 };
 
-const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, locale, status, isMuted, settings, autoplay, updatePrototype }) => {
+const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ status, isMuted, settings, autoplay, updatePrototype }) => {
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
   const [canUseASR] = useCanASR();
@@ -34,6 +33,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
 
   const [input, setInput] = React.useState<string>('');
 
+  const locale = settings.locales[0];
   const isVisuals = settings.layout === PrototypeDuck.PrototypeLayout.VOICE_VISUALS;
 
   const { status: prototypeMachineStatus, messages, interactions, onInteraction, onPlay, audio } = usePrototype({
@@ -119,7 +119,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
           colorScheme={brandColor}
           isMobile={isMobile}
           isVisuals={isVisuals}
-          projectName={name}
+          projectName={settings.projectName}
           hideVFBranding={isCustomizedPrototypeAllowed}
           withStartButton={isIdle}
         />
@@ -198,10 +198,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ name, l
 };
 
 const mapStateToProps = {
-  name: Skill.activeNameSelector,
   status: PrototypeDuck.prototypeStatusSelector,
   isMuted: PrototypeDuck.prototypeMutedSelector,
-  locales: Skill.activeLocalesSelector,
   autoplay: PrototypeDuck.prototypeAutoplaySelector,
 };
 
@@ -209,8 +207,6 @@ const mapDispatchProps = {
   updatePrototype: PrototypeDuck.updatePrototype,
 };
 
-const mergeProps = (...[{ locales }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchProps>) => ({ locale: locales[0] });
+type ConnectedPrototypeProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchProps>;
 
-type ConnectedPrototypeProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchProps, typeof mergeProps>;
-
-export default compose(removeIntercom, connect(mapStateToProps, mapDispatchProps, mergeProps))(Prototype);
+export default compose(removeIntercom, connect(mapStateToProps, mapDispatchProps))(Prototype) as React.FC<PrototypeProps>;

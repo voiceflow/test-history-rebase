@@ -19,12 +19,12 @@ import realtime, * as Realtime from '@/ducks/realtime';
 import recent, * as Recent from '@/ducks/recent';
 import * as Router from '@/ducks/router';
 import session, * as Session from '@/ducks/session';
-import skill, * as Skill from '@/ducks/skill';
 import slot, * as Slot from '@/ducks/slot';
 import template, * as Template from '@/ducks/template';
 import thread, * as Thread from '@/ducks/thread';
 import tracking, * as Tracking from '@/ducks/tracking';
 import ui, * as UI from '@/ducks/ui';
+import version, * as Version from '@/ducks/version';
 import viewport, * as Viewport from '@/ducks/viewport';
 import workspace, * as Workspace from '@/ducks/workspace';
 
@@ -44,7 +44,6 @@ const getCombinedReducer = (history: History) =>
     [Diagram.STATE_KEY]: diagram,
     [Product.STATE_KEY]: product,
     [Project.STATE_KEY]: project,
-    [Skill.STATE_KEY]: skill,
     [Intent.STATE_KEY]: intent,
     [Slot.STATE_KEY]: slot,
     [Recent.STATE_KEY]: recent,
@@ -55,6 +54,7 @@ const getCombinedReducer = (history: History) =>
     [Tracking.STATE_KEY]: tracking,
     [Template.STATE_KEY]: template,
     [Feature.STATE_KEY]: feature,
+    [Version.STATE_KEY]: version,
   });
 
 const createReducer = (history: History) => {

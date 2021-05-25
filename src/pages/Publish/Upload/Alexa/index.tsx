@@ -11,6 +11,7 @@ import WaitVendorsStage from './WaitVendorsStage';
 
 type AlexaProps = {
   export?: boolean;
+  loader?: boolean;
 };
 
 export const Alexa: React.FC<AlexaProps> = (props) => {
@@ -23,7 +24,12 @@ export const Alexa: React.FC<AlexaProps> = (props) => {
     case AlexaStageType.IDLE:
       return <LoaderStage />;
     case AlexaStageType.PROGRESS:
-      return <ProgressStage progress={contextValue.job.stage.data.progress}>{contextValue.job.stage.data.message}</ProgressStage>;
+      return (
+        <>
+          <ProgressStage progress={contextValue.job.stage.data.progress}>{contextValue.job.stage.data.message}</ProgressStage>
+          {props.loader && <LoaderStage />}
+        </>
+      );
     case AlexaStageType.ERROR:
       return <ErrorStage stage={contextValue.job.stage} />;
     case AlexaStageType.SUCCESS:

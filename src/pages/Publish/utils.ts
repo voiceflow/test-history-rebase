@@ -33,6 +33,7 @@ export const FORMATTED_GOOGLE_LOCALES_LABELS: Record<string, string> = FORMATTED
   {}
 );
 
-export const getLocaleLanguage = (locales: Google.Locale[] = []) =>
-  Object.keys(Google.LanguageToLocale).find((language) => Google.LanguageToLocale[language as Google.Language].includes(locales?.[0])) ||
-  (Google.Language.EN as Google.Language);
+export const getLocaleLanguage = (locales: Google.Locale[] = []): Google.Language =>
+  (Object.keys(Google.LanguageToLocale).find((language) =>
+    Google.LanguageToLocale[language as Google.Language].includes(locales?.[0])
+  ) as Google.Language) || (Google.Language.EN as Google.Language);

@@ -15,8 +15,8 @@ import TippyTooltip from '@/components/TippyTooltip';
 import { toast } from '@/components/Toast';
 import { CUSTOM_SLOT_TYPE, ModalType, PlanType, SLOT_COLORS } from '@/constants';
 import * as Intent from '@/ducks/intent';
-import * as Skill from '@/ducks/skill';
 import * as Slot from '@/ducks/slot';
+import * as Version from '@/ducks/version';
 import * as Workspace from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
 import { useModals, useTeardown } from '@/hooks';
@@ -267,7 +267,7 @@ const mapStateToProps = {
   plan: Workspace.planTypeSelector,
   slots: Slot.allSlotsSelector,
   intents: Intent.allIntentsSelector,
-  slotTypes: Skill.activeSlotTypesSelector,
+  slotTypes: Version.activeSlotTypesSelector,
   intentsUsingSlot: Slot.intentsUsingSlotSelector,
 };
 

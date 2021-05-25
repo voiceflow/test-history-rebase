@@ -8,9 +8,8 @@ import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
-import { activeSkillSelector } from '@/ducks/skill/skill/selectors';
+import { activeRootDiagramIDSelector, activeVersionSelector } from '@/ducks/version/selectors';
 import { activeWorkspaceIDSelector } from '@/ducks/workspace';
-import { Skill as SkillModel } from '@/models';
 import { GetState, SyncThunk, Thunk, ThunkDispatch } from '@/store/types';
 import * as Query from '@/utils/query';
 import * as Sentry from '@/vendors/sentry';
@@ -101,15 +100,22 @@ export const redirectToCurrentCanvasCommenting = (): Thunk => async (dispatch, g
 };
 
 export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
-  const skill = activeSkillSelector(getState()) as SkillModel<string>;
+  const state = getState();
+  const versionID = Session.activeVersionIDSelector(state);
+  const rootDiagramID = activeRootDiagramIDSelector(state);
 
-  await dispatch(goToCanvasSwitchRealtime(skill.id, skill.rootDiagramID));
+  Errors.assertVersionID(versionID);
+  if (!rootDiagramID) throw new Error('no active root diagram ID');
+
+  await dispatch(goToCanvasSwitchRealtime(versionID, rootDiagramID));
 };
 
 export const redirectToRootDiagram = (): Thunk => async (dispatch, getState) => {
-  const skill = activeSkillSelector(getState()) as SkillModel<string>;
+  const version = activeVersionSelector(getState());
 
-  await dispatch(redirectToCanvasSwitchRealtime(skill.id, skill.rootDiagramID));
+  if (!version) throw Errors.noActiveVersionID();
+
+  await dispatch(redirectToCanvasSwitchRealtime(version.id, version.rootDiagramID));
 };
 
 export const goToDiagram = (diagramID: string): Thunk => async (dispatch, getState) => {

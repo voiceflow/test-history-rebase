@@ -6,7 +6,7 @@ import { connect } from '@/hocs';
 import { ConnectedProps, MergeArguments } from '@/types';
 
 type DiagramSyncProps = {
-  diagramID: string;
+  diagramID: string | null;
 };
 
 const DiagramSync: React.FC<DiagramSyncProps & ConnectedDiagramSyncProps> = ({

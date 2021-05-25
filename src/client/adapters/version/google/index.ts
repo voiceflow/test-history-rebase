@@ -1,39 +1,41 @@
-import { GoogleVersion, Locale } from '@voiceflow/google-types';
+import { defaultGoogleVersionPublishing, defaultGoogleVersionSettings, GoogleVersion, GoogleVersionData } from '@voiceflow/google-types';
+// eslint-disable-next-line you-dont-need-lodash-underscore/omit
+import _omit from 'lodash/omit';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { BUILT_IN_VARIABLES, PlatformType } from '@/constants';
-import { FullSkill } from '@/models';
+import { Version } from '@/models';
 
+import createSessionAdapter from '../session';
 import localesAdapter from './locales';
-import publishingAdapter from './publishing';
-import settingsAdapter from './settings';
 
-const googleVersionAdapter = createAdapter<GoogleVersion, FullSkill<Locale>>(
-  ({ name, _id, creatorID, projectID, rootDiagramID, variables, platformData: { settings, publishing } }) => ({
-    id: _id,
-    name,
+const sessionAdapter = createSessionAdapter({ platform: PlatformType.GOOGLE });
+
+const googleVersionAdapter = createAdapter<GoogleVersion, Version<GoogleVersionData>>(
+  ({
+    _id,
     creatorID,
     projectID,
     rootDiagramID,
-    diagramID: rootDiagramID,
-    platform: PlatformType.GOOGLE,
-    locales: localesAdapter(publishing?.locales),
-    globalVariables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
-    meta: {
-      ...publishingAdapter.fromDB(publishing),
-      ...settingsAdapter.fromDB(settings),
-      preview: false,
-      fulfillment: {},
-      access_token_variable: null,
-      alexa_permissions: [],
-      alexa_interfaces: null,
-      google_versions: null,
-      updatesDescription: '',
+    variables,
+    platformData: {
+      settings: { session, ...settings },
+      publishing,
     },
+  }) => ({
+    id: _id,
+    creatorID,
+    projectID,
+    rootDiagramID,
+    locales: localesAdapter(publishing?.locales),
+    variables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
+    session: sessionAdapter.fromDB(session, { defaultVoice: settings.defaultVoice }),
+    settings: _omit(defaultGoogleVersionSettings(settings), 'session'),
+    publishing: defaultGoogleVersionPublishing(publishing),
+    status: null,
   }),
   () => {
     throw new AdapterNotImplementedError();
   }
 );
-
 export default googleVersionAdapter;

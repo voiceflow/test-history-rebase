@@ -4,7 +4,7 @@ import React, { useCallback, useEffect } from 'react';
 
 import { setError } from '@/ducks/modal';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { Content } from '@/pages/Canvas/components/Editor';
 import IntegrationsService from '@/services/Integrations';
@@ -161,7 +161,7 @@ function GoogleSheetsEditor({ data, onChange, creatorID, versionID, setError, cu
 
 const mapStateToProps = {
   versionID: Session.activeVersionIDSelector,
-  creatorID: Skill.activeSkillCreatorIDSelector,
+  creatorID: Version.activeVersionCreatorIDSelector,
 };
 
 const mapDispatchToProps = {

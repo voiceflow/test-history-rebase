@@ -6,8 +6,8 @@ import SearchableList from '@/components/SearchableList';
 import { BUILT_IN_VARIABLES, InteractionModelTabType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
 import * as SlotDuck from '@/ducks/slot';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { useEnableDisable, useSetup } from '@/hooks';
 import { ConnectedProps } from '@/types';
@@ -218,12 +218,12 @@ const mapStateToProps = {
   slots: SlotDuck.allSlotsSelector,
   diagramID: Session.activeDiagramIDSelector,
   localVariables: Diagram.activeDiagramLocalVariablesSelector,
-  globalVariables: Skill.activeGlobalVariablesSelector,
+  globalVariables: Version.activeGlobalVariablesSelector,
 };
 
 const mapDispatchToProps = {
-  removeGlobalVariable: Skill.removeGlobalVariable,
-  replaceGlobalVariables: Skill.replaceGlobalVariables,
+  removeGlobalVariable: Version.removeGlobalVariable,
+  replaceGlobalVariables: Version.replaceGlobalVariables,
   removeVariableFromDiagram: Diagram.removeActiveDiagramVariable,
   replaceVariableSetDiagram: Diagram.replaceActiveDiagramVariables,
 };

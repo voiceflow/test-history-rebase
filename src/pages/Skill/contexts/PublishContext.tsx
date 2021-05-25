@@ -15,7 +15,7 @@ import * as Sentry from '@/vendors/sentry';
 export type PublishContextValue = {
   job: Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>;
   cancel: () => Promise<void>;
-  publish: () => Promise<void>;
+  publish: (submit?: boolean) => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
 };
 

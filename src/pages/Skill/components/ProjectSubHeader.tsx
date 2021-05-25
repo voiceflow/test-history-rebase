@@ -34,7 +34,7 @@ const TABS = [
 
 export type ProjectSubHeaderProps = {
   showPublish: boolean;
-  activePage: string;
+  activePage?: string;
 };
 
 const ProjectSubHeader: React.FC<ProjectSubHeaderProps & ConnectedSkillSubHeaderProps> = ({

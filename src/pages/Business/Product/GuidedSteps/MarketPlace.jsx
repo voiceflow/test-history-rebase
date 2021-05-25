@@ -1,12 +1,12 @@
-/* eslint-disable no-shadow, jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
 import { AvForm, AvGroup } from 'availity-reactstrap-validation';
 import React from 'react';
 
 import Button from '@/components/Button';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import Input from '@/components/Input';
-import { productByIDSelector, updateProduct } from '@/ducks/product';
-import { parentCtrlSelector } from '@/ducks/skill';
+import * as Product from '@/ducks/product';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { CountriesName, MarketPlaceAvailability } from '@/services/LocaleMap';
 
@@ -38,7 +38,7 @@ class MarketPlace extends React.PureComponent {
 
   render() {
     const { invalidPrice, invalidIndex } = this.state;
-    const { product, changeStep, parentCtrl } = this.props;
+    const { product, changeStep, parentalControl } = this.props;
 
     return (
       <AvForm onValidSubmit={changeStep}>
@@ -79,7 +79,7 @@ class MarketPlace extends React.PureComponent {
                         {invalidPrice && index === invalidIndex && (
                           <Text small noPadding error>
                             {min} min/
-                            {parentCtrl && place === PARENT_CONTROLS.marketplace ? PARENT_CONTROLS.price : max[product.type]} max
+                            {parentalControl && place === PARENT_CONTROLS.marketplace ? PARENT_CONTROLS.price : max[product.type]} max
                           </Text>
                         )}
                       </div>
@@ -176,13 +176,13 @@ class MarketPlace extends React.PureComponent {
     const {
       product: { marketPlaces = {}, ...restProduct },
       updateProduct,
-      parentCtrl,
+      parentalControl,
     } = this.props;
 
     if (
       e.target.value < MarketPlaceAvailability[index].min ||
       e.target.value > MarketPlaceAvailability[index].max[restProduct.type] ||
-      (parentCtrl && place === PARENT_CONTROLS.marketplace && e.target.value > PARENT_CONTROLS.price)
+      (parentalControl && place === PARENT_CONTROLS.marketplace && e.target.value > PARENT_CONTROLS.price)
     ) {
       this.setState({ invalidPrice: true, invalidIndex: index });
     } else {
@@ -265,12 +265,12 @@ class MarketPlace extends React.PureComponent {
 }
 
 const mapStateToProps = {
-  product: productByIDSelector,
-  parentCtrl: parentCtrlSelector,
+  product: Product.productByIDSelector,
+  parentalControl: Version.alexa.parentalControlSelector,
 };
 
 const mapDispatchToProps = {
-  updateProduct,
+  updateProduct: Product.updateProduct,
 };
 
 const mergeProps = ({ product: productByIDSelector }, { updateProduct }, { productID }) => ({

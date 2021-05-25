@@ -3,9 +3,16 @@ import { DeviceType, Request } from '@voiceflow/general-types';
 import { StepData } from '@voiceflow/general-types/build/nodes/visual';
 
 import { PlanType } from '@/constants';
+import { AnyLocale } from '@/ducks/version';
 import { PrototypeContext } from '@/models';
 
-export type PrototypeSettings = Omit<VersionPrototype['settings'], 'layout'> & { layout: PrototypeLayout; hasPassword: boolean; plan: PlanType };
+export type PrototypeSettings = Omit<VersionPrototype['settings'], 'layout'> & {
+  plan: PlanType;
+  layout: PrototypeLayout;
+  locales: AnyLocale[];
+  projectName: string;
+  hasPassword: boolean;
+};
 
 // context types
 export interface Context extends PrototypeContext {

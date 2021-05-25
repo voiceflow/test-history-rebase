@@ -4,15 +4,12 @@ import SSML from '@/components/SSML';
 import { toast } from '@/components/Toast';
 import * as Diagram from '@/ducks/diagram';
 import * as Project from '@/ducks/project';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { compose } from '@/utils/functional';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
-const SSMLWithVars = (
-  { icon = 'alexa', voice, variables, locales, defaultVoice, platform, addGlobalVariable, saveSettings, updateSettings, ...props },
-  ref
-) => {
+const SSMLWithVars = ({ icon = 'alexa', voice, variables, locales, defaultVoice, platform, addGlobalVariable, saveDefaultVoice, ...props }, ref) => {
   const vars = React.useMemo(() => variables.map((name) => ({ id: name, name, isVariable: true })), [variables]);
   const platformDefaultVoice = getPlatformDefaultVoice(platform);
   const onAddVariable = React.useCallback(
@@ -29,11 +26,6 @@ const SSMLWithVars = (
     [addGlobalVariable]
   );
 
-  const onChangeDefaultVoice = React.useCallback((value) => {
-    updateSettings({ defaultVoice: value });
-    saveSettings({ settings: { defaultVoice: value } }, ['defaultVoice']);
-  }, []);
-
   return (
     <SSML
       ref={ref}
@@ -47,7 +39,7 @@ const SSMLWithVars = (
       defaultVoice={defaultVoice || platformDefaultVoice}
       onAddVariable={onAddVariable}
       platformDefaultVoice={platformDefaultVoice}
-      onChangeDefaultVoice={onChangeDefaultVoice}
+      onChangeDefaultVoice={saveDefaultVoice}
       {...props}
     />
   );
@@ -56,14 +48,13 @@ const SSMLWithVars = (
 const mapStateToProps = {
   platform: Project.activePlatformSelector,
   variables: Diagram.activeDiagramAllVariablesSelector,
-  defaultVoice: Skill.defaultVoiceSelector,
-  locales: Skill.activeLocalesSelector,
+  defaultVoice: Version.activeDefaultVoiceSelector,
+  locales: Version.activeLocalesSelector,
 };
 
 const mapDispatchToProps = {
-  saveSettings: Skill.saveSettings,
-  updateSettings: Skill.updateSettings,
-  addGlobalVariable: Skill.addGlobalVariable,
+  saveDefaultVoice: Version.saveDefaultVoice,
+  addGlobalVariable: Version.addGlobalVariable,
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true }), React.forwardRef)(SSMLWithVars);

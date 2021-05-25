@@ -17,10 +17,12 @@ import thread from './thread';
 import user from './user';
 import workspace from './workspace';
 
+type Platform = typeof getPlatformClient & typeof platformClients;
+
 const client = {
   api,
 
-  platform: Object.assign(getPlatformClient, platformClients),
+  platform: Object.assign(getPlatformClient, platformClients) as Platform,
 
   analytics,
   backup,

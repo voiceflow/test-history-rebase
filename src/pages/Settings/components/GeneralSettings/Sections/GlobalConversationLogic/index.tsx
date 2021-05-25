@@ -1,5 +1,5 @@
 import { Voice as AlexaVoice } from '@voiceflow/alexa-types';
-import { Voice as GeneralVoice } from '@voiceflow/general-types';
+import { RepeatType, Voice as GeneralVoice } from '@voiceflow/general-types';
 import { Voice as GoogleVoice } from '@voiceflow/google-types';
 import React from 'react';
 
@@ -8,37 +8,39 @@ import Section, { SectionToggleVariant, SectionVariant } from '@/components/Sect
 import Select from '@/components/Select';
 import SSML from '@/components/SSML';
 import { ClickableText } from '@/components/Text';
-import { toast } from '@/components/Toast';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import { PlatformType } from '@/constants';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
-import { useDebouncedCallback, useDidUpdateEffect, useSyncedSmartReducerV2 } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { ErrorMessage } from '@/pages/Settings/components';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
-import { ConnectedProps } from '@/types';
+import { ConnectedProps, MergeArguments } from '@/types';
 import { getPlatformDefaultVoice, getPlatformValue } from '@/utils/platform';
 
-import { REPEAT_OPTIONS, RESUME_PROMPT_MAX_LENGTH, SAVE_SETTINGS_DEBOUNCE_DELAY } from './constants';
+import { REPEAT_OPTIONS, RESUME_PROMPT_MAX_LENGTH } from './constants';
 
 const SSMLComponent: any = SSML;
 
-type GlobalConversationLogicOwnProps = {
+type GlobalConversationLogicProps = {
   platform: PlatformType;
   platformMeta: PlatformSettingsMetaProps;
 };
 
-const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & GlobalConversationLogicOwnProps> = ({
-  meta,
+const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & GlobalConversationLogicProps> = ({
+  settings,
+  session,
   platform,
   platformMeta,
+  defaultVoice,
+  platformDefaultVoice,
   saveSettings,
-  updateSettings,
+  saveSession,
+  saveResumePrompt,
+  saveDefaultVoice,
 }) => {
   const { descriptors } = platformMeta;
   const { continuePrevious, allowRepeat, repeatDialog, repeatEverything } = descriptors;
-  const { resumePrompt: resumePromptMeta, repeat: repeatMeta, restart: restartMeta, settings } = meta;
 
   const platformVoices = React.useMemo(() => {
     const voices = getPlatformValue<string[]>(
@@ -49,117 +51,75 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
       },
       Object.values(GeneralVoice)
     );
-
     return voices.filter((voice) => voice !== 'audio');
   }, [platform]);
 
-  const platformDefaultVoice = getPlatformDefaultVoice(platform);
-  const defaultVoice = settings.defaultVoice || platformDefaultVoice;
+  const defaultResumePrompt = React.useMemo(
+    () => ({
+      content: '',
+      voice: defaultVoice,
+      followContent: '',
+      followVoice: defaultVoice,
+    }),
+    [defaultVoice]
+  );
 
-  const defaultResumePrompt = React.useMemo(() => ({ content: '', follow_content: '', follow_voice: defaultVoice, voice: defaultVoice }), [
-    defaultVoice,
-  ]);
+  const [previousSessionDialogError, setPreviousSessionDialogError] = React.useState(false);
 
-  const [state, actions] = useSyncedSmartReducerV2({
-    repeat: repeatMeta || 0,
-    restart: restartMeta,
-    resumePrompt: resumePromptMeta || defaultResumePrompt,
-    followUpType: resumePromptMeta?.follow_voice || defaultVoice,
-    resumePromptType: resumePromptMeta?.voice || defaultVoice,
-    previousSessionDialogError: false,
-  });
+  const repeat = settings?.repeat ?? RepeatType.OFF;
+  const restart = session?.restart || false;
+  const resumePrompt = session?.resumePrompt || defaultResumePrompt;
+  const followUpType = session?.resumePrompt.followVoice || defaultVoice;
+  const resumePromptType = session?.resumePrompt.voice || defaultVoice;
 
   const onChangeResumePromptType = React.useCallback((resumePromptType: string) => {
-    actions.resumePromptType.set(resumePromptType);
-    actions.resumePrompt.update({ content: '', voice: resumePromptType });
+    saveResumePrompt({ content: '', voice: resumePromptType });
   }, []);
 
   const onChangeFollowUpType = React.useCallback((followUpType: string) => {
-    actions.followUpType.set(followUpType);
-    actions.resumePrompt.update({ follow_content: '', follow_voice: followUpType });
+    saveResumePrompt({ followContent: '', followVoice: followUpType });
   }, []);
 
   const onToggleHasFollowUp = React.useCallback(() => {
-    if (!state.resumePrompt.follow_voice) {
-      actions.resumePrompt.update({ follow_content: undefined, follow_voice: defaultVoice });
+    if (resumePrompt?.followVoice) {
+      saveResumePrompt({ followContent: undefined, followVoice: undefined });
     } else {
-      actions.resumePrompt.update({ follow_content: undefined, follow_voice: undefined });
+      saveResumePrompt({ followContent: undefined, followVoice: defaultVoice });
     }
-  }, [state.resumePrompt.follow_voice, defaultVoice]);
+  }, [resumePrompt?.followVoice, defaultVoice]);
 
   const onChangeResumePromptContent = React.useCallback(
     ({ text }) => {
-      if (text === state.resumePrompt.content) {
+      if (text === resumePrompt.content) {
         return;
       }
 
       const valid = text.length <= RESUME_PROMPT_MAX_LENGTH;
 
-      actions.update({
-        resumePrompt: { ...state.resumePrompt, content: text },
-        previousSessionDialogError: !valid,
-      });
+      saveResumePrompt({ content: text });
+      setPreviousSessionDialogError(!valid);
     },
-    [state.resumePrompt.content]
+    [resumePrompt.content]
   );
 
   const onChangeFollowUpVoice = React.useCallback((voice: string) => {
-    actions.resumePrompt.update({ follow_voice: voice });
+    saveResumePrompt({ followVoice: voice });
   }, []);
 
   const onChangeFollowUpContent = React.useCallback(
     ({ text }: { text: string }) => {
-      if (text === state.resumePrompt.follow_content) {
+      if (text === resumePrompt.followContent) {
         return;
       }
 
-      actions.resumePrompt.update({ follow_content: text });
+      saveResumePrompt({ followContent: text });
     },
-    [state.resumePrompt.follow_content]
+    [resumePrompt.followContent]
   );
 
   const onChangeResumePromptVoice = React.useCallback((voice: string) => {
-    actions.resumePrompt.update({ voice });
+    saveResumePrompt({ voice });
   }, []);
-
-  const onChangeDefaultVoice = React.useCallback((voice: string) => {
-    updateSettings({ defaultVoice: voice });
-  }, []);
-
-  const saveSession = useDebouncedCallback(SAVE_SETTINGS_DEBOUNCE_DELAY, async (data) => {
-    await saveSettings(data, ['session']);
-  });
-
-  useDidUpdateEffect(async () => {
-    try {
-      if (state.previousSessionDialogError) {
-        throw new Error();
-      }
-
-      await saveSession({
-        restart: state.restart,
-        resumePrompt: state.resumePrompt,
-      });
-    } catch (err) {
-      toast.error('Settings Save Error');
-    }
-  }, [state.restart, state.resumePrompt.voice, state.resumePrompt.content, state.resumePrompt.follow_voice, state.resumePrompt.follow_content]);
-
-  useDidUpdateEffect(async () => {
-    try {
-      await saveSettings({ repeat: state.repeat }, ['repeat']);
-    } catch (err) {
-      toast.error('Settings Save Error');
-    }
-  }, [state.repeat]);
-
-  useDidUpdateEffect(async () => {
-    try {
-      await saveSettings({ settings }, ['defaultVoice']);
-    } catch (err) {
-      toast.error('Settings Save Error');
-    }
-  }, [settings.defaultVoice]);
 
   const withDefaultVoice = platformVoices.length >= 2;
 
@@ -173,7 +133,7 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
           contentSuffix={descriptors.defaultVoice}
           customContentStyling={{ paddingBottom: '24px' }}
         >
-          <Select value={defaultVoice} options={platformVoices} onSelect={onChangeDefaultVoice} searchable placeholder={defaultVoice} />
+          <Select value={defaultVoice} options={platformVoices} onSelect={saveDefaultVoice} searchable placeholder={defaultVoice} />
         </Section>
       )}
 
@@ -185,8 +145,8 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
         headerToggle
         dividers={withDefaultVoice}
         isDividerNested
-        initialOpen={!state.restart}
-        onToggleChange={actions.restart.set}
+        initialOpen={!restart}
+        onToggleChange={(nextRestart) => saveSession({ restart: nextRestart })}
       >
         <FormControl>
           <FormControl>
@@ -196,36 +156,36 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
                 { id: GeneralVoice.AUDIO, label: 'Audio', customCheckedCondition: (val) => val === GeneralVoice.AUDIO },
               ]}
               name="multiple"
-              checked={state.resumePromptType}
+              checked={resumePromptType}
               onChange={onChangeResumePromptType}
             />
           </FormControl>
 
-          {state.resumePromptType === GeneralVoice.AUDIO ? (
-            <AudioUpload audio={state.resumePrompt.content} update={(value: string) => actions.resumePrompt.update({ content: value })} />
+          {resumePromptType === GeneralVoice.AUDIO ? (
+            <AudioUpload audio={resumePrompt.content} update={(src: string) => onChangeResumePromptContent({ text: src })} />
           ) : (
             <>
               <SSMLComponent
-                voice={state.resumePrompt.voice || defaultVoice}
-                value={state.resumePrompt.content || ''}
+                voice={resumePrompt.voice || defaultVoice}
+                value={resumePrompt.content || ''}
                 onBlur={onChangeResumePromptContent}
                 platform={platform}
                 defaultVoice={defaultVoice}
                 onChangeVoice={onChangeResumePromptVoice}
                 platformDefaultVoice={platformDefaultVoice}
-                onChangeDefaultVoice={onChangeDefaultVoice}
+                onChangeDefaultVoice={saveDefaultVoice}
               />
 
-              {state.previousSessionDialogError && <ErrorMessage>Confirmation message must not exceed 160 symbols.</ErrorMessage>}
+              {previousSessionDialogError && <ErrorMessage>Confirmation message must not exceed 160 symbols.</ErrorMessage>}
             </>
           )}
 
           <ClickableText style={{ marginTop: '14px' }} onClick={onToggleHasFollowUp}>
-            {state.resumePrompt.follow_voice ? 'Remove Follow Up' : 'Add Follow Up'}
+            {resumePrompt.followVoice ? 'Remove Follow Up' : 'Add Follow Up'}
           </ClickableText>
         </FormControl>
 
-        {!!state.resumePrompt.follow_voice && (
+        {!!resumePrompt.followVoice && (
           <Section isNested header="Resume Follow Up" isDividerNested variant={SectionVariant.QUATERNARY}>
             <FormControl>
               <RadioGroup
@@ -234,49 +194,50 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
                   { id: GeneralVoice.AUDIO, label: 'Audio', customCheckedCondition: (val) => val === GeneralVoice.AUDIO },
                 ]}
                 name="multiple"
-                checked={state.followUpType}
+                checked={followUpType}
                 onChange={onChangeFollowUpType}
               />
             </FormControl>
 
-            {state.followUpType === GeneralVoice.AUDIO ? (
+            {followUpType === GeneralVoice.AUDIO ? (
               <FormControl>
-                <AudioUpload
-                  audio={state.resumePrompt.follow_content}
-                  update={(value: string) => actions.resumePrompt.update({ follow_content: value })}
-                />
+                <AudioUpload audio={resumePrompt.followContent} update={(src: string) => onChangeFollowUpContent({ text: src })} />
               </FormControl>
             ) : (
               <FormControl contentBottomUnits={3}>
                 <SSMLComponent
-                  voice={state.resumePrompt.follow_voice || defaultVoice}
-                  value={state.resumePrompt.follow_content || ''}
+                  voice={resumePrompt.followVoice || defaultVoice}
+                  value={resumePrompt.followContent || ''}
                   onBlur={onChangeFollowUpContent}
                   platform={platform}
                   defaultVoice={defaultVoice}
                   onChangeVoice={onChangeFollowUpVoice}
                   platformDefaultVoice={platformDefaultVoice}
-                  onChangeDefaultVoice={onChangeDefaultVoice}
+                  onChangeDefaultVoice={saveDefaultVoice}
                 />
               </FormControl>
             )}
           </Section>
         )}
       </Section>
-
       <Section
         contentPrefix={allowRepeat}
         variant={SectionVariant.QUATERNARY}
         collapseVariant={SectionToggleVariant.TOGGLE}
         header="Allow Users to Repeat"
         isDividerNested
-        onToggleChange={(collapsed) => actions.repeat.set(collapsed ? 0 : 1)}
+        onToggleChange={(collapsed) => saveSettings({ repeat: collapsed ? RepeatType.OFF : RepeatType.DIALOG })}
         headerToggle
-        initialOpen={state.repeat >= 1}
+        initialOpen={repeat !== RepeatType.OFF}
       >
         <FormControl contentBottomUnits={3}>
-          <RadioGroup options={REPEAT_OPTIONS} name="multiple" checked={state.repeat || 1} onChange={actions.repeat.set} />
-          {state.repeat === 1 ? repeatDialog : repeatEverything}
+          <RadioGroup
+            options={REPEAT_OPTIONS}
+            name="multiple"
+            checked={repeat ?? RepeatType.DIALOG}
+            onChange={(repeat) => saveSettings({ repeat })}
+          />
+          {repeat === RepeatType.DIALOG ? repeatDialog : repeatEverything}
         </FormControl>
       </Section>
     </>
@@ -284,14 +245,29 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
 };
 
 const mapStateToProps = {
-  meta: Skill.skillMetaSelector,
+  settings: Version.alexa.activeSettingsSelector,
+  session: Version.activeSessionSelector,
+  defaultVoice: Version.activeDefaultVoiceSelector,
 };
 
 const mapDispatchToProps = {
-  saveSettings: Skill.saveSettings,
-  updateSettings: Skill.updateSettings,
+  saveSettings: Version.alexa.saveSettings,
+  saveSession: Version.saveSession,
+  saveResumePrompt: Version.saveResumePrompt,
+  saveDefaultVoice: Version.saveDefaultVoice,
 };
 
-type ConnectedGlobalConversationLogic = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+const mergeProps = (
+  ...[{ defaultVoice }, , { platform }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, GlobalConversationLogicProps>
+) => {
+  const platformDefaultVoice = getPlatformDefaultVoice(platform);
 
-export default connect(mapStateToProps, mapDispatchToProps)(GlobalConversationLogic);
+  return {
+    platformDefaultVoice,
+    defaultVoice: defaultVoice || platformDefaultVoice,
+  };
+};
+
+type ConnectedGlobalConversationLogic = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(GlobalConversationLogic);

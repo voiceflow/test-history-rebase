@@ -8,10 +8,10 @@ import { Project } from '@/models';
 
 export { default as productAdapter } from './product';
 
-type AnyPlatformData = AlexaProjectData | GoogleProjectData | BasePlatformData;
-type AnyMemberData = AlexaProjectMemberData | GoogleProjectMemberData | BasePlatformData;
+export type AnyProjectData = AlexaProjectData | GoogleProjectData | BasePlatformData;
+export type AnyProjectMemberData = AlexaProjectMemberData | GoogleProjectMemberData | BasePlatformData;
 
-const projectAdapter = createAdapter<DBProject<AnyPlatformData, AnyMemberData>, Project<AnyPlatformData, Member<AnyMemberData>>>(
+const projectAdapter = createAdapter<DBProject<AnyProjectData, AnyProjectMemberData>, Project<AnyProjectData, Member<AnyProjectMemberData>>>(
   ({ _id, name, devVersion, platform, privacy, image = null, liveVersion, linkType = ProjectLinkType.CURVED, members, platformData }) => ({
     id: _id,
     name,

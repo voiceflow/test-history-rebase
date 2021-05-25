@@ -27,6 +27,7 @@ export * from './Slot';
 export * from './Speak';
 export * from './Template';
 export * from './Thread';
+export * from './Version';
 export * from './Workspace';
 
 export type PartialModel<T extends { id: string }> = WithRequired<Partial<T>, 'id'>;

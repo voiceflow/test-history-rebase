@@ -102,10 +102,14 @@ export const saveProjectPrivacy = (projectID: string, privacy: ProjectPrivacy): 
   }
 };
 
-export const saveProjectImage = (projectID: string, image: string): Thunk => async (dispatch) => {
-  await client.api.project.update(projectID, { image });
+export const saveProjectImage = (projectID: string, image: string): Thunk => async (dispatch, getState) => {
+  const project = projectByIDSelector(getState())(projectID);
 
-  dispatch(patchProject(projectID, { image }));
+  if (project.image !== image) {
+    await client.api.project.update(projectID, { image });
+
+    dispatch(patchProject(projectID, { image }));
+  }
 };
 
 export const saveProjectLinkType = (projectID: string, linkType: ProjectLinkType): Thunk => async (dispatch) => {

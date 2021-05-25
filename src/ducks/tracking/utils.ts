@@ -1,7 +1,6 @@
-import { activeSkillSelector } from '@/ducks/skill/skill/selectors';
+import * as Session from '@/ducks/session';
 // to avoid cycle dependencies
 import { activeWorkspaceIDSelector } from '@/ducks/workspace/selectors';
-import * as Models from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 
 import { ProjectEventInfo, WorkspaceEventInfo } from './types';
@@ -10,7 +9,9 @@ export const createWorkspaceEventTracker = <T extends {} | undefined = undefined
   callback: (options: T & WorkspaceEventInfo, ...args: Parameters<Thunk>) => void
 ) => (...args: T extends undefined ? [] : [T]): SyncThunk => (dispatch, getState) => {
   const state = getState();
-  const activeWorkspaceID = activeWorkspaceIDSelector(state)!;
+  const activeWorkspaceID = activeWorkspaceIDSelector(state);
+
+  if (!activeWorkspaceID) return;
 
   const baseEventInfo: WorkspaceEventInfo = {
     workspaceID: activeWorkspaceID,
@@ -36,13 +37,16 @@ export const createProjectEventTracker = <T extends {} | undefined = undefined>(
   callback: (options: T & ProjectEventInfo, ...args: Parameters<Thunk>) => void
 ) => (...args: T extends undefined ? [] : [T]): SyncThunk => (dispatch, getState) => {
   const state = getState();
-  const activeSkill = activeSkillSelector(state) as Models.Skill<string>;
-  const activeWorkspaceID = activeWorkspaceIDSelector(state)!;
+  const versionID = Session.activeVersionIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state);
+  const workspaceID = activeWorkspaceIDSelector(state);
+
+  if (!projectID || !versionID || !workspaceID) return;
 
   const baseEventInfo: ProjectEventInfo = {
-    skillID: activeSkill.id,
-    projectID: activeSkill.projectID,
-    workspaceID: activeWorkspaceID,
+    skillID: versionID,
+    projectID,
+    workspaceID,
   };
 
   callback({ ...args[0], ...baseEventInfo } as T & ProjectEventInfo, dispatch, getState);

@@ -1,0 +1,68 @@
+import createCRUDReducer, * as CRUD from '@/ducks/utils/crud';
+import { Reducer, RootReducer } from '@/store/types';
+import { getNormalizedByKey, patchNormalizedByKey } from '@/utils/normalized';
+
+import { AnyVersionAction, UpdatePublishing, UpdateSession, UpdateSettings, VersionAction } from './actions';
+import { STATE_KEY } from './constants';
+import * as alexa from './platform/alexa';
+import * as general from './platform/general';
+import * as google from './platform/google';
+import { AnyPublishing, AnySettings, AnyVersion, VersionState } from './types';
+
+export { alexa, general, google };
+
+export * from './actions';
+export * from './constants';
+export * from './selectors';
+export * from './sideEffects';
+export * from './types';
+
+export const versionCRUDReducer = createCRUDReducer<AnyVersion>(STATE_KEY);
+
+export const updateSettingsReducer: Reducer<VersionState, UpdateSettings<AnySettings>> = (state, { payload: { id, settings } }) => {
+  const version = getNormalizedByKey(state, id);
+
+  return patchNormalizedByKey(state, id, {
+    settings: {
+      ...version.settings,
+      ...settings,
+    },
+  });
+};
+
+export const updatePublishingReducer: Reducer<VersionState, UpdatePublishing<AnyPublishing>> = (state, { payload: { id, publishing } }) => {
+  const version = getNormalizedByKey(state, id);
+
+  return patchNormalizedByKey(state, id, {
+    publishing: {
+      ...version.publishing,
+      ...publishing,
+    },
+  });
+};
+
+export const updateSessionReducer: Reducer<VersionState, UpdateSession> = (state, { payload: { id, session } }) => {
+  const version = getNormalizedByKey(state, id);
+
+  return patchNormalizedByKey(state, id, {
+    session: {
+      ...version.session,
+      ...session,
+    } as AnyVersion['session'],
+  });
+};
+
+const versionReducer: RootReducer<VersionState, AnyVersionAction> = (state = CRUD.INITIAL_STATE, action) => {
+  switch (action.type) {
+    case VersionAction.UPDATE_SETTINGS:
+      return updateSettingsReducer(state, action);
+    case VersionAction.UPDATE_PUBLISHING:
+      return updatePublishingReducer(state, action);
+    case VersionAction.UPDATE_SESSION:
+      return updateSessionReducer(state, action);
+    default:
+      return versionCRUDReducer(state, action);
+  }
+};
+
+export default versionReducer;

@@ -10,17 +10,17 @@ import Input from '@/components/Input';
 import Section, { SectionVariant } from '@/components/Section';
 import Select from '@/components/Select';
 import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
-import { PlatformType } from '@/constants';
+import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
-import * as Skill from '@/ducks/skill';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
 import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { ConnectedProps } from '@/types';
 import { without } from '@/utils/array';
 import { getPlatformValue } from '@/utils/platform';
 
@@ -40,8 +40,8 @@ const sectionStyling = {
 };
 
 const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
-  meta,
-  skill,
+  invocationName,
+  locales,
   project,
   platform,
   platformMeta,
@@ -50,18 +50,17 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   saveProjectImage,
   saveInvocationName,
 }) => {
-  const { invName } = meta;
-  const { name, locales = [] } = skill;
   const { descriptors, localeText } = platformMeta;
-  const { projectName, invocationName, localesDescriptor } = descriptors;
 
-  const [newInvocation, setNewInvocation] = React.useState(invName);
-  const [newProjectName, setNewProjectName] = React.useState(name);
-  const [projectImage, setProjectImage] = React.useState(project.image);
+  const initialGoogleLanguage = React.useMemo(() => getLocaleLanguage(locales as GoogleLocale[]), [locales]);
+
+  const [newInvocation, setNewInvocation] = React.useState(invocationName ?? '');
+  const [newProjectName, setNewProjectName] = React.useState(project?.name ?? '');
+  const [projectImage, setProjectImage] = React.useState(project?.image ?? '');
 
   const [alexaLocales, setAlexaLocales] = React.useState<AlexaLocale[]>((locales || []) as AlexaLocale[]);
   const [generalLocale, setGeneralLocale] = React.useState<GeneralLocale>((locales as GeneralLocale[])[0]);
-  const [googleLanguage, setGoogleLanguage] = React.useState<string | Language>(() => getLocaleLanguage(locales as GoogleLocale[]));
+  const [googleLanguage, setGoogleLanguage] = React.useState<string | Language>(initialGoogleLanguage);
 
   const displayName =
     platform === PlatformType.ALEXA
@@ -80,18 +79,13 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     )(newInvocation as string, alexaLocales);
 
   const saveSettings = async () => {
-    saveProjectName(newProjectName);
-    saveInvocationName(newInvocation);
-
-    if (projectImage) {
-      saveProjectImage(project.id, projectImage);
-    }
-
-    if (platform === PlatformType.ALEXA) {
-      saveLocales(alexaLocales as AlexaLocale[]);
-    } else {
-      saveLocales(LanguageToLocale[googleLanguage as Language]);
-    }
+    await Promise.all([
+      saveProjectName(newProjectName),
+      !GENERAL_PLATFORMS.includes(platform) ? saveInvocationName(newInvocation) : null,
+      project && projectImage ? saveProjectImage(project.id, projectImage) : null,
+      platform === PlatformType.ALEXA && locales !== alexaLocales ? saveLocales(alexaLocales) : null,
+      platform === PlatformType.GOOGLE && googleLanguage !== initialGoogleLanguage ? saveLocales(LanguageToLocale[googleLanguage as Language]) : null,
+    ]);
   };
 
   useDidUpdateEffect(() => {
@@ -100,7 +94,12 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 
   return (
     <>
-      <Section customContentStyling={sectionStyling} variant={SectionVariant.QUATERNARY} contentSuffix={projectName} header="Project Name">
+      <Section
+        customContentStyling={sectionStyling}
+        variant={SectionVariant.QUATERNARY}
+        contentSuffix={descriptors.projectName}
+        header="Project Name"
+      >
         <Flex>
           <Input value={newProjectName} onChange={(e: ChangeEvent<HTMLInputElement>) => setNewProjectName(e.target.value)} onBlur={saveSettings} />
           <Box ml={16}>
@@ -109,12 +108,14 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         </Flex>
       </Section>
 
-      {platform !== PlatformType.GENERAL && (
+      {!GENERAL_PLATFORMS.includes(platform) && (
         <Section
           header="Invocation Name"
           variant={SectionVariant.QUATERNARY}
           contentSuffix={
-            invocationError && newInvocation ? () => <SectionErrorMessage marginTop={16}>{invocationError}</SectionErrorMessage> : invocationName
+            invocationError && newInvocation
+              ? () => <SectionErrorMessage marginTop={16}>{invocationError}</SectionErrorMessage>
+              : descriptors.invocationName
           }
           isDividerNested
           customContentStyling={sectionStyling}
@@ -131,14 +132,13 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
       <Section
         header={localeText}
         variant={SectionVariant.QUATERNARY}
-        contentSuffix={localesDescriptor}
+        contentSuffix={descriptors.localesDescriptor}
         isDividerNested
         customContentStyling={sectionStyling}
       >
         {getPlatformValue<() => React.ReactNode>(
           platform,
           {
-            // eslint-disable-next-line react/display-name
             [PlatformType.ALEXA]: () => (
               <UnTypedDropdownMultiselect
                 options={LOCALE_MAP}
@@ -155,7 +155,6 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
                 dropdownActive
               />
             ),
-            // eslint-disable-next-line react/display-name
             [PlatformType.GOOGLE]: () => (
               <Select
                 placeholder="Language"
@@ -187,23 +186,19 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 };
 
 const mapStateToProps = {
-  meta: Skill.skillMetaSelector,
-  skill: Skill.activeSkillSelector,
   versionID: Session.activeVersionIDSelector,
-  project: Project.projectByIDSelector,
+  project: Project.activeProjectSelector,
+  invocationName: Version.activeInvocationNameSelector,
+  locales: Version.activeLocalesSelector,
 };
 
 const mapDispatchToProps = {
-  saveInvocationName: Skill.saveInvocationName,
-  saveProjectName: Skill.saveProjectName,
-  saveLocales: Skill.saveLocales,
+  saveInvocationName: Version.saveInvocationName,
+  saveProjectName: Project.saveProjectName,
+  saveLocales: Version.saveLocales,
   saveProjectImage: Project.saveProjectImage,
 };
 
-const mergeProps = (...[{ skill, project: projectByIDSelector }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
-  project: projectByIDSelector(skill.projectID),
-});
+type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Basic);
+export default connect(mapStateToProps, mapDispatchToProps)(Basic);

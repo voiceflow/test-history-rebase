@@ -1,8 +1,8 @@
 import { BuiltInVariable } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
-import { activeGlobalVariablesSelector } from '@/ducks/skill';
-import { slotNamesSelector } from '@/ducks/slot';
+import * as Slot from '@/ducks/slot';
+import { activeGlobalVariablesSelector } from '@/ducks/version/selectors';
 import { Store } from '@/models';
 import { SyncThunk } from '@/store/types';
 import * as Sentry from '@/vendors/sentry';
@@ -15,7 +15,7 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const visualState = prototypeVisualSelector(state);
   const globalVariables = activeGlobalVariablesSelector(state);
-  const slotNames = slotNamesSelector(state);
+  const slotNames = Slot.slotNamesSelector(state);
   const platform = Project.activePlatformSelector(state);
 
   let variables: Store = {};

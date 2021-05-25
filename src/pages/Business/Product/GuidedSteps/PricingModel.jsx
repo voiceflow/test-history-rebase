@@ -1,6 +1,4 @@
-/* eslint-disable jsx-a11y/label-has-for */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-shadow */
+/* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
 import { ProductType } from '@voiceflow/alexa-types';
 import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
@@ -12,8 +10,8 @@ import Button from '@/components/Button';
 import Dropdown from '@/components/Dropdown';
 import Input from '@/components/Input';
 import SvgIcon from '@/components/SvgIcon';
-import { productByIDSelector, updateProduct } from '@/ducks/product';
-import { parentCtrlSelector } from '@/ducks/skill';
+import * as Product from '@/ducks/product';
+import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { withTargetValue } from '@/utils/dom';
 
@@ -48,7 +46,7 @@ export const SUBSCRIPTION_OPTIONS = [
   { value: 'YEARLY', label: 'Yearly' },
 ];
 
-function PricingForm({ product, updateProduct, changeStep, parentCtrl }) {
+function PricingForm({ product, updateProduct, changeStep, parentalControl }) {
   const onTypeChange = (value) => () => {
     updateProduct({
       ...product,
@@ -72,18 +70,18 @@ function PricingForm({ product, updateProduct, changeStep, parentCtrl }) {
             {PRODUCT_TYPES.map(({ value, label }, index) => (
               <FormGroup check key={index}>
                 <Tooltip
-                  disabled={!(value === ProductType.CONSUMABLE && parentCtrl)}
+                  disabled={!(value === ProductType.CONSUMABLE && parentalControl)}
                   position="top"
-                  title={value === ProductType.CONSUMABLE && parentCtrl ? 'Consumables are not available for kid skills at this time.' : null}
+                  title={value === ProductType.CONSUMABLE && parentalControl ? 'Consumables are not available for kid skills at this time.' : null}
                 >
-                  <RadioButtonLabel disabled={value === ProductType.CONSUMABLE && parentCtrl}>
+                  <RadioButtonLabel disabled={value === ProductType.CONSUMABLE && parentalControl}>
                     <Input
                       checked={product.type === value}
                       type="radio"
                       name="type"
                       value={value}
                       onChange={onTypeChange(value)}
-                      disabled={value === ProductType.CONSUMABLE && parentCtrl}
+                      disabled={value === ProductType.CONSUMABLE && parentalControl}
                     />
                     <span>{label}</span>
                   </RadioButtonLabel>
@@ -166,18 +164,18 @@ function PricingForm({ product, updateProduct, changeStep, parentCtrl }) {
 
 PricingForm.proptypes = {
   product: PropTypes.object,
-  parentCtrl: PropTypes.boolean,
+  parentalControl: PropTypes.boolean,
   changeStep: PropTypes.func,
   updateProduct: PropTypes.func,
 };
 
 const mapStateToProps = {
-  product: productByIDSelector,
-  parentCtrl: parentCtrlSelector,
+  product: Product.productByIDSelector,
+  parentalControl: Version.alexa.parentalControlSelector,
 };
 
 const mapDispatchToProps = {
-  updateProduct,
+  updateProduct: Product.updateProduct,
 };
 
 const mergeProps = ({ product: productByIDSelector }, { updateProduct }, { productID }) => ({

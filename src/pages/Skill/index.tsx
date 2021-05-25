@@ -1,8 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import IdleTimer from 'react-idle-timer';
-import { Redirect, RouteComponentProps, Switch } from 'react-router-dom';
-import { Alert } from 'reactstrap';
+import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
@@ -10,7 +9,6 @@ import { Path } from '@/config/routes';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
-import * as SkillDuck from '@/ducks/skill';
 import {
   PlanRestrictionGate,
   ProjectLoadingGate,
@@ -25,7 +23,6 @@ import CanvasHeader from '@/pages/Canvas/header';
 import InactivityModal from '@/pages/Inactivity';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
-import PrivateRoute from '@/Routes/PrivateRoute';
 import { ConnectedProps } from '@/types';
 import { compose } from '@/utils/functional';
 import { getActivePageAndMatch } from '@/utils/routes';
@@ -42,20 +39,10 @@ const Publish = lazy(() => import('@/pages/Publish'));
 
 export type SkillProps = RouteComponentProps;
 
-export type InjectedSkillProps = {
-  versionID: string;
-  diagramID: string;
-  activePage: string;
-  // TODO: figure out if this prop is used
-  error?: string;
-};
-
-const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = ({
-  error,
+const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
   platform,
-  diagramID,
-  activePage,
-  activeSkill,
+  location,
+  projectName,
   goToDashboard,
   saveProjectName,
   goToDesign,
@@ -64,6 +51,7 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
   const [isIdle, onIdle, onActive] = useEnableDisable();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const isPrototypingMode = usePrototypingMode();
+  const activePage = React.useMemo(() => getActivePageAndMatch(PAGES_MATCHES, location.pathname).activePage ?? undefined, [location.pathname]);
 
   const idleTimer = React.useRef<IdleTimer>(null);
 
@@ -79,19 +67,11 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
 
   useCanvasTracking();
 
-  if (error) {
-    return (
-      <div className="super-center w-100 h-100">
-        <Alert color="danger">{error}</Alert>
-      </div>
-    );
-  }
-
   return (
     <MarkupProvider>
       <PlatformProvider value={platform}>
         <Helmet>
-          <title>{activeSkill.name || 'Voiceflow Creator'}</title>
+          <title>{projectName}</title>
         </Helmet>
         {!isOnlyViewer && (
           <>
@@ -103,7 +83,7 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
           <ExportProvider>
             <NLPProvider>
               <Page
-                header={!isPrototypingMode && <ProjectTitle title={activeSkill.name} onChange={saveProjectName} />}
+                header={!isPrototypingMode && <ProjectTitle title={projectName ?? ''} onChange={saveProjectName} />}
                 subHeader={!isPrototypingMode && <ProjectSubHeader showPublish={canEditCanvas} activePage={activePage} />}
                 canScroll={false}
                 headerChildren={<CanvasHeader />}
@@ -117,19 +97,18 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
                 navigateBackText={isPrototypingMode ? 'Back' : ''}
               >
                 <Switch>
-                  <PrivateRoute
+                  <Route
                     path={[Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
                     component={Diagram}
-                    diagramID={diagramID}
                   />
 
-                  <PrivateRoute path={Path.PROJECT_TOOLS} component={Business} />
+                  <Route path={Path.PROJECT_TOOLS} component={Business} />
 
-                  <PrivateRoute path={Path.PROJECT_MIGRATE} component={Migrate} />
+                  <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
 
-                  <PrivateRoute path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
+                  <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
 
-                  <PrivateRoute path={Path.PROJECT_PUBLISH} component={Publish} />
+                  <Route path={Path.PROJECT_PUBLISH} component={Publish} />
 
                   <Redirect to={Path.PROJECT_CANVAS} />
                 </Switch>
@@ -143,14 +122,14 @@ const Skill: React.FC<SkillProps & InjectedSkillProps & ConnectedSkillProps> = (
 };
 
 const mapStateToProps = {
-  activeSkill: SkillDuck.activeSkillSelector,
+  projectName: Project.activeProjectNameSelector,
   isConnected: Realtime.isRealtimeConnectedSelector,
   platform: Project.activePlatformSelector,
   isOnlyViewer: Realtime.isOnlyViewerSelector,
 };
 
 const mapDispatchToProps = {
-  saveProjectName: SkillDuck.saveProjectName,
+  saveProjectName: Project.saveProjectName,
   goToDashboard: Router.goToDashboard,
   goToDesign: Router.goToCurrentCanvas,
 };
@@ -160,18 +139,7 @@ type ConnectedSkillProps = ConnectedProps<typeof mapStateToProps, typeof mapDisp
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withBatchLoadingGate(
-    [
-      ProjectLoadingGate,
-      ({ location }: RouteComponentProps) => {
-        const { activePage, activePageMatch } = getActivePageAndMatch<{ versionID?: string; diagramID?: string }>(PAGES_MATCHES, location.pathname);
-
-        return {
-          versionID: activePageMatch?.params?.versionID,
-          diagramID: activePageMatch?.params?.diagramID,
-          activePage,
-        };
-      },
-    ],
+    ProjectLoadingGate,
     PlanRestrictionGate,
     ProjectLockGate,
     WorkspaceLoadingGate,

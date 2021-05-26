@@ -10,10 +10,14 @@ type LinkProps = {
   textDecoration?: boolean;
 } & TextProps;
 
+const PROTOCOL_POSTFIX_REGEXP = /:?\/\//;
+
+const formatHref = (href: string | undefined, isBlank: boolean) => (!isBlank || !href || !!href.match(PROTOCOL_POSTFIX_REGEXP) ? href : `//${href}`);
+
 const Link = styled.a.attrs<LinkProps>(({ link, href, target = '_blank', rel = 'noopener noreferrer' }) => ({
   target,
   rel,
-  href: link || href,
+  href: formatHref(link || href, target === '_blank'),
 }))<LinkProps>`
   color: ${({ color, theme }) => color ?? theme.colors.blue};
 

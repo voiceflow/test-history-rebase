@@ -1,8 +1,11 @@
 import cn from 'classnames';
+import Markdown, { MarkdownOptions } from 'markdown-to-jsx';
 import React from 'react';
 
-import { SSML_TAG_REGEX } from '@/constants';
+import { Link } from '@/components/Text';
+import { SSML_TAG_REGEX, URL_REGEX } from '@/constants';
 import { ClassName } from '@/styles/constants';
+import { stopPropagation } from '@/utils/dom';
 
 import { Message } from '../components';
 import { MessageProps } from '../components/Message';
@@ -12,11 +15,19 @@ type SpeakProps = Omit<MessageProps, 'iconProps'> & {
   message: string;
 };
 
+const ALL_URLS_REGEXP = new RegExp(URL_REGEX, 'g');
+
+const MARKDOWN_OPTIONS: MarkdownOptions = {
+  forceInline: true,
+  overrides: { a: (props) => <Link {...props} onClick={stopPropagation()} /> },
+};
+
 const Speak: React.FC<SpeakProps> = ({ voice, message, className, ...props }) => {
-  const noSSMLMessage = message.replace(SSML_TAG_REGEX, '');
-  return noSSMLMessage ? (
+  const formattedMessage = React.useMemo(() => message.replace(SSML_TAG_REGEX, '').replace(ALL_URLS_REGEXP, '[$1]($1)'), [message]);
+
+  return formattedMessage ? (
     <Message className={cn(ClassName.CHAT_DIALOG_SPEAK_MESSAGE, className)} {...props}>
-      {noSSMLMessage}
+      <Markdown options={MARKDOWN_OPTIONS}>{formattedMessage}</Markdown>
     </Message>
   ) : null;
 };

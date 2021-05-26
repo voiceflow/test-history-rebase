@@ -36,7 +36,7 @@ parameters:
     default: "storybook"
 
 orbs:
-  vfcommon: voiceflow/common@0.0.132
+  vfcommon: voiceflow/common@0.0.134
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 
@@ -214,6 +214,7 @@ jobs:
           target: << pipeline.parameters.k8s-asset-storybook >>
           container_name: storybook
           tagged: true
+          success_lack_notify: false
 
   build-deploy-admin-image:
     executor: vfcommon/build-executor
@@ -229,6 +230,7 @@ jobs:
           namespace: << pipeline.parameters.k8s-namespace >>
           target: << pipeline.parameters.k8s-asset-admin-ui >>
           tagged: true
+          success_lack_notify: false
 
   update-track-creator-app:
     executor: vfcommon/build-executor

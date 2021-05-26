@@ -43,7 +43,7 @@ export const ButtonContainer = styled.div<{
       padding: ${padding};
     `}
 
-  
+
    ${({ border, isOpen, theme }) =>
     border &&
     css`
@@ -68,7 +68,7 @@ export const ButtonContainer = styled.div<{
 
 export const TextContainer = styled.div<{ capitalized?: boolean; fullWidth?: boolean }>`
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 8px;
 
   color: ${({ color = '#6e849a' }) => color};
   ${({ capitalized }) =>

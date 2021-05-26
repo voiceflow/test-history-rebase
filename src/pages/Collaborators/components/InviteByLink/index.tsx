@@ -6,7 +6,7 @@ import DropdownWithCaret from '@/components/DropdownWithCaret';
 import Menu, { MenuItem } from '@/components/Menu';
 import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
-import { ModalType, UserRole } from '@/constants';
+import { EDITOR_SEAT_ROLES, ModalType, UserRole } from '@/constants';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -21,6 +21,7 @@ import { Container, DropdownContainer } from './components';
 const PermissionText = {
   [UserRole.EDITOR]: 'can edit',
   [UserRole.VIEWER]: 'can view',
+  [UserRole.ADMIN]: 'can admin',
 };
 
 const inviteLimitMessage = (
@@ -30,13 +31,16 @@ const inviteLimitMessage = (
   </span>
 );
 
+type ROLE_OPTIONS = UserRole.EDITOR | UserRole.VIEWER | UserRole.ADMIN;
+
 const InviteByLinkFooter: React.FC<{ noIcon?: boolean } & ConnectedSeatSummaryProps> = ({
   usedEditorSeats,
   numberOfSeats,
   activeWorkspaceID,
   noIcon = false,
+  userRole,
 }) => {
-  const [linkInvitePermission, setLinkInvitePermission] = React.useState<UserRole.EDITOR | UserRole.VIEWER>(UserRole.EDITOR);
+  const [linkInvitePermission, setLinkInvitePermission] = React.useState<ROLE_OPTIONS>(UserRole.EDITOR);
   const [inviteCode, setInviteCode] = React.useState('');
   const [inviteLink, setInviteLink] = React.useState('');
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
@@ -64,7 +68,7 @@ const InviteByLinkFooter: React.FC<{ noIcon?: boolean } & ConnectedSeatSummaryPr
     const numberOfUsedEditorSeats = usedEditorSeats;
     toast.success('Link copied to your clipboard, this link expires in 72 hours.');
 
-    if (numberOfUsedEditorSeats >= numberOfSeats! && linkInvitePermission === UserRole.EDITOR) {
+    if (numberOfUsedEditorSeats >= numberOfSeats! && EDITOR_SEAT_ROLES.includes(linkInvitePermission)) {
       toast.warn(inviteLimitMessage, {
         onClick: openPaymentsModal,
         delay: 1000,
@@ -73,7 +77,7 @@ const InviteByLinkFooter: React.FC<{ noIcon?: boolean } & ConnectedSeatSummaryPr
     copy(inviteLink);
   };
 
-  const handlePermissionChange = (onToggle: () => void, permission: UserRole.EDITOR | UserRole.VIEWER) => {
+  const handlePermissionChange = (onToggle: () => void, permission: ROLE_OPTIONS) => {
     onToggle();
     setLinkInvitePermission(permission);
   };
@@ -89,6 +93,7 @@ const InviteByLinkFooter: React.FC<{ noIcon?: boolean } & ConnectedSeatSummaryPr
             <Menu>
               <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.EDITOR)}>can edit</MenuItem>
               <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.VIEWER)}>can view</MenuItem>
+              {userRole === UserRole.ADMIN && <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.ADMIN)}>can admin</MenuItem>}
             </Menu>
           )}
           text={PermissionText[linkInvitePermission]}
@@ -105,6 +110,7 @@ const mapStateToProps = {
   activeWorkspaceID: Session.activeWorkspaceIDSelector,
   numberOfSeats: Workspace.workspaceNumberOfSeatsSelector,
   usedEditorSeats: Workspace.usedEditorSeatsSelector,
+  userRole: Workspace.userRoleSelector,
 };
 
 type ConnectedSeatSummaryProps = ConnectedProps<typeof mapStateToProps>;

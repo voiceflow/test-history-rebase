@@ -4,7 +4,7 @@ import Flex from '@/components/Flex';
 import Menu from '@/components/Menu';
 import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
-import { UserRole } from '@/constants';
+import { EDITOR_SEAT_ROLES, UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -21,12 +21,12 @@ const getRoleVerb = (role) => {
     case UserRole.ADMIN:
       return 'Admin';
     case UserRole.EDITOR:
-      return 'Can edit';
+      return 'Editor';
     case UserRole.OWNER:
-      return 'Can manage';
+      return 'Manager';
     case UserRole.VIEWER:
     default:
-      return 'Can view';
+      return 'Viewer';
   }
 };
 
@@ -45,19 +45,29 @@ const MemberRow = ({
   seats,
   role,
   userId,
+  activeWorkspace,
 }) => {
   const userIsMember = userId === member.creator_id;
   const ownerRole = useFeature(FeatureFlag.OWNER_ROLE);
-
+  const memberIsWorkspaceOwner = activeWorkspace.creatorID === member.creator_id;
   const allowDropdown =
-    !userIsMember && !isAdmin && !(role === UserRole.EDITOR && (member.role === UserRole.OWNER || member.role === UserRole.ADMIN));
+    !userIsMember &&
+    !isAdmin &&
+    !memberIsWorkspaceOwner &&
+    !(role === UserRole.EDITOR && (member.role === UserRole.OWNER || member.role === UserRole.ADMIN));
 
   const changePermission = (role) => {
+    const isAlreadyEditorSeatType = EDITOR_SEAT_ROLES.includes(member.role);
+
     if (role === member.role) {
       return;
     }
 
-    if ((role === UserRole.EDITOR || role === UserRole.OWNER) && numberOfUsedEditorSeats >= seats) {
+    if (
+      !isAlreadyEditorSeatType &&
+      (role === UserRole.EDITOR || role === UserRole.OWNER || role === UserRole.ADMIN) &&
+      numberOfUsedEditorSeats >= seats
+    ) {
       return toast.error('You have reached your max editor seats usage.');
     }
     if (role === UserRole.VIEWER && numberOfUsedViewerSeats >= seatLimits.viewer) {
@@ -95,16 +105,23 @@ const MemberRow = ({
           <Menu>
             <>
               <DropdownItem onClick={() => changePermission(UserRole.EDITOR)} active={member.role === UserRole.EDITOR}>
-                Can Edit
+                {getRoleVerb(UserRole.EDITOR)}
               </DropdownItem>
               <DropdownItem onClick={() => changePermission(UserRole.VIEWER)} active={member.role === UserRole.VIEWER}>
-                Can View
+                {getRoleVerb(UserRole.VIEWER)}
               </DropdownItem>
             </>
             {(role === UserRole.OWNER || role === UserRole.ADMIN) && ownerRole.isEnabled && (
               <>
                 <DropdownItem onClick={() => changePermission(UserRole.OWNER)} active={member.role === UserRole.OWNER}>
-                  Can Manage
+                  {getRoleVerb(UserRole.OWNER)}
+                </DropdownItem>
+              </>
+            )}
+            {role === UserRole.ADMIN && (
+              <>
+                <DropdownItem onClick={() => changePermission(UserRole.ADMIN)} active={member.role === UserRole.ADMIN}>
+                  {getRoleVerb(UserRole.ADMIN)}
                 </DropdownItem>
               </>
             )}
@@ -139,6 +156,7 @@ const mapStateToProps = {
   numberOfUsedViewerSeats: Workspace.usedViewerSeatsSelector,
   seatLimits: Workspace.seatLimitsSelector,
   seats: Workspace.workspaceNumberOfSeatsSelector,
+  activeWorkspace: Workspace.activeWorkspaceSelector,
 };
 
 const mapDispatchToProps = {

@@ -12,12 +12,17 @@ const MODAL_TITLE = 'ADD COLLABORATORS';
 
 const TooltipMessage = (
   <div>
-    <p>Teams on Voiceflow consist of Editors (can edit) and Viewers (can view)</p>
+    <p>Teams on Voiceflow consist of Editors (can edit), Viewers (can view) and Admins (all permissions)</p>
     <h5>Editors</h5>
     <p>Editors can make changes to the contents of your project. They can edit from the canvas in real-time with other editors.</p>
     <h5>Viewer</h5>
     <p>
       Viewers can view the canvas, simulate the project in the test tool and leave comments. Viewers can <b>not</b> edit the content of your project.
+    </p>
+    <h5>Admins</h5>
+    <p>
+      Admins can manage payments and billing for the workspace, invite collaborators, and pay for additional seats. Additionally, they have all the
+      permissions of an Editor.
     </p>
   </div>
 );

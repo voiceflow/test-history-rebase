@@ -46,8 +46,8 @@ context('Payment and Collaborators', () => {
   describe('collaborators', () => {
     const testInviteEmail = 'yeet@voiceflow.com';
     const testInviteEmail2 = 'yee2t@voiceflow.com';
-    const memberRoleDropdownCanEditString = 'Can edit';
-    const memberRoleDropdownCanViewString = 'Can view';
+    const memberRoleDropdownCanEditString = 'Editor';
+    const memberRoleDropdownCanViewString = 'Viewer';
 
     it('free plan, invite by email, editor', () => {
       collaboratorHelper.setup();

@@ -5,9 +5,8 @@ import { OnboardingStepProps } from '@/pages/Onboarding/types';
 import { StepID } from '../../constants';
 import { AddCollaborators, CreateWorkspace, JoinWorkspace, Payment, PersonalizeWorkspace, SelectChannel, Welcome } from '../../Steps';
 
-export type StepComponentProps = Record<StepID, React.FC<OnboardingStepProps>>;
-
-export const STEP_COMPONENTS: StepComponentProps = {
+// eslint-disable-next-line import/prefer-default-export
+export const STEP_COMPONENTS: Record<StepID, React.FC<OnboardingStepProps>> = {
   [StepID.WELCOME]: Welcome,
   [StepID.CREATE_WORKSPACE]: CreateWorkspace,
   [StepID.PERSONALIZE_WORKSPACE]: PersonalizeWorkspace,

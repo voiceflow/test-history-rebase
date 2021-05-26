@@ -3,7 +3,7 @@ import projectAdapter from '@/client/adapters/project';
 import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
-import * as Workspace from '@/ducks/workspace';
+import * as Session from '@/ducks/session';
 import * as Models from '@/models';
 
 import { Thunk } from './types';
@@ -11,7 +11,7 @@ import { Thunk } from './types';
 export const importProject = (projectID: string, workspaceID: string): Thunk<Models.AnyProject> => async (dispatch, getState) => {
   const project = await client.api.project.get(projectID);
 
-  const activeWorkspaceID = Workspace.activeWorkspaceIDSelector(getState());
+  const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());
 
   const copiedProject = projectAdapter.fromDB(
     await client.platform(project.platform as PlatformType).project.copy(project._id, { teamID: workspaceID })

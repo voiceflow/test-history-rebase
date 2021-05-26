@@ -7,7 +7,6 @@ import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import { activeRootDiagramIDSelector, activeVersionSelector } from '@/ducks/version/selectors';
-import { activeWorkspaceIDSelector } from '@/ducks/workspace';
 import { SyncThunk, Thunk } from '@/store/types';
 import * as Query from '@/utils/query';
 
@@ -160,7 +159,7 @@ export const goToCurrentCanvasInteractionModelEntity = (entityType: InteractionM
 
 export const goToCurrentWorkspaceSettings = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
-  const workspaceID = activeWorkspaceIDSelector(state);
+  const workspaceID = Session.activeWorkspaceIDSelector(state);
 
   Errors.assertWorkspaceID(workspaceID);
   dispatch(goToWorkspaceSettings(workspaceID));

@@ -74,7 +74,7 @@ export const useCanvasTracking = () => {
   const store = useStore();
   const versionID = React.useMemo(() => Session.activeVersionIDSelector(store.getState())!, []);
   const projectID = React.useMemo(() => Session.activeProjectIDSelector(store.getState())!, []);
-  const workspaceID = React.useMemo(() => Workspace.activeWorkspaceIDSelector(store.getState())!, []);
+  const workspaceID = React.useMemo(() => Session.activeWorkspaceIDSelector(store.getState())!, []);
   const startTime = React.useMemo(() => Date.now(), []);
 
   const trackCanvasTime = React.useCallback(

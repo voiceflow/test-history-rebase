@@ -338,7 +338,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
         const getMembers = stubEffect(Workspace, 'getMembers');
         stub(Session, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
         stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => false);
-        stub(Workspace, 'activeWorkspaceIDSelector').returns(workspaceID);
+        stub(Session, 'activeWorkspaceIDSelector').returns(workspaceID);
 
         const { dispatch, expectDispatch, expectStubCalled } = await applyEffect(Realtime.updateDiagramViewers(users));
 

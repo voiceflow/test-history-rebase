@@ -7,7 +7,6 @@ import * as Errors from '@/config/errors';
 import { DISTINCT_PLATFORMS, PlatformType } from '@/constants';
 import { addProjectToList } from '@/ducks/projectList/actions';
 import * as Session from '@/ducks/session';
-import { activeWorkspaceIDSelector } from '@/ducks/workspace/selectors';
 import { AnyProject } from '@/models';
 import { Thunk } from '@/store/types';
 
@@ -48,7 +47,7 @@ export const createProject = ({ platform, name, image, listID }: Partial<CreateP
   getState
 ) => {
   const state = getState();
-  const workspaceID = activeWorkspaceIDSelector(state);
+  const workspaceID = Session.activeWorkspaceIDSelector(state);
 
   Errors.assertWorkspaceID(workspaceID);
 

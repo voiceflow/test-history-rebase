@@ -7,6 +7,7 @@ import Menu, { MenuItem } from '@/components/Menu';
 import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { ModalType, UserRole } from '@/constants';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
@@ -101,7 +102,7 @@ const InviteByLinkFooter: React.FC<{ noIcon?: boolean } & ConnectedSeatSummaryPr
 };
 
 const mapStateToProps = {
-  activeWorkspaceID: Workspace.activeWorkspaceIDSelector,
+  activeWorkspaceID: Session.activeWorkspaceIDSelector,
   numberOfSeats: Workspace.workspaceNumberOfSeatsSelector,
   usedEditorSeats: Workspace.usedEditorSeatsSelector,
 };

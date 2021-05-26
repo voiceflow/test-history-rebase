@@ -8,8 +8,9 @@ import client from '@/client';
 import { ButtonVariant } from '@/components/Button';
 import { toast } from '@/components/Toast';
 import { BillingPeriod, ModalType, UNLIMITED_EDITORS_CONST, UserRole } from '@/constants';
-import { referralCodeSelector, referrerIDSelector } from '@/ducks/account';
-import { activeWorkspaceIDSelector, activeWorkspaceSelector, fetchWorkspace } from '@/ducks/workspace';
+import * as Account from '@/ducks/account';
+import * as Session from '@/ducks/session';
+import * as Workspace from '@/ducks/workspace';
 import { connect, withContext, withProvider, withStripe } from '@/hocs';
 import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSmartReducer } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
@@ -233,14 +234,14 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
 };
 
 const mapStateToProps = {
-  workspaceID: activeWorkspaceIDSelector,
-  workspace: activeWorkspaceSelector,
-  referrerID: referrerIDSelector,
-  referralCode: referralCodeSelector,
+  workspaceID: Session.activeWorkspaceIDSelector,
+  workspace: Workspace.activeWorkspaceSelector,
+  referrerID: Account.referrerIDSelector,
+  referralCode: Account.referralCodeSelector,
 };
 
 const mapDispatchToProps = {
-  updateWorkspace: fetchWorkspace,
+  updateWorkspace: Workspace.fetchWorkspace,
 };
 
 export const withPaymentProvider = withProvider(compose(withStripe, connect(mapStateToProps, mapDispatchToProps))(PaymentContextProvider));

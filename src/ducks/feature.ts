@@ -4,7 +4,6 @@ import client from '@/client';
 import { IS_PRODUCTION } from '@/config';
 import { FeatureFlag, LOCAL_FEATURE_OVERRIDES } from '@/config/features';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 
 import { createAction, createRootSelector } from './utils';
@@ -35,7 +34,7 @@ export type SetFeaturesLoaded = Action<FeatureAction.SET_FEATURES_LOADED, Featur
 
 export type SetWorkspaceFeaturesLoaded = Action<FeatureAction.SET_WORKSPACE_FEATURES_LOADED, FeatureFlagMap>;
 
-type AnyFeatureAction = SetFeaturesLoaded | SetWorkspaceFeaturesLoaded | Session.SetAuthToken | Workspace.UpdateCurrentWorkspace;
+type AnyFeatureAction = SetFeaturesLoaded | SetWorkspaceFeaturesLoaded | Session.SetAuthToken | Session.SetActiveWorkspaceID;
 
 // reducers
 
@@ -70,7 +69,7 @@ const featureReducer: RootReducer<FeatureState, AnyFeatureAction> = (state = INI
       return setWorkspaceFeaturesLoadedReducer(state, action);
     case Session.SessionAction.SET_AUTH_TOKEN:
       return accountChangeReducer(state);
-    case Workspace.WorkspaceAction.UPDATE_CURRENT_WORKSPACE:
+    case Session.SessionAction.SET_ACTIVE_WORKSPACE_ID:
       return workspaceChangeReducer(state);
     default:
       return state;
@@ -113,7 +112,7 @@ export const loadFeatures = (): Thunk => async (dispatch) => {
 };
 
 export const loadWorkspaceFeatures = (): Thunk => async (dispatch, getState) => {
-  const workspaceID = Workspace.activeWorkspaceIDSelector(getState());
+  const workspaceID = Session.activeWorkspaceIDSelector(getState());
 
   if (!workspaceID) {
     return;

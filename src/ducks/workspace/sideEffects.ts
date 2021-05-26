@@ -4,6 +4,7 @@ import { PlatformType, UserRole } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import { saveProjectListsForWorkspace } from '@/ducks/projectList/sideEffects';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
+import { activeWorkspaceIDSelector, setActiveWorkspaceID } from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import * as CRUD from '@/ducks/utils/crud';
 import { DBWorkspace, Workspace } from '@/models';
@@ -11,9 +12,9 @@ import { SyncThunk, Thunk } from '@/store/types';
 import { withoutValue } from '@/utils/array';
 import { normalize } from '@/utils/normalized';
 
-import { patchWorkspace, updateCurrentWorkspace } from './actions';
+import { patchWorkspace } from './actions';
 import { STATE_KEY } from './constants';
-import { activeWorkspaceIDSelector, activeWorkspaceMembersSelector, allWorkspaceIDsSelector } from './selectors';
+import { activeWorkspaceMembersSelector, allWorkspaceIDsSelector } from './selectors';
 import { extractErrorFromResponseData, extractErrorMessages } from './utils';
 
 const MEMBER_UPDATE_ERROR = 'Unable to Update Members';
@@ -28,7 +29,7 @@ export const updateCurrentWorkspaceItem = (payload: Partial<Workspace>): SyncThu
   }
 };
 
-export const removeWorkspace = (workspaceID: string): Thunk => async (dispatch, getState) => {
+export const removeWorkspaceAndUpdateActive = (workspaceID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const activeWorkspaceID = activeWorkspaceIDSelector(state);
   const workspaceIDs = withoutValue(allWorkspaceIDsSelector(state), workspaceID);
@@ -49,7 +50,7 @@ export const deleteWorkspace = (workspaceID: string): Thunk => async (dispatch) 
   try {
     await client.workspace.deleteWorkspace(workspaceID);
 
-    dispatch(removeWorkspace(workspaceID));
+    dispatch(removeWorkspaceAndUpdateActive(workspaceID));
     toast.success('Successfully deleted workspace');
   } catch (err) {
     dispatch(Modal.setError(err.body.data || 'Unable to delete workspace'));
@@ -73,7 +74,7 @@ export const fetchWorkspaces = (isPublicUser = false): Thunk => async (dispatch,
     dispatch(crud.replace(workspaces.sort((l, r) => (l.templates && 1) || (r.templates && -1) || 0).map((workspace) => ({ ...workspace }))));
 
     if (!normalized.allKeys.includes(activeWorkspaceID)) {
-      dispatch(updateCurrentWorkspace(workspaces[0]?.id ?? null));
+      dispatch(setActiveWorkspaceID(workspaces[0]?.id ?? null));
     }
   } catch (err) {
     dispatch(Modal.setError('Unable to fetch workspaces'));
@@ -88,7 +89,7 @@ export const leaveWorkspace = (): Thunk => async (dispatch, getState) => {
     const targetWorkspaceID = activeWorkspaceIDSelector(store)!;
     await client.workspace.leaveWorkspace(targetWorkspaceID);
 
-    dispatch(removeWorkspace(targetWorkspaceID));
+    dispatch(removeWorkspaceAndUpdateActive(targetWorkspaceID));
     toast.success('Successfully left workspace');
   } catch (err) {
     dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERROR)));
@@ -163,7 +164,7 @@ export const updateWorkspaceImage = (url: string): Thunk => async (dispatch, get
 export const acceptInvite = (invite: string): Thunk<string | null> => async (dispatch) => {
   try {
     const workspaceID = await client.workspace.acceptInvite(invite);
-    dispatch(updateCurrentWorkspace(workspaceID));
+    dispatch(setActiveWorkspaceID(workspaceID));
     return workspaceID;
   } catch (err) {
     dispatch(Modal.setError(extractErrorFromResponseData(err, 'Invite Invalid')));
@@ -294,7 +295,7 @@ export interface NewProjectOptions {
 export const ejectFromWorkspace = (workspaceID: string, workspaceName: string): Thunk => async (dispatch, getState) => {
   const currentWorkspaceID = activeWorkspaceIDSelector(getState());
 
-  await dispatch(removeWorkspace(workspaceID));
+  await dispatch(removeWorkspaceAndUpdateActive(workspaceID));
 
   if (currentWorkspaceID === workspaceID) {
     dispatch(goToDashboard());

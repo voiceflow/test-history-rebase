@@ -5,6 +5,7 @@ import { takeoffGraphic } from '@/assets';
 import LoadingGate from '@/components/LoadingGate';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
+import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -120,14 +121,14 @@ class WorkspacesLoadingGate extends Component<WorkspacesLoadingGateProps & Conne
 
 const mapStateToProps = {
   workspaces: Workspace.allWorkspacesSelector,
-  workspaceID: Workspace.activeWorkspaceIDSelector,
+  workspaceID: Session.activeWorkspaceIDSelector,
   getWorkspace: Workspace.workspaceByIDSelector,
   email: Account.userEmailSelector,
 };
 
 const mapDispatchToProps = {
   fetchWorkspaces: Workspace.fetchWorkspaces,
-  updateCurrentWorkspace: Workspace.updateCurrentWorkspace,
+  updateCurrentWorkspace: Session.setActiveWorkspaceID,
   acceptInvite: Workspace.acceptInvite,
   setModal: Modal.setModal,
   trackInvitationAccepted: Tracking.trackInvitationAccepted,

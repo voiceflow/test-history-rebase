@@ -29,8 +29,7 @@ const SIMPLE_WORKSPACE = {
   members: [] as any,
 } as Models.Workspace;
 
-const MOCK_STATE: any = {
-  activeWorkspaceID: WORKSPACE.id,
+const MOCK_STATE = {
   byKey: {
     [WORKSPACE.id]: WORKSPACE,
     [OTHER_WORKSPACE.id]: OTHER_WORKSPACE,
@@ -38,59 +37,41 @@ const MOCK_STATE: any = {
   },
   allKeys: [WORKSPACE.id, OTHER_WORKSPACE.id, SIMPLE_WORKSPACE.id],
 };
+const ROOT_STATE = {
+  session: { activeWorkspaceID: WORKSPACE.id },
+};
 
-suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, describeReducer, describeSelectors }) => {
-  describeReducer(
-    {
-      ...Workspace.INITIAL_STATE,
-      activeWorkspaceID: null,
-    },
-    ({ expectAction }) => {
-      describe('updateCurrentWorkspace()', () => {
-        it('should update the active workspace', () => {
-          const workspaceID = 'ghi';
-
-          expectAction(Workspace.updateCurrentWorkspace(workspaceID)).toModify({ activeWorkspaceID: workspaceID });
-        });
-      });
-    }
-  );
-
-  describeSelectors(({ select, createState }) => {
-    describe('activeWorkspaceIDSelector()', () => {
-      it('should select the active workspace ID', () => {
-        expect(select(Workspace.activeWorkspaceIDSelector)).to.eq(WORKSPACE.id);
-      });
-    });
-
+suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, describeSelectors }) => {
+  describeSelectors(({ select }) => {
     describe('activeWorkspaceSelector()', () => {
       it('should select the active workspace', () => {
-        expect(select(Workspace.activeWorkspaceSelector)).to.eq(WORKSPACE);
+        expect(select(Workspace.activeWorkspaceSelector, ROOT_STATE)).to.eq(WORKSPACE);
       });
     });
 
     describe('workspaceNumberOfSeatsSelector()', () => {
       it('should select the number of seats of the active workspace', () => {
-        expect(select(Workspace.workspaceNumberOfSeatsSelector)).to.eq(4);
+        expect(select(Workspace.workspaceNumberOfSeatsSelector, ROOT_STATE)).to.eq(4);
       });
     });
 
     describe('planTypeSelector()', () => {
       it('should select the plan of the active workspace', () => {
-        expect(select(Workspace.planTypeSelector)).to.eq('pro');
+        expect(select(Workspace.planTypeSelector, ROOT_STATE)).to.eq('pro');
       });
     });
 
     describe('isOnPaidPlanSelector()', () => {
       it('should select whether the active workspace is on a paid plan', () => {
-        const ROOT_STATE = {
+        const rootState = {
+          ...ROOT_STATE,
           feature: {
             features: {
               isEnabled: true,
             },
           },
         };
-        expect(select(Workspace.isOnPaidPlanSelector, ROOT_STATE)).to.be.true;
+        expect(select(Workspace.isOnPaidPlanSelector, rootState)).to.be.true;
       });
     });
 
@@ -102,33 +83,33 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, describeReduc
 
     describe('activeWorkspaceMembersSelector()', () => {
       it('should select members of the active workspace', () => {
-        expect(select(Workspace.activeWorkspaceMembersSelector)).to.eq(MEMBERS);
+        expect(select(Workspace.activeWorkspaceMembersSelector, ROOT_STATE)).to.eq(MEMBERS);
       });
 
       it('should select an empty array if no members listed', () => {
-        expect(select(Workspace.activeWorkspaceMembersSelector, createState({ ...MOCK_STATE, activeWorkspaceID: SIMPLE_WORKSPACE.id }))).to.eql([]);
+        expect(select(Workspace.activeWorkspaceMembersSelector, { session: { activeWorkspaceID: SIMPLE_WORKSPACE.id } })).to.eql([]);
       });
     });
 
     describe('seatLimitsSelector()', () => {
       it('should select the seat limits of the active workspace', () => {
-        expect(select(Workspace.seatLimitsSelector)).to.eq(SEAT_LIMITS);
+        expect(select(Workspace.seatLimitsSelector, ROOT_STATE)).to.eq(SEAT_LIMITS);
       });
     });
 
     describe('usedEditorSeatsSelector()', () => {
       it('should select the number of occupied seats in the active workspace', () => {
-        expect(select(Workspace.usedEditorSeatsSelector)).to.eq(2);
+        expect(select(Workspace.usedEditorSeatsSelector, ROOT_STATE)).to.eq(2);
       });
 
       it('should always have at least 1 used seat', () => {
-        expect(select(Workspace.usedEditorSeatsSelector, createState({ ...MOCK_STATE, activeWorkspaceID: 'def' }))).to.eq(1);
+        expect(select(Workspace.usedEditorSeatsSelector, { session: { activeWorkspaceID: 'def' } })).to.eq(1);
       });
     });
 
     describe('usedViewerSeatsSelector()', () => {
       it('should select the number of viewers in the active workspace', () => {
-        expect(select(Workspace.usedViewerSeatsSelector)).to.eq(1);
+        expect(select(Workspace.usedViewerSeatsSelector, ROOT_STATE)).to.eq(1);
       });
     });
 
@@ -140,25 +121,25 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, describeReduc
 
     describe('activeWorkspaceMemberSelector()', () => {
       it('should select a member from the active workspace by creator ID', () => {
-        expect(select(Workspace.activeWorkspaceMemberSelector)('456')).to.eq(MEMBER);
+        expect(select(Workspace.activeWorkspaceMemberSelector, ROOT_STATE)('456')).to.eq(MEMBER);
       });
 
       it('should return null if no member matches for active workspace', () => {
-        expect(select(Workspace.anyWorkspaceMemberSelector)('999')).to.be.null;
+        expect(select(Workspace.anyWorkspaceMemberSelector, ROOT_STATE)('999')).to.be.null;
       });
 
       it('should return null members list', () => {
-        expect(select(Workspace.activeWorkspaceMemberSelector, createState({ ...MOCK_STATE, activeWorkspaceID: 'def' }))('999')).to.be.null;
+        expect(select(Workspace.activeWorkspaceMemberSelector, { session: { activeWorkspaceID: 'def' } })('999')).to.be.null;
       });
     });
 
     describe('anyWorkspaceMemberSelector()', () => {
       it('should select a member from the active workspace by creator ID', () => {
-        expect(select(Workspace.anyWorkspaceMemberSelector)('456')).to.eq(MEMBER);
+        expect(select(Workspace.anyWorkspaceMemberSelector, ROOT_STATE)('456')).to.eq(MEMBER);
       });
 
       it('should return null if no member matches in all workspaces', () => {
-        expect(select(Workspace.anyWorkspaceMemberSelector)('999')).to.be.null;
+        expect(select(Workspace.anyWorkspaceMemberSelector, ROOT_STATE)('999')).to.be.null;
       });
     });
 
@@ -169,13 +150,13 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, describeReduc
         const color = 'orange';
         const getAlternativeColor = stub(ColorUtils, 'getAlternativeColor').returns(color);
 
-        expect(select(Workspace.distinctWorkspaceMemberSelector)('456', tabID)).to.eql({ ...MEMBER, color });
+        expect(select(Workspace.distinctWorkspaceMemberSelector, ROOT_STATE)('456', tabID)).to.eql({ ...MEMBER, color });
 
         expect(getAlternativeColor).to.be.calledWithExactly(tabID);
       });
 
       it('should return null if no member matches', () => {
-        expect(select(Workspace.distinctWorkspaceMemberSelector)('999', tabID)).to.be.null;
+        expect(select(Workspace.distinctWorkspaceMemberSelector, ROOT_STATE)('999', tabID)).to.be.null;
       });
     });
   });

@@ -4,7 +4,7 @@ import workspaceClient from '@/client/workspace';
 import { SettingsSection } from '@/components/Settings';
 import { Spinner } from '@/components/Spinner';
 import { Descriptor, TableContainer, TableHeader, TableRow } from '@/components/Table';
-import { activeWorkspaceIDSelector } from '@/ducks/workspace';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
 
@@ -83,6 +83,6 @@ function BillingModal({ workspaceId }) {
 }
 
 const mapStateToProps = {
-  workspaceId: activeWorkspaceIDSelector,
+  workspaceId: Session.activeWorkspaceIDSelector,
 };
 export default connect(mapStateToProps)(BillingModal);

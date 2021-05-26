@@ -1,6 +1,4 @@
 import * as Session from '@/ducks/session';
-// to avoid cycle dependencies
-import { activeWorkspaceIDSelector } from '@/ducks/workspace/selectors';
 import { SyncThunk, Thunk } from '@/store/types';
 
 import { ProjectEventInfo, WorkspaceEventInfo } from './types';
@@ -9,7 +7,7 @@ export const createWorkspaceEventTracker = <T extends {} | undefined = undefined
   callback: (options: T & WorkspaceEventInfo, ...args: Parameters<Thunk>) => void
 ) => (...args: T extends undefined ? [] : [T]): SyncThunk => (dispatch, getState) => {
   const state = getState();
-  const activeWorkspaceID = activeWorkspaceIDSelector(state);
+  const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
 
   if (!activeWorkspaceID) return;
 
@@ -39,7 +37,7 @@ export const createProjectEventTracker = <T extends {} | undefined = undefined>(
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
   const projectID = Session.activeProjectIDSelector(state);
-  const workspaceID = activeWorkspaceIDSelector(state);
+  const workspaceID = Session.activeWorkspaceIDSelector(state);
 
   if (!projectID || !versionID || !workspaceID) return;
 

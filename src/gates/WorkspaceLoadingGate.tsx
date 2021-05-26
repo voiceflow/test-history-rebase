@@ -1,6 +1,7 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
@@ -33,7 +34,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   loadWorkspace: Workspace.fetchWorkspaces,
   getMembers: Workspace.getMembers,
-  updateCurrentWorkspace: Workspace.updateCurrentWorkspace,
+  updateCurrentWorkspace: Session.setActiveWorkspaceID,
 };
 
 type ConnectedWorkspaceLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

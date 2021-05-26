@@ -11,6 +11,7 @@ import { BillingPeriod, ModalType, PlanType, PlatformType, UserRole } from '@/co
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import { connect, withStripe } from '@/hocs';
@@ -475,7 +476,7 @@ const mapStateToProps = {
   workspaceById: Workspace.workspaceByIDSelector,
   account: Account.userSelector,
   firstLogin: Account.isFirstLoginSelector,
-  currentWorkspaceID: Workspace.activeWorkspaceIDSelector,
+  currentWorkspaceID: Session.activeWorkspaceIDSelector,
 };
 
 const mapDispatchToProps = {
@@ -485,7 +486,7 @@ const mapDispatchToProps = {
   acceptInvite: Workspace.acceptInvite,
   goToDashboard: Router.goToDashboard,
   goToDashboardWithSearch: Router.goToDashboardWithSearch,
-  updateCurrentWorkspace: Workspace.updateCurrentWorkspace,
+  updateCurrentWorkspace: Session.setActiveWorkspaceID,
   fetchWorkspaces: Workspace.fetchWorkspaces,
   updateWorkspaceName: Workspace.updateWorkspaceName,
   updateWorkspaceImage: Workspace.updateWorkspaceImage,

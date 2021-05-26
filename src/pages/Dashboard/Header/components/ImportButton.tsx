@@ -9,6 +9,7 @@ import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
@@ -66,7 +67,7 @@ const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProj
 };
 
 const mapStateToProps = {
-  workspaceID: Workspace.activeWorkspaceIDSelector,
+  workspaceID: Session.activeWorkspaceIDSelector,
   workspace: Workspace.activeWorkspaceSelector,
   projects: Project.allProjectsSelector,
 };

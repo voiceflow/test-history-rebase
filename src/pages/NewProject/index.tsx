@@ -11,7 +11,7 @@ import { Path } from '@/config/routes';
 import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
-import * as Workspace from '@/ducks/workspace';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
@@ -165,7 +165,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
 };
 
 const mapStateToProps = {
-  activeWorkspaceID: Workspace.activeWorkspaceIDSelector,
+  activeWorkspaceID: Session.activeWorkspaceIDSelector,
 };
 
 const mapDispatchToProps = {

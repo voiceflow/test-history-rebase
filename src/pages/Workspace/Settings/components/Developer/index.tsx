@@ -12,7 +12,7 @@ import Text, { ClickableText } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import { ModalType } from '@/constants';
 import { setConfirm } from '@/ducks/modal';
-import * as Workspace from '@/ducks/workspace';
+import * as Session from '@/ducks/session';
 import { useModals } from '@/hooks';
 import { APIKey } from '@/models/APIKey';
 import * as Sentry from '@/vendors/sentry';
@@ -21,7 +21,7 @@ import CreateAPIKeyModal from './modal';
 
 const APIKeyPage: React.FC = () => {
   const dispatch = useDispatch();
-  const workspaceID = useSelector(Workspace.activeWorkspaceIDSelector)!;
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
 
   const { open: openCreateModal } = useModals(ModalType.API_KEY_CREATE);
 

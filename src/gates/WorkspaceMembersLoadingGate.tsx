@@ -1,6 +1,7 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { ConnectedProps, MergeArguments } from '@/types';
@@ -16,7 +17,7 @@ const WorkspaceMembersLoadingGate: React.FC<ConnectedWorkspaceMembersLoadingGate
 );
 
 const mapStateToProps = {
-  activeWorkspaceID: Workspace.activeWorkspaceIDSelector,
+  activeWorkspaceID: Session.activeWorkspaceIDSelector,
   activeWorkspaceMembers: Workspace.activeWorkspaceMembersSelector,
 };
 

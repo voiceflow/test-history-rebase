@@ -20,9 +20,7 @@ export const {
   has: hasWorkspacesSelector,
 } = CRUD.createCRUDSelectors(STATE_KEY);
 
-export const activeWorkspaceIDSelector = createSelector([rootWorkspacesSelector], ({ activeWorkspaceID }) => activeWorkspaceID);
-
-export const activeWorkspaceSelector = createSelector([workspaceByIDSelector, activeWorkspaceIDSelector], (getWorkspace, workspaceID) =>
+export const activeWorkspaceSelector = createSelector([workspaceByIDSelector, Session.activeWorkspaceIDSelector], (getWorkspace, workspaceID) =>
   workspaceID ? getWorkspace(workspaceID) : null
 );
 

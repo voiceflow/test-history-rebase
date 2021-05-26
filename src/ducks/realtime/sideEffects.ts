@@ -51,7 +51,7 @@ export const switchRealtimeDiagram = (versionID: string, diagramID: string, isNe
 export const updateDiagramViewers = (users: RealtimeLocks['users']): Thunk => async (dispatch, getState) => {
   const state = getState();
   const diagramID = Session.activeDiagramIDSelector(state);
-  const workspaceID = Workspace.activeWorkspaceIDSelector(state);
+  const workspaceID = Session.activeWorkspaceIDSelector(state);
 
   const hasWorkspaceMemberSelector = Workspace.hasWorkspaceMemberSelector(state);
 

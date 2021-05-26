@@ -26,6 +26,7 @@ import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
 import { connect } from '@/hocs';
@@ -324,7 +325,7 @@ const mapStateToProps = {
   projectsMap: Project.projectsMapSelector,
   projectLists: ProjectList.allProjectListsSelector,
   workspace: Workspace.activeWorkspaceSelector,
-  workspaceID: Workspace.activeWorkspaceIDSelector,
+  workspaceID: Session.activeWorkspaceIDSelector,
   workspaces: Workspace.allWorkspacesSelector,
   hasTemplatesWorkspace: Workspace.hasTemplateWorkspaceSelector,
 };

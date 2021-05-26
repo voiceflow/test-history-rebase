@@ -2,7 +2,6 @@ import { Locale as GeneralLocale } from '@voiceflow/general-types';
 import uniqBy from 'lodash/uniqBy';
 import { createSelector } from 'reselect';
 
-import { GENERAL_PLATFORMS } from '@/constants';
 import { applyIntentNameFormatting } from '@/ducks/intent/utils';
 import * as Project from '@/ducks/project';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
@@ -10,6 +9,7 @@ import { activeLocalesSelector } from '@/ducks/version/selectors';
 import { Intent } from '@/models';
 import { unique } from '@/utils/array';
 import { GENERAL_BUILT_INS_MAP, getBuiltInIntents } from '@/utils/intent';
+import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 import { STATE_KEY } from './constants';
 
@@ -36,7 +36,7 @@ export const allPlatformIntentsSelector = createSelector(
   (intents, platform, locales) => {
     const prettifiedIntents = applyIntentNameFormatting(intents, platform);
 
-    if (GENERAL_PLATFORMS.includes(platform)) {
+    if (isAnyGeneralPlatform(platform)) {
       const lang = (locales[0] ?? GeneralLocale.EN_US).split('-')[0];
 
       return uniqBy([...prettifiedIntents, ...(GENERAL_BUILT_INS_MAP[lang] || GENERAL_BUILT_INS_MAP.en)], (intent) => intent.id);

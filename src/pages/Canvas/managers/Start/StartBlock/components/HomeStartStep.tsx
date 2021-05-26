@@ -1,11 +1,12 @@
 import React from 'react';
 
 import Text from '@/components/Text';
-import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
 import { getPlatformValue } from '@/utils/platform';
+import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 export type HomeStartStepProps = {
   platform: PlatformType;
@@ -27,7 +28,7 @@ const HomeStartStep: React.FC<HomeStartStepProps> = ({ platform, invocationName,
           },
           <>Project starts here</>
         )}
-        labelVariant={GENERAL_PLATFORMS.includes(platform) ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
+        labelVariant={isAnyGeneralPlatform(platform) ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
         portID={portID}
       />
     </Section>

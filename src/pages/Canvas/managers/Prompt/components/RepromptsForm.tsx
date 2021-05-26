@@ -1,12 +1,12 @@
 import React from 'react';
 
+import { MAX_ALEXA_REPROMPTS, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
 import { NodeData, SpeakData } from '@/models';
 import NoMatchItem from '@/pages/Canvas/components/NoMatchItem';
 import SpeakAndAudioList from '@/pages/Canvas/components/SpeakAndAudioList';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
 import { PlatformContext } from '@/pages/Skill/contexts';
-
-const MAX_REPROMPTS = 3;
+import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 export type RepromptsFormProps = {
   data: NodeData.Prompt;
@@ -28,7 +28,7 @@ const RepromptsForm: React.FC<RepromptsFormProps> = ({ data, onChange }) => {
       items={reprompts}
       platform={platform}
       itemName="reprompts"
-      maxItems={MAX_REPROMPTS}
+      maxItems={isAnyGeneralPlatform(platform) ? MAX_SPEAK_ITEMS_COUNT : MAX_ALEXA_REPROMPTS}
       randomize={randomize}
       itemComponent={NoMatchItem}
       onChangeItems={changeReprompts}

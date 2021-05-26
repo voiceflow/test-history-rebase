@@ -5,7 +5,7 @@ import Checkbox, { CheckboxType } from '@/components/Checkbox';
 import NestedMenu from '@/components/NestedMenu';
 import OverflowMenu from '@/components/OverflowMenu';
 import Text from '@/components/Text';
-import { DialogType } from '@/constants';
+import { DialogType, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Project from '@/ducks/project';
 import * as Version from '@/ducks/version';
@@ -19,7 +19,6 @@ import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from './constants';
 import StyledSpeakItem from './StyledSpeakItem';
 
 const NestedMenuAny: React.FC<any> = NestedMenu;
-const MAX_EXPRESSIONS = 22;
 
 type NestedMenuOption = MenuOption & { disabled?: boolean; menuItemProps?: {} };
 type TopMenuOption = MenuOption & { options?: NestedMenuOption[]; menuProps?: {} };
@@ -127,7 +126,7 @@ const SpeakEditor: NodeEditor<NodeData.Speak, SpeakEditorConnectedProps> = ({
       }
       items={dialogs}
       platform={platform}
-      maxItems={MAX_EXPRESSIONS}
+      maxItems={MAX_SPEAK_ITEMS_COUNT}
       randomize={isDeprecated ? data.randomize : undefined}
       isDeprecated={isDeprecated}
       itemComponent={StyledSpeakItem}

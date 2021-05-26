@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
-import { GENERAL_PLATFORMS } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Project from '@/ducks/project';
 import * as Prototype from '@/ducks/prototype';
@@ -16,6 +15,7 @@ import { usePrototypingMode } from '@/pages/Skill/hooks';
 import PrototypeMenu from '@/pages/Skill/menus/PrototypeMenu';
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
+import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 const PrototypeOverlay: React.FC<ConnectedDiagramProps> = ({ platform, prototypeMode, showCanvas, hideCanvas }) => {
   const theme = useTheme();
@@ -53,7 +53,7 @@ const PrototypeOverlay: React.FC<ConnectedDiagramProps> = ({ platform, prototype
 
   widthRef.current = getPrototypeSettingsWidth();
 
-  const isGeneral = GENERAL_PLATFORMS.includes(platform);
+  const isGeneral = isAnyGeneralPlatform(platform);
   const isPrototypeSidebarOpened = isPrototypeVariables || isPrototypeSettings || (isPrototypeDisplay && !isGeneral);
 
   return (

@@ -1,5 +1,6 @@
 import { GENERAL_PLATFORMS } from '@/constants';
 import { NodeData } from '@/models';
+import { Writeable } from '@/types';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -10,7 +11,7 @@ const VisualManager: NodeManagerConfig<NodeData.Visual> = {
   ...NODE_CONFIG,
 
   label: 'Visuals',
-  platforms: GENERAL_PLATFORMS,
+  platforms: GENERAL_PLATFORMS as Writeable<typeof GENERAL_PLATFORMS>,
 
   step: VisualStep,
   editor: VisualEditor,

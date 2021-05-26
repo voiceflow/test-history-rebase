@@ -10,7 +10,7 @@ import { FlexCenter } from '@/components/Flex';
 import Input from '@/components/Input';
 import Select from '@/components/Select';
 import Icon from '@/components/SvgIcon';
-import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
@@ -20,6 +20,7 @@ import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES } from '@/pages/Publ
 import LOCALE_MAP from '@/services/LocaleMap';
 import { without } from '@/utils/array';
 import { getPlatformValue } from '@/utils/platform';
+import { isAlexaPlatform, isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 import { SectionDescription, SectionErrorMessage, SectionTitle } from '../components';
 
@@ -52,8 +53,8 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
   setInvocationName,
   setGoogleLanguage,
 }) => {
-  const isAlexa = selectedChannel === PlatformType.ALEXA;
-  const isGeneral = GENERAL_PLATFORMS.includes(selectedChannel);
+  const isAlexa = isAlexaPlatform(selectedChannel);
+  const isGeneral = isAnyGeneralPlatform(selectedChannel);
 
   const alexaDisplayName = isAlexa
     ? alexaLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')

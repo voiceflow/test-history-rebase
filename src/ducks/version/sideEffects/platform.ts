@@ -3,11 +3,12 @@ import { GeneralVersionSettings, Locale as GeneralLocale } from '@voiceflow/gene
 import { GoogleVersionSettings, Locale as GoogleLocale } from '@voiceflow/google-types';
 
 import * as Errors from '@/config/errors';
-import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import { SyncThunk, Thunk } from '@/store/types';
 import { arrayStringReplace } from '@/utils/string';
+import { isAlexaPlatform, isAnyGeneralPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 import { patchVersion } from '../actions';
 import * as alexa from '../platform/alexa';
@@ -48,11 +49,11 @@ export const saveSettings = (settings: Partial<AnySettings>): Thunk => async (di
   const state = getState();
   const platform = Project.activePlatformSelector(state);
 
-  if (platform === PlatformType.ALEXA) {
+  if (isAlexaPlatform(platform)) {
     await dispatch(alexa.saveSettings(settings as AlexaVersionSettings));
-  } else if (platform === PlatformType.GOOGLE) {
+  } else if (isGooglePlatform(platform)) {
     await dispatch(google.saveSettings(settings as GoogleVersionSettings));
-  } else if (GENERAL_PLATFORMS.includes(platform)) {
+  } else if (isAnyGeneralPlatform(platform)) {
     await dispatch(general.saveSettings(settings as GeneralVersionSettings));
   }
 };

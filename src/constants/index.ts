@@ -62,9 +62,9 @@ export enum NLPProvider {
   RASA = 'rasa',
 }
 
-export const GENERAL_PLATFORMS = [PlatformType.GENERAL, PlatformType.IVR, PlatformType.MOBILE_APP, PlatformType.CHATBOT];
+export const GENERAL_PLATFORMS = [PlatformType.GENERAL, PlatformType.IVR, PlatformType.MOBILE_APP, PlatformType.CHATBOT] as const;
 
-export const DISTINCT_PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.GENERAL];
+export const DISTINCT_PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.GENERAL] as const;
 
 export type DistinctPlatform = PlatformType.ALEXA | PlatformType.GOOGLE | PlatformType.GENERAL;
 
@@ -572,3 +572,7 @@ export enum BCP_LANGUAGE_CODE {
 }
 
 export const CUSTOMIZABLE_INTENT_PREFIXS = ['AMAZON', 'VF'];
+
+export const MAX_ALEXA_REPROMPTS = 3;
+
+export const MAX_SPEAK_ITEMS_COUNT = 22;

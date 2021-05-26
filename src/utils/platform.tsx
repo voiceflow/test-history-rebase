@@ -5,6 +5,8 @@ import { Voice as GoogleVoice } from '@voiceflow/google-types';
 import { DISTINCT_PLATFORMS, DistinctPlatform, PlatformType } from '@/constants';
 import { AnyVoice } from '@/ducks/version/types';
 
+import { isDistinctPlatform } from './typeGuards';
+
 export const createPlatformSelector: {
   <T extends any>(platformValues: Record<PlatformType, T>, defaultValue?: T): (platform: PlatformType) => T;
   <T extends any>(platformValues: Partial<Record<PlatformType, T>>, defaultValue: T): (platform: PlatformType) => T;
@@ -25,7 +27,7 @@ export const getDistinctPlatformValue = <T extends any>(platform: PlatformType, 
   createPlatformSelector(platformValues, platformValues[PlatformType.GENERAL])(platform);
 
 export const setDistinctPlatformValue = <T extends any>(platform: PlatformType, value: T): Partial<Record<DistinctPlatform, T>> => ({
-  [DISTINCT_PLATFORMS.includes(platform) ? platform : PlatformType.GENERAL]: value,
+  [isDistinctPlatform(platform) ? platform : PlatformType.GENERAL]: value,
 });
 
 export const distinctPlatformsData = <T extends any>(data: T) =>

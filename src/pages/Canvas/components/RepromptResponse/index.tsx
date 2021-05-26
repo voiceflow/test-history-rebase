@@ -3,6 +3,7 @@ import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
+import { MAX_ALEXA_REPROMPTS, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { Node, NodeData } from '@/models';
@@ -13,13 +14,13 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { head } from '@/utils/array';
+import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 import { NodeEditorPropsType } from '../../managers/types';
 import RadiobuttonText from './components/RadiobuttonText';
 import RepromptTooltip from './components/RepromptTooltip';
 import useCachedUpdate from './hooks/useCachedUpdate';
 
-const MAX_REPROMPTS = 3;
 const ELSE_OPTIONS = [
   {
     id: InteractionElseType.PATH,
@@ -62,11 +63,12 @@ const RepromptResponseForm: React.FC<NodeEditorPropsType<NodeData.Interaction> &
           <RadioGroup options={ELSE_OPTIONS} checked={type} onChange={handleChangeType} />
         </FormControl>
       </Section>
+
       {type === InteractionElseType.REPROMPT && (
         <SpeakAndAudioList
           items={cachedData.else.data.reprompts}
           platform={platform}
-          maxItems={MAX_REPROMPTS}
+          maxItems={isAnyGeneralPlatform(platform) ? MAX_SPEAK_ITEMS_COUNT : MAX_ALEXA_REPROMPTS}
           itemName="reprompts"
           randomize={cachedData.else.randomize}
           itemComponent={NoMatchItem}

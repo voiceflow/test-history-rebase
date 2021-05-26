@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { GENERAL_PLATFORMS } from '@/constants';
 import { ResourcesHeaderButton, SubHeaderItem } from '@/pages/Dashboard/Header/components';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { useCanvasMode } from '@/pages/Skill/hooks';
+import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 import { CanvasSettingsButton, GroupContainer, ShareProject, TestButton, UploadProjectGroup } from './components';
 
@@ -22,7 +22,7 @@ const ActionGroup: React.FC = () => {
 
       {isCanvasMode ? (
         <>
-          {GENERAL_PLATFORMS.includes(platform!) ? (
+          {isAnyGeneralPlatform(platform!) ? (
             <UploadProjectGroup />
           ) : (
             <GroupContainer>

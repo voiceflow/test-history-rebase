@@ -8,7 +8,7 @@ import client from '@/client';
 import { CreationHeader, InnerContainer, OuterContainer } from '@/components/CreationSteps';
 import { FlexCenter } from '@/components/Flex';
 import { Path } from '@/config/routes';
-import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -18,6 +18,7 @@ import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
 import { createPlatformSelector } from '@/utils/platform';
+import { isAlexaPlatform, isAnyGeneralPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 import { StepID, StepMeta } from './constants';
 
@@ -61,25 +62,25 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
     try {
       // TODO: change this when we have templates for all channels
       const project = await createProject(
-        { platform: GENERAL_PLATFORMS.includes(selectedChannel!) ? PlatformType.GENERAL : selectedChannel!, name, image: projectImage, listID },
+        { platform: isAnyGeneralPlatform(selectedChannel!) ? PlatformType.GENERAL : selectedChannel!, name, image: projectImage, listID },
         getTemplateTag(selectedChannel!)
       );
 
       // TODO: in the future make new project parameters much more platform specific
-      if (selectedChannel === PlatformType.ALEXA) {
+      if (isAlexaPlatform(selectedChannel!)) {
         await client.platform.alexa.version.updatePublishing(project.versionID, {
           invocationName,
           invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
           locales: alexaLocales,
         });
-      } else if (selectedChannel === PlatformType.GOOGLE) {
+      } else if (isGooglePlatform(selectedChannel!)) {
         await client.platform.google.version.updatePublishing(project.versionID, {
           locales: LanguageToLocale[googleLanguage],
           displayName: name,
           pronunciation: invocationName,
           sampleInvocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
         });
-      } else if (GENERAL_PLATFORMS.includes(selectedChannel!)) {
+      } else if (isAnyGeneralPlatform(selectedChannel!)) {
         await client.platform.general.version.updateSettings(project.versionID, {
           locales: [generalLocale],
         });

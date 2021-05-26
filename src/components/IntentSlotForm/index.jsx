@@ -11,7 +11,6 @@ import Section, { SectionToggleVariant, UncontrolledSection } from '@/components
 import SSMLWithSlots from '@/components/SSMLWithSlots';
 import Utterance from '@/components/Utterance';
 import { SlotTag } from '@/components/VariableTag';
-import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
 import * as Project from '@/ducks/project';
@@ -20,12 +19,13 @@ import { connect } from '@/hocs';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { slotToString } from '@/utils/slot';
+import { isAlexaPlatform, isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 import { ResponseUtterancesTooltip, SlotConfirmationTooltip, SlotPromptTooltip, SlotRequiredMessage } from './components';
 
 function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalone = false, updateIntentSlot, updateIntentSlotDialog }) {
-  const isAlexa = platform === PlatformType.ALEXA;
-  const isGeneral = GENERAL_PLATFORMS.includes(platform);
+  const isAlexa = isAlexaPlatform(platform);
+  const isGeneral = isAnyGeneralPlatform(platform);
   const utteranceRef = React.useRef();
   const {
     required,

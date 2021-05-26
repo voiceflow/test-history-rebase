@@ -14,6 +14,8 @@ export type Nullable<T> = T | null;
 
 export type Nullish<T> = Nullable<T> | undefined;
 
+export type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+
 export type NullableRecord<T extends object> = { [K in keyof T]: Nullable<T[K]> };
 
 export type NonNullishRecord<T extends object> = Required<{ [K in keyof T]: Exclude<T[K], null> }>;

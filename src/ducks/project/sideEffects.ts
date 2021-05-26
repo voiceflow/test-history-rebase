@@ -4,11 +4,12 @@ import client from '@/client';
 import projectAdapter from '@/client/adapters/project';
 import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
-import { DISTINCT_PLATFORMS, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import { addProjectToList } from '@/ducks/projectList/actions';
 import * as Session from '@/ducks/session';
 import { AnyProject } from '@/models';
 import { Thunk } from '@/store/types';
+import { isDistinctPlatform } from '@/utils/typeGuards';
 
 import { addProject, patchProject, removeProject, replaceProjects, updateProjectName } from './actions';
 import { activeProjectNameSelector, projectByIDSelector } from './selectors';
@@ -52,7 +53,7 @@ export const createProject = ({ platform, name, image, listID }: Partial<CreateP
   Errors.assertWorkspaceID(workspaceID);
 
   // TODO: remove this after SQL `templates` table migration + Mongo template project platform update
-  const distinctPlatform = DISTINCT_PLATFORMS.includes(platform!) ? platform! : PlatformType.GENERAL;
+  const distinctPlatform = isDistinctPlatform(platform!) ? platform! : PlatformType.GENERAL;
 
   const templateProjectID = await client.template.getPlatformTemplate(distinctPlatform, templateTag);
   if (!templateProjectID) {

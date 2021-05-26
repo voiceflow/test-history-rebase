@@ -10,7 +10,7 @@ import Input from '@/components/Input';
 import Section, { SectionVariant } from '@/components/Section';
 import Select from '@/components/Select';
 import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
-import { GENERAL_PLATFORMS, PlatformType } from '@/constants';
+import { PlatformType } from '@/constants';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
@@ -23,6 +23,7 @@ import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { without } from '@/utils/array';
 import { getPlatformValue } from '@/utils/platform';
+import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 import { PlatformSettingsMetaProps, SettingSections } from '../../../constants';
 
@@ -81,7 +82,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   const saveSettings = async () => {
     await Promise.all([
       saveProjectName(newProjectName),
-      !GENERAL_PLATFORMS.includes(platform) ? saveInvocationName(newInvocation) : null,
+      !isAnyGeneralPlatform(platform) ? saveInvocationName(newInvocation) : null,
       project && projectImage ? saveProjectImage(project.id, projectImage) : null,
       platform === PlatformType.ALEXA && locales !== alexaLocales ? saveLocales(alexaLocales) : null,
       platform === PlatformType.GOOGLE && googleLanguage !== initialGoogleLanguage ? saveLocales(LanguageToLocale[googleLanguage as Language]) : null,
@@ -108,7 +109,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         </Flex>
       </Section>
 
-      {!GENERAL_PLATFORMS.includes(platform) && (
+      {!isAnyGeneralPlatform(platform) && (
         <Section
           header="Invocation Name"
           variant={SectionVariant.QUATERNARY}

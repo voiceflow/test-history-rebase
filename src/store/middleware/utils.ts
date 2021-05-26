@@ -1,0 +1,92 @@
+import shallowequal from 'shallowequal';
+import { debounce } from 'throttle-debounce';
+
+import { DiagramState } from '@/constants';
+import * as Account from '@/ducks/account';
+import * as Creator from '@/ducks/creator';
+import * as Realtime from '@/ducks/realtime';
+import * as Workspace from '@/ducks/workspace';
+import { unique } from '@/utils/array';
+
+import { AnyAction, Dispatchable, Selector, StoreMiddleware, StoreMiddlewareAPI } from '../types';
+
+const AUTOSAVE_DEBOUNCE_TIMEOUT = 200;
+const AUTOSAVE_IGNORED_ACTIONS: string[] = [Account.AccountAction.RESET_ACCOUNT, Creator.DiagramAction.SET_DIAGRAM_STATE];
+
+type ActionIgnore = (string | ((action: AnyAction) => boolean))[];
+
+const isIgnored = (action: AnyAction, ignore: ActionIgnore) =>
+  ignore.some((item) => (typeof item === 'function' ? item(action) : item === action.type));
+
+const getDiffKeys = (lhs: Record<string, any>, rhs: Record<string, any>) =>
+  unique([...Object.keys(lhs), ...Object.keys(rhs)]).filter((key) => lhs[key] !== rhs[key]);
+
+export const createAutosaveMiddleware = <T>(
+  selector: Selector<T>,
+  createSaveAction: (changedKeys: string[] | null) => Dispatchable,
+  { ignore = [], partial = false }: { ignore?: ActionIgnore; partial?: boolean } = {}
+): StoreMiddleware => {
+  let prevState: T | null = null;
+  const debouncedSave = debounce(AUTOSAVE_DEBOUNCE_TIMEOUT, (store: StoreMiddlewareAPI, changedKeys: string[] | null) =>
+    store.dispatch(Creator.performSave(createSaveAction(changedKeys)))
+  );
+
+  return (store) => (next) => (action) => {
+    // eslint-disable-next-line callback-return
+    next(action);
+
+    const state = store.getState();
+    const currentState = selector(state);
+    const isLibraryRole = Workspace.isLibraryRoleSelector(state);
+
+    try {
+      if (isLibraryRole) return;
+
+      // do not autosave on realtime updates
+      if (action.meta?.receivedAction) return;
+
+      if (isIgnored(action, [...AUTOSAVE_IGNORED_ACTIONS, ...ignore])) return;
+
+      if (prevState !== null && !shallowequal(prevState, currentState)) {
+        store.dispatch(Creator.setDiagramState(DiagramState.CHANGED));
+
+        debouncedSave(store, partial ? getDiffKeys(prevState, currentState) : null);
+      }
+    } finally {
+      prevState = currentState;
+    }
+  };
+};
+
+export const createRealtimeResourceUpdateMiddleware = <T>(
+  resourceID: Realtime.ResourceType,
+  selector: Selector<T>,
+  { ignore = [] }: { ignore?: ActionIgnore } = {}
+): StoreMiddleware => {
+  let prevState: T | null = null;
+
+  return (store) => (next) => (action) => {
+    // eslint-disable-next-line callback-return
+    next(action);
+
+    const state = store.getState();
+    const currentState = selector(state);
+    const isRealtimeConnected = Realtime.isRealtimeConnectedSelector(state);
+
+    try {
+      if (!isRealtimeConnected) return;
+
+      // do not autosave on realtime updates
+      if (action.meta?.receivedAction) return;
+
+      if (isIgnored(action, ignore)) return;
+
+      if (prevState !== null && !shallowequal(prevState, currentState)) {
+        const realtimeAction = Realtime.updateResource(resourceID, currentState);
+        store.dispatch(Realtime.sendRealtimeProjectUpdate(realtimeAction));
+      }
+    } finally {
+      prevState = currentState;
+    }
+  };
+};

@@ -4,7 +4,6 @@ import Box, { Flex } from '@/components/Box';
 import Duration from '@/components/Duration';
 import User from '@/components/User';
 import * as Workspace from '@/ducks/workspace';
-import { UNKNOWN_MEMBER_DATA } from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { capitalizeAllWords } from '@/utils/string';
@@ -17,7 +16,7 @@ type CommenterProps = {
 };
 
 export const Commenter: React.FC<CommenterProps & ConnectedCommenterProps> = ({ user, time }) => {
-  const userData = user ?? UNKNOWN_MEMBER_DATA;
+  const userData = user ?? Workspace.UNKNOWN_MEMBER_DATA;
 
   return (
     <Flex>
@@ -36,8 +35,7 @@ const mapStateToProps = {
   user: Workspace.anyWorkspaceMemberSelector,
 };
 
-// eslint-disable-next-line no-empty-pattern
-const mergeProps = (...[{ user: userSelector }, {}, { creatorID }]: MergeArguments<typeof mapStateToProps, {}, CommenterProps>) => ({
+const mergeProps = (...[{ user: userSelector }, , { creatorID }]: MergeArguments<typeof mapStateToProps, {}, CommenterProps>) => ({
   user: userSelector(String(creatorID)),
 });
 

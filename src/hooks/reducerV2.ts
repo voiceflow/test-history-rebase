@@ -50,12 +50,12 @@ type API<S extends {}> = {
   update: (payload: Partial<S>) => void;
 } & { [K in keyof S]: KeyApi<S[K]> };
 
-export const useSmartReducerV2 = <S extends {}>(
+export const useSmartReducerV2 = <S extends {}, R extends {} = {}>(
   defaultState: S,
   customReducer: CustomReducer<S> = (s) => s,
-  customApiBuilder: <R extends {}>(defaultState: S, api: { [K in keyof S]: KeyApi<S[K]> }) => R = () => ({} as any)
+  customApiBuilder: (defaultState: S, api: { [K in keyof S]: KeyApi<S[K]> }) => R = () => ({} as any)
 ) => {
-  const apiRef = useRef(null as null | (API<S> & ReturnType<typeof customApiBuilder>));
+  const apiRef = useRef(null as null | (API<S> & R));
   const [state, dispatch] = useReducer(createSmartReducer(customReducer), defaultState);
 
   if (!apiRef.current) {

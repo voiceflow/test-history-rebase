@@ -115,7 +115,6 @@ export const Path = {
   WORKSPACE_BILLING_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.BILLING),
   WORKSPACE_DEVELOPER_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.DEVELOPER),
   NEW_WORKSPACE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.NEW),
-  WORKSPACE_TEMPLATE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.TEMPLATE),
 
   DASHBOARD: toPath(RootRoute.DASHBOARD),
 

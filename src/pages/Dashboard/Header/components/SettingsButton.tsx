@@ -89,7 +89,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  leaveWorkspace: Workspace.leaveWorkspace,
+  leaveWorkspace: Workspace.leaveActiveWorkspace,
   goToWorkspaceSettings: Router.goToCurrentWorkspaceSettings,
 };
 

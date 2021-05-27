@@ -14,7 +14,6 @@ import * as Workspace from '@/ducks/workspace';
 import { extractMemberById } from '@/ducks/workspace/utils';
 import { connect } from '@/hocs';
 import { useModals, useTrackingEvents } from '@/hooks';
-import { importProject } from '@/store/sideEffects';
 import * as Sentry from '@/vendors/sentry';
 
 import { ImportSelect } from './ModalComponents';
@@ -148,7 +147,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  importProject,
+  importProject: Workspace.importProjectToActiveWorkspace,
   goToWorkspace: Router.goToWorkspace,
 };
 

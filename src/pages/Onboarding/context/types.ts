@@ -85,11 +85,8 @@ export type OnboardingContextProps = {
 
 export type OnboardingProviderProps = {
   query: Query;
-  firstLogin: boolean;
   numberOfSteps?: number;
-  children: React.ReactNode;
   stripe: any;
   checkChargeable: (data: any) => void;
-  trackInvitationAccepted: (workspaceId: string) => void;
   isLoginFlow: boolean;
 };

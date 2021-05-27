@@ -5,7 +5,7 @@ import { Members } from '@/components/User';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Realtime from '@/ducks/realtime';
-import { WorkspaceLoadingGate, WorkspaceMembersLoadingGate } from '@/gates';
+import { WorkspaceMembersLoadingGate, WorkspacesLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
 import { compose } from '@/utils/functional';
@@ -28,4 +28,4 @@ const mapStateToProps = {
   viewers: Realtime.activeDiagramViewersSelector,
 };
 
-export default compose(withBatchLoadingGate(WorkspaceLoadingGate, WorkspaceMembersLoadingGate), connect(mapStateToProps))(CanvasViewers);
+export default compose(withBatchLoadingGate(WorkspacesLoadingGate, WorkspaceMembersLoadingGate), connect(mapStateToProps))(CanvasViewers);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { Flex } from '@/components/Box';
@@ -9,14 +9,16 @@ import { SettingsContainer, SettingsHeader } from '@/components/Settings';
 import { Path } from '@/config/routes';
 import { userSelector } from '@/ducks/account';
 import * as Router from '@/ducks/router';
-import { activeWorkspaceSelector } from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspace';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
+import { useDispatch } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 import Billing from './components/Billing';
 import Developer from './components/Developer';
 import General from './components/General';
+import { SettingsGate } from './gates';
 
 enum Paths {
   GENERAL = 'general',
@@ -25,11 +27,10 @@ enum Paths {
 }
 
 const Settings: React.FC = () => {
-  const dispatch = useDispatch();
-  const goToDashboard = () => dispatch(Router.goToDashboard());
-
   const user = useSelector(userSelector);
-  const workspace = useSelector(activeWorkspaceSelector);
+  const workspace = useSelector(Workspace.activeWorkspaceSelector);
+
+  const goToDashboard = useDispatch(Router.goToDashboard);
 
   const tabs = React.useMemo(
     () => [
@@ -68,4 +69,4 @@ const Settings: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(WorkspaceFeatureLoadingGate)(Settings);
+export default withBatchLoadingGate(SettingsGate, WorkspaceFeatureLoadingGate)(Settings);

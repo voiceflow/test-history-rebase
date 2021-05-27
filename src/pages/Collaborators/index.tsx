@@ -39,8 +39,8 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   setConfirm: Modal.setConfirm,
-  sendInvite: Workspace.sendInvite,
-  updateMembers: Workspace.updateMembers,
+  sendInvite: Workspace.sendInviteToActiveWorkspace,
+  updateMembers: Workspace.updateActiveWorkspaceMembers,
 };
 
 type ConnectedCollaboratorsProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

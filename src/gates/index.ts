@@ -1,4 +1,5 @@
 export { default as AccountLoadingGate } from './AccountLoadingGate';
+export { default as CheckInvitationGate } from './CheckInvitationGate';
 export { default as DiagramLoadingGate } from './DiagramLoadingGate';
 export { default as FeatureLoadingGate } from './FeatureLoadingGate';
 export { default as GlobalSocketSubscriptionsLoadingGate } from './GlobalSocketSubscriptionsLoadingGate';
@@ -10,6 +11,5 @@ export { default as ProjectLockGate } from './ProjectLockGate';
 export { default as RealtimeLoadingGate } from './RealtimeLoadingGate';
 export { default as SocketLoadingGate } from './SocketLoadingGate';
 export { default as WorkspaceFeatureLoadingGate } from './WorkspaceFeatureLoadingGate';
-export { default as WorkspaceLoadingGate } from './WorkspaceLoadingGate';
 export { default as WorkspaceMembersLoadingGate } from './WorkspaceMembersLoadingGate';
 export { default as WorkspacesLoadingGate } from './WorkspacesLoadingGate';

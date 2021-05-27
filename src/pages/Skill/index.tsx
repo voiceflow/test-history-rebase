@@ -18,7 +18,7 @@ import {
   ProjectLockGate,
   RealtimeLoadingGate,
   WorkspaceFeatureLoadingGate,
-  WorkspaceLoadingGate,
+  WorkspacesLoadingGate,
 } from '@/gates';
 import { connect, lazy, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable, usePermission, useTeardown } from '@/hooks';
@@ -162,7 +162,7 @@ export default compose(
     ProjectLoadingGate,
     PlanRestrictionGate,
     ProjectLockGate,
-    WorkspaceLoadingGate,
+    WorkspacesLoadingGate,
     WorkspaceFeatureLoadingGate,
     RealtimeLoadingGate
   )

@@ -8,7 +8,7 @@ import Section, { SectionVariant } from '@/components/Section';
 import { ActionSection, SectionVariants, SettingsSection } from '@/components/Settings';
 import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { ModalType } from '@/constants';
-import { activeWorkspaceSelector, updateWorkspaceImage, updateWorkspaceName } from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspace';
 import { useModals } from '@/hooks';
 
 import BoardDeleteModal from './components/BoardDeleteModal';
@@ -17,7 +17,7 @@ const UploadJustIconComponent: React.FC<any> = UploadJustIcon;
 
 const GeneralSettingsPage: React.FC = () => {
   const dispatch = useDispatch();
-  const workspace = useSelector(activeWorkspaceSelector)!;
+  const workspace = useSelector(Workspace.activeWorkspaceSelector)!;
 
   const [name, updateName] = React.useState(workspace.name);
 
@@ -29,11 +29,11 @@ const GeneralSettingsPage: React.FC = () => {
 
   const saveName = React.useCallback(() => {
     if (name && name !== workspace.name) {
-      dispatch(updateWorkspaceName(name));
+      dispatch(Workspace.updateActiveWorkspaceName(name));
     } else {
       updateName(workspace.name);
     }
-  }, [name, updateWorkspaceName, updateName]);
+  }, [name, updateName]);
 
   return (
     <>
@@ -44,7 +44,7 @@ const GeneralSettingsPage: React.FC = () => {
             <Box ml={16}>
               <UploadJustIconComponent
                 size={UploadIconVariant.EXTRA_SMALL}
-                update={(image: string) => dispatch(updateWorkspaceImage(image))}
+                update={(image: string) => dispatch(Workspace.updateActiveWorkspaceImage(image))}
                 image={workspace.image}
                 endpoint="/image"
               />

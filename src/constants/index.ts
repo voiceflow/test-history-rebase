@@ -336,7 +336,7 @@ export enum UserRole {
   GUEST = 'guest', // use for "side-apps" like Prototype Share that do not require login
 }
 
-export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN];
+export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN, UserRole.OWNER];
 
 export const SLOT_COLORS = [
   '#4F9ED1',

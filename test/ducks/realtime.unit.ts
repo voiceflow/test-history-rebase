@@ -335,7 +335,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
             qwe: 'rty',
           },
         };
-        const getMembers = stubEffect(Workspace, 'getMembers');
+        const loadMembers = stubEffect(Workspace, 'loadMembers');
         stub(Session, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
         stub(Workspace, 'hasWorkspaceMemberSelector').returns(() => false);
         stub(Session, 'activeWorkspaceIDSelector').returns(workspaceID);
@@ -343,7 +343,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
         const { dispatch, expectDispatch, expectStubCalled } = await applyEffect(Realtime.updateDiagramViewers(users));
 
         expectDispatch(Realtime.updateActiveDiagramViewers(users));
-        expectStubCalled(getMembers, workspaceID);
+        expectStubCalled(loadMembers, workspaceID);
         expect(dispatch).to.be.calledTwice;
       });
     });

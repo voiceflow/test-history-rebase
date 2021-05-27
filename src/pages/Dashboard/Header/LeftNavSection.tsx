@@ -18,7 +18,6 @@ import { noop } from '@/utils/functional';
 
 type LeftNavSectionProps = {
   loadingProjects: boolean;
-  workspaces: Workspace[];
   activeWorkspace: Workspace | null;
 };
 
@@ -87,6 +86,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProp
 const mapStateToProps = {
   plan: WorkspaceDuck.planTypeSelector,
   role: WorkspaceDuck.userRoleSelector,
+  workspaces: WorkspaceDuck.allWorkspacesSelector,
   isTemplateWorkspace: WorkspaceDuck.isTemplateWorkspaceSelector,
   isAdminOfAnyWorkspace: WorkspaceDuck.isAdminOfAnyWorkspaceSelector,
 };

@@ -2,9 +2,8 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import Menu from '@/components/Menu';
-import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
-import { EDITOR_SEAT_ROLES, UserRole } from '@/constants';
+import { UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -13,8 +12,6 @@ import { FadeLeftContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 
 import { Container, DropdownIcon, DropdownItem, MemberName, PermissionDropdown, PermissionsDropdownButton, UserIcon } from './components';
-
-const isVerifiedMember = (member) => !!member.creator_id;
 
 const getRoleVerb = (role) => {
   switch (role) {
@@ -30,24 +27,8 @@ const getRoleVerb = (role) => {
   }
 };
 
-const MemberRow = ({
-  member,
-  isAdmin,
-  pending,
-  resendInvite,
-  numberOfUsedEditorSeats,
-  numberOfUsedViewerSeats,
-  updateMember,
-  deleteMember,
-  cancelInvite,
-  updateInvite,
-  seatLimits,
-  seats,
-  role,
-  userId,
-  activeWorkspace,
-}) => {
-  const userIsMember = userId === member.creator_id;
+const MemberRow = ({ member, isAdmin, pending, resendInvite, deleteMember, cancelInvite, updateMemberRole, role, userID, activeWorkspace }) => {
+  const userIsMember = userID === member.creator_id;
   const ownerRole = useFeature(FeatureFlag.OWNER_ROLE);
   const memberIsWorkspaceOwner = activeWorkspace.creatorID === member.creator_id;
   const allowDropdown =
@@ -56,31 +37,7 @@ const MemberRow = ({
     !memberIsWorkspaceOwner &&
     !(role === UserRole.EDITOR && (member.role === UserRole.OWNER || member.role === UserRole.ADMIN));
 
-  const changePermission = (role) => {
-    const isAlreadyEditorSeatType = EDITOR_SEAT_ROLES.includes(member.role);
-
-    if (role === member.role) {
-      return;
-    }
-
-    if (
-      !isAlreadyEditorSeatType &&
-      (role === UserRole.EDITOR || role === UserRole.OWNER || role === UserRole.ADMIN) &&
-      numberOfUsedEditorSeats >= seats
-    ) {
-      return toast.error('You have reached your max editor seats usage.');
-    }
-    if (role === UserRole.VIEWER && numberOfUsedViewerSeats >= seatLimits.viewer) {
-      return toast.error('You have reached your max viewer seats usage.');
-    }
-
-    if (isVerifiedMember(member)) {
-      updateMember(member.creator_id, role);
-      return;
-    }
-
-    updateInvite(member.email, role);
-  };
+  const changePermission = (role) => updateMemberRole(member, role);
 
   const remove = () => {
     if (pending) {
@@ -150,20 +107,15 @@ const MemberRow = ({
 };
 
 const mapStateToProps = {
-  numberOfUsedEditorSeats: Workspace.usedEditorSeatsSelector,
   role: Workspace.userRoleSelector,
-  userId: Account.userIDSelector,
-  numberOfUsedViewerSeats: Workspace.usedViewerSeatsSelector,
-  seatLimits: Workspace.seatLimitsSelector,
-  seats: Workspace.workspaceNumberOfSeatsSelector,
+  userID: Account.userIDSelector,
   activeWorkspace: Workspace.activeWorkspaceSelector,
 };
 
 const mapDispatchToProps = {
-  updateMember: Workspace.updateMember,
-  deleteMember: Workspace.deleteMember,
-  cancelInvite: Workspace.cancelInvite,
-  updateInvite: Workspace.updateInvite,
+  deleteMember: Workspace.deleteMemberOfActiveWorkspace,
+  cancelInvite: Workspace.cancelInviteToActiveWorkspace,
+  updateMemberRole: Workspace.updateActiveWorkspaceMemberRole,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MemberRow);

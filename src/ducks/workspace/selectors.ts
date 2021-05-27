@@ -20,6 +20,30 @@ export const {
   has: hasWorkspacesSelector,
 } = CRUD.createCRUDSelectors(STATE_KEY);
 
+export const anyWorkspaceMemberSelector = createSelector([allWorkspacesSelector], (workspaces) => (creatorID: string) => {
+  const allAvailableMembers = workspaces.flatMap((workspace) => workspace.members);
+
+  return allAvailableMembers.find((member) => String(member.creator_id) === creatorID) || null;
+});
+
+export const hasTemplatesWorkspaceSelector = createSelector([allWorkspacesSelector], (workspaces) => workspaces.some(({ templates }) => templates));
+
+export const personalWorkspaceIDsSelector = createSelector([allWorkspacesSelector], (workspaces) =>
+  workspaces.filter((workspace) => !workspace.templates).map((workspace) => workspace.id)
+);
+
+export const isAdminOfAnyWorkspaceSelector = createSelector([allWorkspacesSelector, userIDSelector], (workspaces, userID) =>
+  workspaces.some(({ members }) => members.some(({ creator_id, role }) => userID === creator_id && role === UserRole.ADMIN))
+);
+
+// active project
+
+export const activeProjectWorkspaceSelector = createSelector([allWorkspacesSelector, Session.activeProjectIDSelector], (workspaces, projectID) =>
+  projectID ? workspaces.find(({ boards }) => boards.find(({ projects }) => projects.includes(projectID))) : null
+);
+
+// active workspace
+
 export const activeWorkspaceSelector = createSelector([workspaceByIDSelector, Session.activeWorkspaceIDSelector], (getWorkspace, workspaceID) =>
   workspaceID ? getWorkspace(workspaceID) : null
 );
@@ -58,12 +82,6 @@ export const activeWorkspaceMemberSelector = createSelector([activeWorkspaceMemb
   members?.find((member) => String(member.creator_id) === creatorID) || null
 );
 
-export const anyWorkspaceMemberSelector = createSelector([allWorkspacesSelector], (workspaces) => (creatorID: string) => {
-  const allAvailableMembers = workspaces.flatMap((workspace) => workspace.members);
-
-  return allAvailableMembers.find((member) => String(member.creator_id) === creatorID) || null;
-});
-
 export const hasWorkspaceMemberSelector = createSelector([activeWorkspaceMemberSelector], (getMember) => (creatorID: string) =>
   !!getMember(creatorID)
 );
@@ -81,12 +99,10 @@ export const userRoleSelector = createSelector(
   (getMember, workspace, creatorID) => {
     // template workspace has empty members array since the volume can be very high
     if (workspace?.templates && creatorID) {
-      if (creatorID === TEMPLATES_ADMIN_ID) {
-        return UserRole.ADMIN;
-      }
-      if (TEMPLATES_EDITORS_ID.includes(creatorID)) {
-        return UserRole.EDITOR;
-      }
+      if (creatorID === TEMPLATES_ADMIN_ID) return UserRole.ADMIN;
+
+      if (TEMPLATES_EDITORS_ID.includes(creatorID)) return UserRole.EDITOR;
+
       return UserRole.LIBRARY;
     }
     return getMember(String(creatorID))?.role;
@@ -100,14 +116,4 @@ export const isLibraryRoleSelector = createSelector([userRoleSelector], (role) =
 export const isViewerOrLibraryRoleSelector = createSelector(
   [isViewerRoleSelector, isLibraryRoleSelector],
   (isViewer, isLibrary) => isViewer || isLibrary
-);
-
-export const hasTemplateWorkspaceSelector = createSelector([allWorkspacesSelector], (workspaces) => workspaces.some(({ templates }) => templates));
-
-export const isAdminOfAnyWorkspaceSelector = createSelector([allWorkspacesSelector, userIDSelector], (workspaces, userId) =>
-  workspaces.some(({ members }) => members.some(({ creator_id, role }) => userId === creator_id && role === UserRole.ADMIN))
-);
-
-export const workspaceByProjectIDSelector = createSelector([allWorkspacesSelector, Session.activeProjectIDSelector], (workspaces, projectID) =>
-  workspaces.find(({ boards }) => boards.find(({ projects }) => projects.includes(projectID!)))
 );

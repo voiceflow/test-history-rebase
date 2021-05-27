@@ -7,7 +7,7 @@ import * as Creator from '@/ducks/creator';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { ProjectLoadingGate, WorkspaceFeatureLoadingGate, WorkspaceLoadingGate } from '@/gates';
+import { ProjectLoadingGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { Link, LinkData, Node, Port } from '@/models';
@@ -18,6 +18,7 @@ import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pa
 import useEngine from '@/pages/Canvas/engine';
 import { getManager } from '@/pages/Canvas/managers';
 import { MarkupProvider, PlatformProvider } from '@/pages/Skill/contexts';
+import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { ConnectedProps, Point } from '@/types';
 import { compose } from '@/utils/functional';
@@ -102,7 +103,7 @@ const applyOffsetsToLinks = (links: Link[], offsets: Point) =>
     data: applyOffsetsToLinkData(link.data, offsets),
   }));
 
-const initialize = (diagramID: string) => async (dispatch: any, getState: any) => {
+const initialize = (diagramID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const platform = Project.activePlatformSelector(state);
 
@@ -116,7 +117,7 @@ const initialize = (diagramID: string) => async (dispatch: any, getState: any) =
   creator.ports = applyOffsetsToPorts(creator.ports, offsets);
   creator.links = applyOffsetsToLinks(creator.links, offsets);
 
-  dispatch(Creator.initializeCreator({ ...creator, diagramID }));
+  dispatch(Creator.initializeCreator(creator));
 };
 
 const mapStateToProps = {
@@ -133,7 +134,6 @@ type ConnectedExportProps = ConnectedProps<typeof mapStateToProps, typeof mapDis
 
 export default compose(
   removeIntercom,
-  React.memo,
   connect(mapStateToProps, mapDispatchToProps),
-  withBatchLoadingGate(WorkspaceLoadingGate, WorkspaceFeatureLoadingGate, ProjectLoadingGate, MockRealtimeGate)
+  withBatchLoadingGate(ProjectLoadingGate, WorkspaceFeatureLoadingGate, MockRealtimeGate)
 )(ExportCanvas);

@@ -46,7 +46,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   patchWorkspace: Workspace.patchWorkspace,
-  ejectFromWorkspace: Workspace.ejectFromWorkspace,
+  ejectFromWorkspace: Workspace.ejectFromActiveWorkspace,
   setWebhookData: Prototype.updatePrototypeWebhookData,
 };
 

@@ -25,7 +25,7 @@ export const VIEWS = {
 
 const PRICE_UPDATE_DEBOUNCE_TIMEOUT = 300;
 
-const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, checkChargeable, updateWorkspace, referrerID, referralCode }) => {
+const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, checkChargeable, loadActiveWorkspace, referrerID, referralCode }) => {
   const [checkingOut, startCheckingOut, stopCheckingOut] = useEnableDisable(false);
   const [fetchingPrice, startFetchingPrice, stopFetchingPrice] = useEnableDisable(false);
   const [loadingPlan, startloadingPlan, stoploadingPlan] = useEnableDisable(true);
@@ -111,7 +111,7 @@ const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, chec
         source_id: source?.id,
       });
 
-      updateWorkspace();
+      loadActiveWorkspace();
       closePaymentsModal();
 
       const message = source?.id
@@ -241,7 +241,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updateWorkspace: Workspace.fetchWorkspace,
+  loadActiveWorkspace: Workspace.loadActiveWorkspace,
 };
 
 export const withPaymentProvider = withProvider(compose(withStripe, connect(mapStateToProps, mapDispatchToProps))(PaymentContextProvider));

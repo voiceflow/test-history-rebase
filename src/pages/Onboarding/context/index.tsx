@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
 import { ButtonVariant } from '@/components/Button/constants';
-import { toast as toastNotif } from '@/components/Toast';
+import { toast } from '@/components/Toast';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
 import { BillingPeriod, ModalType, PlanType, PlatformType, UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
@@ -33,8 +33,6 @@ import {
   SpecificFlowType,
 } from './types';
 import * as Utils from './utils';
-
-const toast: any = toastNotif;
 
 export const OnboardingContext = React.createContext<OnboardingContextProps>({
   actions: {
@@ -83,7 +81,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
 
 export const { Consumer: OnboardingConsumer } = OnboardingContext;
 
-const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & ConnectedOnboardingContextProps> = ({
+const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps & ConnectedOnboardingContextProps> = ({
   query,
   children,
   stripe,
@@ -91,17 +89,17 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   goToDashboard,
   goToDashboardWithSearch,
   goToCanvas,
-  updateCurrentWorkspace,
+  setActiveWorkspaceID,
   createWorkspace,
   sendInvite,
-  fetchWorkspaces,
+  loadWorkspaces,
   firstLogin,
   acceptInvite,
   workspaces,
   isLoginFlow, // This boolean represents if the user hits the onboarding flow from a link/new signup, or from the dashboard 'create workspace' button
   createProject,
   trackInvitationAccepted,
-  workspaceById,
+  workspaceByID,
   account,
   currentWorkspaceID,
   updateWorkspaceName,
@@ -180,14 +178,10 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
   cache.current.state = state;
 
   React.useEffect(() => {
-    fetchWorkspaces();
-  }, []);
-
-  React.useEffect(() => {
     const usedSignupCoupon = nonTemplateWorkspaces.length === 1 && nonTemplateWorkspaces[0].name === 'Personal';
     actions.setUsedSignupCoupon(usedSignupCoupon);
     if (usedSignupCoupon) {
-      updateCurrentWorkspace(nonTemplateWorkspaces[0].id);
+      setActiveWorkspaceID(nonTemplateWorkspaces[0].id);
     }
   }, [workspaces.length]);
 
@@ -216,10 +210,6 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     return source;
   };
 
-  const onCancel = () => {
-    goToDashboard();
-  };
-
   const getNumberOfEditors = () => {
     const numberOfEditors = Utils.getNumberOfEditorSeats(addCollaboratorMeta.collaborators);
 
@@ -243,15 +233,14 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
     const inviteSource = query.email ? 'email' : 'link';
 
     if (!newWorkspaceID) {
-      toastNotif.error('Error joining workspace');
+      toast.error('Error joining workspace');
     } else {
-      await fetchWorkspaces();
-      updateCurrentWorkspace(newWorkspaceID);
+      await loadWorkspaces();
 
-      goToDashboard();
+      goToWorkspace(newWorkspaceID);
       trackInvitationAccepted(newWorkspaceID, query.email, inviteSource);
 
-      toastNotif.success('Successfully joined workspace');
+      toast.success('Successfully joined workspace');
     }
   };
 
@@ -279,7 +268,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
 
     const selectedWorkspaceID = paymentMeta.selectedWorkspaceId;
     if (selectedWorkspaceID) {
-      workspace = workspaceById(selectedWorkspaceID);
+      workspace = workspaceByID(selectedWorkspaceID);
     }
     if (!workspace) {
       try {
@@ -290,9 +279,10 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         } else {
           workspace = await createWorkspace({ name, image: workspaceImage || undefined });
         }
-        updateCurrentWorkspace(workspace.id);
+
+        setActiveWorkspaceID(workspace.id);
       } catch (e) {
-        toastNotif.error('Error creating workspace, please try again later');
+        toast.error('Error creating workspace, please try again later');
         goToDashboard();
         return;
       }
@@ -300,9 +290,9 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
 
     // This is so we can invite users and update redux, targeting the just created ^ workspace
     try {
-      await fetchWorkspaces();
+      await loadWorkspaces();
     } catch (e) {
-      toastNotif.error('Error getting workspace, please try again later');
+      toast.error('Error getting workspace, please try again later');
       goToDashboard();
       return;
     }
@@ -324,7 +314,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       try {
         await sendInvite(email, permission, false);
       } catch (e) {
-        toastNotif.error(`Problem inviting ${email}, please try again later`);
+        toast.error(`Problem inviting ${email}, please try again later`);
       }
     });
 
@@ -344,7 +334,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
 
     if (selectedWorkspaceID) {
       goToWorkspace(selectedWorkspaceID);
-      toastNotif.success('Successfully updated workspace');
+      toast.success('Successfully updated workspace');
       setSendingRequests(false);
       return;
     }
@@ -378,7 +368,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
           openSuccessModal({ title: 'Payment Successful', message, icon: receiptGraphic, variant: ButtonVariant.TERTIARY });
         }
       }
-      toastNotif.success('Successfully created workspace');
+      toast.success('Successfully created workspace');
     } catch (error) {
       // if it fails to create a project for the user, go to dashboard
       Sentry.error(error);
@@ -424,7 +414,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
         workspaceID = await handleLastStep(currentStepID);
       } catch (e) {
         // If anything catastrophic goes wrong, fallback to dashboard
-        toastNotif.error('Sorry, something went wrong, try again in a bit.');
+        toast.error('Sorry, something went wrong, try again in a bit.');
         goToDashboard();
         return;
       }
@@ -463,7 +453,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
       stepBack,
       finishJoiningWorkspace,
       finishCreateOnboarding,
-      onCancel,
+      onCancel: goToDashboard,
       getNumberOfEditors,
     },
   };
@@ -473,7 +463,7 @@ const OnboardingProviderFunc: React.ComponentType<OnboardingProviderProps & Conn
 
 const mapStateToProps = {
   workspaces: Workspace.allWorkspacesSelector,
-  workspaceById: Workspace.workspaceByIDSelector,
+  workspaceByID: Workspace.workspaceByIDSelector,
   account: Account.userSelector,
   firstLogin: Account.isFirstLoginSelector,
   currentWorkspaceID: Session.activeWorkspaceIDSelector,
@@ -481,15 +471,15 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   createWorkspace: Workspace.createWorkspace,
-  sendInvite: Workspace.sendInvite,
+  sendInvite: Workspace.sendInviteToActiveWorkspace,
   goToCanvas: Router.goToCanvas,
   acceptInvite: Workspace.acceptInvite,
   goToDashboard: Router.goToDashboard,
   goToDashboardWithSearch: Router.goToDashboardWithSearch,
-  updateCurrentWorkspace: Session.setActiveWorkspaceID,
-  fetchWorkspaces: Workspace.fetchWorkspaces,
-  updateWorkspaceName: Workspace.updateWorkspaceName,
-  updateWorkspaceImage: Workspace.updateWorkspaceImage,
+  setActiveWorkspaceID: Session.setActiveWorkspaceID,
+  loadWorkspaces: Workspace.loadWorkspaces,
+  updateWorkspaceName: Workspace.updateActiveWorkspaceName,
+  updateWorkspaceImage: Workspace.updateActiveWorkspaceImage,
   goToWorkspace: Router.goToWorkspace,
   trackInvitationAccepted: Tracking.trackInvitationAccepted,
   createProject: Project.createProject,
@@ -497,4 +487,6 @@ const mapDispatchToProps = {
 
 type ConnectedOnboardingContextProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export const OnboardingProvider: any = compose(withStripe, connect(mapStateToProps, mapDispatchToProps))(OnboardingProviderFunc);
+export const OnboardingProvider = compose(withStripe, connect(mapStateToProps, mapDispatchToProps))(UnconnectedOnboardingProvider) as React.FC<
+  Omit<OnboardingProviderProps, 'stripe' | 'checkChargeable'>
+>;

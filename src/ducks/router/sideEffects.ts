@@ -162,5 +162,6 @@ export const goToCurrentWorkspaceSettings = (): SyncThunk => (dispatch, getState
   const workspaceID = Session.activeWorkspaceIDSelector(state);
 
   Errors.assertWorkspaceID(workspaceID);
+
   dispatch(goToWorkspaceSettings(workspaceID));
 };

@@ -1,32 +1,28 @@
 import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import InnerContainer from '@/components/CreationSteps/components/Containers/InnerContainer';
 import OuterContainer from '@/components/CreationSteps/components/Containers/OuterContainer';
 import { UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
-import * as Workspace from '@/ducks/workspace';
-import { connect } from '@/hocs';
-import { ConnectedProps } from '@/types';
+import { WorkspacesLoadingGate } from '@/gates';
+import { connect, withBatchLoadingGate } from '@/hocs';
+import { ConnectedProps, MergeArguments } from '@/types';
+import { compose } from '@/utils/functional';
 import * as Query from '@/utils/query';
 
 import { CurrentStep, Header } from './components';
 import { OnboardingProvider } from './context';
-import { OnboardingDataProps, OnboardingStepProps } from './types';
+import { OnboardingDataProps } from './types';
 
-export const Onboarding: React.FC<OnboardingStepProps> = ({ fetchWorkspaces, data, location, firstTime = true }) => {
+export interface OnboardingProps {
+  firstTime?: boolean;
+}
+
+export const Onboarding: React.FC<OnboardingProps & RouteComponentProps & ConnectedOnboardingProps> = ({ data, location, firstTime = true }) => {
   const query = Query.parse(location?.search);
-  const [finishedFetchingWorkspaces, setFinishedFetchingWorkspaces] = React.useState(false);
 
-  const fetchWorkspacesFunc = async () => {
-    await fetchWorkspaces?.();
-    setFinishedFetchingWorkspaces(true);
-  };
-
-  React.useEffect(() => {
-    fetchWorkspacesFunc();
-  });
-
-  return finishedFetchingWorkspaces ? (
+  return (
     <OuterContainer>
       <OnboardingProvider isLoginFlow={firstTime} query={query}>
         <InnerContainer>
@@ -35,25 +31,22 @@ export const Onboarding: React.FC<OnboardingStepProps> = ({ fetchWorkspaces, dat
         </InnerContainer>
       </OnboardingProvider>
     </OuterContainer>
-  ) : null;
-};
-
-const ConnectedOnboarding: React.FC<ConnectedOnboardingStepProps> = ({ fetchWorkspaces, user, ...props }) => {
-  const data: OnboardingDataProps = {
-    collaborators: [{ email: user.email!, permission: UserRole.ADMIN }],
-  };
-
-  return <Onboarding data={data} fetchWorkspaces={fetchWorkspaces} {...props} />;
+  );
 };
 
 const mapStateToProps = {
   user: Account.userSelector,
 };
 
-const mapDispatchToProps = {
-  fetchWorkspaces: Workspace.fetchWorkspaces,
-};
+const mergeProps = (...[{ user }]: MergeArguments<typeof mapStateToProps>) => ({
+  data: {
+    collaborators: [{ email: user.email!, permission: UserRole.ADMIN }],
+  } as OnboardingDataProps,
+});
 
-type ConnectedOnboardingStepProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+type ConnectedOnboardingProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConnectedOnboarding) as React.FC<Omit<OnboardingStepProps, 'data'>>;
+export default compose(
+  connect(mapStateToProps, null, mergeProps),
+  withBatchLoadingGate(WorkspacesLoadingGate)
+)(Onboarding) as React.FC<OnboardingProps>;

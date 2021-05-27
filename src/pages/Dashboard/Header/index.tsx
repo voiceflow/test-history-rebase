@@ -12,19 +12,18 @@ import UpgradeButton from './UpgradeButton';
 
 type DashboardHeaderProps = {
   loadingProjects: boolean;
-  workspaces: Workspace[];
   workspace: Workspace | null;
   handleFilterText: (text: string) => void;
 };
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({ loadingProjects, handleFilterText, workspaces, workspace: activeWorkspace }) => {
+const DashboardHeader: React.FC<DashboardHeaderProps> = ({ loadingProjects, handleFilterText, workspace: activeWorkspace }) => {
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
 
   return (
     <Header
       withLogo
       logoAssetPath={activeWorkspace?.image}
-      leftRenderer={() => <LeftNavSection loadingProjects={loadingProjects} workspaces={workspaces} activeWorkspace={activeWorkspace} />}
+      leftRenderer={() => <LeftNavSection loadingProjects={loadingProjects} activeWorkspace={activeWorkspace} />}
       rightRenderer={() => <RightNavSection />}
       centerRenderer={() => <UpgradeButton />}
       disableLogoClick={!canConfigureWorkspace}

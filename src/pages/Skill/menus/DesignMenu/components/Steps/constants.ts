@@ -59,11 +59,6 @@ const FLOW_STEP = createMenuStep(BlockType.FLOW);
 
 const API_STEP = createMenuStep(BlockType.INTEGRATION, { factoryData: { selectedIntegration: IntegrationType.CUSTOM_API } });
 
-const ZAPIER_STEP = createMenuStep(BlockType.INTEGRATION, {
-  publicOnly: true,
-  factoryData: { selectedIntegration: IntegrationType.ZAPIER },
-});
-
 const GOOGLE_SHEETS_STEP = createMenuStep(BlockType.INTEGRATION, {
   publicOnly: true,
   factoryData: { selectedIntegration: IntegrationType.GOOGLE_SHEETS },
@@ -115,7 +110,7 @@ export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.INTEGRATION,
     label: 'Integration',
-    steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP, TRACE_STEP],
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
   },
   {
     type: BlockCategory.CHANNEL,
@@ -144,7 +139,7 @@ export const GOOGLE_SECTIONS = [
   {
     type: BlockCategory.INTEGRATION,
     label: 'Integration',
-    steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP, TRACE_STEP],
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
   },
   {
     type: BlockCategory.CHANNEL,
@@ -173,7 +168,7 @@ export const GENERAL_SECTIONS = [
   {
     type: BlockCategory.INTEGRATION,
     label: 'Integration',
-    steps: [API_STEP, GOOGLE_SHEETS_STEP, ZAPIER_STEP, CODE_STEP, TRACE_STEP],
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
   },
 ];
 

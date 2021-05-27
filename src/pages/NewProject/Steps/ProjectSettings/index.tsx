@@ -18,6 +18,7 @@ import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import { LoadingButton } from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components';
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES } from '@/pages/Publish/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
+import { Identifier } from '@/styles/constants';
 import { without } from '@/utils/array';
 import { getPlatformValue } from '@/utils/platform';
 import { isAlexaPlatform, isAnyGeneralPlatform } from '@/utils/typeGuards';
@@ -94,6 +95,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
           <SectionTitle>Invocation Name</SectionTitle>
 
           <Input
+            id={Identifier.INVOCATION_NAME_INPUT}
             error={!!invocationError}
             placeholder="Enter invocation name"
             value={invocationName}

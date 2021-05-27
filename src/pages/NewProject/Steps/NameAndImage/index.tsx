@@ -5,6 +5,7 @@ import { FlexCenter } from '@/components/Flex';
 import { ClickableText } from '@/components/Text';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { Container, LabelContainer, NameInput } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
+import { Identifier } from '@/styles/constants';
 
 const IconUpload: React.FC<any> = UploadJustIcon;
 type NameAndImageProps = {
@@ -20,9 +21,10 @@ const NameAndImage: React.FC<NameAndImageProps> = ({ name, setName, projectImage
   const iconUploadRef = React.createRef<HTMLElement>();
 
   return (
-    <Container>
+    <Container id={Identifier.NEW_PROJECT_ICON_UPLOAD_CONTAINER}>
       <FlexCenter>
         <NameInput
+          id={Identifier.NEW_PROJECT_NAME_INPUT}
           value={name}
           onChange={(e: React.FormEvent<HTMLInputElement>) => setName(e.currentTarget.value)}
           // eslint-disable-next-line jsx-a11y/no-autofocus

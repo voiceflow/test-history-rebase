@@ -39,6 +39,27 @@ export enum Identifier {
   TEST_TYPE_SELECTOR = 'vf-test-type-selector',
   SHARE_BUTTON = 'vf-share-button',
   SPEECH_BAR = 'vf-speech-bar',
+
+  APPEARANCE_AND_BRANDING_DD = 'vf-appearance-and-branding-dd',
+  BRANDING_COLOR_INPUT = 'vf-branding-input',
+  PROTOTYPE_PASSWORD_DD = 'vf-prototype-password-dd',
+  BRAND_IMAGE_INPUT_CONTAINER = 'vf-brand-image-input-container',
+  MESSAGE_ICON_INPUT_CONTAINER = 'vf-message-icon-input-container',
+  PUBLIC_SHARE_PROTOTYPE_IMAGE = 'vf-public-share-prototype-image',
+  PROTO_MENU_DISPLAY_BUTTON = 'vf-proto-menu-display-button',
+  PROTO_MENU_DEVELOPER_BUTTON = 'vf-proto-menu-developer-button',
+  PROTO_MENU_SETTINGS_BUTTON = 'vf-proto-menu-settings-button',
+  PROTO_MENU_CANVAS_BUTTON = 'vf-proto-menu-canvas-button',
+
+  DISPLAY_CANVAS_CONTAINER = 'vf-display-canvas-container',
+  PROTO_VARIABLES_MENU_CONTAINER = 'vf-proto-variables-menu-container',
+  PROTO_SETTINGS_MENU_CONTAINER = 'vf-proto-settings-menu-container',
+  NEW_PROJECT_NAME_INPUT = 'vf-project-name-input',
+  NEW_PROJECT_ICON_UPLOAD_CONTAINER = 'vf-new-project-icon-upload-container',
+
+  // Project Creation
+  PROJECT_CREATION_STEP_TITLE = 'vf-project-creation-step-title',
+  INVOCATION_NAME_INPUT = 'vf-invocation-name-input',
 }
 
 export enum ClassName {
@@ -92,6 +113,18 @@ export enum ClassName {
   VISUAL = 'vf-visual',
   VISUAL_IMAGE = 'vf-visual--image',
   VISUAL_APL = 'vf-visual--apl',
+  PROTOTYPE_MESSAGE_ICON = 'vf-prototype-message-icon',
+  EDITOR_FOOTER_BUTTON = 'vf-editor-footer-button',
+  INTENT_SELECT_INPUT = 'vf-intent-select-input',
+  PROTOTYPE_CHIP = 'vf-prototype-chip',
+  DISPLAY_TYPE_ITEM = 'vf-display-type-item',
+  SCALE_CONTAINER = 'vf-scale-container',
+  PLATFORM_CARD = 'vf-platform-card',
+  MULTISELECT_DROPDOWN = 'vf-multi-select-dropdown',
+  MULTISELECT_ITEM = 'vf-multi-select-item',
+  // Project Creation
+  CREATE_PROJECT_LEFT_ACTION = 'vf-create-project-left-action',
+  CREATE_PROJECT_RIGHT_ACTION = 'vf-create-project-right-action',
 }
 
 export enum ExternalClassName {

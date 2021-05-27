@@ -2,6 +2,7 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import SvgIcon from '@/components/SvgIcon';
+import { ClassName } from '@/styles/constants';
 
 import { ChannelMetaType, IconType, PLATFORM_FEATURE_META } from '../../../constants';
 import { Container, FeaturesContainer, IconImage, PlatformDescription, PlatformFeatureBubble, PlatformIcon, PlatformName } from './components';
@@ -13,7 +14,7 @@ type PlatformCard = {
 };
 
 const PlatformCard: React.FC<PlatformCard> = ({ channel, onClick, disabled }) => (
-  <Container onClick={onClick} disabled={disabled}>
+  <Container className={ClassName.PLATFORM_CARD} onClick={onClick} disabled={disabled}>
     <PlatformIcon>
       {channel.iconType === IconType.ICON ? (
         <SvgIcon icon={channel.icon || 'speak'} size={channel.iconSize} color={channel.iconColor} />

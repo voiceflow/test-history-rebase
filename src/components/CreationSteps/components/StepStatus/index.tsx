@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Identifier } from '@/styles/constants';
+
 import { Container, ProgressLine, Title } from './components';
 
 type StepStatusProps = {
@@ -10,7 +12,7 @@ type StepStatusProps = {
 
 const StepStatus: React.FC<StepStatusProps> = ({ title, numberOfSteps, stepStack }) => (
   <Container>
-    <Title>{title}</Title>
+    <Title id={Identifier.PROJECT_CREATION_STEP_TITLE}>{title}</Title>
     {numberOfSteps > 1 && (
       <>
         {stepStack.map((_, index) => (

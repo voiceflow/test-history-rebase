@@ -9,10 +9,11 @@ type ActionButtonProps = {
   icon: Icon;
   label: string;
   onClick: () => void;
+  className?: string;
 };
 
-const ActionButton: React.FC<ActionButtonProps> = ({ shouldRender, icon, label, onClick }) => (
-  <Container>
+const ActionButton: React.FC<ActionButtonProps> = ({ className, shouldRender, icon, label, onClick }) => (
+  <Container className={className}>
     {shouldRender && (
       <InnerContainer onClick={onClick}>
         <IconContainer>

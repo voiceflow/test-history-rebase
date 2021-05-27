@@ -3,11 +3,8 @@ import canvasPage from '../pages/canvas';
 import menuComponent from '../pages/components/menu';
 import dashboardPage from '../pages/dashboard';
 import { collaboratorsModal, legacyModal, paymentModal } from '../pages/modals';
-import newProjectPage from '../pages/newProject';
 import newWorkspacePage from '../pages/newWorkspace';
 import { getClass, getIdentifier } from '../pages/utils';
-
-const PROJECT_NAME = 'my new project';
 
 context('Team Dashboard', () => {
   beforeEach(() => cy.setup());
@@ -17,18 +14,6 @@ context('Team Dashboard', () => {
     cy.visit('/');
     cy.shouldBeOn(newWorkspacePage);
     newWorkspacePage.el.newWorkspaceButton.should('be.visible');
-  });
-
-  it.skip('create new project', () => {
-    cy.visit('/');
-    dashboardPage.el.newProjectButton.click();
-    cy.shouldBeOn(newProjectPage);
-    newProjectPage.setName(PROJECT_NAME);
-    newProjectPage.el.activeRegionCheckbox.should('have.text', 'English (US)');
-    newProjectPage.el.createProjectButton.click();
-    cy.shouldBeOn(canvasPage);
-    canvasPage.el.projectTitle.should('have.value', PROJECT_NAME);
-    cy.title().should('eq', PROJECT_NAME);
   });
 
   describe('dashboard interactions', () => {

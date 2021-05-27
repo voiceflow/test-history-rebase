@@ -5,6 +5,7 @@ import Dropdown from '@/components/Dropdown';
 import Menu, { MenuItem } from '@/components/Menu';
 import SvgIcon from '@/components/SvgIcon';
 import { useKeygen } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 import { stopImmediatePropagation } from '@/utils/dom';
 
 import { Count, InnerContainer, Label, SectionLabel, TriggerContainer, ValueContainer } from './components';
@@ -59,6 +60,7 @@ function DropdownMultiselect({
                 {sectionLabel && <SectionLabel>{sectionLabel}</SectionLabel>}
                 {options.map(({ value, label, onClick }) => (
                   <MenuItem
+                    className={ClassName.MULTISELECT_ITEM}
                     key={genKey(value || label)}
                     onClick={stopImmediatePropagation(() => {
                       onClick?.();
@@ -83,7 +85,7 @@ function DropdownMultiselect({
         Component ? (
           <Component ref={ref} onClick={onToggle} />
         ) : (
-          <TriggerContainer ref={ref} onClick={onToggle}>
+          <TriggerContainer className={ClassName.MULTISELECT_DROPDOWN} ref={ref} onClick={onToggle}>
             <InnerContainer active={dropdownActive && isOpen}>
               {dropdownLabel && <Label>{dropdownLabel}</Label>}
               <ValueContainer>{selectedValue || <span>{placeholder}</span>}</ValueContainer>

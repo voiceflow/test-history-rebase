@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ClassName } from '@/styles/constants';
+
 import { ActionButton, Container, Content, StepStatus } from './components';
 
 type CreationHeaderProps = {
@@ -27,15 +29,15 @@ const CreationHeader: React.FC<CreationHeaderProps> = ({
   children,
 }) => (
   <Container>
-    <ActionButton shouldRender={hasBackButton} icon="back" onClick={stepBack} label="back" />
+    <ActionButton className={ClassName.CREATE_PROJECT_LEFT_ACTION} shouldRender={hasBackButton} icon="back" onClick={stepBack} label="back" />
     <StepStatus title={title} numberOfSteps={numberOfSteps} stepStack={stepStack} />
 
     {!!children && <Content withOffset={!!canCancel || hasSkipButton}>{children}</Content>}
 
     {canCancel ? (
-      <ActionButton shouldRender icon="close" label="cancel" onClick={onCancel} />
+      <ActionButton className={ClassName.CREATE_PROJECT_RIGHT_ACTION} shouldRender icon="close" label="cancel" onClick={onCancel} />
     ) : (
-      <ActionButton shouldRender={hasSkipButton} icon="next" label="skip" onClick={onSkipClick} />
+      <ActionButton className={ClassName.CREATE_PROJECT_RIGHT_ACTION} shouldRender={hasSkipButton} icon="next" label="skip" onClick={onSkipClick} />
     )}
   </Container>
 );

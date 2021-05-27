@@ -1,5 +1,3 @@
-import { ClassName, Identifier } from '../../src/styles/constants';
-
 const CONVERSATION_OVER_MSG = 'This conversation has ended';
 
 export default {
@@ -7,12 +5,6 @@ export default {
 
   startPrototype() {
     this.el.startPrototypeButton.click();
-  },
-
-  uploadImage: (id: string) => {
-    cy.get(`#${id} input[type="file"]`).attachFile({
-      filePath: 'image.png',
-    });
   },
 
   awaitMessage() {
@@ -26,12 +18,6 @@ export default {
   el: {
     get startPrototypeButton() {
       return cy.get('#vf-prototype__start');
-    },
-    get publicPrototypeImage() {
-      return cy.get(`#${Identifier.PUBLIC_SHARE_PROTOTYPE_IMAGE}`);
-    },
-    get publicPrototypeMessageIcon() {
-      return cy.get(`.${ClassName.PROTOTYPE_MESSAGE_ICON}:first`);
     },
     get messageInput() {
       return cy.get('input');
@@ -59,30 +45,6 @@ export default {
     },
     get resetPrototypeButton() {
       return cy.get('.vf-svg-icon--restart').find('svg');
-    },
-    get prototypeMenuCanvasButton() {
-      return cy.get(`#${Identifier.PROTO_MENU_CANVAS_BUTTON}`);
-    },
-    get prototypeMenuDisplayButton() {
-      return cy.get(`#${Identifier.PROTO_MENU_DISPLAY_BUTTON}`);
-    },
-    get prototypeDeveloperDisplayButton() {
-      return cy.get(`#${Identifier.PROTO_MENU_DEVELOPER_BUTTON}`);
-    },
-    get prototypeMenuSettingsButton() {
-      return cy.get(`#${Identifier.PROTO_MENU_SETTINGS_BUTTON}`);
-    },
-    get displayCanvasContainer() {
-      return cy.get(`#${Identifier.DISPLAY_CANVAS_CONTAINER}`);
-    },
-    get aplContainer() {
-      return cy.get(`.${ClassName.VISUAL_APL}`);
-    },
-    get protoVariablesMenuContainer() {
-      return cy.get(`#${Identifier.PROTO_VARIABLES_MENU_CONTAINER}`);
-    },
-    get protoSettingsMenuContainer() {
-      return cy.get(`#${Identifier.PROTO_SETTINGS_MENU_CONTAINER}`);
     },
   },
 

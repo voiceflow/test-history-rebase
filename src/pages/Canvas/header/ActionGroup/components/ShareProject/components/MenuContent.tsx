@@ -10,7 +10,6 @@ import { Permission } from '@/config/permissions';
 import { OverlayProvider, ScrollContextProvider } from '@/contexts';
 import { usePermission } from '@/hooks';
 import { useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
-import { Identifier } from '@/styles/constants';
 
 import { AppearanceAndBranding } from './AppearanceAndBranding';
 import Description from './Description';
@@ -65,7 +64,6 @@ const MenuContent: React.FC = () => {
                 <PrototypeLayoutSelect />
               </Box>
               <UncontrolledSection
-                id={Identifier.APPEARANCE_AND_BRANDING_DD}
                 nestedIntend
                 header="Appearance and Branding"
                 headerToggle

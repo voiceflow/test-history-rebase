@@ -49,19 +49,16 @@ Cypress.Commands.add(
   ($node: Cypress.Chainable<JQuery<HTMLElement>>, targetNodeSelector: string, { offsetX, offsetY }: { offsetX: number; offsetY: number }) => {
     const dataTransfer = new DndSimulatorDataTransfer();
 
-    cy.wrap($node)
-      .trigger('mousedown', { which: 1, force: true })
-      .trigger('dragstart', { dataTransfer, force: true })
-      .trigger('drag', { force: true });
+    cy.wrap($node).trigger('mousedown', { which: 1 }).trigger('dragstart', { dataTransfer }).trigger('drag', {});
 
     cy.get(targetNodeSelector).then(($el) => {
       const { x, y } = $el.get(0).getBoundingClientRect();
 
       cy.wrap($el.get(0))
-        .trigger('dragover', { dataTransfer, force: true })
-        .trigger('drop', { dataTransfer, force: true, clientX: x + offsetX, clientY: y + offsetY })
-        .trigger('dragend', { dataTransfer, force: true })
-        .trigger('mouseup', { force: true, which: 1 });
+        .trigger('dragover', { dataTransfer })
+        .trigger('drop', { dataTransfer, clientX: x + offsetX, clientY: y + offsetY })
+        .trigger('dragend', { dataTransfer })
+        .trigger('mouseup', { which: 1 });
     });
   }
 );

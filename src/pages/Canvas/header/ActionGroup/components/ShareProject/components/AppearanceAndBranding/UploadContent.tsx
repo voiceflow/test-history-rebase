@@ -8,7 +8,6 @@ import Container from './Container';
 const IconUpload: React.FC<any> = UploadJustIcon;
 
 type UploadContentProps = {
-  id?: string;
   title: string;
   isAllowed: boolean;
   initialState: string;
@@ -17,7 +16,7 @@ type UploadContentProps = {
   updateSettings: (image: string) => void;
 };
 
-const UploadContent: React.FC<UploadContentProps> = ({ id, title, isAllowed, initialState, isSquare, hasBorderRight, updateSettings }) => {
+const UploadContent: React.FC<UploadContentProps> = ({ title, isAllowed, initialState, isSquare, hasBorderRight, updateSettings }) => {
   const [image, setImage] = React.useState<string>(initialState);
 
   const updateImage = async (image: string | string[] | null) => {
@@ -28,7 +27,7 @@ const UploadContent: React.FC<UploadContentProps> = ({ id, title, isAllowed, ini
   };
 
   return (
-    <Container id={id} hasBorderRight={hasBorderRight}>
+    <Container hasBorderRight={hasBorderRight}>
       <Header marginBottom={16} secondary={true} disabled={!isAllowed}>
         {title}
       </Header>

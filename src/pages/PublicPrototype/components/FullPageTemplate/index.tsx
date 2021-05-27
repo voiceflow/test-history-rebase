@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Link } from '@/components/Text/components';
-import { Identifier } from '@/styles/constants';
 
 import { Container, ContentContainer } from '../common';
 import { BoxLogo, WaterMark } from './components';
@@ -28,7 +27,7 @@ const FullPageTemplate: React.FC<ShareSplashScreenProps> = ({
 }) => (
   <Container isVisuals={isVisuals} isMobile={isMobile}>
     <ContentContainer centerAlign={centerAlign} isMobile={isMobile}>
-      <BoxLogo id={Identifier.PUBLIC_SHARE_PROTOTYPE_IMAGE} url={logoURL} size={logoSize} isMobile={isMobile} />
+      <BoxLogo url={logoURL} size={logoSize} isMobile={isMobile} />
 
       {children}
     </ContentContainer>

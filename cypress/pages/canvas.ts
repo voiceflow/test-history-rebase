@@ -3,10 +3,7 @@ import { ClassName, ExternalClassName, Identifier } from '../../src/styles/const
 
 export default {
   goToCanvas: () => cy.getSession().then(({ versionID, diagramID }) => cy.visit(`/project/${versionID}/canvas/${diagramID}`)),
-  startPrototype: () => {
-    cy.intercept('/interact/*').as('startPrototype');
-    cy.wait('@startPrototype');
-  },
+
   route: {
     postDiagram: () => cy.route('GET', '/v2/diagrams/**'),
   },
@@ -74,9 +71,6 @@ export default {
     get shareButton() {
       return cy.get(`#${Identifier.SHARE_BUTTON}`);
     },
-    get shareLinkCopyButton() {
-      return cy.get(`#${Identifier.SHARE_COPY_LINK_BUTTON}`);
-    },
     get testButton() {
       return cy.get(`#${Identifier.TEST}`);
     },
@@ -100,12 +94,6 @@ export default {
     },
     get startPrototypeButton() {
       return cy.get('#vf-prototype__start');
-    },
-    get brandingDropdown() {
-      return cy.get(`#${Identifier.APPEARANCE_AND_BRANDING_DD} > div:first-child`);
-    },
-    get brandingColorInput() {
-      return cy.get(`#${Identifier.BRANDING_COLOR_INPUT}`);
     },
     get markupText() {
       return cy.get(`.${ClassName.CANVAS_NODE}--${BlockType.MARKUP_TEXT}`);

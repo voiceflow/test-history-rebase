@@ -55,7 +55,6 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   contentPrefix?: React.FC | string;
   contentSuffix?: React.FC | string;
   emptyChildren?: boolean;
-  id?: string;
 };
 
 const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, UncontrolledSectionProps> = (

@@ -5,7 +5,6 @@ import { FlexApart } from '@/components/Flex';
 import { SvgIconProps } from '@/components/SvgIcon';
 import { BlockType } from '@/constants';
 import { ManagerContext } from '@/pages/Canvas/contexts';
-import { ClassName } from '@/styles/constants';
 
 import ControlsContainer from './ControlsContainer';
 import EditorTutorial from './EditorTutorial';
@@ -52,15 +51,7 @@ const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutor
       <ControlsContainer>
         {menu}
         {options.map(({ label, icon, onClick, variant = ButtonVariant.SECONDARY, disabled = false, iconProps }) => (
-          <Button
-            className={ClassName.EDITOR_FOOTER_BUTTON}
-            variant={variant}
-            icon={icon}
-            onClick={onClick}
-            key={label}
-            disabled={disabled}
-            iconProps={iconProps}
-          >
+          <Button variant={variant} icon={icon} onClick={onClick} key={label} disabled={disabled} iconProps={iconProps}>
             {label}
           </Button>
         ))}

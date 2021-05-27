@@ -82,26 +82,14 @@ const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({
         <>
           {data?.visualType === VisualType.IMAGE && (
             <FadeContainer className={cn(ClassName.VISUAL, ClassName.VISUAL_IMAGE)} key={contentKey}>
-              <ScaleContainer
-                className={ClassName.SCALE_CONTAINER}
-                width={dimension.width}
-                height={dimension.height}
-                scale={scale}
-                isMobile={isMobile}
-              >
+              <ScaleContainer width={dimension.width} height={dimension.height} scale={scale} isMobile={isMobile}>
                 <Image url={data.image} width={dimension.width} height={dimension.height} />
               </ScaleContainer>
             </FadeContainer>
           )}
           {data?.visualType === VisualType.APL && (
             <FadeContainer className={cn(ClassName.VISUAL, ClassName.VISUAL_APL)} key={contentKey}>
-              <ScaleContainer
-                className={ClassName.SCALE_CONTAINER}
-                width={dimension.width}
-                height={dimension.height}
-                scale={scale}
-                isMobile={isMobile}
-              >
+              <ScaleContainer width={dimension.width} height={dimension.height} scale={scale} isMobile={isMobile}>
                 <APL data={data} device={device} dimension={dimension} />
               </ScaleContainer>
             </FadeContainer>

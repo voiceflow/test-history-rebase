@@ -13,7 +13,6 @@ export type SubMenuItem = {
   icon: Icon;
   value: PrototypeMode;
   label?: string;
-  id?: string;
 };
 
 export type SubMenuProps = {
@@ -40,7 +39,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ open, options, selected, onChange }) 
           const isSelectedOption = index === selectedIndex;
 
           return (
-            <MenuItem id={option.id} key={index} selected={isSelectedOption} onClick={() => onSubMenuItemClick(option.value)}>
+            <MenuItem key={index} selected={isSelectedOption} onClick={() => onSubMenuItemClick(option.value)}>
               <TippyTooltip title={option.label || option.value} position="right">
                 <SvgIcon icon={option.icon} color={isSelectedOption ? '#132144' : '#6e849a'} transition="color" />
               </TippyTooltip>

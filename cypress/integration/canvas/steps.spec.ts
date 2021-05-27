@@ -1,6 +1,5 @@
 import canvasPage from '../../pages/canvas';
 import sharedPage from '../../pages/shared';
-import buildTools from '../../utils/canvas/buildTools';
 
 context('Canvas - Steps', () => {
   beforeEach(() => {
@@ -13,8 +12,9 @@ context('Canvas - Steps', () => {
   it('copy/paste step via hotkey', () => {
     cy.awaitCanvasAnimation();
 
-    buildTools.spawnNodeInGrid('speak', 0, 1);
-    buildTools.getLastBlock().click({ force: true }).sendHotkey('{meta}c');
+    cy.addBlockToCanvasViaStepMenu('Speak', [400, 100]);
+
+    canvasPage.el.node.eq(1).find('.vf-canvas__step').click({ force: true }).sendHotkey('{meta}c');
 
     sharedPage.el.toastify.should('contain', '1 block(s) copied to clipboard');
 
@@ -27,9 +27,9 @@ context('Canvas - Steps', () => {
   it('copy/paste step via context menu', () => {
     cy.awaitCanvasAnimation();
 
-    buildTools.spawnNodeInGrid('speak', 0, 1);
+    cy.addBlockToCanvasViaStepMenu('Speak', [400, 100]);
 
-    buildTools.getLastBlock().rightclick();
+    canvasPage.el.node.eq(1).find('.vf-canvas__step').rightclick();
     sharedPage.el.contextMenu.contains('Copy').click();
 
     sharedPage.el.toastify.should('contain', '1 block(s) copied to clipboard');
@@ -43,21 +43,21 @@ context('Canvas - Steps', () => {
   it('duplicate step via hotkey', () => {
     cy.awaitCanvasAnimation();
 
-    buildTools.spawnNodeInGrid('speak', 0, 1);
+    cy.addBlockToCanvasViaStepMenu('Speak', [400, 100]);
 
-    buildTools.getLastStep().click().sendHotkey('{meta}d');
+    canvasPage.el.node.eq(1).find('.vf-canvas__step').click().sendHotkey('{meta}d');
 
-    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [532, 422]);
+    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [432, 252]);
   });
 
   it('duplicate step via context menu', () => {
     cy.awaitCanvasAnimation();
 
-    buildTools.spawnNodeInGrid('speak', 0, 1);
+    cy.addBlockToCanvasViaStepMenu('Speak', [400, 100]);
 
-    buildTools.getLastStep().rightclick();
+    canvasPage.el.node.eq(1).find('.vf-canvas__step').rightclick();
     sharedPage.el.contextMenu.contains('Duplicate').click();
 
-    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [532, 422]);
+    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [432, 252]);
   });
 });

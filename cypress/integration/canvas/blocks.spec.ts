@@ -1,6 +1,5 @@
 import canvasPage from '../../pages/canvas';
 import sharedPage from '../../pages/shared';
-import buildTools from '../../utils/canvas/buildTools';
 
 context('Canvas - Blocks', () => {
   beforeEach(() => {
@@ -51,30 +50,30 @@ context('Canvas - Blocks', () => {
 
     cy.addBlockToCanvasViaStepMenu('Speak', [600, 400]);
 
-    buildTools.getLastBlock().should('have.coords', [268, 304]).dragNode(200, 200).should('have.coords', [468, 504]);
+    canvasPage.el.node.eq(1).should('have.coords', [600, 520]).dragNode(200, 200).should('have.coords', [800, 720]);
   });
 
   it('copy/paste block via hotkey', () => {
     cy.awaitCanvasAnimation();
 
-    buildTools.spawnNodeInGrid('speak', 1, 0);
+    cy.addBlockToCanvasViaStepMenu('Speak', [400, 100]);
 
-    buildTools.clickLastBlock().sendHotkey('{meta}c');
+    canvasPage.el.node.eq(1).click().sendHotkey('{meta}c');
 
     sharedPage.el.toastify.should('contain', '1 block(s) copied to clipboard');
 
     cy.document().trigger('mousemove', { clientX: 400, clientY: 600 });
     cy.clipboard().then((clipboardData) => cy.document().trigger('paste', { clipboardData: { getData: () => clipboardData } }));
 
-    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [400, 560]);
+    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [400, 600]);
   });
 
   it('copy/paste block via context menu', () => {
     cy.awaitCanvasAnimation();
 
-    buildTools.spawnNodeInGrid('speak', 1, 0);
+    cy.addBlockToCanvasViaStepMenu('Speak', [400, 100]);
 
-    buildTools.getLastBlock().rightclick();
+    canvasPage.el.node.eq(1).rightclick();
     sharedPage.el.contextMenu.contains('Copy').click();
 
     sharedPage.el.toastify.should('contain', '1 block(s) copied to clipboard');
@@ -82,17 +81,17 @@ context('Canvas - Blocks', () => {
     canvasPage.el.canvas.rightclick(400, 500, { force: true });
     sharedPage.el.contextMenu.contains('Paste').click();
 
-    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [400, 580]);
+    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [400, 620]);
   });
 
   it('duplicate block via hotkey', () => {
     cy.awaitCanvasAnimation();
 
-    buildTools.spawnNodeInGrid('speak', 1, 0);
+    cy.addBlockToCanvasViaStepMenu('Speak', [400, 100]);
 
-    buildTools.getLastBlock().click().sendHotkey('{meta}d');
+    canvasPage.el.node.eq(1).click().sendHotkey('{meta}d');
 
-    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [532, 382]);
+    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [432, 252]);
   });
 
   it('duplicate block via context menu', () => {
@@ -100,10 +99,10 @@ context('Canvas - Blocks', () => {
 
     cy.addBlockToCanvasViaStepMenu('Speak', [400, 100]);
 
-    buildTools.getLastBlock().rightclick();
+    canvasPage.el.node.eq(1).rightclick();
     sharedPage.el.contextMenu.contains('Duplicate').click();
 
-    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [112, 208]);
+    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [432, 252]);
   });
 
   it('drag multiple blocks', () => {
@@ -121,7 +120,7 @@ context('Canvas - Blocks', () => {
     canvasPage.el.node.eq(0).dragNode(100, 100);
 
     canvasPage.el.node.eq(0).should('have.coords', [500, 404]);
-    canvasPage.el.node.eq(1).should('have.coords', [400, 220]);
-    canvasPage.el.node.eq(2).should('have.coords', [400, 620]);
+    canvasPage.el.node.eq(1).should('have.coords', [500, 320]);
+    canvasPage.el.node.eq(2).should('have.coords', [500, 720]);
   });
 });

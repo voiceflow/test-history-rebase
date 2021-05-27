@@ -4,31 +4,26 @@ import { SubMenuItem } from '@/components/SubMenu';
 import { Icon } from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
 import { PrototypeMode } from '@/ducks/prototype';
-import { Identifier } from '@/styles/constants';
 import { createPlatformSelector } from '@/utils/platform';
 
 const canvasIcon: SubMenuItem = {
   value: PrototypeMode.CANVAS,
   icon: 'canvas',
-  id: Identifier.PROTO_MENU_CANVAS_BUTTON,
 };
 
 const displayIcon: SubMenuItem = {
   value: PrototypeMode.DISPLAY,
   icon: 'display',
-  id: Identifier.PROTO_MENU_DISPLAY_BUTTON,
 };
 
 const developerIcon: SubMenuItem = {
   value: PrototypeMode.VARIABLES,
   icon: 'code',
-  id: Identifier.PROTO_MENU_DEVELOPER_BUTTON,
 };
 
 const settingsIcon: SubMenuItem = {
   value: PrototypeMode.SETTINGS,
   icon: 'cog',
-  id: Identifier.PROTO_MENU_SETTINGS_BUTTON,
 };
 
 const ALEXA_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];

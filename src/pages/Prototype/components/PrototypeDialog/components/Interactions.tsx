@@ -4,7 +4,6 @@ import SimpleBar from 'simplebar-react';
 
 import { css, styled, transition } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
-import { ClassName } from '@/styles/constants';
 import { Color } from '@/types';
 import { hexToRGBA, toRGBAString } from '@/utils/colors';
 import { preventDefault } from '@/utils/dom';
@@ -94,7 +93,6 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
               const ChipElement = request ? ActionChip : Chip;
               return (
                 <ChipElement
-                  className={ClassName.PROTOTYPE_CHIP}
                   key={name}
                   onMouseDown={preventDefault()}
                   onClick={() => onInteraction(request || name)}

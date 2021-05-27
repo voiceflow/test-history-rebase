@@ -9,7 +9,6 @@ import * as Intent from '@/ducks/intent';
 import * as Project from '@/ducks/project';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
-import { ClassName } from '@/styles/constants';
 import {
   filterIntents,
   formatIntentName,
@@ -128,7 +127,6 @@ function IntentSelect({ slots, platform, intent, intents, onChange, intentsMap, 
   return (
     <>
       <Select
-        className={ClassName.INTENT_SELECT_INPUT}
         value={intentID}
         clearable={intentID}
         options={filteredIntents}

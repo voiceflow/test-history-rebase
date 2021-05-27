@@ -30,14 +30,24 @@ type DebugProps = Omit<MessageProps, 'iconProps'> & {
   message: string;
 };
 
+const HYPHEN_REGEXP = /-/g;
+
 export const Debug: React.FC<DebugProps & ConnectedDebugProps> = ({ message, getDiagram, ...props }) => {
   const debugMessage = React.useMemo(() => {
+    let formattedMessage = message;
+
     if (message.includes('entering flow')) {
       const flowID = message.split(' ')[2].replace(/`/g, '');
+
       const name = getDiagram(flowID)?.name || flowID;
-      return `entering flow \`${name}\``;
+
+      formattedMessage = `entering flow \`${name}\``;
     }
-    return message;
+
+    // eslint-disable-next-line no-useless-escape, prettier/prettier
+    formattedMessage = formattedMessage.replace(HYPHEN_REGEXP, '\-');
+
+    return formattedMessage;
   }, [message]);
 
   return (

@@ -46,8 +46,14 @@ function DropdownMultiselect({
       maxHeight={maxHeight}
       maxVisibleItems={maxVisibleItems}
       menu={
-        menu || (
-          <Menu maxHeight={maxHeight} maxVisibleItems={maxVisibleItems} disabled={buttonDisabled} multiSelectProps={{ buttonClick, buttonLabel }}>
+        menu ||
+        ((onToggle) => (
+          <Menu
+            maxHeight={maxHeight}
+            maxVisibleItems={maxVisibleItems}
+            disabled={buttonDisabled}
+            multiSelectProps={{ buttonClick: (e) => buttonClick?.(e, { onToggle }), buttonLabel }}
+          >
             {dropdownOptions.map(({ sectionLabel, options }, index) => (
               <span key={index}>
                 {sectionLabel && <SectionLabel>{sectionLabel}</SectionLabel>}
@@ -68,7 +74,7 @@ function DropdownMultiselect({
               </span>
             ))}
           </Menu>
-        )
+        ))
       }
       autoWidth={autoWidth}
       placement={placement}

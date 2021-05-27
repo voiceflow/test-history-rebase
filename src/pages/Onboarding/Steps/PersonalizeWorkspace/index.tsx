@@ -56,7 +56,6 @@ const CHANNEL_TYPE_OPTIONS = [
 ];
 const PersonalizeWorkspace: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
-
   const [userRole, setUserRole] = React.useState(state.personalizeWorkspaceMeta.role || '');
   const [channels, setChannels] = React.useState(state.personalizeWorkspaceMeta.channels || []);
   const [teamSize, setTeamSize] = React.useState(state.personalizeWorkspaceMeta.teamSize || '');
@@ -84,11 +83,11 @@ const PersonalizeWorkspace: React.FC = () => {
         maxHeight={190}
         maxVisibleItems={6.5}
         multiSectionOptions={CHANNEL_TYPE_OPTIONS}
-        buttonLabel="Unselect All"
+        buttonLabel="Done"
         selectedValue={displayName}
         withCaret
         dropdownActive
-        buttonClick={() => setChannels([])}
+        buttonClick={(_: unknown, { onToggle }: { onToggle: () => void }) => onToggle()}
         selectedItems={channels}
         onSelect={(channel: string) => setChannels(toggleMembership(channels, channel))}
         placeholder="Choose all that apply"

@@ -12,8 +12,9 @@ import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
+import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect } from '@/hooks';
+import { useDidUpdateEffect, useSetup } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
@@ -34,11 +35,14 @@ const getTemplateTag = createPlatformSelector({
 });
 
 const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?: { listID: string } } }> = ({
+  workspace,
+  projects,
   activeWorkspaceID,
   computedMatch,
   goToDashboard,
   redirectToCanvas,
   createProject,
+  loadProjectsByWorkspaceID,
 }) => {
   // Once this starts getting more complex, we should move all this logic to a context, but right now that's overkill
   const [stepStack, setStepStack] = React.useState<StepID[]>([StepID.NAME_AND_IMAGE]);
@@ -110,6 +114,12 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
     }
   };
 
+  useSetup(() => {
+    if (activeWorkspaceID && !projects.length) {
+      loadProjectsByWorkspaceID(activeWorkspaceID);
+    }
+  });
+
   useDidUpdateEffect(() => {
     if (selectedChannel) {
       onContinue();
@@ -120,7 +130,7 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
     setInvocationName(name);
   }, [name]);
 
-  if (!activeWorkspaceID) {
+  if (!activeWorkspaceID || !workspace || projects.length >= workspace.projects) {
     return <Redirect to={Path.DASHBOARD} />;
   }
 
@@ -166,6 +176,8 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
 };
 
 const mapStateToProps = {
+  projects: Project.allProjectsSelector,
+  workspace: Workspace.activeWorkspaceSelector,
   activeWorkspaceID: Session.activeWorkspaceIDSelector,
 };
 
@@ -173,6 +185,7 @@ const mapDispatchToProps = {
   redirectToCanvas: Router.redirectToCanvas,
   goToDashboard: Router.goToDashboard,
   createProject: Project.createProject,
+  loadProjectsByWorkspaceID: Project.loadProjectsByWorkspaceID,
 };
 
 type ConnectedNewProjectProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

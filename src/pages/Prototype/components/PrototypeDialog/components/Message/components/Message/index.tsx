@@ -48,7 +48,11 @@ const Message: React.FC<MessageProps> = ({
       <InnerContainer>
         {withLogo && isFirstInSeries && (
           <LogoCircle shadow={false} size={32} forAvatar={!!avatarURL}>
-            {avatarURL ? <Avatar noHover noShadow url={avatarURL} name="" color="red" /> : <SvgIcon icon="voiceflowV" size={16} color="black" />}
+            {avatarURL ? (
+              <Avatar className={ClassName.PROTOTYPE_MESSAGE_ICON} noHover noShadow url={avatarURL} name="" color="red" />
+            ) : (
+              <SvgIcon icon="voiceflowV" size={16} color="black" />
+            )}
           </LogoCircle>
         )}
 

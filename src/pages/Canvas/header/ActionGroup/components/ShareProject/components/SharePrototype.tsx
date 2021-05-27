@@ -7,6 +7,7 @@ import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { useModals, usePermission } from '@/hooks';
 import { Container, DropdownContainer } from '@/pages/Collaborators/components/InviteByLink/components';
+import { Identifier } from '@/styles/constants';
 
 type SharePrototypeProps = {
   link: string | null;
@@ -40,7 +41,7 @@ const SharePrototype: React.FC<SharePrototypeProps> = ({ link, onClick, isAllowe
           )}
         </span>
       </DropdownContainer>
-      <Button variant={ButtonVariant.PRIMARY} icon={isAllowed ? 'link' : null} onClick={handleCopyLink}>
+      <Button id={Identifier.SHARE_COPY_LINK_BUTTON} variant={ButtonVariant.PRIMARY} icon={isAllowed ? 'link' : null} onClick={handleCopyLink}>
         <span>{isAllowed ? 'Copy Link' : 'Upgrade'}</span>
       </Button>
     </Container>

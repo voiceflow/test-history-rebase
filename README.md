@@ -336,7 +336,7 @@ yarn start --ff_someFeature
 To properly decouple code from configuration, certain configuration variables can be overriden at runtime.
 This is accomplished by injecting these variables into the `window` global variable in `public/static.js`.
 The dockerfile entrypoint is a script that checks for container environment variables prefixed with `VF_OVERRIDE` and populates `public/static.js`.
-The override logic is written in `src/config/index.ts`; if the override on a given variable is populated, then it will override the target variable.
+The override logic is written in `src/config/buildTools.ts`; if the override on a given variable is populated, then it will override the target variable.
 NOTE: PLEASE DO NOT MODIFY `public/static.js`!!! It should be solely managed by the startup script.
 
 ## Previewing in a Development Environment

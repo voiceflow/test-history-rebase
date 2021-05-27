@@ -4,6 +4,7 @@ import Box from '@/components/Box';
 import Divider from '@/components/Divider';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 import ColorInput from './ColorInput';
@@ -27,6 +28,7 @@ const AppearanceAndBranding: React.FC<AppearanceAndBrandingProps & ConnectedAppe
       <Divider style={{ marginTop: '24px', marginBottom: 0 }} />
       <UploadContainer>
         <UploadContent
+          id={Identifier.BRAND_IMAGE_INPUT_CONTAINER}
           title="Brand Image"
           isAllowed={isAllowed}
           initialState={brandImage}
@@ -35,6 +37,7 @@ const AppearanceAndBranding: React.FC<AppearanceAndBrandingProps & ConnectedAppe
           updateSettings={(image) => updateSettings({ brandImage: image })}
         />
         <UploadContent
+          id={Identifier.MESSAGE_ICON_INPUT_CONTAINER}
           title="Message Icon"
           isAllowed={isAllowed}
           initialState={avatar}

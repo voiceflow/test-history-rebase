@@ -8,6 +8,7 @@ import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import { getDeviceList } from '@/pages/Prototype/constants';
 import { FadeRightContainer } from '@/styles/animations';
+import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 import { Dimension, Item, Name } from './components';
@@ -43,7 +44,7 @@ const PrototypeDisplaySettings: React.FC<ConnectedPrototypeDisplaySettingsProps>
             const selected = device === type;
 
             return (
-              <Item key={name} isActive={selected} onClick={() => updateDevice(type)}>
+              <Item className={ClassName.DISPLAY_TYPE_ITEM} key={name} isActive={selected} onClick={() => updateDevice(type)}>
                 <Name>{name}</Name>
 
                 <Dimension selected={selected}>

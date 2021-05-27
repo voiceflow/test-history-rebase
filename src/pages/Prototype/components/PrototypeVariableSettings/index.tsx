@@ -6,13 +6,14 @@ import Tooltip from '@/components/TippyTooltip';
 import { VariableTag } from '@/components/VariableTag';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 import { Drawer } from '../PrototypeContainer';
 import { Variables } from './components';
 
 const PrototypeVariableSettings: React.FC<ConnectedPrototypeVariableSettingsProps> = ({ variables, updateVariables }) => (
-  <Drawer>
+  <Drawer id={Identifier.PROTO_VARIABLES_MENU_CONTAINER}>
     <Section header="VARIABLES" borderBottom variant={SectionVariant.PROTOTYPE} />
 
     <Variables>

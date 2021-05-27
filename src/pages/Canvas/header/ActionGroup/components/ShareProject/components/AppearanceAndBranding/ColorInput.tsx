@@ -6,6 +6,7 @@ import ColorSelect from '@/components/ColorSelect';
 import Input from '@/components/Input';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { hexToRGBA, removeHash, rgbaToHex } from '@/utils/colors';
 import { withEnterPress } from '@/utils/dom';
@@ -47,6 +48,7 @@ const ColorInput: React.FC<ColorInputProps & ConnectedColorInputProps> = ({ isAl
 
   return (
     <Input
+      id={Identifier.BRANDING_COLOR_INPUT}
       value={hex}
       onBlur={() => onSubmitHexColor()}
       onChange={({ currentTarget: { value } }) => setHex(removeHash(value).substr(0, 6))}

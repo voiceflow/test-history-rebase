@@ -239,7 +239,7 @@
     "dotenv": "^8.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.6",
-    "eslint": "^7.26.0",
+    "eslint": "^7.27.0",
     "eslint-import-resolver-webpack": "^0.13.0",
     "file-loader": "6.2.0",
     "filemanager-webpack-plugin": "^4.0.0",

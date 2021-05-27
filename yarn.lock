@@ -5472,6 +5472,13 @@
   dependencies:
     "@voiceflow/api-sdk" "^1.31.11"
 
+"@voiceflow/general-types@^1.48.2":
+  version "1.48.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.48.2.tgz#3c0f86f1860ac123b24f186b344645ae9fff66d2"
+  integrity sha512-f85uH0A71g0pgOVuC1O683Mmipv5uWQ+IQJ6Stpd7MxMLLpcd836xTsXoIlV4tPdXSo8MWQqg/DqpwgBloj5mQ==
+  dependencies:
+    "@voiceflow/api-sdk" "^1.31.11"
+
 "@voiceflow/git-branch-check@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/git-branch-check/-/git-branch-check-1.2.0.tgz#773e07c5e4558283b8f94a0e7e05b88e637bc3d0"
@@ -5479,14 +5486,14 @@
   dependencies:
     current-git-branch "^1.1.0"
 
-"@voiceflow/google-types@1.26.1":
-  version "1.26.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.26.1.tgz#655dce683ab5670e631f5ecd4c113875b4f73f44"
-  integrity sha512-YwxBnyr/SYzr303bP3CDCsRxidU7ecbRgXEgSTibhMBABEakHDOxaky+LeVvDFIuV3Ym6GAjEVwtAHYMvglPgg==
+"@voiceflow/google-types@1.27.15":
+  version "1.27.15"
+  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.27.15.tgz#389e70a45870e6204153c99bfe35fcdfe9833229"
+  integrity sha512-3zo6pssICuO3YBplHFWPfE9M57X3I+imU1DuoB5Gy9nnp9j73svucCKYCONqkIT7m7/IVSkQo9S+e957fzHavA==
   dependencies:
-    "@voiceflow/api-sdk" "1.30.0"
+    "@voiceflow/api-sdk" "^1.31.11"
     "@voiceflow/common" "6.5.0"
-    "@voiceflow/general-types" "1.45.0"
+    "@voiceflow/general-types" "^1.48.2"
     googleapis "^60.0.1"
 
 "@voiceflow/logger@^1.5.2":

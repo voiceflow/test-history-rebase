@@ -17,6 +17,7 @@ import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { formatIntentName, isCustomizeableBuiltInIntent, validateIntentName } from '@/utils/intent';
 import { removeTrailingUnderscores } from '@/utils/string';
+import { isAlexaPlatform } from '@/utils/typeGuards';
 
 export type ManagerProps = {
   id: string;
@@ -24,9 +25,10 @@ export type ManagerProps = {
 };
 
 const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, ManagerProps & ConnectedManagerProps> = (
-  { id, intent: selectedIntent, slots, removeIntent, updateIntent, allIntents },
+  { id, intent: selectedIntent, platform, slots, removeIntent, updateIntent, allIntents },
   ref
 ) => {
+  const isAlexa = isAlexaPlatform(platform);
   const [name, setName] = React.useState(selectedIntent?.name ?? '');
   const [path, setPath] = React.useState<{ type: string | null }>({ type: null });
   const resetPath = React.useCallback(() => setPath({ type: null }), []);
@@ -58,7 +60,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 
   const localNameUpdate = ({ value }: { value: string }) => {
     setNameError(null);
-    setName(formatIntentName(value));
+    setName(isAlexa ? formatIntentName(value) : value);
   };
 
   React.useEffect(() => {

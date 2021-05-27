@@ -92,15 +92,17 @@ export const reorderIntentSlots = (id: string, newAllKeys: string[]): SyncThunk 
 export const newIntent = (intent?: Partial<Intent>): SyncThunk<string> => (dispatch, getState) => {
   const id = intent?.id || cuid.slug();
   const state = getState();
+  const platform = intent?.platform || Project.activePlatformSelector(state);
+
   const name =
     intent?.name ||
     createNextName(
       NEW_INTENT_NAME,
-      allIntentsSelector(state).map(({ name }) => name)
+      allIntentsSelector(state).map(({ name }) => name),
+      platform
     );
   const slots = intent?.slots || { byKey: {}, allKeys: [] };
   const inputs = intent?.inputs || [];
-  const platform = intent?.platform || Project.activePlatformSelector(state);
 
   dispatch(addIntent(id, { id, name, slots, inputs, platform }));
 

@@ -1,5 +1,8 @@
 import cuid from 'cuid';
 
+import { PlatformType } from '@/constants';
+import { isAlexaPlatform } from '@/utils/typeGuards';
+
 import { convertToWord } from './number';
 
 export { cuid };
@@ -7,14 +10,17 @@ export { cuid };
 const TAGS_REGEXP = /(<([^>]+)>)/gi;
 const TRAILING_UNDERSCORES_REGEXP = /^_+|_+$/g;
 
-export const createNextName = (prefix: string, items: string[]): string => {
+export const createNextName = (prefix: string, items: string[], platform: PlatformType): string => {
   let counter = 1;
-
-  while (items.includes(`${prefix}_${convertToWord(counter)}`)) {
+  const isAlexa = isAlexaPlatform(platform);
+  const genIntentName = (counter: number) => (isAlexa ? `${prefix}_${convertToWord(counter)}` : `${prefix} ${convertToWord(counter)}`);
+  let intentName = genIntentName(counter);
+  while (items.includes(intentName)) {
     counter++;
+    intentName = genIntentName(counter);
   }
 
-  return `${prefix}_${convertToWord(counter)}`;
+  return intentName;
 };
 
 export const capitalizeFirstLetter = (value: string): string => value.charAt(0).toUpperCase() + value.slice(1);

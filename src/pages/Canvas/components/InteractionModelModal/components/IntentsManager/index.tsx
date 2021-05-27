@@ -5,12 +5,14 @@ import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
 import * as IntentDuck from '@/ducks/intent';
+import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Intent } from '@/models';
 import { ConnectedProps } from '@/types';
 import { reorder as reorderArray } from '@/utils/array';
 import { formatIntentName } from '@/utils/intent';
+import { isAlexaPlatform } from '@/utils/typeGuards';
 
 import EmptyContainer from '../EmptyContainer';
 import LeftColumn from '../LeftColumn';
@@ -30,10 +32,11 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
   removeIntent,
   setSelectedID,
   reorderIntents,
+  platform,
 }) => {
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
   const managerRef = React.useRef<{ resetPath: () => void }>(null);
-
+  const isAlexa = isAlexaPlatform(platform);
   const scrollbarsRef = React.useRef<Scrollbars>(null);
 
   const getItemKey = React.useCallback((item: Intent) => item.id, []);
@@ -110,7 +113,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
               getLabel={getItemLabel}
               addMessage="New Intent"
               renderItem={(item, index) => renderItem({ key: item.id, itemKey: item.id, item, index })}
-              formatValue={formatIntentName}
+              formatValue={isAlexa ? formatIntentName : undefined}
               placeholder="Search Intents"
             />
           )}
@@ -135,6 +138,7 @@ const mapStateToProps = {
   intents: IntentDuck.allCustomIntentsSelector,
   intentsMap: IntentDuck.mapIntentsSelector,
   intentsIDs: IntentDuck.allIntentIDsSelector,
+  platform: Project.activePlatformSelector,
 };
 
 const mapDispatchToProps = {

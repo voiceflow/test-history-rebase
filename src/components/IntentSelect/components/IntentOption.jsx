@@ -6,6 +6,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { PlatformType, SPACE_REGEXP } from '@/constants';
 import { isCustomizeableBuiltInIntent } from '@/utils/intent';
 import { createPlatformSelector } from '@/utils/platform';
+import { isAlexaPlatform } from '@/utils/typeGuards';
 
 const getPlatformIcon = createPlatformSelector(
   {
@@ -15,8 +16,9 @@ const getPlatformIcon = createPlatformSelector(
   'inFlow'
 );
 
-const getFormatedLabel = (label, searchLabel) => {
-  const substrs = (searchLabel && _toLower(label)?.replace(SPACE_REGEXP, '_').split(_toLower(searchLabel))) || [];
+const getFormatedLabel = (label, searchLabel, platform) => {
+  const formattedLabel = isAlexaPlatform(platform) ? _toLower(label)?.replace(SPACE_REGEXP, '_') : _toLower(label);
+  const substrs = (searchLabel && formattedLabel?.split(_toLower(searchLabel))) || [];
 
   if (substrs.length < 2) {
     return label;
@@ -42,9 +44,9 @@ const getFormatedLabel = (label, searchLabel) => {
   return strsToRender.map((str, i) => (i % 2 === 0 ? str : <b key={i}>{str}</b>));
 };
 
-const IntentOption = ({ option, searchLabel, getOptionLabel, getOptionValue }) => (
+const IntentOption = ({ option, searchLabel, getOptionLabel, getOptionValue, platform }) => (
   <FlexApart fullWidth>
-    <span>{getFormatedLabel(getOptionLabel(getOptionValue(option)), searchLabel)}</span>
+    <span>{getFormatedLabel(getOptionLabel(getOptionValue(option)), searchLabel, platform)}</span>
 
     {isCustomizeableBuiltInIntent(option) && <SvgIcon icon={getPlatformIcon(option.platform)} color="#BECEDC" />}
   </FlexApart>

@@ -18,16 +18,16 @@ const ConditionLabel: React.FC<ConditionLabelProps> = ({ actionable = false, onC
     <Dropdown
       menu={() => (
         <Menu>
-          <MenuItem onClick={() => onChange?.(ExpressionTypeV2.AND)}>AND</MenuItem>
-          <MenuItem onClick={() => onChange?.(ExpressionTypeV2.OR)}>OR</MenuItem>
+          <MenuItem onClick={() => onChange?.(ExpressionTypeV2.AND)}>And</MenuItem>
+          <MenuItem onClick={() => onChange?.(ExpressionTypeV2.OR)}>Or</MenuItem>
         </Menu>
       )}
     >
       {(ref, onToggle, isOpen) => (
-        <ConditionLabelContainer ref={ref} onClick={onToggle} isOpen={isOpen} secondary>
+        <ConditionLabelContainer hasCaret ref={ref} onClick={onToggle} isOpen={isOpen} secondary>
           {children}
-          <Flex ml={8} zIndex={2}>
-            <SvgIcon icon="caretDown" size={10} />
+          <Flex ml={6} zIndex={2}>
+            <SvgIcon icon="caretDown" size={8} />
           </Flex>
         </ConditionLabelContainer>
       )}

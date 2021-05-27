@@ -46,6 +46,7 @@ export type OptionsFilter<O, V> = (
 export type SelectProps<O, V> = {
   id?: string;
   open?: boolean;
+  inputStopProp?: boolean;
   label?: string;
   value?: V;
   inline?: boolean;
@@ -124,6 +125,7 @@ const AnyAdvancedMenu = AdvancedMenu as React.FC<any>;
 const Select = <O, V = O>({
   id,
   open,
+  inputStopProp = true,
   label = '',
   value,
   inline = false,
@@ -254,7 +256,9 @@ const Select = <O, V = O>({
 
   const onOpenMenu = React.useCallback(
     (e?: React.MouseEvent | React.FocusEvent) => {
-      e?.stopPropagation();
+      if (inputStopProp) {
+        e?.stopPropagation();
+      }
 
       if (cache.current.searchable) {
         inputRef.current?.focus?.();

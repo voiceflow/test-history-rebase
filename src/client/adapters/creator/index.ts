@@ -3,6 +3,7 @@ import _isString from 'lodash/isString';
 
 import { createSimpleAdapter } from '@/client/adapters/utils';
 import { BlockType, PlatformType } from '@/constants';
+import { FeatureFlagMap } from '@/ducks/feature';
 import { CreatorDiagram, Link, Node, NodeData, Port } from '@/models';
 import { denormalize, Normalized } from '@/utils/normalized';
 import { getCurrentTimestamp } from '@/utils/time';
@@ -18,16 +19,22 @@ export type DBCreatorDiagram = Omit<Diagram, 'created' | 'creatorID' | 'variable
 const creatorAdapter = createSimpleAdapter<
   DBCreatorDiagram,
   CreatorDiagram,
-  [{ platform: PlatformType }],
+  [
+    {
+      platform: PlatformType;
+      features: FeatureFlagMap;
+    }
+  ],
   [
     {
       nodes: Normalized<Node>;
       ports: Normalized<Port>;
       platform: PlatformType;
+      features: FeatureFlagMap;
     }
   ]
 >(
-  (diagram, { platform }) => {
+  (diagram, { platform, features }) => {
     const rootNodeIDs: string[] = [];
     const nodes: Node[] = [];
     const nodeIDs = new Set<string>();
@@ -56,6 +63,7 @@ const creatorAdapter = createSimpleAdapter<
         parentNode: parentNodes[dbNode.nodeID] || null,
         links,
         platform,
+        features,
       });
 
       nodes.push(node);
@@ -99,7 +107,7 @@ const creatorAdapter = createSimpleAdapter<
       markupNodeIDs,
     };
   },
-  ({ diagramID, viewport, links, data }, { nodes, ports, platform }) => {
+  ({ diagramID, viewport, links, data }, { nodes, ports, platform, features }) => {
     const nodeList = denormalize(nodes);
 
     const portToTargets = links.reduce<Record<string, NodeID>>((acc, link) => {
@@ -141,7 +149,7 @@ const creatorAdapter = createSimpleAdapter<
               data: data[node.id],
               ports: node.ports.out.map((portID) => ports.byKey[portID]),
             },
-            { portToTargets, stepMap, platform, portLinksMap: sourcePortLinksMap }
+            { portToTargets, stepMap, platform, portLinksMap: sourcePortLinksMap, features }
           ),
         }),
         {}

@@ -1,14 +1,21 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
-import { ConditionsLogicInterface, ExpressionData, ExpressionType, ExpressionV2, LogicGroupData } from '@voiceflow/general-types';
+import { ConditionsLogicInterface, ExpressionTypeV2 } from '@voiceflow/general-types';
 import cuid from 'cuid';
 import isEmpty from 'lodash/isEmpty';
 
-import { DefaultDataType, LogicUnitDataType } from './types';
+import {
+  AdvancedExpressionV2,
+  EqualsExpressionV2,
+  ExpressionData,
+  ExpressionV2,
+  LogicGroupData,
+  ValueExpressionV2,
+  VariableExpressionV2,
+} from '@/models';
+
+import { LogicUnitDataType } from './types';
 
 // Validations
-
-// TODO: create an expression validation for Advanced Expression CORE-5503
-export const isValidExpression = () => true;
 
 export const isValidExpressionValue = (value: string): boolean => {
   if (!value) return false;
@@ -39,68 +46,69 @@ export const isVariable = (value: string) => !!value.match(SLOT_REGEXP)?.length;
 export const isConditionInvalid = (expression: LogicUnitDataType) => {
   const rightValueMissing = !isEmpty(expression.value[0]?.value) && isEmpty(expression.value[1]?.value);
   const leftValueMissing = !isEmpty(expression.value[1]?.value) && isEmpty(expression.value[0]?.value);
-
-  return leftValueMissing || rightValueMissing;
+  return (
+    (leftValueMissing || rightValueMissing) && !(expression.type === ExpressionTypeV2.IS_EMPTY || expression.type === ExpressionTypeV2.HAS_VALUE)
+  );
 };
 
 // Default values
 
 export const getAddionalLogicData = (
   expression: ExpressionData | LogicGroupData,
-  newCondition: DefaultDataType<ExpressionV2>
+  newCondition: ExpressionV2 | LogicGroupData
 ): ExpressionData | LogicGroupData => ({
   ...expression,
-  type: expression.type || ExpressionType.AND,
+  type: expression.type || ExpressionTypeV2.AND,
   value: [...expression.value, { ...newCondition }],
 });
 
-export const getDefaultValue = (logicInterface: ConditionsLogicInterface) => {
+export const getDefaultValue = (logicInterface: ConditionsLogicInterface): ExpressionV2 | LogicGroupData => {
   switch (logicInterface) {
     case ConditionsLogicInterface.EXPRESSION:
       return {
         id: cuid.slug(),
         logicInterface,
-        type: ExpressionType.ADVANCE,
+        type: ExpressionTypeV2.ADVANCE,
         value: '',
-      };
+      } as AdvancedExpressionV2;
     case ConditionsLogicInterface.VARIABLE:
       return {
         id: cuid.slug(),
         logicInterface,
-        type: ExpressionType.EQUALS,
+        type: ExpressionTypeV2.EQUALS,
         value: [
           {
-            type: ExpressionType.VARIABLE,
+            type: ExpressionTypeV2.VARIABLE,
             value: '',
-          },
+          } as VariableExpressionV2,
           {
-            type: ExpressionType.VALUE,
+            type: ExpressionTypeV2.VALUE,
             value: '',
-          },
+          } as ValueExpressionV2,
         ],
-      };
+      } as EqualsExpressionV2;
     case ConditionsLogicInterface.VALUE:
       return {
         id: cuid.slug(),
         logicInterface,
-        type: ExpressionType.EQUALS,
+        type: ExpressionTypeV2.EQUALS,
         value: [
           {
-            type: ExpressionType.VALUE,
+            type: ExpressionTypeV2.VALUE,
             value: '',
-          },
+          } as ValueExpressionV2,
           {
-            type: ExpressionType.VALUE,
+            type: ExpressionTypeV2.VALUE,
             value: '',
-          },
+          } as ValueExpressionV2,
         ],
-      };
+      } as EqualsExpressionV2;
     default:
       return {
         id: cuid.slug(),
         logicInterface,
-        type: '',
+        type: null,
         value: [],
-      };
+      } as LogicGroupData;
   }
 };

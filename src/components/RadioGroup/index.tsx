@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import Checkbox, { CheckboxProps, CheckboxType } from '@/components/Checkbox';
 
@@ -23,6 +23,23 @@ export type RadioGroupProps<T extends any> = Omit<CheckboxProps, 'type' | 'value
   column?: boolean;
 };
 
+interface RadioItemProps {
+  index: number;
+  column?: boolean;
+  id: any;
+  label: ReactNode;
+  isChecked: boolean;
+  onChange: (val: any) => void;
+}
+
+export const RadioItem: React.FC<RadioItemProps> = ({ index, column, id, label, isChecked, onChange, ...props }) => (
+  <RadioButtonContainer key={index} column={column}>
+    <Checkbox {...props} type={CheckboxType.RADIO} value={id} checked={isChecked} onChange={() => onChange(id)} isFlat>
+      <div>{label}</div>
+    </Checkbox>
+  </RadioButtonContainer>
+);
+
 const RadioGroup = <T extends any>({
   options = YES_NO_RADIO_BUTTONS as RadioOption<any>[],
   checked,
@@ -37,13 +54,7 @@ const RadioGroup = <T extends any>({
 
       const isChecked = customCheckedCondition ? customCheckedCondition(checked) : checked === id;
 
-      return (
-        <RadioButtonContainer key={index} column={column}>
-          <Checkbox {...props} type={CheckboxType.RADIO} value={id as any} checked={isChecked} onChange={() => onChange(id)} isFlat>
-            <div>{label}</div>
-          </Checkbox>
-        </RadioButtonContainer>
-      );
+      return <RadioItem key={index} index={index} column={column} id={id} label={label} isChecked={isChecked} onChange={onChange} {...props} />;
     })}
   </Container>
 );

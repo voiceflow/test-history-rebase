@@ -1,18 +1,33 @@
+import { ExpressionTypeV2 } from '@voiceflow/general-types';
 import React from 'react';
 
 import Badge from '@/components/Badge';
-import { Flex } from '@/components/Box';
+import Box, { Flex } from '@/components/Box';
+import { ConditionExpressionTooltip } from '@/components/ConditionsBuilder/components';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import Input from '@/components/Input';
+import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant } from '@/components/Section';
+import Text from '@/components/Text';
 import VariablesInput from '@/components/VariablesInput';
+import { useExpressionValidation } from '@/hooks';
 import { NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import PrefixedVariableSelect from '@/pages/Canvas/components/PrefixedVariableSelect';
-
-import ExpressionInputTooltip from './ExpressionInputTooltip';
+import { transformVariableToString } from '@/utils/slot';
 
 const VariablesInputComponent: any = VariablesInput;
+const INPUT_TYPE_OPTIONS = [
+  {
+    id: ExpressionTypeV2.VALUE,
+    label: <Text>Value</Text>,
+  },
+  {
+    id: ExpressionTypeV2.ADVANCE,
+    label: <Text>Variable or Expression</Text>,
+  },
+];
 
 export type SetItemProps = ItemComponentProps<NodeData.SetExpression> &
   MappedItemComponentHandlers<NodeData.SetExpression> &
@@ -25,9 +40,14 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
   { itemKey, item, index, isOnlyItem, isDragging, isDraggingPreview, onUpdate, latestCreatedKey, connectedDragRef, onContextMenu, isContextMenuOpen },
   ref
 ) => {
+  const [error, resetError, isValidExpression, errorMessage] = useExpressionValidation();
+
   const updateExpression = React.useCallback(
     (text) => {
-      onUpdate({ expression: text });
+      if (isValidExpression(text)) {
+        resetError();
+        onUpdate({ expression: text });
+      }
     },
     [item.expression, onUpdate]
   );
@@ -61,18 +81,36 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
               contentBottomUnits={0}
               label={
                 <Flex fullWidth>
-                  Assign Value to Variable
-                  <ExpressionInputTooltip />
+                  Value Type
+                  <ConditionExpressionTooltip />
                 </Flex>
               }
             >
-              <VariablesInputComponent
-                value={item.expression}
-                onBlur={({ text }: { text: string }) => updateExpression(text)}
-                placeholder="Enter value, {variable} or expression"
-                multiline
-              />
+              <RadioGroup options={INPUT_TYPE_OPTIONS} checked={item.type} onChange={(type) => onUpdate({ type })} />
             </FormControl>
+            <Box mt={12}>
+              {item.type === ExpressionTypeV2.VALUE ? (
+                <Input
+                  value={transformVariableToString(`${item.expression}`)}
+                  onChange={({ target }) => onUpdate({ expression: target.value })}
+                  placeholder="Enter value"
+                />
+              ) : (
+                <VariablesInputComponent
+                  error={error}
+                  onFocus={resetError}
+                  value={`${item.expression}`}
+                  onBlur={({ text }: { text: string }) => updateExpression(text)}
+                  placeholder="Enter {variable} or expression"
+                  multiline
+                />
+              )}
+            </Box>
+            {error && (
+              <Box fontSize={13} color="#e91e63" mt={16}>
+                {errorMessage ? `Error: ${errorMessage}.` : 'Expression syntax is invalid.'}
+              </Box>
+            )}
           </Section>
         </>
       )}

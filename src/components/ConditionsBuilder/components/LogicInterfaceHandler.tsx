@@ -1,8 +1,10 @@
-import { ConditionsLogicInterface, ExpressionTypeV2, ExpressionV2, LogicGroupData } from '@voiceflow/general-types';
+import { ConditionsLogicInterface, ExpressionTypeV2 } from '@voiceflow/general-types';
 import React from 'react';
 
+import { ExpressionV2, LogicGroupData } from '@/models';
+
 import { DataConfigurableInterface } from '../constants';
-import { LogicUnitDataType } from '../types';
+import { BaseLogicType, LogicUnitDataType } from '../types';
 import ConditionExpression from './ConditionExpression';
 import ConditionLogicGroup from './ConditionLogicGroup';
 import LogicUnit from './LogicUnit';
@@ -10,7 +12,7 @@ import LogicUnit from './LogicUnit';
 export type LogicInterfaceHandlerProps = {
   firstItem?: boolean;
   expression: ExpressionV2 | LogicGroupData;
-  baseLogicType?: ExpressionTypeV2.AND | ExpressionTypeV2.OR;
+  baseLogicType: BaseLogicType;
 
   onDelete: () => void;
   onChange: (value: ExpressionV2 | LogicGroupData) => void;

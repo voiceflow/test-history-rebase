@@ -105,7 +105,7 @@ const CanvasControls: React.FC<CanvasControlProps & ConnectedCanvasControlsProps
 
   useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true });
-  useHotKeys(Hotkey.ROOT_NODE, onFocusHome, { preventDefault: true });
+  useHotKeys(Hotkey.ROOT_NODE, onFocusHome, { preventDefault: true, disable: engine()?.isNodeFocused() });
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenCMS, { preventDefault: true });
   useHotKeys(Hotkey.OPEN_COMMENTING, toggleCommenting, { preventDefault: true }, [toggleCommenting]);
   useHotKeys(Hotkey.ADD_MARKUP_TEXT, toggleMarkupText, { preventDefault: true }, [toggleMarkupText]);

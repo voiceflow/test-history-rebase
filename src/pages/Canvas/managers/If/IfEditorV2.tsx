@@ -1,37 +1,125 @@
-import { ExpressionData } from '@voiceflow/general-types';
 import React from 'react';
 
-import Box, { Flex } from '@/components/Box';
-import ConditionsBuilder from '@/components/ConditionsBuilder';
-import { useManager } from '@/hooks';
-import { Content } from '@/pages/Canvas/components/Editor';
+import DraggableList, { DeleteComponent } from '@/components/DraggableList';
+import { FeatureFlag } from '@/config/features';
+import { focusedNodeSelector } from '@/ducks/creator';
+import { connect } from '@/hocs';
+import { MapManaged, useFeature, useManager, useToggle } from '@/hooks';
+import { ExpressionData, NodeData } from '@/models';
+import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
+import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
+import { EngineContext } from '@/pages/Canvas/contexts';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
+import { ConnectedProps } from '@/types';
 
-import { NodeEditor } from '../types';
+import { DraggableItemV2, HelpTooltip } from './components';
 import { NODE_CONFIG } from './constants';
 
-// TODO: need to implement with Dragable List
-// ConditionsBuilder will be the component in DragableItem
+const setClone = (initVal: any, targetVal: ExpressionData) => ({
+  ...initVal,
+  name: targetVal.name,
+  value: targetVal.value,
+});
 
-const IfEditorV2: NodeEditor<{ expressions: ExpressionData[] }> = ({ data, onChange }) => {
-  const updateExpressions = React.useCallback((expressions) => onChange({ expressions }), [onChange]);
+const expressionFactory = (conditionsBuilderEnabled?: boolean | null) =>
+  NODE_CONFIG.factory(undefined, {
+    features: {
+      [FeatureFlag.CONDITIONS_BUILDER]: {
+        isEnabled: !!conditionsBuilderEnabled,
+      },
+    },
+  }).data.expressions[0];
 
-  const { items, onAdd, mapManaged } = useManager(data.expressions, updateExpressions, {
-    factory: (() => NODE_CONFIG.factory().data.expressions[0]) as any,
-  });
+const IfEditor: NodeEditor<NodeData.If & ConnectedCommentingUpdatesProps> = ({ data, onChange, focusedNode }) => {
+  const conditionsBuilder = useFeature(FeatureFlag.CONDITIONS_BUILDER);
+  const [isDragging, toggleDragging] = useToggle(false);
+  const engine = React.useContext(EngineContext)!;
+  const updateExpressions = React.useCallback((expressions, save) => onChange({ expressions }, save), [onChange]);
+  const onRemoveExpression = React.useCallback((_, index) => engine.port.remove(focusedNode!.ports!.out![index + 1] as string), [
+    engine.port,
+    focusedNode!.ports!.out,
+  ]);
+
+  const { items, onAdd, onRemove, onDuplicate, mapManaged, onReorder, latestCreatedKey } = useManager(data.expressions, updateExpressions, {
+    factory: () => expressionFactory(conditionsBuilder?.isEnabled),
+    autosave: false,
+    handleRemove: onRemoveExpression,
+    clone: setClone,
+  } as any);
+
+  const addExpression = React.useCallback(
+    async (scrollToBottom: (behavior?: ScrollBehavior) => void) => {
+      onAdd();
+      await engine.port.add(focusedNode!.id!, { label: (items.length + 1).toString() });
+      scrollToBottom();
+    },
+    [engine.port, items.length, onAdd]
+  );
+
+  const onDuplicationExp = React.useCallback(
+    (_, item) => {
+      onDuplicate(item.index, item);
+      engine.port.add(focusedNode!.id as string, { label: (items.length + 1).toString() });
+    },
+    [onDuplicate, focusedNode!.id]
+  );
 
   return (
-    <Content>
-      <Box pl={32} pr={32}>
-        {!!items.length &&
-          mapManaged((map: ExpressionData, { key, onUpdate }) => <ConditionsBuilder expression={map} onChange={onUpdate} key={key} />)}
-      </Box>
-      <Flex justifyContent="center">
-        <Box onClick={onAdd} padding={10} backgroundColor="pink" cursor="pointer">
-          ADD CONDITION
-        </Box>
-      </Flex>
+    <Content
+      footer={({ scrollToBottom }) =>
+        items.length < MAX_ITEMS_PER_EDITOR ? (
+          <Controls
+            options={[
+              {
+                label: 'Add Condition',
+                onClick: () => addExpression(scrollToBottom),
+              },
+            ]}
+            tutorial={{
+              content: <HelpTooltip />,
+              blockType: data.type,
+              helpTitle: 'Having trouble?',
+              helpMessage: (
+                <>
+                  Check out this{' '}
+                  <a href="https://docs.voiceflow.com/#/steps/condition" target="_blank" rel="noopener noreferrer">
+                    doc
+                  </a>{' '}
+                  that goes over using IF blocks inside Voiceflow.
+                </>
+              ),
+            }}
+          />
+        ) : (
+          <MaxOptionsMessage>Maximum options reached</MaxOptionsMessage>
+        )
+      }
+      hideFooter={isDragging}
+    >
+      <DraggableList
+        type="if-editor"
+        onDelete={onRemove}
+        onDuplicate={onDuplicationExp}
+        onReorder={onReorder}
+        onEndDrag={toggleDragging}
+        itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
+        mapManaged={mapManaged as MapManaged<NodeData.IfExpression>}
+        onStartDrag={toggleDragging}
+        itemComponent={DraggableItemV2}
+        deleteComponent={DeleteComponent}
+        partialDragItem
+        previewComponent={DraggableItemV2}
+        withContextMenuDelete
+        withContextMenuDuplicate
+      />
     </Content>
   );
 };
 
-export default IfEditorV2;
+const mapStateToProps = {
+  focusedNode: focusedNodeSelector,
+};
+
+type ConnectedCommentingUpdatesProps = ConnectedProps<typeof mapStateToProps>;
+
+export default connect(mapStateToProps)(IfEditor);

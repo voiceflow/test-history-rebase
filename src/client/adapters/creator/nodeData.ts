@@ -3,17 +3,19 @@ import _isFunction from 'lodash/isFunction';
 
 import { createSimpleAdapter } from '@/client/adapters/utils';
 import { BlockType, PlatformType } from '@/constants';
+import { FeatureFlagMap } from '@/ducks/feature';
 import { NodeData } from '@/models';
 
 import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP, getBlockAdapter } from './block';
+import { getBlockType } from './utils';
 
 const nodeDataAdapter = createSimpleAdapter<
   { data: DiagramNode['data']; type: string },
   NodeData<unknown>,
-  [{ platform: PlatformType; nodeID: string }],
-  [{ platform: PlatformType }]
+  [{ platform: PlatformType; nodeID: string; features: FeatureFlagMap }],
+  [{ platform: PlatformType; features: FeatureFlagMap }]
 >(
-  ({ data: dbData, type: dbType }, { platform, nodeID }) => {
+  ({ data: dbData, type: dbType }, { platform, nodeID, features }) => {
     const getNodeType = APP_BLOCK_TYPE_FROM_DB[dbType];
 
     const type = _isFunction(getNodeType) ? getNodeType(dbData) : getNodeType || dbType;
@@ -23,7 +25,7 @@ const nodeDataAdapter = createSimpleAdapter<
     try {
       const adapters = getBlockAdapter(platform);
 
-      data = adapters[type]?.fromDB(dbData) || { deprecatedType: type, ...dbData };
+      data = adapters[type]?.fromDB(dbData, { features }) || { deprecatedType: type, ...dbData };
     } catch {
       data = { deprecatedType: type, ...dbData };
     }
@@ -31,28 +33,30 @@ const nodeDataAdapter = createSimpleAdapter<
     return {
       name: '',
       ...data,
-      type: data.deprecatedType ? BlockType.DEPRECATED : type,
+      type: getBlockType({ type, data }) as BlockType,
       nodeID,
       path: [],
     };
   },
-  ({ type, path, deprecatedType, nodeID, ...appData }, { platform }) => {
+  ({ type, path, deprecatedType, nodeID, ...appData }, { platform, features }) => {
     const getNodeType = DB_BLOCK_TYPE_FROM_APP[type];
     const dbType = _isFunction(getNodeType) ? getNodeType(appData) : getNodeType || deprecatedType || type;
+
+    const blockType = getBlockType({ type: dbType, features, toDB: true });
 
     let data: DiagramNode['data'] = {};
 
     try {
       const adapters = getBlockAdapter(platform);
 
-      data = adapters[type]?.toDB(appData as any) || (appData as any);
+      data = adapters[blockType]?.toDB(appData as any, { features }) || (appData as any);
     } catch {
       data = appData as any;
     }
 
     return {
       data,
-      type: dbType,
+      type: blockType,
     };
   }
 );

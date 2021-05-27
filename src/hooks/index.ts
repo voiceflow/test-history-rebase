@@ -5,6 +5,7 @@ export * from './dismiss';
 export * from './dragPreview';
 export * from './effect';
 export * from './engine';
+export * from './expressionsValidation';
 export * from './feature';
 export * from './feature';
 export * from './forceUpdate';

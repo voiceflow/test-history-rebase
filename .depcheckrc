@@ -36,6 +36,7 @@
     "ts-loader",
     "node-noop",
     "levenary",
+    "estree",
     "_storybook"
   ]
 }

@@ -15,7 +15,14 @@ import { DraggableItemV2, HelpMessage, HelpTooltip } from './components';
 
 const MAX_SETS = 20;
 
-const setFactory = (conditionsBuilderEnabled?: boolean) => NODE_CONFIG.factory(undefined, { conditionsBuilderEnabled }).data.sets[0];
+const setFactory = (conditionsBuilderEnabled?: boolean) =>
+  NODE_CONFIG.factory(undefined, {
+    features: {
+      [FeatureFlag.CONDITIONS_BUILDER]: {
+        isEnabled: !!conditionsBuilderEnabled,
+      },
+    },
+  }).data.sets[0];
 
 const setClone = (initVal: any, targetVal: NodeData.SetExpression) => ({
   ...initVal,
@@ -42,14 +49,14 @@ const SetEditorV2: NodeEditor<NodeData.Set> = ({ data, onChange }) => {
   const [stepName, setStepName] = React.useState(data.title);
 
   const addExpression = React.useCallback(
-    async (scrollToBottom) => {
+    async (scrollToBottom: (behavior?: ScrollBehavior) => void) => {
       await onAdd();
       scrollToBottom();
     },
     [onAdd]
   );
 
-  const duplicateSet = React.useCallback(
+  const onDuplicateSet = React.useCallback(
     (_, item) => {
       onDuplicate(item.index, item);
     },
@@ -95,7 +102,7 @@ const SetEditorV2: NodeEditor<NodeData.Set> = ({ data, onChange }) => {
             type="set-editor"
             onDelete={onRemove}
             onReorder={onReorder}
-            onDuplicate={duplicateSet}
+            onDuplicate={onDuplicateSet}
             onEndDrag={toggleDragging}
             itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
             mapManaged={mapManaged}

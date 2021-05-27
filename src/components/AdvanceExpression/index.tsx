@@ -31,7 +31,7 @@ const AdvanceExpression: React.FC<AdvanceExpressionProps> = ({ value, onChange, 
   const editorRef = React.useRef<AceEditorRef>(null);
   const [error, setError, resetError] = useEnableDisable(false);
 
-  const [editorState, onUpdateEditorState] = React.useState(value);
+  const [editorState, onUpdateEditorState] = React.useState<string>(value);
   const onUpdateCode = React.useCallback(() => {
     const annotations = editorRef.current?.editor.getSession().getAnnotations();
 
@@ -81,6 +81,7 @@ const AdvanceExpression: React.FC<AdvanceExpressionProps> = ({ value, onChange, 
           name="advance expression"
           mode="javascript"
           inputMode={InputMode.INPUT}
+          editorProps={{ $blockScrolling: false }}
           setOptions={{
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,

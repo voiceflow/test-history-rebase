@@ -4,6 +4,7 @@ import React from 'react';
 import client from '@/client';
 import creatorAdapter from '@/client/adapters/creator';
 import * as Creator from '@/ducks/creator';
+import * as Features from '@/ducks/feature';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
@@ -106,8 +107,9 @@ const applyOffsetsToLinks = (links: Link[], offsets: Point) =>
 const initialize = (diagramID: string): Thunk => async (dispatch, getState) => {
   const state = getState();
   const platform = Project.activePlatformSelector(state);
+  const features = Features.allActiveFeaturesSelector(state);
 
-  const { viewport, ...creator } = creatorAdapter.fromDB(await client.api.diagram.get(diagramID), { platform });
+  const { viewport, ...creator } = creatorAdapter.fromDB(await client.api.diagram.get(diagramID), { platform, features });
 
   const nodesWithCoordinates = creator.nodes.filter((node) => _isNumber(node.x) && _isNumber(node.y));
   const portsWithPoints = creator.ports.filter((port) => !!port.nodeID && !!port.linkData?.points?.length);

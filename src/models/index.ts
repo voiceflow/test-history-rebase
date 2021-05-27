@@ -10,6 +10,7 @@ export * from './Comment';
 export * from './CreatorDiagram';
 export * from './Diagram';
 export * from './Display';
+export * from './Expression';
 export * from './Intent';
 export * from './Job';
 export * from './Link';

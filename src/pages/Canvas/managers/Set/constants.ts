@@ -1,14 +1,15 @@
-import { ExpressionType } from '@voiceflow/general-types';
+import { ExpressionType, ExpressionTypeV2 } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
-import { NodeData } from '@/models';
+import { Expression, NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
 export const defaultExpression = (conditionsBuilderEnabled = false) =>
   conditionsBuilderEnabled
-    ? null
+    ? ''
     : {
         id: cuid.slug(),
         type: ExpressionType.VALUE,
@@ -36,8 +37,9 @@ export const NODE_CONFIG: NodeConfig<NodeData.Set> = {
         {
           id: cuid.slug(),
           variable: null,
+          type: ExpressionTypeV2.VALUE,
           // Temporary force typing, need to merge the new expression adapter, then we can remove this
-          expression: defaultExpression(options?.conditionsBuilderEnabled) as NodeData.Expression,
+          expression: defaultExpression(options?.features?.[FeatureFlag.CONDITIONS_BUILDER]?.isEnabled) as Expression,
         },
       ],
     },

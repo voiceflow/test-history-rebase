@@ -88,6 +88,15 @@ export const featureSelector = createSelector([featuresSelector], (features) => 
   features[featureID] ?? { isEnabled: null }
 );
 
+export const allActiveFeaturesSelector = createSelector([rootSelector], ({ features }) =>
+  Object.keys(features).reduce((acc: Record<string, { isEnabled: boolean }>, key: string) => {
+    if (features[key as FeatureFlag]?.isEnabled || (!IS_PRODUCTION && LOCAL_FEATURE_OVERRIDES[key as FeatureFlag])) {
+      return { ...acc, [key]: { isEnabled: true } };
+    }
+    return acc;
+  }, {})
+);
+
 export const isFeatureEnabledSelector = createSelector([featureSelector], (getFeature) => (featureID: FeatureFlag) =>
   (!IS_PRODUCTION && LOCAL_FEATURE_OVERRIDES[featureID]) || (getFeature(featureID).isEnabled ?? null)
 );

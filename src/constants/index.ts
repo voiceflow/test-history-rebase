@@ -98,7 +98,9 @@ export enum BlockType {
   CHOICE_OLD = 'choice',
   // logic
   SET = 'set',
+  SETV2 = 'setV2',
   IF = 'if',
+  IFV2 = 'ifV2',
   CAPTURE = 'capture',
   RANDOM = 'random',
   // advanced

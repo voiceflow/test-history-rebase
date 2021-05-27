@@ -22,6 +22,7 @@ function TextEditor({
   pluginsTypes = DEFAULT_PLUGINS,
   pluginsProps,
   newLineOnEnter,
+  skipBlurOnUnmount,
   onEditorStateChange,
 }) {
   const initialState = React.useRef(value);
@@ -163,10 +164,10 @@ function TextEditor({
   }, [forceUpdate, shouldRecreateEditorState]);
 
   useTeardown(() => {
-    if (store.get('textValue') !== initialState.current) {
+    if (!skipBlurOnUnmount && store.get('textValue') !== initialState.current) {
       onBlurEditor();
     }
-  }, [store]);
+  }, [store, skipBlurOnUnmount]);
 
   return (
     <>

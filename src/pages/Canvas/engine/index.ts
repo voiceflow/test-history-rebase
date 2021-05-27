@@ -171,6 +171,8 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   isNodeMovementLocked = (nodeID: string) => this.select(Realtime.isNodeMovementLockedSelector)(nodeID);
 
+  isNodeFocused = () => this.select(Creator.hasFocusedNode);
+
   getLockOwner = (nodeID: string) => this.select(Realtime.editLockOwnerSelector)(nodeID);
 
   getDeleteLockedNodes = () => this.select(Realtime.deletionLockedNodesSelector);

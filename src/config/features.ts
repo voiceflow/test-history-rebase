@@ -27,7 +27,7 @@ export enum FeatureFlag {
   INTERCOM_INTEGRATION = 'intercom_integration',
 }
 
-export const LOCAL_FEATURE_OVERRIDES = {
+export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.INTERCOM_INTEGRATION]: INTERCOM_ENABLED,
   [FeatureFlag.GADGETS]: GADGETS_ENABLED,
   [FeatureFlag.WAVENET_VOICES]: WAVENET_VOICES_ENABLED,

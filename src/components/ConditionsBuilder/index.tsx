@@ -1,7 +1,8 @@
-import { ConditionsLogicInterface, ExpressionData, ExpressionTypeV2, ExpressionV2, LogicGroupData } from '@voiceflow/general-types';
+import { ConditionsLogicInterface, ExpressionTypeV2 } from '@voiceflow/general-types';
 import React from 'react';
 
 import Box, { Flex } from '@/components/Box';
+import { ExpressionData, ExpressionV2, LogicGroupData } from '@/models';
 
 import { ConditionLabel, ConditionSelect, LogicInterfaceHandler } from './components';
 import { getAddionalLogicData, getDefaultValue } from './utils';
@@ -13,12 +14,12 @@ export type ConditionsBuilderProps = {
 
 const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, expression }) => {
   const addNewCondition = (logicInterface: ConditionsLogicInterface) => {
-    const values: any = getDefaultValue(logicInterface);
+    const values = getDefaultValue(logicInterface);
     onChange({ ...expression, value: [{ ...values }] } as ExpressionData);
   };
 
   const addAdditionalCondition = (logicInterface: ConditionsLogicInterface) => {
-    const values: any = getDefaultValue(logicInterface);
+    const values = getDefaultValue(logicInterface);
     onChange(getAddionalLogicData(expression!, values));
   };
 
@@ -38,7 +39,7 @@ const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, express
   };
 
   return (
-    <Box pt={16} pb={24}>
+    <Box pt={16} pb={17}>
       {/* if new expression */}
       {!expression?.value?.length && (
         <Flex>
@@ -51,19 +52,27 @@ const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, express
 
       {expression && (
         <>
-          {expression.value?.map((item: ExpressionV2 | LogicGroupData, index: number) => (
-            <LogicInterfaceHandler
-              key={index}
-              firstItem={index === 0}
-              expression={item}
-              onChange={onUpdateData(index)}
-              onDelete={onDeleteCondition(index)}
-              baseLogicType={expression.type}
-              updateBaseType={updateBaseType}
-            />
-          ))}
+          {expression.value?.map((item: ExpressionV2 | LogicGroupData, index: number) => {
+            const isLastItem = index === expression.value.length - 1;
+            const isFirstItem = index === 0;
 
-          {!!expression.value.length && <ConditionSelect onChange={addAdditionalCondition} additional />}
+            return (
+              <div key={index}>
+                <LogicInterfaceHandler
+                  firstItem={isFirstItem}
+                  expression={item}
+                  onChange={onUpdateData(index)}
+                  onDelete={onDeleteCondition(index)}
+                  baseLogicType={expression.type ?? null}
+                  updateBaseType={updateBaseType}
+                />
+
+                {isLastItem && item.logicInterface !== ConditionsLogicInterface.EXPRESSION && (
+                  <ConditionSelect onChange={addAdditionalCondition} additional />
+                )}
+              </div>
+            );
+          })}
         </>
       )}
     </Box>

@@ -87,6 +87,8 @@ export const focusedNodeSelector = createSelector([Diagram.nodeByIDSelector, roo
   focus.target ? getNodeByID(focus.target) : null
 );
 
+export const hasFocusedNode = createSelector([rootSelector], (focus) => focus.isActive);
+
 export const focusedNodeDataSelector = createSelector([Diagram.dataByNodeIDSelector, rootSelector], (getDataByNodeID, focus) =>
   focus.target ? (getDataByNodeID(focus.target) as NodeData<unknown>) : null
 );

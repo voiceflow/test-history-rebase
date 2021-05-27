@@ -26,12 +26,13 @@ export const SetStep: React.FC<SetStepProps> = ({ title, expressions, nodeID, po
         {/* eslint-disable-next-line no-nested-ternary */}
         {conditionsBuilder.isEnabled ? (
           <Item
+            multilineLabel
             label={title || ''}
             labelVariant={StepLabelVariant.SECONDARY}
             icon={NODE_CONFIG.icon}
             iconColor={NODE_CONFIG.iconColor}
             portID={portID}
-            placeholder="Set variable to..."
+            placeholder="Name Set step"
           />
         ) : expressions.length ? (
           expressions.map((label, index) => (

@@ -2,10 +2,19 @@ import { statementIcon, subStatementIcon } from '@/assets';
 import { FlexCenter } from '@/components/Box';
 import { css, styled } from '@/hocs';
 
-const ConditionLabelContainer = styled(FlexCenter)<{ isOpen?: boolean; secondary?: boolean }>`
+const ConditionLabelContainer = styled(FlexCenter)<{ isOpen?: boolean; secondary?: boolean; hasCaret?: boolean }>`
   width: 85px;
-  height: 42px;
-  padding: 0 18px 0 8px;
+  height: 43px;
+
+  ${({ hasCaret }) =>
+    hasCaret
+      ? css`
+          padding-right: 25px;
+          padding-left: 20px;
+        `
+      : css`
+          padding-right: 10px;
+        `}
   font-weight: 600;
   background-image: url(${statementIcon});
 

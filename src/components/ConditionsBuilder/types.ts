@@ -1,12 +1,6 @@
-import {
-  AdvancedExpressionV2,
-  AndExpressionV2,
-  ExpressionTypeV2,
-  ExpressionV2,
-  OrExpressionV2,
-  ValueExpressionV2,
-  VariableExpressionV2,
-} from '@voiceflow/general-types';
+import { ExpressionTypeV2 } from '@voiceflow/general-types';
+
+import { AdvancedExpressionV2, AndExpressionV2, ExpressionV2, OrExpressionV2, ValueExpressionV2, VariableExpressionV2 } from '@/models';
 
 export type ExpressionDataLogicType = Exclude<
   ExpressionTypeV2,
@@ -18,6 +12,4 @@ export type LogicUnitDataType = Exclude<
   OrExpressionV2 | AndExpressionV2 | VariableExpressionV2 | ValueExpressionV2 | AdvancedExpressionV2
 >;
 
-export type DefaultDataType<T> = {
-  id: string;
-} & T;
+export type BaseLogicType = ExpressionTypeV2.AND | ExpressionTypeV2.OR | null;

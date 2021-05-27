@@ -1,25 +1,29 @@
-import { ConditionsLogicInterface, ExpressionTypeV2, ExpressionV2, LogicGroupData } from '@voiceflow/general-types';
+import { ConditionsLogicInterface, ExpressionTypeV2 } from '@voiceflow/general-types';
 import React from 'react';
 
 import Box, { Flex } from '@/components/Box';
+import SvgIcon from '@/components/SvgIcon';
+import { ExpressionV2, LogicGroupData } from '@/models';
 
-import { LogicUnitDataType } from '../types';
-import { getAddionalLogicData, getDefaultValue } from '../utils';
-import ConditionLabel from './ConditionLabel';
-import ConditionSelect from './ConditionSelect';
-import LogicUnit from './LogicUnit';
+import { BaseLogicType, LogicUnitDataType } from '../../types';
+import { getAddionalLogicData, getDefaultValue } from '../../utils';
+import ConditionLabel from '../ConditionLabel';
+import ConditionSelect from '../ConditionSelect';
+import LogicUnit from '../LogicUnit';
+import DeleteButtonContainer from './components/DeleteButtonContainer';
+import LogicGroupContainer from './components/LogicGroupContainer';
 
 export type ConditionLogicGroupProps = {
   firstItem?: boolean;
   expression: LogicGroupData;
-  baseLogicType?: ExpressionTypeV2.AND | ExpressionTypeV2.OR;
+  baseLogicType: BaseLogicType;
 
   onDelete: () => void;
   onChange: (value: LogicGroupData) => void;
   updateBaseType: (value: ExpressionTypeV2.AND | ExpressionTypeV2.OR) => void;
 };
 
-const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, onChange, firstItem, baseLogicType, updateBaseType }) => {
+const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, onChange, onDelete, firstItem, baseLogicType, updateBaseType }) => {
   const addNewCondition = (logicInterface: ConditionsLogicInterface) => {
     const values: any = getDefaultValue(logicInterface);
     onChange({ ...expression, value: [{ ...values }] });
@@ -52,7 +56,11 @@ const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, o
         </Box>
       )}
 
-      <Box borderRadius={5} border="1px dashed #efefef" p={16} mb={16}>
+      <LogicGroupContainer>
+        <DeleteButtonContainer>
+          <SvgIcon clickable icon="close" size={10} color="#6e849a" onClick={onDelete} enableOpacity />
+        </DeleteButtonContainer>
+
         {!expression?.value?.length && (
           <Flex>
             <Flex mr={16}>
@@ -64,6 +72,7 @@ const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, o
 
         {expression?.value?.map((item: ExpressionV2, index: number) => (
           <LogicUnit
+            isLogicGroup
             key={index}
             firstItem={index === 0}
             baseLogicType={expression.type}
@@ -75,7 +84,7 @@ const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, o
         ))}
 
         {!!expression.value.length && <ConditionSelect onChange={addAdditionalCondition} additional isLogicGroup />}
-      </Box>
+      </LogicGroupContainer>
     </Box>
   );
 };

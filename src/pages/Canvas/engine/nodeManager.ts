@@ -2,7 +2,6 @@ import { CanvasNodeVisibility } from '@voiceflow/general-types';
 import _partition from 'lodash/partition';
 import { batch } from 'react-redux';
 
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
@@ -125,14 +124,14 @@ class NodeManager extends EngineConsumer {
 
     getNodeFactoryOptions: () => {
       const platform = this.select(Project.activePlatformSelector);
-      const conditionsBuilderEnabled = this.select(Feature.isFeatureEnabledSelector)(FeatureFlag.CONDITIONS_BUILDER);
+      const allActiveFeatures = this.select(Feature.allActiveFeaturesSelector);
       const defaultVoice = this.select(Version.activeDefaultVoiceSelector);
       const canvasNodeVisibility = this.select(Version.activeCanvasNodeVisibilitySelector);
 
       return {
         defaultVoice: defaultVoice || getPlatformDefaultVoice(platform),
         canvasNodeVisibility: canvasNodeVisibility || CanvasNodeVisibility.PREVIEW,
-        conditionsBuilderEnabled,
+        features: allActiveFeatures,
       };
     },
 

@@ -2,6 +2,7 @@ import { Block, DiagramNode, NodeID } from '@voiceflow/api-sdk';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { BlockType, PlatformType } from '@/constants';
+import { FeatureFlagMap } from '@/ducks/feature';
 import { Link, Node, NodeData, Port } from '@/models';
 
 import { defaultPortAdapter, getPortsAdapter, noInPortTypes } from './block';
@@ -12,12 +13,27 @@ import { generateInPort, getInPortID, isBlock, isStep } from './utils';
 const nodeAdapter = createAdapter<
   DiagramNode,
   { node: Node; data: NodeData<unknown>; ports: Port[] },
-  [{ parentNode: Block | null; links: Link[]; platform: PlatformType }],
-  [{ portToTargets: Record<string, NodeID>; stepMap: Record<NodeID, NodeID>; platform: PlatformType; portLinksMap: Record<string, Link> }]
+  [
+    {
+      parentNode: Block | null;
+      links: Link[];
+      platform: PlatformType;
+      features: FeatureFlagMap;
+    }
+  ],
+  [
+    {
+      portToTargets: Record<string, NodeID>;
+      stepMap: Record<NodeID, NodeID>;
+      platform: PlatformType;
+      portLinksMap: Record<string, Link>;
+      features: FeatureFlagMap;
+    }
+  ]
 >(
-  (dbNode, { parentNode, links, platform }) => {
+  (dbNode, { parentNode, links, platform, features }) => {
     const siblingSteps = parentNode?.data.steps ?? [];
-    const data = nodeDataAdapter.fromDB({ data: dbNode.data, type: dbNode.type }, { platform, nodeID: dbNode.nodeID });
+    const data = nodeDataAdapter.fromDB({ data: dbNode.data, type: dbNode.type }, { platform, nodeID: dbNode.nodeID, features });
 
     const ports: Port[] = [];
 
@@ -87,9 +103,9 @@ const nodeAdapter = createAdapter<
       ports,
     };
   },
-  ({ node, data, ports }, { portToTargets, stepMap, platform, portLinksMap }) => {
+  ({ node, data, ports }, { portToTargets, stepMap, platform, portLinksMap, features }) => {
     const portMap = ports.reduce<Record<string, Port>>((acc, port) => ({ ...acc, [port.id]: port }), {});
-    const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform });
+    const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform, features });
 
     const diagramNode: DiagramNode = {
       nodeID: node.id,

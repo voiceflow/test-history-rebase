@@ -1,9 +1,10 @@
-import { ConditionsLogicInterface, ExpressionV2 } from '@voiceflow/general-types';
+import { ConditionsLogicInterface } from '@voiceflow/general-types';
 import React from 'react';
 
 import Dropdown from '@/components/Dropdown';
 import Menu, { MenuItem } from '@/components/Menu';
 import Text from '@/components/Text';
+import { ExpressionV2 } from '@/models';
 
 import AddConditionButton from './AddConditionButton';
 
@@ -40,8 +41,8 @@ const ConditionSelect: React.FC<ConditionSelectProps> = ({ onChange, additional 
         </Menu>
       )}
     >
-      {(ref, onToggle) => (
-        <AddConditionButton ref={ref} onClick={onToggle} additional={additional}>
+      {(ref, onToggle, isOpen) => (
+        <AddConditionButton isOpen={isOpen} ref={ref} onClick={onToggle} additional={additional}>
           Add a condition
         </AddConditionButton>
       )}

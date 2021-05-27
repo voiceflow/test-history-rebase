@@ -4,6 +4,7 @@ import { Overwrite } from 'utility-types';
 
 import { BlockType, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import { FeatureFlagMap } from '@/ducks/feature';
 import { Markup, Node, NodeData, Port } from '@/models';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { ConnectedStepProps } from '@/pages/Canvas/components/Step';
@@ -13,7 +14,7 @@ import { NodeDataUpdater } from '../types';
 
 export type PortDescriptor = Partial<Omit<Port, 'id'>>;
 
-export type NodeDescriptor = Partial<Overwrite<Omit<Node, 'id'>, { ports?: Partial<Record<'in' | 'out', PortDescriptor[]>> }>>;
+export type NodeDescriptor = Partial<Overwrite<Node, { ports?: Partial<Record<'in' | 'out', PortDescriptor[]>> }>>;
 
 export type NodeEditorPropsType<T> = {
   nodeID: string;
@@ -41,7 +42,7 @@ export type NodeConfig<T extends object | Markup.AnyNodeData> = {
 
   factory: (
     data?: Partial<T>,
-    options?: { defaultVoice?: string; canvasNodeVisibility?: CanvasNodeVisibility; conditionsBuilderEnabled?: boolean }
+    options?: { defaultVoice?: string; canvasNodeVisibility?: CanvasNodeVisibility; features?: FeatureFlagMap }
   ) => {
     node: NodeDescriptor;
     data: Creator.DataDescriptor<T>;

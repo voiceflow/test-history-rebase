@@ -4,6 +4,7 @@ import { CanvasNodeVisibility } from '@voiceflow/general-types';
 import { CanvasAPI } from '@/components/Canvas';
 import { BlockType, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import { FeatureFlagMap } from '@/ducks/feature';
 import { EntityMap, Link, Node, NodeData, NodeWithData, Port } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { NodeDescriptor } from '@/pages/Canvas/managers/types';
@@ -88,7 +89,7 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
 export function nodeFactory(
   type: BlockType,
   factoryData?: Partial<NodeData<unknown>>,
-  options?: { defaultVoice: string; canvasNodeVisibility: CanvasNodeVisibility }
+  options?: { defaultVoice: string; canvasNodeVisibility: CanvasNodeVisibility; features?: FeatureFlagMap }
 ): { node: Omit<Creator.NodeDescriptor, 'id'>; data: Creator.DataDescriptor } {
   const config = getManager(type);
 

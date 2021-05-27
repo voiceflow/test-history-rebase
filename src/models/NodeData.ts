@@ -1,6 +1,6 @@
 import { PermissionType } from '@voiceflow/alexa-types';
 import { SlotMapping } from '@voiceflow/api-sdk';
-import { CanvasNodeVisibility, Chip, ExpressionType, IntegrationUser } from '@voiceflow/general-types';
+import { CanvasNodeVisibility, Chip, ExpressionTypeV2, IntegrationUser } from '@voiceflow/general-types';
 import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
 import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/general-types/build/nodes/googleSheets';
 import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
@@ -9,6 +9,7 @@ import { StepData as VisualStepData } from '@voiceflow/general-types/build/nodes
 import { BlockType, CardType, DistinctPlatform, IntegrationType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 
+import { Expression, ExpressionData } from './Expression';
 import { SpeakData } from './Speak';
 
 export type NodeData<T> = T & {
@@ -156,57 +157,24 @@ export namespace NodeData {
     permissions: UserInfoPermission[];
   };
 
-  // TODO: remove below expression type definition when Conditons builder is released to prod
-  export type GenericExpression<T extends ExpressionType, V> = {
-    id: string;
-    type: T;
-    value: V;
-    depth: number;
-  };
-
-  export type ExpressionTuple = [Expression, Expression];
-
-  // can't use generic here due tu recursion type issue
-  export type NotExpression = { type: ExpressionType.NOT; value: Expression; depth: number; id: string };
-  export type OrExpression = GenericExpression<ExpressionType.OR, ExpressionTuple>;
-  export type AndExpression = GenericExpression<ExpressionType.AND, ExpressionTuple>;
-  export type LessExpression = GenericExpression<ExpressionType.LESS, ExpressionTuple>;
-  export type PlusExpression = GenericExpression<ExpressionType.PLUS, ExpressionTuple>;
-  export type MinusExpression = GenericExpression<ExpressionType.MINUS, ExpressionTuple>;
-  export type TimesExpression = GenericExpression<ExpressionType.TIMES, ExpressionTuple>;
-  export type ValueExpression = GenericExpression<ExpressionType.VALUE, string>;
-  export type DivideExpression = GenericExpression<ExpressionType.DIVIDE, ExpressionTuple>;
-  export type EqualsExpression = GenericExpression<ExpressionType.EQUALS, ExpressionTuple>;
-  export type GreaterExpression = GenericExpression<ExpressionType.GREATER, ExpressionTuple>;
-  export type AdvancedExpression = GenericExpression<ExpressionType.ADVANCE, string>;
-  export type VariableExpression = GenericExpression<ExpressionType.VARIABLE, string>;
-
-  export type Expression =
-    | NotExpression
-    | OrExpression
-    | AndExpression
-    | LessExpression
-    | PlusExpression
-    | MinusExpression
-    | TimesExpression
-    | ValueExpression
-    | DivideExpression
-    | EqualsExpression
-    | GreaterExpression
-    | AdvancedExpression
-    | VariableExpression;
-
-  export type NewExpressionType = string | null;
+  export type NewExpressionType = string | number | null;
 
   export type SetExpression = {
     expression: Expression | NewExpressionType;
     id: string;
     variable?: string | null;
+    type?: ExpressionTypeV2;
   };
 
   export type Set = {
     title?: string;
     sets: SetExpression[];
+  };
+
+  export type IfExpression = Expression | ExpressionData;
+
+  export type If = {
+    expressions: IfExpression[];
   };
 
   export type Directive = {
@@ -227,10 +195,6 @@ export namespace NodeData {
     customPause: boolean;
     description: string | null;
     backgroundImage: string | null;
-  };
-
-  export type If = {
-    expressions: Expression[];
   };
 
   export type AccountLinking = {};

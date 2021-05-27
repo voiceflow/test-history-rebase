@@ -103,6 +103,10 @@ export default styled(AceEditor).attrs<AceEditorProps>({
       .ace_hidden-cursors .ace_cursor {
         opacity: 0 !important;
       }
+      .ace_scrollbar .ace_scrollbar-v,
+      .ace_scrollbar .ace_scrollbar-h {
+        display: none !important;
+      }
     `}
 
   ${({ variant }) => {

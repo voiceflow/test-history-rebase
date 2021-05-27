@@ -18,6 +18,7 @@ export type SvgIconContainerProps = {
   ignoreEvents?: boolean;
   inline?: boolean;
   rotation?: number;
+  enableOpacity?: boolean;
 } & SpaceProps;
 
 const SvgIconContainer = styled.span<SvgIconContainerProps>`
@@ -87,6 +88,16 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
     inline &&
     css`
       display: inline-block;
+    `}
+
+  ${({ enableOpacity }) =>
+    enableOpacity &&
+    css`
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
+      }
     `}
 `;
 

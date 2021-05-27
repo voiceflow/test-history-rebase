@@ -1,15 +1,21 @@
-import Box from '@/components/Box';
-import { css, styled } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 
-const AddConditionButton = styled(Box)<{ additional?: boolean }>`
+const activeStyles = css`
+  color: ${({ theme }) => theme.colors.darkBlue};
+  cursor: pointer;
+`;
+
+const AddConditionButton = styled.span<{ additional?: boolean; isOpen: boolean }>`
+  ${transition('color')};
   font-size: 15px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.blue};
 
   :hover {
-    color: ${({ theme }) => theme.colors.darkBlue};
-    cursor: pointer;
+    ${activeStyles}
   }
+
+  ${({ isOpen }) => isOpen && activeStyles}
 
   ${({ additional }) =>
     additional &&

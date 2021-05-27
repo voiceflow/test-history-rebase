@@ -5,6 +5,7 @@ import React from 'react';
 import Badge from '@/components/Badge';
 import Box from '@/components/Box';
 import VariablesInput from '@/components/VariablesInput';
+import { VariableInputRef } from '@/components/VariablesInput/types';
 import { useEnableDisable } from '@/hooks';
 import { swallowEvent } from '@/utils/dom';
 
@@ -15,13 +16,20 @@ const AnyVariablesInput: any = VariablesInput;
 export type ConditionValueSelectProps = {
   value?: string;
   onChange: (data: { value: string; type: ExpressionTypeV2.VARIABLE | ExpressionTypeV2.VALUE }) => void;
+  onClose?: () => void;
 };
 
-const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '', onChange }) => {
-  const inputRef = React.useRef<{ blur: () => {}; getCurrentValue: () => { text: string } }>(null);
+const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '', onChange, onClose }) => {
+  const inputRef = React.useRef<VariableInputRef>(null);
   const [error, setError, resetError] = useEnableDisable(false);
   const [show, onShow, onHide] = useEnableDisable(false);
   const [empty, updateIsEmpty] = React.useState(true);
+
+  /**
+   * using focus() on draftjs breaks the mention plugin,
+   * this offers a temporary fix until library itself offers a build-in solution
+   * https://github.com/draft-js-plugins/draft-js-plugins/issues/800
+   */
 
   const onUpdate = React.useCallback(
     (value: string) => {
@@ -51,6 +59,7 @@ const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '',
   const onEnter = ({ text }: { text: string }) => {
     onUpdate(text.trim());
     inputRef?.current?.blur();
+    onClose?.();
   };
 
   return (
@@ -65,6 +74,7 @@ const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '',
         onEmpty={updateIsEmpty}
         onEnterPress={onEnter}
         placeholder="Enter value or {variable}"
+        skipBlurOnUnmount
         rightAction={
           !empty &&
           show && (
@@ -76,7 +86,7 @@ const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '',
       />
       {error && (
         <Box fontSize={13} color="#e91e63" mt={16}>
-          Input can only contain values or a variable, not both. No empty values.
+          {isEmpty(value) ? 'This is required input' : 'Input can only contain values or a variable, not both. No empty values.'}
         </Box>
       )}
     </>

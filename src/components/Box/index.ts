@@ -35,6 +35,7 @@ export type BoxProps = ColorProps &
   TextShadowProps & {
     cursor?: CSS.Property.Cursor;
     noOverflow?: boolean;
+    fullWidth?: boolean;
   };
 
 export const Box = styled.div<BoxProps>(
@@ -57,6 +58,12 @@ export const Box = styled.div<BoxProps>(
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+      `}
+
+    ${(props: BoxProps) =>
+      props.fullWidth &&
+      css`
+        width: 100%;
       `}
   `
 );

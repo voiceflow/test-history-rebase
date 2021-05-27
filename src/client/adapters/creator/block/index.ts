@@ -4,6 +4,7 @@ import moize from 'moize';
 
 import { BidirectionalAdapter } from '@/client/adapters/utils';
 import { BlockType, IntegrationType, PlatformType } from '@/constants';
+import { FeatureFlagMap } from '@/ducks/feature';
 import { NodeData } from '@/models';
 import { createPlatformSelector } from '@/utils/platform';
 
@@ -71,7 +72,9 @@ const getPlatformPortsAdapter = createPlatformSelector<typeof alexaPortsAdapter 
 
 export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);
 
-type PlatformBlockAdapter = Partial<Record<BlockType, BidirectionalAdapter<unknown, NodeData<unknown>, [], []>>>;
+type PlatformBlockAdapter = Partial<
+  Record<BlockType, BidirectionalAdapter<unknown, NodeData<unknown>, [{ features: FeatureFlagMap }], [{ features: FeatureFlagMap }]>>
+>;
 
 const commonPortsAdapter = {};
 

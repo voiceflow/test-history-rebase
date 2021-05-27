@@ -36,9 +36,18 @@ const ConnectedImageStep: React.FC<ConnectedStepProps<ImageStepData>> = ({ node,
   const label = getLabel(data);
   const size = data.device ? DEVICE_SIZE_MAP[data.device] : data.dimensions;
   const image = isVariable(data.image) ? null : data.image;
+
   const aspectRatio = size && data.canvasVisibility === CanvasVisibility.FULL ? size.width / size.height : null;
 
-  return <ImageStep nodeID={node.id} portID={node.ports.out[0]} label={label} image={image} aspectRatio={aspectRatio} />;
+  return (
+    <ImageStep
+      nodeID={node.id}
+      portID={node.ports.out[0]}
+      label={label}
+      image={data.canvasVisibility === CanvasVisibility.HIDDEN ? null : image}
+      aspectRatio={aspectRatio}
+    />
+  );
 };
 
 export default ConnectedImageStep;

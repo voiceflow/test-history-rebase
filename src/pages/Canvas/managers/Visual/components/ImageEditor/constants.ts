@@ -14,6 +14,7 @@ export const FRAME_OPTIONS = [
 export const CANVAS_VISIBILITY_OPTIONS = [
   { id: CanvasVisibility.FULL, label: 'Actual Size' },
   { id: CanvasVisibility.CROPPED, label: 'Small' },
+  { id: CanvasVisibility.HIDDEN, label: 'Hidden' },
 ];
 
 export const DEVICE_OPTIONS = [

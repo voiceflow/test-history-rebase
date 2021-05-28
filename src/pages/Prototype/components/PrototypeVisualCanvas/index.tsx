@@ -10,6 +10,7 @@ import * as Prototype from '@/ducks/prototype';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { useLinkedState } from '@/hooks';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 import { APL, Image, PlaceholderIconContainer } from './components';
@@ -43,7 +44,7 @@ const PrototypeVisualCanvas: React.FC<PrototypeVisualCanvasProps & ConnectedProt
   };
 
   return !isShown ? null : (
-    <Box height="100%">
+    <Box height="100%" id={Identifier.DISPLAY_CANVAS_CONTAINER}>
       <Canvas
         key={canvasKey}
         viewport={{ zoom, x: offset[0], y: offset[1] }}

@@ -13,6 +13,7 @@ import * as Sentry from '@/vendors/sentry';
 const MemoizedBaseRenderer = React.memo(BaseRenderer);
 
 type APLProps = {
+  id?: string;
   data: APLStepData;
   device: DeviceType | null;
   dimension: { width: number; height: number };

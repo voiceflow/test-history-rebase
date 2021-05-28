@@ -10,7 +10,7 @@ Cypress.Commands.add(
   'dragNode',
   { prevSubject: 'element' },
   ($node: Cypress.Chainable<JQuery<HTMLElement>>, movementX: number, movementY: number) => {
-    cy.wrap($node).trigger('dragstart', { force: true });
+    cy.wrap($node).trigger('dragstart', { force: true, waitForAnimations: true });
 
     cy.document().then(($doc) => {
       const { clientHeight, clientWidth } = $doc.body;

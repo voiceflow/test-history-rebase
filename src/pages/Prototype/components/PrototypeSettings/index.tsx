@@ -4,6 +4,7 @@ import Section, { SectionVariant } from '@/components/Section';
 import * as Recent from '@/ducks/recent';
 import { connect } from '@/hocs';
 import { useDebug } from '@/pages/Prototype/hooks';
+import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
 import { Drawer } from '../PrototypeContainer';
@@ -17,7 +18,7 @@ const PrototypeSettings: React.FC<ConnectedPrototypeSettingsProps> = ({ settings
   const toggleGuidedNav = () => updateSettings({ guided: !settings.guided });
 
   return (
-    <Drawer>
+    <Drawer id={Identifier.PROTO_SETTINGS_MENU_CONTAINER}>
       <Section header="TEST SETTINGS" variant={SectionVariant.PROTOTYPE} />
       <SettingsSection header="Debug Mode" toggle={toggleDebug} value={debugEnabled}>
         Show the paths, variables and flows you're using while you test

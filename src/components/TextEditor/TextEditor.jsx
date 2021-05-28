@@ -24,6 +24,7 @@ function TextEditor({
   newLineOnEnter,
   skipBlurOnUnmount,
   onEditorStateChange,
+  newLineOnShiftEnter,
 }) {
   const initialState = React.useRef(value);
   const [readOnly, enableReadOnly, disableReadOnly] = useEnableDisable(false);
@@ -64,7 +65,7 @@ function TextEditor({
           return 'handled';
         }
 
-        if (newLineOnEnter) {
+        if (newLineOnEnter || (newLineOnShiftEnter && e.shiftKey)) {
           updateEditorState(RichUtils.insertSoftNewline(nextEditorState));
 
           return 'handled';
@@ -73,7 +74,7 @@ function TextEditor({
 
       return null;
     },
-    [ableToHandleReturn, fromStateWithAdapter, store, newLineOnEnter]
+    [ableToHandleReturn, fromStateWithAdapter, store, newLineOnEnter, newLineOnShiftEnter]
   );
 
   const onBlurEditor = React.useCallback(() => {

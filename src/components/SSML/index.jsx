@@ -155,6 +155,7 @@ const SSML = (
         addLabel: 'Add Effect',
         addOptions: platformSSMLMeta.addOptions,
         historyTooltip: 'Recent Effects',
+        newLinesAllowed: true,
         tagsSearchPlaceholder: 'Search effects',
         additionalControlsRenderer: additionalXMLControlsRenderer,
       },
@@ -190,6 +191,7 @@ const SSML = (
       onEnterPress={onEnterPress ? onEnterPressCallback : null}
       pluginsTypes={withVariablesPlugin ? pluginsTypes : pluginsWithoutVariablesTypes}
       pluginsProps={pluginProps}
+      newLineOnShiftEnter
     />
   );
 };

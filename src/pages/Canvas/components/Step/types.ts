@@ -21,6 +21,7 @@ export type ItemProps = {
   portColor?: string;
   placeholder?: string;
   labelVariant?: StepLabelVariant;
+  withNewLines?: boolean;
   multilineLabel?: boolean;
   labelLineClamp?: number;
 };

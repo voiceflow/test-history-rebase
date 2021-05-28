@@ -6,10 +6,12 @@ import { LINE_HEIGHT } from '../constants';
 export type StepLabelTextProps = {
   multiline?: boolean;
   lineClamp?: number;
+  withNewLines?: boolean;
 };
 
 const StepLabelText = styled.div<StepLabelTextProps>`
   ${overflowTextStyles}
+
   ${({ multiline, lineClamp = 3 }) =>
     multiline &&
     css`
@@ -20,6 +22,12 @@ const StepLabelText = styled.div<StepLabelTextProps>`
       -webkit-line-clamp: ${lineClamp};
     `}
 
+
+  ${({ withNewLines }) =>
+    withNewLines &&
+    css`
+      white-space: pre-wrap;
+    `}
 
   ${({ onClick }) =>
     onClick &&

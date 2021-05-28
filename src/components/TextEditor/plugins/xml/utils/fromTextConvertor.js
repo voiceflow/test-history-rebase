@@ -19,15 +19,24 @@ const REGEX_SINGLE_TAG = /<([^ />]+)([^>]+?)\/>/g;
 const createSupportedOpenTagsRegex = (tags) => new RegExp(`(<)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
 const createSupportedCloseTagsRegex = (tags) => new RegExp(`(</)(?!\\b(${tags.map((tag) => `${tag}`).join('|')})\\b|/)`, 'g');
 
-const removeFunkyCharactersAndUnsupportedTags = (value, tags) =>
-  value
-    .replace(REGEX_CR, '')
+const removeFunkyCharactersAndUnsupportedTags = (value, { tags, newLinesAllowed }) => {
+  const formattedValue = value
+
     .replace(REGEX_NBSP, SPACE)
     .replace(REGEX_CARRIAGE, '')
     .replace(REGEX_ZWS, '')
     .replace(REGEX_SINGLE_TAG, '<$1$2></$1>')
     .replace(createSupportedOpenTagsRegex(Object.keys(tags)), '&lt;')
     .replace(createSupportedCloseTagsRegex(Object.keys(tags)), '&lt;/');
+
+  if (!newLinesAllowed) {
+    formattedValue.replace(REGEX_CR, '');
+  } else {
+    formattedValue.replace(REGEX_CR, '\n');
+  }
+
+  return formattedValue;
+};
 
 function getSafeBodyFromHTML(html) {
   let doc;
@@ -43,8 +52,8 @@ function getSafeBodyFromHTML(html) {
   return root;
 }
 
-const fromTextConvertor = () => ({ tags }) => (next) => (value, { cursor, entityMap, entityRanges }) => {
-  const html = removeFunkyCharactersAndUnsupportedTags(value, tags);
+const fromTextConvertor = () => ({ tags, newLinesAllowed }) => (next) => (value, { cursor, entityMap, entityRanges }) => {
+  const html = removeFunkyCharactersAndUnsupportedTags(value, { tags, newLinesAllowed });
   const safeBody = getSafeBodyFromHTML(html);
   let nextCursor = cursor;
 
@@ -66,8 +75,10 @@ const fromTextConvertor = () => ({ tags }) => (next) => (value, { cursor, entity
     // Trim leading line feed, which is invisible in HTML
     textContent = textContent.replace(REGEX_LEADING_LF, '\n ');
 
-    // Can't use empty string because MSWord
-    textContent = textContent.replace(REGEX_LF, SPACE);
+    if (!newLinesAllowed) {
+      // Can't use empty string because MSWord
+      textContent = textContent.replace(REGEX_LF, SPACE);
+    }
 
     addedText = next(textContent, { cursor: nextCursor, entityMap, entityRanges, withoutTrim: true }); // eslint-disable-line callback-return
 

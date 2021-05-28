@@ -3,7 +3,7 @@ import Markdown, { MarkdownOptions } from 'markdown-to-jsx';
 import React from 'react';
 
 import { Link } from '@/components/Text';
-import { SSML_TAG_REGEX, URL_REGEX } from '@/constants';
+import { NEW_LINE_REGEX, SSML_TAG_REGEX, URL_REGEX } from '@/constants';
 import { ClassName } from '@/styles/constants';
 import { stopPropagation } from '@/utils/dom';
 
@@ -23,7 +23,10 @@ const MARKDOWN_OPTIONS: MarkdownOptions = {
 };
 
 const Speak: React.FC<SpeakProps> = ({ voice, message, className, ...props }) => {
-  const formattedMessage = React.useMemo(() => message.replace(SSML_TAG_REGEX, '').replace(ALL_URLS_REGEXP, '[$1]($1)'), [message]);
+  const formattedMessage = React.useMemo(
+    () => message.replace(SSML_TAG_REGEX, '').replace(ALL_URLS_REGEXP, '[$1]($1)').replace(NEW_LINE_REGEX, '  \n'), // double spaces is a "Line Return" in the markdown
+    [message]
+  );
 
   return formattedMessage ? (
     <Message className={cn(ClassName.CHAT_DIALOG_SPEAK_MESSAGE, className)} {...props}>

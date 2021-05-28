@@ -22,6 +22,7 @@ const Item: React.FC<ItemProps> = ({
   portColor,
   placeholder,
   labelVariant = StepLabelVariant.PRIMARY,
+  withNewLines,
   multilineLabel,
   labelLineClamp,
 }) => {
@@ -32,7 +33,13 @@ const Item: React.FC<ItemProps> = ({
       <IconContainer>{icon && <SvgIcon icon={icon} size={18} color={iconColor} />}</IconContainer>
 
       <StepLabelTextContainer variant={label ? labelVariant : StepLabelVariant.PLACEHOLDER}>
-        <StepLabelText onClick={onClick} className={ClassName.CANVAS_STEP_ITEM_LABEL} multiline={multilineLabel} lineClamp={labelLineClamp}>
+        <StepLabelText
+          onClick={onClick}
+          className={ClassName.CANVAS_STEP_ITEM_LABEL}
+          multiline={multilineLabel}
+          lineClamp={labelLineClamp}
+          withNewLines={withNewLines}
+        >
           {label || placeholder}
         </StepLabelText>
       </StepLabelTextContainer>

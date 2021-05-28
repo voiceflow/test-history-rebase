@@ -50,6 +50,7 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
               icon={NODE_CONFIG.getIcon!(isAudio ? AUDIO_MOCK_DATA : VOICE_MOCK_DATA)}
               portID={index === itemsToRender.length - 1 ? portID : null}
               iconColor={NODE_CONFIG.getIconColor!(isAudio ? AUDIO_MOCK_DATA : VOICE_MOCK_DATA)}
+              withNewLines
               labelVariant={isAudio ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
               multilineLabel={!isAudio}
               labelLineClamp={100}

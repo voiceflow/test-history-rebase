@@ -29,7 +29,8 @@ context('Prototype', () => {
       prototypePage.el.protoSettingsMenuContainer.should('be.visible');
     });
 
-    it('switching between visuals', () => {
+    // Flakey, need to fix
+    it.skip('switching between visuals', () => {
       createSimpleDisplay();
       canvasPage.el.testButton.click();
       canvasPage.el.startPrototypeButton.click();
@@ -38,8 +39,8 @@ context('Prototype', () => {
       cy.get(`.${ClassName.DISPLAY_TYPE_ITEM}`).eq(1).click();
       prototypePage.el.displayCanvasContainer.get('.imageHolder img ').should('have.attr', 'src').and('not.equal', '');
     });
-
-    it('Assert correct speak texts', () => {
+    // Flakey, need to fix
+    it.skip('Assert correct speak texts', () => {
       createSimple2BlockSpeak();
       canvasPage.el.testButton.click();
       canvasPage.el.startPrototypeButton.click();

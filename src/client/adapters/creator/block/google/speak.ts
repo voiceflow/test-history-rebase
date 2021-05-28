@@ -22,7 +22,7 @@ const speakAdapter = createBlockAdapter<StepData<Voice>, NodeData.Speak>(
     canvasVisibility,
     dialogs: dialogs.map((data) =>
       data.type === DialogType.AUDIO
-        ? { voice: Voice.AUDIO, content: data.url ?? '' }
+        ? { voice: Voice.AUDIO, content: data.url ?? '', desc: data.desc }
         : { voice: (data.voice as Voice) ?? Voice.DEFAULT, content: data.content ?? '' }
     ),
   })

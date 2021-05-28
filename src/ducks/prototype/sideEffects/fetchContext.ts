@@ -1,6 +1,7 @@
 import { Request, TraceType } from '@voiceflow/general-types';
 import { TraceFrame as VisualTrace } from '@voiceflow/general-types/build/nodes/visual';
 import cuid from 'cuid';
+import { batch } from 'react-redux';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -54,10 +55,12 @@ const fetchContext = (request: Request | null): Thunk<Context | null> => async (
       trace: trace?.map((t) => ({ ...t, id: cuid() })) ?? [],
     };
 
-    dispatch(updatePrototype({ contextStep: contextStep + 1 }));
-    dispatch(updatePrototypeContext(newStateObj));
-    dispatch(pushContextHistory(newStateObj));
-    dispatch(pushPrototypeVisualDataHistory(lastVisual ? lastVisual.payload : currentVisualData));
+    batch(() => {
+      dispatch(updatePrototype({ contextStep: contextStep + 1 }));
+      dispatch(updatePrototypeContext(newStateObj));
+      dispatch(pushContextHistory(newStateObj));
+      dispatch(pushPrototypeVisualDataHistory(lastVisual ? lastVisual.payload : currentVisualData));
+    });
 
     return newStateObj;
   } catch (err) {

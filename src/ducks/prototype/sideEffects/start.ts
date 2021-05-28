@@ -1,3 +1,5 @@
+import { batch } from 'react-redux';
+
 import * as Errors from '@/config/errors';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -81,10 +83,12 @@ const startPrototype = (diagramID?: string | null, nodeID?: string | null): Sync
     prototypeStartNodeID = parentNodeID || nodeID;
   }
 
-  dispatch(updatePrototype({ activePathBlockIDs: [prototypeStartNodeID!] }));
-  dispatch(pushContextHistory(context));
-  dispatch(pushPrototypeVisualDataHistory(null));
-  dispatch(updatePrototype({ status: PrototypeStatus.ACTIVE, autoplay: false, context, startTime: Date.now(), flowIDHistory: [activeDiagramID] }));
+  batch(() => {
+    dispatch(updatePrototype({ activePathBlockIDs: [prototypeStartNodeID!] }));
+    dispatch(pushContextHistory(context));
+    dispatch(pushPrototypeVisualDataHistory(null));
+    dispatch(updatePrototype({ status: PrototypeStatus.ACTIVE, autoplay: false, context, startTime: Date.now(), flowIDHistory: [activeDiagramID] }));
+  });
 };
 
 export default startPrototype;

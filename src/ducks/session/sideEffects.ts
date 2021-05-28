@@ -1,4 +1,5 @@
 import * as ConnectedReactRouter from 'connected-react-router';
+import { batch } from 'react-redux';
 
 import client from '@/client';
 import { SSOConvertPayload, SSOLoginPayload } from '@/client/sso';
@@ -31,10 +32,14 @@ export const updateAuthToken = (token: string | null): SyncThunk => (dispatch) =
 };
 
 export const resetSession = (): Thunk => async (dispatch) => {
-  dispatch(updateAuthToken(null));
-  dispatch(setIntercomUserHMAC(null));
-  dispatch(resetAccount());
+  batch(() => {
+    dispatch(updateAuthToken(null));
+    dispatch(setIntercomUserHMAC(null));
+    dispatch(resetAccount());
+  });
+
   await client.socket.logout().catch(Sentry.error);
+
   dispatch(goToLogin());
 };
 
@@ -99,8 +104,10 @@ const setSession = ({ token, user, intercomUserHMAC }: { token: string; user: Mo
 
   await client.socket!.auth(token, browserID, tabID);
 
-  dispatch(setIntercomUserHMAC(intercomUserHMAC));
-  dispatch(updateAccount(user));
+  batch(() => {
+    dispatch(setIntercomUserHMAC(intercomUserHMAC));
+    dispatch(updateAccount(user));
+  });
 
   const location = ConnectedReactRouter.getLocation(state);
   const search = Query.parse(location.search);

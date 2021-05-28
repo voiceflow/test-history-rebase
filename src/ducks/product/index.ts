@@ -1,4 +1,5 @@
 import { Locale } from '@voiceflow/alexa-types';
+import { batch } from 'react-redux';
 
 import client from '@/client';
 import { productAdapter } from '@/client/adapters/project';
@@ -80,8 +81,10 @@ export const uploadProduct = (productID: string): Thunk => async (dispatch, getS
   if (product.id === NEW_PRODUCT_ID) {
     const alexaProduct = await client.platform.alexa.project.createProduct(projectID, productAdapter.toDB(product));
 
-    dispatch(cancelProduct());
-    dispatch(addProduct(alexaProduct.productID, productAdapter.fromDB(alexaProduct)));
+    batch(() => {
+      dispatch(cancelProduct());
+      dispatch(addProduct(alexaProduct.productID, productAdapter.fromDB(alexaProduct)));
+    });
   } else {
     await client.platform.alexa.project.updateProduct(projectID, productID, { ...productAdapter.toDB(product), productID });
 

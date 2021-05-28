@@ -1,3 +1,5 @@
+import { batch } from 'react-redux';
+
 import client from '@/client';
 import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
@@ -62,8 +64,10 @@ export const sendInviteToActiveWorkspace = (email: string, permissionType: UserR
     const newMember = await client.workspace.sendInvite(activeWorkspaceID, email, permissionType || undefined);
 
     if (newMember) {
-      dispatch(patchWorkspace(activeWorkspaceID, { members: [...currentMembers, newMember] }));
-      dispatch(trackInvitationSent(activeWorkspaceID, email));
+      batch(() => {
+        dispatch(patchWorkspace(activeWorkspaceID, { members: [...currentMembers, newMember] }));
+        dispatch(trackInvitationSent(activeWorkspaceID, email));
+      });
     }
 
     if (showToast) {

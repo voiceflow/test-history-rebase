@@ -1,3 +1,5 @@
+import { batch } from 'react-redux';
+
 import client from '@/client';
 import commentAdapter from '@/client/adapters/comment';
 import threadAdapter from '@/client/adapters/thread';
@@ -178,8 +180,10 @@ export const handleNewThread = (payload: { projectID: string; created: DBThread 
   Errors.assertCreatorID(creatorID);
   if (creatorID === thread.creatorID) return;
 
-  dispatch(ThreadActions.addThread(thread.id, thread));
-  dispatch(ThreadActions.updateUnreadComments(true));
+  batch(() => {
+    dispatch(ThreadActions.addThread(thread.id, thread));
+    dispatch(ThreadActions.updateUnreadComments(true));
+  });
 };
 
 export const handleThreadUpdate = (payload: { projectID: string; updatedThread: DBThread }): SyncThunk => (dispatch, getState) => {
@@ -205,8 +209,10 @@ export const handleNewReply = (payload: { projectID: string; created: DBComment 
   const comment = commentAdapter.fromDB(payload.created);
   const thread = ThreadSelectors.threadByIDSelector(state)(comment.threadID);
 
-  dispatch(ThreadActions.updateThread(thread.id, { comments: [...thread.comments, comment] }, true));
-  dispatch(ThreadActions.updateUnreadComments(true));
+  batch(() => {
+    dispatch(ThreadActions.updateThread(thread.id, { comments: [...thread.comments, comment] }, true));
+    dispatch(ThreadActions.updateUnreadComments(true));
+  });
 };
 
 export const handleCommentUpdate = (payload: { projectID: string; updatedComment: DBComment }): SyncThunk => (dispatch, getState) => {

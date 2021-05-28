@@ -1,3 +1,5 @@
+import { batch } from 'react-redux';
+
 import { BuiltInVariable } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
@@ -45,19 +47,21 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
     }
   }
 
-  dispatch(updatePrototypeStatus(PrototypeStatus.IDLE));
-  dispatch(updatePrototypeContext({ variables }));
-  dispatch(
-    updatePrototype({
-      contextStep: 0,
-      contextHistory: [],
-      flowIDHistory: [],
-      activePathLinkIDs: [],
-      activePathBlockIDs: [],
-      autoplay: false,
-      visual: { ...visualState, data: null, dataHistory: [] },
-    })
-  );
+  batch(() => {
+    dispatch(updatePrototypeStatus(PrototypeStatus.IDLE));
+    dispatch(updatePrototypeContext({ variables }));
+    dispatch(
+      updatePrototype({
+        contextStep: 0,
+        contextHistory: [],
+        flowIDHistory: [],
+        activePathLinkIDs: [],
+        activePathBlockIDs: [],
+        autoplay: false,
+        visual: { ...visualState, data: null, dataHistory: [] },
+      })
+    );
+  });
 };
 
 export default resetPrototype;

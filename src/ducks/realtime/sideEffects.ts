@@ -1,3 +1,4 @@
+import { batch } from 'react-redux';
 import { ActionCreators } from 'redux-undo';
 
 import client from '@/client';
@@ -63,13 +64,15 @@ export const updateDiagramViewers = (users: RealtimeLocks['users']): Thunk => as
     await dispatch(Workspace.loadMembers(workspaceID));
   }
 
-  // reinitialize history if no other collaborators present
-  if (diagramViewers.length === 1) {
-    dispatch(saveHistory({ force: true, preventUpdate: true }));
-    dispatch(ActionCreators.clearHistory());
-  }
+  batch(() => {
+    // reinitialize history if no other collaborators present
+    if (diagramViewers.length === 1) {
+      dispatch(saveHistory({ force: true, preventUpdate: true }));
+      dispatch(ActionCreators.clearHistory());
+    }
 
-  dispatch(updateActiveDiagramViewers(users));
+    dispatch(updateActiveDiagramViewers(users));
+  });
 };
 
 export const sendRealtimeUpdate = (action: Socket.AnySocketAction | AnyRealtimeAction): Thunk => async (_, getState) => {

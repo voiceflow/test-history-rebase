@@ -1,3 +1,5 @@
+import { batch } from 'react-redux';
+
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
@@ -14,8 +16,10 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
   [Realtime.ResourceType.INTENTS]: (data: Models.Intent[], meta: object) => dispatch(Intent.replaceIntents(data, meta)),
   [Realtime.ResourceType.PRODUCTS]: (data: Models.Product[], meta: object) => dispatch(Product.replaceProducts(data, meta)),
   [Realtime.ResourceType.SETTINGS]: (data: { name: string } & Pick<Version.AnyVersion, 'settings' | 'publishing' | 'session'>, meta: object) => {
-    dispatch(Version.patchActiveVersion({ settings: data.settings, publishing: data.publishing, session: data.session }, meta));
-    dispatch(Project.updateActiveProjectName(data.name, meta));
+    batch(() => {
+      dispatch(Version.patchActiveVersion({ settings: data.settings, publishing: data.publishing, session: data.session }, meta));
+      dispatch(Project.updateActiveProjectName(data.name, meta));
+    });
   },
   [Realtime.ResourceType.FLOWS]: async (data: Models.Diagram[]) => {
     const state = getState();

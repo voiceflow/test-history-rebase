@@ -10,7 +10,7 @@ import apiAdapter from './api';
 import googleSheetsAdapter from './googleSheets';
 import zapierAdapter from './zapier';
 
-const interactionAdapter = createBlockAdapter<APIStepData | ZapierStepData | GoogleSheetsStepData, NodeData.Integration>(
+const integrationAdapter = createBlockAdapter<APIStepData | ZapierStepData | GoogleSheetsStepData, NodeData.Integration>(
   (data, ...args) => {
     switch (data.selectedIntegration) {
       case IntegrationType.CUSTOM_API:
@@ -37,4 +37,4 @@ const interactionAdapter = createBlockAdapter<APIStepData | ZapierStepData | Goo
   }
 );
 
-export default interactionAdapter;
+export default integrationAdapter;

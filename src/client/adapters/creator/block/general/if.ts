@@ -8,15 +8,15 @@ import { NodeData } from '@/models';
 import { createBlockAdapter } from '../utils';
 
 const ifAdapter = createBlockAdapter<IfData, NodeData.If, [{ features: FeatureFlagMap }], [{ features: FeatureFlagMap }]>(
-  ({ expressions }, { features }) => {
-    const isFeatureEnabled = features[FeatureFlag.CONDITIONS_BUILDER];
-
-    return {
-      expressions: isFeatureEnabled?.isEnabled ? expressionAdapter.mapFromDB(expressions) : expressionAdapterLegacy.mapFromDB(expressions),
-    };
-  },
-  ({ expressions }) => ({
-    expressions: expressionAdapterLegacy.mapToDB(expressions as any),
+  ({ expressions }, { features }) => ({
+    expressions: features[FeatureFlag.CONDITIONS_BUILDER]?.isEnabled
+      ? expressionAdapter.mapFromDB(expressions)
+      : expressionAdapterLegacy.mapFromDB(expressions),
+  }),
+  ({ expressions }, { features }) => ({
+    expressions: features[FeatureFlag.CONDITIONS_BUILDER]?.isEnabled
+      ? expressionAdapter.mapToDB(expressions as any)
+      : expressionAdapterLegacy.mapToDB(expressions as any),
   })
 );
 

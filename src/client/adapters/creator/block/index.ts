@@ -3,6 +3,7 @@ import { NodeType } from '@voiceflow/general-types';
 import moize from 'moize';
 
 import { BidirectionalAdapter } from '@/client/adapters/utils';
+import { FeatureFlag } from '@/config/features';
 import { BlockType, IntegrationType, PlatformType } from '@/constants';
 import { FeatureFlagMap } from '@/ducks/feature';
 import { NodeData } from '@/models';
@@ -19,14 +20,19 @@ import { PortsAdapter } from './utils';
 
 const BLOCK_TYPE_MAPPING: [string, BlockType][] = [['block', BlockType.COMBINED]];
 
-export const APP_BLOCK_TYPE_FROM_DB: Record<string, BlockType | ((data: DiagramNode['data']) => BlockType)> = {
+export const APP_BLOCK_TYPE_FROM_DB: Record<
+  string,
+  BlockType | ((data: DiagramNode['data'], options: { features?: FeatureFlagMap }) => BlockType)
+> = {
   ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [key]: value }), {}),
   [NodeType.API]: BlockType.INTEGRATION,
   [NodeType.ZAPIER]: BlockType.INTEGRATION,
   [NodeType.GOOGLE_SHEETS]: BlockType.INTEGRATION,
 };
 
-export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: NodeData<any>) => string)>> = {
+export const DB_BLOCK_TYPE_FROM_APP: Partial<
+  Record<BlockType, string | ((data: NodeData<any>, options: { features?: FeatureFlagMap }) => string)>
+> = {
   ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [value]: key }), {}),
   [BlockType.INTEGRATION]: (data: NodeData<NodeData.Integration>) => {
     switch (data.selectedIntegration) {
@@ -38,6 +44,8 @@ export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: 
         return NodeType.API;
     }
   },
+  [NodeType.IF]: (_, { features }) => (features?.[FeatureFlag.CONDITIONS_BUILDER]?.isEnabled ? BlockType.IFV2 : BlockType.IF),
+  [NodeType.SET]: (_, { features }) => (features?.[FeatureFlag.CONDITIONS_BUILDER]?.isEnabled ? BlockType.SETV2 : BlockType.SET),
 };
 
 const getPlatformAdapter = createPlatformSelector<Partial<Record<BlockType, unknown>>>(

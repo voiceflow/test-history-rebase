@@ -7,7 +7,6 @@ import { FeatureFlagMap } from '@/ducks/feature';
 import { NodeData } from '@/models';
 
 import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP, getBlockAdapter } from './block';
-import { getBlockType } from './utils';
 
 const nodeDataAdapter = createSimpleAdapter<
   { data: DiagramNode['data']; type: string },
@@ -18,7 +17,7 @@ const nodeDataAdapter = createSimpleAdapter<
   ({ data: dbData, type: dbType }, { platform, nodeID, features }) => {
     const getNodeType = APP_BLOCK_TYPE_FROM_DB[dbType];
 
-    const type = _isFunction(getNodeType) ? getNodeType(dbData) : getNodeType || dbType;
+    const type = _isFunction(getNodeType) ? getNodeType(dbData, { features }) : getNodeType || dbType;
 
     let data: Partial<NodeData<unknown>> = {};
 
@@ -33,30 +32,28 @@ const nodeDataAdapter = createSimpleAdapter<
     return {
       name: '',
       ...data,
-      type: getBlockType({ type, data }) as BlockType,
+      type: data.deprecatedType ? BlockType.DEPRECATED : type,
       nodeID,
       path: [],
     };
   },
   ({ type, path, deprecatedType, nodeID, ...appData }, { platform, features }) => {
     const getNodeType = DB_BLOCK_TYPE_FROM_APP[type];
-    const dbType = _isFunction(getNodeType) ? getNodeType(appData) : getNodeType || deprecatedType || type;
-
-    const blockType = getBlockType({ type: dbType, features, toDB: true });
+    const dbType = _isFunction(getNodeType) ? getNodeType(appData, { features }) : getNodeType || deprecatedType || type;
 
     let data: DiagramNode['data'] = {};
 
     try {
       const adapters = getBlockAdapter(platform);
 
-      data = adapters[blockType]?.toDB(appData as any, { features }) || (appData as any);
+      data = adapters[type]?.toDB(appData as any, { features }) || (appData as any);
     } catch {
       data = appData as any;
     }
 
     return {
       data,
-      type: blockType,
+      type: dbType,
     };
   }
 );

@@ -35,7 +35,7 @@ const getTabs = (headers, parameters, selectedAction) => [
     : []),
   {
     value: IntegrationTab.PARAMS,
-    label: `${IntegrationTab.PARAMS} ${parameters.length > 1 ? `(${parameters.length})` : ''}`,
+    label: `${IntegrationTab.PARAMS} ${parameters?.length > 1 ? `(${parameters.length})` : ''}`,
   },
 ];
 

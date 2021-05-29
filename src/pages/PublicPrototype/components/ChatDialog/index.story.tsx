@@ -53,7 +53,7 @@ export const standard = withDecorators(() => {
     <Component
       color={customized ? '#5c6bc0' : undefined}
       input={userResponse}
-      isMute={isMute}
+      isMuted={isMute}
       canRestart={!!userResponse}
       testEnded={testEnded}
       onMute={() => setMute(!isMute)}

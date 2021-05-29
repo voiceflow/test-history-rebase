@@ -8,6 +8,7 @@ import { addVersion } from '@/ducks/version/actions';
 import { AnyLocale } from '@/ducks/version/types';
 import { Thunk } from '@/store/types';
 
+import { updatePrototype } from '../actions';
 import { PrototypeLayout, PrototypeSettings } from '../types';
 
 const setupPublicPrototype = (versionID: string): Thunk<PrototypeSettings> => async (dispatch) => {
@@ -24,6 +25,7 @@ const setupPublicPrototype = (versionID: string): Thunk<PrototypeSettings> => as
   }
 
   const rootDiagramID = prototype.context.stack?.[0].programID as string;
+  const layout = (prototype?.settings.layout ?? PrototypeLayout.TEXT_DIALOG) as PrototypeLayout;
 
   batch(() => {
     dispatch(
@@ -39,6 +41,11 @@ const setupPublicPrototype = (versionID: string): Thunk<PrototypeSettings> => as
         status: null,
       })
     );
+    dispatch(
+      updatePrototype({
+        muted: layout === PrototypeLayout.TEXT_DIALOG,
+      })
+    );
     dispatch(Session.setActiveVersionID(versionID));
     dispatch(Session.setActiveDiagramID(rootDiagramID));
   });
@@ -46,7 +53,7 @@ const setupPublicPrototype = (versionID: string): Thunk<PrototypeSettings> => as
   return {
     ...prototype?.settings,
     plan: plan as PlanType,
-    layout: (prototype?.settings.layout ?? PrototypeLayout.TEXT_DIALOG) as PrototypeLayout,
+    layout,
     locales: prototype.data.locales as AnyLocale[],
     hasPassword: prototype?.settings.hasPassword ?? false,
     projectName: prototype.data.name,

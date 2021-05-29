@@ -31,7 +31,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   isIdle = false,
   onReset,
   onStart,
-  isMuted = false,
+  isMuted = true,
   disabled,
   testEnded = false,
   isMobile,
@@ -47,8 +47,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
               <SvgIcon icon="restart" variant={disabled ? IconVariant.TERTIARY : IconVariant.STANDARD} clickable={!disabled} />
             </ButtonWrapper>
           </Tooltip>
-
-          <Tooltip title="Mute Dialog Audio">
+          <Tooltip title={isMuted ? 'Unmute Dialog Audio' : 'Mute Dialog Audio'}>
             <ButtonWrapper onMouseDown={preventDefault()} onClick={onMute}>
               <SvgIcon icon={isMuted ? 'soundOff' : 'sound'} variant={IconVariant.STANDARD} clickable={!disabled} />
             </ButtonWrapper>

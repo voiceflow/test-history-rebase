@@ -106,7 +106,6 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                 onChange={onInputChange}
                 onStart={onStart}
               />
-
               <ActionButtons
                 color={color}
                 onMute={onMute}

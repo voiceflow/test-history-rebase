@@ -85,7 +85,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ status,
     if (isIOS) {
       audio.play(fakeAudio);
     }
-
     startPrototype();
   };
 

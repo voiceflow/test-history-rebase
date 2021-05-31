@@ -18,7 +18,7 @@ import {
   ff_motorolaSSO,
   ff_natoApco,
   ff_ownerRole,
-  ff_trace,
+  ff_testReports,
   ff_wavenetVoices,
   ga,
   growsurf,
@@ -82,6 +82,7 @@ export const ENV = {
   FF_CONDITIONS_BUILDER: ff_conditionsBuilder && 'true',
   FF_MOTOROLA_SSO: ff_motorolaSSO && 'true',
   FF_LINK_CUSTOMIZATION: ff_linkCustomization && 'true',
+  FF_TEST_REPORTS: ff_testReports && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

@@ -48,6 +48,7 @@ declare module 'webpack-nano/argv' {
     ff_asrBypass: boolean;
     ff_natoApco: boolean;
     ff_motorolaSSO: boolean;
+    ff_testReports: boolean;
   }>;
 
   export = argv;

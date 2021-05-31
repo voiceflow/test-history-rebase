@@ -10,6 +10,7 @@ const NATO_APCO_ENABLED = process.env.FF_NATO_ACPO === 'true';
 const CONDITIONS_BUILDER_ENABLED = process.env.FF_CONDITIONS_BUILDER === 'true';
 const MOTOROLA_SSO_ENABLED = process.env.FF_MOTOROLA_SSO === 'true';
 const LINK_CUSTOMIZATION_ENABLED = !!window.Cypress || process.env.FF_LINK_CUSTOMIZATION === 'true';
+const TEST_REPORTS_ENABLED = process.env.FF_TEST_REPORTS === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
@@ -25,6 +26,8 @@ export enum FeatureFlag {
 
   // permanent circuit breakers for vendor integrations
   INTERCOM_INTEGRATION = 'intercom_integration',
+
+  TEST_REPORTS = 'test_reports',
 }
 
 export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
@@ -37,4 +40,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.CONDITIONS_BUILDER]: CONDITIONS_BUILDER_ENABLED,
   [FeatureFlag.MOTOROLA_SSO]: MOTOROLA_SSO_ENABLED,
   [FeatureFlag.LINK_CUSTOMIZATION]: LINK_CUSTOMIZATION_ENABLED,
+  [FeatureFlag.TEST_REPORTS]: TEST_REPORTS_ENABLED,
 };

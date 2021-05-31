@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
@@ -59,7 +60,7 @@ const Item: React.FC<ItemProps> = ({ icon, type, label, iconColor, factoryData, 
       isClicked={isClickedState}
       onMouseUp={clearClickedState}
       onMouseDown={enableClickedState}
-      className={ClassName.STEP_MENU_ITEM}
+      className={cn(ClassName.STEP_MENU_ITEM, `${ClassName.STEP_MENU_ITEM}--${type}`)}
       ref={connectDrag}
       isDragging={isDragging}
       isDraggingPreview={isDraggingPreview}

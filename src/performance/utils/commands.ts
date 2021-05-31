@@ -1,12 +1,12 @@
+import { BlockCategory, BlockType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { ClassName, Identifier } from '@/styles/constants';
 import { delay, rejectIn } from '@/utils/promise';
 
 import { MOCK_DATA, PerfAction, RunnerEvent } from '../constants';
+import dndSimulator from './dndSimulator';
+import PAGES from './pages';
 import type { EventTypes, Runner } from './runner';
-
-const $ = <T extends HTMLElement = HTMLElement>(selector: string) => document.querySelector(selector) as T;
 
 const createCommands = (runner: Runner) => {
   const promisifyListener = <T extends RunnerEvent, R extends EventTypes[T] = EventTypes[T]>(
@@ -48,21 +48,29 @@ const createCommands = (runner: Runner) => {
 
     canvas: {
       clearFocus: async () => {
-        await $(`#${Identifier.CANVAS}`).click();
+        await PAGES.CANVAS.canvas().click();
 
         await window.vf_engine?.focus.reset();
 
         await delay(100);
       },
 
-      // clicks
-
       clickNode: (nodeID: string) => {
-        $(`[data-node-id="${nodeID}"]`).click();
+        PAGES.CANVAS.node(nodeID).click();
       },
 
       clickFlowStepLink: (nodeID: string) => {
-        $(`[data-node-id="${nodeID}"] .${ClassName.CANVAS_STEP_ITEM_LABEL}`).click();
+        PAGES.CANVAS.flowStepLink(nodeID).click();
+      },
+
+      openDesignMenuStepsSection: (category: BlockCategory) => {
+        if (PAGES.CANVAS.isStepMenuSectionOpened(category)) return;
+
+        PAGES.CANVAS.stepMenuSectionHeader(category).click();
+      },
+
+      createStepViaDesignMenu: (category: BlockCategory, type: BlockType) => {
+        dndSimulator(PAGES.CANVAS.stepMenuSectionStep(category, type), PAGES.CANVAS.canvas());
       },
     },
   };

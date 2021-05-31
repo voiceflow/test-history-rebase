@@ -122,6 +122,9 @@ export enum ClassName {
   PLATFORM_CARD = 'vf-platform-card',
   MULTISELECT_DROPDOWN = 'vf-multi-select-dropdown',
   MULTISELECT_ITEM = 'vf-multi-select-item',
+  COLLAPSE = 'vf-collapse',
+  COLLAPSE_HEADER = 'vf-collapse__header',
+  COLLAPSE_CONTENT = 'vf-collapse__content',
   // Project Creation
   CREATE_PROJECT_LEFT_ACTION = 'vf-create-project-left-action',
   CREATE_PROJECT_RIGHT_ACTION = 'vf-create-project-right-action',

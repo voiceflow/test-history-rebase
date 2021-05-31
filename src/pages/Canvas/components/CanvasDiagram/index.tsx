@@ -105,6 +105,8 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
 
       const { x: mouseX, y: mouseY } = monitor.getClientOffset() || clientOffset;
 
+      perf.action(PerfAction.STEP_DROP_CREATE);
+
       await engine.node.add(blockType, new Coords([mouseX, mouseY]), factoryData);
     },
     hover: _throttle(

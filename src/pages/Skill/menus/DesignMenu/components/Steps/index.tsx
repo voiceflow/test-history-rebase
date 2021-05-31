@@ -50,6 +50,7 @@ const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expande
             steps.length ? (
               <UncontrolledCollapse
                 key={type}
+                type={type}
                 title={label}
                 isOpen={!!expandedSectionsMap[type]}
                 onToggle={() => toggleSection(type)}

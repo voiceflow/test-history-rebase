@@ -336,9 +336,10 @@ export enum UserRole {
   LIBRARY = 'library',
   OWNER = 'owner',
   GUEST = 'guest', // use for "side-apps" like Prototype Share that do not require login
+  BILLING = 'billing',
 }
 
-export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN, UserRole.OWNER];
+export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN, UserRole.OWNER]; // billing not included in seat roles
 
 export const SLOT_COLORS = [
   '#4F9ED1',

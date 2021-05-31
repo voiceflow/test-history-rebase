@@ -21,6 +21,8 @@ const getRoleVerb = (role) => {
       return 'Editor';
     case UserRole.OWNER:
       return 'Manager';
+    case UserRole.BILLING:
+      return 'Billing';
     case UserRole.VIEWER:
     default:
       return 'Viewer';
@@ -79,6 +81,9 @@ const MemberRow = ({ member, isAdmin, pending, resendInvite, deleteMember, cance
               <>
                 <DropdownItem onClick={() => changePermission(UserRole.ADMIN)} active={member.role === UserRole.ADMIN}>
                   {getRoleVerb(UserRole.ADMIN)}
+                </DropdownItem>
+                <DropdownItem onClick={() => changePermission(UserRole.BILLING)} active={member.role === UserRole.BILLING}>
+                  {getRoleVerb(UserRole.BILLING)}
                 </DropdownItem>
               </>
             )}

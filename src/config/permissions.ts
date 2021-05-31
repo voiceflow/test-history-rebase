@@ -47,27 +47,27 @@ export enum Permission {
 const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.GUEST, UserRole.OWNER];
 
 export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
-  [Permission.ADD_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
-  [Permission.VIEW_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
+  [Permission.ADD_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING],
+  [Permission.VIEW_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING],
 
-  [Permission.INVITE_BY_LINK]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
+  [Permission.INVITE_BY_LINK]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING],
 
-  [Permission.CONFIGURE_WORKSPACE]: [UserRole.ADMIN],
-  [Permission.UPGRADE_WORKSPACE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
+  [Permission.CONFIGURE_WORKSPACE]: [UserRole.ADMIN, UserRole.BILLING],
+  [Permission.UPGRADE_WORKSPACE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING],
 
-  [Permission.MANAGE_PROJECTS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
-  [Permission.MANAGE_PROJECT_LISTS]: [UserRole.ADMIN, UserRole.EDITOR],
+  [Permission.MANAGE_PROJECTS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING],
+  [Permission.MANAGE_PROJECT_LISTS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.BILLING],
   [Permission.CLONE_PROJECT]: [UserRole.LIBRARY],
 
   [Permission.EDIT_CANVAS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
-  [Permission.CANVAS_REALTIME]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
-  [Permission.COMMENTING]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
+  [Permission.CANVAS_REALTIME]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING],
+  [Permission.COMMENTING]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING],
   [Permission.SHARE_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
   [Permission.SHARE_PROTOTYPE_PASSWORD]: ALL_USER_ROLES,
   [Permission.TRAIN_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
   [Permission.RENDER_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
 
-  [Permission.HINT_FEATURES]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER],
+  [Permission.HINT_FEATURES]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING],
 };
 
 const ALL_PERMISSIONS = Object.values(PlanType);

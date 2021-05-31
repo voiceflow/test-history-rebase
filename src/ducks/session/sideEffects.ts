@@ -33,9 +33,9 @@ export const updateAuthToken = (token: string | null): SyncThunk => (dispatch) =
 
 export const resetSession = (): Thunk => async (dispatch) => {
   batch(() => {
+    dispatch(resetAccount());
     dispatch(updateAuthToken(null));
     dispatch(setIntercomUserHMAC(null));
-    dispatch(resetAccount());
   });
 
   await client.socket.logout().catch(Sentry.error);

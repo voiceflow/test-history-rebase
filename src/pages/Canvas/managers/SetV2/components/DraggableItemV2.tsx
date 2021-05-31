@@ -29,8 +29,8 @@ const INPUT_TYPE_OPTIONS = [
   },
 ];
 
-export type SetItemProps = ItemComponentProps<NodeData.SetExpression> &
-  MappedItemComponentHandlers<NodeData.SetExpression> &
+export type SetItemProps = ItemComponentProps<NodeData.SetExpressionV2> &
+  MappedItemComponentHandlers<NodeData.SetExpressionV2> &
   DragPreviewComponentProps & {
     latestCreatedKey: string | undefined;
     isOnlyItem: boolean;
@@ -92,7 +92,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
               {item.type === ExpressionTypeV2.VALUE ? (
                 <Input
                   value={transformVariableToString(`${item.expression}`)}
-                  onChange={({ target }) => onUpdate({ expression: target.value })}
+                  onChange={({ target }) => onUpdate({ expression: target.value as NodeData.NewExpressionType })}
                   placeholder="Enter value"
                 />
               ) : (

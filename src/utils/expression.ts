@@ -157,7 +157,11 @@ export const expressionfyLogicUnit = (expression: ExpressionV2): string => {
     return Number.isNaN(strNumberValue) ? `'${strValue.replace(SINGLE_BRACKET_REGEXP, "\\'")}'` : strValue;
   }
 
-  if (expression.type === ExpressionTypeV2.VARIABLE || expression.type === ExpressionTypeV2.ADVANCE) {
+  if (expression.type === ExpressionTypeV2.VARIABLE) {
+    return `{${expression.value}}`;
+  }
+
+  if (expression.type === ExpressionTypeV2.ADVANCE) {
     return expression.value !== '0' ? `${expression.value.replace(SLOT_REGEXP, '{$1}')}` : '';
   }
 

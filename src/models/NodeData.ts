@@ -157,10 +157,8 @@ export namespace NodeData {
     permissions: UserInfoPermission[];
   };
 
-  export type NewExpressionType = string | number | null;
-
   export type SetExpression = {
-    expression: Expression | NewExpressionType;
+    expression: Expression;
     id: string;
     variable?: string | null;
     type?: ExpressionTypeV2;
@@ -171,10 +169,26 @@ export namespace NodeData {
     sets: SetExpression[];
   };
 
-  export type IfExpression = Expression | ExpressionData;
+  export type NewExpressionType = string | number | null;
+
+  export type SetExpressionV2 = {
+    expression: NewExpressionType;
+    id: string;
+    variable?: string | null;
+    type?: ExpressionTypeV2;
+  };
+
+  export type SetV2 = {
+    title?: string;
+    sets: SetExpressionV2[];
+  };
 
   export type If = {
-    expressions: IfExpression[];
+    expressions: Expression[];
+  };
+
+  export type IfV2 = {
+    expressions: ExpressionData[];
   };
 
   export type Directive = {

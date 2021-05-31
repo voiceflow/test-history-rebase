@@ -7,6 +7,7 @@ import { FeatureFlagMap } from '@/ducks/feature';
 import { NodeData } from '@/models';
 
 import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP, getBlockAdapter } from './block';
+import { needsMigration } from './utils';
 
 const nodeDataAdapter = createSimpleAdapter<
   { data: DiagramNode['data']; type: string },
@@ -22,7 +23,7 @@ const nodeDataAdapter = createSimpleAdapter<
     let data: Partial<NodeData<unknown>> = {};
 
     try {
-      const adapters = getBlockAdapter(platform);
+      const adapters = getBlockAdapter(platform, needsMigration(dbType, type, features));
 
       data = adapters[type]?.fromDB(dbData, { features }) || { deprecatedType: type, ...dbData };
     } catch {

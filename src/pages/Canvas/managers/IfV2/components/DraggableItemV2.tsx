@@ -7,11 +7,11 @@ import Input from '@/components/Input';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import SvgIcon from '@/components/SvgIcon';
 import { useSetup } from '@/hooks';
-import { ExpressionData, NodeData } from '@/models';
+import { ExpressionData } from '@/models';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 
-export type IfItemProps = ItemComponentProps<NodeData.IfExpression> &
-  MappedItemComponentHandlers<NodeData.IfExpression> &
+export type IfItemProps = ItemComponentProps<ExpressionData> &
+  MappedItemComponentHandlers<ExpressionData> &
   DragPreviewComponentProps & {
     latestCreatedKey: string | undefined;
     isOnlyItem: boolean;

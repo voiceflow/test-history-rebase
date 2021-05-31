@@ -22,6 +22,7 @@ const Spotlight = () => {
   const [trackingEvents] = useTrackingEvents();
   const engine = React.useContext(EngineContext)!;
   const gadgets = useFeature(FeatureFlag.GADGETS);
+  const conditionsBuilder = useFeature(FeatureFlag.CONDITIONS_BUILDER);
   const isVisible = !!spotlight?.isVisible;
 
   const addBlock = async (blockType: BlockType, factoryData?: Partial<NodeData<unknown>>) => {
@@ -36,6 +37,8 @@ const Spotlight = () => {
         .filter((option) => {
           if (!gadgets.isEnabled && [BlockType.EVENT].includes(option.type)) return false;
           if (IS_PRIVATE_CLOUD && option.publicOnly) return false;
+          if (conditionsBuilder.isEnabled && [BlockType.IF, BlockType.SET].includes(option.type)) return false;
+          if (!conditionsBuilder.isEnabled && [BlockType.IFV2, BlockType.SETV2].includes(option.type)) return false;
           return true;
         }),
     []

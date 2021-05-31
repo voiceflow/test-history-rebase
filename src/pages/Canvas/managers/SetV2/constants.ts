@@ -1,4 +1,4 @@
-import { ExpressionType } from '@voiceflow/general-types';
+import { ExpressionTypeV2 } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { BlockType } from '@/constants';
@@ -6,8 +6,8 @@ import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
-export const NODE_CONFIG: NodeConfig<NodeData.Set> = {
-  type: BlockType.SET,
+export const NODE_CONFIG: NodeConfig<NodeData.SetV2> = {
+  type: BlockType.SETV2,
 
   icon: 'code',
   iconColor: '#5590b5',
@@ -21,16 +21,13 @@ export const NODE_CONFIG: NodeConfig<NodeData.Set> = {
     },
     data: {
       name: 'Set',
+      title: '',
       sets: [
         {
           id: cuid.slug(),
           variable: null,
-          expression: {
-            id: cuid.slug(),
-            type: ExpressionType.VALUE,
-            value: '',
-            depth: 0,
-          },
+          type: ExpressionTypeV2.VALUE,
+          expression: '',
         },
       ],
     },

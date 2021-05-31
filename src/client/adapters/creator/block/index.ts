@@ -16,6 +16,7 @@ import { googleBlockAdapter, googlePortsAdapter } from './google';
 import invalidPlatformAdapter from './invalidPlatform';
 import markupImageAdapter from './markupImage';
 import markupTextAdapter from './markupText';
+import { migrationBlockAdapter } from './migration';
 import { PortsAdapter } from './utils';
 
 const BLOCK_TYPE_MAPPING: [string, BlockType][] = [['block', BlockType.COMBINED]];
@@ -28,6 +29,8 @@ export const APP_BLOCK_TYPE_FROM_DB: Record<
   [NodeType.API]: BlockType.INTEGRATION,
   [NodeType.ZAPIER]: BlockType.INTEGRATION,
   [NodeType.GOOGLE_SHEETS]: BlockType.INTEGRATION,
+  [NodeType.IF]: (_, { features }) => (features?.[FeatureFlag.CONDITIONS_BUILDER]?.isEnabled ? BlockType.IFV2 : BlockType.IF),
+  [NodeType.SET]: (_, { features }) => (features?.[FeatureFlag.CONDITIONS_BUILDER]?.isEnabled ? BlockType.SETV2 : BlockType.SET),
 };
 
 export const DB_BLOCK_TYPE_FROM_APP: Partial<
@@ -87,12 +90,17 @@ type PlatformBlockAdapter = Partial<
 const commonPortsAdapter = {};
 
 export const getBlockAdapter = moize(
-  (platform: PlatformType): PlatformBlockAdapter =>
-    (({
+  (platform: PlatformType, migrate?: boolean): PlatformBlockAdapter => {
+    if (migrate) {
+      return (migrationBlockAdapter as unknown) as PlatformBlockAdapter;
+    }
+
+    return ({
       ...commonBlockAdapter,
       ...generalBlockAdapter,
       ...getPlatformAdapter(platform),
-    } as unknown) as PlatformBlockAdapter)
+    } as unknown) as PlatformBlockAdapter;
+  }
 );
 
 type PlatformPortsAdapter = Partial<Record<BlockType, PortsAdapter>>;

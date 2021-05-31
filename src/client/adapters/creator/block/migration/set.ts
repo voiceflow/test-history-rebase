@@ -1,23 +1,25 @@
+import { ExpressionType, ExpressionTypeV2 } from '@voiceflow/general-types';
 import { StepData as SetData } from '@voiceflow/general-types/build/nodes/set';
 import cuid from 'cuid';
 
-import { expressionAdapterLegacy } from '@/client/adapters/expression';
 import { NodeData } from '@/models';
+import { expressionfyV2 } from '@/utils/expression';
 
 import { createBlockAdapter } from '../utils';
 
-const setAdapter = createBlockAdapter<SetData, NodeData.Set>(
+const setAdapter = createBlockAdapter<SetData, NodeData.SetV2>(
   ({ sets }) => ({
     sets: sets.map(({ expression, variable }) => ({
       id: cuid.slug(),
       variable,
-      expression: expressionAdapterLegacy.fromDB(expression),
+      type: expression.type === ExpressionType.VALUE ? ExpressionTypeV2.VALUE : ExpressionTypeV2.ADVANCE,
+      expression: expressionfyV2(expression) || '',
     })),
   }),
   ({ sets }) => ({
     sets: sets.map(({ expression, variable }) => ({
       variable: variable ?? null,
-      expression: expressionAdapterLegacy.toDB(expression),
+      expression: (expression?.toString() || '') as any,
     })),
   })
 );

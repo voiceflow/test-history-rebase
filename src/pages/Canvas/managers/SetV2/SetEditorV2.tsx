@@ -4,34 +4,25 @@ import { Flex } from '@/components/Box';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import Input from '@/components/Input';
 import Section from '@/components/Section';
-import { FeatureFlag } from '@/config/features';
-import { useFeature, useManager, useToggle } from '@/hooks';
+import { useManager, useToggle } from '@/hooks';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { NODE_CONFIG } from '@/pages/Canvas/managers/Set/constants';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { DraggableItemV2, HelpMessage, HelpTooltip } from './components';
+import { NODE_CONFIG } from './constants';
 
 const MAX_SETS = 20;
 
-const setFactory = (conditionsBuilderEnabled?: boolean) =>
-  NODE_CONFIG.factory(undefined, {
-    features: {
-      [FeatureFlag.CONDITIONS_BUILDER]: {
-        isEnabled: !!conditionsBuilderEnabled,
-      },
-    },
-  }).data.sets[0];
+const setFactory = () => NODE_CONFIG.factory(undefined).data.sets[0];
 
-const setClone = (initVal: any, targetVal: NodeData.SetExpression) => ({
+const setClone = (initVal: any, targetVal: NodeData.SetExpressionV2) => ({
   ...initVal,
   variable: targetVal.variable,
   expression: targetVal.expression,
 });
 
-const SetEditorV2: NodeEditor<NodeData.Set> = ({ data, onChange }) => {
-  const conditionsBuilder = useFeature(FeatureFlag.CONDITIONS_BUILDER);
+const SetEditorV2: NodeEditor<NodeData.SetV2> = ({ data, onChange }) => {
   const [isDragging, toggleDragging] = useToggle(false);
 
   const updateSets = React.useCallback(
@@ -42,7 +33,7 @@ const SetEditorV2: NodeEditor<NodeData.Set> = ({ data, onChange }) => {
   );
 
   const { items, onAdd, onRemove, mapManaged, onDuplicate, onReorder, latestCreatedKey } = useManager(data.sets, updateSets, {
-    factory: () => setFactory(!!conditionsBuilder.isEnabled),
+    factory: () => setFactory(),
     clone: setClone,
   });
 

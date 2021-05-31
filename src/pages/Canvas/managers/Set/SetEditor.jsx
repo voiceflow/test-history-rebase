@@ -1,13 +1,11 @@
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
-import { FeatureFlag } from '@/config/features';
-import { useFeature, useManager, useToggle } from '@/hooks';
+import { useManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 
 import { DraggableItem, HelpMessage, HelpTooltip } from './components';
 import { NODE_CONFIG } from './constants';
-import SetEditorV2 from './SetEditorV2';
 
 const MAX_SETS = 20;
 
@@ -26,7 +24,6 @@ function SetEditor({ data, onChange }) {
   const [isDragging, toggleDragging] = useToggle(false);
   const updateSets = React.useCallback((sets) => onChange({ sets }), [onChange]);
   const onRemoveSets = React.useCallback((_, index) => onChange(data.sets.splice(index, 1)), [data.sets, onChange]);
-
   const { items, onAdd, onRemove, onDuplicate, mapManaged, onReorder, latestCreatedKey } = useManager(data.sets, updateSets, {
     clone: setClone,
     factory: setFactory,
@@ -66,9 +63,9 @@ function SetEditor({ data, onChange }) {
         type="set-editor"
         items={items}
         onDelete={onRemove}
-        onDuplicate={duplicateSet}
         onReorder={onReorder}
         onEndDrag={toggleDragging}
+        onDuplicate={duplicateSet}
         itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
         mapManaged={mapManaged}
         onStartDrag={toggleDragging}
@@ -83,13 +80,4 @@ function SetEditor({ data, onChange }) {
   );
 }
 
-const ConditionalSetEditor = (props) => {
-  const conditionsBuilder = useFeature(FeatureFlag.CONDITIONS_BUILDER);
-
-  if (conditionsBuilder.isEnabled) {
-    return <SetEditorV2 {...props} />;
-  }
-
-  return <SetEditor {...props} />;
-};
-export default ConditionalSetEditor;
+export default SetEditor;

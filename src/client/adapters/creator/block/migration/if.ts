@@ -1,16 +1,16 @@
 import type { StepData as IfData } from '@voiceflow/general-types/build/nodes/if';
 
-import { expressionAdapterLegacy } from '@/client/adapters/expression';
 import { NodeData } from '@/models';
 
 import { createBlockAdapter } from '../utils';
+import expressionV1toV2Adapter from './expression';
 
-const ifAdapter = createBlockAdapter<IfData, NodeData.If>(
+const ifAdapter = createBlockAdapter<IfData, NodeData.IfV2>(
   ({ expressions }) => ({
-    expressions: expressionAdapterLegacy.mapFromDB(expressions),
+    expressions: expressionV1toV2Adapter.mapFromDB(expressions),
   }),
   ({ expressions }) => ({
-    expressions: expressionAdapterLegacy.mapToDB(expressions),
+    expressions: expressionV1toV2Adapter.mapToDB(expressions as any),
   })
 );
 

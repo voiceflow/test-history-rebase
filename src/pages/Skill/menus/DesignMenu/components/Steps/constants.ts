@@ -53,6 +53,8 @@ const EVENT_STEP = createMenuStep(BlockType.EVENT);
 
 const CONDITION_STEP = createMenuStep(BlockType.IF);
 
+const CONDITION_STEP_V2 = createMenuStep(BlockType.IFV2);
+
 const EXIT_STEP = createMenuStep(BlockType.EXIT);
 
 const FLOW_STEP = createMenuStep(BlockType.FLOW);
@@ -77,6 +79,8 @@ const RANDOM_STEP = createMenuStep(BlockType.RANDOM);
 const REMINDER_STEP = createMenuStep(BlockType.REMINDER);
 
 const SET_STEP = createMenuStep(BlockType.SET);
+
+const SET_STEP_V2 = createMenuStep(BlockType.SETV2);
 
 const SPEAK_STEP = createMenuStep(BlockType.SPEAK, { factoryData: { dialogs: [{ type: DialogType.VOICE }] } });
 
@@ -105,7 +109,7 @@ export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP, SET_STEP, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP, CONDITION_STEP_V2, SET_STEP, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -134,7 +138,7 @@ export const GOOGLE_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP, SET_STEP, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP, CONDITION_STEP_V2, SET_STEP, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -163,7 +167,7 @@ export const GENERAL_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP, SET_STEP, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP, CONDITION_STEP_V2, SET_STEP, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,

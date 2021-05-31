@@ -2,10 +2,13 @@ import { Block, DiagramNode, Port as DBPort, Step } from '@voiceflow/api-sdk';
 import _isString from 'lodash/isString';
 
 import { adapterLogger } from '@/client/adapters/utils';
+import { FeatureFlag } from '@/config/features';
+import { BlockType } from '@/constants';
+import { FeatureFlagMap } from '@/ducks/feature';
 import { LinkData, Port } from '@/models';
 import { objectID } from '@/utils';
 
-import { IN_PORT_KEY } from './constants';
+import { IN_PORT_KEY, MIGRATION_BLOCKS } from './constants';
 
 export const creatorLogger = adapterLogger.child('creator');
 
@@ -28,3 +31,9 @@ export const generateOutPort = (nodeID: string, port: DBPort<LinkData>, settings
   id: (_isString(port.id) && port.id) || objectID(),
   linkData: port.data,
 });
+
+export const needsMigration = (dbBlockType: string, appBlockType: BlockType, features: FeatureFlagMap): boolean => {
+  const isFeatureEnabled = features?.[FeatureFlag.CONDITIONS_BUILDER];
+
+  return !!isFeatureEnabled?.isEnabled && MIGRATION_BLOCKS.includes(dbBlockType) && dbBlockType !== appBlockType;
+};

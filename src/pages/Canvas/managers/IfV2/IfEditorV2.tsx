@@ -1,10 +1,9 @@
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
-import { FeatureFlag } from '@/config/features';
 import { focusedNodeSelector } from '@/ducks/creator';
 import { connect } from '@/hocs';
-import { MapManaged, useFeature, useManager, useToggle } from '@/hooks';
+import { MapManaged, useManager, useToggle } from '@/hooks';
 import { ExpressionData, NodeData } from '@/models';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
@@ -21,17 +20,9 @@ const setClone = (initVal: any, targetVal: ExpressionData) => ({
   value: targetVal.value,
 });
 
-const expressionFactory = (conditionsBuilderEnabled?: boolean | null) =>
-  NODE_CONFIG.factory(undefined, {
-    features: {
-      [FeatureFlag.CONDITIONS_BUILDER]: {
-        isEnabled: !!conditionsBuilderEnabled,
-      },
-    },
-  }).data.expressions[0];
+const expressionFactory = () => NODE_CONFIG.factory(undefined).data.expressions[0];
 
-const IfEditor: NodeEditor<NodeData.If & ConnectedCommentingUpdatesProps> = ({ data, onChange, focusedNode }) => {
-  const conditionsBuilder = useFeature(FeatureFlag.CONDITIONS_BUILDER);
+const IfEditor: NodeEditor<NodeData.IfV2 & ConnectedCommentingUpdatesProps> = ({ data, onChange, focusedNode }) => {
   const [isDragging, toggleDragging] = useToggle(false);
   const engine = React.useContext(EngineContext)!;
   const updateExpressions = React.useCallback((expressions, save) => onChange({ expressions }, save), [onChange]);
@@ -41,7 +32,7 @@ const IfEditor: NodeEditor<NodeData.If & ConnectedCommentingUpdatesProps> = ({ d
   ]);
 
   const { items, onAdd, onRemove, onDuplicate, mapManaged, onReorder, latestCreatedKey } = useManager(data.expressions, updateExpressions, {
-    factory: () => expressionFactory(conditionsBuilder?.isEnabled),
+    factory: () => expressionFactory(),
     autosave: false,
     handleRemove: onRemoveExpression,
     clone: setClone,
@@ -103,7 +94,7 @@ const IfEditor: NodeEditor<NodeData.If & ConnectedCommentingUpdatesProps> = ({ d
         onReorder={onReorder}
         onEndDrag={toggleDragging}
         itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
-        mapManaged={mapManaged as MapManaged<NodeData.IfExpression>}
+        mapManaged={mapManaged as MapManaged<ExpressionData>}
         onStartDrag={toggleDragging}
         itemComponent={DraggableItemV2}
         deleteComponent={DeleteComponent}

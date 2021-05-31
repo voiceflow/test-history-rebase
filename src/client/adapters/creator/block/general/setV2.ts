@@ -5,7 +5,7 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter } from '../utils';
 
-const setAdapterV2 = createBlockAdapter<SetData, NodeData.Set>(
+const setAdapterV2 = createBlockAdapter<SetData, NodeData.SetV2>(
   ({ sets, title }) => ({
     title,
     sets: sets.map(({ expression, variable, type }) => ({

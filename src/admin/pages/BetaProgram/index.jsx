@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React from 'react';
-import { Input } from 'reactstrap';
 
 import User from '@/admin/pages/Home/components/User';
 import * as Admin from '@/admin/store/ducks/adminV2';
 import { AdminTitle } from '@/admin/styles';
+import Input from '@/components/Input';
 import { toast } from '@/components/Toast';
 import { connect } from '@/hocs';
 

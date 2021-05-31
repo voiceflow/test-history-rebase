@@ -1,14 +1,14 @@
 import React from 'react';
-import { Alert } from 'reactstrap';
 
 import AceEditor from '@/components/AceEditor';
+import Alert, { AlertVariant } from '@/components/Alert';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
 import { NodeData } from '@/models';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 const DeprecatedEditor: NodeEditor<NodeData.Deprecated> = ({ data: { deprecatedType, ...originalData } }) => (
   <Section>
-    <Alert color="warning">
+    <Alert variant={AlertVariant.WARNING}>
       This "{deprecatedType}" block is now deprecated and is no longer available. This project will still work, but we recommend you to update this
       block as soon as possible.
     </Alert>

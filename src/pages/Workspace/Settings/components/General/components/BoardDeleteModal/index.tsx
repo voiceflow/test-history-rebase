@@ -1,6 +1,6 @@
 import React from 'react';
-import { Input } from 'reactstrap';
 
+import Input from '@/components/Input';
 import Button from '@/components/LegacyButton';
 import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
 import { Spinner } from '@/components/Spinner';

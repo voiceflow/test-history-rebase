@@ -15,6 +15,8 @@ const PlainInput = styled.input<StyledInputProps>`
   ${inputStyle}
 `;
 
+PlainInput.displayName = 'Input';
+
 export enum NestedInputIconPosition {
   LEFT = 'left',
   RIGHT = 'right',

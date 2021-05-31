@@ -8,6 +8,7 @@ import { Router } from 'react-router-dom';
 import client from '@/client';
 import { facebookLogin, googleLogin } from '@/ducks/session';
 import { noop } from '@/utils/functional';
+import { ThemeProvider } from '@/utils/testing';
 
 import { LoginForm } from '../components/LoginForm';
 import { SignupForm } from '../components/SignupForm';
@@ -26,9 +27,11 @@ const mountWithProviders = (jsx) => {
   const history = createMemoryHistory();
 
   return mount(
-    <ReactRedux.Provider store={{ getState: () => ({}), subscribe: noop, dispatch: noop }}>
-      <Router history={history}>{jsx}</Router>
-    </ReactRedux.Provider>
+    <ThemeProvider>
+      <ReactRedux.Provider store={{ getState: () => ({}), subscribe: noop, dispatch: noop }}>
+        <Router history={history}>{jsx}</Router>
+      </ReactRedux.Provider>
+    </ThemeProvider>
   );
 };
 const mockDispatch = jest.fn();

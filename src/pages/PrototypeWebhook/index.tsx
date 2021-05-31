@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Alert } from 'reactstrap';
 
+import Alert from '@/components/Alert';
 import Box from '@/components/Box';
 import Input from '@/components/Input';
 import { ClickableText } from '@/components/Text';

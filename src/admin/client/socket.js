@@ -1,8 +1,8 @@
 import Markdown from 'markdown-to-jsx';
 import React from 'react';
-import { Alert } from 'reactstrap';
 import socket from 'socket.io-client';
 
+import Alert from '@/components/Alert';
 import { API_ENDPOINT, DEVICE_INFO } from '@/config';
 import { setConfirm } from '@/ducks/modal';
 import { getAuthCookie } from '@/utils/cookies';
@@ -61,7 +61,7 @@ const setupSocket = (tabID) => {
         setConfirm({
           size: 'rg',
           text: (
-            <Alert className="mb-0" color={data.type}>
+            <Alert mb={0} color={data.type}>
               <Markdown>{data.message}</Markdown>
             </Alert>
           ),

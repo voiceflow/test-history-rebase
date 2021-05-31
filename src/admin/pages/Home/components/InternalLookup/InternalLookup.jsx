@@ -2,9 +2,9 @@ import './InternalLookup.css';
 
 import _cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
-import { Input } from 'reactstrap';
 
 import * as Admin from '@/admin/store/ducks/adminV2';
+import Input from '@/components/Input';
 import Button from '@/components/LegacyButton';
 import { connect } from '@/hocs';
 

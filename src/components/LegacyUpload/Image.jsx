@@ -1,9 +1,9 @@
 import { IS_VARIABLE_REGEXP } from '@voiceflow/common';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
-import { Input } from 'reactstrap';
 
 import client from '@/client';
+import Input from '@/components/Input';
 import Button from '@/components/LegacyButton';
 import { Spinner } from '@/components/Spinner';
 import { HTTPS_URL_REGEX } from '@/constants';

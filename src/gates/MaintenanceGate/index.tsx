@@ -4,8 +4,8 @@ import _noop from 'lodash/noop';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Alert } from 'reactstrap';
 
+import Alert from '@/components/Alert';
 import LoadingGate from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import * as Modal from '@/ducks/modal';
@@ -46,7 +46,7 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
     setConfirm({
       size: 'rg',
       text: (
-        <Alert className="mb-0">
+        <Alert mb={0}>
           Voiceflow Creator will go under planned maintenance
           <br />
           <b>{interval}</b> from now

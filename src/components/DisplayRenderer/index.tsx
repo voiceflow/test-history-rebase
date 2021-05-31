@@ -1,7 +1,8 @@
 import { APL_DEVICE_CONFIG, APLDeviceType } from '@voiceflow/alexa-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-import { Alert } from 'reactstrap';
+
+import Alert, { AlertVariant } from '@/components/Alert';
 
 import { APLRendererProps } from '../APLRenderer';
 import { BaseRenderer, Container } from './components';
@@ -73,7 +74,7 @@ class DisplayRenderer extends React.Component<DisplayRendererProps, DisplayRende
   render() {
     if (this.state.error) {
       return (
-        <Alert color="danger" className="mb-0">
+        <Alert variant={AlertVariant.DANGER} mb={0}>
           Invalid APL or datasource or commands
           <hr />
           {this.state.error.toString()}

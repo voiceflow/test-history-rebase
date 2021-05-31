@@ -4,10 +4,10 @@ import { ProjectPrivacy } from '@voiceflow/api-sdk';
 import cn from 'classnames';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Alert } from 'reactstrap';
 
 import { createGraphic } from '@/assets';
-import { Flex } from '@/components/Box';
+import Alert, { AlertVariant } from '@/components/Alert';
+import { Flex, FlexCenter } from '@/components/Box';
 import DragLayer from '@/components/DragLayer';
 import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
@@ -223,16 +223,16 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
       <SeoHelmet page={SeoPage.DASHBOARD} />
 
       {isLocked && (
-        <div className="w-100 h-100 super-center position-absolute z-hard pb-5">
+        <FlexCenter height="100%" width="100%" position="absolute" zIndex={10}>
           {/* TODO: flush out subscription failed logic */}
-          <Alert color="danger" className="pointer text-center py-3">
+          <Alert variant={AlertVariant.DANGER} className="pointer text-center">
             <SvgIcon icon="ban" size={32} inline />
             <br />
             Your subscription has failed
             <br />
             Please update your payment to continue
           </Alert>
-        </div>
+        </FlexCenter>
       )}
 
       {/* using loading gate here instead of hock to escape header blinking  */}

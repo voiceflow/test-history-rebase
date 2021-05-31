@@ -1,4 +1,3 @@
-export { default as Checkbox } from './Checkbox';
 export { default as Count } from './Count';
 export { default as InnerContainer } from './InnerContainer';
 export { default as Label } from './Label';

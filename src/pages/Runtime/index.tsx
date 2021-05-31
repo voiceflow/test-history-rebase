@@ -1,6 +1,6 @@
 import React from 'react';
-import { Alert } from 'reactstrap';
 
+import Alert from '@/components/Alert';
 import Box from '@/components/Box';
 import Input from '@/components/Input';
 import Page from '@/components/Page';

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Alert } from 'reactstrap';
 
 import { supportGraphic } from '@/assets';
+import Alert, { AlertVariant } from '@/components/Alert';
 import Button from '@/components/Button';
 import { clearModal } from '@/ducks/modal';
 import { connect } from '@/hocs';
@@ -20,7 +20,7 @@ export const ErrorModal = ({ error, dismiss }) => {
         <img src={supportGraphic} alt="Support" height={80} />
         {error.message ? (
           <>
-            <Alert color="danger">{error.message}</Alert>
+            <Alert variant={AlertVariant.DANGER}>{error.message}</Alert>
             {error.violations
               ? error.violations.map((violation, i) => (
                   <Alert color="danger" key={i}>
@@ -30,7 +30,7 @@ export const ErrorModal = ({ error, dismiss }) => {
               : null}
           </>
         ) : (
-          <Alert color="danger">{typeof error === 'string' ? error : error.error}</Alert>
+          <Alert variant={AlertVariant.DANGER}>{typeof error === 'string' ? error : error.error}</Alert>
         )}
       </ModalBody>
       <ModalFooter>

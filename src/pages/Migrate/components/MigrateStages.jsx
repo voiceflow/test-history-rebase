@@ -1,6 +1,6 @@
 import React from 'react';
-import { Alert } from 'reactstrap';
 
+import Alert from '@/components/Alert';
 import { Spinner } from '@/components/Spinner';
 import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';

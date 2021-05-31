@@ -1,8 +1,9 @@
 import React from 'react';
-import { Alert } from 'reactstrap';
+
+import Alert, { AlertVariant } from '@/components/Alert';
 
 const ItemDeleteConfirm: React.FC = () => (
-  <Alert color="danger" className="mb-0">
+  <Alert variant={AlertVariant.DANGER} mb={0}>
     Deleting this flow permanently deletes everything inside and can not be recovered
     <br />
     <br />

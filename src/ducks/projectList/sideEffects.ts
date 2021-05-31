@@ -69,7 +69,9 @@ export const createProjectList = (): SyncThunk<string> => (dispatch) => {
 export const saveProjectListsForWorkspace = (workspaceID: string): Thunk => async (_, getState) => {
   const projectLists = allProjectListsSelector(getState());
 
-  await client.projectList.update(workspaceID, projectLists);
+  if (projectLists.length) {
+    await client.projectList.update(workspaceID, projectLists);
+  }
 };
 
 export const saveProjectToList = (workspaceID: string, lists: ProjectList[], projectID: string): Thunk => async () => {

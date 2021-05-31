@@ -5,7 +5,6 @@ import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { EDITOR_SEAT_ROLES, UserRole } from '@/constants';
 import * as Modal from '@/ducks/modal';
-import { saveProjectListsForWorkspace } from '@/ducks/projectList/sideEffects';
 import * as Session from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import { Workspace } from '@/models';
@@ -156,14 +155,6 @@ export const deleteMemberOfActiveWorkspace = (creatorID: number): Thunk => async
     toast.error(extractErrorMessages(err));
     throw err;
   }
-};
-
-export const saveActiveWorkspaceProjectLists = (): Thunk => async (dispatch, getState) => {
-  const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());
-
-  Errors.assertWorkspaceID(activeWorkspaceID);
-
-  await dispatch(saveProjectListsForWorkspace(activeWorkspaceID));
 };
 
 const isVerifiedMember = (member: Workspace.Member): member is Workspace.Member & { creator_id: number } => !!member.creator_id;

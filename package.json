@@ -232,7 +232,7 @@
     "commitizen": "^4.2.3",
     "copy-webpack-plugin": "^7.0.0",
     "css-loader": "^5.0.2",
-    "cypress": "^6.8.0",
+    "cypress": "^7.4.0",
     "cypress-file-upload": "^5.0.3",
     "cz-conventional-changelog": "^2.1.0",
     "depcheck": "^1.4.0",

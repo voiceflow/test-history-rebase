@@ -2,7 +2,7 @@ import { Locale as AlexaLocale } from '@voiceflow/alexa-types';
 import { Locale as GeneralLocale } from '@voiceflow/general-types';
 import { Language as GoogleLanguage, LanguageToLocale } from '@voiceflow/google-types';
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useRouteMatch } from 'react-router-dom';
 
 import client from '@/client';
 import { CreationHeader, InnerContainer, OuterContainer } from '@/components/CreationSteps';
@@ -34,11 +34,10 @@ const getTemplateTag = createPlatformSelector({
   [PlatformType.MOBILE_APP]: `default:${PlatformType.MOBILE_APP}`,
 });
 
-const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?: { listID: string } } }> = ({
+const NewProject: React.FC<ConnectedNewProjectProps> = ({
   workspace,
   projects,
   activeWorkspaceID,
-  computedMatch,
   goToDashboard,
   redirectToCanvas,
   createProject,
@@ -58,9 +57,12 @@ const NewProject: React.FC<ConnectedNewProjectProps & { computedMatch: { params?
   const [creatingProject, setCreatingProject] = React.useState(false);
   const CurrentStep = StepMeta[currentStep].component;
 
+  const {
+    params: { listID },
+  } = useRouteMatch<{ listID?: string }>();
+
   const finalizeCreation = async () => {
     setCreatingProject(true);
-    const listID = computedMatch?.params?.listID;
     let newVersionID: string | null = null;
 
     try {

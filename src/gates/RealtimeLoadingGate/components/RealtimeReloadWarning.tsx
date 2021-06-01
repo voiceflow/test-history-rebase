@@ -6,7 +6,7 @@ import { FlexCenter } from '@/components/Flex';
 
 const RealtimeReloadWarning: React.FC = () => (
   <FlexCenter style={{ height: '100%' }} fullWidth>
-    <Error message="Something went wrong. Try reloading the page.">
+    <Error title="" message="Something went wrong. Try reloading the page.">
       <Link to="" onClick={() => window.location.reload()} className="btn btn-primary mt-3">
         Reload Page
       </Link>

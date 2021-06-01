@@ -5,7 +5,7 @@ import { error404Graphic } from '@/assets';
 
 import { Page404Wrapper } from './styled';
 
-const Page404 = () => (
+const Page404: React.FC = () => (
   <Page404Wrapper>
     <div>
       <img src={error404Graphic} height={128} alt="404 Not Found" />

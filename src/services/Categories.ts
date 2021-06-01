@@ -122,7 +122,7 @@ export const AMAZON_CATEGORIES = [
   },
   {
     value: 'MUSIC_AND_AUDIO_ACCESSORIES',
-    label: 'Movie Showtimes',
+    label: 'Music & Audio Accessories',
   },
   {
     value: 'MUSIC_AND_AUDIO_KNOWLEDGE_AND_TRIVIA',

@@ -27,6 +27,7 @@ export * from './Slot';
 export * from './Speak';
 export * from './Template';
 export * from './Thread';
+export * from './Transcript';
 export * from './Version';
 export * from './Workspace';
 

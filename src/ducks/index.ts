@@ -23,6 +23,7 @@ import slot, * as Slot from '@/ducks/slot';
 import template, * as Template from '@/ducks/template';
 import thread, * as Thread from '@/ducks/thread';
 import tracking, * as Tracking from '@/ducks/tracking';
+import transcript, * as Transcript from '@/ducks/transcript';
 import ui, * as UI from '@/ducks/ui';
 import version, * as Version from '@/ducks/version';
 import viewport, * as Viewport from '@/ducks/viewport';
@@ -55,6 +56,7 @@ const getCombinedReducer = (history: History) =>
     [Template.STATE_KEY]: template,
     [Feature.STATE_KEY]: feature,
     [Version.STATE_KEY]: version,
+    [Transcript.STATE_KEY]: transcript,
   });
 
 const createReducer = (history: History) => {

@@ -43,7 +43,7 @@ export const ADVANCE_LOGIC_TYPES = [
 
 const expressionfyV2Value = (expression: ValueExpression): string | number => {
   if (!expression.value) {
-    return 0;
+    return '';
   }
 
   if (isNumber(expression.value)) {

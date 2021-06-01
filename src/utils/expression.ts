@@ -42,10 +42,6 @@ export const ADVANCE_LOGIC_TYPES = [
 ];
 
 const expressionfyV2Value = (expression: ValueExpression): string | number => {
-  if (!expression.value) {
-    return '';
-  }
-
   if (isNumber(expression.value)) {
     return expression.value;
   }

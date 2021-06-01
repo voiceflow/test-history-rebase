@@ -2,12 +2,13 @@ import React from 'react';
 
 import Flex from '@/components/Flex';
 import Tabs from '@/components/Tabs';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useHotKeys, usePermission } from '@/hooks';
+import { useFeature, useHotKeys, usePermission } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ConnectedProps } from '@/types';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
@@ -32,6 +33,12 @@ const TABS = [
   },
 ];
 
+const TEST_REPORT_TAB = {
+  id: 'vf-test-reports-tab',
+  value: 'conversations',
+  label: 'conversations',
+};
+
 export type ProjectSubHeaderProps = {
   showPublish: boolean;
   activePage?: string;
@@ -45,12 +52,18 @@ const ProjectSubHeader: React.FC<ProjectSubHeaderProps & ConnectedSkillSubHeader
   goToPrototype,
   goToPublish,
   isViewerOrLibraryRole,
+  goToConversations,
 }) => {
   const [codeExport] = usePermission(Permission.CODE_EXPORT);
+  const testReports = useFeature(FeatureFlag.TEST_REPORTS);
 
   const headerOptions = TABS.filter((tab) => tab.value !== 'prototype');
   const options =
     showPublish && !(isAnyGeneralPlatform(platform) && !codeExport) ? headerOptions : headerOptions.filter((tab) => tab.value !== 'publish');
+
+  if (testReports.isEnabled) {
+    options.push(TEST_REPORT_TAB);
+  }
 
   const onChange = React.useCallback(
     (value) => {
@@ -59,6 +72,8 @@ const ProjectSubHeader: React.FC<ProjectSubHeaderProps & ConnectedSkillSubHeader
           return goToPrototype();
         case 'publish':
           return goToPublish();
+        case 'conversations':
+          return goToConversations();
         case 'canvas':
         default:
           return goToDesign();
@@ -90,6 +105,7 @@ const mapDispatchToProps = {
   goToDesign: Router.goToCurrentCanvas,
   goToPrototype: Router.goToCurrentPrototype,
   goToPublish: Router.goToActivePlatformPublish,
+  goToConversations: Router.goToConversationsPage,
 };
 
 type ConnectedSkillSubHeaderProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

@@ -6,6 +6,7 @@ export const PAGES_MATCHES = {
   canvas: [Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY],
   migrate: [Path.PROJECT_MIGRATE],
   publish: [Path.PROJECT_PUBLISH],
+  conversations: [Path.CONVERSATIONS],
   prototype_webhook: [Path.PROTOTYPE_WEBHOOK],
 };
 

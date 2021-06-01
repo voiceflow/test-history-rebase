@@ -13,6 +13,7 @@ import * as Query from '@/utils/query';
 import {
   goTo,
   goToCanvasCommenting,
+  goToConversations,
   goToPrototype,
   goToPublish,
   goToSettings,
@@ -134,6 +135,15 @@ export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState)
   Errors.assertVersionID(versionID);
 
   dispatch(goToPublish(versionID, platform));
+};
+
+export const goToConversationsPage = (): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const versionID = Session.activeVersionIDSelector(state);
+
+  Errors.assertVersionID(versionID);
+
+  dispatch(goToConversations(versionID));
 };
 
 export const goToCurrentCanvasInteractionModel = (entityType: InteractionModelTabType): SyncThunk => (dispatch, getState) => {

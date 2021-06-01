@@ -39,6 +39,7 @@ const Diagram = lazy(() => import(/* webpackPrefetch: true */ './components/Diag
 const Business = lazy(() => import('@/pages/Business'));
 const Migrate = lazy(() => import('@/pages/Migrate'));
 const Publish = lazy(() => import('@/pages/Publish'));
+const Conversations = lazy(() => import('@/pages/Conversations'));
 
 export type SkillProps = RouteComponentProps;
 
@@ -117,6 +118,8 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
                     path={[Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
                     component={Diagram}
                   />
+
+                  <Route path={Path.CONVERSATIONS} component={Conversations} />
 
                   <Route path={Path.PROJECT_TOOLS} component={Business} />
 

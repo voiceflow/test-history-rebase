@@ -37,6 +37,7 @@ export enum ProjectRoute {
   TOOLS = 'tools',
   MIGRATE = 'migrate',
   PUBLISH = 'publish',
+  CONVERSATIONS = 'transcripts',
   SETTINGS = 'settings',
   PROTOTYPE_WEBHOOK = 'webhook', // TODO: temporary page, remove after updated
   EXPORT = 'export',
@@ -136,6 +137,8 @@ export const Path = {
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH),
   PROJECT_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS),
   PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.EXPORT, ':diagramID'),
+
+  CONVERSATIONS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CONVERSATIONS),
 
   CANVAS_COMMENTING: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.COMMENTING),
   CANVAS_MODEL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType?'),

@@ -90,12 +90,13 @@ const Link: React.FC = () => {
 
         <Path d={path} ref={instance.pathRef} markerEnd={buildHeadMarker(linkEntity.linkID)} strokeColor={instance.getLinkColor()} />
 
-        {linkCustomization.isEnabled && isEditingMode && (isCaptionEditing || !!linkData?.caption) && (
+        {linkCustomization.isEnabled && (isCaptionEditing || !!linkData?.caption) && (
           <Caption
             color={instance.getLinkColor()}
             linkID={linkEntity.linkID}
             onChange={onChangeCaption}
             instance={instance}
+            disabled={!isEditingMode}
             isEditing={isCaptionEditing}
             isLineActive={isActive}
             onMouseEnter={onMouseEnter}

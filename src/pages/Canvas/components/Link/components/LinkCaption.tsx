@@ -16,6 +16,7 @@ type LinkCaptionProps = {
   linkID: string;
   instance: InternalLinkInstance;
   onChange: (caption: LinkDataCaption | null) => Promise<void>;
+  disabled?: boolean;
   isEditing: boolean;
   isLineActive: boolean;
   onMouseEnter: (event: React.MouseEvent) => void;
@@ -29,6 +30,7 @@ const LinkCaption: React.FC<LinkCaptionProps> = ({
   color,
   instance,
   onChange,
+  disabled,
   isEditing,
   isLineActive,
   onMouseEnter,
@@ -103,7 +105,7 @@ const LinkCaption: React.FC<LinkCaptionProps> = ({
     <foreignObject
       ref={instance.captionRef}
       cursor="pointer"
-      pointerEvents="all"
+      pointerEvents={disabled ? 'none' : 'all'}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       {...captionRect.current}

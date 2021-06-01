@@ -2719,10 +2719,10 @@
     resolve-global "1.0.0"
     yargs "^16.0.0"
 
-"@commitlint/config-conventional@^11.0.0":
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/@commitlint/config-conventional/-/config-conventional-11.0.0.tgz#3fa300a1b639273946de3c3f15e1cda518333422"
-  integrity sha512-SNDRsb5gLuDd2PL83yCOQX6pE7gevC79UPFx+GLbLfw6jGnnbO9/tlL76MLD8MOViqGbo7ZicjChO9Gn+7tHhA==
+"@commitlint/config-conventional@^12.1.4":
+  version "12.1.4"
+  resolved "https://registry.yarnpkg.com/@commitlint/config-conventional/-/config-conventional-12.1.4.tgz#95bbab622f117a8a3e49f95917b08655040c66a8"
+  integrity sha512-ZIdzmdy4o4WyqywMEpprRCrehjCSQrHkaRTVZV411GyLigFQHlEBSJITAihLAWe88Qy/8SyoIe5uKvAsV5vRqQ==
   dependencies:
     conventional-changelog-conventionalcommits "^4.3.1"
 
@@ -5369,12 +5369,12 @@
     axios "^0.21.1"
     superstruct "^0.10.12"
 
-"@voiceflow/commitlint-config@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/commitlint-config/-/commitlint-config-1.0.2.tgz#c64b2b4b2375c2c8d44e605439849256a37e419c"
-  integrity sha512-kbx6eDBG4eRLGlK28axL1zHHhMT0t08KlDW0389oBCI/q558opsBRIPs8hYGugfFqT/slAKqMP3Kevj928VtyA==
+"@voiceflow/commitlint-config@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/commitlint-config/-/commitlint-config-1.1.0.tgz#736b9e099830834b4f85998242d4cff6b1968dfd"
+  integrity sha512-5bBAyKsjT7R/mDBDpfvS9l04srf2DfAMJnhKlJFkuSyFM3qm/by7k5DQxLMrZySKOKxbxhykaTM1zm7/e8/yzg==
   dependencies:
-    "@commitlint/config-conventional" "^11.0.0"
+    "@commitlint/config-conventional" "^12.1.4"
 
 "@voiceflow/common@6.5.0":
   version "6.5.0"

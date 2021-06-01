@@ -210,7 +210,7 @@
     "@types/webpack-deadcode-plugin": "^0.1.1",
     "@types/webpack-merge": "^4.1.5",
     "@types/webpackbar": "^4.0.1",
-    "@voiceflow/commitlint-config": "^1.0.2",
+    "@voiceflow/commitlint-config": "^1.1.0",
     "@voiceflow/eslint-config": "^3.0.0",
     "@voiceflow/git-branch-check": "^1.2.0",
     "@voiceflow/prettier-config": "^1.0.5",

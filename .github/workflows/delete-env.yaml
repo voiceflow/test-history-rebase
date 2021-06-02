@@ -66,7 +66,7 @@ jobs:
           ./vfcli init --interactive false
 
           # Remove environment
-          LABEL=${{ steps.envNameLabel.outputs.label }} 
+          LABEL=${{ steps.envNameLabel.outputs.label }}
           if [[ $LABEL != "" ]]
           then
             ENV_NAME=$LABEL
@@ -113,25 +113,8 @@ jobs:
           set -e
 
           # Store the result on a file in tmp folder to use in future steps
-          if [[ $SEARCH_TRACK_RESULT -eq 0 ]]; then 
-            echo "Track $TRACK exists. Removing.." 
-            aws s3 rm s3://$BUCKET/$TRACK
-          else
-            echo "Track $TRACK does not exist"
-          fi
-
-          # Storybook
-          TRACK="tracks/storybook/$BRANCH"
-          BUCKET="com.voiceflow.ci.assets"
-          echo $TRACK
-          set +e
-          aws s3 cp s3://$BUCKET/$TRACK /tmp/$TRACK
-          SEARCH_TRACK_RESULT=$?
-          set -e
-
-          # Store the result on a file in tmp folder to use in future steps
-          if [[ $SEARCH_TRACK_RESULT -eq 0 ]]; then 
-            echo "Track $TRACK exists. Removing.." 
+          if [[ $SEARCH_TRACK_RESULT -eq 0 ]]; then
+            echo "Track $TRACK exists. Removing.."
             aws s3 rm s3://$BUCKET/$TRACK
           else
             echo "Track $TRACK does not exist"
@@ -147,8 +130,8 @@ jobs:
           set -e
 
           # Store the result on a file in tmp folder to use in future steps
-          if [[ $SEARCH_TRACK_RESULT -eq 0 ]]; then 
-            echo "Track $TRACK exists. Removing.." 
+          if [[ $SEARCH_TRACK_RESULT -eq 0 ]]; then
+            echo "Track $TRACK exists. Removing.."
             aws s3 rm s3://$BUCKET/$TRACK
           else
             echo "Track $TRACK does not exist"

@@ -1,7 +1,0 @@
-FROM node:12-alpine
-
-ENV PORT=80
-
-COPY ./build /var/www/storybook
-
-ENTRYPOINT ["sh","-c", "npx http-server /var/www/storybook -p $PORT"]

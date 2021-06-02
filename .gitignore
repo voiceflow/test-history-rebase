@@ -39,9 +39,6 @@ jspm_packages/
 
 # Optional npm cache directory
 .npm
-# production
-/build
-/admin_build
 
 # Optional eslint cache
 .eslintcache
@@ -77,14 +74,7 @@ package-lock.json
 
 .elasticbeanstalk
 
-# Generated self-signed localhost certificates
-certs/
-
 scratch.js
-
-# cypress test artifacts
-cypress/videos/
-cypress/screenshots/
 
 # webpack-bundle-analyzer report
 bundle-report.html

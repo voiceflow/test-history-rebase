@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "esModuleInterop": true,
+    "baseUrl": "../node_modules",
+    "target": "es5",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "types": [
+      "cypress",
+      "cypress-real-events",
+      "cypress-plugin-stripe-elements"
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "support/index.js"
+  ]
+}

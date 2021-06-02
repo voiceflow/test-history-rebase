@@ -1,8 +1,1 @@
-/node_modules
-/public
-/packages/**/*
-/src/assets
-
-/scripts/*
-setupTests.js
-jest.config.js
+node_modules/

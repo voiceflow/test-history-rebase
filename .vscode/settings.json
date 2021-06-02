@@ -1,20 +1,16 @@
 {
-  "files.autoSave": "onFocusChange",
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
-  "eslint.autoFixOnSave": true,
   "typescript.suggest.autoImports": false,
   "javascript.suggest.autoImports": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.tslint": true,
     "source.fixAll.eslint": true
   },
   "eslint.workingDirectories": [
     {
-      "directory": ".storybook",
-      "changeProcessCWD": true
+      "pattern": "./packages/*/"
     }
   ],
   "eslint.format.enable": true,
@@ -23,7 +19,6 @@
   "css.validate": false,
   "less.validate": false,
   "scss.validate": false,
-  "javascript.validate.enable": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "importHelpers": true,
+    "types": [
+      "jest",
+      "gapi",
+      "gapi.auth2",
+      "resize-observer-browser",
+      "webpack-env"
+    ]
+  }
+}

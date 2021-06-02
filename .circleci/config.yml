@@ -7,12 +7,6 @@ parameters:
   container-image-url-admin-ui:
     type: string
     default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin"
-  container-image-url-storybook:
-    type: string
-    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/storybook"
-  k8s-asset-storybook:
-    type: string
-    default: "deployment/storybook"
   k8s-asset-admin-ui:
     type: string
     default: "deployment/admin-ui"
@@ -31,9 +25,6 @@ parameters:
   track-component-admin-ui:
     type: string
     default: "admin-ui"
-  track-component-storybook:
-    type: string
-    default: "storybook"
 
 orbs:
   vfcommon: voiceflow/common@0.0.138
@@ -107,34 +98,14 @@ jobs:
               export VF_APP_API_HOST=api-$CIRCLE_BRANCH.development.voiceflow.com
               export VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.dev.maintenance/maintenance.json
             fi
-            yarn build <<# parameters.strict >> --validate <</ parameters.strict >>
-            <<# parameters.strict >> yarn types <</ parameters.strict >>
+            yarn concurrently "yarn:build <<# parameters.strict >> --validate <</ parameters.strict >>" <<# parameters.strict >> "yarn:types" <</ parameters.strict >>
+          working_directory: ~/voiceflow/packages/creator-app
       - persist_to_workspace:
-          root: ~/voiceflow
+          root: ~/voiceflow/packages/creator-app
           paths:
             - build
             - app.dockerfile
             - config
-
-  build-storybook:
-    executor: vfcommon/node-executor
-    steps:
-      - checkout
-      - vfcommon/install_node_modules:
-          avoid_post_install_scripts: false
-      - vfcommon/install_node_modules:
-          avoid_post_install_scripts: false
-          working_directory: ~/voiceflow/packages/storybook
-          yarn_lock_restore_cache_directory: ~/voiceflow/packages/storybook
-      - run:
-          name: Build storybook
-          command: yarn storybook:build
-          working_directory: ~/voiceflow/packages/storybook
-      - persist_to_workspace:
-          root: ~/voiceflow/packages/storybook
-          paths:
-            - build
-            - dockerfile
 
   build-admin:
     executor: vfcommon/node-executor
@@ -148,8 +119,9 @@ jobs:
             export VF_APP_API_HOST=api-master.development.voiceflow.com
             export VF_APP_BUILD_ENV=production
             yarn build:admin
+          working_directory: ~/voiceflow/packages/creator-app
       - persist_to_workspace:
-          root: ~/voiceflow
+          root: ~/voiceflow/packages/creator-app
           paths:
             - admin_build
             - admin.dockerfile
@@ -164,10 +136,7 @@ jobs:
           step_name: Unit Tests
       - vfcommon/integration_tests:
           step_name: Integration Tests
-          extra_args: --coverage --detectOpenHandles
-      - run:
-          name: Lint Styles
-          command: yarn lint:css --quiet
+          extra_args: -- -- --coverage --detectOpenHandles
       - vfcommon/lint_report
       - vfcommon/lint_dockerfile
       - vfcommon/dependency_tests:
@@ -197,21 +166,6 @@ jobs:
           name: Wait for deployment rollout
           command: |
             sleep 120
-
-  build-deploy-storybook-image:
-    executor: vfcommon/build-executor
-    steps:
-      - attach_workspace:
-          at: /tmp/vf-build
-      - vfcommon/build_push_image:
-          image_repo: << pipeline.parameters.container-image-url-storybook >>
-          dockerfile: dockerfile
-          checkout: false
-      - vfcommon/post_image_push_actions:
-          namespace: << pipeline.parameters.k8s-namespace >>
-          target: << pipeline.parameters.k8s-asset-storybook >>
-          tagged: true
-          success_slack_notify: false
 
   build-deploy-admin-image:
     executor: vfcommon/build-executor
@@ -243,14 +197,6 @@ jobs:
           image_repo: << pipeline.parameters.container-image-url-admin-ui >>
           component: << pipeline.parameters.track-component-admin-ui >>
           dockerfile: admin.dockerfile
-
-  update-track-storybook:
-    executor: vfcommon/build-executor
-    steps:
-      - vfcommon/update_track:
-          image_repo: << pipeline.parameters.container-image-url-storybook >>
-          component: << pipeline.parameters.track-component-storybook >>
-          dockerfile: dockerfile
 
 workflows:
   update-tracks:
@@ -291,21 +237,6 @@ workflows:
             tags:
               ignore: /.*/
 
-      - build-storybook:
-          context: dev-test
-          filters:
-            <<: *ignore_autorebase_filters
-            tags:
-              ignore: /.*/
-      - update-track-storybook:
-          context: dev-test
-          requires:
-            - build-storybook
-          filters:
-            <<: *ignore_autorebase_filters
-            tags:
-              ignore: /.*/
-
   test-and-release-app:
     jobs:
       - test:
@@ -314,7 +245,7 @@ workflows:
           filters:
             <<: *ignore_autorebase_staging_filters
 
-      - vfcommon/test_e2e:
+      - vfcommon/test_e2e_v2:
           context: dev-test
           github_username: GITHUB_USERNAME
           github_token: GITHUB_TOKEN
@@ -332,13 +263,14 @@ workflows:
           filters:
             <<: *ignore_autorebase_staging_filters
 
-      - vfcommon/release:
+      - vfcommon/release_monorepo:
           <<: *slack-fail-post-step
           sentry_project: creator-app
+          ssh_key: << pipeline.parameters.ssh-fingerprint >>
           context: dev-test
           requires:
             - test
-            - vfcommon/test_e2e
+            - vfcommon/test_e2e_v2
             - build-app
           filters:
             branches:
@@ -374,14 +306,3 @@ workflows:
           context: dev-test
           requires:
             - build-admin
-
-  deploy-storybook:
-    jobs:
-      - build-storybook:
-          <<: *prod_deploy_filters
-          context: dev-test
-      - build-deploy-storybook-image:
-          <<: *prod_deploy_filters
-          context: dev-test
-          requires:
-            - build-storybook

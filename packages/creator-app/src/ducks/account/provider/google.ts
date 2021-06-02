@@ -1,0 +1,41 @@
+import client from '@/client';
+import * as Modal from '@/ducks/modal';
+import { Account } from '@/models';
+import { Thunk } from '@/store/types';
+import { Nullable } from '@/types';
+import * as Sentry from '@/vendors/sentry';
+
+import { updateAccount } from '../actions';
+
+// side effects
+
+export const linkAccount =
+  (code: string): Thunk<Nullable<Account.Google>> =>
+  async (dispatch) => {
+    try {
+      const google = await client.platform.google.session.linkAccount({ code });
+
+      dispatch(updateAccount({ google }));
+
+      return google;
+    } catch (err) {
+      Sentry.error(err);
+      throw err;
+    }
+  };
+
+export const loadAccount = (): Thunk => async (dispatch) => {
+  const google = await client.platform.google.session.getAccount().catch(() => null);
+
+  dispatch(updateAccount({ google }));
+};
+
+export const unlinkAccount = (): Thunk => async (dispatch) => {
+  try {
+    await client.platform.google.session.unlinkAccount();
+
+    dispatch(updateAccount({ google: null }));
+  } catch {
+    dispatch(Modal.setGenericError());
+  }
+};

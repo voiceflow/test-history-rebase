@@ -1,0 +1,23 @@
+import client from '@/client';
+import { Thunk } from '@/store/types';
+
+import { updateAccount } from './actions';
+
+export const saveProfilePicture =
+  (url: string): Thunk =>
+  async (dispatch) => {
+    await client.user.updateProfilePicture(url);
+    dispatch(updateAccount({ image: url }));
+  };
+
+export const saveSocialProfilePicture =
+  (url: string): Thunk =>
+  async (dispatch) => {
+    const blob = await fetch(url).then((r) => r.blob());
+
+    const data = new FormData();
+    data.append('image', blob);
+    const s3Url = await client.file.uploadImage(null, data);
+
+    await dispatch(saveProfilePicture(s3Url.data));
+  };

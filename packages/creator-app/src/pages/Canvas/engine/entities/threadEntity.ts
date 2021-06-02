@@ -1,0 +1,137 @@
+import * as ConnectedReactRouter from 'connected-react-router';
+import React from 'react';
+import { createSelector } from 'reselect';
+
+import * as Creator from '@/ducks/creator';
+import * as Router from '@/ducks/router';
+import * as Thread from '@/ducks/thread';
+import { useSetup } from '@/hooks';
+import * as Models from '@/models';
+import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
+import { Point } from '@/types';
+import { Coords, Vector } from '@/utils/geometry';
+import * as Query from '@/utils/query';
+
+import type { Engine } from '..';
+import { EntityType } from '../constants';
+import { EntityInstance, ResourceEntity } from './entity';
+
+export type ThreadInstance = EntityInstance & {
+  /**
+   * get the current coordinates of this thread on the canvas
+   */
+  getCoords: () => Coords;
+
+  translate: (movement: Vector) => Coords;
+
+  forceRedraw: (nextCoords: Coords) => void;
+};
+
+const threadEntitySelector = createSelector([Creator.nodeByIDSelector, Thread.threadByIDSelector], (getNode, getThread) => (threadID: string) => {
+  const thread = getThread(threadID);
+  const node = thread.nodeID ? getNode(thread.nodeID) : null;
+
+  return {
+    thread,
+    node,
+    parentNode: node?.parentNode ? getNode(node.parentNode) : null,
+  };
+});
+
+class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Models.Node | null }, ThreadInstance> {
+  diagramID: string;
+
+  threadOrder: number;
+
+  get isFocused() {
+    return this.engine.comment.isFocused(this.threadID);
+  }
+
+  constructor(engine: Engine, public threadID: string) {
+    super(EntityType.THREAD, engine, engine.log.child('thread', threadID.slice(-6)));
+
+    const { thread } = this.resolve();
+    this.diagramID = thread.diagramID;
+    this.threadOrder = this.getThreadOrder();
+
+    this.log.debug(this.log.init('constructed thread'), this.log.slug(threadID));
+  }
+
+  resolve() {
+    return this.engine.select(threadEntitySelector)(this.threadID);
+  }
+
+  getThreadOrder() {
+    return this.engine.select(Thread.threadOrder)(this.threadID);
+  }
+
+  shouldUpdate() {
+    return !!this.resolve().thread;
+  }
+
+  calculateCoordinates(point: Point, nodeID: string | null) {
+    if (nodeID) {
+      const node = this.engine.node.api(nodeID);
+      if (!node?.instance?.isReady()) {
+        return new Coords([0, 0]);
+      }
+
+      const anchorCoords = node.instance.getThreadAnchorCoords()!;
+
+      return anchorCoords.add(point).onPlane(this.engine.canvas!.getOuterPlane());
+    }
+
+    return this.engine.canvas!.toCoords(point).onPlane(this.engine.canvas!.getOuterPlane());
+  }
+
+  useCoordinates() {
+    const { x, y, nodeID, parentNodeID, nodeX, nodeY, parentNodeX, parentNodeY, index } = this.useState((e) => {
+      const { thread, node, parentNode } = e.resolve();
+
+      return {
+        nodeID: thread.nodeID,
+        x: thread.position[0],
+        y: thread.position[1],
+        nodeX: node?.x,
+        nodeY: node?.y,
+        parentNodeID: node?.parentNode,
+        parentNodeX: parentNode?.x,
+        parentNodeY: parentNode?.y,
+        index: parentNode?.combinedNodes.indexOf(thread.nodeID!),
+      };
+    });
+
+    return React.useMemo(
+      () => this.calculateCoordinates([x, y], nodeID),
+      [nodeID, x, y, parentNodeID, nodeX, nodeY, parentNodeX, parentNodeY, index]
+    );
+  }
+
+  useInstance(instance: ThreadInstance) {
+    const engine = React.useContext(EngineContext)!;
+
+    super.useInstance(instance);
+    this.useSubscription(this.threadID, () => this.resolve());
+
+    React.useEffect(() => {
+      engine.registerThread(this.threadID, this);
+
+      return () => {
+        engine.expireThread(this.threadID, this.instanceID);
+      };
+    }, []);
+
+    useSetup(async () => {
+      const search = this.engine.select(ConnectedReactRouter.getSearch);
+      const query = Query.parse(search);
+
+      if (query.thread) {
+        this.engine.store.dispatch(Router.redirectToCurrentCanvasCommenting());
+        await engine.comment.setFocus(query.thread);
+        await engine.comment.centerThread(query.thread);
+      }
+    });
+  }
+}
+
+export default ThreadEntity;

@@ -22,7 +22,7 @@ const setAdapterV2 = createBlockAdapter<SetData, NodeData.SetV2>(
         ({
           type,
           variable: variable ?? null,
-          expression: expression ? expression.toString() : '',
+          expression: `${expression}` ?? '',
         } as Set)
     ),
   })

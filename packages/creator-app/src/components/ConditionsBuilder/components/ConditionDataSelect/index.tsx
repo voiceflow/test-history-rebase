@@ -28,6 +28,7 @@ export type ConditionDataSelectProps = {
   onDelete: () => void;
   onChange: (value: LogicUnitDataType) => void;
 };
+
 const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, isLogicGroup, onChange, onDelete }) => {
   const popperRef = React.useRef<HTMLElement | null>(null);
   const [isShown, onToggle] = useDismissable(false, { autoDismiss: false, ref: popperRef });
@@ -82,7 +83,7 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
             innerRef={(node) => {
               popperRef.current = node;
             }}
-            placement="bottom-start"
+            placement="auto"
             modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: 'viewport' } }}
           >
             {({ ref, style, placement }) => (
@@ -91,7 +92,15 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
                   <Container style={{ padding: '0px', overflowY: 'hidden' }}>
                     <FadeDownDelayedContainer>
                       <MenuContainer
-                        style={{ zIndex: 1000, maxWidth: '440px', width: '440px', padding: '24px 32px', overflowX: 'hidden', overflowY: 'scroll' }}
+                        style={{
+                          zIndex: 1000,
+                          maxWidth: '440px',
+                          width: '440px',
+                          maxHeight: '350px',
+                          padding: '24px 32px',
+                          overflowX: 'hidden',
+                          overflowY: 'scroll',
+                        }}
                         onClick={stopPropagation()}
                       >
                         {/* to add left side value */}
@@ -99,17 +108,15 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
                           {expression.logicInterface === ConditionsLogicInterface.VARIABLE && (
                             <>
                               <ConditionVariableSelect value={`${expression.value[0]?.value}`} onChange={onValueUpdate(0)} />
-                              {expression.value[0]?.value && (
-                                <Box mt={24}>
-                                  <ConditionLogicSelect
-                                    onLogicUpdate={onLogicUpdate}
-                                    logicValue={expression.type as ExpressionDataLogicType}
-                                    conditionValue={`${expression.value[1]?.value}`}
-                                    onConditionValueUpdate={onValueUpdate(1)}
-                                    onClose={onToggle}
-                                  />
-                                </Box>
-                              )}
+                              <Box mt={24}>
+                                <ConditionLogicSelect
+                                  onLogicUpdate={onLogicUpdate}
+                                  logicValue={expression.type as ExpressionDataLogicType}
+                                  conditionValue={`${expression.value[1]?.value}`}
+                                  onConditionValueUpdate={onValueUpdate(1)}
+                                  onClose={onToggle}
+                                />
+                              </Box>
                             </>
                           )}
 

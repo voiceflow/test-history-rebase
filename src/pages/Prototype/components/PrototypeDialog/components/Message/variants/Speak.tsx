@@ -4,6 +4,7 @@ import React from 'react';
 
 import { Link } from '@/components/Text';
 import { NEW_LINE_REGEX, SSML_TAG_REGEX, URL_REGEX } from '@/constants';
+import perf, { PerfAction } from '@/performance';
 import { ClassName } from '@/styles/constants';
 import { stopPropagation } from '@/utils/dom';
 
@@ -27,6 +28,12 @@ const Speak: React.FC<SpeakProps> = ({ voice, message, className, ...props }) =>
     () => message.replace(SSML_TAG_REGEX, '').replace(ALL_URLS_REGEXP, '[$1]($1)').replace(NEW_LINE_REGEX, '  \n'), // double spaces is a "Line Return" in the markdown
     [message]
   );
+
+  React.useEffect(() => {
+    if (formattedMessage) {
+      perf.action(PerfAction.PROTOTYPE_SPEAK_RENDERED);
+    }
+  }, [!!formattedMessage]);
 
   return formattedMessage ? (
     <Message className={cn(ClassName.CHAT_DIALOG_SPEAK_MESSAGE, className)} {...props}>

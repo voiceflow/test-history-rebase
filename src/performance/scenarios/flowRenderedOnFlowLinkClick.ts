@@ -1,5 +1,5 @@
 import { MOCK_DATA, PerfScenario } from '../constants';
-import { runner } from '../utils';
+import { PAGES, runner } from '../utils';
 
 runner.register<typeof MOCK_DATA.VERSIONS[number]>(
   PerfScenario.FLOW_RENDERED_ON_FLOW_LINK_CLICK,
@@ -20,7 +20,7 @@ runner.register<typeof MOCK_DATA.VERSIONS[number]>(
     });
 
     unit(async (version) => {
-      await commands.canvas.clickFlowStepLink(version.flowStepID);
+      await PAGES.CANVAS.flowStepLink(version.flowStepID).click();
     });
   }
 );

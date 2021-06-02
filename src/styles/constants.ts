@@ -9,6 +9,7 @@ export enum Identifier {
   PROTOTYPE_START = 'vf-prototype__start',
   PROTOTYPE_RESET = 'vf-prototype__reset',
   PROTOTYPE_RESPONSE = 'vf-prototype__response',
+  PROTOTYPE_RESPONSE_SEND = 'vf-prototype__response_send',
   UPLOAD = 'vf-upload',
   HEADER_BACK = 'vf-header-back',
   PROJECT_TITLE = 'vf-project-title',

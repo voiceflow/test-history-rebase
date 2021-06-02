@@ -93,7 +93,12 @@ const PrototypeInput = <L extends string>({
                 <Box display="inline-block" fontSize={13} color="#8da2b5" mr={16}>
                   Press enter to
                 </Box>
-                <Button variant={ButtonVariant.SECONDARY} onClick={sendTextHandler} style={{ display: 'inline-block' }}>
+                <Button
+                  id={Identifier.PROTOTYPE_RESPONSE_SEND}
+                  style={{ display: 'inline-block' }}
+                  variant={ButtonVariant.SECONDARY}
+                  onClick={sendTextHandler}
+                >
                   Send
                 </Button>
               </Box>

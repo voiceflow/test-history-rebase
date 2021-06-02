@@ -9,6 +9,7 @@ import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { useEventualEngine, useTrackingEvents } from '@/hooks';
+import perf, { PerfAction } from '@/performance';
 import { Dispatch } from '@/store/types';
 
 import PrototypeTool, { PrototypeToolProps } from '../PrototypeTool';
@@ -106,6 +107,8 @@ const usePrototype = ({
 
   const onInteraction = React.useCallback(
     (request: Request | string) => {
+      perf.action(PerfAction.PROTOTYPE_INTERACTION);
+
       if (_isString(request)) {
         const match = request.toLowerCase().trim();
         const chip = interactions.find((interaction) => match === interaction.name.toLowerCase().trim());

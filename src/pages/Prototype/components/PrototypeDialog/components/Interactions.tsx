@@ -3,6 +3,7 @@ import React from 'react';
 import SimpleBar from 'simplebar-react';
 
 import { css, styled, transition } from '@/hocs';
+import perf, { PerfAction } from '@/performance';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 import { Color } from '@/types';
@@ -81,6 +82,13 @@ interface InteractionsProps {
 
 const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction, color }) => {
   const hasInteractions = !!interactions.length;
+
+  React.useEffect(() => {
+    if (hasInteractions) {
+      perf.action(PerfAction.PROTOTYPE_CHIPS_RENDERED);
+    }
+  }, [hasInteractions]);
+
   if (!hasInteractions) {
     return null;
   }

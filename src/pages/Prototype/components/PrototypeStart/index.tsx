@@ -7,8 +7,9 @@ import TippyTooltip from '@/components/TippyTooltip';
 import * as Documentation from '@/config/documentation';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useTrackingEvents } from '@/hooks';
+import { useSetup, useTrackingEvents } from '@/hooks';
 import PrototypeContainer from '@/pages/Prototype/components/PrototypeContainer';
+import perf, { PerfAction } from '@/performance';
 import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -39,6 +40,10 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
       trackEventsWrapper(onStart, 'trackActiveProjectPrototypeTestStart', { debug, mode, display: device })();
     }
   };
+
+  useSetup(() => {
+    perf.action(PerfAction.PROTOTYPE_START_RENDERED);
+  });
 
   return (
     <PrototypeContainer id={Identifier.PROTOTYPE} isPublic={isPublic}>

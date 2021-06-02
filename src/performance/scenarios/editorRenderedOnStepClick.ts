@@ -1,7 +1,7 @@
 import _sample from 'lodash/sample';
 
 import { MOCK_DATA, PerfScenario } from '../constants';
-import { runner } from '../utils';
+import { PAGES, runner } from '../utils';
 
 runner.register<typeof MOCK_DATA.VERSIONS[number]>(
   PerfScenario.EDITOR_RENDERED_ON_STEP_CLICK,
@@ -28,7 +28,7 @@ runner.register<typeof MOCK_DATA.VERSIONS[number]>(
     unit(async (version) => {
       const nodeID = _sample(version.stepIDs)!;
 
-      await commands.canvas.clickNode(nodeID);
+      await PAGES.CANVAS.node(nodeID).click();
     });
   }
 );

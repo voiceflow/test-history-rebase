@@ -34,6 +34,12 @@ const createCommands = (runner: Runner) => {
       await commands.waitAction(PerfAction.CANVAS_RENDERED, timeout);
     },
 
+    goToPrototype: async (versionID: string, timeout = 10000) => {
+      window.store.dispatch(Router.goToPrototype(versionID));
+
+      await commands.waitAction(PerfAction.PROTOTYPE_START_RENDERED, timeout);
+    },
+
     login: async (timeout = 5000): Promise<void> => {
       window.store.dispatch(Session.basicAuthLogin(MOCK_DATA.LOGIN));
 
@@ -53,14 +59,6 @@ const createCommands = (runner: Runner) => {
         await window.vf_engine?.focus.reset();
 
         await delay(100);
-      },
-
-      clickNode: (nodeID: string) => {
-        PAGES.CANVAS.node(nodeID).click();
-      },
-
-      clickFlowStepLink: (nodeID: string) => {
-        PAGES.CANVAS.flowStepLink(nodeID).click();
       },
 
       openDesignMenuStepsSection: (category: BlockCategory) => {

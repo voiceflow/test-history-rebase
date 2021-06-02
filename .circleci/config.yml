@@ -38,7 +38,7 @@ defaults:
       branches:
         ignore: /.*/
       tags:
-        only: /^v[0-9]*(\.[0-9]*)*$/
+        only: /^@voiceflow/creator-app@[0-9]*(\.[0-9]*)*$/
 
   ignore_autorebase_staging_filters: &ignore_autorebase_staging_filters
     branches:

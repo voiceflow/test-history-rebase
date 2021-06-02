@@ -1,5 +1,5 @@
 import { Voice } from '@voiceflow/alexa-types';
-import { DiagramNode as DBNode, Port as DBPort } from '@voiceflow/api-sdk';
+import { BaseDiagramNode as DBNode, BasePort as DBPort } from '@voiceflow/api-sdk';
 import { NoMatches, Prompt } from '@voiceflow/general-types';
 import cuid from 'cuid';
 

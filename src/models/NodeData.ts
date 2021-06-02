@@ -1,4 +1,5 @@
 import { PermissionType } from '@voiceflow/alexa-types';
+import { RecurrenceFreq } from '@voiceflow/alexa-types/build/nodes/reminder';
 import { SlotMapping } from '@voiceflow/api-sdk';
 import { CanvasNodeVisibility, Chip, ExpressionTypeV2, IntegrationUser } from '@voiceflow/general-types';
 import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
@@ -142,7 +143,7 @@ export namespace NodeData {
     seconds: string;
     date?: string;
     timezone?: string;
-    recurrence?: { byDay?: string; freq: string };
+    recurrence?: { byDay?: string; freq: RecurrenceFreq };
     recurrenceBool: boolean;
   };
 

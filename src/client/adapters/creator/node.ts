@@ -1,4 +1,4 @@
-import { Block, DiagramNode, NodeID } from '@voiceflow/api-sdk';
+import { BaseBlock, BaseDiagramNode, NodeID } from '@voiceflow/api-sdk';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { BlockType, PlatformType } from '@/constants';
@@ -11,11 +11,11 @@ import nodeDataAdapter from './nodeData';
 import { generateInPort, getInPortID, isBlock, isStep } from './utils';
 
 const nodeAdapter = createAdapter<
-  DiagramNode,
+  BaseDiagramNode,
   { node: Node; data: NodeData<unknown>; ports: Port[] },
   [
     {
-      parentNode: Block | null;
+      parentNode: BaseBlock | null;
       links: Link[];
       platform: PlatformType;
       features: FeatureFlagMap;
@@ -107,7 +107,7 @@ const nodeAdapter = createAdapter<
     const portMap = ports.reduce<Record<string, Port>>((acc, port) => ({ ...acc, [port.id]: port }), {});
     const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform, features });
 
-    const diagramNode: DiagramNode = {
+    const diagramNode: BaseDiagramNode = {
       nodeID: node.id,
       type,
       coords: node.parentNode ? undefined : [node.x, node.y],

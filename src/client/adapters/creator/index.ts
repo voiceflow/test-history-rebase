@@ -1,4 +1,4 @@
-import { Block, Diagram, DiagramNode, NodeID } from '@voiceflow/api-sdk';
+import { BaseBlock, BaseDiagramNode, Diagram, NodeID } from '@voiceflow/api-sdk';
 import _isString from 'lodash/isString';
 
 import { createSimpleAdapter } from '@/client/adapters/utils';
@@ -49,7 +49,7 @@ const creatorAdapter = createSimpleAdapter<
 
     const nodeList = cleanupDBNodes(diagram.nodes);
 
-    const parentNodes = nodeList.reduce<Record<string, Block>>((acc, node) => {
+    const parentNodes = nodeList.reduce<Record<string, BaseBlock>>((acc, node) => {
       if (isBlock(node)) {
         node.data.steps.forEach((stepID) => {
           acc[stepID] = node;
@@ -58,7 +58,7 @@ const creatorAdapter = createSimpleAdapter<
       return acc;
     }, {});
 
-    const registerNode = (dbNode: DiagramNode) => {
+    const registerNode = (dbNode: BaseDiagramNode) => {
       const { node, data: nodeData, ports: nodePorts } = nodeAdapter.fromDB(dbNode, {
         parentNode: parentNodes[dbNode.nodeID] || null,
         links,
@@ -140,7 +140,7 @@ const creatorAdapter = createSimpleAdapter<
       offsetY: viewport.y,
       zoom: viewport.zoom,
       modified: getCurrentTimestamp(),
-      nodes: nodeList.reduce<Record<string, DiagramNode>>(
+      nodes: nodeList.reduce<Record<string, BaseDiagramNode>>(
         (acc, node) => ({
           ...acc,
           [node.id]: nodeAdapter.toDB(

@@ -1,5 +1,5 @@
 import { VersionPrototype } from '@voiceflow/api-sdk';
-import { DeviceType, Request } from '@voiceflow/general-types';
+import { BaseRequest, DeviceType } from '@voiceflow/general-types';
 import { StepData } from '@voiceflow/general-types/build/nodes/visual';
 
 import { PlanType } from '@/constants';
@@ -82,6 +82,6 @@ export interface PrototypeState {
     device: DeviceType | null;
     dataHistory: (StepData | null)[];
   };
-  webhook: Request | null;
+  webhook: BaseRequest | null;
   settings: PrototypeShareViewSettings;
 }

@@ -1,4 +1,4 @@
-import { Request, RequestType, TextRequest } from '@voiceflow/general-types';
+import { BaseRequest, RequestType, TextRequest } from '@voiceflow/general-types';
 import cuid from 'cuid';
 import _isString from 'lodash/isString';
 
@@ -56,7 +56,7 @@ class PrototypeTool {
     this.trace?.historyStep(StepDirection.FORWARD);
   }
 
-  public async interact(request: Request | string | null = null) {
+  public async interact(request: BaseRequest | string | null = null) {
     this.audio!.stop();
 
     await this.trace?.emptyTrace();

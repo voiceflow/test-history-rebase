@@ -1,4 +1,4 @@
-import { DeviceType, Request } from '@voiceflow/general-types';
+import { BaseRequest, DeviceType } from '@voiceflow/general-types';
 import { StepData } from '@voiceflow/general-types/build/nodes/visual';
 
 import { StoreType } from '@/constants/prototype';
@@ -47,7 +47,7 @@ export type UpdatePrototypeContext = Action<PrototypeAction.UPDATE_TEST_CONTEXT,
 
 export type UpdatePrototypeContextStore = Action<PrototypeAction.UPDATE_TEST_CONTEXT_STORE, { store: StoreType; payload: Partial<Store> }>;
 
-export type UpdatePrototypeWebhookData = Action<PrototypeAction.UPDATE_WEBHOOK, Request>;
+export type UpdatePrototypeWebhookData = Action<PrototypeAction.UPDATE_WEBHOOK, BaseRequest>;
 
 export type UpdatePrototypeSettings = Action<PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, { settings: PrototypeShareViewSettings; patch: boolean }>;
 
@@ -93,7 +93,7 @@ export const updatePrototypeContext = (payload: Partial<Context>): UpdatePrototy
 export const updatePrototypeContextStore = (store: StoreType) => (payload: Partial<Store>): UpdatePrototypeContextStore =>
   createAction(PrototypeAction.UPDATE_TEST_CONTEXT_STORE, { store, payload });
 
-export const updatePrototypeWebhookData = (payload: Request): UpdatePrototypeWebhookData => createAction(PrototypeAction.UPDATE_WEBHOOK, payload);
+export const updatePrototypeWebhookData = (payload: BaseRequest): UpdatePrototypeWebhookData => createAction(PrototypeAction.UPDATE_WEBHOOK, payload);
 
 export const updatePrototypeSettings = (settings: PrototypeShareViewSettings, patch = true): UpdatePrototypeSettings =>
   createAction(PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, { settings, patch });

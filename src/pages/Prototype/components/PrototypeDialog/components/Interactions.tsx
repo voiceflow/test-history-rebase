@@ -1,4 +1,4 @@
-import { Request } from '@voiceflow/general-types';
+import { BaseRequest } from '@voiceflow/general-types';
 import React from 'react';
 import SimpleBar from 'simplebar-react';
 
@@ -76,7 +76,7 @@ const ActionChip = styled(Chip)`
 
 interface InteractionsProps {
   interactions: Interaction[];
-  onInteraction: (request: string | Request) => void;
+  onInteraction: (request: string | BaseRequest) => void;
   color?: string;
 }
 

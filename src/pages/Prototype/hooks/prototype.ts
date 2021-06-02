@@ -1,4 +1,4 @@
-import { Request } from '@voiceflow/general-types';
+import { BaseRequest } from '@voiceflow/general-types';
 import _isString from 'lodash/isString';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -106,7 +106,7 @@ const usePrototype = ({
   }, [webhook]);
 
   const onInteraction = React.useCallback(
-    (request: Request | string) => {
+    (request: BaseRequest | string) => {
       perf.action(PerfAction.PROTOTYPE_INTERACTION);
 
       if (_isString(request)) {

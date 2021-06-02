@@ -1,15 +1,12 @@
-export const RecurrenceType = {
-  DAILY: 'DAILY',
-  WEEKLY: 'WEEKLY',
-};
+import { RecurrenceFreq } from '@voiceflow/alexa-types/build/nodes/reminder';
 
 export const RECURRENCE_OPTIONS = [
   {
-    id: RecurrenceType.DAILY,
+    id: RecurrenceFreq.DAILY,
     label: 'Daily',
   },
   {
-    id: RecurrenceType.WEEKLY,
+    id: RecurrenceFreq.WEEKLY,
     label: 'Weekly',
   },
 ];

@@ -1,4 +1,4 @@
-import { DiagramNode } from '@voiceflow/api-sdk';
+import { BaseDiagramNode } from '@voiceflow/api-sdk';
 import { NodeType } from '@voiceflow/general-types';
 import moize from 'moize';
 
@@ -23,7 +23,7 @@ const BLOCK_TYPE_MAPPING: [string, BlockType][] = [['block', BlockType.COMBINED]
 
 export const APP_BLOCK_TYPE_FROM_DB: Record<
   string,
-  BlockType | ((data: DiagramNode['data'], options: { features?: FeatureFlagMap }) => BlockType)
+  BlockType | ((data: BaseDiagramNode['data'], options: { features?: FeatureFlagMap }) => BlockType)
 > = {
   ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [key]: value }), {}),
   [NodeType.API]: BlockType.INTEGRATION,

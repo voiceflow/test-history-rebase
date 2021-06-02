@@ -1,4 +1,4 @@
-import { TraceFrame } from '@voiceflow/general-types';
+import { BaseTraceFrame } from '@voiceflow/general-types';
 import * as Traces from '@voiceflow/general-types/build/trace';
 
 import { StoreType } from '@/constants/prototype';
@@ -15,8 +15,8 @@ export type DebugTrace = TraceWithID<Traces.DebugTrace>;
 export type ChoiceTrace = TraceWithID<Traces.ChoiceTrace>;
 export type StreamTrace = TraceWithID<Traces.StreamTrace>;
 export type VisualTrace = TraceWithID<Traces.VisualTrace>;
-export type V1Trace = Required<TraceFrame>;
-export { TraceFrame };
+export type V1Trace = Required<BaseTraceFrame>;
+export { BaseTraceFrame };
 
 export type Trace = BlockTrace | SpeakTrace | FlowTrace | DebugTrace | StreamTrace | EndTrace | ChoiceTrace | VisualTrace;
 

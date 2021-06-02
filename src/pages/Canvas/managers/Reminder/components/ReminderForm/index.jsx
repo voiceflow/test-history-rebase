@@ -1,3 +1,4 @@
+import { RecurrenceFreq } from '@voiceflow/alexa-types/build/nodes/reminder';
 import React from 'react';
 
 import DayPickerInput from '@/components/DayPickerInput';
@@ -18,7 +19,7 @@ import {
   VariableInputContainer,
   WeeklySelection,
 } from './components';
-import { RECURRENCE_OPTIONS, RecurrenceType } from './constants';
+import { RECURRENCE_OPTIONS } from './constants';
 
 const USER_TIMEZONE = 'User Timezone';
 const TIMEZONE_OPTIONS = [USER_TIMEZONE, ...TIMEZONES];
@@ -48,7 +49,7 @@ function ReminderForm({ data, withDate, onChange }) {
         ...(!recurrenceBool && {
           recurrence: {
             ...recurrence,
-            freq: RecurrenceType.DAILY,
+            freq: RecurrenceFreq.DAILY,
           },
         }),
       }),
@@ -57,7 +58,7 @@ function ReminderForm({ data, withDate, onChange }) {
 
   React.useEffect(() => {
     if (recurrenceBool && !recurrence?.freq) {
-      updateRecurrenceType(RecurrenceType.DAILY);
+      updateRecurrenceType(RecurrenceFreq.DAILY);
     }
   }, [recurrenceBool]);
 
@@ -120,7 +121,7 @@ function ReminderForm({ data, withDate, onChange }) {
           {recurrence && (
             <RecurrenceContainer>
               <RadioGroup options={RECURRENCE_OPTIONS} checked={recurrence.freq} name="Recurrence" onChange={updateRecurrenceType} />
-              {recurrence.freq === RecurrenceType.WEEKLY && <WeeklySelection recurrence={recurrence} onChange={onChange} />}
+              {recurrence.freq === RecurrenceFreq.WEEKLY && <WeeklySelection recurrence={recurrence} onChange={onChange} />}
             </RecurrenceContainer>
           )}
         </UncontrolledSection>

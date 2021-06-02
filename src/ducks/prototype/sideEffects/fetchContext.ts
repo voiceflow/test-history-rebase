@@ -1,4 +1,4 @@
-import { Request, TraceType } from '@voiceflow/general-types';
+import { BaseRequest, TraceType } from '@voiceflow/general-types';
 import { TraceFrame as VisualTrace } from '@voiceflow/general-types/build/nodes/visual';
 import cuid from 'cuid';
 import { batch } from 'react-redux';
@@ -25,7 +25,7 @@ const getTargetFlowID = (trace: Trace[]) => {
   return null;
 };
 
-const fetchContext = (request: Request | null): Thunk<Context | null> => async (dispatch, getState) => {
+const fetchContext = (request: BaseRequest | null): Thunk<Context | null> => async (dispatch, getState) => {
   const reduxState = getState();
   const { trace: _oldTrace, ...state } = prototypeContextSelector(reduxState);
   const { contextStep } = prototypeSelector(reduxState);

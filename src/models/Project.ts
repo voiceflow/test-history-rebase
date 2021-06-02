@@ -1,9 +1,8 @@
-import { Member, ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
+import { AnyRecord, Member, ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
 
 import { PlatformType } from '@/constants';
-import { Struct } from '@/types';
 
-export type Project<D extends Struct, M extends Member<any>> = {
+export type Project<D extends AnyRecord, M extends Member<any>> = {
   id: string;
   name: string;
   diagramID: string;

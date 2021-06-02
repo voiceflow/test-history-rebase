@@ -1,10 +1,9 @@
+import { RecurrenceFreq } from '@voiceflow/alexa-types/build/nodes/reminder';
 import React from 'react';
 import { ButtonGroup } from 'reactstrap';
 
 import ButtonContainer from '@/components/Button/components/ButtonContainer';
 import { css, styled } from '@/hocs';
-
-import { RecurrenceType } from '../constants';
 
 const DayButton = styled(ButtonContainer)`
   height: 40px;
@@ -53,7 +52,7 @@ function WeeklySelection({ recurrence, onChange }) {
 
   return (
     <WeeklyContainer>
-      {recurrence.freq === RecurrenceType.WEEKLY && (
+      {recurrence.freq === RecurrenceFreq.WEEKLY && (
         <ButtonGroup>
           {weekArray.map((day, index) => (
             <DayButton

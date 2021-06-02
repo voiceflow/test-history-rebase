@@ -1,4 +1,4 @@
-import { DiagramNode } from '@voiceflow/api-sdk';
+import { BaseDiagramNode } from '@voiceflow/api-sdk';
 import _isFunction from 'lodash/isFunction';
 
 import { createSimpleAdapter } from '@/client/adapters/utils';
@@ -10,7 +10,7 @@ import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP, getBlockAdapter } from 
 import { needsMigration } from './utils';
 
 const nodeDataAdapter = createSimpleAdapter<
-  { data: DiagramNode['data']; type: string },
+  { data: BaseDiagramNode['data']; type: string },
   NodeData<unknown>,
   [{ platform: PlatformType; nodeID: string; features: FeatureFlagMap }],
   [{ platform: PlatformType; features: FeatureFlagMap }]
@@ -42,7 +42,7 @@ const nodeDataAdapter = createSimpleAdapter<
     const getNodeType = DB_BLOCK_TYPE_FROM_APP[type];
     const dbType = _isFunction(getNodeType) ? getNodeType(appData, { features }) : getNodeType || deprecatedType || type;
 
-    let data: DiagramNode['data'] = {};
+    let data: BaseDiagramNode['data'] = {};
 
     try {
       const adapters = getBlockAdapter(platform);

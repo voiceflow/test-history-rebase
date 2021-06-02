@@ -1,4 +1,4 @@
-import { Request } from '@voiceflow/general-types';
+import { BaseRequest } from '@voiceflow/general-types';
 import React from 'react';
 
 import { isIOS } from '@/config';
@@ -69,7 +69,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ status,
   const isIdle = status === PrototypeDuck.PrototypeStatus.IDLE;
   const isFinished = status === PrototypeDuck.PrototypeStatus.ENDED;
 
-  const sendInteraction = (customInput: string | Request) => {
+  const sendInteraction = (customInput: string | BaseRequest) => {
     onInteraction(customInput);
     setInput('');
   };

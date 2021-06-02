@@ -6,7 +6,7 @@ import SvgIcon from '@/components/SvgIcon';
 import { PlatformType, SPACE_REGEXP } from '@/constants';
 import { isCustomizeableBuiltInIntent } from '@/utils/intent';
 import { createPlatformSelector } from '@/utils/platform';
-import { isAlexaPlatform } from '@/utils/typeGuards';
+import { isGeneralPlatform } from '@/utils/typeGuards';
 
 const getPlatformIcon = createPlatformSelector(
   {
@@ -17,7 +17,7 @@ const getPlatformIcon = createPlatformSelector(
 );
 
 const getFormatedLabel = (label, searchLabel, platform) => {
-  const formattedLabel = isAlexaPlatform(platform) ? _toLower(label)?.replace(SPACE_REGEXP, '_') : _toLower(label);
+  const formattedLabel = isGeneralPlatform(platform) ? _toLower(label) : _toLower(label)?.replace(SPACE_REGEXP, '_');
   const substrs = (searchLabel && formattedLabel?.split(_toLower(searchLabel))) || [];
 
   if (substrs.length < 2) {

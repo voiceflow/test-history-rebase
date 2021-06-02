@@ -19,7 +19,7 @@ import {
   validateIntentName,
 } from '@/utils/intent';
 import { removeTrailingUnderscores } from '@/utils/string';
-import { isAlexaPlatform } from '@/utils/typeGuards';
+import { isGeneralPlatform } from '@/utils/typeGuards';
 
 import { MissingIntentMessage, Option } from './components';
 
@@ -37,12 +37,12 @@ const labelRenderer = ({ option, searchLabel, getOptionLabel, getOptionValue, op
 );
 
 const optionsFilter = (options, searchLabel, { maxSize = options.length, getOptionLabel, getOptionValue } = {}, platform) => {
-  const isAlexa = isAlexaPlatform(platform);
+  const isGeneral = isGeneralPlatform(platform);
 
   const [matchedOptions, notMatchedOptions] = options.reduce(
     ([matched, notMatched], option) => {
       const lowerCasedOption = _toLower(getOptionLabel(getOptionValue(option)));
-      const matcher = isAlexa ? lowerCasedOption.replace(SPACE_REGEXP, '_') : lowerCasedOption;
+      const matcher = isGeneral ? lowerCasedOption : lowerCasedOption.replace(SPACE_REGEXP, '_');
 
       if (!searchLabel || matcher.includes(_toLower(searchLabel))) {
         matched.push(option);
@@ -68,7 +68,7 @@ const optionsFilter = (options, searchLabel, { maxSize = options.length, getOpti
 
 function IntentSelect({ slots, platform, intent, intents, onChange, intentsMap, newIntent }) {
   const intentID = intent?.id;
-  const isAlexa = isAlexaPlatform(platform);
+  const isGeneral = isGeneralPlatform(platform);
   const filteredIntents = React.useMemo(() => prettifyIntentNames(filterIntents(intents, intent)), [intents, intent]);
   const intentLookup = React.useMemo(
     () =>
@@ -140,7 +140,7 @@ function IntentSelect({ slots, platform, intent, intents, onChange, intentsMap, 
         optionsFilter={(...args) => optionsFilter(...args, platform)}
         getOptionValue={getOptionValue}
         getOptionLabel={getOptionLabel}
-        formatInputValue={isAlexa ? formatIntentName : undefined}
+        formatInputValue={isGeneral ? undefined : formatIntentName}
         isButtonDisabled={isButtonDisabled}
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, options) =>
           labelRenderer({

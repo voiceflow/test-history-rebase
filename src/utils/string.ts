@@ -1,7 +1,7 @@
 import cuid from 'cuid';
 
 import { PlatformType } from '@/constants';
-import { isAlexaPlatform } from '@/utils/typeGuards';
+import { isGeneralPlatform } from '@/utils/typeGuards';
 
 import { convertToWord } from './number';
 
@@ -12,8 +12,8 @@ const TRAILING_UNDERSCORES_REGEXP = /^_+|_+$/g;
 
 export const createNextName = (prefix: string, items: string[], platform: PlatformType): string => {
   let counter = 1;
-  const isAlexa = isAlexaPlatform(platform);
-  const genIntentName = (counter: number) => (isAlexa ? `${prefix}_${convertToWord(counter)}` : `${prefix} ${convertToWord(counter)}`);
+  const isGeneral = isGeneralPlatform(platform);
+  const genIntentName = (counter: number) => (isGeneral ? `${prefix} ${convertToWord(counter)}` : `${prefix}_${convertToWord(counter)}`);
   let intentName = genIntentName(counter);
   while (items.includes(intentName)) {
     counter++;

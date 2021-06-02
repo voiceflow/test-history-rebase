@@ -12,7 +12,7 @@ import { Intent } from '@/models';
 import { ConnectedProps } from '@/types';
 import { reorder as reorderArray } from '@/utils/array';
 import { formatIntentName } from '@/utils/intent';
-import { isAlexaPlatform } from '@/utils/typeGuards';
+import { isGeneralPlatform } from '@/utils/typeGuards';
 
 import EmptyContainer from '../EmptyContainer';
 import LeftColumn from '../LeftColumn';
@@ -36,7 +36,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
 }) => {
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
   const managerRef = React.useRef<{ resetPath: () => void }>(null);
-  const isAlexa = isAlexaPlatform(platform);
+  const isGeneral = isGeneralPlatform(platform);
   const scrollbarsRef = React.useRef<Scrollbars>(null);
 
   const getItemKey = React.useCallback((item: Intent) => item.id, []);
@@ -113,7 +113,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
               getLabel={getItemLabel}
               addMessage="New Intent"
               renderItem={(item, index) => renderItem({ key: item.id, itemKey: item.id, item, index })}
-              formatValue={isAlexa ? formatIntentName : undefined}
+              formatValue={isGeneral ? undefined : formatIntentName}
               placeholder="Search Intents"
             />
           )}

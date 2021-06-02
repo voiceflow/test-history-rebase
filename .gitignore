@@ -59,7 +59,7 @@ jspm_packages/
 .DS_Store
 
 # dotenv environment variables files
-/.env*
+.env*
 
 # Editor Configuration
 .atom

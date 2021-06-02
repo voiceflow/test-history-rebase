@@ -105,7 +105,7 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
                     <Text fontSize={14}>Select 'Custom Project' type</Text>
                   </li>
                   <li>
-                    <Text fontSize={14}>Select 'Black Project' template</Text>
+                    <Text fontSize={14}>Select 'Blank Project' template</Text>
                   </li>
                 </ul>
 

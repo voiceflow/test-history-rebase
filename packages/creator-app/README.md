@@ -65,9 +65,9 @@ yarn lint:js
 yarn lint:css
 ```
 
-#### Integration and Snapshot Tests
+#### Integration Tests
 
-Run interaction and snapshot tests with `jest`.
+Run interaction tests with `jest`.
 
 ```sh
 yarn test

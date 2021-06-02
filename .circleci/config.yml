@@ -266,6 +266,7 @@ workflows:
       - vfcommon/release_monorepo:
           <<: *slack-fail-post-step
           sentry_project: creator-app
+          avoid_post_install_scripts: false
           ssh_key: << pipeline.parameters.ssh-fingerprint >>
           context: dev-test
           requires:

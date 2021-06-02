@@ -13,13 +13,13 @@ const setAdapter = createBlockAdapter<SetData, NodeData.SetV2>(
       id: cuid.slug(),
       variable,
       type: expression.type === ExpressionType.VALUE ? ExpressionTypeV2.VALUE : ExpressionTypeV2.ADVANCE,
-      expression: expressionfyV2(expression) || '',
+      expression: expressionfyV2(expression) ?? '',
     })),
   }),
   ({ sets }) => ({
     sets: sets.map(({ expression, variable }) => ({
       variable: variable ?? null,
-      expression: (expression?.toString() || '') as any,
+      expression: (expression?.toString() ?? '') as any,
     })),
   })
 );

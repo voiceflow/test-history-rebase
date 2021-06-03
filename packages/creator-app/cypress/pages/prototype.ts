@@ -52,7 +52,7 @@ export default {
       return cy.get('.vf-visual--image');
     },
     get chips() {
-      return cy.get('.simplebar-content').find('div');
+      return cy.get(`.${ClassName.PROTOTYPE_CHIP}`);
     },
     get submitMessageInputButton() {
       return cy.get('.vf-svg-icon--send').find('svg');

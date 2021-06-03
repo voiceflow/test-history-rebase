@@ -1,3 +1,4 @@
+import { BaseRequest } from '@voiceflow/general-types';
 import React from 'react';
 
 import { PrototypeStatus } from '@/ducks/prototype';
@@ -22,6 +23,7 @@ export type PrototypeChatDisplayProps = {
   isMobile?: boolean;
   color?: string;
   avatarURL?: string;
+  onInteraction: (request: string | BaseRequest) => void;
 };
 
 const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
@@ -33,12 +35,12 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   onPlay,
   interactions = [],
   status,
-  children,
   hideSessionMessages,
   showPadding,
   isMobile,
   color,
   avatarURL,
+  onInteraction,
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
@@ -82,11 +84,11 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
           showPadding={showPadding}
           bottomScrollRef={scrollRef}
           hideSessionMessages={hideSessionMessages}
-          withInteractions={!!interactions.length}
+          interactions={interactions}
           color={color}
           avatarURL={avatarURL}
+          onInteraction={onInteraction}
         />
-        {children}
       </InnerChatContainer>
     </OutterChatContainer>
   );

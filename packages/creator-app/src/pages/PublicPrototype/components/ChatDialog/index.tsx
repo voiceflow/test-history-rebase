@@ -6,7 +6,6 @@ import Text from '@/components/Text';
 import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
 import { useCanASR, useTheme } from '@/hooks';
 import { ChatDisplay } from '@/pages/Prototype/components';
-import Interactions from '@/pages/Prototype/components/PrototypeDialog/components/Interactions';
 import { ASRSpeechbar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import { Interaction, Message } from '@/pages/Prototype/types';
 
@@ -88,9 +87,8 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
           showPadding
           color={color}
           avatarURL={avatarURL}
-        >
-          <Interactions interactions={interactions} onInteraction={onSend} color={color} />
-        </ChatDisplay>
+          onInteraction={onSend}
+        />
       </DisplayContainer>
 
       <InteractionContainer isMobile={isMobile}>

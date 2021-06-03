@@ -6,7 +6,6 @@ import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useDidUpdateEffect, useTeardown } from '@/hooks';
-import { Interactions } from '@/pages/Prototype/components/PrototypeDialog/components';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';
@@ -104,11 +103,10 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         isLoading={isLoading || (!isBubbleMessageShown && prototypeMachineStatus !== PMStatus.WAITING_USER_INTERACTION)}
         messages={messages}
         onPlay={onPlay}
-        interactions={interactions}
+        interactions={showChips ? interactions : []}
         status={status}
-      >
-        {showChips && <Interactions interactions={interactions} onInteraction={onInteraction} />}
-      </ChatDisplay>
+        onInteraction={onInteraction}
+      />
 
       <UserSaysContainer>
         <Input

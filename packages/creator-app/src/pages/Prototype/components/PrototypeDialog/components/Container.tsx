@@ -3,12 +3,13 @@ import React from 'react';
 
 import { css, styled } from '@/hocs';
 
-export const Outer = styled.div<{ isPublic?: boolean; withInteractions?: boolean }>`
+export const Outer = styled.div<{ isPublic?: boolean }>`
   position: relative;
   display: flex;
   flex: 1;
   height: 100%;
   padding-top: 0;
+
   ${({ isPublic }) =>
     isPublic &&
     css`
@@ -33,9 +34,12 @@ export const Middle = styled.div<{ showPadding?: boolean; isMobile?: boolean }>`
 
 const Content = styled.div<{ showPadding?: boolean; isMobile?: boolean }>`
   width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 
   padding-top: ${({ showPadding, isMobile }) => (showPadding ? (isMobile ? '20px' : '40px') : 0)};
-  padding-bottom: 20px;
   padding-left: 24px;
   padding-right: 24px;
 
@@ -43,14 +47,8 @@ const Content = styled.div<{ showPadding?: boolean; isMobile?: boolean }>`
   -webkit-overflow-scrolling: touch;
 `;
 
-const Container: React.FC<{ isPublic?: boolean; showPadding?: boolean; isMobile?: boolean; withInteractions?: boolean }> = ({
-  children,
-  isPublic,
-  showPadding,
-  withInteractions,
-  isMobile,
-}) => (
-  <Outer isPublic={isPublic} withInteractions={withInteractions}>
+const Container: React.FC<{ isPublic?: boolean; showPadding?: boolean; isMobile?: boolean }> = ({ children, isPublic, showPadding, isMobile }) => (
+  <Outer isPublic={isPublic}>
     <Middle isMobile={isMobile}>
       <Content showPadding={showPadding} isMobile={isMobile} className="chat-dialog-content">
         {children}

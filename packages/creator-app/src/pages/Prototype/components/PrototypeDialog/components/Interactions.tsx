@@ -1,8 +1,7 @@
 import { BaseRequest } from '@voiceflow/general-types';
 import React from 'react';
-import SimpleBar from 'simplebar-react';
 
-import { css, styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs';
 import perf, { PerfAction } from '@/performance';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
@@ -12,29 +11,22 @@ import { preventDefault } from '@/utils/dom';
 
 import { Interaction } from '../../../types';
 
-export const INTERACTIONS_CONTAINER_HEIGHT = 72;
-
-const Container = styled.div<{ hasInteractions: boolean }>`
-  position: absolute;
-  width: 100%;
+const Container = styled.div`
+  position: sticky;
   bottom: 0;
-  overflow-y: hidden;
-  height: ${INTERACTIONS_CONTAINER_HEIGHT}px;
-  white-space: nowrap;
-
-  ${({ hasInteractions }) =>
-    hasInteractions &&
-    css`
-      background-image: linear-gradient(to bottom, rgba(253, 253, 253, 0), rgba(253, 253, 253, 0.29) 28%, #fdfdfd 85%);
-    `}
+  margin-left: -24px;
+  margin-right: -24px;
+  padding: 0 19px 15px 19px;
+  background-image: linear-gradient(to bottom, rgba(253, 253, 253, 0), rgba(253, 253, 253, 0.3) 8%, #fdfdfd 80%);
 
   & > span {
     margin: 5px 5px 0 5px;
   }
 `;
 
-const InnerContainer = styled(SimpleBar)`
-  padding: 16px 20px;
+const Content = styled.div`
+  display: flex;
+  flex-wrap: wrap-reverse;
 `;
 
 type ChipProps = {
@@ -49,7 +41,7 @@ const Chip = styled(FadeLeftContainer)<ChipProps>`
   color: ${({ rgbaColor }) => toRGBAString(rgbaColor)};
   background: white;
   cursor: pointer;
-  margin-right: 10px;
+  margin: 5px;
   padding: 8px 20px;
   display: inline-block;
   text-transform: capitalize;
@@ -69,15 +61,15 @@ const ActionChip = styled(Chip)`
   :hover,
   :active {
     color: #132144;
-    background: white;
+    background: rgba(238, 244, 246, 0.5);
     border: solid 1px rgba(141, 162, 181, 0.6);
   }
 `;
 
 interface InteractionsProps {
+  color?: string;
   interactions: Interaction[];
   onInteraction: (request: string | BaseRequest) => void;
-  color?: string;
 }
 
 const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction, color }) => {
@@ -88,33 +80,37 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
       perf.action(PerfAction.PROTOTYPE_CHIPS_RENDERED);
     }
   }, [hasInteractions]);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useLayoutEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.style.minHeight = `${containerRef.current.scrollHeight}px`;
+    }
+  });
 
   if (!hasInteractions) {
     return null;
   }
 
   return (
-    <Container hasInteractions={hasInteractions}>
-      <InnerContainer>
-        {hasInteractions && (
-          <>
-            {interactions.map(({ name, request }) => {
-              const ChipElement = request ? ActionChip : Chip;
-              return (
-                <ChipElement
-                  className={ClassName.PROTOTYPE_CHIP}
-                  key={name}
-                  onMouseDown={preventDefault()}
-                  onClick={() => onInteraction(request || name)}
-                  rgbaColor={hexToRGBA(color ?? '#5D9DF5')}
-                >
-                  {name}
-                </ChipElement>
-              );
-            })}
-          </>
-        )}
-      </InnerContainer>
+    <Container ref={containerRef}>
+      <Content>
+        {interactions.map(({ name, request }) => {
+          const ChipElement = request ? ActionChip : Chip;
+
+          return (
+            <ChipElement
+              key={name}
+              onClick={() => onInteraction(request || name)}
+              className={ClassName.PROTOTYPE_CHIP}
+              rgbaColor={hexToRGBA(color ?? '#5D9DF5')}
+              onMouseDown={preventDefault()}
+            >
+              {name}
+            </ChipElement>
+          );
+        })}
+      </Content>
     </Container>
   );
 };

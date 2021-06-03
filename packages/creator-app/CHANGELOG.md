@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.382.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.381.3...@voiceflow/creator-app@1.382.0) (2021-06-03)
+
+
+### Features
+
+* reportTag dux (VF-1017) ([#3475](https://github.com/voiceflow/creator-app/issues/3475)) ([3f596fe](https://github.com/voiceflow/creator-app/commit/3f596fefdd4b4c27403dd8b57195bfaddeab3524))
+
+
+
+
+
 ## [1.381.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.381.2...@voiceflow/creator-app@1.381.3) (2021-06-03)
 
 

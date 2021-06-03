@@ -1,9 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { FormGroup, Label } from 'reactstrap';
 
+import Box from '@/components/Box';
 import TextInput from '@/components/Form/TextInput';
 import Multiple from '@/components/Forms/Multiple';
+import { Label } from '@/components/Text';
 import * as Version from '@/ducks/version';
 import { useDispatch, useLinkedState } from '@/hooks';
 import { getTargetValue } from '@/utils/dom';
@@ -42,8 +43,8 @@ const SkillInvocationForm: React.FC = () => {
 
   return (
     <>
-      <FormGroup className="mb-4">
-        <Label className="publish-label">Invocation Name</Label>
+      <Box mb={24}>
+        <Label>Invocation Name</Label>
         <TextInput
           type="text"
           name="invocationName"
@@ -54,10 +55,10 @@ const SkillInvocationForm: React.FC = () => {
           touched={!!invocationNameError}
           error={invocationNameError}
         />
-      </FormGroup>
+      </Box>
 
-      <FormGroup className="mb-4">
-        <Label className="publish-label">Invocations</Label>
+      <Box mb={24}>
+        <Label>Invocations</Label>
         <Multiple
           max={3}
           add="Add Invocation"
@@ -66,7 +67,7 @@ const SkillInvocationForm: React.FC = () => {
           placeholder={`open/start/launch ${invocationName}`}
           update={(invocations: string[]) => savePublishing({ invocations })}
         />
-      </FormGroup>
+      </Box>
     </>
   );
 };

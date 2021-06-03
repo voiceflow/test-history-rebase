@@ -1,8 +1,6 @@
-import { FormGroup } from 'reactstrap';
-
 import { styled } from '@/hocs';
 
-const RadioButtonGroup = styled(FormGroup)`
+const RadioButtonGroup = styled.div`
   display: flex;
 
   & > * {

@@ -4,7 +4,6 @@ import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-valida
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-import { FormGroup } from 'reactstrap';
 
 import Button from '@/components/Button';
 import Dropdown from '@/components/Dropdown';
@@ -68,7 +67,7 @@ function PricingForm({ product, updateProduct, changeStep, parentalControl }) {
           <label>Product Type</label>
           <RadioButtonGroup>
             {PRODUCT_TYPES.map(({ value, label }, index) => (
-              <FormGroup check key={index}>
+              <div key={index}>
                 <Tooltip
                   disabled={!(value === ProductType.CONSUMABLE && parentalControl)}
                   position="top"
@@ -86,7 +85,7 @@ function PricingForm({ product, updateProduct, changeStep, parentalControl }) {
                     <span>{label}</span>
                   </RadioButtonLabel>
                 </Tooltip>
-              </FormGroup>
+              </div>
             ))}
           </RadioButtonGroup>
           <AvFeedback>Type is required</AvFeedback>

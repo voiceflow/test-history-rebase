@@ -1,8 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { FormGroup, Input, Label } from 'reactstrap';
 import { createSelector } from 'reselect';
 
+import Box, { Flex } from '@/components/Box';
+import Input from '@/components/Input';
+import { Label } from '@/components/Text';
 import Toggle from '@/components/Toggle';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
@@ -44,8 +46,8 @@ const PrivacyTermsForm: React.FC = () => {
 
   return (
     <>
-      <FormGroup className="mb-4">
-        <Label className="publish-label">Privacy Policy URL</Label>
+      <Box mb={24}>
+        <Label>Privacy Policy URL</Label>
         <Input
           className="form-bg"
           name="privacyPolicy"
@@ -55,11 +57,11 @@ const PrivacyTermsForm: React.FC = () => {
           onChange={getTargetValue(setPrivacyPolicy)}
           onBlur={savePrivacyPolicy}
         />
-      </FormGroup>
+      </Box>
 
-      <FormGroup className="mb-4">
-        <div className="mb-4">
-          <Label className="publish-label">Terms and Conditions URL</Label>
+      <Box mb={24}>
+        <Box mb={24}>
+          <Label>Terms and Conditions URL</Label>
           <Input
             className="form-bg"
             type="text"
@@ -69,14 +71,14 @@ const PrivacyTermsForm: React.FC = () => {
             onChange={getTargetValue(setTermsAndConditions)}
             onBlur={saveTermsAndConditions}
           />
-        </div>
+        </Box>
 
-        <Label className="publish-label">Is this skill directed to children under the age of 13?</Label>
-        <div className="d-flex">
+        <Label>Is this skill directed to children under the age of 13?</Label>
+        <Flex>
           <u className="mr-2">{forChildren ? 'YES' : 'NO'}</u>
           <Toggle name="copa" checked={forChildren} onChange={() => saveForChildren(!forChildren)} />
-        </div>
-      </FormGroup>
+        </Flex>
+      </Box>
     </>
   );
 };

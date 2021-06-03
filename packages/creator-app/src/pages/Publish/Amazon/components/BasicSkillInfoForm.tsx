@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { FormFeedback, FormGroup, Label } from 'reactstrap';
 import { createSelector } from 'reselect';
 
-import { FlexCenter } from '@/components/Flex';
+import Box, { Flex, FlexCenter } from '@/components/Box';
 import TextInput from '@/components/Form/TextInput';
+import { Label } from '@/components/Text';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import * as Project from '@/ducks/project';
 import * as Version from '@/ducks/version';
@@ -33,37 +33,34 @@ const BasicSkillInfoForm: React.FC = () => {
 
   return (
     <>
-      <FormGroup className="mb-4">
-        <div className="mb-4">
-          <Label className="publish-label">Display Name</Label>
-          <TextInput
-            name="name"
-            type="text"
-            placeholder="Storyflow - Interactive Story Adventures"
-            value={projectName}
-            onChange={getTargetValue(setProjectName)}
-            onBlur={saveProjectName}
-            touched={!!projectNameError}
-            error={projectNameError}
-          />
-          <FormFeedback>Uh oh! Looks like there is an issue with your email address. Please provide a correct email address.</FormFeedback>
-        </div>
-      </FormGroup>
+      <Box mb={24}>
+        <Label>Display Name</Label>
+        <TextInput
+          name="name"
+          type="text"
+          placeholder="Storyflow - Interactive Story Adventures"
+          value={projectName}
+          onChange={getTargetValue(setProjectName)}
+          onBlur={saveProjectName}
+          touched={!!projectNameError}
+          error={projectNameError}
+        />
+      </Box>
 
-      <div className="d-flex mb-2">
-        <div style={{ width: '50%' }}>
-          <Label className="text-center">Large Icon</Label>
+      <Flex mb={8}>
+        <Box width="50%">
+          <Label textAlign="center">Large Icon</Label>
           <FlexCenter>
             <UploadJustIconComponent name="largeIcon" size="xlarge" canRemove endpoint="/image/large_icon" image={largeIcon} update={saveLargeIcon} />
           </FlexCenter>
-        </div>
-        <div style={{ width: '50%' }}>
-          <Label className="text-center">Small Icon</Label>
+        </Box>
+        <Box width="50%">
+          <Label textAlign="center">Small Icon</Label>
           <FlexCenter>
             <UploadJustIconComponent name="smallIcon" size="large" canRemove endpoint="/image/small_icon" image={smallIcon} update={saveSmallIcon} />
           </FlexCenter>
-        </div>
-      </div>
+        </Box>
+      </Flex>
     </>
   );
 };

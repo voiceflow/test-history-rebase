@@ -1,12 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-// import Select from 'react-select';
-import { FormGroup, Label } from 'reactstrap';
 import { createSelector } from 'reselect';
 
+// import Select from 'react-select';
+import Box from '@/components/Box';
 import TextBox from '@/components/Form/TextBox';
 import TextInput from '@/components/Form/TextInput';
 import Select from '@/components/Select';
+import { Label } from '@/components/Text';
 import * as Project from '@/ducks/project';
 import * as Version from '@/ducks/version';
 import { useBoundValue, useDispatch } from '@/hooks';
@@ -47,8 +48,8 @@ const SkillDescriptionForm: React.FC = () => {
 
   return (
     <>
-      <FormGroup className="mt-0 mb-4">
-        <Label className="publish-label">Summary</Label>
+      <Box mb={24}>
+        <Label>Summary</Label>
         <TextInput
           type="text"
           name="summary"
@@ -59,10 +60,10 @@ const SkillDescriptionForm: React.FC = () => {
           touched={!!summaryError}
           error={summaryError}
         />
-      </FormGroup>
+      </Box>
 
-      <FormGroup className="mb-4">
-        <Label className="publish-label">Description</Label>
+      <Box mb={24}>
+        <Label>Description</Label>
         <TextBox
           name="description"
           minRows={4}
@@ -75,11 +76,11 @@ const SkillDescriptionForm: React.FC = () => {
           touched={!!descriptionError}
           error={descriptionError}
         />
-      </FormGroup>
+      </Box>
 
       {isLive && (
-        <FormGroup className="mb-4">
-          <Label className="publish-label">
+        <Box mb={24}>
+          <Label>
             What's new? <small>optional</small>
           </Label>
           <TextBox
@@ -92,11 +93,11 @@ const SkillDescriptionForm: React.FC = () => {
             onChange={getTargetValue(setUpdatesDescription)}
             onBlur={saveUpdatesDescription}
           />
-        </FormGroup>
+        </Box>
       )}
 
-      <FormGroup className="mb-4">
-        <Label className="publish-label">Category</Label>
+      <Box mb={24}>
+        <Label>Category</Label>
         <Select
           value={AMAZON_CATEGORIES.find((option) => option.value === category || option.label === category)?.value}
           options={AMAZON_CATEGORIES}
@@ -106,10 +107,10 @@ const SkillDescriptionForm: React.FC = () => {
           getOptionValue={(option) => option?.value}
           getOptionLabel={(value) => AMAZON_CATEGORIES.find((option) => option.value === value || option.label === value)?.label}
         />
-      </FormGroup>
+      </Box>
 
-      <FormGroup className="mb-4">
-        <Label className="publish-label">
+      <Box mb={24}>
+        <Label>
           Keywords <small>Seperated by commas</small>
         </Label>
         <TextInput
@@ -120,7 +121,7 @@ const SkillDescriptionForm: React.FC = () => {
           onChange={getTargetValue(setKeywords)}
           onBlur={saveKeywords}
         />
-      </FormGroup>
+      </Box>
     </>
   );
 };

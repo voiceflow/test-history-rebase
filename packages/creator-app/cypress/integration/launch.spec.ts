@@ -141,30 +141,30 @@ context('Launch', () => {
       alexa.el.progressIndicators.eq(2).should('have.class', COMPLETED_PROGRESS_INDICATOR);
 
       /// / 4 - Locales
-      const IS_ACTIVE_CLASS = 'active';
+      const ACTIVE_ATTR = 'data-active';
       const EN = 0;
       const DE = 2;
       const JP = 3;
 
-      alexa.el.locales.buttonGroup.eq(EN).should('have.class', IS_ACTIVE_CLASS);
+      alexa.el.locales.buttonGroup.eq(EN).should('have.attr', ACTIVE_ATTR, 'true');
       for (let i = 1; i < alexa.el.locales.buttonGroup.children.length; i += 1) {
-        alexa.el.locales.buttonGroup.eq(i).should('not.have.class', IS_ACTIVE_CLASS);
+        alexa.el.locales.buttonGroup.eq(i).should('have.attr', ACTIVE_ATTR, 'false');
       }
 
       alexa.el.locales.buttonGroup.eq(DE).click();
       alexa.el.locales.buttonGroup.eq(JP).click();
 
-      alexa.el.locales.buttonGroup.eq(EN).should('have.class', IS_ACTIVE_CLASS);
-      alexa.el.locales.buttonGroup.eq(DE).should('have.class', IS_ACTIVE_CLASS);
-      alexa.el.locales.buttonGroup.eq(JP).should('have.class', IS_ACTIVE_CLASS);
+      alexa.el.locales.buttonGroup.eq(EN).should('have.attr', ACTIVE_ATTR, 'true');
+      alexa.el.locales.buttonGroup.eq(DE).should('have.attr', ACTIVE_ATTR, 'true');
+      alexa.el.locales.buttonGroup.eq(JP).should('have.attr', ACTIVE_ATTR, 'true');
 
       alexa.el.locales.buttonGroup.eq(EN).click();
       alexa.el.locales.buttonGroup.eq(DE).click();
       alexa.el.locales.buttonGroup.eq(JP).click();
 
-      alexa.el.locales.buttonGroup.eq(EN).should('not.have.class', IS_ACTIVE_CLASS);
-      alexa.el.locales.buttonGroup.eq(DE).should('not.have.class', IS_ACTIVE_CLASS);
-      alexa.el.locales.buttonGroup.eq(JP).should('have.class', IS_ACTIVE_CLASS);
+      alexa.el.locales.buttonGroup.eq(EN).should('have.attr', ACTIVE_ATTR, 'false');
+      alexa.el.locales.buttonGroup.eq(DE).should('have.attr', ACTIVE_ATTR, 'false');
+      alexa.el.locales.buttonGroup.eq(JP).should('have.attr', ACTIVE_ATTR, 'true');
 
       alexa.el.nextButton.click();
 

@@ -2,7 +2,6 @@ import { getSearch } from 'connected-react-router';
 import _get from 'lodash/get';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Form } from 'reactstrap';
 
 import { wordmark } from '@/assets';
 import Button from '@/components/LegacyButton';
@@ -51,7 +50,7 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
   return (
     <AuthenticationContainer>
       <AuthBox>
-        <Form onSubmit={preventDefault(loginSubmit)}>
+        <form onSubmit={preventDefault(loginSubmit)}>
           <img className="auth-logo" src={wordmark} alt="logo" />
           <div className="auth-form-wrapper">
             <HeaderBox>
@@ -79,7 +78,7 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
               </div>
             </div>
           </div>
-        </Form>
+        </form>
 
         {children}
       </AuthBox>

@@ -154,19 +154,6 @@
   font-size: 15px;
 }
 
-.locale-button {
-  width: 130px;
-  margin: 4px 4px 4px 4px !important;
-  background-color: #fff !important;
-  border-radius: 5px !important;
-}
-
-.locale-button.active {
-  color: #132144 !important;
-  background: linear-gradient(rgb(239, 245, 246) 0%, rgb(238, 244, 246) 100%), rgb(255, 255, 255);
-  border-color: #dfe3ed !important;
-}
-
 .product-card {
   display: inline-block;
   width: 25%;
@@ -417,10 +404,6 @@
 
   /* margin-bottom: 16px; */
   margin: 0 -10px;
-}
-
-.locale-button-group {
-  flex-wrap: wrap;
 }
 
 .empty-card {

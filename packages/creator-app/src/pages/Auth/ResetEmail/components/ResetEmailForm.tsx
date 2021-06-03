@@ -1,8 +1,8 @@
 import React from 'react';
-import { FormGroup } from 'reactstrap';
 
 import client from '@/client';
 import { NetworkError } from '@/client/fetch';
+import Box from '@/components/Box';
 import Button from '@/components/LegacyButton';
 import { toast } from '@/components/Toast';
 import * as Router from '@/ducks/router';
@@ -40,10 +40,8 @@ const ResetEmailForm: React.FC<ResetEmailFormProps & ConnectedResetEmailFormProp
 
   return (
     <form onSubmit={preventDefault(resetEmail)} className="w-100">
-      <FormGroup>
-        <EmailInput value={email} onChange={setEmail} />
-      </FormGroup>
-      <div style={{ height: '45px', marginTop: '32px' }}>
+      <EmailInput value={email} onChange={setEmail} />
+      <Box height={45} mt={32}>
         <div className="float-left auth__link">
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a onClick={() => goToLogin()}>Back to Signing in</a>
@@ -53,7 +51,7 @@ const ResetEmailForm: React.FC<ResetEmailFormProps & ConnectedResetEmailFormProp
             Reset Password
           </Button>
         </div>
-      </div>
+      </Box>
     </form>
   );
 };

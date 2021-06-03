@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
-import { Label } from 'reactstrap';
 
 import { Admin } from '@/admin/client';
 import { CopyContent, CopyFields, ToField } from '@/admin/pages/Copy/styles';
@@ -10,6 +9,7 @@ import * as Account from '@/admin/store/ducks/accountV2';
 import { AdminTitle } from '@/admin/styles';
 import client from '@/client';
 import Button from '@/components/LegacyButton';
+import { Label } from '@/components/Text';
 import { toast } from '@/components/Toast';
 import { connect } from '@/hocs';
 

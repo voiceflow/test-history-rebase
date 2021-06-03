@@ -2,9 +2,8 @@ import React from 'react';
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import { GoogleLoginResponse } from 'react-google-login';
 import { Redirect } from 'react-router-dom';
-import { Form, FormGroup } from 'reactstrap';
 
-import Flex from '@/components/Flex';
+import Box, { Flex } from '@/components/Box';
 import Button from '@/components/LegacyButton';
 import { toast } from '@/components/Toast';
 import { Path } from '@/config/routes';
@@ -63,16 +62,16 @@ const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleA
   return (
     <AuthenticationContainer>
       <AuthBox>
-        <Form onSubmit={preventDefault(onLogin)}>
+        <form onSubmit={preventDefault(onLogin)}>
           <div className="auth-form-wrapper">
             <div className="confirm-helper">
               The email address <strong>{email}</strong> is already used by a Voiceflow account. Login below to switch to using Okta for
               authentication.
             </div>
-            <FormGroup className="passwordInput">
+            <Box className="passwordInput" mb={22} mt={8}>
               <PasswordInput value={password} onChange={setPassword} showPassword={showPassword} />
               {password.length !== 0 && <ShowPasswordIcon showPassword={showPassword} onClick={() => toggleShowPassword()} />}
-            </FormGroup>
+            </Box>
             <div className="row">
               <div className="col-7 auth__link">
                 <span />
@@ -84,7 +83,7 @@ const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleA
               </div>
             </div>
           </div>
-        </Form>
+        </form>
 
         <SocialLoginContainer>
           <Flex>

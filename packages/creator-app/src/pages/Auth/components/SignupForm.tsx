@@ -1,11 +1,11 @@
 import { getSearch } from 'connected-react-router';
 import _throttle from 'lodash/throttle';
 import React from 'react';
-import { Form, FormGroup, Input } from 'reactstrap';
 
 import { wordmarkLight } from '@/assets';
 import client from '@/client';
-import { ControlledInput } from '@/components/Input';
+import Box from '@/components/Box';
+import Input, { ControlledInput } from '@/components/Input';
 import Button from '@/components/LegacyButton';
 import { toast } from '@/components/Toast';
 import * as Router from '@/ducks/router';
@@ -94,7 +94,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
   return (
     <AuthenticationContainer dark>
       <AuthBox>
-        <Form role="form" onSubmit={preventDefault(signupSubmit)}>
+        <form onSubmit={preventDefault(signupSubmit)}>
           <img className="auth-logo" src={wordmarkLight} alt="logo" />
           <div className="auth-form-wrapper">
             <HeaderBox>
@@ -117,9 +117,9 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
             <InputContainer>
               <EmailInput value={email} onChange={setEmail} placeholder="Email address" />
             </InputContainer>
-            <FormGroup>
+            <Box mb={22}>
               <PasswordInput value={password} onChange={setPassword} />
-            </FormGroup>
+            </Box>
             {promo && (
               <InputContainer>
                 <ControlledInput
@@ -145,7 +145,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
               </div>
             </div>
           </div>
-        </Form>
+        </form>
 
         <SocialLogin coupon={coupon} disabled={isSignupDisabled} />
       </AuthBox>

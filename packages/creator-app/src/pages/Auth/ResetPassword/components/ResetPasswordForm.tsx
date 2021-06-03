@@ -1,7 +1,7 @@
 import React from 'react';
-import { FormGroup } from 'reactstrap';
 
 import client from '@/client';
+import Box from '@/components/Box';
 import Button from '@/components/LegacyButton';
 import { toast } from '@/components/Toast';
 import * as Router from '@/ducks/router';
@@ -41,12 +41,12 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps & ConnectedResetPasswor
 
   return (
     <form onSubmit={preventDefault(resetPassword)} className="w-100">
-      <FormGroup>
+      <Box mb={22}>
         <PasswordInput value={password} onChange={setPassword} placeholder="New Password" />
-      </FormGroup>
-      <FormGroup>
+      </Box>
+      <Box mb={22}>
         <PasswordInput value={confirm} onChange={setConfirm} name="confirm" placeholder="Confirm Password" isInvalid={password !== confirm} />
-      </FormGroup>
+      </Box>
       <div style={{ height: '45px', marginTop: '32px' }}>
         <div className="float-left auth__link">
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}

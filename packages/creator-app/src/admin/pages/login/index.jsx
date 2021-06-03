@@ -1,10 +1,11 @@
 import _get from 'lodash/get';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
-import { Form, FormGroup, Input } from 'reactstrap';
+import { Form, FormGroup } from 'reactstrap';
 
 import * as AccountV2 from '@/admin/store/ducks/accountV2';
 import { errorIcon, wordmark } from '@/assets';
+import Input from '@/components/Input';
 import Button from '@/components/LegacyButton';
 import { connect } from '@/hocs';
 

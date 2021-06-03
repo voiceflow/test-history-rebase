@@ -50,7 +50,7 @@ describe('Onboarding', () => {
     fireEvent.change(document.querySelector('[type="password"]')!, { target: { value: TEST_PASSWORD } });
 
     act(() => {
-      fireEvent.submit(screen.getByRole('form'));
+      fireEvent.submit(document.getElementsByTagName('form')[0]);
     });
 
     expect(signup).toBeCalledWith({

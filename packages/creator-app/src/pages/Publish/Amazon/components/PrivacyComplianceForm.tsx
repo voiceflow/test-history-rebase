@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Label } from 'reactstrap';
 import { createSelector } from 'reselect';
 
 import Checkbox from '@/components/Checkbox';
 import TextBox from '@/components/Form/TextBox';
 import RadioGroup from '@/components/RadioGroup';
+import { Label } from '@/components/Text';
 import * as Version from '@/ducks/version';
 import { useBoundValue, useDispatch } from '@/hooks';
 import { getTargetValue } from '@/utils/dom';

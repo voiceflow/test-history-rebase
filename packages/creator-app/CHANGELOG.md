@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.383.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.382.2...@voiceflow/creator-app@1.383.0) (2021-06-03)
+
+
+### Features
+
+* show chips vertically, inline chips with chat dialog (VF-900) ([#3454](https://github.com/voiceflow/creator-app/issues/3454)) ([d562f9a](https://github.com/voiceflow/creator-app/commit/d562f9a2b8ff56808b6af9dec9211f91775e218d))
+
+
+
+
+
 ## [1.382.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.382.1...@voiceflow/creator-app@1.382.2) (2021-06-03)
 
 

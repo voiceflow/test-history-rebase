@@ -1,17 +1,18 @@
 {
-  "specials": ["bin", "eslint", "istanbul", "ttypescript", "webpack", "jest", "babel"],
+  "specials": [
+    "bin",
+    "istanbul",
+    "webpack",
+    "jest",
+    "babel"
+  ],
   "ignores": [
     "@svgr/webpack",
     "@hot-loader/react-dom",
+    "@voiceflow/realtime-sdk",
     "@types/*",
-    "@voiceflow/eslint-config",
     "postcss*",
-    "eslint-import-resolver-typescript",
-    "babel-*",
-    "@babel/preset-es2015",
-    "@babel/preset-typescript",
-    "@babel/helper-simple-access",
-    "babel/preset-react",
+    "babel-loader",
     "css-loader",
     "postcss-loader",
     "file-loader",
@@ -31,7 +32,6 @@
     "sinon",
     "sinon-chai",
     "chai",
-    "chai-as-promised",
-    "_storybook"
+    "chai-as-promised"
   ]
 }

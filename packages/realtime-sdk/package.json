@@ -1,0 +1,39 @@
+{
+  "name": "@voiceflow/realtime-sdk",
+  "version": "1.0.0",
+  "author": "Voiceflow",
+  "bugs": {
+    "url": "https://github.com/voiceflow/creator-app/issues"
+  },
+  "dependencies": {
+    "typescript-fsa": "^3.0.0"
+  },
+  "files": [
+    "build"
+  ],
+  "homepage": "https://github.com/voiceflow/creator-app#readme",
+  "peerDependencies": {
+    "@voiceflow/api-sdk": "^1.31.10"
+  },
+  "devDependencies": {
+    "@voiceflow/api-sdk": "^1.31.10"
+  },
+  "license": "UNLICENSED",
+  "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voiceflow/creator-app.git"
+  },
+  "scripts": {
+    "build": "yarn clean && ttsc --project tsconfig.build.json",
+    "clean": "rimraf build",
+    "lint": "eslint \"**/*.{js,ts}\"",
+    "lint:fix": "yarn lint --fix",
+    "lint:quiet": "yarn lint --quiet",
+    "lint:report": "yarn lint --format json -o sonar/report.json",
+    "test": "exit 0",
+    "test:dependencies": "depcheck",
+    "test:integration": "exit 0",
+    "test:unit": "exit 0"
+  }
+}

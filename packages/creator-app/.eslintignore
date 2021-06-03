@@ -1,4 +1,6 @@
-/public
-/scripts
+build/
 
-/src/assets
+public/
+scripts/
+
+src/assets/

@@ -1,0 +1,4 @@
+{
+  "specials": ["bin", "istanbul", "ttypescript"],
+  "ignores": []
+}

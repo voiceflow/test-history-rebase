@@ -27,7 +27,7 @@ parameters:
     default: "admin-ui"
 
 orbs:
-  vfcommon: voiceflow/common@0.0.140
+  vfcommon: voiceflow/common@0.0.141
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 
@@ -85,6 +85,11 @@ jobs:
       - vfcommon/install_node_modules:
           avoid_post_install_scripts: false
       - run:
+          name: Build realtime-sdk
+          command: |
+            yarn build --scope @voiceflow/realtime-sdk
+          working_directory: ~/voiceflow
+      - run:
           name: Build app, if docker container does not exist
           command: |
             if [[ -z "$CIRCLE_BRANCH" && ! -z "$CIRCLE_TAG" ]]; then
@@ -106,6 +111,29 @@ jobs:
             - build
             - app.dockerfile
             - config
+
+  build-realtime:
+    parameters:
+      check_image:
+        description: Checks if the Docker image exists
+        type: boolean
+        default: false
+    executor: vfcommon/node-executor
+    steps:
+      - checkout
+      - when:
+          condition: << parameters.check_image >>
+          steps:
+            - vfcommon/install_aws_cli
+            - vfcommon/check_image_exists:
+                image_repo: << pipeline.parameters.container-image-url-creator-app >>
+      - vfcommon/install_node_modules:
+          avoid_post_install_scripts: false
+      - run:
+          name: Build realtime
+          command: |
+            yarn build --scope @voiceflow/realtime*
+          working_directory: ~/voiceflow
 
   build-admin:
     executor: vfcommon/node-executor
@@ -238,7 +266,7 @@ workflows:
             tags:
               ignore: /.*/
 
-  test-and-release-app:
+  test-and-release:
     jobs:
       - test:
           <<: *slack-fail-post-step
@@ -264,16 +292,26 @@ workflows:
           filters:
             <<: *ignore_autorebase_staging_filters
 
+      - build-realtime:
+          <<: *slack-fail-post-step
+          context: dev-test
+          post-steps:
+            - jira/notify
+          filters:
+            <<: *ignore_autorebase_staging_filters
+
       - vfcommon/release_monorepo:
           <<: *slack-fail-post-step
           sentry_project: creator-app
           avoid_post_install_scripts: false
+          publish_args: --create-release github
           ssh_key: << pipeline.parameters.ssh-fingerprint >>
           context: dev-test
           requires:
             - test
             - vfcommon/test_e2e_v2
             - build-app
+            - build-realtime
           filters:
             branches:
               only: master

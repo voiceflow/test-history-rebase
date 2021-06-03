@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.382.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.382.0...@voiceflow/creator-app@1.382.1) (2021-06-03)
+
+
+### Bug Fixes
+
+* remove reactstrap w custom components (VF-1066) ([#3476](https://github.com/voiceflow/creator-app/issues/3476)) ([e76cec9](https://github.com/voiceflow/creator-app/commit/e76cec96a9ea6394fd0f661ddf294486e1d8b36a))
+
+
+
+
+
 # [1.382.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.381.3...@voiceflow/creator-app@1.382.0) (2021-06-03)
 
 

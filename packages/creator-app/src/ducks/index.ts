@@ -17,6 +17,7 @@ import projectList, * as ProjectList from '@/ducks/projectList';
 import prototype, * as Prototype from '@/ducks/prototype';
 import realtime, * as Realtime from '@/ducks/realtime';
 import recent, * as Recent from '@/ducks/recent';
+import reportTag, * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import session, * as Session from '@/ducks/session';
 import slot, * as Slot from '@/ducks/slot';
@@ -56,6 +57,7 @@ const getCombinedReducer = (history: History) =>
     [Template.STATE_KEY]: template,
     [Feature.STATE_KEY]: feature,
     [Version.STATE_KEY]: version,
+    [ReportTag.STATE_KEY]: reportTag,
     [Transcript.STATE_KEY]: transcript,
   });
 

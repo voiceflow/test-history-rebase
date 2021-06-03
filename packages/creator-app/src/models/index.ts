@@ -23,6 +23,7 @@ export * from './Project';
 export * from './ProjectList';
 export * from './Prototype';
 export * from './Query';
+export * from './ReportTag';
 export * from './Slot';
 export * from './Speak';
 export * from './Template';

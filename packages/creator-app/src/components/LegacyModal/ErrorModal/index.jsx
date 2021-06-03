@@ -2,6 +2,7 @@ import React from 'react';
 
 import { supportGraphic } from '@/assets';
 import Alert, { AlertVariant } from '@/components/Alert';
+import Box from '@/components/Box';
 import Button from '@/components/Button';
 import { clearModal } from '@/ducks/modal';
 import { connect } from '@/hocs';
@@ -20,7 +21,7 @@ export const ErrorModal = ({ error, dismiss }) => {
         <img src={supportGraphic} alt="Support" height={80} />
         {error.message ? (
           <>
-            <Alert variant={AlertVariant.DANGER}>{error.message}</Alert>
+            <Box my={20}>{error.message}</Box>
             {error.violations
               ? error.violations.map((violation, i) => (
                   <Alert color="danger" key={i}>

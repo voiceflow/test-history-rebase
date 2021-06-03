@@ -12,24 +12,28 @@ import commonConfig from './common';
 
 export default merge(commonConfig, commonBuildConfig, {
   plugins: [
-    new FileManagerPlugin({
-      events: {
-        onEnd: {
-          copy: [
-            {
-              source: `${paths.buildDir}/index.html`,
-              destination: `${paths.buildDir}/prototype.html`,
-            },
-          ],
-        },
-      },
-    }),
     ...(IS_SERVING || !analyze
       ? []
       : [
           new BundleAnalyzerPlugin({
             analyzerMode: 'static',
             reportFilename: path.resolve(__dirname, '../../../bundle-report.html'),
+          }),
+        ]),
+    ...(IS_SERVING
+      ? []
+      : [
+          new FileManagerPlugin({
+            events: {
+              onEnd: {
+                copy: [
+                  {
+                    source: `${paths.buildDir}/index.html`,
+                    destination: `${paths.buildDir}/prototype.html`,
+                  },
+                ],
+              },
+            },
           }),
         ]),
   ],

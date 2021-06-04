@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.386.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.386.0...@voiceflow/creator-app@1.386.1) (2021-06-04)
+
+
+### Bug Fixes
+
+* forced scrollbar (VF-1087) ([90427eb](https://github.com/voiceflow/creator-app/commit/90427eb393045010ac1f8893e6703ad7d85208c5))
+
+
+
+
+
 # [1.386.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.385.0...@voiceflow/creator-app@1.386.0) (2021-06-04)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.385.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.384.0...@voiceflow/creator-app@1.385.0) (2021-06-04)
+
+
+### Features
+
+* transcript actions component (VF-1022) ([#3482](https://github.com/voiceflow/creator-app/issues/3482)) ([254ea6c](https://github.com/voiceflow/creator-app/commit/254ea6cad96a0be3b4e212f10c83c5a2c3568a44))
+
+
+
+
+
 # [1.384.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.383.0...@voiceflow/creator-app@1.384.0) (2021-06-03)
 
 

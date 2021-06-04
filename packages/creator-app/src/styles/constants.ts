@@ -129,6 +129,9 @@ export enum ClassName {
   // Project Creation
   CREATE_PROJECT_LEFT_ACTION = 'vf-create-project-left-action',
   CREATE_PROJECT_RIGHT_ACTION = 'vf-create-project-right-action',
+  TRANSCRIPT_ITEM_STATUSES = 'vf-transcript-item-statuses',
+
+  TRANSCRIPT_ITEM_DROPDOWN_BUTTON = 'vf-transcript-item-dropdown-item',
 }
 
 export enum ExternalClassName {

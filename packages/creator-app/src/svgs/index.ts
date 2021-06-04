@@ -3,10 +3,7 @@
 // a
 export { default as accountLinking } from './account-linking.svg';
 export { default as action } from './action.svg';
-export { default as actionsCheckmark } from './actions-checkmark.svg';
-export { default as activeBookmark } from './active-bookmark.svg';
 export { default as activeDelete } from './active-delete.svg';
-export { default as activeReviewed } from './active-reviewed.svg';
 export { default as add } from './add.svg';
 export { default as addBoard } from './add-board.svg';
 export { default as addStep } from './add-step.svg';
@@ -40,6 +37,7 @@ export { default as chatBubbles } from './chat-bubbles.svg';
 export { default as check } from './check.svg';
 export { default as check2 } from './check-2.svg';
 export { default as checkmark } from './checkmark.svg';
+export { default as checkmarkFilled } from './checkmark-circle-filled.svg';
 export { default as choice } from './choice.svg';
 export { default as circle } from './circle.svg';
 export { default as clock } from './clock.svg';

@@ -17,6 +17,7 @@ import {
   goToPrototype,
   goToPublish,
   goToSettings,
+  goToTranscript,
   goToWorkspaceSettings,
   redirectTo,
   redirectToCanvasCommenting,
@@ -189,3 +190,14 @@ export const goToCurrentWorkspaceSettings = (): SyncThunk => (dispatch, getState
 
   dispatch(goToWorkspaceSettings(workspaceID));
 };
+
+export const goToTargetTranscript =
+  (transcriptID: string): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const versionID = Session.activeVersionIDSelector(state);
+
+    Errors.assertVersionID(versionID);
+
+    dispatch(goToTranscript(versionID, transcriptID));
+  };

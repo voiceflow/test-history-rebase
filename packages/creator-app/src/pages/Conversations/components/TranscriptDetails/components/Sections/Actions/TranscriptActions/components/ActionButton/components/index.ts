@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 export const ActionContainer = styled.div`
   display: flex;
@@ -22,11 +22,16 @@ export const ActionLabel = styled.div`
   white-space: nowrap;
 `;
 
-export const ActionIcon = styled.div`
-  margin-left: 200px;
+export const ActionIcon = styled.div<{ left?: number }>`
   position: relative;
   top: 3px;
   :hover {
     opacity: 0.8;
   }
+
+  ${({ left }) =>
+    left &&
+    css`
+      left: ${left}px;
+    `}
 `;

@@ -58,6 +58,8 @@ export const goToProducts = (versionID: string) => goTo(generatePath(Path.PRODUC
 
 export const goToNewProduct = (versionID: string) => goTo(generatePath(Path.PRODUCT_DETAILS, { versionID, id: 'new' }));
 
+export const goToTranscript = (versionID: string, transcriptID?: string) => goTo(generatePath(Path.CONVERSATIONS, { versionID, transcriptID }));
+
 export const goToEditProduct = (versionID: string, productID: string) => goTo(generatePath(Path.PRODUCT_DETAILS, { versionID, id: productID }));
 
 export const goToInteractionModel = (versionID: string, diagramID: string, modelType?: string, entityID?: string) =>

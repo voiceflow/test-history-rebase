@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.386.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.385.0...@voiceflow/creator-app@1.386.0) (2021-06-04)
+
+
+### Features
+
+* chip layout style (VF-1069) ([#3483](https://github.com/voiceflow/creator-app/issues/3483)) ([f9bc75f](https://github.com/voiceflow/creator-app/commit/f9bc75faf086b72b9c7fcd1d2788758acb7cd859))
+
+
+
+
+
 # [1.385.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.384.0...@voiceflow/creator-app@1.385.0) (2021-06-04)
 
 

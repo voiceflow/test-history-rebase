@@ -2,6 +2,7 @@ import { toast } from '@/components/Toast';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Realtime from '@/ducks/realtime';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 
 import { StoreMiddleware } from '../types';
@@ -12,10 +13,12 @@ export const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (a
   const state = store.getState();
   const viewers = Realtime.activeDiagramViewersSelector(state);
   const isLibraryRole = Workspace.isLibraryRoleSelector(state);
+  const activeDiagramID = Session.activeDiagramIDSelector(state); // do not apply creator middleware if no active diagram
+
   const hasViewers = viewers.length > 1;
   const isHistoryAction = CREATOR_HISTORY_ACTIONS.includes(action.type);
 
-  if (isLibraryRole) {
+  if (isLibraryRole || !activeDiagramID) {
     next(action);
     return;
   }

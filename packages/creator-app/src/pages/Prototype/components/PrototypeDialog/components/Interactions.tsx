@@ -92,13 +92,14 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
 const Container = styled.div`
   position: sticky;
   bottom: 0;
+  height: 65px;
   margin-left: -24px;
   margin-right: -24px;
   background-image: linear-gradient(to bottom, rgba(253, 253, 253, 0), rgba(253, 253, 253, 0.3) 8%, #fdfdfd 80%);
 `;
 
 const ScrollContainer = styled(SimpleBar)`
-  padding: 16px 20px;
+  padding: 0 20px 15px 20px;
   white-space: nowrap;
 `;
 

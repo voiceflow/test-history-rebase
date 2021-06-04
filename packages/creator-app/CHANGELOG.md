@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.387.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.386.2...@voiceflow/creator-app@1.387.0) (2021-06-04)
+
+
+### Features
+
+* transcript manager with dummy data (VF-1026) ([#3480](https://github.com/voiceflow/creator-app/issues/3480)) ([623ae3d](https://github.com/voiceflow/creator-app/commit/623ae3d1282cf2f64ccc7a228c683c458a68c009))
+
+
+
+
+
 ## [1.386.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.386.1...@voiceflow/creator-app@1.386.2) (2021-06-04)
 
 

@@ -1,5 +1,6 @@
 import { BaseRequest } from '@voiceflow/general-types';
 import React from 'react';
+import SimpleBar from 'simplebar-react';
 
 import { Flex } from '@/components/Box';
 import { styled, transition } from '@/hocs';
@@ -11,22 +12,6 @@ import { hexToRGBA, toRGBAString } from '@/utils/colors';
 import { preventDefault } from '@/utils/dom';
 
 import { Interaction } from '../../../types';
-
-const Container = styled.div`
-  position: sticky;
-  bottom: 0;
-  margin-left: -24px;
-  margin-right: -24px;
-  padding: 0 19px 15px 19px;
-  background-image: linear-gradient(to bottom, rgba(253, 253, 253, 0), rgba(253, 253, 253, 0.3) 8%, #fdfdfd 80%);
-  white-space: nowrap;
-  overflow-x: scroll;
-  overflow-y: hidden;
-
-  & > span {
-    margin: 5px 5px 0 5px;
-  }
-`;
 
 type ChipProps = {
   rgbaColor: Color;
@@ -104,6 +89,19 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
   );
 };
 
+const Container = styled.div`
+  position: sticky;
+  bottom: 0;
+  margin-left: -24px;
+  margin-right: -24px;
+  background-image: linear-gradient(to bottom, rgba(253, 253, 253, 0), rgba(253, 253, 253, 0.3) 8%, #fdfdfd 80%);
+`;
+
+const ScrollContainer = styled(SimpleBar)`
+  padding: 16px 20px;
+  white-space: nowrap;
+`;
+
 export const StickyInteractions: React.FC<InteractionsProps> = (props) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -115,7 +113,9 @@ export const StickyInteractions: React.FC<InteractionsProps> = (props) => {
 
   return (
     <Container ref={containerRef}>
-      <Interactions {...props} />
+      <ScrollContainer>
+        <Interactions {...props} />
+      </ScrollContainer>
     </Container>
   );
 };

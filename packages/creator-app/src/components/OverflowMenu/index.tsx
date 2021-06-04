@@ -2,23 +2,23 @@
 import React from 'react';
 
 import Dropdown, { DropdownPlacement } from '@/components/Dropdown';
-import Menu, { MenuOption, MenuProps } from '@/components/Menu';
+import OptionsMenu, { MenuOption } from '@/components/NestedMenu/OptionsMenu';
 import SvgIcon from '@/components/SvgIcon';
+import { truthy } from '@/utils/typeGuards';
 
 import Container from './components/OverflowMenuContainer';
 
-export type OverflowMenuProps<T = undefined> = {
+export type OverflowMenuProps = {
   menu?: React.ReactNode;
-  options?: MenuOption<T>[];
+  options?: (MenuOption | null)[];
   disabled?: boolean;
-  onSelect?: MenuProps<T>['onSelect'];
   placement?: DropdownPlacement;
   selfDismiss?: boolean;
 };
 
-const OverflowMenu = <T extends any = undefined>({ menu, options, onSelect, disabled, placement, selfDismiss }: OverflowMenuProps<T>) => (
-  <Dropdown<T>
-    {...(onSelect ? { onSelect, options } : { menu: menu || <Menu options={options!} /> })}
+const OverflowMenu = ({ menu, options = [], disabled, placement, selfDismiss }: OverflowMenuProps) => (
+  <Dropdown
+    menu={menu || ((onToggle) => <OptionsMenu options={options.filter(truthy)} onToggle={onToggle} />)}
     placement={placement}
     selfDismiss={selfDismiss}
   >

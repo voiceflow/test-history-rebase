@@ -16,11 +16,13 @@ export type PortDescriptor = Partial<Omit<Port, 'id'>>;
 
 export type NodeDescriptor = Partial<Overwrite<Node, { ports?: Partial<Record<'in' | 'out', PortDescriptor[]>> }>>;
 
+export type PushToPath = ({ type, label }: { type: string; label: string }) => void;
+
 export type NodeEditorPropsType<T> = {
   nodeID: string;
   data: NodeData<T>;
   onChange: NodeDataUpdater<T>;
-  pushToPath?: ({ type, label }: { type: string; label: string }) => void;
+  pushToPath?: PushToPath;
   focusedNode?: NodeDescriptor;
   isOpen?: boolean;
   expanded: boolean;

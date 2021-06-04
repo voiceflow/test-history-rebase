@@ -3,56 +3,32 @@ import React from 'react';
 import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
-import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
-import SuggestionChips, { chipFactory } from '@/pages/Canvas/components/SuggestionChips';
+import { useChipOption, useNoReplyOption } from '@/pages/Canvas/managers/components/responseOptions';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { PlatformContext } from '@/pages/Skill/contexts';
 
 import { HelpTooltip } from './components';
 
 const PromptEditor: NodeEditor<NodeData.Prompt> = ({ data, onChange, pushToPath }) => {
-  const hasReprompt = !!data.reprompt;
-  const isAlexa = React.useContext(PlatformContext) === PlatformType.ALEXA;
-  const toggleReprompt = React.useCallback(() => onChange({ reprompt: hasReprompt ? null : repromptFactory() }), [hasReprompt, onChange]);
-  const onRepromptClick = React.useCallback(() => pushToPath?.({ type: 'reprompts', label: 'Reprompts' }), [pushToPath]);
+  const [noReplyOption, NoReplyPage] = useNoReplyOption({ data, onChange, pushToPath });
+  const [chipOption, ChipPage] = useChipOption({ data, onChange, pushToPath });
 
-  const hasChips = !!data.chips;
-  const toggleChips = React.useCallback(() => onChange({ chips: hasChips ? null : chipFactory() }), [hasChips, onChange]);
+  const onRepromptClick = React.useCallback(() => pushToPath?.({ type: 'reprompts', label: 'Reprompts' }), [pushToPath]);
 
   return (
     <Content
       footer={() => (
         <Controls
-          menu={
-            <OverflowMenu
-              placement="top-end"
-              options={[
-                {
-                  label: hasReprompt ? 'Remove No Reply Response' : 'Add  No Reply Response',
-                  onClick: toggleReprompt,
-                },
-                ...(!isAlexa
-                  ? [
-                      {
-                        label: hasChips ? 'Remove Suggestion Chips' : 'Add Suggestion Chips',
-                        onClick: toggleChips,
-                      },
-                    ]
-                  : []),
-              ]}
-            />
-          }
+          menu={<OverflowMenu placement="top-end" options={[noReplyOption, chipOption]} />}
           tutorial={{ content: <HelpTooltip />, blockType: data.type }}
         />
       )}
     >
       <Section customContentStyling={{ color: '#62778c' }}>Prompts will stop & listen for the user to match an intent.</Section>
       <Section header="Reprompt" headerVariant={HeaderVariant.LINK} isLink onClick={onRepromptClick}></Section>
-      {hasReprompt && <NoReplyResponse pushToPath={pushToPath} />}
-      {hasChips && <SuggestionChips pushToPath={pushToPath!} />}
+      {NoReplyPage}
+      {ChipPage}
     </Content>
   );
 };

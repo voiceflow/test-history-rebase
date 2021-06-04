@@ -29,6 +29,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   debug,
   locale,
   status,
+  buttons,
   isPublic,
   autoplay,
   setAtTop,
@@ -99,6 +100,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         atTop={atTop}
         setAtTop={setAtTop}
         isPublic={isPublic}
+        buttons={buttons}
         // to show loader until first bubble message is up or "waiting for user interaction"
         isLoading={isLoading || (!isBubbleMessageShown && prototypeMachineStatus !== PMStatus.WAITING_USER_INTERACTION)}
         messages={messages}
@@ -124,6 +126,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
 };
 
 const mapStateToProps = {
+  buttons: PrototypeDuck.prototypeButtonsSelector,
   status: PrototypeDuck.prototypeStatusSelector,
   locales: Version.activeLocalesSelector,
   autoplay: PrototypeDuck.prototypeAutoplaySelector,

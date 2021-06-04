@@ -6,12 +6,14 @@ import Badge from '@/components/Badge';
 import Box from '@/components/Box';
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
 import ListManager from '@/components/ListManager';
+import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import _VariablesInput from '@/components/VariablesInput';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
-import { FormControl } from '@/pages/Canvas/components/Editor';
+import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
+import { useButtonOption } from '@/pages/Canvas/managers/components/responseOptions';
 import { ConnectedProps } from '@/types';
 
 import InfoTooltip from './InfoTooltip';
@@ -30,50 +32,53 @@ const ChipForm: React.FC<ConnectedChipFormProps> = ({ focus, chips }) => {
   const updateData = useUpdateData(focus.target || undefined);
   const updateChips = React.useCallback((chips) => updateData({ chips }), [updateData]);
   const [isEmpty, updateIsEmpty] = React.useState(true);
+  const buttonOption = useButtonOption();
 
   if (!chips) return null;
 
   return (
-    <Section>
-      <FormControl label="Chips" tooltip={<InfoTooltip />}>
-        <ListManagerWrapper>
-          <ListManager
-            items={chips}
-            addToStart
-            beforeAdd={() => (inputRef as any).current.forceUpdate()}
-            renderForm={({ value, onAdd, onChange }) => (
-              <VariablesInput
-                ref={inputRef}
-                placeholder="Add suggestion chip"
-                value={value?.label}
-                onBlur={variableInputToChip(onChange)}
-                onEmpty={updateIsEmpty}
-                rightAction={
-                  !isEmpty && (
-                    <Badge slide onClick={() => variableInputToChip(onAdd)((inputRef as any).current.getCurrentValue())}>
-                      Enter
-                    </Badge>
-                  )
-                }
-                onEnterPress={variableInputToChip(onAdd)}
-              />
-            )}
-            onUpdate={updateChips}
-            renderItem={(item, { onUpdate }) => (
-              <Box width="100%">
+    <Content footer={() => <Controls menu={<OverflowMenu placement="top-end" options={[buttonOption]} />} />}>
+      <Section>
+        <FormControl label="Chips" tooltip={<InfoTooltip />} contentBottomUnits={0}>
+          <ListManagerWrapper>
+            <ListManager
+              items={chips}
+              addToStart
+              beforeAdd={() => (inputRef as any).current.forceUpdate()}
+              renderForm={({ value, onAdd, onChange }) => (
                 <VariablesInput
-                  placeholder="Update suggestion chip"
-                  value={item.label}
-                  onBlur={variableInputToChip(onUpdate)}
-                  onEnterPress={onUpdate}
-                  creatable={false}
+                  ref={inputRef}
+                  placeholder="Add suggestion chip"
+                  value={value?.label}
+                  onBlur={variableInputToChip(onChange)}
+                  onEmpty={updateIsEmpty}
+                  rightAction={
+                    !isEmpty && (
+                      <Badge slide onClick={() => variableInputToChip(onAdd)((inputRef as any).current.getCurrentValue())}>
+                        Enter
+                      </Badge>
+                    )
+                  }
+                  onEnterPress={variableInputToChip(onAdd)}
                 />
-              </Box>
-            )}
-          />
-        </ListManagerWrapper>
-      </FormControl>
-    </Section>
+              )}
+              onUpdate={updateChips}
+              renderItem={(item, { onUpdate }) => (
+                <Box width="100%">
+                  <VariablesInput
+                    placeholder="Update suggestion chip"
+                    value={item.label}
+                    onBlur={variableInputToChip(onUpdate)}
+                    onEnterPress={onUpdate}
+                    creatable={false}
+                  />
+                </Box>
+              )}
+            />
+          </ListManagerWrapper>
+        </FormControl>
+      </Section>
+    </Content>
   );
 };
 

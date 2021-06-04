@@ -1,3 +1,4 @@
+import { ButtonsLayout } from '@voiceflow/general-types';
 import _constant from 'lodash/constant';
 import { batch } from 'react-redux';
 
@@ -56,6 +57,7 @@ const setupPublicPrototype =
       ...prototype?.settings,
       plan: plan as PlanType,
       layout,
+      buttons: prototype?.settings.buttons as ButtonsLayout,
       locales: prototype.data.locales as AnyLocale[],
       hasPassword: prototype?.settings.hasPassword ?? false,
       projectName: prototype.data.name,

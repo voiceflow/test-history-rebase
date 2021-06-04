@@ -1,4 +1,4 @@
-import { BaseRequest } from '@voiceflow/general-types';
+import { BaseRequest, ButtonsLayout } from '@voiceflow/general-types';
 import React from 'react';
 
 import Box, { Flex } from '@/components/Box';
@@ -25,6 +25,7 @@ export type ChatDialogProps = {
   onReset: () => void;
   messages: Message[];
   isMobile?: boolean;
+  buttons?: ButtonsLayout;
   isLoading?: boolean;
   testEnded?: boolean;
   isListening?: boolean;
@@ -54,6 +55,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   onStart,
   isMuted,
   onReset,
+  buttons,
   messages,
   isMobile,
   isLoading,
@@ -85,6 +87,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
           isMobile={isMobile}
           hideSessionMessages
           showPadding
+          buttons={buttons}
           color={color}
           avatarURL={avatarURL}
           onInteraction={onSend}

@@ -1,11 +1,11 @@
-import { BaseRequest } from '@voiceflow/general-types';
+import { BaseRequest, ButtonsLayout } from '@voiceflow/general-types';
 import React from 'react';
 
 import Divider from '@/components/Divider';
 import * as Prototype from '@/ducks/prototype';
 
 import { Interaction, Message, MessageType } from '../../types';
-import { Container, Ended, Interactions, MessagesContainer } from './components';
+import { Container, Ended, InlineInteractions, MessagesContainer, StickyInteractions } from './components';
 import { Audio, Debug, Loading, Speak, User, Visual } from './components/Message';
 import useMessageFilters from './filters';
 import { checkIfFirstInSeries } from './utils';
@@ -21,6 +21,7 @@ type DialogPrototypeProps = {
   isMobile?: boolean;
   showPadding?: boolean;
   color?: string;
+  buttons?: ButtonsLayout;
   avatarURL?: string;
   interactions: Interaction[];
   onInteraction: (request: string | BaseRequest) => void;
@@ -38,11 +39,13 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   interactions,
   isMobile,
   color,
+  buttons = ButtonsLayout.STACKED,
   avatarURL,
   onInteraction,
 }) => {
   // filter out messages based on settings
   const messages = useMessageFilters(rawMessages);
+  const interactionProps = { color, interactions, onInteraction };
 
   return (
     <Container isPublic={isPublic} showPadding={showPadding} isMobile={isMobile}>
@@ -116,9 +119,10 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
         {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && <Ended messages={messages} />}
 
         <Loading isLoading={isLoading} avatarURL={avatarURL} />
+        {buttons === ButtonsLayout.STACKED && <InlineInteractions {...interactionProps} />}
       </MessagesContainer>
 
-      <Interactions color={color} interactions={interactions} onInteraction={onInteraction} />
+      {buttons === ButtonsLayout.CAROUSEL && <StickyInteractions {...interactionProps} />}
 
       <span ref={bottomScrollRef} />
     </Container>

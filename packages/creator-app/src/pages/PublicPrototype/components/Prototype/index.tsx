@@ -179,6 +179,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ status,
             color={brandColor}
             avatarURL={isCustomizedPrototypeAllowed ? settings.avatar : undefined}
             layout={settings.layout}
+            buttons={settings.buttons}
             onMute={onMute}
             isIdle={isIdle}
             onSend={sendInteraction}

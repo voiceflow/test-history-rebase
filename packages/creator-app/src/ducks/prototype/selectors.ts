@@ -1,3 +1,4 @@
+import { ButtonsLayout } from '@voiceflow/general-types';
 import { createSelector } from 'reselect';
 
 import * as Session from '@/ducks/session';
@@ -52,6 +53,10 @@ export const activePathBlockIDsSelector = createSelector([prototypeSelector], ({
 export const activePathLinkIDsSelector = createSelector([prototypeSelector], ({ activePathLinkIDs }) => activePathLinkIDs);
 
 export const prototypeWebhookDataSelector = createSelector([prototypeSelector], ({ webhook }) => webhook);
+
+export const prototypeSettingsSelector = createSelector([prototypeSelector], ({ settings }) => settings);
+
+export const prototypeButtonsSelector = createSelector([prototypeSelector], ({ settings }) => settings.buttons as ButtonsLayout);
 
 export const prototypeLayoutSelector = createSelector([prototypeSelector], ({ settings }) => settings.layout || PrototypeLayout.TEXT_DIALOG);
 

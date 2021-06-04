@@ -1,6 +1,7 @@
 import { BaseRequest } from '@voiceflow/general-types';
 import React from 'react';
 
+import { Flex } from '@/components/Box';
 import { styled, transition } from '@/hocs';
 import perf, { PerfAction } from '@/performance';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -18,15 +19,13 @@ const Container = styled.div`
   margin-right: -24px;
   padding: 0 19px 15px 19px;
   background-image: linear-gradient(to bottom, rgba(253, 253, 253, 0), rgba(253, 253, 253, 0.3) 8%, #fdfdfd 80%);
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
 
   & > span {
     margin: 5px 5px 0 5px;
   }
-`;
-
-const Content = styled.div`
-  display: flex;
-  flex-wrap: wrap-reverse;
 `;
 
 type ChipProps = {
@@ -80,6 +79,32 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
       perf.action(PerfAction.PROTOTYPE_CHIPS_RENDERED);
     }
   }, [hasInteractions]);
+
+  if (!hasInteractions) {
+    return null;
+  }
+
+  return (
+    <>
+      {interactions.map(({ name, request }) => {
+        const ChipElement = request ? ActionChip : Chip;
+        return (
+          <ChipElement
+            key={name}
+            onClick={() => onInteraction(request || name)}
+            className={ClassName.PROTOTYPE_CHIP}
+            rgbaColor={hexToRGBA(color ?? '#5D9DF5')}
+            onMouseDown={preventDefault()}
+          >
+            {name}
+          </ChipElement>
+        );
+      })}
+    </>
+  );
+};
+
+export const StickyInteractions: React.FC<InteractionsProps> = (props) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useLayoutEffect(() => {
@@ -88,31 +113,17 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
     }
   });
 
-  if (!hasInteractions) {
-    return null;
-  }
-
   return (
     <Container ref={containerRef}>
-      <Content>
-        {interactions.map(({ name, request }) => {
-          const ChipElement = request ? ActionChip : Chip;
-
-          return (
-            <ChipElement
-              key={name}
-              onClick={() => onInteraction(request || name)}
-              className={ClassName.PROTOTYPE_CHIP}
-              rgbaColor={hexToRGBA(color ?? '#5D9DF5')}
-              onMouseDown={preventDefault()}
-            >
-              {name}
-            </ChipElement>
-          );
-        })}
-      </Content>
+      <Interactions {...props} />
     </Container>
   );
 };
 
-export default Interactions;
+export const InlineInteractions: React.FC<InteractionsProps> = (props) => {
+  return (
+    <Flex flexWrap="wrap-reverse" pt={8} ml={40}>
+      <Interactions {...props} />
+    </Flex>
+  );
+};

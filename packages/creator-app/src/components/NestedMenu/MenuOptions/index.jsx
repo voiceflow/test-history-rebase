@@ -45,7 +45,7 @@ function MenuOptions({
 
       if (multiLevelDropdown && !!option.options?.length) {
         return (
-          <Manager key={getOptionKey(option)}>
+          <Manager key={getOptionKey(option) || i}>
             <Reference>
               {({ ref }) => (
                 <SelectItem
@@ -95,7 +95,7 @@ function MenuOptions({
       return (
         <SelectItem
           className={ClassName.MENU_ITEM}
-          key={getOptionKey(option)}
+          key={getOptionKey(option) || i}
           ref={onItemRef(index)}
           // to prevent parent popper from closing onSelect
           onClick={stopImmediatePropagation(() => !option?.disabled && onSelect(getOptionValue(option), [...optionsPath, i]))}

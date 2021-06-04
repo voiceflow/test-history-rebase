@@ -1,5 +1,5 @@
 import { VersionPrototype } from '@voiceflow/api-sdk';
-import { BaseRequest, DeviceType } from '@voiceflow/general-types';
+import { BaseRequest, ButtonsLayout, DeviceType } from '@voiceflow/general-types';
 import { StepData } from '@voiceflow/general-types/build/nodes/visual';
 
 import { PlanType } from '@/constants';
@@ -12,6 +12,7 @@ export type PrototypeSettings = Omit<VersionPrototype['settings'], 'layout'> & {
   locales: AnyLocale[];
   projectName: string;
   hasPassword: boolean;
+  buttons: ButtonsLayout;
 };
 
 // context types
@@ -57,6 +58,7 @@ export type PrototypeShareViewSettings = {
   brandImage?: string;
   avatar?: string;
   password?: string;
+  buttons?: string;
 };
 
 export interface PrototypeState {

@@ -5,6 +5,7 @@ import * as Session from '@/ducks/session';
 import { SyncThunk } from '@/store/types';
 
 import { updatePrototypeMode, updatePrototypeSettings } from '../actions';
+import { prototypeSettingsSelector } from '../selectors';
 import { PrototypeMode, PrototypeShareViewSettings } from '../types';
 
 export { default as checkSharedProtoPassword } from './checkSharedProtoPassword';
@@ -29,14 +30,16 @@ export const updateSharePrototypeSettings =
   (data: Partial<PrototypeShareViewSettings>): SyncThunk =>
   async (dispatch, getState) => {
     const versionID = Session.activeVersionIDSelector(getState());
+    const currentState = prototypeSettingsSelector(getState());
 
     Errors.assertVersionID(versionID);
 
     try {
-      await client.api.version.updatePrototypeSettings(versionID, data);
-
       dispatch(updatePrototypeSettings(data));
+      await client.api.version.updatePrototypeSettings(versionID, data);
     } catch (e) {
+      // revert to current state if update fails;
+      dispatch(updatePrototypeSettings(currentState));
       toast.genericError();
     }
   };

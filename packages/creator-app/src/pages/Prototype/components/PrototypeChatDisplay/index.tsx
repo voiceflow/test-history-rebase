@@ -1,4 +1,4 @@
-import { BaseRequest } from '@voiceflow/general-types';
+import { BaseRequest, ButtonsLayout } from '@voiceflow/general-types';
 import React from 'react';
 
 import { PrototypeStatus } from '@/ducks/prototype';
@@ -16,6 +16,7 @@ export type PrototypeChatDisplayProps = {
   setAtTop?: (val: boolean) => void;
   onPlay: (src: string) => void;
   debug?: boolean;
+  buttons?: ButtonsLayout;
   interactions: Interaction[];
   status: PrototypeStatus;
   hideSessionMessages?: boolean;
@@ -39,6 +40,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   showPadding,
   isMobile,
   color,
+  buttons,
   avatarURL,
   onInteraction,
 }) => {
@@ -80,6 +82,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
           isPublic={isPublic}
           isMobile={isMobile}
           messages={messages}
+          buttons={buttons}
           isLoading={isLoading}
           showPadding={showPadding}
           bottomScrollRef={scrollRef}

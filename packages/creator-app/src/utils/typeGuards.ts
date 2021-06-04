@@ -40,3 +40,6 @@ export const isDistinctPlatform = (type: string | PlatformType): type is typeof 
 
 export const isAnyGeneralPlatform = (type: string | PlatformType): type is typeof GENERAL_PLATFORMS[number] =>
   GENERAL_PLATFORMS.includes(type as typeof GENERAL_PLATFORMS[number]);
+
+type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T;
+export const truthy = <T>(value: T): value is Truthy<T> => Boolean(value);

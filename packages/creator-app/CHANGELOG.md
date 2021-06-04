@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.387.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.387.0...@voiceflow/creator-app@1.387.1) (2021-06-04)
+
+
+### Bug Fixes
+
+* save only when active diagram (VF-000) ([#3488](https://github.com/voiceflow/creator-app/issues/3488)) ([dec2439](https://github.com/voiceflow/creator-app/commit/dec2439b7494cc78921bf320f6934075b8ef6bb4))
+
+
+
+
+
 # [1.387.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.386.2...@voiceflow/creator-app@1.387.0) (2021-06-04)
 
 

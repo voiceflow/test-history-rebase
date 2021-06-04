@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { FlexCenter } from '@/components/Flex';
-
 import { Container, SectionTitle } from '../components';
+import { TranscriptActions } from './TranscriptActions';
 
 const Actions = () => (
-  <Container>
+  <Container rightExtend>
     <SectionTitle>ACTIONS</SectionTitle>
-    <FlexCenter style={{ flex: 2, color: '#8da2b5' }}> - Actions - </FlexCenter>
+    <TranscriptActions />
   </Container>
 );
 

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="17" viewBox="0 0 16 17">
+    <defs>
+        <linearGradient id="p4ziuoc5rb" x1="50%" x2="50%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#6E849A" stop-opacity=".85"/>
+            <stop offset="100%" stop-color="#6E849A"/>
+        </linearGradient>
+        <path id="tpyzxpb2na" d="M8 0C3.581 0 0 3.582 0 8s3.581 8 8 8c4.419 0 8-3.582 8-8s-3.581-8-8-8zm.039 14.4c-3.535 0-6.4-2.865-6.4-6.4s2.865-6.4 6.4-6.4 6.4 2.865 6.4 6.4-2.865 6.4-6.4 6.4zm-1.09-5.835l4.18-3.436c.227-.188.556-.168.76.044.201.207.201.541 0 .748l-4.597 4.76c-.408.422-1.074.426-1.486.007-.026-.026-.05-.054-.074-.083L4.169 8.647c-.185-.231-.17-.569.036-.781.207-.214.537-.24.772-.058l1.005.773c.288.222.686.215.966-.016z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd" opacity=".8">
+        <g>
+            <g>
+                <g>
+                    <g>
+                        <g>
+                            <path d="M0 0H16V16H0z" transform="translate(-1392 -275) translate(1098) translate(0 211.5) translate(16.105 51) translate(277.895 13)"/>
+                            <g transform="translate(-1392 -275) translate(1098) translate(0 211.5) translate(16.105 51) translate(277.895 13)">
+                                <use fill="#FFF" xlink:href="#tpyzxpb2na"/>
+                                <use fill="url(#p4ziuoc5rb)" xlink:href="#tpyzxpb2na"/>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

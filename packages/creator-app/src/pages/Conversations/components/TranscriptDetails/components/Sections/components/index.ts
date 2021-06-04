@@ -1,17 +1,22 @@
 import Flex from '@/components/Flex';
 import { css, styled } from '@/hocs';
 
-export const Container = styled(Flex)<{ curved?: boolean; flex?: number }>`
+export const Container = styled(Flex)<{ curved?: boolean; flex?: number; rightExtend?: boolean }>`
   flex-direction: column;
   flex: 2;
   border-top: 1px solid;
   width: 100%;
   border-color: ${({ theme }) => theme.colors.borders};
   padding: 22px 34px;
-
   &:first-child {
     border: none;
   }
+
+  ${({ rightExtend }) =>
+    rightExtend &&
+    css`
+      padding-right: 0px;
+    `}
 
   ${({ flex }) =>
     flex &&

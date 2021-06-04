@@ -1,4 +1,4 @@
-enum SystemTag {
+export enum SystemTag {
   REVIEWED = 'system.reviewed',
   SAVED = 'system.saved',
   EMOTION_POSITIVE = 'system.emotion_positive',

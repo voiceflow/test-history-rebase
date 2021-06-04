@@ -3,6 +3,10 @@
 // a
 export { default as accountLinking } from './account-linking.svg';
 export { default as action } from './action.svg';
+export { default as actionsCheckmark } from './actions-checkmark.svg';
+export { default as activeBookmark } from './active-bookmark.svg';
+export { default as activeDelete } from './active-delete.svg';
+export { default as activeReviewed } from './active-reviewed.svg';
 export { default as add } from './add.svg';
 export { default as addBoard } from './add-board.svg';
 export { default as addStep } from './add-step.svg';
@@ -23,6 +27,7 @@ export { default as badge } from './badge.svg';
 export { default as ban } from './ban.svg';
 export { default as barGraph } from './bar-graph.svg';
 export { default as blocks } from './blocks.svg';
+export { default as bookmark } from './bookmark.svg';
 
 // c
 export { default as call } from './call.svg';
@@ -93,6 +98,7 @@ export { default as fullscreen } from './fullscreen.svg';
 
 // g
 export { default as google } from './brands/google.svg';
+export { default as garbage } from './garbage.svg';
 export { default as googleAssistant } from './google-assistant.svg';
 export { default as googleAssistantNoColor } from './google-assistant-no-color.svg';
 export { default as googleSheets } from './google-sheets.svg';

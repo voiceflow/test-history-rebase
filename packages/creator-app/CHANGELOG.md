@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.388.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.387.1...@voiceflow/creator-app@1.388.0) (2021-06-06)
+
+
+### Features
+
+* select menu component (VF-1015) ([#3477](https://github.com/voiceflow/creator-app/issues/3477)) ([2eda47a](https://github.com/voiceflow/creator-app/commit/2eda47a71f4a26dfd188e096d6d6ab703aeec9be))
+
+
+
+
+
 ## [1.387.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.387.0...@voiceflow/creator-app@1.387.1) (2021-06-04)
 
 

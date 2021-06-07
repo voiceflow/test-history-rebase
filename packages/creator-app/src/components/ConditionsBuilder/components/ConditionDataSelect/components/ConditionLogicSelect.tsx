@@ -3,11 +3,11 @@ import React from 'react';
 
 import Box, { FlexAlignStart } from '@/components/Box';
 import Checkbox, { CheckboxType } from '@/components/Checkbox';
+import { ExpressionDisplayLabel, ExpressionWithNoSecondValue } from '@/components/ConditionsBuilder/constants';
+import { ExpressionDataLogicType } from '@/components/ConditionsBuilder/types';
 import { RadioOption } from '@/components/RadioGroup';
 import RadioButtonContainer from '@/components/RadioGroup/components/RadioButtonContainer';
 
-import { ExpressionDisplayLabel } from '../../../constants';
-import { ExpressionDataLogicType } from '../../../types';
 import ConditionValueSelect from '../../ConditionValueSelect';
 
 export const ExpressionListOptions: RadioOption<ExpressionDataLogicType>[] = [
@@ -75,27 +75,40 @@ const ConditionLogicSelect: React.FC<ConditionLogicSelectProps> = ({
   conditionValue,
   onConditionValueUpdate,
   onClose,
-}) => (
-  <>
-    {ExpressionListOptions.map(({ id, label }, index) => {
-      const isChecked = logicValue === id;
-      const isLast = index === ExpressionListOptions.length - 1;
-      return (
-        <FlexAlignStart column fullWidth key={index}>
-          <RadioButtonContainer noBottomPadding={isLast && !isChecked} paddingBottom={8} column cursor="pointer">
-            <Checkbox type={CheckboxType.RADIO} value={id} checked={isChecked} onChange={() => onLogicUpdate(id)} isFlat>
-              <div>{label}</div>
-            </Checkbox>
-          </RadioButtonContainer>
-          {isChecked && id !== ExpressionTypeV2.IS_EMPTY && id !== ExpressionTypeV2.HAS_VALUE && (
-            <Box mb={16} fullWidth>
-              <ConditionValueSelect value={conditionValue} onChange={onConditionValueUpdate} onClose={onClose} />
-            </Box>
-          )}
-        </FlexAlignStart>
-      );
-    })}
-  </>
-);
+}) => {
+  React.useEffect(() => {
+    if (ExpressionWithNoSecondValue.includes(logicValue)) {
+      onConditionValueUpdate({ value: '', type: ExpressionTypeV2.VALUE });
+    }
+  }, [logicValue]);
+
+  return (
+    <>
+      {ExpressionListOptions.map(({ id, label }, index) => {
+        const isChecked = logicValue === id;
+        const isLast = index === ExpressionListOptions.length - 1;
+
+        const changeLogic = (id: ExpressionDataLogicType) => () => {
+          onLogicUpdate(id);
+        };
+
+        return (
+          <FlexAlignStart column fullWidth key={index}>
+            <RadioButtonContainer noBottomPadding={isLast && !isChecked} paddingBottom={8} column cursor="pointer">
+              <Checkbox type={CheckboxType.RADIO} value={id} checked={isChecked} onChange={changeLogic(id)} isFlat>
+                <div>{label}</div>
+              </Checkbox>
+            </RadioButtonContainer>
+            {isChecked && !ExpressionWithNoSecondValue.includes(id) && (
+              <Box mb={16} fullWidth>
+                <ConditionValueSelect value={conditionValue} onChange={onConditionValueUpdate} onClose={onClose} />
+              </Box>
+            )}
+          </FlexAlignStart>
+        );
+      })}
+    </>
+  );
+};
 
 export default ConditionLogicSelect;

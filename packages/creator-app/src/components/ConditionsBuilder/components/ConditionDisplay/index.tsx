@@ -23,10 +23,12 @@ const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ expression, isActiv
   const leftValue = isVariable(`${expression?.value?.[0]?.value}`)
     ? transformVariableToString(expression?.value?.[0]?.value as string)
     : expression.value[0]?.value;
+
+  const logicType = expression.type;
+
   const rightValue = isVariable(`${expression?.value?.[1]?.value}`)
     ? transformVariableToString(expression?.value?.[1]?.value as string)
     : expression.value[1]?.value;
-  const logicType = expression.type;
 
   const placeholder = !leftValue && expression.value[0]?.type === ExpressionTypeV2.VARIABLE ? 'Variable' : 'Value';
 

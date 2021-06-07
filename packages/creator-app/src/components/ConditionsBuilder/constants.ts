@@ -15,6 +15,8 @@ export const ExpressionDisplayLabel: Record<string, string> = {
   [ExpressionTypeV2.IS_EMPTY]: 'Is empty',
 };
 
+export const ExpressionWithNoSecondValue = [ExpressionTypeV2.IS_EMPTY, ExpressionTypeV2.HAS_VALUE];
+
 export const ExcludeValuesLogicType = [ExpressionTypeV2.HAS_VALUE, ExpressionTypeV2.IS_EMPTY];
 
 export const DataConfigurableInterface = [ConditionsLogicInterface.VARIABLE, ConditionsLogicInterface.VALUE];

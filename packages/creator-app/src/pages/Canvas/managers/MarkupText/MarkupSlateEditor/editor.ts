@@ -252,7 +252,7 @@ const MarkupSlateEditor = {
       );
 
       if (pasted) {
-        Transforms.collapse(editor);
+        Transforms.collapse(editor, { edge: 'end' });
       }
 
       MarkupSlateEditor.setTextPropertyAtRange(editor, selectionRef.current!, TextProperty.COLOR, DEFAULT_LINK_COLOR);

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.388.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.388.2...@voiceflow/creator-app@1.388.3) (2021-06-07)
+
+
+### Bug Fixes
+
+* admin fix (VF-1086) ([#3487](https://github.com/voiceflow/creator-app/issues/3487)) ([3350b7e](https://github.com/voiceflow/creator-app/commit/3350b7e7c289eff078fecb795bc52517954902fa))
+* line desync in prototype (VF-1053) ([#3493](https://github.com/voiceflow/creator-app/issues/3493)) ([800a6ed](https://github.com/voiceflow/creator-app/commit/800a6edae759de565435ac3069b3419cd5bc8ffb))
+* pop-up placement (VF-1077) ([#3494](https://github.com/voiceflow/creator-app/issues/3494)) ([1f55824](https://github.com/voiceflow/creator-app/commit/1f55824dd8932156223aa4378effec52c8728d63))
+
+
+
+
+
 ## [1.388.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.388.1...@voiceflow/creator-app@1.388.2) (2021-06-07)
 
 

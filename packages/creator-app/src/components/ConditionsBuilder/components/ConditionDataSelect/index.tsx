@@ -83,7 +83,7 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
             innerRef={(node) => {
               popperRef.current = node;
             }}
-            placement="auto"
+            placement="bottom-start"
             modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: 'viewport' } }}
           >
             {({ ref, style, placement }) => (

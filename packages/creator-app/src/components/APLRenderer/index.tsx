@@ -51,43 +51,51 @@ const APLRenderer: React.FC<APLRendererProps> = ({
     let content: Nullable<APL.Content> = null;
 
     (async () => {
-      if (!isInitialized) return;
+      try {
+        if (!isInitialized) return;
 
-      content = APL.Content.create(contentString);
+        content = APL.Content.create(contentString);
 
-      if (data) {
-        content.addData('payload', data);
-      }
-
-      renderer = AlexaAPLRenderer.create({
-        content,
-        view: document.getElementById(elementID)!,
-        viewport,
-        environment: {
-          agentName: 'APL Sandbox',
-          agentVersion: '1.0',
-          allowOpenUrl: true,
-          disallowVideo: false,
-        },
-        theme: 'dark',
-        utcTime: Date.now(),
-        localTimeAdjustment: -new Date().getTimezoneOffset() * 60 * 1000,
-      });
-
-      await renderer.init();
-
-      if (commands) {
-        try {
-          await new Promise((resolve) => renderer?.context.executeCommands(commands).then(resolve));
-        } catch (e) {
-          onCommandFail?.(e);
+        if (data) {
+          content.addData('payload', data);
         }
+
+        renderer = AlexaAPLRenderer.create({
+          content,
+          view: document.getElementById(elementID)!,
+          viewport,
+          environment: {
+            agentName: 'APL Sandbox',
+            agentVersion: '1.0',
+            allowOpenUrl: true,
+            disallowVideo: false,
+          },
+          theme: 'dark',
+          utcTime: Date.now(),
+          localTimeAdjustment: -new Date().getTimezoneOffset() * 60 * 1000,
+        });
+
+        await renderer.init();
+
+        if (commands) {
+          try {
+            await new Promise((resolve) => renderer?.context.executeCommands(commands).then(resolve));
+          } catch (e) {
+            onCommandFail?.(e);
+          }
+        }
+      } catch (error) {
+        Sentry.error(error);
       }
     })();
 
     return () => {
-      content?.delete();
-      renderer?.destroy();
+      try {
+        content?.delete();
+        renderer?.destroy();
+      } catch (error) {
+        Sentry.error(error);
+      }
     };
   }, [isInitialized, data, contentString, viewport]);
 

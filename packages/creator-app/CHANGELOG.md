@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.388.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.388.4...@voiceflow/creator-app@1.388.5) (2021-06-07)
+
+
+### Bug Fixes
+
+* correct logic value display (VF-1080) ([#3495](https://github.com/voiceflow/creator-app/issues/3495)) ([6d6b179](https://github.com/voiceflow/creator-app/commit/6d6b179c3c771c0835539aa93f0442306e50f884))
+
+
+
+
+
 ## [1.388.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.388.3...@voiceflow/creator-app@1.388.4) (2021-06-07)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.388.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.388.1...@voiceflow/creator-app@1.388.2) (2021-06-07)
+
+
+### Bug Fixes
+
+* apl renderer crash (VF-1088) ([#3491](https://github.com/voiceflow/creator-app/issues/3491)) ([f678835](https://github.com/voiceflow/creator-app/commit/f6788354ad40f28ba35c51a63c497c57bdff0d12))
+* markup url not saved (VF-1073) ([#3492](https://github.com/voiceflow/creator-app/issues/3492)) ([be6bbee](https://github.com/voiceflow/creator-app/commit/be6bbeedaf8d3f5de7ecc247e6043880f869ee8d))
+
+
+
+
+
 ## [1.388.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.388.0...@voiceflow/creator-app@1.388.1) (2021-06-07)
 
 

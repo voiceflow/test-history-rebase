@@ -4,7 +4,7 @@ import creatorAdapter from '@/client/adapters/creator';
 import { BUILT_IN_VARIABLES } from '@/constants';
 import { allLinksSelector, creatorDiagramIDSelector, creatorDiagramSelector } from '@/ducks/creator/diagram/selectors';
 import { allActiveFeaturesSelector } from '@/ducks/feature';
-import { activePlatformSelector } from '@/ducks/project';
+import { activeProjectSelector } from '@/ducks/project';
 import { slotNamesSelector } from '@/ducks/slot';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 import { activeGlobalVariablesSelector } from '@/ducks/version/selectors';
@@ -76,13 +76,14 @@ export const fullActiveDiagramSelector = createSelector(
     localVariablesByDiagramIDSelector,
     creatorDiagramSelector,
     allLinksSelector,
-    activePlatformSelector,
+    activeProjectSelector,
     allActiveFeaturesSelector,
   ],
   // eslint-disable-next-line max-params
-  (diagramID, getViewport, getLocalVariables, { rootNodeIDs, nodes, ports, data, markupNodeIDs }, links, platform, features) => {
-    if (!diagramID) return null;
+  (diagramID, getViewport, getLocalVariables, { rootNodeIDs, nodes, ports, data, markupNodeIDs }, links, project, features) => {
+    if (!diagramID || !project) return null;
 
+    const { platform } = project;
     const viewport = getViewport(diagramID);
     const variables = getLocalVariables(diagramID);
 

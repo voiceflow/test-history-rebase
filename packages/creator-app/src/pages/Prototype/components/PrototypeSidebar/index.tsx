@@ -79,8 +79,6 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
 
     const renderAbortControl = { aborted: false };
 
-    engine()?.focus.reset();
-
     if (canRenderPrototype) {
       enableLoading();
 
@@ -92,6 +90,11 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
     } else {
       disableLoading();
     }
+
+    // resetting focus asynchronously to fix line desync issue which is caused due to shifting canvas position to the subheader height
+    requestAnimationFrame(() => {
+      engine()?.focus.reset();
+    });
 
     return () => {
       renderAbortControl.aborted = true;

@@ -8,6 +8,7 @@ import { ExpressionData, ExpressionV2, LogicGroupData } from '@/models';
 import { parser as mathJStoJSParser } from '@/utils/mathjsConversion';
 
 const SINGLE_BRACKET_REGEXP = /'/g;
+const SINGLE_QUOTES = /^'.*'$/m;
 
 const EXPRESSION_OPERATION_SYMBOL_MAP: Record<string, string> = {
   [ExpressionType.OR]: '||',
@@ -190,4 +191,11 @@ export const expressionPreview = (expression: ExpressionData | LogicGroupData): 
   }
 
   return expression.value.length > 0 ? expressionfyLogicInterface(expression?.value[0]) : '';
+};
+
+export const sanitizeSetValue = (exp: string, type: ExpressionTypeV2) => {
+  if (exp.match(SINGLE_QUOTES) && type === ExpressionTypeV2.VALUE) {
+    return exp.substring(1, exp.length - 3);
+  }
+  return exp;
 };

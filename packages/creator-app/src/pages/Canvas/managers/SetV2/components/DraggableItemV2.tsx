@@ -57,6 +57,9 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
   const isNew = latestCreatedKey === itemKey;
 
   useDidUpdateEffect(() => {
+    if (item.type === ExpressionTypeV2.VALUE) {
+      onUpdate({ expression: transformVariableToString(String(item.expression)) });
+    }
     resetError();
   }, [item.type]);
 
@@ -91,12 +94,20 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
                 </Flex>
               }
             >
-              <RadioGroup options={INPUT_TYPE_OPTIONS} checked={item.type} onChange={(type) => onUpdate({ type })} />
+              <RadioGroup
+                options={INPUT_TYPE_OPTIONS}
+                checked={item.type}
+                onChange={(type) =>
+                  onUpdate({
+                    type,
+                  })
+                }
+              />
             </FormControl>
             <Box mt={12}>
               {item.type === ExpressionTypeV2.VALUE ? (
                 <Input
-                  value={transformVariableToString(`${item.expression}`)}
+                  value={String(item.expression)}
                   onChange={({ target }) => onUpdate({ expression: target.value as NodeData.NewExpressionType })}
                   placeholder="Enter value"
                 />
@@ -104,7 +115,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
                 <VariablesInputComponent
                   error={error}
                   onFocus={resetError}
-                  value={`${item.expression}`}
+                  value={String(item.expression)}
                   onBlur={({ text }: { text: string }) => updateExpression(text)}
                   placeholder="Enter {variable} or expression"
                   multiline

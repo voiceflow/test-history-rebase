@@ -20,13 +20,13 @@ export type ConditionDisplayProps = {
   isLogicGroup?: boolean;
 };
 const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ expression, isActive, onDelete, error, isLogicGroup }) => {
-  const leftValue = isVariable(`${expression?.value?.[0]?.value}`)
+  const leftValue = isVariable(String(expression?.value?.[0]?.value))
     ? transformVariableToString(expression?.value?.[0]?.value as string)
     : expression.value[0]?.value;
 
   const logicType = expression.type;
 
-  const rightValue = isVariable(`${expression?.value?.[1]?.value}`)
+  const rightValue = isVariable(String(expression?.value?.[1]?.value))
     ? transformVariableToString(expression?.value?.[1]?.value as string)
     : expression.value[1]?.value;
 

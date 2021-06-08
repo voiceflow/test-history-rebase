@@ -176,7 +176,7 @@ export namespace NodeData {
     expression: NewExpressionType;
     id: string;
     variable?: string | null;
-    type?: ExpressionTypeV2;
+    type: ExpressionTypeV2;
   };
 
   export type SetV2 = {

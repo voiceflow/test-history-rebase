@@ -2,6 +2,7 @@ import { Set, StepData as SetData } from '@voiceflow/general-types/build/nodes/s
 import cuid from 'cuid';
 
 import { NodeData } from '@/models';
+import { sanitizeSetValue } from '@/utils/expression';
 
 import { createBlockAdapter } from '../utils';
 
@@ -12,7 +13,7 @@ const setAdapterV2 = createBlockAdapter<SetData, NodeData.SetV2>(
       id: cuid.slug(),
       type,
       variable,
-      expression,
+      expression: sanitizeSetValue(expression, type),
     })),
   }),
   ({ sets, title }) => ({
@@ -22,7 +23,7 @@ const setAdapterV2 = createBlockAdapter<SetData, NodeData.SetV2>(
         ({
           type,
           variable: variable ?? null,
-          expression: `${expression}` ?? '',
+          expression: sanitizeSetValue(String(expression), type) ?? '',
         } as Set)
     ),
   })

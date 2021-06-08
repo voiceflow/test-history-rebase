@@ -107,12 +107,12 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
                         <>
                           {expression.logicInterface === ConditionsLogicInterface.VARIABLE && (
                             <>
-                              <ConditionVariableSelect value={`${expression.value[0]?.value}`} onChange={onValueUpdate(0)} />
+                              <ConditionVariableSelect value={String(expression.value[0]?.value)} onChange={onValueUpdate(0)} />
                               <Box mt={24}>
                                 <ConditionLogicSelect
                                   onLogicUpdate={onLogicUpdate}
                                   logicValue={expression.type as ExpressionDataLogicType}
-                                  conditionValue={`${expression.value[1]?.value}`}
+                                  conditionValue={String(expression.value[1]?.value)}
                                   onConditionValueUpdate={onValueUpdate(1)}
                                   onClose={onToggle}
                                 />
@@ -123,12 +123,12 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
                           {/* display logic and input field for right side once left side value is saved */}
                           {expression.logicInterface === ConditionsLogicInterface.VALUE && (
                             <>
-                              <ConditionValueSelect value={`${expression.value[0]?.value}`} onChange={onValueUpdate(0)} />
+                              <ConditionValueSelect value={String(expression.value[0]?.value)} onChange={onValueUpdate(0)} />
                               <Box mt={24}>
                                 <ConditionLogicSelect
                                   onLogicUpdate={onLogicUpdate}
                                   logicValue={expression.type as ExpressionDataLogicType}
-                                  conditionValue={`${expression.value[1]?.value}`}
+                                  conditionValue={String(expression.value[1]?.value)}
                                   onConditionValueUpdate={onValueUpdate(1)}
                                   onClose={onToggle}
                                 />

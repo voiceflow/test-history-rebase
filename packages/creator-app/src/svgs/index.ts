@@ -229,6 +229,7 @@ export { default as upgrade } from './Upgrade.svg';
 export { default as upload } from './upload.svg';
 export { default as user } from './user.svg';
 export { default as userInfo } from './user-info.svg';
+export { default as userPlaceholder } from './user-placeholder.svg';
 
 // v
 export { default as voiceflowV } from './V.svg';

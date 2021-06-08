@@ -9,19 +9,19 @@ export enum Sentiment {
   EMOTION_NEUTRAL = 'system.emotion_neutral',
 }
 
-enum Device {
+export enum Device {
   DESKTOP = 'desktop',
   MOBILE = 'mobile',
   TABLET = 'tablet',
 }
 
-enum OperatingSystem {
+export enum OperatingSystem {
   MAC = 'mac',
   LINUX = 'linux',
   WINDOWS = 'windows',
 }
 
-enum Browser {
+export enum Browser {
   CHROME = 'chrome',
   FIREFOX = 'firefox',
   SAFARI = 'safari',

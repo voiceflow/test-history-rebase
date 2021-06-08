@@ -1,0 +1,48 @@
+import Box, { Flex } from '@/components/Box';
+import SvgIcon from '@/components/SvgIcon';
+import { styled } from '@/hocs';
+import THEME from '@/styles/theme';
+
+export const ContextTitle = styled(Flex)`
+  text-align: center;
+  color: ${THEME.colors.primary};
+  font-size: 15px;
+  font-weight: 600;
+  padding-top: 16px;
+`;
+
+export const ContextSubtext = styled(Box)`
+  text-align: center;
+  color: ${THEME.colors.secondary};
+  line-height: 1.54;
+  font-size: 13px;
+  padding-top: 16px;
+`;
+
+export const StyledLogo = styled.div`
+  z-index: 1;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-image: linear-gradient(to bottom, rgba(19, 33, 68, 0.85), #132144);
+
+  & > * > svg {
+    margin-left: 10px;
+    margin-top: 12px;
+    display: inline;
+  }
+`;
+
+export const StyledUser = styled(SvgIcon)`
+  z-index: 2;
+  margin-left: -12px;
+  border-radius: 50%;
+  opacity: 1;
+  border: 3px solid white;
+  background-color: #f9f9f9;
+
+  & > * {
+    margin-left: 16px;
+    margin-top: 17px;
+  }
+`;

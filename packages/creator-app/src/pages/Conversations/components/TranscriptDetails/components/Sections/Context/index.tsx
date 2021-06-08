@@ -1,12 +1,26 @@
 import React from 'react';
 
-import { FlexCenter } from '@/components/Flex';
+import { Browser, Device, OperatingSystem } from '@/models/Transcript';
 
 import { Container } from '../components';
+import { TranscriptContext } from './TranscriptContext';
+
+const MOCK_TRANSCRIPT = {
+  id: '1',
+  creatorID: 2,
+  projectID: 'testproject',
+  unread: true,
+  device: Device.DESKTOP,
+  os: OperatingSystem.MAC,
+  browser: Browser.CHROME,
+  tags: ['test1', 'test2'],
+  notes: 'test note',
+  createdAt: 2021,
+};
 
 const Context = () => (
-  <Container>
-    <FlexCenter style={{ flex: 2, color: '#8da2b5' }}> - Context - </FlexCenter>
+  <Container topExtend>
+    <TranscriptContext transcript={MOCK_TRANSCRIPT}></TranscriptContext>
   </Container>
 );
 

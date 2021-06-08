@@ -195,7 +195,7 @@ export const expressionPreview = (expression: ExpressionData | LogicGroupData): 
 
 export const sanitizeSetValue = (exp: string, type: ExpressionTypeV2) => {
   if (exp.match(SINGLE_QUOTES) && type === ExpressionTypeV2.VALUE) {
-    return exp.substring(1, exp.length - 3);
+    return exp.substring(1, exp.length - 1);
   }
   return exp;
 };

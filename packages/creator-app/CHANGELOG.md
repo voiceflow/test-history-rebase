@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.390.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.389.0...@voiceflow/creator-app@1.390.0) (2021-06-08)
+
+
+### Bug Fixes
+
+* validation error ux ([#3510](https://github.com/voiceflow/creator-app/issues/3510)) ([aba9aba](https://github.com/voiceflow/creator-app/commit/aba9abae80f7dc7901922f1cb4a75c568d5b9aaa))
+
+
+### Features
+
+* transcript context component (VF-1021) ([#3490](https://github.com/voiceflow/creator-app/issues/3490)) ([961e1d4](https://github.com/voiceflow/creator-app/commit/961e1d468e73c98bca578773a2501c4d7a9795da))
+
+
+
+
+
 # [1.389.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.388.5...@voiceflow/creator-app@1.389.0) (2021-06-08)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.390.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.390.1...@voiceflow/creator-app@1.390.2) (2021-06-08)
+
+
+### Bug Fixes
+
+* set string edge case (VF-1011) ([1361a22](https://github.com/voiceflow/creator-app/commit/1361a22c6205324badc91cfdc11b47c7e6671914))
+
+
+
+
+
 ## [1.390.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.390.0...@voiceflow/creator-app@1.390.1) (2021-06-08)
 
 

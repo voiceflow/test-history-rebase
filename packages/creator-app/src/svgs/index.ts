@@ -55,6 +55,7 @@ export { default as custom } from './custom.svg';
 export { default as checked } from './images/icons/check.svg';
 
 // d
+export { default as defaultEmotion } from './default-emotion.svg';
 export { default as developer } from './developer.svg';
 export { default as directive } from './directive.svg';
 export { default as display } from './display.svg';
@@ -150,6 +151,8 @@ export { default as mobile } from './mobile.svg';
 export { default as microphone } from './solid/microphone.svg';
 
 // n
+export { default as negativeEmotion } from './negative-emotion.svg';
+export { default as neutralEmotion } from './neutral-emotion.svg';
 export { default as next } from './next.svg';
 export { default as notifications } from './notifications.svg';
 
@@ -168,6 +171,7 @@ export { default as pending } from './pending.svg';
 export { default as play } from './play.svg';
 export { default as plus } from './plus.svg';
 export { default as portConnected } from './port-connected.svg';
+export { default as positiveEmotion } from './positive-emotion.svg';
 export { default as prompt } from './prompt.svg';
 export { default as publishSpin } from './publish-spin.svg';
 export { default as purchase } from './purchase.svg';

@@ -1,4 +1,4 @@
-import Flex from '@/components/Flex';
+import Flex, { FlexApart } from '@/components/Flex';
 import { css, styled } from '@/hocs';
 
 export const Container = styled(Flex)<{ curved?: boolean; flex?: number; rightExtend?: boolean }>`
@@ -32,7 +32,7 @@ export const Container = styled(Flex)<{ curved?: boolean; flex?: number; rightEx
     `}
 `;
 
-export const SectionTitle = styled.div`
+export const SectionTitle = styled(FlexApart)`
   color: #62778c;
   font-size: 13px;
   font-weight: 600;

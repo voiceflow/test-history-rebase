@@ -42,11 +42,14 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   [CanvasAction.RENAME_BLOCK]: ({ target: nodeID }, { engine }) => engine.node.rename(nodeID!),
 
   [CanvasAction.DELETE_BLOCK]: ({ target: nodeID }, { engine }) => {
-    if (engine.node.isSubtreeActive(nodeID!)) {
-      engine.clearActivation();
+    if (nodeID) {
+      if (engine.node.isSubtreeActive(nodeID!)) {
+        engine.clearActivation();
+      }
+      engine.node.remove(nodeID!);
+    } else {
+      engine.removeActive();
     }
-
-    engine.node.remove(nodeID!);
   },
 
   [CanvasAction.COLOR_BLOCK]: ({ target: nodeID }, { engine, blockColor }) => {

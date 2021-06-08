@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.389.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.388.5...@voiceflow/creator-app@1.389.0) (2021-06-08)
+
+
+### Bug Fixes
+
+* name should not update ([#3509](https://github.com/voiceflow/creator-app/issues/3509)) ([a722ce4](https://github.com/voiceflow/creator-app/commit/a722ce41a1f104527524f2136e1930787394a6fd))
+* right click to delete multiple blocks (VF-1051) ([#3503](https://github.com/voiceflow/creator-app/issues/3503)) ([41d544d](https://github.com/voiceflow/creator-app/commit/41d544d56a057671c54f6a1bea5b73bf54e78ff5))
+
+
+### Features
+
+* emoji picker component V2 (VF-1037) ([#3499](https://github.com/voiceflow/creator-app/issues/3499)) ([905a3c5](https://github.com/voiceflow/creator-app/commit/905a3c5bf62711fb4ba8744400c9b9699277a24f))
+
+
+
+
+
 ## [1.388.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.388.4...@voiceflow/creator-app@1.388.5) (2021-06-07)
 
 

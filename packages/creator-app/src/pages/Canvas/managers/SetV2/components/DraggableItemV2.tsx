@@ -1,4 +1,5 @@
 import { ExpressionTypeV2 } from '@voiceflow/general-types';
+import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
 import Badge from '@/components/Badge';
@@ -10,7 +11,7 @@ import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import Text from '@/components/Text';
 import VariablesInput from '@/components/VariablesInput';
-import { useExpressionValidation } from '@/hooks';
+import { useDidUpdateEffect, useExpressionValidation } from '@/hooks';
 import { NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -44,7 +45,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
 
   const updateExpression = React.useCallback(
     (text) => {
-      if (isValidExpression(text)) {
+      if (!isEmpty(text) && isValidExpression(text)) {
         resetError();
         onUpdate({ expression: text });
       }
@@ -54,6 +55,10 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
 
   const updateVariable = React.useCallback((variable) => onUpdate({ variable }), [onUpdate]);
   const isNew = latestCreatedKey === itemKey;
+
+  useDidUpdateEffect(() => {
+    resetError();
+  }, [item.type]);
 
   return (
     <EditorSection
@@ -106,7 +111,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
                 />
               )}
             </Box>
-            {error && (
+            {error && item.type === ExpressionTypeV2.ADVANCE && (
               <Box fontSize={13} color="#e91e63" mt={16}>
                 {errorMessage ? `Error: ${errorMessage}.` : 'Expression syntax is invalid.'}
               </Box>

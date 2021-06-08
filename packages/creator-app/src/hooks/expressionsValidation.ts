@@ -28,8 +28,8 @@ export const useExpressionValidation = (): [boolean, () => void, (arg: string) =
   const variables = useSelector(Diagram.activeDiagramAllVariablesSelector);
 
   const resetError = () => {
-    reset();
     setErrorMessage('');
+    reset();
   };
 
   const handleError = (msg: string) => {

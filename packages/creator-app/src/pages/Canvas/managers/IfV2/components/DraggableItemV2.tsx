@@ -21,7 +21,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, IfItemProps>
   { itemKey, index, item, isOnlyItem, isDragging, isDraggingPreview, onUpdate, latestCreatedKey, connectedDragRef, onContextMenu, isContextMenuOpen },
   ref
 ) => {
-  const [title, setTitle] = React.useState<string | undefined>('');
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const [title, setTitle] = React.useState<string>((item as ExpressionData).name ?? '');
 
   const isNew = itemKey === latestCreatedKey;
 
@@ -30,10 +31,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, IfItemProps>
   }, [onUpdate, title]);
 
   useSetup(() => {
-    if ((item as ExpressionData).name) {
-      setTitle((item as ExpressionData).name);
-    }
-  }, [item]);
+    if (!(item as ExpressionData).name) inputRef.current?.focus?.();
+  });
 
   return (
     <EditorSection
@@ -55,8 +54,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, IfItemProps>
         <>
           <Section customContentStyling={{ paddingTop: '0px' }}>
             <Input
-              // eslint-disable-next-line jsx-a11y/no-autofocus
-              autoFocus={!title}
+              ref={inputRef}
               value={title}
               onChange={({ currentTarget }) => setTitle(currentTarget.value)}
               onBlur={onBlur}

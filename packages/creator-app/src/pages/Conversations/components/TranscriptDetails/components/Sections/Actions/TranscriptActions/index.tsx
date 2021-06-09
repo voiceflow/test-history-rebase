@@ -16,9 +16,11 @@ export function TranscriptActions() {
         icon={reviewed ? 'checkmarkFilled' : 'check2'}
         color={reviewed ? '#3e9e3e' : THEME.colors.tertiary}
         label="Mark as Reviewed"
+        selected={reviewed}
       />
       <ActionButton
         left={1}
+        selected={saved}
         onClick={() => setSaved(!saved)}
         icon="bookmark"
         label="Save for Later"

@@ -10,14 +10,15 @@ interface StyledActionProps {
   onClick: () => void;
   color?: string;
   left?: number;
+  selected?: boolean;
 }
 
-const ActionButton = ({ label, left, icon, color, onClick }: StyledActionProps) => {
+const ActionButton = ({ label, left, icon, color, onClick, selected }: StyledActionProps) => {
   return (
     <>
-      <ActionContainer onClick={onClick}>
+      <ActionContainer selected={selected} onClick={onClick}>
         <ActionLabel>{label}</ActionLabel>
-        <ActionIcon left={left}>
+        <ActionIcon selected={selected} left={left}>
           <SvgIcon color={color} icon={icon}></SvgIcon>
         </ActionIcon>
       </ActionContainer>

@@ -10,10 +10,11 @@ const ACTIVE_COLOR = 'rgba(238, 244, 246, 0.85)';
 
 export const Container = styled(Flex)<{ active?: boolean; menuOpen: boolean; id: string }>`
   ${transition()};
-  padding: 20px 34px;
+  padding: 20px 32px;
   border-bottom: 1px solid;
   border-color: ${({ theme }) => theme.colors.borders};
   border-left: 3px solid white;
+  border-right: 0px;
   background: white;
   cursor: pointer;
   flex-direction: row;

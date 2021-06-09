@@ -7,5 +7,5 @@ export const Container = styled(Flex)`
 `;
 
 export const IconContainer = styled.div`
-  margin-left: -5px;
+  margin-left: -3px;
 `;

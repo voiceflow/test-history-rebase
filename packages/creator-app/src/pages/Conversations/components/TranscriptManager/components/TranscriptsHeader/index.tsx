@@ -6,9 +6,13 @@ import { ClickableText } from '@/components/Text';
 
 import { Container } from './components';
 
-const TranscriptsHeader = () => (
+interface TranscriptsHeaderProps {
+  resultCount: number;
+}
+
+const TranscriptsHeader = ({ resultCount }: TranscriptsHeaderProps) => (
   <Container>
-    <b>Conversations</b>
+    <b>Conversations ({resultCount})</b>
     <SelectMenu
       // Based off if any filters are enabled
       actionDisabled={true}

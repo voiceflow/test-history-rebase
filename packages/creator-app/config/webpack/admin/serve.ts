@@ -1,7 +1,8 @@
-import merge from 'webpack-merge';
-import { port } from 'webpack-nano/argv';
+import { composeConfigs } from '@voiceflow/webpack-config';
+import buildConfig from '@voiceflow/webpack-config/build/configs/build';
+import serveConfig from '@voiceflow/webpack-config/build/configs/serve';
 
-import serveConfig from '../common/serve';
-import buildConfig from './build';
+import commonConfig from './common';
+import opts from './opts';
 
-export default merge(buildConfig, serveConfig(port ?? 3001));
+export default composeConfigs(commonConfig, buildConfig(), serveConfig())(opts);

@@ -1,6 +1,7 @@
-import merge from 'webpack-merge';
+import { composeConfigs } from '@voiceflow/webpack-config';
+import buildConfig from '@voiceflow/webpack-config/build/configs/build';
 
-import commonBuildConfig from '../common/build';
 import commonConfig from './common';
+import opts from './opts';
 
-export default merge(commonConfig, commonBuildConfig);
+export default composeConfigs(commonConfig, buildConfig())(opts);

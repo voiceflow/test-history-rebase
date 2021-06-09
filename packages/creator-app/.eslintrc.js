@@ -46,7 +46,7 @@ module.exports = {
         project: path.join(__dirname, 'tsconfig.json'),
       },
       webpack: {
-        config: path.join(__dirname, 'config/webpack/common'),
+        config: path.join(__dirname, 'config/webpack/creator/lint'),
       },
     },
   },

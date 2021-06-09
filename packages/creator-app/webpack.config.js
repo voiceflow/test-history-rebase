@@ -1,4 +1,4 @@
-/* eslint-disable no-process-env, import/no-unresolved, global-require */
+/* eslint-disable no-process-env, global-require */
 require('ts-node/register/transpile-only');
 
 const dotenv = require('dotenv');

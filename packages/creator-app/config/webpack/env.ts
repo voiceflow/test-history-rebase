@@ -1,8 +1,8 @@
-/* eslint-disable no-process-env, camelcase */
+/* eslint-disable camelcase */
 
+import { extractEnvironment } from '@voiceflow/webpack-config';
 import branch from 'git-branch';
 import {
-  action,
   canvasCrosshair,
   debug,
   debugCanvas,
@@ -32,26 +32,14 @@ import {
   userflow,
 } from 'webpack-nano/argv';
 
-const { NODE_ENV, CI, CIRCLE_SHA1, CIRCLE_BRANCH, CIRCLE_TAG } = process.env;
-const ENV_PREFIX = 'VF_APP_';
+// eslint-disable-next-line no-process-env
+const { APP_ENV, NODE_ENV, CIRCLE_SHA1, CIRCLE_BRANCH, CIRCLE_TAG } = process.env;
 
-const EXTRACTED_ENV = Object.keys(process.env).reduce<Record<string, string | undefined>>((acc, key) => {
-  if (key.startsWith(ENV_PREFIX)) {
-    acc[key.slice(ENV_PREFIX.length)] = process.env[key];
-  }
+const extractedEnv = extractEnvironment();
 
-  return acc;
-}, {});
-
-export const IS_PRODUCTION = NODE_ENV === 'production';
-export const IS_CI = !!CI;
-export const IS_SERVING = action === 'serve' || action === 'admin-serve';
-export const IS_ADMIN = action === 'admin' || action === 'admin-serve';
-export const BASE_HREF = '/';
-
-export const ENV = {
+export default {
   NODE_ENV,
-  APP_ENV: env || process.env.APP_ENV || 'local',
+  APP_ENV: env || APP_ENV || 'local',
 
   // logging
   LOG_LEVEL: logLevel || '',
@@ -87,8 +75,8 @@ export const ENV = {
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',
   MAINTENANCE_STATUS_SOURCE: '',
-  ...EXTRACTED_ENV,
-  VERSION: EXTRACTED_ENV.VERSION || CIRCLE_TAG || `(${CIRCLE_BRANCH || CIRCLE_SHA1 || branch.sync()})`,
+  ...extractedEnv,
+  VERSION: extractedEnv.VERSION || CIRCLE_TAG || `(${CIRCLE_BRANCH || CIRCLE_SHA1 || branch.sync()})`,
   ...(debug
     ? {
         DEBUG_NETWORK: true,

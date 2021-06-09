@@ -1,18 +1,19 @@
+import { composeConfigs } from '@voiceflow/webpack-config';
+import { svgLoader, typescriptLoader } from '@voiceflow/webpack-config/build/loaders';
 import webpack from 'webpack';
 
-import { svgLoader, typescriptLoader } from '../common/fragments';
 import commonConfig from './common';
+import opts from './opts';
 
-export default {
-  ...commonConfig,
-
+export default composeConfigs(commonConfig, (wpConfig, config) => ({
+  ...wpConfig,
   plugins: [new webpack.NormalModuleReplacementPlugin(/\.(gif|png|css)$/, 'node-noop')],
 
   module: {
     rules: [
       {
-        oneOf: [typescriptLoader, svgLoader()],
+        oneOf: [typescriptLoader(config), svgLoader(config)],
       },
     ],
   },
-};
+}))(opts);

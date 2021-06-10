@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.390.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.390.4...@voiceflow/creator-app@1.390.5) (2021-06-10)
+
+
+### Bug Fixes
+
+* convert numeric variables set when debugging (VF-1104) ([#3520](https://github.com/voiceflow/creator-app/issues/3520)) ([438b890](https://github.com/voiceflow/creator-app/commit/438b890a6bf695c1624122de3329cf980c46247c))
+
+
+
+
+
 ## [1.390.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.390.3...@voiceflow/creator-app@1.390.4) (2021-06-09)
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Browser, Device, OperatingSystem } from '@/models/Transcript';
+import { Browser, Device, OperatingSystem, Sentiment } from '@/models/Transcript';
 
 import { Container } from '../components';
 import { TranscriptContext } from './TranscriptContext';
@@ -16,6 +16,7 @@ const MOCK_TRANSCRIPT = {
   tags: ['test1', 'test2'],
   notes: 'test note',
   createdAt: 2021,
+  sentiment: Sentiment.EMOTION_POSITIVE,
 };
 
 const Context = () => (

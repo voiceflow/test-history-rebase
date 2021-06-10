@@ -50,4 +50,6 @@ export interface Transcript {
   notes: string | null;
   // creation date
   createdAt: number;
+  // sentiment
+  sentiment: Sentiment;
 }

@@ -18,6 +18,7 @@ export type MentionEditorProps = {
   placeholder: string;
   inputProps?: Omit<MentionsInputProps, 'children'>;
   onBlur?: () => void;
+  height?: number;
 };
 
 export const MentionEditor: React.FC<MentionEditorProps & ConnectedMentionEditorProps> = ({
@@ -27,6 +28,7 @@ export const MentionEditor: React.FC<MentionEditorProps & ConnectedMentionEditor
   value = '',
   placeholder,
   inputProps,
+  height,
 }) => {
   const onValueChange: OnChangeHandlerFunc = (e, _, __, mentions) =>
     onChange(
@@ -43,10 +45,11 @@ export const MentionEditor: React.FC<MentionEditorProps & ConnectedMentionEditor
     <MentionEditorContainer>
       <MentionsInput
         className="mentionInput"
+        allowSuggestionsAboveCursor={true}
         placeholder={placeholder}
         value={value}
         onChange={onValueChange}
-        style={mentionEditorStyle}
+        style={mentionEditorStyle(height)}
         onBlur={onBlur}
         {...inputProps}
       >

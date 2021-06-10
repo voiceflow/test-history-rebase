@@ -20,7 +20,15 @@ const NewComment: React.FC = () => {
 
   const saveDraftValue = (values: Pick<Comment, 'text' | 'mentions'>) => engine.comment.setDraftComment(NewCommentID, values);
 
-  return <EditableComment isEditing onSave={onSave} initialValues={engine.comment.draftComment?.[NewCommentID]} onBlur={saveDraftValue} />;
+  return (
+    <EditableComment
+      placeholder="Comment or @mention"
+      isEditing
+      onSave={onSave}
+      initialValues={engine.comment.draftComment?.[NewCommentID]}
+      onBlur={saveDraftValue}
+    />
+  );
 };
 
 export default NewComment;

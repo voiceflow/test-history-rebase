@@ -21,6 +21,9 @@ export type EditableCommentProps = {
   initialValues?: Pick<Comment, 'text' | 'mentions'>;
   headerProps?: Partial<ThreadEditorHeaderProps>;
   onBlur?: (values: Pick<Comment, 'text' | 'mentions'>) => void;
+  hasHeader?: boolean;
+  placeholder: string;
+  height?: number;
 };
 
 const EditableComment: React.FC<EditableCommentProps> = ({
@@ -30,6 +33,9 @@ const EditableComment: React.FC<EditableCommentProps> = ({
   onSave,
   onClose,
   onBlur: saveDraftValues,
+  hasHeader = true,
+  placeholder,
+  height,
 }) => {
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
 
@@ -63,12 +69,15 @@ const EditableComment: React.FC<EditableCommentProps> = ({
 
   return (
     <Box className={COMMENT_EDITOR_CLASSNAME} onBlur={onBlur}>
-      <ThreadEditorHeader onPost={onPost} isEditing={isEditing} isDisabled={!headerProps?.threadID && !comment.text} {...headerProps} />
+      {hasHeader && (
+        <ThreadEditorHeader onPost={onPost} isEditing={isEditing} isDisabled={!headerProps?.threadID && !comment.text} {...headerProps} />
+      )}
       <Box className={COMMENT_CLASSNAME} mt={12}>
         {isEditing ? (
           <MentionEditor
+            height={height}
             onChange={(text, mentions) => setComment({ text, mentions })}
-            placeholder="Comment or @mention"
+            placeholder={placeholder}
             value={comment.text}
             inputProps={{
               inputRef,

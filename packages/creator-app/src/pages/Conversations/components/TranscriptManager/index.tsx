@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Sentiment, Transcript } from '@/models';
+
 import { Container, TranscriptHeader, TranscriptResultsList } from './components';
 
 export const DUMMY_DATA = [
@@ -11,6 +13,7 @@ export const DUMMY_DATA = [
     read: true,
     reviewed: true,
     saved: true,
+    sentiment: Sentiment.EMOTION_POSITIVE,
   },
   {
     id: '2',
@@ -29,6 +32,7 @@ export const DUMMY_DATA = [
     read: true,
     reviewed: false,
     saved: true,
+    sentiment: Sentiment.EMOTION_NEGATIVE,
   },
   {
     id: '4',
@@ -56,6 +60,7 @@ export const DUMMY_DATA = [
     read: false,
     reviewed: false,
     saved: true,
+    sentiment: Sentiment.EMOTION_POSITIVE,
   },
   {
     id: '7',
@@ -71,7 +76,7 @@ export const DUMMY_DATA = [
 const TranscriptManager = () => (
   <Container>
     <TranscriptHeader resultCount={DUMMY_DATA.length} />
-    <TranscriptResultsList transcriptList={DUMMY_DATA} />
+    <TranscriptResultsList transcriptList={DUMMY_DATA as unknown as Transcript[]} />
   </Container>
 );
 

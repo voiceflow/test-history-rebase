@@ -79,12 +79,10 @@ export const Option = styled.div<{ fanDirection: FAN_DIRECTION; number: number; 
   padding: 6px;
   pointer-events: none;
   opacity: 0.6;
-
   :hover {
     transform: scale(1.3);
     opacity: 1;
   }
-
   ${({ number, isHovering, fanDirection }) =>
     isHovering &&
     css`
@@ -117,7 +115,6 @@ export const PlaceholderContainer = styled.div<{ isPlaceholder: boolean }>`
   border-radius: 50%;
   height: 21px;
   width: 21px;
-
   ${({ isPlaceholder }) =>
     !isPlaceholder
       ? css`

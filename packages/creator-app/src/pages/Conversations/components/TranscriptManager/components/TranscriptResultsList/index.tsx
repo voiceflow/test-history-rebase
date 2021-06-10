@@ -3,11 +3,12 @@ import { useLocation } from 'react-router-dom';
 import { AutoSizer, List } from 'react-virtualized';
 
 import { ProjectRoute } from '@/config/routes';
+import { Transcript } from '@/models';
 
 import { Container, TranscriptResultsItem } from './components';
 
 interface TranscriptResultsList {
-  transcriptList: { id: string; name: string; date: string; tags: string[]; read: boolean; reviewed: boolean; saved: boolean }[];
+  transcriptList: Transcript[];
 }
 
 const TranscriptResultsList = ({ transcriptList }: TranscriptResultsList) => {

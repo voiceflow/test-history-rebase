@@ -31,6 +31,7 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ comment, showResolve }) =
         onEdit: startEditing,
         isPosted: !isEditing,
       }}
+      placeholder="Comment or @mention"
     />
   );
 };

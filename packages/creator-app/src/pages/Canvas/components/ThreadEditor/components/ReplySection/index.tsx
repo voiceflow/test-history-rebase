@@ -42,6 +42,7 @@ const ReplySection: React.FC<ReplySectionProps> = ({ threadID }) => {
       headerProps={{
         isPosted: !isReplying,
       }}
+      placeholder="Comment or @mention"
     />
   ) : (
     <ReplySectionContainer className={REPLY_CLASSNAME} onClick={onClick}>

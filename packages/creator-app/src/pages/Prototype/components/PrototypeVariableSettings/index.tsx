@@ -1,3 +1,4 @@
+import { transformStringVariableToNumber } from '@voiceflow/common';
 import React from 'react';
 
 import Input from '@/components/Input';
@@ -30,7 +31,8 @@ const PrototypeVariableSettings: React.FC<ConnectedPrototypeVariableSettingsProp
               </VariableTag>
             }
             value={value}
-            onChange={(e) => updateVariables({ [name]: e.target.value })}
+            onChange={({ target: { value } }) => updateVariables({ [name]: value })}
+            onBlur={() => updateVariables({ [name]: transformStringVariableToNumber(value) })}
             placeholder="Enter value"
           />
         );

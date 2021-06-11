@@ -158,7 +158,7 @@ export const AMAZON_CATEGORIES = [
   },
   {
     value: 'PUBLIC_TRANSPORTATION',
-    label: 'Public Trasportation',
+    label: 'Public Transportation',
   },
   {
     value: 'RELIGION_AND_SPIRITUALITY',

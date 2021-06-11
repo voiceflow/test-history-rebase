@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.393.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.392.1...@voiceflow/creator-app@1.393.0) (2021-06-11)
+
+
+### Bug Fixes
+
+* Categorie typo (VF-1113) ([#3529](https://github.com/voiceflow/creator-app/issues/3529)) ([0d7daa8](https://github.com/voiceflow/creator-app/commit/0d7daa8712a09a0b27d449d79319253b16aadd06))
+
+
+### Features
+
+* auto option for image step (VF-1109) ([#3522](https://github.com/voiceflow/creator-app/issues/3522)) ([3f4f40f](https://github.com/voiceflow/creator-app/commit/3f4f40f588aa5067c066358f7aa25ea2f19acc32))
+
+
+
+
+
 ## [1.392.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.392.0...@voiceflow/creator-app@1.392.1) (2021-06-11)
 
 

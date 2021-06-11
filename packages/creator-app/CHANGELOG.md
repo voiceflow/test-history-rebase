@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.392.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.392.0...@voiceflow/creator-app@1.392.1) (2021-06-11)
+
+
+### Bug Fixes
+
+* added admin ui to be able to mesh with the vfcli ([#3485](https://github.com/voiceflow/creator-app/issues/3485)) ([018de7c](https://github.com/voiceflow/creator-app/commit/018de7c63a3b96fcbc03d5cab81898cf7b5f03c4)), closes [#3483](https://github.com/voiceflow/creator-app/issues/3483) [#3480](https://github.com/voiceflow/creator-app/issues/3480) [#3488](https://github.com/voiceflow/creator-app/issues/3488) [#3477](https://github.com/voiceflow/creator-app/issues/3477) [#3489](https://github.com/voiceflow/creator-app/issues/3489) [#3492](https://github.com/voiceflow/creator-app/issues/3492) [#3491](https://github.com/voiceflow/creator-app/issues/3491) [#3487](https://github.com/voiceflow/creator-app/issues/3487) [#3493](https://github.com/voiceflow/creator-app/issues/3493) [#3494](https://github.com/voiceflow/creator-app/issues/3494) [#3497](https://github.com/voiceflow/creator-app/issues/3497)
+
+
+
+
+
 # [1.392.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.391.0...@voiceflow/creator-app@1.392.0) (2021-06-11)
 
 

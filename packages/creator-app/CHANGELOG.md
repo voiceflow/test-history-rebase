@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.394.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.393.1...@voiceflow/creator-app@1.394.0) (2021-06-11)
+
+
+### Features
+
+* emotion and context ui feedback (VF-000) ([#3534](https://github.com/voiceflow/creator-app/issues/3534)) ([e2f1eb1](https://github.com/voiceflow/creator-app/commit/e2f1eb1312083c3acd6f506008e02e84d2f7ac28))
+
+
+
+
+
 ## [1.393.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.393.0...@voiceflow/creator-app@1.393.1) (2021-06-11)
 
 

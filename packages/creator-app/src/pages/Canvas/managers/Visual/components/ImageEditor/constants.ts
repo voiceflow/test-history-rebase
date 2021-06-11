@@ -2,11 +2,13 @@ import { DeviceType } from '@voiceflow/general-types';
 import { CanvasVisibility } from '@voiceflow/general-types/build/nodes/visual';
 
 export enum FrameType {
+  AUTO = 'AUTO',
   DEVICE = 'DEVICE',
   CUSTOM_SIZE = 'CUSTOM_SIZE',
 }
 
 export const FRAME_OPTIONS = [
+  { id: FrameType.AUTO, label: 'Auto' },
   { id: FrameType.DEVICE, label: 'Device' },
   { id: FrameType.CUSTOM_SIZE, label: 'Custom Size' },
 ];

@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/api-sdk';
 import { DEVICE_SIZE_MAP } from '@voiceflow/general-types';
 import { ImageStepData } from '@voiceflow/general-types/build/nodes/visual';
 import React from 'react';
@@ -8,7 +9,7 @@ import Input from '@/components/Input';
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import Select, { defaultLabelRenderer } from '@/components/Select';
-import Text, { BlockText, Link } from '@/components/Text';
+import Text, { Link } from '@/components/Text';
 import FullImage from '@/components/Upload/ImageUpload/FullImage';
 import * as Documentation from '@/config/documentation';
 import { DEVICE_LABEL_MAP } from '@/constants';
@@ -26,21 +27,36 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
     data.dimensions ? { width: String(data.dimensions.width), height: String(data.dimensions.height) } : null
   );
   const cache = React.useRef({ preDimensions: data.dimensions, prevDevice: data.device });
-  const frameType = data.dimensions ? FrameType.CUSTOM_SIZE : FrameType.DEVICE;
+  const [frameType, setFrameType] = React.useState(FrameType.AUTO);
+
+  const setAutoFit = (frame: FrameType, url: Nullable<string> | string | undefined) => {
+    const currentImage = new Image();
+    if (frame === FrameType.AUTO) {
+      currentImage.src = String(url);
+      currentImage.onload = (e: any) => {
+        const { height } = e.path[0];
+        const { width } = e.path[0];
+        setDimensions({ width: `${width}`, height: `${height}` });
+        onChange({ device: null, dimensions: { width, height }, frameType: frame });
+      };
+    }
+  };
 
   const onChangeFrameType = (newFrameType: FrameType) => {
     if (newFrameType === FrameType.CUSTOM_SIZE) {
       cache.current.prevDevice = data.device;
-
       const newDimensions = cache.current.preDimensions ?? DEFAULT_DIMENSIONS;
-
       setDimensions({ width: `${newDimensions.width}`, height: `${newDimensions.height}` });
-      onChange({ device: null, dimensions: newDimensions });
-    } else {
-      cache.current.preDimensions = data.dimensions;
+      onChange({ device: null, dimensions: newDimensions, frameType: FrameType.CUSTOM_SIZE });
 
+      setFrameType(newFrameType);
+    } else if (newFrameType === FrameType.DEVICE) {
       setDimensions(null);
-      onChange({ device: cache.current.prevDevice, dimensions: null });
+      onChange({ device: cache.current.prevDevice, dimensions: null, frameType: FrameType.DEVICE });
+      setFrameType(newFrameType);
+    } else {
+      setFrameType(newFrameType);
+      setAutoFit(newFrameType, data.image);
     }
   };
 
@@ -63,6 +79,9 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
 
   const ratio = (Number(dimensions?.height) / Number(dimensions?.width)) * 100 || 0;
 
+  const getImageDimensions = (frameType: FrameType) => {
+    return frameType === FrameType.CUSTOM_SIZE ? `${dimensions?.width} x ${dimensions?.height}` : 'Display at full size';
+  };
   return (
     <Content
       footer={() => (
@@ -72,8 +91,15 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
       )}
     >
       <Section dividers isDividerNested isDividerBottom>
-        <FormControl label="Frame Type" contentBottomUnits={0}>
-          <RadioGroup isFlat options={FRAME_OPTIONS} checked={frameType} onChange={onChangeFrameType} />
+        <FormControl label="Size" contentBottomUnits={0}>
+          <RadioGroup
+            isFlat
+            options={FRAME_OPTIONS}
+            checked={frameType}
+            onChange={(e) => {
+              onChangeFrameType(e);
+            }}
+          />
         </FormControl>
       </Section>
 
@@ -110,25 +136,27 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
             </Flex>
           </FormControl>
         ) : (
-          <FormControl label="Device Type">
-            <Select
-              value={data.device}
-              options={DEVICE_OPTIONS}
-              onSelect={(value) => onChange({ device: value })}
-              searchable
-              placeholder="Select option"
-              getOptionLabel={(value) => value && DEVICE_LABEL_MAP[value]}
-              renderOptionLabel={(value, ...args) => (
-                <Box display="flex" justifyContent="space-between" alignItems="center" flex="1">
-                  {defaultLabelRenderer(value, ...args)}
+          frameType === FrameType.DEVICE && (
+            <FormControl label="Device Type">
+              <Select
+                value={data.device}
+                options={DEVICE_OPTIONS}
+                onSelect={(value) => onChange({ device: value })}
+                searchable
+                placeholder="Select option"
+                getOptionLabel={(value) => value && DEVICE_LABEL_MAP[value]}
+                renderOptionLabel={(value, ...args) => (
+                  <Box display="flex" justifyContent="space-between" alignItems="center" flex="1">
+                    {defaultLabelRenderer(value, ...args)}
 
-                  <Text fontSize={13} color="#62778c">
-                    {DEVICE_SIZE_MAP[value].width} x {DEVICE_SIZE_MAP[value].height}
-                  </Text>
-                </Box>
-              )}
-            />
-          </FormControl>
+                    <Text fontSize={13} color="#62778c">
+                      {DEVICE_SIZE_MAP[value].width} x {DEVICE_SIZE_MAP[value].height}
+                    </Text>
+                  </Box>
+                )}
+              />
+            </FormControl>
+          )
         )}
 
         <FormControl
@@ -143,9 +171,7 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
                       {DEVICE_SIZE_MAP[data.device].width} x {DEVICE_SIZE_MAP[data.device].height}
                     </>
                   ) : (
-                    <>
-                      {dimensions?.width} x {dimensions?.height}
-                    </>
+                    <>{getImageDimensions(frameType)}</>
                   )}
                 </Text>
               )}
@@ -153,13 +179,15 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
           }
           contentBottomUnits={0}
         >
-          <AnyFullImage update={(url?: string) => onChange({ image: url ?? null })} image={data.image} canUseLink={false} ratio={ratio} />
-
-          {!data.image && (
-            <BlockText fontSize={13} color="#62778c" mt={16}>
-              Images uploaded to visual steps will appear on the visual tab when testing your project and within shareable prototypes.
-            </BlockText>
-          )}
+          <AnyFullImage
+            update={(url?: string) => {
+              onChange({ image: url ?? null });
+              setAutoFit(frameType, url);
+            }}
+            image={data.image}
+            canUseLink={false}
+            ratio={ratio}
+          />
         </FormControl>
       </Section>
 

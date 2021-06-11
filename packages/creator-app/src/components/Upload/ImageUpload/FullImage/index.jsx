@@ -116,7 +116,7 @@ function FullImage({
     <DropUpload
       onUpdate={update}
       height={imageHeight}
-      label="image"
+      label="image/GIF"
       isImage
       linkPlaceholder="Add link or Variable using '{'"
       clearError={() => setError(null)}

@@ -4805,14 +4805,14 @@
   resolved "https://registry.yarnpkg.com/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
   integrity sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==
 
-"@voiceflow/alexa-types@1.51.3":
-  version "1.51.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.51.3.tgz#ff335af34a7c9ec5a30db5cc2f7374ffe6080c64"
-  integrity sha512-1qGuKaDVjtYi+VCOImPGQKZqlcRpMFykK0H/CMroUW84fD8Q+LfCCQzYyYVDLl/tLy5duUMw6sBsAC4an13ubw==
+"@voiceflow/alexa-types@1.51.4":
+  version "1.51.4"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.51.4.tgz#cfb11396ae2bea1ba87b7fbd9b23035e7661c717"
+  integrity sha512-3prNQAE5wl2hqEJsfy4Ta1+1CJbLwETaUzUiojmoofclx9KppkH7pxia+i2cT2LwWHUxWd4rr+hdJfppBvOH/A==
   dependencies:
     "@voiceflow/api-sdk" "^1.32.1"
     "@voiceflow/common" "6.5.0"
-    "@voiceflow/general-types" "^1.49.3"
+    "@voiceflow/general-types" "^1.50.0"
     ask-smapi-model "^1.11.0"
 
 "@voiceflow/api-sdk@1.32.1", "@voiceflow/api-sdk@^1.32.1":
@@ -4912,10 +4912,10 @@
     eslint-plugin-xss "^0.1.9"
     eslint-plugin-you-dont-need-lodash-underscore "^6.11.0"
 
-"@voiceflow/general-types@1.49.3", "@voiceflow/general-types@^1.49.3":
-  version "1.49.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.49.3.tgz#8011fb89386d8364a37a62fecbd1379dcb2c8eb1"
-  integrity sha512-5lAFvLV+hWbtd1adWShn170Y+21fO1gKfe50Goxcd+Mn6rh1S+oewlZ8d9KLxp/fE4JYmGJkpkIJAhR/QOlwAA==
+"@voiceflow/general-types@1.50.0", "@voiceflow/general-types@^1.50.0":
+  version "1.50.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.50.0.tgz#50af52c6f82bf42e6141c3c4e7ca9389b4103df1"
+  integrity sha512-5CxRPVEziekMKCJMUEBh7qne02qu4qaxAoDYrgScdQKZadBjmopdJsZMCnJ3kuykYgPn6klUUWlGtocGZace3w==
   dependencies:
     "@voiceflow/api-sdk" "^1.32.1"
 
@@ -4926,14 +4926,14 @@
   dependencies:
     current-git-branch "^1.1.0"
 
-"@voiceflow/google-types@1.28.3":
-  version "1.28.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.28.3.tgz#8bb2c4de0b7ceb71747cee713d56cb925e18ef89"
-  integrity sha512-UexiQH3UgVxMOJEnCEXtKGUb9KQPHgc3I/AqOkEz8dqjINR9X/uR0S+QoVYZp19bQifm6sroOMvY/rlkHig6xw==
+"@voiceflow/google-types@1.28.4":
+  version "1.28.4"
+  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.28.4.tgz#56c028c5c7375ab543ff3f5be7583c3cd47c9492"
+  integrity sha512-wP+vtlZzcu/rw6snmqNKzGVbhEy3jyRmfhSZ4mxp3/6gTuf93OBhFlYTcIBK+5+y8K06sHPqt4vCdqlJZaeNAw==
   dependencies:
     "@voiceflow/api-sdk" "^1.32.1"
     "@voiceflow/common" "6.5.0"
-    "@voiceflow/general-types" "^1.49.3"
+    "@voiceflow/general-types" "^1.50.0"
     googleapis "^60.0.1"
 
 "@voiceflow/logger@^1.5.6":

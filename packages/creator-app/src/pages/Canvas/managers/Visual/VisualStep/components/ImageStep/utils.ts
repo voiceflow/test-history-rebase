@@ -18,8 +18,7 @@ export const getLabel = (data: NodeData.Visual): string => {
   if (data.device) {
     label = DEVICE_LABEL_MAP[data.device];
   } else if (data.dimensions) {
-    label = 'Visual';
+    label = data.frameType === 'CUSTOM_SIZE' ? 'Custom Size' : 'Auto Fit';
   }
-
-  return label ? `${label} Mockup` : '';
+  return label || '';
 };

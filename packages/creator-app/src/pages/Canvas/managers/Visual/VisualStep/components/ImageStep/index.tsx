@@ -25,7 +25,7 @@ export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, portID, ima
         label={label}
         portID={portID}
         iconColor={NODE_CONFIG.iconColor}
-        placeholder="Add visual mockup"
+        placeholder="Add a visual"
         labelVariant={StepLabelVariant.SECONDARY}
       />
     </Section>

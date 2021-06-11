@@ -73,6 +73,7 @@
     "prepare": "husky install",
     "start": "yarn --cwd packages/creator-app start",
     "start:admin": "yarn --cwd packages/creator-app start:admin",
+    "start:admin:meshed": "yarn --cwd packages/creator-app start:admin:meshed",
     "start:e2e": "yarn --cwd packages/creator-app start:e2e",
     "start:hidden": "yarn --cwd packages/creator-app start:hidden",
     "start:meshed": "yarn --cwd packages/creator-app start:meshed",

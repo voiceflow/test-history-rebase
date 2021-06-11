@@ -283,8 +283,8 @@ class TraceController {
     }
   }
 
-  private processChoiceTrace({ payload: { choices } }: ChoiceTrace) {
-    this.props.setInteractions(choices);
+  private processChoiceTrace({ payload: { buttons = [] } }: ChoiceTrace) {
+    this.props.setInteractions(buttons);
   }
 
   private processPathTrace(trace: V1Trace) {
@@ -294,6 +294,7 @@ class TraceController {
           const { type } = path.event;
           acc.push({ name: type, request: { type, payload: undefined } });
         }
+
         return acc;
       }, [])
     );
@@ -374,7 +375,11 @@ class TraceController {
 
     const pausing = action === TraceStreamAction.PAUSE;
 
-    this.props.setInteractions([{ name: 'next' }, { name: 'previous' }, { name: pausing ? 'resume' : 'pause' }]);
+    this.props.setInteractions([
+      { name: 'next', request: { type: RequestType.TEXT, payload: 'next' } },
+      { name: 'previous', request: { type: RequestType.TEXT, payload: 'previous' } },
+      { name: pausing ? 'resume' : 'pause', request: { type: RequestType.TEXT, payload: pausing ? 'resume' : 'pause' } },
+    ]);
 
     this.props.updateStatus(PMStatus.WAITING_USER_INTERACTION);
 

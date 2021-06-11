@@ -64,7 +64,7 @@ export type PrototypeShareViewSettings = {
 export interface PrototypeState {
   ID: string | null;
   muted: boolean;
-  showChips: boolean;
+  showButtons: boolean;
   status: PrototypeStatus;
   flowIDHistory: string[];
   autoplay: boolean;

@@ -111,9 +111,10 @@ const usePrototype = ({
 
       if (_isString(request)) {
         const match = request.toLowerCase().trim();
-        const chip = interactions.find((interaction) => match === interaction.name.toLowerCase().trim());
-        if (chip?.request) {
-          request = chip.request;
+        const button = interactions?.find((interaction) => match === interaction.name.toLowerCase().trim());
+
+        if (button?.request) {
+          request = button.request;
         }
       }
 

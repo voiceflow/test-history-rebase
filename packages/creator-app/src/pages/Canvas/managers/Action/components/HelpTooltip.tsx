@@ -7,7 +7,7 @@ const EditorInfoPopup: React.FC = () => (
     <Paragraph marginBottomUnits={3}>
       During shared prototyping, the user will always proceed down the default path when they run into the action step.
       <br />
-      If debug mode is on, the test will stop on the action step and chips are presented for which path to take.
+      If debug mode is on, the test will stop on the action step and buttons are presented for which path to take.
     </Paragraph>
     <Title>Designer</Title>
     <Paragraph marginBottomUnits={3}>

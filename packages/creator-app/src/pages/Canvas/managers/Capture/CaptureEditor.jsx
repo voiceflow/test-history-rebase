@@ -9,7 +9,7 @@ import VariableSelect from '@/components/VariableSelect';
 import * as Documentation from '@/config/documentation';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
-import { useChipOption, useNoReplyOption } from '@/pages/Canvas/managers/components/responseOptions';
+import { useButtonOption, useNoReplyOption } from '@/pages/Canvas/managers/components/responseOptions';
 
 import HelpTooltip from './components/HelpTooltip';
 
@@ -21,14 +21,14 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
 
   const optionsFilter = React.useCallback((slotType) => slotType?.value !== SEARCH_QUERY_SLOT, []);
 
-  const [noReplyOption, NoReplyPage] = useNoReplyOption({ data, onChange, pushToPath });
-  const [chipOption, ChipPage] = useChipOption({ data, onChange, pushToPath });
+  const [noReplyOption, noReplyPage] = useNoReplyOption({ data, onChange, pushToPath });
+  const [buttonOption, buttonPage] = useButtonOption({ data, onChange, pushToPath });
 
   return (
     <Content
       footer={() => (
         <Controls
-          menu={<OverflowMenu placement="top-end" options={[noReplyOption, chipOption]} />}
+          menu={<OverflowMenu placement="top-end" options={[noReplyOption, buttonOption]} />}
           tutorial={{
             content: <HelpTooltip />,
             blockType: data.type,
@@ -78,8 +78,8 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
           <VariableSelect value={data.variable} onChange={onSelectVariable} />
         </FormControl>
       </Section>
-      {NoReplyPage}
-      {ChipPage}
+      {buttonPage}
+      {noReplyPage}
     </Content>
   );
 }

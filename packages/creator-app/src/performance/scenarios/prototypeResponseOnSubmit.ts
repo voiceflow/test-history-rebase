@@ -18,7 +18,7 @@ runner.register(PerfScenario.PROTOTYPE_RESPONSE_ON_SUBMIT, async ({ commands, un
   unit(async () => {
     await PAGES.PROTOTYPE.startButton().click();
 
-    await commands.waitAction(PerfAction.PROTOTYPE_CHIPS_RENDERED);
+    await commands.waitAction(PerfAction.PROTOTYPE_BUTTONS_RENDERED);
 
     if (!PAGES.PROTOTYPE.speakMessages().length) {
       // waiting first speak message to be rendered

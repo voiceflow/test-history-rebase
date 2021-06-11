@@ -56,7 +56,7 @@ export type NodeManagerConfig<T extends object | Markup.AnyNodeData> = NodeConfi
   label: string;
   getDataLabel?: (data: T) => string;
 
-  chips?: boolean;
+  buttons?: boolean;
   reprompt?: boolean;
   platforms?: PlatformType[];
   nameEditable?: boolean;

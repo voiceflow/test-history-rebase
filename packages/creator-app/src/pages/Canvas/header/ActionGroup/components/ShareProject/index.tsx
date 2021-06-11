@@ -4,7 +4,8 @@ import Button, { ButtonVariant } from '@/components/Button';
 import { ModalFooter } from '@/components/LegacyModal';
 import { toast } from '@/components/Toast';
 import { Permission } from '@/config/permissions';
-import { UserRole } from '@/constants';
+import { PlatformType, UserRole } from '@/constants';
+import * as Project from '@/ducks/project';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
@@ -14,6 +15,7 @@ import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
 import { stopImmediatePropagation } from '@/utils/dom';
+import { getPlatformValue } from '@/utils/platform';
 
 import PopupCloseIcon from '../PopupCloseIcon';
 import PopupContainer from '../PopupContainer';
@@ -24,7 +26,7 @@ type ShareProjectProps = {
   render: boolean;
 };
 
-const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({ render, versionID, renderPrototype }) => {
+const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({ render, platform, versionID, renderPrototype }) => {
   const [open, onOpen, onClose] = useEnableDisable(false);
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canSharePrototype, { activeRole }] = usePermission(Permission.SHARE_PROTOTYPE);
@@ -84,7 +86,11 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
                 <MenuItemV2
                   isAllowed={false}
                   title="Share Prototype"
-                  description="Share a testable version of your project that can be prototyped using voice, chat, or chip input."
+                  description={`Share a testable version of your project that can be prototyped using voice, chat, or ${getPlatformValue(
+                    platform,
+                    { [PlatformType.GOOGLE]: 'chips' },
+                    'buttons'
+                  )} input.`}
                 />
               )}
 
@@ -107,6 +113,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
 };
 
 const mapStateToProps = {
+  platform: Project.activePlatformSelector,
   versionID: Session.activeVersionIDSelector,
 };
 

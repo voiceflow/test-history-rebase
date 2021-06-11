@@ -15,7 +15,7 @@ const MOCK_STATE = {
     dataHistory: [],
   },
   muted: false,
-  showChips: true,
+  showButtons: true,
   status: Prototype.PrototypeStatus.ENDED,
   flowIDHistory: [],
   autoplay: true,

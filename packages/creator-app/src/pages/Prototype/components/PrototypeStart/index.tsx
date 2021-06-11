@@ -56,7 +56,7 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
           </Text>
 
           <Text fontSize={13} color="#62778c" fontWeight={500} mt={16} mb={16} lineHeight={1.54}>
-            Start a test to interact with your project using text, voice or chips. <Link href={Documentation.PROTOTYPING}>Learn more.</Link>
+            Start a test to interact with your project using text, voice or buttons. <Link href={Documentation.PROTOTYPING}>Learn more.</Link>
           </Text>
 
           {isModelTraining ? (

@@ -1,6 +1,6 @@
 import { NodeData } from '@/models';
 import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
-import { ChipForm } from '@/pages/Canvas/components/SuggestionChips';
+import { ButtonsEditor } from '@/pages/Canvas/components/SuggestionButtons';
 
 import { NodeManagerConfig } from '../types';
 import { RepromptsForm } from './components';
@@ -9,7 +9,7 @@ import PromptEditor from './PromptEditor';
 import PromptStep from './PromptStep';
 
 const EDITORS_BY_PATH = {
-  chips: ChipForm,
+  buttons: ButtonsEditor,
   reprompts: RepromptsForm,
   noReplyResponse: NoReplyResponseForm,
 };

@@ -4,6 +4,7 @@ import { Manager, PopperProps, Reference } from 'react-popper';
 import Flex from '@/components/Flex';
 import { AdvancedMenu, defaultLabelRenderer } from '@/components/NestedMenu';
 import Portal from '@/components/Portal';
+import { Icon, SvgIconProps } from '@/components/SvgIcon';
 import { toast } from '@/components/Toast';
 import { useCache, useDidUpdateEffect } from '@/hooks';
 import { Nullable } from '@/types';
@@ -45,6 +46,7 @@ export type OptionsFilter<O, V> = (
 
 export type SelectProps<O, V> = {
   id?: string;
+  icon?: Icon;
   open?: boolean;
   inputStopProp?: boolean;
   label?: string;
@@ -66,6 +68,7 @@ export type SelectProps<O, V> = {
   autoFocus?: boolean;
   maxHeight?: number | string;
   className?: string;
+  iconProps?: Partial<SvgIconProps>;
   borderLess?: boolean;
   searchable?: boolean;
   rightAction?: React.ReactNode;
@@ -125,6 +128,7 @@ const AnyAdvancedMenu = AdvancedMenu as React.FC<any>;
 const Select = <O, V = O>({
   id,
   open,
+  icon,
   inputStopProp = true,
   label = '',
   value,
@@ -139,6 +143,7 @@ const Select = <O, V = O>({
   disabled,
   onSelect,
   onCreate,
+  iconProps,
   placement = 'bottom-start',
   autoWidth = true,
   fullWidth,
@@ -363,6 +368,7 @@ const Select = <O, V = O>({
   });
 
   const inputProps = {
+    icon,
     inline,
     onBlur,
     opened,
@@ -371,6 +377,7 @@ const Select = <O, V = O>({
     disabled: disabled || !labelSearchable,
     onChange: onChangeSearchLabel,
     isFocused: opened,
+    iconProps,
     fullWidth,
     autoFocus,
     leftAction: prefix ? <PrefixContainer>{prefix}</PrefixContainer> : null,

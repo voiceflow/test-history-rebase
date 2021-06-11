@@ -2,7 +2,7 @@
 
 import './utils/mockAudio';
 
-import { IntentName, RequestType, TraceType } from '@voiceflow/general-types';
+import { BaseRequest, IntentName, RequestType, TraceType } from '@voiceflow/general-types';
 import { TraceStreamAction } from '@voiceflow/general-types/build/nodes/stream';
 import { SinonSpy, SinonStub } from 'sinon';
 
@@ -36,13 +36,13 @@ enum TraceMethods {
 
 const suite = createSuite(({ spy, stub, expect }) => ({
   createController({ debug = false, context }: { debug?: boolean; context?: { trace: Trace[] } } = {}) {
-    const engine = ({
+    const engine = {
       node: { center: stub(), ports: { out: ['1'] } },
       nodes: [{ 1: { type: BlockType.START } }],
       select: stub(),
       selection: { replace: stub(), getTargets: stub(), reset: stub() },
       getNodeByID: stub().returns({ id: STEP_ID, parentNode: BLOCK_ID, combinedNodes: ['1'] }),
-    } as any) as Engine;
+    } as any as Engine;
 
     const audio = new AudioController();
     const timeout = new TimeoutController();
@@ -72,6 +72,8 @@ const suite = createSuite(({ spy, stub, expect }) => ({
         updatePrototype: stub(),
         contextStep: 1,
         activeDiagramID: '',
+        isMuted: false,
+        waitVisuals: true,
         contextHistory: [{}],
         visualDataHistory: [null],
         updatePrototypeVisualsData: stub(),
@@ -79,7 +81,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
       },
       audio,
       timeout,
-      message: (stub(message) as any) as MessageController,
+      message: stub(message) as any as MessageController,
     });
 
     // @ts-ignore
@@ -96,17 +98,17 @@ const suite = createSuite(({ spy, stub, expect }) => ({
   },
 
   emulateAudioError: (controller: TraceController) =>
-    ((controller['audio']['play'] as any) as SinonStub).callsFake(async (_: any, { onError }: { onError: Function }) => onError()),
+    (controller['audio']['play'] as any as SinonStub).callsFake(async (_: any, { onError }: { onError: Function }) => onError()),
 
   emulateAudioPause: (controller: TraceController, audio: any) =>
-    ((controller['audio']['play'] as any) as SinonStub).callsFake(async (_: any, { onPause }: { onPause: Function }) => onPause(audio)),
+    (controller['audio']['play'] as any as SinonStub).callsFake(async (_: any, { onPause }: { onPause: Function }) => onPause(audio)),
 
-  emulateAudioReject: (controller: TraceController) => ((controller['audio']['play'] as any) as SinonStub).returns(Promise.reject()),
+  emulateAudioReject: (controller: TraceController) => (controller['audio']['play'] as any as SinonStub).returns(Promise.reject()),
 
   emulateFetchContext(controller: TraceController, ...data: any[]) {
     let fetchContextDataCallCount = 0;
 
-    return ((controller['props']['fetchContext'] as any) as SinonStub).callsFake(() => data[fetchContextDataCallCount++]);
+    return (controller['props']['fetchContext'] as any as SinonStub).callsFake(() => data[fetchContextDataCallCount++]);
   },
 
   expectSetTimeout: (controller: TraceController) => expect(controller['timeout']['set']),
@@ -131,7 +133,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
     return expect(controller['props']['setError']);
   },
 
-  expectSetInteractions: (controller: TraceController, interactions: { name: string }[]) =>
+  expectSetInteractions: (controller: TraceController, interactions: { name: string; request?: BaseRequest }[]) =>
     expect(controller['props']['setInteractions']).to.be.calledWith(interactions),
 
   expectEnterFlow: (controller: TraceController) => expect(controller['props']['enterFlow']),
@@ -149,7 +151,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
 
     expect(controller['props']['updateStatus']).to.be.calledWith(PMStatus.NAVIGATING);
     expect(controller['props']['updateStatus']).to.be.calledWith(PMStatus.WAITING_USER_INTERACTION);
-    expect(((controller['processTrace'] as any) as SinonSpy).args[1]).to.be.deep.eq([[], { onlyMessage }]);
+    expect((controller['processTrace'] as any as SinonSpy).args[1]).to.be.deep.eq([[], { onlyMessage }]);
 
     return expect(controller['processTrace']).to.be.calledTwice;
   },
@@ -306,18 +308,18 @@ suite(
       });
 
       it('should process choice trace', async () => {
-        const choices = [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }];
+        const buttons = [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }];
 
         const controller = createController({
           context: {
-            trace: [traceFactory(TraceType.CHOICE, { choices })],
+            trace: [traceFactory(TraceType.CHOICE, { buttons })],
           },
         });
 
         await controller.next();
 
         expectProcessSingleTrace(controller, TraceMethods.CHOICE);
-        expectSetInteractions(controller, choices);
+        expectSetInteractions(controller, buttons);
       });
 
       it('should process flow trace', async () => {
@@ -359,7 +361,11 @@ suite(
 
         expect(controller['streamState']).to.be.deep.eq({ src: SRC, token: '1', offset: 0 });
         expectMessage(controller, 'stream', ID, { audio: SRC });
-        expectSetInteractions(controller, [{ name: 'next' }, { name: 'previous' }, { name: 'pause' }]);
+        expectSetInteractions(controller, [
+          { name: 'next', request: { type: 'text', payload: 'next' } },
+          { name: 'previous', request: { type: 'text', payload: 'previous' } },
+          { name: 'pause', request: { type: 'text', payload: 'pause' } },
+        ]);
         expectUpdateStatus(controller).to.be.calledWith(PMStatus.WAITING_USER_INTERACTION);
         expectAudioPlay(controller).to.be.calledWithMatch(SRC);
         expect(next).to.be.calledWith({ type: RequestType.TEXT, payload: IntentName.NEXT });
@@ -376,7 +382,11 @@ suite(
         await controller.next();
 
         expectMessage(controller, 'stream', ID, { audio: SRC });
-        expectSetInteractions(controller, [{ name: 'next' }, { name: 'previous' }, { name: 'resume' }]);
+        expectSetInteractions(controller, [
+          { name: 'next', request: { type: 'text', payload: 'next' } },
+          { name: 'previous', request: { type: 'text', payload: 'previous' } },
+          { name: 'resume', request: { type: 'text', payload: 'resume' } },
+        ]);
         expectUpdateStatus(controller).to.be.calledWith(PMStatus.WAITING_USER_INTERACTION);
         expectAudioStop(controller).to.be.calledTwice;
         expectAudioPlay(controller).not.to.be.calledWithMatch(SRC);

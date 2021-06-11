@@ -3,22 +3,23 @@ import { StepData } from '@voiceflow/general-types/build/nodes/capture';
 
 import { NodeData } from '@/models';
 
-import { createBlockAdapter, repromptAdapter } from '../utils';
+import { chipsToIntentButtons, createBlockAdapter, repromptAdapter } from '../utils';
 
 const captureAdapter = createBlockAdapter<StepData<Voice>, NodeData.Capture>(
-  ({ slot, variable, reprompt, slotInputs, chips = null }) => ({
+  ({ slot, variable, reprompt, slotInputs, chips, buttons }) => ({
     slot,
     variable,
     examples: slotInputs,
     reprompt: reprompt && repromptAdapter.fromDB(reprompt),
-    chips,
+    buttons: buttons ?? chipsToIntentButtons(chips),
   }),
-  ({ slot, variable, reprompt, examples, chips }) => ({
+  ({ slot, variable, reprompt, examples, buttons }) => ({
     slot,
     variable,
     reprompt: reprompt && repromptAdapter.toDB(reprompt),
     slotInputs: examples,
-    chips,
+    chips: null,
+    buttons,
   })
 );
 

@@ -4,31 +4,41 @@ import { textAndDialogGraphic, textAndDialogGraphicInactive, voiceAndVisualsGrap
 import Box from '@/components/Box';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import Menu, { MenuItem } from '@/components/Menu';
+import { PlatformType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeLayout } from '@/ducks/prototype/types';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect } from '@/hooks';
+import { PlatformContext } from '@/pages/Skill/contexts';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
+import { getPlatformValue } from '@/utils/platform';
 
 import PrototypeLayoutItem from './PrototypeLayoutItem';
 
-const OPTION_DETAILS: Record<PrototypeLayout, Record<string, string>> = {
+interface OptionDetail {
+  title: string;
+  activeImg: string;
+  inactiveImg: string;
+  description: (platform: PlatformType) => string;
+}
+
+const OPTION_DETAILS: Record<PrototypeLayout, OptionDetail> = {
   [PrototypeLayout.TEXT_DIALOG]: {
     title: 'Text and Transcript',
-    description: 'Testers will use text and chips input',
+    description: (platform) => `Testers will use text and ${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
     activeImg: textAndDialogGraphic,
     inactiveImg: textAndDialogGraphicInactive,
   },
   [PrototypeLayout.VOICE_DIALOG]: {
     title: 'Voice and Transcript',
-    description: 'Testers will use voice and chips input',
+    description: (platform) => `Testers will use voice and ${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
     activeImg: textAndDialogGraphic,
     inactiveImg: textAndDialogGraphic,
   },
   [PrototypeLayout.VOICE_VISUALS]: {
     title: 'Voice and Visuals',
-    description: 'Testers will only use voice input',
+    description: () => 'Testers will only use voice input',
     activeImg: voiceAndVisualsGraphic,
     inactiveImg: voiceAndVisualsGraphicInactive,
   },
@@ -40,6 +50,7 @@ const OPTION_DETAILS: Record<PrototypeLayout, Record<string, string>> = {
 const CUSTOM_MENU_WIDTH = 374;
 
 const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ layout, updateSettings }) => {
+  const platform = React.useContext(PlatformContext)!;
   const [localLayout, setLocalLayout] = React.useState(layout);
 
   const onClick = (option: PrototypeLayout, cb: () => void) => async () => {
@@ -74,7 +85,7 @@ const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ 
               >
                 <PrototypeLayoutItem
                   title={OPTION_DETAILS[option].title}
-                  description={OPTION_DETAILS[option].description}
+                  description={OPTION_DETAILS[option].description(platform)}
                   src={option === localLayout ? OPTION_DETAILS[option].activeImg : OPTION_DETAILS[option].inactiveImg}
                 />
               </MenuItem>
@@ -88,7 +99,7 @@ const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ 
           <PrototypeLayoutItem
             src={OPTION_DETAILS[localLayout].activeImg}
             title={OPTION_DETAILS[localLayout].title}
-            description={OPTION_DETAILS[localLayout].description}
+            description={OPTION_DETAILS[localLayout].description(platform)}
           />
         }
       />

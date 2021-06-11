@@ -1,12 +1,13 @@
 import { Voice } from '@voiceflow/alexa-types';
 import { BaseDiagramNode as DBNode, BasePort as DBPort } from '@voiceflow/api-sdk';
-import { NoMatches, Prompt } from '@voiceflow/general-types';
+import { ButtonType, Chip, IntentButton, NoMatches, Prompt } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { createAdapter, createSimpleAdapter } from '@/client/adapters/utils';
 import { DialogType, RepromptType } from '@/constants';
 import { Link, LinkData, Node, NodeData, Port } from '@/models';
 import { SpeakData } from '@/models/Speak';
+import { Nullable } from '@/types';
 
 import { generateOutPort } from '../utils';
 
@@ -68,3 +69,6 @@ export const defaultPortAdapter: PortsAdapter = {
 
 export const getPortByLabel = (ports: { port: Port; target: string | null; link?: Link }[], label: string) =>
   ports.find(({ port }) => port.label === label);
+
+export const chipsToIntentButtons = (chips?: Nullable<Chip[]>): Nullable<IntentButton[]> =>
+  chips?.map(({ label: name }) => ({ name, type: ButtonType.INTENT, payload: { intentID: null } })) ?? null;

@@ -33,7 +33,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Prompt> = {
           },
         ],
       },
-      chips: null,
+      buttons: null,
       reprompt: null,
     },
   }),

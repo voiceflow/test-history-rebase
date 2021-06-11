@@ -1,4 +1,4 @@
-import { BaseRequest, RequestType, TextRequest } from '@voiceflow/general-types';
+import { BaseRequest, IntentRequest, RequestType, TextRequest } from '@voiceflow/general-types';
 import cuid from 'cuid';
 import _isString from 'lodash/isString';
 
@@ -65,10 +65,13 @@ class PrototypeTool {
 
     const formattedRequest = _isString(request) ? ({ type: RequestType.TEXT, payload: request } as TextRequest) : request;
 
-    const input =
-      formattedRequest?.type === RequestType.TEXT && _isString(formattedRequest.payload)
-        ? formattedRequest?.payload
-        : `[Action] ${formattedRequest?.type}`;
+    let input = `[Action] ${formattedRequest?.type}`;
+
+    if (formattedRequest?.type === RequestType.TEXT && _isString(formattedRequest.payload)) {
+      input = formattedRequest.payload;
+    } else if (formattedRequest?.type === RequestType.INTENT) {
+      input = (formattedRequest as IntentRequest).payload.query;
+    }
 
     this.message?.user(cuid(), input);
 

@@ -14,7 +14,7 @@ const EDITORS_BY_PATH = {
 const ChoiceOldManager: NodeManagerConfig<NodeData.ChoiceOld> = {
   type: BlockType.CHOICE_OLD,
   icon: ProjectDiagramIcon as any,
-  chips: true,
+  buttons: true,
   reprompt: true,
   mergeTerminator: true,
 

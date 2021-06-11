@@ -31,7 +31,7 @@ export const prototypeMutedSelector = createSelector([prototypeSelector], ({ mut
 
 export const prototypeInputModeSelector = createSelector([prototypeSelector], ({ inputMode }) => inputMode);
 
-export const prototypeShowChipsSelector = createSelector([prototypeSelector], ({ showChips }) => showChips);
+export const prototypeShowButtonsSelector = createSelector([prototypeSelector], ({ showButtons }) => showButtons);
 
 export const prototypeModeSelector = createSelector([prototypeSelector], ({ mode }) => mode);
 

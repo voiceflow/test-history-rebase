@@ -17,7 +17,7 @@ import { InputArea, InputContainer } from './components';
 import ControlCenter, { ControlCenterProps } from './components/ControlCenter';
 
 const InputAreaComp: React.FC<any> = InputArea;
-export type PrototypeInputProps<L> = Pick<ControlCenterProps, 'showChips' | 'setShowChips' | 'stepBack' | 'stepForward'> & {
+export type PrototypeInputProps<L> = Pick<ControlCenterProps, 'showButtons' | 'setShowButtons' | 'stepBack' | 'stepForward'> & {
   locale: L;
   disabled?: boolean;
   onUserInput: (input: string) => void;
@@ -25,11 +25,11 @@ export type PrototypeInputProps<L> = Pick<ControlCenterProps, 'showChips' | 'set
 
 const PrototypeInput = <L extends string>({
   inputMode,
-  showChips,
+  showButtons,
   updatePrototype,
   locale,
   disabled,
-  setShowChips,
+  setShowButtons,
   onUserInput,
   stepForward,
   diagramID,
@@ -69,8 +69,8 @@ const PrototypeInput = <L extends string>({
         stepBack={stepBack}
         inputMode={inputMode}
         setInputMode={setInputMode}
-        showChips={showChips}
-        setShowChips={setShowChips}
+        showButtons={showButtons}
+        setShowButtons={setShowButtons}
         inputRef={inputRef}
         goBackDisabled={goBackDisabled}
       />
@@ -115,7 +115,7 @@ const PrototypeInput = <L extends string>({
 const mapStateToProps = {
   contextStep: Prototype.prototypeContextStepSelector,
   inputMode: Prototype.prototypeInputModeSelector,
-  showChips: Prototype.prototypeShowChipsSelector,
+  showButtons: Prototype.prototypeShowButtonsSelector,
   status: Prototype.prototypeStatusSelector,
   diagramID: Creator.creatorDiagramIDSelector,
 };

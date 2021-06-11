@@ -49,12 +49,12 @@ context('Prototype', () => {
     });
 
     // The createSimpleSpeakChoice is flakey, gunna skip for now so i can merge the bulk of the new e2es
-    it.skip('reply with chips', () => {
+    it.skip('reply with buttons', () => {
       createSimpleSpeakChoice();
       canvasPage.el.testButton.click();
       prototypePage.startPrototype();
       cy.get(`.${ClassName.CHAT_DIALOG_SPEAK_MESSAGE}`).eq(0).contains('Test');
-      cy.get(`.${ClassName.PROTOTYPE_CHIP}`).contains('yes').click();
+      cy.get(`.${ClassName.PROTOTYPE_BUTTON}`).contains('yes').click();
       cy.get(`.${ClassName.CHAT_DIALOG_LOADING_MESSAGE}`).should('not.be.visible');
       cy.get(`.${ClassName.CHAT_DIALOG_SPEAK_MESSAGE}`).eq(1).contains('Yes End');
     });
@@ -148,11 +148,11 @@ context('Prototype', () => {
         prototypePage.assertFinished();
         prototypePage.el.resetPrototypeButton.click();
 
-        // Use chips
+        // Use buttons
         prototypePage.startPrototype();
         prototypePage.awaitMessage();
         prototypePage.el.systemResponse.should('have.text', systemPrompt);
-        prototypePage.el.chips.should('have.length', 1).click();
+        prototypePage.el.buttons.should('have.length', 1).click();
         prototypePage.assertFinished();
         prototypePage.el.resetPrototypeButton.click();
 

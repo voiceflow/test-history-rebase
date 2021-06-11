@@ -1,4 +1,4 @@
-import { BaseRequest } from '@voiceflow/general-types';
+import { BaseRequest, RequestType } from '@voiceflow/general-types';
 import React from 'react';
 import SimpleBar from 'simplebar-react';
 
@@ -13,11 +13,11 @@ import { preventDefault } from '@/utils/dom';
 
 import { Interaction } from '../../../types';
 
-type ChipProps = {
+interface ButtonProps {
   rgbaColor: Color;
-};
+}
 
-const Chip = styled(FadeLeftContainer)<ChipProps>`
+const Button = styled(FadeLeftContainer)<ButtonProps>`
   ${transition('color', 'background')};
   border-radius: 25px;
   box-shadow: 0 1px 1px 0 rgba(17, 49, 96, 0.06);
@@ -37,7 +37,7 @@ const Chip = styled(FadeLeftContainer)<ChipProps>`
   }
 `;
 
-const ActionChip = styled(Chip)`
+const ActionButton = styled(Button)`
   ${transition('border')};
   border: solid 1px rgba(141, 162, 181, 0.4);
   color: #132144;
@@ -56,12 +56,14 @@ interface InteractionsProps {
   onInteraction: (request: string | BaseRequest) => void;
 }
 
+const SIMPLE_BUTTON_REQUESTS = [RequestType.INTENT, RequestType.TEXT];
+
 const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction, color }) => {
   const hasInteractions = !!interactions.length;
 
   React.useEffect(() => {
     if (hasInteractions) {
-      perf.action(PerfAction.PROTOTYPE_CHIPS_RENDERED);
+      perf.action(PerfAction.PROTOTYPE_BUTTONS_RENDERED);
     }
   }, [hasInteractions]);
 
@@ -72,17 +74,18 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
   return (
     <>
       {interactions.map(({ name, request }) => {
-        const ChipElement = request ? ActionChip : Chip;
+        const ButtonElement = !request || SIMPLE_BUTTON_REQUESTS.includes(request.type as RequestType) ? Button : ActionButton;
+
         return (
-          <ChipElement
+          <ButtonElement
             key={name}
             onClick={() => onInteraction(request || name)}
-            className={ClassName.PROTOTYPE_CHIP}
+            className={ClassName.PROTOTYPE_BUTTON}
             rgbaColor={hexToRGBA(color ?? '#5D9DF5')}
             onMouseDown={preventDefault()}
           >
             {name}
-          </ChipElement>
+          </ButtonElement>
         );
       })}
     </>

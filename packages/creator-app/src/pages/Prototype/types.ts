@@ -1,4 +1,4 @@
-import { BaseRequest } from '@voiceflow/general-types';
+import { AnyRequestButton, BaseRequest } from '@voiceflow/general-types';
 import { ImageStepData } from '@voiceflow/general-types/build/nodes/visual';
 
 export enum PMStatus {
@@ -57,5 +57,5 @@ export type TypedMessage<T extends MessageType> = MessageMap[T];
 
 export interface Interaction {
   name: string;
-  request?: BaseRequest;
+  request: AnyRequestButton['request'] | BaseRequest<undefined>;
 }

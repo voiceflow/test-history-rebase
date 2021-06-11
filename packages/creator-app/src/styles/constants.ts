@@ -117,7 +117,7 @@ export enum ClassName {
   PROTOTYPE_MESSAGE_ICON = 'vf-prototype-message-icon',
   EDITOR_FOOTER_BUTTON = 'vf-editor-footer-button',
   INTENT_SELECT_INPUT = 'vf-intent-select-input',
-  PROTOTYPE_CHIP = 'vf-prototype-chip',
+  PROTOTYPE_BUTTON = 'vf-prototype-button',
   DISPLAY_TYPE_ITEM = 'vf-display-type-item',
   SCALE_CONTAINER = 'vf-scale-container',
   PLATFORM_CARD = 'vf-platform-card',

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import { Node, NodeData } from '@/models';
+import { NodeData } from '@/models';
 import { EngineContext, ManagerContext, ManagerGetter } from '@/pages/Canvas/contexts';
 import type { Engine } from '@/pages/Canvas/engine/';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
@@ -29,19 +29,29 @@ export type PathEntry = {
 };
 
 const generatePath =
-  (node: Node | null, parent: NodeData<unknown> | null, engine: Engine) =>
+  ({
+    type,
+    engine,
+    parentType,
+    parentNodeID,
+  }: {
+    type?: BlockType | null;
+    engine: Engine;
+    parentType?: BlockType | null;
+    parentNodeID?: string | null;
+  }) =>
   (getManager: ManagerGetter): PathEntry[] => {
-    if (!node) {
+    if (!type) {
       return [];
     }
 
-    const blockPath = [{ label: (node.type !== BlockType.COMBINED && getManager(node.type)?.label) || 'Block' }];
+    const blockPath = [{ label: (type !== BlockType.COMBINED && getManager(type)?.label) || 'Block' }];
 
-    return parent
+    return parentType && parentNodeID
       ? [
           {
-            label: (node.type !== BlockType.COMBINED && getManager(parent.type)?.label) || 'Block',
-            focus: () => engine.focus.set(parent.nodeID),
+            label: (type !== BlockType.COMBINED && getManager(parentType)?.label) || 'Block',
+            focus: () => engine.focus.set(parentNodeID),
           },
           ...blockPath,
         ]
@@ -60,7 +70,16 @@ export const useEditorPath = () => {
     parent = engine.select(Creator.dataByNodeIDSelector)(node.parentNode);
   }
 
-  const originalPath = React.useMemo(() => generatePath(node, parent, engine)(getManager), [node, parent, engine, getManager]);
+  const originalPath = React.useMemo(
+    () =>
+      generatePath({
+        type: node?.type,
+        engine,
+        parentType: parent?.type,
+        parentNodeID: parent?.nodeID,
+      })(getManager),
+    [node?.type, parent?.type, parent?.nodeID, engine, getManager]
+  );
   const [path, updatePath] = React.useState(originalPath);
 
   const goToPath = React.useCallback(

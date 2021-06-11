@@ -46,7 +46,7 @@ const optionsFilter = (options, searchLabel, { maxSize = options.length, getOpti
 
       if (!searchLabel || matcher.includes(_toLower(searchLabel))) {
         matched.push(option);
-      } else {
+      } else if (!option?.menuItemProps?.divider) {
         notMatched.push(option);
       }
 
@@ -66,7 +66,20 @@ const optionsFilter = (options, searchLabel, { maxSize = options.length, getOpti
   return { filteredOptions, matchedOptions, notMatchedOptions };
 };
 
-function IntentSelect({ slots, platform, intent, intents, onChange, intentsMap, newIntent }) {
+function IntentSelect({
+  icon = undefined,
+  slots,
+  intent,
+  intents,
+  onChange,
+  platform,
+  newIntent,
+  creatable = true,
+  clearable = undefined,
+  iconProps = undefined,
+  intentsMap,
+  placeholder = 'Name new intent or select existing intent',
+}) {
   const intentID = intent?.id;
   const isGeneral = isGeneralPlatform(platform);
   const filteredIntents = React.useMemo(() => prettifyIntentNames(filterIntents(intents, intent)), [intents, intent]);
@@ -128,15 +141,17 @@ function IntentSelect({ slots, platform, intent, intents, onChange, intentsMap, 
   return (
     <>
       <Select
+        icon={icon}
+        iconProps={iconProps}
         className={ClassName.INTENT_SELECT_INPUT}
         value={intentID}
-        clearable={intentID}
+        clearable={clearable ?? intentID}
         options={filteredIntents}
         onCreate={onCreate}
         onSelect={onSelectIntent}
-        creatable
+        creatable={creatable}
         searchable
-        placeholder="Name new intent or select existing intent"
+        placeholder={placeholder}
         optionsFilter={(...args) => optionsFilter(...args, platform)}
         getOptionValue={getOptionValue}
         getOptionLabel={getOptionLabel}

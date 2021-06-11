@@ -51,8 +51,8 @@ export default {
     get visualImage() {
       return cy.get('.vf-visual--image');
     },
-    get chips() {
-      return cy.get(`.${ClassName.PROTOTYPE_CHIP}`);
+    get buttons() {
+      return cy.get(`.${ClassName.PROTOTYPE_BUTTON}`);
     },
     get submitMessageInputButton() {
       return cy.get('.vf-svg-icon--send').find('svg');

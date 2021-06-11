@@ -11,7 +11,7 @@ const ChoiceManager: NodeManagerConfig<NodeData.Interaction> = {
 
   tip: 'Select choices and capture slot values from user input',
   label: 'Choice',
-  chips: true,
+  buttons: true,
   reprompt: true,
 
   step: ChoiceStep,

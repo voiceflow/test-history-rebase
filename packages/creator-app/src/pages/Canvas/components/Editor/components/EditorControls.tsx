@@ -22,7 +22,7 @@ export type ControlOptions = {
 export type EditorControlsProps = {
   tutorial?: {
     content: React.ReactNode;
-    blockType: BlockType;
+    blockType?: BlockType;
     helpTitle?: React.ReactNode;
     helpMessage?: React.ReactNode;
   };
@@ -41,14 +41,16 @@ const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutor
         <EditorTutorial
           anchor={anchor}
           tutorialTitle={tutorialTitle}
-          title={getManager(tutorial.blockType)?.label || 'Block'}
+          title={(tutorial.blockType && getManager(tutorial.blockType)?.label) || 'Block'}
           helpTitle={tutorial?.helpTitle}
           helpMessage={tutorial?.helpMessage}
         >
           {tutorial.content}
         </EditorTutorial>
       )}
+
       <div>{children}</div>
+
       <ControlsContainer>
         {menu}
         {options.map(({ label, icon, onClick, variant = ButtonVariant.SECONDARY, disabled = false, iconProps }) => (

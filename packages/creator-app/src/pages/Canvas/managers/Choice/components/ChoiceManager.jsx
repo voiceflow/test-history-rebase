@@ -10,7 +10,7 @@ import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import ElseResponse from '@/pages/Canvas/managers/Choice/components/ElseResponse';
-import { useChipOption, useNoReplyOption } from '@/pages/Canvas/managers/components/responseOptions';
+import { useButtonOption, useNoReplyOption } from '@/pages/Canvas/managers/components/responseOptions';
 import { PlatformContext } from '@/pages/Skill/contexts';
 
 import { NODE_CONFIG } from '../constants';
@@ -52,15 +52,15 @@ function ChoiceManager({ data, onChange, focusedNode, pushToPath }) {
     [onReorder, engine.port, focusedNode.id]
   );
 
-  const [noReplyOption, NoReplyPage] = useNoReplyOption({ data, onChange, pushToPath });
-  const [chipOption, ChipPage] = useChipOption({ data, onChange, pushToPath });
+  const [noReplyOption, noReplyPage] = useNoReplyOption({ data, onChange, pushToPath });
+  const [buttonOption, buttonPage] = useButtonOption({ data, onChange, pushToPath });
 
   return (
     <Content
       footer={({ scrollToBottom }) =>
         items.length < MAX_ITEMS_PER_EDITOR ? (
           <Controls
-            menu={<OverflowMenu placement="top-end" options={[noReplyOption, chipOption]} />}
+            menu={<OverflowMenu placement="top-end" options={[noReplyOption, buttonOption]} />}
             options={[
               {
                 label: 'Add Path',
@@ -84,9 +84,9 @@ function ChoiceManager({ data, onChange, focusedNode, pushToPath }) {
         items={items}
         footer={
           <>
+            {buttonPage}
             <ElseResponse pushToPath={pushToPath} editorStatus={data.else.type} />
-            {NoReplyPage}
-            {ChipPage}
+            {noReplyPage}
           </>
         }
         onDelete={onRemove}

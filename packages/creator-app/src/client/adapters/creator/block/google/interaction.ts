@@ -7,7 +7,7 @@ import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 import { distinctPlatformsData } from '@/utils/platform';
 
-import { createBlockAdapter, noMatchAdapter, repromptAdapter } from '../utils';
+import { chipsToIntentButtons, createBlockAdapter, noMatchAdapter, repromptAdapter } from '../utils';
 
 const elseAdapter = createAdapter<ElseData<Voice>, NodeData.InteractionElse>(
   ({ type, ...props }) => ({ type, ...noMatchAdapter.fromDB(props) }),
@@ -20,7 +20,7 @@ const choiceAdapter = createAdapter<Choice, NodeData.InteractionChoice>(
 );
 
 const interactionAdapter = createBlockAdapter<StepData<Voice>, NodeData.Interaction>(
-  ({ name, else: elseData, choices, reprompt, chips = null }) => ({
+  ({ name, else: elseData, choices, reprompt, chips, buttons }) => ({
     name,
     else: elseAdapter.fromDB(elseData),
     choices: choices.map((choice) => ({
@@ -28,14 +28,15 @@ const interactionAdapter = createBlockAdapter<StepData<Voice>, NodeData.Interact
       [PlatformType.GOOGLE]: choiceAdapter.fromDB(choice),
     })),
     reprompt: reprompt && repromptAdapter.fromDB(reprompt),
-    chips,
+    buttons: buttons ?? chipsToIntentButtons(chips),
   }),
-  ({ name, else: elseData, choices, reprompt, chips }) => ({
+  ({ name, else: elseData, choices, reprompt, buttons }) => ({
     name,
     else: elseAdapter.toDB(elseData),
     choices: choices.map(({ [PlatformType.GOOGLE]: data }) => choiceAdapter.toDB(data)),
     reprompt: reprompt && repromptAdapter.toDB(reprompt),
-    chips,
+    chips: null,
+    buttons,
   })
 );
 

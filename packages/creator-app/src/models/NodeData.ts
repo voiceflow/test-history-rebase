@@ -1,7 +1,7 @@
 import { PermissionType } from '@voiceflow/alexa-types';
 import { RecurrenceFreq } from '@voiceflow/alexa-types/build/nodes/reminder';
 import { SlotMapping } from '@voiceflow/api-sdk';
-import { CanvasNodeVisibility, Chip, ExpressionTypeV2, IntegrationUser } from '@voiceflow/general-types';
+import { AnyButton, CanvasNodeVisibility, ExpressionTypeV2, IntegrationUser } from '@voiceflow/general-types';
 import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
 import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/general-types/build/nodes/googleSheets';
 import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
@@ -66,27 +66,27 @@ export namespace NodeData {
 
   export type InteractionElse = NoMatches & { type: InteractionElseType };
 
-  export type Interaction = {
+  export interface Interaction {
     name: string;
     else: InteractionElse;
     choices: Record<DistinctPlatform, InteractionChoice>[];
     reprompt: Reprompt | null;
-    chips: Chip[] | null;
-  };
+    buttons: AnyButton[] | null;
+  }
 
   export type ChoiceOld = {
     choices: { synonyms: string[] }[];
     reprompt: Reprompt | null;
   };
 
-  export type Prompt = {
+  export interface Prompt {
     noMatchReprompt: {
       randomize: boolean;
       reprompts: SpeakData[];
     };
     reprompt: Reprompt | null;
-    chips: Chip[] | null;
-  };
+    buttons: AnyButton[] | null;
+  }
 
   export type Command = Record<DistinctPlatform, Command.PlatformData> & { name: string };
   export namespace Command {
@@ -105,13 +105,13 @@ export namespace NodeData {
     voice?: string | null;
   };
 
-  export type Capture = {
+  export interface Capture {
     slot: string | null;
     variable: string | null;
     examples: string[];
     reprompt: Reprompt | null;
-    chips: Chip[] | null;
-  };
+    buttons: AnyButton[] | null;
+  }
 
   export type Speak = {
     randomize: boolean;

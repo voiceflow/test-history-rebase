@@ -10,7 +10,7 @@ const StreamManager: NodeManagerConfig<NodeData.Stream> = {
 
   tip: 'Stream long form audio files & URLs',
   label: 'Stream',
-  chips: true,
+  buttons: true,
 
   step: StreamStep,
   editor: StreamEditor,

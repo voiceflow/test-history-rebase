@@ -39,7 +39,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Interaction> = {
           },
         ],
       },
-      chips: null,
+      buttons: null,
     },
   }),
 };

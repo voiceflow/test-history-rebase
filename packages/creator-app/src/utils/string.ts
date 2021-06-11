@@ -12,9 +12,12 @@ const TRAILING_UNDERSCORES_REGEXP = /^_+|_+$/g;
 
 export const createNextName = (prefix: string, items: string[], platform: PlatformType): string => {
   let counter = 1;
+
   const isGeneral = isGeneralPlatform(platform);
   const genIntentName = (counter: number) => (isGeneral ? `${prefix} ${convertToWord(counter)}` : `${prefix}_${convertToWord(counter)}`);
+
   let intentName = genIntentName(counter);
+
   while (items.includes(intentName)) {
     counter++;
     intentName = genIntentName(counter);

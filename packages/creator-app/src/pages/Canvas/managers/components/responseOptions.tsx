@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-identical-functions */
-import { ButtonsLayout, Chip } from '@voiceflow/general-types';
+import { AnyButton, ButtonsLayout } from '@voiceflow/general-types';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,11 +9,14 @@ import { PlatformType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import { NodeData } from '@/models/NodeData';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
-import ChipSection, { chipFactory } from '@/pages/Canvas/components/SuggestionChips/components/ChipSection';
+import ButtonsSection, { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons/Section';
 import { CheckboxOption } from '@/pages/Canvas/managers/Speak/SpeakEditor';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
 import { PlatformContext } from '@/pages/Skill/contexts';
+import { Nullable } from '@/types';
+import { getPlatformValue } from '@/utils/platform';
+import { isAlexaPlatform } from '@/utils/typeGuards';
 
 interface NodeInterface<T> {
   data: T;
@@ -23,19 +26,21 @@ interface NodeInterface<T> {
 
 type Option = [MenuOption | null, false | React.ReactNode];
 
-export const useChipOption = ({ data, onChange, pushToPath }: NodeInterface<{ chips: Chip[] | null }>): Option => {
-  const hasChips = !!data.chips;
-  const toggleChips = React.useCallback(() => onChange({ chips: hasChips ? null : chipFactory() }), [hasChips, onChange]);
-  const isAlexa = React.useContext(PlatformContext) === PlatformType.ALEXA;
+export const useButtonOption = ({ data, onChange, pushToPath }: NodeInterface<{ buttons: Nullable<AnyButton[]> }>): Option => {
+  const hasButtons = !!data.buttons;
+  const platform = React.useContext(PlatformContext)!;
+  const toggleButtons = React.useCallback(() => onChange({ buttons: hasButtons ? null : buttonsFactory() }), [hasButtons, onChange]);
+
+  const buttonsName = getPlatformValue(platform, { [PlatformType.GOOGLE]: 'Chips' }, 'Buttons');
 
   return [
-    isAlexa
+    isAlexaPlatform(platform)
       ? null
       : {
-          label: hasChips ? 'Remove Suggestion Chips' : 'Add Suggestion Chips',
-          onClick: toggleChips,
+          label: hasButtons ? `Remove ${buttonsName}` : `Add ${buttonsName}`,
+          onClick: toggleButtons,
         },
-    hasChips && <ChipSection pushToPath={pushToPath!} />,
+    hasButtons && <ButtonsSection pushToPath={pushToPath} />,
   ];
 };
 
@@ -57,16 +62,21 @@ const buttonLayoutLabel = {
   [ButtonsLayout.CAROUSEL]: 'Carousel',
 };
 
-export const useButtonOption = (): MenuOption => {
+export const useButtonLayoutOption = (): MenuOption => {
   const buttons = useSelector(Prototype.prototypeButtonsSelector) ?? ButtonsLayout.STACKED;
   const dispatch = useDispatch();
+
+  const platform = React.useContext(PlatformContext)!;
+
   const updateButtons = async (buttons: ButtonsLayout) => {
     await dispatch(Prototype.updateSharePrototypeSettings({ buttons }));
-    toast.success(`Global chip layout updated to '${buttonLayoutLabel[buttons]}'`);
+    toast.success(
+      `Global ${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons')} layout updated to '${buttonLayoutLabel[buttons]}'`
+    );
   };
 
   return {
-    label: 'Chips Layout',
+    label: `${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'Chips' }, 'Buttons')} Layout`,
     options: [
       {
         label: (

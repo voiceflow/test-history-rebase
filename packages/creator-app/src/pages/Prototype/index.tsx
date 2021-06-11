@@ -33,7 +33,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   isPublic,
   autoplay,
   setAtTop,
-  showChips,
+  showButtons,
   updatePrototype,
   isModelTraining,
 }) => {
@@ -82,8 +82,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     }
   }, [autoplay]);
 
-  const setShowChips = (val: boolean) => {
-    updatePrototype({ showChips: val });
+  const setShowButtons = (val: boolean) => {
+    updatePrototype({ showButtons: val });
   };
 
   if (!initialLoadFinished.current) {
@@ -105,7 +105,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         isLoading={isLoading || (!isBubbleMessageShown && prototypeMachineStatus !== PMStatus.WAITING_USER_INTERACTION)}
         messages={messages}
         onPlay={onPlay}
-        interactions={showChips ? interactions : []}
+        interactions={showButtons ? interactions : []}
         status={status}
         onInteraction={onInteraction}
       />
@@ -115,8 +115,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
           stepBack={onStepBack}
           stepForward={onStepForward}
           locale={locale}
-          setShowChips={setShowChips}
-          showChips={showChips}
+          setShowButtons={setShowButtons}
+          showButtons={showButtons}
           disabled={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.IDLE, PMStatus.DIALOG_PROCESSING)}
           onUserInput={onInteraction}
         />
@@ -130,7 +130,7 @@ const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
   locales: Version.activeLocalesSelector,
   autoplay: PrototypeDuck.prototypeAutoplaySelector,
-  showChips: PrototypeDuck.prototypeShowChipsSelector,
+  showButtons: PrototypeDuck.prototypeShowButtonsSelector,
 };
 
 const mapDispatchProps = {

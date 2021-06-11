@@ -13,8 +13,8 @@ import { ButtonGroupSplitter, ControlButton, ControlsContainer } from './index';
 export type ControlCenterProps = {
   inputMode: Prototype.InputMode;
   setInputMode: (mode: Prototype.InputMode) => void;
-  showChips: boolean;
-  setShowChips: (val: boolean) => void;
+  showButtons: boolean;
+  setShowButtons: (val: boolean) => void;
   stepBack: () => void;
   stepForward: () => void;
   inputRef: React.RefObject<HTMLInputElement>;
@@ -27,8 +27,8 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
   stepBack,
   stepForward,
   history,
-  showChips,
-  setShowChips,
+  showButtons,
+  setShowButtons,
   inputMode,
   setInputMode,
   inputRef,
@@ -61,40 +61,41 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
           <SvgIcon icon="text" size={16} color={ICON_COLOR} />
         </ControlButton>
       </Tooltip>
+
       <Tooltip title="Voice" position="top">
         <ControlButton active={inputMode === Prototype.InputMode.VOICE} onClick={() => setInputMode(Prototype.InputMode.VOICE)}>
           <SvgIcon icon="microphone" size={16} color={ICON_COLOR} />
         </ControlButton>
       </Tooltip>
-      <Tooltip title="Chips" position="top">
-        <ControlButton
-          active={showChips}
-          onClick={() => {
-            setShowChips(!showChips);
-          }}
-        >
+
+      <Tooltip title="Buttons" position="top">
+        <ControlButton active={showButtons} onClick={() => setShowButtons(!showButtons)}>
           <SvgIcon icon="touch" size={16} color={ICON_COLOR} />
         </ControlButton>
       </Tooltip>
+
       <ButtonGroupSplitter />
+
       <Tooltip title="Back" position="top">
         <ControlButton active={false} disabled={goBackDisabled} onClick={handleOnBackward} style={{ transform: 'scaleX(-1)' }}>
           <SvgIcon icon="forward" size={16} color={ICON_COLOR} />
         </ControlButton>
       </Tooltip>
+
       <Tooltip title="Forward" position="top">
         <ControlButton disabled={goForwardDisabled} active={false} onClick={handleOnForward}>
           <SvgIcon icon="forward" size={16} color={ICON_COLOR} />
         </ControlButton>
       </Tooltip>
+
       <ButtonGroupSplitter />
     </ControlsContainer>
   );
 };
 
 const mapStateToProps = {
-  contextStep: Prototype.prototypeContextStepSelector,
   history: Prototype.prototypeContextHistorySelector,
+  contextStep: Prototype.prototypeContextStepSelector,
 };
 
 type ConnectedControlCenterProps = ConnectedProps<typeof mapStateToProps>;

@@ -20,7 +20,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Capture> = {
     data: {
       name: 'Capture',
       slot: null,
-      chips: null,
+      buttons: null,
       examples: [],
       reprompt: null,
       variable: null,

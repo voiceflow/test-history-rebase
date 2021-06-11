@@ -3,19 +3,20 @@ import { StepData } from '@voiceflow/general-types/build/nodes/prompt';
 
 import { NodeData } from '@/models';
 
-import { createBlockAdapter, noMatchAdapter, repromptAdapter } from '../utils';
+import { chipsToIntentButtons, createBlockAdapter, noMatchAdapter, repromptAdapter } from '../utils';
 
 const promptAdapter = createBlockAdapter<StepData<Voice>, NodeData.Prompt>(
-  ({ reprompt, noMatches, chips = null }) => ({
+  ({ reprompt, noMatches, chips, buttons }) => ({
     reprompt: reprompt && repromptAdapter.fromDB(reprompt),
     noMatchReprompt: noMatchAdapter.fromDB(noMatches),
-    chips,
+    buttons: buttons ?? chipsToIntentButtons(chips),
   }),
-  ({ reprompt, noMatchReprompt, chips }) => ({
+  ({ reprompt, noMatchReprompt, buttons }) => ({
     ports: [],
     reprompt: reprompt && repromptAdapter.toDB(reprompt),
     noMatches: noMatchAdapter.toDB(noMatchReprompt),
-    chips,
+    chips: null,
+    buttons,
   })
 );
 

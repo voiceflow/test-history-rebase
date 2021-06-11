@@ -119,6 +119,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
         {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && <Ended messages={messages} />}
 
         <Loading isLoading={isLoading} avatarURL={avatarURL} />
+
         {buttons === ButtonsLayout.STACKED && <InlineInteractions {...interactionProps} />}
       </MessagesContainer>
 

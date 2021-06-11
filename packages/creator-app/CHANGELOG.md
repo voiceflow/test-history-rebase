@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.393.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.393.0...@voiceflow/creator-app@1.393.1) (2021-06-11)
+
+
+### Bug Fixes
+
+* remove global blue outline on focus (VF-1084) ([#3526](https://github.com/voiceflow/creator-app/issues/3526)) ([dbc421f](https://github.com/voiceflow/creator-app/commit/dbc421f73987caa16dd0b2b845ab019f24728aed))
+
+
+
+
+
 # [1.393.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.392.1...@voiceflow/creator-app@1.393.0) (2021-06-11)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.392.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.391.0...@voiceflow/creator-app@1.392.0) (2021-06-11)
+
+
+### Features
+
+* implement buttons editor (VF-1060) ([#3507](https://github.com/voiceflow/creator-app/issues/3507)) ([b498f5c](https://github.com/voiceflow/creator-app/commit/b498f5ce8dbb22712f9e5e4c1df61ccc68b225c8))
+
+
+
+
+
 # [1.391.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.390.5...@voiceflow/creator-app@1.391.0) (2021-06-10)
 
 

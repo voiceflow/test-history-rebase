@@ -7,7 +7,8 @@ export const Container = styled(Flex)<{ curved?: boolean; flex?: number; rightEx
   border-top: 1px solid;
   width: 100%;
   border-color: ${({ theme }) => theme.colors.borders};
-  padding: ${({ topExtend }) => (topExtend ? 40 : 22)}px 34px;
+  padding: ${({ topExtend }) => (topExtend ? 40 : 22)}px 32px;
+  background-color: #fdfdfd;
   &:first-child {
     border: none;
   }

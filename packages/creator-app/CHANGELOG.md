@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.395.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.394.0...@voiceflow/creator-app@1.395.0) (2021-06-14)
+
+
+### Features
+
+* conversations filter query params (VF-1040) ([#3523](https://github.com/voiceflow/creator-app/issues/3523)) ([653e41f](https://github.com/voiceflow/creator-app/commit/653e41fb5cb64f5637848025dae9e6ae8e34a014))
+
+
+
+
+
 # [1.394.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.393.1...@voiceflow/creator-app@1.394.0) (2021-06-11)
 
 

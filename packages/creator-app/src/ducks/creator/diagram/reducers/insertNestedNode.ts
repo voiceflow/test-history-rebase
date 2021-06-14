@@ -35,11 +35,25 @@ export const reorderNestedNode = (state: DiagramState, targetNode: Node, index: 
   )(state);
 };
 
+export const insertIntoParentNode = (state: DiagramState, targetNode: Node, index: number, recipientNode: Node) => {
+  const isLast = recipientNode.combinedNodes.length === index;
+  const oldLinks = isLast ? getNestedOutgoingLinkIDs(state, recipientNode) : getOutgoingLinkIDs(state, targetNode);
+
+  return compose(
+    removeAllLinksFromState(oldLinks),
+    patchNodeInState(recipientNode.id, {
+      combinedNodes: insert(recipientNode.combinedNodes, index, targetNode.id),
+    })
+  )(state);
+};
+
 export const transplantNestedNode = (state: DiagramState, targetNode: Node, index: number, recipientNodeID: string) => {
   const recipientNode = getNormalizedByKey(state.nodes, recipientNodeID);
 
   if (recipientNodeID === targetNode.parentNode) {
-    return reorderNestedNode(state, targetNode, index, recipientNode);
+    return recipientNode.combinedNodes.includes(targetNode.id)
+      ? reorderNestedNode(state, targetNode, index, recipientNode)
+      : insertIntoParentNode(state, targetNode, index, recipientNode);
   }
 
   const surrogateNode = getNormalizedByKey(state.nodes, targetNode.parentNode!);

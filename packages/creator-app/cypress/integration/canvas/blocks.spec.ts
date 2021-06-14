@@ -98,12 +98,13 @@ context('Canvas - Blocks', () => {
   it('duplicate block via context menu', () => {
     cy.awaitCanvasAnimation();
 
-    cy.addBlockToCanvasViaStepMenu('Speak', [400, 100]);
+    cy.addBlockToCanvasViaStepMenu('Speak', [400, 50]);
+    buildTools.waitForSave();
 
     buildTools.getLastBlock().rightclick();
     sharedPage.el.contextMenu.contains('Duplicate').click();
 
-    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [112, 208]);
+    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [432, 202]);
   });
 
   it('drag multiple blocks', () => {

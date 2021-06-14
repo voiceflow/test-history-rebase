@@ -176,10 +176,12 @@ const getOrCreateID = (lookup: Record<string, string>) => (id: string) => {
   return (lookup[id] = objectID());
 };
 
-export const createCloneContext = () => {
-  const nodeIDLookup = {};
-  const portIDLookup = {};
+export type CloneContextOptions = {
+  nodeIDLookup?: Record<string, string>;
+  portIDLookup?: Record<string, string>;
+};
 
+export const createCloneContext = ({ nodeIDLookup = {}, portIDLookup = {} }: CloneContextOptions = {}) => {
   return {
     getNodeID: getOrCreateID(nodeIDLookup),
     getPortID: getOrCreateID(portIDLookup),
@@ -192,8 +194,8 @@ export const mergeEntityMaps = (lhs: EntityMap, rhs: EntityMap) => ({
   links: [...lhs.links, ...rhs.links],
 });
 
-export const cloneEntityMap = async ({ nodesWithData, ports, links }: EntityMap) => {
-  const context = createCloneContext();
+export const cloneEntityMap = async ({ nodesWithData, ports, links }: EntityMap, options?: CloneContextOptions) => {
+  const context = createCloneContext(options);
 
   const clonedPorts = ports.map(clonePort(context));
 

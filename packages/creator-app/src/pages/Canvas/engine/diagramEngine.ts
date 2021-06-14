@@ -4,7 +4,7 @@ import { Pair } from '@/types';
 import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
 
-import { cloneEntityMap, EngineConsumer, mergeEntityMaps } from './utils';
+import { CloneContextOptions, cloneEntityMap, EngineConsumer, mergeEntityMaps } from './utils';
 
 const DUPLICATE_OFFSET: Pair<number> = [40, 40];
 
@@ -66,11 +66,28 @@ class DiagramEngine extends EngineConsumer {
     return node.combinedNodes.map((childNodeID) => this.getEntities(childNodeID, false, { x: node.x, y: node.y })).reduce(mergeEntityMaps);
   }
 
-  async cloneEntities(entityMap: EntityMap, coords: Coords) {
-    const clonedEntityMap = await cloneEntityMap(entityMap);
+  async cloneEntities(entityMap: EntityMap, coords: Coords, options?: CloneContextOptions) {
+    const clonedEntityMap = await cloneEntityMap(entityMap, options);
     await this.engine.node.addMany(clonedEntityMap, coords);
 
     return clonedEntityMap;
+  }
+
+  async duplicateCommand(node: Node) {
+    const parentNode = this.engine.getNodeByID(node.parentNode!);
+    const entities = this.getEntities(node.id, true);
+
+    const coords = this.engine.canvas!.toCoords([node.x, node.y]);
+
+    const clonedEntities = await this.cloneEntities(entities, coords, { nodeIDLookup: { [node.parentNode!]: node.parentNode! } });
+
+    await this.engine.node.insertNested(
+      node.parentNode!,
+      parentNode.combinedNodes.includes(node.id) ? parentNode.combinedNodes.indexOf(node.id) + 1 : parentNode.combinedNodes.length,
+      clonedEntities.nodesWithData[0].node.id
+    );
+
+    return clonedEntities;
   }
 
   duplicateParentNode(node: Node) {
@@ -106,9 +123,19 @@ class DiagramEngine extends EngineConsumer {
       return null;
     }
 
+    let duplicatedEntities: EntityMap;
+
+    if (rootNode.type === BlockType.COMMAND) {
+      duplicatedEntities = await this.duplicateCommand(rootNode);
+    } else if (rootNode.parentNode) {
+      duplicatedEntities = await this.duplicateParentNode(rootNode);
+    } else {
+      duplicatedEntities = await this.duplicateChildNode(rootNode);
+    }
+
     const {
       nodesWithData: [nodeWithData],
-    } = await (rootNode.parentNode ? this.duplicateParentNode(rootNode) : this.duplicateChildNode(rootNode));
+    } = duplicatedEntities;
 
     return nodeWithData?.node?.id;
   }

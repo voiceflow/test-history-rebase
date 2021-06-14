@@ -30,6 +30,7 @@ export type NestedInputProps = Omit<React.ComponentProps<'input'>, 'ref'> & {
   disabled?: boolean;
   leftAction?: React.ReactNode;
   rightAction?: React.ReactNode;
+  hasAction?: boolean;
   iconProps?: Partial<SvgIconProps>;
   iconPosition?: NestedInputIconPosition;
   wrapperProps?: InputWrapperProps;
@@ -86,7 +87,7 @@ export type InputProps = {
 // eslint-disable-next-line react/display-name
 const Input = React.forwardRef<HTMLInputElement, InputProps & Either<NestedInputProps, React.ComponentProps<'input'> & StyledInputProps>>(
   ({ nested, ...props }, ref) => {
-    if (props.icon || props.children || props.leftAction || props.rightAction || nested) {
+    if (props.icon || props.children || props.leftAction || props.rightAction || nested || props.hasAction) {
       return <NestedInput {...props} ref={ref} />;
     }
 

@@ -14,6 +14,7 @@ const INPUT_VARIANTS = {
 
 export type InputProps = InlineInputProps & {
   variant?: InputVariant;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 const Input: React.ForwardRefRenderFunction<HTMLInputElement, InputProps & React.ComponentProps<typeof DefaultInput>> = (

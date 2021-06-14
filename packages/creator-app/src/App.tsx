@@ -22,6 +22,7 @@ import { AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadin
 import { withBatchLoadingGate } from '@/hocs';
 import { useSessionTracking } from '@/hooks';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
+import TagManagerModal from '@/pages/Conversations/components/TagManagerModal';
 import ImportModal from '@/pages/Dashboard/components/ImportModal';
 import {
   CanvasExportModal,
@@ -55,6 +56,7 @@ const App = () => {
       <CollaboratorsModal />
       <ImportModal />
       <LoadingModal />
+      <TagManagerModal />
 
       <ProjectDownloadModal />
       <TestableLinkModal />

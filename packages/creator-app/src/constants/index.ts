@@ -327,6 +327,7 @@ export enum ModalType {
   REFRESH = 'refresh',
 
   CONNECT = 'connect',
+  TAG_MANAGER = 'tag-manager',
 }
 
 export enum UserRole {

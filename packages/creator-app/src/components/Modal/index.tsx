@@ -30,7 +30,7 @@ const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id,
             <div>
               <Icon>{icon}</Icon>
               <Close>
-                <SvgIcon icon="close" variant={IconVariant.STANDARD} clickable size={12} onClick={close} />
+                <SvgIcon icon="close" variant={IconVariant.STANDARD} clickable size={14} onClick={close} />
               </Close>
             </div>
           </Header>

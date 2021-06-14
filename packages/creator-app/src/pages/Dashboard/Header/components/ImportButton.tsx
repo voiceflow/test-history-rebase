@@ -1,9 +1,8 @@
 import React from 'react';
 
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import { ClickableText } from '@/components/Text';
 import TippyTooltip from '@/components/TippyTooltip';
-import { toast } from '@/components/Toast';
+import { toast, ToastCallToAction } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
@@ -39,7 +38,7 @@ const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProj
       toast.success(
         <>
           .VF file successfully imported
-          <ClickableText onClick={() => goToCanvas(newProject.versionID)}>Open Project</ClickableText>
+          <ToastCallToAction onClick={() => goToCanvas(newProject.versionID)}>Open Project</ToastCallToAction>
         </>
       );
 

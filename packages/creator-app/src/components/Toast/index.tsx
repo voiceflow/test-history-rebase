@@ -2,8 +2,10 @@ import React from 'react';
 import * as Toastify from 'react-toastify';
 import { Overwrite } from 'utility-types';
 
+import Box from '@/components/Box';
 import Portal from '@/components/Portal';
 import SvgIcon, { Icon, IconVariant } from '@/components/SvgIcon';
+import { ClickableText } from '@/components/Text';
 import { createGlobalStyle } from '@/hocs';
 
 import Message from './components/Message';
@@ -12,6 +14,13 @@ type ToastMethodName = 'info' | 'error' | 'success' | 'warn';
 
 type ToastMethod = (content: Toastify.ToastContent, options?: Toastify.ToastOptions) => Toastify.ToastId;
 
+export const ToastCallToAction: React.FC<{ onClick: () => void }> = ({ onClick, children }) => {
+  return (
+    <Box mt={8} textAlign="right">
+      <ClickableText onClick={onClick}>{children}</ClickableText>
+    </Box>
+  );
+};
 const wrapWithMessage: (method: ToastMethod, icon?: Icon, color?: string) => ToastMethod & Partial<Record<ToastMethodName, ToastMethod>> =
   (method, icon, color) => (message, options) =>
     method(

@@ -2,37 +2,17 @@ import AlexaAPLRenderer, * as APL from 'apl-viewhost-web';
 import cuid from 'cuid';
 import React from 'react';
 
-import { useEnableDisable } from '@/hooks';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
+
+import aplInitializer from './initializer';
+import { APLRendererProps } from './types';
 
 const DEFAULT_VIEWPORT = {
   width: 1024,
   height: 600,
   dpi: 96,
   isRound: false,
-};
-
-const APLRendererContext = React.createContext(false);
-
-export const APLRendererProvider: React.FC = ({ children }) => {
-  const [isInitialized, initialize] = useEnableDisable();
-
-  React.useEffect(() => {
-    APL.initEngine()
-      .then(() => initialize())
-      .catch(Sentry.error);
-  }, []);
-
-  return <APLRendererContext.Provider value={isInitialized}>{children}</APLRendererContext.Provider>;
-};
-
-export type APLRendererProps = React.ComponentProps<'div'> & {
-  content: string;
-  data?: string;
-  commands?: string;
-  onCommandFail?: (error: Error) => void;
-  viewport: APL.IAPLOptions['viewport'];
 };
 
 const APLRenderer: React.FC<APLRendererProps> = ({
@@ -43,16 +23,20 @@ const APLRenderer: React.FC<APLRendererProps> = ({
   onCommandFail,
   ...props
 }) => {
-  const isInitialized = React.useContext(APLRendererContext);
   const elementID = React.useMemo(() => cuid(), []);
 
   React.useEffect(() => {
     let renderer: Nullable<AlexaAPLRenderer> = null;
     let content: Nullable<APL.Content> = null;
+    let unmounted = false;
 
     (async () => {
       try {
-        if (!isInitialized) return;
+        await aplInitializer.initialize();
+
+        if (unmounted) {
+          return;
+        }
 
         content = APL.Content.create(contentString);
 
@@ -77,6 +61,10 @@ const APLRenderer: React.FC<APLRendererProps> = ({
 
         await renderer.init();
 
+        if (unmounted) {
+          return;
+        }
+
         if (commands) {
           try {
             await new Promise((resolve) => renderer?.context.executeCommands(commands).then(resolve));
@@ -90,14 +78,21 @@ const APLRenderer: React.FC<APLRendererProps> = ({
     })();
 
     return () => {
+      unmounted = true;
+
       try {
         content?.delete();
+      } catch (error) {
+        Sentry.error(error);
+      }
+
+      try {
         renderer?.destroy();
       } catch (error) {
         Sentry.error(error);
       }
     };
-  }, [isInitialized, data, contentString, viewport]);
+  }, [data, contentString, viewport]);
 
   return <div id={elementID} {...props} />;
 };

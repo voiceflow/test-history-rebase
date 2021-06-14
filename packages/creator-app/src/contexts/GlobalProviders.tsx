@@ -7,7 +7,6 @@ import { IntercomProvider } from 'react-use-intercom';
 import { Persistor } from 'redux-persist';
 import { ThemeProvider } from 'styled-components';
 
-import { APLRendererProvider } from '@/components/APLRenderer';
 import { INTERCOM_APP_ID, IS_PRODUCTION_ENV } from '@/config';
 import { MaintenanceGate } from '@/gates';
 import { Store } from '@/store/types';
@@ -51,9 +50,7 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                       <EventualEngineProvider>
                         <IdentityProvider>
                           <ModalsContextProvider>
-                            <APLRendererProvider>
-                              {IS_PRODUCTION_ENV ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}
-                            </APLRendererProvider>
+                            {IS_PRODUCTION_ENV ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}
                           </ModalsContextProvider>
                         </IdentityProvider>
                       </EventualEngineProvider>

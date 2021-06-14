@@ -72,7 +72,7 @@ const AdvanceExpression: React.FC<AdvanceExpressionProps> = ({ value, onChange, 
     <>
       <Container error={error}>
         <AceEditor
-          ref={editorRef as any}
+          ref={editorRef}
           placeholder="Enter Expression"
           value={editorState}
           onChange={(value) => onUpdateEditorState(value)}

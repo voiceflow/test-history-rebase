@@ -1,4 +1,5 @@
 /* eslint-disable simple-import-sort/imports */
+import React from 'react';
 import AceEditor, { AceEditorProps as AceEditorBaseProps } from 'react-ace';
 
 import 'brace/ext/language_tools';
@@ -12,18 +13,7 @@ import './modes/utterance';
 /* eslint-enable simple-import-sort/imports */
 import { css, styled } from '@/hocs';
 
-export enum InputMode {
-  INPUT = 'input',
-}
-
-export const ACE_EDITOR_OPTIONS = {
-  enableBasicAutocompletion: true,
-  enableLiveAutocompletion: true,
-  enableSnippets: false,
-  showLineNumbers: true,
-  tabSize: 2,
-  useWorker: false,
-};
+import { InputMode } from './constants';
 
 export type AceEditorProps = AceEditorBaseProps & {
   variant?: string;
@@ -33,7 +23,7 @@ export type AceEditorProps = AceEditorBaseProps & {
   inputMode?: InputMode;
 };
 
-export default styled(AceEditor).attrs<AceEditorProps>({
+const StyledEditor = styled(AceEditor).attrs({
   fontSize: 13,
   showGutter: true,
   showPrintMargin: false,
@@ -141,3 +131,7 @@ export default styled(AceEditor).attrs<AceEditorProps>({
     }
   }}
 `;
+
+const Editor = React.forwardRef<AceEditor, AceEditorProps>((props) => <StyledEditor {...(props as any)} />);
+
+export default Editor;

@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/api-sdk';
 import { DEVICE_SIZE_MAP } from '@voiceflow/general-types';
-import { ImageStepData } from '@voiceflow/general-types/build/nodes/visual';
+import { FrameType, ImageStepData } from '@voiceflow/general-types/build/nodes/visual';
 import React from 'react';
 
 import Box from '@/components/Box';
@@ -16,7 +16,7 @@ import { DEVICE_LABEL_MAP } from '@/constants';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
-import { CANVAS_VISIBILITY_OPTIONS, DEVICE_OPTIONS, FRAME_OPTIONS, FrameType } from './constants';
+import { CANVAS_VISIBILITY_OPTIONS, DEVICE_OPTIONS, FRAME_OPTIONS } from './constants';
 
 const AnyFullImage = FullImage as any;
 

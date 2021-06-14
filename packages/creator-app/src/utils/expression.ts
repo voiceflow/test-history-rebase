@@ -159,7 +159,11 @@ export const expressionfyLogicUnit = (expression: ExpressionV2): string => {
   }
 
   if (expression.type === ExpressionTypeV2.ADVANCE) {
-    return expression.value !== '0' ? `${expression.value.replace(SLOT_REGEXP, '{$1}')}` : '';
+    if (!expression.value || expression.value === '0') {
+      return '';
+    }
+
+    return expression.value.replace(SLOT_REGEXP, '{$1}');
   }
 
   return `${expression.value}`;

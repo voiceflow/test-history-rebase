@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.397.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.396.0...@voiceflow/creator-app@1.397.0) (2021-06-14)
+
+
+### Bug Fixes
+
+* close all tooltips/popovers on navigating to home (VF-1078) ([#3538](https://github.com/voiceflow/creator-app/issues/3538)) ([4b7f536](https://github.com/voiceflow/creator-app/commit/4b7f53690bcff3f31d415979ad7c4f75cc607a72))
+* duplicate command (VF-1105) ([#3531](https://github.com/voiceflow/creator-app/issues/3531)) ([e8ed5b9](https://github.com/voiceflow/creator-app/commit/e8ed5b9828ea9d060955e7ad61c1b8dbb59dcb1c))
+* isolate apl-viewhost-web (VF-1065) ([#3539](https://github.com/voiceflow/creator-app/issues/3539)) ([c206919](https://github.com/voiceflow/creator-app/commit/c20691943242d1b5acda4b72f463fcefb4613c6c))
+
+
+### Features
+
+* tag manager modal (VF-1013) ([#3535](https://github.com/voiceflow/creator-app/issues/3535)) ([3b12e35](https://github.com/voiceflow/creator-app/commit/3b12e3538aa14b8e854f57f0f1fa55dcb482ecd1))
+
+
+
+
+
 # [1.396.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.395.0...@voiceflow/creator-app@1.396.0) (2021-06-14)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.396.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.395.0...@voiceflow/creator-app@1.396.0) (2021-06-14)
+
+
+### Features
+
+* transcript header toggling and mock dialog (VF-1025) ([#3532](https://github.com/voiceflow/creator-app/issues/3532)) ([e574c44](https://github.com/voiceflow/creator-app/commit/e574c44ce9f4c6fe232e1e9b293aa90d68586ef6))
+
+
+
+
+
 # [1.395.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.394.0...@voiceflow/creator-app@1.395.0) (2021-06-14)
 
 

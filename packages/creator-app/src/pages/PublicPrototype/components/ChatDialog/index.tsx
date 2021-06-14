@@ -40,6 +40,7 @@ export type ChatDialogProps = {
   onCheckMicrophonePermission?: () => void;
   isMicrophonePermissionGranted?: boolean;
   isSpeechSpeechRecognitionSupported?: boolean;
+  hasInput?: boolean;
 };
 
 const ChatDialog: React.FC<ChatDialogProps> = ({
@@ -71,6 +72,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   onCheckMicrophonePermission,
   isMicrophonePermissionGranted,
   isSpeechSpeechRecognitionSupported,
+  hasInput = true,
 }) => {
   const theme = useTheme();
   const [canUseASR] = useCanASR();
@@ -94,86 +96,88 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
         />
       </DisplayContainer>
 
-      <InteractionContainer isMobile={isMobile}>
-        <InputContainer isMobile={isMobile}>
-          {layout === PrototypeLayout.TEXT_DIALOG && (
-            <>
-              <UserInput
-                isMobile={isMobile}
-                isIdle={isIdle}
-                testEnded={testEnded}
-                value={input}
-                onEnterPress={() => onSend(input)}
-                onChange={onInputChange}
-                onStart={onStart}
-              />
-              <ActionButtons
-                color={color}
-                onMute={onMute}
-                onSend={() => onSend(input)}
-                isMuted={isMuted}
-                onReset={onReset}
-                testEnded={testEnded}
-                disabled={isIdle}
-                isIdle={isIdle}
-                onStart={onStart}
-                isMobile={isMobile}
-              />
-            </>
-          )}
+      {hasInput && (
+        <InteractionContainer isMobile={isMobile}>
+          <InputContainer isMobile={isMobile}>
+            {layout === PrototypeLayout.TEXT_DIALOG && (
+              <>
+                <UserInput
+                  isMobile={isMobile}
+                  isIdle={isIdle}
+                  testEnded={testEnded}
+                  value={input}
+                  onEnterPress={() => onSend(input)}
+                  onChange={onInputChange}
+                  onStart={onStart}
+                />
+                <ActionButtons
+                  color={color}
+                  onMute={onMute}
+                  onSend={() => onSend(input)}
+                  isMuted={isMuted}
+                  onReset={onReset}
+                  testEnded={testEnded}
+                  disabled={isIdle}
+                  isIdle={isIdle}
+                  onStart={onStart}
+                  isMobile={isMobile}
+                />
+              </>
+            )}
 
-          {layout === PrototypeLayout.VOICE_DIALOG && (
-            <>
-              {testEnded ? (
-                <Flex flex={1}>
-                  <Text fontSize={15} color={theme.colors.tertiary}>
-                    This conversation has ended
-                  </Text>
-                </Flex>
-              ) : (
-                <SpeechBarContainer>
-                  {canUseASR ? (
-                    <ASRSpeechbar
-                      onTranscript={onSend}
-                      onCheckMicrophonePermission={onCheckMicrophonePermission}
-                      isMicrophonePermissionGranted={isMicrophonePermissionGranted}
-                      locale={locale}
-                    />
-                  ) : (
-                    <UncontrolledSpeechBar
-                      disabled={isIdle}
-                      isMobile={isMobile}
-                      isListening={isListening}
-                      isSupported={isSpeechSpeechRecognitionSupported}
-                      finalTranscript={finalTranscript}
-                      onStopListening={onStopListening}
-                      onStartListening={onStartListening}
-                      interimTranscript={interimTranscript}
-                      onCheckMicrophonePermission={onCheckMicrophonePermission}
-                      isMicrophonePermissionGranted={isMicrophonePermissionGranted}
-                      colorScheme={color}
-                    />
-                  )}
-                </SpeechBarContainer>
-              )}
+            {layout === PrototypeLayout.VOICE_DIALOG && (
+              <>
+                {testEnded ? (
+                  <Flex flex={1}>
+                    <Text fontSize={15} color={theme.colors.tertiary}>
+                      This conversation has ended
+                    </Text>
+                  </Flex>
+                ) : (
+                  <SpeechBarContainer>
+                    {canUseASR ? (
+                      <ASRSpeechbar
+                        onTranscript={onSend}
+                        onCheckMicrophonePermission={onCheckMicrophonePermission}
+                        isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+                        locale={locale}
+                      />
+                    ) : (
+                      <UncontrolledSpeechBar
+                        disabled={isIdle}
+                        isMobile={isMobile}
+                        isListening={isListening}
+                        isSupported={isSpeechSpeechRecognitionSupported}
+                        finalTranscript={finalTranscript}
+                        onStopListening={onStopListening}
+                        onStartListening={onStartListening}
+                        interimTranscript={interimTranscript}
+                        onCheckMicrophonePermission={onCheckMicrophonePermission}
+                        isMicrophonePermissionGranted={isMicrophonePermissionGranted}
+                        colorScheme={color}
+                      />
+                    )}
+                  </SpeechBarContainer>
+                )}
 
-              <ActionButtons
-                color={color}
-                onMute={onMute}
-                onSend={() => onSend(input)}
-                noSend
-                isMuted={isMuted}
-                onReset={onReset}
-                disabled={isIdle}
-                isIdle={isIdle}
-                onStart={onStart}
-                testEnded={testEnded}
-                isMobile={isMobile}
-              />
-            </>
-          )}
-        </InputContainer>
-      </InteractionContainer>
+                <ActionButtons
+                  color={color}
+                  onMute={onMute}
+                  onSend={() => onSend(input)}
+                  noSend
+                  isMuted={isMuted}
+                  onReset={onReset}
+                  disabled={isIdle}
+                  isIdle={isIdle}
+                  onStart={onStart}
+                  testEnded={testEnded}
+                  isMobile={isMobile}
+                />
+              </>
+            )}
+          </InputContainer>
+        </InteractionContainer>
+      )}
     </Box>
   );
 };

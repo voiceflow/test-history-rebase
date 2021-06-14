@@ -3,6 +3,7 @@ import React from 'react';
 import Dropdown from '@/components/Dropdown';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -18,16 +19,17 @@ interface ResultsItem {
 const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & ResultsItem> = ({ goToTargetTranscript, data, active = false }) => {
   const { id, tags, read, date, name, sentiment, reviewed, saved } = data;
   const [menuOpen, setMenuOpen] = React.useState(false);
+
+  const goToTarget = () => {
+    goToTargetTranscript(id);
+  };
+
   const onDelete = () => {
     alert('Deleted');
   };
 
   const onExport = () => {
     alert('Exported');
-  };
-
-  const onSelect = () => {
-    goToTargetTranscript(id);
   };
 
   const options = [
@@ -44,7 +46,7 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
   ];
 
   return (
-    <Container id={id} menuOpen={menuOpen} active={active} onClick={onSelect}>
+    <Container id={id} menuOpen={menuOpen} active={active} onClick={goToTarget}>
       <ReadStatusDot read={read} />
       <InfoSection name={name} date={date} isRead={read} tags={tags} />
       <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>
@@ -62,10 +64,13 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
   );
 };
 
+const mapStateToProps = {
+  activeProjectID: Session.activeProjectIDSelector,
+};
 const mapDispatchToProps = {
   goToTargetTranscript: Router.goToTargetTranscript,
 };
 
-type ConnectTranscriptResultsItemProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+type ConnectTranscriptResultsItemProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(TranscriptResultsItem) as React.FC<ResultsItem>;
+export default connect(mapStateToProps, mapDispatchToProps)(TranscriptResultsItem) as React.FC<ResultsItem>;

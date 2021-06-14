@@ -30,7 +30,7 @@ export enum Browser {
 }
 
 export interface Transcript {
-  // the ID of this transcript
+  // the id of this transcript
   id: string;
   // the user who recorded this test
   creatorID: number | null;

@@ -196,7 +196,6 @@ export const goToTargetTranscript =
   (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
-
     Errors.assertVersionID(versionID);
 
     dispatch(goToTranscript(versionID, transcriptID));

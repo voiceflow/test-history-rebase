@@ -24,6 +24,7 @@ suite('Client - Root', ({ expect }) => {
       'template',
       'thread',
       'workspace',
+      'transcript',
     ]);
   });
 });

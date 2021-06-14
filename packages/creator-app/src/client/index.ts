@@ -14,6 +14,7 @@ import socket from './socket';
 import sso from './sso';
 import template from './template';
 import thread from './thread';
+import transcript from './transcript';
 import user from './user';
 import workspace from './workspace';
 
@@ -40,6 +41,7 @@ const client = {
   thread,
   user,
   workspace,
+  transcript,
 };
 
 export default client;

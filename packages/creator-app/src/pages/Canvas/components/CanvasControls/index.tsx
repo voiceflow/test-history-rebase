@@ -51,6 +51,9 @@ const CanvasControls: React.FC<CanvasControlProps & ConnectedCanvasControlsProps
   }, []);
 
   const onFocusHome = React.useCallback(() => {
+    // to force close any opened tooltips/popovers
+    document.body.click();
+
     engine()?.focusHome();
   }, []);
 

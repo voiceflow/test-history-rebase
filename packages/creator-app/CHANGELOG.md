@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.398.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.398.0...@voiceflow/creator-app@1.398.1) (2021-06-15)
+
+
+### Bug Fixes
+
+* sso error logging (VF-000) ([b6c3559](https://github.com/voiceflow/creator-app/commit/b6c3559d285f7e71538c0c58c6070ef5b7f3755e))
+
+
+
+
+
 # [1.398.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.397.2...@voiceflow/creator-app@1.398.0) (2021-06-15)
 
 

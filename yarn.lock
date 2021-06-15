@@ -19330,10 +19330,10 @@ react-side-effect@^2.1.0:
   resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-2.1.1.tgz#66c5701c3e7560ab4822a4ee2742dee215d72eb3"
   integrity sha512-2FoTQzRNTncBVtnzxFOk2mCpcfxQpenBMbk5kSVBg5UcPqV9fRbgY2zhb7GTWWOlpFmAxhClBDlIq8Rsubz1yQ==
 
-react-speech-recognition@3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/react-speech-recognition/-/react-speech-recognition-3.6.0.tgz#fa1e2248772ff6646175e6bb40b2f39cfa207cb5"
-  integrity sha512-rxm3+R8Jo2FWjy9w1oYyamnuDzTNrqWHvMX7VkBVI+HsYNWMS5sWP2QEMSM5uOVK2cV/EJU9q7MS7VYMoZ2ODQ==
+react-speech-recognition@3.8.2:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/react-speech-recognition/-/react-speech-recognition-3.8.2.tgz#c82e187db92e32e506f0593d80a2347f2079e0fd"
+  integrity sha512-ZbA8wNNdWPAiN7tHsMc/cgfRkssAQwL3F8yMDEbuxLCT0II7YrNurNb3hAq5X58+zMn7YQO+S3OZt0mp5QA38w==
 
 react-stripe-elements@5.1.0:
   version "5.1.0"

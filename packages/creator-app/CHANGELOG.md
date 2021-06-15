@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.398.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.397.2...@voiceflow/creator-app@1.398.0) (2021-06-15)
+
+
+### Features
+
+* sort imm alphabetically (VF-903) ([#3530](https://github.com/voiceflow/creator-app/issues/3530)) ([9338465](https://github.com/voiceflow/creator-app/commit/9338465cc9e9bb2871a8dd0304f0a3b85fab5ebc))
+
+
+
+
+
 ## [1.397.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.397.1...@voiceflow/creator-app@1.397.2) (2021-06-15)
 
 **Note:** Version bump only for package @voiceflow/creator-app

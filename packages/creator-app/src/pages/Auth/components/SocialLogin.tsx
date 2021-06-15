@@ -12,6 +12,7 @@ import { connect } from '@/hocs';
 import { Account } from '@/models';
 import THEME from '@/styles/theme';
 import { ConnectedProps } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 import { SocialLoginContainer } from './AuthBoxes';
 import FacebookLoginButton from './FacebookLoginButton';
@@ -44,7 +45,8 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
         token: userProfile.tokenId,
         coupon,
       });
-    } catch {
+    } catch (error) {
+      Sentry.error(error);
       toast.error('An unexpected error occurred. Please try again or use a different sign up method.');
     }
 
@@ -65,7 +67,8 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
         uri: window.location.href,
         coupon,
       });
-    } catch {
+    } catch (error) {
+      Sentry.error(error);
       toast.error('An unexpected error occurred. Please try again or use a different sign up method.');
     }
 

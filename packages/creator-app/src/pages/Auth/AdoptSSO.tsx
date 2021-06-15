@@ -13,6 +13,7 @@ import { connect } from '@/hocs';
 import { useToggle } from '@/hooks';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { preventDefault } from '@/utils/dom';
+import * as Sentry from '@/vendors/sentry';
 
 import {
   AuthBox,
@@ -42,7 +43,8 @@ const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleA
 
     try {
       await googleAdoptSSO({ domain: domain!, oktaCode, authCode: userProfile.tokenId });
-    } catch {
+    } catch (error) {
+      Sentry.error(error);
       toast.error('An unexpected error occurred. Please try again or use a different sign up method.');
     }
   };
@@ -52,7 +54,8 @@ const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleA
 
     try {
       await facebookAdoptSSO({ domain: domain!, oktaCode, authCode: fbUser.accessToken });
-    } catch {
+    } catch (error) {
+      Sentry.error(error);
       toast.error('An unexpected error occurred. Please try again or use a different sign up method.');
     }
   };

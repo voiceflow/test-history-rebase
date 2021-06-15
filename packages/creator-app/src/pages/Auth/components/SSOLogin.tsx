@@ -9,6 +9,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
+import * as Sentry from '@/vendors/sentry';
 
 import { useOktaLogin } from '../hooks';
 import { SocialLoginContainer } from './AuthBoxes';
@@ -38,6 +39,7 @@ const SSOLogin: React.FC<SSOLoginProps & ConnectedSSOLoginProps> = ({ domain, cl
         }
       }
     } catch (err) {
+      Sentry.error(err);
       toast.error('An unexpected error occurred');
     }
   };

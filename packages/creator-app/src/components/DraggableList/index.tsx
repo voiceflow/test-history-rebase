@@ -42,7 +42,6 @@ export type DraggableListProps<I, D, C> = {
   deleteComponent?: React.NamedExoticComponent<React.PropsWithoutRef<D> & React.RefAttributes<any>>;
   partialDragItem?: boolean;
   contextMenuOptions?: MenuOption[];
-  renderDeleteDelayed?: boolean;
   unmountableDuringDrag?: boolean;
   withContextMenuDelete?: boolean;
   withContextMenuDuplicate?: boolean;
@@ -98,7 +97,6 @@ const DraggableList = <I, D, C>({
   deleteComponent,
   partialDragItem,
   previewComponent,
-  renderDeleteDelayed,
   unmountableDuringDrag,
   withContextMenuDelete,
   withContextMenuDuplicate,
@@ -225,9 +223,7 @@ const DraggableList = <I, D, C>({
 
       <DragPreview<I> type={type} component={previewComponent as any} handlers={handlers} />
 
-      {!!deleteComponent && dragging && (
-        <DropDelete type={type} handlers={handlers} renderDelayed={renderDeleteDelayed} deleteComponent={deleteComponent} deleteProps={deleteProps} />
-      )}
+      {!!deleteComponent && dragging && <DropDelete type={type} handlers={handlers} deleteComponent={deleteComponent} deleteProps={deleteProps} />}
     </ListContainer>
   );
 };

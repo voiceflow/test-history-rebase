@@ -11,10 +11,11 @@ import { createPlatformSelector } from './platform';
 
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
-const AmazonBuiltInIntentsArray = Object.values(AmazonIntent) as string[];
-const GeneralBuiltInIntentsArray = Object.values(GeneralIntents) as string[];
+const amazonBuiltInIntentsArray = Object.values(AmazonIntent) as string[];
+const generalBuiltInIntentsArray = Object.values(GeneralIntents) as string[];
+const builtInIntentMap = new Map([...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray].map((id) => [id, true]));
 
-export const isCustomizeableBuiltInIntent = (intent: Intent) => !![...AmazonBuiltInIntentsArray, ...GeneralBuiltInIntentsArray].includes(intent?.id);
+export const isCustomizeableBuiltInIntent = (intent?: Intent) => !!intent && builtInIntentMap.has(intent.id);
 
 export const formatIntentName = (name = '') =>
   name

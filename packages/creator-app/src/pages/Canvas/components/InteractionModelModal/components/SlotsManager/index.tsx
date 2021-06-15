@@ -1,5 +1,7 @@
 import cuid from 'cuid';
+import _sortBy from 'lodash/sortBy';
 import React from 'react';
+import { createSelector } from 'reselect';
 
 import { noSlotsGraphic } from '@/assets';
 import { Scrollbars } from '@/components/CustomScrollbars';
@@ -13,7 +15,6 @@ import { connect } from '@/hocs';
 import { useEnableDisable, useModals } from '@/hooks';
 import { Slot } from '@/models';
 import { ConnectedProps } from '@/types';
-import { reorder as reorderArray } from '@/utils/array';
 
 import EmptyContainer from '../EmptyContainer';
 import LeftColumn from '../LeftColumn';
@@ -31,7 +32,6 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
   slotsIDs,
   removeSlot,
   selectedID = slots[0]?.id,
-  reorderSlots,
   setSelectedID,
   intentsUsingSlot,
   removeIntentSlot,
@@ -77,7 +77,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
     },
     [selectedID, setSelectedID]
   );
-  const onReorder = React.useCallback((from: number, to: number) => reorderSlots(reorderArray(slotsIDs, from, to)), [slotsIDs, reorderSlots]);
+
   const addNewSlot = React.useCallback(() => {
     toggleSlotEdit({
       isCreate: true,
@@ -98,7 +98,6 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
           type="slots"
           onDrop={stopDragging}
           onDelete={onDelete}
-          onReorder={onReorder}
           itemProps={{ withoutHover: isDragging, selectedID, onSelectSlot: setSelectedID }}
           onEndDrag={stopDragging}
           getItemKey={getItemKey}
@@ -106,7 +105,6 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
           itemComponent={DraggableItem}
           deleteComponent={DeleteComponent}
           previewComponent={DraggableItem}
-          renderDeleteDelayed
           unmountableDuringDrag
           withContextMenuDelete
         >
@@ -139,8 +137,10 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
   );
 };
 
+const sortedSlotsSelector = createSelector(SlotDuck.allSlotsSelector, (slots) => _sortBy(slots, (slot) => slot.name.toLowerCase()));
+
 const mapStateToProps = {
-  slots: SlotDuck.allSlotsSelector,
+  slots: sortedSlotsSelector,
   slotsMap: SlotDuck.mapSlotsSelector,
   slotsIDs: SlotDuck.allSlotIDsSelector,
   intentsUsingSlot: SlotDuck.intentsUsingSlotSelector,
@@ -149,7 +149,6 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   addSlot: SlotDuck.addSlot,
   removeSlot: SlotDuck.removeSlot,
-  reorderSlots: SlotDuck.reorderSlots,
   removeIntentSlot: IntentDuck.removeIntentSlot,
 };
 

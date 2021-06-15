@@ -7,17 +7,16 @@ export type DropDeleteProps<I, P> = {
   type: string;
   handlers: React.RefObject<DnDHandlers<I>>;
   deleteProps?: P;
-  renderDelayed?: boolean;
   deleteComponent: React.NamedExoticComponent<React.PropsWithoutRef<P> & React.RefAttributes<any>>;
 };
 
-const DropDelete = <I, P>({ type, handlers, deleteProps, renderDelayed, deleteComponent: Delete }: DropDeleteProps<I, P>) => {
+const DropDelete = <I, P>({ type, handlers, deleteProps, deleteComponent: Delete }: DropDeleteProps<I, P>) => {
   const rootRef = React.useRef(null);
-  const [rendered, setRendered] = React.useState(!renderDelayed);
 
   const [, connectDrop] = useDrop<DnDItem<I>, unknown, unknown>({
     drop: (item, monitor) => {
       item.deleteHovered = false;
+
       handlers.current?.onDeleteDrop?.(item, monitor);
 
       return item;
@@ -28,16 +27,6 @@ const DropDelete = <I, P>({ type, handlers, deleteProps, renderDelayed, deleteCo
     },
   });
 
-  React.useEffect(() => {
-    const timeout = renderDelayed ? setTimeout(() => setRendered(true), 100) : undefined;
-
-    return () => {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-    };
-  }, []);
-
   React.useEffect(
     () => () => {
       connectDrop(null);
@@ -47,7 +36,7 @@ const DropDelete = <I, P>({ type, handlers, deleteProps, renderDelayed, deleteCo
 
   const connectTarget = connectDrop(rootRef);
 
-  return rendered ? <Delete ref={connectTarget} {...(deleteProps as any)} /> : null;
+  return <Delete ref={connectTarget} {...(deleteProps as any)} />;
 };
 
 export default React.memo(DropDelete) as <I, P>(props: DropDeleteProps<I, P>) => JSX.Element;

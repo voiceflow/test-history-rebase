@@ -26,7 +26,7 @@ const useDragAndDrop = <I extends { id: string } | any>(
     hover: _throttle((item: DnDItem<I>, monitor: DropTargetMonitor) => {
       item.deleteHovered = false;
 
-      if (!rootRef.current) {
+      if (!rootRef.current || !handlers.current.onReorder) {
         return;
       }
 

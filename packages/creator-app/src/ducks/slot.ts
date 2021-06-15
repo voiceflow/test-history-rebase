@@ -24,14 +24,7 @@ export const {
 
 // action creators
 
-export const {
-  add: addSlot,
-  addMany: addSlots,
-  update: updateSlot,
-  remove: removeSlot,
-  replace: replaceSlots,
-  reorder: reorderSlots,
-} = createCRUDActionCreators(STATE_KEY);
+export const { add: addSlot, addMany: addSlots, update: updateSlot, remove: removeSlot, replace: replaceSlots } = createCRUDActionCreators(STATE_KEY);
 
 // selectors
 

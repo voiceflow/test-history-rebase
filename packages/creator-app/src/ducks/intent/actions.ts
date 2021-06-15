@@ -4,9 +4,9 @@ import { Intent } from '@/models';
 import { STATE_KEY } from './constants';
 import { intentProcessor } from './utils';
 
-const { add, addMany, remove: removeIntent, replace, reorder: reorderIntents } = createCRUDActionCreators(STATE_KEY);
+const { add, addMany, remove: removeIntent, replace } = createCRUDActionCreators(STATE_KEY);
 
-export { removeIntent, reorderIntents };
+export { removeIntent };
 
 export const addIntent = (id: string, data: Intent) => add(id, intentProcessor(data));
 

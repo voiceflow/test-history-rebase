@@ -1,4 +1,6 @@
+import _sortBy from 'lodash/sortBy';
 import React from 'react';
+import { createSelector } from 'reselect';
 
 import { noIntentsGraphic } from '@/assets';
 import { Scrollbars } from '@/components/CustomScrollbars';
@@ -10,8 +12,7 @@ import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Intent } from '@/models';
 import { ConnectedProps } from '@/types';
-import { reorder as reorderArray } from '@/utils/array';
-import { formatIntentName } from '@/utils/intent';
+import { formatIntentName, isCustomizeableBuiltInIntent } from '@/utils/intent';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
 import EmptyContainer from '../EmptyContainer';
@@ -31,7 +32,6 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
   intentsIDs,
   removeIntent,
   setSelectedID,
-  reorderIntents,
   platform,
 }) => {
   const [isDragging, startDragging, stopDragging] = useEnableDisable(false);
@@ -79,8 +79,6 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
     [selectedID]
   );
 
-  const onReorder = React.useCallback((from: number, to: number) => reorderIntents(reorderArray(intentsIDs, from, to)), [intentsIDs, reorderIntents]);
-
   const addNewIntent = React.useCallback(() => {
     updateSelected(newIntent());
   }, [newIntent]);
@@ -92,7 +90,6 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
           type="intents"
           onDrop={stopDragging}
           onDelete={onDelete}
-          onReorder={onReorder}
           itemProps={{ withoutHover: isDragging, selectedID, onSelectIntent: updateSelected }}
           onEndDrag={stopDragging}
           getItemKey={getItemKey}
@@ -100,7 +97,6 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
           itemComponent={DraggableItem}
           deleteComponent={DeleteComponent}
           previewComponent={DraggableItem}
-          renderDeleteDelayed
           unmountableDuringDrag
           withContextMenuDelete
         >
@@ -134,8 +130,12 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
   );
 };
 
+const sortedIntentsSelector = createSelector(IntentDuck.allCustomIntentsSelector, (intents) =>
+  _sortBy(intents, isCustomizeableBuiltInIntent, (intent) => intent.name.toLowerCase())
+);
+
 const mapStateToProps = {
-  intents: IntentDuck.allCustomIntentsSelector,
+  intents: sortedIntentsSelector,
   intentsMap: IntentDuck.mapIntentsSelector,
   intentsIDs: IntentDuck.allIntentIDsSelector,
   platform: Project.activePlatformSelector,
@@ -144,7 +144,6 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   newIntent: IntentDuck.newIntent,
   removeIntent: IntentDuck.removeIntent,
-  reorderIntents: IntentDuck.reorderIntents,
 };
 
 type ConnectedIntentsManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

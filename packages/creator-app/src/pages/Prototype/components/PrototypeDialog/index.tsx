@@ -25,6 +25,7 @@ type DialogPrototypeProps = {
   avatarURL?: string;
   interactions: Interaction[];
   onInteraction: (request: string | BaseRequest) => void;
+  stepBack: () => void;
 };
 
 const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
@@ -42,6 +43,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   buttons = ButtonsLayout.STACKED,
   avatarURL,
   onInteraction,
+  stepBack,
 }) => {
   // filter out messages based on settings
   const messages = useMessageFilters(rawMessages);
@@ -116,7 +118,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
           }
         })}
 
-        {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && <Ended messages={messages} />}
+        {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && <Ended stepBack={stepBack} messages={messages} />}
 
         <Loading isLoading={isLoading} avatarURL={avatarURL} />
 

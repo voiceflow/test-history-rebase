@@ -3,6 +3,7 @@ import React from 'react';
 import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
 import { Message } from '@/pages/Prototype/types';
 import ChatDialog from '@/pages/PublicPrototype/components/ChatDialog';
+import { noop } from '@/utils/functional';
 
 import { Container, DialogHeader } from './components';
 import { MOCK_INTERACTIONS, MOCK_MESSAGES } from './MockData';
@@ -37,6 +38,7 @@ const TranscriptDialog: React.FC<TranscriptDialogProps> = ({ messages = MOCK_MES
         isMicrophonePermissionGranted={true}
         isSpeechSpeechRecognitionSupported={false}
         hasInput={false}
+        onStepBack={() => noop()}
       />
     </Container>
   );

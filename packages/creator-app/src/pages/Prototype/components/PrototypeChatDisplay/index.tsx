@@ -25,6 +25,7 @@ export type PrototypeChatDisplayProps = {
   color?: string;
   avatarURL?: string;
   onInteraction: (request: string | BaseRequest) => void;
+  stepBack: () => void;
 };
 
 const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
@@ -43,6 +44,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   buttons,
   avatarURL,
   onInteraction,
+  stepBack,
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
@@ -77,6 +79,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
     <OutterChatContainer>
       <InnerChatContainer onScroll={onScrollHandler} ref={chatScrollRef} atTop={atTop}>
         <Dialog
+          stepBack={stepBack}
           status={status}
           onPlay={onPlay}
           isPublic={isPublic}

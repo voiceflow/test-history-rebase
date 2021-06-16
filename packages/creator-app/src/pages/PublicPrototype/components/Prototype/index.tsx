@@ -43,6 +43,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ status,
     onInteraction,
     onPlay,
     audio,
+    onStepBack,
   } = usePrototype({
     debug: false,
     isPublic: true,
@@ -201,6 +202,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ status,
             onCheckMicrophonePermission={onCheckMicrophonePermission}
             isMicrophonePermissionGranted={isMicrophonePermissionGranted}
             isSpeechSpeechRecognitionSupported={isSpeechSpeechRecognitionSupported}
+            onStepBack={onStepBack}
           />
         )
       }

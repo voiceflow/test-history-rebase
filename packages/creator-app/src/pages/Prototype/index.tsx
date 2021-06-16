@@ -108,6 +108,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         interactions={showButtons ? interactions : []}
         status={status}
         onInteraction={onInteraction}
+        stepBack={onStepBack}
       />
 
       <UserSaysContainer>

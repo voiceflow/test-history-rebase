@@ -41,6 +41,7 @@ export type ChatDialogProps = {
   isMicrophonePermissionGranted?: boolean;
   isSpeechSpeechRecognitionSupported?: boolean;
   hasInput?: boolean;
+  onStepBack: () => void;
 };
 
 const ChatDialog: React.FC<ChatDialogProps> = ({
@@ -73,6 +74,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   isMicrophonePermissionGranted,
   isSpeechSpeechRecognitionSupported,
   hasInput = true,
+  onStepBack,
 }) => {
   const theme = useTheme();
   const [canUseASR] = useCanASR();
@@ -93,6 +95,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
           color={color}
           avatarURL={avatarURL}
           onInteraction={onSend}
+          stepBack={onStepBack}
         />
       </DisplayContainer>
 

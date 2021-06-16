@@ -30,7 +30,7 @@ const MenuContainer = styled.ul<MenuContainerProps>`
   ${cardStyles}
 
   max-height: ${({ theme, withScrollbars, maxVisibleItems }) =>
-    withScrollbars ? 'auto' : getItemsContainer(theme.components.menuItem.height, maxVisibleItems) + VERTICAL_PADDING * 2}px;
+    withScrollbars ? 'auto' : `${getItemsContainer(theme.components.menuItem.height, maxVisibleItems) + VERTICAL_PADDING * 2}px`};
   min-width: 100px;
   ${({ fullWidth }) => (fullWidth ? '' : 'max-width: 400px;')}
   ${({ width }) => (width ? `width: ${width}px;` : '')}

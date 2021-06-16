@@ -67,6 +67,7 @@ export const itemStyles = css<MenuItemProps>`
     css`
       color: #5d9df5;
       padding: 24px 46px;
+      justify-content: center;
     `}
 
   ${({ ending }) =>

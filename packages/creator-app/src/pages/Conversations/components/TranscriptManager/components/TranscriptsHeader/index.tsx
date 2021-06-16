@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { FlexCenter } from '@/components/Flex';
+import ReportTagInput, { InputVariant } from '@/components/ReportTagInput';
 import SelectMenu, { MenuSection } from '@/components/SelectMenu';
 import { ClickableText } from '@/components/Text';
 import { FILTER_TAG } from '@/pages/Conversations/constants';
@@ -18,6 +19,7 @@ const getRandNumString = () => {
 
 const TranscriptsHeader = ({ resultCount }: TranscriptsHeaderProps) => {
   const history = useHistory();
+  const [tags, setTags] = React.useState<string[]>(['positiveEmpotion']);
 
   const handleFilterChange = () => {
     const params = new URLSearchParams();
@@ -52,7 +54,7 @@ const TranscriptsHeader = ({ resultCount }: TranscriptsHeaderProps) => {
                 // _setData()
               }}
             >
-              <FlexCenter style={{ flex: 2, color: '#8da2b5', height: '100px' }}> - Tag Selector - </FlexCenter>
+              <ReportTagInput variant={InputVariant.SELECT_ONLY} onChange={(value: string[]) => setTags(value)} selectedTags={tags} />
             </MenuSection>
           </>
         )}

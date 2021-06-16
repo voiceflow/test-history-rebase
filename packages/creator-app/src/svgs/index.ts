@@ -187,11 +187,13 @@ export { default as remove } from './remove.svg';
 export { default as resources } from './resources.svg';
 export { default as restart } from './restart.svg';
 export { default as returnHome } from './return-home.svg';
+export { default as reviewed } from './reviewed.svg';
 export { default as rocket } from './rocket.svg';
 export { default as random } from './solid/random.svg';
 
 // s
 export { default as save } from './save.svg';
+export { default as saveForLater } from './save-for-later.svg';
 export { default as search } from './search.svg';
 export { default as send } from './send.svg';
 export { default as share } from './share.svg';

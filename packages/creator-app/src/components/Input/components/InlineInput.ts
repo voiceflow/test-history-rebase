@@ -3,6 +3,7 @@ import { css, styled } from '@/hocs';
 export type InlineInputProps = {
   fullWidth?: boolean;
   noOverflow?: boolean;
+  inline?: boolean;
 };
 
 const Input = styled.input<InlineInputProps>`
@@ -24,6 +25,12 @@ const Input = styled.input<InlineInputProps>`
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    `}
+
+  ${({ inline }) =>
+    inline &&
+    css`
+      display: inline-flex;
     `}
 `;
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.399.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.398.1...@voiceflow/creator-app@1.399.0) (2021-06-16)
+
+
+### Features
+
+* report tag input (VF-1014) ([#3528](https://github.com/voiceflow/creator-app/issues/3528)) ([34b86af](https://github.com/voiceflow/creator-app/commit/34b86afc9bbf5b65ccb04d85468c905080d304ce))
+
+
+
+
+
 ## [1.398.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.398.0...@voiceflow/creator-app@1.398.1) (2021-06-15)
 
 

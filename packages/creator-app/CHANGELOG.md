@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.401.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.400.0...@voiceflow/creator-app@1.401.0) (2021-06-17)
+
+
+### Features
+
+* transcript date range picker component (VF-1057) ([#3546](https://github.com/voiceflow/creator-app/issues/3546)) ([c7bd42a](https://github.com/voiceflow/creator-app/commit/c7bd42a8689a03c6f09cace91f75c36196b218a1))
+
+
+
+
+
 # [1.400.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.399.0...@voiceflow/creator-app@1.400.0) (2021-06-16)
 
 

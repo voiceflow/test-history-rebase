@@ -18,7 +18,7 @@ export const DUMMY_DATA = [
   {
     id: '2',
     name: 'Mike Hood',
-    date: '1:79 am, May 2st',
+    date: '1:79 am, May 2nd',
     tags: ['repair path', 'happy path'],
     read: false,
     reviewed: true,
@@ -27,7 +27,7 @@ export const DUMMY_DATA = [
   {
     id: '3',
     name: 'Barack Obama',
-    date: '1:79 am, May 2st',
+    date: '1:79 am, May 2nd',
     tags: ['repair path', 'happy path'],
     read: true,
     reviewed: false,
@@ -37,7 +37,7 @@ export const DUMMY_DATA = [
   {
     id: '4',
     name: 'Donald Trump',
-    date: '1:79 am, May 2st',
+    date: '1:79 am, May 2nd',
     tags: ['repair path', 'happy path'],
     read: false,
     reviewed: true,
@@ -46,7 +46,7 @@ export const DUMMY_DATA = [
   {
     id: '5',
     name: 'Tyler Han',
-    date: '1:79 am, May 2st',
+    date: '1:79 am, May 2nd',
     tags: ['repair path', 'happy path'],
     read: false,
     reviewed: false,
@@ -55,7 +55,7 @@ export const DUMMY_DATA = [
   {
     id: '6',
     name: 'Andrew Lawrence',
-    date: '1:79 am, May 2st',
+    date: '1:79 am, May 2nd',
     tags: ['repair path', 'happy path'],
     read: false,
     reviewed: false,

@@ -21,6 +21,7 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const goToTarget = () => {
+    setMenuOpen(!menuOpen);
     goToTargetTranscript(id);
   };
 
@@ -52,7 +53,6 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
       <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>
         <Dropdown options={options}>
           {(ref, onToggle, isOpen) => {
-            setMenuOpen(isOpen);
             return (
               <IconButton icon="elipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={stopPropagation(onToggle)} ref={ref} />
             );

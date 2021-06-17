@@ -11,4 +11,5 @@ export const FILTER_TAG = {
   TAG: 'tag',
   START_DATE: 'startDate',
   END_DATE: 'endDate',
+  RANGE: 'range',
 };

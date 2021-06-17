@@ -1,4 +1,103 @@
-import { styled } from '@/hocs';
+import DayPicker from 'react-day-picker';
+
+import { css, styled } from '@/hocs';
+import THEME from '@/styles/theme';
+
+import leftArrow from './leftArrow.png';
+import rightArrow from './rightArrow.png';
+
+export const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+export const FORMAT = 'MM/DD/YYYY';
+
+export const TimeRangePicker = styled(DayPicker)<{ isConversation?: boolean }>`
+  & .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--outside):not(.DayPicker-Day--end) {
+    background-color: ${THEME.backgrounds.lightBlue};
+    color: ${THEME.colors.primary};
+    border-radius: 0;
+  }
+
+  & .DayPicker-Day {
+    border-radius: 0;
+    font-size: 13px;
+    font-family: Open Sans;
+    padding: 12px 14px;
+  }
+
+  & .DayPicker-Day--start {
+    border-top-left-radius: 50% !important;    
+  }
+
+  & .DayPicker-Day--end {
+    border-bottom-right-radius: 50% !important;
+  }
+
+  & .DayPicker-Weekday {
+    padding: 9px;
+  }
+
+  & .DayPicker-Weekdays {
+    font-size: 13x;
+    padding-left: 10px;
+    font-family: Open Sans;
+    & > * > * {
+      padding-right: 26px;
+    }
+  }
+
+  & .DayPicker--selected {
+     border-radius: 0 !important;
+  }
+
+  & .DayPicker-Day--today {
+    background-color: ${THEME.backgrounds.greyGreen};
+    color: ${THEME.colors.primary};
+    border-radius: 50% !important;
+  }
+
+  & .DayPicker-Months {
+    font-size: 13px;
+    font-family: Open Sans;
+
+    & .DayPicker-Month {
+      & > * {
+        display: table-caption;
+        text-align: center;
+      }
+    }
+  }
+
+  ${({ isConversation }) =>
+    isConversation
+      ? css`
+          & .DayPicker-NavBar {
+            & > .DayPicker-NavButton--prev {
+              margin: -1px 590px 0px 0px;
+              background-image: url(${leftArrow});
+            }
+
+            & > .DayPicker-NavButton--next {
+              margin-top: -1px;
+              margin-right: 12px;
+              background-image: url(${rightArrow});
+            }
+          }
+        `
+      : css`
+          & .DayPicker-NavBar {
+            & > .DayPicker-NavButton--prev {
+              margin: -1px 265px 0px 0px;
+              background-image: url(${leftArrow});
+            }
+
+            & > .DayPicker-NavButton--next {
+              margin-top: -1px;
+              margin-right: 10px;
+              background-image: url(${rightArrow});
+            }
+          }
+        `};
+  }
+`;
 
 export const DayPickerContainer = styled.div`
   border-radius: 5px;

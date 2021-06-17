@@ -2,8 +2,6 @@ import React from 'react';
 
 import { FullSpinner } from '@/components/Spinner';
 
-// import ErrorBoundary from '@/components/ErrorBoundary';
-
 function LoadingGate({ label, isLoaded, load, unload, children }) {
   React.useEffect(() => {
     if (!isLoaded) {

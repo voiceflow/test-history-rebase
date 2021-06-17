@@ -1,15 +1,12 @@
 import moment from 'moment';
 import React from 'react';
-import DayPicker from 'react-day-picker';
 import { Manager, Popper, Reference } from 'react-popper';
 
 import Portal from '@/components/Portal';
 import VariablesInput from '@/components/VariablesInput';
 import { useEnableDisable } from '@/hooks';
 
-import { DayPickerContainer } from './components';
-
-const FORMAT = 'MM/DD/YYYY';
+import { DayPickerContainer, FORMAT, TimeRangePicker, WEEKDAYS } from './components';
 
 const VariablesInputComponent = VariablesInput as React.FC<any>;
 
@@ -106,7 +103,13 @@ const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
           >
             {({ ref, style, placement }) => (
               <DayPickerContainer ref={ref} style={{ ...style, zIndex: 1100 }} data-placement={placement}>
-                <DayPicker initialMonth={selectedDay} selectedDays={selectedDay} disabledDays={{ before: currentDate }} onDayClick={onDayClick} />
+                <TimeRangePicker
+                  weekdaysShort={WEEKDAYS}
+                  initialMonth={selectedDay}
+                  selectedDays={selectedDay}
+                  disabledDays={{ before: currentDate }}
+                  onDayClick={onDayClick}
+                />
               </DayPickerContainer>
             )}
           </Popper>

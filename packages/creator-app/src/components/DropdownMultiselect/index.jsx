@@ -8,7 +8,7 @@ import { useKeygen } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { stopImmediatePropagation } from '@/utils/dom';
 
-import { Count, InnerContainer, Label, SectionLabel, TriggerContainer, ValueContainer } from './components';
+import { Count, DropdownLabel, InnerContainer, Label, SectionLabel, TriggerContainer, ValueContainer } from './components';
 
 function DropdownMultiselect({
   options = [],
@@ -16,6 +16,7 @@ function DropdownMultiselect({
   component: Component,
   onSelect,
   menu,
+  selfDismiss,
   selectedItems,
   buttonDisabled,
   buttonClick,
@@ -28,6 +29,7 @@ function DropdownMultiselect({
   maxVisibleItems,
   placeholder,
   dropdownActive,
+  isTranscript = false,
   customOptionLabelStyling,
   withCaret,
 }) {
@@ -53,7 +55,15 @@ function DropdownMultiselect({
             maxHeight={maxHeight}
             maxVisibleItems={maxVisibleItems}
             disabled={buttonDisabled}
-            multiSelectProps={{ buttonClick: (e) => buttonClick?.(e, { onToggle }), buttonLabel }}
+            multiSelectProps={{
+              buttonClick: (e) => {
+                buttonClick?.(e, { onToggle });
+                if (selfDismiss) {
+                  onToggle();
+                }
+              },
+              buttonLabel,
+            }}
           >
             {dropdownOptions.map(({ sectionLabel, options }, index) => (
               <span key={index}>
@@ -65,12 +75,23 @@ function DropdownMultiselect({
                     onClick={stopImmediatePropagation(() => {
                       onClick?.();
                       onSelect?.(value);
+                      if (selfDismiss) {
+                        onToggle();
+                      }
                     })}
                   >
                     {/* So weird, if u put the label inside the checkbox component, the menu item onclick will trigger twice on label click // */}
                     {/* (something to do with stopImmediateProp and the checkbox component) */}
-                    <Checkbox readOnly checked={selectedItems.includes(value)} />
-                    <Label style={customOptionLabelStyling}>{label || value.toString()}</Label>
+                    {isTranscript ? (
+                      <>
+                        <DropdownLabel>{label}</DropdownLabel>
+                      </>
+                    ) : (
+                      <>
+                        <Checkbox readOnly checked={selectedItems.includes(value)} />
+                        <Label style={customOptionLabelStyling}>{label || value.toString()}</Label>
+                      </>
+                    )}
                   </MenuItem>
                 ))}
               </span>

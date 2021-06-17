@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Label = styled.div`
+export const Label = styled.div`
   font-size: 13px;
   line-height: 15px;
   text-transform: uppercase;
@@ -10,4 +10,10 @@ const Label = styled.div`
   cursor: pointer;
 `;
 
-export default Label;
+export const DropdownLabel = styled.div`
+  font-size: 15px;
+  line-height: 15px;
+  color: #132144;
+  padding-right: 14px;
+  cursor: pointer;
+`;

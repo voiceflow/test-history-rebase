@@ -1,13 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { FlexCenter } from '@/components/Flex';
 import ReportTagInput, { InputVariant } from '@/components/ReportTagInput';
 import SelectMenu, { MenuSection } from '@/components/SelectMenu';
 import { ClickableText } from '@/components/Text';
 import { FILTER_TAG } from '@/pages/Conversations/constants';
 
 import { Container } from './components';
+import DatePicker from './TimeRangePicker/DatePicker';
 
 interface TranscriptsHeaderProps {
   resultCount: number;
@@ -25,11 +25,13 @@ const TranscriptsHeader = ({ resultCount }: TranscriptsHeaderProps) => {
     const params = new URLSearchParams();
     params.append(FILTER_TAG.TAG, getRandNumString());
     params.append(FILTER_TAG.TAG, getRandNumString());
-    params.append(FILTER_TAG.START_DATE, getRandNumString());
-    params.append(FILTER_TAG.END_DATE, getRandNumString());
     history.push({ search: params.toString() });
   };
 
+  // TODO: set to default dates
+  const [startDate, setStartDate] = React.useState('' as string | Date);
+  const [timeRangeOpen, setTimeRangeOpen] = React.useState(true);
+  const [tagsOpen, setTagsOpen] = React.useState(false);
   return (
     <Container>
       <b>Conversations ({resultCount})</b>
@@ -38,20 +40,16 @@ const TranscriptsHeader = ({ resultCount }: TranscriptsHeaderProps) => {
         actionDisabled={true}
         sections={(_setData, _data) => (
           <>
-            <MenuSection
-              title="Time Range"
-              enabled={true}
-              toggleSection={() => {
-                // _setData()
-              }}
-            >
-              <FlexCenter style={{ flex: 2, color: '#8da2b5', height: '100px' }}> - Date Range Selector - </FlexCenter>
+            <MenuSection title="Time Range" enabled={timeRangeOpen} toggleSection={() => setTimeRangeOpen(!timeRangeOpen)}>
+              <>
+                <DatePicker date={startDate} onChange={(newDate) => setStartDate(newDate)}></DatePicker>
+              </>
             </MenuSection>
             <MenuSection
               title="Tags"
-              enabled={true}
+              enabled={tagsOpen}
               toggleSection={() => {
-                // _setData()
+                setTagsOpen(!tagsOpen);
               }}
             >
               <ReportTagInput variant={InputVariant.SELECT_ONLY} onChange={(value: string[]) => setTags(value)} selectedTags={tags} />

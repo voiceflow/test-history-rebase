@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
-// import Select from 'react-select';
 import Box from '@/components/Box';
 import TextBox from '@/components/Form/TextBox';
 import TextInput from '@/components/Form/TextInput';

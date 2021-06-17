@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.401.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.401.1...@voiceflow/creator-app@1.401.2) (2021-06-17)
+
+
+### Bug Fixes
+
+* opacity on hover+selected (VF-1174) ([#3553](https://github.com/voiceflow/creator-app/issues/3553)) ([8fe68c2](https://github.com/voiceflow/creator-app/commit/8fe68c254d1af81c3167f1a674224963d8de616e))
+
+
+
+
+
 ## [1.401.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.401.0...@voiceflow/creator-app@1.401.1) (2021-06-17)
 
 

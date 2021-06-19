@@ -6,8 +6,8 @@ import { Nullable } from '@/types';
 export const RESOURCE_ENDPOINT = 'prototype';
 
 const createPrototypeService = <J extends Job>(serviceEndpoint: string, resourceEndpoint = RESOURCE_ENDPOINT) => ({
-  run: (projectID: string) =>
-    axios.post<{ job: J; projectID: string }>(`${serviceEndpoint}/${resourceEndpoint}/${projectID}/render`).then((res) => res.data),
+  run: (projectID: string, diagramID: string | null) =>
+    axios.post<{ job: J; projectID: string }>(`${serviceEndpoint}/${resourceEndpoint}/${projectID}/render`, { diagramID }).then((res) => res.data),
 
   cancel: (projectID: string) => axios.post<void>(`${serviceEndpoint}/${resourceEndpoint}/${projectID}/cancel`).then((res) => res.data),
 

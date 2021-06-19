@@ -18,6 +18,7 @@ const renderPrototype =
     const platform = Project.activePlatformSelector(state);
     const projectID = Session.activeProjectIDSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
+    const diagramID = Session.activeDiagramIDSelector(state);
 
     Errors.assertProjectID(projectID);
     Errors.assertVersionID(versionID);
@@ -25,7 +26,7 @@ const renderPrototype =
     try {
       const platformPrototypeService = client.platform(platform).prototype;
 
-      await platformPrototypeService.run(projectID);
+      await platformPrototypeService.run(projectID, diagramID);
 
       await waitJobFinished({
         fetchJob: () => platformPrototypeService.getStatus(projectID),

@@ -40,3 +40,5 @@ export const INTENTS_VIDEO = 'https://www.youtube.com/embed/vuEmXn-lGK0';
 // test & prototype
 export const PROTOTYPING = 'https://docs.voiceflow.com/#/platform/testing/testing';
 export const ASSISTANT_TRAINING = 'https://docs.voiceflow.com/#/platform/testing/testing?id=train-the-voiceflow-assistant';
+
+export const DIALOG_MANAGER_API = 'https://www.voiceflow.com/api/dialog-manager';

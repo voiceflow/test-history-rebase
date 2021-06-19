@@ -1,5 +1,5 @@
 import ButtonContainer from '@/components/Button/components/ButtonContainer';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 const QuaternaryButton = styled(ButtonContainer)`
   border: 0;
@@ -20,6 +20,13 @@ const QuaternaryButton = styled(ButtonContainer)`
   &:active {
     background-color: #5d9df520;
   }
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      background: transparent !important;
+      opacity: 0.5;
+    `}
 `;
 
 export default QuaternaryButton;

@@ -1,14 +1,15 @@
 import React from 'react';
 
-import { SectionBox, SectionContainer, SectionInnerContainer, SectionTitle } from '@/pages/Publish/components/index';
+import Box from '@/components/Box';
+import { SectionCard } from '@/pages/Publish/components/index';
 
-const Section: React.FC<{ title: string }> = ({ title, children }) => (
-  <SectionContainer>
-    <SectionInnerContainer>
-      <SectionTitle> {title}</SectionTitle>
-      <SectionBox>{children}</SectionBox>
-    </SectionInnerContainer>
-  </SectionContainer>
+const Section: React.FC<{ title?: string; card?: boolean }> = ({ title, children, card = true }) => (
+  <Box width="100%" m={12}>
+    <Box fontWeight={600} mb={16}>
+      {title}
+    </Box>
+    {card ? <SectionCard>{children}</SectionCard> : children}
+  </Box>
 );
 
 export default Section;

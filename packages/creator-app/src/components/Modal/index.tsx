@@ -7,7 +7,7 @@ import { useModals } from '@/hooks';
 
 import { Close, Container, Content, Header, Icon, Root } from './components';
 
-export { Body as ModalBody, Footer as ModalFooter } from './components';
+export { Body as ModalBody, Footer as ModalFooter, Header as ModalHeader } from './components';
 
 export type ModalProps = {
   id: ModalType;

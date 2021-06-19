@@ -52,6 +52,7 @@ export enum CanvasRoute {
 export enum PublishRoute {
   ALEXA = 'alexa',
   GOOGLE = 'google',
+  API = 'api',
   EXPORT = 'export',
   GENERAL = 'general',
 }

@@ -324,6 +324,7 @@ export enum ModalType {
   IMPORT_BULK_DENIED = 'import-bulk-denied',
 
   LOADING = 'loading',
+  CONFIRM = 'confirm',
   REFRESH = 'refresh',
 
   CONNECT = 'connect',

@@ -10,6 +10,7 @@ import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { hot } from 'react-hot-loader/root';
 
+import ConfirmModalV2 from '@/components/ConfirmModal';
 import IntercomChat from '@/components/IntercomChat';
 import { ConfirmModal, ErrorModal, ModalBackdrop, SuccessModal } from '@/components/LegacyModal';
 import LoadingModal from '@/components/LegacyModal/LoadingModal';
@@ -47,6 +48,7 @@ const App = () => {
       <SeoHelmet page={SeoPage.ROOT} />
       <SuccessModal />
       <ConfirmModal />
+      <ConfirmModalV2 />
       <ErrorModal />
       <ModalBackdrop />
       <Modal />

@@ -19,3 +19,9 @@ export const useGuestPermission = (activePlan: PlanType, permission: Permission)
 
   return [isAllowed];
 };
+
+export const useIsAdmin = () => {
+  const [, { activeRole }] = usePermission();
+
+  return activeRole === UserRole.ADMIN;
+};

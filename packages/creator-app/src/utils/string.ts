@@ -36,3 +36,7 @@ export const arrayStringReplace = (targetString: string, newString: string, stri
 export const stripHTMLTags = (str: string): string => str.replace(TAGS_REGEXP, '');
 
 export const removeTrailingUnderscores = (str: string): string => str.replace(TRAILING_UNDERSCORES_REGEXP, '');
+
+export const conditionalReplace = (base: string, pattern: RegExp, value?: string) => {
+  return value ? base.replace(pattern, value) : base;
+};

@@ -7,12 +7,11 @@ import Page from '@/components/Page';
 import PlanBubble from '@/components/PlanBubble';
 import { SettingsContainer, SettingsHeader } from '@/components/Settings';
 import { Path } from '@/config/routes';
-import { userSelector } from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
-import { useDispatch } from '@/hooks';
+import { useDispatch, useIsAdmin } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 import Billing from './components/Billing';
@@ -27,8 +26,8 @@ enum Paths {
 }
 
 const Settings: React.FC = () => {
-  const user = useSelector(userSelector);
   const workspace = useSelector(Workspace.activeWorkspaceSelector);
+  const isAdmin = useIsAdmin();
 
   const goToDashboard = useDispatch(Router.goToDashboard);
 
@@ -50,7 +49,7 @@ const Settings: React.FC = () => {
   );
 
   // do not show for the no-admin users
-  if (!workspace?.members.filter((member) => member.role === 'admin').find(({ creator_id }) => creator_id === user.creator_id)) {
+  if (!isAdmin) {
     return <RedirectWithSearch to={Path.DASHBOARD} />;
   }
 

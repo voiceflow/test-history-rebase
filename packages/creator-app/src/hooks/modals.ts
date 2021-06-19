@@ -52,7 +52,7 @@ export const useModals = <T extends object = {}>(modalId: ModalType): ModalActio
 
   return {
     fade,
-    data: modalData,
+    data: isOpened ? modalData : ({} as T),
     open: openModal,
     close: closeModal,
     toggle: toggleModal,

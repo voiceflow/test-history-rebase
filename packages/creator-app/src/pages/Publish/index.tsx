@@ -24,6 +24,7 @@ import SidebarItem from './components/PublishSidebarItem';
 const PublishAmazon = lazy(() => import('./Amazon'));
 const PublishGoogle = lazy(() => import('./Google'));
 const Export = lazy(() => import('./Export'));
+const API = lazy(() => import('./API'));
 
 const updateLink = (link: string, versionID: string) => link.replace(':versionID', versionID);
 
@@ -32,6 +33,11 @@ interface Tab {
   link: string;
   exact?: boolean;
 }
+
+const APITab: Tab = {
+  render: () => <Flex>API</Flex>,
+  link: `/${PublishRoute.API}`,
+};
 
 const getTabs = createPlatformSelector<Tab[]>(
   {
@@ -62,7 +68,7 @@ type PublishProps = RouteComponentProps;
 const Publish: React.FC<PublishProps & ConnectedPublishProps> = ({ match: { path }, history, versionID, location, platform, ...props }) => {
   const [codeExport] = usePermission(Permission.CODE_EXPORT);
 
-  const tabOptions = [...getTabs(platform)];
+  const tabOptions = [...getTabs(platform), APITab];
 
   if (codeExport) {
     tabOptions.push(CODE_EXPORT_TAB);
@@ -83,7 +89,8 @@ const Publish: React.FC<PublishProps & ConnectedPublishProps> = ({ match: { path
           <PrivateRoute {...props} path={`${path}/${PublishRoute.ALEXA}`} component={PublishAmazon} />
           <PrivateRoute {...props} path={`${path}/${PublishRoute.GOOGLE}`} component={PublishGoogle} />
           <PrivateRoute {...props} path={`${path}/${PublishRoute.EXPORT}`} component={Export} />
-          <Redirect from={`${path}/${PublishRoute.GENERAL}`} to={`${path}/${PublishRoute.EXPORT}`} />
+          <PrivateRoute {...props} path={`${path}/${PublishRoute.API}`} component={API} />
+          <Redirect from={`${path}/${PublishRoute.GENERAL}`} to={`${path}/${PublishRoute.API}`} />
         </Switch>
       </PlatformContainer>
     </Container>

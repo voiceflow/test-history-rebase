@@ -1,51 +1,27 @@
-import Flex, { FlexCenter } from '@/components/Flex';
+import Box, { Flex, FlexCenter } from '@/components/Box';
+import Text from '@/components/Text';
 import { styled } from '@/hocs';
 
-export const SectionBox = styled(Flex)`
+export const SectionCard = styled(Box)`
   border-radius: 5px;
   box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.08), 0 0 1px 1px rgba(17, 49, 96, 0.08);
   background-color: white;
-  padding: 32px;
+  padding: 24px;
+
+  ${Text} {
+    color: #62778c;
+  }
 `;
 
 export const ContentContainer = styled(Flex)`
   flex-direction: column;
-  padding: 50px;
-`;
-
-export const SectionContainer = styled(FlexCenter)`
-  min-width: 640px;
-  max-width: 640px;
-`;
-
-export const SectionInnerContainer = styled.div`
-  width: 100%;
-`;
-
-export const SectionTitle = styled.div`
-  margin-bottom: 16px;
-  color: #132144;
-  font-weight: 600;
-  font-size: 15px;
+  padding: 20px;
 `;
 
 export const ContentSection = styled(FlexCenter)`
-  margin-right: 20%;
-  margin-bottom: 40px;
-`;
-
-export const PlatformText = styled.span`
-  text-transform: capitalize;
-`;
-
-export const Text = styled.div`
-  color: #62778c;
-  font-size: 13px;
-  margin-right: 16px;
-`;
-
-export const LinkContainer = styled.div`
-  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 724px;
+  align-items: flex-end;
 `;
 
 export const ActionContainer = styled.div`

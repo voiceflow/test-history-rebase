@@ -21,21 +21,32 @@ const CreateAPIKeyModal: React.FC = () => {
   const [state, setState] = React.useState<CreateAPIKeyState>(CreateAPIKeyState.CONFIG);
   const [name, setName] = React.useState('');
   const [apiKey, setAPIKey] = React.useState('');
-  const { isOpened, data } = useModals<{ onCreate: () => void; workspaceID: string }>(ModalType.API_KEY_CREATE);
+  const { isOpened, data } = useModals<{ name?: string; onCreate: (key: string) => void; workspaceID: string; projectID?: string }>(
+    ModalType.API_KEY_CREATE
+  );
 
   // reset state
   React.useEffect(() => {
-    setName('');
+    if (!isOpened) {
+      return;
+    }
+
     setAPIKey('');
-    setState(CreateAPIKeyState.CONFIG);
+    if (data.name) {
+      setState(CreateAPIKeyState.SHOW_KEY);
+      createAPIKey(data.name, data.projectID);
+    } else {
+      setName('');
+      setState(CreateAPIKeyState.CONFIG);
+    }
   }, [isOpened]);
 
-  const createAPIKey = async () => {
-    const { APIKey } = await client.api.apiKey.create(data.workspaceID, { name });
+  const createAPIKey = async (name: string, projectID?: string) => {
+    const { APIKey } = await client.api.apiKey.create(data.workspaceID, { name, projectID });
     toast.success('API key successfully created');
     setAPIKey(APIKey);
     setState(CreateAPIKeyState.SHOW_KEY);
-    data.onCreate();
+    data.onCreate(APIKey);
   };
 
   const copyAPIKey = () => {
@@ -51,7 +62,7 @@ const CreateAPIKeyModal: React.FC = () => {
             <ModalBody>
               Please copy this key and store it somewhere secure. For security purposes, <b>we can't show this key to you again.</b>
               <Box mt={16}>
-                <TextArea disabled readOnly value={apiKey} />
+                <TextArea disabled readOnly value={apiKey} placeholder="Generating API Key..." minRows={2} />
               </Box>
             </ModalBody>
             <ModalFooter>
@@ -65,7 +76,7 @@ const CreateAPIKeyModal: React.FC = () => {
               <Input placeholder="API Key Name" value={name} onChange={(e) => setName(e.target.value)} />
             </ModalBody>
             <ModalFooter>
-              <Button disabled={state === CreateAPIKeyState.CREATING} onClick={createAPIKey}>
+              <Button disabled={state === CreateAPIKeyState.CREATING} onClick={() => createAPIKey(name)}>
                 Confirm
               </Button>
             </ModalFooter>

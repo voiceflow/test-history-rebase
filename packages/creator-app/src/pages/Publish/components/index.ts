@@ -1,6 +1,7 @@
 import Box, { Flex, FlexCenter } from '@/components/Box';
 import Text from '@/components/Text';
 import { styled } from '@/hocs';
+import THEME from '@/styles/theme';
 
 export const SectionCard = styled(Box)`
   border-radius: 5px;
@@ -9,7 +10,7 @@ export const SectionCard = styled(Box)`
   padding: 24px;
 
   ${Text} {
-    color: #62778c;
+    color: ${THEME.colors.secondary};
   }
 `;
 

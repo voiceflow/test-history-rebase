@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.402.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.402.0...@voiceflow/creator-app@1.402.1) (2021-06-19)
+
+
+### Bug Fixes
+
+* root diagram override ([#3541](https://github.com/voiceflow/creator-app/issues/3541)) ([af4307a](https://github.com/voiceflow/creator-app/commit/af4307a3090951782dc24157a8ef0c4217ad4a30))
+
+
+
+
+
 # [1.402.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.401.2...@voiceflow/creator-app@1.402.0) (2021-06-19)
 
 

@@ -11,11 +11,25 @@ import { ConnectedProps } from '@/types';
 
 import { Container, Item } from './components';
 
+const sortDiagramAlphabetical = (rootDiagramID: string | null, diagram1: any, diagram2: any) => {
+  // Keep HOME flow first in list
+  if (diagram1.id === rootDiagramID) return -1;
+  if (diagram2.id === rootDiagramID) return 1;
+
+  if (diagram1.name.toLowerCase() > diagram2.name.toLowerCase()) {
+    return 1;
+  }
+  if (diagram1.name.toLowerCase() === diagram2.name.toLowerCase()) {
+    return 0;
+  }
+  return -1;
+};
+
 const FlowList: React.FC<ConnectedFlowListProps> = ({ diagrams, rootDiagramID, activeDiagramID }) => {
   const sortedDiagrams = React.useMemo(
     () =>
       diagrams
-        .sort(({ id }) => (id === rootDiagramID ? -1 : 0))
+        .sort((diagram1, diagram2) => sortDiagramAlphabetical(rootDiagramID, diagram1, diagram2))
         .map((diagram) => ({
           ...diagram,
           name: diagram.id === rootDiagramID ? 'Home' : diagram.name,

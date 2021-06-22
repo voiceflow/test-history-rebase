@@ -1,8 +1,7 @@
-import cuid from 'cuid';
 import intersectionWith from 'lodash/intersectionWith';
 import isEqual from 'lodash/isEqual';
-import uniqBy from 'lodash/uniqBy';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 
 import Badge from '@/components/Badge';
@@ -12,21 +11,13 @@ import ErrorMessage from '@/components/ErrorPages/ErrorMessage';
 import Input from '@/components/Input';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
-import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
+import { allReportTagsSelector, createTag, deleteTag } from '@/ducks/reportTag';
 import { useModals } from '@/hooks';
-import { ReportTag } from '@/models';
+import { ReportTag, Sentiment, SentimentArray, SystemTag, SystemTagArray } from '@/models';
 import { FadeLeftContainer } from '@/styles/animations';
-import { ConnectedProps } from '@/types';
 import { withKeyPress } from '@/utils/dom';
 
 import { Content, NewTagInputContainer, TagLineItem } from './components';
-
-const DUMMY_DATA = [
-  { id: '1', projectID: '1', label: 'user error' },
-  { id: '2', projectID: '2', label: 'happy path' },
-];
 
 const tagInputToArray = (val: string) => {
   return [
@@ -39,32 +30,36 @@ const tagInputToArray = (val: string) => {
   ];
 };
 
-const TagManagerModal: React.FC<RouteComponentProps & TagManagerModalConnectedProps> = ({ projectID }) => {
+const TagManagerModal: React.FC<RouteComponentProps> = () => {
+  const allTags = useSelector(allReportTagsSelector);
+  const dispatch = useDispatch();
+
+  const editableTags = allTags.filter((tag: ReportTag) => {
+    return !SystemTagArray.includes(tag.id as SystemTag) && !SentimentArray.includes(tag.id as Sentiment);
+  });
   const [modalRef, setModalRef] = React.useState<HTMLDivElement | null>(null);
   const { close: closeTagManager } = useModals(ModalType.TAG_MANAGER);
-  const [allTags, setAllTags] = React.useState(DUMMY_DATA);
 
-  const tagsLabelArray = React.useMemo(() => allTags.map(({ label }) => label), [allTags]);
+  const tagsLabelArray = React.useMemo(() => editableTags.map(({ label }) => label), [editableTags]);
   const [addVal, setAddVal] = React.useState('');
   const [addError, setAddError] = React.useState('');
 
   const onDeleteTag = (id: string) => {
-    const newAllTags = allTags.filter((tag) => tag.id !== id);
-    setAllTags(newAllTags);
+    dispatch(deleteTag(id));
   };
 
   const onUndoDelete = (tag: ReportTag) => {
-    setAllTags(uniqBy([tag, ...allTags], ({ id }) => id));
+    dispatch(createTag(tag.label, tag.id));
   };
 
   const onAdd = () => {
     const newTags = tagInputToArray(addVal);
 
-    if (!addError && newTags.length) {
-      setAddVal('');
-      const tagObjects = newTags.map((tagLabel) => ({ id: cuid(), label: tagLabel, projectID: projectID! }));
-      setAllTags([...allTags, ...tagObjects]);
-    }
+    newTags.forEach((tagLabel) => {
+      dispatch(createTag(tagLabel));
+    });
+
+    setAddVal('');
   };
 
   const onAddInputChange = ({ target: { value: val } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,7 +102,7 @@ const TagManagerModal: React.FC<RouteComponentProps & TagManagerModalConnectedPr
               )}
             </NewTagInputContainer>
             <Content>
-              {allTags.map((tag) => {
+              {editableTags.map((tag) => {
                 return <TagLineItem key={tag.id} onUndoDelete={onUndoDelete} onDelete={onDeleteTag} tags={allTags} tag={tag} />;
               })}
             </Content>
@@ -123,14 +118,4 @@ const TagManagerModal: React.FC<RouteComponentProps & TagManagerModalConnectedPr
   );
 };
 
-const mapStateToProps = {
-  projectID: Session.activeProjectIDSelector,
-};
-
-const mapDispatchToProps = {
-  goInteractionModel: Router.goToCurrentCanvasInteractionModel,
-};
-
-export type TagManagerModalConnectedProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(TagManagerModal) as React.FC;
+export default TagManagerModal as React.FC;

@@ -11,6 +11,8 @@ export enum Sentiment {
 
 export const SentimentArray = [Sentiment.EMOTION_POSITIVE, Sentiment.EMOTION_NEGATIVE, Sentiment.EMOTION_NEUTRAL];
 
+export const SystemTagArray = [SystemTag.REVIEWED, SystemTag.SAVED];
+
 export enum Device {
   DESKTOP = 'desktop',
   MOBILE = 'mobile',

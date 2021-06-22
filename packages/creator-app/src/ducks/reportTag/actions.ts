@@ -8,6 +8,7 @@ const {
   remove: removeReportTag,
   update: updateReportTag,
   patch: patchReportTag,
+  replace: replaceReportTags,
 } = createCRUDActionCreators(STATE_KEY);
 
-export { addReportTag, addReportTags, patchReportTag, removeReportTag, updateReportTag };
+export { addReportTag, addReportTags, patchReportTag, removeReportTag, replaceReportTags, updateReportTag };

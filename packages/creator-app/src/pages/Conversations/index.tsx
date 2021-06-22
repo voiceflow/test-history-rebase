@@ -1,18 +1,19 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
 
-import * as Transcript from '@/ducks/transcript';
-import { connect } from '@/hocs';
+import { fetchReportTags } from '@/ducks/reportTag';
+import { fetchTranscripts } from '@/ducks/transcript';
 import { useAsyncEffect, useTeardown } from '@/hooks';
 import { FILTER_TAG } from '@/pages/Conversations/constants';
-import { ConnectedProps } from '@/types';
 
 import { ConversationsContainer, TranscriptDetails, TranscriptDialog, TranscriptManager } from './components';
 
 type ConversationProps = RouteComponentProps;
 
-const Conversations: React.FC<ConversationProps & ConnectedConversationsProps> = ({ fetchTranscripts }) => {
-  const [loadingTranscripts, setLoadingTranscripts] = React.useState(true);
+const Conversations: React.FC<ConversationProps> = () => {
+  const [loadingData, setLoadingData] = React.useState(true);
+  const dispatch = useDispatch();
 
   const { search } = useLocation();
   const history = useHistory();
@@ -28,24 +29,18 @@ const Conversations: React.FC<ConversationProps & ConnectedConversationsProps> =
   }, [search, history]);
 
   useAsyncEffect(async () => {
-    await fetchTranscripts();
-    setLoadingTranscripts(false);
+    dispatch(fetchTranscripts());
+    dispatch(fetchReportTags());
+    setLoadingData(false);
   }, [search]);
 
   return (
     <ConversationsContainer>
-      <TranscriptManager loading={loadingTranscripts} />
+      <TranscriptManager loading={loadingData} />
       <TranscriptDialog />
       <TranscriptDetails />
     </ConversationsContainer>
   );
 };
 
-const mapStateToProps = {};
-const mapDispatchToProps = {
-  fetchTranscripts: Transcript.fetchTranscripts,
-};
-
-type ConnectedConversationsProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(Conversations);
+export default Conversations;

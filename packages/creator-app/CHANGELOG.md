@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.403.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.402.1...@voiceflow/creator-app@1.403.0) (2021-06-22)
+
+
+### Bug Fixes
+
+* restrict project list and workspace ui for billing (VF-1160) ([#3562](https://github.com/voiceflow/creator-app/issues/3562)) ([c19e8ce](https://github.com/voiceflow/creator-app/commit/c19e8ce56279c1bdf1a12063ce531b0590cfbea4))
+
+
+### Features
+
+* update naming convention of new blocks (VF-899) ([#3557](https://github.com/voiceflow/creator-app/issues/3557)) ([21ecf59](https://github.com/voiceflow/creator-app/commit/21ecf5964ec9304ac74ca9af4731d5fed26e4c35))
+
+
+
+
+
 ## [1.402.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.402.0...@voiceflow/creator-app@1.402.1) (2021-06-19)
 
 

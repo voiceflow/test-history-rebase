@@ -52,10 +52,10 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
 
   [Permission.INVITE_BY_LINK]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING],
 
-  [Permission.CONFIGURE_WORKSPACE]: [UserRole.ADMIN, UserRole.BILLING],
+  [Permission.CONFIGURE_WORKSPACE]: [UserRole.ADMIN],
   [Permission.UPGRADE_WORKSPACE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING],
 
-  [Permission.MANAGE_PROJECTS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING],
+  [Permission.MANAGE_PROJECTS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
   [Permission.MANAGE_PROJECT_LISTS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.BILLING],
   [Permission.CLONE_PROJECT]: [UserRole.LIBRARY],
 

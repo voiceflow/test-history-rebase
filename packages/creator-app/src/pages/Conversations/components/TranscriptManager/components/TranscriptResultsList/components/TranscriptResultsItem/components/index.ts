@@ -46,11 +46,7 @@ export const Container = styled(Flex)<{ active?: boolean; menuOpen: boolean; id:
       display: inline;
       background: white;
       border-radius: 50%;
-      box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 6px 0 rgba(17, 49, 96, 0.24);
-
-      :hover {
-        box-shadow: none;
-      }
+      box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
     }
 
     & .${ClassName.TRANSCRIPT_ITEM_STATUSES}-${({ id }) => id} {

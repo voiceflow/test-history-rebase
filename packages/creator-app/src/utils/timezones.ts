@@ -13,35 +13,35 @@ const timezoneGroups: TimezoneGroup[] = [
     group: 'US (Common)',
     zones: [
       {
-        value: 'America/Puerto_Rico',
+        value: 'US/Puerto_Rico',
         name: 'Puerto Rico (Atlantic)',
       },
       {
-        value: 'America/New_York',
+        value: 'US/New_York',
         name: 'New York (Eastern)',
       },
       {
-        value: 'America/Chicago',
+        value: 'US/Chicago',
         name: 'Chicago (Central)',
       },
       {
-        value: 'America/Denver',
+        value: 'US/Denver',
         name: 'Denver (Mountain)',
       },
       {
-        value: 'America/Phoenix',
+        value: 'US/Phoenix',
         name: 'Phoenix (MST)',
       },
       {
-        value: 'America/Los_Angeles',
+        value: 'US/Los_Angeles',
         name: 'Los Angeles (Pacific)',
       },
       {
-        value: 'America/Anchorage',
+        value: 'US/Anchorage',
         name: 'Anchorage (Alaska)',
       },
       {
-        value: 'Pacific/Honolulu',
+        value: 'America Pacific/Honolulu',
         name: 'Honolulu (Hawaii)',
       },
     ],

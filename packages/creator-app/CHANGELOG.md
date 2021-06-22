@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.405.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.404.0...@voiceflow/creator-app@1.405.0) (2021-06-22)
+
+
+### Bug Fixes
+
+* transcript options button toggling (VF-1179) ([#3556](https://github.com/voiceflow/creator-app/issues/3556)) ([995c6a6](https://github.com/voiceflow/creator-app/commit/995c6a6633118a6efed6a35274be0b87f7a671e1))
+
+
+### Features
+
+* connect transcript manager and details section for test-reports (VF-1034) ([#3549](https://github.com/voiceflow/creator-app/issues/3549)) ([5c5e62d](https://github.com/voiceflow/creator-app/commit/5c5e62d956124008c63638eb2f82bc1b389aad56))
+
+
+
+
+
 # [1.404.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.403.1...@voiceflow/creator-app@1.404.0) (2021-06-22)
 
 

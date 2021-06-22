@@ -29,7 +29,6 @@ export default addNodeReducer;
 
 export const addNestedNodeReducer: Reducer<DiagramState, AddNestedNode> = (state, { payload: { parentNodeID, node, data, mergedNodeID } }) => {
   const parentNode = getNormalizedByKey(state.nodes, parentNodeID);
-
   const [newNode, newPorts, newNodeData] = buildNewNode({ ...node, parentNode: parentNodeID }, data);
 
   const isCombinedBlock = parentNode.combinedNodes.length;
@@ -129,7 +128,7 @@ export const addWrappedNodeReducer: Reducer<DiagramState, AddWrappedNode> = (
       }),
       ports: parentPorts,
     },
-    { name: 'Block' }
+    { name: `New Block ${state.rootNodeIDs.length}` }
   );
 
   return compose(addBlockToState(rootNode, rootPorts, rootNodeData), addBlockToState(newNode, newPorts, newNodeData))(state);

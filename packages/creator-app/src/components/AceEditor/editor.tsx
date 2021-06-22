@@ -1,6 +1,6 @@
 /* eslint-disable simple-import-sort/imports */
 import React from 'react';
-import AceEditor, { AceEditorProps as AceEditorBaseProps } from 'react-ace';
+import AceEditor, { IAceEditorProps as AceEditorBaseProps } from 'react-ace';
 
 import 'brace/ext/language_tools';
 import 'brace/mode/javascript';

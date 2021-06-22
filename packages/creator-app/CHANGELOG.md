@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.406.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.405.0...@voiceflow/creator-app@1.406.0) (2021-06-22)
+
+
+### Features
+
+* connecting up tag mangaer modal (VF-1156) ([#3567](https://github.com/voiceflow/creator-app/issues/3567)) ([f477550](https://github.com/voiceflow/creator-app/commit/f4775501c0203ee41e12b58be7b39276ae89f852))
+
+
+
+
+
 # [1.405.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.404.0...@voiceflow/creator-app@1.405.0) (2021-06-22)
 
 

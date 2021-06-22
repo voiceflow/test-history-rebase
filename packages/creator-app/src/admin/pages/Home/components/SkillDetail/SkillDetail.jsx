@@ -10,6 +10,7 @@ import * as Account from '@/admin/store/ducks/accountV2';
 import * as Admin from '@/admin/store/ducks/adminV2';
 import client from '@/client';
 import { toast } from '@/components/Toast';
+import { KeyName } from '@/constants';
 import { connect } from '@/hocs';
 
 export class SkillDetail extends Component {
@@ -96,7 +97,7 @@ export class SkillDetail extends Component {
                   value={this.state.target_user}
                   onChange={(e) => this.setState({ target_user: e.target.value })}
                   onKeyPress={(e) => {
-                    if (e.charCode === 13) {
+                    if (e.key === KeyName.ENTER) {
                       e.preventDefault();
                     }
                   }}

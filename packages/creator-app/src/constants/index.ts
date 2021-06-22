@@ -216,10 +216,6 @@ export enum VoiceType {
   ALEXA = 'Alexa',
 }
 
-export const KeyCodes = {
-  ENTER: 13,
-};
-
 export const PLAN_INFO_LINK = 'https://www.voiceflow.com/pricing';
 
 export enum PlanType {
@@ -397,6 +393,8 @@ export enum KeyName {
   TAB = 'Tab',
   ENTER = 'Enter',
   ESCAPE = 'Escape',
+  BACKSPACE = 'Backspace',
+  DELETE = 'Delete',
   ARROW_UP = 'ArrowUp',
   ARROW_DOWN = 'ArrowDown',
   ARROW_LEFT = 'ArrowLeft',

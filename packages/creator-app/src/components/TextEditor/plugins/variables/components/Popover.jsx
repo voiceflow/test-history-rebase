@@ -4,6 +4,7 @@ import Input from '@/components/Input';
 import Button from '@/components/LegacyButton';
 import { MenuContainer } from '@/components/Menu';
 import Portal from '@/components/Portal';
+import { KeyName } from '@/constants';
 import { TextEditorVariablesPopoverConsumer } from '@/contexts';
 import { css, styled } from '@/hocs';
 import { FadeDownDelayedContainer } from '@/styles/animations';
@@ -69,7 +70,7 @@ export default React.forwardRef(
                         value={variableName}
                         variant="inline"
                         onChange={onChangeVariableName}
-                        onKeyPress={withKeyPress(13, onCreateMention)}
+                        onKeyPress={withKeyPress(KeyName.ENTER, onCreateMention)}
                         placeholder={placeholder}
                         onMouseDown={onFocusInput}
                       />

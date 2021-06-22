@@ -3,6 +3,7 @@ import React from 'react';
 import Box from '@/components/Box';
 import CommentPreview from '@/components/CommentPreview';
 import MentionEditor from '@/components/MentionEditor';
+import { KeyName } from '@/constants';
 import { useLinkedState } from '@/hooks';
 import { Comment } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts';
@@ -83,10 +84,10 @@ const EditableComment: React.FC<EditableCommentProps> = ({
               inputRef,
               autoFocus: isEditing,
               onKeyDown: (e) => {
-                if ((e.metaKey || e.ctrlKey) && e.keyCode === 13) {
+                if ((e.metaKey || e.ctrlKey) && e.key === KeyName.ENTER) {
                   onPost();
                 }
-                if (e.keyCode === 27) {
+                if (e.key === KeyName.ESCAPE) {
                   disableModes();
                 }
               },

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { defaultLabelRenderer } from '@/components/Select';
 import { toast } from '@/components/Toast';
+import { KeyName } from '@/constants';
 import { stopPropagation, withKeyPress } from '@/utils/dom';
 
 import SelectInputOption from './SelectInputOption';
@@ -14,7 +15,7 @@ const SelectOption = ({ tag, value, option, isFocused, onAddTag, onEnterPress, o
   const tagInputAttribute = tag?.attributes?.[option.inputAttribute];
 
   const onEnterPressed = React.useCallback(
-    withKeyPress(13, () => {
+    withKeyPress(KeyName.ENTER, () => {
       const { valid, error } = tagInputAttribute.validate ? tagInputAttribute.validate(val) : { valid: true };
 
       if (!valid) {

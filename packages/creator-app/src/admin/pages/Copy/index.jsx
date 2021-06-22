@@ -11,10 +11,11 @@ import client from '@/client';
 import Button from '@/components/LegacyButton';
 import { Label } from '@/components/Text';
 import { toast } from '@/components/Toast';
+import { KeyName } from '@/constants';
 import { connect } from '@/hocs';
 
 function preventDefaultOnEnter(e) {
-  if (e.charCode === 13) {
+  if (e.key === KeyName.ENTER) {
     e.preventDefault();
   }
 }

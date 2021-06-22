@@ -6,6 +6,7 @@ import * as Admin from '@/admin/store/ducks/adminV2';
 import { AdminTitle } from '@/admin/styles';
 import Input from '@/components/Input';
 import { toast } from '@/components/Toast';
+import { KeyName } from '@/constants';
 import { connect } from '@/hocs';
 
 import {
@@ -34,7 +35,7 @@ class BetaProgram extends React.Component {
   };
 
   keyPress = (event) => {
-    if (event.keyCode === 13) {
+    if (event.key === KeyName.ENTER) {
       // Search for user here
       this.props.findBetaCreator(this.state.email);
       this.setState({

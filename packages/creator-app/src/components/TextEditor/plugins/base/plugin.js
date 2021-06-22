@@ -1,3 +1,5 @@
+import { KeyName } from '@/constants';
+
 import { deleteHandler, pasteTextHandler } from './utils';
 
 export default (globalStore, store, { handlers, fromPastedTextConvertor }) => {
@@ -29,7 +31,7 @@ export default (globalStore, store, { handlers, fromPastedTextConvertor }) => {
     // eslint-disable-next-line consistent-return
     keyBindingFn: (e) => {
       // delete
-      if (e.keyCode === 127 || e.keyCode === 8) {
+      if (e.key === KeyName.DELETE || e.key === KeyName.BACKSPACE) {
         return onDelete(e);
       }
     },

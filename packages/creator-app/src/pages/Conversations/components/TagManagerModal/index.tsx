@@ -10,7 +10,7 @@ import Button, { ButtonVariant } from '@/components/Button';
 import ErrorMessage from '@/components/ErrorPages/ErrorMessage';
 import Input from '@/components/Input';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
-import { ModalType } from '@/constants';
+import { KeyName, ModalType } from '@/constants';
 import { allReportTagsSelector, createTag, deleteTag } from '@/ducks/reportTag';
 import { useModals } from '@/hooks';
 import { ReportTag, Sentiment, SentimentArray, SystemTag, SystemTagArray } from '@/models';
@@ -81,7 +81,7 @@ const TagManagerModal: React.FC<RouteComponentProps> = () => {
           <ModalBody style={{ padding: '0' }}>
             <NewTagInputContainer>
               <Input
-                onKeyPress={withKeyPress(13, onAdd)}
+                onKeyPress={withKeyPress(KeyName.ENTER, onAdd)}
                 error={!!addError}
                 value={addVal}
                 onChange={onAddInputChange}

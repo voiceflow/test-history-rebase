@@ -4,6 +4,7 @@ import Box, { Flex } from '@/components/Box';
 import Dropdown from '@/components/Dropdown';
 import InlineInput, { InputVariant } from '@/components/Input';
 import SvgIcon, { Icon } from '@/components/SvgIcon';
+import { KeyName } from '@/constants';
 import { Sentiment, SentimentArray } from '@/models';
 import { SentimentToSVGName } from '@/pages/Conversations/constants';
 
@@ -38,9 +39,9 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({ menu, selectedT
   const scrollTo = React.useCallback((...args) => containerRef.current?.scrollTo(...args), [selectedTags]);
 
   const onBackspace = (event: React.KeyboardEvent) => {
-    const key = event.keyCode || event.charCode;
+    const { key } = event;
 
-    if ((key === 8 || key === 46) && !searchedTag.trim()) {
+    if (key && (key === KeyName.BACKSPACE || key === KeyName.DELETE) && !searchedTag.trim()) {
       onChange(selectedTags.splice(-1, 1));
     }
   };

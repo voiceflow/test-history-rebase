@@ -4,6 +4,7 @@ import validUrl from 'valid-url';
 import Badge from '@/components/Badge';
 import Input from '@/components/Input';
 import VariablesInput from '@/components/VariablesInput';
+import { KeyName } from '@/constants';
 import { stopPropagation, withKeyPress } from '@/utils/dom';
 import { transformVariablesToReadable } from '@/utils/slot';
 
@@ -61,7 +62,7 @@ function LinkUpload({ onUpdate, onBack, validate = validURL, placeholder, withVa
         <Input
           {...inputProps}
           onChange={(e) => setValue(e.target.value)}
-          onKeyPress={withKeyPress(13, () => validateAndUpdate(value))}
+          onKeyPress={withKeyPress(KeyName.ENTER, () => validateAndUpdate(value))}
           rightAction={<Badge onClick={() => validateAndUpdate(value)}>Enter</Badge>}
         />
       )}

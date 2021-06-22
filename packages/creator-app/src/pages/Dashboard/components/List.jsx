@@ -8,6 +8,7 @@ import IconButton from '@/components/IconButton';
 import Button from '@/components/LegacyButton';
 import Form from '@/components/LegacyForm';
 import { Permission } from '@/config/permissions';
+import { KeyName } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
 import withDraggable from '@/hocs/withDraggable';
 import { usePermission } from '@/hooks';
@@ -121,7 +122,7 @@ export function List(props) {
                     selected
                     disabled={!canManageLists}
                     onChange={({ target }) => handleChange('name', target.value)}
-                    onKeyPress={({ charCode }) => charCode === 13 && onInputNameBlur()}
+                    onKeyPress={({ key }) => key === KeyName.ENTER && onInputNameBlur()}
                     maxLength={32}
                     placeholder="Enter list name"
                   />

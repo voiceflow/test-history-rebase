@@ -7,6 +7,7 @@ import InfoIcon from '@/components/InfoIcon';
 import Input from '@/components/Input';
 import SvgIcon from '@/components/SvgIcon';
 import { toast } from '@/components/Toast';
+import { KeyName } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
@@ -98,7 +99,7 @@ const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> 
             </Badge>
           )
         }
-        onKeyPress={withKeyPress(13, onAdd)}
+        onKeyPress={withKeyPress(KeyName.ENTER, onAdd)}
         nested
       />
     </Container>

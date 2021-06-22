@@ -2,7 +2,7 @@ import _isNumber from 'lodash/isNumber';
 import _isString from 'lodash/isString';
 
 import { IS_E2E_TEST } from '@/config';
-import { KeyCode } from '@/constants';
+import { KeyName } from '@/constants';
 import { Pair, Point } from '@/types';
 
 declare global {
@@ -186,16 +186,16 @@ export const swallowEvent = withHandler<Event | React.SyntheticEvent, boolean>((
 });
 
 export const withKeyPress =
-  <E extends KeyboardEvent | React.KeyboardEvent>(charCode: number, cb: (event: E) => void) =>
+  <E extends KeyboardEvent | React.KeyboardEvent>(key: string, cb: (event: E) => void) =>
   (event: E) => {
-    if (event.charCode === charCode) {
+    if (event.key === key) {
       return cb(event);
     }
   };
 
-export const swallowKeyPress = (charCode: number) => withKeyPress(charCode, preventDefault());
+export const swallowKeyPress = (key: string) => withKeyPress(key, preventDefault());
 
-export const withEnterPress = <E extends KeyboardEvent | React.KeyboardEvent>(cb: (event: E) => void) => withKeyPress(KeyCode.ENTER, cb);
+export const withEnterPress = <E extends KeyboardEvent | React.KeyboardEvent>(cb: (event: E) => void) => withKeyPress(KeyName.ENTER, cb);
 
 export const copyJSONPath = (copy_event: { name: string; namespace: string[] }) => {
   const total_path = copy_event.namespace.slice();

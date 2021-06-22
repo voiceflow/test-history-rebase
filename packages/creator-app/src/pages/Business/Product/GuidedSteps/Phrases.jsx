@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import SvgIcon from '@/components/SvgIcon';
-import { DEFAULT_PRODUCT_PHRASE } from '@/constants';
+import { DEFAULT_PRODUCT_PHRASE, KeyName } from '@/constants';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { connect } from '@/hocs';
 
@@ -50,7 +50,7 @@ function PhrasesForm({ product, updateProduct, changeStep }) {
             onChange={(e) => setEditingPhrase({ value: e.target.value, index })}
             onBlur={onBlur}
             onKeyPress={(e) => {
-              if (e.charCode === 13) e.preventDefault();
+              if (e.key === KeyName.ENTER) e.preventDefault();
             }}
           />
 

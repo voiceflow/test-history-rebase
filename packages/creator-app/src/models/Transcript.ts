@@ -9,6 +9,8 @@ export enum Sentiment {
   EMOTION_NEUTRAL = 'system.emotion_neutral',
 }
 
+export const SentimentArray = [Sentiment.EMOTION_POSITIVE, Sentiment.EMOTION_NEGATIVE, Sentiment.EMOTION_NEUTRAL];
+
 export enum Device {
   DESKTOP = 'desktop',
   MOBILE = 'mobile',
@@ -33,7 +35,7 @@ export interface Transcript {
   // the id of this transcript
   id: string;
   // the user who recorded this test
-  creatorID: number | null;
+  creatorID: string | null;
   // the project this transcript is related to
   projectID: string;
   // drives the "read" indicator in the results list
@@ -45,11 +47,9 @@ export interface Transcript {
   // ie. chrome, firefox
   browser: Browser;
   // list of tag IDs and SystemTags
-  tags: (string | SystemTag)[];
+  tags: (string | SystemTag | Sentiment)[];
   // look at mentions format from commenting
   notes: string | null;
   // creation date
   createdAt: number;
-  // sentiment
-  sentiment: Sentiment;
 }

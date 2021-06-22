@@ -1,8 +1,8 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { AutoSizer, List } from 'react-virtualized';
 
-import { ProjectRoute } from '@/config/routes';
+import { currentTranscriptIDSelector } from '@/ducks/transcript';
 import { Transcript } from '@/models';
 
 import { Container, TranscriptResultsItem } from './components';
@@ -12,8 +12,7 @@ interface TranscriptResultsList {
 }
 
 const TranscriptResultsList = ({ transcriptList }: TranscriptResultsList) => {
-  const { pathname } = useLocation();
-  const activeTranscriptID = pathname.split(`${ProjectRoute.CONVERSATIONS}`)[1]?.replace('/', '').split('?')[0] || null;
+  const currentTranscriptID = useSelector(currentTranscriptIDSelector);
 
   return (
     <Container>
@@ -27,7 +26,7 @@ const TranscriptResultsList = ({ transcriptList }: TranscriptResultsList) => {
               autoHeight
               rowRenderer={({ key, index }) => {
                 const data = transcriptList[index];
-                return <TranscriptResultsItem key={key} data={transcriptList[index]} active={activeTranscriptID === data.id} />;
+                return <TranscriptResultsItem key={key} data={transcriptList[index]} active={currentTranscriptID === data.id} />;
               }}
               height={20}
             />

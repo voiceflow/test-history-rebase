@@ -4,8 +4,9 @@ import Box, { Flex } from '@/components/Box';
 import Dropdown from '@/components/Dropdown';
 import InlineInput, { InputVariant } from '@/components/Input';
 import SvgIcon, { Icon } from '@/components/SvgIcon';
+import { Sentiment, SentimentArray } from '@/models';
+import { SentimentToSVGName } from '@/pages/Conversations/constants';
 
-import { DEFAULT_TAGS } from '../constants';
 import { ReportTagInputContext } from '../context';
 import { InputWrapper, TagWrapper } from './components';
 
@@ -29,6 +30,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({ menu, selectedT
     actions: { onSearch },
   } = React.useContext(ReportTagInputContext)!;
 
+  const selectedTagObjects = allTags.filter((tag) => selectedTags.includes(tag.id));
   const onRemove = (tagID: string) => () => {
     onChange(selectedTags.filter((id) => id !== tagID));
   };
@@ -53,13 +55,16 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({ menu, selectedT
         return (
           <Box ref={ref} fullWidth>
             <InputWrapper ref={containerRef} isActive={isOpen} hasItems={!!selectedTags.length}>
-              {selectedTags.map((tag, i) => {
-                const isIcon = DEFAULT_TAGS.find((item) => item.icon === tag);
-
+              {selectedTagObjects.map((tag, i) => {
+                const isIcon = SentimentArray.includes(tag.id as Sentiment);
                 return (
                   <TagWrapper key={i}>
-                    {isIcon ? <SvgIcon icon={tag as Icon} size={22} /> : allTags.find((item) => item.id === tag)?.label}
-                    <SvgIcon size={9} icon="close" clickable onClick={onRemove(tag)} />
+                    {isIcon ? (
+                      <SvgIcon icon={SentimentToSVGName[tag.id as Sentiment]} size={22} />
+                    ) : (
+                      allTags.find((item) => item.id === tag.id)?.label
+                    )}
+                    <SvgIcon size={9} icon="close" clickable onClick={onRemove(tag.id)} />
                   </TagWrapper>
                 );
               })}

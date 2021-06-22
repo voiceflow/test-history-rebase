@@ -41,7 +41,6 @@ export const loadProjectsByWorkspaceID =
     const dbProjects = await client.api.project.list(workspaceID);
 
     const projects = projectAdapter.mapFromDB(dbProjects);
-
     dispatch(replaceProjects(projects));
 
     return projects;

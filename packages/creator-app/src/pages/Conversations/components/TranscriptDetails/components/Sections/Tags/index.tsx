@@ -1,15 +1,24 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ReportTagInput from '@/components/ReportTagInput';
 import { ClickableText } from '@/components/Text';
 import { ModalType } from '@/constants';
+import { currentSelectedTranscriptSelector, updateTags } from '@/ducks/transcript';
 import { useModals } from '@/hooks';
 
 import { Container, SectionTitle } from '../components';
 
-const Notes = () => {
+const Tags: React.FC = () => {
+  const currentTranscript = useSelector(currentSelectedTranscriptSelector);
+  const dispatch = useDispatch();
+
   const { open: openTagManager } = useModals(ModalType.TAG_MANAGER);
-  const [tags, setTags] = React.useState<string[]>([]);
+  const { tags } = currentTranscript;
+
+  const setTags = (tags: string[]) => {
+    dispatch(updateTags(currentTranscript.id, tags));
+  };
 
   return (
     <Container withBackground>
@@ -17,9 +26,9 @@ const Notes = () => {
         TAGS
         <ClickableText onClick={openTagManager}>Manager</ClickableText>
       </SectionTitle>
-      <ReportTagInput selectedTags={tags} onChange={(value: string[]) => setTags(value)} />
+      <ReportTagInput selectedTags={tags} onChange={setTags} />
     </Container>
   );
 };
 
-export default Notes;
+export default Tags;

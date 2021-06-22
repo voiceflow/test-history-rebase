@@ -1,14 +1,27 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+
+import { currentSelectedTranscriptSelector } from '@/ducks/transcript';
 
 import { Actions, Container, Context, Notes, Tags } from './components';
 
-const TranscriptDetails = () => (
-  <Container>
-    <Context />
-    <Actions />
-    <Tags />
-    <Notes />
-  </Container>
-);
+const TranscriptDetails: React.FC = () => {
+  const currentTranscript = useSelector(currentSelectedTranscriptSelector);
+
+  return (
+    <Container>
+      {currentTranscript ? (
+        <>
+          <Context />
+          <Actions />
+          <Tags />
+          <Notes />
+        </>
+      ) : (
+        'No Data Selected'
+      )}
+    </Container>
+  );
+};
 
 export default TranscriptDetails;

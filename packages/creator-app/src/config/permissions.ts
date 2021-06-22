@@ -42,6 +42,9 @@ export enum Permission {
   // features
   COMMENTING = 'feature.COMMENTING',
   BULK_UPLOAD = 'feature.BULK_UPLOAD',
+
+  // Transcript
+  DELETE_TRANSCRIPT = 'transcripts.DELETE',
 }
 
 const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.GUEST, UserRole.OWNER];
@@ -49,7 +52,7 @@ const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRo
 export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.ADD_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING],
   [Permission.VIEW_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING],
-
+  [Permission.DELETE_TRANSCRIPT]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
   [Permission.INVITE_BY_LINK]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING],
 
   [Permission.CONFIGURE_WORKSPACE]: [UserRole.ADMIN],

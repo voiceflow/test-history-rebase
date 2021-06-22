@@ -25,11 +25,13 @@ export const EMOJI_SVGS: Record<EMOJI_OPTION, Icon> = {
 interface EmojiPickerProps {
   options: EMOJI_OPTION[];
   fanDirection: FAN_DIRECTION;
+  onChange: (option: EMOJI_OPTION) => void;
+  value: EMOJI_OPTION | null;
 }
 
-const EmojiPicker: React.FC<EmojiPickerProps> = ({ fanDirection, options }) => {
+const EmojiPicker: React.FC<EmojiPickerProps> = ({ onChange, value, fanDirection, options }) => {
   const [isHovering, setIsHovering] = React.useState(false);
-  const [currentEmotion, setCurrentEmotion] = React.useState(EMOJI_OPTION.DEFAULT);
+  const [currentEmotion, setCurrentEmotion] = React.useState(value || EMOJI_OPTION.DEFAULT);
   const onHover = useDebouncedCallback(
     100,
     () => {
@@ -37,6 +39,10 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ fanDirection, options }) => {
     },
     []
   );
+
+  React.useEffect(() => {
+    setCurrentEmotion(value || EMOJI_OPTION.DEFAULT);
+  }, [value]);
 
   const onHoverLeave = useDebouncedCallback(
     100,
@@ -49,8 +55,10 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ fanDirection, options }) => {
   const handleSelect = (option: EMOJI_OPTION) => {
     if (currentEmotion === option) {
       setCurrentEmotion(EMOJI_OPTION.DEFAULT);
+      onChange(EMOJI_OPTION.DEFAULT);
     } else {
       setCurrentEmotion(option);
+      onChange(option);
     }
     setIsHovering(false);
   };

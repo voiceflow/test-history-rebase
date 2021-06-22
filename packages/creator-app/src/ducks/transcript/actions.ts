@@ -2,6 +2,13 @@ import { createCRUDActionCreators } from '@/ducks/utils/crud';
 
 import { STATE_KEY } from './constants';
 
-const { add: addTranscript, addMany: addTranscripts, remove: removeTranscript } = createCRUDActionCreators(STATE_KEY);
+const {
+  add: addTranscript,
+  addMany: addTranscripts,
+  remove: removeTranscript,
+  replace: replaceTranscripts,
+  update: updateTranscript,
+  patch: patchTranscript,
+} = createCRUDActionCreators(STATE_KEY);
 
-export { addTranscript, addTranscripts, removeTranscript };
+export { addTranscript, addTranscripts, patchTranscript, removeTranscript, replaceTranscripts, updateTranscript };

@@ -17,6 +17,7 @@ export const ContextSubtext = styled(Box)`
   line-height: 1.54;
   font-size: 13px;
   padding-top: 16px;
+  text-transform: capitalize;
 `;
 
 export const StyledLogo = styled.div`

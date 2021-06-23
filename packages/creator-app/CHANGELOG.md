@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.406.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.406.3...@voiceflow/creator-app@1.406.4) (2021-06-23)
+
+
+### Bug Fixes
+
+* standardize model export (VF-277) ([#3569](https://github.com/voiceflow/creator-app/issues/3569)) ([6f9aa98](https://github.com/voiceflow/creator-app/commit/6f9aa98b65684d5a56d7f5df06517d38a6db6a7e))
+
+
+
+
+
 ## [1.406.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.406.2...@voiceflow/creator-app@1.406.3) (2021-06-23)
 
 **Note:** Version bump only for package @voiceflow/creator-app

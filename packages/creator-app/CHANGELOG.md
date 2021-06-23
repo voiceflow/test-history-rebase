@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.406.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.406.0...@voiceflow/creator-app@1.406.1) (2021-06-23)
+
+
+### Bug Fixes
+
+* replace usage of keyCode and charCode (VF-487) ([#3561](https://github.com/voiceflow/creator-app/issues/3561)) ([b0e900d](https://github.com/voiceflow/creator-app/commit/b0e900d339c4f96a70fa0d400658e2f6bb53de58))
+
+
+
+
+
 # [1.406.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.405.0...@voiceflow/creator-app@1.406.0) (2021-06-22)
 
 

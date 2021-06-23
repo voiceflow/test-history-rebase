@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Dropdown from '@/components/Dropdown';
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import { Permission } from '@/config/permissions';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -10,9 +9,8 @@ import { usePermission } from '@/hooks';
 import { Sentiment, SentimentArray, SystemTag } from '@/models';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
-import { stopPropagation } from '@/utils/dom';
 
-import { Container, InfoSection, ReadStatusDot, StatusIcons } from './components';
+import { Container, InfoSection, OptionButton, ReadStatusDot, StatusIcons } from './components';
 
 interface ResultsItem {
   active?: boolean;
@@ -29,7 +27,6 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
   const [canDeleteTranscript] = usePermission(Permission.DELETE_TRANSCRIPT);
 
   const goToTarget = () => {
-    setMenuOpen(!menuOpen);
     goToTargetTranscript(id);
   };
 
@@ -71,9 +68,7 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
       <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>
         <Dropdown options={options}>
           {(ref, onToggle, isOpen) => {
-            return (
-              <IconButton icon="elipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={stopPropagation(onToggle)} ref={ref} />
-            );
+            return <OptionButton ref={ref} onToggle={onToggle} isOpen={isOpen} setMenuOpen={setMenuOpen} />;
           }}
         </Dropdown>
       </div>

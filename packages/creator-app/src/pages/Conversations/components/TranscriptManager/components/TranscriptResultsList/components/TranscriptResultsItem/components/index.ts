@@ -4,6 +4,7 @@ import { ClassName } from '@/styles/constants';
 import { COLOR_BLUE } from '@/styles/theme/constants';
 
 export { default as InfoSection } from './InfoSection';
+export { default as OptionButton } from './OptionButton';
 export { default as StatusIcons } from './StatusIcons';
 
 const ACTIVE_COLOR = 'rgba(238, 244, 246, 0.85)';

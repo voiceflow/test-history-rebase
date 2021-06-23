@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.406.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.406.1...@voiceflow/creator-app@1.406.2) (2021-06-23)
+
+
+### Bug Fixes
+
+* weird options button behaviour (VF-000) ([#3568](https://github.com/voiceflow/creator-app/issues/3568)) ([4862488](https://github.com/voiceflow/creator-app/commit/48624889e69f65534bc8a4e178c89fef3438ff91))
+
+
+
+
+
 ## [1.406.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.406.0...@voiceflow/creator-app@1.406.1) (2021-06-23)
 
 

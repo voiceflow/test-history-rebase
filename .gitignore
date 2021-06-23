@@ -86,3 +86,6 @@ bundle-report.html
 sonar/
 nyc_coverage*
 certs/*
+
+# Jest
+.jest_cache

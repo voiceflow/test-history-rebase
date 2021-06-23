@@ -160,6 +160,10 @@ jobs:
     steps: # a collection of executable commands
       - checkout
       - vfcommon/install_node_modules
+      - restore_cache:
+          keys:
+            - jest-cache-{{ .Branch }}
+            - jest-cache-master
       - vfcommon/unit_tests:
           step_name: Unit Tests
       - vfcommon/integration_tests:
@@ -169,6 +173,10 @@ jobs:
       - vfcommon/lint_dockerfile
       - vfcommon/dependency_tests:
           step_name: Dependency Tests
+      - save_cache:
+          key: jest-cache-{{ .Branch }}-{{ .BuildNum }}
+          paths:
+            - ~/voiceflow/packages/creator-app/.jest_cache
       # - sonarcloud/scan:
       #     cache_version: 2
 

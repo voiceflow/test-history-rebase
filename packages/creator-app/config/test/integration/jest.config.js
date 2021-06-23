@@ -25,6 +25,7 @@ module.exports = {
   },
   transformIgnorePatterns: ['/node_modules/'],
   coverageDirectory: 'jest_coverage',
+  cacheDirectory: '.jest_cache',
   coveragePathIgnorePatterns: ['/node_modules/', '/^.+\\.svg$/', '/src\\/.+\\.it\\..+$/', '/src\\/.+\\.story\\..+$/'],
   globals: {
     'ts-jest': {

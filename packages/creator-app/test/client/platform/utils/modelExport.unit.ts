@@ -8,6 +8,6 @@ const client = createClient(SERVICE_ENDPOINT);
 
 suite('Platform Client - Utils - ModelExport', ({ expect }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['export', 'exportBlob']);
+    expect(Object.keys(client)).to.have.members(['exportBlob']);
   });
 });

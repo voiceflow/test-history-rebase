@@ -71,8 +71,9 @@ export const exportModel =
       const projectName = Project.activeProjectNameSelector(state)?.replace(/ /g, '_');
 
       if (nlpProvider === NLPProvider.ALEXA) {
-        data = await client.platform.alexa.modelExport.export(versionID, 'ask');
-        download(`${projectName}-alexa-model.json`, data, DataTypes.JSON);
+        data = await client.platform.alexa.modelExport.exportBlob(versionID, 'ask');
+        downloadFromURL(`${projectName}-alexa-model.json`, data);
+        URL.revokeObjectURL(data);
       } else if (nlpProvider === NLPProvider.DIALOGFLOW_ES) {
         data = await client.platform.google.modelExport.exportBlob(versionID, 'dialogflow/es');
         downloadFromURL(`${projectName}-dialogflow-es-model.zip`, data);
@@ -82,8 +83,9 @@ export const exportModel =
         downloadFromURL(`${projectName}-rasa-model.zip`, data);
         URL.revokeObjectURL(data);
       } else if (nlpProvider === NLPProvider.LUIS) {
-        data = await client.platform.general.modelExport.export(versionID, 'luis');
-        download(`${projectName}-general-model.json`, data, DataTypes.JSON);
+        data = await client.platform.general.modelExport.exportBlob(versionID, 'luis');
+        downloadFromURL(`${projectName}-general-model.json`, data);
+        URL.revokeObjectURL(data);
       } else {
         throw new Error(`no provider matched: ${nlpProvider}`);
       }

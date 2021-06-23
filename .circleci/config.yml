@@ -161,9 +161,15 @@ jobs:
       - checkout
       - vfcommon/install_node_modules
       - restore_cache:
+          name: Restoring jest Cache
           keys:
             - jest-cache-{{ .Branch }}
             - jest-cache-master
+      - restore_cache:
+          name: Restoring eslint Cache
+          keys:
+            - eslint-cache-{{ .Branch }}
+            - eslint-cache-master
       - vfcommon/unit_tests:
           step_name: Unit Tests
       - vfcommon/integration_tests:
@@ -174,9 +180,15 @@ jobs:
       - vfcommon/dependency_tests:
           step_name: Dependency Tests
       - save_cache:
+          name: Saving jest Cache
           key: jest-cache-{{ .Branch }}-{{ .BuildNum }}
           paths:
             - ~/voiceflow/packages/creator-app/.jest_cache
+      - save_cache:
+          name: Saving eslint Cache
+          key: eslint-cache-{{ .Branch }}-{{ .BuildNum }}
+          paths:
+            - ~/voiceflow/packages/creator-app/.eslintcache
       # - sonarcloud/scan:
       #     cache_version: 2
 

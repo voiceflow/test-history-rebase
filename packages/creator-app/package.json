@@ -241,7 +241,7 @@
     "lint:css": "stylelint src/**/*.css",
     "lint:dockerfiles": "hadolint --ignore DL3018 ./app.dockerfile ./admin.dockerfile",
     "lint:fix": "yarn lint:js --fix --rule 'react-hooks/exhaustive-deps: off'",
-    "lint:js": "eslint \"src/**/*.{js,ts,jsx,tsx}\"",
+    "lint:js": "eslint \"src/**/*.{js,ts,jsx,tsx}\" --cache --cache-strategy content",
     "lint:quiet": "concurrently -c yellow,blue \"yarn:lint:js --rule 'prettier/prettier: off' --quiet\" \"yarn:lint:css --quiet\" --color",
     "lint:report": "yarn lint:js --format json -o sonar/report.json && yarn lint:css --formatter json --output-file sonar/report_css.json",
     "local": "vfcli mesh connect creator-app",

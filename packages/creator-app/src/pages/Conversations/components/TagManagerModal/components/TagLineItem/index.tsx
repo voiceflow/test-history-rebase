@@ -4,6 +4,8 @@ import ErrorMessage from '@/components/ErrorPages/ErrorMessage';
 import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import Input from '@/components/Input';
 import { toast, ToastCallToAction } from '@/components/Toast';
+import * as ReportTagDuck from '@/ducks/reportTag';
+import { useDispatch } from '@/hooks';
 import { ReportTag } from '@/models';
 import { FadeLeftContainer } from '@/styles/animations';
 
@@ -21,6 +23,7 @@ const TagLineItem: React.FC<TagLineItemProps> = ({ tags, onUndoDelete, onDelete,
   const [tagVal, setTagVal] = React.useState(tag.label);
   const [tagError, setTagError] = React.useState('');
   const allOtherTags = React.useMemo(() => tags.filter(({ id }) => id !== tag.id), [tags]);
+  const updateTag = useDispatch(ReportTagDuck.updateTag);
 
   const onDeleteTag = () => {
     onDelete(tag.id);
@@ -45,9 +48,15 @@ const TagLineItem: React.FC<TagLineItemProps> = ({ tags, onUndoDelete, onDelete,
     }
   };
 
+  const saveUpdate = () => {
+    if (!tagError) {
+      updateTag(tag.id, tagVal);
+    }
+  };
+
   return (
     <Container>
-      <Input error={!!tagError} value={tagVal} onChange={onTagChange} />
+      <Input error={!!tagError} value={tagVal} onChange={onTagChange} onBlur={saveUpdate} />
       {tagError && (
         <FadeLeftContainer>
           <ErrorMessage style={{ marginBottom: '0px', paddingTop: '8px' }}>{tagError}</ErrorMessage>

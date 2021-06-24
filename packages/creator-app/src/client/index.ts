@@ -9,6 +9,7 @@ import integrations from './integrations';
 import platformClients, { getPlatformClient } from './platforms';
 import projectList from './projectList';
 import prototype from './prototype';
+import reportTags from './reportTags';
 import session from './session';
 import socket from './socket';
 import sso from './sso';
@@ -42,6 +43,7 @@ const client = {
   user,
   workspace,
   transcript,
+  reportTags,
 };
 
 export default client;

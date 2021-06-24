@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.407.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.406.5...@voiceflow/creator-app@1.407.0) (2021-06-24)
+
+
+### Features
+
+* set up report tag clients and side effect BE Calls (VF-1028) ([#3572](https://github.com/voiceflow/creator-app/issues/3572)) ([b546c7c](https://github.com/voiceflow/creator-app/commit/b546c7cb027c5bcef0a6799bb9f9e43cc5665631))
+
+
+
+
+
 ## [1.406.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.406.4...@voiceflow/creator-app@1.406.5) (2021-06-23)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -1,11 +1,11 @@
 {
   "name": "@voiceflow/realtime",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "dependencies": {
     "@logux/server": "^0.10.0",
     "@voiceflow/common": "^6.5.1",
     "@voiceflow/logger": "^1.5.6",
-    "@voiceflow/realtime-sdk": "^1.1.0",
+    "@voiceflow/realtime-sdk": "^1.2.0",
     "core-js": "^3.12.1",
     "regenerator-runtime": "^0.13.7"
   },

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.408.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.407.0...@voiceflow/creator-app@1.408.0) (2021-06-24)
+
+
+### Features
+
+* extract admin-app and ui packages ([#3552](https://github.com/voiceflow/creator-app/issues/3552)) ([de58a39](https://github.com/voiceflow/creator-app/commit/de58a39da5ae02927f7272e3cd5164d1ff06e235))
+
+
+
+
+
 # [1.407.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.406.5...@voiceflow/creator-app@1.407.0) (2021-06-24)
 
 

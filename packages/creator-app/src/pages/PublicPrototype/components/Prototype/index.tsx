@@ -1,12 +1,12 @@
 import { BaseRequest } from '@voiceflow/general-types';
+import { IS_IOS, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import { isIOS } from '@/config';
 import { Permission } from '@/config/permissions';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useASR, useCanASR, useDidUpdateEffect, useGuestPermission, useSpeechRecognition, useTeardown } from '@/hooks';
+import { useASR, useCanASR, useGuestPermission, useSpeechRecognition, useTeardown } from '@/hooks';
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPrototype } from '@/pages/Prototype/hooks';
@@ -94,7 +94,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ status,
   const onMute = () => updatePrototype({ muted: !isMuted });
 
   const onStart = () => {
-    if (isIOS) {
+    if (IS_IOS) {
       audio.play(fakeAudio);
     }
     startPrototype();

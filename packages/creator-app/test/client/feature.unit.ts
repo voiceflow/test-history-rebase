@@ -1,5 +1,6 @@
+import { generate } from '@voiceflow/ui';
+
 import client from '@/client/feature';
-import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 

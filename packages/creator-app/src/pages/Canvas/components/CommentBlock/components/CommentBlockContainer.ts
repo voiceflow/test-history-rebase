@@ -1,4 +1,5 @@
-import Flex from '@/components/Flex';
+import { Flex } from '@voiceflow/ui';
+
 import { MemberIcon } from '@/components/User';
 import { styled, units } from '@/hocs';
 import { NODE_ACTIVE_CLASSNAME } from '@/pages/Canvas/constants';

@@ -1,7 +1,7 @@
+import { Input } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import Input from '@/components/Input';
 import { ControlProps } from '@/types';
 import { getTargetValue } from '@/utils/dom';
 

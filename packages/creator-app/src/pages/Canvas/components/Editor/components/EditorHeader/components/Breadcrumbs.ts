@@ -1,4 +1,5 @@
-import { flexStyles } from '@/components/Flex';
+import { flexStyles } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const Breadcrumbs = styled.div.attrs({ fullWidth: true })`

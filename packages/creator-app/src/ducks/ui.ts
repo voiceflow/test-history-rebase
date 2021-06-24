@@ -1,9 +1,9 @@
+import { IS_MAC } from '@voiceflow/ui';
 import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
 import { createSelector } from 'reselect';
 
 import { ControlScheme } from '@/components/Canvas/constants';
-import { isMac } from '@/config';
 import { BlockCategory } from '@/constants';
 import { Action, Reducer, RootReducer } from '@/store/types';
 import { withoutValue } from '@/utils/array';
@@ -33,7 +33,7 @@ export const INITIAL_STATE = {
     openSections: [BlockCategory.RESPONSE],
   },
   local: {},
-  canvasNavigation: isMac ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
+  canvasNavigation: IS_MAC ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
   canvasOnly: false,
 };
 

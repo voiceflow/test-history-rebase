@@ -1,11 +1,12 @@
-import { Flex } from '@/components/Box';
+import { BoxFlex } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 import SpeechBarContainer from '@/pages/Prototype/components/PrototypeSpeechBar/components/Container';
 
 export const DESKTOP_INPUT_CONTAINER_HEIGHT = 80;
 export const MOBILE_INPUT_CONTAINER_HEIGHT = 60;
 
-const InputContainer = styled(Flex)<{ isMobile?: boolean }>`
+const InputContainer = styled(BoxFlex)<{ isMobile?: boolean }>`
   height: ${DESKTOP_INPUT_CONTAINER_HEIGHT}px;
   justify-content: center;
   border-top: 1px solid #dfe3ed;

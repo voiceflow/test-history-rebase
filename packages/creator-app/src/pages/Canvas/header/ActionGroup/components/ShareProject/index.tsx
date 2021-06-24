@@ -1,8 +1,7 @@
+import { Button, ButtonVariant, stopImmediatePropagation, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import Button, { ButtonVariant } from '@/components/Button';
 import { ModalFooter } from '@/components/LegacyModal';
-import { toast } from '@/components/Toast';
 import { Permission } from '@/config/permissions';
 import { PlatformType, UserRole } from '@/constants';
 import * as Project from '@/ducks/project';
@@ -14,7 +13,6 @@ import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
-import { stopImmediatePropagation } from '@/utils/dom';
 import { getPlatformValue } from '@/utils/platform';
 
 import PopupCloseIcon from '../PopupCloseIcon';
@@ -62,15 +60,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
           Share Prototype
         </Button>
       ) : (
-        <Button
-          id={Identifier.SHARE_BUTTON}
-          disabled={isViewer}
-          preventFocusStyle
-          variant={ButtonVariant.QUATERNARY}
-          large
-          onClick={onOpen}
-          isActive={open}
-        >
+        <Button id={Identifier.SHARE_BUTTON} disabled={isViewer} variant={ButtonVariant.QUATERNARY} onClick={onOpen} isActive={open}>
           Share
         </Button>
       )}

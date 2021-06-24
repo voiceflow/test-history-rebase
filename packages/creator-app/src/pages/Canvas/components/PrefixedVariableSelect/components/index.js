@@ -1,5 +1,5 @@
-import { FlexApart } from '@/components/Flex';
-import { SearchInput } from '@/components/Select/components';
+import { FlexApart, SearchInput } from '@voiceflow/ui';
+
 import VariableSelect from '@/components/VariableSelect';
 import { styled } from '@/hocs';
 
@@ -9,8 +9,8 @@ export const Select = styled(VariableSelect)`
   flex: 1;
 
   ${SearchInput} {
-    padding-left: 90px;
     padding-bottom: 12px;
+    padding-left: 90px;
   }
 `;
 

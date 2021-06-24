@@ -1,7 +1,6 @@
 {
   "name": "@voiceflow/realtime",
   "version": "1.1.0",
-  "type": "module",
   "dependencies": {
     "@logux/server": "^0.10.0",
     "@voiceflow/common": "^6.5.1",
@@ -9,6 +8,9 @@
     "@voiceflow/realtime-sdk": "^1.1.0",
     "core-js": "^3.12.1",
     "regenerator-runtime": "^0.13.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   },
   "license": "UNLICENSED",
   "private": true,
@@ -28,7 +30,5 @@
     "test:integration": "exit 0",
     "test:unit": "exit 0"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.7"
-  }
+  "type": "module"
 }

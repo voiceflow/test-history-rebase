@@ -1,12 +1,12 @@
 import composeRefs from '@seznam/compose-react-refs';
+import { KeyName, useCache, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { Node, Transforms } from 'slate';
 import { Editable, RenderElementProps, RenderLeafProps, Slate } from 'slate-react';
 
-import { KeyName } from '@/constants';
 import { isNodeEditLockedSelector } from '@/ducks/realtime';
 import { compose, connect } from '@/hocs';
-import { useCache, useDebouncedCallback, useDidUpdateEffect } from '@/hooks';
+import { useDebouncedCallback } from '@/hooks';
 import { Markup } from '@/models';
 import { useBlockAPI } from '@/pages/Canvas/components/Block/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';

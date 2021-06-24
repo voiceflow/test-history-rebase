@@ -1,4 +1,5 @@
-import { flexApartStyles } from '@/components/Flex';
+import { flexApartStyles } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 import { sectionStyles } from '@/pages/Canvas/components/Editor/styles';
 

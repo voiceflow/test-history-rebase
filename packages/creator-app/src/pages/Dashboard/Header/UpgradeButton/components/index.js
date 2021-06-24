@@ -1,5 +1,5 @@
-import Flex from '@/components/Flex';
-import IconButton from '@/components/IconButton';
+import { Flex, IconButton } from '@voiceflow/ui';
+
 import { styled, transition, units } from '@/hocs';
 
 export const UpgradeText = styled.div`

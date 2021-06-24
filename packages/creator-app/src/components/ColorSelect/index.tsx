@@ -1,8 +1,8 @@
+import { Portal } from '@voiceflow/ui';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
 import ColorPicker from '@/components/ColorPicker';
-import Portal from '@/components/Portal';
 import { useDismissable } from '@/hooks';
 
 import { ColorPreview } from './components';

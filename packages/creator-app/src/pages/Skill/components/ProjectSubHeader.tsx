@@ -1,6 +1,6 @@
+import { Flex } from '@voiceflow/ui';
 import React from 'react';
 
-import Flex from '@/components/Flex';
 import Tabs from '@/components/Tabs';
 import { FeatureFlag } from '@/config/features';
 import * as Router from '@/ducks/router';

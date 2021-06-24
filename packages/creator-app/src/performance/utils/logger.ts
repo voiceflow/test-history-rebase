@@ -1,5 +1,5 @@
-import Logger from '@/utils/logger';
+import { logger } from '@voiceflow/ui';
 
-const logger = Logger.child('performance');
+const log = logger.child('performance');
 
-export default logger;
+export default log;

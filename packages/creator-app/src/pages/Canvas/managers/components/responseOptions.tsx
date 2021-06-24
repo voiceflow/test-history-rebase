@@ -1,10 +1,8 @@
-/* eslint-disable sonarjs/no-identical-functions */
 import { AnyButton, ButtonsLayout } from '@voiceflow/general-types';
+import { OptionsMenuOption, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { MenuOption } from '@/components/NestedMenu/OptionsMenu';
-import { toast } from '@/components/Toast';
 import { PlatformType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import { NodeData } from '@/models/NodeData';
@@ -24,7 +22,7 @@ interface NodeInterface<T> {
   pushToPath?: PushToPath;
 }
 
-type Option = [MenuOption | null, false | React.ReactNode];
+type Option = [OptionsMenuOption | null, false | React.ReactNode];
 
 export const useButtonOption = ({ data, onChange, pushToPath }: NodeInterface<{ buttons: Nullable<AnyButton[]> }>): Option => {
   const hasButtons = !!data.buttons;
@@ -62,7 +60,7 @@ const buttonLayoutLabel = {
   [ButtonsLayout.CAROUSEL]: 'Carousel',
 };
 
-export const useButtonLayoutOption = (): MenuOption => {
+export const useButtonLayoutOption = (): OptionsMenuOption => {
   const buttons = useSelector(Prototype.prototypeButtonsSelector) ?? ButtonsLayout.STACKED;
   const dispatch = useDispatch();
 

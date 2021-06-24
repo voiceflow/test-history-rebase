@@ -1,12 +1,11 @@
+import { Input, Portal, preventDefault } from '@voiceflow/ui';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Manager, Popper, Reference } from 'react-popper';
 import { Editor } from 'slate';
 
-import Input from '@/components/Input';
-import Portal from '@/components/Portal';
 import { useDismissable } from '@/hooks/dismiss';
-import { preventDefault, withEnterPress } from '@/utils/dom';
+import { withEnterPress } from '@/utils/dom';
 
 import MarkupSlateEditor from '../../MarkupSlateEditor';
 import IconButton from '../IconButton';

@@ -1,5 +1,6 @@
+import { generate } from '@voiceflow/ui';
+
 import client, { ANALYTICS_PATH } from '@/client/analytics';
-import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 

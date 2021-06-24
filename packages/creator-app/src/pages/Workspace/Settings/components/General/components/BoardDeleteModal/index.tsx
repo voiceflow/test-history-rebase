@@ -1,9 +1,7 @@
+import { Input, LegacyButton, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
-import Input from '@/components/Input';
-import Button from '@/components/LegacyButton';
 import Modal, { ModalBody, ModalHeader } from '@/components/LegacyModal';
-import { Spinner } from '@/components/Spinner';
 import { ModalType } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -57,9 +55,9 @@ export const BoardDeleteModal: React.FC<BoardDeleteModalProps & ConnectedBoardDe
             <label>Workspace name</label>
             <Input name="input" onChange={onNameChange} value={name} placeholder="Workspace Name" />
             <div className="mt-3 mb-2 text-center">
-              <Button isBtn isPrimary disabled={name.trim().toLowerCase() !== workspace.name.trim().toLowerCase()} onClick={onDeleteWorkspace}>
+              <LegacyButton isBtn isPrimary disabled={name.trim().toLowerCase() !== workspace.name.trim().toLowerCase()} onClick={onDeleteWorkspace}>
                 Delete forever
-              </Button>
+              </LegacyButton>
             </div>
           </div>
         )}

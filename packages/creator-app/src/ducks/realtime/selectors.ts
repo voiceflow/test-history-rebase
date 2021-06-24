@@ -1,10 +1,10 @@
+import { getAlternativeColor } from '@voiceflow/ui';
 import { createSelector } from 'reselect';
 
 import { creatorDiagramIDSelector } from '@/ducks/creator/diagram/selectors';
 import * as Session from '@/ducks/session';
 import { createRootSelector } from '@/ducks/utils';
 import * as Workspace from '@/ducks/workspace';
-import { getAlternativeColor } from '@/utils/colors';
 
 import { LockType, ResourceType, STATE_KEY } from './constants';
 import { AnyNodeLock } from './types';

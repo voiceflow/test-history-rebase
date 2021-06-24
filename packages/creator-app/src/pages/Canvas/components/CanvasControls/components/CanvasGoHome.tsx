@@ -1,6 +1,6 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import SvgIcon from '@/components/SvgIcon';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';

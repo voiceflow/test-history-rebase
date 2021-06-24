@@ -1,6 +1,6 @@
+import { Spinner } from '@voiceflow/ui';
 import React from 'react';
 
-import { Spinner } from '@/components/Spinner';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 

@@ -1,6 +1,6 @@
-import Box from '@/components/Box';
+import { Box, changeColorShade } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs';
-import { changeColorShade } from '@/utils/colors';
 
 const ButtonWrapper = styled(Box)<{ color?: string; disabled?: boolean; isMobile?: boolean }>`
   ${transition('color')}

@@ -46,7 +46,7 @@ module.exports = {
         project: path.join(__dirname, 'tsconfig.json'),
       },
       webpack: {
-        config: path.join(__dirname, 'config/webpack/creator/lint'),
+        config: path.join(__dirname, 'config/webpack/lint'),
       },
     },
   },
@@ -60,7 +60,18 @@ module.exports = {
       },
     },
     {
-      files: ['*.story.*', '*.unit.*', '*.it.*', 'src/utils/testing/**/*', 'test/**/*', 'cypress/**/*', 'config/**/*', '*.config.js', '.*rc.js'],
+      files: [
+        '*.story.*',
+        '*.unit.*',
+        '*.it.*',
+        'src/utils/testing/**/*',
+        'test/**/*',
+        'cypress/**/*',
+        'config/**/*',
+        '*.config.mjs',
+        '*.config.js',
+        '.*rc.js',
+      ],
       extends: ['@voiceflow/eslint-config/utility'],
       rules: {
         // off

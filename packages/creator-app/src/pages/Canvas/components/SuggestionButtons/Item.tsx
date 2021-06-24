@@ -1,9 +1,8 @@
 import { IntentButton } from '@voiceflow/general-types';
+import { Badge, Box } from '@voiceflow/ui';
 import numberToWords from 'number-to-words/src';
 import React from 'react';
 
-import Badge from '@/components/Badge';
-import Box from '@/components/Box';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import IntentSelect from '@/components/IntentSelect';
 import { SectionToggleVariant } from '@/components/Section';

@@ -1,4 +1,5 @@
-import { flexApartStyles } from '@/components/Flex';
+import { flexApartStyles } from '@voiceflow/ui';
+
 import { styled, units } from '@/hocs';
 
 import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_NAME, sectionStyles } from '../../../styles';

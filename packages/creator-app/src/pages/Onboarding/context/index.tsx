@@ -1,11 +1,10 @@
+import { ButtonVariant, toast } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
-import { ButtonVariant } from '@/components/Button/constants';
-import { toast } from '@/components/Toast';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
 import { BillingPeriod, ModalType, PlanType, PlatformType, UserRole } from '@/constants';
 import * as Account from '@/ducks/account';

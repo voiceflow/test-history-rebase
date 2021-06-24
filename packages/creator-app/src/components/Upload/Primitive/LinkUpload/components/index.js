@@ -1,10 +1,11 @@
-import SvgIcon from '@/components/SvgIcon';
+import { SvgIcon } from '@voiceflow/ui';
+
 import { styled, transition } from '@/hocs';
 
 export const ErrorMessage = styled.div`
+  position: absolute;
   margin-top: 5px;
   color: #e91e63;
-  position: absolute;
   font-size: 13px;
 `;
 

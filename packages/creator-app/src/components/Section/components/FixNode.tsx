@@ -1,7 +1,6 @@
+import { Icon, SvgIcon } from '@voiceflow/ui';
 import _isString from 'lodash/isString';
 import React from 'react';
-
-import SvgIcon, { Icon } from '@/components/SvgIcon';
 
 import PrefixContainer from './PrefixContainer';
 

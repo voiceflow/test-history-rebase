@@ -1,6 +1,6 @@
+import { SvgIcon } from '@voiceflow/ui';
 import { mapProps } from 'recompose';
 
-import SvgIcon from '@/components/SvgIcon';
 import { css, styled, transition, units } from '@/hocs';
 
 const HeaderIcon = styled(mapProps(({ rotate, ...props }) => props)(SvgIcon))`

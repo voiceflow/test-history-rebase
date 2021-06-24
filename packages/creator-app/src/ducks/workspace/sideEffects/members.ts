@@ -1,7 +1,7 @@
+import { toast } from '@voiceflow/ui';
 import { batch } from 'react-redux';
 
 import client from '@/client';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { EDITOR_SEAT_ROLES, UserRole } from '@/constants';
 import * as Modal from '@/ducks/modal';

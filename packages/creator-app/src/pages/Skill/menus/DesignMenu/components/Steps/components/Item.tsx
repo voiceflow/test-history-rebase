@@ -1,9 +1,9 @@
+import { Icon, SvgIcon } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import SvgIcon, { Icon } from '@/components/SvgIcon';
 import { BlockType, DragItem } from '@/constants';
 import { useEnableDisable, useEventualEngine, useSetup } from '@/hooks';
 import { NodeData } from '@/models';

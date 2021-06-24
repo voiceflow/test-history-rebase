@@ -1,15 +1,13 @@
 import { BaseRequest, RequestType } from '@voiceflow/general-types';
+import { BoxFlex, hexToRGBA, preventDefault, toRGBAString } from '@voiceflow/ui';
 import React from 'react';
 import SimpleBar from 'simplebar-react';
 
-import { Flex } from '@/components/Box';
 import { styled, transition } from '@/hocs';
 import perf, { PerfAction } from '@/performance';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 import { Color } from '@/types';
-import { hexToRGBA, toRGBAString } from '@/utils/colors';
-import { preventDefault } from '@/utils/dom';
 
 import { Interaction } from '../../../types';
 
@@ -126,8 +124,8 @@ export const StickyInteractions: React.FC<InteractionsProps> = (props) => {
 
 export const InlineInteractions: React.FC<InteractionsProps> = (props) => {
   return (
-    <Flex flexWrap="wrap-reverse" pt={8} ml={40}>
+    <BoxFlex flexWrap="wrap-reverse" pt={8} ml={40}>
       <Interactions {...props} />
-    </Flex>
+    </BoxFlex>
   );
 };

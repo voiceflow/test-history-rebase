@@ -1,14 +1,12 @@
+import { Box, Menu, MenuItem, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { textAndDialogGraphic, textAndDialogGraphicInactive, voiceAndVisualsGraphic, voiceAndVisualsGraphicInactive } from '@/assets';
-import Box from '@/components/Box';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
-import Menu, { MenuItem } from '@/components/Menu';
 import { PlatformType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeLayout } from '@/ducks/prototype/types';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect } from '@/hooks';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';

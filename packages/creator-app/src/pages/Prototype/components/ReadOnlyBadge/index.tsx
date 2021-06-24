@@ -1,6 +1,6 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Icon from '@/components/SvgIcon';
 import { useEnableDisable } from '@/hooks';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -31,7 +31,7 @@ const ReadOnlyBadge: React.FC = () => {
   return isPrototypingMode ? (
     <Container runBlink={blinking}>
       <FadeLeftContainer>
-        <Icon icon="eye" />
+        <SvgIcon icon="eye" />
         <span>Read only</span>
       </FadeLeftContainer>
     </Container>

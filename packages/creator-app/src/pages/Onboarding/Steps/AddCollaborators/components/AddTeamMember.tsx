@@ -1,8 +1,7 @@
+import { ClickableText, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import InvalidEmailError from '@/components/InvalidEmailError';
-import SvgIcon from '@/components/SvgIcon';
-import { ClickableText } from '@/components/Text';
 import { UserRole } from '@/constants';
 import { CollaboratorType } from '@/pages/Onboarding/types';
 

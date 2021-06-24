@@ -1,7 +1,6 @@
+import { FullSpinner, Spinner } from '@voiceflow/ui';
 import isFunction from 'lodash/isFunction';
 import React from 'react';
-
-import { FullSpinner, Spinner } from '@/components/Spinner';
 
 export type LoadingGateProps = {
   full?: boolean;

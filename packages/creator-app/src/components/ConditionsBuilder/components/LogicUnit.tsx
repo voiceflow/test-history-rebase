@@ -1,7 +1,7 @@
 import { ExpressionTypeV2 } from '@voiceflow/general-types';
+import { BoxFlexAlignStart } from '@voiceflow/ui';
 import React from 'react';
 
-import { FlexAlignStart } from '@/components/Box';
 import { ExpressionV2 } from '@/models';
 
 import { BaseLogicType, LogicUnitDataType } from '../types';
@@ -23,12 +23,12 @@ const LogicUnit: React.FC<LogicUnitProps> = ({ baseLogicType, updateBaseType, ex
   const label = firstItem ? 'IF' : baseLogicType?.toUpperCase();
 
   return (
-    <FlexAlignStart mb={16}>
+    <BoxFlexAlignStart mb={16}>
       <ConditionLabel actionable={!firstItem} onChange={updateBaseType}>
         {label}
       </ConditionLabel>
       <ConditionDataSelect isLogicGroup={isLogicGroup} expression={expression} onChange={onDataChange} onDelete={onDelete} />
-    </FlexAlignStart>
+    </BoxFlexAlignStart>
   );
 };
 

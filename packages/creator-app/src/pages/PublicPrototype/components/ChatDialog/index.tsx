@@ -1,8 +1,7 @@
 import { BaseRequest, ButtonsLayout } from '@voiceflow/general-types';
+import { Box, BoxFlex, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import Box, { Flex } from '@/components/Box';
-import Text from '@/components/Text';
 import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
 import { useCanASR, useTheme } from '@/hooks';
 import { ChatDisplay } from '@/pages/Prototype/components';
@@ -131,11 +130,11 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
             {layout === PrototypeLayout.VOICE_DIALOG && (
               <>
                 {testEnded ? (
-                  <Flex flex={1}>
+                  <BoxFlex flex={1}>
                     <Text fontSize={15} color={theme.colors.tertiary}>
                       This conversation has ended
                     </Text>
-                  </Flex>
+                  </BoxFlex>
                 ) : (
                   <SpeechBarContainer>
                     {canUseASR ? (

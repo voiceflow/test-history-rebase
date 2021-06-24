@@ -1,4 +1,5 @@
 /* eslint-disable no-shadow */
+import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
@@ -11,7 +12,6 @@ import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import NoProducts from '@/pages/Canvas/components/NoProducts';
 import ProductTile from '@/pages/Canvas/components/ProductTile';
 import { FadeLeftContainer } from '@/styles/animations';
-import { stopPropagation } from '@/utils/dom';
 
 import { AllProductsLink } from './components';
 import SelectedProduct from './SelectedProduct';

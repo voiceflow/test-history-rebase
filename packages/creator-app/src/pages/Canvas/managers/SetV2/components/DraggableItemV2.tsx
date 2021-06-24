@@ -1,17 +1,14 @@
 import { ExpressionTypeV2 } from '@voiceflow/general-types';
+import { Badge, Box, BoxFlex, Input, Text, useDidUpdateEffect } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
-import Badge from '@/components/Badge';
-import Box, { Flex } from '@/components/Box';
 import { ConditionExpressionTooltip } from '@/components/ConditionsBuilder/components';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
-import Input from '@/components/Input';
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant } from '@/components/Section';
-import Text from '@/components/Text';
 import VariablesInput from '@/components/VariablesInput';
-import { useDidUpdateEffect, useExpressionValidation } from '@/hooks';
+import { useExpressionValidation } from '@/hooks';
 import { NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -88,10 +85,10 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
             <FormControl
               contentBottomUnits={0}
               label={
-                <Flex fullWidth>
+                <BoxFlex fullWidth>
                   Value Type
                   <ConditionExpressionTooltip />
-                </Flex>
+                </BoxFlex>
               }
             >
               <RadioGroup

@@ -1,10 +1,7 @@
+import { Button, ButtonVariant, FlexApart, NetworkError, toast } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import { NetworkError } from '@/client/fetch';
-import Button, { ButtonVariant } from '@/components/Button';
-import { FlexApart } from '@/components/Flex';
-import { toast } from '@/components/Toast';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';

@@ -1,15 +1,15 @@
+import { preventDefault, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
-import { useDidUpdateEffect, useFeature, useTrackingEvents } from '@/hooks';
+import { useFeature, useTrackingEvents } from '@/hooks';
 import { NodeData } from '@/models';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { getSections, MenuStep } from '@/pages/Skill/menus/DesignMenu/components/Steps/constants';
 import { Identifier } from '@/styles/constants';
-import { preventDefault } from '@/utils/dom';
 
 import { Container, Select } from './components';
 

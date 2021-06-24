@@ -1,0 +1,38 @@
+{
+  "extends": "@voiceflow/tsconfig",
+  "compilerOptions": {
+    "jsx": "react",
+    "allowJs": true,
+    "baseUrl": "..",
+    "rootDirs": [
+      "src",
+      "../ui/src"
+    ],
+    "paths": {
+      "@voiceflow/ui": [
+        "ui/src"
+      ],
+      "@/*": [
+        "admin-app/src/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "types": [
+      "node"
+    ]
+  },
+  "compileOnSave": false,
+  "include": [
+    "src/**/*",
+    "test/**/*",
+    "config/**/*",
+    "typings/**/*.d.ts",
+  ],
+  "exclude": [
+    "node_modules/**",
+    "build/**"
+  ]
+}

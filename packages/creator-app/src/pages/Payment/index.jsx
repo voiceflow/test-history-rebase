@@ -1,6 +1,6 @@
+import { Spinner } from '@voiceflow/ui';
 import React from 'react';
 
-import { Spinner } from '@/components/Spinner';
 import { compose } from '@/utils/functional';
 
 import Checkout from './Checkout';

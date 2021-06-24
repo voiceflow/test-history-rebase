@@ -1,7 +1,7 @@
 import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { useDidUpdateEffect, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
-import { useDidUpdateEffect, useToggle } from '@/hooks';
 import { STROKE_DEFAULT_COLOR } from '@/pages/Canvas/components/Link';
 import { EngineContext, IsStraightLinksContext, PortEntityContext } from '@/pages/Canvas/contexts';
 import { PathPoints } from '@/types';

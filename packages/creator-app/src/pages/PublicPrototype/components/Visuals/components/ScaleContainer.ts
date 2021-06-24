@@ -1,4 +1,5 @@
-import Box from '@/components/Box';
+import { Box } from '@voiceflow/ui';
+
 import { styled, transition } from '@/hocs';
 
 type ScaleContainerProps = {

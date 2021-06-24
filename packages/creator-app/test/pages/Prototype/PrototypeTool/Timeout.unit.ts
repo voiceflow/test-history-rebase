@@ -1,6 +1,4 @@
-/* eslint-disable dot-notation, @typescript-eslint/ban-ts-comment */
-
-import './utils/mockAudio';
+/* eslint-disable dot-notation */
 
 import suite from '@/../test/_suite';
 import TimeoutController from '@/pages/Prototype/PrototypeTool/Timeout';

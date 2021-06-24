@@ -1,6 +1,6 @@
+import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
-import Portal from '@/components/Portal';
 import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import { LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';

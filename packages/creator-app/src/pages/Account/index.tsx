@@ -1,10 +1,10 @@
 import './Account.css';
 
+import { LegacyButton } from '@voiceflow/ui';
 import moment from 'moment';
 import React, { Component } from 'react';
 
 import { UserMenu } from '@/components/Header/components';
-import Button from '@/components/LegacyButton';
 import Page from '@/components/Page';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import * as Account from '@/ducks/account';
@@ -71,44 +71,44 @@ class AccountPage extends Component<ConnectedAccountPageProps, AccountPageState>
   amazonButton = () => {
     if (!this.state.amazonStatus) {
       return (
-        <Button isPrimary disabled>
+        <LegacyButton isPrimary disabled>
           loading...
-        </Button>
+        </LegacyButton>
       );
     }
     if (!this.props.user.amazon) {
       return (
-        <Button isPrimary disabled>
+        <LegacyButton isPrimary disabled>
           Unlinked
-        </Button>
+        </LegacyButton>
       );
     }
     return (
-      <Button isPrimary onClick={this.resetAmazon}>
+      <LegacyButton isPrimary onClick={this.resetAmazon}>
         Reset
-      </Button>
+      </LegacyButton>
     );
   };
 
   googleButton = () => {
     if (!this.state.googleStatus) {
       return (
-        <Button isPrimary disabled>
+        <LegacyButton isPrimary disabled>
           loading...
-        </Button>
+        </LegacyButton>
       );
     }
     if (!this.props.user.google) {
       return (
-        <Button isPrimary disabled>
+        <LegacyButton isPrimary disabled>
           Unlinked
-        </Button>
+        </LegacyButton>
       );
     }
     return (
-      <Button isPrimary onClick={this.resetGoogle}>
+      <LegacyButton isPrimary onClick={this.resetGoogle}>
         Reset
-      </Button>
+      </LegacyButton>
     );
   };
 

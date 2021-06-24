@@ -1,0 +1,107 @@
+import { Input, LegacyButton } from '@voiceflow/ui';
+import _get from 'lodash/get';
+import queryString from 'query-string';
+import React, { useEffect, useState } from 'react';
+import { Form, FormGroup } from 'reactstrap';
+
+import { errorIcon, wordmark } from '@/assets';
+import * as AccountV2 from '@/ducks/accountV2';
+import { connect } from '@/hocs';
+
+import { AuthBox } from './AuthBoxes';
+import AuthenticationContainer from './AuthenticationWrapper';
+import SocialLogin from './SocialLogin';
+
+const LoginForm = ({ login, location }) => {
+  const query = queryString.parse(location.search);
+  const [loginError, setLoginError] = useState(null);
+  const [email, setEmail] = useState(query.email ? query.email : '');
+  const [password, setPassword] = useState('');
+  let timeout;
+
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    login({
+      email,
+      password,
+    }).catch((err) => {
+      const errText = _get(err, ['body', 'data']) || err;
+
+      setLoginError(errText);
+    });
+    return false;
+  };
+
+  useEffect(() => {
+    timeout = setTimeout(() => {
+      setLoginError(false);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  });
+
+  return (
+    <AuthenticationContainer>
+      <AuthBox>
+        <Form onSubmit={loginSubmit}>
+          <div className="logo">
+            <img className="auth-logo" src={wordmark} alt="logo" />
+            <div className="admin-icon">Internal</div>
+          </div>
+          <div className="auth-form-wrapper">
+            <FormGroup>
+              <Input
+                className="form-bg"
+                type="email"
+                name="email"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                required
+                minLength="6"
+                value={email}
+              />
+            </FormGroup>
+            <FormGroup className="passwordInput">
+              <Input
+                className="form-bg"
+                type="password"
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                minLength="8"
+                value={password}
+              />
+            </FormGroup>
+            <div className="row">
+              <div className="col-8 auth__link">
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <a href="https://creator.voiceflow.com">Back to voiceflow</a>
+              </div>
+              <div className="col-4">
+                <LegacyButton isPrimary isBlock type="submit">
+                  Log in
+                </LegacyButton>
+              </div>
+            </div>
+          </div>
+        </Form>
+        <SocialLogin entryText="Or sign in with" light />
+        {loginError && (
+          <div className="errorContainer row">
+            <div className="col-1">
+              <img src={errorIcon} alt="" />
+            </div>
+            <div className="col-11">{loginError}</div>
+          </div>
+        )}
+      </AuthBox>
+    </AuthenticationContainer>
+  );
+};
+
+const mapDispatchToProps = {
+  login: AccountV2.login,
+};
+
+export default connect(null, mapDispatchToProps)(LoginForm);

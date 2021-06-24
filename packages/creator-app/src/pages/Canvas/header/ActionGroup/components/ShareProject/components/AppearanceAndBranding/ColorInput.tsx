@@ -1,14 +1,13 @@
+import { hexToRGBA, Input, removeHashFromHex, rgbaToHex } from '@voiceflow/ui';
 import React from 'react';
 import { RGBColor } from 'react-color';
 
 import { InputAction } from '@/components/ColorPicker/components';
 import ColorSelect from '@/components/ColorSelect';
-import Input from '@/components/Input';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
-import { hexToRGBA, removeHash, rgbaToHex } from '@/utils/colors';
 import { withEnterPress } from '@/utils/dom';
 
 const getHexColor = (color: RGBColor) => {
@@ -23,7 +22,7 @@ type ColorInputProps = {
 };
 
 const ColorInput: React.FC<ColorInputProps & ConnectedColorInputProps> = ({ isAllowed, disabledBorderColor, brandColor, updateSettings }) => {
-  const [hex, setHex] = React.useState(() => removeHash(brandColor));
+  const [hex, setHex] = React.useState(() => removeHashFromHex(brandColor));
   const [color, setColor] = React.useState(() => hexToRGBA(brandColor));
 
   const onSubmitHexColor = () => {
@@ -34,12 +33,12 @@ const ColorInput: React.FC<ColorInputProps & ConnectedColorInputProps> = ({ isAl
       setHex(upperCaseHex);
       updateSettings({ brandColor: `#${upperCaseHex}` });
     } catch {
-      setHex(removeHash(getHexColor(color)).toUpperCase());
+      setHex(removeHashFromHex(getHexColor(color)).toUpperCase());
     }
   };
 
   const onSubmitColor = (nextColor: RGBColor) => {
-    const nextHex = removeHash(getHexColor(nextColor)).toUpperCase();
+    const nextHex = removeHashFromHex(getHexColor(nextColor)).toUpperCase();
 
     setHex(nextHex);
     setColor({ a: 1, ...nextColor });
@@ -51,7 +50,7 @@ const ColorInput: React.FC<ColorInputProps & ConnectedColorInputProps> = ({ isAl
       id={Identifier.BRANDING_COLOR_INPUT}
       value={hex}
       onBlur={() => onSubmitHexColor()}
-      onChange={({ currentTarget: { value } }) => setHex(removeHash(value).substr(0, 6))}
+      onChange={({ currentTarget: { value } }) => setHex(removeHashFromHex(value).substr(0, 6))}
       leftAction={<InputAction>HEX</InputAction>}
       rightAction={
         <ColorSelect

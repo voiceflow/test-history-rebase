@@ -1,6 +1,6 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import SvgIcon from '@/components/SvgIcon';
 import { Sentiment } from '@/models';
 import { SentimentToSVGName } from '@/pages/Conversations/constants';
 import { ClassName } from '@/styles/constants';

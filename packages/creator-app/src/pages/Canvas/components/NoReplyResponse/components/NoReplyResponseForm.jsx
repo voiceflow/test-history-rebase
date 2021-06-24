@@ -1,7 +1,7 @@
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 import { createSelector } from 'reselect';
 
-import Box from '@/components/Box';
 import Section from '@/components/Section';
 import SSMLWithVars from '@/components/SSMLWithVars';
 import AudioUpload from '@/components/Upload/AudioUpload';

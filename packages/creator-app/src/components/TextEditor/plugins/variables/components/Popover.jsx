@@ -1,14 +1,10 @@
+import { Input, KeyName, LegacyButton, MenuContainer, Portal, preventDefault, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import Input from '@/components/Input';
-import Button from '@/components/LegacyButton';
-import { MenuContainer } from '@/components/Menu';
-import Portal from '@/components/Portal';
-import { KeyName } from '@/constants';
 import { TextEditorVariablesPopoverConsumer } from '@/contexts';
 import { css, styled } from '@/hocs';
 import { FadeDownDelayedContainer } from '@/styles/animations';
-import { preventDefault, stopPropagation, withKeyPress } from '@/utils/dom';
+import { withKeyPress } from '@/utils/dom';
 
 const PopoverContainer = styled.div`
   z-index: 1000;
@@ -39,7 +35,6 @@ const Hr = styled.hr`
   margin: 0;
 `;
 
-// eslint-disable-next-line react/display-name
 export default React.forwardRef(
   (
     {
@@ -75,7 +70,7 @@ export default React.forwardRef(
                         onMouseDown={onFocusInput}
                       />
 
-                      <Button
+                      <LegacyButton
                         isBtn
                         onClick={preventDefault(onCreateMention)}
                         disabled={!variableName || !!variablesMap[variableName]}
@@ -84,7 +79,7 @@ export default React.forwardRef(
                         onMouseDown={preventDefault()}
                       >
                         Create
-                      </Button>
+                      </LegacyButton>
                     </Header>
 
                     <Hr />

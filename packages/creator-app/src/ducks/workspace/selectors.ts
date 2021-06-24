@@ -1,3 +1,4 @@
+import { getAlternativeColor } from '@voiceflow/ui';
 import { createSelector } from 'reselect';
 
 import { hasRolePermission, Permission } from '@/config/permissions';
@@ -7,7 +8,6 @@ import * as Session from '@/ducks/session';
 import * as CRUD from '@/ducks/utils/crud';
 import { Workspace } from '@/models';
 import { NonNullableRecord } from '@/types';
-import { getAlternativeColor } from '@/utils/colors';
 
 import { STATE_KEY, TEMPLATES_ADMIN_ID, TEMPLATES_EDITORS_ID } from './constants';
 

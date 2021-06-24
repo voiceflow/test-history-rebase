@@ -1,11 +1,9 @@
 /* eslint-disable no-shadow */
+import { Button, Input, KeyName, SvgIcon } from '@voiceflow/ui';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-import Button from '@/components/Button';
-import Input from '@/components/Input';
-import SvgIcon from '@/components/SvgIcon';
-import { DEFAULT_PRODUCT_PHRASE, KeyName } from '@/constants';
+import { DEFAULT_PRODUCT_PHRASE } from '@/constants';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { connect } from '@/hocs';
 

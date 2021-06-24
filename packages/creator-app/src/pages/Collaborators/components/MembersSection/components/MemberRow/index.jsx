@@ -1,7 +1,6 @@
+import { Flex, Menu } from '@voiceflow/ui';
 import React from 'react';
 
-import Flex from '@/components/Flex';
-import Menu from '@/components/Menu';
 import { FeatureFlag } from '@/config/features';
 import { UserRole } from '@/constants';
 import * as Account from '@/ducks/account';

@@ -27,7 +27,7 @@ parameters:
     default: "admin-ui"
 
 orbs:
-  vfcommon: voiceflow/common@0.0.157
+  vfcommon: voiceflow/common@0.0.164
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 
@@ -85,9 +85,13 @@ jobs:
       - vfcommon/install_node_modules:
           avoid_post_install_scripts: false
       - run:
-          name: Build realtime-sdk
+          name: Install cpio
           command: |
-            yarn build --scope @voiceflow/realtime-sdk
+            sudo apt-get install -y cpio
+      - run:
+          name: Build dependencies
+          command: |
+            yarn build --scope @voiceflow/realtime-sdk --scope @voiceflow/ui
           working_directory: ~/voiceflow
       - run:
           name: Build app, if docker container does not exist
@@ -109,7 +113,7 @@ jobs:
           root: ~/voiceflow/packages/creator-app
           paths:
             - build
-            - app.dockerfile
+            - Dockerfile
             - config
 
   build-realtime:
@@ -136,23 +140,45 @@ jobs:
           working_directory: ~/voiceflow
 
   build-admin:
+    parameters:
+      strict:
+        description: Run typechecking and other build-time analyses
+        type: boolean
+        default: false
     executor: vfcommon/node-executor
     steps:
       - checkout
       - vfcommon/install_node_modules:
           avoid_post_install_scripts: false
       - run:
+          name: Install cpio
+          command: |
+            sudo apt-get install -y cpio
+      - run:
+          name: Build dependencies
+          command: |
+            yarn build --scope @voiceflow/realtime-sdk --scope @voiceflow/ui
+          working_directory: ~/voiceflow
+      - run:
           name: Build admin static artifacts
           command: |
-            export VF_APP_API_HOST=api-master.development.voiceflow.com
-            export VF_APP_BUILD_ENV=production
-            yarn build:admin
-          working_directory: ~/voiceflow/packages/creator-app
+            if [[ -z "$CIRCLE_BRANCH" && ! -z "$CIRCLE_TAG" ]]; then
+              echo "Building production image!"
+              export VF_APP_BUILD_ENV=production
+              export VF_APP_API_HOST=api.voiceflow.com
+            else
+              echo "Building development image!"
+              export VF_APP_BUILD_ENV=staging
+              export VF_APP_API_HOST=api-$CIRCLE_BRANCH.development.voiceflow.com
+            fi
+
+            yarn build <<# parameters.strict >> --validate --strict <</ parameters.strict >>
+          working_directory: ~/voiceflow/packages/admin-app
       - persist_to_workspace:
-          root: ~/voiceflow/packages/creator-app
+          root: ~/voiceflow/packages/admin-app
           paths:
-            - admin_build
-            - admin.dockerfile
+            - build
+            - Dockerfile
             - config
 
   test: # Main unit, style, and dependency tests
@@ -160,6 +186,14 @@ jobs:
     steps: # a collection of executable commands
       - checkout
       - vfcommon/install_node_modules
+      - run:
+          name: Install cpio
+          command: |
+            sudo apt-get install -y cpio
+      - run:
+          name: Build dependencies
+          command: |
+            yarn build --scope @voiceflow/realtime-sdk --scope @voiceflow/ui
       - restore_cache:
           name: Restoring jest Cache
           keys:
@@ -184,6 +218,7 @@ jobs:
           key: jest-cache-{{ .Branch }}-{{ .BuildNum }}
           paths:
             - ~/voiceflow/packages/creator-app/.jest_cache
+            - ~/voiceflow/packages/ui/.jest_cache
       - save_cache:
           name: Saving eslint Cache
           key: eslint-cache-{{ .Branch }}-{{ .BuildNum }}
@@ -204,7 +239,7 @@ jobs:
           at: /tmp/vf-build
       - vfcommon/build_push_image:
           image_repo: << pipeline.parameters.container-image-url-creator-app >>
-          dockerfile: app.dockerfile
+          dockerfile: Dockerfile
           checkout: false
       - vfcommon/post_image_push_actions:
           namespace: << pipeline.parameters.k8s-namespace >>
@@ -224,7 +259,7 @@ jobs:
           at: /tmp/vf-build
       - vfcommon/build_push_image:
           image_repo: << pipeline.parameters.container-image-url-admin-ui >>
-          dockerfile: admin.dockerfile
+          dockerfile: Dockerfile
           checkout: false
       - vfcommon/post_image_push_actions:
           namespace: << pipeline.parameters.k8s-namespace >>
@@ -238,7 +273,7 @@ jobs:
       - vfcommon/update_track:
           image_repo: << pipeline.parameters.container-image-url-creator-app >>
           component: << pipeline.parameters.track-component-creator-app >>
-          dockerfile: app.dockerfile
+          dockerfile: Dockerfile
 
   update-track-admin-ui:
     executor: vfcommon/build-executor
@@ -246,7 +281,7 @@ jobs:
       - vfcommon/update_track:
           image_repo: << pipeline.parameters.container-image-url-admin-ui >>
           component: << pipeline.parameters.track-component-admin-ui >>
-          dockerfile: admin.dockerfile
+          dockerfile: Dockerfile
 
 workflows:
   update-tracks:
@@ -312,6 +347,15 @@ workflows:
           filters:
             <<: *ignore_autorebase_staging_filters
 
+      - build-admin:
+          <<: *slack-fail-post-step
+          context: dev-test
+          strict: true
+          post-steps:
+            - jira/notify
+          filters:
+            <<: *ignore_autorebase_staging_filters
+
       - build-realtime:
           <<: *slack-fail-post-step
           context: dev-test
@@ -330,6 +374,7 @@ workflows:
             - test
             - vfcommon/test_e2e
             - build-app
+            - build-admin
             - build-realtime
           filters:
             branches:

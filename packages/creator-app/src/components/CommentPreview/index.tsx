@@ -1,6 +1,6 @@
+import { Text } from '@voiceflow/ui';
 import React from 'react';
 
-import Text from '@/components/Text';
 import * as Workspace from '@/ducks/workspace';
 import { UNKNOWN_MEMBER_DATA } from '@/ducks/workspace/constants';
 import { connect } from '@/hocs';

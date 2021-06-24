@@ -1,6 +1,6 @@
+import { Link } from '@voiceflow/ui';
 import React from 'react';
 
-import { Link } from '@/components/Text';
 import { DescriptorContainer, DescriptorVariant } from '@/pages/Settings/components/ContentDescriptors/components';
 
 const ProjectName: React.FC = () => (

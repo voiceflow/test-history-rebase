@@ -1,11 +1,9 @@
+import { preventDefault, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import SvgIcon from '@/components/SvgIcon';
-import Text from '@/components/Text';
 import { useEnableDisable, useTrackingEvents } from '@/hooks';
 import { Comment } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { preventDefault } from '@/utils/dom';
 
 import { REPLY_CLASSNAME } from '../../constants';
 import EditableComment from '../EditableComment';

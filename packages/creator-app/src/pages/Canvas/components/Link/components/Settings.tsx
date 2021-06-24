@@ -1,13 +1,12 @@
 import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { stopPropagation, SvgIcon, useCache, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
-import SvgIcon from '@/components/SvgIcon';
-import { useCache, useHotKeys, useToggle } from '@/hooks';
+import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { EngineContext, IsCanvasOnlyContext, IsCreatorMenuHiddenContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
 import { ClassName } from '@/styles/constants';
-import { stopPropagation } from '@/utils/dom';
 
 import { InternalLinkInstance } from '../types';
 import Button from './SettingsButton';

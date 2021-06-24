@@ -1,9 +1,9 @@
 /* eslint-disable default-case */
+import { SvgIcon } from '@voiceflow/ui';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 
 import GuidedSteps from '@/components/GuidedSteps';
-import SvgIcon from '@/components/SvgIcon';
 import { NEW_PRODUCT_ID } from '@/constants';
 import * as Feature from '@/ducks/feature';
 import * as Product from '@/ducks/product';

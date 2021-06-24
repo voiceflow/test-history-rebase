@@ -1,3 +1,4 @@
+import { stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
@@ -5,7 +6,6 @@ import Upgrade from '@/components/Upgrade';
 import { Permission } from '@/config/permissions';
 import { ExportFormat } from '@/constants';
 import { usePermission } from '@/hooks';
-import { stopImmediatePropagation } from '@/utils/dom';
 
 import Description from './Description';
 import Header from './Header';

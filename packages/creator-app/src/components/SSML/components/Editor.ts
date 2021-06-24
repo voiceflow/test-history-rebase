@@ -1,11 +1,12 @@
-import * as SvgIcon from '@/components/SvgIcon';
+import { SvgIconContainer } from '@voiceflow/ui';
+
 import TextEditor from '@/components/TextEditor';
 import { styled } from '@/hocs';
 
 const Editor = styled(TextEditor)`
   align-items: flex-start;
 
-  & > ${SvgIcon.Container} {
+  & > ${SvgIconContainer} {
     margin-top: 3px;
   }
 

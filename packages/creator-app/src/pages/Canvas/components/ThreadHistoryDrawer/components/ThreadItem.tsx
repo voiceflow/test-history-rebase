@@ -1,14 +1,9 @@
+import { Box, BoxFlexApart, Flex, IconButton, IconButtonVariant, SvgIcon, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Box, { FlexApart } from '@/components/Box';
 import Commenter from '@/components/Commenter';
 import CommentPreview from '@/components/CommentPreview';
 import Duration from '@/components/Duration';
-import Flex from '@/components/Flex';
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import SvgIcon from '@/components/SvgIcon';
-import Text from '@/components/Text';
-import TippyTooltip from '@/components/TippyTooltip';
 import * as Workspace from '@/ducks/workspace';
 import { UNKNOWN_MEMBER_DATA } from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -40,7 +35,7 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
 
   return (
     <ItemContainer isFocused={focusThread.focusedID === threadID} onClick={onClick}>
-      <FlexApart height={42}>
+      <BoxFlexApart height={42}>
         <Commenter creatorID={user?.creator_id || UNKNOWN_MEMBER_DATA.creator_id} />
         {resolved && (
           <TippyTooltip title="Mark Unresolved" distance={1}>
@@ -54,11 +49,11 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
             />
           </TippyTooltip>
         )}
-      </FlexApart>
+      </BoxFlexApart>
       <Box p="12px 0">
         <CommentPreview text={text} />
       </Box>
-      <FlexApart>
+      <BoxFlexApart>
         <Duration key={threadID} time={created} />
         {!!hasReplies && (
           <Flex>
@@ -68,7 +63,7 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
             <SvgIcon icon="forward" size={14} color="#8da2b5" />
           </Flex>
         )}
-      </FlexApart>
+      </BoxFlexApart>
     </ItemContainer>
   );
 };

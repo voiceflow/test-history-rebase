@@ -1,10 +1,9 @@
+import { Flex } from '@voiceflow/ui';
 import styled from 'styled-components';
-
-import FlexCenter from '@/components/Flex';
 
 import TitleInput from './TitleInput';
 
-const ProjectTitleContainer = styled(FlexCenter)`
+const ProjectTitleContainer = styled(Flex)`
   font-size: 18px;
   height: inherit;
   flex: 1;

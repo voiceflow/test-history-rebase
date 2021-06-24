@@ -1,4 +1,5 @@
-import Box from '@/components/Box';
+import { Box } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const DeleteButtonContainer = styled(Box)`

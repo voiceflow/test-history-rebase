@@ -1,8 +1,8 @@
 import { ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
+import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
 import projectAdapter from '@/client/adapters/project';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { PlatformType } from '@/constants';
 import { addProjectToList } from '@/ducks/projectList/actions';

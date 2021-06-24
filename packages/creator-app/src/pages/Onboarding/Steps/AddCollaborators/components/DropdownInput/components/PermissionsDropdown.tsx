@@ -1,10 +1,8 @@
+import { Dropdown as BaseDropdown, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
 
-import BaseDropdown from '@/components/Dropdown';
-import Menu, { MenuItem } from '@/components/Menu';
 import { SectionToggleVariant } from '@/components/Section';
-import Icon from '@/components/SvgIcon';
 import { UserRole } from '@/constants';
 import { styled } from '@/hocs';
 
@@ -54,7 +52,7 @@ const PermissionsDropdown: React.FC<PermissionDropdownProps> = ({
       {(ref, onToggle, isOpen) => (
         <DropdownButton orientation={orientation} ref={ref} onClick={isDisabled ? _constant(null) : onToggle} error={hasError} active={isOpen}>
           {dropdownValue?.label?.toUpperCase()}
-          {!isDisabled && <Icon icon={SectionToggleVariant.TOGGLE as any} size={10} color="currentColor" />}
+          {!isDisabled && <SvgIcon icon={SectionToggleVariant.TOGGLE as any} size={10} color="currentColor" />}
         </DropdownButton>
       )}
     </Dropdown>

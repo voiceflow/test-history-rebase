@@ -1,6 +1,5 @@
+import { Button } from '@voiceflow/ui';
 import React from 'react';
-
-import Button from '@/components/Button';
 
 import { Modal, ModalBody, ModalFooter, ModalHeader } from '../components';
 

@@ -1,9 +1,8 @@
+import { Dropdown, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { InputGroup } from 'reactstrap';
 
-import Dropdown from '@/components/Dropdown';
 import { SectionToggleVariant } from '@/components/Section';
-import Icon from '@/components/SvgIcon';
 import { css, styled } from '@/hocs';
 
 import { DropdownButton, InputGroupAddon, TextInput, TextInputContainer } from './components';
@@ -13,11 +12,13 @@ export * from './constants';
 
 export const Container = styled(InputGroup)`
   position: relative;
-  flex-wrap: nowrap;
   flex: 1;
+  flex-wrap: nowrap;
+
   & ${DropdownButton}, ${TextInput} {
     transition: border-color 0.15s ease;
   }
+
   :focus-within {
     & ${DropdownButton}, ${TextInput} {
       border-color: #5d9df5 !important;
@@ -68,7 +69,7 @@ function ButtonDropdownInput({
           {(ref, onToggle, isOpen) => (
             <DropdownButton orientation={orientation} ref={ref} onClick={onToggle} active={isOpen} error={error} disabled={error}>
               {dropdownValue.label}
-              <Icon icon={SectionToggleVariant.TOGGLE} size={7} />
+              <SvgIcon icon={SectionToggleVariant.TOGGLE} size={7} />
             </DropdownButton>
           )}
         </Dropdown>

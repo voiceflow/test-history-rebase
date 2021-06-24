@@ -1,6 +1,5 @@
+import { Dropdown } from '@voiceflow/ui';
 import React from 'react';
-
-import Dropdown from '@/components/Dropdown';
 
 import PrimaryDropdownButton from './components/PrimaryDropdownButton';
 import SecondaryDropdownButton from './components/SecondaryDropdownButton';

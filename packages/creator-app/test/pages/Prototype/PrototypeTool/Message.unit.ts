@@ -1,7 +1,5 @@
 /* eslint-disable dot-notation, @typescript-eslint/ban-ts-comment */
 
-import './utils/mockAudio';
-
 import { createSuite } from '@/../test/_suite';
 import MessageController from '@/pages/Prototype/PrototypeTool/Message';
 import { MessageType } from '@/pages/Prototype/types';

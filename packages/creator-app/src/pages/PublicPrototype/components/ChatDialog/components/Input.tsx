@@ -1,9 +1,7 @@
+import { BoxFlex, Input, InputVariant, IS_IOS, swallowEvent } from '@voiceflow/ui';
 import React from 'react';
 
-import { Flex } from '@/components/Box';
-import Input, { InputVariant } from '@/components/Input';
-import { isIOS } from '@/config';
-import { swallowEvent, withEnterPress } from '@/utils/dom';
+import { withEnterPress } from '@/utils/dom';
 
 export type UserInputProps = {
   value: string;
@@ -22,14 +20,14 @@ const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, is
   }, []);
 
   const onFocus = React.useCallback(() => {
-    if (isIOS) {
+    if (IS_IOS) {
       document.querySelector('#root')!.removeEventListener('touchmove', preventIOSBodyScrolling);
       document.querySelector('#root')!.addEventListener('touchmove', preventIOSBodyScrolling);
     }
   }, []);
 
   const onBlur = React.useCallback(() => {
-    if (isIOS) {
+    if (IS_IOS) {
       document.querySelector('#root')!.removeEventListener('touchmove', preventIOSBodyScrolling);
     }
   }, [isMobile]);
@@ -42,7 +40,7 @@ const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, is
 
   return (
     // mobile browsers will zoom and make css look bad if font-size is less than 16px
-    <Flex flex={2} fontSize={isMobile ? 16 : 15} maxWidth="100%" onClick={() => isIdle && onStart()}>
+    <BoxFlex flex={2} fontSize={isMobile ? 16 : 15} maxWidth="100%" onClick={() => isIdle && onStart()}>
       <Input
         key={String(!isIdle)}
         value={value}
@@ -58,7 +56,7 @@ const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, is
         onKeyPress={withEnterPress(swallowEvent(onEnterPress))}
         placeholder={testEnded ? 'This conversation has ended' : 'Type a message...'}
       />
-    </Flex>
+    </BoxFlex>
   );
 };
 

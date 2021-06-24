@@ -1,6 +1,7 @@
+import { preventDefault } from '@voiceflow/ui';
+
 import { BlockType } from '@/constants';
 import { ClassName } from '@/styles/constants';
-import { preventDefault } from '@/utils/dom';
 import MouseMovement from '@/utils/mouseMovement';
 
 import { ControlType } from '../../constants';

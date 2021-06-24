@@ -1,7 +1,7 @@
+import { TippyTooltip, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import TippyTooltip from '@/components/TippyTooltip';
-import { useDidUpdateEffect, useKeygen, useOnScreen } from '@/hooks';
+import { useKeygen, useOnScreen } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { ActiveLine, Tab, Wrapper } from './components';

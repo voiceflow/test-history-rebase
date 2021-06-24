@@ -1,7 +1,6 @@
+import { preventDefault } from '@voiceflow/ui';
 import React from 'react';
 import { Editor } from 'slate';
-
-import { preventDefault } from '@/utils/dom';
 
 import { ElementProperty, TextAlign } from '../constants';
 import MarkupSlateEditor from '../MarkupSlateEditor';

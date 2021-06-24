@@ -1,7 +1,7 @@
+import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import Tooltip, { Section, Title } from '@/components/Tooltip';
-import { stopPropagation } from '@/utils/dom';
 
 import { AnchorContainer, HelpMessage } from './components';
 

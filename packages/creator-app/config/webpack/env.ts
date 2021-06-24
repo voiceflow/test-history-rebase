@@ -6,7 +6,7 @@ import {
   canvasCrosshair,
   debug,
   debugCanvas,
-  debugHttp,
+  debugFetch,
   debugNet,
   debugRealtime,
   debugSocket,
@@ -86,7 +86,7 @@ export default {
       }
     : {
         DEBUG_NETWORK: debugNet ? true : '',
-        DEBUG_HTTP: debugHttp ? true : '',
+        DEBUG_FETCH: debugFetch ? true : '',
         DEBUG_SOCKET: debugSocket ? true : '',
         DEBUG_REALTIME: debugRealtime ? true : '',
         DEBUG_CANVAS: debugCanvas ? true : '',

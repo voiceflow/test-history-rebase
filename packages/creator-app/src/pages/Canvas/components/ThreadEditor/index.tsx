@@ -1,10 +1,10 @@
+import { preventDefault, stopPropagation } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
 import { Comment, Thread } from '@/models';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
-import { preventDefault, stopPropagation } from '@/utils/dom';
 
 import { CommentEditor, Container, NewComment, ReplySection } from './components';
 import { NEW_THREAD_EDITOR } from './constants';

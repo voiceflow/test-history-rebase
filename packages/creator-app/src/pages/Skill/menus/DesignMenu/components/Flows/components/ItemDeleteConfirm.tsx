@@ -1,6 +1,5 @@
+import { Alert, AlertVariant } from '@voiceflow/ui';
 import React from 'react';
-
-import Alert, { AlertVariant } from '@/components/Alert';
 
 const ItemDeleteConfirm: React.FC = () => (
   <Alert variant={AlertVariant.DANGER} mb={0}>

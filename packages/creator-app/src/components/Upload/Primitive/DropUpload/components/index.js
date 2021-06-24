@@ -1,5 +1,5 @@
-import { LoadCircle } from '@/components/Loader';
-import SvgIcon from '@/components/SvgIcon';
+import { LoadCircle, SvgIcon } from '@voiceflow/ui';
+
 import { styled, transition } from '@/hocs';
 
 export const CornerActionButton = styled(SvgIcon)`

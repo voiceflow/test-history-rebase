@@ -1,4 +1,4 @@
-import Logger from '@/utils/logger';
+import { logger } from '@voiceflow/ui';
 
 // eslint-disable-next-line import/prefer-default-export
-export const storeLogger = Logger.child('store');
+export const storeLogger = logger.child('store');

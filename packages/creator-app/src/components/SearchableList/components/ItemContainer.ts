@@ -1,5 +1,6 @@
+import { FlexApart } from '@voiceflow/ui';
+
 import { dragPlaceholderStyles } from '@/components/DragPlaceholder';
-import { FlexApart } from '@/components/Flex';
 import { css, styled, transition } from '@/hocs';
 
 export type ItemContainerProps = {

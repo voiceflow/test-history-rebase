@@ -1,4 +1,4 @@
-import { isMac } from '@/config';
+import { IS_MAC } from '@voiceflow/ui';
 
 import { ControlScheme, SCROLL_TIMEOUT } from '../constants';
 import MouseInterface from './mouse';
@@ -11,7 +11,7 @@ const ControlSchemeMap = {
 };
 
 const generateControls = (
-  scheme: ControlScheme = isMac ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
+  scheme: ControlScheme = IS_MAC ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
   handle: (action: ControlAction) => void,
   scrollTimeout = SCROLL_TIMEOUT
 ) => ControlSchemeMap[scheme](handle, scrollTimeout);

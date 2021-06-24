@@ -1,10 +1,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */
 
+import { Button, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
-
-import Button from '@/components/Button';
-import TippyTooltip, { TippyTooltipProps } from '@/components/TippyTooltip';
 
 import SingleStep from './SingleStep';
 import GuidedStepsWrapper from './styles';
@@ -216,7 +214,7 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
                           <SubmitWrapper {...wrapperProps}>
                             <Button
                               variant="primary"
-                              disabled={!isFormValid || disabled || preventSubmit}
+                              disabled={!isFormValid || disabled || !!preventSubmit}
                               onClick={(e: React.MouseEvent) => submit(e, idx)}
                             >
                               {submitText}

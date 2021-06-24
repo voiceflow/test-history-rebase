@@ -1,8 +1,8 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
+import { ErrorMessageWithDivider } from '@voiceflow/ui';
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
-import { ErrorMessageWithDivider } from '@/components/ErrorPages/ErrorMessage';
 import OverflowMenu from '@/components/OverflowMenu';
 import Section from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';

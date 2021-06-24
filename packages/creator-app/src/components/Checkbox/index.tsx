@@ -1,7 +1,6 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Assign } from 'utility-types';
-
-import SvgIcon from '@/components/SvgIcon';
 
 import { Button, ButtonContainer, Container } from './components';
 import { CheckboxColor, CheckboxType } from './constants';

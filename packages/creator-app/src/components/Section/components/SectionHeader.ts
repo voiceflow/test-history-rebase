@@ -1,4 +1,5 @@
-import { FlexApart } from '@/components/Flex';
+import { FlexApart } from '@voiceflow/ui';
+
 import { css, styled, transition, units } from '@/hocs';
 
 type SectionHeaderProps = {

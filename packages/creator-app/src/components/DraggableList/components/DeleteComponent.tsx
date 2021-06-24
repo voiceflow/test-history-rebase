@@ -1,6 +1,6 @@
+import { IconButton, IconButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import { useEnableDisable } from '@/hooks';
 
 import DeleteComponentContent from './DeleteComponentContent';

@@ -1,7 +1,8 @@
+import { SVG } from '@voiceflow/ui';
+
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
 import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
-import ProjectDiagramIcon from '@/svgs/solid/project-diagram.svg';
 
 import { NodeManagerConfig } from '../types';
 import ChoiceOldEditor from './ChoiceOldEditor';
@@ -13,7 +14,7 @@ const EDITORS_BY_PATH = {
 
 const ChoiceOldManager: NodeManagerConfig<NodeData.ChoiceOld> = {
   type: BlockType.CHOICE_OLD,
-  icon: ProjectDiagramIcon as any,
+  icon: SVG.projectDiagram as any,
   buttons: true,
   reprompt: true,
   mergeTerminator: true,

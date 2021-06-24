@@ -1,16 +1,14 @@
+import { BoxFlex, NestedMenu, Text, useCache } from '@voiceflow/ui';
 import React from 'react';
 import { Popper } from 'react-popper';
 
-import { Flex } from '@/components/Box';
-import NestedMenu from '@/components/NestedMenu';
-import Text from '@/components/Text';
 import { Permission } from '@/config/permissions';
 import { CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as UIDuck from '@/ducks/ui';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useCache, useModals, usePermission } from '@/hooks';
+import { useModals, usePermission } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
@@ -174,14 +172,14 @@ const ContextMenu: React.FC<ConnectedContextMenuProps> = ({ toggleCanvasOnly, is
             getOptionLabel={getOptionLabel}
             maxVisibleItems={7}
             renderOptionLabel={(option: ContextMenuOption<CanvasAction> | ContextMenuOption<BlockVariant>) => (
-              <Flex width="100%" justifyContent="space-between">
+              <BoxFlex width="100%" justifyContent="space-between">
                 <Text>{option.label}</Text>
                 {!!option.hotkey && (
                   <Text marginLeft={32} fontSize={13} color="#8da2b5">
                     {option?.hotkey}
                   </Text>
                 )}
-              </Flex>
+              </BoxFlex>
             )}
           />
         </div>

@@ -1,6 +1,15 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "baseUrl": ".",
+    "rootDir": "src",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
     "importHelpers": true,
     "types": [
       "jest",

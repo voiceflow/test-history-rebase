@@ -1,13 +1,12 @@
+import { ButtonVariant, Portal } from '@voiceflow/ui';
 import moment from 'moment';
 import React from 'react';
 import { DateUtils, Modifier, RangeModifier } from 'react-day-picker';
 import { Manager, Popper, Reference } from 'react-popper';
 import { useHistory } from 'react-router-dom';
 
-import { ButtonVariant } from '@/components/Button';
 import { FORMAT, TimeRangePicker, WEEKDAYS } from '@/components/DayPickerInput/components';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
-import Portal from '@/components/Portal';
 import { useEnableDisable } from '@/hooks';
 import { FILTER_TAG } from '@/pages/Conversations/constants';
 

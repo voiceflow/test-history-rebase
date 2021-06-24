@@ -1,14 +1,9 @@
+import { BlockText, Box, Button, FlexApart, Link, Select, stopImmediatePropagation, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
 import BubbleText from '@/components/BubbleText';
-import Button from '@/components/Button';
 import ChatWithUsLink from '@/components/ChatLink';
-import { FlexApart } from '@/components/Flex';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
-import Select from '@/components/Select';
-import { BlockText, Link } from '@/components/Text';
-import { toast } from '@/components/Toast';
 import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { ModalType, NLPProvider, PLAN_TYPE_META, PlanType } from '@/constants';
@@ -17,7 +12,6 @@ import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
 import UploadButton from '@/pages/Canvas/header/ActionGroup/components/UploadButton';
 import { ConnectedProps } from '@/types';
-import { stopImmediatePropagation } from '@/utils/dom';
 
 import { EXPORT_TYPES } from './constants';
 

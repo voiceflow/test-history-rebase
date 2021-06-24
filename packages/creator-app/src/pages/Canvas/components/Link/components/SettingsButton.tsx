@@ -1,7 +1,5 @@
+import { Box, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-
-import Box from '@/components/Box';
-import TippyTooltip from '@/components/TippyTooltip';
 
 import ButtonContainer from './SettingsButtonContainer';
 

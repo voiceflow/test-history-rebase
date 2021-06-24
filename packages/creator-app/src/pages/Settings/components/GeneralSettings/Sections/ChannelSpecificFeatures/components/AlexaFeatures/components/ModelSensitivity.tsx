@@ -1,8 +1,8 @@
 import { ModelSensitivity as ModelSensitivityType } from '@voiceflow/alexa-types';
+import { Select } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
-import Select from '@/components/Select';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';

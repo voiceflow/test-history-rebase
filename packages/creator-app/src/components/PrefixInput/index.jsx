@@ -1,7 +1,7 @@
+import { inputStyle } from '@voiceflow/ui';
 import React from 'react';
 import { Input, InputGroup, InputGroupAddon, InputGroupText as PrefixText } from 'reactstrap';
 
-import { inputStyle } from '@/components/Input/styles';
 import { styled } from '@/hocs';
 
 const InputGroupText = styled(PrefixText)`

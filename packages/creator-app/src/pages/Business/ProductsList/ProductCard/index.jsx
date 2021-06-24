@@ -1,18 +1,15 @@
 /* eslint-disable no-shadow */
+import { Dropdown, IconButton, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Dropdown from '@/components/Dropdown';
-import IconButton from '@/components/IconButton';
-import SvgIcon from '@/components/SvgIcon';
 import * as Product from '@/ducks/product';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { PRODUCT_TYPES } from '@/pages/Business/Product/GuidedSteps/PricingModel';
 import LocaleMap from '@/services/LocaleMap';
-import { stopPropagation } from '@/utils/dom';
 import { isProductComplete } from '@/utils/product';
 
 import { Container, Description, Details, Icon, Status, StatusText, SubTitle, Title, TooltipInfo } from './components';

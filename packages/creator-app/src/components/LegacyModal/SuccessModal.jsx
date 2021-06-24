@@ -1,8 +1,6 @@
+import { Box, Button, ButtonVariant, Flex } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
-import Button, { ButtonVariant } from '@/components/Button';
-import Flex from '@/components/Flex';
 import { ModalType } from '@/constants';
 import { styled } from '@/hocs';
 import { useModals } from '@/hooks';
@@ -10,8 +8,8 @@ import { useModals } from '@/hooks';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from './components';
 
 const BodyContainer = styled(ModalBody)`
-  font-size: 16px;
   padding: 30px 32px 60px 32px;
+  font-size: 16px;
   text-align: center;
 `;
 

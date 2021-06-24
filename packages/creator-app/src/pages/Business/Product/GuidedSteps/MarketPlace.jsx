@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
+import { Button, Input } from '@voiceflow/ui';
 import { AvForm, AvGroup } from 'availity-reactstrap-validation';
 import React from 'react';
 
-import Button from '@/components/Button';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
-import Input from '@/components/Input';
 import * as Product from '@/ducks/product';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';

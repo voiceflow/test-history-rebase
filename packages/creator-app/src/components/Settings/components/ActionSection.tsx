@@ -1,6 +1,6 @@
+import { FlexApart } from '@voiceflow/ui';
 import React from 'react';
 
-import { FlexApart } from '@/components/Flex';
 import { styled } from '@/hocs';
 
 const Container = styled(FlexApart)`

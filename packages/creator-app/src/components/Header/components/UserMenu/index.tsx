@@ -1,15 +1,12 @@
+import { Dropdown, Menu, MenuItem, preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Dropdown from '@/components/Dropdown';
-import Menu, { MenuItem } from '@/components/Menu';
-import SvgIcon from '@/components/SvgIcon';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { connect, styled } from '@/hocs';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
-import { preventDefault } from '@/utils/dom';
 
 import { UserNameContainer } from './components';
 

@@ -1,7 +1,8 @@
-import { FlexCenter } from '@/components/Box';
+import { BoxFlexCenter } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs';
 
-const SettingsButtonContainer = styled(FlexCenter)<{ isActive?: boolean; isSimple?: boolean }>`
+const SettingsButtonContainer = styled(BoxFlexCenter)<{ isActive?: boolean; isSimple?: boolean }>`
   ${transition('color', 'background-color', 'opacity')}
 
   width: 32px;

@@ -1,10 +1,7 @@
+import { ClickableText, Icon, Input, NestedInputIconPosition } from '@voiceflow/ui';
 import React, { useCallback, useMemo, useState } from 'react';
 
-import Input from '@/components/Input';
-import { NestedInputIconPosition } from '@/components/Input/components/DefaultInput';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
-import type { Icon } from '@/components/SvgIcon';
-import { ClickableText } from '@/components/Text';
 import { Permission } from '@/config/permissions';
 import { ModalType, RESPONSE_COLOR_CODES as COLOR_CODES } from '@/constants';
 import * as Prototype from '@/ducks/prototype';

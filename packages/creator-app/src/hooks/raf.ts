@@ -1,8 +1,8 @@
+import { useCache } from '@voiceflow/ui';
 import React from 'react';
 
 import { Nullable } from '@/types';
 
-import { useCache } from './cache';
 import { LifecyclePhase, useLifecycle } from './lifecycle';
 
 export const useRAF = () => {

@@ -1,3 +1,4 @@
+import { useDidUpdateEffect, useEnableDisable } from '@voiceflow/ui';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
@@ -7,7 +8,7 @@ import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useEnableDisable, useHotKeys, usePermission, useTheme, useTrackingEvents } from '@/hooks';
+import { useHotKeys, usePermission, useTheme, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useAnyModeOpen } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';

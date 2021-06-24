@@ -1,7 +1,7 @@
+import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { toast } from '@/components/Toast';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';

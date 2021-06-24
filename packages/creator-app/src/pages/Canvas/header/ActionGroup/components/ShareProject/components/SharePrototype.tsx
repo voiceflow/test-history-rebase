@@ -1,7 +1,6 @@
+import { Button, ButtonVariant, Link } from '@voiceflow/ui';
 import React from 'react';
 
-import Button, { ButtonVariant } from '@/components/Button';
-import { Link } from '@/components/Text';
 import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';

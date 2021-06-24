@@ -1,8 +1,7 @@
+import { Box, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
 import { SectionProps, UncontrolledSection } from '@/components/Section';
-import Toggle from '@/components/Toggle';
 import THEME from '@/styles/theme';
 
 const SettingsSection: React.FC<{ toggle: () => void; value: boolean } & SectionProps> = ({ value, toggle, children, ...props }) => (

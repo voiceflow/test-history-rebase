@@ -1,7 +1,7 @@
+import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
-import { useContextApi } from '@/hooks/cache';
 
 export type ModalContextType<T extends object = object> = null | {
   fade: boolean;

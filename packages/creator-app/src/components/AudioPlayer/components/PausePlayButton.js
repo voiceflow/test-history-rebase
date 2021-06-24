@@ -1,20 +1,19 @@
-import { css } from 'styled-components';
+import { IconButton } from '@voiceflow/ui';
 
-import IconButton from '@/components/IconButton';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 const PausePlayButton = styled(IconButton)`
-  margin-right: 24px;
-  flex-shrink: 0;
   z-index: 1;
+  flex-shrink: 0;
+  margin-right: 24px;
 
   ${({ icon }) =>
     icon === 'play' &&
     css`
       svg {
         position: relative;
-        left: 2px;
         top: 1px;
+        left: 2px;
       }
     `}
 `;

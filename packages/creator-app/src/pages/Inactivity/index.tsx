@@ -1,9 +1,8 @@
+import { LegacyButton, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import Countdown from 'react-countdown-now';
 
-import Button from '@/components/LegacyButton';
 import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
-import SvgIcon from '@/components/SvgIcon';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { Callback, ConnectedProps } from '@/types';
@@ -38,9 +37,9 @@ const InactivityModal: React.FC<InactivityModalProps & ConnectedInactivityModalP
       </BodyContainer>
     </ModalBody>
     <ModalFooter>
-      <Button className="btn-tertiary tertiary" onClick={onActive}>
+      <LegacyButton className="btn-tertiary tertiary" onClick={onActive}>
         Dismiss
-      </Button>
+      </LegacyButton>
     </ModalFooter>
   </ModalComponent>
 );

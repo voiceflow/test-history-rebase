@@ -1,7 +1,7 @@
+import { DEVICE_INFO, generate } from '@voiceflow/ui';
+
 import client, { SESSION_ENDPOINTS, SESSION_PATH } from '@/client/session';
-import { DEVICE_INFO } from '@/config';
 import { SessionType } from '@/constants';
-import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 

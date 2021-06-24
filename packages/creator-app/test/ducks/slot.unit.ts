@@ -1,9 +1,10 @@
+import { generate } from '@voiceflow/ui';
+
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { CRUDState } from '@/ducks/utils/crud';
 import * as Models from '@/models';
 import { normalize } from '@/utils/normalized';
-import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 

@@ -1,11 +1,9 @@
+import { Badge, Input, KeyName, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 import validUrl from 'valid-url';
 
-import Badge from '@/components/Badge';
-import Input from '@/components/Input';
 import VariablesInput from '@/components/VariablesInput';
-import { KeyName } from '@/constants';
-import { stopPropagation, withKeyPress } from '@/utils/dom';
+import { withKeyPress } from '@/utils/dom';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import { BackArrow, ErrorMessage, LinkUploadInputContainer } from './components';

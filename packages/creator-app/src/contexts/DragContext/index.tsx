@@ -1,7 +1,6 @@
+import { Portal, useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
-import Portal from '@/components/Portal';
-import { useContextApi } from '@/hooks/cache';
 import { Nullable } from '@/types';
 
 import DragLayer, { PreviewOptions } from './DragLayer';

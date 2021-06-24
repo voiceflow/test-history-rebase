@@ -1,9 +1,8 @@
+import { IS_SAFARI, toast } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
-import { toast } from '@/components/Toast';
-import { isSafari } from '@/config';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
@@ -27,8 +26,8 @@ import {
 } from '../constants';
 
 const Wrapper = styled.div`
-  width: ${isSafari ? '100vw' : '100%'};
-  height: ${isSafari ? 'calc(100vh - 120px)' : '100%'};
+  width: ${IS_SAFARI ? '100vw' : '100%'};
+  height: ${IS_SAFARI ? 'calc(100vh - 120px)' : '100%'};
   overflow: hidden;
 
   &.${CANVAS_MARKUP_CREATING_CLASSNAME}[data-markup-creating-type="${BlockType.MARKUP_TEXT}"] {

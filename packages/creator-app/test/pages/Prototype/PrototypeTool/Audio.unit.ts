@@ -1,14 +1,12 @@
 /* eslint-disable dot-notation, @typescript-eslint/ban-ts-comment */
 
-import './utils/mockAudio';
-
 import suite from '@/../test/_suite';
 import AudioController, { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 import { noop } from '@/utils/functional';
 
 suite('Prototype/PrototypeTool/Audio - TAudio', ({ spy, stub, expect }) => {
   describe('TAudio', () => {
-    it('should be able to set src', () => {
+    it('should be able to set src', async () => {
       const audio = new TAudio();
 
       audio.src = 'new src';
@@ -26,7 +24,7 @@ suite('Prototype/PrototypeTool/Audio - TAudio', ({ spy, stub, expect }) => {
 
     it('should call VF_ON_PAUSE on pause', () => {
       // @ts-ignore
-      const pause = spy(global.Audio.prototype, 'pause');
+      const pause = spy(TAudio.prototype, 'pause');
 
       const audio = new TAudio();
       const onPause = stub();

@@ -1,6 +1,5 @@
+import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
-
-import { useContextApi } from '@/hooks/cache';
 
 import { EngineContext } from './EngineContext';
 

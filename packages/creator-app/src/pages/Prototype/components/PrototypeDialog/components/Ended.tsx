@@ -1,8 +1,7 @@
+import { Box, ClickableText, Link } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
 import Divider from '@/components/Divider';
-import { ClickableText, Link } from '@/components/Text';
 import { FeatureFlag } from '@/config/features';
 import { DOCS_LINK } from '@/constants';
 import * as Prototype from '@/ducks/prototype';

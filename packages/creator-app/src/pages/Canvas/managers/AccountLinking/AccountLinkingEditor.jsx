@@ -1,13 +1,11 @@
+import { Input, Select, Spinner } from '@voiceflow/ui';
 import _filter from 'lodash/filter';
 import _find from 'lodash/find';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
-import Input from '@/components/Input';
 import { SubHeader } from '@/components/Page/components';
 import Section from '@/components/Section';
-import Select from '@/components/Select';
-import { Spinner } from '@/components/Spinner';
 import SubHeaderTabs from '@/components/Tabs';
 import * as Modal from '@/ducks/modal';
 import * as Version from '@/ducks/version';

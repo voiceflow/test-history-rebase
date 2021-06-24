@@ -1,12 +1,10 @@
+import { GLOBAL_FETCH_HEADERS, setUnauthorizedHandler, StatusCode, toast } from '@voiceflow/ui';
 import axios from 'axios';
 import { History } from 'history';
 import _throttle from 'lodash/throttle';
 
-import { toast } from '@/components/Toast';
-
 import client from './client';
-import fetch, { GLOBAL_HEADERS, StatusCode } from './client/fetch';
-import { setUnauthorizedHandler } from './client/fetch/raw';
+import fetch from './client/fetch';
 import { API_ENDPOINT, TRUSTED_ENDPOINTS, VERSION } from './config';
 import { clearPersistedLogs } from './utils/logger';
 import * as Google from './vendors/google';
@@ -41,8 +39,8 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
   axios.defaults.withCredentials = true;
   axios.defaults.headers.common.browserid = browserID;
   axios.defaults.headers.common.tabid = tabID;
-  GLOBAL_HEADERS.set('browserid', browserID);
-  GLOBAL_HEADERS.set('tabid', tabID);
+  GLOBAL_FETCH_HEADERS.set('browserid', browserID);
+  GLOBAL_FETCH_HEADERS.set('tabid', tabID);
 
   axios.interceptors.response.use(
     (response) => response,
@@ -65,7 +63,7 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
   LogRocket.initialize((sessionURL) => {
     // add session URL to all outgoing HTTP requests
     axios.defaults.headers.common['x-logrocket-url'] = sessionURL;
-    GLOBAL_HEADERS.set('x-logrocket-url', sessionURL);
+    GLOBAL_FETCH_HEADERS.set('x-logrocket-url', sessionURL);
   });
 
   Google.initialize();

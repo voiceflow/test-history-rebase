@@ -1,14 +1,12 @@
 import { getInvocationNameError as getAlexaInvocationNameError, Locale as AlexaLocale } from '@voiceflow/alexa-types';
 import { Locale as GeneralLocale } from '@voiceflow/general-types';
 import { getInvocationNameError as getGoogleInvocationNameError, Language, LanguageToLocale, Locale as GoogleLocale } from '@voiceflow/google-types';
+import { Box, BoxFlex, Input, Select, useDidUpdateEffect } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React, { ChangeEvent } from 'react';
 
-import Box, { Flex } from '@/components/Box';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
-import Input from '@/components/Input';
 import Section, { SectionVariant } from '@/components/Section';
-import Select from '@/components/Select';
 import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { PlatformType } from '@/constants';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
@@ -16,7 +14,6 @@ import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect } from '@/hooks';
 import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
@@ -101,12 +98,12 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         contentSuffix={descriptors.projectName}
         header="Project Name"
       >
-        <Flex>
+        <BoxFlex>
           <Input value={newProjectName} onChange={(e: ChangeEvent<HTMLInputElement>) => setNewProjectName(e.target.value)} onBlur={saveSettings} />
           <Box ml={16}>
             <UnTypedUploadJustIcon size={UploadIconVariant.EXTRA_SMALL} update={setProjectImage} image={projectImage} endpoint="/image" />
           </Box>
-        </Flex>
+        </BoxFlex>
       </Section>
 
       {!isAnyGeneralPlatform(platform) && (

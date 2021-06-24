@@ -8,7 +8,6 @@ export * from './IdentityContext';
 export * from './ModalsContext';
 export * from './MousePositionContext';
 export * from './NamespaceContext';
-export * from './OverlayContext';
 export * from './TextEditorVariablesPopoverContext';
 
 export type ScrollContextValue = {

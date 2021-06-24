@@ -1,7 +1,7 @@
+import { Button } from '@voiceflow/ui';
 import React from 'react';
 
 import BubbleText from '@/components/BubbleText';
-import Button from '@/components/Button';
 import ImageCarousel from '@/components/ImageCarousel';
 import { ModalFooter } from '@/components/LegacyModal';
 import CarouselButtons from '@/components/LegacyModal/CarouselButtons';

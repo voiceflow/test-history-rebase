@@ -1,18 +1,11 @@
 import { SlotType as AlexaSlotType } from '@voiceflow/alexa-types';
+import { Button, ClickableText, Flex, FlexApart, flexApartStyles, Input, Select, stopPropagation, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import _sample from 'lodash/sample';
 import React from 'react';
 
-import Button from '@/components/Button';
-import Flex, { FlexApart, flexApartStyles } from '@/components/Flex';
-import Input from '@/components/Input';
 import { ModalFooter } from '@/components/LegacyModal';
 import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
-import Select from '@/components/Select';
-import SvgIcon from '@/components/SvgIcon';
-import { ClickableText } from '@/components/Text';
-import TippyTooltip from '@/components/TippyTooltip';
-import { toast } from '@/components/Toast';
 import { CUSTOM_SLOT_TYPE, ModalType, PlanType, SLOT_COLORS } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
@@ -21,7 +14,6 @@ import * as Workspace from '@/ducks/workspace';
 import { connect, styled } from '@/hocs';
 import { useModals, useTeardown } from '@/hooks';
 import { replace, without } from '@/utils/array';
-import { stopPropagation } from '@/utils/dom';
 import { formatIntentName } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
 import { removeTrailingUnderscores } from '@/utils/string';

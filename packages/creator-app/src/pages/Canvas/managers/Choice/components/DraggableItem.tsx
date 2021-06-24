@@ -1,6 +1,6 @@
+import { Badge } from '@voiceflow/ui';
 import React from 'react';
 
-import Badge from '@/components/Badge';
 import { DragPreviewComponentProps, ItemComponentHandlers, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import IntentForm, { LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';

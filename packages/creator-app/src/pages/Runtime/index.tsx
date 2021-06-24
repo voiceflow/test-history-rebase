@@ -1,11 +1,7 @@
+import { Alert, Box, ClickableText, Input, Link, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import Alert from '@/components/Alert';
-import Box from '@/components/Box';
-import Input from '@/components/Input';
 import Page from '@/components/Page';
-import { ClickableText, Link, Text } from '@/components/Text';
-import { toast } from '@/components/Toast';
 import { API_ENDPOINT, GENERAL_RUNTIME_ENDPOINT_TAG, GENERAL_SERVICE_ENDPOINT } from '@/config';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';

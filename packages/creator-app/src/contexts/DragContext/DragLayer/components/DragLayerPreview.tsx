@@ -1,7 +1,7 @@
+import { useCache } from '@voiceflow/ui';
 import React from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
 
-import { useCache } from '@/hooks/cache';
 import { useThrottledCallback } from '@/hooks/callback';
 import { useForceUpdate } from '@/hooks/forceUpdate';
 import { useTeardown } from '@/hooks/lifecycle';

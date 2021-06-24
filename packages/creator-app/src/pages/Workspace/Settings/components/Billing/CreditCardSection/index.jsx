@@ -1,11 +1,9 @@
+import { Box, Input, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import Box from '@/components/Box';
-import Input from '@/components/Input';
 import Section, { SectionVariant } from '@/components/Section';
 import { CardElement } from '@/components/Stripe';
-import { toast } from '@/components/Toast';
 import { withStripe } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
 import { ActionMapping } from '@/pages/Payment/Checkout/components/StepHeading';

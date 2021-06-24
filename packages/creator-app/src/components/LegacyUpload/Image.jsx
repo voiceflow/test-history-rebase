@@ -1,11 +1,9 @@
 import { IS_VARIABLE_REGEXP } from '@voiceflow/common';
+import { Input, LegacyButton, Spinner } from '@voiceflow/ui';
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 
 import client from '@/client';
-import Input from '@/components/Input';
-import Button from '@/components/LegacyButton';
-import { Spinner } from '@/components/Spinner';
 import { HTTPS_URL_REGEX } from '@/constants';
 import * as Sentry from '@/vendors/sentry';
 
@@ -107,7 +105,7 @@ class Image extends Component {
         render = (
           <div className="image-box super-center d-flex">
             <div>{this.props.image}</div>
-            <Button className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
+            <LegacyButton className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
           </div>
         );
       } else if (!this.props.image.match(HTTPS_URL_REGEX)) {
@@ -116,14 +114,14 @@ class Image extends Component {
             <div className="rejected-file text-danger text-center super-center h-100">
               Please check your URL or your {'{'}variable{'}'}
             </div>
-            <Button className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
+            <LegacyButton className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
           </div>
         );
       } else {
         render = (
           <div className="image-box">
             <div className="image" style={{ backgroundImage: `url(${this.props.image})` }} />
-            <Button className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
+            <LegacyButton className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
           </div>
         );
       }
@@ -131,7 +129,7 @@ class Image extends Component {
       render = (
         <div className="image-box">
           <div className="image" style={{ backgroundImage: `url(${this.props.image})` }} />
-          <Button className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
+          <LegacyButton className="close" disabled={this.props.isDisabled} onClick={this.onReset} />
         </div>
       );
     } else if (this.state.url_open) {
@@ -140,12 +138,12 @@ class Image extends Component {
           <div className="text-center w-100">
             <label>Enter Image URL</label>
             <Input placeholder="URL Link (must be [https])" value={this.state.url} onChange={this.handleChange} name="url" />
-            <Button isFlat onClick={() => this.setState({ url_open: false })} className="mt-3 mr-1">
+            <LegacyButton isFlat onClick={() => this.setState({ url_open: false })} className="mt-3 mr-1">
               Back
-            </Button>
-            <Button isBtn isPrimary onClick={() => this.props.update(this.state.url)} className="mr-1">
+            </LegacyButton>
+            <LegacyButton isBtn isPrimary onClick={() => this.props.update(this.state.url)} className="mr-1">
               Confirm
-            </Button>
+            </LegacyButton>
           </div>
         </div>
       );
@@ -164,7 +162,7 @@ class Image extends Component {
           <div className="w-100">
             <div className="drop-child">
               {this.props.url && (
-                <Button
+                <LegacyButton
                   isBtn
                   isLink
                   className="mt-5 pt-4 pointer"
@@ -176,7 +174,7 @@ class Image extends Component {
                   }}
                 >
                   Add URL or {'{'}variable{'}'}
-                </Button>
+                </LegacyButton>
               )}
             </div>
             <div className="rejected-file text-danger text-center">File not Accepted</div>

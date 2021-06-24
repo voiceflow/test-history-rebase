@@ -1,6 +1,7 @@
+import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
-import { useContextApi, useDismissable } from '@/hooks';
+import { useDismissable } from '@/hooks';
 
 export type SpotlightContextValue = {
   isVisible: boolean;

@@ -1,11 +1,10 @@
+import { LegacyButton, preventDefault, toast } from '@voiceflow/ui';
 import { getSearch } from 'connected-react-router';
 import _get from 'lodash/get';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { wordmark } from '@/assets';
-import Button from '@/components/LegacyButton';
-import { toast } from '@/components/Toast';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -15,7 +14,6 @@ import { Query } from '@/models';
 import HeaderBox from '@/pages/Auth/components/HeaderBox';
 import perf, { PerfAction } from '@/performance';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { preventDefault } from '@/utils/dom';
 
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
@@ -72,9 +70,9 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
                 {IS_PRIVATE_CLOUD ? <span /> : <a onClick={goToSignup}>Don't have an account?</a>}
               </div>
               <div className="col-5">
-                <Button isPrimary isBlock type="submit">
+                <LegacyButton isPrimary isBlock type="submit">
                   {query.invite ? 'Join Team' : 'Log In'}
-                </Button>
+                </LegacyButton>
               </div>
             </div>
           </div>

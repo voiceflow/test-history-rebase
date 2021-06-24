@@ -1,23 +1,22 @@
 require('ts-node/register/transpile-only');
 
-const webpackConfig = require('./config/webpack/creator/test').default;
+const webpackConfig = require('./config/webpack/test').default;
 
+// eslint-disable-next-line no-process-env
 process.env.NODE_ENV = 'test';
 
-module.exports = function (wallaby) {
-  return {
-    files: [{ pattern: 'src/**/*.{js,jsx,ts,tsx}', load: false }, '!src/**/*.it.*'],
+module.exports = (wallaby) => ({
+  files: [{ pattern: 'src/**/*.{js,jsx,ts,tsx}', load: false }, '!src/**/*.it.*'],
 
-    tests: [{ pattern: 'test/**/*.unit.ts', load: false }, '!test/pages/Prototype/**/*'],
+  tests: [{ pattern: 'test/**/*.unit.ts', load: false }, '!test/pages/Prototype/**/*'],
 
-    testFramework: 'mocha',
+  testFramework: 'mocha',
 
-    postprocessor: wallaby.postprocessors.webpack(webpackConfig, {
-      setupFiles: ['./config/test/unit/setup.js'],
-    }),
+  postprocessor: wallaby.postprocessors.webpack(webpackConfig, {
+    setupFiles: ['./config/test/unit/setup.js'],
+  }),
 
-    setup() {
-      window.__moduleBundler.loadTests();
-    },
-  };
-};
+  setup() {
+    window.__moduleBundler.loadTests();
+  },
+});

@@ -1,7 +1,5 @@
+import { Box, preventDefault } from '@voiceflow/ui';
 import React from 'react';
-
-import Box from '@/components/Box';
-import { preventDefault } from '@/utils/dom';
 
 import { Container, ContentContainer } from '../../common';
 import StartButton from './StartButton';

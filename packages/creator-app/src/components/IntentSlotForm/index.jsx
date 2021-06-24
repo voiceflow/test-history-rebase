@@ -1,10 +1,9 @@
 import { SlotType } from '@voiceflow/alexa-types';
+import { Badge, ErrorMessage } from '@voiceflow/ui';
 import React from 'react';
 import { withProps } from 'recompose';
 
-import Badge from '@/components/Badge';
 import ChatWithUsLink from '@/components/ChatLink';
-import ErrorMessage from '@/components/ErrorPages/ErrorMessage';
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
 import ListManager from '@/components/ListManager';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';

@@ -1,6 +1,6 @@
+import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
-import { Icon } from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
 import { AmazonInvocationName, GoogleInvocationName } from '@/pages/NewProject/DescriptionElements/InvocationName';
 import { AmazonLanguage, GeneralLanguage, GoogleLanguage } from '@/pages/NewProject/DescriptionElements/Languages';

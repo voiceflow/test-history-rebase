@@ -1,10 +1,8 @@
+import { IconVariant, Link, SvgIcon, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
 import { SectionToggleVariant, SectionVariant } from '@/components/Section';
-import SvgIcon, { IconVariant } from '@/components/SvgIcon';
-import { Link } from '@/components/Text';
-import { toast } from '@/components/Toast';
 import JsonUpload from '@/components/Upload/JsonUpload';
 import { APL_TOOL_LINK } from '@/constants';
 import { FormControl } from '@/pages/Canvas/components/Editor';

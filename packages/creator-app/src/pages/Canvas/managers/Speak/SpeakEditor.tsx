@@ -1,9 +1,9 @@
 import { CanvasNodeVisibility } from '@voiceflow/general-types';
+import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Checkbox, { CheckboxProps, CheckboxType } from '@/components/Checkbox';
 import OverflowMenu from '@/components/OverflowMenu';
-import Text from '@/components/Text';
 import { DialogType, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Project from '@/ducks/project';

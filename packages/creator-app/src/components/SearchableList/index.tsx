@@ -1,10 +1,10 @@
+import { useDidUpdateEffect } from '@voiceflow/ui';
 import _isFunction from 'lodash/isFunction';
 import _toLower from 'lodash/toLower';
 import React from 'react';
 import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 
 import CustomScrollbars, { Scrollbars } from '@/components/CustomScrollbars';
-import { useDidUpdateEffect } from '@/hooks';
 
 import { AddButton, Container, ScrollContainer, SearchContainer, SearchInput, WindowScrollerContainer } from './components';
 

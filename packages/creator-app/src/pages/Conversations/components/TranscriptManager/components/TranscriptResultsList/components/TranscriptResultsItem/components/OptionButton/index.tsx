@@ -1,7 +1,5 @@
+import { IconButton, IconButtonVariant, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
-
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import { stopPropagation } from '@/utils/dom';
 
 interface OptionButtonProps {
   onToggle: () => void;

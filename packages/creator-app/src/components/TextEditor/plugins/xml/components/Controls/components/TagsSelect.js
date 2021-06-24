@@ -1,17 +1,16 @@
-import Select from '@/components/Select';
-import { SearchInput } from '@/components/Select/components';
+import { SearchInput, Select } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const TagsSelect = styled(Select)`
   width: 126px;
 
   ${SearchInput} {
-    font-size: 13px;
+    color: #62778c;
     font-weight: 600;
+    font-size: 13px;
     line-height: 15px;
     text-transform: uppercase;
-
-    color: #62778c;
   }
 `;
 

@@ -1,4 +1,5 @@
-import { overflowTextStyles } from '@/components/Text';
+import { overflowTextStyles } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 import { LINE_HEIGHT } from '../constants';

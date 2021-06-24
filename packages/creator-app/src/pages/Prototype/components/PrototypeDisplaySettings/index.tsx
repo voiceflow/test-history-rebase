@@ -1,8 +1,7 @@
+import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
-import SvgIcon from '@/components/SvgIcon';
 import * as Project from '@/ducks/project';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';

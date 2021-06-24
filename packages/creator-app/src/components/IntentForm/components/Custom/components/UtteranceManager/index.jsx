@@ -1,15 +1,20 @@
+import {
+  Badge,
+  ClickableText,
+  ErrorMessage,
+  stopPropagation,
+  SvgIcon,
+  TippyTooltip,
+  toast,
+  useDidUpdateEffect,
+  useEnableDisable,
+} from '@voiceflow/ui';
 import cuid from 'cuid';
 import React from 'react';
 
-import Badge from '@/components/Badge';
 import ChatWithUsLink from '@/components/ChatLink';
-import ErrorMessage from '@/components/ErrorPages/ErrorMessage';
 import ListManager from '@/components/ListManager';
 import { ContentContainer, SectionToggleVariant } from '@/components/Section';
-import SvgIcon from '@/components/SvgIcon';
-import { ClickableText } from '@/components/Text';
-import TippyTooltip from '@/components/TippyTooltip';
-import { toast } from '@/components/Toast';
 import Utterance from '@/components/Utterance';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
@@ -17,10 +22,9 @@ import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useEnableDisable, useModals, usePermission } from '@/hooks';
+import { useModals, usePermission } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
-import { stopPropagation } from '@/utils/dom';
 import { isCustomizeableBuiltInIntent, validateUtterance } from '@/utils/intent';
 
 import ListManagerWrapper from '../../../ListManagerWrapper';

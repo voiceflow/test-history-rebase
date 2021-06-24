@@ -1,5 +1,5 @@
-import { ChildInput } from '@/components/Input/components';
-import InputWrapper from '@/components/Input/components/InputWrapper';
+import { ChildInput, InputWrapper } from '@voiceflow/ui';
+
 import Section from '@/components/Section';
 import { styled, units } from '@/hocs';
 

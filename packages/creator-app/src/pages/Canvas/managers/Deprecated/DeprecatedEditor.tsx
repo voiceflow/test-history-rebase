@@ -1,7 +1,7 @@
+import { Alert, AlertVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
-import Alert, { AlertVariant } from '@/components/Alert';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
 import { NodeData } from '@/models';
 import { NodeEditor } from '@/pages/Canvas/managers/types';

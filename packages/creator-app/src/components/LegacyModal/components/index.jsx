@@ -1,3 +1,4 @@
+import { stopImmediatePropagation } from '@voiceflow/ui';
 import cn from 'classnames';
 import _isBoolean from 'lodash/isBoolean';
 import React from 'react';
@@ -6,7 +7,6 @@ import { Modal as ReactstrapModal } from 'reactstrap';
 import { ModalsContext } from '@/contexts';
 import { css, styled } from '@/hocs';
 import { ClassName } from '@/styles/constants';
-import { stopImmediatePropagation } from '@/utils/dom';
 
 import ModalBackdrop from './ModalBackdrop';
 import ModalBody from './ModalBody';

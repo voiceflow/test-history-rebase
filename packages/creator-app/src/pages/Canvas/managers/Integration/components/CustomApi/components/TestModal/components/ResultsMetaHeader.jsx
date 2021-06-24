@@ -1,6 +1,6 @@
+import { SvgIcon, SvgIconContainer } from '@voiceflow/ui';
 import React from 'react';
 
-import SvgIcon, { Container as SvgIconContainer } from '@/components/SvgIcon';
 import { RESPONSE_COLOR_CODES as COLOR_CODES } from '@/constants';
 import { styled } from '@/hocs';
 

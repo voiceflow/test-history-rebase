@@ -1,9 +1,9 @@
 import { BaseRequest } from '@voiceflow/general-types';
+import { toast } from '@voiceflow/ui';
 import _isString from 'lodash/isString';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { toast } from '@/components/Toast';
 import * as Creator from '@/ducks/creator';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';

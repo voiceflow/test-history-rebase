@@ -1,3 +1,4 @@
+import { Input, removeHashFromHex } from '@voiceflow/ui';
 import { parseToRgb, rgba } from 'polished';
 import React from 'react';
 import { RGBColor } from 'react-color';
@@ -6,8 +7,6 @@ import ColorWrap, { InjectedColorProps } from 'react-color/lib/components/common
 import Hue from 'react-color/lib/components/common/Hue';
 import Saturation from 'react-color/lib/components/common/Saturation';
 
-import Input from '@/components/Input';
-import { removeHash } from '@/utils/colors';
 import { withEnterPress } from '@/utils/dom';
 
 import { AlphaContainer, Colors, Container, HueContainer, InputAction, InputContainer, PickerPointer, SaturationContainer } from './components';
@@ -32,7 +31,7 @@ const ColorPicker = ({
   onChangeCompleted,
   ...props
 }: ColorPickerProps & InjectedColorProps) => {
-  const [localHex, setLocalHex] = React.useState(() => removeHash(props.hex!));
+  const [localHex, setLocalHex] = React.useState(() => removeHashFromHex(props.hex!));
 
   const onSubmitHexColor = (hex: string, { completed }: { completed?: boolean } = {}) => {
     let color: string;
@@ -41,7 +40,7 @@ const ColorPicker = ({
       color = rgba(hex, props.rgb!.a ?? 1);
     } catch {
       color = props.hex!;
-      setLocalHex(removeHash(props.hex!));
+      setLocalHex(removeHashFromHex(props.hex!));
     }
 
     if (completed) {
@@ -69,12 +68,12 @@ const ColorPicker = ({
   };
 
   const onSelectColor = (color: string) => {
-    setLocalHex(removeHash(color));
+    setLocalHex(removeHashFromHex(color));
     onSubmitHexColor(color);
   };
 
   React.useEffect(() => {
-    setLocalHex(removeHash(props.hex!));
+    setLocalHex(removeHashFromHex(props.hex!));
   }, [props.hex]);
 
   return !props.onChange ? null : (
@@ -99,7 +98,7 @@ const ColorPicker = ({
             value={localHex}
             onBlur={onBlur}
             onFocus={onInputFocus}
-            onChange={({ currentTarget: { value } }) => setLocalHex(removeHash(value).substr(0, 6))}
+            onChange={({ currentTarget: { value } }) => setLocalHex(removeHashFromHex(value).substr(0, 6))}
             leftAction={<InputAction>HEX</InputAction>}
             onKeyPress={withEnterPress(onEnterPress)}
           />

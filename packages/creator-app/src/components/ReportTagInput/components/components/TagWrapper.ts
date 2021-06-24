@@ -1,4 +1,5 @@
-import * as SvgIcon from '@/components/SvgIcon';
+import { SvgIconContainer } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const TagWrapper = styled.span`
@@ -12,7 +13,7 @@ const TagWrapper = styled.span`
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.16);
   background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.85), #eef4f6);
 
-  & > ${SvgIcon.Container} {
+  & > ${SvgIconContainer} {
     color: ${({ theme }) => theme.iconColors.disabled};
     padding-left: 9.7px;
   }

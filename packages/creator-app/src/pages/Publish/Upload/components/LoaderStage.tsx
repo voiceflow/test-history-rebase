@@ -1,7 +1,5 @@
+import { Box, Spinner } from '@voiceflow/ui';
 import React from 'react';
-
-import Box from '@/components/Box';
-import { Spinner } from '@/components/Spinner';
 
 import StageContainer from './StageContainer';
 

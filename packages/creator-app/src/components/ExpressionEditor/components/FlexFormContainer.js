@@ -1,5 +1,5 @@
-import { flexStyles } from '@/components/Flex';
-import { SearchInputIcon } from '@/components/Select/components';
+import { flexStyles, SearchInputIcon } from '@voiceflow/ui';
+
 import { styled, units } from '@/hocs';
 
 import ExpressionMenuToggle from './ExpressionMenuToggle';

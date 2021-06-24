@@ -1,3 +1,4 @@
+import { useContextApi, useDidUpdateEffect, useSetup, useTeardown, withContext } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -6,8 +7,7 @@ import { JobStatus } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
-import { withContext } from '@/hocs/withContext';
-import { useContextApi, useDidUpdateEffect, useDispatch, useSetup, useTeardown } from '@/hooks';
+import { useDispatch } from '@/hooks';
 import { AlexaPublishJob, GooglePublishJob } from '@/models';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';

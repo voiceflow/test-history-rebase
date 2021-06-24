@@ -1,4 +1,5 @@
-import { FlexCenter } from '@/components/Flex';
+import { FlexCenter } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs';
 
 type DefaultVoiceContainerProps = {

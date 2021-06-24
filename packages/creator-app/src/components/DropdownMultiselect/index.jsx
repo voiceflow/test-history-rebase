@@ -1,12 +1,9 @@
+import { Dropdown, Menu, MenuItem, stopImmediatePropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
-import Dropdown from '@/components/Dropdown';
-import Menu, { MenuItem } from '@/components/Menu';
-import SvgIcon from '@/components/SvgIcon';
 import { useKeygen } from '@/hooks';
 import { ClassName } from '@/styles/constants';
-import { stopImmediatePropagation } from '@/utils/dom';
 
 import { Count, DropdownLabel, InnerContainer, Label, SectionLabel, TriggerContainer, ValueContainer } from './components';
 

@@ -1,3 +1,4 @@
+import { ButtonVariant, toast, withContext, withProvider } from '@voiceflow/ui';
 import cuid from 'cuid';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
@@ -5,13 +6,11 @@ import { compose } from 'recompose';
 
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
-import { ButtonVariant } from '@/components/Button';
-import { toast } from '@/components/Toast';
 import { BillingPeriod, ModalType, UNLIMITED_EDITORS_CONST, UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { connect, withContext, withProvider, withStripe } from '@/hocs';
+import { connect, withStripe } from '@/hocs';
 import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSmartReducer } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 

@@ -1,14 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
 import { ProductType } from '@voiceflow/alexa-types';
+import { Button, Dropdown, Input, SvgIcon } from '@voiceflow/ui';
 import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Button from '@/components/Button';
-import Dropdown from '@/components/Dropdown';
-import Input from '@/components/Input';
-import SvgIcon from '@/components/SvgIcon';
 import * as Product from '@/ducks/product';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';

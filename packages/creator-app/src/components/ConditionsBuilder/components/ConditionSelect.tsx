@@ -1,9 +1,7 @@
 import { ConditionsLogicInterface } from '@voiceflow/general-types';
+import { Dropdown, Menu, MenuItem, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import Dropdown from '@/components/Dropdown';
-import Menu, { MenuItem } from '@/components/Menu';
-import Text from '@/components/Text';
 import { ExpressionV2 } from '@/models';
 
 import AddConditionButton from './AddConditionButton';

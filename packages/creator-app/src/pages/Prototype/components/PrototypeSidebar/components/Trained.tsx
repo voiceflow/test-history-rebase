@@ -1,10 +1,8 @@
 import { PrototypeModel } from '@voiceflow/api-sdk';
+import { Box, Button, ButtonVariant, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { lightbulbGraphic } from '@/assets';
-import Box from '@/components/Box';
-import Button, { ButtonVariant } from '@/components/Button';
-import Text, { Link } from '@/components/Text';
 import * as Documentation from '@/config/documentation';
 import { PlatformType } from '@/constants';
 import { createPlatformSelector } from '@/utils/platform';

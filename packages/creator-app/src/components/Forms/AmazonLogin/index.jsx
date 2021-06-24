@@ -1,8 +1,8 @@
+import { Button } from '@voiceflow/ui';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Button from '@/components/Button';
 import { AMAZON_APP_ID } from '@/config';
 import * as Account from '@/ducks/account';
 import { useAsyncMountUnmount } from '@/hooks';

@@ -1,6 +1,6 @@
+import { Badge } from '@voiceflow/ui';
 import React from 'react';
 
-import Badge from '@/components/Badge';
 import ExpressionEditor from '@/components/ExpressionEditor';
 import { SectionToggleVariant } from '@/components/Section';
 import { FormControl } from '@/pages/Canvas/components/Editor';

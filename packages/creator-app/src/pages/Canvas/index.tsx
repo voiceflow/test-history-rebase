@@ -1,8 +1,9 @@
+import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { DiagramLoadingGate } from '@/gates';
 import { withLoadingGate } from '@/hocs';
-import { useDidUpdateEffect, useTheme } from '@/hooks';
+import { useTheme } from '@/hooks';
 import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';

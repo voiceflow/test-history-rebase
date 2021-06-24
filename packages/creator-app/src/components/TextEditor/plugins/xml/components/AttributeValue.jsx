@@ -1,6 +1,5 @@
+import { Select } from '@voiceflow/ui';
 import React from 'react';
-
-import Select from '@/components/Select';
 
 import { AttributeType } from '../constants';
 import AttributeValueText from './AttributeValueText';

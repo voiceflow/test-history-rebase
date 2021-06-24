@@ -1,6 +1,5 @@
-import Flex from '@/components/Flex';
-import { inputStyle } from '@/components/Input/styles';
-import { SelectWrapper } from '@/components/Select/components';
+import { Flex, inputStyle, SelectWrapper } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 const Container = styled(Flex)`
@@ -9,8 +8,8 @@ const Container = styled(Flex)`
   overflow: hidden;
 
   ${SelectWrapper} {
-    margin: -10px 0 -10px -16px;
     height: 40px;
+    margin: -10px 0 -10px -16px;
   }
 
   ${({ regularInput }) =>

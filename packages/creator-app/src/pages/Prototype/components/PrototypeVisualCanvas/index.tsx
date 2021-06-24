@@ -1,10 +1,9 @@
 import { VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import { Box, SvgIcon } from '@voiceflow/ui';
 import cuid from 'cuid';
 import React from 'react';
 
-import Box from '@/components/Box';
 import Canvas from '@/components/Canvas';
-import SvgIcon from '@/components/SvgIcon';
 import * as Project from '@/ducks/project';
 import * as Prototype from '@/ducks/prototype';
 import * as UI from '@/ducks/ui';

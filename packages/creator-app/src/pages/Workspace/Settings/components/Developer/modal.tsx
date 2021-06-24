@@ -1,12 +1,9 @@
+import { Box, Button, Input, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import Box from '@/components/Box';
-import Button from '@/components/Button';
-import Input from '@/components/Input';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import TextArea from '@/components/TextArea';
-import { toast } from '@/components/Toast';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 import { copy } from '@/utils/clipboard';

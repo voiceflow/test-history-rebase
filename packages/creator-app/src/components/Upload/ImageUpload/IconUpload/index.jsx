@@ -1,12 +1,10 @@
+import { LoadCircle, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useDropzone } from 'react-dropzone10';
 
-import { LoadCircle } from '@/components/Loader';
-import SvgIcon from '@/components/SvgIcon';
 import { RemoveButton } from '@/components/Upload/ImageUpload/FullImage/components';
 import { IMAGE_FILE_FORMATS } from '@/constants';
 import { withUpload } from '@/hocs';
-import { stopPropagation } from '@/utils/dom';
 import { noop } from '@/utils/functional';
 
 import { ErrorText, IconUploadContainer, IconUploadInput, ImageContainer } from './components';

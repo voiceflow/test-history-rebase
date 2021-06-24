@@ -1,8 +1,6 @@
+import { Box, FlexApart, Input } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
-import { FlexApart } from '@/components/Flex';
-import Input from '@/components/Input';
 import RemoveDropdown from '@/components/RemoveDropdown';
 import Section, { SectionVariant } from '@/components/Section';
 import { VariableTag } from '@/components/VariableTag';

@@ -1,7 +1,6 @@
+import { Icon, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import SvgIcon, { Icon } from '@/components/SvgIcon';
-import TippyTooltip from '@/components/TippyTooltip';
 import { PrototypeMode } from '@/ducks/prototype/types';
 import { useTheme } from '@/hooks';
 import { SlideOutDirection } from '@/styles/transitions';

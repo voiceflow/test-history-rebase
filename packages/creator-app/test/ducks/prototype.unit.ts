@@ -1,5 +1,6 @@
+import { generate } from '@voiceflow/ui';
+
 import * as Prototype from '@/ducks/prototype';
-import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 

@@ -1,0 +1,146 @@
+import './PlanModal.css';
+
+import { Button, FlexApart, Select } from '@voiceflow/ui';
+import _upperFirst from 'lodash/upperFirst';
+import moment from 'moment';
+import React from 'react';
+import DayPicker from 'react-day-picker';
+import { Modal, ModalBody } from 'reactstrap';
+
+import { PlanType } from '@/constants';
+import * as Admin from '@/ducks/adminV2';
+import { connect } from '@/hocs';
+
+class PlanModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleDayClick = this.handleDayClick.bind(this);
+    this.state = {
+      selectedDay: undefined,
+      seats: props.workspace.seats || 1,
+    };
+  }
+
+  handleDayClick(day, { selected, disabled }) {
+    if (disabled) {
+      // Day is disabled, do nothing
+      return;
+    }
+    if (selected) {
+      // Unselect the day if already selected
+      this.setState({ selectedDay: day });
+      return;
+    }
+    this.setState({ selectedDay: day });
+  }
+
+  updatePlan = (planID) => {
+    this.props.updateWorkspace(this.props.workspace?.team_id, { plan: planID });
+  };
+
+  updateSeats = (seats) => () => {
+    this.props.updateWorkspace(this.props.workspace?.team_id, { seats });
+  };
+
+  updateExpiry = (expiry) => () => {
+    this.props.updateWorkspace(this.props.workspace?.team_id, { expiry });
+  };
+
+  getSelectedDays = () => {
+    if (this.props.workspace && this.props.workspace.expiry && !this.state.selectedDay) {
+      return { from: new Date(), to: new Date(this.props.workspace.expiry) };
+    }
+    return { from: new Date(), to: this.state.selectedDay };
+  };
+
+  render() {
+    const modifiersStyles = {
+      selected: {
+        color: '#3191FF',
+        backgroundColor: '#A8D9FF',
+      },
+    };
+
+    const selectedDays = this.getSelectedDays();
+
+    const { workspace } = this.props;
+    const { seats } = this.state;
+
+    return (
+      <div>
+        <Modal isOpen={this.props.showPlanModal} toggle={this.props.togglePlanModal}>
+          <div className="am__title" onClick={this.props.togglePlanModal}>
+            Plan Controls
+            <div className="close am__close" />
+          </div>
+          <ModalBody>
+            <div>
+              <div className="ctg__charge_overview">
+                <div className="ctg__charge_for">Editing plan for:</div>
+                <div className="ctg__charge_header">Team #{workspace.team_id}</div>
+                <div className="ctg__receipt_divider"></div>
+                <div className="ctg__charge_amount">
+                  <div>Current Plan: {PlanType[workspace.plan]?.toUpperCase() || 'BASIC'}</div>
+                  <div>Expiry: {workspace.expiry ? moment(workspace.expiry).format('MMMM Do YYYY, h:mm:ss a') : 'No expiry set'}</div>
+                  <div className="ctg__date-picker">
+                    <DayPicker
+                      onDayClick={this.handleDayClick}
+                      selectedDays={selectedDays}
+                      disabledDays={{ before: new Date() }}
+                      modifiersStyles={modifiersStyles}
+                    />
+                    <div className="ctg__trial_details">
+                      <div>Plan will expire {moment(this.state.selectedDay).add(1, 'd').fromNow()}</div>
+                      <div>Plan Expiry: {moment(this.state.selectedDay).add(1, 'd').format('MMM Do YYYY')} (expires at midnight)</div>
+                    </div>
+                  </div>
+                  <FlexApart>
+                    <Button variant="secondary" onClick={this.updateExpiry(moment(this.state.selectedDay).add(1, 'd').format())}>
+                      Update Expiry
+                    </Button>
+                    <Button variant="secondary" onClick={this.updateExpiry(null)}>
+                      Cancel Expiry
+                    </Button>
+                  </FlexApart>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div className="ctg__seats">
+              Seats:
+              <input
+                type="number"
+                id="seats"
+                min="1"
+                value={this.state.seats}
+                onChange={(e) => this.setState({ seats: parseInt(e.target.value, 10) })}
+              />
+              <Button variant="secondary" onClick={this.updateSeats(seats)}>
+                Update Seats
+              </Button>
+            </div>
+
+            <hr />
+
+            <label>
+              Set Plan to: (currently <b>{_upperFirst(workspace.plan || 'Starter')}</b>)
+            </label>
+
+            <Select
+              value={workspace.plan || PlanType.STARTER}
+              options={[PlanType.STARTER, PlanType.STUDENT, PlanType.PRO, PlanType.ENTERPRISE]}
+              getOptionLabel={_upperFirst}
+              onSelect={this.updatePlan}
+            />
+          </ModalBody>
+        </Modal>
+      </div>
+    );
+  }
+}
+
+const mapDispatchToProps = {
+  updateWorkspace: Admin.updateWorkspace,
+};
+
+export default connect(null, mapDispatchToProps)(PlanModal);

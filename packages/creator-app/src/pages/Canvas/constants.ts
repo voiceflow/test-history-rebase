@@ -1,5 +1,6 @@
+import { hexToRGBA } from '@voiceflow/ui';
+
 import { ClassName, Identifier } from '@/styles/constants';
-import { hexToRGBA } from '@/utils/colors';
 
 export const CANVAS_HIDDEN_CLASSNAME = `${Identifier.CANVAS}--hidden`;
 export const CANVAS_ACTIVATION_CLASSNAME = `${Identifier.CANVAS}--activation`;

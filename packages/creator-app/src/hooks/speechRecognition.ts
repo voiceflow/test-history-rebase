@@ -1,13 +1,12 @@
+import { toast, useCache } from '@voiceflow/ui';
 import React from 'react';
 import SpeechRecognition, { useSpeechRecognition as useReactSpeechRecognition } from 'react-speech-recognition';
 import RecordRTC from 'recordrtc';
 import io from 'socket.io-client';
 
-import { toast } from '@/components/Toast';
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
 import { BCP_LANGUAGE_CODE } from '@/constants';
 
-import { useCache } from './cache';
 import { useMicrophonePermission } from './microphone';
 
 // eslint-disable-next-line import/prefer-default-export

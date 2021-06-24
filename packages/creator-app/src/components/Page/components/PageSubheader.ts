@@ -1,6 +1,5 @@
+import { FlexApart } from '@voiceflow/ui';
 import styled from 'styled-components';
-
-import { FlexApart } from '@/components/Flex';
 
 const PageSubHeader = styled(FlexApart)`
   box-sizing: border-box;

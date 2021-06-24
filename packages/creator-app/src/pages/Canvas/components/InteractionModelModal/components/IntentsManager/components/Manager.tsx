@@ -1,13 +1,10 @@
+import { ClickableText, ErrorMessage, FlexApart, Input } from '@voiceflow/ui';
 import React from 'react';
 
-import ErrorMessage from '@/components/ErrorPages/ErrorMessage';
-import { FlexApart } from '@/components/Flex';
-import Input from '@/components/Input';
 import IntentForm from '@/components/IntentForm';
 import { StandaloneIntentSlotForm } from '@/components/IntentSlotForm';
 import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
-import { ClickableText } from '@/components/Text';
 import * as Intents from '@/ducks/intent';
 import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
 import * as Project from '@/ducks/project';
@@ -91,7 +88,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 
         {nameError && (
           <FadeLeftContainer>
-            <ErrorMessage style={{ marginBottom: '0px', paddingTop: '10px' }}>{nameError}</ErrorMessage>
+            <ErrorMessage style={{ marginBottom: '0', paddingTop: '10px' }}>{nameError}</ErrorMessage>
           </FadeLeftContainer>
         )}
       </Section>

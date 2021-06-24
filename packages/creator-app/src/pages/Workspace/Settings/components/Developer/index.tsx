@@ -1,15 +1,10 @@
+import { Box, BoxFlexApart, ClickableText, Dropdown, IconButton, IconButtonVariant, Spinner, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import client from '@/client';
-import Box, { FlexApart } from '@/components/Box';
-import Dropdown from '@/components/Dropdown';
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import { SettingsSection } from '@/components/Settings';
-import { Spinner } from '@/components/Spinner';
 import { TableContainer, TableRow } from '@/components/Table';
-import Text, { ClickableText } from '@/components/Text';
-import { toast } from '@/components/Toast';
 import { ModalType } from '@/constants';
 import { setConfirm } from '@/ducks/modal';
 import * as Session from '@/ducks/session';
@@ -70,7 +65,7 @@ const APIKeyPage: React.FC = () => {
 
   return (
     <SettingsSection title="API Keys">
-      <FlexApart px={32} py={24}>
+      <BoxFlexApart px={32} py={24}>
         <Text color="secondary">({apiKeys.length}) Existing API Keys</Text>
         <ClickableText
           onClick={() =>
@@ -82,7 +77,7 @@ const APIKeyPage: React.FC = () => {
         >
           Create New API Key
         </ClickableText>
-      </FlexApart>
+      </BoxFlexApart>
       {!!apiKeys.length && (
         <TableContainer topBorder columns={[1]}>
           {apiKeys.map(({ _id: keyID, name }) => (

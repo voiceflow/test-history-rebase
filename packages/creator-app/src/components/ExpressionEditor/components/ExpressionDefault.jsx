@@ -1,7 +1,6 @@
+import { SvgIcon } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
-
-import SvgIcon from '@/components/SvgIcon';
 
 import { ARITHMETIC, LEVELS } from '../constants';
 import ExpressionOperator from './ExpressionOperator';

@@ -1,7 +1,6 @@
+import { FlexApart, Select } from '@voiceflow/ui';
 import React from 'react';
 
-import { FlexApart } from '@/components/Flex';
-import Select from '@/components/Select';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 

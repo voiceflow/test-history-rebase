@@ -1,4 +1,4 @@
-import { KeyName } from '@/constants';
+import { KeyName } from '@voiceflow/ui';
 
 import { deleteHandler, pasteTextHandler } from './utils';
 

@@ -4,7 +4,6 @@ export * from './lazy';
 export * from './platformAware';
 export * from './styled';
 export * from './withBatchLoadingGate';
-export * from './withContext';
 export * from './withDebug';
 export * from './withExternalResources';
 export * from './withHook';

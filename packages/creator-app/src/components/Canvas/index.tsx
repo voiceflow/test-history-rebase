@@ -1,8 +1,7 @@
 import composeRefs from '@seznam/compose-react-refs';
+import { IS_SAFARI, OverlayValue, withOverlay } from '@voiceflow/ui';
 import React from 'react';
 
-import { isSafari } from '@/config';
-import { OverlayValue, withOverlay } from '@/contexts';
 import { Identifier } from '@/styles/constants';
 import { ANIMATION_SPEED } from '@/styles/theme';
 import { Pair, Point, Viewport } from '@/types';
@@ -372,7 +371,7 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
 
     addListener('wheel', { passive: false });
 
-    if (isSafari) {
+    if (IS_SAFARI) {
       addListener('gesturestart');
       addListener('gesturechange');
     }

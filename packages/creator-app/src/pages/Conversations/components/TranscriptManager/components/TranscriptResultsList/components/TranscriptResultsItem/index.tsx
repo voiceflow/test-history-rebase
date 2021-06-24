@@ -1,6 +1,6 @@
+import { Dropdown } from '@voiceflow/ui';
 import React from 'react';
 
-import Dropdown from '@/components/Dropdown';
 import { Permission } from '@/config/permissions';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';

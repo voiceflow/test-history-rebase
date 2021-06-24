@@ -1,4 +1,5 @@
-import Input from '@/components/Input';
+import { Input } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const StyledInput = styled(Input)`

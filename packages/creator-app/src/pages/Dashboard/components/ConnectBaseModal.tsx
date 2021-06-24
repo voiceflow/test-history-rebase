@@ -1,19 +1,16 @@
+import { Box, Button, ButtonVariant, Link, LoadCircle, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
 import AlertMessage, { AlertMessageVariant } from '@/components/AlertMessage';
-import Box from '@/components/Box';
-import Button, { ButtonVariant } from '@/components/Button';
 import AmazonLoginButton from '@/components/Forms/AmazonLogin';
 import GoogleLoginButton from '@/components/Forms/GoogleLogin';
-import { LoadCircle } from '@/components/Loader';
 import { ModalFooter } from '@/components/Modal';
-import { Link } from '@/components/Text';
 import { GOOGLE_OAUTH_SCOPES, ModalType, PlatformType } from '@/constants';
 import { AlexaStageType, GoogleStageType } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
-import { useModals, useSmartReducerV2 } from '@/hooks';
+import { useModals } from '@/hooks';
 import { Account } from '@/models';
 import * as Models from '@/models';
 import {

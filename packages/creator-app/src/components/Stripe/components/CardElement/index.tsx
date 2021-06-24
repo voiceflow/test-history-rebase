@@ -1,11 +1,8 @@
+import { Box, Icon, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 import { CardElement, ReactStripeElements } from 'react-stripe-elements';
 
-import { Box } from '@/components/Box';
-import SvgIcon, { Icon } from '@/components/SvgIcon';
-import TippyTooltip from '@/components/TippyTooltip';
 import { useEnableDisable, useToggle } from '@/hooks';
-import { preventDefault } from '@/utils/dom';
 
 import { StripeCardElementWrapper, stripeInputStyle, Wrapper } from './components';
 

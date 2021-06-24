@@ -1,7 +1,7 @@
 import { DeviceType, Dimensions } from '@voiceflow/general-types';
+import { Icon } from '@voiceflow/ui';
 
 import { SubMenuItem } from '@/components/SubMenu';
-import { Icon } from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
 import { PrototypeMode } from '@/ducks/prototype';
 import { Identifier } from '@/styles/constants';

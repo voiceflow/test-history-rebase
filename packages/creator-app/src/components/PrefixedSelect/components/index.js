@@ -1,6 +1,5 @@
-import { FlexApart } from '@/components/Flex';
-import Select from '@/components/Select';
-import { SearchInput } from '@/components/Select/components';
+import { FlexApart, SearchInput, Select } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 export { default as Prefix } from './Prefix';

@@ -1,10 +1,8 @@
+import { Box, Flex, toast } from '@voiceflow/ui';
 import React from 'react';
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import { GoogleLoginResponse } from 'react-google-login';
 
-import { Box } from '@/components/Box';
-import Flex from '@/components/Flex';
-import { toast } from '@/components/Toast';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import * as AccountDuck from '@/ducks/account';
 import * as Session from '@/ducks/session';

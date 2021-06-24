@@ -1,7 +1,6 @@
+import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import * as React from 'react';
 
-import SvgIcon from '@/components/SvgIcon';
-import Tooltip from '@/components/TippyTooltip';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import { useHotKeys } from '@/hooks';
@@ -56,37 +55,37 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
 
   return (
     <ControlsContainer>
-      <Tooltip title="Text" position="top">
+      <TippyTooltip title="Text" position="top">
         <ControlButton active={inputMode === Prototype.InputMode.TEXT} onClick={() => setInputMode(Prototype.InputMode.TEXT)}>
           <SvgIcon icon="text" size={16} color={ICON_COLOR} />
         </ControlButton>
-      </Tooltip>
+      </TippyTooltip>
 
-      <Tooltip title="Voice" position="top">
+      <TippyTooltip title="Voice" position="top">
         <ControlButton active={inputMode === Prototype.InputMode.VOICE} onClick={() => setInputMode(Prototype.InputMode.VOICE)}>
           <SvgIcon icon="microphone" size={16} color={ICON_COLOR} />
         </ControlButton>
-      </Tooltip>
+      </TippyTooltip>
 
-      <Tooltip title="Buttons" position="top">
+      <TippyTooltip title="Buttons" position="top">
         <ControlButton active={showButtons} onClick={() => setShowButtons(!showButtons)}>
           <SvgIcon icon="touch" size={16} color={ICON_COLOR} />
         </ControlButton>
-      </Tooltip>
+      </TippyTooltip>
 
       <ButtonGroupSplitter />
 
-      <Tooltip title="Back" position="top">
+      <TippyTooltip title="Back" position="top">
         <ControlButton active={false} disabled={goBackDisabled} onClick={handleOnBackward} style={{ transform: 'scaleX(-1)' }}>
           <SvgIcon icon="forward" size={16} color={ICON_COLOR} />
         </ControlButton>
-      </Tooltip>
+      </TippyTooltip>
 
-      <Tooltip title="Forward" position="top">
+      <TippyTooltip title="Forward" position="top">
         <ControlButton disabled={goForwardDisabled} active={false} onClick={handleOnForward}>
           <SvgIcon icon="forward" size={16} color={ICON_COLOR} />
         </ControlButton>
-      </Tooltip>
+      </TippyTooltip>
 
       <ButtonGroupSplitter />
     </ControlsContainer>

@@ -1,10 +1,6 @@
+import { Box, BoxFlex, Dropdown, Icon, Input, InputVariant, KeyName, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Box, { Flex } from '@/components/Box';
-import Dropdown from '@/components/Dropdown';
-import InlineInput, { InputVariant } from '@/components/Input';
-import SvgIcon, { Icon } from '@/components/SvgIcon';
-import { KeyName } from '@/constants';
 import { Sentiment, SentimentArray } from '@/models';
 import { SentimentToSVGName } from '@/pages/Conversations/constants';
 
@@ -70,8 +66,8 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({ menu, selectedT
                 );
               })}
 
-              <Flex onClick={onToggle} flex={1}>
-                <InlineInput
+              <BoxFlex onClick={onToggle} flex={1}>
+                <Input
                   inline
                   ref={inputRef}
                   value={searchedTag}
@@ -81,7 +77,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({ menu, selectedT
                   placeholder={selectedTags.length ? '' : 'Add Tags'}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSearch(e.target.value)}
                 />
-              </Flex>
+              </BoxFlex>
             </InputWrapper>
           </Box>
         );

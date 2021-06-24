@@ -1,7 +1,5 @@
+import { Input, KeyName } from '@voiceflow/ui';
 import React from 'react';
-
-import Input from '@/components/Input';
-import { KeyName } from '@/constants';
 
 import Container from './Container';
 import Description from './Description';

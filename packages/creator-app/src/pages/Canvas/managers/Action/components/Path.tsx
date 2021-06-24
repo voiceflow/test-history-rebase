@@ -1,13 +1,9 @@
+import { Box, BoxFlexCenter, Input, swallowEvent, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Box, { FlexCenter } from '@/components/Box';
 import Checkbox from '@/components/Checkbox';
-import Input from '@/components/Input';
 import { Minus } from '@/components/InteractiveIcon';
-import Text from '@/components/Text';
-import Tooltip from '@/components/TippyTooltip';
 import { styled } from '@/hocs';
-import { swallowEvent } from '@/utils/dom';
 
 type Path = { label: string; isDefault?: boolean };
 
@@ -19,7 +15,7 @@ type PathSectionProps = {
   onRemove?: () => void;
 };
 
-const Container = styled(FlexCenter)`
+const Container = styled(BoxFlexCenter)`
   :not(:last-child) {
     margin-bottom: 12px;
   }
@@ -37,15 +33,15 @@ const PathSection: React.FC<PathSectionProps> = ({ path, index, onUpdate, onRemo
       onChange={(e) => onUpdate({ label: e.target.value })}
       placeholder="Add path name"
       rightAction={
-        <Tooltip title={path.isDefault ? 'Default Path' : 'Assign as default path'} position="top" distance={8}>
+        <TippyTooltip title={path.isDefault ? 'Default Path' : 'Assign as default path'} position="top" distance={8}>
           <Checkbox checked={path.isDefault} onChange={swallowEvent(() => updateDefaultPath(index))} padding={false} />
-        </Tooltip>
+        </TippyTooltip>
       }
     />
     <Box ml={16}>
-      <Tooltip title={onRemove ? 'Remove path' : 'Action step must have at least 1 path'} position="top" distance={8}>
+      <TippyTooltip title={onRemove ? 'Remove path' : 'Action step must have at least 1 path'} position="top" distance={8}>
         <Minus onClick={onRemove} disabled={!onRemove} />
-      </Tooltip>
+      </TippyTooltip>
     </Box>
   </Container>
 );

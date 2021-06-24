@@ -1,10 +1,12 @@
+import { toast } from '@voiceflow/ui';
+
 import client from '@/client';
 import reportTagsAdapter from '@/client/adapters/reportTags';
-import { toast } from '@/components/Toast';
-import { addReportTag, patchReportTag, removeReportTag, replaceReportTags } from '@/ducks/reportTag/actions';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { Sentiment, SystemTag } from '@/models';
 import { Thunk } from '@/store/types';
+
+import { addReportTag, patchReportTag, removeReportTag, replaceReportTags } from './actions';
 
 export const DUMMY_DATA = [
   {

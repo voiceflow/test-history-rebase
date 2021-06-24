@@ -1,6 +1,6 @@
+import { FlexCenter } from '@voiceflow/ui';
 import { rgba } from 'polished';
 
-import { FlexCenter } from '@/components/Flex';
 import { css, styled, transition } from '@/hocs';
 
 export const Container = styled.div<{ disabled?: boolean }>`

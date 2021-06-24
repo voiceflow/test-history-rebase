@@ -1,11 +1,7 @@
+import { BoxFlexEnd, IconVariant, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { FlexEnd } from '@/components/Box';
-import SvgIcon from '@/components/SvgIcon';
-import Tooltip from '@/components/TippyTooltip';
-import { IconVariant } from '@/constants';
 import { useTheme } from '@/hooks';
-import { preventDefault } from '@/utils/dom';
 
 import ButtonWrapper from './ButtonWrapper';
 
@@ -39,19 +35,19 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   const theme = useTheme();
 
   return (
-    <FlexEnd flex={1}>
+    <BoxFlexEnd flex={1}>
       {!testEnded && (
         <>
-          <Tooltip title="Reset Test" disabled={disabled}>
+          <TippyTooltip title="Reset Test" disabled={disabled}>
             <ButtonWrapper disabled={disabled} onClick={disabled ? undefined : onReset}>
               <SvgIcon icon="restart" variant={disabled ? IconVariant.TERTIARY : IconVariant.STANDARD} clickable={!disabled} />
             </ButtonWrapper>
-          </Tooltip>
-          <Tooltip title={isMuted ? 'Unmute Dialog Audio' : 'Mute Dialog Audio'}>
+          </TippyTooltip>
+          <TippyTooltip title={isMuted ? 'Unmute Dialog Audio' : 'Mute Dialog Audio'}>
             <ButtonWrapper onMouseDown={preventDefault()} onClick={onMute}>
               <SvgIcon icon={isMuted ? 'soundOff' : 'sound'} variant={IconVariant.STANDARD} clickable={!disabled} />
             </ButtonWrapper>
-          </Tooltip>
+          </TippyTooltip>
         </>
       )}
 
@@ -71,7 +67,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           <SvgIcon icon="restart" color={theme?.backgrounds.white} />
         </ButtonWrapper>
       )}
-    </FlexEnd>
+    </BoxFlexEnd>
   );
 };
 

@@ -1,9 +1,7 @@
 import { ExpressionTypeV2 } from '@voiceflow/general-types';
+import { BoxFlex, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { Flex } from '@/components/Box';
-import SvgIcon from '@/components/SvgIcon';
-import Text from '@/components/Text';
 import { transformVariableToString } from '@/utils/slot';
 
 import { ExpressionDisplayLabel } from '../../constants';
@@ -39,9 +37,9 @@ const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ expression, isActiv
           <b>{leftValue || placeholder}</b> {ExpressionDisplayLabel[logicType!].toLowerCase()} <b>{rightValue}</b>
         </Text>
       </LabelWrapper>
-      <Flex pr={16} pl={12}>
+      <BoxFlex pr={16} pl={12}>
         <SvgIcon icon="close" size={10} color="#6e849a" onClick={onDelete} enableOpacity />
-      </Flex>
+      </BoxFlex>
     </ConditionDisplayContainer>
   );
 };

@@ -1,6 +1,6 @@
+import { Select } from '@voiceflow/ui';
 import React from 'react';
 
-import Select from '@/components/Select';
 import { allProductsSelector, productByIDSelector } from '@/ducks/product';
 import { connect } from '@/hocs';
 

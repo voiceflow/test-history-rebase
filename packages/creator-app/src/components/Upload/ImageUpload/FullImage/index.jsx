@@ -1,15 +1,13 @@
 import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
+import { LoadCircle, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useDropzone } from 'react-dropzone10';
 import { Tooltip } from 'react-tippy';
 
-import { LoadCircle } from '@/components/Loader';
-import SvgIcon from '@/components/SvgIcon';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import { HTTPS_URL_REGEX, IMAGE_FILE_FORMATS } from '@/constants';
 import { withUpload } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
-import { stopPropagation } from '@/utils/dom';
 import { noop } from '@/utils/functional';
 
 import { ErrorText } from '../IconUpload/components';

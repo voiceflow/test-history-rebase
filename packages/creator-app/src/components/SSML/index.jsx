@@ -1,11 +1,10 @@
+import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import { prettifyGoogleVoicesLong, prettifyVoice } from '@/components/SSML/utils';
-import SvgIcon from '@/components/SvgIcon';
 import { PluginType } from '@/components/TextEditor';
-import TippyTooltip from '@/components/TippyTooltip';
 import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
 import { useFeature } from '@/hooks';

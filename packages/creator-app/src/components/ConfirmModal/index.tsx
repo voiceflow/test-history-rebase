@@ -1,7 +1,6 @@
+import { Box, Button } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
-import Button from '@/components/Button';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import { useEnableDisable, useModals } from '@/hooks';

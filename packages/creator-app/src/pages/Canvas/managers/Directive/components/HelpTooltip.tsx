@@ -1,6 +1,6 @@
+import { Link } from '@voiceflow/ui';
 import React from 'react';
 
-import { Link } from '@/components/Text';
 import { Paragraph } from '@/components/Tooltip';
 import { DOCS_LINK, PlatformType } from '@/constants';
 

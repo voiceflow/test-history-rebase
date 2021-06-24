@@ -1,7 +1,7 @@
+import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { supportGraphicSmall } from '@/assets';
-import Button, { ButtonVariant } from '@/components/Button';
 
 import { ButtonContainer, ButtonLink, Description, StageContainer } from '../components';
 

@@ -1,6 +1,6 @@
+import { Badge } from '@voiceflow/ui';
 import React from 'react';
 
-import Badge from '@/components/Badge';
 import { SectionVariant } from '@/components/Section';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';

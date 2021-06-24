@@ -1,16 +1,12 @@
+import { Box, BoxFlexCenter, ClickableText, LoadCircle, SvgIcon, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
 import moment from 'moment';
 import React from 'react';
 
 import { noIntentsGraphic } from '@/assets';
 import client from '@/client';
-import Box, { FlexCenter } from '@/components/Box';
-import { LoadCircle } from '@/components/Loader';
 import { SettingsSection } from '@/components/Settings';
-import SvgIcon from '@/components/SvgIcon';
 import { Descriptor, TableContainer, TableHeader, TableRow } from '@/components/Table';
-import { ClickableText } from '@/components/Text/components/ClickableText';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';
@@ -92,9 +88,9 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
     <SettingsSection title="All Versions">
       <Descriptor>New versions are created every time your project is uploaded to {name}.</Descriptor>
       {loading ? (
-        <FlexCenter minHeight={320}>
+        <BoxFlexCenter minHeight={320}>
           <LoadCircle />
-        </FlexCenter>
+        </BoxFlexCenter>
       ) : (
         <FadeLeftContainer>
           {versions.length ? (
@@ -124,12 +120,12 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
               ))}
             </TableContainer>
           ) : (
-            <FlexCenter minHeight={320}>
+            <BoxFlexCenter minHeight={320}>
               <Box textAlign="center">
                 <img src={noIntentsGraphic} height={64} alt="no intents" />
                 <Box mt={10}>No versions exist</Box>
               </Box>
-            </FlexCenter>
+            </BoxFlexCenter>
           )}
         </FadeLeftContainer>
       )}

@@ -1,10 +1,10 @@
+import { swallowEvent } from '@voiceflow/ui';
 import mouseEventOffset from 'mouse-event-offset';
 import React from 'react';
 
 import { EngineContext, PortEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useEditingMode } from '@/pages/Skill/hooks';
-import { swallowEvent } from '@/utils/dom';
 
 import { InternalPortInstance } from './types';
 

@@ -1,6 +1,6 @@
+import { Text } from '@voiceflow/ui';
 import React from 'react';
 
-import Text from '@/components/Text';
 import { useInterval } from '@/hooks';
 import { getAbbrevatedFormat, getTimeDuration } from '@/utils/time';
 

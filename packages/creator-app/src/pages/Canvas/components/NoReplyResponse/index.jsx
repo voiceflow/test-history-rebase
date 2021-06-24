@@ -1,7 +1,7 @@
+import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Section from '@/components/Section';
-import { Text } from '@/components/Text';
 import { RepromptType } from '@/constants';
 
 import { InfoTooltip } from './components';

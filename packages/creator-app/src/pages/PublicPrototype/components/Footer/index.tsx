@@ -1,6 +1,5 @@
+import { BoxFlex } from '@voiceflow/ui';
 import React from 'react';
-
-import { Flex } from '@/components/Box';
 
 import { ActionButtons, Container, LeftEdge, OuterContainer, RightEdge } from './components';
 
@@ -16,10 +15,10 @@ const Footer: React.FC<FooterProps> = ({ children, ...props }) => (
     <LeftEdge />
 
     <Container>
-      <Flex flex={2}>{children}</Flex>
-      <Flex flex={1} justifyContent="end" flexDirection="row">
+      <BoxFlex flex={2}>{children}</BoxFlex>
+      <BoxFlex flex={1} justifyContent="end" flexDirection="row">
         <ActionButtons {...props} />
-      </Flex>
+      </BoxFlex>
     </Container>
 
     <RightEdge />

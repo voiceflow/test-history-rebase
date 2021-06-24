@@ -1,11 +1,9 @@
 import './ImportModal.css';
 
+import { Button, StatusCode, toast } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
-import { StatusCode } from '@/client/fetch';
-import Button from '@/components/Button';
 import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
-import { toast } from '@/components/Toast';
 import { hasPermission, Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';

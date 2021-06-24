@@ -1,6 +1,6 @@
+import { toast } from '@voiceflow/ui';
 import React from 'react';
 
-import { toast } from '@/components/Toast';
 import { useSetup } from '@/hooks';
 import { AlexaExportJob, GeneralJob, GoogleExportJob, JobStageData } from '@/models';
 import { DataTypes, download } from '@/utils/dom';

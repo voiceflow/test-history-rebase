@@ -1,7 +1,6 @@
+import { Box, BoxFlex, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import Box, { Flex } from '@/components/Box';
-import Text, { Link } from '@/components/Text';
 import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
@@ -63,7 +62,7 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
     <ContentContainer>
       <ContentSection>
         <Section title="Runtime Export">
-          <Flex>
+          <BoxFlex>
             <Text>
               {getPlatformValue(
                 platform,
@@ -108,7 +107,7 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
                 <ExportPopup export />
               </UploadPopup>
             </ActionContainer>
-          </Flex>
+          </BoxFlex>
         </Section>
       </ContentSection>
     </ContentContainer>

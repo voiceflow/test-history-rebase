@@ -1,3 +1,4 @@
+import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Router from '@/ducks/router';
@@ -5,7 +6,6 @@ import { connect } from '@/hocs';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { stopPropagation } from '@/utils/dom';
 import { getDistinctPlatformValue } from '@/utils/platform';
 
 export type CommandStepProps = {

@@ -1,5 +1,4 @@
-import { isChrome, isChromeOS, isEdge, isFirefox, isMac, isWindows } from '@/config';
-import { preventDefault } from '@/utils/dom';
+import { IS_CHROME, IS_CHROME_OS, IS_EDGE, IS_FIREFOX, IS_MAC, IS_WINDOWS, preventDefault } from '@voiceflow/ui';
 
 import { ANIMATION_TIMEOUT, ControlType } from '../../constants';
 import MouseControls from '../mouse/controls';
@@ -68,7 +67,7 @@ class TrackPadControls extends MouseControls {
     let { deltaX } = event;
     let { deltaY } = event;
 
-    if (!isMac && event.shiftKey) {
+    if (!IS_MAC && event.shiftKey) {
       const temp = deltaY;
       deltaY = deltaX;
       deltaX = temp;
@@ -81,14 +80,14 @@ class TrackPadControls extends MouseControls {
     if (isWheelDeltaSupported) {
       wheelDeltaX = event.wheelDeltaX!;
       wheelDeltaY = event.wheelDeltaY!;
-      if (!isMac && event.shiftKey) {
+      if (!IS_MAC && event.shiftKey) {
         const temp = wheelDeltaY;
         wheelDeltaY = wheelDeltaX;
         wheelDeltaX = temp;
       }
     }
 
-    if (isWindows && isChrome) {
+    if (IS_WINDOWS && IS_CHROME) {
       const { devicePixelRatio } = window;
       deltaX /= devicePixelRatio;
       deltaY /= devicePixelRatio;
@@ -99,15 +98,15 @@ class TrackPadControls extends MouseControls {
     deltaX = -deltaX;
     deltaY = -deltaY;
 
-    if (isChromeOS) {
+    if (IS_CHROME_OS) {
       if (event.ctrlKey && (wheelDeltaY === 120 || wheelDeltaY === -120)) {
         deltaY *= 5;
       }
-    } else if (isWindows) {
+    } else if (IS_WINDOWS) {
       let lowResMouse = false;
       let lowResCutoff = 120 - 1;
 
-      if (isChrome || isEdge) {
+      if (IS_CHROME || IS_EDGE) {
         deltaX = wheelDeltaX;
         deltaY = wheelDeltaY;
         lowResMouse = Math.abs(deltaX) >= lowResCutoff || Math.abs(deltaY) >= lowResCutoff;
@@ -116,7 +115,7 @@ class TrackPadControls extends MouseControls {
           deltaX /= 120;
           deltaY /= 120;
         }
-      } else if (isFirefox) {
+      } else if (IS_FIREFOX) {
         if (deltaMode) {
           deltaX *= 40;
           deltaY *= 40;

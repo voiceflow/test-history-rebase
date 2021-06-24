@@ -1,6 +1,6 @@
+import { Flex } from '@voiceflow/ui';
 import React from 'react';
 
-import Flex from '@/components/Flex';
 import { Minus } from '@/components/InteractiveIcon';
 import VariablesInput from '@/components/VariablesInput';
 import { styled } from '@/hocs';

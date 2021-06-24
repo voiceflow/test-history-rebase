@@ -1,7 +1,7 @@
+import { Box } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import Box from '@/components/Box';
 import { ClassName } from '@/styles/constants';
 
 import { ContentContainer, Placeholder, Title } from './components';

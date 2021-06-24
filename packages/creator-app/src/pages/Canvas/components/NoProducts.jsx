@@ -1,8 +1,7 @@
+import { Button, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { safeGraphic } from '@/assets';
-import Button from '@/components/Button';
-import { stopPropagation } from '@/utils/dom';
 
 import { NoProductLabel, NoProductMessage, PaymentContainer } from '../managers/Payment/components';
 

@@ -1,8 +1,8 @@
+import { toast } from '@voiceflow/ui';
 import Base64 from 'crypto-js/enc-base64';
 import Utf8 from 'crypto-js/enc-utf8';
 import { get, set } from 'idb-keyval';
 
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { BlockType, CLIPBOARD_DATA_KEY, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';

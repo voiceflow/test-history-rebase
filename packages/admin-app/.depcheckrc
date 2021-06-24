@@ -1,0 +1,12 @@
+{
+  "specials": [
+    "bin",
+    "istanbul",
+    "webpack",
+    "jest",
+    "babel"
+  ],
+  "ignores": [
+    "ts-node"
+  ]
+}

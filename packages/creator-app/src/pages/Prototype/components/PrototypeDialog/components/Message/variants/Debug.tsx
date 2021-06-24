@@ -1,7 +1,7 @@
+import { Box } from '@voiceflow/ui';
 import Markdown from 'markdown-to-jsx';
 import React from 'react';
 
-import Box from '@/components/Box';
 import * as Diagram from '@/ducks/diagram';
 import { connect, styled } from '@/hocs';
 import { ConnectedProps } from '@/types';

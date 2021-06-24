@@ -1,4 +1,5 @@
-import { Icon } from '@/components/SvgIcon';
+import { Icon } from '@voiceflow/ui';
+
 import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';

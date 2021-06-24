@@ -1,8 +1,7 @@
+import { IconButton, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import IconButton from '@/components/IconButton';
-import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import { BlockType, ModalType } from '@/constants';
 import * as Thread from '@/ducks/thread';

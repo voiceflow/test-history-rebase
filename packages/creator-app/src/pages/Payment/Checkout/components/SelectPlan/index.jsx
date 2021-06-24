@@ -1,7 +1,6 @@
+import { Flex, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Flex from '@/components/Flex';
-import SvgIcon from '@/components/SvgIcon';
 import { PLAN_INFO_LINK, PlanType } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';

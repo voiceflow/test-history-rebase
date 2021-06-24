@@ -1,7 +1,6 @@
+import { Alert, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
-import Alert from '@/components/Alert';
-import { Spinner } from '@/components/Spinner';
 import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';

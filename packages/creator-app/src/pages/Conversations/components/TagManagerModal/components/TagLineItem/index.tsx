@@ -1,9 +1,6 @@
+import { ErrorMessage, IconButton, IconButtonVariant, Input, toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
-import ErrorMessage from '@/components/ErrorPages/ErrorMessage';
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import Input from '@/components/Input';
-import { toast, ToastCallToAction } from '@/components/Toast';
 import * as ReportTagDuck from '@/ducks/reportTag';
 import { useDispatch } from '@/hooks';
 import { ReportTag } from '@/models';
@@ -59,7 +56,7 @@ const TagLineItem: React.FC<TagLineItemProps> = ({ tags, onUndoDelete, onDelete,
       <Input error={!!tagError} value={tagVal} onChange={onTagChange} onBlur={saveUpdate} />
       {tagError && (
         <FadeLeftContainer>
-          <ErrorMessage style={{ marginBottom: '0px', paddingTop: '8px' }}>{tagError}</ErrorMessage>
+          <ErrorMessage style={{ marginBottom: '0', paddingTop: '8px' }}>{tagError}</ErrorMessage>
         </FadeLeftContainer>
       )}
       <TrashIconContainer>

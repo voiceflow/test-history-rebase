@@ -375,32 +375,6 @@ export const FILTERED_AMAZON_INTENTS = [
   'NavigateHomeIntent',
 ];
 
-export enum IconVariant {
-  STANDARD = 'standard',
-  POPOVER = 'popover',
-  SECONDARY = 'secondary',
-  TERTIARY = 'tertiary',
-  BLUE = 'blue',
-  WHITE = 'white',
-}
-
-/** @deprecated Use KeyName instead */
-export enum KeyCode {
-  ENTER = 13,
-}
-
-export enum KeyName {
-  TAB = 'Tab',
-  ENTER = 'Enter',
-  ESCAPE = 'Escape',
-  BACKSPACE = 'Backspace',
-  DELETE = 'Delete',
-  ARROW_UP = 'ArrowUp',
-  ARROW_DOWN = 'ArrowDown',
-  ARROW_LEFT = 'ArrowLeft',
-  ARROW_RIGHT = 'ArrowRight',
-}
-
 export const UNLIMITED_EDITORS_CONST = 100;
 
 export const PLAN_TYPE_META = {

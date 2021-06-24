@@ -1,17 +1,12 @@
 import moize from 'moize';
 
 import type { State } from '@/ducks';
-import { Action, AnyAction, RootReducer, Selector } from '@/store/types';
+import { AnyAction, RootReducer, Selector } from '@/store/types';
 import { storeLogger } from '@/store/utils';
 
-export const duckLogger = storeLogger.child('duck');
+export { createAction } from '@voiceflow/ui';
 
-export const createAction = <T extends string, P, M extends object | void>(type: T, payload?: P, meta?: M) =>
-  ({
-    type,
-    ...(payload !== undefined && { payload }),
-    ...(meta && { meta }),
-  } as Action<T, P, Exclude<M, void>>);
+export const duckLogger = storeLogger.child('duck');
 
 export const createKeyedSelector = <S extends Selector<any>, K extends keyof ReturnType<S>>(
   selector: S,

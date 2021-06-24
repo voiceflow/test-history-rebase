@@ -1,16 +1,13 @@
-/* eslint-disable sonarjs/no-identical-functions */
+import { Dropdown, DropdownPlacement, OptionsMenu, OptionsMenuOption, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Dropdown, { DropdownPlacement } from '@/components/Dropdown';
-import OptionsMenu, { MenuOption } from '@/components/NestedMenu/OptionsMenu';
-import SvgIcon from '@/components/SvgIcon';
 import { truthy } from '@/utils/typeGuards';
 
 import Container from './components/OverflowMenuContainer';
 
 export type OverflowMenuProps = {
   menu?: React.ReactNode;
-  options?: (MenuOption | null)[];
+  options?: (OptionsMenuOption | null)[];
   disabled?: boolean;
   placement?: DropdownPlacement;
   selfDismiss?: boolean;

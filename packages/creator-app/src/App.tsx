@@ -6,6 +6,7 @@ import 'simplebar/dist/simplebar.min.css';
 import './App.css';
 import 'react-day-picker/lib/style.css';
 
+import { ToastContainer } from '@voiceflow/ui';
 import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { hot } from 'react-hot-loader/root';
@@ -17,7 +18,6 @@ import LoadingModal from '@/components/LegacyModal/LoadingModal';
 import Modal from '@/components/LegacyModal/Modal';
 import RefreshModal from '@/components/RefreshModal';
 import SeoHelmet from '@/components/SeoHelmet';
-import { ToastContainer } from '@/components/Toast';
 import { SeoPage } from '@/constants/seo';
 import { AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadingGate, SocketLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';

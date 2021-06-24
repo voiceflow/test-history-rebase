@@ -1,8 +1,8 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import Section from '@/components/Section';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
-import SvgIcon from '@/components/SvgIcon';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { Content } from '@/pages/Canvas/components/Editor';

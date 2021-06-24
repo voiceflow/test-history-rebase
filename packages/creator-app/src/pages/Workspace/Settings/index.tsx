@@ -1,8 +1,8 @@
+import { BoxFlex } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { Flex } from '@/components/Box';
 import Page from '@/components/Page';
 import PlanBubble from '@/components/PlanBubble';
 import { SettingsContainer, SettingsHeader } from '@/components/Settings';
@@ -36,10 +36,10 @@ const Settings: React.FC = () => {
       { label: 'General', path: Paths.GENERAL },
       {
         label: (
-          <Flex alignItems="center">
+          <BoxFlex alignItems="center">
             Billing&nbsp;&nbsp;
             <PlanBubble plan={workspace?.plan} disabled />
-          </Flex>
+          </BoxFlex>
         ),
         path: 'billing',
       },

@@ -1,15 +1,10 @@
+import { Dropdown, IconButton, IconButtonVariant, Menu, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Dropdown from '@/components/Dropdown';
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import Menu from '@/components/Menu';
-import SvgIcon from '@/components/SvgIcon';
-import TippyTooltip from '@/components/TippyTooltip';
 import { Notification, notificationsSelector, readNotifications } from '@/ducks/notifications';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks/toggle';
 import { ConnectedProps } from '@/types';
-import { stopPropagation } from '@/utils/dom';
 
 import Numbered from './components/Numbered';
 import UpdateBubble from './components/UpdateBubble';

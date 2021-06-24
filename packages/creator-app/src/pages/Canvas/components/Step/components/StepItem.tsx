@@ -1,6 +1,6 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import SvgIcon from '@/components/SvgIcon';
 import { StepLabelVariant } from '@/constants/canvas';
 import Port from '@/pages/Canvas/components/Port';
 import { PortEntityProvider } from '@/pages/Canvas/contexts';

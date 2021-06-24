@@ -1,4 +1,5 @@
-import { flexStyles } from '@/components/Flex';
+import { flexStyles } from '@voiceflow/ui';
+
 import { IconContainer } from '@/components/InfoIcon';
 import { styled, units } from '@/hocs';
 

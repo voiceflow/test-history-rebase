@@ -1,9 +1,9 @@
+import { ButtonVariant } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse } from 'react-google-login';
 
 import { googleLogo } from '@/assets';
-import { ButtonVariant } from '@/components/Button';
 import { GOOGLE_CLIENT_ID } from '@/config';
 import { noop } from '@/utils/functional';
 

@@ -1,3 +1,4 @@
+import { Alert } from '@voiceflow/ui';
 import axios from 'axios';
 import cuid from 'cuid';
 import _noop from 'lodash/noop';
@@ -5,7 +6,6 @@ import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Alert from '@/components/Alert';
 import LoadingGate from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import * as Modal from '@/ducks/modal';

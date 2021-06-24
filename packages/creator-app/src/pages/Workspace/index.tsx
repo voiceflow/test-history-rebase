@@ -1,9 +1,9 @@
+import { LegacyButton } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import { conversationGraphic } from '@/assets';
-import Button from '@/components/LegacyButton';
 import { LegacyPath, Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as WorkspaceDuck from '@/ducks/workspace';
@@ -32,9 +32,9 @@ const Workspace: React.FC<ConnectedWorkspaceProps> = ({ personalWorkspaceIDs, go
             incredible voice experiences
           </span>
           <br />
-          <Button id="createWorkspace" isPrimary className="mt-4" onClick={goToNewWorkspace}>
+          <LegacyButton id="createWorkspace" isPrimary className="mt-4" onClick={goToNewWorkspace}>
             New Workspace
-          </Button>
+          </LegacyButton>
         </div>
       </div>
     );

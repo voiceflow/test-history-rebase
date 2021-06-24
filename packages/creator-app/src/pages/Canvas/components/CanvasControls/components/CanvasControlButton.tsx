@@ -1,7 +1,6 @@
+import { IconButton, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import IconButton from '@/components/IconButton';
-import TippyTooltip from '@/components/TippyTooltip';
 import { usePermission } from '@/hooks';
 
 import { CanvasControlMetaProps } from '../constants';

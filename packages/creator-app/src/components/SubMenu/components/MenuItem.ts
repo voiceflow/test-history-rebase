@@ -1,5 +1,5 @@
-import { FlexCenter } from '@/components/Flex';
-import { Container as SvgIconContainer } from '@/components/SvgIcon/components';
+import { FlexCenter, SvgIconContainer } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 export type MenuItemProps = {

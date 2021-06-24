@@ -1,7 +1,6 @@
+import { Alert } from '@voiceflow/ui';
 import axios from 'axios';
 import React from 'react';
-
-import Alert from '@/components/Alert';
 
 const MISSING_PARAM_ERR = 'Parameters missing, please ensure all sections are completed';
 

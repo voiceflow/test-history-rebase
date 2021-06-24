@@ -1,4 +1,5 @@
-import { inputStyle, StyledInputProps } from '@/components/Input/styles';
+import { inputStyle, StyledInputProps } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 type WrapperProps = StyledInputProps & {

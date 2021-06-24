@@ -1,4 +1,5 @@
-import { baseButtonStyles } from '@/components/Button/components/BaseButton';
+import { baseButtonStyles } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs';
 
 type TabProps = {

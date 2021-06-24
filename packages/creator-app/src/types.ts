@@ -1,16 +1,22 @@
+import { Nullable } from '@voiceflow/ui';
 import React from 'react';
-import { RGBColor } from 'react-color';
-import { Overwrite } from 'utility-types';
 
-import { AnyThunk, Dispatchable, ThunkResult } from './store/types';
-
-export type Color = Required<RGBColor>;
-
-export type Either<T extends object, R extends object> =
-  | (T & { [K in Exclude<keyof R, keyof T>]?: never })
-  | (R & { [K in Exclude<keyof T, keyof R>]?: never });
-
-export type Nullable<T> = T | null;
+export {
+  ActionCreatorLookup,
+  AnyAction,
+  AnyFunction,
+  Callback,
+  Color,
+  ConnectedProps,
+  Either,
+  Eventual,
+  Function,
+  MappedDispatchProps,
+  MappedStateProps,
+  MergeArguments,
+  Nullable,
+  SelectorLookup,
+} from '@voiceflow/ui';
 
 export type Nullish<T> = Nullable<T> | undefined;
 
@@ -23,8 +29,6 @@ export type NonNullishRecord<T extends object> = Required<{ [K in keyof T]: Excl
 export type Pair<T> = [T, T];
 
 export type Quad<T> = [T, T, T, T];
-
-export type Eventual<T> = Promise<T> | T;
 
 export type Point = [x: number, y: number];
 
@@ -51,34 +55,6 @@ export type MenuOption = {
   value?: any;
   onClick?: React.MouseEventHandler;
 };
-
-export type Function<A extends any[] = any[], R = any> = (...args: A) => R;
-
-export type AnyFunction = Function<any[], any>;
-
-export type Callback = Function<[], Eventual<void>>;
-
-export type SelectorLookup<S> = Record<string, (state: S) => any>;
-
-export type ActionCreatorLookup = Record<string, (...args: any[]) => Dispatchable>;
-
-export type MappedStateProps<T extends SelectorLookup<any>> = { [K in keyof T]: ReturnType<T[K]> };
-
-export type MappedDispatchProps<T extends ActionCreatorLookup> = {
-  [K in keyof T]: ReturnType<T[K]> extends AnyThunk ? (...args: Parameters<T[K]>) => ThunkResult<ReturnType<T[K]>> : T[K];
-};
-
-export type MergeArguments<S extends SelectorLookup<any> = {}, D extends ActionCreatorLookup = {}, P extends object = {}> = [
-  MappedStateProps<S>,
-  MappedDispatchProps<D>,
-  P
-];
-
-export type ConnectedProps<
-  S extends SelectorLookup<any> = {},
-  D extends ActionCreatorLookup = {},
-  M extends Function<MergeArguments<S, D, any>, object> = () => {}
-> = Overwrite<Overwrite<MappedStateProps<S> & MappedDispatchProps<D>, MappedDispatchProps<D>> & ReturnType<M>, ReturnType<M>>;
 
 export type HOC<I extends object, O extends object> = (component: React.ComponentType<I>) => React.FC<O>;
 

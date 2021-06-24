@@ -1,8 +1,7 @@
+import { Flex, Input } from '@voiceflow/ui';
 import _upperFirst from 'lodash/upperFirst';
 import React from 'react';
 
-import Flex from '@/components/Flex';
-import Input from '@/components/Input';
 import { Add, ButtonContainer, Minus } from '@/components/InteractiveIcon';
 import Section from '@/components/Section';
 import { styled, units } from '@/hocs';

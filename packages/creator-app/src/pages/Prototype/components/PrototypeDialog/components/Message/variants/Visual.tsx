@@ -1,6 +1,6 @@
+import { Link } from '@voiceflow/ui';
 import React from 'react';
 
-import { Link } from '@/components/Text';
 import { css, styled } from '@/hocs';
 import { Image } from '@/pages/Canvas/components/Step/components';
 import { VisualMessage } from '@/pages/Prototype/types';

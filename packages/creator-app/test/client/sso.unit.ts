@@ -1,6 +1,7 @@
+import { generate } from '@voiceflow/ui';
+
 import client, { SSO_PATH } from '@/client/sso';
 import { SessionType } from '@/constants';
-import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 

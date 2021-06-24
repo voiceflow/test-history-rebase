@@ -1,7 +1,6 @@
+import { Input, Select } from '@voiceflow/ui';
 import React from 'react';
 
-import Input from '@/components/Input';
-import Select from '@/components/Select';
 import VariablesInput from '@/components/VariablesInput';
 
 import { Container, InputWrapper } from './components';

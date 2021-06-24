@@ -1,10 +1,8 @@
+import { Dropdown, Flex, FlexApart, SvgIcon } from '@voiceflow/ui';
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Dropdown from '@/components/Dropdown';
-import Flex, { FlexApart } from '@/components/Flex';
-import SvgIcon from '@/components/SvgIcon';
 import { BillingPeriod, PERIOD_NAME } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';

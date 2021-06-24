@@ -1,9 +1,7 @@
+import { Icon, IconButton, IconButtonVariant, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import Select from '@/components/Select';
-import SvgIcon, { Icon } from '@/components/SvgIcon';
 import { ModalType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { useModals, useTrackingEvents } from '@/hooks';

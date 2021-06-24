@@ -1,9 +1,6 @@
+import { Dropdown, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-
-import Dropdown from '@/components/Dropdown';
-import SvgIcon from '@/components/SvgIcon';
-import { stopPropagation } from '@/utils/dom';
 
 import { addFakeSelection, addTag, removeFakeSelection } from '../../utils';
 import { ControlsWrapper, FullWidthWrapper, HistoryWrapper, SelectOption, TagsSelect, Wrapper } from './components';

@@ -1,6 +1,6 @@
+import { Icon } from '@voiceflow/ui';
 import _isFunction from 'lodash/isFunction';
 
-import { Icon } from '@/components/SvgIcon';
 import { BlockCategory, BlockType, DialogType, IntegrationType, PlatformType, RootOrMarkupBlockType } from '@/constants';
 import { NodeData } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';

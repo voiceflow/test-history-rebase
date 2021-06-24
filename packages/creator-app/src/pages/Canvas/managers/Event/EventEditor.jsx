@@ -1,6 +1,6 @@
+import { Input } from '@voiceflow/ui';
 import React from 'react';
 
-import Input from '@/components/Input';
 import Section from '@/components/Section';
 import { useManager } from '@/hooks';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';

@@ -1,9 +1,9 @@
+import { ClickableText } from '@voiceflow/ui';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import ReportTagInput, { InputVariant } from '@/components/ReportTagInput';
 import SelectMenu, { MenuSection } from '@/components/SelectMenu';
-import { ClickableText } from '@/components/Text';
 import { FILTER_TAG } from '@/pages/Conversations/constants';
 
 import { Container } from './components';

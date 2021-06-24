@@ -1,8 +1,8 @@
+import { Portal } from '@voiceflow/ui';
 import moment from 'moment';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
-import Portal from '@/components/Portal';
 import VariablesInput from '@/components/VariablesInput';
 import { useEnableDisable } from '@/hooks';
 

@@ -1,8 +1,7 @@
+import { Box, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
 import { EditableTextAPI } from '@/components/EditableText';
-import { useDidUpdateEffect } from '@/hooks';
 import { LinkDataCaption } from '@/models';
 import { LinkEntityContext } from '@/pages/Canvas/contexts';
 import { withEnterPress } from '@/utils/dom';

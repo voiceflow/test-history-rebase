@@ -1,4 +1,5 @@
-import BaseButton from '@/components/Button/components/BaseButton';
+import { BaseButton } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs';
 
 const ButtonGroupButton = styled(BaseButton)`

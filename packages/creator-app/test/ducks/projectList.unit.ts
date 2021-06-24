@@ -1,3 +1,5 @@
+import { generate } from '@voiceflow/ui';
+
 import client from '@/client';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListSelectors from '@/ducks/projectList/selectors';
@@ -5,7 +7,6 @@ import { CRUDState } from '@/ducks/utils/crud';
 import * as Models from '@/models';
 import { normalize } from '@/utils/normalized';
 import * as StringUtils from '@/utils/string';
-import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 

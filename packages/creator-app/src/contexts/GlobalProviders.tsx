@@ -1,3 +1,4 @@
+import { OverlayProvider } from '@voiceflow/ui';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import React from 'react';
@@ -19,7 +20,6 @@ import { IdentityProvider } from './IdentityContext';
 import LifecycleProvider from './LifecycleProvider';
 import { ModalsContextProvider } from './ModalsContext';
 import { MousePositionProvider } from './MousePositionContext';
-import { OverlayProvider } from './OverlayContext';
 import StoreProvider from './StoreProvider';
 import { TextEditorVariablesPopoverProvider } from './TextEditorVariablesPopoverContext';
 

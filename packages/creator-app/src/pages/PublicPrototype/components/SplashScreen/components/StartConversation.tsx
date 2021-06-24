@@ -1,10 +1,7 @@
+import { Box, Link, preventDefault, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
-import { Link, Text } from '@/components/Text/components';
-import Tooltip from '@/components/TippyTooltip';
 import { Identifier } from '@/styles/constants';
-import { preventDefault } from '@/utils/dom';
 
 import StartButton from './StartButton';
 
@@ -40,11 +37,11 @@ const StartConversation: React.FC<StartConversationProps> = ({
         You've been invited to have a conversation with
         {projectName.length > 120 ? (
           <Text color={colorScheme} trim>
-            <Tooltip title={projectName}>
+            <TippyTooltip title={projectName}>
               <Box width={120} noOverflow ml={5}>
                 {projectName}
               </Box>
-            </Tooltip>
+            </TippyTooltip>
           </Text>
         ) : (
           <Text color={colorScheme} ml={5}>

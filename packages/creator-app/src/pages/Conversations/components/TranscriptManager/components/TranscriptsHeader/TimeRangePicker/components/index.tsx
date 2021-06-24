@@ -1,6 +1,5 @@
-import Button from '@/components/Button';
-import { FlexApart } from '@/components/Flex';
-import { ClickableText } from '@/components/Text';
+import { Button, ClickableText, FlexApart } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 import THEME from '@/styles/theme';
 

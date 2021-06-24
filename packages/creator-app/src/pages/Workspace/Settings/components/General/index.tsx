@@ -1,9 +1,7 @@
+import { Box, BoxFlex, Button, Input } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Box, { Flex } from '@/components/Box';
-import Button from '@/components/Button';
-import Input from '@/components/Input';
 import Section, { SectionVariant } from '@/components/Section';
 import { ActionSection, SectionVariants, SettingsSection } from '@/components/Settings';
 import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
@@ -39,7 +37,7 @@ const GeneralSettingsPage: React.FC = () => {
     <>
       <SettingsSection title="General">
         <Section variant={SectionVariant.QUATERNARY} header="Workspace Name">
-          <Flex mb={24}>
+          <BoxFlex mb={24}>
             <Input name="name" value={name} onBlur={saveName} onChange={(e) => updateName(e.target.value)} placeholder="Board Name" />
             <Box ml={16}>
               <UploadJustIconComponent
@@ -49,18 +47,14 @@ const GeneralSettingsPage: React.FC = () => {
                 endpoint="/image"
               />
             </Box>
-          </Flex>
+          </BoxFlex>
         </Section>
       </SettingsSection>
       <SettingsSection title="Danger Zone" variant={SectionVariants.SECONDARY}>
         <ActionSection
           heading="Delete Workspace"
           description="This action cannot be reverted, proceed with caution"
-          action={
-            <Button isBtn onClick={openDeleteModal} isLinkLarge>
-              Delete Workspace
-            </Button>
-          }
+          action={<Button onClick={openDeleteModal}>Delete Workspace</Button>}
         />
       </SettingsSection>
       <BoardDeleteModal workspace={workspace} />

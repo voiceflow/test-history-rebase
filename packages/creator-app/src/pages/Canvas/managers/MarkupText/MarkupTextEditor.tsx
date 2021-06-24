@@ -1,6 +1,6 @@
+import { FlexAround } from '@voiceflow/ui';
 import React from 'react';
 
-import { FlexAround } from '@/components/Flex';
 import { withRequiredEngine } from '@/contexts';
 import { Markup } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';

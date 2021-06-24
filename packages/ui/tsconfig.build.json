@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./build/common",
+    "declaration": true
+  },
+  "exclude": [
+    "node_modules/**",
+    "config/**",
+    "build/**",
+    "jest_coverage/**",
+    "nyc_coverage_unit/**",
+    "test/**",
+    "*.config.*"
+  ]
+}

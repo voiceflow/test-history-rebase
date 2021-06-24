@@ -1,5 +1,5 @@
-import { inputStyle } from '@/components/Input/styles';
-import * as SvgIcon from '@/components/SvgIcon';
+import { inputStyle, SvgIconContainer } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 import { OrientationType } from '../constants';
@@ -31,7 +31,7 @@ const DropdownButton = styled.button`
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
         `}
-  ${SvgIcon.Container} {
+  ${SvgIconContainer} {
     margin-left: 5px;
     margin-top: 2px;
   }

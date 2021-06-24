@@ -1,4 +1,5 @@
-import Button from '@/components/Button';
+import { Button } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 const RandomEditorButton = styled(Button)`

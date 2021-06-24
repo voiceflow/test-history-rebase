@@ -1,6 +1,7 @@
+import { generate } from '@voiceflow/ui';
+
 import projectListAdapter from '@/client/adapters/projectList';
 import client, { TEAM_PATH } from '@/client/projectList';
-import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 

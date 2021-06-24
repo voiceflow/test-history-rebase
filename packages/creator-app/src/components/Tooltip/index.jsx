@@ -1,11 +1,10 @@
 /* eslint-disable no-shadow */
+import { Portal, portalRootNode, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
-import Portal, { rootNode } from '@/components/Portal';
 import { useDismissable } from '@/hooks/dismiss';
 import { FadeDownDelayedContainer, SlideContainer } from '@/styles/animations';
-import { stopPropagation } from '@/utils/dom';
 
 import { Container, JSONCode, Paragraph, Section, Title } from './components';
 
@@ -19,7 +18,7 @@ export default function Tooltip({ anchorRenderer, placement = 'auto-end', childr
       <Reference>{({ ref }) => anchorRenderer({ ref, isOpen, onToggle })}</Reference>
       {isOpen && (
         <Portal portalNode={portalNode}>
-          <Popper modifiers={{ preventOverflow: { padding: 19, boundariesElement: rootNode } }} placement={placement}>
+          <Popper modifiers={{ preventOverflow: { padding: 19, boundariesElement: portalRootNode } }} placement={placement}>
             {({ ref, style, placement }) => (
               <div ref={ref} style={{ ...style, zIndex: 1100 }} data-placement={placement}>
                 <SlideContainer onClick={stopPropagation(null, true)}>

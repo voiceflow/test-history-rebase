@@ -1,7 +1,7 @@
+/* eslint-disable max-nested-callbacks */
 import { UserRole } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
-import * as ColorUtils from '@/utils/colors';
 
 import suite from './_suite';
 
@@ -41,7 +41,7 @@ const ROOT_STATE = {
   session: { activeWorkspaceID: WORKSPACE.id },
 };
 
-suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, describeSelectors }) => {
+suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, rewire, describeSelectors }) => {
   describeSelectors(({ select }) => {
     describe('activeWorkspaceSelector()', () => {
       it('should select the active workspace', () => {
@@ -146,11 +146,20 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, describeSelec
     describe('distinctWorkspaceMemberSelector()', () => {
       const tabID = 'xyz';
 
-      it('should select a a distinct member from the active workspace by creator ID', () => {
+      it('should select a a distinct member from the active workspace by creator ID', async () => {
         const color = 'orange';
-        const getAlternativeColor = stub(ColorUtils, 'getAlternativeColor').returns(color);
+        const getAlternativeColor = stub().returns(color);
 
-        expect(select(Workspace.distinctWorkspaceMemberSelector, ROOT_STATE)('456', tabID)).to.eql({ ...MEMBER, color });
+        const RewiredWorkspace = await rewire.around(
+          () => import('@/ducks/workspace'),
+          (mock) => {
+            mock(() => import('@voiceflow/ui'))
+              .callThrough()
+              .with({ getAlternativeColor });
+          }
+        );
+
+        expect(select(RewiredWorkspace.distinctWorkspaceMemberSelector, ROOT_STATE)('456', tabID)).to.eql({ ...MEMBER, color });
 
         expect(getAlternativeColor).to.be.calledWithExactly(tabID);
       });

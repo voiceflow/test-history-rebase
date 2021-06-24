@@ -1,7 +1,5 @@
+import { BlockText, Text, TextProps } from '@voiceflow/ui';
 import React from 'react';
-
-import Text from '@/components/Text';
-import { BlockText, TextProps } from '@/components/Text/components/Text';
 
 export type LabelProps = TextProps & {
   color?: string;

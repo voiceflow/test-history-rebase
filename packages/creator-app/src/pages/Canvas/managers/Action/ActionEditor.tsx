@@ -1,9 +1,8 @@
+import { Box, Input } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import Box from '@/components/Box';
 import ChatWithUsLink from '@/components/ChatLink';
-import Input from '@/components/Input';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import TextArea from '@/components/TextArea';
 import { focusedNodeSelector } from '@/ducks/creator';

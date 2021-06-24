@@ -1,15 +1,8 @@
 /* eslint-disable no-process-env, @typescript-eslint/no-non-null-assertion */
-import Bowser from 'bowser';
+import { IS_DEVELOPMENT, IS_PRODUCTION } from '@voiceflow/ui';
 import loglevel from 'loglevel';
 
-const { browser, os, platform } = Bowser.parse(window.navigator.userAgent);
-
-export const DEVICE_INFO = {
-  os: os.name,
-  version: os.version,
-  browser: browser.name,
-  platform: platform.type,
-};
+export { IS_DEVELOPMENT, IS_PRODUCTION, IS_TEST, NODE_ENV } from '@voiceflow/ui';
 
 // Container env var-based configuration overrides
 declare global {
@@ -43,23 +36,6 @@ declare global {
   }
 }
 
-export const isMobile = DEVICE_INFO.platform === 'mobile';
-export const isTablet = DEVICE_INFO.platform === 'tablet';
-
-export const isMac = DEVICE_INFO.os === 'macOS';
-export const isIOS = DEVICE_INFO.os === 'iOS';
-export const isWindows = DEVICE_INFO.os === 'Windows';
-export const isChromeOS = DEVICE_INFO.os === 'Chrome OS';
-
-export const isEdge = DEVICE_INFO.browser === 'Microsoft Edge';
-export const isChrome = DEVICE_INFO.browser === 'Chrome';
-export const isFirefox = DEVICE_INFO.browser === 'Firefox';
-export const isSafari = DEVICE_INFO.browser === 'Safari';
-
-export const NODE_ENV = process.env.NODE_ENV!;
-export const IS_PRODUCTION = NODE_ENV === 'production';
-export const IS_DEVELOPMENT = NODE_ENV === 'development';
-export const IS_TEST = NODE_ENV === 'test';
 export const IS_E2E_TEST = !!window.Cypress;
 export const IS_PERFORMANCE_TEST = IS_DEVELOPMENT || !!window.VF_OVERRIDE_IS_PERFORMANCE_TEST;
 
@@ -104,7 +80,6 @@ export const LOG_FILTER = process.env.LOG_FILTER || '';
 // debugging
 
 export const DEBUG_NETWORK = !IS_PRODUCTION && !!process.env.DEBUG_NETWORK;
-export const DEBUG_HTTP = DEBUG_NETWORK || (!IS_PRODUCTION && !!process.env.DEBUG_HTTP);
 export const DEBUG_SOCKET = DEBUG_NETWORK || (!IS_PRODUCTION && !!process.env.DEBUG_SOCKET);
 
 export const DEBUG_REALTIME = !IS_PRODUCTION && !!process.env.DEBUG_REALTIME;

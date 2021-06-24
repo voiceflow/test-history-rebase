@@ -1,8 +1,8 @@
+import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useContextApi } from '@/hooks/cache';
 import { ConnectedProps } from '@/types';
 
 export type IdentityContextValue = {

@@ -1,12 +1,9 @@
 import { PrototypeModel } from '@voiceflow/api-sdk';
+import { ClickableText, Flex, logger, TippyTooltip, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import Flex from '@/components/Flex';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
-import { ClickableText } from '@/components/Text';
-import TippyTooltip from '@/components/TippyTooltip';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
@@ -15,10 +12,9 @@ import { PrototypeStatus } from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useSmartReducerV2, useTrackingEvents } from '@/hooks';
+import { useTrackingEvents } from '@/hooks';
 import { NLPContext } from '@/pages/Skill/contexts';
 import { ConnectedProps } from '@/types';
-import logger from '@/utils/logger';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
 import * as Sentry from '@/vendors/sentry';
 

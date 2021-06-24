@@ -1,8 +1,6 @@
+import { Button, ButtonVariant, FlexCenter, toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
-import Button, { ButtonVariant } from '@/components/Button';
-import { FlexCenter } from '@/components/Flex';
-import { toast, ToastCallToAction } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
 import { goToTargetTranscript } from '@/ducks/router';
 import * as Transcripts from '@/ducks/transcript';
@@ -19,15 +17,15 @@ export type PrototypeResetProps = {
 
 const Container = styled(FlexCenter)`
   height: 179px;
-  border-top: solid 1px #eaeff4;
   background: white;
+  border-top: solid 1px #eaeff4;
 `;
 
 const Splitter = styled.div`
-  height: 16px;
   width: 1px;
-  background: #dfe3ed;
+  height: 16px;
   margin: 0 12px;
+  background: #dfe3ed;
 `;
 
 const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProps> = ({

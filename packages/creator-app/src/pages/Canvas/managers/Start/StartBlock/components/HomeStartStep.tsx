@@ -1,6 +1,6 @@
+import { Text } from '@voiceflow/ui';
 import React from 'react';
 
-import Text from '@/components/Text';
 import { PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';

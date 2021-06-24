@@ -1,7 +1,6 @@
+import { IconButton, SvgIconContainer } from '@voiceflow/ui';
 import React from 'react';
 
-import IconButton from '@/components/IconButton';
-import * as SvgIcon from '@/components/SvgIcon';
 import { styled, transition } from '@/hocs';
 
 import ModalBody from './components/ModalBody';
@@ -24,7 +23,7 @@ const Container = styled(ModalBody)`
 `;
 const LeftButton = styled(CarouselButton)`
   left: -60px;
-  ${SvgIcon.Container} {
+  ${SvgIconContainer} {
     position: relative;
     right: 1px;
   }
@@ -33,7 +32,7 @@ const LeftButton = styled(CarouselButton)`
 const RightButton = styled(CarouselButton)`
   right: -60px;
 
-  ${SvgIcon.Container} {
+  ${SvgIconContainer} {
     position: relative;
     left: 1px;
   }

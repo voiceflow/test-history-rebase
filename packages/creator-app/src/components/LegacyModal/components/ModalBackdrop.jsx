@@ -1,10 +1,10 @@
+import { stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
 import { Modal as ReactstrapModal } from 'reactstrap';
 
 import { IS_TEST } from '@/config';
 import { ModalsContext } from '@/contexts';
 import { createGlobalStyle } from '@/hocs';
-import { stopImmediatePropagation } from '@/utils/dom';
 
 const StyledBackdropModal = createGlobalStyle`
   .modal-backdrop-invisible {

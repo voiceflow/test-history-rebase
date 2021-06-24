@@ -1,6 +1,6 @@
+import { withContext } from '@voiceflow/ui';
 import React from 'react';
 
-import { withContext } from '@/hocs';
 import type { Engine } from '@/pages/Canvas/engine';
 
 export const EngineContext = React.createContext<Engine | null>(null);

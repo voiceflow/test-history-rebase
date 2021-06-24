@@ -1,7 +1,5 @@
+import { Dropdown, IconButton, IconButtonVariant } from '@voiceflow/ui';
 import React from 'react';
-
-import Dropdown from '@/components/Dropdown';
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
 
 import { Container } from './components';
 

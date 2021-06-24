@@ -8,18 +8,18 @@
   "dependencies": {
     "typescript-fsa": "^3.0.0"
   },
+  "devDependencies": {
+    "@voiceflow/api-sdk": "^1.31.10"
+  },
   "files": [
     "build"
   ],
   "homepage": "https://github.com/voiceflow/creator-app#readme",
+  "license": "UNLICENSED",
+  "main": "build/index.js",
   "peerDependencies": {
     "@voiceflow/api-sdk": "^1.31.10"
   },
-  "devDependencies": {
-    "@voiceflow/api-sdk": "^1.31.10"
-  },
-  "license": "UNLICENSED",
-  "main": "build/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voiceflow/creator-app.git"

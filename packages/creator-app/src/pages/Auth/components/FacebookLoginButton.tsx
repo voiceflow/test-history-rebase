@@ -1,10 +1,10 @@
+import { ButtonVariant } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
 import { facebookLogo } from '@/assets';
-import { ButtonVariant } from '@/components/Button';
 import { FACEBOOK_APP_ID } from '@/config';
 
 import SocialButton from './SocialButton';

@@ -1,8 +1,8 @@
+import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import Section, { SectionVariant } from '@/components/Section';
-import { toast } from '@/components/Toast';
 import { FeatureFlag } from '@/config/features';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';

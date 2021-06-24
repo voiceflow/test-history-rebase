@@ -1,13 +1,11 @@
+import { Flex, SvgIconContainer } from '@voiceflow/ui';
 import styled from 'styled-components';
 
-import Flex from '@/components/Flex';
-import * as SvgIcon from '@/components/SvgIcon';
-
 const SecondaryDropdownButtonToggle = styled(Flex)`
-  margin-left: 12px;
   margin-right: -2px;
+  margin-left: 12px;
 
-  & ${SvgIcon.Container} {
+  & ${SvgIconContainer} {
     color: #6e849a;
   }
 `;

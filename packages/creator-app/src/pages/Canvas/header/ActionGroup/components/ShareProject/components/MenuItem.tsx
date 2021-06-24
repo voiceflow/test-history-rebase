@@ -1,14 +1,11 @@
+import { Button, ButtonVariant, Link, stopImmediatePropagation, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Button, { ButtonVariant } from '@/components/Button';
 import PlanBubble from '@/components/PlanBubble';
-import { Link } from '@/components/Text';
-import Tooltip from '@/components/TippyTooltip';
 import { PlanType } from '@/constants';
 import { useEnableDisable } from '@/hooks';
 import { Nullable } from '@/types';
 import { copy } from '@/utils/clipboard';
-import { stopImmediatePropagation } from '@/utils/dom';
 
 import ButtonContainer from './ButtonContainer';
 import Description from './Description';
@@ -69,11 +66,11 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, isAllowed, onRe
         {loading ? (
           <LoadingButton iconProps={{ spin: true, size: 20 }} variant={ButtonVariant.SECONDARY} icon="publishSpin" square />
         ) : (
-          <Tooltip title="Copied to clipboard" position="top" open={isCopied}>
+          <TippyTooltip title="Copied to clipboard" position="top" open={isCopied}>
             <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(onClick)}>
               Copy
             </Button>
-          </Tooltip>
+          </TippyTooltip>
         )}
       </ButtonContainer>
     </MenuItemContainer>

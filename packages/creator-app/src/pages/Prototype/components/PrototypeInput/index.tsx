@@ -1,8 +1,6 @@
+import { Box, Button, ButtonVariant, preventDefault } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
-import Button from '@/components/Button';
-import { ButtonVariant } from '@/components/Button/constants';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
@@ -10,7 +8,7 @@ import Reset from '@/pages/Prototype/components/PrototypeReset';
 import { useResetPrototype } from '@/pages/Prototype/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
-import { preventDefault, withEnterPress } from '@/utils/dom';
+import { withEnterPress } from '@/utils/dom';
 
 import SpeechBar from '../PrototypeSpeechBar';
 import { InputArea, InputContainer } from './components';

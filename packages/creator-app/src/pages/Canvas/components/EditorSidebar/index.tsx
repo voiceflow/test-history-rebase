@@ -1,3 +1,4 @@
+import { stopImmediatePropagation } from '@voiceflow/ui';
 import moize from 'moize';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -15,7 +16,6 @@ import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { useEditingMode } from '@/pages/Skill/hooks';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut';
-import { stopImmediatePropagation } from '@/utils/dom';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import EditorModal from './components/EditorModal';

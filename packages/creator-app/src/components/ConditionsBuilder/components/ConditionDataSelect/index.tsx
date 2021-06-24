@@ -1,17 +1,14 @@
 import { ConditionsLogicInterface, ExpressionTypeV2 } from '@voiceflow/general-types';
+import { Box, MenuContainer, Portal, stopPropagation } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
-import Box from '@/components/Box';
-import { MenuContainer } from '@/components/Menu';
-import Portal from '@/components/Portal';
 import { Container } from '@/components/Tooltip/components';
 import { useEnableDisable } from '@/hooks';
 import { useDismissable } from '@/hooks/dismiss';
 import { ExpressionTupleV2 } from '@/models';
 import { FadeDownDelayedContainer, SlideContainer } from '@/styles/animations';
-import { stopPropagation } from '@/utils/dom';
 
 import { ExpressionDataLogicType, LogicUnitDataType } from '../../types';
 import { isConditionInvalid } from '../../utils';

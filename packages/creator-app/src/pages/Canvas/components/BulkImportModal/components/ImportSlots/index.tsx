@@ -1,20 +1,17 @@
+import { Box, Button, ButtonVariant, Link, Text, toast, useDidUpdateEffect, useSmartReducerV2 } from '@voiceflow/ui';
 import _tail from 'lodash/tail';
 import Papa from 'papaparse';
 import pluralize from 'pluralize';
 import React from 'react';
 
 import { slotUploadExampleCSV } from '@/assets';
-import Box from '@/components/Box';
-import Button, { ButtonVariant } from '@/components/Button';
 import Checkbox from '@/components/Checkbox';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import RadioGroup from '@/components/RadioGroup';
-import Text, { Link } from '@/components/Text';
-import { toast } from '@/components/Toast';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import * as Documentation from '@/config/documentation';
 import { ModalType } from '@/constants';
-import { useDebouncedCallback, useDidUpdateEffect, useModals, useSmartReducerV2 } from '@/hooks';
+import { useDebouncedCallback, useModals } from '@/hooks';
 import { readFileAsText } from '@/utils/file';
 
 import { ACCEPTED_FILE_TYPES, FILE_SIZE_LIMIT_BYTES, FILE_SIZE_LIMIT_KB, UPLOAD_VARIANTS, UploadType } from '../../constants';

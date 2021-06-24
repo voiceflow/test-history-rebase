@@ -1,7 +1,6 @@
+import { Button, ButtonVariant, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import Button, { ButtonVariant } from '@/components/Button';
-import Text, { Link } from '@/components/Text';
 import * as Documentation from '@/config/documentation';
 
 import NLUContainer from './NLUContainer';

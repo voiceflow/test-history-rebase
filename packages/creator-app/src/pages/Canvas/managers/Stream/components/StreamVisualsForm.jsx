@@ -1,7 +1,7 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
-import SvgIcon from '@/components/SvgIcon';
 import FullImageUpload, { validateLink } from '@/components/Upload/ImageUpload/FullImage';
 import ImageGroupUpload from '@/components/Upload/ImageUpload/ImageGroup';
 import VariablesInput from '@/components/VariablesInput';

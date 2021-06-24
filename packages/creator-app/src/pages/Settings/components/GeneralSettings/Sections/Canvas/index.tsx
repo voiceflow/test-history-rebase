@@ -1,9 +1,9 @@
 import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionVariant } from '@/components/Section';
-import { Link } from '@/components/Text';
 import * as Documentation from '@/config/documentation';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';

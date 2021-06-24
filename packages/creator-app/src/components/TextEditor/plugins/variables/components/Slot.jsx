@@ -1,10 +1,10 @@
+import { swallowEvent } from '@voiceflow/ui';
 import React from 'react';
 
 import { slotStyles, variableStyle } from '@/components/VariableTag';
 import { InteractionModelTabType } from '@/constants';
 import * as Router from '@/ducks/router';
 import { connect, styled } from '@/hocs';
-import { swallowEvent } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 
 const Text = styled.span`

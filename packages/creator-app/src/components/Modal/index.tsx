@@ -1,8 +1,7 @@
+import { IconVariant, Portal, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Portal from '@/components/Portal';
-import SvgIcon from '@/components/SvgIcon';
-import { IconVariant, ModalType } from '@/constants';
+import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 
 import { Close, Container, Content, Header, Icon, Root } from './components';
@@ -20,7 +19,6 @@ export type ModalProps = {
 const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id, title, icon, isSmall = true, children, className }, ref) => {
   const { fade, isOpened, close, isInStack } = useModals(id);
 
-  // eslint-disable-next-line xss/no-mixed-html
   return !isInStack ? null : (
     <Portal portalNode={document.body}>
       <Root ref={ref} hidden={!isOpened}>

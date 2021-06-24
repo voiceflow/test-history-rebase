@@ -1,11 +1,10 @@
 import { APIActionType, APIBodyType } from '@voiceflow/general-types/build/nodes/api';
 import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
+import { Icon, SVG } from '@voiceflow/ui';
 
-import { Icon } from '@/components/SvgIcon';
 import { BlockType, IntegrationType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { NodeData } from '@/models';
-import GlobeIcon from '@/svgs/solid/globe.svg';
 
 import { NodeConfig } from '../types';
 
@@ -66,7 +65,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Integration> = {
   type: BlockType.INTEGRATION,
 
   // for older version
-  icon: GlobeIcon as any,
+  icon: SVG.globeIcon as any,
   iconColor: '#fa7891',
 
   // for block redesign

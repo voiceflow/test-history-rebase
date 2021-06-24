@@ -1,15 +1,15 @@
+import { IconVariant, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { matchPath, RouteComponentProps, useLocation } from 'react-router-dom';
 
-import SvgIcon from '@/components/SvgIcon';
 import Tabs from '@/components/Tabs';
 import { Path } from '@/config/routes';
-import { IconVariant, InteractionModelTabType, ModalType } from '@/constants';
+import { InteractionModelTabType, ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useModals } from '@/hooks';
+import { useModals } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 import { IntentsManager, Modal, ModalContent, SlotsManager, VariablesManager } from './components';

@@ -1,4 +1,5 @@
-import Button from '@/components/Button';
+import { Button } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const LoadingButton = styled(Button)`

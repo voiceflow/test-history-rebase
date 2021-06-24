@@ -1,8 +1,8 @@
+import { ClickableText } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ReportTagInput from '@/components/ReportTagInput';
-import { ClickableText } from '@/components/Text';
 import { ModalType } from '@/constants';
 import { currentSelectedTranscriptSelector, updateTags } from '@/ducks/transcript';
 import { useModals } from '@/hooks';

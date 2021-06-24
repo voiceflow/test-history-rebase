@@ -1,4 +1,5 @@
-import { FlexCenter } from '@/components/Flex';
+import { FlexCenter } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 import { ANIMATION_SPEED } from '@/styles/theme';
 

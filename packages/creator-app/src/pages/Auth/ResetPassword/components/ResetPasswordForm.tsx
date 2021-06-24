@@ -1,13 +1,10 @@
+import { Box, LegacyButton, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import Box from '@/components/Box';
-import Button from '@/components/LegacyButton';
-import { toast } from '@/components/Toast';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
-import { preventDefault } from '@/utils/dom';
 
 import { PasswordInput } from '../../components';
 import { ResetPasswordStage } from '../constants';
@@ -53,9 +50,9 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps & ConnectedResetPasswor
           <a onClick={() => goToLogin()}>Back to Signing in</a>
         </div>
         <div className="float-right">
-          <Button isPrimary isBlock type="submit">
+          <LegacyButton isPrimary isBlock type="submit">
             Update Password
-          </Button>
+          </LegacyButton>
         </div>
       </div>
     </form>

@@ -1,8 +1,6 @@
+import { Box, IconButton, IconButtonVariant, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import TippyTooltip from '@/components/TippyTooltip';
 import { useEnableDisable } from '@/hooks';
 import { AlexaPublishJob, GooglePublishJob, Job } from '@/models';
 import { PublishContext } from '@/pages/Skill/contexts';

@@ -1,9 +1,8 @@
+import { Box, KeyName } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
 import CommentPreview from '@/components/CommentPreview';
 import MentionEditor from '@/components/MentionEditor';
-import { KeyName } from '@/constants';
 import { useLinkedState } from '@/hooks';
 import { Comment } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts';

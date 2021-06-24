@@ -1,7 +1,7 @@
 import { ExpressionType } from '@voiceflow/general-types';
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import SvgIcon from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 
 const Wrapper = styled.span`

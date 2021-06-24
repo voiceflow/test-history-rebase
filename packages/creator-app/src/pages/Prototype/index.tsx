@@ -1,3 +1,4 @@
+import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -5,7 +6,7 @@ import * as PrototypeDuck from '@/ducks/prototype';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
-import { useDidUpdateEffect, useTeardown } from '@/hooks';
+import { useTeardown } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { compose } from '@/utils/functional';

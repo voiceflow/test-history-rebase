@@ -1,6 +1,6 @@
+import { Link } from '@voiceflow/ui';
 import React from 'react';
 
-import { Link } from '@/components/Text';
 import { Paragraph, Title } from '@/components/Tooltip';
 import * as Documentation from '@/config/documentation';
 

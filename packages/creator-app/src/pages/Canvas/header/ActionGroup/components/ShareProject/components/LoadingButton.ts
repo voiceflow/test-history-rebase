@@ -1,12 +1,12 @@
-import Button from '@/components/Button';
-import { Icon } from '@/components/Button/components/SecondaryButton/components';
+import { Button, SecondaryButtonIcon } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const LoadingButton = styled(Button)`
-  pointer-events: none;
   margin-top: 1px;
+  pointer-events: none;
 
-  ${Icon} {
+  ${SecondaryButtonIcon} {
     width: 20px;
     height: 20px;
   }

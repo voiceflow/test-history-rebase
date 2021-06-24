@@ -1,4 +1,5 @@
-import BaseInput from '@/components/Input';
+import { Input as BaseInput } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 const Input = styled(BaseInput as any)<{ showdropdown: boolean; error: boolean }>`

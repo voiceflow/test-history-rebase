@@ -1,18 +1,15 @@
+import { Box, Flex, FlexCenter, LoadCircle, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Box from '@/components/Box';
 import Drawer from '@/components/Drawer';
-import Flex, { FlexCenter } from '@/components/Flex';
-import { LoadCircle } from '@/components/Loader';
 import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
-import SvgIcon from '@/components/SvgIcon';
 import { Permission } from '@/config/permissions';
 import * as Diagram from '@/ducks/diagram';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useEventualEngine, usePermission, useTheme } from '@/hooks';
+import { useEventualEngine, usePermission, useTheme } from '@/hooks';
 import { useEnableDisable, useToggle } from '@/hooks/toggle';
 import Prototype from '@/pages/Prototype';
 import { useDebug, useResetPrototype } from '@/pages/Prototype/hooks';

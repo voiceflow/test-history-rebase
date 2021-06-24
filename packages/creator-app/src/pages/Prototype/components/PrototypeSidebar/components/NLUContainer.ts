@@ -1,5 +1,5 @@
-import { FlexCenter } from '@/components/Flex';
-import Text from '@/components/Text';
+import { FlexCenter, Text } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 type NLUContainerProps = {

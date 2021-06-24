@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
-import { FlexApart } from '@/components/Flex';
-import SvgIconContainer from '@/components/SvgIcon/components/SvgIconContainer';
+import { FlexApart, SvgIconContainer } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 type UserNameContainerProps = {

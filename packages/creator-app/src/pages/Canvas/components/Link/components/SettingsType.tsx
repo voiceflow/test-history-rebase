@@ -1,10 +1,7 @@
 import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { Portal, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
-
-import Portal from '@/components/Portal';
-import SvgIcon from '@/components/SvgIcon';
-import { stopPropagation } from '@/utils/dom';
 
 import Button from './SettingsButton';
 import Content from './SettingsContent';

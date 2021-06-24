@@ -1,39 +1,33 @@
-import Cookies, { CookieGetOptions, CookieSetOptions } from 'universal-cookie';
+import { getCookieByName, removeCookie, setCookie } from '@voiceflow/ui';
 
 import { CREATOR_URL, LEGACY_URL, ROOT_DOMAIN } from '@/config';
+
+export { getAllCookies as getAll, getCookieByName as getByName, removeCookie as remove } from '@voiceflow/ui';
 
 export const AUTH_COOKIE = 'auth_vf';
 export const MAINTENANCE_COOKIE = 'maintenance';
 
 const COOKIE_OPTIONS = { path: '/', domain: ROOT_DOMAIN };
 
-const cookies = new Cookies();
+export const removeAuthCookie = () => removeCookie(AUTH_COOKIE, COOKIE_OPTIONS);
 
-export const getByName = <R extends any = string>(name: string, options?: CookieGetOptions): R => cookies.get(name, options);
-
-export const getAll = () => cookies.getAll();
-
-export const remove = (key: string, options?: CookieSetOptions) => cookies.remove(key, options);
-
-export const removeAuthCookie = () => remove(AUTH_COOKIE, COOKIE_OPTIONS);
-
-export const setAuthCookie = (token: string) => cookies.set(AUTH_COOKIE, token, COOKIE_OPTIONS);
+export const setAuthCookie = (token: string) => setCookie(AUTH_COOKIE, token, COOKIE_OPTIONS);
 
 export const getAuthCookie = () => {
   switch (window.location.host) {
     case CREATOR_URL:
-      remove(AUTH_COOKIE, { path: '/', domain: LEGACY_URL });
+      removeCookie(AUTH_COOKIE, { path: '/', domain: LEGACY_URL });
       break;
     case LEGACY_URL:
-      remove(AUTH_COOKIE, COOKIE_OPTIONS);
+      removeCookie(AUTH_COOKIE, COOKIE_OPTIONS);
       break;
     // no default
   }
 
-  return getByName(AUTH_COOKIE);
+  return getCookieByName(AUTH_COOKIE);
 };
 
 // TODO: is this still needed?
-export const removeLastSessionCookie = () => remove('last_session');
+export const removeLastSessionCookie = () => removeCookie('last_session');
 
-export const getMaintenanceCookie = () => getByName<string | undefined>(MAINTENANCE_COOKIE);
+export const getMaintenanceCookie = () => getCookieByName<string | undefined>(MAINTENANCE_COOKIE);

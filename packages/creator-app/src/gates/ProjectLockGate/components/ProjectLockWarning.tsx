@@ -1,7 +1,7 @@
+import { Button } from '@voiceflow/ui';
 import React from 'react';
 
-import Button from '@/components/Button';
-import SessionLocked from '@/components/ErrorPages/SessionLocked';
+import SessionLocked from '@/components/SessionLocked';
 
 export type ProjectLockWarningProps = {
   onTakeover: () => void;

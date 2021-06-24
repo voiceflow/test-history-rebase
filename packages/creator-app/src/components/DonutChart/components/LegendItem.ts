@@ -1,4 +1,5 @@
-import { FlexApart } from '@/components/Flex';
+import { FlexApart } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 type LegendItemProps = {

@@ -1,5 +1,4 @@
 export * from './asr';
-export * from './cache';
 export * from './callback';
 export * from './dismiss';
 export * from './dragPreview';
@@ -24,7 +23,6 @@ export * from './mouse';
 export * from './permission';
 export * from './raf';
 export * from './reducer';
-export * from './reducerV2';
 export * from './redux';
 export * from './routes';
 export * from './scroll';

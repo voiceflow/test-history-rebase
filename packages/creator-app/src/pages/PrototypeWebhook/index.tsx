@@ -1,11 +1,7 @@
+import { Alert, Box, ClickableText, Input, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import Alert from '@/components/Alert';
-import Box from '@/components/Box';
-import Input from '@/components/Input';
-import { ClickableText } from '@/components/Text';
-import { toast } from '@/components/Toast';
 import { API_ENDPOINT } from '@/config';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';

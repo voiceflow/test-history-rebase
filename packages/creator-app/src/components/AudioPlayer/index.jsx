@@ -1,11 +1,10 @@
+import { Flex, swallowEvent } from '@voiceflow/ui';
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import Flex from '@/components/Flex';
 import useAudioPlayer from '@/hooks/audioPlayer';
 import { prettifyBucketURL } from '@/utils/audio';
-import { swallowEvent } from '@/utils/dom';
 
 import { CloseButton, Container, DurationText, FileNameContainer, PausePlayButton, ProgressBar } from './components';
 

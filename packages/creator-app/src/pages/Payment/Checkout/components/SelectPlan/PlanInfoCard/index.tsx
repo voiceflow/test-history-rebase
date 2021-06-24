@@ -1,7 +1,7 @@
+import { FlexApart } from '@voiceflow/ui';
 import React from 'react';
 
 import BubbleText from '@/components/BubbleText';
-import { FlexApart } from '@/components/Flex';
 import { BillingPeriod, PLAN_TYPE_META, PlanType } from '@/constants';
 
 import {

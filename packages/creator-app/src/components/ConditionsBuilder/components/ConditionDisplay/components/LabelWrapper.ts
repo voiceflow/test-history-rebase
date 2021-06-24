@@ -1,7 +1,8 @@
-import { Flex } from '@/components/Box';
+import { BoxFlex } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
-const LabelWrapper = styled(Flex)`
+const LabelWrapper = styled(BoxFlex)`
   overflow-wrap: anywhere;
   display: inline-flex;
   flex-wrap: wrap;

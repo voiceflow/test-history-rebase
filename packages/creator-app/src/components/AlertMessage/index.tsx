@@ -1,7 +1,5 @@
+import { FlexCenter, Icon, SvgIcon, SvgIconProps } from '@voiceflow/ui';
 import React from 'react';
-
-import { FlexCenter } from '@/components/Flex';
-import SvgIcon, { Icon, SvgIconProps } from '@/components/SvgIcon';
 
 import { Container, ContainerProps } from './components';
 import { MESSAGE_VARIANTS, Variant } from './constants';

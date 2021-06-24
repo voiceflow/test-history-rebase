@@ -1,4 +1,5 @@
-import Flex from '@/components/Flex';
+import { Flex } from '@voiceflow/ui';
+
 import { MemberIcon } from '@/components/User';
 import { css, styled } from '@/hocs';
 import {

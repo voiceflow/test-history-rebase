@@ -1,10 +1,11 @@
+/* eslint-disable max-classes-per-file */
+import { logger } from '@voiceflow/ui';
 import React from 'react';
 import shallowEqual from 'shallowequal';
 
 import { useTeardown } from '@/hooks';
 import { objectID } from '@/utils';
 import { append, withoutValue } from '@/utils/array';
-import Logger from '@/utils/logger';
 
 import type { Engine } from '..';
 import { EntityType } from '../constants';
@@ -27,8 +28,7 @@ export abstract class Entity<T extends EntityInstance = EntityInstance> {
 
   public instance: T | null = null;
 
-  // eslint-disable-next-line no-useless-constructor
-  constructor(protected type: EntityType, protected engine: Engine, protected log: typeof Logger) {}
+  constructor(protected type: EntityType, protected engine: Engine, protected log: typeof logger) {}
 
   #addClass = (className: string) => {
     this.classNames = append(this.classNames, className);

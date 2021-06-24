@@ -1,6 +1,5 @@
+import { SecondaryButton } from '@voiceflow/ui';
 import styled, { css } from 'styled-components';
-
-import SecondaryButton from '@/components/Button/components/SecondaryButton';
 
 const OverflowMenuContainer = styled(SecondaryButton)`
   color: rgba(110, 132, 154, 0.85);

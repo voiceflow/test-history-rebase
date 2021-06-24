@@ -1,7 +1,7 @@
+import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import SSML from '@/components/SSML';
-import { toast } from '@/components/Toast';
 import * as Diagram from '@/ducks/diagram';
 import * as Project from '@/ducks/project';
 import * as Version from '@/ducks/version';

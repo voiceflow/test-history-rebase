@@ -1,10 +1,7 @@
+import { Dropdown, FlexApart, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Dropdown from '@/components/Dropdown';
-import { FlexApart } from '@/components/Flex';
-import Menu, { MenuItem } from '@/components/Menu';
 import PlanBubble from '@/components/PlanBubble';
-import SvgIcon from '@/components/SvgIcon';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { UserRole } from '@/constants';
 import * as Router from '@/ducks/router';

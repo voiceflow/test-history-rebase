@@ -128,7 +128,7 @@ To enable network debugging:
 yarn start --debugNet
 ```
 
-You can also enable more granular network debugging by passing `--debugHttp` to only see HTTP/HTTPS requests
+You can also enable more granular network debugging by passing `--debugFetch` to only see HTTP/HTTPS requests
 or `--debugSocket` to only see websocket events.
 
 #### Realtime Debugging

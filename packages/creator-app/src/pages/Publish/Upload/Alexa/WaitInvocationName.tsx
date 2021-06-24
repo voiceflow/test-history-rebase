@@ -1,16 +1,10 @@
 import { getInvocationNameError as getAlexaInvocationNameError, Locale } from '@voiceflow/alexa-types';
+import { BlockText, Box, BoxFlex, Button, ButtonVariant, IconVariant, Input, SvgIcon, TippyTooltip, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 import { Assign } from 'utility-types';
 
-import Box, { Flex } from '@/components/Box';
-import Button, { ButtonVariant } from '@/components/Button';
-import Input from '@/components/Input';
-import SvgIcon, { IconVariant } from '@/components/SvgIcon';
-import { BlockText } from '@/components/Text';
-import TippyTooltip from '@/components/TippyTooltip';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
-import { useSmartReducerV2 } from '@/hooks';
 import { AlexaExportJob, AlexaPublishJob } from '@/models';
 import { ConnectedProps, Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
@@ -64,7 +58,7 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
     <LoaderStage>Updating Invocation Name</LoaderStage>
   ) : (
     <StageContainer>
-      <Flex mb="s">
+      <BoxFlex mb="s">
         <BlockText color="secondary" fontWeight={600} mr={4}>
           Invocation Name
         </BlockText>
@@ -84,7 +78,7 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
         >
           <SvgIcon icon="info" clickable variant={IconVariant.STANDARD} />
         </TippyTooltip>
-      </Flex>
+      </BoxFlex>
 
       <Box mb="m">
         <Input value={state.name} placeholder="Invocation Name" onChange={updateName} />

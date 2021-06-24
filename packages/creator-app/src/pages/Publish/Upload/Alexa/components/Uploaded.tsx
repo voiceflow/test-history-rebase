@@ -1,10 +1,9 @@
+import { BlockText, FlexStart, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 import Confetti from 'react-dom-confetti';
 import { ThemeContext } from 'styled-components';
 
-import { FlexStart } from '@/components/Flex';
 import Section from '@/components/Section';
-import { BlockText, Link, Text } from '@/components/Text';
 import * as Project from '@/ducks/project';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';

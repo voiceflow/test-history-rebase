@@ -1,13 +1,11 @@
+import { toast, useContextApi, useDidUpdateEffect, useSetup, useTeardown, withContext } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { JobStatus } from '@/constants';
 import * as Session from '@/ducks/session';
-import { withContext } from '@/hocs/withContext';
-import { useContextApi, useDidUpdateEffect, useSetup, useTeardown } from '@/hooks';
 import { NLPTrainJob } from '@/models';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';

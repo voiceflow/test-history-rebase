@@ -1,4 +1,5 @@
-import Flex, { flexApartStyles } from '@/components/Flex';
+import { Flex, flexApartStyles } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 type HeaderProps = {
@@ -7,8 +8,8 @@ type HeaderProps = {
 
 const Header = styled(Flex)<HeaderProps>`
   color: #132144;
-  font-size: 15px;
   font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
 
   ${({ rightIcon }) =>

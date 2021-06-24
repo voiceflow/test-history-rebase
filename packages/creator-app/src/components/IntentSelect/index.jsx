@@ -1,9 +1,8 @@
+import { Select, toast } from '@voiceflow/ui';
 import _shuffle from 'lodash/shuffle';
 import _toLower from 'lodash/toLower';
 import React from 'react';
 
-import Select from '@/components/Select';
-import { toast } from '@/components/Toast';
 import { CUSTOMIZABLE_INTENT_PREFIXS, SPACE_REGEXP } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as Project from '@/ducks/project';

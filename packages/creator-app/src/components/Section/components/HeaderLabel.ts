@@ -1,5 +1,6 @@
+import { overflowTextStyles } from '@voiceflow/ui';
+
 import { SectionVariant } from '@/components/Section/constants';
-import { overflowTextStyles } from '@/components/Text';
 import { css, styled, units } from '@/hocs';
 
 export enum HeaderVariant {

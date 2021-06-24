@@ -1,7 +1,7 @@
+import * as Fixtures from '@/../test/_fixtures';
 import client from '@/client';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
-import { Fixtures } from '@/utils/testing';
 
 import suite from './_suite';
 

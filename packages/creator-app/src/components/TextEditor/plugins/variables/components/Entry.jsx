@@ -1,6 +1,6 @@
+import { MenuItem } from '@voiceflow/ui';
 import React from 'react';
 
-import { MenuItem } from '@/components/Menu';
 import { css, styled } from '@/hocs';
 
 const Item = styled(MenuItem)`

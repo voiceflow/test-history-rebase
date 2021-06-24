@@ -1,7 +1,7 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { PopperProps } from 'react-popper';
 
-import Icon from '@/components/SvgIcon';
 import TutorialTooltip from '@/components/TutorialTooltip';
 import { css, styled, transition } from '@/hocs';
 
@@ -37,7 +37,7 @@ const InfoIcon: React.FC<InfoIconProps> = ({ children, placement = 'bottom-start
     portalNode={document.body}
     anchorRenderer={({ isOpen }: { isOpen: boolean }) => (
       <IconContainer isOpen={isOpen}>
-        <Icon size={16} icon="info" />
+        <SvgIcon size={16} icon="info" />
       </IconContainer>
     )}
   >

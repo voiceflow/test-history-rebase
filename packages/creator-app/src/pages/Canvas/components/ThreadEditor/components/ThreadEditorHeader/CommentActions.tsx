@@ -1,17 +1,10 @@
+import { Box, BoxFlex, Dropdown, FlexEnd, IconButton, IconButtonVariant, IS_MAC, Menu, MenuItem, preventDefault, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { Box, Flex } from '@/components/Box';
-import Dropdown from '@/components/Dropdown';
-import { FlexEnd } from '@/components/Flex';
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import Menu, { MenuItem } from '@/components/Menu';
-import TippyTooltip from '@/components/TippyTooltip';
-import { isMac } from '@/config';
 import { useEnableDisable } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { preventDefault } from '@/utils/dom';
 
-const hotKey = isMac ? '⌘↵' : 'Ctrl↵';
+const hotKey = IS_MAC ? '⌘↵' : 'Ctrl↵';
 
 export type CommentActionsProps = {
   onPost: () => void;
@@ -72,7 +65,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
       )}
       {threadID && isPosted && showResolve && (
         <TippyTooltip title="Mark Resolved" distance={1}>
-          <Flex ml={16}>
+          <BoxFlex ml={16}>
             <IconButton
               size={16}
               icon="check2"
@@ -81,7 +74,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
               iconProps={{ color: '#becedc' }}
               hoverColor="#6e849a"
             />
-          </Flex>
+          </BoxFlex>
         </TippyTooltip>
       )}
       {!isPosted && (

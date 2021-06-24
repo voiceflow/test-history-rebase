@@ -1,7 +1,7 @@
 import { VALID_SAMPLE_UTTERANCE } from '@voiceflow/common';
+import { Input } from '@voiceflow/ui';
 import React from 'react';
 
-import Input from '@/components/Input';
 import ListManager from '@/components/ListManager';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 

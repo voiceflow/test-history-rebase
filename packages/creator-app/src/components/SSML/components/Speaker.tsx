@@ -1,8 +1,8 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import client from '@/client';
-import SvgIcon from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
 import { useEnableDisable } from '@/hooks/toggle';
 import { ClassName } from '@/styles/constants';

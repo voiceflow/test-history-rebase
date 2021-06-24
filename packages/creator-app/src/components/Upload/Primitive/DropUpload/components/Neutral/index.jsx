@@ -1,6 +1,5 @@
+import { swallowEvent } from '@voiceflow/ui';
 import React from 'react';
-
-import { swallowEvent } from '@/utils/dom';
 
 import { CornerActionButton } from '..';
 import BrowseButton from './components/BrowseButton';

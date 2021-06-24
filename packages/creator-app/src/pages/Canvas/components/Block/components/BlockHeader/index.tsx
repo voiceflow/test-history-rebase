@@ -1,11 +1,11 @@
+import { Icon, preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
-import SvgIcon, { Icon } from '@/components/SvgIcon';
 import { BlockVariant } from '@/constants/canvas';
 import { BLOCK_SECTION_TITLE_CLASSNAME } from '@/pages/Canvas/constants';
 import { useEditingMode } from '@/pages/Skill/hooks';
-import { preventDefault, withEnterPress } from '@/utils/dom';
+import { withEnterPress } from '@/utils/dom';
 
 import { Container, IconContainer, Input } from './components';
 

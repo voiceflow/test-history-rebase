@@ -1,4 +1,4 @@
-import { isMac } from '@/config';
+import { IS_MAC } from '@voiceflow/ui';
 
 export enum Hotkey {
   COPY = 'COPY',
@@ -90,7 +90,7 @@ const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {
   [SpecialKey.BACKSPACE]: 'Del',
 };
 
-export const PLATFORM_META_KEY = isMac ? SpecialKey.META : SpecialKey.CTRL;
+export const PLATFORM_META_KEY = IS_MAC ? SpecialKey.META : SpecialKey.CTRL;
 export const PLATFORM_META_KEY_LABEL = SPECIAL_KEY_LABEL[PLATFORM_META_KEY];
 
 const replaceSpecials = (label: string): string =>

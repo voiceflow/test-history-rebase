@@ -1,7 +1,6 @@
+import { IconButton, IconButtonContainer, IconButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import { Container } from '@/components/IconButton/components';
 import { styled } from '@/hocs';
 import { Point } from '@/types';
 
@@ -22,7 +21,7 @@ const LinkRemoveButton: React.FC<LinkRemoveButtonProps> = ({ position: [x, y], o
 export default styled(LinkRemoveButton)`
   position: relative;
 
-  & > ${Container} {
+  & > ${IconButtonContainer} {
     position: absolute;
     top: 50%;
     left: 50%;

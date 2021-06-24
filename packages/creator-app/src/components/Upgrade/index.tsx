@@ -1,10 +1,8 @@
+import { ClickableText, stopImmediatePropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import SvgIcon from '@/components/SvgIcon';
-import { ClickableText } from '@/components/Text';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
-import { stopImmediatePropagation } from '@/utils/dom';
 
 import UpgradeContainer from './UpgradeContainer';
 

@@ -1,6 +1,6 @@
+import { Icon } from '@voiceflow/ui';
 import cuid from 'cuid';
 
-import { Icon } from '@/components/SvgIcon';
 import { BlockType, DialogType } from '@/constants';
 import { NodeData } from '@/models';
 

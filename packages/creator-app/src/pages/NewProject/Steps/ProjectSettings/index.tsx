@@ -1,15 +1,11 @@
 import { getInvocationNameError as getAlexaInvocationNameError } from '@voiceflow/alexa-types';
 import { Locale as GeneralLocale } from '@voiceflow/general-types';
 import { getInvocationNameError as getGoogleInvocationNameError } from '@voiceflow/google-types';
+import { Button, ButtonVariant, FlexCenter, Input, Select, SvgIcon } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
 
-import Button, { ButtonVariant } from '@/components/Button';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
-import { FlexCenter } from '@/components/Flex';
-import Input from '@/components/Input';
-import Select from '@/components/Select';
-import Icon from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
@@ -156,7 +152,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
       <FlexCenter>
         {creatingProject ? (
           <LoadingButton variant="primary" square>
-            <Icon icon="publishSpin" size={24} spin />
+            <SvgIcon icon="publishSpin" size={24} spin />
           </LoadingButton>
         ) : (
           <Button variant={ButtonVariant.PRIMARY} disabled={!canContinue} onClick={finalizeCreation}>

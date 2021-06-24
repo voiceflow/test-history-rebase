@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+import { Portal } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
 
-import Portal from '@/components/Portal';
 import { CANVAS_CROSSHAIR_ENABLED } from '@/config';
 import { styled } from '@/hocs';
 import { EngineContext } from '@/pages/Canvas/contexts';

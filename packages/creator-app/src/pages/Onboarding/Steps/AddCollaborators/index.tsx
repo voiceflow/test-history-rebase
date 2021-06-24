@@ -1,10 +1,6 @@
+import { Badge, Button, ClickableText, FlexCenter, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Badge from '@/components/Badge';
-import Button from '@/components/Button';
-import { FlexCenter } from '@/components/Flex';
-import Icon from '@/components/SvgIcon';
-import { ClickableText } from '@/components/Text';
 import { UserRole } from '@/constants';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { CollaboratorType, OnboardingStepProps } from '@/pages/Onboarding/types';
@@ -65,7 +61,7 @@ const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
 
       <FlexCenter column style={{ marginTop: '25px' }}>
         <Button disabled={!validMembers.length || hasErrors || sendingRequests} variant="primary" onClick={onContinue}>
-          {sendingRequests ? <Icon icon="publishSpin" size={24} spin /> : 'Send Invites'}
+          {sendingRequests ? <SvgIcon icon="publishSpin" size={24} spin /> : 'Send Invites'}
         </Button>
 
         <ClickableText onClick={advanceToNextStep} mt={16}>

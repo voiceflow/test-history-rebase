@@ -1,6 +1,6 @@
+import { Spinner } from '@voiceflow/ui';
 import React from 'react';
 
-import { Spinner } from '@/components/Spinner';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';

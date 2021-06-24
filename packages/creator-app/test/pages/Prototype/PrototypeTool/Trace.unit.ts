@@ -1,7 +1,5 @@
 /* eslint-disable dot-notation, @typescript-eslint/ban-ts-comment */
 
-import './utils/mockAudio';
-
 import { BaseRequest, IntentName, RequestType, TraceType } from '@voiceflow/general-types';
 import { TraceStreamAction } from '@voiceflow/general-types/build/nodes/stream';
 import { SinonSpy, SinonStub } from 'sinon';

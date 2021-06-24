@@ -1,13 +1,12 @@
 import { Voice as AlexaVoice } from '@voiceflow/alexa-types';
 import { RepeatType, Voice as GeneralVoice } from '@voiceflow/general-types';
 import { Voice as GoogleVoice } from '@voiceflow/google-types';
+import { ClickableText, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
-import Select from '@/components/Select';
 import SSML from '@/components/SSML';
-import { ClickableText } from '@/components/Text';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import { PlatformType } from '@/constants';
 import * as Version from '@/ducks/version';

@@ -1,8 +1,6 @@
+import { Flex, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import FlexCenter from '@/components/Flex';
-import SvgIcon from '@/components/SvgIcon';
-import TippyTooltip from '@/components/TippyTooltip';
 import { LockOwner } from '@/models';
 import { Identifier } from '@/styles/constants';
 
@@ -17,7 +15,6 @@ export type UserProps = MemberIconProps & {
   pending?: boolean;
 };
 
-// eslint-disable-next-line react/display-name
 const User = React.forwardRef<HTMLDivElement, UserProps>(({ user, className, pending, ...props }, ref) => {
   if (pending) {
     return (
@@ -89,7 +86,7 @@ export const Members: React.FC<MembersProps> = ({ min = 0, max = 8, onAdd, membe
       </MembersWrapper>
 
       {accepted.length > max && (
-        <FlexCenter>
+        <Flex>
           <TippyTooltip
             html={
               <>
@@ -105,7 +102,7 @@ export const Members: React.FC<MembersProps> = ({ min = 0, max = 8, onAdd, membe
           >
             <div className="text-muted no-select">+{accepted.length - max}</div>
           </TippyTooltip>
-        </FlexCenter>
+        </Flex>
       )}
     </MembersContainer>
   );

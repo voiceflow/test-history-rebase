@@ -1,8 +1,7 @@
+import { BoxFlex, Input } from '@voiceflow/ui';
 import React from 'react';
 
-import { Flex } from '@/components/Box';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
-import Input from '@/components/Input';
 import Section from '@/components/Section';
 import { useManager, useToggle } from '@/hooks';
 import { NodeData } from '@/models';
@@ -74,7 +73,7 @@ const SetEditorV2: NodeEditor<NodeData.SetV2> = ({ data, onChange }) => {
       hideFooter={isDragging}
     >
       <>
-        <Flex fullWidth zIndex={2} position="fixed" top={0} borderBottom="1px solid #eaeff4">
+        <BoxFlex fullWidth zIndex={2} position="fixed" top={0} borderBottom="1px solid #eaeff4">
           <Section fullWidth>
             <Input
               icon={NODE_CONFIG.icon}
@@ -87,8 +86,8 @@ const SetEditorV2: NodeEditor<NodeData.SetV2> = ({ data, onChange }) => {
               placeholder="Name Set step"
             />
           </Section>
-        </Flex>
-        <Flex style={{ marginTop: '84px' }}>
+        </BoxFlex>
+        <BoxFlex style={{ marginTop: '84px' }}>
           <DraggableList
             type="set-editor"
             onDelete={onRemove}
@@ -105,7 +104,7 @@ const SetEditorV2: NodeEditor<NodeData.SetV2> = ({ data, onChange }) => {
             withContextMenuDelete
             withContextMenuDuplicate
           />
-        </Flex>
+        </BoxFlex>
       </>
     </Content>
   );

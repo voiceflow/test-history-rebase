@@ -1,7 +1,6 @@
+import { BoxFlex, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { Flex } from '@/components/Box';
-import { Text } from '@/components/Text';
 import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
 import { useTrackingEvents } from '@/hooks';
@@ -33,19 +32,19 @@ const SelectVendorStage: React.FC<SelectVendorStageProps & ConnectedSelectVendor
 
   return (
     <StageContainer noPadding>
-      <Flex fullWidth height={42} mt={8} padding="12px 21px 10px 24px">
+      <BoxFlex fullWidth height={42} mt={8} padding="12px 21px 10px 24px">
         <Text textAlign="left" mb={11} fontWeight={600} fontSize={15}>
           Select Vendor
         </Text>
-      </Flex>
+      </BoxFlex>
 
-      <Flex maxHeight={400} mb={8} column style={{ overflow: 'auto' }}>
+      <BoxFlex maxHeight={400} mb={8} column style={{ overflow: 'auto' }}>
         {vendors.map(({ id, name }) => (
-          <Flex key={id} fullWidth onClick={() => onVendorSelect(id)}>
+          <BoxFlex key={id} fullWidth onClick={() => onVendorSelect(id)}>
             <ProjectItem>{name || id}</ProjectItem>
-          </Flex>
+          </BoxFlex>
         ))}
-      </Flex>
+      </BoxFlex>
     </StageContainer>
   );
 };

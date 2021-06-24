@@ -1,7 +1,7 @@
 /* eslint-disable valid-jsdoc */
+import { Flex } from '@voiceflow/ui';
 import React from 'react';
 
-import Flex from '@/components/Flex';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import { IMAGE_FILE_FORMATS } from '@/constants';
 import { styled, withUpload } from '@/hocs';

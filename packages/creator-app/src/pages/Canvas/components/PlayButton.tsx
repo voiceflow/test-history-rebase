@@ -1,7 +1,6 @@
+import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import SvgIcon from '@/components/SvgIcon';
-import TippyTooltip from '@/components/TippyTooltip';
 import { BlockVariant } from '@/constants/canvas';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';

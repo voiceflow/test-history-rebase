@@ -1,9 +1,8 @@
+import { Flex, SvgIcon } from '@voiceflow/ui';
 import CSS from 'csstype';
 import React from 'react';
 
-import Flex from '@/components/Flex';
 import InfoIcon from '@/components/InfoIcon';
-import Icon from '@/components/SvgIcon';
 import { Identifier } from '@/styles/constants';
 
 import { HeaderTextContainer, ModalHeaderContainer } from './components';
@@ -24,7 +23,7 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({ header, toggle, children, cla
         {tooltip && <InfoIcon tooltipProps={{ portalNode: window.document.body }}>{tooltip}</InfoIcon>}
       </Flex>
     )}
-    <Icon id={Identifier.MODAL_CLOSE_BUTTON_REGULAR} icon="close" onClick={toggle} size={12} />
+    <SvgIcon id={Identifier.MODAL_CLOSE_BUTTON_REGULAR} icon="close" onClick={toggle} size={12} />
   </ModalHeaderContainer>
 );
 

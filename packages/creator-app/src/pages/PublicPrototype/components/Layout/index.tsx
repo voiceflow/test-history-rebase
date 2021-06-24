@@ -1,10 +1,7 @@
+import { Box, BoxFlexCenter, IS_MOBILE, SvgIcon, Text } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 
-import Box, { FlexCenter } from '@/components/Box';
-import SvgIcon from '@/components/SvgIcon';
-import Text from '@/components/Text';
-import { isMobile as isMobileDevice } from '@/config';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { useHotKeys, useSetup, useToggle } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -45,7 +42,7 @@ const Layout: React.FC<LayoutProps> = ({
   const [isMobileSize, toggleIsMobileSize] = useToggle(window.innerWidth <= MAX_MOBILE_WIDTH);
   const [isFullScreen, toggleFullScreen] = useToggle(false);
 
-  const isMobile = isMobileSize || isMobileDevice;
+  const isMobile = isMobileSize || IS_MOBILE;
   const isDesktopVisualsScreen = isVisuals && !isMobile && splashScreenPassed;
 
   useHotKeys(Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN, () => toggleFullScreen(false), { disable: !isDesktopVisualsScreen });
@@ -74,12 +71,12 @@ const Layout: React.FC<LayoutProps> = ({
   return (
     <Container isMobile={isMobile} isVisuals={isVisuals} isFullScreen={isFullScreen} splashScreenPassed={splashScreenPassed}>
       {layout !== PrototypeDuck.PrototypeLayout.TEXT_DIALOG && isMobile ? (
-        <FlexCenter width="100%" height="100%" column p={32}>
+        <BoxFlexCenter width="100%" height="100%" column p={32}>
           <SvgIcon icon="info" color="#e5b813" size={32} />
           <Box mt={16} textAlign="center">
             <Text fontSize={22}>Mobile support for prototypes is coming soon. Please test on desktop.</Text>
           </Box>
-        </FlexCenter>
+        </BoxFlexCenter>
       ) : (
         <>
           <ContentContainer isMobile={isMobile} isVisuals={isVisuals} isFullScreen={isFullScreen} splashScreenPassed={splashScreenPassed}>

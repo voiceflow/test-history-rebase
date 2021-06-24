@@ -1,7 +1,7 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import GoogleLoginButton from '@/components/Forms/GoogleLogin';
-import SvgIcon from '@/components/SvgIcon';
 import { GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';

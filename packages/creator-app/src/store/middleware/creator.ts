@@ -1,4 +1,5 @@
-import { toast } from '@/components/Toast';
+import { toast } from '@voiceflow/ui';
+
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Realtime from '@/ducks/realtime';

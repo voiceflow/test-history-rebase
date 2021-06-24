@@ -1,11 +1,8 @@
+import { Box, BoxFlex, Input, Label, Toggle } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import Box, { Flex } from '@/components/Box';
-import Input from '@/components/Input';
-import { Label } from '@/components/Text';
-import Toggle from '@/components/Toggle';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
 import * as Version from '@/ducks/version';
@@ -74,10 +71,10 @@ const PrivacyTermsForm: React.FC = () => {
         </Box>
 
         <Label>Is this skill directed to children under the age of 13?</Label>
-        <Flex>
+        <BoxFlex>
           <u className="mr-2">{forChildren ? 'YES' : 'NO'}</u>
           <Toggle name="copa" checked={forChildren} onChange={() => saveForChildren(!forChildren)} />
-        </Flex>
+        </BoxFlex>
       </Box>
     </>
   );

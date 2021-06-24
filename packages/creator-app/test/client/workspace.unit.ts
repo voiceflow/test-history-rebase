@@ -1,7 +1,8 @@
+import { generate } from '@voiceflow/ui';
+
 import memberAdapter from '@/client/adapters/member';
 import workspaceAdapter from '@/client/adapters/workspace';
 import client, { LEGACY_WORKSPACE_PATH, WORKSPACES_PATH } from '@/client/workspace';
-import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 

@@ -1,4 +1,5 @@
-import { isIOS } from '@/config';
+/* eslint-disable max-classes-per-file */
+import { IS_IOS } from '@voiceflow/ui';
 
 const SOUND_BANK_PREFIX = 'soundbank://soundlibrary/';
 const SOUND_BANK_MIRROR = 'https://d3qhmae9zx9eb.cloudfront.net/';
@@ -14,6 +15,10 @@ export class TAudio extends Audio {
     } else {
       super.src = value;
     }
+  }
+
+  get src(): string {
+    return super.src;
   }
 
   pause(): void {
@@ -103,7 +108,7 @@ class AudioController {
     this.audio.loop = false;
 
     // do not recreate an audio on iOS, since the first message will not be played
-    if (!isIOS) {
+    if (!IS_IOS) {
       this.audio = new TAudio();
     }
   }

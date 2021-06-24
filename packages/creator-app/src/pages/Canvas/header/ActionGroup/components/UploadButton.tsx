@@ -1,10 +1,6 @@
+import { Box, Button, Icon, PrimaryButtonIcon, PrimaryButtonLabel, SvgIconContainer, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
-import Button from '@/components/Button';
-import { Icon, Label } from '@/components/Button/components/PrimaryButton/components';
-import * as SvgIcon from '@/components/SvgIcon';
-import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import { css, styled } from '@/hocs';
 import { usePermission } from '@/hooks';
@@ -30,25 +26,25 @@ const UploadButton = styled(Button).attrs({ speed: 2000 })<UploadButtonProps>`
       box-shadow: none;
     `}
 
-  ${Icon} {
+  ${PrimaryButtonIcon} {
     background: linear-gradient(-180deg, #427fcf 0%, #125bc1 68%);
     box-shadow: none;
 
-    ${SvgIcon.Container} {
+    ${SvgIconContainer} {
       display: block;
       opacity: 1;
       ${({ isUploading }) => isUploading && Spin}
     }
   }
 
-  ${Label} {
+  ${PrimaryButtonLabel} {
     padding-right: 20px;
     text-align: left;
   }
 `;
 
 type UploadButtonContainerProps = {
-  icon?: SvgIcon.Icon;
+  icon?: Icon;
   label?: string;
   onClick: React.MouseEventHandler;
   tooltip?: string;

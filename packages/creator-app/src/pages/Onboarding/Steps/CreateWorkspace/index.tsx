@@ -1,9 +1,6 @@
+import { Button, ClickableText, FlexCenter, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import Button from '@/components/Button';
-import { FlexCenter } from '@/components/Flex';
-import { ClickableText } from '@/components/Text';
-import { toast } from '@/components/Toast';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 
 import { StepID } from '../../constants';

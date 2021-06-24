@@ -1,4 +1,5 @@
-import { FlexCenter, FlexLabel } from '@/components/Flex';
+import { FlexCenter, FlexLabel } from '@voiceflow/ui';
+
 import { css, styled, units } from '@/hocs';
 
 import ProductDetails from './ProductDetails';

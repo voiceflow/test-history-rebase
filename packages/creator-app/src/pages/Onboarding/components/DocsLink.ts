@@ -1,5 +1,5 @@
-import { flexStyles } from '@/components/Flex';
-import { Link } from '@/components/Text';
+import { flexStyles, Link } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const DocsLink = styled(Link)`

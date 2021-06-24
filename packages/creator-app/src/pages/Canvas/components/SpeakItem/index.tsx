@@ -1,10 +1,9 @@
+import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import { SectionToggleVariant } from '@/components/Section';
 import SSMLWithVars from '@/components/SSMLWithVars';
-import SvgIcon from '@/components/SvgIcon';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import VariablesInput from '@/components/VariablesInput';
 import { DialogType, PlatformType } from '@/constants';

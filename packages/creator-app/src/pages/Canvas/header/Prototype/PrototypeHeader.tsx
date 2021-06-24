@@ -1,6 +1,6 @@
+import { FlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
-import { FlexCenter } from '@/components/Flex';
 import { PrototypeStatus, prototypeStatusSelector } from '@/ducks/prototype';
 import { connect, styled } from '@/hocs';
 

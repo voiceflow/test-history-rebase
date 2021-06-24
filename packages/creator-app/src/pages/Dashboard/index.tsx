@@ -1,21 +1,14 @@
 import './DashBoard.css';
 
 import { ProjectPrivacy } from '@voiceflow/api-sdk';
+import { Alert, AlertVariant, BoxFlex, BoxFlexCenter, FullSpinner, IconButton, LegacyButton, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { createGraphic } from '@/assets';
-import Alert, { AlertVariant } from '@/components/Alert';
-import { Flex, FlexCenter } from '@/components/Box';
 import DragLayer from '@/components/DragLayer';
-import IconButton from '@/components/IconButton';
-import Button from '@/components/LegacyButton';
 import SeoHelmet from '@/components/SeoHelmet';
-import { FullSpinner } from '@/components/Spinner';
-import SvgIcon from '@/components/SvgIcon';
-import TippyTooltip from '@/components/TippyTooltip';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
@@ -223,7 +216,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
       <SeoHelmet page={SeoPage.DASHBOARD} />
 
       {isLocked && (
-        <FlexCenter height="100%" width="100%" position="absolute" zIndex={10}>
+        <BoxFlexCenter height="100%" width="100%" position="absolute" zIndex={10}>
           {/* TODO: flush out subscription failed logic */}
           <Alert variant={AlertVariant.DANGER} className="pointer text-center">
             <SvgIcon icon="ban" size={32} inline />
@@ -232,7 +225,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
             <br />
             Please update your payment to continue
           </Alert>
-        </FlexCenter>
+        </BoxFlexCenter>
       )}
 
       {/* using loading gate here instead of hock to escape header blinking  */}
@@ -261,9 +254,9 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
                     <label className="dark text-center mb-3">No Projects Found</label>
                     <div className="text-muted mb-2">This workspace has no projects, create one.</div>
                     <Link to={Path.NEW_INTRO_PROJECT} className="no-underline super-center">
-                      <Button isPrimary className="mt-3" id="createskill">
+                      <LegacyButton isPrimary className="mt-3" id="createskill">
                         New Project
-                      </Button>
+                      </LegacyButton>
                     </Link>
                   </div>
                 </div>
@@ -315,14 +308,14 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
                           </DragLayer>
 
                           {canManageLists && (
-                            <Flex
+                            <BoxFlex
                               className={DashboardClassName.ADD_LIST_BUTTON}
                               style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}
                             >
                               <TippyTooltip distance={8} title="Add new list" position="bottom">
                                 <IconButton large icon="addStep" onClick={createList} size={13} />
                               </TippyTooltip>
-                            </Flex>
+                            </BoxFlex>
                           )}
                         </div>
                       </div>

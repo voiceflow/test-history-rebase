@@ -1,11 +1,8 @@
-/* eslint-disable jsx-a11y/label-has-for */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-shadow */
+/* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control, no-shadow */
+import { Button, Flex } from '@voiceflow/ui';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '@/components/Button';
-import Flex from '@/components/Flex';
 import Image from '@/components/LegacyUpload/Image';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { connect } from '@/hocs';

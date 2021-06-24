@@ -1,11 +1,7 @@
+import { Dropdown, FlexApart, Link, MenuContainer, stopImmediatePropagation, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Dropdown from '@/components/Dropdown';
-import { FlexApart } from '@/components/Flex';
 import { ModalFooter } from '@/components/LegacyModal';
-import { MenuContainer } from '@/components/Menu';
-import { Link } from '@/components/Text';
-import Tooltip from '@/components/TippyTooltip';
 import * as Documentation from '@/config/documentation';
 import { ExportFormat } from '@/constants';
 import * as Export from '@/ducks/export';
@@ -15,7 +11,6 @@ import { ExportItem } from '@/pages/Canvas/header/ActionGroup/components/SharePr
 import UploadButton from '@/pages/Canvas/header/ActionGroup/components/UploadButton';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
-import { stopImmediatePropagation } from '@/utils/dom';
 
 import ExportIcon from './ExportIcon';
 
@@ -58,9 +53,9 @@ const ExportProjectButton: React.FC<ConnectedExportProjectButtonProps> = ({ expo
       )}
     >
       {(ref, onToggle, isOpen) => (
-        <Tooltip title="Export">
+        <TippyTooltip title="Export">
           <ExportIcon isOpen={isOpen} ref={ref} icon="export" size="16" color={isOpen ? '#3D82E2' : '#BECEDC'} onClick={() => onToggle()} />
-        </Tooltip>
+        </TippyTooltip>
       )}
     </Dropdown>
   );

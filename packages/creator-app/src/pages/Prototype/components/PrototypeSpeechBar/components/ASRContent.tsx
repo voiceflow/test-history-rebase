@@ -1,7 +1,5 @@
+import { ClickableText, preventDefault, Text } from '@voiceflow/ui';
 import React from 'react';
-
-import { ClickableText, Text } from '@/components/Text';
-import { preventDefault } from '@/utils/dom';
 
 import Container from './Container';
 

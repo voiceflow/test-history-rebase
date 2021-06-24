@@ -1,11 +1,9 @@
 import { PrototypeModel } from '@voiceflow/api-sdk';
+import { BlockText, Box, Flex } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
 import DonutChart from '@/components/DonutChart';
 import Duration from '@/components/Duration';
-import Flex from '@/components/Flex';
-import { BlockText } from '@/components/Text';
 import { ModelDiff } from '@/utils/prototypeModel';
 
 type ModelStateProps = {

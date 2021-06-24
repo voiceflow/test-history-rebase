@@ -1,9 +1,6 @@
+import { Button, PrimaryButtonIcon, PrimaryButtonLabel, SvgIconContainer, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Button from '@/components/Button';
-import { Icon, Label } from '@/components/Button/components/PrimaryButton/components';
-import * as SvgIcon from '@/components/SvgIcon';
-import Tooltip from '@/components/TippyTooltip';
 import * as Router from '@/ducks/router';
 import { connect, css, styled } from '@/hocs';
 import { useTrackingEvents } from '@/hooks';
@@ -22,16 +19,19 @@ const PlayButton = styled(Button).attrs({ speed: 2000 })<PlayButtonProps>`
       background: linear-gradient(-180deg, #5d9df588 0%, #176ce088 68%);
       box-shadow: none;
     `}
-  ${Icon} {
+
+  ${PrimaryButtonIcon} {
     background: linear-gradient(-180deg, #427fcf 0%, #125bc1 68%);
     box-shadow: none;
-    ${SvgIcon.Container} {
+
+    ${SvgIconContainer} {
       display: block;
       opacity: 1;
       ${({ isUploading }) => isUploading && Spin}
     }
   }
-  ${Label} {
+
+  ${PrimaryButtonLabel} {
     padding-right: 20px;
     text-align: left;
   }
@@ -41,7 +41,7 @@ const TestButton: React.FC<ConnectedTestButtonProps> = ({ goToPrototype }) => {
   const [trackingEvents] = useTrackingEvents();
 
   return (
-    <Tooltip distance={6} title="Test" position="bottom" hotkey="T">
+    <TippyTooltip distance={6} title="Test" position="bottom" hotkey="T">
       <PlayButton
         id={Identifier.TEST}
         icon="play"
@@ -53,7 +53,7 @@ const TestButton: React.FC<ConnectedTestButtonProps> = ({ goToPrototype }) => {
       >
         Test
       </PlayButton>
-    </Tooltip>
+    </TippyTooltip>
   );
 };
 

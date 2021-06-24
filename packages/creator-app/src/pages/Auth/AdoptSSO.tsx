@@ -1,18 +1,15 @@
+import { Box, BoxFlex, LegacyButton, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import { GoogleLoginResponse } from 'react-google-login';
 import { Redirect } from 'react-router-dom';
 
-import Box, { Flex } from '@/components/Box';
-import Button from '@/components/LegacyButton';
-import { toast } from '@/components/Toast';
 import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { preventDefault } from '@/utils/dom';
 import * as Sentry from '@/vendors/sentry';
 
 import {
@@ -80,19 +77,19 @@ const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleA
                 <span />
               </div>
               <div className="col-5">
-                <Button isPrimary isBlock type="submit">
+                <LegacyButton isPrimary isBlock type="submit">
                   Use Okta
-                </Button>
+                </LegacyButton>
               </div>
             </div>
           </div>
         </form>
 
         <SocialLoginContainer>
-          <Flex>
+          <BoxFlex>
             <GoogleLoginButton light onLogin={onGoogleLogin} />
             <FacebookLoginButton light onLogin={onFacebookLogin} />
-          </Flex>
+          </BoxFlex>
         </SocialLoginContainer>
       </AuthBox>
     </AuthenticationContainer>

@@ -1,12 +1,12 @@
+import { preventDefault, useDidUpdateEffect, useToggle } from '@voiceflow/ui';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Editor } from 'slate';
 
 import ColorSelect from '@/components/ColorSelect';
 import SliderInputGroup from '@/components/SliderInputGroup';
-import { useDidUpdateEffect, useToggle } from '@/hooks';
 import { Markup } from '@/models';
-import { preventDefault, withEnterPress } from '@/utils/dom';
+import { withEnterPress } from '@/utils/dom';
 
 import { DEFAULT_COLOR, TextProperty } from '../constants';
 import MarkupSlateEditor from '../MarkupSlateEditor';

@@ -1,4 +1,4 @@
-import { Icon } from '@/components/SvgIcon';
+import { Icon } from '@voiceflow/ui';
 
 export enum Variant {
   DANGER = 'danger',

@@ -1,7 +1,6 @@
+import { IconButton, IconButtonVariant, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';

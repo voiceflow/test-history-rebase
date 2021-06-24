@@ -1,6 +1,6 @@
+import { toast } from '@voiceflow/ui';
 import React from 'react';
 
-import { toast } from '@/components/Toast';
 import { DiagramState, JobStatus, ModalType } from '@/constants';
 import { AlexaStageType } from '@/constants/platforms';
 import * as Account from '@/ducks/account';

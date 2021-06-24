@@ -33,4 +33,4 @@ export const platformAware: {
 } = <T extends any>(
   components: Partial<Record<PlatformType, React.FC<T>>>,
   defaultComponent: React.FC<T> = () => <div>Platform Component is not found!</div>
-) => connect(mapStateToProps)(getPlatformComponentSwitcher(components, defaultComponent)) as React.FC<T>;
+) => connect(mapStateToProps)(getPlatformComponentSwitcher(components, defaultComponent) as React.FC<PlatformComponentSwitcherProps>) as React.FC<T>;

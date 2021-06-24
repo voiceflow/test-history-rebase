@@ -1,4 +1,5 @@
-import { flexApartStyles } from '@/components/Flex';
+import { flexApartStyles } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const DeleteComponentContent = styled.div.attrs({ column: true })`

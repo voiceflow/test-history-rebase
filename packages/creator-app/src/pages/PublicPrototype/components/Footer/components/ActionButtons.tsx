@@ -1,7 +1,5 @@
+import { IconVariant, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-
-import SvgIcon, { IconVariant } from '@/components/SvgIcon';
-import TippyTooltip from '@/components/TippyTooltip';
 
 import ActionButtonContainer from './ActionButtonContainer';
 

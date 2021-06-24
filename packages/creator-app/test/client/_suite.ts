@@ -1,9 +1,9 @@
+import { generate } from '@voiceflow/ui';
 import { SinonStub } from 'sinon';
 
 import { createSuite } from '@/../test/_suite';
 import { AnyBidirectionalAdapter } from '@/client/adapters/utils';
 import fetch, * as Fetch from '@/client/fetch';
-import { generate } from '@/utils/testing';
 
 export default createSuite((utils) => ({
   ...utils,

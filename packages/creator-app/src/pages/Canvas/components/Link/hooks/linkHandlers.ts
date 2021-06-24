@@ -1,11 +1,11 @@
 import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { swallowEvent, useCache } from '@voiceflow/ui';
 import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
-import { useCache, useDismissable, useFeature, useRAF, useToggle } from '@/hooks';
+import { useDismissable, useFeature, useRAF, useToggle } from '@/hooks';
 import { LinkDataCaption } from '@/models';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
-import { swallowEvent } from '@/utils/dom';
 
 import { STRAIGHT_PATH_OFFSET } from '../constants';
 import { InternalLinkInstance } from '../types';

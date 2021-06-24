@@ -1,10 +1,6 @@
+import { flexEndStyles, SVG, SvgIcon } from '@voiceflow/ui';
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-
-import { flexEndStyles } from '@/components/Flex';
-import SvgIcon from '@/components/SvgIcon';
-import Locked from '@/svgs/locked.svg';
-import Unlocked from '@/svgs/unlocked.svg';
 
 import Clipboard from './ClipBoardSource';
 
@@ -72,7 +68,7 @@ const ClipBoard = (props) => {
           <InputGroup>
             {'locked' in props && (
               <InputPrepend>
-                <SvgIcon icon={locked ? Locked : Unlocked} width={18} height={18} />
+                <SvgIcon icon={locked ? SVG.locked : SVG.unlocked} width={18} height={18} />
               </InputPrepend>
             )}
             <Input readOnly value={value} className="form-control-border right" />

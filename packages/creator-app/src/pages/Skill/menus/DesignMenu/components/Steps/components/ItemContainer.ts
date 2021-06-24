@@ -1,5 +1,6 @@
+import { Flex } from '@voiceflow/ui';
+
 import { dragPlaceholderStyles } from '@/components/DragPlaceholder';
-import Flex from '@/components/Flex';
 import { css, styled, transition } from '@/hocs';
 
 import ItemDotsIconContainer from './ItemDotsIconContainer';

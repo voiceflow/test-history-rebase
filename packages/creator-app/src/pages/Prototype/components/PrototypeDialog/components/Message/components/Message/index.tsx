@@ -1,9 +1,8 @@
+import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
 import Avatar from '@/components/Avatar';
-import SvgIcon from '@/components/SvgIcon';
-import TippyTooltip from '@/components/TippyTooltip';
 import { FadeDownContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 

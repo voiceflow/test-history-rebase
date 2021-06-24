@@ -1,5 +1,6 @@
+import { Flex } from '@voiceflow/ui';
+
 import { CANVAS_INTERACTING_CLASSNAME } from '@/components/Canvas/constants';
-import Flex from '@/components/Flex';
 import { css, styled, transition } from '@/hocs';
 
 import { INDICATOR_DIAMETER } from '../constants';

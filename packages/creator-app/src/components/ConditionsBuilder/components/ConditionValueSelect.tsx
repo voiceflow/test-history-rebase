@@ -1,13 +1,11 @@
 import { ExpressionTypeV2 } from '@voiceflow/general-types';
+import { Badge, Box, swallowEvent } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
-import Badge from '@/components/Badge';
-import Box from '@/components/Box';
 import VariablesInput from '@/components/VariablesInput';
 import { VariableInputRef } from '@/components/VariablesInput/types';
 import { useEnableDisable } from '@/hooks';
-import { swallowEvent } from '@/utils/dom';
 
 import { isValidExpressionValue, isVariable } from '../utils';
 

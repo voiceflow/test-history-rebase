@@ -34,10 +34,17 @@
       "es2020.string"
     ],
     "outDir": "./build",
-    "baseUrl": ".",
+    "baseUrl": "..",
+    "rootDirs": [
+      "src",
+      "../ui/src"
+    ],
     "paths": {
+      "@voiceflow/ui": [
+        "ui/src"
+      ],
       "@/*": [
-        "./src/*"
+        "creator-app/src/*"
       ]
     },
     "types": [

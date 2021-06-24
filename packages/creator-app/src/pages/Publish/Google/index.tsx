@@ -1,11 +1,8 @@
+import { Box, BoxFlex, Button, ButtonVariant, Link, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import Box, { Flex } from '@/components/Box';
-import Button, { ButtonVariant } from '@/components/Button';
 import { SettingsSection } from '@/components/Settings';
-import { Link } from '@/components/Text';
-import { toast } from '@/components/Toast';
 import * as Documentation from '@/config/documentation';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
@@ -41,13 +38,13 @@ const GooglePublish: React.FC<ConnectedGooglePublishProps> = ({ projectID }) => 
             </Box>
             <Link href={Documentation.GOOGLE_ACTIONS}>Learn More</Link>
           </Box>
-          <Flex m={32}>
+          <BoxFlex m={32}>
             <Link href={googleProjectID ? `https://console.actions.google.com/project/${googleProjectID}/directoryinformation/` : undefined}>
               <Button variant={ButtonVariant.SECONDARY} disabled={!googleProjectID} nowrap>
                 Actions Console
               </Button>
             </Link>
-          </Flex>
+          </BoxFlex>
         </Box>
       </SettingsSection>
     </Container>

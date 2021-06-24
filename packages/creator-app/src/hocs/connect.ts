@@ -1,20 +1,11 @@
+import { AnyFunction, logger } from '@voiceflow/ui';
 import * as ReactRedux from 'react-redux';
 import { getDisplayName } from 'recompose';
 import { createStructuredSelector } from 'reselect';
 
 import { IS_PRODUCTION } from '@/config';
 import { Dispatch } from '@/store/types';
-import {
-  ActionCreatorLookup,
-  AnyFunction,
-  ConnectedProps,
-  Function,
-  MappedDispatchProps,
-  MappedStateProps,
-  MergeArguments,
-  SelectorLookup,
-} from '@/types';
-import Logger from '@/utils/logger';
+import { ActionCreatorLookup, ConnectedProps, Function, MappedDispatchProps, MappedStateProps, MergeArguments, SelectorLookup } from '@/types';
 
 type MergePropsType<T extends AnyFunction> = T extends (...args: MergeArguments<any, any, infer R>) => any ? R : {};
 
@@ -49,7 +40,7 @@ export const connect: Connect =
     const isDebug = !IS_PRODUCTION && options.debug;
     const { removeDispatch } = options;
     const shouldMerge = options.merge ?? true;
-    const log = Logger.child(`connect(${getDisplayName(component)})`);
+    const log = logger.child(`connect(${getDisplayName(component)})`);
 
     return ReactRedux.connect(
       (typeof mapStateToProps === 'function' ? mapStateToProps : mapStateToProps && createStructuredSelector(mapStateToProps)) || null,

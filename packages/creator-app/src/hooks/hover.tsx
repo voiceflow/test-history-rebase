@@ -1,7 +1,7 @@
+import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { HoverContext, HoverProvider } from '@/contexts/HoverContext';
-import { useContextApi } from '@/hooks/cache';
 
 import { useEnableDisable } from './toggle';
 

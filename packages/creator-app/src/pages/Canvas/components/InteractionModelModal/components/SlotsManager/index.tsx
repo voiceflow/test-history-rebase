@@ -1,3 +1,4 @@
+import { toast } from '@voiceflow/ui';
 import cuid from 'cuid';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
@@ -7,7 +8,6 @@ import { noSlotsGraphic } from '@/assets';
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
-import { toast } from '@/components/Toast';
 import { ModalType } from '@/constants';
 import * as IntentDuck from '@/ducks/intent';
 import * as SlotDuck from '@/ducks/slot';

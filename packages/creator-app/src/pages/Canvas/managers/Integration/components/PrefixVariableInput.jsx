@@ -1,6 +1,6 @@
+import { Flex, FlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
-import Flex, { FlexCenter } from '@/components/Flex';
 import VariablesInput from '@/components/VariablesInput';
 import { Container as VariablesContainer } from '@/components/VariablesInput/components';
 import { styled } from '@/hocs';

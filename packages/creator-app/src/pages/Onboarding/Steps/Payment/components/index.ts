@@ -1,4 +1,5 @@
-import Flex from '@/components/Flex';
+import { Flex } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 export { default as Container } from './Container';

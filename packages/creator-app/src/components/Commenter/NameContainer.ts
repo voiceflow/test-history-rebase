@@ -1,4 +1,5 @@
-import Text from '@/components/Text';
+import { Text } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const NameContainer = styled(Text)`

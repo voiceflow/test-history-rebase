@@ -1,7 +1,6 @@
+import { Select, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import Select from '@/components/Select';
-import { toast } from '@/components/Toast';
 import * as Diagram from '@/ducks/diagram';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';

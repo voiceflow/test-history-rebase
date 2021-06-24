@@ -1,14 +1,12 @@
+import { BlockText, Box, BoxFlex, Button, ButtonVariant, Link, Text, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import AlertMessage, { AlertMessageVariant } from '@/components/AlertMessage';
-import Box, { Flex } from '@/components/Box';
-import Button, { ButtonVariant } from '@/components/Button';
 import { ModalFooter } from '@/components/LegacyModal';
-import { BlockText, Link, Text } from '@/components/Text';
 import * as Documentation from '@/config/documentation';
 import { GoogleStageType } from '@/constants/platforms';
-import { useAsyncMountUnmount, useSmartReducerV2 } from '@/hooks';
+import { useAsyncMountUnmount } from '@/hooks';
 import UploadPopup from '@/pages/Canvas/header/ActionGroup/components/UploadPopup';
 import { Container, DropdownContainer } from '@/pages/Collaborators/components/InviteByLink/components';
 
@@ -72,9 +70,9 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
 
               <Box maxHeight={400} style={{ overflow: 'auto' }}>
                 {projects.map(({ id, name }) => (
-                  <Flex key={id} fullWidth height={42} onClick={() => updateCurrentStage(id)}>
+                  <BoxFlex key={id} fullWidth height={42} onClick={() => updateCurrentStage(id)}>
                     <ProjectItem>{name || id}</ProjectItem>
-                  </Flex>
+                  </BoxFlex>
                 ))}
               </Box>
 

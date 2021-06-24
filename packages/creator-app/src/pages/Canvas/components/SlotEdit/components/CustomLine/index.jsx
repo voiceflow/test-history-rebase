@@ -1,7 +1,5 @@
+import { Input, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
-
-import Input from '@/components/Input';
-import SvgIcon from '@/components/SvgIcon';
 
 import { ButtonContainer, Container, SynonymContainer, ValueContainer } from './components';
 

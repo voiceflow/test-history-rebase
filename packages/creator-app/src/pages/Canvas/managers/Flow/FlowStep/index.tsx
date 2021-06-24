@@ -1,3 +1,4 @@
+import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -7,7 +8,6 @@ import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { DiagramMapContext } from '@/pages/Canvas/contexts';
 import perf, { PerfAction } from '@/performance';
-import { stopPropagation } from '@/utils/dom';
 
 import { NODE_CONFIG } from '../constants';
 

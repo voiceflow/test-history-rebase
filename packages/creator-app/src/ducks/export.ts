@@ -1,7 +1,7 @@
+import { toast } from '@voiceflow/ui';
 import fileSaver from 'file-saver';
 
 import client from '@/client';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { ExportFormat, NLPProvider } from '@/constants';
 import * as Project from '@/ducks/project';

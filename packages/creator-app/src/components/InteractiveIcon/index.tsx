@@ -1,8 +1,8 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 import { withProps } from 'recompose';
 
-import SvgIcon from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 
 type InteractiveIconProps = {

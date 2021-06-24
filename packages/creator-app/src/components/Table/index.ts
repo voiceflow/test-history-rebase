@@ -1,4 +1,5 @@
-import Box, { FlexCenter } from '@/components/Box';
+import { Box, BoxFlexCenter } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 export const Descriptor = styled.div`
@@ -8,12 +9,12 @@ export const Descriptor = styled.div`
   margin: 17px 0;
 `;
 
-export const TableHeader = styled(FlexCenter)`
+export const TableHeader = styled(BoxFlexCenter)`
   font-size: 13px;
   color: #62778c;
 `;
 
-export const TableRow = styled(FlexCenter)`
+export const TableRow = styled(BoxFlexCenter)`
   font-size: 15px;
 `;
 

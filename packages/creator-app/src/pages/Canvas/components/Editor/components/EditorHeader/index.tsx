@@ -1,15 +1,13 @@
+import { Dropdown, IconButton, IconButtonVariant, preventDefault } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import Dropdown from '@/components/Dropdown';
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { SidebarContext } from '@/pages/Canvas/components/EditorSidebar/contexts';
 import { EDITOR_BREADCRUMBS_CLASSNAME, EDITOR_HEADER_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import { ConnectedProps, Nullable } from '@/types';
-import { preventDefault } from '@/utils/dom';
 
 import { ActiveLabel, Breadcrumbs, Container, Divider, Label, Title, TitleActionsContainer } from './components';
 

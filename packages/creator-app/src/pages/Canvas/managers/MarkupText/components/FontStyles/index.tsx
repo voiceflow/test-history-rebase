@@ -1,9 +1,7 @@
+import { preventDefault, Select } from '@voiceflow/ui';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Editor } from 'slate';
-
-import Select from '@/components/Select';
-import { preventDefault } from '@/utils/dom';
 
 import { Font, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, FONTS_LABELS, FontWeight, TextProperty } from '../../constants';
 import MarkupSlateEditor from '../../MarkupSlateEditor';

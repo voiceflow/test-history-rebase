@@ -1,10 +1,8 @@
+import { NetworkError, Spinner, toast } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import client from '@/client';
-import { NetworkError } from '@/client/fetch';
-import { Spinner } from '@/components/Spinner';
-import { toast } from '@/components/Toast';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';

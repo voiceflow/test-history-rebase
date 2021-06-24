@@ -1,7 +1,6 @@
+import { Button, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Button from '@/components/Button';
-import SvgIcon from '@/components/SvgIcon';
 import * as Product from '@/ducks/product';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';

@@ -1,10 +1,8 @@
-/* eslint-disable no-nested-ternary */
+import { Menu as BaseMenu, MenuItem, stopImmediatePropagation, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
-import BaseMenu, { MenuItem } from '@/components/Menu';
-import Text from '@/components/Text';
 import * as Thread from '@/ducks/thread';
 import { connect } from '@/hocs';
 import { useTheme } from '@/hooks';
@@ -14,7 +12,6 @@ import { useCommentingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { SlideOutDirection } from '@/styles/transitions/SlideOut';
 import { ConnectedProps } from '@/types';
-import { stopImmediatePropagation } from '@/utils/dom';
 
 import { Container as HeaderContainer, NoThreads, ThreadItem } from './components';
 import { FILTER_LABELS, FilterType } from './constants';

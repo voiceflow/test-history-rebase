@@ -1,6 +1,6 @@
+import { Flex } from '@voiceflow/ui';
 import React from 'react';
 
-import Flex from '@/components/Flex';
 import Section from '@/components/Section';
 import { IntegrationType } from '@/constants';
 import { Content } from '@/pages/Canvas/components/Editor';

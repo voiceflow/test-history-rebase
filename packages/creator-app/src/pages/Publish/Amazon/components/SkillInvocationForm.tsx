@@ -1,10 +1,9 @@
+import { Box, Label } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import Box from '@/components/Box';
 import TextInput from '@/components/Form/TextInput';
 import Multiple from '@/components/Forms/Multiple';
-import { Label } from '@/components/Text';
 import * as Version from '@/ducks/version';
 import { useDispatch, useLinkedState } from '@/hooks';
 import { getTargetValue } from '@/utils/dom';

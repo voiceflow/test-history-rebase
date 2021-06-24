@@ -1,12 +1,11 @@
+import { Link, stopPropagation } from '@voiceflow/ui';
 import cn from 'classnames';
 import Markdown, { MarkdownOptions } from 'markdown-to-jsx';
 import React from 'react';
 
-import { Link } from '@/components/Text';
 import { NEW_LINE_REGEX, SSML_TAG_REGEX, URL_REGEX } from '@/constants';
 import perf, { PerfAction } from '@/performance';
 import { ClassName } from '@/styles/constants';
-import { stopPropagation } from '@/utils/dom';
 
 import { Message } from '../components';
 import { MessageProps } from '../components/Message';

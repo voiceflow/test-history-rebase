@@ -1,3 +1,3 @@
-import Logger from '@/utils/logger';
+import { logger } from '@voiceflow/ui';
 
-export const clientLogger = Logger.child('client');
+export const clientLogger = logger.child('client');

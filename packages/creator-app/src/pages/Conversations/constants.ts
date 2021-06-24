@@ -1,4 +1,5 @@
-import { Icon } from '@/components/SvgIcon';
+import { Icon } from '@voiceflow/ui';
+
 import { Sentiment } from '@/models';
 
 export const SentimentToSVGName: Record<Sentiment, Icon> = {

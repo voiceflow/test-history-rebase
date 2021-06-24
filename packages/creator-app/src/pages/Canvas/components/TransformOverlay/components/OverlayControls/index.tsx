@@ -1,6 +1,6 @@
+import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
-import Portal from '@/components/Portal';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';

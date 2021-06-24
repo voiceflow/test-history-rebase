@@ -1,6 +1,6 @@
+import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
-import { Icon } from '@/components/SvgIcon';
 import { BlockState, BlockVariant } from '@/constants/canvas';
 
 export type SectionProps = React.PropsWithChildren<{

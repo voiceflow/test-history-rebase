@@ -1,11 +1,10 @@
+import { Portal, portalRootNode, stopPropagation } from '@voiceflow/ui';
 import React, { Ref } from 'react';
 import { Manager, Popper, PopperProps, Reference } from 'react-popper';
 
-import Portal, { rootNode } from '@/components/Portal';
 import { useDismissable } from '@/hooks';
 import { FadeDownDelayedContainer, SlideContainer } from '@/styles/animations';
 import { Nullable } from '@/types';
-import { stopPropagation } from '@/utils/dom';
 
 import { SelectMenuContainer, SelectMenuHeader } from './components';
 
@@ -47,7 +46,7 @@ const SelectMenu: React.FC<SelectMenuProps> = ({
       <Reference>{({ ref }) => children(ref, onToggle, isOpen, data)}</Reference>
       {isOpen && (
         <Portal portalNode={portal}>
-          <Popper modifiers={{ preventOverflow: { boundariesElement: rootNode } }} placement={placement}>
+          <Popper modifiers={{ preventOverflow: { boundariesElement: portalRootNode } }} placement={placement}>
             {({ ref, style, placement }) => (
               <div ref={ref} style={{ ...style }} data-placement={placement}>
                 <SlideContainer onClick={stopPropagation(null, true)}>

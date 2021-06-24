@@ -1,20 +1,13 @@
+import { Button, ClickableText, ControlledInput, Dropdown, FlexApart, FlexCenter, Menu, MenuItem, SvgIcon, toast } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React, { useContext } from 'react';
 
 import { teamGraphic } from '@/assets';
 import client from '@/client';
-import Button from '@/components/Button';
 import Collapsable from '@/components/Collapsable';
-import Dropdown from '@/components/Dropdown';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import { TextVariant } from '@/components/DropdownWithCaret/types';
-import { FlexApart, FlexCenter } from '@/components/Flex';
-import { ControlledInput } from '@/components/Input';
-import Menu, { MenuItem } from '@/components/Menu';
 import { CardElement } from '@/components/Stripe';
-import SvgIcon from '@/components/SvgIcon';
-import { ClickableText } from '@/components/Text';
-import { toast } from '@/components/Toast';
 import { BillingPeriod, PERIOD_NAME, PlanType, UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';

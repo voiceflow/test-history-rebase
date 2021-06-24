@@ -1,6 +1,6 @@
+import { ButtonVariant, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import { ButtonVariant } from '@/components/Button';
 import IntentForm, { HelpTooltip as IntentTooltip, LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import Section, { SectionVariant } from '@/components/Section';
@@ -9,7 +9,6 @@ import * as Intent from '@/ducks/intent';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect } from '@/hooks';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { ConnectedProps, MergeArguments } from '@/types';

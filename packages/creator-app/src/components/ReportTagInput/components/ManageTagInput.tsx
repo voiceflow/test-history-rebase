@@ -1,9 +1,7 @@
+import { Menu, MenuItem, preventDefault, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import Menu, { MenuItem } from '@/components/Menu';
-import Text from '@/components/Text';
 import { ReportTag } from '@/models';
-import { preventDefault } from '@/utils/dom';
 
 import { ReportTagInputContext } from '../context';
 import BaseTagInput, { MenuProps, TagInputVariantProps } from './BaseReportTagInput';

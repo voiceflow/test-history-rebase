@@ -1,7 +1,7 @@
+import { FullSpinner, Page404 } from '@voiceflow/ui';
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { FullSpinner } from '@/components/Spinner';
 import { LegacyPath, Path } from '@/config/routes';
 import { authTokenSelector } from '@/ducks/session';
 import { connect, lazy } from '@/hocs';
@@ -28,7 +28,6 @@ const Legal = lazy(() => import('@/components/Legal'));
 const Skill = lazy(() => import(/* webpackPrefetch: true */ '@/pages/Skill'));
 const Account = lazy(() => import('@/pages/Account'));
 const Runtime = lazy(() => import('@/pages/Runtime'));
-const Page404 = lazy(() => import('@/components/ErrorPages/404'));
 const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));
 const Workspace = lazy(() => import('@/pages/Workspace'));
 const NewWorkspace = lazy(() => import('@/pages/Dashboard/NewWorkspace'));

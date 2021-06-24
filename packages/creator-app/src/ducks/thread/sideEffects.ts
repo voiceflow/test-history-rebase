@@ -1,9 +1,9 @@
+import { toast } from '@voiceflow/ui';
 import { batch } from 'react-redux';
 
 import client from '@/client';
 import commentAdapter from '@/client/adapters/comment';
 import threadAdapter from '@/client/adapters/thread';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';

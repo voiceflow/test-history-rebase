@@ -1,9 +1,8 @@
+import { Flex, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import ButtonDropdownInput, { OrientationType } from '@/components/ButtonDropdownInput';
-import Flex from '@/components/Flex';
 import InvalidEmailError from '@/components/InvalidEmailError';
-import { toast } from '@/components/Toast';
 import { EDITOR_SEAT_ROLES, ModalType, UserRole } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';

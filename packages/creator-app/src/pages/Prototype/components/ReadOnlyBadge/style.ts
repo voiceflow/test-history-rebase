@@ -1,5 +1,5 @@
-import Flex from '@/components/Flex';
-import SvgIconContainer from '@/components/SvgIcon/components/SvgIconContainer';
+import { Flex, SvgIconContainer } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs';
 
 export const Container = styled(Flex)<{ runBlink: boolean }>`

@@ -1,10 +1,8 @@
+import { Button, ButtonVariant, Menu, MenuItem, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import Button, { ButtonVariant } from '@/components/Button';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
-import Menu, { MenuItem } from '@/components/Menu';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { EDITOR_SEAT_ROLES, ModalType, UserRole } from '@/constants';
 import * as Session from '@/ducks/session';

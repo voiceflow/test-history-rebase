@@ -1,8 +1,7 @@
+import { BoxFlexApart, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { FlexApart } from '@/components/Box';
-import SvgIcon from '@/components/SvgIcon';
 import { currentSelectedTranscriptSelector } from '@/ducks/transcript';
 
 import { ContextSubtext, ContextTitle, StyledLogo, StyledUser } from './components';
@@ -13,12 +12,12 @@ const TranscriptContext: React.FC = () => {
 
   return (
     <>
-      <FlexApart>
+      <BoxFlexApart>
         <StyledLogo>
           <SvgIcon icon="voiceflowV" size={24} />
         </StyledLogo>
         <StyledUser icon="userPlaceholder" size={48} color="#f0f0f0" />
-      </FlexApart>
+      </BoxFlexApart>
       <ContextTitle>Conversation between your assistant and {creatorID || 'a test user'}</ContextTitle>
       <ContextSubtext>
         {device}&nbsp; •&nbsp; {os}&nbsp; •&nbsp; {browser}

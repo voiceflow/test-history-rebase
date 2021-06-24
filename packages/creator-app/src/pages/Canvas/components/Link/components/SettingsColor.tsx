@@ -1,11 +1,9 @@
+import { Box, Portal, stopPropagation } from '@voiceflow/ui';
 import { parseToRgb, toColorString } from 'polished';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
-import Box from '@/components/Box';
 import ColorPicker from '@/components/ColorPicker';
-import Portal from '@/components/Portal';
-import { stopPropagation } from '@/utils/dom';
 
 import Button from './SettingsButton';
 import ColorIcon from './SettingsColorIcon';

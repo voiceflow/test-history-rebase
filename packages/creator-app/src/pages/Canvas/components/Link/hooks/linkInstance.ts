@@ -1,9 +1,10 @@
 import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { useCache } from '@voiceflow/ui';
 import moize from 'moize';
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import { useCache, useLinkedRef, useRAF } from '@/hooks';
+import { useLinkedRef, useRAF } from '@/hooks';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { Nullable } from '@/types';

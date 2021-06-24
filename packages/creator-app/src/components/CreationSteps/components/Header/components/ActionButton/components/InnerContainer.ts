@@ -1,15 +1,17 @@
-import SvgIconContainer from '@/components/SvgIcon/components/SvgIconContainer';
+import { SvgIconContainer } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const InnerContainer = styled.div`
-  height: 100%;
   width: 100%;
+  height: 100%;
   cursor: pointer;
-  :hover{
-   ${SvgIconContainer} {
-    transition: all 0.15s ease; // doing 'color' doesnt work for some reason
-    color: #8DA2B5;
-   }
+
+  :hover ${SvgIconContainer} {
+    /* doing 'color' doesnt work for some reason */
+    color: #8da2b5;
+    transition: all 0.15s ease;
+  }
 `;
 
 export default InnerContainer;

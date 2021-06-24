@@ -1,12 +1,12 @@
 import { Locale as AlexaLocale } from '@voiceflow/alexa-types';
 import { Locale as GeneralLocale } from '@voiceflow/general-types';
 import { Language as GoogleLanguage, LanguageToLocale } from '@voiceflow/google-types';
+import { FlexCenter, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { Redirect, useRouteMatch } from 'react-router-dom';
 
 import client from '@/client';
 import { CreationHeader, InnerContainer, OuterContainer } from '@/components/CreationSteps';
-import { FlexCenter } from '@/components/Flex';
 import { Path } from '@/config/routes';
 import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
@@ -14,7 +14,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useDidUpdateEffect, useSetup } from '@/hooks';
+import { useSetup } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';

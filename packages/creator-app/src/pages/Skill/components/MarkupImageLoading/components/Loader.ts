@@ -1,4 +1,5 @@
-import BaseLoader from '@/components/Loader';
+import { Loader as BaseLoader } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const Loader = styled(BaseLoader)`

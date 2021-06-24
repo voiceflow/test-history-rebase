@@ -1,4 +1,5 @@
-import { Description as BaseDescription } from '@/components/Text';
+import { Description as BaseDescription } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 import { breakpoints } from '@/styles/breakpoints';
 

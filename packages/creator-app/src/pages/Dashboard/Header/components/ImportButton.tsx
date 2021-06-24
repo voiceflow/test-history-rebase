@@ -1,8 +1,6 @@
+import { IconButton, IconButtonVariant, TippyTooltip, toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import TippyTooltip from '@/components/TippyTooltip';
-import { toast, ToastCallToAction } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';

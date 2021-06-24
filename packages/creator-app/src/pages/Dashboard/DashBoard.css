@@ -183,6 +183,7 @@
   overflow: hidden;
   background-color: #fff;
   border-right: 1px solid #dfe3ed;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   cursor: grab;
 }
 
@@ -278,9 +279,9 @@
   flex: 0 0 auto;
   -webkit-justify-content: flex-end;
   justify-content: flex-end;
-  max-height: 80px;
   min-width: 0;
   min-height: 0;
+  max-height: 80px;
   padding: 16px 32px;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
@@ -1302,26 +1303,26 @@
 }
 
 #successAnimation.animated {
-  -webkit-animation: 1s ease-out 0s 1 both scaleAnimation;
-  animation: 1s ease-out 0s 1 both scaleAnimation;
+  -webkit-animation: 1s ease-out 0s 1 both scale-animation;
+  animation: 1s ease-out 0s 1 both scale-animation;
 }
 
 #successAnimation.animated #successAnimationCircle {
-  -webkit-animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCircle, 0.3s linear 0.9s 1 both fadeOut;
-  animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCircle, 0.3s linear 0.9s 1 both fadeOut;
+  -webkit-animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both draw-circle, 0.3s linear 0.9s 1 both fade-out;
+  animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both draw-circle, 0.3s linear 0.9s 1 both fade-out;
 }
 
 #successAnimation.animated #successAnimationCheck {
-  -webkit-animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCheck, 0.3s linear 0.9s 1 both fadeOut;
-  animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCheck, 0.3s linear 0.9s 1 both fadeOut;
+  -webkit-animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both draw-check, 0.3s linear 0.9s 1 both fade-out;
+  animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both draw-check, 0.3s linear 0.9s 1 both fade-out;
 }
 
 #successAnimation.animated #successAnimationResult {
-  -webkit-animation: 0.3s linear 0.9s both fadeIn;
-  animation: 0.3s linear 0.9s both fadeIn;
+  -webkit-animation: 0.3s linear 0.9s both fade-in;
+  animation: 0.3s linear 0.9s both fade-in;
 }
 
-@-webkit-keyframes scaleAnimation {
+@-webkit-keyframes scale-animation {
   0% {
     -webkit-transform: scale(1.5);
     transform: scale(1.5);
@@ -1335,7 +1336,7 @@
   }
 }
 
-@keyframes scaleAnimation {
+@keyframes scale-animation {
   0% {
     -webkit-transform: scale(1.5);
     transform: scale(1.5);
@@ -1349,7 +1350,7 @@
   }
 }
 
-@-webkit-keyframes drawCircle {
+@-webkit-keyframes draw-circle {
   0% {
     stroke-dashoffset: 151px;
   }
@@ -1359,7 +1360,7 @@
   }
 }
 
-@keyframes drawCircle {
+@keyframes draw-circle {
   0% {
     stroke-dashoffset: 151px;
   }
@@ -1369,7 +1370,7 @@
   }
 }
 
-@-webkit-keyframes drawCheck {
+@-webkit-keyframes draw-check {
   0% {
     stroke-dashoffset: 36px;
   }
@@ -1379,7 +1380,7 @@
   }
 }
 
-@keyframes drawCheck {
+@keyframes draw-check {
   0% {
     stroke-dashoffset: 36px;
   }
@@ -1389,7 +1390,7 @@
   }
 }
 
-@-webkit-keyframes fadeOut {
+@-webkit-keyframes fade-out {
   0% {
     opacity: 1;
   }
@@ -1399,7 +1400,7 @@
   }
 }
 
-@keyframes fadeOut {
+@keyframes fade-out {
   0% {
     opacity: 1;
   }
@@ -1409,7 +1410,7 @@
   }
 }
 
-@-webkit-keyframes fadeIn {
+@-webkit-keyframes fade-in {
   0% {
     opacity: 0;
   }
@@ -1419,7 +1420,7 @@
   }
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   0% {
     opacity: 0;
   }

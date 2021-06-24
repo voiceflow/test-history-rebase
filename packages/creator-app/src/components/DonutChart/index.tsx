@@ -1,10 +1,7 @@
+import { Box, Flex, Portal, Text } from '@voiceflow/ui';
 import React from 'react';
 import { Popper } from 'react-popper';
 
-import Box from '@/components/Box';
-import Flex from '@/components/Flex';
-import Portal from '@/components/Portal';
-import Text from '@/components/Text';
 import { useThrottledCallback } from '@/hooks';
 import { Point } from '@/types';
 import { buildVirtualElement } from '@/utils/dom';

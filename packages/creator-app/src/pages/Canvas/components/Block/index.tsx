@@ -1,7 +1,7 @@
+import { Icon } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import { Icon } from '@/components/SvgIcon';
 import User from '@/components/User';
 import { BlockVariant } from '@/constants/canvas';
 import { LockOwner } from '@/models';

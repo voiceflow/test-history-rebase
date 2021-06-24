@@ -1,4 +1,5 @@
-import { FlexCenter } from '@/components/Flex';
+import { FlexCenter } from '@voiceflow/ui';
+
 import { PlatformType } from '@/constants';
 import { styled } from '@/hocs';
 import { getPlatformValue } from '@/utils/platform';

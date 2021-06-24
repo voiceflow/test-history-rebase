@@ -1,7 +1,7 @@
 import { ConditionsLogicInterface, ExpressionTypeV2 } from '@voiceflow/general-types';
+import { Box, BoxFlex } from '@voiceflow/ui';
 import React from 'react';
 
-import Box, { Flex } from '@/components/Box';
 import { ExpressionData, ExpressionV2, LogicGroupData } from '@/models';
 
 import { ConditionLabel, ConditionSelect, LogicInterfaceHandler } from './components';
@@ -42,12 +42,12 @@ const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, express
     <Box pt={16} pb={17}>
       {/* if new expression */}
       {!expression?.value?.length && (
-        <Flex>
-          <Flex mr={16}>
+        <BoxFlex>
+          <BoxFlex mr={16}>
             <ConditionLabel>IF</ConditionLabel>
-          </Flex>
+          </BoxFlex>
           <ConditionSelect onChange={addNewCondition} />
-        </Flex>
+        </BoxFlex>
       )}
 
       {expression && (

@@ -1,9 +1,6 @@
+import { Button, Description, FlexCenter, SvgIcon, Title } from '@voiceflow/ui';
 import React from 'react';
 
-import Button from '@/components/Button';
-import { FlexCenter } from '@/components/Flex';
-import SvgIcon from '@/components/SvgIcon';
-import { Description, Title } from '@/components/Text';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { FadeDownContainer } from '@/styles/animations';
 

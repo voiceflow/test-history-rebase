@@ -1,6 +1,6 @@
+import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
-import { Icon } from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import { Node, NodeData } from '@/models';

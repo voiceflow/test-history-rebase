@@ -1,13 +1,12 @@
+import { Portal, swallowEvent, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import Portal from '@/components/Portal';
 import { FeatureFlag } from '@/config/features';
-import { useDidUpdateEffect, useFeature } from '@/hooks';
+import { useFeature } from '@/hooks';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { useEditingMode } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
-import { swallowEvent } from '@/utils/dom';
 
 import { Caption, Group, HeadMarker, Overlay, Path, RemoveButton, Settings, Styles } from './components';
 import { useLinkHandlers, useLinkInstance } from './hooks';

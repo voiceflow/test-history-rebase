@@ -1,8 +1,7 @@
 import { Voice } from '@voiceflow/alexa-types';
+import { Button, FlexCenter, FlexEnd } from '@voiceflow/ui';
 import React from 'react';
 
-import Button from '@/components/Button';
-import { FlexCenter, FlexEnd } from '@/components/Flex';
 import Header from '@/components/Header';
 import MadeInVoiceflow from '@/components/MadeInVoiceflow';
 import SeoHelmet from '@/components/SeoHelmet';

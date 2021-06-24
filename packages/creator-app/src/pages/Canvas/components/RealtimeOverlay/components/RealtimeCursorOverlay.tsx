@@ -1,10 +1,9 @@
+import { preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import SvgIcon from '@/components/SvgIcon';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { RealtimeCursorOverlayAPI } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
-import { preventDefault } from '@/utils/dom';
 
 import { ANIMATION_DURATION, CURSOR_EXPIRY_TIMEOUT } from '../constants';
 import AbstractOverlay, { ConnectedRealtimeOverlayProps, connectOverlay, RealtimeViewer } from './AbstractOverlay';

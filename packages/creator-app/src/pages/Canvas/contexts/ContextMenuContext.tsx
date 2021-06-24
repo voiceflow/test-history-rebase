@@ -1,8 +1,6 @@
+import { OverlayContext, useContextApi, useSmartReducerV2, withContext, withStaticContext } from '@voiceflow/ui';
 import React from 'react';
 
-import { OverlayContext } from '@/contexts';
-import { withContext, withStaticContext } from '@/hocs';
-import { useContextApi, useSmartReducerV2 } from '@/hooks';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { Nullable } from '@/types';
 

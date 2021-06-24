@@ -1,10 +1,7 @@
+import { Box, Button, Flex, Link } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
-import Button from '@/components/Button';
-import Flex from '@/components/Flex';
 import Modal, { ModalFooter } from '@/components/Modal';
-import { Link } from '@/components/Text';
 import { ModalType } from '@/constants';
 import { styled } from '@/hocs';
 import { useModals } from '@/hooks';

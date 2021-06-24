@@ -1,7 +1,6 @@
+import { Button, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import Button from '@/components/Button';
-import Text from '@/components/Text';
 import { DiagramState, ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Session from '@/ducks/session';

@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { CanvasNodeVisibility } from '@voiceflow/general-types';
+import { Logger } from '@voiceflow/ui';
 
 import { CanvasAPI } from '@/components/Canvas';
 import { BlockType, PlatformType } from '@/constants';
@@ -12,7 +13,6 @@ import { Dispatchable, Dispatcher, DispatchResult, Selector } from '@/store/type
 import { NullableRecord, Pair, Point } from '@/types';
 import { objectID } from '@/utils';
 import { asyncForEach, unique } from '@/utils/array';
-import { Logger } from '@/utils/logger';
 import { isChoiceNode, isLinkedFlowNode, isLinkedIntentNode, isProductLinkedNode } from '@/utils/node';
 import { isInRange } from '@/utils/number';
 import { getDistinctPlatformValue } from '@/utils/platform';

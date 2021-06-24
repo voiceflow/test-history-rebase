@@ -1,4 +1,5 @@
-import * as SvgIcon from '@/components/SvgIcon';
+import { SvgIconContainer } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs';
 
 const BillingDropdown = styled.div<{ disabled: boolean; error?: boolean; isOpen: boolean }>`
@@ -25,7 +26,7 @@ const BillingDropdown = styled.div<{ disabled: boolean; error?: boolean; isOpen:
       color: #5d9df5;
     `}
 
-  ${SvgIcon.Container} {
+  ${SvgIconContainer} {
     display: inline-block;
     margin-left: 5px;
   }

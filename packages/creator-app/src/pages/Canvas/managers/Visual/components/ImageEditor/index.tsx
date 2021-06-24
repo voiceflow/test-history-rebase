@@ -1,15 +1,11 @@
 import { Nullable } from '@voiceflow/api-sdk';
 import { DEVICE_SIZE_MAP } from '@voiceflow/general-types';
 import { FrameType, ImageStepData } from '@voiceflow/general-types/build/nodes/visual';
+import { Box, defaultMenuLabelRenderer, Flex, Input, Link, Select, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
-import Flex from '@/components/Flex';
-import Input from '@/components/Input';
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
-import Select, { defaultLabelRenderer } from '@/components/Select';
-import Text, { Link } from '@/components/Text';
 import FullImage from '@/components/Upload/ImageUpload/FullImage';
 import * as Documentation from '@/config/documentation';
 import { DEVICE_LABEL_MAP } from '@/constants';
@@ -147,7 +143,7 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
                 getOptionLabel={(value) => value && DEVICE_LABEL_MAP[value]}
                 renderOptionLabel={(value, ...args) => (
                   <Box display="flex" justifyContent="space-between" alignItems="center" flex="1">
-                    {defaultLabelRenderer(value, ...args)}
+                    {defaultMenuLabelRenderer(value, ...args)}
 
                     <Text fontSize={13} color="#62778c">
                       {DEVICE_SIZE_MAP[value].width} x {DEVICE_SIZE_MAP[value].height}

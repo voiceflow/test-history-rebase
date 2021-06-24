@@ -1,4 +1,5 @@
-import { Link } from '@/components/Text';
+import { Link } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const ButtonLink = styled(Link)`

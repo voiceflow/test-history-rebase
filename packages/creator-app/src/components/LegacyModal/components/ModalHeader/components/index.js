@@ -1,4 +1,5 @@
-import * as SvgIcon from '@/components/SvgIcon';
+import { SvgIconContainer } from '@voiceflow/ui';
+
 import { styled, units } from '@/hocs';
 
 export const ModalHeaderContainer = styled.div`
@@ -19,7 +20,7 @@ export const ModalHeaderContainer = styled.div`
     margin-bottom: 0px;
   }
 
-  & > ${SvgIcon.Container} {
+  & > ${SvgIconContainer} {
     padding: 10px;
     margin: -10px;
     cursor: pointer;

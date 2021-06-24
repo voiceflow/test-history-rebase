@@ -1,4 +1,5 @@
-import { flexCenterStyles } from '@/components/Flex';
+import { flexCenterStyles } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 import { HEADER_HEIGHT } from '../../../constants';

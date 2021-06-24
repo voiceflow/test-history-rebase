@@ -1,3 +1,5 @@
 {
-  "extends": ["@voiceflow/stylelint-config"],
+  "extends": [
+    "@voiceflow/stylelint-config"
+  ]
 }

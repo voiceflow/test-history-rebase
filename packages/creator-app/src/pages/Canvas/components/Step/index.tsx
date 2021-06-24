@@ -1,9 +1,9 @@
+import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import User from '@/components/User';
 import { useEditingMode } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
-import { stopPropagation } from '@/utils/dom';
 
 import { Container, HoverContainer, Image, ImageContainer } from './components';
 import { StepAPIContext } from './contexts';

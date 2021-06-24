@@ -1,19 +1,19 @@
 import { RecurrenceFreq } from '@voiceflow/alexa-types/build/nodes/reminder';
+import { ButtonContainer } from '@voiceflow/ui';
 import React from 'react';
 import { ButtonGroup } from 'reactstrap';
 
-import ButtonContainer from '@/components/Button/components/ButtonContainer';
 import { css, styled } from '@/hocs';
 
 const DayButton = styled(ButtonContainer)`
-  height: 40px;
   width: 40px;
+  height: 40px;
 
   ${(props) =>
     props.selected
       ? css`
-          background: #5d9df5 !important;
           color: #ffffff;
+          background: #5d9df5 !important;
         `
       : css`
           color: #62778c;

@@ -1,10 +1,9 @@
+import { Box, BoxFlex, BoxFlexCenter, Label } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import Box, { Flex, FlexCenter } from '@/components/Box';
 import TextInput from '@/components/Form/TextInput';
-import { Label } from '@/components/Text';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import * as Project from '@/ducks/project';
 import * as Version from '@/ducks/version';
@@ -47,20 +46,20 @@ const BasicSkillInfoForm: React.FC = () => {
         />
       </Box>
 
-      <Flex mb={8}>
+      <BoxFlex mb={8}>
         <Box width="50%">
           <Label textAlign="center">Large Icon</Label>
-          <FlexCenter>
+          <BoxFlexCenter>
             <UploadJustIconComponent name="largeIcon" size="xlarge" canRemove endpoint="/image/large_icon" image={largeIcon} update={saveLargeIcon} />
-          </FlexCenter>
+          </BoxFlexCenter>
         </Box>
         <Box width="50%">
           <Label textAlign="center">Small Icon</Label>
-          <FlexCenter>
+          <BoxFlexCenter>
             <UploadJustIconComponent name="smallIcon" size="large" canRemove endpoint="/image/small_icon" image={smallIcon} update={saveSmallIcon} />
-          </FlexCenter>
+          </BoxFlexCenter>
         </Box>
-      </Flex>
+      </BoxFlex>
     </>
   );
 };

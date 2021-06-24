@@ -1,14 +1,10 @@
 import { APIKey } from '@voiceflow/api-sdk';
+import { BlockText, Box, BoxFlex, Button, ButtonVariant, FullSpinner, Link, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import SampleEditor from '@/components/AceEditor/Sample';
-import Box, { Flex } from '@/components/Box';
-import Button, { ButtonVariant } from '@/components/Button';
-import { FullSpinner } from '@/components/Spinner';
-import Text, { BlockText, Link } from '@/components/Text';
-import Tooltip from '@/components/TippyTooltip';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
@@ -93,26 +89,26 @@ const API: React.FC = () => {
               Manage Keys
             </BlockText>
             <Text>Manage and edit all API keys created across projects in this workspace.</Text>
-            <Flex justifyContent="flex-end" mt={24}>
-              <Tooltip title={AdminMessage} disabled={isAdmin}>
+            <BoxFlex justifyContent="flex-end" mt={24}>
+              <TippyTooltip title={AdminMessage} disabled={isAdmin}>
                 <Button variant={ButtonVariant.QUATERNARY} onClick={goToDeveloperSettings} disabled={!isAdmin}>
                   Manage Keys {!!keys.length && `(${keys.length})`}
                 </Button>
-              </Tooltip>
-            </Flex>
+              </TippyTooltip>
+            </BoxFlex>
           </Section>
           <Section>
             <BlockText fontWeight={600} mb={8}>
               Create API Key
             </BlockText>
             <Text>This key allows you to make requests to our Dialog Management API.</Text>
-            <Flex justifyContent="flex-end" mt={24}>
-              <Tooltip title={AdminMessage} disabled={isAdmin}>
+            <BoxFlex justifyContent="flex-end" mt={24}>
+              <TippyTooltip title={AdminMessage} disabled={isAdmin}>
                 <Button onClick={projectKeys.length ? confirmRefresh : createNewKey} disabled={!isAdmin || isOpened}>
                   {projectKeys.length ? 'Refresh Key' : 'Create Key'}
                 </Button>
-              </Tooltip>
-            </Flex>
+              </TippyTooltip>
+            </BoxFlex>
           </Section>
         </ContentSection>
         <ContentSection>
@@ -124,9 +120,9 @@ const API: React.FC = () => {
               Allow your Voiceflow project to be easily integrated into any conversational interface like a chatbot, voice assistant, IVR, web chat,
               and so much more.
             </Text>
-            <Flex justifyContent="flex-end" mt={12}>
+            <BoxFlex justifyContent="flex-end" mt={12}>
               <Link href={DIALOG_MANAGER_API}>Learn More</Link>
-            </Flex>
+            </BoxFlex>
           </Section>
         </ContentSection>
       </ContentContainer>

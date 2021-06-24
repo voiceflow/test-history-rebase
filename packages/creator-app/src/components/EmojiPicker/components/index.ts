@@ -1,4 +1,5 @@
-import * as SvgIcon from '@/components/SvgIcon';
+import { SvgIconContainer } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 import { FAN_DIRECTION } from '../constants';
@@ -122,7 +123,7 @@ export const PlaceholderContainer = styled.div<{ isPlaceholder: boolean }>`
           top: 1px;
         `
       : css`
-          ${SvgIcon.Container} {
+          ${SvgIconContainer} {
             position: relative;
             right: 2px;
           }

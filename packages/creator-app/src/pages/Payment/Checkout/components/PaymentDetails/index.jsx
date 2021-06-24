@@ -1,7 +1,7 @@
+import { ControlledInput, Input } from '@voiceflow/ui';
 import React from 'react';
 
 import Collapsable from '@/components/Collapsable';
-import Input, { ControlledInput } from '@/components/Input';
 import { CardElement } from '@/components/Stripe';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';

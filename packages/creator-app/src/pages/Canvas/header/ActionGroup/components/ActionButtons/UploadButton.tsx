@@ -1,7 +1,6 @@
+import { IconButton, IconButtonVariant, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import TippyTooltip from '@/components/TippyTooltip';
 import { PlatformType } from '@/constants';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { createPlatformSelector } from '@/utils/platform';

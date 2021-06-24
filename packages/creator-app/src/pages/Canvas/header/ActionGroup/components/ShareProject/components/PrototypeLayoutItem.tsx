@@ -1,6 +1,6 @@
+import { Box, BoxFlex } from '@voiceflow/ui';
 import React from 'react';
 
-import Box, { Flex } from '@/components/Box';
 import { useTheme } from '@/hooks';
 
 export type PrototypeLayoutItemProps = {
@@ -13,7 +13,7 @@ const PrototypeLayoutItem: React.FC<PrototypeLayoutItemProps> = ({ src, title, d
   const theme = useTheme();
 
   return (
-    <Flex>
+    <BoxFlex>
       <Box mr={16} height={42}>
         <img src={src} height="100%" alt={title} />
       </Box>
@@ -25,7 +25,7 @@ const PrototypeLayoutItem: React.FC<PrototypeLayoutItemProps> = ({ src, title, d
           {description}
         </Box>
       </Box>
-    </Flex>
+    </BoxFlex>
   );
 };
 

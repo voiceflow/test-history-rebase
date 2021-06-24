@@ -1,4 +1,5 @@
-import { DEVICE_INFO } from '@/config';
+import { DEVICE_INFO } from '@voiceflow/ui';
+
 import { SessionType } from '@/constants';
 import { Account } from '@/models';
 

@@ -1,4 +1,5 @@
-import { BlockText } from '@/components/Text';
+import { BlockText } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const Description = styled(BlockText)`

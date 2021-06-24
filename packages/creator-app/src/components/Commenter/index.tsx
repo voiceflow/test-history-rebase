@@ -1,6 +1,6 @@
+import { Box, BoxFlex } from '@voiceflow/ui';
 import React from 'react';
 
-import Box, { Flex } from '@/components/Box';
 import Duration from '@/components/Duration';
 import User from '@/components/User';
 import * as Workspace from '@/ducks/workspace';
@@ -19,7 +19,7 @@ export const Commenter: React.FC<CommenterProps & ConnectedCommenterProps> = ({ 
   const userData = user ?? Workspace.UNKNOWN_MEMBER_DATA;
 
   return (
-    <Flex>
+    <BoxFlex>
       <User user={userData} medium />
       <NameContainer>{capitalizeAllWords(userData.name)}</NameContainer>
       {time && (
@@ -27,7 +27,7 @@ export const Commenter: React.FC<CommenterProps & ConnectedCommenterProps> = ({ 
           <Duration time={time} short={!!time} />
         </Box>
       )}
-    </Flex>
+    </BoxFlex>
   );
 };
 

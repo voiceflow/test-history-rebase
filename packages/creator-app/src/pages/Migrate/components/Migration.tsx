@@ -1,13 +1,8 @@
 import { AlexaProjectMemberData } from '@voiceflow/alexa-types';
+import { Alert, AlertVariant, Box, BoxFlex, Button, Input, Select, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import Alert, { AlertVariant } from '@/components/Alert';
-import Box, { Flex } from '@/components/Box';
-import Button from '@/components/Button';
-import Input from '@/components/Input';
-import Select from '@/components/Select';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
 import * as Product from '@/ducks/product';
@@ -122,9 +117,9 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
           onSelect={setVendorID}
         />
       </Box>
-      <Flex>
+      <BoxFlex>
         <h3>Skill ID</h3>
-      </Flex>
+      </BoxFlex>
       <Box mb={32} width="100%">
         <Input value={skillID} onChange={(e) => setSkillID(e.target.value)} placeholder="no existing Skill ID" />
       </Box>

@@ -1,4 +1,5 @@
-import SvgIcon from '@/components/SvgIcon';
+import { SvgIcon } from '@voiceflow/ui';
+
 import { styled, transition } from '@/hocs';
 
 const PopupCloseIcon = styled(SvgIcon).attrs({ icon: 'close', size: 12 })`

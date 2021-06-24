@@ -1,8 +1,5 @@
+import { IconVariant, SvgIcon, Toggle } from '@voiceflow/ui';
 import React from 'react';
-
-import SvgIcon from '@/components/SvgIcon';
-import Toggle from '@/components/Toggle';
-import { IconVariant } from '@/constants';
 
 import { SectionToggleVariant } from '../../constants';
 import { Container, ToggleArrowContainer } from './components';

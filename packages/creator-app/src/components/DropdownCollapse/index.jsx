@@ -1,8 +1,7 @@
+import { FlexApart, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Collapse } from 'reactstrap';
 
-import { FlexApart } from '@/components/Flex';
-import SvgIcon from '@/components/SvgIcon';
 import { styled } from '@/hocs';
 
 const HeaderContainer = styled(FlexApart)`

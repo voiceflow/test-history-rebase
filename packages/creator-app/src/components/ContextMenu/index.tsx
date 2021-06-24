@@ -1,8 +1,7 @@
+import { Menu, MenuProps, Portal } from '@voiceflow/ui';
 import React from 'react';
 import { Popper, PopperProps } from 'react-popper';
 
-import Menu, { MenuProps } from '@/components/Menu';
-import Portal from '@/components/Portal';
 import { useDismissable } from '@/hooks/dismiss';
 import { Identifier } from '@/styles/constants';
 import { Point } from '@/types';

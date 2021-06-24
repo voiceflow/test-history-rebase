@@ -1,9 +1,7 @@
+import { defaultMenuLabelRenderer, KeyName, stopPropagation, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import { defaultLabelRenderer } from '@/components/Select';
-import { toast } from '@/components/Toast';
-import { KeyName } from '@/constants';
-import { stopPropagation, withKeyPress } from '@/utils/dom';
+import { withKeyPress } from '@/utils/dom';
 
 import SelectInputOption from './SelectInputOption';
 import SelectInputOptionWrapper from './SelectInputOptionWrapper';
@@ -59,7 +57,7 @@ const SelectOption = ({ tag, value, option, isFocused, onAddTag, onEnterPress, o
       </SelectInputOptionWrapperAbsolute>
     </SelectInputOptionWrapper>
   ) : (
-    defaultLabelRenderer(option, searchLabel, getOptionLabel, getOptionValue)
+    defaultMenuLabelRenderer(option, searchLabel, getOptionLabel, getOptionValue)
   );
 };
 

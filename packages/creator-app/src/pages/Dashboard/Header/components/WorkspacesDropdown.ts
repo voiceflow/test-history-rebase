@@ -1,4 +1,5 @@
-import SvgIconContainer from '@/components/SvgIcon/components/SvgIconContainer';
+import { SvgIconContainer } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 const WorkspaceDropdownContainer = styled.div<{ isLoading: boolean }>`

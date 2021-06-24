@@ -1,4 +1,5 @@
-import Flex from '@/components/Flex';
+import { Flex } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs';
 
 export { default as FullWidthWrapper } from './FullWidthWrapper';

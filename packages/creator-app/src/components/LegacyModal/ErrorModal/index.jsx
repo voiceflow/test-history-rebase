@@ -1,9 +1,7 @@
+import { Alert, AlertVariant, Box, Button } from '@voiceflow/ui';
 import React from 'react';
 
 import { supportGraphic } from '@/assets';
-import Alert, { AlertVariant } from '@/components/Alert';
-import Box from '@/components/Box';
-import Button from '@/components/Button';
 import { clearModal } from '@/ducks/modal';
 import { connect } from '@/hocs';
 

@@ -1,3 +1,4 @@
+import { Dropdown, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import _map from 'lodash/map';
 import PropTypes from 'prop-types';
@@ -5,8 +6,6 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import Avatar from '@/components/Avatar';
-import Dropdown from '@/components/Dropdown';
-import SvgIcon from '@/components/SvgIcon';
 import { Permission } from '@/config/permissions';
 import { RootRoute } from '@/config/routes';
 import { ModalType } from '@/constants';
@@ -15,7 +14,6 @@ import { useModals, usePermission } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
 import { PROJECT_COLORS } from '@/styles/colors';
 import { DashboardClassName } from '@/styles/constants';
-import { stopPropagation } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
 import { getPlatformAppName } from '@/utils/platform';
 

@@ -1,7 +1,6 @@
+import { useContextApi, withContext } from '@voiceflow/ui';
 import React from 'react';
 
-import { withContext } from '@/hocs';
-import { useContextApi } from '@/hooks';
 import { SLATE_EDITOR_CLASS_NAME } from '@/pages/Canvas/managers/MarkupText/constants';
 
 import { EngineContext } from './EngineContext';

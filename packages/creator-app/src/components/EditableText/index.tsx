@@ -1,8 +1,7 @@
+import { useDidUpdateEffect, useEnableDisable } from '@voiceflow/ui';
 import React from 'react';
 import { AutosizeInputProps } from 'react-input-autosize';
 import { Assign } from 'utility-types';
-
-import { useDidUpdateEffect, useEnableDisable } from '@/hooks';
 
 import { UnstyledInput, UnstyledText } from './components';
 

@@ -1,4 +1,5 @@
-import { FlexCenter } from '@/components/Flex';
+import { FlexCenter } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const ButtonContainer = styled(FlexCenter)`

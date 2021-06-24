@@ -1,8 +1,8 @@
+import { getScrollbarWidth, KeyName, preventDefault } from '@voiceflow/ui';
 import _isNumber from 'lodash/isNumber';
 import _isString from 'lodash/isString';
 
 import { IS_E2E_TEST } from '@/config';
-import { KeyName } from '@/constants';
 import { Pair, Point } from '@/types';
 
 declare global {
@@ -42,31 +42,6 @@ export const mouseEventOffset = (
   const rect = getBoundingClientOffset(target!);
 
   return [cx - rect.left, cy - rect.top];
-};
-
-/**
- * Get the width of the browser scrollbar
- */
-export const getScrollbarWidth = () => {
-  const outer = document.createElement('div');
-  outer.style.visibility = 'hidden';
-  outer.style.width = '100px';
-
-  document.body.appendChild(outer);
-
-  const widthNoScroll = outer.offsetWidth;
-
-  outer.style.overflow = 'scroll';
-
-  const inner = document.createElement('div');
-  inner.style.width = '100%';
-  outer.appendChild(inner);
-
-  const widthWithScroll = inner.offsetWidth;
-
-  outer.parentNode?.removeChild(outer);
-
-  return widthNoScroll - widthWithScroll;
 };
 
 /**
@@ -151,40 +126,6 @@ export const scrollTo = (node: HTMLElement | null, { top = 0, left = 0, ...opts 
   }
 };
 
-export const withHandler =
-  <E extends Event | React.BaseSyntheticEvent, O = never>(task: (event: E, options?: O) => void) =>
-  // eslint-disable-next-line consistent-return
-  <T extends E>(cb?: ((event: T) => void) | null, options?: O) =>
-  (event: T) => {
-    task(event, options);
-
-    if (cb) {
-      return cb(event);
-    }
-  };
-
-export const stopPropagation = withHandler<React.SyntheticEvent, boolean>((e, stopNativePropagation) => {
-  e.stopPropagation();
-
-  if (stopNativePropagation) {
-    e.nativeEvent.stopImmediatePropagation();
-  }
-});
-
-export const stopImmediatePropagation = withHandler<React.SyntheticEvent>((e) => e.nativeEvent.stopImmediatePropagation());
-
-export const preventDefault = withHandler((e) => e.preventDefault());
-
-export const swallowEvent = withHandler<Event | React.SyntheticEvent, boolean>((e, stopNativePropagation) => {
-  e.stopPropagation();
-  e.preventDefault();
-
-  if (stopNativePropagation) {
-    (e as Event).stopImmediatePropagation?.();
-    (e as React.SyntheticEvent).nativeEvent?.stopImmediatePropagation();
-  }
-});
-
 export const withKeyPress =
   <E extends KeyboardEvent | React.KeyboardEvent>(key: string, cb: (event: E) => void) =>
   (event: E) => {
@@ -195,7 +136,10 @@ export const withKeyPress =
 
 export const swallowKeyPress = (key: string) => withKeyPress(key, preventDefault());
 
-export const withEnterPress = <E extends KeyboardEvent | React.KeyboardEvent>(cb: (event: E) => void) => withKeyPress(KeyName.ENTER, cb);
+export const withEnterPress: {
+  <E extends React.KeyboardEvent<any>>(cb: (event: E) => void): (event: E) => void;
+  <E extends KeyboardEvent>(cb: (event: E) => void): (event: E) => void;
+} = <E extends KeyboardEvent | React.KeyboardEvent<any>>(cb: (event: E) => void) => withKeyPress(KeyName.ENTER, cb);
 
 export const copyJSONPath = (copy_event: { name: string; namespace: string[] }) => {
   const total_path = copy_event.namespace.slice();

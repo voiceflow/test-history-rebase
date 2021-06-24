@@ -1,7 +1,7 @@
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
-import Box from '@/components/Box';
 import ChatWithUsLink from '@/components/ChatLink';
 import OverflowMenu from '@/components/OverflowMenu';
 import { BUILT_IN_VARIABLES } from '@/constants';

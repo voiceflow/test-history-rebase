@@ -1,3 +1,4 @@
+import { logger } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
 import moize from 'moize';
 import React from 'react';
@@ -26,7 +27,6 @@ import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { Selector, Store } from '@/store/types';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
-import logger from '@/utils/logger';
 
 import ActivationEngine from './activationEngine';
 import ClipboardEngine from './clipboardEngine';

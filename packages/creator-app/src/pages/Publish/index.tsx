@@ -1,9 +1,9 @@
 import './Skill.css';
 
+import { Flex } from '@voiceflow/ui';
 import React from 'react';
 import { NavLink, Redirect, RouteComponentProps, Switch } from 'react-router-dom';
 
-import Flex from '@/components/Flex';
 import { Permission } from '@/config/permissions';
 import { PublishRoute } from '@/config/routes';
 import { PlatformType } from '@/constants';

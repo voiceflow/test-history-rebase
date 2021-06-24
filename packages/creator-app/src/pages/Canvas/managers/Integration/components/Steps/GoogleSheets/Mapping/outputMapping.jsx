@@ -1,8 +1,7 @@
+import { IconVariant, LegacyButton, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import Select from 'react-select';
 
-import Button from '@/components/LegacyButton';
-import SvgIcon, { IconVariant } from '@/components/SvgIcon';
 import VariableSelect from '@/components/VariableSelect';
 import { styled } from '@/hocs';
 
@@ -32,12 +31,12 @@ const OutputMapping = (props) => (
             placeholder="Variable"
           />
         </div>
-        <Button isCloseSmall className="ml-2" onClick={() => props.onRemove(i)} />
+        <LegacyButton isCloseSmall className="ml-2" onClick={() => props.onRemove(i)} />
       </MapLine>
     ))}
-    <Button isBtn isClear isLarge isBlock onClick={props.onAdd}>
+    <LegacyButton isBtn isClear isLarge isBlock onClick={props.onAdd}>
       + Add Mapping
-    </Button>
+    </LegacyButton>
   </>
 );
 

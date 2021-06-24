@@ -1,4 +1,5 @@
-import Box from '@/components/Box';
+import { Box } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 const WaterMark = styled(Box)<{ centerAlign?: boolean }>`

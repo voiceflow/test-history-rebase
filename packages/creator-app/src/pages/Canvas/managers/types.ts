@@ -1,8 +1,8 @@
 import { CanvasNodeVisibility } from '@voiceflow/general-types';
+import { Icon } from '@voiceflow/ui';
 import React from 'react';
 import { Overwrite } from 'utility-types';
 
-import { Icon } from '@/components/SvgIcon';
 import { BlockType, PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { FeatureFlagMap } from '@/ducks/feature';

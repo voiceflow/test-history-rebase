@@ -1,8 +1,6 @@
+import { Button, FlexCenter, Input } from '@voiceflow/ui';
 import React, { Component } from 'react';
 
-import Button from '@/components/Button';
-import { FlexCenter } from '@/components/Flex';
-import Input from '@/components/Input';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import { connect } from '@/hocs';

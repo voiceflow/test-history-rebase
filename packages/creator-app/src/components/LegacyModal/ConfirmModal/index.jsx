@@ -1,6 +1,6 @@
+import { LegacyButton } from '@voiceflow/ui';
 import React from 'react';
 
-import Button from '@/components/LegacyButton';
 import { clearModal } from '@/ducks/modal';
 import { connect } from '@/hocs';
 
@@ -19,11 +19,11 @@ export const ConfirmModal = ({ toggle, confirm }) => {
       <ModalBody className="text-center">{confirm.text}</ModalBody>
       <ModalFooter>
         {cancel && (
-          <Button isFlatGray onClick={toggle}>
+          <LegacyButton isFlatGray onClick={toggle}>
             Cancel
-          </Button>
+          </LegacyButton>
         )}
-        <Button
+        <LegacyButton
           className="btn-primary ml-2"
           isPrimary={confirm.warning}
           onClick={() => {
@@ -34,7 +34,7 @@ export const ConfirmModal = ({ toggle, confirm }) => {
           }}
         >
           Confirm
-        </Button>
+        </LegacyButton>
       </ModalFooter>
     </Modal>
   );

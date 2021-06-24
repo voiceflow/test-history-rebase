@@ -1,6 +1,6 @@
+import { Button } from '@voiceflow/ui';
 import React from 'react';
 
-import Button from '@/components/Button';
 import User from '@/components/User';
 import * as Realtime from '@/ducks/realtime';
 import { LockOwner } from '@/models';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 
-import ErrorBoundary from '@/components/ErrorPages/ErrorBoundary';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { Path } from '@/config/routes';
 import { authTokenSelector } from '@/ducks/session';
 import { connect } from '@/hocs';

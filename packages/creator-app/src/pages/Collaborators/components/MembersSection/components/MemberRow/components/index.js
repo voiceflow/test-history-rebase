@@ -1,7 +1,5 @@
-import Dropdown from '@/components/Dropdown';
-import { FlexApart } from '@/components/Flex';
-import { MenuItem } from '@/components/Menu';
-import SvgIcon from '@/components/SvgIcon';
+import { Dropdown, FlexApart, MenuItem, SvgIcon } from '@voiceflow/ui';
+
 import User from '@/components/User';
 import { css, styled } from '@/hocs';
 

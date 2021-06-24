@@ -1,8 +1,8 @@
 import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
+import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Section from '@/components/Section';
-import { Text } from '@/components/Text';
 
 import { ChoiceManagerEditors } from '../subeditors';
 

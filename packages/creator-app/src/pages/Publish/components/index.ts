@@ -1,5 +1,5 @@
-import Box, { Flex, FlexCenter } from '@/components/Box';
-import Text from '@/components/Text';
+import { Box, BoxFlex, BoxFlexCenter, Text } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 import THEME from '@/styles/theme';
 
@@ -14,12 +14,12 @@ export const SectionCard = styled(Box)`
   }
 `;
 
-export const ContentContainer = styled(Flex)`
+export const ContentContainer = styled(BoxFlex)`
   flex-direction: column;
   padding: 20px;
 `;
 
-export const ContentSection = styled(FlexCenter)`
+export const ContentSection = styled(BoxFlexCenter)`
   margin-bottom: 20px;
   width: 724px;
   align-items: flex-end;

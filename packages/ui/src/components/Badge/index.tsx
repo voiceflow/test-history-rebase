@@ -1,0 +1,55 @@
+import { css, styled, units } from '../../styles';
+
+type BadgeProps = {
+  onClick?: any;
+  slide?: boolean;
+  marginLeft?: number;
+  color?: string;
+};
+
+const Badge = styled.div<BadgeProps>`
+  ${({ marginLeft }) =>
+    marginLeft &&
+    css`
+      margin-left: ${marginLeft}px;
+    `}
+  ${({ onClick }) =>
+    !!onClick &&
+    css`
+      cursor: pointer;
+    `}
+  ${({ slide }) =>
+    slide &&
+    css`
+      animation: fadein 0.15s ease, moveinleft 0.15s ease;
+    `}
+  display: inline-block;
+  box-sizing: border-box;
+  min-width: 22px;
+  height: ${units(2.8)}px;
+  margin-top: -4px;
+  margin-bottom: -4px;
+  padding-right: 6px;
+  padding-left: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 21px;
+  text-align: center;
+  border-radius: 5px;
+
+  ${({ color }) =>
+    color
+      ? css`
+          color: #fff;
+          background: ${color};
+          border: 1px solid ${color};
+        `
+      : css`
+          color: #62778c;
+          background: linear-gradient(180deg, #eff5f6a3 0%, #eef4f6 100%), #fff;
+          border: 1px solid #d4d9e6;
+          box-shadow: 0 1px 0 #d4d9e6;
+        `}
+`;
+
+export default Badge;

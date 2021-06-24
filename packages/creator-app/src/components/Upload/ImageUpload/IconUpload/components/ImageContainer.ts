@@ -1,6 +1,6 @@
+import { FlexCenter } from '@voiceflow/ui';
 import { css } from 'styled-components';
 
-import { FlexCenter } from '@/components/Flex';
 import { styled, transition } from '@/hocs';
 
 type ImageContainerProps = {

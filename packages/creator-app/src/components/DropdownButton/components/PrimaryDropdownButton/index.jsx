@@ -1,8 +1,5 @@
+import { PrimaryButton, PrimaryButtonContainer, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
-
-import PrimaryButton from '@/components/Button/components/PrimaryButton';
-import PrimaryButtonContainer from '@/components/Button/components/PrimaryButton/components/PrimaryButtonContainer';
-import SvgIcon from '@/components/SvgIcon';
 
 import { Container, Toggle } from './components';
 

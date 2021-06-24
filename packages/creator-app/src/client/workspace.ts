@@ -1,3 +1,5 @@
+import { FetchOptions } from '@voiceflow/ui';
+
 import { BillingPeriod, PlanType, UserRole } from '@/constants';
 import { DBWorkspace, Price } from '@/models';
 import { APIKey } from '@/models/APIKey';
@@ -7,7 +9,6 @@ import invoiceAdapter from './adapters/invoice';
 import memberAdapter from './adapters/member';
 import workspaceAdapter from './adapters/workspace';
 import { api, apiV2 } from './fetch';
-import { FetchOptions } from './fetch/types';
 
 export const LEGACY_WORKSPACE_PATH = 'team';
 export const WORKSPACES_PATH = 'workspaces';

@@ -1,7 +1,5 @@
+import { IconButton, IconButtonVariant, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import TippyTooltip from '@/components/TippyTooltip';
 
 const SuccessButton = () => (
   <TippyTooltip title="Successfully Uploaded" position="bottom">

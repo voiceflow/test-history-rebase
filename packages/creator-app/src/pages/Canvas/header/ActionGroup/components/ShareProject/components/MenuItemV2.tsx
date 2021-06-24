@@ -1,8 +1,8 @@
+import { stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import PlanBubble from '@/components/PlanBubble';
 import { PlanType } from '@/constants';
-import { stopImmediatePropagation } from '@/utils/dom';
 
 import Description from './Description';
 import Header from './Header';

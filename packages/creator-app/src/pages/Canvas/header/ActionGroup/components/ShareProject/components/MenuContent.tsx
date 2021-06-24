@@ -1,13 +1,12 @@
+import { Box, Link, OverlayProvider } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
 import Divider from '@/components/Divider';
 import { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
-import { Link } from '@/components/Text';
 import Upgrade from '@/components/Upgrade';
 import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
-import { OverlayProvider, ScrollContextProvider } from '@/contexts';
+import { ScrollContextProvider } from '@/contexts';
 import { usePermission } from '@/hooks';
 import { useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
 import { Identifier } from '@/styles/constants';

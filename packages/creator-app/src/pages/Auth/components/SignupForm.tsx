@@ -1,20 +1,16 @@
+import { Box, ControlledInput, Input, LegacyButton, preventDefault, toast } from '@voiceflow/ui';
 import { getSearch } from 'connected-react-router';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 
 import { wordmarkLight } from '@/assets';
 import client from '@/client';
-import Box from '@/components/Box';
-import Input, { ControlledInput } from '@/components/Input';
-import Button from '@/components/LegacyButton';
-import { toast } from '@/components/Toast';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Query } from '@/models';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { preventDefault } from '@/utils/dom';
 
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
@@ -139,9 +135,9 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
                 <a onClick={goToLogin}>Have an account?</a>
               </div>
               <div className="col-6">
-                <Button isPrimary isLarge isBlock type="submit" disabled={isSignupDisabled}>
+                <LegacyButton isPrimary isLarge isBlock type="submit" disabled={isSignupDisabled}>
                   {query.invite ? 'Join Team' : 'Create Account'}
-                </Button>
+                </LegacyButton>
               </div>
             </div>
           </div>

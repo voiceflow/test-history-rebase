@@ -1,21 +1,18 @@
+import { Box, Button, ButtonVariant, Link, Text, toast, useDidUpdateEffect, useSmartReducerV2 } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
 
 import { utteranceUploadExampleCSV } from '@/assets';
-import Box from '@/components/Box';
-import Button, { ButtonVariant } from '@/components/Button';
 import Checkbox from '@/components/Checkbox';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import RadioGroup from '@/components/RadioGroup';
-import Text, { Link } from '@/components/Text';
-import { toast } from '@/components/Toast';
 import DropUpload from '@/components/Upload/Primitive/DropUpload';
 import * as Documentation from '@/config/documentation';
 import { ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
-import { useDebouncedCallback, useDidUpdateEffect, useModals, useSmartReducerV2 } from '@/hooks';
+import { useDebouncedCallback, useModals } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { readFileAsText } from '@/utils/file';
 import { isCustomizeableBuiltInIntent } from '@/utils/intent';

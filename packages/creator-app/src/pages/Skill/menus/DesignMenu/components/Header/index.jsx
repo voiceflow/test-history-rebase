@@ -1,7 +1,7 @@
+import { TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Tabs from '@/components/Tabs';
-import TippyTooltip from '@/components/TippyTooltip';
 
 import { Container, LockIcon, LockIconContainer } from './components';
 

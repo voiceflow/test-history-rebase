@@ -1,4 +1,5 @@
-import SvgIcon from '@/components/SvgIcon';
+import { SvgIcon } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 export const ExportIcon = styled(SvgIcon)<{ isOpen?: boolean }>`

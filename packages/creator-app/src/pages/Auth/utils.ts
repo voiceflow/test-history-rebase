@@ -1,4 +1,4 @@
-import { toast } from '@/components/Toast';
+import { toast } from '@voiceflow/ui';
 
 export const replaceSpaceWithPlus = (email?: string) => email?.replace(' ', '+') || email;
 

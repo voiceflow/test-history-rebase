@@ -1,7 +1,8 @@
-import { FlexCenter } from '@/components/Box';
+import { BoxFlexCenter } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
-const ActionButtonContainer = styled(FlexCenter)`
+const ActionButtonContainer = styled(BoxFlexCenter)`
   padding: 10px 15px;
 
   :last-child {

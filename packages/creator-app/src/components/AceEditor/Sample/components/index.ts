@@ -1,4 +1,5 @@
-import { FlexApart } from '@/components/Box';
+import { FlexApart } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs';
 
 export const Header = styled(FlexApart)`

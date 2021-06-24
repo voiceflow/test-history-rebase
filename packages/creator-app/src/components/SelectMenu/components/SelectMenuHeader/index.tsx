@@ -1,6 +1,5 @@
+import { ClickableText } from '@voiceflow/ui';
 import React from 'react';
-
-import { ClickableText } from '@/components/Text';
 
 import { Header, Title } from './components';
 

@@ -1,14 +1,10 @@
+import { Box, LegacyButton, NetworkError, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { NetworkError } from '@/client/fetch';
-import Box from '@/components/Box';
-import Button from '@/components/LegacyButton';
-import { toast } from '@/components/Toast';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
-import { preventDefault } from '@/utils/dom';
 
 import { EmailInput } from '../../components';
 import { ResetPasswordStage } from '../constants';
@@ -49,9 +45,9 @@ const InvalidResetLink: React.FC<InvalidResetLinkProps & ConnectedInvalidResetLi
             <a onClick={() => goToLogin()}>Back to Signing in</a>
           </div>
           <div className="float-right">
-            <Button isPrimary isBlock type="submit">
+            <LegacyButton isPrimary isBlock type="submit">
               Reset Password
-            </Button>
+            </LegacyButton>
           </div>
         </Box>
       </form>

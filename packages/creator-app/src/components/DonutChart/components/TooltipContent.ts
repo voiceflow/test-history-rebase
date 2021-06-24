@@ -1,4 +1,5 @@
-import { MenuContainer } from '@/components/Menu';
+import { MenuContainer } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const TooltipContent = styled(MenuContainer)`

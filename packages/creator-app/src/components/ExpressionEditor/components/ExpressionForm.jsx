@@ -1,7 +1,6 @@
 import { ExpressionType } from '@voiceflow/general-types';
+import { swallowEvent } from '@voiceflow/ui';
 import React from 'react';
-
-import { swallowEvent } from '@/utils/dom';
 
 import { evolveExpression } from '../utils';
 import ExpressionAdvance from './ExpressionAdvance';

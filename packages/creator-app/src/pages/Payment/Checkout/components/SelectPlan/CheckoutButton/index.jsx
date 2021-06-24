@@ -1,8 +1,7 @@
+import { Button, SvgIcon } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
-import Button from '@/components/Button';
-import Icon from '@/components/SvgIcon';
 import { BillingPeriod } from '@/constants';
 import { useTrackingEvents } from '@/hooks';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
@@ -34,7 +33,7 @@ function CheckoutButton({ payment: { state, checkout } }) {
   if (loading.checkout) {
     return (
       <LoadingButton variant="primary" square>
-        <Icon icon="publishSpin" size={24} spin />
+        <SvgIcon icon="publishSpin" size={24} spin />
       </LoadingButton>
     );
   }

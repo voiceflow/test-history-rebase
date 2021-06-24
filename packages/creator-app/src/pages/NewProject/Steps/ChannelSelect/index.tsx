@@ -1,7 +1,6 @@
+import { FlexCenter, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { FlexCenter } from '@/components/Flex';
-import Icon from '@/components/SvgIcon';
 import { PlatformType } from '@/constants';
 import { styled } from '@/hocs';
 import { Container as CreateWorkspaceContainer } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
@@ -52,7 +51,7 @@ const ChannelSelect: React.FC<ChannelSelectProps> = ({
           />
         ))}
       </PlatformCardsContainer>
-      <FlexCenter style={{ marginTop: '32px' }}>{isLoading && <Icon icon="publishSpin" color="#92a3b3" size={36} spin />}</FlexCenter>
+      <FlexCenter style={{ marginTop: '32px' }}>{isLoading && <SvgIcon icon="publishSpin" color="#92a3b3" size={36} spin />}</FlexCenter>
     </Container>
   );
 };

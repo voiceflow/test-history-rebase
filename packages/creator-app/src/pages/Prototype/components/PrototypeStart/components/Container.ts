@@ -1,5 +1,5 @@
-import { FlexCenter } from '@/components/Flex';
-import Text from '@/components/Text';
+import { FlexCenter, Text } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 const Container = styled(FlexCenter).attrs({ column: true })`

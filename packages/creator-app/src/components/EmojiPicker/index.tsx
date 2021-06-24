@@ -1,6 +1,6 @@
+import { Icon, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import SvgIcon, { Icon } from '@/components/SvgIcon';
 import { useDebouncedCallback } from '@/hooks';
 
 import { Container, Option, OptionsContainer, PlaceholderContainer } from './components';

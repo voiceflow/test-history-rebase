@@ -1,13 +1,7 @@
+import { Badge, Dropdown, Flex, FlexApart, Input, KeyName, SvgIcon, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import Badge from '@/components/Badge';
-import Dropdown from '@/components/Dropdown';
-import Flex, { FlexApart } from '@/components/Flex';
 import InfoIcon from '@/components/InfoIcon';
-import Input from '@/components/Input';
-import SvgIcon from '@/components/SvgIcon';
-import { toast } from '@/components/Toast';
-import { KeyName } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';

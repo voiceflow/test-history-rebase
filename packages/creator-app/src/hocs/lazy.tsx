@@ -1,6 +1,5 @@
+import { FullSpinner, Spinner } from '@voiceflow/ui';
 import React from 'react';
-
-import { FullSpinner, Spinner } from '@/components/Spinner';
 
 const LazyLoadSpinner = () => {
   React.useEffect(() => window.location.reload(), []);

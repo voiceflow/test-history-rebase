@@ -1,9 +1,8 @@
+import { FlexStart, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 import Confetti from 'react-dom-confetti';
 
-import { FlexStart } from '@/components/Flex';
 import Section from '@/components/Section';
-import { Link, Text } from '@/components/Text';
 import { GooglePublishJob, JobStageData } from '@/models';
 
 import { DropdownSection, StageContainer, StageHeader } from '../../components';

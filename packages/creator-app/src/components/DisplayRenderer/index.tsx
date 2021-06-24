@@ -1,8 +1,7 @@
 import { APL_DEVICE_CONFIG, APLDeviceType } from '@voiceflow/alexa-types';
+import { Alert, AlertVariant } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-
-import Alert, { AlertVariant } from '@/components/Alert';
 
 import { APLRendererProps } from '../APLRenderer';
 import { BaseRenderer, Container } from './components';

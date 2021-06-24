@@ -1,11 +1,9 @@
+import { Badge, Input, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Badge from '@/components/Badge';
 import ConditionsBuilder from '@/components/ConditionsBuilder';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
-import Input from '@/components/Input';
 import Section, { SectionToggleVariant } from '@/components/Section';
-import SvgIcon from '@/components/SvgIcon';
 import { useSetup } from '@/hooks';
 import { ExpressionData } from '@/models';
 import EditorSection from '@/pages/Canvas/components/EditorSection';

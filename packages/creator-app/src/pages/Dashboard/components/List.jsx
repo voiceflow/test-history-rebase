@@ -1,14 +1,11 @@
+import { Dropdown, IconButton, KeyName, LegacyButton } from '@voiceflow/ui';
 import cn from 'classnames';
 import _constant from 'lodash/constant';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 
-import Dropdown from '@/components/Dropdown';
-import IconButton from '@/components/IconButton';
-import Button from '@/components/LegacyButton';
 import Form from '@/components/LegacyForm';
 import { Permission } from '@/config/permissions';
-import { KeyName } from '@/constants';
 import { ScrollContextProvider } from '@/contexts';
 import withDraggable from '@/hocs/withDraggable';
 import { usePermission } from '@/hooks';
@@ -198,9 +195,9 @@ export function List(props) {
                   })}
                 >
                   <div className={DashboardClassName.LIST_FOOTER_CENTER}>
-                    <Button isFlat isBtn onClick={() => createProject(id)}>
+                    <LegacyButton isFlat isBtn onClick={() => createProject(id)}>
                       Create Project
-                    </Button>
+                    </LegacyButton>
                   </div>
                 </div>
               )}

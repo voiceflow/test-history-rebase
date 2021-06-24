@@ -1,8 +1,7 @@
+import { Button, ButtonVariant, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import Button, { ButtonVariant } from '@/components/Button';
 import { ActionSection } from '@/components/Settings';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';

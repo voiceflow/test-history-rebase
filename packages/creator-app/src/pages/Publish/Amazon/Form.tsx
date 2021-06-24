@@ -1,21 +1,19 @@
+import { preventDefault, Spinner, SvgIcon, withProvider } from '@voiceflow/ui';
 import React from 'react';
 import { Collapse } from 'reactstrap';
 import { compose } from 'redux';
 import validUrl from 'valid-url';
 
 import { ControlledGuidedSteps as GuidedSteps, GuidedStepsWrapper } from '@/components/GuidedSteps';
-import { Spinner } from '@/components/Spinner';
-import SvgIcon from '@/components/SvgIcon';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
 import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
-import { connect, withProvider } from '@/hocs';
+import { connect } from '@/hocs';
 import { useSetup } from '@/hooks';
 import { ConnectedProps } from '@/types';
-import { preventDefault } from '@/utils/dom';
 
 import BasicSkillInfoForm, { BasicSkillInfoDescription } from './components/BasicSkillInfoForm';
 import LocalesForm, { LocalesDescription } from './components/LocalesForm';

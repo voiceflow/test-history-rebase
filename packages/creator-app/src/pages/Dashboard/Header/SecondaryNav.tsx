@@ -1,6 +1,6 @@
+import { Flex } from '@voiceflow/ui';
 import React from 'react';
 
-import FlexCenter from '@/components/Flex';
 import { Members } from '@/components/User';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
@@ -30,11 +30,11 @@ const SecondaryNav: React.FC<SecondaryNavProps> = ({ workspace: selectedWorkspac
         />
       </ProjectSearchContainer>
 
-      <FlexCenter>
+      <Flex>
         {selectedWorkspace && canViewCollaborators && (
           <Members members={selectedWorkspace.members} onAdd={canAddCollaborators ? () => toggleCollaborators() : undefined} />
         )}
-      </FlexCenter>
+      </Flex>
     </>
   );
 };

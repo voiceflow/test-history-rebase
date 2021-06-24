@@ -1,6 +1,5 @@
+import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
-
-import { stopPropagation } from '@/utils/dom';
 
 import { useSwallowZoom } from '../hooks';
 import LineHandle from './LineHandle';

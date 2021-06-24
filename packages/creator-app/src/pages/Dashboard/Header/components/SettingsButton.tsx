@@ -1,10 +1,6 @@
+import { ClickableText, Dropdown, IconButton, IconButtonVariant, Menu, MenuItem, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Dropdown from '@/components/Dropdown';
-import IconButton, { IconButtonVariant } from '@/components/IconButton';
-import Menu, { MenuItem } from '@/components/Menu';
-import { ClickableText, Text } from '@/components/Text';
-import TippyTooltip from '@/components/TippyTooltip';
 import { Permission } from '@/config/permissions';
 import { ModalType, PLAN_TYPE_META, PlanType, UserRole } from '@/constants';
 import * as Router from '@/ducks/router';

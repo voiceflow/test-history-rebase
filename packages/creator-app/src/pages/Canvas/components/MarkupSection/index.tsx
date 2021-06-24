@@ -1,7 +1,7 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { UncontrolledSection } from '@/components/Section';
-import SvgIcon from '@/components/SvgIcon';
 
 import { ContentContainer, IconContainer, Title } from './components';
 

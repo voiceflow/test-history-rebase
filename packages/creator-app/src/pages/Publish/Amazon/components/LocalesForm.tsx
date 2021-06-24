@@ -1,9 +1,8 @@
 import { Locale } from '@voiceflow/alexa-types';
+import { Box, BoxFlex, Label } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import Box, { Flex } from '@/components/Box';
-import { Label } from '@/components/Text';
 import * as Version from '@/ducks/version';
 import { css, styled, transition } from '@/hocs';
 import { useDispatch } from '@/hooks';
@@ -58,13 +57,13 @@ const LocalesForm: React.FC = () => {
   return (
     <Box className="pa__locale-limited" mb={24}>
       <Label>Location(s)</Label>
-      <Flex flexWrap="wrap" className="locale-button-group">
+      <BoxFlex flexWrap="wrap" className="locale-button-group">
         {LOCALE_MAP.map((locale, index) => (
           <LocaleButton data-active={locales.includes(locale.value)} key={index} onClick={() => toggleLocale(locale.value)}>
             {locale.name}
           </LocaleButton>
         ))}
-      </Flex>
+      </BoxFlex>
     </Box>
   );
 };

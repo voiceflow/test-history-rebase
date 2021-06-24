@@ -1,4 +1,5 @@
-import { Icon } from '@/components/SvgIcon';
+import { Icon } from '@voiceflow/ui';
+
 import { BlockType, DragItem } from '@/constants';
 import { NodeData } from '@/models';
 

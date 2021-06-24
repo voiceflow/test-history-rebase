@@ -1,5 +1,6 @@
+import { toast } from '@voiceflow/ui';
+
 import transcriptAdapter from '@/client/adapters/transcripts/transcripts';
-import { toast } from '@/components/Toast';
 import { prototypeContextHistorySelector } from '@/ducks/prototype';
 import { patchTranscript, replaceTranscripts } from '@/ducks/transcript/actions';
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';

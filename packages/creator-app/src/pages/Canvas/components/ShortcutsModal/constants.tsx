@@ -1,10 +1,9 @@
+import { IS_MAC } from '@voiceflow/ui';
 import React from 'react';
-
-import { isMac } from '@/config';
 
 import { ShortcutCommand } from './components';
 
-const hotKey = isMac ? '⌘' : 'Ctrl';
+const hotKey = IS_MAC ? '⌘' : 'Ctrl';
 
 // eslint-disable-next-line import/prefer-default-export
 export const SHORTCUTS = [

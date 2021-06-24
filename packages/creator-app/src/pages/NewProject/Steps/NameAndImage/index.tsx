@@ -1,8 +1,6 @@
+import { Button, ClickableText, FlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
-import Button from '@/components/Button';
-import { FlexCenter } from '@/components/Flex';
-import { ClickableText } from '@/components/Text';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { Container, LabelContainer, NameInput } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import { Identifier } from '@/styles/constants';

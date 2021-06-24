@@ -1,9 +1,8 @@
+import { Box, Flex } from '@voiceflow/ui';
 import React from 'react';
 
 import { ProgressBar } from '@/components/AudioPlayer/components/index';
 import { formatTime } from '@/components/AudioPlayer/index';
-import Box from '@/components/Box';
-import Flex from '@/components/Flex';
 import useAudioPlayer from '@/hooks/audioPlayer';
 
 import { Message } from '../../components';

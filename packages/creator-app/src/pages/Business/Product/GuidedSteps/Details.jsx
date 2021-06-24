@@ -1,12 +1,9 @@
-/* eslint-disable jsx-a11y/label-has-for */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-shadow */
+/* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control, no-shadow */
+import { Button, Input } from '@voiceflow/ui';
 import { AvForm, AvGroup } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '@/components/Button';
-import Input from '@/components/Input';
 import TextArea from '@/components/TextArea';
 import { NEW_PRODUCT_ID } from '@/constants';
 import { productByIDSelector, updateProduct } from '@/ducks/product';

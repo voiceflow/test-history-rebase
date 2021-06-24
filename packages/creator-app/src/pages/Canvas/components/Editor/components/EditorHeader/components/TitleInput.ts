@@ -1,5 +1,5 @@
-import { flexLabelStyles } from '@/components/Flex';
-import Input, { InputVariant } from '@/components/Input';
+import { flexLabelStyles, Input, InputVariant } from '@voiceflow/ui';
+
 import { styled, units } from '@/hocs';
 
 const TitleInput = styled(Input).attrs({ variant: InputVariant.INLINE })`

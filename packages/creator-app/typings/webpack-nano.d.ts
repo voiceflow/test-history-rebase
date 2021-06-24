@@ -16,7 +16,7 @@ declare module 'webpack-nano/argv' {
 
     // debugging
     debug: boolean;
-    debugHttp: boolean;
+    debugFetch: boolean;
     debugNet: boolean;
     debugRealtime: boolean;
     debugSocket: boolean;

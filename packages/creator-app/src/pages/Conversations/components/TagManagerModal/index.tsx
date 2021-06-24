@@ -1,16 +1,12 @@
+import { Badge, Box, Button, ButtonVariant, ErrorMessage, Input, KeyName } from '@voiceflow/ui';
 import intersectionWith from 'lodash/intersectionWith';
 import isEqual from 'lodash/isEqual';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 
-import Badge from '@/components/Badge';
-import Box from '@/components/Box';
-import Button, { ButtonVariant } from '@/components/Button';
-import ErrorMessage from '@/components/ErrorPages/ErrorMessage';
-import Input from '@/components/Input';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
-import { KeyName, ModalType } from '@/constants';
+import { ModalType } from '@/constants';
 import { allReportTagsSelector, createTag, deleteTag } from '@/ducks/reportTag';
 import { useModals } from '@/hooks';
 import { ReportTag, Sentiment, SentimentArray, SystemTag, SystemTagArray } from '@/models';
@@ -97,7 +93,7 @@ const TagManagerModal: React.FC<RouteComponentProps> = () => {
               />
               {addError && (
                 <FadeLeftContainer>
-                  <ErrorMessage style={{ marginBottom: '0px', paddingTop: '8px' }}>{addError}</ErrorMessage>
+                  <ErrorMessage style={{ marginBottom: '0', paddingTop: '8px' }}>{addError}</ErrorMessage>
                 </FadeLeftContainer>
               )}
             </NewTagInputContainer>

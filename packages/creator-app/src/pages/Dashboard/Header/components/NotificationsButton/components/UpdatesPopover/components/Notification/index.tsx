@@ -1,9 +1,9 @@
+import { Link } from '@voiceflow/ui';
 import cn from 'classnames';
 import Markdown from 'markdown-to-jsx';
 import moment from 'moment';
 import React from 'react';
 
-import { Link } from '@/components/Text';
 import * as Notifications from '@/ducks/notifications';
 
 import { Container, TimeContainer } from './components';

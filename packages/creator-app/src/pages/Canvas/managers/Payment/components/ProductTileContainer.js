@@ -1,4 +1,5 @@
-import { FlexApart } from '@/components/Flex';
+import { FlexApart } from '@voiceflow/ui';
+
 import { css, styled, units } from '@/hocs';
 
 const ProductTileContainer = styled(FlexApart)`

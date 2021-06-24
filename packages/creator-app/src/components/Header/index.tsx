@@ -1,9 +1,8 @@
+import { SVG, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { logoDark } from '@/assets';
-import SvgIcon from '@/components/SvgIcon';
 import { ClassName } from '@/styles/constants';
-import LeftIcon from '@/svgs/arrow-left.svg';
 
 import {
   BackButton,
@@ -48,7 +47,7 @@ const Header: React.FC<HeaderProps> = ({
       {withLogo && <Logo src={logoAssetPath || logoDark} alt="logo" draggable="false" />}
       {onBackClick && (
         <BackButton>
-          <SvgIcon icon={LeftIcon} size={3} className="icon-back" onClick={onBackClick} />
+          <SvgIcon icon={SVG.arrowLeft} size={3} className="icon-back" onClick={onBackClick} />
         </BackButton>
       )}
       <HeaderNavigation>

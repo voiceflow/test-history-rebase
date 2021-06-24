@@ -1,4 +1,5 @@
-import Flex from '@/components/Flex';
+import { Flex } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs';
 import { ClassName } from '@/styles/constants';
 import { COLOR_BLUE } from '@/styles/theme/constants';

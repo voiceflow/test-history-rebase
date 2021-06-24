@@ -1,4 +1,5 @@
-import Flex from '@/components/Flex';
+import { Flex } from '@voiceflow/ui';
+
 import { styled, units } from '@/hocs';
 
 const DropdownWrapper = styled(Flex)`

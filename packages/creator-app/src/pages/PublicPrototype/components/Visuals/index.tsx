@@ -1,20 +1,18 @@
 import { DeviceType } from '@voiceflow/general-types';
 import { VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import { preventDefault, SvgIcon, useCache, useDidUpdateEffect } from '@voiceflow/ui';
 import cn from 'classnames';
 import cuid from 'cuid';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 
-import SvgIcon from '@/components/SvgIcon';
 import * as Prototype from '@/ducks/prototype';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
-import { useCache, useDidUpdateEffect } from '@/hooks';
 import { useDeviceDimension } from '@/pages/Prototype/components/PrototypeVisualCanvas/hooks';
 import { FadeContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
-import { preventDefault } from '@/utils/dom';
 
 import { APL, Container, Image, ListenerContainer, PlaceholderContainer, ScaleContainer } from './components';
 import { getScale } from './utils';

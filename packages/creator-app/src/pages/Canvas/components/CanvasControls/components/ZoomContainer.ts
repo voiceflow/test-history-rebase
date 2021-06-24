@@ -1,5 +1,5 @@
-import Flex from '@/components/Flex';
-import { Container } from '@/components/IconButton/components';
+import { Flex, IconButtonContainer } from '@voiceflow/ui';
+
 import { styled, transition } from '@/hocs';
 
 const ZoomContainer = styled(Flex)`
@@ -27,16 +27,16 @@ const ZoomContainer = styled(Flex)`
     opacity: 0;
   }
 
-  & ${Container}:not(:active) {
+  & ${IconButtonContainer}:not(:active) {
     box-shadow: none;
   }
 
-  & > div:not(:last-of-type) ${Container} {
+  & > div:not(:last-of-type) ${IconButtonContainer} {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
-  & > div:not(:first-of-type) ${Container} {
+  & > div:not(:first-of-type) ${IconButtonContainer} {
     margin-left: 1px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;

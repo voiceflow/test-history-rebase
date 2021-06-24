@@ -1,7 +1,6 @@
+import { BaseButton, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import BaseButton from '@/components/Button/components/BaseButton';
-import SvgIcon from '@/components/SvgIcon';
 import { GooglePromptType } from '@/constants';
 import * as Account from '@/ducks/account';
 import { connect, styled } from '@/hocs';
@@ -11,11 +10,12 @@ import { ConnectedProps } from '@/types';
 
 const GoogleLoginButton = styled(BaseButton)`
   position: relative;
-  background: #4285f4;
+  height: 40px;
   color: #fff;
   font-family: 'Roboto', sans-serif;
-  height: 40px;
+  background: #4285f4;
   border-radius: 2px;
+
   span:last-of-type {
     padding: 0 22px 0 18px;
   }

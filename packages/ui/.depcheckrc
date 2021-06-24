@@ -1,0 +1,20 @@
+{
+  "specials": [
+    "bin",
+    "istanbul",
+    "ttypescript"
+  ],
+  "ignores": [
+    "@types/*",
+    "ts-jest",
+    "tslib",
+    "chai",
+    "chai-as-promised",
+    "mocha-suite",
+    "sinon",
+    "sinon-chai",
+    "jsdom-global",
+    "ignore-styles",
+    "regenerator-runtime"
+  ]
+}

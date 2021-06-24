@@ -1,8 +1,6 @@
+import { Button, ButtonVariant, FlexApart, SvgIconProps } from '@voiceflow/ui';
 import React from 'react';
 
-import Button, { ButtonVariant } from '@/components/Button';
-import { FlexApart } from '@/components/Flex';
-import { SvgIconProps } from '@/components/SvgIcon';
 import { BlockType } from '@/constants';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';

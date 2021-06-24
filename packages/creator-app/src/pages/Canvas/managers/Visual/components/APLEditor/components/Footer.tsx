@@ -1,7 +1,6 @@
+import { ButtonVariant, ClickableText } from '@voiceflow/ui';
 import React from 'react';
 
-import { ButtonVariant } from '@/components/Button';
-import { ClickableText } from '@/components/Text';
 import TutorialTooltip from '@/components/TutorialTooltip';
 import { Controls } from '@/pages/Canvas/components/Editor';
 

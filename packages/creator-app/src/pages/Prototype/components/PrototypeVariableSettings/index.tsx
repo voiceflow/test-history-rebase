@@ -1,9 +1,8 @@
 import { transformStringVariableToNumber } from '@voiceflow/common';
+import { Input, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import Input from '@/components/Input';
 import Section, { SectionVariant } from '@/components/Section';
-import Tooltip from '@/components/TippyTooltip';
 import { VariableTag } from '@/components/VariableTag';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
@@ -25,9 +24,9 @@ const PrototypeVariableSettings: React.FC<ConnectedPrototypeVariableSettingsProp
             key={name}
             leftAction={
               <VariableTag isPrototypeSettings style={{ maxWidth: '75%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                <Tooltip delay={500} distance={6} title={name} position="top">
+                <TippyTooltip delay={500} distance={6} title={name} position="top">
                   {name}
-                </Tooltip>
+                </TippyTooltip>
               </VariableTag>
             }
             value={value}

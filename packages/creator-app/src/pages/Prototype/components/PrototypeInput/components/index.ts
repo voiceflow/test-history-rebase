@@ -1,7 +1,6 @@
+import { Flex, FlexCenter, SvgIconContainer } from '@voiceflow/ui';
 import * as React from 'react';
 
-import Flex, { FlexCenter } from '@/components/Flex';
-import SvgIconContainer from '@/components/SvgIcon/components/SvgIconContainer';
 import TextArea from '@/components/TextArea';
 import { css, styled, transition } from '@/hocs';
 

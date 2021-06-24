@@ -1,6 +1,5 @@
+import { withContext } from '@voiceflow/ui';
 import React from 'react';
-
-import { withContext } from '@/hocs';
 
 import type { CanvasAPI } from '.';
 

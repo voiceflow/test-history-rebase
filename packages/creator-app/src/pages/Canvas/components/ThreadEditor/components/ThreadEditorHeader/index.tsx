@@ -1,6 +1,6 @@
+import { BoxFlex } from '@voiceflow/ui';
 import React from 'react';
 
-import { Flex } from '@/components/Box';
 import Commenter from '@/components/Commenter';
 import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
@@ -13,10 +13,10 @@ export type ThreadEditorHeaderProps = CommentActionsProps & {
 };
 
 const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps & ConnectedThreadEditorHeaderProps> = ({ currentUser, postedTime, ...actionProps }) => (
-  <Flex justifyContent="space-between" height={33}>
+  <BoxFlex justifyContent="space-between" height={33}>
     <Commenter creatorID={actionProps.creatorID || currentUser.creator_id!} time={postedTime} />
     <CommentActions currentUser={currentUser.creator_id!} {...actionProps} />
-  </Flex>
+  </BoxFlex>
 );
 
 const mapStateToProps = {

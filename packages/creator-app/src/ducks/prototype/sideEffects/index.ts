@@ -1,5 +1,6 @@
+import { toast } from '@voiceflow/ui';
+
 import client from '@/client';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
 import { SyncThunk } from '@/store/types';

@@ -1,9 +1,7 @@
+import { Button, ButtonVariant, Link, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { testingGraphic } from '@/assets';
-import Button, { ButtonVariant } from '@/components/Button';
-import Text, { Link } from '@/components/Text';
-import TippyTooltip from '@/components/TippyTooltip';
 import * as Documentation from '@/config/documentation';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';

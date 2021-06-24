@@ -1,10 +1,10 @@
+import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { ScrollContext } from '@/contexts';
 import { getOffsetLeftToNode, getOffsetToNode, scrollTo, setScrollbarOffset } from '@/utils/dom';
 import { xnor, xor } from '@/utils/logic';
 
-import { useContextApi } from './cache';
 import { useToggle } from './toggle';
 
 export const useScrollHelpers = <B extends HTMLElement, I extends HTMLElement>({

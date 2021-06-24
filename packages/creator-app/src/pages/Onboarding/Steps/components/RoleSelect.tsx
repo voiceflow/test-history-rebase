@@ -1,6 +1,5 @@
+import { Select } from '@voiceflow/ui';
 import React from 'react';
-
-import Select from '@/components/Select';
 
 const ROLE_OPTIONS = [
   'Conversation Designer',

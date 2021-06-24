@@ -1,4 +1,5 @@
-import BaseIconButton, { IconButtonVariant } from '@/components/IconButton';
+import { IconButton as BaseIconButton, IconButtonVariant } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs';
 
 const activeStyles = css`

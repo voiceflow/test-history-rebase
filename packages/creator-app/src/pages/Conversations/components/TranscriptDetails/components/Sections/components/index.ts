@@ -1,4 +1,5 @@
-import Flex, { FlexApart } from '@/components/Flex';
+import { Flex, FlexApart } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 export const Container = styled(Flex)<{ curved?: boolean; flex?: number; rightExtend?: boolean; topExtend?: boolean; withBackground?: boolean }>`

@@ -1,11 +1,6 @@
+import { Box, Flex, OverflowText, SvgIcon, Text, TippyTooltip } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
-
-import Box from '@/components/Box';
-import Flex from '@/components/Flex';
-import SvgIcon from '@/components/SvgIcon';
-import Text, { OverflowText } from '@/components/Text';
-import TippyTooltip from '@/components/TippyTooltip';
 
 export type ErrorsProps = {
   name: string;

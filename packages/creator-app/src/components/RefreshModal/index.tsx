@@ -1,18 +1,15 @@
+import { Box, Button, Link, logger } from '@voiceflow/ui';
 import React from 'react';
 
 import { takeoffGraphic } from '@/assets';
-import Box from '@/components/Box';
-import Button from '@/components/Button';
 import Modal, { ModalFooter } from '@/components/Modal';
-import { Link } from '@/components/Text';
 import { IS_DEVELOPMENT } from '@/config';
 import { ModalType } from '@/constants';
 import { styled } from '@/hocs';
 import { useModals, useScheduled, useSetup } from '@/hooks';
 import { BodyContainer, ContentContainer } from '@/pages/Dashboard/components/ModalComponents';
-import Logger from '@/utils/logger';
 
-const log = Logger.child('refreshModal');
+const log = logger.child('refreshModal');
 
 const StyledModal = styled(Modal)`
   max-width: 392px;

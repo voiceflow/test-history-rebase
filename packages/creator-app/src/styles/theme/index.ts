@@ -1,65 +1,15 @@
+import { createTheme } from '@voiceflow/ui';
+
 import BLOCK_THEME, { BLOCK_WIDTH } from './block';
 import BLOCK_STEP_THEME from './blockStep';
-import { ANIMATION_SPEED, COLOR_BLUE } from './constants';
-import ICON_THEME from './icon';
+import { ANIMATION_SPEED } from './constants';
 
 export { ANIMATION_SPEED, BLOCK_WIDTH };
 
-const THEME = {
-  unit: 8,
-  breakpoints: {
-    sm: '576px',
-    md: '768px',
-    lg: '992px',
-    xl: '1200px',
-  },
-  backgrounds: {
-    offWhite: '#f9f9f9',
-    offWhiteBlue: '#FAFAFC',
-    white: '#ffffff',
-    lightBlue: '#eff6fe',
-    greyGreen: '#eef4f6',
-    gray: '#f6f6f6',
-  },
-  iconColors: {
-    disabled: '#BECEDC',
-    active: '#6e849a',
-  },
-  colors: {
-    primary: '#132144',
-    secondary: '#62778c',
-    tertiary: '#8da2b5',
-    quaternary: '#949DB0',
-    red: '#E91E63',
-    green: '#279745',
-    blue: COLOR_BLUE,
-    darkBlue: '#4886da',
-    borders: '#dfe3ed',
-  },
-  space: {
-    xs: 4,
-    s: 8,
-    m: 12,
-    l: 16,
-    xl: 20,
-  },
-  fontSizes: {
-    s: 13,
-    m: 15,
-    l: 28,
-  },
+const THEME = createTheme({
   components: {
-    button: {
-      height: 42,
-    },
-    input: {
-      height: 42,
-    },
     captionedIconButton: {
       height: 60,
-    },
-    menuItem: {
-      height: 42,
     },
     blockSidebar: {
       width: 480,
@@ -92,7 +42,6 @@ const THEME = {
     },
     block: BLOCK_THEME,
     blockStep: BLOCK_STEP_THEME,
-    icon: ICON_THEME,
     audioPlayer: {
       height: 108,
     },
@@ -139,7 +88,7 @@ const THEME = {
 
     return `transition: ${properties.map((property) => `${property} ${ANIMATION_SPEED}s ease`).join(',')};`;
   },
-};
+});
 
 export type Theme = typeof THEME;
 

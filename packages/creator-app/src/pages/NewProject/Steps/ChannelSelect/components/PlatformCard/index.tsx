@@ -1,7 +1,7 @@
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import SvgIcon from '@/components/SvgIcon';
 import { ClassName } from '@/styles/constants';
 
 import { ChannelMetaType, IconType, PLATFORM_FEATURE_META } from '../../../constants';

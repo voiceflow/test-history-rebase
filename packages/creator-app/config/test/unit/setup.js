@@ -1,9 +1,16 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable no-process-env */
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const sinonChai = require('sinon-chai');
 const ignoreStyles = require('ignore-styles');
+
+global.Audio = class {
+  play() {}
+
+  pause() {}
+};
 
 ignoreStyles.default([...ignoreStyles.DEFAULT_EXTENSIONS, '.csv']);
 

@@ -1,6 +1,6 @@
+import { Flex } from '@voiceflow/ui';
 import React from 'react';
 
-import Flex from '@/components/Flex';
 import { Members } from '@/components/User';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';

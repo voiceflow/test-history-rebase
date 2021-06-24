@@ -1,4 +1,4 @@
-import { Icon } from '@/components/SvgIcon';
+import { Icon } from '@voiceflow/ui';
 
 export enum InputVariant {
   SELECT_ONLY = 'select_only',

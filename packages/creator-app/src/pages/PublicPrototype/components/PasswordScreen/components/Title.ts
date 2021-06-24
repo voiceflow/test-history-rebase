@@ -1,4 +1,5 @@
-import { Title as BaseTitle } from '@/components/Text';
+import { Title as BaseTitle } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 import { breakpoints } from '@/styles/breakpoints';
 

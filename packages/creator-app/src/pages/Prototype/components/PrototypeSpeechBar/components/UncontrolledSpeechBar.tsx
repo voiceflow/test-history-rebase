@@ -1,11 +1,9 @@
+import { Box, ClickableText, preventDefault, Text, useCache } from '@voiceflow/ui';
 import React from 'react';
 
-import Box from '@/components/Box';
-import { ClickableText, Text } from '@/components/Text';
-import { useCache, useDebouncedCallback, useHotKeys } from '@/hooks';
+import { useDebouncedCallback, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { Identifier } from '@/styles/constants';
-import { preventDefault } from '@/utils/dom';
 
 import Container from './Container';
 

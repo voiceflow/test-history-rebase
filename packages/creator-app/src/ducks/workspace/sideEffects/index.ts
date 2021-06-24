@@ -1,6 +1,7 @@
+import { toast } from '@voiceflow/ui';
+
 import client from '@/client';
 import projectAdapter from '@/client/adapters/project';
-import { toast } from '@/components/Toast';
 import * as Errors from '@/config/errors';
 import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';

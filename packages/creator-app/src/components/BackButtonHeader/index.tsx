@@ -1,9 +1,7 @@
+import { BoxFlex, FlexApart, FlexEnd, SVG, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { Flex } from '@/components/Box';
-import { FlexApart, FlexEnd } from '@/components/Flex';
 import { BackButton } from '@/components/Header/components';
-import SvgIcon from '@/components/SvgIcon';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -12,7 +10,6 @@ import { Hotkey } from '@/keymap';
 import { ProgressStage } from '@/pages/Publish/Upload/components';
 import { PublishContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
-import ArrowLeftIcon from '@/svgs/arrow-left.svg';
 import { ConnectedProps } from '@/types';
 
 import { HeaderContainer, NavigateBackTextContainer, SubHeader } from './components';
@@ -49,11 +46,11 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHead
     <>
       {publishContextValue?.job?.stage.data && <ProgressStage progress={(publishContextValue.job.stage.data as any).progress} />}
       <HeaderContainer style={{ minWidth: '100%' }}>
-        <Flex style={{ padding: 'none', height: '70px', backgroundColor: '#fff' }}>
+        <BoxFlex style={{ padding: 'none', height: '70px', backgroundColor: '#fff' }}>
           <FlexApart style={{ minWidth: '100%', height: '100%', padding: 'none' }}>
             {onNavigateBack && (
               <BackButtonComp hasBackText={!!navigateBackText} onClick={onNavigateBack} id={Identifier.HEADER_BACK}>
-                <SvgIcon icon={ArrowLeftIcon} size={14} className="icon-back" />
+                <SvgIcon icon={SVG.arrowLeft} size={14} className="icon-back" />
                 {navigateBackText && <NavigateBackTextContainer>{navigateBackText}</NavigateBackTextContainer>}
               </BackButtonComp>
             )}
@@ -70,7 +67,7 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHead
               {children}
             </FlexEnd>
           </FlexApart>
-        </Flex>
+        </BoxFlex>
         {subHeader && <SubHeader>{subHeader}</SubHeader>}
       </HeaderContainer>
     </>

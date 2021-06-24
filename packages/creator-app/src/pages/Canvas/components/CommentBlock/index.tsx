@@ -1,3 +1,4 @@
+import { stopImmediatePropagation, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 import Textarea from 'react-textarea-autosize';
 
@@ -7,7 +8,7 @@ import { compose } from '@/hocs';
 import { useLinkedState } from '@/hooks';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { BlockAPI } from '@/pages/Canvas/types';
-import { stopImmediatePropagation, stopPropagation, withTargetValue } from '@/utils/dom';
+import { withTargetValue } from '@/utils/dom';
 
 import { Container } from './components';
 import { useCommentBlockAPI } from './hooks';

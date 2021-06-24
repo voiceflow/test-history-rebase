@@ -1,6 +1,7 @@
+import { generate } from '@voiceflow/ui';
+
 import commentAdapter from '@/client/adapters/comment';
 import client, { COMMENTING_PATH } from '@/client/comment';
-import { generate } from '@/utils/testing';
 
 import suite from './_suite';
 

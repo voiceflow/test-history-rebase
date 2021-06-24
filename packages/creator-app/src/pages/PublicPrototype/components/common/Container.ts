@@ -1,4 +1,5 @@
-import { FlexApart } from '@/components/Box';
+import { BoxFlexApart } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 type ContainerProps = {
@@ -6,7 +7,7 @@ type ContainerProps = {
   isVisuals?: boolean;
 };
 
-const Container = styled(FlexApart).attrs({ column: true })<ContainerProps>`
+const Container = styled(BoxFlexApart).attrs({ column: true })<ContainerProps>`
   width: 100%;
   height: 100%;
   padding: ${({ isMobile, isVisuals }) =>

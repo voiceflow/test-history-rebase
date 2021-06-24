@@ -1,6 +1,6 @@
+import { ClickableText } from '@voiceflow/ui';
 import React from 'react';
 
-import { ClickableText } from '@/components/Text';
 import { useOpenIntercom } from '@/vendors/intercom';
 
 function ChatWithUsLink({ children }) {

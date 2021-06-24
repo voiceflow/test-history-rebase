@@ -1,3 +1,4 @@
+import { preventDefault, stopPropagation } from '@voiceflow/ui';
 import cuid from 'cuid';
 import React from 'react';
 import { ThemeContext } from 'styled-components';
@@ -11,7 +12,6 @@ import { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { StepAPI } from '@/pages/Canvas/types';
 import { useEditingMode } from '@/pages/Skill/hooks';
-import { preventDefault, stopPropagation } from '@/utils/dom';
 import { Coords } from '@/utils/geometry';
 
 export type InternalNodeInstance = NodeInstance & {

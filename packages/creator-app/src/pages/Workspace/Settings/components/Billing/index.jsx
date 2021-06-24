@@ -1,8 +1,8 @@
+import { Spinner } from '@voiceflow/ui';
 import React, { useEffect } from 'react';
 
 import workspaceClient from '@/client/workspace';
 import { SettingsSection } from '@/components/Settings';
-import { Spinner } from '@/components/Spinner';
 import { Descriptor, TableContainer, TableHeader, TableRow } from '@/components/Table';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';

@@ -1,9 +1,7 @@
+import { BoxFlex, BoxFlexApart, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { Flex, FlexApart } from '@/components/Box';
 import Checkbox from '@/components/Checkbox';
-import Menu, { MenuItem } from '@/components/Menu';
-import SvgIcon from '@/components/SvgIcon';
 import { ReportTag } from '@/models';
 
 import { DEFAULT_TAGS } from '../constants';
@@ -25,13 +23,13 @@ const SelectOnlyTagInput = (props: TagInputVariantProps) => {
         <Menu fullWidth>
           {DEFAULT_TAGS.map((tag, index) => (
             <MenuItem key={index} onClick={onTagChange(tag)}>
-              <Flex fullWidth>
+              <BoxFlex fullWidth>
                 <Checkbox readOnly checked={props.selectedTags.includes(tag.id)} />
-                <FlexApart fullWidth>
+                <BoxFlexApart fullWidth>
                   {tag.label}
                   <SvgIcon size={22} icon={tag.icon} />
-                </FlexApart>
-              </Flex>
+                </BoxFlexApart>
+              </BoxFlex>
             </MenuItem>
           ))}
           {filteredTags.length > 0 && <MenuItem divider />}

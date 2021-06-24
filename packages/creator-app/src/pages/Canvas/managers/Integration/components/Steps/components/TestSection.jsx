@@ -1,6 +1,7 @@
 import { deepVariableSubstitution } from '@voiceflow/common';
 import { GoogleSheetsActionType } from '@voiceflow/general-types/build/nodes/googleSheets';
 import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
+import { Spinner } from '@voiceflow/ui';
 import update from 'immutability-helper';
 import _cloneDeep from 'lodash/cloneDeep';
 import _isEmpty from 'lodash/isEmpty';
@@ -10,7 +11,6 @@ import { Button, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import DefaultModal from '@/components/LegacyModal/DefaultModal';
-import { Spinner } from '@/components/Spinner';
 import { IntegrationType } from '@/constants';
 import { setConfirm, setError } from '@/ducks/modal';
 import { connect } from '@/hocs';

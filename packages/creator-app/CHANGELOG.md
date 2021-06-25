@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.410.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.409.0...@voiceflow/creator-app@1.410.0) (2021-06-25)
+
+
+### Features
+
+* navigation redesign (VF-1123) ([#3580](https://github.com/voiceflow/creator-app/issues/3580)) ([d06199e](https://github.com/voiceflow/creator-app/commit/d06199ebef751ba26a55b5325433e22d248f51b9))
+
+
+
+
+
 # [1.409.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.408.0...@voiceflow/creator-app@1.409.0) (2021-06-25)
 
 

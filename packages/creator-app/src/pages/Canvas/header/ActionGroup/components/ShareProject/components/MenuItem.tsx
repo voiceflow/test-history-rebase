@@ -64,7 +64,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, description, isAllowed, onRe
       </div>
       <ButtonContainer>
         {loading ? (
-          <LoadingButton iconProps={{ spin: true, size: 20 }} variant={ButtonVariant.SECONDARY} icon="publishSpin" square />
+          <LoadingButton />
         ) : (
           <TippyTooltip title="Copied to clipboard" position="top" open={isCopied}>
             <Button variant={ButtonVariant.SECONDARY} onClick={stopImmediatePropagation(onClick)}>

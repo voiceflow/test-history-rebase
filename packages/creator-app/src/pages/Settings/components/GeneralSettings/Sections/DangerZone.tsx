@@ -1,40 +1,18 @@
-import { Button, ButtonVariant, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { ActionSection } from '@/components/Settings';
-import * as Errors from '@/config/errors';
-import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
-import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
+import { useDeleteProject } from '@/hooks';
 import { ConnectedProps } from '@/types';
-import * as Sentry from '@/vendors/sentry';
 
-const DangerZone: React.FC<ConnectedDangerZoneProps> = ({ projectName, setConfirm, goToDashboard, projectID, deleteProject }) => {
-  const handleDelete = async () => {
-    if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
-      toast.genericError();
-      return;
-    }
-
-    try {
-      goToDashboard();
-      await deleteProject(projectID);
-      toast.success(`Successfully deleted ${projectName}`);
-    } catch (e) {
-      toast.error(e.message);
-    }
-  };
-
-  const deletePrompt = () => {
-    setConfirm({
-      text: <p className="mb-0">This action can not be undone, {projectName} and all flows can not be recovered</p>,
-      warning: true,
-      confirm: handleDelete,
-    });
-  };
+const DangerZone: React.FC<ConnectedDangerZoneProps> = ({ projectName, projectID }) => {
+  const deletePrompt = useDeleteProject({
+    projectID,
+    projectName,
+  });
 
   return (
     <ActionSection
@@ -54,11 +32,6 @@ const mapStateToProps = {
   projectID: Session.activeProjectIDSelector,
 };
 
-const mapDispatchProps = {
-  deleteProject: Project.deleteProject,
-  goToDashboard: Router.goToDashboard,
-  setConfirm: Modal.setConfirm,
-};
+type ConnectedDangerZoneProps = ConnectedProps<typeof mapStateToProps>;
 
-type ConnectedDangerZoneProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchProps>;
-export default connect(mapStateToProps, mapDispatchProps)(DangerZone);
+export default connect(mapStateToProps)(DangerZone);

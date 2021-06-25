@@ -23,7 +23,8 @@ const PrototypeHeader = ({ status }: { status: PrototypeStatus }) => (
       )}
       <PrototypeTimer />
     </TimerContainer>
-    <ShareProject render />
+
+    <ShareProject />
   </>
 );
 

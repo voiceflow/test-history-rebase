@@ -8,10 +8,8 @@ import { Tooltip } from 'react-tippy';
 import Avatar from '@/components/Avatar';
 import { Permission } from '@/config/permissions';
 import { RootRoute } from '@/config/routes';
-import { ModalType } from '@/constants';
 import withDraggable from '@/hocs/withDraggable';
-import { useModals, usePermission } from '@/hooks';
-import { useToggle } from '@/hooks/toggle';
+import { usePermission, useProjectOptions } from '@/hooks';
 import { PROJECT_COLORS } from '@/styles/colors';
 import { DashboardClassName } from '@/styles/constants';
 import { getHumanLanguageName } from '@/utils/languages';
@@ -29,63 +27,20 @@ import {
 } from './styled';
 
 export function Item(props) {
-  const {
-    id,
-    name,
-    diagram,
-    language,
-    isLive,
-    onRemove,
-    avatarUrl,
-    isDragging,
-    platform,
-    version_id,
-    onDuplicate,
-    onDownload,
-    connectDragSource,
-    connectDropTarget,
-  } = props;
+  const { id, name, listId, diagram, language, isLive, avatarUrl, isDragging, platform, versionID, connectDragSource, connectDropTarget } = props;
 
-  const [isDropdownOpened, toggleDropdownOpened] = useToggle();
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
-  const [canCloneProject] = usePermission(Permission.CLONE_PROJECT);
   const titleRef = React.useRef(null);
   const [titleOverflowing, setTitleOverflowing] = React.useState(false);
-  const { open: openCloneModal } = useModals(ModalType.IMPORT_PROJECT);
   const dateFromID = new Date(parseInt(id.substring(0, 8), 16));
   const color = PROJECT_COLORS[dateFromID.getTime() % PROJECT_COLORS.length] || PROJECT_COLORS[0];
 
   const TitleWrapper = titleOverflowing ? Tooltip : React.Fragment;
-  const options = canManageProjects
-    ? [
-        {
-          value: 'duplicate',
-          label: 'Duplicate Project',
-          onClick: onDuplicate,
-        },
-        {
-          value: 'download',
-          label: 'Copy Download Link',
-          onClick: onDownload,
-        },
-        {
-          value: 'remove',
-          label: 'Remove Project',
-          onClick: onRemove,
-        },
-      ]
-    : [];
-
-  if (canCloneProject) {
-    const cloneOption = {
-      value: 'clone',
-      label: 'Clone Project',
-      onClick: async () => {
-        openCloneModal({ cloning: true, projectID: id });
-      },
-    };
-    options.push(cloneOption);
-  }
+  const options = useProjectOptions({
+    boardID: listId,
+    projectID: id,
+    projectName: name,
+  });
 
   React.useEffect(() => {
     setTitleOverflowing(titleRef?.current?.scrollWidth > titleRef?.current?.clientWidth);
@@ -95,27 +50,14 @@ export function Item(props) {
 
   const item = (
     <div>
-      <ProjectListItem
-        hasOptions={hasOptions}
-        to={`/${RootRoute.PROJECT}/${version_id}/canvas/${diagram}`}
-        hidden={isDragging}
-        isActive={isDropdownOpened}
-        tabIndex={0}
-        onBlur={() => toggleDropdownOpened(false)}
-      >
+      <ProjectListItem hasOptions={hasOptions} to={`/${RootRoute.PROJECT}/${versionID}/canvas/${diagram}`} hidden={isDragging} tabIndex={0}>
         <Dropdown options={options}>
-          {(ref, onToggle) =>
+          {(ref, onToggle, isOpen) =>
             hasOptions ? (
-              <DropdownIconWrapper
-                className={DashboardClassName.PROJECTS_LIST_ITEM_ACTIONS}
-                onClick={stopPropagation(() => {
-                  toggleDropdownOpened();
-                  onToggle();
-                })}
-                ref={ref}
-              >
-                <Avatar url={avatarUrl} name={name} color={color} />
-                <ProjectListItemActions>
+              <DropdownIconWrapper className={DashboardClassName.PROJECTS_LIST_ITEM_ACTIONS} onClick={stopPropagation(() => onToggle())} ref={ref}>
+                {!isOpen && <Avatar url={avatarUrl} name={name} color={color} />}
+
+                <ProjectListItemActions active={isOpen}>
                   <SvgIcon icon="elipsis" />
                 </ProjectListItemActions>
               </DropdownIconWrapper>
@@ -174,15 +116,13 @@ Item.propTypes = {
   name: PropTypes.string.isRequired,
   created: PropTypes.string.isRequired,
   isOver: PropTypes.bool,
-  onRemove: PropTypes.func.isRequired,
+  listId: PropTypes.string.isRequired,
   language: PropTypes.array.isRequired,
   isLive: PropTypes.bool,
   avatarUrl: PropTypes.string,
   isDragging: PropTypes.bool,
   isDragLayer: PropTypes.bool,
-  version_id: PropTypes.string.isRequired,
-  onDuplicate: PropTypes.func.isRequired,
-  onDownload: PropTypes.func.isRequired,
+  versionID: PropTypes.string.isRequired,
   connectDragSource: PropTypes.func,
   connectDropTarget: PropTypes.func,
   isDraggingPreview: PropTypes.bool,

@@ -1,5 +1,5 @@
 import composeRefs from '@seznam/compose-react-refs';
-import { IS_SAFARI, OverlayValue, withOverlay } from '@voiceflow/ui';
+import { DismissOverlayValue, IS_SAFARI, withDismissOverlay } from '@voiceflow/ui';
 import React from 'react';
 
 import { Identifier } from '@/styles/constants';
@@ -49,7 +49,7 @@ export type CanvasProps = {
   onDragStart?: (event: React.DragEvent) => void;
 };
 
-class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlScheme'> & { overlay: OverlayValue }> {
+class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlScheme'> & { dismissOverlay: DismissOverlayValue }> {
   static defaultProps: CanvasProps = {
     scrollTimeout: SCROLL_TIMEOUT,
   };
@@ -294,15 +294,14 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
 
     switch (control.type) {
       case ControlType.PAN:
-        this.props.overlay.dismiss();
+        this.props.dismissOverlay.dismissAllGlobally();
         this.onPan(control.deltaX, control.deltaY);
         break;
       case ControlType.SCALE:
-        this.props.overlay.dismiss();
+        this.props.dismissOverlay.dismissAllGlobally();
         this.onZoom(control);
         break;
       case ControlType.CLICK:
-        this.props.overlay.dismiss();
         this.props.onClick?.(control.event);
         break;
       case ControlType.MOUSE_UP:
@@ -421,4 +420,4 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
   }
 }
 
-export default withOverlay(Canvas) as React.FC<CanvasProps>;
+export default withDismissOverlay(Canvas) as React.FC<CanvasProps>;

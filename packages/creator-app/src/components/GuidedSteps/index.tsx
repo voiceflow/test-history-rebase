@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */
 
-import { Button, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import { Button, ButtonVariant, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
@@ -18,6 +18,8 @@ interface GuidedBlock {
 }
 
 interface GuidedStepsProps {
+  centred?: boolean;
+
   blocks: GuidedBlock[];
 
   step: number;
@@ -40,6 +42,8 @@ interface GuidedStepsProps {
 }
 
 const GuidedSteps: React.FC<GuidedStepsProps> = ({
+  centred,
+
   blocks,
 
   forceFollow,
@@ -168,7 +172,7 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
     preventSubmit && showPreventSubmitTooltip ? ({ position: 'top-end', title: preventSubmit.message, distance: 5 } as TippyTooltipProps) : {};
 
   return (
-    <GuidedStepsWrapper disabled={disabled}>
+    <GuidedStepsWrapper centred={centred} disabled={disabled}>
       <ul className="gs__steps-list">
         {blocks &&
           blocks.map((block, idx) => (
@@ -207,16 +211,12 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
                     {!haveFooter && (
                       <div className="gs__panel-footer">
                         {idx < blocks.length - 1 ? (
-                          <Button variant="secondary" disabled={!validStepChange(idx + 1)} onClick={(e: React.MouseEvent) => changeStep(e, idx + 1)}>
+                          <Button variant={ButtonVariant.SECONDARY} disabled={!validStepChange(idx + 1)} onClick={(e) => changeStep(e, idx + 1)}>
                             Next
                           </Button>
                         ) : (
                           <SubmitWrapper {...wrapperProps}>
-                            <Button
-                              variant="primary"
-                              disabled={!isFormValid || disabled || !!preventSubmit}
-                              onClick={(e: React.MouseEvent) => submit(e, idx)}
-                            >
+                            <Button disabled={!isFormValid || disabled || !!preventSubmit} onClick={(e) => submit(e, idx)}>
                               {submitText}
                             </Button>
                           </SubmitWrapper>

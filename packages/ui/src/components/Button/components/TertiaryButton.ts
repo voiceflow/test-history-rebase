@@ -1,13 +1,18 @@
-import { css, styled } from '../../../styles';
-import ButtonContainer from './ButtonContainer';
+import { css, styled, transition } from '../../../styles';
+import { ButtonVariant } from '../constants';
+import ButtonContainer, { ButtonContainerProps } from './ButtonContainer';
 
-const TertiaryButton = styled(ButtonContainer)`
+export interface TertiaryButtonProps extends ButtonContainerProps {
+  variant: ButtonVariant.TERTIARY;
+}
+
+const TertiaryButton = styled(ButtonContainer)<TertiaryButtonProps>`
+  ${transition('background', 'background-color')}
   padding: 0 22px;
   color: #5d9df5;
   font-weight: 600;
   border: 0;
   box-shadow: none;
-  transition: all 0.15s ease-out;
 
   ${({ disabled }) =>
     disabled

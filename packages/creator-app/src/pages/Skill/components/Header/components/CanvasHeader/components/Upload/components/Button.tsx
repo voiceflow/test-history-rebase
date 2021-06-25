@@ -1,0 +1,91 @@
+import { Text } from '@voiceflow/ui';
+import React from 'react';
+
+import { HeaderIconButtonProps } from '@/components/ProjectPage';
+import { PlatformType } from '@/constants';
+import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
+import { PlatformContext } from '@/pages/Skill/contexts';
+import { Identifier } from '@/styles/constants';
+import { createPlatformSelector } from '@/utils/platform';
+
+import StyledButton from './StyledButton';
+
+const getPlatformIconProps = createPlatformSelector<HeaderIconButtonProps>(
+  {
+    [PlatformType.ALEXA]: { icon: 'amazonAlexa', iconProps: { color: '#5fcaf4' } },
+    [PlatformType.GOOGLE]: { icon: 'googleAssistant' },
+  },
+  { icon: 'ban' }
+);
+
+const getPlatformName = createPlatformSelector(
+  {
+    [PlatformType.ALEXA]: 'Alexa',
+    [PlatformType.GOOGLE]: 'Google',
+  },
+  ''
+);
+
+export enum ButtonVariant {
+  UPLOAD = 'UPLOAD',
+  CONNECT = 'CONNECT',
+  LOADING = 'LOADING',
+  SUCCESS = 'SUCCESS',
+}
+
+interface ConnectButtonProps {
+  variant?: ButtonVariant;
+  onClick?: () => void;
+  progress?: number;
+}
+
+const getButtonProps = (platform: PlatformType, { variant, progress }: ConnectButtonProps): HeaderIconButtonProps & { key?: string } => {
+  const loadIconProps: HeaderIconButtonProps = { icon: 'loader', color: '#132144', withOpacity: true, size: 18 };
+
+  switch (variant) {
+    case ButtonVariant.CONNECT:
+      return {
+        ...getPlatformIconProps(platform),
+        tooltip: { title: `Connect to ${getPlatformName(platform)}`, hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT] },
+      };
+    case ButtonVariant.UPLOAD:
+      return { ...loadIconProps, tooltip: { title: `Upload to ${getPlatformName(platform)}`, hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT] } };
+    case ButtonVariant.SUCCESS:
+      return { icon: 'greenCheckMark', size: 18, tooltip: { title: 'Successfully Uploaded' } };
+    case ButtonVariant.LOADING:
+      return {
+        ...loadIconProps,
+        key: 'progress',
+        iconProps: { spin: true },
+        tooltip: {
+          html: (
+            <div>
+              Uploading:
+              <Text ml="7px" color="rgba(255, 255, 255, 0.59)">
+                {progress || 0}%
+              </Text>
+            </div>
+          ),
+        },
+      };
+    default:
+      return loadIconProps;
+  }
+};
+
+const ConnectButton: React.FC<ConnectButtonProps> = ({ onClick, ...props }) => {
+  const platform = React.useContext(PlatformContext)!;
+
+  const buttonProps = getButtonProps(platform, props);
+
+  return (
+    <StyledButton
+      id={Identifier.UPLOAD}
+      onClick={onClick}
+      {...buttonProps}
+      tooltip={buttonProps.tooltip && { ...buttonProps.tooltip, position: 'bottom' }}
+    />
+  );
+};
+
+export default ConnectButton;

@@ -1,0 +1,49 @@
+import { useCallback, useContext } from 'react';
+
+import { Permission } from '@/config/permissions';
+import { ModalType, PlatformType } from '@/constants';
+import { useEventualEngine, useModals, usePermission } from '@/hooks';
+
+import { MarkupContext, PlatformContext } from '../contexts';
+import { useCommentingMode } from './modes';
+
+export * from './alexaPublish';
+export * from './diagram';
+export * from './googlePublish';
+export * from './modes';
+
+export const useIsPlatform = (platform: PlatformType) => {
+  const activePlatform = useContext(PlatformContext);
+
+  return platform === activePlatform;
+};
+
+export const useCommentingToggle = () => {
+  const getEngine = useEventualEngine();
+  const upgradeModal = useModals(ModalType.PAYMENT);
+  const isCommentingMode = useCommentingMode();
+  const [canUseCommenting] = usePermission(Permission.COMMENTING);
+
+  return useCallback(() => {
+    if (isCommentingMode) {
+      getEngine()?.disableAllModes();
+    } else if (!canUseCommenting) {
+      upgradeModal.open();
+    } else {
+      getEngine()?.comment.activate();
+    }
+  }, [getEngine, upgradeModal, isCommentingMode]);
+};
+
+export const useDisableModes = () => {
+  const markup = useContext(MarkupContext)!;
+  const getEngine = useEventualEngine();
+
+  return useCallback(() => {
+    if (getEngine()?.markup.creatingType) {
+      getEngine()?.markup.finishCreating?.();
+    } else {
+      getEngine()?.disableAllModes();
+    }
+  }, [markup]);
+};

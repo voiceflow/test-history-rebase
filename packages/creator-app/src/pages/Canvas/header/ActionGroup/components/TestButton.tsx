@@ -12,7 +12,7 @@ export type PlayButtonProps = {
   isUploading?: boolean;
 };
 
-const PlayButton = styled(Button).attrs({ speed: 2000 })<PlayButtonProps>`
+const PlayButton = styled(Button).attrs({ icon: 'play', iconProps: { size: 11 }, speed: 2000 })<PlayButtonProps>`
   ${({ isUploading }) =>
     isUploading &&
     css`
@@ -44,12 +44,10 @@ const TestButton: React.FC<ConnectedTestButtonProps> = ({ goToPrototype }) => {
     <TippyTooltip distance={6} title="Test" position="bottom" hotkey="T">
       <PlayButton
         id={Identifier.TEST}
-        icon="play"
         onClick={() => {
           trackingEvents.trackActiveProjectPrototypeTestClick();
           goToPrototype();
         }}
-        iconProps={{ size: 11 }}
       >
         Test
       </PlayButton>

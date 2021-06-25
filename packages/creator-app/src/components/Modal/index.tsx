@@ -1,8 +1,10 @@
 import { IconVariant, Portal, SvgIcon } from '@voiceflow/ui';
+import cn from 'classnames';
 import React from 'react';
 
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 
 import { Close, Container, Content, Header, Icon, Root } from './components';
 
@@ -22,11 +24,13 @@ const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id,
   return !isInStack ? null : (
     <Portal portalNode={document.body}>
       <Root ref={ref} hidden={!isOpened}>
-        <Container fade={fade} isSmall={isSmall} className={className}>
+        <Container fade={fade} isSmall={isSmall} className={cn(ClassName.MODAL, className, `${ClassName.MODAL}--${id}`)}>
           <Header>
             {title}
+
             <div>
               <Icon>{icon}</Icon>
+
               <Close>
                 <SvgIcon icon="close" variant={IconVariant.STANDARD} clickable size={14} onClick={close} />
               </Close>

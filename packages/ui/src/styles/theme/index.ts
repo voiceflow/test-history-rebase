@@ -33,6 +33,8 @@ const THEME = {
     blue: COLOR_BLUE,
     darkBlue: '#4886da',
     borders: '#dfe3ed',
+    separator: '#dfe3ed',
+    separatorSecondary: '#EAEFF4',
   },
   space: {
     xs: 4,

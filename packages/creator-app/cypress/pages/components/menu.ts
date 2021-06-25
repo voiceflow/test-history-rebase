@@ -1,4 +1,4 @@
-import { ClassName, DashboardClassName } from '../../../src/styles/constants';
+import { ClassName } from '../../../src/styles/constants';
 import { getClass } from '../utils';
 
 export default {

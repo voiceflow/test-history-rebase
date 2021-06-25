@@ -1,5 +1,4 @@
-import ButtonContainer from './ButtonContainer';
-import Container, { getItemsContainer, MAX_VISIBLE_ITEMS } from './MenuContainer';
-import Item, { itemStyles } from './MenuItem';
-
-export { ButtonContainer, Container, getItemsContainer, Item, itemStyles, MAX_VISIBLE_ITEMS };
+export { default as ButtonContainer } from './ButtonContainer';
+export { default as Container, getItemsContainer, MAX_VISIBLE_ITEMS } from './MenuContainer';
+export { default as Item, itemStyles } from './MenuItem';
+export { default as MenuItemNote } from './MenuItemNote';

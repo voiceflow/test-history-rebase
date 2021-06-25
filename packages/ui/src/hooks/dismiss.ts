@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { OverlayContext } from '../contexts';
+import { DismissOverlayContext } from '../contexts/DismissOverlayContext';
+import { useCache } from './cache';
 import { useEnableDisable } from './toggle';
 
 // eslint-disable-next-line import/prefer-default-export, sonarjs/cognitive-complexity
@@ -9,57 +10,42 @@ export function useDismissable(
   {
     ref,
     onClose,
-    autoDismiss = false,
     dismissEvent = 'click',
     disabledOverlay = false,
     skipDefaultPrevented = true,
   }: {
     ref?: React.RefObject<Element>;
     onClose?: null | (() => void);
-    autoDismiss?: boolean;
     dismissEvent?: 'click' | 'mousedown';
     disabledOverlay?: boolean;
     skipDefaultPrevented?: boolean;
   } = {}
-): [boolean, () => void, (event?: MouseEvent) => void] {
-  const overlay = React.useContext(OverlayContext);
+): [isOpen: boolean, toggle: () => void, close: (event?: MouseEvent) => void] {
+  const dismissOverlay = React.useContext(DismissOverlayContext)!;
   const [isOpen, setOpen, setClosed] = useEnableDisable(defaultValue);
-  const rootNode = overlay?.rootNode ?? document;
+
+  const cache = useCache({ isOpen, onClose, skipDefaultPrevented });
+
+  const handleOpen = React.useCallback(() => {
+    if (cache.current.isOpen) return;
+
+    cache.current.isOpen = true;
+    dismissOverlay.dismissAll(); // dismiss all popovers on the current level
+    setOpen();
+  }, []);
 
   const handleClose = React.useCallback(
     (event?: Event) => {
-      if (skipDefaultPrevented && event?.defaultPrevented) return;
-      if (ref?.current?.contains?.(event?.target as Element)) {
-        return;
-      }
+      if (!cache.current.isOpen) return;
+      if (cache.current.skipDefaultPrevented && event?.defaultPrevented) return;
+      if (event?.target && ref?.current?.contains?.(event.target as Element)) return;
 
-      onClose?.();
-
+      cache.current.isOpen = false;
       setClosed();
-
-      if (!disabledOverlay && autoDismiss) {
-        overlay?.setHandler(null);
-      }
+      cache.current.onClose?.();
     },
-    [onClose, autoDismiss, overlay?.setHandler]
+    [dismissEvent]
   );
-
-  const removeRootListener = React.useCallback(() => rootNode.removeEventListener(dismissEvent, handleClose), [rootNode, handleClose]);
-
-  const handleOpen = React.useCallback(() => {
-    if (autoDismiss && !disabledOverlay && !overlay?.canOpen()) {
-      return;
-    }
-
-    setOpen();
-
-    if (!disabledOverlay && autoDismiss) {
-      overlay?.setHandler(() => {
-        handleClose();
-        removeRootListener();
-      });
-    }
-  }, [autoDismiss, overlay?.canOpen, overlay?.setHandler, handleClose, removeRootListener]);
 
   const forceClose = React.useCallback(() => handleClose(), [handleClose]);
 
@@ -67,21 +53,25 @@ export function useDismissable(
 
   React.useEffect(() => {
     if (isOpen) {
-      rootNode.addEventListener(dismissEvent, handleClose);
+      if (!disabledOverlay) {
+        dismissOverlay.subscriber.subscribe(dismissEvent, handleClose);
+        dismissOverlay.addHandler(handleClose);
+      } else {
+        dismissOverlay.rootNode.addEventListener(dismissEvent, handleClose);
+      }
 
       return () => {
-        if (!disabledOverlay && autoDismiss) {
-          overlay?.setHandler(null);
+        if (!disabledOverlay) {
+          dismissOverlay.subscriber.unsubscribe(dismissEvent, handleClose);
+          dismissOverlay.removeHandler(handleClose);
+        } else {
+          dismissOverlay.rootNode.removeEventListener(dismissEvent, handleClose);
         }
-
-        removeRootListener();
       };
     }
 
-    removeRootListener();
-
     return undefined;
-  }, [isOpen, rootNode]);
+  }, [isOpen, handleClose, dismissOverlay]);
 
   return [isOpen, onToggle, handleClose];
 }

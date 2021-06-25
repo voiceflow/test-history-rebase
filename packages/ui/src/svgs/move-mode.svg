@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
+	<g fill="none" fill-rule="evenodd">
+		<g transform="translate(-104.000000, -28.000000) translate(72.000000, 0.000000) translate(19.000000, 15.000000) translate(13.000000, 13.000000) translate(8.000000, 8.000000) scale(-1, 1) translate(-8.000000, -8.000000) translate(1.000000, 1.000000)">
+			<path d="M0 6.13c.015.342.24.64.565.747l4.931 1.627 1.627 4.93c.107.326.405.55.747.565.348.015.66-.189.792-.5l5.27-12.35c.29-.681-.4-1.371-1.08-1.08L.5 5.337c-.315.134-.514.45-.5.792z" fill="currentColor" />
+		</g>
+	</g>
+</svg>

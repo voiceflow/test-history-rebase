@@ -1,18 +1,13 @@
-import { Button, ButtonVariant, stopImmediatePropagation, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalFooter } from '@/components/LegacyModal';
 import { Permission } from '@/config/permissions';
 import { PlatformType, UserRole } from '@/constants';
 import * as Project from '@/ducks/project';
-import * as Prototype from '@/ducks/prototype';
-import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
-import { useEnableDisable, usePermission, useTrackingEvents } from '@/hooks';
+import { useEnableDisable, usePermission, useSelector } from '@/hooks';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
-import { copy } from '@/utils/clipboard';
 import { getPlatformValue } from '@/utils/platform';
 
 import PopupCloseIcon from '../PopupCloseIcon';
@@ -20,36 +15,15 @@ import PopupContainer from '../PopupContainer';
 import PopupTransition from '../PopupTransition';
 import { MenuContent, MenuItemV2, SharePrototype } from './components';
 
-type ShareProjectProps = {
-  render: boolean;
-};
+interface ShareProjectProps {
+  compile?: boolean;
+}
 
-const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = ({ render, platform, versionID, renderPrototype }) => {
+const ShareProject: React.FC<ShareProjectProps> = ({ compile }) => {
+  const platform = useSelector(Project.activePlatformSelector);
   const [open, onOpen, onClose] = useEnableDisable(false);
-  const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canSharePrototype, { activeRole }] = usePermission(Permission.SHARE_PROTOTYPE);
-  const [canInviteByLink] = usePermission(Permission.INVITE_BY_LINK);
-  const [trackingEvents] = useTrackingEvents();
-
   const isPrototypingMode = usePrototypingMode();
-
-  const testableLink = canShareProject || canSharePrototype ? `${window.location.origin}/prototype/${versionID}` : null;
-
-  const onRenderPrototype = () => renderPrototype({ aborted: false });
-
-  const onClickPrototype = () => {
-    if (render && canSharePrototype) {
-      onRenderPrototype();
-
-      copy(testableLink);
-
-      trackingEvents.trackTestableLinkCopy();
-
-      toast.success('Link copied to clipboard');
-    } else if (!render) {
-      toast.error('Unable to copy link to clipboard, please try again or contact support');
-    }
-  };
 
   const isViewer = activeRole === UserRole.VIEWER;
 
@@ -60,7 +34,7 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
           Share Prototype
         </Button>
       ) : (
-        <Button id={Identifier.SHARE_BUTTON} disabled={isViewer} variant={ButtonVariant.QUATERNARY} onClick={onOpen} isActive={open}>
+        <Button id={Identifier.SHARE_BUTTON} disabled={isViewer} variant={ButtonVariant.QUATERNARY} onClick={onOpen}>
           Share
         </Button>
       )}
@@ -84,14 +58,9 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
                 />
               )}
 
-              {canInviteByLink && (
+              {canSharePrototype && (
                 <ModalFooter onClick={stopImmediatePropagation()}>
-                  <SharePrototype
-                    link={testableLink}
-                    onClick={onClickPrototype}
-                    isAllowed={canSharePrototype}
-                    onRenderPrototype={onRenderPrototype}
-                  />
+                  <SharePrototype compile={compile} />
                 </ModalFooter>
               )}
             </>
@@ -102,15 +71,4 @@ const ShareProject: React.FC<ShareProjectProps & ConnectedShareProjectProps> = (
   );
 };
 
-const mapStateToProps = {
-  platform: Project.activePlatformSelector,
-  versionID: Session.activeVersionIDSelector,
-};
-
-const mapDispatchToProps = {
-  renderPrototype: Prototype.renderPrototype,
-};
-
-type ConnectedShareProjectProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(ShareProject) as React.FC<ShareProjectProps>;
+export default ShareProject;

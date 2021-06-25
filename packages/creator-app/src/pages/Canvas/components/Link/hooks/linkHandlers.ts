@@ -46,7 +46,6 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
 
   const [isActive, toggleActive] = useDismissable(false, {
     ref: instance.containerRef,
-    autoDismiss: true,
     onClose,
     disabledOverlay: true,
     skipDefaultPrevented: false,

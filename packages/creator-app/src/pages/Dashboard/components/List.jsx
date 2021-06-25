@@ -34,11 +34,8 @@ export function List(props) {
     isCreated,
     isDragging,
     clearNewBoard,
-    onDeleteProject,
     onMoveProject,
     onDropProject,
-    onCopyProject,
-    onDownloadProject,
     connectDragSource,
     isDraggingPreview,
     connectDropTarget,
@@ -163,7 +160,7 @@ export function List(props) {
                             <Item
                               index={i}
                               id={project.id}
-                              version_id={project.versionID}
+                              versionID={project.versionID}
                               listId={id}
                               created={project.created}
                               isFB={false}
@@ -176,9 +173,6 @@ export function List(props) {
                               onToggleDragging={setMoving}
                               language={project.locales}
                               isLive={project.isLive}
-                              onRemove={() => onDeleteProject(project.id, project.name)}
-                              onDuplicate={() => onCopyProject(project.id, id)}
-                              onDownload={() => onDownloadProject(project.id)}
                             />
                           </li>
                         );
@@ -233,10 +227,8 @@ List.propTypes = {
   isCreated: PropTypes.bool,
   isDragging: PropTypes.bool,
   projectIds: PropTypes.arrayOf(PropTypes.number),
-  onDeleteProject: PropTypes.func,
   onCancelCreate: PropTypes.func,
   disableDragging: PropTypes.bool,
-  onCopyProject: PropTypes.func,
   connectDragSource: PropTypes.func,
   connectDropTarget: PropTypes.func,
   isDraggingPreview: PropTypes.bool,

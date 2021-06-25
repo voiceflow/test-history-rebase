@@ -17,7 +17,7 @@ type DropdownWithCaretProps = {
   textVariant?: TextVariant;
   alwaysBlue?: boolean;
   fullWidth?: boolean;
-  autoDismiss?: boolean;
+  disabledOverlay?: boolean;
   border?: string;
 };
 
@@ -31,14 +31,14 @@ const DropdownWithCaret: React.FC<DropdownWithCaretProps> = ({
   text,
   padding = '10px 25px',
   alwaysBlue = false,
-  autoDismiss = false,
+  disabledOverlay = false,
   border,
   fullWidth,
 }) => {
   const inactiveColor = alwaysBlue ? '#5190e6' : color;
 
   return (
-    <Dropdown autoDismiss={autoDismiss} placement={placement} menu={menu}>
+    <Dropdown disabledOverlay={disabledOverlay} placement={placement} menu={menu}>
       {(ref, onToggle, isOpen) => (
         <DisabledWrapper disabled={disabled}>
           <ButtonContainer

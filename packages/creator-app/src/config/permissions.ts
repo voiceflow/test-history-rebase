@@ -14,6 +14,7 @@ export enum Permission {
   MANAGE_PROJECTS = 'project.MANAGE',
   CLONE_PROJECT = 'project.CLONE',
   SHARE_PROJECT = 'project.SHARE',
+  EDIT_PROJECT = 'project.EDIT',
 
   // export
   CODE_EXPORT = 'export.CODE',
@@ -61,6 +62,7 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.MANAGE_PROJECTS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
   [Permission.MANAGE_PROJECT_LISTS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.BILLING],
   [Permission.CLONE_PROJECT]: [UserRole.LIBRARY],
+  [Permission.EDIT_PROJECT]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
 
   [Permission.EDIT_CANVAS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
   [Permission.CANVAS_REALTIME]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING],

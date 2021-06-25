@@ -17,6 +17,7 @@ import {
   ff_linkCustomization,
   ff_motorolaSSO,
   ff_natoApco,
+  ff_navigationRedesign,
   ff_ownerRole,
   ff_testReports,
   ff_wavenetVoices,
@@ -71,6 +72,7 @@ export default {
   FF_MOTOROLA_SSO: ff_motorolaSSO && 'true',
   FF_LINK_CUSTOMIZATION: ff_linkCustomization && 'true',
   FF_TEST_REPORTS: ff_testReports && 'true',
+  FF_NAVIGATION_REDESIGN: ff_navigationRedesign && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

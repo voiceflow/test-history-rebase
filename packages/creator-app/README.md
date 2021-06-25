@@ -310,6 +310,7 @@ yarn start --ff_someFeature
 - `ff_natoApco` / `VF_APP_FF_NATO_APCO`: nato apco slot type
 - `ff_conditionsBuilder` / `VF_APP_FF_CONDITIONS_BUILDER`: new conditions builder
 - `ff_linkCustomization` / `VF_APP_FF_LINK_CUSTOMIZATION`: link breakpoints, type and color
+- `ff_navigationRedesign` / `VF_APP_FF_NAVIGATION_REDESIGN`: redesigned header/leftSidebar/etc
 
 ### Environment variable overrides
 

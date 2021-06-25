@@ -10,14 +10,16 @@ export type UploadPopupProps = {
   open: boolean;
   onClose: () => void;
   jobStage?: AlexaStageType | GoogleStageType | null;
+  className?: string;
   multiSelect?: boolean;
 };
 
-const UploadPopup: React.FC<UploadPopupProps> = ({ open, onClose, children, jobStage, multiSelect }) => (
-  <PopupContainer open={open} jobStage={jobStage} multiSelect={multiSelect}>
-    <PopupCloseIcon onClick={onClose} />
-    <PopupTransition>{children}</PopupTransition>
-  </PopupContainer>
-);
+const UploadPopup: React.FC<UploadPopupProps> = ({ open, onClose, children, jobStage, multiSelect, className }) =>
+  !children ? null : (
+    <PopupContainer open={open} jobStage={jobStage} multiSelect={multiSelect} className={className}>
+      <PopupCloseIcon onClick={onClose} />
+      <PopupTransition>{children}</PopupTransition>
+    </PopupContainer>
+  );
 
 export default UploadPopup;

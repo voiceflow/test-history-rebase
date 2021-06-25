@@ -54,7 +54,7 @@ export const useInitialCanvas = ({ platform, dimension }: { platform: PlatformTy
     const scale = Math.min(scaleX, scaleY);
 
     const settingsWidth = isGeneral ? 0 : theme.components.displaySettings.width;
-    const offsetXOffset = theme.components.prototypeSidebar.width - (theme.components.subMenu.width + settingsWidth);
+    const offsetXOffset = theme.components.prototypeSidebar.width - (theme.components.sidebarIconMenu.width + settingsWidth);
     const offsetX = (Math.abs(bodyWidth - frameWidth * scale) - offsetXOffset) / 2;
     const offsetY = Math.abs(canvasHeight - frameHeight * scale) / 2;
 

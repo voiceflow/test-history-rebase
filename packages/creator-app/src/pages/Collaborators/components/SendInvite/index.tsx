@@ -25,10 +25,12 @@ const OPTIONS_ARRAY = [
 ];
 
 type SendInviteProps = {
+  inline?: boolean;
   sendInvite: (email: string, role: UserRole) => void;
 };
 
 const SendInvite: React.FC<SendInviteProps & ConnectedSendInviteProps> = ({
+  inline,
   sendInvite,
   numberOfSeats,
   seatLimits,
@@ -80,7 +82,7 @@ const SendInvite: React.FC<SendInviteProps & ConnectedSendInviteProps> = ({
   };
 
   return (
-    <Container error={isInvalid}>
+    <Container inline={inline} error={isInvalid}>
       <Flex>
         <ButtonDropdownInput
           orientation={OrientationType.LEFT}
@@ -94,10 +96,11 @@ const SendInvite: React.FC<SendInviteProps & ConnectedSendInviteProps> = ({
           onFocus={setValid}
         />
 
-        <SendInviteButton id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} variant="secondary" disabled={isInvalid}>
-          Send Invite
+        <SendInviteButton id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} disabled={isInvalid}>
+          {inline ? 'Send' : 'Send Invite'}
         </SendInviteButton>
       </Flex>
+
       {isInvalid && <InvalidEmailError>Email is not valid.</InvalidEmailError>}
     </Container>
   );

@@ -1,0 +1,42 @@
+import React from 'react';
+import { generatePath } from 'react-router-dom';
+
+import NavLinkSidebar, { NavLinkItem } from '@/components/NavLinkSidebar';
+import { Path } from '@/config/routes';
+import { PlatformType } from '@/constants';
+import * as Project from '@/ducks/project';
+import * as Session from '@/ducks/session';
+import { useSelector } from '@/hooks';
+import { createPlatformSelector } from '@/utils/platform';
+
+import CanvasIconMenu from './CanvasIconMenu';
+import IconMenuOffsetContainer from './IconMenuOffsetContainer';
+
+const getPlatformItems = createPlatformSelector<(versionID: string) => NavLinkItem[]>(
+  {
+    [PlatformType.ALEXA]: (versionID) => [{ to: generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID }), key: 'version', label: 'Versions' }],
+    [PlatformType.GOOGLE]: (versionID) => [{ to: generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID }), key: 'version', label: 'Versions' }],
+  },
+  () => []
+);
+
+const SettingsSidebar: React.FC = () => {
+  const platform = useSelector(Project.activePlatformSelector);
+  const versionID = useSelector(Session.activeVersionIDSelector)!;
+
+  const items = React.useMemo<NavLinkItem[]>(() => {
+    const platformItems = getPlatformItems(platform)(versionID);
+
+    return [{ to: generatePath(Path.PROJECT_GENERAL_SETTINGS, { versionID }), key: 'general', label: 'General' }, ...platformItems];
+  }, [platform, versionID]);
+
+  return (
+    <IconMenuOffsetContainer>
+      <CanvasIconMenu />
+
+      <NavLinkSidebar items={items} />
+    </IconMenuOffsetContainer>
+  );
+};
+
+export default SettingsSidebar;

@@ -76,7 +76,7 @@ const workspaceClient = {
 
   updateInvite: (workspaceID: string, email: string, role: UserRole) => api.patch(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
 
-  sendInvite: (workspaceID: string, email: string, role: UserRole) =>
+  sendInvite: (workspaceID: string, email: string, role?: UserRole) =>
     api.post<DBWorkspace.Member | void>(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
 
   getInviteLink: (workspaceID: string, role: UserRole) => api.post<string>(`${WORKSPACES_PATH}/${workspaceID}/inviteLink`, { role }),

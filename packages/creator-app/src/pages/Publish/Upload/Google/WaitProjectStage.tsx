@@ -5,9 +5,7 @@ import client from '@/client';
 import AlertMessage, { AlertMessageVariant } from '@/components/AlertMessage';
 import { ModalFooter } from '@/components/LegacyModal';
 import * as Documentation from '@/config/documentation';
-import { GoogleStageType } from '@/constants/platforms';
-import { useAsyncMountUnmount } from '@/hooks';
-import UploadPopup from '@/pages/Canvas/header/ActionGroup/components/UploadPopup';
+import { useAsyncMountUnmount, useTeardown } from '@/hooks';
 import { Container, DropdownContainer } from '@/pages/Collaborators/components/InviteByLink/components';
 
 import { ButtonLink, LoaderStage, ProjectItem, StageContainer } from '../components';
@@ -15,40 +13,34 @@ import { ButtonLink, LoaderStage, ProjectItem, StageContainer } from '../compone
 const Footer = ModalFooter as React.FC<any>;
 
 type WaitProjectStageProps = {
-  open?: boolean;
-  onClose?: () => void;
-  updateCurrentStage: (googleProjectID: string) => void;
   cancel: () => void;
+  onClose?: () => void;
+  setMultiProjects?: (value: boolean) => void;
+  updateCurrentStage: (googleProjectID: string) => void;
 };
 
-const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage, cancel, open, onClose }) => {
+const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ cancel, updateCurrentStage, setMultiProjects }) => {
   const [projects, setProjects] = React.useState<{ id: string; name?: string }[]>([]);
 
-  const [state, api] = useSmartReducerV2({
-    error: false,
-    loading: true,
-  });
+  const [state, api] = useSmartReducerV2({ error: false, loading: true });
 
   useAsyncMountUnmount(async () => {
     try {
       const projectIDs = await client.platform.google.project.getGoogleProjects();
 
-      api.update({
-        error: false,
-        loading: false,
-      });
+      api.update({ error: false, loading: false });
 
       setProjects(projectIDs);
+      setMultiProjects?.(projectIDs.length > 0);
     } catch {
-      api.update({
-        error: true,
-        loading: false,
-      });
+      api.update({ error: true, loading: false });
     }
   });
 
+  useTeardown(() => setMultiProjects?.(false));
+
   return (
-    <UploadPopup open={open!} onClose={onClose!} jobStage={GoogleStageType.WAIT_PROJECT} multiSelect={projects.length > 0}>
+    <>
       {state.loading ? (
         <LoaderStage>Loading Projects</LoaderStage>
       ) : (
@@ -128,7 +120,7 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
           )}
         </StageContainer>
       )}
-    </UploadPopup>
+    </>
   );
 };
 

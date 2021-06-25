@@ -62,11 +62,7 @@ const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ exportMode
         <ModalFooter onClick={stopImmediatePropagation()}>
           <FlexApart fullWidth>
             <Link href={Documentation.MODEL_EXPORT}>Learn More</Link>
-            {!canExport && (
-              <Button variant="primary" onClick={openPaymentsModal}>
-                Upgrade
-              </Button>
-            )}
+            {!canExport && <Button onClick={openPaymentsModal}>Upgrade</Button>}
             {canExport && <UploadButton isActive={!!isExporting} label="Export" icon="publishSpin" onClick={stopImmediatePropagation(onClick)} />}
           </FlexApart>
         </ModalFooter>

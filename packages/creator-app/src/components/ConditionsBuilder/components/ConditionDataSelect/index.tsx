@@ -1,12 +1,11 @@
 import { ConditionsLogicInterface, ExpressionTypeV2 } from '@voiceflow/general-types';
-import { Box, MenuContainer, Portal, stopPropagation } from '@voiceflow/ui';
+import { Box, MenuContainer, Portal, stopPropagation, useDismissable } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
 import { Container } from '@/components/Tooltip/components';
 import { useEnableDisable } from '@/hooks';
-import { useDismissable } from '@/hooks/dismiss';
 import { ExpressionTupleV2 } from '@/models';
 import { FadeDownDelayedContainer, SlideContainer } from '@/styles/animations';
 
@@ -28,7 +27,7 @@ export type ConditionDataSelectProps = {
 
 const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, isLogicGroup, onChange, onDelete }) => {
   const popperRef = React.useRef<HTMLElement | null>(null);
-  const [isShown, onToggle] = useDismissable(false, { autoDismiss: false, ref: popperRef });
+  const [isShown, onToggle] = useDismissable(false, { ref: popperRef });
   const [invalidCondition, setInvalidCondition, setValidCondition] = useEnableDisable(false);
 
   // methods

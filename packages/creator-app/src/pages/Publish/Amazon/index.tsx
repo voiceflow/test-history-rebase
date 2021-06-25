@@ -36,12 +36,14 @@ export const PublishAmazon: React.FC<ConnectedPublishAmazonProps> = ({ syncSelec
   return (
     <>
       <PublishAmazonForm onPublish={onPublish} />
+
       <ModalComponent isOpen={open} onClosed={cancel} centered contentClassName="overflow-hidden">
         {close && (
           <Box position="absolute" width="100%">
             <ModalHeader toggle={() => setOpen(false)} />
           </Box>
         )}
+
         <Box p={10}>
           <Alexa loader />
         </Box>

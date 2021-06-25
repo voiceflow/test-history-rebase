@@ -1,7 +1,6 @@
 import './DashBoard.css';
 
-import { ProjectPrivacy } from '@voiceflow/api-sdk';
-import { Alert, AlertVariant, BoxFlex, BoxFlexCenter, FullSpinner, IconButton, LegacyButton, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
+import { Alert, AlertVariant, BoxFlex, BoxFlexCenter, FullSpinner, IconButton, LegacyButton, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
@@ -9,7 +8,6 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { createGraphic } from '@/assets';
 import DragLayer from '@/components/DragLayer';
 import SeoHelmet from '@/components/SeoHelmet';
-import * as Errors from '@/config/errors';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
@@ -24,15 +22,13 @@ import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
-import { useAsyncEffect, useModals, usePermission, useScrollHelpers, useSetup, useTrackingEvents, useWorkspaceTracking } from '@/hooks';
+import { useAsyncEffect, useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
 import * as Models from '@/models';
 import perf, { PerfAction } from '@/performance';
 import { DashboardClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
-import { copy } from '@/utils/clipboard';
 import { compose } from '@/utils/functional';
 import * as Query from '@/utils/query';
-import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
 import { Item as ListItem } from './components/Item';
@@ -67,8 +63,6 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
   setConfirm,
   setError,
   clearSearch,
-  copyProject,
-  deleteProject,
   transplantProject,
   createList,
   renameList,
@@ -77,7 +71,6 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
   deleteList,
   loadLists,
   fetchNotifications,
-  saveProjectPrivacy,
   goToNewIntroProject,
   goToNewProject,
 }) => {
@@ -86,65 +79,12 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
   const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
 
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
-  const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [loading, toggleLoading] = React.useState(true);
   const [filterText, handleFilterText] = React.useState('');
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const { open: openCollaboratorsModal } = useModals(ModalType.COLLABORATORS);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
-  const { toggle: toggleLoadingModal } = useModals(ModalType.LOADING);
-  const { open: openProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
-
-  const [trackingEvents] = useTrackingEvents();
-
-  const onCopyProject = React.useCallback(
-    async (projectID, boardID = null) => {
-      if (!workspace) {
-        Sentry.error(Errors.noActiveWorkspaceID());
-        toast.genericError();
-        return;
-      }
-
-      if (projects.length >= workspace.projects) {
-        openProjectLimitModal({ projects: workspace.projects });
-        return;
-      }
-
-      toggleLoadingModal(true);
-
-      await copyProject(projectID, activeWorkspaceID!, boardID);
-
-      toggleLoadingModal(false);
-    },
-    [projects, workspace, activeWorkspaceID]
-  );
-
-  const onDownloadProject = React.useCallback(async (projectID) => {
-    if (canShareProject) {
-      try {
-        copy(`${window.location.origin}/dashboard?import=${projectID}`);
-        toast.success('Copied to clipboard');
-        trackingEvents.trackActiveProjectDownloadLinkShare();
-        saveProjectPrivacy(projectID, ProjectPrivacy.PUBLIC);
-      } catch {
-        toast.error('Error getting import link');
-      }
-    } else {
-      openProjectDownloadModal();
-    }
-  }, []);
-
-  const onDeleteProject = React.useCallback(
-    (boardID: string) => (projectId: string, projectName: string) => {
-      setConfirm({
-        text: <p className="mb-0">This action can not be undone, {projectName} and all flows can not be recovered</p>,
-        warning: true,
-        confirm: () => deleteProject(boardID, projectId).catch((err) => setError(err.message)),
-      });
-    },
-    []
-  );
 
   const onCreateProject = React.useCallback(
     (id: string) => {
@@ -281,9 +221,6 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
                                 onRename={renameList}
                                 onRemove={onDeleteBoard}
                                 projects={projects}
-                                onCopyProject={onCopyProject}
-                                onDownloadProject={onDownloadProject}
-                                onDeleteProject={onDeleteProject(list.id)}
                                 createProject={onCreateProject}
                                 onMove={onMove}
                                 onMoveProject={onMoveProject}
@@ -343,8 +280,6 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   loadLists: ProjectList.loadProjectLists,
   createList: ProjectList.createProjectList,
-  deleteProject: ProjectList.deleteProjectFromList,
-  copyProject: Workspace.copyProject,
   setConfirm: Modal.setConfirm,
   setError: Modal.setError,
   deleteList: ProjectList.deleteProjectList,
@@ -353,7 +288,6 @@ const mapDispatchToProps = {
   transplantProject: ProjectList.transplantProject,
   moveList: ProjectList.moveProjectList,
   fetchNotifications: Notifications.fetchNotifications,
-  saveProjectPrivacy: Project.saveProjectPrivacy,
   goToNewProject: Router.goToNewProject,
   goToNewIntroProject: Router.goToNewIntroProject,
   clearSearch: Router.clearSearch,

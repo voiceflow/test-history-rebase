@@ -1,4 +1,4 @@
-import { Button } from '@voiceflow/ui';
+import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import User from '@/components/User';
@@ -29,7 +29,7 @@ const LockedEditorOverlay: React.FC<LockedEditorOverlayProps> = ({ lockOwner, pr
   return (
     <Container>
       <p>{prevOwner!.name} is all done, you can now takeover edit access</p>
-      <Button variant="secondary" onClick={acquireLock}>
+      <Button variant={ButtonVariant.SECONDARY} onClick={acquireLock}>
         Enter
       </Button>
     </Container>

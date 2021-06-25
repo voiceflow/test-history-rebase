@@ -1,3 +1,4 @@
+/* eslint-disable simple-import-sort/exports */
 // MAKE SURE TO USE @/assets/… import paths to get the correct import type for SVGs (string vs React.FC)
 
 // csv files

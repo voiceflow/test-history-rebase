@@ -56,7 +56,7 @@ export const validateInvite =
   };
 
 export const sendInviteToActiveWorkspace =
-  (email: string, permissionType: UserRole, showToast = true): Thunk<boolean> =>
+  (email: string, permissionType: UserRole | null, showToast = true): Thunk<boolean> =>
   async (dispatch, getState) => {
     const state = getState();
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);

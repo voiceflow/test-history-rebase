@@ -5,6 +5,7 @@ import { batch } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as Creator from '@/ducks/creator';
@@ -20,7 +21,7 @@ import {
   WorkspaceFeatureLoadingGate,
   WorkspacesLoadingGate,
 } from '@/gates';
-import { connect, lazy, withBatchLoadingGate } from '@/hocs';
+import { connect, lazy, withBatchLoadingGate, withFeatureSwitcher } from '@/hocs';
 import { useCanvasTracking, useEnableDisable, usePermission, useTeardown } from '@/hooks';
 import CanvasHeader from '@/pages/Canvas/header';
 import InactivityModal from '@/pages/Inactivity';
@@ -34,6 +35,7 @@ import ProjectSubHeader from './components/ProjectSubHeader';
 import ProjectTitle from './components/ProjectTitle';
 import { PAGES_MATCHES, TIMEOUT_COUNT } from './constants';
 import { ExportProvider, MarkupProvider, NLPProvider, PlatformProvider, PublishProvider } from './contexts';
+import SkillV2 from './indexV2';
 
 const Diagram = lazy(() => import(/* webpackPrefetch: true */ './components/Diagram'));
 const Business = lazy(() => import('@/pages/Business'));
@@ -57,6 +59,7 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
   setActiveVersionID,
 }) => {
   const [isIdle, onIdle, onActive] = useEnableDisable();
+
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const isPrototypingMode = usePrototypingMode();
   const activePage = React.useMemo(() => getActivePageAndMatch(PAGES_MATCHES, location.pathname).activePage ?? undefined, [location.pathname]);
@@ -176,5 +179,6 @@ export default compose(
     WorkspacesLoadingGate,
     WorkspaceFeatureLoadingGate,
     RealtimeLoadingGate
-  )
+  ),
+  withFeatureSwitcher(FeatureFlag.NAVIGATION_REDESIGN, SkillV2)
 )(Skill) as React.FC<SkillProps>;

@@ -16,7 +16,7 @@ import { IntentsManager, Modal, ModalContent, SlotsManager, VariablesManager } f
 import { TABS } from './constants';
 
 const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: InteractionModelTabType }> & InteractionModelModalConnectedProps> = ({
-  renderProtoytpe,
+  compilePrototype,
   goToCurrentCanvas,
   goInteractionModel,
   goInteractionModelEntity,
@@ -53,7 +53,7 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
 
   const openExportModal = async () => {
     toggleExportModel();
-    await renderProtoytpe({ aborted: false });
+    await compilePrototype({ aborted: false });
   };
 
   React.useEffect(() => {
@@ -107,7 +107,7 @@ const mapDispatchToProps = {
   goToCurrentCanvas: Router.goToCurrentCanvas,
   goInteractionModel: Router.goToCurrentCanvasInteractionModel,
   goInteractionModelEntity: Router.goToCurrentCanvasInteractionModelEntity,
-  renderProtoytpe: Prototype.renderPrototype,
+  compilePrototype: Prototype.compilePrototype,
 };
 
 export type InteractionModelModalConnectedProps = ConnectedProps<{}, typeof mapDispatchToProps>;

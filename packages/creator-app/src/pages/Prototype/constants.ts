@@ -1,41 +1,49 @@
 import { DeviceType, Dimensions } from '@voiceflow/general-types';
 import { Icon } from '@voiceflow/ui';
 
-import { SubMenuItem } from '@/components/SubMenu';
+import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
 import { PlatformType } from '@/constants';
 import { PrototypeMode } from '@/ducks/prototype';
 import { Identifier } from '@/styles/constants';
 import { createPlatformSelector } from '@/utils/platform';
 
-const canvasIcon: SubMenuItem = {
-  value: PrototypeMode.CANVAS,
-  icon: 'canvas',
+export interface PrototypeMenuItem extends SidebarIconMenuItem {
+  value: PrototypeMode;
+}
+
+const canvasIcon: PrototypeMenuItem = {
   id: Identifier.PROTO_MENU_CANVAS_BUTTON,
+  icon: 'canvas',
+  value: PrototypeMode.CANVAS,
+  tooltip: { title: 'Canvas' },
 };
 
-const displayIcon: SubMenuItem = {
-  value: PrototypeMode.DISPLAY,
-  icon: 'display',
+const displayIcon: PrototypeMenuItem = {
   id: Identifier.PROTO_MENU_DISPLAY_BUTTON,
+  icon: 'display',
+  value: PrototypeMode.DISPLAY,
+  tooltip: { title: 'Display' },
 };
 
-const developerIcon: SubMenuItem = {
-  value: PrototypeMode.VARIABLES,
-  icon: 'code',
+const developerIcon: PrototypeMenuItem = {
   id: Identifier.PROTO_MENU_DEVELOPER_BUTTON,
+  icon: 'code',
+  value: PrototypeMode.VARIABLES,
+  tooltip: { title: 'Variables' },
 };
 
-const settingsIcon: SubMenuItem = {
-  value: PrototypeMode.SETTINGS,
-  icon: 'cog',
+const settingsIcon: PrototypeMenuItem = {
   id: Identifier.PROTO_MENU_SETTINGS_BUTTON,
+  icon: 'cog',
+  value: PrototypeMode.SETTINGS,
+  tooltip: { title: 'Settings' },
 };
 
-const ALEXA_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];
+const ALEXA_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];
 
-const GOOGLE_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, developerIcon, settingsIcon];
+const GOOGLE_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, developerIcon, settingsIcon];
 
-const GENERAL_PROTOTYPE_MENU_OPTIONS: SubMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];
+const GENERAL_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, displayIcon, developerIcon, settingsIcon];
 
 export const getMenuOptions = createPlatformSelector(
   {

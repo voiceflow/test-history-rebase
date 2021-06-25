@@ -171,7 +171,7 @@ export const diagramViewersSelector = createSelector(
 
     return Object.entries(locks.users[diagramID] || {}).map(([tabID, creatorID]) => ({
       tabID,
-      ...getWorkspaceMember(creatorID),
+      ...getWorkspaceMember(creatorID)!,
       color: getAlternativeColor(tabID),
     }));
   }

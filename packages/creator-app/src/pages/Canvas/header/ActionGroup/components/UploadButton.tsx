@@ -1,4 +1,4 @@
-import { Box, Button, Icon, PrimaryButtonIcon, PrimaryButtonLabel, SvgIconContainer, TippyTooltip } from '@voiceflow/ui';
+import { Box, Button, Icon, PrimaryButtonIcon, PrimaryButtonLabel, PrimaryButtonProps, SvgIconContainer, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -7,10 +7,10 @@ import { usePermission } from '@/hooks';
 import { Spin } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 
-export type UploadButtonProps = {
+export interface UploadButtonProps extends PrimaryButtonProps {
   isVendors?: boolean;
   isUploading?: boolean;
-};
+}
 
 const UploadButton = styled(Button).attrs({ speed: 2000 })<UploadButtonProps>`
   ${({ isVendors }) =>
@@ -57,7 +57,7 @@ const UploadButtonContainer: React.FC<UploadButtonContainerProps> = ({ icon = 'r
   const component = (
     <>
       {children || (
-        <UploadButton icon={isActive ? 'publishSpin' : icon} id={Identifier.UPLOAD} onClick={onClick} isUploading={isActive}>
+        <UploadButton id={Identifier.UPLOAD} icon={isActive ? 'publishSpin' : icon} onClick={onClick} isUploading={isActive}>
           {label}
         </UploadButton>
       )}

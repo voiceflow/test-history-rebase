@@ -50,7 +50,7 @@ const Message: React.FC<MessageProps> = ({
             {avatarURL ? (
               <Avatar className={ClassName.PROTOTYPE_MESSAGE_ICON} noHover noShadow url={avatarURL} name="" color="red" />
             ) : (
-              <SvgIcon icon="voiceflowV" size={16} color="black" />
+              <SvgIcon icon="voiceflowV" size={16} color="#fff" />
             )}
           </LogoCircle>
         )}

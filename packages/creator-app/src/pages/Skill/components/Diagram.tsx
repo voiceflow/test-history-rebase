@@ -12,8 +12,8 @@ import { ManagerProvider } from '@/pages/Canvas/contexts';
 import { getManager } from '@/pages/Canvas/managers';
 import PrototypeOverlay from '@/pages/Prototype/components/PrototypeOverlay';
 import ReadOnlyBadge from '@/pages/Prototype/components/ReadOnlyBadge';
+import DesignMenu from '@/pages/Skill/components/DesignMenu';
 import { useAnyModeOpen, usePrototypingMode } from '@/pages/Skill/hooks';
-import DesignMenu from '@/pages/Skill/menus/DesignMenu';
 import { ConnectedProps } from '@/types';
 
 import DiagramSync from './DiagramSync';

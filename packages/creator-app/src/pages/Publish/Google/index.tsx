@@ -2,19 +2,21 @@ import { Box, BoxFlex, Button, ButtonVariant, Link, toast } from '@voiceflow/ui'
 import React from 'react';
 
 import client from '@/client';
-import { SettingsSection } from '@/components/Settings';
 import * as Documentation from '@/config/documentation';
 import * as Errors from '@/config/errors';
+import { FeatureFlag } from '@/config/features';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useAsyncMountUnmount } from '@/hooks';
+import { useAsyncMountUnmount, useFeature } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
-import { Container } from './components';
+import { ContentContainer, ContentSection, Section } from '../components';
 
 const GooglePublish: React.FC<ConnectedGooglePublishProps> = ({ projectID }) => {
   const [googleProjectID, setGoogleProjectID] = React.useState<string | null>(null);
+
+  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
 
   useAsyncMountUnmount(async () => {
     if (!projectID) {
@@ -29,25 +31,28 @@ const GooglePublish: React.FC<ConnectedGooglePublishProps> = ({ projectID }) => 
   });
 
   return (
-    <Container>
-      <SettingsSection title="Publish">
-        <Box alignItems="flex-end" display="flex">
-          <Box m={32}>
-            <Box mb={16} color="tertiary">
-              To publish your Google Action visit the Actions Console to submit your project for review
+    <ContentContainer redesignEnabled={navigationRedesign.isEnabled}>
+      <ContentSection>
+        <Section title="Publish">
+          <BoxFlex alignItems="flex-end">
+            <Box m={navigationRedesign.isEnabled ? 0 : 8}>
+              <Box mb={16} color="tertiary">
+                To publish your Google Action visit the Actions Console to submit your project for review
+              </Box>
+              <Link href={Documentation.GOOGLE_ACTIONS}>Learn More</Link>
             </Box>
-            <Link href={Documentation.GOOGLE_ACTIONS}>Learn More</Link>
-          </Box>
-          <BoxFlex m={32}>
-            <Link href={googleProjectID ? `https://console.actions.google.com/project/${googleProjectID}/directoryinformation/` : undefined}>
-              <Button variant={ButtonVariant.SECONDARY} disabled={!googleProjectID} nowrap>
-                Actions Console
-              </Button>
-            </Link>
+
+            <BoxFlex {...(navigationRedesign.isEnabled ? { ml: 16 } : { m: 8 })}>
+              <Link href={googleProjectID ? `https://console.actions.google.com/project/${googleProjectID}/directoryinformation/` : undefined}>
+                <Button variant={ButtonVariant.SECONDARY} disabled={!googleProjectID} nowrap>
+                  Actions Console
+                </Button>
+              </Link>
+            </BoxFlex>
           </BoxFlex>
-        </Box>
-      </SettingsSection>
-    </Container>
+        </Section>
+      </ContentSection>
+    </ContentContainer>
   );
 };
 

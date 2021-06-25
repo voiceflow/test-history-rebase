@@ -1,4 +1,4 @@
-import { IconButton as BaseIconButton, IconButtonVariant } from '@voiceflow/ui';
+import { IconButton as BaseIconButton, IconButtonFlatContainerProps, IconButtonVariant } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
@@ -9,7 +9,7 @@ const activeStyles = css`
   box-shadow: none !important;
 `;
 
-const IconButton = styled(BaseIconButton).attrs({ variant: IconButtonVariant.FLAT, size: 16 })`
+const IconButton = styled(BaseIconButton).attrs({ variant: IconButtonVariant.FLAT, size: 16 })<IconButtonFlatContainerProps>`
   ${transition('background', 'color')}
   border-radius: 5px;
 

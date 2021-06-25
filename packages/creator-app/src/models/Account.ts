@@ -4,7 +4,7 @@ export type Account = {
   email: string;
   name: string;
   creator_id: number;
-  image: string;
+  image?: string;
   created: string;
   first_login?: boolean;
   referrer_id?: number;

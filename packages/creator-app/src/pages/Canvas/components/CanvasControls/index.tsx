@@ -3,7 +3,7 @@ import cn from 'classnames';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
-import { BlockType, ModalType } from '@/constants';
+import { BlockType, CANVAS_ZOOM_DELTA, ModalType } from '@/constants';
 import * as Thread from '@/ducks/thread';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -17,8 +17,6 @@ import { ConnectedProps } from '@/types';
 
 import { CanvasControlButton, Container, ControlContainer, UnreadCommentsIndicator, ZoomContainer } from './components';
 import { CanvasControl, CanvasControlMeta } from './constants';
-
-const ZOOM_DELTA = 15;
 
 type CanvasControlProps = {
   render: boolean;
@@ -41,12 +39,12 @@ const CanvasControls: React.FC<CanvasControlProps & ConnectedCanvasControlsProps
 
   const onZoomIn = React.useCallback(() => {
     engine()?.canvas?.applyTransition();
-    engine()?.canvas?.zoomIn(ZOOM_DELTA);
+    engine()?.canvas?.zoomIn(CANVAS_ZOOM_DELTA);
   }, []);
 
   const onZoomOut = React.useCallback(() => {
     engine()?.canvas?.applyTransition();
-    engine()?.canvas?.zoomOut(ZOOM_DELTA);
+    engine()?.canvas?.zoomOut(CANVAS_ZOOM_DELTA);
   }, []);
 
   const onFocusHome = React.useCallback(() => {

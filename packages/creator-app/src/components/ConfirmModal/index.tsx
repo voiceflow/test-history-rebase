@@ -5,7 +5,7 @@ import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import { useEnableDisable, useModals } from '@/hooks';
 
-interface ConfirmProps {
+export interface ConfirmProps {
   header?: string;
   body?: React.ReactNode;
   confirm?: () => void | Promise<void>;

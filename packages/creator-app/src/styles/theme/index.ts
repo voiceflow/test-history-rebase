@@ -3,6 +3,7 @@ import { createTheme } from '@voiceflow/ui';
 import BLOCK_THEME, { BLOCK_WIDTH } from './block';
 import BLOCK_STEP_THEME from './blockStep';
 import { ANIMATION_SPEED } from './constants';
+import PROJECT_PAGE from './projectPage';
 
 export { ANIMATION_SPEED, BLOCK_WIDTH };
 
@@ -61,9 +62,6 @@ const THEME = createTheme({
     subHeader: {
       height: 50,
     },
-    subMenu: {
-      width: 65,
-    },
     developerSettings: {
       width: 320,
     },
@@ -73,15 +71,27 @@ const THEME = createTheme({
     prototypeSidebar: {
       width: 400,
     },
+    sidebarIconMenu: {
+      width: 72,
+
+      itemHeight: 72,
+      smallItemHeight: 48,
+    },
+    navLinkSidebar: {
+      width: 250,
+
+      itemHeight: 32,
+    },
     get usedPrototypeDisplayCanvasWidth() {
       return this.displaySettings.width + this.usedGeneralPrototypeDisplayCanvasWidth;
     },
     get usedGeneralPrototypeDisplayCanvasWidth() {
-      return this.subMenu.width + this.prototypeSidebar.width;
+      return this.sidebarIconMenu.width + this.prototypeSidebar.width;
     },
     get usedPrototypeDisplayCanvasHeight() {
       return this.header.height;
     },
+    projectPage: PROJECT_PAGE,
   },
   transition(...propertyWhitelist: string[]): string {
     const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];

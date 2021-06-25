@@ -309,8 +309,6 @@ export enum ModalType {
   PROJECT_DOWNLOAD = 'project-download',
   TESTABLE_LINKS = 'testable-links',
   CANVAS_EXPORT = 'canvas-export',
-  CANVAS_MARKUP = 'canvas-markup',
-  SHARE_MENU = 'share-menu',
 
   SHORTCUTS = 'shortcuts',
 
@@ -508,6 +506,8 @@ export const DOCS_LINK = 'https://docs.voiceflow.com';
 export const FORUM_LINK = 'https://forum.voiceflow.com/';
 // eslint-disable-next-line no-secrets/no-secrets
 export const YOUTUBE_CHANNEL_LINK = 'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ';
+export const DESKTOP_APP_LINK = 'https://www.voiceflow.com/desktop';
+export const BOOK_DEMO_LINK = 'https://www.voiceflow.com/demo';
 
 export enum BCP_LANGUAGE_CODE {
   AR_SA = 'ar-SA',
@@ -554,3 +554,5 @@ export const CUSTOMIZABLE_INTENT_PREFIXS = ['AMAZON', 'VF'];
 export const MAX_ALEXA_REPROMPTS = 3;
 
 export const MAX_SPEAK_ITEMS_COUNT = 22;
+
+export const CANVAS_ZOOM_DELTA = 15;

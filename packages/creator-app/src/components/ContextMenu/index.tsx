@@ -1,8 +1,7 @@
-import { Menu, MenuProps, Portal } from '@voiceflow/ui';
+import { DismissOverlayContext, Menu, MenuOption, Portal, useDismissable } from '@voiceflow/ui';
 import React from 'react';
 import { Popper, PopperProps } from 'react-popper';
 
-import { useDismissable } from '@/hooks/dismiss';
 import { Identifier } from '@/styles/constants';
 import { Point } from '@/types';
 import { buildVirtualElement } from '@/utils/dom';
@@ -12,14 +11,15 @@ const EXCLUDED_TAG_NAME = ['input', 'textarea'];
 export const CONTEXT_MENU_IGNORED_CLASS_NAME = 'context-menu-exclude';
 
 type ContextMenuProps<T> = {
-  options: MenuProps<T>['options'];
+  options: MenuOption<T>[];
   placement?: PopperProps['placement'];
   children: (props: { isOpen: boolean; onContextMenu: (event: React.MouseEvent<HTMLElement>) => void }) => React.ReactNode;
 };
 
 const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...props }: ContextMenuProps<T>) => {
   const [virtualElememt, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement> | null>(null);
-  const [isOpen, onToggle] = useDismissable(false, { autoDismiss: true });
+  const dismissOverlay = React.useContext(DismissOverlayContext)!;
+  const [isOpen, onToggle] = useDismissable(false);
 
   const onContextMenu = (event: React.MouseEvent<HTMLElement>) => {
     const target: any = event?.target;
@@ -35,6 +35,10 @@ const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...p
     setVirtualElement(buildVirtualElement([event.clientX, event.clientY] as Point));
 
     if (!isOpen) {
+      if (dismissOverlay.hasHandlers()) {
+        dismissOverlay.dismissAll();
+      }
+
       onToggle();
     }
   };

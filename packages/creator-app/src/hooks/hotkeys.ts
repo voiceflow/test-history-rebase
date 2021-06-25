@@ -5,8 +5,8 @@ import HOTKEY_MAPPING, { Hotkey } from '@/keymap';
 
 export type Options = null | {
   action?: 'keypress' | 'keydown' | 'keyup';
-  preventDefault?: boolean;
   disable?: boolean;
+  preventDefault?: boolean;
 };
 
 type Callback = (e: KeyboardEvent) => void;

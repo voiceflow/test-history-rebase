@@ -1,8 +1,9 @@
+import { ModalType } from '../../src/constants';
 import { ClassName, DashboardClassName, Identifier } from '../../src/styles/constants';
 import canvasPage from '../pages/canvas';
 import menuComponent from '../pages/components/menu';
 import dashboardPage from '../pages/dashboard';
-import { collaboratorsModal, legacyModal, paymentModal } from '../pages/modals';
+import { collaboratorsModal, legacyModal, modal, paymentModal } from '../pages/modals';
 import newWorkspacePage from '../pages/newWorkspace';
 import { getClass, getIdentifier } from '../pages/utils';
 
@@ -31,11 +32,11 @@ context('Team Dashboard', () => {
       cy.title().should('eq', 'my other project');
     });
 
-    it('remove project', () => {
+    it('delete project', () => {
       dashboardPage.el.projectListItemTitle.should('have.text', 'my other project');
       dashboardPage.el.projectListItem.find('div').eq(1).realHover().find('.vf-svg-icon--elipsis').should('be.visible').click();
-      menuComponent.el.item.eq(2).should('have.text', 'Remove Project').click();
-      legacyModal.el.confirm.should('be.visible').find('button').eq(1).click();
+      menuComponent.el.item.eq(3).should('have.text', 'Delete project').click();
+      modal(ModalType.CONFIRM).el.root.should('be.visible').find('button').click();
 
       // check if last project in the list is removed
       dashboardPage.el.projectList.should('have.length', 0);

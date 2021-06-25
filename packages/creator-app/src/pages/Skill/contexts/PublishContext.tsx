@@ -12,14 +12,14 @@ import { AlexaPublishJob, GooglePublishJob } from '@/models';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
-export type PublishContextValue = {
-  job: Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>;
+export type PublishContextValue<T extends AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob> = {
+  job: Nullable<T>;
   cancel: () => Promise<void>;
   publish: (submit?: boolean) => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
 };
 
-export const PublishContext = React.createContext<Nullable<PublishContextValue>>(null);
+export const PublishContext = React.createContext<Nullable<PublishContextValue<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>>>(null);
 export const { Consumer: PublishConsumer } = PublishContext;
 
 const PULL_TIMEOUT = 3000; // 3s

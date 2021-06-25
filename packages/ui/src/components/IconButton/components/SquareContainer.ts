@@ -1,10 +1,12 @@
 import { styled, transition } from '../../../styles';
 import { ButtonContainer } from '../../Button';
 import { SvgIconContainer } from '../../SvgIcon';
+import { IconButtonVariant } from '../types';
+import { BaseContainerProps } from './IconButtonContainer';
 
-export type SquareContainerProps = {
-  hoverColor?: string;
-};
+export interface SquareContainerProps extends BaseContainerProps {
+  variant: IconButtonVariant.SQUARE;
+}
 
 const SquareContainer = styled(ButtonContainer)<SquareContainerProps>`
   ${transition('background', 'border')}

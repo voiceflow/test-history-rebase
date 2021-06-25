@@ -5,12 +5,13 @@ import { Permission } from '@/config/permissions';
 import { BlockType, MarkupBlockType } from '@/constants';
 import { useEventualEngine, usePermission, useTrackingEvents, useUpload } from '@/hooks';
 import { Markup, NodeData } from '@/models';
-import { useAnyModeOpen } from '@/pages/Skill/hooks';
+import { useAnyModeOpen } from '@/pages/Skill/hooks/modes';
 import { ClassName, Identifier } from '@/styles/constants';
 import { Nullable } from '@/types';
 import { asyncForEach } from '@/utils/array';
-import { upload } from '@/utils/dom';
+import { upload, windowRefocused } from '@/utils/dom';
 import { imageSizeFromUrl } from '@/utils/file';
+import { delay } from '@/utils/promise';
 
 const FILE_LIMIT = 2 ** 20 * 4; // 2 ** 20 === 1 mb
 const ALLOWED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png'];
@@ -18,11 +19,13 @@ const ALLOWED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png'];
 export type MarkupContextType = {
   imageLimit: number;
   creatingType: Nullable<MarkupBlockType>;
+  uploadingImages: boolean;
   imageAcceptedTypes: string[];
 
   addImages: (files: Nullable<FileList | File[]>) => Promise<void>;
   finishCreating: () => void;
   startTextCreation: () => void;
+  toggleTextCreating: () => void;
   startMarkupSession: () => void;
   finishMarkupSession: () => void;
   triggerImagesUpload: () => void;
@@ -36,10 +39,11 @@ export const MarkupProvider: React.FC = ({ children }) => {
   const isAnyModeOpen = useAnyModeOpen();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const [creatingType, localSetCreatingType] = React.useState<Nullable<MarkupBlockType>>(null);
+  const [uploadingImages, setUploadingImages] = React.useState(false);
 
   const { onUpload: onUploadImage, isLoading: isImageUploading } = useUpload({ fileType: 'image', clientFunc: 'uploadImage' });
 
-  const cache = useCache({ getEngine, isAnyModeOpen, canEditCanvas, isImageUploading });
+  const cache = useCache({ getEngine, isAnyModeOpen, canEditCanvas, isImageUploading, uploadingImages });
 
   const startTimeCache = React.useRef(0);
 
@@ -70,6 +74,7 @@ export const MarkupProvider: React.FC = ({ children }) => {
     }
 
     setCreatingType(BlockType.MARKUP_IMAGE);
+    setUploadingImages(true);
 
     const engine = cache.current.getEngine()!;
 
@@ -93,6 +98,7 @@ export const MarkupProvider: React.FC = ({ children }) => {
     });
 
     setCreatingType(null);
+    setUploadingImages(false);
   }, []);
 
   const startMarkupSession = React.useCallback(() => {
@@ -119,7 +125,15 @@ export const MarkupProvider: React.FC = ({ children }) => {
     setCreatingType(BlockType.MARKUP_TEXT);
   }, []);
 
-  const triggerImagesUpload = React.useCallback(() => {
+  const toggleTextCreating = React.useCallback(() => {
+    if (creatingType) {
+      finishCreating();
+    } else {
+      startTextCreation();
+    }
+  }, [creatingType, finishCreating, startTextCreation]);
+
+  const triggerImagesUpload = React.useCallback(async () => {
     if (!cache.current.canEditCanvas || cache.current.isImageUploading) {
       return;
     }
@@ -128,7 +142,16 @@ export const MarkupProvider: React.FC = ({ children }) => {
       cache.current.getEngine()?.disableAllModes();
     }
 
+    setCreatingType(BlockType.MARKUP_IMAGE);
+
     upload(addImages, { multiple: true, accept: ALLOWED_IMAGE_TYPES.join(',') });
+
+    await windowRefocused();
+    await delay(300);
+
+    if (!cache.current.uploadingImages) {
+      setCreatingType(null);
+    }
   }, []);
 
   useDidUpdateEffect(() => {
@@ -191,9 +214,11 @@ export const MarkupProvider: React.FC = ({ children }) => {
     imageLimit: FILE_LIMIT,
     creatingType,
     finishCreating,
+    uploadingImages,
     startTextCreation,
     startMarkupSession,
     imageAcceptedTypes: ALLOWED_IMAGE_TYPES,
+    toggleTextCreating,
     finishMarkupSession,
     triggerImagesUpload,
   });

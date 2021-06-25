@@ -1,6 +1,7 @@
 import { createPortal } from 'react-dom';
 
-export const portalRootNode = document.querySelector('#root') || document.body; // for tests
+// eslint-disable-next-line xss/no-mixed-html
+export const portalRootNode = (document.querySelector('#root') || document.body) as HTMLElement; // for tests
 
 export type PortalProps = {
   portalNode?: HTMLElement;

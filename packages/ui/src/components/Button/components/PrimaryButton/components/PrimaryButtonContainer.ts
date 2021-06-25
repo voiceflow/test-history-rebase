@@ -1,27 +1,26 @@
-import { css, styled } from '../../../../../styles';
+import { css, styled, transition } from '../../../../../styles';
 import ButtonContainer, { ButtonContainerProps } from '../../ButtonContainer';
 import Icon from './PrimaryButtonIcon';
 
-export type PrimaryButtonContainerProps = ButtonContainerProps & {
+export interface PrimaryButtonContainerProps extends ButtonContainerProps {
   canHover?: boolean;
-};
+}
 
 const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerProps>`
+  ${transition('background', 'opacity', 'box-shadow')}
   color: #fff;
+  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.1), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
   font-weight: 600;
-  white-space: nowrap;
-  text-align: center;
   background: linear-gradient(-180deg, #5d9df5 0%, #176ce0 68%);
   background-size: 1px 52px;
-  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.1), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
-  transition: all 0.15s ease-out;
+  white-space: nowrap;
+  text-align: center;
 
   ${({ disabled, canHover = true }) =>
     disabled
       ? css`
           background: linear-gradient(180deg, #5d9df56b 0%, #176ce075 100%);
           box-shadow: none;
-
           & ${Icon} {
             opacity: 0.46;
           }
@@ -29,7 +28,7 @@ const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerPro
       : canHover &&
         css`
           &:hover {
-            background-position: 0;
+            background-position: 0px;
           }
         `}
 

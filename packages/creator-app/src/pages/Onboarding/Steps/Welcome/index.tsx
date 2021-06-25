@@ -22,7 +22,7 @@ const Welcome: React.FC = () => {
         <FlexCenter column>
           <FadeDownContainer delay={0} {...fadeConfig}>
             <LogoContainer>
-              <SvgIcon icon="voiceflowV" size={24} color="black" />
+              <SvgIcon icon="voiceflowV" size={24} color="#fff" />
             </LogoContainer>
           </FadeDownContainer>
           <FadeDownContainer delay={0.12} {...fadeConfig}>
@@ -35,9 +35,7 @@ const Welcome: React.FC = () => {
           </FadeDownContainer>
           <FadeDownContainer delay={0.36} {...fadeConfig}>
             <FlexCenter>
-              <Button variant="primary" onClick={() => actions.stepForward(StepID.PERSONALIZE_WORKSPACE)}>
-                Get Started
-              </Button>
+              <Button onClick={() => actions.stepForward(StepID.PERSONALIZE_WORKSPACE)}>Get Started</Button>
             </FlexCenter>
           </FadeDownContainer>
         </FlexCenter>

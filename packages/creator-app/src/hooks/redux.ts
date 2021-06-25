@@ -1,9 +1,17 @@
 import { useCallback } from 'react';
 import * as ReactRedux from 'react-redux';
 
+import type { State } from '@/ducks';
 import { Dispatchable, DispatchResult, Selector } from '@/store/types';
 
 import { useLinkedState } from './linked';
+
+export { useSelector } from 'react-redux';
+
+declare module 'react-redux' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface DefaultRootState extends State {}
+}
 
 export const useDispatch = <S extends any[], D extends any[], R extends Dispatchable>(
   createAction: (...args: [...S, ...D]) => R,

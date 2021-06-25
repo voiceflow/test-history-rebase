@@ -14,7 +14,7 @@ const TranscriptContext: React.FC = () => {
     <>
       <BoxFlexApart>
         <StyledLogo>
-          <SvgIcon icon="voiceflowV" size={24} />
+          <SvgIcon icon="voiceflowV" size={24} color="#fff" />
         </StyledLogo>
         <StyledUser icon="userPlaceholder" size={48} color="#f0f0f0" />
       </BoxFlexApart>

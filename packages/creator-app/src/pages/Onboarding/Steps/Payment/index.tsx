@@ -251,7 +251,7 @@ const Payment: React.FC<ConnectedPaymentProps> = ({ workspaces, workspaceByID, c
         </PaymentDetailsContainer>
 
         <FlexCenter>
-          <Button disabled={!canContinue || sendingRequests} variant="primary" onClick={onContinue}>
+          <Button disabled={!canContinue || sendingRequests} onClick={onContinue}>
             {sendingRequests ? (
               <SvgIcon icon="publishSpin" size={24} spin />
             ) : (

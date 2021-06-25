@@ -51,27 +51,10 @@ const PopupContainer = styled.div<PopupContainerProps>`
       box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
     `}
 
-  ${({ multiSelect }) =>
-    multiSelect &&
-    css`
-      min-width: 254px;
-      max-width: 254px;
-      right: 180px;
-      padding: 0px;
-    `}
-
-  ${({ jobStage, multiSelect }) => {
+  ${({ jobStage }) => {
     // eslint-disable-next-line sonarjs/no-small-switch
     switch (jobStage) {
       case GoogleStageType.WAIT_PROJECT:
-        if (multiSelect) {
-          return css`
-            min-width: 254px;
-            max-width: 254px;
-            right: 180px;
-            padding: 0px;
-          `;
-        }
         return css`
           min-width: 420px;
           max-width: 420px;
@@ -90,6 +73,15 @@ const PopupContainer = styled.div<PopupContainerProps>`
         return css``;
     }
   }}
+
+  ${({ multiSelect }) =>
+    multiSelect &&
+    css`
+      min-width: 254px;
+      max-width: 254px;
+      right: 180px;
+      padding: 0px;
+    `}
 `;
 
 export default PopupContainer;

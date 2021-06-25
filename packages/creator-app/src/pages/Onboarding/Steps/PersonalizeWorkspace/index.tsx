@@ -103,7 +103,7 @@ const PersonalizeWorkspace: React.FC = () => {
         </SizeRow>
       </TeamSizeContainer>
       <FlexCenter>
-        <Button disabled={!canContinue} variant="primary" onClick={onContinue}>
+        <Button disabled={!canContinue} onClick={onContinue}>
           Continue
         </Button>
       </FlexCenter>

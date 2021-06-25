@@ -41,7 +41,7 @@ const NameAndImage: React.FC<NameAndImageProps> = ({ name, setName, projectImage
       </LabelContainer>
 
       <FlexCenter>
-        <Button disabled={!canContinue} variant="primary" onClick={onContinue}>
+        <Button disabled={!canContinue} onClick={onContinue}>
           Continue
         </Button>
       </FlexCenter>

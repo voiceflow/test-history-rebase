@@ -30,14 +30,14 @@ const ActionGroup: React.FC = () => {
             </GroupContainer>
           )}
           <GroupContainer>
-            <ShareProject render />
+            <ShareProject compile />
           </GroupContainer>
           <TestButton />
         </>
       ) : (
         <>
           <GroupContainer>
-            <ShareProject render />
+            <ShareProject compile />
           </GroupContainer>
 
           <UploadProjectGroup />

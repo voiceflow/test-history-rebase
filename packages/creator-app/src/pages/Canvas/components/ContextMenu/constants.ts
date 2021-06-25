@@ -15,6 +15,8 @@ export enum CanvasAction {
   DELETE_BLOCK = 'delete_block',
   COLOR_BLOCK = 'color_block',
   RETURN_TO_HOME = 'return_to_home',
+  ZOOM_IN = 'zoom_in',
+  ZOOM_OUT = 'zoom_out',
   DIVIDER = 'divider',
   TOGGLE_UI = 'toggle_ui',
   ADD_TEXT = 'add_text',
@@ -62,7 +64,13 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Add Text',
     value: CanvasAction.ADD_TEXT,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT],
-    shouldRender: (_, { showHintFeatures }) => showHintFeatures,
+    shouldRender: (_, { showHintFeatures, navigationRedesign }) => showHintFeatures && !navigationRedesign,
+  },
+  {
+    label: 'Add Text',
+    value: CanvasAction.ADD_TEXT,
+    hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT_V2],
+    shouldRender: (_, { showHintFeatures, navigationRedesign }) => showHintFeatures && !!navigationRedesign,
   },
   {
     label: 'Add Image',
@@ -87,6 +95,18 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     value: CanvasAction.RETURN_TO_HOME,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.ROOT_NODE],
     shouldRender: (_, { engine }) => !engine.comment.isActive,
+  },
+  {
+    label: 'Zoom In',
+    value: CanvasAction.ZOOM_IN,
+    hotkey: HOTKEY_LABEL_MAP[Hotkey.ZOOM_IN],
+    shouldRender: (_, { navigationRedesign }) => !!navigationRedesign,
+  },
+  {
+    label: 'Zoom Out',
+    value: CanvasAction.ZOOM_OUT,
+    hotkey: HOTKEY_LABEL_MAP[Hotkey.ZOOM_OUT],
+    shouldRender: (_, { navigationRedesign }) => !!navigationRedesign,
   },
   {
     label: 'Hide/Show UI',

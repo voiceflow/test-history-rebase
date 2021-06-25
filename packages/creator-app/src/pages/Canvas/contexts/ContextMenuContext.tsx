@@ -1,4 +1,4 @@
-import { OverlayContext, useContextApi, useSmartReducerV2, withContext, withStaticContext } from '@voiceflow/ui';
+import { DismissOverlayContext, useContextApi, useSmartReducerV2, withContext, withStaticContext } from '@voiceflow/ui';
 import React from 'react';
 
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
@@ -23,33 +23,26 @@ export const { Consumer: ContextMenuConsumer } = ContextMenuContext;
 
 export const ContextMenuProvider: React.FC = ({ children }) => {
   const engine = React.useContext(EngineContext)!;
-  const overlay = React.useContext(OverlayContext)!;
+  const dismissOverlay = React.useContext(DismissOverlayContext)!;
 
   const [menuContext, menuContextApi] = useSmartReducerV2<Partial<MenuContext>>({ type: undefined, target: undefined, position: undefined });
 
   const onHide = React.useCallback(() => {
-    if (menuContext === null) {
-      return;
-    }
-
+    dismissOverlay.removeHandler(onHide);
     menuContextApi.reset();
-    overlay.setHandler(null);
-  }, [engine, overlay]);
+  }, []);
 
   const onOpen = React.useCallback(
     (event: React.MouseEvent, type = ContextMenuTarget.CANVAS, target: Nullable<string> = null) => {
       event.preventDefault();
 
-      if (!overlay.canOpen()) {
-        return;
+      if (dismissOverlay.hasHandlersGlobally()) {
+        dismissOverlay.dismissAllGlobally();
       }
 
       // defense for ctrl-click on chrome and safari ¯\_(ツ)_/¯
       if (!event.ctrlKey) {
-        overlay.setHandler(() => {
-          menuContextApi.reset();
-          overlay.setHandler(null);
-        });
+        dismissOverlay.addHandler(onHide);
       }
 
       if (type === ContextMenuTarget.NODE && target && engine.selection.isOneOfManyTargets(target)) {
@@ -66,7 +59,7 @@ export const ContextMenuProvider: React.FC = ({ children }) => {
 
       menuContextApi.set({ position: [event.clientX, event.clientY], type, target });
     },
-    [engine, overlay]
+    [engine, dismissOverlay]
   );
 
   const api = useContextApi({ ...menuContext, isOpen: !!menuContext, onOpen, onHide });

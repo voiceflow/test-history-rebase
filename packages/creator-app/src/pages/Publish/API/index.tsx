@@ -5,17 +5,18 @@ import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import SampleEditor from '@/components/AceEditor/Sample';
+import { ConfirmProps } from '@/components/ConfirmModal';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
+import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
 import { goToWorkspaceDeveloperSettings } from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, useDispatch, useIsAdmin, useModals } from '@/hooks';
+import { useAsyncEffect, useDispatch, useFeature, useIsAdmin, useModals } from '@/hooks';
 import CreateAPIKeyModal from '@/pages/Workspace/Settings/components/Developer/modal';
 import * as Sentry from '@/vendors/sentry';
 
-import { ContentContainer, ContentSection } from '../components';
-import Section from '../components/Section';
+import { ContentContainer, ContentSection, Section } from '../components';
 import { getSamples } from './utils';
 
 const AdminMessage = 'Only workspace admins can manage API Keys';
@@ -24,6 +25,7 @@ const API: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
   const [keys, setKeys] = React.useState<APIKey[]>([]);
   const [activeKey, setActiveKey] = React.useState('');
+  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
 
   const isAdmin = useIsAdmin();
 
@@ -35,7 +37,7 @@ const API: React.FC = () => {
   const samples = getSamples(versionID, activeKey);
 
   const { open: openCreateModal, isOpened } = useModals(ModalType.API_KEY_CREATE);
-  const { open: openConfirmModal } = useModals(ModalType.CONFIRM);
+  const { open: openConfirmModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
 
   const goToDeveloperSettings = useDispatch(() => goToWorkspaceDeveloperSettings(workspaceID));
 
@@ -77,18 +79,22 @@ const API: React.FC = () => {
   return (
     <>
       <CreateAPIKeyModal />
-      <ContentContainer>
+
+      <ContentContainer redesignEnabled={navigationRedesign.isEnabled}>
         <ContentSection>
           <Section title="API Call Examples" card={false}>
             <SampleEditor samples={samples} />
           </Section>
         </ContentSection>
+
         <ContentSection>
           <Section title="API Keys">
             <BlockText fontWeight={600} mb={8}>
               Manage Keys
             </BlockText>
+
             <Text>Manage and edit all API keys created across projects in this workspace.</Text>
+
             <BoxFlex justifyContent="flex-end" mt={24}>
               <TippyTooltip title={AdminMessage} disabled={isAdmin}>
                 <Button variant={ButtonVariant.QUATERNARY} onClick={goToDeveloperSettings} disabled={!isAdmin}>
@@ -97,11 +103,14 @@ const API: React.FC = () => {
               </TippyTooltip>
             </BoxFlex>
           </Section>
+
           <Section>
             <BlockText fontWeight={600} mb={8}>
               Create API Key
             </BlockText>
+
             <Text>This key allows you to make requests to our Dialog Management API.</Text>
+
             <BoxFlex justifyContent="flex-end" mt={24}>
               <TippyTooltip title={AdminMessage} disabled={isAdmin}>
                 <Button onClick={projectKeys.length ? confirmRefresh : createNewKey} disabled={!isAdmin || isOpened}>
@@ -111,6 +120,7 @@ const API: React.FC = () => {
             </BoxFlex>
           </Section>
         </ContentSection>
+
         <ContentSection>
           <Section title="API Documentation">
             <BlockText fontWeight={600} mb={8}>

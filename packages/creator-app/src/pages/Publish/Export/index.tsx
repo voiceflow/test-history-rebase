@@ -1,11 +1,12 @@
 import { Box, BoxFlex, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
-import { useAsyncMountUnmount, useToggle } from '@/hooks';
+import { useAsyncMountUnmount, useFeature, useToggle } from '@/hooks';
 import AlexaUploadButton from '@/pages/Canvas/header/ActionGroup/components/AlexaUploadGroup/Button';
 import GoogleUploadButton from '@/pages/Canvas/header/ActionGroup/components/GoogleUploadGroup/Button';
 import UploadButton from '@/pages/Canvas/header/ActionGroup/components/UploadButton';
@@ -16,12 +17,12 @@ import { ConnectedProps } from '@/types';
 import { isNotify, isReady, isRunning } from '@/utils/job';
 import { getPlatformValue } from '@/utils/platform';
 
-import { ActionContainer, ContentContainer, ContentSection } from '../components';
-import Section from '../components/Section';
+import { ActionContainer, ContentContainer, ContentSection, Section } from '../components';
 
 const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }) => {
   const [open, toggleOpen] = useToggle(false);
   const { cancel, job, start } = React.useContext(ExportContext)!;
+  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
 
   const onClose = () => {
     toggleOpen(false);
@@ -59,7 +60,7 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
   );
 
   return (
-    <ContentContainer>
+    <ContentContainer redesignEnabled={navigationRedesign.isEnabled}>
       <ContentSection>
         <Section title="Runtime Export">
           <BoxFlex>

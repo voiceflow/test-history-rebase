@@ -2,9 +2,11 @@ import { FullSpinner, Page404 } from '@voiceflow/ui';
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+import { FeatureFlag } from '@/config/features';
 import { LegacyPath, Path } from '@/config/routes';
-import { authTokenSelector } from '@/ducks/session';
-import { connect, lazy } from '@/hocs';
+import * as Session from '@/ducks/session';
+import { lazy } from '@/hocs';
+import { useFeature, useSelector } from '@/hooks';
 import AdoptSSO from '@/pages/Auth/AdoptSSO';
 import Login from '@/pages/Auth/Login';
 import LoginSSOCallback from '@/pages/Auth/LoginSSOCallback';
@@ -17,7 +19,6 @@ import Signup from '@/pages/Auth/Signup';
 import Export from '@/pages/Export';
 import Onboarding from '@/pages/Onboarding';
 import Settings from '@/pages/Settings';
-import { ConnectedProps } from '@/types';
 import * as Query from '@/utils/query';
 
 import PrivateRoute from './PrivateRoute';
@@ -32,91 +33,92 @@ const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));
 const Workspace = lazy(() => import('@/pages/Workspace'));
 const NewWorkspace = lazy(() => import('@/pages/Dashboard/NewWorkspace'));
 
-const Routes: React.FC<ConnectedRoutesProps> = ({ authToken }) => (
-  <Suspense fallback={<FullSpinner name="Assets" />}>
-    <Switch>
-      <Route exact path={Path.SSML} component={SSML} />
+const Routes: React.FC = () => {
+  const authToken = useSelector(Session.authTokenSelector);
+  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
 
-      <PublicRoute exact path={Path.RESET_PASSWORD} component={ResetPassword} />
-      <PublicRoute exact path={Path.RESET} component={ResetEmail} />
-      <PublicRoute exact path={Path.LOGIN} component={Login} />
-      <PublicRoute exact path={Path.LOGIN_MATTEL} component={MattelLogin} />
-      <PublicRoute exact path={Path.LOGIN_MOTOROLA} component={MotorolaLogin} />
-      <PublicRoute exact path={Path.LOGIN_OIN} component={OINLogin} />
-      <PublicRoute exact path={Path.LOGIN_SSO_CALLBACK} component={LoginSSOCallback} />
-      <PublicRoute exact path={Path.SSO_ADOPT} component={AdoptSSO} />
-      <PublicRoute exact path={Path.PROMO_SIGNUP} component={Signup} promo />
-      <PublicRoute exact path={Path.SIGNUP} component={Signup} />
-      <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
+  return (
+    <Suspense fallback={<FullSpinner name="Assets" />}>
+      <Switch>
+        <Route exact path={Path.SSML} component={SSML} />
 
-      <Route exact path={Path.CREATOR_TERMS} component={Legal} />
+        <PublicRoute exact path={Path.RESET_PASSWORD} component={ResetPassword} />
+        <PublicRoute exact path={Path.RESET} component={ResetEmail} />
+        <PublicRoute exact path={Path.LOGIN} component={Login} />
+        <PublicRoute exact path={Path.LOGIN_MATTEL} component={MattelLogin} />
+        <PublicRoute exact path={Path.LOGIN_MOTOROLA} component={MotorolaLogin} />
+        <PublicRoute exact path={Path.LOGIN_OIN} component={OINLogin} />
+        <PublicRoute exact path={Path.LOGIN_SSO_CALLBACK} component={LoginSSOCallback} />
+        <PublicRoute exact path={Path.SSO_ADOPT} component={AdoptSSO} />
+        <PublicRoute exact path={Path.PROMO_SIGNUP} component={Signup} promo />
+        <PublicRoute exact path={Path.SIGNUP} component={Signup} />
+        <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
 
-      <Redirect exact from={Path.WORKSPACE} to={Path.DASHBOARD} />
-      <PrivateRoute exact path={Path.NEW_WORKSPACE} component={NewWorkspace} />
-      <PrivateRoute path={[Path.WORKSPACE, Path.DASHBOARD]} component={Workspace} />
+        <Route exact path={Path.CREATOR_TERMS} component={Legal} />
 
-      <Redirect exact from={Path.PROJECT_DEMO} to={Path.PUBLIC_PROTOTYPE} />
-      <Route path={Path.PUBLIC_PROTOTYPE} component={PublicPrototype} />
+        <Redirect exact from={Path.WORKSPACE} to={Path.DASHBOARD} />
+        <PrivateRoute exact path={Path.NEW_WORKSPACE} component={NewWorkspace} />
+        <PrivateRoute path={[Path.WORKSPACE, Path.DASHBOARD]} component={Workspace} />
 
-      <Redirect from={LegacyPath.WORKSPACE_DASHBOARD} to={Path.WORKSPACE_DASHBOARD} />
-      <Redirect from={LegacyPath.CANVAS_DIAGRAM} to={Path.PROJECT_CANVAS} />
-      <Redirect from={LegacyPath.CANVAS_PREVIEW} to={Path.PROJECT_CANVAS} />
-      <Redirect from={LegacyPath.CANVAS_TEST} to={Path.PROJECT_PROTOTYPE} />
-      <Redirect from={LegacyPath.PROJECT_TEST} to={Path.PROJECT_PROTOTYPE} />
-      <Redirect from={LegacyPath.PRODUCT_DETAILS} to={Path.PRODUCT_DETAILS} />
-      <Redirect from={LegacyPath.PRODUCT_LIST} to={Path.PRODUCT_LIST} />
-      <Redirect from={LegacyPath.TOOLS} to={Path.PROJECT_TOOLS} />
-      <Redirect from={LegacyPath.MIGRATE} to={Path.PROJECT_MIGRATE} />
-      <Redirect from={LegacyPath.PUBLISH_GOOGLE} to={Path.PUBLISH_GOOGLE} />
-      <Redirect from={LegacyPath.PUBLISH_ALEXA} to={Path.PUBLISH_ALEXA} />
-      <Redirect from={LegacyPath.PUBLISH} to={Path.PUBLISH_ALEXA} />
-      <Redirect exact from={LegacyPath.PROJECT_PUBLISH} to={Path.PUBLISH_ALEXA} />
+        <Redirect exact from={Path.PROJECT_DEMO} to={Path.PUBLIC_PROTOTYPE} />
+        <Route path={Path.PUBLIC_PROTOTYPE} component={PublicPrototype} />
 
-      <PrivateRoute path={Path.PROJECT_EXPORT} component={Export} />
-      <PrivateRoute path={Path.PROJECT_SETTINGS} component={Settings} />
-      <PrivateRoute path={Path.PROJECT_VERSION} component={Skill} />
+        <Redirect from={LegacyPath.WORKSPACE_DASHBOARD} to={Path.WORKSPACE_DASHBOARD} />
+        <Redirect from={LegacyPath.CANVAS_DIAGRAM} to={Path.PROJECT_CANVAS} />
+        <Redirect from={LegacyPath.CANVAS_PREVIEW} to={Path.PROJECT_CANVAS} />
+        <Redirect from={LegacyPath.CANVAS_TEST} to={Path.PROJECT_PROTOTYPE} />
+        <Redirect from={LegacyPath.PROJECT_TEST} to={Path.PROJECT_PROTOTYPE} />
+        <Redirect from={LegacyPath.PRODUCT_DETAILS} to={Path.PRODUCT_DETAILS} />
+        <Redirect from={LegacyPath.PRODUCT_LIST} to={Path.PRODUCT_LIST} />
+        <Redirect from={LegacyPath.TOOLS} to={Path.PROJECT_TOOLS} />
+        <Redirect from={LegacyPath.MIGRATE} to={Path.PROJECT_MIGRATE} />
+        <Redirect from={LegacyPath.PUBLISH_GOOGLE} to={Path.PUBLISH_GOOGLE} />
+        <Redirect from={LegacyPath.PUBLISH_ALEXA} to={Path.PUBLISH_ALEXA} />
+        <Redirect from={LegacyPath.PUBLISH} to={Path.PUBLISH_ALEXA} />
+        <Redirect exact from={LegacyPath.PROJECT_PUBLISH} to={Path.PUBLISH_ALEXA} />
 
-      <PrivateRoute path={Path.ACCOUNT} component={Account} />
-      <PrivateRoute path={Path.RUNTIME} component={Runtime} />
+        <PrivateRoute path={Path.PROJECT_EXPORT} component={Export} />
 
-      <Route
-        exact
-        path={Path.INVITE}
-        render={(props) => {
-          const parsed = Query.parse(props.location.search);
-          const inviteCode = parsed.invite_code;
-          const { email } = parsed;
-          const signupLink = email ? `${Path.SIGNUP}?invite=${inviteCode}&email=${email}` : `${Path.SIGNUP}?invite=${inviteCode}`;
+        {!navigationRedesign.isEnabled && <PrivateRoute path={Path.PROJECT_SETTINGS} component={Settings} />}
 
-          if (inviteCode) {
-            return authToken ? <Redirect to={`${Path.DASHBOARD}?invite=${inviteCode}`} /> : <Redirect to={signupLink} />;
+        <PrivateRoute path={Path.PROJECT_VERSION} component={Skill} />
+
+        <PrivateRoute path={Path.ACCOUNT} component={Account} />
+        <PrivateRoute path={Path.RUNTIME} component={Runtime} />
+
+        <Route
+          exact
+          path={Path.INVITE}
+          render={(props) => {
+            const parsed = Query.parse(props.location.search);
+            const inviteCode = parsed.invite_code;
+            const { email } = parsed;
+            const signupLink = email ? `${Path.SIGNUP}?invite=${inviteCode}&email=${email}` : `${Path.SIGNUP}?invite=${inviteCode}`;
+
+            if (inviteCode) {
+              return authToken ? <Redirect to={`${Path.DASHBOARD}?invite=${inviteCode}`} /> : <Redirect to={signupLink} />;
+            }
+            const code = props.match.params.invite_code;
+            return authToken ? (
+              <Redirect to={`${Path.DASHBOARD}?invite=${code}`} />
+            ) : (
+              <Redirect to={`${Path.SIGNUP}?invite=${code}${props.location.search}`} />
+            );
+          }}
+        />
+
+        <Route
+          exact
+          path={Path.HOME}
+          render={() =>
+            authToken ? <Redirect to={`${Path.DASHBOARD}${window.location.search}`} /> : <Redirect to={`${Path.SIGNUP}${window.location.search}`} />
           }
-          const code = props.match.params.invite_code;
-          return authToken ? (
-            <Redirect to={`${Path.DASHBOARD}?invite=${code}`} />
-          ) : (
-            <Redirect to={`${Path.SIGNUP}?invite=${code}${props.location.search}`} />
-          );
-        }}
-      />
+        />
 
-      <Route
-        exact
-        path={Path.HOME}
-        render={() =>
-          authToken ? <Redirect to={`${Path.DASHBOARD}${window.location.search}`} /> : <Redirect to={`${Path.SIGNUP}${window.location.search}`} />
-        }
-      />
-
-      <Route component={Page404} />
-    </Switch>
-  </Suspense>
-);
-
-const mapStateToProps = {
-  authToken: authTokenSelector,
+        <Route component={Page404} />
+      </Switch>
+    </Suspense>
+  );
 };
 
-type ConnectedRoutesProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(Routes);
+export default Routes;

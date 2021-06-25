@@ -126,6 +126,9 @@ export const scrollTo = (node: HTMLElement | null, { top = 0, left = 0, ...opts 
   }
 };
 
+/**
+ * @deprecated use withKeyNamePress
+ */
 export const withKeyPress =
   <E extends KeyboardEvent | React.KeyboardEvent>(key: string, cb: (event: E) => void) =>
   (event: E) => {
@@ -140,6 +143,15 @@ export const withEnterPress: {
   <E extends React.KeyboardEvent<any>>(cb: (event: E) => void): (event: E) => void;
   <E extends KeyboardEvent>(cb: (event: E) => void): (event: E) => void;
 } = <E extends KeyboardEvent | React.KeyboardEvent<any>>(cb: (event: E) => void) => withKeyPress(KeyName.ENTER, cb);
+
+export const withInputBlur =
+  <E extends KeyboardEvent | React.KeyboardEvent>(cb?: (event: E) => void) =>
+  (event: E): void => {
+    (event.target as HTMLInputElement)?.blur();
+
+    // eslint-disable-next-line callback-return
+    cb?.(event);
+  };
 
 export const copyJSONPath = (copy_event: { name: string; namespace: string[] }) => {
   const total_path = copy_event.namespace.slice();
@@ -200,6 +212,7 @@ export const readFileAsync = (file: File): Promise<string> =>
 
 export const upload = (onChange: (files: FileList) => void, options: { accept?: string; multiple?: boolean } = {}) => {
   const element = document.createElement('input');
+
   element.setAttribute('type', 'file');
   element.setAttribute('multiple', `${!!options.multiple}`);
 
@@ -208,9 +221,16 @@ export const upload = (onChange: (files: FileList) => void, options: { accept?: 
   }
 
   element.style.display = 'none';
-  element.addEventListener('change', () => {
-    if (element.files?.length) onChange(element.files);
-  });
+
+  const onChangeHandler = () => {
+    if (element.files?.length) {
+      onChange(element.files);
+    }
+
+    element.removeEventListener('change', onChangeHandler);
+  };
+
+  element.addEventListener('change', onChangeHandler);
 
   document.body.appendChild(element);
 
@@ -300,4 +320,12 @@ export const importScript = (id: string, uri: string, callbackName: string) =>
     };
 
     (firstJS?.parentNode ?? document.head).appendChild(js);
+  });
+
+/**
+ * useful to determinate when select file window is opened/closed
+ */
+export const windowRefocused = (): Promise<void> =>
+  new Promise<void>((resolve) => {
+    window.addEventListener('blur', () => window.addEventListener('focus', () => resolve(), { once: true }), { once: true });
   });

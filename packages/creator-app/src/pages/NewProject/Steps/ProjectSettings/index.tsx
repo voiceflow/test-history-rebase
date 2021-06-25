@@ -151,7 +151,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
 
       <FlexCenter>
         {creatingProject ? (
-          <LoadingButton variant="primary" square>
+          <LoadingButton square>
             <SvgIcon icon="publishSpin" size={24} spin />
           </LoadingButton>
         ) : (

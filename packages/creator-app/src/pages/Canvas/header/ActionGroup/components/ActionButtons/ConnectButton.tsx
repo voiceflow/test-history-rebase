@@ -34,7 +34,6 @@ const ConnectButton: React.FC<ConnectButtonProps> = ({ onClick }) => {
       <IconButton
         id={Identifier.UPLOAD}
         iconProps={{ color: '#3D82E2' }}
-        preventFocusStyle
         variant={IconButtonVariant.ACTION}
         icon={getConnectIcon(platform) as Icon}
         large

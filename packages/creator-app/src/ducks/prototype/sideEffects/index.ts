@@ -10,8 +10,8 @@ import { prototypeSettingsSelector } from '../selectors';
 import { PrototypeMode, PrototypeShareViewSettings } from '../types';
 
 export { default as checkSharedProtoPassword } from './checkSharedProtoPassword';
+export { default as compilePrototype } from './compilePrototype';
 export { default as fetchContext } from './fetchContext';
-export { default as renderPrototype } from './render';
 export { default as resetPrototype } from './reset';
 export { default as setupPublicPrototype } from './setupPublicPrototype';
 export { default as startPrototype } from './start';

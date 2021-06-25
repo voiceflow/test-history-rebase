@@ -1,11 +1,17 @@
 import { cancelIcon } from '@/assets';
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const GuidedStepsWrapper = styled.div<{ disabled?: boolean }>`
+const GuidedStepsWrapper = styled.div<{ disabled?: boolean; centred?: boolean }>`
   max-width: 1040px;
-  margin-left: auto;
-  margin-right: auto;
+
   padding: 32px;
+
+  ${({ centred = true }) =>
+    centred &&
+    css`
+      margin-left: auto;
+      margin-right: auto;
+    `}
 
   .alert {
     margin-bottom: 15px;

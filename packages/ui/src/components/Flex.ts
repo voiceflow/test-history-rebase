@@ -1,6 +1,7 @@
 import { css, styled } from '../styles';
 
 export type FlexProps = {
+  gap?: number;
   column?: boolean;
   inline?: boolean;
   fullWidth?: boolean;
@@ -9,6 +10,12 @@ export type FlexProps = {
 export const flexStyles = css<FlexProps>`
   display: ${({ inline }) => (inline ? 'inline-flex' : 'flex')};
   align-items: center;
+
+  ${({ gap }) =>
+    gap &&
+    css`
+      gap: ${gap}px;
+    `}
 
   ${({ column }) =>
     column &&

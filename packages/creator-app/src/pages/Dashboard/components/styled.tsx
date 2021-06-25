@@ -44,7 +44,7 @@ export const ProjectListDragZone = styled(DragPlaceholder)`
   border-radius: 7px;
 `;
 
-export const ProjectListItemActions = styled.div`
+export const ProjectListItemActions = styled.div<{ active?: boolean }>`
   display: none;
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
   transition: all 0.15s linear;
@@ -55,15 +55,27 @@ export const ProjectListItemActions = styled.div`
   &:hover {
     color: #6e849a;
   }
+
+  ${({ active }) =>
+    active &&
+    css`
+      display: flex;
+      background: linear-gradient(#5d9df515, #5d9df530);
+      color: #5b9dfa;
+      box-shadow: 0 0 0 1px #5b9dfa99;
+
+      &:hover {
+        color: #5b9dfa;
+      }
+    `}
 `;
 
 export interface ProjectListItemProps extends LinkProps {
-  isActive: boolean;
   hidden: boolean;
   hasOptions: boolean;
 }
 
-export const ProjectListItem = styled(({ isActive, hasOptions, ...props }: ProjectListItemProps) => <Link {...props} />)`
+export const ProjectListItem = styled(({ hasOptions, ...props }: ProjectListItemProps) => <Link {...props} />)`
   display: flex;
   min-width: 0;
   padding: 15px 23px;
@@ -93,20 +105,6 @@ export const ProjectListItem = styled(({ isActive, hasOptions, ...props }: Proje
   }
 
   ${({ hidden }) => hidden && 'visibility: hidden'}
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      ${AvatarContainer} {
-        display: none;
-      }
-      ${ProjectListItemActions} {
-        display: flex;
-        background: linear-gradient(#5d9df515, #5d9df530);
-        color: #5b9dfa;
-        box-shadow: 0 0 0 1px #5b9dfa99;
-      }
-    `}
 `;
 
 export const DropdownIconWrapper = styled.div`

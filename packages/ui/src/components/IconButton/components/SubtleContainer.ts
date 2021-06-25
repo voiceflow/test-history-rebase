@@ -1,10 +1,13 @@
 import { styled } from '../../../styles';
 import { ButtonContainer } from '../../Button';
 import { SvgIconContainer } from '../../SvgIcon';
+import { IconButtonVariant } from '../types';
+import { BaseContainerProps } from './IconButtonContainer';
 
-export type SubtleContainerProps = {
+export interface SubtleContainerProps extends BaseContainerProps {
+  variant: IconButtonVariant.SUBTLE;
   hoverColor?: string;
-};
+}
 
 const SubtleContainer = styled(ButtonContainer)<SubtleContainerProps>`
   border-style: none;

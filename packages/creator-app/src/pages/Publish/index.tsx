@@ -99,8 +99,8 @@ const Publish: React.FC<PublishProps & ConnectedPublishProps> = ({ match: { path
 
 const mapStateToProps = {
   user: Account.userSelector,
-  versionID: Session.activeVersionIDSelector,
   platform: Project.activePlatformSelector,
+  versionID: Session.activeVersionIDSelector,
 };
 
 type ConnectedPublishProps = ConnectedProps<typeof mapStateToProps>;

@@ -1,4 +1,4 @@
-import { OverlayProvider } from '@voiceflow/ui';
+import { DismissOverlayProvider } from '@voiceflow/ui';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import React from 'react';
@@ -46,7 +46,7 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
               <TextEditorVariablesPopoverProvider value={document.body}>
                 <MousePositionProvider>
                   <DragProvider>
-                    <OverlayProvider>
+                    <DismissOverlayProvider>
                       <EventualEngineProvider>
                         <IdentityProvider>
                           <ModalsContextProvider>
@@ -54,7 +54,7 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                           </ModalsContextProvider>
                         </IdentityProvider>
                       </EventualEngineProvider>
-                    </OverlayProvider>
+                    </DismissOverlayProvider>
                   </DragProvider>
                 </MousePositionProvider>
               </TextEditorVariablesPopoverProvider>

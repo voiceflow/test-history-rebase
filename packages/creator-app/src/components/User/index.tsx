@@ -9,13 +9,38 @@ import { MemberIconProps } from './components/MemberIcon';
 
 export * from './components';
 
-export type UserProps = MemberIconProps & {
-  user: LockOwner;
-  className?: string;
+export interface UserProps extends MemberIconProps {
+  user?: LockOwner;
+  flat?: boolean;
   pending?: boolean;
-};
+  className?: string;
+}
+
+const isColorImage = (user: LockOwner) => !!user?.image && user.image.length === 13 && user.image.includes('|');
 
 const User = React.forwardRef<HTMLDivElement, UserProps>(({ user, className, pending, ...props }, ref) => {
+  // eslint-disable-next-line no-nested-ternary
+  const letter = React.useMemo(() => (!user?.image ? '?' : isColorImage(user) ? user.name[0] : ''), [user]);
+
+  const styles = React.useMemo(() => {
+    const style: React.CSSProperties = {};
+
+    if (!user) {
+      return style;
+    }
+
+    if (isColorImage(user)) {
+      const colors = user.color ? user.color.split('|') : user.image!.split('|');
+      style.backgroundColor = `#${colors[1]}`;
+      style.color = `#${colors[0]}`;
+    } else if (user) {
+      style.fontSize = '0.0009px';
+      style.backgroundImage = `url(${user.image})`;
+    }
+
+    return style;
+  }, [user]);
+
   if (pending) {
     return (
       <MemberIcon className={className} ref={ref} {...props}>
@@ -24,28 +49,8 @@ const User = React.forwardRef<HTMLDivElement, UserProps>(({ user, className, pen
     );
   }
 
-  if (!user?.image) {
-    return (
-      <MemberIcon className={className} ref={ref} {...props}>
-        ?
-      </MemberIcon>
-    );
-  }
-
-  const style: React.CSSProperties = {};
-  let letter = null;
-
-  if (user.image.length === 13 && user.image.includes('|')) {
-    const colors = user.color ? user.color.split('|') : user.image.split('|');
-    style.backgroundColor = `#${colors[1]}`;
-    style.color = `#${colors[0]}`;
-    [letter] = user.name;
-  } else {
-    style.backgroundImage = `url(${user.image})`;
-  }
-
   return (
-    <MemberIcon className={className} style={style} ref={ref} {...props}>
+    <MemberIcon className={className} style={styles} ref={ref} {...props}>
       {letter}
     </MemberIcon>
   );
@@ -53,26 +58,29 @@ const User = React.forwardRef<HTMLDivElement, UserProps>(({ user, className, pen
 
 export default User;
 
-export type MembersProps = {
-  members: LockOwner[];
-  onAdd?: () => void;
+export interface MembersProps {
   min?: number;
   max?: number;
-};
+  flat?: boolean;
+  onAdd?: () => void;
+  members: LockOwner[];
+}
 
-export const Members: React.FC<MembersProps> = ({ min = 0, max = 8, onAdd, members }) => {
-  const accepted = members.filter((member) => !!member.creator_id).reverse();
+export const Members: React.FC<MembersProps> = ({ min = 0, max = 8, flat, onAdd, members }) => {
+  const accepted = React.useMemo(() => members.filter((member) => !!member.creator_id).reverse(), [members]);
+  const renderMembers = React.useMemo(() => accepted.slice(0, max), [max, accepted]);
+  const hiddenMembers = React.useMemo(() => accepted.slice(max), [max, accepted]);
 
-  if (!accepted || accepted.length <= min) {
+  if (accepted.length <= min) {
     return null;
   }
 
   return (
     <MembersContainer>
       <MembersWrapper>
-        {accepted.slice(0, max).map((member, index) => (
+        {renderMembers.map((member, index) => (
           <TippyTooltip style={{ zIndex: max - index }} key={member.tabID || member.creator_id} title={member.name} position="bottom">
-            <User user={member} />
+            <User flat={flat} user={member} />
           </TippyTooltip>
         ))}
 
@@ -90,11 +98,11 @@ export const Members: React.FC<MembersProps> = ({ min = 0, max = 8, onAdd, membe
           <TippyTooltip
             html={
               <>
-                {accepted.slice(max).map((member) => (
-                  <>
+                {hiddenMembers.map((member) => (
+                  <React.Fragment key={member.creator_id}>
                     {member.name}
                     <br />
-                  </>
+                  </React.Fragment>
                 ))}
               </>
             }

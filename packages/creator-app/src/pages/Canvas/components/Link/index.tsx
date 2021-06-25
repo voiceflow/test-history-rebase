@@ -54,7 +54,9 @@ const Link: React.FC = () => {
 
   useDidUpdateEffect(() => {
     if (!isActive && isCaptionEditing) {
-      onToggleCaptionEditing(false);
+      requestAnimationFrame(() => {
+        onToggleCaptionEditing(false);
+      });
     }
   }, [isActive]);
 

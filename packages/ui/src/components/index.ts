@@ -21,11 +21,15 @@ export {
   PrimaryButtonContainer,
   PrimaryButtonIcon,
   PrimaryButtonLabel,
+  PrimaryButtonProps,
   QuaternaryButton,
+  QuaternaryButtonProps,
   SecondaryButton,
   SecondaryButtonContainer,
   SecondaryButtonIcon,
+  SecondaryButtonProps,
   TertiaryButton,
+  TertiaryButtonProps,
 } from './Button';
 export { default as Card } from './Card';
 export { default as Dropdown, DropdownPlacement } from './Dropdown';
@@ -46,7 +50,21 @@ export {
   flexStartStyles,
   flexStyles,
 } from './Flex';
-export { default as IconButton, IconButtonContainer, IconButtonVariant } from './IconButton';
+export {
+  BaseIconButtonProps,
+  default as IconButton,
+  IconButtonActionContainerProps,
+  IconButtonBaseContainerProps,
+  IconButtonContainer,
+  IconButtonContainerProps,
+  IconButtonFlatContainerProps,
+  IconButtonOutlineContainerProps,
+  IconButtonProps,
+  IconButtonSquareContainerProps,
+  IconButtonSubtleContainerProps,
+  IconButtonSuccessContainerProps,
+  IconButtonVariant,
+} from './IconButton';
 export {
   ChildInput,
   ControlledInput,

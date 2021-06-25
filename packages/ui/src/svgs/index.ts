@@ -49,6 +49,7 @@ export { default as comment } from './comment.svg';
 export { default as commentReply } from './comment-reply.svg';
 export { default as community } from './community.svg';
 export { default as connectGoogle } from './connect-google.svg';
+export { default as conversations } from './conversations.svg';
 export { default as creditCard } from './credit-card.svg';
 export { default as cursor } from './cursor.svg';
 export { default as custom } from './custom.svg';
@@ -56,6 +57,7 @@ export { default as checked } from './images/icons/check.svg';
 
 // d
 export { default as defaultEmotion } from './default-emotion.svg';
+export { default as designer } from './designer.svg';
 export { default as developer } from './developer.svg';
 export { default as directive } from './directive.svg';
 export { default as display } from './display.svg';
@@ -77,6 +79,7 @@ export { default as error } from './error.svg';
 export { default as event } from './event.svg';
 export { default as exit } from './exit.svg';
 export { default as exitFullscreen } from './exit-fullscreen.svg';
+export { default as expand } from './expand.svg';
 export { default as export } from './export.svg';
 export { default as exportModel } from './export-model.svg';
 export { default as eye } from './eye.svg';
@@ -118,9 +121,11 @@ export { default as itemMinus } from './expression-minus.svg';
 export { default as if } from './if.svg';
 export { default as image } from './image.svg';
 export { default as imageDropzone } from './image-dropzone.svg';
+export { default as interactionModel } from './imm-icon.svg';
 export { default as inFlow } from './in-flow.svg';
 export { default as info } from './info.svg';
 export { default as information } from './information.svg';
+export { default as integrations } from './integrations.svg';
 export { default as italic } from './italic.svg';
 
 // j
@@ -150,6 +155,7 @@ export { default as mail } from './mail.svg';
 export { default as markupImage } from './markup-image.svg';
 export { default as minus } from './minus.svg';
 export { default as mobile } from './mobile.svg';
+export { default as moveMode } from './move-mode.svg';
 export { default as microphone } from './solid/microphone.svg';
 
 // n

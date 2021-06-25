@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IS_PRODUCTION } from '@/config';
 import { FeatureFlag, LOCAL_FEATURE_OVERRIDES } from '@/config/features';
-import { FeatureFlagsContext } from '@/contexts';
+import { FeatureFlagsContext } from '@/contexts/FeatureFlagsContext';
 
 // eslint-disable-next-line import/prefer-default-export
 export const useFeature = (featureID: FeatureFlag) => {

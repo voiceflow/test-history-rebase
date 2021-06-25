@@ -5,19 +5,20 @@ import { ClassName } from '../../../styles/constants';
 import { flexStyles } from '../../Flex';
 
 export type MenuItemProps = {
+  height?: number | string;
   active?: boolean;
   ending?: boolean;
   divider?: boolean;
   disabled?: boolean;
+  className?: string;
   capitalize?: boolean;
   bottomAction?: boolean;
-  className?: string;
 };
 
 export const itemStyles = css<MenuItemProps>`
   ${flexStyles}
 
-  height: ${({ theme, divider }) => (!divider ? `${theme.components.menuItem.height}px` : 0)};
+  height: ${({ theme, height = theme.components.menuItem.height, divider }) => (!divider ? `${height}px` : 0)};
   padding: 0 24px;
   background: #fff;
   overflow: hidden;
@@ -70,10 +71,10 @@ export const itemStyles = css<MenuItemProps>`
       justify-content: center;
     `}
 
-  ${({ ending }) =>
+  ${({ ending, height = 52 }) =>
     ending &&
     css`
-      height: 52px;
+      height: ${height}px;
       background: #fbfbfb !important;
       padding-bottom: 2px;
     `}

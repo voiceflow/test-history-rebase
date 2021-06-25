@@ -89,7 +89,7 @@ export const deleteWorkspace =
   };
 
 export const copyProject =
-  (projectID: string, workspaceID: string, listID: string): Thunk =>
+  (projectID: string, workspaceID: string, listID?: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const project = projectByIDSelector(state)(projectID);

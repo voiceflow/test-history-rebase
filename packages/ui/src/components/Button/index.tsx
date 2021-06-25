@@ -3,37 +3,41 @@ import React from 'react';
 
 import { ClassName } from '../../styles/constants';
 import SvgIcon from '../SvgIcon';
-import { PrimaryButton, QuaternaryButton, SecondaryButton, TertiaryButton } from './components';
-import { PrimaryButtonProps } from './components/PrimaryButton';
-import { SecondaryButtonProps } from './components/SecondaryButton';
+import {
+  PrimaryButton,
+  PrimaryButtonProps,
+  QuaternaryButton,
+  QuaternaryButtonProps,
+  SecondaryButton,
+  SecondaryButtonProps,
+  TertiaryButton,
+  TertiaryButtonProps,
+} from './components';
 import { ButtonVariant } from './constants';
 
 export * from './components';
-export * from './styles';
 export { ButtonVariant };
 
 const BUTTON_VARIANTS = {
   [ButtonVariant.PRIMARY]: PrimaryButton,
-  [ButtonVariant.SECONDARY]: SecondaryButton,
   [ButtonVariant.TERTIARY]: TertiaryButton,
+  [ButtonVariant.SECONDARY]: SecondaryButton,
   [ButtonVariant.QUATERNARY]: QuaternaryButton,
 };
 
-interface ButtonProps extends Pick<React.ComponentProps<'button'>, 'type' | 'id' | 'className' | 'style'>, PrimaryButtonProps, SecondaryButtonProps {
-  variant?: ButtonVariant | `${ButtonVariant}`;
-}
+type ButtonProps = PrimaryButtonProps | SecondaryButtonProps | TertiaryButtonProps | QuaternaryButtonProps;
 
-const Button: React.ForwardRefRenderFunction<HTMLButtonElement, React.PropsWithChildren<ButtonProps>> = (
-  { variant = ButtonVariant.PRIMARY, className, isLoading = false, children, ...props },
+const Button: React.ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
+  { variant = ButtonVariant.PRIMARY, className, children, ...props },
   ref
 ) => {
-  const Component = BUTTON_VARIANTS[variant] || PrimaryButton;
+  const Component = (BUTTON_VARIANTS[variant] || PrimaryButton) as React.ForwardRefExoticComponent<any>;
 
   return (
-    <Component isLoading={isLoading} className={cn(ClassName.BUTTON, className)} ref={ref} {...props}>
-      {isLoading ? <SvgIcon icon="publishSpin" size={24} spin /> : children}
+    <Component ref={ref} className={cn(ClassName.BUTTON, className)} variant={variant} {...props}>
+      {props.isLoading ? <SvgIcon icon="publishSpin" size={24} spin /> : children}
     </Component>
   );
 };
 
-export default React.forwardRef(Button);
+export default React.forwardRef<HTMLButtonElement, ButtonProps>(Button);

@@ -11,6 +11,8 @@ export enum Hotkey {
   ROOT_NODE = 'ROOT_NODE',
   LAUNCH_PAGE = 'LAUNCH_PAGE',
   DESIGN_PAGE = 'DESIGN_PAGE',
+  SETTINGS_PAGE = 'SETTINGS_PAGE',
+  INTEGRATION_PAGE = 'INTEGRATION_PAGE',
   USER_SPEECH = 'USER_SPEECH',
   OPEN_CMS_MODAL = 'OPEN_CMS_MODAL',
   TOGGLE_LEFT_SIDEBAR_LOCK = 'TOGGLE_LEFT_SIDEBAR_LOCK',
@@ -21,11 +23,16 @@ export enum Hotkey {
   CLOSE_CANVAS_MODE = 'CLOSE_CANVAS_MODE',
   ADD_MARKUP_TEXT = 'ADD_MARKUP_TEXT',
   ADD_MARKUP_IMAGE = 'ADD_MARKUP_IMAGE',
+  ADD_MARKUP_TEXT_V2 = 'ADD_MARKUP_TEXT_V2',
   DUPLICATE = 'DUPLICATE',
   SHOW_HIDE_UI = 'SHOW_HIDE_UI',
   MOVE_FORWARD = 'MOVE_FORWARD',
   MOVE_BACKWARD = 'MOVE_BACKWARD',
+  RUN_MODE = 'RUN_MODE',
   TEST_MODE = 'TEST_MODE',
+  MOVE_MODE = 'MOVE_MODE',
+  UPLOAD_PROJECT = 'UPLOAD_PROJECT',
+  CLOSE_CANVAS_ONLY_MODE = 'CLOSE_CANVAS_ONLY_MODE',
   PROTOTYPE_CLOSE_FULL_SCREEN = 'PROTOTYPE_CLOSE_FULL_SCREEN',
   PROTOTYPE_FULL_SCREEN_TOGGLE = 'PROTOTYPE_FULL_SCREEN_TOGGLE',
 }
@@ -54,22 +61,29 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.DELETE]: [SpecialKey.DELETE, SpecialKey.BACKSPACE],
   [Hotkey.ZOOM_IN]: [SpecialKey.EQUAL, `${SpecialKey.SHIFT}+${SpecialKey.EQUAL}`],
   [Hotkey.ZOOM_OUT]: ['-', `${SpecialKey.SHIFT}+-`],
+  [Hotkey.RUN_MODE]: 'r',
   [Hotkey.TEST_MODE]: 't',
+  [Hotkey.MOVE_MODE]: 'v',
   [Hotkey.ROOT_NODE]: 's',
   [Hotkey.SPOTLIGHT]: `${SpecialKey.SHIFT}+${SpecialKey.SPACE}`,
   [Hotkey.DUPLICATE]: [`${SpecialKey.CTRL}+d`, `${SpecialKey.META}+d`],
   [Hotkey.USER_SPEECH]: SpecialKey.SPACE,
   [Hotkey.DESIGN_PAGE]: '1',
   [Hotkey.LAUNCH_PAGE]: '2',
+  [Hotkey.SETTINGS_PAGE]: '4',
+  [Hotkey.INTEGRATION_PAGE]: '3',
   [Hotkey.MOVE_FORWARD]: SpecialKey.RIGHT,
   [Hotkey.SHOW_HIDE_UI]: [`${SpecialKey.CTRL}+\\`, `${SpecialKey.META}+\\`],
   [Hotkey.MOVE_BACKWARD]: SpecialKey.LEFT,
+  [Hotkey.UPLOAD_PROJECT]: [`${SpecialKey.CTRL}+u`, `${SpecialKey.META}+u`],
   [Hotkey.OPEN_CMS_MODAL]: 'm',
   [Hotkey.OPEN_COMMENTING]: 'c',
   [Hotkey.ADD_MARKUP_TEXT]: 'a',
   [Hotkey.ADD_MARKUP_IMAGE]: 'i',
+  [Hotkey.ADD_MARKUP_TEXT_V2]: 't',
   [Hotkey.CLOSE_CANVAS_MODE]: SpecialKey.ESC,
   [Hotkey.CLOSE_LEFT_SIDEBAR]: SpecialKey.ESC,
+  [Hotkey.CLOSE_CANVAS_ONLY_MODE]: SpecialKey.ESC,
   [Hotkey.TOGGLE_LEFT_SIDEBAR_LOCK]: ['/', '?'],
   [Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB]: [',', `${SpecialKey.SHIFT}+,`],
   [Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB]: ['.', `${SpecialKey.SHIFT}+.`],
@@ -108,7 +122,7 @@ const getHotkeyLabel = (hotkey: Hotkey): string => {
     label = platformLabel ?? label[0];
   }
 
-  return replaceSpecials(label.toUpperCase());
+  return replaceSpecials(label.toUpperCase().replace('+', ''));
 };
 
 export const HOTKEY_LABEL_MAP = Object.values(Hotkey).reduce<Record<Hotkey, string>>(

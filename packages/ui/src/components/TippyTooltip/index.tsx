@@ -1,20 +1,19 @@
 import React from 'react';
 import { Tooltip, TooltipProps } from 'react-tippy';
 
-import { IS_MAC, IS_TEST } from '../../config';
+import { IS_TEST } from '../../config';
 import { ClassName } from '../../styles/constants';
 import { HotkeyLabel } from './components';
 
-export type TippyTooltipProps = TooltipProps & {
+export interface TippyTooltipProps extends TooltipProps {
   hotkey?: string;
-  systemHotkey?: string;
-};
+}
 
 const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChildren<TippyTooltipProps>> = (
-  { html, title, disabled, children, hotkey, systemHotkey, ...props },
+  { html, title, disabled, children, hotkey, ...props },
   ref
 ) => {
-  const withHotkey = !!(hotkey || systemHotkey);
+  const withHotkey = !!hotkey;
 
   // eslint-disable-next-line xss/no-mixed-html
   return (
@@ -25,7 +24,7 @@ const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChild
         withHotkey ? (
           <>
             {html || title}
-            <HotkeyLabel>{systemHotkey ? `${IS_MAC ? '⌘' : 'Ctrl+'}${systemHotkey}` : hotkey}</HotkeyLabel>
+            <HotkeyLabel>{hotkey}</HotkeyLabel>
           </>
         ) : (
           html

@@ -2,13 +2,14 @@ import { BoxFlex, NestedMenu, Text, useCache } from '@voiceflow/ui';
 import React from 'react';
 import { Popper } from 'react-popper';
 
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
-import { CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
+import { CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as UIDuck from '@/ducks/ui';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useModals, usePermission } from '@/hooks';
+import { useFeature, useModals, usePermission } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
@@ -63,6 +64,15 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
   [CanvasAction.TOGGLE_UI]: (_, { toggleCanvasOnly }) => toggleCanvasOnly(),
 
+  [CanvasAction.ZOOM_IN]: (_, { engine }) => {
+    engine.canvas?.applyTransition();
+    engine.canvas?.zoomIn(CANVAS_ZOOM_DELTA);
+  },
+  [CanvasAction.ZOOM_OUT]: (_, { engine }) => {
+    engine.canvas?.applyTransition();
+    engine.canvas?.zoomOut(CANVAS_ZOOM_DELTA);
+  },
+
   [CanvasAction.ADD_TEXT]: (_, { markup }) => markup.startTextCreation(),
 
   [CanvasAction.ADD_IMAGE]: (_, { markup }) => markup.triggerImagesUpload(),
@@ -88,6 +98,8 @@ const ContextMenu: React.FC<ConnectedContextMenuProps> = ({ toggleCanvasOnly, is
   const clipboard = React.useContext(ClipboardContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
 
+  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
+
   const upgradeModal = useModals(ModalType.PAYMENT);
 
   const [canUseCommenting] = usePermission(Permission.COMMENTING);
@@ -102,6 +114,7 @@ const ContextMenu: React.FC<ConnectedContextMenuProps> = ({ toggleCanvasOnly, is
     canUseCommenting,
     toggleCanvasOnly,
     showHintFeatures,
+    navigationRedesign: !!navigationRedesign.isEnabled,
   });
 
   const options = React.useMemo(() => {
@@ -170,7 +183,7 @@ const ContextMenu: React.FC<ConnectedContextMenuProps> = ({ toggleCanvasOnly, is
             getOptionKey={getOptionKey}
             getOptionValue={getOptionValue}
             getOptionLabel={getOptionLabel}
-            maxVisibleItems={7}
+            maxVisibleItems={8}
             renderOptionLabel={(option: ContextMenuOption<CanvasAction> | ContextMenuOption<BlockVariant>) => (
               <BoxFlex width="100%" justifyContent="space-between">
                 <Text>{option.label}</Text>

@@ -30,3 +30,5 @@ export const activeProjectLinkTypeSelector = createSelector([activeProjectSelect
 export const isActiveProjectLiveSelector = createSelector([activeProjectSelector], (project) => !!project?.isLive);
 
 export const isStraightLinksSelector = createSelector([activeProjectLinkTypeSelector], (linkType) => linkType === ProjectLinkType.STRAIGHT);
+
+export const projectsCountSelector = createSelector([allProjectsSelector], (projects) => projects.length);

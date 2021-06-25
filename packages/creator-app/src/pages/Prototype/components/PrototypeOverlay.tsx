@@ -1,18 +1,19 @@
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
+import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Project from '@/ducks/project';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useTheme } from '@/hooks';
+import { useFeature, useTheme } from '@/hooks';
 import PrototypeDisplaySettings from '@/pages/Prototype/components/PrototypeDisplaySettings';
 import PrototypeSettings from '@/pages/Prototype/components/PrototypeSettings';
 import PrototypeSidebar from '@/pages/Prototype/components/PrototypeSidebar';
 import PrototypeVariableSettings from '@/pages/Prototype/components/PrototypeVariableSettings';
 import PrototypeVisualCanvas from '@/pages/Prototype/components/PrototypeVisualCanvas';
+import { PrototypeIconMenu } from '@/pages/Skill/components/Sidebar/components';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
-import PrototypeMenu from '@/pages/Skill/menus/PrototypeMenu';
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
@@ -22,7 +23,7 @@ const PrototypeOverlay: React.FC<ConnectedDiagramProps> = ({ platform, prototype
   const isPrototypingMode = usePrototypingMode();
 
   const widthRef = React.useRef(0);
-
+  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
   const isCanvasVisible = !isPrototypingMode || prototypeMode !== Prototype.PrototypeMode.DISPLAY;
 
   React.useEffect(() => {
@@ -59,12 +60,8 @@ const PrototypeOverlay: React.FC<ConnectedDiagramProps> = ({ platform, prototype
   return (
     <>
       {/* prototyping mode */}
-      {isPrototypingMode && (
-        <>
-          <PrototypeSidebar open />
-          <PrototypeMenu open />
-        </>
-      )}
+      {isPrototypingMode && <PrototypeSidebar open />}
+      {isPrototypingMode && !navigationRedesign.isEnabled && <PrototypeIconMenu />}
 
       {isPrototypingMode && (
         <>
@@ -73,7 +70,7 @@ const PrototypeOverlay: React.FC<ConnectedDiagramProps> = ({ platform, prototype
           <Drawer
             open={isPrototypeSidebarOpened}
             width={widthRef.current}
-            offset={theme.components.subMenu.width}
+            offset={theme.components.sidebarIconMenu.width}
             direction={SlideOutDirection.RIGHT}
           >
             {isPrototypeVariables && <PrototypeVariableSettings />}

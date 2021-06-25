@@ -23,7 +23,7 @@ const UploadButton: React.FC<UploadButtonProps> = ({ isJobActive, onClick }) => 
 
   return (
     <TippyTooltip title={getUploadMessage(platform)} position="bottom">
-      <IconButton preventFocusStyle variant={IconButtonVariant.ACTION} icon="loader" large onClick={onClick} active={isJobActive} />
+      <IconButton variant={IconButtonVariant.ACTION} icon="loader" large onClick={onClick} active={isJobActive} />
     </TippyTooltip>
   );
 };

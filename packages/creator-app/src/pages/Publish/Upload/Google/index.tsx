@@ -11,13 +11,14 @@ import WaitProjectStage from './WaitProjectStage';
 
 type GoogleProps = {
   export?: boolean;
+  setMultiProjects?: (value: boolean) => void;
 };
 
-export const Google: React.FC<GoogleProps> = (props) => {
+export const Google: React.FC<GoogleProps> = ({ export: isExport, setMultiProjects }) => {
   const exportContextValue = React.useContext(ExportContext)!;
   const publishContextValue = React.useContext(PublishContext)!;
 
-  const contextValue = props.export ? exportContextValue : publishContextValue;
+  const contextValue = isExport ? exportContextValue : publishContextValue;
 
   switch (contextValue.job?.stage.type) {
     case GoogleStageType.IDLE:
@@ -29,7 +30,9 @@ export const Google: React.FC<GoogleProps> = (props) => {
     case GoogleStageType.SUCCESS:
       return <SuccessStage stage={contextValue.job.stage} cancel={contextValue.cancel} />;
     case GoogleStageType.WAIT_PROJECT:
-      return <WaitProjectStage updateCurrentStage={contextValue.updateCurrentStage} cancel={contextValue.cancel} />;
+      return (
+        <WaitProjectStage updateCurrentStage={contextValue.updateCurrentStage} cancel={contextValue.cancel} setMultiProjects={setMultiProjects} />
+      );
     case GoogleStageType.WAIT_INVOCATION_NAME:
       return <WaitInvocationName stage={contextValue.job.stage} updateCurrentStage={contextValue.updateCurrentStage} />;
     default:

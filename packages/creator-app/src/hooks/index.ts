@@ -21,6 +21,7 @@ export * from './microphone';
 export * from './modals';
 export * from './mouse';
 export * from './permission';
+export * from './project';
 export * from './raf';
 export * from './reducer';
 export * from './redux';

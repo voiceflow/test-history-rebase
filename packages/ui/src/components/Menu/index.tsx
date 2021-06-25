@@ -1,19 +1,34 @@
+import composeRefs from '@seznam/compose-react-refs';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
-import { useCombinedRefs, useDidUpdateEffect, useTheme } from '../../hooks';
+import { useTheme } from '../../hooks';
 import { FadeDownDelayedContainer } from '../../styles/animations';
 import { ClassName } from '../../styles/constants';
 import { Either } from '../../types';
 import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '../../utils';
 import { FlexLabel } from '../Flex';
-import { ButtonContainer, Container, getItemsContainer, Item, itemStyles, MAX_VISIBLE_ITEMS } from './components';
+import { ButtonContainer, Container, getItemsContainer, Item, itemStyles, MAX_VISIBLE_ITEMS, MenuItemNote } from './components';
 
 export { Container as MenuContainer, Item as MenuItem, itemStyles as menuItemStyles };
 
-export type MenuOption<T> = T extends undefined
-  ? { value?: never; label: React.ReactNode; onClick?: (e: React.MouseEvent) => void }
-  : { value: T; label: React.ReactNode; onClick?: (e: React.MouseEvent) => void };
+interface BaseMenuOption {
+  key?: string;
+  note?: React.ReactNode;
+  label: React.ReactNode;
+  divider?: boolean;
+  onClick?: (e: React.MouseEvent) => void;
+}
+
+interface MenuOptionWithValue<T> extends BaseMenuOption {
+  value: T;
+}
+
+interface MenuOptionWithoutValue extends BaseMenuOption {
+  value?: never;
+}
+
+export type MenuOption<T> = T extends undefined ? MenuOptionWithoutValue : MenuOptionWithValue<T>;
 
 export type MenuProps<T> = {
   id?: string;
@@ -41,13 +56,13 @@ export type MenuRefElement = HTMLUListElement;
 const Menu = <T,>(
   {
     id,
+    width,
     options,
     disabled,
     onSelect,
     children,
     maxHeight,
     fullWidth,
-    width,
     searchable,
     scrollbarsRef,
     maxVisibleItems = MAX_VISIBLE_ITEMS,
@@ -58,8 +73,7 @@ const Menu = <T,>(
   }: MenuProps<T>,
   ref: Parameters<React.ForwardRefRenderFunction<MenuRefElement>>[1]
 ) => {
-  const menuRef = useCombinedRefs(ref);
-  const [visibleOptions, setVisibleOptions] = React.useState(options || []);
+  const menuRef = React.useRef<MenuRefElement>(null);
   const scrollBarWidth = React.useMemo(() => getScrollbarWidth(), []);
   const theme = useTheme();
 
@@ -69,12 +83,9 @@ const Menu = <T,>(
       onSelect?.(value!);
     });
 
-  useDidUpdateEffect(() => {
-    setVisibleOptions(options || []);
-  }, [options]);
-
   React.useEffect(() => {
     const wheelCallback = (event: WheelEvent) => event.stopImmediatePropagation();
+
     const mouseDownCallback = (event: MouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
@@ -84,6 +95,7 @@ const Menu = <T,>(
 
     node?.addEventListener('wheel', wheelCallback, { passive: true });
     node?.addEventListener('mousedown', mouseDownCallback);
+
     return () => {
       node?.removeEventListener('wheel', wheelCallback);
       node?.removeEventListener('mousedown', mouseDownCallback);
@@ -93,7 +105,7 @@ const Menu = <T,>(
   return (
     <Container
       id={id}
-      ref={menuRef}
+      ref={composeRefs(ref, menuRef)}
       className={ClassName.MENU}
       fullWidth={fullWidth}
       width={width}
@@ -116,9 +128,10 @@ const Menu = <T,>(
           hideTracksWhenNotNeeded
         >
           {children ||
-            visibleOptions.map(({ value, label, onClick }, index) => (
-              <Item key={`${index}-${label}`} onClick={onItemClick(value, onClick)}>
+            options?.map(({ key, value, note, label, divider, onClick }, index) => (
+              <Item key={key || `${index}-${label}`} divider={divider} onClick={onItemClick(value, onClick)}>
                 <FlexLabel>{label || String(value)}</FlexLabel>
+                {!!note && <MenuItemNote>{note}</MenuItemNote>}
               </Item>
             ))}
         </Scrollbars>
@@ -133,7 +146,7 @@ const Menu = <T,>(
   );
 };
 
-// The only way I found to use generics with forwardRef
+// The only way we found to use generics with forwardRef
 const forwardRef = (
   render: (
     props: MenuProps<any>,

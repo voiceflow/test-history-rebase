@@ -11,6 +11,15 @@ export type ItemContainerProps = {
   isContextMenuOpen?: boolean;
 };
 
+export const activeStyles = css`
+  cursor: default;
+
+  &:before {
+    border-color: #dfe3ed;
+    opacity: 1;
+  }
+`;
+
 const ItemContainer = styled(FlexApart)<ItemContainerProps>`
   width: 100%;
   height: 100%;
@@ -46,16 +55,7 @@ const ItemContainer = styled(FlexApart)<ItemContainerProps>`
       }
     `}
 
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      cursor: default;
-
-      &:before {
-        border-color: #dfe3ed;
-        opacity: 1;
-      }
-    `}
+  ${({ isActive }) => isActive && activeStyles}
 
   ${({ isContextMenuOpen }) =>
     isContextMenuOpen &&

@@ -60,7 +60,7 @@ const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
       <AddTeamMember errors={errors} onUpdate={onMemberUpdate} collaborators={collaborators} />
 
       <FlexCenter column style={{ marginTop: '25px' }}>
-        <Button disabled={!validMembers.length || hasErrors || sendingRequests} variant="primary" onClick={onContinue}>
+        <Button disabled={!validMembers.length || hasErrors || sendingRequests} onClick={onContinue}>
           {sendingRequests ? <SvgIcon icon="publishSpin" size={24} spin /> : 'Send Invites'}
         </Button>
 

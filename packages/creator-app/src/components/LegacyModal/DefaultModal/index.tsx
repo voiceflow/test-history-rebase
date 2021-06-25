@@ -1,4 +1,4 @@
-import { Button } from '@voiceflow/ui';
+import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { Modal, ModalBody, ModalFooter, ModalHeader } from '../components';
@@ -32,7 +32,7 @@ const DefaultModal: React.FC<DefaultModalProps> = ({ open, toggle, header, conte
         {close_button_text ? (
           <Button onClick={toggle}>{close_button_text}</Button>
         ) : (
-          <Button variant="tertiary" onClick={toggle}>
+          <Button variant={ButtonVariant.TERTIARY} onClick={toggle}>
             Close
           </Button>
         )}

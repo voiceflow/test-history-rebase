@@ -1,14 +1,23 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
+import { FadeLeft } from '@/styles/animations';
 
 export type ContainerProps = {
   error: boolean;
+  inline?: boolean;
 };
 
 const Container = styled.div<ContainerProps>`
   border-bottom: 1px solid #eaeff4;
-  padding: ${({ error }) => (error ? '0px 32px 0px 0px' : '0px 32px 16px 0px')};
-  padding-top: 0;
-  margin: 0;
+  padding: 0 32px;
+  padding-bottom: ${({ error }) => (error ? 0 : 16)}px;
+
+  ${({ inline }) =>
+    inline &&
+    css`
+      padding-top: 24px;
+
+      ${FadeLeft}
+    `}
 `;
 
 export default Container;

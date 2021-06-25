@@ -1,38 +1,58 @@
-import { Button, ButtonVariant, Link } from '@voiceflow/ui';
+import { Button, ButtonVariant, Link, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
-import { useModals, usePermission } from '@/hooks';
+import * as Prototype from '@/ducks/prototype';
+import * as Session from '@/ducks/session';
+import { useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Container, DropdownContainer } from '@/pages/Collaborators/components/InviteByLink/components';
 import { Identifier } from '@/styles/constants';
+import { copy } from '@/utils/clipboard';
 
-type SharePrototypeProps = {
-  link: string | null;
-  onClick: () => void;
-  isAllowed: boolean;
-  onRenderPrototype?: () => void;
-};
+interface SharePrototypeProps {
+  inline?: boolean;
+  compile?: boolean;
+}
 
-const SharePrototype: React.FC<SharePrototypeProps> = ({ link, onClick, isAllowed, onRenderPrototype }) => {
-  const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
+const SharePrototype: React.FC<SharePrototypeProps> = ({ inline, compile }) => {
+  const versionID = useSelector(Session.activeVersionIDSelector);
+  const compilePrototype = useDispatch(Prototype.compilePrototype);
+
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
+  const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
+  const [trackingEvents] = useTrackingEvents();
 
-  const handleCopyLink = () => {
-    if (!isAllowed) {
-      openPaymentsModal();
-    } else {
-      onClick();
+  const testableLink = canSharePrototype ? `${window.location.origin}/prototype/${versionID}` : null;
+
+  const onRenderPrototype = () => {
+    if (compile) {
+      compilePrototype({ aborted: false });
     }
+  };
+
+  const onCopyLink = () => {
+    if (!canSharePrototype) {
+      openPaymentsModal();
+      return;
+    }
+
+    onRenderPrototype();
+
+    copy(testableLink);
+
+    trackingEvents.trackTestableLinkCopy();
+
+    toast.success('Link copied to clipboard');
   };
 
   return (
     <Container>
       <DropdownContainer>
         <span>
-          {canSharePrototype && link ? (
-            <Link href={link} onClick={onRenderPrototype}>
+          {canSharePrototype && testableLink ? (
+            <Link href={testableLink} onClick={onRenderPrototype}>
               Open link in new tab
             </Link>
           ) : (
@@ -40,11 +60,17 @@ const SharePrototype: React.FC<SharePrototypeProps> = ({ link, onClick, isAllowe
           )}
         </span>
       </DropdownContainer>
-      <Button id={Identifier.SHARE_COPY_LINK_BUTTON} variant={ButtonVariant.PRIMARY} icon={isAllowed ? 'link' : null} onClick={handleCopyLink}>
-        <span>{isAllowed ? 'Copy Link' : 'Upgrade'}</span>
+
+      <Button
+        id={Identifier.SHARE_COPY_LINK_BUTTON}
+        variant={ButtonVariant.PRIMARY}
+        icon={!inline && canSharePrototype ? 'link' : null}
+        onClick={onCopyLink}
+      >
+        <span>{canSharePrototype ? 'Copy Link' : 'Upgrade'}</span>
       </Button>
     </Container>
   );
 };
 
-export default SharePrototype as React.FC<SharePrototypeProps>;
+export default SharePrototype;

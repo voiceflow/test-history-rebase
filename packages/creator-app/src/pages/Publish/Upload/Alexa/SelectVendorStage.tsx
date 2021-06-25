@@ -10,9 +10,9 @@ import { isReady } from '@/utils/job';
 
 import { ProjectItem, StageContainer } from '../components';
 
-type SelectVendorStageProps = {
+interface SelectVendorStageProps {
   setVendorSelected: (vendorSelected: boolean) => void;
-};
+}
 
 const SelectVendorStage: React.FC<SelectVendorStageProps & ConnectedSelectVendorStageProps> = ({ setVendorSelected, vendors, activateVendor }) => {
   const [trackingEvents] = useTrackingEvents();

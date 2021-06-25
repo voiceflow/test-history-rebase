@@ -5,20 +5,27 @@ import { ExportContext, PublishContext } from '@/pages/Skill/contexts';
 
 import { LoaderStage, ProgressStage } from '../components';
 import ErrorStage from './ErrorStage';
+import SelectVendorStage from './SelectVendorStage';
 import SuccessStage from './SuccessStage';
 import WaitInvocationName from './WaitInvocationName';
 import WaitVendorsStage from './WaitVendorsStage';
 
-type AlexaProps = {
+interface AlexaProps {
   export?: boolean;
   loader?: boolean;
-};
+  showSelectVendor?: boolean;
+  setVendorSelected?: (vendorSelected: boolean) => void;
+}
 
-export const Alexa: React.FC<AlexaProps> = (props) => {
+export const Alexa: React.FC<AlexaProps> = ({ export: isExport, loader, showSelectVendor, setVendorSelected }) => {
   const exportContextValue = React.useContext(ExportContext)!;
   const publishContextValue = React.useContext(PublishContext)!;
 
-  const contextValue = props.export ? exportContextValue : publishContextValue;
+  const contextValue = isExport ? exportContextValue : publishContextValue;
+
+  if (showSelectVendor && setVendorSelected) {
+    return <SelectVendorStage setVendorSelected={setVendorSelected} />;
+  }
 
   switch (contextValue.job?.stage.type) {
     case AlexaStageType.IDLE:
@@ -27,7 +34,7 @@ export const Alexa: React.FC<AlexaProps> = (props) => {
       return (
         <>
           <ProgressStage progress={contextValue.job.stage.data.progress}>{contextValue.job.stage.data.message}</ProgressStage>
-          {props.loader && <LoaderStage />}
+          {loader && <LoaderStage />}
         </>
       );
     case AlexaStageType.ERROR:

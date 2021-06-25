@@ -1,8 +1,14 @@
-import { Button, SecondaryButtonIcon } from '@voiceflow/ui';
+import { Button, ButtonVariant, SecondaryButtonIcon } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-const LoadingButton = styled(Button)`
+const LoadingButton = styled(Button).attrs({
+  icon: 'publishSpin',
+  square: true,
+  variant: ButtonVariant.SECONDARY,
+  iconProps: { spin: true, size: 20 },
+})`
+  pointer-events: none;
   margin-top: 1px;
   pointer-events: none;
 

@@ -29,7 +29,7 @@ export type PrototypeSidebarProps = {
 const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSidebarProps> = ({
   open,
   saveActiveDiagram,
-  renderPrototype,
+  compilePrototype,
   isMuted,
   updatePrototype,
   status,
@@ -82,7 +82,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
       // eslint-disable-next-line promise/catch-or-return
       saveActiveDiagram()
         .catch(Sentry.error)
-        .then(() => renderPrototype(renderAbortControl))
+        .then(() => compilePrototype(renderAbortControl))
         .then(disableLoading);
     } else {
       disableLoading();
@@ -159,7 +159,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  renderPrototype: PrototypeDuck.renderPrototype,
+  compilePrototype: PrototypeDuck.compilePrototype,
   updatePrototype: PrototypeDuck.updatePrototype,
   saveActiveDiagram: Diagram.saveActiveDiagram,
 };

@@ -43,7 +43,7 @@ const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, saveProfil
         <RoleSelect userRole={userRole} setUserRole={setUserRole} />
       </FieldsContainer>
       <FlexCenter>
-        <Button disabled={!canContinue} variant="primary" onClick={onContinue}>
+        <Button disabled={!canContinue} onClick={onContinue}>
           Join Workspace
         </Button>
       </FlexCenter>

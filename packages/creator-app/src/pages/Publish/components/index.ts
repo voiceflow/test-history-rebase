@@ -1,22 +1,18 @@
-import { Box, BoxFlex, BoxFlexCenter, Text } from '@voiceflow/ui';
+import { BoxFlex, BoxFlexCenter } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
-import THEME from '@/styles/theme';
+import { css, styled } from '@/hocs';
 
-export const SectionCard = styled(Box)`
-  border-radius: 5px;
-  box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.08), 0 0 1px 1px rgba(17, 49, 96, 0.08);
-  background-color: white;
-  padding: 24px;
+export { default as Section } from './Section';
 
-  ${Text} {
-    color: ${THEME.colors.secondary};
-  }
-`;
-
-export const ContentContainer = styled(BoxFlex)`
+export const ContentContainer = styled(BoxFlex)<{ redesignEnabled?: boolean | null }>`
   flex-direction: column;
   padding: 20px;
+
+  ${({ redesignEnabled }) =>
+    redesignEnabled &&
+    css`
+      align-items: flex-start;
+    `}
 `;
 
 export const ContentSection = styled(BoxFlexCenter)`

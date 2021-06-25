@@ -23,13 +23,13 @@ interface OptionDetail {
 
 const OPTION_DETAILS: Record<PrototypeLayout, OptionDetail> = {
   [PrototypeLayout.TEXT_DIALOG]: {
-    title: 'Text and Transcript',
+    title: 'Chat Input',
     description: (platform) => `Testers will use text and ${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
     activeImg: textAndDialogGraphic,
     inactiveImg: textAndDialogGraphicInactive,
   },
   [PrototypeLayout.VOICE_DIALOG]: {
-    title: 'Voice and Transcript',
+    title: 'Voice Input',
     description: (platform) => `Testers will use voice and ${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
     activeImg: textAndDialogGraphic,
     inactiveImg: textAndDialogGraphic,
@@ -92,7 +92,6 @@ const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ 
         )}
         border="1px solid #d4d9e6"
         placement="bottom-start"
-        autoDismiss
         text={
           <PrototypeLayoutItem
             src={OPTION_DETAILS[localLayout].activeImg}

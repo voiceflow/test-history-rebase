@@ -1,37 +1,43 @@
+import React from 'react';
+
 import { css, styled } from '../../../styles';
-import { BUTTON_HEIGHT } from '../styles';
+import { ButtonVariant } from '../constants';
 import BaseButton, { BaseButtonProps } from './BaseButton';
+
+export const BUTTON_HEIGHT = 42;
+
+export interface ButtonContainerProps extends BaseButtonProps, React.ButtonHTMLAttributes<HTMLButtonElement> {
+  square?: boolean;
+  nowrap?: boolean;
+  variant?: ButtonVariant;
+  isLoading?: boolean;
+  fullWidth?: boolean;
+}
 
 export const buttonContainerStyles = css<ButtonContainerProps>`
   height: ${BUTTON_HEIGHT}px;
+  border-radius: 90px;
   font-size: 15px;
   line-height: 18px;
-  border-radius: 90px;
 
-  ${({ fullWidth, square }) => {
+  width: ${({ fullWidth, square }) => {
     if (square) {
-      return css`
-        width: ${BUTTON_HEIGHT}px;
-      `;
+      return `${BUTTON_HEIGHT}px`;
     }
+
     if (fullWidth) {
-      return css`
-        width: 100%;
-      `;
+      return '100%';
     }
-    return css`
-      width: auto;
-    `;
+
+    return 'auto';
   }};
 
-  ${({ nowrap }) => nowrap && 'white-space: nowrap;'}
+  ${({ nowrap }) =>
+    nowrap &&
+    css`
+      white-space: nowrap;
+    `}
 `;
-
-export type ButtonContainerProps = BaseButtonProps & {
-  fullWidth?: boolean;
-  square?: boolean;
-  nowrap?: boolean;
-};
 
 const ButtonContainer = styled(BaseButton)<ButtonContainerProps>`
   ${buttonContainerStyles}

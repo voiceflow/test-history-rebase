@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import validUrl from 'valid-url';
 
 import { ControlledGuidedSteps as GuidedSteps, GuidedStepsWrapper } from '@/components/GuidedSteps';
+import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
 import * as Product from '@/ducks/product';
@@ -12,7 +13,7 @@ import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
-import { useSetup } from '@/hooks';
+import { useFeature, useSetup } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 import BasicSkillInfoForm, { BasicSkillInfoDescription } from './components/BasicSkillInfoForm';
@@ -77,6 +78,7 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps & ConnectedPublishAmazo
   const [saving, setSaving] = React.useState(false);
   const [idCollapse, setIdCollapse] = React.useState(false);
   const validationContext = React.useContext(ValidationContext);
+  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
 
   useSetup(async () => {
     await loadVersion(versionID!);
@@ -163,7 +165,7 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps & ConnectedPublishAmazo
     <>
       <div className="subheader-page-container">
         <div>
-          <GuidedStepsWrapper className="pb-0">
+          <GuidedStepsWrapper centred={!navigationRedesign.isEnabled} className="pb-0">
             {inReview && (
               <div className="alert alert-success" role="alert">
                 <div className="d-flex justify-content-between align-items-center">
@@ -207,6 +209,7 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps & ConnectedPublishAmazo
           <form onSubmit={preventDefault()}>
             <GuidedSteps
               blocks={BLOCKS}
+              centred={!navigationRedesign.isEnabled}
               checkStep={checkValidStep}
               onComplete={validateForm}
               submitText={

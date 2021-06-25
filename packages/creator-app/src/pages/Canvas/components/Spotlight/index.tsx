@@ -7,8 +7,8 @@ import { BlockType } from '@/constants';
 import { useFeature, useTrackingEvents } from '@/hooks';
 import { NodeData } from '@/models';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
+import { getSections, MenuStep } from '@/pages/Skill/components/DesignMenu/components/Steps/constants';
 import { PlatformContext } from '@/pages/Skill/contexts';
-import { getSections, MenuStep } from '@/pages/Skill/menus/DesignMenu/components/Steps/constants';
 import { Identifier } from '@/styles/constants';
 
 import { Container, Select } from './components';

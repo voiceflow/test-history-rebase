@@ -1,9 +1,8 @@
-import { Portal } from '@voiceflow/ui';
+import { Portal, useDismissable } from '@voiceflow/ui';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
 import ColorPicker from '@/components/ColorPicker';
-import { useDismissable } from '@/hooks';
 
 import { ColorPreview } from './components';
 
@@ -26,7 +25,7 @@ const ColorSelect: React.FC<ColorSelectProps> = ({
 }) => {
   const popperRef = React.useRef<HTMLElement>(null);
 
-  const [open, toggleOpen] = useDismissable(false, { onClose, autoDismiss: true, ref: popperRef, dismissEvent: 'mousedown' });
+  const [open, toggleOpen] = useDismissable(false, { onClose, ref: popperRef, dismissEvent: 'mousedown' });
 
   const onOpen = () => {
     if (!disabled) {

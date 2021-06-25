@@ -4,7 +4,7 @@ import { css, styled } from '@/hocs';
 
 import { FAN_DIRECTION } from '../constants';
 
-const EMOJI_SIZE = 30;
+const EMOJI_SIZE = 28;
 
 const determineInitialOffset = (fanDirection: FAN_DIRECTION) => {
   switch (fanDirection) {
@@ -72,7 +72,7 @@ export const Option = styled.div<{ fanDirection: FAN_DIRECTION; number: number; 
       ${determineTransition(fanDirection)}
     `}
   position: absolute;
-  transition-timing-function: ease, cubic-bezier(0.32, 1.85, 0.55, 0.67);
+  transition-timing-function: linear, cubic-bezier(0.32, 1.85, 0.54, 1.85);
   ${({ fanDirection }) =>
     css`
       ${determineInitialPosition(fanDirection)}
@@ -81,7 +81,8 @@ export const Option = styled.div<{ fanDirection: FAN_DIRECTION; number: number; 
   pointer-events: none;
   opacity: 0.6;
   :hover {
-    transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease;
+    transition-delay: 0.15ms;
     transform: scale(1.3);
     opacity: 1;
   }

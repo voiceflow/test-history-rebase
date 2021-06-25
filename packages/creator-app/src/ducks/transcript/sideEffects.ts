@@ -29,7 +29,7 @@ export const DUMMY_DATA = [
     device: Device.DESKTOP,
     os: OperatingSystem.MAC,
     browser: Browser.FIREFOX,
-    notes: 'Awsome stuff',
+    notes: 'Awesome stuff',
     createdAt: 0,
     name: 'Mike Hood',
     date: '1:79 am, May 2st',

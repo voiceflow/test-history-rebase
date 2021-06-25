@@ -5,8 +5,8 @@ import { useDebouncedCallback } from '@/hooks';
 
 import { Container, Option, OptionsContainer, PlaceholderContainer } from './components';
 import { FAN_DIRECTION } from './constants';
-// Shouldn't change this, the component isnt designed in a way where this can be modified easily yet
-const EMOJI_SIZE = 24;
+
+const EMOJI_SIZE = 23;
 
 export enum EMOJI_OPTION {
   HAPPY = 'happy',
@@ -33,7 +33,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ onChange, value, fanDirection
   const [isHovering, setIsHovering] = React.useState(false);
   const [currentEmotion, setCurrentEmotion] = React.useState(value || EMOJI_OPTION.DEFAULT);
   const onHover = useDebouncedCallback(
-    100,
+    10,
     () => {
       setIsHovering(true);
     },
@@ -45,7 +45,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ onChange, value, fanDirection
   }, [value]);
 
   const onHoverLeave = useDebouncedCallback(
-    100,
+    10,
     () => {
       setIsHovering(false);
     },

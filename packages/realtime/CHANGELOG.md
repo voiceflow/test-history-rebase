@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.2.0...@voiceflow/realtime@1.3.0) (2021-06-28)
+
+
+### Features
+
+* introduce logux store and atomic actions ff (VF-942) ([#3591](https://github.com/voiceflow/creator-app/issues/3591)) ([d43a5b0](https://github.com/voiceflow/creator-app/commit/d43a5b01b23cd4a28330c85a423df6c7bd5175ae))
+
+
+
+
+
 # [1.2.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.1.0...@voiceflow/realtime@1.2.0) (2021-06-24)
 
 

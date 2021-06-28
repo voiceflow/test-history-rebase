@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.411.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.410.0...@voiceflow/creator-app@1.411.0) (2021-06-28)
+
+
+### Features
+
+* more transcript redux connections, delete UX (VF-000) ([#3578](https://github.com/voiceflow/creator-app/issues/3578)) ([f401f8d](https://github.com/voiceflow/creator-app/commit/f401f8df8e6263d1b013c34e567c030829fdb4a9))
+
+
+
+
+
 # [1.410.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.409.0...@voiceflow/creator-app@1.410.0) (2021-06-25)
 
 

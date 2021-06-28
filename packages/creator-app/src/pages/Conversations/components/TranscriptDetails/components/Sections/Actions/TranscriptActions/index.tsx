@@ -1,7 +1,9 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { addTag, currentSelectedTranscriptSelector, currentTranscriptIDSelector, removeTag } from '@/ducks/transcript';
+import * as Modal from '@/ducks/modal';
+import * as Transcript from '@/ducks/transcript';
+import { useDispatch } from '@/hooks';
 import { SystemTag } from '@/models';
 import THEME from '@/styles/theme';
 
@@ -9,20 +11,31 @@ import { Container } from './components';
 import ActionButton from './components/ActionButton';
 
 const TranscriptActions: React.FC = () => {
-  const currentTranscript = useSelector(currentSelectedTranscriptSelector);
-  const currentTranscriptID = useSelector(currentTranscriptIDSelector);
-  const dispatch = useDispatch();
+  const currentTranscript = useSelector(Transcript.currentSelectedTranscriptSelector);
+  const currentTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
+  const deleteTranscript = useDispatch(Transcript.deleteTranscript);
+  const confirmDelete = useDispatch(Modal.setConfirm);
 
   const { tags } = currentTranscript || {};
   const isSaved = !!tags?.includes(SystemTag.SAVED);
   const isReviewed = !!tags?.includes(SystemTag.REVIEWED);
+  const removeTag = useDispatch(Transcript.removeTag);
+  const addTag = useDispatch(Transcript.addTag);
 
   const handleReviewedClick = () => {
-    isReviewed ? dispatch(removeTag(currentTranscriptID!, SystemTag.REVIEWED)) : dispatch(addTag(currentTranscriptID!, SystemTag.REVIEWED));
+    isReviewed ? removeTag(currentTranscriptID!, SystemTag.REVIEWED) : addTag(currentTranscriptID!, SystemTag.REVIEWED);
   };
 
   const handleSavedClick = () => {
-    isSaved ? dispatch(removeTag(currentTranscriptID!, SystemTag.SAVED)) : dispatch(addTag(currentTranscriptID!, SystemTag.SAVED));
+    isSaved ? removeTag(currentTranscriptID!, SystemTag.SAVED) : addTag(currentTranscriptID!, SystemTag.SAVED);
+  };
+
+  const handleDelete = () => {
+    confirmDelete({
+      warning: false,
+      text: 'Are you sure you want to delete this conversation?',
+      confirm: () => deleteTranscript(currentTranscript.id),
+    });
   };
 
   return (
@@ -42,7 +55,7 @@ const TranscriptActions: React.FC = () => {
         label="Save for Later"
         color={isSaved ? THEME.colors.red : THEME.colors.tertiary}
       />
-      <ActionButton onClick={() => alert('Deleted')} icon="garbage" label="Delete" color={THEME.colors.tertiary} />
+      <ActionButton onClick={handleDelete} icon="garbage" label="Delete" color={THEME.colors.tertiary} />
     </Container>
   );
 };

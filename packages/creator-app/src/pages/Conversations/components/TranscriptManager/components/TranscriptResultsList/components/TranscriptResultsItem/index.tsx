@@ -2,10 +2,12 @@ import { Dropdown } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
+import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
+import * as Transcript from '@/ducks/transcript';
 import { connect } from '@/hocs';
-import { usePermission } from '@/hooks';
+import { useDispatch, usePermission } from '@/hooks';
 import { Sentiment, SentimentArray, SystemTag } from '@/models';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -25,13 +27,26 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
 
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [canDeleteTranscript] = usePermission(Permission.DELETE_TRANSCRIPT);
+  const markAsRead = useDispatch(Transcript.markAsRead);
+  const deleteTranscript = useDispatch(Transcript.deleteTranscript);
+  const confirmDelete = useDispatch(Modal.setConfirm);
+
+  React.useEffect(() => {
+    if (active && unread) {
+      markAsRead(id);
+    }
+  }, [active]);
 
   const goToTarget = () => {
     goToTargetTranscript(id);
   };
 
   const onDelete = () => {
-    alert('Deleted');
+    confirmDelete({
+      warning: false,
+      text: 'Are you sure you want to delete this conversation?',
+      confirm: () => deleteTranscript(id),
+    });
   };
 
   const onExport = () => {
@@ -59,7 +74,7 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
             onClick: onExport,
           },
         ];
-  }, [canDeleteTranscript]);
+  }, [canDeleteTranscript, id]);
 
   return (
     <Container id={id} menuOpen={menuOpen} active={active} onClick={goToTarget}>

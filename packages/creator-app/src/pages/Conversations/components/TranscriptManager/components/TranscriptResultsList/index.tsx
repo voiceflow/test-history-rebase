@@ -26,7 +26,7 @@ const TranscriptResultsList = ({ transcriptList }: TranscriptResultsList) => {
               autoHeight
               rowRenderer={({ key, index }) => {
                 const data = transcriptList[index];
-                return <TranscriptResultsItem key={key} data={transcriptList[index]} active={currentTranscriptID === data.id} />;
+                return <TranscriptResultsItem key={key} data={data} active={currentTranscriptID === data.id} />;
               }}
               height={20}
             />

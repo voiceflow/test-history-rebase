@@ -68,9 +68,9 @@ export const ReadStatusDot = styled.div<{ read?: boolean }>`
   ${({ read = false }) =>
     read
       ? css`
-          background-color: ${COLOR_BLUE};
+          background-color: #becedc;
         `
       : css`
-          background-color: #becedc;
+          background-color: ${COLOR_BLUE};
         `}
 `;

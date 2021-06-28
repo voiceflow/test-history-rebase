@@ -33,6 +33,8 @@ export enum Browser {
   OTHER = 'other',
 }
 
+export type TagType = string | SystemTag | Sentiment;
+
 export interface Transcript {
   // the id of this transcript
   id: string;
@@ -49,7 +51,7 @@ export interface Transcript {
   // ie. chrome, firefox
   browser: Browser;
   // list of tag IDs and SystemTags
-  tags: (string | SystemTag | Sentiment)[];
+  tags: TagType[];
   // look at mentions format from commenting
   notes: string | null;
   // creation date

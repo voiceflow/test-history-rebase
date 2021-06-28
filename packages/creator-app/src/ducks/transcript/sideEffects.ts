@@ -2,7 +2,7 @@ import { toast } from '@voiceflow/ui';
 
 import transcriptAdapter from '@/client/adapters/transcripts/transcripts';
 import { prototypeContextHistorySelector } from '@/ducks/prototype';
-import { patchTranscript, replaceTranscripts } from '@/ducks/transcript/actions';
+import { patchTranscript, removeTranscript, replaceTranscripts } from '@/ducks/transcript/actions';
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
 import { Browser, Device, OperatingSystem, PrototypeContext, Sentiment, SystemTag, Trace } from '@/models';
 import { Thunk } from '@/store/types';
@@ -158,4 +158,33 @@ export const updateTags =
   (transcriptID: string, tags: string[]): Thunk =>
   async (dispatch) => {
     dispatch(patchTranscript(transcriptID, { tags }));
+  };
+
+export const markAsRead =
+  (transcriptID: string): Thunk =>
+  async (dispatch, _getState) => {
+    // const state = getState();
+    // const activeProjectID = activeProjectIDSelector(state);
+    try {
+      // TODO uncomment client call to save to db
+      // await client.transcript.patchTranscript(activeProjectID!, transcriptID, { unread: false})
+      dispatch(patchTranscript(transcriptID, { unread: false }));
+    } catch (e) {
+      toast.error('Failed to update transcript read status');
+    }
+  };
+
+export const deleteTranscript =
+  (transcriptID: string): Thunk =>
+  async (dispatch, _getState) => {
+    // const state = getState();
+    // const activeProjectID = activeProjectIDSelector(state);
+    try {
+      // TODO uncomment client call to save to db
+      // await client.transcript.deleteTranscript(activeProjectID!, transcriptID, { unread: false})
+      dispatch(removeTranscript(transcriptID));
+      toast.success('Successfully deleted conversation');
+    } catch (e) {
+      toast.error('Failed to delete transcript');
+    }
   };

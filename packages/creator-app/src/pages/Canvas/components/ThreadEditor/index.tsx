@@ -3,7 +3,7 @@ import cn from 'classnames';
 import React from 'react';
 
 import { Comment, Thread } from '@/models';
-import { FadeDownDelayedContainer } from '@/styles/animations';
+import { FadeDownContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 
 import { CommentEditor, Container, NewComment, ReplySection } from './components';
@@ -21,7 +21,7 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread }) => (
     onMouseDown={stopPropagation(null, true)}
     onClick={preventDefault()}
   >
-    <FadeDownDelayedContainer>
+    <FadeDownContainer>
       {thread ? (
         <>
           {thread.comments.map((comment: Comment, index: number) => (
@@ -32,7 +32,7 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread }) => (
       ) : (
         <NewComment />
       )}
-    </FadeDownDelayedContainer>
+    </FadeDownContainer>
   </Container>
 );
 

@@ -66,6 +66,7 @@ const CommentThread: React.FC = () => {
       <CommentIndicator className={`${ClassName.CANVAS_THREAD}__indicator`} draggable tabIndex={-1} {...handlers} isFocused={isFocused}>
         {threadEntity.threadOrder}
       </CommentIndicator>
+
       {isFocused && <ThreadEditor />}
     </DragTarget>
   );

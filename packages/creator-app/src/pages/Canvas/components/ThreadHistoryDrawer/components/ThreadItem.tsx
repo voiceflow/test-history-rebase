@@ -28,8 +28,8 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
     if (focusThread.focusedID === threadID) {
       focusThread.resetFocus();
     } else {
-      await focusThread.setFocus(threadID);
       await engine.comment.centerThread(threadID);
+      await focusThread.setFocus(threadID);
     }
   }, [focusThread.focusedID, threadID]);
 

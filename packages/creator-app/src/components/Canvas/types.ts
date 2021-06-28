@@ -13,10 +13,12 @@ export type TransformOptions = {
 };
 
 export type ZoomOptions = {
+  raf?: boolean;
   origin?: Point;
 };
 
 export type StyleOptions = {
+  raf?: boolean;
   zoom?: number;
   position?: Point;
 };

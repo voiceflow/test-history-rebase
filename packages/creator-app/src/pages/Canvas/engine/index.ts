@@ -431,8 +431,9 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     if (animate) {
       canvasAPI.applyTransition();
     }
-    canvasAPI.setZoom(80);
-    canvasAPI.setPosition(nextPosition);
+
+    canvasAPI.setZoom(80, { raf: animate });
+    canvasAPI.setPosition(nextPosition, { raf: animate });
   }
 
   async reset() {

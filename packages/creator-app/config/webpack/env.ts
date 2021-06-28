@@ -12,6 +12,7 @@ import {
   debugSocket,
   env,
   ff_asrBypass,
+  ff_atomicActions,
   ff_conditionsBuilder,
   ff_gadgets,
   ff_linkCustomization,
@@ -73,6 +74,7 @@ export default {
   FF_LINK_CUSTOMIZATION: ff_linkCustomization && 'true',
   FF_TEST_REPORTS: ff_testReports && 'true',
   FF_NAVIGATION_REDESIGN: ff_navigationRedesign && 'true',
+  FF_ATOMIC_ACTIONS: ff_atomicActions && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

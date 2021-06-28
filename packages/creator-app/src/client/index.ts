@@ -9,6 +9,7 @@ import integrations from './integrations';
 import platformClients, { getPlatformClient } from './platforms';
 import projectList from './projectList';
 import prototype from './prototype';
+import realtime from './realtime';
 import reportTags from './reportTags';
 import session from './session';
 import socket from './socket';
@@ -44,6 +45,7 @@ const client = {
   workspace,
   transcript,
   reportTags,
+  realtime,
 };
 
 export default client;

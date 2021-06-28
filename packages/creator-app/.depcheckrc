@@ -10,6 +10,7 @@
     "@svgr/webpack",
     "@hot-loader/react-dom",
     "@voiceflow/realtime-sdk",
+    "@logux/state",
     "@types/*",
     "postcss*",
     "babel-loader",

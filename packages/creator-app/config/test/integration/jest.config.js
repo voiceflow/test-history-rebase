@@ -7,6 +7,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/config/test/integration/setup.js'],
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
+    '^@logux/client$': 'identity-obj-proxy',
     '^.+\\.(svg|csv|png)$': '<rootDir>/config/test/integration/assetPlaceholder.js',
     '^@/(.*)': '<rootDir>/src/$1',
   },

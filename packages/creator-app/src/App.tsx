@@ -19,7 +19,7 @@ import Modal from '@/components/LegacyModal/Modal';
 import RefreshModal from '@/components/RefreshModal';
 import SeoHelmet from '@/components/SeoHelmet';
 import { SeoPage } from '@/constants/seo';
-import { AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadingGate, SocketLoadingGate } from '@/gates';
+import { AccountLoadingGate, FeatureLoadingGate, GlobalSocketSubscriptionsLoadingGate, RealtimeLoadingGateV2, SocketLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
 import { useSessionTracking } from '@/hooks';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
@@ -76,5 +76,5 @@ const App = () => {
 export default compose(
   hot,
   withGlobalProviders,
-  withBatchLoadingGate(FeatureLoadingGate, SocketLoadingGate, AccountLoadingGate, GlobalSocketSubscriptionsLoadingGate)
+  withBatchLoadingGate(FeatureLoadingGate, SocketLoadingGate, AccountLoadingGate, RealtimeLoadingGateV2, GlobalSocketSubscriptionsLoadingGate)
 )(App) as React.FC<GlobalProvidersProps>;

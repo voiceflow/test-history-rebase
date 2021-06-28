@@ -9,6 +9,7 @@ export { default as PlanRestrictionGate } from './PlanRestrictionGate';
 export { default as ProjectLoadingGate } from './ProjectLoadingGate';
 export { default as ProjectLockGate } from './ProjectLockGate';
 export { default as RealtimeLoadingGate } from './RealtimeLoadingGate';
+export { default as RealtimeLoadingGateV2, RealtimeStoreContext } from './RealtimeLoadingGateV2';
 export { default as SocketLoadingGate } from './SocketLoadingGate';
 export { default as WorkspaceFeatureLoadingGate } from './WorkspaceFeatureLoadingGate';
 export { default as WorkspaceMembersLoadingGate } from './WorkspaceMembersLoadingGate';

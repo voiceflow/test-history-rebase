@@ -17,6 +17,7 @@
   "scripts": {
     "build": "yarn clean && ttsc --project tsconfig.build.json",
     "clean": "rimraf build",
+    "dev": "yarn build --watch",
     "e2e": "yarn kill:e2e && NODE_ENV=e2e nodemon src/index.ts",
     "e2e:node-dev": "yarn kill:e2e && NODE_ENV=e2e node-dev -r esm  src/index.ts",
     "kill:e2e": "kill -9 $(lsof -t -i tcp:8013) || true",

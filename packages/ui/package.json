@@ -42,6 +42,7 @@
     "@types/node": "^15.12.2",
     "jest": "^26.6.3",
     "ts-jest": "26.5.6",
+    "tsc-watch": "^4.4.0",
     "tslib": "2.2.0"
   },
   "files": [
@@ -56,14 +57,17 @@
     "url": "git+https://github.com/voiceflow/creator-app.git"
   },
   "scripts": {
-    "build": "yarn clean && yarn build:svg && yarn clean:svg-index && concurrently -c yellow,blue 'yarn:build:cjs' 'yarn:build:esm'",
+    "build": "yarn clean && yarn build:svg && concurrently -c yellow,blue 'yarn:build:cjs' 'yarn:build:esm'",
     "build:cjs": "ttsc --project tsconfig.build.json && ./scripts/copy_assets.sh common",
     "build:esm": "ttsc --project tsconfig.module.json && ./scripts/copy_assets.sh module",
-    "build:svg": "svgr --out-dir src/svgs src/svgs",
+    "build:svg": "svgr --out-dir src/svgs src/svgs && yarn clean:svg-index",
     "clean": "yarn clean:build && yarn clean:svg",
     "clean:build": "rimraf build",
     "clean:svg": "rimraf \"src/svgs/**/*.svg.jsx\"",
     "clean:svg-index": "rimraf \"src/svgs/**/index.svg.jsx\"",
+    "dev": "yarn clean && yarn build:svg && concurrently -c yellow,blue 'yarn:dev:cjs' 'yarn:dev:esm'",
+    "dev:cjs": "tsc-watch --compiler ttypescript/bin/tsc --onSuccess './scripts/copy_assets.sh common' --project tsconfig.build.json --watch",
+    "dev:esm": "tsc-watch --compiler ttypescript/bin/tsc --onSuccess './scripts/copy_assets.sh module' --project tsconfig.module.json --watch",
     "lint": "eslint \"**/*.{js,ts}\"",
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",

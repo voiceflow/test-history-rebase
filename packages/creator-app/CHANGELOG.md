@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.413.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.412.0...@voiceflow/creator-app@1.413.0) (2021-06-29)
+
+
+### Bug Fixes
+
+* remove close button from share popup (VF-918) ([#3596](https://github.com/voiceflow/creator-app/issues/3596)) ([57bbfd8](https://github.com/voiceflow/creator-app/commit/57bbfd8befff1ed747c7d63eb8f88d77e1fa9333))
+* wrong button types (VF-1197) ([#3587](https://github.com/voiceflow/creator-app/issues/3587)) ([5ed59c1](https://github.com/voiceflow/creator-app/commit/5ed59c1e87e4571fc89dfead577b6e7dc58fba55))
+
+
+### Features
+
+* connect transcript dialog, loading, and empty screen states (VF-1216) ([#3594](https://github.com/voiceflow/creator-app/issues/3594)) ([d53878e](https://github.com/voiceflow/creator-app/commit/d53878e8e34031560dd9be982c1db15bd6ee0acf))
+* prompt/choice default buttons for chat projects (VF-1061) ([#3595](https://github.com/voiceflow/creator-app/issues/3595)) ([7b1d09a](https://github.com/voiceflow/creator-app/commit/7b1d09a9635fb222284f1735474ebca5df6812af))
+* remove customizable links ff (VF-1206) ([#3597](https://github.com/voiceflow/creator-app/issues/3597)) ([b09c3c9](https://github.com/voiceflow/creator-app/commit/b09c3c9281c74d89d59b19960777cf50363fe0ff))
+* transcript filter component (VF-1020) ([#3555](https://github.com/voiceflow/creator-app/issues/3555)) ([866f68f](https://github.com/voiceflow/creator-app/commit/866f68f0ffd4e9de53bce71fcdab3dd949aa2341))
+
+
+
+
+
 # [1.412.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.411.1...@voiceflow/creator-app@1.412.0) (2021-06-28)
 
 

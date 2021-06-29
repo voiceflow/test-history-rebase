@@ -2,8 +2,7 @@ import { ProjectLinkType } from '@voiceflow/api-sdk';
 import { swallowEvent, useCache } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
-import { useDismissable, useFeature, useRAF, useToggle } from '@/hooks';
+import { useDismissable, useRAF, useToggle } from '@/hooks';
 import { LinkDataCaption } from '@/models';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 
@@ -28,7 +27,6 @@ const DOUBLE_CLICK_TIMESTAMP = 300;
 const useLinkHandlers = (instance: InternalLinkInstance) => {
   const engine = React.useContext(EngineContext)!;
   const linkEntity = React.useContext(LinkEntityContext)!;
-  const linkCustomization = useFeature(FeatureFlag.LINK_CUSTOMIZATION);
 
   const [stylesScheduler] = useRAF();
   const [isCaptionEditing, toggleCaptionEditing] = useToggle(false);
@@ -274,18 +272,18 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
   }, []);
 
   return {
-    onClick: linkCustomization.isEnabled ? onClick : () => {},
+    onClick,
     onRemove,
     isActive,
-    onMouseDown: linkCustomization.isEnabled ? onMouseDown : () => {},
-    onMouseMove: linkCustomization.isEnabled ? onMouseMove : () => {},
+    onMouseDown,
+    onMouseMove,
     onMouseEnter,
     onMouseLeave,
     onChangeType,
     onChangeColor,
     onChangeCaption,
     isCaptionEditing,
-    onToggleCaptionEditing: linkCustomization.isEnabled ? onToggleCaptionEditing : () => {},
+    onToggleCaptionEditing,
   };
 };
 

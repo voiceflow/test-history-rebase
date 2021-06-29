@@ -1,16 +1,14 @@
 import { Portal, swallowEvent, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
-import { useFeature } from '@/hooks';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { useEditingMode } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { Caption, Group, HeadMarker, Overlay, Path, RemoveButton, Settings, Styles } from './components';
+import { Caption, Group, HeadMarker, Overlay, Path, Settings, Styles } from './components';
 import { useLinkHandlers, useLinkInstance } from './hooks';
-import { buildHeadMarker, getPathPointsCenter } from './utils';
+import { buildHeadMarker } from './utils';
 
 export * from './components';
 export * from './constants';
@@ -21,7 +19,6 @@ const Link: React.FC = () => {
   const isEditingMode = useEditingMode();
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
-  const linkCustomization = useFeature(FeatureFlag.LINK_CUSTOMIZATION);
   const { linkData, isSupported, isHighlighted, sourceTargetPoints } = linkEntity.useState((e) => ({
     linkData: e.resolve().data ?? null,
     isSupported: e.isSupported,
@@ -63,7 +60,6 @@ const Link: React.FC = () => {
   if (!isSupported) return null;
 
   const path = instance.getPath();
-  const points = instance.getPoints();
 
   if (!path) return null;
 
@@ -91,7 +87,7 @@ const Link: React.FC = () => {
 
         <Path d={path} ref={instance.pathRef} markerEnd={buildHeadMarker(linkEntity.linkID)} strokeColor={instance.getLinkColor()} />
 
-        {linkCustomization.isEnabled && (isCaptionEditing || !!linkData?.caption) && (
+        {(isCaptionEditing || !!linkData?.caption) && (
           <Caption
             color={instance.getLinkColor()}
             linkID={linkEntity.linkID}
@@ -116,15 +112,7 @@ const Link: React.FC = () => {
           {...instance.getMarkerAttrs()}
         />
 
-        {!linkCustomization.isEnabled && isEditingMode && isHighlighted && !!points.current && (
-          <RemoveButton
-            onClick={onRemove}
-            position={getPathPointsCenter(points.current, { straight: instance.isStraight() })}
-            onMouseLeave={onMouseLeave}
-          />
-        )}
-
-        {linkCustomization.isEnabled && isEditingMode && isActive && (
+        {isEditingMode && isActive && (
           <Portal>
             <Settings
               instance={instance}

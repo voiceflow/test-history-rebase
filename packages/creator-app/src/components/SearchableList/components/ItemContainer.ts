@@ -47,6 +47,11 @@ const ItemContainer = styled(FlexApart)<ItemContainerProps>`
     content: '';
   }
 
+  & > * {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
   ${({ withoutHover }) =>
     !withoutHover &&
     css`

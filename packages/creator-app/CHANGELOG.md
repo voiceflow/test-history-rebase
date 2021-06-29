@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.413.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.413.2...@voiceflow/creator-app@1.413.3) (2021-06-29)
+
+
+### Bug Fixes
+
+* switch emotions to png (VF-000) ([#3586](https://github.com/voiceflow/creator-app/issues/3586)) ([5ae0c5d](https://github.com/voiceflow/creator-app/commit/5ae0c5dfab3f5599bcfd74a13da91b57a313073c))
+
+
+
+
+
 ## [1.413.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.413.1...@voiceflow/creator-app@1.413.2) (2021-06-29)
 
 **Note:** Version bump only for package @voiceflow/creator-app

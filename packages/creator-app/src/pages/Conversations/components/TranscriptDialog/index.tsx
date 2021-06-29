@@ -1,24 +1,34 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
-import { Message } from '@/pages/Prototype/types';
+import { currentSelectedTranscriptSelector } from '@/ducks/transcript';
+import { Interaction } from '@/pages/Prototype/types';
 import ChatDialog from '@/pages/PublicPrototype/components/ChatDialog';
 import { noop } from '@/utils/functional';
 
 import { Container, DialogHeader } from './components';
-import { MOCK_INTERACTIONS, MOCK_MESSAGES } from './MockData';
 
-interface TranscriptDialogProps {
-  messages?: Message[];
-}
+const MOCK_INTERACTIONS: Interaction[] = [
+  {
+    name: 'Interaction Test 1',
+    request: { type: 'type', payload: undefined },
+  },
+  {
+    name: 'Interaction Test 2',
+    request: { type: 'type', payload: undefined },
+  },
+];
 
-const TranscriptDialog: React.FC<TranscriptDialogProps> = ({ messages = MOCK_MESSAGES }) => {
+const TranscriptDialog: React.FC = () => {
   const [input, setInput] = React.useState('');
+  const currentTranscript = useSelector(currentSelectedTranscriptSelector);
 
   return (
     <Container>
       <DialogHeader />
       <ChatDialog
+        autoScroll={false}
         locale="locale"
         input={input}
         onStart={() => alert()}
@@ -27,7 +37,7 @@ const TranscriptDialog: React.FC<TranscriptDialogProps> = ({ messages = MOCK_MES
         onSend={(request) => alert(request)}
         onReset={() => alert()}
         onPlay={(src) => alert(src)}
-        messages={messages}
+        messages={currentTranscript?.messages}
         interactions={MOCK_INTERACTIONS}
         onInputChange={(input) => setInput(input)}
         prototypeStatus={PrototypeStatus.ACTIVE}

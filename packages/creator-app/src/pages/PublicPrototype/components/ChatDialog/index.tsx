@@ -40,6 +40,7 @@ export type ChatDialogProps = {
   isMicrophonePermissionGranted?: boolean;
   isSpeechSpeechRecognitionSupported?: boolean;
   hasInput?: boolean;
+  autoScroll?: boolean;
   onStepBack: () => void;
 };
 
@@ -73,6 +74,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   isMicrophonePermissionGranted,
   isSpeechSpeechRecognitionSupported,
   hasInput = true,
+  autoScroll = true,
   onStepBack,
 }) => {
   const theme = useTheme();
@@ -95,6 +97,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
           avatarURL={avatarURL}
           onInteraction={onSend}
           stepBack={onStepBack}
+          autoScroll={autoScroll}
         />
       </DisplayContainer>
 

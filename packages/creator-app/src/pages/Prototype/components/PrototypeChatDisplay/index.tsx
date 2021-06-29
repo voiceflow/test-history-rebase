@@ -26,6 +26,7 @@ export type PrototypeChatDisplayProps = {
   avatarURL?: string;
   onInteraction: (request: string | BaseRequest) => void;
   stepBack: () => void;
+  autoScroll?: boolean;
 };
 
 const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
@@ -44,6 +45,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   buttons,
   avatarURL,
   onInteraction,
+  autoScroll = true,
   stepBack,
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
@@ -62,7 +64,9 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   );
 
   const scrollToBottom = () => {
-    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (autoScroll) {
+      scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   React.useEffect(() => {

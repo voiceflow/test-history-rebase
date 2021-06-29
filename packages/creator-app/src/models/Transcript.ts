@@ -1,3 +1,5 @@
+import { Message } from '@/pages/Prototype/types';
+
 export enum SystemTag {
   REVIEWED = 'system.reviewed',
   SAVED = 'system.saved',
@@ -56,4 +58,7 @@ export interface Transcript {
   notes: string | null;
   // creation date
   createdAt: number;
+
+  // TODO: change to designated message type
+  messages: Message[];
 }

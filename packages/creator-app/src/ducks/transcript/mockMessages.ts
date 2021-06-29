@@ -1,9 +1,9 @@
-import { Interaction, Message, MessageType } from '@/pages/Prototype/types';
+import { Message, MessageType } from '@/pages/Prototype/types';
 
 export const MOCK_MESSAGES: Message[] = [
   {
     message:
-      'Hi Sam, welcome to Voiceflow Banking! I’m Mia, your personal banking assistant. I can help you with things like transfering funds, or checking account balances.',
+      'Hi Linda, welcome to Voiceflow Banking! I’m Mia, your personal banking assistant. I can help you with things like transfering funds, or checking account balances.',
     id: '1',
     type: MessageType.SPEAK,
     startTime: '00:01',
@@ -57,13 +57,24 @@ export const MOCK_MESSAGES: Message[] = [
     startTime: '00:11',
   },
 ];
-export const MOCK_INTERACTIONS: Interaction[] = [
+
+export const MOCK_MESSAGES_2: Message[] = [
   {
-    name: 'Interaction Test 1',
-    request: { type: 'type', payload: undefined },
+    message: 'Cool cool cool cool cool cool cool no doubt no doubt',
+    id: '1',
+    type: MessageType.SPEAK,
+    startTime: '00:01',
   },
   {
-    name: 'Interaction Test 2',
-    request: { type: 'type', payload: undefined },
+    message: 'noice noice noice noice',
+    id: '2',
+    type: MessageType.SPEAK,
+    startTime: '00:02',
+  },
+  {
+    input: 'hello, unsolved case. do you bring me joy? no, because you are boring and you are too hard. see ya!',
+    id: '3',
+    type: MessageType.USER,
+    startTime: '00:03',
   },
 ];

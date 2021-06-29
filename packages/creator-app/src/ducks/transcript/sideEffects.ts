@@ -7,6 +7,8 @@ import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
 import { Browser, Device, OperatingSystem, PrototypeContext, Sentiment, SystemTag, Trace } from '@/models';
 import { Thunk } from '@/store/types';
 
+import { MOCK_MESSAGES, MOCK_MESSAGES_2 } from './mockMessages';
+
 export const DUMMY_DATA = [
   {
     id: '1',
@@ -21,6 +23,7 @@ export const DUMMY_DATA = [
     date: '9:39 am, May 1st',
     tags: ['1', '3', SystemTag.REVIEWED, Sentiment.EMOTION_POSITIVE],
     unread: true,
+    messages: MOCK_MESSAGES,
   },
   {
     id: '2',
@@ -35,6 +38,7 @@ export const DUMMY_DATA = [
     date: '1:79 am, May 2st',
     tags: ['3', '5', SystemTag.SAVED, Sentiment.EMOTION_POSITIVE],
     unread: false,
+    messages: MOCK_MESSAGES_2,
   },
   {
     id: '3',
@@ -49,6 +53,7 @@ export const DUMMY_DATA = [
     date: '1:79 am, May 2st',
     tags: ['4', '1', SystemTag.REVIEWED, SystemTag.SAVED],
     unread: true,
+    messages: MOCK_MESSAGES_2,
   },
   {
     id: '4',
@@ -59,10 +64,11 @@ export const DUMMY_DATA = [
     browser: Browser.CHROME,
     notes: '',
     createdAt: 0,
-    name: 'Donald Trump',
+    name: 'Serena Williams',
     date: '1:79 am, May 2st',
     tags: ['1', '4', SystemTag.SAVED],
     unread: false,
+    messages: MOCK_MESSAGES,
   },
   {
     id: '5',
@@ -77,6 +83,7 @@ export const DUMMY_DATA = [
     date: '1:79 am, May 2st',
     tags: ['1', '3', Sentiment.EMOTION_NEUTRAL],
     unread: false,
+    messages: MOCK_MESSAGES_2,
   },
   {
     id: '6',
@@ -91,6 +98,7 @@ export const DUMMY_DATA = [
     date: '1:79 am, May 2st',
     tags: ['4', '1', SystemTag.SAVED, Sentiment.EMOTION_NEGATIVE],
     unread: false,
+    messages: MOCK_MESSAGES,
   },
   {
     id: '7',
@@ -105,6 +113,7 @@ export const DUMMY_DATA = [
     date: '1:79 am, May 2nd',
     tags: ['5', SystemTag.REVIEWED, Sentiment.EMOTION_POSITIVE],
     unread: true,
+    messages: MOCK_MESSAGES,
   },
 ];
 

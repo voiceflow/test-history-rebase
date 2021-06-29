@@ -1,12 +1,12 @@
 import './DashBoard.css';
 
-import { Alert, AlertVariant, BoxFlex, BoxFlexCenter, FullSpinner, IconButton, LegacyButton, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Alert, AlertVariant, BoxFlex, BoxFlexCenter, FullSpinner, IconButton, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 
-import { createGraphic } from '@/assets';
 import DragLayer from '@/components/DragLayer';
+import EmptyScreen from '@/components/EmptyScreen';
 import SeoHelmet from '@/components/SeoHelmet';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
@@ -186,20 +186,12 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
               }}
             >
               {projects.length === 0 ? (
-                <div className="h-100 d-flex justify-content-center">
-                  <div className="align-self-center">
-                    <div className="text-center">
-                      <img src={createGraphic} alt="skill-icon" width="80" height="80" className="mb-3" />
-                    </div>
-                    <label className="dark text-center mb-3">No Projects Found</label>
-                    <div className="text-muted mb-2">This workspace has no projects, create one.</div>
-                    <Link to={Path.NEW_INTRO_PROJECT} className="no-underline super-center">
-                      <LegacyButton isPrimary className="mt-3" id="createskill">
-                        New Project
-                      </LegacyButton>
-                    </Link>
-                  </div>
-                </div>
+                <EmptyScreen
+                  title="No Projects Found"
+                  body="This workspace has no projects, create one."
+                  buttonText="New Project"
+                  link={Path.NEW_INTRO_PROJECT}
+                />
               ) : (
                 <div className={DashboardClassName.LISTS_CONTAINER}>
                   <div className={DashboardClassName.LISTS_CONTAINER_INNER}>

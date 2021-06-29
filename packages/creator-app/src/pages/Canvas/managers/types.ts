@@ -31,6 +31,13 @@ export type NodeEditorPropsType<T> = {
 
 export type NodeEditor<T, E = {}> = React.FC<NodeEditorPropsType<T> & E>;
 
+interface NodeFactoryOptions {
+  features?: FeatureFlagMap;
+  platform?: PlatformType;
+  defaultVoice?: string;
+  canvasNodeVisibility?: CanvasNodeVisibility;
+}
+
 export type NodeConfig<T extends object | Markup.AnyNodeData> = {
   type: BlockType;
 
@@ -42,13 +49,7 @@ export type NodeConfig<T extends object | Markup.AnyNodeData> = {
   mergeTerminator?: boolean;
   mergeInitializer?: boolean;
 
-  factory: (
-    data?: Partial<T>,
-    options?: { defaultVoice?: string; canvasNodeVisibility?: CanvasNodeVisibility; features?: FeatureFlagMap }
-  ) => {
-    node: NodeDescriptor;
-    data: Creator.DataDescriptor<T>;
-  };
+  factory: (data?: Partial<T>, options?: NodeFactoryOptions) => { node: NodeDescriptor; data: Creator.DataDescriptor<T> };
 };
 
 export type NodeManagerConfig<T extends object | Markup.AnyNodeData> = NodeConfig<T> & {

@@ -17,7 +17,7 @@ const createBlockTypeGuard =
     nodes.includes(type as R);
 const createPlatformTypeGuard =
   <R extends PlatformType>(platform: R) =>
-  (type: string | PlatformType): type is R =>
+  (type?: string | PlatformType): type is R =>
     type === platform;
 
 export const isRootBlockType = createBlockTypeGuard(ROOT_NODES);

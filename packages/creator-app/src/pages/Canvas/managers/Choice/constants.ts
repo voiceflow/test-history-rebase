@@ -3,7 +3,9 @@ import cuid from 'cuid';
 
 import { BlockType, DialogType } from '@/constants';
 import { NodeData } from '@/models';
+import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
 import { distinctPlatformsData } from '@/utils/platform';
+import { isChatbotPlatform } from '@/utils/typeGuards';
 
 import { NodeConfig } from '../types';
 
@@ -39,7 +41,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Interaction> = {
           },
         ],
       },
-      buttons: null,
+      buttons: isChatbotPlatform(options?.platform) ? buttonsFactory() : null,
     },
   }),
 };

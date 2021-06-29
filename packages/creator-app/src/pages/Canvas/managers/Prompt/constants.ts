@@ -2,6 +2,8 @@ import cuid from 'cuid';
 
 import { BlockType, DialogType } from '@/constants';
 import { NodeData } from '@/models';
+import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
+import { isChatbotPlatform } from '@/utils/typeGuards';
 
 import { NodeConfig } from '../types';
 
@@ -33,7 +35,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Prompt> = {
           },
         ],
       },
-      buttons: null,
+      buttons: isChatbotPlatform(options?.platform) ? buttonsFactory() : null,
       reprompt: null,
     },
   }),

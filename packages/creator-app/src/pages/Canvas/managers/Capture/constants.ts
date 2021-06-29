@@ -1,5 +1,7 @@
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
+import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
+import { isChatbotPlatform } from '@/utils/typeGuards';
 
 import { NodeConfig } from '../types';
 
@@ -10,7 +12,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Capture> = {
   icon: 'microphone',
   iconColor: '#58457a',
 
-  factory: () => ({
+  factory: (_, options) => ({
     node: {
       ports: {
         in: [{}],
@@ -20,7 +22,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Capture> = {
     data: {
       name: 'Capture',
       slot: null,
-      buttons: null,
+      buttons: isChatbotPlatform(options?.platform) ? buttonsFactory() : null,
       examples: [],
       reprompt: null,
       variable: null,

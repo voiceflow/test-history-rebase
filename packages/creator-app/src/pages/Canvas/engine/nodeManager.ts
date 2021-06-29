@@ -124,14 +124,15 @@ class NodeManager extends EngineConsumer {
 
     getNodeFactoryOptions: () => {
       const platform = this.select(Project.activePlatformSelector);
-      const allActiveFeatures = this.select(Feature.allActiveFeaturesSelector);
       const defaultVoice = this.select(Version.activeDefaultVoiceSelector);
+      const allActiveFeatures = this.select(Feature.allActiveFeaturesSelector);
       const canvasNodeVisibility = this.select(Version.activeCanvasNodeVisibilitySelector);
 
       return {
+        features: allActiveFeatures,
+        platform,
         defaultVoice: defaultVoice || getPlatformDefaultVoice(platform),
         canvasNodeVisibility: canvasNodeVisibility || CanvasNodeVisibility.PREVIEW,
-        features: allActiveFeatures,
       };
     },
 

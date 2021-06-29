@@ -1,4 +1,4 @@
-import { ErrorBoundaryWrapper, PageError } from '@voiceflow/ui';
+import { ErrorBoundaryWrapper, LegacyButton, PageError } from '@voiceflow/ui';
 import LogRocket from 'logrocket';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -36,8 +36,8 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       return (
         <ErrorBoundaryWrapper>
           <PageError message="Something went wrong, return to dashboard.">
-            <Link to="/" className="btn btn-primary mt-3">
-              Dashboard
+            <Link to="/">
+              <LegacyButton isPrimary>Dashboard</LegacyButton>
             </Link>
           </PageError>
         </ErrorBoundaryWrapper>

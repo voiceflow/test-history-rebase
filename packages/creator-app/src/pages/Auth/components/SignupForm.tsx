@@ -135,7 +135,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
                 <a onClick={goToLogin}>Have an account?</a>
               </div>
               <div className="col-6">
-                <LegacyButton isPrimary isLarge isBlock type="submit" disabled={isSignupDisabled}>
+                <LegacyButton isPrimary type="submit" disabled={isSignupDisabled}>
                   {query.invite ? 'Join Team' : 'Create Account'}
                 </LegacyButton>
               </div>

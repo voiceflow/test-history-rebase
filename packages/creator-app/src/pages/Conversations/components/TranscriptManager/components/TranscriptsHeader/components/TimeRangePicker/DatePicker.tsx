@@ -33,22 +33,28 @@ const TIME_RANGE_OPTIONS = [
 
 export type DayPickerInputProps = {
   date?: string | Date;
+  isToggledOpen: boolean;
   onChange: (date: string | Date) => void;
 };
 
-const DatePicker = ({ date, onChange }: DayPickerInputProps) => {
+const DatePicker: React.FC<DayPickerInputProps> = ({ date, isToggledOpen, onChange }) => {
   const dayPickerRef = React.useRef<HTMLElement | null>(null);
   const variablesInputRef = React.useRef<{ blur: Function; getEditorState: Function } | null>(null);
   const history = useHistory();
 
   const [calenderOpened, onShowCalender, onHideCalender] = useEnableDisable(false);
-  const startDate = undefined;
-  const endDate = undefined;
-
-  const [input, setInput] = React.useState('' as TimeRange | string);
-  const [range, setRange] = React.useState({ from: startDate, to: endDate } as RangeModifier);
+  const [range, setRange] = React.useState({ from: undefined, to: undefined } as RangeModifier);
   const [isOpen, setIsOpen] = React.useState(false);
   const modifiers: Partial<Modifier> = { start: range.from, end: range.to };
+
+  const defaultParams = () => {
+    if (window.location.search.includes(FILTER_TAG.RANGE)) {
+      return new URLSearchParams(window.location.search).get(FILTER_TAG.RANGE);
+    }
+    return '';
+  };
+
+  const [input, setInput] = React.useState(defaultParams() as TimeRange | string);
 
   const [selectedDay] = React.useMemo(() => {
     const mdate = moment(date);
@@ -57,43 +63,10 @@ const DatePicker = ({ date, onChange }: DayPickerInputProps) => {
     return [isValid ? mdate.toDate() : undefined, isValid ? mdate.format(FORMAT) : (date && `${date}`) || ''];
   }, [date]);
 
-  React.useEffect(() => {
-    // eslint-disable-next-line xss/no-mixed-html
-    const clickHandler = (e: MouseEvent) => {
-      const isEditorFocused = variablesInputRef.current?.getEditorState().getSelection().hasFocus;
-
-      // eslint-disable-next-line xss/no-mixed-html
-      if (isEditorFocused || (e.currentTarget && dayPickerRef.current?.contains(e.target as HTMLElement))) {
-        return;
-      }
-
-      onHideCalender();
-    };
-
-    if (calenderOpened) {
-      window.document.body.addEventListener('click', clickHandler, true);
-    }
-
-    return () => {
-      window.document.body.removeEventListener('click', clickHandler, true);
-    };
-  }, [calenderOpened]);
-
-  const setTimeRange = (timeRange: TimeRange | string) => {
-    if (timeRange === TimeRange.CUSTOM) {
-      onShowCalender();
-      setRangeInput(range);
-    } else {
-      setInput(timeRange);
-      handleTimeRangeChange(timeRange);
-    }
-  };
-
   const setRangeInput = (range: RangeModifier) => {
     const start = range.from ? range.from?.toLocaleDateString() : '';
     const end = range.to ? range.to?.toLocaleDateString() : '';
     start ? setInput(`${start} - ${end}`) : setInput('');
-    handleTimeRangeChange(TimeRange.CUSTOM);
   };
 
   const onDayClick = (newDate: Date) => {
@@ -108,20 +81,66 @@ const DatePicker = ({ date, onChange }: DayPickerInputProps) => {
     const params = new URLSearchParams();
 
     if (timeRange === TimeRange.CUSTOM) {
-      params.append(FILTER_TAG.START_DATE, range.from ? range.from.toLocaleString() : '');
-      params.append(FILTER_TAG.END_DATE, range.to ? range.to.toLocaleString() : '');
+      const from = moment(range.from?.toLocaleString()).format(FORMAT);
+      const to = moment(range.to?.toLocaleString()).format(FORMAT);
+      if (input) {
+        params.append(FILTER_TAG.START_DATE, from || '');
+        params.append(FILTER_TAG.END_DATE, to || '');
+        setRangeInput(range);
+      }
     } else {
       params.append(FILTER_TAG.RANGE, timeRange!);
     }
 
-    history.push({ search: params.toString() });
+    history.replace({ search: params.toString() });
   };
+
+  const setTimeRange = (timeRange: TimeRange | string) => {
+    if (timeRange === TimeRange.CUSTOM) {
+      onShowCalender();
+      setRangeInput(range);
+      handleTimeRangeChange(TimeRange.CUSTOM);
+    } else {
+      setInput(timeRange);
+      handleTimeRangeChange(timeRange);
+    }
+  };
+
+  React.useEffect(() => {
+    let isRange = false;
+    TIME_RANGE_OPTIONS.forEach((option) => {
+      if (option.label === input) {
+        isRange = true;
+      }
+    });
+
+    if (!isRange && isToggledOpen && !input) {
+      const startDate = new URLSearchParams(window.location.search).get(FILTER_TAG.START_DATE);
+      const endDate = new URLSearchParams(window.location.search).get(FILTER_TAG.END_DATE);
+      const params = new URLSearchParams();
+      params.append(FILTER_TAG.START_DATE, startDate || '');
+      params.append(FILTER_TAG.END_DATE, endDate || '');
+      startDate ? setInput(`${startDate}-${endDate}`) : setInput('');
+      handleTimeRangeChange(TimeRange.CUSTOM);
+      history.replace({ search: params.toString() });
+    } else if (isRange && isToggledOpen && input) {
+      handleTimeRangeChange(input);
+    } else {
+      history.replace({ search: '' });
+    }
+  }, [isToggledOpen]);
 
   return (
     <Manager>
       <Reference>
         {({ ref }) => (
-          <div onBlur={() => setIsOpen(false)} onClick={() => setIsOpen(!isOpen)} ref={ref}>
+          <div
+            onBlur={() => setIsOpen(false)}
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+            ref={ref}
+          >
             <TimeRangeSelect
               selfDismiss
               open={isOpen}
@@ -130,13 +149,9 @@ const DatePicker = ({ date, onChange }: DayPickerInputProps) => {
               autoWidth
               buttonDisabled={false}
               placeholder="Time Range"
-              onSelect={(timeRange: TimeRange) => {
-                setTimeRange(timeRange);
-              }}
+              onSelect={(timeRange: TimeRange) => setTimeRange(timeRange)}
               buttonLabel="Custom period"
-              buttonClick={() => {
-                setTimeRange(TimeRange.CUSTOM);
-              }}
+              buttonClick={() => setTimeRange(TimeRange.CUSTOM)}
               selectedValue={input}
               selectedItems={input}
               dropdownActive
@@ -177,7 +192,14 @@ const DatePicker = ({ date, onChange }: DayPickerInputProps) => {
                   >
                     <b>Clear</b>
                   </ClearRangeLink>
-                  <ApplyButton id="apply-date-button" variant={ButtonVariant.PRIMARY} onClick={() => onHideCalender()}>
+                  <ApplyButton
+                    id="apply-date-button"
+                    variant={ButtonVariant.PRIMARY}
+                    onClick={() => {
+                      onHideCalender();
+                      handleTimeRangeChange(TimeRange.CUSTOM);
+                    }}
+                  >
                     Apply
                   </ApplyButton>
                 </CalendarFooter>

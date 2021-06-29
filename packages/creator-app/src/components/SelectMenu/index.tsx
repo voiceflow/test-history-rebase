@@ -22,6 +22,7 @@ interface SelectMenuProps {
   sections: (setData: (data: any) => void, data: any) => any;
   data?: any;
   actionDisabled?: boolean;
+  clearData: () => void;
 }
 
 const SelectMenu: React.FC<SelectMenuProps> = ({
@@ -32,14 +33,11 @@ const SelectMenu: React.FC<SelectMenuProps> = ({
   placement = 'bottom-start',
   data = {},
   actionDisabled,
+  clearData,
 }) => {
   const containerRef = React.useRef<Nullable<HTMLDivElement>>(null);
   const [menuData, setMenuData] = React.useState(data);
   const [isOpen, onToggle] = useDismissable(false, { ref: selfDismiss ? containerRef : undefined });
-
-  const clearData = () => {
-    setMenuData({});
-  };
 
   return (
     <Manager>

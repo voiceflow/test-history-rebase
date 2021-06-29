@@ -4,7 +4,7 @@ import { styled } from '@/hocs';
 
 const TagWrapper = styled.span`
   margin: 0 3px 3px 0;
-  padding: 4px 12px;
+  padding: 4px 0px 4px 12px;
   border-radius: 5px;
   display: inline-flex;
   align-items: center;
@@ -15,7 +15,7 @@ const TagWrapper = styled.span`
 
   & > ${SvgIconContainer} {
     color: ${({ theme }) => theme.iconColors.disabled};
-    padding-left: 9.7px;
+    padding-right: 9px;
   }
 `;
 

@@ -2,10 +2,10 @@ import { Box, BoxFlex, Dropdown, Icon, Input, InputVariant, KeyName, SvgIcon } f
 import React from 'react';
 
 import { Sentiment, SentimentArray } from '@/models';
-import { SentimentToSVGName } from '@/pages/Conversations/constants';
+import { SentimentToPNGName } from '@/pages/Conversations/constants';
 
 import { ReportTagInputContext } from '../context';
-import { InputWrapper, TagWrapper } from './components';
+import { InputWrapper, PngIcon, TagWrapper } from './components';
 
 export interface MenuProps {
   exists: boolean;
@@ -57,7 +57,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({ menu, selectedT
                 return (
                   <TagWrapper key={i}>
                     {isIcon ? (
-                      <SvgIcon icon={SentimentToSVGName[tag.id as Sentiment]} size={22} />
+                      <PngIcon src={SentimentToPNGName[tag.id as Sentiment]} style={{ width: '22px', height: '22px' }} />
                     ) : (
                       allTags.find((item) => item.id === tag.id)?.label
                     )}

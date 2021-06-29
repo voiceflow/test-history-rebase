@@ -1,23 +1,22 @@
-import { SvgIconContainer } from '@voiceflow/ui';
-
 import { css, styled } from '@/hocs';
 
 import { FAN_DIRECTION } from '../constants';
 
-const EMOJI_SIZE = 28;
+const EMOJI_SIZE = 30;
+const EMOJI_OFFSET = 6;
 
 const determineInitialOffset = (fanDirection: FAN_DIRECTION) => {
   switch (fanDirection) {
     case FAN_DIRECTION.DOWN:
-      return 'top: -6px;  right: 27px;';
+      return `top: ${-EMOJI_OFFSET}px;  right: 27px;`;
     case FAN_DIRECTION.LEFT:
-      return 'top: -5px;  right: -8px;';
+      return `top: ${-EMOJI_OFFSET}px;  right: ${-EMOJI_OFFSET + 1}px;`;
     case FAN_DIRECTION.RIGHT:
-      return 'top: -6px;  right: 28px;';
+      return `top: ${-EMOJI_OFFSET}px;  right: 28px;`;
     case FAN_DIRECTION.UP:
-      return 'top: 31px;  right: 27px;';
+      return `top: 31px;  right: 27px;`;
     default:
-      return 'top: -6px;  right: -6px;';
+      return `top: ${-EMOJI_OFFSET}px;  right: ${-EMOJI_OFFSET}px;`;
   }
 };
 
@@ -66,22 +65,38 @@ const determineFinalPosition = (fanDirection: FAN_DIRECTION, number: number) => 
   }
 };
 
+const getContainerPadding = (fanDirection: FAN_DIRECTION) => {
+  switch (fanDirection) {
+    case FAN_DIRECTION.DOWN:
+      return `padding-bottom: 5px;`;
+    case FAN_DIRECTION.LEFT:
+      return `padding-left: 5px;`;
+    case FAN_DIRECTION.RIGHT:
+      return `padding-right: 5px;`;
+    case FAN_DIRECTION.UP:
+      return `padding-top: 5px;`;
+    default:
+      return `padding-left: 5px;`;
+  }
+};
+
 export const Option = styled.div<{ fanDirection: FAN_DIRECTION; number: number; isHovering: boolean }>`
   ${({ fanDirection }) =>
     css`
       ${determineTransition(fanDirection)}
     `}
+  background-color: #ffffff;
   position: absolute;
-  transition-timing-function: linear, cubic-bezier(0.32, 1.85, 0.54, 1.85);
+  transition-timing-function: ease, cubic-bezier(0.32, 1.85, 0.54, 0.67);
   ${({ fanDirection }) =>
     css`
       ${determineInitialPosition(fanDirection)}
     `}
-  padding: 6px;
+  padding: ${EMOJI_OFFSET}px;
   pointer-events: none;
   opacity: 0.6;
   :hover {
-    transition: all 0.2s ease;
+    transition: all 0.2s ease-in-out;
     transition-delay: 0.15ms;
     transform: scale(1.3);
     opacity: 1;
@@ -101,9 +116,15 @@ export const OptionsContainer = styled.div<{ fanDirection: FAN_DIRECTION; length
     `}
 `;
 
-export const Container = styled.div`
+export const Container = styled.div<{ fanDirection: FAN_DIRECTION }>`
   cursor: pointer;
   position: relative;
+  ${({ fanDirection }) =>
+    fanDirection &&
+    css`
+      ${getContainerPadding(fanDirection)}
+    `}
+
   :hover {
     ${Option} {
       pointer-events: auto;
@@ -121,12 +142,16 @@ export const PlaceholderContainer = styled.div<{ isPlaceholder: boolean }>`
   ${({ isPlaceholder }) =>
     !isPlaceholder
       ? css`
-          top: 1px;
+          top: 0px;
         `
       : css`
-          ${SvgIconContainer} {
+          & > * {
             position: relative;
-            right: 2px;
           }
         `}
+`;
+
+export const EmotionContainer = styled.img`
+  width: 20px;
+  height: 20px;
 `;

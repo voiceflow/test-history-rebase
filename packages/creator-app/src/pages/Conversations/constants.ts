@@ -1,11 +1,12 @@
-import { Icon } from '@voiceflow/ui';
-
+import negativeEmotion from '@/components/EmojiPicker/assets/negativeEmotion.png';
+import neutralEmotion from '@/components/EmojiPicker/assets/neutralEmotion.png';
+import positiveEmotion from '@/components/EmojiPicker/assets/positiveEmotion.png';
 import { Sentiment } from '@/models';
 
-export const SentimentToSVGName: Record<Sentiment, Icon> = {
-  [Sentiment.EMOTION_NEGATIVE]: 'negativeEmotion',
-  [Sentiment.EMOTION_POSITIVE]: 'positiveEmotion',
-  [Sentiment.EMOTION_NEUTRAL]: 'neutralEmotion',
+export const SentimentToPNGName = {
+  [Sentiment.EMOTION_NEGATIVE]: negativeEmotion,
+  [Sentiment.EMOTION_POSITIVE]: positiveEmotion,
+  [Sentiment.EMOTION_NEUTRAL]: neutralEmotion,
 };
 
 export const FILTER_TAG = {

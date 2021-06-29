@@ -2,11 +2,11 @@ import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { Sentiment } from '@/models';
-import { SentimentToSVGName } from '@/pages/Conversations/constants';
+import { SentimentToPNGName } from '@/pages/Conversations/constants';
 import { ClassName } from '@/styles/constants';
 import THEME from '@/styles/theme';
 
-import { Container, IconContainer } from './components';
+import { Container, EmotionContainer, IconContainer } from './components';
 
 interface StatusIconsProps {
   sentiment?: Sentiment;
@@ -29,8 +29,8 @@ const StatusIcons: React.FC<StatusIconsProps> = ({ id, sentiment, reviewed = fal
         </IconContainer>
       )}
       {sentiment && (
-        <IconContainer>
-          <SvgIcon icon={SentimentToSVGName[sentiment]} size={20} />
+        <IconContainer isEmotion>
+          <EmotionContainer src={SentimentToPNGName[sentiment]} />
         </IconContainer>
       )}
     </Container>

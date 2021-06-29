@@ -1,12 +1,23 @@
 import { Flex } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 export const Container = styled(Flex)`
   flex: 1;
   flex-direction: row-reverse;
 `;
 
-export const IconContainer = styled.div`
+export const IconContainer = styled.div<{ isEmotion?: boolean }>`
   margin-left: -3px;
+
+  ${({ isEmotion }) =>
+    isEmotion &&
+    css`
+      margin-bottom: 1px;
+    `}
+`;
+
+export const EmotionContainer = styled.img`
+  width: 20px;
+  height: 20px;
 `;

@@ -34,9 +34,9 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 
   const slotEdit = path.type === 'slot';
 
-  const validateName = (intentName: string) =>
+  const validateName = (intentName?: string | null) =>
     validateIntentName(
-      intentName,
+      intentName ?? '',
       allIntents.filter((intent) => intent.id !== selectedIntent.id),
       slots
     );

@@ -27,12 +27,12 @@ export const intentProcessor = ({ inputs = [], ...intent }: Intent): Intent => {
 };
 
 export const applySingleIntentNameFormatting = (intent: Intent, platform: PlatformType) => {
-  let { name } = intent;
+  let { name } = intent ?? { name: '' };
   if (isCustomizeableBuiltInIntent(intent)) {
     // eslint-disable-next-line prefer-destructuring
     name = removeBuiltInPrefix(name);
     if (platform === PlatformType.GENERAL) {
-      name = capitalizeFirstLetter(name.toLowerCase());
+      name = capitalizeFirstLetter(name?.toLowerCase());
     } else if (platform === PlatformType.ALEXA) {
       name = name.replace(/(\w)Intent/g, '$1');
     }

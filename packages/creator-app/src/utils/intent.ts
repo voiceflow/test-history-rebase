@@ -15,7 +15,7 @@ const amazonBuiltInIntentsArray = Object.values(AmazonIntent) as string[];
 const generalBuiltInIntentsArray = Object.values(GeneralIntents) as string[];
 const builtInIntentMap = new Map([...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray].map((id) => [id, true]));
 
-export const isCustomizeableBuiltInIntent = (intent?: Intent) => !!intent && builtInIntentMap.has(intent.id);
+export const isCustomizeableBuiltInIntent = (intent?: Intent | null) => !!intent && builtInIntentMap.has(intent.id);
 
 export const formatIntentName = (name = '') =>
   name

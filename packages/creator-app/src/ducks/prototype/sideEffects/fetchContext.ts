@@ -5,6 +5,7 @@ import { batch } from 'react-redux';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
+import * as Account from '@/ducks/account';
 import * as Recent from '@/ducks/recent';
 import * as Session from '@/ducks/session';
 import { Trace } from '@/models';
@@ -36,15 +37,22 @@ const fetchContext =
     const versionID = Session.activeVersionIDSelector(reduxState);
     const activeDiagramID = Session.activeDiagramIDSelector(reduxState);
 
+    // unique identifier for session analytics
+    const sessionID = `${versionID}.${Account.userIDSelector(reduxState) || Session.browserIDSelector(reduxState)}`;
+
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(activeDiagramID);
 
     try {
-      const { state: _state, trace } = await client.prototype.interact(versionID, {
-        state,
-        request,
-        config: { stopAll: !!settings.guided, excludeTypes: [], tts: true },
-      });
+      const { state: _state, trace } = await client.prototype.interact(
+        versionID,
+        {
+          state,
+          request,
+          config: { stopAll: !!settings.guided, excludeTypes: [], tts: true },
+        },
+        sessionID
+      );
 
       const newState: Context = _state;
       const lastVisual = [...trace].reverse().find(({ type }) => type === TraceType.VISUAL) as VisualTrace;

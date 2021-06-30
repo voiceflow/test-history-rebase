@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.414.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.413.4...@voiceflow/creator-app@1.414.0) (2021-06-30)
+
+
+### Features
+
+* update analytics endpoint (VF-153) ([#3592](https://github.com/voiceflow/creator-app/issues/3592)) ([2a57211](https://github.com/voiceflow/creator-app/commit/2a572110e88694beb0b2843815d93e758f9c8626))
+
+
+
+
+
 ## [1.413.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.413.3...@voiceflow/creator-app@1.413.4) (2021-06-30)
 
 **Note:** Version bump only for package @voiceflow/creator-app

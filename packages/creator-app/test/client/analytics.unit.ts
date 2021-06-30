@@ -13,7 +13,7 @@ suite('Client - Analytics', ({ expect, stubFetch }) => {
 
   describe('track()', () => {
     it('track event', () => {
-      const fetch = stubFetch('api', 'post');
+      const fetch = stubFetch('apiV2', 'post');
 
       client.track(EVENT);
 

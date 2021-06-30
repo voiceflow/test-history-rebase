@@ -1,6 +1,6 @@
 import _styled, { css as _css, ThemedCssFunction, ThemedStyledInterface, ThemedStyledProps } from 'styled-components';
 
-import { Theme } from './theme';
+import type { Theme } from './theme';
 
 export { createTheme } from './theme';
 export { createGlobalStyle, keyframes } from 'styled-components';
@@ -20,3 +20,18 @@ export const units =
   (count = 1) =>
   ({ theme }: { theme: Theme }): number =>
     theme.unit * count;
+
+export const colors =
+  (color: keyof Theme['colors']) =>
+  ({ theme }: { theme: Theme }): string =>
+    theme.colors[color];
+
+export const iconColors =
+  (color: keyof Theme['iconColors']) =>
+  ({ theme }: { theme: Theme }): string =>
+    theme.iconColors[color];
+
+export const backgrounds =
+  (background: keyof Theme['backgrounds']) =>
+  ({ theme }: { theme: Theme }): string =>
+    theme.backgrounds[background];

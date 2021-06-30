@@ -1,4 +1,6 @@
 import { css, styled } from '../../styles';
+import { COLOR_BLUE } from '../../styles/constants';
+import { VariantValue } from '../../types';
 import Box from '../Box';
 
 export enum AlertVariant {
@@ -13,17 +15,17 @@ interface AlertProps {
   backgroundColor: string;
 }
 
-const AlertColors: Record<AlertVariant, AlertProps> = {
-  [AlertVariant.DEFAULT]: { color: '#5d9df5', borderColor: '#5d9df515', backgroundColor: '#5d9df515' },
+const COLORS: Record<AlertVariant, AlertProps> = {
+  [AlertVariant.DEFAULT]: { color: COLOR_BLUE, borderColor: '#5d9df515', backgroundColor: '#5d9df515' },
   [AlertVariant.DANGER]: { color: '#721c24', borderColor: '#f8d7da', backgroundColor: '#f8d7da' },
   [AlertVariant.WARNING]: { color: '#856404', borderColor: '#ffeeba', backgroundColor: '#fff3cd' },
 };
 
-const Alert = styled(Box)<{ variant?: AlertVariant | `${AlertVariant}` }>`
+const Alert = styled(Box)<{ variant?: VariantValue<AlertVariant> }>`
   ${({ variant = AlertVariant.DEFAULT }) => css`
-    color: ${AlertColors[variant].color};
-    background: ${AlertColors[variant].backgroundColor};
-    border: 1px solid ${AlertColors[variant].borderColor};
+    color: ${COLORS[variant].color};
+    background: ${COLORS[variant].backgroundColor};
+    border: 1px solid ${COLORS[variant].borderColor};
   `}
   position: relative;
   padding: 0.75rem 1.25rem;

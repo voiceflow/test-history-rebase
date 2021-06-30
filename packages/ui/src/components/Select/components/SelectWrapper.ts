@@ -1,4 +1,4 @@
-import { css, styled } from '../../../styles';
+import { colors, css, styled } from '../../../styles';
 import { inputFocusStyle, InputWrapper } from '../../Input';
 
 export type SelectWrapperProps = {
@@ -10,7 +10,7 @@ export type SelectWrapperProps = {
 
 const SelectWrapper = styled.div<SelectWrapperProps>`
   position: relative;
-  color: #132144;
+  color: ${colors('primary')};
   outline: none;
 
   ${({ onClick, onFocus }) =>

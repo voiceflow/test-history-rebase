@@ -1,6 +1,6 @@
 import { Overwrite } from 'utility-types';
 
-import { ANIMATION_SPEED, COLOR_BLUE } from '../constants';
+import { ANIMATION_SPEED, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE } from '../constants';
 import ICON_THEME from './icon';
 
 const THEME = {
@@ -13,28 +13,29 @@ const THEME = {
   },
   backgrounds: {
     offWhite: '#f9f9f9',
-    offWhiteBlue: '#FAFAFC',
+    offWhiteBlue: '#fafafc',
     white: '#ffffff',
     lightBlue: '#eff6fe',
     greyGreen: '#eef4f6',
     gray: '#f6f6f6',
   },
   iconColors: {
-    disabled: '#BECEDC',
+    disabled: '#becedc',
     active: '#6e849a',
   },
   colors: {
+    white: COLOR_WHITE,
     primary: '#132144',
     secondary: '#62778c',
     tertiary: '#8da2b5',
-    quaternary: '#949DB0',
-    red: '#E91E63',
-    green: '#279745',
+    quaternary: '#949db0',
+    red: COLOR_RED,
+    green: COLOR_GREEN,
     blue: COLOR_BLUE,
     darkBlue: '#4886da',
     borders: '#dfe3ed',
     separator: '#dfe3ed',
-    separatorSecondary: '#EAEFF4',
+    separatorSecondary: '#eaeff4',
   },
   space: {
     xs: 4,

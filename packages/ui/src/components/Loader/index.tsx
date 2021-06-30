@@ -2,7 +2,7 @@ import cn from 'classnames';
 import React from 'react';
 
 import { loader2Icon } from '../../assets';
-import { css, styled } from '../../styles';
+import { colors, css, styled } from '../../styles';
 import { ClassName } from '../../styles/constants';
 
 type LoaderProps = {
@@ -29,7 +29,7 @@ const LoadContainer = styled.div<LoaderProps>`
 export const LoadCircle = styled.span<LoaderProps>`
   ${spinnerStyles}
   line-height: 1;
-  background-color: ${({ color }) => color || '#fff'};
+  background-color: ${({ color }) => color || colors('white')};
   background-image: url(${loader2Icon});
   background-repeat: no-repeat;
   background-position: center;

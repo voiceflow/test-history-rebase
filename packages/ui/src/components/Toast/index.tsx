@@ -3,6 +3,7 @@ import * as Toastify from 'react-toastify';
 import { Overwrite } from 'utility-types';
 
 import { createGlobalStyle } from '../../styles';
+import { COLOR_BLUE, COLOR_RED } from '../../styles/constants';
 import Box from '../Box';
 import Portal from '../Portal';
 import SvgIcon, { Icon, IconVariant } from '../SvgIcon';
@@ -40,8 +41,8 @@ const toast = wrapWithMessage(Toastify.toast) as ToastMethod &
   toast[methodName] = Toastify.toast[methodName] as any;
 });
 
-toast.info = wrapWithMessage(Toastify.toast.info, 'info', '#5D9DF5');
-toast.error = wrapWithMessage(Toastify.toast.error, 'error', '#E91E63');
+toast.info = wrapWithMessage(Toastify.toast.info, 'info', COLOR_BLUE);
+toast.error = wrapWithMessage(Toastify.toast.error, 'error', COLOR_RED);
 toast.success = wrapWithMessage(Toastify.toast.success, 'checkmark', '#42B761');
 toast.warn = wrapWithMessage(Toastify.toast.warn, 'warning', '#E5B813');
 

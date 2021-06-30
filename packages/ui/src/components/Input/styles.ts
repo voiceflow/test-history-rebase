@@ -1,15 +1,15 @@
 import { system } from 'styled-system';
 
-import { css } from '../../styles';
+import { colors, css } from '../../styles';
 
 export const inputFocusStyle = css`
-  border: 1px solid #5d9df5;
+  border: 1px solid ${colors('blue')};
   outline: 0;
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 `;
 
 export const inputDisabledStyle = css`
-  color: #949db0;
+  color: ${colors('quaternary')};
   ${system({
     pointerEvents: {
       property: 'pointerEvents',
@@ -36,7 +36,7 @@ export const inputStyle = css<StyledInputProps>`
   font: normal 15px Open Sans, Arial, sans-serif;
   font-size: 15px;
   line-height: 20px;
-  background: #fff;
+  background: ${colors('white')};
   border: 1px solid #d2dae2;
   border-radius: 6px;
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
@@ -56,6 +56,6 @@ export const inputStyle = css<StyledInputProps>`
   ${({ error, borderColor }) =>
     (error || borderColor) &&
     css`
-      border: 1px solid ${error ? '#E91E63' : borderColor} !important;
+      border: 1px solid ${error ? colors('red') : borderColor} !important;
     `}
 `;

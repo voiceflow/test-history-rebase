@@ -1,4 +1,4 @@
-import { styled } from '../../../styles';
+import { colors, styled } from '../../../styles';
 import { centerContent } from '../styles';
 
 const ErrorBoundaryWrapper = styled.div`
@@ -10,7 +10,7 @@ const ErrorBoundaryWrapper = styled.div`
 
   p {
     margin-top: 1rem;
-    color: #62778c;
+    color: ${colors('secondary')};
   }
 `;
 

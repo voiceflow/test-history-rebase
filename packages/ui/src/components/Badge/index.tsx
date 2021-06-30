@@ -1,13 +1,13 @@
-import { css, styled, units } from '../../styles';
+import { backgrounds, colors, css, styled, units } from '../../styles';
 
 type BadgeProps = {
-  onClick?: any;
+  onClick?: React.MouseEventHandler;
   slide?: boolean;
   marginLeft?: number;
   color?: string;
 };
 
-const Badge = styled.div<BadgeProps>`
+const Badge = styled.div.attrs((props) => (props.onClick ? { role: 'button' } : {}))<BadgeProps>`
   ${({ marginLeft }) =>
     marginLeft &&
     css`
@@ -40,13 +40,13 @@ const Badge = styled.div<BadgeProps>`
   ${({ color }) =>
     color
       ? css`
-          color: #fff;
+          color: ${colors('white')};
           background: ${color};
           border: 1px solid ${color};
         `
       : css`
-          color: #62778c;
-          background: linear-gradient(180deg, #eff5f6a3 0%, #eef4f6 100%), #fff;
+          color: ${colors('secondary')};
+          background: linear-gradient(180deg, #eff5f6a3 0%, ${backgrounds('greyGreen')} 100%), ${backgrounds('white')};
           border: 1px solid #d4d9e6;
           box-shadow: 0 1px 0 #d4d9e6;
         `}

@@ -1,4 +1,4 @@
-import { styled, transition } from '../../../styles';
+import { colors, styled, transition } from '../../../styles';
 import { ButtonContainer } from '../../Button';
 import { SvgIconContainer } from '../../SvgIcon';
 import { IconButtonVariant } from '../types';
@@ -17,12 +17,12 @@ const SquareContainer = styled(ButtonContainer)<SquareContainerProps>`
 
   & ${SvgIconContainer} {
     max-width: 16px;
-    color: #8da2b5;
+    color: ${colors('tertiary')};
   }
 
   &:hover {
     background: rgba(238, 244, 246, 0.85);
-    border: solid 1px #dfe3ed;
+    border: solid 1px ${colors('borders')};
   }
 `;
 

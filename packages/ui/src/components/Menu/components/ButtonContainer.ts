@@ -1,4 +1,4 @@
-import { styled } from '../../../styles';
+import { colors, styled } from '../../../styles';
 
 export type ButtonContainerProps = {
   disabled?: boolean;
@@ -10,7 +10,7 @@ const ButtonContainer = styled.div<ButtonContainerProps>`
   justify-content: center;
   margin-bottom: -8px;
   padding: 24px 40px;
-  color: ${({ disabled }) => (disabled ? '#8da2b5' : '#5d9df5')};
+  color: ${({ disabled }) => (disabled ? colors('tertiary') : colors('blue'))};
   font-size: 15px;
   line-height: 18px;
   border-top: 1px solid #eaeff4;

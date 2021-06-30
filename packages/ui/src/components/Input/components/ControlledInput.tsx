@@ -1,16 +1,17 @@
 import React from 'react';
 
-import { styled } from '../../../styles';
+import { colors, styled } from '../../../styles';
 import { FadeLeftContainer } from '../../../styles/animations';
+import { COLOR_GREEN, COLOR_RED } from '../../../styles/constants';
 import { NestedInput, NestedInputProps } from './DefaultInput';
 
 const getColor = (error?: boolean, complete?: boolean) => {
   if (error) {
-    return '#E91E63';
+    return COLOR_RED;
   }
 
   if (complete) {
-    return '#279745';
+    return COLOR_GREEN;
   }
 
   return undefined;
@@ -29,7 +30,7 @@ const getIcon = (error?: boolean, complete?: boolean) => {
 };
 
 const Message = styled(FadeLeftContainer)`
-  color: #8da2b5;
+  color: ${colors('tertiary')};
   font-size: 13px;
   text-transform: capitalize;
 `;

@@ -1,4 +1,4 @@
-import { css, styled } from '../../../../styles';
+import { backgrounds, colors, css, styled } from '../../../../styles';
 
 const MenuHeaderWrapper = styled.div`
   display: flex;
@@ -9,10 +9,10 @@ const MenuHeaderWrapper = styled.div`
   ${({ isFocused }) =>
     isFocused &&
     css`
-      background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #fff;
+      background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors('white')};
 
       > input {
-        background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #fff;
+        background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors('white')};
       }
     `};
 `;

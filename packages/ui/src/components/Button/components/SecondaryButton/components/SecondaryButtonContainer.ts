@@ -1,4 +1,4 @@
-import { css, styled, transition } from '../../../../../styles';
+import { backgrounds, colors, css, styled, transition } from '../../../../../styles';
 import ButtonContainer, { ButtonContainerProps } from '../../ButtonContainer';
 import Icon from './SecondaryButtonIcon';
 
@@ -13,14 +13,14 @@ const hoverStyles = css<SecondaryButtonContainerProps>`
 
 const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonContainerProps>`
   ${transition('background', 'opacity', 'box-shadow', 'background-color')}
-  border: 1px solid #dfe3ed;
-  font-weight: 600;
+  box-sizing: border-box;
   padding: 9px 22px 10px;
-  color: #132144;
+  color: ${colors('primary')};
+  font-weight: 600;
   line-height: 22px;
   background-color: #eef4f6d9;
   background-size: 1px 42px;
-  box-sizing: border-box;
+  border: 1px solid ${colors('borders')};
 
   ${({ square }) =>
     square &&
@@ -32,15 +32,15 @@ const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonContaine
     flat &&
     css`
       padding: 9px 18px 10px;
-      border-radius: 8px;
       background-color: rgba(238, 244, 246, 0.7);
+      border-radius: 8px;
     `}
 
   ${({ disabled }) =>
     disabled
       ? css`
           color: rgba(19, 33, 68, 0.5);
-          background: linear-gradient(-180deg, rgba(238, 244, 246, 0.3) 0%, #eef4f6 100%);
+          background: linear-gradient(-180deg, rgba(238, 244, 246, 0.3) 0%, ${backgrounds('greyGreen')} 100%);
 
           & ${Icon} {
             opacity: 0.5;

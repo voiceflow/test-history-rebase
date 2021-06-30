@@ -6,7 +6,7 @@ import { IS_PRODUCTION } from '../config';
 import { getAllCookies, removeCookie } from './cookies';
 
 export const LOG_LEVEL = (IS_PRODUCTION ? 'error' : process.env.LOG_LEVEL || 'info') as loglevel.LogLevelDesc;
-export const LOG_FILTER = process.env.LOG_FILTER || '';
+export const LOG_FILTER: string = process.env.LOG_FILTER || '';
 
 const LOG_LEVEL_PREFIX = 'loglevel';
 const SEPARATOR = '.';

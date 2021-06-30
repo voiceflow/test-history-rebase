@@ -1,7 +1,8 @@
 import React from 'react';
 import { Manager, PopperProps, Reference } from 'react-popper';
 
-import { useCache, useDidUpdateEffect } from '../../hooks';
+import { useCache, useDidUpdateEffect, useTheme } from '../../hooks';
+import { Theme } from '../../styles/theme';
 import { Nullable } from '../../types';
 import Flex from '../Flex';
 import { AdvancedMenu, defaultMenuLabelRenderer } from '../NestedMenu';
@@ -174,6 +175,8 @@ const Select = <O, V = O>({
   validateCreate,
 }: // eslint-disable-next-line sonarjs/cognitive-complexity
 SelectProps<O, V>) => {
+  const theme = useTheme() as Theme;
+
   const optionLabel = getOptionLabel(value) || '';
 
   const inputRef = React.useRef<Nullable<HTMLInputElement>>(null);
@@ -425,7 +428,7 @@ SelectProps<O, V>) => {
 
                 <SearchInputIcon
                   icon={clearable ? 'close' : 'caretDown'}
-                  color={isDropDownOpened ? '#5D9DF5' : '#6e849a'}
+                  color={isDropDownOpened ? theme.colors.blue : theme.iconColors.active}
                   size={10}
                   onClick={onIconClick}
                 />

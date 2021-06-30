@@ -4,7 +4,7 @@ module.exports = {
   roots: ['<rootDir>/src', '<rootDir>/test'],
   testMatch: ['**/*.it.[jt]sx'],
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/config/test/integration/setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/config/test/integration/setup.ts'],
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
     '^.+\\.svg$': '<rootDir>/config/test/integration/assetPlaceholder.js',

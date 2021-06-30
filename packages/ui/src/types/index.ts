@@ -22,6 +22,8 @@ export type Callback = Function<[], Eventual<void>>;
 
 export type Eventual<T> = Promise<T> | T;
 
+export type VariantValue<T extends string> = T | `${T}`;
+
 export type ConnectedProps<
   S extends SelectorLookup<any> = {},
   D extends ActionCreatorLookup = {},

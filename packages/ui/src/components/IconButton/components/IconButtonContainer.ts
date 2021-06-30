@@ -1,8 +1,8 @@
-import { css, styled, transition } from '../../../styles';
+import { colors, css, styled, transition } from '../../../styles';
 import { ButtonContainer } from '../../Button';
 import { IconButtonVariant } from '../types';
 
-export interface BaseContainerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface BaseContainerProps extends Pick<React.ComponentProps<'button'>, 'id' | 'className' | 'disabled' | 'onClick' | 'onMouseDown'> {
   variant?: IconButtonVariant;
 }
 
@@ -21,34 +21,30 @@ const SIZE = {
 };
 
 export const importantStyles = css`
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.14) 0%, rgba(44, 133, 255, 0.205899) 97.03%), #fff;
+  background: linear-gradient(180deg, rgba(93, 157, 245, 0.14) 0%, rgba(44, 133, 255, 0.205899) 97.03%), ${colors('white')};
 `;
 
 export const activeStyle = css`
   ${importantStyles}
-
-  color: #5d9df5;
-  border: 1px solid #fff;
+  color: ${colors('blue')};
+  border: 1px solid ${colors('white')};
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 
   &:hover {
-    color: #5d9df5;
+    color: ${colors('blue')};
   }
 `;
 
 const IconButtonContainer = styled(ButtonContainer)<IconButtonContainerProps>`
   ${transition('box-shadow', 'color')}
-
   position: relative;
   z-index: 1;
-  background-color: #fff;
+  width: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
+  height: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
+  color: rgba(110, 132, 154, 0.75);
+  background-color: ${colors('white')};
   background-size: cover;
   border: 1px solid transparent;
-
-  height: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
-  width: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
-
-  color: rgba(110, 132, 154, 0.75);
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
 
   &:hover {

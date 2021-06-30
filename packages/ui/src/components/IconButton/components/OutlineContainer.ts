@@ -1,4 +1,4 @@
-import { css, styled, transition } from '../../../styles';
+import { colors, css, styled, transition } from '../../../styles';
 import { SvgIconContainer } from '../../SvgIcon';
 import { IconButtonVariant } from '../types';
 import IconButtonContainer, { IconButtonContainerSharedProps } from './IconButtonContainer';
@@ -11,10 +11,10 @@ export interface OutlineContainerProps extends IconButtonContainerSharedProps {
 }
 
 const activeStyle = css<OutlineContainerProps>`
-  background: #eef4f6cc;
   color: ${({ color }) => color ?? 'rgba(19, 33, 68, 0.85)'};
+  background: #eef4f6cc;
+  border: 1px solid ${colors('borders')};
   box-shadow: none !important;
-  border: 1px solid #dfe3ed;
   opacity: 1;
 
   &:hover {
@@ -22,22 +22,20 @@ const activeStyle = css<OutlineContainerProps>`
   }
 `;
 
-const OutlineContainer = styled(IconButtonContainer)<OutlineContainerProps>`
+const OutlineContainer = styled(IconButtonContainer as React.FC<OutlineContainerProps>)`
   ${transition('border', 'background', 'color', 'box-shadow', 'opacity')}
-
-  border: 1px solid #eaeff4;
+  color: ${({ color, theme }) => color ?? theme.colors.tertiary};
+  background: ${colors('white')};
+  border: 1px solid ${colors('separatorSecondary')};
   box-shadow: none !important;
-  background: #fff;
-  color: ${({ color }) => color ?? '#8da2b5'};
 
   ${SvgIconContainer} {
     opacity: 1;
   }
 
   &:hover {
-    border: 1px solid #dfe3ed;
-    box-shadow: none;
-    color: ${({ color }) => color ?? '#6e849a'};
+    color: ${({ color, theme }) => color ?? theme.iconColors.active};
+    border: 1px solid ${colors('borders')};
     box-shadow: none;
   }
 
@@ -59,10 +57,10 @@ const OutlineContainer = styled(IconButtonContainer)<OutlineContainerProps>`
     !preventFocusStyle &&
     css`
       &:focus {
+        color: ${colors('primary')};
         background: #eef4f6cc;
-        color: #132144;
+        border: 1px solid ${colors('borders')};
         box-shadow: none !important;
-        border: 1px solid #dfe3ed;
       }
     `}
 

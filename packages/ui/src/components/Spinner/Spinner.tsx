@@ -1,11 +1,11 @@
 import cn from 'classnames';
 import React from 'react';
-import styled from 'styled-components';
 
+import { colors, styled } from '../../styles';
 import Loader from '../Loader';
 
 const Text = styled.div`
-  color: #132144;
+  color: ${colors('primary')};
   font-weight: 400;
   font-size: 18px;
 `;

@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { styled } from '../../../styles';
+import { colors, styled } from '../../../styles';
 import SvgIcon, { Icon } from '../../SvgIcon';
 
 const MessageWrapper = styled.div`
   display: flex;
-  color: #132144;
+  color: ${colors('primary')};
 `;
 
 const MessageIcon = styled(SvgIcon)`

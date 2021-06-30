@@ -1,4 +1,4 @@
-import { css, styled } from '../../styles';
+import { colors, css, styled } from '../../styles';
 import Input from '../Input';
 
 export * from './components';
@@ -47,12 +47,12 @@ const SearchInput = styled(Input)<SearchInputProps>`
   ${({ isDropDownOpened, opened }) =>
     (isDropDownOpened || opened) &&
     css`
-      border-color: #5d9df5 !important;
+      border-color: ${colors('blue')} !important;
 
       ${isDropDownOpened &&
       css`
         &[disabled] {
-          color: #5d9df5 !important;
+          color: ${colors('blue')} !important;
         }
       `}
     `}

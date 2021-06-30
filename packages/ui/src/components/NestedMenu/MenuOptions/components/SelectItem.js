@@ -1,4 +1,4 @@
-import { css, styled } from '../../../../styles';
+import { backgrounds, colors, css, styled } from '../../../../styles';
 import { MenuItem } from '../../../Menu';
 
 const SelectItem = styled(MenuItem)`
@@ -7,7 +7,7 @@ const SelectItem = styled(MenuItem)`
   ${({ isFocused }) =>
     isFocused &&
     css`
-      background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff !important;
+      background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors('white')} !important;
     `}
 
   ${({ isGroup }) =>

@@ -1,7 +1,7 @@
-import { styled } from '../../../styles';
+import { colors, styled } from '../../../styles';
 
 const PrefixContainer = styled.span`
-  color: #62778c;
+  color: ${colors('secondary')};
   font-weight: 600;
   font-size: 13px;
 `;

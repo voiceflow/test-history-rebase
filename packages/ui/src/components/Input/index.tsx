@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { VariantValue } from '../../types';
 import { DefaultInput, InlineInput } from './components';
 import { InlineInputProps } from './components/InlineInput';
 import { InputVariant } from './constants';
@@ -13,15 +14,13 @@ const INPUT_VARIANTS = {
   [InputVariant.INLINE]: InlineInput,
 };
 
-export type InputProps = InlineInputProps & {
-  variant?: InputVariant | `${InputVariant}`;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-};
+export type InputProps = InlineInputProps &
+  React.ComponentProps<typeof DefaultInput> & {
+    variant?: VariantValue<InputVariant>;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  };
 
-const Input: React.ForwardRefRenderFunction<HTMLInputElement, InputProps & React.ComponentProps<typeof DefaultInput>> = (
-  { variant = InputVariant.DEFAULT, ...props },
-  ref
-) => {
+const Input: React.ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({ variant = InputVariant.DEFAULT, ...props }, ref) => {
   const Component = INPUT_VARIANTS[variant];
 
   return variant === InputVariant.INLINE && props.children ? props.children({ ref }) : <Component {...props} ref={ref} />;

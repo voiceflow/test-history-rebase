@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.415.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.414.0...@voiceflow/creator-app@1.415.0) (2021-06-30)
+
+
+### Features
+
+* show all messages when muted (VF-921) ([#3588](https://github.com/voiceflow/creator-app/issues/3588)) ([93143e1](https://github.com/voiceflow/creator-app/commit/93143e1867ddaa1169c2aeada4f70b6b52632421))
+
+
+
+
+
 # [1.414.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.413.4...@voiceflow/creator-app@1.414.0) (2021-06-30)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.415.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.415.0...@voiceflow/creator-app@1.415.1) (2021-06-30)
+
+
+### Bug Fixes
+
+* IMM intent name deletion crash (VF-1167) ([#3582](https://github.com/voiceflow/creator-app/issues/3582)) ([66e6f29](https://github.com/voiceflow/creator-app/commit/66e6f29485db0f999935c86e1cb57381463badb2))
+* prototype session id (VF-1184) ([#3599](https://github.com/voiceflow/creator-app/issues/3599)) ([00b832e](https://github.com/voiceflow/creator-app/commit/00b832ec90e36fdf46aaa06601a357cc6628c187))
+
+
+
+
+
 # [1.415.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.414.0...@voiceflow/creator-app@1.415.0) (2021-06-30)
 
 

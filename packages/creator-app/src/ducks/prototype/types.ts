@@ -2,12 +2,13 @@ import { VersionPrototype } from '@voiceflow/api-sdk';
 import { BaseRequest, ButtonsLayout, DeviceType } from '@voiceflow/general-types';
 import { StepData } from '@voiceflow/general-types/build/nodes/visual';
 
-import { PlanType } from '@/constants';
+import { PlanType, PlatformType } from '@/constants';
 import { AnyLocale } from '@/ducks/version';
 import { PrototypeContext } from '@/models';
 
 export type PrototypeSettings = Omit<VersionPrototype['settings'], 'layout'> & {
   plan: PlanType;
+  platform: PlatformType;
   layout: PrototypeLayout;
   locales: AnyLocale[];
   projectName: string;

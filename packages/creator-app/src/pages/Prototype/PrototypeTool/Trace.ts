@@ -12,12 +12,15 @@ import { BlockTrace, ChoiceTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace
 import { Engine } from '@/pages/Canvas/engine';
 import { tail, unique } from '@/utils/array';
 import { noop } from '@/utils/functional';
+import { delay } from '@/utils/promise';
 
 import { Interaction, PMStatus } from '../types';
 import AudioController from './Audio';
 import MessageController from './Message';
 import TimeoutController from './Timeout';
 import { getUpdatedContextHistory, isV1Trace } from './utils';
+
+const MUTED_MESSAGE_DELAY = 150;
 
 export enum StepDirection {
   FORWARD = 'forward',
@@ -396,18 +399,22 @@ class TraceController {
       this.streamState = { src, token, offset: 0 };
     }
 
-    try {
-      await this.audio.play(src, {
-        loop: action === TraceStreamAction.LOOP,
-        muted: this.props.isMuted,
-        offset: this.streamState.offset,
-        onPause: (audio) => {
-          this.streamState.offset = audio.currentTime;
-        },
-        onError: () => this.setError(),
-      });
-    } catch {
-      return;
+    if (this.props.isMuted) {
+      await delay(MUTED_MESSAGE_DELAY);
+    } else {
+      try {
+        await this.audio.play(src, {
+          loop: action === TraceStreamAction.LOOP,
+          muted: this.props.isMuted,
+          offset: this.streamState.offset,
+          onPause: (audio) => {
+            this.streamState.offset = audio.currentTime;
+          },
+          onError: () => this.setError(),
+        });
+      } catch {
+        return;
+      }
     }
 
     await this.next({ type: RequestType.TEXT, payload: IntentName.NEXT });
@@ -424,7 +431,16 @@ class TraceController {
       return;
     }
 
-    await this.audio.play(src, { muted: this.props.isMuted, onError: () => this.setError() }).catch(noop);
+    if (this.props.isMuted) {
+      await delay(MUTED_MESSAGE_DELAY);
+    } else {
+      await this.audio
+        .play(src, {
+          muted: this.props.isMuted,
+          onError: () => this.setError(),
+        })
+        .catch(noop);
+    }
   }
 
   private async processFlowTrace({ payload: { diagramID } }: FlowTrace) {

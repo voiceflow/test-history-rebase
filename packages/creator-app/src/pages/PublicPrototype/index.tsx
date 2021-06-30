@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { RemoveIntercom } from '@/components/IntercomChat';
 import SeoHelmet from '@/components/SeoHelmet';
 import { Permission } from '@/config/permissions';
-import { PlanType } from '@/constants';
+import { PlanType, PlatformType } from '@/constants';
 import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { connect } from '@/hocs';
@@ -24,6 +24,7 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
   const [isLoaded, toggleLoaded] = useToggle(false);
   const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings>({
     plan: PlanType.STARTER,
+    platform: PlatformType.GENERAL,
     locales: [],
     layout: PrototypeDuck.PrototypeLayout.TEXT_DIALOG,
     projectName: '',

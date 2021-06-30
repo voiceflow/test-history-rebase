@@ -65,15 +65,15 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
 
   const scrollToBottom = () => {
     if (autoScroll) {
-      scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+      scrollRef.current?.scrollIntoView();
     }
   };
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     scrollToBottom();
   }, [messages.length, interactions]);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (isLoading) {
       scrollToBottom();
     }

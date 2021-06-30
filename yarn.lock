@@ -4863,14 +4863,14 @@
   resolved "https://registry.yarnpkg.com/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
   integrity sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==
 
-"@voiceflow/alexa-types@1.51.4":
-  version "1.51.4"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.51.4.tgz#cfb11396ae2bea1ba87b7fbd9b23035e7661c717"
-  integrity sha512-3prNQAE5wl2hqEJsfy4Ta1+1CJbLwETaUzUiojmoofclx9KppkH7pxia+i2cT2LwWHUxWd4rr+hdJfppBvOH/A==
+"@voiceflow/alexa-types@1.51.9":
+  version "1.51.9"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.51.9.tgz#62051b5f1a6213ad6737f0859a6663e3a2a73419"
+  integrity sha512-8aih6Un3eA1Mhs2WVK0FWmVFzLpxvfVyz1bRom546Gy2lgjdI+Ym98WB8HkHLuAqZcRusUN7Qy5I/M4Kb+WPQw==
   dependencies:
-    "@voiceflow/api-sdk" "^1.32.1"
+    "@voiceflow/api-sdk" "^1.33.0"
     "@voiceflow/common" "6.5.0"
-    "@voiceflow/general-types" "^1.50.0"
+    "@voiceflow/general-types" "^1.50.5"
     ask-smapi-model "^1.11.0"
 
 "@voiceflow/api-sdk@1.32.1":
@@ -4883,17 +4883,17 @@
     axios "^0.21.1"
     superstruct "^0.10.12"
 
-"@voiceflow/api-sdk@1.32.2":
-  version "1.32.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.32.2.tgz#902e6f5e8acdc9e9923032e4251e4349fca23c79"
-  integrity sha512-rkS64apdEZgrfRLWzOfzWFjPPwo4jSOiplnRCvUkjvjlIUews3V9S01xUpIjnazIYGf8xdaMCsbuqkugoyuHhQ==
+"@voiceflow/api-sdk@1.33.0", "@voiceflow/api-sdk@^1.33.0":
+  version "1.33.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.33.0.tgz#c86a2ef5d4e788238b0e6b95999c07ddbd080dda"
+  integrity sha512-XmPKy02/dWSh8kOAb30Soqi3UG8zz+7kPQwJhj41BlRGSQBZeGbQa56NzQZ3Tb416w8r0AU3TLZZOR2HWj27Sw==
   dependencies:
     "@types/atob" "^2.1.2"
     atob "^2.1.2"
     axios "^0.21.1"
     superstruct "^0.10.12"
 
-"@voiceflow/api-sdk@^1.31.10", "@voiceflow/api-sdk@^1.32.1", "@voiceflow/api-sdk@^1.32.5":
+"@voiceflow/api-sdk@^1.31.10", "@voiceflow/api-sdk@^1.32.5":
   version "1.32.5"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.32.5.tgz#3b7378c8e14d4cead7cd60282205d40b0455bea6"
   integrity sha512-m+/a7ivrx01gaRpz3996FIXSTBmM4hmS7mtatV2YWfOND1RZUrAwXaDqOLXyRWc2FFE7kVy6zepWCfYDYjzEKQ==
@@ -4980,14 +4980,14 @@
     eslint-plugin-xss "^0.1.9"
     eslint-plugin-you-dont-need-lodash-underscore "^6.11.0"
 
-"@voiceflow/general-types@1.50.0":
-  version "1.50.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.50.0.tgz#50af52c6f82bf42e6141c3c4e7ca9389b4103df1"
-  integrity sha512-5CxRPVEziekMKCJMUEBh7qne02qu4qaxAoDYrgScdQKZadBjmopdJsZMCnJ3kuykYgPn6klUUWlGtocGZace3w==
+"@voiceflow/general-types@1.50.5", "@voiceflow/general-types@^1.50.5":
+  version "1.50.5"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.50.5.tgz#08424501a71e91f6e25013f8df2462caf278001d"
+  integrity sha512-SgwlRucj1RaKk3+ojqjNntF2hyoBvjCuhTpztEw9nnusPo3uN8OzEGwcfZD59MeB8pPsvIlX5mp3csG+1FU7jA==
   dependencies:
-    "@voiceflow/api-sdk" "^1.32.1"
+    "@voiceflow/api-sdk" "^1.33.0"
 
-"@voiceflow/general-types@^1.50.0", "@voiceflow/general-types@^1.50.4":
+"@voiceflow/general-types@^1.50.4":
   version "1.50.4"
   resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.50.4.tgz#3cd895fcd81cc1899e9afaa66b89c41117e0e80e"
   integrity sha512-ZpDs3Z8A/8X5bqXY4Srtr7e33PKeNpmNWSgXXwhFzPn6VSaCGnlK6wkaVy1DmrvYsp7zT+NBo9wcc/qkTqe9jA==
@@ -12777,15 +12777,10 @@ immutability-helper@^2.9.0:
   dependencies:
     invariant "^2.2.0"
 
-immutable@3.8.2, "immutable@^3.8.1 || ^4.0.0-rc.1":
+immutable@3.8.2, "immutable@^3.8.1 || ^4.0.0-rc.1", immutable@~3.7.4:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
   integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=
-
-immutable@~3.7.4:
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.7.6.tgz#13b4d3cb12befa15482a26fe1b2ebae640071e4b"
-  integrity sha1-E7TTyxK++hVIKib+Gy665kAHHks=
 
 import-fresh@^2.0.0:
   version "2.0.0"

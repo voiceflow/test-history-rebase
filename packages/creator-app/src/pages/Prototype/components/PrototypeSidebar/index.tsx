@@ -6,6 +6,7 @@ import Drawer from '@/components/Drawer';
 import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import { Permission } from '@/config/permissions';
 import * as Diagram from '@/ducks/diagram';
+import * as Project from '@/ducks/project';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
 import { connect } from '@/hocs';
@@ -18,6 +19,7 @@ import { NLPContext } from '@/pages/Skill/contexts';
 import { FadeLeftContainer } from '@/styles/animations';
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
+import { isChatbotPlatform } from '@/utils/typeGuards';
 import * as Sentry from '@/vendors/sentry';
 
 import { Container, EmbedContainer, TrainingSection } from './components';
@@ -28,11 +30,12 @@ export type PrototypeSidebarProps = {
 
 const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSidebarProps> = ({
   open,
-  saveActiveDiagram,
-  compilePrototype,
-  isMuted,
-  updatePrototype,
   status,
+  isMuted,
+  platform,
+  updatePrototype,
+  compilePrototype,
+  saveActiveDiagram,
 }) => {
   const theme = useTheme();
   const debugEnabled = useDebug();
@@ -74,16 +77,21 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   React.useEffect(() => {
     if (!open) return undefined;
 
+    if (isChatbotPlatform(platform)) {
+      updatePrototype({ muted: true });
+    }
+
     const renderAbortControl = { aborted: false };
 
     if (canRenderPrototype) {
-      enableLoading();
+      (async () => {
+        enableLoading();
 
-      // eslint-disable-next-line promise/catch-or-return
-      saveActiveDiagram()
-        .catch(Sentry.error)
-        .then(() => compilePrototype(renderAbortControl))
-        .then(disableLoading);
+        await saveActiveDiagram().catch(Sentry.error);
+        await compilePrototype(renderAbortControl);
+
+        disableLoading();
+      })();
     } else {
       disableLoading();
     }
@@ -156,11 +164,12 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
 const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
   isMuted: PrototypeDuck.prototypeMutedSelector,
+  platform: Project.activePlatformSelector,
 };
 
 const mapDispatchToProps = {
-  compilePrototype: PrototypeDuck.compilePrototype,
   updatePrototype: PrototypeDuck.updatePrototype,
+  compilePrototype: PrototypeDuck.compilePrototype,
   saveActiveDiagram: Diagram.saveActiveDiagram,
 };
 

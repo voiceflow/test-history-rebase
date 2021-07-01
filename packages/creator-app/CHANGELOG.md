@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.417.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.416.0...@voiceflow/creator-app@1.417.0) (2021-07-01)
+
+
+### Features
+
+* export .vf file without version id (VF-1229) ([#3613](https://github.com/voiceflow/creator-app/issues/3613)) ([47fb23d](https://github.com/voiceflow/creator-app/commit/47fb23dd53fe7950c915d0c626f07363faaa22b2))
+
+
+
+
+
 # [1.416.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.415.1...@voiceflow/creator-app@1.416.0) (2021-07-01)
 
 

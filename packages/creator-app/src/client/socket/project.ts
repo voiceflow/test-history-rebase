@@ -40,6 +40,8 @@ const projectSocketClient = {
   watchForCommentUpdate: (callback: AnyFunction) => client.watch(ServerEvent.COMMENT_UPDATED, callback),
 
   watchForCommentDelete: (callback: AnyFunction) => client.watch(ServerEvent.COMMENT_DELETED, callback),
+
+  watchForTranscriptDelete: (callback: AnyFunction) => client.watch(ServerEvent.TRANSCRIPT_DELETED, callback),
 };
 
 export default projectSocketClient;

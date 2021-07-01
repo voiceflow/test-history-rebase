@@ -1,7 +1,9 @@
 import { toast } from '@voiceflow/ui';
 
+import client from '@/client';
 import transcriptAdapter from '@/client/adapters/transcripts/transcripts';
 import { prototypeContextHistorySelector } from '@/ducks/prototype';
+import { activeProjectIDSelector } from '@/ducks/session';
 import { patchTranscript, removeTranscript, replaceTranscripts } from '@/ducks/transcript/actions';
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
 import { Browser, Device, OperatingSystem, PrototypeContext, Sentiment, SystemTag, Trace } from '@/models';
@@ -185,12 +187,12 @@ export const markAsRead =
 
 export const deleteTranscript =
   (transcriptID: string): Thunk =>
-  async (dispatch, _getState) => {
-    // const state = getState();
-    // const activeProjectID = activeProjectIDSelector(state);
+  async (dispatch, getState) => {
+    const state = getState();
+    const activeProjectID = activeProjectIDSelector(state);
     try {
       // TODO uncomment client call to save to db
-      // await client.transcript.deleteTranscript(activeProjectID!, transcriptID, { unread: false})
+      await client.transcript.deleteTranscript(activeProjectID!, transcriptID);
       dispatch(removeTranscript(transcriptID));
       toast.success('Successfully deleted conversation');
     } catch (e) {

@@ -1,8 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { AutoSizer, List } from 'react-virtualized';
 
-import { currentTranscriptIDSelector } from '@/ducks/transcript';
+import * as Router from '@/ducks/router';
+import { currentTranscriptIDSelector, mapTranscriptsSelector } from '@/ducks/transcript';
+import { useDispatch, useSelector } from '@/hooks';
 import { Transcript } from '@/models';
 
 import { Container, TranscriptResultsItem } from './components';
@@ -13,6 +14,15 @@ interface TranscriptResultsList {
 
 const TranscriptResultsList = ({ transcriptList }: TranscriptResultsList) => {
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
+  const transcriptMap = useSelector(mapTranscriptsSelector);
+  const goToTranscript = useDispatch(Router.goToTargetTranscript);
+
+  React.useEffect(() => {
+    const targetTranscriptDoesntExist = currentTranscriptID && !transcriptMap[currentTranscriptID];
+    if (transcriptList.length && (targetTranscriptDoesntExist || !currentTranscriptID)) {
+      goToTranscript(transcriptList[0].id);
+    }
+  }, [transcriptList, currentTranscriptID]);
 
   return (
     <Container>

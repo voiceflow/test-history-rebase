@@ -10,15 +10,13 @@ const TranscriptDetails: React.FC = () => {
 
   return (
     <Container>
-      {currentTranscript ? (
+      {currentTranscript && (
         <>
           <Context />
           <Actions />
           <Tags />
           <Notes />
         </>
-      ) : (
-        'No Data Selected'
       )}
     </Container>
   );

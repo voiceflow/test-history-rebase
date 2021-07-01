@@ -42,6 +42,7 @@ export enum ServerEvent {
   COMMENT_UPDATED = 'comment:updated',
   COMMENT_DELETED = 'comment:deleted',
 
+  TRANSCRIPT_DELETED = 'transcript:deleted',
   PROTOTYPE_WEBHOOK = 'prototype:webhook',
 }
 

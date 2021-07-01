@@ -153,7 +153,6 @@ export const goToConversationsPage = (): Thunk => async (dispatch, getState) => 
   const versionID = Session.activeVersionIDSelector(state);
 
   Errors.assertVersionID(versionID);
-
   dispatch(goToConversations(versionID));
 };
 

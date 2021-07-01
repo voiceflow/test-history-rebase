@@ -8,7 +8,7 @@ import { Container, KeyBubble } from './components';
 interface HotkeyToActionProps {
   label: string;
   hotkey: Hotkey;
-  onHotkey: (event: KeyboardEvent) => void;
+  onHotkey: (event: KeyboardEvent | React.MouseEvent) => void;
   preventDefault?: boolean;
 }
 
@@ -16,7 +16,7 @@ const HotkeyToAction: React.FC<HotkeyToActionProps> = ({ label, hotkey, onHotkey
   useHotKeys(hotkey, onHotkey, { preventDefault }, [onHotkey]);
 
   return (
-    <Container>
+    <Container onClick={onHotkey}>
       <KeyBubble>{HOTKEY_LABEL_MAP[hotkey]}</KeyBubble>
       <div>{label}</div>
     </Container>

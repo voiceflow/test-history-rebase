@@ -1,17 +1,22 @@
-import { IS_MAC } from '@voiceflow/ui';
 import React from 'react';
+
+import { PLATFORM_META_KEY_LABEL } from '@/keymap';
 
 import { ShortcutCommand } from './components';
 
-const hotKey = IS_MAC ? '⌘' : 'Ctrl';
+interface ShortcutItem {
+  title: string;
+  command: React.ReactNode;
+  shouldRender?: (options: { navigationRedesignEnabled: boolean }) => boolean;
+}
 
 // eslint-disable-next-line import/prefer-default-export
-export const SHORTCUTS = [
+export const SHORTCUTS: ShortcutItem[] = [
   {
     title: 'Copy',
     command: (
       <>
-        <ShortcutCommand>{hotKey}</ShortcutCommand> + <ShortcutCommand>C</ShortcutCommand>
+        <ShortcutCommand>{PLATFORM_META_KEY_LABEL}</ShortcutCommand> + <ShortcutCommand>C</ShortcutCommand>
       </>
     ),
   },
@@ -19,7 +24,7 @@ export const SHORTCUTS = [
     title: 'Paste',
     command: (
       <>
-        <ShortcutCommand>{hotKey}</ShortcutCommand> + <ShortcutCommand>V</ShortcutCommand>
+        <ShortcutCommand>{PLATFORM_META_KEY_LABEL}</ShortcutCommand> + <ShortcutCommand>V</ShortcutCommand>
       </>
     ),
   },
@@ -27,7 +32,7 @@ export const SHORTCUTS = [
     title: 'Duplicate',
     command: (
       <>
-        <ShortcutCommand>{hotKey}</ShortcutCommand> + <ShortcutCommand>D</ShortcutCommand>
+        <ShortcutCommand>{PLATFORM_META_KEY_LABEL}</ShortcutCommand> + <ShortcutCommand>D</ShortcutCommand>
       </>
     ),
   },
@@ -35,7 +40,7 @@ export const SHORTCUTS = [
     title: 'Undo',
     command: (
       <>
-        <ShortcutCommand>{hotKey}</ShortcutCommand> + <ShortcutCommand>Z</ShortcutCommand>
+        <ShortcutCommand>{PLATFORM_META_KEY_LABEL}</ShortcutCommand> + <ShortcutCommand>Z</ShortcutCommand>
       </>
     ),
   },
@@ -43,7 +48,7 @@ export const SHORTCUTS = [
     title: 'Redo',
     command: (
       <>
-        <ShortcutCommand>{hotKey}</ShortcutCommand> + <ShortcutCommand>Shift</ShortcutCommand> + <ShortcutCommand>Z</ShortcutCommand>
+        <ShortcutCommand>{PLATFORM_META_KEY_LABEL}</ShortcutCommand> + <ShortcutCommand>Shift</ShortcutCommand> + <ShortcutCommand>Z</ShortcutCommand>
       </>
     ),
   },
@@ -79,7 +84,7 @@ export const SHORTCUTS = [
     title: 'Show/Hide UI',
     command: (
       <>
-        <ShortcutCommand>{hotKey}</ShortcutCommand> + <ShortcutCommand>\</ShortcutCommand>
+        <ShortcutCommand>{PLATFORM_META_KEY_LABEL}</ShortcutCommand> + <ShortcutCommand>\</ShortcutCommand>
       </>
     ),
   },
@@ -104,15 +109,61 @@ export const SHORTCUTS = [
     ),
   },
   {
-    title: 'Design',
+    title: 'Designer',
     command: <ShortcutCommand>1</ShortcutCommand>,
   },
   {
     title: 'Launch',
     command: <ShortcutCommand>2</ShortcutCommand>,
+    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
   },
   {
     title: 'Test Mode',
     command: <ShortcutCommand>T</ShortcutCommand>,
+    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
+  },
+  {
+    title: 'Integrations',
+    command: <ShortcutCommand>3</ShortcutCommand>,
+    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
+  },
+  {
+    title: 'Settings',
+    command: <ShortcutCommand>4</ShortcutCommand>,
+    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
+  },
+  {
+    title: 'Run Project',
+    command: <ShortcutCommand>R</ShortcutCommand>,
+    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
+  },
+  {
+    title: 'Add Text',
+    command: <ShortcutCommand>T</ShortcutCommand>,
+    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
+  },
+  {
+    title: 'Add Image',
+    command: <ShortcutCommand>I</ShortcutCommand>,
+    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
+  },
+  {
+    title: 'Model',
+    command: <ShortcutCommand>M</ShortcutCommand>,
+    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
+  },
+  {
+    title: 'Commenting',
+    command: <ShortcutCommand>C</ShortcutCommand>,
+    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
+  },
+  {
+    title: 'Upload',
+    command: (
+      <>
+        <ShortcutCommand>{PLATFORM_META_KEY_LABEL}</ShortcutCommand> + <ShortcutCommand>U</ShortcutCommand>
+      </>
+    ),
+    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
   },
 ];

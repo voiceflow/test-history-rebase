@@ -2,7 +2,6 @@ import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { RemoveIntercom } from '@/components/IntercomChat';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useEventualEngine, useRouteDiagramID, useSelector, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
@@ -65,7 +64,6 @@ const Diagram: React.FC<DiagramProps> = () => {
         )}
 
         <PrototypeOverlay />
-        <RemoveIntercom />
       </ManagerProvider>
     </>
   );

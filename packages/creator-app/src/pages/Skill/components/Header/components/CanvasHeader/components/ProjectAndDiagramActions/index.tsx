@@ -10,7 +10,7 @@ import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 
-import { Container, DiagramsActions, ProjectActions, ProjectTitle } from './components';
+import { Container, DiagramsActions, ProjectActions, ProjectTitle, ViewOnly } from './components';
 
 const validateTitle = (value: string) => value.trim() || 'Untitled Project';
 
@@ -24,13 +24,14 @@ const ProjectAndDiagramActions: React.FC = () => {
   const projectName = useSelector(Project.activeProjectNameSelector);
 
   const isPrototypingMode = usePrototypingMode();
-  const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
+  const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
   const titleRef = React.useRef<EditableTextAPI>(null);
   const [focused, setFocused] = useToggle(false);
   const [formValue, updateFormValue] = useLinkedState(projectName ?? '');
 
-  const isReadOnly = isLocked || isPrototypingMode || !canManageProjects;
+  const isReadOnly = isLocked || isPrototypingMode || !canEditProject;
 
   const onBlur = React.useCallback(() => {
     if (isReadOnly) {
@@ -61,6 +62,8 @@ const ProjectAndDiagramActions: React.FC = () => {
 
   return (
     <Container>
+      {!canEditCanvas && <ViewOnly>View only</ViewOnly>}
+
       <ProjectTitle
         id={Identifier.PROJECT_TITLE}
         ref={titleRef}
@@ -69,7 +72,7 @@ const ProjectAndDiagramActions: React.FC = () => {
         onFocus={onFocus}
         readOnly={isReadOnly}
         onChange={updateFormValue}
-        disabled={isLocked || !canManageProjects}
+        disabled={isLocked || !canEditProject}
         onKeyPress={withEnterPress(withInputBlur())}
       />
 

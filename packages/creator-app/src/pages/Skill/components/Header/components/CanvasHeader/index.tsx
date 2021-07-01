@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { Header, HeaderDivider } from '@/components/ProjectPage';
+import { Permission } from '@/config/permissions';
+import { usePermission } from '@/hooks';
 import CanvasViewers from '@/pages/Skill/components/CanvasViewers';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
@@ -10,6 +12,7 @@ import { CanvasControls, LogoButton, ProjectAndDiagramActions, Run, Share, Uploa
 
 const CanvasHeader: React.FC = () => {
   const platform = React.useContext(PlatformContext)!;
+  const [canPublish] = usePermission(Permission.CANVAS_PUBLISH);
 
   return (
     <SharePopperProvider>
@@ -24,7 +27,7 @@ const CanvasHeader: React.FC = () => {
 
         <Share />
 
-        {!isAnyGeneralPlatform(platform) && (
+        {canPublish && !isAnyGeneralPlatform(platform) && (
           <>
             <HeaderDivider />
 

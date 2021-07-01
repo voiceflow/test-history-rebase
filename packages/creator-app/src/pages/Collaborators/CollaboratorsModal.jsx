@@ -43,7 +43,7 @@ function CollaboratorsModal() {
         <Collaborators />
       </BodyContainer>
 
-      <ModalFooter justifyContent="flex-start">
+      <ModalFooter withoutBackground justifyContent="flex-start">
         <InviteByLink />
       </ModalFooter>
     </Modal>

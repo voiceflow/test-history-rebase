@@ -4,6 +4,7 @@ import IdleTimer from 'react-idle-timer';
 import { batch } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch, useRouteMatch } from 'react-router-dom';
 
+import { RemoveIntercom } from '@/components/IntercomChat';
 import ProjectPage from '@/components/ProjectPage';
 import { Path } from '@/config/routes';
 import * as Creator from '@/ducks/creator';
@@ -109,9 +110,12 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
               debounce={250}
               timeout={TIMEOUT_COUNT}
             />
+
             <InactivityModal open={isIdle} onActive={setActive} />
           </>
         )}
+
+        <RemoveIntercom />
 
         <PublishProvider>
           <ExportProvider>

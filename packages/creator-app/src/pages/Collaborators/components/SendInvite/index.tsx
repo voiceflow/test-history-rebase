@@ -97,7 +97,7 @@ const SendInvite: React.FC<SendInviteProps & ConnectedSendInviteProps> = ({
         />
 
         <SendInviteButton id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} disabled={isInvalid}>
-          {inline ? 'Send' : 'Send Invite'}
+          Send
         </SendInviteButton>
       </Flex>
 

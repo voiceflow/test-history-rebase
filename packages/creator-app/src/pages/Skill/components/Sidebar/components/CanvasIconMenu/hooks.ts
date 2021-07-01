@@ -128,7 +128,7 @@ export const useHelpOptions = () => {
       { key: 'forum', label: 'Community', onClick: () => window.open(FORUM_LINK, '_blank') },
       { key: 'divider', label: 'Divider', divider: true },
       { key: 'demo', label: 'Book a demo', onClick: () => window.open(BOOK_DEMO_LINK, '_blank') },
-      { key: 'intercome', label: isIntercomVisible ? 'Hide Intercom' : 'Chat with us', onClick: isIntercomVisible ? hideIntercom : showIntercom },
+      { key: 'intercom', label: isIntercomVisible ? 'Hide Intercom' : 'Chat with us', onClick: isIntercomVisible ? hideIntercom : showIntercom },
     ],
     [isIntercomVisible]
   );

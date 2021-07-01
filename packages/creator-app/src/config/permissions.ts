@@ -38,6 +38,7 @@ export enum Permission {
   CANVAS_REALTIME = 'canvas.REALTIME',
   CANVAS_MARKUP = 'canvas.MARKUP',
   CANVAS_EXPORT = 'canvas.EXPORT',
+  CANVAS_PUBLISH = 'canvas.PUBLISH',
   HINT_FEATURES = 'canvas.HINT_FEATURES',
 
   // features
@@ -48,31 +49,35 @@ export enum Permission {
   DELETE_TRANSCRIPT = 'transcripts.DELETE',
 }
 
-const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.GUEST, UserRole.OWNER];
+const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.OWNER, UserRole.BILLING, UserRole.GUEST];
+const SIGNED_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING];
+const EDITOR_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER];
+const EDITOR_AND_BILLING_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING];
 
 export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
-  [Permission.ADD_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING],
-  [Permission.VIEW_COLLABORATORS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING],
-  [Permission.DELETE_TRANSCRIPT]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
-  [Permission.INVITE_BY_LINK]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING],
+  [Permission.ADD_COLLABORATORS]: EDITOR_AND_BILLING_USER_ROLES,
+  [Permission.VIEW_COLLABORATORS]: SIGNED_USER_ROLES,
+  [Permission.DELETE_TRANSCRIPT]: EDITOR_USER_ROLES,
+  [Permission.INVITE_BY_LINK]: EDITOR_AND_BILLING_USER_ROLES,
 
   [Permission.CONFIGURE_WORKSPACE]: [UserRole.ADMIN],
-  [Permission.UPGRADE_WORKSPACE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING],
+  [Permission.UPGRADE_WORKSPACE]: EDITOR_AND_BILLING_USER_ROLES,
 
-  [Permission.MANAGE_PROJECTS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
-  [Permission.MANAGE_PROJECT_LISTS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.BILLING],
+  [Permission.MANAGE_PROJECTS]: EDITOR_USER_ROLES,
+  [Permission.MANAGE_PROJECT_LISTS]: EDITOR_AND_BILLING_USER_ROLES,
   [Permission.CLONE_PROJECT]: [UserRole.LIBRARY],
-  [Permission.EDIT_PROJECT]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
+  [Permission.EDIT_PROJECT]: EDITOR_USER_ROLES,
 
-  [Permission.EDIT_CANVAS]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
-  [Permission.CANVAS_REALTIME]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING],
-  [Permission.COMMENTING]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING],
-  [Permission.SHARE_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
+  [Permission.EDIT_CANVAS]: EDITOR_USER_ROLES,
+  [Permission.CANVAS_REALTIME]: SIGNED_USER_ROLES,
+  [Permission.COMMENTING]: SIGNED_USER_ROLES,
+  [Permission.SHARE_PROTOTYPE]: EDITOR_USER_ROLES,
   [Permission.SHARE_PROTOTYPE_PASSWORD]: ALL_USER_ROLES,
-  [Permission.TRAIN_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
-  [Permission.RENDER_PROTOTYPE]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER],
+  [Permission.TRAIN_PROTOTYPE]: EDITOR_USER_ROLES,
+  [Permission.RENDER_PROTOTYPE]: EDITOR_USER_ROLES,
+  [Permission.CANVAS_PUBLISH]: EDITOR_USER_ROLES,
 
-  [Permission.HINT_FEATURES]: [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING],
+  [Permission.HINT_FEATURES]: SIGNED_USER_ROLES,
 };
 
 const ALL_PERMISSIONS = Object.values(PlanType);

@@ -31,19 +31,7 @@ const inviteLimitMessage = (
 
 type ROLE_OPTIONS = UserRole.EDITOR | UserRole.VIEWER | UserRole.ADMIN;
 
-interface InviteByLinkFooterProps {
-  noIcon?: boolean;
-  inline?: boolean;
-}
-
-const InviteByLinkFooter: React.FC<InviteByLinkFooterProps & ConnectedSeatSummaryProps> = ({
-  usedEditorSeats,
-  numberOfSeats,
-  activeWorkspaceID,
-  noIcon = false,
-  inline,
-  userRole,
-}) => {
+const InviteByLinkFooter: React.FC<ConnectedSeatSummaryProps> = ({ usedEditorSeats, numberOfSeats, activeWorkspaceID, userRole }) => {
   const [linkInvitePermission, setLinkInvitePermission] = React.useState<ROLE_OPTIONS>(UserRole.EDITOR);
   const [inviteCode, setInviteCode] = React.useState('');
   const [inviteLink, setInviteLink] = React.useState('');
@@ -103,8 +91,8 @@ const InviteByLinkFooter: React.FC<InviteByLinkFooterProps & ConnectedSeatSummar
           text={PermissionText[linkInvitePermission]}
         />
       </DropdownContainer>
-      <Button id={Identifier.COPY_INVITE_BUTTON} variant={ButtonVariant.PRIMARY} icon={noIcon ? null : 'link'} onClick={handleCopyLink}>
-        <span>{inline ? 'Copy Link' : 'Copy Invite Link'}</span>
+      <Button id={Identifier.COPY_INVITE_BUTTON} variant={ButtonVariant.PRIMARY} onClick={handleCopyLink}>
+        <span>Copy Link</span>
       </Button>
     </Container>
   );
@@ -119,4 +107,4 @@ const mapStateToProps = {
 
 type ConnectedSeatSummaryProps = ConnectedProps<typeof mapStateToProps>;
 
-export default connect(mapStateToProps)(InviteByLinkFooter) as React.FC<InviteByLinkFooterProps>;
+export default connect(mapStateToProps)(InviteByLinkFooter) as React.FC;

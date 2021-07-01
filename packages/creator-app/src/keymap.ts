@@ -122,7 +122,10 @@ const getHotkeyLabel = (hotkey: Hotkey): string => {
     label = platformLabel ?? label[0];
   }
 
-  return replaceSpecials(label.toUpperCase().replace('+', ''));
+  // for the mac platform remove '+' between ⌘ and hotkey
+  const formattedLabel = IS_MAC ? label.replace(`${PLATFORM_META_KEY}+`, PLATFORM_META_KEY) : label;
+
+  return replaceSpecials(formattedLabel.toUpperCase());
 };
 
 export const HOTKEY_LABEL_MAP = Object.values(Hotkey).reduce<Record<Hotkey, string>>(

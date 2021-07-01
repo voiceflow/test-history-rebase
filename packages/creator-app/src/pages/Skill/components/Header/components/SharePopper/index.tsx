@@ -57,7 +57,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
         renderFooter={() => (
           <PopperFooter>
             <Switch>
-              <Route path={ShareProjectTab.INVITE} render={() => <InviteFooter inline noIcon />} />
+              <Route path={ShareProjectTab.INVITE} render={() => <InviteFooter />} />
               <Route path={ShareProjectTab.SHARE} render={() => <ShareFooter compile inline />} />
               <Route path={ShareProjectTab.EXPORT} render={() => <ExportFooter />} />
             </Switch>

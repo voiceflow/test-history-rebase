@@ -26,7 +26,7 @@ export const exportCanvas =
 
       try {
         const data = await client.api.version.export(versionID);
-        download(`${projectName?.replace(/ /g, '_')}-${versionID}.vf`, JSON.stringify(data, null, 2), DataTypes.JSON);
+        download(`${projectName?.replace(/ /g, '_')}.vf`, JSON.stringify(data, null, 2), DataTypes.JSON);
       } catch (error) {
         Sentry.error(error);
         toast.error('.VF export failed');

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.416.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.415.1...@voiceflow/creator-app@1.416.0) (2021-07-01)
+
+
+### Features
+
+* update invite modal styles, navigation redesign feedback (VF-1219) ([#3612](https://github.com/voiceflow/creator-app/issues/3612)) ([4ae49b6](https://github.com/voiceflow/creator-app/commit/4ae49b6bae04f4471d3ee6cf55214002304b2880))
+
+
+
+
+
 ## [1.415.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.415.0...@voiceflow/creator-app@1.415.1) (2021-06-30)
 
 

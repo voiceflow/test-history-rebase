@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.418.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.418.2...@voiceflow/creator-app@1.418.3) (2021-07-02)
+
+
+### Bug Fixes
+
+* set cursor to default on multi-selection(VF-1188) ([#3593](https://github.com/voiceflow/creator-app/issues/3593)) ([cc7294f](https://github.com/voiceflow/creator-app/commit/cc7294ffc86eef2dfb7ef588d5b24273da92e612))
+
+
+
+
+
 ## [1.418.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.418.1...@voiceflow/creator-app@1.418.2) (2021-07-02)
 
 **Note:** Version bump only for package @voiceflow/creator-app

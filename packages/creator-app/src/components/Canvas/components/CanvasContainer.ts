@@ -1,4 +1,5 @@
 import { styled } from '@/hocs';
+import { CANVAS_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { CANVAS_BUSY_CLASSNAME, CANVAS_INTERACTING_CLASSNAME } from '../constants';
 
@@ -17,7 +18,7 @@ const CanvasContainer = styled.div`
     }
   }
 
-  &:active:not(.${CANVAS_BUSY_CLASSNAME}) {
+  .${CANVAS_DRAGGING_CLASSNAME} &:not(.${CANVAS_BUSY_CLASSNAME}) {
     cursor: grabbing;
   }
 `;

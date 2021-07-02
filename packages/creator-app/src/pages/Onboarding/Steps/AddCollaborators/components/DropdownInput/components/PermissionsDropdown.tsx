@@ -1,5 +1,4 @@
 import { Dropdown as BaseDropdown, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
-import _constant from 'lodash/constant';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
@@ -15,7 +14,6 @@ type PermissionDropdownProps = {
   selectedValue: UserRole;
   orientation: string;
   hasError?: boolean;
-  isDisabled?: boolean;
 };
 
 // styled components
@@ -23,15 +21,7 @@ const Dropdown = styled(BaseDropdown)`
   border-left: 0;
 `;
 
-const PermissionsDropdown: React.FC<PermissionDropdownProps> = ({
-  options = [],
-  onSelect,
-  onRemove,
-  selectedValue,
-  orientation,
-  hasError,
-  isDisabled,
-}) => {
+const PermissionsDropdown: React.FC<PermissionDropdownProps> = ({ options = [], onSelect, onRemove, selectedValue, orientation, hasError }) => {
   const dropdownValue =
     selectedValue === UserRole.ADMIN ? { value: UserRole.EDITOR, label: 'OWNER' } : options.filter((option) => option.value === selectedValue)?.[0];
 
@@ -50,9 +40,9 @@ const PermissionsDropdown: React.FC<PermissionDropdownProps> = ({
       }
     >
       {(ref, onToggle, isOpen) => (
-        <DropdownButton orientation={orientation} ref={ref} onClick={isDisabled ? _constant(null) : onToggle} error={hasError} active={isOpen}>
+        <DropdownButton orientation={orientation} ref={ref} onClick={onToggle} error={hasError} active={isOpen}>
           {dropdownValue?.label?.toUpperCase()}
-          {!isDisabled && <SvgIcon icon={SectionToggleVariant.TOGGLE as any} size={10} color="currentColor" />}
+          <SvgIcon icon={SectionToggleVariant.TOGGLE as any} size={10} color="currentColor" />
         </DropdownButton>
       )}
     </Dropdown>

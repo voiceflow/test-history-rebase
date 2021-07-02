@@ -1,5 +1,5 @@
+import { Collapse } from '@voiceflow/ui';
 import React from 'react';
-import { Collapse } from 'reactstrap';
 
 import { styled } from '@/hocs';
 

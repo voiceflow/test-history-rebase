@@ -2291,10 +2291,6 @@ kbd {
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
 }
 
-.collapsing {
-  transition: height 0.15s ease;
-}
-
 .btn-secondary.dropdown-toggle {
   padding-left: 16px;
   color: #62778c !important;

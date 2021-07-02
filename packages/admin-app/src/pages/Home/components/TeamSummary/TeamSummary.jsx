@@ -1,10 +1,10 @@
 import './TeamSummary.css';
 
-import { ClickableText, LegacyButton } from '@voiceflow/ui';
+import { ClickableText, Collapse, LegacyButton } from '@voiceflow/ui';
 import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, Collapse, ListGroup } from 'reactstrap';
+import { Card, CardBody, ListGroup } from 'reactstrap';
 
 import PlanModal from '@/components/PlanModal/PlanModal';
 import RoleModal from '@/components/RoleModal';

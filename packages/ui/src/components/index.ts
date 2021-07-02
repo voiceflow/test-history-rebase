@@ -32,6 +32,7 @@ export {
   TertiaryButtonProps,
 } from './Button';
 export { default as Card } from './Card';
+export { default as Collapse } from './Collapse';
 export { default as Dropdown, DropdownPlacement } from './Dropdown';
 export { ErrorBoundaryWrapper, ErrorDescription, ErrorMessage, ErrorMessageWithDivider, Page404, Page404Wrapper, PageError } from './Error';
 export {

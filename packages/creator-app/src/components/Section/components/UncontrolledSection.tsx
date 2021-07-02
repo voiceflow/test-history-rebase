@@ -1,7 +1,6 @@
-import { Icon, SvgIcon, swallowEvent } from '@voiceflow/ui';
+import { Collapse, Icon, SvgIcon, swallowEvent } from '@voiceflow/ui';
 import _isFunction from 'lodash/isFunction';
 import React from 'react';
-import { Collapse } from 'reactstrap';
 import { CSSProperties } from 'styled-components';
 
 import InfoIcon from '@/components/InfoIcon';

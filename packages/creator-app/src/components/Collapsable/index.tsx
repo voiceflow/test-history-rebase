@@ -1,7 +1,6 @@
-import { SvgIconProps } from '@voiceflow/ui';
+import { Collapse, SvgIconProps } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
-import { Collapse } from 'reactstrap';
 
 import { useToggle } from '@/hooks/toggle';
 import { ClassName } from '@/styles/constants';

@@ -18,7 +18,6 @@ export type DropdownInputProps = {
   autoFocus?: boolean;
   onFocus?: () => void;
   hasError?: boolean;
-  isDisabled?: boolean;
 };
 
 const DropdownInput: React.FC<DropdownInputProps> = ({
@@ -31,10 +30,9 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
   showDropdown,
   hasError,
   autoFocus,
-  isDisabled,
   ...props
 }) => (
-  <Container orientation={OrientationType.LEFT} isInvalid={!!hasError} isDisabled={isDisabled}>
+  <Container isInvalid={!!hasError}>
     <TextInputContainer>
       <Input
         // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -45,7 +43,6 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange(e.target.value)}
         showdropdown={showDropdown}
         error={hasError}
-        disabled={isDisabled}
         {...props}
       />
     </TextInputContainer>
@@ -58,7 +55,6 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
           onRemove={removeCollaborator}
           selectedValue={dropdownValue}
           hasError={hasError}
-          isDisabled={isDisabled}
         />
       </InputGroupAddon>
     )}

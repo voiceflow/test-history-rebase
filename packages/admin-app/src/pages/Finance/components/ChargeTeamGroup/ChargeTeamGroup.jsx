@@ -2,10 +2,10 @@
 import './ChargeTeamGroup.css';
 import '../AdminAdvancedModal/AdminAdvancedModal.css';
 
-import { Input, LegacyButton } from '@voiceflow/ui';
+import { Collapse, Input, LegacyButton } from '@voiceflow/ui';
 import moment from 'moment';
 import React from 'react';
-import { Alert, Card, CardBody, Collapse, Modal, ModalBody, ModalFooter } from 'reactstrap';
+import { Alert, Card, CardBody, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
 import PlanModal from '@/components/RoleModal';
 import * as Admin from '@/ducks/adminV2';

@@ -1,6 +1,5 @@
-import { preventDefault, Spinner, SvgIcon, withProvider } from '@voiceflow/ui';
+import { Collapse, preventDefault, Spinner, SvgIcon, withProvider } from '@voiceflow/ui';
 import React from 'react';
-import { Collapse } from 'reactstrap';
 import { compose } from 'redux';
 import validUrl from 'valid-url';
 

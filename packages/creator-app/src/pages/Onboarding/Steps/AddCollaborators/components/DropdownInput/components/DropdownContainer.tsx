@@ -1,5 +1,4 @@
-import React from 'react';
-import { InputGroup, InputGroupProps } from 'reactstrap';
+import { Flex } from '@voiceflow/ui';
 
 import { TextInputContainer } from '@/components/ButtonDropdownInput/components';
 import { css, styled } from '@/hocs';
@@ -7,9 +6,7 @@ import { css, styled } from '@/hocs';
 import DropdownButton from './DropdownButton';
 import Input from './Input';
 
-const DropdownContainer = styled(({ isInvalid, isDisabled, ...props }) => <InputGroup {...props} />)<
-  InputGroupProps & { isInvalid: boolean; isDisabled: boolean }
->`
+const DropdownContainer = styled(Flex)<{ isInvalid: boolean }>`
   position: relative;
   flex-wrap: nowrap;
   flex: 1;
@@ -23,17 +20,6 @@ const DropdownContainer = styled(({ isInvalid, isDisabled, ...props }) => <Input
       css`
         border-color: #e91e63 !important;
       `}
-
-    ${({ isDisabled }) =>
-      isDisabled &&
-      css`
-        cursor: no-drop;
-        color: #62778c !important;
-
-        :hover {
-          color: #62778c !important;
-        }
-      `}
   }
 
   :focus-within {
@@ -44,13 +30,6 @@ const DropdownContainer = styled(({ isInvalid, isDisabled, ...props }) => <Input
         isInvalid &&
         css`
           border-color: #e91e63 !important;
-        `}
-
-      ${({ isDisabled }) =>
-        isDisabled &&
-        css`
-          cursor: no-drop;
-          border-color: #d2dae2 !important;
         `}
     }
   }

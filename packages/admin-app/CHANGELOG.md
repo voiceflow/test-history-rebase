@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.1.5...@voiceflow/admin-app@1.1.6) (2021-07-02)
+
+
+### Bug Fixes
+
+* remove reactstrap collapse (VF-1066) ([#3615](https://github.com/voiceflow/creator-app/issues/3615)) ([e0cbf3d](https://github.com/voiceflow/creator-app/commit/e0cbf3d0df20eb20aaf4f8b7b71ce3f41f18f1a4))
+
+
+
+
+
 ## [1.1.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.1.4...@voiceflow/admin-app@1.1.5) (2021-06-30)
 
 **Note:** Version bump only for package @voiceflow/admin-app

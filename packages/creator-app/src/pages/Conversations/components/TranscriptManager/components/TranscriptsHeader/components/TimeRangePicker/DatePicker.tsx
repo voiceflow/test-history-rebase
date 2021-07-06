@@ -1,12 +1,11 @@
-import { ButtonVariant, Portal } from '@voiceflow/ui';
+import { ButtonVariant } from '@voiceflow/ui';
 import moment from 'moment';
 import React from 'react';
 import { DateUtils, Modifier, RangeModifier } from 'react-day-picker';
-import { Manager, Popper, Reference } from 'react-popper';
-import { useHistory } from 'react-router-dom';
 
 import { FORMAT, TimeRangePicker, WEEKDAYS } from '@/components/DayPickerInput/components';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
+import Popper, { PopperContent, PopperProps } from '@/components/Popper';
 import { useEnableDisable } from '@/hooks';
 import { FILTER_TAG } from '@/pages/Conversations/constants';
 
@@ -14,7 +13,7 @@ import { ApplyButton, CalendarFooter, ClearRangeLink, DayPickerContainer } from 
 
 const TimeRangeSelect: any = DropdownMultiselect;
 
-enum TimeRange {
+export enum TimeRange {
   TODAY = 'Today',
   YESTERDAY = 'Yesterday',
   WEEK = 'Last 7 Days',
@@ -33,16 +32,13 @@ const TIME_RANGE_OPTIONS = [
 
 export type DayPickerInputProps = {
   date?: string | Date;
-  isToggledOpen: boolean;
-  onChange: (date: string | Date) => void;
+  placement?: PopperProps['placement'];
+  onChange: (input: TimeRange | string) => void;
 };
 
-const DatePicker: React.FC<DayPickerInputProps> = ({ date, isToggledOpen, onChange }) => {
-  const dayPickerRef = React.useRef<HTMLElement | null>(null);
+const DatePicker: React.FC<DayPickerInputProps> = ({ date, placement, onChange }) => {
   const variablesInputRef = React.useRef<{ blur: Function; getEditorState: Function } | null>(null);
-  const history = useHistory();
-
-  const [calenderOpened, onShowCalender, onHideCalender] = useEnableDisable(false);
+  const [calendarOpened, onShowCalendar, onHideCalendar] = useEnableDisable(false);
   const [range, setRange] = React.useState({ from: undefined, to: undefined } as RangeModifier);
   const [isOpen, setIsOpen] = React.useState(false);
   const modifiers: Partial<Modifier> = { start: range.from, end: range.to };
@@ -50,6 +46,11 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ date, isToggledOpen, onChan
   const defaultParams = () => {
     if (window.location.search.includes(FILTER_TAG.RANGE)) {
       return new URLSearchParams(window.location.search).get(FILTER_TAG.RANGE);
+    }
+    if (window.location.search.includes(FILTER_TAG.START_DATE) && window.location.search.includes(FILTER_TAG.END_DATE)) {
+      return `${new URLSearchParams(window.location.search).get(FILTER_TAG.START_DATE)}- ${new URLSearchParams(window.location.search).get(
+        FILTER_TAG.END_DATE
+      )}`;
     }
     return '';
   };
@@ -70,145 +71,85 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ date, isToggledOpen, onChan
   };
 
   const onDayClick = (newDate: Date) => {
-    onChange(newDate);
     const newRange = DateUtils.addDayToRange(newDate, range);
     setRange({ from: newRange.from, to: newRange.to });
-    setRangeInput(newRange);
     variablesInputRef.current?.blur();
-  };
-
-  const handleTimeRangeChange = (timeRange?: TimeRange | string) => {
-    const params = new URLSearchParams();
-
-    if (timeRange === TimeRange.CUSTOM) {
-      const from = moment(range.from?.toLocaleString()).format(FORMAT);
-      const to = moment(range.to?.toLocaleString()).format(FORMAT);
-      if (input) {
-        params.append(FILTER_TAG.START_DATE, from || '');
-        params.append(FILTER_TAG.END_DATE, to || '');
-        setRangeInput(range);
-      }
-    } else {
-      params.append(FILTER_TAG.RANGE, timeRange!);
-    }
-
-    history.replace({ search: params.toString() });
   };
 
   const setTimeRange = (timeRange: TimeRange | string) => {
     if (timeRange === TimeRange.CUSTOM) {
-      onShowCalender();
       setRangeInput(range);
-      handleTimeRangeChange(TimeRange.CUSTOM);
     } else {
       setInput(timeRange);
-      handleTimeRangeChange(timeRange);
     }
   };
 
   React.useEffect(() => {
-    let isRange = false;
-    TIME_RANGE_OPTIONS.forEach((option) => {
-      if (option.label === input) {
-        isRange = true;
-      }
-    });
-
-    if (!isRange && isToggledOpen && !input) {
-      const startDate = new URLSearchParams(window.location.search).get(FILTER_TAG.START_DATE);
-      const endDate = new URLSearchParams(window.location.search).get(FILTER_TAG.END_DATE);
-      const params = new URLSearchParams();
-      params.append(FILTER_TAG.START_DATE, startDate || '');
-      params.append(FILTER_TAG.END_DATE, endDate || '');
-      startDate ? setInput(`${startDate}-${endDate}`) : setInput('');
-      handleTimeRangeChange(TimeRange.CUSTOM);
-      history.replace({ search: params.toString() });
-    } else if (isRange && isToggledOpen && input) {
-      handleTimeRangeChange(input);
-    } else {
-      history.replace({ search: '' });
-    }
-  }, [isToggledOpen]);
+    onChange(input);
+  }, [input]);
 
   return (
-    <Manager>
-      <Reference>
-        {({ ref }) => (
-          <div
-            onBlur={() => setIsOpen(false)}
-            onClick={() => {
-              setIsOpen(!isOpen);
+    <Popper
+      placement={placement}
+      renderContent={() =>
+        calendarOpened && (
+          <PopperContent>
+            <DayPickerContainer>
+              <TimeRangePicker
+                isConversation
+                className="DayPicker"
+                modifiers={modifiers}
+                initialMonth={selectedDay}
+                selectedDays={range}
+                weekdaysShort={WEEKDAYS}
+                onDayClick={(date) => onDayClick(date)}
+                numberOfMonths={2}
+                showOutsideDays
+              />
+              <CalendarFooter>
+                <ClearRangeLink onClick={() => setInput('')}>
+                  <b>Clear</b>
+                </ClearRangeLink>
+                <ApplyButton
+                  id="apply-date-button"
+                  variant={ButtonVariant.PRIMARY}
+                  onClick={() => {
+                    setTimeRange(TimeRange.CUSTOM);
+                    onHideCalendar();
+                  }}
+                >
+                  Apply
+                </ApplyButton>
+              </CalendarFooter>
+            </DayPickerContainer>
+          </PopperContent>
+        )
+      }
+    >
+      {({ ref, onToggle }) => (
+        <div onBlur={() => setIsOpen(false)} onClick={() => setIsOpen(!isOpen)} ref={ref}>
+          <TimeRangeSelect
+            selfDismiss={true}
+            open={isOpen}
+            isTranscript
+            options={TIME_RANGE_OPTIONS}
+            autoWidth
+            buttonDisabled={false}
+            placeholder="Time Range"
+            onSelect={(timeRange: TimeRange) => setTimeRange(timeRange)}
+            buttonLabel="Custom period"
+            buttonClick={() => {
+              onToggle();
+              onShowCalendar();
             }}
-            ref={ref}
-          >
-            <TimeRangeSelect
-              selfDismiss
-              open={isOpen}
-              isTranscript
-              options={TIME_RANGE_OPTIONS}
-              autoWidth
-              buttonDisabled={false}
-              placeholder="Time Range"
-              onSelect={(timeRange: TimeRange) => setTimeRange(timeRange)}
-              buttonLabel="Custom period"
-              buttonClick={() => setTimeRange(TimeRange.CUSTOM)}
-              selectedValue={input}
-              selectedItems={input}
-              dropdownActive
-              withCaret
-            />
-          </div>
-        )}
-      </Reference>
-
-      {calenderOpened && (
-        <Portal>
-          <Popper
-            innerRef={(node) => {
-              dayPickerRef.current = node;
-            }}
-            placement="right"
-            modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: document.body } }}
-          >
-            {({ ref, style }) => (
-              <DayPickerContainer ref={ref} style={{ ...style }} data-placement="bottom-end">
-                <TimeRangePicker
-                  isConversation
-                  className="DayPicker"
-                  modifiers={modifiers}
-                  initialMonth={selectedDay}
-                  selectedDays={range}
-                  weekdaysShort={WEEKDAYS}
-                  onDayClick={(date) => onDayClick(date)}
-                  numberOfMonths={2}
-                  showOutsideDays
-                />
-                <CalendarFooter>
-                  <ClearRangeLink
-                    onClick={() => {
-                      setInput('');
-                      setRange({ from: undefined, to: undefined });
-                    }}
-                  >
-                    <b>Clear</b>
-                  </ClearRangeLink>
-                  <ApplyButton
-                    id="apply-date-button"
-                    variant={ButtonVariant.PRIMARY}
-                    onClick={() => {
-                      onHideCalender();
-                      handleTimeRangeChange(TimeRange.CUSTOM);
-                    }}
-                  >
-                    Apply
-                  </ApplyButton>
-                </CalendarFooter>
-              </DayPickerContainer>
-            )}
-          </Popper>
-        </Portal>
+            selectedValue={input}
+            selectedItems={input}
+            dropdownActive
+            withCaret
+          />
+        </div>
       )}
-    </Manager>
+    </Popper>
   );
 };
 

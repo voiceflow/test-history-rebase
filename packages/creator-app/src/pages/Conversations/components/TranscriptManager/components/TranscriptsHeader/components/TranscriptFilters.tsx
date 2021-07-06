@@ -8,16 +8,17 @@ import { FILTER_TAG } from '@/pages/Conversations/constants';
 import THEME from '@/styles/theme';
 
 import ApplyFiltersButton from './ApplyFiltersButton';
-import DatePicker from './TimeRangePicker/DatePicker';
+import DatePicker, { TimeRange } from './TimeRangePicker/DatePicker';
 
 const TranscriptFilters = () => {
   const history = useHistory();
   const params = new URLSearchParams();
-  const [startDate, setStartDate] = React.useState('' as string | Date);
+  const startDate = '' as string | Date;
+
   const [timeRangeOpen, setTimeRangeOpen] = React.useState(false);
   const [tagsOpen, setTagsOpen] = React.useState(false);
+  const [currentRange, setCurrentRange] = React.useState('' as TimeRange | string);
   const [tags, setTags] = React.useState<string[]>([]);
-
   const clearTranscriptFilter = () => {
     setTimeRangeOpen(false);
     setTagsOpen(false);
@@ -25,10 +26,31 @@ const TranscriptFilters = () => {
     history.replace({ search: '' });
   };
 
-  const setTagsFilter = () => {
+  const appendURL = (range: TimeRange | string) => {
+    if (!range && tags.length === 0) {
+      history.replace({ search: '' });
+      return;
+    }
+    if (
+      range === TimeRange.TODAY ||
+      range === TimeRange.YESTERDAY ||
+      range === TimeRange.WEEK ||
+      range === TimeRange.MONTH ||
+      range === TimeRange.ALLTIME
+    ) {
+      params.append(FILTER_TAG.RANGE, range || '');
+    } else {
+      const from = range.substring(0, range.indexOf('-'));
+      const to = range.substring(range.indexOf('-') + 2);
+
+      params.append(FILTER_TAG.START_DATE, from || '');
+      params.append(FILTER_TAG.END_DATE, to || '');
+    }
+
     tags.forEach((tag) => {
       params.append(FILTER_TAG.TAG, tag);
     });
+
     history.replace({ search: params.toString() });
   };
 
@@ -36,43 +58,49 @@ const TranscriptFilters = () => {
     <SelectMenu
       clearData={clearTranscriptFilter}
       actionDisabled={!timeRangeOpen && !tagsOpen}
-      sections={(_setData, _data) => (
-        <>
-          <MenuSection title="Time Range" enabled={timeRangeOpen} toggleSection={() => setTimeRangeOpen(!timeRangeOpen)}>
-            <DatePicker date={startDate} isToggledOpen={timeRangeOpen} onChange={(newDate) => setStartDate(newDate)} />
-          </MenuSection>
-          <MenuSection
-            title="Tags"
-            enabled={tagsOpen}
-            toggleSection={() => {
-              setTagsOpen(!tagsOpen);
-            }}
-          >
-            <ReportTagInput
-              variant={InputVariant.SELECT_ONLY}
-              onChange={(value: string[]) => {
-                const newTag = value.slice(-1)[0];
-                if (!tags.includes(newTag)) {
-                  setTags([...tags, newTag]);
-                }
-                setTagsFilter();
+      sections={({ onToggle }) => {
+        return (
+          <>
+            <MenuSection title="Time Range" enabled={timeRangeOpen} toggleSection={() => setTimeRangeOpen(!timeRangeOpen)}>
+              <DatePicker date={startDate} onChange={(newRange: TimeRange | string) => setCurrentRange(newRange)} placement="right" />
+            </MenuSection>
+
+            <MenuSection
+              title="Tags"
+              enabled={tagsOpen}
+              toggleSection={() => {
+                setTagsOpen(!tagsOpen);
               }}
-              selectedTags={tags}
-            />
-          </MenuSection>
-          <Box borderTop={`1px solid ${THEME.colors.borders}`}>
-            <ApplyFiltersButton variant={ButtonVariant.PRIMARY} onClick={() => alert('Filters Applied!')}>
-              Apply
-            </ApplyFiltersButton>
-          </Box>
-        </>
-      )}
+            >
+              <ReportTagInput
+                variant={InputVariant.SELECT_ONLY}
+                onChange={(value: string[]) => {
+                  const newTag = value.slice(-1)[0];
+                  if (!tags.includes(newTag)) {
+                    setTags([...tags, newTag]);
+                  }
+                }}
+                selectedTags={tags}
+              />
+            </MenuSection>
+            <Box borderTop={`1px solid ${THEME.colors.borders}`}>
+              <ApplyFiltersButton
+                variant={ButtonVariant.PRIMARY}
+                onClick={() => {
+                  appendURL(currentRange);
+                  onToggle();
+                }}
+              >
+                Apply
+              </ApplyFiltersButton>
+            </Box>
+          </>
+        );
+      }}
     >
-      {(ref, onToggle, isOpen, _data) => (
-        // const numberOfEnabledFilters = _data.filters
-        <ClickableText isActive={isOpen} ref={ref} onClick={onToggle}>
+      {({ ref, isOpened, onToggle }) => (
+        <ClickableText isActive={isOpened} ref={ref} onClick={onToggle}>
           Add filters
-          {/* {numberOfEnabledFilters ? `(${numberOfEnabledFilters})` : ''} */}
         </ClickableText>
       )}
     </SelectMenu>

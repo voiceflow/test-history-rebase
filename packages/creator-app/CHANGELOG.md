@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.418.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.418.3...@voiceflow/creator-app@1.418.4) (2021-07-06)
+
+
+### Bug Fixes
+
+* upload poper (VF-1234) ([#3624](https://github.com/voiceflow/creator-app/issues/3624)) ([ab7a2d6](https://github.com/voiceflow/creator-app/commit/ab7a2d6cb99c217f6375ca97708621ba1ba17163))
+
+
+
+
+
 ## [1.418.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.418.2...@voiceflow/creator-app@1.418.3) (2021-07-02)
 
 

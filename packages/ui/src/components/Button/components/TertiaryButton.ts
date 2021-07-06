@@ -4,30 +4,31 @@ import ButtonContainer, { ButtonContainerProps } from './ButtonContainer';
 
 export interface TertiaryButtonProps extends ButtonContainerProps {
   variant: ButtonVariant.TERTIARY;
+  isGray?: boolean;
 }
 
 const TertiaryButton = styled(ButtonContainer)<TertiaryButtonProps>`
   ${transition('background', 'background-color')}
   padding: 0 22px;
-  color: ${colors('blue')};
+  color: ${({ isGray }) => (isGray ? colors('tertiary') : colors('blue'))};
   font-weight: 600;
   border: 0;
   box-shadow: none;
 
-  ${({ disabled }) =>
+  ${({ disabled, isGray }) =>
     disabled
       ? css`
-          color: rgba(93, 157, 245, 0.5);
+          color: ${isGray ? 'rgb(141, 162, 181, 0.5)' : 'rgba(93, 157, 245, 0.5)'};
           pointer-events: none;
         `
       : css`
           &:hover {
-            background: rgba(93, 157, 245, 0.1);
+            background: ${isGray ? 'rgb(141, 162, 181, 0.09)' : 'rgba(93, 157, 245, 0.1)'};
           }
         `}
 
   &:active {
-    background: rgba(93, 157, 245, 0.16);
+    background: ${({ isGray }) => (isGray ? 'rgb(141, 162, 181, 0.15)' : 'rgba(93, 157, 245, 0.16)')};
   }
 `;
 

@@ -1,4 +1,4 @@
-import { LegacyButton } from '@voiceflow/ui';
+import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { clearModal } from '@/ducks/modal';
@@ -17,15 +17,15 @@ export const ConfirmModal = ({ toggle, confirm }) => {
     <Modal modalname="confirm" isOpen={!!confirm} toggle={toggle} centered size={confirm.size || 'sm'}>
       {confirm.header && <ModalHeader toggle={toggle}>{confirm.header}</ModalHeader>}
       <ModalBody className="text-center">{confirm.text}</ModalBody>
-      <ModalFooter>
+      <ModalFooter style={{ paddingRight: '48px' }}>
         {cancel && (
-          <LegacyButton isFlatGray onClick={toggle}>
+          <Button isGray variant={ButtonVariant.TERTIARY} onClick={toggle}>
             Cancel
-          </LegacyButton>
+          </Button>
         )}
-        <LegacyButton
+        <Button
+          variant={ButtonVariant.PRIMARY}
           className="btn-primary ml-2"
-          isPrimary={confirm.warning}
           onClick={() => {
             if (typeof confirm.confirm === 'function') {
               confirm.confirm(...(confirm.params || []));
@@ -34,7 +34,7 @@ export const ConfirmModal = ({ toggle, confirm }) => {
           }}
         >
           Confirm
-        </LegacyButton>
+        </Button>
       </ModalFooter>
     </Modal>
   );

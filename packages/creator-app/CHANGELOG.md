@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.419.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.418.4...@voiceflow/creator-app@1.419.0) (2021-07-06)
+
+
+### Features
+
+* adjust muted messages delay (VF-000) ([#3634](https://github.com/voiceflow/creator-app/issues/3634)) ([4458ffc](https://github.com/voiceflow/creator-app/commit/4458ffc78ac950b7c69fc3d6748d98c5950d82c2))
+
+
+
+
+
 ## [1.418.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.418.3...@voiceflow/creator-app@1.418.4) (2021-07-06)
 
 

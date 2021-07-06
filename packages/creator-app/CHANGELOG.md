@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.419.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.419.0...@voiceflow/creator-app@1.419.1) (2021-07-06)
+
+
+### Bug Fixes
+
+* filter poppers and apply button logic (VF-1215) ([#3626](https://github.com/voiceflow/creator-app/issues/3626)) ([cbac3a8](https://github.com/voiceflow/creator-app/commit/cbac3a81d298e74ded20fe60382ea2ba406fbe45))
+
+
+
+
+
 # [1.419.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.418.4...@voiceflow/creator-app@1.419.0) (2021-07-06)
 
 

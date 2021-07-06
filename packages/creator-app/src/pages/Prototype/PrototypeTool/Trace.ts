@@ -20,7 +20,7 @@ import MessageController from './Message';
 import TimeoutController from './Timeout';
 import { getUpdatedContextHistory, isV1Trace } from './utils';
 
-const MUTED_MESSAGE_DELAY = 150;
+const MUTED_MESSAGE_DELAY = 250;
 
 export enum StepDirection {
   FORWARD = 'forward',

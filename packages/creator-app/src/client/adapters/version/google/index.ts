@@ -27,11 +27,10 @@ const googleVersionAdapter = createAdapter<GoogleVersion, Version<GoogleVersionD
     creatorID,
     projectID,
     rootDiagramID,
-    locales: localesAdapter(publishing?.locales),
     variables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
     session: sessionAdapter.fromDB(session, { defaultVoice: settings.defaultVoice }),
     settings: _omit(defaultGoogleVersionSettings(settings), 'session'),
-    publishing: defaultGoogleVersionPublishing(publishing),
+    publishing: { ...defaultGoogleVersionPublishing(publishing), locales: localesAdapter(publishing?.locales) },
     status: null,
   }),
   () => {

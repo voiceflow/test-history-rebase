@@ -1,6 +1,13 @@
 import { REGIONAL_VOICE as ALEXA_REGIONAL_VOICE } from '@voiceflow/alexa-types';
 import { AZURE_LOCALE_VOICE_META } from '@voiceflow/general-types';
-import { Locale, LocaleCodeToCountryLanguage, LocaleToVoiceLanguageCode, VoiceLanguageCodeToVoice, VoiceType } from '@voiceflow/google-types';
+import {
+  Locale,
+  LocaleCodeToCountryLanguage,
+  LocaleToVoiceLanguageCode,
+  VoiceLanguageCode,
+  VoiceLanguageCodeToVoice,
+  VoiceType,
+} from '@voiceflow/google-types';
 import _constant from 'lodash/constant';
 
 import { PlatformType } from '@/constants';
@@ -752,7 +759,7 @@ const GOOGLE_SSML_META = {
   platformTags: GOOGLE_DEFAULT_TAGS,
   addOptions: UNIVERSAL_ADD_OPTIONS,
   voiceOptions: (locales, useWavenet) => {
-    const localeMeta = locales?.map((locale) => ({ locale, languageCode: LocaleToVoiceLanguageCode[locale] }));
+    const localeMeta = locales?.map((locale) => ({ locale, languageCode: LocaleToVoiceLanguageCode[locale] ?? VoiceLanguageCode.EN_US }));
 
     return localeMeta?.map((meta) => ({
       label: LocaleCodeToCountryLanguage[meta.locale] || meta.locale,

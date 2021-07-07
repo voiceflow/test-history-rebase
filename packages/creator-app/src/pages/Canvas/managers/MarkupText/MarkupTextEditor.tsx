@@ -2,26 +2,21 @@ import { FlexAround } from '@voiceflow/ui';
 import React from 'react';
 
 import { withRequiredEngine } from '@/contexts';
+import { useTrackingEvents } from '@/hooks';
 import { Markup } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
 import Section from '@/pages/Canvas/components/MarkupSection';
 import type { Engine } from '@/pages/Canvas/engine';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
-import { MarkupContext } from '@/pages/Skill/contexts';
 
 import { FontStyles, Hyperlink, IconButtonSeparator, TextAligns, TextColor, TextStyles } from './components';
 
 export const MarkupTextEditor: React.FC<NodeEditorPropsType<Markup.NodeData.Text> & { engine: Engine }> = ({ nodeID, engine }) => {
-  const markup = React.useContext(MarkupContext)!;
-
   const editor = engine.markup.useTextEditor(nodeID);
+  const [trackingEvents] = useTrackingEvents();
 
   React.useEffect(() => {
-    markup.startMarkupSession();
-
-    return () => {
-      markup.finishMarkupSession();
-    };
+    trackingEvents.trackMarkupText();
   }, []);
 
   return !editor ? null : (

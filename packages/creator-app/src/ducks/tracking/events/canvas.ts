@@ -1,13 +1,13 @@
 import client from '@/client';
 
-import { CanvasControlHelpMenuResource, CanvasMenuLockState, EventName } from '../constants';
+import { CanvasMenuLockState, EventName } from '../constants';
 import { createProjectEventPayload, createProjectEventTracker } from '../utils';
 
 export const trackCanvasMenuLock = createProjectEventTracker<{ state: CanvasMenuLockState }>((options) =>
   client.analytics.track(EventName.CANVAS_MENU_LOCK, createProjectEventPayload(options, { state: options.state }))
 );
 
-export const trackCanvasControlHelpMenuResource = createProjectEventTracker<{ resource: CanvasControlHelpMenuResource }>((options) =>
+export const trackCanvasControlHelpMenuResource = createProjectEventTracker<{ resource: string }>((options) =>
   client.analytics.track(EventName.CANVAS_CONTROL_HELP_MENU, createProjectEventPayload(options, { resource: options.resource }))
 );
 
@@ -19,12 +19,12 @@ export const trackCanvasSpotlightOpened = createProjectEventTracker((options) =>
   client.analytics.track(EventName.CANVAS_SPOTLIGHT_OPENED, createProjectEventPayload(options))
 );
 
-export const trackMarkupOpen = createProjectEventTracker((options) =>
-  client.analytics.track(EventName.CANVAS_MARKUP_OPENED, createProjectEventPayload(options))
+export const trackMarkupText = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.CANVAS_MARKUP_TEXT, createProjectEventPayload(options))
 );
 
-export const trackMarkupSessionDuration = createProjectEventTracker<{ duration: number }>((options) =>
-  client.analytics.track(EventName.CANVAS_MARKUP_DURATION, createProjectEventPayload(options, { duration: Math.floor(options.duration / 1000) }))
+export const trackMarkupImage = createProjectEventTracker((options) =>
+  client.analytics.track(EventName.CANVAS_MARKUP_IMAGE, createProjectEventPayload(options))
 );
 
 export const trackCommentingOpen = createProjectEventTracker((options) =>

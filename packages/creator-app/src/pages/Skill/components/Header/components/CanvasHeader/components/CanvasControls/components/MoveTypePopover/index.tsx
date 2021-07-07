@@ -4,7 +4,7 @@ import React from 'react';
 import { ControlScheme } from '@/components/Canvas/constants';
 import Checkbox, { CheckboxType } from '@/components/Checkbox';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useSelector, useTheme } from '@/hooks';
+import { useDispatch, useSelector, useTheme, useTrackingEvents } from '@/hooks';
 
 import { Container } from './components';
 
@@ -26,10 +26,12 @@ interface MoveTypePopoverProps {
 const MoveTypePopover: React.FC<MoveTypePopoverProps> = ({ closePopover }) => {
   const canvasNavigation = useSelector(UI.canvasNavigationSelector);
   const setCanvasNavigation = useDispatch(UI.setCanvasNavigation);
+  const [trackEvents] = useTrackingEvents();
 
   const theme = useTheme();
 
   const onSetNavigation = (controlScheme: ControlScheme) => {
+    trackEvents.trackProjectMoveType({ type: controlScheme });
     setCanvasNavigation(controlScheme);
     closePopover();
   };

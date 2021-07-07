@@ -26,8 +26,6 @@ export type MarkupContextType = {
   finishCreating: () => void;
   startTextCreation: () => void;
   toggleTextCreating: () => void;
-  startMarkupSession: () => void;
-  finishMarkupSession: () => void;
   triggerImagesUpload: () => void;
 };
 
@@ -44,8 +42,6 @@ export const MarkupProvider: React.FC = ({ children }) => {
   const { onUpload: onUploadImage, isLoading: isImageUploading } = useUpload({ fileType: 'image', clientFunc: 'uploadImage' });
 
   const cache = useCache({ getEngine, isAnyModeOpen, canEditCanvas, isImageUploading, uploadingImages });
-
-  const startTimeCache = React.useRef(0);
 
   const [trackEvents] = useTrackingEvents();
 
@@ -65,6 +61,8 @@ export const MarkupProvider: React.FC = ({ children }) => {
     if (!cache.current.canEditCanvas || !files || !files[0]) {
       return;
     }
+
+    trackEvents.trackMarkupImage();
 
     const allowedFiles = Array.from(files).filter((file) => ALLOWED_IMAGE_TYPES.includes(`.${file.type.split('/')[1]}`) && file.size <= FILE_LIMIT);
 
@@ -99,18 +97,6 @@ export const MarkupProvider: React.FC = ({ children }) => {
 
     setCreatingType(null);
     setUploadingImages(false);
-  }, []);
-
-  const startMarkupSession = React.useCallback(() => {
-    trackEvents.trackMarkupOpen();
-    startTimeCache.current = Date.now();
-  }, []);
-
-  const finishMarkupSession = React.useCallback(() => {
-    if (startTimeCache.current) {
-      trackEvents.trackMarkupSessionDuration({ duration: Date.now() - startTimeCache.current });
-      startTimeCache.current = 0;
-    }
   }, []);
 
   const startTextCreation = React.useCallback(() => {
@@ -155,25 +141,10 @@ export const MarkupProvider: React.FC = ({ children }) => {
   }, []);
 
   useDidUpdateEffect(() => {
-    const engine = getEngine();
-
-    if (creatingType) {
-      startMarkupSession();
-    } else {
-      finishMarkupSession();
-
-      engine?.markup.reset();
+    if (!creatingType) {
+      getEngine()?.markup.reset();
     }
   }, [creatingType]);
-
-  React.useEffect(() => {
-    window.addEventListener('beforeunload', finishMarkupSession);
-
-    return () => {
-      finishMarkupSession();
-      window.removeEventListener('beforeunload', finishMarkupSession);
-    };
-  }, []);
 
   React.useEffect(() => {
     if (creatingType === BlockType.MARKUP_TEXT) {
@@ -216,10 +187,8 @@ export const MarkupProvider: React.FC = ({ children }) => {
     finishCreating,
     uploadingImages,
     startTextCreation,
-    startMarkupSession,
     imageAcceptedTypes: ALLOWED_IMAGE_TYPES,
     toggleTextCreating,
-    finishMarkupSession,
     triggerImagesUpload,
   });
 

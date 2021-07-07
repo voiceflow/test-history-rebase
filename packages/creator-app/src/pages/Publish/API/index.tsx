@@ -12,7 +12,7 @@ import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
 import { goToWorkspaceDeveloperSettings } from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, useDispatch, useFeature, useIsAdmin, useModals } from '@/hooks';
+import { useAsyncEffect, useDispatch, useFeature, useIsAdmin, useModals, useSetup, useTrackingEvents } from '@/hooks';
 import CreateAPIKeyModal from '@/pages/Workspace/Settings/components/Developer/modal';
 import * as Sentry from '@/vendors/sentry';
 
@@ -40,8 +40,13 @@ const API: React.FC = () => {
   const { open: openConfirmModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
 
   const goToDeveloperSettings = useDispatch(() => goToWorkspaceDeveloperSettings(workspaceID));
+  const [trackingEvents] = useTrackingEvents();
 
   const projectKeys = React.useMemo(() => keys.filter((key) => key.projectID === projectID), [keys, projectID]);
+
+  useSetup(() => {
+    trackingEvents.trackActiveProjectApiPage();
+  });
 
   useAsyncEffect(async () => {
     if (isAdmin) {

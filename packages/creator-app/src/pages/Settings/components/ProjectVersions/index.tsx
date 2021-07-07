@@ -14,6 +14,7 @@ import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
+import { useSetup, useTrackingEvents } from '@/hooks';
 import { getSettingsMetaProps } from '@/pages/Settings/constants';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
@@ -29,6 +30,8 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
   const [loading, setLoading] = React.useState(true);
   const [versions, setVersions] = React.useState<ProjectVersion[]>([]);
   const { name } = getSettingsMetaProps(platform);
+
+  const [trackingEvents] = useTrackingEvents();
 
   const swapVersions = async (versionID: string) => {
     if (!projectID) {
@@ -80,9 +83,11 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
     }
   }, []);
 
-  React.useEffect(() => {
+  useSetup(() => {
+    trackingEvents.trackActiveProjectVersionPage();
+
     fetchBackups();
-  }, []);
+  });
 
   return (
     <SettingsSection title="All Versions">

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { SectionVariants, SettingsSection } from '@/components/Settings';
 import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
+import { useSetup, useTrackingEvents } from '@/hooks';
 import AlexaFeatures from '@/pages/Settings/components/GeneralSettings/Sections/ChannelSpecificFeatures';
 import { getSettingsMetaProps, SettingSections } from '@/pages/Settings/constants';
 
@@ -20,6 +21,11 @@ const SectionComponents: Record<SettingSections, React.FC<{ platform: PlatformTy
 const SettingsContent: React.FC = () => {
   const platform = useSelector(Project.activePlatformSelector);
   const platformMeta = getSettingsMetaProps(platform);
+  const [trackingEvents] = useTrackingEvents();
+
+  useSetup(() => {
+    trackingEvents.trackActiveProjectSettingsOpened();
+  });
 
   return (
     <>

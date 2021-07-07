@@ -8,7 +8,7 @@ import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDismissable, useDispatch, useHotKeys, usePermission, useSelector } from '@/hooks';
+import { useDismissable, useDispatch, useHotKeys, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 
 export enum CanvasOptionType {
@@ -33,6 +33,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const goToCurrentSettings = useDispatch(Router.goToCurrentSettings);
 
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
+
   const helpButtonRef = React.useRef<HTMLDivElement | null>(null);
 
   const [helpOpened, toggleHelpOpened] = useDismissable(false, { ref: helpButtonRef });
@@ -121,14 +122,46 @@ export const useHelpOptions = () => {
   const showIntercom = useDispatch(Session.showIntercom);
   const hideIntercom = useDispatch(Session.hideIntercom);
 
+  const [, trackingEventsWrapper] = useTrackingEvents();
+
   return React.useMemo<MenuOption<undefined>[]>(
     () => [
-      { key: 'docs', label: 'Documentation', onClick: () => window.open(DOCS_LINK, '_blank') },
-      { key: 'videos', label: 'Video tutorials', onClick: () => window.open(YOUTUBE_CHANNEL_LINK, '_blank') },
-      { key: 'forum', label: 'Community', onClick: () => window.open(FORUM_LINK, '_blank') },
+      {
+        key: 'docs',
+        label: 'Documentation',
+        onClick: trackingEventsWrapper(() => window.open(DOCS_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', {
+          resource: 'Docs',
+        }),
+      },
+      {
+        key: 'videos',
+        label: 'Video tutorials',
+        onClick: trackingEventsWrapper(() => window.open(YOUTUBE_CHANNEL_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', {
+          resource: 'Videos',
+        }),
+      },
+      {
+        key: 'forum',
+        label: 'Community',
+        onClick: trackingEventsWrapper(() => window.open(FORUM_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', {
+          resource: 'Forum',
+        }),
+      },
       { key: 'divider', label: 'Divider', divider: true },
-      { key: 'demo', label: 'Book a demo', onClick: () => window.open(BOOK_DEMO_LINK, '_blank') },
-      { key: 'intercom', label: isIntercomVisible ? 'Hide Intercom' : 'Chat with us', onClick: isIntercomVisible ? hideIntercom : showIntercom },
+      {
+        key: 'demo',
+        label: 'Book a demo',
+        onClick: trackingEventsWrapper(() => window.open(BOOK_DEMO_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', {
+          resource: 'Demo',
+        }),
+      },
+      {
+        key: 'intercom',
+        label: isIntercomVisible ? 'Hide Intercom' : 'Chat with us',
+        onClick: trackingEventsWrapper(isIntercomVisible ? hideIntercom : showIntercom, 'trackCanvasControlHelpMenuResource', {
+          resource: 'Intercom',
+        }),
+      },
     ],
     [isIntercomVisible]
   );

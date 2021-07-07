@@ -31,9 +31,13 @@ export const useDeleteProject = ({
 }): (() => void) => {
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
 
+  const getProjectByID = useSelector(Project.projectByIDSelector);
+
   const onDeleteProject = useDispatch(Project.deleteProject);
   const onGoToDashboard = useDispatch(Router.goToDashboard);
   const onDeleteProjectFromList = useDispatch(ProjectList.deleteProjectFromList);
+
+  const [trackingEvents] = useTrackingEvents();
 
   const { open: openConfirmModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
 
@@ -45,6 +49,8 @@ export const useDeleteProject = ({
     }
 
     try {
+      trackingEvents.trackProjectDelete({ versionID: getProjectByID(projectID)?.versionID, projectID });
+
       if (boardID) {
         await onDeleteProjectFromList(boardID, projectID);
       } else {
@@ -57,7 +63,7 @@ export const useDeleteProject = ({
     } catch (e) {
       toast.error(e.message);
     }
-  }, [boardID, projectID, projectName]);
+  }, [boardID, projectID, projectName, getProjectByID]);
 
   return React.useCallback(() => {
     if (!canManageProjects) {
@@ -95,6 +101,7 @@ export const useProjectOptions = ({
 
   const workspace = useSelector(Workspace.activeWorkspaceSelector);
   const projectsCount = useSelector(Project.projectsCountSelector);
+  const getProjectByID = useSelector(Project.projectByIDSelector);
 
   const copyProject = useDispatch(Workspace.copyProject);
   const saveProjectPrivacy = useDispatch(Project.saveProjectPrivacy);
@@ -128,11 +135,13 @@ export const useProjectOptions = ({
 
     onToggleLoadingModal(true);
 
+    trackingEvents.trackProjectDuplicate({ versionID: getProjectByID(projectID)?.versionID, projectID });
+
     await copyProject(projectID, workspace.id, boardID);
 
     onToggleLoadingModal(false);
     onDuplicated?.();
-  }, [boardID, onDuplicated, projectsCount, workspace, onToggleLoadingModal, onOpenProjectLimitModal]);
+  }, [boardID, getProjectByID, onDuplicated, projectsCount, workspace, onToggleLoadingModal, onOpenProjectLimitModal]);
 
   const onDownload = React.useCallback(async () => {
     if (!projectID) {

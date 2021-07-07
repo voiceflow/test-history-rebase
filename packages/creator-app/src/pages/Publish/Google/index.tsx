@@ -7,7 +7,7 @@ import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useAsyncMountUnmount, useFeature } from '@/hooks';
+import { useAsyncMountUnmount, useFeature, useSetup, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
@@ -17,6 +17,12 @@ const GooglePublish: React.FC<ConnectedGooglePublishProps> = ({ projectID }) => 
   const [googleProjectID, setGoogleProjectID] = React.useState<string | null>(null);
 
   const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
+
+  const [trackingEvents] = useTrackingEvents();
+
+  useSetup(() => {
+    trackingEvents.trackActiveProjectGooglePublishPage();
+  });
 
   useAsyncMountUnmount(async () => {
     if (!projectID) {

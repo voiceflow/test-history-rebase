@@ -5,6 +5,7 @@ import Modal, { ModalHeader } from '@/components/LegacyModal';
 import { JobStatus } from '@/constants';
 import * as Account from '@/ducks/account';
 import { connect } from '@/hocs';
+import { useSetup, useTrackingEvents } from '@/hooks';
 import { Alexa } from '@/pages/Publish/Upload';
 import { PublishContext } from '@/pages/Skill/contexts';
 import { ConnectedProps } from '@/types';
@@ -18,6 +19,8 @@ export const PublishAmazon: React.FC<ConnectedPublishAmazonProps> = ({ syncSelec
   const [close, setClose] = React.useState(false);
   const { job, publish, cancel } = React.useContext(PublishContext)!;
 
+  const [trackingEvents] = useTrackingEvents();
+
   const onPublish = () => {
     setOpen(true);
     publish(true);
@@ -29,9 +32,11 @@ export const PublishAmazon: React.FC<ConnectedPublishAmazonProps> = ({ syncSelec
     }
   }, [job?.status]);
 
-  React.useEffect(() => {
+  useSetup(() => {
+    trackingEvents.trackActiveProjectAlexaPublishPage();
+
     syncSelectedVendor();
-  }, []);
+  });
 
   return (
     <>

@@ -4,6 +4,7 @@ import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import * as PrototypeDuck from '@/ducks/prototype';
+import * as Transcripts from '@/ducks/transcript';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useASR, useCanASR, useGuestPermission, useSpeechRecognition, useTeardown } from '@/hooks';
@@ -25,7 +26,14 @@ type PrototypeProps = {
   settings: PrototypeDuck.PrototypeSettings;
 };
 
-const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ status, isMuted, settings, autoplay, updatePrototype }) => {
+const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
+  status,
+  isMuted,
+  savePrototypeSession,
+  settings,
+  autoplay,
+  updatePrototype,
+}) => {
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
   const [canUseASR] = useCanASR();
@@ -113,6 +121,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({ status,
   useDidUpdateEffect(() => {
     if (isFinished) {
       onStopListening();
+      savePrototypeSession();
     }
   }, [isFinished]);
 
@@ -218,6 +227,7 @@ const mapStateToProps = {
 
 const mapDispatchProps = {
   updatePrototype: PrototypeDuck.updatePrototype,
+  savePrototypeSession: Transcripts.createTranscript,
 };
 
 type ConnectedPrototypeProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchProps>;

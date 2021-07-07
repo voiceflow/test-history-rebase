@@ -87,6 +87,11 @@ declare namespace Cypress {
     removeTestThreads(): Chainable;
 
     /**
+     * remove all transcripts associated with the test account
+     */
+    removeTestTranscripts(): Chainable;
+
+    /**
      * create a new project
      */
     createProject(platform?: 'alexa' | 'google' | 'general', tag?: string): Chainable;

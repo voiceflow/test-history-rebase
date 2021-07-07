@@ -15,7 +15,7 @@ import { PartialComment } from './types';
 const EMPTY_COMMENT: PartialComment = { text: '', mentions: [] };
 
 export type EditableCommentProps = {
-  onSave: (value: PartialComment) => void;
+  onSave?: (value: PartialComment) => void;
   isEditing?: boolean;
   onClose?: Callback;
   initialValues?: Pick<Comment, 'text' | 'mentions'>;
@@ -49,7 +49,7 @@ const EditableComment: React.FC<EditableCommentProps> = ({
   };
 
   const onPost = () => {
-    onSave(comment);
+    onSave?.(comment);
 
     setComment(EMPTY_COMMENT);
 

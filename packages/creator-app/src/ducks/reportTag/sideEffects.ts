@@ -1,7 +1,6 @@
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
-import reportTagsAdapter from '@/client/adapters/reportTags';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { Sentiment, SystemTag } from '@/models';
 import { Thunk } from '@/store/types';
@@ -52,8 +51,6 @@ export const fetchReportTags = (): Thunk => async (dispatch, getState) => {
   let reportTags;
   try {
     reportTags = await client.reportTags.fetchTags(activeProjectID!);
-    // TODO, dont overwrite with dummy data
-    reportTags = DUMMY_DATA.map((data) => reportTagsAdapter.fromDB(data));
     dispatch(replaceReportTags(reportTags));
   } catch (e) {
     toast.error('Error fetching report tags');
@@ -69,11 +66,11 @@ export const createTag =
       const state = getState();
       const activeProjectID = activeProjectIDSelector(state);
       try {
-        const newTag = await client.reportTags.createTag(activeProjectID!, { id, label: tagLabel });
+        const newTag = await client.reportTags.createTag(activeProjectID!, { previousID: id, label: tagLabel });
 
         dispatch(
-          addReportTag(newTag.id, {
-            id: newTag.id,
+          addReportTag(newTag.id.toString(), {
+            id: newTag.id.toString(),
             projectID: activeProjectID!,
             label: tagLabel,
           })
@@ -85,19 +82,16 @@ export const createTag =
 
 export const deleteTag =
   (tagID: string): Thunk =>
-  async (dispatch, _getState) => {
-    // const state = getState();
-    // const activeProjectID = activeProjectIDSelector(state);
+  async (dispatch, getState) => {
+    const state = getState();
+    const activeProjectID = activeProjectIDSelector(state);
 
-    // TODO uncomment this when we store tags in the db properly
-    // try {
-    //   await client.reportTags.deleteTag(activeProjectID!, tagID);
-    // } catch (e) {
-    //   toast.error(e);
-    //   return;
-    // }
-
-    dispatch(removeReportTag(tagID));
+    try {
+      await client.reportTags.deleteTag(activeProjectID!, tagID);
+      dispatch(removeReportTag(tagID.toString()));
+    } catch (e) {
+      toast.error('Error deleting tag');
+    }
   };
 
 export const updateTag =
@@ -106,14 +100,10 @@ export const updateTag =
     const state = getState();
     const activeProjectID = activeProjectIDSelector(state);
 
-    // TODO uncomment this when we pull tags from db properly
-    // let updatedTag;
-    // try {
-    //   updatedTag = await client.reportTags.patchTag(activeProjectID!, { id: tagID, label});
-    // } catch (e) {
-    //   toast.error(e);
-    //   return;
-    // }
-
-    dispatch(patchReportTag(tagID, { id: tagID, label, projectID: activeProjectID! }));
+    try {
+      await client.reportTags.patchTag(activeProjectID!, { id: tagID, label });
+      dispatch(patchReportTag(tagID, { id: tagID, label, projectID: activeProjectID! }));
+    } catch (e) {
+      toast.error('Error updating tag');
+    }
   };

@@ -14,6 +14,7 @@ export const Name = styled.div`
   font-size: 15px;
   width: 100%;
   margin-bottom: 6px;
+  text-transform: capitalize;
 `;
 
 export const MetaContainer = styled.div`

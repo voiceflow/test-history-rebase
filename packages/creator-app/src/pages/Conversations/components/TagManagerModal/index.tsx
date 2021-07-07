@@ -2,13 +2,12 @@ import { Badge, Box, Button, ButtonVariant, ErrorMessage, Input, KeyName } from 
 import intersectionWith from 'lodash/intersectionWith';
 import isEqual from 'lodash/isEqual';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import { allReportTagsSelector, createTag, deleteTag } from '@/ducks/reportTag';
-import { useModals } from '@/hooks';
+import { useDispatch, useModals, useSelector } from '@/hooks';
 import { ReportTag, Sentiment, SentimentArray, SystemTag, SystemTagArray } from '@/models';
 import { FadeLeftContainer } from '@/styles/animations';
 import { withKeyPress } from '@/utils/dom';
@@ -28,7 +27,8 @@ const tagInputToArray = (val: string) => {
 
 const TagManagerModal: React.FC<RouteComponentProps> = () => {
   const allTags = useSelector(allReportTagsSelector);
-  const dispatch = useDispatch();
+  const deleteReportTag = useDispatch(deleteTag);
+  const createReportTag = useDispatch(createTag);
 
   const editableTags = allTags.filter((tag: ReportTag) => {
     return !SystemTagArray.includes(tag.id as SystemTag) && !SentimentArray.includes(tag.id as Sentiment);
@@ -41,18 +41,18 @@ const TagManagerModal: React.FC<RouteComponentProps> = () => {
   const [addError, setAddError] = React.useState('');
 
   const onDeleteTag = (id: string) => {
-    dispatch(deleteTag(id));
+    deleteReportTag(id);
   };
 
   const onUndoDelete = (tag: ReportTag) => {
-    dispatch(createTag(tag.label, tag.id));
+    createReportTag(tag.label, tag.id);
   };
 
   const onAdd = () => {
     const newTags = tagInputToArray(addVal);
 
     newTags.forEach((tagLabel) => {
-      dispatch(createTag(tagLabel));
+      createReportTag(tagLabel);
     });
 
     setAddVal('');

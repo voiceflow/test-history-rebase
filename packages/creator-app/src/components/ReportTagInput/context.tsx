@@ -2,22 +2,22 @@ import React from 'react';
 
 import * as ReportTags from '@/ducks/reportTag';
 import { connect } from '@/hocs';
-import { ReportTag, Sentiment, SystemTag } from '@/models';
+import { ReportTag } from '@/models';
 import { ConnectedProps } from '@/types';
 
 // TODO: remove
-const SAMPLE_TAGS: ReportTag[] = [
-  { id: '1', label: 'happy path', projectID: '1' },
-  { id: '2', label: 'difficult path', projectID: '2' },
-  { id: '3', label: 'sad path', projectID: '3' },
-  { id: '4', label: "didn't comply", projectID: '4' },
-  { id: '5', label: 'repair path', projectID: '5' },
-  { id: Sentiment.EMOTION_POSITIVE, label: '', projectID: '6' },
-  { id: Sentiment.EMOTION_NEGATIVE, label: '', projectID: '7' },
-  { id: Sentiment.EMOTION_NEUTRAL, label: '', projectID: '8' },
-  { id: SystemTag.SAVED, label: 'saved', projectID: '8' },
-  { id: SystemTag.REVIEWED, label: 'reviewed', projectID: '8' },
-];
+// const SAMPLE_TAGS: ReportTag[] = [
+//   { id: '1', label: 'happy path', projectID: '1' },
+//   { id: '2', label: 'difficult path', projectID: '2' },
+//   { id: '3', label: 'sad path', projectID: '3' },
+//   { id: '4', label: "didn't comply", projectID: '4' },
+//   { id: '5', label: 'repair path', projectID: '5' },
+//   { id: Sentiment.EMOTION_POSITIVE, label: '', projectID: '6' },
+//   { id: Sentiment.EMOTION_NEGATIVE, label: '', projectID: '7' },
+//   { id: Sentiment.EMOTION_NEUTRAL, label: '', projectID: '8' },
+//   { id: SystemTag.SAVED, label: 'saved', projectID: '8' },
+//   { id: SystemTag.REVIEWED, label: 'reviewed', projectID: '8' },
+// ];
 export interface ReportTagInputContextApi {
   state: {
     allTags: ReportTag[];
@@ -37,9 +37,10 @@ export const { Consumer: ReportTagInputContextConsumer } = ReportTagInputContext
 
 export const UnconnectedReportTagInputContextProvider: React.FC<{ selectedTags: string[] } & ConnectedReportTagInputContextProps> = ({
   selectedTags,
+  tags,
   children,
 }) => {
-  const [filteredTags, setFilteredTags] = React.useState<ReportTag[]>(SAMPLE_TAGS.filter((tag) => !selectedTags.includes(tag.id)));
+  const [filteredTags, setFilteredTags] = React.useState<ReportTag[]>(tags.filter((tag) => !selectedTags.includes(tag.id)));
   const [searchedTag, setSearchedTag] = React.useState('');
 
   React.useEffect(() => {
@@ -49,14 +50,14 @@ export const UnconnectedReportTagInputContextProvider: React.FC<{ selectedTags: 
   }, [searchedTag]);
 
   React.useEffect(() => {
-    setFilteredTags(SAMPLE_TAGS.filter((tag) => !selectedTags.includes(tag.id)));
+    setFilteredTags(tags.filter((tag) => !selectedTags.includes(tag.id)));
   }, [selectedTags]);
 
   const api = {
     state: {
       filteredTags,
       searchedTag,
-      allTags: SAMPLE_TAGS,
+      allTags: tags,
     },
     actions: {
       onSearch: (tagLabel: string) => setSearchedTag(tagLabel),

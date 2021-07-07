@@ -20,7 +20,7 @@ interface ResultsItem {
 }
 
 const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & ResultsItem> = ({ goToTargetTranscript, data, active = false }) => {
-  const { id, tags, unread, date, name } = data;
+  const { id, tags, unread, created_at, name } = data;
   const isSaved = tags.includes(SystemTag.SAVED);
   const isReviewed = tags.includes(SystemTag.REVIEWED);
   const sentiment = tags.filter((tag: string) => SentimentArray.includes(tag as Sentiment))[0];
@@ -79,7 +79,7 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
   return (
     <Container id={id} menuOpen={menuOpen} active={active} onClick={goToTarget}>
       <ReadStatusDot read={!unread} />
-      <InfoSection name={name} date={date} isRead={!unread} tags={tags} />
+      <InfoSection name={name} date={created_at} isRead={!unread} tags={tags} />
       <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>
         <Dropdown options={options}>
           {(ref, onToggle, isOpen) => {

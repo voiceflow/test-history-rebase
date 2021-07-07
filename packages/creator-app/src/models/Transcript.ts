@@ -59,6 +59,9 @@ export interface Transcript {
   // creation date
   createdAt: number;
 
+  // session id
+  sessionID: string;
+
   // TODO: change to designated message type
   messages: Message[];
 }

@@ -38,20 +38,23 @@ const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProp
   const testReports = useFeature(FeatureFlag.TEST_REPORTS);
 
   const onSave = () => {
-    savePrototypeSession();
-    toast.success(
-      <>
-        Test saved to Conversations <br />
-        <ToastCallToAction
-          onClick={() => {
-            // TODO target the right transcript id
-            goToTargetTranscript('1');
-          }}
-        >
-          Go to conversation
-        </ToastCallToAction>
-      </>
-    );
+    try {
+      savePrototypeSession();
+      toast.success(
+        <>
+          Test saved to Conversations <br />
+          <ToastCallToAction
+            onClick={() => {
+              // TODO target the right transcript id
+              goToTargetTranscript('1');
+            }}
+          >
+            Go to conversation
+          </ToastCallToAction>
+        </>
+      );
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
   };
 
   return (
@@ -80,7 +83,7 @@ const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProp
 };
 
 const mapDispatchToProps = {
-  savePrototypeSession: Transcripts.savePrototypeSession,
+  savePrototypeSession: Transcripts.createTranscript,
   goToTargetTranscript,
 };
 

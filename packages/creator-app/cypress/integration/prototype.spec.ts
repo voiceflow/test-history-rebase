@@ -74,7 +74,9 @@ context('Prototype', () => {
 
   describe('public prototype', () => {
     beforeEach(() => cy.setup());
-    afterEach(() => cy.teardown());
+    afterEach(() => {
+      cy.teardown();
+    });
 
     describe('sharing prototype', () => {
       beforeEach(() => {

@@ -39,9 +39,9 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
   const isSignupDisabled = !!coupon && !couponValid;
 
   const signupSubmit = async () => {
-    onDisable();
-
     if (!isDisabled) {
+      onDisable();
+
       try {
         await signup({
           name,
@@ -135,7 +135,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
                 <a onClick={goToLogin}>Have an account?</a>
               </div>
               <div className="col-6">
-                <LegacyButton isPrimary type="submit" disabled={isSignupDisabled}>
+                <LegacyButton isPrimary type="submit" disabled={isDisabled || isSignupDisabled}>
                   {query.invite ? 'Join Team' : 'Create Account'}
                 </LegacyButton>
               </div>

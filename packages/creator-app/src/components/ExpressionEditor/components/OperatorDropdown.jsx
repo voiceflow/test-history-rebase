@@ -1,9 +1,8 @@
 import { ExpressionType } from '@voiceflow/general-types';
 import { Portal, swallowEvent } from '@voiceflow/ui';
 import React from 'react';
+import { useDismissable } from 'react-dismissable-layers';
 import { Manager, Popper, Reference } from 'react-popper';
-
-import { useDismissable } from '@/hooks/dismiss';
 
 import { GROUPS, MAX_DEPTH } from '../constants';
 import ExpressionGroup from './ExpressionGroup';

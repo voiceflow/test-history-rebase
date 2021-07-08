@@ -1,7 +1,8 @@
 import { ConditionsLogicInterface, ExpressionTypeV2 } from '@voiceflow/general-types';
-import { Box, MenuContainer, Portal, stopPropagation, useDismissable } from '@voiceflow/ui';
+import { Box, MenuContainer, Portal, stopPropagation } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
+import { useDismissable } from 'react-dismissable-layers';
 import { Manager, Popper, Reference } from 'react-popper';
 
 import { Container } from '@/components/Tooltip/components';

@@ -1,8 +1,8 @@
 import composeRefs from '@seznam/compose-react-refs';
 import React, { Fragment } from 'react';
+import { useDismissable } from 'react-dismissable-layers';
 import { Manager, Popper, PopperProps, Reference } from 'react-popper';
 
-import { useDismissable } from '../../hooks';
 import { Nullable } from '../../types';
 import Menu, { MenuOption, MenuProps } from '../Menu';
 import Portal from '../Portal';
@@ -56,7 +56,7 @@ const Dropdown = <T extends any = undefined>({
 DropdownProps<T>): React.ReactElement => {
   const containerRef = React.useRef<Nullable<HTMLDivElement>>(null);
 
-  const [isOpen, onToggle] = useDismissable(false, { onClose, disabledOverlay, ref: selfDismiss ? containerRef : undefined });
+  const [isOpen, onToggle] = useDismissable(false, { onClose, disableLayers: disabledOverlay, ref: selfDismiss ? containerRef : undefined });
   const [childRef, setChildRef] = React.useState<Nullable<HTMLElement>>(null);
 
   const onComputedStyle = React.useCallback(

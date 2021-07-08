@@ -1,5 +1,6 @@
-import { DismissOverlayProvider, Portal, portalRootNode, useDidUpdateEffect, useDismissable } from '@voiceflow/ui';
+import { Portal, portalRootNode, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
+import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
 import { Manager, Popper as ReactPopper, PopperProps as ReactPopperProps, Reference } from 'react-popper';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -75,7 +76,7 @@ const Popper: React.FC<PopperProps> = ({
               }
             : {})}
         >
-          <DismissOverlayProvider>
+          <DismissableLayerProvider>
             <Portal portalNode={portalNode}>
               <ReactPopper
                 innerRef={containerRef}
@@ -102,7 +103,7 @@ const Popper: React.FC<PopperProps> = ({
                 )}
               </ReactPopper>
             </Portal>
-          </DismissOverlayProvider>
+          </DismissableLayerProvider>
         </Wrapper>
       )}
     </Manager>

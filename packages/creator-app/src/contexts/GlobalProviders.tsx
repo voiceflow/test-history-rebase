@@ -1,7 +1,7 @@
-import { DismissOverlayProvider } from '@voiceflow/ui';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import React from 'react';
+import { DismissableLayersGlobalProvider } from 'react-dismissable-layers';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { IntercomProvider } from 'react-use-intercom';
@@ -46,7 +46,7 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
               <TextEditorVariablesPopoverProvider value={document.body}>
                 <MousePositionProvider>
                   <DragProvider>
-                    <DismissOverlayProvider>
+                    <DismissableLayersGlobalProvider>
                       <EventualEngineProvider>
                         <IdentityProvider>
                           <ModalsContextProvider>
@@ -54,7 +54,7 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                           </ModalsContextProvider>
                         </IdentityProvider>
                       </EventualEngineProvider>
-                    </DismissOverlayProvider>
+                    </DismissableLayersGlobalProvider>
                   </DragProvider>
                 </MousePositionProvider>
               </TextEditorVariablesPopoverProvider>

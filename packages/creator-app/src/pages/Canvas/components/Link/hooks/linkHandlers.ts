@@ -1,8 +1,9 @@
 import { ProjectLinkType } from '@voiceflow/api-sdk';
 import { swallowEvent, useCache } from '@voiceflow/ui';
 import React from 'react';
+import { useDismissable } from 'react-dismissable-layers';
 
-import { useDismissable, useRAF, useToggle } from '@/hooks';
+import { useRAF, useToggle } from '@/hooks';
 import { LinkDataCaption } from '@/models';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 
@@ -45,7 +46,7 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
   const [isActive, toggleActive] = useDismissable(false, {
     ref: instance.containerRef,
     onClose,
-    disabledOverlay: true,
+    disableLayers: true,
     skipDefaultPrevented: false,
   });
 

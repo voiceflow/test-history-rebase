@@ -1,6 +1,7 @@
 import composeRefs from '@seznam/compose-react-refs';
-import { DismissOverlayValue, IS_SAFARI, withDismissOverlay } from '@voiceflow/ui';
+import { IS_SAFARI, withContext } from '@voiceflow/ui';
 import React from 'react';
+import { DismissableLayerContext } from 'react-dismissable-layers';
 
 import { Identifier } from '@/styles/constants';
 import { ANIMATION_SPEED } from '@/styles/theme';
@@ -49,7 +50,9 @@ export type CanvasProps = {
   onDragStart?: (event: React.DragEvent) => void;
 };
 
-class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlScheme'> & { dismissOverlay: DismissOverlayValue }> {
+class Canvas extends React.PureComponent<
+  WithRequired<CanvasProps, 'controlScheme'> & { dismissableLayer: React.ContextType<typeof DismissableLayerContext> }
+> {
   static defaultProps: CanvasProps = {
     scrollTimeout: SCROLL_TIMEOUT,
   };
@@ -303,11 +306,11 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
 
     switch (control.type) {
       case ControlType.PAN:
-        this.props.dismissOverlay.dismissAllGlobally();
+        this.props.dismissableLayer.dismissAllGlobally();
         this.onPan(control.deltaX, control.deltaY);
         break;
       case ControlType.SCALE:
-        this.props.dismissOverlay.dismissAllGlobally();
+        this.props.dismissableLayer.dismissAllGlobally();
         this.onZoom(control);
         break;
       case ControlType.CLICK:
@@ -429,4 +432,4 @@ class Canvas extends React.PureComponent<WithRequired<CanvasProps, 'controlSchem
   }
 }
 
-export default withDismissOverlay(Canvas) as React.FC<CanvasProps>;
+export default withContext(DismissableLayerContext, 'dismissableLayer')(Canvas) as React.FC<CanvasProps>;

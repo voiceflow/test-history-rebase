@@ -1,5 +1,6 @@
-import { DismissOverlayContext, Menu, MenuOption, Portal, useDismissable } from '@voiceflow/ui';
+import { Menu, MenuOption, Portal } from '@voiceflow/ui';
 import React from 'react';
+import { useDismissable } from 'react-dismissable-layers';
 import { Popper, PopperProps } from 'react-popper';
 
 import { Identifier } from '@/styles/constants';
@@ -18,7 +19,6 @@ type ContextMenuProps<T> = {
 
 const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...props }: ContextMenuProps<T>) => {
   const [virtualElememt, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement> | null>(null);
-  const dismissOverlay = React.useContext(DismissOverlayContext)!;
   const [isOpen, onToggle] = useDismissable(false);
 
   const onContextMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -35,10 +35,6 @@ const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...p
     setVirtualElement(buildVirtualElement([event.clientX, event.clientY] as Point));
 
     if (!isOpen) {
-      if (dismissOverlay.hasHandlers()) {
-        dismissOverlay.dismissAll();
-      }
-
       onToggle();
     }
   };

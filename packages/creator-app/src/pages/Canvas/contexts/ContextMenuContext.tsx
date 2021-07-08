@@ -1,5 +1,6 @@
-import { DismissOverlayContext, useContextApi, useSmartReducerV2, withContext, withStaticContext } from '@voiceflow/ui';
+import { useContextApi, useSmartReducerV2, withContext, withStaticContext } from '@voiceflow/ui';
 import React from 'react';
+import { DismissableLayerContext } from 'react-dismissable-layers';
 
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
 import { Nullable } from '@/types';
@@ -23,12 +24,12 @@ export const { Consumer: ContextMenuConsumer } = ContextMenuContext;
 
 export const ContextMenuProvider: React.FC = ({ children }) => {
   const engine = React.useContext(EngineContext)!;
-  const dismissOverlay = React.useContext(DismissOverlayContext)!;
+  const dismissOverlay = React.useContext(DismissableLayerContext)!;
 
   const [menuContext, menuContextApi] = useSmartReducerV2<Partial<MenuContext>>({ type: undefined, target: undefined, position: undefined });
 
   const onHide = React.useCallback(() => {
-    dismissOverlay.removeHandler(onHide);
+    dismissOverlay.removeHandler('click', onHide);
     menuContextApi.reset();
   }, []);
 
@@ -42,7 +43,7 @@ export const ContextMenuProvider: React.FC = ({ children }) => {
 
       // defense for ctrl-click on chrome and safari ¯\_(ツ)_/¯
       if (!event.ctrlKey) {
-        dismissOverlay.addHandler(onHide);
+        dismissOverlay.addHandler('click', onHide);
       }
 
       if (type === ContextMenuTarget.NODE && target && engine.selection.isOneOfManyTargets(target)) {

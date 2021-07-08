@@ -1,5 +1,6 @@
 import { MenuOption } from '@voiceflow/ui';
 import React from 'react';
+import { useDismissable } from 'react-dismissable-layers';
 import { useRouteMatch } from 'react-router-dom';
 
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
@@ -8,7 +9,7 @@ import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDismissable, useDispatch, useHotKeys, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useHotKeys, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 
 export enum CanvasOptionType {

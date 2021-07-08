@@ -5045,6 +5045,11 @@
   resolved "https://registry.yarnpkg.com/@voiceflow/prettier-config/-/prettier-config-1.0.5.tgz#307caf65040ae0c0539ecb8531b9e403381f11ab"
   integrity sha512-yM35E7UI0fD8yMgL7JImljvMLZVU+jCz/latc2s2e7Nlbr9kiMpO0FArjkaXVIghhcUeQ0y04lsFUHRu3kMzmA==
 
+"react-dismissable-layers@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-dismissable-layers/-/react-dismissable-layers-0.1.1.tgz#3841c2d31643c4a5e5fa3655e910a415257c548e"
+  integrity sha512-VEH1Dt4DAei262JPTRHrXlJuQgcVlvYaAM0tU+8b+1x2ux6TV+BklWjQFty8Lf2UpsMqvrLEFHgC0B8DkVBKLA==
+
 "@voiceflow/semantic-release-config@^1.0.8":
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/@voiceflow/semantic-release-config/-/semantic-release-config-1.0.8.tgz#686bd93b08befb32a0ac71ffdb859858d77def1c"
@@ -19202,6 +19207,11 @@ react-dev-utils@^11.0.4:
     shell-quote "1.7.2"
     strip-ansi "6.0.0"
     text-table "0.2.0"
+
+react-dismissable-layers@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-dismissable-layers/-/react-dismissable-layers-0.1.1.tgz#db0c0e7ebd06613f61ba91aae9bcc206bdbf2f94"
+  integrity sha512-bTDKMD4eDMAnmxMIXgi8TGfP/NoMRn/ahhdcxC0DR6l+qnUyripBPEo+a3M/lL/F+Layaq0senmG3zCQVDjSLQ==
 
 react-dnd-html5-backend@^10.0.0:
   version "10.0.2"

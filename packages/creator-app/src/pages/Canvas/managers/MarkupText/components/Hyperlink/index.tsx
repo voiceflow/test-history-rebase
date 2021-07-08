@@ -1,10 +1,10 @@
 import { Input, Portal, preventDefault } from '@voiceflow/ui';
 import React from 'react';
+import { useDismissable } from 'react-dismissable-layers';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Manager, Popper, Reference } from 'react-popper';
 import { Editor } from 'slate';
 
-import { useDismissable } from '@/hooks/dismiss';
 import { withEnterPress } from '@/utils/dom';
 
 import MarkupSlateEditor from '../../MarkupSlateEditor';

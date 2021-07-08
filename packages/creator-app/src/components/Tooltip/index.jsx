@@ -1,9 +1,9 @@
 /* eslint-disable no-shadow */
 import { Portal, portalRootNode, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
+import { useDismissable } from 'react-dismissable-layers';
 import { Manager, Popper, Reference } from 'react-popper';
 
-import { useDismissable } from '@/hooks/dismiss';
 import { FadeDownDelayedContainer, SlideContainer } from '@/styles/animations';
 
 import { Container, JSONCode, Paragraph, Section, Title } from './components';

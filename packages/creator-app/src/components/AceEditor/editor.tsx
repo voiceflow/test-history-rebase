@@ -79,6 +79,16 @@ const StyledEditor = styled(AceEditor).attrs({
     font-weight: 600;
   }
 
+  .ace_comment.ace_placeholder {
+    font-size: 13px;
+    font-family: 'Monaco', monospace;
+    padding-left: 2px !important;
+  }
+
+  .ace_placeholder {
+    transform: none;
+  }
+
   ${({ inputMode }) =>
     inputMode === InputMode.INPUT &&
     css`

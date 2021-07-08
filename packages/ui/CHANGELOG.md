@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.3.5...@voiceflow/ui@1.4.0) (2021-07-08)
+
+
+### Features
+
+* replace dismiss system with dismissable layers (VF-000) ([#3635](https://github.com/voiceflow/creator-app/issues/3635)) ([16a631d](https://github.com/voiceflow/creator-app/commit/16a631d5d7957f19eee00b73281feaa41bbb0f30))
+
+
+
+
+
 ## [1.3.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.3.4...@voiceflow/ui@1.3.5) (2021-07-06)
 
 **Note:** Version bump only for package @voiceflow/ui

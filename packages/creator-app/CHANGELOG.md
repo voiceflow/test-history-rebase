@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.421.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.420.2...@voiceflow/creator-app@1.421.0) (2021-07-08)
+
+
+### Features
+
+* replace dismiss system with dismissable layers (VF-000) ([#3635](https://github.com/voiceflow/creator-app/issues/3635)) ([16a631d](https://github.com/voiceflow/creator-app/commit/16a631d5d7957f19eee00b73281feaa41bbb0f30))
+
+
+
+
+
 ## [1.420.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.420.1...@voiceflow/creator-app@1.420.2) (2021-07-08)
 
 

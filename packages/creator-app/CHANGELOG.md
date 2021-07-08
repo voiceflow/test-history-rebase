@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.421.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.421.0...@voiceflow/creator-app@1.421.1) (2021-07-08)
+
+
+### Bug Fixes
+
+* remove canvas export prompt for pro+ users (VF-1259) ([#3642](https://github.com/voiceflow/creator-app/issues/3642)) ([9fd9962](https://github.com/voiceflow/creator-app/commit/9fd9962972bec2a2a34e44ec039efc8b2d9eaa2b))
+* ui watch and creator-app rebuild (VF-000) ([#3641](https://github.com/voiceflow/creator-app/issues/3641)) ([1c363d5](https://github.com/voiceflow/creator-app/commit/1c363d5598e7b0f50afa21ecdc8406da55b00d37))
+
+
+
+
+
 # [1.421.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.420.2...@voiceflow/creator-app@1.421.0) (2021-07-08)
 
 

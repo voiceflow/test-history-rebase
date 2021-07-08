@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.4.0...@voiceflow/ui@1.4.1) (2021-07-08)
+
+
+### Bug Fixes
+
+* ui watch and creator-app rebuild (VF-000) ([#3641](https://github.com/voiceflow/creator-app/issues/3641)) ([1c363d5](https://github.com/voiceflow/creator-app/commit/1c363d5598e7b0f50afa21ecdc8406da55b00d37))
+
+
+
+
+
 # [1.4.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.3.5...@voiceflow/ui@1.4.0) (2021-07-08)
 
 

@@ -37,7 +37,7 @@ const ExportContent: React.FC = () => {
 
       <RadioGroup isFlat options={EXPORT_OPTIONS} checked={exportFormat} column onChange={setExportFormat} />
 
-      {canExportWithoutBranding && (
+      {!canExportWithoutBranding && (
         <Box position="absolute" left={0} right={0} bottom={0}>
           <Upgrade>Remove branding from PNG & PDF exports.</Upgrade>
         </Box>

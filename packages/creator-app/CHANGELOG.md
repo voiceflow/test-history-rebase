@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.420.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.420.1...@voiceflow/creator-app@1.420.2) (2021-07-08)
+
+
+### Bug Fixes
+
+* disable "Create Account" button while request is pending (VF-1262) ([#3639](https://github.com/voiceflow/creator-app/issues/3639)) ([c6eceed](https://github.com/voiceflow/creator-app/commit/c6eceedbcd455aebaa91083c3e40f76f8bafdcf8))
+
+
+
+
+
 ## [1.420.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.420.0...@voiceflow/creator-app@1.420.1) (2021-07-07)
 
 

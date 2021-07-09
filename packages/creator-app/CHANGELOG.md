@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.422.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.421.2...@voiceflow/creator-app@1.422.0) (2021-07-09)
+
+
+### Features
+
+* fetch dialogs and show in UI (VF-000) ([#3645](https://github.com/voiceflow/creator-app/issues/3645)) ([61f0ef2](https://github.com/voiceflow/creator-app/commit/61f0ef234c96b237f63eafaea6d58693151879e5))
+
+
+
+
+
 ## [1.421.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.421.1...@voiceflow/creator-app@1.421.2) (2021-07-09)
 
 

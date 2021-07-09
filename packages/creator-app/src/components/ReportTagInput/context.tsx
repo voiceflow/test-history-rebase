@@ -5,19 +5,6 @@ import { connect } from '@/hocs';
 import { ReportTag } from '@/models';
 import { ConnectedProps } from '@/types';
 
-// TODO: remove
-// const SAMPLE_TAGS: ReportTag[] = [
-//   { id: '1', label: 'happy path', projectID: '1' },
-//   { id: '2', label: 'difficult path', projectID: '2' },
-//   { id: '3', label: 'sad path', projectID: '3' },
-//   { id: '4', label: "didn't comply", projectID: '4' },
-//   { id: '5', label: 'repair path', projectID: '5' },
-//   { id: Sentiment.EMOTION_POSITIVE, label: '', projectID: '6' },
-//   { id: Sentiment.EMOTION_NEGATIVE, label: '', projectID: '7' },
-//   { id: Sentiment.EMOTION_NEUTRAL, label: '', projectID: '8' },
-//   { id: SystemTag.SAVED, label: 'saved', projectID: '8' },
-//   { id: SystemTag.REVIEWED, label: 'reviewed', projectID: '8' },
-// ];
 export interface ReportTagInputContextApi {
   state: {
     allTags: ReportTag[];

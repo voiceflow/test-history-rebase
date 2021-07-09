@@ -1,3 +1,4 @@
+import dialogsAdapter from '@/client/adapters/transcripts/dialogs';
 import transcriptAdapter from '@/client/adapters/transcripts/transcripts';
 import { TagType, Transcript } from '@/models';
 
@@ -18,6 +19,9 @@ const transcriptClient = {
 
   createTranscript: (data: Partial<Transcript> & { versionID: string | null }, projectID: string | null) =>
     apiV2.put(`${TRANSCRIPT_PATH}`, { ...data, projectID: projectID || undefined }),
+
+  getTranscriptDialog: (projectID: string, transcriptID: string) =>
+    apiV2.get(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`).then((dialogs: any) => dialogs.map((dialog: any) => dialogsAdapter.fromDB(dialog))),
 };
 
 export default transcriptClient;

@@ -5,7 +5,6 @@ import { batch } from 'react-redux';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import * as Account from '@/ducks/account';
 import * as Recent from '@/ducks/recent';
 import * as Session from '@/ducks/session';
 import { Trace } from '@/models';
@@ -13,7 +12,7 @@ import { Thunk } from '@/store/types';
 import * as Sentry from '@/vendors/sentry';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype, updatePrototypeContext } from '../actions';
-import { prototypeContextSelector, prototypeSelector, prototypeVisualDataSelector } from '../selectors';
+import { prototypeContextSelector, prototypeIDSelector, prototypeSelector, prototypeVisualDataSelector } from '../selectors';
 import { Context } from '../types';
 
 const getTargetFlowID = (trace: Trace[]) => {
@@ -36,9 +35,10 @@ const fetchContext =
     const currentVisualData = prototypeVisualDataSelector(reduxState);
     const versionID = Session.activeVersionIDSelector(reduxState);
     const activeDiagramID = Session.activeDiagramIDSelector(reduxState);
+    const prototypeID = prototypeIDSelector(reduxState);
 
     // unique identifier for session analytics
-    const sessionID = `${versionID}.${Account.userIDSelector(reduxState) || Session.browserIDSelector(reduxState)}`;
+    const sessionID = `${versionID}.${prototypeID}`;
 
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(activeDiagramID);

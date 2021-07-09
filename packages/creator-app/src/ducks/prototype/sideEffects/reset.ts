@@ -7,6 +7,7 @@ import * as Slot from '@/ducks/slot';
 import { activeGlobalVariablesSelector } from '@/ducks/version/selectors';
 import { Store } from '@/models';
 import { SyncThunk } from '@/store/types';
+import { cuid } from '@/utils/string';
 import * as Sentry from '@/vendors/sentry';
 
 import { updatePrototype, updatePrototypeContext, updatePrototypeStatus } from '../actions';
@@ -52,6 +53,7 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
     dispatch(updatePrototypeContext({ variables }));
     dispatch(
       updatePrototype({
+        ID: cuid(),
         contextStep: 0,
         contextHistory: [],
         flowIDHistory: [],

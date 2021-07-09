@@ -11,6 +11,7 @@ import { Thunk } from '@/store/types';
 
 import { updatePrototype } from '../actions';
 import { PrototypeLayout, PrototypeSettings } from '../types';
+import resetPrototype from './reset';
 
 const setupPublicPrototype =
   (versionID: string): Thunk<PrototypeSettings> =>
@@ -32,6 +33,7 @@ const setupPublicPrototype =
     const layout = (prototype?.settings.layout ?? PrototypeLayout.TEXT_DIALOG) as PrototypeLayout;
 
     batch(() => {
+      dispatch(resetPrototype());
       dispatch(
         addVersion(versionID, {
           id: versionID,

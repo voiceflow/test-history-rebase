@@ -60,7 +60,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  goToDiagram: Router.goToDiagram,
+  goToDiagram: Router.goToDiagramHistoryPush,
   loadFlowVariables: Diagram.loadLocalVariables,
 };
 

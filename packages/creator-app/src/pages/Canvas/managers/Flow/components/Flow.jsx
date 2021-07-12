@@ -90,7 +90,7 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   createDiagram: Diagram.createDiagram,
   saveActiveDiagram: Diagram.saveActiveDiagram,
-  goToDiagram: Router.goToDiagram,
+  goToDiagram: Router.goToDiagramHistoryPush,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Flow);

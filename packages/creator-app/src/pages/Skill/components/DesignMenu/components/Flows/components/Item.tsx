@@ -69,7 +69,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  goToDiagram: Router.goToDiagram,
+  goToDiagram: Router.goToDiagramHistoryPush,
 };
 
 const mergeProps = (...[{ getDiagramViewers }, , { id }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, ItemProps>) => ({

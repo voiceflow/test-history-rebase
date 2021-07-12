@@ -43,7 +43,7 @@ const ConnectedFlowStep: React.FC<ConnectedStepProps<NodeData.Flow>> = ({ node, 
   const goToDiagram = React.useCallback(() => {
     perf.action(PerfAction.FLOW_NODE__LINK_CLICK);
 
-    if (data.diagramID) dispatch(Router.goToDiagram(data.diagramID));
+    if (data.diagramID) dispatch(Router.goToDiagramHistoryPush(data.diagramID));
   }, [data.diagramID, dispatch]);
 
   const label = data.diagramID ? diagramMap[data.diagramID]?.name : null;

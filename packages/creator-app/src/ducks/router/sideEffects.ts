@@ -3,6 +3,7 @@ import { generatePath } from 'react-router-dom';
 import * as Errors from '@/config/errors';
 import { Path } from '@/config/routes';
 import { InteractionModelTabType } from '@/constants';
+import * as Creator from '@/ducks/creator';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
@@ -105,6 +106,30 @@ export const goToDiagram =
     Errors.assertVersionID(versionID);
 
     await dispatch(goToCanvasSwitchRealtime(versionID, diagramID));
+  };
+
+export const goToDiagramHistoryPush =
+  (diagramID: string): Thunk =>
+  async (dispatch) => {
+    await dispatch(goToDiagram(diagramID));
+
+    dispatch(Creator.diagramsHistoryPush(diagramID));
+  };
+
+export const goToDiagramHistoryPop =
+  (diagramID: string): Thunk =>
+  async (dispatch) => {
+    await dispatch(goToDiagram(diagramID));
+
+    dispatch(Creator.diagramsHistoryPop());
+  };
+
+export const goToDiagramHistoryClear =
+  (diagramID: string): Thunk =>
+  async (dispatch) => {
+    await dispatch(goToDiagram(diagramID));
+
+    dispatch(Creator.diagramsHistoryClear());
   };
 
 export const goToDiagramCommenting =

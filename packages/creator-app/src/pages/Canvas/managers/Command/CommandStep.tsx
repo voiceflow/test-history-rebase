@@ -27,7 +27,7 @@ const ConnectedCommandStep: React.FC<ConnectedStepProps<NodeData.Command> & Conn
 );
 
 const mapDispatchToProps = {
-  goToDiagram: Router.goToDiagram,
+  goToDiagram: Router.goToDiagramHistoryPush,
 };
 
 const mergeProps = (

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.423.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.422.1...@voiceflow/creator-app@1.423.0) (2021-07-12)
+
+
+### Features
+
+* flows navigation history (VF-1248) ([#3644](https://github.com/voiceflow/creator-app/issues/3644)) ([fd0c22f](https://github.com/voiceflow/creator-app/commit/fd0c22f3f6a358b308d261682431a3de9f5a07b8))
+* request `firebase` scope in Google OAuth connect (VF-873) ([#3656](https://github.com/voiceflow/creator-app/issues/3656)) ([34ec078](https://github.com/voiceflow/creator-app/commit/34ec0787b83cc47a54f6a8af9a00722f2f39c29a))
+
+
+
+
+
 ## [1.422.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.422.0...@voiceflow/creator-app@1.422.1) (2021-07-09)
 
 **Note:** Version bump only for package @voiceflow/creator-app

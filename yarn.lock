@@ -4443,9 +4443,9 @@
   integrity sha512-nFXlBxhz5Wnz/P7AQenmaG7r9MGBmvZhTW/MLPEPd1CYLgB+6jg0GygIYYM5LR+K1WyZ3+jXGhGszxoLQQkHXQ==
 
 "@types/react-stripe-elements@^6.0.4":
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/@types/react-stripe-elements/-/react-stripe-elements-6.0.4.tgz#0931064941b4f74e25edb8955703eee90774a057"
-  integrity sha512-EzEeBiOwQJ0fPzZhtg9zqyy5GJbEbi0sFNFCowFXmRwraRcMRyZ4p2UK8nylzfCR2KtMPZ2fgUVH9xD/VL/StQ==
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/@types/react-stripe-elements/-/react-stripe-elements-6.0.5.tgz#09e10701b58f6bc81e0e299b99934793a6fa9db8"
+  integrity sha512-CW639rmamGDyiIYkB8aXyhinJmMATTAklcZmVNeU5hdy/lg/W5eNEKzd5VsmobJniKRC6KPyVVq/J3zgtmPNNA==
   dependencies:
     "@types/react" "*"
     "@types/stripe-v3" "*"

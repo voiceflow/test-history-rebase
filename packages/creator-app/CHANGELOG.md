@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.423.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.423.0...@voiceflow/creator-app@1.423.1) (2021-07-14)
+
+
+### Bug Fixes
+
+* disable button after save transcript (VF-1271) ([#3659](https://github.com/voiceflow/creator-app/issues/3659)) ([ddc881e](https://github.com/voiceflow/creator-app/commit/ddc881efb9a6f62ba54f2c1fc5e6b3f4f62a41f2))
+
+
+
+
+
 # [1.423.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.422.1...@voiceflow/creator-app@1.423.0) (2021-07-12)
 
 

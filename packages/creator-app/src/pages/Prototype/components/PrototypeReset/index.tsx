@@ -1,32 +1,21 @@
-import { Button, ButtonVariant, FlexCenter, toast, ToastCallToAction } from '@voiceflow/ui';
+import { Button, ButtonVariant, toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
 import { goToTargetTranscript } from '@/ducks/router';
 import * as Transcripts from '@/ducks/transcript';
-import { connect, styled } from '@/hocs';
+import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
+
+import { Container, Splitter } from './components';
 
 export type PrototypeResetProps = {
   onClick: React.MouseEventHandler<HTMLSpanElement>;
   stepBack: () => void;
   goBackDisabled: boolean;
 };
-
-const Container = styled(FlexCenter)`
-  height: 179px;
-  background: white;
-  border-top: solid 1px #eaeff4;
-`;
-
-const Splitter = styled.div`
-  width: 1px;
-  height: 16px;
-  margin: 0 12px;
-  background: #dfe3ed;
-`;
 
 const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProps> = ({
   savePrototypeSession,
@@ -36,6 +25,7 @@ const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProp
   goToTargetTranscript,
 }) => {
   const testReports = useFeature(FeatureFlag.TEST_REPORTS);
+  const [transcriptSaved, setTranscriptSaved] = React.useState(true);
 
   const onSave = () => {
     try {
@@ -73,7 +63,14 @@ const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProp
       {testReports.isEnabled && (
         <>
           <Splitter />
-          <Button variant={ButtonVariant.TERTIARY} onClick={onSave}>
+          <Button
+            variant={ButtonVariant.TERTIARY}
+            onClick={() => {
+              onSave();
+              setTranscriptSaved(false);
+            }}
+            disabled={!transcriptSaved}
+          >
             Save Test
           </Button>
         </>

@@ -3774,21 +3774,7 @@
     lz-string "^1.4.4"
     pretty-format "^27.0.2"
 
-"@testing-library/jest-dom@^5.12.0":
-  version "5.12.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.12.0.tgz#6a5d340b092c44b7bce17a4791b47d9bc2c61443"
-  integrity sha512-N9Y82b2Z3j6wzIoAqajlKVF1Zt7sOH0pPee0sUHXHc5cv2Fdn23r+vpWm0MBBoGJtPOly5+Bdx1lnc3CD+A+ow==
-  dependencies:
-    "@babel/runtime" "^7.9.2"
-    "@types/testing-library__jest-dom" "^5.9.1"
-    aria-query "^4.2.2"
-    chalk "^3.0.0"
-    css "^3.0.0"
-    css.escape "^1.5.1"
-    lodash "^4.17.15"
-    redent "^3.0.0"
-
-"@testing-library/jest-dom@^5.14.1":
+"@testing-library/jest-dom@^5.12.0", "@testing-library/jest-dom@^5.14.1":
   version "5.14.1"
   resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.14.1.tgz#8501e16f1e55a55d675fe73eecee32cdaddb9766"
   integrity sha512-dfB7HVIgTNCxH22M1+KU6viG5of2ldoA5ly8Ar8xkezKHKXjRvznCdbMbqjYGgO2xjRbwnR+rR8MLUIqF3kKbQ==
@@ -4886,20 +4872,10 @@
     axios "^0.21.1"
     superstruct "^0.10.12"
 
-"@voiceflow/api-sdk@1.33.0", "@voiceflow/api-sdk@^1.33.0":
+"@voiceflow/api-sdk@1.33.0", "@voiceflow/api-sdk@^1.31.10", "@voiceflow/api-sdk@^1.32.5", "@voiceflow/api-sdk@^1.33.0":
   version "1.33.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.33.0.tgz#c86a2ef5d4e788238b0e6b95999c07ddbd080dda"
   integrity sha512-XmPKy02/dWSh8kOAb30Soqi3UG8zz+7kPQwJhj41BlRGSQBZeGbQa56NzQZ3Tb416w8r0AU3TLZZOR2HWj27Sw==
-  dependencies:
-    "@types/atob" "^2.1.2"
-    atob "^2.1.2"
-    axios "^0.21.1"
-    superstruct "^0.10.12"
-
-"@voiceflow/api-sdk@^1.31.10", "@voiceflow/api-sdk@^1.32.5":
-  version "1.32.5"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.32.5.tgz#3b7378c8e14d4cead7cd60282205d40b0455bea6"
-  integrity sha512-m+/a7ivrx01gaRpz3996FIXSTBmM4hmS7mtatV2YWfOND1RZUrAwXaDqOLXyRWc2FFE7kVy6zepWCfYDYjzEKQ==
   dependencies:
     "@types/atob" "^2.1.2"
     atob "^2.1.2"
@@ -4983,19 +4959,12 @@
     eslint-plugin-xss "^0.1.9"
     eslint-plugin-you-dont-need-lodash-underscore "^6.11.0"
 
-"@voiceflow/general-types@1.50.5", "@voiceflow/general-types@^1.50.5":
+"@voiceflow/general-types@1.50.5", "@voiceflow/general-types@^1.50.4", "@voiceflow/general-types@^1.50.5":
   version "1.50.5"
   resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.50.5.tgz#08424501a71e91f6e25013f8df2462caf278001d"
   integrity sha512-SgwlRucj1RaKk3+ojqjNntF2hyoBvjCuhTpztEw9nnusPo3uN8OzEGwcfZD59MeB8pPsvIlX5mp3csG+1FU7jA==
   dependencies:
     "@voiceflow/api-sdk" "^1.33.0"
-
-"@voiceflow/general-types@^1.50.4":
-  version "1.50.4"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.50.4.tgz#3cd895fcd81cc1899e9afaa66b89c41117e0e80e"
-  integrity sha512-ZpDs3Z8A/8X5bqXY4Srtr7e33PKeNpmNWSgXXwhFzPn6VSaCGnlK6wkaVy1DmrvYsp7zT+NBo9wcc/qkTqe9jA==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.32.5"
 
 "@voiceflow/git-branch-check@^1.2.0":
   version "1.2.0"
@@ -5091,82 +5060,10 @@
   resolved "https://registry.yarnpkg.com/@voiceflow/tsconfig/-/tsconfig-1.0.0.tgz#09406c649729c8a9d5b7fa1d76427d8a9adbc961"
   integrity sha512-+gOf2u/5xc5SHqrD+o1nBPfodAo34jQWmVR6K/h94/XZp8uoHQ7yzUnMqRpiJMrdX+Ku7WCI0xd9h1jYSHS0LA==
 
-"@voiceflow/webpack-config@1.7.1":
+"@voiceflow/webpack-config@1.7.1", "@voiceflow/webpack-config@^1.3.0":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/webpack-config/-/webpack-config-1.7.1.tgz#ca24110f3a87fa10d0a7f5e2e3ea31dc839a4d8c"
   integrity sha512-xNhtYIm/zuZJHDmCEbSbIxtlnP9t8wtmC7wOVPgb+uCi+QpwEQcsaurlDImF63FcIzF+dizvMzcAIZBtKMvPkQ==
-  dependencies:
-    "@babel/core" "^7.13.15"
-    "@babel/plugin-proposal-class-properties" "^7.13.0"
-    "@babel/plugin-proposal-decorators" "^7.13.15"
-    "@babel/plugin-proposal-nullish-coalescing-operator" "^7.13.8"
-    "@babel/plugin-proposal-optional-chaining" "^7.13.12"
-    "@babel/plugin-transform-modules-commonjs" "^7.13.8"
-    "@babel/preset-es2015" "^7.0.0-beta.53"
-    "@babel/preset-react" "^7.13.13"
-    "@babel/preset-typescript" "^7.13.0"
-    "@hot-loader/react-dom" "^16.13.0"
-    "@svgr/webpack" "^5.5.0"
-    "@types/babel__core" "^7.1.14"
-    "@types/case-sensitive-paths-webpack-plugin" "^2.1.5"
-    "@types/circular-dependency-plugin" "^5.0.2"
-    "@types/copy-webpack-plugin" "^6.4.0"
-    "@types/mini-css-extract-plugin" "^1.4.1"
-    "@types/optimize-css-assets-webpack-plugin" "^5.0.2"
-    "@types/postcss-safe-parser" "^4.0.0"
-    "@types/react-dev-utils" "^9.0.6"
-    "@types/terser-webpack-plugin" "^5.0.2"
-    "@types/webpack-bundle-analyzer" "^3.9.1"
-    "@types/webpack-deadcode-plugin" "^0.1.1"
-    "@types/webpack-dev-server" "^3.11.4"
-    "@types/webpack-env" "^1.16.0"
-    "@types/webpack-merge" "^4.1.5"
-    "@types/webpackbar" "^4.0.1"
-    babel-loader "^8.2.2"
-    babel-plugin-lodash "^3.3.4"
-    babel-plugin-named-asset-import "^0.3.7"
-    babel-plugin-require-context-hook "^1.0.0"
-    babel-plugin-styled-components "^1.12.0"
-    babel-plugin-webpack-alias-7 "^0.1.1"
-    babel-preset-es2015 "^6.24.1"
-    babel-preset-react-app "^10.0.0"
-    case-sensitive-paths-webpack-plugin "^2.4.0"
-    circular-dependency-plugin "^5.2.2"
-    clean-webpack-plugin "^3.0.0"
-    copy-webpack-plugin "^7.0.0"
-    css-loader "^5.0.2"
-    file-loader "6.2.0"
-    filemanager-webpack-plugin "^4.0.0"
-    fork-ts-checker-webpack-plugin "^6.2.1"
-    html-webpack-plugin "^5.3.1"
-    istanbul-instrumenter-loader "^3.0.1"
-    mini-css-extract-plugin "^1.5.0"
-    optimize-css-assets-webpack-plugin "^5.0.4"
-    postcss "^8.2.9"
-    postcss-flexbugs-fixes "^5.0.2"
-    postcss-loader "^5.3.0"
-    postcss-preset-env "^6.7.0"
-    postcss-safe-parser "^5.0.2"
-    preload-webpack-plugin "^3.0.0-beta.4"
-    react-dev-utils "^11.0.4"
-    react-hot-loader "^4.13.0"
-    style-loader "^2.0.0"
-    terser-webpack-plugin "^5.1.1"
-    ts-loader "^8.2.0"
-    tsconfig-paths-webpack-plugin "^3.5.1"
-    utility-types "^3.10.0"
-    webpack "^5.23.0"
-    webpack-bundle-analyzer "^4.4.0"
-    webpack-deadcode-plugin "^0.1.12"
-    webpack-dev-server "^3.11.2"
-    webpack-merge "^5.7.3"
-    webpack-nano "^1.1.1"
-    webpackbar "^5.0.0-3"
-
-"@voiceflow/webpack-config@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/webpack-config/-/webpack-config-1.3.0.tgz#a4363fc7228b80ed06980eabe7f873cf92d9036a"
-  integrity sha512-lqg4JNz2Vu3lEul5u7YW1X1IURK28Y50+zRBbtAUGOlxCZ06F9mAupnwn8IjOzcOeNIPOpS8En57yCgCrYQglA==
   dependencies:
     "@babel/core" "^7.13.15"
     "@babel/plugin-proposal-class-properties" "^7.13.0"
@@ -7659,15 +7556,10 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981:
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000805, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001125, caniuse-lite@^1.0.30001166, caniuse-lite@^1.0.30001179, caniuse-lite@^1.0.30001219:
   version "1.0.30001234"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001234.tgz#8fc2e709e3b0679d7af7f073a1c661155c39b975"
   integrity sha512-a3gjUVKkmwLdNysa1xkUAwN2VfJUJyVW47rsi3aCbkRCtbHAfo+rOsCqVw29G6coQ8gzAPb5XBXwiGHwme3isA==
-
-caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000805, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001125, caniuse-lite@^1.0.30001166, caniuse-lite@^1.0.30001179, caniuse-lite@^1.0.30001219:
-  version "1.0.30001233"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001233.tgz#b7cb4a377a4b12ed240d2fa5c792951a06e5f2c4"
-  integrity sha512-BmkbxLfStqiPA7IEzQpIk0UFZFf3A4E6fzjPJ6OR+bFC2L8ES9J8zGA/asoi47p8XDVkev+WJo2I2Nc8c/34Yg==
 
 capture-exit@^2.0.0:
   version "2.0.0"

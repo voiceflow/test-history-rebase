@@ -4498,9 +4498,9 @@
     "@types/react" "*"
 
 "@types/recordrtc@^5.6.5":
-  version "5.6.5"
-  resolved "https://registry.yarnpkg.com/@types/recordrtc/-/recordrtc-5.6.5.tgz#aa7b1ec80afefbe1f73296f36fcad0eabcd8c6f1"
-  integrity sha512-4FF77kV/VTnEM7lB018sr70IKl1e1rbRpXuv1G3t7Ty7Z5HGRDehH2xq9cxvTNn18DDSkm0D5gwU5CpfwiPuDQ==
+  version "5.6.6"
+  resolved "https://registry.yarnpkg.com/@types/recordrtc/-/recordrtc-5.6.6.tgz#0a74a20ec8ecb7e66c5447e96bb44472748ca2e1"
+  integrity sha512-lO/0EL9Mp0HBiwmzwnYIPRKCdLkzimAjaKG5M0pPwuXi++corDU9nzIBP2Hgn7+8OTZWGpy9pHdTaJn8SUiMGw==
 
 "@types/redux-form@^8.3.1":
   version "8.3.1"

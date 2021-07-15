@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.425.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.424.0...@voiceflow/creator-app@1.425.0) (2021-07-15)
+
+
+### Bug Fixes
+
+* remove conditions ff (VF-000) ([#3636](https://github.com/voiceflow/creator-app/issues/3636)) ([86df6f3](https://github.com/voiceflow/creator-app/commit/86df6f33d00f6688eda757a498bc88923a493cdf))
+
+
+### Features
+
+* add atom state system (VF-753) ([#3669](https://github.com/voiceflow/creator-app/issues/3669)) ([3ef8af4](https://github.com/voiceflow/creator-app/commit/3ef8af43d144d2043fe73e6bd170adb68e0d2efb))
+* connect user image and name in test reports (VF-1277) ([#3663](https://github.com/voiceflow/creator-app/issues/3663)) ([cf535b6](https://github.com/voiceflow/creator-app/commit/cf535b65edb09779415449cf0de90330c421ed3a))
+* pass filter query params to client call (VF-1238) ([#3652](https://github.com/voiceflow/creator-app/issues/3652)) ([a042bcb](https://github.com/voiceflow/creator-app/commit/a042bcb29786bcaab3c6b2e9cbf8408e9496735f))
+* remove navigation redesign ff (VF-1194) ([#3614](https://github.com/voiceflow/creator-app/issues/3614)) ([8fac369](https://github.com/voiceflow/creator-app/commit/8fac369d7b1da6f76c273789f61caab5a9fcf800))
+
+
+
+
+
 # [1.424.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.423.1...@voiceflow/creator-app@1.424.0) (2021-07-15)
 
 

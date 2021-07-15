@@ -134,7 +134,7 @@ export function List(props) {
                       placement="bottom-end"
                     >
                       {(ref, onToggle, isOpen) => (
-                        <IconButton icon="elipsis" variant="flat" active={isOpen} size={15} onClick={onToggle} ref={ref} large />
+                        <IconButton icon="ellipsis" variant="flat" active={isOpen} size={15} onClick={onToggle} ref={ref} large />
                       )}
                     </Dropdown>
                   </div>

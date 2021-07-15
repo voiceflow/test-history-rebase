@@ -3,7 +3,7 @@ import { History } from 'history';
 import React from 'react';
 import { DismissableLayersGlobalProvider } from 'react-dismissable-layers';
 import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { IntercomProvider } from 'react-use-intercom';
 import { Persistor } from 'redux-persist';
 import { ThemeProvider } from 'styled-components';

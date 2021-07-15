@@ -1,7 +1,7 @@
 import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
 import { LoadCircle, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
-import { useDropzone } from 'react-dropzone10';
+import { useDropzone } from 'react-dropzone';
 import { Tooltip } from 'react-tippy';
 
 import DropUpload from '@/components/Upload/Primitive/DropUpload';

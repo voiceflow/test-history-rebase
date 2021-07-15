@@ -21,7 +21,7 @@ const OverflowMenu = ({ menu, options = [], disabled, placement, selfDismiss }: 
   >
     {(ref, onToggle) => (
       <Container disabled={disabled} onClick={onToggle} ref={ref}>
-        <SvgIcon icon="elipsis" />
+        <SvgIcon icon="ellipsis" />
       </Container>
     )}
   </Dropdown>

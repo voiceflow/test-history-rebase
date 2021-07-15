@@ -101,7 +101,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
         return;
       }
 
-      if (monitor.didDrop() && monitor.getDropResult().captured) return;
+      if (monitor.didDrop() && monitor.getDropResult()?.captured) return;
 
       const { x: mouseX, y: mouseY } = monitor.getClientOffset() || clientOffset;
 

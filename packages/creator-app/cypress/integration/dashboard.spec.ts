@@ -34,7 +34,7 @@ context('Team Dashboard', () => {
 
     it('delete project', () => {
       dashboardPage.el.projectListItemTitle.should('have.text', 'my other project');
-      dashboardPage.el.projectListItem.find('div').eq(1).realHover().find('.vf-svg-icon--elipsis').should('be.visible').click();
+      dashboardPage.el.projectListItem.find('div').eq(1).realHover().find('.vf-svg-icon--ellipsis').should('be.visible').click();
       menuComponent.el.item.eq(3).should('have.text', 'Delete project').click();
       modal(ModalType.CONFIRM).el.root.should('be.visible').find('button').click();
 
@@ -45,7 +45,7 @@ context('Team Dashboard', () => {
 
     it('remove list', () => {
       dashboardPage.el.projectList.should('have.length', 1);
-      dashboardPage.el.projectList.find(getClass(DashboardClassName.LIST_HEADER_ASIDE)).find('.vf-svg-icon--elipsis').click();
+      dashboardPage.el.projectList.find(getClass(DashboardClassName.LIST_HEADER_ASIDE)).find('.vf-svg-icon--ellipsis').click();
       menuComponent.el.item.eq(0).should('have.text', 'Remove List').click();
       legacyModal.el.confirm.should('be.visible').find('button').eq(1).click();
 

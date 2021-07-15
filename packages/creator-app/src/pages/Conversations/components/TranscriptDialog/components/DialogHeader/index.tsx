@@ -26,7 +26,7 @@ const DialogHeader = () => {
         placement="bottom-end"
       >
         {(ref, onToggle, isOpen) => (
-          <IconButton icon="elipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
+          <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
         )}
       </Dropdown>
     </Container>

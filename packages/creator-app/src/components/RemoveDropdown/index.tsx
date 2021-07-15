@@ -11,7 +11,7 @@ export type RemoveDropDownProps = {
 const RemoveDropDown: React.FC<RemoveDropDownProps> = ({ onRemove, deleteText = 'Delete' }) => (
   <Container>
     <Dropdown options={[{ label: deleteText, onClick: onRemove }]}>
-      {(ref, onToggle, isOpen) => <IconButton icon="elipsis" variant={IconButtonVariant.FLAT} active={isOpen} onClick={onToggle} ref={ref} />}
+      {(ref, onToggle, isOpen) => <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} onClick={onToggle} ref={ref} />}
     </Dropdown>
   </Container>
 );

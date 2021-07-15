@@ -71,7 +71,7 @@ export { default as downloads } from './downloads.svg';
 export { default as echoShow } from './echo-show.svg';
 export { default as echoSpot } from './echo-spot.svg';
 export { default as editName } from './edit-name.svg';
-export { default as elipsis } from './elipsis.svg';
+export { default as ellipsis } from './ellipsis.svg';
 export { default as else } from './else.svg';
 export { default as equals } from './equals.svg';
 export { default as error } from './error.svg';

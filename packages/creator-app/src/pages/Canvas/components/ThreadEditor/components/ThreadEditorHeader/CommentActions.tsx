@@ -54,7 +54,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
             <IconButton
               ref={ref}
               size={16}
-              icon="elipsis"
+              icon="ellipsis"
               variant={IconButtonVariant.SUBTLE}
               onClick={preventDefault(onToggle)}
               iconProps={{ color: isOpen ? '#6e849a' : '#becedc' }}

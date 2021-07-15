@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDropzone } from 'react-dropzone10';
+import { useDropzone } from 'react-dropzone';
 
 import LinkUpload from '../LinkUpload';
 import Container from './components/Container';

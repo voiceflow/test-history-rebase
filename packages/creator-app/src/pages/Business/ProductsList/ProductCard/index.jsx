@@ -64,7 +64,7 @@ function ProductCard({
 
       <Dropdown options={options}>
         {(ref, onToggle, isOpen) => (
-          <IconButton icon="elipsis" variant="flat" active={isOpen} size={15} onClick={stopPropagation(onToggle)} ref={ref} />
+          <IconButton icon="ellipsis" variant="flat" active={isOpen} size={15} onClick={stopPropagation(onToggle)} ref={ref} />
         )}
       </Dropdown>
 

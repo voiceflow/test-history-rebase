@@ -12,7 +12,7 @@ const OptionButton: React.ForwardRefRenderFunction<HTMLButtonElement, OptionButt
     setMenuOpen(isOpen);
   }, [isOpen]);
 
-  return <IconButton icon="elipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={stopPropagation(onToggle)} ref={ref} />;
+  return <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={stopPropagation(onToggle)} ref={ref} />;
 };
 
 export default React.forwardRef(OptionButton);

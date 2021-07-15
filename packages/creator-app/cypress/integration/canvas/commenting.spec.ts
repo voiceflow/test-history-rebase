@@ -122,7 +122,7 @@ context('Canvas - Commenting', () => {
           .click();
 
         commentingMode.el.threadEditor.should('be.visible');
-        commentingMode.el.threadEditor.find('.vf-svg-icon--elipsis').click();
+        commentingMode.el.threadEditor.find('.vf-svg-icon--ellipsis').click();
 
         cy.get('.vf-menu') //
           .should('be.visible')

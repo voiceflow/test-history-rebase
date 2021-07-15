@@ -58,7 +58,7 @@ export function Item(props) {
                 {!isOpen && <Avatar url={avatarUrl} name={name} color={color} />}
 
                 <ProjectListItemActions active={isOpen}>
-                  <SvgIcon icon="elipsis" />
+                  <SvgIcon icon="ellipsis" />
                 </ProjectListItemActions>
               </DropdownIconWrapper>
             ) : (

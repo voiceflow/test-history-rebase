@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.424.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.423.1...@voiceflow/creator-app@1.424.0) (2021-07-15)
+
+
+### Features
+
+* reprompts and else path (VF-1251) ([#3658](https://github.com/voiceflow/creator-app/issues/3658)) ([d4bbc70](https://github.com/voiceflow/creator-app/commit/d4bbc70f2bd23ece34ebe876c3a6e4c9f2c3b6ea))
+
+
+
+
+
 ## [1.423.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.423.0...@voiceflow/creator-app@1.423.1) (2021-07-14)
 
 

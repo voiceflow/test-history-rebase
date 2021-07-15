@@ -62,7 +62,8 @@ const Conversations: React.FC<ConnectedConversationProps & ConversationProps> = 
   }, [loadingData]);
 
   useAsyncEffect(async () => {
-    dispatch(fetchTranscripts());
+    const queryParams = queryString.stringify(queryString.parse(location.search));
+    dispatch(fetchTranscripts(queryParams));
     setLoadingData(false);
   }, [search]);
 

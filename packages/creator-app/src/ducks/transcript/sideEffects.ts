@@ -9,17 +9,18 @@ import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
 import { Browser, Device, OperatingSystem, SystemTag } from '@/models';
 import { Thunk } from '@/store/types';
 
-export const fetchTranscripts = (): Thunk => async (dispatch, getState) => {
-  const state = getState();
-
-  try {
-    const activeProjectID = Session.activeProjectIDSelector(state);
-    const transcripts = await client.transcript.find(activeProjectID!, '');
-    dispatch(replaceTranscripts(transcripts));
-  } catch (e) {
-    toast.error('Error fetching transcripts');
-  }
-};
+export const fetchTranscripts =
+  (queryParams?: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    try {
+      const activeProjectID = Session.activeProjectIDSelector(state);
+      const transcripts = await client.transcript.find(activeProjectID || '1', queryParams);
+      dispatch(replaceTranscripts(transcripts));
+    } catch (e) {
+      toast.error('Error fetching transcripts');
+    }
+  };
 
 export const createTranscript = (): Thunk => async (_dispatch, getState) => {
   const state = getState();

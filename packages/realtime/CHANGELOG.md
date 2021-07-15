@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.3.1...@voiceflow/realtime@1.4.0) (2021-07-15)
+
+
+### Features
+
+* setup realtime channels (VF-929) ([#3647](https://github.com/voiceflow/creator-app/issues/3647)) ([8ac2243](https://github.com/voiceflow/creator-app/commit/8ac2243a4574733bafb5f3308ff9e9c06e9506bf))
+
+
+
+
+
 ## [1.3.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.3.0...@voiceflow/realtime@1.3.1) (2021-06-29)
 
 **Note:** Version bump only for package @voiceflow/realtime

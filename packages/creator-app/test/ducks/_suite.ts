@@ -34,6 +34,11 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
 
         return this;
       },
+      toNotModify() {
+        this.result.to.eql(rootState);
+
+        return this;
+      },
       toModifyByKey(key: string, diff: S extends Normalized<infer R> ? Partial<R> : never) {
         const currValue = getNormalizedByKey<object>(rootState as any, key);
         const nextValue = getNormalizedByKey(this.rawResult as any, key);

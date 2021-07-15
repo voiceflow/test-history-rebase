@@ -5,6 +5,7 @@ import client from '@/client';
 import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { currentTranscriptIDSelector } from '@/ducks/transcript';
+import { Message } from '@/pages/Prototype/types';
 import ChatDialog from '@/pages/PublicPrototype/components/ChatDialog';
 import { noop } from '@/utils/functional';
 
@@ -12,7 +13,7 @@ import { Container, DialogHeader } from './components';
 
 const TranscriptDialog: React.FC = () => {
   const [input, setInput] = React.useState('');
-  const [messages, setMessages] = React.useState([]);
+  const [messages, setMessages] = React.useState<Message[]>([]);
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
   const activeProjectID = useSelector(activeProjectIDSelector);
 

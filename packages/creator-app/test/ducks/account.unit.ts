@@ -1,21 +1,36 @@
+import { generate } from '@voiceflow/ui';
+
 import * as Fixtures from '@/../test/_fixtures';
 import client from '@/client';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
+import * as Session from '@/ducks/session';
 
 import suite from './_suite';
 
 const CREATOR_ID = 123;
-const AMAZON_ACCOUNT: any = {
-  token: 'abc',
+const REFERRER_ID = 456;
+const REFERRAL_CODE = generate.id();
+const EMAIL = 'user@example.com';
+const VENDORS = generate.array(2, generate.id);
+const AMAZON_ACCOUNT = {
+  token: generate.id(),
+  vendors: VENDORS,
 };
-const GOOGLE_ACCOUNT: any = {
-  token: 'def',
+const GOOGLE_ACCOUNT = {
+  token: generate.id(),
+  profile: {
+    email: EMAIL,
+  },
 };
 const MOCK_STATE = {
   creator_id: CREATOR_ID,
-  amazon: AMAZON_ACCOUNT,
-  google: GOOGLE_ACCOUNT,
+  referrer_id: REFERRER_ID,
+  referral_code: REFERRAL_CODE,
+  email: EMAIL,
+  amazon: AMAZON_ACCOUNT as any,
+  google: GOOGLE_ACCOUNT as any,
+  first_login: true,
 } as Account.AccountState;
 
 suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, describeSelectors, describeSideEffects }) => {
@@ -23,6 +38,12 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
     describe('updateAccount()', () => {
       it('should replace the active account', () => {
         expectAction(Account.updateAccount(Fixtures.USER)).toModify(Fixtures.USER);
+      });
+    });
+
+    describe('resetAccount()', () => {
+      it('should reset all account information', () => {
+        expectAction(Account.resetAccount()).result.to.eq(Account.INITIAL_STATE);
       });
     });
 
@@ -64,9 +85,84 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
       });
     });
 
+    describe('referrerIDSelector()', () => {
+      it('should select referrer ID', () => {
+        expect(select(Account.referrerIDSelector)).to.eq(REFERRER_ID);
+      });
+    });
+
+    describe('referralCodeSelector()', () => {
+      it('should select referral code', () => {
+        expect(select(Account.referralCodeSelector)).to.eq(REFERRAL_CODE);
+      });
+    });
+
+    describe('isLoggingInSelector()', () => {
+      it('should be logging in', () => {
+        expect(
+          select(Account.isLoggingInSelector, {
+            [Session.STATE_KEY]: { token: { value: generate.id() } },
+            [Account.STATE_KEY]: { creator_id: null },
+          })
+        ).to.be.true;
+      });
+
+      it('should not be logging in', () => {
+        expect(select(Account.isLoggingInSelector, { [Session.STATE_KEY]: { token: { value: null } } })).to.be.false;
+      });
+    });
+
+    describe('isLoggedInSelector()', () => {
+      it('should be logged in', () => {
+        expect(select(Account.isLoggedInSelector, { [Session.STATE_KEY]: { token: { value: generate.id() } } })).to.be.true;
+      });
+
+      it('should not be logged in', () => {
+        expect(select(Account.isLoggedInSelector, { [Session.STATE_KEY]: { token: { value: null } } })).to.be.false;
+      });
+    });
+
+    describe('isFirstLoginSelector()', () => {
+      it('should select if is first login', () => {
+        expect(select(Account.isFirstLoginSelector)).to.be.true;
+      });
+    });
+
+    describe('userEmailSelector()', () => {
+      it('should select user email', () => {
+        expect(select(Account.userEmailSelector)).to.eq(EMAIL);
+      });
+    });
+
     describe('amazonAccountSelector()', () => {
       it('should select amazon account', () => {
         expect(select(Account.amazonAccountSelector)).to.eq(AMAZON_ACCOUNT);
+      });
+    });
+
+    describe('amazonVendorsSelector()', () => {
+      it('should select amazon account', () => {
+        expect(select(Account.amazonVendorsSelector)).to.eq(VENDORS);
+      });
+
+      it('should select default', () => {
+        expect(select(Account.amazonVendorsSelector, { [Account.STATE_KEY]: {} })).to.eql([]);
+      });
+    });
+
+    describe('googleAccountSelector()', () => {
+      it('should select google account', () => {
+        expect(select(Account.googleAccountSelector)).to.eq(GOOGLE_ACCOUNT);
+      });
+    });
+
+    describe('googleEmailSelector()', () => {
+      it('should select google account email', () => {
+        expect(select(Account.googleEmailSelector)).to.eq(EMAIL);
+      });
+
+      it('should select default', () => {
+        expect(select(Account.googleEmailSelector, { [Account.STATE_KEY]: {} })).to.eq('0');
       });
     });
   });

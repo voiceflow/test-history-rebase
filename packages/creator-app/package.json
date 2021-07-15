@@ -144,7 +144,7 @@
     "@types/esprima": "^4.0.2",
     "@types/estree": "^0.0.48",
     "@types/file-saver": "^2.0.2",
-    "@types/gapi": "^0.0.39",
+    "@types/gapi": "^0.0.41",
     "@types/gapi.auth2": "^0.0.54",
     "@types/git-branch": "^2.0.1",
     "@types/jest": "^26.0.23",

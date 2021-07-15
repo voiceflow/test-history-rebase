@@ -1,5 +1,16 @@
-import { reducerWithInitialState } from 'typescript-fsa-reducers';
+import { combineReducers } from 'redux';
 
-const reducer = reducerWithInitialState({});
+import realtimeDiagramReducer, { DIAGRAM_STATE_KEY } from './diagram';
+import realtimeProjectReducer, { PROJECT_STATE_KEY } from './project';
 
-export default reducer;
+export * from './diagram';
+export * from './project';
+
+const realtimeReducer = combineReducers({
+  [PROJECT_STATE_KEY]: realtimeProjectReducer,
+  [DIAGRAM_STATE_KEY]: realtimeDiagramReducer,
+});
+
+export default realtimeReducer;
+
+export type RealtimeState = ReturnType<typeof realtimeReducer>;

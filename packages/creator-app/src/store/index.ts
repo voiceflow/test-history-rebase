@@ -1,5 +1,6 @@
 import { History } from 'history';
 import * as Redux from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { persistStore } from 'redux-persist';
 
 import { IS_DEVELOPMENT } from '@/config';
@@ -11,15 +12,14 @@ import { Store } from './types';
 declare global {
   interface Window {
     store: Store;
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: any;
   }
 }
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
+export const composeEnhancers = composeWithDevTools({ name: 'Voiceflow Creator - Global Store' });
 
 function createStore(history: History) {
   const middleware = createMiddleware(history);
-  const store: Store = Redux.createStore(createReducer(history), {}, composeEnhancers(Redux.applyMiddleware(...middleware)));
+  const store = Redux.createStore(createReducer(history), {}, composeEnhancers(Redux.applyMiddleware(...middleware))) as Store;
   const persistor = persistStore(store);
 
   if (IS_DEVELOPMENT && module.hot) {

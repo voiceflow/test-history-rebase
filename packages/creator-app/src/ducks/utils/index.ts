@@ -13,8 +13,12 @@ export const createKeyedSelector = <S extends Selector<any>, K extends keyof Ret
   stateKey: K
 ): ((state: State) => ReturnType<S>[K]) => moize.simple((state) => selector(state)[stateKey]);
 
-export const createRootSelector = <K extends keyof State>(stateKey: K): ((state: State) => State[K]) =>
-  moize.simple(({ [stateKey]: state }) => state);
+export const createRootSelectorFactory =
+  <S extends Record<string, any>>() =>
+  <K extends keyof S>(stateKey: K): ((state: S) => S[K]) =>
+    moize.simple(({ [stateKey]: state }) => state);
+
+export const createRootSelector = createRootSelectorFactory<State>();
 
 export const createLookupReducer =
   <S, A extends AnyAction>(reducer: RootReducer<S, A>) =>

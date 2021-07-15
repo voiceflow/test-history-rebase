@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.426.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.425.1...@voiceflow/creator-app@1.426.0) (2021-07-15)
+
+
+### Features
+
+* realtime store (VF-941) ([#3673](https://github.com/voiceflow/creator-app/issues/3673)) ([81cce8a](https://github.com/voiceflow/creator-app/commit/81cce8aaf51fa2706af7d5d9c1ceac1c6b175c6a))
+
+
+
+
+
 ## [1.425.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.425.0...@voiceflow/creator-app@1.425.1) (2021-07-15)
 
 **Note:** Version bump only for package @voiceflow/creator-app

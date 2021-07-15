@@ -16,7 +16,8 @@
   ],
   "homepage": "https://github.com/voiceflow/creator-app#readme",
   "license": "UNLICENSED",
-  "main": "build/index.js",
+  "main": "build/common/index.js",
+  "module": "build/module/index.js",
   "peerDependencies": {
     "@voiceflow/api-sdk": "^1.31.10"
   },
@@ -25,8 +26,11 @@
     "url": "git+https://github.com/voiceflow/creator-app.git"
   },
   "scripts": {
-    "build": "yarn clean && ttsc --project tsconfig.build.json",
+    "build": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs' 'yarn:build:esm'",
+    "build:cjs": "ttsc --project tsconfig.build.json",
+    "build:esm": "ttsc --project tsconfig.module.json",
     "clean": "rimraf build",
+    "dev": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs --watch' 'yarn:build:esm --watch'",
     "lint": "eslint \"**/*.{js,ts}\"",
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",

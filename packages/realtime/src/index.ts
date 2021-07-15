@@ -10,10 +10,10 @@ import config from './config';
 import log from './logger';
 import Server from './server';
 
-const cwd = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 (async () => {
-  const server = new Server(cwd, log, config);
+  const server = new Server(rootDir, log, config);
 
   server.use(auth);
   server.use(channels);

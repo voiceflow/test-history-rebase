@@ -2,12 +2,15 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { Plugin } from '@/types';
 
+import { resendProjectChannel } from '../../utils';
+
 const setName: Plugin = (server) =>
-  server.type(Realtime.project.setName.type, {
+  server.action(Realtime.project.setName, {
     access: (_ctx, _action, _meta) => {
       // implement access logic
       return true;
     },
+    resend: resendProjectChannel,
     process: (_ctx, _action, _meta) => {
       // persist to database
     },

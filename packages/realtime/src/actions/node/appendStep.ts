@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Plugin } from '@/types';
 
 const appendStep: Plugin = (server) =>
-  server.type(Realtime.node.appendStep.type, {
+  server.action(Realtime.node.appendStep, {
     access: (_ctx, _action, _meta) => {
       // implement access logic
       return true;

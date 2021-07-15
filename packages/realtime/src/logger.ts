@@ -4,7 +4,7 @@ import config from './config';
 
 const log = new Logger({
   level: config.LOG_LEVEL as LogLevel,
-  pretty: ['local', 'test'].includes(config.NODE_ENV || ''),
+  pretty: ['local', 'test', 'e2e'].includes(config.NODE_ENV || ''),
   middlewareVerbosity: config.MIDDLEWARE_VERBOSITY as MiddlewareVerbosity,
 });
 

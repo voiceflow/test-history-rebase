@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Plugin } from '@/types';
 
 const removeStep: Plugin = (server) =>
-  server.type(Realtime.node.removeStep.type, {
+  server.action(Realtime.node.removeStep, {
     access: (_ctx, _action, _meta) => {
       // implement access logic
       return true;

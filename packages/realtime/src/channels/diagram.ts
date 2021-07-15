@@ -1,19 +1,10 @@
-import { DIAGRAM_KEY, PROJECT_KEY, VERSION_KEY } from '@voiceflow/realtime-sdk';
+import { Channels } from '@voiceflow/realtime-sdk';
 
 import { Plugin } from '@/types';
 
 const diagramChannel: Plugin = (server) =>
-  server.channel<{ projectID: string; versionID: string; diagramID: string }>(
-    `${PROJECT_KEY}/:projectID/${VERSION_KEY}/:versionID/${DIAGRAM_KEY}/:diagramID`,
-    {
-      access: (_ctx, _action, _meta) => {
-        // implement access logic
-        return true;
-      },
-      filter: (_ctx, _action, _meta) => {
-        // persist to database
-      },
-    }
-  );
+  server.channel<Parameters<typeof Channels.diagram>[0]>(Channels.diagram({ diagramID: ':diagramID' }), {
+    access: (ctx) => server.diagramAuthorizer(server, Number(ctx.userId), ctx.params.diagramID),
+  });
 
 export default diagramChannel;

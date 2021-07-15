@@ -6,8 +6,11 @@
     "@voiceflow/common": "^6.5.1",
     "@voiceflow/logger": "^1.5.6",
     "@voiceflow/realtime-sdk": "^1.2.0",
+    "axios": "^0.21.1",
     "core-js": "^3.12.1",
-    "regenerator-runtime": "^0.13.7"
+    "moize": "^6.0.3",
+    "regenerator-runtime": "^0.13.7",
+    "typescript-fsa": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
@@ -20,6 +23,7 @@
     "dev": "yarn build --watch",
     "e2e": "yarn kill:e2e && NODE_ENV=e2e nodemon src/index.ts",
     "e2e:node-dev": "yarn kill:e2e && NODE_ENV=e2e node-dev -r esm  src/index.ts",
+    "gen-certs:e2e": "scripts/generate_e2e_certs.sh",
     "kill:e2e": "kill -9 $(lsof -t -i tcp:8013) || true",
     "lint": "eslint \"**/*.{js,ts}\"",
     "lint:fix": "yarn lint --fix",

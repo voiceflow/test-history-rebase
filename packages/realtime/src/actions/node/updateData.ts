@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Plugin } from '@/types';
 
 const updateData: Plugin = (server) =>
-  server.type(Realtime.node.updateData.type, {
+  server.action(Realtime.node.updateData, {
     access: (_ctx, _action, _meta) => {
       // implement access logic
       return true;

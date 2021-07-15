@@ -4,13 +4,10 @@ import { Plugin } from '@/types';
 
 import { resendDiagramChannel } from '../../utils';
 
-const removeBlocks: Plugin = (server) =>
-  server.action(Realtime.diagram.removeBlocks, {
+const moveCursor: Plugin = (server) =>
+  server.noop(Realtime.diagram.moveCursor, {
     access: (ctx, action) => server.diagramAuthorizer(server, Number(ctx.userId), action.payload.diagramID),
     resend: resendDiagramChannel,
-    process: (_ctx, _action, _meta) => {
-      // persist to database
-    },
   });
 
-export default removeBlocks;
+export default moveCursor;

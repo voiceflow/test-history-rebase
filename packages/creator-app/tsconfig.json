@@ -37,11 +37,15 @@
     "baseUrl": "..",
     "rootDirs": [
       "src",
-      "../ui/src"
+      "../ui/src",
+      "../realtime-sdk/src"
     ],
     "paths": {
       "@voiceflow/ui": [
         "ui/src"
+      ],
+      "@voiceflow/realtime-sdk": [
+        "realtime-sdk/src"
       ],
       "@/*": [
         "creator-app/src/*"

@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
 import { Path } from '@/config/routes';
+import { RealtimeProjectProvider } from '@/contexts/RealtimeProjectContext';
 import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
@@ -13,6 +14,8 @@ import { useRouteDiagramID, useRouteVersionID } from '@/hooks';
 import { ConnectedProps, MergeArguments } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
+import RealtimeProjectSubscription from '../RealtimeProjectSubscription';
+import RealtimeVersionSubscription from '../RealtimeVersionSubscription';
 import CommentingUpdates from './CommentingUpdates';
 import TranscriptUpdates from './TranscriptsUpdates';
 
@@ -51,9 +54,11 @@ const ProjectLoadingGate: React.FC<ConnectedProjectLoadingGateProps> = ({
 
   return (
     <LoadingGate label="Project" isLoaded={!!activeVersion && versionID === activeVersion.id} load={loadProjectAndJoinChannel}>
+      <RealtimeProjectSubscription />
+      <RealtimeVersionSubscription />
       <CommentingUpdates />
       <TranscriptUpdates />
-      {children}
+      <RealtimeProjectProvider>{children}</RealtimeProjectProvider>
     </LoadingGate>
   );
 };

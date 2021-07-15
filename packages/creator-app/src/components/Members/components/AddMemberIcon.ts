@@ -1,6 +1,5 @@
+import { MemberIcon } from '@/components/User';
 import { styled } from '@/hocs';
-
-import MemberIcon from './MemberIcon';
 
 const AddMemberIcon = styled(MemberIcon)`
   width: 30px;

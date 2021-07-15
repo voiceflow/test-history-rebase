@@ -2,7 +2,7 @@ import { InputVariant, OverflowText } from '@voiceflow/ui';
 import React from 'react';
 
 import ContextMenu from '@/components/ContextMenu';
-import { Members } from '@/components/User';
+import Members from '@/components/Members';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as Version from '@/ducks/version';

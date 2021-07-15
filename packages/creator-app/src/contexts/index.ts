@@ -9,6 +9,8 @@ export * from './IdentityContext';
 export * from './ModalsContext';
 export * from './MousePositionContext';
 export * from './NamespaceContext';
+export * from './RealtimeDiagramContext';
+export * from './RealtimeProjectContext';
 export * from './RealtimeStoreContext';
 export * from './TextEditorVariablesPopoverContext';
 

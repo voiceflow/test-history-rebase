@@ -8,6 +8,7 @@ module.exports = {
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
     '^@logux/client$': 'identity-obj-proxy',
+    '^@logux/redux$': 'identity-obj-proxy',
     '^.+\\.(svg|csv|png)$': '<rootDir>/config/test/integration/assetPlaceholder.js',
     '^@/(.*)': '<rootDir>/src/$1',
   },

@@ -21,7 +21,7 @@ export interface AtomFamily<T> {
   context?: React.Context<AtomContextValue>;
 }
 
-export interface AtomFamilyFactoy<T, P extends Serializable> {
+export interface AtomFactory<T, P extends Serializable> {
   (param: P): AtomFamily<T>;
 }
 
@@ -31,7 +31,7 @@ export const useAtomFactory = <T, P extends Serializable = never>(
   key: string,
   options: Pick<AtomFamily<T>, 'context'> & { default: T | ((param: P) => T) },
   dependencies: any[] = []
-): AtomFamilyFactoy<T, P> => {
+): AtomFactory<T, P> => {
   const atomStore = useAtomContext(options);
 
   return React.useCallback(

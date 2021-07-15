@@ -5,6 +5,8 @@ import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
+import RealtimeWorkspaceSubscription from './RealtimeWorkspaceSubscription';
+
 const WorkspacesLoadingGate: React.FC<ConnectedWorkspacesLoadingGateProps> = ({ loadWorkspaces, children }) => {
   const [isLoaded, setLoaded] = React.useState(false);
 
@@ -16,6 +18,7 @@ const WorkspacesLoadingGate: React.FC<ConnectedWorkspacesLoadingGateProps> = ({ 
 
   return (
     <LoadingGate label="Workspaces" isLoaded={isLoaded} load={load} zIndex={50} backgroundColor="#f9f9f9">
+      <RealtimeWorkspaceSubscription />
       {children}
     </LoadingGate>
   );

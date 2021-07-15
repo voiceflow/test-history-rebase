@@ -1,21 +1,42 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
+import { throttle } from 'throttle-debounce';
 
 import { MovementCalculator } from '@/components/Canvas/types';
 import { REALTIME_CURSOR_ENABLED } from '@/config';
-import * as Realtime from '@/ducks/realtime';
+import { FeatureFlag } from '@/config/features';
+import * as RealtimeDuck from '@/ducks/realtime';
+import * as RealtimeV2Duck from '@/ducks/realtimeV2';
+import * as Session from '@/ducks/session';
+import { useFeature, useRealtimeDispatch, useRealtimeSelector, useSelector } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { Pair, Viewport } from '@/types';
+import { Pair, Point, Viewport } from '@/types';
 
 // eslint-disable-next-line import/prefer-default-export
 export const useCursorControls = () => {
-  const mousePosition = React.useRef<[number, number] | null>(null);
+  const mousePosition = React.useRef<Point | null>(null);
   const engine = React.useContext(EngineContext)!;
+  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+  const tabID = useSelector(Session.tabIDSelector)!;
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
+  const diagramID = useSelector(Session.activeDiagramIDSelector)!;
+  const dispatch = useRealtimeDispatch();
+  const hasProjectViewers = useRealtimeSelector(RealtimeV2Duck.hasExternalProjectViewersSelector)(projectID);
+  const prevCoords = React.useRef<Point | null>(null);
 
-  const moveMouse = React.useCallback((location) => {
-    if (!REALTIME_CURSOR_ENABLED) return;
-
-    engine.realtime.sendVolatileUpdate(Realtime.moveMouse(location));
-  }, []);
+  const moveMouse = React.useCallback(
+    throttle(10, (nextCoords: Point) => {
+      if (atomicActions.isEnabled) {
+        if (hasProjectViewers && prevCoords.current !== nextCoords) {
+          prevCoords.current = nextCoords;
+          dispatch.sync(Realtime.diagram.moveCursor({ diagramID, tabID, coords: nextCoords }));
+        }
+      } else if (!REALTIME_CURSOR_ENABLED) {
+        engine.realtime.sendVolatileUpdate(RealtimeDuck.moveMouse(nextCoords));
+      }
+    }),
+    [hasProjectViewers]
+  );
 
   const panViewport = React.useCallback(
     (movement: Pair<number>) => {

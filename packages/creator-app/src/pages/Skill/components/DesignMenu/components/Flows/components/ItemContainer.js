@@ -1,5 +1,5 @@
+import { MembersContainer } from '@/components/Members/components';
 import { SearchableListItemContainer } from '@/components/SearchableList';
-import { MembersContainer } from '@/components/User/components';
 import { css, styled } from '@/hocs';
 
 const ItemContainer = styled(SearchableListItemContainer)`

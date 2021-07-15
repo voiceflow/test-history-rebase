@@ -41,7 +41,7 @@ export interface Transcript {
   // the id of this transcript
   id: string;
   // the user who recorded this test
-  creatorID: string | null;
+  creator_id: string | null;
   // the project this transcript is related to
   projectID: string;
   // drives the "read" indicator in the results list

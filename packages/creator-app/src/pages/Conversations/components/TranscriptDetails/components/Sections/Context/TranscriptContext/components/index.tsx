@@ -38,7 +38,6 @@ export const StyledUser = styled(SvgIcon)`
   z-index: 2;
   margin-left: -12px;
   border-radius: 50%;
-  opacity: 1;
   border: 3px solid white;
   background-color: #f9f9f9;
 
@@ -46,4 +45,15 @@ export const StyledUser = styled(SvgIcon)`
     margin-left: 16px;
     margin-top: 17px;
   }
+`;
+
+export const UserContainer = styled.img`
+  z-index: 2;
+  width: 55px;
+  height: 55px;
+  margin-left: -12px;
+  border-radius: 50%;
+  opacity: 1;
+  background: white;
+  border: 3px solid white;
 `;

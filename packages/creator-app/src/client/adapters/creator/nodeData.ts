@@ -23,7 +23,7 @@ const nodeDataAdapter = createSimpleAdapter<
     let data: Partial<NodeData<unknown>> = {};
 
     try {
-      const adapters = getBlockAdapter(platform, needsMigration(dbType, type, features));
+      const adapters = getBlockAdapter(platform, needsMigration(dbType, type));
 
       data = adapters[type]?.fromDB(dbData, { features }) || { deprecatedType: type, ...dbData };
     } catch {

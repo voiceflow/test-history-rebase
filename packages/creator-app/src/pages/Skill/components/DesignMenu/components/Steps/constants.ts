@@ -51,8 +51,6 @@ const DISPLAY_STEP = createMenuStep(BlockType.DISPLAY);
 
 const EVENT_STEP = createMenuStep(BlockType.EVENT);
 
-const CONDITION_STEP = createMenuStep(BlockType.IF);
-
 const CONDITION_STEP_V2 = createMenuStep(BlockType.IFV2);
 
 const EXIT_STEP = createMenuStep(BlockType.EXIT);
@@ -77,8 +75,6 @@ const PROMPT_STEP = createMenuStep(BlockType.PROMPT);
 const RANDOM_STEP = createMenuStep(BlockType.RANDOM);
 
 const REMINDER_STEP = createMenuStep(BlockType.REMINDER);
-
-const SET_STEP = createMenuStep(BlockType.SET);
 
 const SET_STEP_V2 = createMenuStep(BlockType.SETV2);
 
@@ -109,7 +105,7 @@ export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP, CONDITION_STEP_V2, SET_STEP, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -138,7 +134,7 @@ export const GOOGLE_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP, CONDITION_STEP_V2, SET_STEP, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -167,7 +163,7 @@ export const GENERAL_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP, CONDITION_STEP_V2, SET_STEP, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,

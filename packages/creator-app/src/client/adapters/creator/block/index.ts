@@ -3,7 +3,6 @@ import { NodeType } from '@voiceflow/general-types';
 import moize from 'moize';
 
 import { BidirectionalAdapter } from '@/client/adapters/utils';
-import { FeatureFlag } from '@/config/features';
 import { BlockType, IntegrationType, PlatformType } from '@/constants';
 import { FeatureFlagMap } from '@/ducks/feature';
 import { NodeData } from '@/models';
@@ -29,8 +28,8 @@ export const APP_BLOCK_TYPE_FROM_DB: Record<
   [NodeType.API]: BlockType.INTEGRATION,
   [NodeType.ZAPIER]: BlockType.INTEGRATION,
   [NodeType.GOOGLE_SHEETS]: BlockType.INTEGRATION,
-  [NodeType.IF]: (_, { features }) => (features?.[FeatureFlag.CONDITIONS_BUILDER]?.isEnabled ? BlockType.IFV2 : BlockType.IF),
-  [NodeType.SET]: (_, { features }) => (features?.[FeatureFlag.CONDITIONS_BUILDER]?.isEnabled ? BlockType.SETV2 : BlockType.SET),
+  [NodeType.IF]: BlockType.IFV2,
+  [NodeType.SET]: BlockType.SETV2,
 };
 
 export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: NodeData<any>, options: { features?: FeatureFlagMap }) => string)>> =
@@ -46,8 +45,8 @@ export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: 
           return NodeType.API;
       }
     },
-    [NodeType.IF]: (_, { features }) => (features?.[FeatureFlag.CONDITIONS_BUILDER]?.isEnabled ? BlockType.IFV2 : BlockType.IF),
-    [NodeType.SET]: (_, { features }) => (features?.[FeatureFlag.CONDITIONS_BUILDER]?.isEnabled ? BlockType.SETV2 : BlockType.SET),
+    [NodeType.IF]: BlockType.IFV2,
+    [NodeType.SET]: BlockType.SETV2,
   };
 
 const getPlatformAdapter = createPlatformSelector<Partial<Record<BlockType, unknown>>>(

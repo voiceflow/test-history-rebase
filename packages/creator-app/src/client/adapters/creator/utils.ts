@@ -2,9 +2,7 @@ import { BaseBlock, BaseDiagramNode, BasePort, BaseStep } from '@voiceflow/api-s
 import _isString from 'lodash/isString';
 
 import { adapterLogger } from '@/client/adapters/utils';
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
-import { FeatureFlagMap } from '@/ducks/feature';
 import { LinkData, Port } from '@/models';
 import { objectID } from '@/utils';
 
@@ -32,8 +30,6 @@ export const generateOutPort = (nodeID: string, port: BasePort<LinkData>, settin
   linkData: port.data,
 });
 
-export const needsMigration = (dbBlockType: string, appBlockType: BlockType, features: FeatureFlagMap): boolean => {
-  const isFeatureEnabled = features?.[FeatureFlag.CONDITIONS_BUILDER];
-
-  return !!isFeatureEnabled?.isEnabled && MIGRATION_BLOCKS.includes(dbBlockType) && dbBlockType !== appBlockType;
+export const needsMigration = (dbBlockType: string, appBlockType: BlockType): boolean => {
+  return MIGRATION_BLOCKS.includes(dbBlockType) && dbBlockType !== appBlockType;
 };

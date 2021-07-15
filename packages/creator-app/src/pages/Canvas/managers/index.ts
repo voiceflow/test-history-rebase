@@ -17,7 +17,6 @@ import DisplayManager from './Display';
 import EventManager from './Event';
 import ExitManager from './Exit';
 import FlowManager from './Flow';
-import IfManager from './If';
 import IfManagerV2 from './IfV2';
 import IntegrationManager from './Integration';
 import IntentManager from './Intent';
@@ -29,7 +28,6 @@ import PermissionManager from './Permission';
 import PromptManager from './Prompt';
 import RandomManager from './Random';
 import ReminderManager from './Reminder';
-import SetManager from './Set';
 import SetManagerV2 from './SetV2';
 import SpeakManager from './Speak';
 import StartManager from './Start';
@@ -45,9 +43,9 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.COMBINED]: CombinedManager,
   [BlockType.COMMENT]: CommentManager,
   [BlockType.COMMAND]: CommandManager,
-  [BlockType.SET]: SetManager,
+  [BlockType.SET]: SetManagerV2,
   [BlockType.SETV2]: SetManagerV2,
-  [BlockType.IF]: IfManager,
+  [BlockType.IF]: IfManagerV2,
   [BlockType.IFV2]: IfManagerV2,
   [BlockType.CAPTURE]: CaptureManager,
   [BlockType.RANDOM]: RandomManager,

@@ -1,40 +1,11 @@
 import React from 'react';
 
-import { MAX_ALEXA_REPROMPTS, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
-import { NodeData, SpeakData } from '@/models';
-import NoMatchItem from '@/pages/Canvas/components/NoMatchItem';
-import SpeakAndAudioList from '@/pages/Canvas/components/SpeakAndAudioList';
-import { NodeDataUpdater } from '@/pages/Canvas/types';
-import { PlatformContext } from '@/pages/Skill/contexts';
-import { isAnyGeneralPlatform } from '@/utils/typeGuards';
+import { NodeData } from '@/models';
+import NoMatch from '@/pages/Canvas/components/NoMatch';
+import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
-export type RepromptsFormProps = {
-  data: NodeData.Prompt;
-  onChange: NodeDataUpdater<NodeData.Prompt>;
-};
-
-const RepromptsForm: React.FC<RepromptsFormProps> = ({ data, onChange }) => {
-  const {
-    noMatchReprompt: { randomize, reprompts },
-  } = data;
-
-  const platform = React.useContext(PlatformContext)!;
-
-  const changeRandomize = React.useCallback((randomize: boolean) => onChange({ noMatchReprompt: { randomize, reprompts } }), [reprompts]);
-  const changeReprompts = React.useCallback((reprompts: SpeakData[]) => onChange({ noMatchReprompt: { randomize, reprompts } }), [randomize]);
-
-  return (
-    <SpeakAndAudioList
-      items={reprompts}
-      platform={platform}
-      itemName="reprompts"
-      maxItems={isAnyGeneralPlatform(platform) ? MAX_SPEAK_ITEMS_COUNT : MAX_ALEXA_REPROMPTS}
-      randomize={randomize}
-      itemComponent={NoMatchItem}
-      onChangeItems={changeReprompts}
-      onChangeRandomize={changeRandomize}
-    />
-  );
-};
+const RepromptsForm: React.FC<NodeEditorPropsType<NodeData.Prompt>> = ({ data, onChange, pushToPath }) => (
+  <NoMatch noMatches={data.noMatchReprompt} onChange={(noMatches) => onChange({ noMatchReprompt: noMatches })} pushToPath={pushToPath} />
+);
 
 export default RepromptsForm;

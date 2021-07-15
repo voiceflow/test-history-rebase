@@ -11,7 +11,7 @@ import ifAdapterV2, { ifPortsAdapter } from './ifV2';
 import integrationAdapter from './integration';
 import intentAdapter from './intent';
 import interactionAdapter from './interaction';
-import promptAdapter from './prompt';
+import promptAdapter, { promptPortsAdapter } from './prompt';
 import randomAdapter from './random';
 import setAdapter from './set';
 import setAdapterV2 from './setV2';
@@ -46,4 +46,5 @@ export const generalBlockAdapter = {
 export const generalPortsAdapter = {
   [BlockType.TRACE]: tracePortsAdapter,
   [BlockType.IF]: ifPortsAdapter,
+  [BlockType.PROMPT]: promptPortsAdapter,
 };

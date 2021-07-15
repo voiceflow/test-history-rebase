@@ -85,7 +85,7 @@ function ChoiceManager({ data, onChange, focusedNode, pushToPath }) {
         footer={
           <>
             {buttonPage}
-            <ElseResponse pushToPath={pushToPath} editorStatus={data.else.type} />
+            <ElseResponse pushToPath={pushToPath} noMatches={data.else} />
             {noReplyPage}
           </>
         }

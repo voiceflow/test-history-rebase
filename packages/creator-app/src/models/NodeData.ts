@@ -1,10 +1,9 @@
 import { PermissionType } from '@voiceflow/alexa-types';
 import { RecurrenceFreq } from '@voiceflow/alexa-types/build/nodes/reminder';
 import { SlotMapping } from '@voiceflow/api-sdk';
-import { AnyButton, CanvasNodeVisibility, ExpressionTypeV2, IntegrationUser } from '@voiceflow/general-types';
+import { AnyButton, CanvasNodeVisibility, ExpressionTypeV2, IntegrationUser, NoMatchType } from '@voiceflow/general-types';
 import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
 import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/general-types/build/nodes/googleSheets';
-import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
 import { StepData as VisualStepData } from '@voiceflow/general-types/build/nodes/visual';
 
 import { BlockType, CardType, DistinctPlatform, IntegrationType, RepromptType } from '@/constants';
@@ -54,6 +53,8 @@ export namespace NodeData {
   };
 
   export type NoMatches = {
+    type: NoMatchType | null;
+    pathName: string;
     randomize: boolean;
     reprompts: SpeakData[];
   };
@@ -64,11 +65,9 @@ export namespace NodeData {
     mappings: SlotMapping[];
   };
 
-  export type InteractionElse = NoMatches & { type: InteractionElseType };
-
   export interface Interaction {
     name: string;
-    else: InteractionElse;
+    else: NoMatches;
     choices: Record<DistinctPlatform, InteractionChoice>[];
     reprompt: Reprompt | null;
     buttons: AnyButton[] | null;
@@ -80,10 +79,7 @@ export namespace NodeData {
   };
 
   export interface Prompt {
-    noMatchReprompt: {
-      randomize: boolean;
-      reprompts: SpeakData[];
-    };
+    noMatchReprompt: NoMatches;
     reprompt: Reprompt | null;
     buttons: AnyButton[] | null;
   }

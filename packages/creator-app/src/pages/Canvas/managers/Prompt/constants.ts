@@ -1,3 +1,4 @@
+import { NoMatchType } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { BlockType, DialogType } from '@/constants';
@@ -20,11 +21,14 @@ export const NODE_CONFIG: NodeConfig<NodeData.Prompt> = {
     node: {
       ports: {
         in: [{}],
+        out: [{}],
       },
     },
     data: {
       name: 'Prompt',
       noMatchReprompt: {
+        type: NoMatchType.REPROMPT,
+        pathName: 'No Match',
         randomize: false,
         reprompts: [
           {

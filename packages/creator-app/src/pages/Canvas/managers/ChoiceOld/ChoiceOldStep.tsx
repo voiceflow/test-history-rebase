@@ -25,7 +25,7 @@ const ConnectedChoiceOldStep: React.FC<ConnectedStepProps<NodeData.ChoiceOld>> =
     [outPorts, choiceByPortID]
   );
 
-  return <ChoiceStep nodeID={node.id} elsePortID={elsePortID} choices={choices} isPath />;
+  return <ChoiceStep nodeID={node.id} elsePortID={elsePortID} choices={choices} isPath elsePathName="No Match" />;
 };
 
 export default ConnectedChoiceOldStep;

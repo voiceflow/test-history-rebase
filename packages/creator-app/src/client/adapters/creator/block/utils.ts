@@ -1,6 +1,6 @@
 import { Voice } from '@voiceflow/alexa-types';
 import { BaseDiagramNode as DBNode, BasePort as DBPort } from '@voiceflow/api-sdk';
-import { ButtonType, Chip, IntentButton, NoMatches, Prompt } from '@voiceflow/general-types';
+import { ButtonType, Chip, IntentButton, NoMatches, NoMatchType, Prompt } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { createAdapter, createSimpleAdapter } from '@/client/adapters/utils';
@@ -48,11 +48,15 @@ export const noMatchRepromptAdapter = createAdapter<Prompt<any>, SpeakData>(
 );
 
 export const noMatchAdapter = createAdapter<NoMatches<any>, NodeData.NoMatches>(
-  ({ randomize, reprompts }) => ({
+  ({ type = NoMatchType.REPROMPT, randomize, reprompts, pathName = 'No Match' }) => ({
+    type,
+    pathName,
     randomize,
     reprompts: noMatchRepromptAdapter.mapFromDB(reprompts),
   }),
-  ({ randomize, reprompts }) => ({
+  ({ type, randomize, reprompts, pathName }) => ({
+    type,
+    pathName,
     randomize,
     reprompts: noMatchRepromptAdapter.mapToDB(reprompts),
   })

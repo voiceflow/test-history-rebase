@@ -1,4 +1,4 @@
-import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
+import { NoMatchType } from '@voiceflow/general-types';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
@@ -17,9 +17,10 @@ export type ChoiceStepProps = {
   choices: { label: string | null; portID: string }[];
   nodeID: string;
   elsePortID: string;
+  elsePathName: string;
 };
 
-export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID, elsePortID }) => (
+export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID, elsePortID, elsePathName }) => (
   <Step nodeID={nodeID}>
     {!!choices.length && (
       <Section>
@@ -35,11 +36,15 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID,
         ))}
       </Section>
     )}
-    {isPath && <ElseItem portID={elsePortID} />}
-    {!isPath && choices.length === 0 && (
-      <Section>
-        <Item icon="else" iconColor="#6e849a" portID={null} label="Reprompt" labelVariant={StepLabelVariant.SECONDARY} />
-      </Section>
+
+    {isPath ? (
+      <ElseItem label={elsePathName} portID={elsePortID} />
+    ) : (
+      choices.length === 0 && (
+        <Section>
+          <Item icon="else" iconColor="#6e849a" portID={null} label="Reprompt" labelVariant={StepLabelVariant.SECONDARY} />
+        </Section>
+      )
     )}
   </Step>
 );
@@ -49,7 +54,7 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction>> = 
 
   const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
   const choicesByPortID = useSyncedLookup(nodeOutPorts, data.choices);
-  const isPath = data.else.type === InteractionElseType.PATH;
+  const isPath = data.else.type !== NoMatchType.REPROMPT;
 
   const choices = React.useMemo(
     () =>
@@ -66,7 +71,7 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction>> = 
     [platform, choicesByPortID, nodeOutPorts, intentsMap]
   );
 
-  return <ChoiceStep choices={choices} nodeID={node.id} elsePortID={elsePortID} isPath={isPath} />;
+  return <ChoiceStep choices={choices} nodeID={node.id} elsePortID={elsePortID} isPath={isPath} elsePathName={data.else.pathName} />;
 };
 
 export default ConnectedChoiceStep;

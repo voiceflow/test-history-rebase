@@ -49,7 +49,7 @@ type ItemComponent = React.NamedExoticComponent<
   React.PropsWithoutRef<ItemComponentProps<SpeakData> & MappedItemComponentHandlers<SpeakData> & ItemExtraProps> & React.RefAttributes<HTMLElement>
 >;
 
-export type SpeakAndAudioListProps = {
+export interface SpeakAndAudioListProps {
   items: SpeakData[];
   platform: PlatformType;
   maxItems: number;
@@ -61,7 +61,7 @@ export type SpeakAndAudioListProps = {
   onChangeItems?: (items: SpeakData[]) => void;
   getControlOptions?: (options: { addVoice: () => void; addAudio: () => void; isMaxMatches: boolean }) => ControlOptions[];
   onChangeRandomize?: (newRandomize: boolean) => void;
-};
+}
 
 type FooterArgs = {
   scrollToBottom: (behavior: string) => void;
@@ -70,6 +70,7 @@ type FooterArgs = {
 const SpeakAndAudioList = ({
   items: speakAudioItems,
   itemName = 'outputs',
+  children,
   maxItems,
   platform,
   randomize,
@@ -80,7 +81,7 @@ const SpeakAndAudioList = ({
   itemComponent,
   getControlOptions,
   onChangeRandomize,
-}: SpeakAndAudioListProps & ConnectedSpeakAndAudioListProps) => {
+}: React.PropsWithChildren<SpeakAndAudioListProps> & ConnectedSpeakAndAudioListProps) => {
   const [isDragging, toggleDragging] = useToggle(false);
   const toggleRandomized = React.useCallback(() => onChangeRandomize?.(!randomize), [randomize, onChangeRandomize]);
   const updateItems = React.useCallback((items: SpeakData[]) => onChangeItems?.(items), [onChangeItems]);
@@ -153,6 +154,7 @@ const SpeakAndAudioList = ({
     >
       <DraggableList
         type="speak-editor"
+        footer={children}
         onDelete={onRemove}
         onReorder={onReorder}
         onEndDrag={toggleDragging}

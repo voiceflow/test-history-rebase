@@ -6,11 +6,11 @@ import { ItemProps } from '../types';
 import Item from './StepItem';
 import Section from './StepSection';
 
-export type ElseStepItemProps = Omit<ItemProps, 'icon' | 'label' | 'portColor' | 'iconColor' | 'labelVariant'>;
+export type ElseStepItemProps = Omit<ItemProps, 'icon' | 'portColor' | 'iconColor' | 'labelVariant'>;
 
-const ElseStepItem: React.FC<ElseStepItemProps> = (props) => (
+const ElseStepItem: React.FC<ElseStepItemProps> = ({ label = 'Else', ...props }) => (
   <Section>
-    <Item icon="else" iconColor="#6e849a" label="Else" labelVariant={StepLabelVariant.SECONDARY} portColor="#8da2b5" {...props} />
+    <Item icon="else" label={label} iconColor="#6e849a" labelVariant={StepLabelVariant.SECONDARY} portColor="#8da2b5" {...props} />
   </Section>
 );
 

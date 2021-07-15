@@ -1,16 +1,14 @@
-import IntentSlotForm from '@/components/IntentSlotForm';
 import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
 import { ButtonsEditor } from '@/pages/Canvas/components/SuggestionButtons';
 
+import { RepromptsForm } from './components';
 import NoMatchPathNameForm from './components/NoMatchPathNameForm';
-import RepromptResponseForm from './components/RepromptResponseForm';
 
 export const EDITORS_BY_PATH = {
-  slot: IntentSlotForm,
   buttons: ButtonsEditor,
+  reprompts: RepromptsForm,
   noMatchPath: NoMatchPathNameForm,
   noReplyResponse: NoReplyResponseForm,
-  repromptResponse: RepromptResponseForm,
 };
 
-export type ChoiceManagerEditors = keyof typeof EDITORS_BY_PATH;
+export type PromptEditors = keyof typeof EDITORS_BY_PATH;

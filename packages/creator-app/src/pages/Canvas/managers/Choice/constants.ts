@@ -1,4 +1,4 @@
-import { ElseType as InteractionElseType } from '@voiceflow/general-types/build/nodes/interaction';
+import { NoMatchType } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { BlockType, DialogType } from '@/constants';
@@ -30,7 +30,8 @@ export const NODE_CONFIG: NodeConfig<NodeData.Interaction> = {
       choices: [distinctPlatformsData({ id: cuid.slug(), intent: null, mappings: [] })],
       reprompt: null,
       else: {
-        type: InteractionElseType.REPROMPT,
+        type: NoMatchType.REPROMPT,
+        pathName: 'No Match',
         randomize: false,
         reprompts: [
           {

@@ -4852,15 +4852,15 @@
   resolved "https://registry.yarnpkg.com/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
   integrity sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==
 
-"@voiceflow/alexa-types@1.51.9":
-  version "1.51.9"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.51.9.tgz#62051b5f1a6213ad6737f0859a6663e3a2a73419"
-  integrity sha512-8aih6Un3eA1Mhs2WVK0FWmVFzLpxvfVyz1bRom546Gy2lgjdI+Ym98WB8HkHLuAqZcRusUN7Qy5I/M4Kb+WPQw==
+"@voiceflow/alexa-types@1.52.1":
+  version "1.52.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.52.1.tgz#c6d715d86eef8ce8b824fca676a57cb46c21f817"
+  integrity sha512-8I1EO2tbJG/+H2CwH1y6uco4PALTdgt59nOZMm+tQdnUbbGMtnvgeGgI3AFRnrqfHRfVjYGPOwZS1RzaIGmDtg==
   dependencies:
     "@voiceflow/api-sdk" "^1.33.0"
     "@voiceflow/common" "6.5.0"
-    "@voiceflow/general-types" "^1.50.5"
-    ask-smapi-model "^1.11.0"
+    "@voiceflow/general-types" "^1.51.1"
+    ask-smapi-model "1.14.0"
 
 "@voiceflow/api-sdk@1.32.1":
   version "1.32.1"
@@ -4872,10 +4872,20 @@
     axios "^0.21.1"
     superstruct "^0.10.12"
 
-"@voiceflow/api-sdk@1.33.0", "@voiceflow/api-sdk@^1.31.10", "@voiceflow/api-sdk@^1.32.5", "@voiceflow/api-sdk@^1.33.0":
+"@voiceflow/api-sdk@1.33.0", "@voiceflow/api-sdk@^1.33.0":
   version "1.33.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.33.0.tgz#c86a2ef5d4e788238b0e6b95999c07ddbd080dda"
   integrity sha512-XmPKy02/dWSh8kOAb30Soqi3UG8zz+7kPQwJhj41BlRGSQBZeGbQa56NzQZ3Tb416w8r0AU3TLZZOR2HWj27Sw==
+  dependencies:
+    "@types/atob" "^2.1.2"
+    atob "^2.1.2"
+    axios "^0.21.1"
+    superstruct "^0.10.12"
+
+"@voiceflow/api-sdk@^1.31.10":
+  version "1.32.5"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.32.5.tgz#3b7378c8e14d4cead7cd60282205d40b0455bea6"
+  integrity sha512-m+/a7ivrx01gaRpz3996FIXSTBmM4hmS7mtatV2YWfOND1RZUrAwXaDqOLXyRWc2FFE7kVy6zepWCfYDYjzEKQ==
   dependencies:
     "@types/atob" "^2.1.2"
     atob "^2.1.2"
@@ -4959,10 +4969,10 @@
     eslint-plugin-xss "^0.1.9"
     eslint-plugin-you-dont-need-lodash-underscore "^6.11.0"
 
-"@voiceflow/general-types@1.50.5", "@voiceflow/general-types@^1.50.4", "@voiceflow/general-types@^1.50.5":
-  version "1.50.5"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.50.5.tgz#08424501a71e91f6e25013f8df2462caf278001d"
-  integrity sha512-SgwlRucj1RaKk3+ojqjNntF2hyoBvjCuhTpztEw9nnusPo3uN8OzEGwcfZD59MeB8pPsvIlX5mp3csG+1FU7jA==
+"@voiceflow/general-types@1.51.1", "@voiceflow/general-types@^1.51.1":
+  version "1.51.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.51.1.tgz#ae56e9f06a7038a12d24a00277d4c0e44ae096f8"
+  integrity sha512-n+Eq+UsrU6iGPlQSbatw2IOXqVhbdAbmvm+fw7EIsM0dChNQ1nFIvfR582M8rfJUv2Kj5yDIIe6wDt6xR6AaFw==
   dependencies:
     "@voiceflow/api-sdk" "^1.33.0"
 
@@ -4973,14 +4983,14 @@
   dependencies:
     current-git-branch "^1.1.0"
 
-"@voiceflow/google-types@1.28.8":
-  version "1.28.8"
-  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.28.8.tgz#42bc6053d0f58865234eb6037c9fc10999e7e992"
-  integrity sha512-qfQuqIjVYj5LlegUtS+/2tb96EB4577H/nxfh5xC2XYlVUL3vnCAIx0Hxk9yn1V810VE1Z9bZsMC8xOD6hydbw==
+"@voiceflow/google-types@1.30.1":
+  version "1.30.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.30.1.tgz#9cfe7009f5caca148b486c050b9937db36f3a725"
+  integrity sha512-2lb79V8QESfvUJs4jG0iFUfVxK6uJxUJcSAFdxFl2GZQXvZ/NNptg5n0TDHhFF74+AMffToe+6pXGgCPqg6ywQ==
   dependencies:
-    "@voiceflow/api-sdk" "^1.32.5"
+    "@voiceflow/api-sdk" "^1.33.0"
     "@voiceflow/common" "6.5.0"
-    "@voiceflow/general-types" "^1.50.4"
+    "@voiceflow/general-types" "^1.51.1"
     googleapis "^60.0.1"
 
 "@voiceflow/logger@^1.5.6":
@@ -5895,10 +5905,10 @@ ask-sdk-model-runtime@^1.1.0:
   resolved "https://registry.yarnpkg.com/ask-sdk-model-runtime/-/ask-sdk-model-runtime-1.4.0.tgz#7ec395985c433dd9118a238932ac3a8ac8c0c0bd"
   integrity sha512-JSu9zGklm8jtaQMk344BTJqVSX/tenFNB7b+jgnoHDp4aRwmzCAlDnBiiNAVMXlbrBeIi+ms79yK1s2oq0PjFg==
 
-ask-smapi-model@^1.11.0:
-  version "1.15.2"
-  resolved "https://registry.yarnpkg.com/ask-smapi-model/-/ask-smapi-model-1.15.2.tgz#02a65af497cd8e1a029fd886e0ab143edda9ba5e"
-  integrity sha512-q+i5Hphs8BjWtt4TNue+eFxlvzP1jSlXWj5vahYfa8ue0EJKo73RQl19BtgPTDhRp9e1Biwmh1NI6OO208mzng==
+ask-smapi-model@1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/ask-smapi-model/-/ask-smapi-model-1.14.0.tgz#1076b92eef9fa08a8d29b7c24b0e0063ba809b02"
+  integrity sha512-HnmHZy7YY3Bdcwr+pkVKV7x91WckQCf7Q4zQuIG/b2m3MXqwRm6b83OmnirFtvc25u2YlfaEvM7Zy3aiQAyWOw==
   dependencies:
     ask-sdk-model-runtime "^1.1.0"
 

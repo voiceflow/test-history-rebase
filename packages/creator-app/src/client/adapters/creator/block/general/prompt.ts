@@ -1,9 +1,10 @@
 import { Voice } from '@voiceflow/general-types';
 import { StepData } from '@voiceflow/general-types/build/nodes/prompt';
+import cuid from 'cuid';
 
 import { NodeData } from '@/models';
 
-import { chipsToIntentButtons, createBlockAdapter, noMatchAdapter, repromptAdapter } from '../utils';
+import { chipsToIntentButtons, createBlockAdapter, defaultPortAdapter, noMatchAdapter, PortsAdapter, repromptAdapter } from '../utils';
 
 const promptAdapter = createBlockAdapter<StepData<Voice>, NodeData.Prompt>(
   ({ reprompt, noMatches, chips, buttons }) => ({
@@ -19,5 +20,16 @@ const promptAdapter = createBlockAdapter<StepData<Voice>, NodeData.Prompt>(
     buttons,
   })
 );
+
+export const promptPortsAdapter: PortsAdapter<NodeData.Prompt> = {
+  ...defaultPortAdapter,
+  fromDB: (ports, node) => {
+    if (!ports.length) {
+      return defaultPortAdapter.fromDB([{ id: cuid(), data: {}, type: 'else', target: null }], node);
+    }
+
+    return defaultPortAdapter.fromDB(ports, node);
+  },
+};
 
 export default promptAdapter;

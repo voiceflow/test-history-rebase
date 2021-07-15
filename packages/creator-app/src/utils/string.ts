@@ -3,7 +3,7 @@ import cuid from 'cuid';
 import { PlatformType } from '@/constants';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
-import { convertToWord } from './number';
+import { convertToWord, NON_ALPHANUMERIC_REGEXP } from './number';
 
 export { cuid };
 
@@ -14,7 +14,12 @@ export const createNextName = (prefix: string, items: string[], platform: Platfo
   let counter = 1;
 
   const isGeneral = isGeneralPlatform(platform);
-  const genIntentName = (counter: number) => (isGeneral ? `${prefix} ${convertToWord(counter)}` : `${prefix}_${convertToWord(counter)}`);
+
+  const genIntentName = (counter: number) => {
+    const name = `${prefix} ${convertToWord(counter)}`;
+
+    return isGeneral ? name : name.replace(NON_ALPHANUMERIC_REGEXP, '_');
+  };
 
   let intentName = genIntentName(counter);
 

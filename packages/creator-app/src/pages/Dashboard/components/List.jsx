@@ -189,7 +189,7 @@ export function List(props) {
                   })}
                 >
                   <div className={DashboardClassName.LIST_FOOTER_CENTER}>
-                    <LegacyButton isFlat isBtn onClick={() => createProject(id)}>
+                    <LegacyButton isFlat onClick={() => createProject(id)}>
                       Create Project
                     </LegacyButton>
                   </div>

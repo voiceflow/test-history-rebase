@@ -1,10 +1,7 @@
-import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { DiagramLoadingGate } from '@/gates';
 import { withLoadingGate } from '@/hocs';
-import { useFeature, useTheme } from '@/hooks';
 import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
@@ -30,28 +27,12 @@ type CanvasProps = {
 
 const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const engine = useEngine();
-  const theme = useTheme();
-
-  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
 
   React.useEffect(() => {
     if (engine.getRootNodeIDs().length === 1 && !engine.comment.isActive) {
       engine.centerHome();
     }
   }, [engine]);
-
-  useDidUpdateEffect(() => {
-    if (navigationRedesign.isEnabled) {
-      return;
-    }
-
-    const position = engine.canvas?.getPosition();
-    const { height } = theme.components.subHeader;
-
-    if (position) {
-      engine.canvas?.setPosition([position[0], position[1] + (isPrototypingMode ? height : -height)]);
-    }
-  }, [isPrototypingMode]);
 
   return (
     <CanvasProviders engine={engine}>

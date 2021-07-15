@@ -3,10 +3,9 @@ import React from 'react';
 
 import { testingGraphic } from '@/assets';
 import * as Documentation from '@/config/documentation';
-import { FeatureFlag } from '@/config/features';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useFeature, useSetup, useTrackingEvents } from '@/hooks';
+import { useSetup, useTrackingEvents } from '@/hooks';
 import PrototypeContainer from '@/pages/Prototype/components/PrototypeContainer';
 import perf, { PerfAction } from '@/performance';
 import { FadeDownContainer } from '@/styles/animations';
@@ -30,8 +29,6 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
   device,
   isModelTraining,
 }) => {
-  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
-
   const [, trackEventsWrapper] = useTrackingEvents();
 
   const start = () => {
@@ -53,19 +50,11 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
           <img src={testingGraphic} alt="user" width="80" />
 
           <Text fontSize={16} color="#132144" fontWeight={600} mt={16}>
-            {navigationRedesign.isEnabled ? 'Run your project' : 'Test your project'}
+            Run your project
           </Text>
 
           <Text fontSize={13} color="#62778c" fontWeight={500} mt={16} mb={16} lineHeight={1.54}>
-            {navigationRedesign.isEnabled ? (
-              <>
-                Run your project to interact with it using text, voice or buttons. <Link href={Documentation.PROTOTYPING}>See more.</Link>
-              </>
-            ) : (
-              <>
-                Start a test to interact with your project using text, voice or buttons. <Link href={Documentation.PROTOTYPING}>Learn more.</Link>
-              </>
-            )}
+            Run your project to interact with it using text, voice or buttons. <Link href={Documentation.PROTOTYPING}>See more.</Link>
           </Text>
 
           {isModelTraining ? (
@@ -75,12 +64,12 @@ const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProp
               position="bottom"
             >
               <Button variant={ButtonVariant.TERTIARY} onClick={start} disabled>
-                {navigationRedesign.isEnabled ? 'Run Test' : 'Start Test'}
+                Run Test
               </Button>
             </TippyTooltip>
           ) : (
             <Button variant={ButtonVariant.TERTIARY} onClick={start} id={Identifier.PROTOTYPE_START}>
-              {navigationRedesign.isEnabled ? 'Run Test' : 'Start Test'}
+              Run Test
             </Button>
           )}
         </Container>

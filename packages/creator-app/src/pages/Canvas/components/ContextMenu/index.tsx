@@ -2,14 +2,13 @@ import { BoxFlex, NestedMenu, Text, useCache } from '@voiceflow/ui';
 import React from 'react';
 import { Popper } from 'react-popper';
 
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as UIDuck from '@/ducks/ui';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useModals, usePermission } from '@/hooks';
+import { useModals, usePermission } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
@@ -98,8 +97,6 @@ const ContextMenu: React.FC<ConnectedContextMenuProps> = ({ toggleCanvasOnly, is
   const clipboard = React.useContext(ClipboardContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
 
-  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
-
   const upgradeModal = useModals(ModalType.PAYMENT);
 
   const [canUseCommenting] = usePermission(Permission.COMMENTING);
@@ -114,7 +111,6 @@ const ContextMenu: React.FC<ConnectedContextMenuProps> = ({ toggleCanvasOnly, is
     canUseCommenting,
     toggleCanvasOnly,
     showHintFeatures,
-    navigationRedesign: !!navigationRedesign.isEnabled,
   });
 
   const options = React.useMemo(() => {

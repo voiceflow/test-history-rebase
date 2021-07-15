@@ -1,7 +1,9 @@
 import { Box, Icon, SvgIcon, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import cn from 'classnames';
 import React from 'react';
 
 import { useTheme } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 import { SlideOutDirection } from '@/styles/transitions';
 
 import Drawer from '../Drawer';
@@ -43,7 +45,13 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
 
     return (
       <ItemContainer key={option.value} {...option.tooltip} {...(option.tooltip ? { position: option.tooltip.position ?? 'right' } : {})}>
-        <Item id={option.id} small={option.small} isActive={option.value === activeValue} onClick={(event) => onClick(option, event)}>
+        <Item
+          id={option.id}
+          small={option.small}
+          onClick={(event) => onClick(option, event)}
+          isActive={option.value === activeValue}
+          className={cn(ClassName.SIDEBAR_ICON_MENU_ITEM, open && `${ClassName.SIDEBAR_ICON_MENU_ITEM}--${option.value}`)}
+        >
           <SvgIcon icon={option.icon} color="currentColor" />
         </Item>
       </ItemContainer>
@@ -52,7 +60,7 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
 
   return (
     <Drawer as="section" open={open} width={theme.components.sidebarIconMenu.width} zIndex={25} direction={SlideOutDirection.RIGHT}>
-      <Container>
+      <Container className={cn(ClassName.SIDEBAR_ICON_MENU, open && `${ClassName.SIDEBAR_ICON_MENU}--opened`)}>
         {options.map(renderOption)}
 
         {footerOptions?.length && (

@@ -17,7 +17,6 @@ import {
   ff_gadgets,
   ff_motorolaSSO,
   ff_natoApco,
-  ff_navigationRedesign,
   ff_ownerRole,
   ff_testReports,
   ff_wavenetVoices,
@@ -71,7 +70,6 @@ export default {
   FF_CONDITIONS_BUILDER: ff_conditionsBuilder && 'true',
   FF_MOTOROLA_SSO: ff_motorolaSSO && 'true',
   FF_TEST_REPORTS: ff_testReports && 'true',
-  FF_NAVIGATION_REDESIGN: ff_navigationRedesign && 'true',
   FF_ATOMIC_ACTIONS: ff_atomicActions && 'true',
 
   API_HOST: host || 'localhost',

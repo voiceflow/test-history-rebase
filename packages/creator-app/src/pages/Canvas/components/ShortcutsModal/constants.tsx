@@ -7,7 +7,7 @@ import { ShortcutCommand } from './components';
 interface ShortcutItem {
   title: string;
   command: React.ReactNode;
-  shouldRender?: (options: { navigationRedesignEnabled: boolean }) => boolean;
+  shouldRender?: () => boolean;
 }
 
 // eslint-disable-next-line import/prefer-default-export
@@ -113,49 +113,32 @@ export const SHORTCUTS: ShortcutItem[] = [
     command: <ShortcutCommand>1</ShortcutCommand>,
   },
   {
-    title: 'Launch',
-    command: <ShortcutCommand>2</ShortcutCommand>,
-    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
-  },
-  {
-    title: 'Test Mode',
-    command: <ShortcutCommand>T</ShortcutCommand>,
-    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
-  },
-  {
     title: 'Integrations',
     command: <ShortcutCommand>3</ShortcutCommand>,
-    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
   },
   {
     title: 'Settings',
     command: <ShortcutCommand>4</ShortcutCommand>,
-    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
   },
   {
     title: 'Run Project',
     command: <ShortcutCommand>R</ShortcutCommand>,
-    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
   },
   {
     title: 'Add Text',
     command: <ShortcutCommand>T</ShortcutCommand>,
-    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
   },
   {
     title: 'Add Image',
     command: <ShortcutCommand>I</ShortcutCommand>,
-    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
   },
   {
     title: 'Model',
     command: <ShortcutCommand>M</ShortcutCommand>,
-    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
   },
   {
     title: 'Commenting',
     command: <ShortcutCommand>C</ShortcutCommand>,
-    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
   },
   {
     title: 'Upload',
@@ -164,6 +147,5 @@ export const SHORTCUTS: ShortcutItem[] = [
         <ShortcutCommand>{PLATFORM_META_KEY_LABEL}</ShortcutCommand> + <ShortcutCommand>U</ShortcutCommand>
       </>
     ),
-    shouldRender: ({ navigationRedesignEnabled }) => navigationRedesignEnabled,
   },
 ];

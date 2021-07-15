@@ -1,12 +1,11 @@
 import { Box, BoxFlex, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
-import { useAsyncMountUnmount, useFeature, useSetup, useToggle, useTrackingEvents } from '@/hooks';
+import { useAsyncMountUnmount, useSetup, useToggle, useTrackingEvents } from '@/hooks';
 import AlexaUploadButton from '@/pages/Canvas/header/ActionGroup/components/AlexaUploadGroup/Button';
 import GoogleUploadButton from '@/pages/Canvas/header/ActionGroup/components/GoogleUploadGroup/Button';
 import UploadButton from '@/pages/Canvas/header/ActionGroup/components/UploadButton';
@@ -22,7 +21,6 @@ import { ActionContainer, ContentContainer, ContentSection, Section } from '../c
 const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }) => {
   const [open, toggleOpen] = useToggle(false);
   const { cancel, job, start } = React.useContext(ExportContext)!;
-  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -66,7 +64,7 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
   );
 
   return (
-    <ContentContainer redesignEnabled={navigationRedesign.isEnabled}>
+    <ContentContainer>
       <ContentSection>
         <Section title="Runtime Export">
           <BoxFlex>

@@ -1,18 +1,16 @@
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
-import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Project from '@/ducks/project';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useFeature, useTheme } from '@/hooks';
+import { useTheme } from '@/hooks';
 import PrototypeDisplaySettings from '@/pages/Prototype/components/PrototypeDisplaySettings';
 import PrototypeSettings from '@/pages/Prototype/components/PrototypeSettings';
 import PrototypeSidebar from '@/pages/Prototype/components/PrototypeSidebar';
 import PrototypeVariableSettings from '@/pages/Prototype/components/PrototypeVariableSettings';
 import PrototypeVisualCanvas from '@/pages/Prototype/components/PrototypeVisualCanvas';
-import { PrototypeIconMenu } from '@/pages/Skill/components/Sidebar/components';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
@@ -23,7 +21,6 @@ const PrototypeOverlay: React.FC<ConnectedDiagramProps> = ({ platform, prototype
   const isPrototypingMode = usePrototypingMode();
 
   const widthRef = React.useRef(0);
-  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
   const isCanvasVisible = !isPrototypingMode || prototypeMode !== Prototype.PrototypeMode.DISPLAY;
 
   React.useEffect(() => {
@@ -61,7 +58,6 @@ const PrototypeOverlay: React.FC<ConnectedDiagramProps> = ({ platform, prototype
     <>
       {/* prototyping mode */}
       {isPrototypingMode && <PrototypeSidebar open />}
-      {isPrototypingMode && !navigationRedesign.isEnabled && <PrototypeIconMenu />}
 
       {isPrototypingMode && (
         <>

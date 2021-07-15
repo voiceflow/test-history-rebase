@@ -4,6 +4,8 @@ import { DismissableLayerProvider, useDismissable } from 'react-dismissable-laye
 import { Manager, Popper as ReactPopper, PopperProps as ReactPopperProps, Reference } from 'react-popper';
 import { MemoryRouter } from 'react-router-dom';
 
+import { ClassName } from '@/styles/constants';
+
 import { Body, Container } from './components';
 
 export { Content as PopperContent, Footer as PopperFooter, Nav as PopperNav, NavItem as PopperNavItem } from './components';
@@ -90,7 +92,7 @@ const Popper: React.FC<PopperProps> = ({
               >
                 {({ ref, style }) => (
                   <div ref={ref} style={{ ...style, zIndex: 1000 }}>
-                    <Container style={{ width, height }}>
+                    <Container className={ClassName.POPPER} style={{ width, height }}>
                       {renderNav?.(rendererProps)}
 
                       <Body>

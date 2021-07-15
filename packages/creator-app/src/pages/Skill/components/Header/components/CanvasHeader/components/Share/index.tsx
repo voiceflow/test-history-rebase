@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Identifier } from '@/styles/constants';
+
 import { SharePopperContext } from '../../../../contexts';
 import SharePopper from '../../../SharePopper';
 import { ShareButton } from './components';
@@ -10,7 +12,7 @@ const Share: React.FC = () => {
   return (
     <SharePopper>
       {({ ref, isOpened }) => (
-        <ShareButton ref={ref} onClick={() => shareModal.open()} isActive={isOpened}>
+        <ShareButton id={Identifier.SHARE_BUTTON} ref={ref} onClick={() => shareModal.open()} isActive={isOpened}>
           Share
         </ShareButton>
       )}

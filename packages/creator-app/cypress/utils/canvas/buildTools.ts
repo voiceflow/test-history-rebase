@@ -19,7 +19,8 @@ const canvasUtils = {
     cy.get(`#${Identifier.CANVAS}`).click({ waitForAnimations: true });
   },
   focusHome: () => {
-    cy.get(`#${Identifier.CANVAS_HOME_BUTTON}`).click({ force: true, waitForAnimations: true });
+    canvasUtils.focusCanvas();
+    cy.sendHotkey('s');
   },
   spawnNodeInGrid: (blockName: string, xUnits: number, yUnits: number) => {
     canvasUtils.focusHome();

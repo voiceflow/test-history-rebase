@@ -64,13 +64,7 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Add Text',
     value: CanvasAction.ADD_TEXT,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT],
-    shouldRender: (_, { showHintFeatures, navigationRedesign }) => showHintFeatures && !navigationRedesign,
-  },
-  {
-    label: 'Add Text',
-    value: CanvasAction.ADD_TEXT,
-    hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT_V2],
-    shouldRender: (_, { showHintFeatures, navigationRedesign }) => showHintFeatures && !!navigationRedesign,
+    shouldRender: (_, { showHintFeatures }) => showHintFeatures,
   },
   {
     label: 'Add Image',
@@ -100,13 +94,11 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Zoom In',
     value: CanvasAction.ZOOM_IN,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.ZOOM_IN],
-    shouldRender: (_, { navigationRedesign }) => !!navigationRedesign,
   },
   {
     label: 'Zoom Out',
     value: CanvasAction.ZOOM_OUT,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.ZOOM_OUT],
-    shouldRender: (_, { navigationRedesign }) => !!navigationRedesign,
   },
   {
     label: 'Hide/Show UI',

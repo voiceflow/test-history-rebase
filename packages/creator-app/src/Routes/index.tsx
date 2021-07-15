@@ -2,11 +2,10 @@ import { FullSpinner, Page404 } from '@voiceflow/ui';
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { FeatureFlag } from '@/config/features';
 import { LegacyPath, Path } from '@/config/routes';
 import * as Session from '@/ducks/session';
 import { lazy } from '@/hocs';
-import { useFeature, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
 import AdoptSSO from '@/pages/Auth/AdoptSSO';
 import Login from '@/pages/Auth/Login';
 import LoginSSOCallback from '@/pages/Auth/LoginSSOCallback';
@@ -18,7 +17,6 @@ import ResetPassword from '@/pages/Auth/ResetPassword';
 import Signup from '@/pages/Auth/Signup';
 import Export from '@/pages/Export';
 import Onboarding from '@/pages/Onboarding';
-import Settings from '@/pages/Settings';
 import * as Query from '@/utils/query';
 
 import PrivateRoute from './PrivateRoute';
@@ -35,7 +33,6 @@ const NewWorkspace = lazy(() => import('@/pages/Dashboard/NewWorkspace'));
 
 const Routes: React.FC = () => {
   const authToken = useSelector(Session.authTokenSelector);
-  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
 
   return (
     <Suspense fallback={<FullSpinner name="Assets" />}>
@@ -78,8 +75,6 @@ const Routes: React.FC = () => {
         <Redirect exact from={LegacyPath.PROJECT_PUBLISH} to={Path.PUBLISH_ALEXA} />
 
         <PrivateRoute path={Path.PROJECT_EXPORT} component={Export} />
-
-        {!navigationRedesign.isEnabled && <PrivateRoute path={Path.PROJECT_SETTINGS} component={Settings} />}
 
         <PrivateRoute path={Path.PROJECT_VERSION} component={Skill} />
 

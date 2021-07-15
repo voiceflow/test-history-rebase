@@ -16,10 +16,8 @@ export enum Identifier {
   CANVAS = 'vf-canvas',
   CANVAS_CONTAINER = 'vf-canvas-container',
   BLOCK_EDITOR = 'vf-block-editor',
-  CANVAS_HOME_BUTTON = 'vf-canvas__home-button',
   ADD_COLLABORATORS = 'vf-add-collaborators',
   THREAD_HISTORY_DRAWER = 'vf-thread-history-drawer',
-  ESCAPE_MODE_PROMPT = 'vf-escape-mode-prompt',
   SPOTLIGHT = 'vf-spotlight',
   UPGRADE_BUTTON = 'vf-upgrade-button',
   PAYMENT_DETAILS_SECTION = 'vf-payment-details-section',
@@ -106,7 +104,6 @@ export enum ClassName {
   HEADER_USER_MENU = 'vf-header_user-menu',
   SVG_ICON_CLOSE = 'vf-svg-icon--close',
   HOME_BLOCK = 'vf-canvas__block--home',
-  COMMENTING_MODE = 'vf-canvas__control--commenting',
   MENTION_INPUT = 'mentionInput',
   CHAT_DIALOG_MESSAGE = 'vf-chat-dialog__message',
   CHAT_DIALOG_LOADING_MESSAGE = 'vf-chat-dialog__message--loading',
@@ -132,6 +129,12 @@ export enum ClassName {
   TRANSCRIPT_ITEM_STATUSES = 'vf-transcript-item-statuses',
 
   TRANSCRIPT_ITEM_DROPDOWN_BUTTON = 'vf-transcript-item-dropdown-item',
+
+  SIDEBAR_ICON_MENU = 'vf-sidebar-icon-menu',
+  SIDEBAR_ICON_MENU_ITEM = 'vf-sidebar-icon-menu__item',
+
+  POPPER = 'vf-popper',
+  POPPER_NAV_ITEM = 'vf-popper__nav_item',
 }
 
 export enum ExternalClassName {

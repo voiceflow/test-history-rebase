@@ -10,7 +10,6 @@ const NATO_APCO_ENABLED = process.env.FF_NATO_ACPO === 'true';
 const CONDITIONS_BUILDER_ENABLED = process.env.FF_CONDITIONS_BUILDER === 'true';
 const MOTOROLA_SSO_ENABLED = process.env.FF_MOTOROLA_SSO === 'true';
 const TEST_REPORTS_ENABLED = process.env.FF_TEST_REPORTS === 'true';
-const NAVIGATION_REDESIGN_ENABLED = process.env.FF_NAVIGATION_REDESIGN === 'true';
 const ATOMIC_ACTIONS_ENABLED = process.env.FF_ATOMIC_ACTIONS === 'true';
 
 export enum FeatureFlag {
@@ -20,7 +19,6 @@ export enum FeatureFlag {
   NATO_APCO = 'nato_apco',
   CONDITIONS_BUILDER = 'conditions_builder',
   MOTOROLA_SSO = 'motorola_sso',
-  NAVIGATION_REDESIGN = 'navigation_redesign',
   ATOMIC_ACTIONS = 'atomic_actions',
 
   // used by select private cloud instances to add a new role type
@@ -42,6 +40,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.CONDITIONS_BUILDER]: CONDITIONS_BUILDER_ENABLED,
   [FeatureFlag.MOTOROLA_SSO]: MOTOROLA_SSO_ENABLED,
   [FeatureFlag.TEST_REPORTS]: TEST_REPORTS_ENABLED,
-  [FeatureFlag.NAVIGATION_REDESIGN]: NAVIGATION_REDESIGN_ENABLED,
   [FeatureFlag.ATOMIC_ACTIONS]: ATOMIC_ACTIONS_ENABLED,
 };

@@ -89,6 +89,7 @@ context('Prototype', () => {
       it('generate share link and visit link', () => {
         canvasPage.goToCanvas();
         canvasPage.el.shareButton.click();
+        canvasPage.el.shareTabs.shareTab.click();
         canvasPage.el.shareLinkCopyButton.click();
         cy.clipboard().then((clipboardData) => cy.visit(clipboardData!));
         prototypePage.el.startPrototypeButton.should('be.visible');
@@ -98,6 +99,7 @@ context('Prototype', () => {
         cy.upgradeTestAccount('pro');
         canvasPage.goToCanvas();
         canvasPage.el.shareButton.click();
+        canvasPage.el.shareTabs.shareTab.click();
         canvasPage.el.shareLinkCopyButton.click();
         canvasPage.el.brandingDropdown.click();
         canvasPage.el.brandingColorInput.clear();
@@ -117,6 +119,7 @@ context('Prototype', () => {
       it('brand configuration (with free account)', () => {
         canvasPage.goToCanvas();
         canvasPage.el.shareButton.click();
+        canvasPage.el.shareTabs.shareTab.click();
         cy.contains('Customize prototype style and branding');
       });
     });

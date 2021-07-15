@@ -1,50 +1,23 @@
+import { Box } from '@voiceflow/ui';
 import React from 'react';
-import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
-import Page from '@/components/Page';
-import { SettingsContainer, SettingsHeader } from '@/components/Settings';
-import * as Project from '@/ducks/project';
-import * as Router from '@/ducks/router';
-import { ProjectLoadingGate, WorkspaceFeatureLoadingGate } from '@/gates';
-import { connect, withBatchLoadingGate } from '@/hocs';
+import { Path } from '@/config/routes';
+import { ProjectLoadingGate } from '@/gates';
+import { withBatchLoadingGate } from '@/hocs';
 import { Identifier } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
-import { compose } from '@/utils/functional';
 
 import GeneralSettings from './components/GeneralSettings';
 import ProjectVersions from './components/ProjectVersions';
-import { getSettingsMetaProps, Tabs } from './constants';
 
-const Settings: React.FC<ConnectedSettingsProps> = ({ platform, goToDesign }) => {
-  const { tabs } = getSettingsMetaProps(platform);
-  const { url } = useRouteMatch();
+const Settings: React.FC = () => (
+  <Box id={Identifier.SETTINGS_PAGE} maxWidth={700} p={32}>
+    <Switch>
+      <Route path={Path.PROJECT_GENERAL_SETTINGS} component={GeneralSettings} />
+      <Route path={Path.PROJECT_VERSION_SETTINGS} component={ProjectVersions} />
+      <Redirect to={Path.PROJECT_GENERAL_SETTINGS} />
+    </Switch>
+  </Box>
+);
 
-  return (
-    <Page navigateBackText="Back" onNavigateBack={goToDesign} header={<SettingsHeader>Project Settings</SettingsHeader>}>
-      <span id={Identifier.SETTINGS_PAGE}>
-        <SettingsContainer tabs={tabs}>
-          <Switch>
-            <Route path={`${url}/${Tabs.GENERAL.path}`} component={GeneralSettings} />
-            <Route path={`${url}/${Tabs.VERSIONS.path}`} component={ProjectVersions} />
-            <Redirect from="*" to={`${url}/${Tabs.GENERAL.path}`} />
-          </Switch>
-        </SettingsContainer>
-      </span>
-    </Page>
-  );
-};
-
-const mapStateToProps = {
-  platform: Project.activePlatformSelector,
-};
-
-const mapDispatchToProps = {
-  goToDesign: Router.goToCurrentCanvas,
-};
-
-type ConnectedSettingsProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withBatchLoadingGate(ProjectLoadingGate, WorkspaceFeatureLoadingGate)
-)(Settings) as React.FC;
+export default withBatchLoadingGate(ProjectLoadingGate)(Settings);

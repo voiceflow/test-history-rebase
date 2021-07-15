@@ -13,7 +13,7 @@ const PrototypeHeader: React.FC = () => {
 
   return (
     <Header renderLogoButton={() => <HeaderBackButton onClick={() => goToCurrentCanvas()} />}>
-      <HeaderHotkeyToAction hotkey={Hotkey.CLOSE_CANVAS_MODE} label="to return to designer" onHotkey={goToCurrentCanvas} preventDefault />
+      <HeaderHotkeyToAction label="to return to designer" hotkey={Hotkey.CLOSE_CANVAS_MODE} onHotkey={goToCurrentCanvas} preventDefault />
 
       <Content>
         <Timer />

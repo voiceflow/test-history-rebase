@@ -12,9 +12,6 @@ export default {
   },
 
   el: {
-    get projectSettings() {
-      return cy.get('[data-original-title="Settings"]').find('button');
-    },
     get projectTitle() {
       return cy.get(`#${Identifier.PROJECT_TITLE}`);
     },
@@ -42,11 +39,8 @@ export default {
     get canvas() {
       return cy.get(`#${Identifier.CANVAS}`);
     },
-    get escapeModePrompt() {
-      return cy.get(`#${Identifier.ESCAPE_MODE_PROMPT}`);
-    },
     get commentingModeControl() {
-      return cy.get(`.${ClassName.COMMENTING_MODE} button`);
+      return cy.get(`.${ClassName.CANVAS_CONTROL}--commenting button`);
     },
     get markupTextControl() {
       return cy.get(`.${ClassName.CANVAS_CONTROL}--markup-text button`);
@@ -62,10 +56,24 @@ export default {
     },
     tabs: {
       get designTab() {
-        return cy.get(`#${Identifier.DESIGN_TAB}`);
+        return cy.get(`.${ClassName.SIDEBAR_ICON_MENU_ITEM}--DESIGN`);
       },
       get launchTab() {
-        return cy.get(`#${Identifier.LAUNCH_TAB}`);
+        return cy.get(`.${ClassName.SIDEBAR_ICON_MENU_ITEM}--INTEGRATION`);
+      },
+      get settingsTab() {
+        return cy.get(`.${ClassName.SIDEBAR_ICON_MENU_ITEM}--SETTINGS`);
+      },
+    },
+    shareTabs: {
+      get inviteTab() {
+        return cy.get(`.${ClassName.POPPER_NAV_ITEM}[href="INVITE"]`);
+      },
+      get shareTab() {
+        return cy.get(`.${ClassName.POPPER_NAV_ITEM}[href="SHARE"]`);
+      },
+      get exportTab() {
+        return cy.get(`.${ClassName.POPPER_NAV_ITEM}[href="EXPORT"]`);
       },
     },
     get uploadButton() {

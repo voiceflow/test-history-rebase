@@ -27,7 +27,7 @@ context('Canvas - Links', () => {
     canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click();
     canvasPage.el.node.eq(1).click();
 
-    canvasPage.el.canvas.click(0, 0);
+    canvasPage.el.canvas.click(0, 0, { force: true });
 
     canvasPage.el.link.find('path').eq(0).click({ force: true });
     canvasPage.el.linkSettings.find('.vf-svg-icon--trash').click();

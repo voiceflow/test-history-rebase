@@ -2,17 +2,16 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import IdleTimer from 'react-idle-timer';
 import { batch } from 'react-redux';
-import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Redirect, Route, RouteComponentProps, Switch, useRouteMatch } from 'react-router-dom';
 
-import Page from '@/components/Page';
-import { FeatureFlag } from '@/config/features';
-import { Permission } from '@/config/permissions';
+import { RemoveIntercom } from '@/components/IntercomChat';
+import ProjectPage from '@/components/ProjectPage';
 import { Path } from '@/config/routes';
 import * as Creator from '@/ducks/creator';
 import * as Project from '@/ducks/project';
 import * as Realtime from '@/ducks/realtime';
-import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
+import * as UI from '@/ducks/ui';
 import {
   PlanRestrictionGate,
   ProjectLoadingGate,
@@ -21,48 +20,44 @@ import {
   WorkspaceFeatureLoadingGate,
   WorkspacesLoadingGate,
 } from '@/gates';
-import { connect, lazy, withBatchLoadingGate, withFeatureSwitcher } from '@/hocs';
-import { useCanvasTracking, useEnableDisable, usePermission, useTeardown } from '@/hooks';
-import CanvasHeader from '@/pages/Canvas/header';
+import { connect, lazy, withBatchLoadingGate } from '@/hocs';
+import { useCanvasTracking, useEnableDisable, useEventualEngine, useLayoutDidUpdate, useSelector, useTeardown, useTheme } from '@/hooks';
 import InactivityModal from '@/pages/Inactivity';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
-import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { ConnectedProps } from '@/types';
 import { compose } from '@/utils/functional';
-import { getActivePageAndMatch } from '@/utils/routes';
 
-import ProjectSubHeader from './components/ProjectSubHeader';
-import ProjectTitle from './components/ProjectTitle';
-import { PAGES_MATCHES, TIMEOUT_COUNT } from './constants';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+import { TIMEOUT_COUNT } from './constants';
 import { ExportProvider, MarkupProvider, NLPProvider, PlatformProvider, PublishProvider } from './contexts';
-import SkillV2 from './indexV2';
 
 const Diagram = lazy(() => import(/* webpackPrefetch: true */ './components/Diagram'));
 const Business = lazy(() => import('@/pages/Business'));
 const Migrate = lazy(() => import('@/pages/Migrate'));
 const Publish = lazy(() => import('@/pages/Publish'));
+const Settings = lazy(() => import('@/pages/Settings'));
 const Conversations = lazy(() => import('@/pages/Conversations'));
 
 export type SkillProps = RouteComponentProps;
 
+const DIAGRAM_ROUTES = [Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY];
+
 const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
   platform,
-  location,
   projectName,
-  goToDashboard,
-  saveProjectName,
-  goToDesign,
   isOnlyViewer,
   resetCreator,
   setActiveDiagramID,
   setActiveProjectID,
   setActiveVersionID,
 }) => {
-  const [isIdle, onIdle, onActive] = useEnableDisable();
+  const theme = useTheme();
+  const getEngine = useEventualEngine();
+  const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
+  const isDiagramRoute = useRouteMatch(DIAGRAM_ROUTES);
 
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-  const isPrototypingMode = usePrototypingMode();
-  const activePage = React.useMemo(() => getActivePageAndMatch(PAGES_MATCHES, location.pathname).activePage ?? undefined, [location.pathname]);
+  const [isIdle, onIdle, onActive] = useEnableDisable();
 
   const idleTimer = React.useRef<IdleTimer | null>(null);
 
@@ -87,12 +82,24 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
     });
   });
 
+  useLayoutDidUpdate(() => {
+    const engine = getEngine();
+
+    const position = engine?.canvas?.getPosition();
+    const { height } = theme.components.projectPage.header;
+
+    if (position) {
+      engine?.canvas?.setPosition([position[0], position[1] + (canvasOnly ? height : -height)]);
+    }
+  }, [canvasOnly]);
+
   return (
     <MarkupProvider>
       <PlatformProvider value={platform}>
         <Helmet>
           <title>{projectName}</title>
         </Helmet>
+
         {!isOnlyViewer && (
           <>
             <IdleTimer
@@ -104,31 +111,23 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
               debounce={250}
               timeout={TIMEOUT_COUNT}
             />
+
             <InactivityModal open={isIdle} onActive={setActive} />
           </>
         )}
+
+        <RemoveIntercom />
+
         <PublishProvider>
           <ExportProvider>
             <NLPProvider>
-              <Page
-                header={!isPrototypingMode && <ProjectTitle title={projectName ?? ''} onChange={saveProjectName} />}
-                subHeader={!isPrototypingMode && <ProjectSubHeader showPublish={canEditCanvas} activePage={activePage} />}
-                canScroll={false}
-                headerChildren={<CanvasHeader />}
-                onNavigateBack={() => {
-                  if (isPrototypingMode) {
-                    goToDesign();
-                  } else {
-                    goToDashboard();
-                  }
-                }}
-                navigateBackText={isPrototypingMode ? 'Back' : ''}
+              <ProjectPage
+                scrollable={!isDiagramRoute}
+                renderHeader={() => !canvasOnly && <Header />}
+                renderSidebar={() => !canvasOnly && <Sidebar />}
               >
                 <Switch>
-                  <Route
-                    path={[Path.PROJECT_PROTOTYPE, Path.PROJECT_CANVAS, Path.CANVAS_COMMENTING, Path.CANVAS_MODEL, Path.CANVAS_MODEL_ENTITY]}
-                    component={Diagram}
-                  />
+                  <Route path={DIAGRAM_ROUTES} component={Diagram} />
 
                   <Route path={Path.CONVERSATIONS} component={Conversations} />
 
@@ -140,9 +139,11 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
 
                   <Route path={Path.PROJECT_PUBLISH} component={Publish} />
 
+                  <Route path={Path.PROJECT_SETTINGS} component={Settings} />
+
                   <Redirect to={Path.PROJECT_CANVAS} />
                 </Switch>
-              </Page>
+              </ProjectPage>
             </NLPProvider>
           </ExportProvider>
         </PublishProvider>
@@ -152,16 +153,13 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
 };
 
 const mapStateToProps = {
+  platform: Project.activePlatformSelector,
   projectName: Project.activeProjectNameSelector,
   isConnected: Realtime.isRealtimeConnectedSelector,
-  platform: Project.activePlatformSelector,
   isOnlyViewer: Realtime.isOnlyViewerSelector,
 };
 
 const mapDispatchToProps = {
-  saveProjectName: Project.saveProjectName,
-  goToDashboard: Router.goToDashboard,
-  goToDesign: Router.goToCurrentCanvas,
   resetCreator: Creator.resetCreator,
   setActiveDiagramID: Session.setActiveDiagramID,
   setActiveProjectID: Session.setActiveProjectID,
@@ -179,6 +177,5 @@ export default compose(
     WorkspacesLoadingGate,
     WorkspaceFeatureLoadingGate,
     RealtimeLoadingGate
-  ),
-  withFeatureSwitcher(FeatureFlag.NAVIGATION_REDESIGN, SkillV2)
+  )
 )(Skill) as React.FC<SkillProps>;

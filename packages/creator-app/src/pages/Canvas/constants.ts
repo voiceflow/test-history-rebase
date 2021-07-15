@@ -39,10 +39,6 @@ export const FLOW_BLOCK_CLASSNAME = `${ClassName.CANVAS_BLOCK}--flow`;
 export const BLOCK_SECTION_CLASSNAME = `${ClassName.CANVAS_BLOCK}__section`;
 export const BLOCK_SECTION_TITLE_CLASSNAME = `${ClassName.CANVAS_BLOCK}__section__title`;
 
-export const COMMENTING_CONTROL_CLASSNAME = `${ClassName.CANVAS_CONTROL}--commenting`;
-export const MARKUP_TEXT_CONTROL_CLASSNAME = `${ClassName.CANVAS_CONTROL}--markup-text`;
-export const MARKUP_IMAGE_CONTROL_CLASSNAME = `${ClassName.CANVAS_CONTROL}--markup-image`;
-
 export const DEFAULT_MARKUP_BORDER_RADIUS = 5;
 export const DEFAULT_MARKUP_LINE_COLOR = hexToRGBA('#62778cff');
 export const DEFAULT_MARKUP_BORDER_COLOR = hexToRGBA('#5d9df5ff');

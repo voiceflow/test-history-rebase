@@ -309,7 +309,6 @@ yarn start --ff_someFeature
 - `ff_straightLines` / `VF_APP_FF_STRAIGHT_LINES`: straight lines
 - `ff_natoApco` / `VF_APP_FF_NATO_APCO`: nato apco slot type
 - `ff_conditionsBuilder` / `VF_APP_FF_CONDITIONS_BUILDER`: new conditions builder
-- `ff_navigationRedesign` / `VF_APP_FF_NAVIGATION_REDESIGN`: redesigned header/leftSidebar/etc
 
 ### Environment variable overrides
 

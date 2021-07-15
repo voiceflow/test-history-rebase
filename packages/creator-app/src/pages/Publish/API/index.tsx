@@ -7,12 +7,11 @@ import client from '@/client';
 import SampleEditor from '@/components/AceEditor/Sample';
 import { ConfirmProps } from '@/components/ConfirmModal';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
-import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
 import { goToWorkspaceDeveloperSettings } from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, useDispatch, useFeature, useIsAdmin, useModals, useSetup, useTrackingEvents } from '@/hooks';
+import { useAsyncEffect, useDispatch, useIsAdmin, useModals, useSetup, useTrackingEvents } from '@/hooks';
 import CreateAPIKeyModal from '@/pages/Workspace/Settings/components/Developer/modal';
 import * as Sentry from '@/vendors/sentry';
 
@@ -25,7 +24,6 @@ const API: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
   const [keys, setKeys] = React.useState<APIKey[]>([]);
   const [activeKey, setActiveKey] = React.useState('');
-  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
 
   const isAdmin = useIsAdmin();
 
@@ -85,7 +83,7 @@ const API: React.FC = () => {
     <>
       <CreateAPIKeyModal />
 
-      <ContentContainer redesignEnabled={navigationRedesign.isEnabled}>
+      <ContentContainer>
         <ContentSection>
           <Section title="API Call Examples" card={false}>
             <SampleEditor samples={samples} />

@@ -15,7 +15,6 @@ export interface OptionProps {
   toggleCanvasOnly: () => void;
   showHintFeatures: boolean;
   canUseCommenting: boolean;
-  navigationRedesign?: boolean;
 }
 
 export interface ContextMenuOption<T> {

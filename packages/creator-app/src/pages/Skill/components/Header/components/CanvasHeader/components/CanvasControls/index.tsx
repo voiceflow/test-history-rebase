@@ -9,6 +9,7 @@ import { useModals, usePermission, useSelector, useTrackingEvents } from '@/hook
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { MarkupContext } from '@/pages/Skill/contexts';
 import { useCommentingMode, useCommentingToggle, useDisableModes } from '@/pages/Skill/hooks';
+import { ClassName } from '@/styles/constants';
 
 import { MoveTypePopover } from './components';
 
@@ -56,9 +57,10 @@ const CanvasHeader: React.FC = () => {
             icon="text"
             active={isMarkupTextActive}
             isSmall
-            tooltip={{ title: 'Text', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT_V2] }}
+            tooltip={{ title: 'Text', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT] }}
             onClick={markup.toggleTextCreating}
             iconProps={{ width: 12, height: 14 }}
+            className={`${ClassName.CANVAS_CONTROL}--markup-text`}
           />
         )}
 
@@ -69,6 +71,7 @@ const CanvasHeader: React.FC = () => {
             isSmall
             onClick={markup.triggerImagesUpload}
             tooltip={{ title: 'Image', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE] }}
+            className={`${ClassName.CANVAS_CONTROL}--markup-image`}
           />
         )}
       </Flex>
@@ -83,6 +86,7 @@ const CanvasHeader: React.FC = () => {
             isSmall
             tooltip={{ title: 'Comment', hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING] }}
             onClick={onToggleCommenting}
+            className={`${ClassName.CANVAS_CONTROL}--commenting`}
             withBadge={hasUnreadComments}
           />
 

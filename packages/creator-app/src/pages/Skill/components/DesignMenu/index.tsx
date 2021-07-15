@@ -2,14 +2,13 @@ import { useDidUpdateEffect, useEnableDisable } from '@voiceflow/ui';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { DragItem } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useFeature, useHotKeys, usePermission, useTheme, useTrackingEvents } from '@/hooks';
+import { useHotKeys, usePermission, useTheme, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useAnyModeOpen } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
@@ -30,7 +29,6 @@ const DesignMenu: React.FC<ConnectedDesignMenuProps> = ({
   selectActiveTab,
   isViewerOrLibraryRole,
 }) => {
-  const navigationRedesign = useFeature(FeatureFlag.NAVIGATION_REDESIGN);
   const [isEditingMode] = usePermission(Permission.EDIT_CANVAS);
   const isAnyModeOpen = useAnyModeOpen();
   const [isOpenByHover, openByHover, closeByLoseHover] = useEnableDisable(false);
@@ -136,9 +134,8 @@ const DesignMenu: React.FC<ConnectedDesignMenuProps> = ({
       ref={dropRef}
       locked={!isHidden}
       canvasOnly={canvasOnly}
-      navigationRedesign={!!navigationRedesign.isEnabled}
     >
-      <Content isOpen={isOpen} activeTab={selectedTab} ref={designMenuRef} navigationRedesign={!!navigationRedesign.isEnabled}>
+      <Content isOpen={isOpen} activeTab={selectedTab} ref={designMenuRef}>
         <Header
           tabs={isViewerOrLibraryRole ? TABS.filter((tab) => tab.value === Tab.FLOWS) : TABS}
           locked={!isHidden}

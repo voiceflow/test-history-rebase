@@ -52,8 +52,7 @@ context('Canvas - Commenting', () => {
 
       cy.shouldBeOn(commentingMode);
       commentingMode.el.historyDrawer.should('be.visible');
-      canvasPage.el.escapeModePrompt.should('be.visible').and('have.text', 'esc to exit commenting');
-      canvasPage.el.commentingModeControl.find('.vf-svg-icon--close').should('be.visible');
+      canvasPage.el.commentingModeControl.should('be.visible');
     });
   });
 

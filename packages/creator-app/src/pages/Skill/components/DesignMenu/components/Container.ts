@@ -4,7 +4,6 @@ type ContainerProps = {
   isOpen?: boolean;
   locked?: boolean;
   canvasOnly?: boolean;
-  navigationRedesign?: boolean;
 };
 
 const Container = styled.aside<ContainerProps>`
@@ -12,24 +11,13 @@ const Container = styled.aside<ContainerProps>`
   padding-right: ${({ theme }) => theme.components.leftSidebar.hiddenWidth}px;
 
   position: absolute;
+  top: 16px;
+  bottom: 16px;
   z-index: 10;
   transition: transform 350ms cubic-bezier(0.075, 0.82, 0.165, 1);
   will-change: transform;
-
-  ${({ theme, canvasOnly, navigationRedesign }) =>
-    navigationRedesign
-      ? css`
-          top: 16px;
-          left: ${16 + (canvasOnly ? 0 : theme.components.sidebarIconMenu.width)}px;
-          bottom: 16px;
-          transform: translateX(-${({ theme }) => theme.components.leftSidebar.contentWidth + 18}px);
-        `
-      : css`
-          top: 50px;
-          left: 0;
-          bottom: ${canvasOnly ? 50 : 90}px;
-          transform: translateX(-${({ theme }) => theme.components.leftSidebar.contentWidth}px);
-        `}
+  left: ${({ canvasOnly, theme }) => 16 + (canvasOnly ? 0 : theme.components.sidebarIconMenu.width)}px;
+  transform: translateX(-${({ theme }) => theme.components.leftSidebar.contentWidth + 18}px);
 
   ${({ isOpen }) =>
     isOpen &&
@@ -46,7 +34,7 @@ const Container = styled.aside<ContainerProps>`
 
     position: absolute;
     top: 50%;
-    right: ${({ navigationRedesign }) => (navigationRedesign ? 2 : 6)}px;
+    right: 2px;
 
     border-radius: 3px;
     opacity: 0.5;
@@ -56,9 +44,8 @@ const Container = styled.aside<ContainerProps>`
     pointer-events: none;
   }
 
-  ${({ locked, navigationRedesign }) =>
+  ${({ locked }) =>
     locked &&
-    navigationRedesign &&
     css`
       &:after {
         opacity: 0;

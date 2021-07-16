@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.5.0...@voiceflow/realtime@1.5.1) (2021-07-16)
+
+
+### Bug Fixes
+
+* add realtime tests (VF-000) ([#3684](https://github.com/voiceflow/creator-app/issues/3684)) ([70f6c79](https://github.com/voiceflow/creator-app/commit/70f6c79ec10027164294475bb285ec6276164d5b))
+
+
+
+
+
 # [1.5.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.4.1...@voiceflow/realtime@1.5.0) (2021-07-16)
 
 

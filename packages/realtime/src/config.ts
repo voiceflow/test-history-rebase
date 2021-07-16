@@ -16,12 +16,6 @@ const CONFIG: Config = {
   IS_PRIVATE_CLOUD: NODE_ENV === 'production' && CLOUD_ENV !== 'public',
   CREATOR_API_ENDPOINT: getRequiredProcessEnv('CREATOR_API_ENDPOINT'),
 
-  // Application secrets
-  PLATFORM_KEY: getRequiredProcessEnv('PLATFORM_KEY'),
-  CONFIG_CLIENT_ID: getRequiredProcessEnv('CONFIG_CLIENT_ID'),
-  CONFIG_CLIENT_SECRET: getRequiredProcessEnv('CONFIG_CLIENT_SECRET'),
-  SEGMENT_WRITE_KEY: getRequiredProcessEnv('SEGMENT_WRITE_KEY'),
-
   // Release information
   GIT_SHA: getOptionalProcessEnv('GIT_SHA'),
   BUILD_NUM: getOptionalProcessEnv('BUILD_NUM'),

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DragContext, DragContextPreviewProps } from '@/contexts';
+import { DragContext, DragContextPreviewProps } from '@/contexts/DragContext';
 
 // eslint-disable-next-line import/prefer-default-export
 export const useDragPreview = <P extends {}>(type: string, component: React.FC<DragContextPreviewProps & P>, options: Record<string, any> = {}) => {

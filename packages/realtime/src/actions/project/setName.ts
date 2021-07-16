@@ -1,19 +1,14 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Plugin } from '@/types';
+import { ActionCreatorPayload } from '../utils';
+import { AbstractProjectActionControl } from './utils';
 
-import { resendProjectChannel } from '../../utils';
+class SetProjectNameControl extends AbstractProjectActionControl<ActionCreatorPayload<typeof Realtime.project.setName>> {
+  actionCreator = Realtime.project.setName;
 
-const setName: Plugin = (server) =>
-  server.action(Realtime.project.setName, {
-    access: (_ctx, _action, _meta) => {
-      // implement access logic
-      return true;
-    },
-    resend: resendProjectChannel,
-    process: (_ctx, _action, _meta) => {
-      // persist to database
-    },
-  });
+  process = async (): Promise<void> => {
+    // TODO: add process
+  };
+}
 
-export default setName;
+export default SetProjectNameControl;

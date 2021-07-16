@@ -1,16 +1,14 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Plugin } from '@/types';
+import { ActionCreatorPayload } from '../utils';
+import { AbstractLinkActionControl } from './utils';
 
-const remove: Plugin = (server) =>
-  server.action(Realtime.link.remove, {
-    access: (_ctx, _action, _meta) => {
-      // implement access logic
-      return true;
-    },
-    process: (_ctx, _action, _meta) => {
-      // persist to database
-    },
-  });
+class RemoveLinkActionControl extends AbstractLinkActionControl<ActionCreatorPayload<typeof Realtime.link.remove>> {
+  actionCreator = Realtime.link.remove;
 
-export default remove;
+  process = async (): Promise<void> => {
+    // TODO: add process
+  };
+}
+
+export default RemoveLinkActionControl;

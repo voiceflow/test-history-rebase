@@ -1,11 +1,24 @@
-import { Plugin } from '@/types';
+import { LoguxControlOptions } from '../../control';
+import AddBlocksControl from './addBlocks';
+import DragBlocksControl from './dragBlocks';
+import MoveBlocksControl from './moveBlocks';
+import MoveCursorControl from './moveCursor';
+import RemoveBlocControl from './removeBlocks';
 
-import addBlocks from './addBlocks';
-import dragBlocks from './dragBlocks';
-import moveBlocks from './moveBlocks';
-import moveCursor from './moveCursor';
-import removeBlocks from './removeBlocks';
+export type DiagramActionControlMap = {
+  addBlocksControl: AddBlocksControl;
+  dragBlocksControl: DragBlocksControl;
+  moveBlocksControl: MoveBlocksControl;
+  moveCursorControl: MoveCursorControl;
+  removeBlocControl: RemoveBlocControl;
+};
 
-const diagramActions: Plugin = (service) => service.use(addBlocks, dragBlocks, moveBlocks, removeBlocks, moveCursor);
+const buildDiagramActionControls = (options: LoguxControlOptions): DiagramActionControlMap => ({
+  addBlocksControl: new AddBlocksControl(options),
+  dragBlocksControl: new DragBlocksControl(options),
+  moveBlocksControl: new MoveBlocksControl(options),
+  moveCursorControl: new MoveCursorControl(options),
+  removeBlocControl: new RemoveBlocControl(options),
+});
 
-export default diagramActions;
+export default buildDiagramActionControls;

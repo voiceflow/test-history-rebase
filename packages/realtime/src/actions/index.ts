@@ -1,10 +1,16 @@
-import { Plugin } from '@/types';
+import { LoguxControlOptions } from '../control';
+import buildDiagramActionControls, { DiagramActionControlMap } from './diagram';
+import buildLinkActionControls, { LinkActionControlMap } from './link';
+import buildNodeActionControls, { NodeActionControlMap } from './node';
+import buildProjectActionControls, { ProjectActionControlMap } from './project';
 
-import diagramActions from './diagram';
-import linkActions from './link';
-import nodeActions from './node';
-import projectActions from './project';
+export type ActionMap = DiagramActionControlMap & LinkActionControlMap & NodeActionControlMap & ProjectActionControlMap;
 
-const actions: Plugin = (service) => service.use(diagramActions, linkActions, nodeActions, projectActions);
+const buildActions = (options: LoguxControlOptions): ActionMap => ({
+  ...buildLinkActionControls(options),
+  ...buildNodeActionControls(options),
+  ...buildDiagramActionControls(options),
+  ...buildProjectActionControls(options),
+});
 
-export default actions;
+export default buildActions;

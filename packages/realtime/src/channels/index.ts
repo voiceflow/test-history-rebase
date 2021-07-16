@@ -1,10 +1,21 @@
-import { Plugin } from '@/types';
+import { LoguxControlOptions } from '../control';
+import DiagramChannel from './diagram';
+import ProjectChannel from './project';
+import VersionChannel from './version';
+import WorkspaceChannel from './workspace';
 
-import diagramChannel from './diagram';
-import projectChannel from './project';
-import versionChannel from './version';
-import workspaceChannel from './workspace';
+export type ChannelMap = {
+  diagram: DiagramChannel;
+  project: ProjectChannel;
+  version: VersionChannel;
+  workspace: WorkspaceChannel;
+};
 
-const channels: Plugin = (server) => server.use(diagramChannel, versionChannel, projectChannel, workspaceChannel);
+const buildChannels = (options: LoguxControlOptions): ChannelMap => ({
+  diagram: new DiagramChannel(options),
+  project: new ProjectChannel(options),
+  version: new VersionChannel(options),
+  workspace: new WorkspaceChannel(options),
+});
 
-export default channels;
+export default buildChannels;

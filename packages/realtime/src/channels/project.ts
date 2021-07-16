@@ -1,10 +1,33 @@
-import { Channels } from '@voiceflow/realtime-sdk';
+import { parseId } from '@logux/core';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Plugin } from '@/types';
+import { AbstractChannelControl, ChannelContext } from './utils';
 
-const projectChannel: Plugin = (server) =>
-  server.channel<Parameters<typeof Channels.project>[0]>(Channels.project({ projectID: ':projectID' }), {
-    access: (ctx) => server.projectAuthorizer(server, Number(ctx.userId), ctx.params.projectID),
-  });
+class ProjectChannel extends AbstractChannelControl<Realtime.Channels.ProjectChannelParams> {
+  channel = Realtime.Channels.project({ projectID: ':projectID' });
 
-export default projectChannel;
+  protected access = async (ctx: ChannelContext<Realtime.Channels.ProjectChannelParams>): Promise<boolean> => {
+    return this.services.project.canRead(ctx.params.projectID, Number(ctx.userId));
+  };
+
+  protected load = async (ctx: ChannelContext<Realtime.Channels.ProjectChannelParams>): Promise<void> => {
+    const diagramIDs = await this.services.project.getConnectedDiagrams(ctx.params.projectID);
+
+    const diagramsNodesIDs = await Promise.all(diagramIDs.map((diagramID) => this.services.diagram.getConnectedNodes(diagramID)));
+    const diagramViewers = await Promise.all(
+      diagramsNodesIDs.map((nodesIDs) => this.services.viewer.getViewers(nodesIDs.map((nodeID) => parseId(nodeID).clientId!)))
+    );
+
+    await this.server.process(
+      Realtime.project.loadViewers({
+        projectID: ctx.params.projectID,
+        viewers: diagramIDs.reduce<Record<string, Realtime.Viewer[]>>(
+          (acc, diagramID, index) => Object.assign(acc, { [diagramID]: diagramViewers[index] }),
+          {}
+        ),
+      })
+    );
+  };
+}
+
+export default ProjectChannel;

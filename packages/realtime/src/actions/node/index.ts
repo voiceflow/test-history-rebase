@@ -1,12 +1,27 @@
-import { Plugin } from '@/types';
+import { LoguxControlOptions } from '../../control';
+import AppendPortControl from './appendPort';
+import AppendStepControl from './appendStep';
+import InsertStepControl from './insertStep';
+import RemovePortControl from './removePort';
+import RemoveStepControl from './removeStep';
+import UpdateNodeDataControl from './updateData';
 
-import appendPort from './appendPort';
-import appendStep from './appendStep';
-import insertStep from './insertStep';
-import removePort from './removePort';
-import removeStep from './removeStep';
-import updateData from './updateData';
+export type NodeActionControlMap = {
+  appendPortControl: AppendPortControl;
+  appendStepControl: AppendStepControl;
+  insertStepControl: InsertStepControl;
+  removePortControl: RemovePortControl;
+  removeStepControl: RemoveStepControl;
+  updateNodeDataControl: UpdateNodeDataControl;
+};
 
-const nodeActions: Plugin = (service) => service.use(appendPort, appendStep, insertStep, removePort, removeStep, updateData);
+const buildNodeActionControls = (options: LoguxControlOptions): NodeActionControlMap => ({
+  appendPortControl: new AppendPortControl(options),
+  appendStepControl: new AppendStepControl(options),
+  insertStepControl: new InsertStepControl(options),
+  removePortControl: new RemovePortControl(options),
+  removeStepControl: new RemoveStepControl(options),
+  updateNodeDataControl: new UpdateNodeDataControl(options),
+});
 
-export default nodeActions;
+export default buildNodeActionControls;

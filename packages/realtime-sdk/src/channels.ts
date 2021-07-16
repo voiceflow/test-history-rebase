@@ -1,9 +1,25 @@
 import { DIAGRAM_KEY, PROJECT_KEY, VERSION_KEY, WORKSPACE_KEY } from './constants';
 
-export const workspace = ({ workspaceID }: { workspaceID: string }) => `${WORKSPACE_KEY}/${workspaceID}`;
+export interface WorkspaceChannelParams {
+  workspaceID: string;
+}
 
-export const project = ({ projectID }: { projectID: string }) => `${PROJECT_KEY}/${projectID}`;
+export interface ProjectChannelParams {
+  projectID: string;
+}
 
-export const version = ({ versionID }: { versionID: string }) => `${VERSION_KEY}/${versionID}`;
+export interface VersionChannelParams extends ProjectChannelParams {
+  versionID: string;
+}
 
-export const diagram = ({ diagramID }: { diagramID: string }) => `${DIAGRAM_KEY}/${diagramID}`;
+export interface DiagramChannelParams extends ProjectChannelParams {
+  diagramID: string;
+}
+
+export const workspace = ({ workspaceID }: WorkspaceChannelParams): string => `${WORKSPACE_KEY}/${workspaceID}`;
+
+export const project = ({ projectID }: ProjectChannelParams): string => `${PROJECT_KEY}/${projectID}`;
+
+export const version = ({ versionID, ...params }: VersionChannelParams): string => `${project(params)}/${VERSION_KEY}/${versionID}`;
+
+export const diagram = ({ diagramID, ...params }: DiagramChannelParams): string => `${project(params)}/${DIAGRAM_KEY}/${diagramID}`;

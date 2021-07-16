@@ -4,7 +4,8 @@
     "compiler": "ttypescript"
   },
   "compilerOptions": {
-    "module": "esnext",
+    "target": "ES2017",
+    "module": "ESNext",
     "baseUrl": "..",
     "rootDirs": [
       "src",

@@ -1,10 +1,13 @@
-import { Channels } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Plugin } from '@/types';
+import { AbstractChannelControl, ChannelContext } from './utils';
 
-const versionChannel: Plugin = (server) =>
-  server.channel<Parameters<typeof Channels.version>[0]>(Channels.version({ versionID: ':versionID' }), {
-    access: (ctx) => server.versionAuthorizer(server, Number(ctx.userId), ctx.params.versionID),
-  });
+class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionChannelParams> {
+  channel = Realtime.Channels.version({ versionID: ':versionID', projectID: ':projectID' });
 
-export default versionChannel;
+  protected access = async (ctx: ChannelContext<Realtime.Channels.VersionChannelParams>): Promise<boolean> => {
+    return this.services.version.canRead(ctx.params.versionID, Number(ctx.userId));
+  };
+}
+
+export default VersionChannel;

@@ -1,6 +1,6 @@
 import produce, { Draft } from 'immer';
 import { ActionCreator } from 'typescript-fsa';
-import { reducerWithInitialState } from 'typescript-fsa-reducers';
+import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import { createRootSelectorFactory } from '@/ducks/utils';
 
@@ -15,7 +15,7 @@ declare module 'typescript-fsa-reducers' {
 
 type ImmerHandler<S, P> = (draft: Draft<S>, payload: P) => void;
 
-export const createRootReducer = <T>(initialState: T) => {
+export const createRootReducer = <T>(initialState: T): ReducerBuilder<T, T, T | undefined> => {
   const reducer = reducerWithInitialState<T>(initialState);
 
   reducer.immerCase = (actionCreator, handler) => reducer.case(actionCreator, (state, payload) => produce(state, (draft) => handler(draft, payload)));

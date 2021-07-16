@@ -1,16 +1,14 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Plugin } from '@/types';
+import { ActionCreatorPayload } from '../utils';
+import { AbstractNodeActionControl } from './utils';
 
-const appendPort: Plugin = (server) =>
-  server.action(Realtime.node.appendPort, {
-    access: (_ctx, _action, _meta) => {
-      // implement access logic
-      return true;
-    },
-    process: (_ctx, _action, _meta) => {
-      // persist to database
-    },
-  });
+class AppendPortControl extends AbstractNodeActionControl<ActionCreatorPayload<typeof Realtime.node.appendPort>> {
+  actionCreator = Realtime.node.appendPort;
 
-export default appendPort;
+  process = async (): Promise<void> => {
+    // TODO: add process
+  };
+}
+
+export default AppendPortControl;

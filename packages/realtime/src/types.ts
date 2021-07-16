@@ -1,9 +1,3 @@
-import type Server from './server';
-
-export interface Plugin {
-  (server: Server): void;
-}
-
 export interface Config {
   NODE_ENV: string;
   PORT: number;
@@ -12,12 +6,6 @@ export interface Config {
   CLOUD_ENV: string;
   IS_PRIVATE_CLOUD: boolean;
   CREATOR_API_ENDPOINT: string;
-
-  // Application secrets
-  PLATFORM_KEY: string;
-  CONFIG_CLIENT_ID: string;
-  CONFIG_CLIENT_SECRET: string;
-  SEGMENT_WRITE_KEY: string;
 
   // Release information
   GIT_SHA: string | null;

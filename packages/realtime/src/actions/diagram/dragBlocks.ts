@@ -1,13 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Plugin } from '@/types';
+import { ActionCreatorPayload } from '../utils';
+import { NoopDiagramActionControl } from './utils';
 
-import { resendDiagramChannel } from '../../utils';
+class DragBlocksControl extends NoopDiagramActionControl<ActionCreatorPayload<typeof Realtime.diagram.dragBlocks>> {
+  actionCreator = Realtime.diagram.dragBlocks;
+}
 
-const dragBlocks: Plugin = (server) =>
-  server.noop(Realtime.diagram.dragBlocks, {
-    access: (ctx, action) => server.diagramAuthorizer(server, Number(ctx.userId), action.payload.diagramID),
-    resend: resendDiagramChannel,
-  });
-
-export default dragBlocks;
+export default DragBlocksControl;

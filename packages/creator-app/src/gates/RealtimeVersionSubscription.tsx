@@ -1,20 +1,15 @@
 import React from 'react';
 
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
-import { useVersionSubscription } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { useSelector, useVersionSubscription } from '@/hooks';
 
-const RealtimeVersionSubscription: React.FC<RealtimeVersionSubscriptionConnectedProps> = ({ versionID }) => {
-  useVersionSubscription(versionID);
+const RealtimeVersionSubscription: React.FC = () => {
+  const versionID = useSelector(Session.activeVersionIDSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector);
+
+  useVersionSubscription(projectID, versionID);
 
   return null;
 };
 
-const mapStateToProps = {
-  versionID: Session.activeVersionIDSelector,
-};
-
-type RealtimeVersionSubscriptionConnectedProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(RealtimeVersionSubscription);
+export default RealtimeVersionSubscription;

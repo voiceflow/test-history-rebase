@@ -3,7 +3,8 @@ import { preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { EventualEngineContext, RealtimeDiagramContext, RealtimeProjectContext } from '@/contexts';
-import { useAtomState, useAtomSubscription, useRealtimeDispatch } from '@/hooks';
+import * as Session from '@/ducks/session';
+import { useAtomState, useAtomSubscription, useRealtimeDispatch, useSelector } from '@/hooks';
 import { composeRefs } from '@/utils/react';
 
 import { ANIMATION_DURATION, CURSOR_EXPIRY_TIMEOUT } from '../../../constants';
@@ -20,6 +21,7 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
   const { cursorCoordsAtom } = React.useContext(RealtimeDiagramContext)!;
   const { viewerAtom } = React.useContext(RealtimeProjectContext)!;
   const viewer = useAtomState(viewerAtom({ tabID }));
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
   const innerRef = React.useRef<HTMLDivElement>(null);
   const dispatch = useRealtimeDispatch();
   const removeTimerRef = React.useRef<NodeJS.Timer | null>(null);
@@ -29,7 +31,7 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
   const backgroundColor = React.useMemo(() => (viewer.color.includes('|') ? `#${viewer.color.split('|')[1]}` : '#fddae1'), [viewer.color]);
 
   const setTimers = React.useCallback(() => {
-    removeTimerRef.current = setTimeout(() => dispatch.local(Realtime.diagram.hideCursor({ diagramID, tabID })), CURSOR_EXPIRY_TIMEOUT);
+    removeTimerRef.current = setTimeout(() => dispatch.local(Realtime.diagram.hideCursor({ projectID, diagramID, tabID })), CURSOR_EXPIRY_TIMEOUT);
 
     fadeoutTimerRef.current = setTimeout(() => {
       window.requestAnimationFrame(() => {
@@ -52,7 +54,11 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
     }
   }, []);
 
-  const [initialX, initialY] = useAtomSubscription(cursorCoordsAtom({ tabID }), (coords) => {
+  const initialPoint = useAtomSubscription(cursorCoordsAtom({ tabID }), (coords) => {
+    if (!coords) {
+      return;
+    }
+
     // using eventual engine to avoid having to re-bind this subscription when changing diagrams
     const point = eventualEngine.get()!.canvas!.reverseTransformPoint(coords, true);
 
@@ -79,11 +85,15 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
   }, []);
 
   return (
-    <Cursor style={{ left: `${initialX}px`, top: `${initialY}px` }} onClick={preventDefault()} ref={composeRefs(innerRef, ref)}>
+    <Cursor
+      ref={composeRefs(innerRef, ref)}
+      style={{ left: `${initialPoint?.[0] ?? 0}px`, top: `${initialPoint?.[1] ?? 0}px` }}
+      onClick={preventDefault()}
+    >
       <SvgIcon icon="cursor" color={color} />
       <div style={{ position: 'relative' }}>
         <Nametag color={color} backgroundColor={backgroundColor}>
-          {viewer.name}
+          {viewer?.name}
         </Nametag>
       </div>
     </Cursor>

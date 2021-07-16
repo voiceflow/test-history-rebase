@@ -1,30 +1,21 @@
 import * as Logux from '@logux/server';
-import { Authorizer, Processor, Resender } from '@logux/server/base-server';
 import Logger from '@voiceflow/logger';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Action, ActionCreator, AnyAction } from 'typescript-fsa';
+import { AnyAction } from 'typescript-fsa';
 
-import createClient from './client';
-import type { Config, Plugin } from './types';
-import { createDiagramAuthorizer, createProjectAuthorizer, createVersionAuthorizer, createWorkspaceAuthorizer } from './utils';
+import type { Config } from './types';
 
 const SUBPROTOCOL = '1.0.0';
 const SUPPORT_RANGE = '1.x';
 
-type ActionCreatorPayload<T extends ActionCreator<any>> = T extends ActionCreator<infer R> ? R : never;
+interface Options {
+  cwd: string;
+  config: Config;
+  logger: Logger;
+}
 
 class Server extends Logux.Server {
-  client = createClient(this.config);
-
-  workspaceAuthorizer = createWorkspaceAuthorizer();
-
-  projectAuthorizer = createProjectAuthorizer();
-
-  versionAuthorizer = createVersionAuthorizer();
-
-  diagramAuthorizer = createDiagramAuthorizer();
-
-  constructor(cwd: string, log: Logger, public config: Config) {
+  constructor({ cwd, config, logger }: Options) {
     super({
       subprotocol: SUBPROTOCOL,
       supports: SUPPORT_RANGE,
@@ -37,11 +28,11 @@ class Server extends Logux.Server {
           // ignore action processing logs
           if (['Action was processed', 'Action was cleaned'].includes(message)) return;
 
-          log.info({ message, details: config.NODE_ENV === 'production' || !details.action ? details : details.action });
+          logger.info({ message, details: config.NODE_ENV === 'production' || !details.action ? details : details.action });
         },
-        warn: (details, message) => log.warn({ message, details }),
-        error: (details, message) => log.error({ message, details }),
-        fatal: (details, message) => log.fatal({ message, details }),
+        warn: (details, message) => logger.warn({ message, details }),
+        error: (details, message) => logger.error({ message, details }),
+        fatal: (details, message) => logger.fatal({ message, details }),
       },
       env: config.NODE_ENV === 'production' ? 'production' : 'development',
 
@@ -52,50 +43,12 @@ class Server extends Logux.Server {
     });
   }
 
-  use(...plugins: Plugin[]) {
-    return plugins.map((plugin) => plugin(this));
+  async start(): Promise<void> {
+    await this.listen();
   }
 
-  action<T extends ActionCreator<any>>(
-    actionCreator: T,
-    callbacks: {
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      access: Authorizer<Action<ActionCreatorPayload<T>>, {}, {}>;
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      process: Processor<Action<ActionCreatorPayload<T>>, {}, {}>;
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      resend?: Resender<Action<ActionCreatorPayload<T>>, {}, {}>;
-    }
-  ): void {
-    this.type<Action<ActionCreatorPayload<T>>>(actionCreator.type, callbacks);
-  }
-
-  noop<T extends ActionCreator<any>>(
-    actionCreator: T,
-    callbacks: {
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      access?: Authorizer<Action<ActionCreatorPayload<T>>, {}, {}>;
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      process?: Processor<Action<ActionCreatorPayload<T>>, {}, {}>;
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      resend?: Resender<Action<ActionCreatorPayload<T>>, {}, {}>;
-    } = {}
-  ): void {
-    this.type<Action<ActionCreatorPayload<T>>>(actionCreator.type, {
-      access: () => true,
-      process: () => {
-        // noop
-      },
-      ...callbacks,
-    });
-  }
-
-  start() {
-    return this.listen();
-  }
-
-  stop() {
-    return this.destroy();
+  async stop(): Promise<void> {
+    await this.destroy();
   }
 }
 

@@ -1,16 +1,14 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Plugin } from '@/types';
+import { ActionCreatorPayload } from '../utils';
+import { AbstractDiagramActionControl } from './utils';
 
-import { resendDiagramChannel } from '../../utils';
+class RemoveBlocksControl extends AbstractDiagramActionControl<ActionCreatorPayload<typeof Realtime.diagram.removeBlocks>> {
+  actionCreator = Realtime.diagram.removeBlocks;
 
-const removeBlocks: Plugin = (server) =>
-  server.action(Realtime.diagram.removeBlocks, {
-    access: (ctx, action) => server.diagramAuthorizer(server, Number(ctx.userId), action.payload.diagramID),
-    resend: resendDiagramChannel,
-    process: (_ctx, _action, _meta) => {
-      // persist to database
-    },
-  });
+  process = async (): Promise<void> => {
+    // TODO: add process
+  };
+}
 
-export default removeBlocks;
+export default RemoveBlocksControl;

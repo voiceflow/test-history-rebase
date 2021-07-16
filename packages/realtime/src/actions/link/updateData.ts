@@ -1,16 +1,14 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Plugin } from '@/types';
+import { ActionCreatorPayload } from '../utils';
+import { AbstractLinkActionControl } from './utils';
 
-const updateData: Plugin = (server) =>
-  server.action(Realtime.link.updateData, {
-    access: (_ctx, _action, _meta) => {
-      // implement access logic
-      return true;
-    },
-    process: (_ctx, _action, _meta) => {
-      // persist to database
-    },
-  });
+class UpdateDataLinkActionControl extends AbstractLinkActionControl<ActionCreatorPayload<typeof Realtime.link.updateData>> {
+  actionCreator = Realtime.link.updateData;
 
-export default updateData;
+  process = async (): Promise<void> => {
+    // TODO: add process
+  };
+}
+
+export default UpdateDataLinkActionControl;

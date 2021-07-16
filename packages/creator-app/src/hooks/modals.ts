@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ModalType } from '@/constants';
-import { ModalContextType, ModalsContext } from '@/contexts';
+import { ModalContextType, ModalsContext } from '@/contexts/ModalsContext';
 
 export interface ModalActions<T extends object = {}> {
   fade: boolean;

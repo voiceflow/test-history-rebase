@@ -29,7 +29,7 @@ export const useCursorControls = () => {
       if (atomicActions.isEnabled) {
         if (hasProjectViewers && prevCoords.current !== nextCoords) {
           prevCoords.current = nextCoords;
-          dispatch.sync(Realtime.diagram.moveCursor({ diagramID, tabID, coords: nextCoords }));
+          dispatch.sync(Realtime.diagram.moveCursor({ projectID, diagramID, tabID, coords: nextCoords }));
         }
       } else if (!REALTIME_CURSOR_ENABLED) {
         engine.realtime.sendVolatileUpdate(RealtimeDuck.moveMouse(nextCoords));

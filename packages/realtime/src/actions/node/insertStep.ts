@@ -1,16 +1,14 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Plugin } from '@/types';
+import { ActionCreatorPayload } from '../utils';
+import { AbstractNodeActionControl } from './utils';
 
-const insertStep: Plugin = (server) =>
-  server.action(Realtime.node.insertStep, {
-    access: (_ctx, _action, _meta) => {
-      // implement access logic
-      return true;
-    },
-    process: (_ctx, _action, _meta) => {
-      // persist to database
-    },
-  });
+class InsertStepControl extends AbstractNodeActionControl<ActionCreatorPayload<typeof Realtime.node.insertStep>> {
+  actionCreator = Realtime.node.insertStep;
 
-export default insertStep;
+  process = async (): Promise<void> => {
+    // TODO: add process
+  };
+}
+
+export default InsertStepControl;

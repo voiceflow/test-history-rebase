@@ -23,10 +23,10 @@ export const useWorkspaceSubscription = (workspaceID: Nullable<string>): boolean
 export const useProjectSubscription = (projectID: Nullable<string>): boolean =>
   useSubscription(projectID ? [Channels.project({ projectID })] : [], { context: RealtimeStoreContext as any });
 
-export const useVersionSubscription = (versionID: Nullable<string>): boolean =>
-  useSubscription(versionID ? [Channels.version({ versionID })] : [], { context: RealtimeStoreContext as any });
+export const useVersionSubscription = (projectID: Nullable<string>, versionID: Nullable<string>): boolean =>
+  useSubscription(projectID && versionID ? [Channels.version({ versionID, projectID })] : [], { context: RealtimeStoreContext as any });
 
-export const useDiagramSubscription = (diagramID: Nullable<string>): boolean =>
-  useSubscription(diagramID ? [Channels.diagram({ diagramID })] : [], {
+export const useDiagramSubscription = (projectID: Nullable<string>, diagramID: Nullable<string>): boolean =>
+  useSubscription(projectID && diagramID ? [Channels.diagram({ diagramID, projectID })] : [], {
     context: RealtimeStoreContext as any,
   });

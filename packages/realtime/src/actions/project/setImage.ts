@@ -1,19 +1,14 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Plugin } from '@/types';
+import { ActionCreatorPayload } from '../utils';
+import { AbstractProjectActionControl } from './utils';
 
-import { resendProjectChannel } from '../../utils';
+class SetProjectImageControl extends AbstractProjectActionControl<ActionCreatorPayload<typeof Realtime.project.setImage>> {
+  actionCreator = Realtime.project.setImage;
 
-const setImage: Plugin = (server) =>
-  server.action(Realtime.project.setImage, {
-    access: (_ctx, _action, _meta) => {
-      // implement access logic
-      return true;
-    },
-    resend: resendProjectChannel,
-    process: (_ctx, _action, _meta) => {
-      // persist to database
-    },
-  });
+  process = async (): Promise<void> => {
+    // TODO: add process
+  };
+}
 
-export default setImage;
+export default SetProjectImageControl;

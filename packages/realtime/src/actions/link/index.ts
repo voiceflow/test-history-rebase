@@ -1,9 +1,18 @@
-import { Plugin } from '@/types';
+import { LoguxControlOptions } from '../../control';
+import AddLinkControl from './add';
+import RemoveLinkControl from './remove';
+import UpdateLinkDataControl from './updateData';
 
-import add from './add';
-import remove from './remove';
-import updateData from './updateData';
+export type LinkActionControlMap = {
+  addLinkControl: AddLinkControl;
+  removeLinkControl: RemoveLinkControl;
+  updateLinkDataControl: UpdateLinkDataControl;
+};
 
-const linkActions: Plugin = (service) => service.use(add, remove, updateData);
+const buildLinkActionControls = (options: LoguxControlOptions): LinkActionControlMap => ({
+  addLinkControl: new AddLinkControl(options),
+  removeLinkControl: new RemoveLinkControl(options),
+  updateLinkDataControl: new UpdateLinkDataControl(options),
+});
 
-export default linkActions;
+export default buildLinkActionControls;

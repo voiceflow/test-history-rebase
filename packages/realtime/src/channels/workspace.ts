@@ -1,10 +1,13 @@
-import { Channels } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { Plugin } from '@/types';
+import { AbstractChannelControl, ChannelContext } from './utils';
 
-const workspaceChannel: Plugin = (server) =>
-  server.channel<Parameters<typeof Channels.workspace>[0]>(Channels.workspace({ workspaceID: ':workspaceID' }), {
-    access: (ctx) => server.workspaceAuthorizer(server, Number(ctx.userId), ctx.params.workspaceID),
-  });
+class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.WorkspaceChannelParams> {
+  channel = Realtime.Channels.workspace({ workspaceID: ':workspaceID' });
 
-export default workspaceChannel;
+  protected access = async (ctx: ChannelContext<Realtime.Channels.WorkspaceChannelParams>): Promise<boolean> => {
+    return this.services.workspace.canRead(ctx.params.workspaceID, Number(ctx.userId));
+  };
+}
+
+export default WorkspaceChannel;

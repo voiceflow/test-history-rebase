@@ -44,10 +44,14 @@ export const useAtomFactory = <T, P extends Serializable = never>(
         context: options.context,
         default: typeof options.default === 'function' ? () => (options.default as (param: P) => T)(param as P) : options.default,
         update: (next) => {
-          const atom = atomStore.atoms.get(atomKey) || { listeners: [] };
+          const atom = atomStore.atoms.get(atomKey);
 
-          atomStore.atoms.set(atomKey, { ...atom, value: next });
-          atom.listeners.forEach((listener) => listener(next));
+          if (atom && atom.value === next) {
+            return;
+          }
+
+          atomStore.atoms.set(atomKey, { ...atom, value: next, listeners: atom?.listeners ?? [] });
+          atom?.listeners.forEach((listener) => listener(next));
         },
       };
     },
@@ -55,8 +59,8 @@ export const useAtomFactory = <T, P extends Serializable = never>(
   );
 };
 
-export const useAtom = <T>(key: string, options: Pick<Atom<T>, 'default' | 'context'>, dependencies: any[] = []) => {
-  return React.useMemo(
+export const useAtom = <T>(key: string, options: Pick<Atom<T>, 'default' | 'context'>, dependencies: any[] = []) =>
+  React.useMemo(
     () => ({
       key,
       default: options.default,
@@ -64,7 +68,6 @@ export const useAtom = <T>(key: string, options: Pick<Atom<T>, 'default' | 'cont
     }),
     [key, ...dependencies]
   );
-};
 
 const isDirectlyEqual = <T>(lhs: T, rhs: T) => lhs === rhs;
 

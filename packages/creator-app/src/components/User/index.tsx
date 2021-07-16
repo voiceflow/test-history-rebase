@@ -34,7 +34,7 @@ const User = React.forwardRef<HTMLDivElement, UserProps>(({ user, className, pen
       const colors = user.color ? user.color.split('|') : user.image.split('|');
       style.backgroundColor = `#${colors[1]}`;
       style.color = `#${colors[0]}`;
-    } else if (user) {
+    } else if (user?.image) {
       style.fontSize = '0.0009px';
       style.backgroundImage = `url(${user.image})`;
     }

@@ -1,5 +1,6 @@
 import { AxiosStatic } from 'axios';
 
+import logger from '../logger';
 import { User } from '../models';
 import { BaseOptions } from './types';
 
@@ -18,7 +19,11 @@ const ApiClient = ({ axios, config }: Options) => {
         client
           .get<User | null>('/user', { headers: { authorization: token } })
           .then(({ data }) => data)
-          .catch(() => null),
+          .catch((err) => {
+            logger.debug(err);
+
+            return null;
+          }),
     },
 
     workspace: {

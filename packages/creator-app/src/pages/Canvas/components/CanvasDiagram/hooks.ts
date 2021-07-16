@@ -5,6 +5,7 @@ import { throttle } from 'throttle-debounce';
 import { MovementCalculator } from '@/components/Canvas/types';
 import { REALTIME_CURSOR_ENABLED } from '@/config';
 import { FeatureFlag } from '@/config/features';
+import * as Account from '@/ducks/account';
 import * as RealtimeDuck from '@/ducks/realtime';
 import * as RealtimeV2Duck from '@/ducks/realtimeV2';
 import * as Session from '@/ducks/session';
@@ -17,25 +18,25 @@ export const useCursorControls = () => {
   const mousePosition = React.useRef<Point | null>(null);
   const engine = React.useContext(EngineContext)!;
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-  const tabID = useSelector(Session.tabIDSelector)!;
+  const creatorID = useSelector(Account.userIDSelector)!;
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
   const dispatch = useRealtimeDispatch();
-  const hasProjectViewers = useRealtimeSelector(RealtimeV2Duck.hasExternalProjectViewersSelector)(projectID);
+  const hasDiagramViewers = useRealtimeSelector((state) => RealtimeV2Duck.hasExternalDiagramViewersSelector(state, diagramID));
   const prevCoords = React.useRef<Point | null>(null);
 
   const moveMouse = React.useCallback(
     throttle(10, (nextCoords: Point) => {
       if (atomicActions.isEnabled) {
-        if (hasProjectViewers && prevCoords.current !== nextCoords) {
+        if (hasDiagramViewers && prevCoords.current !== nextCoords) {
           prevCoords.current = nextCoords;
-          dispatch.sync(Realtime.diagram.moveCursor({ projectID, diagramID, tabID, coords: nextCoords }));
+          dispatch.sync(Realtime.diagram.moveCursor({ projectID, diagramID, creatorID, coords: nextCoords }));
         }
       } else if (!REALTIME_CURSOR_ENABLED) {
         engine.realtime.sendVolatileUpdate(RealtimeDuck.moveMouse(nextCoords));
       }
     }),
-    [hasProjectViewers]
+    [hasDiagramViewers]
   );
 
   const panViewport = React.useCallback(

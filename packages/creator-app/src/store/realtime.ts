@@ -8,7 +8,7 @@ import { Action, AnyAction, isType } from 'typescript-fsa';
 
 import { DEBUG_REALTIME } from '@/config';
 import * as Account from '@/ducks/account';
-import realtimeReducer, * as RealtimeDuck from '@/ducks/realtimeV2';
+import realtimeReducer from '@/ducks/realtimeV2';
 import * as Session from '@/ducks/session';
 
 interface LoguxMiddlewareAPI<S = any> extends Redux.MiddlewareAPI<LoguxDispatch<AnyAction>, S> {
@@ -20,13 +20,9 @@ interface LoguxMiddleware<S = any> {
 }
 
 const isProjectAction = (action: AnyAction): action is Action<Realtime.ProjectPayload> =>
-  [
-    Realtime.project.identifyViewer.type,
-    Realtime.project.forgetViewer.type,
-    Realtime.project.setName.type,
-    Realtime.project.setImage.type,
-    Realtime.project.setPrivacy.type,
-  ].includes(action.type);
+  [Realtime.project.setName.type, Realtime.project.setImage.type, Realtime.project.setPrivacy.type, Realtime.project.updateViewers].includes(
+    action.type
+  );
 
 const isDiagramAction = (action: AnyAction): action is Action<Realtime.DiagramPayload> => [Realtime.diagram.moveCursor].includes(action.type);
 
@@ -67,40 +63,10 @@ export const diagramIgnoreMiddleware = createIgnoreMiddleware(
 export const ownCursorIgnoreMiddleware: LoguxMiddleware = createIgnoreMiddleware((api, action) => {
   if (!isType(action, Realtime.diagram.moveCursor)) return false;
 
-  const tabID = Session.tabIDSelector(api.global.getState());
+  const creatorID = Account.userIDSelector(api.global.getState());
 
-  return action.payload.tabID === tabID;
+  return action.payload.creatorID === creatorID;
 });
-
-/**
- * re-send own indentification when a new viewer identifies themselves
- */
-export const reidentifySelfMiddleware: LoguxMiddleware = (api) => (next) => (action) => {
-  const globalState = api.global.getState();
-  const tabID = Session.tabIDSelector(globalState);
-
-  if (
-    isType(action, Realtime.project.identifyViewer) &&
-    action.payload.tabID !== tabID &&
-    !RealtimeDuck.projectHasViewerSelector(api.getState())(action.payload.projectID, action.payload.tabID)
-  ) {
-    const user = Account.userSelector(globalState);
-
-    api.dispatch.sync(
-      Realtime.project.identifyViewer({
-        tabID,
-        projectID: action.payload.projectID,
-        viewer: {
-          creatorID: user.creator_id!,
-          name: user.name!,
-          image: user.image!,
-        },
-      })
-    );
-  }
-
-  next(action);
-};
 
 export const wrapDispatch = (getStore: () => LoguxReduxStore) =>
   Object.assign((action: AnyAction) => getStore().dispatch(action), {
@@ -117,7 +83,7 @@ const createRealtimeStore = (globalStore: Redux.Store, realtime: CrossTabClient)
     undefined,
     composeEnhancers(
       Redux.applyMiddleware(
-        ...[projectIgnoreMiddleware, diagramIgnoreMiddleware, reidentifySelfMiddleware, ownCursorIgnoreMiddleware].map(
+        ...[projectIgnoreMiddleware, diagramIgnoreMiddleware, ownCursorIgnoreMiddleware].map(
           (middleware) =>
             ((api) =>
               middleware({

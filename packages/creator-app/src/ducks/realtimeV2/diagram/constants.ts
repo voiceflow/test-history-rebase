@@ -1,5 +1,14 @@
-import { RealtimeDiagramState } from './types';
+import { RealtimeDiagramAwarenessState, RealtimeDiagramState } from './types';
 
 export const DIAGRAM_STATE_KEY = 'diagram';
 
-export const INITIAL_DIAGRAM_STATE: RealtimeDiagramState = {};
+export const INITIAL_DIAGRAM_STATE: RealtimeDiagramState = {
+  awareness: {
+    viewers: {},
+    cursors: {},
+  },
+};
+
+export const INITIAL_CURSORS: RealtimeDiagramAwarenessState['cursors'][string] = {};
+
+export const INITIAL_DIAGRAM_VIEWERS: RealtimeDiagramAwarenessState['viewers'][string] = [];

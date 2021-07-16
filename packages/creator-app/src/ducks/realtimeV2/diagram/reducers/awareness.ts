@@ -1,43 +1,56 @@
 /* eslint-disable no-param-reassign */
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ActionCreator } from 'typescript-fsa';
-
-import { withoutValue } from '@/utils/array';
-import { createEmptyNormalized } from '@/utils/normalized';
+import { getAlternativeColor } from '@voiceflow/ui';
+import { Draft } from 'immer';
 
 import { createReducerFactory } from '../../utils';
 import { RealtimeDiagramAwarenessState, RealtimeDiagramState } from '../types';
 
 const createReducer = createReducerFactory<RealtimeDiagramState>();
 
-export const moveCursorReducer = createReducer(Realtime.diagram.moveCursor, (state, { diagramID, tabID, coords }) => {
-  const diagramState = state[diagramID] || (state[diagramID] = { awareness: createEmptyNormalized() });
-
-  if (!diagramState.awareness.allKeys.includes(tabID)) {
-    diagramState.awareness.allKeys.push(tabID);
+const initializeAwareness = <T extends Draft<RealtimeDiagramAwarenessState['cursors']> | Draft<RealtimeDiagramAwarenessState['viewers']>>(
+  state: T,
+  diagramID: string
+): T[string] => {
+  if (!state[diagramID]) {
+    state[diagramID] = {};
   }
 
-  diagramState.awareness.byKey[tabID] = coords;
+  return state[diagramID] as T[string];
+};
+
+const createViewer = (viewer: Realtime.Viewer) => ({ ...viewer, color: getAlternativeColor(viewer.creatorID), creator_id: viewer.creatorID });
+
+export const moveCursorReducer = createReducer(Realtime.diagram.moveCursor, (state, { diagramID, creatorID, coords }) => {
+  const awarenessCursors = initializeAwareness(state.awareness.cursors, diagramID);
+
+  awarenessCursors[creatorID] = coords;
 });
 
-export const hideCursorReducer = createReducer(
-  [Realtime.diagram.hideCursor, Realtime.project.forgetViewer] as ActionCreator<{ projectID?: string; tabID: string }>[],
-  (state, { projectID, tabID }) => {
-    const removeFromAwareness = (awareness: RealtimeDiagramAwarenessState) => {
-      awareness.allKeys = withoutValue(awareness.allKeys, tabID);
-      delete awareness.byKey[tabID];
-    };
+export const hideCursorReducer = createReducer(Realtime.diagram.hideCursor, (state, { creatorID, diagramID }) => {
+  const awarenessCursors = initializeAwareness(state.awareness.cursors, diagramID);
 
-    if (projectID) {
-      const projectState = state[projectID];
+  delete awarenessCursors[creatorID];
+});
 
-      if (projectState) {
-        removeFromAwareness(projectState.awareness);
+export const updateDiagramViewers = createReducer(Realtime.project.updateViewers, (state, { diagramID, viewers }) => {
+  initializeAwareness(state.awareness.viewers, diagramID);
+
+  state.awareness.viewers[diagramID] = viewers.map(createViewer);
+
+  if (state.awareness.cursors[diagramID]) {
+    Object.keys(state.awareness.cursors[diagramID]).forEach((creatorID) => {
+      if (!viewers.some((viewer) => String(viewer.creatorID) === creatorID)) {
+        delete state.awareness.cursors[diagramID][creatorID];
       }
-    } else {
-      Object.values(state).forEach((projectState) => {
-        removeFromAwareness(projectState.awareness);
-      });
-    }
+    });
   }
-);
+});
+
+export const loadViewersReducer = createReducer(Realtime.project.loadViewers, (state, { viewers }) => {
+  Object.keys(viewers).forEach((diagramID) => {
+    initializeAwareness(state.awareness.viewers, diagramID);
+
+    state.awareness.viewers[diagramID] = viewers[diagramID].map(createViewer);
+  });
+});

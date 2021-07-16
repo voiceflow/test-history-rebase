@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { EventualEngineContext, RealtimeDiagramContext, RealtimeProjectContext } from '@/contexts';
+import { EventualEngineContext, RealtimeDiagramContext } from '@/contexts';
 import * as Session from '@/ducks/session';
 import { useAtomState, useAtomSubscription, useRealtimeDispatch, useSelector } from '@/hooks';
 import { composeRefs } from '@/utils/react';
@@ -12,26 +12,27 @@ import Cursor from '../../RealtimeOverlayCursor';
 import Nametag from '../../RealtimeOverlayNametag';
 
 export type RealtimeCursorProps = {
+  creatorID: number;
   diagramID: string;
-  tabID: string;
 };
 
-const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ diagramID, tabID }, ref) => {
+const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ diagramID, creatorID }, ref) => {
   const eventualEngine = React.useContext(EventualEngineContext)!;
-  const { cursorCoordsAtom } = React.useContext(RealtimeDiagramContext)!;
-  const { viewerAtom } = React.useContext(RealtimeProjectContext)!;
-  const viewer = useAtomState(viewerAtom({ tabID }));
+  const { viewerAtom, cursorCoordsAtom } = React.useContext(RealtimeDiagramContext)!;
+  const viewer = useAtomState(viewerAtom({ creatorID }));
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const innerRef = React.useRef<HTMLDivElement>(null);
   const dispatch = useRealtimeDispatch();
   const removeTimerRef = React.useRef<NodeJS.Timer | null>(null);
   const fadeoutTimerRef = React.useRef<NodeJS.Timer | null>(null);
-
-  const color = React.useMemo(() => (viewer.color.includes('|') ? `#${viewer.color.split('|')[0]}` : '#f8758f'), [viewer.color]);
-  const backgroundColor = React.useMemo(() => (viewer.color.includes('|') ? `#${viewer.color.split('|')[1]}` : '#fddae1'), [viewer.color]);
+  const color = React.useMemo(() => (viewer?.color.includes('|') ? `#${viewer.color.split('|')[0]}` : '#f8758f'), [viewer?.color]);
+  const backgroundColor = React.useMemo(() => (viewer?.color.includes('|') ? `#${viewer.color.split('|')[1]}` : '#fddae1'), [viewer?.color]);
 
   const setTimers = React.useCallback(() => {
-    removeTimerRef.current = setTimeout(() => dispatch.local(Realtime.diagram.hideCursor({ projectID, diagramID, tabID })), CURSOR_EXPIRY_TIMEOUT);
+    removeTimerRef.current = setTimeout(
+      () => dispatch.local(Realtime.diagram.hideCursor({ projectID, diagramID, creatorID })),
+      CURSOR_EXPIRY_TIMEOUT
+    );
 
     fadeoutTimerRef.current = setTimeout(() => {
       window.requestAnimationFrame(() => {
@@ -41,7 +42,7 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
         el.style.opacity = String(0);
       });
     }, CURSOR_EXPIRY_TIMEOUT - ANIMATION_DURATION);
-  }, [diagramID, tabID]);
+  }, [diagramID, creatorID]);
 
   const clearTimers = React.useCallback(() => {
     if (removeTimerRef.current !== null) {
@@ -54,7 +55,7 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
     }
   }, []);
 
-  const initialPoint = useAtomSubscription(cursorCoordsAtom({ tabID }), (coords) => {
+  const initialPoint = useAtomSubscription(cursorCoordsAtom({ creatorID }), (coords) => {
     if (!coords) {
       return;
     }

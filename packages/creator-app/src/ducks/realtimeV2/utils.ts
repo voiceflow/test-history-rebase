@@ -35,3 +35,18 @@ export const createReducerFactory =
     [actionCreator, handler] as any;
 
 export const createRootSelector = createRootSelectorFactory<RealtimeState>();
+
+export const firstArgSelector =
+  <T>() =>
+  (_: unknown, arg: T): T =>
+    arg;
+
+export const secondArgSelector =
+  <T>() =>
+  (_: unknown, __: unknown, arg: T): T =>
+    arg;
+
+export const thirdArgSelector =
+  <T>() =>
+  (_: unknown, __: unknown, ___: unknown, arg: T): T =>
+    arg;

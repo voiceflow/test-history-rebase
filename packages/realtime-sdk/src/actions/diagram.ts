@@ -5,8 +5,8 @@ import { createAction, typeFactory } from './utils';
 const diagramType = typeFactory(DIAGRAM_KEY);
 const diagramAwarenessType = typeFactory(DIAGRAM_KEY, AWARENESS_KEY);
 
-export const moveCursor = createAction<DiagramPayload<{ tabID: string; coords: Coords }>>(diagramAwarenessType('MOVE_CURSOR'));
-export const hideCursor = createAction<DiagramPayload<{ tabID: string }>>(diagramAwarenessType('HIDE_CURSOR'));
+export const moveCursor = createAction<DiagramPayload<{ creatorID: number; coords: Coords }>>(diagramAwarenessType('MOVE_CURSOR'));
+export const hideCursor = createAction<DiagramPayload<{ creatorID: number }>>(diagramAwarenessType('HIDE_CURSOR'));
 
 export const addBlocks = createAction<DiagramPayload<{ blocks: Record<string, unknown> }>>(diagramType('ADD_BLOCKS'));
 export const removeBlocks = createAction<DiagramPayload<{ blocks: Record<string, unknown> }>>(diagramType('REMOVE_BLOCKS'));

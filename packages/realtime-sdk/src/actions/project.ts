@@ -8,12 +8,8 @@ const projectType = typeFactory(PROJECT_KEY);
 const projectLocalType = typeFactory(PROJECT_KEY, LOCAL_KEY);
 const projectAwarenessType = typeFactory(PROJECT_KEY, AWARENESS_KEY);
 
-// TODO: DECIDE VIEWER STRUCTURE
 export const loadViewers = createAction<ProjectPayload<{ viewers: Record<string, Viewer[]> }>>(projectAwarenessType('LOAD_VIEWERS'));
 export const updateViewers = createAction<ProjectPayload<{ diagramID: string; viewers: Viewer[] }>>(projectAwarenessType('UPDATE_VIEWERS'));
-// TODO: DECIDE VIEWER STRUCTURE
-export const identifyViewer = createAction<ProjectPayload<{ tabID: string; viewer: Viewer }>>(projectAwarenessType('IDENTIFY_VIEWER'));
-export const forgetViewer = createAction<ProjectPayload<{ tabID: string }>>(projectAwarenessType('FORGET_VIEWER'));
 
 export const setName = createAction<ProjectPayload<{ name: string }>>(projectType('SET_NAME'));
 export const setImage = createAction<ProjectPayload<{ image: string }>>(projectType('SET_IMAGE'));

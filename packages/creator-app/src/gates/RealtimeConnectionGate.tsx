@@ -7,7 +7,7 @@ import LoadingGate from '@/components/LoadingGate';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
-import { useFeature, useOneTimeEffect, usePageAwareTeardown, useSelector } from '@/hooks';
+import { useFeature, useSelector } from '@/hooks';
 import createRealtimeStore from '@/store/realtime';
 import logger from '@/utils/logger';
 
@@ -21,7 +21,7 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
   const [isLoaded, setLoaded] = React.useState(!atomicActions.isEnabled);
 
   const result = React.useMemo(() => {
-    if (userID == null) {
+    if (userID === null || !authToken) {
       logger.warn('realtime not started for unauthenticated session');
       return null;
     }
@@ -34,23 +34,13 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
     }
 
     return {
-      awaitSync,
-      client: realtime,
       store: createRealtimeStore(globalStore, realtime),
+      client: realtime,
+      awaitSync,
     };
-  }, [userID]);
+  }, [userID, authToken]);
 
-  useOneTimeEffect(() => {
-    if (!userID) return false;
-
-    result?.client.changeUser(String(userID));
-
-    return true;
-  }, [userID]);
-
-  usePageAwareTeardown(() => {
-    result?.client.destroy();
-  });
+  React.useEffect(() => () => result?.client.destroy(), [result]);
 
   return result ? (
     <ClientContext.Provider value={result.client}>

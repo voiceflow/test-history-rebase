@@ -15,7 +15,7 @@ class ProjectChannel extends AbstractChannelControl<Realtime.Channels.ProjectCha
 
     const diagramsNodesIDs = await Promise.all(diagramIDs.map((diagramID) => this.services.diagram.getConnectedNodes(diagramID)));
     const diagramViewers = await Promise.all(
-      diagramsNodesIDs.map((nodesIDs) => this.services.viewer.getViewers(nodesIDs.map((nodeID) => parseId(nodeID).clientId!)))
+      diagramsNodesIDs.map((nodesIDs) => this.services.viewer.getViewers([...new Set(nodesIDs.map((nodeID) => parseId(nodeID).userId!))]))
     );
 
     await this.server.process(

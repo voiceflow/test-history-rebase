@@ -10,14 +10,19 @@ import { Point } from '@/types';
 import { createAtomContext } from './AtomContext';
 import { RealtimeStoreContext } from './RealtimeStoreContext';
 
+interface ViewerParam {
+  creatorID: number;
+}
+
 interface CursorCoordsParam {
-  tabID: string;
+  creatorID: number;
 }
 
 const DiagramAtomContext = createAtomContext();
 
 export interface RealtimeDiagramContextValue {
-  cursorCoordsAtom: AtomFactory<Point, Readonly<CursorCoordsParam>>;
+  viewerAtom: AtomFactory<ReturnType<typeof Realtime.diagramViewerSelector>, Readonly<ViewerParam>>;
+  cursorCoordsAtom: AtomFactory<Point | null, Readonly<CursorCoordsParam>>;
 }
 
 export const RealtimeDiagramContext = React.createContext<RealtimeDiagramContextValue | null>(null);
@@ -26,12 +31,26 @@ export const RealtimeDiagramProvider = withProvider(DiagramAtomContext.Uncontrol
   const { store } = React.useContext(RealtimeStoreContext);
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
 
-  const cursorCoordsAtom = useAtomFactory('diagram.cursorCoords', {
-    default: ({ tabID }: Readonly<CursorCoordsParam>) => Realtime.cursorCoordsSelector(store.getState())(diagramID, tabID),
-    context: DiagramAtomContext,
-  });
+  const viewerAtom = useAtomFactory(
+    'diagram.viewer',
+    {
+      default: ({ creatorID }: Readonly<ViewerParam>) => Realtime.diagramViewerSelector(store.getState(), diagramID, creatorID),
+      context: DiagramAtomContext,
+    },
+    [diagramID]
+  );
+
+  const cursorCoordsAtom = useAtomFactory(
+    'diagram.cursorCoords',
+    {
+      default: ({ creatorID }: Readonly<CursorCoordsParam>) => Realtime.cursorCoordsSelector(store.getState(), diagramID, creatorID),
+      context: DiagramAtomContext,
+    },
+    [diagramID]
+  );
 
   const diagramAtoms = useContextApi({
+    viewerAtom,
     cursorCoordsAtom,
   });
 
@@ -39,15 +58,15 @@ export const RealtimeDiagramProvider = withProvider(DiagramAtomContext.Uncontrol
     () =>
       store.subscribe(() => {
         const state = store.getState();
-        const tabIDs = Realtime.diagramViewersTabIDsSelector(state)(diagramID);
+        const viewers = Realtime.diagramViewersSelector(state, diagramID);
+        const cursors = Realtime.diagramCursorsSelector(state, diagramID);
 
-        tabIDs.forEach((tabID) => {
-          const coords = Realtime.cursorCoordsSelector(state)(diagramID, tabID);
-
-          return cursorCoordsAtom({ tabID }).update(coords);
+        viewers.forEach((viewer) => {
+          viewerAtom({ creatorID: viewer.creatorID }).update(viewer);
+          cursorCoordsAtom({ creatorID: viewer.creatorID }).update(cursors[viewer.creatorID] ?? null);
         });
       }),
-    []
+    [diagramID]
   );
 
   return <RealtimeDiagramContext.Provider value={diagramAtoms}>{children}</RealtimeDiagramContext.Provider>;

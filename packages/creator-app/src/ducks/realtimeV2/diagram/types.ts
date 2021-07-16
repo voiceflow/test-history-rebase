@@ -1,10 +1,12 @@
-import { Point } from '@/types';
-import { Normalized } from '@/utils/normalized';
+import { Viewer } from '@voiceflow/realtime-sdk';
 
-export interface RealtimeDiagramState {
-  [diagramID: string]: {
-    awareness: RealtimeDiagramAwarenessState;
-  };
+import { Point } from '@/types';
+
+export interface RealtimeDiagramAwarenessState {
+  cursors: Record<string, Record<string, Point>>;
+  viewers: Record<string, (Viewer & { color: string; creator_id: number })[]>;
 }
 
-export type RealtimeDiagramAwarenessState = Normalized<Point>;
+export interface RealtimeDiagramState {
+  awareness: RealtimeDiagramAwarenessState;
+}

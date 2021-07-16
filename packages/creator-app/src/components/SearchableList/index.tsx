@@ -8,7 +8,7 @@ import CustomScrollbars, { Scrollbars } from '@/components/CustomScrollbars';
 
 import { AddButton, Container, ScrollContainer, SearchContainer, SearchInput, WindowScrollerContainer } from './components';
 
-export { ItemContainer as SearchableListItemContainer } from './components';
+export { IntentName, ItemContainer as SearchableListItemContainer } from './components';
 
 export type SearchableListProps<T> = {
   items: T[];

@@ -20,6 +20,13 @@ export const activeStyles = css`
   }
 `;
 
+export const IntentName = styled.span`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 8px;
+`;
+
 const ItemContainer = styled(FlexApart)<ItemContainerProps>`
   width: 100%;
   height: 100%;
@@ -45,11 +52,6 @@ const ItemContainer = styled(FlexApart)<ItemContainerProps>`
     ${transition('opacity', 'border', 'transform')};
 
     content: '';
-  }
-
-  & > * {
-    text-overflow: ellipsis;
-    overflow: hidden;
   }
 
   ${({ withoutHover }) =>

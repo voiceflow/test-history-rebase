@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
-import { SearchableListItemContainer } from '@/components/SearchableList';
+import { IntentName, SearchableListItemContainer } from '@/components/SearchableList';
 import { Intent } from '@/models';
 import { isCustomizeableBuiltInIntent } from '@/utils/intent';
 
@@ -30,7 +30,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, DraggableIte
       isDraggingPreview={isDraggingPreview}
       isContextMenuOpen={isContextMenuOpen}
     >
-      <span>{item.name}</span>
+      <IntentName>{item.name}</IntentName>
       <ItemCount>
         {isBuiltIn && 'Built-in '}
         {!isBuiltIn && !!item.inputs?.length && <>{item.inputs.length}</>}

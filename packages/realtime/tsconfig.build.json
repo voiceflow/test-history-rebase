@@ -19,6 +19,10 @@
   "exclude": [
     "node_modules/**",
     "build/**",
-    "test/**"
+    "tests/**",
+    "node_modules/**",
+    "config/**",
+    "nyc_coverage_unit/**",
+    "*.config.*"
   ]
 }

@@ -11,6 +11,9 @@
       "src",
       "../realtime-sdk/src"
     ],
+    "typeRoots": [
+      "../../node_modules/@types",
+    ],
     "paths": {
       "@voiceflow/realtime-sdk": [
         "realtime-sdk/src"

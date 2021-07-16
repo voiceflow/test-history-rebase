@@ -2,6 +2,12 @@
   "specials": ["bin", "istanbul", "ttypescript"],
   "ignores": [
     "@babel/plugin-transform-modules-commonjs",
-    "@babel/preset-typescript"
+    "@babel/preset-typescript",
+    "mocha",
+    "mocha-suite",
+    "sinon",
+    "sinon-chai",
+    "chai",
+    "chai-as-promised"
   ]
 }

@@ -9,6 +9,7 @@
     "@voiceflow/logger": "^1.5.6",
     "@voiceflow/realtime-sdk": "^1.4.0",
     "axios": "^0.21.1",
+    "dotenv": "^9.0.2",
     "core-js": "^3.12.1",
     "ioredis": "^4.27.6",
     "path-to-regexp": "^6.2.0",
@@ -16,9 +17,12 @@
     "typescript-fsa": "^3.0.0"
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "@types/deep-equal-in-any-order": "^1.0.1",
     "@types/ioredis": "^4.26.5",
     "node-dev": "^7.0.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "deep-equal-in-any-order": "^1.0.27"
   },
   "license": "UNLICENSED",
   "private": true,
@@ -37,9 +41,8 @@
     "lint:report": "yarn lint --format json -o sonar/report.json",
     "start": "PORT=8013 CREATOR_API_ENDPOINT=https:// NODE_ENV=production node --experimental-specifier-resolution=node --max-old-space-size=8192 build/index.js",
     "start:e2e": "NODE_ENV=e2e node --experimental-specifier-resolution=node --max-old-space-size=8192 build/index.js",
-    "test": "exit 0",
+    "test": "yarn test:unit",
     "test:dependencies": "depcheck",
-    "test:integration": "exit 0",
-    "test:unit": "exit 0"
+    "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml"
   }
 }

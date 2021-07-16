@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.428.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.427.3...@voiceflow/creator-app@1.428.0) (2021-07-16)
+
+
+### Features
+
+* introduce clients/services/middlewares, add auth (VF-928) ([#3675](https://github.com/voiceflow/creator-app/issues/3675)) ([2e62b14](https://github.com/voiceflow/creator-app/commit/2e62b14cb4aba5da8cc6e67f9b637ac3a740ed77))
+
+
+
+
+
 ## [1.427.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.427.2...@voiceflow/creator-app@1.427.3) (2021-07-16)
 
 **Note:** Version bump only for package @voiceflow/creator-app

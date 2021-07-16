@@ -26,7 +26,7 @@ const TranscriptFilters = () => {
     history.replace({ search: '' });
   };
 
-  const appendURL = (range: TimeRange | string) => {
+  const appendURL = (range: Exclude<TimeRange, TimeRange.CUSTOM> | string) => {
     if (!range && tags.length === 0) {
       history.replace({ search: '' });
       return;
@@ -40,11 +40,12 @@ const TranscriptFilters = () => {
     ) {
       params.append(FILTER_TAG.RANGE, range || '');
     } else {
-      const from = range.substring(0, range.indexOf('-'));
-      const to = range.substring(range.indexOf('-') + 2);
+      const split = range.split('-');
+      const from = new Date(split[0]).getTime();
+      const to = new Date(split[1]).getTime();
 
-      params.append(FILTER_TAG.START_DATE, from || '');
-      params.append(FILTER_TAG.END_DATE, to || '');
+      params.append(FILTER_TAG.START_DATE, from.toString() || '');
+      params.append(FILTER_TAG.END_DATE, to.toString() || '');
     }
 
     tags.forEach((tag) => {

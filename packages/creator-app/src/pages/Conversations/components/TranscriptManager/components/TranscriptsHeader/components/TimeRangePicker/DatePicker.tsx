@@ -48,11 +48,12 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ date, placement, onChange }
       return new URLSearchParams(window.location.search).get(FILTER_TAG.RANGE);
     }
     if (window.location.search.includes(FILTER_TAG.START_DATE) && window.location.search.includes(FILTER_TAG.END_DATE)) {
-      return `${new URLSearchParams(window.location.search).get(FILTER_TAG.START_DATE)}- ${new URLSearchParams(window.location.search).get(
-        FILTER_TAG.END_DATE
-      )}`;
+      const start = Number(new URLSearchParams(window.location.search).get(FILTER_TAG.START_DATE));
+      const end = Number(new URLSearchParams(window.location.search).get(FILTER_TAG.END_DATE));
+
+      return `${moment.unix(start / 1000).format(FORMAT)} - ${moment.unix(end / 1000).format(FORMAT)}`;
     }
-    return '';
+    return TimeRange.ALLTIME;
   };
 
   const [input, setInput] = React.useState(defaultParams() as TimeRange | string);

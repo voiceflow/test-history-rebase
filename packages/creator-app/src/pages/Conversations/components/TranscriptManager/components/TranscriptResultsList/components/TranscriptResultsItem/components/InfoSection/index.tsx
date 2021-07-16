@@ -16,12 +16,13 @@ interface InfoSection {
 
 const InfoSection: React.FC<InfoSection> = ({ name, date, isRead, tags }) => {
   const tagsMap = useSelector(mapReportTagsSelector);
+  const formattedDate = `${moment(date).format('LT').toLocaleLowerCase()}, ${moment(date).format('MMMM Do')}`;
 
   return (
     <Container>
       <Name>{name || 'Test User'}</Name>
       <MetaContainer>
-        {moment.utc(date).format('MMMM Do YYYY')}
+        {formattedDate}
         <Box display="inline" mr={6} ml={6}>
           •
         </Box>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.427.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.426.0...@voiceflow/creator-app@1.427.0) (2021-07-16)
+
+
+### Features
+
+* add realtime awareness system (VF-941) ([#3674](https://github.com/voiceflow/creator-app/issues/3674)) ([c88a71a](https://github.com/voiceflow/creator-app/commit/c88a71a35ebab7f046f4c7ae7bad04fb41987169))
+
+
+
+
+
 # [1.426.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.425.1...@voiceflow/creator-app@1.426.0) (2021-07-15)
 
 

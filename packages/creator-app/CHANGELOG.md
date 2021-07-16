@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.427.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.427.0...@voiceflow/creator-app@1.427.1) (2021-07-16)
+
+
+### Bug Fixes
+
+* ellipsis on IMM long intent names (VF-1220) ([#3676](https://github.com/voiceflow/creator-app/issues/3676)) ([a72cc04](https://github.com/voiceflow/creator-app/commit/a72cc043b47f8cb947e5abfd69a09537c274a0be))
+
+
+
+
+
 # [1.427.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.426.0...@voiceflow/creator-app@1.427.0) (2021-07-16)
 
 

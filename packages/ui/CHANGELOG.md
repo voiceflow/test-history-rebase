@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.4.3...@voiceflow/ui@1.4.4) (2021-07-16)
+
+
+### Bug Fixes
+
+* ellipsis on IMM long intent names (VF-1220) ([#3676](https://github.com/voiceflow/creator-app/issues/3676)) ([a72cc04](https://github.com/voiceflow/creator-app/commit/a72cc043b47f8cb947e5abfd69a09537c274a0be))
+
+
+
+
+
 ## [1.4.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.4.2...@voiceflow/ui@1.4.3) (2021-07-15)
 
 **Note:** Version bump only for package @voiceflow/ui

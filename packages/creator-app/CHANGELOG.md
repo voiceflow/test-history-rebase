@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.428.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.428.0...@voiceflow/creator-app@1.428.1) (2021-07-16)
+
+
+### Bug Fixes
+
+* pass timestamp instead of date in transcript filter (VF-000) ([#3685](https://github.com/voiceflow/creator-app/issues/3685)) ([0d327e4](https://github.com/voiceflow/creator-app/commit/0d327e40448b4cf2c02ee2979066174ecda8b9ef))
+
+
+
+
+
 # [1.428.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.427.3...@voiceflow/creator-app@1.428.0) (2021-07-16)
 
 

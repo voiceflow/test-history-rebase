@@ -64,29 +64,29 @@ export const validateSlotName = ({
   notEmptyValues?: boolean;
 }) => {
   if (!slotName.trim()) {
-    return 'Slot must have a name';
+    return 'Entity must have a name';
   }
 
   if (slotName.length > 32) {
-    return 'Slot name cannot exceed 32 characters';
+    return 'Entity name cannot exceed 32 characters';
   }
 
   if (!slotType) {
-    return 'Slot must have a type';
+    return 'Entity must have a type';
   }
 
   if (slotType === CUSTOM_SLOT_TYPE && !notEmptyValues) {
-    return 'Custom slot needs at least one value';
+    return 'Custom entity needs at least one value';
   }
 
   const lowerCasedSlotName = slotName.toLowerCase();
 
   if (slots.some(({ name }) => name.toLowerCase() === lowerCasedSlotName)) {
-    return `The '${slotName}' slot already exists.`;
+    return `The '${slotName}' entity already exists.`;
   }
 
   if (intents.some(({ name }) => name.toLowerCase() === lowerCasedSlotName)) {
-    return `You have an intent defined with the '${slotName}' name already. Intent/slot name must be unique.`;
+    return `You have an intent defined with the '${slotName}' name already. Intent/entity name must be unique.`;
   }
 
   return null;

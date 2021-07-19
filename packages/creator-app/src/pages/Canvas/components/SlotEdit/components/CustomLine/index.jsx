@@ -7,11 +7,11 @@ const CustomLine = ({ remove, value: { value, synonyms }, onBlur, onChange, remo
   <Container>
     <ValueContainer>
       {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
-      <Input autoFocus={!value} value={value} onBlur={onBlur} onChange={(e) => onChange({ value: e.target.value })} placeholder="Slot Value" />
+      <Input autoFocus={!value} value={value} onBlur={onBlur} onChange={(e) => onChange({ value: e.target.value })} placeholder="Entity Value" />
     </ValueContainer>
 
     <SynonymContainer>
-      <Input value={synonyms} onBlur={onBlur} onChange={(e) => onChange({ synonyms: e.target.value })} placeholder="Slot Synonyms (optional)" />
+      <Input value={synonyms} onBlur={onBlur} onChange={(e) => onChange({ synonyms: e.target.value })} placeholder="Entity Synonyms (optional)" />
     </SynonymContainer>
 
     <ButtonContainer disabled={removeDisabled}>

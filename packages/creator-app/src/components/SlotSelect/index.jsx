@@ -12,7 +12,7 @@ const SlotSelect = ({ value, onChange, className, slotTypes, filter, ...props })
 
   return (
     <Select
-      placeholder="Select Slot Type"
+      placeholder="Select Entity Type"
       value={selected ? selected.label : null}
       onSelect={onChange}
       options={options}

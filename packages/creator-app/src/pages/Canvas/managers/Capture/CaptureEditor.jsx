@@ -69,7 +69,7 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
                 />
               )}
               renderItem={(item, { onUpdate }) => (
-                <Input value={item} onChange={(e) => onUpdate(e.target.value)} placeholder="Enter Slot Content Example" />
+                <Input value={item} onChange={(e) => onUpdate(e.target.value)} placeholder="Enter Entity Content Example" />
               )}
             />
           </FormControl>

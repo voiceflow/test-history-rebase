@@ -106,7 +106,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
           collapseVariant={SectionToggleVariant.TOGGLE}
         >
           <Section
-            header="Slot Prompt"
+            header="Entity Prompt"
             tooltip={<SlotPromptTooltip />}
             tooltipProps={{
               helpTitle: 'Not getting it?',
@@ -127,7 +127,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
                 value={promptText || ''}
                 onBlur={onChangePrompt}
                 onChangeVoice={onChangePromptVoice}
-                placeholder="What question will we ask the user to fill this slot?"
+                placeholder="What question will we ask the user to fill this entity?"
               />
             </FormControl>
 
@@ -204,7 +204,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
           {required && isAlexa && (
             <UncontrolledSection
               isCollapsed={!intentSlot.dialog.confirmEnabled}
-              header="Slot Confirmation"
+              header="Entity Confirmation"
               tooltip={<SlotConfirmationTooltip />}
               tooltipProps={{
                 helpTitle: 'Not getting it?',
@@ -226,7 +226,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
                   value={confirmText || ''}
                   onBlur={onChangeConfirm}
                   onChangeVoice={onChangeConfirmVoice}
-                  placeholder="What yes/no question will we ask to confirm the slot?"
+                  placeholder="What yes/no question will we ask to confirm the entity?"
                 />
               </FormControl>
             </UncontrolledSection>

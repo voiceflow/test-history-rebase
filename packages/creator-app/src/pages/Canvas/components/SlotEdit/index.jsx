@@ -181,14 +181,14 @@ function SlotEdit({
         }
         dividers={false}
         variant="tertiary"
-        header="Slot Name"
+        header="Entity Name"
       >
         <FlexApart>
           <Input
             value={slotName}
             onBlur={isInteraction && onBlurInInteraction}
             onChange={(e) => setSlotName(formatIntentName(e.target.value))}
-            placeholder="Enter Slot Name"
+            placeholder="Enter Entity Name"
             ref={nameRef}
           />
 
@@ -199,7 +199,7 @@ function SlotEdit({
       <Section
         dividers={false}
         variant="tertiary"
-        header="Slot Type"
+        header="Entity Type"
         infix={
           <TippyTooltip title="Bulk Import">
             <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
@@ -212,7 +212,7 @@ function SlotEdit({
           disabled={slotType && slotTypes.length === 1}
           onSelect={updateSlotType}
           searchable
-          placeholder="Select slot data type"
+          placeholder="Select entity data type"
           getOptionValue={(option) => option.value}
           getOptionLabel={(optionValue) => slotTypesMap[optionValue]?.label}
         />
@@ -234,7 +234,7 @@ function SlotEdit({
         )}
       </Section>
 
-      <Section dividers={false} variant="tertiary" header="Slot Color">
+      <Section dividers={false} variant="tertiary" header="Entity Color">
         <Flex>
           {SLOT_COLORS.map((color, index) => (
             <ColorSelector onClick={() => setSelectedColor(color)} key={index} color={color}>
@@ -247,10 +247,10 @@ function SlotEdit({
       {!isInteraction && (
         <FlexModalFooter>
           <Button variant="primary" onClick={updateSlot}>
-            {isCreate ? 'Create' : 'Update'} Slot
+            {isCreate ? 'Create' : 'Update'} Entity
           </Button>
 
-          {isDeleteable && <ClickableText onClick={deleteSlot}>Delete Slot</ClickableText>}
+          {isDeleteable && <ClickableText onClick={deleteSlot}>Delete Entity</ClickableText>}
         </FlexModalFooter>
       )}
     </>

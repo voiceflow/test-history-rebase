@@ -146,7 +146,7 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
                 addToStart
                 beforeAdd={() => utteranceRef.current.forceUpdate()}
                 renderForm={({ value, onAdd, onChange, addError }) => {
-                  const placeholder = intent.inputs.length ? 'Add synonyms, {} to add slots' : 'What might the user say to invoke this intent?';
+                  const placeholder = intent.inputs.length ? 'Add synonyms, {} to add entities' : 'What might the user say to invoke this intent?';
 
                   return (
                     <>

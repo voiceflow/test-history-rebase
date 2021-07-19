@@ -171,7 +171,9 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
                 focus
                 onLoad={onLoad}
                 onChange={onChange}
-                placeholder={builtIn ? 'One utterance per line, built-in intents do not support slots' : 'One utterance per line, wrap slots in {}'}
+                placeholder={
+                  builtIn ? 'One utterance per line, built-in intents do not support entities' : 'One utterance per line, wrap entities in {}'
+                }
               />
             ) : (
               <PartialDropUpload
@@ -196,7 +198,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
             </Text>
           ) : (
             <Text color="#62778c" fontSize={13}>
-              {builtIn ? <>On sample utterance per row. </> : <> One sample utterance per row, wrap slots in {'{}'}. </>}
+              {builtIn ? <>On sample utterance per row. </> : <> One sample utterance per row, wrap entities in {'{}'}. </>}
               <Link download target="" href={utteranceUploadExampleCSV}>
                 Download template
               </Link>

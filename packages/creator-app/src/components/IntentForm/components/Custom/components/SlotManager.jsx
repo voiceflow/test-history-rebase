@@ -37,7 +37,7 @@ function SlotManager({ intent, slotsMap, reorderIntentSlots, pushToPath, isNeste
   return slotCount === 0 ? null : (
     <EditorSection
       namespace="slots"
-      header="Slots"
+      header="Entities"
       count={slotCount}
       tooltip={<SlotsTooltip />}
       headerToggle={!!slotCount}

@@ -454,7 +454,7 @@ export enum DiagramState {
 }
 
 export enum InteractionModelTabType {
-  SLOTS = 'slots',
+  SLOTS = 'entities',
   INTENTS = 'intents',
   VARIABLES = 'variables',
 }

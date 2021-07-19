@@ -11,7 +11,7 @@ function SlotEditModal() {
   const { data } = useModals(ModalType.SLOT_EDIT);
 
   return (
-    <Modal id={ModalType.SLOT_EDIT} title={data.isCreate ? 'NEW SLOT' : 'EDIT SLOT'}>
+    <Modal id={ModalType.SLOT_EDIT} title={data.isCreate ? 'NEW ENTITY' : 'EDIT ENTITY'}>
       <Box width="100%">
         <SlotEdit {...data} />
       </Box>

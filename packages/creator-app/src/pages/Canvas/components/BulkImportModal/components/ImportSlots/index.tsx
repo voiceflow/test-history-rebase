@@ -153,7 +153,7 @@ const ImportSlots: React.FC = () => {
   }, [isOpened]);
 
   return (
-    <Modal id={ModalType.IMPORT_SLOTS} title="Bulk import Slots">
+    <Modal id={ModalType.IMPORT_SLOTS} title="Bulk import Entities">
       <Box width="100%">
         <ModalBody>
           <Box mb={15}>
@@ -169,7 +169,7 @@ const ImportSlots: React.FC = () => {
                 focus
                 onLoad={onLoad}
                 onChange={onChange}
-                placeholder="One slot per line (value,synonym 1,…)"
+                placeholder="One entity per line (value,synonym 1,…)"
               />
             ) : (
               <PartialDropUpload
@@ -190,7 +190,7 @@ const ImportSlots: React.FC = () => {
             </Text>
           ) : (
             <Text color="#62778c" fontSize={13}>
-              One slot per row (value,synonym 1,synonym 2,...).{' '}
+              One entity per row (value,synonym 1,synonym 2,...).{' '}
               <Link download target="" href={slotUploadExampleCSV}>
                 Download template
               </Link>
@@ -201,12 +201,12 @@ const ImportSlots: React.FC = () => {
             <>
               <Separator />
 
-              <Errors name="slot" errors={state.errors} />
+              <Errors name="entity" errors={state.errors} />
 
               <Separator />
 
               <Checkbox isFlat checked={state.ignoreErrors} onChange={onChangeIgnoreErrors}>
-                Ignore failed {pluralize('slot', state.errors.size)}
+                Ignore failed {pluralize('entity', state.errors.size)}
               </Checkbox>
 
               <Separator isLast />

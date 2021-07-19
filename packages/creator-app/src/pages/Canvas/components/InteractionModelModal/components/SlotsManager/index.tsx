@@ -50,7 +50,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
       if (activeIntents.length > 0) {
         activeIntents.forEach((intent) => removeIntentSlot(intent.id, item.id));
 
-        toast.info('Utterances containing this slot have been modified to remove the slot reference.');
+        toast.info('Utterances containing this entity have been modified to remove the slot reference.');
       }
 
       removeSlot(item.id);
@@ -113,11 +113,11 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
               ref={scrollbarsRef}
               items={slots}
               onAdd={addNewSlot}
-              addMessage="New Slot"
+              addMessage="New Entity"
               onChange={onFilter}
               getLabel={getItemLabel}
               renderItem={(item: Slot, index) => renderItem({ item, index, itemKey: item.id, key: item.id })}
-              placeholder="Search Slots"
+              placeholder="Search Entities"
             />
           )}
         </DraggableList>
@@ -126,7 +126,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
       <RightColumn>
         {!slots.length ? (
           <EmptyContainer>
-            <img src={noSlotsGraphic} height={64} alt="no slots" />
+            <img src={noSlotsGraphic} height={64} alt="no entities" />
             <p>Your project doesn’t contain any Slots</p>
           </EmptyContainer>
         ) : (

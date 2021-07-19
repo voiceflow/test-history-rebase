@@ -40,14 +40,14 @@ const HelpTooltip = () => (
       </Paragraph>
     </Collapsable>
 
-    <Collapsable title="Slots">
+    <Collapsable title="Entities">
       <Paragraph>
-        Slots are best described as variables within an utterance. They help us pick out important pieces of information from a sentence that we can
-        use to fulfill the users intent.
+        Entities are best described as variables within an utterance. They help us pick out important pieces of information from a sentence that we
+        can use to fulfill the users intent.
       </Paragraph>
       <Paragraph marginBottomUnits={2}>
-        Voiceflow already contains a set of pre-defined slot types including First Name, Country, Airport etc. You also have the ability to define our
-        own custom slots types.
+        Voiceflow already contains a set of pre-defined entity types including First Name, Country, Airport etc. You also have the ability to define
+        our own custom entities types.
       </Paragraph>
     </Collapsable>
   </>

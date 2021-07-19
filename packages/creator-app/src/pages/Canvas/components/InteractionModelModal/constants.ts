@@ -7,7 +7,7 @@ export const TABS = [
   },
   {
     value: InteractionModelTabType.SLOTS as string,
-    label: 'Slots',
+    label: 'Entities',
   },
   {
     value: InteractionModelTabType.VARIABLES as string,

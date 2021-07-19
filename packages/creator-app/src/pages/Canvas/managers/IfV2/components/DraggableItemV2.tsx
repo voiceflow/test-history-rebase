@@ -1,4 +1,4 @@
-import { Badge, Input, SvgIcon } from '@voiceflow/ui';
+import { Badge, Input } from '@voiceflow/ui';
 import React from 'react';
 
 import ConditionsBuilder from '@/components/ConditionsBuilder';
@@ -56,8 +56,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, IfItemProps>
               value={title}
               onChange={({ currentTarget }) => setTitle(currentTarget.value)}
               onBlur={onBlur}
-              leftAction={<SvgIcon icon="if" size={16} color="#f86683" />}
-              placeholder="Name condition"
+              placeholder="Condition Label"
             />
           </Section>
           <Section isDividerNested customContentStyling={{ paddingTop: '0px', paddingBottom: '0px' }}>

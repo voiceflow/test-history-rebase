@@ -54,7 +54,7 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction>> = 
 
   const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
   const choicesByPortID = useSyncedLookup(nodeOutPorts, data.choices);
-  const isPath = data.else.type !== NoMatchType.REPROMPT;
+  const isPath = !!data.else.type && data.else.type !== NoMatchType.REPROMPT;
 
   const choices = React.useMemo(
     () =>

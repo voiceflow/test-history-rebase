@@ -32,6 +32,8 @@ export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID,
             portID={portID}
             iconColor={NODE_CONFIG.iconColor}
             placeholder={`Path ${index + 1}`}
+            multilineLabel
+            labelLineClamp={5}
           />
         ))}
       </Section>

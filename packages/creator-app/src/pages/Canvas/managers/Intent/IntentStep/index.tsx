@@ -17,7 +17,15 @@ export type IntentStepProps = {
 export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, portID, label }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item label={label} portID={portID} icon={NODE_CONFIG.icon} iconColor={NODE_CONFIG.iconColor} placeholder="Create or select an intent" />
+      <Item
+        label={label}
+        portID={portID}
+        icon={NODE_CONFIG.icon}
+        iconColor={NODE_CONFIG.iconColor}
+        placeholder="Create or select an intent"
+        multilineLabel
+        labelLineClamp={5}
+      />
     </Section>
   </Step>
 );

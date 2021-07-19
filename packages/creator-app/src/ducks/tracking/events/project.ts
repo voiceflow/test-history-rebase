@@ -1,6 +1,7 @@
 import client from '@/client';
 import { ControlScheme } from '@/components/Canvas/constants';
 import { NLPProvider } from '@/constants';
+import { PrototypeLayout } from '@/ducks/prototype/types';
 
 import { EventName } from '../constants';
 import { ProjectEventInfo, WorkspaceEventInfo } from '../types';
@@ -64,8 +65,8 @@ export const trackProjectClone =
       createWorkspaceEventPayload({ workspaceID }, { template_id: templateID, template_name: templateName }, { teamhashed: ['template_id'] })
     );
 
-export const trackTestableLinkCopy = createProjectEventTracker((options) =>
-  client.analytics.track(EventName.SHARE_PROTOTYPE_LINK, createProjectEventPayload(options))
+export const trackTestableLinkCopy = createProjectEventTracker((options: ProjectEventInfo & { layout: PrototypeLayout }) =>
+  client.analytics.track(EventName.SHARE_PROTOTYPE_LINK, createProjectEventPayload(options, { layout: options.layout }))
 );
 
 export const trackProjectMoveType = createProjectEventTracker((options: ProjectEventInfo & { type: ControlScheme }) =>

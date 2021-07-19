@@ -6,7 +6,6 @@ import IconButtonButton from '../../IconButton/components/Button';
 import ExpandIconContainer from '../../IconButton/components/ExpandIconContainer';
 
 const StyledLogoButton = styled(IconButton).attrs({ icon: 'voiceflowV', size: 26, iconProps: { color: '#000' } })`
-  margin-right: 18px;
   border-right: 1px solid ${({ theme }) => theme.colors.borders};
 
   ${IconButtonButton} {

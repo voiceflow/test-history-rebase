@@ -2,15 +2,9 @@ import { BoxFlex, FlexApart, FlexEnd, SVG, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { BackButton } from '@/components/Header/components';
-import * as Router from '@/ducks/router';
-import * as Workspace from '@/ducks/workspace';
-import { connect } from '@/hocs';
-import { useHotKeys } from '@/hooks';
-import { Hotkey } from '@/keymap';
 import { ProgressStage } from '@/pages/Publish/Upload/components';
 import { PublishContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
 
 import { HeaderContainer, NavigateBackTextContainer, SubHeader } from './components';
 
@@ -24,23 +18,8 @@ export type BackButtonHeaderProps = {
 
 const BackButtonComp: React.FC<any> = BackButton;
 
-const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHeaderProps> = ({
-  render,
-  header,
-  subHeader,
-  onNavigateBack,
-  navigateBackText,
-  children,
-  goToDesign,
-  goToPrototype,
-  goToPublish,
-  isViewerOrLibraryRole,
-}) => {
+const BackButtonHeader: React.FC<BackButtonHeaderProps> = ({ render, header, subHeader, onNavigateBack, navigateBackText, children }) => {
   const publishContextValue = React.useContext(PublishContext)!;
-
-  useHotKeys(Hotkey.TEST_MODE, () => goToPrototype(), { preventDefault: true });
-  useHotKeys(Hotkey.DESIGN_PAGE, () => goToDesign());
-  useHotKeys(Hotkey.LAUNCH_PAGE, () => !isViewerOrLibraryRole && goToPublish());
 
   return render ? (
     <>
@@ -74,16 +53,4 @@ const BackButtonHeader: React.FC<BackButtonHeaderProps & ConnectedBackButtonHead
   ) : null;
 };
 
-const mapStateToProps = {
-  isViewerOrLibraryRole: Workspace.isViewerOrLibraryRoleSelector,
-};
-
-const mapDispatchToProps = {
-  goToDesign: Router.goToCurrentCanvas,
-  goToPrototype: Router.goToCurrentPrototype,
-  goToPublish: Router.goToActivePlatformPublish,
-};
-
-type ConnectedBackButtonHeaderProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(BackButtonHeader) as React.FC<BackButtonHeaderProps>;
+export default BackButtonHeader;

@@ -7,6 +7,10 @@ export { default as TranscriptDialog } from './TranscriptDialog';
 export { default as TranscriptManager } from './TranscriptManager';
 
 export const ConversationsContainer = styled(Flex)<{ isFilteredResultsEmpty: boolean }>`
+  height: 100%;
+  padding-left: ${({ theme }) => theme.components.sidebarIconMenu.width}px;
+  flex-direction: row;
+
   ${({ isFilteredResultsEmpty }) =>
     isFilteredResultsEmpty
       ? css`
@@ -15,9 +19,7 @@ export const ConversationsContainer = styled(Flex)<{ isFilteredResultsEmpty: boo
           justify-content: center;
         `
       : css`
-& > span {
-  margin-left: 25%;
-`}
-  flex-direction: row;
-  height: 100%;
+        & > span {
+          margin-left: 25%;
+      `}
 `;

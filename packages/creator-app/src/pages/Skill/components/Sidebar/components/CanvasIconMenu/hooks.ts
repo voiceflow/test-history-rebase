@@ -4,12 +4,13 @@ import { useDismissable } from 'react-dismissable-layers';
 import { useRouteMatch } from 'react-router-dom';
 
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch, useHotKeys, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useHotKeys, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 
 export enum CanvasOptionType {
@@ -17,6 +18,7 @@ export enum CanvasOptionType {
   SETTINGS = 'SETTINGS',
   DESIGNER = 'DESIGNER',
   INTEGRATION = 'INTEGRATION',
+  CONVERSATION = 'CONVERSATION',
 }
 
 const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
@@ -24,14 +26,18 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
   [CanvasOptionType.DESIGNER]: [],
   [CanvasOptionType.SETTINGS]: [Path.PROJECT_SETTINGS],
   [CanvasOptionType.INTEGRATION]: [Path.PROJECT_PUBLISH],
+  [CanvasOptionType.CONVERSATION]: [Path.CONVERSATIONS],
 };
 
 export const useCanvasMenuOptionsAndHotkeys = () => {
   const match = useRouteMatch();
 
+  const testReports = useFeature(FeatureFlag.TEST_REPORTS);
+
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
   const goToCurrentPublish = useDispatch(Router.goToActivePlatformPublish);
   const goToCurrentSettings = useDispatch(Router.goToCurrentSettings);
+  const goToCurrentTranscript = useDispatch(Router.goToCurrentTranscript);
 
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
 
@@ -42,6 +48,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   useHotKeys(Hotkey.DESIGN_PAGE, goToCurrentCanvas, { preventDefault: true });
   useHotKeys(Hotkey.SETTINGS_PAGE, goToCurrentSettings, { preventDefault: true, disable: !canEditProject });
   useHotKeys(Hotkey.INTEGRATION_PAGE, goToCurrentPublish, { preventDefault: true, disable: !canEditProject });
+  useHotKeys(Hotkey.CONVERSATION_PAGE, goToCurrentTranscript, { preventDefault: true, disable: !testReports.isEnabled });
 
   const options = React.useMemo<SidebarIconMenuItem[]>(
     () => [
@@ -51,6 +58,16 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         tooltip: { title: 'Designer', hotkey: HOTKEY_LABEL_MAP[Hotkey.DESIGN_PAGE] },
         onClick: goToCurrentCanvas,
       },
+      ...(testReports.isEnabled
+        ? [
+            {
+              value: CanvasOptionType.CONVERSATION,
+              icon: 'conversations' as const,
+              tooltip: { title: 'Conversations', hotkey: HOTKEY_LABEL_MAP[Hotkey.CONVERSATION_PAGE] },
+              onClick: goToCurrentTranscript,
+            },
+          ]
+        : []),
       ...(canEditProject
         ? [
             {
@@ -59,10 +76,6 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
               tooltip: { title: 'Integration', hotkey: HOTKEY_LABEL_MAP[Hotkey.INTEGRATION_PAGE] },
               onClick: goToCurrentPublish,
             },
-          ]
-        : []),
-      ...(canEditProject
-        ? [
             {
               value: CanvasOptionType.SETTINGS,
               icon: 'cog' as const,
@@ -72,7 +85,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           ]
         : []),
     ],
-    [canEditProject]
+    [canEditProject, testReports]
   );
 
   const footerOptions = React.useMemo<SidebarIconMenuItem[]>(

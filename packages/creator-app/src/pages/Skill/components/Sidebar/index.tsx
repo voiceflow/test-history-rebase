@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 
-import { CanvasIconMenu, IntegrationsSidebar, PrototypeIconMenu, SettingsSidebar } from './components';
+import { CanvasIconMenu, ConversationsSidebar, IntegrationsSidebar, PrototypeIconMenu, SettingsSidebar } from './components';
 
 const Sidebar: React.FC = () => (
   <Switch>
@@ -14,6 +14,8 @@ const Sidebar: React.FC = () => (
     <Route path={Path.PROJECT_PUBLISH} component={IntegrationsSidebar} />
 
     <Route path={Path.PROJECT_SETTINGS} component={SettingsSidebar} />
+
+    <Route path={Path.CONVERSATIONS} component={ConversationsSidebar} />
   </Switch>
 );
 

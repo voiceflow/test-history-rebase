@@ -215,6 +215,14 @@ export const goToCurrentWorkspaceSettings = (): SyncThunk => (dispatch, getState
   dispatch(goToWorkspaceSettings(workspaceID));
 };
 
+export const goToCurrentTranscript = (): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const versionID = Session.activeVersionIDSelector(state);
+  Errors.assertVersionID(versionID);
+
+  dispatch(goToTranscript(versionID));
+};
+
 export const goToTargetTranscript =
   (transcriptID: string): SyncThunk =>
   (dispatch, getState) => {

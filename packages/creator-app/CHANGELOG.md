@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.429.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.428.2...@voiceflow/creator-app@1.429.0) (2021-07-19)
+
+
+### Bug Fixes
+
+* hide no match path if type isn't selected (VF-1292) ([#3692](https://github.com/voiceflow/creator-app/issues/3692)) ([d5c505c](https://github.com/voiceflow/creator-app/commit/d5c505ceb19a40c0a4bb5a7bfed5d6f834d20452))
+
+
+### Features
+
+* add conversations page (VF-1098) ([#3695](https://github.com/voiceflow/creator-app/issues/3695)) ([91ccae4](https://github.com/voiceflow/creator-app/commit/91ccae4b63f2cbe1dd0cad9270109df80c98d3f4))
+* add layout property to testable link tracking (VF-149) ([#3698](https://github.com/voiceflow/creator-app/issues/3698)) ([f823fe2](https://github.com/voiceflow/creator-app/commit/f823fe2812ed9cf151feadae51002c37b16aee6a))
+* change `slot` name to `entity` app wide (VF-920) ([#3696](https://github.com/voiceflow/creator-app/issues/3696)) ([b4c6d27](https://github.com/voiceflow/creator-app/commit/b4c6d27ee1e59e7e35b5bcbb7deb089e055fc637))
+* multi line choice/intent steps (VF-1252) ([#3693](https://github.com/voiceflow/creator-app/issues/3693)) ([eac0dbd](https://github.com/voiceflow/creator-app/commit/eac0dbd21d76caf2e598a17f89f0ae3ddb2c4f4e))
+
+
+
+
+
 ## [1.428.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.428.1...@voiceflow/creator-app@1.428.2) (2021-07-19)
 
 

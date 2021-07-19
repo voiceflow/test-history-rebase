@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.4.4...@voiceflow/ui@1.5.0) (2021-07-19)
+
+
+### Features
+
+* add conversations page (VF-1098) ([#3695](https://github.com/voiceflow/creator-app/issues/3695)) ([91ccae4](https://github.com/voiceflow/creator-app/commit/91ccae4b63f2cbe1dd0cad9270109df80c98d3f4))
+
+
+
+
+
 ## [1.4.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.4.3...@voiceflow/ui@1.4.4) (2021-07-16)
 
 

@@ -1,3 +1,4 @@
+import { IntentName } from '@voiceflow/general-types';
 import { Select, toast } from '@voiceflow/ui';
 import _shuffle from 'lodash/shuffle';
 import _toLower from 'lodash/toLower';
@@ -102,10 +103,12 @@ function IntentSelect({
   const onSelectIntent = React.useCallback(
     (value) => {
       const intentID = value;
-      const isDefaultBuiltIn = CUSTOMIZABLE_INTENT_PREFIXS.includes(value?.split('.')[0]);
+      const isDefaultBuiltIn = CUSTOMIZABLE_INTENT_PREFIXS.includes(value?.split('.')[0]) || value === IntentName.NONE;
+
       if (isDefaultBuiltIn && !intentsMap[intentID]) {
         newIntent({ id: intentID, name: value, builtIn: true });
       }
+
       onChange({ intent: intentID });
     },
     [onChange]

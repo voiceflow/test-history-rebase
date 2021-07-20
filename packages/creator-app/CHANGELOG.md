@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.430.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.430.0...@voiceflow/creator-app@1.430.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* change slot to entity for empty state (VF-1314) ([#3710](https://github.com/voiceflow/creator-app/issues/3710)) ([ef51aeb](https://github.com/voiceflow/creator-app/commit/ef51aeb1923d7c3c709c2db1f1c45457ac5e18a6))
+
+
+
+
+
 # [1.430.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.429.1...@voiceflow/creator-app@1.430.0) (2021-07-20)
 
 

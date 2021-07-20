@@ -127,7 +127,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
         {!slots.length ? (
           <EmptyContainer>
             <img src={noSlotsGraphic} height={64} alt="no entities" />
-            <p>Your project doesn’t contain any Slots</p>
+            <p>Your project doesn’t contain any Entities</p>
           </EmptyContainer>
         ) : (
           <Manager id={selectedID} removeSlot={onDeleteFromManager} />

@@ -4399,9 +4399,9 @@
     "@types/react" "*"
 
 "@types/react-facebook-login@^4.1.3":
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/@types/react-facebook-login/-/react-facebook-login-4.1.3.tgz#10df628691a90d07d878e10867e6f04c6fd19428"
-  integrity sha512-P1BtA/WfIUCOQy+M8jpdIPaGzn76n2tPTf1do6hoNYvJpijvWbZKiMcXOWubjd7DJ1QGXhzNa6DH4jrUoe5txA==
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@types/react-facebook-login/-/react-facebook-login-4.1.4.tgz#64b9e7ef638ee3048a60c39acc8111c04aa9edf9"
+  integrity sha512-TX6y5shj0wCx8Whho05MqjAcb8lg1R33Jdy4raCl5b/t2nO9WC8/VLF+7u9cXzRd4ohN7Iz1RwuT+90LUROhyg==
   dependencies:
     "@types/react" "*"
 

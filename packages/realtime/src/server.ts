@@ -36,7 +36,7 @@ class Server extends Logux.Server {
       },
       env: config.NODE_ENV === 'production' ? 'production' : 'development',
 
-      ...(config.NODE_ENV === 'e2e' && {
+      ...((config.NODE_ENV === 'e2e' || config.NODE_ENV === 'local') && {
         cert: 'certs/localhost.crt',
         key: 'certs/localhost.key',
       }),

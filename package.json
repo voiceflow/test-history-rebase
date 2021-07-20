@@ -58,6 +58,7 @@
     "commit": "cz",
     "connect:cli": "yarn --cwd packages/creator-app connect:cli",
     "cypress:ci": "yarn --cwd packages/creator-app cypress:ci",
+    "cypress": "yarn --cwd packages/creator-app cypress",
     "dev": "lerna run dev --concurrency=4 --parallel",
     "e2e": "yarn --cwd packages/creator-app e2e",
     "e2e:check-deps": "yarn --cwd packages/creator-app e2e:check-deps",

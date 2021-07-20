@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.5.0...@voiceflow/ui@1.6.0) (2021-07-20)
+
+
+### Features
+
+* initial UI/UX test reports feedback (VF-1288) ([#3701](https://github.com/voiceflow/creator-app/issues/3701)) ([dd42e4e](https://github.com/voiceflow/creator-app/commit/dd42e4eba23b1cc684d7464c06062b9017616dcb))
+
+
+
+
+
 # [1.5.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.4.4...@voiceflow/ui@1.5.0) (2021-07-19)
 
 

@@ -76,14 +76,12 @@ const SetEditorV2: NodeEditor<NodeData.SetV2> = ({ data, onChange }) => {
         <BoxFlex fullWidth zIndex={2} position="fixed" top={0} borderBottom="1px solid #eaeff4">
           <Section fullWidth>
             <Input
-              icon={NODE_CONFIG.icon}
-              iconProps={{ color: NODE_CONFIG.iconColor }}
               value={stepName}
               onChange={(e) => setStepName(e.target.value)}
               onBlur={(e) => {
                 onChange({ title: e.target.value });
               }}
-              placeholder="Name Set step"
+              placeholder="Set Label"
             />
           </Section>
         </BoxFlex>

@@ -16,6 +16,7 @@ const THEME = {
     offWhiteBlue: '#fafafc',
     white: '#ffffff',
     lightBlue: '#eff6fe',
+    lightGray: '#fcfcfc',
     greyGreen: '#eef4f6',
     gray: '#f6f6f6',
   },

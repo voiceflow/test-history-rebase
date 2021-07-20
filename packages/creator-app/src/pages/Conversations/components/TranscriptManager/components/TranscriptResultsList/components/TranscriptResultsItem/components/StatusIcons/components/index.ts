@@ -8,7 +8,7 @@ export const Container = styled(Flex)`
 `;
 
 export const IconContainer = styled.div<{ isEmotion?: boolean }>`
-  margin-left: -3px;
+  margin-left: -2px;
 
   ${({ isEmotion }) =>
     isEmotion &&

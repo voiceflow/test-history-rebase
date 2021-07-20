@@ -79,7 +79,7 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
   return (
     <Container id={id} menuOpen={menuOpen} active={active} onClick={goToTarget}>
       <ReadStatusDot read={!unread} />
-      <InfoSection name={name} date={created_at} isRead={!unread} tags={tags} />
+      <InfoSection active={active} name={name} date={created_at} isRead={!unread} tags={tags} />
       <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>
         <Dropdown options={options}>
           {(ref, onToggle, isOpen) => {

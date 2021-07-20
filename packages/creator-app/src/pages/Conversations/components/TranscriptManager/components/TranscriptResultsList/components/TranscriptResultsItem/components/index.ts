@@ -2,13 +2,13 @@ import { Flex } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 import { ClassName } from '@/styles/constants';
-import { COLOR_BLUE } from '@/styles/theme/constants';
 
 export { default as InfoSection } from './InfoSection';
 export { default as OptionButton } from './OptionButton';
 export { default as StatusIcons } from './StatusIcons';
 
-const ACTIVE_COLOR = 'rgba(238, 244, 246, 0.85)';
+const ACTIVE_COLOR = 'rgba(238, 244, 246, 0.60)';
+const HOVER_COLOR = 'rgba(238, 244, 246, 0.32)';
 
 export const Container = styled(Flex)<{ active?: boolean; menuOpen: boolean; id: string }>`
   ${transition()};
@@ -35,20 +35,18 @@ export const Container = styled(Flex)<{ active?: boolean; menuOpen: boolean; id:
     css`
       border-bottom: 1px solid ${({ theme }) => theme.colors.borders};
       border-top: 1px solid ${({ theme }) => theme.colors.borders};
-      border-left: 3px solid ${COLOR_BLUE};
+      border-left: 3px solid ${({ theme }) => theme.colors.blue};
       background: ${ACTIVE_COLOR};
       margin-top: -1px;
       padding-top: 21px;
     `}
 
   &:hover {
-    background: ${ACTIVE_COLOR};
+    background: ${HOVER_COLOR};
+    border-left: 3px solid ${HOVER_COLOR};
 
     & .${ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON} {
       display: inline;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
     }
 
     & .${ClassName.TRANSCRIPT_ITEM_STATUSES}-${({ id }) => id} {
@@ -68,9 +66,9 @@ export const ReadStatusDot = styled.div<{ read?: boolean }>`
   ${({ read = false }) =>
     read
       ? css`
-          background-color: #becedc;
+          background-color: ${({ theme }) => theme.iconColors.disabled};
         `
       : css`
-          background-color: ${COLOR_BLUE};
+          background-color: ${({ theme }) => theme.colors.blue};
         `}
 `;

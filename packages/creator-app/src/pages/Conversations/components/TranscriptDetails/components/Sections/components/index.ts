@@ -9,7 +9,7 @@ export const Container = styled(Flex)<{ curved?: boolean; flex?: number; rightEx
   width: 100%;
   border-color: ${({ theme }) => theme.colors.borders};
   padding: ${({ topExtend }) => (topExtend ? 40 : 22)}px 32px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.backgrounds.lightGray};
   &:first-child {
     border: none;
   }
@@ -26,10 +26,10 @@ export const Container = styled(Flex)<{ curved?: boolean; flex?: number; rightEx
       flex: ${flex};
     `}
 
-${({ withBackground }) =>
+${({ withBackground, theme }) =>
     withBackground &&
     css`
-      background-color: #fcfcfc;
+      background-color: ${theme.backgrounds.lightGray};
     `}
 
   ${({ curved }) =>

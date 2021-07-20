@@ -1,7 +1,6 @@
 import { Flex } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
-import THEME from '@/styles/theme';
 
 export const Container = styled(Flex)`
   flex: 5;
@@ -17,9 +16,9 @@ export const Name = styled.div`
   text-transform: capitalize;
 `;
 
-export const MetaContainer = styled.div`
+export const MetaContainer = styled.div<{ isActive: boolean }>`
   width: 100%;
-  color: ${THEME.colors.secondary};
+  color: ${({ theme, isActive }) => (isActive ? theme.colors.secondary : theme.colors.tertiary)};
   font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;

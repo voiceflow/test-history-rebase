@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.431.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.430.2...@voiceflow/creator-app@1.431.0) (2021-07-21)
+
+
+### Features
+
+* tags input component (VF-1158) ([#3707](https://github.com/voiceflow/creator-app/issues/3707)) ([e110e4c](https://github.com/voiceflow/creator-app/commit/e110e4ce5e3982d2df7ee52a23dcbec46cd60742))
+
+
+
+
+
 ## [1.430.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.430.1...@voiceflow/creator-app@1.430.2) (2021-07-21)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -29,7 +29,6 @@ const DebugFilter = (): Filter => {
     } else if (!debugEnabled) {
       return false;
     }
-
     return true;
   };
 };

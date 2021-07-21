@@ -6,7 +6,7 @@ import * as Prototype from '@/ducks/prototype';
 
 import { Interaction, Message, MessageType } from '../../types';
 import { Container, Ended, InlineInteractions, MessagesContainer, StickyInteractions } from './components';
-import { Audio, Debug, Loading, Speak, User, Visual } from './components/Message';
+import { Audio, Debug, IntentConfidence, Loading, Speak, User, Visual } from './components/Message';
 import useMessageFilters from './filters';
 import { checkIfFirstInSeries } from './utils';
 
@@ -58,6 +58,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
           const isFirstInSeries = checkIfFirstInSeries(previousMessage, message);
           const isCurrent = message === messages[messages.length - 1];
           const isLast = index === messages.length - 1;
+          const isIntentConfidence = message.type === MessageType.DEBUG && message.message.startsWith('matched intent');
 
           switch (message.type) {
             case MessageType.SESSION:
@@ -93,7 +94,11 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                 />
               );
             case MessageType.DEBUG:
-              return <Debug key={message.id} {...message} />;
+              return isIntentConfidence ? (
+                <IntentConfidence key={message.id} {...message}></IntentConfidence>
+              ) : (
+                <Debug key={message.id} {...message} />
+              );
             case MessageType.USER:
               return <User isFirstInSeries={isFirstInSeries} userSpeak={userSpeak} key={message.id} color={color} {...message} />;
             case MessageType.STREAM:

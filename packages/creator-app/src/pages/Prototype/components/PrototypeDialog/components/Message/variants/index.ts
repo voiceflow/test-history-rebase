@@ -1,5 +1,6 @@
 export { default as Audio } from './Audio';
 export { default as Debug } from './Debug';
+export { default as IntentConfidence } from './IntentConfidence';
 export { default as Loading } from './Loading';
 export { default as Speak } from './Speak';
 export { default as Stream } from './Stream';

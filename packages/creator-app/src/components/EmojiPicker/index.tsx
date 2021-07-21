@@ -9,6 +9,8 @@ import positiveEmotion from './assets/positiveEmotion.png';
 import { Container, EmotionContainer, Option, OptionsContainer, PlaceholderContainer } from './components';
 import { FAN_DIRECTION } from './constants';
 
+export { defaultEmotion, negativeEmotion, neutralEmotion, positiveEmotion };
+
 export enum EMOJI_OPTION {
   HAPPY = 'happy',
   SAD = 'sad',

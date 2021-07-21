@@ -73,7 +73,8 @@ export const removeTag =
 export const updateTags =
   (transcriptID: string, tags: string[]): Thunk =>
   async (dispatch) => {
-    dispatch(patchTranscript(transcriptID, { tags }));
+    const updatedTagsArray = [...new Set([...tags])];
+    dispatch(patchTranscript(transcriptID, { tags: updatedTagsArray }));
   };
 
 export const markAsRead =

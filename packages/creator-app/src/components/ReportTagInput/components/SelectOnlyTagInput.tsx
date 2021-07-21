@@ -1,48 +1,16 @@
-import { BoxFlex, BoxFlexApart, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import Checkbox from '@/components/Checkbox';
-import { ReportTag } from '@/models';
+import BaseTagInput from './BaseReportTagInput';
 
-import { DEFAULT_TAGS } from '../constants';
-import { ReportTagInputContext } from '../context';
-import BaseTagInput, { TagInputVariantProps } from './BaseReportTagInput';
+interface SelectOnlyTagInputProps {
+  onChange: (tags: string[]) => void;
+  selectedTags: string[];
+  hasRadioButtons: boolean;
+  isSelectedFunc: (id: string) => boolean;
+}
 
-const SelectOnlyTagInput = (props: TagInputVariantProps) => {
-  const {
-    state: { filteredTags },
-  } = React.useContext(ReportTagInputContext)!;
-
-  const onTagChange = (tag: ReportTag | { label: string; icon: string; id: string }) => () => {
-    props.onChange([...props.selectedTags, tag.id]);
-  };
-
-  return (
-    <BaseTagInput
-      menu={() => (
-        <Menu fullWidth>
-          {DEFAULT_TAGS.map((tag, index) => (
-            <MenuItem key={index} onClick={onTagChange(tag)}>
-              <BoxFlex fullWidth>
-                <Checkbox readOnly checked={props.selectedTags.includes(tag.id)} />
-                <BoxFlexApart fullWidth>
-                  {tag.label}
-                  <SvgIcon size={22} icon={tag.icon} />
-                </BoxFlexApart>
-              </BoxFlex>
-            </MenuItem>
-          ))}
-          {filteredTags.length > 0 && <MenuItem divider />}
-          {filteredTags.map((tag: ReportTag, index: number) => (
-            <MenuItem key={index} onClick={onTagChange(tag)}>
-              <Checkbox readOnly checked={props.selectedTags.includes(tag.id)} /> {tag.label}
-            </MenuItem>
-          ))}
-        </Menu>
-      )}
-      {...props}
-    />
-  );
+const SelectOnlyTagInput: React.FC<SelectOnlyTagInputProps> = (props) => {
+  return <BaseTagInput selectOnly creatable={false} {...props} />;
 };
 
 export default SelectOnlyTagInput;

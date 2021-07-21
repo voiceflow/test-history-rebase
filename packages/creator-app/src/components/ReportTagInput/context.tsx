@@ -1,7 +1,10 @@
 import React from 'react';
 
 import * as ReportTags from '@/ducks/reportTag';
+import { createTag } from '@/ducks/reportTag';
+import { currentSelectedTranscriptSelector, updateTags } from '@/ducks/transcript';
 import { connect } from '@/hocs';
+import { useDispatch, useSelector } from '@/hooks';
 import { ReportTag } from '@/models';
 import { ConnectedProps } from '@/types';
 
@@ -10,25 +13,31 @@ export interface ReportTagInputContextApi {
     allTags: ReportTag[];
     filteredTags: ReportTag[];
     searchedTag: string;
+    tagsMap: {
+      [key: string]: ReportTag;
+    };
   };
   actions: {
     onSearch: (tagLabel: string) => void;
     updateFilteredTags: (tagID: string) => void;
+    onCreateNew: (val: string) => void;
   };
 }
 
 export const ReportTagInputContext = React.createContext<ReportTagInputContextApi | null>(null);
 export const { Consumer: ReportTagInputContextConsumer } = ReportTagInputContext;
 
-// TODO: replace all SAMPLE_TAGS instances with 'tags' from props
-
 export const UnconnectedReportTagInputContextProvider: React.FC<{ selectedTags: string[] } & ConnectedReportTagInputContextProps> = ({
   selectedTags,
-  tags,
+  allTags,
+  tagsMap,
   children,
 }) => {
-  const [filteredTags, setFilteredTags] = React.useState<ReportTag[]>(tags.filter((tag) => !selectedTags.includes(tag.id)));
+  const [filteredTags, setFilteredTags] = React.useState<ReportTag[]>(allTags.filter((tag) => !selectedTags.includes(tag.id)));
   const [searchedTag, setSearchedTag] = React.useState('');
+  const createReportTag = useDispatch(createTag);
+  const setTags = useDispatch(updateTags);
+  const currentTranscript = useSelector(currentSelectedTranscriptSelector);
 
   React.useEffect(() => {
     if (searchedTag.trim()) {
@@ -36,19 +45,28 @@ export const UnconnectedReportTagInputContextProvider: React.FC<{ selectedTags: 
     }
   }, [searchedTag]);
 
+  const onCreateNew = async (label: string) => {
+    const id = await createReportTag(label);
+    if (id) {
+      setTags(currentTranscript.id, [...selectedTags, id]);
+    }
+  };
+
   React.useEffect(() => {
-    setFilteredTags(tags.filter((tag) => !selectedTags.includes(tag.id)));
+    setFilteredTags(allTags.filter((tag) => !selectedTags.includes(tag.id)));
   }, [selectedTags]);
 
   const api = {
     state: {
       filteredTags,
       searchedTag,
-      allTags: tags,
+      allTags,
+      tagsMap,
     },
     actions: {
       onSearch: (tagLabel: string) => setSearchedTag(tagLabel),
       updateFilteredTags: (tagID: string) => setFilteredTags(filteredTags.filter((tag) => tag.id !== tagID)),
+      onCreateNew,
     },
   };
 
@@ -56,7 +74,8 @@ export const UnconnectedReportTagInputContextProvider: React.FC<{ selectedTags: 
 };
 
 const mapStateToProps = {
-  tags: ReportTags.allReportTagsSelector,
+  allTags: ReportTags.allReportTagsSelector,
+  tagsMap: ReportTags.mapReportTagsSelector,
 };
 
 const mapDispatchToProps = {

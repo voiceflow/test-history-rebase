@@ -9,7 +9,7 @@ import Portal from '../../Portal';
 import MenuHeader from '../MenuHeader';
 // eslint-disable-next-line import/no-cycle
 import MenuOptions from '../MenuOptions';
-import { MenuPopoverContainer } from './components';
+import { FooterActionContainer, MenuPopoverContainer } from './components';
 
 const KeyCodes = {
   TAB: 'Tab',
@@ -34,8 +34,12 @@ function BaseNestedMenu({
   grouped,
   options,
   onSelect,
+  createLabel,
   onCreate,
   maxHeight,
+  footerAction,
+  footerActionLabel,
+  onClickFooterAction,
   creatable,
   autoWidth,
   placement,
@@ -278,16 +282,19 @@ function BaseNestedMenu({
   return (
     <Portal portalNode={portalNode || document.body}>
       <Popper placement={placement} modifiers={popoverModifiers}>
-        {({ ref, style, placement: parentPlacement }) => (
+        {({ ref, style, scheduleUpdate, placement: parentPlacement }) => (
           <MenuPopoverContainer ref={ref} style={style} isRoot={isRoot} autoWidth={autoWidth} onMouseMove={onMouseMove}>
             <Menu
               id={id}
+              footerAction={footerAction}
+              footerActionComponent={() => <FooterActionContainer onClick={onClickFooterAction}>{footerActionLabel}</FooterActionContainer>}
               ref={menuRef}
               maxHeight={maxHeight}
               fullWidth
               searchable={
                 (creatable || (searchable && isDropdown)) && (
                   <MenuHeader
+                    createLabel={createLabel}
                     withSearchIcon={withSearchIcon}
                     onFocus={() => !cachedRef.current.blockOptionHover && onFocusItem(0)}
                     onCreate={onCreate}
@@ -310,6 +317,7 @@ function BaseNestedMenu({
               {...menuProps}
             >
               <MenuOptions
+                updatePosition={scheduleUpdate}
                 onHide={onHide}
                 options={options}
                 grouped={grouped}

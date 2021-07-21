@@ -19,6 +19,7 @@ function MenuHeader({
   focusedOptionIndex,
   onChangeSearchLabel,
   createInputPlaceholder,
+  createLabel = 'Create',
 }) {
   const value = searchable && !isDropdown ? searchLabel : newOptionLabel;
   const theme = useTheme();
@@ -38,7 +39,7 @@ function MenuHeader({
 
         {!isDropdown && (
           <LegacyButton isBtn onClick={() => onCreate(value)} disabled={!value || isButtonDisabled(value)} className="pointer" isLinkLarge>
-            Create
+            {createLabel}
           </LegacyButton>
         )}
       </MenuHeaderWrapper>

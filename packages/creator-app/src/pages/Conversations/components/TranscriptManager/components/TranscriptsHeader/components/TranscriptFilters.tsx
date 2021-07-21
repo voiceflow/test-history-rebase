@@ -75,11 +75,8 @@ const TranscriptFilters = () => {
             >
               <ReportTagInput
                 variant={InputVariant.SELECT_ONLY}
-                onChange={(value: string[]) => {
-                  const newTag = value.slice(-1)[0];
-                  if (!tags.includes(newTag)) {
-                    setTags([...tags, newTag]);
-                  }
+                onChange={(tags: string[]) => {
+                  setTags([...new Set([...tags])]);
                 }}
                 selectedTags={tags}
               />

@@ -1,8 +1,8 @@
 import React from 'react';
+import AutosizeInput from 'react-input-autosize';
 import { Manager, PopperProps, Reference } from 'react-popper';
 
-import { useCache, useDidUpdateEffect, useTheme } from '../../hooks';
-import { Theme } from '../../styles/theme';
+import { useCache, useDidUpdateEffect } from '../../hooks';
 import { Nullable } from '../../types';
 import Flex from '../Flex';
 import { AdvancedMenu, defaultMenuLabelRenderer } from '../NestedMenu';
@@ -10,7 +10,7 @@ import Portal from '../Portal';
 import SearchInput, { SearchInputIcon } from '../SearchInput';
 import { Icon, SvgIconProps } from '../SvgIcon';
 import { toast } from '../Toast';
-import { InlineInputValue, PrefixContainer, SelectWrapper } from './components';
+import { InlineInputValue, PrefixContainer, SelectWrapper, TagsContainer, TagsInput } from './components';
 import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
 
 export { defaultOptionsFilter, searchableOptionsFilter };
@@ -47,6 +47,13 @@ export type OptionsFilter<O, V> = (
 
 export type SelectProps<O, V> = {
   id?: string;
+  tags?: any;
+  footerAction?: boolean;
+  footerActionLabel?: string;
+  onClickFooterAction?: () => void;
+  onSearch?: (val: string) => void;
+  hasRadioButtons?: boolean;
+  isSelectedFunc?: (id: string) => boolean;
   icon?: Icon;
   open?: boolean;
   inputStopProp?: boolean;
@@ -58,6 +65,7 @@ export type SelectProps<O, V> = {
   prefix?: React.ReactNode;
   options: O[];
   onClose?: () => void;
+  createLabel?: string;
   grouped?: boolean;
   minWidth?: boolean;
   onSelect: (value: V, optionsPath: number[]) => void;
@@ -82,6 +90,9 @@ export type SelectProps<O, V> = {
   getOptionLabel?: GetOptionLabel<V>;
   withSearchIcon?: boolean;
   optionsMaxSize?: number;
+  autoUpdatePlacement?: boolean;
+  autoDismiss?: boolean;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
   triggerRenderer?: (options: {
     ref: React.RefObject<HTMLInputElement>;
     value: string;
@@ -135,6 +146,12 @@ const Select = <O, V = O>({
   value,
   inline = false,
   onBlur,
+  onKeyDown,
+  footerAction,
+  footerActionLabel,
+  onSearch,
+  createLabel,
+  onClickFooterAction,
   onOpen,
   prefix,
   onClose,
@@ -145,6 +162,8 @@ const Select = <O, V = O>({
   onSelect,
   onCreate,
   iconProps,
+  autoDismiss = true,
+  autoUpdatePlacement,
   placement = 'bottom-start',
   autoWidth = true,
   fullWidth,
@@ -173,10 +192,9 @@ const Select = <O, V = O>({
   showNotMatchedOptions,
   createInputPlaceholder,
   validateCreate,
+  tags,
 }: // eslint-disable-next-line sonarjs/cognitive-complexity
 SelectProps<O, V>) => {
-  const theme = useTheme() as Theme;
-
   const optionLabel = getOptionLabel(value) || '';
 
   const inputRef = React.useRef<Nullable<HTMLInputElement>>(null);
@@ -323,13 +341,21 @@ SelectProps<O, V>) => {
 
       onUpdateOptionsToRender(input);
       updateSearchLabel(input);
+      onSearch?.(target.value);
     },
     [onUpdateOptionsToRender]
   );
 
   const onSelectItem = React.useCallback(
-    (value: V, optionsPath: number[]) => {
+    (value: V, optionsPath: number[], updatePopperPosition: () => void) => {
       onSelect(value, optionsPath);
+      if (autoUpdatePlacement) {
+        updatePopperPosition();
+      }
+      if (!autoDismiss) {
+        updateSearchLabel('');
+        return;
+      }
       onHideMenu();
     },
     [onSelect, onHideMenu]
@@ -396,6 +422,7 @@ SelectProps<O, V>) => {
     onMouseDown: searchable ? onMouseDown : undefined,
     rightAction,
     isDropDownOpened,
+    onKeyDown,
   };
 
   return (
@@ -424,14 +451,28 @@ SelectProps<O, V>) => {
               })
             ) : (
               <Flex>
-                <SearchInput {...inputProps} ref={inputRef} value={label || searchLabel} type="search" autoComplete="off" clearable={clearable} />
-
-                <SearchInputIcon
-                  icon={clearable ? 'close' : 'caretDown'}
-                  color={isDropDownOpened ? theme.colors.blue : theme.iconColors.active}
-                  size={10}
-                  onClick={onIconClick}
-                />
+                {tags ? (
+                  <TagsContainer
+                    isActive={opened}
+                    onClick={() => {
+                      onOpenMenu();
+                      inputRef?.current?.focus();
+                    }}
+                  >
+                    {tags()}
+                    <TagsInput {...inputProps} ref={inputRef as React.RefObject<AutosizeInput>} value={label || searchLabel} autoComplete="off" />
+                  </TagsContainer>
+                ) : (
+                  <>
+                    <SearchInput {...inputProps} ref={inputRef} value={label || searchLabel} type="search" autoComplete="off" clearable={clearable} />
+                    <SearchInputIcon
+                      icon={clearable ? 'close' : 'caretDown'}
+                      color={isDropDownOpened ? '#5D9DF5' : '#6e849a'}
+                      size={10}
+                      onClick={onIconClick}
+                    />
+                  </>
+                )}
               </Flex>
             )}
           </SelectWrapper>
@@ -447,6 +488,13 @@ SelectProps<O, V>) => {
       {opened && (
         <AnyAdvancedMenu
           id={id}
+          footerAction={footerAction}
+          footerActionLabel={footerActionLabel}
+          onClickFooterAction={() => {
+            onHideMenu();
+            onClickFooterAction?.();
+          }}
+          createLabel={createLabel}
           onHide={onHideMenu}
           grouped={grouped}
           options={optionsToRender}

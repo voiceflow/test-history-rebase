@@ -1,47 +1,46 @@
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
+import { negativeEmotion, neutralEmotion, positiveEmotion } from '@/components/EmojiPicker';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { Sentiment, SystemTag } from '@/models';
 import { Thunk } from '@/store/types';
+import THEME from '@/styles/theme';
 
 import { addReportTag, patchReportTag, removeReportTag, replaceReportTags } from './actions';
 
-export const DUMMY_DATA = [
+const BUILT_INS = [
   {
-    id: '1',
-    projectID: '1',
-    label: 'happy path',
+    id: Sentiment.EMOTION_POSITIVE,
+    label: 'Positive',
+    icon: positiveEmotion,
+    builtIn: true,
   },
   {
-    id: '2',
-    projectID: '1',
-    label: 'sad path',
+    id: Sentiment.EMOTION_NEUTRAL,
+    label: 'Neutral',
+    icon: neutralEmotion,
+    builtIn: true,
   },
   {
-    id: '3',
-    projectID: '1',
-    label: 'user error',
-  },
-  {
-    id: '4',
-    projectID: '1',
-    label: 'perfect interaction',
-  },
-  {
-    id: SystemTag.REVIEWED,
-    projectID: '1',
-    label: '',
+    id: Sentiment.EMOTION_NEGATIVE,
+    label: 'Negative',
+    icon: negativeEmotion,
+    builtIn: true,
   },
   {
     id: SystemTag.SAVED,
-    projectID: '1',
-    label: '',
+    label: 'Saved for later',
+    icon: 'bookmark',
+    iconColor: THEME.colors.red,
+    builtIn: true,
   },
   {
-    id: Sentiment.EMOTION_POSITIVE,
-    projectID: '1',
-    label: '',
+    id: SystemTag.REVIEWED,
+    label: 'Reviewed',
+    icon: 'checkmarkFilled',
+    iconColor: '#3e9e3e',
+    builtIn: true,
   },
 ];
 
@@ -51,6 +50,11 @@ export const fetchReportTags = (): Thunk => async (dispatch, getState) => {
   let reportTags;
   try {
     reportTags = await client.reportTags.fetchTags(activeProjectID!);
+    // To Remove hard coded builtIns
+    const builtIns = BUILT_INS.map((val) => {
+      return { ...val, projectID: activeProjectID!.toString() };
+    });
+    reportTags = [...builtIns, ...reportTags];
     dispatch(replaceReportTags(reportTags));
   } catch (e) {
     toast.error('Error fetching report tags');
@@ -61,22 +65,25 @@ export const createTag =
   // For undoing a delete, we want to preserve the id, so anything that was referencing it in transcripts, will still have the correct reference ID
 
 
-    (tagLabel: string, id?: string): Thunk =>
+    (tagLabel: string, id?: string): Thunk<string | null> =>
     async (dispatch, getState) => {
       const state = getState();
       const activeProjectID = activeProjectIDSelector(state);
       try {
         const newTag = await client.reportTags.createTag(activeProjectID!, { previousID: id, label: tagLabel });
-
+        const newID = newTag.id.toString();
         dispatch(
           addReportTag(newTag.id.toString(), {
-            id: newTag.id.toString(),
+            id: newID,
             projectID: activeProjectID!,
             label: tagLabel,
           })
         );
+
+        return newID;
       } catch (e) {
         toast.error(e);
+        return null;
       }
     };
 

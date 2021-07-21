@@ -41,7 +41,7 @@ const Notes: React.FC = () => {
   };
 
   return (
-    <Container curved>
+    <Container style={{ flex: 4 }} curved>
       <SectionTitle>
         NOTES
         <EmojiPicker

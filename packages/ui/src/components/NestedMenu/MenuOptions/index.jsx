@@ -27,6 +27,7 @@ function MenuOptions({
   popoverModifiers,
   renderOptionLabel,
   focusedOptionIndex,
+  updatePosition,
   multiLevelDropdown,
   childFocusItemIndex,
   onChildFocusItemIndex,
@@ -98,7 +99,7 @@ function MenuOptions({
           key={getOptionKey(option) || i}
           ref={onItemRef(index)}
           // to prevent parent popper from closing onSelect
-          onClick={stopImmediatePropagation(() => !option?.disabled && onSelect(getOptionValue(option), [...optionsPath, i]))}
+          onClick={stopImmediatePropagation(() => !option?.disabled && onSelect(getOptionValue(option), [...optionsPath, i], updatePosition))}
           isNested={grouped}
           disabled={option.disabled}
           isFocused={focusedOptionIndex === index}

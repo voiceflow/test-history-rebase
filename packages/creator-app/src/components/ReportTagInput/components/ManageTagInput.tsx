@@ -1,57 +1,25 @@
-import { Menu, MenuItem, preventDefault, Text } from '@voiceflow/ui';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { ReportTag } from '@/models';
+import { currentSelectedTranscriptSelector, updateTags } from '@/ducks/transcript';
 
-import { ReportTagInputContext } from '../context';
-import BaseTagInput, { MenuProps, TagInputVariantProps } from './BaseReportTagInput';
+import BaseTagInput from './BaseReportTagInput';
 
-const ManageTagInput = (props: TagInputVariantProps) => {
-  const {
-    state: { filteredTags, searchedTag },
-  } = React.useContext(ReportTagInputContext)!;
+interface ManageTagInputProps {
+  selectedTags: string[];
+  footerAction: boolean;
+  footerActionLabel: string;
+  onClickFooterAction: () => void;
+}
 
-  const onAdd = () => () => {
-    // TODO: implement with Manage Tags component
+const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags, ...props }) => {
+  const currentTranscript = useSelector(currentSelectedTranscriptSelector);
+  const dispatch = useDispatch();
+  const setTags = (tags: string[]) => {
+    dispatch(updateTags(currentTranscript.id, tags));
   };
 
-  const onTagChange = (tag: ReportTag) => () => {
-    props.onChange([...props.selectedTags, tag.id]);
-  };
-
-  return (
-    <BaseTagInput
-      menu={({ exists }: MenuProps) => {
-        return (
-          <Menu maxVisibleItems={5.5} fullWidth>
-            {!exists && !!searchedTag.trim() && (
-              <>
-                <MenuItem onClick={preventDefault(onAdd())}>
-                  <Text color="#8da2b5" mr="4px">
-                    Add
-                  </Text>
-                  <Text>"{searchedTag}"</Text>
-                </MenuItem>
-                <MenuItem divider />
-              </>
-            )}
-            {!!filteredTags.length && (
-              <>
-                {filteredTags.map((tag: ReportTag, index: number) => (
-                  <MenuItem key={index} onClick={preventDefault(onTagChange(tag))}>
-                    {tag.label}
-                  </MenuItem>
-                ))}
-                <MenuItem divider />
-              </>
-            )}
-            <MenuItem bottomAction>Manage Tags</MenuItem>
-          </Menu>
-        );
-      }}
-      {...props}
-    />
-  );
+  return <BaseTagInput {...props} onChange={setTags} selectedTags={selectedTags} />;
 };
 
 export default ManageTagInput;

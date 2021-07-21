@@ -33,6 +33,8 @@ export type MenuOption<T> = T extends undefined ? MenuOptionWithoutValue : MenuO
 export type MenuProps<T> = {
   id?: string;
   disabled?: boolean;
+  footerAction?: boolean;
+  footerActionComponent?: () => React.FC;
   maxHeight?: number | string;
   fullWidth?: boolean;
   width?: number;
@@ -64,6 +66,8 @@ const Menu = <T,>(
     maxHeight,
     fullWidth,
     searchable,
+    footerAction,
+    footerActionComponent,
     scrollbarsRef,
     maxVisibleItems = MAX_VISIBLE_ITEMS,
     noTopPadding,
@@ -105,6 +109,7 @@ const Menu = <T,>(
   return (
     <Container
       id={id}
+      footerAction={footerAction}
       ref={composeRefs(ref, menuRef)}
       className={ClassName.MENU}
       fullWidth={fullWidth}
@@ -142,6 +147,7 @@ const Menu = <T,>(
           {multiSelectProps.buttonLabel}
         </ButtonContainer>
       )}
+      {footerAction && footerActionComponent?.()}
     </Container>
   );
 };

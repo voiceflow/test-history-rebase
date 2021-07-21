@@ -11,6 +11,10 @@ export const MenuSearchIcon = styled(SvgIcon)`
 export const MenuInput = styled(Input)`
   flex: 1;
   padding: 12px 0;
+
+  ::placeholder {
+    line-height: 20px;
+  }
 `;
 
 export const MenuHr = styled.hr`

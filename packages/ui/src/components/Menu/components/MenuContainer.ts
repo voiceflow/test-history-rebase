@@ -24,10 +24,11 @@ export type MenuContainerProps = {
   padding?: string;
   height?: number;
   withScrollbars?: boolean;
+  footerAction?: boolean;
 };
 
 const MenuContainer = styled.ul<MenuContainerProps>`
-  ${cardStyles}
+  ${cardStyles};
 
   max-height: ${({ theme, withScrollbars, maxVisibleItems }) =>
     withScrollbars ? 'auto' : `${getItemsContainer(theme.components.menuItem.height, maxVisibleItems) + VERTICAL_PADDING * 2}px`};
@@ -51,6 +52,7 @@ const MenuContainer = styled.ul<MenuContainerProps>`
   line-height: 18px;
   list-style: none;
   overflow: hidden;
+  position: relative;
 
   ${SlideDown}
 
@@ -72,6 +74,12 @@ const MenuContainer = styled.ul<MenuContainerProps>`
     noBottomPadding &&
     css`
       padding-bottom: 0;
+    `}
+
+  ${({ footerAction }) =>
+    footerAction &&
+    css`
+      padding-bottom: 67px;
     `}
 `;
 

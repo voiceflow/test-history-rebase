@@ -5,7 +5,6 @@ const Container = styled.div<{ rightAlign?: boolean; userSpeak?: boolean; isFirs
   position: relative;
   align-items: flex-end;
   margin-left: 45px;
-  max-width: 500px;
 
   ${({ isFirstInSeries }) =>
     !isFirstInSeries &&

@@ -5055,10 +5055,10 @@
     lodash-es "^4.17.15"
     prop-types "^15.5.8"
 
-"@voiceflow/eslint-config@3.2.2":
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/eslint-config/-/eslint-config-3.2.2.tgz#985cac0d672ffd15f06bff9370ae494579e2bc13"
-  integrity sha512-N8mORM1TImC6qCoEHBHb+12btXJj1G2YhodnZqqzoESyp4y7+LlVyoHsIrqPQjGtNPvYOMrberYtZSQwC40eJw==
+"@voiceflow/eslint-config@3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/eslint-config/-/eslint-config-3.3.0.tgz#dced13164fc841e127e88ef4de0adeb60ccdb7e4"
+  integrity sha512-C14D8u0CU85q2EmV3jtAN6nVX1t7aoBdmhJh57RtrrayyUMwOqZnIj42k6B6gi49beR372kQV0vUpvsxJzzVOA==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^4.20.0"
     "@typescript-eslint/parser" "^4.20.0"

@@ -12,7 +12,7 @@
     "@types/sinon": "^9.0.10",
     "@types/sinon-chai": "^3.2.5",
     "@voiceflow/commitlint-config": "^1.1.0",
-    "@voiceflow/eslint-config": "3.2.2",
+    "@voiceflow/eslint-config": "3.3.0",
     "@voiceflow/git-branch-check": "^1.2.0",
     "@voiceflow/prettier-config": "^1.0.5",
     "@voiceflow/semantic-release-config": "^1.0.8",

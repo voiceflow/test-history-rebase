@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.432.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.431.0...@voiceflow/creator-app@1.432.0) (2021-07-21)
+
+
+### Features
+
+* update chat dialog ui/ux (VF-1032) ([#3709](https://github.com/voiceflow/creator-app/issues/3709)) ([4085a2e](https://github.com/voiceflow/creator-app/commit/4085a2eaf2d81efedd297c8774924460a3ca77d8))
+
+
+
+
+
 # [1.431.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.430.2...@voiceflow/creator-app@1.431.0) (2021-07-21)
 
 

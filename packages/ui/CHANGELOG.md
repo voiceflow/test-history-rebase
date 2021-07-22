@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.7.0...@voiceflow/ui@1.7.1) (2021-07-22)
+
+
+### Bug Fixes
+
+* missing secondary menus (VF-000) ([0f28994](https://github.com/voiceflow/creator-app/commit/0f289944cfb40700c734bcdfd42958771a2d49d0))
+
+
+
+
+
 # [1.7.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.6.0...@voiceflow/ui@1.7.0) (2021-07-21)
 
 

@@ -193,7 +193,7 @@
     "@voiceflow/babel-preset": "^1.0.0",
     "@voiceflow/webpack-config": "1.7.1",
     "babel-loader": "^8.2.2",
-    "cypress": "^7.4.0",
+    "cypress": "^8.0.0",
     "cypress-file-upload": "^5.0.3",
     "dotenv": "^9.0.2",
     "filemanager-webpack-plugin": "^4.0.0",

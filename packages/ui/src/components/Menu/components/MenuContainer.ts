@@ -13,7 +13,7 @@ const nativeScrollbarsStyle = css`
 
 export const getItemsContainer = (itemHeight: number, maxVisibleItems: number = MAX_VISIBLE_ITEMS): number => itemHeight * maxVisibleItems;
 
-export type MenuContainerProps = {
+export interface MenuContainerProps {
   fullWidth?: boolean;
   nativeScrollbar?: boolean;
   noTopPadding?: boolean;
@@ -25,7 +25,7 @@ export type MenuContainerProps = {
   height?: number;
   withScrollbars?: boolean;
   footerAction?: boolean;
-};
+}
 
 const MenuContainer = styled.ul<MenuContainerProps>`
   ${cardStyles};
@@ -52,7 +52,6 @@ const MenuContainer = styled.ul<MenuContainerProps>`
   line-height: 18px;
   list-style: none;
   overflow: hidden;
-  position: relative;
 
   ${SlideDown}
 

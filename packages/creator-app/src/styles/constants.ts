@@ -54,6 +54,7 @@ export enum Identifier {
   PROTO_VARIABLES_MENU_CONTAINER = 'vf-proto-variables-menu-container',
   PROTO_SETTINGS_MENU_CONTAINER = 'vf-proto-settings-menu-container',
   NEW_PROJECT_NAME_INPUT = 'vf-project-name-input',
+  NEW_PROJECT_BUTTON = 'vf-new-project-button',
   NEW_PROJECT_ICON_UPLOAD_CONTAINER = 'vf-new-project-icon-upload-container',
 
   // Project Creation

@@ -23,7 +23,14 @@ const InfoSection: React.FC<InfoSection> = ({ active, name, date, isRead, tags }
     const customTags = tags.filter((tag) => Number.isInteger(tag));
 
     if (!isRead) {
-      return <span>Unread</span>;
+      return (
+        <>
+          <Box display="inline" mr={6} ml={6}>
+            •
+          </Box>
+          <span>Unread</span>
+        </>
+      );
     }
     if (isRead && customTags.length > 0) {
       return (

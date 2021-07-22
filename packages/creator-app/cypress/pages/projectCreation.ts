@@ -1,13 +1,12 @@
 import { ClassName, Identifier } from '../../src/styles/constants';
 import { uploadFile } from '../utils';
 import canvasPage from './canvas';
-import dashboardPage from './dashboard';
 
 export const PROJECT_NAME = 'Project Name';
 
 export const helper = {
   clickProjectCreateButton: () => {
-    dashboardPage.el.newProjectButton.click();
+    cy.get(`#${Identifier.NEW_PROJECT_BUTTON}`).click();
   },
   clickButtonWithText: (text: string) => {
     cy.get(`.${ClassName.BUTTON}`).contains(text).click();

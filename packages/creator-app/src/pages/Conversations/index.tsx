@@ -6,10 +6,10 @@ import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
 
 import EmptyScreen from '@/components/EmptyScreen';
 import LoadingGate from '@/components/LoadingGate';
-import { Path } from '@/config/routes';
 import { fetchReportTags } from '@/ducks/reportTag';
-import { fetchTranscripts } from '@/ducks/transcript';
+import * as Router from '@/ducks/router';
 import * as Transcripts from '@/ducks/transcript';
+import { fetchTranscripts } from '@/ducks/transcript';
 import { connect } from '@/hocs';
 import { useAsyncEffect, useTeardown } from '@/hooks';
 import { FILTER_TAG } from '@/pages/Conversations/constants';
@@ -20,12 +20,10 @@ import { ConversationsContainer, TranscriptDetails, TranscriptDialog, Transcript
 type ConversationProps = RouteComponentProps;
 
 const Conversations: React.FC<ConnectedConversationProps & ConversationProps> = ({ allTranscripts }) => {
-  const [loadingData, setLoadingData] = React.useState(true);
+  const [isLoaded, setIsLoaded] = React.useState(false);
   const [noTestRuns, setNoTestRuns] = React.useState(false);
-  const location = useLocation();
+  const [filteredReportsExist, setFilteredReportsExist] = React.useState(true);
 
-  // TODO: placeholder for filtered reports result
-  const filteredReports = true;
   const dispatch = useDispatch();
 
   const { search } = useLocation();
@@ -45,36 +43,42 @@ const Conversations: React.FC<ConnectedConversationProps & ConversationProps> = 
   const loadReports = async () => {
     dispatch(fetchTranscripts());
     dispatch(fetchReportTags());
-    setLoadingData(false);
+
+    setNoTestRuns(false);
+    setIsLoaded(true);
   };
 
   React.useEffect(() => {
-    const queryParams = queryString.parse(location.search);
+    const queryParams = queryString.parse(search);
     const tags = queryParams[FILTER_TAG.TAG];
     const range = queryParams[FILTER_TAG.RANGE];
     const startDate = queryParams[FILTER_TAG.START_DATE];
     const endDate = queryParams[FILTER_TAG.END_DATE];
     const noFilters = !tags && !range && !startDate && !endDate;
 
-    if (noFilters && !allTranscripts) {
-      setNoTestRuns(true);
+    if (allTranscripts.length) {
+      setFilteredReportsExist(true);
+      setNoTestRuns(false);
+    } else {
+      noFilters ? setNoTestRuns(true) : setFilteredReportsExist(false);
     }
-  }, [loadingData]);
+  }, [allTranscripts]);
 
   useAsyncEffect(async () => {
-    const queryParams = queryString.stringify(queryString.parse(location.search));
+    const queryParams = queryString.stringify(queryString.parse(search));
 
-    dispatch(fetchTranscripts(queryParams));
-    setLoadingData(false);
+    dispatch(fetchTranscripts(queryParams || ''));
+
+    setNoTestRuns(false);
   }, [search]);
 
   return (
-    <ConversationsContainer isFilteredResultsEmpty={filteredReports}>
-      <LoadingGate isLoaded={!loadingData} label="Conversations" load={loadReports}>
+    <ConversationsContainer isFilteredResultsEmpty={filteredReportsExist}>
+      <LoadingGate isLoaded={isLoaded} label="Conversations" load={loadReports}>
         {!noTestRuns ? (
           <>
-            <TranscriptManager loading={loadingData} />
-            {filteredReports ? (
+            <TranscriptManager />
+            {filteredReportsExist ? (
               <>
                 <TranscriptDialog />
                 <TranscriptDetails />
@@ -85,7 +89,7 @@ const Conversations: React.FC<ConnectedConversationProps & ConversationProps> = 
                   title="No reports exist"
                   body="No reports exist with the current filters applied"
                   buttonText="Clear Filters"
-                  link={Path.CONVERSATIONS}
+                  onClick={() => history.replace({ search: '' })}
                 />
               </Box>
             )}
@@ -95,7 +99,7 @@ const Conversations: React.FC<ConnectedConversationProps & ConversationProps> = 
             title="No conversations exist"
             body="Save a test, or share your assistant with sharable links to access the conversations."
             buttonText="Go to Test"
-            link={Path.PROJECT_PROTOTYPE}
+            onClick={() => dispatch(Router.goToCurrentPrototype())}
           />
         )}
       </LoadingGate>

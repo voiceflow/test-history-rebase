@@ -1,10 +1,10 @@
-import { ClassName, DashboardClassName } from '../../src/styles/constants';
+import { ClassName, DashboardClassName, Identifier } from '../../src/styles/constants';
 import { getClass } from './utils';
 
 export default {
   el: {
     get newProjectButton() {
-      return cy.get('#dashboard a');
+      return cy.get(`#${Identifier.NEW_PROJECT_BUTTON}`);
     },
     get workspaceDropdownButton() {
       return cy.get('#workspaceDropdown');

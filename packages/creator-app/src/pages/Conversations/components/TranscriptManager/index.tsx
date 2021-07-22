@@ -7,7 +7,7 @@ import { ConnectedProps } from '@/types';
 import { Container, TranscriptHeader, TranscriptResultsList } from './components';
 
 interface TranscriptManagerProps {
-  loading: boolean;
+  loading?: boolean;
 }
 
 const TranscriptManager: React.FC<ConnectedTranscriptManagerProps & TranscriptManagerProps> = ({ allTranscripts }) => (

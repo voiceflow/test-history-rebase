@@ -9,7 +9,6 @@ import DragLayer from '@/components/DragLayer';
 import EmptyScreen from '@/components/EmptyScreen';
 import SeoHelmet from '@/components/SeoHelmet';
 import { Permission } from '@/config/permissions';
-import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import { SeoPage } from '@/constants/seo';
 import { ScrollContextProvider } from '@/contexts';
@@ -25,7 +24,7 @@ import { connect, withBatchLoadingGate } from '@/hocs';
 import { useAsyncEffect, useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
 import * as Models from '@/models';
 import perf, { PerfAction } from '@/performance';
-import { DashboardClassName } from '@/styles/constants';
+import { DashboardClassName, Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { compose } from '@/utils/functional';
 import * as Query from '@/utils/query';
@@ -187,10 +186,11 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
             >
               {projects.length === 0 ? (
                 <EmptyScreen
+                  id={Identifier.NEW_PROJECT_BUTTON}
                   title="No Projects Found"
                   body="This workspace has no projects, create one."
                   buttonText="New Project"
-                  link={Path.NEW_INTRO_PROJECT}
+                  onClick={goToNewIntroProject}
                 />
               ) : (
                 <div className={DashboardClassName.LISTS_CONTAINER}>

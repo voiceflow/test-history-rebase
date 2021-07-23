@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.436.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.435.2...@voiceflow/creator-app@1.436.0) (2021-07-23)
+
+
+### Bug Fixes
+
+* auth token declaration (VF-000) ([1cb768c](https://github.com/voiceflow/creator-app/commit/1cb768c5c3805d5a7f2ac8ecc4b8bb760adcea7a))
+* enable realtime cursor ([#3738](https://github.com/voiceflow/creator-app/issues/3738)) ([9ebd235](https://github.com/voiceflow/creator-app/commit/9ebd2354b3ec1f421168a46bb554435d8a5ac20e))
+
+
+### Features
+
+* conversation dialog refinement (VF-1287) ([#3729](https://github.com/voiceflow/creator-app/issues/3729)) ([36160c9](https://github.com/voiceflow/creator-app/commit/36160c9c1cf296685fe387c86baa58c2acd3554c))
+
+
+
+
+
 ## [1.435.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.435.1...@voiceflow/creator-app@1.435.2) (2021-07-23)
 
 **Note:** Version bump only for package @voiceflow/creator-app

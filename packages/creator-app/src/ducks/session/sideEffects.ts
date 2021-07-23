@@ -104,8 +104,6 @@ const setSession =
 
     Cookies.removeLastSessionCookie();
 
-    await client.socket!.auth(token, browserID, tabID);
-
     batch(() => {
       dispatch(updateAuthToken(token));
       dispatch(setIntercomUserHMAC(intercomUserHMAC));
@@ -123,6 +121,8 @@ const setSession =
     } else {
       dispatch(goToOnboarding());
     }
+
+    await client.socket!.auth(token, browserID, tabID);
 
     await dispatch(identifyUser(user));
   };

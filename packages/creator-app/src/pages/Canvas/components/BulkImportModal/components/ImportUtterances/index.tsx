@@ -192,7 +192,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
               {state.utterancesCount} <Text color="#62778c">{pluralize('utterance', state.utterancesCount)} </Text>
               {!builtIn && (
                 <>
-                  <Text>with</Text> {state.slotsCount} <Text color="#62778c">{pluralize('slot', state.slotsCount)} included.</Text>
+                  <Text>with</Text> {state.slotsCount} <Text color="#62778c">{pluralize('entity', state.slotsCount)} included.</Text>
                 </>
               )}
             </Text>

@@ -5,6 +5,8 @@ import onboarding from '../pages/onboarding';
 context('Onboarding', () => {
   const regularFlow = (projectType?: string) => {
     cy.signup();
+    onboarding.assert.verifyEmailTitle();
+    cy.verifyEmail();
 
     cy.shouldBeOn(onboarding);
     onboarding.el.getStartedButton.click();
@@ -50,6 +52,8 @@ context('Onboarding', () => {
 
     it('new user', () => {
       cy.signup('?promo=student');
+      onboarding.assert.verifyEmailTitle();
+      cy.verifyEmail();
 
       cy.shouldBeOn(onboarding);
       onboarding.el.getStartedButton.click();
@@ -83,6 +87,8 @@ context('Onboarding', () => {
 
     it('new user creator signup flow', () => {
       cy.signup('?ob_payment=true&ob_plan=creator&ob_period=MO');
+      onboarding.assert.verifyEmailTitle();
+      cy.verifyEmail();
 
       cy.shouldBeOn(onboarding);
       onboarding.el.getStartedButton.click();
@@ -102,6 +108,8 @@ context('Onboarding', () => {
     // TODO: sometimes on circle ci, (maybe on local too but havent ran into it) this test fails with a timeout, should look into a fix so we can get this test case back
     it.skip('existing user creator signup flow', () => {
       cy.signup();
+      onboarding.assert.verifyEmailTitle();
+      cy.verifyEmail();
 
       cy.visit('?ob_payment=true&ob_plan=creator&ob_period=MO');
 

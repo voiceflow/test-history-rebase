@@ -21,3 +21,10 @@ export const saveSocialProfilePicture =
 
     await dispatch(saveProfilePicture(s3Url.data));
   };
+
+export const confirmAccount =
+  (token: string): Thunk =>
+  async (dispatch) => {
+    await client.user.confirmAccount(token);
+    dispatch(updateAccount({ verified: true, first_login: true }));
+  };

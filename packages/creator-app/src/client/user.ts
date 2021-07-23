@@ -16,6 +16,10 @@ const userClient = {
   testResetPassword: (resetCode: string) => api.get(`${USER_PATH}/reset/${resetCode}`),
 
   resetPassword: (creatorID: string, password: string) => api.post(`${USER_PATH}/reset/${creatorID}`, { password }),
+
+  resendConfirmationEmail: (): Promise<void> => api.post(`${USER_PATH}/verify`),
+
+  confirmAccount: (token: string): Promise<void> => api.post(`${USER_PATH}/verify/${token}`),
 };
 
 export default userClient;

@@ -48,11 +48,18 @@ context('Main', () => {
     it('signup', () => {
       cy.signup();
 
+      onboardingPage.assert.verifyEmailTitle();
       cy.shouldBeOn(onboardingPage);
+
+      cy.verifyEmail();
+
+      cy.shouldBeOn(onboardingPage);
+      onboardingPage.el.getStartedButton.click();
     });
 
     it('login', () => {
       cy.createTestAccount();
+      cy.setVerified();
 
       cy.visit('/login');
 

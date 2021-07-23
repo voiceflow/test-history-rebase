@@ -17,6 +17,7 @@ Cypress.Commands.add('setup', () => {
   cy.removeTestAccount();
   cy.wait(1000); // eslint-disable-line cypress/no-unnecessary-waiting
   cy.createTestAccount();
+  cy.setVerified();
   cy.setAuth();
 });
 

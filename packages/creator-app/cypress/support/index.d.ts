@@ -47,6 +47,16 @@ declare namespace Cypress {
     signup(queryString?: string): Chainable;
 
     /**
+     * verification confirmation through API of the email of the user created during the signup flow
+     */
+    verifyEmail(): Chainable;
+
+    /**
+     * verify the email of the user created during the signup flow
+     */
+    setVerified(): Chainable;
+
+    /**
      * create workspace, needs to be called after signup()
      */
     createWorkspace(): Chainable;

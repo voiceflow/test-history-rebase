@@ -15,6 +15,7 @@ export type PrototypeConfig = {
 
 export type RecentState = {
   prototype: PrototypeConfig;
+  redirect: string | null;
 };
 
 export const STATE_KEY = 'recent';
@@ -30,17 +31,20 @@ export const INITIAL_STATE: RecentState = {
     intent: false,
     guided: true,
   },
+  redirect: null,
 };
 
 export enum RecentAction {
   UPDATE_RECENT_TESTING = 'RECENT:TESTING:UPDATE',
+  UPDATE_RECENT_REDIRECT = 'RECENT:REDIRECT:UPDATE',
 }
 
 // action types
 
 export type UpdateRecentPrototype = Action<RecentAction.UPDATE_RECENT_TESTING, Partial<PrototypeConfig>>;
+export type UpdateRecentRedirect = Action<RecentAction.UPDATE_RECENT_REDIRECT, string | null>;
 
-export type AnyRecentAction = UpdateRecentPrototype;
+export type AnyRecentAction = UpdateRecentPrototype | UpdateRecentRedirect;
 
 // reducers
 
@@ -48,10 +52,11 @@ export const updateRecentPrototypeReducer: Reducer<RecentState, UpdateRecentProt
   update(state, { prototype: { $merge: payload } });
 
 const recentReducer: RootReducer<RecentState, AnyRecentAction> = (state = INITIAL_STATE, action) => {
-  // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
     case RecentAction.UPDATE_RECENT_TESTING:
       return updateRecentPrototypeReducer(state, action);
+    case RecentAction.UPDATE_RECENT_REDIRECT:
+      return { ...state, redirect: action.payload };
     default:
       return state;
   }
@@ -63,6 +68,8 @@ export default persistReducer(PERSIST_CONFIG, recentReducer);
 
 const rootSelector = createRootSelector(STATE_KEY);
 
+export const recentRedirectSelector = createSelector([rootSelector], ({ redirect }) => redirect);
+
 export const recentPrototypeSelector = createSelector([rootSelector], ({ prototype }) => prototype);
 
 export const prototypeDebugSelector = createSelector([recentPrototypeSelector], ({ debug }) => debug);
@@ -71,3 +78,5 @@ export const prototypeDebugSelector = createSelector([recentPrototypeSelector], 
 
 export const updateRecentPrototype = (payload: Partial<PrototypeConfig>): UpdateRecentPrototype =>
   createAction(RecentAction.UPDATE_RECENT_TESTING, payload);
+
+export const updateRecentRedirect = (payload: string | null): UpdateRecentRedirect => createAction(RecentAction.UPDATE_RECENT_REDIRECT, payload);

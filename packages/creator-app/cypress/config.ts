@@ -1,3 +1,5 @@
+export const REDIS_HOST = '127.0.0.1';
+
 export const POSTGRES_HOST = '127.0.0.1';
 export const POSTGRES_DB = 'voiceflow_e2e';
 export const POSTGRES_USER = 'voiceflow';

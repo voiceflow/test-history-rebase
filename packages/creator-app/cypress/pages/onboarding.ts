@@ -1,4 +1,4 @@
-import { DashboardClassName } from '../../src/styles/constants';
+import { DashboardClassName, Identifier } from '../../src/styles/constants';
 
 const TARGET_ELEMENT_TEXT = {
   RoleDropdown: 'Select your role',
@@ -77,6 +77,9 @@ export default {
   assert: {
     planBubble: (planString = 'Free') => {
       cy.get(`.${DashboardClassName.PLAN_BUBBLE}`).contains(planString);
+    },
+    verifyEmailTitle: () => {
+      cy.get(`#${Identifier.VERIFY_EMAIL_TITLE}`).contains('Verify your email');
     },
   },
   el: helper.el,

@@ -1,10 +1,11 @@
 import cuid from 'cuid';
 
-import { API_URL, POSTGRES_DB, POSTGRES_HOST, POSTGRES_USER, TEST_EMAIL, TEST_PASSWORD, TEST_USER } from '../../config';
+import { API_URL, POSTGRES_DB, POSTGRES_HOST, POSTGRES_USER, REDIS_HOST, TEST_EMAIL, TEST_PASSWORD, TEST_USER } from '../../config';
 import signupPage from '../../pages/signup';
 import { CREATOR_ID_KEY, SESSION_CONTEXT, TAB_ID_KEY, TOKEN_KEY } from './session';
 
 const PSQL = `PGPASSFILE=.pgpass psql -h ${POSTGRES_HOST} -d ${POSTGRES_DB} -U ${POSTGRES_USER}`;
+const REDIS = `redis-cli -h ${REDIS_HOST} -p 6379`;
 
 Cypress.Commands.add('signup', (queryString = '') => {
   cy.visit(`/signup${queryString}`);
@@ -14,6 +15,22 @@ Cypress.Commands.add('signup', (queryString = '') => {
   signupPage.setPassword(TEST_PASSWORD);
 
   signupPage.submit();
+});
+
+Cypress.Commands.add('verifyEmail', () => {
+  cy.exec(`${PSQL} -t -c "SELECT creator_id FROM creators WHERE email='${TEST_EMAIL}' LIMIT 1"`).then((result) => {
+    const creatorID = result.stdout;
+
+    cy.exec(`${REDIS} get ve_${creatorID}`).then((result) => {
+      const token = result.stdout;
+
+      cy.visit(`/account/confirm/${token}${creatorID}`);
+    });
+  });
+});
+
+Cypress.Commands.add('setVerified', () => {
+  cy.exec(`${PSQL} -c "UPDATE creators SET verified=TRUE WHERE email='${TEST_EMAIL}'"`);
 });
 
 Cypress.Commands.add('setAuth', () => {
@@ -54,8 +71,9 @@ Cypress.Commands.add('createTestAccount', () => {
       password: TEST_PASSWORD,
     },
   }).then((res) => {
+    const creatorID = res.body.user.creator_id;
     SESSION_CONTEXT.set(TOKEN_KEY, res.body.token);
-    SESSION_CONTEXT.set(CREATOR_ID_KEY, res.body.user.creator_id);
+    SESSION_CONTEXT.set(CREATOR_ID_KEY, creatorID);
     SESSION_CONTEXT.get(CREATOR_ID_KEY);
   });
 });

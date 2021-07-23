@@ -23,6 +23,7 @@ export const INITIAL_STATE: AccountState = {
   amazon: null,
   google: null,
   created: null,
+  verified: false,
   referrer_id: null,
   referral_code: null,
 };

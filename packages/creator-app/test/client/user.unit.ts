@@ -13,6 +13,8 @@ suite('Client - User', ({ expect, stubFetch }) => {
       'resetEmail',
       'testResetPassword',
       'resetPassword',
+      'resendConfirmationEmail',
+      'confirmAccount',
     ]);
   });
 
@@ -88,6 +90,28 @@ suite('Client - User', ({ expect, stubFetch }) => {
       await client.resetPassword(resetCode, password);
 
       expect(fetch).to.be.calledWithExactly(`${USER_PATH}/reset/${resetCode}`, { password });
+    });
+  });
+
+  describe('resendConfirmationEmail', () => {
+    it('resend email confirmation', async () => {
+      const fetch = stubFetch('api', 'post');
+
+      await client.resendConfirmationEmail();
+
+      expect(fetch).to.be.calledWithExactly(`${USER_PATH}/verify`);
+    });
+  });
+
+  describe('confirmAccount', () => {
+    it('Requesting account confirmation', async () => {
+      const token = generate.string();
+
+      const fetch = stubFetch('api', 'post');
+
+      await client.confirmAccount(token);
+
+      expect(fetch).to.be.calledWithExactly(`${USER_PATH}/verify/${token}`);
     });
   });
 });

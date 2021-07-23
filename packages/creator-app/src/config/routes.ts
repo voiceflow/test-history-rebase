@@ -126,6 +126,7 @@ export const Path = {
   DASHBOARD: toPath(RootRoute.DASHBOARD),
 
   ACCOUNT: toPath(RootRoute.ACCOUNT),
+  CONFIRM_ACCOUNT: toPath(RootRoute.ACCOUNT, 'confirm', ':token'),
 
   INVITE: toPath(RootRoute.INVITE),
 

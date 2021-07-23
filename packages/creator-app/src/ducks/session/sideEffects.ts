@@ -103,11 +103,11 @@ const setSession =
     const browserID = browserIDSelector(state);
 
     Cookies.removeLastSessionCookie();
-    dispatch(updateAuthToken(token));
 
     await client.socket!.auth(token, browserID, tabID);
 
     batch(() => {
+      dispatch(updateAuthToken(token));
       dispatch(setIntercomUserHMAC(intercomUserHMAC));
       dispatch(updateAccount(user));
     });

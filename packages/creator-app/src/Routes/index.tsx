@@ -30,6 +30,7 @@ const Runtime = lazy(() => import('@/pages/Runtime'));
 const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));
 const Workspace = lazy(() => import('@/pages/Workspace'));
 const NewWorkspace = lazy(() => import('@/pages/Dashboard/NewWorkspace'));
+const ConfirmAccount = lazy(() => import('@/pages/Auth/ConfirmAccount'));
 
 const Routes: React.FC = () => {
   const authToken = useSelector(Session.authTokenSelector);
@@ -39,6 +40,7 @@ const Routes: React.FC = () => {
       <Switch>
         <Route exact path={Path.SSML} component={SSML} />
 
+        <Route exact path={Path.CONFIRM_ACCOUNT} component={ConfirmAccount} />
         <PublicRoute exact path={Path.RESET_PASSWORD} component={ResetPassword} />
         <PublicRoute exact path={Path.RESET} component={ResetEmail} />
         <PublicRoute exact path={Path.LOGIN} component={Login} />

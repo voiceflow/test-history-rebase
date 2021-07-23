@@ -13,6 +13,8 @@ export const isFirstLoginSelector = createSelector([userSelector], ({ first_logi
 
 export const userEmailSelector = createSelector([userSelector], ({ email }) => email);
 
+export const userVerifiedSelector = createSelector([userSelector], ({ verified }) => verified);
+
 export const amazonAccountSelector = createSelector([userSelector], ({ amazon }) => amazon);
 
 export const amazonVendorsSelector = createSelector([amazonAccountSelector], (amazon) => amazon?.vendors ?? []);

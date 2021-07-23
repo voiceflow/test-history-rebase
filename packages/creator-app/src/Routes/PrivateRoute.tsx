@@ -3,8 +3,10 @@ import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { Path } from '@/config/routes';
+import { userVerifiedSelector } from '@/ducks/account';
 import { authTokenSelector } from '@/ducks/session';
 import { connect } from '@/hocs';
+import Verify from '@/pages/Auth/Verify';
 import { ConnectedProps } from '@/types';
 
 export type PrivateRouteProps<T extends object> = {
@@ -14,29 +16,43 @@ export type PrivateRouteProps<T extends object> = {
   exact?: boolean;
 } & Omit<T, keyof RouteComponentProps>;
 
-const PrivateRoute = <T extends object>({ component: Component, authToken, ...rest }: PrivateRouteProps<T> & ConnectedPrivateRouteProps) => (
+const PrivateRoute = <T extends object>({
+  component: Component,
+  authToken,
+  verified,
+  ...rest
+}: PrivateRouteProps<T> & ConnectedPrivateRouteProps) => (
   <Route
     {...(rest as any)}
-    render={(props) =>
-      authToken ? (
+    render={(props) => {
+      if (!authToken) {
+        return (
+          <Redirect
+            to={{
+              pathname: Path.LOGIN,
+              search: props.location.search,
+              state: { from: props.location },
+            }}
+          />
+        );
+      }
+
+      if (!verified) {
+        return <Verify />;
+      }
+
+      return (
         <ErrorBoundary>
           <Component {...props} {...(rest as any)} />
         </ErrorBoundary>
-      ) : (
-        <Redirect
-          to={{
-            pathname: Path.LOGIN,
-            search: props.location.search,
-            state: { from: props.location },
-          }}
-        />
-      )
-    }
+      );
+    }}
   />
 );
 
 const mapStateToProps = {
   authToken: authTokenSelector,
+  verified: userVerifiedSelector,
 };
 
 type ConnectedPrivateRouteProps = ConnectedProps<typeof mapStateToProps>;

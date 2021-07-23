@@ -1,4 +1,4 @@
-import { Box, ControlledInput, Input, LegacyButton, preventDefault, toast } from '@voiceflow/ui';
+import { Box, Button, ControlledInput, Input, preventDefault, toast } from '@voiceflow/ui';
 import { getSearch } from 'connected-react-router';
 import _throttle from 'lodash/throttle';
 import React from 'react';
@@ -21,10 +21,10 @@ import InputContainer from './InputContainer';
 import PasswordInput from './PasswordInput';
 import SocialLogin from './SocialLogin';
 
-export type SignupFormProps = {
+export interface SignupFormProps {
   query: Query.Auth;
   promo?: boolean;
-};
+}
 
 export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormProps> = ({ signup, promo, query, goToLogin }) => {
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
@@ -135,9 +135,9 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
                 <a onClick={goToLogin}>Have an account?</a>
               </div>
               <div className="col-6">
-                <LegacyButton isPrimary type="submit" disabled={isDisabled || isSignupDisabled}>
+                <Button type="submit" disabled={isDisabled || isSignupDisabled}>
                   {query.invite ? 'Join Team' : 'Create Account'}
-                </LegacyButton>
+                </Button>
               </div>
             </div>
           </div>

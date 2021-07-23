@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.434.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.433.1...@voiceflow/creator-app@1.434.0) (2021-07-23)
+
+
+### Features
+
+* email verification frontend (VF-1285) ([#3686](https://github.com/voiceflow/creator-app/issues/3686)) ([5135167](https://github.com/voiceflow/creator-app/commit/51351673823912ca44b198a26c5c437a2f9cbfd1)), closes [#3713](https://github.com/voiceflow/creator-app/issues/3713)
+
+
+
+
+
 ## [1.433.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.433.0...@voiceflow/creator-app@1.433.1) (2021-07-22)
 
 **Note:** Version bump only for package @voiceflow/creator-app

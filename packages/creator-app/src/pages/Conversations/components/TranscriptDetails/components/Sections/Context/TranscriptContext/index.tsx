@@ -2,10 +2,11 @@ import { BoxFlexApart, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import * as Prototype from '@/ducks/prototype';
 import { currentSelectedTranscriptSelector } from '@/ducks/transcript';
 import { Workspace } from '@/models';
 
-import { ContextSubtext, ContextTitle, StyledLogo, StyledUser, UserContainer } from './components';
+import { AvatarContainer, ContextSubtext, ContextTitle, DefaultUserContainer, LetterContainer, StyledLogo, StyledUser } from './components';
 
 export type CreatorListParams = Pick<Workspace, 'name' | 'image'>;
 interface TranscriptContextProps {
@@ -19,16 +20,42 @@ const TranscriptContext: React.FC<TranscriptContextProps> = ({ creatorIDList, cr
 
   const index = creatorIDList.indexOf(Number(creator_id));
 
+  const avatar = useSelector(Prototype.prototypeAvatarSelector);
+
   const userName = creatorIDList.includes(Number(creator_id)) ? creatorList[index].name : '';
   const userImage = creatorIDList.includes(Number(creator_id)) ? creatorList[index].image : '';
+
+  const UserContainer = () => {
+    let letter = '';
+    let backgroundColor = '';
+    let color = '';
+    let isCustom = true;
+
+    if (userImage.length === 13 && userImage.includes('|')) {
+      const colors = userImage.split('|');
+      backgroundColor = `#${colors[1]}`;
+      color = `#${colors[0]}`;
+      [letter] = userName;
+      isCustom = false;
+    }
+
+    if (isCustom) {
+      return <DefaultUserContainer src={userImage} />;
+    }
+    return (
+      <LetterContainer color={color} backgroundColor={backgroundColor}>
+        <span>{letter}</span>
+      </LetterContainer>
+    );
+  };
 
   return (
     <>
       <BoxFlexApart>
-        <StyledLogo>
-          <SvgIcon icon="voiceflowV" size={24} color="#fff" />
+        <StyledLogo isCustom={!!avatar}>
+          {avatar ? <AvatarContainer src={avatar} /> : <SvgIcon icon="voiceflowV" size={24} color="#fff" />}
         </StyledLogo>
-        {userImage ? <UserContainer src={userImage} /> : <StyledUser icon="userPlaceholder" size={48} color="#f0f0f0" />}
+        {userImage ? <UserContainer /> : <StyledUser icon="userPlaceholder" size={48} color="#f0f0f0" />}
       </BoxFlexApart>
       <ContextTitle>Conversation between your assistant and {userName || 'a test user'}</ContextTitle>
       <ContextSubtext>

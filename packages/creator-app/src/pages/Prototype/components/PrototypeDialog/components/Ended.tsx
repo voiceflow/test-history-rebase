@@ -10,14 +10,15 @@ import { useFeature } from '@/hooks';
 import { Message, MessageType } from '@/pages/Prototype/types';
 import { ConnectedProps } from '@/types';
 
-type PrototypeEndedProps = {
+interface PrototypeEndedProps {
   messages: Message[];
   stepBack: () => void;
-};
+  isTranscript?: boolean;
+}
 
 const LearnMore = <Link href={`${DOCS_LINK}/#/platform/testing/testing.md?id=no-intent-or-reprompted-matched`}>Learn More</Link>;
 
-const PrototypeEnded: React.FC<ConnectedPrototypeEndedProps & PrototypeEndedProps> = ({ contextStep, messages, stepBack }) => {
+const PrototypeEnded: React.FC<ConnectedPrototypeEndedProps & PrototypeEndedProps> = ({ contextStep, messages, stepBack, isTranscript }) => {
   const testReports = useFeature(FeatureFlag.TEST_REPORTS);
   const goBackDisabled = contextStep <= 1;
 
@@ -32,11 +33,13 @@ const PrototypeEnded: React.FC<ConnectedPrototypeEndedProps & PrototypeEndedProp
   const reason = React.useMemo(() => {
     // see if the last interaction is a user or bot
     const last = [...messages].reverse().find(({ type }) => [MessageType.SPEAK, MessageType.USER].includes(type));
-    if (last?.type === MessageType.SPEAK) {
-      return <>Reached last connected step. {Action}</>;
-    }
-    if (last?.type === MessageType.USER) {
-      return <>No Intent matched or reprompt found. {Action}</>;
+    if (!isTranscript) {
+      if (last?.type === MessageType.SPEAK) {
+        return <>Reached last connected step. {Action}</>;
+      }
+      if (last?.type === MessageType.USER) {
+        return <>No Intent matched or reprompt found. {Action}</>;
+      }
     }
 
     return null;
@@ -44,7 +47,7 @@ const PrototypeEnded: React.FC<ConnectedPrototypeEndedProps & PrototypeEndedProp
 
   return (
     <>
-      <Divider isLast={true}>Session ended</Divider>
+      <Divider isLast={true}>{isTranscript ? 'Conversation Ended' : 'Session Ended'}</Divider>
       <Box textAlign="center" fontSize={13}>
         {reason}
       </Box>

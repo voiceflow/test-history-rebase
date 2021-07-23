@@ -4,7 +4,7 @@ import * as Prototype from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
 import { useDebug, usePublic } from '@/pages/Prototype/hooks';
 
-import { Message, MessageType } from '../../types';
+import { Message, MessageType, TranscriptMessageType } from '../../types';
 
 type Filter = (message: Message) => boolean;
 
@@ -33,9 +33,18 @@ const DebugFilter = (): Filter => {
   };
 };
 
+const BlockFilter = (): Filter => {
+  return (message: Message) => {
+    const messageType = String(message.type);
+
+    return messageType !== TranscriptMessageType.BLOCK && messageType !== TranscriptMessageType.CHOICE;
+  };
+};
+
 const filterMap: Record<string, () => Filter> = {
   [MessageType.VISUAL]: VisualFilter,
   [MessageType.DEBUG]: DebugFilter,
+  [TranscriptMessageType.BLOCK]: BlockFilter,
 };
 
 const useMessageFilters = (messages: Message[]): Message[] => {
@@ -46,5 +55,4 @@ const useMessageFilters = (messages: Message[]): Message[] => {
 
   return messages.filter((message) => filters[message.type]?.(message) ?? true);
 };
-
 export default useMessageFilters;

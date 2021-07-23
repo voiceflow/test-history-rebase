@@ -1,21 +1,28 @@
+import { BaseRequest } from '@voiceflow/general-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import client from '@/client';
-import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
+import * as Prototype from '@/ducks/prototype';
+import { PrototypeStatus } from '@/ducks/prototype/types';
+import * as Recent from '@/ducks/recent';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { currentTranscriptIDSelector } from '@/ducks/transcript';
+import PrototypeChatDisplay from '@/pages/Prototype/components/PrototypeChatDisplay';
 import { Message } from '@/pages/Prototype/types';
-import ChatDialog from '@/pages/PublicPrototype/components/ChatDialog';
 import { noop } from '@/utils/functional';
 
 import { Container, DialogHeader } from './components';
 
 const TranscriptDialog: React.FC = () => {
-  const [input, setInput] = React.useState('');
   const [messages, setMessages] = React.useState<Message[]>([]);
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
   const activeProjectID = useSelector(activeProjectIDSelector);
+  const debugMessage = useSelector(Recent.prototypeDebugSelector);
+  const intentConfidence = useSelector(Recent.prototypeIntentSelector);
+  const avatar = useSelector(Prototype.prototypeAvatarSelector);
+  const color = useSelector(Prototype.prototypeBrandColorSelector);
+  const dispatch = useDispatch();
 
   const fetchDialogs = async () => {
     const dialogs = await client.transcript.getTranscriptDialog(activeProjectID!, currentTranscriptID!);
@@ -30,31 +37,34 @@ const TranscriptDialog: React.FC = () => {
     }
   }, [currentTranscriptID]);
 
+  const handleMessageClick = () => {};
+
+  const handleChange = (isDebugToggled: boolean) => {
+    isDebugToggled
+      ? dispatch(Recent.updateRecentPrototype({ debug: !debugMessage }))
+      : dispatch(Recent.updateRecentPrototype({ intent: !intentConfidence }));
+  };
+
   return (
     <Container>
-      <DialogHeader />
-      <ChatDialog
-        autoScroll={false}
-        locale="locale"
-        input={input}
-        onStart={() => alert()}
-        layout={PrototypeLayout.TEXT_DIALOG}
-        onMute={() => alert()}
-        onSend={(request) => alert(request)}
-        onReset={() => alert()}
-        onPlay={(src) => alert(src)}
+      <DialogHeader
+        handleChange={handleChange}
+        transcriptInformation={{ intentConfidenceToggled: debugMessage, debugMessageToggled: intentConfidence }}
+      />
+      <PrototypeChatDisplay
+        avatarURL={avatar}
+        color={color}
+        isTranscript={true}
         messages={messages}
+        onPlay={handleMessageClick}
+        debug={true}
         interactions={[]}
-        onInputChange={(input) => setInput(input)}
-        prototypeStatus={PrototypeStatus.ACTIVE}
-        finalTranscript="finalTranscript"
-        onStopListening={() => alert()}
-        onStartListening={() => alert()}
-        interimTranscript="interimTranscript"
-        isMicrophonePermissionGranted={true}
-        isSpeechSpeechRecognitionSupported={false}
-        hasInput={false}
-        onStepBack={() => noop()}
+        status={PrototypeStatus.ENDED}
+        hideSessionMessages={false}
+        showPadding
+        onInteraction={(request: string | BaseRequest) => alert(request)}
+        stepBack={() => noop()}
+        autoScroll={false}
       />
     </Container>
   );

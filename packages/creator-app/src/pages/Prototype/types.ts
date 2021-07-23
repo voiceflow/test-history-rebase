@@ -13,6 +13,11 @@ export enum PMStatus {
   DIALOG_WAITING_USER_INTERACTION = 'DIALOG_WAITING_USER_INTERACTION',
 }
 
+export enum TranscriptMessageType {
+  BLOCK = 'BLOCK',
+  CHOICE = 'CHOICE',
+}
+
 export enum MessageType {
   USER = 'USER',
   AUDIO = 'AUDIO',

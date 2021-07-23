@@ -27,6 +27,7 @@ export type PrototypeChatDisplayProps = {
   onInteraction: (request: string | BaseRequest) => void;
   stepBack: () => void;
   autoScroll?: boolean;
+  isTranscript?: boolean;
 };
 
 const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
@@ -47,6 +48,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   onInteraction,
   autoScroll = true,
   stepBack,
+  isTranscript,
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
@@ -98,6 +100,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
           color={color}
           avatarURL={avatarURL}
           onInteraction={onInteraction}
+          isTranscript={isTranscript}
         />
       </InnerChatContainer>
     </OutterChatContainer>

@@ -74,6 +74,8 @@ export const recentPrototypeSelector = createSelector([rootSelector], ({ prototy
 
 export const prototypeDebugSelector = createSelector([recentPrototypeSelector], ({ debug }) => debug);
 
+export const prototypeIntentSelector = createSelector([recentPrototypeSelector], ({ intent }) => intent);
+
 //  action creators
 
 export const updateRecentPrototype = (payload: Partial<PrototypeConfig>): UpdateRecentPrototype =>

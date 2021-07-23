@@ -3,6 +3,7 @@ import { css, styled, transition } from '@/hocs';
 export const OutterChatContainer = styled.div`
   position: relative;
   flex: 1;
+  width: 100%;
 `;
 
 export const InnerChatContainer = styled.div<{ atTop: boolean }>`

@@ -30,7 +30,7 @@ type IntentConfidenceProps = Omit<MessageProps, 'iconProps'> & {
 
 export const IntentConfidence: React.FC<IntentConfidenceProps & ConnectedIntentConfidenceProps> = ({ message, getDiagram, ...props }) => {
   const intentMessage = `${message.split('**')[1]} - `;
-  const confidenceMessage = ` ${message.split('_')[1]}`;
+  const confidenceMessage = ` ${message.split('confidence interval')[1].split('_')[1]}`;
 
   return (
     <Box mt={8} mb={12} fontSize={13} style={{ textAlign: 'right', marginTop: '-16px' }} {...props}>

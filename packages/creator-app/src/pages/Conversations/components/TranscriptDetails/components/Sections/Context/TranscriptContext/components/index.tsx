@@ -20,12 +20,12 @@ export const ContextSubtext = styled(Box)`
   text-transform: capitalize;
 `;
 
-export const StyledLogo = styled.div`
+export const StyledLogo = styled.div<{ isCustom: boolean }>`
   z-index: 1;
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-image: linear-gradient(to bottom, rgba(19, 33, 68, 0.85), #132144);
+  background-image: ${({ isCustom }) => (isCustom ? 'none' : 'linear-gradient(to bottom, rgba(19, 33, 68, 0.85), #132144)')};
 
   & > * > svg {
     margin-left: 10px;
@@ -47,7 +47,14 @@ export const StyledUser = styled(SvgIcon)`
   }
 `;
 
-export const UserContainer = styled.img`
+export const AvatarContainer = styled.img`
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+`;
+
+export const DefaultUserContainer = styled.img`
   z-index: 2;
   width: 55px;
   height: 55px;
@@ -56,4 +63,22 @@ export const UserContainer = styled.img`
   opacity: 1;
   background: white;
   border: 3px solid white;
+`;
+
+export const LetterContainer = styled.div<{ color: string; backgroundColor: string }>`
+  width: 50px;
+  height: 50px;
+  color: ${({ color }) => color};
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 50px;
+  margin-left: -12px;
+  z-index: 2;
+  text-align: center;
+  text-transform: uppercase;
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  background-position: center;
+  background-size: contain;
+  border: 2px solid white;
+  border-radius: 100%;
 `;

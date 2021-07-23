@@ -26,6 +26,7 @@ type DialogPrototypeProps = {
   interactions: Interaction[];
   onInteraction: (request: string | BaseRequest) => void;
   stepBack: () => void;
+  isTranscript?: boolean;
 };
 
 const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
@@ -44,22 +45,26 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   avatarURL,
   onInteraction,
   stepBack,
+  isTranscript = false,
 }) => {
   // filter out messages based on settings
   const messages = useMessageFilters(rawMessages);
+
   const interactionProps = { color, interactions, onInteraction };
 
   return (
     <Container isPublic={isPublic} showPadding={showPadding} isMobile={isMobile}>
       <MessagesContainer>
+        {isTranscript && <Divider style={{ marginTop: '-30px' }}>Conversation Started</Divider>}
+
         {messages.map((message: Message, index) => {
           const previousMessage = messages[index - 1];
           const userSpeak = message.type === MessageType.USER;
+
           const isFirstInSeries = checkIfFirstInSeries(previousMessage, message);
           const isCurrent = message === messages[messages.length - 1];
           const isLast = index === messages.length - 1;
           const isIntentConfidence = message.type === MessageType.DEBUG && message.message.startsWith('matched intent');
-
           switch (message.type) {
             case MessageType.SESSION:
               return hideSessionMessages ? null : (
@@ -94,11 +99,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                 />
               );
             case MessageType.DEBUG:
-              return isIntentConfidence ? (
-                <IntentConfidence key={message.id} {...message}></IntentConfidence>
-              ) : (
-                <Debug key={message.id} {...message} />
-              );
+              return isIntentConfidence ? <IntentConfidence key={message.id} {...message} /> : <Debug key={message.id} {...message} />;
             case MessageType.USER:
               return <User isFirstInSeries={isFirstInSeries} userSpeak={userSpeak} key={message.id} color={color} {...message} />;
             case MessageType.STREAM:
@@ -123,7 +124,9 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
           }
         })}
 
-        {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && <Ended stepBack={stepBack} messages={messages} />}
+        {status === Prototype.PrototypeStatus.ENDED && !hideSessionMessages && (
+          <Ended isTranscript={isTranscript} stepBack={stepBack} messages={messages} />
+        )}
 
         <Loading isLoading={isLoading} avatarURL={avatarURL} />
 

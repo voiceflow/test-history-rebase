@@ -3,31 +3,54 @@ import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
 
-import { Container } from './components';
+import { Container, LabelContainer } from './components';
 
-const Label = (label: string) => {
-  return <Checkbox checked={true}>{label}</Checkbox>;
+interface TranscriptDialogInformation {
+  intentConfidenceToggled: boolean;
+  debugMessageToggled: boolean;
+}
+
+interface DialogHeaderProps {
+  transcriptInformation: TranscriptDialogInformation;
+  handleChange: (isDebugToggled: boolean) => void;
+}
+
+const Label = (label: string, checked: boolean) => {
+  return (
+    <Checkbox checked={checked}>
+      <LabelContainer>{label}</LabelContainer>
+    </Checkbox>
+  );
 };
-const DialogHeader = () => {
+
+const DialogHeader: React.FC<DialogHeaderProps> = ({ transcriptInformation, handleChange }) => {
+  const [intentConfidenceToggled, setIntentConfidenceToggled] = React.useState<boolean>(transcriptInformation.intentConfidenceToggled);
+  const [debugMessageToggled, setDebugMessageToggled] = React.useState<boolean>(transcriptInformation.debugMessageToggled);
+
+  const onToggle = (isDebugMessage: boolean) => {
+    isDebugMessage ? setDebugMessageToggled(!debugMessageToggled) : setIntentConfidenceToggled(!intentConfidenceToggled);
+
+    handleChange(isDebugMessage);
+  };
+
   return (
     <Container>
       <b>Transcript</b>
       <Dropdown
+        selfDismiss
         options={[
           {
-            label: Label('Intent confidence'),
-            onClick: () => alert('Intent confidence clicked'),
+            label: Label('Intent confidence', intentConfidenceToggled),
+            onClick: () => onToggle(false),
           },
           {
-            label: Label('Debug messages'),
-            onClick: () => alert('Debug messages clicked'),
+            label: Label('Debug messages', debugMessageToggled),
+            onClick: () => onToggle(true),
           },
         ]}
         placement="bottom-end"
       >
-        {(ref, onToggle, isOpen) => (
-          <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
-        )}
+        {(ref, onToggle) => <IconButton icon="ellipsis" variant={IconButtonVariant.SUBTLE} size={15} onClick={onToggle} ref={ref} />}
       </Dropdown>
     </Container>
   );

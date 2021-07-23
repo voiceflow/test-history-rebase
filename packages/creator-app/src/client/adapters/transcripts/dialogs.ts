@@ -10,7 +10,7 @@ const dialogAdapter = createAdapter<any, any>(
     let specificProperties = {};
 
     const commonProperties = {
-      startTime: moment.utc(data.timestamp).format('YYYY-MM-DD HH:mm:ss'),
+      startTime: moment.utc(data.timestamp).format('ss'),
     };
 
     // eslint-disable-next-line xss/no-mixed-html
@@ -33,7 +33,7 @@ const dialogAdapter = createAdapter<any, any>(
         }
       : {
           ...data.payload?.payload,
-          image: data.payload.payload?.imageURL,
+          image: data.payload.payload?.image,
           type: data.payload.type.toUpperCase(),
           ...commonProperties,
           ...specificProperties,

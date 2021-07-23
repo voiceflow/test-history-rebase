@@ -4561,9 +4561,9 @@
     "@types/react-transition-group" "*"
 
 "@types/react-speech-recognition@^3.6.0":
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/@types/react-speech-recognition/-/react-speech-recognition-3.6.0.tgz#3c52e2d3e2306d8fb0f54a769586221cdba4e35b"
-  integrity sha512-nFXlBxhz5Wnz/P7AQenmaG7r9MGBmvZhTW/MLPEPd1CYLgB+6jg0GygIYYM5LR+K1WyZ3+jXGhGszxoLQQkHXQ==
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@types/react-speech-recognition/-/react-speech-recognition-3.6.1.tgz#cc41d52a5d8825bb713c88175219d8eb73273f73"
+  integrity sha512-Lb2p28jMY+rEGgyCq4dtVQ8WQIMAmFakSrN7on00+mpXN2nC/mwXiAAwAGRPEpaHUpqLxZ7MwSjLPV/AgAlOHg==
 
 "@types/react-stripe-elements@^6.0.4":
   version "6.0.5"

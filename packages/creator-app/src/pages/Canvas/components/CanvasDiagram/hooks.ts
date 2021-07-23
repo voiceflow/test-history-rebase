@@ -32,7 +32,7 @@ export const useCursorControls = () => {
           prevCoords.current = nextCoords;
           dispatch.sync(Realtime.diagram.moveCursor({ projectID, diagramID, creatorID, coords: nextCoords }));
         }
-      } else if (!REALTIME_CURSOR_ENABLED) {
+      } else if (REALTIME_CURSOR_ENABLED) {
         engine.realtime.sendVolatileUpdate(RealtimeDuck.moveMouse(nextCoords));
       }
     }),

@@ -3096,9 +3096,9 @@
     nanoid "^3.1.23"
 
 "@logux/core@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@logux/core/-/core-0.7.0.tgz#b167e97127f2eb9b9faf37ca637ce929aa6e5f3e"
-  integrity sha512-vUpJ3KBlPoIqSpvNxf9hTUVT8zn1eNRAE8p4mbHbaOyNVEE9LQpYnBqxm6yQxcojhz/I/3NdeaBY0F2XbAwJsg==
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@logux/core/-/core-0.7.1.tgz#f834e74957b32cb2f67a58510c67627e2e15adc3"
+  integrity sha512-isCsAaWoimxACNyAa52Q6kaWpwW76I8kUTQN2EIGmI2DpylpHVXpA/2yFxbVRWmRElhnc12qCurUtFTHHgNgdQ==
   dependencies:
     nanoevents "^6.0.0"
 

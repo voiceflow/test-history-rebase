@@ -66,11 +66,7 @@ const NewProject: React.FC<ConnectedNewProjectProps> = ({
     let newVersionID: string | null = null;
 
     try {
-      // TODO: change this when we have templates for all channels
-      const project = await createProject(
-        { platform: isAnyGeneralPlatform(selectedChannel!) ? PlatformType.GENERAL : selectedChannel!, name, image: projectImage, listID },
-        getTemplateTag(selectedChannel!)
-      );
+      const project = await createProject({ platform: selectedChannel!, name, image: projectImage, listID }, getTemplateTag(selectedChannel!));
 
       // TODO: in the future make new project parameters much more platform specific
       if (isAlexaPlatform(selectedChannel!)) {

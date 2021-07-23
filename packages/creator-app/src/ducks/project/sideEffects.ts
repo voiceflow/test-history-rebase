@@ -9,7 +9,6 @@ import { addProjectToList } from '@/ducks/projectList/actions';
 import * as Session from '@/ducks/session';
 import { AnyProject } from '@/models';
 import { Thunk } from '@/store/types';
-import { isDistinctPlatform } from '@/utils/typeGuards';
 
 import { addProject, patchProject, removeProject, replaceProjects, updateProjectName } from './actions';
 import { activeProjectNameSelector, projectByIDSelector } from './selectors';
@@ -54,19 +53,19 @@ export const createProject =
 
     Errors.assertWorkspaceID(workspaceID);
 
-    // TODO: remove this after SQL `templates` table migration + Mongo template project platform update
-    const distinctPlatform = isDistinctPlatform(platform!) ? platform! : PlatformType.GENERAL;
+    const platformType = platform ?? PlatformType.GENERAL;
+    const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
 
-    const templateProjectID = await client.template.getPlatformTemplate(distinctPlatform, templateTag);
     if (!templateProjectID) {
-      toast.error(`no project templates exist for platform ${platform}`);
+      toast.error(`no project templates exist for platform ${platformType}`);
       throw new Error('no platform project template');
     }
 
     try {
       const newProject = await client
-        .platform(platform!)
+        .platform(platformType)
         .project.copy(templateProjectID, { name, image, teamID: workspaceID }, { channel: templateTag?.split(':')[1] });
+
       if (listID) {
         dispatch(addProjectToList(listID, newProject._id));
       }

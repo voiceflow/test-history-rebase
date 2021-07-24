@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.436.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.436.0...@voiceflow/creator-app@1.436.1) (2021-07-24)
+
+
+### Bug Fixes
+
+* isp legacy image upload (VF-1319) ([#3740](https://github.com/voiceflow/creator-app/issues/3740)) ([1f840c4](https://github.com/voiceflow/creator-app/commit/1f840c4192b797d9c8aee98b01b665ce933a012c))
+
+
+
+
+
 # [1.436.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.435.2...@voiceflow/creator-app@1.436.0) (2021-07-23)
 
 

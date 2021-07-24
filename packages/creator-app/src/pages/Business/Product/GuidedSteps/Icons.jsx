@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control, no-shadow */
-import { Button, Flex } from '@voiceflow/ui';
+import { Box, Button } from '@voiceflow/ui';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Image from '@/components/LegacyUpload/Image';
+import { UploadIconVariant, UploadJustIcon as Image } from '@/components/Upload/ImageUpload/IconUpload';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { connect } from '@/hocs';
 
@@ -19,12 +19,12 @@ function IconForm({ product, updateProduct, changeStep }) {
 
   return (
     <>
-      <Flex>
+      <Box display="flex">
         <IconContainer>
           <label>Small Icon</label>
           <Image
-            className="icon-image small-icon"
-            path="/image/small_icon"
+            size={UploadIconVariant.MEDIUM}
+            endpoint="/image/small_icon"
             image={product.smallIconUri}
             update={(imgUrl) => uploadImage(imgUrl, 'smallIconUri')}
           />
@@ -33,13 +33,13 @@ function IconForm({ product, updateProduct, changeStep }) {
         <IconContainer noBorder>
           <label>Large Icon</label>
           <Image
-            className="icon-image large-icon"
-            path="/image/large_icon"
+            size={UploadIconVariant.LARGE}
+            endpoint="/image/large_icon"
             image={product.largeIconUri}
             update={(imgUrl) => uploadImage(imgUrl, 'largeIconUri')}
           />
         </IconContainer>
-      </Flex>
+      </Box>
 
       <NextButtonContainer>
         <Button variant="secondary" onClick={changeStep}>

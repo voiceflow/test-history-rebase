@@ -84,6 +84,8 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                   isCurrent={isCurrent}
                   isLast={isLast}
                   avatarURL={avatarURL}
+                  allowPause={isTranscript}
+                  autoplay={!isTranscript}
                 />
               );
             case MessageType.SPEAK:
@@ -115,6 +117,8 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                   isCurrent={isCurrent}
                   isLast={isLast}
                   avatarURL={avatarURL}
+                  allowPause={isTranscript}
+                  autoplay={!isTranscript}
                 />
               );
             case MessageType.VISUAL:

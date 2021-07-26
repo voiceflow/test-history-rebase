@@ -15,13 +15,20 @@ type AudioProps = Omit<MessageProps, 'iconProps'> & {
   isCurrent: boolean;
   onPlay: () => void;
   audioSrc: string;
+  allowPause?: boolean;
+  autoplay?: boolean;
 };
 
-const Audio: React.FC<AudioProps> = ({ onPlay, audioSrc, name, isCurrent, ...props }) => {
-  const { ref, curTime, playing, duration, setPlaying, restart } = useAudioPlayer({ autoplay: true });
+const Audio: React.FC<AudioProps> = ({ onPlay, audioSrc, autoplay = true, name, isCurrent, allowPause, ...props }) => {
+  const { ref, curTime, playing, duration, setPlaying, restart } = useAudioPlayer({ autoplay });
   const audioRef: any = ref;
 
   const onClickHandler = () => {
+    if (allowPause) {
+      setPlaying(!playing);
+      return;
+    }
+
     onPlay();
     restart();
     setPlaying(true);
@@ -31,7 +38,7 @@ const Audio: React.FC<AudioProps> = ({ onPlay, audioSrc, name, isCurrent, ...pro
 
   return (
     <Message {...props} onClick={onClickHandler}>
-      {playing && <ProgressBar percent={percent} style={{ backgroundColor: WAVE_COLOR, opacity: 0.12, top: 0 }} />}
+      {(playing || allowPause) && <ProgressBar percent={percent} style={{ backgroundColor: WAVE_COLOR, opacity: 0.12, top: 0 }} />}
       <Flex style={{ position: 'relative' }}>
         <WaveContainer playing={playing}>
           {RECTANGLE_CLASS_ARRAY.map((val, index) => (
@@ -42,7 +49,8 @@ const Audio: React.FC<AudioProps> = ({ onPlay, audioSrc, name, isCurrent, ...pro
           {formatTime(curTime)}
         </Box>
       </Flex>
-      <audio ref={audioRef} muted={true}>
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+      <audio ref={audioRef} muted={!allowPause}>
         <source src={audioSrc} type="audio/mpeg" />
       </audio>
     </Message>

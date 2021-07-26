@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.437.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.436.3...@voiceflow/creator-app@1.437.0) (2021-07-26)
+
+
+### Features
+
+* audio message UX test reports (VF-1270) ([#3746](https://github.com/voiceflow/creator-app/issues/3746)) ([20f8c4a](https://github.com/voiceflow/creator-app/commit/20f8c4a4e225a5d30b116a5669599cba0aea3880))
+
+
+
+
+
 ## [1.436.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.436.2...@voiceflow/creator-app@1.436.3) (2021-07-26)
 
 **Note:** Version bump only for package @voiceflow/creator-app

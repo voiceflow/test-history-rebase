@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.436.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.436.1...@voiceflow/creator-app@1.436.2) (2021-07-26)
+
+
+### Bug Fixes
+
+* connect tags component to BE (VF-000) ([#3727](https://github.com/voiceflow/creator-app/issues/3727)) ([930cbed](https://github.com/voiceflow/creator-app/commit/930cbed7e97eece6e6a1681a952b7660aeb1b492))
+
+
+
+
+
 ## [1.436.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.436.0...@voiceflow/creator-app@1.436.1) (2021-07-24)
 
 

@@ -14,33 +14,28 @@ const BUILT_INS = [
     id: Sentiment.EMOTION_POSITIVE,
     label: 'Positive',
     icon: positiveEmotion,
-    builtIn: true,
   },
   {
     id: Sentiment.EMOTION_NEUTRAL,
     label: 'Neutral',
     icon: neutralEmotion,
-    builtIn: true,
   },
   {
     id: Sentiment.EMOTION_NEGATIVE,
     label: 'Negative',
     icon: negativeEmotion,
-    builtIn: true,
   },
   {
     id: SystemTag.SAVED,
     label: 'Saved for later',
     icon: 'bookmark',
     iconColor: THEME.colors.red,
-    builtIn: true,
   },
   {
     id: SystemTag.REVIEWED,
     label: 'Reviewed',
     icon: 'checkmarkFilled',
     iconColor: '#3e9e3e',
-    builtIn: true,
   },
 ];
 

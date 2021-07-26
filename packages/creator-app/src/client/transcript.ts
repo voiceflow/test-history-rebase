@@ -6,6 +6,8 @@ import { apiV2 } from './fetch';
 
 export const TRANSCRIPT_PATH = 'transcripts';
 
+const TRANSCRIPT_REPORT_TAG_PATH = 'report_tag';
+
 const transcriptClient = {
   find: (projectID: string, queryParams?: string) =>
     apiV2.get<Transcript[]>(`${TRANSCRIPT_PATH}/${projectID}?${queryParams ?? ''}`).then(transcriptAdapter.mapFromDB),
@@ -20,6 +22,12 @@ const transcriptClient = {
 
   getTranscriptDialog: (projectID: string, transcriptID: string) =>
     apiV2.get<any[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`).then(dialogsAdapter.mapFromDB),
+
+  addTag: (projectID: string, transcriptID: string, tagID: string) =>
+    apiV2.put<any[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/${TRANSCRIPT_REPORT_TAG_PATH}/${tagID}`),
+
+  removeTag: (projectID: string, transcriptID: string, tagID: string) =>
+    apiV2.delete<any[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/${TRANSCRIPT_REPORT_TAG_PATH}/${tagID}`),
 };
 
 export default transcriptClient;

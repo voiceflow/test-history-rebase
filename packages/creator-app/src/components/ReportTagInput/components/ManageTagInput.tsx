@@ -1,7 +1,7 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { currentSelectedTranscriptSelector, updateTags } from '@/ducks/transcript';
+import { addTag, currentSelectedTranscriptSelector, removeTag, updateTags } from '@/ducks/transcript';
+import { useDispatch, useSelector } from '@/hooks';
 
 import BaseTagInput from './BaseReportTagInput';
 
@@ -14,12 +14,23 @@ interface ManageTagInputProps {
 
 const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags, ...props }) => {
   const currentTranscript = useSelector(currentSelectedTranscriptSelector);
-  const dispatch = useDispatch();
-  const setTags = (tags: string[]) => {
-    dispatch(updateTags(currentTranscript.id, tags));
+  const dispatchAddTag = useDispatch(addTag);
+  const dispatchRemoveTag = useDispatch(removeTag);
+  const dispatchUpdateTags = useDispatch(updateTags);
+
+  const setTags = async (tags: string[]) => {
+    await dispatchUpdateTags(currentTranscript.id, tags);
   };
 
-  return <BaseTagInput {...props} onChange={setTags} selectedTags={selectedTags} />;
+  const addTagToTranscript = async (tagID: string) => {
+    await dispatchAddTag(currentTranscript.id, tagID);
+  };
+
+  const removeTagFromTranscript = async (tagID: string) => {
+    await dispatchRemoveTag(currentTranscript.id, tagID);
+  };
+
+  return <BaseTagInput {...props} addTag={addTagToTranscript} removeTag={removeTagFromTranscript} onChange={setTags} selectedTags={selectedTags} />;
 };
 
 export default ManageTagInput;

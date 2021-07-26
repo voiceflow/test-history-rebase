@@ -2,6 +2,7 @@ import { Box, FlexApart, FlexStart, Icon, KeyName, Select, SvgIcon } from '@voic
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
+import { isBuiltInTag } from '@/ducks/transcript/utils';
 import { ReportTag, Sentiment, SentimentArray } from '@/models';
 
 import { ReportTagInputContext } from '../context';
@@ -17,6 +18,8 @@ export interface BaseReportTagInputProps {
   hasRadioButtons?: boolean;
   isSelectedFunc?: (id: string) => boolean;
   selectOnly?: boolean;
+  addTag: (tagID: string) => void;
+  removeTag: (tagID: string) => void;
 }
 
 export type TagInputVariantProps = Omit<BaseReportTagInputProps, 'menu' | 'tags'>;
@@ -28,7 +31,7 @@ const customMenuLabelRenderer = (option: ReportTag, isSelectedFunc: (val: string
         <Checkbox readOnly checked={isSelectedFunc(option.id)} />
         <div>{option.label}</div>
       </FlexStart>
-      {option.builtIn &&
+      {isBuiltInTag(option.id) &&
         (!SentimentArray.includes(option.id as Sentiment) ? (
           <SvgIcon icon={option.icon as Icon} color={option.iconColor} />
         ) : (
@@ -43,11 +46,12 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
   footerActionLabel,
   onClickFooterAction,
   selectedTags = [],
-  onChange,
   creatable = true,
   hasRadioButtons,
   isSelectedFunc,
   selectOnly,
+  addTag,
+  removeTag,
 }) => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const {
@@ -55,7 +59,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
     actions: { onSearch, onCreateNew },
   } = React.useContext(ReportTagInputContext)!;
 
-  const nonBuiltInTags = allTags.filter((tag) => !tag.builtIn);
+  const nonBuiltInTags = allTags.filter((tag) => !isBuiltInTag(tag.id));
   const selectedTagObjects =
     selectedTags
       ?.map((tagId) => {
@@ -64,15 +68,14 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
       .filter((data) => !!data) || [];
 
   const onRemove = (tagID: string) => () => {
-    onChange(selectedTags.filter((id) => id !== tagID));
+    removeTag(tagID);
   };
 
   const onToggleTag = (tagID: string) => {
     if (selectedTags.includes(tagID)) {
-      const newTagArray = selectedTags.filter((id) => id !== tagID);
-      onChange(newTagArray);
+      removeTag(tagID);
     } else {
-      onChange([...selectedTags, tagID]);
+      addTag(tagID);
     }
   };
 
@@ -81,7 +84,8 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
   const onBackspace = (event: React.KeyboardEvent) => {
     const { key } = event;
     if (key && (key === KeyName.BACKSPACE || key === KeyName.DELETE) && !searchedTag.trim() && !!selectedTags.length) {
-      onChange(selectedTags.slice(0, -1));
+      const lastTagID = selectedTags[selectedTags.length - 1];
+      removeTag(lastTagID);
     }
   };
 

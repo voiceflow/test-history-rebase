@@ -6,7 +6,7 @@ import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { patchTranscript, removeTranscript, replaceTranscripts } from '@/ducks/transcript/actions';
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
-import { Browser, Device, OperatingSystem, SystemTag } from '@/models';
+import { Browser, Device, OperatingSystem, Sentiment, SystemTag } from '@/models';
 import { Thunk } from '@/store/types';
 
 export const fetchTranscripts =
@@ -47,27 +47,38 @@ export const createTranscript = (): Thunk => async (_dispatch, getState) => {
 };
 
 export const addTag =
-  (transcriptID: string, tag: SystemTag | string): Thunk =>
+  (transcriptID: string, tagID: string | SystemTag | Sentiment): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
+    const activeProjectID = Session.activeProjectIDSelector(state);
+
     const { tags } = transcriptByIDSelector(state)(transcriptID);
-    const newTagsArray = [...new Set([...tags, tag])];
-
-    // TODO client call to save to db
-
-    dispatch(patchTranscript(transcriptID, { tags: newTagsArray }));
+    const newTagsArray = [...new Set([...tags, tagID])];
+    try {
+      dispatch(patchTranscript(transcriptID, { tags: newTagsArray }));
+      await client.transcript.addTag(activeProjectID!, transcriptID, tagID);
+    } catch (e) {
+      toast.error('Error adding tag');
+      dispatch(patchTranscript(transcriptID, { tags }));
+    }
   };
 
 export const removeTag =
-  (transcriptID: string, tag: SystemTag | string): Thunk =>
+  (transcriptID: string, tagID: string | SystemTag | Sentiment): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
+    const activeProjectID = Session.activeProjectIDSelector(state);
+
     const { tags } = transcriptByIDSelector(state)(transcriptID);
-    const newTagsArray = [...new Set(tags)].filter((tagName) => tagName !== tag);
+    const newTagsArray = [...new Set(tags)].filter((tagId) => tagId !== tagID);
 
-    // TODO client call to save to db
-
-    dispatch(patchTranscript(transcriptID, { tags: newTagsArray }));
+    try {
+      dispatch(patchTranscript(transcriptID, { tags: newTagsArray }));
+      await client.transcript.removeTag(activeProjectID!, transcriptID, tagID);
+    } catch (e) {
+      toast.error('Error removing tag');
+      dispatch(patchTranscript(transcriptID, { tags }));
+    }
   };
 
 export const updateTags =

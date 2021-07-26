@@ -1,10 +1,12 @@
 import { Message } from '@/pages/Prototype/types';
 
+// Never change these, they are used in the transcript_report_tags table as specific ids for tags
 export enum SystemTag {
   REVIEWED = 'system.reviewed',
   SAVED = 'system.saved',
 }
 
+// Never change these, they are used in the transcript_report_tags table as specific ids for tags
 export enum Sentiment {
   EMOTION_POSITIVE = 'system.emotion_positive',
   EMOTION_NEGATIVE = 'system.emotion_negative',

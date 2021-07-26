@@ -7,7 +7,6 @@ export interface ReportTag {
   projectID: string;
   // a human-readable label for this tag
   label: string;
-  builtIn?: boolean;
   icon?: any;
   iconColor?: string;
 }

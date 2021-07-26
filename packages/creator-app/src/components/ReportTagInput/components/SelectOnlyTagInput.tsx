@@ -9,8 +9,18 @@ interface SelectOnlyTagInputProps {
   isSelectedFunc: (id: string) => boolean;
 }
 
-const SelectOnlyTagInput: React.FC<SelectOnlyTagInputProps> = (props) => {
-  return <BaseTagInput selectOnly creatable={false} {...props} />;
+const SelectOnlyTagInput: React.FC<SelectOnlyTagInputProps> = ({ onChange, selectedTags, ...props }) => {
+  const addTag = (tagID: string) => {
+    onChange([...selectedTags, tagID]);
+  };
+
+  const removeTag = (tagID: string) => {
+    const newTagArray = selectedTags.filter((id) => id !== tagID);
+    onChange(newTagArray);
+  };
+  return (
+    <BaseTagInput onChange={onChange} addTag={addTag} selectedTags={selectedTags} removeTag={removeTag} selectOnly creatable={false} {...props} />
+  );
 };
 
 export default SelectOnlyTagInput;

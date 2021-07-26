@@ -1,9 +1,9 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import EmojiPicker, { EMOJI_OPTION } from '@/components/EmojiPicker';
 import { FAN_DIRECTION } from '@/components/EmojiPicker/constants';
-import { currentSelectedTranscriptSelector, currentTranscriptIDSelector, updateTags } from '@/ducks/transcript';
+import { addTag, currentSelectedTranscriptSelector, currentTranscriptIDSelector, removeTag } from '@/ducks/transcript';
+import { useDispatch, useSelector } from '@/hooks';
 import { Sentiment, SentimentArray } from '@/models';
 
 import { Container, SectionTitle } from '../components';
@@ -24,19 +24,18 @@ const EmojiToSentiment = {
 const Notes: React.FC = () => {
   const currentTranscript = useSelector(currentSelectedTranscriptSelector);
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
-  const dispatch = useDispatch();
+  const dispatchAddTag = useDispatch(addTag);
+  const dispatchRemoveTag = useDispatch(removeTag);
 
   const { tags } = currentTranscript;
   const currentSentiment = React.useMemo(() => tags.filter((tag) => SentimentArray.includes(tag as Sentiment)), [tags, currentTranscriptID]);
   const selectedEmoji = currentSentiment?.[0] ? SentimentToEmoji[currentSentiment[0] as Sentiment] : null;
 
-  const onChange = (emotion: EMOJI_OPTION) => {
+  const onChange = async (emotion: EMOJI_OPTION) => {
     if (emotion === EMOJI_OPTION.DEFAULT) {
-      const newTags = tags.filter((tag) => !SentimentArray.includes(tag as Sentiment));
-      dispatch(updateTags(currentTranscriptID!, newTags));
+      await dispatchRemoveTag(currentTranscriptID!, currentSentiment[0]);
     } else {
-      const newTags = tags.filter((tag) => !SentimentArray.includes(tag as Sentiment));
-      dispatch(updateTags(currentTranscriptID!, [...newTags, EmojiToSentiment[emotion]]));
+      await dispatchAddTag(currentTranscriptID!, EmojiToSentiment[emotion]);
     }
   };
 

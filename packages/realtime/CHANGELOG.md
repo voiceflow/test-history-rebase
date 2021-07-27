@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.5.2...@voiceflow/realtime@1.6.0) (2021-07-27)
+
+
+### Features
+
+* realtime caching (VF-000) ([#3760](https://github.com/voiceflow/creator-app/issues/3760)) ([3cec162](https://github.com/voiceflow/creator-app/commit/3cec1626a172405dfcd3dbda5c06e1a051c088ec))
+
+
+
+
+
 ## [1.5.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.5.1...@voiceflow/realtime@1.5.2) (2021-07-20)
 
 **Note:** Version bump only for package @voiceflow/realtime

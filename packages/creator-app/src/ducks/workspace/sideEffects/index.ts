@@ -11,7 +11,7 @@ import { addProjectToList } from '@/ducks/projectList/actions';
 import { addProjectToDefaultList, saveProjectListsForWorkspace, saveProjectToList } from '@/ducks/projectList/sideEffects';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
-import { AnyProject, DBWorkspace, Workspace } from '@/models';
+import { AnyProject, DBMember, Workspace } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { withoutValue } from '@/utils/array';
 
@@ -155,7 +155,7 @@ export const patchActiveWorkspace =
   };
 
 export const updateActiveWorkspaceMembers =
-  (members: DBWorkspace.Member[]): Thunk =>
+  (members: DBMember[]): Thunk =>
   async (dispatch, getState) => {
     try {
       const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());

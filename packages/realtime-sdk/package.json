@@ -6,6 +6,8 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
+    "@voiceflow/alexa-types": "^1.52.2",
+    "@voiceflow/internal": "^1.2.0",
     "typescript-fsa": "^3.0.0"
   },
   "devDependencies": {

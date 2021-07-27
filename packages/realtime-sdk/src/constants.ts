@@ -6,3 +6,5 @@ export const NODE_KEY = 'node';
 export const LINK_KEY = 'link';
 export const AWARENESS_KEY = 'awareness';
 export const LOCAL_KEY = 'local';
+
+export const DEFAULT_PROJECTS_LIST_NAME = 'Default List';

@@ -1,8 +1,8 @@
-import { DBWorkspace } from '@/models';
+import { DBMember } from '@/models';
 
 import { createAdapter } from './utils';
 
-const memberAdapter = createAdapter<DBWorkspace.Member, DBWorkspace.Member>(
+const memberAdapter = createAdapter<DBMember, DBMember>(
   ({ creator_id, created, email, image, name, status, seats, role }) => ({
     creator_id,
     created,

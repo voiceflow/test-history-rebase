@@ -1,0 +1,22 @@
+import { User } from '@/models';
+
+import logger from '../../logger';
+import { ExtraOptions } from './types';
+
+export interface UserClient {
+  get: () => Promise<User | null>;
+}
+
+const Client = ({ axiosClient }: ExtraOptions): UserClient => ({
+  get: () =>
+    axiosClient
+      .get<User | null>('/user')
+      .then(({ data }) => data)
+      .catch((err) => {
+        logger.debug(err);
+
+        return null;
+      }),
+});
+
+export default Client;

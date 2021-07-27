@@ -14,7 +14,7 @@ import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useDebouncedCallback, useToggle } from '@/hooks';
-import { DBWorkspace } from '@/models';
+import { DBMember } from '@/models';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
 import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
@@ -124,7 +124,7 @@ const Payment: React.FC<ConnectedPaymentProps> = ({ workspaces, workspaceByID, c
     const targetWorkspace = workspaceByID(selectedWorkspaceId);
     let numberOfEditors = 0;
 
-    targetWorkspace?.members.forEach((member: DBWorkspace.Member) => {
+    targetWorkspace?.members.forEach((member: DBMember) => {
       if (member.role === UserRole.ADMIN || member.role === UserRole.EDITOR) {
         numberOfEditors++;
       }

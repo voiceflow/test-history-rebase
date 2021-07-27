@@ -1,31 +1,26 @@
 import { AbstractControl } from '../control';
-import { DEFAULT_EXPIRE_MODE, DEFAULT_EXPIRE_TIME } from './constants';
 
 class WorkspaceService extends AbstractControl {
-  private static getCanReadKey(workspaceID: string, userID: number): string {
-    return `workspace:${workspaceID}:can-read:${userID}`;
+  private static getCanReadKey({ workspaceID, creatorID }: { workspaceID: string; creatorID: number }): string {
+    return `workspace:${workspaceID}:can-read:${creatorID}`;
   }
 
-  private async getCachedCanRead(workspaceID: string, userID: number): Promise<boolean | null> {
-    const cachedCanRead = await this.clients.redis.get(WorkspaceService.getCanReadKey(workspaceID, userID));
+  private canReadCache = this.clients.cache.createKeyValue({
+    adapter: this.clients.cache.adapters.booleanAdapter,
+    keyCreator: WorkspaceService.getCanReadKey,
+  });
 
-    return cachedCanRead === null ? null : Boolean(Number(cachedCanRead));
-  }
-
-  private async cacheCanRead(workspaceID: string, userID: number, canRead: boolean): Promise<void> {
-    await this.clients.redis.set(WorkspaceService.getCanReadKey(workspaceID, userID), Number(canRead), DEFAULT_EXPIRE_MODE, DEFAULT_EXPIRE_TIME);
-  }
-
-  public async canRead(workspaceID: string, userID: number): Promise<boolean> {
-    const cachedCanRead = await this.getCachedCanRead(workspaceID, userID);
+  public async canRead(workspaceID: string, creatorID: number): Promise<boolean> {
+    const cachedCanRead = await this.canReadCache.get({ workspaceID, creatorID });
 
     if (cachedCanRead !== null) {
       return cachedCanRead;
     }
 
-    const canRead = await this.clients.api.workspace.canRead(userID, workspaceID);
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const canRead = await client.workspace.canRead(creatorID, workspaceID);
 
-    await this.cacheCanRead(workspaceID, userID, canRead);
+    await this.canReadCache.set({ workspaceID, creatorID }, canRead);
 
     return canRead;
   }

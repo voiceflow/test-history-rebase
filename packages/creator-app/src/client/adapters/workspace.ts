@@ -1,4 +1,4 @@
-import { DBWorkspace, Workspace } from '@/models';
+import { DBWorkspace, Workspace, WorkspaceActivationState } from '@/models';
 
 import { AdapterNotImplementedError, createAdapter } from './utils';
 
@@ -23,7 +23,7 @@ const workspaceAdapter = createAdapter<DBWorkspace, Workspace>(
     beta_flag,
     templates,
   }) => {
-    let state: Workspace.ActivationState | null = null;
+    let state: WorkspaceActivationState | null = null;
     if (INVALID_STATES.includes(stripe_status)) {
       state = 'LOCKED';
     } else if (WARNING_STATES.includes(stripe_status)) {

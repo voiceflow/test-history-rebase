@@ -7,7 +7,7 @@ import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
-import { DBWorkspace } from '@/models';
+import { DBMember } from '@/models';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
@@ -39,7 +39,7 @@ const getRoleVerb = (role: UserRole) => {
 };
 
 interface MemberRowProps {
-  member: DBWorkspace.Member;
+  member: DBMember;
   inline?: boolean;
   pending: boolean;
   resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<boolean>;

@@ -1,7 +1,7 @@
 import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import { FetchOptions } from '@voiceflow/ui';
 
-import { DBWorkspace, Price } from '@/models';
+import { DBMember, DBWorkspace, Price } from '@/models';
 import { APIKey } from '@/models/APIKey';
 import { DBBilling } from '@/models/Billing';
 
@@ -20,9 +20,9 @@ const workspaceClient = {
 
   createWorkspace: (data: { name: string; image?: string }) => api.post<DBWorkspace>(WORKSPACES_PATH, data).then(workspaceAdapter.fromDB),
 
-  findMembers: (workspaceID: string) => api.get<DBWorkspace.Member[]>(`${WORKSPACES_PATH}/${workspaceID}/members`).then(memberAdapter.mapFromDB),
+  findMembers: (workspaceID: string) => api.get<DBMember[]>(`${WORKSPACES_PATH}/${workspaceID}/members`).then(memberAdapter.mapFromDB),
 
-  updateMembers: (workspaceID: string, payload: { members: DBWorkspace.Member[] }) =>
+  updateMembers: (workspaceID: string, payload: { members: DBMember[] }) =>
     api.patch<DBWorkspace>(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/members`, payload),
 
   deleteWorkspace: (workspaceID: string) => api.delete(`${WORKSPACES_PATH}/${workspaceID}`),
@@ -77,7 +77,7 @@ const workspaceClient = {
   updateInvite: (workspaceID: string, email: string, role: UserRole) => api.patch(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
 
   sendInvite: (workspaceID: string, email: string, role?: UserRole) =>
-    api.post<DBWorkspace.Member | void>(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
+    api.post<DBMember | void>(`${WORKSPACES_PATH}/${workspaceID}/invite`, { email, role }),
 
   getInviteLink: (workspaceID: string, role: UserRole) => api.post<string>(`${WORKSPACES_PATH}/${workspaceID}/inviteLink`, { role }),
 

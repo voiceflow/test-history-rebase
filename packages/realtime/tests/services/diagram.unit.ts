@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { DEFAULT_EXPIRE_MODE, DEFAULT_EXPIRE_TIME } from '@/services/constants';
 import DiagramService from '@/services/diagram';
 
 describe('Diagram service unit tests', () => {
@@ -14,26 +13,39 @@ describe('Diagram service unit tests', () => {
       const diagramID = 'testDiagramID';
       const creatorID = 123;
 
-      const services = {};
+      const voiceflowClient = {
+        diagram: {
+          canRead: sinon.stub().resolves(true),
+        },
+      };
+
+      const keyValueCacheClient = {
+        get: sinon.stub().resolves(null),
+        set: sinon.stub(),
+      };
 
       const clients = {
-        api: {
-          diagram: {
-            canRead: sinon.stub().resolves(true),
+        cache: {
+          adapters: {
+            booleanAdapter: 'booleanAdapter',
           },
+          createSet: sinon.stub(),
+          createKeyValue: sinon.stub().returns(keyValueCacheClient),
         },
-        redis: {
-          get: sinon.stub().resolves(null),
-          set: sinon.stub(),
+      };
+
+      const services = {
+        voiceflow: {
+          getClientByUserID: sinon.stub().resolves(voiceflowClient),
         },
       };
 
       const diagramService = new DiagramService({ services, clients } as any);
 
       await expect(diagramService.canRead(diagramID, creatorID)).to.eventually.be.true;
-      expect(clients.redis.get).to.be.calledWithExactly(`diagrams:${diagramID}:can-read:${creatorID}`);
-      expect(clients.redis.set).to.be.calledWithExactly(`diagrams:${diagramID}:can-read:${creatorID}`, 1, DEFAULT_EXPIRE_MODE, DEFAULT_EXPIRE_TIME);
-      expect(clients.api.diagram.canRead).be.calledWithExactly(creatorID, diagramID);
+      expect(keyValueCacheClient.get).to.be.calledWithExactly({ diagramID, creatorID });
+      expect(keyValueCacheClient.set).to.be.calledWithExactly({ diagramID, creatorID }, true);
+      expect(voiceflowClient.diagram.canRead).be.calledWithExactly(creatorID, diagramID);
     });
   });
 });

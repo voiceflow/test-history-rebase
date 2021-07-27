@@ -1,14 +1,14 @@
 import { Locale, MarketPlace, ProductType } from '@voiceflow/alexa-types';
 
 import { DEFAULT_PRODUCT_PHRASE, NEW_PRODUCT_ID } from '@/constants';
-import { Product } from '@/models';
+import { Product, ProductMarketPlace } from '@/models';
 import Locales, { MarketPlaceAvailability } from '@/services/LocaleMap';
 
 export const getSelectedLocales = (locales: Locale[] = []) =>
   Locales.filter(({ value, inSkillProduct }) => locales.includes(value) && inSkillProduct);
 
 export const getDefaultAvailability = () =>
-  MarketPlaceAvailability.reduce<Record<MarketPlace, Product.MarketPlace>>(
+  MarketPlaceAvailability.reduce<Record<MarketPlace, ProductMarketPlace>>(
     (acc, { marketPlace, currency, min, countries }) =>
       Object.assign(acc, {
         [marketPlace]: {
@@ -17,7 +17,7 @@ export const getDefaultAvailability = () =>
           countries,
         },
       }),
-    {} as Record<MarketPlace, Product.MarketPlace>
+    {} as Record<MarketPlace, ProductMarketPlace>
   );
 
 export const createNewProduct = (locales: Locale[]): Product => ({
@@ -41,7 +41,6 @@ export const createNewProduct = (locales: Locale[]): Product => ({
   cardDescription: null,
   privacyPolicyUrl: null,
   purchasableState: null,
-  purchasePromptVoice: null,
   testingInstructions: null,
   subscriptionFrequency: null,
 });

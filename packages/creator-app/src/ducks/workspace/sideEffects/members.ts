@@ -8,7 +8,7 @@ import { EDITOR_SEAT_ROLES } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
-import { Workspace } from '@/models';
+import { Member } from '@/models';
 import { Thunk } from '@/store/types';
 
 import { patchWorkspace } from '../actions';
@@ -171,10 +171,10 @@ export const deleteMemberOfActiveWorkspace =
     }
   };
 
-const isVerifiedMember = (member: Workspace.Member): member is Workspace.Member & { creator_id: number } => !!member.creator_id;
+const isVerifiedMember = (member: Member): member is Member & { creator_id: number } => !!member.creator_id;
 
 export const updateActiveWorkspaceMemberRole =
-  (member: Workspace.Member, role: UserRole): Thunk =>
+  (member: Member, role: UserRole): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const numberOfUsedEditorSeats = usedEditorSeatsSelector(state);

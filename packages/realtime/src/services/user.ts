@@ -1,48 +1,38 @@
 import { AbstractControl } from '../control';
 import { User } from '../models';
-import { DEFAULT_EXPIRE_MODE, DEFAULT_EXPIRE_TIME } from './constants';
 
 class UserService extends AbstractControl {
-  private static getTokenUserKey(token: string): string {
+  private static getTokenUserKey({ token }: { token: string }): string {
     return `users:${token}`;
   }
 
-  private static getUserIDTokenKey(userID: number): string {
+  private static getUserIDTokenKey({ userID }: { userID: number }): string {
     return `users:${userID}:token`;
   }
 
-  private async getCachedUser(token: string): Promise<User | null> {
-    const cachedUserJSON = await this.clients.redis.get(UserService.getTokenUserKey(token));
+  private userCache = this.clients.cache.createKeyValue({
+    adapter: this.clients.cache.adapters.jsonAdapterCreator<User | null>(),
+    keyCreator: UserService.getTokenUserKey,
+  });
 
-    let cachedUser: User | null = null;
-
-    if (cachedUserJSON) {
-      try {
-        cachedUser = JSON.parse(cachedUserJSON) || null;
-      } catch {
-        // empty
-      }
-    }
-
-    return cachedUser;
-  }
+  // in case we want to get user by id, not by token, not using expire to do not expire key during request
+  private tokenCache = this.clients.cache.createKeyValue({
+    expire: false,
+    keyCreator: UserService.getUserIDTokenKey,
+  });
 
   private async cacheUser(token: string, user: User): Promise<void> {
-    await Promise.all([
-      this.clients.redis.set(UserService.getTokenUserKey(token), JSON.stringify(user), DEFAULT_EXPIRE_MODE, DEFAULT_EXPIRE_TIME),
-      // in case we want to get user by id, not by token, not using expire to do not expire key during request
-      this.clients.redis.set(UserService.getUserIDTokenKey(user.creator_id), token),
-    ]);
+    await Promise.all([this.userCache.set({ token }, user), this.tokenCache.set({ userID: user.creator_id }, token)]);
   }
 
   public async getUserByToken(token: string): Promise<User | null> {
-    const cachedUser = await this.getCachedUser(token);
+    const cachedUser = await this.userCache.get({ token });
 
     if (cachedUser) {
       return cachedUser;
     }
 
-    const user = await this.clients.api.user.get(token);
+    const user = await this.services.voiceflow.getClientByToken(token).user.get();
 
     if (user) {
       await this.cacheUser(token, user);
@@ -51,8 +41,12 @@ class UserService extends AbstractControl {
     return user;
   }
 
+  public async getUserTokenByID(userID: number): Promise<string | null> {
+    return this.tokenCache.get({ userID });
+  }
+
   public async getUserByID(userID: number): Promise<User | null> {
-    const token = await this.clients.redis.get(UserService.getUserIDTokenKey(userID));
+    const token = await this.getUserTokenByID(userID);
 
     if (!token) {
       return null;

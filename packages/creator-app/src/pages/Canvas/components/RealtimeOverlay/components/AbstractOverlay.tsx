@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as Realtime from '@/ducks/realtime';
 import { connect } from '@/hocs';
-import { DBWorkspace } from '@/models';
+import { DBMember } from '@/models';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { InjectedEngineProps, withEngine } from '@/pages/Canvas/contexts';
 import { RealtimeCursorOverlayAPI, RealtimeLinkOverlayAPI } from '@/pages/Canvas/types';
@@ -10,11 +10,11 @@ import { ConnectedProps, HOC } from '@/types';
 import { append, withoutValue } from '@/utils/array';
 import { compose } from '@/utils/functional';
 
-export type RealtimeOverlayState = {
+export interface RealtimeOverlayState {
   items: string[];
-};
+}
 
-export type RealtimeViewer = DBWorkspace.Member & { color: string };
+export type RealtimeViewer = DBMember & { color: string };
 
 abstract class AbstractOverlay<
   T extends RealtimeCursorOverlayAPI | RealtimeLinkOverlayAPI

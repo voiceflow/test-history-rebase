@@ -7,7 +7,7 @@ import { EDITOR_SEAT_ROLES } from '@/constants';
 import { userIDSelector } from '@/ducks/account/selectors';
 import * as Session from '@/ducks/session';
 import * as CRUD from '@/ducks/utils/crud';
-import { Workspace } from '@/models';
+import { Member } from '@/models';
 import { NonNullableRecord } from '@/types';
 
 import { STATE_KEY, TEMPLATES_ADMIN_ID, TEMPLATES_EDITORS_ID } from './constants';
@@ -59,10 +59,7 @@ export const activeWorkspaceMembersSelector = createSelector([activeWorkspaceSel
 
 export const activeWorkspaceCommentingMembersSelector = createSelector(
   [activeWorkspaceMembersSelector],
-  (members) =>
-    members.filter(
-      (member: Workspace.Member) => member.name && hasRolePermission(Permission.COMMENTING, member.role)
-    ) as NonNullableRecord<Workspace.Member>[]
+  (members) => members.filter((member: Member) => member.name && hasRolePermission(Permission.COMMENTING, member.role)) as NonNullableRecord<Member>[]
 );
 
 export const seatLimitsSelector = createSelector([activeWorkspaceSelector], (workspace) => workspace?.seatLimits);

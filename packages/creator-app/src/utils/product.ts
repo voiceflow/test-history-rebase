@@ -2,31 +2,24 @@ import { decodeMarketPlaceKey, encodeMarketPlaceKey, Locale, ProductType } from 
 import { MarketPlace } from '@voiceflow/alexa-types/build/project/product';
 import moment from 'moment';
 
-import { DBProduct, Product } from '@/models';
+import { DBProduct, Product, ProductMarketPlace } from '@/models';
 import { MarketPlaceAvailability } from '@/services/LocaleMap';
 
 export type MergedLocale = Pick<
   Product,
-  | 'summary'
-  | 'description'
-  | 'smallIconUri'
-  | 'largeIconUri'
-  | 'phrases'
-  | 'keywords'
-  | 'cardDescription'
-  | 'purchasePrompt'
-  | 'purchasePromptVoice'
-  | 'privacyPolicyUrl'
->;
+  'summary' | 'description' | 'smallIconUri' | 'largeIconUri' | 'phrases' | 'keywords' | 'cardDescription' | 'purchasePrompt' | 'privacyPolicyUrl'
+> & {
+  purchasePromptVoice: string | null;
+};
 
 // app to db
 
-export const getDistributionCountries = (marketPlaces: Record<string, Product.MarketPlace>) =>
+export const getDistributionCountries = (marketPlaces: Record<string, ProductMarketPlace>) =>
   Object.keys(marketPlaces)
     .map((place) => marketPlaces[place].countries)
     .reduce((a, b) => a.concat(b), []);
 
-export const formatMarketPlaces = (marketPlaces: Record<string, Product.MarketPlace>) => {
+export const formatMarketPlaces = (marketPlaces: Record<string, ProductMarketPlace>) => {
   // find any valid release date
   const generalReleaseDate = Object.values(marketPlaces).find((place) => !!place?.releaseDate)?.releaseDate || moment().format('YYYY-MM-DD');
 
@@ -48,7 +41,7 @@ export const formatMarketPlaces = (marketPlaces: Record<string, Product.MarketPl
 export const parseMarketPlaces = (
   allPlaces: Partial<Record<string, DBProduct.Pricing>>,
   distributionCountries: string[]
-): Record<string, Product.MarketPlace> =>
+): Record<string, ProductMarketPlace> =>
   Object.keys(allPlaces).reduce((acc, encodedKey) => {
     const placeKey = decodeMarketPlaceKey(encodedKey);
     const place = allPlaces[encodedKey];
@@ -114,10 +107,10 @@ export const getMissingDataInfo = (product: Product) => {
   // pricing and countries
   marketPlacesKeys.length > 0 &&
     marketPlacesKeys.map(
-      (place) => product.marketPlaces[place].countries.length === 0 && missingInfo.push(`Please select atleast one country for ${place}`)
+      (place) => product.marketPlaces[place]!.countries.length === 0 && missingInfo.push(`Please select atleast one country for ${place}`)
     );
   marketPlacesKeys.length > 0 &&
-    marketPlacesKeys.map((place) => product.marketPlaces[place].price === 0 && missingInfo.push(`Please add minimum pricing value for ${place}`));
+    marketPlacesKeys.map((place) => product.marketPlaces[place]!.price === 0 && missingInfo.push(`Please add minimum pricing value for ${place}`));
 
   return missingInfo;
 };
@@ -130,7 +123,7 @@ export const isProductComplete = (product: Product) => {
     product.testingInstructions &&
     product.taxCategory &&
     Object.keys(product.marketPlaces).length > 0 &&
-    (Object.keys(product.marketPlaces) as MarketPlace[]).filter((place) => product.marketPlaces[place].countries.length === 0).length === 0 &&
+    (Object.keys(product.marketPlaces) as MarketPlace[]).filter((place) => product.marketPlaces[place]!.countries.length === 0).length === 0 &&
     product.summary &&
     product.smallIconUri &&
     product.largeIconUri &&

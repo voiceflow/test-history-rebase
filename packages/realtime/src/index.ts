@@ -29,6 +29,9 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
   });
 
   try {
+    server.on('fatal', (error) => logger.error({ error }));
+    server.on('error', (error, action, meta) => logger.warn({ error, action, meta }));
+
     await serviceManager.start();
     await server.start();
   } catch (e) {

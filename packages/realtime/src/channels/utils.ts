@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import type { LoguxSubscribeAction, LoguxUnsubscribeAction } from '@logux/actions';
-import { ChannelContext as BaseChannelContext } from '@logux/server';
+import { ChannelContext as BaseChannelContext, SendBackActions } from '@logux/server';
 
 import { AbstractLoguxControl } from '../control';
 
@@ -11,7 +11,7 @@ export abstract class AbstractChannelControl<P extends object, D extends object 
 
   protected abstract access: (ctx: ChannelContext<P, D>) => Promise<boolean>;
 
-  protected load?: (ctx: ChannelContext<P, D>, action: LoguxSubscribeAction) => void;
+  protected load?: (ctx: ChannelContext<P, D>, action: LoguxSubscribeAction) => SendBackActions | Promise<SendBackActions>;
 
   protected finally?: (ctx: ChannelContext<P, D>, action: LoguxSubscribeAction) => void;
 

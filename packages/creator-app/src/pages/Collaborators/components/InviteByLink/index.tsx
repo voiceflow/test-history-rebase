@@ -1,5 +1,6 @@
 import { Button, ButtonVariant, Menu, MenuItem, toast } from '@voiceflow/ui';
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
@@ -8,7 +9,7 @@ import { EDITOR_SEAT_ROLES, ModalType, UserRole } from '@/constants';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
+import { useModals, useTrackingEvents } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
@@ -36,6 +37,8 @@ const InviteByLinkFooter: React.FC<ConnectedSeatSummaryProps> = ({ usedEditorSea
   const [inviteCode, setInviteCode] = React.useState('');
   const [inviteLink, setInviteLink] = React.useState('');
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
+  const [trackingEvents] = useTrackingEvents();
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
 
   React.useEffect(() => {
     const getInviteLink = async () => {
@@ -67,6 +70,8 @@ const InviteByLinkFooter: React.FC<ConnectedSeatSummaryProps> = ({ usedEditorSea
       });
     }
     copy(inviteLink);
+
+    trackingEvents.trackProjectInviteCollaboratorsCopy({ projectID });
   };
 
   const handlePermissionChange = (onToggle: () => void, permission: ROLE_OPTIONS) => {

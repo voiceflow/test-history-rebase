@@ -82,3 +82,8 @@ export const trackProjectDuplicate = createWorkspaceEventTracker(
   ({ workspaceID, versionID, projectID }: WorkspaceEventInfo & { versionID?: string; projectID: string }) =>
     client.analytics.track(EventName.PROJECT_DUPLICATE, createWorkspaceEventPayload({ workspaceID }, { skill_id: versionID, project_id: projectID }))
 );
+
+export const trackProjectInviteCollaboratorsCopy = createWorkspaceEventTracker(
+  ({ workspaceID, projectID }: WorkspaceEventInfo & { projectID: string }) =>
+    client.analytics.track(EventName.PROJECT_INVITATION_COPY, createWorkspaceEventPayload({ workspaceID }, { project_id: projectID }))
+);

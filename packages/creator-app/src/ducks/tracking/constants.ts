@@ -30,6 +30,7 @@ export enum EventName {
   PROJECT_PUBLISH_SUCCESS = 'Publish Success',
   INTERACTION_MODEL_EXPORTED = 'Interaction Model Exported',
   PROJECT_TRAIN_ASSISTANT = 'Train Assistant',
+  PROJECT_INVITATION_COPY = 'Copy Invitation Link',
   PROJECT_MOVE_TYPE_CHANGED = 'Move Type',
   PROJECT_DUPLICATE = 'Duplicate Project',
   PROJECT_DELETE = 'Delete Project',

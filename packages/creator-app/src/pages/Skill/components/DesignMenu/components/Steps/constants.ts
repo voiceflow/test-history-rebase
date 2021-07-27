@@ -1,19 +1,20 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Icon } from '@voiceflow/ui';
 import _isFunction from 'lodash/isFunction';
 
-import { BlockCategory, BlockType, DialogType, IntegrationType, PlatformType, RootOrMarkupBlockType } from '@/constants';
+import { BlockCategory, BlockType, DialogType, IntegrationType, RootOrMarkupBlockType } from '@/constants';
 import { NodeData } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { createPlatformSelector } from '@/utils/platform';
 
-export type MenuStep = {
+export interface MenuStep {
   type: BlockType;
   icon: Icon;
   label: string;
   iconColor?: string;
   publicOnly?: boolean;
   factoryData?: NodeData<any>;
-};
+}
 
 const createMenuStep = (
   type: Exclude<BlockType, RootOrMarkupBlockType>,

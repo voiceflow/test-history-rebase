@@ -1,6 +1,6 @@
+import { UserRole } from '@voiceflow/internal';
 import _toLower from 'lodash/toLower';
 
-import { UserRole } from '@/constants';
 import { CollaboratorType } from '@/pages/Onboarding/types';
 import { isValidEmail } from '@/utils/emails';
 

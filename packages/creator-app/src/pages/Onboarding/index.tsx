@@ -1,9 +1,9 @@
+import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import InnerContainer from '@/components/CreationSteps/components/Containers/InnerContainer';
 import OuterContainer from '@/components/CreationSteps/components/Containers/OuterContainer';
-import { UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import { WorkspacesLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';

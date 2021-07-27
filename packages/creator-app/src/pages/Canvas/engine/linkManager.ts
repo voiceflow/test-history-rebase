@@ -1,4 +1,5 @@
-import { PlatformType } from '@/constants';
+import { PlatformType } from '@voiceflow/internal';
+
 import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
 import { Link, LinkData } from '@/models';

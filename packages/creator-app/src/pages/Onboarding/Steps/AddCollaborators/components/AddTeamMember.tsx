@@ -1,8 +1,8 @@
+import { UserRole } from '@voiceflow/internal';
 import { ClickableText, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import InvalidEmailError from '@/components/InvalidEmailError';
-import { UserRole } from '@/constants';
 import { CollaboratorType } from '@/pages/Onboarding/types';
 
 import CollaboratorListContainer from './CollaboratorListContainer';
@@ -13,11 +13,11 @@ const OPTIONS: { value: UserRole; label: string }[] = [
   { value: UserRole.EDITOR, label: 'Can Edit' },
 ];
 
-export type AddTeamMembersProps = {
+export interface AddTeamMembersProps {
   errors: string[];
   onUpdate: (value: CollaboratorType[]) => void;
   collaborators: CollaboratorType[];
-};
+}
 
 const AddTeamMember: React.FC<AddTeamMembersProps> = ({ errors, collaborators, onUpdate }) => {
   const [focusedIndex, setFocusedIndex] = React.useState<null | number>(null);

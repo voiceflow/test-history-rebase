@@ -1,9 +1,9 @@
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import NavLinkSidebar, { NavLinkItem } from '@/components/NavLinkSidebar';
 import { Path } from '@/config/routes';
-import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';

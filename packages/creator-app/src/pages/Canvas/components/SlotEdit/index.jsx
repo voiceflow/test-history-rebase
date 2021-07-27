@@ -1,4 +1,5 @@
 import { SlotType as AlexaSlotType } from '@voiceflow/alexa-types';
+import { PlanType } from '@voiceflow/internal';
 import { Button, ClickableText, Flex, FlexApart, flexApartStyles, Input, Select, stopPropagation, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import _sample from 'lodash/sample';
 import React from 'react';
@@ -6,7 +7,7 @@ import React from 'react';
 import { ModalFooter } from '@/components/LegacyModal';
 import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
-import { CUSTOM_SLOT_TYPE, ModalType, PlanType, SLOT_COLORS } from '@/constants';
+import { CUSTOM_SLOT_TYPE, ModalType, SLOT_COLORS } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as Slot from '@/ducks/slot';
 import * as Version from '@/ducks/version';

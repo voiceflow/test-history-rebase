@@ -1,4 +1,4 @@
-import { PlatformType } from '@/constants';
+import { PlatformType } from '@voiceflow/internal';
 
 import { NodeManagerConfig } from '../types';
 import AccountLinkingEditor from './AccountLinkingEditor';

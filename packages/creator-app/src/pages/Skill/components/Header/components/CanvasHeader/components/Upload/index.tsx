@@ -1,6 +1,6 @@
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
-import { PlatformType } from '@/constants';
 import { platformAware } from '@/hocs';
 
 import { Alexa, Google } from './components';

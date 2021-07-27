@@ -1,9 +1,9 @@
 import { Voice } from '@voiceflow/general-types';
 import { Choice, StepData } from '@voiceflow/general-types/build/nodes/interaction';
+import { PlatformType } from '@voiceflow/internal';
 import cuid from 'cuid';
 
 import { createAdapter } from '@/client/adapters/utils';
-import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 import { distinctPlatformsData } from '@/utils/platform';
 

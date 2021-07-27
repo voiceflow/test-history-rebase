@@ -1,4 +1,5 @@
-import { BillingPeriod, PlanType, PlatformType } from '@/constants';
+import { BillingPeriod, PlanType, PlatformType } from '@voiceflow/internal';
+
 import { Query } from '@/models';
 
 import { StepID } from '../constants';
@@ -22,7 +23,7 @@ export enum SpecificFlowType {
   login_creator_existing = 'login_creator_existing',
 }
 
-export type OnboardingContextState = {
+export interface OnboardingContextState {
   selectableWorkspace: boolean;
   specificFlowType: SpecificFlowType;
   flow: OnboardingType;
@@ -60,9 +61,9 @@ export type OnboardingContextState = {
   hasFixedPeriod: boolean;
   usedSignupCoupon?: boolean;
   hasWorkspaces?: boolean;
-};
+}
 
-export type OnboardingContextActions = {
+export interface OnboardingContextActions {
   stepBack: () => null;
   stepForward: (stepID: StepID | null, options?: { skip: boolean }) => void;
   closeOnboarding: VoidFunction;
@@ -76,17 +77,17 @@ export type OnboardingContextActions = {
   finishJoiningWorkspace: VoidFunction;
   onCancel: VoidFunction;
   getNumberOfEditors: () => number;
-};
+}
 
-export type OnboardingContextProps = {
+export interface OnboardingContextProps {
   state: OnboardingContextState;
   actions: OnboardingContextActions;
-};
+}
 
-export type OnboardingProviderProps = {
+export interface OnboardingProviderProps {
   query: Query;
   numberOfSteps?: number;
   stripe: any;
   checkChargeable: (data: any) => void;
   isLoginFlow: boolean;
-};
+}

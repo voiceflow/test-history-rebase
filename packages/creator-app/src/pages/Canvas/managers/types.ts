@@ -1,9 +1,10 @@
 import { CanvasNodeVisibility } from '@voiceflow/general-types';
+import { PlatformType } from '@voiceflow/internal';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
 import { Overwrite } from 'utility-types';
 
-import { BlockType, PlatformType } from '@/constants';
+import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { FeatureFlagMap } from '@/ducks/feature';
 import { Markup, Node, NodeData, Port } from '@/models';
@@ -18,7 +19,7 @@ export type NodeDescriptor = Partial<Overwrite<Node, { ports?: Partial<Record<'i
 
 export type PushToPath = ({ type, label }: { type: string; label: string }) => void;
 
-export type NodeEditorPropsType<T> = {
+export interface NodeEditorPropsType<T> {
   nodeID: string;
   data: NodeData<T>;
   onChange: NodeDataUpdater<T>;
@@ -27,7 +28,7 @@ export type NodeEditorPropsType<T> = {
   isOpen?: boolean;
   expanded: boolean;
   onExpand: () => void;
-};
+}
 
 export type NodeEditor<T, E = {}> = React.FC<NodeEditorPropsType<T> & E>;
 
@@ -38,7 +39,7 @@ interface NodeFactoryOptions {
   canvasNodeVisibility?: CanvasNodeVisibility;
 }
 
-export type NodeConfig<T extends object | Markup.AnyNodeData> = {
+export interface NodeConfig<T extends object | Markup.AnyNodeData> {
   type: BlockType;
 
   icon?: Icon;
@@ -50,7 +51,7 @@ export type NodeConfig<T extends object | Markup.AnyNodeData> = {
   mergeInitializer?: boolean;
 
   factory: (data?: Partial<T>, options?: NodeFactoryOptions) => { node: NodeDescriptor; data: Creator.DataDescriptor<T> };
-};
+}
 
 export type NodeManagerConfig<T extends object | Markup.AnyNodeData> = NodeConfig<T> & {
   tip?: string;

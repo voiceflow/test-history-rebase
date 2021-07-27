@@ -1,4 +1,5 @@
-import { PlatformType } from '@/constants';
+import { PlatformType } from '@voiceflow/internal';
+
 import { createPlatformSelector } from '@/utils/platform';
 
 import alexa from './alexa';

@@ -1,7 +1,7 @@
+import { UserRole } from '@voiceflow/internal';
 import { Badge, Button, ClickableText, FlexCenter, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { UserRole } from '@/constants';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { CollaboratorType, OnboardingStepProps } from '@/pages/Onboarding/types';
 

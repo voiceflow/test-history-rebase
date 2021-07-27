@@ -1,8 +1,9 @@
 import { BaseDiagramNode } from '@voiceflow/api-sdk';
+import { PlatformType } from '@voiceflow/internal';
 import _isFunction from 'lodash/isFunction';
 
 import { createSimpleAdapter } from '@/client/adapters/utils';
-import { BlockType, PlatformType } from '@/constants';
+import { BlockType } from '@/constants';
 import { FeatureFlagMap } from '@/ducks/feature';
 import { NodeData } from '@/models';
 

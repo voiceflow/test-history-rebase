@@ -2,8 +2,9 @@ import { AmazonIntent, BUILT_IN_INTENTS as ALEXA_BUILT_IN_INTENTS } from '@voice
 import { SLOT_REGEXP } from '@voiceflow/common';
 import { DEFAULT_INTENTS_MAP, DefaultIntent, IntentName as GeneralIntents, Locale as GeneralLocale } from '@voiceflow/general-types';
 import { BUILT_IN_INTENTS as GOOGLE_BUILT_IN_INTENTS } from '@voiceflow/google-types';
+import { PlatformType } from '@voiceflow/internal';
 
-import { FILTERED_AMAZON_INTENTS, PlatformType } from '@/constants';
+import { FILTERED_AMAZON_INTENTS } from '@/constants';
 import { Intent, Slot } from '@/models';
 import { capitalizeFirstLetter } from '@/utils/string';
 

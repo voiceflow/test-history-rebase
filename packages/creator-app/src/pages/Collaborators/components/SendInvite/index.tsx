@@ -1,9 +1,10 @@
+import { UserRole } from '@voiceflow/internal';
 import { Flex, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import ButtonDropdownInput, { OrientationType } from '@/components/ButtonDropdownInput';
 import InvalidEmailError from '@/components/InvalidEmailError';
-import { EDITOR_SEAT_ROLES, ModalType, UserRole } from '@/constants';
+import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';
 import { useEnableDisable, useModals } from '@/hooks';
@@ -24,10 +25,10 @@ const OPTIONS_ARRAY = [
   { value: UserRole.VIEWER, label: 'can view' },
 ];
 
-type SendInviteProps = {
+interface SendInviteProps {
   inline?: boolean;
   sendInvite: (email: string, role: UserRole) => void;
-};
+}
 
 const SendInvite: React.FC<SendInviteProps & ConnectedSendInviteProps> = ({
   inline,

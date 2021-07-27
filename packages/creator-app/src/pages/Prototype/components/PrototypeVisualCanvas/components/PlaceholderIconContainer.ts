@@ -1,13 +1,13 @@
+import { PlatformType } from '@voiceflow/internal';
 import { FlexCenter } from '@voiceflow/ui';
 
-import { PlatformType } from '@/constants';
 import { styled } from '@/hocs';
 import { getPlatformValue } from '@/utils/platform';
 
-type ContentContainerProps = {
+interface ContentContainerProps {
   width?: number;
   platform: PlatformType;
-};
+}
 
 const GENERAL_MENU_PADDING = 65;
 const ALEXA_MENU_PADDING = 234;

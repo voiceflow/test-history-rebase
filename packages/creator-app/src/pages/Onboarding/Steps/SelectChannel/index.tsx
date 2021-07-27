@@ -1,6 +1,6 @@
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
-import { PlatformType } from '@/constants';
 import ChannelSelect from '@/pages/NewProject/Steps/ChannelSelect';
 
 import { StepID } from '../../constants';

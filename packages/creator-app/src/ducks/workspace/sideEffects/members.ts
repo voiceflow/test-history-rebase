@@ -1,9 +1,10 @@
+import { UserRole } from '@voiceflow/internal';
 import { toast } from '@voiceflow/ui';
 import { batch } from 'react-redux';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import { EDITOR_SEAT_ROLES, UserRole } from '@/constants';
+import { EDITOR_SEAT_ROLES } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';

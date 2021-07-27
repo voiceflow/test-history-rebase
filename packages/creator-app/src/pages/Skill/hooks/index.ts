@@ -1,7 +1,8 @@
+import { PlatformType } from '@voiceflow/internal';
 import { useCallback, useContext } from 'react';
 
 import { Permission } from '@/config/permissions';
-import { ModalType, PlatformType } from '@/constants';
+import { ModalType } from '@/constants';
 import { useEventualEngine, useModals, usePermission } from '@/hooks';
 
 import { MarkupContext, PlatformContext } from '../contexts';

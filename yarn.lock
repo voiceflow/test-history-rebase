@@ -5128,6 +5128,11 @@
     "@voiceflow/general-types" "^1.51.1"
     googleapis "^60.0.1"
 
+"@voiceflow/internal@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/internal/-/internal-1.2.0.tgz#9523dffe48fb66ad3fb25700c6a3aa4b1dc701dc"
+  integrity sha512-gk736sBQVzOZzjjolKwuICtkM4oKMeJ0Ip7zHxqrgBo0ric/dnK8bAwyD5MrdhxYTQ/kRAULj4kMS6AB+nqGRg==
+
 "@voiceflow/logger@^1.5.6":
   version "1.5.7"
   resolved "https://registry.yarnpkg.com/@voiceflow/logger/-/logger-1.5.7.tgz#f273a9d2a9feef3b0e59e25fad1ae8f6faf4a8c2"

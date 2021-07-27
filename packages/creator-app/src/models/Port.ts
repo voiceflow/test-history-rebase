@@ -1,17 +1,17 @@
-import { PlatformType } from '@/constants';
+import { PlatformType } from '@voiceflow/internal';
 
 import { LinkData } from './Link';
 
-export type Port = {
+export interface Port {
   id: string;
   nodeID: string;
   label: string | null;
   platform: PlatformType | null;
   virtual: boolean;
   linkData?: LinkData;
-};
+}
 
-export type DBPort = {
+export interface DBPort {
   id: string;
   parentNode: string;
   links?: string[];
@@ -20,4 +20,4 @@ export type DBPort = {
   hidden?: boolean;
   virtual?: boolean;
   linkData?: LinkData;
-};
+}

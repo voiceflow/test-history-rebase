@@ -1,3 +1,4 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Box, Button, ButtonVariant, Link, LoadCircle, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,7 @@ import AlertMessage, { AlertMessageVariant } from '@/components/AlertMessage';
 import AmazonLoginButton from '@/components/Forms/AmazonLogin';
 import GoogleLoginButton from '@/components/Forms/GoogleLogin';
 import { ModalFooter } from '@/components/Modal';
-import { GOOGLE_OAUTH_SCOPES, ModalType, PlatformType } from '@/constants';
+import { GOOGLE_OAUTH_SCOPES, ModalType } from '@/constants';
 import { AlexaStageType, GoogleStageType } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
@@ -23,11 +24,11 @@ import {
 } from '@/pages/Dashboard/components/ModalComponents';
 import { ConnectedProps, Nullable } from '@/types';
 
-export type ConnectBaseModalProps = {
+export interface ConnectBaseModalProps {
   modalType: ModalType;
   className?: string;
   helpLink?: string;
-};
+}
 
 const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseModalProps> = ({ modalType, platform, helpLink, className }) => {
   const { close: closeConnectModal, data, isOpened } = useModals(modalType as ModalType);

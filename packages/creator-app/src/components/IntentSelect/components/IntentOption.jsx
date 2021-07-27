@@ -1,8 +1,9 @@
+import { PlatformType } from '@voiceflow/internal';
 import { FlexApart, SvgIcon } from '@voiceflow/ui';
 import _toLower from 'lodash/toLower';
 import React from 'react';
 
-import { PlatformType, SPACE_REGEXP } from '@/constants';
+import { SPACE_REGEXP } from '@/constants';
 import { isCustomizeableBuiltInIntent } from '@/utils/intent';
 import { createPlatformSelector } from '@/utils/platform';
 import { isGeneralPlatform } from '@/utils/typeGuards';

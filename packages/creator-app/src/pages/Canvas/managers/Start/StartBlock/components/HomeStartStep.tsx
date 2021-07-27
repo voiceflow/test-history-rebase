@@ -1,18 +1,18 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
 import { getPlatformValue } from '@/utils/platform';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
-export type HomeStartStepProps = {
+export interface HomeStartStepProps {
   platform: PlatformType;
   invocationName: string;
   portID: string;
-};
+}
 
 const HomeStartStep: React.FC<HomeStartStepProps> = ({ platform, invocationName, portID }) => (
   <Step disableHighlightStyle>

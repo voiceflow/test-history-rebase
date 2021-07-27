@@ -1,8 +1,9 @@
+import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import { FlexApart } from '@voiceflow/ui';
 import React from 'react';
 
 import BubbleText from '@/components/BubbleText';
-import { BillingPeriod, PLAN_TYPE_META, PlanType } from '@/constants';
+import { PLAN_TYPE_META } from '@/constants';
 
 import {
   Container,
@@ -14,7 +15,7 @@ import {
   PlanNameContainer,
 } from './components';
 
-type PlanInfoCardProps = {
+interface PlanInfoCardProps {
   plan: {
     pricing: any;
     highlights: string[];
@@ -22,7 +23,7 @@ type PlanInfoCardProps = {
     id: PlanType;
   };
   period: BillingPeriod;
-};
+}
 
 const PlanInfoCard: React.FC<PlanInfoCardProps> = ({ plan, period }) => {
   const { pricing, highlights, name, id } = plan;

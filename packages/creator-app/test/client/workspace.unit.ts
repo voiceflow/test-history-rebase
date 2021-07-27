@@ -1,10 +1,10 @@
+import { UserRole } from '@voiceflow/internal';
 import { generate } from '@voiceflow/ui';
 
 import invoiceAdapter from '@/client/adapters/invoice';
 import memberAdapter from '@/client/adapters/member';
 import workspaceAdapter from '@/client/adapters/workspace';
 import client, { LEGACY_WORKSPACE_PATH, WORKSPACES_PATH } from '@/client/workspace';
-import { UserRole } from '@/constants';
 
 import suite from './_suite';
 

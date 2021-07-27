@@ -1,3 +1,4 @@
+import { PlatformType } from '@voiceflow/internal';
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -6,7 +7,6 @@ import { Tooltip } from 'react-tippy';
 import { prettifyGoogleVoicesLong, prettifyVoice } from '@/components/SSML/utils';
 import { PluginType } from '@/components/TextEditor';
 import { FeatureFlag } from '@/config/features';
-import { PlatformType } from '@/constants';
 import { useFeature } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { capitalizeFirstLetter } from '@/utils/string';

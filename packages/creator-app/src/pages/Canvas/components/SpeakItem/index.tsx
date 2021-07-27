@@ -1,3 +1,4 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,7 @@ import { SectionToggleVariant } from '@/components/Section';
 import SSMLWithVars from '@/components/SSMLWithVars';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import VariablesInput from '@/components/VariablesInput';
-import { DialogType, PlatformType } from '@/constants';
+import { DialogType } from '@/constants';
 import { SpeakData, SSMLData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';

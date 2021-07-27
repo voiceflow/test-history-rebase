@@ -1,4 +1,5 @@
-import { PlatformType } from '@/constants';
+import { PlatformType } from '@voiceflow/internal';
+
 import { NodeData } from '@/models';
 
 import { NodeManagerConfig } from '../types';

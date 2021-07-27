@@ -1,8 +1,8 @@
 import { DeviceType, Dimensions } from '@voiceflow/general-types';
+import { PlatformType } from '@voiceflow/internal';
 import { Icon } from '@voiceflow/ui';
 
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
-import { PlatformType } from '@/constants';
 import { PrototypeMode } from '@/ducks/prototype';
 import { Identifier } from '@/styles/constants';
 import { createPlatformSelector } from '@/utils/platform';
@@ -53,12 +53,12 @@ export const getMenuOptions = createPlatformSelector(
   GENERAL_PROTOTYPE_MENU_OPTIONS
 );
 
-export type DeviceInfo = {
+export interface DeviceInfo {
   name: string;
   icon: Icon;
   type: DeviceType;
   dimension: Dimensions & { density: number };
-};
+}
 
 export const ALEXA_DEVICES: DeviceInfo[] = [
   {

@@ -1,4 +1,4 @@
-import { BillingPeriod, PlanType, PromoType } from '@/constants';
+import { BillingPeriod, PlanType, PromoType } from '@voiceflow/internal';
 
 export type Query = Query.Onboarding & Query.Dashboard & Query.Auth & Query.Canvas & Query.Okta;
 

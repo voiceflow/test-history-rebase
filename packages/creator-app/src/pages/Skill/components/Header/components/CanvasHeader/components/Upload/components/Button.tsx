@@ -1,8 +1,8 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { HeaderIconButtonProps } from '@/components/ProjectPage';
-import { PlatformType } from '@/constants';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';

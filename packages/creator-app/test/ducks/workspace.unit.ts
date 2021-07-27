@@ -1,5 +1,6 @@
 /* eslint-disable max-nested-callbacks */
-import { UserRole } from '@/constants';
+import { UserRole } from '@voiceflow/internal';
+
 import * as Workspace from '@/ducks/workspace';
 import * as Models from '@/models';
 

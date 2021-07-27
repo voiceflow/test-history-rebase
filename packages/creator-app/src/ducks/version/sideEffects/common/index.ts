@@ -1,5 +1,6 @@
 import { AlexaProjectData, AlexaVersionData } from '@voiceflow/alexa-types';
 import { BaseVersionSettings } from '@voiceflow/general-types';
+import { PlatformType } from '@voiceflow/internal';
 import { batch } from 'react-redux';
 
 import client from '@/client';
@@ -9,7 +10,6 @@ import slotAdapter from '@/client/adapters/slot';
 import versionAdapter, { AnyDBVersion } from '@/client/adapters/version';
 import createSessionAdapter from '@/client/adapters/version/session';
 import * as Errors from '@/config/errors';
-import { PlatformType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Integration from '@/ducks/integration';

@@ -1,6 +1,6 @@
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
-import { PlatformType } from '@/constants';
 import { activePlatformSelector } from '@/ducks/project/selectors';
 import { ConnectedProps } from '@/types';
 

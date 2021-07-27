@@ -1,7 +1,8 @@
 import { CanvasNodeVisibility } from '@voiceflow/general-types';
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
-import { DialogType, PlatformType } from '@/constants';
+import { DialogType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
@@ -12,21 +13,21 @@ import { stripHTMLTags } from '@/utils/string';
 
 import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '../constants';
 
-export type SpeakStepItem = {
+export interface SpeakStepItem {
   id: string;
   url?: string;
   type: DialogType;
   content?: string;
   isAudio?: boolean;
-};
+}
 
-export type SpeakStepProps = {
+export interface SpeakStepProps {
   items: SpeakStepItem[];
   random?: boolean;
   portID: string;
   nodeID: string;
   platform: PlatformType;
-};
+}
 
 export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, nodeID, portID }) => {
   const itemsToRender = random && items.length ? [items[0]] : items;

@@ -1,8 +1,9 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import { Paragraph } from '@/components/Tooltip';
-import { DOCS_LINK, PlatformType } from '@/constants';
+import { DOCS_LINK } from '@/constants';
 
 const EditorInfoPopup: React.FC<{ platform: PlatformType }> = ({ platform }) => {
   switch (platform) {

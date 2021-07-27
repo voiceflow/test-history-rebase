@@ -1,9 +1,10 @@
 import { AlexaVersion, AlexaVersionData, defaultAlexaVersionPublishing, defaultAlexaVersionSettings, Voice } from '@voiceflow/alexa-types';
+import { PlatformType } from '@voiceflow/internal';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
-import { BUILT_IN_VARIABLES, PlatformType } from '@/constants';
+import { BUILT_IN_VARIABLES } from '@/constants';
 import { Version } from '@/models';
 
 import createSessionAdapter from '../session';

@@ -1,21 +1,21 @@
+import { PlatformType } from '@voiceflow/internal';
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import client from '@/client';
-import { PlatformType } from '@/constants';
 import { useEnableDisable } from '@/hooks/toggle';
 import { ClassName } from '@/styles/constants';
 import * as Sentry from '@/vendors/sentry';
 
 import SpeakerWrapper from './SpeakerWrapper';
 
-type SpeakerProps = {
+interface SpeakerProps {
   voice: string;
   platform?: PlatformType;
   setError?: (error?: string) => void;
   getSSMLToPlay: () => string;
-};
+}
 
 const Speaker: React.FC<SpeakerProps> = ({ voice, platform, setError, getSSMLToPlay }) => {
   const audio = React.useMemo(() => new Audio(), []);

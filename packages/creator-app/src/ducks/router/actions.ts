@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import { PlatformType } from '@voiceflow/internal';
 import { CALL_HISTORY_METHOD, push, replace } from 'connected-react-router';
 import { generatePath } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
-import { PlatformType } from '@/constants';
 import { Action } from '@/store/types';
 import { Struct } from '@/types';
 import * as Query from '@/utils/query';

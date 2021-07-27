@@ -1,9 +1,9 @@
+import { UserRole } from '@voiceflow/internal';
 import { Dropdown, FlexApart, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import PlanBubble from '@/components/PlanBubble';
 import { IS_PRIVATE_CLOUD } from '@/config';
-import { UserRole } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as WorkspaceDuck from '@/ducks/workspace';
 import { connect } from '@/hocs';
@@ -13,10 +13,10 @@ import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
 
-type LeftNavSectionProps = {
+interface LeftNavSectionProps {
   loadingProjects: boolean;
   activeWorkspace: Workspace | null;
-};
+}
 
 const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProps> = ({
   workspaces,

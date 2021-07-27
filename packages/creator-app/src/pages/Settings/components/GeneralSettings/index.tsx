@@ -1,8 +1,8 @@
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { SectionVariants, SettingsSection } from '@/components/Settings';
-import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import { useSetup, useTrackingEvents } from '@/hooks';
 import AlexaFeatures from '@/pages/Settings/components/GeneralSettings/Sections/ChannelSpecificFeatures';

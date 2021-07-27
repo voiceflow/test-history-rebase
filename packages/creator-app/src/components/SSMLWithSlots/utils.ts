@@ -1,4 +1,4 @@
-import { PlatformType } from '@/constants';
+import { PlatformType } from '@voiceflow/internal';
 
 /**
  * Some platforms don't allow slot values to be embedded within slot reprompts. Consequently, even if

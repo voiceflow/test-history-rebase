@@ -1,7 +1,7 @@
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
 import { Section as TooltipSection } from '@/components/Tooltip';
-import { PlatformType } from '@/constants';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { getPlatformValue } from '@/utils/platform';
 

@@ -1,6 +1,6 @@
 import { StepData } from '@voiceflow/google-types/build/nodes/stream';
+import { PlatformType } from '@voiceflow/internal';
 
-import { PlatformType } from '@/constants';
 import { PortType } from '@/constants/canvas';
 import { NodeData } from '@/models';
 

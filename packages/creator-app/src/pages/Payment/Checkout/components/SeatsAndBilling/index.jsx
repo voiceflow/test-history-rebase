@@ -1,9 +1,10 @@
+import { BillingPeriod } from '@voiceflow/internal';
 import { Dropdown, Flex, FlexApart, SvgIcon } from '@voiceflow/ui';
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import { BillingPeriod, PERIOD_NAME } from '@/constants';
+import { PERIOD_NAME } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';

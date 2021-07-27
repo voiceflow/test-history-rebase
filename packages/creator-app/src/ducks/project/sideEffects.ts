@@ -1,10 +1,10 @@
 import { ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
+import { PlatformType } from '@voiceflow/internal';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
 import projectAdapter from '@/client/adapters/project';
 import * as Errors from '@/config/errors';
-import { PlatformType } from '@/constants';
 import { addProjectToList } from '@/ducks/projectList/actions';
 import * as Session from '@/ducks/session';
 import { AnyProject } from '@/models';
@@ -13,12 +13,12 @@ import { Thunk } from '@/store/types';
 import { addProject, patchProject, removeProject, replaceProjects, updateProjectName } from './actions';
 import { activeProjectNameSelector, projectByIDSelector } from './selectors';
 
-export type CreateProjectParams = {
+export interface CreateProjectParams {
   platform: PlatformType;
   name: string;
   image: string;
   listID?: string;
-};
+}
 
 // side effects
 

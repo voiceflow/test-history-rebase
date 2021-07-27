@@ -1,3 +1,4 @@
+import { UserRole } from '@voiceflow/internal';
 import { Button, ButtonVariant, Menu, MenuItem, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -5,7 +6,7 @@ import { useSelector } from 'react-redux';
 import client from '@/client';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import * as Errors from '@/config/errors';
-import { EDITOR_SEAT_ROLES, ModalType, UserRole } from '@/constants';
+import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';

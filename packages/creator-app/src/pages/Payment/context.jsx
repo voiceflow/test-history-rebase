@@ -1,3 +1,4 @@
+import { BillingPeriod, UserRole } from '@voiceflow/internal';
 import { ButtonVariant, toast, withContext, withProvider } from '@voiceflow/ui';
 import cuid from 'cuid';
 import _isEmpty from 'lodash/isEmpty';
@@ -6,7 +7,7 @@ import { compose } from 'recompose';
 
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
-import { BillingPeriod, ModalType, UNLIMITED_EDITORS_CONST, UserRole } from '@/constants';
+import { ModalType, UNLIMITED_EDITORS_CONST } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';

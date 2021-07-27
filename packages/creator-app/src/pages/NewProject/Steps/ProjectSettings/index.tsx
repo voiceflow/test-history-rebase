@@ -1,12 +1,12 @@
 import { getInvocationNameError as getAlexaInvocationNameError } from '@voiceflow/alexa-types';
 import { Locale as GeneralLocale } from '@voiceflow/general-types';
 import { getInvocationNameError as getGoogleInvocationNameError } from '@voiceflow/google-types';
+import { PlatformType } from '@voiceflow/internal';
 import { Button, ButtonVariant, FlexCenter, Input, Select, SvgIcon } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
-import { PlatformType } from '@/constants';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
@@ -23,7 +23,7 @@ import { SectionDescription, SectionErrorMessage, SectionTitle } from '../compon
 
 const UnTypedDropdownMultiselect: any = DropdownMultiselect;
 
-type PlatformSettingsProps = {
+interface PlatformSettingsProps {
   alexaLocales: string[];
   generalLocale: GeneralLocale;
   invocationName: string;
@@ -35,7 +35,7 @@ type PlatformSettingsProps = {
   selectedChannel: PlatformType;
   setInvocationName: (name: string) => void;
   setGoogleLanguage: (val: string) => void;
-};
+}
 
 const ProjectSettings: React.FC<PlatformSettingsProps> = ({
   alexaLocales,

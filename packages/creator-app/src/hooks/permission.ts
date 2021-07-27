@@ -1,7 +1,7 @@
+import { PlanType, UserRole } from '@voiceflow/internal';
 import React from 'react';
 
 import { hasPermission, Permission } from '@/config/permissions';
-import { PlanType, UserRole } from '@/constants';
 import { IdentityContext, IdentityContextValue } from '@/contexts';
 
 // eslint-disable-next-line import/prefer-default-export

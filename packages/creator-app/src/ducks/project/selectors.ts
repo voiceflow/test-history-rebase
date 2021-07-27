@@ -1,7 +1,7 @@
 import { ProjectLinkType } from '@voiceflow/api-sdk';
+import { PlatformType } from '@voiceflow/internal';
 import { createSelector } from 'reselect';
 
-import { PlatformType } from '@/constants';
 import * as Session from '@/ducks/session';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 

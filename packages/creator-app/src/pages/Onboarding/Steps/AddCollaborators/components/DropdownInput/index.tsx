@@ -1,12 +1,12 @@
+import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
 import { InputGroupAddon, TextInputContainer } from '@/components/ButtonDropdownInput/components';
 import { OrientationType } from '@/components/ButtonDropdownInput/constants';
-import { UserRole } from '@/constants';
 
 import { Container, Input, PermissionsDropdown } from './components';
 
-export type DropdownInputProps = {
+export interface DropdownInputProps {
   inputValue?: string | null;
   onInputChange: (value: string) => void;
   dropdownValue?: UserRole;
@@ -18,7 +18,7 @@ export type DropdownInputProps = {
   autoFocus?: boolean;
   onFocus?: () => void;
   hasError?: boolean;
-};
+}
 
 const DropdownInput: React.FC<DropdownInputProps> = ({
   inputValue,

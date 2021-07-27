@@ -1,5 +1,6 @@
+import { BillingPeriod, PlanType, PromoType, UserRole } from '@voiceflow/internal';
+
 import { IS_PRIVATE_CLOUD } from '@/config';
-import { BillingPeriod, PlanType, PromoType, UserRole } from '@/constants';
 import { Query } from '@/models';
 
 import { StepID } from '../constants';

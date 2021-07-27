@@ -1,15 +1,17 @@
+import { BillingPeriod, PlanType } from '@voiceflow/internal';
+
 import client from '@/client';
-import { BillingPeriod, PERIOD_NAME, PlanType } from '@/constants';
+import { PERIOD_NAME } from '@/constants';
 
 import { EventName, UpgradePrompt } from '../constants';
 import { createWorkspaceEventPayload, createWorkspaceEventTracker } from '../utils';
 
-type TrackUpgradeOptions = {
+interface TrackUpgradeOptions {
   plan: PlanType;
   seats: number;
   period: BillingPeriod;
   coupon: string;
-};
+}
 
 export const trackUpgrade = createWorkspaceEventTracker<TrackUpgradeOptions>((options) =>
   client.analytics.track(
@@ -23,9 +25,9 @@ export const trackUpgrade = createWorkspaceEventTracker<TrackUpgradeOptions>((op
   )
 );
 
-type TrackUpgradePromptOptions = {
+interface TrackUpgradePromptOptions {
   promptType: UpgradePrompt;
-};
+}
 
 export const trackUpgradePrompt = createWorkspaceEventTracker<TrackUpgradePromptOptions>((options) =>
   client.analytics.track(

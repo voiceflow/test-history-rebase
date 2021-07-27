@@ -1,3 +1,4 @@
+import { BillingPeriod, PlanType, PlatformType, UserRole } from '@voiceflow/internal';
 import { ButtonVariant, toast } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
@@ -6,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
-import { BillingPeriod, ModalType, PlanType, PlatformType, UserRole } from '@/constants';
+import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';

@@ -1,6 +1,6 @@
+import { PlatformType } from '@voiceflow/internal';
 import _isPlainObject from 'lodash/isPlainObject';
 
-import { PlatformType } from '@/constants';
 import { Intent, IntentInput, IntentSlot } from '@/models';
 import { isCustomizeableBuiltInIntent, removeBuiltInPrefix } from '@/utils/intent';
 import { capitalizeFirstLetter } from '@/utils/string';

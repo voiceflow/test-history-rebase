@@ -1,4 +1,5 @@
 import { ButtonsLayout } from '@voiceflow/general-types';
+import { PlanType, PlatformType } from '@voiceflow/internal';
 import { FullSpinner, toast } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -6,7 +7,6 @@ import { RouteComponentProps } from 'react-router-dom';
 import { RemoveIntercom } from '@/components/IntercomChat';
 import SeoHelmet from '@/components/SeoHelmet';
 import { Permission } from '@/config/permissions';
-import { PlanType, PlatformType } from '@/constants';
 import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { connect } from '@/hocs';

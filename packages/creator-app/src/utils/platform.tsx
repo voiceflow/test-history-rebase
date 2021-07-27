@@ -1,8 +1,9 @@
 import { Voice as AlexaVoice } from '@voiceflow/alexa-types';
 import { Voice as GeneralVoice } from '@voiceflow/general-types';
 import { Voice as GoogleVoice } from '@voiceflow/google-types';
+import { PlatformType } from '@voiceflow/internal';
 
-import { DISTINCT_PLATFORMS, DistinctPlatform, PlatformType } from '@/constants';
+import { DISTINCT_PLATFORMS, DistinctPlatform } from '@/constants';
 import { AnyVoice } from '@/ducks/version/types';
 
 import { isDistinctPlatform } from './typeGuards';

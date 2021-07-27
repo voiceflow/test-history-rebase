@@ -1,8 +1,8 @@
+import { BillingPeriod } from '@voiceflow/internal';
 import { Button, SvgIcon } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
-import { BillingPeriod } from '@/constants';
 import { useTrackingEvents } from '@/hooks';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';

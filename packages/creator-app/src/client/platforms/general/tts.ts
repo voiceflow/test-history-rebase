@@ -1,7 +1,7 @@
+import { PlatformType } from '@voiceflow/internal';
 import axios from 'axios';
 
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
-import { PlatformType } from '@/constants';
 
 const ttsGeneralService = {
   convert: ({ ssml, voiceID, platform }: { ssml: string; voiceID: string; platform?: PlatformType }) =>

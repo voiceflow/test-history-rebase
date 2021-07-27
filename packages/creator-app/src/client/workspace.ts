@@ -1,6 +1,6 @@
+import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import { FetchOptions } from '@voiceflow/ui';
 
-import { BillingPeriod, PlanType, UserRole } from '@/constants';
 import { DBWorkspace, Price } from '@/models';
 import { APIKey } from '@/models/APIKey';
 import { DBBilling } from '@/models/Billing';

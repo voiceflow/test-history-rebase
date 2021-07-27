@@ -1,7 +1,7 @@
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
 import { Tab } from '@/components/Settings/components/SettingsTabs';
-import { PlatformType } from '@/constants';
 import { createPlatformSelector } from '@/utils/platform';
 
 import { Alexa, General, Google, Universal } from './components/ContentDescriptors';
@@ -19,7 +19,7 @@ export const Tabs = {
   VERSIONS: { label: 'Versions', path: 'version' },
 };
 
-export type PlatformSettingsMetaProps = {
+export interface PlatformSettingsMetaProps {
   name: string;
   sections: SettingSections[];
   descriptors: {
@@ -37,7 +37,7 @@ export type PlatformSettingsMetaProps = {
   };
   tabs: Tab[];
   localeText?: string;
-};
+}
 
 export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaProps>(
   {

@@ -1,10 +1,11 @@
 import { AnyButton, ButtonType } from '@voiceflow/general-types';
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 import { createSelector } from 'reselect';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import OverflowMenu from '@/components/OverflowMenu';
-import { DistinctPlatform, PlatformType } from '@/constants';
+import { DistinctPlatform } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as IntentDuck from '@/ducks/intent';
 import { connect } from '@/hocs';

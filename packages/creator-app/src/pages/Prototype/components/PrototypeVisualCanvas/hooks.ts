@@ -1,9 +1,9 @@
 import { DEVICE_SIZE_MAP, DeviceType } from '@voiceflow/general-types';
 import { StepData, VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
 import { ZOOM_FACTOR } from '@/components/Canvas/constants';
-import { PlatformType } from '@/constants';
 import { useTheme } from '@/hooks';
 import { ALL_DEVICES } from '@/pages/Prototype/constants';
 import { Pair } from '@/types';
@@ -12,10 +12,10 @@ import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 const DEFAULT_FILL_RATIO = 0.8;
 const DEFAULT_FRAME_DIMENSION = 400;
 
-type Dimension = {
+interface Dimension {
   width: number;
   height: number;
-};
+}
 
 export const useDeviceDimension = ({ data, device }: { data: StepData | null; device: DeviceType | null }): Dimension =>
   React.useMemo(() => {

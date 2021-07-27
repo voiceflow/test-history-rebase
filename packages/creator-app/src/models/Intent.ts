@@ -1,29 +1,30 @@
-import { PlatformType } from '@/constants';
+import { PlatformType } from '@voiceflow/internal';
+
 import { Normalized } from '@/utils/normalized';
 
-export type IntentInput = {
+export interface IntentInput {
   text: string;
   voice?: string;
   slots?: string[];
-};
+}
 
-export type IntentSlotDialog = {
+export interface IntentSlotDialog {
   confirm: IntentInput[];
   utterances: IntentInput[];
   confirmEnabled: boolean;
   prompt: IntentInput[];
-};
+}
 
-export type IntentSlot = {
+export interface IntentSlot {
   id: string;
   dialog: IntentSlotDialog;
   required: boolean;
-};
+}
 
-export type Intent = {
+export interface Intent {
   id: string;
   name: string;
   slots: Normalized<IntentSlot>;
   inputs: IntentInput[];
   platform: PlatformType;
-};
+}

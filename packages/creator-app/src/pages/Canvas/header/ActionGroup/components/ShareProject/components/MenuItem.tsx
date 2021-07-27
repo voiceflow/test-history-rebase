@@ -1,8 +1,8 @@
+import { PlanType } from '@voiceflow/internal';
 import { Button, ButtonVariant, Link, stopImmediatePropagation, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import PlanBubble from '@/components/PlanBubble';
-import { PlanType } from '@/constants';
 import { useEnableDisable } from '@/hooks';
 import { Nullable } from '@/types';
 import { copy } from '@/utils/clipboard';
@@ -13,7 +13,7 @@ import Header from './Header';
 import LoadingButton from './LoadingButton';
 import MenuItemContainer from './MenuItemContainer';
 
-type MenuItemProps = {
+interface MenuItemProps {
   title: string;
   description: string;
   onRedirect: () => void;
@@ -23,7 +23,7 @@ type MenuItemProps = {
   track: () => void;
   loading?: boolean;
   onClick?: () => void;
-};
+}
 
 const MenuItem: React.FC<MenuItemProps> = ({ title, description, isAllowed, onRedirect, help, link, track, loading, onClick: onClickProp }) => {
   const [isCopied, setCopiedStatus, clearCopiedStatus] = useEnableDisable();

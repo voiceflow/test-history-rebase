@@ -1,5 +1,6 @@
+import { PlatformType } from '@voiceflow/internal';
+
 import client from '@/client';
-import { PlatformType } from '@/constants';
 
 import { EventName } from '../constants';
 

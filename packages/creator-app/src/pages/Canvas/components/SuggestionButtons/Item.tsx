@@ -1,4 +1,5 @@
 import { IntentButton } from '@voiceflow/general-types';
+import { PlatformType } from '@voiceflow/internal';
 import { Badge, Box } from '@voiceflow/ui';
 import numberToWords from 'number-to-words/src';
 import React from 'react';
@@ -7,7 +8,6 @@ import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandl
 import IntentSelect from '@/components/IntentSelect';
 import { SectionToggleVariant } from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
-import { PlatformType } from '@/constants';
 import * as IntentDuck from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { useSetup } from '@/hooks';

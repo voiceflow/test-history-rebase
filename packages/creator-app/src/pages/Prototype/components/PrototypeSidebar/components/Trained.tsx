@@ -1,10 +1,10 @@
 import { PrototypeModel } from '@voiceflow/api-sdk';
+import { PlatformType } from '@voiceflow/internal';
 import { Box, Button, ButtonVariant, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { lightbulbGraphic } from '@/assets';
 import * as Documentation from '@/config/documentation';
-import { PlatformType } from '@/constants';
 import { createPlatformSelector } from '@/utils/platform';
 import { ModelDiff } from '@/utils/prototypeModel';
 
@@ -19,14 +19,14 @@ const getTrainText = createPlatformSelector(
   'Train Assistant'
 );
 
-type TrainedProps = {
+interface TrainedProps {
   diff: ModelDiff;
   platform: PlatformType;
   isTrained?: boolean;
   trainedModel: PrototypeModel | null;
   lastTrainedTime: number;
   onStartTraining: () => void;
-};
+}
 
 const Trained: React.FC<TrainedProps> = ({ diff, platform, isTrained, trainedModel, lastTrainedTime, onStartTraining }) => (
   <NLUContainer fullWidth>

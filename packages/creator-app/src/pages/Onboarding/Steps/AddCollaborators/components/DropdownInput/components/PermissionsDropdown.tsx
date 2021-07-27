@@ -1,20 +1,20 @@
+import { UserRole } from '@voiceflow/internal';
 import { Dropdown as BaseDropdown, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
-import { UserRole } from '@/constants';
 import { styled } from '@/hocs';
 
 import DropdownButton from './DropdownButton';
 
-type PermissionDropdownProps = {
+interface PermissionDropdownProps {
   options?: { value: UserRole; label: string }[];
   onSelect?: (value: UserRole) => void;
   onRemove?: () => void;
   selectedValue: UserRole;
   orientation: string;
   hasError?: boolean;
-};
+}
 
 // styled components
 const Dropdown = styled(BaseDropdown)`

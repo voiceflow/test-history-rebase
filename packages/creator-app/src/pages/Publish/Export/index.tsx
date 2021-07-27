@@ -1,7 +1,7 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Box, BoxFlex, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { PlatformType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';

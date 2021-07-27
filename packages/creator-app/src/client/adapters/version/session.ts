@@ -1,7 +1,7 @@
 import { BaseResumeSession, RestartSession, SessionType } from '@voiceflow/general-types';
+import { PlatformType } from '@voiceflow/internal';
 
 import { createAdapter } from '@/client/adapters/utils';
-import { PlatformType } from '@/constants';
 import { Version } from '@/models';
 import { Nullable } from '@/types';
 import { getPlatformDefaultVoice } from '@/utils/platform';

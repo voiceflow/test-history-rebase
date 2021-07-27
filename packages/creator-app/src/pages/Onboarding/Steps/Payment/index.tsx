@@ -1,3 +1,4 @@
+import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import { Button, ClickableText, ControlledInput, Dropdown, FlexApart, FlexCenter, Menu, MenuItem, SvgIcon, toast } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React, { useContext } from 'react';
@@ -8,7 +9,7 @@ import Collapsable from '@/components/Collapsable';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import { TextVariant } from '@/components/DropdownWithCaret/types';
 import { CardElement } from '@/components/Stripe';
-import { BillingPeriod, PERIOD_NAME, PlanType, UserRole } from '@/constants';
+import { PERIOD_NAME } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';

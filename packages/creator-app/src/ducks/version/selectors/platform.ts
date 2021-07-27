@@ -1,6 +1,6 @@
+import { PlatformType } from '@voiceflow/internal';
 import { createSelector } from 'reselect';
 
-import { PlatformType } from '@/constants';
 import * as Feature from '@/ducks/feature';
 import * as Project from '@/ducks/project';
 import { identity } from '@/utils/functional';

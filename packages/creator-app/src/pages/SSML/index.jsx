@@ -1,4 +1,5 @@
 import { Voice } from '@voiceflow/alexa-types';
+import { PlatformType } from '@voiceflow/internal';
 import { Button, FlexCenter, FlexEnd } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,6 @@ import Header from '@/components/Header';
 import MadeInVoiceflow from '@/components/MadeInVoiceflow';
 import SeoHelmet from '@/components/SeoHelmet';
 import SSML from '@/components/SSML';
-import { PlatformType } from '@/constants';
 import { SeoPage } from '@/constants/seo';
 import removeIntercom from '@/hocs/removeIntercom';
 import { useDebouncedCallback } from '@/hooks/callback';

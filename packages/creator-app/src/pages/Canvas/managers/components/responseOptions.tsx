@@ -1,9 +1,9 @@
 import { AnyButton, ButtonsLayout } from '@voiceflow/general-types';
+import { PlatformType } from '@voiceflow/internal';
 import { OptionsMenuOption, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PlatformType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import { NodeData } from '@/models/NodeData';
 import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';

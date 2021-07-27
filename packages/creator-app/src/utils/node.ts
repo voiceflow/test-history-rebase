@@ -1,6 +1,7 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Overwrite } from 'utility-types';
 
-import { BlockType, DistinctPlatform, PlatformType } from '@/constants';
+import { BlockType, DistinctPlatform } from '@/constants';
 import { NodeData } from '@/models';
 import { NonNullishRecord } from '@/types';
 

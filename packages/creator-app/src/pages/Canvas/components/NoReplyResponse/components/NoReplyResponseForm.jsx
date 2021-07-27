@@ -1,3 +1,4 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 import { createSelector } from 'reselect';
@@ -6,7 +7,7 @@ import Section from '@/components/Section';
 import SSMLWithVars from '@/components/SSMLWithVars';
 import AudioUpload from '@/components/Upload/AudioUpload';
 import VariablesInput from '@/components/VariablesInput';
-import { PlatformType, RepromptType } from '@/constants';
+import { RepromptType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';

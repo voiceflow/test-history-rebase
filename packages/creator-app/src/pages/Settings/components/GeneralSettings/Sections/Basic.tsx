@@ -1,6 +1,7 @@
 import { getInvocationNameError as getAlexaInvocationNameError, Locale as AlexaLocale } from '@voiceflow/alexa-types';
 import { Locale as GeneralLocale } from '@voiceflow/general-types';
 import { getInvocationNameError as getGoogleInvocationNameError, Language, LanguageToLocale, Locale as GoogleLocale } from '@voiceflow/google-types';
+import { PlatformType } from '@voiceflow/internal';
 import { Box, BoxFlex, Input, Select, useDidUpdateEffect } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React, { ChangeEvent } from 'react';
@@ -8,7 +9,6 @@ import React, { ChangeEvent } from 'react';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import Section, { SectionVariant } from '@/components/Section';
 import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
-import { PlatformType } from '@/constants';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
@@ -27,11 +27,11 @@ import { PlatformSettingsMetaProps, SettingSections } from '../../../constants';
 const UnTypedDropdownMultiselect: any = DropdownMultiselect;
 const UnTypedUploadJustIcon: any = UploadJustIcon;
 
-type BasicProps = {
+interface BasicProps {
   title: SettingSections;
   platform: PlatformType;
   platformMeta: PlatformSettingsMetaProps;
-};
+}
 
 const sectionStyling = {
   paddingBottom: '24px',

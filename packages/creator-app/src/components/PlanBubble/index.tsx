@@ -1,15 +1,16 @@
+import { PlanType } from '@voiceflow/internal';
 import React from 'react';
 
 import BubbleText from '@/components/BubbleText';
 import { Permission } from '@/config/permissions';
-import { ModalType, PLAN_TYPE_META, PlanType } from '@/constants';
+import { ModalType, PLAN_TYPE_META } from '@/constants';
 import { useModals, usePermission } from '@/hooks';
 import { DashboardClassName } from '@/styles/constants';
 
-type PlanBubble = {
+interface PlanBubble {
   plan?: PlanType | null;
   disabled?: boolean;
-};
+}
 
 const PlanBubble: React.FC<PlanBubble> = ({ plan, disabled }) => {
   const [canUpgrade] = usePermission(Permission.UPGRADE_WORKSPACE);

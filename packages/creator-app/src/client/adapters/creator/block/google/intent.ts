@@ -1,6 +1,6 @@
 import { StepData } from '@voiceflow/general-types/build/nodes/jump';
+import { PlatformType } from '@voiceflow/internal';
 
-import { PlatformType } from '@/constants';
 import { NodeData } from '@/models';
 import { distinctPlatformsData } from '@/utils/platform';
 

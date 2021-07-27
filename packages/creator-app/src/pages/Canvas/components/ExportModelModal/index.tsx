@@ -1,3 +1,4 @@
+import { PlanType } from '@voiceflow/internal';
 import { BlockText, Box, Button, FlexApart, Link, Select, stopImmediatePropagation, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,7 @@ import ChatWithUsLink from '@/components/ChatLink';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
-import { ModalType, NLPProvider, PLAN_TYPE_META, PlanType } from '@/constants';
+import { ModalType, NLPProvider, PLAN_TYPE_META } from '@/constants';
 import * as Export from '@/ducks/export';
 import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';

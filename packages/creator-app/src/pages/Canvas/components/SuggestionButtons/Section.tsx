@@ -1,9 +1,9 @@
 import { ButtonType, IntentButton } from '@voiceflow/general-types';
+import { PlatformType } from '@voiceflow/internal';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Section from '@/components/Section';
-import { PlatformType } from '@/constants';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { getPlatformValue } from '@/utils/platform';
 

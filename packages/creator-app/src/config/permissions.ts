@@ -1,4 +1,4 @@
-import { PlanType, UserRole } from '@/constants';
+import { PlanType, UserRole } from '@voiceflow/internal';
 
 export enum Permission {
   // workspace

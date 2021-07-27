@@ -1,6 +1,7 @@
 import { Voice as AlexaVoice } from '@voiceflow/alexa-types';
 import { RepeatType, Voice as GeneralVoice } from '@voiceflow/general-types';
 import { Voice as GoogleVoice } from '@voiceflow/google-types';
+import { PlatformType } from '@voiceflow/internal';
 import { ClickableText, Select } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +9,6 @@ import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
 import SSML from '@/components/SSML';
 import AudioUpload from '@/components/Upload/AudioUpload';
-import { PlatformType } from '@/constants';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
@@ -21,10 +21,10 @@ import { REPEAT_OPTIONS, RESUME_PROMPT_MAX_LENGTH } from './constants';
 
 const SSMLComponent: any = SSML;
 
-type GlobalConversationLogicProps = {
+interface GlobalConversationLogicProps {
   platform: PlatformType;
   platformMeta: PlatformSettingsMetaProps;
-};
+}
 
 const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & GlobalConversationLogicProps> = ({
   settings,

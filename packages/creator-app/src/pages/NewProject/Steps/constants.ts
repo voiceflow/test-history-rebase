@@ -1,7 +1,7 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
-import { PlatformType } from '@/constants';
 import { AmazonInvocationName, GoogleInvocationName } from '@/pages/NewProject/DescriptionElements/InvocationName';
 import { AmazonLanguage, GeneralLanguage, GoogleLanguage } from '@/pages/NewProject/DescriptionElements/Languages';
 import { createPlatformSelector } from '@/utils/platform';
@@ -16,7 +16,7 @@ export enum IconType {
   IMAGE = 'image,',
 }
 
-export type PlatformMetaType = {
+export interface PlatformMetaType {
   company: string;
   icon?: Icon;
   iconColor?: string;
@@ -24,7 +24,7 @@ export type PlatformMetaType = {
   invocationDescription?: React.FC;
   localesDescription?: React.FC;
   localesText?: string;
-};
+}
 
 const GENERAL_PLATFORM_META: PlatformMetaType = {
   company: '',
@@ -68,7 +68,7 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>({
   },
 });
 
-export type ChannelMetaType = {
+export interface ChannelMetaType {
   name: string;
   description: string;
   features: PlatformFeature[];
@@ -77,7 +77,7 @@ export type ChannelMetaType = {
   iconColor?: string;
   iconType: IconType;
   iconSize: number;
-};
+}
 
 export const getChannelMeta = createPlatformSelector<ChannelMetaType>({
   [PlatformType.ALEXA]: {

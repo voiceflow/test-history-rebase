@@ -1,6 +1,6 @@
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
-import { PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
 import { createPlatformSelector } from '@/utils/platform';
@@ -15,10 +15,10 @@ const getPlatformLabel = createPlatformSelector(
   'Project'
 );
 
-export type ExitStepProps = {
+export interface ExitStepProps {
   nodeID: string;
   platform: PlatformType;
-};
+}
 
 export const ExitStep: React.FC<ExitStepProps> = ({ nodeID, platform }) => (
   <Step nodeID={nodeID}>

@@ -1,6 +1,6 @@
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
-import { PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
@@ -9,13 +9,13 @@ import { transformVariablesToReadable } from '@/utils/slot';
 
 import { NODE_CONFIG } from '../constants';
 
-export type StreamStepProps = {
+export interface StreamStepProps {
   audio: string;
   platform: PlatformType;
   customPause: boolean;
   nodeID: string;
   portIDs: string[];
-};
+}
 
 export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customPause, nodeID, portIDs }) => {
   const isGoogle = platform === PlatformType.GOOGLE;

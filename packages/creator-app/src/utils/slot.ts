@@ -2,9 +2,10 @@ import { BUILT_IN_SLOTS as ALEXA_BUILT_IN_SLOTS } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
 import { SlotType } from '@voiceflow/general-types';
 import { BUILT_IN_SLOTS as GOOGLE_BUILT_IN_SLOTS } from '@voiceflow/google-types';
+import { PlatformType } from '@voiceflow/internal';
 
 import { FeatureFlag } from '@/config/features';
-import { CUSTOM_SLOT_TYPE, PlatformType } from '@/constants';
+import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { generalSlotTypesByLanguage } from '@/constants/platforms';
 import { Intent, Slot } from '@/models';
 

@@ -1,9 +1,9 @@
 import { AlexaVersionSettings, Locale as AlexaLocale } from '@voiceflow/alexa-types';
 import { GeneralVersionSettings, Locale as GeneralLocale } from '@voiceflow/general-types';
 import { GoogleVersionSettings, Locale as GoogleLocale } from '@voiceflow/google-types';
+import { PlatformType } from '@voiceflow/internal';
 
 import * as Errors from '@/config/errors';
-import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import { SyncThunk, Thunk } from '@/store/types';

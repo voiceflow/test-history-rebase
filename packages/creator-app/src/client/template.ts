@@ -1,4 +1,4 @@
-import { PlatformType } from '@/constants';
+import { PlatformType } from '@voiceflow/internal';
 
 import { apiV2 } from './fetch';
 

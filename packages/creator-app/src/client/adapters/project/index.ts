@@ -1,9 +1,9 @@
 import { AlexaProjectData, AlexaProjectMemberData } from '@voiceflow/alexa-types';
 import { BasePlatformData, Member, Project as DBProject, ProjectLinkType } from '@voiceflow/api-sdk';
 import { GoogleProjectData, GoogleProjectMemberData } from '@voiceflow/google-types';
+import { PlatformType } from '@voiceflow/internal';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
-import { PlatformType } from '@/constants';
 import { Project } from '@/models';
 
 export { default as productAdapter } from './product';

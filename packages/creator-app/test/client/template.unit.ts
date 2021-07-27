@@ -1,7 +1,7 @@
+import { PlatformType } from '@voiceflow/internal';
 import { generate } from '@voiceflow/ui';
 
 import client from '@/client/template';
-import { PlatformType } from '@/constants';
 
 import suite from './_suite';
 

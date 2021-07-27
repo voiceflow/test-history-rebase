@@ -1,3 +1,4 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Badge } from '@voiceflow/ui';
 import React from 'react';
 
@@ -5,7 +6,7 @@ import { DragPreviewComponentProps, ItemComponentHandlers, ItemComponentProps, M
 import IntentForm, { LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import Section, { SectionToggleVariant } from '@/components/Section';
-import { DistinctPlatform, PlatformType } from '@/constants';
+import { DistinctPlatform } from '@/constants';
 import * as IntentDuck from '@/ducks/intent';
 import { connect } from '@/hocs';
 import { Intent, NodeData } from '@/models';

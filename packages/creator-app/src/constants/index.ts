@@ -1,5 +1,6 @@
 import { PermissionType } from '@voiceflow/alexa-types';
 import { DeviceType } from '@voiceflow/general-types';
+import { BillingPeriod, PlanType, PlatformType, UserRole } from '@voiceflow/internal';
 
 import { Pair } from '@/types';
 
@@ -45,15 +46,6 @@ export enum SessionType {
   FACEBOOK = 'facebook',
   BASIC_AUTH = 'session',
   SIGN_UP = 'user',
-}
-
-export enum PlatformType {
-  ALEXA = 'alexa',
-  GOOGLE = 'google',
-  GENERAL = 'general',
-  IVR = 'ivr',
-  CHATBOT = 'chatbot',
-  MOBILE_APP = 'mobile_app',
 }
 
 export enum NLPProvider {
@@ -219,24 +211,6 @@ export enum VoiceType {
 
 export const PLAN_INFO_LINK = 'https://www.voiceflow.com/pricing';
 
-export enum PlanType {
-  OLD_STARTER = 'old_starter',
-  OLD_PRO = 'old_pro',
-  OLD_ENTERPRISE = 'old_enterprise',
-  OLD_TEAM = 'old_team',
-  STARTER = 'starter',
-  STUDENT = 'student',
-  PRO = 'pro',
-  TEAM = 'team',
-  ENTERPRISE = 'enterprise',
-  CREATOR = 'creator',
-}
-
-export enum PromoType {
-  STUDENT = 'student',
-  CREATOR = 'creator',
-}
-
 export const RESPONSE_COLOR_CODES = {
   GREEN: '#349d51',
   YELLOW: '#e1d40b',
@@ -246,11 +220,6 @@ export const RESPONSE_COLOR_CODES = {
 export enum RepromptType {
   TEXT = 'text',
   AUDIO = 'audio',
-}
-
-export enum BillingPeriod {
-  MONTHLY = 'MO',
-  ANNUALLY = 'YR',
 }
 
 export const PERIOD_NAME = {
@@ -324,16 +293,6 @@ export enum ModalType {
 
   CONNECT = 'connect',
   TAG_MANAGER = 'tag-manager',
-}
-
-export enum UserRole {
-  ADMIN = 'admin',
-  EDITOR = 'editor',
-  VIEWER = 'viewer',
-  LIBRARY = 'library',
-  OWNER = 'owner',
-  GUEST = 'guest', // use for "side-apps" like Prototype Share that do not require login
-  BILLING = 'billing',
 }
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN, UserRole.OWNER]; // billing not included in seat roles

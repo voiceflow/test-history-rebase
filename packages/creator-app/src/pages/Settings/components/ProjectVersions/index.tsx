@@ -1,3 +1,4 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Box, BoxFlexCenter, ClickableText, LoadCircle, SvgIcon, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
 import moment from 'moment';
@@ -8,7 +9,6 @@ import client from '@/client';
 import { SettingsSection } from '@/components/Settings';
 import { Descriptor, TableContainer, TableHeader, TableRow } from '@/components/Table';
 import * as Errors from '@/config/errors';
-import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
@@ -20,11 +20,11 @@ import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
-type ProjectVersion = {
+interface ProjectVersion {
   versionID: string;
   created: string;
   platform: PlatformType;
-};
+}
 
 const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, activeVersionID, setConfirm, goToCanvas, platform }) => {
   const [loading, setLoading] = React.useState(true);

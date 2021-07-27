@@ -1,3 +1,5 @@
+import { PlatformType } from '@voiceflow/internal';
+
 import {
   BlockType,
   DIAGRAM_REFERENCE_NODES,
@@ -6,7 +8,6 @@ import {
   INTERNAL_NODES,
   MARKUP_AND_COMBINED_NODES,
   MARKUP_NODES,
-  PlatformType,
   ROOT_AND_MARKUP_NODES,
   ROOT_NODES,
 } from '@/constants';

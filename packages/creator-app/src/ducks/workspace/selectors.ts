@@ -1,8 +1,9 @@
+import { PlanType, UserRole } from '@voiceflow/internal';
 import { getAlternativeColor } from '@voiceflow/ui';
 import { createSelector } from 'reselect';
 
 import { hasRolePermission, Permission } from '@/config/permissions';
-import { EDITOR_SEAT_ROLES, PlanType, UserRole } from '@/constants';
+import { EDITOR_SEAT_ROLES } from '@/constants';
 import { userIDSelector } from '@/ducks/account/selectors';
 import * as Session from '@/ducks/session';
 import * as CRUD from '@/ducks/utils/crud';

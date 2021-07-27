@@ -1,8 +1,8 @@
+import { PlatformType } from '@voiceflow/internal';
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
-import { PlatformType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
 
@@ -18,14 +18,14 @@ export enum StepID {
   SELECT_CHANNEL = 'select_channel',
 }
 
-export type StepMetaPropsType = {
+export interface StepMetaPropsType {
   title: (val?: string) => string;
   canBack: boolean;
   canSkip: boolean;
   skipTo: StepID | null;
   trackStep: (props: any, options: { skip: boolean }) => void;
   docsLink?: React.ReactNode;
-};
+}
 
 export type StepMetaProps = Record<StepID, StepMetaPropsType>;
 

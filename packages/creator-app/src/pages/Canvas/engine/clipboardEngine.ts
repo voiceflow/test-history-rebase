@@ -1,10 +1,11 @@
+import { PlatformType } from '@voiceflow/internal';
 import { toast } from '@voiceflow/ui';
 import Base64 from 'crypto-js/enc-base64';
 import Utf8 from 'crypto-js/enc-utf8';
 import { get, set } from 'idb-keyval';
 
 import * as Errors from '@/config/errors';
-import { BlockType, CLIPBOARD_DATA_KEY, PlatformType } from '@/constants';
+import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Diagrams from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
@@ -20,7 +21,7 @@ import { Coords } from '@/utils/geometry';
 
 import { EngineConsumer, getCopiedNodeDataIDs } from './utils';
 
-type ClipboardContext = {
+interface ClipboardContext {
   versionID: string;
   nodes: Models.Node[];
   data: Record<string, Models.NodeData<unknown>>;
@@ -31,7 +32,7 @@ type ClipboardContext = {
   products: Models.Product[];
   diagrams: Models.Diagram[];
   platform: PlatformType;
-};
+}
 
 const ClipboardVersion = {
   V3: 'v3',

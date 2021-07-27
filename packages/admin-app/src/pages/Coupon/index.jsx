@@ -1,9 +1,9 @@
+import { PlanType } from '@voiceflow/internal';
 import { Input, toast } from '@voiceflow/ui';
 import axios from 'axios';
 import React from 'react';
 import { Button, Col, Form, FormGroup, Input as Select, Label, Table } from 'reactstrap';
 
-import { PlanType } from '@/constants';
 import { AdminTitle } from '@/styles/components';
 
 class Coupon extends React.Component {
@@ -45,6 +45,7 @@ class Coupon extends React.Component {
     this.getCoupons();
   }
 
+  // eslint-disable-next-line consistent-return
   async onSubmit() {
     if (!this.state.coupon.code) {
       return toast.error('Bad code');

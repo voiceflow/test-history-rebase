@@ -1,6 +1,6 @@
+import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
-import { UserRole } from '@/constants';
 import { DBWorkspace } from '@/models';
 import { Identifier } from '@/styles/constants';
 

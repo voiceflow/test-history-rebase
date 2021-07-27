@@ -1,6 +1,6 @@
+import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
-import { PlatformType } from '@/constants';
 import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
 
 import ChannelSelect from './Steps/ChannelSelect';
@@ -13,10 +13,10 @@ export enum StepID {
   PROJECT_SETTINGS = 'project_settings',
 }
 
-type StepMetaProps = {
+interface StepMetaProps {
   title: (platform: PlatformType) => string;
   component: React.FC<any>;
-};
+}
 
 export const StepMeta: Record<StepID, StepMetaProps> = {
   [StepID.NAME_AND_IMAGE]: {

@@ -1,9 +1,9 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Box, Menu, MenuItem, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { textAndDialogGraphic, textAndDialogGraphicInactive, voiceAndVisualsGraphic, voiceAndVisualsGraphicInactive } from '@/assets';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
-import { PlatformType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeLayout } from '@/ducks/prototype/types';
 import { connect } from '@/hocs';

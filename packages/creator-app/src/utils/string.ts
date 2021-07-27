@@ -1,6 +1,6 @@
+import { PlatformType } from '@voiceflow/internal';
 import cuid from 'cuid';
 
-import { PlatformType } from '@/constants';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
 import { convertToWord, NON_ALPHANUMERIC_REGEXP } from './number';

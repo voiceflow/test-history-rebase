@@ -1,18 +1,18 @@
+import { PlanType } from '@voiceflow/internal';
 import { stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import PlanBubble from '@/components/PlanBubble';
-import { PlanType } from '@/constants';
 
 import Description from './Description';
 import Header from './Header';
 import MenuItemContainer from './MenuItemContainer';
 
-type MenuItemProps = {
+interface MenuItemProps {
   title: string;
   description: string;
   isAllowed: boolean;
-};
+}
 
 const MenuItem: React.FC<MenuItemProps> = ({ title, description, isAllowed }) => (
   <MenuItemContainer onClick={stopImmediatePropagation()}>

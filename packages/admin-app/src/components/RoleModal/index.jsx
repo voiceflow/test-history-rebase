@@ -1,8 +1,8 @@
+import { UserRole } from '@voiceflow/internal';
 import { Box, Button, FlexEnd, Select } from '@voiceflow/ui';
 import React from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-import { UserRole } from '@/constants';
 import * as Admin from '@/ducks/adminV2';
 import { connect } from '@/hocs';
 

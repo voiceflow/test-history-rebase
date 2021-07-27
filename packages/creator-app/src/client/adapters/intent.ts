@@ -1,7 +1,7 @@
 import { Intent as DBIntent } from '@voiceflow/api-sdk';
+import { PlatformType } from '@voiceflow/internal';
 
 import { createAdapter } from '@/client/adapters/utils';
-import { PlatformType } from '@/constants';
 import { Intent, IntentInput, IntentSlot } from '@/models';
 import { denormalize, normalize } from '@/utils/normalized';
 

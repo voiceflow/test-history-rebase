@@ -1,8 +1,7 @@
 import { AnyRecord, Member, ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
+import { PlatformType } from '@voiceflow/internal';
 
-import { PlatformType } from '@/constants';
-
-export type Project<D extends AnyRecord, M extends Member<any>> = {
+export interface Project<D extends AnyRecord, M extends Member<any>> {
   id: string;
   name: string;
   diagramID: string;
@@ -17,11 +16,11 @@ export type Project<D extends AnyRecord, M extends Member<any>> = {
   linkType: ProjectLinkType;
   members: M[];
   platformData: D;
-};
+}
 
 export type AnyProject = Project<any, Member<any>>;
 
-export type DBProject = {
+export interface DBProject {
   project_id: string;
   skill_id: string;
   name: string;
@@ -32,9 +31,9 @@ export type DBProject = {
   created: string;
   islive: boolean;
   image: string | undefined;
-};
+}
 
-export type Price = {
+export interface Price {
   price: number;
   errors: {
     coupon?: {
@@ -48,4 +47,4 @@ export type Price = {
     };
   };
   discount?: {};
-};
+}

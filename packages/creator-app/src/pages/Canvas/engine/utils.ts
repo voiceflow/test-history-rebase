@@ -1,9 +1,10 @@
 /* eslint-disable max-classes-per-file */
 import { CanvasNodeVisibility } from '@voiceflow/general-types';
+import { PlatformType } from '@voiceflow/internal';
 import { Logger } from '@voiceflow/ui';
 
 import { CanvasAPI } from '@/components/Canvas';
-import { BlockType, PlatformType } from '@/constants';
+import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { FeatureFlagMap } from '@/ducks/feature';
 import { EntityMap, Link, Node, NodeData, NodeWithData, Port } from '@/models';
@@ -19,16 +20,16 @@ import { getDistinctPlatformValue } from '@/utils/platform';
 
 import type { Engine } from '.';
 
-export type NodeCandidate = {
+export interface NodeCandidate {
   nodeID: string;
   containsPoint: (point: [number, number]) => boolean;
   isWithin: (rect: DOMRect) => boolean;
-};
+}
 
-export type CloneUtils = {
+export interface CloneUtils {
   getNodeID: (nodeID: string) => string;
   getPortID: (portID: string) => string;
-};
+}
 
 export class ComponentManager<C extends Record<string, unknown> = Record<string, unknown>> {
   log: Logger | null = null;
@@ -176,10 +177,10 @@ const getOrCreateID = (lookup: Record<string, string>) => (id: string) => {
   return (lookup[id] = objectID());
 };
 
-export type CloneContextOptions = {
+export interface CloneContextOptions {
   nodeIDLookup?: Record<string, string>;
   portIDLookup?: Record<string, string>;
-};
+}
 
 export const createCloneContext = ({ nodeIDLookup = {}, portIDLookup = {} }: CloneContextOptions = {}) => {
   return {

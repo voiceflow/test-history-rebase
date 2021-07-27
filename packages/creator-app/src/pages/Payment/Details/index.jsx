@@ -1,3 +1,4 @@
+import { PlanType } from '@voiceflow/internal';
 import { Button } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +7,7 @@ import ImageCarousel from '@/components/ImageCarousel';
 import { ModalFooter } from '@/components/LegacyModal';
 import CarouselButtons from '@/components/LegacyModal/CarouselButtons';
 import Tabs from '@/components/Tabs';
-import { PLAN_TYPE_META, PlanType } from '@/constants';
+import { PLAN_TYPE_META } from '@/constants';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';

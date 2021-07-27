@@ -1,6 +1,6 @@
-import { PlanType, UserRole } from '@/constants';
+import { PlanType, UserRole } from '@voiceflow/internal';
 
-export type Workspace = {
+export interface Workspace {
   id: string;
   name: string;
   boards: DBWorkspace.Board[];
@@ -16,12 +16,12 @@ export type Workspace = {
   state: Workspace.ActivationState | null;
   betaFlag: number;
   templates: boolean;
-};
+}
 
 export namespace Workspace {
   export type ActivationState = 'LOCKED' | 'WARNING';
 
-  export type Member = {
+  export interface Member {
     creator_id: number | null;
     seats: number;
     name: string | null;
@@ -36,10 +36,10 @@ export namespace Workspace {
      */
     status: unknown;
     invite?: string;
-  };
+  }
 }
 
-export type DBWorkspace = {
+export interface DBWorkspace {
   creator_id: number;
   team_id: string;
   stripe_status: StripeStatus;
@@ -55,16 +55,16 @@ export type DBWorkspace = {
   members: DBWorkspace.Member[];
   beta_flag: number;
   templates: boolean;
-};
+}
 
 export namespace DBWorkspace {
-  export type Board = {
+  export interface Board {
     board_id: string;
     name: string;
     projects: string[];
-  };
+  }
 
-  export type Member = {
+  export interface Member {
     creator_id: number;
     seats: number;
     name: string;
@@ -74,12 +74,12 @@ export namespace DBWorkspace {
     created: string;
     status: unknown;
     invite?: string;
-  };
+  }
 }
 
-export type SeatLimits = {
+export interface SeatLimits {
   editor: number;
   viewer: number;
-};
+}
 
 export type StripeStatus = 'incomplete_expired' | 'incomplete' | 'unpaid' | 'past_due';

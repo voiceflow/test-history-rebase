@@ -1,5 +1,6 @@
 import './PlanModal.css';
 
+import { PlanType } from '@voiceflow/internal';
 import { Button, FlexApart, Select } from '@voiceflow/ui';
 import _upperFirst from 'lodash/upperFirst';
 import moment from 'moment';
@@ -7,7 +8,6 @@ import React from 'react';
 import DayPicker from 'react-day-picker';
 import { Modal, ModalBody } from 'reactstrap';
 
-import { PlanType } from '@/constants';
 import * as Admin from '@/ducks/adminV2';
 import { connect } from '@/hocs';
 

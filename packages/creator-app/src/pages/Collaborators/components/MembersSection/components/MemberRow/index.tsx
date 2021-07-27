@@ -1,8 +1,8 @@
+import { UserRole } from '@voiceflow/internal';
 import { Flex, Menu } from '@voiceflow/ui';
 import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
-import { UserRole } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { connect } from '@/hocs';

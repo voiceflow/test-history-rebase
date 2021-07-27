@@ -1,3 +1,4 @@
+import { PlatformType } from '@voiceflow/internal';
 import cuid from 'cuid';
 import React from 'react';
 
@@ -8,7 +9,7 @@ import DraggableList, {
   MappedItemComponentHandlers,
 } from '@/components/DraggableList';
 import OverflowMenu from '@/components/OverflowMenu';
-import { DialogType, PlatformType } from '@/constants';
+import { DialogType } from '@/constants';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { useManager, useToggle } from '@/hooks';
@@ -63,9 +64,9 @@ export interface SpeakAndAudioListProps {
   onChangeRandomize?: (newRandomize: boolean) => void;
 }
 
-type FooterArgs = {
+interface FooterArgs {
   scrollToBottom: (behavior: string) => void;
-};
+}
 
 const SpeakAndAudioList = ({
   items: speakAudioItems,

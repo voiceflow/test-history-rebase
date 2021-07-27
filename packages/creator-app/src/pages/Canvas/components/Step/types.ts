@@ -1,18 +1,18 @@
+import { PlatformType } from '@voiceflow/internal';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
-import { PlatformType } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import { Node, NodeData } from '@/models';
 
-export type ConnectedStepProps<T = {}> = {
+export interface ConnectedStepProps<T = {}> {
   node: Node;
   data: NodeData<T>;
   platform: PlatformType;
   withPorts: boolean;
-};
+}
 
-export type ItemProps = {
+export interface ItemProps {
   portID?: string | null;
   icon?: Icon | null;
   label?: React.ReactNode | null;
@@ -24,4 +24,4 @@ export type ItemProps = {
   withNewLines?: boolean;
   multilineLabel?: boolean;
   labelLineClamp?: number;
-};
+}

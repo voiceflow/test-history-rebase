@@ -8,9 +8,9 @@ import {
   VoiceLanguageCodeToVoice,
   VoiceType,
 } from '@voiceflow/google-types';
+import { PlatformType } from '@voiceflow/internal';
 import _constant from 'lodash/constant';
 
-import { PlatformType } from '@/constants';
 import { createPlatformSelector } from '@/utils/platform';
 import { capitalizeFirstLetter } from '@/utils/string';
 

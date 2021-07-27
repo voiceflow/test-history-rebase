@@ -1,9 +1,10 @@
 import { BaseDiagramNode } from '@voiceflow/api-sdk';
 import { NodeType } from '@voiceflow/general-types';
+import { PlatformType } from '@voiceflow/internal';
 import moize from 'moize';
 
 import { BidirectionalAdapter } from '@/client/adapters/utils';
-import { BlockType, IntegrationType, PlatformType } from '@/constants';
+import { BlockType, IntegrationType } from '@/constants';
 import { FeatureFlagMap } from '@/ducks/feature';
 import { NodeData } from '@/models';
 import { createPlatformSelector } from '@/utils/platform';

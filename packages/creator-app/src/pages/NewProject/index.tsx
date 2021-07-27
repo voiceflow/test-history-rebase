@@ -1,6 +1,7 @@
 import { Locale as AlexaLocale } from '@voiceflow/alexa-types';
 import { Locale as GeneralLocale } from '@voiceflow/general-types';
 import { Language as GoogleLanguage, LanguageToLocale } from '@voiceflow/google-types';
+import { PlatformType } from '@voiceflow/internal';
 import { FlexCenter, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { Redirect, useRouteMatch } from 'react-router-dom';
@@ -8,7 +9,6 @@ import { Redirect, useRouteMatch } from 'react-router-dom';
 import client from '@/client';
 import { CreationHeader, InnerContainer, OuterContainer } from '@/components/CreationSteps';
 import { Path } from '@/config/routes';
-import { PlatformType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';

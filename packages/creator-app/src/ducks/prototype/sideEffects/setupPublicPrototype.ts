@@ -1,9 +1,9 @@
 import { ButtonsLayout } from '@voiceflow/general-types';
+import { PlanType, PlatformType } from '@voiceflow/internal';
 import _constant from 'lodash/constant';
 import { batch } from 'react-redux';
 
 import client from '@/client';
-import { PlanType, PlatformType } from '@/constants';
 import * as Session from '@/ducks/session';
 import { addVersion } from '@/ducks/version/actions';
 import { AnyLocale } from '@/ducks/version/types';

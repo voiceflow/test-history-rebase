@@ -1,7 +1,7 @@
+import { PlatformType } from '@voiceflow/internal';
 import { FlexCenter, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { PlatformType } from '@/constants';
 import { styled } from '@/hocs';
 import { Container as CreateWorkspaceContainer } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 
@@ -15,11 +15,11 @@ const Container = styled(CreateWorkspaceContainer)`
   padding-top: 0;
 `;
 
-type ChannelSelectProps = {
+interface ChannelSelectProps {
   onSelect: (platform: PlatformType | null) => void;
   isLoading: boolean;
   instruction?: string;
-};
+}
 
 const ChannelSelect: React.FC<ChannelSelectProps> = ({
   onSelect,

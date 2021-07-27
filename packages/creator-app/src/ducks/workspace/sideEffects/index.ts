@@ -1,9 +1,9 @@
+import { PlatformType } from '@voiceflow/internal';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
 import projectAdapter from '@/client/adapters/project';
 import * as Errors from '@/config/errors';
-import { PlatformType } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import { addProject } from '@/ducks/project/actions';
 import { projectByIDSelector } from '@/ducks/project/selectors';

@@ -1,11 +1,14 @@
-import { UserRole } from '@/constants';
+import { UserRole } from '@voiceflow/internal';
 
-export type CollaboratorType = { email: string; permission: UserRole };
+export interface CollaboratorType {
+  email: string;
+  permission: UserRole;
+}
 
-export type OnboardingDataProps = {
+export interface OnboardingDataProps {
   collaborators: CollaboratorType[];
-};
+}
 
-export type OnboardingStepProps = {
+export interface OnboardingStepProps {
   data: OnboardingDataProps;
-};
+}

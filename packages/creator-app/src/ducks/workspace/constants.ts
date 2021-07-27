@@ -1,4 +1,5 @@
-import { UserRole } from '@/constants';
+import { UserRole } from '@voiceflow/internal';
+
 import * as CRUD from '@/ducks/utils/crud';
 import { DBWorkspace } from '@/models';
 

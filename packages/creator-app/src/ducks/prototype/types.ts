@@ -1,8 +1,8 @@
 import { VersionPrototype } from '@voiceflow/api-sdk';
 import { BaseRequest, ButtonsLayout, DeviceType } from '@voiceflow/general-types';
 import { StepData } from '@voiceflow/general-types/build/nodes/visual';
+import { PlanType, PlatformType } from '@voiceflow/internal';
 
-import { PlanType, PlatformType } from '@/constants';
 import { AnyLocale } from '@/ducks/version';
 import { PrototypeContext } from '@/models';
 
@@ -43,9 +43,9 @@ export enum PrototypeMode {
   SETTINGS = 'Settings',
 }
 
-export type WebhookData = {
+export interface WebhookData {
   utterance?: string;
-};
+}
 
 export enum PrototypeLayout {
   TEXT_DIALOG = 'text-and-dialog',
@@ -53,14 +53,14 @@ export enum PrototypeLayout {
   VOICE_VISUALS = 'voice-and-visuals',
 }
 
-export type PrototypeShareViewSettings = {
+export interface PrototypeShareViewSettings {
   layout?: PrototypeLayout;
   brandColor?: string;
   brandImage?: string;
   avatar?: string;
   password?: string;
   buttons?: string;
-};
+}
 
 export interface PrototypeState {
   ID: string | null;

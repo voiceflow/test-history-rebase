@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.438.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.437.0...@voiceflow/creator-app@1.438.0) (2021-07-27)
+
+
+### Features
+
+* invite collaborator link segment tracking (VF-1245) ([#3748](https://github.com/voiceflow/creator-app/issues/3748)) ([71e2694](https://github.com/voiceflow/creator-app/commit/71e269435ce37b66af36ce8f8289fd09ce9e38c0))
+* Trigger toast on cmd/crtl + s, shift + cmd/ctrl + s (VF-1261) ([#3756](https://github.com/voiceflow/creator-app/issues/3756)) ([fde13bb](https://github.com/voiceflow/creator-app/commit/fde13bb2c04b66059a4f9be47c71ebf2251cb8b1))
+
+
+
+
+
 # [1.437.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.436.3...@voiceflow/creator-app@1.437.0) (2021-07-26)
 
 

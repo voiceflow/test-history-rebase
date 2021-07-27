@@ -1,4 +1,5 @@
 import canvasPage from '../../pages/canvas';
+import sharedPage from '../../pages/shared';
 
 context('Canvas', () => {
   beforeEach(() => {
@@ -16,6 +17,14 @@ context('Canvas', () => {
   it('open settings', () => {
     canvasPage.el.tabs.settingsTab.click();
     canvasPage.el.settingsPage.should('have.length', 1);
+  });
+
+  it('shows info message when saving via hotkey', () => {
+    cy.awaitCanvasAnimation();
+
+    canvasPage.el.canvas.sendHotkey('{meta}s');
+
+    sharedPage.el.toastify.should('contain', 'Voiceflow automatically saves your work');
   });
 
   it('drag canvas', () => {

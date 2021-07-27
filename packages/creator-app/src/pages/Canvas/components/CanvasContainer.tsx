@@ -81,6 +81,8 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
     []
   );
 
+  const onSave = React.useCallback(() => toast.info('Voiceflow automatically saves your work', { toastId: 'canvas-container-save-hotkey-info' }), []);
+
   const onDuplicate = React.useCallback(() => {
     const targets = engine.activation.getTargets();
     if (targets.length === 1) {
@@ -101,6 +103,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   useHotKeys(Hotkey.REDO, redoHistory as VoidFunction, { preventDefault: true });
   useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { action: 'keyup', preventDefault: true }, [showSpotlight]);
   useHotKeys(Hotkey.DUPLICATE, onDuplicate, { preventDefault: true });
+  useHotKeys(Hotkey.SAVE, onSave, { preventDefault: true });
 
   return (
     <Wrapper

@@ -34,6 +34,7 @@ export enum Hotkey {
   CLOSE_CANVAS_ONLY_MODE = 'CLOSE_CANVAS_ONLY_MODE',
   PROTOTYPE_CLOSE_FULL_SCREEN = 'PROTOTYPE_CLOSE_FULL_SCREEN',
   PROTOTYPE_FULL_SCREEN_TOGGLE = 'PROTOTYPE_FULL_SCREEN_TOGGLE',
+  SAVE = 'SAVE',
 }
 
 enum SpecialKey {
@@ -87,6 +88,12 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB]: ['.', `${SpecialKey.SHIFT}+.`],
   [Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN]: SpecialKey.ESC,
   [Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE]: 'f',
+  [Hotkey.SAVE]: [
+    `${SpecialKey.META}+s`,
+    `${SpecialKey.CTRL}+s`,
+    `${SpecialKey.SHIFT}+${SpecialKey.CTRL}+s`,
+    `${SpecialKey.SHIFT}+${SpecialKey.META}+s`,
+  ],
 };
 
 const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {

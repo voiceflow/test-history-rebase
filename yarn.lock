@@ -3086,9 +3086,9 @@
   integrity sha512-i1occXt0XcJXHI2wsq/soZiMGd+CpyeKfxnF0WCY0VfMJiYSObBl7v0jEXQuFgBVWcK1CR2b6DLkdVOYvWC45Q==
 
 "@logux/client@^0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@logux/client/-/client-0.12.0.tgz#f3c665a3077ab5aca45314b73f8f5d3fd2c0f157"
-  integrity sha512-meQVBLULsGrZeJKUWN+hCzla9wXjE0nGqwwkYPWdaXvVAYdx5docGkmi/rqJ5KZj7hMDAWAAagnR3lOOnuN+uQ==
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/@logux/client/-/client-0.12.1.tgz#5100944fb43efddc57c38e0a3cb1b8a4e1c4af78"
+  integrity sha512-iafzoI9jjNWcsOAQRkEyNaZquxxTMEeymoEPqxnuCC7DbsKq8KQrVHiyaSVi3QcKX9N8AuFDVWm8BryiNtlrXQ==
   dependencies:
     "@logux/actions" "^0.2.0"
     fast-json-stable-stringify "^2.1.0"

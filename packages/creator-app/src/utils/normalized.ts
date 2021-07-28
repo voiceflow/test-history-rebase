@@ -1,12 +1,14 @@
 import { withoutValue } from '@/utils/array';
 import { stringify } from '@/utils/functional';
 
-export type ObjectWithId = { id: number | string };
+export interface ObjectWithId {
+  id: number | string;
+}
 
-export type Normalized<T> = {
+export interface Normalized<T> {
   byKey: Record<string, T>;
   allKeys: string[];
-};
+}
 
 export const createEmptyNormalized = (): Normalized<any> => ({ byKey: {}, allKeys: [] });
 export const EMPTY = createEmptyNormalized();

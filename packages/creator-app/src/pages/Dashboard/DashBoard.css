@@ -325,19 +325,19 @@
   min-width: 0;
 }
 
-.projects-list {
+.project-list {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
 
-.projects-list__list-item {
+.project-list__list-item {
   margin-bottom: 12px;
   background-color: #fff;
   border-radius: 7px;
 }
 
-.main-list-body.still .projects-list__item:active {
+.main-list-body.still .project-list__item:active {
   margin-bottom: 12px;
   background: linear-gradient(-180deg, rgba(238, 244, 246, 0.3), rgba(238, 244, 246, 0.45));
   border: 1px solid #eaeff4 !important;
@@ -345,7 +345,7 @@
   box-shadow: none !important;
 }
 
-.projects-list__item {
+.project-list__item {
   position: relative;
   display: -ms-flexbox;
   display: flex;
@@ -397,7 +397,7 @@
   background-image: linear-gradient(-180deg, rgba(110, 132, 154, 0.85), #6e849a);
 }
 
-.projects-list__item-image {
+.project-list__item-image {
   position: absolute;
   top: 0;
   left: 0;
@@ -418,30 +418,30 @@
   box-shadow: inset 0 0 0 1px #fff, 0 0 0 1px #fff, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
 }
 
-.main-list-body.still .projects-list__item:hover {
+.main-list-body.still .project-list__item:hover {
   background-color: #fff;
   border-color: transparent;
   -webkit-box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 2px 4px 0 rgba(17, 49, 96, 0.12);
   box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 2px 4px 0 rgba(17, 49, 96, 0.12);
 }
 
-.main-list-body.still .projects-list__item:hover .projects-list__item-image,
-.main-list-body.still .projects-list__item.__is-hovered .projects-list__item-image {
+.main-list-body.still .project-list__item:hover .project-list__item-image,
+.main-list-body.still .project-list__item.__is-hovered .project-list__item-image {
   display: none;
 }
 
-.projects-list__item:hover .projects-list__item-action {
+.project-list__item:hover .project-list__item-action {
   border: 1px solid #fff;
   border-radius: 50%;
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
 }
 
-.main-list-body.still .projects-list__item:hover .projects-list__item-actions,
-.main-list-body.still .projects-list__item.__is-hovered .projects-list__item-actions {
+.main-list-body.still .project-list__item:hover .project-list__item-actions,
+.main-list-body.still .project-list__item.__is-hovered .project-list__item-actions {
   display: block;
 }
 
-.projects-list__item-details {
+.project-list__item-details {
   display: flex;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
@@ -487,7 +487,7 @@
   background-image: linear-gradient(-180deg, rgba(5, 159, 228, 0.85) 0%, #059fe4 98%);
 }
 
-.projects-list__item-status {
+.project-list__item-status {
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
   align-self: center;
@@ -497,7 +497,7 @@
   -ms-flex-item-align: center;
 }
 
-.projects-list__item-status .status-indicator {
+.project-list__item-status .status-indicator {
   display: block;
 }
 
@@ -518,7 +518,7 @@
   background-image: linear-gradient(-180deg, rgba(5, 159, 228, 0.85), #059fe4 98%);
 }
 
-.projects-list__item-caption {
+.project-list__item-caption {
   color: #8da2b5;
   font-weight: 300;
   font-size: 13px;

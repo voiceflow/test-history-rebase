@@ -25,13 +25,13 @@ export default {
       return cy.get(getClass(DashboardClassName.LIST_HEADER));
     },
     get projectListItem() {
-      return cy.get(getClass(DashboardClassName.PROJECTS_LIST_ITEM));
+      return cy.get(getClass(DashboardClassName.PROJECT_LIST_ITEM));
     },
     get projectListItemTitle() {
-      return cy.get(getClass(DashboardClassName.PROJECTS_LIST_ITEM_TITLE));
+      return cy.get(getClass(DashboardClassName.PROJECT_LIST_ITEM_TITLE));
     },
     get projectListItemActionButton() {
-      return cy.get(getClass(DashboardClassName.PROJECTS_LIST_ITEM_ACTIONS));
+      return cy.get(getClass(DashboardClassName.PROJECT_LIST_ITEM_ACTIONS));
     },
     get userMenu() {
       return cy.get(`.${ClassName.HEADER_USER_MENU}`);

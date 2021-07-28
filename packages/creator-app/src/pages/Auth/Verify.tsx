@@ -7,7 +7,7 @@ import client from '@/client';
 import * as Account from '@/ducks/account';
 import * as Recent from '@/ducks/recent';
 import * as Session from '@/ducks/session';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useSelector, useSetup } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import Card from './components/Card';
@@ -16,6 +16,7 @@ import Title from './components/Title';
 
 const Verify: React.FC = () => {
   const email = useSelector(Account.userEmailSelector);
+  const history = useHistory();
 
   const logout = useDispatch(Session.logout);
   const setRedirect = useDispatch(Recent.updateRecentRedirect);
@@ -29,12 +30,11 @@ const Verify: React.FC = () => {
     }
   }, []);
 
-  const history = useHistory();
-
-  React.useEffect(() => {
+  useSetup(() => {
     const { pathname, search = '' } = history.location;
+
     setRedirect(`${pathname}${search}` || null);
-  }, []);
+  });
 
   return (
     <Container>

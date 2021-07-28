@@ -62,7 +62,7 @@ export const updateDiagramViewers =
     Errors.assertDiagramID(diagramID);
 
     const diagramViewers = Object.values(users[diagramID] ?? {});
-    const newMembers = diagramViewers.filter((viewer) => !hasWorkspaceMemberSelector(viewer));
+    const newMembers = diagramViewers.filter((viewer) => !hasWorkspaceMemberSelector(Number(viewer)));
 
     if (newMembers.length && workspaceID) {
       await dispatch(Workspace.loadMembers(workspaceID));

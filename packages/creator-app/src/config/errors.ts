@@ -2,32 +2,38 @@ import { Nullish } from '@/types';
 
 class StateInvariantError extends Error {}
 
-export const noActiveCreatorID = () => new StateInvariantError('no active creator ID');
+export const error = (message: string): StateInvariantError => new StateInvariantError(message);
 
-export const noActiveWorkspaceID = () => new StateInvariantError('no active workspace ID');
+export const noActiveCreatorID = (): StateInvariantError => error('no active creator ID');
 
-export const noActiveProjectID = () => new StateInvariantError('no active project ID');
+export const noActiveWorkspaceID = (): StateInvariantError => error('no active workspace ID');
 
-export const noActiveVersionID = () => new StateInvariantError('no active version ID');
+export const noActiveProjectID = (): StateInvariantError => error('no active project ID');
 
-export const noActiveDiagramID = () => new StateInvariantError('no active diagram ID');
+export const noActiveVersionID = (): StateInvariantError => error('no active version ID');
+
+export const noActiveDiagramID = (): StateInvariantError => error('no active diagram ID');
+
+export const assert: <T>(value: Nullish<T>, error: StateInvariantError) => asserts value is T = (value, error) => {
+  if (!value) throw error;
+};
 
 export const assertCreatorID: (id: Nullish<number>) => asserts id is number = (id) => {
-  if (!id) throw noActiveCreatorID();
+  assert(id, noActiveCreatorID());
 };
 
 export const assertWorkspaceID: (id: Nullish<string>) => asserts id is string = (id) => {
-  if (!id) throw noActiveWorkspaceID();
+  assert(id, noActiveWorkspaceID());
 };
 
 export const assertProjectID: (id: Nullish<string>) => asserts id is string = (id) => {
-  if (!id) throw noActiveProjectID();
+  assert(id, noActiveProjectID());
 };
 
 export const assertVersionID: (id: Nullish<string>) => asserts id is string = (id) => {
-  if (!id) throw noActiveVersionID();
+  assert(id, noActiveVersionID());
 };
 
 export const assertDiagramID: (id: Nullish<string>) => asserts id is string = (id) => {
-  if (!id) throw noActiveDiagramID();
+  assert(id, noActiveDiagramID());
 };

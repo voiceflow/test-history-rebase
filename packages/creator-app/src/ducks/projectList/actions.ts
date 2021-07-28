@@ -24,7 +24,6 @@ export const {
   update: updateProjectList,
   remove: removeProjectList,
   replace: replaceProjectLists,
-  reorder: reorderProjectLists,
   move: moveProjectList,
 } = createCRUDActionCreators(STATE_KEY);
 

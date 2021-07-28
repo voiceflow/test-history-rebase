@@ -12,9 +12,9 @@ import { Container } from './components';
 const MENTION_MARKUP_REGEX = /(\[@[^\]]+])\(user:\d+\)/g;
 const MENTION_REGEX = /(@[^\]]+)/g;
 
-export type CommentPreviewProps = {
+export interface CommentPreviewProps {
   text?: string;
-};
+}
 
 const extractUserID = (text: string) => text.split('user:')[1].replace(')', '');
 
@@ -26,7 +26,7 @@ const CommentPreview: React.FC<CommentPreviewProps & ConnectedCommentPreviewProp
     () =>
       text.replace(MENTION_MARKUP_REGEX, (str: string) => {
         const userID = extractUserID(str);
-        const memberExists = hasMember(userID);
+        const memberExists = hasMember(Number(userID));
         return memberExists ? str.match(MENTION_REGEX)![0] : `@${UNKNOWN_MEMBER_MENTION}`;
       }),
     [text]

@@ -34,13 +34,13 @@ export * from './Workspace';
 
 export type PartialModel<T extends { id: string }> = WithRequired<Partial<T>, 'id'>;
 
-export type NodeWithData = {
+export interface NodeWithData {
   node: Node;
   data: NodeData<unknown>;
-};
+}
 
-export type EntityMap = {
+export interface EntityMap {
   nodesWithData: NodeWithData[];
   ports: Port[];
   links: Link[];
-};
+}

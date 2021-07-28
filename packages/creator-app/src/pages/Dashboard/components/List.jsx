@@ -151,12 +151,12 @@ export function List(props) {
                   })}
                 >
                   <div ref={innerRef} className={DashboardClassName.LIST_BODY_INNER}>
-                    <ul className={DashboardClassName.PROJECTS_LIST}>
+                    <ul className={DashboardClassName.PROJECT_LIST}>
                       {projects.map((project, i) => {
                         if (!project) return null;
 
                         return (
-                          <li key={project.id} className={DashboardClassName.PROJECTS_LIST_ITEM}>
+                          <li key={project.id} className={DashboardClassName.PROJECT_LIST_ITEM}>
                             <Item
                               index={i}
                               id={project.id}

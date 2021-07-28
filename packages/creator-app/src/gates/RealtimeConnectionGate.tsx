@@ -47,7 +47,7 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
     result.client.destroy();
   });
 
-  return result ? (
+  return (
     <ClientContext.Provider value={result.client}>
       <LoadingGate label="Collaboration" isLoaded={isConnected}>
         <ChannelErrors>
@@ -57,8 +57,6 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
         </ChannelErrors>
       </LoadingGate>
     </ClientContext.Provider>
-  ) : (
-    <>{children}</>
   );
 };
 

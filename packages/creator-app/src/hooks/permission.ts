@@ -2,9 +2,8 @@ import { PlanType, UserRole } from '@voiceflow/internal';
 import React from 'react';
 
 import { hasPermission, Permission } from '@/config/permissions';
-import { IdentityContext, IdentityContextValue } from '@/contexts';
+import { IdentityContext, IdentityContextValue } from '@/contexts/IdentityContext';
 
-// eslint-disable-next-line import/prefer-default-export
 export const usePermission = (permission?: Permission): [boolean, IdentityContextValue] => {
   const identity = React.useContext(IdentityContext)!;
 

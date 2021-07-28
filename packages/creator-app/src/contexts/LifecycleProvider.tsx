@@ -6,9 +6,9 @@ import { connect } from '@/hocs';
 import setupApp from '@/setup';
 import { ConnectedProps } from '@/types';
 
-export type LifecycleProviderProps = {
+export interface LifecycleProviderProps {
   history: History;
-};
+}
 
 const LifecycleProvider: React.FC<LifecycleProviderProps & ConnectedLifecycleProviderProps> = ({ history, browserID, tabID, children, logout }) => {
   React.useEffect(() => {

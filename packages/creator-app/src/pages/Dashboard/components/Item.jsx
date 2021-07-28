@@ -54,7 +54,7 @@ export function Item(props) {
         <Dropdown options={options}>
           {(ref, onToggle, isOpen) =>
             hasOptions ? (
-              <DropdownIconWrapper className={DashboardClassName.PROJECTS_LIST_ITEM_ACTIONS} onClick={stopPropagation(() => onToggle())} ref={ref}>
+              <DropdownIconWrapper className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS} onClick={stopPropagation(() => onToggle())} ref={ref}>
                 {!isOpen && <Avatar url={avatarUrl} name={name} color={color} />}
 
                 <ProjectListItemActions active={isOpen}>
@@ -62,7 +62,7 @@ export function Item(props) {
                 </ProjectListItemActions>
               </DropdownIconWrapper>
             ) : (
-              <DropdownIconWrapper className={DashboardClassName.PROJECTS_LIST_ITEM_ACTIONS}>
+              <DropdownIconWrapper className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS}>
                 <Avatar noHover url={avatarUrl} name={name} color={color} />
               </DropdownIconWrapper>
             )
@@ -72,7 +72,7 @@ export function Item(props) {
         <ProjectNameWrapper>
           <ProjectTitleDetails>
             <TitleWrapper {...(titleOverflowing ? { title: name } : {})}>
-              <ProjectTitle ref={titleRef} className={DashboardClassName.PROJECTS_LIST_ITEM_TITLE}>
+              <ProjectTitle ref={titleRef} className={DashboardClassName.PROJECT_LIST_ITEM_TITLE}>
                 {name}
               </ProjectTitle>
             </TitleWrapper>
@@ -84,7 +84,7 @@ export function Item(props) {
             </ProjectTitleCaption>
           </ProjectTitleDetails>
 
-          <Tooltip position="top" title={isLive ? 'Live' : 'Development'} className={DashboardClassName.PROJECTS_LIST_ITEM_STATUS} distance={10}>
+          <Tooltip position="top" title={isLive ? 'Live' : 'Development'} className={DashboardClassName.PROJECT_LIST_ITEM_STATUS} distance={10}>
             <SvgIcon
               icon={isLive ? 'outlinedFilledCircle' : 'outlinedCircle'}
               color={isLive ? '#43A047' : '#059fe4'}

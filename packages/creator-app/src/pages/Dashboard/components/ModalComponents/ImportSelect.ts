@@ -4,8 +4,7 @@ import { styled } from '@/hocs';
 
 const ImportSelect = styled(Select)`
   input {
-    color: black !important
- ;
+    color: black !important;
   }
 `;
 

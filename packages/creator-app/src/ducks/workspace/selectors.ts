@@ -17,8 +17,6 @@ export const {
   all: allWorkspacesSelector,
   allIDs: allWorkspaceIDsSelector,
   byID: workspaceByIDSelector,
-  findByIDs: workspacesByIDsSelector,
-  has: hasWorkspacesSelector,
 } = CRUD.createCRUDSelectors(STATE_KEY);
 
 export const anyWorkspaceMemberSelector = createSelector([allWorkspacesSelector], (workspaces) => (creatorID: string) => {
@@ -35,12 +33,6 @@ export const personalWorkspaceIDsSelector = createSelector([allWorkspacesSelecto
 
 export const isAdminOfAnyWorkspaceSelector = createSelector([allWorkspacesSelector, userIDSelector], (workspaces, userID) =>
   workspaces.some(({ members }) => members.some(({ creator_id, role }) => userID === creator_id && role === UserRole.ADMIN))
-);
-
-// active project
-
-export const activeProjectWorkspaceSelector = createSelector([allWorkspacesSelector, Session.activeProjectIDSelector], (workspaces, projectID) =>
-  projectID ? workspaces.find(({ boards }) => boards.find(({ projects }) => projects.includes(projectID))) : null
 );
 
 // active workspace
@@ -83,7 +75,7 @@ export const activeWorkspaceMemberSelector = createSelector(
 
 export const hasWorkspaceMemberSelector = createSelector(
   [activeWorkspaceMemberSelector],
-  (getMember) => (creatorID: string) => !!getMember(creatorID)
+  (getMember) => (creatorID: number) => !!getMember(String(creatorID))
 );
 
 export const distinctWorkspaceMemberSelector = createSelector(

@@ -80,6 +80,7 @@
     "start:admin": "yarn --cwd packages/admin-app start",
     "start:e2e": "yarn --cwd packages/creator-app start:e2e",
     "start:hidden": "yarn --cwd packages/creator-app start:hidden",
+    "start:meshed": "yarn --cwd packages/creator-app start:meshed",
     "start:meshed:admin-ui": "yarn --cwd packages/admin-app start:meshed",
     "start:meshed:creator-app": "yarn --cwd packages/creator-app start:meshed",
     "start:meshed:realtime": "yarn --cwd packages/realtime start:meshed",

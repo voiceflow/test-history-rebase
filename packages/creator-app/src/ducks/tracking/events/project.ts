@@ -1,7 +1,7 @@
 import client from '@/client';
 import { ControlScheme } from '@/components/Canvas/constants';
 import { NLPProvider } from '@/constants';
-import { PrototypeLayout } from '@/ducks/prototype/types';
+import { PrototypeSettings } from '@/ducks/prototype/types';
 
 import { EventName } from '../constants';
 import { ProjectEventInfo, WorkspaceEventInfo } from '../types';
@@ -15,10 +15,6 @@ export const trackActiveProjectSessionDuration = (options: ProjectEventInfo & { 
 
 export const trackActiveProjectSettingsOpened = createProjectEventTracker((options) =>
   client.analytics.track(EventName.PROJECT_SETTINGS_OPENED, createProjectEventPayload(options))
-);
-
-export const trackActiveProjectTestableLinkShare = createProjectEventTracker((options) =>
-  client.analytics.track(EventName.PROJECT_SHARE_TESTABLE_LINK, createProjectEventPayload(options))
 );
 
 export const trackActiveProjectDownloadLinkShare = createProjectEventTracker((options) =>
@@ -65,8 +61,17 @@ export const trackProjectClone =
       createWorkspaceEventPayload({ workspaceID }, { template_id: templateID, template_name: templateName }, { teamhashed: ['template_id'] })
     );
 
-export const trackTestableLinkCopy = createProjectEventTracker((options: ProjectEventInfo & { layout: PrototypeLayout }) =>
-  client.analytics.track(EventName.SHARE_PROTOTYPE_LINK, createProjectEventPayload(options, { layout: options.layout }))
+export const trackTestableLinkCopy = createProjectEventTracker((options: ProjectEventInfo & Partial<PrototypeSettings>) =>
+  client.analytics.track(
+    EventName.SHARE_PROTOTYPE_LINK,
+    createProjectEventPayload(options, {
+      layout: options.layout,
+      color: options.brandColor,
+      password: !!options.password,
+      image: !!options.brandImage,
+      icon: !!options.avatar,
+    })
+  )
 );
 
 export const trackProjectMoveType = createProjectEventTracker((options: ProjectEventInfo & { type: ControlScheme }) =>

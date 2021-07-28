@@ -20,6 +20,10 @@ const SharePrototype: React.FC<SharePrototypeProps> = ({ inline, compile }) => {
   const versionID = useSelector(Session.activeVersionIDSelector);
   const compilePrototype = useDispatch(Prototype.compilePrototype);
   const layoutType = useSelector(Prototype.prototypeLayoutSelector);
+  const brandColor = useSelector(Prototype.prototypeBrandColorSelector);
+  const password = useSelector(Prototype.prototypePasswordSelector);
+  const brandImage = useSelector(Prototype.prototypeBrandImageSelector);
+  const avatar = useSelector(Prototype.prototypeAvatarSelector);
 
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
@@ -43,7 +47,7 @@ const SharePrototype: React.FC<SharePrototypeProps> = ({ inline, compile }) => {
 
     copy(testableLink);
 
-    trackingEvents.trackTestableLinkCopy({ layout: layoutType });
+    trackingEvents.trackTestableLinkCopy({ layout: layoutType, brandColor, password, brandImage, avatar });
 
     toast.success('Link copied to clipboard');
   };

@@ -21,7 +21,6 @@ export enum EventName {
   PROJECT_SESSION_DURATION = 'Project Session Duration',
   PROJECT_PROTOTYPE_TEST_START = 'Prototype Test Start',
   PROJECT_PROTOTYPE_TEST_CLICK = 'Test Button',
-  PROJECT_SHARE_TESTABLE_LINK = 'Testable Link Button',
   PROJECT_SHARE_DOWNLOAD_LINK = 'Project Download Button',
   CLONE_PROJECT = 'Clone Project',
   PROJECT_NEW_COMMENT_THREAD = 'New Comment Thread Created',

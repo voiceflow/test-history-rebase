@@ -5097,14 +5097,7 @@
     eslint-plugin-xss "^0.1.9"
     eslint-plugin-you-dont-need-lodash-underscore "^6.11.0"
 
-"@voiceflow/general-types@1.51.1":
-  version "1.51.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.51.1.tgz#ae56e9f06a7038a12d24a00277d4c0e44ae096f8"
-  integrity sha512-n+Eq+UsrU6iGPlQSbatw2IOXqVhbdAbmvm+fw7EIsM0dChNQ1nFIvfR582M8rfJUv2Kj5yDIIe6wDt6xR6AaFw==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.33.0"
-
-"@voiceflow/general-types@^1.51.1", "@voiceflow/general-types@^1.51.2":
+"@voiceflow/general-types@1.51.2", "@voiceflow/general-types@^1.51.1", "@voiceflow/general-types@^1.51.2":
   version "1.51.2"
   resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.51.2.tgz#af1cead0bf3baeb0658deefebba38736fffbd945"
   integrity sha512-NgXjGKUUFJH43JhUyHEefZ082ZHisjdHcn+tSIiBgYfakRA0KlKOh1RK4hq4q81557DrjEH5eNjDjQvVEGvlLw==

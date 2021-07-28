@@ -1,6 +1,11 @@
+import { ClientMeta, CrossTabClient } from '@logux/client';
+import { Log } from '@logux/core';
+import { LoguxReduxStore } from '@logux/redux';
 import React from 'react';
-import { ReactReduxContextValue } from 'react-redux';
+import { AnyAction } from 'redux';
 
 import { RealtimeState } from '@/ducks/realtimeV2';
 
-export const RealtimeStoreContext = React.createContext<ReactReduxContextValue<RealtimeState>>(null!);
+export type RealtimeStore = LoguxReduxStore<RealtimeState, AnyAction, Log<ClientMeta>, CrossTabClient>;
+
+export const RealtimeStoreContext = React.createContext<{ store: RealtimeStore }>(null!);

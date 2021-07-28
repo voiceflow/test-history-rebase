@@ -7,7 +7,7 @@ import { conversationGraphic } from '@/assets';
 import { LegacyPath, Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as WorkspaceDuck from '@/ducks/workspace';
-import { CheckInvitationGate, WorkspacesLoadingGate } from '@/gates';
+import { CheckInvitationGate, WorkspaceLoadingGate, WorkspacesLoadingGate } from '@/gates';
 import { connect, lazy, withBatchLoadingGate } from '@/hocs';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 import { ConnectedProps } from '@/types';
@@ -66,6 +66,6 @@ const mapDispatchToProps = {
 type ConnectedWorkspaceProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
 
 export default compose(
-  withBatchLoadingGate(CheckInvitationGate, WorkspacesLoadingGate),
+  withBatchLoadingGate(CheckInvitationGate, WorkspacesLoadingGate, WorkspaceLoadingGate),
   connect(mapStateToProps, mapDispatchToProps)
 )(Workspace as any);

@@ -8,6 +8,8 @@
   "dependencies": {
     "@voiceflow/alexa-types": "^1.52.2",
     "@voiceflow/internal": "^1.2.0",
+    "cuid": "^2.1.8",
+    "moment": "^2.29.1",
     "typescript-fsa": "^3.0.0"
   },
   "devDependencies": {

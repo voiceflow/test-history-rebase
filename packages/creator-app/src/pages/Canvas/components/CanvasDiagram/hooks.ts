@@ -21,6 +21,7 @@ export const useCursorControls = () => {
   const creatorID = useSelector(Account.userIDSelector)!;
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const dispatch = useRealtimeDispatch();
   const hasDiagramViewers = useRealtimeSelector((state) => RealtimeV2Duck.hasExternalDiagramViewersSelector(state, diagramID));
   const prevCoords = React.useRef<Point | null>(null);
@@ -30,7 +31,7 @@ export const useCursorControls = () => {
       if (atomicActions.isEnabled) {
         if (hasDiagramViewers && prevCoords.current !== nextCoords) {
           prevCoords.current = nextCoords;
-          dispatch.sync(Realtime.diagram.moveCursor({ projectID, diagramID, creatorID, coords: nextCoords }));
+          dispatch.sync(Realtime.diagram.awarenessMoveCursor({ projectID, diagramID, creatorID, workspaceID, coords: nextCoords }));
         }
       } else if (REALTIME_CURSOR_ENABLED) {
         engine.realtime.sendVolatileUpdate(RealtimeDuck.moveMouse(nextCoords));

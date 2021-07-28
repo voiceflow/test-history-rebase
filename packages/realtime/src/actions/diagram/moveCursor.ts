@@ -1,10 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { ActionCreatorPayload } from '../utils';
-import { NoopDiagramActionControl } from './utils';
+import { AbstractNoopDiagramActionControl } from './utils';
 
-class MoveCursorControl extends NoopDiagramActionControl<ActionCreatorPayload<typeof Realtime.diagram.moveCursor>> {
-  actionCreator = Realtime.diagram.moveCursor;
+class MoveCursorControl extends AbstractNoopDiagramActionControl<Realtime.diagram.AwarenessMoveCursor> {
+  actionCreator = Realtime.diagram.awarenessMoveCursor;
 }
 
 export default MoveCursorControl;

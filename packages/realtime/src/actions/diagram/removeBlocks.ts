@@ -1,9 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { ActionCreatorPayload } from '../utils';
 import { AbstractDiagramActionControl } from './utils';
 
-class RemoveBlocksControl extends AbstractDiagramActionControl<ActionCreatorPayload<typeof Realtime.diagram.removeBlocks>> {
+class RemoveBlocksControl extends AbstractDiagramActionControl<Realtime.diagram.AddRemoveBlocksPayload> {
   actionCreator = Realtime.diagram.removeBlocks;
 
   process = async (): Promise<void> => {

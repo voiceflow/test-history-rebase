@@ -18,6 +18,7 @@ import {
   ProjectLockGate,
   RealtimeLoadingGate,
   WorkspaceFeatureLoadingGate,
+  WorkspaceLoadingGate,
   WorkspacesLoadingGate,
 } from '@/gates';
 import { connect, lazy, withBatchLoadingGate } from '@/hocs';
@@ -175,6 +176,7 @@ export default compose(
     PlanRestrictionGate,
     ProjectLockGate,
     WorkspacesLoadingGate,
+    WorkspaceLoadingGate,
     WorkspaceFeatureLoadingGate,
     RealtimeLoadingGate
   )

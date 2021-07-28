@@ -1,9 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { ActionCreatorPayload } from '../utils';
 import { AbstractLinkActionControl } from './utils';
 
-class RemoveLinkActionControl extends AbstractLinkActionControl<ActionCreatorPayload<typeof Realtime.link.remove>> {
+class RemoveLinkActionControl extends AbstractLinkActionControl<Realtime.BaseLinkPayload> {
   actionCreator = Realtime.link.remove;
 
   process = async (): Promise<void> => {

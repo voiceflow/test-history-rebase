@@ -2,9 +2,9 @@ import { FullSpinner, Spinner } from '@voiceflow/ui';
 import isFunction from 'lodash/isFunction';
 import React from 'react';
 
-export type LoadingGateProps = {
+export interface LoadingGateProps {
   full?: boolean;
-  load: () => unknown | Promise<any>;
+  load?: null | (() => void);
   label?: string;
   zIndex?: number;
   unload?: () => void;
@@ -12,7 +12,7 @@ export type LoadingGateProps = {
   children?: React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined | (() => React.ReactNode);
   withoutSpinner?: boolean;
   backgroundColor?: string;
-};
+}
 
 const LoadingGate: React.FC<LoadingGateProps> = ({
   full = true,
@@ -30,7 +30,7 @@ const LoadingGate: React.FC<LoadingGateProps> = ({
       return unload;
     }
 
-    load();
+    load?.();
 
     return undefined;
   }, [isLoaded]);

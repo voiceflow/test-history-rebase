@@ -1,9 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { ActionCreatorPayload } from '../utils';
-import { NoopDiagramActionControl } from './utils';
+import { AbstractNoopDiagramActionControl } from './utils';
 
-class DragBlocksControl extends NoopDiagramActionControl<ActionCreatorPayload<typeof Realtime.diagram.dragBlocks>> {
+class DragBlocksControl extends AbstractNoopDiagramActionControl<Realtime.diagram.DragMoveBlocksPayload> {
   actionCreator = Realtime.diagram.dragBlocks;
 }
 

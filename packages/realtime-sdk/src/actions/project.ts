@@ -1,20 +1,25 @@
-import { ProjectPrivacy } from '@voiceflow/api-sdk';
-
-import { AWARENESS_KEY, LOCAL_KEY, PROJECT_KEY } from '../constants';
-import { ProjectPayload, Viewer } from '../types';
-import { createAction, typeFactory } from './utils';
+import { AWARENESS_KEY, PROJECT_KEY } from '../constants';
+import { AnyProject } from '../models';
+import { BaseProjectPayload, BaseWorkspacePayload, Viewer } from '../types';
+import { createAction, createCrudActions, typeFactory } from './utils';
 
 const projectType = typeFactory(PROJECT_KEY);
-const projectLocalType = typeFactory(PROJECT_KEY, LOCAL_KEY);
-const projectAwarenessType = typeFactory(PROJECT_KEY, AWARENESS_KEY);
+const projectAwarenessType = typeFactory(projectType(AWARENESS_KEY));
 
-export const loadViewers = createAction<ProjectPayload<{ viewers: Record<string, Viewer[]> }>>(projectAwarenessType('LOAD_VIEWERS'));
-export const updateViewers = createAction<ProjectPayload<{ diagramID: string; viewers: Viewer[] }>>(projectAwarenessType('UPDATE_VIEWERS'));
+// Awareness
 
-export const setName = createAction<ProjectPayload<{ name: string }>>(projectType('SET_NAME'));
-export const setImage = createAction<ProjectPayload<{ image: string }>>(projectType('SET_IMAGE'));
-export const setPrivacy = createAction<ProjectPayload<{ privacy: ProjectPrivacy }>>(projectType('SET_PRIVACY'));
+export interface AwarenessLoadViewersPayload extends BaseProjectPayload {
+  viewers: { [diagramID: string]: Viewer[] };
+}
 
-export const local = {
-  reset: createAction<ProjectPayload>(projectLocalType('RESET')),
-};
+export interface AwarenessUpdateViewersPayload extends BaseProjectPayload {
+  viewers: Viewer[];
+  diagramID: string;
+}
+
+export const awarenessLoadViewers = createAction<AwarenessLoadViewersPayload>(projectAwarenessType('LOAD_VIEWERS'));
+export const awarenessUpdateViewers = createAction<AwarenessUpdateViewersPayload>(projectAwarenessType('UPDATE_VIEWERS'));
+
+// Other
+
+export const crudActions = createCrudActions<BaseWorkspacePayload, AnyProject>(projectType);

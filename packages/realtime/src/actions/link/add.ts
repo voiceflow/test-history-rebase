@@ -1,9 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { ActionCreatorPayload } from '../utils';
 import { AbstractLinkActionControl } from './utils';
 
-class AddLinkActionControl extends AbstractLinkActionControl<ActionCreatorPayload<typeof Realtime.link.add>> {
+class AddLinkActionControl extends AbstractLinkActionControl<Realtime.link.AddPayload> {
   actionCreator = Realtime.link.add;
 
   process = async (): Promise<void> => {

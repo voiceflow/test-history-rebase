@@ -7,9 +7,7 @@ import { AbstractLoguxControl } from '../control';
 
 export type { Resend } from '@logux/server/base-server';
 
-export type ActionCreatorPayload<T extends ActionCreator<any>> = T extends ActionCreator<infer R> ? R : never;
-
-export abstract class AbstractActionControl<P extends ActionCreatorPayload<any>, D extends object = {}> extends AbstractLoguxControl {
+export abstract class AbstractActionControl<P, D extends object = {}> extends AbstractLoguxControl {
   protected abstract actionCreator: ActionCreator<P>;
 
   protected abstract access: (ctx: Context<D>, action: Action<P>, meta: ServerMeta) => boolean | Promise<boolean>;
@@ -30,7 +28,7 @@ export abstract class AbstractActionControl<P extends ActionCreatorPayload<any>,
   }
 }
 
-export abstract class NoopActionControl<P extends ActionCreatorPayload<any>, D extends object = {}> extends AbstractActionControl<P, D> {
+export abstract class NoopActionControl<P, D extends object = {}> extends AbstractActionControl<P, D> {
   protected access = (): boolean | Promise<boolean> => true;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

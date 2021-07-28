@@ -8,7 +8,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     return `${Realtime.DIAGRAM_KEY}:${diagramID}:${nodeID}`;
   }
 
-  channel = Realtime.Channels.diagram({ diagramID: ':diagramID', projectID: ':projectID' });
+  channel = Realtime.Channels.diagram({ diagramID: ':diagramID', projectID: ':projectID', workspaceID: ':workspaceID' });
 
   private async getViewers(diagramID: string): Promise<Realtime.Viewer[]> {
     const nodeIDs = await this.services.diagram.getConnectedNodes(diagramID);
@@ -43,10 +43,11 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     const viewers = await this.getViewers(ctx.params.diagramID);
 
     await ctx.server.process(
-      Realtime.project.updateViewers({
+      Realtime.project.awarenessUpdateViewers({
         viewers,
         diagramID: ctx.params.diagramID,
         projectID: ctx.params.projectID,
+        workspaceID: ctx.params.workspaceID,
       })
     );
   };
@@ -66,10 +67,11 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     const viewers = await this.getViewers(ctx.params.diagramID);
 
     await ctx.server.process(
-      Realtime.project.updateViewers({
+      Realtime.project.awarenessUpdateViewers({
         viewers,
         diagramID: ctx.params.diagramID,
         projectID: ctx.params.projectID,
+        workspaceID: ctx.params.workspaceID,
       })
     );
   };

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
-
 export interface Viewer {
   creatorID: number;
   name: string;
@@ -8,34 +6,29 @@ export interface Viewer {
 
 export type Coords = [number, number];
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface BaseCreatorPayload {}
+
 export interface BaseWorkspacePayload {
   workspaceID: string;
 }
 
-export type ProjectPayload<T extends Record<string, any> = {}> = {
+export interface BaseProjectPayload extends BaseWorkspacePayload {
   projectID: string;
-} & T;
+}
 
-export type DiagramPayload<T extends Record<string, any> = {}> = ProjectPayload<
-  {
-    diagramID: string;
-  } & T
->;
+export interface BaseDiagramPayload extends BaseProjectPayload {
+  diagramID: string;
+}
 
-export type LinkPayload<T extends Record<string, any> = {}> = DiagramPayload<
-  {
-    linkID: string;
-  } & T
->;
+export interface BaseLinkPayload extends BaseDiagramPayload {
+  linkID: string;
+}
 
-export type NodePayload<T extends Record<string, any> = {}> = DiagramPayload<
-  {
-    nodeID: string;
-  } & T
->;
+export interface BaseNodePayload extends BaseDiagramPayload {
+  nodeID: string;
+}
 
-export type BlockPayload<T extends Record<string, any> = {}> = DiagramPayload<
-  {
-    blockID: string;
-  } & T
->;
+export interface BaseBlockPayload extends BaseDiagramPayload {
+  blockID: string;
+}

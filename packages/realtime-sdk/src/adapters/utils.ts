@@ -1,9 +1,4 @@
-import { IS_PRODUCTION } from '../constants';
-import logger from '../logger';
-
-export const identity = <T>(value: T): T => value;
-
-const debug = (message: string, value: unknown) => logger.debug({ type: 'adapter', message, value });
+const identity = <T>(value: T): T => value;
 
 export class AdapterNotImplementedError extends Error {
   constructor() {
@@ -11,8 +6,8 @@ export class AdapterNotImplementedError extends Error {
   }
 }
 
-export interface Options {
-  debug?: boolean;
+interface AdapterOptions {
+  debug?: (message: string, value: any) => void;
 }
 
 export type Adapter<I, A extends any[], O> = (value: I, ...args: A) => O;
@@ -34,69 +29,55 @@ export type AnyBidirectionalMultiadapter = BidirectionalMultiadapter<any, any, a
 export const createSimpleAdapter = <I, O, T extends any[] = [], R extends any[] = []>(
   fromDB: Adapter<I, T, O>,
   toDB: Adapter<O, R, I>,
-  options: Options = {}
+  { debug }: AdapterOptions = {}
 ): BidirectionalAdapter<I, O, T, R> => ({
-  fromDB:
-    !IS_PRODUCTION && options.debug
-      ? (dbValue, ...args) => {
-          debug('adapter called with value from DB', dbValue);
+  fromDB: (dbValue, ...args) => {
+    debug?.('adapter called with value from DB', dbValue);
 
-          const result = fromDB(dbValue, ...args);
+    const result = fromDB(dbValue, ...args);
 
-          debug('converted DB value to', result);
+    debug?.('converted DB value to', result);
 
-          return result;
-        }
-      : fromDB,
-  toDB:
-    !IS_PRODUCTION && options.debug
-      ? (appValue, ...args) => {
-          debug('adapter called with value from the store', appValue);
+    return result;
+  },
+  toDB: (appValue, ...args) => {
+    debug?.('adapter called with value from the store', appValue);
 
-          const result = toDB(appValue, ...args);
+    const result = toDB(appValue, ...args);
 
-          debug('converted store value to', result);
+    debug?.('converted store value to', result);
 
-          return result;
-        }
-      : toDB,
+    return result;
+  },
 });
 
 export const createAdapter = <I, O, T extends any[] = [], R extends any[] = []>(
   fromDB: Adapter<I, T, O>,
   toDB: Adapter<O, R, I>,
-  options: Options = {}
+  options: AdapterOptions = {}
 ): BidirectionalMultiadapter<I, O, T, R> => ({
   ...createSimpleAdapter<I, O, T, R>(fromDB, toDB, options),
   mapFromDB: (dbValues, ...args) => {
-    if (!IS_PRODUCTION && options.debug) {
-      debug('adapter called with values from DB', dbValues);
-    }
+    options.debug?.('adapter called with values from DB', dbValues);
 
     const result = dbValues.map((dbValue) => fromDB(dbValue, ...args));
 
-    if (!IS_PRODUCTION && options.debug) {
-      debug('converted DB values to', result);
-    }
+    options.debug?.('converted DB values to', result);
 
     return result;
   },
   mapToDB: (appValues, ...args) => {
-    if (!IS_PRODUCTION && options.debug) {
-      debug('adapter called with values from store', appValues);
-    }
+    options.debug?.('adapter called with values from store', appValues);
 
     const result = appValues.map((appValue) => toDB(appValue, ...args));
 
-    if (!IS_PRODUCTION && options.debug) {
-      debug('converted store values to', result);
-    }
+    options.debug?.('converted store values to', result);
 
     return result;
   },
 });
 
 export const identityAdapter: {
-  fromDB: <T>(value: T) => T;
   toDB: <T>(value: T) => T;
+  fromDB: <T>(value: T) => T;
 } = createSimpleAdapter<any, any>(identity, identity);

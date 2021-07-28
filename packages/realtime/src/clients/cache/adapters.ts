@@ -1,11 +1,11 @@
-import { BidirectionalMultiadapter, createAdapter } from '../../adapters/utils';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-export const booleanAdapter = createAdapter<string, boolean>(
+export const booleanAdapter = Realtime.Adapters.createAdapter<string, boolean>(
   (value) => Boolean(Number(value)),
   (value) => String(Number(value))
 );
 
-export const jsonAdapter = createAdapter<string, any>(
+export const jsonAdapter = Realtime.Adapters.createAdapter<string, any>(
   (json) => {
     let value = null;
 
@@ -20,4 +20,4 @@ export const jsonAdapter = createAdapter<string, any>(
   (value) => JSON.stringify(value)
 );
 
-export const jsonAdapterCreator = <T>(): BidirectionalMultiadapter<string, T, [], []> => jsonAdapter;
+export const jsonAdapterCreator = <T>(): Realtime.Adapters.BidirectionalMultiadapter<string, T, [], []> => jsonAdapter;

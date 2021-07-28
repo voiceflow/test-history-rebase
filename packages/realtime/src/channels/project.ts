@@ -5,7 +5,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { AbstractChannelControl, ChannelContext } from './utils';
 
 class ProjectChannel extends AbstractChannelControl<Realtime.Channels.ProjectChannelParams> {
-  channel = Realtime.Channels.project({ projectID: ':projectID' });
+  channel = Realtime.Channels.project({ projectID: ':projectID', workspaceID: ':workspaceID' });
 
   protected access = async (ctx: ChannelContext<Realtime.Channels.ProjectChannelParams>): Promise<boolean> => {
     return this.services.project.canRead(ctx.params.projectID, Number(ctx.userId));
@@ -19,12 +19,13 @@ class ProjectChannel extends AbstractChannelControl<Realtime.Channels.ProjectCha
       diagramsNodesIDs.map((nodesIDs) => this.services.viewer.getViewers([...new Set(nodesIDs.map((nodeID) => parseId(nodeID).userId!))]))
     );
 
-    return Realtime.project.loadViewers({
+    return Realtime.project.awarenessLoadViewers({
       viewers: diagramIDs.reduce<{ [diagramID: string]: Realtime.Viewer[] }>(
         (acc, diagramID, index) => Object.assign(acc, { [diagramID]: diagramViewers[index] }),
         {}
       ),
       projectID: ctx.params.projectID,
+      workspaceID: ctx.params.workspaceID,
     });
   };
 }

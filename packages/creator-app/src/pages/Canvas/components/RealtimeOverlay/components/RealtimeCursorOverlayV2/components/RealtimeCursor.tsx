@@ -11,16 +11,17 @@ import { ANIMATION_DURATION, CURSOR_EXPIRY_TIMEOUT } from '../../../constants';
 import Cursor from '../../RealtimeOverlayCursor';
 import Nametag from '../../RealtimeOverlayNametag';
 
-export type RealtimeCursorProps = {
+export interface RealtimeCursorProps {
   creatorID: number;
   diagramID: string;
-};
+}
 
 const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ diagramID, creatorID }, ref) => {
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const { viewerAtom, cursorCoordsAtom } = React.useContext(RealtimeDiagramContext)!;
   const viewer = useAtomState(viewerAtom({ creatorID }));
   const projectID = useSelector(Session.activeProjectIDSelector)!;
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const innerRef = React.useRef<HTMLDivElement>(null);
   const dispatch = useRealtimeDispatch();
   const removeTimerRef = React.useRef<NodeJS.Timer | null>(null);
@@ -30,7 +31,7 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
 
   const setTimers = React.useCallback(() => {
     removeTimerRef.current = setTimeout(
-      () => dispatch.local(Realtime.diagram.hideCursor({ projectID, diagramID, creatorID })),
+      () => dispatch.local(Realtime.diagram.awarenessHideCursor({ workspaceID, projectID, diagramID, creatorID })),
       CURSOR_EXPIRY_TIMEOUT
     );
 

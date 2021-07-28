@@ -25,7 +25,7 @@ class Server extends Logux.Server {
       logger: {
         info: (details: { action: AnyAction }, message) => {
           // ignore MOVE_CURSOR actions and processed responses
-          if ([Realtime.diagram.moveCursor.type, 'logux/processed'].includes(details?.action?.type)) return;
+          if ([Realtime.diagram.awarenessMoveCursor.type, 'logux/processed'].includes(details?.action?.type)) return;
           // ignore action processing logs
           if (['Action was processed', 'Action was cleaned'].includes(message)) return;
 

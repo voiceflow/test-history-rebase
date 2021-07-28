@@ -1,10 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { ActionCreatorPayload } from '../utils';
-import { NoopProjectActionControl } from './utils';
+import { AbstractNoopProjectActionControl } from './utils';
 
-class LoadProjectViewers extends NoopProjectActionControl<ActionCreatorPayload<typeof Realtime.project.loadViewers>> {
-  actionCreator = Realtime.project.loadViewers;
+class LoadProjectViewers extends AbstractNoopProjectActionControl<Realtime.project.AwarenessLoadViewersPayload> {
+  actionCreator = Realtime.project.awarenessLoadViewers;
 }
 
 export default LoadProjectViewers;

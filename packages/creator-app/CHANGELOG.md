@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.443.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.442.0...@voiceflow/creator-app@1.443.0) (2021-07-28)
+
+
+### Features
+
+* removes audio step from chatbot project type (VF-1346) ([#3776](https://github.com/voiceflow/creator-app/issues/3776)) ([ed5c6c0](https://github.com/voiceflow/creator-app/commit/ed5c6c0135b2ecc1ff18ddd0e562636d3bc1ae93))
+
+
+
+
+
 # [1.442.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.441.0...@voiceflow/creator-app@1.442.0) (2021-07-28)
 
 

@@ -1,0 +1,26 @@
+FROM node:12-alpine
+
+ARG NPM_TOKEN
+
+ARG build_SEM_VER
+ARG build_BUILD_NUM
+ARG build_GIT_SHA
+ARG build_BUILD_URL
+
+ENV SEM_VER=${build_SEM_VER}
+ENV BUILD_NUM=${build_BUILD_NUM}
+ENV GIT_SHA=${build_GIT_SHA}
+ENV BUILD_URL=${build_BUILD_URL}
+
+RUN apk --no-cache add git dumb-init
+
+WORKDIR /usr/src/app
+COPY ./ ./
+
+RUN echo $NPM_TOKEN > .npmrc && \
+  yarn install --production && \
+  rm -f .npmrc && \
+  yarn cache clean
+
+ENTRYPOINT [ "dumb-init" ]
+CMD ["node", "--experimental-specifier-resolution=node", "build/index.js"]

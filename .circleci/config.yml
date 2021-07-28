@@ -7,6 +7,9 @@ parameters:
   container-image-url-admin-ui:
     type: string
     default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin"
+  container-image-url-realtime:
+    type: string
+    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/realtime"
   k8s-asset-admin-ui:
     type: string
     default: "deployment/admin-ui"
@@ -25,6 +28,9 @@ parameters:
   track-component-admin-ui:
     type: string
     default: "admin-ui"
+  track-component-realtime:
+    type: string
+    default: "realtime"
 
 orbs:
   vfcommon: voiceflow/common@0.0.168
@@ -137,7 +143,15 @@ jobs:
           name: Build realtime
           command: |
             yarn build --scope @voiceflow/realtime*
+            cp yarn.lock packages/realtime
           working_directory: ~/voiceflow
+      - persist_to_workspace:
+          root: ~/voiceflow/packages/realtime
+          paths:
+            - build
+            - Dockerfile
+            - package.json
+            - yarn.lock
 
   build-admin:
     parameters:
@@ -283,6 +297,14 @@ jobs:
           component: << pipeline.parameters.track-component-admin-ui >>
           dockerfile: Dockerfile
 
+  update-track-realtime:
+    executor: vfcommon/build-executor
+    steps:
+      - vfcommon/update_track:
+          image_repo: << pipeline.parameters.container-image-url-realtime >>
+          component: << pipeline.parameters.track-component-realtime >>
+          dockerfile: Dockerfile
+
 workflows:
   update-tracks:
     jobs:
@@ -317,6 +339,21 @@ workflows:
           context: dev-test
           requires:
             - build-admin
+          filters:
+            <<: *ignore_autorebase_filters
+            tags:
+              ignore: /.*/
+
+      - build-realtime:
+          context: dev-test
+          filters:
+            <<: *ignore_autorebase_filters
+            tags:
+              ignore: /.*/
+      - update-track-realtime:
+          context: dev-test
+          requires:
+            - build-realtime
           filters:
             <<: *ignore_autorebase_filters
             tags:

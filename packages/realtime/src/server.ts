@@ -20,6 +20,7 @@ class Server extends Logux.Server {
       subprotocol: SUBPROTOCOL,
       supports: SUPPORT_RANGE,
       root: cwd,
+      host: '0.0.0.0',
       port: config.PORT,
       logger: {
         info: (details: { action: AnyAction }, message) => {

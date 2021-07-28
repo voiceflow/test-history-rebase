@@ -34,6 +34,7 @@
     "clean": "rimraf build",
     "dev": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs --watch' 'yarn:build:esm --watch'",
     "lint": "eslint \"**/*.{js,ts}\"",
+    "lint:dockerfiles": "exit 0",
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:report": "yarn lint --format json -o sonar/report.json",

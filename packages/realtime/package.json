@@ -37,15 +37,18 @@
     "gen-certs:e2e": "scripts/generate_e2e_certs.sh",
     "kill:e2e": "kill -9 $(lsof -t -i tcp:8013) || true",
     "lint": "eslint \"**/*.{js,ts}\"",
+    "lint:dockerfiles": "hadolint --ignore DL3018 ./Dockerfile",
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:report": "yarn lint --format json -o sonar/report.json",
-    "local": "NODE_ENV=local NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon src/index.ts",
+    "local": "vfcli mesh connect realtime",
     "start": "PORT=8013 CREATOR_API_ENDPOINT=https:// NODE_ENV=production node --experimental-specifier-resolution=node --max-old-space-size=8192 build/index.js",
     "start:e2e": "NODE_ENV=e2e node --experimental-specifier-resolution=node --max-old-space-size=8192 build/index.js",
+    "start:meshed": "NODE_ENV=local NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon src/index.ts",
     "test": "yarn test:unit",
     "test:dependencies": "depcheck",
-    "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml"
+    "test:unit": "NODE_ENV=test nyc  --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml",
+    "test:integration": "exit 0"
   },
   "type": "module"
 }

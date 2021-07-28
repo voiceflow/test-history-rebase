@@ -1,3 +1,4 @@
+import { TimeRange } from '@voiceflow/internal';
 import { Box, ButtonVariant, ClickableText } from '@voiceflow/ui';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -8,7 +9,7 @@ import { FILTER_TAG } from '@/pages/Conversations/constants';
 import THEME from '@/styles/theme';
 
 import ApplyFiltersButton from './ApplyFiltersButton';
-import DatePicker, { TimeRange } from './TimeRangePicker/DatePicker';
+import DatePicker from './TimeRangePicker/DatePicker';
 
 const TranscriptFilters = () => {
   const history = useHistory();

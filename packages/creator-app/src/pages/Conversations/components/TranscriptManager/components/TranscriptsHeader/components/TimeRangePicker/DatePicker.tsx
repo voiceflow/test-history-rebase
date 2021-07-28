@@ -1,3 +1,4 @@
+import { TimeRange } from '@voiceflow/internal';
 import { ButtonVariant } from '@voiceflow/ui';
 import moment from 'moment';
 import React from 'react';
@@ -13,15 +14,6 @@ import { ApplyButton, CalendarFooter, ClearRangeLink, DayPickerContainer } from 
 
 const TimeRangeSelect: any = DropdownMultiselect;
 
-export enum TimeRange {
-  TODAY = 'Today',
-  YESTERDAY = 'Yesterday',
-  WEEK = 'Last 7 Days',
-  MONTH = 'Last 30 days',
-  ALLTIME = 'All time',
-  CUSTOM = 'Custom Period',
-}
-
 const TIME_RANGE_OPTIONS = [
   { label: 'Today', value: TimeRange.TODAY },
   { label: 'Yesterday', value: TimeRange.YESTERDAY },
@@ -30,11 +22,11 @@ const TIME_RANGE_OPTIONS = [
   { label: 'All time', value: TimeRange.ALLTIME },
 ];
 
-export type DayPickerInputProps = {
+export interface DayPickerInputProps {
   date?: string | Date;
   placement?: PopperProps['placement'];
   onChange: (input: TimeRange | string) => void;
-};
+}
 
 const DatePicker: React.FC<DayPickerInputProps> = ({ date, placement, onChange }) => {
   const variablesInputRef = React.useRef<{ blur: Function; getEditorState: Function } | null>(null);

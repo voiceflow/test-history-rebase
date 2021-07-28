@@ -2,7 +2,6 @@ import { Box, Input } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import ChatWithUsLink from '@/components/ChatLink';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import TextArea from '@/components/TextArea';
 import { focusedNodeSelector } from '@/ducks/creator';
@@ -57,12 +56,6 @@ const ActionEditor: React.FC<NodeEditorPropsType<NodeData.Trace>> = ({ data, onC
           tutorial={{
             content: <HelpTooltip />,
             blockType: data.type,
-            helpTitle: 'Having trouble?',
-            helpMessage: (
-              <>
-                <ChatWithUsLink>Live chat</ChatWithUsLink> with someone on the Voiceflow team.
-              </>
-            ),
           }}
         />
       )}

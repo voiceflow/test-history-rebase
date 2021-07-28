@@ -6,7 +6,7 @@ import { SupportedOperations } from '@/components/ConditionsBuilder/constants';
 import InfoIcon from '@/components/InfoIcon';
 
 const ConditionExpressionTooltip: React.FC = () => (
-  <InfoIcon tooltipProps={{ helpMessage: false, helpTitle: false }}>
+  <InfoIcon>
     <>
       <Text>{`This input accepts plain text numbers, variables using "{" and methamatical expressions.`}</Text>
       <Box mt={16} mb={16}>

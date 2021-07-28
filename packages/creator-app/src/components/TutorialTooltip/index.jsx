@@ -3,14 +3,14 @@ import React from 'react';
 
 import Tooltip, { Section, Title } from '@/components/Tooltip';
 
-import { AnchorContainer, HelpMessage } from './components';
+import { AnchorContainer } from './components';
 
 const TutorialTooltip = ({
   title,
   children,
   placement = 'top-start',
   helpTitle = 'Still having trouble?',
-  helpMessage = <HelpMessage />,
+  helpMessage,
   portalNode,
   anchorRenderer,
   contentBottomUnits = 3,
@@ -28,9 +28,12 @@ const TutorialTooltip = ({
 
     <Section marginBottomUnits={contentBottomUnits}>{children}</Section>
 
-    {!!helpTitle && <Title>{helpTitle}</Title>}
-
-    {!!helpMessage && <Section>{helpMessage}</Section>}
+    {!!helpTitle && !!helpMessage && (
+      <>
+        <Title>{helpTitle}</Title>
+        <Section>{helpMessage}</Section>
+      </>
+    )}
   </Tooltip>
 );
 

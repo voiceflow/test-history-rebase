@@ -5,7 +5,7 @@ import Section from '@/components/Section';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { without } from '@/utils/array';
 
-import { HelpMessage, HelpTooltip } from './components';
+import { HelpTooltip } from './components';
 import { PERMISSIONS } from './constants';
 
 function PermissionEditor({ data, onChange }) {
@@ -29,8 +29,6 @@ function PermissionEditor({ data, onChange }) {
           tutorial={{
             content: <HelpTooltip />,
             blockType: type,
-            helpTitle: 'Having trouble?',
-            helpMessage: <HelpMessage />,
           }}
         />
       )}

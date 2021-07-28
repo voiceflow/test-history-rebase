@@ -5,7 +5,7 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { useManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 
-import { DraggableItem, HelpMessage, HelpTooltip } from './components';
+import { DraggableItem, HelpTooltip } from './components';
 
 const permissionFactory = () => ({
   id: cuid.slug(),
@@ -34,7 +34,6 @@ function UserInfoEditor({ data, onChange }) {
           tutorial={{
             content: <HelpTooltip />,
             blockType: data.type,
-            helpMessage: <HelpMessage />,
           }}
         />
       )}

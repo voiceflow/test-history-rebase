@@ -12,7 +12,6 @@ import {
 import cuid from 'cuid';
 import React from 'react';
 
-import ChatWithUsLink from '@/components/ChatLink';
 import ListManager from '@/components/ListManager';
 import { ContentContainer, SectionToggleVariant } from '@/components/Section';
 import Utterance from '@/components/Utterance';
@@ -129,13 +128,6 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
           tooltip={<UtterancesTooltip />}
           headerToggle
           isNested={isNested}
-          tooltipProps={{
-            helpMessage: (
-              <>
-                <ChatWithUsLink>Live chat</ChatWithUsLink> with someone on the Voiceflow team.
-              </>
-            ),
-          }}
           isDividerNested
           collapseVariant={SectionToggleVariant.ARROW}
         >

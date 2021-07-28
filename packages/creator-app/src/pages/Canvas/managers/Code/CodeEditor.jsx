@@ -1,9 +1,9 @@
-import { Box } from '@voiceflow/ui';
+import { Box, Link } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
-import ChatWithUsLink from '@/components/ChatLink';
 import OverflowMenu from '@/components/OverflowMenu';
+import * as Documentation from '@/config/documentation';
 import { BUILT_IN_VARIABLES } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import { connect } from '@/hocs';
@@ -51,7 +51,7 @@ function CodeEditor({ data, onChange, onExpand, expanded, variables }) {
             helpTitle: 'Having trouble?',
             helpMessage: (
               <>
-                <ChatWithUsLink>Live chat</ChatWithUsLink> with someone on the Voiceflow team.
+                Check out our <Link href={Documentation.CODE_STEP}>documentation</Link>.
               </>
             ),
           }}

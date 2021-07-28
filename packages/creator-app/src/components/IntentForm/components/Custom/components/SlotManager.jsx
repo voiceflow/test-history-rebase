@@ -1,6 +1,5 @@
 import React from 'react';
 
-import ChatWithUsLink from '@/components/ChatLink';
 import DraggableList from '@/components/DraggableList';
 import { SectionToggleVariant } from '@/components/Section';
 import * as Intent from '@/ducks/intent';
@@ -43,14 +42,6 @@ function SlotManager({ intent, slotsMap, reorderIntentSlots, pushToPath, isNeste
       headerToggle={!!slotCount}
       isNested={isNested}
       isDividerNested
-      tooltipProps={{
-        helpMessage: (
-          <>
-            <ChatWithUsLink>Live chat</ChatWithUsLink> with someone on the Voiceflow team.
-          </>
-        ),
-        contentBottomUnits: 1.5,
-      }}
       collapseVariant={SectionToggleVariant.ARROW}
       disabled={!slotCount}
     >

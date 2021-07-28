@@ -2,7 +2,6 @@ import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
-import ChatWithUsLink from '@/components/ChatLink';
 import OverflowMenu from '@/components/OverflowMenu';
 import { NodeData } from '@/models/NodeData';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
@@ -22,12 +21,6 @@ const DirectiveEditor: React.FC<NodeEditorPropsType<NodeData.Directive>> = ({ da
           tutorial={{
             content: <HelpTooltip platform={platform} />,
             blockType: data.type,
-            helpTitle: 'Having trouble?',
-            helpMessage: (
-              <>
-                <ChatWithUsLink>Live chat</ChatWithUsLink> with someone on the Voiceflow team.
-              </>
-            ),
           }}
           menu={<OverflowMenu options={[{ label: 'Expand Fullscreen', onClick: onExpand }]} placement="top-end" />}
         />

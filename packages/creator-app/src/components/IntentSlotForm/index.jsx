@@ -3,7 +3,6 @@ import { Badge, ErrorMessage } from '@voiceflow/ui';
 import React from 'react';
 import { withProps } from 'recompose';
 
-import ChatWithUsLink from '@/components/ChatLink';
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
 import ListManager from '@/components/ListManager';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
@@ -105,20 +104,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
           onClick={() => updateIntentSlot(intent.id, slot.id, { required: !required })}
           collapseVariant={SectionToggleVariant.TOGGLE}
         >
-          <Section
-            header="Entity Prompt"
-            tooltip={<SlotPromptTooltip />}
-            tooltipProps={{
-              helpTitle: 'Not getting it?',
-              helpMessage: (
-                <>
-                  That’s cool, <ChatWithUsLink>start a live chat</ChatWithUsLink> with someone on the Voiceflow team.
-                </>
-              ),
-            }}
-            isNested
-            dividerIsNested
-          >
+          <Section header="Entity Prompt" tooltip={<SlotPromptTooltip />} isNested dividerIsNested>
             <FormControl>
               <SSMLWithSlots
                 icon={null}
@@ -138,13 +124,6 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
                 count={utterancesWithDefault.length}
                 tooltip={<ResponseUtterancesTooltip />}
                 headerToggle
-                tooltipProps={{
-                  helpMessage: (
-                    <>
-                      <ChatWithUsLink>Live chat</ChatWithUsLink> with someone on the Voiceflow team.
-                    </>
-                  ),
-                }}
                 isNested
                 isDividerNested
                 collapseVariant={SectionToggleVariant.ARROW}
@@ -206,14 +185,6 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
               isCollapsed={!intentSlot.dialog.confirmEnabled}
               header="Entity Confirmation"
               tooltip={<SlotConfirmationTooltip />}
-              tooltipProps={{
-                helpTitle: 'Not getting it?',
-                helpMessage: (
-                  <>
-                    That’s cool, <ChatWithUsLink>start a live chat</ChatWithUsLink> with someone on the Voiceflow team.
-                  </>
-                ),
-              }}
               isNested
               onClick={() => updateIntentSlotDialog(intent.id, slot.id, { confirmEnabled: !intentSlot.dialog.confirmEnabled })}
               collapseVariant={SectionToggleVariant.TOGGLE}

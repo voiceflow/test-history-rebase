@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.442.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.441.0...@voiceflow/creator-app@1.442.0) (2021-07-28)
+
+
+### Features
+
+*  update 'Testable Link Button' Segment Event (VF-1242) ([#3775](https://github.com/voiceflow/creator-app/issues/3775)) ([49d8c54](https://github.com/voiceflow/creator-app/commit/49d8c54afb655689955a167a94bd4debc7318188))
+
+
+
+
+
 # [1.441.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.440.1...@voiceflow/creator-app@1.441.0) (2021-07-28)
 
 

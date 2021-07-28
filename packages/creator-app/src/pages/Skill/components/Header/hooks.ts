@@ -4,8 +4,9 @@ import React from 'react';
 import { Permission } from '@/config/permissions';
 import { DESKTOP_APP_LINK, ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useModals, usePermission } from '@/hooks';
+import { useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 
 import { ShareProjectTab } from './constants';
@@ -16,11 +17,18 @@ export const useLogoButtonOptions = ({ uiToggle, shortcuts }: { uiToggle?: boole
   const goToDashboard = useDispatch(Router.goToDashboard);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
   const goToCurrentSettings = useDispatch(Router.goToCurrentSettings);
+  const [trackingEvents] = useTrackingEvents();
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
 
   const sharePopper = React.useContext(SharePopperContext);
   const shortcutModal = useModals(ModalType.SHORTCUTS);
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+
+  const onOpenShortcutsModal = React.useCallback(() => {
+    shortcutModal.toggle();
+    trackingEvents.trackCanvasSeeShortcutsModalOpened({ projectID });
+  }, [shortcutModal, projectID]);
 
   return React.useMemo<MenuOption<undefined>[]>(
     () => [
@@ -38,7 +46,7 @@ export const useLogoButtonOptions = ({ uiToggle, shortcuts }: { uiToggle?: boole
           ]
         : []),
       { key: 'divider-3', label: 'divider', divider: true },
-      ...(shortcuts ? [{ key: 'shortcuts', label: 'See shortcuts', onClick: () => shortcutModal.toggle() }] : []),
+      ...(shortcuts ? [{ key: 'shortcuts', label: 'See shortcuts', onClick: onOpenShortcutsModal }] : []),
       { key: 'desktop-app', label: 'Get desktop app', onClick: () => window.open(DESKTOP_APP_LINK, '_blank') },
     ],
     [sharePopper, uiToggle, shortcuts, canEditProject, shortcutModal.toggle, canAddCollaborators]

@@ -50,6 +50,7 @@ export enum EventName {
   CANVAS_MARKUP_TEXT = 'Text Markup',
   CANVAS_MARKUP_IMAGE = 'Image Markup',
   CANVAS_COMMENTING_OPENED = 'Canvas Commenting Opened',
+  CANVAS_SHORTCUTS_MODAL_OPENED = 'Shortcuts Modal Opened',
 
   ONBOARDING_PAY = 'Onboarding - Pay',
   ONBOARDING_JOIN = 'Onboarding - Join',

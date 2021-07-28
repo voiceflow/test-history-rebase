@@ -1,7 +1,13 @@
 import client from '@/client';
 
 import { CanvasMenuLockState, EventName } from '../constants';
-import { createProjectEventPayload, createProjectEventTracker } from '../utils';
+import { WorkspaceEventInfo } from '../types';
+import { createProjectEventPayload, createProjectEventTracker, createWorkspaceEventPayload, createWorkspaceEventTracker } from '../utils';
+
+export const trackCanvasSeeShortcutsModalOpened = createWorkspaceEventTracker(
+  ({ workspaceID, projectID }: WorkspaceEventInfo & { projectID: string }) =>
+    client.analytics.track(EventName.CANVAS_SHORTCUTS_MODAL_OPENED, createWorkspaceEventPayload({ workspaceID }, { project_id: projectID }))
+);
 
 export const trackCanvasMenuLock = createProjectEventTracker<{ state: CanvasMenuLockState }>((options) =>
   client.analytics.track(EventName.CANVAS_MENU_LOCK, createProjectEventPayload(options, { state: options.state }))

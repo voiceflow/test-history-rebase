@@ -149,6 +149,30 @@ export const GOOGLE_SECTIONS = [
   },
 ];
 
+// chatbot menu sections
+export const CHATBOT_SECTIONS = [
+  {
+    type: BlockCategory.RESPONSE,
+    label: 'Response',
+    steps: [SPEAK_STEP, VISUAL_STEP],
+  },
+  {
+    type: BlockCategory.USER_INPUT,
+    label: 'User Input',
+    steps: [CHOICE_STEP, PROMPT_STEP, INTENT_STEP],
+  },
+  {
+    type: BlockCategory.LOGIC,
+    label: 'Logic',
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+  },
+  {
+    type: BlockCategory.INTEGRATION,
+    label: 'Integration',
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+  },
+];
+
 // general menu sections
 export const GENERAL_SECTIONS = [
   {
@@ -177,6 +201,7 @@ export const getSections = createPlatformSelector(
   {
     [PlatformType.ALEXA]: ALEXA_SECTIONS,
     [PlatformType.GOOGLE]: GOOGLE_SECTIONS,
+    [PlatformType.CHATBOT]: CHATBOT_SECTIONS,
   },
   GENERAL_SECTIONS
 );

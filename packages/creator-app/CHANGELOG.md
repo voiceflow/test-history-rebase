@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.441.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.440.1...@voiceflow/creator-app@1.441.0) (2021-07-28)
+
+
+### Bug Fixes
+
+* remove tutorial live chat prompt (VF-1369) ([#3774](https://github.com/voiceflow/creator-app/issues/3774)) ([66391e2](https://github.com/voiceflow/creator-app/commit/66391e29c86ebf70a1d1d8b1ead0bb8db67467d4))
+
+
+### Features
+
+* add project, workspace, projectList and product CRUD support (VF-000) ([#3769](https://github.com/voiceflow/creator-app/issues/3769)) ([d9f7e91](https://github.com/voiceflow/creator-app/commit/d9f7e916ca98d5e73bd0707f5f979a11b60c6d65))
+
+
+
+
+
 ## [1.440.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.440.0...@voiceflow/creator-app@1.440.1) (2021-07-28)
 
 **Note:** Version bump only for package @voiceflow/creator-app

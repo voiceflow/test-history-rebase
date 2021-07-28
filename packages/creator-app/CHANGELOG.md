@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.440.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.439.2...@voiceflow/creator-app@1.440.0) (2021-07-28)
+
+
+### Features
+
+* Add 'Shortcuts Modal' Segment Event (VF-1247) ([#3757](https://github.com/voiceflow/creator-app/issues/3757)) ([89d68b3](https://github.com/voiceflow/creator-app/commit/89d68b30d24cc0b1ab1faef5f4292d5e82b9e0e0))
+
+
+
+
+
 ## [1.439.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.439.1...@voiceflow/creator-app@1.439.2) (2021-07-28)
 
 **Note:** Version bump only for package @voiceflow/creator-app

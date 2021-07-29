@@ -1,8 +1,6 @@
-import { PlatformType } from '@voiceflow/internal';
 import { Box, Menu, MenuItem, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import { textAndDialogGraphic, textAndDialogGraphicInactive, voiceAndVisualsGraphic, voiceAndVisualsGraphicInactive } from '@/assets';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeLayout } from '@/ducks/prototype/types';
@@ -10,42 +8,9 @@ import { connect } from '@/hocs';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
-import { getPlatformValue } from '@/utils/platform';
 
-import PrototypeLayoutItem from './PrototypeLayoutItem';
-
-interface OptionDetail {
-  title: string;
-  activeImg: string;
-  inactiveImg: string;
-  description: (platform: PlatformType) => string;
-}
-
-const OPTION_DETAILS: Record<PrototypeLayout, OptionDetail> = {
-  [PrototypeLayout.TEXT_DIALOG]: {
-    title: 'Chat Input',
-    description: (platform) => `Testers will use text and ${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
-    activeImg: textAndDialogGraphic,
-    inactiveImg: textAndDialogGraphicInactive,
-  },
-  [PrototypeLayout.VOICE_DIALOG]: {
-    title: 'Voice Input',
-    description: (platform) => `Testers will use voice and ${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
-    activeImg: textAndDialogGraphic,
-    inactiveImg: textAndDialogGraphic,
-  },
-  [PrototypeLayout.VOICE_VISUALS]: {
-    title: 'Voice and Visuals',
-    description: () => 'Testers will only use voice input',
-    activeImg: voiceAndVisualsGraphic,
-    inactiveImg: voiceAndVisualsGraphicInactive,
-  },
-};
-/**
- *  width is calculated from parent popup width and padding
- * to account for caret
- *  */
-const CUSTOM_MENU_WIDTH = 374;
+import PrototypeLayoutItem from '../PrototypeLayoutItem';
+import { CUSTOM_MENU_WIDTH, getLayoutOptions, OPTION_DETAILS } from './constants';
 
 const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ layout, updateSettings }) => {
   const platform = React.useContext(PlatformContext)!;
@@ -57,10 +22,10 @@ const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ 
     cb();
   };
 
-  const getOptions = React.useCallback(
-    () => [PrototypeLayout.TEXT_DIALOG, PrototypeLayout.VOICE_DIALOG, PrototypeLayout.VOICE_VISUALS].filter((option) => option !== layout),
-    [layout]
-  );
+  const layoutOptions = React.useMemo(() => {
+    const options = getLayoutOptions(platform);
+    return options.filter((option) => option !== layout);
+  }, [layout, platform]);
 
   useDidUpdateEffect(() => {
     if (layout !== localLayout) {
@@ -74,7 +39,7 @@ const PrototypeLayoutSelect: React.FC<ConnectedPrototypeLayoutSelectProps> = ({ 
         fullWidth
         menu={(onToggle: () => void) => (
           <Menu width={CUSTOM_MENU_WIDTH}>
-            {getOptions().map((option: PrototypeLayout) => (
+            {layoutOptions.map((option: PrototypeLayout) => (
               <MenuItem
                 className={ClassName.TEST_TYPE_OPTION}
                 onClick={onClick(option, onToggle)}

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.445.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.445.0...@voiceflow/creator-app@1.445.1) (2021-07-29)
+
+
+### Bug Fixes
+
+* channel subscriptions, add connection warning page ([#3785](https://github.com/voiceflow/creator-app/issues/3785)) ([a88c0ec](https://github.com/voiceflow/creator-app/commit/a88c0ec8350ffc4224b9d81665ab998d055e87cd))
+
+
+
+
+
 # [1.445.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.444.1...@voiceflow/creator-app@1.445.0) (2021-07-29)
 
 

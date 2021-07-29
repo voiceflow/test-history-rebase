@@ -2,23 +2,23 @@ import { BillingPeriod, PlanType, PlatformType, UserRole } from '@voiceflow/inte
 import { ButtonVariant, toast } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch as useReduxDispatch } from 'react-redux';
 
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
+import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
+import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
-import { connect, withStripe } from '@/hocs';
-import { useModals, useSmartReducer, useTrackingEvents } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { withStripe } from '@/hocs';
+import { useDispatch, useFeature, useModals, useRealtimeSelector, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
 import { asyncForEach } from '@/utils/array';
-import { compose } from '@/utils/functional';
 import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
@@ -81,32 +81,44 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
 
 export const { Consumer: OnboardingConsumer } = OnboardingContext;
 
-const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps & ConnectedOnboardingContextProps> = ({
+const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   query,
   children,
   stripe,
   checkChargeable,
-  goToDashboard,
-  goToDashboardWithSearch,
-  goToCanvas,
-  setActiveWorkspaceID,
-  createWorkspace,
-  sendInvite,
-  loadWorkspaces,
-  firstLogin,
-  acceptInvite,
-  workspaces,
   isLoginFlow, // This boolean represents if the user hits the onboarding flow from a link/new signup, or from the dashboard 'create workspace' button
-  createProject,
-  trackInvitationAccepted,
-  workspaceByID,
-  account,
-  currentWorkspaceID,
-  updateWorkspaceName,
-  updateWorkspaceImage,
-  goToWorkspace,
 }) => {
-  const dispatch = useDispatch();
+  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+
+  const dispatch = useReduxDispatch();
+
+  const workspacesV1 = useSelector(Workspace.allWorkspacesSelector);
+  const workspacesRealtime = useRealtimeSelector(RealtimeWorkspace.allWorkspacesSelector);
+  const workspaceByIDV1 = useSelector(Workspace.workspaceByIDSelector);
+  const workspaceByIDRealtime = useRealtimeSelector(
+    (state) => (workspaceID: string) => RealtimeWorkspace.workspaceByIDSelector(state, { id: workspaceID })
+  );
+  const account = useSelector(Account.userSelector);
+  const firstLogin = useSelector(Account.isFirstLoginSelector);
+  const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
+
+  const workspaces = atomicActions.isEnabled ? workspacesRealtime : workspacesV1;
+  const workspaceByID = atomicActions.isEnabled ? workspaceByIDRealtime : workspaceByIDV1;
+
+  const createWorkspace = useDispatch(Workspace.createWorkspace);
+  const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
+  const goToCanvas = useDispatch(Router.goToCanvas);
+  const acceptInvite = useDispatch(Workspace.acceptInvite);
+  const goToDashboard = useDispatch(Router.goToDashboard);
+  const goToDashboardWithSearch = useDispatch(Router.goToDashboardWithSearch);
+  const setActiveWorkspaceID = useDispatch(Session.setActiveWorkspaceID);
+  const loadWorkspaces = useDispatch(Workspace.loadWorkspaces);
+  const updateWorkspaceName = useDispatch(Workspace.updateActiveWorkspaceName);
+  const updateWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
+  const goToWorkspace = useDispatch(Router.goToWorkspace);
+  const trackInvitationAccepted = useDispatch(Tracking.trackInvitationAccepted);
+  const createProject = useDispatch(Project.createProject);
+
   const [trackingEvents] = useTrackingEvents();
   const [isFinalizing, setIsFinalizing] = React.useState(false);
   const hasFixedPeriod = !!query.ob_period;
@@ -461,32 +473,4 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps & Connecte
   return <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
 };
 
-const mapStateToProps = {
-  workspaces: Workspace.allWorkspacesSelector,
-  workspaceByID: Workspace.workspaceByIDSelector,
-  account: Account.userSelector,
-  firstLogin: Account.isFirstLoginSelector,
-  currentWorkspaceID: Session.activeWorkspaceIDSelector,
-};
-
-const mapDispatchToProps = {
-  createWorkspace: Workspace.createWorkspace,
-  sendInvite: Workspace.sendInviteToActiveWorkspace,
-  goToCanvas: Router.goToCanvas,
-  acceptInvite: Workspace.acceptInvite,
-  goToDashboard: Router.goToDashboard,
-  goToDashboardWithSearch: Router.goToDashboardWithSearch,
-  setActiveWorkspaceID: Session.setActiveWorkspaceID,
-  loadWorkspaces: Workspace.loadWorkspaces,
-  updateWorkspaceName: Workspace.updateActiveWorkspaceName,
-  updateWorkspaceImage: Workspace.updateActiveWorkspaceImage,
-  goToWorkspace: Router.goToWorkspace,
-  trackInvitationAccepted: Tracking.trackInvitationAccepted,
-  createProject: Project.createProject,
-};
-
-type ConnectedOnboardingContextProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export const OnboardingProvider = compose(withStripe, connect(mapStateToProps, mapDispatchToProps))(UnconnectedOnboardingProvider) as React.FC<
-  Omit<OnboardingProviderProps, 'stripe' | 'checkChargeable'>
->;
+export const OnboardingProvider = withStripe(UnconnectedOnboardingProvider) as React.FC<Omit<OnboardingProviderProps, 'stripe' | 'checkChargeable'>>;

@@ -2,27 +2,34 @@ import { IconButton, IconButtonVariant, TippyTooltip, toast, ToastCallToAction }
 import React from 'react';
 
 import * as Errors from '@/config/errors';
+import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
-import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { useActiveWorkspace, useDispatch, useFeature, useModals, useSelector } from '@/hooks';
 import { readFileAsync, upload } from '@/utils/dom';
 import * as Sentry from '@/vendors/sentry';
 
 const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 
-const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProject, loadProjectLists, workspace, projects, goToCanvas }) => {
+const ImportButton: React.FC = () => {
+  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+
+  const projects = useSelector(Project.allProjectsSelector);
+
+  const goToCanvas = useDispatch(Router.goToCanvas);
+  const importProject = useDispatch(Project.importProjectFromFile);
+  const loadProjectLists = useDispatch(ProjectList.loadProjectLists);
+
+  const workspace = useActiveWorkspace();
+
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
 
   const onUpload = async (files: FileList) => {
     if (!files.length) return;
 
-    if (!workspaceID) {
+    if (!workspace?.id) {
       Sentry.error(Errors.noActiveWorkspaceID());
       toast.genericError();
 
@@ -32,7 +39,7 @@ const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProj
     try {
       const file = await readFileAsync(files[0]);
 
-      const newProject = await importProject(workspaceID, file);
+      const newProject = await importProject(workspace.id, file);
       toast.success(
         <>
           .VF file successfully imported
@@ -40,8 +47,10 @@ const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProj
         </>
       );
 
-      // reload project list just to be sure
-      loadProjectLists(workspaceID);
+      if (!atomicActions.isEnabled) {
+        // reload project list just to be sure
+        loadProjectLists(workspace.id);
+      }
     } catch (err) {
       Sentry.error(err);
       toast.error('.VF file failed to import');
@@ -63,18 +72,4 @@ const ImportButton: React.FC<ConnectedImportButton> = ({ workspaceID, importProj
   );
 };
 
-const mapStateToProps = {
-  workspaceID: Session.activeWorkspaceIDSelector,
-  workspace: Workspace.activeWorkspaceSelector,
-  projects: Project.allProjectsSelector,
-};
-
-const mapDispatchToProps = {
-  importProject: Project.importProjectFromFile,
-  loadProjectLists: ProjectList.loadProjectLists,
-  goToCanvas: Router.goToCanvas,
-};
-
-type ConnectedImportButton = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(ImportButton);
+export default ImportButton;

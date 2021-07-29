@@ -2,9 +2,7 @@ import produce, { Draft } from 'immer';
 import { ActionCreator } from 'typescript-fsa';
 import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers';
 
-import { createRootSelectorFactory } from '@/ducks/utils';
-
-import type { RealtimeState } from '.';
+export type ImmerHandler<S, P> = (draft: Draft<S>, payload: P) => void;
 
 declare module 'typescript-fsa-reducers' {
   interface ReducerBuilder<InS, OutS = InS, PassedS = InS | undefined> {
@@ -13,9 +11,7 @@ declare module 'typescript-fsa-reducers' {
   }
 }
 
-type ImmerHandler<S, P> = (draft: Draft<S>, payload: P) => void;
-
-export const createRootReducer = <T>(initialState: T): ReducerBuilder<T, T, T | undefined> => {
+export const createRootReducer = <T>(initialState: T): ReducerBuilder<T> => {
   const reducer = reducerWithInitialState<T>(initialState);
 
   reducer.immerCase = (actionCreator, handler) => reducer.case(actionCreator, (state, payload) => produce(state, (draft) => handler(draft, payload)));
@@ -26,27 +22,12 @@ export const createRootReducer = <T>(initialState: T): ReducerBuilder<T, T, T | 
   return reducer;
 };
 
+export interface CreateReducer<S> {
+  <P>(actionCreator: ActionCreator<P>, handler: ImmerHandler<S, P>): [actionCreator: ActionCreator<P>, handler: ImmerHandler<S, P>];
+  <P>(actionCreators: ActionCreator<P>[], handler: ImmerHandler<S, P>): [actionCreators: ActionCreator<P>[], handler: ImmerHandler<S, P>];
+}
+
 export const createReducerFactory =
-  <S>(): {
-    <P>(actionCreator: ActionCreator<P>, handler: ImmerHandler<S, P>): [actionCreator: ActionCreator<P>, handler: ImmerHandler<S, P>];
-    <P>(actionCreators: ActionCreator<P>[], handler: ImmerHandler<S, P>): [actionCreators: ActionCreator<P>[], handler: ImmerHandler<S, P>];
-  } =>
+  <S>(): CreateReducer<S> =>
   (actionCreator: ActionCreator<any> | ActionCreator<any>[], handler: ImmerHandler<S, any>) =>
     [actionCreator, handler] as any;
-
-export const createRootSelector = createRootSelectorFactory<RealtimeState>();
-
-export const firstArgSelector =
-  <T>() =>
-  (_: unknown, arg: T): T =>
-    arg;
-
-export const secondArgSelector =
-  <T>() =>
-  (_: unknown, __: unknown, arg: T): T =>
-    arg;
-
-export const thirdArgSelector =
-  <T>() =>
-  (_: unknown, __: unknown, ___: unknown, arg: T): T =>
-    arg;

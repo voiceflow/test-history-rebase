@@ -9,7 +9,7 @@ import { Persistor } from 'redux-persist';
 import { ThemeProvider } from 'styled-components';
 
 import { INTERCOM_APP_ID, IS_PRODUCTION_ENV } from '@/config';
-import { MaintenanceGate } from '@/gates';
+import { FeatureLoadingGate, MaintenanceGate, RealtimeConnectionGate } from '@/gates';
 import { Store } from '@/store/types';
 import THEME from '@/styles/theme';
 
@@ -23,45 +23,49 @@ import { MousePositionProvider } from './MousePositionContext';
 import StoreProvider from './StoreProvider';
 import { TextEditorVariablesPopoverProvider } from './TextEditorVariablesPopoverContext';
 
-export type GlobalProvidersProps = {
+export interface GlobalProvidersProps {
   history: History;
   store: Store;
   persistor: Persistor;
-};
+}
 
 const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persistor, children }) => {
   const renderApp = () => (
-    <ConnectedRouter history={history}>
-      <LifecycleProvider history={history}>{children}</LifecycleProvider>
-    </ConnectedRouter>
+    <LifecycleProvider history={history}>
+      <RealtimeConnectionGate>
+        <EventualEngineProvider>
+          <IdentityProvider>
+            <DragProvider>
+              <ModalsContextProvider>{children}</ModalsContextProvider>
+            </DragProvider>
+          </IdentityProvider>
+        </EventualEngineProvider>
+      </RealtimeConnectionGate>
+    </LifecycleProvider>
   );
 
   // eslint-disable-next-line xss/no-mixed-html
   return (
     <StoreProvider store={store} persistor={persistor}>
-      <FeatureFlagsProvider>
-        <DndProvider backend={HTML5Backend}>
-          <ThemeProvider theme={THEME}>
-            <IntercomProvider appId={INTERCOM_APP_ID}>
-              <TextEditorVariablesPopoverProvider value={document.body}>
-                <MousePositionProvider>
-                  <DragProvider>
-                    <DismissableLayersGlobalProvider>
-                      <EventualEngineProvider>
-                        <IdentityProvider>
-                          <ModalsContextProvider>
-                            {IS_PRODUCTION_ENV ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}
-                          </ModalsContextProvider>
-                        </IdentityProvider>
-                      </EventualEngineProvider>
-                    </DismissableLayersGlobalProvider>
-                  </DragProvider>
-                </MousePositionProvider>
-              </TextEditorVariablesPopoverProvider>
-            </IntercomProvider>
-          </ThemeProvider>
-        </DndProvider>
-      </FeatureFlagsProvider>
+      <ConnectedRouter history={history}>
+        <FeatureFlagsProvider>
+          <DndProvider backend={HTML5Backend}>
+            <ThemeProvider theme={THEME}>
+              <FeatureLoadingGate>
+                <IntercomProvider appId={INTERCOM_APP_ID}>
+                  <TextEditorVariablesPopoverProvider value={document.body}>
+                    <MousePositionProvider>
+                      <DismissableLayersGlobalProvider>
+                        {IS_PRODUCTION_ENV ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}
+                      </DismissableLayersGlobalProvider>
+                    </MousePositionProvider>
+                  </TextEditorVariablesPopoverProvider>
+                </IntercomProvider>
+              </FeatureLoadingGate>
+            </ThemeProvider>
+          </DndProvider>
+        </FeatureFlagsProvider>
+      </ConnectedRouter>
     </StoreProvider>
   );
 };

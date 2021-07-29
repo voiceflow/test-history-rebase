@@ -1,5 +1,6 @@
 import './DashBoard.css';
 
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Alert, AlertVariant, BoxFlex, BoxFlexCenter, FullSpinner, IconButton, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -8,6 +9,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import DragLayer from '@/components/DragLayer';
 import EmptyScreen from '@/components/EmptyScreen';
 import SeoHelmet from '@/components/SeoHelmet';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import { SeoPage } from '@/constants/seo';
@@ -16,17 +18,30 @@ import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
+import * as RealtimeProjectList from '@/ducks/realtimeV2/projectList';
+import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
-import { connect, withBatchLoadingGate } from '@/hocs';
-import { useAsyncEffect, useModals, usePermission, useScrollHelpers, useSetup, useWorkspaceTracking } from '@/hooks';
+import { withBatchLoadingGate } from '@/hocs';
+import {
+  useActiveWorkspace,
+  useAsyncEffect,
+  useDispatch,
+  useFeature,
+  useModals,
+  usePermission,
+  useRealtimeDispatch,
+  useRealtimeSelector,
+  useScrollHelpers,
+  useSelector,
+  useSetup,
+  useWorkspaceTracking,
+} from '@/hooks';
 import * as Models from '@/models';
 import perf, { PerfAction } from '@/performance';
 import { DashboardClassName, Identifier } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
-import { compose } from '@/utils/functional';
 import * as Query from '@/utils/query';
 import * as Userflow from '@/vendors/userflow';
 
@@ -48,37 +63,44 @@ const getBoardFilteredProjects = (projectsIDs: string[], projectsMap: Record<str
 
   return filtered;
 };
-
 export type DashboardProps = RouteComponentProps;
 
-export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
-  location,
-  activeWorkspaceID,
-  workspace,
-  projects,
-  projectsMap,
-  projectLists,
-  hasTemplatesWorkspace,
-  setConfirm,
-  setError,
-  clearSearch,
-  transplantProject,
-  createList,
-  renameList,
-  clearNewList,
-  moveList,
-  deleteList,
-  loadLists,
-  fetchNotifications,
-  goToNewIntroProject,
-  goToNewProject,
-}) => {
+export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
+  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+
+  const workspace = useActiveWorkspace();
+  const projects = useSelector(Project.allProjectsSelector);
+  const projectsMap = useSelector(Project.projectsMapSelector);
+  const projectListsV1 = useSelector(ProjectList.allProjectListsSelector);
+  const projectListsRealtime = useRealtimeSelector(RealtimeProjectList.allProjectListsSelector);
+  const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
+  const hasTemplatesWorkspaceV1 = useSelector(Workspace.hasTemplatesWorkspaceSelector);
+  const hasTemplatesWorkspaceRealtime = useRealtimeSelector(RealtimeWorkspace.hasTemplatesWorkspaceSelector);
+  const loadLists = useDispatch(ProjectList.loadProjectLists);
+  const createList = useDispatch(ProjectList.createProjectList);
+  const setConfirm = useDispatch(Modal.setConfirm);
+  const setError = useDispatch(Modal.setError);
+  const deleteList = useDispatch(ProjectList.deleteProjectList);
+  const renameList = useDispatch(ProjectList.renameProjectList);
+  const clearNewList = useDispatch(ProjectList.clearNewProjectList);
+  const transplantProject = useDispatch(ProjectList.transplantProject);
+  const moveList = useDispatch(ProjectList.moveProjectList);
+  const fetchNotifications = useDispatch(Notifications.fetchNotifications);
+  const goToNewProject = useDispatch(Router.goToNewProject);
+  const goToNewIntroProject = useDispatch(Router.goToNewIntroProject);
+  const clearSearch = useDispatch(Router.clearSearch);
+  const realtimeDispatch = useRealtimeDispatch();
+  const saveRealtimeProjectLists = useDispatch(ProjectList.saveRealtimeProjectListsForActiveWorkspace);
+
+  const projectLists = atomicActions.isEnabled ? projectListsRealtime : projectListsV1;
+  const hasTemplatesWorkspace = atomicActions.isEnabled ? hasTemplatesWorkspaceRealtime : hasTemplatesWorkspaceV1;
+
   const query = location?.search ? Query.parse(location.search) : null;
 
   const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
 
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
-  const [loading, toggleLoading] = React.useState(true);
+  const [loading, toggleLoading] = React.useState(!atomicActions.isEnabled);
   const [filterText, handleFilterText] = React.useState('');
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const { open: openCollaboratorsModal } = useModals(ModalType.COLLABORATORS);
@@ -110,11 +132,32 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
     });
   }, []);
 
-  const onMove = React.useCallback((drag, hover) => moveList(drag.id, hover.id), []);
+  const onMove = React.useCallback(
+    (drag, hover) => {
+      if (atomicActions.isEnabled) {
+        realtimeDispatch.sync(Realtime.projectList.crudActions.move({ workspaceID: activeWorkspaceID!, from: drag.id, to: hover.id }));
+      } else {
+        moveList(drag.id, hover.id);
+      }
+    },
+    [atomicActions, activeWorkspaceID]
+  );
 
   const onMoveProject = React.useCallback(
-    (drag, hover) => transplantProject({ listID: drag.listId, projectID: drag.id }, { listID: hover.listId, projectID: hover.id }),
-    []
+    (drag, hover) => {
+      if (atomicActions.isEnabled) {
+        realtimeDispatch.sync(
+          Realtime.projectList.transplantProjectBetweenLists({
+            workspaceID: activeWorkspaceID!,
+            from: { listID: drag.listId, projectID: drag.id },
+            to: { listID: hover.listId, projectID: hover.id },
+          })
+        );
+      } else {
+        transplantProject({ listID: drag.listId, projectID: drag.id }, { listID: hover.listId, projectID: hover.id });
+      }
+    },
+    [atomicActions, activeWorkspaceID]
   );
 
   useAsyncEffect(async () => {
@@ -214,6 +257,8 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
                                 onRemove={onDeleteBoard}
                                 projects={projects}
                                 createProject={onCreateProject}
+                                onDrop={saveRealtimeProjectLists}
+                                onDropProject={saveRealtimeProjectLists}
                                 onMove={onMove}
                                 onMoveProject={onMoveProject}
                                 clearNewBoard={clearNewList}
@@ -242,7 +287,7 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
                               style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}
                             >
                               <TippyTooltip distance={8} title="Add new list" position="bottom">
-                                <IconButton large icon="addStep" onClick={createList} size={13} />
+                                <IconButton large icon="addStep" onClick={() => createList()} size={13} />
                               </TippyTooltip>
                             </BoxFlex>
                           )}
@@ -260,31 +305,4 @@ export const Dashboard: React.FC<DashboardProps & ConnectedDashboardProps> = ({
   );
 };
 
-const mapStateToProps = {
-  projects: Project.allProjectsSelector,
-  projectsMap: Project.projectsMapSelector,
-  projectLists: ProjectList.allProjectListsSelector,
-  workspace: Workspace.activeWorkspaceSelector,
-  activeWorkspaceID: Session.activeWorkspaceIDSelector,
-  hasTemplatesWorkspace: Workspace.hasTemplatesWorkspaceSelector,
-};
-
-const mapDispatchToProps = {
-  loadLists: ProjectList.loadProjectLists,
-  createList: ProjectList.createProjectList,
-  setConfirm: Modal.setConfirm,
-  setError: Modal.setError,
-  deleteList: ProjectList.deleteProjectList,
-  renameList: ProjectList.renameProjectList,
-  clearNewList: ProjectList.clearNewProjectList,
-  transplantProject: ProjectList.transplantProject,
-  moveList: ProjectList.moveProjectList,
-  fetchNotifications: Notifications.fetchNotifications,
-  goToNewProject: Router.goToNewProject,
-  goToNewIntroProject: Router.goToNewIntroProject,
-  clearSearch: Router.clearSearch,
-};
-
-type ConnectedDashboardProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default compose(withBatchLoadingGate(DashboardGate), connect(mapStateToProps, mapDispatchToProps))(Dashboard);
+export default withBatchLoadingGate(DashboardGate)(Dashboard);

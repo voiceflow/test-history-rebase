@@ -10,7 +10,7 @@ import { RealtimeCursor } from './components';
 const RealtimeCursorOverlay: React.FC = () => {
   const userID = useSelector(Account.userIDSelector);
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
-  const creatorIDs = useRealtimeSelector((state) => Realtime.diagramViewersIDsSelector(state, diagramID));
+  const creatorIDs = useRealtimeSelector((state) => Realtime.diagramViewersIDsByIDSelector(state, { id: diagramID }));
 
   return (
     <>

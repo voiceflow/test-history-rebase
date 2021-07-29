@@ -21,7 +21,7 @@ interface CursorCoordsParam {
 const DiagramAtomContext = createAtomContext();
 
 export interface RealtimeDiagramContextValue {
-  viewerAtom: AtomFactory<ReturnType<typeof Realtime.diagramViewerSelector>, Readonly<ViewerParam>>;
+  viewerAtom: AtomFactory<ReturnType<typeof Realtime.diagramViewerByIDAndCreatorIDSelector>, Readonly<ViewerParam>>;
   cursorCoordsAtom: AtomFactory<Point | null, Readonly<CursorCoordsParam>>;
 }
 
@@ -34,7 +34,8 @@ export const RealtimeDiagramProvider = withProvider(DiagramAtomContext.Uncontrol
   const viewerAtom = useAtomFactory(
     'diagram.viewer',
     {
-      default: ({ creatorID }: Readonly<ViewerParam>) => Realtime.diagramViewerSelector(store.getState(), diagramID, creatorID),
+      default: ({ creatorID }: Readonly<ViewerParam>) =>
+        Realtime.diagramViewerByIDAndCreatorIDSelector(store.getState(), { id: diagramID, creatorID }),
       context: DiagramAtomContext,
     },
     [diagramID]
@@ -43,7 +44,8 @@ export const RealtimeDiagramProvider = withProvider(DiagramAtomContext.Uncontrol
   const cursorCoordsAtom = useAtomFactory(
     'diagram.cursorCoords',
     {
-      default: ({ creatorID }: Readonly<CursorCoordsParam>) => Realtime.cursorCoordsSelector(store.getState(), diagramID, creatorID),
+      default: ({ creatorID }: Readonly<CursorCoordsParam>) =>
+        Realtime.cursorCoordsByIDAndCreatorIDSelector(store.getState(), { id: diagramID, creatorID }),
       context: DiagramAtomContext,
     },
     [diagramID]
@@ -58,8 +60,8 @@ export const RealtimeDiagramProvider = withProvider(DiagramAtomContext.Uncontrol
     () =>
       store.subscribe(() => {
         const state = store.getState();
-        const viewers = Realtime.diagramViewersSelector(state, diagramID);
-        const cursors = Realtime.diagramCursorsSelector(state, diagramID);
+        const viewers = Realtime.diagramViewersByIDSelector(state, { id: diagramID });
+        const cursors = Realtime.diagramCursorsByIDSelector(state, { id: diagramID });
 
         viewers.forEach((viewer) => {
           viewerAtom({ creatorID: viewer.creatorID }).update(viewer);

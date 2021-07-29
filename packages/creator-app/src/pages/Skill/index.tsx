@@ -176,8 +176,8 @@ export default compose(
     PlanRestrictionGate,
     ProjectLockGate,
     WorkspacesLoadingGate,
-    WorkspaceLoadingGate,
     WorkspaceFeatureLoadingGate,
+    WorkspaceLoadingGate,
     RealtimeLoadingGate
   )
 )(Skill) as React.FC<SkillProps>;

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.7.0...@voiceflow/realtime@1.8.0) (2021-07-29)
+
+
+### Features
+
+* unrevert realtime workspace and projectsList ducks rebased (VF-000) ([#3784](https://github.com/voiceflow/creator-app/issues/3784)) ([043bf23](https://github.com/voiceflow/creator-app/commit/043bf23e2f9cbbd6cae98319026105c0eac568af)), closes [#3753](https://github.com/voiceflow/creator-app/issues/3753)
+
+
+
+
+
 # [1.7.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.6.1...@voiceflow/realtime@1.7.0) (2021-07-28)
 
 

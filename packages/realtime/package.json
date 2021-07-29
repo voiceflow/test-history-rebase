@@ -14,6 +14,7 @@
     "cuid": "^2.1.8",
     "dotenv": "^9.0.2",
     "ioredis": "^4.27.6",
+    "lodash": "^4.17.21",
     "moize": "^6.0.3",
     "path-to-regexp": "^6.2.0",
     "regenerator-runtime": "^0.13.7",
@@ -48,7 +49,7 @@
     "start:meshed": "NODE_ENV=local NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon src/index.ts",
     "test": "yarn test:unit",
     "test:dependencies": "depcheck",
-    "test:unit": "NODE_ENV=test nyc  --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml",
+    "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml",
     "test:integration": "exit 0"
   },
   "type": "module"

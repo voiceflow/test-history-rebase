@@ -12,7 +12,6 @@ export const {
   all: allProjectsSelector,
   map: projectsMapSelector,
   byID: projectByIDSelector,
-  has: hasProjectsSelector,
 } = createCRUDSelectors(STATE_KEY);
 
 // active project

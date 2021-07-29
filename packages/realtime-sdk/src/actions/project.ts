@@ -17,9 +17,14 @@ export interface AwarenessUpdateViewersPayload extends BaseProjectPayload {
   diagramID: string;
 }
 
+export interface ImportProjectFromFile extends BaseWorkspacePayload {
+  data: string;
+}
+
 export const awarenessLoadViewers = createAction<AwarenessLoadViewersPayload>(projectAwarenessType('LOAD_VIEWERS'));
 export const awarenessUpdateViewers = createAction<AwarenessUpdateViewersPayload>(projectAwarenessType('UPDATE_VIEWERS'));
 
 // Other
 
 export const crudActions = createCrudActions<BaseWorkspacePayload, AnyProject>(projectType);
+export const importProjectFromFile = createAction<ImportProjectFromFile>(projectType('IMPORT_PROJECT_FROM_FILE'));

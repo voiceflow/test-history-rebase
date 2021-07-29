@@ -45,5 +45,5 @@ export const alexaProjectSelectedVendorSkillIDByIDAndCreatorID = createSelector(
   alexaProjectSelectedVendorIDByIDAndCreatorIDSelector,
   (state, params) => [state, params] as const,
   (selectedVendorID, [state, params]) =>
-    selectedVendorID ? alexaProjectVendorByIDAndCreatorIDAndVendorID(state, { ...params, vendorID: selectedVendorID }) : null
+    selectedVendorID ? alexaProjectVendorByIDAndCreatorIDAndVendorID(state, { ...params, vendorID: selectedVendorID })?.skillID ?? null : null
 );

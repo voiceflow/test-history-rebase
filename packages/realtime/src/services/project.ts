@@ -50,6 +50,28 @@ class ProjectService extends AbstractControl {
 
     return client.project.list(workspaceID);
   }
+
+  public async importFromFile(workspaceID: string, creatorID: number, data: string): Promise<Realtime.DBProject> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    return client.version.import(workspaceID, JSON.parse(data));
+  }
+
+  public async patch(
+    projectID: string,
+    creatorID: number,
+    data: Partial<Pick<Realtime.DBProject, 'name' | 'image' | 'privacy' | 'linkType'>>
+  ): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.project.update(projectID, data);
+  }
+
+  public async remove(projectID: string, creatorID: number): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.project.delete(projectID);
+  }
 }
 
 export default ProjectService;

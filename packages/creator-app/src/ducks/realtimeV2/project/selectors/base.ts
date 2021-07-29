@@ -8,7 +8,6 @@ import { PROJECT_STATE_KEY } from '../constants';
 export const {
   all: allProjectsSelector,
   map: projectsMapSelector,
-  has: hasProjectsSelector,
   root: rootProjectsSelector,
   byID: projectByIDSelector,
   allIDs: allProjectsIDsSelector,

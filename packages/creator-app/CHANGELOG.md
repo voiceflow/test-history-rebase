@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.444.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.444.0...@voiceflow/creator-app@1.444.1) (2021-07-29)
+
+
+### Reverts
+
+* Revert "feat: realtime workspace and projectsList ducks rebased (#3753)" ([de2e46a](https://github.com/voiceflow/creator-app/commit/de2e46ae50de965053fd8fde8be987252938baed)), closes [#3753](https://github.com/voiceflow/creator-app/issues/3753)
+
+
+
+
+
 # [1.444.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.443.0...@voiceflow/creator-app@1.444.0) (2021-07-29)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.446.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.445.2...@voiceflow/creator-app@1.446.0) (2021-07-29)
+
+
+### Features
+
+* hides voice and visual option for chatbot project (VF-1344) ([#3789](https://github.com/voiceflow/creator-app/issues/3789)) ([4755c64](https://github.com/voiceflow/creator-app/commit/4755c649b6569712f3846e941626bf92883bc91e))
+
+
+
+
+
 ## [1.445.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.445.1...@voiceflow/creator-app@1.445.2) (2021-07-29)
 
 

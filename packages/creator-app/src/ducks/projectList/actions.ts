@@ -27,15 +27,11 @@ export const {
   move: moveProjectList,
 } = createCRUDActionCreators(STATE_KEY);
 
-export const renameProjectList = (listID: string, name: string) => updateProjectList(listID, { name }, true);
-
-export const clearNewProjectList = (listID: string) => updateProjectList(listID, { isNew: false }, true);
-
 export const removeProjectFromList = (listID: string, projectID: string): RemoveProjectFromList =>
   createAction(ProjectListAction.REMOVE_PROJECT_FROM_LIST, { listID, projectID });
 
 export const transplantProject = (from: { listID: string; projectID: string }, to: { listID: string; projectID: string }): TransplantProject =>
   createAction(ProjectListAction.TRANSPLANT_PROJECT, { from, to });
 
-export const addProjectToList = (listID: string, projectID: string, addToStart?: boolean): AddProjectToList =>
+export const addProjectToListAction = (listID: string, projectID: string, addToStart?: boolean): AddProjectToList =>
   createAction(ProjectListAction.ADD_PROJECT_TO_LIST, { listID, projectID, addToStart });

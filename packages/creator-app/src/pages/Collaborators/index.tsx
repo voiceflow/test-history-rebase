@@ -1,8 +1,7 @@
 import React from 'react';
 
 import * as Workspace from '@/ducks/workspace';
-import { connect } from '@/hocs';
-import { ConnectedProps } from '@/types';
+import { useActiveWorkspace, useDispatch } from '@/hooks';
 
 import MemberSection from './components/MembersSection';
 import SendInvite from './components/SendInvite';
@@ -11,7 +10,10 @@ interface CollaboratorsProps {
   inline?: boolean;
 }
 
-const Collaborators: React.FC<CollaboratorsProps & ConnectedCollaboratorsProps> = ({ inline, workspace, sendInvite }) => {
+const Collaborators: React.FC<CollaboratorsProps> = ({ inline }) => {
+  const workspace = useActiveWorkspace();
+  const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
+
   const members = workspace?.members ?? [];
 
   return (
@@ -22,14 +24,4 @@ const Collaborators: React.FC<CollaboratorsProps & ConnectedCollaboratorsProps> 
   );
 };
 
-const mapStateToProps = {
-  workspace: Workspace.activeWorkspaceSelector,
-};
-
-const mapDispatchToProps = {
-  sendInvite: Workspace.sendInviteToActiveWorkspace,
-};
-
-type ConnectedCollaboratorsProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(Collaborators) as React.FC<CollaboratorsProps>;
+export default Collaborators;

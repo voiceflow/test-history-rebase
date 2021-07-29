@@ -34,12 +34,14 @@ class KeyValueCache<K extends BaseKeyExtractor, A extends BaseAdapter | undefine
   }
 
   public async set(keyOptions: KeyOptions<K>, value: StringToDB<A>): Promise<void> {
-    await this.redis.set(
-      this.keyCreator(keyOptions),
-      this.adapter?.toDB(value) ?? value,
-      this.expire ? this.expireMode : undefined,
-      this.expire ? this.expireTime : undefined
-    );
+    const key = this.keyCreator(keyOptions);
+    const dbValue = this.adapter?.toDB(value) ?? value;
+
+    if (this.expire) {
+      await this.redis.set(key, dbValue, this.expireMode, this.expireTime);
+    } else {
+      await this.redis.set(key, dbValue);
+    }
   }
 }
 

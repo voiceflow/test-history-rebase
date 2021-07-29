@@ -4,23 +4,18 @@ import React from 'react';
 import Commenter from '@/components/Commenter';
 import CommentPreview from '@/components/CommentPreview';
 import Duration from '@/components/Duration';
-import * as Workspace from '@/ducks/workspace';
-import { UNKNOWN_MEMBER_DATA } from '@/ducks/workspace';
-import { connect } from '@/hocs';
 import { Thread as ThreadType } from '@/models';
 import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
-import { ConnectedProps, MergeArguments } from '@/types';
 
 import ItemContainer from './ItemContainer';
 
 type ThreadItemProps = ThreadType;
 
-const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: threadID, resolved, comments, user }) => {
+const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comments }) => {
   const engine = React.useContext(EngineContext)!;
   const focusThread = React.useContext(FocusThreadContext)!;
 
-  const { text, created } = comments[0];
-
+  const comment = comments[0];
   const hasReplies = comments.length - 1;
   const hasMultipleReplies = comments.length > 2;
 
@@ -36,7 +31,7 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
   return (
     <ItemContainer isFocused={focusThread.focusedID === threadID} onClick={onClick}>
       <BoxFlexApart height={42}>
-        <Commenter creatorID={user?.creator_id || UNKNOWN_MEMBER_DATA.creator_id} />
+        <Commenter creatorID={comment.creatorID} />
         {resolved && (
           <TippyTooltip title="Mark Unresolved" distance={1}>
             <IconButton
@@ -51,10 +46,10 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
         )}
       </BoxFlexApart>
       <Box p="12px 0">
-        <CommentPreview text={text} />
+        <CommentPreview text={comment.text} />
       </Box>
       <BoxFlexApart>
-        <Duration key={threadID} time={created} />
+        <Duration key={threadID} time={comment.created} />
         {!!hasReplies && (
           <Flex>
             <Text color="#8da2b5" mr={8} fontSize={13}>
@@ -68,14 +63,4 @@ const ThreadItem: React.FC<ThreadItemProps & ConnectedThreadItemProps> = ({ id: 
   );
 };
 
-const mapStateToProps = {
-  user: Workspace.anyWorkspaceMemberSelector,
-};
-
-const mergeProps = (...[{ user: userSelector }, , { comments }]: MergeArguments<typeof mapStateToProps, {}, ThreadItemProps>) => ({
-  user: userSelector(String(comments[0].creatorID))!,
-});
-
-export type ConnectedThreadItemProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
-
-export default connect(mapStateToProps, null, mergeProps)(ThreadItem as any) as React.FC<ThreadItemProps>;
+export default ThreadItem;

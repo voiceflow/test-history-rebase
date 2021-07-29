@@ -2,15 +2,27 @@ import { PlanType, UserRole } from '@voiceflow/internal';
 import { ClickableText, Dropdown, IconButton, IconButtonVariant, Menu, MenuItem, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType, PLAN_TYPE_META } from '@/constants';
+import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { connect } from '@/hocs';
-import { useModals, usePermission } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { useDispatch, useFeature, useModals, usePermission, useRealtimeSelector, useSelector } from '@/hooks';
 
-const SettingsButton: React.FC<ConnectedSettingsButton> = ({ plan, goToWorkspaceSettings, leaveWorkspace }) => {
+const SettingsButton: React.FC = () => {
+  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+
+  const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
+  const planV1 = useSelector(Workspace.planTypeSelector);
+  const planRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
+
+  const plan = atomicActions.isEnabled ? planRealtime : planV1;
+
+  const leaveWorkspace = useDispatch(Workspace.leaveActiveWorkspace);
+  const goToWorkspaceSettings = useDispatch(Router.goToCurrentWorkspaceSettings);
+
   const { toggle: togglePayment } = useModals(ModalType.PAYMENT);
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
   const [canConfigureWorkspace, { activeRole }] = usePermission(Permission.CONFIGURE_WORKSPACE);
@@ -81,15 +93,4 @@ const SettingsButton: React.FC<ConnectedSettingsButton> = ({ plan, goToWorkspace
   );
 };
 
-const mapStateToProps = {
-  plan: Workspace.planTypeSelector,
-};
-
-const mapDispatchToProps = {
-  leaveWorkspace: Workspace.leaveActiveWorkspace,
-  goToWorkspaceSettings: Router.goToCurrentWorkspaceSettings,
-};
-
-type ConnectedSettingsButton = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsButton);
+export default SettingsButton;

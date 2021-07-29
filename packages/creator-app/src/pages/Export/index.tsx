@@ -7,10 +7,10 @@ import * as Creator from '@/ducks/creator';
 import * as Features from '@/ducks/feature';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import { ProjectLoadingGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { connect, withBatchLoadingGate } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
+import { useIsOnPaidPlanSelector } from '@/hooks';
 import { Link, LinkData, Node, Port } from '@/models';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
@@ -27,7 +27,9 @@ import { isMarkupBlockType, isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
 import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark, MockRealtimeGate } from './components';
 
-const ExportCanvas: React.FC<ConnectedExportProps> = ({ platform, diagramID, initialize, isOnPaidPlan }) => {
+const ExportCanvas: React.FC<ConnectedExportProps> = ({ platform, diagramID, initialize }) => {
+  const isOnPaidPlan = useIsOnPaidPlanSelector();
+
   const engine = useEngine();
   const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
 
@@ -126,7 +128,6 @@ const initialize =
 
 const mapStateToProps = {
   diagramID: Session.activeDiagramIDSelector,
-  isOnPaidPlan: Workspace.isOnPaidPlanSelector,
   platform: Project.activePlatformSelector,
 };
 

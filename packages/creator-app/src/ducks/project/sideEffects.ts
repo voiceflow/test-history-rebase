@@ -5,12 +5,12 @@ import { toast } from '@voiceflow/ui';
 import client from '@/client';
 import projectAdapter from '@/client/adapters/project';
 import * as Errors from '@/config/errors';
-import { addProjectToList } from '@/ducks/projectList/actions';
+import { addProjectToList } from '@/ducks/projectList/sideEffects/shared';
 import * as Session from '@/ducks/session';
 import { AnyProject } from '@/models';
 import { Thunk } from '@/store/types';
 
-import { addProject, patchProject, removeProject, replaceProjects, updateProjectName } from './actions';
+import { addProject, patchProject, removeManyProjects, removeProject, replaceProjects, updateProjectName } from './actions';
 import { activeProjectNameSelector, projectByIDSelector } from './selectors';
 
 export interface CreateProjectParams {
@@ -90,6 +90,14 @@ export const deleteProject =
     await client.api.project.delete(projectID);
 
     dispatch(removeProject(projectID));
+  };
+
+export const deleteManyProjects =
+  (projectIDs: string[]): Thunk =>
+  async (dispatch) => {
+    await Promise.all(projectIDs.map((projectID) => client.api.project.delete(projectID)));
+
+    dispatch(removeManyProjects(projectIDs));
   };
 
 export const setupProjectSocketConnection = (projectID: string) => async () => {

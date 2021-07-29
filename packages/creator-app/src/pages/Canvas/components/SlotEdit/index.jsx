@@ -7,13 +7,16 @@ import React from 'react';
 import { ModalFooter } from '@/components/LegacyModal';
 import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
+import { FeatureFlag } from '@/config/features';
 import { CUSTOM_SLOT_TYPE, ModalType, SLOT_COLORS } from '@/constants';
 import * as Intent from '@/ducks/intent';
+import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
+import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
 import * as Version from '@/ducks/version';
 import * as Workspace from '@/ducks/workspace';
-import { connect, styled } from '@/hocs';
-import { useModals, useTeardown } from '@/hooks';
+import { styled } from '@/hocs';
+import { useFeature, useModals, useRealtimeSelector, useSelector, useTeardown } from '@/hooks';
 import { replace, without } from '@/utils/array';
 import { formatIntentName } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
@@ -42,23 +45,20 @@ const FlexModalFooter = styled(ModalFooter)`
   flex-direction: row-reverse;
 `;
 
-function SlotEdit({
-  id,
-  name = '',
-  plan,
-  type,
-  color = _sample(SLOT_COLORS),
-  inputs = [],
-  slots,
-  onSave,
-  intents,
-  onRemove,
-  isCreate,
-  onDelete,
-  slotTypes = [],
-  isInteraction,
-  intentsUsingSlot,
-}) {
+function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = [], onSave, onRemove, isCreate, onDelete, isInteraction }) {
+  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+
+  const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
+
+  const planV1 = useSelector(Workspace.planTypeSelector);
+  const planRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
+  const slots = useSelector(Slot.allSlotsSelector);
+  const intents = useSelector(Intent.allIntentsSelector);
+  const slotTypes = useSelector(Version.activeSlotTypesSelector) ?? [];
+  const intentsUsingSlot = useSelector(Slot.intentsUsingSlotSelector);
+
+  const plan = atomicActions.isEnabled ? planRealtime : planV1;
+
   const isDeleteable = !isCreate && !!onDelete;
 
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
@@ -257,12 +257,5 @@ function SlotEdit({
     </>
   );
 }
-const mapStateToProps = {
-  plan: Workspace.planTypeSelector,
-  slots: Slot.allSlotsSelector,
-  intents: Intent.allIntentsSelector,
-  slotTypes: Version.activeSlotTypesSelector,
-  intentsUsingSlot: Slot.intentsUsingSlotSelector,
-};
 
-export default connect(mapStateToProps)(SlotEdit);
+export default SlotEdit;

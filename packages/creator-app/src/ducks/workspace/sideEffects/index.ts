@@ -1,18 +1,21 @@
 import { PlatformType } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
 import projectAdapter from '@/client/adapters/project';
 import * as Errors from '@/config/errors';
+import { FeatureFlag } from '@/config/features';
+import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import { addProject } from '@/ducks/project/actions';
 import { projectByIDSelector } from '@/ducks/project/selectors';
-import { addProjectToList } from '@/ducks/projectList/actions';
-import { addProjectToDefaultList, saveProjectListsForWorkspace, saveProjectToList } from '@/ducks/projectList/sideEffects';
+import { addProjectToDefaultList, addProjectToList, saveProjectListsForWorkspace, saveProjectToList } from '@/ducks/projectList/sideEffects';
+import { allWorkspaceIDsSelector as realtimeAllWorkspaceIDsSelector } from '@/ducks/realtimeV2/workspace/selectors';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import { AnyProject, DBMember, Workspace } from '@/models';
-import { SyncThunk, Thunk } from '@/store/types';
+import { Thunk } from '@/store/types';
 import { withoutValue } from '@/utils/array';
 
 import { patchWorkspace, removeWorkspace, replaceWorkspaces } from '../actions';
@@ -25,7 +28,7 @@ const MEMBER_UPDATE_ERROR = 'Unable to Update Members';
 
 export const loadWorkspaces =
   (isPublicUser = false): Thunk =>
-  async (dispatch) => {
+  async (dispatch, getState, { realtimeDispatch }) => {
     try {
       const workspaces = await client.workspace.find({
         query: { isPublic: isPublicUser },
@@ -34,7 +37,13 @@ export const loadWorkspaces =
       // templates workspace should be last
       const sorted = [...workspaces].sort((l, r) => (l.templates && 1) || (r.templates && -1) || 0).map((workspace) => ({ ...workspace }));
 
-      dispatch(replaceWorkspaces(sorted));
+      const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+
+      if (atomicActionsEnabled) {
+        await realtimeDispatch.crossTab(Realtime.workspace.crudLocalActions.replace({ values: sorted }));
+      } else {
+        dispatch(replaceWorkspaces(sorted));
+      }
     } catch (err) {
       dispatch(Modal.setError('Unable to fetch workspaces'));
 
@@ -56,10 +65,15 @@ export const createWorkspace =
 
 export const removeWorkspaceAndUpdateActive =
   (workspaceID: string): Thunk =>
-  async (dispatch, getState) => {
+  async (dispatch, getState, { realtimeDispatch, getRealtimeState }) => {
     const state = getState();
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const workspaceIDs = withoutValue(allWorkspaceIDsSelector(state), workspaceID);
+    const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+
+    const workspaceIDs = withoutValue(
+      atomicActionsEnabled ? realtimeAllWorkspaceIDsSelector(getRealtimeState()) : allWorkspaceIDsSelector(state),
+      workspaceID
+    );
 
     // default to the first existing workspace
     const newWorkspaceID = workspaceIDs.length > 0 ? workspaceIDs[0] : null;
@@ -70,7 +84,11 @@ export const removeWorkspaceAndUpdateActive =
       dispatch(goToWorkspace(newWorkspaceID));
     }
 
-    dispatch(removeWorkspace(workspaceID));
+    if (atomicActionsEnabled) {
+      await realtimeDispatch.crossTab(Realtime.workspace.crudActions.remove({ key: workspaceID, workspaceID }));
+    } else {
+      dispatch(removeWorkspace(workspaceID));
+    }
   };
 
 export const deleteWorkspace =
@@ -79,7 +97,8 @@ export const deleteWorkspace =
     try {
       await client.workspace.deleteWorkspace(workspaceID);
 
-      dispatch(removeWorkspaceAndUpdateActive(workspaceID));
+      await dispatch(removeWorkspaceAndUpdateActive(workspaceID));
+
       toast.success('Successfully deleted workspace');
     } catch (err) {
       dispatch(Modal.setError(err.body.data || 'Unable to delete workspace'));
@@ -90,41 +109,64 @@ export const deleteWorkspace =
 
 export const copyProject =
   (projectID: string, workspaceID: string, listID?: string): Thunk =>
-  async (dispatch, getState) => {
+  async (dispatch, getState, { realtimeDispatch }) => {
     const state = getState();
     const project = projectByIDSelector(state)(projectID);
 
     if (!project) throw new Error();
 
+    // TODO: move to the realtime service
     const copiedProject = projectAdapter.fromDB(
       await client.platform(project.platform).project.copy(project.id, { teamID: workspaceID, name: `${project.name} (COPY)` })
     );
 
-    dispatch(addProject(copiedProject.id, copiedProject));
+    const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+
+    if (atomicActionsEnabled) {
+      await realtimeDispatch.sync(
+        Realtime.project.crudActions.add({
+          key: copiedProject.id,
+          value: copiedProject,
+          workspaceID,
+        })
+      );
+    } else {
+      dispatch(addProject(copiedProject.id, copiedProject));
+    }
 
     if (listID) {
-      dispatch(addProjectToList(listID, copiedProject.id));
+      await dispatch(addProjectToList(listID, copiedProject.id));
     }
   };
 
 // active workspace
 
-export const loadActiveWorkspace = (): Thunk => async (dispatch, getState) => {
-  try {
-    const state = getState();
-    const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
+export const loadActiveWorkspace =
+  (): Thunk =>
+  async (dispatch, getState, { realtimeDispatch }) => {
+    try {
+      const state = getState();
+      const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
 
-    Errors.assertWorkspaceID(activeWorkspaceID);
+      Errors.assertWorkspaceID(activeWorkspaceID);
 
-    const workspace = await client.workspace.fetchWorkspace(activeWorkspaceID);
+      const workspace = await client.workspace.fetchWorkspace(activeWorkspaceID);
 
-    dispatch(patchWorkspace(activeWorkspaceID, workspace));
-  } catch (err) {
-    dispatch(Modal.setError('Unable to fetch workspace'));
+      const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
-    throw err;
-  }
-};
+      if (atomicActionsEnabled) {
+        await realtimeDispatch.crossTab(
+          Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: workspace, workspaceID: activeWorkspaceID })
+        );
+      } else {
+        dispatch(patchWorkspace(activeWorkspaceID, workspace));
+      }
+    } catch (err) {
+      dispatch(Modal.setError('Unable to fetch workspace'));
+
+      throw err;
+    }
+  };
 
 export const leaveActiveWorkspace = (): Thunk => async (dispatch, getState) => {
   try {
@@ -135,7 +177,8 @@ export const leaveActiveWorkspace = (): Thunk => async (dispatch, getState) => {
 
     await client.workspace.leaveWorkspace(activeWorkspaceID);
 
-    dispatch(removeWorkspaceAndUpdateActive(activeWorkspaceID));
+    await dispatch(removeWorkspaceAndUpdateActive(activeWorkspaceID));
+
     toast.success('Successfully left workspace');
   } catch (err) {
     dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERROR)));
@@ -144,19 +187,9 @@ export const leaveActiveWorkspace = (): Thunk => async (dispatch, getState) => {
   }
 };
 
-export const patchActiveWorkspace =
-  (payload: Partial<Workspace>): SyncThunk =>
-  (dispatch, getState) => {
-    const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());
-
-    Errors.assertWorkspaceID(activeWorkspaceID);
-
-    dispatch(patchWorkspace(activeWorkspaceID, payload));
-  };
-
 export const updateActiveWorkspaceMembers =
   (members: DBMember[]): Thunk =>
-  async (dispatch, getState) => {
+  async (dispatch, getState, { realtimeDispatch }) => {
     try {
       const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());
       const body = {
@@ -166,9 +199,18 @@ export const updateActiveWorkspaceMembers =
 
       Errors.assertWorkspaceID(activeWorkspaceID);
 
+      // TODO: move to the realtime
       const workspace = await client.workspace.updateMembers(activeWorkspaceID, body);
 
-      dispatch(patchActiveWorkspace(workspace));
+      const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+
+      if (atomicActionsEnabled) {
+        await realtimeDispatch.sync(
+          Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: workspace, workspaceID: activeWorkspaceID })
+        );
+      } else {
+        dispatch(patchWorkspace(activeWorkspaceID, workspace));
+      }
     } catch (err) {
       dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERROR)));
 
@@ -178,15 +220,24 @@ export const updateActiveWorkspaceMembers =
 
 export const updateActiveWorkspaceName =
   (name: string): Thunk =>
-  async (dispatch, getState) => {
+  async (dispatch, getState, { realtimeDispatch }) => {
     try {
       const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());
 
       Errors.assertWorkspaceID(activeWorkspaceID);
 
+      // TODO: move to the realtime
       await client.workspace.updateName(activeWorkspaceID, name);
 
-      dispatch(patchWorkspace(activeWorkspaceID, { name }));
+      const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+
+      if (atomicActionsEnabled) {
+        await realtimeDispatch.sync(
+          Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { name }, workspaceID: activeWorkspaceID })
+        );
+      } else {
+        dispatch(patchWorkspace(activeWorkspaceID, { name }));
+      }
     } catch (err) {
       dispatch(Modal.setError(extractErrorFromResponseData(err, 'Invalid Workspace Name')));
 
@@ -196,15 +247,24 @@ export const updateActiveWorkspaceName =
 
 export const updateActiveWorkspaceImage =
   (url: string): Thunk =>
-  async (dispatch, getState) => {
+  async (dispatch, getState, { realtimeDispatch }) => {
     try {
       const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());
 
       Errors.assertWorkspaceID(activeWorkspaceID);
 
+      // TODO: move to the realtime
       await client.workspace.updateImage(activeWorkspaceID, url);
 
-      dispatch(patchWorkspace(activeWorkspaceID, { image: url }));
+      const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+
+      if (atomicActionsEnabled) {
+        await realtimeDispatch.sync(
+          Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { image: url }, workspaceID: activeWorkspaceID })
+        );
+      } else {
+        dispatch(patchWorkspace(activeWorkspaceID, { image: url }));
+      }
     } catch (err) {
       dispatch(Modal.setError('Error updating workspace image'));
 
@@ -226,6 +286,7 @@ export const ejectFromActiveWorkspace =
     toast.info(`You are no longer a collaborator for "${workspaceName}" workspace`);
   };
 
+// TODO: remove and save on every action
 export const saveActiveWorkspaceProjectLists = (): Thunk => async (dispatch, getState) => {
   const workspaceID = Session.activeWorkspaceIDSelector(getState());
 
@@ -236,20 +297,37 @@ export const saveActiveWorkspaceProjectLists = (): Thunk => async (dispatch, get
 
 export const importProjectToActiveWorkspace =
   (projectID: string, workspaceID: string): Thunk<AnyProject> =>
-  async (dispatch, getState) => {
+  async (dispatch, getState, { realtimeDispatch }) => {
     const project = await client.api.project.get(projectID);
+    const state = getState();
 
-    const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());
+    const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
+    const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
+    // TODO: move to realtime service
     const copiedProject = projectAdapter.fromDB(
       await client.platform(project.platform as PlatformType).project.copy(project._id, { teamID: workspaceID })
     );
 
+    if (atomicActionsEnabled) {
+      await realtimeDispatch.sync(
+        Realtime.project.crudActions.add({
+          key: copiedProject.id,
+          value: copiedProject,
+          workspaceID,
+        })
+      );
+    }
+
     if (activeWorkspaceID === workspaceID) {
-      dispatch(addProject(copiedProject.id, copiedProject));
-      await dispatch(addProjectToDefaultList(copiedProject.id));
+      if (!atomicActionsEnabled) {
+        dispatch(addProject(copiedProject.id, copiedProject));
+      }
+
+      await dispatch(addProjectToDefaultList(copiedProject.id, workspaceID));
     } else {
       const projectLists = await client.projectList.find(workspaceID);
+
       dispatch(saveProjectToList(workspaceID, projectLists, copiedProject.id));
     }
 

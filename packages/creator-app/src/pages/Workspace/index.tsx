@@ -1,22 +1,32 @@
 import { LegacyButton } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { compose } from 'recompose';
 
 import { conversationGraphic } from '@/assets';
+import { FeatureFlag } from '@/config/features';
 import { LegacyPath, Path } from '@/config/routes';
+import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Router from '@/ducks/router';
 import * as WorkspaceDuck from '@/ducks/workspace';
 import { CheckInvitationGate, WorkspaceLoadingGate, WorkspacesLoadingGate } from '@/gates';
-import { connect, lazy, withBatchLoadingGate } from '@/hocs';
+import { lazy, withBatchLoadingGate } from '@/hocs';
+import { useDispatch, useFeature, useRealtimeSelector, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
-import { ConnectedProps } from '@/types';
 
 const Settings = lazy(() => import('@/pages/Workspace/Settings'));
 const NewProject = lazy(() => import('@/pages/NewProject'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
 
-const Workspace: React.FC<ConnectedWorkspaceProps> = ({ personalWorkspaceIDs, goToNewWorkspace }) => {
+const Workspace: React.FC = () => {
+  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+
+  const personalWorkspaceIDsV1 = useSelector(WorkspaceDuck.personalWorkspaceIDsSelector);
+  const personalWorkspaceIDsRealtime = useRealtimeSelector(RealtimeWorkspace.personalWorkspaceIDsSelector);
+
+  const personalWorkspaceIDs = atomicActions.isEnabled ? personalWorkspaceIDsRealtime : personalWorkspaceIDsV1;
+
+  const goToNewWorkspace = useDispatch(Router.goToNewWorkspace);
+
   if (!personalWorkspaceIDs.length) {
     return (
       <div className="h-100 d-flex justify-content-center">
@@ -55,17 +65,4 @@ const Workspace: React.FC<ConnectedWorkspaceProps> = ({ personalWorkspaceIDs, go
   );
 };
 
-const mapStateToProps = {
-  personalWorkspaceIDs: WorkspaceDuck.personalWorkspaceIDsSelector,
-};
-
-const mapDispatchToProps = {
-  goToNewWorkspace: Router.goToNewWorkspace,
-};
-
-type ConnectedWorkspaceProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default compose(
-  withBatchLoadingGate(CheckInvitationGate, WorkspacesLoadingGate, WorkspaceLoadingGate),
-  connect(mapStateToProps, mapDispatchToProps)
-)(Workspace as any);
+export default withBatchLoadingGate(CheckInvitationGate, WorkspacesLoadingGate, WorkspaceLoadingGate)(Workspace);

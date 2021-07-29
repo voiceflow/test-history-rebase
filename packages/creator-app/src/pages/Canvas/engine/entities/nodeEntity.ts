@@ -2,13 +2,17 @@ import React from 'react';
 import { createSelector } from 'reselect';
 import shallowEqual from 'shallowequal';
 
+import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { useTeardown } from '@/hooks';
 import { Node, NodeData } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 import { MarkupTransform } from '@/pages/Canvas/types';
+import { getRealtimeStore } from '@/store/realtime';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
@@ -135,6 +139,12 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
   }
 
   get isLocked() {
+    if (this.engine.isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS)) {
+      const activeWorkspaceID = this.engine.select(Session.activeWorkspaceIDSelector);
+
+      return RealtimeWorkspace.isTemplateWorkspaceByIDSelector(getRealtimeStore().getState(), { id: activeWorkspaceID });
+    }
+
     return this.engine.select(Workspace.isTemplateWorkspaceSelector);
   }
 

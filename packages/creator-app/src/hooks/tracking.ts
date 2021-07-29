@@ -2,13 +2,18 @@ import React from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { Dispatch } from 'redux';
 
+import { FeatureFlag } from '@/config/features';
+import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import * as Workspace from '@/ducks/workspace';
 import { ThunkResult } from '@/store/types';
 
 import { useOneTimeEffect } from './effect';
+import { useFeature } from './feature';
 import { useSetup, useTeardown } from './lifecycle';
+import { useRealtimeSelector } from './realtime';
+import { useActiveWorkspace } from './workspace';
 
 const wrapDispatch = <T extends Record<string, (...args: any[]) => any>>(
   dispatch: Dispatch,
@@ -38,9 +43,15 @@ export const useTrackingEvents = () => {
 };
 
 export const useSessionTracking = () => {
+  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
+
   const [trackEvents] = useTrackingEvents();
+
   const authToken = useSelector(Session.authTokenSelector);
-  const workspaceIDs = useSelector(Workspace.allWorkspaceIDsSelector);
+  const workspaceIDsV1 = useSelector(Workspace.allWorkspaceIDsSelector);
+  const workspaceIDsRealtime = useRealtimeSelector(RealtimeWorkspace.allWorkspaceIDsSelector);
+  const workspaceIDs = atomicActions.isEnabled ? workspaceIDsRealtime : workspaceIDsV1;
+
   const startTime = React.useMemo(() => Date.now(), []);
   const trackSessionTime = React.useCallback(() => trackEvents.trackSessionDuration(Date.now() - startTime), []);
 
@@ -59,7 +70,7 @@ export const useSessionTracking = () => {
 
 export const useWorkspaceTracking = () => {
   const [trackEvents] = useTrackingEvents();
-  const workspace = useSelector(Workspace.activeWorkspaceSelector);
+  const workspace = useActiveWorkspace();
 
   React.useEffect(() => {
     if (workspace) {

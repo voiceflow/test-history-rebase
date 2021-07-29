@@ -1,7 +1,13 @@
 import { LoguxControlOptions } from '../../control';
 import PatchWorkspaceControl from './patch';
 import { AddProjectControl, RemoveProjectControl } from './project';
-import { AddProjectListControl, PatchProjectListControl, RemoveProjectListControl, TransplantProjectBetweenListsControl } from './projectList';
+import {
+  AddProjectListControl,
+  MoveProjectListControl,
+  PatchProjectListControl,
+  RemoveProjectListControl,
+  TransplantProjectBetweenListsControl,
+} from './projectList';
 import RemoveWorkspaceControl from './remove';
 
 export interface WorkspaceActionControlMap {
@@ -12,6 +18,7 @@ export interface WorkspaceActionControlMap {
   removeProjectControl: RemoveProjectControl;
 
   addProjectListControl: AddProjectListControl;
+  moveProjectListControl: MoveProjectListControl;
   patchProjectListControl: PatchProjectListControl;
   removeProjectListControl: RemoveProjectListControl;
   transplantProjectBetweenListsControl: TransplantProjectBetweenListsControl;
@@ -25,6 +32,7 @@ const buildWorkspaceActionControls = (options: LoguxControlOptions): WorkspaceAc
   removeProjectControl: new RemoveProjectControl(options),
 
   addProjectListControl: new AddProjectListControl(options),
+  moveProjectListControl: new MoveProjectListControl(options),
   patchProjectListControl: new PatchProjectListControl(options),
   removeProjectListControl: new RemoveProjectListControl(options),
   transplantProjectBetweenListsControl: new TransplantProjectBetweenListsControl(options),

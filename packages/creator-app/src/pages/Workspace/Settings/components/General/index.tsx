@@ -1,13 +1,13 @@
 import { Box, BoxFlex, Button, Input } from '@voiceflow/ui';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Section, { SectionVariant } from '@/components/Section';
 import { ActionSection, SectionVariants, SettingsSection } from '@/components/Settings';
 import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { ModalType } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
-import { useModals } from '@/hooks';
+import { useActiveWorkspace, useModals } from '@/hooks';
 
 import BoardDeleteModal from './components/BoardDeleteModal';
 
@@ -15,7 +15,7 @@ const UploadJustIconComponent: React.FC<any> = UploadJustIcon;
 
 const GeneralSettingsPage: React.FC = () => {
   const dispatch = useDispatch();
-  const workspace = useSelector(Workspace.activeWorkspaceSelector)!;
+  const workspace = useActiveWorkspace()!;
 
   const [name, updateName] = React.useState(workspace.name);
 

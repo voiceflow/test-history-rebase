@@ -21,6 +21,3 @@ export const extractErrorMessages = (err?: {
 
 export const extractErrorFromResponseData = (err: Partial<Record<'response' | 'body', { data?: string }>> | undefined, defaultMessage: string) =>
   err?.response?.data || err?.body?.data || (err && JSON.stringify(err)) || defaultMessage;
-
-export const extractMemberById = (creatorID: string, members: { creator_id: string }[]) =>
-  members?.find((member) => member.creator_id === creatorID) || null;

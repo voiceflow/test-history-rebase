@@ -11,8 +11,12 @@ import { CreationHeader, InnerContainer, OuterContainer } from '@/components/Cre
 import { Path } from '@/config/routes';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
-import { useActiveWorkspace, useDispatch, useSelector, useSetup } from '@/hooks';
+import * as Session from '@/ducks/session';
+import * as Workspace from '@/ducks/workspace';
+import { connect } from '@/hocs';
+import { useSetup } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
+import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
 import { createPlatformSelector } from '@/utils/platform';
 import { isAlexaPlatform, isAnyGeneralPlatform, isGooglePlatform } from '@/utils/typeGuards';
@@ -30,15 +34,15 @@ const getTemplateTag = createPlatformSelector({
   [PlatformType.MOBILE_APP]: `default:${PlatformType.MOBILE_APP}`,
 });
 
-const NewProject: React.FC = () => {
-  const projects = useSelector(Project.allProjectsSelector);
-  const workspace = useActiveWorkspace();
-
-  const redirectToCanvas = useDispatch(Router.redirectToCanvas);
-  const goToDashboard = useDispatch(Router.goToDashboard);
-  const createProject = useDispatch(Project.createProject);
-  const loadProjectsByWorkspaceID = useDispatch(Project.loadProjectsByWorkspaceID);
-
+const NewProject: React.FC<ConnectedNewProjectProps> = ({
+  workspace,
+  projects,
+  activeWorkspaceID,
+  goToDashboard,
+  redirectToCanvas,
+  createProject,
+  loadProjectsByWorkspaceID,
+}) => {
   // Once this starts getting more complex, we should move all this logic to a context, but right now that's overkill
   const [stepStack, setStepStack] = React.useState<StepID[]>([StepID.NAME_AND_IMAGE]);
   const currentStep = stepStack[0];
@@ -109,8 +113,8 @@ const NewProject: React.FC = () => {
   };
 
   useSetup(() => {
-    if (workspace?.id && !projects.length) {
-      loadProjectsByWorkspaceID(workspace.id);
+    if (activeWorkspaceID && !projects.length) {
+      loadProjectsByWorkspaceID(activeWorkspaceID);
     }
   });
 
@@ -124,7 +128,7 @@ const NewProject: React.FC = () => {
     setInvocationName(name);
   }, [name]);
 
-  if (!workspace || projects.length >= workspace.projects) {
+  if (!activeWorkspaceID || !workspace || projects.length >= workspace.projects) {
     return <Redirect to={Path.DASHBOARD} />;
   }
 
@@ -169,4 +173,19 @@ const NewProject: React.FC = () => {
   );
 };
 
-export default NewProject;
+const mapStateToProps = {
+  projects: Project.allProjectsSelector,
+  workspace: Workspace.activeWorkspaceSelector,
+  activeWorkspaceID: Session.activeWorkspaceIDSelector,
+};
+
+const mapDispatchToProps = {
+  redirectToCanvas: Router.redirectToCanvas,
+  goToDashboard: Router.goToDashboard,
+  createProject: Project.createProject,
+  loadProjectsByWorkspaceID: Project.loadProjectsByWorkspaceID,
+};
+
+type ConnectedNewProjectProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewProject);

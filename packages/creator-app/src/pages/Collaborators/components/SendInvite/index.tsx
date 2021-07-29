@@ -4,13 +4,12 @@ import React from 'react';
 
 import ButtonDropdownInput, { OrientationType } from '@/components/ButtonDropdownInput';
 import InvalidEmailError from '@/components/InvalidEmailError';
-import { FeatureFlag } from '@/config/features';
 import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
-import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { useEnableDisable, useFeature, useModals, useRealtimeSelector, useSelector, useWorkspaceUserRoleSelector } from '@/hooks';
+import { connect } from '@/hocs';
+import { useEnableDisable, useModals } from '@/hooks';
 import { Identifier } from '@/styles/constants';
+import { ConnectedProps } from '@/types';
 import { isValidEmail } from '@/utils/emails';
 
 import Container from './components/Container';
@@ -31,31 +30,15 @@ interface SendInviteProps {
   sendInvite: (email: string, role: UserRole) => void;
 }
 
-const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
-  const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const userRole = useWorkspaceUserRoleSelector();
-  const seatLimitsV1 = useSelector(Workspace.seatLimitsSelector);
-  const seatLimitsRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspaceSeatLimitsByIDSelector(state, { id: activeWorkspaceID }));
-  const numberOfSeatsV1 = useSelector(Workspace.workspaceNumberOfSeatsSelector);
-  const numberOfSeatsRealtime = useRealtimeSelector((state) =>
-    RealtimeWorkspace.workspaceNumberOfSeatsByIDSelector(state, { id: activeWorkspaceID })
-  );
-  const usedEditorSeatsV1 = useSelector(Workspace.usedEditorSeatsSelector);
-  const usedEditorSeatsRealtime = useRealtimeSelector((state) =>
-    RealtimeWorkspace.workspaceUsedEditorSeatsByIDSelector(state, { id: activeWorkspaceID })
-  );
-  const usedViewerSeatsV1 = useSelector(Workspace.usedViewerSeatsSelector);
-  const usedViewerSeatsRealtime = useRealtimeSelector((state) =>
-    RealtimeWorkspace.workspaceUsedViewerSeatsByIDSelector(state, { id: activeWorkspaceID })
-  );
-
-  const numberOfSeats = atomicActions.isEnabled ? numberOfSeatsRealtime : numberOfSeatsV1;
-  const seatLimits = atomicActions.isEnabled ? seatLimitsRealtime : seatLimitsV1;
-  const usedEditorSeats = atomicActions.isEnabled ? usedEditorSeatsRealtime : usedEditorSeatsV1;
-  const usedViewerSeats = atomicActions.isEnabled ? usedViewerSeatsRealtime : usedViewerSeatsV1;
-
+const SendInvite: React.FC<SendInviteProps & ConnectedSendInviteProps> = ({
+  inline,
+  sendInvite,
+  numberOfSeats,
+  seatLimits,
+  usedEditorSeats,
+  usedViewerSeats,
+  userRole,
+}) => {
   const [email, setEmail] = React.useState('');
   const [permissionType, setPermissionType] = React.useState(OPTIONS_ARRAY[0]);
   const [isInvalid, setInvalid, setValid] = useEnableDisable(false);
@@ -124,4 +107,16 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
   );
 };
 
-export default SendInvite;
+const mapStateToProps = {
+  seatLimits: Workspace.seatLimitsSelector,
+  plan: Workspace.planTypeSelector,
+  members: Workspace.activeWorkspaceMembersSelector,
+  numberOfSeats: Workspace.workspaceNumberOfSeatsSelector,
+  usedEditorSeats: Workspace.usedEditorSeatsSelector,
+  usedViewerSeats: Workspace.usedViewerSeatsSelector,
+  userRole: Workspace.userRoleSelector,
+};
+
+type ConnectedSendInviteProps = ConnectedProps<typeof mapStateToProps>;
+
+export default connect(mapStateToProps)(SendInvite) as React.FC<SendInviteProps>;

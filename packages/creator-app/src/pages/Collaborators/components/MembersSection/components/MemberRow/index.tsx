@@ -5,9 +5,11 @@ import React from 'react';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
-import { useActiveWorkspace, useDispatch, useFeature, useSelector, useWorkspaceUserRoleSelector } from '@/hooks';
+import { connect } from '@/hocs';
+import { useFeature } from '@/hooks';
 import { DBMember } from '@/models';
 import { ClassName } from '@/styles/constants';
+import { ConnectedProps } from '@/types';
 
 import {
   Container,
@@ -43,18 +45,20 @@ interface MemberRowProps {
   resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<boolean>;
 }
 
-const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendInvite }) => {
-  const ownerRole = useFeature(FeatureFlag.OWNER_ROLE);
-
-  const role = useWorkspaceUserRoleSelector();
-  const userID = useSelector(Account.userIDSelector);
-  const activeWorkspace = useActiveWorkspace();
-
-  const deleteMember = useDispatch(Workspace.deleteMemberOfActiveWorkspace);
-  const cancelInvite = useDispatch(Workspace.cancelInviteToActiveWorkspace);
-  const updateMemberRole = useDispatch(Workspace.updateActiveWorkspaceMemberRole);
-
+const MemberRow: React.FC<MemberRowProps & ConnectedMemberRowProps> = ({
+  role,
+  userID,
+  member,
+  inline,
+  pending,
+  resendInvite,
+  deleteMember,
+  cancelInvite,
+  activeWorkspace,
+  updateMemberRole,
+}) => {
   const userIsMember = userID === member.creator_id;
+  const ownerRole = useFeature(FeatureFlag.OWNER_ROLE);
   const memberIsWorkspaceOwner = activeWorkspace?.creatorID === member.creator_id;
   const allowDropdown =
     !userIsMember && !memberIsWorkspaceOwner && !(role === UserRole.EDITOR && (member.role === UserRole.OWNER || member.role === UserRole.ADMIN));
@@ -129,4 +133,18 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendIn
   );
 };
 
-export default MemberRow;
+const mapStateToProps = {
+  role: Workspace.userRoleSelector,
+  userID: Account.userIDSelector,
+  activeWorkspace: Workspace.activeWorkspaceSelector,
+};
+
+const mapDispatchToProps = {
+  deleteMember: Workspace.deleteMemberOfActiveWorkspace,
+  cancelInvite: Workspace.cancelInviteToActiveWorkspace,
+  updateMemberRole: Workspace.updateActiveWorkspaceMemberRole,
+};
+
+type ConnectedMemberRowProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(MemberRow) as React.FC<MemberRowProps>;

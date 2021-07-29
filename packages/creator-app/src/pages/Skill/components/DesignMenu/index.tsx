@@ -6,27 +6,29 @@ import { Permission } from '@/config/permissions';
 import { DragItem } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useHotKeys, useIsViewerOrLibraryRoleSelector, usePermission, useSelector, useTheme, useTrackingEvents } from '@/hooks';
+import * as Workspace from '@/ducks/workspace';
+import { connect } from '@/hocs';
+import { useHotKeys, usePermission, useTheme, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useAnyModeOpen } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
+import { ConnectedProps } from '@/types';
 
 import { Container, Content, Flows, Header, Steps } from './components';
 import { Tab, TABS } from './constants';
 
 const SIDEBAR_CALCULATION_BUFFER = 50;
 
-const DesignMenu: React.FC = () => {
-  const isHidden = useSelector(UI.isCreatorMenuHiddenSelector);
-  const activeTab = useSelector(UI.activeCreatorMenuSelector);
-  const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
-  const isViewerOrLibraryRole = useIsViewerOrLibraryRoleSelector();
-
-  const toggleIsHidden = useDispatch(UI.toggleCreatorMenuHidden);
-  const hideCreatorMenu = useDispatch(UI.hideCreatorMenu);
-  const showCreatorMenu = useDispatch(UI.showCreatorMenu);
-  const selectActiveTab = useDispatch(UI.setActiveCreatorMenu);
-
+const DesignMenu: React.FC<ConnectedDesignMenuProps> = ({
+  isHidden,
+  activeTab,
+  canvasOnly,
+  toggleIsHidden,
+  showCreatorMenu,
+  hideCreatorMenu,
+  selectActiveTab,
+  isViewerOrLibraryRole,
+}) => {
   const [isEditingMode] = usePermission(Permission.EDIT_CANVAS);
   const isAnyModeOpen = useAnyModeOpen();
   const [isOpenByHover, openByHover, closeByLoseHover] = useEnableDisable(false);
@@ -148,4 +150,20 @@ const DesignMenu: React.FC = () => {
   );
 };
 
-export default DesignMenu;
+const mapStateToProps = {
+  isHidden: UI.isCreatorMenuHiddenSelector,
+  activeTab: UI.activeCreatorMenuSelector,
+  canvasOnly: UI.isCanvasOnlyShowingSelector,
+  isViewerOrLibraryRole: Workspace.isViewerOrLibraryRoleSelector,
+};
+
+const mapDispatchToProps = {
+  toggleIsHidden: UI.toggleCreatorMenuHidden,
+  hideCreatorMenu: UI.hideCreatorMenu,
+  showCreatorMenu: UI.showCreatorMenu,
+  selectActiveTab: UI.setActiveCreatorMenu,
+};
+
+type ConnectedDesignMenuProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(DesignMenu);

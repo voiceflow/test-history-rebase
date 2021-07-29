@@ -1,17 +1,18 @@
 import { UserRole } from '@voiceflow/internal';
 import { Button, ButtonVariant, Menu, MenuItem, toast } from '@voiceflow/ui';
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import * as Errors from '@/config/errors';
-import { FeatureFlag } from '@/config/features';
 import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { useFeature, useModals, useRealtimeSelector, useSelector, useTrackingEvents, useWorkspaceUserRoleSelector } from '@/hooks';
+import { connect } from '@/hocs';
+import { useModals, useTrackingEvents } from '@/hooks';
 import { Identifier } from '@/styles/constants';
+import { ConnectedProps } from '@/types';
 import { copy } from '@/utils/clipboard';
 import * as Sentry from '@/vendors/sentry';
 
@@ -32,23 +33,7 @@ const inviteLimitMessage = (
 
 type ROLE_OPTIONS = UserRole.EDITOR | UserRole.VIEWER | UserRole.ADMIN;
 
-const InviteByLinkFooter: React.FC = () => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
-  const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const numberOfSeatsV1 = useSelector(Workspace.workspaceNumberOfSeatsSelector);
-  const numberOfSeatsRealtime = useRealtimeSelector((state) =>
-    RealtimeWorkspace.workspaceNumberOfSeatsByIDSelector(state, { id: activeWorkspaceID })
-  );
-  const usedEditorSeatsV1 = useSelector(Workspace.usedEditorSeatsSelector);
-  const usedEditorSeatsRealtime = useRealtimeSelector((state) =>
-    RealtimeWorkspace.workspaceUsedEditorSeatsByIDSelector(state, { id: activeWorkspaceID })
-  );
-  const userRole = useWorkspaceUserRoleSelector();
-
-  const numberOfSeats = atomicActions.isEnabled ? numberOfSeatsRealtime : numberOfSeatsV1;
-  const usedEditorSeats = atomicActions.isEnabled ? usedEditorSeatsRealtime : usedEditorSeatsV1;
-
+const InviteByLinkFooter: React.FC<ConnectedSeatSummaryProps> = ({ usedEditorSeats, numberOfSeats, activeWorkspaceID, userRole }) => {
   const [linkInvitePermission, setLinkInvitePermission] = React.useState<ROLE_OPTIONS>(UserRole.EDITOR);
   const [inviteCode, setInviteCode] = React.useState('');
   const [inviteLink, setInviteLink] = React.useState('');
@@ -119,4 +104,13 @@ const InviteByLinkFooter: React.FC = () => {
   );
 };
 
-export default InviteByLinkFooter;
+const mapStateToProps = {
+  activeWorkspaceID: Session.activeWorkspaceIDSelector,
+  numberOfSeats: Workspace.workspaceNumberOfSeatsSelector,
+  usedEditorSeats: Workspace.usedEditorSeatsSelector,
+  userRole: Workspace.userRoleSelector,
+};
+
+type ConnectedSeatSummaryProps = ConnectedProps<typeof mapStateToProps>;
+
+export default connect(mapStateToProps)(InviteByLinkFooter) as React.FC;

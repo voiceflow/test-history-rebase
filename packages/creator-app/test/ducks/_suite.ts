@@ -8,11 +8,11 @@ import * as CRUD from '@/ducks/utils/crud';
 import { AnyAction, AnyThunk, RootReducer, Selector } from '@/store/types';
 import { getNormalizedByKey, Normalized } from '@/utils/normalized';
 
-interface ReduxDuck<S, A extends AnyAction> {
+type ReduxDuck<S, A extends AnyAction> = {
   default: RootReducer<S, A>;
   STATE_KEY: string;
   INITIAL_STATE?: any;
-}
+};
 
 const INIT_ACTION: any = createAction('@@INIT');
 const NOOP_ACTION: any = createAction('@@NOOP');
@@ -79,7 +79,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
           utils.expect(stub).to.be.calledWithExactly(...args);
         };
 
-        const result = await sideEffect(dispatch as any, getState, {} as any);
+        const result = await sideEffect(dispatch as any, getState);
 
         return {
           result,
@@ -96,7 +96,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
         const expectDispatch = (action: { type: string } | AnyAction | AnyThunk) => utils.expect(dispatch).to.be.calledWithExactly(action);
 
         try {
-          await sideEffect(dispatch, getState, {} as any);
+          await sideEffect(dispatch, getState);
 
           throw Error('should have thrown an error');
         } catch (error) {

@@ -3,15 +3,15 @@ import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
+import * as Workspace from '@/ducks/workspace';
 import PermissionGate from '@/gates/PermissionGate';
-import { useIsOnPaidPlanSelector, useModals } from '@/hooks';
+import { connect } from '@/hocs';
+import { useModals } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import { Container, UpgradeIcon, UpgradeText } from './components';
 
-function UpgradeButton() {
-  const isOnPaidPlan = useIsOnPaidPlanSelector();
-
+function UpgradeButton({ isOnPaidPlan }) {
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
 
   return (
@@ -28,4 +28,8 @@ function UpgradeButton() {
   );
 }
 
-export default UpgradeButton;
+const mapStateToProps = {
+  isOnPaidPlan: Workspace.isOnPaidPlanSelector,
+};
+
+export default connect(mapStateToProps)(UpgradeButton);

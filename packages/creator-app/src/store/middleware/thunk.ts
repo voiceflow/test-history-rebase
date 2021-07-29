@@ -3,8 +3,6 @@ import thunk from 'redux-thunk';
 
 import * as Sentry from '@/vendors/sentry';
 
-import { getRealtimeStore, wrapDispatch } from '../realtime';
-
 type ThunkError = Error & { thunkErrorLogged?: boolean };
 
 const handleThunkError = (err: ThunkError) => {
@@ -37,8 +35,6 @@ export const thunkErrorLoggerMiddleware: Redux.Middleware = () => (next) => (act
 };
 
 // const thunkMiddleware = [thunkErrorLoggerMiddleware, thunk];
-const thunkMiddleware = [
-  thunk.withExtraArgument({ realtimeDispatch: wrapDispatch(getRealtimeStore), getRealtimeState: () => getRealtimeStore().getState() }),
-];
+const thunkMiddleware = [thunk];
 
 export default thunkMiddleware;

@@ -9,17 +9,17 @@ import Collapsable from '@/components/Collapsable';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import { TextVariant } from '@/components/DropdownWithCaret/types';
 import { CardElement } from '@/components/Stripe';
-import { FeatureFlag } from '@/config/features';
 import { PERIOD_NAME } from '@/constants';
 import * as Account from '@/ducks/account';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Workspace from '@/ducks/workspace';
-import { useDebouncedCallback, useFeature, useRealtimeSelector, useSelector, useToggle } from '@/hooks';
+import { connect } from '@/hocs';
+import { useDebouncedCallback, useToggle } from '@/hooks';
 import { DBMember } from '@/models';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
 import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
 import CostText from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components/CostText';
+import { ConnectedProps } from '@/types';
 
 import {
   BubbleTextContainer,
@@ -38,23 +38,8 @@ import {
 
 export const GET_PRICE_WITHOUT_TEAM_ID_CONST = 'none';
 
-const Payment: React.FC = () => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
-  const workspacesV1 = useSelector(Workspace.allWorkspacesSelector);
-  const workspacesRealtime = useRealtimeSelector(RealtimeWorkspace.allWorkspacesSelector);
-  const getWorkspaceByIDV1 = useSelector(Workspace.workspaceByIDSelector);
-  const getWorkspaceByIDRealtime = useRealtimeSelector(
-    (state) => (workspaceID: string) => RealtimeWorkspace.workspaceByIDSelector(state, { id: workspaceID })
-  );
-  const creatorID = useSelector(Account.userIDSelector);
-  const referrerID = useSelector(Account.referrerIDSelector);
-  const referralCode = useSelector(Account.referralCodeSelector);
-
+const Payment: React.FC<ConnectedPaymentProps> = ({ workspaces, workspaceByID, creatorID, getWorkspaceByID, referrerID, referralCode }) => {
   const { state, actions } = useContext(OnboardingContext);
-
-  const workspaces = atomicActions.isEnabled ? workspacesRealtime : workspacesV1;
-  const getWorkspaceByID = atomicActions.isEnabled ? getWorkspaceByIDRealtime : getWorkspaceByIDV1;
 
   const { plan, couponCode, period } = state.paymentMeta;
   const { sendingRequests, selectableWorkspace, hasFixedPeriod, specificFlowType } = state;
@@ -93,9 +78,8 @@ const Payment: React.FC = () => {
   };
 
   const isWorkspaceAdmin = (workspaceID: string) => {
-    const targetWorkspaceMembers = getWorkspaceByID(workspaceID)?.members;
-
-    return targetWorkspaceMembers?.some((member) => member.creator_id === creatorID && member.role === UserRole.ADMIN);
+    const targetWorkspaceMembers = getWorkspaceByID(workspaceID).members;
+    return targetWorkspaceMembers.some((member) => member.creator_id === creatorID && member.role === UserRole.ADMIN);
   };
 
   const handleStripeOnChange = ({ error }: any) => {
@@ -137,7 +121,7 @@ const Payment: React.FC = () => {
   }, [coupon, paymentPeriod, selectedPlan, seatCount, setCouponError, setPriceError]);
 
   React.useEffect(() => {
-    const targetWorkspace = getWorkspaceByID(selectedWorkspaceId);
+    const targetWorkspace = workspaceByID(selectedWorkspaceId);
     let numberOfEditors = 0;
 
     targetWorkspace?.members.forEach((member: DBMember) => {
@@ -168,7 +152,7 @@ const Payment: React.FC = () => {
         ),
       }
     : {
-        text: selectedWorkspaceId ? `Workspace: ${getWorkspaceByID(selectedWorkspaceId)?.name}` : 'Select a Workspace',
+        text: selectedWorkspaceId ? `Workspace: ${getWorkspaceByID(selectedWorkspaceId).name}` : 'Select a Workspace',
         menu: (
           <Menu>
             {workspaces.map((workspace) => (
@@ -281,4 +265,15 @@ const Payment: React.FC = () => {
   );
 };
 
-export default Payment;
+const mapStateToProps = {
+  workspaces: Workspace.allWorkspacesSelector,
+  getWorkspaceByID: Workspace.workspaceByIDSelector,
+  creatorID: Account.userIDSelector,
+  workspaceByID: Workspace.workspaceByIDSelector,
+  referrerID: Account.referrerIDSelector,
+  referralCode: Account.referralCodeSelector,
+};
+
+type ConnectedPaymentProps = ConnectedProps<typeof mapStateToProps>;
+
+export default connect(mapStateToProps)(Payment);

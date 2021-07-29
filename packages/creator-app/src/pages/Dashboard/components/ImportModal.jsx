@@ -1,70 +1,44 @@
 import './ImportModal.css';
 
-import { Button, ButtonVariant, StatusCode, toast } from '@voiceflow/ui';
+import { Button, StatusCode, toast } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
 import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
-import { FeatureFlag } from '@/config/features';
-import { hasRolePermission, Permission } from '@/config/permissions';
+import { hasPermission, Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
-import { extractMemberById } from '@/ducks/realtimeV2/workspace/utils';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
-import { useDispatch, useFeature, useModals, useRealtimeSelector, useSelector, useTrackingEvents } from '@/hooks';
-import { Workspace as WorkspaceModel } from '@/models';
+import { extractMemberById } from '@/ducks/workspace/utils';
+import { connect } from '@/hocs';
+import { useModals, useTrackingEvents } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
 import { ImportSelect } from './ModalComponents';
 
-const allowedToClone = (workspace: WorkspaceModel, creatorID: number | null): boolean => {
-  if (!creatorID) {
-    return false;
-  }
-
-  const creatorRole = extractMemberById(workspace.members ?? [], creatorID)?.role;
-
-  return !!creatorRole && hasRolePermission(Permission.MANAGE_PROJECTS, creatorRole);
+const allowedToClone = (workspace, creatorID) => {
+  const creatorRole = extractMemberById(creatorID, workspace.members)?.role;
+  return hasPermission(Permission.MANAGE_PROJECTS, creatorRole, null);
 };
 
-const ImportModal: React.FC = () => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
-  const creatorID = useSelector(Account.userIDSelector);
-  const workspacesV1 = useSelector(Workspace.allWorkspacesSelector);
-  const workspacesRealtime = useRealtimeSelector(RealtimeWorkspace.allWorkspacesSelector);
-  const workspaceByIDSelectorV1 = useSelector(Workspace.workspaceByIDSelector);
-  const workspaceByIDSelectorRealtime = useRealtimeSelector(
-    (state) => (workspaceID: string) => RealtimeWorkspace.workspaceByIDSelector(state, { id: workspaceID })
-  );
-
-  const workspaces = atomicActions.isEnabled ? workspacesRealtime : workspacesV1;
-  const workspaceByIDSelector = atomicActions.isEnabled ? workspaceByIDSelectorRealtime : workspaceByIDSelectorV1;
-
-  const importProject = useDispatch(Workspace.importProjectToActiveWorkspace);
-  const goToWorkspace = useDispatch(Router.goToWorkspace);
-
+function ImportModal({ importProject, workspaces, workspaceByIDSelector, goToWorkspace, creatorID }) {
   const [trackEvents] = useTrackingEvents();
   const workspaceOptions = useMemo(() => workspaces.map((workspace) => ({ value: workspace.id, label: workspace.name })), [workspaces]);
-  const [targetWorkspace, setTargetWorkspace] = useState<typeof workspaceOptions[number] | null>(workspaceOptions[0]);
-  const { close, toggle, data, isOpened } = useModals<{ projectID?: string; cloning?: boolean }>(ModalType.IMPORT_PROJECT);
+  const [targetWorkspace, setTargetWorkspace] = useState(workspaceOptions[0]);
+  const { close, toggle, data, isOpened } = useModals(ModalType.IMPORT_PROJECT);
   const { open: openLoadingModal, close: closeLoadingModal } = useModals(ModalType.LOADING);
   const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
-  const [multipleWorkspaces, setMultipleWorkspaces] = React.useState(false);
-
   const { projectID, cloning = false } = data;
+  const [multipleWorkspaces, setMultipleWorkspaces] = React.useState(null);
 
   const renderModal = isOpened && multipleWorkspaces;
 
   React.useEffect(() => {
     if (!projectID) return;
-
     // get a list of workspaces with editor/owner/admin role
     const authorizedWorkspaces = workspaces.filter((workspace) =>
       workspace.members.some((member) => member.creator_id === creatorID && allowedToClone(workspace, creatorID))
     );
-
     // If user has 0 workspaces with Editor/Admin/Owner role, show toast
     if (authorizedWorkspaces.length === 0) {
       setMultipleWorkspaces(false);
@@ -89,31 +63,24 @@ const ImportModal: React.FC = () => {
   }, [workspaceOptions]);
 
   const chooseWorkspace = React.useCallback(
-    (workspaceID: string) => setTargetWorkspace(workspaceOptions.find(({ value }) => value === workspaceID) ?? null),
+    (workspaceID) => setTargetWorkspace(workspaceOptions.find(({ value }) => value === workspaceID)),
     [workspaceOptions, setTargetWorkspace]
   );
 
-  const cloneProject = async (workspaceID?: string) => {
-    if (!projectID || !workspaceID) return;
-
+  const cloneProject = async (workspaceID) => {
     const workspace = workspaceByIDSelector(workspaceID);
 
-    if (!workspace) return;
-
     const projectCountPerWorkspace = workspace.boards.reduce((acc, board) => acc + (board.projects.length || 0), 0);
-
     if (projectCountPerWorkspace >= workspace.projects) {
       close();
       goToWorkspace(workspaceID);
       openProjectLimitModal({ message: 'Project limitations is reached' });
       return;
     }
-
     if (allowedToClone(workspace, creatorID)) {
       try {
         close();
         openLoadingModal();
-
         const importedProject = await importProject(projectID, workspaceID);
 
         if (cloning) {
@@ -125,7 +92,6 @@ const ImportModal: React.FC = () => {
         }
       } catch (e) {
         closeLoadingModal();
-
         if (e.statusCode === StatusCode.FORBIDDEN) {
           goToWorkspace(workspaceID);
           openProjectLimitModal({ message: 'Project limitations is reached' });
@@ -137,9 +103,7 @@ const ImportModal: React.FC = () => {
         return;
       }
       goToWorkspace(workspaceID);
-
       toast.success('Cloned project successfully!');
-
       closeLoadingModal();
     } else {
       toast.error(
@@ -151,30 +115,38 @@ const ImportModal: React.FC = () => {
   return renderModal ? (
     <Modal isOpen={isOpened} toggle={toggle} className="import-modal">
       <ModalHeader toggle={toggle} header={cloning ? 'Clone Project' : 'Copy Project'}></ModalHeader>
-
-      <ModalBody>
+      <ModalBody padding="0 32px 32px 32px">
         <ImportSelect
           prefix={cloning ? 'CLONE TO' : 'COPY TO'}
           value={targetWorkspace?.label}
-          onSelect={(value: any) => chooseWorkspace(value)}
+          onSelect={chooseWorkspace}
           disabled={workspaceOptions.length === 1}
           options={workspaceOptions}
-          getOptionValue={(option: any) => option.value}
-          renderOptionLabel={(option: any) => option.label}
+          getOptionValue={(option) => option.value}
+          renderOptionLabel={(option) => option.label}
         />
       </ModalBody>
-
       <ModalFooter>
         {!cloning && (
-          <Button variant={ButtonVariant.TERTIARY} onClick={() => toggle()}>
+          <Button variant="tertiary" onClick={toggle}>
             Cancel
           </Button>
         )}
-
-        <Button onClick={() => cloneProject(targetWorkspace?.value)}>{cloning ? 'Clone' : 'Copy Project'}</Button>
+        <Button onClick={() => cloneProject(targetWorkspace.value)}>{cloning ? 'Clone' : 'Copy Project'}</Button>
       </ModalFooter>
     </Modal>
   ) : null;
+}
+
+const mapStateToProps = {
+  workspaces: Workspace.allWorkspacesSelector,
+  workspaceByIDSelector: Workspace.workspaceByIDSelector,
+  creatorID: Account.userIDSelector,
 };
 
-export default ImportModal;
+const mapDispatchToProps = {
+  importProject: Workspace.importProjectToActiveWorkspace,
+  goToWorkspace: Router.goToWorkspace,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ImportModal);

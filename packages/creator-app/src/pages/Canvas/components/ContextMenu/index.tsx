@@ -6,10 +6,13 @@ import { Permission } from '@/config/permissions';
 import { CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as UIDuck from '@/ducks/ui';
-import { useDispatch, useIsTemplateWorkspaceSelector, useModals, usePermission } from '@/hooks';
+import * as Workspace from '@/ducks/workspace';
+import { connect } from '@/hocs';
+import { useModals, usePermission } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
+import { ConnectedProps } from '@/types';
 import { buildVirtualElement } from '@/utils/dom';
 import { noop } from '@/utils/functional';
 import { Coords } from '@/utils/geometry';
@@ -88,11 +91,7 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   },
 };
 
-const ContextMenu: React.FC = () => {
-  const isTemplateWorkspace = useIsTemplateWorkspaceSelector();
-
-  const toggleCanvasOnly = useDispatch(UIDuck.toggleCanvasOnly);
-
+const ContextMenu: React.FC<ConnectedContextMenuProps> = ({ toggleCanvasOnly, isTemplateWorkspace }) => {
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
@@ -198,4 +197,14 @@ const ContextMenu: React.FC = () => {
   );
 };
 
-export default ContextMenu;
+const mapStateToProps = {
+  isTemplateWorkspace: Workspace.isTemplateWorkspaceSelector,
+};
+
+const mapDispatchToProps = {
+  toggleCanvasOnly: UIDuck.toggleCanvasOnly,
+};
+
+type ConnectedContextMenuProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContextMenu);

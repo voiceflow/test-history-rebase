@@ -35,4 +35,3 @@ export * from './theme';
 export * from './toggle';
 export * from './tracking';
 export * from './upload';
-export * from './workspace';

@@ -1,11 +1,12 @@
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-import { useWorkspaceUserRoleSelector } from '@/hooks';
+import * as Workspace from '@/ducks/workspace';
 import { ImportButton, NotificationsButton, ResourcesHeaderButton, SettingsButton, SubHeaderItem } from '@/pages/Dashboard/Header/components';
 
 const RightNavSection = () => {
-  const userRole = useWorkspaceUserRoleSelector();
+  const userRole = useSelector(Workspace.userRoleSelector);
 
   return (
     <>

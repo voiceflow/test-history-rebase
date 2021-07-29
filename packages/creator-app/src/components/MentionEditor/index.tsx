@@ -2,7 +2,9 @@ import React from 'react';
 import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
 
 import Commenter from '@/components/Commenter';
-import { useActiveWorkspaceCommentingMembersSelector } from '@/hooks';
+import * as Workspace from '@/ducks/workspace';
+import { connect } from '@/hocs';
+import { ConnectedProps } from '@/types';
 
 import MentionPreview from '../CommentPreview';
 import { MentionEditorContainer, mentionEditorStyle, mentionStyle } from './components';
@@ -10,18 +12,24 @@ import { formatNameToMention } from './utils';
 
 export { MentionPreview };
 
-export interface MentionEditorProps {
+export type MentionEditorProps = {
   onChange: (value: string, mentions: number[]) => void;
   value?: string;
   placeholder: string;
   inputProps?: Omit<MentionsInputProps, 'children'>;
   onBlur?: () => void;
   height?: number;
-}
+};
 
-export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, value = '', placeholder, inputProps, height }) => {
-  const members = useActiveWorkspaceCommentingMembersSelector();
-
+export const MentionEditor: React.FC<MentionEditorProps & ConnectedMentionEditorProps> = ({
+  members,
+  onChange,
+  onBlur,
+  value = '',
+  placeholder,
+  inputProps,
+  height,
+}) => {
   const onValueChange: OnChangeHandlerFunc = (e, _, __, mentions) =>
     onChange(
       e.target.value,
@@ -59,4 +67,10 @@ export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, 
   );
 };
 
-export default MentionEditor;
+const mapStateToProps = {
+  members: Workspace.activeWorkspaceCommentingMembersSelector,
+};
+
+export type ConnectedMentionEditorProps = ConnectedProps<typeof mapStateToProps>;
+
+export default connect(mapStateToProps)(MentionEditor as any) as React.FC<MentionEditorProps>;

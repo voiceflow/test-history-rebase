@@ -3,27 +3,19 @@ import React from 'react';
 
 import Duration from '@/components/Duration';
 import User from '@/components/User';
-import { FeatureFlag } from '@/config/features';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Workspace from '@/ducks/workspace';
-import { useFeature, useRealtimeSelector, useSelector } from '@/hooks';
+import { connect } from '@/hocs';
+import { ConnectedProps, MergeArguments } from '@/types';
 import { capitalizeAllWords } from '@/utils/string';
 
 import NameContainer from './NameContainer';
 
-interface CommenterProps {
-  time?: string;
+type CommenterProps = {
   creatorID: number;
-}
+  time?: string;
+};
 
-export const Commenter: React.FC<CommenterProps> = ({ time, creatorID }) => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
-  const userV1 = useSelector((state) => Workspace.anyWorkspaceMemberSelector(state)(String(creatorID)));
-  const userRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspaceMemberByCreatorIDSelector(state, { creatorID }));
-
-  const user = atomicActions.isEnabled ? userRealtime : userV1;
-
+export const Commenter: React.FC<CommenterProps & ConnectedCommenterProps> = ({ user, time }) => {
   const userData = user ?? Workspace.UNKNOWN_MEMBER_DATA;
 
   return (
@@ -39,4 +31,14 @@ export const Commenter: React.FC<CommenterProps> = ({ time, creatorID }) => {
   );
 };
 
-export default Commenter;
+const mapStateToProps = {
+  user: Workspace.anyWorkspaceMemberSelector,
+};
+
+const mergeProps = (...[{ user: userSelector }, , { creatorID }]: MergeArguments<typeof mapStateToProps, {}, CommenterProps>) => ({
+  user: userSelector(String(creatorID)),
+});
+
+type ConnectedCommenterProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
+
+export default connect(mapStateToProps, {}, mergeProps)(Commenter);

@@ -1,3 +1,18 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { DBProjectList, ProjectList } from '@/models';
 
-export default Realtime.Adapters.projectListAdapter;
+import { createAdapter } from './utils';
+
+const projectListAdapter = createAdapter<DBProjectList, ProjectList>(
+  ({ board_id, name, projects }) => ({
+    id: board_id,
+    name,
+    projects,
+  }),
+  ({ id, name, projects }) => ({
+    board_id: id,
+    name,
+    projects,
+  })
+);
+
+export default projectListAdapter;

@@ -45,16 +45,6 @@ export const useWorkspaceSubscription = ({ workspaceID }: NullableRecord<Realtim
   return isLeader ? !subscribing : isLeaderConnected;
 };
 
-export const useProjectSubscription = ({ projectID, workspaceID }: NullableRecord<Realtime.Channels.ProjectChannelParams>): boolean => {
-  const [isLeader, isLeaderConnected] = useClientStateAndRole();
-
-  const subscribing = useSubscription(projectID && workspaceID ? [Realtime.Channels.project({ projectID, workspaceID })] : [], {
-    context: RealtimeStoreContext as any,
-  });
-
-  return isLeader ? !subscribing : isLeaderConnected;
-};
-
 export const useDiagramSubscription = ({ diagramID, projectID, workspaceID }: NullableRecord<Realtime.Channels.DiagramChannelParams>): boolean => {
   const [isLeader, isLeaderConnected] = useClientStateAndRole();
 

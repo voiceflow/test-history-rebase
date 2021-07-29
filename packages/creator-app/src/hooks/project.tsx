@@ -18,7 +18,6 @@ import * as Sentry from '@/vendors/sentry';
 
 import { useDispatch } from './redux';
 import { useTrackingEvents } from './tracking';
-import { useActiveWorkspace } from './workspace';
 
 // eslint-disable-next-line import/prefer-default-export
 export const useDeleteProject = ({
@@ -100,7 +99,7 @@ export const useProjectOptions = ({
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
 
-  const workspace = useActiveWorkspace();
+  const workspace = useSelector(Workspace.activeWorkspaceSelector);
   const projectsCount = useSelector(Project.projectsCountSelector);
   const getProjectByID = useSelector(Project.projectByIDSelector);
 

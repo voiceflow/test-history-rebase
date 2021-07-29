@@ -2,11 +2,12 @@ import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
 import * as Workspace from '@/ducks/workspace';
+import { connect } from '@/hocs';
 import { useDispatch } from '@/hooks';
+import { ConnectedProps } from '@/types';
 
-const WorkspacesLoadingGate: React.FC = ({ children }) => {
+const WorkspacesLoadingGate: React.FC<ConnectedWorkspacesLoadingGateProps> = ({ children }) => {
   const loadWorkspaces = useDispatch(Workspace.loadWorkspaces);
-
   const [isLoaded, setLoaded] = React.useState(false);
 
   const load = React.useCallback(async () => {
@@ -22,4 +23,10 @@ const WorkspacesLoadingGate: React.FC = ({ children }) => {
   );
 };
 
-export default WorkspacesLoadingGate;
+const mapDispatchToProps = {
+  loadWorkspaces: Workspace.loadWorkspaces,
+};
+
+type ConnectedWorkspacesLoadingGateProps = ConnectedProps<{}, typeof mapDispatchToProps>;
+
+export default connect(null, mapDispatchToProps)(WorkspacesLoadingGate);

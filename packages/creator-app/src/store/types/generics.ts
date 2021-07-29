@@ -1,8 +1,6 @@
 import * as Redux from 'redux';
 import { Assign } from 'utility-types';
 
-import type { RealtimeStore } from '@/contexts/RealtimeStoreContext';
-
 import type { AnyAction, Dispatch, Dispatchable, DispatchResult, ThunkDispatch } from './dispatch';
 
 // store
@@ -16,14 +14,14 @@ export type Store<S> = Assign<
   }
 >;
 
-export interface StoreMiddlewareAPI<S> {
+export type StoreMiddlewareAPI<S> = {
   dispatch: <D extends Dispatchable>(dispatchable: D) => DispatchResult<D>;
   getState: GetState<S>;
-}
+};
 
-export interface StoreMiddleware<S> {
+export type StoreMiddleware<S> = {
   (api: StoreMiddlewareAPI<S>): (next: Dispatch) => (action: AnyAction) => any;
-}
+};
 
 // selector
 
@@ -31,10 +29,6 @@ export type Selector<S, T> = (state: S) => T;
 
 // thunk
 
-export type SyncThunk<S, R> = (
-  dispatch: ThunkDispatch,
-  getState: GetState<S>,
-  realtime: { realtimeDispatch: RealtimeStore['dispatch']; getRealtimeState: RealtimeStore['getState'] }
-) => R;
+export type SyncThunk<S, R> = (dispatch: ThunkDispatch, getState: GetState<S>) => R;
 
 export type Thunk<S, R> = SyncThunk<S, Promise<R>>;

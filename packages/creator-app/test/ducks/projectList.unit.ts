@@ -29,11 +29,17 @@ const MOCK_STATE: CRUDState<Models.ProjectList> = {
 
 suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describeCRUDReducer, describeSelectors, describeSideEffects }) => {
   describeCRUDReducer(({ expectAction, applyAction }) => {
-    describe('updateProjectList()', () => {
+    describe('renameProjectList()', () => {
       it('should rename the list', () => {
         const name = generate.string();
 
-        expectAction(ProjectList.updateProjectList(LIST_ID, { name }, true)).toModifyByKey(LIST_ID, { name });
+        expectAction(ProjectList.renameProjectList(LIST_ID, name)).toModifyByKey(LIST_ID, { name });
+      });
+    });
+
+    describe('clearNewProjectList()', () => {
+      it('should clear the isNew flag', () => {
+        expectAction(ProjectList.clearNewProjectList(LIST_ID)).toModifyByKey(LIST_ID, { isNew: false });
       });
     });
 
@@ -43,21 +49,17 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
       });
     });
 
-    describe('addProjectToListAction()', () => {
+    describe('addProjectToList()', () => {
       it('should add project to end of list', () => {
         const projectID = generate.id();
 
-        expectAction(ProjectList.addProjectToListAction(LIST_ID, projectID)).toModifyByKey(LIST_ID, {
-          projects: [...LIST.projects, projectID],
-        });
+        expectAction(ProjectList.addProjectToList(LIST_ID, projectID)).toModifyByKey(LIST_ID, { projects: [...LIST.projects, projectID] });
       });
 
       it('should add project to start of list', () => {
         const projectID = generate.id();
 
-        expectAction(ProjectList.addProjectToListAction(LIST_ID, projectID, true)).toModifyByKey(LIST_ID, {
-          projects: [projectID, ...LIST.projects],
-        });
+        expectAction(ProjectList.addProjectToList(LIST_ID, projectID, true)).toModifyByKey(LIST_ID, { projects: [projectID, ...LIST.projects] });
       });
     });
 
@@ -109,40 +111,6 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
   });
 
   describeSideEffects(({ applyEffect }) => {
-    const rootState = {
-      session: {},
-      feature: {
-        features: {},
-      },
-    };
-
-    describe('renameProjectList()', () => {
-      it('should rename the list', async () => {
-        const name = generate.string();
-
-        const { expectDispatch } = await applyEffect(ProjectList.renameProjectList(LIST_ID, name), rootState);
-
-        expectDispatch(ProjectList.updateProjectList(LIST_ID, { name }, true));
-      });
-    });
-
-    describe('clearNewProjectList()', () => {
-      it('should clear the isNew flag', async () => {
-        const { expectDispatch } = await applyEffect(ProjectList.clearNewProjectList(LIST_ID), rootState);
-
-        expectDispatch(ProjectList.updateProjectList(LIST_ID, { isNew: false }, true));
-      });
-    });
-    describe('addProjectToList()', () => {
-      it('should add project to end of list', async () => {
-        const projectID = generate.id();
-
-        const { expectDispatch } = await applyEffect(ProjectList.addProjectToList(LIST_ID, projectID), rootState);
-
-        expectDispatch(ProjectList.addProjectToListAction(LIST_ID, projectID));
-      });
-    });
-
     describe('saveProjectListsForWorkspace()', () => {
       it('should save project lists to the DB', async () => {
         const workspaceID = generate.id();
@@ -161,9 +129,9 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
         const listID = generate.id();
         stub(StringUtils, 'cuid').returns(listID);
 
-        const { result, expectDispatch } = await applyEffect(ProjectList.createProjectList(), rootState);
+        const { result, expectDispatch } = await applyEffect(ProjectList.createProjectList());
 
-        expect(result.id).to.eq(listID);
+        expect(result).to.eq(listID);
         expectDispatch(ProjectList.addProjectList(listID, { id: listID, name: 'New List', projects: [], isNew: true }));
       });
     });
@@ -175,7 +143,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
         const workspaceID = generate.id();
         const updateLists = stub(client.projectList, 'update');
 
-        await applyEffect(ProjectList.saveProjectToList(workspaceID, [LIST, ...lists], projectID), rootState);
+        await applyEffect(ProjectList.saveProjectToList(workspaceID, [LIST, ...lists], projectID));
 
         expect(updateLists).to.be.calledWithExactly(workspaceID, [{ ...LIST, projects: [projectID, ...LIST.projects] }, ...lists]);
       });
@@ -183,7 +151,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
     describe('deleteProjectList()', () => {
       it('should remove a project list and all the projects in it', async () => {
-        const { dispatch } = await applyEffect(ProjectList.deleteProjectList(LIST_ID), rootState);
+        const { dispatch } = await applyEffect(ProjectList.deleteProjectList(LIST_ID));
 
         expect(dispatch).to.be.calledWithExactly(ProjectList.removeProjectList(LIST_ID));
       });
@@ -191,7 +159,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
     describe('deleteProjectFromList()', () => {
       it('should the the projects in the list', async () => {
-        const { dispatch } = await applyEffect(ProjectList.deleteProjectFromList(LIST_ID, PROJECT_ID), rootState);
+        const { dispatch } = await applyEffect(ProjectList.deleteProjectFromList(LIST_ID, PROJECT_ID));
 
         expect(dispatch).to.be.calledWithExactly(ProjectList.removeProjectFromList(LIST_ID, PROJECT_ID));
       });

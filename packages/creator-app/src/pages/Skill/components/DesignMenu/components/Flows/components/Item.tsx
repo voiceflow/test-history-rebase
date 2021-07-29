@@ -18,16 +18,16 @@ import { withEnterPress, withInputBlur, withTargetValue } from '@/utils/dom';
 import ItemContainer from './ItemContainer';
 import ItemInput from './ItemInput';
 
-interface ItemProps {
+type ItemProps = {
   id: string;
   name: string;
   isActive: boolean;
-}
+};
 
 const Item: React.FC<ItemProps & ConnectedItemProps> = ({ id, name, isActive, viewers, goToDiagram, rootDiagramID }) => {
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
-  const viewersV2 = useRealtimeSelector((state) => RealtimeV2.diagramViewersByIDSelector(state, { id }));
+  const viewersV2 = useRealtimeSelector((state) => RealtimeV2.diagramViewersSelector(state, id));
 
   const { catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } = useDiagramRename({
     diagramID: id,

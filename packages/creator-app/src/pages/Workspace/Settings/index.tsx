@@ -1,5 +1,6 @@
 import { BoxFlex } from '@voiceflow/ui';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
@@ -7,9 +8,10 @@ import PlanBubble from '@/components/PlanBubble';
 import { SettingsContainer, SettingsHeader } from '@/components/Settings';
 import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
+import * as Workspace from '@/ducks/workspace';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
-import { useActiveWorkspace, useDispatch, useIsAdmin } from '@/hooks';
+import { useDispatch, useIsAdmin } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 import Billing from './components/Billing';
@@ -24,7 +26,7 @@ enum Paths {
 }
 
 const Settings: React.FC = () => {
-  const workspace = useActiveWorkspace();
+  const workspace = useSelector(Workspace.activeWorkspaceSelector);
   const isAdmin = useIsAdmin();
 
   const goToDashboard = useDispatch(Router.goToDashboard);

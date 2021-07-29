@@ -3,23 +3,16 @@ import { ButtonVariant, toast, withContext, withProvider } from '@voiceflow/ui';
 import cuid from 'cuid';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
+import { compose } from 'recompose';
 
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
 import { ModalType, UNLIMITED_EDITORS_CONST } from '@/constants';
 import * as Account from '@/ducks/account';
+import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { withStripe } from '@/hocs';
-import {
-  useActiveWorkspace,
-  useAsyncEffect,
-  useDebouncedCallback,
-  useDispatch,
-  useEnableDisable,
-  useModals,
-  useSelector,
-  useSmartReducer,
-} from '@/hooks';
+import { connect, withStripe } from '@/hocs';
+import { useAsyncMountUnmount, useDebouncedCallback, useEnableDisable, useModals, useSmartReducer } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
 export const PaymentContext = React.createContext(null);
@@ -32,13 +25,7 @@ export const VIEWS = {
 
 const PRICE_UPDATE_DEBOUNCE_TIMEOUT = 300;
 
-const PaymentContextProvider = ({ children, stripe, checkChargeable }) => {
-  const workspace = useActiveWorkspace();
-  const referrerID = useSelector(Account.referrerIDSelector);
-  const referralCode = useSelector(Account.referralCodeSelector);
-
-  const loadActiveWorkspace = useDispatch(Workspace.loadActiveWorkspace);
-
+const PaymentContextProvider = ({ children, stripe, workspaceID, workspace, checkChargeable, loadActiveWorkspace, referrerID, referralCode }) => {
   const [checkingOut, startCheckingOut, stopCheckingOut] = useEnableDisable(false);
   const [fetchingPrice, startFetchingPrice, stopFetchingPrice] = useEnableDisable(false);
   const [loadingPlan, startloadingPlan, stoploadingPlan] = useEnableDisable(true);
@@ -74,7 +61,7 @@ const PaymentContextProvider = ({ children, stripe, checkChargeable }) => {
         checkHash.current = hash;
         startFetchingPrice();
 
-        const { price, errors, discount } = await client.workspace.calculatePrice(workspace?.id ?? null, {
+        const { price, errors, discount } = await client.workspace.calculatePrice(workspaceID, {
           plan,
           seats,
           period,
@@ -93,11 +80,11 @@ const PaymentContextProvider = ({ children, stripe, checkChargeable }) => {
         stopFetchingPrice();
       }
     },
-    [workspace]
+    [workspaceID]
   );
 
   const checkout = async () => {
-    if (!workspace || !_isEmpty(state.errors) || !(state.stripeCompleted || state.usingExistingSource)) {
+    if (!_isEmpty(state.errors) || !(state.stripeCompleted || state.usingExistingSource)) {
       return;
     }
 
@@ -116,7 +103,7 @@ const PaymentContextProvider = ({ children, stripe, checkChargeable }) => {
         await checkChargeable(source);
       }
 
-      await client.workspace.checkout(workspace.id, {
+      await client.workspace.checkout(workspaceID, {
         plan: state.plan.id,
         seats: state.seats,
         period: state.period,
@@ -154,19 +141,14 @@ const PaymentContextProvider = ({ children, stripe, checkChargeable }) => {
   };
 
   // side effects
-  useAsyncEffect(async () => {
+  useAsyncMountUnmount(async () => {
     startloadingPlan();
-
     const plans = await getPlans();
     actions.setPlans(plans);
 
-    if (!workspace?.id) {
-      return;
-    }
-
     try {
       // get the user's current plan and settings
-      const { plan, period, seats, source } = await client.workspace.getPlan(workspace.id);
+      const { plan, period, seats, source } = await client.workspace.getPlan(workspaceID);
 
       let numberOfSeats = seats;
       let stripePromotion = '';
@@ -198,7 +180,7 @@ const PaymentContextProvider = ({ children, stripe, checkChargeable }) => {
     }
 
     stoploadingPlan();
-  }, [workspace?.id]);
+  });
 
   React.useEffect(() => {
     if (state.plan?.pricing) {
@@ -252,6 +234,17 @@ const PaymentContextProvider = ({ children, stripe, checkChargeable }) => {
   return <PaymentContext.Provider value={api}>{children}</PaymentContext.Provider>;
 };
 
-export const withPaymentProvider = withProvider(withStripe(PaymentContextProvider));
+const mapStateToProps = {
+  workspaceID: Session.activeWorkspaceIDSelector,
+  workspace: Workspace.activeWorkspaceSelector,
+  referrerID: Account.referrerIDSelector,
+  referralCode: Account.referralCodeSelector,
+};
+
+const mapDispatchToProps = {
+  loadActiveWorkspace: Workspace.loadActiveWorkspace,
+};
+
+export const withPaymentProvider = withProvider(compose(withStripe, connect(mapStateToProps, mapDispatchToProps))(PaymentContextProvider));
 
 export const withPayment = withContext(PaymentContext, 'payment');

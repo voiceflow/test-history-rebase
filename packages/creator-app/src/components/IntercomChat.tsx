@@ -5,22 +5,18 @@ import { useIntercom } from 'react-use-intercom';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
-import { useActiveWorkspace, useFeature, useSelector } from '@/hooks';
+import * as Workspace from '@/ducks/workspace';
+import { connect } from '@/hocs';
+import { useFeature } from '@/hooks';
+import { ConnectedProps } from '@/types';
 import { generateID } from '@/utils/env';
 import * as Intercom from '@/vendors/intercom';
 import * as LogRocket from '@/vendors/logRocket';
 
-export const IntercomChat: React.FC = () => {
-  const intercomIntegration = useFeature(FeatureFlag.INTERCOM_INTEGRATION);
-
-  const user = useSelector(Account.userSelector);
-  const isLoggedIn = useSelector(Account.isLoggedInSelector);
-  const isVisible = useSelector(Session.isIntercomVisibleSelector);
-  const intercomUserHMAC = useSelector(Session.intercomUserHMACSelector);
-  const workspace = useActiveWorkspace();
-
+export const IntercomChat: React.FC<ConnectedIntercomChatProps> = ({ user, workspace, isVisible, isLoggedIn, intercomUserHMAC }) => {
   const isRunning = React.useRef(false);
   const intercom = useIntercom();
+  const intercomIntegration = useFeature(FeatureFlag.INTERCOM_INTEGRATION);
 
   const showIntercom = intercomIntegration.isEnabled && isVisible && !!workspace;
 
@@ -47,7 +43,17 @@ export const IntercomChat: React.FC = () => {
   return null;
 };
 
-export default IntercomChat;
+const mapStateToProps = {
+  user: Account.userSelector,
+  isLoggedIn: Account.isLoggedInSelector,
+  workspace: Workspace.activeWorkspaceSelector,
+  isVisible: Session.isIntercomVisibleSelector,
+  intercomUserHMAC: Session.intercomUserHMACSelector,
+};
+
+type ConnectedIntercomChatProps = ConnectedProps<typeof mapStateToProps>;
+
+export default connect(mapStateToProps)(IntercomChat);
 
 export const RemoveIntercom: React.FC = ({ children }) => {
   const dispatch = useDispatch();

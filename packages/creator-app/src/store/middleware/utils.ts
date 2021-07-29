@@ -1,18 +1,13 @@
 import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
 
-import { FeatureFlag } from '@/config/features';
 import { DiagramState } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
-import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
-import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { unique } from '@/utils/array';
 
-import { getRealtimeStore } from '../realtime';
 import { AnyAction, Dispatchable, Selector, StoreMiddleware, StoreMiddlewareAPI } from '../types';
 
 const AUTOSAVE_DEBOUNCE_TIMEOUT = 200;
@@ -42,14 +37,7 @@ export const createAutosaveMiddleware = <T>(
 
     const state = store.getState();
     const currentState = selector(state);
-    const creatorID = Account.userIDSelector(state);
-    const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-    const activeDiagramID = Session.activeDiagramIDSelector(state); // do not apply creator middleware if no active diagram
-
-    const isLibraryRole =
-      atomicActionsEnabled && creatorID && getRealtimeStore()
-        ? RealtimeWorkspace.workspaceIsLibraryRoleByIDAndCreatorIDSelector(getRealtimeStore().getState(), { id: activeDiagramID, creatorID })
-        : Workspace.isLibraryRoleSelector(state);
+    const isLibraryRole = Workspace.isLibraryRoleSelector(state);
 
     try {
       if (isLibraryRole) return;

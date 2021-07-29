@@ -4,16 +4,13 @@ import React from 'react';
 
 import PlanBubble from '@/components/PlanBubble';
 import { IS_PRIVATE_CLOUD } from '@/config';
-import { FeatureFlag } from '@/config/features';
-import * as Account from '@/ducks/account';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
 import * as WorkspaceDuck from '@/ducks/workspace';
-import { useDispatch, useFeature, useIsTemplateWorkspaceSelector, useRealtimeSelector, useSelector, useWorkspaceUserRoleSelector } from '@/hooks';
+import { connect } from '@/hocs';
 import { Workspace } from '@/models';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
 import { ClassName } from '@/styles/constants';
+import { ConnectedProps } from '@/types';
 import { noop } from '@/utils/functional';
 
 interface LeftNavSectionProps {
@@ -21,30 +18,17 @@ interface LeftNavSectionProps {
   activeWorkspace: Workspace | null;
 }
 
-const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace, loadingProjects }) => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
-  const userID = useSelector(Account.userIDSelector);
-  const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-
-  const planV1 = useSelector(WorkspaceDuck.planTypeSelector);
-  const planRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
-  const role = useWorkspaceUserRoleSelector();
-  const workspacesV1 = useSelector(WorkspaceDuck.allWorkspacesSelector);
-  const workspacesRealtime = useRealtimeSelector(RealtimeWorkspace.allWorkspacesSelector);
-  const isTemplateWorkspace = useIsTemplateWorkspaceSelector();
-  const isAdminOfAnyWorkspaceV1 = useSelector(WorkspaceDuck.isAdminOfAnyWorkspaceSelector);
-  const isAdminOfAnyWorkspaceRealtime = useRealtimeSelector((state) =>
-    RealtimeWorkspace.isCreatorAdminOfAnyWorkspaceSelector(state, { creatorID: userID! })
-  );
-
-  const plan = atomicActions.isEnabled ? planRealtime : planV1;
-  const workspaces = atomicActions.isEnabled ? workspacesRealtime : workspacesV1;
-  const isAdminOfAnyWorkspace = atomicActions.isEnabled ? isAdminOfAnyWorkspaceRealtime : isAdminOfAnyWorkspaceV1;
-
-  const goToWorkspace = useDispatch(Router.goToWorkspace);
-  const goToNewWorkspace = useDispatch(Router.goToNewWorkspace);
-
+const LeftNavSection: React.FC<LeftNavSectionProps & ConnectedLeftNavSectionProps> = ({
+  workspaces,
+  activeWorkspace,
+  isTemplateWorkspace,
+  loadingProjects,
+  goToWorkspace,
+  isAdminOfAnyWorkspace,
+  goToNewWorkspace,
+  role,
+  plan,
+}) => {
   const privateCloudCreateCondition = isAdminOfAnyWorkspace || role === UserRole.OWNER;
   const showCreateWorkspaceButton = !IS_PRIVATE_CLOUD || privateCloudCreateCondition;
 
@@ -96,4 +80,19 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace, loadin
   );
 };
 
-export default LeftNavSection;
+const mapStateToProps = {
+  plan: WorkspaceDuck.planTypeSelector,
+  role: WorkspaceDuck.userRoleSelector,
+  workspaces: WorkspaceDuck.allWorkspacesSelector,
+  isTemplateWorkspace: WorkspaceDuck.isTemplateWorkspaceSelector,
+  isAdminOfAnyWorkspace: WorkspaceDuck.isAdminOfAnyWorkspaceSelector,
+};
+
+const mapDispatchToProps = {
+  goToWorkspace: Router.goToWorkspace,
+  goToNewWorkspace: Router.goToNewWorkspace,
+};
+
+type ConnectedLeftNavSectionProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(LeftNavSection) as React.FC<LeftNavSectionProps>;

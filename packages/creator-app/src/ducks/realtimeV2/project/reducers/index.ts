@@ -1,8 +1,7 @@
-import { createRootCRUDReducer } from '../../utils';
-import { PROJECT_INITIAL_STATE } from '../constants';
+import { createRootReducer } from '../../utils';
+import { INITIAL_PROJECT_STATE } from '../constants';
 import { RealtimeProjectState } from '../types';
-import crudReducers from './crud';
 
-const realtimeProjectReducer = createRootCRUDReducer<RealtimeProjectState>(PROJECT_INITIAL_STATE, crudReducers).build();
+const realtimeProjectReducer = createRootReducer<RealtimeProjectState>(INITIAL_PROJECT_STATE).build();
 
 export default realtimeProjectReducer;

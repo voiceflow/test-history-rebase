@@ -23,7 +23,7 @@ export const useCursorControls = () => {
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const dispatch = useRealtimeDispatch();
-  const hasDiagramViewers = useRealtimeSelector((state) => RealtimeV2Duck.hasExternalDiagramViewersByIDSelector(state, { id: diagramID }));
+  const hasDiagramViewers = useRealtimeSelector((state) => RealtimeV2Duck.hasExternalDiagramViewersSelector(state, diagramID));
   const prevCoords = React.useRef<Point | null>(null);
 
   const moveMouse = React.useCallback(

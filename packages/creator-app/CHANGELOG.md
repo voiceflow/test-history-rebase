@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.444.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.443.0...@voiceflow/creator-app@1.444.0) (2021-07-29)
+
+
+### Features
+
+* realtime workspace and projectsList ducks rebased ([#3753](https://github.com/voiceflow/creator-app/issues/3753)) ([6e30db0](https://github.com/voiceflow/creator-app/commit/6e30db066d1cd7c26331da342014a5f91e008118))
+
+
+
+
+
 # [1.443.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.442.0...@voiceflow/creator-app@1.443.0) (2021-07-28)
 
 

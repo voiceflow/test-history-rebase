@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.446.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.446.0...@voiceflow/creator-app@1.446.1) (2021-07-30)
+
+
+### Bug Fixes
+
+* changes team member background size to cover (VF-1367) ([#3790](https://github.com/voiceflow/creator-app/issues/3790)) ([a6ce4db](https://github.com/voiceflow/creator-app/commit/a6ce4db09f52da1a64e665c46b81300111d3268b))
+
+
+
+
+
 # [1.446.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.445.2...@voiceflow/creator-app@1.446.0) (2021-07-29)
 
 

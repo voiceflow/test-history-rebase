@@ -17,7 +17,7 @@ const MemberIcon = styled.div<MemberIconProps>`
   position: relative;
   background-color: #fff;
   background-position: center center;
-  background-size: contain;
+  background-size: cover;
   font-weight: 600;
   text-transform: uppercase;
   user-select: none;

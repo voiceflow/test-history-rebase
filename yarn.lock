@@ -5805,10 +5805,10 @@ anymatch@^3.0.0, anymatch@^3.0.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apl-viewhost-web@1.6.3:
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/apl-viewhost-web/-/apl-viewhost-web-1.6.3.tgz#cb6c3c726d5b8343196131a0f74f5ca955aa0a42"
-  integrity sha512-pabJmnYlkjumFogE6lnnuSosnb1d9WcruSaJlpNuC1P/UdU8kkciqikY1HJ8M+u6SzidSY/AAwNO7BrnOBP5hA==
+apl-viewhost-web@1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/apl-viewhost-web/-/apl-viewhost-web-1.7.0.tgz#e5d4fe40b32859e95df54421388faa9368fce6b2"
+  integrity sha512-DcCTPYeYLHvwz5SmasyRcqv8dYe4EeYh5DdHvfJZhZh8aFYxepVc+dgz7SNNK7Ib23k1VTVCYmfIEZ8wSH3gaA==
 
 append-transform@^2.0.0:
   version "2.0.0"

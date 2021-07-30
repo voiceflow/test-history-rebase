@@ -1,4 +1,4 @@
-import { createRootReducer } from '../../utils';
+import { createRootReducer } from '../../utils/reducer';
 import { INITIAL_DIAGRAM_STATE } from '../constants';
 import { RealtimeDiagramState } from '../types';
 import { hideCursorReducer, loadViewersReducer, moveCursorReducer, updateDiagramViewers } from './awareness';

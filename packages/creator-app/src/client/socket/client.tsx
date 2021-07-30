@@ -35,12 +35,12 @@ export enum SocketStatus {
   TRANSFERRING = 'transferring',
 }
 
-type AuthProfile = {
+interface AuthProfile {
   auth: string | undefined;
   browserId: string;
   tabId: string;
   device: typeof DEVICE_INFO;
-};
+}
 
 class SocketClient {
   socket = io(API_ENDPOINT, {
@@ -136,9 +136,11 @@ class SocketClient {
 
         this.status = SocketStatus.CONNECTED;
 
-        this.on(SocketEvent.DISCONNECT, () => {
-          this.status = SocketStatus.DISCONNECTED;
-        });
+        if (this.authProfile) {
+          this.#initializeConnection(this.authProfile);
+        }
+
+        this.on(SocketEvent.DISCONNECT, this.#onDisconnect);
 
         resolve();
       });
@@ -151,7 +153,9 @@ class SocketClient {
     if (!this.socket.connected) return;
 
     Sentry.breadcrumb('socket', 'Disconnecting from websocket');
+
     this.status = SocketStatus.TERMINATED;
+    this.off(SocketEvent.DISCONNECT, this.#onDisconnect);
     this.socket.disconnect();
   };
 
@@ -179,6 +183,10 @@ class SocketClient {
     this.authProfile = null;
 
     await this.call(SocketEvent.LOGOUT);
+  };
+
+  #onDisconnect = () => {
+    this.status = SocketStatus.DISCONNECTED;
   };
 
   #onReconnect = () => {

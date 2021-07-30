@@ -2,7 +2,7 @@ import { ProjectLinkType } from '@voiceflow/api-sdk';
 import { PlatformType } from '@voiceflow/internal';
 import { createSelector } from 'reselect';
 
-import { createCRUDSelectors } from '../../utils';
+import { createCRUDSelectors } from '../../utils/crud';
 import { PROJECT_STATE_KEY } from '../constants';
 
 export const {

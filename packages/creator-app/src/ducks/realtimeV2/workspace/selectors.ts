@@ -4,7 +4,8 @@ import { createSelector } from 'reselect';
 import { hasRolePermission, Permission } from '@/config/permissions';
 import { EDITOR_SEAT_ROLES } from '@/constants';
 
-import { createCRUDSelectors, creatorIDParamSelector } from '../utils';
+import { createCRUDSelectors } from '../utils/crud';
+import { creatorIDParamSelector } from '../utils/selector';
 import { TEMPLATES_ADMIN_ID, TEMPLATES_EDITORS_ID, WORKSPACE_STATE_KEY } from './constants';
 
 export const {

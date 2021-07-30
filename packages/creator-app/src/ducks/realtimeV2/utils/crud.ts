@@ -138,8 +138,8 @@ interface CRUDSelectors<K extends keyof CRUDStateSubset> {
   byID: ParametricSelector<RealtimeState, IDSelectorParam, NormalizedValue<CRUDStateSubset[K]> | null>;
   byIDs: ParametricSelector<RealtimeState, IDsSelectorParam, NormalizedValue<CRUDStateSubset[K]>[]>;
   allIDs: Selector<RealtimeState, string[]>;
-  getByID: Selector<RealtimeState, (id: string) => CRUDStateSubset[K]>;
-  getByIDs: Selector<RealtimeState, (ids: string[]) => CRUDStateSubset[K][]>;
+  getByID: Selector<RealtimeState, (id: string) => NormalizedValue<CRUDStateSubset[K]> | null>;
+  getByIDs: Selector<RealtimeState, (ids: string[]) => NormalizedValue<CRUDStateSubset[K]>[]>;
 }
 
 export const idParamSelector = createParameterSelector<IDSelectorParam>((params) => params.id);

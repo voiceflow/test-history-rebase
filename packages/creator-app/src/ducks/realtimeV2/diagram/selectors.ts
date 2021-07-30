@@ -3,7 +3,8 @@ import { createSelector } from 'reselect';
 
 import { Nullable, Point } from '@/types';
 
-import { createRootSelector, creatorIDParamSelector, idParamSelector, idsParamSelector } from '../utils';
+import { idParamSelector, idsParamSelector } from '../utils/crud';
+import { createRootSelector, creatorIDParamSelector } from '../utils/selector';
 import { DIAGRAM_STATE_KEY, INITIAL_CURSORS, INITIAL_DIAGRAM_VIEWERS } from './constants';
 
 const rootSelector = createRootSelector(DIAGRAM_STATE_KEY);

@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { getAlternativeColor } from '@voiceflow/ui';
 import { Draft } from 'immer';
 
-import { createReducerFactory } from '../../utils';
+import { createReducerFactory } from '../../utils/reducer';
 import { RealtimeDiagramAwarenessState, RealtimeDiagramState } from '../types';
 
 const createReducer = createReducerFactory<RealtimeDiagramState>();

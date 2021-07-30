@@ -1,4 +1,4 @@
-import { createReducerFactory } from '../../utils';
+import { createReducerFactory } from '../../utils/reducer';
 import { RealtimeProjectListState } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export

@@ -1,4 +1,4 @@
-import { CRUD_INITIAL_STATE } from '../utils';
+import { CRUD_INITIAL_STATE } from '../utils/crud';
 import { RealtimeProjectListState } from './types';
 
 export const PROJECT_LIST_STATE_KEY = 'projectList';

@@ -2,7 +2,7 @@ import { UserRole } from '@voiceflow/internal';
 
 import { DBMember } from '@/models';
 
-import { CRUD_INITIAL_STATE } from '../utils';
+import { CRUD_INITIAL_STATE } from '../utils/crud';
 import { RealtimeWorkspaceState } from './types';
 
 export const WORKSPACE_STATE_KEY = 'workspace';

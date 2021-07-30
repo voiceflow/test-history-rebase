@@ -1,4 +1,4 @@
-import { createReducerFactory } from '../../utils';
+import { createReducerFactory } from '../../utils/reducer';
 import { RealtimeWorkspaceState } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export

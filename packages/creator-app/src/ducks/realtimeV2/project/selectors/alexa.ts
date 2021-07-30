@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 import { Project } from '@/models';
 import { Nullable } from '@/types';
 
-import { createParameterSelector, creatorIDParamSelector } from '../../utils';
+import { createParameterSelector, creatorIDParamSelector } from '../../utils/selector';
 import { projectByIDSelector } from './base';
 
 interface VendorIDParam {

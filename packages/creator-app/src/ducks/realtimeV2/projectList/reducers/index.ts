@@ -1,4 +1,4 @@
-import { createRootCRUDReducer } from '../../utils';
+import { createRootCRUDReducer } from '../../utils/crud';
 import { PROJECT_LIST_INITIAL_STATE } from '../constants';
 import { RealtimeProjectListState } from '../types';
 import crudReducers from './crud';

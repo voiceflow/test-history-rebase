@@ -12,14 +12,14 @@ import * as Slot from '@/ducks/slot';
 import { compose, connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { formatIntentName, isCustomizeableBuiltInIntent, validateIntentName } from '@/utils/intent';
+import { formatIntentName, isCustomizeableBuiltInIntent, prettifyIntentName, validateIntentName } from '@/utils/intent';
 import { removeTrailingUnderscores } from '@/utils/string';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
-export type ManagerProps = {
+export interface ManagerProps {
   id: string;
   removeIntent: (id: string) => void;
-};
+}
 
 const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, ManagerProps & ConnectedManagerProps> = (
   { id, intent: selectedIntent, platform, slots, removeIntent, updateIntent, allIntents },
@@ -77,7 +77,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
         <FlexApart onClick={resetPath}>
           <Input
             error={!!nameError}
-            value={name}
+            value={prettifyIntentName(name)}
             onBlur={onBlur}
             onChange={({ currentTarget }) => localNameUpdate(currentTarget)}
             placeholder="Intent Name"

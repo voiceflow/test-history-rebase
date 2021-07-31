@@ -12,7 +12,7 @@ import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Intent } from '@/models';
 import { ConnectedProps } from '@/types';
-import { formatIntentName, isCustomizeableBuiltInIntent } from '@/utils/intent';
+import { formatIntentName, isCustomizeableBuiltInIntent, prettifyIntentName, prettifyIntentNames } from '@/utils/intent';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
 import EmptyContainer from '../EmptyContainer';
@@ -20,10 +20,10 @@ import LeftColumn from '../LeftColumn';
 import RightColumn from '../RightColumn';
 import { DraggableItem, Manager } from './components';
 
-export type IntentsManagerProps = {
+export interface IntentsManagerProps {
   selectedID?: string;
   setSelectedID: (id: string) => void;
-};
+}
 
 const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProps> = ({
   intents,
@@ -40,7 +40,9 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
   const scrollbarsRef = React.useRef<Scrollbars>(null);
 
   const getItemKey = React.useCallback((item: Intent) => item.id, []);
-  const getItemLabel = React.useCallback((item: Intent) => item.name, []);
+  const getItemLabel = React.useCallback((item: Intent) => prettifyIntentName(item.name), []);
+
+  const prettifyIntents = React.useMemo(() => prettifyIntentNames(intents), [intents]);
 
   const updateSelected = React.useCallback(
     (id: string) => {
@@ -103,7 +105,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
           {({ renderItem }) => (
             <SearchableList
               ref={scrollbarsRef}
-              items={intents}
+              items={prettifyIntents}
               onAdd={addNewIntent}
               onChange={onChange}
               getLabel={getItemLabel}

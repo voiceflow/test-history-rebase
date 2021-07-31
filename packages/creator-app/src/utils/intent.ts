@@ -16,6 +16,10 @@ const amazonBuiltInIntentsArray = Object.values(AmazonIntent) as string[];
 const generalBuiltInIntentsArray = Object.values(GeneralIntents) as string[];
 const builtInIntentMap = new Map([...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray].map((id) => [id, true]));
 
+const intentLabel: { [key in GeneralIntents]?: string } = {
+  [GeneralIntents.NONE]: 'Fallback',
+};
+
 export const isCustomizeableBuiltInIntent = (intent?: Intent | null) => !!intent && builtInIntentMap.has(intent.id);
 
 export const formatIntentName = (name = '') =>
@@ -25,6 +29,7 @@ export const formatIntentName = (name = '') =>
     .toLowerCase();
 
 export const prettifyIntentName = (name = '') =>
+  intentLabel[name as GeneralIntents] ??
   name
     .replace(/(\w)Intent/g, '$1')
     .replace(/([A-Za-z])([A-Z])(?=[a-z])/g, '$1 $2') // camelCase => camel Case

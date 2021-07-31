@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.447.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.446.3...@voiceflow/creator-app@1.447.0) (2021-07-31)
+
+
+### Features
+
+* renames None intent to Fallback (VF-1324) ([#3791](https://github.com/voiceflow/creator-app/issues/3791)) ([69fdee4](https://github.com/voiceflow/creator-app/commit/69fdee4d338ec264f7efc58377c696474878b7ba))
+
+
+
+
+
 ## [1.446.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.446.2...@voiceflow/creator-app@1.446.3) (2021-07-30)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.7.2...@voiceflow/ui@1.7.3) (2021-08-02)
+
+
+### Bug Fixes
+
+* monorepo improvements ([c18e285](https://github.com/voiceflow/creator-app/commit/c18e285f558ac6b95f2b6c1e741397d902d8cb34)), closes [#3764](https://github.com/voiceflow/creator-app/issues/3764)
+
+
+
+
+
 ## [1.7.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.7.1...@voiceflow/ui@1.7.2) (2021-07-28)
 
 **Note:** Version bump only for package @voiceflow/ui

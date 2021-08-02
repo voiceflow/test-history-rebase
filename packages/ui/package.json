@@ -71,6 +71,7 @@
     "clean:svg-index": "rimraf \"src/svgs/**/index.svg.jsx\"",
     "lint": "concurrently -c yellow,blue \"yarn:lint:js\" \"yarn:lint:css\"",
     "lint:css": "stylelint src/**/*.css",
+    "lint:dockerfiles": "exit 0",
     "lint:fix": "yarn lint:js --fix",
     "lint:js": "eslint \"**/*.{js,ts}\"",
     "lint:quiet": "concurrently -c yellow,blue \"yarn:lint:js --rule 'prettier/prettier: off' --quiet\" \"yarn:lint:css --quiet\" --color",

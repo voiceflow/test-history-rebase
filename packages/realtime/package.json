@@ -49,8 +49,8 @@
     "start:meshed": "NODE_ENV=local NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon src/index.ts",
     "test": "yarn test:unit",
     "test:dependencies": "depcheck",
-    "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml",
-    "test:integration": "exit 0"
+    "test:integration": "exit 0",
+    "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml"
   },
   "type": "module"
 }

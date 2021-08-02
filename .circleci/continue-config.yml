@@ -1,0 +1,487 @@
+version: 2.1
+
+parameters:
+  container-image-url-creator-app:
+    type: string
+    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
+  container-image-url-admin-ui:
+    type: string
+    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin"
+  container-image-url-realtime:
+    type: string
+    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/realtime"
+  k8s-asset-admin-ui:
+    type: string
+    default: "deployment/admin-ui"
+  k8s-asset-creator-app:
+    type: string
+    default: "deployment/creator-app"
+  k8s-namespace:
+    type: string
+    default: "voiceflow-v1" # This is usually voiceflow-v1
+  ssh-fingerprint:
+    type: string
+    default: "93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a"
+  track-component-creator-app:
+    type: string
+    default: "creator-app"
+  track-component-admin-ui:
+    type: string
+    default: "admin-ui"
+  track-component-realtime:
+    type: string
+    default: "realtime"
+  build-creator-app:
+    type: boolean
+    default: false
+  build-admin-app:
+    type: boolean
+    default: false
+  build-realtime:
+    type: boolean
+    default: false
+
+orbs:
+  vfcommon: voiceflow/common@0.0.178
+  sonarcloud: sonarsource/sonarcloud@1.0.2
+  jira: circleci/jira@1.3.1
+
+# Reusable YAML chunks
+defaults:
+  prod_creator_deploy_filters: &prod_creator_deploy_filters
+    filters:
+      branches:
+        ignore: /.*/
+      tags:
+        only: /^@voiceflow/creator-app@[0-9]*(\.[0-9]*)*$/
+
+  prod_admin_deploy_filters: &prod_admin_deploy_filters
+    filters:
+      branches:
+        ignore: /.*/
+      tags:
+        only: /^@voiceflow/admin-app@[0-9]*(\.[0-9]*)*$/
+
+  ignore_autorebase_staging_filters: &ignore_autorebase_staging_filters
+    branches:
+      ignore:
+        - /rebase-pull-request-.*/
+        - /cherry-pick-rebase-pull-request-.*/
+        - staging
+
+  ignore_autorebase_filters: &ignore_autorebase_filters
+    branches:
+      ignore:
+        - /rebase-pull-request-.*/
+        - /cherry-pick-rebase-pull-request-.*/
+
+  slack-fail-post-step: &slack-fail-post-step
+    post-steps:
+      - vfcommon/notify_slack:
+          channel: dev_general
+          event: fail
+          mentions: "@eng_creator"
+          template: basic_fail_1
+          branch_pattern: master
+
+jobs:
+
+  build-app:
+    parameters:
+      check_image:
+        description: Checks if the Docker image exists
+        type: boolean
+        default: false
+      strict:
+        description: Run typechecking and other build-time analyses
+        type: boolean
+        default: false
+    executor: vfcommon/node-executor
+    steps:
+      - checkout
+      - vfcommon/stop_if_no_changes:
+          package: creator-app
+
+      - when:
+          condition: << parameters.check_image >>
+          steps:
+            - vfcommon/install_aws_cli
+            - vfcommon/check_image_exists:
+                image_repo: << pipeline.parameters.container-image-url-creator-app >>
+      - vfcommon/install_node_modules:
+          avoid_post_install_scripts: false
+      - vfcommon/install_cpio
+      - run:
+          name: Build dependencies
+          command: |
+            yarn build --scope @voiceflow/realtime-sdk --scope @voiceflow/ui
+          working_directory: ~/voiceflow
+      - run:
+          name: Build app, if docker container does not exist
+          command: |
+            if [[ -z "$CIRCLE_BRANCH" && ! -z "$CIRCLE_TAG" ]]; then
+              echo "Building production image!"
+              export VF_APP_API_HOST=api.voiceflow.com
+              export VF_APP_BUILD_ENV=production
+              export VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.maintenance/maintenance.json
+            else
+              echo "Building development image!"
+              export VF_APP_BUILD_ENV=staging
+              export VF_APP_API_HOST=api-$CIRCLE_BRANCH.development.voiceflow.com
+              export VF_APP_MAINTENANCE_STATUS_SOURCE=https://s3.amazonaws.com/com.voiceflow.dev.maintenance/maintenance.json
+            fi
+            yarn concurrently "yarn:build <<# parameters.strict >> --validate <</ parameters.strict >>" <<# parameters.strict >> "yarn:types" <</ parameters.strict >>
+          working_directory: ~/voiceflow/packages/creator-app
+      - persist_to_workspace:
+          root: ~/voiceflow/packages/creator-app
+          paths:
+            - build
+            - Dockerfile
+            - config
+
+  build-realtime:
+    parameters:
+      check_image:
+        description: Checks if the Docker image exists
+        type: boolean
+        default: false
+    executor: vfcommon/node-executor
+    steps:
+      - checkout
+      - vfcommon/stop_if_no_changes:
+          package: realtime
+      - when:
+          condition: << parameters.check_image >>
+          steps:
+            - vfcommon/install_aws_cli
+            - vfcommon/check_image_exists:
+                image_repo: << pipeline.parameters.container-image-url-creator-app >>
+      - vfcommon/install_node_modules:
+          avoid_post_install_scripts: false
+      - run:
+          name: Build realtime
+          command: |
+            yarn build --scope @voiceflow/realtime*
+            cp yarn.lock packages/realtime
+          working_directory: ~/voiceflow
+      - persist_to_workspace:
+          root: ~/voiceflow/packages/realtime
+          paths:
+            - build
+            - Dockerfile
+            - config
+            - package.json
+            - yarn.lock
+
+  build-admin:
+    parameters:
+      strict:
+        description: Run typechecking and other build-time analyses
+        type: boolean
+        default: false
+    executor: vfcommon/node-executor
+    steps:
+      - checkout
+      - vfcommon/stop_if_no_changes:
+          package: admin-app
+      - vfcommon/install_node_modules:
+          avoid_post_install_scripts: false
+      - vfcommon/install_cpio
+
+      - run:
+          name: Build dependencies
+          command: |
+            yarn build --scope @voiceflow/realtime-sdk --scope @voiceflow/ui
+          working_directory: ~/voiceflow
+      - run:
+          name: Build admin static artifacts
+          command: |
+            if [[ -z "$CIRCLE_BRANCH" && ! -z "$CIRCLE_TAG" ]]; then
+              echo "Building production image!"
+              export VF_APP_BUILD_ENV=production
+              export VF_APP_API_HOST=api.voiceflow.com
+            else
+              echo "Building development image!"
+              export VF_APP_BUILD_ENV=staging
+              export VF_APP_API_HOST=api-$CIRCLE_BRANCH.development.voiceflow.com
+            fi
+
+            yarn build <<# parameters.strict >> --validate --strict <</ parameters.strict >>
+          working_directory: ~/voiceflow/packages/admin-app
+      - persist_to_workspace:
+          root: ~/voiceflow/packages/admin-app
+          paths:
+            - build
+            - Dockerfile
+            - config
+
+  test: # Main unit, style, and dependency tests
+    executor: vfcommon/node-executor
+    steps: # a collection of executable commands
+      - checkout
+      - vfcommon/install_node_modules
+      - vfcommon/install_cpio
+      - vfcommon/exec_command_when_package_changed_monorepo:
+          step_name: Build dependencies
+
+          command: yarn build --scope @voiceflow/realtime-sdk --scope @voiceflow/ui
+          package_to_force_execution: "creator-app"
+          run_on_root: true
+      - restore_cache:
+          name: Restoring jest Cache
+          keys:
+            - jest-cache-{{ .Branch }}
+            - jest-cache-master
+      - restore_cache:
+          name: Restoring eslint Cache
+          keys:
+            - eslint-cache-{{ .Branch }}
+            - eslint-cache-master
+      - vfcommon/unit_tests_monorepo
+      - vfcommon/integration_tests_monorepo
+      - vfcommon/lint_report_monorepo
+      - vfcommon/lint_dockerfile_monorepo
+      - vfcommon/dependency_tests_monorepo
+      - save_cache:
+          name: Saving jest Cache
+          key: jest-cache-{{ .Branch }}-{{ .BuildNum }}
+          paths:
+            - ~/voiceflow/packages/creator-app/.jest_cache
+            - ~/voiceflow/packages/ui/.jest_cache
+      - save_cache:
+          name: Saving eslint Cache
+          key: eslint-cache-{{ .Branch }}-{{ .BuildNum }}
+          paths:
+            - ~/voiceflow/packages/creator-app/.eslintcache
+      - sonarcloud/scan:
+          cache_version: 2
+
+  build-deploy-app-image:
+    parameters:
+      sentry:
+        description: Report deploy to sentry?
+        type: boolean
+        default: false
+    executor: vfcommon/build-executor
+    steps:
+      - checkout
+      - vfcommon/stop_if_no_changes:
+          package: creator-app
+      - attach_workspace:
+          at: /tmp/vf-build
+      - vfcommon/build_push_image:
+          image_repo: << pipeline.parameters.container-image-url-creator-app >>
+          dockerfile: Dockerfile
+          checkout: false
+      - vfcommon/post_image_push_actions:
+          namespace: << pipeline.parameters.k8s-namespace >>
+          target: << pipeline.parameters.k8s-asset-creator-app >>
+          # TODO: rethink this for a monorepo
+          # sentry: << parameters.sentry >>
+          tagged: true
+      - run:
+          name: Wait for deployment rollout
+          command: |
+            sleep 120
+
+  build-deploy-admin-image:
+    executor: vfcommon/build-executor
+    steps:
+      - checkout
+      - vfcommon/stop_if_no_changes:
+          package: admin-app
+      - attach_workspace:
+          at: /tmp/vf-build
+      - vfcommon/build_push_image:
+          image_repo: << pipeline.parameters.container-image-url-admin-ui >>
+          dockerfile: Dockerfile
+          checkout: false
+      - vfcommon/post_image_push_actions:
+          namespace: << pipeline.parameters.k8s-namespace >>
+          target: << pipeline.parameters.k8s-asset-admin-ui >>
+          tagged: true
+          success_slack_notify: false
+
+  update-track-creator-app:
+    executor: vfcommon/build-executor
+    steps:
+      - checkout
+      - vfcommon/stop_if_no_changes:
+          package: craetor-app
+      - vfcommon/update_track:
+          image_repo: << pipeline.parameters.container-image-url-creator-app >>
+          component: << pipeline.parameters.track-component-creator-app >>
+          dockerfile: Dockerfile
+
+  update-track-admin-ui:
+    executor: vfcommon/build-executor
+    steps:
+      - checkout
+      - vfcommon/stop_if_no_changes:
+          package: admin-app
+      - vfcommon/update_track:
+          image_repo: << pipeline.parameters.container-image-url-admin-ui >>
+          component: << pipeline.parameters.track-component-admin-ui >>
+          dockerfile: Dockerfile
+
+  update-track-realtime:
+    executor: vfcommon/build-executor
+    steps:
+      - checkout
+      - vfcommon/stop_if_no_changes:
+          package: realtime
+      - vfcommon/update_track:
+          image_repo: << pipeline.parameters.container-image-url-realtime >>
+          component: << pipeline.parameters.track-component-realtime >>
+          dockerfile: Dockerfile
+
+workflows:
+  update-creator-app-track:
+    when: << pipeline.parameters.build-creator-app >>
+    jobs:
+      - build-app:
+          check_image: true
+          context: dev-test
+          filters:
+            <<: *ignore_autorebase_filters
+            tags:
+              ignore: /.*/
+      - update-track-creator-app:
+          context: dev-test
+          post-steps:
+            - jira/notify:
+                environment: ${CIRCLE_BRANCH%%_*}
+                environment_type: testing
+                job_type: deployment
+          requires:
+            - build-app
+          filters:
+            <<: *ignore_autorebase_filters
+            tags:
+              ignore: /.*/
+
+  update-admin-app-track:
+    when: << pipeline.parameters.build-admin-app >>
+    jobs:
+      - build-admin:
+          context: dev-test
+          filters:
+            <<: *ignore_autorebase_filters
+            tags:
+              ignore: /.*/
+      - update-track-admin-ui:
+          context: dev-test
+          requires:
+            - build-admin
+          filters:
+            <<: *ignore_autorebase_filters
+            tags:
+              ignore: /.*/
+
+  update-realtime-track:
+    when: << pipeline.parameters.build-realtime >>
+    jobs:
+      - build-realtime:
+          context: dev-test
+          filters:
+            <<: *ignore_autorebase_filters
+            tags:
+              ignore: /.*/
+      - update-track-realtime:
+          context: dev-test
+          requires:
+            - build-realtime
+          filters:
+            <<: *ignore_autorebase_filters
+            tags:
+              ignore: /.*/
+  
+  test-and-release:
+    jobs:
+      - test:
+          <<: *slack-fail-post-step
+          context: dev-test
+          filters:
+            <<: *ignore_autorebase_staging_filters
+
+      - vfcommon/test_e2e:
+          context: dev-test
+          github_username: GITHUB_USERNAME
+          github_token: GITHUB_TOKEN
+          execute: << pipeline.parameters.build-creator-app >>
+          <<: *slack-fail-post-step
+          filters:
+            <<: *ignore_autorebase_staging_filters
+
+      - build-app:
+          <<: *slack-fail-post-step
+          context: dev-test
+          strict: true
+          post-steps:
+            - jira/notify
+          filters:
+            <<: *ignore_autorebase_staging_filters
+
+      - build-admin:
+          <<: *slack-fail-post-step
+          context: dev-test
+          strict: true
+          post-steps:
+            - jira/notify
+          filters:
+            <<: *ignore_autorebase_staging_filters
+
+      - build-realtime:
+          <<: *slack-fail-post-step
+          context: dev-test
+          post-steps:
+            - jira/notify
+          filters:
+            <<: *ignore_autorebase_staging_filters
+
+      - vfcommon/release_monorepo:
+          <<: *slack-fail-post-step
+          sentry_project: creator-app
+          avoid_post_install_scripts: false
+          ssh_key: << pipeline.parameters.ssh-fingerprint >>
+          context: dev-test
+          requires:
+            - test
+            - vfcommon/test_e2e
+            - build-app
+            - build-admin
+            - build-realtime
+          filters:
+            branches:
+              only: master
+
+  # Deploy services
+  deploy-app:
+    jobs:
+      - build-app:
+          <<: *prod_creator_deploy_filters
+          context: dev-test
+          post-steps:
+            - jira/notify
+      - build-deploy-app-image:
+          <<: *prod_creator_deploy_filters
+          sentry: true
+          context: dev-test
+          post-steps:
+            - jira/notify:
+                environment: public
+                environment_type: production
+                job_type: deployment
+          requires:
+            - build-app
+
+  deploy-admin:
+    jobs:
+      - build-admin:
+          <<: *prod_admin_deploy_filters
+          context: dev-test
+      - build-deploy-admin-image:
+          <<: *prod_admin_deploy_filters
+          context: dev-test
+          requires:
+            - build-admin

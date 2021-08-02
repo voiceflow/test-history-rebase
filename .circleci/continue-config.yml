@@ -42,7 +42,7 @@ parameters:
     default: false
 
 orbs:
-  vfcommon: voiceflow/common@0.0.178
+  vfcommon: voiceflow/common@0.0.179
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 
@@ -457,6 +457,7 @@ workflows:
 
   # Deploy services
   deploy-app:
+    when: << pipeline.parameters.build-creator-app >>
     jobs:
       - build-app:
           <<: *prod_creator_deploy_filters
@@ -476,6 +477,7 @@ workflows:
             - build-app
 
   deploy-admin:
+    when: << pipeline.parameters.build-admin-app >>
     jobs:
       - build-admin:
           <<: *prod_admin_deploy_filters

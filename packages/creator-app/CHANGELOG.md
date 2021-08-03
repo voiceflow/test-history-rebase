@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.449.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.448.1...@voiceflow/creator-app@1.449.0) (2021-08-03)
+
+
+### Bug Fixes
+
+* platform names (VF-1398) ([#3809](https://github.com/voiceflow/creator-app/issues/3809)) ([4723c97](https://github.com/voiceflow/creator-app/commit/4723c97e20307c540064b11f03d4037094df0f0e))
+
+
+### Features
+
+* add `last_utterance` global variable (VF-1162) ([#3804](https://github.com/voiceflow/creator-app/issues/3804)) ([b49f2f9](https://github.com/voiceflow/creator-app/commit/b49f2f9ca079887490b7b0706effc39c07230165))
+
+
+
+
+
 ## [1.448.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.448.0...@voiceflow/creator-app@1.448.1) (2021-08-03)
 
 

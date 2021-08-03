@@ -84,7 +84,7 @@ export function Item(props) {
             </ProjectTitleCaption>
           </ProjectTitleDetails>
 
-          <Tooltip position="top" title={isLive ? 'Live' : 'Development'} className={DashboardClassName.PROJECT_LIST_ITEM_STATUS} distance={10}>
+          <Tooltip position="top" title={isLive ? 'Live' : 'Design'} className={DashboardClassName.PROJECT_LIST_ITEM_STATUS} distance={10}>
             <SvgIcon
               icon={isLive ? 'outlinedFilledCircle' : 'outlinedCircle'}
               color={isLive ? '#43A047' : '#059fe4'}

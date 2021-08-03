@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.450.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.449.0...@voiceflow/creator-app@1.450.0) (2021-08-03)
+
+
+### Bug Fixes
+
+* dialog adapter (VF-000) ([#3810](https://github.com/voiceflow/creator-app/issues/3810)) ([6f1cdba](https://github.com/voiceflow/creator-app/commit/6f1cdba1de38f5799d50f6a1cba6510f3e618253))
+
+
+### Features
+
+* change tooltip text (VF-1254) ([#3800](https://github.com/voiceflow/creator-app/issues/3800)) ([d5c0aa7](https://github.com/voiceflow/creator-app/commit/d5c0aa7270cc54b2e3b6426637673884126e4790))
+
+
+
+
+
 # [1.449.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.448.1...@voiceflow/creator-app@1.449.0) (2021-08-03)
 
 

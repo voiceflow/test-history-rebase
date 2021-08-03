@@ -1,7 +1,7 @@
 import { TimeRange } from '@voiceflow/internal';
 import { Box, ButtonVariant, ClickableText } from '@voiceflow/ui';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import ReportTagInput, { InputVariant } from '@/components/ReportTagInput';
 import SelectMenu, { MenuSection } from '@/components/SelectMenu';
@@ -13,45 +13,73 @@ import DatePicker from './TimeRangePicker/DatePicker';
 
 const TranscriptFilters = () => {
   const history = useHistory();
-  const params = new URLSearchParams();
+  const location = useLocation();
   const startDate = '' as string | Date;
 
   const [timeRangeOpen, setTimeRangeOpen] = React.useState(false);
   const [tagsOpen, setTagsOpen] = React.useState(false);
   const [currentRange, setCurrentRange] = React.useState('' as TimeRange | string);
   const [tags, setTags] = React.useState<string[]>([]);
+
+  const filtersCounter = React.useMemo(() => {
+    let counter = 0;
+    const params = new URLSearchParams(location.search);
+
+    if (params.has(FILTER_TAG.RANGE) || params.has(FILTER_TAG.START_DATE) || params.has(FILTER_TAG.END_DATE)) {
+      counter++;
+    }
+
+    if (params.has(FILTER_TAG.TAG)) {
+      counter++;
+    }
+
+    return counter;
+  }, [location.search]);
+
   const clearTranscriptFilter = () => {
     setTimeRangeOpen(false);
     setTagsOpen(false);
-
-    history.replace({ search: '' });
   };
 
-  const appendURL = (range: Exclude<TimeRange, TimeRange.CUSTOM> | string) => {
-    if (!range && tags.length === 0) {
-      history.replace({ search: '' });
-      return;
-    }
-    if (
+  const isBuiltInRange = (range: Exclude<TimeRange, TimeRange.CUSTOM> | string) => {
+    return (
       range === TimeRange.TODAY ||
       range === TimeRange.YESTERDAY ||
       range === TimeRange.WEEK ||
       range === TimeRange.MONTH ||
       range === TimeRange.ALLTIME
-    ) {
-      params.append(FILTER_TAG.RANGE, range || '');
+    );
+  };
+
+  const addDateRangeParams = (params: URLSearchParams) => {
+    if (isBuiltInRange(currentRange)) {
+      params.append(FILTER_TAG.RANGE, currentRange || '');
     } else {
-      const split = range.split('-');
+      const split = currentRange.split('-');
       const from = new Date(split[0]).getTime();
       const to = new Date(split[1]).getTime();
 
-      params.append(FILTER_TAG.START_DATE, from.toString() || '');
-      params.append(FILTER_TAG.END_DATE, to.toString() || '');
+      from && params.append(FILTER_TAG.START_DATE, from.toString() || '');
+      to && params.append(FILTER_TAG.END_DATE, to.toString() || '');
     }
+  };
 
+  const addTagsParams = (params: URLSearchParams) => {
     tags.forEach((tag) => {
       params.append(FILTER_TAG.TAG, tag);
     });
+  };
+
+  const appendURL = () => {
+    const params = new URLSearchParams();
+
+    if (!currentRange && tags.length === 0) {
+      history.replace({ search: '' });
+      return;
+    }
+
+    if (timeRangeOpen) addDateRangeParams(params);
+    if (tagsOpen) addTagsParams(params);
 
     history.replace({ search: params.toString() });
   };
@@ -67,18 +95,10 @@ const TranscriptFilters = () => {
               <DatePicker date={startDate} onChange={(newRange: TimeRange | string) => setCurrentRange(newRange)} placement="right" />
             </MenuSection>
 
-            <MenuSection
-              title="Tags"
-              enabled={tagsOpen}
-              toggleSection={() => {
-                setTagsOpen(!tagsOpen);
-              }}
-            >
+            <MenuSection title="Tags" enabled={tagsOpen} toggleSection={() => setTagsOpen(!tagsOpen)}>
               <ReportTagInput
                 variant={InputVariant.SELECT_ONLY}
-                onChange={(tags: string[]) => {
-                  setTags([...new Set([...tags])]);
-                }}
+                onChange={(tags: string[]) => setTags([...new Set([...tags])])}
                 selectedTags={tags}
               />
             </MenuSection>
@@ -86,7 +106,7 @@ const TranscriptFilters = () => {
               <ApplyFiltersButton
                 variant={ButtonVariant.PRIMARY}
                 onClick={() => {
-                  appendURL(currentRange);
+                  appendURL();
                   onToggle();
                 }}
               >
@@ -99,7 +119,7 @@ const TranscriptFilters = () => {
     >
       {({ ref, isOpened, onToggle }) => (
         <ClickableText isActive={isOpened} ref={ref} onClick={onToggle}>
-          Add filters
+          Add filters {filtersCounter > 0 && `(${filtersCounter})`}
         </ClickableText>
       )}
     </SelectMenu>

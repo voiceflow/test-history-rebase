@@ -27,8 +27,11 @@ const Notes: React.FC = () => {
   const dispatchAddTag = useDispatch(addTag);
   const dispatchRemoveTag = useDispatch(removeTag);
 
-  const { tags } = currentTranscript;
-  const currentSentiment = React.useMemo(() => tags.filter((tag) => SentimentArray.includes(tag as Sentiment)), [tags, currentTranscriptID]);
+  const { reportTags } = currentTranscript;
+  const currentSentiment = React.useMemo(
+    () => reportTags.filter((tag) => SentimentArray.includes(tag as Sentiment)),
+    [reportTags, currentTranscriptID]
+  );
   const selectedEmoji = currentSentiment?.[0] ? SentimentToEmoji[currentSentiment[0] as Sentiment] : null;
 
   const onChange = async (emotion: EMOJI_OPTION) => {

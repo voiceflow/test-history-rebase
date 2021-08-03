@@ -43,7 +43,7 @@ export interface Transcript {
   // the id of this transcript
   id: string;
   // the user who recorded this test
-  creator_id: string | null;
+  creatorID: string | null;
   // the project this transcript is related to
   projectID: string;
   // drives the "read" indicator in the results list
@@ -55,7 +55,7 @@ export interface Transcript {
   // ie. chrome, firefox
   browser: Browser;
   // list of tag IDs and SystemTags
-  tags: TagType[];
+  reportTags: TagType[];
   // look at mentions format from commenting
   notes: string | null;
   // creation date

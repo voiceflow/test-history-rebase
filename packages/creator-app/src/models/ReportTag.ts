@@ -1,5 +1,9 @@
 import { Sentiment, SystemTag } from '@/models/Transcript';
 
+export interface DBReportTag {
+  tagID: string;
+  label: string;
+}
 export interface ReportTag {
   // the ID of this report tag
   id: string | Sentiment | SystemTag;

@@ -52,14 +52,14 @@ export const addTag =
     const state = getState();
     const activeProjectID = Session.activeProjectIDSelector(state);
 
-    const { tags } = transcriptByIDSelector(state)(transcriptID);
-    const newTagsArray = [...new Set([...tags, tagID])];
+    const { reportTags } = transcriptByIDSelector(state)(transcriptID);
+    const newTagsArray = [...new Set([...reportTags, tagID])];
     try {
-      dispatch(patchTranscript(transcriptID, { tags: newTagsArray }));
+      dispatch(patchTranscript(transcriptID, { reportTags: newTagsArray }));
       await client.transcript.addTag(activeProjectID!, transcriptID, tagID);
     } catch (e) {
       toast.error('Error adding tag');
-      dispatch(patchTranscript(transcriptID, { tags }));
+      dispatch(patchTranscript(transcriptID, { reportTags }));
     }
   };
 
@@ -69,15 +69,15 @@ export const removeTag =
     const state = getState();
     const activeProjectID = Session.activeProjectIDSelector(state);
 
-    const { tags } = transcriptByIDSelector(state)(transcriptID);
-    const newTagsArray = [...new Set(tags)].filter((tagId) => tagId !== tagID);
+    const { reportTags } = transcriptByIDSelector(state)(transcriptID);
+    const newTagsArray = [...new Set(reportTags)].filter((tagId) => tagId !== tagID);
 
     try {
-      dispatch(patchTranscript(transcriptID, { tags: newTagsArray }));
+      dispatch(patchTranscript(transcriptID, { reportTags: newTagsArray }));
       await client.transcript.removeTag(activeProjectID!, transcriptID, tagID);
     } catch (e) {
       toast.error('Error removing tag');
-      dispatch(patchTranscript(transcriptID, { tags }));
+      dispatch(patchTranscript(transcriptID, { reportTags }));
     }
   };
 
@@ -85,7 +85,7 @@ export const updateTags =
   (transcriptID: string, tags: string[]): Thunk =>
   async (dispatch) => {
     const updatedTagsArray = [...new Set([...tags])];
-    dispatch(patchTranscript(transcriptID, { tags: updatedTagsArray }));
+    dispatch(patchTranscript(transcriptID, { reportTags: updatedTagsArray }));
   };
 
 export const markAsRead =

@@ -5,7 +5,19 @@ import { AnyProject, DBProject } from '../models';
 import { AdapterNotImplementedError, createAdapter } from './utils';
 
 const projectAdapter = createAdapter<DBProject, AnyProject>(
-  ({ _id, name, devVersion, platform, privacy, image = null, liveVersion, linkType = ProjectLinkType.CURVED, members, platformData }) => ({
+  ({
+    _id,
+    name,
+    devVersion,
+    platform,
+    privacy,
+    image = null,
+    liveVersion,
+    linkType = ProjectLinkType.CURVED,
+    members,
+    platformData,
+    reportTags = {},
+  }) => ({
     id: _id,
     name,
     isLive: !!liveVersion,
@@ -20,6 +32,7 @@ const projectAdapter = createAdapter<DBProject, AnyProject>(
     linkType,
     members,
     platformData,
+    reportTags,
   }),
   () => {
     throw new AdapterNotImplementedError();

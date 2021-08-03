@@ -8,12 +8,12 @@ import { Container, SectionTitle } from '../components';
 
 const Tags: React.FC = () => {
   const currentTranscript = useSelector(currentSelectedTranscriptSelector);
-  const { tags } = currentTranscript;
+  const { reportTags } = currentTranscript;
 
   return (
     <Container style={{ flex: 1 }} withBackground>
       <SectionTitle>TAGS</SectionTitle>
-      <ReportTagInput selectedTags={tags} />
+      <ReportTagInput selectedTags={reportTags} />
     </Container>
   );
 };

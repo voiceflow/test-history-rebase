@@ -20,10 +20,10 @@ interface ResultsItem {
 }
 
 const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & ResultsItem> = ({ goToTargetTranscript, data, active = false }) => {
-  const { id, tags, unread, created_at, name } = data;
-  const isSaved = tags.includes(SystemTag.SAVED);
-  const isReviewed = tags.includes(SystemTag.REVIEWED);
-  const sentiment = tags.filter((tag: string) => SentimentArray.includes(tag as Sentiment))[0];
+  const { id, reportTags, unread, createdAt, name } = data;
+  const isSaved = reportTags.includes(SystemTag.SAVED);
+  const isReviewed = reportTags.includes(SystemTag.REVIEWED);
+  const sentiment = reportTags.filter((tag: string) => SentimentArray.includes(tag as Sentiment))[0];
 
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [canDeleteTranscript] = usePermission(Permission.DELETE_TRANSCRIPT);
@@ -79,7 +79,7 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
   return (
     <Container id={id} menuOpen={menuOpen} active={active} onClick={goToTarget}>
       <ReadStatusDot read={!unread} />
-      <InfoSection active={active} name={name} date={created_at} isRead={!unread} tags={tags} />
+      <InfoSection active={active} name={name} date={createdAt} isRead={!unread} tags={reportTags} />
       <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>
         <Dropdown options={options}>
           {(ref, onToggle, isOpen) => {

@@ -16,14 +16,14 @@ interface TranscriptContextProps {
 
 const TranscriptContext: React.FC<TranscriptContextProps> = ({ creatorIDList, creatorList }) => {
   const currentTranscript = useSelector(currentSelectedTranscriptSelector);
-  const { device, os, browser, creator_id } = currentTranscript;
+  const { device, os, browser, creatorID } = currentTranscript;
 
-  const index = creatorIDList.indexOf(Number(creator_id));
+  const index = creatorIDList.indexOf(Number(creatorID));
 
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
 
-  const userName = creatorIDList.includes(Number(creator_id)) ? creatorList[index].name : '';
-  const userImage = creatorIDList.includes(Number(creator_id)) ? creatorList[index].image : '';
+  const userName = creatorIDList.includes(Number(creatorID)) ? creatorList[index].name : '';
+  const userImage = creatorIDList.includes(Number(creatorID)) ? creatorList[index].image : '';
 
   const UserContainer = () => {
     let letter = '';

@@ -65,7 +65,7 @@ export const createTag =
       const state = getState();
       const activeProjectID = activeProjectIDSelector(state);
       try {
-        const newTag = await client.reportTags.createTag(activeProjectID!, { previousID: id, label: tagLabel });
+        const newTag = await client.reportTags.createTag(activeProjectID!, { tagID: id, label: tagLabel });
         const newID = newTag.id.toString();
         dispatch(
           addReportTag(newTag.id.toString(), {
@@ -103,7 +103,7 @@ export const updateTag =
     const activeProjectID = activeProjectIDSelector(state);
 
     try {
-      await client.reportTags.patchTag(activeProjectID!, { id: tagID, label });
+      await client.reportTags.patchTag(activeProjectID!, { tagID, label });
       dispatch(patchReportTag(tagID, { id: tagID, label, projectID: activeProjectID! }));
     } catch (e) {
       toast.error('Error updating tag');

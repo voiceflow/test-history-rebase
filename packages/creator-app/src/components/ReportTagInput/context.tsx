@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as ReportTags from '@/ducks/reportTag';
 import { createTag } from '@/ducks/reportTag';
-import { currentSelectedTranscriptSelector, updateTags } from '@/ducks/transcript';
+import { addTag, currentSelectedTranscriptSelector } from '@/ducks/transcript';
 import { connect } from '@/hocs';
 import { useDispatch, useSelector } from '@/hooks';
 import { ReportTag } from '@/models';
@@ -36,7 +36,7 @@ export const UnconnectedReportTagInputContextProvider: React.FC<{ selectedTags: 
   const [filteredTags, setFilteredTags] = React.useState<ReportTag[]>(allTags.filter((tag) => !selectedTags.includes(tag.id)));
   const [searchedTag, setSearchedTag] = React.useState('');
   const createReportTag = useDispatch(createTag);
-  const setTags = useDispatch(updateTags);
+  const addReportTag = useDispatch(addTag);
   const currentTranscript = useSelector(currentSelectedTranscriptSelector);
 
   React.useEffect(() => {
@@ -48,7 +48,7 @@ export const UnconnectedReportTagInputContextProvider: React.FC<{ selectedTags: 
   const onCreateNew = async (label: string) => {
     const id = await createReportTag(label);
     if (id) {
-      setTags(currentTranscript.id, [...selectedTags, id]);
+      addReportTag(currentTranscript.id, id);
     }
   };
 

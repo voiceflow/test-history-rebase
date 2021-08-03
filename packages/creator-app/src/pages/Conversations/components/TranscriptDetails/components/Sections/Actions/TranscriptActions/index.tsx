@@ -16,9 +16,9 @@ const TranscriptActions: React.FC = () => {
   const deleteTranscript = useDispatch(Transcript.deleteTranscript);
   const confirmDelete = useDispatch(Modal.setConfirm);
 
-  const { tags } = currentTranscript || {};
-  const isSaved = !!tags?.includes(SystemTag.SAVED);
-  const isReviewed = !!tags?.includes(SystemTag.REVIEWED);
+  const { reportTags } = currentTranscript || {};
+  const isSaved = !!reportTags?.includes(SystemTag.SAVED);
+  const isReviewed = !!reportTags?.includes(SystemTag.REVIEWED);
   const removeTag = useDispatch(Transcript.removeTag);
   const addTag = useDispatch(Transcript.addTag);
 

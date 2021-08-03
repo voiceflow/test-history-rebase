@@ -1,17 +1,20 @@
+import { PlatformType } from '@voiceflow/internal';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
-import { BUILT_IN_VARIABLES, InteractionModelTabType } from '@/constants';
+import { BUILT_IN_VARIABLES, BuiltInVariable, InteractionModelTabType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
+import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import * as SlotDuck from '@/ducks/slot';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { useEnableDisable, useSetup } from '@/hooks';
 import { ConnectedProps } from '@/types';
+import { createPlatformSelector } from '@/utils/platform';
 
 import LeftColumn from '../LeftColumn';
 import RightColumn from '../RightColumn';
@@ -20,11 +23,20 @@ import { VARIABLE_DESCRIPTION, VariableType } from './constants';
 import { Variable } from './types';
 import { addPrefix } from './utils';
 
-export type VariablesManagerProps = {
+/** Get global variables for the given platform. */
+const getPlatformGlobalVariables = createPlatformSelector(
+  {
+    [PlatformType.GOOGLE]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],
+    [PlatformType.GENERAL]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],
+  },
+  BUILT_IN_VARIABLES
+);
+
+export interface VariablesManagerProps {
   selectedID?: string;
   setSelectedID: (id: string) => void;
   setSelectedTypeAndID: (type: InteractionModelTabType, id: string) => void;
-};
+}
 
 const createVariablesList = (type: VariableType, variables: string[]) =>
   variables.map((variable) => ({ id: addPrefix(type, variable), name: variable, type }));
@@ -32,6 +44,7 @@ const createVariablesList = (type: VariableType, variables: string[]) =>
 const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManagerProps> = ({
   slots,
   selectedID,
+  platform,
   setSelectedID,
   localVariables,
   globalVariables,
@@ -40,11 +53,15 @@ const VariablesManager: React.FC<VariablesManagerProps & ConnectedVariablesManag
   removeVariableFromDiagram,
 }) => {
   const [mergedVariables, mergedVariablesMap] = React.useMemo(() => {
-    const list = [
-      ..._sortBy(createVariablesList(VariableType.LOCAL, localVariables), (variable) => variable.name.toLowerCase()),
-      ..._sortBy(createVariablesList(VariableType.GLOBAL, globalVariables), (variable) => variable.name.toLowerCase()),
-      ..._sortBy(createVariablesList(VariableType.BUILT_IN, BUILT_IN_VARIABLES), (variable) => variable.name.toLowerCase()),
-    ];
+    const variables = {
+      [VariableType.LOCAL]: localVariables,
+      [VariableType.GLOBAL]: globalVariables,
+      [VariableType.BUILT_IN]: getPlatformGlobalVariables(platform),
+    };
+
+    const list = Object.entries(variables).flatMap(([type, variables]) =>
+      _sortBy(createVariablesList(type as VariableType, variables), (variable) => variable.name.toLowerCase())
+    );
 
     const map = list.reduce<Record<string, Variable>>((acc, item) => Object.assign(acc, { [item.id]: item }), {});
 
@@ -173,6 +190,7 @@ const mapStateToProps = {
   diagramID: Session.activeDiagramIDSelector,
   localVariables: Diagram.activeDiagramLocalVariablesSelector,
   globalVariables: Version.activeGlobalVariablesSelector,
+  platform: Project.activePlatformSelector,
 };
 
 const mapDispatchToProps = {

@@ -68,6 +68,7 @@ export const BuiltInVariable = {
   PLATFORM: 'platform',
   LOCALE: 'locale',
   INTENT_CONFIDENCE: 'intent_confidence',
+  LAST_UTTERANCE: 'last_utterance',
 };
 
 export const BUILT_IN_VARIABLES = [

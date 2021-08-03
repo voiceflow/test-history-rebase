@@ -2,12 +2,13 @@ import { BuiltInVariable } from '@/constants';
 
 // eslint-disable-next-line import/prefer-default-export
 export const VARIABLE_DESCRIPTION = {
-  [BuiltInVariable.SESSIONS]: 'The Number of times a particular user has opened the app',
-  [BuiltInVariable.USER_ID]: "The user's Amazon/Google unique id",
-  [BuiltInVariable.TIMESTAMP]: 'UNIX timestamp (number of seconds since January 1st, 1970 at UTC.)',
+  [BuiltInVariable.SESSIONS]: 'The number of times a particular user has opened the app',
+  [BuiltInVariable.USER_ID]: "The user's Amazon/Google unique ID",
+  [BuiltInVariable.TIMESTAMP]: 'UNIX timestamp (number of seconds since January 1st, 1970 at UTC)',
   [BuiltInVariable.PLATFORM]: 'The platform your skill is running on ("alexa" or "google")',
-  [BuiltInVariable.LOCALE]: 'The locale of the user (eg en-US, en-CA, it-IT, fr-FR ...)',
+  [BuiltInVariable.LOCALE]: 'The locale of the user (eg. en-US, en-CA, it-IT, fr-FR, ...)',
   [BuiltInVariable.INTENT_CONFIDENCE]: 'The confidence interval (measured as a value from 0 to 100) for the most recently matched intent',
+  [BuiltInVariable.LAST_UTTERANCE]: 'The users last utterance in a text string',
 };
 
 export enum VariableType {

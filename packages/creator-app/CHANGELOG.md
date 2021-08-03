@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.448.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.448.0...@voiceflow/creator-app@1.448.1) (2021-08-03)
+
+
+### Bug Fixes
+
+* fixes add filters menu (VF-1386) ([#3805](https://github.com/voiceflow/creator-app/issues/3805)) ([69548ca](https://github.com/voiceflow/creator-app/commit/69548caa32254a2f7965695e9a52b26880b5b803))
+
+
+
+
+
 # [1.448.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.447.1...@voiceflow/creator-app@1.448.0) (2021-08-03)
 
 

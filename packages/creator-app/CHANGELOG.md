@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.448.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.447.1...@voiceflow/creator-app@1.448.0) (2021-08-03)
+
+
+### Features
+
+* conversations mongoDB (VF-000) ([#3806](https://github.com/voiceflow/creator-app/issues/3806)) ([1accab7](https://github.com/voiceflow/creator-app/commit/1accab71c296b1f08b4c9170cb6f5e97093dc8ca))
+
+
+
+
+
 ## [1.447.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.447.0...@voiceflow/creator-app@1.447.1) (2021-08-02)
 
 **Note:** Version bump only for package @voiceflow/creator-app

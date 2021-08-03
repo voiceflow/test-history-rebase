@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.6.1...@voiceflow/realtime-sdk@1.7.0) (2021-08-03)
+
+
+### Bug Fixes
+
+* optional reporttag record (VF-000) ([6f2da91](https://github.com/voiceflow/creator-app/commit/6f2da9133dfb8541811be6315a1459207f425e91))
+
+
+### Features
+
+* conversations mongoDB (VF-000) ([#3806](https://github.com/voiceflow/creator-app/issues/3806)) ([1accab7](https://github.com/voiceflow/creator-app/commit/1accab71c296b1f08b4c9170cb6f5e97093dc8ca))
+
+
+
+
+
 ## [1.6.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.6.0...@voiceflow/realtime-sdk@1.6.1) (2021-07-29)
 
 

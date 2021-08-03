@@ -16,7 +16,7 @@ export interface Project<D extends AnyRecord, M extends Member<any>> {
   versionID: string;
   members: M[];
   platformData: D;
-  reportTags: Record<string, { tagID: string; label: string }>;
+  reportTags?: Record<string, { tagID: string; label: string }>;
 }
 
 export type AnyProject = Project<AnyRecord, Member<any>>;

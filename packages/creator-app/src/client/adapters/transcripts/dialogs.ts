@@ -5,7 +5,7 @@ import { MessageType } from '@/pages/Prototype/types';
 
 const dialogAdapter = createAdapter<any, any>(
   (data) => {
-    const responseType = data.request_type;
+    const responseType = data.format;
     const isUserInput = responseType === 'request';
     let specificProperties = {};
 
@@ -34,7 +34,7 @@ const dialogAdapter = createAdapter<any, any>(
       : {
           ...data.payload?.payload,
           image: data.payload.payload?.image,
-          type: data.payload.type.toUpperCase(),
+          type: data.type.toUpperCase(),
           ...commonProperties,
           ...specificProperties,
         };

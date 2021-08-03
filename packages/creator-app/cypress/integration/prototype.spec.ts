@@ -124,7 +124,7 @@ context('Prototype', () => {
       });
     });
 
-    describe('with speak and choice', () => {
+    describe.skip('with speak and choice', () => {
       beforeEach(() => {
         cy.createProject('general', 'prototype:speak_and_choice');
         cy.renderTest('general');
@@ -184,7 +184,7 @@ context('Prototype', () => {
       });
     });
 
-    describe('with visuals', () => {
+    describe.skip('with visuals', () => {
       beforeEach(() => {
         cy.createProject('general', 'prototype:visual');
         cy.renderTest('general');

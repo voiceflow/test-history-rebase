@@ -1,10 +1,8 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
 
 import * as Account from '@/ducks/accountV2';
 import * as AdminDuck from '@/ducks/adminV2';
 import { connect } from '@/hocs';
-import theme, { mainTheme, mappedThemes } from '@/styles/theme';
 
 import AuthenticatedRouter from './AuthenticatedRouter';
 import LoadingGate from './LoadingGate';
@@ -24,19 +22,12 @@ class AllRoutes extends React.Component {
   };
 
   render() {
-    const THEME = {
-      ...theme,
-      ...(mappedThemes[this.props.theme] || mainTheme),
-    };
-
     return (
-      <ThemeProvider theme={THEME}>
-        <div className="body">
-          <LoadingGate label="Session" load={this.getUser} isLoaded={!Account.getAuth() || this.props.user.id}>
-            {() => (this.isInitialized() ? <AuthenticatedRouter /> : <PublicRouter />)}
-          </LoadingGate>
-        </div>
-      </ThemeProvider>
+      <div className="body">
+        <LoadingGate label="Session" load={this.getUser} isLoaded={!Account.getAuth() || this.props.user.id}>
+          {() => (this.isInitialized() ? <AuthenticatedRouter /> : <PublicRouter />)}
+        </LoadingGate>
+      </div>
     );
   }
 }
@@ -44,7 +35,6 @@ class AllRoutes extends React.Component {
 const mapStateToProps = {
   user: Account.accountSelector,
   theme: AdminDuck.themeSelector,
-  dark: AdminDuck.darkSelector,
 };
 
 const mapDispatchToProps = {

@@ -1,13 +1,13 @@
 import { Board, Creator, Error } from '@/models';
 import { NonNullishRecord } from '@/types';
 
-export enum THEMES {
-  light = 'LIGHT',
-  dark = 'DARK',
-  unicorn = 'UNICORN',
+export enum ThemeType {
+  LIGHT = 'LIGHT',
+  DARK = 'DARK',
+  UNICORN = 'UNICORN',
 }
 
-export type AdminState = {
+export interface AdminState {
   creator: Creator | NonNullishRecord<Record<string, unknown>>;
   betaCreator: Creator | NonNullishRecord<Record<string, unknown>>;
   boards: Board[];
@@ -15,5 +15,5 @@ export type AdminState = {
   vendors: any[];
   error: Error;
   dark: boolean;
-  theme: THEMES;
-};
+  theme: ThemeType;
+}

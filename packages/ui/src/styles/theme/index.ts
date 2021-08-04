@@ -1,5 +1,3 @@
-import { Overwrite } from 'utility-types';
-
 import { ANIMATION_SPEED, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE } from '../constants';
 import ICON_THEME from './icon';
 
@@ -73,12 +71,13 @@ export type Theme = typeof THEME;
 
 export default THEME;
 
-export const createTheme = <T extends Overwrite<Partial<Theme>, { components?: Record<string, any> }>>(overrides: T): Theme & T => ({
-  ...THEME,
-  ...overrides,
+export const createTheme = <T extends { components?: Record<string, any>; [key: string]: any }>(overrides: Omit<Partial<Theme>, 'components'> & T) =>
+  ({
+    ...THEME,
+    ...overrides,
 
-  components: {
-    ...THEME.components,
-    ...overrides.components,
-  },
-});
+    components: {
+      ...THEME.components,
+      ...overrides.components,
+    },
+  } as Theme & T);

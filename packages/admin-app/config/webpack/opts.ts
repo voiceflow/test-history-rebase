@@ -28,13 +28,15 @@ const opts: Options = {
 
   serve: {
     port: 3001,
-    publicURL: 'admin-local.development.voiceflow.com:3003',
-    https: E2E
-      ? {
-          key: fs.readFileSync(path.join(rootDir, 'certs/localhost.key')),
-          cert: fs.readFileSync(path.join(rootDir, 'certs/localhost.crt')),
-        }
-      : undefined,
+    publicURL: 'https://admin-local.development.voiceflow.com:3003',
+
+    ...(E2E && {
+      port: 3003,
+      https: {
+        key: fs.readFileSync(path.join(rootDir, 'certs/localhost.key')),
+        cert: fs.readFileSync(path.join(rootDir, 'certs/localhost.crt')),
+      },
+    }),
   },
 };
 

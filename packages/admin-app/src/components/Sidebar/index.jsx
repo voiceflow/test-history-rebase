@@ -12,7 +12,7 @@ import { history } from '@/store';
 const Sidebar = (props) => (
   <SidebarWrapper>
     <div className="logo" onClick={() => history.push('/')}>
-      <img src={props.theme === AdminV2.THEMES.dark ? wordmarkLight : wordmark} alt="" />
+      <img src={props.theme === AdminV2.ThemeType.DARK ? wordmarkLight : wordmark} alt="" />
       <div className="admin-icon">Internal</div>
     </div>
     <div className="stack-large">
@@ -68,8 +68,8 @@ const Sidebar = (props) => (
       <div className="settings-toggle">
         Jank mode
         <Toggle
-          checked={props.theme === AdminV2.THEMES.dark}
-          onChange={() => props.toggleTheme(props.theme === AdminV2.THEMES.dark ? AdminV2.THEMES.light : AdminV2.THEMES.dark)}
+          checked={props.theme === AdminV2.ThemeType.DARK}
+          onChange={() => props.toggleTheme(props.theme === AdminV2.ThemeType.DARK ? AdminV2.ThemeType.LIGHT : AdminV2.ThemeType.DARK)}
         />
       </div>
     </div>

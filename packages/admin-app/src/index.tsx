@@ -7,27 +7,21 @@ import 'react-day-picker/lib/style.css';
 import './Admin.css';
 
 import { ToastContainer } from '@voiceflow/ui';
-import { ConnectedRouter } from 'connected-react-router';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import * as Sentry from '@/vendors/sentry';
 
-import LifecycleProvider from './contexts/LifecycleProvider';
+import GlobalProviders from './contexts/GlobalProviders';
 import AllRoutes from './Routes/allRoutes';
-import Root, { history } from './store';
 
 Sentry.init();
 
 // Render ReactDOM
 ReactDOM.render(
-  <Root>
-    <ConnectedRouter history={history}>
-      <LifecycleProvider>
-        <AllRoutes />
-        <ToastContainer />
-      </LifecycleProvider>
-    </ConnectedRouter>
-  </Root>,
+  <GlobalProviders>
+    <AllRoutes />
+    <ToastContainer />
+  </GlobalProviders>,
   document.getElementById('root')
 );

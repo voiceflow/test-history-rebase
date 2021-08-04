@@ -1,8 +1,8 @@
 import { createTheme } from '@voiceflow/ui';
 
-import { THEMES } from '@/ducks/adminV2';
+import { ThemeType } from '@/ducks/adminV2';
 
-export const mainTheme = {
+export const mainTheme = createTheme({
   palette: {
     common: {
       black: '#132144',
@@ -54,9 +54,9 @@ export const mainTheme = {
   },
 
   shadows: ['none'],
-};
+});
 
-export const darkTheme = {
+export const darkTheme = createTheme({
   palette: {
     common: {
       black: '#132144',
@@ -108,15 +108,14 @@ export const darkTheme = {
   },
 
   shadows: ['none'],
+});
+
+export const THEME_MAP = {
+  [ThemeType.LIGHT]: mainTheme,
+  [ThemeType.DARK]: darkTheme,
+  [ThemeType.UNICORN]: mainTheme,
 };
 
-export const mappedThemes = {
-  [THEMES.light]: mainTheme,
-  [THEMES.dark]: darkTheme,
-};
+export const getTheme = (theme: ThemeType) => THEME_MAP[theme] || mainTheme;
 
-const theme = createTheme({});
-
-export default theme;
-
-export type Theme = typeof theme & (typeof mainTheme | typeof darkTheme);
+export type Theme = typeof mainTheme | typeof darkTheme;

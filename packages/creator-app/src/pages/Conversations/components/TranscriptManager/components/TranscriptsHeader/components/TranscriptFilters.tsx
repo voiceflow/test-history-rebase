@@ -39,6 +39,7 @@ const TranscriptFilters = () => {
   const clearTranscriptFilter = () => {
     setTimeRangeOpen(false);
     setTagsOpen(false);
+    history.replace({ search: '' });
   };
 
   const isBuiltInRange = (range: Exclude<TimeRange, TimeRange.CUSTOM> | string) => {

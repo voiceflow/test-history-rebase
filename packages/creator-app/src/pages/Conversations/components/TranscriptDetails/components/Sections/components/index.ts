@@ -4,12 +4,12 @@ import { css, styled } from '@/hocs';
 
 export const Container = styled(Flex)<{ curved?: boolean; flex?: number; rightExtend?: boolean; topExtend?: boolean; withBackground?: boolean }>`
   flex-direction: column;
-  flex: 2;
+  flex: 0
   border-top: 1px solid;
   width: 100%;
   border-color: ${({ theme }) => theme.colors.borders};
   padding: ${({ topExtend }) => (topExtend ? 40 : 22)}px 32px;
-  background-color: ${({ theme }) => theme.backgrounds.lightGray};
+  background-color: ${({ theme }) => theme.backgrounds.white};
   &:first-child {
     border: none;
   }
@@ -27,10 +27,10 @@ export const Container = styled(Flex)<{ curved?: boolean; flex?: number; rightEx
     `}
 
 ${({ withBackground, theme }) =>
-    withBackground &&
-    css`
-      background-color: ${theme.backgrounds.lightGray};
-    `}
+  withBackground &&
+  css`
+    background-color: ${theme.backgrounds.lightGray};
+  `}
 
   ${({ curved }) =>
     curved &&

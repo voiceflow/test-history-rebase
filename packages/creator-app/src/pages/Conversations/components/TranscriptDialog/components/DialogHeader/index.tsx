@@ -5,6 +5,10 @@ import Checkbox from '@/components/Checkbox';
 
 import { Container, LabelContainer } from './components';
 
+enum DialogLabel {
+  INTENT_CONFIDENCE = 'Intent confidence',
+  DEBUG = 'Debug messages',
+}
 interface TranscriptDialogInformation {
   intentConfidenceToggled: boolean;
   debugMessageToggled: boolean;
@@ -14,14 +18,6 @@ interface DialogHeaderProps {
   transcriptInformation: TranscriptDialogInformation;
   handleChange: (isDebugToggled: boolean) => void;
 }
-
-const Label = (label: string, checked: boolean) => {
-  return (
-    <Checkbox checked={checked}>
-      <LabelContainer>{label}</LabelContainer>
-    </Checkbox>
-  );
-};
 
 const DialogHeader: React.FC<DialogHeaderProps> = ({ transcriptInformation, handleChange }) => {
   const [intentConfidenceToggled, setIntentConfidenceToggled] = React.useState<boolean>(transcriptInformation.intentConfidenceToggled);
@@ -33,6 +29,19 @@ const DialogHeader: React.FC<DialogHeaderProps> = ({ transcriptInformation, hand
     handleChange(isDebugMessage);
   };
 
+  const Label = (label: string, checked: boolean) => {
+    return (
+      <Checkbox
+        checked={checked}
+        onChange={() => {
+          label === DialogLabel.DEBUG ? onToggle(true) : onToggle(false);
+        }}
+      >
+        <LabelContainer>{label}</LabelContainer>
+      </Checkbox>
+    );
+  };
+
   return (
     <Container>
       <b>Transcript</b>
@@ -40,12 +49,10 @@ const DialogHeader: React.FC<DialogHeaderProps> = ({ transcriptInformation, hand
         selfDismiss
         options={[
           {
-            label: Label('Intent confidence', intentConfidenceToggled),
-            onClick: () => onToggle(false),
+            label: Label(DialogLabel.INTENT_CONFIDENCE, intentConfidenceToggled),
           },
           {
-            label: Label('Debug messages', debugMessageToggled),
-            onClick: () => onToggle(true),
+            label: Label(DialogLabel.DEBUG, debugMessageToggled),
           },
         ]}
         placement="bottom-end"

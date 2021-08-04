@@ -17,7 +17,7 @@ const Context: React.FC = () => {
   });
 
   return (
-    <Container topExtend>
+    <Container withBackground topExtend>
       <TranscriptContext creatorIDList={creatorIDList} creatorList={creatorList} />
     </Container>
   );

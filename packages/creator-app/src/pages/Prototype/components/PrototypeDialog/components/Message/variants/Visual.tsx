@@ -11,6 +11,7 @@ import { MessageProps } from '../components/Message';
 
 type VisualProps = MessageProps & {
   visual: VisualMessage;
+  isTranscript?: boolean;
 };
 
 const VisualContainer = styled.div`
@@ -38,12 +39,12 @@ const ImageContainer = styled.div<{ ratio: number; isFirstInSeries?: boolean }>`
   }
 `;
 
-const Visual: React.FC<VisualProps> = ({ visual: { image, dimensions }, ...props }) => {
+const Visual: React.FC<VisualProps> = ({ visual: { image, dimensions }, isTranscript, ...props }) => {
   const { width = 0, height = 0 } = dimensions || {};
   const ratio = (height / width) * 100 || 60;
 
   return (
-    <VisualContainer>
+    <VisualContainer onClick={(e) => isTranscript && e.preventDefault()}>
       <Message bubble={false} {...props} withAnimation>
         <Link href={image!}>
           <ImageContainer ratio={ratio} isFirstInSeries={props.isFirstInSeries}>

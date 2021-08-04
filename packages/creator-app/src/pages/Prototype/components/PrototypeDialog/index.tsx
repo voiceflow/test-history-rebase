@@ -10,7 +10,7 @@ import { Audio, Debug, IntentConfidence, Loading, Speak, User, Visual } from './
 import useMessageFilters from './filters';
 import { checkIfFirstInSeries } from './utils';
 
-type DialogPrototypeProps = {
+interface DialogPrototypeProps {
   onPlay: (src: string) => void;
   status: Prototype.PrototypeStatus;
   messages: Message[];
@@ -27,7 +27,7 @@ type DialogPrototypeProps = {
   onInteraction: (request: string | BaseRequest) => void;
   stepBack: () => void;
   isTranscript?: boolean;
-};
+}
 
 const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   isPublic,
@@ -65,6 +65,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
           const isCurrent = message === messages[messages.length - 1];
           const isLast = index === messages.length - 1;
           const isIntentConfidence = message.type === MessageType.DEBUG && message.message.startsWith('matched intent');
+
           switch (message.type) {
             case MessageType.SESSION:
               return hideSessionMessages ? null : (
@@ -122,7 +123,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                 />
               );
             case MessageType.VISUAL:
-              return <Visual isFirstInSeries={isFirstInSeries} key={message.id} visual={message} avatarURL={avatarURL} />;
+              return <Visual isTranscript isFirstInSeries={isFirstInSeries} key={message.id} visual={message} avatarURL={avatarURL} />;
             default:
               return null;
           }

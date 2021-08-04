@@ -49,7 +49,7 @@ const TranscriptDialog: React.FC = () => {
     <Container>
       <DialogHeader
         handleChange={handleChange}
-        transcriptInformation={{ intentConfidenceToggled: debugMessage, debugMessageToggled: intentConfidence }}
+        transcriptInformation={{ intentConfidenceToggled: intentConfidence, debugMessageToggled: debugMessage }}
       />
       <PrototypeChatDisplay
         avatarURL={avatar}

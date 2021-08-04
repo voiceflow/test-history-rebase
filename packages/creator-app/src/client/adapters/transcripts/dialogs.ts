@@ -10,7 +10,7 @@ const dialogAdapter = createAdapter<any, any>(
     let specificProperties = {};
 
     const commonProperties = {
-      startTime: moment.utc(data.timestamp).format('ss'),
+      startTime: moment.utc(data.timestamp).format('mm:ss'),
     };
 
     // eslint-disable-next-line xss/no-mixed-html

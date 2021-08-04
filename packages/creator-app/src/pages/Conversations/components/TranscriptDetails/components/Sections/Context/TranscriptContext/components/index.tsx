@@ -66,12 +66,12 @@ export const DefaultUserContainer = styled.img`
 `;
 
 export const LetterContainer = styled.div<{ color: string; backgroundColor: string }>`
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   color: ${({ color }) => color};
   font-weight: 600;
   font-size: 24px;
-  line-height: 50px;
+  line-height: 48px;
   margin-left: -12px;
   z-index: 2;
   text-align: center;

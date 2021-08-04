@@ -9,7 +9,7 @@ import EditableComment from '@/pages/Canvas/components/ThreadEditor/components/E
 
 import { Container } from './components';
 
-export const HEIGHT = 180;
+export const HEIGHT = 260;
 
 const TranscriptNotes: React.FC = () => {
   const currentTranscript = useSelector(currentSelectedTranscriptSelector);

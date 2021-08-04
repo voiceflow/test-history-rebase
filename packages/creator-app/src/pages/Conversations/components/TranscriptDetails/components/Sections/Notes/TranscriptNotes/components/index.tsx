@@ -5,7 +5,7 @@ import { css, styled } from '@/hocs';
 export const Container = styled(BoxFlexStart)<{ height: number }>`
   max-width: 295px;
   z-index: 999;
-
+  flex-grow: 2;
   ${({ height }) => css`
     max-height: ${height}px;
   `}

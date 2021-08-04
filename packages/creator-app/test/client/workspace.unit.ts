@@ -333,7 +333,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
   describe('validateCoupon()', () => {
     it('check if coupon is valid', async () => {
       const couponCode = generate.id();
-      const fetch = stubFetch('api', 'get').resolves(true);
+      const fetch = stubFetch('api', 'get').resolves('true');
 
       const result = await client.validateCoupon(couponCode);
 

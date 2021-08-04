@@ -83,7 +83,7 @@ const workspaceClient = {
 
   listAPIKeys: (workspaceID: string) => apiV2.get<APIKey[]>(`${WORKSPACES_PATH}/${workspaceID}/api-keys`),
 
-  validateCoupon: (couponCode: string) => api.get<boolean>(`${WORKSPACES_PATH}/coupon/${couponCode}`),
+  validateCoupon: (couponCode: string) => api.get<string>(`${WORKSPACES_PATH}/coupon/${couponCode}`).then((result) => result === 'true'),
 };
 
 export default workspaceClient;

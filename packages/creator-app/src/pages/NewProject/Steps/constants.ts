@@ -54,18 +54,9 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>({
     icon: 'googleAssistant',
   },
   [PlatformType.GENERAL]: GENERAL_PLATFORM_META,
-  [PlatformType.IVR]: {
-    ...GENERAL_PLATFORM_META,
-    iconColor: '#5c6bc0',
-  },
-  [PlatformType.CHATBOT]: {
-    ...GENERAL_PLATFORM_META,
-    iconColor: '#3a7685',
-  },
-  [PlatformType.MOBILE_APP]: {
-    ...GENERAL_PLATFORM_META,
-    iconColor: '#3a5999',
-  },
+  [PlatformType.IVR]: GENERAL_PLATFORM_META,
+  [PlatformType.CHATBOT]: GENERAL_PLATFORM_META,
+  [PlatformType.MOBILE_APP]: GENERAL_PLATFORM_META,
 });
 
 export interface ChannelMetaType {

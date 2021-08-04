@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.451.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.451.1...@voiceflow/creator-app@1.451.2) (2021-08-04)
+
+
+### Bug Fixes
+
+* admin tool crashing (VF-1406) ([#3819](https://github.com/voiceflow/creator-app/issues/3819)) ([b2a4033](https://github.com/voiceflow/creator-app/commit/b2a4033064c82e35baf880cb74a84d7659aeb4f8))
+
+
+
+
+
 ## [1.451.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.451.0...@voiceflow/creator-app@1.451.1) (2021-08-04)
 
 

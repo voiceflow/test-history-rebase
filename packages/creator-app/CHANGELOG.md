@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.451.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.451.3...@voiceflow/creator-app@1.451.4) (2021-08-04)
+
+
+### Bug Fixes
+
+* reorder ports along with expressions (VF-1404) ([#3824](https://github.com/voiceflow/creator-app/issues/3824)) ([6c2ec09](https://github.com/voiceflow/creator-app/commit/6c2ec09b6ba75070181b5088246d46711563534a))
+
+
+
+
+
 ## [1.451.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.451.2...@voiceflow/creator-app@1.451.3) (2021-08-04)
 
 

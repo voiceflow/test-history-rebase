@@ -350,7 +350,7 @@ jobs:
           steps:
             - checkout
             - vfcommon/stop_if_no_changes:
-                package: craetor-app
+                package: creator-app
             - vfcommon/update_track:
                 image_repo: << pipeline.parameters.container-image-url-creator-app >>
                 component: << pipeline.parameters.track-component-creator-app >>

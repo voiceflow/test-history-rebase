@@ -1,8 +1,9 @@
 import { css, styled } from '@/hocs';
 
-type VariableTagProps = {
+interface VariableTagProps {
+  color?: string;
   isPrototypeSettings?: boolean;
-};
+}
 
 export const variableStyle = css<VariableTagProps>`
   display: inline-block;

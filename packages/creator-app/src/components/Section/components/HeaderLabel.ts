@@ -8,13 +8,13 @@ export enum HeaderVariant {
   LINK = 'link',
 }
 
-export type HeaderLabelProps = {
+export interface HeaderLabelProps {
   disabled?: boolean;
   variant?: HeaderVariant;
   hasToggle: boolean;
   isCollapsed: boolean;
   sectionVariant: SectionVariant;
-};
+}
 
 const HeaderLabel = styled.div<HeaderLabelProps>`
   ${overflowTextStyles}
@@ -32,7 +32,7 @@ const HeaderLabel = styled.div<HeaderLabelProps>`
 
   /* truncated text hack https://css-tricks.com/flexbox-truncated-text/ */
   min-width: 0;
-  margin-right: ${units(1.5)}px;
+  margin-right: ${units(2)}px;
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
   ${({ variant }) => {
     switch (variant) {

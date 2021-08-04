@@ -24,6 +24,7 @@ import { removeTrailingUnderscores } from '@/utils/string';
 
 import { ColorSelector, SlotTag } from './components';
 import CustomLine from './components/CustomLine';
+import EntitySection from './components/EntitySection';
 import ValueSynonymsSection from './components/ValueSynonymsSection';
 import { generateSlotInput, mergeSlotInputs } from './utils';
 
@@ -174,15 +175,15 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
 
   return (
     <>
-      <Section
+      <EntitySection
+        dividers={false}
+        variant="tertiary"
+        header="Entity"
         status={
           <SlotTag color={selectedColor} isInteraction={isInteraction}>
             {slotName}
           </SlotTag>
         }
-        dividers={false}
-        variant="tertiary"
-        header="Entity Name"
       >
         <FlexApart>
           <Input
@@ -195,7 +196,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
 
           {isInteraction && <RemoveDropdown onRemove={() => onRemove(id)} />}
         </FlexApart>
-      </Section>
+      </EntitySection>
 
       <Section
         dividers={false}

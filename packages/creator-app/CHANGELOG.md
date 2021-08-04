@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.451.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.450.2...@voiceflow/creator-app@1.451.0) (2021-08-04)
+
+
+### Features
+
+* added maxlength on inputs and trim texts on slot tag (VF-1316) ([#3802](https://github.com/voiceflow/creator-app/issues/3802)) ([ae1423a](https://github.com/voiceflow/creator-app/commit/ae1423ae0deab0bc1f29bbbcea8db944be34112b))
+
+
+
+
+
 ## [1.450.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.450.1...@voiceflow/creator-app@1.450.2) (2021-08-04)
 
 **Note:** Version bump only for package @voiceflow/creator-app

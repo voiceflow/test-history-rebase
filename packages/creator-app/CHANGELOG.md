@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.451.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.451.0...@voiceflow/creator-app@1.451.1) (2021-08-04)
+
+
+### Bug Fixes
+
+* use .then() to convert to boolean (VF-1418) ([#3820](https://github.com/voiceflow/creator-app/issues/3820)) ([7768965](https://github.com/voiceflow/creator-app/commit/77689654bfa3144cb90444c7c18f069d7a55ee44))
+
+
+
+
+
 # [1.451.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.450.2...@voiceflow/creator-app@1.451.0) (2021-08-04)
 
 

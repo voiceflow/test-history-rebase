@@ -38,6 +38,15 @@ const IfEditor: NodeEditor<NodeData.IfV2 & ConnectedCommentingUpdatesProps> = ({
     clone: setClone,
   } as any);
 
+  const reorderExpressions = React.useCallback(
+    (from: number, to: number) => {
+      onReorder(from, to);
+
+      engine.port.reorder(focusedNode!.id!, from + 1, to + 1);
+    },
+    [onReorder, engine.port, focusedNode!.id!]
+  );
+
   const addExpression = React.useCallback(
     async (scrollToBottom: (behavior?: ScrollBehavior) => void) => {
       onAdd();
@@ -91,7 +100,7 @@ const IfEditor: NodeEditor<NodeData.IfV2 & ConnectedCommentingUpdatesProps> = ({
         type="if-editor"
         onDelete={onRemove}
         onDuplicate={onDuplicationExp}
-        onReorder={onReorder}
+        onReorder={reorderExpressions}
         onEndDrag={toggleDragging}
         itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
         mapManaged={mapManaged as MapManaged<ExpressionData>}

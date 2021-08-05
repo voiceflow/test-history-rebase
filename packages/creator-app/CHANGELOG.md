@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.451.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.451.6...@voiceflow/creator-app@1.451.7) (2021-08-05)
+
+
+### Bug Fixes
+
+* align slot to input (VF-1316) ([#3825](https://github.com/voiceflow/creator-app/issues/3825)) ([8b21b15](https://github.com/voiceflow/creator-app/commit/8b21b15d3b9896140a5558d02b54cf55ff2234c1))
+
+
+
+
+
 ## [1.451.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.451.5...@voiceflow/creator-app@1.451.6) (2021-08-05)
 
 

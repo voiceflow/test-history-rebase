@@ -53,14 +53,14 @@ defaults:
       branches:
         ignore: /.*/
       tags:
-        only: /^@voiceflow/creator-app@[0-9]*(\.[0-9]*)*$/
+        only: /^@voiceflow\/creator-app@[0-9]*(\.[0-9]*)*$/
 
   prod_admin_deploy_filters: &prod_admin_deploy_filters
     filters:
       branches:
         ignore: /.*/
       tags:
-        only: /^@voiceflow/admin-app@[0-9]*(\.[0-9]*)*$/
+        only: /^@voiceflow\/admin-app@[0-9]*(\.[0-9]*)*$/
 
   ignore_autorebase_staging_filters: &ignore_autorebase_staging_filters
     branches:

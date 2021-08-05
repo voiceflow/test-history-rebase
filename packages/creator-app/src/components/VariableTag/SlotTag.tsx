@@ -31,10 +31,11 @@ const SlotTagContent = styled.span`
 
 interface SlotTagProps {
   color?: string | undefined;
+  className?: string;
 }
 
-export const SlotTag: React.FC<SlotTagProps> = ({ children, color }) => (
-  <SlotTagWrapper color={color}>
+export const SlotTag: React.FC<SlotTagProps> = ({ children, color, className }) => (
+  <SlotTagWrapper color={color} className={className}>
     <span>{`{`}</span>
     <SlotTagContent>{children}</SlotTagContent>
     <span>{`}`}</span>

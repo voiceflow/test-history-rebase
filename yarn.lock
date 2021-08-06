@@ -5111,19 +5111,13 @@
     eslint-plugin-xss "^0.1.9"
     eslint-plugin-you-dont-need-lodash-underscore "^6.11.0"
 
-"@voiceflow/general-types@1.51.5", "@voiceflow/general-types@^1.51.5":
-  version "1.51.5"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.51.5.tgz#2e8e592d86b3286d55c64bdefb7311805793cc7a"
-  integrity sha512-Ida0DDC2qIoO3/7WmpGVhbF1MzJePSFxcCXn4vj1db0jw0iRfEmQIHxop+S+VchGw8h+7HkUa+2GSspm7GY2ng==
+"@voiceflow/general-types@1.52.0", "@voiceflow/general-types@^1.51.2", "@voiceflow/general-types@^1.51.5":
+  version "1.52.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.52.0.tgz#b5fa069b53c3d382bafbb6d63e9b1ed089801771"
+  integrity sha512-m7lEx+8unFv/1v1+/MfayqeeG+7J2ndej1TzT3kkeMuis7HCn56swh4FCv+rYbBlEzCUK+Q2TrAQTwqr5/ES0A==
   dependencies:
     "@voiceflow/api-sdk" "^1.34.2"
-
-"@voiceflow/general-types@^1.51.2":
-  version "1.51.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.51.2.tgz#af1cead0bf3baeb0658deefebba38736fffbd945"
-  integrity sha512-NgXjGKUUFJH43JhUyHEefZ082ZHisjdHcn+tSIiBgYfakRA0KlKOh1RK4hq4q81557DrjEH5eNjDjQvVEGvlLw==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.34.0"
+    slate "^0.63.0"
 
 "@voiceflow/git-branch-check@^1.2.0":
   version "1.2.0"
@@ -21266,7 +21260,7 @@ slate-react@0.63.0:
     scroll-into-view-if-needed "^2.2.20"
     tiny-invariant "1.0.6"
 
-slate@0.63.0:
+slate@0.63.0, slate@^0.63.0:
   version "0.63.0"
   resolved "https://registry.yarnpkg.com/slate/-/slate-0.63.0.tgz#63a50c45a8971d350a3ebeef25e10cd9fa5c7726"
   integrity sha512-np24XIRsGbwVgKQR6DWLorTRQD7arUKiztCKsepBNiYtMxHqjR76i2nJA6pdGn6Vj9q88Afi9eYwCsfnzy2hBA==

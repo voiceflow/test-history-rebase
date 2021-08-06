@@ -17,10 +17,10 @@ export interface Options {
 
 export type Adapter<I, A extends any[], O> = (value: I, ...args: A) => O;
 
-export type BidirectionalAdapter<I, O, T extends any[], R extends any[]> = {
+export interface BidirectionalAdapter<I, O, T extends any[], R extends any[]> {
   fromDB: Adapter<I, T, O>;
   toDB: Adapter<O, R, I>;
-};
+}
 
 export type AnyBidirectionalAdapter = BidirectionalAdapter<any, any, any[], any[]>;
 

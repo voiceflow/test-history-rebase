@@ -2,9 +2,9 @@ import { FlexCenter } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
-type SpeakerWrapperProps = {
+interface SpeakerWrapperProps {
   isPlaying?: boolean;
-};
+}
 
 const SpeakerWrapper = styled(FlexCenter)<SpeakerWrapperProps>`
   width: 20px;

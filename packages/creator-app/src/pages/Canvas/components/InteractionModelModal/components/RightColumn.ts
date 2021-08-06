@@ -1,8 +1,8 @@
 import { styled } from '@/hocs';
 
-type RightColumnProps = {
+interface RightColumnProps {
   withTopPadding?: boolean;
-};
+}
 
 const RightColumn = styled.div<RightColumnProps>`
   width: 490px;

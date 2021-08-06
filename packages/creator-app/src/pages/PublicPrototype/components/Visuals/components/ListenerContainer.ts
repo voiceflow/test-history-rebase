@@ -1,8 +1,8 @@
 import { css, styled } from '@/hocs';
 
-type ListenerContainerProps = {
+interface ListenerContainerProps {
   listeningASR: boolean;
-};
+}
 
 const ListenerContainer = styled.div<ListenerContainerProps>`
   height: 100vh;

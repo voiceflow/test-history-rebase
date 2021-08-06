@@ -6,11 +6,11 @@ import Step, { ConnectedStepProps, Item, Section, VariableLabel } from '@/pages/
 
 import { NODE_CONFIG, PERMISSION_LABELS } from '../constants';
 
-export type PermissionStepProps = {
+export interface PermissionStepProps {
   permissions: string[];
   nodeID: string;
   portID: string;
-};
+}
 
 export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nodeID, portID }) => {
   const labelText = (

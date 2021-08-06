@@ -3,10 +3,10 @@ import React from 'react';
 import ShortcutContainer from './ShortcutContainer';
 import ShortcutTitle from './ShortcutTitle';
 
-export type ShortcutProps = {
+export interface ShortcutProps {
   title: string;
   command: React.ReactNode;
-};
+}
 
 const Shortcut: React.FC<ShortcutProps> = ({ command, title }) => (
   <ShortcutContainer>

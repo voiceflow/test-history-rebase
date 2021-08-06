@@ -10,13 +10,13 @@ import { Close, Container, Content, Header, Icon, Root } from './components';
 
 export { Body as ModalBody, Footer as ModalFooter, Header as ModalHeader } from './components';
 
-export type ModalProps = {
+export interface ModalProps {
   id: ModalType;
   title: React.ReactNode;
   icon?: React.ReactNode;
   isSmall?: boolean;
   className?: string;
-};
+}
 
 const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id, title, icon, isSmall = true, children, className }, ref) => {
   const { fade, isOpened, close, isInStack } = useModals(id);

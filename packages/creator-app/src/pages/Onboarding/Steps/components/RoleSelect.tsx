@@ -14,10 +14,10 @@ const ROLE_OPTIONS = [
   'Educator',
 ];
 
-type RoleSelectProps = {
+interface RoleSelectProps {
   userRole?: string;
   setUserRole: (role: string) => void;
-};
+}
 
 const RoleSelect: React.FC<RoleSelectProps> = ({ userRole, setUserRole }) => (
   <Select

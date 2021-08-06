@@ -4,9 +4,9 @@ import { styled, units } from '@/hocs';
 
 import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_NAME, sectionStyles } from '../../../styles';
 
-export type ContainerProps = {
+export interface ContainerProps {
   withTitle?: boolean;
-};
+}
 
 const Container = styled.div.attrs({ column: true })<ContainerProps>`
   ${flexApartStyles}

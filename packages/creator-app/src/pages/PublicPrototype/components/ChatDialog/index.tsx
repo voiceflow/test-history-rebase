@@ -10,7 +10,7 @@ import { Interaction, Message } from '@/pages/Prototype/types';
 
 import { ActionButtons, DisplayContainer, InputContainer, InteractionContainer, SpeechBarContainer, UserInput } from './components';
 
-export type ChatDialogProps = {
+export interface ChatDialogProps {
   input: string;
   color?: string;
   avatarURL?: string;
@@ -42,7 +42,7 @@ export type ChatDialogProps = {
   hasInput?: boolean;
   autoScroll?: boolean;
   onStepBack: () => void;
-};
+}
 
 const ChatDialog: React.FC<ChatDialogProps> = ({
   input,

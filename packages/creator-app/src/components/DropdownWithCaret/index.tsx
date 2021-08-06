@@ -6,7 +6,7 @@ import { Identifier } from '@/styles/constants';
 
 import { TextVariant } from './types';
 
-type DropdownWithCaretProps = {
+interface DropdownWithCaretProps {
   placement?: DropdownPlacement;
   menu: React.ReactNode;
   text: string | React.ReactNode;
@@ -19,7 +19,7 @@ type DropdownWithCaretProps = {
   fullWidth?: boolean;
   disabledOverlay?: boolean;
   border?: string;
-};
+}
 
 const DropdownWithCaret: React.FC<DropdownWithCaretProps> = ({
   placement = 'bottom-start',

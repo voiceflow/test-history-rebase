@@ -1,12 +1,12 @@
 import { backgrounds, colors, css, styled } from '../../../styles';
 import { MenuItem } from '../../Menu';
 
-export type SelectItemProps = {
+export interface SelectItemProps {
   isGroup?: boolean;
   isNested?: boolean;
   isFocused?: boolean;
   withSubLevel?: boolean;
-};
+}
 
 const SelectItem = styled(MenuItem)<SelectItemProps>`
   position: relative;

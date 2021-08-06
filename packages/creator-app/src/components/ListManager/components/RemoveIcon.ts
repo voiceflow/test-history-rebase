@@ -2,9 +2,9 @@ import { SvgIcon } from '@voiceflow/ui';
 
 import { css, styled, transition, units } from '@/hocs';
 
-type RemoveIconProps = {
+interface RemoveIconProps {
   isHidden?: boolean;
-};
+}
 
 const RemoveIcon = styled(SvgIcon).attrs({ icon: 'remove' })<RemoveIconProps>`
   margin-left: ${units(2)}px;

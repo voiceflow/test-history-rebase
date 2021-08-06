@@ -8,10 +8,10 @@ import HelpTooltip from './HelpTooltip';
 
 const AnyTutorialTooltip = TutorialTooltip as any;
 
-type FooterProps = {
+interface FooterProps {
   canRenderPreview?: boolean;
   openPreviewModal: () => void;
-};
+}
 
 const Footer: React.FC<FooterProps> = ({ canRenderPreview, openPreviewModal }) => (
   <Controls

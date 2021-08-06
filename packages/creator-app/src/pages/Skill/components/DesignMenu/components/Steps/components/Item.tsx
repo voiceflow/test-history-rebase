@@ -14,14 +14,14 @@ import ItemContainer from './ItemContainer';
 import ItemDotsIconContainer from './ItemDotsIconContainer';
 import ItemLabel from './ItemLabel';
 
-export type ItemProps = {
+export interface ItemProps {
   type: BlockType;
   icon: Icon | React.FC;
   label: string;
   factoryData?: Partial<NodeData<unknown>>;
   iconColor?: string;
   isDraggingPreview?: boolean;
-};
+}
 
 const Item: React.FC<ItemProps> = ({ icon, type, label, iconColor, factoryData, isDraggingPreview }) => {
   const engine = useEventualEngine();

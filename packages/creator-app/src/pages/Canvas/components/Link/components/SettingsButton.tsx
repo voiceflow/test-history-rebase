@@ -3,14 +3,14 @@ import React from 'react';
 
 import ButtonContainer from './SettingsButtonContainer';
 
-type SettingsButtonProps = {
+interface SettingsButtonProps {
   onClick?: (e: React.MouseEvent) => void;
   children: React.ReactNode;
   isActive?: boolean;
   isSimple?: boolean;
   tooltipTitle?: string;
   tooltipHotkey?: string;
-};
+}
 
 const SettingsButton: React.ForwardRefRenderFunction<HTMLDivElement, SettingsButtonProps> = (
   { children, onClick, isActive, isSimple, tooltipTitle, tooltipHotkey },

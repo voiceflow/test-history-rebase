@@ -9,9 +9,9 @@ import { ClassName } from '@/styles/constants';
 import { CommentEditor, Container, NewComment, ReplySection } from './components';
 import { NEW_THREAD_EDITOR } from './constants';
 
-export type ThreadEditorProps = {
+export interface ThreadEditorProps {
   thread?: Thread;
-};
+}
 
 const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread }) => (
   <Container

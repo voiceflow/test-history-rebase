@@ -5,7 +5,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from '../components';
 
 const ModalComponent: React.FC<any> = Modal;
 
-export type DefaultModalProps = {
+export interface DefaultModalProps {
   open?: boolean;
   noPadding?: boolean;
   hideFooter?: boolean;
@@ -13,7 +13,7 @@ export type DefaultModalProps = {
   toggle?: () => void;
   header: React.ReactNode;
   content: React.ReactNode;
-};
+}
 
 const DefaultModal: React.FC<DefaultModalProps> = ({ open, toggle, header, content, noPadding, hideFooter, close_button_text }) => (
   <ModalComponent isOpen={open} toggle={toggle} modalname="default">

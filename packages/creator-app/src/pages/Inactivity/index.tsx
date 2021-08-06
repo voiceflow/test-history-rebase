@@ -19,10 +19,10 @@ const countdownRenderer = ({ minutes, seconds }: { minutes: number; seconds: num
 
 const ModalComponent: React.FC<any> = Modal;
 
-export type InactivityModalProps = {
+export interface InactivityModalProps {
   open: boolean;
   onActive: Callback;
-};
+}
 
 const InactivityModal: React.FC<InactivityModalProps & ConnectedInactivityModalProps> = ({ open, onActive, goToDashboard }) => (
   <ModalComponent isOpen={open} toggle={onActive}>

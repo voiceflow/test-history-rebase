@@ -1,11 +1,11 @@
 import { css, styled, transition } from '@/hocs';
 
-type PieceProps = {
+interface PieceProps {
   color: string;
   rotate: number;
   border: boolean;
   isHovered?: boolean;
-};
+}
 
 const Piece = styled.div<PieceProps>`
   ${transition('opacity')};

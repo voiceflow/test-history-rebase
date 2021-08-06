@@ -1,9 +1,9 @@
 import { css, styled } from '@/hocs';
 
-type CheckBoxContainerProps = {
+interface CheckBoxContainerProps {
   isFlat?: boolean;
   disabled?: boolean;
-};
+}
 
 const CheckBoxContainer = styled.label<CheckBoxContainerProps>`
   position: relative;

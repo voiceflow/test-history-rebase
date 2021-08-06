@@ -1,9 +1,9 @@
 import { styled } from '@/hocs';
 import { CANVAS_ACTIVATION_CLASSNAME, LINK_ACTIVE_CLASSNAME } from '@/pages/Canvas/constants';
 
-export type LinkGroupProps = {
+export interface LinkGroupProps {
   isVisible: boolean;
-};
+}
 
 const LinkGroup = styled.g.attrs<LinkGroupProps>(({ isVisible }) => ({
   style: {

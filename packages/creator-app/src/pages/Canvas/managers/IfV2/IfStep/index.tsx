@@ -9,7 +9,7 @@ import { expressionPreview } from '@/utils/expression';
 
 import { NODE_CONFIG } from '../constants';
 
-export type IfStepProps = {
+export interface IfStepProps {
   nodeID: string;
   elsePortID: string;
   expressions: {
@@ -17,7 +17,7 @@ export type IfStepProps = {
     label: JSX.Element | null;
     portID: string;
   }[];
-};
+}
 
 export const IfStep: React.FC<IfStepProps> = ({ expressions, nodeID, elsePortID }) => (
   <Step nodeID={nodeID}>

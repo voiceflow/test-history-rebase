@@ -9,11 +9,11 @@ import { noop } from '@/utils/functional';
 
 import SocialButton from './SocialButton';
 
-export type GoogleLoginButtonProps = {
+export interface GoogleLoginButtonProps {
   light?: boolean;
   disabled?: boolean;
   onLogin: (userProfile: GoogleLoginResponse) => Promise<void>;
-};
+}
 
 const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ light, disabled, onLogin }) => (
   <GoogleLogin

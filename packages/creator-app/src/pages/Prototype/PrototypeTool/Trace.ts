@@ -27,7 +27,7 @@ export enum StepDirection {
   BACK = 'back',
 }
 
-export type TraceControllerProps = {
+export interface TraceControllerProps {
   debug: boolean;
   engine?: null | Engine;
   isMuted: boolean;
@@ -50,20 +50,20 @@ export type TraceControllerProps = {
   activePathBlockIDs: string[];
   updatePrototypeVisualsData: (data: null | VisualData) => void;
   updatePrototypeVisualsDataHistory: (dataHistory: (null | VisualData)[]) => void;
-};
+}
 
-type Options = {
+interface Options {
   props: TraceControllerProps;
   audio: AudioController;
   message: MessageController;
   timeout: TimeoutController;
-};
+}
 
-type StreamState = {
+interface StreamState {
   src: string | null;
   token: string | null;
   offset: number;
-};
+}
 
 const findLastBlockTrace = (trace: Trace[]) => [...trace].reverse().find((traceFrame) => traceFrame.type === TraceType.BLOCK);
 

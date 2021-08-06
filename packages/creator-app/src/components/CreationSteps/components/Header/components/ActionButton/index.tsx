@@ -3,13 +3,13 @@ import React from 'react';
 
 import { Container, IconContainer, InnerContainer, Label } from './components';
 
-type ActionButtonProps = {
+interface ActionButtonProps {
   shouldRender: boolean;
   icon: Icon;
   label: string;
   onClick: () => void;
   className?: string;
-};
+}
 
 const ActionButton: React.FC<ActionButtonProps> = ({ className, shouldRender, icon, label, onClick }) => (
   <Container className={className}>

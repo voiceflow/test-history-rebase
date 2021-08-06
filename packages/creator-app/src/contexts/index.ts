@@ -14,11 +14,11 @@ export * from './RealtimeProjectContext';
 export * from './RealtimeStoreContext';
 export * from './TextEditorVariablesPopoverContext';
 
-export type ScrollContextValue = {
+export interface ScrollContextValue {
   scrollToNode: (node: HTMLElement, padding?: number) => void;
   setScrollBarOffset: () => void;
   scrollHorizontalToNode: (node: HTMLElement, padding?: number) => void;
-};
+}
 
 export const ScrollContext = React.createContext<ScrollContextValue | null>(null);
 export const { Consumer: ScrollContextConsumer, Provider: ScrollContextProvider } = ScrollContext;

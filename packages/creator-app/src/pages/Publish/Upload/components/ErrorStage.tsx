@@ -6,10 +6,10 @@ import { Nullable } from '@/types';
 import StageContainer from './StageContainer';
 import StageHeader from './StageHeader';
 
-export type ErrorStageProps = {
+export interface ErrorStageProps {
   title: string;
   footer?: Nullable<React.ReactNode>;
-};
+}
 
 const ErrorStage: React.FC<ErrorStageProps> = ({ title, children }) => (
   <StageContainer style={{ textAlign: 'left' }}>

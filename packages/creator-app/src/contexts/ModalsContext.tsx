@@ -16,10 +16,10 @@ export type ModalContextType<T extends object = object> = null | {
 
 export const ModalsContext = React.createContext<ModalContextType>(null);
 
-export type ModalStackFrame = {
+export interface ModalStackFrame {
   id: ModalType;
   data: object;
-};
+}
 
 export type ModalStack = ModalStackFrame[];
 

@@ -14,13 +14,13 @@ const FadeKeyframes = (distance = 0, height = 0) => keyframes`
   }
 `;
 
-export type FadeProps = {
+export interface FadeProps {
   delay?: number;
   height?: number;
   distance?: number;
   duration?: number;
   animationFunction?: string;
-};
+}
 
 export const getAnimationStyles =
   ({

@@ -1,6 +1,6 @@
 import { AmazonProfile, AmazonVendor } from '@voiceflow/alexa-types';
 
-export type Account = {
+export interface Account {
   email: string;
   name: string;
   creator_id: number;
@@ -9,7 +9,7 @@ export type Account = {
   first_login?: boolean;
   referrer_id?: number;
   referral_code?: string;
-};
+}
 
 export type LockOwner = Account & {
   color?: string;
@@ -17,13 +17,13 @@ export type LockOwner = Account & {
 };
 
 export namespace Account {
-  export type Amazon = {
+  export interface Amazon {
     token: string;
     profile: AmazonProfile;
     vendors: AmazonVendor[];
-  };
+  }
 
-  export type Google = {
+  export interface Google {
     token: string;
     profile: {
       id: string;
@@ -36,5 +36,5 @@ export namespace Account {
       locale: string;
       hd: string;
     };
-  };
+  }
 }

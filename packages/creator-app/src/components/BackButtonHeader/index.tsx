@@ -8,13 +8,13 @@ import { Identifier } from '@/styles/constants';
 
 import { HeaderContainer, NavigateBackTextContainer, SubHeader } from './components';
 
-export type BackButtonHeaderProps = {
+export interface BackButtonHeaderProps {
   render?: boolean;
   header?: React.ReactNode;
   subHeader?: React.ReactNode;
   onNavigateBack: () => void;
   navigateBackText?: string;
-};
+}
 
 const BackButtonComp: React.FC<any> = BackButton;
 

@@ -1,8 +1,8 @@
 import { colors, styled } from '../../../styles';
 
-export type ButtonContainerProps = {
+export interface ButtonContainerProps {
   disabled?: boolean;
-};
+}
 
 const ButtonContainer = styled.div<ButtonContainerProps>`
   display: flex;

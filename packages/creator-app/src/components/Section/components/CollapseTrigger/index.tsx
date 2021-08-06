@@ -4,12 +4,12 @@ import React from 'react';
 import { SectionToggleVariant } from '../../constants';
 import { Container, ToggleArrowContainer } from './components';
 
-type CollapseTriggerProps = {
+interface CollapseTriggerProps {
   variant: SectionToggleVariant;
   onToggle?: React.MouseEventHandler;
   isCollapsed?: boolean;
   disabled?: boolean;
-};
+}
 
 const CollapseTrigger: React.FC<CollapseTriggerProps> = ({ disabled, onToggle, isCollapsed, variant }) => (
   <Container disabled={disabled}>

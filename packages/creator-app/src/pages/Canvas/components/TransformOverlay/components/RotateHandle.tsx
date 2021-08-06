@@ -12,9 +12,9 @@ const OffsetCircularHandle = styled(CircularHandle)`
   transform: translateX(-50%);
 `;
 
-export type RotateHandleProps = {
+export interface RotateHandleProps {
   onDragStart: () => void;
-};
+}
 
 const RotateHandle: React.FC<RotateHandleProps> = ({ onDragStart }) => {
   const ref = useSwallowZoom<HTMLDivElement>();

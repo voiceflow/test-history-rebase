@@ -6,12 +6,12 @@ import { Manager, Popper, Reference } from 'react-popper';
 import Button from './SettingsButton';
 import Content from './SettingsContent';
 
-type SettingsTypeProps = {
+interface SettingsTypeProps {
   type: ProjectLinkType;
   isOpen: boolean;
   onToggle: () => void;
   onChange: (type: ProjectLinkType) => void;
-};
+}
 
 const SettingsType: React.FC<SettingsTypeProps> = ({ type, isOpen, onToggle, onChange }) => {
   const isStraightLink = type === ProjectLinkType.STRAIGHT;

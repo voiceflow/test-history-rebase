@@ -4,11 +4,11 @@ import { css, styled } from '@/hocs';
 
 import { LINE_HEIGHT } from '../constants';
 
-export type StepLabelTextProps = {
+export interface StepLabelTextProps {
   multiline?: boolean;
   lineClamp?: number;
   withNewLines?: boolean;
-};
+}
 
 const StepLabelText = styled.div<StepLabelTextProps>`
   ${overflowTextStyles}

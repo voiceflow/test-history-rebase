@@ -1,8 +1,8 @@
 import { css, styled } from '@/hocs';
 
-type ItemContainerProps = {
+interface ItemContainerProps {
   isFocused?: boolean;
-};
+}
 
 const Container = styled.div<ItemContainerProps>`
   padding: 20px 32px;

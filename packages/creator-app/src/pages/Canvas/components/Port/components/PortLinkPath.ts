@@ -1,9 +1,9 @@
 import { styled } from '@/hocs';
 import { Path } from '@/pages/Canvas/components/Link';
 
-export type PortLinkPathProps = {
+export interface PortLinkPathProps {
   isHighlighted: boolean;
-};
+}
 
 const PortLinkPath = styled(Path)<PortLinkPathProps>`
   transform: translateY(-2px);

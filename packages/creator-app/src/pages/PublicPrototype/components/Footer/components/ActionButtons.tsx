@@ -3,12 +3,12 @@ import React from 'react';
 
 import ActionButtonContainer from './ActionButtonContainer';
 
-type ActionButtons = {
+interface ActionButtons {
   onMute: () => void;
   isMuted: boolean;
   onReset: () => void;
   onFullScreen: () => void;
-};
+}
 
 const ActionButtons: React.FC<ActionButtons> = ({ onMute, onReset, isMuted, onFullScreen }) => (
   <>

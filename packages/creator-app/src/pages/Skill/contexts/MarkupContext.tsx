@@ -16,7 +16,7 @@ import { delay } from '@/utils/promise';
 const FILE_LIMIT = 2 ** 20 * 4; // 2 ** 20 === 1 mb
 const ALLOWED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png'];
 
-export type MarkupContextType = {
+export interface MarkupContextType {
   imageLimit: number;
   creatingType: Nullable<MarkupBlockType>;
   uploadingImages: boolean;
@@ -27,7 +27,7 @@ export type MarkupContextType = {
   startTextCreation: () => void;
   toggleTextCreating: () => void;
   triggerImagesUpload: () => void;
-};
+}
 
 export const MarkupContext = React.createContext<Nullable<MarkupContextType>>(null);
 export const { Consumer: MarkupConsumer } = MarkupContext;

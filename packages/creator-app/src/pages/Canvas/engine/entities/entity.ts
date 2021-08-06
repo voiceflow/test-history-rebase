@@ -10,12 +10,12 @@ import { append, withoutValue } from '@/utils/array';
 import type { Engine } from '..';
 import { EntityType } from '../constants';
 
-export type EntityInstance = {
+export interface EntityInstance {
   isReady: () => boolean;
 
   addClass: (className: string) => void;
   removeClass: (className: string) => void;
-};
+}
 
 export const isDirectlyEqual = <T>(lhs: T, rhs: T) => lhs === rhs;
 

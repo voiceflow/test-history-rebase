@@ -3,9 +3,9 @@ import { Flex } from '@voiceflow/ui';
 import { css, styled } from '@/hocs';
 import { FadeRightContainer } from '@/styles/animations';
 
-type ContainerProps = {
+interface ContainerProps {
   isPublic?: boolean;
-};
+}
 
 export const Container = styled(Flex).attrs({ column: true })<ContainerProps>`
   height: 100%;

@@ -9,7 +9,7 @@ import { withEnterPress } from '@/utils/dom';
 
 import { Container, IconContainer, Input } from './components';
 
-export type BlockHeaderProps = {
+export interface BlockHeaderProps {
   variant: BlockVariant;
   name?: string;
   icon?: Icon;
@@ -20,7 +20,7 @@ export type BlockHeaderProps = {
   updateName?: (value: string) => void;
   titleRef?: React.Ref<EditableTextAPI | null>;
   actions?: JSX.Element;
-};
+}
 
 const BlockHeader: React.FC<BlockHeaderProps> = ({
   name,

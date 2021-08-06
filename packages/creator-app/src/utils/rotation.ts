@@ -79,10 +79,10 @@ const applyCWRotationMatrix = (vec: Point, angle: number): Point =>
  *
  */
 
-type RotateCoordsOptions = {
+interface RotateCoordsOptions {
   // Determines which direction we perform the rotation in.
   rotation: RotationDirection;
-};
+}
 
 const defaultRotateOptions = { rotation: RotationDirection.CW };
 

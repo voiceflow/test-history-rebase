@@ -5,9 +5,9 @@ import { Nullable } from '@/types';
 
 import DragLayer, { PreviewOptions } from './DragLayer';
 
-export type DragContextPreviewProps = {
+export interface DragContextPreviewProps {
   getStyle: () => { width?: number; height?: number };
-};
+}
 
 export type DragContextType = null | {
   isRegistered: (type: string) => boolean;

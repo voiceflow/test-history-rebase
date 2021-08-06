@@ -28,10 +28,10 @@ export type CRUDState<T> = Normalized<T>;
 
 type CRUDStateSubset = PickByValue<State, CRUDState<any>>;
 
-export type Meta = {
+export interface Meta {
   modelType?: string;
   receivedAction?: boolean;
-};
+}
 
 export const INITIAL_STATE: CRUDState<any> = {
   allKeys: [],

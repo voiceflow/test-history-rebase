@@ -5,9 +5,9 @@ import { noIntentsGraphic } from '@/assets';
 
 import { FILTER_LABELS, FilterType } from '../constants';
 
-export type NoCommentsProps = {
+export interface NoCommentsProps {
   type?: FilterType;
-};
+}
 
 const NoComments: React.FC<NoCommentsProps> = ({ type }) => {
   const mainText = type ? `No ${FILTER_LABELS[type]} Comments` : 'No Comments Exist';

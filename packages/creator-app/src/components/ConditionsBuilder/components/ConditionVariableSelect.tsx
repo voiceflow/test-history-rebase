@@ -5,12 +5,12 @@ import VariableSelect from '@/components/VariableSelect';
 
 const AnyVariableSelect: any = VariableSelect;
 
-export type ConditionVariableSelectProps = {
+export interface ConditionVariableSelectProps {
   value: string;
   onChange: (data: { value: string }) => void;
   onClick?: (event: SyntheticEvent<Element, Event>) => void;
   inputStopProp?: boolean;
-};
+}
 
 const ConditionVariableSelect: React.FC<ConditionVariableSelectProps> = ({ value, onChange, inputStopProp }) => (
   <>

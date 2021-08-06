@@ -10,7 +10,7 @@ import Bubble from '../MessageBubble';
 import Container from '../MessageContainer';
 import { LogoCircle } from './components';
 
-export type MessageProps = {
+export interface MessageProps {
   onClick?: React.MouseEventHandler;
   startTime?: string;
   rightAlign?: boolean;
@@ -23,7 +23,7 @@ export type MessageProps = {
   color?: string;
   avatarURL?: string;
   className?: string;
-};
+}
 
 const Message: React.FC<MessageProps> = ({
   rightAlign,

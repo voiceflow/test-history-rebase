@@ -1,8 +1,8 @@
 import { styled, units } from '@/hocs';
 
-type SeparatorProps = {
+interface SeparatorProps {
   isLast?: boolean;
-};
+}
 
 const Separator = styled.div<SeparatorProps>`
   position: relative;

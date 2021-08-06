@@ -10,11 +10,29 @@ enum ActionType {
   KEY_UPDATE = 'key-update',
 }
 
-type SetAction<S extends {}> = { type: ActionType.SET; payload: S };
-type UpdateAction<S extends {}> = { type: ActionType.UPDATE; payload: Partial<S> };
-type KeySetAction<S extends {}, K extends keyof S> = { type: ActionType.KEY_SET; key: K; payload: S[K] };
-type KeyToggleAction<S extends {}, K extends keyof S> = { type: ActionType.KEY_TOGGLE; key: K; payload?: never };
-type KeyUpdateAction<S extends {}, K extends keyof S> = { type: ActionType.KEY_UPDATE; key: K; payload: Partial<S[K]> };
+interface SetAction<S extends {}> {
+  type: ActionType.SET;
+  payload: S;
+}
+interface UpdateAction<S extends {}> {
+  type: ActionType.UPDATE;
+  payload: Partial<S>;
+}
+interface KeySetAction<S extends {}, K extends keyof S> {
+  type: ActionType.KEY_SET;
+  key: K;
+  payload: S[K];
+}
+interface KeyToggleAction<S extends {}, K extends keyof S> {
+  type: ActionType.KEY_TOGGLE;
+  key: K;
+  payload?: never;
+}
+interface KeyUpdateAction<S extends {}, K extends keyof S> {
+  type: ActionType.KEY_UPDATE;
+  key: K;
+  payload: Partial<S[K]>;
+}
 
 type Action<S extends {}, K extends keyof S> = SetAction<S> | UpdateAction<S> | KeySetAction<S, K> | KeyToggleAction<S, K> | KeyUpdateAction<S, K>;
 
@@ -50,12 +68,12 @@ const createSmartReducer =
     }
   };
 
-type KeyApi<P> = {
+interface KeyApi<P> {
   set: (payload: P) => void;
   clear: () => void;
   toggle: () => void;
   update: (payload: Partial<P>) => void;
-};
+}
 
 type API<S extends {}> = {
   set: (payload: S) => void;

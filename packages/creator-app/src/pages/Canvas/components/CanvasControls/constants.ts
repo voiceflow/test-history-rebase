@@ -4,12 +4,12 @@ import * as Documentation from '@/config/documentation';
 import { DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 
-export type StaticResource = {
+export interface StaticResource {
   icon: Icon;
   link: string;
   label: string;
   resourceName: Tracking.CanvasControlHelpMenuResource;
-};
+}
 
 export const STATIC_RESOURCES: StaticResource[] = [
   {

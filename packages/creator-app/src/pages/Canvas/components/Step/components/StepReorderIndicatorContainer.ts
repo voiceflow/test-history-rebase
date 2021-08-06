@@ -4,12 +4,12 @@ import { NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 
 import CaptureZone from './StepReorderCaptureZone';
 
-export type StepReorderIndicatorContainerProps = {
+export interface StepReorderIndicatorContainerProps {
   isActive: boolean;
   variant: BlockVariant;
   isHovered?: boolean;
   isLast?: boolean;
-};
+}
 
 const hoverStyle = css<StepReorderIndicatorContainerProps>`
   height: ${({ theme }) => theme.components.blockStep.minHeight + 2}px;

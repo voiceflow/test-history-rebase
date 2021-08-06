@@ -12,9 +12,9 @@ import NegativeMarginContainer from './NegativeMarginContainer';
 import UploadContainer from './UploadContainer';
 import UploadContent from './UploadContent';
 
-type AppearanceAndBrandingProps = {
+interface AppearanceAndBrandingProps {
   isAllowed: boolean;
-};
+}
 
 const AppearanceAndBranding: React.FC<AppearanceAndBrandingProps & ConnectedAppearanceAndBrandingProps> = ({
   isAllowed,

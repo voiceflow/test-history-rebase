@@ -4,9 +4,9 @@ import React from 'react';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
 
-export type PermissionGateProps = {
+export interface PermissionGateProps {
   permission: Permission;
-};
+}
 
 const PermissionGate: React.FC<PermissionGateProps> = ({ permission, children }) => {
   const [isAllowed, { activeRole }] = usePermission(permission);

@@ -11,11 +11,11 @@ const EXCLUDED_TAG_NAME = ['input', 'textarea'];
 
 export const CONTEXT_MENU_IGNORED_CLASS_NAME = 'context-menu-exclude';
 
-type ContextMenuProps<T> = {
+interface ContextMenuProps<T> {
   options: MenuOption<T>[];
   placement?: PopperProps['placement'];
   children: (props: { isOpen: boolean; onContextMenu: (event: React.MouseEvent<HTMLElement>) => void }) => React.ReactNode;
-};
+}
 
 const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...props }: ContextMenuProps<T>) => {
   const [virtualElememt, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement> | null>(null);

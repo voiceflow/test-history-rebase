@@ -11,7 +11,7 @@ import { Container, Content } from './components';
 
 export { Container };
 
-export type PageProps = {
+export interface PageProps {
   header?: React.ReactNode;
   onNavigateBack: () => void;
   subHeader?: React.ReactNode;
@@ -19,7 +19,7 @@ export type PageProps = {
   scrollHorizontal?: boolean;
   navigateBackText?: string;
   headerChildren?: React.ReactNode;
-};
+}
 
 const Page: React.FC<PageProps & ConnectedPageProps> = ({
   header,

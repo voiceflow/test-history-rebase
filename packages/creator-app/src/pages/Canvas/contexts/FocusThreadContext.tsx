@@ -3,11 +3,11 @@ import React from 'react';
 
 import { EngineContext } from './EngineContext';
 
-export type FocusThreadContextValue = {
+export interface FocusThreadContextValue {
   focusedID: string | null;
   setFocus: (id: string) => Promise<void>;
   resetFocus: () => void;
-};
+}
 
 export const FocusThreadContext = React.createContext<FocusThreadContextValue | null>(null);
 export const { Consumer: FocusThreadConsumer } = FocusThreadContext;

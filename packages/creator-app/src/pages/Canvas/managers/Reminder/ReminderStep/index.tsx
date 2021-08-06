@@ -7,13 +7,13 @@ import { transformVariablesToReadable } from '@/utils/slot';
 
 import { NODE_CONFIG } from '../constants';
 
-export type ReminderStepProps = {
+export interface ReminderStepProps {
   label: string;
   withPorts: boolean;
   nodeID: string;
   successPortID: string;
   failurePortID: string;
-};
+}
 
 export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, nodeID, successPortID, failurePortID }) => (
   <Step nodeID={nodeID}>

@@ -1,11 +1,11 @@
 import { css, styled } from '@/hocs';
 
-type StageContainerProps = {
+interface StageContainerProps {
   width?: number;
   height?: number;
   noPadding?: boolean;
   padding?: string;
-};
+}
 
 const StageContainer = styled.div<StageContainerProps>`
   width: 100%;

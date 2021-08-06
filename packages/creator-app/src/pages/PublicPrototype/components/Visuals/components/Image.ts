@@ -2,9 +2,9 @@ import { Box } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-type ImageProps = {
+interface ImageProps {
   url?: string | null;
-};
+}
 
 const Image = styled(Box)<ImageProps>`
   background-image: url(${({ url }) => url});

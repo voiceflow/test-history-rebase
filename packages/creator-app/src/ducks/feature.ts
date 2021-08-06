@@ -10,11 +10,11 @@ import { createAction, createRootSelector } from './utils';
 
 export type FeatureFlagMap = Partial<Record<FeatureFlag, { isEnabled: boolean }>>;
 
-export type FeatureState = {
+export interface FeatureState {
   features: FeatureFlagMap;
   isLoaded: boolean;
   isWorkspaceLoaded: boolean;
-};
+}
 
 export const STATE_KEY = 'feature';
 export const INITIAL_STATE: FeatureState = {

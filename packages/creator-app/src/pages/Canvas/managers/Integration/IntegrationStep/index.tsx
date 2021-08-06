@@ -7,13 +7,13 @@ import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } fro
 import { NODE_CONFIG } from '../constants';
 import { getLabel, getPlaceholder } from './utils';
 
-export type IntegrationStepProps = {
+export interface IntegrationStepProps {
   data: NodeData.Integration;
   withPorts: boolean;
   nodeID: string;
   successPortID: string;
   failurePortID: string;
-};
+}
 
 export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPorts, nodeID, successPortID, failurePortID }) => (
   <Step nodeID={nodeID}>

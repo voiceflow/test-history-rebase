@@ -6,10 +6,10 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 
 import { NODE_CONFIG } from '../constants';
 
-export type DirectiveStepProps = {
+export interface DirectiveStepProps {
   nodeID: string;
   portID: string;
-};
+}
 
 export const DirectiveStep: React.FC<DirectiveStepProps> = ({ nodeID, portID }) => (
   <Step nodeID={nodeID}>

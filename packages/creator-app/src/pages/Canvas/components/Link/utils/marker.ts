@@ -2,7 +2,9 @@ import { PathPoints } from '@/types';
 
 export const buildHeadMarker = (id: string): string => `url(#head-${id})`;
 
-export type MarkerAttrs = { orient: string };
+export interface MarkerAttrs {
+  orient: string;
+}
 
 const TOP_MARKER_ATTRS = { orient: '90deg' };
 const DEFAULT_MARKER_ATTRS = { orient: '0deg' };

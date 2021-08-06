@@ -46,7 +46,7 @@ export type SessionMessage = GenericMessage<MessageType.SESSION, { message: stri
 
 export type VisualMessage = GenericMessage<MessageType.VISUAL, ImageStepData>;
 
-export type MessageMap = {
+export interface MessageMap {
   [MessageType.USER]: UserMessage;
   [MessageType.AUDIO]: AudioMessage;
   [MessageType.SPEAK]: SpeakMessage;
@@ -54,7 +54,7 @@ export type MessageMap = {
   [MessageType.STREAM]: StreamMessage;
   [MessageType.SESSION]: SessionMessage;
   [MessageType.VISUAL]: VisualMessage;
-};
+}
 
 export type Message = UserMessage | AudioMessage | SpeakMessage | DebugMessage | SessionMessage | StreamMessage | VisualMessage;
 

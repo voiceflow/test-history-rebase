@@ -13,10 +13,10 @@ import { useAsyncMountUnmount } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
-type MigrationProps = {
+interface MigrationProps {
   onError: (error: string) => void;
   onSuccess: () => void;
-};
+}
 
 const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonAccount, productMap, projectID, selectedVendor, onSuccess }) => {
   const [vendorID, setVendorID] = React.useState<string>(selectedVendor ?? '');

@@ -12,12 +12,12 @@ import * as Sentry from '@/vendors/sentry';
 
 const MemoizedBaseRenderer = React.memo(BaseRenderer);
 
-type APLProps = {
+interface APLProps {
   id?: string;
   data: APLStepData;
   device: DeviceType | null;
   dimension: { width: number; height: number };
-};
+}
 
 const APL: React.FC<APLProps & ConnectedAPLProps> = ({ data, device, resolveAPL, dimension }) => {
   const [aplContext, setAPLContext] = React.useState<{ apl: string; data: string; commands: string } | null>(null);

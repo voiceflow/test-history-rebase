@@ -16,9 +16,9 @@ import { ClassName } from '@/styles/constants';
 import { stepBoxShadowStyles } from '../styles';
 import Section from './StepSection';
 
-export type StepContainerProps = {
+export interface StepContainerProps {
   canHighlight?: boolean;
-};
+}
 
 const StepContainer = styled(Flex)<StepContainerProps>`
   position: relative;

@@ -15,9 +15,9 @@ export const NotificationContainer = styled.div`
   }
 `;
 
-type UpdatesPopoverTypes = {
+interface UpdatesPopoverTypes {
   notifications: Notifications.Notification[];
-};
+}
 
 const UpdatesPopover: React.FC<UpdatesPopoverTypes> = ({ notifications }) => (
   <NotificationContainer>

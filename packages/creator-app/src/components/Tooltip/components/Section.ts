@@ -1,8 +1,8 @@
 import { styled, units } from '@/hocs';
 
-export type SectionProps = {
+export interface SectionProps {
   marginBottomUnits: number;
-};
+}
 
 const Section = styled.section<SectionProps>`
   &:not(:last-child) {

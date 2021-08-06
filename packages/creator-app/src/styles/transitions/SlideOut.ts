@@ -5,13 +5,13 @@ export enum SlideOutDirection {
   RIGHT = 'right',
 }
 
-export type SlideOutProps = {
+export interface SlideOutProps {
   open?: boolean;
   width: number;
   offset?: number;
   direction?: SlideOutDirection;
   disableAnimation?: boolean;
-};
+}
 
 export const SlideOut = styled.div<SlideOutProps>`
   position: absolute;

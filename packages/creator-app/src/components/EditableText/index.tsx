@@ -17,10 +17,10 @@ export type EditableTextProps = Assign<
   }
 >;
 
-export type EditableTextAPI = {
+export interface EditableTextAPI {
   stopEditing: VoidFunction;
   startEditing: VoidFunction;
-};
+}
 
 // eslint-disable-next-line react/display-name
 const EditableText = React.forwardRef<EditableTextAPI, EditableTextProps>(({ value, onChange, onBlur, onFocus, id, className, ...props }, ref) => {

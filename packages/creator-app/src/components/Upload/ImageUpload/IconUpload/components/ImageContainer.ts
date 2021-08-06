@@ -3,7 +3,7 @@ import { css } from 'styled-components';
 
 import { styled, transition } from '@/hocs';
 
-type ImageContainerProps = {
+interface ImageContainerProps {
   size: number;
   image: string;
   isLoading: boolean;
@@ -11,7 +11,7 @@ type ImageContainerProps = {
   notAccepted: boolean;
   isSquare?: boolean;
   disabled?: boolean;
-};
+}
 
 const ImageContainer = styled(FlexCenter)<ImageContainerProps>`
   ${transition('background-color', 'border')}

@@ -3,9 +3,9 @@ import { OverflowText } from '@voiceflow/ui';
 import { StepLabelVariant } from '@/constants/canvas';
 import { styled } from '@/hocs';
 
-export type StepLabelTextContainerProps = {
+export interface StepLabelTextContainerProps {
   variant: StepLabelVariant;
-};
+}
 
 const StepLabelTextContainer = styled(OverflowText)<StepLabelTextContainerProps>`
   flex: 1;

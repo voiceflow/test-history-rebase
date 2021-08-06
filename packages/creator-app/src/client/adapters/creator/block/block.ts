@@ -3,11 +3,11 @@ import { NodeData } from '@/models';
 
 import { createBlockAdapter } from './utils';
 
-type BlockData = {
+interface BlockData {
   name?: string;
   color?: BlockVariant;
   blockColor?: BlockVariant;
-};
+}
 
 const blockDataAdapter = createBlockAdapter<BlockData, NodeData.Combined | NodeData.Start>(
   ({ name, color, blockColor }) => ({

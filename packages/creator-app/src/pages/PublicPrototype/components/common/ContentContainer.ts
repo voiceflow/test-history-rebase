@@ -1,9 +1,9 @@
 import { css, styled } from '@/hocs';
 
-type ContentContainerProps = {
+interface ContentContainerProps {
   centerAlign?: boolean;
   isMobile?: boolean;
-};
+}
 
 const ContentContainer = styled.div<ContentContainerProps>`
   flex: 3;

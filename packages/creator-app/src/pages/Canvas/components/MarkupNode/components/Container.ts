@@ -1,12 +1,12 @@
 import { css, styled } from '@/hocs';
 import { CANVAS_COMMENTING_ENABLED_CLASSNAME, CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 
-export type ContainerProps = {
+export interface ContainerProps {
   isText: boolean;
   rotate: number;
   scale: number;
   maxWidth: number | null;
-};
+}
 
 const Container = styled.div<ContainerProps>`
   position: absolute;

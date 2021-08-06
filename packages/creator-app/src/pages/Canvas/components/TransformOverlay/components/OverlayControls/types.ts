@@ -5,7 +5,7 @@ import { Pair, Point } from '@/types';
 
 import { HandlePosition } from '../../constants';
 
-export type OverlayState = {
+export interface OverlayState {
   ref: React.MutableRefObject<HTMLDivElement | null>;
   handlePosition: React.MutableRefObject<HandlePosition | null>;
   snapshot: React.MutableRefObject<MarkupTransform | null>;
@@ -14,4 +14,4 @@ export type OverlayState = {
   rotation: React.MutableRefObject<number | null>;
   isRotating: React.MutableRefObject<boolean>;
   zoom: React.MutableRefObject<number>;
-};
+}

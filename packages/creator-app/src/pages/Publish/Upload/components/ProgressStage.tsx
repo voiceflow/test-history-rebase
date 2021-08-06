@@ -2,9 +2,9 @@ import React from 'react';
 
 import { css, styled, transition } from '@/hocs';
 
-export type ProgressStageProps = {
+export interface ProgressStageProps {
   progress: number;
-};
+}
 
 const ProgressBar = styled.div<ProgressStageProps>`
   position: fixed;

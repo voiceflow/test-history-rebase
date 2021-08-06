@@ -1,6 +1,6 @@
 import { Project } from './Project';
 
-export type Board = {
+export interface Board {
   team_id: number;
   name: string;
   created: string;
@@ -9,4 +9,4 @@ export type Board = {
   expiry: string | null;
   role: string;
   projects: Project[];
-};
+}

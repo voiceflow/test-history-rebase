@@ -16,7 +16,10 @@ import { isSlotsInRepromptValid } from './utils';
  * variables, only reference existing Slots.
  */
 
-type onBlurParameters = { newValue: string; pluginsData: object };
+interface onBlurParameters {
+  newValue: string;
+  pluginsData: object;
+}
 
 interface SSMLWithSlotsProps {
   // SSML props

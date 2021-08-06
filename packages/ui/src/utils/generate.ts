@@ -2,7 +2,7 @@ import cuid from 'cuid';
 
 const CHARACTERS = Array.from({ length: 26 }).map((_, index) => String.fromCharCode(97 + index));
 
-type Generate = {
+interface Generate {
   oneOf: <T>(options: T[]) => T;
 
   number: (min?: number, max?: number) => number;
@@ -14,7 +14,7 @@ type Generate = {
   object: <T = string>(entryCount?: number, factory?: () => T) => Record<string, T>;
 
   array: <T = string>(length?: number, factory?: () => T) => T[];
-};
+}
 
 // eslint-disable-next-line import/prefer-default-export
 export const generate: Generate = {

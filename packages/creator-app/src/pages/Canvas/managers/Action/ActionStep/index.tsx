@@ -4,12 +4,12 @@ import { useSyncedLookup } from '@/hooks';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
 
-export type ActionStepProps = {
+export interface ActionStepProps {
   nodeID: string;
   name: string;
   paths: { label: string; isDefault?: boolean; portID: string }[];
   withPorts: boolean;
-};
+}
 
 export const ActionStep: React.FC<ActionStepProps> = ({ nodeID, name, paths, withPorts }) => (
   <Step nodeID={nodeID}>

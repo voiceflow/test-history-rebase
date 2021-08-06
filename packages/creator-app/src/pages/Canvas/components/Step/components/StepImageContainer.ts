@@ -2,9 +2,9 @@ import { css, styled, units } from '@/hocs';
 
 import StepImage from './StepImage';
 
-type StepImageContainerProps = {
+interface StepImageContainerProps {
   aspectRatio?: number | null;
-};
+}
 
 const StepImageContainer = styled.div<StepImageContainerProps>`
   ${({ aspectRatio }) =>

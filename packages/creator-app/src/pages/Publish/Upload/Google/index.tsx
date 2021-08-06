@@ -9,10 +9,10 @@ import SuccessStage from './SuccessStage';
 import WaitInvocationName from './WaitInvocationName';
 import WaitProjectStage from './WaitProjectStage';
 
-type GoogleProps = {
+interface GoogleProps {
   export?: boolean;
   setMultiProjects?: (value: boolean) => void;
-};
+}
 
 export const Google: React.FC<GoogleProps> = ({ export: isExport, setMultiProjects }) => {
   const exportContextValue = React.useContext(ExportContext)!;

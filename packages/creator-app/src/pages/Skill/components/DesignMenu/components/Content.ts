@@ -2,10 +2,10 @@ import { styled, transition } from '@/hocs';
 
 import { Tab } from '../constants';
 
-type ContentProps = {
+interface ContentProps {
   activeTab?: Tab;
   isOpen?: boolean;
-};
+}
 
 const Content = styled.div<ContentProps>`
   ${transition('background-color', 'box-shadow')};

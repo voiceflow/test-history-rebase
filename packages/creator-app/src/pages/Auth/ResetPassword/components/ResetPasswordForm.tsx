@@ -9,10 +9,10 @@ import { ConnectedProps } from '@/types';
 import { PasswordInput } from '../../components';
 import { ResetPasswordStage } from '../constants';
 
-export type ResetPasswordFormProps = {
+export interface ResetPasswordFormProps {
   resetCode: string;
   setStage: (stage: ResetPasswordStage) => void;
-};
+}
 
 const ResetPasswordForm: React.FC<ResetPasswordFormProps & ConnectedResetPasswordFormProps> = ({ resetCode, goToLogin, setStage }) => {
   const [password, setPassword] = React.useState('');

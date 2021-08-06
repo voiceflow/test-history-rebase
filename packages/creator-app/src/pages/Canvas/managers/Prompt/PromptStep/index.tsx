@@ -7,12 +7,12 @@ import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canva
 
 import { NODE_CONFIG } from '../constants';
 
-export type PromptStepProps = {
+export interface PromptStepProps {
   nodeID: string;
   isPath: boolean;
   elsePortID: string;
   elsePathName: string;
-};
+}
 
 export const PromptStep: React.FC<PromptStepProps> = ({ nodeID, isPath, elsePathName, elsePortID }) => (
   <Step nodeID={nodeID}>

@@ -10,9 +10,9 @@ import { Nullable } from '@/types';
 
 const FORCE_UPDATE_THROTTLE_TIME = 200;
 
-export type Options = {
+export interface Options {
   horizontalEnabled: boolean;
-};
+}
 
 const DEFAULT_OPTIONS: Options = {
   horizontalEnabled: false,
@@ -33,10 +33,10 @@ const getPreviewStyle = (initialOffset: Nullable<XYCoord>, currentOffset: Nullab
   };
 };
 
-type DragLayerPreviewProps<I> = {
+interface DragLayerPreviewProps<I> {
   getOptions: (type: string) => undefined | Partial<Options>;
   renderPreview: (type: string, item: I) => React.ReactNode;
-};
+}
 
 const DragLayerPreview = <I extends any>({ getOptions, renderPreview }: DragLayerPreviewProps<I>): JSX.Element => {
   const previewRef = React.useRef<HTMLDivElement>(null);

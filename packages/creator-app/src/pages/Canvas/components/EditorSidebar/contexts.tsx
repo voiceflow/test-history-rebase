@@ -4,20 +4,20 @@ import React from 'react';
 import type { NodeData } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
 
-export type SidebarHeaderAction = {
+export interface SidebarHeaderAction {
   value: string;
   label: string;
   onClick: (options: { data: NodeData<unknown>; engine: Engine }) => void;
-};
+}
 
-export type SidebarContextState = {
+export interface SidebarContextState {
   headerActions: SidebarHeaderAction[];
-};
+}
 
-export type SidebarContextType = {
+export interface SidebarContextType {
   state: SidebarContextState;
   updateState: (state: SidebarContextState) => void;
-};
+}
 
 export const SidebarContext = React.createContext<null | SidebarContextType>(null);
 export const { Consumer: SidebarConsumer } = SidebarContext;
@@ -35,9 +35,9 @@ const DEFAULT_SIDEBAR_HEADER_ACTIONS: SidebarHeaderAction[] = [
   },
 ];
 
-export type SidebarProviderProps = {
+export interface SidebarProviderProps {
   headerActions?: SidebarHeaderAction[];
-};
+}
 
 export const SidebarProvider: React.FC<SidebarProviderProps> = ({ headerActions = DEFAULT_SIDEBAR_HEADER_ACTIONS, children }) => {
   const [state, updateState] = React.useState({ headerActions });

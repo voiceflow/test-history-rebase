@@ -9,7 +9,7 @@ import ConditionExpression from './ConditionExpression';
 import ConditionLogicGroup from './ConditionLogicGroup';
 import LogicUnit from './LogicUnit';
 
-export type LogicInterfaceHandlerProps = {
+export interface LogicInterfaceHandlerProps {
   firstItem?: boolean;
   expression: ExpressionV2 | LogicGroupData;
   baseLogicType: BaseLogicType;
@@ -17,7 +17,7 @@ export type LogicInterfaceHandlerProps = {
   onDelete: () => void;
   onChange: (value: ExpressionV2 | LogicGroupData) => void;
   updateBaseType: (value: ExpressionTypeV2.AND | ExpressionTypeV2.OR) => void;
-};
+}
 
 const LogicInterfaceHandler: React.FC<LogicInterfaceHandlerProps> = ({
   expression,

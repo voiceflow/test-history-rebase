@@ -5,11 +5,11 @@ import { css, styled, transition } from '@/hocs';
 
 import ItemDotsIconContainer from './ItemDotsIconContainer';
 
-type ItemContainerProps = {
+interface ItemContainerProps {
   isDragging: boolean;
   isClicked: boolean;
   isDraggingPreview?: boolean;
-};
+}
 
 const ItemContainer = styled(Flex)<ItemContainerProps>`
   width: 200px;

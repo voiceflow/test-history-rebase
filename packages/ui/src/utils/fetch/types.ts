@@ -19,7 +19,7 @@ export type FetchOptions = Pick<RequestInit, 'credentials' | 'mode'> & {
   query?: Record<string, string | number | boolean>;
 };
 
-export type FetchResult<R> = {
+export interface FetchResult<R> {
   status: number;
   body: R;
-};
+}

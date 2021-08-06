@@ -35,19 +35,19 @@ const getDeviceInfo = (type: APLDeviceType) => {
   };
 };
 
-type DisplayRendererProps = {
+interface DisplayRendererProps {
   apl: string;
   data?: string;
   commands?: string;
   withControls?: boolean;
-};
+}
 
-type DisplayRendererState = {
+interface DisplayRendererState {
   device: APLDeviceType;
   viewport: APLRendererProps['viewport'];
   scale: number;
   error: Error | null;
-};
+}
 
 class DisplayRenderer extends React.Component<DisplayRendererProps, DisplayRendererState> {
   static defaultProps: Partial<DisplayRendererProps> = {

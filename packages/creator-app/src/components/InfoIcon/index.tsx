@@ -5,7 +5,9 @@ import { PopperProps } from 'react-popper';
 import TutorialTooltip from '@/components/TutorialTooltip';
 import { css, styled, transition } from '@/hocs';
 
-type IconContainerProps = { isOpen: boolean };
+interface IconContainerProps {
+  isOpen: boolean;
+}
 
 export const IconContainer = styled.div<IconContainerProps>`
   ${transition('color')}
@@ -25,10 +27,10 @@ export const IconContainer = styled.div<IconContainerProps>`
   }
 `;
 
-export type InfoIconProps = {
+export interface InfoIconProps {
   placement?: PopperProps['placement'];
   tooltipProps?: any;
-};
+}
 
 const InfoIcon: React.FC<InfoIconProps> = ({ children, placement = 'bottom-start', tooltipProps }) => (
   <TutorialTooltip

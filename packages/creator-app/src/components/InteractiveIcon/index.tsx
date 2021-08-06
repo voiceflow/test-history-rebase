@@ -5,13 +5,13 @@ import { withProps } from 'recompose';
 
 import { styled } from '@/hocs';
 
-type InteractiveIconProps = {
+interface InteractiveIconProps {
   disabled?: boolean;
   onClick?: () => void;
   icon: string;
   className?: string;
   message?: string;
-};
+}
 
 export const ButtonContainer = styled.div<{ disabled?: boolean }>`
   border-radius: 50%;

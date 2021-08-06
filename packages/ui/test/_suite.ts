@@ -2,14 +2,14 @@ import chai from 'chai';
 import mochaSuite from 'mocha-suite';
 import sinon, { SinonMockStatic, SinonSpyStatic, SinonStub, SinonStubStatic } from 'sinon';
 
-export type Utils = {
+export interface Utils {
   spy: SinonSpyStatic;
   stub: SinonStubStatic;
   mock: SinonMockStatic;
   expect: typeof chai.expect;
   mockDate: (ms: number) => SinonStub;
   stubLocalStorage: (getter?: (key: string) => string) => { getItem: (key: string) => string; setItem: (key: string, value: string) => void };
-};
+}
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const createSuite = <T = {}>(createUtils?: (utils: Utils) => T) =>

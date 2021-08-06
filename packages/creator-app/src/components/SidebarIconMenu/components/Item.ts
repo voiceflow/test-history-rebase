@@ -2,10 +2,10 @@ import { FlexCenter } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
-export type MenuItemProps = {
+export interface MenuItemProps {
   small?: boolean;
   isActive?: boolean;
-};
+}
 
 export const ITEM_HEIGHT = 44;
 

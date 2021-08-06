@@ -1,10 +1,10 @@
 import { css, styled, transition } from '@/hocs';
 
-type ContainerProps = {
+interface ContainerProps {
   isOpen?: boolean;
   locked?: boolean;
   canvasOnly?: boolean;
-};
+}
 
 const Container = styled.aside<ContainerProps>`
   width: ${({ theme }) => theme.components.leftSidebar.width}px;

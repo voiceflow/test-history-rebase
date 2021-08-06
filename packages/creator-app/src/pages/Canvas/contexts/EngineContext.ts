@@ -8,6 +8,6 @@ export const { Provider: EngineProvider, Consumer: EngineConsumer } = EngineCont
 
 export const withEngine = withContext(EngineContext, 'engine');
 
-export type InjectedEngineProps = {
+export interface InjectedEngineProps {
   engine: Engine;
-};
+}

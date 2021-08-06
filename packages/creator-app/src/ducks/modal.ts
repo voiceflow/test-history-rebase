@@ -2,11 +2,11 @@ import { Action, RootReducer } from '@/store/types';
 
 import { createAction } from './utils';
 
-export type ModalState = {
+export interface ModalState {
   confirmModal: { confirm: () => void; [key: string]: unknown } | null;
   errorModal: { message?: string | unknown; [key: string]: unknown } | null;
   modal: unknown | null;
-};
+}
 
 export const STATE_KEY = 'modal';
 export const INITIAL_STATE: ModalState = {

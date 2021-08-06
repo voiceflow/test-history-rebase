@@ -5,18 +5,18 @@ import { useManager } from '@/hooks';
 
 import { ItemWrapper, RemoveIcon } from './components';
 
-type RenderForm<I> = {
+interface RenderForm<I> {
   value?: I | null;
   onAdd: (value: I) => void;
   onChange: (value: I) => void;
   addError?: string;
-};
+}
 
-type ItemOptions<I> = {
+interface ItemOptions<I> {
   key: string;
   index: number;
   onUpdate: (value: I) => void;
-};
+}
 
 type ListManagerProps<I> = React.PropsWithChildren<{
   items: I[];

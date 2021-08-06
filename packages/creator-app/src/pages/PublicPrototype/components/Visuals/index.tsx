@@ -17,13 +17,13 @@ import { ConnectedProps } from '@/types';
 import { APL, Container, Image, ListenerContainer, PlaceholderContainer, ScaleContainer } from './components';
 import { getScale } from './utils';
 
-type VisualsProps = {
+interface VisualsProps {
   isMobile?: boolean;
   isFullScreen?: boolean;
   onStopListening: () => void;
   onStartListening: () => void;
   listeningASR: boolean;
-};
+}
 
 const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({
   data,

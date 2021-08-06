@@ -2,9 +2,9 @@ import { FlexCenter } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
-type ContainerProps = {
+interface ContainerProps {
   hasBorderRight: boolean;
-};
+}
 
 const Container = styled(FlexCenter)<ContainerProps>`
   padding: 24px;

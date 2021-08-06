@@ -2,10 +2,10 @@ import { baseButtonStyles } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
-type TabProps = {
+interface TabProps {
   color?: string;
   isActive?: boolean;
-};
+}
 
 const Tab = styled.button<TabProps>`
   ${baseButtonStyles}

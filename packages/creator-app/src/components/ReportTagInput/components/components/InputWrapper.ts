@@ -1,9 +1,9 @@
 import { css, styled } from '@/hocs';
 
-export type InputProps = {
+export interface InputProps {
   isActive?: boolean;
   hasItems?: boolean;
-};
+}
 
 const Input = styled.div<InputProps>`
   border-radius: 5px;

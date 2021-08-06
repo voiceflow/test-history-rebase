@@ -6,11 +6,11 @@ import { ConnectedProps } from '@/types';
 
 import UploadButton from '../UploadButton';
 
-type ButtonProps = {
+interface ButtonProps {
   onClick: () => void;
   isActive: boolean;
   label?: string;
-};
+}
 
 const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ google, onClick, isActive, label }) => {
   const needsLogin = !google;

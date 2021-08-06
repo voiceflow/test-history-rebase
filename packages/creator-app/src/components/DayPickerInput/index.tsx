@@ -10,10 +10,10 @@ import { DayPickerContainer, FORMAT, TimeRangePicker, WEEKDAYS } from './compone
 
 const VariablesInputComponent = VariablesInput as React.FC<any>;
 
-export type DayPickerInputProps = {
+export interface DayPickerInputProps {
   date?: string | Date;
   onChange: (date: string | Date) => void;
-};
+}
 
 const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
   const dayPickerRef = React.useRef<HTMLElement | null>(null);

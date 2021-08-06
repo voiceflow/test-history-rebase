@@ -6,9 +6,9 @@ const SpinKeyframes = keyframes`
   }
 `;
 
-export type SpinProps = {
+export interface SpinProps {
   speed?: number;
-};
+}
 
 export const Spin = css<SpinProps>`
   animation: ${SpinKeyframes} ${({ speed = 1000 }) => speed}ms linear infinite;

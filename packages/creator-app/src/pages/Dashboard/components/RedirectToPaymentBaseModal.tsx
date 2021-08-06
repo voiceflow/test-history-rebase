@@ -7,14 +7,14 @@ import { styled } from '@/hocs';
 import { useModals } from '@/hooks';
 import { BodyContainer, ButtonContainer, ContentContainer } from '@/pages/Dashboard/components/ModalComponents';
 
-export type RedirectToPaymentBaseModalProps = {
+export interface RedirectToPaymentBaseModalProps {
   modalType: ModalType;
   header: string;
   icon: string;
   bodyContent: React.ReactNode;
   className?: string;
   helpLink?: string;
-};
+}
 
 const StyledModal = styled(Modal)`
   max-width: 392px;

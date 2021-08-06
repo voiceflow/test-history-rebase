@@ -1,9 +1,9 @@
 import { styled } from '@/hocs';
 
-export type RealtimeOverlayNametagProps = {
+export interface RealtimeOverlayNametagProps {
   color: string;
   backgroundColor: string;
-};
+}
 
 const RealtimeOverlayNametag = styled.div<RealtimeOverlayNametagProps>`
   position: absolute;

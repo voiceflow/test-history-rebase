@@ -4,10 +4,10 @@ import React from 'react';
 
 import ConditionLabelContainer from './ConditionLabelContainer';
 
-export type ConditionLabelProps = {
+export interface ConditionLabelProps {
   actionable?: boolean;
   onChange?: (value: ExpressionTypeV2.AND | ExpressionTypeV2.OR) => void;
-};
+}
 
 const ConditionLabel: React.FC<ConditionLabelProps> = ({ actionable = false, onChange, children }) =>
   actionable ? (

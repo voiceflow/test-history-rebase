@@ -2,9 +2,9 @@ import { css, styled } from '@/hocs';
 
 import { dividerStyles } from '../styles';
 
-export type EditorContentContainerProps = {
+export interface EditorContentContainerProps {
   fillHeight?: boolean;
-};
+}
 
 const EditorContentContainer = styled.div<EditorContentContainerProps>`
   ${dividerStyles}

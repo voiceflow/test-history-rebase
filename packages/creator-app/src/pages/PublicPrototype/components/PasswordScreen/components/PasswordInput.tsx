@@ -6,10 +6,10 @@ import Description from './Description';
 import Title from './Title';
 import ViewPrototypeButton from './ViewPrototypeButton';
 
-export type PasswordInputProps = {
+export interface PasswordInputProps {
   checkLogin: (password: string) => void;
   colorScheme?: string;
-};
+}
 
 const PasswordInput: React.FC<PasswordInputProps> = ({ checkLogin, colorScheme }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);

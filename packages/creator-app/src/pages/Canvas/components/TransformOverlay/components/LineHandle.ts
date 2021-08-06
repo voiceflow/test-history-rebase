@@ -2,10 +2,10 @@ import { css, styled } from '@/hocs';
 
 import { HandlePosition } from '../constants';
 
-export type LineHandleProps = {
+export interface LineHandleProps {
   edge: 'start' | 'end';
   position: HandlePosition;
-};
+}
 
 const LineHandle = styled.div<LineHandleProps>`
   position: absolute;

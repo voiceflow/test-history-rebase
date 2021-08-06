@@ -10,7 +10,7 @@ import { withoutValue } from '@/utils/array';
 
 import { createAction, createRootSelector } from './utils';
 
-export type UIState = {
+export interface UIState {
   creatorMenu: {
     activeMenu: string | null;
     isHidden: boolean;
@@ -21,7 +21,7 @@ export type UIState = {
   local: Record<string, any>;
   canvasNavigation: ControlScheme;
   canvasOnly: boolean;
-};
+}
 
 export const STATE_KEY = 'ui';
 export const INITIAL_STATE = {

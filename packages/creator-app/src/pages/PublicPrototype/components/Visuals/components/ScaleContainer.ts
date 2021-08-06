@@ -2,10 +2,10 @@ import { Box } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs';
 
-type ScaleContainerProps = {
+interface ScaleContainerProps {
   scale: number;
   isMobile?: boolean;
-};
+}
 
 const ScaleContainer = styled(Box)<ScaleContainerProps>`
   ${transition('transform')};

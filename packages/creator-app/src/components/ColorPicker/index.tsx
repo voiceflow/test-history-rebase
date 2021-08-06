@@ -12,7 +12,7 @@ import { withEnterPress } from '@/utils/dom';
 import { AlphaContainer, Colors, Container, HueContainer, InputAction, InputContainer, PickerPointer, SaturationContainer } from './components';
 import withHexColor from './withHexColor';
 
-export type ColorPickerProps = {
+export interface ColorPickerProps {
   width?: number;
   colors?: boolean;
   hexInput?: boolean;
@@ -20,7 +20,7 @@ export type ColorPickerProps = {
   onInputBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onInputFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onChangeCompleted?: (color: RGBColor) => void;
-};
+}
 
 const ColorPicker = ({
   colors = true,

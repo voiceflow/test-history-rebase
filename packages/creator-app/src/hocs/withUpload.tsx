@@ -14,13 +14,13 @@ type RequiredProps<F> = {
   update: (url: string | string[] | null) => void;
 } & (F extends 'uploadImage' ? { endpoint?: null | string | string[] } : F extends 'uploadAudio' ? { endpoint: string } : never);
 
-type InjectedProps = {
+interface InjectedProps {
   error: null | string;
   setError: (error: null | string) => void;
   isLoading: boolean;
   onDropRejected: () => void;
   onDropAccepted: (files: Blob[]) => void;
-};
+}
 
 export const withUpload = <C extends Config, P extends RequiredProps<C['clientFunc']>, R extends any = any>(
   WrappedComponent: React.ComponentType<InjectedProps>,

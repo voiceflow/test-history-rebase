@@ -3,12 +3,12 @@ import cuid from 'cuid';
 
 import * as Query from '@/utils/query';
 
-type OKTAOptions = {
+interface OKTAOptions {
   domain: string;
 
   clientID: string;
   redirectURI: string;
-};
+}
 
 class OKTA {
   private channel = new BroadcastChannel<{ code?: string; state?: string; error?: string }>('voiceflow-login-sso');

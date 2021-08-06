@@ -9,7 +9,7 @@ import { ConnectedProps } from '@/types';
 
 import { ButtonGroupSplitter, ControlButton, ControlsContainer } from './index';
 
-export type ControlCenterProps = {
+export interface ControlCenterProps {
   inputMode: Prototype.InputMode;
   setInputMode: (mode: Prototype.InputMode) => void;
   showButtons: boolean;
@@ -18,7 +18,7 @@ export type ControlCenterProps = {
   stepForward: () => void;
   inputRef: React.RefObject<HTMLInputElement>;
   goBackDisabled: boolean;
-};
+}
 
 const ICON_COLOR = '#99a8b8';
 

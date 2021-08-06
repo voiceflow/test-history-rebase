@@ -7,12 +7,12 @@ import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
 import { NODE_CONFIG } from '../constants';
 
-export type CardStepProps = {
+export interface CardStepProps {
   image: string | null;
   nodeID: string;
   portID: string;
   title: string;
-};
+}
 
 export const CardStep: React.FC<CardStepProps> = ({ title, image, nodeID, portID }) => (
   <Step nodeID={nodeID} image={image}>

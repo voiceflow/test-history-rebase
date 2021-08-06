@@ -1,4 +1,4 @@
-export type Display = {
+export interface Display {
   id: string;
   creatorID: number;
   skillID: number;
@@ -6,9 +6,9 @@ export type Display = {
   datasource: string;
   name: string;
   description: string | null;
-};
+}
 
-export type DBDisplay = {
+export interface DBDisplay {
   id: string;
   creator_id: number;
   skill_id: number;
@@ -16,4 +16,4 @@ export type DBDisplay = {
   datasource: string;
   title: string;
   description: string | null;
-};
+}

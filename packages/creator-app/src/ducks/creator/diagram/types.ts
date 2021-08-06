@@ -4,7 +4,7 @@ import { DiagramState as DState } from '@/constants';
 import { Link, Node, NodeData, PartialModel, Port } from '@/models';
 import { Normalized } from '@/utils/normalized';
 
-export type DiagramState = {
+export interface DiagramState {
   diagramID: string | null;
   rootNodeIDs: string[];
   nodes: Normalized<Node>;
@@ -18,7 +18,7 @@ export type DiagramState = {
   markupNodeIDs: string[];
   diagramState: DState;
   hidden: boolean;
-};
+}
 
 export type NodeDescriptor = Overwrite<Node, { ports: Record<'in' | 'out', PartialModel<Port>[]> }>;
 

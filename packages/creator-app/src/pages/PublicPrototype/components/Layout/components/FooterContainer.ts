@@ -4,9 +4,9 @@ import { css, styled, transition } from '@/hocs';
 
 export const FOOTER_HEIGHT = 74;
 
-type FooterContainerProps = {
+interface FooterContainerProps {
   isHidden?: boolean;
-};
+}
 
 const FooterContainer = styled(BoxFlexCenter)<FooterContainerProps>`
   ${transition('transform')};

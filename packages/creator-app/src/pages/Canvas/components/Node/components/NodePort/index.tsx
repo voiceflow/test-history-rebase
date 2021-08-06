@@ -4,9 +4,9 @@ import { PortEntityContext } from '@/pages/Canvas/contexts';
 
 import { usePortInstance } from './hooks';
 
-export type NodePortProps = {
+export interface NodePortProps {
   getAnchorPoint: () => DOMRect | null;
-};
+}
 
 const NodePort: React.FC<NodePortProps> = ({ getAnchorPoint }) => {
   const portEntity = React.useContext(PortEntityContext)!;

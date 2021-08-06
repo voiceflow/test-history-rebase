@@ -3,12 +3,12 @@ import { useDrop } from 'react-dnd';
 
 import { DnDHandlers, DnDItem } from '../types';
 
-export type DropDeleteProps<I, P> = {
+export interface DropDeleteProps<I, P> {
   type: string;
   handlers: React.RefObject<DnDHandlers<I>>;
   deleteProps?: P;
   deleteComponent: React.NamedExoticComponent<React.PropsWithoutRef<P> & React.RefAttributes<any>>;
-};
+}
 
 const DropDelete = <I, P>({ type, handlers, deleteProps, deleteComponent: Delete }: DropDeleteProps<I, P>) => {
   const rootRef = React.useRef(null);

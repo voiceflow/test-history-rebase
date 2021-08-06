@@ -1,11 +1,12 @@
-export type TrackingState = {};
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TrackingState {}
 
-export type WorkspaceEventInfo = {
+export interface WorkspaceEventInfo {
   workspaceID: string;
-};
+}
 
-export type ProjectEventInfo = {
+export interface ProjectEventInfo {
   skillID: string;
   projectID: string;
   workspaceID: string;
-};
+}

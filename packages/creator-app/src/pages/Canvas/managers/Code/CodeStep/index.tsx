@@ -6,13 +6,13 @@ import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem } fro
 
 import { NODE_CONFIG } from '../constants';
 
-export type CodeStepProps = {
+export interface CodeStepProps {
   codeAdded: boolean;
   withPorts: boolean;
   nodeID: string;
   successPortID: string;
   failurePortID: string;
-};
+}
 
 export const CodeStep: React.FC<CodeStepProps> = ({ codeAdded, withPorts, nodeID, successPortID, failurePortID }) => (
   <Step nodeID={nodeID}>

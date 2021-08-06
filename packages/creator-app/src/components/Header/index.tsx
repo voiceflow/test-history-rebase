@@ -18,7 +18,7 @@ import {
   UserMenu,
 } from './components';
 
-type HeaderProps = {
+interface HeaderProps {
   title?: React.ReactNode;
   withUserMenu?: boolean;
   withLogo?: boolean;
@@ -29,7 +29,7 @@ type HeaderProps = {
   rightRenderer?: () => React.ReactNode;
   centerRenderer?: () => React.ReactNode;
   subHeaderRenderer?: () => React.ReactNode;
-};
+}
 
 const Header: React.FC<HeaderProps> = ({
   title,

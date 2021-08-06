@@ -5,10 +5,10 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 
 import { NODE_CONFIG } from '../constants';
 
-export type DeprecatedStepProps = {
+export interface DeprecatedStepProps {
   nodeID: string;
   ports: string[];
-};
+}
 
 const DeprecatedStep: React.FC<DeprecatedStepProps> = ({ nodeID, ports }) => (
   <Step nodeID={nodeID}>

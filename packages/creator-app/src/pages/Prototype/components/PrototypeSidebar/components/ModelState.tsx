@@ -6,11 +6,11 @@ import DonutChart from '@/components/DonutChart';
 import Duration from '@/components/Duration';
 import { ModelDiff } from '@/utils/prototypeModel';
 
-type ModelStateProps = {
+interface ModelStateProps {
   diff: ModelDiff;
   trainedModel: PrototypeModel;
   lastTrainedTime: number;
-};
+}
 
 enum DonutKey {
   TRAINED = 'TRAINED',

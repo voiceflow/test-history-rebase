@@ -22,9 +22,9 @@ import SplashScreen from '../SplashScreen';
 import Visuals from '../Visuals';
 import fakeAudio from './fakeAudio';
 
-type PrototypeProps = {
+interface PrototypeProps {
   settings: PrototypeDuck.PrototypeSettings;
-};
+}
 
 const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   status,

@@ -4,7 +4,7 @@ import { ClassName } from '@/styles/constants';
 
 import { ActionButton, Container, Content, StepStatus } from './components';
 
-type CreationHeaderProps = {
+interface CreationHeaderProps {
   hasBackButton: boolean;
   stepBack: () => void;
   canCancel: boolean;
@@ -14,7 +14,7 @@ type CreationHeaderProps = {
   title: any;
   numberOfSteps: number;
   stepStack: any[];
-};
+}
 
 const CreationHeader: React.FC<CreationHeaderProps> = ({
   hasBackButton,

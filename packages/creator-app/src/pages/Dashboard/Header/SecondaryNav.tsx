@@ -9,10 +9,10 @@ import { Workspace } from '@/models';
 
 import { ProjectSearchContainer, ProjectSearchInput } from './components';
 
-type SecondaryNavProps = {
+interface SecondaryNavProps {
   workspace: Workspace | null;
   handleFilterText: (text: string) => void;
-};
+}
 
 const SecondaryNav: React.FC<SecondaryNavProps> = ({ workspace: selectedWorkspace, handleFilterText }) => {
   const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);

@@ -21,9 +21,9 @@ export type LinkInstance = EntityInstance & {
   translatePoint: (movement: Pair<number>, data: { isSource: boolean; reposition: boolean; sourceAndTargetSelected: boolean }) => void;
 };
 
-export type PortLinkInstance = {
+export interface PortLinkInstance {
   updatePosition: (points: PathPoints | null) => void;
-};
+}
 
 class LinkEntity extends ResourceEntity<Models.Link, LinkInstance> {
   get isHighlighted() {

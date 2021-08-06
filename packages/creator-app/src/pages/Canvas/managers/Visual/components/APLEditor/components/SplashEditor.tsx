@@ -8,11 +8,11 @@ import { FormControl } from '@/pages/Canvas/components/Editor';
 const AnyFullImage = FullImage as any;
 const AnyVariablesInput = VariablesInput as any;
 
-type SplashEditorProps = {
+interface SplashEditorProps {
   title: string;
   onChange: (data: { title?: string; imageURL?: string }) => void;
   imageURL: string;
-};
+}
 
 const SplashEditor: React.FC<SplashEditorProps> = ({ title, onChange, imageURL }) => (
   <Section isDividerNested>

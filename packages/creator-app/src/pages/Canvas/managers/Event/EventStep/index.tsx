@@ -5,11 +5,11 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 
 import { NODE_CONFIG } from '../constants';
 
-export type IntentStepProps = {
+export interface IntentStepProps {
   label?: string | null;
   nodeID: string;
   portID?: string;
-};
+}
 
 export const EventStep: React.FC<IntentStepProps> = ({ nodeID, portID, label }) => (
   <Step nodeID={nodeID}>

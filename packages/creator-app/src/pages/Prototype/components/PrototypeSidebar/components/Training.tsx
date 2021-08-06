@@ -6,9 +6,9 @@ import * as Documentation from '@/config/documentation';
 import NLUContainer from './NLUContainer';
 import TrainingLoader from './TrainingLoader';
 
-export type TrainingProps = {
+export interface TrainingProps {
   onCancelTraining: () => void;
-};
+}
 
 const Training: React.FC<TrainingProps> = ({ onCancelTraining }) => (
   <NLUContainer containsLoader>

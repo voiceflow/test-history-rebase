@@ -7,14 +7,14 @@ import { ClassName } from '@/styles/constants';
 
 import { Container, Content, Header, HeaderIcon } from './components';
 
-type UncontrolledCollapseProps = {
+interface UncontrolledCollapseProps {
   type?: string;
   title?: string;
   isOpen: boolean;
   onToggle: () => void;
   rightIcon?: boolean;
   iconProps?: Partial<SvgIconProps>;
-};
+}
 
 export const UncontrolledCollapse: React.FC<UncontrolledCollapseProps> = ({
   type,

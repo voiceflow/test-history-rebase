@@ -7,11 +7,11 @@ import { ClassName } from '@/styles/constants';
 import { ChannelMetaType, IconType, PLATFORM_FEATURE_META } from '../../../constants';
 import { Container, FeaturesContainer, IconImage, PlatformDescription, PlatformFeatureBubble, PlatformIcon, PlatformName } from './components';
 
-type PlatformCard = {
+interface PlatformCard {
   channel: ChannelMetaType;
   onClick: () => void;
   disabled?: boolean;
-};
+}
 
 const PlatformCard: React.FC<PlatformCard> = ({ channel, onClick, disabled }) => (
   <Container className={ClassName.PLATFORM_CARD} onClick={onClick} disabled={disabled}>

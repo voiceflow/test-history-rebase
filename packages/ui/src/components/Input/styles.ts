@@ -22,10 +22,10 @@ export const inputDisabledStyle = css`
   })}
 `;
 
-export type StyledInputProps = {
+export interface StyledInputProps {
   error?: boolean;
   borderColor?: string;
-};
+}
 
 export const inputStyle = css<StyledInputProps>`
   display: block;

@@ -2,12 +2,12 @@ import { css, styled, units } from '@/hocs';
 
 import { dividersStyles, draggingPreviewStyles, draggingStyles } from './SectionContainer';
 
-type SimpleSectionProps = {
+interface SimpleSectionProps {
   isNested?: boolean;
   dividers?: boolean;
   isDragging?: boolean;
   isDraggingPreview?: boolean;
-};
+}
 
 const SimpleSection = styled.div<SimpleSectionProps>`
   position: relative;

@@ -1,7 +1,7 @@
 import { VariableType } from './constants';
 
-export type Variable = {
+export interface Variable {
   id: string;
   type: VariableType;
   name: string;
-};
+}

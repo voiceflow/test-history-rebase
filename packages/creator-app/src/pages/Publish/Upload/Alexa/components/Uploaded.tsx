@@ -12,9 +12,9 @@ import { ConnectedProps } from '@/types';
 
 import { DropdownSection, StageContainer, StageHeader } from '../../components';
 
-type UploadedProps = {
+interface UploadedProps {
   stageData: JobStageData<AlexaPublishJob.SuccessStage>;
-};
+}
 
 const Uploaded: React.FC<UploadedProps & UploadedConnectedProps> = ({ stageData, locales, updateActiveVendor }) => {
   const { succeededLocale, amazonID, selectedVendorID } = stageData;

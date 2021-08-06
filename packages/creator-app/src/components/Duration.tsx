@@ -6,11 +6,11 @@ import { getAbbrevatedFormat, getTimeDuration } from '@/utils/time';
 
 const DURATION_TIMEOUT = 30000;
 
-type DurationProps = {
+interface DurationProps {
   time: string | number;
   short?: boolean;
   color?: string;
-};
+}
 
 const Duration: React.FC<DurationProps> = ({ time, short = false, color = '#8da2b5' }) => {
   const [duration, setDuration] = React.useState<string>(() => getTimeDuration(time));

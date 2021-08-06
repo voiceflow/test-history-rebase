@@ -25,9 +25,9 @@ export const EventualEngineProvider: React.FC = ({ children }) => {
   return <EventualEngineContext.Provider value={api}>{children}</EventualEngineContext.Provider>;
 };
 
-export type RegisterEngineProps = {
+export interface RegisterEngineProps {
   engine: Engine;
-};
+}
 
 export const RegisterEngine: React.FC<RegisterEngineProps> = ({ engine }) => {
   const engineContext = React.useContext(EventualEngineContext)!;

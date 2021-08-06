@@ -6,21 +6,21 @@ import { ClassName } from '@/styles/constants';
 
 import { ActiveLine, Tab, Wrapper } from './components';
 
-export type Tab = {
+export interface Tab {
   id?: string;
   value: string;
   label: React.ReactNode;
   color?: string;
   [key: string]: any;
-};
+}
 
-export type TabsProps = {
+export interface TabsProps {
   as?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
   options: Tab[];
   onChange: (nextSelected: string) => void;
   innerRef?: boolean;
   selected?: string;
-};
+}
 
 const Tabs: React.FC<TabsProps> = ({ as = 'button', options, selected, onChange, innerRef }) => {
   const genKey = useKeygen();

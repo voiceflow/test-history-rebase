@@ -6,10 +6,10 @@ import { AlexaExportJob, AlexaPublishJob } from '@/models';
 import { DownloadStage } from '../components';
 import { Submitted, Uploaded } from './components';
 
-type SuccessStageProps = {
+interface SuccessStageProps {
   stage: AlexaExportJob.SuccessStage | AlexaPublishJob.SuccessStage;
   cancel: () => void;
-};
+}
 
 const SuccessStage: React.FC<SuccessStageProps> = ({ stage, cancel }) => {
   switch (stage.data.successType) {

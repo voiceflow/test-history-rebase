@@ -10,15 +10,15 @@ import { Container, ContentContainer, FooterContainer, VisualsBorder } from './c
 
 const MAX_MOBILE_WIDTH = 720;
 
-type RendererOptions = {
+interface RendererOptions {
   isMobile: boolean;
   isVisuals: boolean;
   isFullScreen: boolean;
   toggleFullScreen: (value?: unknown) => void;
   splashScreenPassed: boolean;
-};
+}
 
-export type LayoutProps = {
+export interface LayoutProps {
   layout: PrototypeDuck.PrototypeLayout;
   children: (options: RendererOptions) => React.ReactNode;
   isVisuals: boolean;
@@ -27,7 +27,7 @@ export type LayoutProps = {
   splashScreenPassed: boolean;
   renderVisualsFooter?: (options: RendererOptions) => React.ReactNode;
   colorScheme?: string;
-};
+}
 
 const Layout: React.FC<LayoutProps> = ({
   children,

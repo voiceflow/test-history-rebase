@@ -1,12 +1,12 @@
 import { ConditionsLogicInterface, ExpressionType, ExpressionTypeV2 } from '@voiceflow/general-types';
 
-export type GenericExpressionV2<T extends ExpressionTypeV2, V> = {
+export interface GenericExpressionV2<T extends ExpressionTypeV2, V> {
   id: string;
   type: T | null;
   value: V;
   name?: string;
   logicInterface?: ConditionsLogicInterface;
-};
+}
 export type ExpressionTupleV2 = [ExpressionV2?, ExpressionV2?];
 
 export type ValueExpressionV2 = GenericExpressionV2<ExpressionTypeV2.VALUE, string>;
@@ -49,18 +49,24 @@ export type ExpressionData = GenericExpressionV2<ExpressionTypeV2.AND | Expressi
 
 // older
 
-export type GenericExpression<T extends ExpressionType, V> = {
+export interface GenericExpression<T extends ExpressionType, V> {
   id: string;
   name?: string;
   type: T;
   value: V;
   depth: number;
-};
+}
 
 export type ExpressionTuple = [Expression, Expression];
 
 // can't use generic here due tu recursion type issue
-export type NotExpression = { type: ExpressionType.NOT; value: Expression; depth: number; id: string; name?: string };
+export interface NotExpression {
+  type: ExpressionType.NOT;
+  value: Expression;
+  depth: number;
+  id: string;
+  name?: string;
+}
 export type OrExpression = GenericExpression<ExpressionType.OR, ExpressionTuple>;
 export type AndExpression = GenericExpression<ExpressionType.AND, ExpressionTuple>;
 export type LessExpression = GenericExpression<ExpressionType.LESS, ExpressionTuple>;

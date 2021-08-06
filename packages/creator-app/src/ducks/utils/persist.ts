@@ -2,11 +2,11 @@ import { RootReducer } from '@/store/types';
 
 const PERSIST_KEY = 'persist';
 
-export type Persistor<V> = {
+export interface Persistor<V> {
   get: () => V | null;
   set: (value: V) => void;
   getRaw: () => string | null;
-};
+}
 
 type NotUndefined = null | boolean | number | string | any[] | Record<string, any>;
 

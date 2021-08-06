@@ -7,11 +7,11 @@ import { Nullable } from '@/types';
 
 import { EngineContext } from './EngineContext';
 
-export type MenuContext = {
+export interface MenuContext {
   type: ContextMenuTarget;
   target: string | null;
   position: [number, number];
-};
+}
 
 export type ContextMenuValue = Partial<MenuContext> & {
   isOpen: boolean;

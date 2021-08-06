@@ -6,10 +6,10 @@ import { GoogleExportJob, GooglePublishJob } from '@/models';
 import { DownloadStage } from '../components';
 import { Submitted, Uploaded } from './components';
 
-type SuccessStageProps = {
+interface SuccessStageProps {
   stage: GoogleExportJob.SuccessStage | GooglePublishJob.SuccessStage;
   cancel: () => void;
-};
+}
 
 const SuccessStage: React.FC<SuccessStageProps> = ({ stage, cancel }) => {
   switch (stage.data.successType) {

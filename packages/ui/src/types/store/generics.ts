@@ -14,14 +14,14 @@ export type Store<S> = Assign<
   }
 >;
 
-export type StoreMiddlewareAPI<S> = {
+export interface StoreMiddlewareAPI<S> {
   dispatch: <D extends Dispatchable>(dispatchable: D) => DispatchResult<D>;
   getState: GetState<S>;
-};
+}
 
-export type StoreMiddleware<S> = {
+export interface StoreMiddleware<S> {
   (api: StoreMiddlewareAPI<S>): (next: Dispatch) => (action: AnyAction) => any;
-};
+}
 
 // selector
 

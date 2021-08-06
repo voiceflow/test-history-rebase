@@ -7,9 +7,9 @@ import { ClassName } from '@/styles/constants';
 import { Connector, Container, Lifecycle, Link } from './components';
 import { useHandlers, usePortInstance } from './hooks';
 
-export type PortProps = {
+export interface PortProps {
   color?: string;
-};
+}
 
 const Port: React.FC<PortProps> = ({ color }) => {
   const portEntity = React.useContext(PortEntityContext)!;

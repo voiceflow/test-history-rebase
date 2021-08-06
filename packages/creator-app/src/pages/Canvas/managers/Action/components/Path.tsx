@@ -5,15 +5,18 @@ import Checkbox from '@/components/Checkbox';
 import { Minus } from '@/components/InteractiveIcon';
 import { styled } from '@/hocs';
 
-type Path = { label: string; isDefault?: boolean };
+interface Path {
+  label: string;
+  isDefault?: boolean;
+}
 
-type PathSectionProps = {
+interface PathSectionProps {
   index: number;
   path: Path;
   onUpdate: (path: Partial<Path>) => void;
   updateDefaultPath: (index: number) => void;
   onRemove?: () => void;
-};
+}
 
 const Container = styled(BoxFlexCenter)`
   :not(:last-child) {

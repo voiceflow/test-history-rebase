@@ -32,9 +32,9 @@ const withInitialViewport = connect({ viewport: Viewport.activeDiagramViewportSe
   areStatesEqual: () => true,
 });
 
-type ConnectedCanvasDiagramProps = {
+interface ConnectedCanvasDiagramProps {
   viewport: ViewportType;
-};
+}
 
 const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU];
 

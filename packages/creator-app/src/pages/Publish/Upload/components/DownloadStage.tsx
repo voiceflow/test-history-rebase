@@ -5,10 +5,10 @@ import { useSetup } from '@/hooks';
 import { AlexaExportJob, GeneralJob, GoogleExportJob, JobStageData } from '@/models';
 import { DataTypes, download } from '@/utils/dom';
 
-type DownloadProps = {
+interface DownloadProps {
   cancel: () => void;
   stageData: JobStageData<AlexaExportJob.SuccessStage> | JobStageData<GoogleExportJob.SuccessStage> | JobStageData<GeneralJob.SuccessStage>;
-};
+}
 
 const Download: React.FC<DownloadProps> = ({ cancel, stageData }) => {
   useSetup(() => {

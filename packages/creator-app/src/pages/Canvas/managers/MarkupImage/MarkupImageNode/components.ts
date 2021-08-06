@@ -3,12 +3,12 @@ import { css, styled } from '@/hocs';
 import { CANVAS_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
 import { Identifier } from '@/styles/constants';
 
-type ContainerProps = {
+interface ContainerProps {
   url: string;
   width: number;
   height: number;
   activated: boolean;
-};
+}
 
 export const Container = styled.div.attrs<ContainerProps>(({ width, height }) => ({
   style: {

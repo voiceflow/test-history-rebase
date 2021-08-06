@@ -6,12 +6,12 @@ import { ConnectedStepProps } from '@/pages/Canvas/components/Step';
 
 import { APLStep, ImageStep } from './components';
 
-export type ImageStepProps = {
+export interface ImageStepProps {
   image: string | null;
   label: string | null;
   portID?: string;
   aspectRatio: number | null;
-};
+}
 
 const ConnectedImageStep: React.FC<ConnectedStepProps<NodeData.Visual>> = ({ data, ...props }) => (
   <>

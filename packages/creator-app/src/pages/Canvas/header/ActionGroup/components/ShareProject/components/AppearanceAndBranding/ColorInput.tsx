@@ -16,10 +16,10 @@ const getHexColor = (color: RGBColor) => {
   return hex.slice(0, hex.length - 2);
 };
 
-type ColorInputProps = {
+interface ColorInputProps {
   isAllowed: boolean;
   disabledBorderColor: string;
-};
+}
 
 const ColorInput: React.FC<ColorInputProps & ConnectedColorInputProps> = ({ isAllowed, disabledBorderColor, brandColor, updateSettings }) => {
   const [hex, setHex] = React.useState(() => removeHashFromHex(brandColor));

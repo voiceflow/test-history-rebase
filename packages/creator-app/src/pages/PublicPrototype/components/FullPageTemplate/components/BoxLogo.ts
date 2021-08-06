@@ -5,11 +5,11 @@ import { breakpoints } from '@/styles/breakpoints';
 const VF_LOGO = 'https://res-3.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco/dohvpzgjnwzndaen346r';
 const DEFAULT_SIZE = 48;
 
-type BoxLogoProps = {
+interface BoxLogoProps {
   url?: string;
   size?: number;
   isMobile?: boolean;
-};
+}
 
 const BoxLogo = styled.div<BoxLogoProps>`
   display: inline-block;

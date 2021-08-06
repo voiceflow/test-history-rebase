@@ -13,7 +13,7 @@ import Content from './SettingsContent';
 
 const COLORS = ['#8da2b5', '#6297fc', '#5271ff', '#00b76d', '#f83f55', '#ffa626', '#ff7043', '#057571', '#002b47'];
 
-type SettingsColorProps = {
+interface SettingsColorProps {
   color: string;
   isOpen: boolean;
   onToggle: () => void;
@@ -21,7 +21,7 @@ type SettingsColorProps = {
   isPickerOpen: boolean;
   onPickerToggle: () => void;
   onPickerChange: (color: string) => void;
-};
+}
 
 const SettingsColor: React.FC<SettingsColorProps> = ({ color, isOpen, onToggle, onChange, isPickerOpen, onPickerToggle, onPickerChange }) => {
   const rgbColor = parseToRgb(color);

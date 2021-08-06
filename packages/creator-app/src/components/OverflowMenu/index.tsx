@@ -5,13 +5,13 @@ import { truthy } from '@/utils/typeGuards';
 
 import Container from './components/OverflowMenuContainer';
 
-export type OverflowMenuProps = {
+export interface OverflowMenuProps {
   menu?: React.ReactNode;
   options?: (OptionsMenuOption | null)[];
   disabled?: boolean;
   placement?: DropdownPlacement;
   selfDismiss?: boolean;
-};
+}
 
 const OverflowMenu = ({ menu, options = [], disabled, placement, selfDismiss }: OverflowMenuProps) => (
   <Dropdown

@@ -7,7 +7,7 @@ import { Identifier } from '@/styles/constants';
 
 import Container from './Container';
 
-export type UncontrolledSpeechBarProps = {
+export interface UncontrolledSpeechBarProps {
   isMobile?: boolean;
   disabled?: boolean;
   isListening?: boolean;
@@ -19,7 +19,7 @@ export type UncontrolledSpeechBarProps = {
   onCheckMicrophonePermission?: () => void;
   isMicrophonePermissionGranted?: boolean;
   colorScheme?: string;
-};
+}
 
 const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
   isMobile,

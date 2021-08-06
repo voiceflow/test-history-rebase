@@ -10,13 +10,13 @@ import { isVariable } from '../../utils';
 import ConditionDisplayContainer from './components/ConditionDisplayContainer';
 import LabelWrapper from './components/LabelWrapper';
 
-export type ConditionDisplayProps = {
+export interface ConditionDisplayProps {
   error?: boolean;
   onDelete?: () => void;
   expression: LogicUnitDataType;
   isActive: boolean;
   isLogicGroup?: boolean;
-};
+}
 const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ expression, isActive, onDelete, error, isLogicGroup }) => {
   const leftValue = isVariable(String(expression?.value?.[0]?.value))
     ? transformVariableToString(expression?.value?.[0]?.value as string)

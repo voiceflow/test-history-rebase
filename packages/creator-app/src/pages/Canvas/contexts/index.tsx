@@ -26,9 +26,9 @@ export type ManagerGetter = <T extends object | Markup.AnyNodeData>(type: BlockT
 export const ManagerContext = React.createContext<ManagerGetter | null>(null);
 export const { Provider: ManagerProvider, Consumer: ManagerConsumer } = ManagerContext;
 
-export type CanvasProvidersProps = {
+export interface CanvasProvidersProps {
   engine: Engine;
-};
+}
 
 export const CanvasProviders: React.FC<CanvasProvidersProps> = ({ engine, children }) => (
   <EngineProvider value={engine}>

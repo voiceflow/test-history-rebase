@@ -7,14 +7,14 @@ import { ProductMapContext } from '@/pages/Canvas/contexts';
 
 import { NODE_CONFIG } from '../constants';
 
-export type PaymentStepProps = {
+export interface PaymentStepProps {
   label?: string;
   withPorts: boolean;
   upsellMessage?: string | null;
   nodeID: string;
   successPortID: string;
   failurePortID: string;
-};
+}
 
 export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, withPorts, nodeID, successPortID, failurePortID }) => (
   <Step nodeID={nodeID}>

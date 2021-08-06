@@ -19,12 +19,12 @@ import ConditionLogicSelect from './components/ConditionLogicSelect';
 
 export type ValueSelectExpressionType = ExpressionTypeV2.VARIABLE | ExpressionTypeV2.VALUE;
 
-export type ConditionDataSelectProps = {
+export interface ConditionDataSelectProps {
   isLogicGroup?: boolean;
   expression: LogicUnitDataType;
   onDelete: () => void;
   onChange: (value: LogicUnitDataType) => void;
-};
+}
 
 const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, isLogicGroup, onChange, onDelete }) => {
   const popperRef = React.useRef<HTMLElement | null>(null);

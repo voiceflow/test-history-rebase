@@ -3,9 +3,9 @@ import { FlexApart, SvgIconContainer } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
-type UserNameContainerProps = {
+interface UserNameContainerProps {
   isOpen: boolean;
-};
+}
 
 export const UserNameContainer = styled(FlexApart)<UserNameContainerProps>`
   font-size: 16px;

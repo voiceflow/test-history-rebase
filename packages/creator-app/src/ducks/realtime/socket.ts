@@ -40,7 +40,11 @@ export enum SocketAction {
   UPDATE_RESOURCE = 'REALTIME:PROJECT:SOCKET:RESOURCE:UPDATE',
 }
 
-export type LockPayload<T extends string, L extends LockType, A extends LockAction> = { targets: T[]; types: L[]; action: A };
+export interface LockPayload<T extends string, L extends LockType, A extends LockAction> {
+  targets: T[];
+  types: L[];
+  action: A;
+}
 
 type GenericLockAction<S extends SocketAction, T extends string, L extends LockType, A extends LockAction> = Action<
   S,

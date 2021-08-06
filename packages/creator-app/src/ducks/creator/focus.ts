@@ -8,11 +8,11 @@ import { AnyCreatorAction, CreatorAction } from './actions';
 import * as Diagram from './diagram';
 import { creatorStateSelector } from './selectors';
 
-export type FocusState = {
+export interface FocusState {
   target: string | null;
   isActive: boolean;
   renameActiveRevision: string | null;
-};
+}
 
 export const FOCUS_STATE_KEY = 'focus';
 

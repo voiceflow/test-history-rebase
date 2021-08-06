@@ -15,9 +15,9 @@ import { ConnectedProps } from '@/types';
 import { APL, Image, PlaceholderIconContainer } from './components';
 import { useDeviceDimension, useInitialCanvas } from './hooks';
 
-type PrototypeVisualCanvasProps = {
+interface PrototypeVisualCanvasProps {
   isShown: boolean;
-};
+}
 
 const PrototypeVisualCanvas: React.FC<PrototypeVisualCanvasProps & ConnectedPrototypeVisualCanvasProps> = ({
   data,

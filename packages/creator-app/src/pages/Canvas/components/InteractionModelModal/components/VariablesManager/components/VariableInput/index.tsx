@@ -18,10 +18,10 @@ const VARIABLE_LABELS: Record<VariableType, string> = {
   [VariableType.BUILT_IN]: 'Built In',
 };
 
-export type VariableInputProps = {
+export interface VariableInputProps {
   setSelected: (type: VariableType, variable: string) => void;
   children?: never;
-};
+}
 
 const VariableInput: React.FC<VariableInputProps & ConnectedVariableInputProps> = ({
   addGlobalVariable,

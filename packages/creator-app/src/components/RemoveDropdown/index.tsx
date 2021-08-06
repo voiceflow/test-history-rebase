@@ -3,10 +3,10 @@ import React from 'react';
 
 import { Container } from './components';
 
-export type RemoveDropDownProps = {
+export interface RemoveDropDownProps {
   onRemove: () => void;
   deleteText?: string;
-};
+}
 
 const RemoveDropDown: React.FC<RemoveDropDownProps> = ({ onRemove, deleteText = 'Delete' }) => (
   <Container>

@@ -1,4 +1,4 @@
-export type StripeCoupon = {
+export interface StripeCoupon {
   id: string;
   object: string;
   amount_off: null;
@@ -19,4 +19,4 @@ export type StripeCoupon = {
   applies_to: {
     products: string[];
   };
-};
+}

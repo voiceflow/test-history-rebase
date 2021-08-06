@@ -1,8 +1,8 @@
 import { BlockVariant } from '@/constants/canvas';
 
-export type ReorderIndicatorProps = {
+export interface ReorderIndicatorProps {
   index: number;
   isEnabled: boolean;
   variant: BlockVariant;
   onMouseUp: (event: React.MouseEvent) => void;
-};
+}

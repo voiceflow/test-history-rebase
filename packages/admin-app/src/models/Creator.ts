@@ -1,4 +1,4 @@
-export type Creator = {
+export interface Creator {
   name: string;
   email: string;
   creator_id: number;
@@ -17,4 +17,4 @@ export type Creator = {
   referrer_id: number | null;
   okta_id: string | null;
   first_login?: boolean;
-};
+}

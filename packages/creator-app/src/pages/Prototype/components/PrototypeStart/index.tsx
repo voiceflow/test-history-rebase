@@ -14,12 +14,12 @@ import { ConnectedProps } from '@/types';
 
 import { Container } from './components';
 
-export type PrototypeStartProps = {
+export interface PrototypeStartProps {
   debug: boolean;
   onStart: () => void;
   isPublic?: boolean;
   isModelTraining?: boolean;
-};
+}
 
 const PrototypeStart: React.FC<PrototypeStartProps & ConnectedPrototypeStartProps> = ({
   isPublic,

@@ -7,16 +7,16 @@ import { Action, Reducer, RootReducer } from '@/store/types';
 
 import { createAction, createRootSelector } from './utils';
 
-export type PrototypeConfig = {
+export interface PrototypeConfig {
   debug: boolean;
   intent: boolean;
   guided: boolean;
-};
+}
 
-export type RecentState = {
+export interface RecentState {
   prototype: PrototypeConfig;
   redirect: string | null;
-};
+}
 
 export const STATE_KEY = 'recent';
 

@@ -22,9 +22,9 @@ export type Trace = BlockTrace | SpeakTrace | FlowTrace | DebugTrace | StreamTra
 
 // context types
 
-export type Store = {
+export interface Store {
   [key: string]: any;
-};
+}
 
 export interface Frame {
   blockID?: string | null;

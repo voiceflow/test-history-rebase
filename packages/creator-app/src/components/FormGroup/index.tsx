@@ -5,11 +5,11 @@ import { Container, LeftColumn } from './components';
 
 export * from './components';
 
-export type FormGroupProps = {
+export interface FormGroupProps {
   className?: string;
   leftColumn: React.ReactNode;
   rightColumn: React.ReactNode;
-};
+}
 
 const FormGroup: React.FC<FormGroupProps> = ({ className, leftColumn, rightColumn }) => (
   <Container className={className}>

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { withEnterPress } from '@/utils/dom';
 
-export type UserInputProps = {
+export interface UserInputProps {
   value: string;
   isIdle?: boolean;
   isMobile?: boolean;
@@ -11,7 +11,7 @@ export type UserInputProps = {
   onChange: (value: string) => void;
   testEnded?: boolean;
   onEnterPress: () => void;
-};
+}
 
 const UserInput: React.FC<UserInputProps> = ({ value, onEnterPress, onChange, isIdle, testEnded, isMobile, onStart }) => {
   const preventIOSBodyScrolling = React.useCallback((event: Event) => {

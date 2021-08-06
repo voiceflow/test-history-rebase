@@ -17,10 +17,10 @@ export const EXPORT_OPTIONS = [
   { id: ExportFormat.VF, label: 'Local File (.vf)' },
 ];
 
-export type ExportItemProps = {
+export interface ExportItemProps {
   updateType: (type: ExportFormat) => void;
   exportType: ExportFormat;
-};
+}
 
 const ExportItem: React.FC<ExportItemProps> = ({ updateType, exportType }) => {
   const [canExport] = usePermission(Permission.CANVAS_EXPORT);

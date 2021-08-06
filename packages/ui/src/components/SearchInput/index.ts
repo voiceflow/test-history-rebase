@@ -3,7 +3,7 @@ import Input from '../Input';
 
 export * from './components';
 
-export type SearchInputProps = {
+export interface SearchInputProps {
   opened?: boolean;
   inline?: boolean;
   clearable?: boolean;
@@ -11,7 +11,7 @@ export type SearchInputProps = {
   isDropdown?: boolean;
   borderLess?: boolean;
   isDropDownOpened?: boolean;
-};
+}
 
 const SearchInput = styled(Input)<SearchInputProps>`
   height: ${({ theme }) => theme.components.input.height}px;

@@ -8,7 +8,9 @@ import { connect } from '@/hocs';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { ConnectedProps } from '@/types';
 
-type ModelSensitivityOwnProps = { platformMeta: PlatformSettingsMetaProps };
+interface ModelSensitivityOwnProps {
+  platformMeta: PlatformSettingsMetaProps;
+}
 const OPTIONS = [
   { name: 'Low', value: ModelSensitivityType.LOW },
   { name: 'Medium', value: ModelSensitivityType.MEDIUM },

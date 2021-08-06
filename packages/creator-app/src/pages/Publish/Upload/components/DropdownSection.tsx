@@ -3,10 +3,10 @@ import React from 'react';
 
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
 
-type DropdownSectionProps = {
+interface DropdownSectionProps {
   title?: string;
   isDividerBottom?: boolean;
-};
+}
 
 const DropdownSection: React.FC<DropdownSectionProps> = ({ title, isDividerBottom, children }) => (
   <Section

@@ -1,10 +1,10 @@
 import { css, styled } from '../../../styles';
 
-type PopoverContainerProps = {
+interface PopoverContainerProps {
   zIndex?: number | string;
   noScroll?: boolean;
   autoWidth?: boolean;
-};
+}
 
 const PopoverContainer = styled.div<PopoverContainerProps>`
   z-index: ${({ zIndex = 1100 }) => zIndex};

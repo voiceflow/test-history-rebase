@@ -13,12 +13,12 @@ const fadeIn = keyframes`
   }
 `;
 
-export type PopupContainerProps = {
+export interface PopupContainerProps {
   open?: boolean;
   jobStage?: AlexaStageType | GoogleStageType | null;
   multiSelect?: boolean;
   width?: number;
-};
+}
 
 const PopupContainer = styled.div<PopupContainerProps>`
   display: ${({ open }) => (open ? 'flex' : 'none')};

@@ -13,10 +13,10 @@ import { SkillEventsErrorMessage } from '@/pages/Settings/components';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { ConnectedProps } from '@/types';
 
-type AlexaEventsOwnProps = {
+interface AlexaEventsOwnProps {
   platformMeta: PlatformSettingsMetaProps;
   modelSensitivityShown?: boolean;
-};
+}
 
 const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({
   propAlexaEvents,

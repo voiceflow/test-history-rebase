@@ -8,16 +8,16 @@ import { ClassName } from '@/styles/constants';
 import ControlsContainer from './ControlsContainer';
 import EditorTutorial from './EditorTutorial';
 
-export type ControlOptions = {
+export interface ControlOptions {
   icon?: SvgIconProps['icon'];
   label: string;
   onClick: React.MouseEventHandler;
   variant?: ButtonVariant;
   disabled?: boolean;
   iconProps?: Omit<SvgIconProps, 'icon'>;
-};
+}
 
-export type EditorControlsProps = {
+export interface EditorControlsProps {
   tutorial?: {
     content: React.ReactNode;
     blockType?: BlockType;
@@ -28,7 +28,7 @@ export type EditorControlsProps = {
   anchor?: React.ReactNode;
   options?: ControlOptions[];
   tutorialTitle?: React.ReactNode;
-};
+}
 
 const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutorialTitle, options = [], menu, children }) => {
   const getManager = React.useContext(ManagerContext)!;

@@ -8,9 +8,9 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { useCanvasMouse } from '@/pages/Canvas/hooks';
 import { CartesianPlane, Coords } from '@/utils/geometry';
 
-type ReticuleProps = {
+interface ReticuleProps {
   color?: string;
-};
+}
 
 const Reticule = styled.div<ReticuleProps>`
   position: absolute;

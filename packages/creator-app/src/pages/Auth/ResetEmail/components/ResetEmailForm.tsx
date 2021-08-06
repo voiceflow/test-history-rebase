@@ -9,11 +9,11 @@ import { ConnectedProps } from '@/types';
 import { EmailInput } from '../../components';
 import { ResetEmailStage } from '../constants';
 
-export type ResetEmailFormProps = {
+export interface ResetEmailFormProps {
   email: string;
   setEmail: (email: string) => void;
   setStage: (stage: ResetEmailStage) => void;
-};
+}
 
 const ResetEmailForm: React.FC<ResetEmailFormProps & ConnectedResetEmailFormProps> = ({ email, goToLogin, setEmail, setStage }) => {
   const resetEmail = async () => {

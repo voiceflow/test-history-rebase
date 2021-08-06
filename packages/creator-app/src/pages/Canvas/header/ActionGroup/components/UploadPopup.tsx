@@ -6,13 +6,13 @@ import PopupCloseIcon from './PopupCloseIcon';
 import PopupContainer from './PopupContainer';
 import PopupTransition from './PopupTransition';
 
-export type UploadPopupProps = {
+export interface UploadPopupProps {
   open: boolean;
   onClose: () => void;
   jobStage?: AlexaStageType | GoogleStageType | null;
   className?: string;
   multiSelect?: boolean;
-};
+}
 
 const UploadPopup: React.FC<UploadPopupProps> = ({ open, onClose, children, jobStage, multiSelect, className }) =>
   !children ? null : (

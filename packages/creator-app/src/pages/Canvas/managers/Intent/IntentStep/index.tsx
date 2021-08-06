@@ -8,11 +8,11 @@ import { getDistinctPlatformValue } from '@/utils/platform';
 
 import { NODE_CONFIG } from '../constants';
 
-export type IntentStepProps = {
+export interface IntentStepProps {
   label?: string | null;
   nodeID: string;
   portID?: string;
-};
+}
 
 export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, portID, label }) => (
   <Step nodeID={nodeID}>

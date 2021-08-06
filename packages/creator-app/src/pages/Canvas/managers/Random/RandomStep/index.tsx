@@ -6,10 +6,10 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 
 import { NODE_CONFIG } from '../constants';
 
-export type RandomStepProps = {
+export interface RandomStepProps {
   nodeID: string;
   ports: string[];
-};
+}
 
 export const RandomStep: React.FC<RandomStepProps> = ({ nodeID, ports }) => (
   <Step nodeID={nodeID}>

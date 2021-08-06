@@ -43,13 +43,13 @@ const UploadButton = styled(Button).attrs({ speed: 2000 })<UploadButtonProps>`
   }
 `;
 
-type UploadButtonContainerProps = {
+interface UploadButtonContainerProps {
   icon?: Icon;
   label?: string;
   onClick: React.MouseEventHandler;
   tooltip?: string;
   isActive: boolean;
-};
+}
 
 const UploadButtonContainer: React.FC<UploadButtonContainerProps> = ({ icon = 'rocket', onClick, isActive, label = 'Export', tooltip, children }) => {
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);

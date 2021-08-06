@@ -1,5 +1,5 @@
 import React from 'react';
 
-export type BaseStartBlockProps = {
+export interface BaseStartBlockProps {
   commands: React.ReactNode;
-};
+}

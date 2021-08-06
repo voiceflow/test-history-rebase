@@ -1,16 +1,16 @@
 import { BaseDiagramNode } from '@voiceflow/api-sdk';
 
-export type PrimitiveDiagram = {
+export interface PrimitiveDiagram {
   offsetX: number;
   offsetY: number;
   zoom: number;
   variables: string[];
   nodes: Record<string, BaseDiagramNode>;
   children: string[];
-};
-export type StructuredFlow = {
+}
+export interface StructuredFlow {
   id: string;
   name: string;
   children: StructuredFlow[];
   parents: StructuredFlow[];
-};
+}

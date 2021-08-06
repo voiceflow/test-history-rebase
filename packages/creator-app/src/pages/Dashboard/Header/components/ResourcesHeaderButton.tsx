@@ -11,13 +11,13 @@ import { ClassName } from '@/styles/constants';
 
 import OptionLabel from './ResourceOptionLabel';
 
-type Option = {
+interface Option {
   link?: string;
   icon: Icon;
   label: string;
   onClick?: () => void;
   resourceName?: Tracking.CanvasControlHelpMenuResource;
-};
+}
 
 export type Resource = Omit<StaticResource, 'link'> & {
   link?: string;

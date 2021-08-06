@@ -1,8 +1,8 @@
 import { css, styled } from '@/hocs';
 
-type BoldTextProps = {
+interface BoldTextProps {
   fontSize?: number;
-};
+}
 
 const BoldText = styled.span<BoldTextProps>`
   font-weight: 600;

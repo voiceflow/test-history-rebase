@@ -1,8 +1,8 @@
 import { styled } from '@/hocs';
 
-type PieceContainerProps = {
+interface PieceContainerProps {
   rotate: number;
-};
+}
 
 const PieceContainer = styled.div<PieceContainerProps>`
   position: absolute;

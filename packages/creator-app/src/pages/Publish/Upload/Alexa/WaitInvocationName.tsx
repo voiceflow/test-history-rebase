@@ -11,10 +11,10 @@ import * as Sentry from '@/vendors/sentry';
 
 import { ButtonContainer, Description, LoaderStage, StageContainer } from '../components';
 
-type WaitInvocationNameProps = {
+interface WaitInvocationNameProps {
   stage: AlexaExportJob.WaitInvocationNameStage | AlexaPublishJob.WaitInvocationNameStage;
   updateCurrentStage: (data: unknown) => void;
-};
+}
 
 const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameConnectedProps> = ({
   stage,

@@ -1,8 +1,8 @@
 import { styled, transition } from '@/hocs';
 
-type ActiveLineProps = {
+interface ActiveLineProps {
   color?: string;
-};
+}
 
 const ActiveLine = styled.div<ActiveLineProps>`
   position: absolute;

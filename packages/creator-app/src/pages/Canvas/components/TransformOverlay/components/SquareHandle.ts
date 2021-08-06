@@ -2,9 +2,9 @@ import { css, styled } from '@/hocs';
 
 import { HandlePosition } from '../constants';
 
-export type SquareHandleProps = {
+export interface SquareHandleProps {
   position: HandlePosition;
-};
+}
 
 const SquareHandle = styled.div<SquareHandleProps>`
   position: absolute;

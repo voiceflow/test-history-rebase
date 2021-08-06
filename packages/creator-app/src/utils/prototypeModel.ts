@@ -1,16 +1,16 @@
 import { PrototypeModel } from '@voiceflow/api-sdk';
 import { MD5 } from 'object-hash';
 
-export type HashedRecordDiff = {
+export interface HashedRecordDiff {
   new: string[];
   deleted: string[];
   updated: string[];
-};
+}
 
-export type ModelDiff = {
+export interface ModelDiff {
   slots: HashedRecordDiff;
   intents: HashedRecordDiff;
-};
+}
 
 export const getHashedRecordByKey = <T extends { key: string }>(array: T[]) =>
   array.reduce<Record<string, string>>((acc, item) => Object.assign(acc, { [item.key]: MD5(item) }), {});

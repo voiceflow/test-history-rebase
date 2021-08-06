@@ -13,10 +13,10 @@ import { generateOutPort } from '../utils';
 
 export const createBlockAdapter = createSimpleAdapter;
 
-export type PortsAdapter<D = unknown> = {
+export interface PortsAdapter<D = unknown> {
   toDB: (ports: { port: Port; target: string | null; link?: Link }[], node: Node, data: D) => DBPort<LinkData>[];
   fromDB: (ports: DBPort<LinkData>[], node: DBNode) => { port: Port; target: string | null }[];
-};
+}
 
 // TODO: refactor merge repromptAdapter and noMatchRepromptAdapter to use the same types
 export const repromptAdapter = createAdapter<Prompt<any>, NodeData.Reprompt>(

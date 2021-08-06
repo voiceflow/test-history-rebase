@@ -5,9 +5,9 @@ import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { ConnectedProps, MergeArguments } from '@/types';
 
-type DiagramSyncProps = {
+interface DiagramSyncProps {
   diagramID: string | null;
-};
+}
 
 const DiagramSync: React.FC<DiagramSyncProps & ConnectedDiagramSyncProps> = ({
   isDiagramSynced,

@@ -1,9 +1,9 @@
 import { css, styled, transition } from '@/hocs';
 
-type ContainerProps = {
+interface ContainerProps {
   isActive?: boolean;
   colorScheme?: string;
-};
+}
 
 const Container = styled.div<ContainerProps>`
   ${transition('opacity')}

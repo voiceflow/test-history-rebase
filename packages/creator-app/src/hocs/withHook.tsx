@@ -4,10 +4,10 @@ import { setDisplayName, wrapDisplayName } from 'recompose';
 import { AnyFunction } from '@/types';
 import { identity } from '@/utils/functional';
 
-export type WithHookOptions<T, P extends object> = {
+export interface WithHookOptions<T, P extends object> {
   shouldRender?: (props: P) => boolean;
   getProps?: (props: T) => P;
-};
+}
 
 export const withHook =
   <C extends AnyFunction, P extends object = ReturnType<C>>(

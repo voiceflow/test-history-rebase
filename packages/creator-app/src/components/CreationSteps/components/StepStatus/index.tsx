@@ -4,11 +4,11 @@ import { Identifier } from '@/styles/constants';
 
 import { Container, ProgressLine, Title } from './components';
 
-type StepStatusProps = {
+interface StepStatusProps {
   title: any;
   numberOfSteps: number;
   stepStack: any[];
-};
+}
 
 const StepStatus: React.FC<StepStatusProps> = ({ title, numberOfSteps, stepStack }) => (
   <Container>

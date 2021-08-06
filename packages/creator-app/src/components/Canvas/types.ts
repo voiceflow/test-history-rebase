@@ -2,23 +2,23 @@ import { Point } from '@/types';
 
 export type MovementCalculator = (mouseLocation: Point) => [number, number, number];
 
-export type TransitionOptions = {
+export interface TransitionOptions {
   delay?: number;
   duration?: number;
-};
+}
 
-export type TransformOptions = {
+export interface TransformOptions {
   relative?: boolean;
   bounding?: boolean;
-};
+}
 
-export type ZoomOptions = {
+export interface ZoomOptions {
   raf?: boolean;
   origin?: Point;
-};
+}
 
-export type StyleOptions = {
+export interface StyleOptions {
   raf?: boolean;
   zoom?: number;
   position?: Point;
-};
+}

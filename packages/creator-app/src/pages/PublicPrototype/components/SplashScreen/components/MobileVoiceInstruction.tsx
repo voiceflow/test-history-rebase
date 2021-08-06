@@ -4,10 +4,10 @@ import React from 'react';
 import { Container, ContentContainer } from '../../common';
 import StartButton from './StartButton';
 
-type MobileVoiceInstructionProps = {
+interface MobileVoiceInstructionProps {
   onStart: () => void;
   colorScheme?: string;
-};
+}
 
 const MobileVoiceInstruction: React.FC<MobileVoiceInstructionProps> = ({ onStart, colorScheme }) => (
   <Container isMobile>

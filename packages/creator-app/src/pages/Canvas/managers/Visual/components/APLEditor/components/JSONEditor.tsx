@@ -12,13 +12,13 @@ import { handleJSONFileRead } from '@/utils/files';
 
 const AnyJsonUpload = JsonUpload as any;
 
-type JSONEditorProps = {
+interface JSONEditorProps {
   onChange: (data: { datasource?: string; aplCommands?: string; jsonFileName?: string; document?: string }) => void;
   datasource?: string;
   aplCommands?: string;
   jsonFileName: string;
   document?: string;
-};
+}
 
 const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplCommands = '', jsonFileName, document: documentData = '' }) => {
   const [localDatasource, setLocalDatasource] = React.useState(datasource);

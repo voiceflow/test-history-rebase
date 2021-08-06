@@ -7,9 +7,9 @@ import { GooglePublishJob, JobStageData } from '@/models';
 
 import { DropdownSection, StageContainer, StageHeader } from '../../components';
 
-type UploadedProps = {
+interface UploadedProps {
   stageData: JobStageData<GooglePublishJob.SuccessStage>;
-};
+}
 
 const Uploaded: React.FC<UploadedProps> = ({ stageData }) => {
   const { googleProjectID } = stageData;

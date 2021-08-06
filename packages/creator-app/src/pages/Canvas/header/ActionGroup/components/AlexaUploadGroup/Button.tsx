@@ -15,11 +15,11 @@ const PartialMenu = Menu as React.ComponentType<Partial<React.ComponentProps<typ
 const PartialMenuItem = MenuItem as React.ComponentType<Partial<React.ComponentProps<typeof MenuItem>>>;
 const AnyDropdownButton = DropdownButton as React.ComponentType<any>;
 
-type ButtonProps = {
+interface ButtonProps {
   onClick: () => void;
   isActive: boolean;
   label?: string;
-};
+}
 
 const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorID, amazon, onClick, isActive, label, activateVendor }) => {
   // show dropdown list for vendors

@@ -21,9 +21,9 @@ import ThreadLayer from './components/ThreadLayer';
 import { CanvasProviders } from './contexts';
 import useEngine from './engine';
 
-type CanvasProps = {
+interface CanvasProps {
   isPrototypingMode?: boolean;
-};
+}
 
 const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const engine = useEngine();

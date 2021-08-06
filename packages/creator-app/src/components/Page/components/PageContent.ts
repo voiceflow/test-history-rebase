@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components';
 
-export type PageContentProps = {
+export interface PageContentProps {
   scrollHorizontal?: boolean;
   canScroll?: boolean;
-};
+}
 
 const PageContent = styled.main<PageContentProps>`
   position: relative;

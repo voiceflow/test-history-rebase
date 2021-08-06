@@ -10,12 +10,12 @@ import { NLPTrainJob } from '@/models';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
-export type NLPContextValue = {
+export interface NLPContextValue {
   job: Nullable<NLPTrainJob.AnyJob>;
   cancel: () => Promise<void>;
   publish: () => Promise<void>;
   publishing: boolean;
-};
+}
 
 export const NLPContext = React.createContext<Nullable<NLPContextValue>>(null);
 export const { Consumer: NLPConsumer } = NLPContext;

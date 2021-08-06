@@ -7,9 +7,9 @@ import DeleteComponentContent from './DeleteComponentContent';
 import DeleteComponentWrapper from './DeleteComponentWrapper';
 import DeleteText from './DeleteText';
 
-export type DeleteComponentProps = {
+export interface DeleteComponentProps {
   message?: React.ReactNode;
-};
+}
 
 const DeleteComponent: React.ForwardRefRenderFunction<HTMLDivElement, DeleteComponentProps> = ({ message = 'Drop here to remove' }, ref) => {
   const [hover, startHover, stopHover] = useEnableDisable(false);

@@ -1,4 +1,4 @@
-export type Template = {
+export interface Template {
   id: string;
   moduleProjectID: number;
   projectID: string;
@@ -7,9 +7,9 @@ export type Template = {
   description: string;
   icon: string;
   color: string;
-};
+}
 
-export type DBTemplate = {
+export interface DBTemplate {
   module_id: string;
   module_project_id: number;
   project_id: string;
@@ -18,4 +18,4 @@ export type DBTemplate = {
   descr: string;
   module_icon: string;
   color: string;
-};
+}

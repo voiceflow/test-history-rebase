@@ -3,10 +3,10 @@ import React from 'react';
 import client from '@/client';
 import { useEnableDisable } from '@/hooks/toggle';
 
-export type UploadConfig = {
+export interface UploadConfig {
   fileType: string;
   clientFunc: keyof typeof client.file;
-};
+}
 
 // eslint-disable-next-line import/prefer-default-export
 export const useUpload = <C extends UploadConfig>(config: C) => {

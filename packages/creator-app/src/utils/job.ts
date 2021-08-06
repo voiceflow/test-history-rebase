@@ -3,7 +3,9 @@ import { Job } from '@/models';
 import { Nullable } from '@/types';
 import { delay } from '@/utils/promise';
 
-export type AbortControl = { aborted: boolean };
+export interface AbortControl {
+  aborted: boolean;
+}
 
 export const waitJobFinished = async <J extends Job>({
   fetchJob,

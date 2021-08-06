@@ -11,12 +11,12 @@ import perf, { PerfAction } from '@/performance';
 
 import { NODE_CONFIG } from '../constants';
 
-export type FlowStepProps = {
+export interface FlowStepProps {
   label: string | null;
   nodeID: string;
   portID: string;
   onClickFlow?: () => void;
-};
+}
 
 export const FlowStep: React.FC<FlowStepProps> = ({ label, nodeID, portID, onClickFlow }) => (
   <Step nodeID={nodeID}>

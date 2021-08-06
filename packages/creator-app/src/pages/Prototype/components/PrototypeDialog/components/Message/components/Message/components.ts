@@ -1,9 +1,9 @@
 import { css, styled } from '@/hocs';
 import { LogoContainer } from '@/pages/Onboarding/Steps/Welcome/components';
 
-type LogoCircleProps = {
+interface LogoCircleProps {
   forAvatar?: boolean;
-};
+}
 
 // eslint-disable-next-line import/prefer-default-export
 export const LogoCircle = styled(LogoContainer)<LogoCircleProps>`

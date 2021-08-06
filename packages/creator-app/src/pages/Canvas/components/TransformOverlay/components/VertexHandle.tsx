@@ -8,9 +8,9 @@ import { Point } from '@/types';
 import { useSwallowZoom } from '../hooks';
 import CircularHandle from './CircularHandle';
 
-type VertexCircularHandleProps = {
+interface VertexCircularHandleProps {
   point: Point;
-};
+}
 
 const VertexCircularHandle = styled(CircularHandle)<VertexCircularHandleProps>`
   position: fixed;

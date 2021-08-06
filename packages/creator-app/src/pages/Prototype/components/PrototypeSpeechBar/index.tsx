@@ -6,10 +6,10 @@ import { ASRSpeechbar, UncontrolledSpeechBar } from './components';
 
 export { ASRSpeechbar, UncontrolledSpeechBar } from './components';
 
-export type PrototypeSpeechBarProps = {
+export interface PrototypeSpeechBarProps {
   locale: string;
   onTranscript: (input: string) => void;
-};
+}
 
 const PrototypeSpeechBar: React.FC<PrototypeSpeechBarProps> = ({ locale, onTranscript }) => {
   const [canUseASR] = useCanASR();

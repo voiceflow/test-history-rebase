@@ -11,10 +11,10 @@ const PORT_BACKGROUND_COLOR = '#62778c';
 const getPortColor = ({ color = PORT_COLOR }) => color;
 const getBackgroundColor = ({ color = PORT_BACKGROUND_COLOR }) => color;
 
-export type PortConnectorContainerProps = {
+export interface PortConnectorContainerProps {
   color?: string;
   isConnected?: boolean;
-};
+}
 
 const PortConnectorContainer = styled.div<PortConnectorContainerProps>`
   position: absolute;

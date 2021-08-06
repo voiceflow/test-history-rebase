@@ -16,16 +16,16 @@ import {
   NLPTrainStageType,
 } from '@/constants/platforms';
 
-export type JobStage<T extends string = string, D extends object = object> = {
+export interface JobStage<T extends string = string, D extends object = object> {
   type: T;
   data: D;
-};
+}
 
-export type Job<S extends JobStage = JobStage> = {
+export interface Job<S extends JobStage = JobStage> {
   id: string;
   stage: S;
   status: JobStatus;
-};
+}
 
 export type JobStageData<S extends JobStage> = S extends JobStage<string, infer D> ? D : never;
 

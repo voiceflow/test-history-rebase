@@ -1,11 +1,11 @@
 import { css, styled } from '@/hocs';
 
-type ContainerProps = {
+interface ContainerProps {
   clickable?: boolean;
   isFirstInSeries?: boolean;
   rightAlign?: boolean;
   color?: string;
-};
+}
 
 const Container = styled.div<ContainerProps>`
   position: relative;

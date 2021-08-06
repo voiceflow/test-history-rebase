@@ -1,7 +1,7 @@
 import { Referral, StripeCoupon, StripeProduct } from '@/models';
 
-export type ReferralState = {
+export interface ReferralState {
   coupons: StripeCoupon[];
   products: StripeProduct[];
   referrals: Referral[];
-};
+}

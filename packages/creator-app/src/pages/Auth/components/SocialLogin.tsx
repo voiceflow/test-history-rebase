@@ -16,12 +16,12 @@ import { SocialLoginContainer } from './AuthBoxes';
 import FacebookLoginButton from './FacebookLoginButton';
 import GoogleLoginButton from './GoogleLoginButton';
 
-export type SocialLoginProps = {
+export interface SocialLoginProps {
   light?: boolean;
   coupon?: string;
   disabled?: boolean;
   loginMode?: boolean;
-};
+}
 
 const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
   light,

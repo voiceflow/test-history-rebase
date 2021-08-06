@@ -12,7 +12,7 @@ import LogicUnit from '../LogicUnit';
 import DeleteButtonContainer from './components/DeleteButtonContainer';
 import LogicGroupContainer from './components/LogicGroupContainer';
 
-export type ConditionLogicGroupProps = {
+export interface ConditionLogicGroupProps {
   firstItem?: boolean;
   expression: LogicGroupData;
   baseLogicType: BaseLogicType;
@@ -20,7 +20,7 @@ export type ConditionLogicGroupProps = {
   onDelete: () => void;
   onChange: (value: LogicGroupData) => void;
   updateBaseType: (value: ExpressionTypeV2.AND | ExpressionTypeV2.OR) => void;
-};
+}
 
 const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, onChange, onDelete, firstItem, baseLogicType, updateBaseType }) => {
   const addNewCondition = (logicInterface: ConditionsLogicInterface) => {

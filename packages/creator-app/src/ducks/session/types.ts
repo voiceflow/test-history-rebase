@@ -1,4 +1,4 @@
-export type SessionState = {
+export interface SessionState {
   token: { value: string | null };
   tabID: string;
   browserID: string;
@@ -9,4 +9,4 @@ export type SessionState = {
   intercomVisible: boolean;
   intercomUserHMAC: null | string;
   websocketsEnabled: boolean;
-};
+}

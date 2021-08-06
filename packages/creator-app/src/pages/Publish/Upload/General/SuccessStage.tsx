@@ -5,10 +5,10 @@ import { GeneralJob } from '@/models';
 
 import { DownloadStage } from '../components';
 
-type SuccessStageProps = {
+interface SuccessStageProps {
   stage: GeneralJob.SuccessStage;
   cancel: () => void;
-};
+}
 
 const SuccessStage: React.FC<SuccessStageProps> = ({ stage, cancel }) => {
   if (stage.data.successType !== GeneralJobSuccessType.DOWNLOAD) {

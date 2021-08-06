@@ -1,6 +1,8 @@
 import { styled } from '@/hocs';
 
-export type DraftJSEditorContainerProps = { wordBreak?: string };
+export interface DraftJSEditorContainerProps {
+  wordBreak?: string;
+}
 
 const DraftJSEditorContainer = styled.div<DraftJSEditorContainerProps>`
   word-break: ${({ wordBreak = 'normal' }) => wordBreak};

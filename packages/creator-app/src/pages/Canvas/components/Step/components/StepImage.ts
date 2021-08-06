@@ -1,9 +1,9 @@
 import { styled } from '@/hocs';
 
-export type StepImageProps = {
+export interface StepImageProps {
   image: string;
   position?: string;
-};
+}
 
 const StepImage = styled.div<StepImageProps>`
   width: 100%;

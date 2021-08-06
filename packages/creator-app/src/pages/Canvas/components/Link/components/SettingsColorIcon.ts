@@ -1,11 +1,11 @@
 import { css, styled, transition } from '@/hocs';
 
-type SettingsColorIcon = {
+interface SettingsColorIcon {
   color?: string;
   gradient?: string;
   isSimple?: boolean;
   isSelected?: boolean;
-};
+}
 
 const SettingsColorIcon = styled.div<SettingsColorIcon>`
   ${transition('transform')};

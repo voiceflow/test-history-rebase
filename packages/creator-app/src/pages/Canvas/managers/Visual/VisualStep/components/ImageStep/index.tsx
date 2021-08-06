@@ -9,13 +9,13 @@ import { isVariable } from '@/utils/slot';
 import { NODE_CONFIG } from '../../../constants';
 import { getLabel } from './utils';
 
-export type ImageStepProps = {
+export interface ImageStepProps {
   image: string | null;
   label: string | null;
   nodeID: string;
   portID?: string;
   aspectRatio: number | null;
-};
+}
 
 export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, portID, image, aspectRatio }) => (
   <Step nodeID={nodeID} image={image} imageAspectRatio={aspectRatio} imagePosition="top center">

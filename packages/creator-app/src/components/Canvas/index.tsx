@@ -30,7 +30,7 @@ export const ORIGIN: Point = [0, 0];
 
 export type CanvasAPI = Canvas['api'];
 
-export type CanvasProps = {
+export interface CanvasProps {
   viewport?: Viewport;
   controlScheme?: ControlScheme;
   innerRef?: React.Ref<HTMLDivElement>;
@@ -48,7 +48,7 @@ export type CanvasProps = {
   onSelectDragStart?: (event: React.DragEvent) => void;
   onRegister?: (api: CanvasAPI | null) => void;
   onDragStart?: (event: React.DragEvent) => void;
-};
+}
 
 class Canvas extends React.PureComponent<
   WithRequired<CanvasProps, 'controlScheme'> & { dismissableLayer: React.ContextType<typeof DismissableLayerContext> }

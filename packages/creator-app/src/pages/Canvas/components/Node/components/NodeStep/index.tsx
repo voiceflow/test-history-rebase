@@ -15,11 +15,11 @@ import NodePort from '../NodePort';
 import { useNodeInstance, useStepAPI } from './hooks';
 import Styles from './NodeStepStyles';
 
-export type NodeStepProps = {
+export interface NodeStepProps {
   isLast: boolean;
   variant: BlockVariant;
   isDraggable: boolean;
-};
+}
 
 const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => {
   const engine = React.useContext(EngineContext)!;

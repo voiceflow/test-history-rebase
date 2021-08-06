@@ -2,9 +2,9 @@ import { css, styled } from '@/hocs';
 
 import { LINK_WIDTH } from '../constants';
 
-type PortLink = {
+interface PortLink {
   reversed?: boolean;
-};
+}
 
 const PortLink = styled.svg<PortLink>`
   ${({ reversed }) =>

@@ -5,13 +5,13 @@ import MoveBlocksControl from './moveBlocks';
 import MoveCursorControl from './moveCursor';
 import RemoveBlocControl from './removeBlocks';
 
-export type DiagramActionControlMap = {
+export interface DiagramActionControlMap {
   addBlocksControl: AddBlocksControl;
   dragBlocksControl: DragBlocksControl;
   moveBlocksControl: MoveBlocksControl;
   moveCursorControl: MoveCursorControl;
   removeBlocControl: RemoveBlocControl;
-};
+}
 
 const buildDiagramActionControls = (options: LoguxControlOptions): DiagramActionControlMap => ({
   addBlocksControl: new AddBlocksControl(options),

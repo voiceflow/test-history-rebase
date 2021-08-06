@@ -8,12 +8,12 @@ import { FadeLeftContainer } from '@/styles/animations';
 
 import Description from './Description';
 
-export type ManagerProps = {
+export interface ManagerProps {
   variable: string;
   isBuiltIn?: boolean;
   description?: string;
   removeVariable: () => void;
-};
+}
 
 const Manager: React.FC<ManagerProps> = ({ variable, isBuiltIn, description, removeVariable }) => (
   <FadeLeftContainer mt={10}>

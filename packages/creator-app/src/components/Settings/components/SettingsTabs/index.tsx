@@ -7,11 +7,15 @@ import { FadeLeftContainer } from '@/styles/animations';
 import SectionBox from '../SectionBox';
 import { SettingsTab } from './components';
 
-export type Tab = { label: React.ReactNode; path: string; tabs?: Tab[] };
+export interface Tab {
+  label: React.ReactNode;
+  path: string;
+  tabs?: Tab[];
+}
 
-type SettingsTabsProps = {
+interface SettingsTabsProps {
   tabs: Tab[];
-};
+}
 const SettingsTabs: React.FC<SettingsTabsProps> = ({ tabs }) => {
   const { url } = useRouteMatch();
 

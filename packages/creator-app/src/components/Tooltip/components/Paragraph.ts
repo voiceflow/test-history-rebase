@@ -1,6 +1,8 @@
 import { styled, units } from '@/hocs';
 
-type ParagraphProps = { marginBottomUnits?: number };
+interface ParagraphProps {
+  marginBottomUnits?: number;
+}
 
 const Paragraph = styled.p<ParagraphProps>`
   font-size: 15px;

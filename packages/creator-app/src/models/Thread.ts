@@ -7,7 +7,7 @@ import { Comment, DBComment } from './Comment';
 
 // Frontend type
 
-export type Thread = {
+export interface Thread {
   id: string;
   projectID: string;
   diagramID: string;
@@ -17,13 +17,13 @@ export type Thread = {
   resolved: boolean;
   comments: Comment[];
   deleted: boolean;
-};
+}
 
 export type NewThread = Assign<Omit<Thread, 'id'>, { comments: [Pick<Comment, 'creatorID' | 'text' | 'mentions'>] }>;
 
 // Backend type
 
-export type DBThread = {
+export interface DBThread {
   thread_id: string;
   project_id: string;
   diagram_id: string;
@@ -33,4 +33,4 @@ export type DBThread = {
   resolved: boolean;
   comments: DBComment[];
   deleted: boolean;
-};
+}

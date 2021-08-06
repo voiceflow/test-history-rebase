@@ -15,7 +15,7 @@ type ConnectOptions<T> = {
   merge?: boolean;
 } & Omit<ReactRedux.Options<{}, T>, 'forwardRef'>;
 
-type Connect = {
+interface Connect {
   <S extends SelectorLookup<any>, D extends ActionCreatorLookup, M extends (...args: MergeArguments<S, D, any>) => any>(
     mapStateToProps: S | null,
     mapDispatchToProps?: D | null,
@@ -30,7 +30,7 @@ type Connect = {
   ): <P extends object, R>(
     component: React.ForwardRefRenderFunction<R, P & ConnectedProps<S, D, M>>
   ) => React.ForwardRefRenderFunction<R, Omit<P, keyof ConnectedProps<S, D, M>>>;
-};
+}
 
 // eslint-disable-next-line import/prefer-default-export
 export const connect: Connect =

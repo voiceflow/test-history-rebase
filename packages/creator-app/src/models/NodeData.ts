@@ -25,45 +25,45 @@ export type BlockNodeData<T> = NodeData<T> & {
 };
 
 export namespace NodeData {
-  export type Start = {
+  export interface Start {
     name: string;
     blockColor: BlockVariant;
-  };
+  }
 
-  export type Combined = {
+  export interface Combined {
     name: string;
     blockColor: BlockVariant;
-  };
+  }
 
-  export type Code = {
+  export interface Code {
     code: string;
-  };
+  }
 
   export type Deprecated = {
     deprecatedType: string;
   } & Record<string, unknown>;
 
-  export type Random = {
+  export interface Random {
     paths: number;
     noDuplicates: boolean;
-  };
+  }
 
-  export type Permission = {
+  export interface Permission {
     permissions: string[];
-  };
+  }
 
-  export type NoMatches = {
+  export interface NoMatches {
     type: NoMatchType | null;
     pathName: string;
     randomize: boolean;
     reprompts: SpeakData[];
-  };
+  }
 
-  export type InteractionChoice = {
+  export interface InteractionChoice {
     id: string;
     intent: string | null;
     mappings: SlotMapping[];
-  };
+  }
 
   export interface Interaction {
     name: string;
@@ -73,10 +73,10 @@ export namespace NodeData {
     buttons: AnyButton[] | null;
   }
 
-  export type ChoiceOld = {
+  export interface ChoiceOld {
     choices: { synonyms: string[] }[];
     reprompt: Reprompt | null;
-  };
+  }
 
   export interface Prompt {
     noMatchReprompt: NoMatches;
@@ -86,20 +86,20 @@ export namespace NodeData {
 
   export type Command = Record<DistinctPlatform, Command.PlatformData> & { name: string };
   export namespace Command {
-    export type PlatformData = {
+    export interface PlatformData {
       // only added some properties here
       intent: string | null;
       diagramID: string | null;
       mappings: SlotMapping[];
-    };
+    }
   }
 
-  export type Reprompt = {
+  export interface Reprompt {
     type: RepromptType;
     content: string;
     audio?: string | null;
     voice?: string | null;
-  };
+  }
 
   export interface Capture {
     slot: string | null;
@@ -109,28 +109,28 @@ export namespace NodeData {
     buttons: AnyButton[] | null;
   }
 
-  export type Speak = {
+  export interface Speak {
     randomize: boolean;
     dialogs: SpeakData[];
     canvasVisibility?: CanvasNodeVisibility;
-  };
+  }
 
-  export type Card = {
+  export interface Card {
     cardType: CardType;
     title: string;
     content: string;
     hasSmallImage: boolean;
     largeImage: string | null;
     smallImage: string | null;
-  };
+  }
 
-  export type Flow = {
+  export interface Flow {
     diagramID: string | null;
     inputs?: { from: string | null; to: string | null }[];
     outputs?: { from: string | null; to: string | null }[];
-  };
+  }
 
-  export type Reminder = {
+  export interface Reminder {
     name: string;
     reminderType: string;
     text: string;
@@ -141,64 +141,64 @@ export namespace NodeData {
     timezone?: string;
     recurrence?: { byDay?: string; freq: RecurrenceFreq };
     recurrenceBool: boolean;
-  };
+  }
 
-  export type UserInfoPermission = {
+  export interface UserInfoPermission {
     id: string;
     mapTo: string | null;
     product: string | null;
     selected: PermissionType | null;
-  };
+  }
 
-  export type UserInfo = {
+  export interface UserInfo {
     permissions: UserInfoPermission[];
-  };
+  }
 
-  export type SetExpression = {
+  export interface SetExpression {
     expression: Expression;
     id: string;
     variable?: string | null;
     type?: ExpressionTypeV2;
-  };
+  }
 
-  export type Set = {
+  export interface Set {
     title?: string;
     sets: SetExpression[];
-  };
+  }
 
   export type NewExpressionType = string | number | null;
 
-  export type SetExpressionV2 = {
+  export interface SetExpressionV2 {
     expression: NewExpressionType;
     id: string;
     variable?: string | null;
     type: ExpressionTypeV2;
-  };
+  }
 
-  export type SetV2 = {
+  export interface SetV2 {
     title?: string;
     sets: SetExpressionV2[];
-  };
+  }
 
-  export type If = {
+  export interface If {
     expressions: Expression[];
-  };
+  }
 
-  export type IfV2 = {
+  export interface IfV2 {
     expressions: ExpressionData[];
-  };
+  }
 
-  export type Directive = {
+  export interface Directive {
     directive: any;
-  };
+  }
 
-  export type Trace = {
+  export interface Trace {
     name: string;
     body: string;
     paths: { label: string; isDefault?: boolean }[];
-  };
+  }
 
-  export type Stream = {
+  export interface Stream {
     loop: boolean;
     audio: string;
     title: string | null;
@@ -206,36 +206,40 @@ export namespace NodeData {
     customPause: boolean;
     description: string | null;
     backgroundImage: string | null;
-  };
+  }
 
-  export type AccountLinking = {};
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface AccountLinking {}
 
   export type Intent = Record<DistinctPlatform, Intent.PlatformData>;
 
   export namespace Intent {
-    export type PlatformData = { intent: string | null; mappings: SlotMapping[] };
+    export interface PlatformData {
+      intent: string | null;
+      mappings: SlotMapping[];
+    }
   }
 
-  export type Event = {
+  export interface Event {
     requestName: string;
     mappings: {
       path: string;
       var: string | null;
     }[];
-  };
+  }
 
-  export type Payment = {
+  export interface Payment {
     productID: string | null;
-  };
+  }
 
-  export type CancelPayment = {
+  export interface CancelPayment {
     productID: string | null;
-  };
+  }
 
-  export type IntegrationDefaultProps<T extends IntegrationType> = {
+  export interface IntegrationDefaultProps<T extends IntegrationType> {
     selectedAction?: string;
     selectedIntegration: T;
-  };
+  }
 
   export type CustomApi = IntegrationDefaultProps<IntegrationType.CUSTOM_API> & {
     url?: string;
@@ -267,29 +271,30 @@ export namespace NodeData {
 
   export type Integration = CustomApi | GoogleSheets | Zapier;
 
-  export type TypedIntegration = {
+  export interface TypedIntegration {
     [IntegrationType.ZAPIER]: Zapier;
     [IntegrationType.CUSTOM_API]: CustomApi;
     [IntegrationType.GOOGLE_SHEETS]: GoogleSheets;
-  };
+  }
 
-  export type Exit = {};
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface Exit {}
 
   export type Visual = VisualStepData;
 }
 
 export namespace DBNodeData {
-  export type Reprompt = {
+  export interface Reprompt {
     type: string;
     voice?: string;
     content?: string;
-  };
+  }
 
-  export type Prompt = {
+  export interface Prompt {
     noMatchReprompt: {
       randomize: boolean;
       reprompts: SpeakData[];
     };
     reprompt: Reprompt | null;
-  };
+  }
 }

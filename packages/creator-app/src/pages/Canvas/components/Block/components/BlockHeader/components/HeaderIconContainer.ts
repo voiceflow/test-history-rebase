@@ -1,8 +1,8 @@
 import { css, styled } from '@/hocs';
 
-export type HeaderIconContainerProps = {
+export interface HeaderIconContainerProps {
   side: 'left' | 'right';
-};
+}
 
 const HeaderIconContainer = styled.div<HeaderIconContainerProps>`
   position: absolute;

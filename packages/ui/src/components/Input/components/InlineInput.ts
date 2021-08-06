@@ -1,10 +1,10 @@
 import { css, styled } from '../../../styles';
 
-export type InlineInputProps = {
+export interface InlineInputProps {
   fullWidth?: boolean;
   noOverflow?: boolean;
   inline?: boolean;
-};
+}
 
 const Input = styled.input<InlineInputProps>`
   ${({ fullWidth }) =>

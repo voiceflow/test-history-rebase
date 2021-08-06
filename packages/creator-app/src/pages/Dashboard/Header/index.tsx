@@ -10,11 +10,11 @@ import RightNavSection from './RightNavSection';
 import SecondaryNav from './SecondaryNav';
 import UpgradeButton from './UpgradeButton';
 
-type DashboardHeaderProps = {
+interface DashboardHeaderProps {
   loadingProjects: boolean;
   workspace: Workspace | null;
   handleFilterText: (text: string) => void;
-};
+}
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({ loadingProjects, handleFilterText, workspace: activeWorkspace }) => {
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);

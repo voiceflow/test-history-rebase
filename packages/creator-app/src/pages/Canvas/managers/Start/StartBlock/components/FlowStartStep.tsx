@@ -3,9 +3,9 @@ import React from 'react';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 
-export type FlowStartStepProps = {
+export interface FlowStartStepProps {
   portID: string;
-};
+}
 
 const FlowStartStep: React.FC<FlowStartStepProps> = ({ portID }) => (
   <Step disableHighlightStyle>

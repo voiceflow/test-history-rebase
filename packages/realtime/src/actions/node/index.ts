@@ -6,14 +6,14 @@ import RemovePortControl from './removePort';
 import RemoveStepControl from './removeStep';
 import UpdateNodeDataControl from './updateData';
 
-export type NodeActionControlMap = {
+export interface NodeActionControlMap {
   appendPortControl: AppendPortControl;
   appendStepControl: AppendStepControl;
   insertStepControl: InsertStepControl;
   removePortControl: RemovePortControl;
   removeStepControl: RemoveStepControl;
   updateNodeDataControl: UpdateNodeDataControl;
-};
+}
 
 const buildNodeActionControls = (options: LoguxControlOptions): NodeActionControlMap => ({
   appendPortControl: new AppendPortControl(options),

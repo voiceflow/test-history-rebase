@@ -9,11 +9,11 @@ import { ReportTagInputProvider } from './context';
 
 export * from './constants';
 
-export type ReportTagInputProps = {
+export interface ReportTagInputProps {
   variant?: InputVariant;
   onChange?: (tags: string[]) => void;
   selectedTags: string[];
-};
+}
 
 const ReportTagInput: React.ForwardRefRenderFunction<HTMLInputElement, ReportTagInputProps> = ({
   variant = InputVariant.MANAGE,

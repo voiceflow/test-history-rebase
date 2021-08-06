@@ -6,12 +6,12 @@ import Step, { ConnectedStepProps, Item, Section, VariableLabel } from '@/pages/
 
 import { NODE_CONFIG } from '../constants';
 
-export type CaptureStepProps = {
+export interface CaptureStepProps {
   nodeID: string;
   portID: string;
   toVariable: string | null;
   fromVariable: string | null;
-};
+}
 
 export const CaptureStep: React.FC<CaptureStepProps> = ({ fromVariable, toVariable, nodeID, portID }) => (
   <Step nodeID={nodeID}>

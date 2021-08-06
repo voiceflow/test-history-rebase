@@ -11,12 +11,12 @@ import { AlexaExportJob, GeneralJob, GoogleExportJob } from '@/models';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
-export type ExportContextValue = {
+export interface ExportContextValue {
   job: Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob | GeneralJob.AnyJob>;
   start: () => Promise<void>;
   cancel: () => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
-};
+}
 
 export const ExportContext = React.createContext<Nullable<ExportContextValue>>(null);
 export const { Consumer: ExportConsumer } = ExportContext;

@@ -6,7 +6,7 @@ import { ClassName } from '@/styles/constants';
 
 import { ContentContainer, Placeholder, Title } from './components';
 
-type FrameProps = {
+interface FrameProps {
   zoom: number;
   width: number;
   title?: React.ReactNode;
@@ -14,7 +14,7 @@ type FrameProps = {
   isRound?: boolean;
   placeholderImage?: null | string;
   className?: string;
-};
+}
 
 const Frame: React.FC<FrameProps> = ({ zoom, width, title, height, isRound, children, placeholderImage, className }) => {
   const scale = Math.min(1 / Math.abs(zoom / 100), 8);

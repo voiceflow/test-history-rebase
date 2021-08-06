@@ -8,11 +8,11 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 import { ConnectedProps, MergeArguments } from '@/types';
 import { getDistinctPlatformValue } from '@/utils/platform';
 
-export type CommandStepProps = {
+export interface CommandStepProps {
   nodeID: string;
   name?: string;
   onCommandClick: () => void;
-};
+}
 
 export const CommandStep: React.FC<CommandStepProps> = ({ nodeID, name, onCommandClick }) => (
   <Step nodeID={nodeID}>

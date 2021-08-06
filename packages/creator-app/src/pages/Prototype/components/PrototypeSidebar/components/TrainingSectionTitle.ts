@@ -8,10 +8,10 @@ export enum TrainingSectionTitleVariant {
   UNTRAINED,
 }
 
-type TrainingSectionTitleProps = {
+interface TrainingSectionTitleProps {
   variant: TrainingSectionTitleVariant;
   statusVisible?: boolean;
-};
+}
 
 const getColor = ({ variant }: TrainingSectionTitleProps) => {
   switch (variant) {

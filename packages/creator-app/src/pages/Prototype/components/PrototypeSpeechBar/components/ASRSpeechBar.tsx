@@ -5,12 +5,12 @@ import { useASR, useDebouncedCallback, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import ASRContent from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRContent';
 
-type ASRSpeechBarProps = {
+interface ASRSpeechBarProps {
   onTranscript: (text: string) => void;
   onCheckMicrophonePermission?: () => void;
   isMicrophonePermissionGranted?: boolean;
   locale: string;
-};
+}
 
 const ASRSpeechBar: React.FC<ASRSpeechBarProps> = ({ onTranscript, isMicrophonePermissionGranted, onCheckMicrophonePermission, locale }) => {
   const { listening, onStopListening, onStartListening, processingTranscription } = useASR({ onTranscript, locale });

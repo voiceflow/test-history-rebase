@@ -4,7 +4,7 @@ import { backgrounds, colors, css, styled } from '../../../styles';
 import { ClassName } from '../../../styles/constants';
 import { flexStyles } from '../../Flex';
 
-export type MenuItemProps = {
+export interface MenuItemProps {
   height?: number | string;
   active?: boolean;
   ending?: boolean;
@@ -13,7 +13,7 @@ export type MenuItemProps = {
   className?: string;
   capitalize?: boolean;
   bottomAction?: boolean;
-};
+}
 
 export const itemStyles = css<MenuItemProps>`
   ${flexStyles}

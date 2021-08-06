@@ -24,12 +24,12 @@ import TrainFadeDown from './TrainFadeDown';
 import Training from './Training';
 import TrainingSectionTitle, { TrainingSectionTitleVariant } from './TrainingSectionTitle';
 
-export type TrainingSectionProps = {
+export interface TrainingSectionProps {
   isOpen: boolean;
   onOpen: () => void;
   isTraining: boolean;
   toggleOpen: () => void;
-};
+}
 
 const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionProps> = ({
   isOpen,

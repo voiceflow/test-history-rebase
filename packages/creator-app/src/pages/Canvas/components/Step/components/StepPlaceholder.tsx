@@ -8,10 +8,10 @@ import { NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 import CaptureZone from './StepReorderCaptureZone';
 import IndicatorContainer from './StepReorderIndicatorContainer';
 
-export type StepPlaceholderProps = {
+export interface StepPlaceholderProps {
   variant: BlockVariant;
   isLast: boolean;
-};
+}
 
 const StepPlaceholder: React.FC<StepPlaceholderProps> = ({ variant, isLast }) => {
   const [forceHover, setForceHover] = React.useState(true);

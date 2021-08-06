@@ -2,9 +2,9 @@ import { Flex, flexApartStyles } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
-type HeaderProps = {
+interface HeaderProps {
   rightIcon?: boolean;
-};
+}
 
 const Header = styled(Flex)<HeaderProps>`
   color: #132144;

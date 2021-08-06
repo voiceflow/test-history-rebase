@@ -5,9 +5,9 @@ import { supportGraphicSmall } from '@/assets';
 
 import { ButtonContainer, ButtonLink, Description, StageContainer } from '../components';
 
-type WaitVendorsStageProps = {
+interface WaitVendorsStageProps {
   cancel: () => void;
-};
+}
 
 const WaitVendorsStage: React.FC<WaitVendorsStageProps> = ({ cancel }) => (
   <StageContainer>

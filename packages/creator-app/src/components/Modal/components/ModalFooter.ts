@@ -2,9 +2,9 @@ import { Flex } from '@voiceflow/ui';
 
 import { styled, units } from '@/hocs';
 
-export type ModalFooterProps = {
+export interface ModalFooterProps {
   justifyContent?: string;
-};
+}
 
 const ModalFooter = styled(Flex)<ModalFooterProps>`
   justify-content: ${({ justifyContent }) => justifyContent || 'flex-end'};

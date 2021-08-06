@@ -12,18 +12,18 @@ export enum NotificationType {
   CHANGE = 'CHANGE',
 }
 
-export type Notification = {
+export interface Notification {
   id: string;
   type: NotificationType;
   details: string;
   created: string;
   isNew?: boolean;
-};
+}
 
-export type NotificationState = {
+export interface NotificationState {
   forced: Notification | null;
   notifications: Notification[];
-};
+}
 
 export const STATE_KEY = 'notifications';
 export const INITIAL_STATE: NotificationState = {

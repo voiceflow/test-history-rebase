@@ -1,10 +1,10 @@
 import { css, styled } from '@/hocs';
 import { FadeLeft } from '@/styles/animations';
 
-export type ContainerProps = {
+export interface ContainerProps {
   error: boolean;
   inline?: boolean;
-};
+}
 
 const Container = styled.div<ContainerProps>`
   border-bottom: 1px solid #eaeff4;

@@ -6,7 +6,7 @@ import HeaderLabel from './HeaderLabel';
 import Header from './SectionHeader';
 import StatusContainer from './StatusContainer';
 
-export type SectionContainerProps = {
+export interface SectionContainerProps {
   isLink?: boolean;
   variant?: SectionVariant;
   dividers?: boolean;
@@ -22,7 +22,7 @@ export type SectionContainerProps = {
   headerToggle?: boolean;
   isRounded?: boolean;
   fullWidth?: boolean;
-};
+}
 
 export const draggingStyles = css`
   & > * {

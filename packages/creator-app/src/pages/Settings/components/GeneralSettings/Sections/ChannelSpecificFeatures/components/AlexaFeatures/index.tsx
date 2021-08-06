@@ -8,7 +8,9 @@ import { ConnectedProps } from '@/types';
 
 import { Events, GadgetsToggle, ModelSensitivity } from './components';
 
-export type AlexaFeaturesOwnProps = { platformMeta: PlatformSettingsMetaProps };
+export interface AlexaFeaturesOwnProps {
+  platformMeta: PlatformSettingsMetaProps;
+}
 
 const MODEL_SENSITIVITY_SUPPORTED_LOCALES: string[] = [Locale.EN_US, Locale.EN_AU, Locale.EN_CA, Locale.EN_IN, Locale.EN_GB, Locale.DE_DE];
 

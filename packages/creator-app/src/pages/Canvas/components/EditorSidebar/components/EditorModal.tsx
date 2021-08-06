@@ -10,11 +10,11 @@ import EditorModalHeader from './EditorModalHeader';
 
 const ModalComponent: React.FC<any> = Modal;
 
-export type EditorModalProps = {
+export interface EditorModalProps {
   disableModalMode?: () => void;
   data: NodeData<unknown>;
   editor: React.ReactNode;
-};
+}
 
 const EditorModal: React.FC<EditorModalProps> = ({ disableModalMode, editor, data }) => (
   <ModalComponent toggle={disableModalMode} isOpen onClosed={disableModalMode} size="lg">

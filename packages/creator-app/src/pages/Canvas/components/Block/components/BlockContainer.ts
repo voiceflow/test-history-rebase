@@ -26,10 +26,10 @@ const disabledStyles = css`
   opacity: 0.7;
 `;
 
-type BlockContainerProps = {
+interface BlockContainerProps {
   variant: BlockVariant;
   blockColor?: string;
-};
+}
 
 const BlockContainer = styled.div<BlockContainerProps>`
   ${transition('opacity')}

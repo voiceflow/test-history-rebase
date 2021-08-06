@@ -1,8 +1,8 @@
 import { css, styled, transition } from '@/hocs';
 
-type DragPreviewWrapper = {
+interface DragPreviewWrapper {
   deleteHovered?: boolean;
-};
+}
 
 const DragPreviewWrapper = styled.div<DragPreviewWrapper>`
   z-index: 10000000;

@@ -4,7 +4,9 @@ import client from '@/client';
 import { DiagramUpdateAction } from '@/client/socket/constants';
 import { ActionHandler, DiagramUpdateEvent, UpdateActionHandler } from '@/client/socket/types';
 
-type UsersUpdate = { users: Record<string, Record<string, string>> };
+interface UsersUpdate {
+  users: Record<string, Record<string, string>>;
+}
 
 class RealtimeSubscription {
   handlers: Record<string, ActionHandler<any>[]> = {};

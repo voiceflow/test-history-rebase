@@ -4,10 +4,10 @@ import { PortEntityContext } from '@/pages/Canvas/contexts';
 
 import ConnectorContainer from './PortConnectorContainer';
 
-export type PortConnectorProps = {
+export interface PortConnectorProps {
   color?: string;
   isConnected?: boolean;
-};
+}
 
 const PortConnector: React.FC<PortConnectorProps> = ({ color, isConnected }) => {
   const portEntity = React.useContext(PortEntityContext)!;

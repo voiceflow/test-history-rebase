@@ -3,11 +3,11 @@ import { down } from 'styled-breakpoints';
 import { styled } from '@/hocs';
 import { FadeDownDelayed } from '@/styles/animations';
 
-export type ModalContainerProps = {
+export interface ModalContainerProps {
   fade: boolean;
   isSmall?: boolean;
   isOpened?: boolean;
-};
+}
 
 const ModalContainer = styled.section<ModalContainerProps>`
   ${({ fade }) => fade && FadeDownDelayed}

@@ -1,8 +1,8 @@
 import { css, styled } from '@/hocs';
 
-export type AuthenticationContainerProps = {
+export interface AuthenticationContainerProps {
   dark?: boolean;
-};
+}
 
 const AuthenticationContainer = styled.div<AuthenticationContainerProps>`
   display: flex;

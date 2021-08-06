@@ -1,8 +1,8 @@
 import { css, styled } from '@/hocs';
 
-type SectionTitleErrorMessageProps = {
+interface SectionTitleErrorMessageProps {
   marginTop?: number;
-};
+}
 
 export const SectionTitle = styled.label`
   text-align: left;

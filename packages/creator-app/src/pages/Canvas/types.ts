@@ -5,7 +5,7 @@ import { Comment, LockOwner, NodeData } from '@/models';
 import { Either, Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
-export type MarkupTransform = {
+export interface MarkupTransform {
   scale: number;
   width: number;
   height: number;
@@ -13,24 +13,24 @@ export type MarkupTransform = {
   invertX: boolean;
   invertY: boolean;
   origin: Coords;
-};
+}
 
 export type NodeDataUpdater<T> = (value: Partial<NodeData<T>>, save?: boolean) => void;
 
-export type CanvasContainerAPI = {
+export interface CanvasContainerAPI {
   addClass: (className: string) => void;
   removeClass: (className: string) => void;
-};
+}
 
-export type BlockAPI<T extends HTMLElement = HTMLElement> = {
+export interface BlockAPI<T extends HTMLElement = HTMLElement> {
   ref: React.RefObject<T>;
   rename: () => void;
   getRect: () => DOMRect | null;
   addEventListener: <E extends keyof HTMLElementEventMap>(event: E, listener: (event: HTMLElementEventMap[E]) => void) => void;
   removeEventListener: <E extends keyof HTMLElementEventMap>(event: E, listener: (event: HTMLElementEventMap[E]) => void) => void;
-};
+}
 
-export type StepAPI<T extends HTMLElement = HTMLElement> = {
+export interface StepAPI<T extends HTMLElement = HTMLElement> {
   ref: React.RefObject<T>;
   isDraggable: boolean;
   withPorts: boolean;
@@ -45,23 +45,23 @@ export type StepAPI<T extends HTMLElement = HTMLElement> = {
     onMouseLeave: (event?: React.MouseEvent) => void;
     onDragStart: (event: React.DragEvent) => void;
   };
-};
+}
 
-export type NewLinkAPI = {
+export interface NewLinkAPI {
   show: () => void;
   hide: () => void;
   isPinned: () => boolean;
   pin: (position: Point) => void;
   unpin: () => void;
-};
+}
 
-export type NewCommentAPI = {
+export interface NewCommentAPI {
   show: (origin: Coords) => void;
   hide: () => void;
   getOrigin: () => Coords | null;
-};
+}
 
-export type MergeLayerAPI<T extends HTMLElement = HTMLElement> = {
+export interface MergeLayerAPI<T extends HTMLElement = HTMLElement> {
   ref: React.RefObject<T>;
   isVisible: boolean;
   isTransparent: boolean;
@@ -69,30 +69,30 @@ export type MergeLayerAPI<T extends HTMLElement = HTMLElement> = {
   reset: () => void;
   setTransparent: () => void;
   clearTransparent: () => void;
-};
+}
 
-export type RealtimeCursorOverlayAPI = {
+export interface RealtimeCursorOverlayAPI {
   moveMouse: (tabID: string, location: Point) => void;
   zoomViewport: (calculateMovement: MovementCalculator) => void;
   panViewport: (movement: Pair<number>) => void;
   removeUser: (tabID: string) => void;
-};
+}
 
-export type RealtimeLinkOverlayAPI = {
+export interface RealtimeLinkOverlayAPI {
   moveLink: (tabID: string, linkData: Either<{ reset: true }, { points: Pair<Point> }>) => void;
   removeUser: (tabID: string) => void;
-};
+}
 
-export type TransformOverlayAPI = {
+export interface TransformOverlayAPI {
   initialize: (transform: MarkupTransform) => void;
   translate: (movement: Pair<number>) => void;
   resize: (height: number) => void;
   clearTransformations: () => void;
   reset: () => void;
-};
+}
 
-export type SelectionMarqueeAPI = {
+export interface SelectionMarqueeAPI {
   show: () => void;
-};
+}
 
 export type DraftCommentType = Record<string, Pick<Comment, 'text' | 'mentions'>>;

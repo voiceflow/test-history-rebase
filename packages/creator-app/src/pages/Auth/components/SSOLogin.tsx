@@ -11,13 +11,13 @@ import * as Sentry from '@/vendors/sentry';
 import { useOktaLogin } from '../hooks';
 import { SocialLoginContainer } from './AuthBoxes';
 
-export type SSOLoginProps = {
+export interface SSOLoginProps {
   domain: string;
   clientID: string;
   light?: boolean;
   coupon?: string;
   disabled?: boolean;
-};
+}
 
 const SSOLogin: React.FC<SSOLoginProps & ConnectedSSOLoginProps> = ({ domain, clientID, light, coupon, ssoLogin, goToAdoptSSO }) => {
   const oktaLogin = useOktaLogin(domain, clientID);

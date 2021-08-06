@@ -6,7 +6,7 @@ import Slider, { SliderProps } from '@/components/Slider';
 
 import { Input, InputAction, SliderPrefixContainer } from './components';
 
-export type SliderInputGroupProps = {
+export interface SliderInputGroupProps {
   inputValue: string;
   inputProps?: Omit<React.ComponentProps<typeof Input>, 'value' | 'onChange' | 'rightAction'>;
   sliderValue: number;
@@ -16,7 +16,7 @@ export type SliderInputGroupProps = {
   onChangeInput: React.ChangeEventHandler<HTMLInputElement>;
   onChangeSlider: (value: number) => void;
   onSliderContainerMouseDown?: React.MouseEventHandler<HTMLDivElement>;
-};
+}
 
 const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
   inputValue,

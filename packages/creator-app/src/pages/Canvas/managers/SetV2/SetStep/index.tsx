@@ -6,11 +6,11 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 
 import { NODE_CONFIG } from '../constants';
 
-export type SetStepProps = {
+export interface SetStepProps {
   nodeID: string;
   portID: string;
   title?: string;
-};
+}
 
 export const SetStep: React.FC<SetStepProps> = ({ title, nodeID, portID }) => (
   <Step nodeID={nodeID}>

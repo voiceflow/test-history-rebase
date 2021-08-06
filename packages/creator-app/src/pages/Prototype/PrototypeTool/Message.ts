@@ -6,9 +6,9 @@ import { loadImage } from '@/utils/dom';
 
 import { Message, MessageType, TypedMessage } from '../types';
 
-export type MessageControllerProps = {
+export interface MessageControllerProps {
   addToMessages: (message: Message) => void;
-};
+}
 
 class MessageController {
   private props: MessageControllerProps;

@@ -6,13 +6,13 @@ import { Container, LabelContainer, NameInput } from '@/pages/Onboarding/Steps/C
 import { Identifier } from '@/styles/constants';
 
 const IconUpload: React.FC<any> = UploadJustIcon;
-type NameAndImageProps = {
+interface NameAndImageProps {
   name: string;
   setName: (name: string) => void;
   projectImage: string;
   setProjectImage: (url: string) => void;
   onContinue: () => void;
-};
+}
 
 const NameAndImage: React.FC<NameAndImageProps> = ({ name, setName, projectImage, setProjectImage, onContinue }) => {
   const canContinue = !!name;

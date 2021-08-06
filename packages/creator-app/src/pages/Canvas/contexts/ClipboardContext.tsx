@@ -9,9 +9,9 @@ export const BufferType = {
   BLOCK: 'block',
 };
 
-export type ClipboardContextValue = {
+export interface ClipboardContextValue {
   copy: (nodeID?: string) => void;
-};
+}
 
 const IGNORED_TAGS = ['TEXTAREA', 'INPUT'];
 

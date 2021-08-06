@@ -8,9 +8,9 @@ import { useFeature } from '@/hooks';
 import { Alexa } from '@/pages/Settings/components/ContentDescriptors';
 import { ConnectedProps } from '@/types';
 
-type AlexaGadgetsToggleOwnProps = {
+interface AlexaGadgetsToggleOwnProps {
   modelSensitivityShown?: boolean;
-};
+}
 
 const AlexaGadgetsToggle: React.FC<AlexaGadgetsToggleOwnProps & ConnectedAlexaGadgetsToggleProps> = ({
   customInterfaceEnabled,

@@ -14,7 +14,7 @@ import { PartialComment } from './types';
 
 const EMPTY_COMMENT: PartialComment = { text: '', mentions: [] };
 
-export type EditableCommentProps = {
+export interface EditableCommentProps {
   onSave?: (value: PartialComment) => void;
   isEditing?: boolean;
   onClose?: Callback;
@@ -24,7 +24,7 @@ export type EditableCommentProps = {
   hasHeader?: boolean;
   placeholder: string;
   height?: number;
-};
+}
 
 const EditableComment: React.FC<EditableCommentProps> = ({
   initialValues = EMPTY_COMMENT,

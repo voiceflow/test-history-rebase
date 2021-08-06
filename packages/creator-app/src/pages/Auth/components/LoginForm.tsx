@@ -23,9 +23,9 @@ import InputContainer from './InputContainer';
 import PasswordInput from './PasswordInput';
 import ShowPasswordIcon from './ShowPasswordIcon';
 
-export type LoginFormProps = {
+export interface LoginFormProps {
   query: Query.Auth;
-};
+}
 
 export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ basicAuthLogin, goToSignup, query, children }) => {
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');

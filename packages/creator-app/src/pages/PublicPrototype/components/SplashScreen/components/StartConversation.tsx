@@ -5,7 +5,7 @@ import { Identifier } from '@/styles/constants';
 
 import StartButton from './StartButton';
 
-export type StartConversationProps = {
+export interface StartConversationProps {
   projectName: string;
   withStartButton?: boolean;
   isVisuals?: boolean;
@@ -14,7 +14,7 @@ export type StartConversationProps = {
   hideVFBranding?: boolean;
   setVisualsWelcomeScreenPassed: (val: boolean) => void;
   onStart: () => void;
-};
+}
 
 const StartConversation: React.FC<StartConversationProps> = ({
   projectName,

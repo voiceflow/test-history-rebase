@@ -7,13 +7,13 @@ import Step, { ConnectedStepProps, FailureItem, Item, Section, SuccessItem, Vari
 
 import { NODE_CONFIG } from '../constants';
 
-export type UserInfoStepProps = {
+export interface UserInfoStepProps {
   userPermissions: (string | null)[];
   withPorts: boolean;
   nodeID: string;
   successPortID: string;
   failurePortID: string;
-};
+}
 
 export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, withPorts, nodeID, successPortID, failurePortID }) => (
   <Step nodeID={nodeID}>

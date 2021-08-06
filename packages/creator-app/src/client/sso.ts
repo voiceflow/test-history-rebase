@@ -11,17 +11,17 @@ const CONVERT_ENDPOINTS = {
   [SessionType.FACEBOOK]: 'facebook',
 };
 
-export type SSOLoginPayload = {
+export interface SSOLoginPayload {
   domain: string;
   code: string;
   coupon?: string;
-};
+}
 
-export type SSOConvertPayload = {
+export interface SSOConvertPayload {
   domain: string;
   oktaCode: string;
   authCode: string;
-};
+}
 
 const ssoClient = {
   login: (data: SSOLoginPayload) => apiV2.post<{ token: string; user: Account; intercomUserHMAC?: string }>(`${SSO_PATH}/login`, data),

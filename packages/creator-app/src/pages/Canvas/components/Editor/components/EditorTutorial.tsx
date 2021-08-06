@@ -2,13 +2,13 @@ import React from 'react';
 
 import TutorialTooltip from '@/components/TutorialTooltip';
 
-export type EditorTutorialProps = {
+export interface EditorTutorialProps {
   title: React.ReactNode;
   anchor: React.ReactNode;
   helpTitle?: React.ReactNode;
   helpMessage?: React.ReactNode;
   tutorialTitle: React.ReactNode;
-};
+}
 
 const TutorialTooltipAny = TutorialTooltip as any;
 

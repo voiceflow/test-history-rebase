@@ -1,6 +1,6 @@
 import { Project } from './Project';
 
-export type Workspace = {
+export interface Workspace {
   expiry: string;
   team_id: number;
   created: string;
@@ -8,4 +8,4 @@ export type Workspace = {
   plan: string;
   role: string;
   projects: Project[];
-};
+}

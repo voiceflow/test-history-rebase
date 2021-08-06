@@ -2,11 +2,11 @@ import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
-export type SpotlightContextValue = {
+export interface SpotlightContextValue {
   isVisible: boolean;
   toggle: () => void;
   hide: (event?: MouseEvent) => void;
-};
+}
 
 export const SpotlightContext = React.createContext<SpotlightContextValue | null>(null);
 export const { Consumer: SpotlightConsumer } = SpotlightContext;

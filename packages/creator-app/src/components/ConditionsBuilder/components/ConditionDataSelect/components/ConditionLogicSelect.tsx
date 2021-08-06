@@ -61,13 +61,13 @@ export const ExpressionListOptions: RadioOption<ExpressionDataLogicType>[] = [
   },
 ];
 
-export type ConditionLogicSelectProps = {
+export interface ConditionLogicSelectProps {
   logicValue: ExpressionDataLogicType;
   onLogicUpdate: (value: ExpressionDataLogicType) => void;
   conditionValue?: string;
   onConditionValueUpdate: (data: { value: string; type: ExpressionTypeV2.VARIABLE | ExpressionTypeV2.VALUE }) => void;
   onClose: () => void;
-};
+}
 
 const ConditionLogicSelect: React.FC<ConditionLogicSelectProps> = ({
   logicValue,

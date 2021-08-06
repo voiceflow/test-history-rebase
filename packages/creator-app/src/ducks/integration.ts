@@ -5,17 +5,17 @@ import { createSelector } from 'reselect';
 import { createAction, createRootSelector } from '@/ducks/utils';
 import { Action, RootReducer, Thunk } from '@/store/types';
 
-export type IntegrationUser = {
+export interface IntegrationUser {
   platform: string;
-};
+}
 
 export type IntegrationUsers = Record<string, IntegrationUser[]>;
 
-export type IntegrationState = {
+export interface IntegrationState {
   integration_users: IntegrationUsers;
   loading: boolean;
   error: unknown | null;
-};
+}
 
 export const STATE_KEY = 'integrationUsers';
 export const INITIAL_STATE: IntegrationState = {

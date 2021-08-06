@@ -1,8 +1,8 @@
 import { styled } from '@/hocs';
 
-type OuterContainerProps = {
+interface OuterContainerProps {
   visible?: boolean;
-};
+}
 
 const OuterContainer = styled.div<OuterContainerProps>`
   position: relative;

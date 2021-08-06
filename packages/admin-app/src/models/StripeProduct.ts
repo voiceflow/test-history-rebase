@@ -1,4 +1,4 @@
-export type StripeProduct = {
+export interface StripeProduct {
   id: string;
   object: string;
   active: boolean;
@@ -12,4 +12,4 @@ export type StripeProduct = {
   statement_descriptor: string | null;
   unit_label: string | null;
   updated: number;
-};
+}

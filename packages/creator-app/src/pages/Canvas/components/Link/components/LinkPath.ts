@@ -3,10 +3,10 @@ import { LINK_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { HIGHLIGHT_COLOR, STROKE_DEFAULT_COLOR } from '../constants';
 
-export type LinkPathProps = {
+export interface LinkPathProps {
   strokeColor: string;
   isHighlighted?: boolean;
-};
+}
 
 export const getHighlightedStrokeColor = ({ strokeColor }: LinkPathProps): string =>
   strokeColor === STROKE_DEFAULT_COLOR ? HIGHLIGHT_COLOR : strokeColor;

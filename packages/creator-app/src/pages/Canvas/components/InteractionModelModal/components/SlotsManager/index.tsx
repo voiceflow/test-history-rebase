@@ -21,10 +21,10 @@ import LeftColumn from '../LeftColumn';
 import RightColumn from '../RightColumn';
 import { DraggableItem, Manager } from './components';
 
-export type SlotsManagerProps = {
+export interface SlotsManagerProps {
   selectedID?: string;
   setSelectedID: (id: string) => void;
-};
+}
 
 const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = ({
   slots,

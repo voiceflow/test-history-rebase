@@ -11,11 +11,11 @@ import { isValidExpressionValue, isVariable } from '../utils';
 
 const AnyVariablesInput: any = VariablesInput;
 
-export type ConditionValueSelectProps = {
+export interface ConditionValueSelectProps {
   value?: string;
   onChange: (data: { value: string; type: ExpressionTypeV2.VARIABLE | ExpressionTypeV2.VALUE }) => void;
   onClose?: () => void;
-};
+}
 
 const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '', onChange, onClose }) => {
   const inputRef = React.useRef<VariableInputRef>(null);

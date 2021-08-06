@@ -2,9 +2,9 @@ import { Box } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
-type ContainerProps = {
+interface ContainerProps {
   isMobile?: boolean;
-};
+}
 
 const Container = styled(Box)<ContainerProps>`
   display: flex;

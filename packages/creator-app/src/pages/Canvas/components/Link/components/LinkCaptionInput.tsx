@@ -4,11 +4,11 @@ import { LINK_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { getHighlightedStrokeColor } from './LinkPath';
 
-export type LinkCaptionInput = {
+export interface LinkCaptionInput {
   color: string;
   isLineActive?: boolean;
   isHighlighted?: boolean;
-};
+}
 
 const LinkCaptionInput = styled(EditableText)<LinkCaptionInput>`
   display: inline-block;

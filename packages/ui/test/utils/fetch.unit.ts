@@ -5,7 +5,10 @@ import createRawFetch from '../../src/utils/fetch/raw';
 import { generate } from '../../src/utils/generate';
 import suite from '../_suite';
 
-type MockResult = { status?: number; body?: string };
+interface MockResult {
+  status?: number;
+  body?: string;
+}
 
 const TEST_URL = 'test/12345';
 const TEST_API_ENDPOINT = 'https://undefined';

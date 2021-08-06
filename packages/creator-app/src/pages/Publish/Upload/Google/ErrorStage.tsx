@@ -29,9 +29,9 @@ const getError = ({ errorType, error }: JobStageData<GoogleExportJob.ErrorStage>
   return _isString(strError) ? strError : 'something went wrong, please contact us on Intercom';
 };
 
-type ErrorStageProps = {
+interface ErrorStageProps {
   stage: GoogleExportJob.ErrorStage | GooglePublishJob.ErrorStage;
-};
+}
 
 const ErrorStage: React.FC<ErrorStageProps> = ({ stage }) => <BaseErrorStage title={getTitle(stage.data)}>{getError(stage.data)}</BaseErrorStage>;
 

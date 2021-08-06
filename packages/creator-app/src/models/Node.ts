@@ -2,7 +2,7 @@ import { BlockType } from '@/constants';
 
 import { DBPort } from './Port';
 
-export type Node = {
+export interface Node {
   id: string;
   type: BlockType;
   x: number;
@@ -10,9 +10,9 @@ export type Node = {
   parentNode: string | null;
   combinedNodes: string[];
   ports: { in: string[]; out: string[] };
-};
+}
 
-export type DBNode = {
+export interface DBNode {
   id: string;
   name: string;
   x?: number;
@@ -21,22 +21,22 @@ export type DBNode = {
   combines?: DBNode[] | null;
   parentNode?: string;
   extras: DBNode.Extras;
-};
+}
 
 export namespace DBNode {
   export type WithCoords = WithRequired<DBNode, 'x' | 'y'>;
 
-  export type Extras = {
+  export interface Extras {
     type: string;
     virtualExtras?: VirtualExtras;
     [key: string]: any;
-  };
+  }
 
-  export type VirtualExtras = {
+  export interface VirtualExtras {
     color?: string;
     name?: string;
     id?: string;
     inPortID?: string;
     reusePorts?: boolean;
-  };
+  }
 }

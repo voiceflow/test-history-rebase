@@ -12,16 +12,16 @@ import { HandlePosition } from '../../constants';
 import Overlay from '../Overlay';
 import { useTransformOverlayAPI } from './hooks';
 
-export type OverlayControlsRenderProps = {
+export interface OverlayControlsRenderProps {
   nodeType: BlockType | null;
   data: NodeData<Markup.AnyNodeData> | null;
   onRotateStart: () => void;
   onResizeStart: (handle: HandlePosition) => () => void;
-};
+}
 
-export type OverlayControlsProps = {
+export interface OverlayControlsProps {
   children: (renderProps: OverlayControlsRenderProps) => React.ReactNode;
-};
+}
 
 const OverlayControls: React.FC<OverlayControlsProps & ConnectedOverlayControlsProps> = ({ node, children }) => {
   const engine = React.useContext(EngineContext)!;

@@ -7,7 +7,7 @@ import Container from './Container';
 
 const IconUpload: React.FC<any> = UploadJustIcon;
 
-type UploadContentProps = {
+interface UploadContentProps {
   id?: string;
   title: string;
   isAllowed: boolean;
@@ -15,7 +15,7 @@ type UploadContentProps = {
   isSquare: boolean;
   hasBorderRight: boolean;
   updateSettings: (image: string) => void;
-};
+}
 
 const UploadContent: React.FC<UploadContentProps> = ({ id, title, isAllowed, initialState, isSquare, hasBorderRight, updateSettings }) => {
   const [image, setImage] = React.useState<string>(initialState);

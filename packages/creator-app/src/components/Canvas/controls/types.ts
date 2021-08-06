@@ -8,52 +8,52 @@ export type GestureEvent = UIEvent & {
   scale?: number;
 };
 
-export type TrackpadZoomAction = {
+export interface TrackpadZoomAction {
   type: ControlType.SCALE;
   scale: number;
   event: GestureEvent;
-};
+}
 
-export type MouseZoomAction = {
+export interface MouseZoomAction {
   type: ControlType.SCALE;
   delta: number;
   event: WheelEvent;
-};
+}
 
 export type ZoomAction = Either<TrackpadZoomAction, MouseZoomAction>;
 
-export type StartInteraction = {
+export interface StartInteraction {
   type: ControlType.START_INTERACTION;
-};
+}
 
-export type EndIneraction = {
+export interface EndIneraction {
   type: ControlType.END_INTERACTION;
-};
+}
 
-export type EndAction = {
+export interface EndAction {
   type: ControlType.END;
-};
+}
 
-export type ClickAction = {
+export interface ClickAction {
   type: ControlType.CLICK;
   event: React.MouseEvent;
-};
+}
 
-export type MouseUpAction = {
+export interface MouseUpAction {
   type: ControlType.MOUSE_UP;
   event: MouseEvent;
-};
+}
 
-export type ShiftDragStartAction = {
+export interface ShiftDragStartAction {
   type: ControlType.SELECT_DRAG_START;
   event: React.DragEvent;
-};
+}
 
-export type PanAction = {
+export interface PanAction {
   type: ControlType.PAN;
   deltaX: number;
   deltaY: number;
-};
+}
 
 export type ControlAction =
   | ZoomAction

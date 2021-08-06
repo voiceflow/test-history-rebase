@@ -10,7 +10,7 @@ import { InternalLinkInstance } from '../types';
 import { getPathPointsCenter } from '../utils';
 import CaptionInput from './LinkCaptionInput';
 
-type LinkCaptionProps = {
+interface LinkCaptionProps {
   color: string;
   linkID: string;
   instance: InternalLinkInstance;
@@ -23,7 +23,7 @@ type LinkCaptionProps = {
   isHighlighted?: boolean;
   onToggleActive: (event: React.MouseEvent) => void;
   onToggleEditing: (value: unknown) => void;
-};
+}
 
 const LinkCaption: React.FC<LinkCaptionProps> = ({
   color,

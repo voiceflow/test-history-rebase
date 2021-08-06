@@ -11,11 +11,11 @@ import { ConnectedProps } from '@/types';
 
 import { Container, Splitter } from './components';
 
-export type PrototypeResetProps = {
+export interface PrototypeResetProps {
   onClick: React.MouseEventHandler<HTMLSpanElement>;
   stepBack: () => void;
   goBackDisabled: boolean;
-};
+}
 
 const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProps> = ({
   savePrototypeSession,

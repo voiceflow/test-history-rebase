@@ -12,13 +12,13 @@ import { getDistinctPlatformValue } from '@/utils/platform';
 
 import { NODE_CONFIG } from '../constants';
 
-export type ChoiceStepProps = {
+export interface ChoiceStepProps {
   isPath: boolean;
   choices: { label: string | null; portID: string }[];
   nodeID: string;
   elsePortID: string;
   elsePathName: string;
-};
+}
 
 export const ChoiceStep: React.FC<ChoiceStepProps> = ({ isPath, choices, nodeID, elsePortID, elsePathName }) => (
   <Step nodeID={nodeID}>

@@ -7,10 +7,10 @@ import { ExpressionData, ExpressionV2, LogicGroupData } from '@/models';
 import { ConditionLabel, ConditionSelect, LogicInterfaceHandler } from './components';
 import { getAddionalLogicData, getDefaultValue } from './utils';
 
-export type ConditionsBuilderProps = {
+export interface ConditionsBuilderProps {
   onChange: (value: ExpressionData) => void;
   expression?: ExpressionData;
-};
+}
 
 const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, expression }) => {
   const addNewCondition = (logicInterface: ConditionsLogicInterface) => {

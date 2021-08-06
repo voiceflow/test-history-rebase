@@ -1,12 +1,12 @@
 import { css, styled, transition } from '@/hocs';
 
-type ContainerProps = {
+interface ContainerProps {
   isMobile?: boolean;
   isVisuals?: boolean;
   isFullScreen?: boolean;
   splashScreenPassed?: boolean;
   height?: string;
-};
+}
 
 const Container = styled.div<ContainerProps>`
   ${transition('color')};

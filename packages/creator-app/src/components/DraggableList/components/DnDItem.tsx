@@ -8,17 +8,17 @@ import useDragAndDrop from '../useDragAndDrop';
 
 type InternalWithoutType<I> = Omit<InternalItem<I>, 'type'>;
 
-export type ItemComponentHandlers<I> = {
+export interface ItemComponentHandlers<I> {
   onRemove: (props: InternalWithoutType<I>) => void;
   onUpdate?: never;
   onDuplicate?: (props: InternalWithoutType<I>) => void;
-};
+}
 
-export type MappedItemComponentHandlers<I> = {
+export interface MappedItemComponentHandlers<I> {
   onRemove: () => void;
   onUpdate: (value: Partial<I>) => void;
   onDuplicate?: (props: InternalWithoutType<I>) => void;
-};
+}
 
 export type ItemComponentProps<I> = InternalWithoutType<I> & {
   style?: { opacity: number };

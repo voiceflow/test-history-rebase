@@ -9,9 +9,9 @@ import { useModals, useTrackingEvents } from '@/hooks';
 import * as Models from '@/models';
 import { ConnectedProps } from '@/types';
 
-export type BoardDeleteModalProps = {
+export interface BoardDeleteModalProps {
   workspace: Models.Workspace;
-};
+}
 
 export const BoardDeleteModal: React.FC<BoardDeleteModalProps & ConnectedBoardDeleteModalProps> = ({ workspace, deleteWorkspace }) => {
   const [trackEvents] = useTrackingEvents();

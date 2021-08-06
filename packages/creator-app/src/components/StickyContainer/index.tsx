@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Container } from './components';
 
-type StickyContainerProps = {
+interface StickyContainerProps {
   top?: number;
   width?: number;
-};
+}
 const StickyContainer: React.FC<StickyContainerProps> = ({ top, width, children }) => (
   <Container top={top} width={width}>
     {children}

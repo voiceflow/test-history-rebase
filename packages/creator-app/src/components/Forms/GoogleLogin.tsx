@@ -24,13 +24,13 @@ const GoogleLoginButton = styled(BaseButton)`
 type AccountCallback = (account: Models.Account.Google) => void;
 type LoginDataCallback = (loginData: { code: string }) => void;
 
-export type GoogleLoginProps = {
+export interface GoogleLoginProps {
   scopes: string[];
   onFail: () => void;
   onLoad?: () => void;
   onSuccess: AccountCallback | LoginDataCallback;
   skipLinkGoogleAccount?: boolean;
-};
+}
 
 const GoogleLogin: React.FC<GoogleLoginProps & ConnectedGoogleLoginProps> = ({
   scopes,

@@ -23,9 +23,9 @@ const CLASS_MAPPINGS: Record<Notifications.NotificationType, { class: string; la
   },
 };
 
-export type NotificationProps = {
+export interface NotificationProps {
   data: Notifications.Notification;
-};
+}
 
 const Notification: React.FC<NotificationProps> = ({ data: { details, created, isNew, type } }) => (
   <Container>

@@ -1,8 +1,8 @@
 import { styled } from '@/hocs';
 
-type ChartContainerProps = {
+interface ChartContainerProps {
   size: number;
-};
+}
 
 const ChartContainer = styled.div<ChartContainerProps>`
   position: relative;

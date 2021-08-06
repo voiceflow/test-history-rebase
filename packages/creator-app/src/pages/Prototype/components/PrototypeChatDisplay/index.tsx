@@ -8,7 +8,7 @@ import { Interaction, Message } from '../../types';
 import Dialog from '../PrototypeDialog';
 import { InnerChatContainer, OutterChatContainer } from './components';
 
-export type PrototypeChatDisplayProps = {
+export interface PrototypeChatDisplayProps {
   isPublic?: boolean;
   isLoading?: boolean;
   atTop?: boolean;
@@ -28,7 +28,7 @@ export type PrototypeChatDisplayProps = {
   stepBack: () => void;
   autoScroll?: boolean;
   isTranscript?: boolean;
-};
+}
 
 const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   atTop = true,

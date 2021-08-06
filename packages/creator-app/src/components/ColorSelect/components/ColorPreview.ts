@@ -4,9 +4,9 @@ const BACKGROUND_IMAGE =
   // eslint-disable-next-line no-secrets/no-secrets
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==';
 
-type ColorPreviewProps = {
+interface ColorPreviewProps {
   disabled?: boolean;
-};
+}
 
 const ColorPreview = styled.div<ColorPreviewProps>`
   width: 24px;

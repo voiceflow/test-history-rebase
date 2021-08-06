@@ -71,11 +71,11 @@ export const getActiveLine = (points: PathPoints, [pointX, pointY]: Point): Path
   return activeLine;
 };
 
-type TransformActiveLineOptions = {
+interface TransformActiveLineOptions {
   points: PathPoints;
   activeLine: PathLine;
   mouseCoords: Point;
-};
+}
 
 export const transformActiveLine = (options: TransformActiveLineOptions): PathPoints =>
   isVerticalLine(options.activeLine) ? transformActiveVerticalLine(options) : transformActiveHorizontalLine(options);

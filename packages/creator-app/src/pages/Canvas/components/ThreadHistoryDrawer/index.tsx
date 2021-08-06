@@ -18,9 +18,9 @@ import { FILTER_LABELS, FilterType } from './constants';
 
 const Menu: any = BaseMenu;
 
-export type ThreadHistoryDrawerProps = {
+export interface ThreadHistoryDrawerProps {
   focusedTarget?: string | null;
-};
+}
 
 export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps & ConnectedThreadHistoryDrawerProps> = ({ openThreads, resolvedThreads }) => {
   const theme = useTheme();

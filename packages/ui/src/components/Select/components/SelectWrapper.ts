@@ -1,12 +1,12 @@
 import { colors, css, styled } from '../../../styles';
 import { inputFocusStyle, InputWrapper } from '../../Input';
 
-export type SelectWrapperProps = {
+export interface SelectWrapperProps {
   minWidth?: boolean;
   clearable?: boolean;
   fullWidth?: boolean;
   isFocused?: boolean;
-};
+}
 
 const SelectWrapper = styled.div<SelectWrapperProps>`
   position: relative;

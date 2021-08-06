@@ -4,14 +4,14 @@ import React from 'react';
 
 import APLRenderer, { APLRendererProps } from '@/components/APLRenderer';
 
-type BaseRendererProps = {
+interface BaseRendererProps {
   apl: string;
   data: string;
   commands: string;
   scale: number;
   viewport: APLRendererProps['viewport'];
   onFail: (error: Error) => void;
-};
+}
 
 // eslint-disable-next-line react/display-name
 const BaseRenderer: React.FC<BaseRendererProps> = ({ onFail, scale, apl, data, commands, viewport }) => (

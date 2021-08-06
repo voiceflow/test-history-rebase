@@ -12,12 +12,12 @@ import { ButtonLink, LoaderStage, ProjectItem, StageContainer } from '../compone
 
 const Footer = ModalFooter as React.FC<any>;
 
-type WaitProjectStageProps = {
+interface WaitProjectStageProps {
   cancel: () => void;
   onClose?: () => void;
   setMultiProjects?: (value: boolean) => void;
   updateCurrentStage: (googleProjectID: string) => void;
-};
+}
 
 const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ cancel, updateCurrentStage, setMultiProjects }) => {
   const [projects, setProjects] = React.useState<{ id: string; name?: string }[]>([]);

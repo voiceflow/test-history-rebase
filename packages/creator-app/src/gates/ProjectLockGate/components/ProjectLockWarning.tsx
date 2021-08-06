@@ -3,9 +3,9 @@ import React from 'react';
 
 import SessionLocked from '@/components/SessionLocked';
 
-export type ProjectLockWarningProps = {
+export interface ProjectLockWarningProps {
   onTakeover: () => void;
-};
+}
 
 const ProjectLockWarning: React.FC<ProjectLockWarningProps> = ({ onTakeover }) => (
   <SessionLocked>

@@ -2,12 +2,12 @@ import { PathPoint, Point } from '@/types';
 
 import { DOUBLE_STRAIGHT_PATH_OFFSET, TOP_PORT_OFFSET } from '../constants';
 
-type CreatePointData = {
+interface CreatePointData {
   toTop?: boolean;
   locked?: boolean;
   reversed?: boolean;
   allowedToTop?: boolean;
-};
+}
 
 export function createPoint(point: Point, data?: CreatePointData): PathPoint;
 export function createPoint(x: number, y: number, data?: CreatePointData): PathPoint;

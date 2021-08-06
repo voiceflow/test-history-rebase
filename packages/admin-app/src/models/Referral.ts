@@ -1,4 +1,4 @@
-export type Referral = {
+export interface Referral {
   referralCode: string;
   stripeCoupon: string | null;
   stripeProducts: string[];
@@ -7,4 +7,4 @@ export type Referral = {
   expiry: number | null;
   status: boolean;
   creatorID?: number;
-};
+}

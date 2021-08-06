@@ -9,11 +9,11 @@ import { FACEBOOK_APP_ID } from '@/config';
 
 import SocialButton from './SocialButton';
 
-export type FacebookLoginButtonProps = {
+export interface FacebookLoginButtonProps {
   light?: boolean;
   disabled?: boolean;
   onLogin: (fbUser: ReactFacebookLoginInfo) => Promise<void>;
-};
+}
 
 const FacebookLoginButton: React.FC<FacebookLoginButtonProps> = ({ light, disabled, onLogin }) => (
   <FacebookLogin

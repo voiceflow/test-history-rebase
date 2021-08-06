@@ -2,10 +2,10 @@ import { FlexApart } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-type LegendItemProps = {
+interface LegendItemProps {
   color: string;
   gradient: string;
-};
+}
 
 const LegendItem = styled(FlexApart)<LegendItemProps>`
   position: relative;

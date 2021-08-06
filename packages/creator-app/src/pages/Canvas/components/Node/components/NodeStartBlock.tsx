@@ -15,7 +15,8 @@ import { ConnectedProps, MergeArguments } from '@/types';
 
 import NodeStep from './NodeStep';
 
-export type NodeStartBlockProps = {};
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface NodeStartBlockProps {}
 
 const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockProps & ConnectedNodeStartBlockProps> = (
   { invocationName, isRootDiagram, diagram },

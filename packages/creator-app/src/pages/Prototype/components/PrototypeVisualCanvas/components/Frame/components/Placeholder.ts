@@ -1,10 +1,10 @@
 import { css, styled } from '@/hocs';
 
-type PlaceholderProps = {
+interface PlaceholderProps {
   width: number;
   height: number;
   image?: null | string;
-};
+}
 
 const Placeholder = styled.div<PlaceholderProps>`
   width: ${({ width }) => width}px;

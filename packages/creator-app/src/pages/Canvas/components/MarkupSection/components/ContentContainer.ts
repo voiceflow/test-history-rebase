@@ -1,8 +1,8 @@
 import { css, styled } from '@/hocs';
 
-type ContentContainerProps = {
+interface ContentContainerProps {
   withoutHeader?: boolean;
-};
+}
 
 const ContentContainer = styled.div<ContentContainerProps>`
   ${({ withoutHeader }) =>

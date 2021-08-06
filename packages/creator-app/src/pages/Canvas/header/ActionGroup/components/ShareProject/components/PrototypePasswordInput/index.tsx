@@ -12,10 +12,10 @@ import { ConnectedProps } from '@/types';
 
 import { StyledBlockText } from './components';
 
-type PrototypePasswordInputProps = {
+interface PrototypePasswordInputProps {
   isCollapsed: boolean;
   onToggleCollapse: () => void;
-};
+}
 
 const UnconnectedPrototypePasswordInput: React.FC<PrototypePasswordInputProps & ConnectedPrototypePasswordInputProps> = ({
   initialValue = '',

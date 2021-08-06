@@ -7,10 +7,10 @@ import SlotEdit from '@/pages/Canvas/components/SlotEdit';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 
-export type ManagerProps = {
+export interface ManagerProps {
   id: string;
   removeSlot: (id: string) => void;
-};
+}
 
 const SlotEditComponent = SlotEdit as React.FC<any>;
 

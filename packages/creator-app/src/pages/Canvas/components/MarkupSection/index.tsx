@@ -5,12 +5,12 @@ import { UncontrolledSection } from '@/components/Section';
 
 import { ContentContainer, IconContainer, Title } from './components';
 
-export type SectionProps = {
+export interface SectionProps {
   title?: string;
   isLast?: boolean;
   opened?: boolean;
   onAddRemove?: () => void;
-};
+}
 
 const Section: React.FC<SectionProps> = ({ title, children, opened, isLast, onAddRemove }) => (
   <UncontrolledSection

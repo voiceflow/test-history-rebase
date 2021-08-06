@@ -3,10 +3,10 @@ import React from 'react';
 import { NODE_DISABLED_CLASSNAME, NODE_HOVERED_CLASSNAME } from '@/pages/Canvas/constants';
 import { NodeEntityContext } from '@/pages/Canvas/contexts';
 
-export type NodeBlockStylesProps = {
+export interface NodeBlockStylesProps {
   isHovered: boolean;
   hasLinkWarning: boolean;
-};
+}
 
 const NodeBlockStyles: React.FC<NodeBlockStylesProps> = ({ isHovered, hasLinkWarning }) => {
   const nodeEntity = React.useContext(NodeEntityContext)!;

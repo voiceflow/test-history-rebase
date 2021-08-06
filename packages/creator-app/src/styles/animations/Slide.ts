@@ -12,11 +12,11 @@ const SlideKeyframes = keyframes`
   }
 `;
 
-export type SlideProps = {
+export interface SlideProps {
   delay?: number;
   origin?: string;
   duration?: number;
-};
+}
 
 const getAnimationStyles =
   ({ delay: defaultDelay = 0, origin: defaultOrigin = 'top', duration: defaultDuration = ANIMATION_SPEED }: SlideProps = {}) =>

@@ -5,7 +5,7 @@ import { useTheme } from '@/hooks';
 
 import ButtonWrapper from './ButtonWrapper';
 
-export type ActionButtonsProps = {
+export interface ActionButtonsProps {
   color?: string;
   onMute: () => void;
   onSend: () => void;
@@ -17,7 +17,7 @@ export type ActionButtonsProps = {
   disabled?: boolean;
   testEnded?: boolean;
   isMobile?: boolean;
-};
+}
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({
   color,

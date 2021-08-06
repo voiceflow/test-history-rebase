@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Container, EditorContentAnimation } from '@/pages/Canvas/components/Editor';
 
-type EditorProps = {
+interface EditorProps {
   animationDistance?: number;
-};
+}
 
 const Editor: React.FC<EditorProps> = ({ children, animationDistance }) => (
   <Container>

@@ -9,9 +9,9 @@ import { ConnectedProps } from '@/types';
 import { EmailInput } from '../../components';
 import { ResetPasswordStage } from '../constants';
 
-export type InvalidResetLinkProps = {
+export interface InvalidResetLinkProps {
   setStage: (stage: ResetPasswordStage) => void;
-};
+}
 
 const InvalidResetLink: React.FC<InvalidResetLinkProps & ConnectedInvalidResetLinkProps> = ({ goToLogin, setStage }) => {
   const [email, setEmail] = React.useState('');

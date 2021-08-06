@@ -1,10 +1,10 @@
 import { styled } from '@/hocs';
 import StepContainer from '@/pages/Canvas/components/Step/components/StepContainer';
 
-export type MergePreviewProps = {
+export interface MergePreviewProps {
   isVisible: boolean;
   isTransparent: boolean;
-};
+}
 
 const MergePreview = styled.div<MergePreviewProps>`
   position: absolute;

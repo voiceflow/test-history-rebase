@@ -11,13 +11,13 @@ import { StepAPIContext } from './contexts';
 export * from './components';
 export * from './types';
 
-export type BaseStepProps = {
+export interface BaseStepProps {
   nodeID?: string;
   image?: string | null;
   imagePosition?: string;
   imageAspectRatio?: number | null;
   disableHighlightStyle?: boolean;
-};
+}
 
 export type StepProps = BaseStepProps;
 

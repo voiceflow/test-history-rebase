@@ -11,11 +11,11 @@ import ConditionExpressionTooltip from './ConditionExpressionTooltip';
 
 const VariablesInputComponent: any = VariablesInput;
 
-export type ConditionExpressionProps = {
+export interface ConditionExpressionProps {
   expression: ExpressionV2;
   onChange: (value: ExpressionV2) => void;
   onDelete: () => void;
-};
+}
 
 const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, onChange, onDelete }) => {
   const [error, resetError, isValidExpression, errorMessage] = useExpressionValidation();

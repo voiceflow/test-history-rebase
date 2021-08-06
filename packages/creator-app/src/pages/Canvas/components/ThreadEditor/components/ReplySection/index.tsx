@@ -9,9 +9,9 @@ import { REPLY_CLASSNAME } from '../../constants';
 import EditableComment from '../EditableComment';
 import ReplySectionContainer from './ReplySectionContainer';
 
-type ReplySectionProps = {
+interface ReplySectionProps {
   threadID: string;
-};
+}
 
 const ReplySection: React.FC<ReplySectionProps> = ({ threadID }) => {
   const engine = React.useContext(EngineContext)!;

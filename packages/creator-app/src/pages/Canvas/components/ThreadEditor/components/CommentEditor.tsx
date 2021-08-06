@@ -6,10 +6,10 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 
 import EditableComment from './EditableComment';
 
-type CommentEditorProps = {
+interface CommentEditorProps {
   showResolve: boolean;
   comment: Comment;
-};
+}
 
 const CommentEditor: React.FC<CommentEditorProps> = ({ comment, showResolve }) => {
   const engine = React.useContext(EngineContext)!;

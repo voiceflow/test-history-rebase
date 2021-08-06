@@ -1,8 +1,8 @@
 import { styled, transition } from '@/hocs';
 
-type ToggleArrowContainerProps = {
+interface ToggleArrowContainerProps {
   isCollapsed?: boolean;
-};
+}
 
 const ToggleArrowContainer = styled.div<ToggleArrowContainerProps>`
   ${transition('transform')}

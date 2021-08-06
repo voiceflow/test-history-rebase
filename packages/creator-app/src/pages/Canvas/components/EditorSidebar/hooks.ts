@@ -22,11 +22,11 @@ const DEFAULT_SIDEBAR_HEADER_ACTIONS: SidebarHeaderAction[] = [
   },
 ];
 
-export type PathEntry = {
+export interface PathEntry {
   label: string;
   focus?: () => void;
   type?: string;
-};
+}
 
 const generatePath =
   ({

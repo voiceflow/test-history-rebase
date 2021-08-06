@@ -1,8 +1,8 @@
 import { styled } from '@/hocs';
 
-type DropdownContainerProps = {
+interface DropdownContainerProps {
   isCollapsed?: boolean;
-};
+}
 
 const DropdownContainer = styled.div<DropdownContainerProps>`
   min-width: 200px;

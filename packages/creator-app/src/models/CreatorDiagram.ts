@@ -5,7 +5,7 @@ import { DBNode, Node } from './Node';
 import { NodeData } from './NodeData';
 import { Port } from './Port';
 
-export type CreatorDiagram = {
+export interface CreatorDiagram {
   diagramID: string;
   viewport: Viewport;
   rootNodeIDs: string[];
@@ -14,9 +14,9 @@ export type CreatorDiagram = {
   ports: Port[];
   data: Record<string, NodeData<unknown>>;
   markupNodeIDs: string[];
-};
+}
 
-export type DBCreatorDiagram = {
+export interface DBCreatorDiagram {
   id: string;
   offsetX: number;
   offsetY: number;
@@ -24,4 +24,4 @@ export type DBCreatorDiagram = {
   links: DBLink[];
   nodes: DBNode[];
   blockRedesignOffset: boolean;
-};
+}

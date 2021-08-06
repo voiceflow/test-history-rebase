@@ -8,18 +8,18 @@ import { buildVirtualElement } from '@/utils/dom';
 
 import { ChartContainer, LegendItem, Piece, PieceContainer, TooltipContainer, TooltipContent } from './components';
 
-export type DonutDataItem = {
+export interface DonutDataItem {
   key: string;
   color: string;
   value: number;
-};
+}
 
-export type DonutChartProps<T extends DonutDataItem> = {
+export interface DonutChartProps<T extends DonutDataItem> {
   data: T[];
   size?: number;
   legend?: Record<string, { label: string; gradient: string }>;
   renderTooltip?: (data: T) => React.ReactNode;
-};
+}
 
 const DonutChart = <T extends DonutDataItem>({ size = 150, data, legend, renderTooltip }: DonutChartProps<T>) => {
   const [hoveredKey, setHoveredKey] = React.useState<null | string>(null);

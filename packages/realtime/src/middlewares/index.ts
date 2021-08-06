@@ -1,9 +1,9 @@
 import type { LoguxControlOptions } from '../control';
 import AuthMiddleware from './auth';
 
-export type MiddlewareMap = {
+export interface MiddlewareMap {
   auth: AuthMiddleware;
-};
+}
 
 const buildMiddlewares = (options: LoguxControlOptions): MiddlewareMap => ({
   auth: new AuthMiddleware(options),

@@ -2,9 +2,9 @@ import { FlexCenter, Text } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
-type NLUContainerProps = {
+interface NLUContainerProps {
   containsLoader?: boolean;
-};
+}
 
 const NLUContainer = styled(FlexCenter).attrs({ column: true })<NLUContainerProps>`
   & > ${Text} {

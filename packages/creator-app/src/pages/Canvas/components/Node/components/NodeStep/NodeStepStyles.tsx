@@ -9,10 +9,10 @@ import {
 } from '@/pages/Canvas/constants';
 import { NodeEntityContext } from '@/pages/Canvas/contexts';
 
-export type NodeStepStylesProps = {
+export interface NodeStepStylesProps {
   isHovered: boolean;
   hasLinkWarning: boolean;
-};
+}
 
 const NodeStepStyles: React.FC<NodeStepStylesProps> = ({ isHovered, hasLinkWarning }) => {
   const nodeEntity = React.useContext(NodeEntityContext)!;

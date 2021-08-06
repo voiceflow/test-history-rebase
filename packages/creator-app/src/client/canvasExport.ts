@@ -2,12 +2,12 @@ import axios from 'axios';
 
 import { CANVAS_EXPORT_ENDPOINT } from '@/config';
 
-type Options = {
+interface Options {
   token: string;
   canvasURL: string;
   persistedTabID: string;
   persistedBrowserID: string;
-};
+}
 
 const canvasExportClient = {
   toPNG: (data: Options) =>

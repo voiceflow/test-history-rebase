@@ -3,11 +3,11 @@ import React from 'react';
 
 import { useTheme } from '@/hooks';
 
-export type PrototypeLayoutItemProps = {
+export interface PrototypeLayoutItemProps {
   src?: string;
   title?: string;
   description?: string;
-};
+}
 
 const PrototypeLayoutItem: React.FC<PrototypeLayoutItemProps> = ({ src, title, description }) => {
   const theme = useTheme();

@@ -24,9 +24,9 @@ const getError = ({ errorType, error }: JobStageData<GeneralJob.ErrorStage>) => 
   return _isString(strError) ? strError : 'something went wrong, please contact us on Intercom';
 };
 
-type ErrorStageProps = {
+interface ErrorStageProps {
   stage: GeneralJob.ErrorStage;
-};
+}
 
 const ErrorStage: React.FC<ErrorStageProps> = ({ stage }) => <BaseErrorStage title={getTitle(stage.data)}>{getError(stage.data)}</BaseErrorStage>;
 

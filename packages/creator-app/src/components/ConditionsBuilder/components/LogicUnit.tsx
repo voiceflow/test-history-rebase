@@ -8,7 +8,7 @@ import { BaseLogicType, LogicUnitDataType } from '../types';
 import ConditionDataSelect from './ConditionDataSelect';
 import ConditionLabel from './ConditionLabel';
 
-export type LogicUnitProps = {
+export interface LogicUnitProps {
   firstItem?: boolean;
   isLogicGroup?: boolean;
   expression: LogicUnitDataType;
@@ -17,7 +17,7 @@ export type LogicUnitProps = {
   onDelete: () => void;
   onDataChange: (value: ExpressionV2) => void;
   updateBaseType: (value: ExpressionTypeV2.AND | ExpressionTypeV2.OR) => void;
-};
+}
 
 const LogicUnit: React.FC<LogicUnitProps> = ({ baseLogicType, updateBaseType, expression, onDataChange, onDelete, firstItem, isLogicGroup }) => {
   const label = firstItem ? 'IF' : baseLogicType?.toUpperCase();

@@ -2,10 +2,10 @@ import { Box, Flex, OverflowText, SvgIcon, Text, TippyTooltip } from '@voiceflow
 import pluralize from 'pluralize';
 import React from 'react';
 
-export type ErrorsProps = {
+export interface ErrorsProps {
   name: string;
   errors: Map<number, string>;
-};
+}
 
 const Errors: React.FC<ErrorsProps> = ({ name, errors }) => (
   <Flex>

@@ -3,13 +3,13 @@ import { FlexApart } from '@voiceflow/ui';
 import { dragPlaceholderStyles } from '@/components/DragPlaceholder';
 import { css, styled, transition } from '@/hocs';
 
-export type ItemContainerProps = {
+export interface ItemContainerProps {
   isActive?: boolean;
   isDragging?: boolean;
   withoutHover?: boolean;
   isDraggingPreview?: boolean;
   isContextMenuOpen?: boolean;
-};
+}
 
 export const activeStyles = css`
   cursor: default;

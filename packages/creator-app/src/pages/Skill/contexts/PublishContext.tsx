@@ -12,12 +12,12 @@ import { AlexaPublishJob, GooglePublishJob } from '@/models';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
-export type PublishContextValue<T extends AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob> = {
+export interface PublishContextValue<T extends AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob> {
   job: Nullable<T>;
   cancel: () => Promise<void>;
   publish: (submit?: boolean) => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
-};
+}
 
 export const PublishContext = React.createContext<Nullable<PublishContextValue<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>>>(null);
 export const { Consumer: PublishConsumer } = PublishContext;

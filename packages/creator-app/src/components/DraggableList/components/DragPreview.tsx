@@ -5,15 +5,15 @@ import { useDragPreview } from '@/hooks';
 import { DnDHandlers } from '../types';
 import DragPreviewWrapper from './DragPreviewWrapper';
 
-export type DragPreviewComponentProps = {
+export interface DragPreviewComponentProps {
   isDraggingPreview?: boolean;
-};
+}
 
-export type DragPreviewProps<P extends {}> = {
+export interface DragPreviewProps<P extends {}> {
   type: string;
   handlers: { current: DnDHandlers<any> };
   component: React.FC<P & DragPreviewComponentProps>;
-};
+}
 
 const DragPreview = <P extends {}>({ type, component: Preview, handlers }: DragPreviewProps<P>) => {
   useDragPreview<P>(type, ({ getStyle, ...props }) => (

@@ -6,7 +6,7 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 
 const hotKey = IS_MAC ? '⌘↵' : 'Ctrl↵';
 
-export type CommentActionsProps = {
+export interface CommentActionsProps {
   onPost: () => void;
   onEdit?: () => void;
   isEditing?: boolean;
@@ -17,7 +17,7 @@ export type CommentActionsProps = {
   threadID?: string;
   commentID?: string;
   showResolve?: boolean;
-};
+}
 
 const CommentActions: React.FC<CommentActionsProps> = ({
   onPost,

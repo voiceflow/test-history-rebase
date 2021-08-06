@@ -1,4 +1,4 @@
-export type Charge = {
+export interface Charge {
   amount: number;
   amount_captured: number;
   amount_refunded: number;
@@ -47,4 +47,4 @@ export type Charge = {
   status: string;
   transfer_data: null;
   transfer_group: null;
-};
+}

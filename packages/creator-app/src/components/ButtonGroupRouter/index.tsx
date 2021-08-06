@@ -3,9 +3,9 @@ import React from 'react';
 import ButtonGroup from '@/components/ButtonGroup';
 import { styled } from '@/hocs';
 
-type ContentContainerProps = {
+interface ContentContainerProps {
   maxHeight?: boolean;
-};
+}
 
 const ContentContainer = styled.div<ContentContainerProps>`
   margin-top: ${(props) => (props.maxHeight ? '16px' : '')};

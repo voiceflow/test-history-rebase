@@ -10,7 +10,7 @@ import { AddButton, Container, ScrollContainer, SearchContainer, SearchInput, Wi
 
 export { IntentName, ItemContainer as SearchableListItemContainer } from './components';
 
-export type SearchableListProps<T> = {
+export interface SearchableListProps<T> {
   items: T[];
   getLabel: (item: T) => string;
   onAdd?: () => void;
@@ -21,7 +21,7 @@ export type SearchableListProps<T> = {
   placeholder: string;
   formatValue?: (value: string) => string;
   id?: string;
-};
+}
 
 const SearchableList: React.ForwardRefRenderFunction<Scrollbars, SearchableListProps<any>> = (
   { items, getLabel, onAdd, addMessage, onChange, rowHeight = 42, renderItem, placeholder, formatValue = (value) => value, id },

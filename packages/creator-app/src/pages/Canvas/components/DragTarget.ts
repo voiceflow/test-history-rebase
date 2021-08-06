@@ -1,11 +1,11 @@
 import { css, styled } from '@/hocs';
 import { Point } from '@/types';
 
-export type DragTargetProps = {
+export interface DragTargetProps {
   position: Point;
   isTransform?: boolean;
   zIndex?: number;
-};
+}
 
 const DragTarget = styled.div.attrs<DragTargetProps>(({ isTransform, position: [left, top] }) => ({
   style: isTransform ? { transform: `translate(${left}px, ${top}px)` } : { left, top },

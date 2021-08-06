@@ -6,12 +6,12 @@ import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/componen
 import { NODE_CONFIG } from '@/pages/Canvas/managers/Display/constants';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
-export type APLStepProps = {
+export interface APLStepProps {
   image?: string | null;
   label?: string | null;
   nodeID: string;
   portID?: string;
-};
+}
 
 export const APLStep: React.FC<APLStepProps> = ({ label, nodeID, portID, image }) => (
   <Step nodeID={nodeID} image={image}>

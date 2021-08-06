@@ -3,11 +3,11 @@ import AddLinkControl from './add';
 import RemoveLinkControl from './remove';
 import UpdateLinkDataControl from './updateData';
 
-export type LinkActionControlMap = {
+export interface LinkActionControlMap {
   addLinkControl: AddLinkControl;
   removeLinkControl: RemoveLinkControl;
   updateLinkDataControl: UpdateLinkDataControl;
-};
+}
 
 const buildLinkActionControls = (options: LoguxControlOptions): LinkActionControlMap => ({
   addLinkControl: new AddLinkControl(options),

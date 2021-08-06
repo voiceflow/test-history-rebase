@@ -5,12 +5,12 @@ import { Nullable } from '@/types';
 
 import TitleInput from './TitleInput';
 
-type TitleProps = {
+interface TitleProps {
   name: string;
   onChange: (value: string) => void;
   disabled?: boolean;
   renameRevision?: Nullable<string>;
-};
+}
 
 const Title: React.FC<TitleProps> = ({ name, onChange, renameRevision, disabled }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);

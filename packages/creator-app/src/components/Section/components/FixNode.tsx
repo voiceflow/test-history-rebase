@@ -4,10 +4,10 @@ import React from 'react';
 
 import PrefixContainer from './PrefixContainer';
 
-export type FixNodeProps = {
+export interface FixNodeProps {
   fixNode: Icon | React.ReactNode;
   color: string;
-};
+}
 
 const FixNode: React.FC<FixNodeProps> = ({ fixNode, color }) => (
   <PrefixContainer>{_isString(fixNode) ? <SvgIcon color={color} icon={fixNode as Icon} /> : fixNode}</PrefixContainer>

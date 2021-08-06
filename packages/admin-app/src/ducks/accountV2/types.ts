@@ -1,4 +1,4 @@
-export type AccountState = {
+export interface AccountState {
   loading: boolean;
   email: string | null;
   name: string | null;
@@ -7,4 +7,4 @@ export type AccountState = {
   admin: number;
   image: string | null;
   vendors: string[];
-};
+}

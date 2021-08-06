@@ -1,8 +1,8 @@
 import { styled } from '@/hocs';
 
-export type RenderContainerProps = {
+export interface RenderContainerProps {
   height: number;
-};
+}
 
 const RenderContainer = styled.div<RenderContainerProps>`
   overflow: hidden;

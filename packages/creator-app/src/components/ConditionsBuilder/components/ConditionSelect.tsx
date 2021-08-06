@@ -6,12 +6,12 @@ import { ExpressionV2 } from '@/models';
 
 import AddConditionButton from './AddConditionButton';
 
-export type ConditionSelectProps = {
+export interface ConditionSelectProps {
   additional?: boolean;
   isLogicGroup?: boolean;
   expression?: ExpressionV2;
   onChange: (value: ConditionsLogicInterface) => void;
-};
+}
 
 const ConditionSelect: React.FC<ConditionSelectProps> = ({ onChange, additional = false, isLogicGroup = false }) => {
   const onSelect = (logicInterface: ConditionsLogicInterface) => () => onChange(logicInterface);

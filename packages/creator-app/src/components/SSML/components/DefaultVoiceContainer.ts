@@ -2,9 +2,9 @@ import { FlexCenter } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
-type DefaultVoiceContainerProps = {
+interface DefaultVoiceContainerProps {
   active?: boolean;
-};
+}
 
 const DefaultVoiceContainer = styled(FlexCenter)<DefaultVoiceContainerProps>`
   ${transition('opacity')}

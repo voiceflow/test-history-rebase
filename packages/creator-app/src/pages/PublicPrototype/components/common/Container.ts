@@ -2,10 +2,10 @@ import { BoxFlexApart } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-type ContainerProps = {
+interface ContainerProps {
   isMobile?: boolean;
   isVisuals?: boolean;
-};
+}
 
 const Container = styled(BoxFlexApart).attrs({ column: true })<ContainerProps>`
   width: 100%;

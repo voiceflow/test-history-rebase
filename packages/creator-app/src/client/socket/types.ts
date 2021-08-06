@@ -1,10 +1,10 @@
 import { AnyAction } from '@/store/types';
 
-export type DiagramUpdateEvent<T extends AnyAction = AnyAction> = {
+export interface DiagramUpdateEvent<T extends AnyAction = AnyAction> {
   action: T;
   tabId: string;
   timestamp?: number;
-};
+}
 
 export type ActionHandler<T extends object = object> = (action: T, tabID: string) => void;
 

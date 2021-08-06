@@ -16,14 +16,14 @@ import { ChatDisplay, Container, Input, Start, UserSaysContainer } from './compo
 import { usePrototype, useResetPrototype, useStartPrototype } from './hooks';
 import { BotMessageTypes, MessageType, PMStatus } from './types';
 
-export type PrototypeProps = {
+export interface PrototypeProps {
   debug: boolean;
   atTop: boolean;
   // TODO: remove when public prototype v2 released
   isPublic?: boolean;
   setAtTop?: (val: boolean) => void;
   isModelTraining?: boolean;
-};
+}
 
 const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   atTop,

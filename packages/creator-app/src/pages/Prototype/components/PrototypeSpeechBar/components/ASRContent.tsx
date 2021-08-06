@@ -3,7 +3,7 @@ import React from 'react';
 
 import Container from './Container';
 
-type ASRContentProps = {
+interface ASRContentProps {
   isMicrophoneAvailable?: boolean;
   listeningASR: boolean;
   processingTranscription: boolean;
@@ -11,7 +11,7 @@ type ASRContentProps = {
   onListen: () => void;
   onStop: () => void;
   onCheckMicrophonePermission?: () => void;
-};
+}
 
 const ASRContent: React.FC<ASRContentProps> = ({
   isMicrophoneAvailable,

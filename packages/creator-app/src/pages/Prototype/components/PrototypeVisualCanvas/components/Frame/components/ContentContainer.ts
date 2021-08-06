@@ -1,9 +1,9 @@
 import { css, styled } from '@/hocs';
 import { Fade } from '@/styles/animations';
 
-type ContentContainerProps = {
+interface ContentContainerProps {
   isRound?: boolean;
-};
+}
 
 const ContentContainer = styled.div<ContentContainerProps>`
   ${Fade}

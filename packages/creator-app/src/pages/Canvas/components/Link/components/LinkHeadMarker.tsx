@@ -3,13 +3,13 @@ import React from 'react';
 import { STROKE_DEFAULT_COLOR } from '../constants';
 import { getHighlightedStrokeColor } from './LinkPath';
 
-export type LinkHeadMarkerProps = {
+export interface LinkHeadMarkerProps {
   id?: string;
   refX?: string;
   color?: string;
   orient?: string;
   isHighlighted?: boolean;
-};
+}
 
 const LinkHeadMarker: React.ForwardRefRenderFunction<SVGMarkerElement, LinkHeadMarkerProps> = (
   { id, refX = '8', orient, isHighlighted, color = STROKE_DEFAULT_COLOR },

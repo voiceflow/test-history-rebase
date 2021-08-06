@@ -2,9 +2,9 @@ import { FlexCenter } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
-type TeamSizeOptionProps = {
+interface TeamSizeOptionProps {
   selected: boolean;
-};
+}
 
 const TeamSizeOption = styled(FlexCenter)<TeamSizeOptionProps>`
   ${transition('background', 'box-shadow')}

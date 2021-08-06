@@ -2,12 +2,12 @@ import { css, styled } from '@/hocs';
 
 import { FOOTER_HEIGHT } from './FooterContainer';
 
-type ContentContainerProps = {
+interface ContentContainerProps {
   isMobile?: boolean;
   isVisuals?: boolean;
   isFullScreen?: boolean;
   splashScreenPassed?: boolean;
-};
+}
 
 const MARGIN = 48;
 

@@ -1,4 +1,4 @@
-export type Project = {
+export interface Project {
   project_id: number;
   name: string;
   dev_version: number;
@@ -80,4 +80,4 @@ export type Project = {
   skill_created: string;
   skill_name: string;
   role: string;
-};
+}

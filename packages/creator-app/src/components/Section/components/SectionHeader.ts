@@ -2,11 +2,11 @@ import { FlexApart } from '@voiceflow/ui';
 
 import { css, styled, transition, units } from '@/hocs';
 
-type SectionHeaderProps = {
+interface SectionHeaderProps {
   isDragging?: boolean;
   containerToggle?: boolean;
   nestedIntend?: boolean;
-};
+}
 
 const SectionHeader = styled(FlexApart)<SectionHeaderProps>`
   height: auto;

@@ -1,10 +1,10 @@
 import { Pair, Point, Quad } from '@/types';
 
-export type CartesianPlane = {
+export interface CartesianPlane {
   origin: Coords;
   scale: number;
   size?: Pair<number>;
-};
+}
 
 export class Vector {
   static mapMagnitude(value: number, sourceScale: number, targetScale: number) {
@@ -189,9 +189,9 @@ export class Quadrilateral extends Shape<Quad<Coords>> {
   }
 }
 
-export type Transform = {
+export interface Transform {
   apply<T extends Shape>(shape: T): T;
-};
+}
 
 export class TranslateTransform implements Transform {
   constructor(private movement: Vector) {}

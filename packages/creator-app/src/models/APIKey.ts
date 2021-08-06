@@ -1,4 +1,4 @@
-export type APIKey = {
+export interface APIKey {
   _id: string;
   workspaceID: string;
   creatorID: number;
@@ -6,4 +6,4 @@ export type APIKey = {
   permissions: string[];
   scopes: string[];
   data?: any;
-};
+}

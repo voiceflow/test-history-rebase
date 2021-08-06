@@ -1,7 +1,7 @@
 import { Board } from './Board';
 import { Charge } from './Charge';
 
-export type Team = {
+export interface Team {
   beta_flag: number;
   boards: Board[];
   charges?: Charge[];
@@ -21,4 +21,4 @@ export type Team = {
   team_id: number;
   templates: boolean;
   website: null | string;
-};
+}

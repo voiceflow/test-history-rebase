@@ -24,9 +24,9 @@ import * as Sentry from '@/vendors/sentry';
 
 import { Container, EmbedContainer, TrainingSection } from './components';
 
-export type PrototypeSidebarProps = {
+export interface PrototypeSidebarProps {
   open: boolean;
-};
+}
 
 const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSidebarProps> = ({
   open,

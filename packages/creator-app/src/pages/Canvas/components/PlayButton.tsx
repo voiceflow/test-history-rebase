@@ -5,7 +5,7 @@ import { BlockVariant } from '@/constants/canvas';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import { connect, styled, transition } from '@/hocs';
-import { useTheme } from '@/hooks';
+import { useTheme, useTrackingEvents } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
@@ -37,13 +37,15 @@ const Container = styled.div`
   }
 `;
 
-type PlayButtonProps = {
+interface PlayButtonProps {
   nodeID?: string;
   variant?: BlockVariant;
-};
+}
 
 const PlayButton: React.FC<ConnectedPlayButtonProps & PlayButtonProps> = ({ nodeID, variant, updatePrototype, goToPrototype }) => {
   const theme = useTheme();
+
+  const [trackingEvents] = useTrackingEvents();
 
   return (
     <Container>
@@ -57,6 +59,8 @@ const PlayButton: React.FC<ConnectedPlayButtonProps & PlayButtonProps> = ({ node
 
             updatePrototype({ autoplay: true });
             goToPrototype(nodeID);
+
+            trackingEvents.trackProjectBlockPrototypeTestStart();
           }}
         />
       </TippyTooltip>

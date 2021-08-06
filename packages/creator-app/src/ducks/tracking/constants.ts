@@ -31,6 +31,7 @@ export enum EventName {
   PROJECT_TRAIN_ASSISTANT = 'Train Assistant',
   PROJECT_INVITATION_COPY = 'Copy Invitation Link',
   PROJECT_MOVE_TYPE_CHANGED = 'Move Type',
+  PROJECT_BLOCK_TEST_START = 'Start Test from Block',
   PROJECT_DUPLICATE = 'Duplicate Project',
   PROJECT_DELETE = 'Delete Project',
   PROJECT_ALEXA_PUBLISH_PAGE = 'Alexa Publish Page',

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.453.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.453.4...@voiceflow/creator-app@1.453.5) (2021-08-06)
+
+
+### Bug Fixes
+
+* multi emoji bug ([#3847](https://github.com/voiceflow/creator-app/issues/3847)) ([642ee16](https://github.com/voiceflow/creator-app/commit/642ee1608ad2b01ff8d77f65aeeae347ec7a187c))
+
+
+
+
+
 ## [1.453.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.453.3...@voiceflow/creator-app@1.453.4) (2021-08-06)
 
 **Note:** Version bump only for package @voiceflow/creator-app

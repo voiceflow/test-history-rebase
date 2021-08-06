@@ -60,10 +60,12 @@ export interface Transcript {
   notes: string | null;
   // creation date
   createdAt: number;
-
   // session id
   sessionID: string;
-
   // TODO: change to designated message type
   messages: Message[];
+  // the name of the user who recorded this test
+  name: string;
+  // the imageURL of the user who recorded this test
+  image: string;
 }

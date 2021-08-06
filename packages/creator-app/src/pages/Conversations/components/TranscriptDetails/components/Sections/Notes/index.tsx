@@ -35,11 +35,19 @@ const Notes: React.FC = () => {
   const selectedEmoji = currentSentiment?.[0] ? SentimentToEmoji[currentSentiment[0] as Sentiment] : null;
 
   const onChange = async (emotion: EMOJI_OPTION) => {
+    const updateCalls = [];
+
     if (emotion === EMOJI_OPTION.DEFAULT) {
-      await dispatchRemoveTag(currentTranscriptID!, currentSentiment[0]);
-    } else {
-      await dispatchAddTag(currentTranscriptID!, EmojiToSentiment[emotion]);
+      return dispatchRemoveTag(currentTranscriptID!, currentSentiment[0]);
     }
+
+    if (currentSentiment[0]) {
+      updateCalls.push(dispatchRemoveTag(currentTranscriptID!, currentSentiment[0]));
+    }
+
+    updateCalls.push(dispatchAddTag(currentTranscriptID!, EmojiToSentiment[emotion]));
+
+    await Promise.all(updateCalls);
   };
 
   return (

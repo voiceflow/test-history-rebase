@@ -2,12 +2,14 @@ import { toast } from '@voiceflow/ui';
 import Bowser from 'bowser';
 
 import client from '@/client';
+import { TranscriptExportFormat } from '@/client/transcript';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { patchTranscript, removeTranscript, replaceTranscripts } from '@/ducks/transcript/actions';
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
 import { Browser, Device, OperatingSystem, Sentiment, SystemTag } from '@/models';
 import { Thunk } from '@/store/types';
+import { downloadFromURL } from '@/utils/dom';
 
 export const fetchTranscripts =
   (queryParams?: string): Thunk =>
@@ -125,5 +127,23 @@ export const deleteTranscript =
       toast.success('Successfully deleted conversation');
     } catch (e) {
       toast.error('Failed to delete transcript');
+    }
+  };
+
+export const exportTranscript =
+  (format: TranscriptExportFormat, transcriptID: string): Thunk =>
+  async (_dispatch, getState) => {
+    const state = getState();
+    const activeProjectID = Session.activeProjectIDSelector(state)!;
+
+    try {
+      const exportedTranscript = await client.transcript.exportTranscript(activeProjectID, transcriptID, { format });
+
+      const csvBlob = new Blob([exportedTranscript], { type: 'text/csv' });
+
+      const url = URL.createObjectURL(csvBlob);
+      downloadFromURL(`Conversation with Test User.${format}`, url);
+    } catch (error) {
+      toast.error('Transcript export failed');
     }
   };

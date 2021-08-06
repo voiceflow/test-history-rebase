@@ -1,6 +1,7 @@
 import { Dropdown } from '@voiceflow/ui';
 import React from 'react';
 
+import { TranscriptExportFormat } from '@/client/transcript';
 import { Permission } from '@/config/permissions';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
@@ -17,9 +18,10 @@ import { Container, InfoSection, OptionButton, ReadStatusDot, StatusIcons } from
 interface ResultsItem {
   active?: boolean;
   data: any;
+  format: TranscriptExportFormat;
 }
 
-const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & ResultsItem> = ({ goToTargetTranscript, data, active = false }) => {
+const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & ResultsItem> = ({ goToTargetTranscript, data, active = false, format }) => {
   const { id, reportTags, unread, createdAt, name } = data;
   const isSaved = reportTags.includes(SystemTag.SAVED);
   const isReviewed = reportTags.includes(SystemTag.REVIEWED);
@@ -29,6 +31,7 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
   const [canDeleteTranscript] = usePermission(Permission.DELETE_TRANSCRIPT);
   const markAsRead = useDispatch(Transcript.markAsRead);
   const deleteTranscript = useDispatch(Transcript.deleteTranscript);
+  const exportTranscript = useDispatch(Transcript.exportTranscript);
   const confirmDelete = useDispatch(Modal.setConfirm);
 
   React.useEffect(() => {
@@ -48,9 +51,8 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
       confirm: () => deleteTranscript(id),
     });
   };
-
-  const onExport = () => {
-    alert('Exported');
+  const onExport = async () => {
+    exportTranscript(format, id);
   };
 
   const options = React.useMemo(() => {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { AutoSizer, List } from 'react-virtualized';
 
+import { TranscriptExportFormat } from '@/client/transcript';
 import * as Router from '@/ducks/router';
 import { currentTranscriptIDSelector, mapTranscriptsSelector } from '@/ducks/transcript';
 import { useDispatch, useSelector } from '@/hooks';
@@ -36,7 +37,14 @@ const TranscriptResultsList = ({ transcriptList }: TranscriptResultsList) => {
               autoHeight
               rowRenderer={({ key, index }) => {
                 const data = transcriptList[index];
-                return <TranscriptResultsItem key={key} data={data} active={currentTranscriptID?.toString() === data.id.toString()} />;
+                return (
+                  <TranscriptResultsItem
+                    key={key}
+                    format={TranscriptExportFormat.CSV}
+                    data={data}
+                    active={currentTranscriptID?.toString() === data.id.toString()}
+                  />
+                );
               }}
               height={20}
             />

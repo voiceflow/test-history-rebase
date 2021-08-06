@@ -6,6 +6,10 @@ import { apiV2 } from './fetch';
 
 export const TRANSCRIPT_PATH = 'transcripts';
 
+export enum TranscriptExportFormat {
+  CSV = 'csv',
+}
+
 const TRANSCRIPT_REPORT_TAG_PATH = 'report_tag';
 
 const transcriptClient = {
@@ -22,6 +26,9 @@ const transcriptClient = {
 
   getTranscriptDialog: (projectID: string, transcriptID: string) =>
     apiV2.get<any[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`).then(dialogsAdapter.mapFromDB),
+
+  exportTranscript: (projectID: string, transcriptID: string, params: { format: TranscriptExportFormat }) =>
+    apiV2.get<Blob>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/export?${new URLSearchParams(params).toString()}`).then((response) => response),
 
   addTag: (projectID: string, transcriptID: string, tagID: string) =>
     apiV2.put<any[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/${TRANSCRIPT_REPORT_TAG_PATH}/${tagID}`),

@@ -67,7 +67,7 @@
     "nanostores": "^0.3.3",
     "number-to-words": "^1.2.4",
     "object-hash": "^2.1.1",
-    "papaparse": "^5.3.0",
+    "papaparse": "^5.3.1",
     "pluralize": "^8.0.0",
     "polished": "^3.6.5",
     "prettysize": "^2.0.0",

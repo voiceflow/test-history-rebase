@@ -4,11 +4,11 @@ import moment from 'moment';
 import React from 'react';
 import { DateUtils, Modifier, RangeModifier } from 'react-day-picker';
 
-import { FORMAT, TimeRangePicker, WEEKDAYS } from '@/components/DayPickerInput/components';
+import { TimeRangePicker, WEEKDAYS } from '@/components/DayPickerInput/components';
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import Popper, { PopperContent, PopperProps } from '@/components/Popper';
 import { useEnableDisable } from '@/hooks';
-import { FILTER_TAG } from '@/pages/Conversations/constants';
+import { isBuiltInRange } from '@/pages/Conversations/constants';
 
 import { ApplyButton, CalendarFooter, ClearRangeLink, DayPickerContainer } from './components';
 
@@ -22,40 +22,46 @@ const TIME_RANGE_OPTIONS = [
   { label: 'All time', value: TimeRange.ALLTIME },
 ];
 
+const initialRange = { from: undefined, to: undefined, enteredTo: undefined };
+
 export interface DayPickerInputProps {
-  date?: string | Date;
+  currentRange?: string | Date;
   placement?: PopperProps['placement'];
   onChange: (input: TimeRange | string) => void;
 }
 
-const DatePicker: React.FC<DayPickerInputProps> = ({ date, placement, onChange }) => {
+const DatePicker: React.FC<DayPickerInputProps> = ({ currentRange, placement, onChange }) => {
   const variablesInputRef = React.useRef<{ blur: Function; getEditorState: Function } | null>(null);
   const [calendarOpened, onShowCalendar, onHideCalendar] = useEnableDisable(false);
-  const [range, setRange] = React.useState({ from: undefined, to: undefined } as RangeModifier);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const modifiers: Partial<Modifier> = { start: range.from, end: range.to };
 
-  const defaultParams = () => {
-    if (window.location.search.includes(FILTER_TAG.RANGE)) {
-      return new URLSearchParams(window.location.search).get(FILTER_TAG.RANGE);
-    }
-    if (window.location.search.includes(FILTER_TAG.START_DATE) && window.location.search.includes(FILTER_TAG.END_DATE)) {
-      const start = Number(new URLSearchParams(window.location.search).get(FILTER_TAG.START_DATE));
-      const end = Number(new URLSearchParams(window.location.search).get(FILTER_TAG.END_DATE));
+  const getDefaultRange = () => {
+    if (!currentRange || isBuiltInRange(currentRange as string)) return initialRange;
 
-      return `${moment.unix(start / 1000).format(FORMAT)} - ${moment.unix(end / 1000).format(FORMAT)}`;
-    }
-    return TimeRange.ALLTIME;
+    const date = (currentRange as string).split('-');
+    const from = moment(date[0]);
+    const to = moment(date[1]);
+
+    if (!from.isValid() || !to.isValid()) return initialRange;
+
+    return { from: from.toDate(), to: to.toDate(), enteredTo: to.toDate() };
   };
 
-  const [input, setInput] = React.useState(defaultParams() as TimeRange | string);
+  const [range, setRange] = React.useState(getDefaultRange() as RangeModifier & { enteredTo?: Date });
 
-  const [selectedDay] = React.useMemo(() => {
-    const mdate = moment(date);
-    const isValid = !!date && mdate.isValid();
+  const [isOpen, setIsOpen] = React.useState(false);
 
-    return [isValid ? mdate.toDate() : undefined, isValid ? mdate.format(FORMAT) : (date && `${date}`) || ''];
-  }, [date]);
+  const modifiers: Partial<Modifier> = {
+    start: range.from,
+    end: range.enteredTo,
+    saturdays: { daysOfWeek: [6] },
+    sundays: { daysOfWeek: [0] },
+  };
+
+  const disabledDays = { before: range.from } as Modifier;
+  const selectedDays = [range.from, { from: range.from, to: range.enteredTo }] as Modifier[];
+  const initialMonth = range.from || new Date();
+
+  const [input, setInput] = React.useState(currentRange as TimeRange | string);
 
   const setRangeInput = (range: RangeModifier) => {
     const start = range.from ? range.from?.toLocaleDateString() : '';
@@ -63,10 +69,54 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ date, placement, onChange }
     start ? setInput(`${start} - ${end}`) : setInput('');
   };
 
+  const isSelectingFirstDay = (dateRange: RangeModifier, day: Date) => {
+    const { to, from } = dateRange;
+    const isBeforeFirstDay = from && DateUtils.isDayBefore(day, from);
+    const isRangeSelected = from && to;
+    return !from || isBeforeFirstDay || isRangeSelected;
+  };
+
+  const isRangeSelected = React.useMemo(() => {
+    const { enteredTo, from } = range;
+    return from != null && enteredTo != null && DateUtils.isDayBefore(from, enteredTo);
+  }, [range]);
+
+  const resetDateRange = () => setRange(initialRange);
+
   const onDayClick = (newDate: Date) => {
-    const newRange = DateUtils.addDayToRange(newDate, range);
-    setRange({ from: newRange.from, to: newRange.to });
+    const { from, to } = range;
+
+    if (from && to && newDate >= from && newDate <= to) {
+      resetDateRange();
+      return;
+    }
+
+    if (isSelectingFirstDay(range, newDate)) {
+      setRange({
+        from: newDate,
+        to: undefined,
+        enteredTo: undefined,
+      });
+    } else {
+      setRange({
+        from: range.from,
+        to: newDate,
+        enteredTo: newDate,
+      });
+    }
+
     variablesInputRef.current?.blur();
+  };
+
+  const onDayMouseEnter = (newDate: Date) => {
+    if (!isSelectingFirstDay(range, newDate)) {
+      setRange({ from: range.from, to: range.to, enteredTo: newDate });
+    }
+  };
+
+  const handleClear = () => {
+    setInput('');
+    resetDateRange();
   };
 
   const setTimeRange = (timeRange: TimeRange | string) => {
@@ -92,15 +142,18 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ date, placement, onChange }
                 isConversation
                 className="DayPicker"
                 modifiers={modifiers}
-                initialMonth={selectedDay}
-                selectedDays={range}
+                initialMonth={initialMonth}
+                selectedDays={selectedDays}
+                disabledDays={disabledDays}
                 weekdaysShort={WEEKDAYS}
                 onDayClick={(date) => onDayClick(date)}
+                onDayMouseEnter={(date) => onDayMouseEnter(date)}
                 numberOfMonths={2}
                 showOutsideDays
+                isRangeSelected={isRangeSelected}
               />
               <CalendarFooter>
-                <ClearRangeLink onClick={() => setInput('')}>
+                <ClearRangeLink onClick={handleClear}>
                   <b>Clear</b>
                 </ClearRangeLink>
                 <ApplyButton

@@ -5,7 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import ReportTagInput, { InputVariant } from '@/components/ReportTagInput';
 import SelectMenu, { MenuSection } from '@/components/SelectMenu';
-import { FILTER_TAG } from '@/pages/Conversations/constants';
+import { FILTER_TAG, isBuiltInRange } from '@/pages/Conversations/constants';
 import THEME from '@/styles/theme';
 
 import ApplyFiltersButton from './ApplyFiltersButton';
@@ -14,7 +14,6 @@ import DatePicker from './TimeRangePicker/DatePicker';
 const TranscriptFilters = () => {
   const history = useHistory();
   const location = useLocation();
-  const startDate = '' as string | Date;
 
   const [timeRangeOpen, setTimeRangeOpen] = React.useState(false);
   const [tagsOpen, setTagsOpen] = React.useState(false);
@@ -40,16 +39,6 @@ const TranscriptFilters = () => {
     setTimeRangeOpen(false);
     setTagsOpen(false);
     history.replace({ search: '' });
-  };
-
-  const isBuiltInRange = (range: Exclude<TimeRange, TimeRange.CUSTOM> | string) => {
-    return (
-      range === TimeRange.TODAY ||
-      range === TimeRange.YESTERDAY ||
-      range === TimeRange.WEEK ||
-      range === TimeRange.MONTH ||
-      range === TimeRange.ALLTIME
-    );
   };
 
   const addDateRangeParams = (params: URLSearchParams) => {
@@ -93,7 +82,7 @@ const TranscriptFilters = () => {
         return (
           <>
             <MenuSection title="Time Range" enabled={timeRangeOpen} toggleSection={() => setTimeRangeOpen(!timeRangeOpen)}>
-              <DatePicker date={startDate} onChange={(newRange: TimeRange | string) => setCurrentRange(newRange)} placement="right" />
+              <DatePicker currentRange={currentRange} onChange={(newRange: TimeRange | string) => setCurrentRange(newRange)} placement="right" />
             </MenuSection>
 
             <MenuSection title="Tags" enabled={tagsOpen} toggleSection={() => setTagsOpen(!tagsOpen)}>

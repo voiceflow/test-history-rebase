@@ -1,3 +1,5 @@
+import { TimeRange } from '@voiceflow/internal';
+
 import negativeEmotion from '@/components/EmojiPicker/assets/negativeEmotion.png';
 import neutralEmotion from '@/components/EmojiPicker/assets/neutralEmotion.png';
 import positiveEmotion from '@/components/EmojiPicker/assets/positiveEmotion.png';
@@ -14,4 +16,10 @@ export const FILTER_TAG = {
   START_DATE: 'startDate',
   END_DATE: 'endDate',
   RANGE: 'range',
+};
+
+export const isBuiltInRange = (range: Exclude<TimeRange, TimeRange.CUSTOM> | string) => {
+  return (
+    range === TimeRange.TODAY || range === TimeRange.YESTERDAY || range === TimeRange.WEEK || range === TimeRange.MONTH || range === TimeRange.ALLTIME
+  );
 };

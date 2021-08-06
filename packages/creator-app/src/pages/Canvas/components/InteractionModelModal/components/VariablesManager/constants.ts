@@ -8,7 +8,7 @@ export const VARIABLE_DESCRIPTION = {
   [BuiltInVariable.PLATFORM]: 'The platform your skill is running on ("alexa" or "google")',
   [BuiltInVariable.LOCALE]: 'The locale of the user (eg. en-US, en-CA, it-IT, fr-FR, ...)',
   [BuiltInVariable.INTENT_CONFIDENCE]: 'The confidence interval (measured as a value from 0 to 100) for the most recently matched intent',
-  [BuiltInVariable.LAST_UTTERANCE]: 'The users last utterance in a text string',
+  [BuiltInVariable.LAST_UTTERANCE]: `The user's last utterance in a text string`,
 };
 
 export enum VariableType {

@@ -1,16 +1,17 @@
 import { createSelector } from 'reselect';
 
 import creatorAdapter from '@/client/adapters/creator';
-import { BUILT_IN_VARIABLES } from '@/constants';
 import { allLinksSelector, creatorDiagramIDSelector, creatorDiagramSelector } from '@/ducks/creator/diagram/selectors';
 import { allActiveFeaturesSelector } from '@/ducks/feature';
 import { activeProjectSelector } from '@/ducks/project';
+import * as Project from '@/ducks/project';
 import { slotNamesSelector } from '@/ducks/slot';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 import { activeGlobalVariablesSelector } from '@/ducks/version/selectors';
 import * as Viewport from '@/ducks/viewport';
 import { CreatorDiagram } from '@/models';
 import { unique } from '@/utils/array';
+import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 import { denormalize, getNormalizedByKey } from '@/utils/normalized';
 
 import { STATE_KEY } from './constants';
@@ -65,8 +66,9 @@ export const activeDiagramLocalVariablesSelector = createSelector(
 );
 
 export const activeDiagramAllVariablesSelector = createSelector(
-  [activeGlobalVariablesSelector, activeDiagramLocalVariablesSelector, slotNamesSelector],
-  (globalVariables, activeDiagramVariables, slotNames) => unique([...slotNames, ...BUILT_IN_VARIABLES, ...globalVariables, ...activeDiagramVariables])
+  [activeGlobalVariablesSelector, activeDiagramLocalVariablesSelector, slotNamesSelector, Project.activePlatformSelector],
+  (globalVariables, activeDiagramVariables, slotNames, platform) =>
+    unique([...slotNames, ...getPlatformGlobalVariables(platform), ...globalVariables, ...activeDiagramVariables])
 );
 
 export const fullActiveDiagramSelector = createSelector(

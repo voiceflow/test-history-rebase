@@ -1,11 +1,10 @@
-import { PlatformType } from '@voiceflow/internal';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
-import { BUILT_IN_VARIABLES, BuiltInVariable, InteractionModelTabType } from '@/constants';
+import { InteractionModelTabType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
@@ -14,7 +13,7 @@ import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { useEnableDisable, useSetup } from '@/hooks';
 import { ConnectedProps } from '@/types';
-import { createPlatformSelector } from '@/utils/platform';
+import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 import LeftColumn from '../LeftColumn';
 import RightColumn from '../RightColumn';
@@ -22,15 +21,6 @@ import { DraggableItem, Manager, VariableInput, VariableListContainer } from './
 import { VARIABLE_DESCRIPTION, VariableType } from './constants';
 import { Variable } from './types';
 import { addPrefix } from './utils';
-
-/** Get global variables for the given platform. */
-const getPlatformGlobalVariables = createPlatformSelector(
-  {
-    [PlatformType.GOOGLE]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],
-    [PlatformType.GENERAL]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],
-  },
-  BUILT_IN_VARIABLES
-);
 
 export interface VariablesManagerProps {
   selectedID?: string;

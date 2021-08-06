@@ -4,8 +4,8 @@ import { PlatformType } from '@voiceflow/internal';
 import _omit from 'lodash/omit';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
-import { BUILT_IN_VARIABLES } from '@/constants';
 import { Version } from '@/models';
+import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 import createSessionAdapter from '../session';
 
@@ -28,7 +28,7 @@ const alexaVersionAdapter = createAdapter<AlexaVersion, Version<AlexaVersionData
     creatorID,
     projectID,
     rootDiagramID,
-    variables: variables.filter((variable) => !BUILT_IN_VARIABLES.includes(variable)),
+    variables: variables.filter((variable) => !getPlatformGlobalVariables(PlatformType.ALEXA).includes(variable)),
     session: sessionAdapter.fromDB(session, { defaultVoice: settings.defaultVoice }),
     settings: _omit(defaultAlexaVersionSettings(settings), 'session'),
     publishing: defaultAlexaVersionPublishing(publishing),

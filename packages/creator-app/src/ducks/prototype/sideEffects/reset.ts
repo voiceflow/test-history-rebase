@@ -33,6 +33,7 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
     [BuiltInVariable.SESSIONS]: 1,
     [BuiltInVariable.TIMESTAMP]: 0,
     [BuiltInVariable.INTENT_CONFIDENCE]: 0,
+    [BuiltInVariable.LAST_UTTERANCE]: '',
   };
 
   const projectID = Session.activeProjectIDSelector(state);

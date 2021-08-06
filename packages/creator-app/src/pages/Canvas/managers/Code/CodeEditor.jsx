@@ -1,13 +1,15 @@
 import { Box, Link } from '@voiceflow/ui';
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import AceEditor from '@/components/AceEditor';
 import OverflowMenu from '@/components/OverflowMenu';
 import * as Documentation from '@/config/documentation';
-import { BUILT_IN_VARIABLES } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
+import * as Project from '@/ducks/project';
 import { connect } from '@/hocs';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
+import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 import { HelpTooltip } from './components';
 
@@ -15,12 +17,13 @@ function CodeEditor({ data, onChange, onExpand, expanded, variables }) {
   const editorRef = React.useRef();
   const [editorState, onUpdateEditorState] = React.useState(data.code);
   const onUpdateCode = React.useCallback(() => onChange({ code: editorState }), [editorState, onChange]);
+  const platform = useSelector(Project.activePlatformSelector);
 
   React.useEffect(() => {
     if (editorRef.current) {
       editorRef.current.editor.completers.push({
         getCompletions: (editor, session, pos, prefix, callback) => {
-          const wordList = [...BUILT_IN_VARIABLES, ...variables, 'voiceflow', '_system'];
+          const wordList = [...getPlatformGlobalVariables(platform), ...variables, 'voiceflow', '_system'];
 
           callback(
             null,

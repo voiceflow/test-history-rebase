@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.8.3...@voiceflow/realtime@1.8.4) (2021-08-06)
+
+
+### Bug Fixes
+
+* new lint run (VF-000) ([#3840](https://github.com/voiceflow/creator-app/issues/3840)) ([8099fa4](https://github.com/voiceflow/creator-app/commit/8099fa4221c061b865a02da86c1b43613cca4ce4))
+
+
+
+
+
 ## [1.8.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.8.2...@voiceflow/realtime@1.8.3) (2021-08-03)
 
 **Note:** Version bump only for package @voiceflow/realtime

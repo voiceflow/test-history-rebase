@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.26](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.1.25...@voiceflow/admin-app@1.1.26) (2021-08-06)
+
+
+### Bug Fixes
+
+* new lint run (VF-000) ([#3840](https://github.com/voiceflow/creator-app/issues/3840)) ([8099fa4](https://github.com/voiceflow/creator-app/commit/8099fa4221c061b865a02da86c1b43613cca4ce4))
+
+
+
+
+
 ## [1.1.25](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.1.24...@voiceflow/admin-app@1.1.25) (2021-08-04)
 
 

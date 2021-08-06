@@ -1,9 +1,8 @@
 import { PlatformType } from '@voiceflow/internal';
-import { Box, Button, ButtonVariant, Link, LoadCircle, useSmartReducerV2 } from '@voiceflow/ui';
+import { Alert, AlertVariant, Box, Button, ButtonVariant, Link, LoadCircle, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
-import AlertMessage, { AlertMessageVariant } from '@/components/AlertMessage';
 import AmazonLoginButton from '@/components/Forms/AmazonLogin';
 import GoogleLoginButton from '@/components/Forms/GoogleLogin';
 import { ModalFooter } from '@/components/Modal';
@@ -110,9 +109,9 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
                 </>
               )}
               {state.error && (
-                <AlertMessage variant={AlertMessageVariant.DANGER} mb={0} mt={4}>
+                <Alert variant={AlertVariant.DANGER} mb={0} mt={8}>
                   Login With Amazon Failed
-                </AlertMessage>
+                </Alert>
               )}
             </BodyContainer>
 
@@ -153,9 +152,9 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
                 </>
               )}
               {state.error && (
-                <AlertMessage variant={AlertMessageVariant.DANGER} mb={0} mt={4}>
+                <Alert variant={AlertVariant.DANGER} mb={0} mt={8}>
                   Login With Google Failed
-                </AlertMessage>
+                </Alert>
               )}
             </BodyContainer>
 

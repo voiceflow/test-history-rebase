@@ -1,3 +1,5 @@
+import { ClassName } from '../../../src/styles/constants';
+
 const formRoot = () => cy.get('ul.gs__steps-list > .gs__steps-list__list-item');
 
 const form = {
@@ -71,10 +73,10 @@ export default {
         return form.skillInvocation.root.find("input[type='text']").eq(0);
       },
       get invocations() {
-        return form.skillInvocation.root.find(".input-group input[type='text']");
+        return form.skillInvocation.root.find(`.${ClassName.INPUT_GROUP} input[type='text']`);
       },
       get deleteButtons() {
-        return form.skillInvocation.root.find('.input-group button');
+        return form.skillInvocation.root.find(`.${ClassName.INPUT_GROUP} button`);
       },
       get addInvocationButton() {
         return form.skillInvocation.root.find('.gs__panel-body .multiple > button').eq(0);

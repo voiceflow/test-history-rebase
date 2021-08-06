@@ -1,15 +1,16 @@
 import { deepVariableSubstitution } from '@voiceflow/common';
 import { GoogleSheetsActionType } from '@voiceflow/general-types/build/nodes/googleSheets';
 import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
-import { Spinner } from '@voiceflow/ui';
+import { BoxFlexCenter, Button, Input, Spinner } from '@voiceflow/ui';
 import update from 'immutability-helper';
 import _cloneDeep from 'lodash/cloneDeep';
 import _isEmpty from 'lodash/isEmpty';
 import React, { Component } from 'react';
 import ReactJson from 'react-json-view';
-import { Button, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
+import InputGroup from '@/components/InputGroup';
+import InputGroupAddon, { AddonType } from '@/components/InputGroupAddon';
 import DefaultModal from '@/components/LegacyModal/DefaultModal';
 import { IntegrationType } from '@/constants';
 import { setConfirm, setError } from '@/ducks/modal';
@@ -243,13 +244,8 @@ class TestSection extends Component {
                   {variables.map((val, key) => (
                     <React.Fragment key={key}>
                       <InputGroup className="mb-2">
-                        <InputGroupAddon addonType="prepend">{val}</InputGroupAddon>
-                        <Input
-                          className="form-control form-control-border right"
-                          name={val}
-                          placeholder="set variable"
-                          onChange={this.handleVariableChange}
-                        />
+                        <InputGroupAddon addonType={AddonType.PREPEND}>{val}</InputGroupAddon>
+                        <Input name={val} placeholder="set variable" onChange={this.handleVariableChange} />
                       </InputGroup>
                     </React.Fragment>
                   ))}
@@ -261,9 +257,9 @@ class TestSection extends Component {
           noPadding={true}
         />
 
-        <Button className="mb-2 btn btn-lg btn-block" color="clear" onClick={() => this.runTest()} size="sm" block>
-          Test Integration
-        </Button>
+        <BoxFlexCenter mb={16}>
+          <Button onClick={() => this.runTest()}>Test Integration</Button>
+        </BoxFlexCenter>
         {this.renderTestContent()}
       </>
     );

@@ -65,6 +65,7 @@ export enum Identifier {
 }
 
 export enum ClassName {
+  INPUT_GROUP = 'vf-input-group',
   BUTTON = 'vf-button',
   TABS = 'vf-tabs',
   TAB = 'vf-tab',

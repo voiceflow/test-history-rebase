@@ -1,5 +1,5 @@
 import { IntentName } from '@voiceflow/general-types';
-import { Select, toast } from '@voiceflow/ui';
+import { Alert, AlertVariant, Select, toast } from '@voiceflow/ui';
 import _shuffle from 'lodash/shuffle';
 import _toLower from 'lodash/toLower';
 import React from 'react';
@@ -21,7 +21,7 @@ import {
 import { removeTrailingUnderscores } from '@/utils/string';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
-import { MissingIntentMessage, Option } from './components';
+import { Option } from './components';
 
 const getOptionValue = (option) => option.id;
 
@@ -171,7 +171,7 @@ function IntentSelect({
         }
         createInputPlaceholder="Name new intent"
       />
-      {intentMissing && <MissingIntentMessage variant="warning" message="Intent is broken or has been deleted." />}
+      {intentMissing && <Alert variant={AlertVariant.WARNING} message="Intent is broken or has been deleted." mt={10} />}
     </>
   );
 }

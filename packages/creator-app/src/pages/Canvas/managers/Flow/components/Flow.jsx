@@ -1,12 +1,10 @@
-import { Select } from '@voiceflow/ui';
+import { Alert, AlertVariant, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import { DIAGRAM_ID_SEPARATOR, ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
-
-import MissingFlowMessage from './MissingFlowMessage';
 
 const generateDiagramValue = (data) => `${data.id}${DIAGRAM_ID_SEPARATOR}${data.name}`;
 
@@ -78,7 +76,7 @@ function Flow({ onChange, diagrams, diagram, diagramID, goToDiagram, enterOnCrea
         placeholder="Create new flow or select existing"
         createInputPlaceholder="New Flow Name"
       />
-      {flowDoesNotExist && <MissingFlowMessage variant="warning" message="Previously selected Flow is broken or has been deleted." />}
+      {flowDoesNotExist && <Alert variant={AlertVariant.WARNING} message="Previously selected Flow is broken or has been deleted." mt={10} />}
     </>
   );
 }

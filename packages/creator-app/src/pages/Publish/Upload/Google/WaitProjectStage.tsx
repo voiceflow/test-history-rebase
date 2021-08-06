@@ -1,8 +1,7 @@
-import { BlockText, Box, BoxFlex, Button, ButtonVariant, Link, Text, useSmartReducerV2 } from '@voiceflow/ui';
+import { Alert, AlertVariant, BlockText, Box, BoxFlex, Button, ButtonVariant, Link, Text, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import AlertMessage, { AlertMessageVariant } from '@/components/AlertMessage';
 import { ModalFooter } from '@/components/LegacyModal';
 import * as Documentation from '@/config/documentation';
 import { useAsyncMountUnmount, useTeardown } from '@/hooks';
@@ -48,9 +47,9 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ cancel, updateCurre
           {/* eslint-disable-next-line no-nested-ternary */}
           {state.error ? (
             <StageContainer>
-              <AlertMessage variant={AlertMessageVariant.DANGER} mb={0} mt={4}>
+              <Alert variant={AlertVariant.UNSTYLED} mb={0} mt={4}>
                 Failed to retrieve projects for your Google developer account
-              </AlertMessage>
+              </Alert>
             </StageContainer>
           ) : projects.length ? (
             <StageContainer noPadding>

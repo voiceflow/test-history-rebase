@@ -1,8 +1,10 @@
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
-import { InputGroupAddon, TextInputContainer } from '@/components/ButtonDropdownInput/components';
+import { TextInputContainer } from '@/components/ButtonDropdownInput/components';
 import { OrientationType } from '@/components/ButtonDropdownInput/constants';
+import InputGroup from '@/components/InputGroup';
+import InputGroupAddon, { AddonType } from '@/components/InputGroupAddon';
 
 import { Container, Input, PermissionsDropdown } from './components';
 
@@ -33,31 +35,33 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
   ...props
 }) => (
   <Container isInvalid={!!hasError}>
-    <TextInputContainer>
-      <Input
-        // eslint-disable-next-line jsx-a11y/no-autofocus
-        autoFocus={autoFocus}
-        orientation={OrientationType.LEFT}
-        value={inputValue}
-        placeholder="name@example.com"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange(e.target.value)}
-        showdropdown={showDropdown}
-        error={hasError}
-        {...props}
-      />
-    </TextInputContainer>
-    {showDropdown && (
-      <InputGroupAddon orientation={OrientationType.LEFT} addonType="prepend">
-        <PermissionsDropdown
+    <InputGroup>
+      <TextInputContainer>
+        <Input
+          // eslint-disable-next-line jsx-a11y/no-autofocus
+          autoFocus={autoFocus}
           orientation={OrientationType.LEFT}
-          options={options}
-          onSelect={onDropdownChange}
-          onRemove={removeCollaborator}
-          selectedValue={dropdownValue}
-          hasError={hasError}
+          value={inputValue}
+          placeholder="name@example.com"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange(e.target.value)}
+          showdropdown={showDropdown}
+          error={hasError}
+          {...props}
         />
-      </InputGroupAddon>
-    )}
+      </TextInputContainer>
+      {showDropdown && (
+        <InputGroupAddon addonType={AddonType.PREPEND}>
+          <PermissionsDropdown
+            orientation={OrientationType.LEFT}
+            options={options}
+            onSelect={onDropdownChange}
+            onRemove={removeCollaborator}
+            selectedValue={dropdownValue}
+            hasError={hasError}
+          />
+        </InputGroupAddon>
+      )}
+    </InputGroup>
   </Container>
 );
 

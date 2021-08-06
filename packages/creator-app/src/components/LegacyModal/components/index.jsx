@@ -19,7 +19,6 @@ const BaseModal = styled(({ modalWidth, notAllowed, ...props }) => <ReactstrapMo
     css`
       max-width: ${theme.components.modals[modalname]?.width}px !important;
     `}
-
   ${({ notAllowed }) => notAllowed && 'cursor: not-allowed'};
 `;
 

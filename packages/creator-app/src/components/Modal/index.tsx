@@ -1,12 +1,13 @@
-import { IconVariant, Portal, SvgIcon } from '@voiceflow/ui';
+import { Flex, IconVariant, Portal, SvgIcon } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
+import InfoIcon from '@/components/InfoIcon';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { Close, Container, Content, Header, Icon, Root } from './components';
+import { Close, Container, Header, Icon, Root } from './components';
 
 export { Body as ModalBody, Footer as ModalFooter, Header as ModalHeader } from './components';
 
@@ -16,9 +17,13 @@ export interface ModalProps {
   icon?: React.ReactNode;
   isSmall?: boolean;
   className?: string;
+  tooltip?: React.ReactNode;
 }
 
-const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id, title, icon, isSmall = true, children, className }, ref) => {
+const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = (
+  { id, title, icon, isSmall = true, children, className, tooltip },
+  ref
+) => {
   const { fade, isOpened, close, isInStack } = useModals(id);
 
   return !isInStack ? null : (
@@ -26,8 +31,14 @@ const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id,
       <Root ref={ref} hidden={!isOpened}>
         <Container fade={fade} isSmall={isSmall} className={cn(ClassName.MODAL, className, `${ClassName.MODAL}--${id}`)}>
           <Header>
-            {title}
-
+            <Flex as="span">
+              {title}
+              {tooltip && (
+                <span className="ml-2">
+                  <InfoIcon tooltipProps={{ portalNode: window.document.body }}>{tooltip}</InfoIcon>
+                </span>
+              )}
+            </Flex>
             <div>
               <Icon>{icon}</Icon>
 
@@ -37,7 +48,7 @@ const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id,
             </div>
           </Header>
 
-          <Content>{children}</Content>
+          <Flex column>{children}</Flex>
         </Container>
       </Root>
     </Portal>

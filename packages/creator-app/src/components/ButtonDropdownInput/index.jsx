@@ -1,37 +1,28 @@
 import { Dropdown, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
-import { InputGroup } from 'reactstrap';
 
+import InputGroup from '@/components/InputGroup';
+import InputGroupAddon, { AddonType } from '@/components/InputGroupAddon';
 import { SectionToggleVariant } from '@/components/Section';
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 
-import { DropdownButton, InputGroupAddon, TextInput, TextInputContainer } from './components';
+import { DropdownButton, TextInput, TextInputContainer } from './components';
 import { OrientationType } from './constants';
 
 export * from './constants';
-
 export const Container = styled(InputGroup)`
-  position: relative;
-  flex: 1;
-  flex-wrap: nowrap;
-
+  & .prepend {
+    margin-right: -2px;
+  }
+  & .append {
+    margin-left: -2px;
+  }
   & ${DropdownButton}, ${TextInput} {
     transition: border-color 0.15s ease;
   }
-
   :focus-within {
     & ${DropdownButton}, ${TextInput} {
       border-color: #5d9df5 !important;
-    }
-    & ${TextInput} {
-      ${({ orientation }) =>
-        orientation === OrientationType.RIGHT
-          ? css`
-              border-left: 0 !important;
-            `
-          : css`
-              border-right: 0 !important;
-            `}
     }
   }
 `;
@@ -62,9 +53,9 @@ function ButtonDropdownInput({
   );
 
   return (
-    <Container orientation={orientation}>
+    <Container>
       {orientation === OrientationType.LEFT && Input}
-      <InputGroupAddon orientation={orientation} addonType="prepend">
+      <InputGroupAddon addonType={orientation === OrientationType.RIGHT ? AddonType.PREPEND : AddonType.APPEND}>
         <Dropdown options={options} onSelect={onDropdownChange} noScroll={noScroll}>
           {(ref, onToggle, isOpen) => (
             <DropdownButton orientation={orientation} ref={ref} onClick={onToggle} active={isOpen} error={error} disabled={error}>

@@ -32,7 +32,7 @@ const TooltipMessage = (
   </div>
 );
 
-function CollaboratorsModal() {
+const CollaboratorsModal = () => {
   const { isOpened, toggle } = useModals(ModalType.COLLABORATORS);
 
   return (
@@ -43,11 +43,11 @@ function CollaboratorsModal() {
         <Collaborators />
       </BodyContainer>
 
-      <ModalFooter withoutBackground justifyContent="flex-start">
+      <ModalFooter>
         <InviteByLink />
       </ModalFooter>
     </Modal>
   );
-}
+};
 
 export default CollaboratorsModal;

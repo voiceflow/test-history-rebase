@@ -1,8 +1,8 @@
 import { APIActionType } from '@voiceflow/general-types/build/nodes/api';
 import React from 'react';
-import { TabContent, TabPane } from 'reactstrap';
 
 import Tabs from '@/components/Tabs';
+import { TabContent, TabPane } from '@/components/Tabs/components';
 
 import RequestBody from './RequestBody';
 import RequestHeaders from './RequestHeaders';

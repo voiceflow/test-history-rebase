@@ -1,7 +1,9 @@
-import { inputStyle } from '@voiceflow/ui';
+import { Input, inputStyle } from '@voiceflow/ui';
 import React from 'react';
-import { Input, InputGroup, InputGroupAddon, InputGroupText as PrefixText } from 'reactstrap';
 
+import InputGroup from '@/components/InputGroup';
+import InputGroupAddon, { AddonType } from '@/components/InputGroupAddon';
+import PrefixText from '@/components/InputGroupText';
 import { styled } from '@/hocs';
 
 const InputGroupText = styled(PrefixText)`
@@ -20,7 +22,6 @@ const InputSection = styled(Input)`
   border-color: #d4d9e6 !important;
   ${inputStyle}
   border-left: 0px !important;
-
   :focus {
     border-left: 0px !important;
   }
@@ -32,11 +33,19 @@ const Container = styled(InputGroup)`
       border-color: #5d9df5 !important;
     }
   }
+  div span {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  input {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 `;
 
 const PrefixInput = ({ prefix, onChange }) => (
   <Container className="mb-2">
-    <InputGroupAddon addonType="prepend">
+    <InputGroupAddon addonType={AddonType.PREPEND}>
       <InputGroupText>{prefix}</InputGroupText>
     </InputGroupAddon>
     <InputSection className="form-control form-control-border right" placeholder="Enter value" onChange={onChange} />

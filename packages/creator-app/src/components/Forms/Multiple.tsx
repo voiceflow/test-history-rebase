@@ -1,8 +1,13 @@
+import { Input } from '@voiceflow/ui';
 import React from 'react';
-import { Button, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 
+import InputGroup from '@/components/InputGroup';
+import InputGroupAddon, { AddonType } from '@/components/InputGroupAddon';
+import InputGroupText from '@/components/InputGroupText';
 import { useLinkedState } from '@/hooks';
 import { append, replace, without } from '@/utils/array';
+
+import MultipleAddButton from './components/MultipleAddButton';
 
 interface Multiple {
   max?: number;
@@ -51,12 +56,13 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
 
           <InputGroup>
             {!!prepend && (
-              <InputGroupAddon className="input-prepend" addonType="prepend">
+              <InputGroupAddon addonType={AddonType.PREPEND}>
                 <InputGroupText className="input-group-text-bg">{prepend}</InputGroupText>
               </InputGroupAddon>
             )}
 
             <Input
+              type="text"
               name={String(index)}
               value={item}
               onBlur={onBlur}
@@ -67,7 +73,7 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
             />
 
             {localList.length > 1 && (
-              <InputGroupAddon addonType="append">
+              <InputGroupAddon addonType={AddonType.APPEND}>
                 <button className="close ml-3" onClick={onDelete(index)} />
               </InputGroupAddon>
             )}
@@ -75,11 +81,7 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
         </div>
       ))}
 
-      {(max && localList.length >= max) || isDisabled ? null : (
-        <Button block outline color="primary" onClick={onAdd}>
-          {add}
-        </Button>
-      )}
+      {(max && localList.length >= max) || isDisabled ? null : <MultipleAddButton onClick={onAdd}>{add}</MultipleAddButton>}
     </div>
   );
 };

@@ -7,26 +7,38 @@ export enum AlertVariant {
   DEFAULT = 'default',
   DANGER = 'danger',
   WARNING = 'warning',
+  UNSTYLED = 'unstyled',
 }
 
-interface AlertProps {
+interface AlertStyle {
   color: string;
   borderColor: string;
   backgroundColor: string;
 }
 
-const COLORS: Record<AlertVariant, AlertProps> = {
+const COLORS: Partial<Record<AlertVariant, AlertStyle>> = {
   [AlertVariant.DEFAULT]: { color: COLOR_BLUE, borderColor: '#5d9df515', backgroundColor: '#5d9df515' },
   [AlertVariant.DANGER]: { color: '#721c24', borderColor: '#f8d7da', backgroundColor: '#f8d7da' },
   [AlertVariant.WARNING]: { color: '#856404', borderColor: '#ffeeba', backgroundColor: '#fff3cd' },
 };
 
-const Alert = styled(Box)<{ variant?: VariantValue<AlertVariant> }>`
-  ${({ variant = AlertVariant.DEFAULT }) => css`
-    color: ${COLORS[variant].color};
-    background: ${COLORS[variant].backgroundColor};
-    border: 1px solid ${COLORS[variant].borderColor};
-  `}
+interface AlertProps {
+  variant?: VariantValue<AlertVariant>;
+}
+
+const Alert = styled(Box)<AlertProps>`
+  ${({ variant = AlertVariant.DEFAULT }) => {
+    const variantStyle = COLORS[variant];
+
+    return (
+      variantStyle &&
+      css`
+        color: ${variantStyle.color};
+        background: ${variantStyle.backgroundColor};
+        border: 1px solid ${variantStyle.borderColor};
+      `
+    );
+  }}
   position: relative;
   padding: 0.75rem 1.25rem;
   border-radius: 0.25rem;

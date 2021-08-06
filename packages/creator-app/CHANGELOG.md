@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.452.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.451.7...@voiceflow/creator-app@1.452.0) (2021-08-06)
+
+
+### Bug Fixes
+
+* add last utterance built-in variable to input fields (VF-1402) ([#3834](https://github.com/voiceflow/creator-app/issues/3834)) ([dcea9f7](https://github.com/voiceflow/creator-app/commit/dcea9f7f941b5d95a87c9aeaecc43aae52dba4c7))
+* fixes date picker selection behavior (VF-1387) ([#3828](https://github.com/voiceflow/creator-app/issues/3828)) ([2f85f4f](https://github.com/voiceflow/creator-app/commit/2f85f4f330255d89a23dc5e4463226e7fd4d99e6))
+
+
+### Features
+
+* add transcript user name and image (VF-1400) ([#3837](https://github.com/voiceflow/creator-app/issues/3837)) ([74db3bd](https://github.com/voiceflow/creator-app/commit/74db3bd27cd94e45664f481e8ccc4c586018f100))
+* start test from block segment tracking (VF-1381) ([#3836](https://github.com/voiceflow/creator-app/issues/3836)) ([ffa1ba8](https://github.com/voiceflow/creator-app/commit/ffa1ba8b5d3e3fc8555e902fed8001f93ce457e7))
+
+
+
+
+
 ## [1.451.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.451.6...@voiceflow/creator-app@1.451.7) (2021-08-05)
 
 

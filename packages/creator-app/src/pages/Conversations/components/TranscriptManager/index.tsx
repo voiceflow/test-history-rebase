@@ -10,12 +10,20 @@ interface TranscriptManagerProps {
   loading?: boolean;
 }
 
-const TranscriptManager: React.FC<ConnectedTranscriptManagerProps & TranscriptManagerProps> = ({ allTranscripts }) => (
-  <Container>
-    <TranscriptHeader resultCount={allTranscripts.length} />
-    <TranscriptResultsList transcriptList={allTranscripts} />
-  </Container>
-);
+const TranscriptManager: React.FC<ConnectedTranscriptManagerProps & TranscriptManagerProps> = ({ allTranscripts }) => {
+  const [hasShadow, setHasShadow] = React.useState<boolean>(false);
+
+  const handleScroll = React.useCallback((e: React.UIEvent<HTMLElement>) => {
+    setHasShadow(e.currentTarget.scrollTop !== 0);
+  }, []);
+
+  return (
+    <Container>
+      <TranscriptHeader resultCount={allTranscripts.length} hasShadow={hasShadow} />
+      <TranscriptResultsList transcriptList={allTranscripts} onScroll={handleScroll} />
+    </Container>
+  );
+};
 
 const mapStateToProps = {
   allTranscripts: Transcripts.allTranscriptsSelector,

@@ -16,6 +16,10 @@ interface StatusIconsProps {
 }
 
 const StatusIcons: React.FC<StatusIconsProps> = ({ id, sentiment, reviewed = false, saved = false }) => {
+  if (!saved && !reviewed && !sentiment) {
+    return null;
+  }
+
   return (
     <Container className={`${ClassName.TRANSCRIPT_ITEM_STATUSES}-${id}`}>
       {saved && (

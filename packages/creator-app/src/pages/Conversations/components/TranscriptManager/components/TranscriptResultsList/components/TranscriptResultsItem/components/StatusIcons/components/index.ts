@@ -18,6 +18,7 @@ export const IconContainer = styled.div<{ isEmotion?: boolean }>`
 `;
 
 export const EmotionContainer = styled.img`
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
+  margin-bottom: 1px;
 `;

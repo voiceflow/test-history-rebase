@@ -1,4 +1,5 @@
 import { Dropdown } from '@voiceflow/ui';
+import cn from 'classnames';
 import React from 'react';
 
 import { TranscriptExportFormat } from '@/client/transcript';
@@ -17,11 +18,18 @@ import { Container, InfoSection, OptionButton, ReadStatusDot, StatusIcons } from
 
 interface ResultsItem {
   active?: boolean;
+  isLastItem?: boolean;
   data: any;
   format: TranscriptExportFormat;
 }
 
-const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & ResultsItem> = ({ goToTargetTranscript, data, active = false, format }) => {
+const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & ResultsItem> = ({
+  goToTargetTranscript,
+  data,
+  format,
+  active = false,
+  isLastItem = false,
+}) => {
   const { id, reportTags, unread, createdAt, name } = data;
   const isSaved = reportTags.includes(SystemTag.SAVED);
   const isReviewed = reportTags.includes(SystemTag.REVIEWED);
@@ -79,7 +87,7 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
   }, [canDeleteTranscript, id]);
 
   return (
-    <Container id={id} menuOpen={menuOpen} active={active} onClick={goToTarget}>
+    <Container id={id} menuOpen={menuOpen} active={active} onClick={goToTarget} isLastItem={isLastItem} className={cn({ active })}>
       <ReadStatusDot read={!unread} />
       <InfoSection active={active} name={name} date={createdAt} isRead={!unread} tags={reportTags} />
       <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>

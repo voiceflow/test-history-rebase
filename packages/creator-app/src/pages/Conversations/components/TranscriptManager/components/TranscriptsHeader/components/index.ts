@@ -6,11 +6,19 @@ import THEME from '@/styles/theme';
 export { default as DatePicker } from './TimeRangePicker/DatePicker';
 export { default as TranscriptFilters } from './TranscriptFilters';
 
-export const Container = styled(FlexApart)`
+export const Container = styled(FlexApart)<{ hasShadow: boolean }>`
   height: 72px;
   padding: 26px 32px;
   width: 100%;
   background: ${THEME.backgrounds.white};
   border-bottom: 1px solid;
   border-color: ${({ theme }) => theme.colors.borders};
+  z-index: 1;
+  transition: box-shadow 0.2s ease-in-out;
+
+  ${({ hasShadow }) =>
+    hasShadow &&
+    `
+    box-shadow: 0 1px 3px 0 rgba(19, 33, 68, 0.08);
+  `}
 `;

@@ -9,11 +9,12 @@ import { Transcript } from '@/models';
 
 import { Container, TranscriptResultsItem } from './components';
 
-interface TranscriptResultsList {
+interface TranscriptResultsListProps {
   transcriptList: Transcript[];
+  onScroll: (e: React.UIEvent<HTMLElement>) => void;
 }
 
-const TranscriptResultsList = ({ transcriptList }: TranscriptResultsList) => {
+const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcriptList, onScroll }) => {
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
   const transcriptMap = useSelector(mapTranscriptsSelector);
   const goToTranscript = useDispatch(Router.goToTargetTranscript);
@@ -26,23 +27,25 @@ const TranscriptResultsList = ({ transcriptList }: TranscriptResultsList) => {
   }, [transcriptList, currentTranscriptID]);
 
   return (
-    <Container>
+    <Container onScroll={onScroll}>
       <AutoSizer disableHeight={true}>
         {({ width }) => {
           return (
             <List
               width={width}
               rowCount={transcriptList.length}
-              rowHeight={88}
+              rowHeight={89}
               autoHeight
               rowRenderer={({ key, index }) => {
                 const data = transcriptList[index];
+                const isLastItem = transcriptList.length === index + 1;
                 return (
                   <TranscriptResultsItem
                     key={key}
                     format={TranscriptExportFormat.CSV}
                     data={data}
                     active={currentTranscriptID?.toString() === data.id.toString()}
+                    isLastItem={isLastItem}
                   />
                 );
               }}

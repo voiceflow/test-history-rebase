@@ -4,13 +4,14 @@ import { Container, TranscriptFilters } from './components';
 
 interface TranscriptsHeaderProps {
   resultCount: number;
+  hasShadow: boolean;
 }
 
-const TranscriptsHeader = ({ resultCount }: TranscriptsHeaderProps) => {
+const TranscriptsHeader: React.FC<TranscriptsHeaderProps> = ({ resultCount, hasShadow }) => {
   return (
-    <Container>
+    <Container hasShadow={hasShadow}>
       <b>Conversations ({resultCount})</b>
-      <TranscriptFilters></TranscriptFilters>
+      <TranscriptFilters />
     </Container>
   );
 };

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.453.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.452.0...@voiceflow/creator-app@1.453.0) (2021-08-06)
+
+
+### Features
+
+* client-side transcript CSV export (VF-1339) ([#3788](https://github.com/voiceflow/creator-app/issues/3788)) ([9e5cbd5](https://github.com/voiceflow/creator-app/commit/9e5cbd5321e1a5ad501ddc8594b92100be17f41d))
+
+
+
+
+
 # [1.452.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.451.7...@voiceflow/creator-app@1.452.0) (2021-08-06)
 
 

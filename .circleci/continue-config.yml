@@ -348,9 +348,6 @@ jobs:
       - when:
           condition: << parameters.execute >>
           steps:
-            - checkout
-            - vfcommon/stop_if_no_changes:
-                package: creator-app
             - vfcommon/update_track:
                 image_repo: << pipeline.parameters.container-image-url-creator-app >>
                 component: << pipeline.parameters.track-component-creator-app >>
@@ -367,9 +364,6 @@ jobs:
       - when:
           condition: << parameters.execute >>
           steps:
-            - checkout
-            - vfcommon/stop_if_no_changes:
-                package: admin-app
             - vfcommon/update_track:
                 image_repo: << pipeline.parameters.container-image-url-admin-ui >>
                 component: << pipeline.parameters.track-component-admin-ui >>
@@ -386,9 +380,6 @@ jobs:
       - when:
           condition: << parameters.execute >>
           steps:
-            - checkout
-            - vfcommon/stop_if_no_changes:
-                package: realtime
             - vfcommon/update_track:
                 image_repo: << pipeline.parameters.container-image-url-realtime >>
                 component: << pipeline.parameters.track-component-realtime >>
@@ -401,6 +392,7 @@ workflows:
       - build-app:
           check_image: true
           context: dev-test
+          name: build-app-track
           execute: << pipeline.parameters.build-creator-app >>
           filters:
             <<: *ignore_autorebase_filters
@@ -415,7 +407,7 @@ workflows:
                 environment_type: testing
                 job_type: deployment
           requires:
-            - build-app
+            - build-app-track
           filters:
             <<: *ignore_autorebase_filters
             tags:
@@ -427,6 +419,7 @@ workflows:
       - build-admin:
           execute: << pipeline.parameters.build-admin-app >>
           context: dev-test
+          name: build-admin-track
           filters:
             <<: *ignore_autorebase_filters
             tags:
@@ -435,7 +428,7 @@ workflows:
           context: dev-test
           execute: << pipeline.parameters.build-admin-app >>
           requires:
-            - build-admin
+            - build-admin-track
           filters:
             <<: *ignore_autorebase_filters
             tags:
@@ -447,6 +440,7 @@ workflows:
       - build-realtime:
           context: dev-test
           execute: << pipeline.parameters.build-realtime >>
+          name: build-realtime-track
           filters:
             <<: *ignore_autorebase_filters
             tags:
@@ -455,7 +449,7 @@ workflows:
           context: dev-test
           execute: << pipeline.parameters.build-realtime >>
           requires:
-            - build-realtime
+            - build-realtime-track
           filters:
             <<: *ignore_autorebase_filters
             tags:
@@ -481,6 +475,7 @@ workflows:
       - build-app:
           <<: *slack-fail-post-step
           context: dev-test
+          name: build-app-test
           strict: true
           execute: << pipeline.parameters.build-creator-app >>
           post-steps:
@@ -491,6 +486,7 @@ workflows:
       - build-admin:
           <<: *slack-fail-post-step
           context: dev-test
+          name: build-admin-test
           strict: true
           execute: << pipeline.parameters.build-admin-app >>
           post-steps:
@@ -501,6 +497,7 @@ workflows:
       - build-realtime:
           <<: *slack-fail-post-step
           context: dev-test
+          name: build-realtime-test
           execute: << pipeline.parameters.build-realtime >>
           post-steps:
             - jira/notify
@@ -516,9 +513,9 @@ workflows:
           requires:
             - test
             - vfcommon/test_e2e
-            - build-app
-            - build-admin
-            - build-realtime
+            - build-app-test
+            - build-admin-test
+            - build-realtime-test
           filters:
             branches:
               only: master
@@ -530,6 +527,7 @@ workflows:
       - build-app:
           <<: *prod_creator_deploy_filters
           context: dev-test
+          name: build-app-release
           execute: << pipeline.parameters.build-creator-app >>
           post-steps:
             - jira/notify
@@ -544,7 +542,7 @@ workflows:
                 environment_type: production
                 job_type: deployment
           requires:
-            - build-app
+            - build-app-release
 
   deploy-admin:
     when: << pipeline.parameters.build-admin-app >>
@@ -552,10 +550,11 @@ workflows:
       - build-admin:
           <<: *prod_admin_deploy_filters
           context: dev-test
+          name: build-admin-release
           execute: << pipeline.parameters.build-admin-app >>
       - build-deploy-admin-image:
           <<: *prod_admin_deploy_filters
           context: dev-test
           execute: << pipeline.parameters.build-admin-app >>
           requires:
-            - build-admin
+            - build-admin-release

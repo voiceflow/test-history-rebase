@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.454.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.453.6...@voiceflow/creator-app@1.454.0) (2021-08-09)
+
+
+### Bug Fixes
+
+* update expression validation when new variable introduced (VF-1444) ([#3855](https://github.com/voiceflow/creator-app/issues/3855)) ([3660864](https://github.com/voiceflow/creator-app/commit/36608647d8f0b010faf09a60745db66c546710ac))
+
+
+### Features
+
+* update dialog manager snippet (VF-1422) ([#3848](https://github.com/voiceflow/creator-app/issues/3848)) ([58483b7](https://github.com/voiceflow/creator-app/commit/58483b76519e0318898ba33989b3b0eab96235f4))
+
+
+
+
+
 ## [1.453.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.453.5...@voiceflow/creator-app@1.453.6) (2021-08-08)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -47,7 +47,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
         onUpdate({ expression: text });
       }
     },
-    [item.expression, onUpdate]
+    [isValidExpression, item.expression, onUpdate]
   );
 
   const updateVariable = React.useCallback((variable) => onUpdate({ variable }), [onUpdate]);

@@ -29,7 +29,7 @@ const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, o
         onChange({ ...expression, value: text } as ExpressionV2);
       }
     },
-    [expression.value, onChange]
+    [isValidExpression, expression.value, onChange]
   );
 
   return (

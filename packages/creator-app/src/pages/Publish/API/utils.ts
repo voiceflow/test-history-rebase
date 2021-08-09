@@ -1,12 +1,11 @@
 import { Language, Sample } from '@/components/AceEditor/Sample';
-import { conditionalReplace } from '@/utils/string';
 
 import { curl, nodeJS, python } from './constants';
 
 // eslint-disable-next-line import/prefer-default-export
 export const getSamples = (versionID?: string, apiKey?: string): Sample[] => {
   const sampleReplace = (sample: string) => {
-    return conditionalReplace(conditionalReplace(sample, /{versionID}/g, versionID), /{apiKey}/g, apiKey);
+    return sample.replace(/{{vf\.version_id}}/gi, versionID || '{version id}').replace(/{{vf\.api_key}}/gi, apiKey || '{api_key}');
   };
 
   return [
@@ -16,7 +15,7 @@ export const getSamples = (versionID?: string, apiKey?: string): Sample[] => {
       sample: sampleReplace(curl),
     },
     {
-      label: 'NodeJS',
+      label: 'Node.js',
       language: Language.JAVASCRIPT,
       sample: sampleReplace(nodeJS),
     },

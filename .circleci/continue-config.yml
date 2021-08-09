@@ -348,6 +348,9 @@ jobs:
       - when:
           condition: << parameters.execute >>
           steps:
+            - checkout
+            - vfcommon/stop_if_no_changes:
+                package: creator-app
             - vfcommon/update_track:
                 image_repo: << pipeline.parameters.container-image-url-creator-app >>
                 component: << pipeline.parameters.track-component-creator-app >>
@@ -364,6 +367,9 @@ jobs:
       - when:
           condition: << parameters.execute >>
           steps:
+            - checkout
+            - vfcommon/stop_if_no_changes:
+                package: admin-app
             - vfcommon/update_track:
                 image_repo: << pipeline.parameters.container-image-url-admin-ui >>
                 component: << pipeline.parameters.track-component-admin-ui >>
@@ -380,6 +386,9 @@ jobs:
       - when:
           condition: << parameters.execute >>
           steps:
+            - checkout
+            - vfcommon/stop_if_no_changes:
+                package: realtime
             - vfcommon/update_track:
                 image_repo: << pipeline.parameters.container-image-url-realtime >>
                 component: << pipeline.parameters.track-component-realtime >>

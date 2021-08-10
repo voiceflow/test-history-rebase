@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.7.0...@voiceflow/realtime-sdk@1.8.0) (2021-08-10)
+
+
+### Features
+
+* Adds dialogflow to project creation page (VF-1350) ([#3860](https://github.com/voiceflow/creator-app/issues/3860)) ([ab80a3a](https://github.com/voiceflow/creator-app/commit/ab80a3aace6b30e72b6996d986cff443b06e5688))
+
+
+
+
+
 # [1.7.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.6.1...@voiceflow/realtime-sdk@1.7.0) (2021-08-03)
 
 

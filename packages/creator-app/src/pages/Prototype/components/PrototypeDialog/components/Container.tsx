@@ -47,14 +47,21 @@ const Content = styled.div<{ showPadding?: boolean; isMobile?: boolean }>`
   -webkit-overflow-scrolling: touch;
 `;
 
-const Container: React.FC<{ isPublic?: boolean; showPadding?: boolean; isMobile?: boolean }> = ({ children, isPublic, showPadding, isMobile }) => (
-  <Outer isPublic={isPublic}>
-    <Middle isMobile={isMobile}>
-      <Content showPadding={showPadding} isMobile={isMobile} className="chat-dialog-content">
-        {children}
-      </Content>
-    </Middle>
-  </Outer>
-);
+const Container: React.FC<{
+  isPublic?: boolean;
+  showPadding?: boolean;
+  isMobile?: boolean;
+  onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
+}> = ({ children, isPublic, showPadding, isMobile, onScroll }) => {
+  return (
+    <Outer isPublic={isPublic}>
+      <Middle isMobile={isMobile}>
+        <Content onScroll={(e) => onScroll!(e)} showPadding={showPadding} isMobile={isMobile} className="chat-dialog-content">
+          {children}
+        </Content>
+      </Middle>
+    </Outer>
+  );
+};
 
 export default Container;

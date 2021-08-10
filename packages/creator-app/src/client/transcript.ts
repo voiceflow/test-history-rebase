@@ -1,4 +1,4 @@
-import dialogsAdapter from '@/client/adapters/transcripts/dialogs';
+import dialogAdapter from '@/client/adapters/transcripts/dialogs';
 import transcriptAdapter from '@/client/adapters/transcripts/transcripts';
 import { TagType, Transcript } from '@/models';
 
@@ -25,7 +25,7 @@ const transcriptClient = {
     apiV2.put(TRANSCRIPT_PATH, { ...data, projectID: projectID || undefined }),
 
   getTranscriptDialog: (projectID: string, transcriptID: string) =>
-    apiV2.get<any[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`).then(dialogsAdapter.mapFromDB),
+    apiV2.get<any[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`).then(dialogAdapter.mapFromDB),
 
   exportTranscript: (projectID: string, transcriptID: string, params: { format: TranscriptExportFormat }) =>
     apiV2.get<Blob>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/export?${new URLSearchParams(params).toString()}`).then((response) => response),

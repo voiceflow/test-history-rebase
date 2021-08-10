@@ -31,14 +31,12 @@ const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = (
       <Root ref={ref} hidden={!isOpened}>
         <Container fade={fade} isSmall={isSmall} className={cn(ClassName.MODAL, className, `${ClassName.MODAL}--${id}`)}>
           <Header>
-            <Flex as="span">
-              {title}
-              {tooltip && (
-                <span className="ml-2">
-                  <InfoIcon tooltipProps={{ portalNode: window.document.body }}>{tooltip}</InfoIcon>
-                </span>
-              )}
-            </Flex>
+            {title}
+            {tooltip && (
+              <span className="ml-2">
+                <InfoIcon tooltipProps={{ portalNode: window.document.body }}>{tooltip}</InfoIcon>
+              </span>
+            )}
             <div>
               <Icon>{icon}</Icon>
 

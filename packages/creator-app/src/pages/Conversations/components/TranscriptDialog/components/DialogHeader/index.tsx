@@ -17,9 +17,10 @@ interface TranscriptDialogInformation {
 interface DialogHeaderProps {
   transcriptInformation: TranscriptDialogInformation;
   handleChange: (isDebugToggled: boolean) => void;
+  isScrolling: boolean;
 }
 
-const DialogHeader: React.FC<DialogHeaderProps> = ({ transcriptInformation, handleChange }) => {
+const DialogHeader: React.FC<DialogHeaderProps> = ({ transcriptInformation, handleChange, isScrolling }) => {
   const [intentConfidenceToggled, setIntentConfidenceToggled] = React.useState<boolean>(transcriptInformation.intentConfidenceToggled);
   const [debugMessageToggled, setDebugMessageToggled] = React.useState<boolean>(transcriptInformation.debugMessageToggled);
 
@@ -43,7 +44,7 @@ const DialogHeader: React.FC<DialogHeaderProps> = ({ transcriptInformation, hand
   };
 
   return (
-    <Container>
+    <Container hasShadow={isScrolling}>
       <b>Transcript</b>
       <Dropdown
         selfDismiss

@@ -27,6 +27,7 @@ interface DialogPrototypeProps {
   onInteraction: (request: string | BaseRequest) => void;
   stepBack: () => void;
   isTranscript?: boolean;
+  onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 }
 
 const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
@@ -46,6 +47,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   onInteraction,
   stepBack,
   isTranscript = false,
+  onScroll,
 }) => {
   // filter out messages based on settings
   const messages = useMessageFilters(rawMessages);
@@ -53,7 +55,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   const interactionProps = { color, interactions, onInteraction };
 
   return (
-    <Container isPublic={isPublic} showPadding={showPadding} isMobile={isMobile}>
+    <Container onScroll={onScroll} isPublic={isPublic} showPadding={showPadding} isMobile={isMobile}>
       <MessagesContainer>
         {isTranscript && <Divider style={{ marginTop: '-30px' }}>Conversation Started</Divider>}
 

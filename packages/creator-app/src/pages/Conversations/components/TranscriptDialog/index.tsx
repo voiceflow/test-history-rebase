@@ -13,9 +13,11 @@ import { Message } from '@/pages/Prototype/types';
 import { noop } from '@/utils/functional';
 
 import { Container, DialogHeader } from './components';
+import { transformDialogTimestamp } from './util';
 
 const TranscriptDialog: React.FC = () => {
   const [messages, setMessages] = React.useState<Message[]>([]);
+  const [isScrolling, setIsScrolling] = React.useState<boolean>(false);
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
   const activeProjectID = useSelector(activeProjectIDSelector);
   const debugMessage = useSelector(Recent.prototypeDebugSelector);
@@ -26,7 +28,9 @@ const TranscriptDialog: React.FC = () => {
 
   const fetchDialogs = async () => {
     const dialogs = await client.transcript.getTranscriptDialog(activeProjectID!, currentTranscriptID!);
-    setMessages(dialogs);
+    const modifiedDialogs = await transformDialogTimestamp(dialogs, dialogs[0].startTime);
+
+    setMessages(modifiedDialogs);
   };
 
   React.useEffect(() => {
@@ -45,13 +49,22 @@ const TranscriptDialog: React.FC = () => {
       : dispatch(Recent.updateRecentPrototype({ intent: !intentConfidence }));
   };
 
+  const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+    if (e.currentTarget.scrollTop !== 0) {
+      setIsScrolling(true);
+    } else {
+      setIsScrolling(false);
+    }
+  };
   return (
     <Container>
       <DialogHeader
+        isScrolling={isScrolling}
         handleChange={handleChange}
         transcriptInformation={{ intentConfidenceToggled: intentConfidence, debugMessageToggled: debugMessage }}
       />
       <PrototypeChatDisplay
+        onScroll={onScroll}
         avatarURL={avatar}
         color={color}
         isTranscript={true}

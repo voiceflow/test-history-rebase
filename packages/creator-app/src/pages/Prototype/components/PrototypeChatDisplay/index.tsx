@@ -28,6 +28,7 @@ export interface PrototypeChatDisplayProps {
   stepBack: () => void;
   autoScroll?: boolean;
   isTranscript?: boolean;
+  onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 }
 
 const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
@@ -49,6 +50,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   autoScroll = true,
   stepBack,
   isTranscript,
+  onScroll,
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
@@ -59,7 +61,6 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
       if (chatScrollRef?.current?.scrollTop === 0) {
         return setAtTop?.(true);
       }
-
       return setAtTop?.(false);
     },
     []
@@ -85,6 +86,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
     <OutterChatContainer>
       <InnerChatContainer onScroll={onScrollHandler} ref={chatScrollRef} atTop={atTop}>
         <Dialog
+          onScroll={onScroll}
           stepBack={stepBack}
           status={status}
           onPlay={onPlay}

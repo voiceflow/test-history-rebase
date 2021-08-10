@@ -23,7 +23,9 @@ const Container = styled.div<{ rightAlign?: boolean; userSpeak?: boolean; isFirs
       ? css`
           flex-direction: row-reverse;
         `
-      : css``}
+      : css`
+          max-width: 500px;
+        `}
 `;
 
 export default Container;

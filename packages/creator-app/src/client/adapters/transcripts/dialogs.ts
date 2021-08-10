@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { MessageType } from '@/pages/Prototype/types';
 
@@ -10,7 +8,7 @@ const dialogAdapter = createAdapter<any, any>(
     let specificProperties = {};
 
     const commonProperties = {
-      startTime: moment.utc(data.timestamp).format('mm:ss'),
+      startTime: data.timestamp,
     };
 
     // eslint-disable-next-line xss/no-mixed-html

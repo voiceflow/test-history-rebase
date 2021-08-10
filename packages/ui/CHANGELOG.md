@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.8.0...@voiceflow/ui@1.9.0) (2021-08-10)
+
+
+### Features
+
+* text editor (VF-1361) ([#3835](https://github.com/voiceflow/creator-app/issues/3835)) ([f38a902](https://github.com/voiceflow/creator-app/commit/f38a902673dede59f4998167f4197d2bcae33708))
+
+
+
+
+
 # [1.8.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.7.7...@voiceflow/ui@1.8.0) (2021-08-10)
 
 

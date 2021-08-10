@@ -142,6 +142,6 @@ const StyledEditor = styled(AceEditor).attrs({
   }}
 `;
 
-const Editor = React.forwardRef<AceEditor, AceEditorProps>((props) => <StyledEditor {...(props as any)} />);
+const Editor = React.forwardRef<AceEditor, AceEditorProps>((props, ref) => <StyledEditor {...(props as any)} ref={ref} />);
 
 export default Editor;

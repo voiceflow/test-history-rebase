@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { css, styled } from '@/hocs';
 
 interface DividerProps {
@@ -31,7 +33,7 @@ const getMargin = ({ offset, isSmall }: DividerProps) => {
   `;
 };
 
-const Divider = styled.div<DividerProps>`
+const Divider = styled(({ offset, secondary, isSmall, ...props }) => <div {...props} />)<DividerProps>`
   ${getMargin};
   width: 1px;
   height: ${({ isSmall }) => (isSmall ? '24px' : '100%')};

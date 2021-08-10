@@ -9220,9 +9220,9 @@ cypress-file-upload@^5.0.3:
   integrity sha512-+8VzNabRk3zG6x8f8BWArF/xA/W0VK4IZNx3MV0jFWrJS/qKn8eHfa5nU73P9fOQAgwHFJx7zjg4lwOnljMO8g==
 
 cypress-plugin-stripe-elements@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/cypress-plugin-stripe-elements/-/cypress-plugin-stripe-elements-1.0.1.tgz#70034c1fddc5fbb40567f7460f51d214f19c3172"
-  integrity sha512-GLofWHUWkl/efX8IHlsA6BxtizdAPucwHpAYb3k0mr/ZqCTi+4xbv4Ab9P9YmsacHxCckemylJe3Q6QklZihhw==
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/cypress-plugin-stripe-elements/-/cypress-plugin-stripe-elements-1.0.2.tgz#b298d5da820228aafebfa8d3376993ac65f02f71"
+  integrity sha512-tNXZ9BHooO8IGGmOpVRhNfGde/vmPY4D56pi4VHw1EWbfSuwCoveeqqjKDeRfPzMTD5gGYGwXdX2qO1S9O9GEg==
 
 cypress-real-events@^1.3.0:
   version "1.5.1"

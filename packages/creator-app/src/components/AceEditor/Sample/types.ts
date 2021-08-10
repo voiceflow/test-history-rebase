@@ -2,6 +2,7 @@ export enum Language {
   PYTHON = 'python',
   JAVASCRIPT = 'javascript',
   JSON = 'json',
+  SHELL = 'sh',
 }
 
 export interface Sample {

@@ -11,7 +11,7 @@ export const getSamples = (versionID?: string, apiKey?: string): Sample[] => {
   return [
     {
       label: 'cURL',
-      language: Language.JAVASCRIPT,
+      language: Language.SHELL,
       sample: sampleReplace(curl),
     },
     {

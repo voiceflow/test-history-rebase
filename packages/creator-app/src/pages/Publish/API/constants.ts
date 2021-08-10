@@ -1,10 +1,12 @@
 export const nodeJS = `const axios = require('axios');
 
+// View our quick start guide to get your API key and version ID:
+// https://www.voiceflow.com/api/dialog-manager#section/Quick-Start
 const apiKey = '{{vf.api_key}}';
 const versionID = '{{vf.version_id}}';
 
-const userID = 'user_123'; // The unique ID used to track conversation state
-const userInput = 'Hello world!'; // The user's message to your Voiceflow project
+const userID = 'user_123'; // Unique ID used to track conversation state
+const userInput = 'Hello world!'; // User's message to your Voiceflow project
 
 const body = {
   request: {
@@ -32,23 +34,32 @@ async function startInteract() {
 startInteract().catch((error) => console.error(error));
 `;
 
-export const curl = `
-curl --request POST 'https://general-runtime.voiceflow.com/state/{{vf.version_id}}}/user/steve/interact'
-     --header "Authorization: {{vf.api_key}}"
-     --header 'Content-Type: application/json'
-     --data-raw '{
-        "request": { "type": "text", "payload": "Hello world!" }
-     }'
+// eslint-disable-next-line no-secrets/no-secrets
+export const curl = String.raw`# View our quick start guide to get your API key and version ID:
+# https://www.voiceflow.com/api/dialog-manager#section/Quick-Start
+API_KEY='{{vf.api_key}}'
+VERSION_ID='{{vf.version_id}}'
+
+USER_ID='user_123'
+USER_INPUT='Hello world!'
+
+curl --request POST "https://general-runtime.voiceflow.com/state/$VERSION_ID/user/$USER_ID/interact" \
+     --header "Authorization: $API_KEY" \
+     --header 'Content-Type: application/json' \
+     --data-raw "{
+        \"request\": { \"type\": \"text\", \"payload\": \"$USER_INPUT\" }
+     }"
 `;
 
-export const python = `
-import requests
+export const python = `import requests
 
+# View our quick start guide to get your API key and version ID:
+# https://www.voiceflow.com/api/dialog-manager#section/Quick-Start
 api_key = "{{vf.api_key}}"
 version_id = "{{vf.version_id}}"
 
-user_id = "user_123"  # The unique ID used to track conversation state
-user_input = "Hello world!"  # The user's message to your Voiceflow project
+user_id = "user_123"  # Unique ID used to track conversation state
+user_input = "Hello world!"  # User's message to your Voiceflow project
 
 body = {"request": {"type": "text", "payload": "Hello world!"}}
 

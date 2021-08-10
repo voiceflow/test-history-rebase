@@ -86,7 +86,7 @@ const API: React.FC = () => {
       <ContentContainer>
         <ContentSection>
           <Section title="API Call Examples" card={false}>
-            <SampleEditor samples={samples} />
+            <SampleEditor samples={samples} wrap={false} />
           </Section>
         </ContentSection>
 

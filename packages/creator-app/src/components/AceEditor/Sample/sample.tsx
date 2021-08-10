@@ -1,6 +1,7 @@
 import 'brace';
 import 'brace/theme/cobalt';
 import 'brace/mode/javascript';
+import 'brace/mode/sh';
 import 'brace/mode/python';
 import 'brace/mode/json';
 
@@ -13,7 +14,7 @@ import { copy } from '@/utils/clipboard';
 import { Header, Option } from './components';
 import { Sample } from './types';
 
-const SampleEditor: React.FC<{ samples: Sample[] }> = ({ samples = [] }) => {
+const SampleEditor: React.FC<{ samples: Sample[]; wrap?: boolean }> = ({ samples = [], wrap = true }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const { sample, language } = samples[selectedIndex] || { sample: '', language: '' };
@@ -45,7 +46,7 @@ const SampleEditor: React.FC<{ samples: Sample[] }> = ({ samples = [] }) => {
         mode={language}
         focus={false}
         highlightActiveLine={false}
-        setOptions={{ useWorker: false, wrap: true, maxLines: Infinity, fontSize: 15 }}
+        setOptions={{ useWorker: false, indentedSoftWrap: false, wrap, maxLines: Infinity, fontSize: 15 }}
       />
     </Box>
   );

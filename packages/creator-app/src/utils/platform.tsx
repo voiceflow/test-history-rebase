@@ -47,6 +47,7 @@ export const getPlatformDefaultVoice = createPlatformSelector<AnyVoice>(
 export const getPlatformAppName = createPlatformSelector({
   [PlatformType.ALEXA]: 'Alexa Skill',
   [PlatformType.GOOGLE]: 'Google Action',
+  [PlatformType.DIALOGFLOW]: 'Dialogflow',
   [PlatformType.GENERAL]: 'Custom Assistant',
   [PlatformType.IVR]: 'IVR',
   [PlatformType.CHATBOT]: 'Chatbot',

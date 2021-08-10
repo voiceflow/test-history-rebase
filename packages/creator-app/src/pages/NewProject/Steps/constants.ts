@@ -2,8 +2,8 @@ import { PlatformType } from '@voiceflow/internal';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
-import { AmazonInvocationName, GoogleInvocationName } from '@/pages/NewProject/DescriptionElements/InvocationName';
-import { AmazonLanguage, GeneralLanguage, GoogleLanguage } from '@/pages/NewProject/DescriptionElements/Languages';
+import { AmazonInvocationName, DialogflowInvocationName, GoogleInvocationName } from '@/pages/NewProject/DescriptionElements/InvocationName';
+import { AmazonLanguage, DialogflowLanguage, GeneralLanguage, GoogleLanguage } from '@/pages/NewProject/DescriptionElements/Languages';
 import { createPlatformSelector } from '@/utils/platform';
 
 export enum PlatformFeature {
@@ -53,6 +53,14 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>({
     platformAppType: 'Action',
     icon: 'googleAssistant',
   },
+  [PlatformType.DIALOGFLOW]: {
+    company: 'Google',
+    invocationDescription: DialogflowInvocationName,
+    localesDescription: DialogflowLanguage,
+    localesText: 'Language',
+    platformAppType: 'Action',
+    icon: 'dialogflow',
+  },
   [PlatformType.GENERAL]: GENERAL_PLATFORM_META,
   [PlatformType.IVR]: GENERAL_PLATFORM_META,
   [PlatformType.CHATBOT]: GENERAL_PLATFORM_META,
@@ -88,6 +96,15 @@ export const getChannelMeta = createPlatformSelector<ChannelMetaType>({
     features: [PlatformFeature.DESIGN_AND_PROTO, PlatformFeature.PUBLISH],
     iconType: IconType.ICON,
     icon: 'googleAssistant',
+    iconSize: 24,
+  },
+  [PlatformType.DIALOGFLOW]: {
+    platform: PlatformType.DIALOGFLOW,
+    name: 'Dialogflow',
+    description: 'Design, prototype and publish for Google Dialogflow.',
+    features: [PlatformFeature.DESIGN_AND_PROTO, PlatformFeature.PUBLISH],
+    iconType: IconType.ICON,
+    icon: 'dialogflow',
     iconSize: 24,
   },
   [PlatformType.GENERAL]: {
@@ -137,7 +154,7 @@ export const PLATFORM_FEATURE_META = {
     name: 'Design & Prototype',
     color: '#5589eb',
     borderColor: { red: 85, green: 137, blue: 235 },
-    description: (platform: PlatformType) => {
+    description: (platform: PlatformType): string => {
       switch (platform) {
         case PlatformType.IVR:
           return 'Design, prototype and share IVR system call flows';
@@ -156,7 +173,7 @@ export const PLATFORM_FEATURE_META = {
     name: 'Publish',
     color: '#558b2f',
     borderColor: { red: 85, green: 139, blue: 47 },
-    description: (platform: PlatformType) => {
+    description: (platform: PlatformType): string => {
       const platformMeta = getPlatformMeta(platform);
 
       return `Publish live apps to the ${platformMeta.company} ${platformMeta.platformAppType} store`;

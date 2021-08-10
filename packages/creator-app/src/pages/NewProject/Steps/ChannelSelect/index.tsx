@@ -1,7 +1,10 @@
 import { PlatformType } from '@voiceflow/internal';
 import { FlexCenter, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
+import { useSelector } from 'react-redux';
 
+import { FeatureFlag } from '@/config/features';
+import * as Feature from '@/ducks/feature';
 import { styled } from '@/hocs';
 import { Container as CreateWorkspaceContainer } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 
@@ -9,7 +12,19 @@ import { getChannelMeta } from '../constants';
 import { InstructionContainer, PlatformCardsContainer, QuestionContainer } from './components';
 import PlatformCard from './components/PlatformCard';
 
-const OPTIONS = [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.GENERAL, PlatformType.IVR, PlatformType.CHATBOT, PlatformType.MOBILE_APP];
+const OPTIONS = [
+  PlatformType.ALEXA,
+  PlatformType.GOOGLE,
+  PlatformType.DIALOGFLOW,
+  PlatformType.GENERAL,
+  PlatformType.IVR,
+  PlatformType.CHATBOT,
+  PlatformType.MOBILE_APP,
+];
+
+const PROJECT_FEATURE_FLAGS: { [key in PlatformType]?: FeatureFlag } = {
+  [PlatformType.DIALOGFLOW]: FeatureFlag.DIALOGFLOW,
+};
 
 const Container = styled(CreateWorkspaceContainer)`
   padding-top: 0;
@@ -26,6 +41,17 @@ const ChannelSelect: React.FC<ChannelSelectProps> = ({
   isLoading,
   instruction = 'Select between Amazon Alexa, Google Assistant, or a General Assistant project type',
 }) => {
+  const isFeatureEnabled = useSelector(Feature.isFeatureEnabledSelector);
+
+  const channelOptions = React.useMemo(
+    () =>
+      OPTIONS.filter((platform) => {
+        const featureFlag = PROJECT_FEATURE_FLAGS[platform];
+        return !featureFlag || isFeatureEnabled(featureFlag);
+      }),
+    []
+  );
+
   // When the user clicks back on the following step, reset platform
   React.useEffect(() => {
     onSelect(null);
@@ -40,7 +66,7 @@ const ChannelSelect: React.FC<ChannelSelectProps> = ({
         </div>
       </FlexCenter>
       <PlatformCardsContainer>
-        {OPTIONS.map((platform, index) => (
+        {channelOptions.map((platform, index) => (
           <PlatformCard
             key={index}
             channel={getChannelMeta(platform)}

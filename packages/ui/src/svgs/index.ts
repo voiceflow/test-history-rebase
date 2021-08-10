@@ -58,6 +58,7 @@ export { default as checked } from './images/icons/check.svg';
 // d
 export { default as designer } from './designer.svg';
 export { default as developer } from './developer.svg';
+export { default as dialogflow } from './dialogflow.svg';
 export { default as directive } from './directive.svg';
 export { default as display } from './display.svg';
 export { default as divide } from './divide.svg';

@@ -24,6 +24,7 @@ const NUMBER_OF_STEPS = 3;
 const getTemplateTag = createPlatformSelector({
   [PlatformType.ALEXA]: 'default',
   [PlatformType.GOOGLE]: 'default',
+  [PlatformType.DIALOGFLOW]: 'default',
   [PlatformType.GENERAL]: 'default',
   [PlatformType.CHATBOT]: `default:${PlatformType.CHATBOT}`,
   [PlatformType.IVR]: `default:${PlatformType.IVR}`,

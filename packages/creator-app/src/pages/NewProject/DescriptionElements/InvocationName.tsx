@@ -10,6 +10,16 @@ export const GoogleInvocationName: React.FC = () => (
   </span>
 );
 
+export const DialogflowInvocationName: React.FC = () => (
+  <span>
+    The name users will say or type to interact with your Google Dialogflow. This must comply with the{' '}
+    <a rel="noreferrer" target="_blank" href="https://developers.google.com/assistant/df-asdk/discovery/explicit#invocation_name">
+      guidelines
+    </a>
+    . This can be changed later.
+  </span>
+);
+
 export const AmazonInvocationName: React.FC = () => (
   <span>
     The name users will say to interact with your Alexa Skill. This must comply with the{' '}

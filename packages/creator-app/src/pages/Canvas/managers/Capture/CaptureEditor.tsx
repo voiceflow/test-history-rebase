@@ -8,27 +8,31 @@ import SlotSelect from '@/components/SlotSelect';
 import VariableSelect from '@/components/VariableSelect';
 import * as Documentation from '@/config/documentation';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
+import { NodeData } from '@/models';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
-import { useButtonsOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
+import { useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
+import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
 import HelpTooltip from './components/HelpTooltip';
 
 const SEARCH_QUERY_SLOT = 'AMAZON.SearchQuery';
 
-function CaptureEdtitor({ data, onChange, pushToPath }) {
+const SlotSelectComponent = SlotSelect as React.FC<any>;
+const VariableSelectComponent = VariableSelect as React.FC<any>;
+
+const CaptureEditor: React.FC<NodeEditorPropsType<NodeData.Capture>> = ({ data, onChange, pushToPath }) => {
   const updateSlot = React.useCallback((slot) => onChange({ slot }), [onChange]);
   const onSelectVariable = React.useCallback((variable) => onChange({ variable }), [onChange]);
 
   const optionsFilter = React.useCallback((slotType) => slotType?.value !== SEARCH_QUERY_SLOT, []);
 
-  const [buttonsOption, buttonsSection] = useButtonsOptionSection({ data, onChange, pushToPath });
   const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
 
   return (
     <Content
       footer={() => (
         <Controls
-          menu={<OverflowMenu placement="top-end" options={[noReplyOption, buttonsOption]} />}
+          menu={<OverflowMenu placement="top-end" options={[noReplyOption]} />}
           tutorial={{
             content: <HelpTooltip />,
             blockType: data.type,
@@ -47,7 +51,7 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
     >
       <Section>
         <FormControl label="Input Type">
-          <SlotSelect value={data.slot} onChange={updateSlot} filter={optionsFilter} />
+          <SlotSelectComponent value={data.slot} onChange={updateSlot} filter={optionsFilter} />
         </FormControl>
         {data.slot === CUSTOM_SLOT_TYPE && (
           <FormControl>
@@ -58,10 +62,11 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
               renderForm={({ value, onAdd, onChange }) => (
                 <Input
                   placeholder="Enter user reply"
-                  value={value}
+                  value={value!}
                   onKeyPress={(event) => {
                     if (event.key === 'Enter') {
-                      onAdd(event.target.value);
+                      // eslint-disable-next-line xss/no-mixed-html
+                      onAdd((event.target as HTMLInputElement).value);
                       onChange('');
                     }
                   }}
@@ -75,15 +80,13 @@ function CaptureEdtitor({ data, onChange, pushToPath }) {
           </FormControl>
         )}
         <FormControl label="Capture Input to" contentBottomUnits={0}>
-          <VariableSelect value={data.variable} onChange={onSelectVariable} />
+          <VariableSelectComponent value={data.variable} onChange={onSelectVariable} />
         </FormControl>
       </Section>
-
-      {buttonsSection}
 
       {noReplySection}
     </Content>
   );
-}
+};
 
-export default CaptureEdtitor;
+export default CaptureEditor;

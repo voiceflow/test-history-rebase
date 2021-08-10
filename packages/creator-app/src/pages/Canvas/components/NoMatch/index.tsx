@@ -12,7 +12,7 @@ import { Node, NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import NoMatchItem from '@/pages/Canvas/components/NoMatchItem';
 import NoMatchPath from '@/pages/Canvas/components/NoMatchPath';
-import SpeakAndAudioList from '@/pages/Canvas/components/SpeakAndAudioList';
+import SpeakAudioList from '@/pages/Canvas/components/SpeakAudioList';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { PlatformContext } from '@/pages/Skill/contexts';
@@ -96,7 +96,7 @@ const NoMatch: React.FC<NoMatchProps & ConnectedNoMatchProps> = ({ onChange, noM
       ) : (
         <>
           {localNoMatches.type !== NoMatchType.PATH ? (
-            <SpeakAndAudioList
+            <SpeakAudioList
               items={localNoMatches.reprompts}
               platform={platform}
               maxItems={isAnyGeneralPlatform(platform) ? MAX_SPEAK_ITEMS_COUNT : MAX_ALEXA_REPROMPTS}
@@ -107,7 +107,7 @@ const NoMatch: React.FC<NoMatchProps & ConnectedNoMatchProps> = ({ onChange, noM
               onChangeRandomize={(randomize) => setLocalNoMatches({ ...localNoMatches, randomize })}
             >
               {localNoMatches.type === NoMatchType.BOTH && <NoMatchPath pushToPath={pushToPath} />}
-            </SpeakAndAudioList>
+            </SpeakAudioList>
           ) : (
             <NoMatchPath pushToPath={pushToPath} borderBottom />
           )}

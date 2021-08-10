@@ -28,44 +28,52 @@ const DEBOUNCE_TIMEOUT = 300;
 
 type OnChange<T extends {}> = (items: T[], save?: boolean) => void;
 
-export type MapManaged<T extends {}> = (
-  render: (
-    item: T,
-    options: {
-      key: string;
-      index: number;
-      onUpdate: (value: Partial<T>) => void;
-      onRemove: () => void;
-      toggleOpen: () => void;
-    }
-  ) => React.ReactNode
-) => React.ReactNode[];
+interface MapManagedRenderOptions<T extends {}> {
+  key: string;
+  index: number;
+  onUpdate: (value: Partial<T>) => void;
+  onRemove: () => void;
+  toggleOpen: () => void;
+}
+interface MapManagedOptions<T extends {}, F extends any[]> {
+  clone?: (initVal: T, targetVal: T) => T;
+  getKey?: (value: T) => string;
+  factory?: (...args: F) => T;
+  maxItems?: number;
+  autosave?: boolean;
+  debounced?: boolean;
+  handleRemove?: (value: T, index: number) => void;
+}
+
+export type MapManaged<T extends {}> = (render: (item: T, options: MapManagedRenderOptions<T>) => React.ReactNode) => React.ReactNode[];
+
+export interface MapManagedAPI<T extends {}, F extends any[]> {
+  keys: string[];
+  items: T[];
+  onAdd: (...args: F) => void;
+  onUpdate: (key: string, value: Partial<T>) => void;
+  onRemove: (key: string) => Promise<void>;
+  onReorder: (from: number, to: number) => void;
+  toggleOpen: (key: string) => void;
+  mapManaged: MapManaged<T>;
+  onDuplicate: (to: number, item: T, ...args: F) => void;
+  onAddToStart: (...args: F) => void;
+  isMaxMatches: boolean;
+  latestCreatedKey: string | undefined;
+}
 
 export const useManager = <T extends {}, F extends any[]>(
   items: T[] = [],
   onChange: (items: T[], save?: boolean) => void,
-  {
-    clone = identity,
-    getKey,
-    factory = identity as any,
-    autosave = true,
-    debounced = true,
-    handleRemove,
-  }: {
-    clone?: (initVal: T, targetVal: T) => T;
-    getKey?: (value: T) => string;
-    factory?: (...args: F) => T;
-    autosave?: boolean;
-    debounced?: boolean;
-    handleRemove?: (value: T, index: number) => void;
-  } = {}
-) => {
+  { clone = identity, getKey, maxItems, factory = identity as any, autosave = true, debounced = true, handleRemove }: MapManagedOptions<T, F> = {}
+): MapManagedAPI<T, F> => {
   const keyLookup = React.useRef<Map<T | [T, number], string>>();
   const normalized = React.useRef<Normalized<T>>();
   const cachedOnChange = React.useRef<OnChange<T>>();
   const latestCreatedKey = React.useRef<string>();
 
   const [forceUpdate] = useForceUpdate();
+  const isMaxMatches = maxItems == null ? false : items.length >= maxItems;
 
   const generateLookupKey = React.useMemo(
     () => moize((value: T, index: number): T | [T, number] => (value !== null && UNIQUE_TYPES.includes(typeof value) ? value : [value, index])),
@@ -147,6 +155,10 @@ export const useManager = <T extends {}, F extends any[]>(
 
   const onAdd = React.useCallback(
     (...args: F) => {
+      if (isMaxMatches) {
+        return;
+      }
+
       const { key, value } = createKeyValue(...args);
 
       const updated = addNormalizedByKey(normalized.current!, key, value);
@@ -154,11 +166,15 @@ export const useManager = <T extends {}, F extends any[]>(
 
       commitInsert(key, value, index, updated);
     },
-    [createKeyValue, commitInsert]
+    [createKeyValue, commitInsert, isMaxMatches]
   );
 
   const onAddToStart = React.useCallback(
     (...args: F) => {
+      if (isMaxMatches) {
+        return;
+      }
+
       const { key, value } = createKeyValue(...args);
 
       const updated = addToStartNormalizedByKey(normalized.current!, key, value);
@@ -166,11 +182,15 @@ export const useManager = <T extends {}, F extends any[]>(
 
       commitInsert(key, value, index, updated);
     },
-    [createKeyValue, commitInsert]
+    [createKeyValue, commitInsert, isMaxMatches]
   );
 
   const onDuplicate = React.useCallback(
     (to: number, item: T, ...args: F) => {
+      if (isMaxMatches) {
+        return;
+      }
+
       const { key, value: dupVal } = duplicateKeyValue(item, ...args);
 
       const withDupVal = addToStartNormalizedByKey(normalized.current!, key, dupVal);
@@ -183,7 +203,7 @@ export const useManager = <T extends {}, F extends any[]>(
 
       commitInsert(key, dupVal, dupIndex, updated);
     },
-    [duplicateKeyValue, commitInsert]
+    [duplicateKeyValue, commitInsert, isMaxMatches]
   );
 
   const onReorder = React.useCallback(
@@ -270,6 +290,7 @@ export const useManager = <T extends {}, F extends any[]>(
     mapManaged,
     onDuplicate,
     onAddToStart,
+    isMaxMatches,
     latestCreatedKey: latestCreatedKey.current,
   };
 };

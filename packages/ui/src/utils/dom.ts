@@ -23,7 +23,7 @@ export const getScrollbarWidth = () => {
   return widthNoScroll - widthWithScroll;
 };
 
-const withHandler =
+export const withHandler =
   <E extends Event | React.BaseSyntheticEvent, O = never>(task: (event: E, options?: O) => void) =>
   <T extends E>(cb?: ((event: T) => void) | null, options?: O) =>
   // eslint-disable-next-line consistent-return

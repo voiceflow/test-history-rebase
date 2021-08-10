@@ -1,9 +1,9 @@
 import composeRefs from '@seznam/compose-react-refs';
-import { KeyName, useCache, useDidUpdateEffect } from '@voiceflow/ui';
+import { useCache, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
-import { Node, Transforms } from 'slate';
-import { Editable, RenderElementProps, RenderLeafProps, Slate } from 'slate-react';
+import { Descendant, Node, Transforms } from 'slate';
 
+import SlateEditable, { SlateEditorAPI } from '@/components/SlateEditable';
 import { isNodeEditLockedSelector } from '@/ducks/realtime';
 import { compose, connect } from '@/hocs';
 import { useDebouncedCallback } from '@/hooks';
@@ -13,9 +13,8 @@ import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/t
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { BlockAPI } from '@/pages/Canvas/types';
 
-import { Font, FONT_WEIGHTS_PER_FONT_FAMILY, FontWeight, SLATE_EDITOR_CLASS_NAME, TextProperty } from '../constants';
-import MarkupSlateEditor from '../MarkupSlateEditor';
-import { Border, BorderPosition, Container, DefaultElement, Leaf, LinkElement } from './components';
+import { SLATE_EDITOR_CLASS_NAME } from '../constants';
+import { Border, BorderPosition, Container } from './components';
 import { addDraggableAttr, findAllDraggableParents, removeDraggableAttr } from './utils';
 
 type MarkupProps = ConnectedMarkupNodeProps<Markup.NodeData.Text> & {
@@ -26,16 +25,16 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
 
-  const isNew = React.useMemo(() => MarkupSlateEditor.isNewState(data.content), []);
+  const isNew = React.useMemo(() => SlateEditorAPI.isNewState(data.content), []);
 
-  const [value, setValue] = React.useState<Node[]>(data.content);
+  const [value, setValue] = React.useState<Descendant[]>(data.content);
   const [editable, setEditable] = React.useState(isNew);
   const [isInitialWidthApplied, setIsInitialWidthApplied] = React.useState(false);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const draggableParentsCache = React.useRef<HTMLElement[]>([]);
 
-  const cache = useCache({ value, skipEditableFocus: false }, { value });
+  const cache = useCache({ value, skipEditableFocus: false, doubleClicked: false }, { value });
 
   const updateContentDebounced = useDebouncedCallback(300, () => engine.node.updateData(node.id, { content: cache.current.value }), []);
 
@@ -59,7 +58,7 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
 
   const onDragStart = React.useCallback(
     (event: React.DragEvent) => {
-      if (MarkupSlateEditor.isFocused(editor)) {
+      if (SlateEditorAPI.isFocused(editor)) {
         event.stopPropagation();
       }
     },
@@ -67,20 +66,27 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
   );
 
   const onFocus = React.useCallback(() => {
+    setEditable(true);
+
     if (draggableParentsCache?.current?.length === 0) {
       removeDraggableParents();
+    }
+
+    if (!cache.current.doubleClicked) {
+      cache.current.skipEditableFocus = true;
     }
 
     if (engine.markup.creatingType) {
       cache.current.skipEditableFocus = true;
 
-      setEditable(true);
       engine.markup.finishCreating?.();
     }
+
+    cache.current.doubleClicked = false;
   }, [engine]);
 
   const onBlur = React.useCallback(async () => {
-    if (!MarkupSlateEditor.serialize(cache.current.value)) {
+    if (!SlateEditorAPI.serialize(cache.current.value)) {
       engine.node.remove(node.id);
 
       addDraggableAttr(draggableParentsCache.current);
@@ -104,63 +110,28 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
     draggableParentsCache.current = [];
   }, []);
 
-  const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
-    const isActionKey = event.ctrlKey || event.metaKey;
-
-    if (event.key === KeyName.ESCAPE) {
-      editor.removeFakeSelection();
-      MarkupSlateEditor.deselect(editor);
-      MarkupSlateEditor.blur(editor);
-    } else if (isActionKey && event.key === 'b') {
-      const fontFamily = MarkupSlateEditor.textProperty(editor, TextProperty.FONT_FAMILY) || Font.OPEN_SANS;
-      const fontWeight = MarkupSlateEditor.textProperty(editor, TextProperty.FONT_WEIGHT) || FontWeight.REGULAR;
-
-      const nextFontWeight = fontWeight === FontWeight.REGULAR ? FontWeight.BOLD : FontWeight.REGULAR;
-
-      if ((FONT_WEIGHTS_PER_FONT_FAMILY[fontFamily] || FONT_WEIGHTS_PER_FONT_FAMILY[Font.OPEN_SANS])?.includes(nextFontWeight)) {
-        MarkupSlateEditor.setTextProperty(editor, TextProperty.FONT_WEIGHT, nextFontWeight);
-      }
-    } else if (isActionKey && event.key === 'i') {
-      const isItalicActive = MarkupSlateEditor.isTextPropertyActive(editor, TextProperty.ITALIC, true);
-
-      MarkupSlateEditor.setTextProperty(editor, TextProperty.ITALIC, !isItalicActive);
-    } else if (isActionKey && event.key === 'u') {
-      const isUnderlineActive = MarkupSlateEditor.isTextPropertyActive(editor, TextProperty.UNDERLINE, true);
-
-      MarkupSlateEditor.setTextProperty(editor, TextProperty.UNDERLINE, !isUnderlineActive);
-    }
-  }, []);
-
-  const renderElement = React.useCallback(({ element, ...props }: RenderElementProps) => {
-    if (MarkupSlateEditor.isLink(element)) {
-      return <LinkElement {...props} element={element} />;
-    }
-
-    return <DefaultElement {...props} element={element} />;
-  }, []);
-
   const onContainerDoubleClick = React.useCallback(() => {
     if (editable) {
       return;
     }
 
+    cache.current.doubleClicked = true;
+
     setEditable(true);
   }, [editable]);
-
-  const renderLeaf = React.useCallback((props: RenderLeafProps) => <Leaf {...props} />, []);
 
   React.useImperativeHandle(ref, () => blockAPI, [blockAPI]);
 
   useDidUpdateEffect(() => {
-    if (isFocused && !MarkupSlateEditor.isFocused(editor) && MarkupSlateEditor.serialize(value)) {
+    if (isFocused && !SlateEditorAPI.isFocused(editor) && SlateEditorAPI.serialize(value)) {
       engine.transformation.initialize(nodeEntity.nodeID);
     }
 
     if (!isFocused) {
       setEditable(false);
       editor.removeFakeSelection();
-      MarkupSlateEditor.deselect(editor);
-      MarkupSlateEditor.blur(editor);
+      SlateEditorAPI.deselect(editor);
+      SlateEditorAPI.blur(editor);
     }
   }, [isFocused]);
 
@@ -179,7 +150,7 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
   }, [data.content]);
 
   useDidUpdateEffect(() => {
-    if (value !== data.content && !MarkupSlateEditor.isFocused(editor)) {
+    if (value !== data.content && !SlateEditorAPI.isFocused(editor)) {
       updateContentDebounced();
     }
   }, [value]);
@@ -188,10 +159,10 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
     if (editable && !cache.current.skipEditableFocus) {
       const [node, path] = Node.last(editor, []);
 
-      MarkupSlateEditor.focus(editor);
+      SlateEditorAPI.focus(editor);
       Transforms.select(editor, {
-        anchor: { path, offset: MarkupSlateEditor.serialize([node]).length },
-        focus: { path, offset: MarkupSlateEditor.serialize([node]).length },
+        anchor: { path, offset: SlateEditorAPI.serialize([node]).length },
+        focus: { path, offset: SlateEditorAPI.serialize([node]).length },
       });
     } else if (cache.current.skipEditableFocus) {
       cache.current.skipEditableFocus = false;
@@ -200,13 +171,13 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
 
   React.useEffect(() => {
     if (isNew && isFocused && isActivated && !isInitialWidthApplied) {
-      MarkupSlateEditor.focus(editor);
+      SlateEditorAPI.focus(editor);
     }
   }, [isNew, isActivated, isFocused]);
 
   React.useLayoutEffect(() => {
     if (!isInitialWidthApplied && isNew && isFocused) {
-      const isEmpty = MarkupSlateEditor.isNewState(value);
+      const isEmpty = SlateEditorAPI.isNewState(value);
       const slateNodes = Array.from(containerRef.current?.querySelectorAll<HTMLElement>('[data-slate-node="element"]') ?? []);
       const maxWidth = Math.max(0, ...slateNodes.map(({ clientWidth }) => clientWidth));
 
@@ -240,17 +211,15 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
       <Border scale={data.scale} position={BorderPosition.BOTTOM} />
       <Border scale={data.scale} position={BorderPosition.LEFT} />
 
-      <Slate editor={editor} value={value} onChange={setValue}>
-        <Editable
-          onBlur={onBlur}
-          onFocus={onFocus}
-          onKeyDown={onKeyDown}
-          className={SLATE_EDITOR_CLASS_NAME}
-          renderLeaf={renderLeaf}
-          placeholder="Type something"
-          renderElement={renderElement}
-        />
-      </Slate>
+      <SlateEditable
+        value={value}
+        editor={editor}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        onChange={setValue}
+        className={SLATE_EDITOR_CLASS_NAME}
+        placeholder="Type something"
+      />
     </Container>
   );
 };

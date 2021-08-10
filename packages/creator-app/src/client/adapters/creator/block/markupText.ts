@@ -1,10 +1,10 @@
 /* eslint-disable max-depth, no-restricted-syntax */
+import { ElementProperty, ElementType, TextProperty } from '@voiceflow/general-types/build/nodes/text';
 import { RawDraftContentState, RawDraftEntityRange, RawDraftInlineStyleRange } from 'draft-js';
 import { parseToRgb } from 'polished';
 import { Element, Text } from 'slate';
 
 import { Markup } from '@/models';
-import { ElementProperty, ElementType, TextAlign, TextProperty } from '@/pages/Canvas/managers/MarkupText/constants';
 
 import { createBlockAdapter } from './utils';
 
@@ -19,7 +19,7 @@ enum DraftInlineStyle {
 
 type DraftTextData = Omit<Markup.NodeData.Text, 'content'> & {
   content: RawDraftContentState;
-  textAlignment?: TextAlign;
+  textAlignment?: string;
 };
 
 type Node = Element | Text;
@@ -196,7 +196,7 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
         });
 
       return {
-        [ElementProperty.TEXT_ALIGN]: textAlignment || TextAlign.LEFT,
+        [ElementProperty.TEXT_ALIGN]: textAlignment || 'left',
         children,
       };
     });

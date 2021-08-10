@@ -83,6 +83,8 @@ const SPEAK_STEP = createMenuStep(BlockType.SPEAK, { factoryData: { dialogs: [{ 
 
 const AUDIO_STEP = createMenuStep(BlockType.SPEAK, { factoryData: { dialogs: [{ type: DialogType.AUDIO }] } });
 
+const TEXT_STEP = createMenuStep(BlockType.TEXT);
+
 const STREAM_STEP = createMenuStep(BlockType.STREAM);
 
 const USER_INFO_STEP = createMenuStep(BlockType.USER_INFO);
@@ -154,7 +156,7 @@ export const CHATBOT_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, VISUAL_STEP],
+    steps: [SPEAK_STEP, TEXT_STEP, VISUAL_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,

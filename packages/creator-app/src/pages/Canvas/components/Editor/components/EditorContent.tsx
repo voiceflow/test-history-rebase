@@ -4,13 +4,14 @@ import React from 'react';
 import ContentContainer from './EditorContentContainer';
 import Footer from './EditorFooter';
 
+export interface RenderOptions {
+  scrollTo: (...args: [ScrollToOptions] | [number, number]) => void;
+  scrollToBottom: (behavior?: ScrollBehavior) => void;
+}
+
 export type EditorContentProps = React.ComponentProps<typeof ContentContainer> & {
-  footer?:
-    | React.ReactNode
-    | ((options: {
-        scrollTo: (...args: [ScrollToOptions] | [number, number]) => void;
-        scrollToBottom: (behavior?: ScrollBehavior) => void;
-      }) => React.ReactNode);
+  footer?: React.ReactNode | ((options: RenderOptions) => React.ReactNode);
+  children?: React.ReactNode | ((options: RenderOptions) => React.ReactNode);
   hideFooter?: boolean;
 };
 

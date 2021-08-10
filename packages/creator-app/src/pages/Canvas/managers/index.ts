@@ -32,12 +32,14 @@ import SetManagerV2 from './SetV2';
 import SpeakManager from './Speak';
 import StartManager from './Start';
 import StreamManager from './Stream';
+import TextManager from './Text';
 import UserInfoManager from './UserInfo';
 import VisualManager from './Visual';
 
 export const MANAGERS_BY_TYPE = {
   [BlockType.START]: StartManager,
   [BlockType.SPEAK]: SpeakManager,
+  [BlockType.TEXT]: TextManager,
   [BlockType.CHOICE]: ChoiceManager,
   [BlockType.CHOICE_OLD]: ChoiceOldManager,
   [BlockType.COMBINED]: CombinedManager,

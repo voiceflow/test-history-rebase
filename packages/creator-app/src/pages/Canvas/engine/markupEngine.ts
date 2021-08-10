@@ -4,10 +4,10 @@ import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Editor } from 'slate';
 
+import { SlateEditorAPI, useSetupSlateEditor } from '@/components/SlateEditable';
 import { BlockType, MarkupBlockType } from '@/constants';
 import { useForceUpdate, useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
-import MarkupSlateEditor, { createSlateEditor } from '@/pages/Canvas/managers/MarkupText/MarkupSlateEditor';
 import { Nullable } from '@/types';
 import { objectID } from '@/utils';
 import { isMarkupBlockType } from '@/utils/typeGuards';
@@ -46,7 +46,7 @@ class MarkupEngine extends EngineConsumer {
     const nodeData: Markup.NodeData.Text = {
       scale: 1,
       rotate: 0,
-      content: MarkupSlateEditor.getEmptyState(),
+      content: SlateEditorAPI.getEmptyState(),
       overrideWidth: 178,
     };
 
@@ -62,9 +62,9 @@ class MarkupEngine extends EngineConsumer {
   }
 
   useSetupTextEditor(nodeID: string): Editor {
-    const editor = React.useMemo(() => {
-      const editor = createSlateEditor();
+    const editor = useSetupSlateEditor();
 
+    React.useMemo(() => {
       const { onChange } = editor;
 
       editor.onChange = () => {
@@ -73,8 +73,6 @@ class MarkupEngine extends EngineConsumer {
           onChange();
         });
       };
-
-      return editor;
     }, []);
 
     useSetup(() => {
@@ -88,8 +86,8 @@ class MarkupEngine extends EngineConsumer {
     return editor;
   }
 
-  useTextEditor(nodeID: string): Editor | undefined {
-    const [forceUpdate] = useForceUpdate();
+  useTextEditor(nodeID: string): [key: number, editor: Editor | undefined] {
+    const [forceUpdate, key] = useForceUpdate();
     const editor = this.textEditorsMap.get(nodeID);
 
     useSetup(() => {
@@ -100,7 +98,7 @@ class MarkupEngine extends EngineConsumer {
       this.textEditorsOnChangeMap.delete(nodeID);
     });
 
-    return editor;
+    return [key, editor];
   }
 }
 

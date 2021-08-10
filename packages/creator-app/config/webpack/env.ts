@@ -19,6 +19,7 @@ import {
   ff_natoApco,
   ff_ownerRole,
   ff_testReports,
+  ff_textStep,
   ff_wavenetVoices,
   ga,
   growsurf,
@@ -71,6 +72,7 @@ export default {
   FF_TEST_REPORTS: ff_testReports && 'true',
   FF_ATOMIC_ACTIONS: ff_atomicActions && 'true',
   FF_DIALOGFLOW: ff_dialogflow && 'true',
+  FF_TEXT_STEP: ff_textStep && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

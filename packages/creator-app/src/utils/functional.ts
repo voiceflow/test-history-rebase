@@ -32,6 +32,31 @@ export const identity = <T>(value: T): T => value;
 
 export const stringify = (value: any): string => (_isString(value) ? value : String(value));
 
+export const chain =
+  <A extends any[]>(...fns: Array<(...args: A) => void>) =>
+  (...args: A): void =>
+    fns.forEach((fn) => fn(...args));
+
+export const chainVoid =
+  (...fns: Array<() => void>) =>
+  (): void =>
+    chain(...fns)();
+
+export const chainAsync =
+  <A extends any[]>(...fns: Array<(...args: A) => void>) =>
+  async (...args: A): Promise<void> => {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const fn of fns) {
+      // eslint-disable-next-line no-await-in-loop
+      await fn(...args);
+    }
+  };
+
+export const chainVoidAsync =
+  (...fns: Array<() => void>) =>
+  (): Promise<void> =>
+    chainAsync(...fns)();
+
 export const withEffect =
   <T>(callback: (value: T) => void) =>
   (value: T) => {

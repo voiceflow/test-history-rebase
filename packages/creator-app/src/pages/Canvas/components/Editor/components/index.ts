@@ -1,4 +1,5 @@
 export { default as Container } from './EditorContainer';
+export type { RenderOptions as ContentRenderOptions } from './EditorContent';
 export { default as Content } from './EditorContent';
 export { default as EditorContentAnimation } from './EditorContentAnimation';
 export type { ControlOptions } from './EditorControls';

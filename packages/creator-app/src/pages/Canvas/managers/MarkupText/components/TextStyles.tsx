@@ -1,32 +1,15 @@
-import { preventDefault } from '@voiceflow/ui';
 import React from 'react';
-import { Editor } from 'slate';
 
-import { TextProperty } from '../constants';
-import MarkupSlateEditor from '../MarkupSlateEditor';
-import IconButton from './IconButton';
+import { TextItalicButton, TextUnderlineButton } from '@/components/SlateEditable';
 
-interface TextStylesProps {
-  editor: Editor;
-}
+import Button from './Button';
 
-const TextStyles: React.FC<TextStylesProps> = ({ editor }) => {
-  const isItalicActive = MarkupSlateEditor.isTextPropertyActive(editor, TextProperty.ITALIC, true);
-  const isUnderlineActive = MarkupSlateEditor.isTextPropertyActive(editor, TextProperty.UNDERLINE, true);
-
+const TextStyles: React.FC = () => {
   return (
     <>
-      <IconButton
-        icon="italic"
-        active={isItalicActive}
-        onMouseDown={preventDefault(() => MarkupSlateEditor.setTextProperty(editor, TextProperty.ITALIC, !isItalicActive))}
-      />
+      <TextItalicButton component={Button} />
 
-      <IconButton
-        icon="underline"
-        active={isUnderlineActive}
-        onMouseDown={preventDefault(() => MarkupSlateEditor.setTextProperty(editor, TextProperty.UNDERLINE, !isUnderlineActive))}
-      />
+      <TextUnderlineButton component={Button} />
     </>
   );
 };

@@ -14,6 +14,7 @@ import promptAdapter, { promptPortsAdapter } from './prompt';
 import randomAdapter from './random';
 import setAdapterV2 from './setV2';
 import speakAdapter from './speak';
+import textAdapter from './text';
 import traceAdapter, { tracePortsAdapter } from './trace';
 import visualAdapter from './visual';
 
@@ -23,6 +24,7 @@ export const generalBlockAdapter = {
 
   // user defined
   [BlockType.IFV2]: ifAdapterV2,
+  [BlockType.TEXT]: textAdapter,
   [BlockType.SETV2]: setAdapterV2,
   [BlockType.EXIT]: exitAdapter,
   [BlockType.CODE]: codeAdapter,

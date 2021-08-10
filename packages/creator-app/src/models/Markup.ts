@@ -1,4 +1,4 @@
-import { Node } from 'slate';
+import { Descendant } from 'slate';
 
 export namespace Markup {
   export interface Color {
@@ -12,7 +12,7 @@ export namespace Markup {
     export interface Text {
       scale: number;
       rotate: number;
-      content: Node[];
+      content: Descendant[];
       overrideWidth: number | null /* Used to implement horizontal + vertical resizing of Markup Text */;
     }
 

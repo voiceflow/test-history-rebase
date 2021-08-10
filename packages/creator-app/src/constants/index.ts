@@ -88,6 +88,7 @@ export enum BlockType {
   COMMENT = 'comment',
 
   // basic
+  TEXT = 'text',
   SPEAK = 'speak',
   CHOICE_OLD = 'choice',
   // logic

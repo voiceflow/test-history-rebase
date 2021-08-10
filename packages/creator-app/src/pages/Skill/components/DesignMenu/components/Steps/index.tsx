@@ -19,14 +19,18 @@ import { StepDragItem } from './types';
 
 const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expandedSections }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
+  const textStep = useFeature(FeatureFlag.TEXT_STEP);
+
   const sections = React.useMemo(() => {
     const platformSections = getSections(platform);
 
     return platformSections.map((platformSection) => ({
       ...platformSection,
       steps: platformSection.steps.filter((step) => {
-        if (!gadgets.isEnabled && [BlockType.EVENT].includes(step.type)) return false;
+        if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
+        if (!textStep.isEnabled && step.type === BlockType.TEXT) return false;
         if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
+
         return true;
       }),
     }));

@@ -13,7 +13,7 @@ import { useManager, useToggle } from '@/hooks';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
-import { useButtonLayoutOption } from '@/pages/Canvas/managers/components/responseOptions';
+import { useButtonLayoutOption } from '@/pages/Canvas/managers/hooks';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { ConnectedProps } from '@/types';
 import { compose } from '@/utils/functional';

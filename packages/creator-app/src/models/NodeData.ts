@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
 import { PermissionType } from '@voiceflow/alexa-types';
 import { RecurrenceFreq } from '@voiceflow/alexa-types/build/nodes/reminder';
 import { SlotMapping } from '@voiceflow/api-sdk';
 import { AnyButton, CanvasNodeVisibility, ExpressionTypeV2, IntegrationUser, NoMatchType } from '@voiceflow/general-types';
 import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
 import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/general-types/build/nodes/googleSheets';
+import { StepData as TextStepData } from '@voiceflow/general-types/build/nodes/text';
 import { StepData as VisualStepData } from '@voiceflow/general-types/build/nodes/visual';
 
 import { BlockType, CardType, DistinctPlatform, IntegrationType, RepromptType } from '@/constants';
@@ -281,6 +283,7 @@ export namespace NodeData {
   export interface Exit {}
 
   export type Visual = VisualStepData;
+  export type Text = TextStepData;
 }
 
 export namespace DBNodeData {

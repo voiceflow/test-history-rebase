@@ -1,37 +1,16 @@
-import { preventDefault } from '@voiceflow/ui';
 import React from 'react';
-import { Editor } from 'slate';
 
-import { ElementProperty, TextAlign } from '../constants';
-import MarkupSlateEditor from '../MarkupSlateEditor';
-import IconButton from './IconButton';
+import { ElementAlignCenterButton, ElementAlignLeftButton, ElementAlignRightButton } from '@/components/SlateEditable';
 
-interface TextAlignsProps {
-  editor: Editor;
-}
+import Button from './Button';
 
-const TextAligns: React.FC<TextAlignsProps> = ({ editor }) => (
+const TextAligns: React.FC = () => (
   <>
-    <IconButton
-      icon="textAlignLeft"
-      active={
-        MarkupSlateEditor.isElementPropertyActive(editor, ElementProperty.TEXT_ALIGN, undefined) ||
-        MarkupSlateEditor.isElementPropertyActive(editor, ElementProperty.TEXT_ALIGN, TextAlign.LEFT)
-      }
-      onMouseDown={preventDefault(() => MarkupSlateEditor.setElementProperty(editor, ElementProperty.TEXT_ALIGN, TextAlign.LEFT))}
-    />
+    <ElementAlignLeftButton component={Button} />
 
-    <IconButton
-      icon="textAlignCenter"
-      active={MarkupSlateEditor.isElementPropertyActive(editor, ElementProperty.TEXT_ALIGN, TextAlign.CENTER)}
-      onMouseDown={preventDefault(() => MarkupSlateEditor.setElementProperty(editor, ElementProperty.TEXT_ALIGN, TextAlign.CENTER))}
-    />
+    <ElementAlignCenterButton component={Button} />
 
-    <IconButton
-      icon="textAlignRight"
-      active={MarkupSlateEditor.isElementPropertyActive(editor, ElementProperty.TEXT_ALIGN, TextAlign.RIGHT)}
-      onMouseDown={preventDefault(() => MarkupSlateEditor.setElementProperty(editor, ElementProperty.TEXT_ALIGN, TextAlign.RIGHT))}
-    />
+    <ElementAlignRightButton component={Button} />
   </>
 );
 

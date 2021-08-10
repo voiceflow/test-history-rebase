@@ -16,6 +16,9 @@ parameters:
   k8s-asset-creator-app:
     type: string
     default: "deployment/creator-app"
+  k8s-asset-realtime:
+    type: string
+    default: "deployment/realtime"
   k8s-namespace:
     type: string
     default: "voiceflow-v1" # This is usually voiceflow-v1
@@ -62,6 +65,13 @@ defaults:
       tags:
         only: /^@voiceflow/admin-app@[0-9]*(\.[0-9]*)*$/
 
+  prod_realtime_deploy_filters: &prod_realtime_deploy_filters
+    filters:
+      branches:
+        ignore: /.*/
+      tags:
+        only: /^@voiceflow/realtime@[0-9]*(\.[0-9]*)*$/
+
   ignore_autorebase_staging_filters: &ignore_autorebase_staging_filters
     branches:
       ignore:
@@ -100,14 +110,21 @@ jobs:
         description: if there is a change in this branch, then execute
         type: boolean
         default: false
+      force_check:
+        description: force to update the build, if there is a change or not. This is for tracks
+        type: boolean
+        default: true
     executor: vfcommon/node-executor
     steps:
       - when:
           condition: << parameters.execute >>
           steps:
             - checkout
-            - vfcommon/stop_if_no_changes:
-                package: creator-app
+            - when:
+                condition: << parameters.force_check >>
+                steps:
+                  - vfcommon/stop_if_no_changes:
+                      package: creator-app
             - when:
                 condition: << parameters.check_image >>
                 steps:
@@ -155,14 +172,21 @@ jobs:
         description: if there is a change in this branch, then execute
         type: boolean
         default: false
+      force_check:
+        description: force to update the build, if there is a change or not. This is for tracks
+        type: boolean
+        default: true
     executor: vfcommon/node-executor
     steps:
       - when:
           condition: << parameters.execute >>
           steps:
             - checkout
-            - vfcommon/stop_if_no_changes:
-                package: realtime
+            - when:
+                condition: << parameters.force_check >>
+                steps:
+                  - vfcommon/stop_if_no_changes:
+                      package: realtime
             - when:
                 condition: << parameters.check_image >>
                 steps:
@@ -196,14 +220,21 @@ jobs:
         description: if there is a change in this branch, then execute
         type: boolean
         default: false
+      force_check:
+        description: force to update the build, if there is a change or not. This is for tracks
+        type: boolean
+        default: true
     executor: vfcommon/node-executor
     steps:
       - when:
           condition: << parameters.execute >>
           steps:
             - checkout
-            - vfcommon/stop_if_no_changes:
-                package: admin-app
+            - when:
+                condition: << parameters.force_check >>
+                steps:
+                  - vfcommon/stop_if_no_changes:
+                      package: admin-app
             - vfcommon/install_node_modules:
                 avoid_post_install_scripts: false
             - vfcommon/install_cpio
@@ -337,45 +368,8 @@ jobs:
                 tagged: true
                 success_slack_notify: false
 
-  update-track-creator-app:
-    parameters:
-      execute:
-        description: if there is a change in this branch, then execute
-        type: boolean
-        default: false
-    executor: vfcommon/build-executor
-    steps:
-      - when:
-          condition: << parameters.execute >>
-          steps:
-            - checkout
-            - vfcommon/stop_if_no_changes:
-                package: creator-app
-            - vfcommon/update_track:
-                image_repo: << pipeline.parameters.container-image-url-creator-app >>
-                component: << pipeline.parameters.track-component-creator-app >>
-                dockerfile: Dockerfile
 
-  update-track-admin-ui:
-    parameters:
-      execute:
-        description: if there is a change in this branch, then execute
-        type: boolean
-        default: false
-    executor: vfcommon/build-executor
-    steps:
-      - when:
-          condition: << parameters.execute >>
-          steps:
-            - checkout
-            - vfcommon/stop_if_no_changes:
-                package: admin-app
-            - vfcommon/update_track:
-                image_repo: << pipeline.parameters.container-image-url-admin-ui >>
-                component: << pipeline.parameters.track-component-admin-ui >>
-                dockerfile: Dockerfile
-
-  update-track-realtime:
+  build-deploy-realtime-image:
     parameters:
       execute:
         description: if there is a change in this branch, then execute
@@ -389,6 +383,91 @@ jobs:
             - checkout
             - vfcommon/stop_if_no_changes:
                 package: realtime
+            - attach_workspace:
+                at: /tmp/vf-build
+            - vfcommon/build_push_image:
+                image_repo: << pipeline.parameters.container-image-url-realtime >>
+                dockerfile: Dockerfile
+                checkout: false
+            - vfcommon/post_image_push_actions:
+                namespace: << pipeline.parameters.k8s-namespace >>
+                target: << pipeline.parameters.k8s-asset-realtime >>
+                tagged: true
+                success_slack_notify: false
+
+  update-track-creator-app:
+    parameters:
+      execute:
+        description: if there is a change in this branch, then execute
+        type: boolean
+        default: false
+      force_check:
+        description: force to update the build, if there is a change or not. This is for tracks
+        type: boolean
+        default: true
+    executor: vfcommon/build-executor
+    steps:
+      - when:
+          condition: << parameters.execute >>
+          steps:
+            - checkout
+            - when:
+                condition: << parameters.force_check >>
+                steps:
+                  - vfcommon/stop_if_no_changes:
+                      package: creator-app
+            - vfcommon/update_track:
+                image_repo: << pipeline.parameters.container-image-url-creator-app >>
+                component: << pipeline.parameters.track-component-creator-app >>
+                dockerfile: Dockerfile
+
+  update-track-admin-ui:
+    parameters:
+      execute:
+        description: if there is a change in this branch, then execute
+        type: boolean
+        default: false
+      force_check:
+        description: force to update the build, if there is a change or not. This is for tracks
+        type: boolean
+        default: true
+    executor: vfcommon/build-executor
+    steps:
+      - when:
+          condition: << parameters.execute >>
+          steps:
+            - checkout
+            - when:
+                condition: << parameters.force_check >>
+                steps:
+                  - vfcommon/stop_if_no_changes:
+                      package: admin-app
+            - vfcommon/update_track:
+                image_repo: << pipeline.parameters.container-image-url-admin-ui >>
+                component: << pipeline.parameters.track-component-admin-ui >>
+                dockerfile: Dockerfile
+
+  update-track-realtime:
+    parameters:
+      execute:
+        description: if there is a change in this branch, then execute
+        type: boolean
+        default: false
+      force_check:
+        description: force to update the build, if there is a change or not. This is for tracks
+        type: boolean
+        default: true
+    executor: vfcommon/build-executor
+    steps:
+      - when:
+          condition: << parameters.execute >>
+          steps:
+            - checkout
+            - when:
+                condition: << parameters.force_check >>
+                steps:
+                  - vfcommon/stop_if_no_changes:
+                      package: realtime
             - vfcommon/update_track:
                 image_repo: << pipeline.parameters.container-image-url-realtime >>
                 component: << pipeline.parameters.track-component-realtime >>
@@ -403,6 +482,7 @@ workflows:
           context: dev-test
           name: build-app-track
           execute: << pipeline.parameters.build-creator-app >>
+          force_check: false
           filters:
             <<: *ignore_autorebase_filters
             tags:
@@ -410,6 +490,7 @@ workflows:
       - update-track-creator-app:
           context: dev-test
           execute: << pipeline.parameters.build-creator-app >>
+          force_check: false
           post-steps:
             - jira/notify:
                 environment: ${CIRCLE_BRANCH%%_*}
@@ -427,6 +508,7 @@ workflows:
     jobs:
       - build-admin:
           execute: << pipeline.parameters.build-admin-app >>
+          force_check: false
           context: dev-test
           name: build-admin-track
           filters:
@@ -436,6 +518,7 @@ workflows:
       - update-track-admin-ui:
           context: dev-test
           execute: << pipeline.parameters.build-admin-app >>
+          force_check: false
           requires:
             - build-admin-track
           filters:
@@ -449,6 +532,7 @@ workflows:
       - build-realtime:
           context: dev-test
           execute: << pipeline.parameters.build-realtime >>
+          force_check: false
           name: build-realtime-track
           filters:
             <<: *ignore_autorebase_filters
@@ -457,6 +541,7 @@ workflows:
       - update-track-realtime:
           context: dev-test
           execute: << pipeline.parameters.build-realtime >>
+          force_check: false
           requires:
             - build-realtime-track
           filters:
@@ -567,3 +652,18 @@ workflows:
           execute: << pipeline.parameters.build-admin-app >>
           requires:
             - build-admin-release
+
+  deploy-realtime:
+    when: << pipeline.parameters.build-realtime >>
+    jobs:
+      - build-realtime:
+          <<: *prod_realtime_deploy_filters
+          context: dev-test
+          name: build-realtime-release
+          execute: << pipeline.parameters.build-realtime >>
+      - build-deploy-realtime-image:
+          <<: *prod_realtime_deploy_filters
+          context: dev-test
+          execute: << pipeline.parameters.build-realtime >>
+          requires:
+            - build-realtime-release

@@ -41,10 +41,11 @@ const Conversations: React.FC<ConnectedConversationProps & ConversationProps> = 
   }, [search, history]);
 
   const loadReports = async () => {
-    dispatch(fetchTranscripts());
-    dispatch(fetchReportTags());
-
     setNoTestRuns(false);
+
+    await dispatch(fetchTranscripts());
+    await dispatch(fetchReportTags());
+
     setIsLoaded(true);
   };
 

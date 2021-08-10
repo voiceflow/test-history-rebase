@@ -12,7 +12,7 @@ const ConversationsHeader: React.FC = () => {
   return (
     <SharePopperProvider>
       <Container>
-        <HeaderLogoButton options={logoOptions} />
+        <HeaderLogoButton noMargins={true} options={logoOptions} />
       </Container>
     </SharePopperProvider>
   );

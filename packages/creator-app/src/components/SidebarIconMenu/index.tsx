@@ -1,4 +1,4 @@
-import { Box, Icon, SvgIcon, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import { Box, Icon, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
@@ -7,7 +7,7 @@ import { ClassName } from '@/styles/constants';
 import { SlideOutDirection } from '@/styles/transitions';
 
 import Drawer from '../Drawer';
-import { Container, Item } from './components';
+import { Container, IconContainer, Item } from './components';
 
 export interface SidebarIconMenuItem {
   id?: string;
@@ -16,6 +16,7 @@ export interface SidebarIconMenuItem {
   small?: boolean;
   tooltip?: TippyTooltipProps;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  withBadge?: boolean;
 }
 
 export interface SidebarIconMenuProps<T extends SidebarIconMenuItem> {
@@ -52,7 +53,7 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
           isActive={option.value === activeValue}
           className={cn(ClassName.SIDEBAR_ICON_MENU_ITEM, open && `${ClassName.SIDEBAR_ICON_MENU_ITEM}--${option.value}`)}
         >
-          <SvgIcon icon={option.icon} color="currentColor" />
+          <IconContainer icon={option.icon} color="currentColor" withBadge={option.withBadge ?? false} />
         </Item>
       </ItemContainer>
     );

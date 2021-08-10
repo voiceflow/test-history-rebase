@@ -10,6 +10,7 @@ import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
+import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useFeature, useHotKeys, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 
@@ -31,7 +32,7 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
 
 export const useCanvasMenuOptionsAndHotkeys = () => {
   const match = useRouteMatch();
-
+  const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
   const testReports = useFeature(FeatureFlag.TEST_REPORTS);
 
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
@@ -65,6 +66,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
               icon: 'conversations' as const,
               tooltip: { title: 'Conversations', hotkey: HOTKEY_LABEL_MAP[Hotkey.CONVERSATION_PAGE] },
               onClick: goToCurrentTranscript,
+              withBadge: hasUnreadTranscripts,
             },
           ]
         : []),

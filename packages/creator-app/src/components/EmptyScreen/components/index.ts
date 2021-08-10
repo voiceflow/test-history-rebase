@@ -1,5 +1,37 @@
+import { colors } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
-const Container = styled.div``;
+export const BodyTextContainer = styled.div`
+  max-width: 360px;
+  margin-bottom: 32px;
+  color: ${colors('secondary')};
+`;
 
-export default Container;
+export const ButtonContainer = styled.div`
+  display: grid;
+  place-items: center;
+`;
+
+export const TitleLabel = styled.div`
+  color: ${colors('primary')};
+  margin-bottom: 15px;
+  text-align: center;
+  display: block;
+  font-weight: 600;
+  font-size: 15px;
+`;
+
+export const LogoContainer = styled.div`
+  text-align: center;
+`;
+
+export const Logo = styled.img`
+  margin-bottom: 16px;
+  vertical-align: middle;
+`;
+
+export const ContentContainer = styled.div`
+  text-align: center;
+  align-self: center;
+`;

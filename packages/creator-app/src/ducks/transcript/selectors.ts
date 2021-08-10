@@ -31,3 +31,5 @@ export const currentTranscriptIDSelector = createSelector([mapTranscriptsSelecto
   });
   return match?.params.transcriptID;
 });
+
+export const hasUnreadTranscriptsSelector = createSelector([rootTranscriptsSelector], ({ hasUnreadTranscripts }) => hasUnreadTranscripts);

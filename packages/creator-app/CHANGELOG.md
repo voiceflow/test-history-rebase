@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.456.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.456.0...@voiceflow/creator-app@1.456.1) (2021-08-10)
+
+
+### Bug Fixes
+
+* remove buttons option on capture step (VF-1424) ([#3858](https://github.com/voiceflow/creator-app/issues/3858)) ([dd99f99](https://github.com/voiceflow/creator-app/commit/dd99f99ae080011e559fcc390ed62f87b07ad39a))
+* test report other miscellaneous cleanup (VF-000) ([#3862](https://github.com/voiceflow/creator-app/issues/3862)) ([fa47f92](https://github.com/voiceflow/creator-app/commit/fa47f92e6aced63ad90a58e3da516bfb5b6863ce))
+* transcript dialog refinements (VF-1389) ([#3856](https://github.com/voiceflow/creator-app/issues/3856)) ([16edfcb](https://github.com/voiceflow/creator-app/commit/16edfcbf95d60c32b64fe06eae421e0bb00bc0bb))
+
+
+
+
+
 # [1.456.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.455.0...@voiceflow/creator-app@1.456.0) (2021-08-10)
 
 

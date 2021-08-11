@@ -2,7 +2,7 @@ import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
 import { negativeEmotion, neutralEmotion, positiveEmotion } from '@/components/EmojiPicker';
-import { allReportTagsSelector } from '@/ducks/reportTag';
+import { allReportTagsSelector } from '@/ducks/reportTag/selectors';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { Sentiment, SystemTag } from '@/models';
 import { Thunk } from '@/store/types';

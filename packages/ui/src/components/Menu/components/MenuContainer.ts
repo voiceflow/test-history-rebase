@@ -78,7 +78,7 @@ const MenuContainer = styled.ul<MenuContainerProps>`
   ${({ footerAction }) =>
     footerAction &&
     css`
-      padding-bottom: 67px;
+      padding-bottom: 75px;
     `}
 `;
 

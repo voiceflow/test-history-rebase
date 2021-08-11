@@ -41,6 +41,10 @@ const customMenuLabelRenderer = (option: ReportTag, isSelectedFunc: (val: string
   );
 };
 
+const filterOutSelected = (id: string, selectedTagIDs: string[]) => {
+  return !selectedTagIDs.includes(id);
+};
+
 const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
   footerAction,
   footerActionLabel,
@@ -53,11 +57,21 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
   addTag,
   removeTag,
 }) => {
-  const containerRef = React.useRef<HTMLDivElement | null>(null);
   const {
     state: { searchedTag, allTags, tagsMap },
     actions: { onSearch, onCreateNew },
   } = React.useContext(ReportTagInputContext)!;
+
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  // Only use tags that exist in redux (they can be deleted in the tags manager)
+  const [selectedValidTags, setSelectedValidTags] = React.useState(() => {
+    return selectedTags.filter((tag) => !!tagsMap[tag]);
+  });
+
+  React.useEffect(() => {
+    const validTags = selectedTags.filter((tag) => !!tagsMap[tag]);
+    setSelectedValidTags(validTags);
+  }, [tagsMap, selectedTags]);
 
   const nonBuiltInTags = allTags.filter((tag) => !isBuiltInTag(tag.id));
   const selectedTagObjects =
@@ -83,6 +97,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
 
   const onBackspace = (event: React.KeyboardEvent) => {
     const { key } = event;
+
     if (key && (key === KeyName.BACKSPACE || key === KeyName.DELETE) && !searchedTag.trim() && !!selectedTags.length) {
       const lastTagID = selectedTags[selectedTags.length - 1];
       removeTag(lastTagID);
@@ -102,7 +117,9 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
         footerActionLabel={footerActionLabel}
         onClickFooterAction={onClickFooterAction}
         fullWidth
-        options={selectOnly ? allTags : nonBuiltInTags}
+        selectedOptions={selectedValidTags}
+        renderOptionsFilter={selectOnly ? undefined : ({ id }: { id: string }) => filterOutSelected(id, selectedValidTags)}
+        options={selectOnly ? allTags : nonBuiltInTags.filter(({ id }) => filterOutSelected(id, selectedValidTags))}
         autoDismiss={false}
         creatable={creatable}
         onKeyDown={onBackspace}
@@ -111,14 +128,10 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
         searchable
         onCreate={onCreateNew}
         onSearch={(val) => onSearch(val)}
-        getOptionValue={(tag) => {
-          return tag!.id;
-        }}
-        getOptionLabel={(tag) => {
-          return tag ? tagsMap[tag]?.label : '';
-        }}
-        createInputPlaceholder="Add new tag"
-        placeholder={selectedTags?.length ? '' : 'Add Tags'}
+        getOptionValue={(tag) => tag!.id}
+        getOptionLabel={(tag) => (tag ? tagsMap[tag]?.label : '')}
+        createInputPlaceholder="New tag"
+        placeholder={selectedValidTags?.length ? '' : 'Add Tags'}
         onSelect={onToggleTag}
         tags={() => {
           return selectedTagObjects.map((tag, i) => {

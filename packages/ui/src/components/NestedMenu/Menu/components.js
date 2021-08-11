@@ -17,7 +17,8 @@ export const FooterActionContainer = styled.div`
   padding: 24px;
   border-top: solid 1px #eaeff4;
   position: absolute;
-  bottom: 0px;
+  border-radius: 0 0 5px 5px;
+  bottom: 5px;
   :hover {
     color: ${({ theme }) => theme.colors.darkBlue};
   }

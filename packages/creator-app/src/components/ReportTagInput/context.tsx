@@ -49,6 +49,7 @@ export const UnconnectedReportTagInputContextProvider: React.FC<{ selectedTags: 
     const id = await createReportTag(label);
     if (id) {
       addReportTag(currentTranscript.id, id);
+      setSearchedTag('');
     }
   };
 

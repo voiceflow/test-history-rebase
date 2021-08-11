@@ -2,6 +2,7 @@ import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
 import { negativeEmotion, neutralEmotion, positiveEmotion } from '@/components/EmojiPicker';
+import { allReportTagsSelector } from '@/ducks/reportTag';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { Sentiment, SystemTag } from '@/models';
 import { Thunk } from '@/store/types';
@@ -64,6 +65,13 @@ export const createTag =
     async (dispatch, getState) => {
       const state = getState();
       const activeProjectID = activeProjectIDSelector(state);
+      const allExistingReportTags = allReportTagsSelector(state);
+      const allExistingTagLabels = allExistingReportTags?.map(({ label }) => label) || [];
+
+      if (allExistingTagLabels.includes(tagLabel)) {
+        toast.error('Tag already exists');
+        return null;
+      }
       try {
         const newTag = await client.reportTags.createTag(activeProjectID!, { tagID: id, label: tagLabel });
         const newID = newTag.id.toString();

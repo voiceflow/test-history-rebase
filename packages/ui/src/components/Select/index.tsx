@@ -1,3 +1,4 @@
+import noop from 'lodash/noop';
 import React from 'react';
 import AutosizeInput from 'react-input-autosize';
 import { Manager, PopperProps, Reference } from 'react-popper';
@@ -63,11 +64,13 @@ export type SelectProps<O, V> = {
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onOpen?: () => void;
   prefix?: React.ReactNode;
+  selectedOptions?: any;
   options: O[];
   onClose?: () => void;
   createLabel?: string;
   grouped?: boolean;
   minWidth?: boolean;
+  renderOptionsFilter?: (option: O) => boolean;
   onSelect: (value: V, optionsPath: number[]) => void;
   disabled?: boolean;
   placement?: PopperProps['placement'];
@@ -156,7 +159,9 @@ const Select = <O, V = O>({
   prefix,
   onClose,
   grouped,
+  selectedOptions,
   options = [],
+  renderOptionsFilter,
   minWidth = true,
   disabled,
   onSelect,
@@ -196,18 +201,23 @@ const Select = <O, V = O>({
 }: // eslint-disable-next-line sonarjs/cognitive-complexity
 SelectProps<O, V>) => {
   const optionLabel = getOptionLabel(value) || '';
+  const cachedRef = React.useRef({ updatePopperPosition: noop });
 
+  const [initialValueLabel] = React.useState(optionLabel);
   const inputRef = React.useRef<Nullable<HTMLInputElement>>(null);
   const inlineRef = React.useRef<Nullable<HTMLInputElement>>(null);
   const [opened, updateOpened] = React.useState(!!open);
+  const [directMatch, setDirectMatch] = React.useState(false);
   const [searchLabel, updateSearchLabel] = React.useState(optionLabel);
-  const [optionsToRender, updateOptionsToRender] = React.useState(options);
+  const [optionsToRender, updateOptionsToRender] = React.useState(renderOptionsFilter ? options.filter(renderOptionsFilter) : options);
   const [inputWrapperRef, setInputWrapperRef] = React.useState<Nullable<HTMLElement>>(null);
   const [focusedOptionIndex, updateFocusedOptionIndex] = React.useState(multiLevelDropdown ? null : 0);
 
   const isDropdown = !!label;
   const labelSearchable = !label && searchable;
   const isDropDownOpened = isDropdown && opened;
+
+  const renderDropdown = opened && (!!options.length || searchLabel || !searchable);
 
   const cache = useCache({
     value,
@@ -221,6 +231,7 @@ SelectProps<O, V>) => {
     optionLabel,
     searchLabel,
     optionsFilter,
+    initialValueLabel,
     getOptionLabel,
     optionsMaxSize,
     getOptionValue,
@@ -250,7 +261,7 @@ SelectProps<O, V>) => {
 
   const onUpdateOptionsToRender = React.useCallback(
     (label: string) => {
-      const { filteredOptions, matchedOptions } = cache.current.optionsFilter(cache.current.options, label, {
+      const { matchedOptions } = cache.current.optionsFilter(cache.current.options, label, {
         grouped: cache.current.grouped,
         maxSize: cache.current.optionsMaxSize,
         showNotMatched: cache.current.showNotMatchedOptions,
@@ -258,6 +269,16 @@ SelectProps<O, V>) => {
         getOptionValue: cache.current.getOptionValue,
         multiLevelDropdown: cache.current.multiLevelDropdown,
       });
+
+      const hasExactMatch =
+        matchedOptions.length === 1 &&
+        cache.current.getOptionLabel(cache.current.getOptionValue(matchedOptions[0]))?.toLowerCase() === label.toLowerCase();
+
+      if (hasExactMatch || cache.current.initialValueLabel?.toLowerCase() === label.toLowerCase()) {
+        setDirectMatch(true);
+      } else {
+        setDirectMatch(false);
+      }
 
       const findIndexCallback = (option: O) => cache.current.value === cache.current.getOptionValue(option);
 
@@ -277,10 +298,21 @@ SelectProps<O, V>) => {
         }
       }
 
-      updateOptionsToRender(filteredOptions);
+      updateOptionsToRender(matchedOptions);
     },
     [grouped, updateOptionsToRender, updateFocusedOptionIndex]
   );
+
+  React.useEffect(() => {
+    if (renderOptionsFilter && selectedOptions) {
+      const nonSelectedOptions = options.filter(renderOptionsFilter);
+      updateOptionsToRender(nonSelectedOptions);
+    }
+
+    if (autoUpdatePlacement) {
+      cachedRef.current.updatePopperPosition();
+    }
+  }, [selectedOptions, updateOptionsToRender]);
 
   const onOpenMenu = React.useCallback(
     (e?: React.MouseEvent | React.FocusEvent) => {
@@ -294,11 +326,23 @@ SelectProps<O, V>) => {
 
       if (!cache.current.opened) {
         updateOpened(true);
-        onUpdateOptionsToRender(cache.current.searchLabel);
         cache.current.onOpen?.();
       }
+
+      cache.current.initialValueLabel = optionLabel;
+
+      // Clear the search so all options render
+
+      const hasExistingInputLabel = cache.current.searchable && cache.current.initialValueLabel;
+      if (hasExistingInputLabel) {
+        cache.current.searchLabel = cache.current.initialValueLabel;
+        onUpdateOptionsToRender('');
+        setDirectMatch(true);
+      } else {
+        onUpdateOptionsToRender(cache.current.searchLabel);
+      }
     },
-    [updateOpened, onUpdateOptionsToRender]
+    [updateOpened, onUpdateOptionsToRender, optionLabel]
   );
 
   const onHideMenu = React.useCallback(() => {
@@ -335,13 +379,16 @@ SelectProps<O, V>) => {
     [grouped, optionsToRender, updateFocusedOptionIndex]
   );
 
+  const handleOnSearchLabelChange = (val: string) => {
+    onUpdateOptionsToRender(val);
+    updateSearchLabel(val);
+    onSearch?.(val);
+  };
+
   const onChangeSearchLabel = React.useCallback(
     ({ target }: React.ChangeEvent<HTMLInputElement>) => {
       const input = formatInputValue ? formatInputValue(target.value) : target.value;
-
-      onUpdateOptionsToRender(input);
-      updateSearchLabel(input);
-      onSearch?.(target.value);
+      handleOnSearchLabelChange(input);
     },
     [onUpdateOptionsToRender]
   );
@@ -349,11 +396,12 @@ SelectProps<O, V>) => {
   const onSelectItem = React.useCallback(
     (value: V, optionsPath: number[], updatePopperPosition: () => void) => {
       onSelect(value, optionsPath);
+      handleOnSearchLabelChange('');
+
       if (autoUpdatePlacement) {
-        updatePopperPosition();
+        cachedRef.current.updatePopperPosition = updatePopperPosition;
       }
       if (!autoDismiss) {
-        updateSearchLabel('');
         return;
       }
       onHideMenu();
@@ -362,11 +410,18 @@ SelectProps<O, V>) => {
   );
 
   const onCreateItem = React.useCallback(
-    (label: string) => {
+    (label: string, updatePopperPosition: () => void) => {
       try {
+        updateSearchLabel('');
         validateCreate?.(label);
         onCreate?.(label);
-        onHideMenu();
+
+        if (autoUpdatePlacement) {
+          cachedRef.current.updatePopperPosition = updatePopperPosition;
+        }
+        if (autoDismiss) {
+          onHideMenu();
+        }
       } catch (error) {
         toast.warn(error?.message || error?.toString?.() || 'something went wrong');
       }
@@ -453,6 +508,7 @@ SelectProps<O, V>) => {
               <Flex>
                 {tags ? (
                   <TagsContainer
+                    hasTags={selectedOptions?.length}
                     isActive={opened}
                     onClick={() => {
                       onOpenMenu();
@@ -460,7 +516,19 @@ SelectProps<O, V>) => {
                     }}
                   >
                     {tags()}
-                    <TagsInput {...inputProps} ref={inputRef as React.RefObject<AutosizeInput>} value={label || searchLabel} autoComplete="off" />
+                    <TagsInput
+                      hasTags={selectedOptions?.length}
+                      {...inputProps}
+                      onBlur={(e) => {
+                        if (!renderDropdown) {
+                          updateOpened(false);
+                        }
+                        onBlur?.(e);
+                      }}
+                      ref={inputRef as React.RefObject<AutosizeInput>}
+                      value={label || searchLabel}
+                      autoComplete="off"
+                    />
                   </TagsContainer>
                 ) : (
                   <>
@@ -485,7 +553,7 @@ SelectProps<O, V>) => {
         </Portal>
       )}
 
-      {opened && (
+      {renderDropdown && (
         <AnyAdvancedMenu
           id={id}
           footerAction={footerAction}
@@ -506,6 +574,7 @@ SelectProps<O, V>) => {
           placement={placement}
           searchable={searchable}
           isDropdown={isDropdown}
+          directSearchMatch={directMatch}
           searchLabel={searchLabel}
           getOptionKey={getOptionKey}
           onFocusOption={onFocusOption}

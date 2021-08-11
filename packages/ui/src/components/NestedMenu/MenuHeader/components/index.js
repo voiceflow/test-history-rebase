@@ -1,16 +1,19 @@
-import { styled, units } from '../../../../styles';
-import Input from '../../../Input';
-import SvgIcon from '../../../SvgIcon';
+import AutosizeInput from 'react-input-autosize';
+
+import { styled } from '../../../../styles';
 
 export { default as MenuHeaderWrapper } from './MenuHeaderWrapper';
 
-export const MenuSearchIcon = styled(SvgIcon)`
-  margin-right: ${units(2)}px;
-`;
+export const MenuInput = styled(AutosizeInput)`
+  padding: 10px 0;
+  line-height: 20px;
 
-export const MenuInput = styled(Input)`
-  flex: 1;
-  padding: 12px 0;
+  input {
+    border: none;
+    background: transparent;
+    padding-right: 0px;
+    padding-left: 0px;
+  }
 
   ::placeholder {
     line-height: 20px;

@@ -1,11 +1,9 @@
 import React from 'react';
 
-import { useTheme } from '../../../hooks';
-import LegacyButton from '../../LegacyButton';
-import { MenuHeaderWrapper, MenuHr, MenuInput, MenuSearchIcon } from './components';
+import Box from '../../Box';
+import { MenuHeaderWrapper, MenuHr, MenuInput } from './components';
 
 function MenuHeader({
-  withSearchIcon = true,
   onFocus,
   onCreate,
   searchable,
@@ -22,28 +20,31 @@ function MenuHeader({
   createLabel = 'Create',
 }) {
   const value = searchable && !isDropdown ? searchLabel : newOptionLabel;
-  const theme = useTheme();
+  const inputVal = searchable ? searchLabel : newOptionLabel;
+
+  if (!inputVal) return null;
 
   return (
     <>
-      <MenuHeaderWrapper ref={focusedOptionIndex === 0 ? focusedOptionRef : null} isFocused={focusedOptionIndex === 0} onMouseEnter={onFocus}>
-        {withSearchIcon && <MenuSearchIcon icon="search" color={theme.iconColors.active} />}
-
+      <MenuHeaderWrapper
+        isDisabled={!value || isButtonDisabled(value)}
+        ref={focusedOptionIndex === 0 ? focusedOptionRef : null}
+        isFocused={focusedOptionIndex === 0}
+        onMouseEnter={onFocus}
+        onClick={() => onCreate(value)}
+      >
+        {!isDropdown && <Box style={{ marginRight: '4px', color: '#6e849a' }}>{createLabel}</Box>}
+        "
         <MenuInput
+          onClick={(e) => e.stopPropagation()}
           ref={createInputRef}
-          value={searchable ? searchLabel : newOptionLabel}
+          value={inputVal}
           variant="inline"
           onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
           placeholder={createInputPlaceholder}
         />
-
-        {!isDropdown && (
-          <LegacyButton isBtn onClick={() => onCreate(value)} disabled={!value || isButtonDisabled(value)} className="pointer" isLinkLarge>
-            {createLabel}
-          </LegacyButton>
-        )}
+        "
       </MenuHeaderWrapper>
-
       <MenuHr />
     </>
   );

@@ -4,6 +4,7 @@ import React from 'react';
 
 import { mapReportTagsSelector } from '@/ducks/reportTag';
 import { useSelector } from '@/hooks';
+import { ALL_BUILTIN_TAGS_ARRAY, Sentiment, SystemTag } from '@/models';
 
 import { Container, MetaContainer, Name } from './components';
 
@@ -18,10 +19,8 @@ interface InfoSection {
 const InfoSection: React.FC<InfoSection> = ({ active, name, date, isRead, tags }) => {
   const tagsMap = useSelector(mapReportTagsSelector);
   const formattedDate = `${moment(date).format('LT').toLocaleLowerCase()}, ${moment(date).format('MMMM Do')}`;
-
   const MetaInfoSection = () => {
-    const customTags = tags.filter((tag) => Number.isInteger(tag));
-
+    const customTags = tags.filter((tag) => !ALL_BUILTIN_TAGS_ARRAY.includes(tag as SystemTag | Sentiment));
     if (!isRead) {
       return (
         <>

@@ -108,10 +108,13 @@ export const updateNotes =
   async (dispatch, getState) => {
     const state = getState();
     const activeProjectID = Session.activeProjectIDSelector(state);
+    const { notes: initialNotes } = transcriptByIDSelector(state)(transcriptID);
+
     try {
-      await client.transcript.patchTranscript(activeProjectID!, transcriptID, { notes });
       dispatch(patchTranscript(transcriptID, { notes }));
+      await client.transcript.patchTranscript(activeProjectID!, transcriptID, { notes });
     } catch (e) {
+      dispatch(patchTranscript(transcriptID, { notes: initialNotes }));
       toast.error('Failed to update transcript notes');
     }
   };

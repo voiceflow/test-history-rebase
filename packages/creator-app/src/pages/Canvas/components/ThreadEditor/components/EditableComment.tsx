@@ -16,6 +16,7 @@ const EMPTY_COMMENT: PartialComment = { text: '', mentions: [] };
 
 export interface EditableCommentProps {
   onSave?: (value: PartialComment) => void;
+  onChange?: (text: string, mentions: number[]) => void;
   isEditing?: boolean;
   onClose?: Callback;
   initialValues?: Pick<Comment, 'text' | 'mentions'>;
@@ -35,6 +36,7 @@ const EditableComment: React.FC<EditableCommentProps> = ({
   onBlur: saveDraftValues,
   hasHeader = true,
   placeholder,
+  onChange,
   height,
 }) => {
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
@@ -46,6 +48,11 @@ const EditableComment: React.FC<EditableCommentProps> = ({
     if (comment.text) {
       saveDraftValues?.(comment);
     }
+  };
+
+  const handleOnChange = (text: string, mentions: number[]) => {
+    setComment({ text, mentions });
+    onChange?.(text, mentions);
   };
 
   const onPost = () => {
@@ -76,7 +83,7 @@ const EditableComment: React.FC<EditableCommentProps> = ({
         {isEditing ? (
           <MentionEditor
             height={height}
-            onChange={(text, mentions) => setComment({ text, mentions })}
+            onChange={handleOnChange}
             placeholder={placeholder}
             value={comment.text}
             inputProps={{

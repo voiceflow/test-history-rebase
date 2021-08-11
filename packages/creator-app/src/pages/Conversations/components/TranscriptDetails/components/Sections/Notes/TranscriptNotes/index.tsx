@@ -3,8 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { currentSelectedTranscriptSelector } from '@/ducks/transcript';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch } from '@/hooks';
-import { Comment } from '@/models';
+import { useDebouncedCallback, useDispatch } from '@/hooks';
 import EditableComment from '@/pages/Canvas/components/ThreadEditor/components/EditableComment';
 
 import { Container } from './components';
@@ -18,9 +17,13 @@ const TranscriptNotes: React.FC = () => {
   const { notes } = currentTranscript;
   const saveNote = useDispatch(Transcript.updateNotes);
 
-  const handleSave = (data: Pick<Comment, 'text' | 'mentions'>) => {
-    saveNote(currentTranscriptID!, data.text);
-  };
+  const debouncedSave = useDebouncedCallback(
+    500,
+    (text: string) => {
+      saveNote(currentTranscriptID!, text);
+    },
+    []
+  );
 
   return (
     <Container height={HEIGHT}>
@@ -28,8 +31,8 @@ const TranscriptNotes: React.FC = () => {
         height={HEIGHT}
         placeholder="Leave notes or @mention"
         isEditing={true}
+        onChange={debouncedSave}
         initialValues={{ text: notes || '', mentions: [] }}
-        onBlur={handleSave}
         hasHeader={false}
       />
     </Container>

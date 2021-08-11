@@ -144,7 +144,7 @@ export const useProjectOptions = ({
     onDuplicated?.();
   }, [boardID, getProjectByID, onDuplicated, projectsCount, workspace, onToggleLoadingModal, onOpenProjectLimitModal]);
 
-  const onDownload = React.useCallback(async () => {
+  const onClone = React.useCallback(async () => {
     if (!projectID) {
       Sentry.error(Errors.noActiveProjectID());
       toast.genericError();
@@ -184,7 +184,7 @@ export const useProjectOptions = ({
       ...(canManageProjects
         ? [
             { label: 'Duplicate project', onClick: onDuplicate },
-            { label: 'Copy download link', onClick: onDownload },
+            { label: 'Copy clone link', onClick: onClone },
           ]
         : []),
       ...(canCloneProject ? [{ label: 'Clone Project', onClick: onCloneProject }] : []),
@@ -195,6 +195,6 @@ export const useProjectOptions = ({
           ]
         : []),
     ],
-    [onRename, onDuplicate, onDownload, canCloneProject, canManageProjects, onCloneProject, onDelete]
+    [onRename, onDuplicate, onClone, canCloneProject, canManageProjects, onCloneProject, onDelete]
   );
 };

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.457.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.456.1...@voiceflow/creator-app@1.457.0) (2021-08-11)
+
+
+### Bug Fixes
+
+* increased tooltip container height (VF-1430) ([#3873](https://github.com/voiceflow/creator-app/issues/3873)) ([fe4130a](https://github.com/voiceflow/creator-app/commit/fe4130a6e78f78631b8968ef93b006d5598a48ba))
+* mentions racecond bug VF-1393) ([#3881](https://github.com/voiceflow/creator-app/issues/3881)) ([8705ef1](https://github.com/voiceflow/creator-app/commit/8705ef1cab7a76ef45302907bb119dfbfd6af46d))
+
+
+### Features
+
+* change link label from download to clone (VF-1370) ([#3872](https://github.com/voiceflow/creator-app/issues/3872)) ([a620c54](https://github.com/voiceflow/creator-app/commit/a620c54d8b4cb462647a52edeb43472b6479ad60))
+* hidden image and pdf download options when inside templates workspace (VF-1405) ([#3871](https://github.com/voiceflow/creator-app/issues/3871)) ([3087948](https://github.com/voiceflow/creator-app/commit/30879480abb5fd0c9c83c4ba3ecb55e9d5baff8b))
+
+
+
+
+
 ## [1.456.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.456.0...@voiceflow/creator-app@1.456.1) (2021-08-10)
 
 

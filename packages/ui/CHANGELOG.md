@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.9.0...@voiceflow/ui@1.9.1) (2021-08-11)
+
+
+### Bug Fixes
+
+* tag manager dropdown UX (VF-1390) ([#3799](https://github.com/voiceflow/creator-app/issues/3799)) ([df5770e](https://github.com/voiceflow/creator-app/commit/df5770e70fa707f684ca89f20167123fd4dd2438))
+
+
+
+
+
 # [1.9.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.8.0...@voiceflow/ui@1.9.0) (2021-08-10)
 
 

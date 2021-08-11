@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.458.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.457.0...@voiceflow/creator-app@1.458.0) (2021-08-11)
+
+
+### Bug Fixes
+
+* circ dep (VF-000) ([#3882](https://github.com/voiceflow/creator-app/issues/3882)) ([67eee05](https://github.com/voiceflow/creator-app/commit/67eee0512c616f5f4dc28a17cf5039639a073641))
+* tag manager dropdown UX (VF-1390) ([#3799](https://github.com/voiceflow/creator-app/issues/3799)) ([df5770e](https://github.com/voiceflow/creator-app/commit/df5770e70fa707f684ca89f20167123fd4dd2438))
+
+
+### Features
+
+* hide conversations tab for library users (VF-1408) ([#3857](https://github.com/voiceflow/creator-app/issues/3857)) ([472efff](https://github.com/voiceflow/creator-app/commit/472efff9a78b9a0eefa2bb19c28d6c748ce2c998))
+
+
+
+
+
 # [1.457.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.456.1...@voiceflow/creator-app@1.457.0) (2021-08-11)
 
 

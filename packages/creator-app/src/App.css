@@ -1643,9 +1643,15 @@ body.modal-open {
 
 .tippy-tooltip [x-circle] {
   width: 140%;
+  height: 100%;
   background: linear-gradient(-180deg, rgba(17, 49, 96, 0.85), #113160);
   background-color: #fff;
   border: 1px solid #113160;
+  border-radius: 0;
+}
+
+.tippy-popper[x-placement^='bottom'] [x-circle].enter {
+  transform: scale(1) translate(-55%, -50%);
 }
 
 .port.in.combine-port.moving {

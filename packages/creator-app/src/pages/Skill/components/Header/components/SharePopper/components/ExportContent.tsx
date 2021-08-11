@@ -5,7 +5,8 @@ import RadioGroup from '@/components/RadioGroup';
 import Upgrade from '@/components/Upgrade';
 import { Permission } from '@/config/permissions';
 import { ExportFormat } from '@/constants';
-import { usePermission } from '@/hooks';
+import * as Workspace from '@/ducks/workspace';
+import { usePermission, useSelector } from '@/hooks';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import { ExportContext } from '../contexts';
@@ -16,10 +17,14 @@ export const EXPORT_OPTIONS = [
   { id: ExportFormat.VF, label: 'Local copy (.vf)' },
 ];
 
+export const EXPORT_OPTIONS_TEMPLATE_WORKSPACE = [{ id: ExportFormat.VF, label: 'Local copy (.vf)' }];
+
 const ExportContent: React.FC = () => {
   const { exportFormat, setExportFormat } = React.useContext(ExportContext)!;
 
   const [canExportWithoutBranding] = usePermission(Permission.CANVAS_EXPORT);
+
+  const isTemplateWorkspace = useSelector(Workspace.isTemplateWorkspaceSelector);
 
   return (
     <FadeLeftContainer style={{ height: '100%' }} paddingTop={24} paddingX={32}>
@@ -35,7 +40,13 @@ const ExportContent: React.FC = () => {
         Content Format
       </BlockText>
 
-      <RadioGroup isFlat options={EXPORT_OPTIONS} checked={exportFormat} column onChange={setExportFormat} />
+      <RadioGroup
+        isFlat
+        options={isTemplateWorkspace ? EXPORT_OPTIONS_TEMPLATE_WORKSPACE : EXPORT_OPTIONS}
+        checked={exportFormat}
+        column
+        onChange={setExportFormat}
+      />
 
       {!canExportWithoutBranding && (
         <Box position="absolute" left={0} right={0} bottom={0}>

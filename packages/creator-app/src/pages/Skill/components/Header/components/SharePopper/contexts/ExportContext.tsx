@@ -3,7 +3,8 @@ import React from 'react';
 
 import { ExportFormat } from '@/constants';
 import * as Export from '@/ducks/export';
-import { useDispatch, useTrackingEvents } from '@/hooks';
+import * as Workspace from '@/ducks/workspace';
+import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { Nullable } from '@/types';
 
 interface ExportValue {
@@ -19,11 +20,12 @@ export const { Consumer: ExportConsumer } = ExportContext;
 
 export const ExportProvider: React.FC = ({ children }) => {
   const exportCanvas = useDispatch(Export.exportCanvas);
+  const isTemplateWorkspace = useSelector(Workspace.isTemplateWorkspaceSelector);
 
   const [trackingEvents] = useTrackingEvents();
 
   const [isExporting, setExporting] = React.useState(false);
-  const [exportFormat, setExportFormat] = React.useState(ExportFormat.PNG);
+  const [exportFormat, setExportFormat] = React.useState(isTemplateWorkspace ? ExportFormat.VF : ExportFormat.PNG);
 
   const onExport = React.useCallback(async () => {
     trackingEvents.trackExportButtonClick({ format: exportFormat });

@@ -1,29 +1,30 @@
 import { Box } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect, RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
 
 import EmptyScreen from '@/components/EmptyScreen';
 import LoadingGate from '@/components/LoadingGate';
+import { Permission } from '@/config/permissions';
+import { Path } from '@/config/routes';
 import { fetchReportTags } from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import * as Transcripts from '@/ducks/transcript';
 import { fetchTranscripts } from '@/ducks/transcript';
-import { connect } from '@/hocs';
-import { useAsyncEffect, useTeardown } from '@/hooks';
+import { useAsyncEffect, usePermission, useTeardown } from '@/hooks';
 import { FILTER_TAG } from '@/pages/Conversations/constants';
-import { ConnectedProps } from '@/types';
 
 import { ConversationsContainer, TranscriptDetails, TranscriptDialog, TranscriptManager } from './components';
 
 type ConversationProps = RouteComponentProps;
 
-const Conversations: React.FC<ConnectedConversationProps & ConversationProps> = ({ allTranscripts }) => {
+const Conversations: React.FC<ConversationProps> = () => {
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [noTestRuns, setNoTestRuns] = React.useState(false);
   const [filteredReportsExist, setFilteredReportsExist] = React.useState(true);
-
+  const allTranscripts = useSelector(Transcripts.allTranscriptsSelector);
+  const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
   const dispatch = useDispatch();
 
   const { search } = useLocation();
@@ -73,6 +74,10 @@ const Conversations: React.FC<ConnectedConversationProps & ConversationProps> = 
     setNoTestRuns(false);
   }, [search]);
 
+  if (!canViewConversations) {
+    return <Redirect to={Path.DASHBOARD} />;
+  }
+
   return (
     <ConversationsContainer isFilteredResultsEmpty={filteredReportsExist}>
       <LoadingGate isLoaded={isLoaded} label="Conversations" load={loadReports}>
@@ -108,10 +113,4 @@ const Conversations: React.FC<ConnectedConversationProps & ConversationProps> = 
   );
 };
 
-const mapStateToProps = {
-  allTranscripts: Transcripts.allTranscriptsSelector,
-};
-
-type ConnectedConversationProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(Conversations) as React.FC<ConversationProps>;
+export default Conversations;

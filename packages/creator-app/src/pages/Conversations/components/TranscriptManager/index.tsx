@@ -1,8 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import * as Transcripts from '@/ducks/transcript';
-import { connect } from '@/hocs';
-import { ConnectedProps } from '@/types';
 
 import { Container, TranscriptHeader, TranscriptResultsList } from './components';
 
@@ -10,8 +9,9 @@ interface TranscriptManagerProps {
   loading?: boolean;
 }
 
-const TranscriptManager: React.FC<ConnectedTranscriptManagerProps & TranscriptManagerProps> = ({ allTranscripts }) => {
+const TranscriptManager: React.FC<TranscriptManagerProps> = () => {
   const [hasShadow, setHasShadow] = React.useState<boolean>(false);
+  const allTranscripts = useSelector(Transcripts.allTranscriptsSelector);
 
   const handleScroll = React.useCallback((e: React.UIEvent<HTMLElement>) => {
     setHasShadow(e.currentTarget.scrollTop !== 0);
@@ -25,10 +25,4 @@ const TranscriptManager: React.FC<ConnectedTranscriptManagerProps & TranscriptMa
   );
 };
 
-const mapStateToProps = {
-  allTranscripts: Transcripts.allTranscriptsSelector,
-};
-
-type ConnectedTranscriptManagerProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(TranscriptManager) as React.FC<TranscriptManagerProps>;
+export default TranscriptManager;

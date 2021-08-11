@@ -33,6 +33,7 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
 export const useCanvasMenuOptionsAndHotkeys = () => {
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
+
   const testReports = useFeature(FeatureFlag.TEST_REPORTS);
 
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
@@ -41,6 +42,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const goToCurrentTranscript = useDispatch(Router.goToCurrentTranscript);
 
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
+  const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
 
   const helpButtonRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -59,7 +61,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         tooltip: { title: 'Designer', hotkey: HOTKEY_LABEL_MAP[Hotkey.DESIGN_PAGE] },
         onClick: goToCurrentCanvas,
       },
-      ...(testReports.isEnabled
+      ...(testReports.isEnabled && canViewConversations
         ? [
             {
               value: CanvasOptionType.CONVERSATION,

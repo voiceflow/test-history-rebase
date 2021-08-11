@@ -6,13 +6,10 @@ import { TranscriptExportFormat } from '@/client/transcript';
 import { Permission } from '@/config/permissions';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
 import * as Transcript from '@/ducks/transcript';
-import { connect } from '@/hocs';
 import { useDispatch, usePermission } from '@/hooks';
 import { Sentiment, SentimentArray, SystemTag } from '@/models';
 import { ClassName } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
 
 import { Container, InfoSection, OptionButton, ReadStatusDot, StatusIcons } from './components';
 
@@ -23,13 +20,7 @@ interface ResultsItem {
   format: TranscriptExportFormat;
 }
 
-const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & ResultsItem> = ({
-  goToTargetTranscript,
-  data,
-  format,
-  active = false,
-  isLastItem = false,
-}) => {
+const TranscriptResultsItem: React.FC<ResultsItem> = ({ data, format, active = false, isLastItem = false }) => {
   const { id, reportTags, unread, createdAt, name } = data;
   const isSaved = reportTags.includes(SystemTag.SAVED);
   const isReviewed = reportTags.includes(SystemTag.REVIEWED);
@@ -37,6 +28,7 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
 
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [canDeleteTranscript] = usePermission(Permission.DELETE_TRANSCRIPT);
+  const goToTargetTranscript = useDispatch(Router.goToTargetTranscript);
   const markAsRead = useDispatch(Transcript.markAsRead);
   const deleteTranscript = useDispatch(Transcript.deleteTranscript);
   const exportTranscript = useDispatch(Transcript.exportTranscript);
@@ -102,13 +94,4 @@ const TranscriptResultsItem: React.FC<ConnectTranscriptResultsItemProps & Result
   );
 };
 
-const mapStateToProps = {
-  activeProjectID: Session.activeProjectIDSelector,
-};
-const mapDispatchToProps = {
-  goToTargetTranscript: Router.goToTargetTranscript,
-};
-
-type ConnectTranscriptResultsItemProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(TranscriptResultsItem) as React.FC<ResultsItem>;
+export default TranscriptResultsItem;

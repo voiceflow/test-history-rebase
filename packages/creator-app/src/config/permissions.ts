@@ -47,6 +47,7 @@ export enum Permission {
 
   // Transcript
   DELETE_TRANSCRIPT = 'transcripts.DELETE',
+  VIEW_CONVERSATIONS = 'transcripts.VIEW',
 }
 
 const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.OWNER, UserRole.BILLING, UserRole.GUEST];
@@ -76,6 +77,7 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.TRAIN_PROTOTYPE]: EDITOR_USER_ROLES,
   [Permission.RENDER_PROTOTYPE]: EDITOR_USER_ROLES,
   [Permission.CANVAS_PUBLISH]: EDITOR_USER_ROLES,
+  [Permission.VIEW_CONVERSATIONS]: ALL_USER_ROLES,
 
   [Permission.HINT_FEATURES]: SIGNED_USER_ROLES,
 };

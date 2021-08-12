@@ -19,7 +19,7 @@
     "@voiceflow/common": "6.5.1",
     "@voiceflow/draft-js-mention-plugin": "3.3.15",
     "@voiceflow/general-types": "1.53.0",
-    "@voiceflow/google-types": "1.32.5",
+    "@voiceflow/google-types": "1.32.9",
     "@voiceflow/internal": "^1.5.0",
     "@voiceflow/realtime-sdk": "^1.8.0",
     "@voiceflow/ui": "^1.10.1",

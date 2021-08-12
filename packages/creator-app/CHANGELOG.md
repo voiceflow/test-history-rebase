@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.460.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.459.3...@voiceflow/creator-app@1.460.0) (2021-08-12)
+
+
+### Features
+
+* notifications for unread transcripts + misc fixes (VF-1466) ([#3874](https://github.com/voiceflow/creator-app/issues/3874)) ([619b002](https://github.com/voiceflow/creator-app/commit/619b0024935d9040e4fe39f5db4c43749c86dab7))
+* text trace (VF-1362) ([#3875](https://github.com/voiceflow/creator-app/issues/3875)) ([99a8a62](https://github.com/voiceflow/creator-app/commit/99a8a6263e890aa440e416eb1e24d9355c4962d6))
+
+
+
+
+
 ## [1.459.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.459.2...@voiceflow/creator-app@1.459.3) (2021-08-12)
 
 **Note:** Version bump only for package @voiceflow/creator-app

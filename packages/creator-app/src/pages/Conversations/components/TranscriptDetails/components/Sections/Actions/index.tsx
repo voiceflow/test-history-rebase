@@ -5,7 +5,7 @@ import TranscriptActions from './TranscriptActions';
 
 const Actions: React.FC = () => {
   return (
-    <Container rightExtend>
+    <Container withBorder rightExtend>
       <SectionTitle>ACTIONS</SectionTitle>
       <TranscriptActions />
     </Container>

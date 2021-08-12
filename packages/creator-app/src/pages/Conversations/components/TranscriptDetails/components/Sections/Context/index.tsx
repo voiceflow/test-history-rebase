@@ -5,7 +5,7 @@ import TranscriptContext from './TranscriptContext';
 
 const Context: React.FC = () => {
   return (
-    <Container withBackground topExtend>
+    <Container withBorder withBackground topExtend>
       <TranscriptContext />
     </Container>
   );

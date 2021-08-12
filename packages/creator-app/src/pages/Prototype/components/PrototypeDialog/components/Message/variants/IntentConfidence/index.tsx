@@ -51,7 +51,7 @@ export const IntentConfidence: React.FC<IntentConfidenceProps & ConnectedIntentC
   return (
     <Container>
       <IntentText>{intentMessage}</IntentText>
-      <ConfidenceScore> {confidenceMessage}</ConfidenceScore>
+      <ConfidenceScore>{confidenceMessage}</ConfidenceScore>
     </Container>
   );
 };

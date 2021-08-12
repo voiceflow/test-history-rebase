@@ -5,7 +5,7 @@ const TagsContainer = styled.div<{ isActive?: boolean; hasTags: boolean }>`
   background: white;
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
   border: solid 1px #d4d9e6;
-  max-height: 117px;
+  max-height: 111px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;

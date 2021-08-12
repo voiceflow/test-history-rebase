@@ -11,7 +11,7 @@ const Tags: React.FC = () => {
   const { reportTags } = currentTranscript;
 
   return (
-    <Container style={{ flex: 1 }} withBackground>
+    <Container style={{ flex: 1, paddingBottom: '24px' }} withBackground>
       <SectionTitle>TAGS</SectionTitle>
       <ReportTagInput selectedTags={reportTags} />
     </Container>

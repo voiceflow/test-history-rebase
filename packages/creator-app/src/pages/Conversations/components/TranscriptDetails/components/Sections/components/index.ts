@@ -2,17 +2,26 @@ import { Flex, FlexApart } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
-export const Container = styled(Flex)<{ curved?: boolean; flex?: number; rightExtend?: boolean; topExtend?: boolean; withBackground?: boolean }>`
+export const Container = styled(Flex)<{
+  curved?: boolean;
+  flex?: number;
+  rightExtend?: boolean;
+  topExtend?: boolean;
+  withBackground?: boolean;
+  withBorder?: boolean;
+}>`
   flex-direction: column;
-  flex: 0
-  border-top: 1px solid;
+  flex: 0;
   width: 100%;
+  ${({ withBorder }) =>
+    withBorder &&
+    css`
+      border-bottom: 1px solid;
+    `}
+
   border-color: ${({ theme }) => theme.colors.borders};
   padding: ${({ topExtend }) => (topExtend ? 40 : 22)}px 32px;
   background-color: ${({ theme }) => theme.backgrounds.white};
-  &:first-child {
-    border: none;
-  }
 
   ${({ rightExtend }) =>
     rightExtend &&
@@ -27,10 +36,10 @@ export const Container = styled(Flex)<{ curved?: boolean; flex?: number; rightEx
     `}
 
 ${({ withBackground, theme }) =>
-  withBackground &&
-  css`
-    background-color: ${theme.backgrounds.lightGray};
-  `}
+    withBackground &&
+    css`
+      background-color: ${theme.backgrounds.lightGray};
+    `}
 
   ${({ curved }) =>
     curved &&

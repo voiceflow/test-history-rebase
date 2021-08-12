@@ -35,14 +35,15 @@ export const IntentText = styled.div`
     text-transform: capitalize;
   }
 
-  font-weight: bold;
+  color: #62778c;
   font-style: normal;
   display: inline-block;
 `;
 
 export const ConfidenceScore = styled.div`
-  color: ${colors('secondary')};
+  color: #8da2b5;
   display: inline-block;
+  padding-left: 2px;
 `;
 
 export const StatusIcon = styled(SvgIcon)`

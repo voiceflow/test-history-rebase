@@ -96,8 +96,8 @@ export const Option = styled.div<{ fanDirection: FAN_DIRECTION; number: number; 
   pointer-events: none;
   opacity: 0.6;
   :hover {
-    transition: all 0.2s ease-in-out;
-    transition-delay: 0.15ms;
+    transition: all 0.12s ease-in-out;
+    transition-delay: 0.12ms;
     transform: scale(1.3);
     opacity: 1;
   }

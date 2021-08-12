@@ -24,7 +24,7 @@ const TagWrapper = styled.span<{ onClick: (e: React.MouseEvent) => void }>`
 
   & > ${SvgIconContainer} {
     color: ${({ theme }) => theme.iconColors.disabled};
-    padding-right: 9px;
+    padding-right: 12px;
   }
 `;
 

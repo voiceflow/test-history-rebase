@@ -1,4 +1,5 @@
 import { AnyRequestButton, BaseRequest } from '@voiceflow/general-types';
+import { TextData } from '@voiceflow/general-types/build/nodes/text';
 import { ImageStepData } from '@voiceflow/general-types/build/nodes/visual';
 
 export enum PMStatus {
@@ -20,6 +21,7 @@ export enum TranscriptMessageType {
 
 export enum MessageType {
   USER = 'USER',
+  TEXT = 'TEXT',
   AUDIO = 'AUDIO',
   SPEAK = 'SPEAK',
   DEBUG = 'DEBUG',
@@ -29,11 +31,13 @@ export enum MessageType {
   LAUNCH = 'LAUNCH',
 }
 
-export const BotMessageTypes = [MessageType.AUDIO, MessageType.SPEAK, MessageType.STREAM, MessageType.VISUAL];
+export const BotMessageTypes = [MessageType.AUDIO, MessageType.SPEAK, MessageType.TEXT, MessageType.STREAM, MessageType.VISUAL];
 
 type GenericMessage<T extends MessageType, D = {}> = { id: string; type: T; startTime: string; turnID?: string } & D;
 
 export type UserMessage = GenericMessage<MessageType.USER, { input: string; intentName?: string }>;
+
+export type TextMessage = GenericMessage<MessageType.TEXT, { slate: TextData }>;
 
 export type AudioMessage = GenericMessage<MessageType.AUDIO, { name: string; src?: string | null }>;
 
@@ -51,6 +55,7 @@ export type LaunchMessage = GenericMessage<MessageType.LAUNCH, {}>;
 
 export interface MessageMap {
   [MessageType.USER]: UserMessage;
+  [MessageType.TEXT]: TextMessage;
   [MessageType.AUDIO]: AudioMessage;
   [MessageType.SPEAK]: SpeakMessage;
   [MessageType.DEBUG]: DebugMessage;
@@ -60,7 +65,16 @@ export interface MessageMap {
   [MessageType.LAUNCH]: LaunchMessage;
 }
 
-export type Message = UserMessage | AudioMessage | SpeakMessage | DebugMessage | SessionMessage | StreamMessage | VisualMessage | LaunchMessage;
+export type Message =
+  | UserMessage
+  | TextMessage
+  | AudioMessage
+  | SpeakMessage
+  | DebugMessage
+  | SessionMessage
+  | StreamMessage
+  | VisualMessage
+  | LaunchMessage;
 
 export type TypedMessage<T extends MessageType> = MessageMap[T];
 

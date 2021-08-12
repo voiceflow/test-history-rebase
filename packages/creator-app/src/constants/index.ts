@@ -320,6 +320,8 @@ export const NEW_LINE_REGEX = /\n/g;
 export const SSML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 
 export const URL_REGEX = /(((https?:)?\/\/)?(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,10}\b([\w#%&+./:=?@~-]*))/;
+export const URL_ONLY_REGEX = /^(((https?:)?\/\/)?(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,10}\b([\w#%&+./:=?@~-]*))$/;
+export const ALL_URLS_REGEX = RegExp(URL_REGEX, 'g');
 export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,10}\b([\w#%&+./:=?@~-]*)/;
 
 export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';

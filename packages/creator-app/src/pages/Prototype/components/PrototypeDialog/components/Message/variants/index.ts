@@ -4,5 +4,6 @@ export { default as IntentConfidence } from './IntentConfidence';
 export { default as Loading } from './Loading';
 export { default as Speak } from './Speak';
 export { default as Stream } from './Stream';
+export { default as Text } from './Text';
 export { default as User } from './User';
 export { default as Visual } from './Visual';

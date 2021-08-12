@@ -1,8 +1,8 @@
 import { slate } from '@voiceflow/internal';
-import isURL from 'is-url';
 import { Descendant, Editor, Element, Range, Text, Transforms } from 'slate';
 
 import { Nullable } from '@/types';
+import { isURL } from '@/utils/string';
 
 import { DEFAULT_COLOR, ElementType, TextProperty } from '../../constants';
 import type { EditorAPIType } from '../editorAPI';

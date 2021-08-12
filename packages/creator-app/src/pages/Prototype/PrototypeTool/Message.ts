@@ -43,6 +43,10 @@ class MessageController {
     this.add({ id, type: MessageType.DEBUG, ...data });
   }
 
+  public text(id: string, data: Omit<TypedMessage<MessageType.TEXT>, 'id' | 'type' | 'startTime'>): void {
+    this.add({ id, type: MessageType.TEXT, ...data });
+  }
+
   public async visual(id: string, payload: VisualTrace['payload']): Promise<void> {
     if (payload.visualType !== VisualType.IMAGE || !payload.image) {
       return;

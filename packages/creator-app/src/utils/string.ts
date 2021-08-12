@@ -1,6 +1,7 @@
 import { PlatformType } from '@voiceflow/internal';
 import cuid from 'cuid';
 
+import { URL_ONLY_REGEX } from '@/constants';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
 import { convertToWord, NON_ALPHANUMERIC_REGEXP } from './number';
@@ -45,3 +46,7 @@ export const removeTrailingUnderscores = (str: string): string => str.replace(TR
 export const conditionalReplace = (base: string, pattern: RegExp, value?: string) => {
   return value ? base.replace(pattern, value) : base;
 };
+
+export const isURL = (str: string): boolean => !!str.match(URL_ONLY_REGEX);
+
+export const getValidHref = (href: string): string => (href.startsWith('//') || href.includes('://') ? href : `//${href}`);

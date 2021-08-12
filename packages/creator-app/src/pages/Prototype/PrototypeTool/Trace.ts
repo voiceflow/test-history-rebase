@@ -257,6 +257,10 @@ class TraceController {
         await this.processSpeakTrace(topTrace, { onlyMessage });
         break;
       }
+      case TraceType.TEXT: {
+        await this.message.text(topTrace.id, { slate: topTrace.payload.slate });
+        break;
+      }
       case TraceType.FLOW: {
         await this.processFlowTrace(topTrace);
         break;

@@ -15,10 +15,11 @@ export type DebugTrace = TraceWithID<Traces.DebugTrace>;
 export type ChoiceTrace = TraceWithID<Traces.ChoiceTrace>;
 export type StreamTrace = TraceWithID<Traces.StreamTrace>;
 export type VisualTrace = TraceWithID<Traces.VisualTrace>;
+export type TextTrace = TraceWithID<Traces.TextTrace>;
 export type V1Trace = Required<BaseTraceFrame>;
 export { BaseTraceFrame };
 
-export type Trace = BlockTrace | SpeakTrace | FlowTrace | DebugTrace | StreamTrace | EndTrace | ChoiceTrace | VisualTrace;
+export type Trace = BlockTrace | SpeakTrace | FlowTrace | DebugTrace | StreamTrace | EndTrace | ChoiceTrace | VisualTrace | TextTrace;
 
 // context types
 

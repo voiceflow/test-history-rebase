@@ -6,7 +6,7 @@ import * as Prototype from '@/ducks/prototype';
 
 import { Interaction, Message, MessageType, UserMessage } from '../../types';
 import { Container, Ended, InlineInteractions, MessagesContainer, StickyInteractions } from './components';
-import { Audio, Debug, IntentConfidence, Loading, Speak, User, Visual } from './components/Message';
+import { Audio, Debug, IntentConfidence, Loading, Speak, Text, User, Visual } from './components/Message';
 import useMessageFilters from './filters';
 import { checkIfFirstInSeries } from './utils';
 
@@ -94,6 +94,10 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                   allowPause={isTranscript}
                   autoplay={!isTranscript}
                 />
+              );
+            case MessageType.TEXT:
+              return (
+                <Text userSpeak={userSpeak} isFirstInSeries={isFirstInSeries} key={message.id} {...message} isLast={isLast} avatarURL={avatarURL} />
               );
             case MessageType.SPEAK:
               return (

@@ -1,7 +1,7 @@
 {
   "name": "@voiceflow/creator-app",
   "description": "voiceflow Creator App",
-  "version": "1.458.0",
+  "version": "1.459.0",
   "author": "Voiceflow",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
@@ -22,7 +22,7 @@
     "@voiceflow/google-types": "1.32.5",
     "@voiceflow/internal": "^1.5.0",
     "@voiceflow/realtime-sdk": "^1.8.0",
-    "@voiceflow/ui": "^1.9.1",
+    "@voiceflow/ui": "^1.10.0",
     "@welldone-software/why-did-you-render": "^4.3.1",
     "apl-viewhost-web": "1.7.0",
     "availity-reactstrap-validation": "^2.6.1",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.459.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.458.0...@voiceflow/creator-app@1.459.0) (2021-08-12)
+
+
+### Features
+
+* add utterance to intent V1 (VF-1249) ([#3777](https://github.com/voiceflow/creator-app/issues/3777)) ([46cfe76](https://github.com/voiceflow/creator-app/commit/46cfe761959a9683e6a03f4e93f5ced962a9e9aa))
+
+
+
+
+
 # [1.458.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.457.0...@voiceflow/creator-app@1.458.0) (2021-08-11)
 
 

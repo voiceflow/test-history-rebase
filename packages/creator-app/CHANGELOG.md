@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.459.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.459.0...@voiceflow/creator-app@1.459.1) (2021-08-12)
+
+
+### Bug Fixes
+
+* add global tts voice settings to general projects (VF-1428) ([#3863](https://github.com/voiceflow/creator-app/issues/3863)) ([5117896](https://github.com/voiceflow/creator-app/commit/51178965ddc0611fe32bdd13d5f05a0b5fa0c465))
+* force cursor end on prefilled utterance input (VF-000) ([#3887](https://github.com/voiceflow/creator-app/issues/3887)) ([1c4a47a](https://github.com/voiceflow/creator-app/commit/1c4a47ad79319b0a3eedba801b4429f67a1597ca))
+
+
+
+
+
 # [1.459.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.458.0...@voiceflow/creator-app@1.459.0) (2021-08-12)
 
 

@@ -81,10 +81,18 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       tabs: [Tabs.GENERAL, Tabs.VERSIONS],
       localeText: 'Language',
     },
+    [PlatformType.CHATBOT]: {
+      name: 'Chatbot',
+      sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
+      descriptors: {
+        projectName: General.ProjectName,
+      },
+      tabs: [Tabs.GENERAL],
+    },
   },
   {
     name: 'General',
-    sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
+    sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.GLOBAL_CONVERSATION_LOGIC, SettingSections.DANGER_ZONE],
     descriptors: {
       projectName: General.ProjectName,
     },

@@ -55,7 +55,7 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
 
   React.useEffect(() => {
     if (prefilledNewUtterance) {
-      utteranceRef.current.focus();
+      utteranceRef.current.forceFocusToTheEnd?.();
       updateIsEmpty(false);
     }
   }, [prefilledNewUtterance, utteranceRef]);

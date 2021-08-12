@@ -1,4 +1,4 @@
-import { RichUtils } from 'draft-js';
+import { EditorState, RichUtils } from 'draft-js';
 import React from 'react';
 import lifecycle from 'recompose/lifecycle';
 
@@ -122,6 +122,11 @@ function TextEditor({
           store.set('textValue', nextValue.text);
 
           return nextValue;
+        };
+
+        editor.forceFocusToTheEnd = () => {
+          const newState = EditorState.moveFocusToEnd(EditorState.moveSelectionToEnd(store.get('editorState')));
+          updateEditorState(newState);
         };
       }
 

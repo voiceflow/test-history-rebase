@@ -29,6 +29,7 @@ type ListManagerProps<I> = React.PropsWithChildren<{
   addToStart?: boolean;
   addValidation?: (value: I) => { valid: boolean; error?: string };
   requiredItemIndex?: number;
+  initialValue?: I;
 }>;
 
 function ListManager<I>({
@@ -42,9 +43,10 @@ function ListManager<I>({
   addToStart,
   addValidation,
   requiredItemIndex,
+  initialValue,
 }: ListManagerProps<I>): React.ReactElement {
   const [addError, setAddError] = React.useState<string>();
-  const [formValue, onChangeFormValue] = React.useState<I | null>();
+  const [formValue, onChangeFormValue] = React.useState<I | null>(initialValue as I);
   const { items: managedItems, onAdd, onAddToStart, onRemove, onReorder, toggleOpen, mapManaged, latestCreatedKey } = useManager(items, onUpdate);
 
   const onAddItem = (value: I) => {

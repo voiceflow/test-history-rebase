@@ -1,10 +1,16 @@
 import { css, styled } from '@/hocs';
 
-const Container = styled.div<{ rightAlign?: boolean; userSpeak?: boolean; isFirstInSeries?: boolean }>`
+const Container = styled.div<{ focused?: boolean; rightAlign?: boolean; userSpeak?: boolean; isFirstInSeries?: boolean }>`
   display: flex;
   position: relative;
   align-items: flex-end;
   margin-left: 45px;
+
+  ${({ focused }) =>
+    focused &&
+    css`
+      opacity: 100% !important;
+    `}
 
   ${({ isFirstInSeries }) =>
     !isFirstInSeries &&

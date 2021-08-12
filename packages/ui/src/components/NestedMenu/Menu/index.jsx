@@ -56,6 +56,7 @@ function BaseNestedMenu({
   inputWrapperRef,
   isButtonDisabled = _constant(false),
   formatInputValue,
+  alwaysShowCreate,
   popoverModifiers,
   disableAnimation,
   firstOptionIndex = 0,
@@ -306,6 +307,7 @@ function BaseNestedMenu({
                   (creatable || (searchable && isDropdown)) &&
                   !directSearchMatch && (
                     <MenuHeader
+                      alwaysShowCreate={alwaysShowCreate}
                       createLabel={createLabel}
                       withSearchIcon={withSearchIcon}
                       onCreate={(val) => onCreate(val, scheduleUpdate)}

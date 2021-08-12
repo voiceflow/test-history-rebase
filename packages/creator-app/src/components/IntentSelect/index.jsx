@@ -78,6 +78,8 @@ function IntentSelect({
   clearable = undefined,
   iconProps = undefined,
   intentsMap,
+  triggerRenderer = undefined,
+  alwaysShowCreate = false,
   placeholder = 'Name new intent or select existing intent',
 }) {
   const intentID = intent?.id;
@@ -103,6 +105,7 @@ function IntentSelect({
   const onSelectIntent = React.useCallback(
     (value) => {
       const intentID = value;
+
       const isDefaultBuiltIn = CUSTOMIZABLE_INTENT_PREFIXS.includes(value?.split('.')[0]) || value === IntentName.NONE;
 
       if (isDefaultBuiltIn && !intentsMap[intentID]) {
@@ -144,6 +147,7 @@ function IntentSelect({
     <>
       <Select
         icon={icon}
+        triggerRenderer={triggerRenderer}
         iconProps={iconProps}
         className={ClassName.INTENT_SELECT_INPUT}
         value={intentID}
@@ -158,6 +162,7 @@ function IntentSelect({
         getOptionValue={getOptionValue}
         getOptionLabel={getOptionLabel}
         formatInputValue={isGeneral ? undefined : formatIntentName}
+        alwaysShowCreate={alwaysShowCreate}
         isButtonDisabled={isButtonDisabled}
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, options) =>
           labelRenderer({
@@ -169,7 +174,7 @@ function IntentSelect({
             platform,
           })
         }
-        createInputPlaceholder="Name new intent"
+        createInputPlaceholder="new Intent"
       />
       {intentMissing && <Alert variant={AlertVariant.WARNING} message="Intent is broken or has been deleted." mt={10} />}
     </>

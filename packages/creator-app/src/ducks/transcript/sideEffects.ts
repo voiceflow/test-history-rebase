@@ -24,6 +24,35 @@ export const fetchTranscripts =
     }
   };
 
+export const setUtteranceAddedTo =
+  (newUtteranceCount: number, intentName: string, intentID: string, transcriptID: string, turnID: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    try {
+      const activeProjectID = Session.activeProjectIDSelector(state);
+      const { annotations } = transcriptByIDSelector(state)(transcriptID);
+
+      await client.transcript.setTurnUtteranceAddedTo(transcriptID, activeProjectID!, turnID, intentID);
+
+      dispatch(
+        patchTranscript(transcriptID, {
+          annotations: {
+            ...annotations,
+            [turnID]: {
+              ...(annotations[turnID] ? annotations[turnID] : {}),
+              utteranceAddedTo: intentID,
+            },
+          },
+        })
+      );
+
+      toast.success(`${newUtteranceCount} utterance(s) added to the ${intentName} intent`);
+    } catch (e) {
+      toast.error('Error saving');
+    }
+  };
+
 export const createTranscript = (): Thunk => async (_dispatch, getState) => {
   const state = getState();
   const { browser, os, platform } = Bowser.parse(window.navigator.userAgent);

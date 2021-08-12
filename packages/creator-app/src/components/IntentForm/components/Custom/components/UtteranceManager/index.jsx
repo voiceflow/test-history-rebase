@@ -8,9 +8,12 @@ import {
   toast,
   useDidUpdateEffect,
   useEnableDisable,
+  useSetup,
 } from '@voiceflow/ui';
 import cuid from 'cuid';
+import queryString from 'query-string';
 import React from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import ListManager from '@/components/ListManager';
 import { ContentContainer, SectionToggleVariant } from '@/components/Section';
@@ -30,7 +33,14 @@ import ListManagerWrapper from '../../../ListManagerWrapper';
 import UtterancesTooltip from '../UtterancesTooltip';
 import { BuiltInIntentMessage } from './components';
 
+export const PREFILLED_UTTERANCE_PARAM = 'utterance';
+
 function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customIntents, isNested }) {
+  const { search } = useLocation();
+  const queryParams = queryString.parse(search);
+  const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM];
+  const history = useHistory();
+
   const intentID = intent.id;
   const utteranceRef = React.useRef();
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
@@ -40,12 +50,31 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
   const { toggle: toggleSlotEdit, close: closeSlotEdit, isInStack: slotEditOpen } = useModals(ModalType.SLOT_EDIT);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const isBuiltIn = isCustomizeableBuiltInIntent(intent);
-  const [showUtterances, setShowUtterances] = React.useState(!isBuiltIn || !!intent.inputs?.length);
+  const [showUtterances, setShowUtterances] = React.useState(!isBuiltIn || !!intent.inputs?.length || !!prefilledNewUtterance);
   const onUpdateUtterances = React.useCallback((inputs) => updateIntent(intentID, { inputs }, true), [intentID, updateIntent]);
+
+  React.useEffect(() => {
+    if (prefilledNewUtterance) {
+      utteranceRef.current.focus();
+      updateIsEmpty(false);
+    }
+  }, [prefilledNewUtterance, utteranceRef]);
 
   const warnNoUtterances = () => {
     toast.warn(`Your intent (${intent.name}) has no utterances. Add utterances to make your intent triggerable.`);
   };
+
+  useSetup(() => {
+    // Remove the prefilled utterance query param, so on another intent select, the prefill won't persist.
+    if (prefilledNewUtterance) {
+      const queryParams = new URLSearchParams(search);
+      queryParams.delete(PREFILLED_UTTERANCE_PARAM);
+
+      history.replace({
+        search: queryParams.toString(),
+      });
+    }
+  });
 
   const onAddSlot = React.useCallback(
     (name) =>
@@ -118,7 +147,7 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
           skipRerender={slotEditOpen}
           namespace="utterances"
           header="Utterances"
-          initialOpen={intent.inputs.length === 0}
+          initialOpen={intent.inputs.length === 0 || !!prefilledNewUtterance}
           infix={
             <TippyTooltip title="Bulk Import">
               <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
@@ -136,10 +165,10 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
               <ListManager
                 items={intent.inputs}
                 addToStart
+                initialValue={prefilledNewUtterance ? { text: prefilledNewUtterance, slots: [] } : null}
                 beforeAdd={() => utteranceRef.current.forceUpdate()}
                 renderForm={({ value, onAdd, onChange, addError }) => {
                   const placeholder = intent.inputs.length ? 'Add synonyms, {} to add entities' : 'What might the user say to invoke this intent?';
-
                   return (
                     <>
                       <Utterance
@@ -155,7 +184,12 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
                         iconProps={{ variant: 'blue' }}
                         rightAction={
                           !isEmpty && (
-                            <Badge slide onClick={() => onAdd(utteranceRef.current.getCurrentUtterance())}>
+                            <Badge
+                              slide
+                              onClick={() => {
+                                onAdd(utteranceRef.current.getCurrentUtterance());
+                              }}
+                            >
                               Enter
                             </Badge>
                           )

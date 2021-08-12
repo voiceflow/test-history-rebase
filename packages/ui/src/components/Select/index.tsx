@@ -93,6 +93,7 @@ export type SelectProps<O, V> = {
   getOptionLabel?: GetOptionLabel<V>;
   withSearchIcon?: boolean;
   optionsMaxSize?: number;
+  alwaysShowCreate?: boolean;
   autoUpdatePlacement?: boolean;
   autoDismiss?: boolean;
   onKeyDown?: (e: React.KeyboardEvent) => void;
@@ -158,6 +159,7 @@ const Select = <O, V = O>({
   onOpen,
   prefix,
   onClose,
+  alwaysShowCreate = false,
   grouped,
   selectedOptions,
   options = [],
@@ -274,7 +276,10 @@ SelectProps<O, V>) => {
         matchedOptions.length === 1 &&
         cache.current.getOptionLabel(cache.current.getOptionValue(matchedOptions[0]))?.toLowerCase() === label.toLowerCase();
 
-      if (hasExactMatch || cache.current.initialValueLabel?.toLowerCase() === label.toLowerCase()) {
+      if (
+        hasExactMatch ||
+        (!!cache.current.initialValueLabel?.toLowerCase() && cache.current.initialValueLabel?.toLowerCase() === label.toLowerCase())
+      ) {
         setDirectMatch(true);
       } else {
         setDirectMatch(false);
@@ -576,6 +581,7 @@ SelectProps<O, V>) => {
           isDropdown={isDropdown}
           directSearchMatch={directMatch}
           searchLabel={searchLabel}
+          alwaysShowCreate={alwaysShowCreate}
           getOptionKey={getOptionKey}
           onFocusOption={onFocusOption}
           withSearchIcon={withSearchIcon}

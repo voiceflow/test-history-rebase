@@ -4,7 +4,7 @@ import React from 'react';
 import Divider from '@/components/Divider';
 import * as Prototype from '@/ducks/prototype';
 
-import { Interaction, Message, MessageType } from '../../types';
+import { Interaction, Message, MessageType, UserMessage } from '../../types';
 import { Container, Ended, InlineInteractions, MessagesContainer, StickyInteractions } from './components';
 import { Audio, Debug, IntentConfidence, Loading, Speak, User, Visual } from './components/Message';
 import useMessageFilters from './filters';
@@ -28,6 +28,8 @@ interface DialogPrototypeProps {
   stepBack: () => void;
   isTranscript?: boolean;
   onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
+  setFocusedTurnID: (turnID: string | null) => void;
+  focusedTurnID: string | null;
 }
 
 const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
@@ -48,6 +50,8 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   stepBack,
   isTranscript = false,
   onScroll,
+  setFocusedTurnID,
+  focusedTurnID,
 }) => {
   // filter out messages based on settings
   const messages = useMessageFilters(rawMessages);
@@ -104,9 +108,30 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                 />
               );
             case MessageType.DEBUG:
-              return isIntentConfidence ? <IntentConfidence key={message.id} {...message} /> : <Debug key={message.id} {...message} />;
+              return isIntentConfidence ? (
+                <IntentConfidence
+                  setFocusedTurnID={setFocusedTurnID}
+                  focusedTurnID={focusedTurnID}
+                  isTranscript={isTranscript}
+                  key={message.id}
+                  lastUserMessage={messages[index - 1] as UserMessage}
+                  {...message}
+                />
+              ) : (
+                <Debug key={message.id} {...message} />
+              );
             case MessageType.USER:
-              return <User isFirstInSeries={isFirstInSeries} userSpeak={userSpeak} key={message.id} color={color} {...message} />;
+              return (
+                <User
+                  turnID={message.turnID}
+                  focusedTurnID={focusedTurnID}
+                  isFirstInSeries={isFirstInSeries}
+                  userSpeak={userSpeak}
+                  key={message.id}
+                  color={color}
+                  {...message}
+                />
+              );
             case MessageType.STREAM:
               return (
                 <Audio

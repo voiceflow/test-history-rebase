@@ -23,6 +23,7 @@ export interface MessageProps {
   color?: string;
   avatarURL?: string;
   className?: string;
+  focused?: boolean;
 }
 
 const Message: React.FC<MessageProps> = ({
@@ -38,12 +39,13 @@ const Message: React.FC<MessageProps> = ({
   bubble = true,
   avatarURL,
   className,
+  focused = false,
   ...props
 }) => {
   const InnerContainer = React.useMemo(() => (!rightAlign && isFirstInSeries && !withAnimation ? React.Fragment : FadeDownContainer), []);
 
   return (
-    <Container className={cn(ClassName.CHAT_DIALOG_MESSAGE, className)} rightAlign={rightAlign} {...props}>
+    <Container focused={focused} className={cn(ClassName.CHAT_DIALOG_MESSAGE, className)} rightAlign={rightAlign} {...props}>
       <InnerContainer>
         {withLogo && isFirstInSeries && (
           <LogoCircle shadow={false} size={32} forAvatar={!!avatarURL}>

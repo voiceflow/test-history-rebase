@@ -23,6 +23,8 @@ import {
 } from '@/gates';
 import { connect, lazy, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable, useEventualEngine, useLayoutDidUpdate, useSelector, useTeardown, useTheme } from '@/hooks';
+import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
+import NonRouteIMM from '@/pages/Canvas/components/InteractionModelModal/NonRouteIMM';
 import InactivityModal from '@/pages/Inactivity';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
 import { ConnectedProps } from '@/types';
@@ -116,6 +118,9 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
             <InactivityModal open={isIdle} onActive={setActive} />
           </>
         )}
+
+        <NonRouteIMM />
+        <ExportModelModal />
 
         <RemoveIntercom />
 

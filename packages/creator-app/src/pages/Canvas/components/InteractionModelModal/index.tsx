@@ -1,19 +1,16 @@
-import { IconVariant, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
+import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { matchPath, RouteComponentProps, useLocation } from 'react-router-dom';
 
-import Tabs from '@/components/Tabs';
 import { Path } from '@/config/routes';
 import { InteractionModelTabType, ModalType } from '@/constants';
-import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
-import { IntentsManager, Modal, ModalContent, SlotsManager, VariablesManager } from './components';
-import { TABS } from './constants';
+import UncontrolledInteractionModel from './UncontrolledInteractionModel';
 
 const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: InteractionModelTabType }> & InteractionModelModalConnectedProps> = ({
   compilePrototype,
@@ -73,33 +70,16 @@ const InteractionModelModal: React.FC<RouteComponentProps<{ modelType: Interacti
   }, [isInStack]);
 
   return (
-    <Modal
-      id={ModalType.INTERACTION_MODEL}
-      ref={setModalRef}
-      title={<Tabs selected={activeTab} options={TABS} onChange={onChangeTab} />}
-      icon={<SvgIcon icon="exportModel" variant={IconVariant.STANDARD} clickable size={16} onClick={openExportModal} />}
-      isSmall={false}
-    >
-      {!!modalRef && (
-        <TextEditorVariablesPopoverProvider value={modalRef}>
-          <ModalContent>
-            {activeTab === InteractionModelTabType.SLOTS && (
-              <SlotsManager selectedID={modelMatch?.params.modelEntityID} setSelectedID={onSetSelectedID} />
-            )}
-            {activeTab === InteractionModelTabType.INTENTS && (
-              <IntentsManager selectedID={modelMatch?.params.modelEntityID} setSelectedID={onSetSelectedID} />
-            )}
-            {activeTab === InteractionModelTabType.VARIABLES && (
-              <VariablesManager
-                selectedID={modelMatch?.params.modelEntityID}
-                setSelectedID={onSetSelectedID}
-                setSelectedTypeAndID={onSetSelectedTypeAndID}
-              />
-            )}
-          </ModalContent>
-        </TextEditorVariablesPopoverProvider>
-      )}
-    </Modal>
+    <UncontrolledInteractionModel
+      activeTab={activeTab}
+      onChangeTab={onChangeTab}
+      openExportModal={openExportModal}
+      setModalRef={setModalRef}
+      modalRef={modalRef}
+      onSetSelectedID={onSetSelectedID}
+      onSetSelectedTypeAndID={onSetSelectedTypeAndID}
+      selectedID={modelMatch?.params.modelEntityID}
+    />
   );
 };
 

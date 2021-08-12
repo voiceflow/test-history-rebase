@@ -18,6 +18,7 @@ import { transformDialogTimestamp } from './util';
 const TranscriptDialog: React.FC = () => {
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [isScrolling, setIsScrolling] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState(false);
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
   const activeProjectID = useSelector(activeProjectIDSelector);
   const debugMessage = useSelector(Recent.prototypeDebugSelector);
@@ -27,9 +28,10 @@ const TranscriptDialog: React.FC = () => {
   const dispatch = useDispatch();
 
   const fetchDialogs = async () => {
+    setLoading(true);
     const dialogs = await client.transcript.getTranscriptDialog(activeProjectID!, currentTranscriptID!);
     const modifiedDialogs = await transformDialogTimestamp(dialogs, dialogs[0].startTime);
-
+    setLoading(false);
     setMessages(modifiedDialogs);
   };
 
@@ -63,22 +65,24 @@ const TranscriptDialog: React.FC = () => {
         handleChange={handleChange}
         transcriptInformation={{ intentConfidenceToggled: intentConfidence, debugMessageToggled: debugMessage }}
       />
-      <PrototypeChatDisplay
-        onScroll={onScroll}
-        avatarURL={avatar}
-        color={color}
-        isTranscript={true}
-        messages={messages}
-        onPlay={handleMessageClick}
-        debug={true}
-        interactions={[]}
-        status={PrototypeStatus.ENDED}
-        hideSessionMessages={false}
-        showPadding
-        onInteraction={(request: string | BaseRequest) => alert(request)}
-        stepBack={() => noop()}
-        autoScroll={false}
-      />
+      {!loading && (
+        <PrototypeChatDisplay
+          onScroll={onScroll}
+          avatarURL={avatar}
+          color={color}
+          isTranscript={true}
+          messages={messages}
+          onPlay={handleMessageClick}
+          debug={true}
+          interactions={[]}
+          status={PrototypeStatus.ENDED}
+          hideSessionMessages={false}
+          showPadding
+          onInteraction={(request: string | BaseRequest) => alert(request)}
+          stepBack={() => noop()}
+          autoScroll={false}
+        />
+      )}
     </Container>
   );
 };

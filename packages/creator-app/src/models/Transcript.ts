@@ -41,6 +41,12 @@ export enum Browser {
 
 export type TagType = string | SystemTag | Sentiment;
 
+export interface AnnotationTurnType {
+  utteranceAddedTo?: string;
+}
+
+export type Annotations = Record<string, AnnotationTurnType>;
+
 export interface Transcript {
   // the id of this transcript
   id: string;
@@ -70,4 +76,6 @@ export interface Transcript {
   name: string;
   // the imageURL of the user who recorded this test
   image: string;
+
+  annotations: Annotations;
 }

@@ -54,6 +54,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
+  const [focusedTurnID, setFocusedTurnID] = React.useState<string | null>(null);
 
   const onScrollHandler = useDebouncedCallback(
     30,
@@ -83,7 +84,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   }, [isLoading]);
 
   return (
-    <OutterChatContainer>
+    <OutterChatContainer focusedTurnID={focusedTurnID}>
       <InnerChatContainer onScroll={onScrollHandler} ref={chatScrollRef} atTop={atTop}>
         <Dialog
           onScroll={onScroll}
@@ -103,6 +104,8 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
           avatarURL={avatarURL}
           onInteraction={onInteraction}
           isTranscript={isTranscript}
+          setFocusedTurnID={setFocusedTurnID}
+          focusedTurnID={focusedTurnID}
         />
       </InnerChatContainer>
     </OutterChatContainer>

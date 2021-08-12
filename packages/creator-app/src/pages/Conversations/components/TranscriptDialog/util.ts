@@ -1,4 +1,3 @@
-import cuid from 'cuid';
 import moment from 'moment';
 
 import { Message } from '@/pages/Prototype/types';
@@ -12,7 +11,6 @@ const calculateRelativeTimeDifference = (startTime: string, endTime: string) => 
 export const transformDialogTimestamp = (dialogs: Message[], startTime: string): Message[] => {
   dialogs.forEach((message: any) => {
     message.startTime = calculateRelativeTimeDifference(startTime, message.startTime);
-    message.id += `${cuid.slug()}`;
   });
   return dialogs;
 };

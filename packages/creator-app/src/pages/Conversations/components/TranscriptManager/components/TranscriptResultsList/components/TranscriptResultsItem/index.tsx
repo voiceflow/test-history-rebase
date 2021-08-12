@@ -52,7 +52,7 @@ const TranscriptResultsItem: React.FC<ResultsItem> = ({ data, format, active = f
     });
   };
   const onExport = async () => {
-    exportTranscript(format, id);
+    await exportTranscript(format, id, name);
   };
 
   const options = React.useMemo(() => {

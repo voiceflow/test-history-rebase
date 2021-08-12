@@ -69,7 +69,7 @@ export const createTranscript = (): Thunk => async (_dispatch, getState) => {
 
   try {
     await client.transcript.createTranscript(
-      { device: deviceType!, os: operatingSystem, browser: browserName, sessionID, versionID },
+      { unread: true, device: deviceType!, os: operatingSystem, browser: browserName, sessionID, versionID },
       activeProjectID
     );
   } catch (e) {
@@ -163,7 +163,7 @@ export const deleteTranscript =
   };
 
 export const exportTranscript =
-  (format: TranscriptExportFormat, transcriptID: string): Thunk =>
+  (format: TranscriptExportFormat, transcriptID: string, name: string): Thunk =>
   async (_dispatch, getState) => {
     const state = getState();
     const activeProjectID = Session.activeProjectIDSelector(state)!;
@@ -174,7 +174,7 @@ export const exportTranscript =
       const csvBlob = new Blob([exportedTranscript], { type: 'text/csv' });
 
       const url = URL.createObjectURL(csvBlob);
-      downloadFromURL(`Conversation with Test User.${format}`, url);
+      downloadFromURL(`Conversation with ${name ?? 'Test User'}.${format}`, url);
     } catch (error) {
       toast.error('Transcript export failed');
     }

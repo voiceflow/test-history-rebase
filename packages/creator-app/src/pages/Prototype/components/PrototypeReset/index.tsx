@@ -5,7 +5,7 @@ import { FeatureFlag } from '@/config/features';
 import { goToTargetTranscript } from '@/ducks/router';
 import * as Transcripts from '@/ducks/transcript';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
+import { useDispatch, useFeature } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
@@ -26,10 +26,12 @@ const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProp
 }) => {
   const testReports = useFeature(FeatureFlag.TEST_REPORTS);
   const [transcriptSaved, setTranscriptSaved] = React.useState(true);
+  const updateUnreadTranscripts = useDispatch(Transcripts.updateUnreadTranscripts);
 
   const onSave = () => {
     try {
       savePrototypeSession();
+      updateUnreadTranscripts(true);
       toast.success(
         <>
           Test saved to Conversations <br />

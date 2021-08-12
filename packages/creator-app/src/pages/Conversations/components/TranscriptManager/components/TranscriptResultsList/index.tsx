@@ -3,6 +3,7 @@ import { AutoSizer, List } from 'react-virtualized';
 
 import { TranscriptExportFormat } from '@/client/transcript';
 import * as Router from '@/ducks/router';
+import * as Transcripts from '@/ducks/transcript';
 import { currentTranscriptIDSelector, mapTranscriptsSelector } from '@/ducks/transcript';
 import { useDispatch, useSelector } from '@/hooks';
 import { Transcript } from '@/models';
@@ -18,11 +19,19 @@ const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcrip
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
   const transcriptMap = useSelector(mapTranscriptsSelector);
   const goToTranscript = useDispatch(Router.goToTargetTranscript);
+  const updateUnreadTranscript = useDispatch(Transcripts.updateUnreadTranscripts);
 
   React.useEffect(() => {
     const targetTranscriptDoesntExist = currentTranscriptID && !transcriptMap[currentTranscriptID];
     if (transcriptList.length && (targetTranscriptDoesntExist || !currentTranscriptID)) {
       goToTranscript(transcriptList[0].id);
+    }
+
+    const unreadTranscripts = transcriptList.filter((transcript) => transcript.unread);
+    if (!unreadTranscripts.length) {
+      updateUnreadTranscript(false);
+    } else {
+      updateUnreadTranscript(true);
     }
   }, [transcriptList, currentTranscriptID]);
 
@@ -49,7 +58,7 @@ const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcrip
                   />
                 );
               }}
-              height={20}
+              height={1000}
             />
           );
         }}

@@ -3130,9 +3130,9 @@
     nanoevents "^6.0.0"
 
 "@logux/redux@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@logux/redux/-/redux-0.8.0.tgz#7c07c824fdcab5317cd801e5369bf85649359345"
-  integrity sha512-qR2eghIMBiCBQTNnEDz2perslhmG4LiVt8f2nBKbViD178l0et2NfBsXiYDMRnU3ACLOjOwaGdXzNinqdulxYg==
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@logux/redux/-/redux-0.8.1.tgz#6aa6dc6e3962995d22f16035ca53df7104aa5035"
+  integrity sha512-dKwFqYmARzK8nkwshyYQuQyZg/biDm1zIsIFlsaEIzVu+Ddg+LR2nU06ekSwjhIH0OMruX0lFjBvWgqKPIVbHg==
   dependencies:
     nanoevents "^6.0.0"
 

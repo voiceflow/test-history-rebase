@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.461.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.2...@voiceflow/creator-app@1.461.3) (2021-08-13)
+
+
+### Bug Fixes
+
+* add fewtch counter to track latest fetch (VF-000) ([#3903](https://github.com/voiceflow/creator-app/issues/3903)) ([cba084d](https://github.com/voiceflow/creator-app/commit/cba084dd4cc15d3064840716b46c964c57f22c29))
+
+
+
+
+
 ## [1.461.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.1...@voiceflow/creator-app@1.461.2) (2021-08-13)
 
 **Note:** Version bump only for package @voiceflow/creator-app

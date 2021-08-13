@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.10.1...@voiceflow/ui@1.11.0) (2021-08-13)
+
+
+### Features
+
+* slate variables, links and other plugins systep  ([#3894](https://github.com/voiceflow/creator-app/issues/3894)) ([ac3c4f1](https://github.com/voiceflow/creator-app/commit/ac3c4f1bd40bab3c080bb0d7965757a9a0606cc9))
+
+
+
+
+
 ## [1.10.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.10.0...@voiceflow/ui@1.10.1) (2021-08-12)
 
 

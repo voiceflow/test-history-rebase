@@ -1,6 +1,6 @@
 import { BaseRequest } from '@voiceflow/general-types';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import client from '@/client';
 import * as Prototype from '@/ducks/prototype';
@@ -26,20 +26,24 @@ const TranscriptDialog: React.FC = () => {
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
   const color = useSelector(Prototype.prototypeBrandColorSelector);
   const dispatch = useDispatch();
+  const store = useStore();
 
-  const fetchDialogs = async () => {
+  const fetchDialogs = async (targetTranscriptID: string) => {
     setLoading(true);
-    const dialogs = await client.transcript.getTranscriptDialog(activeProjectID!, currentTranscriptID!);
-    const modifiedDialogs = await transformDialogTimestamp(dialogs, dialogs[0].startTime);
-    setLoading(false);
-    setMessages(modifiedDialogs);
+    const dialogs = await client.transcript.getTranscriptDialog(activeProjectID!, targetTranscriptID!);
+    const currentTranscriptID = currentTranscriptIDSelector(store.getState());
+    if (currentTranscriptID === targetTranscriptID && dialogs) {
+      setLoading(false);
+      const modifiedDialogs = await transformDialogTimestamp(dialogs, dialogs[0].startTime);
+      setMessages(modifiedDialogs);
+    }
   };
 
   React.useEffect(() => {
     if (!currentTranscriptID) {
       setMessages([]);
     } else {
-      fetchDialogs();
+      fetchDialogs(currentTranscriptID);
     }
   }, [currentTranscriptID]);
 

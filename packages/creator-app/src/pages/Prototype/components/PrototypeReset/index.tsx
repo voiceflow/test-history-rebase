@@ -28,17 +28,16 @@ const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProp
   const [transcriptSaved, setTranscriptSaved] = React.useState(true);
   const updateUnreadTranscripts = useDispatch(Transcripts.updateUnreadTranscripts);
 
-  const onSave = () => {
+  const onSave = async () => {
     try {
-      savePrototypeSession();
+      const newTranscriptID = await savePrototypeSession();
       updateUnreadTranscripts(true);
       toast.success(
         <>
           Test saved to Conversations <br />
           <ToastCallToAction
             onClick={() => {
-              // TODO target the right transcript id
-              goToTargetTranscript('1');
+              goToTargetTranscript(newTranscriptID!);
             }}
           >
             Go to conversation

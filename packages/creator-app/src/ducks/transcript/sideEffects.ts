@@ -53,7 +53,7 @@ export const setUtteranceAddedTo =
     }
   };
 
-export const createTranscript = (): Thunk => async (_dispatch, getState) => {
+export const createTranscript = (): Thunk<string | undefined> => async (_dispatch, getState) => {
   const state = getState();
   const { browser, os, platform } = Bowser.parse(window.navigator.userAgent);
 
@@ -68,12 +68,15 @@ export const createTranscript = (): Thunk => async (_dispatch, getState) => {
   const browserName = browser.name as Browser;
 
   try {
-    await client.transcript.createTranscript(
+    const { _id } = await client.transcript.createTranscript(
       { unread: true, device: deviceType!, os: operatingSystem, browser: browserName, sessionID, versionID },
       activeProjectID
     );
+
+    return _id;
   } catch (e) {
     toast.error('Error saving transcript');
+    return undefined;
   }
 };
 

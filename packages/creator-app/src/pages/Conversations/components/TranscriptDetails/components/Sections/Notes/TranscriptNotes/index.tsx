@@ -22,7 +22,7 @@ const TranscriptNotes: React.FC = () => {
     (text: string) => {
       saveNote(currentTranscriptID!, text);
     },
-    []
+    [currentTranscriptID]
   );
 
   return (

@@ -52,7 +52,7 @@ const TextColor: React.FC = () => {
 
   const onBlurOpacityInput = ({ target }: React.FocusEvent<HTMLInputElement>) => {
     unstable_batchedUpdates(() => {
-      if (!editor.getFakeSelectionRange()) {
+      if (!editor.isFakeSelectionApplied()) {
         editor.removeFakeSelection();
       } else {
         EditorAPI.removeFakeSelectionAndFocus(editor);
@@ -77,7 +77,7 @@ const TextColor: React.FC = () => {
     unstable_batchedUpdates(() => {
       togglePickerInputFocused(false);
 
-      if (!editor.getFakeSelectionRange()) {
+      if (!editor.isFakeSelectionApplied()) {
         editor.removeFakeSelection();
       } else {
         EditorAPI.removeFakeSelectionAndFocus(editor);

@@ -2,6 +2,7 @@ import React from 'react';
 import { RenderElementProps } from 'slate-react';
 
 import { styled } from '@/hocs';
+import { getValidHref } from '@/utils/string';
 
 import { LinkElement as LinkElementType } from '../editor/types';
 
@@ -32,10 +33,7 @@ const LinkElement: React.FC<LinkElementProps> = ({ attributes, children, element
       }
 
       if (href && withoutExtraKeys) {
-        // not using http/https here since the links can have custom protocols, like zpl://
-        const link = href.startsWith('//') || href.includes('://') ? href : `//${href}`;
-
-        window.open(link, '_blank', 'toolbar=0,location=0,menubar=0');
+        window.open(getValidHref(href), '_blank');
       }
     },
     [href]

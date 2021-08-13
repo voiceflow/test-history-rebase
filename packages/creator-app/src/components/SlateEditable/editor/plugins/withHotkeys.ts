@@ -2,7 +2,7 @@ import React from 'react';
 import { Editor } from 'slate';
 
 import type { Hotkey } from '../../constants';
-import type { EditorAPIType } from '../editorAPI';
+import type { Plugin } from './types';
 
 export interface HotkeysEditor {
   HotKeysHandlersMap: Partial<Record<string, React.KeyboardEventHandler<HTMLDivElement>>>;
@@ -11,20 +11,18 @@ export interface HotkeysEditor {
   unregisterHotKey: (key: Hotkey) => void;
 }
 
-export const withHotkeysPlugin =
-  (_EditorAPI: EditorAPIType) =>
-  (editor: Editor): Editor => {
-    const hotkeysEditor: HotkeysEditor = {
-      HotKeysHandlersMap: {},
+export const withHotkeysPlugin: Plugin = () => (editor: Editor) => {
+  const hotkeysEditor: HotkeysEditor = {
+    HotKeysHandlersMap: {},
 
-      registerHotKey: (key: Hotkey, callback: React.KeyboardEventHandler<HTMLDivElement>) => {
-        hotkeysEditor.HotKeysHandlersMap[key] = callback;
-      },
+    registerHotKey: (key: Hotkey, callback: React.KeyboardEventHandler<HTMLDivElement>) => {
+      hotkeysEditor.HotKeysHandlersMap[key] = callback;
+    },
 
-      unregisterHotKey: (key: Hotkey) => {
-        delete hotkeysEditor.HotKeysHandlersMap[key];
-      },
-    };
-
-    return Object.assign(editor, hotkeysEditor);
+    unregisterHotKey: (key: Hotkey) => {
+      delete hotkeysEditor.HotKeysHandlersMap[key];
+    },
   };
+
+  return Object.assign(editor, hotkeysEditor);
+};

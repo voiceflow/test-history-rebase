@@ -5,10 +5,14 @@ import { withReact } from 'slate-react';
 import { compose } from '@/utils/functional';
 
 import EditorAPI from './editorAPI';
-import { withPlugins } from './plugins';
+import { PluginType, withPlugins } from './plugins';
 import { Editor } from './types';
 
-export { EditorAPI };
+export { default as EditorAPI } from './editorAPI';
+export type { PluginsOptions } from './plugins';
+export { DEFAULT_PLUGINS_OPTIONS, PluginType } from './plugins';
+export { default as Prism, PrismLanguage, PrismVariablesProperty } from './prism';
 export * from './types';
 
-export const createEditor = (): Editor => compose(withPlugins(EditorAPI), withHistory, withReact)(createSlateEditor());
+export const createEditor = (plugins: PluginType[] = []): Editor =>
+  compose(withPlugins(EditorAPI, plugins), withHistory, withReact)(createSlateEditor());

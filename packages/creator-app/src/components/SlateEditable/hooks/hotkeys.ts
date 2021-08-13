@@ -2,11 +2,9 @@ import { KeyName, useCache } from '@voiceflow/ui';
 import React from 'react';
 import { Editor } from 'slate';
 
-import { Hotkey } from './constants';
-import { useStaticSlateEditor } from './contexts';
-import { createEditor, EditorAPI } from './editor';
-
-export const useSetupEditor = (): Editor => React.useMemo(() => createEditor(), []);
+import { Hotkey } from '../constants';
+import { useStaticSlateEditor } from '../contexts';
+import { EditorAPI } from '../editor';
 
 export const useEditorHotkey = (key: Hotkey, callback: React.KeyboardEventHandler<HTMLDivElement>): void => {
   const editor = useStaticSlateEditor();

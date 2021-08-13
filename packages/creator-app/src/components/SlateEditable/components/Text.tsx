@@ -4,20 +4,18 @@ import { RenderLeafProps } from 'slate-react';
 
 import { useSlateEditor } from '../contexts';
 
-const Text: React.FC<RenderLeafProps> = ({ attributes, children, leaf }) => {
+interface TextProps extends RenderLeafProps {
+  styleOverrides?: React.CSSProperties;
+}
+
+const Text: React.ForwardRefRenderFunction<HTMLSpanElement, TextProps> = ({ leaf, children, attributes, styleOverrides }, ref) => {
   const editor = useSlateEditor();
 
   return (
-    <span
-      {...attributes}
-      style={{
-        ...slate.getTextCSSProperties(leaf),
-        ...editor.getFakeSelectionTextStyles(leaf),
-      }}
-    >
+    <span ref={ref} {...attributes} style={{ ...slate.getTextCSSProperties(leaf), ...editor.getFakeSelectionTextStyles(leaf), ...styleOverrides }}>
       {children}
     </span>
   );
 };
 
-export default Text;
+export default React.forwardRef<HTMLSpanElement, TextProps>(Text);

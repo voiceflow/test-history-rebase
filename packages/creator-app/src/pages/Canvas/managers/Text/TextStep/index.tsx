@@ -1,17 +1,16 @@
 import { CanvasNodeVisibility } from '@voiceflow/general-types';
 import React from 'react';
 
-import { SlateEditorAPI } from '@/components/SlateEditable';
 import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
-import { transformVariablesToReadable } from '@/utils/slot';
+import { serializeSlateToJSX } from '@/utils/slate';
 
 import { NODE_CONFIG } from '../constants';
 
 interface TextStepItem {
   id: string;
-  content: string;
+  content: React.ReactNode;
 }
 
 export interface TextStepProps {
@@ -31,7 +30,7 @@ export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, portID, previ
           itemsToRender.map(({ id, content }, index) => (
             <Item
               key={id}
-              label={content ? transformVariablesToReadable(content) : null}
+              label={content}
               portID={index === itemsToRender.length - 1 ? portID : null}
               icon={NODE_CONFIG.icon}
               iconColor={NODE_CONFIG.iconColor}
@@ -51,7 +50,7 @@ export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, portID, previ
 };
 
 const ConnectedTextStep: React.FC<ConnectedStepProps<NodeData.Text>> = ({ node, data }) => {
-  const items = React.useMemo(() => data.texts.map(({ id, content }) => ({ id, content: SlateEditorAPI.serialize(content) })), [data.texts]);
+  const items = React.useMemo(() => data.texts.map(({ id, content }) => ({ id, content: serializeSlateToJSX(content) })), [data.texts]);
 
   return <TextStep items={items} preview={data.canvasVisibility === CanvasNodeVisibility.PREVIEW} nodeID={node.id} portID={node.ports.out[0]} />;
 };

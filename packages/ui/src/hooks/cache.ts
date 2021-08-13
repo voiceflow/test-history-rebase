@@ -8,4 +8,4 @@ export const useCache = <T extends Record<string, unknown>>(defaultData: T, data
   return cache;
 };
 
-export const useContextApi = <T extends Record<string, unknown>>(api: T): T => React.useMemo(() => api, Object.values(api));
+export const useContextApi = <T>(api: T): T => React.useMemo(() => api, Object.values(api));

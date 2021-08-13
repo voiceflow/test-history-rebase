@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-import { Descendant, Editor as SlateEditor, EditorInterface, Element, Node, Range, Text, Transforms } from 'slate';
+import { Descendant, Editor as SlateEditor, EditorInterface, Element, Location, Node, Path, Range, Text, Transforms } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react';
 import { PickByValue } from 'utility-types';
@@ -8,7 +8,7 @@ import { PickByValue } from 'utility-types';
 import { Nullable } from '@/types';
 
 import { PluginsEditorAPI, withPluginsEditorAPI } from './plugins';
-import { Editor } from './types';
+import type { Editor } from './types';
 
 // not using TextProperty and ElementProperty enums since plugins can add extra props
 type TextPropertyKey = keyof Omit<Text, 'text'>;
@@ -29,11 +29,12 @@ interface BaseEditorAPI extends EditorInterface, ReactEditorType, HistoryEditorT
   // selection and range
 
   fullRange(editor: Editor): Range;
-  setSelection(editor: Editor, selection: Range): void;
+  setSelection(editor: Editor, target: Location): void;
 
   // element
 
   element(editor: Editor): Nullable<Element>;
+  firstElement(node: Node): Nullable<Element>;
   elementProperty<T extends ElementPropertyKey>(editor: Editor, property: T): Element[T] | undefined;
   elementProperty<T extends ElementPropertyKey>(editor: Editor, property: T, defaultValue: NonNullable<Element[T]>): NonNullable<Element[T]>;
   setElementProperty<T extends ElementPropertyKey>(editor: Editor, property: T, value: Element[T] | undefined): void;
@@ -46,8 +47,11 @@ interface BaseEditorAPI extends EditorInterface, ReactEditorType, HistoryEditorT
 
   // text
 
+  addMarkToAll: (editor: Editor, key: string, value: any) => void;
+  removeMarkFromAll: (editor: Editor, key: string) => void;
+
   text(editor: Editor): Nullable<Text>;
-  firstText(node: Descendant): Nullable<Text>;
+  firstText(node: Node): Nullable<Text>;
   textProperty<T extends TextPropertyKey>(editor: Editor, property: T): Text[T] | undefined;
   textProperty<T extends TextPropertyKey>(editor: Editor, property: T, defaultValue: NonNullable<Text[T]>): NonNullable<Text[T]>;
   setTextProperty<T extends TextPropertyKey>(editor: Editor, property: T, value: Text[T] | undefined): void;
@@ -59,8 +63,7 @@ interface BaseEditorAPI extends EditorInterface, ReactEditorType, HistoryEditorT
     value: NonNullable<Text[T]>,
     options?: { nullable?: boolean }
   ): boolean;
-  setTextPropertyAtRange<T extends TextPropertyKey>(editor: Editor, range: Range, property: T, value: Text[T] | undefined): void;
-  unsetTextPropertyAtAll<T extends TextPropertyKey>(editor: Editor, property: T): void;
+  setTextPropertyAtLocation<T extends TextPropertyKey>(editor: Editor, range: Location, property: T, value: Text[T] | undefined): void;
 }
 
 const BaseEditorAPI: BaseEditorAPI = {
@@ -92,32 +95,38 @@ const BaseEditorAPI: BaseEditorAPI = {
     anchor: EditorAPI.start(editor, []),
   }),
 
-  setSelection: (editor: Editor, selection: Range): void => Transforms.select(editor, selection),
+  setSelection: (editor: Editor, selection: Location): void => Transforms.select(editor, selection),
 
   // element
 
   element: (editor: Editor): Nullable<Element> => {
-    const fakeSelectionRange = editor.getFakeSelectionRange();
+    const { selection } = editor;
 
-    if (fakeSelectionRange) {
-      const [entry] = EditorAPI.nodes<Element>(editor, {
-        at: fakeSelectionRange,
-        match: (n) => !EditorAPI.isEditor(n) && Element.isElement(n),
-      });
-
-      return entry?.[0] ?? null;
+    if (!selection) {
+      return EditorAPI.firstElement(editor);
     }
 
-    if (!EditorAPI.isFocused(editor) || !editor.selection) {
-      return (editor.children[0] ?? null) as Nullable<Element>;
+    const [start, end] = Range.edges(selection);
+
+    // path[0] gives us the index of the top-level block.
+    let startTopLevelBlockIndex = start.path[0];
+    const endTopLevelBlockIndex = end.path[0];
+
+    while (startTopLevelBlockIndex <= endTopLevelBlockIndex) {
+      const [node] = EditorAPI.node(editor, [startTopLevelBlockIndex]);
+
+      if (Element.isElement(node)) {
+        return node;
+      }
+
+      startTopLevelBlockIndex++;
     }
 
-    const [entry] = EditorAPI.nodes<Element>(editor, {
-      at: editor.selection,
-      match: (n) => !EditorAPI.isEditor(n) && Element.isElement(n),
-    });
+    return null;
+  },
 
-    return entry?.[0] ?? null;
+  firstElement: (node: Node): Nullable<Element> => {
+    return (Element.isElement(node) || EditorAPI.isEditor(node)) && Element.isElement(node.children[0]) ? node.children[0] : null;
   },
 
   elementProperty: <T extends ElementPropertyKey>(editor: Editor, property: T, defaultValue?: NonNullable<Element[T]>): Element[T] | undefined => {
@@ -134,87 +143,121 @@ const BaseEditorAPI: BaseEditorAPI = {
   ): boolean => (nullable ? EditorAPI.elementProperty(editor, property, value) : EditorAPI.elementProperty(editor, property)) === value,
 
   setElementProperty: <T extends ElementPropertyKey>(editor: Editor, property: T, value: Element[T] | undefined): void => {
-    if (!EditorAPI.isFocused(editor)) {
-      Transforms.setNodes(editor, { [property]: value }, { at: EditorAPI.fullRange(editor), mode: 'highest' });
-    } else {
-      Transforms.setNodes(editor, { [property]: value }, { mode: 'highest' });
-    }
+    Transforms.setNodes(editor, { [property]: value }, { at: editor.selection ?? EditorAPI.fullRange(editor), mode: 'highest' });
   },
 
   // text
 
-  text: (editor: Editor): Nullable<Text> => {
-    const fakeSelectionRange = editor.getFakeSelectionRange();
+  addMarkToAll: (editor: Editor, key: string, value: any): void => {
+    editor.marks = { ...(EditorAPI.marks(editor) ?? {}), [key]: value };
 
-    if (fakeSelectionRange) {
-      const [entry] = EditorAPI.nodes<Text>(editor, { at: fakeSelectionRange, match: Text.isText });
+    const fullRange = EditorAPI.fullRange(editor);
+
+    if (Range.isExpanded(fullRange)) {
+      Transforms.setNodes(editor, { [key]: value }, { at: fullRange, match: Text.isText, split: true });
+    }
+  },
+
+  removeMarkFromAll: (editor: Editor, key: string): void => {
+    const marks = { ...EditorAPI.marks(editor) };
+
+    delete marks[key as keyof Omit<Text, 'text'>];
+
+    editor.marks = marks;
+
+    const fullRange = EditorAPI.fullRange(editor);
+
+    if (Range.isExpanded(fullRange)) {
+      Transforms.unsetNodes(editor, key, { at: fullRange, match: Text.isText, split: true });
+    }
+  },
+
+  addMark: (editor: Editor, key: string, value: any): void => {
+    if (!editor.selection) {
+      EditorAPI.addMarkToAll(editor, key, value);
+    } else {
+      SlateEditor.addMark(editor, key, value);
+    }
+  },
+
+  removeMark: (editor: Editor, key: string): void => {
+    if (!editor.selection) {
+      EditorAPI.removeMarkFromAll(editor, key);
+    } else {
+      SlateEditor.removeMark(editor, key);
+    }
+  },
+
+  text(editor: Editor): Nullable<Text> {
+    const { selection } = editor;
+
+    if (!selection) {
+      return EditorAPI.firstText(editor);
+    }
+
+    if (Range.isExpanded(selection)) {
+      const [entry] = EditorAPI.nodes(editor, { at: selection, match: Text.isText });
 
       return entry?.[0] ?? null;
     }
 
-    if (!EditorAPI.isFocused(editor) || !editor.selection) {
-      return EditorAPI.firstText(editor);
-    }
+    const { anchor } = selection;
+    const { path } = anchor;
 
-    const [entry] = EditorAPI.nodes<Text>(editor, {
-      at: editor.selection,
-      match: Text.isText,
-    });
+    let [node] = EditorAPI.leaf(editor, path);
 
-    return entry?.[0] ?? null;
-  },
+    if (anchor.offset === 0) {
+      const prev = EditorAPI.previous(editor, { at: path, match: Text.isText });
+      const block = EditorAPI.above<Element>(editor, { match: (n) => EditorAPI.isBlock(editor, n) });
 
-  firstText: (node: Node): Nullable<Text> => {
-    if (!node) {
-      return null;
-    }
+      if (prev && block) {
+        const [prevNode, prevPath] = prev;
+        const [, blockPath] = block;
 
-    if (EditorAPI.isEditor(node) || Element.isElement(node)) {
-      return EditorAPI.firstText(node.children[0]);
+        if (Path.isAncestor(blockPath, prevPath)) {
+          node = prevNode as Text;
+        }
+      }
     }
 
     return node;
   },
 
-  textProperty<T extends TextPropertyKey>(editor: Editor, property: T, defaultValue?: Text[T]): Text[T] | undefined {
-    const text = EditorAPI.text(editor);
+  firstText: (node: Node): Nullable<Text> => {
+    if (Text.isText(node)) {
+      return node;
+    }
 
-    return text?.[property] ?? defaultValue;
+    // eslint-disable-next-line no-restricted-syntax
+    for (const child of node.children) {
+      const text = EditorAPI.firstText(child);
+
+      if (text) {
+        return text;
+      }
+    }
+
+    return null;
+  },
+
+  textProperty<T extends TextPropertyKey>(editor: Editor, property: T, defaultValue?: Text[T]): Text[T] | undefined {
+    if (!editor.selection) {
+      return EditorAPI.text(editor)?.[property] ?? defaultValue;
+    }
+
+    const marks = EditorAPI.marks(editor);
+
+    return (marks?.[property] as Text[T]) ?? defaultValue;
   },
 
   setTextProperty: <T extends TextPropertyKey>(editor: Editor, property: T, value: Text[T] | undefined): void => {
-    const fakeSelectionRange = editor.getFakeSelectionRange();
-
-    if (fakeSelectionRange && Range.isCollapsed(fakeSelectionRange)) {
-      editor.marks = { ...(EditorAPI.marks(editor) ?? {}), [property]: value };
-
-      editor.onChange();
-      return;
-    }
-
-    if (fakeSelectionRange) {
-      const rangeRef = EditorAPI.rangeRef(editor, fakeSelectionRange);
-
-      EditorAPI.setTextPropertyAtRange(editor, fakeSelectionRange, property, value);
-
-      editor.setFakeSelectionRange(rangeRef.unref()!);
-      return;
-    }
-
-    if (!EditorAPI.isFocused(editor) || !editor.selection) {
-      editor.marks = { ...(EditorAPI.marks(editor) ?? {}), [property]: value };
-
-      Transforms.setNodes(editor, { [property]: value }, { at: EditorAPI.fullRange(editor), match: Text.isText, split: true });
-      return;
-    }
-
-    editor.addMark(property, value);
+    EditorAPI.addMark(editor, property, value);
   },
 
   toggleTextProperty: <T extends BooleanTextPropertyKey>(editor: Editor, property: T, value?: boolean): void => {
     const newValue = value ?? !EditorAPI.isTextPropertyActive<T>(editor, property, true as NonNullable<Text[T]>);
 
-    EditorAPI.setTextProperty(editor, property, newValue);
+    EditorAPI.setTextProperty(editor, property, newValue as Text[T]);
   },
 
   isTextPropertyActive: <T extends TextPropertyKey>(
@@ -224,12 +267,8 @@ const BaseEditorAPI: BaseEditorAPI = {
     { nullable }: { nullable?: boolean } = {}
   ): boolean => (nullable ? EditorAPI.textProperty(editor, property, value) : EditorAPI.textProperty(editor, property)) === value,
 
-  setTextPropertyAtRange: <T extends TextPropertyKey>(editor: Editor, range: Range, property: T, value: Text[T] | undefined): void => {
-    Transforms.setNodes(editor, { [property]: value }, { match: Text.isText, split: true, at: range });
-  },
-
-  unsetTextPropertyAtAll: <T extends TextPropertyKey>(editor: Editor, property: T): void => {
-    Transforms.unsetNodes(editor, property, { match: Text.isText, at: EditorAPI.fullRange(editor) });
+  setTextPropertyAtLocation: <T extends TextPropertyKey>(editor: Editor, location: Location, property: T, value: Text[T] | undefined): void => {
+    Transforms.setNodes(editor, { [property]: value }, { match: Text.isText, split: true, at: location });
   },
 };
 

@@ -1,3 +1,4 @@
+import _unionBy from 'lodash/unionBy';
 import { createSelector } from 'reselect';
 
 import creatorAdapter from '@/client/adapters/creator';
@@ -5,14 +6,14 @@ import { allLinksSelector, creatorDiagramIDSelector, creatorDiagramSelector } fr
 import { allActiveFeaturesSelector } from '@/ducks/feature';
 import { activeProjectSelector } from '@/ducks/project';
 import * as Project from '@/ducks/project';
-import { slotNamesSelector } from '@/ducks/slot';
+import { allSlotsSelector, slotNamesSelector } from '@/ducks/slot';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 import { activeGlobalVariablesSelector } from '@/ducks/version/selectors';
 import * as Viewport from '@/ducks/viewport';
 import { CreatorDiagram } from '@/models';
 import { unique } from '@/utils/array';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
-import { denormalize, getNormalizedByKey } from '@/utils/normalized';
+import { denormalize, getNormalizedByKey, normalize } from '@/utils/normalized';
 
 import { STATE_KEY } from './constants';
 import { StructuredFlow } from './types';
@@ -69,6 +70,23 @@ export const activeDiagramAllVariablesSelector = createSelector(
   [activeGlobalVariablesSelector, activeDiagramLocalVariablesSelector, slotNamesSelector, Project.activePlatformSelector],
   (globalVariables, activeDiagramVariables, slotNames, platform) =>
     unique([...slotNames, ...getPlatformGlobalVariables(platform), ...globalVariables, ...activeDiagramVariables])
+);
+
+export const activeDiagramAllVariablesNormalizedSelector = createSelector(
+  [activeGlobalVariablesSelector, activeDiagramLocalVariablesSelector, allSlotsSelector, Project.activePlatformSelector],
+  (globalVariables, activeDiagramVariables, slots, platform) =>
+    normalize(
+      _unionBy<{ id: string; name: string; isSlot?: boolean }>(
+        [
+          ...slots.map((slot) => ({ id: slot.id, name: slot.name, isSlot: true })),
+          ...[...getPlatformGlobalVariables(platform), ...globalVariables, ...activeDiagramVariables].map((variable) => ({
+            id: variable,
+            name: variable,
+          })),
+        ],
+        'name'
+      )
+    )
 );
 
 export const fullActiveDiagramSelector = createSelector(

@@ -24,15 +24,16 @@ interface HyperlinkButtonProps {
 const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
   const editor = useSlateEditor();
 
-  const link = (EditorAPI.link(editor)?.url ?? '') as string;
-  const [localLink, setLocalLink] = React.useState(link);
+  const linkNode = EditorAPI.link(editor);
+  const url = linkNode?.url ?? '';
+  const [localUrl, setLocalUrl] = React.useState(url);
 
   const onBlur = () => {
     unstable_batchedUpdates(() => {
-      if (!localLink) {
+      if (linkNode && !localUrl) {
         EditorAPI.unwrapLink(editor);
-      } else {
-        EditorAPI.wrapLink(editor, localLink);
+      } else if (!linkNode && localUrl) {
+        EditorAPI.wrapLink(editor, localUrl);
       }
 
       EditorAPI.removeFakeSelectionAndFocus(editor);
@@ -41,9 +42,9 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
 
   React.useEffect(() => {
     if (EditorAPI.isFocused(editor)) {
-      setLocalLink(link);
+      setLocalUrl(url);
     }
-  }, [link]);
+  }, [url]);
 
   return (
     <Popper
@@ -56,10 +57,10 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
         <Content>
           <Title>Hyperlink</Title>
           <Input
-            value={localLink}
+            value={localUrl}
             onBlur={withHandler(onClose)(onBlur)}
             onFocus={editor.applyFakeSelection}
-            onChange={({ target }) => setLocalLink(target.value)}
+            onChange={({ target }) => setLocalUrl(target.value)}
             autoFocus // eslint-disable-line jsx-a11y/no-autofocus
             onKeyPress={withEnterPress(preventDefault(({ currentTarget }) => currentTarget?.blur()))}
             placeholder="Enter URL"
@@ -69,9 +70,9 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
     >
       {({ ref, isOpened, onToggle }) =>
         children ? (
-          children({ ref, icon: 'hyperlink', active: !!link || isOpened, onClick: preventDefault(onToggle) })
+          children({ ref, icon: 'hyperlink', active: !!url || isOpened, onClick: preventDefault(onToggle) })
         ) : (
-          <IconButton ref={ref} icon="hyperlink" active={!!link || isOpened} onClick={preventDefault(onToggle)} />
+          <IconButton ref={ref} icon="hyperlink" active={!!url || isOpened} onClick={preventDefault(onToggle)} />
         )
       }
     </Popper>

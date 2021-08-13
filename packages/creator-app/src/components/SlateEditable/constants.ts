@@ -11,3 +11,8 @@ export enum Hotkey {
   UNDERLINE = 'u',
   STRIKE_THROUGH = 's',
 }
+
+export enum Plugins {
+  LINKS = 'LINKS',
+  VARIABLES = 'VARIABLES',
+}

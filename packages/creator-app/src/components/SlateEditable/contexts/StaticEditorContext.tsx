@@ -1,11 +1,10 @@
 import React from 'react';
 import { Editor } from 'slate';
 
-const EditorContext = React.createContext<[Editor] | null>(null);
+import { EditorContextProvider } from './EditorContext';
 
 const StaticEditorContext = React.createContext<Editor | null>(null);
 
-export const { Provider: EditorContextProvider } = EditorContext;
 export const { Provider: StaticEditorContextProvider } = StaticEditorContext;
 
 interface EditorProviderProps {
@@ -21,16 +20,9 @@ export const ControlledEditorProvider: React.FC<ControlledEditorProviderProps> =
 
   return (
     <StaticEditorContext.Provider value={editor}>
-      <EditorContext.Provider value={context}>{children}</EditorContext.Provider>
+      <EditorContextProvider value={context}>{children}</EditorContextProvider>
     </StaticEditorContext.Provider>
   );
-};
-
-// rerenders on each editor change
-export const useSlateEditor = (): Editor => {
-  const [editor] = React.useContext(EditorContext)!;
-
-  return editor;
 };
 
 // doesn't rerender on editor change, just provides editor

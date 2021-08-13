@@ -4,7 +4,7 @@ import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Editor } from 'slate';
 
-import { SlateEditorAPI, useSetupSlateEditor } from '@/components/SlateEditable';
+import { SlateEditorAPI, SlatePluginType, useSetupSlateEditor } from '@/components/SlateEditable';
 import { BlockType, MarkupBlockType } from '@/constants';
 import { useForceUpdate, useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
@@ -62,7 +62,7 @@ class MarkupEngine extends EngineConsumer {
   }
 
   useSetupTextEditor(nodeID: string): Editor {
-    const editor = useSetupSlateEditor();
+    const editor = useSetupSlateEditor(SlatePluginType.LINKS);
 
     React.useMemo(() => {
       const { onChange } = editor;

@@ -1,0 +1,24 @@
+import React from 'react';
+import { useFocused, useSelected } from 'slate-react';
+
+import { useToggle } from '@/hooks';
+
+import { Popper, PopperItem, PopperProps } from './components';
+
+interface SuggestionsProps<T extends PopperItem> extends Omit<PopperProps<T>, 'isSelected' | 'togglePopperFocused'> {
+  isSelected?: boolean;
+}
+
+const Suggestions = <T extends PopperItem>(props: SuggestionsProps<T>): React.ReactElement<any, any> | null => {
+  const isFocused = useFocused();
+  const isElementSelected = useSelected();
+
+  const [isPopperFocused, togglePopperFocused] = useToggle(false);
+
+  const isSelected = isFocused && isElementSelected && props.isSelected;
+  const isRendered = isPopperFocused || isSelected;
+
+  return isRendered ? <Popper {...props} isSelected={isSelected} togglePopperFocused={togglePopperFocused} /> : null;
+};
+
+export default Suggestions;

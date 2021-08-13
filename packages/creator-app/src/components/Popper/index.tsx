@@ -25,7 +25,7 @@ export interface PopperProps {
   height?: string;
   opened?: boolean;
   onClose?: () => void;
-  children: (props: ChildrenProps) => React.ReactNode;
+  children?: (props: ChildrenProps) => React.ReactNode;
   renderNav?: (props: RendererProps) => React.ReactNode;
   modifiers?: ReactPopperProps['modifiers'];
   placement?: ReactPopperProps['placement'];
@@ -67,7 +67,7 @@ const Popper: React.FC<PopperProps> = ({
 
   return (
     <Manager>
-      <Reference>{({ ref }) => children({ ...rendererProps, ref })}</Reference>
+      {children && <Reference>{({ ref }) => children({ ...rendererProps, ref })}</Reference>}
 
       {isOpened && (
         <Wrapper

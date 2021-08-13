@@ -1,25 +1,21 @@
 import { useCache } from '@voiceflow/ui';
 import React from 'react';
 import { Descendant, Editor } from 'slate';
-import { Editable, RenderElementProps, RenderLeafProps, Slate } from 'slate-react';
+import { Editable, Slate } from 'slate-react';
 import { EditableProps } from 'slate-react/dist/components/editable';
 
 import { useForceUpdate } from '@/hooks';
 
-import { DefaultElement, LinkElement, Text } from './components';
-import { EditorContextProvider, StaticEditorContextProvider } from './contexts';
-import { EditorAPI } from './editor';
-import { useEditorHotkeys } from './hooks';
+import { EditorContextProvider, PluginsOptionsContextProvider, StaticEditorContextProvider } from './contexts';
+import { DEFAULT_PLUGINS_OPTIONS, EditorAPI, PluginsOptions } from './editor';
+import { useEditorDecorate, useEditorHotkeys } from './hooks';
+import { defaultRenderElement, defaultRenderLeaf, defaultRenderPlaceholder } from './renderers';
 
 export * from './components';
-export * from './contexts';
-export { EditorAPI as SlateEditorAPI } from './editor';
-export { useSetupEditor as useSetupSlateEditor } from './hooks';
-
-export const defaultRenderElement = ({ element, ...props }: RenderElementProps): JSX.Element =>
-  EditorAPI.isLink(element) ? <LinkElement {...props} element={element} /> : <DefaultElement {...props} element={element} />;
-
-export const defaultRenderLeaf = (props: RenderLeafProps): JSX.Element => <Text {...props} />;
+export { ControlledEditorProvider, useSlateEditor, useSlateEditorContext, useStaticSlateEditor } from './contexts';
+export type { PluginsOptions as SlatePluginsOptions } from './editor';
+export { EditorAPI as SlateEditorAPI, PluginType as SlatePluginType } from './editor';
+export { useSetupEditor as useSetupSlateEditor, useEditorForceNormalize as useSlateEditorForceNormalize } from './hooks';
 
 export type SlateValue = Descendant[];
 
@@ -27,20 +23,34 @@ interface SlateEditableRef {
   focus: () => void;
 }
 
-interface SlateEditableProps extends Omit<EditableProps, 'value' | 'onChange'> {
+interface SlateEditableProps extends Omit<EditableProps, 'value' | 'onChange' | 'decorate'> {
   value: SlateValue;
   editor: Editor;
   onChange: (value: SlateValue) => void;
   topToolbar?: React.ReactNode;
+  pluginsOptions?: PluginsOptions;
 }
 
 const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEditableProps> = (
-  { value, editor, onChange, children, topToolbar, renderLeaf = defaultRenderLeaf, renderElement = defaultRenderElement, ...editableProps },
+  {
+    value,
+    onBlur,
+    editor,
+    onChange,
+    children,
+    topToolbar,
+    renderLeaf = defaultRenderLeaf,
+    renderElement = defaultRenderElement,
+    pluginsOptions = DEFAULT_PLUGINS_OPTIONS,
+    renderPlaceholder = defaultRenderPlaceholder,
+    ...editableProps
+  },
   ref
 ) => {
   const [forceUpdate, contextKey] = useForceUpdate();
 
-  const cache = useCache({ onChange });
+  const cache = useCache({ onBlur, onChange });
+  const decorate = useEditorDecorate(editor);
   const onKeyDown = useEditorHotkeys(editor, editableProps.onKeyDown);
 
   const editorContext = React.useMemo<[Editor]>(() => [editor], [contextKey]);
@@ -50,18 +60,36 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
     forceUpdate();
   }, []);
 
+  const onLocalBlur = React.useCallback((event: React.FocusEvent<HTMLDivElement>) => {
+    if (!editor.blurPrevented) {
+      cache.current.onBlur?.(event);
+    }
+  }, []);
+
+  editor.pluginsOptions = pluginsOptions;
+
   React.useImperativeHandle(ref, () => ({ focus: () => EditorAPI.focus(editor) }), [editor]);
 
   return (
     <StaticEditorContextProvider value={editor}>
       <EditorContextProvider value={editorContext}>
-        {topToolbar}
+        <PluginsOptionsContextProvider value={pluginsOptions}>
+          {topToolbar}
 
-        <Slate editor={editor} value={value} onChange={onLocalChange}>
-          <Editable renderLeaf={renderLeaf} renderElement={renderElement} {...editableProps} onKeyDown={onKeyDown} />
-        </Slate>
+          <Slate editor={editor} value={value} onChange={onLocalChange}>
+            <Editable
+              onBlur={onLocalBlur}
+              decorate={decorate ?? undefined}
+              renderLeaf={renderLeaf}
+              renderElement={renderElement}
+              renderPlaceholder={renderPlaceholder}
+              {...editableProps}
+              onKeyDown={onKeyDown}
+            />
+          </Slate>
 
-        {children}
+          {children}
+        </PluginsOptionsContextProvider>
       </EditorContextProvider>
     </StaticEditorContextProvider>
   );

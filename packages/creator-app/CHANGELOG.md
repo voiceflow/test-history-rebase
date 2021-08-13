@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.460.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.460.0...@voiceflow/creator-app@1.460.1) (2021-08-13)
+
+
+### Bug Fixes
+
+* go to right path on transcript save (VF-000) ([#3897](https://github.com/voiceflow/creator-app/issues/3897)) ([227cecf](https://github.com/voiceflow/creator-app/commit/227cecfdacfff49837a061bb7c288460446e01eb))
+
+
+
+
+
 # [1.460.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.459.3...@voiceflow/creator-app@1.460.0) (2021-08-12)
 
 

@@ -12,7 +12,7 @@ import PrototypeChatDisplay from '@/pages/Prototype/components/PrototypeChatDisp
 import { Message } from '@/pages/Prototype/types';
 import { noop } from '@/utils/functional';
 
-import { Container, DialogHeader } from './components';
+import { Container, DialogHeader, DialogLoader } from './components';
 import { transformDialogTimestamp } from './util';
 
 const TranscriptDialog: React.FC = () => {
@@ -69,7 +69,9 @@ const TranscriptDialog: React.FC = () => {
         handleChange={handleChange}
         transcriptInformation={{ intentConfidenceToggled: intentConfidence, debugMessageToggled: debugMessage }}
       />
-      {!loading && (
+      {loading ? (
+        <DialogLoader />
+      ) : (
         <PrototypeChatDisplay
           onScroll={onScroll}
           avatarURL={avatar}

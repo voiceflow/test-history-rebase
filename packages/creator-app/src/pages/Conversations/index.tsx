@@ -46,6 +46,7 @@ const Conversations: React.FC<ConversationProps> = () => {
 
     await dispatch(fetchTranscripts());
     await dispatch(fetchReportTags());
+    // dispatch(Prototype.updateActivePrototypeMode(Prototype.PrototypeMode.DISPLAY));
 
     setIsLoaded(true);
   };

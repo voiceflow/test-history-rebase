@@ -12,8 +12,8 @@ export const Container = styled(FlexApart)<{ hasShadow: boolean }>`
   ${({ hasShadow }) =>
     hasShadow &&
     css`
+      transition: all 0.15s ease-in-out;
       box-shadow: 0 1px 3px 0 rgba(19, 33, 68, 0.08);
-      border-bottom: solid 1px ${colors('borders')};
     `}
 `;
 

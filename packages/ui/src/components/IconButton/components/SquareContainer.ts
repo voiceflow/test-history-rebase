@@ -10,13 +10,14 @@ export interface SquareContainerProps extends BaseContainerProps {
 
 const SquareContainer = styled(ButtonContainer)<SquareContainerProps>`
   ${transition('background', 'border')}
+
   padding: 12px;
   border: solid 1px transparent;
-  border-style: none;
   border-radius: 5px;
 
   & ${SvgIconContainer} {
     max-width: 16px;
+
     color: ${colors('tertiary')};
   }
 

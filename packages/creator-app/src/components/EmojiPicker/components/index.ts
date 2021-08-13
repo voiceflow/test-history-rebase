@@ -1,3 +1,5 @@
+import { colors } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
 
 import { FAN_DIRECTION } from '../constants';
@@ -85,7 +87,7 @@ export const Option = styled.div<{ fanDirection: FAN_DIRECTION; number: number; 
     css`
       ${determineTransition(fanDirection)}
     `}
-  background-color: #ffffff;
+  background-color: ${colors('white')};
   position: absolute;
   transition-timing-function: ease, cubic-bezier(0.32, 1.85, 0.54, 0.67);
   ${({ fanDirection }) =>
@@ -97,7 +99,7 @@ export const Option = styled.div<{ fanDirection: FAN_DIRECTION; number: number; 
   opacity: 0.6;
   :hover {
     transition: all 0.12s ease-in-out;
-    transition-delay: 0.12ms;
+    transition-delay: 0.5ms;
     transform: scale(1.3);
     opacity: 1;
   }

@@ -55,7 +55,6 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
 }) => {
   // filter out messages based on settings
   const messages = useMessageFilters(rawMessages);
-
   const interactionProps = { color, interactions, onInteraction };
 
   return (

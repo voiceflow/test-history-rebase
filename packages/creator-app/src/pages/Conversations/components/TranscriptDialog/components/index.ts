@@ -1,4 +1,4 @@
-import { Flex } from '@voiceflow/ui';
+import { Flex, LoadCircle } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
@@ -9,4 +9,9 @@ export const Container = styled(Flex)`
   height: 100%;
   background: white;
   flex-direction: column;
+`;
+
+export const DialogLoader = styled(LoadCircle)`
+  position: absolute;
+  bottom: 50%;
 `;

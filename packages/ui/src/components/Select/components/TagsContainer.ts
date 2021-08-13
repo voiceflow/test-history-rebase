@@ -15,11 +15,11 @@ const TagsContainer = styled.div<{ isActive?: boolean; hasTags: boolean }>`
   ${({ hasTags }) =>
     hasTags
       ? css`
-          padding: 7px 8px;
+          padding: 8px 16px;
           padding-top: 4px;
         `
       : css`
-          padding: 7px 8px;
+          padding: 8px 16px;
         `}
 
   ${({ isActive }) =>

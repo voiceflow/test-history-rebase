@@ -5031,17 +5031,7 @@
     "@voiceflow/general-types" "^1.54.1"
     ask-smapi-model "1.14.0"
 
-"@voiceflow/api-sdk@1.35.0":
-  version "1.35.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.35.0.tgz#be02cfb599b8232672d19b9036c68868b9d65adb"
-  integrity sha512-FhSXFNWH3boZkuZoWxQFyokbcuxMYXWif1cF1fqTasEQUyi9OAL7W/2SVy4sGE4Gt+A+KqfhhQKD0PjlxaCStA==
-  dependencies:
-    "@types/atob" "^2.1.2"
-    atob "^2.1.2"
-    axios "^0.21.1"
-    superstruct "^0.10.12"
-
-"@voiceflow/api-sdk@^1.34.0", "@voiceflow/api-sdk@^1.34.2", "@voiceflow/api-sdk@^1.35.0", "@voiceflow/api-sdk@^1.35.1":
+"@voiceflow/api-sdk@1.35.1", "@voiceflow/api-sdk@^1.34.0", "@voiceflow/api-sdk@^1.34.2", "@voiceflow/api-sdk@^1.35.0", "@voiceflow/api-sdk@^1.35.1":
   version "1.35.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.35.1.tgz#fb6986d309882e4eb156c53521b9d46f3f029d6b"
   integrity sha512-2sf/seo5uOZQmiBRP10y9F21azFZQfmAkCIdDa5Vp3zqkFAd5sUxYskkeWjc5Zy7TxA+EO9iPkjfMCHkpKweVg==

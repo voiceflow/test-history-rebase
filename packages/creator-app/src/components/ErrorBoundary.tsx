@@ -35,7 +35,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     if (hasError || show) {
       return (
         <ErrorBoundaryWrapper>
-          <PageError message="Something went wrong, return to dashboard.">
+          <PageError message="Please return to dashboard. If the issue continues, please contact support.">
             <Link to="/">
               <LegacyButton isPrimary>Dashboard</LegacyButton>
             </Link>

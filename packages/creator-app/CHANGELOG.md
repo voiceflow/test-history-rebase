@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.461.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.10...@voiceflow/creator-app@1.461.11) (2021-08-16)
+
+
+### Bug Fixes
+
+* use numbered reprompts instead of words (VF-1443) ([#3914](https://github.com/voiceflow/creator-app/issues/3914)) ([294d768](https://github.com/voiceflow/creator-app/commit/294d76823cc7f78e63b9a27a97dd90d251265a19))
+
+
+
+
+
 ## [1.461.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.9...@voiceflow/creator-app@1.461.10) (2021-08-16)
 
 

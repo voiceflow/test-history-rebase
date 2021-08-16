@@ -1,10 +1,11 @@
 import React from 'react';
+import { matchPath, useLocation } from 'react-router-dom';
 import { AutoSizer, List } from 'react-virtualized';
 
 import { TranscriptExportFormat } from '@/client/transcript';
 import * as Router from '@/ducks/router';
 import * as Transcripts from '@/ducks/transcript';
-import { currentTranscriptIDSelector, mapTranscriptsSelector } from '@/ducks/transcript';
+import { currentTranscriptIDSelector } from '@/ducks/transcript';
 import { useDispatch, useSelector } from '@/hooks';
 import { Transcript } from '@/models';
 
@@ -17,13 +18,14 @@ interface TranscriptResultsListProps {
 
 const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcriptList, onScroll }) => {
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
-  const transcriptMap = useSelector(mapTranscriptsSelector);
   const goToTranscript = useDispatch(Router.goToTargetTranscript);
   const updateUnreadTranscript = useDispatch(Transcripts.updateUnreadTranscripts);
+  const location = useLocation();
+  const match = matchPath(location.pathname, { path: '/project/:versionID/transcripts' });
+  const noUrlTranscriptTarget = match?.isExact;
 
   React.useEffect(() => {
-    const targetTranscriptDoesntExist = currentTranscriptID && !transcriptMap[currentTranscriptID];
-    if (transcriptList.length && (targetTranscriptDoesntExist || !currentTranscriptID)) {
+    if (transcriptList.length && noUrlTranscriptTarget) {
       goToTranscript(transcriptList[0].id);
     }
 

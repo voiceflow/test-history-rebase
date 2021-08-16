@@ -10,12 +10,12 @@ const TagsInput = styled(AutosizeInput)<{ hasTags: boolean }>`
     border: none;
     height: 18px;
     padding: 4px;
+    margin-top: 3px;
 
     ${({ hasTags }) =>
       hasTags &&
       css`
         position: relative;
-        top: 3px;
       `}
   }
 `;

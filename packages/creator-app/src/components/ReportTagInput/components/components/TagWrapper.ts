@@ -4,8 +4,9 @@ import React from 'react';
 import { styled } from '@/hocs';
 
 const TagWrapper = styled.span<{ onClick: (e: React.MouseEvent) => void }>`
-  margin: 3px 3px 0px 0px;
   height: 26px;
+  margin: 3px 3px 0px 0px;
+
   padding: 4px 0px 4px 12px;
   border-radius: 5px;
   display: inline-flex;

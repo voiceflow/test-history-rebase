@@ -11,23 +11,15 @@ const TagsContainer = styled.div<{ isActive?: boolean; hasTags: boolean }>`
   flex-wrap: wrap;
   overflow-y: auto;
   cursor: text;
-
-  ${({ hasTags }) =>
-    hasTags
-      ? css`
-          padding: 8px 16px;
-          padding-top: 4px;
-        `
-      : css`
-          padding: 8px 16px;
-        `}
+  min-height: 42px;
+  padding: 7px 8px;
+  padding-top: 4px;
 
   ${({ isActive }) =>
     isActive &&
     css`
       border-color: ${({ theme }) => theme.colors.blue};
     `}
-
 
   input {
     ${({ hasTags }) =>

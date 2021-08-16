@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.461.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.7...@voiceflow/creator-app@1.461.8) (2021-08-16)
+
+
+### Bug Fixes
+
+* scroll test dialog to bottom on end (VF-1435) ([#3911](https://github.com/voiceflow/creator-app/issues/3911)) ([d8ee84d](https://github.com/voiceflow/creator-app/commit/d8ee84d7f26fedd6c8c1af9c95663b0f8971f35c))
+
+
+
+
+
 ## [1.461.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.6...@voiceflow/creator-app@1.461.7) (2021-08-16)
 
 **Note:** Version bump only for package @voiceflow/creator-app

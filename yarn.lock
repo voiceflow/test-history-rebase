@@ -5021,30 +5021,30 @@
   resolved "https://registry.yarnpkg.com/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
   integrity sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==
 
-"@voiceflow/alexa-types@1.52.8":
-  version "1.52.8"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.52.8.tgz#6fe04a53bd9bcf0e9ddb6d61b6e0f35bbdec529e"
-  integrity sha512-KLxFWPdbosz9YUboV7BtPxTVWLTXEIsl21d5ZSbQ92xBl+h1Pj4D/XmZoD3kQGwfpNJID5ZLkbj2M3qIWdmAiw==
+"@voiceflow/alexa-types@1.52.13", "@voiceflow/alexa-types@^1.52.2":
+  version "1.52.13"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.52.13.tgz#4ac5400fac31ec1fc1cc0a698c54571ac7db8c1f"
+  integrity sha512-V2Gyb2SyHbod77M1fK55ah+OCS9eEOiWRi4fFwlxXYTJeDhYG7mEIbzzFk+q/mTtavA1Cy4Hn8GtqbUZ5YG1Vw==
   dependencies:
-    "@voiceflow/api-sdk" "^1.34.2"
+    "@voiceflow/api-sdk" "^1.35.1"
     "@voiceflow/common" "6.5.0"
-    "@voiceflow/general-types" "^1.53.1"
+    "@voiceflow/general-types" "^1.54.1"
     ask-smapi-model "1.14.0"
 
-"@voiceflow/alexa-types@^1.52.2":
-  version "1.52.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.52.2.tgz#98e23dc5fc57e228018c366745a670bffeb81bb3"
-  integrity sha512-J17inXGyN2/CBdJn3ou3huKTdwl6GWwb0BBlECy0YM20G3Rmx3VrHhHi6tPwC4wBOzE+Nux58vZZkw2AB6Gf9g==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.34.0"
-    "@voiceflow/common" "6.5.0"
-    "@voiceflow/general-types" "^1.51.2"
-    ask-smapi-model "1.14.0"
-
-"@voiceflow/api-sdk@1.35.0", "@voiceflow/api-sdk@^1.34.0", "@voiceflow/api-sdk@^1.34.2", "@voiceflow/api-sdk@^1.35.0":
+"@voiceflow/api-sdk@1.35.0":
   version "1.35.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.35.0.tgz#be02cfb599b8232672d19b9036c68868b9d65adb"
   integrity sha512-FhSXFNWH3boZkuZoWxQFyokbcuxMYXWif1cF1fqTasEQUyi9OAL7W/2SVy4sGE4Gt+A+KqfhhQKD0PjlxaCStA==
+  dependencies:
+    "@types/atob" "^2.1.2"
+    atob "^2.1.2"
+    axios "^0.21.1"
+    superstruct "^0.10.12"
+
+"@voiceflow/api-sdk@^1.34.0", "@voiceflow/api-sdk@^1.34.2", "@voiceflow/api-sdk@^1.35.0", "@voiceflow/api-sdk@^1.35.1":
+  version "1.35.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.35.1.tgz#fb6986d309882e4eb156c53521b9d46f3f029d6b"
+  integrity sha512-2sf/seo5uOZQmiBRP10y9F21azFZQfmAkCIdDa5Vp3zqkFAd5sUxYskkeWjc5Zy7TxA+EO9iPkjfMCHkpKweVg==
   dependencies:
     "@types/atob" "^2.1.2"
     atob "^2.1.2"
@@ -5133,7 +5133,7 @@
     eslint-plugin-xss "^0.1.9"
     eslint-plugin-you-dont-need-lodash-underscore "^6.11.0"
 
-"@voiceflow/general-types@1.54.0", "@voiceflow/general-types@^1.54.0":
+"@voiceflow/general-types@1.54.0":
   version "1.54.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.54.0.tgz#50e84a5bb5ae5859efc96ca8d7b89f459d7593d9"
   integrity sha512-DpAM3Wf8FKdHgQ45SYfrhKp2/2xWEylhzRhQGIfxWhZsNymMH9fbVEDR20g6Wzc5tAU9JEZgSFFT6FOCGjo6uw==
@@ -5141,20 +5141,12 @@
     "@voiceflow/api-sdk" "^1.35.0"
     slate "^0.63.0"
 
-"@voiceflow/general-types@^1.51.2", "@voiceflow/general-types@^1.53.4":
-  version "1.53.4"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.53.4.tgz#65e2ccc3a1dd13ef7b3a9a2bd979893100d5726b"
-  integrity sha512-4ZDEB7E5NnKeDjebnxaqqOufOMdbeAf+p5Xzv/Bncb5Hj9ttmMDauWYvlaoBwWcT/xQSEivK7k76Bl7a8pwvIg==
+"@voiceflow/general-types@^1.53.4", "@voiceflow/general-types@^1.54.0", "@voiceflow/general-types@^1.54.1":
+  version "1.54.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.54.1.tgz#a5a1fad88ee6455e28ea263098cf7058ab2aa8f0"
+  integrity sha512-h3CmAK/BMZD4NAFOO8rinCUxtJtT76NQACuvilVDGbK54VHpoP4NdDlTufhR3Sf73pxMTvsnn5KSMaQqFK8T1A==
   dependencies:
-    "@voiceflow/api-sdk" "^1.35.0"
-    slate "^0.63.0"
-
-"@voiceflow/general-types@^1.53.1":
-  version "1.53.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.53.1.tgz#97c2aa3cca2e1146a7f2c935e1da150c0a744e09"
-  integrity sha512-Qc1obr6H4RzuwLxFnA5nQtHAq0YCQ6RtSV6Urpbzk4NmaH0Avs2/zOOdQ/EGpNFdnxPBJ55tTUL1KAHSTxE2VQ==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.34.2"
+    "@voiceflow/api-sdk" "^1.35.1"
     slate "^0.63.0"
 
 "@voiceflow/git-branch-check@^1.2.0":

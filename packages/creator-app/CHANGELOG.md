@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.461.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.11...@voiceflow/creator-app@1.461.12) (2021-08-16)
+
+
+### Bug Fixes
+
+* save on blur (VF-000) ([#3919](https://github.com/voiceflow/creator-app/issues/3919)) ([f9f417d](https://github.com/voiceflow/creator-app/commit/f9f417d664d766e2e025c6cb6cde358ba4e48722))
+
+
+
+
+
 ## [1.461.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.10...@voiceflow/creator-app@1.461.11) (2021-08-16)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.11.3...@voiceflow/ui@1.11.4) (2021-08-16)
+
+
+### Bug Fixes
+
+* jitty jitter ([#3912](https://github.com/voiceflow/creator-app/issues/3912)) ([d937dd7](https://github.com/voiceflow/creator-app/commit/d937dd7b6488065c78ee2a52ce6bd3f4102c64b9))
+
+
+
+
+
 ## [1.11.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.11.2...@voiceflow/ui@1.11.3) (2021-08-16)
 
 **Note:** Version bump only for package @voiceflow/ui

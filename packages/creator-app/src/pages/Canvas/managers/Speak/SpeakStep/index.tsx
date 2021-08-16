@@ -42,10 +42,10 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
               placeholder={getPlatformValue(
                 platform,
                 {
-                  [PlatformType.ALEXA]: isAudio ? 'Upload audio file' : 'What will Alexa say?',
-                  [PlatformType.GOOGLE]: 'What will Google say?',
+                  [PlatformType.ALEXA]: isAudio ? 'Upload audio file' : 'Add Alexa reply',
+                  [PlatformType.GOOGLE]: 'Add Google reply',
                 },
-                'What will the assistant say?'
+                'Add Assistant reply'
               )}
               label={content ? stripHTMLTags(transformVariablesToReadable(content)) : null}
               icon={NODE_CONFIG.getIcon!(isAudio ? AUDIO_MOCK_DATA : VOICE_MOCK_DATA)}
@@ -62,10 +62,10 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
             placeholder={getPlatformValue(
               platform,
               {
-                [PlatformType.ALEXA]: 'What will Alexa say?',
-                [PlatformType.GOOGLE]: 'What will Google say?',
+                [PlatformType.ALEXA]: 'Add Alexa reply',
+                [PlatformType.GOOGLE]: 'Add Google reply',
               },
-              'What will the assistant say?'
+              'Add Assistant reply'
             )}
             icon={NODE_CONFIG.getIcon!(VOICE_MOCK_DATA)}
             iconColor={NODE_CONFIG.getIconColor!(VOICE_MOCK_DATA)}

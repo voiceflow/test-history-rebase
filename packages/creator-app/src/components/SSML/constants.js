@@ -745,7 +745,7 @@ export const ALEXA_ADD_OPTIONS = [
 ];
 
 const ALEXA_SSML_META = {
-  fallbackPlaceholder: (voice) => `Enter what ${voice || 'Alexa'} will say`,
+  fallbackPlaceholder: (voice) => `Enter ${voice || 'Alexa'} reply, {} to add variables`,
   canChangeVoice: true,
   platformTags: ALEXA_DEFAULT_TAGS,
   addOptions: ALEXA_ADD_OPTIONS,
@@ -754,7 +754,7 @@ const ALEXA_SSML_META = {
 };
 
 const GOOGLE_SSML_META = {
-  fallbackPlaceholder: () => 'Enter what Google will say',
+  fallbackPlaceholder: () => 'Enter Google reply, {} to add variables',
   canChangeVoice: true,
   platformTags: GOOGLE_DEFAULT_TAGS,
   addOptions: UNIVERSAL_ADD_OPTIONS,
@@ -778,7 +778,7 @@ const GOOGLE_SSML_META = {
 };
 
 const GENERAL_SSML_META = {
-  fallbackPlaceholder: () => 'What should the assistant say?',
+  fallbackPlaceholder: () => 'Enter Assistant reply, {} to add variables',
   canChangeVoice: true,
   platformTags: ALEXA_DEFAULT_TAGS,
   addOptions: ALEXA_ADD_OPTIONS,

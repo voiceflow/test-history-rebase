@@ -55,6 +55,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
   const [focusedTurnID, setFocusedTurnID] = React.useState<string | null>(null);
+  const hasEnded = status === PrototypeStatus.ENDED;
 
   const onScrollHandler = useDebouncedCallback(
     30,
@@ -76,6 +77,12 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   React.useLayoutEffect(() => {
     scrollToBottom();
   }, [messages.length, interactions]);
+
+  React.useLayoutEffect(() => {
+    if (hasEnded) {
+      scrollToBottom();
+    }
+  }, [hasEnded]);
 
   React.useLayoutEffect(() => {
     if (isLoading) {

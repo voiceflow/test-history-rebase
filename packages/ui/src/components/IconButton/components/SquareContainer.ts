@@ -18,12 +18,26 @@ const SquareContainer = styled(ButtonContainer)<SquareContainerProps>`
   & ${SvgIconContainer} {
     max-width: 16px;
 
-    color: ${colors('tertiary')};
+    color: ${colors('secondary')};
+    opacity: 0.65;
   }
 
   &:hover {
     background: rgba(238, 244, 246, 0.85);
     border: solid 1px ${colors('borders')};
+
+    & ${SvgIconContainer} {
+      opacity: 0.85;
+    }
+  }
+
+  &:active {
+    background: rgba(238, 244, 246, 0.85);
+    border: solid 1px ${colors('borders')};
+
+    & ${SvgIconContainer} {
+      opacity: 1;
+    }
   }
 `;
 

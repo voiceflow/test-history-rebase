@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.42](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.1.41...@voiceflow/admin-app@1.1.42) (2021-08-17)
+
+
+### Bug Fixes
+
+* safari UI issues (VF-1469) ([#3913](https://github.com/voiceflow/creator-app/issues/3913)) ([1e100d4](https://github.com/voiceflow/creator-app/commit/1e100d44c41d42a20eefa2cf2907710d27e4aff2))
+
+
+
+
+
 ## [1.1.41](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.1.40...@voiceflow/admin-app@1.1.41) (2021-08-16)
 
 **Note:** Version bump only for package @voiceflow/admin-app

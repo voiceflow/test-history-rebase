@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.461.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.12...@voiceflow/creator-app@1.461.13) (2021-08-17)
+
+
+### Bug Fixes
+
+* add OAuth2 scope to create GCP projects (VF-873) ([#3920](https://github.com/voiceflow/creator-app/issues/3920)) ([24bb757](https://github.com/voiceflow/creator-app/commit/24bb7575043439050a4d61ffbb8be43019f2cd60))
+* fix tooltip animation and border (VF-1473) ([#3918](https://github.com/voiceflow/creator-app/issues/3918)) ([8efacdb](https://github.com/voiceflow/creator-app/commit/8efacdb1a2402fc8fa3a21fec48f62a557255954))
+* safari UI issues (VF-1469) ([#3913](https://github.com/voiceflow/creator-app/issues/3913)) ([1e100d4](https://github.com/voiceflow/creator-app/commit/1e100d44c41d42a20eefa2cf2907710d27e4aff2))
+
+
+
+
+
 ## [1.461.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.11...@voiceflow/creator-app@1.461.12) (2021-08-16)
 
 

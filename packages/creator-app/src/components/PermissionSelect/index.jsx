@@ -12,10 +12,9 @@ const PermissionSelect = ({ value, onChange, disabledOptions }) => (
       label: permission.name,
     }))}
     optionsFilter={(options) => ({
-      filteredOptions: options.filter(
+      matchedOptions: options.filter(
         (option) => option.value === value || option.value === PermissionType.UNOFFICIAL_PRODUCT || !disabledOptions.includes(option.value)
       ),
-      matchedOptions: [],
     })}
     getOptionValue={(option) => option.value}
     renderOptionLabel={(option) => option.label}

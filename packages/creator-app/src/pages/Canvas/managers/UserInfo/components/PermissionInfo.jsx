@@ -1,4 +1,4 @@
-import { Constants, Project } from '@voiceflow/alexa-types';
+import { Constants, Node } from '@voiceflow/alexa-types';
 import React from 'react';
 
 import ProductSelect from '@/components/ProductSelect';
@@ -9,7 +9,7 @@ import { connect } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 
 const PermissionInfo = ({ permission, onChange, getProduct }) => {
-  const isProductPermission = permission.selected === Constants.PermissionType.UNOFFICIAL_PRODUCT;
+  const isProductPermission = permission.selected === Node.PermissionType.UNOFFICIAL_PRODUCT;
   const isMappable = permission.selected && PERMISSIONS_WITH_VARIABLE_MAPS.includes(permission.selected);
 
   const updateVariable = React.useCallback((mapTo) => onChange({ mapTo }), [onChange]);
@@ -17,7 +17,7 @@ const PermissionInfo = ({ permission, onChange, getProduct }) => {
 
   if (isProductPermission) {
     const product = getProduct(permission.product);
-    const isConsumable = product?.type === Project.ProductType.CONSUMABLE;
+    const isConsumable = product?.type === Constants.ProductType.CONSUMABLE;
 
     return (
       <>

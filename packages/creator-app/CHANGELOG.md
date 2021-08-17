@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.461.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.13...@voiceflow/creator-app@1.461.14) (2021-08-17)
+
+
+### Bug Fixes
+
+* userInfo dropdown (VF-1548) ([#3926](https://github.com/voiceflow/creator-app/issues/3926)) ([9303c47](https://github.com/voiceflow/creator-app/commit/9303c4782eef7ce03dbd40e3c36f2e2872f6eb27))
+
+
+
+
+
 ## [1.461.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.12...@voiceflow/creator-app@1.461.13) (2021-08-17)
 
 

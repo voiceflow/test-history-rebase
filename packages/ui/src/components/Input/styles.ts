@@ -10,6 +10,7 @@ export const inputFocusStyle = css`
 
 export const inputDisabledStyle = css`
   color: ${colors('quaternary')};
+  -webkit-text-fill-color: ${colors('quaternary')};
   ${system({
     pointerEvents: {
       property: 'pointerEvents',

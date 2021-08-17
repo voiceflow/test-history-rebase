@@ -25,7 +25,11 @@ const Container = styled.aside<ContainerProps>`
       transform: translateX(0) !important;
     `}
 
-  &:after {
+  &:focus {
+    outline: 0;
+  }
+
+  &::after {
     ${transition('opacity')}
 
     display: block;
@@ -42,15 +46,13 @@ const Container = styled.aside<ContainerProps>`
 
     content: '';
     pointer-events: none;
-  }
 
-  ${({ locked }) =>
-    locked &&
-    css`
-      &:after {
+    ${({ locked }) =>
+      locked &&
+      css`
         opacity: 0;
-      }
-    `}
+      `}
+  }
 `;
 
 export default Container;

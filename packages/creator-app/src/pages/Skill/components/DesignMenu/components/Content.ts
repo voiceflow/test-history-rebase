@@ -1,4 +1,6 @@
-import { styled, transition } from '@/hocs';
+import { IS_SAFARI } from '@voiceflow/ui';
+
+import { css, styled, transition } from '@/hocs';
 
 import { Tab } from '../constants';
 
@@ -17,6 +19,11 @@ const Content = styled.div<ContentProps>`
   background-color: ${({ activeTab }) => (activeTab === Tab.STEPS ? '#f9f9f9' : '#fff')};
   overflow: hidden;
   border-radius: 6px;
+
+  ${IS_SAFARI &&
+  css`
+    transform: translateZ(0);
+  `}
 
   box-shadow: ${({ isOpen }) =>
     isOpen

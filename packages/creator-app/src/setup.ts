@@ -1,4 +1,4 @@
-import { GLOBAL_FETCH_HEADERS, setUnauthorizedHandler, StatusCode, toast } from '@voiceflow/ui';
+import { GLOBAL_FETCH_HEADERS, IS_SAFARI, setUnauthorizedHandler, StatusCode, toast } from '@voiceflow/ui';
 import axios from 'axios';
 import { History } from 'history';
 import _throttle from 'lodash/throttle';
@@ -14,6 +14,14 @@ import * as LogRocket from './vendors/logRocket';
 import * as Userflow from './vendors/userflow';
 
 const LOGOUT_HANDLER_TIMEOUT = 3000;
+
+const VOICEFLOW_ASCII = String.raw`
+            _           __ _
+/\   /\___ (_) ___ ___ / _| | _____      __
+\ \ / / _ \| |/ __/ _ \ |_| |/ _ \ \ /\ / /
+ \ V / (_) | | (_|  __/  _| | (_) \ V  V /
+  \_/ \___/|_|\___\___|_| |_|\___/ \_/\_/
+`;
 
 const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout: () => void; history: History; browserID: string }) => {
   clearPersistedLogs();
@@ -76,12 +84,11 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
 
   // eslint-disable-next-line no-console
   console.info(
-    `%c
-            _           __ _
-/\\   /\\___ (_) ___ ___ / _| | _____      __
-\\ \\ / / _ \\| |/ __/ _ \\ |_| |/ _ \\ \\ /\\ / /
- \\ V / (_) | | (_|  __/  _| | (_) \\ V  V /
-  \\_/ \\___/|_|\\___\\___|_| |_|\\___/ \\_/\\_/
+    // safari doesn't use a monospaced font in its console so the ASCII art looks trash
+    IS_SAFARI
+      ? `%cVoiceflow ${VERSION}`
+      : `%c
+${VOICEFLOW_ASCII}
 
 ${VERSION}
   `,

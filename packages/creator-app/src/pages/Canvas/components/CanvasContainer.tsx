@@ -27,7 +27,7 @@ import {
 
 const Wrapper = styled.div`
   width: ${IS_SAFARI ? '100vw' : '100%'};
-  height: ${IS_SAFARI ? 'calc(100vh - 120px)' : '100%'};
+  height: ${({ theme }) => (IS_SAFARI ? `calc(100vh - ${theme.components.projectPage.header.height}px)` : '100%')};
   overflow: hidden;
 
   &.${CANVAS_MARKUP_CREATING_CLASSNAME}[data-markup-creating-type="${BlockType.MARKUP_TEXT}"] {

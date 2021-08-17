@@ -1,4 +1,4 @@
-import { clearPersistedLogs, GLOBAL_FETCH_HEADERS } from '@voiceflow/ui';
+import { clearPersistedLogs, GLOBAL_FETCH_HEADERS, IS_SAFARI } from '@voiceflow/ui';
 import axios from 'axios';
 import cuid from 'cuid';
 
@@ -9,6 +9,15 @@ import * as LogRocket from '@/vendors/logRocket';
 import setupSocket from './client/socket';
 
 const TAB_ID_KEY = 'tabId';
+
+const ADMIN_ASCII = String.raw`
+            _           __ _                __ _       _           _     __
+/\   /\___ (_) ___ ___ / _| | _____      __/ //_\   __| |_ __ ___ (_)_ __\ \
+\ \ / / _ \| |/ __/ _ \ |_| |/ _ \ \ /\ / / |//_\\ / _\` | '_ \` _ \| | '_ \| |
+ \ V / (_) | | (_|  __/  _| | (_) \ V  V /| /  _  \ (_| | | | | | | | | | | |
+  \_/ \___/|_|\___\___|_| |_|\___/ \_/\_/ | \_/ \_/\__,_|_| |_| |_|_|_| |_| |
+                                           \_\                           /_/
+`;
 
 const setupAdmin = () => {
   clearPersistedLogs();
@@ -40,13 +49,11 @@ const setupAdmin = () => {
 
   // eslint-disable-next-line no-console
   console.info(
-    `%c
-            _           __ _                __ _       _           _     __
-/\\   /\\___ (_) ___ ___ / _| | _____      __/ //_\\   __| |_ __ ___ (_)_ __\\ \\
-\\ \\ / / _ \\| |/ __/ _ \\ |_| |/ _ \\ \\ /\\ / / |//_\\\\ / _\` | '_ \` _ \\| | '_ \\| |
- \\ V / (_) | | (_|  __/  _| | (_) \\ V  V /| /  _  \\ (_| | | | | | | | | | | |
-  \\_/ \\___/|_|\\___\\___|_| |_|\\___/ \\_/\\_/ | \\_/ \\_/\\__,_|_| |_| |_|_|_| |_| |
-                                           \\_\\                           /_/
+    // safari doesn't use a monospaced font in its console so the ASCII art looks trash
+    IS_SAFARI
+      ? `%cVoiceflow Admin ${VERSION}`
+      : `%c
+${ADMIN_ASCII}
 
 ${VERSION}
   `,

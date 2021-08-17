@@ -5,6 +5,7 @@ import React from 'react';
 import { mapReportTagsSelector } from '@/ducks/reportTag';
 import { useSelector } from '@/hooks';
 import { ALL_BUILTIN_TAGS_ARRAY, Sentiment, SystemTag } from '@/models';
+import { ClassName } from '@/styles/constants';
 
 import { Container, MetaContainer, Name } from './components';
 
@@ -51,7 +52,7 @@ const InfoSection: React.FC<InfoSection> = ({ active, name, date, isRead, tags }
   return (
     <Container>
       <Name>{name || 'Test User'}</Name>
-      <MetaContainer isActive={active}>
+      <MetaContainer className={ClassName.TRANSCRIPT_DATE} isActive={active}>
         {formattedDate}
         <MetaInfoSection />
       </MetaContainer>

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import * as Prototype from '@/ducks/prototype';
 import { currentSelectedTranscriptSelector } from '@/ducks/transcript';
+import { ClassName } from '@/styles/constants';
 
 import { AvatarContainer, ContextSubtext, ContextTitle, DefaultUserContainer, LetterContainer, StyledLogo, StyledUser } from './components';
 
@@ -45,8 +46,8 @@ const TranscriptContext: React.FC = () => {
         </StyledLogo>
         {image ? <UserContainer /> : <StyledUser icon="userPlaceholder" size={48} color="#f0f0f0" />}
       </BoxFlexApart>
-      <ContextTitle>Conversation between your assistant and {name || 'a test user'}</ContextTitle>
-      <ContextSubtext>
+      <ContextTitle className={ClassName.TRANSCRIPT_USER_NAME}>Conversation between your assistant and {name || 'a test user'}</ContextTitle>
+      <ContextSubtext className={ClassName.TRANSCRIPT_CONTEXT_META}>
         {device}&nbsp; •&nbsp; {os}&nbsp; •&nbsp; {browser}
       </ContextSubtext>
     </>

@@ -14,6 +14,7 @@ import * as Transcripts from '@/ducks/transcript';
 import { fetchTranscripts } from '@/ducks/transcript';
 import { useAsyncEffect, usePermission, useTeardown } from '@/hooks';
 import { FILTER_TAG } from '@/pages/Conversations/constants';
+import { Identifier } from '@/styles/constants';
 
 import { ConversationsContainer, TranscriptDetails, TranscriptDialog, TranscriptManager } from './components';
 
@@ -80,7 +81,7 @@ const Conversations: React.FC<ConversationProps> = () => {
   }
 
   return (
-    <ConversationsContainer isFilteredResultsEmpty={filteredReportsExist}>
+    <ConversationsContainer id={Identifier.CONVERSATIONS_PAGE} isFilteredResultsEmpty={filteredReportsExist}>
       <LoadingGate isLoaded={isLoaded} label="Conversations" load={loadReports}>
         {!noTestRuns ? (
           <>
@@ -103,6 +104,7 @@ const Conversations: React.FC<ConversationProps> = () => {
           </>
         ) : (
           <EmptyScreen
+            id={Identifier.EMPTY_TRANSCRIPTS_CONTAINER}
             title="No conversations exist"
             body="Save a test, or share your assistant with sharable links to access the conversations."
             buttonText="Go to Test"

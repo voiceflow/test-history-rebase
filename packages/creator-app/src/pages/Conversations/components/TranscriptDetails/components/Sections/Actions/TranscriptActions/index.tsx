@@ -5,6 +5,7 @@ import * as Modal from '@/ducks/modal';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch } from '@/hooks';
 import { SystemTag } from '@/models';
+import { Identifier } from '@/styles/constants';
 import THEME from '@/styles/theme';
 
 import { Container } from './components';
@@ -41,6 +42,7 @@ const TranscriptActions: React.FC = () => {
   return (
     <Container>
       <ActionButton
+        id={Identifier.MARK_AS_REVIEWED_TRANSCRIPT_BUTTON}
         onClick={handleReviewedClick}
         icon={isReviewed ? 'checkmarkFilled' : 'check2'}
         color={isReviewed ? '#3e9e3e' : THEME.colors.tertiary}
@@ -48,6 +50,7 @@ const TranscriptActions: React.FC = () => {
         selected={isReviewed}
       />
       <ActionButton
+        id={Identifier.SAVE_FOR_LATER_TRANSCRIPT_BUTTON}
         left={1}
         selected={isSaved}
         onClick={handleSavedClick}
@@ -55,7 +58,7 @@ const TranscriptActions: React.FC = () => {
         label="Save for Later"
         color={isSaved ? THEME.colors.red : THEME.colors.tertiary}
       />
-      <ActionButton onClick={handleDelete} icon="garbage" label="Delete" color={THEME.colors.tertiary} />
+      <ActionButton id={Identifier.DELETE_TRANSCRIPT_BUTTON} onClick={handleDelete} icon="garbage" label="Delete" color={THEME.colors.tertiary} />
     </Container>
   );
 };

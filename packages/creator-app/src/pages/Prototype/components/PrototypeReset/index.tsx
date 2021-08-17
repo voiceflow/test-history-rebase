@@ -65,6 +65,7 @@ const PrototypeReset: React.FC<PrototypeResetProps & ConnectedPrototypeResetProp
         <>
           <Splitter />
           <Button
+            id={Identifier.SAVE_TRANSCRIPT_BUTTON}
             variant={ButtonVariant.TERTIARY}
             onClick={() => {
               onSave();

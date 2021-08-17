@@ -62,6 +62,14 @@ export enum Identifier {
   // Project Creation
   PROJECT_CREATION_STEP_TITLE = 'vf-project-creation-step-title',
   INVOCATION_NAME_INPUT = 'vf-invocation-name-input',
+
+  // Transcripts
+  SAVE_TRANSCRIPT_BUTTON = 'vf-save-conversations-button',
+  DELETE_TRANSCRIPT_BUTTON = 'vf-delete-transcript-button',
+  MARK_AS_REVIEWED_TRANSCRIPT_BUTTON = 'vf-mark-reviewed-transcript-button',
+  SAVE_FOR_LATER_TRANSCRIPT_BUTTON = 'vf-save-for-later-transcript-button',
+  EMPTY_TRANSCRIPTS_CONTAINER = 'vf-empty-transcripts-container',
+  CONVERSATIONS_PAGE = 'vf-conversations-container',
 }
 
 export enum ClassName {
@@ -130,9 +138,14 @@ export enum ClassName {
   // Project Creation
   CREATE_PROJECT_LEFT_ACTION = 'vf-create-project-left-action',
   CREATE_PROJECT_RIGHT_ACTION = 'vf-create-project-right-action',
-  TRANSCRIPT_ITEM_STATUSES = 'vf-transcript-item-statuses',
 
   TRANSCRIPT_ITEM_DROPDOWN_BUTTON = 'vf-transcript-item-dropdown-item',
+  TRANSCRIPT_ITEM_STATUSES = 'vf-transcript-item-statuses',
+  TRANSCRIPT_USER_NAME = 'vf-transcript-user-name',
+  TRANSCRIPT_CONTEXT_META = 'vf-transcript-context-meta',
+  TRANSCRIPT_DIALOG_LOADING = 'vf-transcript-dialog--loading',
+  TRANSCRIPT_LOADING = 'vf-transcript-page--loading',
+  TRANSCRIPT_DATE = 'vf-conversations-transcript-date',
 
   SIDEBAR_ICON_MENU = 'vf-sidebar-icon-menu',
   SIDEBAR_ICON_MENU_ITEM = 'vf-sidebar-icon-menu__item',

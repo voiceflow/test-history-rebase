@@ -1,3 +1,3 @@
-import { AccountLinking as BaseAccountLinking } from '@voiceflow/alexa-types';
+import { Version } from '@voiceflow/alexa-types';
 
-export type AccountLinking = BaseAccountLinking;
+export type AccountLinking = Version.AccountLinking;

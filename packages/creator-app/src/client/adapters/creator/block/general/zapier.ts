@@ -1,22 +1,21 @@
-import { IntegrationType } from '@voiceflow/general-types';
-import { StepData, ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
+import { Node } from '@voiceflow/base-types';
 
 import { NodeData } from '@/models';
 
 import { createBlockAdapter } from '../utils';
 
-const zapierAdapter = createBlockAdapter<StepData, NodeData.Zapier>(
+const zapierAdapter = createBlockAdapter<Node.Zapier.StepData, NodeData.Zapier>(
   ({ value, user, selectedAction }) => ({
     user,
     value,
     selectedAction,
-    selectedIntegration: IntegrationType.ZAPIER,
+    selectedIntegration: Node.Utils.IntegrationType.ZAPIER,
   }),
-  ({ user, value = '', selectedAction = ZapierActionType.START_A_ZAP }) => ({
+  ({ user, value = '', selectedAction = Node.Zapier.ZapierActionType.START_A_ZAP }) => ({
     user,
     value: value ?? '',
-    selectedAction: selectedAction as ZapierActionType,
-    selectedIntegration: IntegrationType.ZAPIER,
+    selectedAction: selectedAction as Node.Zapier.ZapierActionType,
+    selectedIntegration: Node.Utils.IntegrationType.ZAPIER,
   })
 );
 

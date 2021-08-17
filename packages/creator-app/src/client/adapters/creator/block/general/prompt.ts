@@ -1,12 +1,11 @@
-import { Voice } from '@voiceflow/general-types';
-import { StepData } from '@voiceflow/general-types/build/nodes/prompt';
+import { Node } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { NodeData } from '@/models';
 
 import { chipsToIntentButtons, createBlockAdapter, defaultPortAdapter, noMatchAdapter, PortsAdapter, repromptAdapter } from '../utils';
 
-const promptAdapter = createBlockAdapter<StepData<Voice>, NodeData.Prompt>(
+const promptAdapter = createBlockAdapter<Node.Prompt.StepData, NodeData.Prompt>(
   ({ reprompt, noMatches, chips, buttons }) => ({
     reprompt: reprompt && repromptAdapter.fromDB(reprompt),
     noMatchReprompt: noMatchAdapter.fromDB(noMatches),

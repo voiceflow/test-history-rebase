@@ -1,10 +1,10 @@
-import { StepData } from '@voiceflow/general-types/build/nodes/flow';
+import { Node } from '@voiceflow/base-types';
 
 import { NodeData } from '@/models';
 
 import { createBlockAdapter } from '../utils';
 
-const flowAdapter = createBlockAdapter<StepData, NodeData.Flow>(
+const flowAdapter = createBlockAdapter<Node.Flow.StepData, NodeData.Flow>(
   ({ diagramID, variableMap }) => ({
     diagramID,
     inputs: variableMap?.inputs?.map(([from, to]) => ({ from, to })),

@@ -1,13 +1,6 @@
-import { REGIONAL_VOICE as ALEXA_REGIONAL_VOICE } from '@voiceflow/alexa-types';
-import { AZURE_LOCALE_VOICE_META } from '@voiceflow/general-types';
-import {
-  Locale,
-  LocaleCodeToCountryLanguage,
-  LocaleToVoiceLanguageCode,
-  VoiceLanguageCode,
-  VoiceLanguageCodeToVoice,
-  VoiceType,
-} from '@voiceflow/google-types';
+import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
+import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants as GoogleConstants } from '@voiceflow/google-types';
 import { PlatformType } from '@voiceflow/internal';
 import _constant from 'lodash/constant';
 
@@ -750,7 +743,7 @@ const ALEXA_SSML_META = {
   platformTags: ALEXA_DEFAULT_TAGS,
   addOptions: ALEXA_ADD_OPTIONS,
   voiceOptions: () =>
-    ALEXA_REGIONAL_VOICE.map(({ label, options }) => ({ label, options: options.map((voice) => ({ label: voice, value: voice })) })),
+    AlexaConstants.REGIONAL_VOICE.map(({ label, options }) => ({ label, options: options.map((voice) => ({ label: voice, value: voice })) })),
 };
 
 const GOOGLE_SSML_META = {
@@ -759,14 +752,17 @@ const GOOGLE_SSML_META = {
   platformTags: GOOGLE_DEFAULT_TAGS,
   addOptions: UNIVERSAL_ADD_OPTIONS,
   voiceOptions: (locales, useWavenet) => {
-    const localeMeta = locales?.map((locale) => ({ locale, languageCode: LocaleToVoiceLanguageCode[locale] ?? VoiceLanguageCode.EN_US }));
+    const localeMeta = locales?.map((locale) => ({
+      locale,
+      languageCode: GoogleConstants.LocaleToVoiceLanguageCode[locale] ?? GoogleConstants.VoiceLanguageCode.EN_US,
+    }));
 
     return localeMeta?.map((meta) => ({
-      label: LocaleCodeToCountryLanguage[meta.locale] || meta.locale,
-      options: VoiceLanguageCodeToVoice[meta.languageCode]
+      label: GoogleConstants.LocaleCodeToCountryLanguage[meta.locale] || meta.locale,
+      options: GoogleConstants.VoiceLanguageCodeToVoice[meta.languageCode]
         .map((voiceMeta) =>
           voiceMeta.voiceName
-            .filter((voiceName) => useWavenet || voiceName.includes(VoiceType.STANDARD))
+            .filter((voiceName) => useWavenet || voiceName.includes(GoogleConstants.VoiceType.STANDARD))
             .map((voiceName) => ({
               value: voiceName,
               label: prettifyGoogleVoicesShort(voiceName),
@@ -783,7 +779,7 @@ const GENERAL_SSML_META = {
   platformTags: ALEXA_DEFAULT_TAGS,
   addOptions: ALEXA_ADD_OPTIONS,
   voiceOptions: (locales, useWavenet) => {
-    const allGoogleLocales = Object.values(Locale);
+    const allGoogleLocales = Object.values(GoogleConstants.Locale);
 
     return [
       {
@@ -799,7 +795,7 @@ const GENERAL_SSML_META = {
       {
         value: 'Microsoft',
         label: 'Microsoft',
-        options: Object.values(AZURE_LOCALE_VOICE_META).map((meta) => ({
+        options: Object.values(GeneralConstants.AZURE_LOCALE_VOICE_META).map((meta) => ({
           value: meta.language,
           label: meta.language,
           options: meta.voices.map((voice) => ({ value: voice.voiceID, label: prettifyAzureVoiceID(voice.voiceID) })),

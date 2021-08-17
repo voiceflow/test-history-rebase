@@ -1,4 +1,4 @@
-import { AnyButton } from '@voiceflow/general-types';
+import { Button } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
@@ -18,7 +18,7 @@ interface NodeInterface<T> {
   pushToPath?: PushToPath;
 }
 
-const useButtonsOptionSection = ({ data, onChange, pushToPath }: NodeInterface<{ buttons: Nullable<AnyButton[]> }>): OptionSection => {
+const useButtonsOptionSection = ({ data, onChange, pushToPath }: NodeInterface<{ buttons: Nullable<Button.AnyButton[]> }>): OptionSection => {
   const hasButtons = !!data.buttons;
   const platform = React.useContext(PlatformContext)!;
   const toggleButtons = React.useCallback(() => onChange({ buttons: hasButtons ? null : buttonsFactory() }), [hasButtons, onChange]);

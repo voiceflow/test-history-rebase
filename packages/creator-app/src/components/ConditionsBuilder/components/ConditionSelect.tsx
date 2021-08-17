@@ -1,4 +1,4 @@
-import { ConditionsLogicInterface } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import { Dropdown, Menu, MenuItem, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -10,32 +10,32 @@ export interface ConditionSelectProps {
   additional?: boolean;
   isLogicGroup?: boolean;
   expression?: ExpressionV2;
-  onChange: (value: ConditionsLogicInterface) => void;
+  onChange: (value: Node.Utils.ConditionsLogicInterface) => void;
 }
 
 const ConditionSelect: React.FC<ConditionSelectProps> = ({ onChange, additional = false, isLogicGroup = false }) => {
-  const onSelect = (logicInterface: ConditionsLogicInterface) => () => onChange(logicInterface);
+  const onSelect = (logicInterface: Node.Utils.ConditionsLogicInterface) => () => onChange(logicInterface);
 
   return (
     <Dropdown
       menu={() => (
         <Menu>
-          <MenuItem onClick={onSelect(ConditionsLogicInterface.VARIABLE)}>Variable</MenuItem>
-          <MenuItem onClick={onSelect(ConditionsLogicInterface.VALUE)}>
+          <MenuItem onClick={onSelect(Node.Utils.ConditionsLogicInterface.VARIABLE)}>Variable</MenuItem>
+          <MenuItem onClick={onSelect(Node.Utils.ConditionsLogicInterface.VALUE)}>
             <Text mr={6}>Value</Text>
             <Text fontSize={14} color="#62778c">
               (plain text)
             </Text>
           </MenuItem>
           {!isLogicGroup && (
-            <MenuItem onClick={onSelect(ConditionsLogicInterface.LOGIC_GROUP)}>
+            <MenuItem onClick={onSelect(Node.Utils.ConditionsLogicInterface.LOGIC_GROUP)}>
               <Text mr={6}>Logic group</Text>
               <Text fontSize={14} color="#62778c">
                 (and, or)
               </Text>
             </MenuItem>
           )}
-          {!(additional || isLogicGroup) && <MenuItem onClick={onSelect(ConditionsLogicInterface.EXPRESSION)}>Expresssion</MenuItem>}
+          {!(additional || isLogicGroup) && <MenuItem onClick={onSelect(Node.Utils.ConditionsLogicInterface.EXPRESSION)}>Expresssion</MenuItem>}
         </Menu>
       )}
     >

@@ -1,5 +1,5 @@
-import { DEVICE_SIZE_MAP, DeviceType } from '@voiceflow/general-types';
-import { StepData, VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
+import { Constants } from '@voiceflow/general-types';
 import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
@@ -17,11 +17,11 @@ interface Dimension {
   height: number;
 }
 
-export const useDeviceDimension = ({ data, device }: { data: StepData | null; device: DeviceType | null }): Dimension =>
+export const useDeviceDimension = ({ data, device }: { data: Node.Visual.StepData | null; device: Node.Visual.DeviceType | null }): Dimension =>
   React.useMemo(() => {
-    if (data?.visualType === VisualType.IMAGE) {
+    if (data?.visualType === Node.Visual.VisualType.IMAGE) {
       return data.device
-        ? DEVICE_SIZE_MAP[data.device]
+        ? Constants.DEVICE_SIZE_MAP[data.device]
         : {
             width: data.dimensions?.width ?? DEFAULT_FRAME_DIMENSION,
             height: data.dimensions?.height ?? DEFAULT_FRAME_DIMENSION,

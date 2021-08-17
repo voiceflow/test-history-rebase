@@ -1,5 +1,4 @@
-import { BaseRequest, DeviceType } from '@voiceflow/general-types';
-import { StepData } from '@voiceflow/general-types/build/nodes/visual';
+import { Node, Request } from '@voiceflow/base-types';
 
 import { StoreType } from '@/constants/prototype';
 import { createAction } from '@/ducks/utils';
@@ -35,19 +34,19 @@ export type UpdatePrototypeMode = Action<PrototypeAction.UPDATE_TEST_MODE, { pro
 
 export type PushContextHistory = Action<PrototypeAction.ADD_TEST_CONTEXT_HISTORY, Context>;
 
-export type UpdatePrototypeVisualDevice = Action<PrototypeAction.UPDATE_TEST_VISUAL_DEVICE, DeviceType>;
+export type UpdatePrototypeVisualDevice = Action<PrototypeAction.UPDATE_TEST_VISUAL_DEVICE, Node.Visual.DeviceType>;
 
-export type UpdatePrototypeVisualData = Action<PrototypeAction.UPDATE_TEST_VISUAL_DATA, null | StepData>;
+export type UpdatePrototypeVisualData = Action<PrototypeAction.UPDATE_TEST_VISUAL_DATA, null | Node.Visual.StepData>;
 
-export type PushPrototypeVisualDataHistory = Action<PrototypeAction.ADD_TEST_VISUAL_DATA_HISTORY, null | StepData>;
+export type PushPrototypeVisualDataHistory = Action<PrototypeAction.ADD_TEST_VISUAL_DATA_HISTORY, null | Node.Visual.StepData>;
 
-export type UpdatePrototypeVisualDataHistory = Action<PrototypeAction.UPDATE_TEST_VISUAL_DATA_HISTORY, (null | StepData)[]>;
+export type UpdatePrototypeVisualDataHistory = Action<PrototypeAction.UPDATE_TEST_VISUAL_DATA_HISTORY, (null | Node.Visual.StepData)[]>;
 
 export type UpdatePrototypeContext = Action<PrototypeAction.UPDATE_TEST_CONTEXT, Partial<Context>>;
 
 export type UpdatePrototypeContextStore = Action<PrototypeAction.UPDATE_TEST_CONTEXT_STORE, { store: StoreType; payload: Partial<Store> }>;
 
-export type UpdatePrototypeWebhookData = Action<PrototypeAction.UPDATE_WEBHOOK, BaseRequest>;
+export type UpdatePrototypeWebhookData = Action<PrototypeAction.UPDATE_WEBHOOK, Request.BaseRequest>;
 
 export type UpdatePrototypeSettings = Action<PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, { settings: PrototypeShareViewSettings; patch: boolean }>;
 
@@ -75,16 +74,16 @@ export const updatePrototypeMode = (projectID: string, mode: PrototypeMode): Upd
 
 export const pushContextHistory = (payload: Context): PushContextHistory => createAction(PrototypeAction.ADD_TEST_CONTEXT_HISTORY, payload);
 
-export const updatePrototypeVisualDevice = (payload: DeviceType): UpdatePrototypeVisualDevice =>
+export const updatePrototypeVisualDevice = (payload: Node.Visual.DeviceType): UpdatePrototypeVisualDevice =>
   createAction(PrototypeAction.UPDATE_TEST_VISUAL_DEVICE, payload);
 
-export const updatePrototypeVisualData = (data: null | StepData): UpdatePrototypeVisualData =>
+export const updatePrototypeVisualData = (data: null | Node.Visual.StepData): UpdatePrototypeVisualData =>
   createAction(PrototypeAction.UPDATE_TEST_VISUAL_DATA, data);
 
-export const pushPrototypeVisualDataHistory = (data: null | StepData): PushPrototypeVisualDataHistory =>
+export const pushPrototypeVisualDataHistory = (data: null | Node.Visual.StepData): PushPrototypeVisualDataHistory =>
   createAction(PrototypeAction.ADD_TEST_VISUAL_DATA_HISTORY, data);
 
-export const updatePrototypeVisualDataHistory = (data: (null | StepData)[]): UpdatePrototypeVisualDataHistory =>
+export const updatePrototypeVisualDataHistory = (data: (null | Node.Visual.StepData)[]): UpdatePrototypeVisualDataHistory =>
   createAction(PrototypeAction.UPDATE_TEST_VISUAL_DATA_HISTORY, data);
 
 export const updatePrototypeContext = (payload: Partial<Context>): UpdatePrototypeContext =>
@@ -95,7 +94,8 @@ export const updatePrototypeContextStore =
   (payload: Partial<Store>): UpdatePrototypeContextStore =>
     createAction(PrototypeAction.UPDATE_TEST_CONTEXT_STORE, { store, payload });
 
-export const updatePrototypeWebhookData = (payload: BaseRequest): UpdatePrototypeWebhookData => createAction(PrototypeAction.UPDATE_WEBHOOK, payload);
+export const updatePrototypeWebhookData = (payload: Request.BaseRequest): UpdatePrototypeWebhookData =>
+  createAction(PrototypeAction.UPDATE_WEBHOOK, payload);
 
 export const updatePrototypeSettings = (settings: PrototypeShareViewSettings, patch = true): UpdatePrototypeSettings =>
   createAction(PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, { settings, patch });

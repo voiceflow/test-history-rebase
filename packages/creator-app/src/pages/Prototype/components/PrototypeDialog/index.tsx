@@ -1,4 +1,4 @@
-import { BaseRequest, ButtonsLayout } from '@voiceflow/general-types';
+import { Button, Request } from '@voiceflow/base-types';
 import React from 'react';
 
 import Divider from '@/components/Divider';
@@ -21,10 +21,10 @@ interface DialogPrototypeProps {
   isMobile?: boolean;
   showPadding?: boolean;
   color?: string;
-  buttons?: ButtonsLayout;
+  buttons?: Button.ButtonsLayout;
   avatarURL?: string;
   interactions: Interaction[];
-  onInteraction: (request: string | BaseRequest) => void;
+  onInteraction: (request: string | Request.BaseRequest) => void;
   stepBack: () => void;
   isTranscript?: boolean;
   onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
@@ -44,7 +44,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   interactions,
   isMobile,
   color,
-  buttons = ButtonsLayout.STACKED,
+  buttons = Button.ButtonsLayout.STACKED,
   avatarURL,
   onInteraction,
   stepBack,
@@ -165,10 +165,10 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
 
         <Loading isLoading={isLoading} avatarURL={avatarURL} />
 
-        {buttons === ButtonsLayout.STACKED && <InlineInteractions {...interactionProps} />}
+        {buttons === Button.ButtonsLayout.STACKED && <InlineInteractions {...interactionProps} />}
       </MessagesContainer>
 
-      {buttons === ButtonsLayout.CAROUSEL && <StickyInteractions {...interactionProps} />}
+      {buttons === Button.ButtonsLayout.CAROUSEL && <StickyInteractions {...interactionProps} />}
 
       <span ref={bottomScrollRef} />
     </Container>

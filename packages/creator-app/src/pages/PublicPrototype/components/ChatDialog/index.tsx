@@ -1,4 +1,4 @@
-import { BaseRequest, ButtonsLayout } from '@voiceflow/general-types';
+import { Button, Request } from '@voiceflow/base-types';
 import { Box, BoxFlex, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -18,13 +18,13 @@ export interface ChatDialogProps {
   layout: PrototypeLayout;
   onStart: () => void;
   onMute: () => void;
-  onSend: (request: string | BaseRequest) => void;
+  onSend: (request: string | Request.BaseRequest) => void;
   onPlay: (src: string) => void;
   isMuted?: boolean;
   onReset: () => void;
   messages: Message[];
   isMobile?: boolean;
-  buttons?: ButtonsLayout;
+  buttons?: Button.ButtonsLayout;
   isLoading?: boolean;
   testEnded?: boolean;
   isListening?: boolean;

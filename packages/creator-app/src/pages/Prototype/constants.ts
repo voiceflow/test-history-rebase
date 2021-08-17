@@ -1,4 +1,4 @@
-import { DeviceType, Dimensions } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 import { Icon } from '@voiceflow/ui';
 
@@ -56,46 +56,46 @@ export const getMenuOptions = createPlatformSelector(
 export interface DeviceInfo {
   name: string;
   icon: Icon;
-  type: DeviceType;
-  dimension: Dimensions & { density: number };
+  type: Node.Visual.DeviceType;
+  dimension: Node.Visual.Dimensions & { density: number };
 }
 
 export const ALEXA_DEVICES: DeviceInfo[] = [
   {
-    type: DeviceType.ECHO_SHOW_8,
+    type: Node.Visual.DeviceType.ECHO_SHOW_8,
     name: 'Echo Show 8',
     icon: 'echoShow',
     dimension: { width: 1024, height: 600, density: 160 },
   },
 
   {
-    type: DeviceType.ECHO_SHOW_10,
+    type: Node.Visual.DeviceType.ECHO_SHOW_10,
     name: 'Echo Show 10',
     icon: 'echoShow',
     dimension: { width: 1280, height: 800, density: 160 },
   },
 
   {
-    type: DeviceType.ECHO_SPOT,
+    type: Node.Visual.DeviceType.ECHO_SPOT,
     name: 'Echo Spot',
     icon: 'echoSpot',
     dimension: { width: 480, height: 480, density: 160 },
   },
   {
-    type: DeviceType.FIRE_TV_CUBE,
+    type: Node.Visual.DeviceType.FIRE_TV_CUBE,
     name: 'Fire TV Cube',
     icon: 'fireTV',
     // chosen as it's the average recommended TV pixel density
     dimension: { width: 1920, height: 1080, density: 160 },
   },
   {
-    type: DeviceType.FIRE_HD_8,
+    type: Node.Visual.DeviceType.FIRE_HD_8,
     name: 'Fire HD 8',
     icon: 'fireHD8',
     dimension: { width: 1200, height: 800, density: 160 },
   },
   {
-    type: DeviceType.FIRE_HD_10,
+    type: Node.Visual.DeviceType.FIRE_HD_10,
     name: 'Fire HD 10',
     icon: 'fireHD10',
     dimension: { width: 1920, height: 1200, density: 160 },

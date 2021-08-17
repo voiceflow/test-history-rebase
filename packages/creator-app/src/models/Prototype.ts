@@ -1,23 +1,22 @@
-import { BaseTraceFrame } from '@voiceflow/general-types';
-import * as Traces from '@voiceflow/general-types/build/trace';
+import { Node, Trace } from '@voiceflow/base-types';
 
 import { StoreType } from '@/constants/prototype';
 
 // trace types
 
-export type TraceWithID<T extends Traces.GeneralTrace> = { id: string } & T;
+export type TraceWithID<T extends Node.Utils.BaseTraceFrame> = { id: string } & T;
 
-export type EndTrace = TraceWithID<Traces.ExitTrace>;
-export type FlowTrace = TraceWithID<Traces.FlowTrace>;
-export type BlockTrace = TraceWithID<Traces.BlockTrace>;
-export type SpeakTrace = TraceWithID<Traces.SpeakTrace>;
-export type DebugTrace = TraceWithID<Traces.DebugTrace>;
-export type ChoiceTrace = TraceWithID<Traces.ChoiceTrace>;
-export type StreamTrace = TraceWithID<Traces.StreamTrace>;
-export type VisualTrace = TraceWithID<Traces.VisualTrace>;
-export type TextTrace = TraceWithID<Traces.TextTrace>;
-export type V1Trace = Required<BaseTraceFrame>;
-export { BaseTraceFrame };
+export type EndTrace = TraceWithID<Trace.ExitTrace>;
+export type FlowTrace = TraceWithID<Trace.FlowTrace>;
+export type BlockTrace = TraceWithID<Trace.BlockTrace>;
+export type SpeakTrace = TraceWithID<Trace.SpeakTrace>;
+export type DebugTrace = TraceWithID<Trace.DebugTrace>;
+export type ChoiceTrace = TraceWithID<Trace.ChoiceTrace>;
+export type StreamTrace = TraceWithID<Trace.StreamTrace>;
+export type VisualTrace = TraceWithID<Trace.VisualTrace>;
+export type TextTrace = TraceWithID<Trace.TextTrace>;
+export type V1Trace = Required<Node.Utils.BaseTraceFrame>;
+export type BaseTraceFrame = Node.Utils.BaseTraceFrame;
 
 export type Trace = BlockTrace | SpeakTrace | FlowTrace | DebugTrace | StreamTrace | EndTrace | ChoiceTrace | VisualTrace | TextTrace;
 

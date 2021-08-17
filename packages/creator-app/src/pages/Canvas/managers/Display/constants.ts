@@ -1,4 +1,4 @@
-import { APLType, VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
 
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
@@ -22,8 +22,8 @@ export const NODE_CONFIG: NodeConfig<NodeData.Visual> = {
     data: {
       name: 'Display',
       title: '',
-      aplType: APLType.SPLASH,
-      visualType: VisualType.APL,
+      aplType: Node.Visual.APLType.SPLASH,
+      visualType: Node.Visual.VisualType.APL,
       imageURL: '',
       document: '',
       datasource: '',

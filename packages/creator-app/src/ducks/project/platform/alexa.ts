@@ -1,4 +1,4 @@
-import { AlexaProjectData, AlexaProjectMemberData } from '@voiceflow/alexa-types';
+import { Project as AlexaProject } from '@voiceflow/alexa-types';
 import { Member } from '@voiceflow/api-sdk';
 import { createSelector } from 'reselect';
 
@@ -15,7 +15,7 @@ import { activeProjectSelector } from '../selectors';
 
 export const activeAlexaProjectSelector = createSelector(
   [activeProjectSelector],
-  (activeProject) => activeProject as Nullable<Project<AlexaProjectData, Member<AlexaProjectMemberData>>>
+  (activeProject) => activeProject as Nullable<Project<AlexaProject.AlexaProjectData, Member<AlexaProject.AlexaProjectMemberData>>>
 );
 
 export const activeProjectMembersSelector = createSelector([activeAlexaProjectSelector], (project) => project?.members ?? []);

@@ -1,4 +1,5 @@
-import { RepeatType, Voice as GeneralVoice } from '@voiceflow/general-types';
+import { Version } from '@voiceflow/base-types';
+import { Constants } from '@voiceflow/general-types';
 import { PlatformType } from '@voiceflow/internal';
 import { ClickableText } from '@voiceflow/ui';
 import React from 'react';
@@ -52,7 +53,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
 
   const [previousSessionDialogError, setPreviousSessionDialogError] = React.useState(false);
 
-  const repeat = settings?.repeat ?? RepeatType.OFF;
+  const repeat = settings?.repeat ?? Version.RepeatType.OFF;
   const restart = session?.restart || false;
   const resumePrompt = session?.resumePrompt || defaultResumePrompt;
   const followUpType = session?.resumePrompt.followVoice || defaultVoice;
@@ -124,8 +125,8 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
           <FormControl>
             <RadioGroup
               options={[
-                { id: defaultVoice, label: 'Speak', customCheckedCondition: (val) => val !== GeneralVoice.AUDIO },
-                { id: GeneralVoice.AUDIO, label: 'Audio', customCheckedCondition: (val) => val === GeneralVoice.AUDIO },
+                { id: defaultVoice, label: 'Speak', customCheckedCondition: (val) => val !== Constants.Voice.AUDIO },
+                { id: Constants.Voice.AUDIO, label: 'Audio', customCheckedCondition: (val) => val === Constants.Voice.AUDIO },
               ]}
               name="multiple"
               checked={resumePromptType}
@@ -133,7 +134,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
             />
           </FormControl>
 
-          {resumePromptType === GeneralVoice.AUDIO ? (
+          {resumePromptType === Constants.Voice.AUDIO ? (
             <AudioUpload audio={resumePrompt.content} update={(src: string) => onChangeResumePromptContent({ text: src })} />
           ) : (
             <>
@@ -162,8 +163,8 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
             <FormControl>
               <RadioGroup
                 options={[
-                  { id: defaultVoice, label: 'Speak', customCheckedCondition: (val) => val !== GeneralVoice.AUDIO },
-                  { id: GeneralVoice.AUDIO, label: 'Audio', customCheckedCondition: (val) => val === GeneralVoice.AUDIO },
+                  { id: defaultVoice, label: 'Speak', customCheckedCondition: (val) => val !== Constants.Voice.AUDIO },
+                  { id: Constants.Voice.AUDIO, label: 'Audio', customCheckedCondition: (val) => val === Constants.Voice.AUDIO },
                 ]}
                 name="multiple"
                 checked={followUpType}
@@ -171,7 +172,7 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
               />
             </FormControl>
 
-            {followUpType === GeneralVoice.AUDIO ? (
+            {followUpType === Constants.Voice.AUDIO ? (
               <FormControl>
                 <AudioUpload audio={resumePrompt.followContent} update={(src: string) => onChangeFollowUpContent({ text: src })} />
               </FormControl>
@@ -198,18 +199,18 @@ const AssistantConversationLogic: React.FC<ConnectedAssistantConversationLogic &
         collapseVariant={SectionToggleVariant.TOGGLE}
         header="Allow Users to Repeat"
         isDividerNested
-        onToggleChange={(collapsed) => saveSettings({ repeat: collapsed ? RepeatType.OFF : RepeatType.DIALOG })}
+        onToggleChange={(collapsed) => saveSettings({ repeat: collapsed ? Version.RepeatType.OFF : Version.RepeatType.DIALOG })}
         headerToggle
-        initialOpen={repeat !== RepeatType.OFF}
+        initialOpen={repeat !== Version.RepeatType.OFF}
       >
         <FormControl contentBottomUnits={3}>
           <RadioGroup
             options={REPEAT_OPTIONS}
             name="multiple"
-            checked={repeat ?? RepeatType.DIALOG}
+            checked={repeat ?? Version.RepeatType.DIALOG}
             onChange={(repeat) => saveSettings({ repeat })}
           />
-          {repeat === RepeatType.DIALOG ? repeatDialog : repeatEverything}
+          {repeat === Version.RepeatType.DIALOG ? repeatDialog : repeatEverything}
         </FormControl>
       </Section>
     </>

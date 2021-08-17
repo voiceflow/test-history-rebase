@@ -1,4 +1,4 @@
-import { ConditionsLogicInterface, ExpressionTypeV2 } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import { ExpressionV2, LogicGroupData } from '@/models';
@@ -16,7 +16,7 @@ export interface LogicInterfaceHandlerProps {
 
   onDelete: () => void;
   onChange: (value: ExpressionV2 | LogicGroupData) => void;
-  updateBaseType: (value: ExpressionTypeV2.AND | ExpressionTypeV2.OR) => void;
+  updateBaseType: (value: Node.Utils.ExpressionTypeV2.AND | Node.Utils.ExpressionTypeV2.OR) => void;
 }
 
 const LogicInterfaceHandler: React.FC<LogicInterfaceHandlerProps> = ({
@@ -39,7 +39,7 @@ const LogicInterfaceHandler: React.FC<LogicInterfaceHandlerProps> = ({
       />
     )}
 
-    {expression.logicInterface === ConditionsLogicInterface.LOGIC_GROUP && (
+    {expression.logicInterface === Node.Utils.ConditionsLogicInterface.LOGIC_GROUP && (
       <ConditionLogicGroup
         firstItem={firstItem}
         baseLogicType={baseLogicType}
@@ -50,7 +50,7 @@ const LogicInterfaceHandler: React.FC<LogicInterfaceHandlerProps> = ({
       />
     )}
 
-    {expression.logicInterface === ConditionsLogicInterface.EXPRESSION && (
+    {expression.logicInterface === Node.Utils.ConditionsLogicInterface.EXPRESSION && (
       <ConditionExpression expression={expression as ExpressionV2} onChange={onChange} onDelete={onDelete} />
     )}
   </>

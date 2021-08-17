@@ -1,4 +1,4 @@
-import { AlexaProjectData, AlexaProjectMemberData } from '@voiceflow/alexa-types';
+import { Project as AlexaProject } from '@voiceflow/alexa-types';
 import { Member } from '@voiceflow/api-sdk';
 import { createSelector } from 'reselect';
 
@@ -16,12 +16,12 @@ const vendorIDSelector = createParameterSelector<VendorIDParam>((params) => para
 
 export const alexaProjectByIDSelector = createSelector(
   projectByIDSelector,
-  (activeProject) => activeProject as Nullable<Project<AlexaProjectData, Member<AlexaProjectMemberData>>>
+  (activeProject) => activeProject as Nullable<Project<AlexaProject.AlexaProjectData, Member<AlexaProject.AlexaProjectMemberData>>>
 );
 
 export const alexaProjectMembersByIDSelector = createSelector(
   alexaProjectByIDSelector,
-  (project): Member<AlexaProjectMemberData>[] => project?.members ?? []
+  (project): Member<AlexaProject.AlexaProjectMemberData>[] => project?.members ?? []
 );
 
 export const alexaProjectMemberByIDAndCreatorIDSelector = createSelector(

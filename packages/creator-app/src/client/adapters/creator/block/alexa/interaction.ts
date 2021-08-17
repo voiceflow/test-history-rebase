@@ -1,5 +1,5 @@
-import { Voice } from '@voiceflow/alexa-types';
-import { Choice, StepData } from '@voiceflow/general-types/build/nodes/interaction';
+import { Node } from '@voiceflow/alexa-types';
+import { Node as BaseNode } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 import cuid from 'cuid';
 
@@ -9,12 +9,12 @@ import { distinctPlatformsData } from '@/utils/platform';
 
 import { createBlockAdapter, noMatchAdapter, repromptAdapter } from '../utils';
 
-const choiceAdapter = createAdapter<Choice, NodeData.InteractionChoice>(
+const choiceAdapter = createAdapter<BaseNode.Interaction.Choice, NodeData.InteractionChoice>(
   ({ intent, mappings = [] }) => ({ id: cuid.slug(), intent, mappings }),
   ({ intent, mappings }) => ({ intent: intent ?? '', mappings })
 );
 
-const interactionAdapter = createBlockAdapter<StepData<Voice>, NodeData.Interaction>(
+const interactionAdapter = createBlockAdapter<Node.Interaction.StepData, NodeData.Interaction>(
   ({ name, else: elseData, choices, reprompt }) => ({
     name,
     else: noMatchAdapter.fromDB(elseData),

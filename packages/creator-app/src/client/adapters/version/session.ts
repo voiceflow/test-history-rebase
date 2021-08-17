@@ -1,5 +1,6 @@
-import { BaseResumeSession, RestartSession, SessionType } from '@voiceflow/general-types';
+import { Version as BaseVersion } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
+import { Types as VoiceTypes } from '@voiceflow/voice-types';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { Version } from '@/models';
@@ -7,9 +8,14 @@ import { Nullable } from '@/types';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
 const createSessionAdapter = <V extends string>({ platform }: { platform: PlatformType }) =>
-  createAdapter<RestartSession | BaseResumeSession<V>, Nullable<Version.Session>, [{ defaultVoice: Nullable<V> }], [{ defaultVoice: Nullable<V> }]>(
+  createAdapter<
+    BaseVersion.RestartSession | BaseVersion.ResumeSession<VoiceTypes.Prompt<V>>,
+    Nullable<Version.Session>,
+    [{ defaultVoice: Nullable<V> }],
+    [{ defaultVoice: Nullable<V> }]
+  >(
     (session, { defaultVoice }) =>
-      session?.type === SessionType.RESUME
+      session?.type === BaseVersion.SessionType.RESUME
         ? {
             restart: false,
             resumePrompt: {
@@ -34,14 +40,14 @@ const createSessionAdapter = <V extends string>({ platform }: { platform: Platfo
 
       if (restart) {
         return {
-          type: SessionType.RESTART,
+          type: BaseVersion.SessionType.RESTART,
         };
       }
 
       const platformDefaultVoice = getPlatformDefaultVoice(platform);
 
       return {
-        type: SessionType.RESUME,
+        type: BaseVersion.SessionType.RESUME,
         resume: content?.trim()
           ? {
               voice: (voice as V) || defaultVoice || (platformDefaultVoice as V),

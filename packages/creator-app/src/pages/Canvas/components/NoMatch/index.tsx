@@ -1,4 +1,4 @@
-import { NoMatchType } from '@voiceflow/general-types';
+import { Node as BaseNode } from '@voiceflow/base-types';
 import React from 'react';
 
 import { CheckboxType } from '@/components/Checkbox';
@@ -23,16 +23,16 @@ import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 import NoMatchTooltip from './components/NoMatchTooltip';
 import RadiobuttonText from './components/RadiobuttonText';
 
-const ELSE_OPTIONS: RadioOption<NoMatchType>[] = [
+const ELSE_OPTIONS: RadioOption<BaseNode.Utils.NoMatchType>[] = [
   {
-    id: NoMatchType.REPROMPT,
+    id: BaseNode.Utils.NoMatchType.REPROMPT,
     label: <RadiobuttonText label="Reprompts" />,
-    customCheckedCondition: (type) => type === NoMatchType.REPROMPT || type === NoMatchType.BOTH,
+    customCheckedCondition: (type) => type === BaseNode.Utils.NoMatchType.REPROMPT || type === BaseNode.Utils.NoMatchType.BOTH,
   },
   {
-    id: NoMatchType.PATH,
+    id: BaseNode.Utils.NoMatchType.PATH,
     label: <RadiobuttonText label="Path" />,
-    customCheckedCondition: (type) => type === NoMatchType.PATH || type === NoMatchType.BOTH,
+    customCheckedCondition: (type) => type === BaseNode.Utils.NoMatchType.PATH || type === BaseNode.Utils.NoMatchType.BOTH,
   },
 ];
 
@@ -48,23 +48,23 @@ const NoMatch: React.FC<NoMatchProps & ConnectedNoMatchProps> = ({ onChange, noM
 
   const [localNoMatches, setLocalNoMatches] = useLinkedState(noMatches);
 
-  const handleChangeType = (newType: NoMatchType) => {
-    let nextType: NoMatchType | null;
+  const handleChangeType = (newType: BaseNode.Utils.NoMatchType) => {
+    let nextType: BaseNode.Utils.NoMatchType | null;
     let removeLink = false;
 
-    if (localNoMatches.type === NoMatchType.BOTH) {
-      if (newType === NoMatchType.PATH) {
-        nextType = NoMatchType.REPROMPT;
+    if (localNoMatches.type === BaseNode.Utils.NoMatchType.BOTH) {
+      if (newType === BaseNode.Utils.NoMatchType.PATH) {
+        nextType = BaseNode.Utils.NoMatchType.REPROMPT;
         removeLink = !!elseLinkID;
       } else {
-        nextType = NoMatchType.PATH;
+        nextType = BaseNode.Utils.NoMatchType.PATH;
       }
     } else if (newType === localNoMatches.type) {
       nextType = null;
     } else if (!localNoMatches.type) {
       nextType = newType;
     } else {
-      nextType = NoMatchType.BOTH;
+      nextType = BaseNode.Utils.NoMatchType.BOTH;
     }
 
     if (removeLink) {
@@ -83,7 +83,7 @@ const NoMatch: React.FC<NoMatchProps & ConnectedNoMatchProps> = ({ onChange, noM
 
   return (
     <>
-      <Section borderBottom={!!localNoMatches.type && localNoMatches.type !== NoMatchType.PATH}>
+      <Section borderBottom={!!localNoMatches.type && localNoMatches.type !== BaseNode.Utils.NoMatchType.PATH}>
         <FormControl label="No Match Type" contentBottomUnits={0} tooltip={<NoMatchTooltip />} tooltipProps={{ helpTitle: null, helpMessage: null }}>
           <RadioGroup type={CheckboxType.CHECKBOX} options={ELSE_OPTIONS} checked={localNoMatches.type!} onChange={handleChangeType} />
         </FormControl>
@@ -95,7 +95,7 @@ const NoMatch: React.FC<NoMatchProps & ConnectedNoMatchProps> = ({ onChange, noM
         </Section>
       ) : (
         <>
-          {localNoMatches.type !== NoMatchType.PATH ? (
+          {localNoMatches.type !== BaseNode.Utils.NoMatchType.PATH ? (
             <SpeakAudioList
               items={localNoMatches.reprompts}
               platform={platform}
@@ -106,7 +106,7 @@ const NoMatch: React.FC<NoMatchProps & ConnectedNoMatchProps> = ({ onChange, noM
               onChangeItems={(reprompts) => setLocalNoMatches({ ...localNoMatches, reprompts })}
               onChangeRandomize={(randomize) => setLocalNoMatches({ ...localNoMatches, randomize })}
             >
-              {localNoMatches.type === NoMatchType.BOTH && <NoMatchPath pushToPath={pushToPath} />}
+              {localNoMatches.type === BaseNode.Utils.NoMatchType.BOTH && <NoMatchPath pushToPath={pushToPath} />}
             </SpeakAudioList>
           ) : (
             <NoMatchPath pushToPath={pushToPath} borderBottom />

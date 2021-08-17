@@ -1,4 +1,4 @@
-import { SlotType } from '@voiceflow/alexa-types';
+import { Constants } from '@voiceflow/alexa-types';
 import { Badge, ErrorMessage } from '@voiceflow/ui';
 import React from 'react';
 import { withProps } from 'recompose';
@@ -43,7 +43,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
   }, [intent.slots.allKeys, slotsMap]);
 
   const utterancesWithDefault = React.useMemo(() => {
-    const defaultSlotText = slot.type === SlotType.SEARCHQUERY ? `search ${strSlot}` : strSlot;
+    const defaultSlotText = slot.type === Constants.SlotType.SEARCHQUERY ? `search ${strSlot}` : strSlot;
     const utterancesWithoutDefault = utterances.filter(({ text }) => text?.trim() !== defaultSlotText);
 
     return [...utterancesWithoutDefault, { text: defaultSlotText, slots: [slot.id] }];

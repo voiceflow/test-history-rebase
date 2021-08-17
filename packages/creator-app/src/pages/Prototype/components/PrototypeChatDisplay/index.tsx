@@ -1,4 +1,4 @@
-import { BaseRequest, ButtonsLayout } from '@voiceflow/general-types';
+import { Button, Request } from '@voiceflow/base-types';
 import React from 'react';
 
 import { PrototypeStatus } from '@/ducks/prototype';
@@ -16,7 +16,7 @@ export interface PrototypeChatDisplayProps {
   setAtTop?: (val: boolean) => void;
   onPlay: (src: string) => void;
   debug?: boolean;
-  buttons?: ButtonsLayout;
+  buttons?: Button.ButtonsLayout;
   interactions: Interaction[];
   status: PrototypeStatus;
   hideSessionMessages?: boolean;
@@ -24,7 +24,7 @@ export interface PrototypeChatDisplayProps {
   isMobile?: boolean;
   color?: string;
   avatarURL?: string;
-  onInteraction: (request: string | BaseRequest) => void;
+  onInteraction: (request: string | Request.BaseRequest) => void;
   stepBack: () => void;
   autoScroll?: boolean;
   isTranscript?: boolean;

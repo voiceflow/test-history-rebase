@@ -1,6 +1,5 @@
 import { VersionPrototype } from '@voiceflow/api-sdk';
-import { BaseRequest, ButtonsLayout, DeviceType } from '@voiceflow/general-types';
-import { StepData } from '@voiceflow/general-types/build/nodes/visual';
+import { Button, Node, Request } from '@voiceflow/base-types';
 import { PlanType, PlatformType } from '@voiceflow/internal';
 
 import { AnyLocale } from '@/ducks/version';
@@ -13,7 +12,7 @@ export type PrototypeSettings = Omit<VersionPrototype['settings'], 'layout'> & {
   locales: AnyLocale[];
   projectName: string;
   hasPassword: boolean;
-  buttons: ButtonsLayout;
+  buttons: Button.ButtonsLayout;
 };
 
 // context types
@@ -81,10 +80,10 @@ export interface PrototypeState {
    */
   mode: Record<string, PrototypeMode>;
   visual: {
-    data: StepData | null;
-    device: DeviceType | null;
-    dataHistory: (StepData | null)[];
+    data: Node.Visual.StepData | null;
+    device: Node.Visual.DeviceType | null;
+    dataHistory: (Node.Visual.StepData | null)[];
   };
-  webhook: BaseRequest | null;
+  webhook: Request.BaseRequest | null;
   settings: PrototypeShareViewSettings;
 }

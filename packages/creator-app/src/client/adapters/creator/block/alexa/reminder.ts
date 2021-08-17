@@ -1,5 +1,4 @@
-import type { StepData as ReminderData } from '@voiceflow/alexa-types/build/nodes/reminder';
-import { ReminderClientType, ReminderType } from '@voiceflow/alexa-types/build/nodes/reminder';
+import { Node } from '@voiceflow/alexa-types';
 import _isString from 'lodash/isString';
 
 import { NodeData } from '@/models';
@@ -7,7 +6,7 @@ import { transformVariablesFromReadable, transformVariablesToReadable } from '@/
 
 import { createBlockAdapter } from '../utils';
 
-const reminderDataAdapter = createBlockAdapter<ReminderData, NodeData.Reminder>(
+const reminderDataAdapter = createBlockAdapter<Node.Reminder.StepData, NodeData.Reminder>(
   ({
     reminder: {
       name,
@@ -21,7 +20,8 @@ const reminderDataAdapter = createBlockAdapter<ReminderData, NodeData.Reminder>(
     },
   }) => ({
     name,
-    reminderType: type === ReminderType.SCHEDULED_RELATIVE ? ReminderClientType.TIME : ReminderClientType.SCHEDULED,
+    reminderType:
+      type === Node.Reminder.ReminderType.SCHEDULED_RELATIVE ? Node.Reminder.ReminderClientType.TIME : Node.Reminder.ReminderClientType.SCHEDULED,
     text,
     hours: h,
     minutes: m,
@@ -33,12 +33,12 @@ const reminderDataAdapter = createBlockAdapter<ReminderData, NodeData.Reminder>(
     recurrenceBool,
   }),
   ({ name, reminderType, text, hours, minutes, seconds, date, timezone, recurrence, recurrenceBool }) => {
-    const isTimer = reminderType === ReminderClientType.TIME;
+    const isTimer = reminderType === Node.Reminder.ReminderClientType.TIME;
 
     return {
       reminder: {
         name,
-        type: isTimer ? ReminderType.SCHEDULED_RELATIVE : ReminderType.SCHEDULED_ABSOLUTE,
+        type: isTimer ? Node.Reminder.ReminderType.SCHEDULED_RELATIVE : Node.Reminder.ReminderType.SCHEDULED_ABSOLUTE,
         text,
         time: {
           h: hours,

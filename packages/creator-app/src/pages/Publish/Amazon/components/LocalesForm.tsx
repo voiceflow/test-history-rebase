@@ -1,4 +1,4 @@
-import { Locale } from '@voiceflow/alexa-types';
+import { Constants } from '@voiceflow/alexa-types';
 import { Box, BoxFlex, Label } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -44,7 +44,7 @@ const LocalesForm: React.FC = () => {
   const saveLocales = useDispatch(Version.saveLocales);
 
   const toggleLocale = React.useCallback(
-    (locale: Locale) => {
+    (locale: Constants.Locale) => {
       const nextLocales = toggleMembership(locales, locale);
 
       if (nextLocales.length) {

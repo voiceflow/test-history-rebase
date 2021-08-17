@@ -1,4 +1,4 @@
-import { ExpressionTypeV2 } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import { BoxFlex, Dropdown, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +6,7 @@ import ConditionLabelContainer from './ConditionLabelContainer';
 
 export interface ConditionLabelProps {
   actionable?: boolean;
-  onChange?: (value: ExpressionTypeV2.AND | ExpressionTypeV2.OR) => void;
+  onChange?: (value: Node.Utils.ExpressionTypeV2.AND | Node.Utils.ExpressionTypeV2.OR) => void;
 }
 
 const ConditionLabel: React.FC<ConditionLabelProps> = ({ actionable = false, onChange, children }) =>
@@ -14,8 +14,8 @@ const ConditionLabel: React.FC<ConditionLabelProps> = ({ actionable = false, onC
     <Dropdown
       menu={() => (
         <Menu>
-          <MenuItem onClick={() => onChange?.(ExpressionTypeV2.AND)}>And</MenuItem>
-          <MenuItem onClick={() => onChange?.(ExpressionTypeV2.OR)}>Or</MenuItem>
+          <MenuItem onClick={() => onChange?.(Node.Utils.ExpressionTypeV2.AND)}>And</MenuItem>
+          <MenuItem onClick={() => onChange?.(Node.Utils.ExpressionTypeV2.OR)}>Or</MenuItem>
         </Menu>
       )}
     >

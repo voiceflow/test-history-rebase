@@ -1,4 +1,4 @@
-import { CanvasNodeVisibility } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
@@ -87,7 +87,7 @@ const ConnectedSpeakStep: React.FC<ConnectedStepProps<NodeData.Speak>> = ({ node
   return (
     <SpeakStep
       items={items}
-      random={!data.canvasVisibility ? data.randomize : data.canvasVisibility === CanvasNodeVisibility.PREVIEW}
+      random={!data.canvasVisibility ? data.randomize : data.canvasVisibility === Node.Utils.CanvasNodeVisibility.PREVIEW}
       nodeID={node.id}
       portID={node.ports.out[0]}
       platform={platform}

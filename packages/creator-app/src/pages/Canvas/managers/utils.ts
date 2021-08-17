@@ -1,13 +1,13 @@
-import { NoMatchType } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const getNoMatchSectionLabel = (type: NoMatchType | null) => {
+export const getNoMatchSectionLabel = (type: Node.Utils.NoMatchType | null) => {
   switch (type) {
-    case NoMatchType.REPROMPT:
+    case Node.Utils.NoMatchType.REPROMPT:
       return 'Reprompt';
-    case NoMatchType.PATH:
+    case Node.Utils.NoMatchType.PATH:
       return 'Path';
-    case NoMatchType.BOTH:
+    case Node.Utils.NoMatchType.BOTH:
       return 'Reprompt + Path';
     default:
       return '';

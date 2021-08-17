@@ -1,5 +1,4 @@
-import { DeviceType } from '@voiceflow/general-types';
-import { VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
 import { preventDefault, SvgIcon, useCache, useDidUpdateEffect } from '@voiceflow/ui';
 import cn from 'classnames';
 import cuid from 'cuid';
@@ -34,7 +33,7 @@ const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({
   onStartListening,
   listeningASR,
 }) => {
-  const dimension = useDeviceDimension({ data, device: device || DeviceType.ECHO_SHOW_10 });
+  const dimension = useDeviceDimension({ data, device: device || Node.Visual.DeviceType.ECHO_SHOW_10 });
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [scale, setScale] = React.useState(1);
 
@@ -78,7 +77,7 @@ const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({
       {isMobile && <ListenerContainer listeningASR={listeningASR} />}
       {!!containerRef.current && (
         <>
-          {data?.visualType === VisualType.IMAGE && (
+          {data?.visualType === Node.Visual.VisualType.IMAGE && (
             <FadeContainer className={cn(ClassName.VISUAL, ClassName.VISUAL_IMAGE)} key={contentKey}>
               <ScaleContainer
                 className={ClassName.SCALE_CONTAINER}
@@ -91,7 +90,7 @@ const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({
               </ScaleContainer>
             </FadeContainer>
           )}
-          {data?.visualType === VisualType.APL && (
+          {data?.visualType === Node.Visual.VisualType.APL && (
             <FadeContainer className={cn(ClassName.VISUAL, ClassName.VISUAL_APL)} key={contentKey}>
               <ScaleContainer
                 className={ClassName.SCALE_CONTAINER}

@@ -1,4 +1,4 @@
-import { AccountLinking, AlexaStage, AlexaVersionData, AlexaVersionPublishing, AlexaVersionSettings, Locale } from '@voiceflow/alexa-types';
+import { Constants, Version } from '@voiceflow/alexa-types';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
@@ -27,7 +27,7 @@ export const accountLinkingSelector = createSelector([activeSettingsSelector], (
 
 export const activePublishingSelector = createSelector([activeAlexaVersionSelector], (version) => version?.publishing ?? null);
 
-export const activeLocalesSelector = createSelector([activePublishingSelector], (publishing): Locale[] => publishing?.locales ?? []);
+export const activeLocalesSelector = createSelector([activePublishingSelector], (publishing): Constants.Locale[] => publishing?.locales ?? []);
 
 export const activeInvocationNameSelector = createSelector([activePublishingSelector], (publishing) => publishing?.invocationName ?? null);
 
@@ -35,23 +35,25 @@ export const activeInvocationsSelector = createSelector([activePublishingSelecto
 
 export const parentalControlSelector = createSelector(
   [activePublishingSelector, activeLocalesSelector],
-  (publishing, locales) => publishing?.forChildren && locales.includes(Locale.EN_US)
+  (publishing, locales) => publishing?.forChildren && locales.includes(Constants.Locale.EN_US)
 );
 
-export const inReviewSelector = createSelector([activeAlexaVersionSelector], (version) => version?.status?.stage === AlexaStage.REVIEW);
+export const inReviewSelector = createSelector([activeAlexaVersionSelector], (version) => version?.status?.stage === Version.AlexaStage.REVIEW);
 
 // action creators
 
-export const updateSettings = (versionID: string, settings: Partial<AlexaVersionSettings>): UpdateSettings<AlexaVersionSettings> =>
-  updateSettingsByVersionID<AlexaVersionSettings>(versionID, settings);
+export const updateSettings = (versionID: string, settings: Partial<Version.AlexaVersionSettings>): UpdateSettings<Version.AlexaVersionSettings> =>
+  updateSettingsByVersionID<Version.AlexaVersionSettings>(versionID, settings);
 
-export const updatePublishing = (versionID: string, publishing: Partial<AlexaVersionPublishing>): UpdatePublishing<AlexaVersionPublishing> =>
-  updatePublishingByVersionID<AlexaVersionPublishing>(versionID, publishing);
+export const updatePublishing = (
+  versionID: string,
+  publishing: Partial<Version.AlexaVersionPublishing>
+): UpdatePublishing<Version.AlexaVersionPublishing> => updatePublishingByVersionID<Version.AlexaVersionPublishing>(versionID, publishing);
 
 // side effects
 
 export const saveSettings =
-  (settings: Partial<AlexaVersionSettings>): Thunk =>
+  (settings: Partial<Version.AlexaVersionSettings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -63,7 +65,7 @@ export const saveSettings =
   };
 
 export const savePublishing =
-  (publishing: Partial<AlexaVersionPublishing>): Thunk =>
+  (publishing: Partial<Version.AlexaVersionPublishing>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -74,7 +76,7 @@ export const savePublishing =
     await client.platform.alexa.version.updatePublishing(versionID, publishing);
   };
 
-export const loadAccountLinking = (): Thunk<Nullable<AccountLinking>> => async (dispatch, getState) => {
+export const loadAccountLinking = (): Thunk<Nullable<Version.AccountLinking>> => async (dispatch, getState) => {
   const versionID = Session.activeVersionIDSelector(getState());
 
   Errors.assertVersionID(versionID);
@@ -83,7 +85,7 @@ export const loadAccountLinking = (): Thunk<Nullable<AccountLinking>> => async (
     platformData: {
       settings: { accountLinking },
     },
-  } = await client.api.version.get<{ platformData: AlexaVersionData }>(versionID, ['platformData']);
+  } = await client.api.version.get<{ platformData: Version.AlexaVersionData }>(versionID, ['platformData']);
 
   dispatch(updateSettings(versionID, { accountLinking }));
 

@@ -1,7 +1,7 @@
-import { BUILT_IN_SLOTS as ALEXA_BUILT_IN_SLOTS } from '@voiceflow/alexa-types';
+import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
-import { SlotType } from '@voiceflow/general-types';
-import { BUILT_IN_SLOTS as GOOGLE_BUILT_IN_SLOTS } from '@voiceflow/google-types';
+import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants as GoogleConstants } from '@voiceflow/google-types';
 import { PlatformType } from '@voiceflow/internal';
 
 import { FeatureFlag } from '@/config/features';
@@ -23,10 +23,10 @@ export const getSlotTypes = <L extends string>(
 
   switch (platform) {
     case PlatformType.GOOGLE:
-      builtInSlots = [...GOOGLE_BUILT_IN_SLOTS];
+      builtInSlots = [...GoogleConstants.BUILT_IN_SLOTS];
       break;
     case PlatformType.ALEXA:
-      builtInSlots = [...ALEXA_BUILT_IN_SLOTS];
+      builtInSlots = [...AlexaConstants.BUILT_IN_SLOTS];
       builtInSlots = builtInSlots
         .filter((slot) => !slot.locales || locales.every((locale) => slot.locales!.includes(locale)))
         .sort((lSlot, rSlot) => lSlot.label.localeCompare(rSlot.label));
@@ -34,7 +34,7 @@ export const getSlotTypes = <L extends string>(
     default:
       builtInSlots = generalSlotTypesByLanguage(locales[0]?.substring(0, 2));
       if (!featureSelector?.(FeatureFlag.NATO_APCO)) {
-        builtInSlots = builtInSlots.filter((slot) => slot.type !== SlotType.NATOAPCO);
+        builtInSlots = builtInSlots.filter((slot) => slot.type !== GeneralConstants.SlotType.NATOAPCO);
       }
   }
 

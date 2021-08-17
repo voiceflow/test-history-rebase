@@ -1,11 +1,10 @@
-import { StepData } from '@voiceflow/general-types/build/nodes/capture';
-import { Voice } from '@voiceflow/google-types';
+import { Node } from '@voiceflow/google-types';
 
 import { NodeData } from '@/models';
 
 import { chipsToIntentButtons, createBlockAdapter, repromptAdapter } from '../utils';
 
-const captureAdapter = createBlockAdapter<StepData<Voice>, NodeData.Capture>(
+const captureAdapter = createBlockAdapter<Node.Capture.StepData, NodeData.Capture>(
   ({ slot, variable, reprompt, slotInputs, chips, buttons }) => ({
     slot,
     variable,

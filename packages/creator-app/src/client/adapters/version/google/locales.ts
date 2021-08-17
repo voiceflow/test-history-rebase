@@ -1,5 +1,6 @@
-import { Language, LanguageToLocale, Locale } from '@voiceflow/google-types';
+import { Constants } from '@voiceflow/google-types';
 
-const localesAdapter = (locales: Language[] | Locale[]): Locale[] => LanguageToLocale[locales[0] as Language] || locales;
+const localesAdapter = (locales: Constants.Language[] | Constants.Locale[]): Constants.Locale[] =>
+  Constants.LanguageToLocale[locales[0] as Constants.Language] || locales;
 
 export default localesAdapter;

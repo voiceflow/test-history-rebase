@@ -1,4 +1,4 @@
-import { AlexaProjectMemberData } from '@voiceflow/alexa-types';
+import { Project as AlexaProject } from '@voiceflow/alexa-types';
 import { Alert, AlertVariant, Box, BoxFlex, Button, Input, Select, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -20,7 +20,7 @@ interface MigrationProps {
 
 const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonAccount, productMap, projectID, selectedVendor, onSuccess }) => {
   const [vendorID, setVendorID] = React.useState<string>(selectedVendor ?? '');
-  const [projectMember, setProjectMember] = React.useState<AlexaProjectMemberData | null>(null);
+  const [projectMember, setProjectMember] = React.useState<AlexaProject.AlexaProjectMemberData | null>(null);
   const [skillID, setSkillID] = React.useState<string>('');
   const [products, setProducts] = React.useState<Record<string, string>>({});
 
@@ -45,7 +45,7 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
       return;
     }
 
-    setProjectMember((await client.api.project.member.get<AlexaProjectMemberData>(projectID)).platformData);
+    setProjectMember((await client.api.project.member.get<AlexaProject.AlexaProjectMemberData>(projectID)).platformData);
   });
 
   React.useEffect(() => {

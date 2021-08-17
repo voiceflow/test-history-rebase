@@ -1,4 +1,4 @@
-import { AccountLinking, AccountLinkingAccessTokenScheme, AccountLinkingType } from '@voiceflow/alexa-types';
+import { Version } from '@voiceflow/alexa-types';
 
 import { BlockType } from '@/constants';
 
@@ -39,19 +39,19 @@ export const TABS = [
 ];
 
 export const CLIENT_AUTH_SCHEMES = [
-  { value: AccountLinkingAccessTokenScheme.HTTP_BASIC, label: 'HTTP Basic (recommended)' },
-  { value: AccountLinkingAccessTokenScheme.REQUEST_BODY_CREDENTIALS, label: 'Credentials in request body' },
+  { value: Version.AccountLinkingAccessTokenScheme.HTTP_BASIC, label: 'HTTP Basic (recommended)' },
+  { value: Version.AccountLinkingAccessTokenScheme.REQUEST_BODY_CREDENTIALS, label: 'Credentials in request body' },
 ];
 
-export const EMPTY_ACCOUNT_DATA: AccountLinking = {
-  type: AccountLinkingType.AUTH_CODE,
+export const EMPTY_ACCOUNT_DATA: Version.AccountLinking = {
+  type: Version.AccountLinkingType.AUTH_CODE,
   scopes: [''],
   domains: [''],
   clientId: '',
   clientSecret: '',
   accessTokenUrl: '',
   authorizationUrl: '',
-  accessTokenScheme: AccountLinkingAccessTokenScheme.HTTP_BASIC,
+  accessTokenScheme: Version.AccountLinkingAccessTokenScheme.HTTP_BASIC,
   defaultTokenExpirationInSeconds: 3600,
 };
 

@@ -1,4 +1,4 @@
-import { BaseRequest } from '@voiceflow/general-types';
+import { Request } from '@voiceflow/base-types';
 import { IS_IOS, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -89,7 +89,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   const isIdle = status === PrototypeDuck.PrototypeStatus.IDLE;
   const isFinished = status === PrototypeDuck.PrototypeStatus.ENDED;
 
-  const sendInteraction = (customInput: string | BaseRequest) => {
+  const sendInteraction = (customInput: string | Request.BaseRequest) => {
     onInteraction(customInput);
     setInput('');
   };

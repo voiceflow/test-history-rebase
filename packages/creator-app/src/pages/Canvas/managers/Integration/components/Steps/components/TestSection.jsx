@@ -1,6 +1,5 @@
+import { Node } from '@voiceflow/base-types';
 import { deepVariableSubstitution } from '@voiceflow/common';
-import { GoogleSheetsActionType } from '@voiceflow/general-types/build/nodes/googleSheets';
-import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
 import { BoxFlexCenter, Button, Input, Spinner } from '@voiceflow/ui';
 import update from 'immutability-helper';
 import _cloneDeep from 'lodash/cloneDeep';
@@ -22,13 +21,13 @@ import { deepDraftToMarkdown } from '../../utils';
 
 const SERVICES_MAP = {
   [IntegrationType.GOOGLE_SHEETS]: {
-    [GoogleSheetsActionType.RETRIEVE_DATA]: IntegrationsService.googleSheets.retrieveData,
-    [GoogleSheetsActionType.CREATE_DATA]: IntegrationsService.googleSheets.createData,
-    [GoogleSheetsActionType.UPDATE_DATA]: IntegrationsService.googleSheets.updateData,
-    [GoogleSheetsActionType.DELETE_DATA]: IntegrationsService.googleSheets.deleteData,
+    [Node.GoogleSheets.GoogleSheetsActionType.RETRIEVE_DATA]: IntegrationsService.googleSheets.retrieveData,
+    [Node.GoogleSheets.GoogleSheetsActionType.CREATE_DATA]: IntegrationsService.googleSheets.createData,
+    [Node.GoogleSheets.GoogleSheetsActionType.UPDATE_DATA]: IntegrationsService.googleSheets.updateData,
+    [Node.GoogleSheets.GoogleSheetsActionType.DELETE_DATA]: IntegrationsService.googleSheets.deleteData,
   },
   [IntegrationType.ZAPIER]: {
-    [ZapierActionType.START_A_ZAP]: IntegrationsService.zapier.createMessage,
+    [Node.Zapier.ZapierActionType.START_A_ZAP]: IntegrationsService.zapier.createMessage,
   },
 };
 
@@ -40,16 +39,16 @@ class TestSection extends Component {
 
   generateLegacyActionsDataStructure = (selected_integration, selected_action, data, actionsData) => {
     if (selected_integration === IntegrationType.GOOGLE_SHEETS) {
-      if (selected_action === GoogleSheetsActionType.RETRIEVE_DATA) {
+      if (selected_action === Node.GoogleSheets.GoogleSheetsActionType.RETRIEVE_DATA) {
         actionsData.match_value = textEditorContentAdapter.toDB(data.match_value);
 
         actionsData.header_column = data.header_column;
-      } else if (selected_action === GoogleSheetsActionType.CREATE_DATA) {
+      } else if (selected_action === Node.GoogleSheets.GoogleSheetsActionType.CREATE_DATA) {
         actionsData.row_values = data.row_values.map((rowVal) => textEditorContentAdapter.toDB(rowVal));
-      } else if (selected_action === GoogleSheetsActionType.UPDATE_DATA) {
+      } else if (selected_action === Node.GoogleSheets.GoogleSheetsActionType.UPDATE_DATA) {
         actionsData.row_values = data.row_values.map((rowVal) => textEditorContentAdapter.toDB(rowVal));
         actionsData.row_number = textEditorContentAdapter.toDB(data.row_number);
-      } else if (selected_action === GoogleSheetsActionType.DELETE_DATA) {
+      } else if (selected_action === Node.GoogleSheets.GoogleSheetsActionType.DELETE_DATA) {
         actionsData.start_row = textEditorContentAdapter.toDB(data.start_row);
         actionsData.end_row = textEditorContentAdapter.toDB(data.end_row);
       }

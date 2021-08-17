@@ -1,4 +1,4 @@
-import { IntentName } from '@voiceflow/general-types/build/constants/intent';
+import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
 import * as Diagram from '@/ducks/diagram';
@@ -33,7 +33,7 @@ export const IntentConfidence: React.FC<IntentConfidenceProps & ConnectedIntentC
 }) => {
   const intentMessage = `${message.split('**')[1]} - `;
   const confidenceMessage = ` ${message.split('confidence interval')[1].split('_')[1]}`;
-  const noMatch = lastUserMessage.intentName === IntentName.NONE || (intentConfidence && intentConfidence < INTENT_CONFIDENCE_THRESHOLD);
+  const noMatch = lastUserMessage.intentName === Constants.IntentName.NONE || (intentConfidence && intentConfidence < INTENT_CONFIDENCE_THRESHOLD);
 
   if (noMatch && isTranscript) {
     return (

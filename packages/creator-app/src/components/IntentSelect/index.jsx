@@ -1,4 +1,4 @@
-import { IntentName } from '@voiceflow/general-types';
+import { Constants } from '@voiceflow/general-types';
 import { Alert, AlertVariant, Select, toast } from '@voiceflow/ui';
 import _shuffle from 'lodash/shuffle';
 import _toLower from 'lodash/toLower';
@@ -106,7 +106,7 @@ function IntentSelect({
     (value) => {
       const intentID = value;
 
-      const isDefaultBuiltIn = CUSTOMIZABLE_INTENT_PREFIXS.includes(value?.split('.')[0]) || value === IntentName.NONE;
+      const isDefaultBuiltIn = CUSTOMIZABLE_INTENT_PREFIXS.includes(value?.split('.')[0]) || value === Constants.IntentName.NONE;
 
       if (isDefaultBuiltIn && !intentsMap[intentID]) {
         newIntent({ id: intentID, name: value, builtIn: true });

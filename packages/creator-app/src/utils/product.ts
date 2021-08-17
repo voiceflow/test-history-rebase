@@ -1,5 +1,4 @@
-import { decodeMarketPlaceKey, encodeMarketPlaceKey, Locale, ProductType } from '@voiceflow/alexa-types';
-import { MarketPlace } from '@voiceflow/alexa-types/build/project/product';
+import { Constants, Project } from '@voiceflow/alexa-types';
 import moment from 'moment';
 
 import { DBProduct, Product, ProductMarketPlace } from '@/models';
@@ -24,7 +23,7 @@ export const formatMarketPlaces = (marketPlaces: Record<string, ProductMarketPla
   const generalReleaseDate = Object.values(marketPlaces).find((place) => !!place?.releaseDate)?.releaseDate || moment().format('YYYY-MM-DD');
 
   return Object.keys(marketPlaces).reduce<Record<string, DBProduct.Pricing>>((acc, place) => {
-    acc[encodeMarketPlaceKey(place as MarketPlace)] = {
+    acc[Project.encodeMarketPlaceKey(place as Project.MarketPlace)] = {
       releaseDate: marketPlaces[place].releaseDate || generalReleaseDate,
       defaultPriceListing: {
         price: +marketPlaces[place].price || 0,
@@ -43,7 +42,7 @@ export const parseMarketPlaces = (
   distributionCountries: string[]
 ): Record<string, ProductMarketPlace> =>
   Object.keys(allPlaces).reduce((acc, encodedKey) => {
-    const placeKey = decodeMarketPlaceKey(encodedKey);
+    const placeKey = Project.decodeMarketPlaceKey(encodedKey);
     const place = allPlaces[encodedKey];
 
     return !place
@@ -60,10 +59,10 @@ export const parseMarketPlaces = (
   }, {});
 
 export const parseLocales = (
-  locales: Partial<Record<Locale, DBProduct.LocalePublishingInformation>>,
+  locales: Partial<Record<Constants.Locale, DBProduct.LocalePublishingInformation>>,
   privacyAndCompliance: DBProduct.PrivacyAndCompliance
 ) =>
-  (Object.keys(locales) as Locale[]).reduce<MergedLocale>((acc, locale) => {
+  (Object.keys(locales) as Constants.Locale[]).reduce<MergedLocale>((acc, locale) => {
     const localeData = locales[locale];
 
     return !localeData
@@ -99,7 +98,7 @@ export const getMissingDataInfo = (product: Product) => {
   !product.privacyPolicyUrl && missingInfo.push('Privacy policy URL is missing');
   !product.testingInstructions && missingInfo.push('Testing Information is missing');
 
-  const marketPlacesKeys = Object.keys(product.marketPlaces) as MarketPlace[];
+  const marketPlacesKeys = Object.keys(product.marketPlaces) as Project.MarketPlace[];
 
   // marketplace
   marketPlacesKeys.length === 0 && missingInfo.push('Atleast one marketplace is required');
@@ -123,7 +122,8 @@ export const isProductComplete = (product: Product) => {
     product.testingInstructions &&
     product.taxCategory &&
     Object.keys(product.marketPlaces).length > 0 &&
-    (Object.keys(product.marketPlaces) as MarketPlace[]).filter((place) => product.marketPlaces[place]!.countries.length === 0).length === 0 &&
+    (Object.keys(product.marketPlaces) as Project.MarketPlace[]).filter((place) => product.marketPlaces[place]!.countries.length === 0).length ===
+      0 &&
     product.summary &&
     product.smallIconUri &&
     product.largeIconUri &&
@@ -136,7 +136,7 @@ export const isProductComplete = (product: Product) => {
     product.privacyPolicyUrl
   );
 
-  if (product.type === ProductType.SUBSCRIPTION) {
+  if (product.type === Constants.ProductType.SUBSCRIPTION) {
     return { isComplete: isComplete && product.subscriptionFrequency && product.trialPeriodDays, missingInfo };
   }
 

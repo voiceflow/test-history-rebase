@@ -1,4 +1,4 @@
-import { VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import { NodeData } from '@/models';
@@ -15,8 +15,8 @@ export interface ImageStepProps {
 
 const ConnectedImageStep: React.FC<ConnectedStepProps<NodeData.Visual>> = ({ data, ...props }) => (
   <>
-    {data.visualType === VisualType.APL && <APLStep data={data} {...props} />}
-    {data.visualType === VisualType.IMAGE && <ImageStep data={data} {...props} />}
+    {data.visualType === Node.Visual.VisualType.APL && <APLStep data={data} {...props} />}
+    {data.visualType === Node.Visual.VisualType.IMAGE && <ImageStep data={data} {...props} />}
   </>
 );
 

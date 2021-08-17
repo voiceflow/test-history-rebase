@@ -1,4 +1,4 @@
-import { APIActionType } from '@voiceflow/general-types/build/nodes/api';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import Tabs from '@/components/Tabs';
@@ -25,7 +25,7 @@ const getTabs = (headers, parameters, selectedAction) => [
     value: IntegrationTab.HEADERS,
     label: `${IntegrationTab.HEADERS} ${headers.length > 1 ? `(${headers.length})` : ''}`,
   },
-  ...(selectedAction !== APIActionType.GET
+  ...(selectedAction !== Node.Api.APIActionType.GET
     ? [
         {
           value: IntegrationTab.BODY,
@@ -56,7 +56,7 @@ function RequestTabs({ headers, body, content, bodyInputType, parameters, select
         </TabPane>
 
         <TabPane tabId={IntegrationTab.BODY}>
-          {selectedAction !== APIActionType.GET && (
+          {selectedAction !== Node.Api.APIActionType.GET && (
             <RequestBody onChange={onChange} body={body} content={content} bodyInputType={bodyInputType} factory={keyPairFactory} />
           )}
         </TabPane>

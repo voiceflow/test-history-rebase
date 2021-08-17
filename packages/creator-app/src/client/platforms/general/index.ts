@@ -1,4 +1,4 @@
-import { GeneralVersionData, GeneralVersionSettings } from '@voiceflow/general-types';
+import { Version as GeneralVersion } from '@voiceflow/general-types';
 
 import { generalService } from '@/client/fetch';
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
@@ -18,7 +18,7 @@ const generalServiceClient = {
   modelExport: createModelExportService(generalService),
   project: projectService,
   publish: publishService(),
-  version: createVersionService<GeneralVersionSettings, {}, GeneralVersionData>(GENERAL_SERVICE_ENDPOINT),
+  version: createVersionService<GeneralVersion.GeneralVersionSettings, {}, GeneralVersion.GeneralVersionData>(GENERAL_SERVICE_ENDPOINT),
   prototype: createPrototypeService<GeneralJob.AnyJob>(GENERAL_SERVICE_ENDPOINT),
 };
 

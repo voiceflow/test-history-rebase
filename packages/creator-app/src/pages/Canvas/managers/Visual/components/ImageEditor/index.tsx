@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/api-sdk';
-import { DEVICE_SIZE_MAP } from '@voiceflow/general-types';
-import { FrameType, ImageStepData } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
+import { Constants } from '@voiceflow/general-types';
 import { Box, defaultMenuLabelRenderer, Flex, Input, Link, Select, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -18,16 +18,16 @@ const AnyFullImage = FullImage as any;
 
 const DEFAULT_DIMENSIONS = { width: 500, height: 500 };
 
-const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
+const ImageEditor: NodeEditor<Node.Visual.ImageStepData> = ({ data, onChange }) => {
   const [dimensions, setDimensions] = React.useState<null | { width: string; height: string }>(() =>
     data.dimensions ? { width: String(data.dimensions.width), height: String(data.dimensions.height) } : null
   );
   const cache = React.useRef({ preDimensions: data.dimensions, prevDevice: data.device });
-  const [frameType, setFrameType] = React.useState(FrameType.AUTO);
+  const [frameType, setFrameType] = React.useState(Node.Visual.FrameType.AUTO);
 
-  const setAutoFit = (frame: FrameType, url: Nullable<string> | string | undefined) => {
+  const setAutoFit = (frame: Node.Visual.FrameType, url: Nullable<string> | string | undefined) => {
     const currentImage = new Image();
-    if (frame === FrameType.AUTO) {
+    if (frame === Node.Visual.FrameType.AUTO) {
       currentImage.src = String(url);
       currentImage.onload = (e: any) => {
         const { height } = e.path[0];
@@ -38,17 +38,17 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
     }
   };
 
-  const onChangeFrameType = (newFrameType: FrameType) => {
-    if (newFrameType === FrameType.CUSTOM_SIZE) {
+  const onChangeFrameType = (newFrameType: Node.Visual.FrameType) => {
+    if (newFrameType === Node.Visual.FrameType.CUSTOM_SIZE) {
       cache.current.prevDevice = data.device;
       const newDimensions = cache.current.preDimensions ?? DEFAULT_DIMENSIONS;
       setDimensions({ width: `${newDimensions.width}`, height: `${newDimensions.height}` });
-      onChange({ device: null, dimensions: newDimensions, frameType: FrameType.CUSTOM_SIZE });
+      onChange({ device: null, dimensions: newDimensions, frameType: Node.Visual.FrameType.CUSTOM_SIZE });
 
       setFrameType(newFrameType);
-    } else if (newFrameType === FrameType.DEVICE) {
+    } else if (newFrameType === Node.Visual.FrameType.DEVICE) {
       setDimensions(null);
-      onChange({ device: cache.current.prevDevice, dimensions: null, frameType: FrameType.DEVICE });
+      onChange({ device: cache.current.prevDevice, dimensions: null, frameType: Node.Visual.FrameType.DEVICE });
       setFrameType(newFrameType);
     } else {
       setFrameType(newFrameType);
@@ -75,8 +75,8 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
 
   const ratio = (Number(dimensions?.height) / Number(dimensions?.width)) * 100 || 0;
 
-  const getImageDimensions = (frameType: FrameType) => {
-    return frameType === FrameType.CUSTOM_SIZE ? `${dimensions?.width} x ${dimensions?.height}` : 'Display at full size';
+  const getImageDimensions = (frameType: Node.Visual.FrameType) => {
+    return frameType === Node.Visual.FrameType.CUSTOM_SIZE ? `${dimensions?.width} x ${dimensions?.height}` : 'Display at full size';
   };
   return (
     <Content
@@ -100,7 +100,7 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
       </Section>
 
       <Section dividers={!!data.image} isDividerNested isDividerBottom>
-        {frameType === FrameType.CUSTOM_SIZE ? (
+        {frameType === Node.Visual.FrameType.CUSTOM_SIZE ? (
           <FormControl label="Dimensions">
             <Flex>
               <Box width="104px" mr={12}>
@@ -132,7 +132,7 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
             </Flex>
           </FormControl>
         ) : (
-          frameType === FrameType.DEVICE && (
+          frameType === Node.Visual.FrameType.DEVICE && (
             <FormControl label="Device Type">
               <Select
                 value={data.device}
@@ -146,7 +146,7 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
                     {defaultMenuLabelRenderer(value, ...args)}
 
                     <Text fontSize={13} color="#62778c">
-                      {DEVICE_SIZE_MAP[value].width} x {DEVICE_SIZE_MAP[value].height}
+                      {Constants.DEVICE_SIZE_MAP[value].width} x {Constants.DEVICE_SIZE_MAP[value].height}
                     </Text>
                   </Box>
                 )}
@@ -164,7 +164,7 @@ const ImageEditor: NodeEditor<ImageStepData> = ({ data, onChange }) => {
                 <Text fontSize={13} color="#62778c" fontWeight="normal">
                   {data.device ? (
                     <>
-                      {DEVICE_SIZE_MAP[data.device].width} x {DEVICE_SIZE_MAP[data.device].height}
+                      {Constants.DEVICE_SIZE_MAP[data.device].width} x {Constants.DEVICE_SIZE_MAP[data.device].height}
                     </>
                   ) : (
                     <>{getImageDimensions(frameType)}</>

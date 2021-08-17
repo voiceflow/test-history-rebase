@@ -1,10 +1,10 @@
-import type { StepData } from '@voiceflow/general-types/build/nodes/exit';
+import { Node } from '@voiceflow/base-types';
 
 import { NodeData } from '@/models';
 
 import { createBlockAdapter } from '../utils';
 
-const exitAdapter = createBlockAdapter<StepData, NodeData.Exit>(
+const exitAdapter = createBlockAdapter<Node.Exit.StepData, NodeData.Exit>(
   () => ({}),
   () => ({
     ports: [],

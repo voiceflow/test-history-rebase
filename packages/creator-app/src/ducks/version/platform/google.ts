@@ -1,4 +1,4 @@
-import { GoogleVersionPublishing, GoogleVersionSettings } from '@voiceflow/google-types';
+import { Version } from '@voiceflow/google-types';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
@@ -27,16 +27,18 @@ export const activeInvocationsSelector = createSelector([activePublishingSelecto
 
 // action creators
 
-export const updateSettings = (versionID: string, settings: Partial<GoogleVersionSettings>): UpdateSettings<GoogleVersionSettings> =>
-  updateSettingsByVersionID<GoogleVersionSettings>(versionID, settings);
+export const updateSettings = (versionID: string, settings: Partial<Version.GoogleVersionSettings>): UpdateSettings<Version.GoogleVersionSettings> =>
+  updateSettingsByVersionID<Version.GoogleVersionSettings>(versionID, settings);
 
-export const updatePublishing = (versionID: string, publishing: Partial<GoogleVersionPublishing>): UpdatePublishing<GoogleVersionPublishing> =>
-  updatePublishingByVersionID<GoogleVersionPublishing>(versionID, publishing);
+export const updatePublishing = (
+  versionID: string,
+  publishing: Partial<Version.GoogleVersionPublishing>
+): UpdatePublishing<Version.GoogleVersionPublishing> => updatePublishingByVersionID<Version.GoogleVersionPublishing>(versionID, publishing);
 
 // side effects
 
 export const saveSettings =
-  (settings: Partial<GoogleVersionSettings>): Thunk =>
+  (settings: Partial<Version.GoogleVersionSettings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -48,7 +50,7 @@ export const saveSettings =
   };
 
 export const savePublishing =
-  (publishing: Partial<GoogleVersionPublishing>): Thunk =>
+  (publishing: Partial<Version.GoogleVersionPublishing>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);

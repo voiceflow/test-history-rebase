@@ -1,13 +1,12 @@
-import { DeviceType } from '@voiceflow/general-types';
-import { StepData } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 
 import { Pair } from '@/types';
 
-export interface VisualRenderProps<T extends StepData> {
+export interface VisualRenderProps<T extends Node.Visual.StepData> {
   zoom: number;
   data: null | T;
-  device: null | DeviceType;
+  device: null | Node.Visual.DeviceType;
   platform: PlatformType;
   dimensions: Pair<number>;
 }

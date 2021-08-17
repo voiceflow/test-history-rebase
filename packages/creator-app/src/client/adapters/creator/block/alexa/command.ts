@@ -1,4 +1,4 @@
-import type { StepData } from '@voiceflow/general-types/build/nodes/push';
+import { Node } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 
 import { NodeData } from '@/models';
@@ -6,7 +6,7 @@ import { distinctPlatformsData } from '@/utils/platform';
 
 import { createBlockAdapter } from '../utils';
 
-const commandAdapter = createBlockAdapter<StepData, NodeData.Command>(
+const commandAdapter = createBlockAdapter<Node.Command.StepData, NodeData.Command>(
   ({ intent, diagramID, name, mappings }) => ({
     ...distinctPlatformsData({ intent: null, diagramID: null, mappings: [] }),
     [PlatformType.ALEXA]: { intent, diagramID: diagramID ?? null, mappings: mappings ?? [] },

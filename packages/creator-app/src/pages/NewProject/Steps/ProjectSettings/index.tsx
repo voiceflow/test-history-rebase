@@ -1,6 +1,6 @@
-import { getInvocationNameError as getAlexaInvocationNameError } from '@voiceflow/alexa-types';
-import { Locale as GeneralLocale } from '@voiceflow/general-types';
-import { getInvocationNameError as getGoogleInvocationNameError } from '@voiceflow/google-types';
+import { Utils as AlexaUtils } from '@voiceflow/alexa-types';
+import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Utils as GoogleUtils } from '@voiceflow/google-types';
 import { PlatformType } from '@voiceflow/internal';
 import { Button, ButtonVariant, FlexCenter, Input, Select, SvgIcon } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
@@ -25,7 +25,7 @@ const UnTypedDropdownMultiselect: any = DropdownMultiselect;
 
 interface PlatformSettingsProps {
   alexaLocales: string[];
-  generalLocale: GeneralLocale;
+  generalLocale: GeneralConstants.Locale;
   invocationName: string;
   googleLanguage: string;
   creatingProject: boolean;
@@ -62,8 +62,8 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
     getPlatformValue<(name?: string, locales?: any[]) => string | null>(
       selectedChannel,
       {
-        [PlatformType.ALEXA]: getAlexaInvocationNameError,
-        [PlatformType.GOOGLE]: getGoogleInvocationNameError,
+        [PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
+        [PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
       },
       _constant(null)
     )(invocationName, alexaLocales);
@@ -78,8 +78,8 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
       options={GENERAL_LOCALES_OPTIONS}
       onSelect={setGeneralLocale}
       placeholder="Locale"
-      getOptionValue={(option) => option?.value || GeneralLocale.EN_US}
-      getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as GeneralLocale] ?? ''}
+      getOptionValue={(option) => option?.value || GeneralConstants.Locale.EN_US}
+      getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as GeneralConstants.Locale] ?? ''}
       renderOptionLabel={(option) => option.name}
     />
   );

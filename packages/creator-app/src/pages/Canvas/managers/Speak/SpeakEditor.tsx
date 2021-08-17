@@ -1,4 +1,4 @@
-import { CanvasNodeVisibility } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
@@ -16,13 +16,17 @@ import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from './constants';
 import StyledSpeakAudioItem from './StyledSpeakAudioItem';
 
 const SpeakEditor: NodeEditor<NodeData.Speak, SpeakEditorConnectedProps> = ({ data, platform, onChange }) => {
-  const { dialogs, randomize, canvasVisibility = randomize ? CanvasNodeVisibility.PREVIEW : CanvasNodeVisibility.ALL_VARIANTS } = data;
+  const {
+    dialogs,
+    randomize,
+    canvasVisibility = randomize ? Node.Utils.CanvasNodeVisibility.PREVIEW : Node.Utils.CanvasNodeVisibility.ALL_VARIANTS,
+  } = data;
   const isDeprecated = !data.canvasVisibility;
 
   const isAudio = React.useMemo(() => dialogs[0]?.type === DialogType.AUDIO, []);
 
   const updateDialogs = React.useCallback((dialogs: SpeakData[]) => onChange({ dialogs }), [onChange]);
-  const updateCanvasVisibility = React.useCallback((value: CanvasNodeVisibility) => onChange({ canvasVisibility: value }), [onChange]);
+  const updateCanvasVisibility = React.useCallback((value: Node.Utils.CanvasNodeVisibility) => onChange({ canvasVisibility: value }), [onChange]);
 
   const canvasVisibilityOption = useCanvasVisibilityOption(canvasVisibility, updateCanvasVisibility);
 

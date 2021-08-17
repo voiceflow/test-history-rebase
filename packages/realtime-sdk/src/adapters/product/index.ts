@@ -1,4 +1,4 @@
-import { Locale, ProductType, PublishingLocale } from '@voiceflow/alexa-types';
+import { Constants, Project } from '@voiceflow/alexa-types';
 import cuid from 'cuid';
 
 import { DBProduct, Product } from '../../models';
@@ -28,7 +28,7 @@ const productAdapter = createAdapter<DBProduct, Product>(
       type,
       skill: '', // TODO: remove after type will be updated
       version,
-      locales: Object.keys(publishingInformation.locales) as Locale[],
+      locales: Object.keys(publishingInformation.locales) as Constants.Locale[],
       marketPlaces: parseMarketPlaces(publishingInformation.pricing, publishingInformation.distributionCountries),
       taxCategory: publishingInformation.taxInformation.category || null,
       referenceName,
@@ -78,8 +78,8 @@ const productAdapter = createAdapter<DBProduct, Product>(
       pricing: formatMarketPlaces(marketPlaces),
       taxInformation: { category: taxCategory ?? '' },
       distributionCountries: getDistributionCountries(marketPlaces),
-      locales: locales.reduce<Partial<Record<Locale, PublishingLocale>>>((acc, locale) => {
-        const publishLocal: PublishingLocale = {
+      locales: locales.reduce<Partial<Record<Constants.Locale, Project.PublishingLocale>>>((acc, locale) => {
+        const publishLocal: Project.PublishingLocale = {
           name,
           summary,
           keywords,
@@ -97,7 +97,7 @@ const productAdapter = createAdapter<DBProduct, Product>(
       }, {}),
     },
     subscriptionInformation:
-      type === ProductType.SUBSCRIPTION && subscriptionFrequency
+      type === Constants.ProductType.SUBSCRIPTION && subscriptionFrequency
         ? {
             subscriptionTrialPeriodDays: trialPeriodDays ? +trialPeriodDays : 0,
             subscriptionPaymentFrequency: subscriptionFrequency,

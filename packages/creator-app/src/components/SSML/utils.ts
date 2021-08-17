@@ -1,4 +1,4 @@
-import { Locale, LocaleCodeToCountryLanguage } from '@voiceflow/google-types/build/constants/index';
+import { Constants } from '@voiceflow/google-types';
 
 import { capitalizeFirstLetter } from '@/utils/string';
 
@@ -19,7 +19,7 @@ export const prettifyGoogleVoicesLong = (voiceCode: string) => {
 
   const localeCode = `${splitCode[0]}-${splitCode[1]}`;
   const voiceType = `${capitalizeFirstLetter(splitCode[2])} ${splitCode[3]}`;
-  return `${LocaleCodeToCountryLanguage[localeCode as Locale] || localeCode || ''} ${voiceType}`;
+  return `${Constants.LocaleCodeToCountryLanguage[localeCode as Constants.Locale] || localeCode || ''} ${voiceType}`;
 };
 
 export const prettifyAzureVoiceID = (voiceID: string) => voiceID.split('-')[3].replace('RUS', '').replace('azure-', '');

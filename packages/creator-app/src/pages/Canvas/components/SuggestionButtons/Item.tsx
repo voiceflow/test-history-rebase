@@ -1,4 +1,4 @@
-import { IntentButton } from '@voiceflow/general-types';
+import { Button } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 import { Badge, Box } from '@voiceflow/ui';
 import numberToWords from 'number-to-words/src';
@@ -24,8 +24,8 @@ import { isGooglePlatform } from '@/utils/typeGuards';
 const AnyIntentSelect: React.FC<any> = IntentSelect;
 const VariablesInputComponent: React.FC<any> = VariablesInput;
 
-export type ItemProps = ItemComponentProps<IntentButton> &
-  MappedItemComponentHandlers<IntentButton> &
+export type ItemProps = ItemComponentProps<Button.IntentButton> &
+  MappedItemComponentHandlers<Button.IntentButton> &
   DragPreviewComponentProps & {
     isOnlyItem: boolean;
     dividedIntents: (Intent | { id: string; name: string; menuItemProps: { divider: boolean } })[];

@@ -1,4 +1,4 @@
-import { VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import { NodeData } from '@/models';
@@ -8,8 +8,8 @@ import { APLEditor, ImageEditor } from './components';
 
 const VisualEditor: NodeEditor<NodeData.Visual> = ({ data, ...props }) => (
   <>
-    {data.visualType === VisualType.APL && <APLEditor data={data} {...props} />}
-    {data.visualType === VisualType.IMAGE && <ImageEditor data={data} {...props} />}
+    {data.visualType === Node.Visual.VisualType.APL && <APLEditor data={data} {...props} />}
+    {data.visualType === Node.Visual.VisualType.IMAGE && <ImageEditor data={data} {...props} />}
   </>
 );
 

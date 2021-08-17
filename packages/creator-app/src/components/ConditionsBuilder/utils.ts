@@ -1,5 +1,5 @@
+import { Node } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
-import { ConditionsLogicInterface, ExpressionTypeV2 } from '@voiceflow/general-types';
 import cuid from 'cuid';
 import isEmpty from 'lodash/isEmpty';
 
@@ -47,7 +47,8 @@ export const isConditionInvalid = (expression: LogicUnitDataType) => {
   const rightValueMissing = !isEmpty(expression.value[0]?.value) && isEmpty(expression.value[1]?.value);
   const leftValueMissing = !isEmpty(expression.value[1]?.value) && isEmpty(expression.value[0]?.value);
   return (
-    (leftValueMissing || rightValueMissing) && !(expression.type === ExpressionTypeV2.IS_EMPTY || expression.type === ExpressionTypeV2.HAS_VALUE)
+    (leftValueMissing || rightValueMissing) &&
+    !(expression.type === Node.Utils.ExpressionTypeV2.IS_EMPTY || expression.type === Node.Utils.ExpressionTypeV2.HAS_VALUE)
   );
 };
 
@@ -58,47 +59,47 @@ export const getAddionalLogicData = (
   newCondition: ExpressionV2 | LogicGroupData
 ): ExpressionData | LogicGroupData => ({
   ...expression,
-  type: expression.type || ExpressionTypeV2.AND,
+  type: expression.type || Node.Utils.ExpressionTypeV2.AND,
   value: [...expression.value, { ...newCondition }],
 });
 
-export const getDefaultValue = (logicInterface: ConditionsLogicInterface): ExpressionV2 | LogicGroupData => {
+export const getDefaultValue = (logicInterface: Node.Utils.ConditionsLogicInterface): ExpressionV2 | LogicGroupData => {
   switch (logicInterface) {
-    case ConditionsLogicInterface.EXPRESSION:
+    case Node.Utils.ConditionsLogicInterface.EXPRESSION:
       return {
         id: cuid.slug(),
         logicInterface,
-        type: ExpressionTypeV2.ADVANCE,
+        type: Node.Utils.ExpressionTypeV2.ADVANCE,
         value: '',
       } as AdvancedExpressionV2;
-    case ConditionsLogicInterface.VARIABLE:
+    case Node.Utils.ConditionsLogicInterface.VARIABLE:
       return {
         id: cuid.slug(),
         logicInterface,
-        type: ExpressionTypeV2.EQUALS,
+        type: Node.Utils.ExpressionTypeV2.EQUALS,
         value: [
           {
-            type: ExpressionTypeV2.VARIABLE,
+            type: Node.Utils.ExpressionTypeV2.VARIABLE,
             value: '',
           } as VariableExpressionV2,
           {
-            type: ExpressionTypeV2.VALUE,
+            type: Node.Utils.ExpressionTypeV2.VALUE,
             value: '',
           } as ValueExpressionV2,
         ],
       } as EqualsExpressionV2;
-    case ConditionsLogicInterface.VALUE:
+    case Node.Utils.ConditionsLogicInterface.VALUE:
       return {
         id: cuid.slug(),
         logicInterface,
-        type: ExpressionTypeV2.EQUALS,
+        type: Node.Utils.ExpressionTypeV2.EQUALS,
         value: [
           {
-            type: ExpressionTypeV2.VALUE,
+            type: Node.Utils.ExpressionTypeV2.VALUE,
             value: '',
           } as ValueExpressionV2,
           {
-            type: ExpressionTypeV2.VALUE,
+            type: Node.Utils.ExpressionTypeV2.VALUE,
             value: '',
           } as ValueExpressionV2,
         ],

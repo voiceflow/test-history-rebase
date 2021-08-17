@@ -1,4 +1,4 @@
-import { ExpressionTypeV2 } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import { Badge, Box, BoxFlex, Input, Text, useDidUpdateEffect } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
@@ -18,11 +18,11 @@ import { transformVariableToString } from '@/utils/slot';
 const VariablesInputComponent: any = VariablesInput;
 const INPUT_TYPE_OPTIONS = [
   {
-    id: ExpressionTypeV2.VALUE,
+    id: Node.Utils.ExpressionTypeV2.VALUE,
     label: <Text>Value</Text>,
   },
   {
-    id: ExpressionTypeV2.ADVANCE,
+    id: Node.Utils.ExpressionTypeV2.ADVANCE,
     label: <Text>Variable or Expression</Text>,
   },
 ];
@@ -54,7 +54,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
   const isNew = latestCreatedKey === itemKey;
 
   useDidUpdateEffect(() => {
-    if (item.type === ExpressionTypeV2.VALUE) {
+    if (item.type === Node.Utils.ExpressionTypeV2.VALUE) {
       onUpdate({ expression: transformVariableToString(String(item.expression)) });
     }
     resetError();
@@ -102,7 +102,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
               />
             </FormControl>
             <Box mt={12}>
-              {item.type === ExpressionTypeV2.VALUE ? (
+              {item.type === Node.Utils.ExpressionTypeV2.VALUE ? (
                 <Input
                   value={String(item.expression)}
                   onChange={({ target }) => onUpdate({ expression: target.value as NodeData.NewExpressionType })}
@@ -119,7 +119,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
                 />
               )}
             </Box>
-            {error && item.type === ExpressionTypeV2.ADVANCE && (
+            {error && item.type === Node.Utils.ExpressionTypeV2.ADVANCE && (
               <Box fontSize={13} color="#e91e63" mt={16}>
                 {errorMessage ? `Error: ${errorMessage}.` : 'Expression syntax is invalid.'}
               </Box>

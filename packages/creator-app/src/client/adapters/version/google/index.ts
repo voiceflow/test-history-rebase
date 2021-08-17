@@ -1,4 +1,4 @@
-import { defaultGoogleVersionPublishing, defaultGoogleVersionSettings, GoogleVersion, GoogleVersionData } from '@voiceflow/google-types';
+import { Version as GoogleVersion } from '@voiceflow/google-types';
 import { PlatformType } from '@voiceflow/internal';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
@@ -12,7 +12,7 @@ import localesAdapter from './locales';
 
 const sessionAdapter = createSessionAdapter({ platform: PlatformType.GOOGLE });
 
-const googleVersionAdapter = createAdapter<GoogleVersion, Version<GoogleVersionData>>(
+const googleVersionAdapter = createAdapter<GoogleVersion.GoogleVersion, Version<GoogleVersion.GoogleVersionData>>(
   ({
     _id,
     creatorID,
@@ -30,8 +30,8 @@ const googleVersionAdapter = createAdapter<GoogleVersion, Version<GoogleVersionD
     rootDiagramID,
     variables: variables.filter((variable) => !getPlatformGlobalVariables(PlatformType.GOOGLE).includes(variable)),
     session: sessionAdapter.fromDB(session, { defaultVoice: settings.defaultVoice }),
-    settings: _omit(defaultGoogleVersionSettings(settings), 'session'),
-    publishing: { ...defaultGoogleVersionPublishing(publishing), locales: localesAdapter(publishing?.locales) },
+    settings: _omit(GoogleVersion.defaultGoogleVersionSettings(settings), 'session'),
+    publishing: { ...GoogleVersion.defaultGoogleVersionPublishing(publishing), locales: localesAdapter(publishing?.locales) },
     status: null,
   }),
   () => {

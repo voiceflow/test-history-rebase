@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { CanvasNodeVisibility } from '@voiceflow/general-types';
+import { Node as BaseNode } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 import { Logger } from '@voiceflow/ui';
 
@@ -90,7 +90,7 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
 export function nodeFactory(
   type: BlockType,
   factoryData?: Partial<NodeData<unknown>>,
-  options?: { defaultVoice: string; canvasNodeVisibility: CanvasNodeVisibility; features?: FeatureFlagMap }
+  options?: { defaultVoice: string; canvasNodeVisibility: BaseNode.Utils.CanvasNodeVisibility; features?: FeatureFlagMap }
 ): { node: Omit<Creator.NodeDescriptor, 'id'>; data: Creator.DataDescriptor } {
   const config = getManager(type);
 

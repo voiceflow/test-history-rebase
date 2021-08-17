@@ -1,5 +1,5 @@
+import { Node } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
-import { ConditionsLogicInterface, Expression, ExpressionType, ExpressionTypeV2, GenericExpression, ValueExpression } from '@voiceflow/general-types';
 import isVarName from 'is-var-name';
 import isNumber from 'lodash/isNumber';
 import isString from 'lodash/isString';
@@ -11,38 +11,38 @@ const SINGLE_BRACKET_REGEXP = /'/g;
 const SINGLE_QUOTES = /^'.*'$/m;
 
 const EXPRESSION_OPERATION_SYMBOL_MAP: Record<string, string> = {
-  [ExpressionType.OR]: '||',
-  [ExpressionType.AND]: '&&',
-  [ExpressionType.PLUS]: '+',
-  [ExpressionType.MINUS]: '-',
-  [ExpressionType.TIMES]: '*',
-  [ExpressionType.DIVIDE]: '/',
+  [Node.Utils.ExpressionType.OR]: '||',
+  [Node.Utils.ExpressionType.AND]: '&&',
+  [Node.Utils.ExpressionType.PLUS]: '+',
+  [Node.Utils.ExpressionType.MINUS]: '-',
+  [Node.Utils.ExpressionType.TIMES]: '*',
+  [Node.Utils.ExpressionType.DIVIDE]: '/',
 
-  [ExpressionType.EQUALS]: '==',
-  [ExpressionType.LESS]: '<',
-  [ExpressionType.GREATER]: '>',
+  [Node.Utils.ExpressionType.EQUALS]: '==',
+  [Node.Utils.ExpressionType.LESS]: '<',
+  [Node.Utils.ExpressionType.GREATER]: '>',
 
-  [ExpressionTypeV2.NOT_EQUAL]: '!==',
-  [ExpressionTypeV2.GREATER_OR_EQUAL]: '>=',
-  [ExpressionTypeV2.LESS_OR_EQUAL]: '<=',
-  [ExpressionTypeV2.CONTAINS]: ExpressionTypeV2.CONTAINS,
-  [ExpressionTypeV2.NOT_CONTAIN]: 'notContain',
-  [ExpressionTypeV2.STARTS_WITH]: '^',
-  [ExpressionTypeV2.ENDS_WITH]: '$',
-  [ExpressionTypeV2.HAS_VALUE]: '!',
-  [ExpressionTypeV2.IS_EMPTY]: 'isEmpty',
+  [Node.Utils.ExpressionTypeV2.NOT_EQUAL]: '!==',
+  [Node.Utils.ExpressionTypeV2.GREATER_OR_EQUAL]: '>=',
+  [Node.Utils.ExpressionTypeV2.LESS_OR_EQUAL]: '<=',
+  [Node.Utils.ExpressionTypeV2.CONTAINS]: Node.Utils.ExpressionTypeV2.CONTAINS,
+  [Node.Utils.ExpressionTypeV2.NOT_CONTAIN]: 'notContain',
+  [Node.Utils.ExpressionTypeV2.STARTS_WITH]: '^',
+  [Node.Utils.ExpressionTypeV2.ENDS_WITH]: '$',
+  [Node.Utils.ExpressionTypeV2.HAS_VALUE]: '!',
+  [Node.Utils.ExpressionTypeV2.IS_EMPTY]: 'isEmpty',
 };
 
 export const ADVANCE_LOGIC_TYPES = [
-  ExpressionType.ADVANCE,
-  ExpressionType.NOT,
-  ExpressionType.MINUS,
-  ExpressionType.DIVIDE,
-  ExpressionType.PLUS,
-  ExpressionType.TIMES,
+  Node.Utils.ExpressionType.ADVANCE,
+  Node.Utils.ExpressionType.NOT,
+  Node.Utils.ExpressionType.MINUS,
+  Node.Utils.ExpressionType.DIVIDE,
+  Node.Utils.ExpressionType.PLUS,
+  Node.Utils.ExpressionType.TIMES,
 ];
 
-const expressionfyV2Value = (expression: ValueExpression): string | number => {
+const expressionfyV2Value = (expression: Node.Utils.ValueExpression): string | number => {
   if (isNumber(expression.value)) {
     return expression.value;
   }
@@ -53,16 +53,16 @@ const expressionfyV2Value = (expression: ValueExpression): string | number => {
   return Number.isNaN(strNumberValue) ? `'${strValue.replace(SINGLE_BRACKET_REGEXP, "\\'")}'` : strNumberValue;
 };
 
-export const expressionfyV2 = (expression: Expression): string | number => {
-  if (expression.type === ExpressionType.VALUE) {
+export const expressionfyV2 = (expression: Node.Utils.Expression): string | number => {
+  if (expression.type === Node.Utils.ExpressionType.VALUE) {
     return expressionfyV2Value(expression);
   }
 
-  if (expression.type === ExpressionType.VARIABLE) {
+  if (expression.type === Node.Utils.ExpressionType.VARIABLE) {
     return isVarName(expression.value) ? `{{[${expression.value}].${expression.value}}}` : 0;
   }
 
-  if (expression.type === ExpressionType.ADVANCE) {
+  if (expression.type === Node.Utils.ExpressionType.ADVANCE) {
     if (Array.isArray(expression.value)) {
       return mathJStoJSParser(
         expression.value.reduce((acc, curr) => `${acc}${acc ? EXPRESSION_OPERATION_SYMBOL_MAP[expression.type] : ''}${expressionfyV2(curr)}`, '')
@@ -72,7 +72,7 @@ export const expressionfyV2 = (expression: Expression): string | number => {
     return mathJStoJSParser(expression.value);
   }
 
-  if (expression.type === ExpressionType.NOT) {
+  if (expression.type === Node.Utils.ExpressionType.NOT) {
     return `!${expressionfyV2(expression.value)}`;
   }
 
@@ -82,8 +82,8 @@ export const expressionfyV2 = (expression: Expression): string | number => {
 /**
  *  gets the list of deepest expressions
  */
-export const flatten = (exps: Expression[]): GenericExpression<ExpressionType, string>[] =>
-  exps.reduce<GenericExpression<ExpressionType, string>[]>((acc, cur) => {
+export const flatten = (exps: Node.Utils.Expression[]): Node.Utils.GenericExpression<Node.Utils.ExpressionType, string>[] =>
+  exps.reduce<Node.Utils.GenericExpression<Node.Utils.ExpressionType, string>[]>((acc, cur) => {
     const { value } = cur;
 
     if (Array.isArray(value)) {
@@ -97,13 +97,14 @@ export const flatten = (exps: Expression[]): GenericExpression<ExpressionType, s
     return [...acc, ...flatten([value])];
   }, []);
 
-export const getHighestDepth = (expression: Expression): number => flatten([expression]).reduce((acc, { depth }) => Math.max(acc, depth), 0);
+export const getHighestDepth = (expression: Node.Utils.Expression): number =>
+  flatten([expression]).reduce((acc, { depth }) => Math.max(acc, depth), 0);
 
-export const isDeepestExpressionAdvance = (expression: Expression): boolean =>
+export const isDeepestExpressionAdvance = (expression: Node.Utils.Expression): boolean =>
   flatten([expression]).some(({ type }) => ADVANCE_LOGIC_TYPES.includes(type));
 
-export const hasAdvanceChildExpression = (expression: Expression): boolean => {
-  if (expression.type === ExpressionType.ADVANCE || expression.type === ExpressionType.NOT) {
+export const hasAdvanceChildExpression = (expression: Node.Utils.Expression): boolean => {
+  if (expression.type === Node.Utils.ExpressionType.ADVANCE || expression.type === Node.Utils.ExpressionType.NOT) {
     return true;
   }
 
@@ -122,24 +123,24 @@ export const hasAdvanceChildExpression = (expression: Expression): boolean => {
  */
 
 const EXPRESSIONV2_OPERATION_SYMBOL_MAP: Record<string, string> = {
-  [ExpressionTypeV2.OR]: '||',
-  [ExpressionTypeV2.AND]: '&&',
-  [ExpressionTypeV2.EQUALS]: '==',
-  [ExpressionTypeV2.LESS]: '<',
-  [ExpressionTypeV2.GREATER]: '>',
-  [ExpressionTypeV2.NOT_EQUAL]: '!=',
-  [ExpressionTypeV2.GREATER_OR_EQUAL]: '>=',
-  [ExpressionTypeV2.LESS_OR_EQUAL]: '<=',
-  [ExpressionTypeV2.CONTAINS]: 'contains',
-  [ExpressionTypeV2.NOT_CONTAIN]: 'does not contain',
-  [ExpressionTypeV2.STARTS_WITH]: 'starts with',
-  [ExpressionTypeV2.ENDS_WITH]: 'ends with',
-  [ExpressionTypeV2.HAS_VALUE]: 'has value',
-  [ExpressionTypeV2.IS_EMPTY]: 'is empty',
+  [Node.Utils.ExpressionTypeV2.OR]: '||',
+  [Node.Utils.ExpressionTypeV2.AND]: '&&',
+  [Node.Utils.ExpressionTypeV2.EQUALS]: '==',
+  [Node.Utils.ExpressionTypeV2.LESS]: '<',
+  [Node.Utils.ExpressionTypeV2.GREATER]: '>',
+  [Node.Utils.ExpressionTypeV2.NOT_EQUAL]: '!=',
+  [Node.Utils.ExpressionTypeV2.GREATER_OR_EQUAL]: '>=',
+  [Node.Utils.ExpressionTypeV2.LESS_OR_EQUAL]: '<=',
+  [Node.Utils.ExpressionTypeV2.CONTAINS]: 'contains',
+  [Node.Utils.ExpressionTypeV2.NOT_CONTAIN]: 'does not contain',
+  [Node.Utils.ExpressionTypeV2.STARTS_WITH]: 'starts with',
+  [Node.Utils.ExpressionTypeV2.ENDS_WITH]: 'ends with',
+  [Node.Utils.ExpressionTypeV2.HAS_VALUE]: 'has value',
+  [Node.Utils.ExpressionTypeV2.IS_EMPTY]: 'is empty',
 };
 
 export const expressionfyLogicUnit = (expression: ExpressionV2): string => {
-  if (expression.type === ExpressionTypeV2.VALUE) {
+  if (expression.type === Node.Utils.ExpressionTypeV2.VALUE) {
     if (!expression.value) {
       return '';
     }
@@ -154,11 +155,11 @@ export const expressionfyLogicUnit = (expression: ExpressionV2): string => {
     return Number.isNaN(strNumberValue) ? `'${strValue.replace(SINGLE_BRACKET_REGEXP, "\\'")}'` : strValue;
   }
 
-  if (expression.type === ExpressionTypeV2.VARIABLE) {
+  if (expression.type === Node.Utils.ExpressionTypeV2.VARIABLE) {
     return `{${expression.value}}`;
   }
 
-  if (expression.type === ExpressionTypeV2.ADVANCE) {
+  if (expression.type === Node.Utils.ExpressionTypeV2.ADVANCE) {
     if (!expression.value || expression.value === '0') {
       return '';
     }
@@ -171,14 +172,14 @@ export const expressionfyLogicUnit = (expression: ExpressionV2): string => {
 
 export const expressionfyLogicInterface = (exp: ExpressionV2 | LogicGroupData): string => {
   switch (exp.logicInterface) {
-    case ConditionsLogicInterface.VALUE:
-    case ConditionsLogicInterface.VARIABLE:
+    case Node.Utils.ConditionsLogicInterface.VALUE:
+    case Node.Utils.ConditionsLogicInterface.VARIABLE:
       return (exp.value as Array<ExpressionV2>).reduce((acc: string, curr: ExpressionV2) => {
         acc = `${acc}${acc ? ` ${EXPRESSIONV2_OPERATION_SYMBOL_MAP[exp.type!]} ` : ''}${expressionfyLogicUnit(curr)}`;
 
         return acc;
       }, '');
-    case ConditionsLogicInterface.LOGIC_GROUP:
+    case Node.Utils.ConditionsLogicInterface.LOGIC_GROUP:
       return expressionPreview(exp as LogicGroupData);
     default:
       return expressionfyLogicUnit(exp as ExpressionV2);
@@ -197,8 +198,8 @@ export const expressionPreview = (expression: ExpressionData | LogicGroupData): 
   return expression.value.length > 0 ? expressionfyLogicInterface(expression?.value[0]) : '';
 };
 
-export const sanitizeSetValue = (exp: string, type: ExpressionTypeV2) => {
-  if (exp.match(SINGLE_QUOTES) && type === ExpressionTypeV2.VALUE) {
+export const sanitizeSetValue = (exp: string, type: Node.Utils.ExpressionTypeV2) => {
+  if (exp.match(SINGLE_QUOTES) && type === Node.Utils.ExpressionTypeV2.VALUE) {
     return exp.substring(1, exp.length - 1);
   }
   return exp;

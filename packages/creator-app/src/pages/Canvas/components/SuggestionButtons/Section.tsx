@@ -1,4 +1,4 @@
-import { ButtonType, IntentButton } from '@voiceflow/general-types';
+import { Button } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
@@ -9,7 +9,7 @@ import { getPlatformValue } from '@/utils/platform';
 
 import InfoTooltip from './InfoTooltip';
 
-export const buttonsFactory = (): IntentButton[] => [{ name: '', type: ButtonType.INTENT, payload: { intentID: null } }];
+export const buttonsFactory = (): Button.IntentButton[] => [{ name: '', type: Button.ButtonType.INTENT, payload: { intentID: null } }];
 
 interface ButtonsSectionProps {
   pushToPath?: (path: { type: string; label: string }) => void;

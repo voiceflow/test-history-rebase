@@ -1,4 +1,4 @@
-import { APIActionType } from '@voiceflow/general-types/build/nodes/api';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import { useEnableDisable } from '@/hooks/toggle';
@@ -16,7 +16,7 @@ const mappingFactory = () => ({ path: [], var: null });
 function CustomApiEditor({ data, onChange }) {
   const [testModalOpened, openTestModal, closeTestModal] = useEnableDisable(false);
   const { url, body, content, mapping, bodyInputType, headers, parameters, selectedAction } = data;
-  const isGet = APIActionType.GET === selectedAction;
+  const isGet = Node.Api.APIActionType.GET === selectedAction;
 
   return (
     <Content

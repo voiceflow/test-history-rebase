@@ -1,5 +1,4 @@
-import { APIActionType, APIBodyType } from '@voiceflow/general-types/build/nodes/api';
-import { ZapierActionType } from '@voiceflow/general-types/build/nodes/zapier';
+import { Node } from '@voiceflow/base-types';
 import { Icon, SVG } from '@voiceflow/ui';
 
 import { BlockType, IntegrationType } from '@/constants';
@@ -32,7 +31,7 @@ export const DEFAULT_DATA: Record<IntegrationType, NodeData.Integration> = {
   [IntegrationType.ZAPIER]: {
     user: {},
     value: '',
-    selectedAction: ZapierActionType.START_A_ZAP,
+    selectedAction: Node.Zapier.ZapierActionType.START_A_ZAP,
     selectedIntegration: IntegrationType.ZAPIER,
   },
   [IntegrationType.CUSTOM_API]: {
@@ -42,8 +41,8 @@ export const DEFAULT_DATA: Record<IntegrationType, NodeData.Integration> = {
     mapping: [{ path: '', var: null }],
     content: '',
     parameters: [EMPTY_KEY_VALUE_ITEM],
-    bodyInputType: APIBodyType.FORM_DATA,
-    selectedAction: APIActionType.GET,
+    bodyInputType: Node.Api.APIBodyType.FORM_DATA,
+    selectedAction: Node.Api.APIActionType.GET,
     selectedIntegration: IntegrationType.CUSTOM_API,
   },
   [IntegrationType.GOOGLE_SHEETS]: {

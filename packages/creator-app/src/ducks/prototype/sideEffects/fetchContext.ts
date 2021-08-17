@@ -1,5 +1,4 @@
-import { BaseRequest, TraceType } from '@voiceflow/general-types';
-import { TraceFrame as VisualTrace } from '@voiceflow/general-types/build/nodes/visual';
+import { Node, Request } from '@voiceflow/base-types';
 import cuid from 'cuid';
 import { batch } from 'react-redux';
 
@@ -18,7 +17,7 @@ import { Context } from '../types';
 const getTargetFlowID = (trace: Trace[]) => {
   for (let i = trace.length - 1; i >= 0; i--) {
     const currentTrace = trace[i];
-    if (currentTrace.type === TraceType.FLOW && !!currentTrace.payload?.diagramID) {
+    if (currentTrace.type === Node.Utils.TraceType.FLOW && !!currentTrace.payload?.diagramID) {
       return currentTrace.payload.diagramID;
     }
   }
@@ -26,7 +25,7 @@ const getTargetFlowID = (trace: Trace[]) => {
 };
 
 const fetchContext =
-  (request: BaseRequest | null): Thunk<Context | null> =>
+  (request: Request.BaseRequest | null): Thunk<Context | null> =>
   async (dispatch, getState) => {
     const reduxState = getState();
     const { trace: _oldTrace, ...state } = prototypeContextSelector(reduxState);
@@ -55,7 +54,7 @@ const fetchContext =
       );
 
       const newState: Context = _state;
-      const lastVisual = [...trace].reverse().find(({ type }) => type === TraceType.VISUAL) as VisualTrace;
+      const lastVisual = [...trace].reverse().find(({ type }) => type === Node.Utils.TraceType.VISUAL) as Node.Visual.TraceFrame;
 
       newState.previousContextDiagramID = activeDiagramID;
       newState.targetContextDiagramID = getTargetFlowID(trace) || activeDiagramID;

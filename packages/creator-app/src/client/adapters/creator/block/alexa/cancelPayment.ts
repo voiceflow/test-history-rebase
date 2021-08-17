@@ -1,10 +1,10 @@
-import type { StepData as CancelPaymentDataData } from '@voiceflow/alexa-types/build/nodes/cancelPayment';
+import { Node } from '@voiceflow/alexa-types';
 
 import { NodeData } from '@/models';
 
 import { createBlockAdapter } from '../utils';
 
-const cancelPaymentDataAdapter = createBlockAdapter<CancelPaymentDataData, NodeData.CancelPayment>(
+const cancelPaymentDataAdapter = createBlockAdapter<Node.CancelPayment.StepData, NodeData.CancelPayment>(
   ({ productID }) => ({ productID }),
   ({ productID }) => ({ productID: productID || '' })
 );

@@ -1,6 +1,6 @@
-import { AlexaVersionSettings, Locale as AlexaLocale } from '@voiceflow/alexa-types';
-import { GeneralVersionSettings, Locale as GeneralLocale } from '@voiceflow/general-types';
-import { GoogleVersionSettings, Locale as GoogleLocale } from '@voiceflow/google-types';
+import { Constants as AlexaConstants, Version as AlexaVersion } from '@voiceflow/alexa-types';
+import { Constants as GeneralConstants, Version as GeneralVersion } from '@voiceflow/general-types';
+import { Constants as GoogleConstants, Version as GoogleVersion } from '@voiceflow/google-types';
 import { PlatformType } from '@voiceflow/internal';
 
 import * as Errors from '@/config/errors';
@@ -26,12 +26,12 @@ export const updateLocalesByVersionID =
 
     switch (project.platform) {
       case PlatformType.ALEXA:
-        return dispatch(alexa.updatePublishing(versionID, { locales: locales as unknown as [AlexaLocale, ...AlexaLocale[]] }));
+        return dispatch(alexa.updatePublishing(versionID, { locales: locales as unknown as [AlexaConstants.Locale, ...AlexaConstants.Locale[]] }));
       case PlatformType.GOOGLE:
-        return dispatch(google.updatePublishing(versionID, { locales: locales as GoogleLocale[] }));
+        return dispatch(google.updatePublishing(versionID, { locales: locales as GoogleConstants.Locale[] }));
       case PlatformType.GENERAL:
       default:
-        return dispatch(general.updateSettings(versionID, { locales: locales as GeneralLocale[] }));
+        return dispatch(general.updateSettings(versionID, { locales: locales as GeneralConstants.Locale[] }));
     }
   };
 
@@ -53,11 +53,11 @@ export const saveSettings =
     const platform = Project.activePlatformSelector(state);
 
     if (isAlexaPlatform(platform)) {
-      await dispatch(alexa.saveSettings(settings as AlexaVersionSettings));
+      await dispatch(alexa.saveSettings(settings as AlexaVersion.AlexaVersionSettings));
     } else if (isGooglePlatform(platform)) {
-      await dispatch(google.saveSettings(settings as GoogleVersionSettings));
+      await dispatch(google.saveSettings(settings as GoogleVersion.GoogleVersionSettings));
     } else if (isAnyGeneralPlatform(platform)) {
-      await dispatch(general.saveSettings(settings as GeneralVersionSettings));
+      await dispatch(general.saveSettings(settings as GeneralVersion.GeneralVersionSettings));
     }
   };
 

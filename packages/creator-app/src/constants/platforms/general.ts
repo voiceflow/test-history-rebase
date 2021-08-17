@@ -1,8 +1,8 @@
 import { BuiltinSlot } from '@voiceflow/common';
-import { Language, Locale, SlotType, SlotTypes } from '@voiceflow/general-types';
+import { Constants } from '@voiceflow/general-types';
 
-export const generalSlotTypesByLanguage = (language: string = Language.EN) =>
-  SlotTypes[language]?.map<BuiltinSlot<SlotType, never>>((slot) => ({ type: slot.name, label: slot.label })) || [];
+export const generalSlotTypesByLanguage = (language: string = Constants.Language.EN) =>
+  Constants.SlotTypes[language]?.map<BuiltinSlot<Constants.SlotType, never>>((slot) => ({ type: slot.name, label: slot.label })) || [];
 
 export enum GeneralStageType {
   IDLE = 'IDLE',
@@ -39,28 +39,28 @@ export enum NLPTrainJobSuccessType {
 }
 
 export const GENERAL_LOCALE_NAME_MAP = {
-  [Locale.EN_US]: 'English (en-US)',
-  [Locale.AR_AR]: 'Arabic (ar-AR)',
-  [Locale.ZH_CN]: 'Chinese (zh-CN)',
-  [Locale.NL_NL]: 'Dutch (nl-NL)',
-  [Locale.FR_FR]: 'French (fr-FR)',
-  [Locale.FR_CA]: 'French (fr-CA)',
-  [Locale.DE_DE]: 'German (de-DE)',
-  [Locale.GU_IN]: 'Gujarati (gu-IN)',
-  [Locale.HI_IN]: 'Hindi (hi-IN)',
-  [Locale.IT_IT]: 'Italian (it-IT)',
-  [Locale.JA_JP]: 'Japanese (ja-JP)',
-  [Locale.KO_KR]: 'Korean (ko-KR)',
-  [Locale.MR_IN]: 'Marathi (mr-IN)',
-  [Locale.PT_BR]: 'Portuguese (pt-BR)',
-  [Locale.ES_ES]: 'Spanish (es-ES)',
-  [Locale.ES_MX]: 'Spanish (es-MX)',
-  [Locale.TA_IN]: 'Tamil (ta-IN)',
-  [Locale.TE_IN]: 'Telugu (te-IN)',
-  [Locale.TR_TR]: 'Turkish (tr-TR)',
+  [Constants.Locale.EN_US]: 'English (en-US)',
+  [Constants.Locale.AR_AR]: 'Arabic (ar-AR)',
+  [Constants.Locale.ZH_CN]: 'Chinese (zh-CN)',
+  [Constants.Locale.NL_NL]: 'Dutch (nl-NL)',
+  [Constants.Locale.FR_FR]: 'French (fr-FR)',
+  [Constants.Locale.FR_CA]: 'French (fr-CA)',
+  [Constants.Locale.DE_DE]: 'German (de-DE)',
+  [Constants.Locale.GU_IN]: 'Gujarati (gu-IN)',
+  [Constants.Locale.HI_IN]: 'Hindi (hi-IN)',
+  [Constants.Locale.IT_IT]: 'Italian (it-IT)',
+  [Constants.Locale.JA_JP]: 'Japanese (ja-JP)',
+  [Constants.Locale.KO_KR]: 'Korean (ko-KR)',
+  [Constants.Locale.MR_IN]: 'Marathi (mr-IN)',
+  [Constants.Locale.PT_BR]: 'Portuguese (pt-BR)',
+  [Constants.Locale.ES_ES]: 'Spanish (es-ES)',
+  [Constants.Locale.ES_MX]: 'Spanish (es-MX)',
+  [Constants.Locale.TA_IN]: 'Tamil (ta-IN)',
+  [Constants.Locale.TE_IN]: 'Telugu (te-IN)',
+  [Constants.Locale.TR_TR]: 'Turkish (tr-TR)',
 };
 
-export const GENERAL_LOCALES_OPTIONS = Object.keys(GENERAL_LOCALE_NAME_MAP).reduce<{ value: Locale; name: string }[]>(
-  (acc, key) => [...acc, { value: key as Locale, name: GENERAL_LOCALE_NAME_MAP[key as Locale] }],
+export const GENERAL_LOCALES_OPTIONS = Object.keys(GENERAL_LOCALE_NAME_MAP).reduce<{ value: Constants.Locale; name: string }[]>(
+  (acc, key) => [...acc, { value: key as Constants.Locale, name: GENERAL_LOCALE_NAME_MAP[key as Constants.Locale] }],
   []
 );

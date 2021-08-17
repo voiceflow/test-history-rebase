@@ -1,5 +1,5 @@
-import { DEVICE_SIZE_MAP } from '@voiceflow/general-types';
-import { CanvasVisibility, ImageStepData } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
+import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
@@ -32,19 +32,19 @@ export const ImageStep: React.FC<ImageStepProps> = ({ label, nodeID, portID, ima
   </Step>
 );
 
-const ConnectedImageStep: React.FC<ConnectedStepProps<ImageStepData>> = ({ node, data }) => {
+const ConnectedImageStep: React.FC<ConnectedStepProps<Node.Visual.ImageStepData>> = ({ node, data }) => {
   const label = getLabel(data);
-  const size = data.device ? DEVICE_SIZE_MAP[data.device] : data.dimensions;
+  const size = data.device ? Constants.DEVICE_SIZE_MAP[data.device] : data.dimensions;
   const image = isVariable(data.image) ? null : data.image;
 
-  const aspectRatio = size && data.canvasVisibility === CanvasVisibility.FULL ? size.width / size.height : null;
+  const aspectRatio = size && data.canvasVisibility === Node.Visual.CanvasVisibility.FULL ? size.width / size.height : null;
 
   return (
     <ImageStep
       nodeID={node.id}
       portID={node.ports.out[0]}
       label={label}
-      image={data.canvasVisibility === CanvasVisibility.HIDDEN ? null : image}
+      image={data.canvasVisibility === Node.Visual.CanvasVisibility.HIDDEN ? null : image}
       aspectRatio={aspectRatio}
     />
   );

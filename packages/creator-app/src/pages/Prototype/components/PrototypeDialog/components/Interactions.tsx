@@ -1,4 +1,4 @@
-import { BaseRequest, RequestType } from '@voiceflow/general-types';
+import { Request } from '@voiceflow/base-types';
 import { BoxFlex, hexToRGBA, preventDefault, toRGBAString } from '@voiceflow/ui';
 import React from 'react';
 import SimpleBar from 'simplebar-react';
@@ -51,10 +51,10 @@ const ActionButton = styled(Button)`
 interface InteractionsProps {
   color?: string;
   interactions: Interaction[];
-  onInteraction: (request: string | BaseRequest) => void;
+  onInteraction: (request: string | Request.BaseRequest) => void;
 }
 
-const SIMPLE_BUTTON_REQUESTS = [RequestType.INTENT, RequestType.TEXT];
+const SIMPLE_BUTTON_REQUESTS = [Request.RequestType.INTENT, Request.RequestType.TEXT];
 
 const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction, color }) => {
   const hasInteractions = !!interactions.length;
@@ -72,7 +72,7 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
   return (
     <>
       {interactions.map(({ name, request }) => {
-        const ButtonElement = !request || SIMPLE_BUTTON_REQUESTS.includes(request.type as RequestType) ? Button : ActionButton;
+        const ButtonElement = !request || SIMPLE_BUTTON_REQUESTS.includes(request.type as Request.RequestType) ? Button : ActionButton;
 
         return (
           <ButtonElement

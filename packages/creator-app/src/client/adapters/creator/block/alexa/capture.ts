@@ -1,11 +1,10 @@
-import { Voice } from '@voiceflow/alexa-types';
-import { StepData } from '@voiceflow/general-types/build/nodes/capture';
+import { Node } from '@voiceflow/alexa-types';
 
 import { NodeData } from '@/models';
 
 import { createBlockAdapter, repromptAdapter } from '../utils';
 
-const captureAdapter = createBlockAdapter<StepData<Voice>, NodeData.Capture>(
+const captureAdapter = createBlockAdapter<Node.Capture.StepData, NodeData.Capture>(
   ({ slot, variable, reprompt, slotInputs }) => ({
     slot,
     variable,

@@ -1,27 +1,26 @@
-import { Locale } from '@voiceflow/alexa-types';
-import { MarketPlace } from '@voiceflow/alexa-types/build/project/product';
+import { Constants, Project } from '@voiceflow/alexa-types';
 
 export default [
-  { value: Locale.EN_US, label: 'English (US)', name: 'English (US)', inSkillProduct: true },
-  { value: Locale.EN_GB, label: 'English (UK)', name: 'English (UK)', inSkillProduct: true },
-  { value: Locale.DE_DE, label: 'German (DE)', name: 'German (DE)', inSkillProduct: true },
-  { value: Locale.JA_JP, label: 'Japanese (JP)', name: 'Japanese (JP)', inSkillProduct: true },
-  { value: Locale.ES_US, label: 'Spanish (US)', name: 'Spanish (US)', inSkillProduct: true },
-  { value: Locale.ES_ES, label: 'Spanish (ES)', name: 'Spanish (ES)', inSkillProduct: true },
-  { value: Locale.FR_FR, label: 'French (FR)', name: 'French (FR)', inSkillProduct: true },
-  { value: Locale.IT_IT, label: 'Italian (IT)', name: 'Italian (IT)', inSkillProduct: true },
-  { value: Locale.EN_AU, label: 'English (AU)', name: 'English (AU)' },
-  { value: Locale.EN_CA, label: 'English (CA)', name: 'English (CA)' },
-  { value: Locale.EN_IN, label: 'English (IN)', name: 'English (IN)' },
-  { value: Locale.ES_MX, label: 'Spanish (MX)', name: 'Spanish (MX)' },
-  { value: Locale.FR_CA, label: 'French (CA)', name: 'French (CA)' },
-  { value: Locale.PT_BR, label: 'Portuguese (BR)', name: 'Portuguese (BR)' },
-  { value: Locale.HI_IN, label: 'Hindi (IN)', name: 'Hindi (IN)' },
+  { value: Constants.Locale.EN_US, label: 'English (US)', name: 'English (US)', inSkillProduct: true },
+  { value: Constants.Locale.EN_GB, label: 'English (UK)', name: 'English (UK)', inSkillProduct: true },
+  { value: Constants.Locale.DE_DE, label: 'German (DE)', name: 'German (DE)', inSkillProduct: true },
+  { value: Constants.Locale.JA_JP, label: 'Japanese (JP)', name: 'Japanese (JP)', inSkillProduct: true },
+  { value: Constants.Locale.ES_US, label: 'Spanish (US)', name: 'Spanish (US)', inSkillProduct: true },
+  { value: Constants.Locale.ES_ES, label: 'Spanish (ES)', name: 'Spanish (ES)', inSkillProduct: true },
+  { value: Constants.Locale.FR_FR, label: 'French (FR)', name: 'French (FR)', inSkillProduct: true },
+  { value: Constants.Locale.IT_IT, label: 'Italian (IT)', name: 'Italian (IT)', inSkillProduct: true },
+  { value: Constants.Locale.EN_AU, label: 'English (AU)', name: 'English (AU)' },
+  { value: Constants.Locale.EN_CA, label: 'English (CA)', name: 'English (CA)' },
+  { value: Constants.Locale.EN_IN, label: 'English (IN)', name: 'English (IN)' },
+  { value: Constants.Locale.ES_MX, label: 'Spanish (MX)', name: 'Spanish (MX)' },
+  { value: Constants.Locale.FR_CA, label: 'French (CA)', name: 'French (CA)' },
+  { value: Constants.Locale.PT_BR, label: 'Portuguese (BR)', name: 'Portuguese (BR)' },
+  { value: Constants.Locale.HI_IN, label: 'Hindi (IN)', name: 'Hindi (IN)' },
 ];
 
 export const MarketPlaceAvailability = [
   {
-    marketPlace: MarketPlace.COM,
+    marketPlace: Project.MarketPlace.COM,
     currency: 'USD',
     icon: '$',
     min: 0.99,
@@ -33,7 +32,7 @@ export const MarketPlaceAvailability = [
     countries: ['US'],
   },
   {
-    marketPlace: MarketPlace.CO_UK,
+    marketPlace: Project.MarketPlace.CO_UK,
     currency: 'GBP',
     icon: '£',
     min: 0.99,
@@ -72,7 +71,7 @@ export const MarketPlaceAvailability = [
     ],
   },
   {
-    marketPlace: MarketPlace.DE,
+    marketPlace: Project.MarketPlace.DE,
     currency: 'EUR',
     icon: '€',
     min: 0.99,
@@ -96,7 +95,7 @@ export const MarketPlaceAvailability = [
     countries: ['ES'],
   },
   {
-    marketPlace: MarketPlace.FR,
+    marketPlace: Project.MarketPlace.FR,
     currency: 'EUR',
     icon: '€',
     min: 0.99,
@@ -120,7 +119,7 @@ export const MarketPlaceAvailability = [
     countries: ['IT'],
   },
   {
-    marketPlace: MarketPlace.CO_JP,
+    marketPlace: Project.MarketPlace.CO_JP,
     currency: 'JPY',
     icon: '¥',
     min: 99,

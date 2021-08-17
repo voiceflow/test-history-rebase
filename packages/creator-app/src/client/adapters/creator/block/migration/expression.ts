@@ -1,26 +1,18 @@
-import {
-  ConditionsLogicInterface,
-  Expression,
-  ExpressionTuple,
-  ExpressionType,
-  ExpressionTypeV2,
-  ExpressionV2,
-  LogicGroupData,
-} from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import cuid from 'cuid';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { ExpressionData as NodeDataExpressionData } from '@/models';
 import { ADVANCE_LOGIC_TYPES, expressionfyV2, getHighestDepth, hasAdvanceChildExpression } from '@/utils/expression';
 
-const LogicGroupConditionType: string[] = [ExpressionTypeV2.AND, ExpressionTypeV2.OR];
+const LogicGroupConditionType: string[] = [Node.Utils.ExpressionTypeV2.AND, Node.Utils.ExpressionTypeV2.OR];
 
 // identifies the logicInterface for older IF data
-export const getLogicInterface = (expression: Expression, hasParent = false): ConditionsLogicInterface => {
+export const getLogicInterface = (expression: Node.Utils.Expression, hasParent = false): Node.Utils.ConditionsLogicInterface => {
   const valueIsArray = Array.isArray(expression.value);
 
-  if (!valueIsArray && (expression.type === ExpressionType.VALUE || ADVANCE_LOGIC_TYPES.includes(expression.type))) {
-    return ConditionsLogicInterface.EXPRESSION;
+  if (!valueIsArray && (expression.type === Node.Utils.ExpressionType.VALUE || ADVANCE_LOGIC_TYPES.includes(expression.type))) {
+    return Node.Utils.ConditionsLogicInterface.EXPRESSION;
   }
 
   if (valueIsArray && !ADVANCE_LOGIC_TYPES.includes(expression.type)) {
@@ -36,53 +28,56 @@ export const getLogicInterface = (expression: Expression, hasParent = false): Co
       !hasAdvanceChildExpression(expression) &&
       LogicGroupConditionType.includes(expression.type)
     ) {
-      return ConditionsLogicInterface.LOGIC_GROUP;
+      return Node.Utils.ConditionsLogicInterface.LOGIC_GROUP;
     }
 
     if (getHighestDepth(expression) < 2 || hasParent) {
-      const isVariable = (expression.value as ExpressionTuple)[0].type === ExpressionType.VARIABLE;
+      const isVariable = (expression.value as Node.Utils.ExpressionTuple)[0].type === Node.Utils.ExpressionType.VARIABLE;
 
-      return isVariable ? ConditionsLogicInterface.VARIABLE : ConditionsLogicInterface.VALUE;
+      return isVariable ? Node.Utils.ConditionsLogicInterface.VARIABLE : Node.Utils.ConditionsLogicInterface.VALUE;
     }
   }
 
   // any expression with depth 3 or higher or does not match above criteria is an expression
-  return ConditionsLogicInterface.EXPRESSION;
+  return Node.Utils.ConditionsLogicInterface.EXPRESSION;
 };
 
-export const sanitizeExpression = (expression: Expression, logicInterface: ConditionsLogicInterface): ExpressionV2 | LogicGroupData => {
+export const sanitizeExpression = (
+  expression: Node.Utils.Expression,
+  logicInterface: Node.Utils.ConditionsLogicInterface
+): Node.Utils.ExpressionV2 | Node.Utils.LogicGroupData => {
   switch (logicInterface) {
-    case ConditionsLogicInterface.VARIABLE:
+    case Node.Utils.ConditionsLogicInterface.VARIABLE:
       if (Array.isArray(expression.value)) {
         return {
-          type: expression.type as unknown as ExpressionTypeV2,
+          type: expression.type as unknown as Node.Utils.ExpressionTypeV2,
           value: expression.value.map((data: any, index: number) => {
-            const isSecondValueVariable = index === 1 && data.type === ExpressionType.VARIABLE;
+            const isSecondValueVariable = index === 1 && data.type === Node.Utils.ExpressionType.VARIABLE;
 
             return {
               type: data.type,
               value: isSecondValueVariable ? `{{[${data.value}].${data.value}}}` : data.value,
             };
           }),
-        } as ExpressionV2;
+        } as Node.Utils.ExpressionV2;
       }
-      return { type: ExpressionTypeV2.ADVANCE, value: expression.value } as ExpressionV2;
-    case ConditionsLogicInterface.VALUE:
+      return { type: Node.Utils.ExpressionTypeV2.ADVANCE, value: expression.value } as Node.Utils.ExpressionV2;
+    case Node.Utils.ConditionsLogicInterface.VALUE:
       if (Array.isArray(expression.value)) {
         return {
-          type: expression.type as unknown as ExpressionTypeV2,
+          type: expression.type as unknown as Node.Utils.ExpressionTypeV2,
           value: expression.value.map((data: any) => {
-            const isVariable = data.type === ExpressionType.VARIABLE;
+            const isVariable = data.type === Node.Utils.ExpressionType.VARIABLE;
 
             return { type: data.type, value: isVariable ? `{{[${data.value}].${data.value}}}` : data.value };
           }),
-        } as ExpressionV2;
+        } as Node.Utils.ExpressionV2;
       }
-      return { type: ExpressionTypeV2.ADVANCE, value: expression.value } as ExpressionV2;
-    case ConditionsLogicInterface.LOGIC_GROUP:
+      return { type: Node.Utils.ExpressionTypeV2.ADVANCE, value: expression.value } as Node.Utils.ExpressionV2;
+    case Node.Utils.ConditionsLogicInterface.LOGIC_GROUP:
       return {
-        type: expression.type as unknown as ExpressionTypeV2,
-        value: (expression.value as Expression[]).map((value: Expression) => {
+        type: expression.type as unknown as Node.Utils.ExpressionTypeV2,
+        value: (expression.value as Node.Utils.Expression[]).map((value: Node.Utils.Expression) => {
           const logic = getLogicInterface(value, true);
 
           return {
@@ -91,13 +86,13 @@ export const sanitizeExpression = (expression: Expression, logicInterface: Condi
             ...sanitizeExpression(value, logic),
           };
         }),
-      } as LogicGroupData;
+      } as Node.Utils.LogicGroupData;
     default:
-      return { type: ExpressionTypeV2.ADVANCE, value: expressionfyV2(expression) } as ExpressionV2;
+      return { type: Node.Utils.ExpressionTypeV2.ADVANCE, value: expressionfyV2(expression) } as Node.Utils.ExpressionV2;
   }
 };
 
-const expressionV1toV2Adapter = createAdapter<Expression, NodeDataExpressionData>(
+const expressionV1toV2Adapter = createAdapter<Node.Utils.Expression, NodeDataExpressionData>(
   (expression) => {
     const logicInterface = getLogicInterface(expression);
 

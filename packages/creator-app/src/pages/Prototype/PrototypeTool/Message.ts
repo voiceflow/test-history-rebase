@@ -1,4 +1,4 @@
-import { VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
 import moment from 'moment';
 
 import { VisualTrace } from '@/models';
@@ -48,7 +48,7 @@ class MessageController {
   }
 
   public async visual(id: string, payload: VisualTrace['payload']): Promise<void> {
-    if (payload.visualType !== VisualType.IMAGE || !payload.image) {
+    if (payload.visualType !== Node.Visual.VisualType.IMAGE || !payload.image) {
       return;
     }
     // preload image

@@ -1,4 +1,4 @@
-import type { StepData } from '@voiceflow/alexa-types/build/nodes/stream';
+import { Node } from '@voiceflow/alexa-types';
 import { PlatformType } from '@voiceflow/internal';
 
 import { PortType } from '@/constants/canvas';
@@ -7,7 +7,7 @@ import { NodeData } from '@/models';
 import { generateOutPort } from '../../utils';
 import { createBlockAdapter, getPortByLabel, PortsAdapter } from '../utils';
 
-const streamAdapter = createBlockAdapter<StepData, NodeData.Stream>(
+const streamAdapter = createBlockAdapter<Node.Stream.StepData, NodeData.Stream>(
   ({ loop, audio, title, iconImage, customPause, description, backgroundImage }) => ({
     loop,
     audio,

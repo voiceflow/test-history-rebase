@@ -1,6 +1,7 @@
-import { Voice } from '@voiceflow/alexa-types';
+import { Constants } from '@voiceflow/alexa-types';
 import { BaseDiagramNode as DBNode, BasePort as DBPort } from '@voiceflow/api-sdk';
-import { ButtonType, Chip, IntentButton, NoMatches, NoMatchType, Prompt } from '@voiceflow/general-types';
+import { Button, Node as BaseNode } from '@voiceflow/base-types';
+import { Types as VoiceTypes } from '@voiceflow/voice-types';
 import cuid from 'cuid';
 
 import { createAdapter, createSimpleAdapter } from '@/client/adapters/utils';
@@ -19,9 +20,9 @@ export interface PortsAdapter<D = unknown> {
 }
 
 // TODO: refactor merge repromptAdapter and noMatchRepromptAdapter to use the same types
-export const repromptAdapter = createAdapter<Prompt<any>, NodeData.Reprompt>(
+export const repromptAdapter = createAdapter<VoiceTypes.Prompt<any>, NodeData.Reprompt>(
   (reprompt) => {
-    const type = reprompt.voice === Voice.AUDIO ? RepromptType.AUDIO : RepromptType.TEXT;
+    const type = reprompt.voice === Constants.Voice.AUDIO ? RepromptType.AUDIO : RepromptType.TEXT;
 
     return {
       type,
@@ -31,24 +32,24 @@ export const repromptAdapter = createAdapter<Prompt<any>, NodeData.Reprompt>(
     };
   },
   (reprompt) => ({
-    voice: reprompt.type === RepromptType.AUDIO ? Voice.AUDIO : (reprompt.voice as Voice | undefined) ?? Voice.ALEXA,
+    voice: reprompt.type === RepromptType.AUDIO ? Constants.Voice.AUDIO : (reprompt.voice as Constants.Voice | undefined) ?? Constants.Voice.ALEXA,
     content: (reprompt.type === RepromptType.AUDIO ? reprompt.audio : reprompt.content) ?? '',
   })
 );
 
-export const noMatchRepromptAdapter = createAdapter<Prompt<any>, SpeakData>(
+export const noMatchRepromptAdapter = createAdapter<VoiceTypes.Prompt<any>, SpeakData>(
   (reprompt) =>
-    reprompt.voice === Voice.AUDIO
+    reprompt.voice === Constants.Voice.AUDIO
       ? { url: reprompt.content, type: DialogType.AUDIO, id: cuid() }
       : { type: DialogType.VOICE, voice: reprompt.voice, content: reprompt.content, id: cuid() },
   (reprompt) => ({
-    voice: reprompt.type === DialogType.AUDIO ? Voice.AUDIO : (reprompt.voice as Voice | undefined) ?? Voice.ALEXA,
+    voice: reprompt.type === DialogType.AUDIO ? Constants.Voice.AUDIO : (reprompt.voice as Constants.Voice | undefined) ?? Constants.Voice.ALEXA,
     content: reprompt.type === DialogType.AUDIO ? reprompt.url : reprompt.content,
   })
 );
 
-export const noMatchAdapter = createAdapter<NoMatches<any>, NodeData.NoMatches>(
-  ({ type = NoMatchType.REPROMPT, randomize, reprompts, pathName = 'No Match' }) => ({
+export const noMatchAdapter = createAdapter<BaseNode.Utils.StepNoMatch<VoiceTypes.Prompt<any>>, NodeData.NoMatches>(
+  ({ type = BaseNode.Utils.NoMatchType.REPROMPT, randomize, reprompts, pathName = 'No Match' }) => ({
     type,
     pathName,
     randomize,
@@ -74,5 +75,5 @@ export const defaultPortAdapter: PortsAdapter = {
 export const getPortByLabel = (ports: { port: Port; target: string | null; link?: Link }[], label: string) =>
   ports.find(({ port }) => port.label === label);
 
-export const chipsToIntentButtons = (chips?: Nullable<Chip[]>): Nullable<IntentButton[]> =>
-  chips?.map(({ label: name }) => ({ name, type: ButtonType.INTENT, payload: { intentID: null } })) ?? null;
+export const chipsToIntentButtons = (chips?: Nullable<Button.Chip[]>): Nullable<Button.IntentButton[]> =>
+  chips?.map(({ label: name }) => ({ name, type: Button.ButtonType.INTENT, payload: { intentID: null } })) ?? null;

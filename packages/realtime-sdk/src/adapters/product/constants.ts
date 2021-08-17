@@ -1,9 +1,9 @@
-import { MarketPlace } from '@voiceflow/alexa-types/build/project/product';
+import { Project } from '@voiceflow/alexa-types';
 
 // eslint-disable-next-line import/prefer-default-export
 export const MARKET_PLACE_AVAILABILITY = [
   {
-    marketPlace: MarketPlace.COM,
+    marketPlace: Project.MarketPlace.COM,
     currency: 'USD',
     icon: '$',
     min: 0.99,
@@ -15,7 +15,7 @@ export const MARKET_PLACE_AVAILABILITY = [
     countries: ['US'],
   },
   {
-    marketPlace: MarketPlace.CO_UK,
+    marketPlace: Project.MarketPlace.CO_UK,
     currency: 'GBP',
     icon: '£',
     min: 0.99,
@@ -54,7 +54,7 @@ export const MARKET_PLACE_AVAILABILITY = [
     ],
   },
   {
-    marketPlace: MarketPlace.DE,
+    marketPlace: Project.MarketPlace.DE,
     currency: 'EUR',
     icon: '€',
     min: 0.99,
@@ -78,7 +78,7 @@ export const MARKET_PLACE_AVAILABILITY = [
     countries: ['ES'],
   },
   {
-    marketPlace: MarketPlace.FR,
+    marketPlace: Project.MarketPlace.FR,
     currency: 'EUR',
     icon: '€',
     min: 0.99,
@@ -102,7 +102,7 @@ export const MARKET_PLACE_AVAILABILITY = [
     countries: ['IT'],
   },
   {
-    marketPlace: MarketPlace.CO_JP,
+    marketPlace: Project.MarketPlace.CO_JP,
     currency: 'JPY',
     icon: '¥',
     min: 99,

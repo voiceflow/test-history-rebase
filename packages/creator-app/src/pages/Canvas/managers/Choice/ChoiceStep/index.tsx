@@ -1,4 +1,4 @@
-import { NoMatchType } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
@@ -56,7 +56,7 @@ const ConnectedChoiceStep: React.FC<ConnectedStepProps<NodeData.Interaction>> = 
 
   const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
   const choicesByPortID = useSyncedLookup(nodeOutPorts, data.choices);
-  const isPath = !!data.else.type && data.else.type !== NoMatchType.REPROMPT;
+  const isPath = !!data.else.type && data.else.type !== Node.Utils.NoMatchType.REPROMPT;
 
   const choices = React.useMemo(
     () =>

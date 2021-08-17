@@ -1,6 +1,6 @@
-import { getInvocationNameError as getAlexaInvocationNameError, Locale as AlexaLocale } from '@voiceflow/alexa-types';
-import { Locale as GeneralLocale } from '@voiceflow/general-types';
-import { getInvocationNameError as getGoogleInvocationNameError, Language, LanguageToLocale, Locale as GoogleLocale } from '@voiceflow/google-types';
+import { Constants as AlexaConstants, Utils as AlexaUtils } from '@voiceflow/alexa-types';
+import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants as GoogleConstants, Utils as GoogleUtils } from '@voiceflow/google-types';
 import { PlatformType } from '@voiceflow/internal';
 import { Box, BoxFlex, Input, Select, useDidUpdateEffect } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
@@ -50,15 +50,15 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 }) => {
   const { descriptors, localeText } = platformMeta;
 
-  const initialGoogleLanguage = React.useMemo(() => getLocaleLanguage(locales as GoogleLocale[]), [locales]);
+  const initialGoogleLanguage = React.useMemo(() => getLocaleLanguage(locales as GoogleConstants.Locale[]), [locales]);
 
   const [newInvocation, setNewInvocation] = React.useState(invocationName ?? '');
   const [newProjectName, setNewProjectName] = React.useState(project?.name ?? '');
   const [projectImage, setProjectImage] = React.useState(project?.image ?? '');
 
-  const [alexaLocales, setAlexaLocales] = React.useState<AlexaLocale[]>((locales || []) as AlexaLocale[]);
-  const [generalLocale, setGeneralLocale] = React.useState<GeneralLocale>((locales as GeneralLocale[])[0]);
-  const [googleLanguage, setGoogleLanguage] = React.useState<string | Language>(initialGoogleLanguage);
+  const [alexaLocales, setAlexaLocales] = React.useState<AlexaConstants.Locale[]>((locales || []) as AlexaConstants.Locale[]);
+  const [generalLocale, setGeneralLocale] = React.useState<GeneralConstants.Locale>((locales as GeneralConstants.Locale[])[0]);
+  const [googleLanguage, setGoogleLanguage] = React.useState<string | GoogleConstants.Language>(initialGoogleLanguage);
 
   const displayName =
     platform === PlatformType.ALEXA
@@ -70,8 +70,8 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     getPlatformValue<(name?: string, locales?: any[]) => string | null>(
       platform,
       {
-        [PlatformType.ALEXA]: getAlexaInvocationNameError,
-        [PlatformType.GOOGLE]: getGoogleInvocationNameError,
+        [PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
+        [PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
       },
       _constant(null)
     )(newInvocation as string, alexaLocales);
@@ -82,7 +82,9 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
       !isAnyGeneralPlatform(platform) ? saveInvocationName(newInvocation) : null,
       project && projectImage ? saveProjectImage(project.id, projectImage) : null,
       platform === PlatformType.ALEXA && locales !== alexaLocales ? saveLocales(alexaLocales) : null,
-      platform === PlatformType.GOOGLE && googleLanguage !== initialGoogleLanguage ? saveLocales(LanguageToLocale[googleLanguage as Language]) : null,
+      platform === PlatformType.GOOGLE && googleLanguage !== initialGoogleLanguage
+        ? saveLocales(GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language])
+        : null,
     ]);
   };
 
@@ -140,7 +142,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
             [PlatformType.ALEXA]: () => (
               <UnTypedDropdownMultiselect
                 options={LOCALE_MAP}
-                onSelect={(val: AlexaLocale) =>
+                onSelect={(val: AlexaConstants.Locale) =>
                   setAlexaLocales(alexaLocales.includes(val) ? without(alexaLocales, alexaLocales.indexOf(val)) : [...alexaLocales, val])
                 }
                 autoWidth
@@ -172,8 +174,8 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
               onSelect={setGeneralLocale}
               searchable
               placeholder="Locale"
-              getOptionValue={(option) => option?.value || GeneralLocale.EN_US}
-              getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as GeneralLocale] ?? ''}
+              getOptionValue={(option) => option?.value || GeneralConstants.Locale.EN_US}
+              getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as GeneralConstants.Locale] ?? ''}
               renderOptionLabel={(option) => option.name}
             />
           )

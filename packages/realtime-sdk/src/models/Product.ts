@@ -1,5 +1,4 @@
-import { AlexaProduct, Locale, ProductType } from '@voiceflow/alexa-types';
-import { MarketPlace, SubscriptionPaymentFrequency } from '@voiceflow/alexa-types/build/project/product';
+import { Constants, Project } from '@voiceflow/alexa-types';
 
 export interface ProductMarketPlace {
   price: number;
@@ -11,14 +10,14 @@ export interface ProductMarketPlace {
 export interface Product {
   id: string;
   skill: string;
-  type: ProductType;
+  type: Constants.ProductType;
   name: string;
   version: '1.0';
   referenceName: string;
   summary: string;
   description: string;
-  marketPlaces: Partial<Record<MarketPlace, ProductMarketPlace>>;
-  locales: Locale[];
+  marketPlaces: Partial<Record<Project.MarketPlace, ProductMarketPlace>>;
+  locales: Constants.Locale[];
   phrases: string[];
   keywords: string[];
   purchasableState: string | null;
@@ -26,11 +25,11 @@ export interface Product {
   largeIconUri: string | null;
   testingInstructions: string | null;
   cardDescription: string | null;
-  subscriptionFrequency: SubscriptionPaymentFrequency | null;
+  subscriptionFrequency: Project.SubscriptionPaymentFrequency | null;
   privacyPolicyUrl: string | null;
   trialPeriodDays: string | null;
   taxCategory: string | null;
   purchasePrompt: string | null;
 }
 
-export type DBProduct = AlexaProduct;
+export type DBProduct = Project.AlexaProduct;

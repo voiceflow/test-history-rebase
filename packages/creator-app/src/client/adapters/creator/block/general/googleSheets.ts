@@ -1,11 +1,10 @@
-import { IntegrationType } from '@voiceflow/general-types';
-import { GoogleSheetsActionType, StepData } from '@voiceflow/general-types/build/nodes/googleSheets';
+import { Node } from '@voiceflow/base-types';
 
 import { NodeData } from '@/models';
 
 import { createBlockAdapter } from '../utils';
 
-const googleSheetsAdapter = createBlockAdapter<StepData, NodeData.GoogleSheets>(
+const googleSheetsAdapter = createBlockAdapter<Node.GoogleSheets.StepData, NodeData.GoogleSheets>(
   ({ user, sheet, endRow, mapping, startRow, rowNumber, rowValues, matchValue, spreadsheet, headerColumn, selectedAction }) => ({
     user,
     sheet,
@@ -18,7 +17,7 @@ const googleSheetsAdapter = createBlockAdapter<StepData, NodeData.GoogleSheets>(
     match_value: matchValue,
     header_column: headerColumn,
     selectedAction: selectedAction ?? undefined,
-    selectedIntegration: IntegrationType.GOOGLE_SHEETS,
+    selectedIntegration: Node.Utils.IntegrationType.GOOGLE_SHEETS,
   }),
   ({
     user,
@@ -43,8 +42,8 @@ const googleSheetsAdapter = createBlockAdapter<StepData, NodeData.GoogleSheets>(
     matchValue: match_value,
     spreadsheet,
     headerColumn: header_column,
-    selectedAction: selectedAction as null | GoogleSheetsActionType,
-    selectedIntegration: IntegrationType.GOOGLE_SHEETS,
+    selectedAction: selectedAction as null | Node.GoogleSheets.GoogleSheetsActionType,
+    selectedIntegration: Node.Utils.IntegrationType.GOOGLE_SHEETS,
   })
 );
 

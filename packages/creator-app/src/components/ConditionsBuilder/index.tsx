@@ -1,4 +1,4 @@
-import { ConditionsLogicInterface, ExpressionTypeV2 } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import { Box, BoxFlex } from '@voiceflow/ui';
 import React from 'react';
 
@@ -13,17 +13,17 @@ export interface ConditionsBuilderProps {
 }
 
 const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, expression }) => {
-  const addNewCondition = (logicInterface: ConditionsLogicInterface) => {
+  const addNewCondition = (logicInterface: Node.Utils.ConditionsLogicInterface) => {
     const values = getDefaultValue(logicInterface);
     onChange({ ...expression, value: [{ ...values }] } as ExpressionData);
   };
 
-  const addAdditionalCondition = (logicInterface: ConditionsLogicInterface) => {
+  const addAdditionalCondition = (logicInterface: Node.Utils.ConditionsLogicInterface) => {
     const values = getDefaultValue(logicInterface);
     onChange(getAddionalLogicData(expression!, values));
   };
 
-  const updateBaseType = (type: ExpressionTypeV2.AND | ExpressionTypeV2.OR) => {
+  const updateBaseType = (type: Node.Utils.ExpressionTypeV2.AND | Node.Utils.ExpressionTypeV2.OR) => {
     onChange({ ...expression, type } as ExpressionData);
   };
 
@@ -67,7 +67,7 @@ const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, express
                   updateBaseType={updateBaseType}
                 />
 
-                {isLastItem && item.logicInterface !== ConditionsLogicInterface.EXPRESSION && (
+                {isLastItem && item.logicInterface !== Node.Utils.ConditionsLogicInterface.EXPRESSION && (
                   <ConditionSelect onChange={addAdditionalCondition} additional />
                 )}
               </div>

@@ -1,6 +1,6 @@
-import { Voice as AlexaVoice } from '@voiceflow/alexa-types';
-import { Voice as GeneralVoice } from '@voiceflow/general-types';
-import { Voice as GoogleVoice } from '@voiceflow/google-types';
+import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
+import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants as GoogleConstants } from '@voiceflow/google-types';
 import { PlatformType } from '@voiceflow/internal';
 
 import { DISTINCT_PLATFORMS, DistinctPlatform } from '@/constants';
@@ -38,10 +38,10 @@ export const distinctPlatformsData = <T extends any>(data: T) =>
 
 export const getPlatformDefaultVoice = createPlatformSelector<AnyVoice>(
   {
-    [PlatformType.ALEXA]: AlexaVoice.ALEXA,
-    [PlatformType.GOOGLE]: GoogleVoice.DEFAULT,
+    [PlatformType.ALEXA]: AlexaConstants.Voice.ALEXA,
+    [PlatformType.GOOGLE]: GoogleConstants.Voice.DEFAULT,
   },
-  GeneralVoice.DEFAULT
+  GeneralConstants.Voice.DEFAULT
 );
 
 export const getPlatformAppName = createPlatformSelector({

@@ -1,10 +1,10 @@
-import type { StepData } from '@voiceflow/alexa-types/build/nodes/accountLinking';
+import { Node } from '@voiceflow/alexa-types';
 
 import { NodeData } from '@/models';
 
 import { createBlockAdapter } from '../utils';
 
-const accountLinkingAdapter = createBlockAdapter<StepData, NodeData.AccountLinking>(
+const accountLinkingAdapter = createBlockAdapter<Node.AccountLinking.StepData, NodeData.AccountLinking>(
   () => ({}),
   () => ({})
 );

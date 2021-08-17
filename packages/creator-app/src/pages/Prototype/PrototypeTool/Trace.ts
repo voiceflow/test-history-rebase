@@ -1,7 +1,5 @@
-import { BaseRequest, IntentName, RequestType, TraceType } from '@voiceflow/general-types';
-import { SpeakType } from '@voiceflow/general-types/build/nodes/speak';
-import { TraceStreamAction } from '@voiceflow/general-types/build/nodes/stream';
-import { StepData as VisualData } from '@voiceflow/general-types/build/nodes/visual';
+import { Node as BaseNode, Request } from '@voiceflow/base-types';
+import { Constants } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
@@ -38,7 +36,7 @@ export interface TraceControllerProps {
   waitVisuals: boolean;
   getNodeByID: (targetBlockID: string) => Node;
   updateStatus: (status: PMStatus) => void;
-  fetchContext: (request: BaseRequest | null) => Promise<Prototype.Context | null>;
+  fetchContext: (request: Request.BaseRequest | null) => Promise<Prototype.Context | null>;
   flowIDHistory: string[];
   contextHistory: Partial<Prototype.Context>[];
   activeDiagramID: string;
@@ -46,10 +44,10 @@ export interface TraceControllerProps {
   updatePrototype: (payload: Partial<Prototype.PrototypeState>) => void;
   getLinksByPortID: (portID: string) => Link[];
   activePathLinkIDs: string[];
-  visualDataHistory: (null | VisualData)[];
+  visualDataHistory: (null | BaseNode.Visual.StepData)[];
   activePathBlockIDs: string[];
-  updatePrototypeVisualsData: (data: null | VisualData) => void;
-  updatePrototypeVisualsDataHistory: (dataHistory: (null | VisualData)[]) => void;
+  updatePrototypeVisualsData: (data: null | BaseNode.Visual.StepData) => void;
+  updatePrototypeVisualsDataHistory: (dataHistory: (null | BaseNode.Visual.StepData)[]) => void;
 }
 
 interface Options {
@@ -65,7 +63,7 @@ interface StreamState {
   offset: number;
 }
 
-const findLastBlockTrace = (trace: Trace[]) => [...trace].reverse().find((traceFrame) => traceFrame.type === TraceType.BLOCK);
+const findLastBlockTrace = (trace: Trace[]) => [...trace].reverse().find((traceFrame) => traceFrame.type === BaseNode.Utils.TraceType.BLOCK);
 
 const WAIT_ENTITY_TIME = 200;
 const MIN_FOCUSED_NODE_TIME = 500;
@@ -118,7 +116,7 @@ class TraceController {
     this.message = message;
   }
 
-  public next = async (request: BaseRequest | null = null): Promise<void> => {
+  public next = async (request: Request.BaseRequest | null = null): Promise<void> => {
     const currentContextStep = this.props.contextStep;
     const { contextHistory } = this.props;
     const { visualDataHistory } = this.props;
@@ -241,39 +239,39 @@ class TraceController {
     }
 
     switch (topTrace.type) {
-      case TraceType.CHOICE: {
+      case BaseNode.Utils.TraceType.CHOICE: {
         this.processChoiceTrace(topTrace);
         break;
       }
-      case TraceType.BLOCK: {
+      case BaseNode.Utils.TraceType.BLOCK: {
         await this.processBlockTrace(topTrace, { isLast: !tailTrace.length, onlyMessage });
         break;
       }
-      case TraceType.STREAM: {
+      case BaseNode.Utils.TraceType.STREAM: {
         await this.processStreamTrace(topTrace, { onlyMessage });
         break;
       }
-      case TraceType.SPEAK: {
+      case BaseNode.Utils.TraceType.SPEAK: {
         await this.processSpeakTrace(topTrace, { onlyMessage });
         break;
       }
-      case TraceType.TEXT: {
+      case BaseNode.Utils.TraceType.TEXT: {
         await this.message.text(topTrace.id, { slate: topTrace.payload.slate });
         break;
       }
-      case TraceType.FLOW: {
+      case BaseNode.Utils.TraceType.FLOW: {
         await this.processFlowTrace(topTrace);
         break;
       }
-      case TraceType.END: {
+      case BaseNode.Utils.TraceType.END: {
         await this.processEndTrace();
         break;
       }
-      case TraceType.VISUAL: {
+      case BaseNode.Utils.TraceType.VISUAL: {
         await this.processVisual(topTrace);
         break;
       }
-      case TraceType.DEBUG: {
+      case BaseNode.Utils.TraceType.DEBUG: {
         await this.message.debug(topTrace.id, { message: topTrace.payload.message });
         break;
       }
@@ -380,12 +378,12 @@ class TraceController {
   ) {
     this.message.stream(id, { audio: src });
 
-    const pausing = action === TraceStreamAction.PAUSE;
+    const pausing = action === BaseNode.Stream.TraceStreamAction.PAUSE;
 
     this.props.setInteractions([
-      { name: 'next', request: { type: RequestType.TEXT, payload: 'next' } },
-      { name: 'previous', request: { type: RequestType.TEXT, payload: 'previous' } },
-      { name: pausing ? 'resume' : 'pause', request: { type: RequestType.TEXT, payload: pausing ? 'resume' : 'pause' } },
+      { name: 'next', request: { type: Request.RequestType.TEXT, payload: 'next' } },
+      { name: 'previous', request: { type: Request.RequestType.TEXT, payload: 'previous' } },
+      { name: pausing ? 'resume' : 'pause', request: { type: Request.RequestType.TEXT, payload: pausing ? 'resume' : 'pause' } },
     ]);
 
     this.props.updateStatus(PMStatus.WAITING_USER_INTERACTION);
@@ -408,7 +406,7 @@ class TraceController {
     } else {
       try {
         await this.audio.play(src, {
-          loop: action === TraceStreamAction.LOOP,
+          loop: action === BaseNode.Stream.TraceStreamAction.LOOP,
           muted: this.props.isMuted,
           offset: this.streamState.offset,
           onPause: (audio) => {
@@ -421,11 +419,11 @@ class TraceController {
       }
     }
 
-    await this.next({ type: RequestType.TEXT, payload: IntentName.NEXT });
+    await this.next({ type: Request.RequestType.TEXT, payload: Constants.IntentName.NEXT });
   }
 
   private async processSpeakTrace({ id, payload: { src, type, voice, message } }: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
-    if (type === SpeakType.AUDIO) {
+    if (type === BaseNode.Speak.TraceSpeakType.AUDIO) {
       this.message.audio(id, { name: message, src });
     } else {
       this.message.speak(id, { message, voice, src });

@@ -1,4 +1,4 @@
-import { BaseRequest, IntentRequest, RequestType, TextRequest } from '@voiceflow/general-types';
+import { Request } from '@voiceflow/base-types';
 import cuid from 'cuid';
 import _isString from 'lodash/isString';
 
@@ -56,21 +56,21 @@ class PrototypeTool {
     this.trace?.historyStep(StepDirection.FORWARD);
   }
 
-  public async interact(request: BaseRequest | string | null = null) {
+  public async interact(request: Request.BaseRequest | string | null = null) {
     this.audio!.stop();
 
     await this.trace?.emptyTrace();
 
     this.trace?.resetInteractions();
 
-    const formattedRequest = _isString(request) ? ({ type: RequestType.TEXT, payload: request } as TextRequest) : request;
+    const formattedRequest = _isString(request) ? ({ type: Request.RequestType.TEXT, payload: request } as Request.TextRequest) : request;
 
     let input = `[Action] ${formattedRequest?.type}`;
 
-    if (formattedRequest?.type === RequestType.TEXT && _isString(formattedRequest.payload)) {
+    if (formattedRequest?.type === Request.RequestType.TEXT && _isString(formattedRequest.payload)) {
       input = formattedRequest.payload;
-    } else if (formattedRequest?.type === RequestType.INTENT) {
-      input = (formattedRequest as IntentRequest).payload.query;
+    } else if (formattedRequest?.type === Request.RequestType.INTENT) {
+      input = (formattedRequest as Request.IntentRequest).payload.query;
     }
 
     this.message?.user(cuid(), input);

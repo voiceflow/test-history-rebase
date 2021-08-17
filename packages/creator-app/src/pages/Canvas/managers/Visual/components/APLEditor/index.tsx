@@ -1,4 +1,4 @@
-import { APLStepData, APLType } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
@@ -14,12 +14,13 @@ import { ConnectedProps } from '@/types';
 import { Footer, JSONEditor, SplashEditor } from './components';
 import { APL_OPTIONS } from './constants';
 
-const APLEditor: React.FC<NodeEditorPropsType<APLStepData> & ConnectedAPLEditorProps> = ({ data, onChange, resolveAPL }) => {
+const APLEditor: React.FC<NodeEditorPropsType<Node.Visual.APLStepData> & ConnectedAPLEditorProps> = ({ data, onChange, resolveAPL }) => {
   const { aplType, imageURL, title, document: documentData, aplCommands, jsonFileName, datasource } = data;
 
   const previewModal = useModals(ModalType.APL_PREVIEW);
 
-  const canCreatePreview = (aplType === APLType.SPLASH && !!(title || imageURL)) || (aplType === APLType.JSON && !!jsonFileName);
+  const canCreatePreview =
+    (aplType === Node.Visual.APLType.SPLASH && !!(title || imageURL)) || (aplType === Node.Visual.APLType.JSON && !!jsonFileName);
 
   const openPreviewModal = async () => {
     const result = await resolveAPL(data);
@@ -27,7 +28,7 @@ const APLEditor: React.FC<NodeEditorPropsType<APLStepData> & ConnectedAPLEditorP
     previewModal.open({ apl: result.apl, commands: result.commands, displayData: result.data });
   };
 
-  const onChangeAPLType = (newAPLType: APLType) => {
+  const onChangeAPLType = (newAPLType: Node.Visual.APLType) => {
     onChange({
       aplType: newAPLType,
       title: '',
@@ -43,13 +44,18 @@ const APLEditor: React.FC<NodeEditorPropsType<APLStepData> & ConnectedAPLEditorP
     <Content footer={() => <Footer openPreviewModal={openPreviewModal} canRenderPreview={canCreatePreview} />}>
       <Section>
         <FormControl label="Display Type" contentBottomUnits={0}>
-          <RadioGroup options={APL_OPTIONS} checked={aplType} onChange={onChangeAPLType} disabled={!!jsonFileName && aplType === APLType.JSON} />
+          <RadioGroup
+            options={APL_OPTIONS}
+            checked={aplType}
+            onChange={onChangeAPLType}
+            disabled={!!jsonFileName && aplType === Node.Visual.APLType.JSON}
+          />
         </FormControl>
       </Section>
 
-      {aplType === APLType.SPLASH && <SplashEditor title={title || ''} onChange={onChange} imageURL={imageURL || ''} />}
+      {aplType === Node.Visual.APLType.SPLASH && <SplashEditor title={title || ''} onChange={onChange} imageURL={imageURL || ''} />}
 
-      {aplType === APLType.JSON && (
+      {aplType === Node.Visual.APLType.JSON && (
         <JSONEditor datasource={datasource} aplCommands={aplCommands} jsonFileName={jsonFileName || ''} onChange={onChange} document={documentData} />
       )}
     </Content>
@@ -62,4 +68,4 @@ const mapDispatchToProps = {
 
 type ConnectedAPLEditorProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(APLEditor) as React.FC<NodeEditorPropsType<APLStepData>>;
+export default connect(null, mapDispatchToProps)(APLEditor) as React.FC<NodeEditorPropsType<Node.Visual.APLStepData>>;

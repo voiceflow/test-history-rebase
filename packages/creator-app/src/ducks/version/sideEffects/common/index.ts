@@ -1,6 +1,7 @@
-import { AlexaProjectData, AlexaVersionData } from '@voiceflow/alexa-types';
-import { BaseVersionSettings } from '@voiceflow/general-types';
+import { Project as AlexaProject } from '@voiceflow/alexa-types';
+import { Version as BaseVersion } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
+import { Version as VoiceVersion } from '@voiceflow/voice-types';
 import { batch } from 'react-redux';
 
 import client from '@/client';
@@ -68,7 +69,9 @@ export const activateVersion =
     const slots = slotAdapter.mapFromDB(dbVersion.platformData.slots);
     const intents = intentAdapter(platform).mapFromDB(dbVersion.platformData.intents);
     const products =
-      'products' in dbProject.platformData ? productAdapter.mapFromDB(Object.values((dbProject.platformData as AlexaProjectData).products)) : [];
+      'products' in dbProject.platformData
+        ? productAdapter.mapFromDB(Object.values((dbProject.platformData as AlexaProject.AlexaProjectData).products))
+        : [];
 
     batch(() => {
       dispatch(Creator.resetCreator());
@@ -174,7 +177,7 @@ export const saveIntentsAndSlots = (): Thunk => async (_, getState) => {
   const slots = slotAdapter.mapToDB(Slot.allSlotsSelector(state));
   const intents = intentAdapter(platform).mapToDB(Intent.allIntentsSelector(state));
 
-  await client.api.version.updatePlatformData<AlexaVersionData>(versionID, { slots, intents });
+  await client.api.version.updatePlatformData<BaseVersion.BaseVersionData>(versionID, { slots, intents });
 };
 
 export const saveLocales =
@@ -207,7 +210,10 @@ export const saveSession =
     dispatch(updateSessionByVersionID(versionID, session));
 
     await client.platform(platform).version.updateSettings(versionID, {
-      session: createSessionAdapter({ platform }).toDB({ ...activeSession, ...session }, { defaultVoice }) as BaseVersionSettings<any>['session'],
+      session: createSessionAdapter({ platform }).toDB(
+        { ...activeSession, ...session },
+        { defaultVoice }
+      ) as VoiceVersion.VoiceVersionSettings<any>['session'],
     });
   };
 

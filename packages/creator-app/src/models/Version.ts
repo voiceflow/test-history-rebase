@@ -1,11 +1,11 @@
 import { Version as DBVersion, VersionPlatformData } from '@voiceflow/api-sdk';
-import { BaseVersionSettings } from '@voiceflow/general-types';
+import { Version as VoiceVersion } from '@voiceflow/voice-types';
 
 import { Nullable } from '@/types';
 
 export { DBVersion };
 
-export interface Version<P extends VersionPlatformData<BaseVersionSettings<string>, any>>
+export interface Version<P extends VersionPlatformData<VoiceVersion.VoiceVersionSettings<string>, any>>
   extends Pick<DBVersion<P>, 'creatorID' | 'variables' | 'projectID' | 'rootDiagramID'> {
   id: string;
   status: Nullable<P['status']>;

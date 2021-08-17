@@ -1,10 +1,10 @@
-import type { StepData as CodeData } from '@voiceflow/general-types/build/nodes/code';
+import { Node } from '@voiceflow/base-types';
 
 import { NodeData } from '@/models';
 
 import { createBlockAdapter } from '../utils';
 
-const codeAdapter = createBlockAdapter<CodeData, NodeData.Code>(
+const codeAdapter = createBlockAdapter<Node.Code.StepData, NodeData.Code>(
   ({ code }) => ({ code }),
   ({ code }) => ({ code })
 );

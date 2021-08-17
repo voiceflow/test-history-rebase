@@ -1,4 +1,4 @@
-import { ModelSensitivity as ModelSensitivityType } from '@voiceflow/alexa-types';
+import { Version as AlexaVersion } from '@voiceflow/alexa-types';
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
@@ -12,9 +12,9 @@ interface ModelSensitivityOwnProps {
   platformMeta: PlatformSettingsMetaProps;
 }
 const OPTIONS = [
-  { name: 'Low', value: ModelSensitivityType.LOW },
-  { name: 'Medium', value: ModelSensitivityType.MEDIUM },
-  { name: 'High', value: ModelSensitivityType.HIGH },
+  { name: 'Low', value: AlexaVersion.ModelSensitivity.LOW },
+  { name: 'Medium', value: AlexaVersion.ModelSensitivity.MEDIUM },
+  { name: 'High', value: AlexaVersion.ModelSensitivity.HIGH },
 ];
 
 const ModelSensitivity: React.FC<ConnectedModelSensitivityProps & ModelSensitivityOwnProps> = ({ modelSensitivity, platformMeta, saveSettings }) => (
@@ -27,10 +27,10 @@ const ModelSensitivity: React.FC<ConnectedModelSensitivityProps & ModelSensitivi
   >
     <Select
       placeholder="Model Sensitivity"
-      value={modelSensitivity ?? ModelSensitivityType.LOW}
+      value={modelSensitivity ?? AlexaVersion.ModelSensitivity.LOW}
       options={OPTIONS}
       onSelect={(value) => saveSettings({ modelSensitivity: value })}
-      getOptionValue={(option) => option?.value || ModelSensitivityType.LOW}
+      getOptionValue={(option) => option?.value || AlexaVersion.ModelSensitivity.LOW}
       getOptionLabel={(value) => OPTIONS.find((option) => option.value === value)?.name ?? 'Low'}
     />
   </Section>

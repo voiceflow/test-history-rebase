@@ -1,4 +1,4 @@
-import { getInvocationNameError as getAlexaInvocationNameError, Locale } from '@voiceflow/alexa-types';
+import { Constants, Utils } from '@voiceflow/alexa-types';
 import { BlockText, Box, BoxFlex, Button, ButtonVariant, IconVariant, Input, SvgIcon, TippyTooltip, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 import { Assign } from 'utility-types';
@@ -32,7 +32,7 @@ const WaitInvocationName: React.FC<WaitInvocationNameProps & WaitInvocationNameC
   const updateName = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     api.update({
       name: target.value,
-      error: getAlexaInvocationNameError(target.value, locales),
+      error: Utils.getInvocationNameError(target.value, locales),
     });
   };
 
@@ -108,6 +108,6 @@ const mapDispatchToProps = {
   saveInvocationName: Version.saveInvocationName,
 };
 
-type WaitInvocationNameConnectedProps = Assign<ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>, { locales: Locale[] }>;
+type WaitInvocationNameConnectedProps = Assign<ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>, { locales: Constants.Locale[] }>;
 
 export default connect(mapStateToProps, mapDispatchToProps)(WaitInvocationName) as React.FC<WaitInvocationNameProps>;

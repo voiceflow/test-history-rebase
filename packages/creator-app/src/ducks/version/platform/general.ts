@@ -1,4 +1,4 @@
-import { GeneralVersionSettings } from '@voiceflow/general-types';
+import { Version } from '@voiceflow/general-types';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
@@ -24,13 +24,15 @@ export const activeInvocationNameSelector = Project.activeProjectNameSelector;
 
 // action creators
 
-export const updateSettings = (versionID: string, settings: Partial<GeneralVersionSettings>): UpdateSettings<GeneralVersionSettings> =>
-  updateSettingsByVersionID<GeneralVersionSettings>(versionID, settings);
+export const updateSettings = (
+  versionID: string,
+  settings: Partial<Version.GeneralVersionSettings>
+): UpdateSettings<Version.GeneralVersionSettings> => updateSettingsByVersionID<Version.GeneralVersionSettings>(versionID, settings);
 
 // side effects
 
 export const saveSettings =
-  (settings: Partial<GeneralVersionSettings>): Thunk =>
+  (settings: Partial<Version.GeneralVersionSettings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);

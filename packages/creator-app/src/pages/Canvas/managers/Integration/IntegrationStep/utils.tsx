@@ -1,4 +1,4 @@
-import { APIActionType } from '@voiceflow/general-types/build/nodes/api';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import { IntegrationType } from '@/constants';
@@ -7,13 +7,13 @@ import { VariableLabel } from '@/pages/Canvas/components/Step';
 
 const getCustomApiAction = (action: string | undefined) => {
   switch (action) {
-    case APIActionType.POST:
+    case Node.Api.APIActionType.POST:
       return 'POST';
-    case APIActionType.PUT:
+    case Node.Api.APIActionType.PUT:
       return 'PUT';
-    case APIActionType.DELETE:
+    case Node.Api.APIActionType.DELETE:
       return 'DELETE';
-    case APIActionType.PATCH:
+    case Node.Api.APIActionType.PATCH:
       return 'PATCH';
     default:
       return 'GET';

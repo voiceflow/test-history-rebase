@@ -1,11 +1,10 @@
-import { Voice } from '@voiceflow/alexa-types';
-import { StepData } from '@voiceflow/general-types/build/nodes/prompt';
+import { Node } from '@voiceflow/alexa-types';
 
 import { NodeData } from '@/models';
 
 import { createBlockAdapter, noMatchAdapter, repromptAdapter } from '../utils';
 
-const promptAdapter = createBlockAdapter<StepData<Voice>, NodeData.Prompt>(
+const promptAdapter = createBlockAdapter<Node.Prompt.StepData, NodeData.Prompt>(
   ({ reprompt, noMatches }) => ({
     reprompt: reprompt && repromptAdapter.fromDB(reprompt),
     noMatchReprompt: noMatchAdapter.fromDB(noMatches),

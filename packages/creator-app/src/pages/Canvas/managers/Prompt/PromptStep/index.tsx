@@ -1,4 +1,4 @@
-import { NoMatchType } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
@@ -33,7 +33,7 @@ export const PromptStep: React.FC<PromptStepProps> = ({ nodeID, isPath, elsePath
 const ConnectedPromptStep: React.FC<ConnectedStepProps<NodeData.Prompt>> = ({ node, data }) => (
   <PromptStep
     nodeID={node.id}
-    isPath={!!data.noMatchReprompt.type && data.noMatchReprompt.type !== NoMatchType.REPROMPT}
+    isPath={!!data.noMatchReprompt.type && data.noMatchReprompt.type !== Node.Utils.NoMatchType.REPROMPT}
     elsePortID={node.ports.out[0]}
     elsePathName={data.noMatchReprompt.pathName}
   />

@@ -1,4 +1,4 @@
-import { GoogleProject } from '@voiceflow/google-types';
+import { Project } from '@voiceflow/google-types';
 import axios from 'axios';
 
 import { GOOGLE_SERVICE_ENDPOINT } from '@/config';
@@ -6,7 +6,7 @@ import { GOOGLE_SERVICE_ENDPOINT } from '@/config';
 import { createProjectService, PROJECT_RESOURCE_ENDPOINT } from '../utils';
 
 const projectGoogleService = {
-  ...createProjectService<GoogleProject>(GOOGLE_SERVICE_ENDPOINT),
+  ...createProjectService<Project.GoogleProject>(GOOGLE_SERVICE_ENDPOINT),
 
   getGoogleProjects: () =>
     axios

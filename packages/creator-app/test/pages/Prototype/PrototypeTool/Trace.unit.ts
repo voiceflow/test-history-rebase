@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation, @typescript-eslint/ban-ts-comment */
 
-import { BaseRequest, IntentName, RequestType, TraceType } from '@voiceflow/general-types';
-import { TraceStreamAction } from '@voiceflow/general-types/build/nodes/stream';
+import { Node, Request } from '@voiceflow/base-types';
+import { Constants } from '@voiceflow/general-types';
 import { SinonSpy, SinonStub } from 'sinon';
 
 import { createSuite } from '@/../test/_suite';
@@ -21,7 +21,7 @@ const MESSAGE = 'message';
 const BLOCK_ID = 'block-id';
 const STEP_ID = 'step-id';
 
-const traceFactory = <T extends TraceType>(type: T, payload: unknown): Trace => ({ id: ID, type, payload } as any);
+const traceFactory = <T extends Node.Utils.TraceType>(type: T, payload: unknown): Trace => ({ id: ID, type, payload } as any);
 
 enum TraceMethods {
   END = 'processEndTrace',
@@ -131,7 +131,7 @@ const suite = createSuite(({ spy, stub, expect }) => ({
     return expect(controller['props']['setError']);
   },
 
-  expectSetInteractions: (controller: TraceController, interactions: { name: string; request?: BaseRequest }[]) =>
+  expectSetInteractions: (controller: TraceController, interactions: { name: string; request?: Request.BaseRequest }[]) =>
     expect(controller['props']['setInteractions']).to.be.calledWith(interactions),
 
   expectEnterFlow: (controller: TraceController) => expect(controller['props']['enterFlow']),
@@ -203,7 +203,7 @@ suite(
       });
 
       it('should process block trace', async () => {
-        const controller = createController({ context: { trace: [traceFactory(TraceType.BLOCK, { blockID: BLOCK_ID })] } });
+        const controller = createController({ context: { trace: [traceFactory(Node.Utils.TraceType.BLOCK, { blockID: BLOCK_ID })] } });
 
         await controller.next();
 
@@ -213,7 +213,7 @@ suite(
       });
 
       it('should process block without timeout', async () => {
-        const controller = createController({ debug: true, context: { trace: [traceFactory(TraceType.BLOCK, { blockID: BLOCK_ID })] } });
+        const controller = createController({ debug: true, context: { trace: [traceFactory(Node.Utils.TraceType.BLOCK, { blockID: BLOCK_ID })] } });
 
         await controller.next();
 
@@ -225,7 +225,7 @@ suite(
         const controller = createController({
           context: {
             trace: [
-              traceFactory(TraceType.SPEAK, {
+              traceFactory(Node.Utils.TraceType.SPEAK, {
                 src: SRC,
                 type: SpeakTraceAudioType.MESSAGE,
                 voice: 'voice',
@@ -247,7 +247,7 @@ suite(
         const controller = createController({
           context: {
             trace: [
-              traceFactory(TraceType.SPEAK, {
+              traceFactory(Node.Utils.TraceType.SPEAK, {
                 src: SRC,
                 type: SpeakTraceAudioType.AUDIO,
                 message: MESSAGE,
@@ -268,7 +268,7 @@ suite(
         const controller = createController({
           context: {
             trace: [
-              traceFactory(TraceType.SPEAK, {
+              traceFactory(Node.Utils.TraceType.SPEAK, {
                 src: SRC,
                 type: SpeakTraceAudioType.AUDIO,
                 message: MESSAGE,
@@ -290,7 +290,7 @@ suite(
         const controller = createController({
           context: {
             trace: [
-              traceFactory(TraceType.SPEAK, {
+              traceFactory(Node.Utils.TraceType.SPEAK, {
                 src: SRC,
                 type: SpeakTraceAudioType.AUDIO,
                 message: MESSAGE,
@@ -310,7 +310,7 @@ suite(
 
         const controller = createController({
           context: {
-            trace: [traceFactory(TraceType.CHOICE, { buttons })],
+            trace: [traceFactory(Node.Utils.TraceType.CHOICE, { buttons })],
           },
         });
 
@@ -323,7 +323,7 @@ suite(
       it('should process flow trace', async () => {
         const controller = createController({
           context: {
-            trace: [traceFactory(TraceType.FLOW, { diagramID: 'diagramID' })],
+            trace: [traceFactory(Node.Utils.TraceType.FLOW, { diagramID: 'diagramID' })],
           },
         });
 
@@ -337,7 +337,7 @@ suite(
       it('should process flow trace without diagramID', async () => {
         const controller = createController({
           context: {
-            trace: [traceFactory(TraceType.FLOW, {})],
+            trace: [traceFactory(Node.Utils.TraceType.FLOW, {})],
           },
         });
 
@@ -353,7 +353,9 @@ suite(
 
         const next = spy(controller, 'next');
 
-        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PLAY, token: '1' })] });
+        emulateFetchContext(controller, {
+          trace: [traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PLAY, token: '1' })],
+        });
 
         await controller.next();
 
@@ -366,14 +368,16 @@ suite(
         ]);
         expectUpdateStatus(controller).to.be.calledWith(PMStatus.WAITING_USER_INTERACTION);
         expectAudioPlay(controller).to.be.calledWithMatch(SRC);
-        expect(next).to.be.calledWith({ type: RequestType.TEXT, payload: IntentName.NEXT });
+        expect(next).to.be.calledWith({ type: Request.RequestType.TEXT, payload: Constants.IntentName.NEXT });
         expectProcessSingleTrace(controller, TraceMethods.STREAM);
       });
 
       it('should process stream pause', async () => {
         const controller = createController();
 
-        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PAUSE, token: '1' })] });
+        emulateFetchContext(controller, {
+          trace: [traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PAUSE, token: '1' })],
+        });
 
         const next = spy(controller, 'next');
 
@@ -388,14 +392,16 @@ suite(
         expectUpdateStatus(controller).to.be.calledWith(PMStatus.WAITING_USER_INTERACTION);
         expectAudioStop(controller).to.be.calledTwice;
         expectAudioPlay(controller).not.to.be.calledWithMatch(SRC);
-        expect(next).not.to.be.calledWith({ type: RequestType.TEXT, payload: IntentName.NEXT });
+        expect(next).not.to.be.calledWith({ type: Request.RequestType.TEXT, payload: Constants.IntentName.NEXT });
         expectProcessSingleTrace(controller, TraceMethods.STREAM);
       });
 
       it('should process stream audio pause', async () => {
         const controller = createController();
 
-        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PLAY, token: '1' })] });
+        emulateFetchContext(controller, {
+          trace: [traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PLAY, token: '1' })],
+        });
 
         emulateAudioPause(controller, { currentTime: 10 });
 
@@ -407,7 +413,9 @@ suite(
       it('should process stream audio error', async () => {
         const controller = createController();
 
-        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PLAY, token: '1' })] });
+        emulateFetchContext(controller, {
+          trace: [traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PLAY, token: '1' })],
+        });
         emulateAudioError(controller);
 
         await controller.next();
@@ -421,17 +429,19 @@ suite(
 
         const next = spy(controller, 'next');
 
-        emulateFetchContext(controller, { trace: [traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PLAY, token: '1' })] });
+        emulateFetchContext(controller, {
+          trace: [traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PLAY, token: '1' })],
+        });
         emulateAudioReject(controller);
 
         await controller.next();
 
-        expect(next).not.to.be.calledWith({ type: RequestType.TEXT, payload: IntentName.NEXT });
+        expect(next).not.to.be.calledWith({ type: Request.RequestType.TEXT, payload: Constants.IntentName.NEXT });
       });
 
       it('should process debug trace', async () => {
         const controller = createController({
-          context: { trace: [traceFactory(TraceType.DEBUG, { message: MESSAGE })] },
+          context: { trace: [traceFactory(Node.Utils.TraceType.DEBUG, { message: MESSAGE })] },
         });
 
         await controller.next();
@@ -442,7 +452,7 @@ suite(
 
       it('should process end trace', async () => {
         const controller = createController({
-          context: { trace: [traceFactory(TraceType.END, {})] },
+          context: { trace: [traceFactory(Node.Utils.TraceType.END, {})] },
         });
 
         await controller.next();
@@ -465,22 +475,22 @@ suite(
           controller,
           {
             trace: [
-              traceFactory(TraceType.BLOCK, { blockID: BLOCK_ID }),
-              traceFactory(TraceType.SPEAK, {
+              traceFactory(Node.Utils.TraceType.BLOCK, { blockID: BLOCK_ID }),
+              traceFactory(Node.Utils.TraceType.SPEAK, {
                 src: SRC,
                 type: SpeakTraceAudioType.MESSAGE,
                 voice: 'voice',
                 message: MESSAGE,
                 choices: [],
               }),
-              traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PLAY, token: '1' }),
+              traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PLAY, token: '1' }),
             ],
           },
           {
             trace: [
-              traceFactory(TraceType.CHOICE, { choices: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }] }),
-              traceFactory(TraceType.FLOW, { diagramID: 'diagramID' }),
-              traceFactory(TraceType.END, {}),
+              traceFactory(Node.Utils.TraceType.CHOICE, { choices: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }] }),
+              traceFactory(Node.Utils.TraceType.FLOW, { diagramID: 'diagramID' }),
+              traceFactory(Node.Utils.TraceType.END, {}),
             ],
           }
         );
@@ -493,7 +503,7 @@ suite(
 
       it('should not process traces if stopped', async () => {
         const controller = createController({
-          context: { trace: [traceFactory(TraceType.BLOCK, { blockID: BLOCK_ID })] },
+          context: { trace: [traceFactory(Node.Utils.TraceType.BLOCK, { blockID: BLOCK_ID })] },
         });
 
         controller['stopped'] = true;
@@ -508,7 +518,7 @@ suite(
       it('should clear and stop  trace', () => {
         const controller = createController();
 
-        controller['trace'] = [traceFactory(TraceType.BLOCK, { blockID: BLOCK_ID })];
+        controller['trace'] = [traceFactory(Node.Utils.TraceType.BLOCK, { blockID: BLOCK_ID })];
 
         controller.stop();
 
@@ -522,18 +532,18 @@ suite(
         const controller = createController();
 
         controller['trace'] = [
-          traceFactory(TraceType.BLOCK, { blockID: BLOCK_ID }),
-          traceFactory(TraceType.SPEAK, {
+          traceFactory(Node.Utils.TraceType.BLOCK, { blockID: BLOCK_ID }),
+          traceFactory(Node.Utils.TraceType.SPEAK, {
             src: SRC,
             type: SpeakTraceAudioType.MESSAGE,
             voice: 'voice',
             message: MESSAGE,
             choices: [],
           }),
-          traceFactory(TraceType.STREAM, { src: SRC, action: TraceStreamAction.PLAY, token: '1' }),
-          traceFactory(TraceType.CHOICE, { choices: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }] }),
-          traceFactory(TraceType.FLOW, { diagramID: 'diagramID' }),
-          traceFactory(TraceType.END, {}),
+          traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PLAY, token: '1' }),
+          traceFactory(Node.Utils.TraceType.CHOICE, { choices: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }] }),
+          traceFactory(Node.Utils.TraceType.FLOW, { diagramID: 'diagramID' }),
+          traceFactory(Node.Utils.TraceType.END, {}),
         ];
 
         await controller.emptyTrace();

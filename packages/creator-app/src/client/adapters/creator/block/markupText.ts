@@ -1,5 +1,5 @@
 /* eslint-disable max-depth, no-restricted-syntax */
-import { ElementProperty, ElementType, TextProperty } from '@voiceflow/general-types/build/nodes/text';
+import { Text as BaseText } from '@voiceflow/base-types';
 import { RawDraftContentState, RawDraftEntityRange, RawDraftInlineStyleRange } from 'draft-js';
 import { parseToRgb } from 'polished';
 import { Element, Text } from 'slate';
@@ -72,7 +72,7 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
 
           (children[children.length - 1] as Text).text = beforeText;
           children.push({
-            type: ElementType.LINK,
+            type: BaseText.ElementType.LINK,
             url,
             children: [{ text: linkText }],
           });
@@ -165,16 +165,16 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
           // eslint-disable-next-line default-case
           switch (draftProperty) {
             case DraftInlineStyle.ITALIC:
-              children = addLeafPropertyAtRange(children, styleRange, TextProperty.ITALIC, true);
+              children = addLeafPropertyAtRange(children, styleRange, BaseText.TextProperty.ITALIC, true);
               break;
             case DraftInlineStyle.UNDERLINE:
-              children = addLeafPropertyAtRange(children, styleRange, TextProperty.UNDERLINE, true);
+              children = addLeafPropertyAtRange(children, styleRange, BaseText.TextProperty.UNDERLINE, true);
               break;
             case DraftInlineStyle.FONT_FAMILY:
-              children = addLeafPropertyAtRange(children, styleRange, TextProperty.FONT_FAMILY, value);
+              children = addLeafPropertyAtRange(children, styleRange, BaseText.TextProperty.FONT_FAMILY, value);
               break;
             case DraftInlineStyle.FONT_WEIGHT:
-              children = addLeafPropertyAtRange(children, styleRange, TextProperty.FONT_WEIGHT, value);
+              children = addLeafPropertyAtRange(children, styleRange, BaseText.TextProperty.FONT_WEIGHT, value);
               break;
             case DraftInlineStyle.COLOR: {
               try {
@@ -187,7 +187,7 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
                   a: 'alpha' in rgb ? rgb.alpha : 1,
                 };
 
-                children = addLeafPropertyAtRange(children, styleRange, TextProperty.COLOR, rgba);
+                children = addLeafPropertyAtRange(children, styleRange, BaseText.TextProperty.COLOR, rgba);
               } catch {
                 // empty
               }
@@ -196,7 +196,7 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
         });
 
       return {
-        [ElementProperty.TEXT_ALIGN]: textAlignment || 'left',
+        [BaseText.ElementProperty.TEXT_ALIGN]: textAlignment || 'left',
         children,
       };
     });

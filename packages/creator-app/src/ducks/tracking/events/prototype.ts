@@ -1,4 +1,4 @@
-import { DeviceType } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 
 import client from '@/client';
 import * as Prototype from '@/ducks/prototype';
@@ -25,12 +25,15 @@ export const trackActiveProjectPrototypeTestClick = createProjectEventTracker((o
   client.analytics.track(EventName.PROJECT_PROTOTYPE_TEST_CLICK, createProjectEventPayload(options))
 );
 
-export const trackActiveProjectPrototypeTestStart = createProjectEventTracker<{ debug: boolean; display: DeviceType | null; mode: PrototypeMode }>(
-  (options) =>
-    client.analytics.track(
-      EventName.PROJECT_PROTOTYPE_TEST_START,
-      createProjectEventPayload(options, { debug: options.debug, display: options.display, mode: options.mode })
-    )
+export const trackActiveProjectPrototypeTestStart = createProjectEventTracker<{
+  debug: boolean;
+  display: Node.Visual.DeviceType | null;
+  mode: PrototypeMode;
+}>((options) =>
+  client.analytics.track(
+    EventName.PROJECT_PROTOTYPE_TEST_START,
+    createProjectEventPayload(options, { debug: options.debug, display: options.display, mode: options.mode })
+  )
 );
 
 export const trackProjectBlockPrototypeTestStart = createProjectEventTracker((options, _dispatch, getState) => {

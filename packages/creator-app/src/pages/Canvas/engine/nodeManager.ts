@@ -1,4 +1,4 @@
-import { CanvasNodeVisibility } from '@voiceflow/general-types';
+import { Node as BaseNode } from '@voiceflow/base-types';
 import _partition from 'lodash/partition';
 import { batch } from 'react-redux';
 
@@ -132,7 +132,7 @@ class NodeManager extends EngineConsumer {
         features: allActiveFeatures,
         platform,
         defaultVoice: defaultVoice || getPlatformDefaultVoice(platform),
-        canvasNodeVisibility: canvasNodeVisibility || CanvasNodeVisibility.PREVIEW,
+        canvasNodeVisibility: canvasNodeVisibility || BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
       };
     },
 

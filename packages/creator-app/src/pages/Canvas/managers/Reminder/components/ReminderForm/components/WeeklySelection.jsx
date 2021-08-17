@@ -1,4 +1,4 @@
-import { RecurrenceFreq } from '@voiceflow/alexa-types/build/nodes/reminder';
+import { Node } from '@voiceflow/alexa-types';
 import { ButtonContainer, Flex } from '@voiceflow/ui';
 import React from 'react';
 
@@ -51,7 +51,7 @@ function WeeklySelection({ recurrence, onChange }) {
 
   return (
     <WeeklyContainer>
-      {recurrence.freq === RecurrenceFreq.WEEKLY && (
+      {recurrence.freq === Node.Reminder.RecurrenceFreq.WEEKLY && (
         <Flex>
           {weekArray.map((day, index) => (
             <DayButton

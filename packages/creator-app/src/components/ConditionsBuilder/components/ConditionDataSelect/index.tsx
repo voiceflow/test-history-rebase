@@ -1,4 +1,4 @@
-import { ConditionsLogicInterface, ExpressionTypeV2 } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import { Box, MenuContainer, Portal, stopPropagation } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
@@ -17,7 +17,7 @@ import ConditionValueSelect from '../ConditionValueSelect';
 import ConditionVariableSelect from '../ConditionVariableSelect';
 import ConditionLogicSelect from './components/ConditionLogicSelect';
 
-export type ValueSelectExpressionType = ExpressionTypeV2.VARIABLE | ExpressionTypeV2.VALUE;
+export type ValueSelectExpressionType = Node.Utils.ExpressionTypeV2.VARIABLE | Node.Utils.ExpressionTypeV2.VALUE;
 
 export interface ConditionDataSelectProps {
   isLogicGroup?: boolean;
@@ -102,7 +102,7 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
                       >
                         {/* to add left side value */}
                         <>
-                          {expression.logicInterface === ConditionsLogicInterface.VARIABLE && (
+                          {expression.logicInterface === Node.Utils.ConditionsLogicInterface.VARIABLE && (
                             <>
                               <ConditionVariableSelect value={String(expression.value[0]?.value)} onChange={onValueUpdate(0)} />
                               <Box mt={24}>
@@ -118,7 +118,7 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
                           )}
 
                           {/* display logic and input field for right side once left side value is saved */}
-                          {expression.logicInterface === ConditionsLogicInterface.VALUE && (
+                          {expression.logicInterface === Node.Utils.ConditionsLogicInterface.VALUE && (
                             <>
                               <ConditionValueSelect value={String(expression.value[0]?.value)} onChange={onValueUpdate(0)} />
                               <Box mt={24}>

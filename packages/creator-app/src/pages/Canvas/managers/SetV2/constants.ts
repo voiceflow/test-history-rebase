@@ -1,4 +1,4 @@
-import { ExpressionTypeV2 } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import cuid from 'cuid';
 
 import { BlockType } from '@/constants';
@@ -6,6 +6,7 @@ import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
+// eslint-disable-next-line import/prefer-default-export
 export const NODE_CONFIG: NodeConfig<NodeData.SetV2> = {
   type: BlockType.SETV2,
 
@@ -26,7 +27,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.SetV2> = {
         {
           id: cuid.slug(),
           variable: null,
-          type: ExpressionTypeV2.VALUE,
+          type: Node.Utils.ExpressionTypeV2.VALUE,
           expression: '',
         },
       ],

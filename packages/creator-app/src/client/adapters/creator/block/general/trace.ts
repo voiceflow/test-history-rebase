@@ -1,10 +1,10 @@
-import { StepData } from '@voiceflow/general-types/build/nodes/_v1';
+import { Node } from '@voiceflow/base-types';
 
 import { NodeData } from '@/models';
 
 import { createBlockAdapter, defaultPortAdapter, PortsAdapter } from '../utils';
 
-const traceAdapter = createBlockAdapter<StepData<{ name: string; body: string }> & Record<string, unknown>, NodeData.Trace>(
+const traceAdapter = createBlockAdapter<Node._v1.StepData<{ name: string; body: string }> & Record<string, unknown>, NodeData.Trace>(
   ({ payload, defaultPath, ports }) => ({
     name: payload?.name || '',
     body: payload?.body || '',

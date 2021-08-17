@@ -1,4 +1,4 @@
-import { PermissionType } from '@voiceflow/alexa-types';
+import { Node } from '@voiceflow/alexa-types';
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
@@ -13,7 +13,7 @@ const PermissionSelect = ({ value, onChange, disabledOptions }) => (
     }))}
     optionsFilter={(options) => ({
       matchedOptions: options.filter(
-        (option) => option.value === value || option.value === PermissionType.UNOFFICIAL_PRODUCT || !disabledOptions.includes(option.value)
+        (option) => option.value === value || option.value === Node.PermissionType.UNOFFICIAL_PRODUCT || !disabledOptions.includes(option.value)
       ),
     })}
     getOptionValue={(option) => option.value}

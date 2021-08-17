@@ -1,4 +1,4 @@
-import { ExpressionTypeV2 } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import { BoxFlexAlignStart } from '@voiceflow/ui';
 import React from 'react';
 
@@ -16,7 +16,7 @@ export interface LogicUnitProps {
 
   onDelete: () => void;
   onDataChange: (value: ExpressionV2) => void;
-  updateBaseType: (value: ExpressionTypeV2.AND | ExpressionTypeV2.OR) => void;
+  updateBaseType: (value: Node.Utils.ExpressionTypeV2.AND | Node.Utils.ExpressionTypeV2.OR) => void;
 }
 
 const LogicUnit: React.FC<LogicUnitProps> = ({ baseLogicType, updateBaseType, expression, onDataChange, onDelete, firstItem, isLogicGroup }) => {

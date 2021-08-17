@@ -1,4 +1,4 @@
-import { Set, StepData as SetData } from '@voiceflow/general-types/build/nodes/setV2';
+import { Node } from '@voiceflow/base-types';
 import cuid from 'cuid';
 
 import { NodeData } from '@/models';
@@ -6,7 +6,7 @@ import { sanitizeSetValue } from '@/utils/expression';
 
 import { createBlockAdapter } from '../utils';
 
-const setAdapterV2 = createBlockAdapter<SetData, NodeData.SetV2>(
+const setAdapterV2 = createBlockAdapter<Node.SetV2.StepData, NodeData.SetV2>(
   ({ sets, title }) => ({
     title,
     sets: sets.map(({ expression, variable, type }) => ({
@@ -24,7 +24,7 @@ const setAdapterV2 = createBlockAdapter<SetData, NodeData.SetV2>(
           type,
           variable: variable ?? null,
           expression: sanitizeSetValue(String(expression), type) ?? '',
-        } as Set)
+        } as Node.SetV2.Set)
     ),
   })
 );

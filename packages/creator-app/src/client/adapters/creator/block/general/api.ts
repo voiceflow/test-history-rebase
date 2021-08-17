@@ -1,11 +1,10 @@
-import { IntegrationType } from '@voiceflow/general-types';
-import { APIActionType, APIBodyType, APIMethod, StepData } from '@voiceflow/general-types/build/nodes/api';
+import { Node } from '@voiceflow/base-types';
 
 import { NodeData } from '@/models';
 
 import { createBlockAdapter } from '../utils';
 
-const apiAdapter = createBlockAdapter<StepData, NodeData.CustomApi>(
+const apiAdapter = createBlockAdapter<Node.Api.StepData, NodeData.CustomApi>(
   ({ url, body, headers, mappings, content, selectedAction, params, bodyType }) => ({
     url,
     body,
@@ -15,7 +14,7 @@ const apiAdapter = createBlockAdapter<StepData, NodeData.CustomApi>(
     parameters: params,
     bodyInputType: bodyType,
     selectedAction,
-    selectedIntegration: IntegrationType.CUSTOM_API,
+    selectedIntegration: Node.Utils.IntegrationType.CUSTOM_API,
   }),
   ({
     url = '',
@@ -24,19 +23,19 @@ const apiAdapter = createBlockAdapter<StepData, NodeData.CustomApi>(
     headers = [],
     mapping = [],
     parameters = [],
-    bodyInputType = APIBodyType.FORM_DATA,
-    selectedAction = APIActionType.GET,
+    bodyInputType = Node.Api.APIBodyType.FORM_DATA,
+    selectedAction = Node.Api.APIActionType.GET,
   }) => ({
     url,
     body,
     params: parameters,
-    method: selectedAction.split(' ')[2] as APIMethod,
+    method: selectedAction.split(' ')[2] as Node.Api.APIMethod,
     headers,
     content,
     mappings: mapping,
     bodyType: bodyInputType,
-    selectedAction: selectedAction as APIActionType,
-    selectedIntegration: IntegrationType.CUSTOM_API,
+    selectedAction: selectedAction as Node.Api.APIActionType,
+    selectedIntegration: Node.Utils.IntegrationType.CUSTOM_API,
   })
 );
 

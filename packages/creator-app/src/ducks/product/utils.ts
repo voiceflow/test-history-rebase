@@ -1,14 +1,14 @@
-import { Locale, MarketPlace, ProductType } from '@voiceflow/alexa-types';
+import { Constants, Project } from '@voiceflow/alexa-types';
 
 import { DEFAULT_PRODUCT_PHRASE, NEW_PRODUCT_ID } from '@/constants';
 import { Product, ProductMarketPlace } from '@/models';
 import Locales, { MarketPlaceAvailability } from '@/services/LocaleMap';
 
-export const getSelectedLocales = (locales: Locale[] = []) =>
+export const getSelectedLocales = (locales: Constants.Locale[] = []) =>
   Locales.filter(({ value, inSkillProduct }) => locales.includes(value) && inSkillProduct);
 
 export const getDefaultAvailability = () =>
-  MarketPlaceAvailability.reduce<Record<MarketPlace, ProductMarketPlace>>(
+  MarketPlaceAvailability.reduce<Record<Project.MarketPlace, ProductMarketPlace>>(
     (acc, { marketPlace, currency, min, countries }) =>
       Object.assign(acc, {
         [marketPlace]: {
@@ -17,12 +17,12 @@ export const getDefaultAvailability = () =>
           countries,
         },
       }),
-    {} as Record<MarketPlace, ProductMarketPlace>
+    {} as Record<Project.MarketPlace, ProductMarketPlace>
   );
 
-export const createNewProduct = (locales: Locale[]): Product => ({
+export const createNewProduct = (locales: Constants.Locale[]): Product => ({
   id: NEW_PRODUCT_ID,
-  type: ProductType.ENTITLEMENT,
+  type: Constants.ProductType.ENTITLEMENT,
   name: '',
   skill: '',
   summary: '',

@@ -1,4 +1,4 @@
-import { ButtonsLayout } from '@voiceflow/general-types';
+import { Button } from '@voiceflow/base-types';
 import { PlanType, PlatformType } from '@voiceflow/internal';
 import { FullSpinner, toast } from '@voiceflow/ui';
 import React from 'react';
@@ -29,7 +29,7 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
     layout: PrototypeDuck.PrototypeLayout.TEXT_DIALOG,
     projectName: '',
     hasPassword: false,
-    buttons: ButtonsLayout.STACKED,
+    buttons: Button.ButtonsLayout.STACKED,
   });
 
   const [isAuthenticated, setAuthenticated] = React.useState<boolean>(false);

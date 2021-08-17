@@ -1,4 +1,4 @@
-import { CanvasVisibility, VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
 
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
@@ -24,8 +24,8 @@ export const NODE_CONFIG: NodeConfig<NodeData.Visual> = {
       image: null,
       device: null,
       dimensions: null,
-      visualType: VisualType.IMAGE,
-      canvasVisibility: CanvasVisibility.FULL,
+      visualType: Node.Visual.VisualType.IMAGE,
+      canvasVisibility: Node.Visual.CanvasVisibility.FULL,
     },
   }),
 };

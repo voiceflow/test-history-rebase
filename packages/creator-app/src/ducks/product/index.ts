@@ -1,4 +1,4 @@
-import { Locale } from '@voiceflow/alexa-types';
+import { Constants } from '@voiceflow/alexa-types';
 import { batch } from 'react-redux';
 
 import client from '@/client';
@@ -44,7 +44,7 @@ export const createProduct = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const locales = activeLocalesSelector(state);
 
-  const product = createNewProduct(locales as Locale[]);
+  const product = createNewProduct(locales as Constants.Locale[]);
 
   dispatch(addProduct(product.id, product));
 };
@@ -99,7 +99,7 @@ export const uploadProduct =
   };
 
 export const saveAllProductLocales =
-  (locales: Locale[]): Thunk =>
+  (locales: Constants.Locale[]): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const allProducts = allProductsSelector(state);

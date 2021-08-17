@@ -1,12 +1,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
-import { PermissionType } from '@voiceflow/alexa-types';
-import { RecurrenceFreq } from '@voiceflow/alexa-types/build/nodes/reminder';
+import { Node as AlexaNode } from '@voiceflow/alexa-types';
 import { SlotMapping } from '@voiceflow/api-sdk';
-import { AnyButton, CanvasNodeVisibility, ExpressionTypeV2, IntegrationUser, NoMatchType } from '@voiceflow/general-types';
-import { APIBodyType, APIKeyVal } from '@voiceflow/general-types/build/nodes/api';
-import { GoogleSheetsMapping, GoogleSheetsSpreadsheet, GoogleSheetsValueLabel } from '@voiceflow/general-types/build/nodes/googleSheets';
-import { StepData as TextStepData } from '@voiceflow/general-types/build/nodes/text';
-import { StepData as VisualStepData } from '@voiceflow/general-types/build/nodes/visual';
+import { Button, Node as BaseNode } from '@voiceflow/base-types';
 
 import { BlockType, CardType, DistinctPlatform, IntegrationType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
@@ -55,7 +50,7 @@ export namespace NodeData {
   }
 
   export interface NoMatches {
-    type: NoMatchType | null;
+    type: BaseNode.Utils.NoMatchType | null;
     pathName: string;
     randomize: boolean;
     reprompts: SpeakData[];
@@ -72,7 +67,7 @@ export namespace NodeData {
     else: NoMatches;
     choices: Record<DistinctPlatform, InteractionChoice>[];
     reprompt: Reprompt | null;
-    buttons: AnyButton[] | null;
+    buttons: Button.AnyButton[] | null;
   }
 
   export interface ChoiceOld {
@@ -83,7 +78,7 @@ export namespace NodeData {
   export interface Prompt {
     noMatchReprompt: NoMatches;
     reprompt: Reprompt | null;
-    buttons: AnyButton[] | null;
+    buttons: Button.AnyButton[] | null;
   }
 
   export type Command = Record<DistinctPlatform, Command.PlatformData> & { name: string };
@@ -108,13 +103,13 @@ export namespace NodeData {
     variable: string | null;
     examples: string[];
     reprompt: Reprompt | null;
-    buttons: AnyButton[] | null;
+    buttons: Button.AnyButton[] | null;
   }
 
   export interface Speak {
     randomize: boolean;
     dialogs: SpeakData[];
-    canvasVisibility?: CanvasNodeVisibility;
+    canvasVisibility?: BaseNode.Utils.CanvasNodeVisibility;
   }
 
   export interface Card {
@@ -141,7 +136,7 @@ export namespace NodeData {
     seconds: string;
     date?: string;
     timezone?: string;
-    recurrence?: { byDay?: string; freq: RecurrenceFreq };
+    recurrence?: { byDay?: string; freq: AlexaNode.Reminder.RecurrenceFreq };
     recurrenceBool: boolean;
   }
 
@@ -149,7 +144,7 @@ export namespace NodeData {
     id: string;
     mapTo: string | null;
     product: string | null;
-    selected: PermissionType | null;
+    selected: AlexaNode.PermissionType | null;
   }
 
   export interface UserInfo {
@@ -160,7 +155,7 @@ export namespace NodeData {
     expression: Expression;
     id: string;
     variable?: string | null;
-    type?: ExpressionTypeV2;
+    type?: BaseNode.Utils.ExpressionTypeV2;
   }
 
   export interface Set {
@@ -174,7 +169,7 @@ export namespace NodeData {
     expression: NewExpressionType;
     id: string;
     variable?: string | null;
-    type: ExpressionTypeV2;
+    type: BaseNode.Utils.ExpressionTypeV2;
   }
 
   export interface SetV2 {
@@ -238,52 +233,55 @@ export namespace NodeData {
     productID: string | null;
   }
 
-  export interface IntegrationDefaultProps<T extends IntegrationType> {
+  export interface IntegrationDefaultProps {
     selectedAction?: string;
-    selectedIntegration: T;
+    selectedIntegration: string;
   }
 
-  export type CustomApi = IntegrationDefaultProps<IntegrationType.CUSTOM_API> & {
+  export interface CustomApi extends IntegrationDefaultProps {
     url?: string;
-    body?: APIKeyVal[];
-    headers?: APIKeyVal[];
+    body?: BaseNode.Api.APIKeyVal[];
+    headers?: BaseNode.Api.APIKeyVal[];
     mapping?: { path: string; var: string | null; index?: number }[];
     content?: string;
-    parameters?: APIKeyVal[];
-    bodyInputType?: APIBodyType;
-  };
+    parameters?: BaseNode.Api.APIKeyVal[];
+    bodyInputType?: BaseNode.Api.APIBodyType;
+    selectedIntegration: IntegrationType.CUSTOM_API;
+  }
 
-  export type GoogleSheets = IntegrationDefaultProps<IntegrationType.GOOGLE_SHEETS> & {
-    user?: IntegrationUser;
-    sheet?: GoogleSheetsValueLabel | null;
-    mapping?: GoogleSheetsMapping[];
+  export interface GoogleSheets extends IntegrationDefaultProps {
+    user?: BaseNode.Utils.IntegrationUser;
+    sheet?: BaseNode.GoogleSheets.GoogleSheetsValueLabel | null;
+    mapping?: BaseNode.GoogleSheets.GoogleSheetsMapping[];
     end_row?: string;
     start_row?: string;
     row_values?: string[];
     row_number?: string;
-    spreadsheet: GoogleSheetsSpreadsheet | null;
+    spreadsheet: BaseNode.GoogleSheets.GoogleSheetsSpreadsheet | null;
     match_value?: string;
-    header_column?: GoogleSheetsValueLabel | null;
-  };
+    header_column?: BaseNode.GoogleSheets.GoogleSheetsValueLabel | null;
+    selectedIntegration: IntegrationType.GOOGLE_SHEETS;
+  }
 
-  export type Zapier = IntegrationDefaultProps<IntegrationType.ZAPIER> & {
-    user?: IntegrationUser;
+  export interface Zapier extends IntegrationDefaultProps {
+    user?: BaseNode.Utils.IntegrationUser;
     value?: string;
-  };
+    selectedIntegration: IntegrationType.ZAPIER;
+  }
 
   export type Integration = CustomApi | GoogleSheets | Zapier;
 
   export interface TypedIntegration {
-    [IntegrationType.ZAPIER]: Zapier;
-    [IntegrationType.CUSTOM_API]: CustomApi;
-    [IntegrationType.GOOGLE_SHEETS]: GoogleSheets;
+    [BaseNode.Utils.IntegrationType.ZAPIER]: Zapier;
+    [BaseNode.Utils.IntegrationType.CUSTOM_API]: CustomApi;
+    [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: GoogleSheets;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface Exit {}
 
-  export type Visual = VisualStepData;
-  export type Text = TextStepData;
+  export type Visual = BaseNode.Visual.StepData;
+  export type Text = BaseNode.Text.StepData;
 }
 
 export namespace DBNodeData {

@@ -1,6 +1,6 @@
-import { Locale as AlexaLocale } from '@voiceflow/alexa-types';
-import { Locale as GeneralLocale } from '@voiceflow/general-types';
-import { Language as GoogleLanguage, LanguageToLocale } from '@voiceflow/google-types';
+import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
+import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants as GoogleConstants } from '@voiceflow/google-types';
 import { PlatformType } from '@voiceflow/internal';
 import { FlexCenter, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
@@ -48,9 +48,9 @@ const NewProject: React.FC = () => {
   const [projectImage, setProjectImage] = React.useState('');
   const [invocationName, setInvocationName] = React.useState('');
   const [selectedChannel, setSelectedChannel] = React.useState<PlatformType | null>(null);
-  const [alexaLocales, setAlexaLocales] = React.useState<[AlexaLocale, ...AlexaLocale[]]>([LOCALE_MAP[0].value]);
-  const [googleLanguage, setGoogleLanguage] = React.useState<GoogleLanguage>(GoogleLanguage.EN);
-  const [generalLocale, setGeneralLocale] = React.useState<GeneralLocale>(GeneralLocale.EN_US);
+  const [alexaLocales, setAlexaLocales] = React.useState<[AlexaConstants.Locale, ...AlexaConstants.Locale[]]>([LOCALE_MAP[0].value]);
+  const [googleLanguage, setGoogleLanguage] = React.useState<GoogleConstants.Language>(GoogleConstants.Language.EN);
+  const [generalLocale, setGeneralLocale] = React.useState<GeneralConstants.Locale>(GeneralConstants.Locale.EN_US);
   const [creatingProject, setCreatingProject] = React.useState(false);
   const CurrentStep = StepMeta[currentStep].component;
 
@@ -74,7 +74,7 @@ const NewProject: React.FC = () => {
         });
       } else if (isGooglePlatform(selectedChannel!)) {
         await client.platform.google.version.updatePublishing(project.versionID, {
-          locales: LanguageToLocale[googleLanguage],
+          locales: GoogleConstants.LanguageToLocale[googleLanguage],
           displayName: name,
           pronunciation: invocationName,
           sampleInvocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],

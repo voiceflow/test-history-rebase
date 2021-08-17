@@ -1,7 +1,7 @@
-import { AmazonIntent, BUILT_IN_INTENTS as ALEXA_BUILT_IN_INTENTS } from '@voiceflow/alexa-types';
+import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
-import { DEFAULT_INTENTS_MAP, DefaultIntent, IntentName as GeneralIntents, Locale as GeneralLocale } from '@voiceflow/general-types';
-import { BUILT_IN_INTENTS as GOOGLE_BUILT_IN_INTENTS } from '@voiceflow/google-types';
+import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants as GoogleConstants } from '@voiceflow/google-types';
 import { PlatformType } from '@voiceflow/internal';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
@@ -12,12 +12,12 @@ import { createPlatformSelector } from './platform';
 
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
-const amazonBuiltInIntentsArray = Object.values(AmazonIntent) as string[];
-const generalBuiltInIntentsArray = Object.values(GeneralIntents) as string[];
+const amazonBuiltInIntentsArray = Object.values(AlexaConstants.AmazonIntent) as string[];
+const generalBuiltInIntentsArray = Object.values(GeneralConstants.IntentName) as string[];
 const builtInIntentMap = new Map([...amazonBuiltInIntentsArray, ...generalBuiltInIntentsArray].map((id) => [id, true]));
 
-const intentLabel: { [key in GeneralIntents]?: string } = {
-  [GeneralIntents.NONE]: 'Fallback',
+const intentLabel: { [key in GeneralConstants.IntentName]?: string } = {
+  [GeneralConstants.IntentName.NONE]: 'Fallback',
 };
 
 export const isCustomizeableBuiltInIntent = (intent?: Intent | null) => !!intent && builtInIntentMap.has(intent.id);
@@ -29,7 +29,7 @@ export const formatIntentName = (name = '') =>
     .toLowerCase();
 
 export const prettifyIntentName = (name = '') =>
-  intentLabel[name as GeneralIntents] ??
+  intentLabel[name as GeneralConstants.IntentName] ??
   name
     .replace(/(\w)Intent/g, '$1')
     .replace(/([A-Za-z])([A-Z])(?=[a-z])/g, '$1 $2') // camelCase => camel Case
@@ -72,7 +72,7 @@ export const intentFactory =
     };
   };
 
-export const generalIntentFactory = (generalIntent: DefaultIntent): Intent => {
+export const generalIntentFactory = (generalIntent: GeneralConstants.DefaultIntent): Intent => {
   const intent = intentFactory(PlatformType.GENERAL)(generalIntent);
 
   return {
@@ -95,12 +95,12 @@ export const validateIntentName = (intentName: string, intents: Intent[], slots:
   return null;
 };
 
-export const ALEXA_BUILT_INS = ALEXA_BUILT_IN_INTENTS.map(intentFactory(PlatformType.ALEXA));
+export const ALEXA_BUILT_INS = AlexaConstants.BUILT_IN_INTENTS.map(intentFactory(PlatformType.ALEXA));
 
-export const GOOGLE_BUILT_INS = GOOGLE_BUILT_IN_INTENTS.map(intentFactory(PlatformType.GOOGLE));
+export const GOOGLE_BUILT_INS = GoogleConstants.BUILT_IN_INTENTS.map(intentFactory(PlatformType.GOOGLE));
 
-export const GENERAL_BUILT_INS_MAP = Object.keys(DEFAULT_INTENTS_MAP).reduce<Record<string, Intent[]>>(
-  (acc, key) => Object.assign(acc, { [key]: DEFAULT_INTENTS_MAP[key].map(generalIntentFactory) }),
+export const GENERAL_BUILT_INS_MAP = Object.keys(GeneralConstants.DEFAULT_INTENTS_MAP).reduce<Record<string, Intent[]>>(
+  (acc, key) => Object.assign(acc, { [key]: GeneralConstants.DEFAULT_INTENTS_MAP[key].map(generalIntentFactory) }),
   {}
 );
 
@@ -109,7 +109,7 @@ export const getBuiltInIntents = createPlatformSelector(
     [PlatformType.ALEXA]: ALEXA_BUILT_INS,
     [PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
   },
-  GENERAL_BUILT_INS_MAP[GeneralLocale.EN_US]
+  GENERAL_BUILT_INS_MAP[GeneralConstants.Locale.EN_US]
 );
 
 export const isBuiltInIntent = (intentID: string) => [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS].some((intent) => intent.id === intentID);

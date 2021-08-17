@@ -1,11 +1,11 @@
-import { AlexaProduct, Locale, ProductType, PublishingLocale } from '@voiceflow/alexa-types';
+import { Constants, Project } from '@voiceflow/alexa-types';
 import cuid from 'cuid';
 
 import { createAdapter } from '@/client/adapters/utils';
 import { Product } from '@/models';
 import { formatMarketPlaces, getDistributionCountries, parseLocales, parseMarketPlaces } from '@/utils/product';
 
-const productAdapter = createAdapter<AlexaProduct, Product>(
+const productAdapter = createAdapter<Project.AlexaProduct, Product>(
   // db to app
   ({
     name,
@@ -28,7 +28,7 @@ const productAdapter = createAdapter<AlexaProduct, Product>(
       type,
       skill: '', // TODO: remove after type will be updated
       version,
-      locales: Object.keys(publishingInformation.locales) as Locale[],
+      locales: Object.keys(publishingInformation.locales) as Constants.Locale[],
       marketPlaces: parseMarketPlaces(publishingInformation.pricing, publishingInformation.distributionCountries),
       taxCategory: publishingInformation.taxInformation.category || null,
       referenceName,
@@ -69,16 +69,16 @@ const productAdapter = createAdapter<AlexaProduct, Product>(
     purchasableState: 'PURCHASABLE',
     testingInstructions: testingInstructions || '',
     privacyAndCompliance: {
-      locales: locales.reduce<AlexaProduct['privacyAndCompliance']['locales']>(
+      locales: locales.reduce<Project.AlexaProduct['privacyAndCompliance']['locales']>(
         (acc, locale) => Object.assign(acc, { [locale]: { privacyPolicyUrl: privacyPolicyUrl?.trim() ?? '' } }),
-        {} as AlexaProduct['privacyAndCompliance']['locales']
+        {} as Project.AlexaProduct['privacyAndCompliance']['locales']
       ),
     },
     publishingInformation: {
       pricing: formatMarketPlaces(marketPlaces),
       taxInformation: { category: taxCategory ?? '' },
       distributionCountries: getDistributionCountries(marketPlaces),
-      locales: locales.reduce<Partial<Record<Locale, PublishingLocale>>>(
+      locales: locales.reduce<Partial<Record<Constants.Locale, Project.PublishingLocale>>>(
         (acc, locale) =>
           Object.assign(acc, {
             [locale]: {
@@ -93,13 +93,13 @@ const productAdapter = createAdapter<AlexaProduct, Product>(
                 boughtCardDescription: cardDescription || '',
                 purchasePromptDescription: purchasePrompt || '',
               },
-            } as PublishingLocale,
+            } as Project.PublishingLocale,
           }),
         {}
       ),
     },
     subscriptionInformation:
-      type === ProductType.SUBSCRIPTION && subscriptionFrequency
+      type === Constants.ProductType.SUBSCRIPTION && subscriptionFrequency
         ? {
             subscriptionTrialPeriodDays: trialPeriodDays ? +trialPeriodDays : 0,
             subscriptionPaymentFrequency: subscriptionFrequency,

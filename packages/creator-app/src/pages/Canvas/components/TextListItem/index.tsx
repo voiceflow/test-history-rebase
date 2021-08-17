@@ -1,4 +1,4 @@
-import { TextData } from '@voiceflow/general-types/build/nodes/text';
+import { Node } from '@voiceflow/base-types';
 import { Box, Input, stopPropagation, SvgIcon, toast, useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -25,7 +25,7 @@ import { compose } from '@/utils/functional';
 
 import { Toolbar } from './components';
 
-export type TextListItemProps = ListItemComponentProps<TextData, { header?: React.ReactNode }>;
+export type TextListItemProps = ListItemComponentProps<Node.Text.TextData, { header?: React.ReactNode }>;
 
 const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemProps> = (
   {

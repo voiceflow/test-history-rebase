@@ -1,16 +1,16 @@
-import { StepData as DisplayData } from '@voiceflow/alexa-types/build/nodes/display';
-import { APLStepData, VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/alexa-types';
+import { Node as BaseNode } from '@voiceflow/base-types';
 
 import { createBlockAdapter } from '../utils';
 
-const displayAdapter = createBlockAdapter<DisplayData, APLStepData>(
+const displayAdapter = createBlockAdapter<Node.Display.StepData, BaseNode.Visual.APLStepData>(
   ({ type, title, imageURL, document, datasource, aplCommands, jsonFileName }) => ({
     title,
     aplType: type,
     imageURL,
     document,
     datasource,
-    visualType: VisualType.APL,
+    visualType: BaseNode.Visual.VisualType.APL,
     aplCommands,
     jsonFileName,
   }),

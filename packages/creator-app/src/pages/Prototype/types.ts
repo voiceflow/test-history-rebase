@@ -1,6 +1,4 @@
-import { AnyRequestButton, BaseRequest } from '@voiceflow/general-types';
-import { TextData } from '@voiceflow/general-types/build/nodes/text';
-import { ImageStepData } from '@voiceflow/general-types/build/nodes/visual';
+import { Node, Request } from '@voiceflow/base-types';
 
 export enum PMStatus {
   IDLE = 'IDLE',
@@ -37,7 +35,7 @@ type GenericMessage<T extends MessageType, D = {}> = { id: string; type: T; star
 
 export type UserMessage = GenericMessage<MessageType.USER, { input: string; intentName?: string }>;
 
-export type TextMessage = GenericMessage<MessageType.TEXT, { slate: TextData }>;
+export type TextMessage = GenericMessage<MessageType.TEXT, { slate: Node.Text.TextData }>;
 
 export type AudioMessage = GenericMessage<MessageType.AUDIO, { name: string; src?: string | null }>;
 
@@ -49,7 +47,7 @@ export type StreamMessage = GenericMessage<MessageType.STREAM, { audio: string }
 
 export type SessionMessage = GenericMessage<MessageType.SESSION, { message: string }>;
 
-export type VisualMessage = GenericMessage<MessageType.VISUAL, ImageStepData>;
+export type VisualMessage = GenericMessage<MessageType.VISUAL, Node.Visual.ImageStepData>;
 
 export type LaunchMessage = GenericMessage<MessageType.LAUNCH, {}>;
 
@@ -80,5 +78,5 @@ export type TypedMessage<T extends MessageType> = MessageMap[T];
 
 export interface Interaction {
   name: string;
-  request: AnyRequestButton['request'] | BaseRequest<undefined>;
+  request: Request.AnyRequestButton['request'] | Request.BaseRequest<undefined>;
 }

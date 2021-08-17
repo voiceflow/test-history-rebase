@@ -1,4 +1,4 @@
-import { AlexaVersion, AlexaVersionData, defaultAlexaVersionPublishing, defaultAlexaVersionSettings, Voice } from '@voiceflow/alexa-types';
+import { Constants, Version as AlexaVersion } from '@voiceflow/alexa-types';
 import { PlatformType } from '@voiceflow/internal';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
@@ -9,9 +9,9 @@ import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 import createSessionAdapter from '../session';
 
-const sessionAdapter = createSessionAdapter<Voice>({ platform: PlatformType.ALEXA });
+const sessionAdapter = createSessionAdapter<Constants.Voice>({ platform: PlatformType.ALEXA });
 
-const alexaVersionAdapter = createAdapter<AlexaVersion, Version<AlexaVersionData>>(
+const alexaVersionAdapter = createAdapter<AlexaVersion.AlexaVersion, Version<AlexaVersion.AlexaVersionData>>(
   ({
     _id,
     creatorID,
@@ -30,8 +30,8 @@ const alexaVersionAdapter = createAdapter<AlexaVersion, Version<AlexaVersionData
     rootDiagramID,
     variables: variables.filter((variable) => !getPlatformGlobalVariables(PlatformType.ALEXA).includes(variable)),
     session: sessionAdapter.fromDB(session, { defaultVoice: settings.defaultVoice }),
-    settings: _omit(defaultAlexaVersionSettings(settings), 'session'),
-    publishing: defaultAlexaVersionPublishing(publishing),
+    settings: _omit(AlexaVersion.defaultAlexaVersionSettings(settings), 'session'),
+    publishing: AlexaVersion.defaultAlexaVersionPublishing(publishing),
     status,
   }),
   () => {

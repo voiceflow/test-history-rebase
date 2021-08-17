@@ -1,4 +1,4 @@
-import { BaseRequest } from '@voiceflow/general-types';
+import { Request } from '@voiceflow/base-types';
 import React from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 
@@ -84,7 +84,7 @@ const TranscriptDialog: React.FC = () => {
           status={PrototypeStatus.ENDED}
           hideSessionMessages={false}
           showPadding
-          onInteraction={(request: string | BaseRequest) => alert(request)}
+          onInteraction={(request: string | Request.BaseRequest) => alert(request)}
           stepBack={() => noop()}
           autoScroll={false}
         />

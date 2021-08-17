@@ -1,5 +1,4 @@
-import { DeviceType } from '@voiceflow/general-types';
-import { APLStepData } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import displayAdapter from '@/client/adapters/creator/block/alexa/display';
@@ -14,15 +13,15 @@ const MemoizedBaseRenderer = React.memo(BaseRenderer);
 
 interface APLProps {
   id?: string;
-  data: APLStepData;
-  device: DeviceType | null;
+  data: Node.Visual.APLStepData;
+  device: Node.Visual.DeviceType | null;
   dimension: { width: number; height: number };
 }
 
 const APL: React.FC<APLProps & ConnectedAPLProps> = ({ data, device, resolveAPL, dimension }) => {
   const [aplContext, setAPLContext] = React.useState<{ apl: string; data: string; commands: string } | null>(null);
 
-  const isRound = device === DeviceType.ECHO_SPOT;
+  const isRound = device === Node.Visual.DeviceType.ECHO_SPOT;
   const renderAPL = !!aplContext;
 
   const deviceInfo = React.useMemo(() => ALL_DEVICES.find(({ type }) => type === device), [device]);

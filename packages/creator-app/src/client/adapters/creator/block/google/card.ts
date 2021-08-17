@@ -1,20 +1,20 @@
-import { CardType, StepData } from '@voiceflow/google-types/build/nodes/card';
+import { Node } from '@voiceflow/base-types';
 import _capitalize from 'lodash/capitalize';
 
 import { NodeData } from '@/models';
 
 import { createBlockAdapter } from '../utils';
 
-const cardAdapter = createBlockAdapter<StepData, NodeData.Card>(
-  ({ type = CardType.SIMPLE, title, text: content, image }) => ({
-    cardType: _capitalize(type) as CardType,
+const cardAdapter = createBlockAdapter<Node.Card.StepData, NodeData.Card>(
+  ({ type = Node.Card.CardType.SIMPLE, title, text: content, image }) => ({
+    cardType: _capitalize(type) as Node.Card.CardType,
     title,
     content,
     hasSmallImage: !!image?.smallImageUrl,
     largeImage: image?.largeImageUrl || null,
     smallImage: image?.smallImageUrl || null,
   }),
-  ({ cardType: type = CardType.SIMPLE, title = '', content: text = '', largeImage, smallImage }) => ({
+  ({ cardType: type = Node.Card.CardType.SIMPLE, title = '', content: text = '', largeImage, smallImage }) => ({
     type,
     title,
     text,

@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
-import { ProductType } from '@voiceflow/alexa-types';
+import { Constants } from '@voiceflow/alexa-types';
 import { Button, Dropdown, Input, SvgIcon } from '@voiceflow/ui';
 import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
@@ -32,9 +32,9 @@ export const TAX_CATEGORIES = [
 ];
 
 export const PRODUCT_TYPES = [
-  { value: ProductType.ENTITLEMENT, label: 'One-Time Purchase' },
-  { value: ProductType.CONSUMABLE, label: 'Consumable' },
-  { value: ProductType.SUBSCRIPTION, label: 'Subscription' },
+  { value: Constants.ProductType.ENTITLEMENT, label: 'One-Time Purchase' },
+  { value: Constants.ProductType.CONSUMABLE, label: 'Consumable' },
+  { value: Constants.ProductType.SUBSCRIPTION, label: 'Subscription' },
 ];
 
 export const SUBSCRIPTION_OPTIONS = [
@@ -66,18 +66,22 @@ function PricingForm({ product, updateProduct, changeStep, parentalControl }) {
             {PRODUCT_TYPES.map(({ value, label }, index) => (
               <div key={index}>
                 <Tooltip
-                  disabled={!(value === ProductType.CONSUMABLE && parentalControl)}
+                  disabled={!(value === Constants.ProductType.CONSUMABLE && parentalControl)}
                   position="top"
-                  title={value === ProductType.CONSUMABLE && parentalControl ? 'Consumables are not available for kid skills at this time.' : null}
+                  title={
+                    value === Constants.ProductType.CONSUMABLE && parentalControl
+                      ? 'Consumables are not available for kid skills at this time.'
+                      : null
+                  }
                 >
-                  <RadioButtonLabel disabled={value === ProductType.CONSUMABLE && parentalControl}>
+                  <RadioButtonLabel disabled={value === Constants.ProductType.CONSUMABLE && parentalControl}>
                     <Input
                       checked={product.type === value}
                       type="radio"
                       name="type"
                       value={value}
                       onChange={onTypeChange(value)}
-                      disabled={value === ProductType.CONSUMABLE && parentalControl}
+                      disabled={value === Constants.ProductType.CONSUMABLE && parentalControl}
                     />
                     <span>{label}</span>
                   </RadioButtonLabel>
@@ -88,7 +92,7 @@ function PricingForm({ product, updateProduct, changeStep, parentalControl }) {
           <AvFeedback>Type is required</AvFeedback>
         </SubSection>
 
-        {(product.type === ProductType.SUBSCRIPTION || product.type === ProductType.CONSUMABLE) && (
+        {(product.type === Constants.ProductType.SUBSCRIPTION || product.type === Constants.ProductType.CONSUMABLE) && (
           <SubSection>
             <label>Bill Customer</label>
             {product.type === 'CONSUMABLE' && (
@@ -106,7 +110,7 @@ function PricingForm({ product, updateProduct, changeStep, parentalControl }) {
               </SubSection>
             )}
 
-            {product.type === ProductType.SUBSCRIPTION && (
+            {product.type === Constants.ProductType.SUBSCRIPTION && (
               <SubSection flex>
                 <SubscriptionDropdown>
                   <Dropdown onSelect={onChange('subscriptionFrequency')} options={SUBSCRIPTION_OPTIONS} autoWidth={true}>

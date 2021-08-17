@@ -1,4 +1,4 @@
-import { AnyButton, ButtonType } from '@voiceflow/general-types';
+import { Button } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 import { createSelector } from 'reselect';
@@ -26,13 +26,13 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
   const platform = React.useContext(PlatformContext)!;
   const [isDragging, toggleDragging] = useToggle(false);
   const updateData = useUpdateData(focus.target || undefined);
-  const updateButtons = React.useCallback((buttons: AnyButton[]) => updateData({ buttons }), [updateData]);
+  const updateButtons = React.useCallback((buttons: Button.AnyButton[]) => updateData({ buttons }), [updateData]);
   const buttonLayoutOption = useButtonLayoutOption();
 
   const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(focusedNode.buttons, updateButtons, {
     factory: () => ({
       name: '',
-      type: ButtonType.INTENT,
+      type: Button.ButtonType.INTENT,
       payload: { intentID: null },
     }),
   });
@@ -86,7 +86,7 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
 
 const focusedNodeWithButtonsSelector = createSelector(
   Creator.focusedNodeDataSelector,
-  (data) => data as NodeData<{ buttons?: AnyButton[]; choices?: Record<DistinctPlatform, NodeData.InteractionChoice>[] }>
+  (data) => data as NodeData<{ buttons?: Button.AnyButton[]; choices?: Record<DistinctPlatform, NodeData.InteractionChoice>[] }>
 );
 
 const mapStateToProps = {

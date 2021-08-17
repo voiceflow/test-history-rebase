@@ -1,4 +1,4 @@
-import { CanvasNodeVisibility } from '@voiceflow/general-types';
+import { Node as BaseNode } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
@@ -36,7 +36,7 @@ interface NodeFactoryOptions {
   features?: FeatureFlagMap;
   platform?: PlatformType;
   defaultVoice?: string;
-  canvasNodeVisibility?: CanvasNodeVisibility;
+  canvasNodeVisibility?: BaseNode.Utils.CanvasNodeVisibility;
 }
 
 export interface NodeConfig<T extends object | Markup.AnyNodeData> {

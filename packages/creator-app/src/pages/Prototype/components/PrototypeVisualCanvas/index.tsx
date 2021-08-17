@@ -1,4 +1,4 @@
-import { VisualType } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
 import { Box, SvgIcon } from '@voiceflow/ui';
 import cuid from 'cuid';
 import React from 'react';
@@ -54,8 +54,8 @@ const PrototypeVisualCanvas: React.FC<PrototypeVisualCanvasProps & ConnectedProt
         scrollTimeout={100}
         controlScheme={controlScheme}
       >
-        {data?.visualType === VisualType.IMAGE && <Image key={contentKey} {...visualRenderProps} data={data} />}
-        {data?.visualType === VisualType.APL && <APL key={contentKey} {...visualRenderProps} data={data} />}
+        {data?.visualType === Node.Visual.VisualType.IMAGE && <Image key={contentKey} {...visualRenderProps} data={data} />}
+        {data?.visualType === Node.Visual.VisualType.APL && <APL key={contentKey} {...visualRenderProps} data={data} />}
       </Canvas>
 
       {!data?.visualType && (

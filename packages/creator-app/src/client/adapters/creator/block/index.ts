@@ -1,5 +1,5 @@
 import { BaseDiagramNode } from '@voiceflow/api-sdk';
-import { NodeType } from '@voiceflow/general-types';
+import { Node } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 import moize from 'moize';
 
@@ -26,11 +26,11 @@ export const APP_BLOCK_TYPE_FROM_DB: Record<
   BlockType | ((data: BaseDiagramNode['data'], options: { features?: FeatureFlagMap }) => BlockType)
 > = {
   ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [key]: value }), {}),
-  [NodeType.API]: BlockType.INTEGRATION,
-  [NodeType.ZAPIER]: BlockType.INTEGRATION,
-  [NodeType.GOOGLE_SHEETS]: BlockType.INTEGRATION,
-  [NodeType.IF]: BlockType.IFV2,
-  [NodeType.SET]: BlockType.SETV2,
+  [Node.NodeType.API]: BlockType.INTEGRATION,
+  [Node.NodeType.ZAPIER]: BlockType.INTEGRATION,
+  [Node.NodeType.GOOGLE_SHEETS]: BlockType.INTEGRATION,
+  [Node.NodeType.IF]: BlockType.IFV2,
+  [Node.NodeType.SET]: BlockType.SETV2,
 };
 
 export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: NodeData<any>, options: { features?: FeatureFlagMap }) => string)>> =
@@ -39,15 +39,15 @@ export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: 
     [BlockType.INTEGRATION]: (data: NodeData<NodeData.Integration>) => {
       switch (data.selectedIntegration) {
         case IntegrationType.ZAPIER:
-          return NodeType.ZAPIER;
+          return Node.NodeType.ZAPIER;
         case IntegrationType.GOOGLE_SHEETS:
-          return NodeType.GOOGLE_SHEETS;
+          return Node.NodeType.GOOGLE_SHEETS;
         default:
-          return NodeType.API;
+          return Node.NodeType.API;
       }
     },
-    [NodeType.IF]: BlockType.IFV2,
-    [NodeType.SET]: BlockType.SETV2,
+    [Node.NodeType.IF]: BlockType.IFV2,
+    [Node.NodeType.SET]: BlockType.SETV2,
   };
 
 const getPlatformAdapter = createPlatformSelector<Partial<Record<BlockType, unknown>>>(

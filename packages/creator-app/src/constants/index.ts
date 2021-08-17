@@ -1,10 +1,11 @@
-import { PermissionType } from '@voiceflow/alexa-types';
-import { DeviceType } from '@voiceflow/general-types';
+import { Node as AlexaNode } from '@voiceflow/alexa-types';
+import { Node as BaseNode } from '@voiceflow/base-types';
 import { BillingPeriod, PlanType, PlatformType, UserRole } from '@voiceflow/internal';
 
 import { Pair } from '@/types';
 
-export { IntegrationType } from '@voiceflow/general-types';
+export { CardType } from '@voiceflow/base-types/build/node/card';
+export { IntegrationType } from '@voiceflow/base-types/build/node/utils';
 
 export const USER_INFO_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
 export const ACTION_BUILDER_SCOPE = 'https://www.googleapis.com/auth/actions.builder';
@@ -133,64 +134,64 @@ export enum BlockType {
 export const PERMISSIONS = [
   {
     name: 'User Email',
-    value: PermissionType.ALEXA_PROFILE_EMAIL_READ,
+    value: AlexaNode.PermissionType.ALEXA_PROFILE_EMAIL_READ,
     variableMap: true,
   },
   {
     name: 'User Name',
-    value: PermissionType.ALEXA_PROFILE_NAME_READ,
+    value: AlexaNode.PermissionType.ALEXA_PROFILE_NAME_READ,
     variableMap: true,
   },
   {
     name: 'User Phone Number',
-    value: PermissionType.ALEXA_PROFILE_MOBILE_NUMBER_READ,
+    value: AlexaNode.PermissionType.ALEXA_PROFILE_MOBILE_NUMBER_READ,
     variableMap: true,
   },
   {
     name: 'Location Services',
-    value: PermissionType.ALEXA_DEVICES_ALL_GEOLOCATION_READ,
+    value: AlexaNode.PermissionType.ALEXA_DEVICES_ALL_GEOLOCATION_READ,
     variableMap: true,
   },
   {
     name: 'Reminders',
-    value: PermissionType.ALEXA_ALERTS_REMINDERS_SKILL_READ_WRITE,
+    value: AlexaNode.PermissionType.ALEXA_ALERTS_REMINDERS_SKILL_READ_WRITE,
   },
   {
     name: 'Lists Read',
-    value: PermissionType.ALEXA_HOUSEHOLD_LISTS_READ,
+    value: AlexaNode.PermissionType.ALEXA_HOUSEHOLD_LISTS_READ,
   },
   {
     name: 'Lists Write',
-    value: PermissionType.ALEXA_HOUSEHOLD_LISTS_WRITE,
+    value: AlexaNode.PermissionType.ALEXA_HOUSEHOLD_LISTS_WRITE,
   },
   {
     name: 'Notifications',
-    value: PermissionType.ALEXA_DEVICES_ALL_NOTIFICATIONS_WRITE,
+    value: AlexaNode.PermissionType.ALEXA_DEVICES_ALL_NOTIFICATIONS_WRITE,
   },
   {
     name: 'Skill Personalization',
-    value: PermissionType.ALEXA_PERSON_ID_READ,
+    value: AlexaNode.PermissionType.ALEXA_PERSON_ID_READ,
     variableMap: true,
   },
   {
     name: 'Account Linking',
-    value: PermissionType.UNOFFICIAL_ACCOUNT_LINKING,
+    value: AlexaNode.PermissionType.UNOFFICIAL_ACCOUNT_LINKING,
     variableMap: true,
   },
   {
     name: 'Product',
-    value: PermissionType.UNOFFICIAL_PRODUCT,
+    value: AlexaNode.PermissionType.UNOFFICIAL_PRODUCT,
   },
   {
     name: 'ISP',
-    value: PermissionType.UNOFFICIAL_ISP,
+    value: AlexaNode.PermissionType.UNOFFICIAL_ISP,
   },
   // Removed for now, amazon pay permissions broken
 ];
 
 export const PERMISSIONS_WITH_VARIABLE_MAPS = PERMISSIONS.filter(({ variableMap }) => variableMap).map(({ value }) => value);
 
-export const PERMISSION_LABELS: Record<PermissionType, string> = PERMISSIONS.reduce<Record<string, string>>(
+export const PERMISSION_LABELS: Record<AlexaNode.PermissionType, string> = PERMISSIONS.reduce<Record<string, string>>(
   (acc, permission) => Object.assign(acc, { [permission.value]: permission.name }),
   {}
 );
@@ -199,8 +200,6 @@ export const ReminderType = {
   TIMER: 'timer',
   SCHEDULED: 'scheduled',
 };
-
-export { CardType } from '@voiceflow/alexa-types/build/nodes/card';
 
 export enum DialogType {
   AUDIO = 'audio',
@@ -450,20 +449,20 @@ export const GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES = [
 
 export const START_BLOCK_ID = 'start00000000000000000000';
 
-export const DEVICE_LABEL_MAP: Record<DeviceType, string> = {
-  [DeviceType.MOBILE]: 'Mobile',
-  [DeviceType.TABLET]: 'Tablet',
-  [DeviceType.DESKTOP]: 'Desktop',
-  [DeviceType.SMART_WATCH]: 'Smart Watch',
-  [DeviceType.TELEVISION]: 'Television',
-  [DeviceType.IN_CAR_DISPLAY]: 'In-Car Display',
-  [DeviceType.ECHO_SPOT]: 'Echo Spot',
-  [DeviceType.ECHO_SHOW_8]: 'Echo Show 8',
-  [DeviceType.ECHO_SHOW_10]: 'Echo Show 10',
-  [DeviceType.FIRE_HD_8]: 'Fire HD 8',
-  [DeviceType.FIRE_HD_10]: 'Fire HD 10',
-  [DeviceType.FIRE_TV_CUBE]: 'Fire TV Cube',
-  [DeviceType.GOOGLE_NEST_HUB]: 'Google Nest Hub',
+export const DEVICE_LABEL_MAP: Record<BaseNode.Visual.DeviceType, string> = {
+  [BaseNode.Visual.DeviceType.MOBILE]: 'Mobile',
+  [BaseNode.Visual.DeviceType.TABLET]: 'Tablet',
+  [BaseNode.Visual.DeviceType.DESKTOP]: 'Desktop',
+  [BaseNode.Visual.DeviceType.SMART_WATCH]: 'Smart Watch',
+  [BaseNode.Visual.DeviceType.TELEVISION]: 'Television',
+  [BaseNode.Visual.DeviceType.IN_CAR_DISPLAY]: 'In-Car Display',
+  [BaseNode.Visual.DeviceType.ECHO_SPOT]: 'Echo Spot',
+  [BaseNode.Visual.DeviceType.ECHO_SHOW_8]: 'Echo Show 8',
+  [BaseNode.Visual.DeviceType.ECHO_SHOW_10]: 'Echo Show 10',
+  [BaseNode.Visual.DeviceType.FIRE_HD_8]: 'Fire HD 8',
+  [BaseNode.Visual.DeviceType.FIRE_HD_10]: 'Fire HD 10',
+  [BaseNode.Visual.DeviceType.FIRE_TV_CUBE]: 'Fire TV Cube',
+  [BaseNode.Visual.DeviceType.GOOGLE_NEST_HUB]: 'Google Nest Hub',
 };
 
 export const DOCS_LINK = 'https://docs.voiceflow.com';

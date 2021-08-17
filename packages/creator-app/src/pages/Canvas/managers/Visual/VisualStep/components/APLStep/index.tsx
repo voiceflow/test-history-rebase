@@ -1,4 +1,4 @@
-import { APLStepData, APLType } from '@voiceflow/general-types/build/nodes/visual';
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
@@ -28,8 +28,8 @@ export const APLStep: React.FC<APLStepProps> = ({ label, nodeID, portID, image }
   </Step>
 );
 
-const ConnectedAPLStep: React.FC<ConnectedStepProps<APLStepData>> = ({ node, data }) => {
-  const label = data.aplType === APLType.SPLASH ? transformVariablesToReadable(data.title) : data.jsonFileName;
+const ConnectedAPLStep: React.FC<ConnectedStepProps<Node.Visual.APLStepData>> = ({ node, data }) => {
+  const label = data.aplType === Node.Visual.APLType.SPLASH ? transformVariablesToReadable(data.title) : data.jsonFileName;
   const image = isVariable(data.imageURL) ? null : data.imageURL;
 
   return <APLStep nodeID={node.id} portID={node.ports.out[0]} label={label} image={image} />;

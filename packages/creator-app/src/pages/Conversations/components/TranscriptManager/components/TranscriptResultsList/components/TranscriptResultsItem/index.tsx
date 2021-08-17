@@ -79,7 +79,14 @@ const TranscriptResultsItem: React.FC<ResultsItem> = ({ data, format, active = f
   }, [canDeleteTranscript, id]);
 
   return (
-    <Container id={id} menuOpen={menuOpen} active={active} onClick={goToTarget} isLastItem={isLastItem} className={cn({ active })}>
+    <Container
+      id={id}
+      menuOpen={menuOpen}
+      active={active}
+      onClick={goToTarget}
+      isLastItem={isLastItem}
+      className={cn(ClassName.TRANSCRIPT_ITEM, { active })}
+    >
       <ReadStatusDot read={!unread} />
       <InfoSection active={active} name={name} date={createdAt} isRead={!unread} tags={reportTags} />
       <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>

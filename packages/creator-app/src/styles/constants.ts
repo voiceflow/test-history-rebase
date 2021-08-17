@@ -139,6 +139,7 @@ export enum ClassName {
   CREATE_PROJECT_LEFT_ACTION = 'vf-create-project-left-action',
   CREATE_PROJECT_RIGHT_ACTION = 'vf-create-project-right-action',
 
+  TRANSCRIPT_ITEM = 'vf-transcript-item',
   TRANSCRIPT_ITEM_DROPDOWN_BUTTON = 'vf-transcript-item-dropdown-item',
   TRANSCRIPT_ITEM_STATUSES = 'vf-transcript-item-statuses',
   TRANSCRIPT_USER_NAME = 'vf-transcript-user-name',

@@ -84,3 +84,16 @@ Cypress.Commands.add('createThread', (text: string) => {
     comments: [{ text, mentions: [], creator_id: creatorID }],
   });
 });
+
+Cypress.Commands.add('createTranscript', ({ sessionID, creatorID }: { sessionID: string; creatorID: string | null }) => {
+  const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);
+
+  cy.request('PUT', `${API_URL}/v2/transcripts`, {
+    projectID,
+    sessionID,
+    creatorID,
+    device: 'desktop',
+    os: 'linux',
+    browser: 'chrome',
+  });
+});

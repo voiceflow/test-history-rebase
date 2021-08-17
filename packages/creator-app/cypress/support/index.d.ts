@@ -4,11 +4,11 @@
 declare namespace Cypress {
   type Coords = [x: number, y: number];
 
-  type PageModel = {
+  interface PageModel {
     meta: {
       route: string | RegExp;
     };
-  };
+  }
 
   type VFWindow = Cypress.AUTWindow & {
     cypress_clipboard?: string;
@@ -125,6 +125,11 @@ declare namespace Cypress {
      * create a new thread
      */
     createThread(text: string): Chainable;
+
+    /**
+     * create a new transcript
+     */
+    createTranscript(options: { sessionID: string; creatorID: string | null }): Chainable;
 
     /**
      * wait for canvas animation to complete

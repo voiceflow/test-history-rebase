@@ -11,13 +11,13 @@ const defaultTranscriptContext = 'Conversation between your assistant and Test A
 // const currentDate = `${moment(Date.now()).format('LT').toLocaleLowerCase()}, ${moment(Date.now()).format('MMMM Do')}`;
 
 context('Conversations', () => {
+  beforeEach(() => cy.setup());
+
+  afterEach(() => {
+    cy.teardown();
+  });
+
   describe('empty transcripts page', () => {
-    beforeEach(() => cy.setup());
-
-    afterEach(() => {
-      cy.teardown();
-    });
-
     it('displays empty transcripts page with no test runs', () => {
       cy.createProject('general', 'prototype:speak_and_choice');
       canvasPage.goToCanvas();
@@ -26,13 +26,32 @@ context('Conversations', () => {
     });
   });
 
-  describe('prototype mode save transcripts', () => {
-    beforeEach(() => cy.setup());
+  describe('click to change active transcript', () => {
+    const sessionID = '123';
 
-    afterEach(() => {
-      cy.teardown();
+    it('displays empty transcripts page with no test runs', () => {
+      cy.createProject('general', 'prototype:speak_and_choice');
+      cy.createTranscript({ sessionID, creatorID: null });
+      cy.createTranscript({ sessionID, creatorID: null });
+      canvasPage.goToCanvas();
+      conversations.goToTranscriptsTab();
+
+      conversations.el.conversationsPage.should('be.visible');
+
+      conversations.el.transcriptListItem.eq(0).should('have.class', 'active');
+      conversations.el.transcriptListItem //
+        .eq(1)
+        .should('not.have.class', 'active')
+        .click();
+
+      conversations.el.transcriptListItem.eq(0).should('not.have.class', 'active');
+      conversations.el.transcriptListItem //
+        .eq(1)
+        .should('have.class', 'active');
     });
+  });
 
+  describe('prototype mode save transcripts', () => {
     it('saves transcript', () => {
       cy.createProject('general', 'prototype:speak_and_choice');
       canvasPage.goToCanvas();
@@ -51,12 +70,6 @@ context('Conversations', () => {
   });
 
   describe('public prototype mode save transcripts', () => {
-    beforeEach(() => cy.setup());
-
-    afterEach(() => {
-      cy.teardown();
-    });
-
     it('saves transcript', () => {
       cy.createProject('general', 'prototype:speak_and_choice');
       cy.renderTest('general');

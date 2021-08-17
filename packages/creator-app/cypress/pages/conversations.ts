@@ -32,6 +32,10 @@ export default {
       return cy.get(`#${Identifier.SAVE_TRANSCRIPT_BUTTON}`);
     },
 
+    get conversationsPage() {
+      return cy.get(`#${Identifier.CONVERSATIONS_PAGE}`);
+    },
+
     get markAsReviewedTranscriptButton() {
       return cy.get(`#${Identifier.MARK_AS_REVIEWED_TRANSCRIPT_BUTTON}`);
     },
@@ -46,6 +50,10 @@ export default {
 
     get confirmDeleteTranscriptModal() {
       return cy.get(`#${ModalType.CONFIRM}`);
+    },
+
+    get transcriptListItem() {
+      return cy.get(`.${ClassName.TRANSCRIPT_ITEM}`);
     },
 
     get transcriptListItemStatus() {

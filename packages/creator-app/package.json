@@ -125,7 +125,7 @@
     "simplebar-react": "^2.0.9",
     "slate": "0.63.0",
     "slate-history": "0.62.0",
-    "slate-react": "0.63.0",
+    "slate-react": "0.65.3",
     "socket.io-client": "^2.4.0",
     "stream-browserify": "^3.0.0",
     "styled-breakpoints": "^9.0.9",

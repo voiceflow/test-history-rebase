@@ -35,6 +35,7 @@ build/Release
 
 # compiled source code
 build/
+admin_build/
 
 # Dependency directories
 node_modules/

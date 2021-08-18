@@ -1,5 +1,6 @@
 import { system } from 'styled-system';
 
+import { IS_SAFARI } from '../../config';
 import { colors, css } from '../../styles';
 
 export const inputFocusStyle = css`
@@ -10,7 +11,11 @@ export const inputFocusStyle = css`
 
 export const inputDisabledStyle = css`
   color: ${colors('quaternary')};
-  -webkit-text-fill-color: ${colors('quaternary')};
+  ${IS_SAFARI &&
+  css`
+    -webkit-text-fill-color: ${colors('quaternary')};
+  `}
+
   ${system({
     pointerEvents: {
       property: 'pointerEvents',

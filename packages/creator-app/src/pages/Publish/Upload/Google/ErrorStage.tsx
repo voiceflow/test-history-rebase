@@ -33,6 +33,10 @@ interface ErrorStageProps {
   stage: GoogleExportJob.ErrorStage | GooglePublishJob.ErrorStage;
 }
 
-const ErrorStage: React.FC<ErrorStageProps> = ({ stage }) => <BaseErrorStage title={getTitle(stage.data)}>{getError(stage.data)}</BaseErrorStage>;
+const ErrorStage: React.FC<ErrorStageProps> = ({ stage }) => (
+  <BaseErrorStage title={getTitle(stage.data)}>
+    <span>{getError(stage.data)}</span>
+  </BaseErrorStage>
+);
 
 export default ErrorStage;

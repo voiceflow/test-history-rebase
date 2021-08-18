@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ClassName } from '@/styles/constants';
+
 import BaseTagInput from './BaseReportTagInput';
 
 interface SelectOnlyTagInputProps {
@@ -19,7 +21,16 @@ const SelectOnlyTagInput: React.FC<SelectOnlyTagInputProps> = ({ onChange, selec
     onChange(newTagArray);
   };
   return (
-    <BaseTagInput onChange={onChange} addTag={addTag} selectedTags={selectedTags} removeTag={removeTag} selectOnly creatable={false} {...props} />
+    <BaseTagInput
+      className={ClassName.BASE_REPORT_TAG_INPUT}
+      onChange={onChange}
+      addTag={addTag}
+      selectedTags={selectedTags}
+      removeTag={removeTag}
+      selectOnly
+      creatable={false}
+      {...props}
+    />
   );
 };
 

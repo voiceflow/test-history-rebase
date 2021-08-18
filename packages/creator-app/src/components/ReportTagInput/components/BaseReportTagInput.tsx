@@ -20,6 +20,7 @@ export interface BaseReportTagInputProps {
   selectOnly?: boolean;
   addTag: (tagID: string) => void;
   removeTag: (tagID: string) => void;
+  className: string;
 }
 
 export type TagInputVariantProps = Omit<BaseReportTagInputProps, 'menu' | 'tags'>;
@@ -56,6 +57,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
   selectOnly,
   addTag,
   removeTag,
+  className,
 }) => {
   const {
     state: { searchedTag, allTags, tagsMap },
@@ -111,6 +113,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
   return (
     <>
       <Select
+        className={className}
         autoUpdatePlacement
         renderOptionLabel={hasRadioButtons && !!isSelectedFunc ? (option) => customMenuLabelRenderer(option, isSelectedFunc) : undefined}
         footerAction={footerAction}

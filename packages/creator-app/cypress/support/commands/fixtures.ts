@@ -97,3 +97,13 @@ Cypress.Commands.add('createTranscript', ({ sessionID, creatorID }: { sessionID:
     browser: 'chrome',
   });
 });
+
+Cypress.Commands.add('createReportTag', ({ label, tagID }: { label: string; tagID: string }) => {
+  const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);
+
+  cy.request('PUT', `${API_URL}/v2/projects/${projectID}/tags`, {
+    id: tagID,
+    projectID,
+    label,
+  });
+});

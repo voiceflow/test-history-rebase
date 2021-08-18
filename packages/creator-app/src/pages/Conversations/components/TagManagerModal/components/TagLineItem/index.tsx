@@ -1,10 +1,12 @@
 import { ErrorMessage, IconButton, IconButtonVariant, Input, toast, ToastCallToAction } from '@voiceflow/ui';
+import cn from 'classnames';
 import React from 'react';
 
 import * as ReportTagDuck from '@/ducks/reportTag';
 import { useDispatch } from '@/hooks';
 import { ReportTag } from '@/models';
 import { FadeLeftContainer } from '@/styles/animations';
+import { ClassName } from '@/styles/constants';
 
 import { Container, TrashIconContainer } from './components';
 
@@ -53,14 +55,26 @@ const TagLineItem: React.FC<TagLineItemProps> = ({ tags, onUndoDelete, onDelete,
 
   return (
     <Container>
-      <Input error={!!tagError} value={tagVal} onChange={onTagChange} onBlur={saveUpdate} />
+      <Input
+        className={cn(`${ClassName.TAG_MODAL_INPUT_FIELD}-${tag.label}`)}
+        error={!!tagError}
+        value={tagVal}
+        onChange={onTagChange}
+        onBlur={saveUpdate}
+      />
       {tagError && (
         <FadeLeftContainer>
           <ErrorMessage style={{ marginBottom: '0', paddingTop: '8px' }}>{tagError}</ErrorMessage>
         </FadeLeftContainer>
       )}
       <TrashIconContainer>
-        <IconButton icon="garbage" size={16} onClick={onDeleteTag} variant={IconButtonVariant.SQUARE} />
+        <IconButton
+          className={cn(`${ClassName.DELETE_TAG_BUTTON}-${tag.label}`)}
+          icon="garbage"
+          size={16}
+          onClick={onDeleteTag}
+          variant={IconButtonVariant.SQUARE}
+        />
       </TrashIconContainer>
     </Container>
   );

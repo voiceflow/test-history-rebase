@@ -11,7 +11,17 @@ export default {
     // this.el.dialogLoadingIndicator.should('not.be.viible');
   },
 
-  assertSuccessSaveTranscriptToast: () => {
+  createProjectAndTranscript: (sessionID: string, creatorID: string) => {
+    cy.createProject('general', 'prototype:speak_and_choice');
+    cy.createTranscript({ sessionID, creatorID });
+  },
+
+  assertReportTagExists: (label: string) => {
+    cy.get(`.${ClassName.BASE_REPORT_TAG_INPUT}`).contains(label);
+    cy.get(`.active`).find(`.${ClassName.TRANSCRIPT_ITEM_META}`).should('contain', label);
+  },
+
+  assertSuccessToast: () => {
     cy.get(`.${TOAST_CLASS_NAME} .vf-svg-icon--checkmark`).should('be.visible');
   },
 
@@ -62,6 +72,10 @@ export default {
 
     get transcriptUserName() {
       return cy.get(`.${ClassName.TRANSCRIPT_USER_NAME}`);
+    },
+
+    get reportTagInput() {
+      return cy.get(`.${ClassName.BASE_REPORT_TAG_INPUT}`);
     },
 
     get transcriptMeta() {

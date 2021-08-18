@@ -50,7 +50,7 @@ const InfoSection: React.FC<InfoSection> = ({ active, name, date, isRead, tags }
   };
 
   return (
-    <Container>
+    <Container className={ClassName.TRANSCRIPT_ITEM_META}>
       <Name>{name || 'Test User'}</Name>
       <MetaContainer className={ClassName.TRANSCRIPT_DATE} isActive={active}>
         {formattedDate}

@@ -147,6 +147,12 @@ export enum ClassName {
   TRANSCRIPT_DIALOG_LOADING = 'vf-transcript-dialog--loading',
   TRANSCRIPT_LOADING = 'vf-transcript-page--loading',
   TRANSCRIPT_DATE = 'vf-conversations-transcript-date',
+  MARK_AS_REVIEWED_CONTAINER = 'vf-mark-as-reviewed-container',
+  SAVED_FOR_LATER_CONTAINER = 'vf-saved-for-later-container',
+  BASE_REPORT_TAG_INPUT = 'vf-conversations-report-tag-input',
+  TRANSCRIPT_ITEM_META = 'vf-conversations-transcript-meta',
+  DELETE_TAG_BUTTON = 'vf-conversations-delete-tag-button',
+  TAG_MODAL_INPUT_FIELD = 'vf-conversations-tag-input-field',
 
   SIDEBAR_ICON_MENU = 'vf-sidebar-icon-menu',
   SIDEBAR_ICON_MENU_ITEM = 'vf-sidebar-icon-menu__item',

@@ -132,6 +132,11 @@ declare namespace Cypress {
     createTranscript(options: { sessionID: string; creatorID: string | null }): Chainable;
 
     /**
+     * create a new transcript report tag
+     */
+    createReportTag(options: { label: string; tagID: string }): Chainable;
+
+    /**
      * wait for canvas animation to complete
      */
     awaitCanvasAnimation(): Chainable;

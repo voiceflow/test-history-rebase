@@ -2,6 +2,7 @@ import React from 'react';
 
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 
 import { ManageTagInput, SelectOnlyTagInput } from './components';
 import { InputVariant } from './constants';
@@ -26,7 +27,14 @@ const ReportTagInput: React.ForwardRefRenderFunction<HTMLInputElement, ReportTag
   return (
     <ReportTagInputProvider selectedTags={selectedTags}>
       {variant === InputVariant.MANAGE ? (
-        <ManageTagInput selectedTags={selectedTags} footerAction footerActionLabel="Manage Tags" onClickFooterAction={openTagManager} {...props} />
+        <ManageTagInput
+          className={ClassName.BASE_REPORT_TAG_INPUT}
+          selectedTags={selectedTags}
+          footerAction
+          footerActionLabel="Manage Tags"
+          onClickFooterAction={openTagManager}
+          {...props}
+        />
       ) : (
         <SelectOnlyTagInput
           hasRadioButtons

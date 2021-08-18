@@ -10,9 +10,10 @@ interface ManageTagInputProps {
   footerAction: boolean;
   footerActionLabel: string;
   onClickFooterAction: () => void;
+  className: string;
 }
 
-const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags, ...props }) => {
+const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags, className, ...props }) => {
   const currentTranscript = useSelector(currentSelectedTranscriptSelector);
   const dispatchAddTag = useDispatch(addTag);
   const dispatchRemoveTag = useDispatch(removeTag);
@@ -30,7 +31,16 @@ const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags, ...props 
     await dispatchRemoveTag(currentTranscript.id, tagID);
   };
 
-  return <BaseTagInput {...props} addTag={addTagToTranscript} removeTag={removeTagFromTranscript} onChange={setTags} selectedTags={selectedTags} />;
+  return (
+    <BaseTagInput
+      {...props}
+      className={className}
+      addTag={addTagToTranscript}
+      removeTag={removeTagFromTranscript}
+      onChange={setTags}
+      selectedTags={selectedTags}
+    />
+  );
 };
 
 export default ManageTagInput;

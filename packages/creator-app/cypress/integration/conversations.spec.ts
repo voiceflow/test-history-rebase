@@ -1,14 +1,15 @@
-// import moment from 'moment';
-
 import { ClassName } from '../../src/styles/constants';
 import canvasPage from '../pages/canvas';
 import conversations from '../pages/conversations';
 import { legacyModal } from '../pages/modals';
 import prototypePage from '../pages/prototype';
 
-const systemPrompt = 'This is a speak step';
-const defaultTranscriptContext = 'Conversation between your assistant and Test Account';
-// const currentDate = `${moment(Date.now()).format('LT').toLocaleLowerCase()}, ${moment(Date.now()).format('MMMM Do')}`;
+const SYSTEM_PROMPT = 'This is a speak step';
+const SESSION_ID = '123';
+const DEFAULT_TRANSCRIPT_CONTEXT = 'Conversation between your assistant and Test Account';
+const TRANSCRIPTS_TAGS_MODAL_PLACEHOLDER = 'Add new tags separated by commas';
+const MOCK_TAG_NAME = 'tag1';
+const CREATOR_ID = '1';
 
 context('Conversations', () => {
   beforeEach(() => cy.setup());
@@ -26,14 +27,11 @@ context('Conversations', () => {
     });
   });
 
-  // TODO: flakey
-  describe.skip('click to change active transcript', () => {
-    const sessionID = '123';
-
+  describe('click to change active transcript', () => {
     it('displays empty transcripts page with no test runs', () => {
       cy.createProject('general', 'prototype:speak_and_choice');
-      cy.createTranscript({ sessionID, creatorID: null });
-      cy.createTranscript({ sessionID, creatorID: null });
+      cy.createTranscript({ sessionID: SESSION_ID, creatorID: null });
+      cy.createTranscript({ sessionID: SESSION_ID, creatorID: null });
       canvasPage.goToCanvas();
       conversations.goToTranscriptsTab();
 
@@ -52,6 +50,81 @@ context('Conversations', () => {
     });
   });
 
+  describe('toggling and managing transcript tags', () => {
+    it('toggles built-in tags through transcript actions', () => {
+      conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
+      canvasPage.goToCanvas();
+      conversations.goToTranscriptsTab();
+
+      conversations.el.conversationsPage.should('be.visible');
+
+      conversations.el.markAsReviewedTranscriptButton.click();
+      conversations.el.saveForLaterTranscriptButton.click();
+
+      conversations.el.transcriptListItem.scrollIntoView();
+      conversations.el.transcriptListItem
+        .eq(0)
+        .find(`.${ClassName.TRANSCRIPT_ITEM_STATUSES}`)
+        .find(`.${ClassName.MARK_AS_REVIEWED_CONTAINER}`)
+        .should('be.visible');
+      conversations.el.transcriptListItem
+        .eq(0)
+        .find(`.${ClassName.TRANSCRIPT_ITEM_STATUSES}`)
+        .find(`.${ClassName.SAVED_FOR_LATER_CONTAINER}`)
+        .should('be.visible');
+
+      conversations.el.markAsReviewedTranscriptButton.click();
+      conversations.el.saveForLaterTranscriptButton.click();
+
+      conversations.el.transcriptListItem.scrollIntoView();
+      conversations.el.transcriptListItem.eq(0).contains(`.${ClassName.TRANSCRIPT_ITEM_STATUSES}`).should('not.exist');
+    });
+
+    it('add and delete custom tags in report tags dropdown', () => {
+      conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
+      canvasPage.goToCanvas();
+      conversations.goToTranscriptsTab();
+
+      conversations.el.reportTagInput.invoke('val').should('contain', '');
+      conversations.el.reportTagInput.type(`${MOCK_TAG_NAME}{enter}`);
+
+      conversations.assertReportTagExists(MOCK_TAG_NAME);
+
+      conversations.el.reportTagInput.type('{del}');
+      conversations.el.reportTagInput.invoke('val').should('contain', '');
+      conversations.el.transcriptListItem.eq(0).contains(`.${ClassName.TRANSCRIPT_ITEM_STATUSES}`).should('not.exist');
+    });
+
+    it('create and add custom tags in report tag manager', () => {
+      conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
+      canvasPage.goToCanvas();
+      conversations.goToTranscriptsTab();
+
+      conversations.el.reportTagInput.type(' ');
+      cy.get('div').contains('Manage Tags').click();
+      cy.get(`input[placeholder="${TRANSCRIPTS_TAGS_MODAL_PLACEHOLDER}"]`).focus().type(`${MOCK_TAG_NAME}{enter}`);
+      cy.get('button').contains('Close').click();
+
+      conversations.el.reportTagInput.click().type('{enter}');
+      conversations.assertReportTagExists(MOCK_TAG_NAME);
+    });
+
+    it('deletes report tags in report tag manager', () => {
+      conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
+      cy.createReportTag({ label: MOCK_TAG_NAME, tagID: CREATOR_ID });
+
+      canvasPage.goToCanvas();
+      conversations.goToTranscriptsTab();
+
+      conversations.el.reportTagInput.click().type(' ');
+      cy.get('div').contains('Manage Tags').click();
+
+      cy.get('input').get(`.${ClassName.TAG_MODAL_INPUT_FIELD}-${MOCK_TAG_NAME}`).should('be.visible');
+      cy.get('button').get(`.${ClassName.DELETE_TAG_BUTTON}-${MOCK_TAG_NAME}`).click();
+      conversations.assertSuccessToast();
+    });
+  });
+
   describe('prototype mode save transcripts', () => {
     it('saves transcript', () => {
       cy.createProject('general', 'prototype:speak_and_choice');
@@ -61,10 +134,10 @@ context('Conversations', () => {
       cy.get(`.${ClassName.PROTOTYPE_BUTTON}`).contains('yes').click();
       cy.get(`.${ClassName.CHAT_DIALOG_LOADING_MESSAGE}`).should('not.be.visible');
       conversations.el.prototypeSaveTranscriptButton.click();
-      conversations.assertSuccessSaveTranscriptToast();
+      conversations.assertSuccessToast();
 
       conversations.goToTranscriptsTab();
-      conversations.el.transcriptUserName.should('have.text', defaultTranscriptContext);
+      conversations.el.transcriptUserName.should('have.text', DEFAULT_TRANSCRIPT_CONTEXT);
       conversations.el.transcriptMeta.should('be.visible');
       cy.get(`.active`).should('be.visible').find(`.${ClassName.TRANSCRIPT_DATE}`).should('be.visible');
     });
@@ -84,13 +157,13 @@ context('Conversations', () => {
       // Run public prototype
       prototypePage.el.startPrototypeButton.click();
       prototypePage.awaitMessage();
-      prototypePage.el.systemResponse.should('have.text', systemPrompt);
+      prototypePage.el.systemResponse.should('have.text', SYSTEM_PROMPT);
       prototypePage.el.messageInput.type('yes');
       prototypePage.el.submitMessageInputButton.click();
       prototypePage.assertFinished();
 
       conversations.goToTranscriptsTab();
-      conversations.el.transcriptUserName.should('have.text', defaultTranscriptContext);
+      conversations.el.transcriptUserName.should('have.text', DEFAULT_TRANSCRIPT_CONTEXT);
       conversations.el.transcriptMeta.should('be.visible');
       cy.get(`.active`).should('be.visible').find(`.${ClassName.TRANSCRIPT_DATE}`).should('be.visible');
     });

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.8.0...@voiceflow/realtime-sdk@1.9.0) (2021-08-18)
+
+
+### Features
+
+* bump types (VF-1520) ([#3928](https://github.com/voiceflow/creator-app/issues/3928)) ([29e1347](https://github.com/voiceflow/creator-app/commit/29e1347b7a8fe07608c56e70bbe71d2d0eb60dcb))
+
+
+
+
+
 # [1.8.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.7.0...@voiceflow/realtime-sdk@1.8.0) (2021-08-10)
 
 

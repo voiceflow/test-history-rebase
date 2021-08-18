@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.462.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.16...@voiceflow/creator-app@1.462.0) (2021-08-18)
+
+
+### Bug Fixes
+
+* add OAuth2 scope for Google service management API (VF-873) ([#3932](https://github.com/voiceflow/creator-app/issues/3932)) ([2b5d9db](https://github.com/voiceflow/creator-app/commit/2b5d9dbe63a31151de97f8c16ae675e847d4aa50))
+* imports (VF-000) ([#3933](https://github.com/voiceflow/creator-app/issues/3933)) ([508c1db](https://github.com/voiceflow/creator-app/commit/508c1db12628fa50ea0caef23b89889a63eea9fc))
+* wrap stage error messages in a `<span>` (VF-000) ([#3931](https://github.com/voiceflow/creator-app/issues/3931)) ([892de3d](https://github.com/voiceflow/creator-app/commit/892de3dec03bef4d3a906085be4f923a6cad3adc))
+
+
+### Features
+
+* bump types (VF-1520) ([#3928](https://github.com/voiceflow/creator-app/issues/3928)) ([29e1347](https://github.com/voiceflow/creator-app/commit/29e1347b7a8fe07608c56e70bbe71d2d0eb60dcb))
+
+
+
+
+
 ## [1.461.16](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.461.15...@voiceflow/creator-app@1.461.16) (2021-08-17)
 
 **Note:** Version bump only for package @voiceflow/creator-app

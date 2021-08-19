@@ -1,8 +1,11 @@
 import React from 'react';
 
 import Box from '../../Box';
-import { MenuHeaderWrapper, MenuHr, MenuInput } from './components';
+import Input from '../../Input';
+import SvgIcon from '../../SvgIcon';
+import { MenuHeaderWrapper, MenuHr, MenuInput, SearchContainer } from './components';
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 function MenuHeader({
   onFocus,
   onCreate,
@@ -15,6 +18,7 @@ function MenuHeader({
   isButtonDisabled,
   updateSearchLabel,
   focusedOptionIndex,
+  inDropdownSearch,
   onChangeSearchLabel,
   alwaysShowCreate,
   createInputPlaceholder,
@@ -27,30 +31,58 @@ function MenuHeader({
 
   return (
     <>
-      <MenuHeaderWrapper
-        isDisabled={isButtonDisabled(value)}
-        ref={focusedOptionIndex === 0 ? focusedOptionRef : null}
-        isFocused={focusedOptionIndex === 0}
-        onMouseEnter={onFocus}
-        onClick={() => {
-          if (value) {
-            onCreate(value);
-          }
-        }}
-      >
-        {!isDropdown && <Box style={{ marginRight: '4px', color: '#6e849a' }}>{createLabel}</Box>}
-        {inputVal && <>"</>}
-        <MenuInput
-          onClick={(e) => e.stopPropagation()}
-          ref={createInputRef}
-          value={inputVal}
-          variant="inline"
-          onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
-          placeholder={createInputPlaceholder}
-        />
-        {inputVal && <>"</>}
-      </MenuHeaderWrapper>
-      <MenuHr />
+      {inDropdownSearch && (
+        <>
+          <SearchContainer>
+            <Box mr={12}>
+              <SvgIcon icon="search" size={16} color="#6E849A" />
+            </Box>
+            <Input
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus
+              ref={inDropdownSearch ? createInputRef : null}
+              value={inputVal}
+              onClick={() => createInputRef.current.focus()}
+              onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
+              placeholder={`Search ${createInputPlaceholder}`}
+            />
+          </SearchContainer>
+          <MenuHr />
+        </>
+      )}
+
+      {(!inDropdownSearch || value) && (
+        <MenuHeaderWrapper
+          isDisabled={isButtonDisabled(value)}
+          ref={focusedOptionIndex === 0 ? focusedOptionRef : null}
+          isFocused={focusedOptionIndex === 0}
+          onMouseEnter={onFocus}
+          onClick={() => {
+            if (value) {
+              onCreate(value);
+            }
+          }}
+        >
+          {!isDropdown && <Box style={{ marginRight: '4px', color: '#6e849a' }}>{createLabel}</Box>}
+          {inputVal && <>"</>}
+          <MenuInput
+            onClick={(e) => {
+              if (!inDropdownSearch) {
+                e.stopPropagation();
+              }
+            }}
+            inDropdownSearch={inDropdownSearch}
+            ref={inDropdownSearch ? null : createInputRef}
+            value={inputVal}
+            variant="inline"
+            onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
+            placeholder={createInputPlaceholder}
+          />
+          {inputVal && <>"</>}
+        </MenuHeaderWrapper>
+      )}
+
+      {!inDropdownSearch && <MenuHr style={{ margin: '0px' }} />}
     </>
   );
 }

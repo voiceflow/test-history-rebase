@@ -13,7 +13,7 @@ import { ClassName } from '@/styles/constants';
 import {
   filterIntents,
   formatIntentName,
-  isCustomizeableBuiltInIntent,
+  isCustomizableBuiltInIntent,
   prettifyIntentName,
   prettifyIntentNames,
   validateIntentName,
@@ -72,6 +72,7 @@ function IntentSelect({
   intent,
   intents,
   onChange,
+  inDropdownSearch = false,
   platform,
   newIntent,
   creatable = true,
@@ -94,7 +95,7 @@ function IntentSelect({
       }, {}),
     [filteredIntents]
   );
-  const intentMissing = intent?.id && !intentLookup[intent?.id] && !isCustomizeableBuiltInIntent(intent);
+  const intentMissing = intent?.id && !intentLookup[intent?.id] && !isCustomizableBuiltInIntent(intent);
 
   const getOptionLabel = React.useCallback((value) => intentLookup[value], [intentLookup]);
   const isButtonDisabled = React.useCallback(
@@ -157,6 +158,7 @@ function IntentSelect({
         onSelect={onSelectIntent}
         creatable={creatable}
         searchable
+        inDropdownSearch={inDropdownSearch}
         placeholder={placeholder}
         optionsFilter={(...args) => optionsFilter(...args, platform)}
         getOptionValue={getOptionValue}
@@ -174,7 +176,7 @@ function IntentSelect({
             platform,
           })
         }
-        createInputPlaceholder="new Intent"
+        createInputPlaceholder="intents"
       />
       {intentMissing && <Alert variant={AlertVariant.WARNING} message="Intent is broken or has been deleted." mt={10} />}
     </>

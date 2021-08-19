@@ -48,8 +48,9 @@ export type OptionsFilter<O, V> = (
 
 export type SelectProps<O, V> = {
   id?: string;
-  tags?: any;
+  tags?: () => JSX.Element[];
   footerAction?: boolean;
+  inDropdownSearch?: boolean;
   footerActionLabel?: string;
   onClickFooterAction?: () => void;
   onSearch?: (val: string) => void;
@@ -145,6 +146,7 @@ const Select = <O, V = O>({
   id,
   open,
   icon,
+  inDropdownSearch = false,
   inputStopProp = true,
   label = '',
   value,
@@ -561,6 +563,7 @@ SelectProps<O, V>) => {
       {renderDropdown && (
         <AnyAdvancedMenu
           id={id}
+          inDropdownSearch={inDropdownSearch}
           footerAction={footerAction}
           footerActionLabel={footerActionLabel}
           onClickFooterAction={() => {

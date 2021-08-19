@@ -4,7 +4,7 @@ import _toLower from 'lodash/toLower';
 import React from 'react';
 
 import { SPACE_REGEXP } from '@/constants';
-import { isCustomizeableBuiltInIntent } from '@/utils/intent';
+import { isCustomizableBuiltInIntent } from '@/utils/intent';
 import { createPlatformSelector } from '@/utils/platform';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
@@ -48,7 +48,7 @@ const IntentOption = ({ option, searchLabel, getOptionLabel, getOptionValue, pla
   <FlexApart fullWidth>
     <span>{getFormatedLabel(getOptionLabel(getOptionValue(option)), searchLabel, platform)}</span>
 
-    {isCustomizeableBuiltInIntent(option) && <SvgIcon icon={getPlatformIcon(option.platform)} color="#BECEDC" />}
+    {isCustomizableBuiltInIntent(option) && <SvgIcon icon={getPlatformIcon(option.platform)} color="#BECEDC" />}
   </FlexApart>
 );
 

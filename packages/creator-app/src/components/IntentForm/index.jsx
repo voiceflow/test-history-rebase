@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { UtteranceManager } from '@/components/IntentForm/components/Custom/components';
-import { isCustomizeableBuiltInIntent } from '@/utils/intent';
+import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
 import CustomIntentForm from './components/Custom';
 
@@ -13,7 +13,7 @@ const IntentForm = ({ intent, ...props }) => {
     return null;
   }
 
-  if (isCustomizeableBuiltInIntent(intent)) {
+  if (isCustomizableBuiltInIntent(intent)) {
     return <UtteranceManager intent={intent} isNested={!!props.isNested} />;
   }
 

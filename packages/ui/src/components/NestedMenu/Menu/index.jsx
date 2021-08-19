@@ -57,6 +57,7 @@ function BaseNestedMenu({
   isButtonDisabled = _constant(false),
   formatInputValue,
   alwaysShowCreate,
+  inDropdownSearch,
   popoverModifiers,
   disableAnimation,
   firstOptionIndex = 0,
@@ -304,9 +305,9 @@ function BaseNestedMenu({
                 maxHeight={maxHeight}
                 fullWidth
                 searchable={
-                  (creatable || (searchable && isDropdown)) &&
-                  !directSearchMatch && (
+                  (((creatable || (searchable && isDropdown)) && !directSearchMatch) || inDropdownSearch) && (
                     <MenuHeader
+                      inDropdownSearch={inDropdownSearch}
                       alwaysShowCreate={alwaysShowCreate}
                       createLabel={createLabel}
                       withSearchIcon={withSearchIcon}

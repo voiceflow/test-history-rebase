@@ -20,7 +20,7 @@ const intentLabel: { [key in GeneralConstants.IntentName]?: string } = {
   [GeneralConstants.IntentName.NONE]: 'Fallback',
 };
 
-export const isCustomizeableBuiltInIntent = (intent?: Intent | null) => !!intent && builtInIntentMap.has(intent.id);
+export const isCustomizableBuiltInIntent = (intent?: Intent | null) => !!intent && builtInIntentMap.has(intent.id);
 
 export const formatIntentName = (name = '') =>
   name
@@ -51,7 +51,7 @@ export const filterIntents = (intents: Intent[], activeIntent: Intent) =>
       return true;
     }
 
-    if (isCustomizeableBuiltInIntent(intent)) {
+    if (isCustomizableBuiltInIntent(intent)) {
       return !FILTERED_AMAZON_INTENTS.includes(intent.name.replace(AMAZON_INTENT_PREFIX, ''));
     }
 

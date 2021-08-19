@@ -2,7 +2,7 @@ import { PlatformType } from '@voiceflow/internal';
 import _isPlainObject from 'lodash/isPlainObject';
 
 import { Intent, IntentInput, IntentSlot } from '@/models';
-import { isCustomizeableBuiltInIntent, removeBuiltInPrefix } from '@/utils/intent';
+import { isCustomizableBuiltInIntent, removeBuiltInPrefix } from '@/utils/intent';
 import { capitalizeFirstLetter } from '@/utils/string';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
@@ -29,7 +29,7 @@ export const intentProcessor = ({ inputs = [], ...intent }: Intent): Intent => {
 
 export const applySingleIntentNameFormatting = (intent: Intent, platform: PlatformType) => {
   let { name } = intent ?? { name: '' };
-  if (isCustomizeableBuiltInIntent(intent)) {
+  if (isCustomizableBuiltInIntent(intent)) {
     // eslint-disable-next-line prefer-destructuring
     name = removeBuiltInPrefix(name);
 

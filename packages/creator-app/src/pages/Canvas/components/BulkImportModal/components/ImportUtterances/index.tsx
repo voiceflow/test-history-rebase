@@ -15,7 +15,7 @@ import { connect } from '@/hocs';
 import { useDebouncedCallback, useModals } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { readFileAsText } from '@/utils/file';
-import { isCustomizeableBuiltInIntent } from '@/utils/intent';
+import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
 import { ACCEPTED_FILE_TYPES, FILE_SIZE_LIMIT_BYTES, FILE_SIZE_LIMIT_KB, UPLOAD_VARIANTS, UploadType } from '../../constants';
 import AceEditor from '../AceEditor';
@@ -47,7 +47,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, int
     ModalType.IMPORT_UTTERANCES
   );
 
-  const builtIn = isCustomizeableBuiltInIntent(intentByID(data.intentID));
+  const builtIn = isCustomizableBuiltInIntent(intentByID(data.intentID));
 
   const findSlotsAndUtterances = useDebouncedCallback(
     DEBOUNCE_TIMEOUT,

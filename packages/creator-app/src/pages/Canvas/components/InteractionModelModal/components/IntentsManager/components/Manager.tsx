@@ -12,7 +12,7 @@ import * as Slot from '@/ducks/slot';
 import { compose, connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { formatIntentName, isCustomizeableBuiltInIntent, prettifyIntentName, validateIntentName } from '@/utils/intent';
+import { formatIntentName, isCustomizableBuiltInIntent, prettifyIntentName, validateIntentName } from '@/utils/intent';
 import { removeTrailingUnderscores } from '@/utils/string';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
@@ -30,7 +30,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
   const [path, setPath] = React.useState<{ type: string | null }>({ type: null });
   const resetPath = React.useCallback(() => setPath({ type: null }), []);
   const [nameError, setNameError] = React.useState<string | null>(null);
-  const isBuiltIn = isCustomizeableBuiltInIntent(selectedIntent);
+  const isBuiltIn = isCustomizableBuiltInIntent(selectedIntent);
 
   const slotEdit = path.type === 'slot';
 
@@ -81,7 +81,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
             onBlur={onBlur}
             onChange={({ currentTarget }) => localNameUpdate(currentTarget)}
             placeholder="Intent Name"
-            disabled={isCustomizeableBuiltInIntent(selectedIntent)}
+            disabled={isCustomizableBuiltInIntent(selectedIntent)}
           />
           <RemoveDropdown deleteText={isBuiltIn ? 'Remove' : undefined} onRemove={() => removeIntent(id)} />
         </FlexApart>

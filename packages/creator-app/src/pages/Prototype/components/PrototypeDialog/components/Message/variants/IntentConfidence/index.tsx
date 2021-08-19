@@ -39,8 +39,12 @@ export const IntentConfidence: React.FC<IntentConfidenceProps & ConnectedIntentC
     return (
       <NoIntent
         focused={focusedTurnID === turnID}
-        setChildDropdownIsOpened={(val) => {
-          setFocusedTurnID(val && turnID ? turnID : null);
+        setChildDropdownIsOpened={(opened) => {
+          const anotherDropdownOpened = !opened && focusedTurnID !== null && turnID !== focusedTurnID;
+          if (anotherDropdownOpened) {
+            return;
+          }
+          setFocusedTurnID(opened && turnID ? turnID : null);
         }}
         turnID={turnID!}
         utterance={lastUserMessage.input}

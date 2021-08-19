@@ -27,7 +27,7 @@ import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
-import { isCustomizeableBuiltInIntent, validateUtterance } from '@/utils/intent';
+import { isCustomizableBuiltInIntent, validateUtterance } from '@/utils/intent';
 
 import ListManagerWrapper from '../../../ListManagerWrapper';
 import UtterancesTooltip from '../UtterancesTooltip';
@@ -48,14 +48,15 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
   const { open: openImportBulkDeniedModal } = useModals(ModalType.IMPORT_BULK_DENIED);
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
   const { toggle: toggleSlotEdit, close: closeSlotEdit, isInStack: slotEditOpen } = useModals(ModalType.SLOT_EDIT);
+  const { isOpened: interactionModelInstance } = useModals(ModalType.INTERACTION_MODEL);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
-  const isBuiltIn = isCustomizeableBuiltInIntent(intent);
+  const isBuiltIn = isCustomizableBuiltInIntent(intent);
   const [showUtterances, setShowUtterances] = React.useState(!isBuiltIn || !!intent.inputs?.length || !!prefilledNewUtterance);
   const onUpdateUtterances = React.useCallback((inputs) => updateIntent(intentID, { inputs }, true), [intentID, updateIntent]);
 
   React.useEffect(() => {
     if (prefilledNewUtterance) {
-      utteranceRef.current.forceFocusToTheEnd?.();
+      utteranceRef.current?.forceFocusToTheEnd?.();
       updateIsEmpty(false);
     }
   }, [prefilledNewUtterance, utteranceRef]);
@@ -69,7 +70,6 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
     if (prefilledNewUtterance) {
       const queryParams = new URLSearchParams(search);
       queryParams.delete(PREFILLED_UTTERANCE_PARAM);
-
       history.replace({
         search: queryParams.toString(),
       });
@@ -126,7 +126,7 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
 
   // For the side editor collapse
   useDidUpdateEffect(() => {
-    if (!focus.isActive && !intent.inputs?.length && !isCustomizeableBuiltInIntent(intent)) {
+    if (!focus.isActive && !intent.inputs?.length && !isCustomizableBuiltInIntent(intent)) {
       warnNoUtterances();
     }
   }, [focus.isActive, intent.inputs]);
@@ -147,7 +147,7 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
           skipRerender={slotEditOpen}
           namespace="utterances"
           header="Utterances"
-          initialOpen={intent.inputs.length === 0 || !!prefilledNewUtterance}
+          initialOpen={intent.inputs.length === 0 || interactionModelInstance}
           infix={
             <TippyTooltip title="Bulk Import">
               <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
@@ -166,13 +166,13 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
                 items={intent.inputs}
                 addToStart
                 initialValue={prefilledNewUtterance ? { text: prefilledNewUtterance, slots: [] } : null}
-                beforeAdd={() => utteranceRef.current.forceUpdate()}
+                beforeAdd={() => utteranceRef.current?.forceUpdate()}
                 renderForm={({ value, onAdd, onChange, addError }) => {
                   const placeholder = intent.inputs.length ? 'Add synonyms, {} to add entities' : 'What might the user say to invoke this intent?';
                   return (
                     <>
                       <Utterance
-                        noSlots={isCustomizeableBuiltInIntent(intent)}
+                        noSlots={isCustomizableBuiltInIntent(intent)}
                         ref={utteranceRef}
                         space
                         icon="user"
@@ -187,7 +187,7 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
                             <Badge
                               slide
                               onClick={() => {
-                                onAdd(utteranceRef.current.getCurrentUtterance());
+                                onAdd(utteranceRef.current?.getCurrentUtterance());
                               }}
                             >
                               Enter
@@ -206,7 +206,7 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
                 onUpdate={onUpdateUtterances}
                 renderItem={(item, { onUpdate }) => (
                   <Utterance
-                    noSlots={isCustomizeableBuiltInIntent(intent)}
+                    noSlots={isCustomizableBuiltInIntent(intent)}
                     space
                     slots={slots}
                     value={item.text}

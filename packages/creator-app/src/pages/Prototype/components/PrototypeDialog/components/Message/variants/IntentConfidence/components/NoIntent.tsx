@@ -103,6 +103,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     <Container focused={focused}>
       <IntentSelect
         alwaysShowCreate
+        inDropdownSearch
         intent={null}
         onChange={({ intent }: { intent: string }) => handleIntentSelectCreate(intent)}
         triggerRenderer={({ opened, ...props }: { opened: boolean }) => {
@@ -124,7 +125,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
       <Flex>
         <StatusIcon icon="check2" size={14} color="#3e9e3e" />
       </Flex>
-      Utterance added to &nbsp;<span>{addedIntent?.name}</span>&nbsp;intent
+      Utterance added to&nbsp;<span>{addedIntent?.name}</span>&nbsp;intent
     </Container>
   );
 };

@@ -12,7 +12,7 @@ import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Intent } from '@/models';
 import { ConnectedProps } from '@/types';
-import { formatIntentName, isCustomizeableBuiltInIntent, prettifyIntentName, prettifyIntentNames } from '@/utils/intent';
+import { formatIntentName, isCustomizableBuiltInIntent, prettifyIntentName, prettifyIntentNames } from '@/utils/intent';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
 import EmptyContainer from '../EmptyContainer';
@@ -133,7 +133,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
 };
 
 const sortedIntentsSelector = createSelector(IntentDuck.allCustomIntentsSelector, (intents) =>
-  _sortBy(intents, isCustomizeableBuiltInIntent, (intent) => intent.name.toLowerCase())
+  _sortBy(intents, isCustomizableBuiltInIntent, (intent) => intent.name.toLowerCase())
 );
 
 const mapStateToProps = {

@@ -51,7 +51,7 @@ context('Conversations', () => {
   });
 
   describe('toggling and managing transcript tags', () => {
-    it('toggles built-in tags through transcript actions', () => {
+    it.skip('toggles built-in tags through transcript actions', () => {
       conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
       canvasPage.goToCanvas();
       conversations.goToTranscriptsTab();

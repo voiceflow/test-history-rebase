@@ -7,6 +7,7 @@ const dialogAdapter = createAdapter<any, any>(
   (data) => {
     const responseType = data.format;
     const isUserInput = responseType === 'request';
+    const nestedPayload = data.payload?.payload;
     let specificProperties = {};
 
     const commonProperties = {
@@ -18,9 +19,9 @@ const dialogAdapter = createAdapter<any, any>(
     };
 
     // eslint-disable-next-line xss/no-mixed-html
-    const isAudioSpeak = data.payload.type === 'speak' && data.payload.payload.message.includes('<audio src=');
+    const isAudioSpeak = data.payload.type === 'speak' && nestedPayload?.message.includes('<audio src=');
     if (isAudioSpeak) {
-      const { message } = data.payload.payload;
+      const { message } = nestedPayload;
       // eslint-disable-next-line xss/no-mixed-html
       const extractedURL = message.replace('<audio src="', '').replace('"/>', '');
       specificProperties = {
@@ -32,16 +33,16 @@ const dialogAdapter = createAdapter<any, any>(
     return isUserInput
       ? {
           type: MessageType.USER,
-          input: data.payload.payload?.query,
-          intentName: data.payload?.payload?.intent?.name,
+          input: nestedPayload?.query,
+          intentName: nestedPayload?.intent?.name,
           ...commonProperties,
         }
       : {
-          ...data.payload?.payload,
-          image: data.payload.payload?.image,
+          ...nestedPayload,
+          image: nestedPayload?.image || nestedPayload?.imageURL,
           type: data.type.toUpperCase(),
           intentConfidence: data.state?.variables?.intent_confidence,
-          intentName: data.payload?.payload?.intent?.name,
+          intentName: nestedPayload?.intent?.name,
           ...commonProperties,
           ...specificProperties,
         };

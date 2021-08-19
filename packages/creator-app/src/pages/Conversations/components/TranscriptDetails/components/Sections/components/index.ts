@@ -48,7 +48,6 @@ ${({ withBackground, theme }) =>
       border-top-left-radius: 12px;
       border-top-right-radius: 12px;
       box-shadow: 0 0 16px 0 rgba(19, 33, 68, 0.03), 0 0 0 1px rgba(19, 33, 68, 0.06);
-      -webkit-clip-path: inset(-16px -16px 0px -16px);
     `}
 `;
 

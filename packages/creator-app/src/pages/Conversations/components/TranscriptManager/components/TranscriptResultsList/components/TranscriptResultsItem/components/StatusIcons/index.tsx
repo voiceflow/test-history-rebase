@@ -15,13 +15,13 @@ interface StatusIconsProps {
   id: string;
 }
 
-const StatusIcons: React.FC<StatusIconsProps> = ({ sentiment, reviewed = false, saved = false }) => {
+const StatusIcons: React.FC<StatusIconsProps> = ({ id, sentiment, reviewed = false, saved = false }) => {
   if (!saved && !reviewed && !sentiment) {
     return null;
   }
 
   return (
-    <Container className={`${ClassName.TRANSCRIPT_ITEM_STATUSES}`}>
+    <Container className={`${ClassName.TRANSCRIPT_ITEM_STATUSES}-${id}`}>
       {saved && (
         <IconContainer className={ClassName.SAVED_FOR_LATER_CONTAINER}>
           <SvgIcon icon="bookmark" color={THEME.colors.red} />

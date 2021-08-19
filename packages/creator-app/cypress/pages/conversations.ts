@@ -6,11 +6,6 @@ const TOAST_CLASS_NAME = 'Toastify__toast';
 export default {
   goToTranscriptsTab: () => cy.getSession().then(({ versionID }) => cy.visit(`/project/${versionID}/transcripts`)),
 
-  awaitLoadingTranscripts() {
-    // this.el.transcriptLoadingIndicator.should('not.be.visible');
-    // this.el.dialogLoadingIndicator.should('not.be.viible');
-  },
-
   createProjectAndTranscript: (sessionID: string, creatorID: string) => {
     cy.createProject('general', 'prototype:speak_and_choice');
     cy.createTranscript({ sessionID, creatorID });

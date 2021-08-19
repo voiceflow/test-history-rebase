@@ -18,17 +18,19 @@ context('Conversations', () => {
     cy.teardown();
   });
 
-  describe('empty transcripts page', () => {
+  describe('when on empty transcripts page', () => {
     it('displays empty transcripts page with no test runs', () => {
       cy.createProject('general', 'prototype:speak_and_choice');
       canvasPage.goToCanvas();
       conversations.goToTranscriptsTab();
+
+      cy.awaitLoaded();
       conversations.el.emptyTranscriptsContainer.should('be.visible');
     });
   });
 
-  describe('click to change active transcript', () => {
-    it('displays empty transcripts page with no test runs', () => {
+  describe.skip('when clicking to change active transcript', () => {
+    it('toggles between two transcripts', () => {
       cy.createProject('general', 'prototype:speak_and_choice');
       cy.createTranscript({ sessionID: SESSION_ID, creatorID: null });
       cy.createTranscript({ sessionID: SESSION_ID, creatorID: null });
@@ -50,7 +52,7 @@ context('Conversations', () => {
     });
   });
 
-  describe('toggling and managing transcript tags', () => {
+  describe('when toggling and managing transcript tags', () => {
     it.skip('toggles built-in tags through transcript actions', () => {
       conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
       canvasPage.goToCanvas();
@@ -62,16 +64,8 @@ context('Conversations', () => {
       conversations.el.saveForLaterTranscriptButton.click();
 
       conversations.el.transcriptListItem.scrollIntoView();
-      conversations.el.transcriptListItem
-        .eq(0)
-        .find(`.${ClassName.TRANSCRIPT_ITEM_STATUSES}`)
-        .find(`.${ClassName.MARK_AS_REVIEWED_CONTAINER}`)
-        .should('be.visible');
-      conversations.el.transcriptListItem
-        .eq(0)
-        .find(`.${ClassName.TRANSCRIPT_ITEM_STATUSES}`)
-        .find(`.${ClassName.SAVED_FOR_LATER_CONTAINER}`)
-        .should('be.visible');
+      conversations.el.transcriptListItem.eq(0).find(`.${ClassName.MARK_AS_REVIEWED_CONTAINER}`).should('be.visible');
+      conversations.el.transcriptListItem.eq(0).find(`.${ClassName.SAVED_FOR_LATER_CONTAINER}`).should('be.visible');
 
       conversations.el.markAsReviewedTranscriptButton.click();
       conversations.el.saveForLaterTranscriptButton.click();
@@ -125,11 +119,15 @@ context('Conversations', () => {
     });
   });
 
-  describe('prototype mode save transcripts', () => {
-    it('saves transcript', () => {
+  describe('when on prototype mode save transcripts', () => {
+    it.skip('saves transcript', () => {
       cy.createProject('general', 'prototype:speak_and_choice');
       canvasPage.goToCanvas();
       canvasPage.el.testButton.click();
+
+      cy.awaitLoaded();
+      canvasPage.el.startPrototypeButton.scrollIntoView();
+
       canvasPage.el.startPrototypeButton.click();
       cy.get(`.${ClassName.PROTOTYPE_BUTTON}`).contains('yes').click();
       cy.get(`.${ClassName.CHAT_DIALOG_LOADING_MESSAGE}`).should('not.be.visible');
@@ -143,7 +141,7 @@ context('Conversations', () => {
     });
   });
 
-  describe('public prototype mode save transcripts', () => {
+  describe('when on public prototype mode save transcripts', () => {
     it('saves transcript', () => {
       cy.createProject('general', 'prototype:speak_and_choice');
       cy.renderTest('general');
@@ -155,6 +153,7 @@ context('Conversations', () => {
       cy.clipboard().then((clipboardData) => cy.visit(clipboardData!));
 
       // Run public prototype
+      prototypePage.el.startPrototypeButton.should('be.visible');
       prototypePage.el.startPrototypeButton.click();
       prototypePage.awaitMessage();
       prototypePage.el.systemResponse.should('have.text', SYSTEM_PROMPT);
@@ -168,9 +167,16 @@ context('Conversations', () => {
       cy.get(`.active`).should('be.visible').find(`.${ClassName.TRANSCRIPT_DATE}`).should('be.visible');
     });
 
-    it.skip('deletes transcript', () => {
+    it('deletes transcript', () => {
+      conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
+      canvasPage.goToCanvas();
+      conversations.goToTranscriptsTab();
+      cy.awaitLoaded();
+
       conversations.el.deleteTranscriptButton.click();
       legacyModal.el.confirm.should('be.visible').find('button').eq(1).click();
+
+      cy.awaitLoaded();
       conversations.el.emptyTranscriptsContainer.should('be.visible');
     });
   });

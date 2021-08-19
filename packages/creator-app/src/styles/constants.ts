@@ -64,6 +64,7 @@ export enum Identifier {
   INVOCATION_NAME_INPUT = 'vf-invocation-name-input',
 
   // Transcripts
+  TRANSCRIPT_LOADING = 'vf-transcript-page--loading',
   SAVE_TRANSCRIPT_BUTTON = 'vf-save-conversations-button',
   DELETE_TRANSCRIPT_BUTTON = 'vf-delete-transcript-button',
   MARK_AS_REVIEWED_TRANSCRIPT_BUTTON = 'vf-mark-reviewed-transcript-button',
@@ -145,7 +146,6 @@ export enum ClassName {
   TRANSCRIPT_USER_NAME = 'vf-transcript-user-name',
   TRANSCRIPT_CONTEXT_META = 'vf-transcript-context-meta',
   TRANSCRIPT_DIALOG_LOADING = 'vf-transcript-dialog--loading',
-  TRANSCRIPT_LOADING = 'vf-transcript-page--loading',
   TRANSCRIPT_DATE = 'vf-conversations-transcript-date',
   MARK_AS_REVIEWED_CONTAINER = 'vf-mark-as-reviewed-container',
   SAVED_FOR_LATER_CONTAINER = 'vf-saved-for-later-container',

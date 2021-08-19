@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.462.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.462.5...@voiceflow/creator-app@1.462.6) (2021-08-19)
+
+
+### Bug Fixes
+
+* use substring check (VF-1569) ([#3961](https://github.com/voiceflow/creator-app/issues/3961)) ([ee0581f](https://github.com/voiceflow/creator-app/commit/ee0581ff6d27b2ead0da9de72a4a8310174cb67c))
+
+
+
+
+
 ## [1.462.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.462.4...@voiceflow/creator-app@1.462.5) (2021-08-19)
 
 

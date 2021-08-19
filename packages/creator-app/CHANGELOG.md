@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.462.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.462.2...@voiceflow/creator-app@1.462.3) (2021-08-19)
+
+
+### Bug Fixes
+
+* skip failing test (VF-000) ([#3952](https://github.com/voiceflow/creator-app/issues/3952)) ([7e47544](https://github.com/voiceflow/creator-app/commit/7e47544744b6b35aca45e681b4fcbbdacb4a512a))
+
+
+
+
+
 ## [1.462.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.462.1...@voiceflow/creator-app@1.462.2) (2021-08-19)
 
 

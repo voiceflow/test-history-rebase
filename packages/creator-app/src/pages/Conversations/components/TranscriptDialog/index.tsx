@@ -13,7 +13,7 @@ import { Message } from '@/pages/Prototype/types';
 import { noop } from '@/utils/functional';
 
 import { Container, DialogHeader, DialogLoader } from './components';
-import { transformDialogTimestamp } from './util';
+import { filterAndTransformDialogs } from './util';
 
 const TranscriptDialog: React.FC = () => {
   const [messages, setMessages] = React.useState<Message[]>([]);
@@ -34,7 +34,7 @@ const TranscriptDialog: React.FC = () => {
     const currentTranscriptID = currentTranscriptIDSelector(store.getState());
     if (currentTranscriptID === targetTranscriptID && dialogs) {
       setLoading(false);
-      const modifiedDialogs = await transformDialogTimestamp(dialogs, dialogs[0].startTime);
+      const modifiedDialogs = filterAndTransformDialogs(dialogs, dialogs[0].startTime);
       setMessages(modifiedDialogs);
     }
   };

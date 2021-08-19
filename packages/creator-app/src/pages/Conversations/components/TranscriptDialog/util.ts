@@ -14,3 +14,16 @@ export const transformDialogTimestamp = (dialogs: Message[], startTime: string):
   });
   return dialogs;
 };
+
+// The typings are in another PR, will fix it there
+const filterDialogs = (dialogs: any) => {
+  return dialogs.filter((data: any) => {
+    const isAPLJson = data.aplType === 'JSON';
+    return !isAPLJson;
+  });
+};
+
+export const filterAndTransformDialogs = (dialogs: Message[], startTime: string): Message[] => {
+  const filtered = filterDialogs(dialogs);
+  return transformDialogTimestamp(filtered, startTime);
+};

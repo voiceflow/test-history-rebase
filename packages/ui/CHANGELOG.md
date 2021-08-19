@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.11.8...@voiceflow/ui@1.11.9) (2021-08-19)
+
+
+### Bug Fixes
+
+* update add Utt dropdown header (VF-000) ([#3940](https://github.com/voiceflow/creator-app/issues/3940)) ([632294d](https://github.com/voiceflow/creator-app/commit/632294d05aa49aa65ed52ce96798f2e83989064f))
+
+
+
+
+
 ## [1.11.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.11.7...@voiceflow/ui@1.11.8) (2021-08-18)
 
 **Note:** Version bump only for package @voiceflow/ui

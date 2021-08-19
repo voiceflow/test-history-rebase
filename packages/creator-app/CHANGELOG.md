@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.462.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.462.3...@voiceflow/creator-app@1.462.4) (2021-08-19)
+
+
+### Bug Fixes
+
+* filter out APL JSON (VF-000) ([#3953](https://github.com/voiceflow/creator-app/issues/3953)) ([4c59c7d](https://github.com/voiceflow/creator-app/commit/4c59c7def84e8a35b0fcfcfd004c85f67a86de04))
+* transcript item and tests (VF-1568) ([#3945](https://github.com/voiceflow/creator-app/issues/3945)) ([bb1a8d0](https://github.com/voiceflow/creator-app/commit/bb1a8d0cc0491cce224228b35aca43cdd5a24f62))
+
+
+
+
+
 ## [1.462.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.462.2...@voiceflow/creator-app@1.462.3) (2021-08-19)
 
 

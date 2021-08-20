@@ -1,9 +1,9 @@
-import { Button, ButtonVariant, FlexCenter } from '@voiceflow/ui';
+import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { createGraphic } from '@/assets';
 
-import { BodyTextContainer, ButtonContainer, ContentContainer, Logo, LogoContainer, TitleLabel } from './components';
+import { BodyTextContainer, ButtonContainer, Container, ContentContainer, Logo, LogoContainer, TitleLabel } from './components';
 
 interface EmptyScreenProps {
   id?: string;
@@ -15,7 +15,7 @@ interface EmptyScreenProps {
 
 const EmptyScreen: React.FC<EmptyScreenProps> = ({ id, title, onClick, body, buttonText }) => {
   return (
-    <FlexCenter>
+    <Container>
       <ContentContainer>
         <LogoContainer>
           <Logo src={createGraphic} alt="skill-icon" width="80" height="80" />
@@ -28,7 +28,7 @@ const EmptyScreen: React.FC<EmptyScreenProps> = ({ id, title, onClick, body, but
           </Button>
         </ButtonContainer>
       </ContentContainer>
-    </FlexCenter>
+    </Container>
   );
 };
 

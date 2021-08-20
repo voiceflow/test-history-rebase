@@ -35,3 +35,9 @@ export const ContentContainer = styled.div`
   text-align: center;
   align-self: center;
 `;
+
+export const Container = styled.div`
+  height: 100%;
+  justify-content: center;
+  display: flex;
+`;

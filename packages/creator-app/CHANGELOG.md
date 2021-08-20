@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.462.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.462.6...@voiceflow/creator-app@1.462.7) (2021-08-20)
+
+
+### Bug Fixes
+
+* text ux/ui (VF-000) ([#3959](https://github.com/voiceflow/creator-app/issues/3959)) ([9ad6fb0](https://github.com/voiceflow/creator-app/commit/9ad6fb047d33e9c39069fae78968479a80427dcd))
+* **creator-app/conversations:** fixes transacripts mention ui cutoff (VF-1487) ([#3962](https://github.com/voiceflow/creator-app/issues/3962)) ([c9b8db3](https://github.com/voiceflow/creator-app/commit/c9b8db305a2e90c436fca83d6c7a05a7d2c96422))
+
+
+
+
+
 ## [1.462.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.462.5...@voiceflow/creator-app@1.462.6) (2021-08-19)
 
 

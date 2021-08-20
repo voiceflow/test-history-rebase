@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.464.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.463.0...@voiceflow/creator-app@1.464.0) (2021-08-20)
+
+
+### Features
+
+* conversations segment tracking events (VF-1559) ([#3946](https://github.com/voiceflow/creator-app/issues/3946)) ([c52aeae](https://github.com/voiceflow/creator-app/commit/c52aeae78771c2b09618efddab6d2726d21812f6))
+
+
+
+
+
 # [1.463.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.462.8...@voiceflow/creator-app@1.463.0) (2021-08-20)
 
 

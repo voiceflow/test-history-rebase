@@ -3,6 +3,7 @@ import React from 'react';
 
 import Divider from '@/components/Divider';
 import * as Prototype from '@/ducks/prototype';
+import { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
 
 import { Interaction, Message, MessageType, UserMessage } from '../../types';
 import { Container, Ended, InlineInteractions, MessagesContainer, StickyInteractions } from './components';
@@ -30,6 +31,7 @@ interface DialogPrototypeProps {
   onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
   setFocusedTurnID: (turnID: string | null) => void;
   focusedTurnID: string | null;
+  dialogTurnMap?: TurnMap;
 }
 
 const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
@@ -52,6 +54,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   onScroll,
   setFocusedTurnID,
   focusedTurnID,
+  dialogTurnMap,
 }) => {
   // filter out messages based on settings
   const messages = useMessageFilters(rawMessages);
@@ -113,6 +116,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
             case MessageType.DEBUG:
               return isIntentConfidence ? (
                 <IntentConfidence
+                  dialogTurnMap={dialogTurnMap}
                   setFocusedTurnID={setFocusedTurnID}
                   focusedTurnID={focusedTurnID}
                   isTranscript={isTranscript}

@@ -3,20 +3,22 @@ import React from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import client from '@/client';
+import { DialogMessage } from '@/client/adapters/transcripts/dialogs';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype/types';
 import * as Recent from '@/ducks/recent';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { currentTranscriptIDSelector } from '@/ducks/transcript';
 import PrototypeChatDisplay from '@/pages/Prototype/components/PrototypeChatDisplay';
-import { Message } from '@/pages/Prototype/types';
 import { noop } from '@/utils/functional';
 
 import { Container, DialogHeader, DialogLoader } from './components';
-import { filterAndTransformDialogs } from './util';
+import { filterAndTransformDialogs, generateTurnMap } from './util';
+
+export type TurnMap = Map<string, DialogMessage[]>;
 
 const TranscriptDialog: React.FC = () => {
-  const [messages, setMessages] = React.useState<Message[]>([]);
+  const [messages, setMessages] = React.useState<DialogMessage[]>([]);
   const [isScrolling, setIsScrolling] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState(false);
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
@@ -25,6 +27,7 @@ const TranscriptDialog: React.FC = () => {
   const intentConfidence = useSelector(Recent.prototypeIntentSelector);
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
   const color = useSelector(Prototype.prototypeBrandColorSelector);
+  const [dialogTurnMap, setDialogTurnMap] = React.useState<TurnMap>(new Map());
   const dispatch = useDispatch();
   const store = useStore();
 
@@ -33,6 +36,7 @@ const TranscriptDialog: React.FC = () => {
     const dialogs = await client.transcript.getTranscriptDialog(activeProjectID!, targetTranscriptID!);
     const currentTranscriptID = currentTranscriptIDSelector(store.getState());
     if (currentTranscriptID === targetTranscriptID && dialogs) {
+      setDialogTurnMap(generateTurnMap(dialogs));
       setLoading(false);
       const modifiedDialogs = filterAndTransformDialogs(dialogs, dialogs[0].startTime);
       setMessages(modifiedDialogs);
@@ -76,6 +80,7 @@ const TranscriptDialog: React.FC = () => {
           onScroll={onScroll}
           avatarURL={avatar}
           color={color}
+          dialogTurnMap={dialogTurnMap}
           isTranscript={true}
           messages={messages}
           onPlay={handleMessageClick}

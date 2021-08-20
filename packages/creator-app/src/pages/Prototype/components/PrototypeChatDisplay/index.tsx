@@ -3,6 +3,7 @@ import React from 'react';
 
 import { PrototypeStatus } from '@/ducks/prototype';
 import { useDebouncedCallback } from '@/hooks/callback';
+import { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
 
 import { Interaction, Message } from '../../types';
 import Dialog from '../PrototypeDialog';
@@ -28,6 +29,7 @@ export interface PrototypeChatDisplayProps {
   stepBack: () => void;
   autoScroll?: boolean;
   isTranscript?: boolean;
+  dialogTurnMap?: TurnMap;
   onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 }
 
@@ -50,6 +52,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   autoScroll = true,
   stepBack,
   isTranscript,
+  dialogTurnMap,
   onScroll,
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
@@ -94,6 +97,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
     <OutterChatContainer focusedTurnID={focusedTurnID}>
       <InnerChatContainer onScroll={onScrollHandler} ref={chatScrollRef} atTop={atTop}>
         <Dialog
+          dialogTurnMap={dialogTurnMap}
           onScroll={onScroll}
           stepBack={stepBack}
           status={status}

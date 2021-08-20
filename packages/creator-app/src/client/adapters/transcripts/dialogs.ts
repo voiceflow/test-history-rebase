@@ -1,9 +1,22 @@
 import cuid from 'cuid';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
-import { MessageType } from '@/pages/Prototype/types';
+import { Message, MessageType } from '@/pages/Prototype/types';
 
-const dialogAdapter = createAdapter<any, any>(
+export type DialogMessage = Message & {
+  type: string;
+  image?: string;
+  intentName?: string;
+  startTime: string;
+  timestamp: number;
+  turnID: string;
+  id: string;
+  src?: string;
+  reprompt: boolean;
+  aplType?: string;
+};
+
+const dialogAdapter = createAdapter<any, DialogMessage>(
   (data) => {
     const responseType = data.format;
     const isUserInput = responseType === 'request';
@@ -15,6 +28,7 @@ const dialogAdapter = createAdapter<any, any>(
       timestamp: data.timestamp,
       sessionID: data.session_id,
       turnID: data.turn_id,
+      reprompt: data.payload?.payload?.path?.toLowerCase() === 'reprompt',
       id: cuid(),
     };
 

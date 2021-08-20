@@ -43,7 +43,6 @@ const Message: React.FC<MessageProps> = ({
   ...props
 }) => {
   const InnerContainer = React.useMemo(() => (!rightAlign && isFirstInSeries && !withAnimation ? React.Fragment : FadeDownContainer), []);
-
   return (
     <Container focused={focused} className={cn(ClassName.CHAT_DIALOG_MESSAGE, className)} rightAlign={rightAlign} {...props}>
       <InnerContainer>

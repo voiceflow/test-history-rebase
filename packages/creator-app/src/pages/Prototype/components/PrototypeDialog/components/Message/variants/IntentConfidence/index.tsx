@@ -3,6 +3,7 @@ import React from 'react';
 
 import * as Diagram from '@/ducks/diagram';
 import { connect } from '@/hocs';
+import { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
 import { UserMessage } from '@/pages/Prototype/types';
 import { ConnectedProps } from '@/types';
 
@@ -18,6 +19,7 @@ type IntentConfidenceProps = Omit<MessageProps, 'iconProps'> & {
   isTranscript?: boolean;
   setFocusedTurnID: (turnID: string | null) => void;
   focusedTurnID: string | null;
+  dialogTurnMap?: TurnMap;
 };
 
 const INTENT_CONFIDENCE_THRESHOLD = 30;
@@ -30,10 +32,17 @@ export const IntentConfidence: React.FC<IntentConfidenceProps & ConnectedIntentC
   isTranscript,
   setFocusedTurnID,
   focusedTurnID,
+  dialogTurnMap,
 }) => {
   const intentMessage = `${message.split('**')[1]} - `;
   const confidenceMessage = ` ${message.split('confidence interval')[1].split('_')[1]}`;
-  const noMatch = lastUserMessage.intentName === Constants.IntentName.NONE || (intentConfidence && intentConfidence < INTENT_CONFIDENCE_THRESHOLD);
+  const isReprompt = React.useMemo(() => {
+    return dialogTurnMap?.get(turnID!)?.some(({ reprompt }) => {
+      return !!reprompt;
+    });
+  }, [dialogTurnMap, turnID]);
+  const noMatch =
+    isReprompt || lastUserMessage.intentName === Constants.IntentName.NONE || (intentConfidence && intentConfidence < INTENT_CONFIDENCE_THRESHOLD);
 
   if (noMatch && isTranscript) {
     return (

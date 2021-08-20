@@ -1,4 +1,4 @@
-import { Box, Button, ControlledInput, Input, preventDefault, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, ControlledInput, Input, preventDefault, toast } from '@voiceflow/ui';
 import { getSearch } from 'connected-react-router';
 import _throttle from 'lodash/throttle';
 import React from 'react';
@@ -130,12 +130,12 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
               </InputContainer>
             )}
             <div className="row">
-              <div className="col-6 auth__link">
+              <div className="col-7 auth__link">
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a onClick={goToLogin}>Have an account?</a>
               </div>
-              <div className="col-6">
-                <Button type="submit" disabled={isDisabled || isSignupDisabled}>
+              <div className="col-5">
+                <Button variant={ButtonVariant.PRIMARY} type="submit" disabled={isDisabled || isSignupDisabled}>
                   {query.invite ? 'Join Team' : 'Create Account'}
                 </Button>
               </div>

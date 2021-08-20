@@ -1,4 +1,4 @@
-import { LegacyButton, preventDefault, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, preventDefault, toast } from '@voiceflow/ui';
 import { getSearch } from 'connected-react-router';
 import _get from 'lodash/get';
 import React from 'react';
@@ -70,9 +70,9 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
                 {IS_PRIVATE_CLOUD ? <span /> : <a onClick={goToSignup}>Don't have an account?</a>}
               </div>
               <div className="col-5">
-                <LegacyButton isPrimary isBlock type="submit">
+                <Button variant={ButtonVariant.PRIMARY} type="submit">
                   {query.invite ? 'Join Team' : 'Log In'}
-                </LegacyButton>
+                </Button>
               </div>
             </div>
           </div>

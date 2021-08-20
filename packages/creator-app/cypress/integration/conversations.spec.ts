@@ -12,7 +12,7 @@ const TRANSCRIPTS_TAGS_MODAL_PLACEHOLDER = 'Add new tags separated by commas';
 const MOCK_TAG_NAME = 'tag1';
 const CREATOR_ID = '1';
 
-context('Conversations', () => {
+context.skip('Conversations', () => {
   beforeEach(() => cy.setup());
 
   afterEach(() => {
@@ -113,7 +113,7 @@ context('Conversations', () => {
     });
   });
 
-  describe.skip('when clicking to change active transcript', () => {
+  describe('when clicking to change active transcript', () => {
     it('toggles between two transcripts', () => {
       cy.createProject('general', 'prototype:speak_and_choice');
       cy.createTranscript({ sessionID: SESSION_ID, creatorID: null });
@@ -137,7 +137,7 @@ context('Conversations', () => {
   });
 
   describe('when toggling and managing transcript tags', () => {
-    it.skip('toggles built-in tags through transcript actions', () => {
+    it('toggles built-in tags through transcript actions', () => {
       conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
       canvasPage.goToCanvas();
       conversations.goToTranscriptsTab();
@@ -204,7 +204,7 @@ context('Conversations', () => {
   });
 
   describe('when on prototype mode save transcripts', () => {
-    it.skip('saves transcript', () => {
+    it('saves transcript', () => {
       cy.createProject('general', 'prototype:speak_and_choice');
       canvasPage.goToCanvas();
       canvasPage.el.testButton.click();

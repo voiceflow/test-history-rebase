@@ -104,8 +104,6 @@ const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemP
                 placeholder="Enter text reply, {} to add variables"
                 pluginsOptions={pluginsOptions}
               >
-                {/* <Suggestions value={content} suggestionRegExp="[\\w]*" suggestionTrigger="{" suggestionPrefix="{" suggestionSuffix="}" /> */}
-
                 <Toolbar onClick={stopPropagation()}>
                   <TextBoldButton />
                   <TextItalicButton />

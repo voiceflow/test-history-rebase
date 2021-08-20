@@ -3,9 +3,10 @@ import { RenderPlaceholderProps } from 'slate-react';
 
 import { styled } from '@/hocs';
 
-const PlaceholderText = styled.span`
-  color: #132144 !important;
+export const PlaceholderText = styled.span`
+  color: #8da2b5 !important;
   font-weight: 400;
+  opacity: 1 !important;
   font-size: 15px;
   font-family: 'Open Sans', sans-serif !important;
   text-decoration: none;

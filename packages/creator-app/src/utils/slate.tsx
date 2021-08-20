@@ -11,7 +11,7 @@ const serializeTextNode = (node: BaseText.Text, index: number): React.ReactNode 
 
   return (
     <span key={index} style={styles}>
-      {node.text}
+      {node.text || <>&#xFEFF;</>}
     </span>
   );
 };

@@ -7,7 +7,7 @@ import DraggableList, {
   MappedItemComponentHandlers,
 } from '@/components/DraggableList';
 import { MapManagedAPI, useManager, useToggle } from '@/hooks';
-import { Content, ContentRenderOptions, ControlOptions, Controls } from '@/pages/Canvas/components/Editor';
+import { Content, ContentRenderOptions, ControlOptions, Controls, EditorControlsProps } from '@/pages/Canvas/components/Editor';
 
 export type ListItemExtraProps<E = {}> = DragPreviewComponentProps &
   E & {
@@ -26,6 +26,7 @@ export interface ListEditorContentProps<T, F extends any[] = [], E = {}> {
   items: T[];
   footer?: React.ReactNode;
   factory: (...args: F) => T;
+  tutorial?: EditorControlsProps['tutorial'];
   maxItems?: number;
   renderMenu: (options: MapManagedAPI<T, F> & ContentRenderOptions) => React.ReactNode;
   itemComponent: ListItemComponent<T, E>;
@@ -40,6 +41,7 @@ const ListEditorContent = <T, F extends any[] = [], E = {}>({
   footer,
   factory,
   maxItems,
+  tutorial,
   renderMenu,
   onChangeItems,
   itemComponent,
@@ -53,7 +55,11 @@ const ListEditorContent = <T, F extends any[] = [], E = {}>({
   return (
     <Content
       footer={(options) => (
-        <Controls menu={renderMenu({ ...mapManagedApi, ...options })} options={getControlOptions({ ...mapManagedApi, ...options })} />
+        <Controls
+          menu={renderMenu({ ...mapManagedApi, ...options })}
+          options={getControlOptions({ ...mapManagedApi, ...options })}
+          tutorial={tutorial}
+        />
       )}
       hideFooter={isDragging}
     >

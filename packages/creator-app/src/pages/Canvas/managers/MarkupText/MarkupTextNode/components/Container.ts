@@ -1,4 +1,5 @@
 import { CANVAS_SHIFT_PRESSED_CLASSNAME } from '@/components/Canvas/constants';
+import { PlaceholderText } from '@/components/SlateEditable/components/Placeholder';
 import { BlockType } from '@/constants';
 import { css, styled } from '@/hocs';
 import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
@@ -89,6 +90,12 @@ export const Container = styled.div<{ editable?: boolean; activated?: boolean; i
           white-space: pre;
         }
       `}
+  }
+
+  ${PlaceholderText} {
+    margin-top: 3px;
+    color: #132144 !important;
+    opacity: 0.333 !important;
   }
 `;
 

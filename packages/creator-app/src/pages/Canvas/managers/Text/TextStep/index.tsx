@@ -1,6 +1,7 @@
 import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
+import { SlateEditorAPI } from '@/components/SlateEditable';
 import { StepLabelVariant } from '@/constants/canvas';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, Item, Section } from '@/pages/Canvas/components/Step';
@@ -34,7 +35,7 @@ export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, portID, previ
               portID={index === itemsToRender.length - 1 ? portID : null}
               icon={NODE_CONFIG.icon}
               iconColor={NODE_CONFIG.iconColor}
-              placeholder="What will assistant reply?"
+              placeholder="Add text reply"
               withNewLines
               labelVariant={StepLabelVariant.PRIMARY}
               multilineLabel
@@ -42,7 +43,7 @@ export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, portID, previ
             />
           ))
         ) : (
-          <Item placeholder="What will assistant reply?" icon={NODE_CONFIG.icon} iconColor={NODE_CONFIG.iconColor} />
+          <Item placeholder="Add text reply" icon={NODE_CONFIG.icon} iconColor={NODE_CONFIG.iconColor} />
         )}
       </Section>
     </Step>
@@ -50,7 +51,10 @@ export const TextStep: React.FC<TextStepProps> = ({ items, nodeID, portID, previ
 };
 
 const ConnectedTextStep: React.FC<ConnectedStepProps<NodeData.Text>> = ({ node, data }) => {
-  const items = React.useMemo(() => data.texts.map(({ id, content }) => ({ id, content: serializeSlateToJSX(content) })), [data.texts]);
+  const items = React.useMemo(
+    () => data.texts.map(({ id, content }) => ({ id, content: SlateEditorAPI.isNewState(content) ? '' : serializeSlateToJSX(content) })),
+    [data.texts]
+  );
 
   return (
     <TextStep items={items} preview={data.canvasVisibility === Node.Utils.CanvasNodeVisibility.PREVIEW} nodeID={node.id} portID={node.ports.out[0]} />

@@ -38,10 +38,10 @@ const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutor
       {tutorial && (
         <EditorTutorial
           anchor={anchor}
-          tutorialTitle={tutorialTitle}
           title={(tutorial.blockType && getManager(tutorial.blockType)?.label) || 'Block'}
           helpTitle={tutorial?.helpTitle}
           helpMessage={tutorial?.helpMessage}
+          tutorialTitle={tutorialTitle}
         >
           {tutorial.content}
         </EditorTutorial>

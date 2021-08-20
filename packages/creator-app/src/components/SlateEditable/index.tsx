@@ -27,6 +27,7 @@ interface SlateEditableProps extends Omit<EditableProps, 'value' | 'onChange' | 
   value: SlateValue;
   editor: Editor;
   onChange: (value: SlateValue) => void;
+  spellcheck?: boolean;
   topToolbar?: React.ReactNode;
   pluginsOptions?: PluginsOptions;
 }
@@ -39,6 +40,7 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
     onChange,
     children,
     topToolbar,
+    spellcheck = false,
     renderLeaf = defaultRenderLeaf,
     renderElement = defaultRenderElement,
     pluginsOptions = DEFAULT_PLUGINS_OPTIONS,
@@ -83,6 +85,7 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
               renderLeaf={renderLeaf}
               renderElement={renderElement}
               renderPlaceholder={renderPlaceholder}
+              {...({ spellcheck: `${spellcheck}` } as any)}
               {...editableProps}
               onKeyDown={onKeyDown}
             />

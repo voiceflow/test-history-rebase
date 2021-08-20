@@ -1,6 +1,7 @@
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
+import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
 import TextList from '@/pages/Canvas/components/TextList';
 import TextListItem from '@/pages/Canvas/components/TextListItem';
@@ -13,6 +14,7 @@ const TextEditor: NodeEditor<NodeData.Text> = ({ data, onChange }) => {
   return (
     <TextList
       items={data.texts}
+      tutorial={{ content: <div />, blockType: BlockType.TEXT }}
       renderMenu={() => <OverflowMenu placement="top" options={[canvasVisibilityOption]} />}
       onChangeItems={(texts) => onChange({ texts })}
       itemComponent={TextListItem}

@@ -3,7 +3,7 @@ import cuid from 'cuid';
 import React from 'react';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
-import { ControlOptions } from '@/pages/Canvas/components/Editor';
+import { ControlOptions, EditorControlsProps } from '@/pages/Canvas/components/Editor';
 import ListEditorContent, { ListItemComponent } from '@/pages/Canvas/components/ListEditorContent';
 import { NODE_CONFIG } from '@/pages/Canvas/managers/Text/constants';
 import { chainVoid } from '@/utils/functional';
@@ -18,6 +18,7 @@ export type ItemComponent = ListItemComponent<Node.Text.TextData>;
 export interface TextListProps {
   items: Node.Text.TextData[];
   maxItems?: number;
+  tutorial?: EditorControlsProps['tutorial'];
   renderMenu: () => React.ReactNode;
   itemComponent: ItemComponent;
   onChangeItems: (items: Node.Text.TextData[]) => void;
@@ -26,6 +27,7 @@ export interface TextListProps {
 
 const TextList = ({
   items,
+  tutorial,
   children,
   maxItems,
   renderMenu,
@@ -38,6 +40,7 @@ const TextList = ({
     items={items}
     footer={children}
     factory={factory}
+    tutorial={tutorial}
     maxItems={maxItems}
     renderMenu={renderMenu}
     onChangeItems={onChangeItems}

@@ -3,6 +3,7 @@ import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
 import { isBuiltInTag } from '@/ducks/transcript/utils';
+import { useTrackingEvents } from '@/hooks';
 import { ReportTag, Sentiment, SentimentArray } from '@/models';
 
 import { ReportTagInputContext } from '../context';
@@ -64,6 +65,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
     actions: { onSearch, onCreateNew },
   } = React.useContext(ReportTagInputContext)!;
 
+  const [trackingEvents] = useTrackingEvents();
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   // Only use tags that exist in redux (they can be deleted in the tags manager)
   const [selectedValidTags, setSelectedValidTags] = React.useState(() => {
@@ -92,6 +94,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
       removeTag(tagID);
     } else {
       addTag(tagID);
+      trackingEvents.trackConversationTagAdded({ tagLabel: tagsMap[tagID].label });
     }
   };
 

@@ -7,7 +7,7 @@ import { Permission } from '@/config/permissions';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch, usePermission } from '@/hooks';
+import { useDispatch, usePermission, useTrackingEvents } from '@/hooks';
 import { Sentiment, SentimentArray, SystemTag } from '@/models';
 import { ClassName } from '@/styles/constants';
 
@@ -27,6 +27,7 @@ const TranscriptResultsItem: React.FC<ResultsItem> = ({ data, format, active = f
   const sentiment = reportTags.filter((tag: string) => SentimentArray.includes(tag as Sentiment))[0];
 
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const [trackingEvents] = useTrackingEvents();
   const [canDeleteTranscript] = usePermission(Permission.DELETE_TRANSCRIPT);
   const goToTargetTranscript = useDispatch(Router.goToTargetTranscript);
   const markAsRead = useDispatch(Transcript.markAsRead);
@@ -50,9 +51,11 @@ const TranscriptResultsItem: React.FC<ResultsItem> = ({ data, format, active = f
       text: 'Are you sure you want to delete this conversation?',
       confirm: () => deleteTranscript(id),
     });
+    trackingEvents.trackConversationDeleted();
   };
   const onExport = async () => {
     await exportTranscript(format, id, name);
+    trackingEvents.trackConversationExported();
   };
 
   const options = React.useMemo(() => {

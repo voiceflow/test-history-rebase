@@ -10,3 +10,8 @@ export interface ProjectEventInfo {
   projectID: string;
   workspaceID: string;
 }
+
+export interface ConversationsEventInfo {
+  projectID: string;
+  workspaceID: string;
+}

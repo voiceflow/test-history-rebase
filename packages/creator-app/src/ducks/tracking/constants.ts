@@ -52,6 +52,15 @@ export enum EventName {
   CANVAS_COMMENTING_OPENED = 'Canvas Commenting Opened',
   CANVAS_SHORTCUTS_MODAL_OPENED = 'Shortcuts Modal Opened',
 
+  CONVERSATIONS_SESSION_START = 'Conversations Page Opened',
+  CONVERSATION_EXPORT = 'Conversation Exported',
+  CONVERSATION_DELETE = 'Conversation Deleted',
+  CONVERSATION_NOTES_UPDATED = 'Conversation Notes Updated',
+  CONVERSATION_LIST_FILTERED = 'Conversation List Filtered',
+  CONVERSATION_TAG_ADDED = 'Conversation Tag Added',
+  CONVERSATION_TAG_DELETE = 'Conversation Tag Deleted',
+  CONVERSATION_UTTERANCE_SAVE = 'Conversation Utterance Saved',
+
   ONBOARDING_PAY = 'Onboarding - Pay',
   ONBOARDING_JOIN = 'Onboarding - Join',
   ONBOARDING_SELECT_CHANNEL = 'Onboarding - Select Channel',

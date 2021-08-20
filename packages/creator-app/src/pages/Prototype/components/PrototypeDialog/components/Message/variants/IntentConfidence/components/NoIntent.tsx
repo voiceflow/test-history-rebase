@@ -7,7 +7,7 @@ import IntentSelect from '@/components/IntentSelect';
 import { ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch, useModals, useSelector } from '@/hooks';
+import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { IntentInput } from '@/models';
 
 import { Container, StatusIcon, TextContainer } from './index';
@@ -35,6 +35,7 @@ const determineNewUtterances = (previousInputArray: IntentInput[], newInputArray
 
 const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIsOpened, utterance }) => {
   const history = useHistory();
+  const [trackingEvents] = useTrackingEvents();
   const { annotations } = useSelector(Transcript.currentSelectedTranscriptSelector)!;
   const utteranceAddedToIntentID = annotations[turnID]?.utteranceAddedTo || '';
   const { open: openIMM, isOpened: isOpenedIMM } = useModals(ModalType.INTERACTION_MODEL);
@@ -88,6 +89,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     const netNewUtterances = determineNewUtterances(initialUtterancesArray, updatedUtterances);
     if (netNewUtterances.length) {
       await dispatchAddUtteranceToIntent(netNewUtterances.length, targetIntent.name, targetIntent.id, activeTranscriptID, turnID);
+      trackingEvents.trackConversationUtteranceSaved();
     }
 
     resetStates();

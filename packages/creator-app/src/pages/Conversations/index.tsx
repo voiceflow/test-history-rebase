@@ -12,7 +12,7 @@ import { fetchReportTags } from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import * as Transcripts from '@/ducks/transcript';
 import { fetchTranscripts } from '@/ducks/transcript';
-import { useAsyncEffect, usePermission, useTeardown } from '@/hooks';
+import { useAsyncEffect, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
 import { FILTER_TAG } from '@/pages/Conversations/constants';
 import { Identifier } from '@/styles/constants';
 
@@ -21,6 +21,7 @@ import { ConversationsContainer, TranscriptDetails, TranscriptDialog, Transcript
 type ConversationProps = RouteComponentProps;
 
 const Conversations: React.FC<ConversationProps> = () => {
+  const [trackingEvents] = useTrackingEvents();
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [noTestRuns, setNoTestRuns] = React.useState(false);
   const [filteredReportsExist, setFilteredReportsExist] = React.useState(true);
@@ -50,6 +51,7 @@ const Conversations: React.FC<ConversationProps> = () => {
     // dispatch(Prototype.updateActivePrototypeMode(Prototype.PrototypeMode.DISPLAY));
 
     setIsLoaded(true);
+    trackingEvents.trackConversationSessionStarted();
   };
 
   React.useEffect(() => {

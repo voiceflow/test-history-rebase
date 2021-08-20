@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
 import { allReportTagsSelector, createTag, deleteTag } from '@/ducks/reportTag';
-import { useDispatch, useModals, useSelector } from '@/hooks';
+import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { ReportTag, Sentiment, SentimentArray, SystemTag, SystemTagArray } from '@/models';
 import { FadeLeftContainer } from '@/styles/animations';
 import { withKeyPress } from '@/utils/dom';
@@ -26,6 +26,7 @@ const tagInputToArray = (val: string) => {
 };
 
 const TagManagerModal: React.FC<RouteComponentProps> = () => {
+  const [trackingEvents] = useTrackingEvents();
   const allTags = useSelector(allReportTagsSelector);
   const deleteReportTag = useDispatch(deleteTag);
   const createReportTag = useDispatch(createTag);
@@ -42,6 +43,7 @@ const TagManagerModal: React.FC<RouteComponentProps> = () => {
 
   const onDeleteTag = (id: string) => {
     deleteReportTag(id);
+    trackingEvents.trackConversationTagDeleted();
   };
 
   const onUndoDelete = (tag: ReportTag) => {

@@ -1,4 +1,5 @@
 export * from './canvas';
+export * from './conversations';
 export * from './export';
 export * from './invitation';
 export * from './onboarding';

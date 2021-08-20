@@ -1,7 +1,7 @@
 import * as Session from '@/ducks/session';
 import { SyncThunk, Thunk } from '@/store/types';
 
-import { ProjectEventInfo, WorkspaceEventInfo } from './types';
+import { ConversationsEventInfo, ProjectEventInfo, WorkspaceEventInfo } from './types';
 
 export const createWorkspaceEventTracker =
   <T extends {} | undefined = undefined>(callback: (options: T & WorkspaceEventInfo, ...args: Parameters<Thunk>) => void) =>
@@ -62,6 +62,38 @@ export const createProjectEventPayload = <T extends ProjectEventInfo, D extends 
   properties: {
     ...data,
     skill_id: skillID,
+    project_id: projectID,
+    workspace_id: workspaceID,
+  },
+});
+
+export const createConversationsEventTracker =
+  <T extends {} | undefined = undefined>(callback: (options: T & ConversationsEventInfo, ...args: Parameters<Thunk>) => void) =>
+  (...args: T extends undefined ? [] : [T]): SyncThunk =>
+  (dispatch, getState, realtime) => {
+    const state = getState();
+    const projectID = Session.activeProjectIDSelector(state);
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
+
+    if (!projectID || !workspaceID) return;
+
+    const baseEventInfo: ConversationsEventInfo = {
+      projectID,
+      workspaceID,
+    };
+
+    callback({ ...args[0], ...baseEventInfo } as T & ConversationsEventInfo, dispatch, getState, realtime);
+  };
+
+export const createConversationsEventPayload = <T extends ConversationsEventInfo, D extends {}, K extends keyof D>(
+  { projectID, workspaceID }: T,
+  data: D = {} as D,
+  { hashed = [], teamhashed = [] }: { hashed?: K[]; teamhashed?: K[] } = {}
+) => ({
+  hashed,
+  teamhashed: ['workspace_id', ...teamhashed] as any as keyof D & keyof K,
+  properties: {
+    ...data,
     project_id: projectID,
     workspace_id: workspaceID,
   },

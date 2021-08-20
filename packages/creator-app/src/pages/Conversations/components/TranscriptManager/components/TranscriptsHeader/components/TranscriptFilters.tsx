@@ -5,6 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import ReportTagInput, { InputVariant } from '@/components/ReportTagInput';
 import SelectMenu, { MenuSection } from '@/components/SelectMenu';
+import { useTrackingEvents } from '@/hooks';
 import { FILTER_TAG, isBuiltInRange } from '@/pages/Conversations/constants';
 import { ClassName } from '@/styles/constants';
 import THEME from '@/styles/theme';
@@ -16,6 +17,7 @@ const TranscriptFilters = () => {
   const history = useHistory();
   const location = useLocation();
 
+  const [trackingEvents] = useTrackingEvents();
   const [timeRangeOpen, setTimeRangeOpen] = React.useState(false);
   const [tagsOpen, setTagsOpen] = React.useState(false);
   const [currentRange, setCurrentRange] = React.useState('' as TimeRange | string);
@@ -110,6 +112,7 @@ const TranscriptFilters = () => {
                 onClick={() => {
                   appendURL();
                   onToggle();
+                  trackingEvents.trackConversationListFiltered();
                 }}
               >
                 Apply

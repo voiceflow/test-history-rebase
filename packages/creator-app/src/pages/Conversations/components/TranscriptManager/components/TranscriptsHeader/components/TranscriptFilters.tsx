@@ -6,6 +6,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import ReportTagInput, { InputVariant } from '@/components/ReportTagInput';
 import SelectMenu, { MenuSection } from '@/components/SelectMenu';
 import { FILTER_TAG, isBuiltInRange } from '@/pages/Conversations/constants';
+import { ClassName } from '@/styles/constants';
 import THEME from '@/styles/theme';
 
 import ApplyFiltersButton from './ApplyFiltersButton';
@@ -81,11 +82,21 @@ const TranscriptFilters = () => {
       sections={({ onToggle }) => {
         return (
           <>
-            <MenuSection title="Time Range" enabled={timeRangeOpen} toggleSection={() => setTimeRangeOpen(!timeRangeOpen)}>
+            <MenuSection
+              title="Time Range"
+              enabled={timeRangeOpen}
+              toggleSection={() => setTimeRangeOpen(!timeRangeOpen)}
+              className={ClassName.TRANSCRIPT_FILTERS_DATE_CHECKBOX}
+            >
               <DatePicker currentRange={currentRange} onChange={(newRange: TimeRange | string) => setCurrentRange(newRange)} placement="right" />
             </MenuSection>
 
-            <MenuSection title="Tags" enabled={tagsOpen} toggleSection={() => setTagsOpen(!tagsOpen)}>
+            <MenuSection
+              title="Tags"
+              enabled={tagsOpen}
+              toggleSection={() => setTagsOpen(!tagsOpen)}
+              className={ClassName.TRANSCRIPT_FILTERS_TAGS_CHECKBOX}
+            >
               <ReportTagInput
                 variant={InputVariant.SELECT_ONLY}
                 onChange={(tags: string[]) => setTags([...new Set([...tags])])}
@@ -94,6 +105,7 @@ const TranscriptFilters = () => {
             </MenuSection>
             <Box borderTop={`1px solid ${THEME.colors.borders}`}>
               <ApplyFiltersButton
+                className={ClassName.TRANSCRIPT_FILTERS_MENU_APPLY_BUTTON}
                 variant={ButtonVariant.PRIMARY}
                 onClick={() => {
                   appendURL();
@@ -108,7 +120,7 @@ const TranscriptFilters = () => {
       }}
     >
       {({ ref, isOpened, onToggle }) => (
-        <ClickableText isActive={isOpened} ref={ref} onClick={onToggle}>
+        <ClickableText isActive={isOpened} ref={ref} onClick={onToggle} className={ClassName.TRANSCRIPT_FILTERS_MENU_TEXT}>
           Add filters {filtersCounter > 0 && `(${filtersCounter})`}
         </ClickableText>
       )}

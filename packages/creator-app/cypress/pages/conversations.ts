@@ -4,7 +4,14 @@ import { ClassName, Identifier } from '../../src/styles/constants';
 const TOAST_CLASS_NAME = 'Toastify__toast';
 
 export default {
-  goToTranscriptsTab: () => cy.getSession().then(({ versionID }) => cy.visit(`/project/${versionID}/transcripts`)),
+  goToTranscriptsTab: (queryString?: string) =>
+    cy.getSession().then(({ versionID }) => {
+      let url = `/project/${versionID}/transcripts`;
+
+      if (queryString) url += queryString;
+
+      return cy.visit(url);
+    }),
 
   createProjectAndTranscript: (sessionID: string, creatorID: string) => {
     cy.createProject('general', 'prototype:speak_and_choice');
@@ -30,6 +37,10 @@ export default {
 
   transcriptListItemToggle: () => {
     cy.get(`.${ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}`).first().click(); // might need to click in button first
+  },
+
+  selectTranscriptsMenuTagsOption: (option: string) => {
+    return cy.get(`[data-testid="${option}"]`).click();
   },
 
   el: {
@@ -83,6 +94,26 @@ export default {
 
     get emptyTranscriptsContainer() {
       return cy.get(`#${Identifier.EMPTY_TRANSCRIPTS_CONTAINER}`);
+    },
+
+    get emptyReportsContainer() {
+      return cy.get(`#${Identifier.EMPTY_REPORTS_CONTAINER}`);
+    },
+
+    get transcriptsMenuText() {
+      return cy.get(`.${ClassName.TRANSCRIPT_FILTERS_MENU_TEXT}`);
+    },
+
+    get transcriptsMenuTagsCheckbox() {
+      return cy.get(`.${ClassName.TRANSCRIPT_FILTERS_TAGS_CHECKBOX}`);
+    },
+
+    get transcriptsMenuTagsInput() {
+      return cy.get(`.${ClassName.BASE_REPORT_TAG_INPUT} input`).last();
+    },
+
+    get transcriptsMenuApplyButton() {
+      return cy.get(`.${ClassName.TRANSCRIPT_FILTERS_MENU_APPLY_BUTTON}`);
     },
   },
 

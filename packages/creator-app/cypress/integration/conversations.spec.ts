@@ -1,3 +1,4 @@
+import { Sentiment } from '../../src/models/Transcript';
 import { ClassName } from '../../src/styles/constants';
 import canvasPage from '../pages/canvas';
 import conversations from '../pages/conversations';
@@ -18,7 +19,90 @@ context('Conversations', () => {
     cy.teardown();
   });
 
-  describe('when on empty transcripts page', () => {
+  describe('when navigating to the conversations page using a URL with query parameters', () => {
+    it('changes add filters menu text with filters counter', () => {
+      conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
+      canvasPage.goToCanvas();
+
+      conversations.goToTranscriptsTab(`?range=Yesterday&tag=${Sentiment.EMOTION_NEGATIVE}`);
+
+      conversations.el.transcriptsMenuText.should('include.text', 'Add filters (2)');
+    });
+
+    it('checks filters on filters menu', () => {
+      // TO DO: There is a bug with this behavior.
+      // The checkbox are not checked on initial state, fix this behavior and add the test here.
+    });
+
+    describe('and there are transcripts for given search', () => {
+      it('shows correct number of filtered transcripts', () => {
+        conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
+        cy.createTranscript({ sessionID: SESSION_ID, creatorID: CREATOR_ID, reportTags: [Sentiment.EMOTION_NEGATIVE] });
+        cy.createTranscript({ sessionID: SESSION_ID, creatorID: CREATOR_ID, reportTags: [Sentiment.EMOTION_NEGATIVE] });
+        canvasPage.goToCanvas();
+
+        conversations.goToTranscriptsTab(`?range=Yesterday&tag=${Sentiment.EMOTION_NEGATIVE}`);
+
+        conversations.el.transcriptListItem.should('have.length', 2);
+      });
+    });
+
+    describe('and there are no transcripts for given search', () => {
+      it('shows no result page content', () => {
+        cy.createProject('general', 'prototype:speak_and_choice');
+        cy.createTranscript({ sessionID: SESSION_ID, creatorID: CREATOR_ID, reportTags: [Sentiment.EMOTION_NEGATIVE] });
+        canvasPage.goToCanvas();
+
+        conversations.goToTranscriptsTab(`?range=Yesterday&tag=${Sentiment.EMOTION_POSITIVE}`);
+
+        conversations.el.emptyReportsContainer.should('be.visible');
+      });
+    });
+  });
+
+  describe('when changing filter', () => {
+    it('updates url query parameters', () => {
+      conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
+      canvasPage.goToCanvas();
+      conversations.goToTranscriptsTab();
+
+      conversations.el.transcriptsMenuText.click();
+      conversations.el.transcriptsMenuTagsCheckbox.click();
+      conversations.el.transcriptsMenuTagsInput.click();
+      conversations.selectTranscriptsMenuTagsOption(Sentiment.EMOTION_POSITIVE);
+
+      conversations.el.transcriptsMenuApplyButton.click({ force: true });
+
+      cy.url().should('contain', `tag=${Sentiment.EMOTION_POSITIVE}`);
+    });
+
+    describe('and clearning filters', () => {
+      it('clears url query parameters as well', () => {
+        conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
+        cy.createTranscript({ sessionID: SESSION_ID, creatorID: CREATOR_ID });
+        canvasPage.goToCanvas();
+        conversations.goToTranscriptsTab(`?range=Yesterday&tag=${Sentiment.EMOTION_NEGATIVE}`);
+
+        conversations.el.transcriptsMenuText.click();
+        conversations.el.transcriptsMenuTagsCheckbox.click();
+        conversations.el.transcriptsMenuTagsInput.click();
+        conversations.selectTranscriptsMenuTagsOption(Sentiment.EMOTION_POSITIVE);
+
+        conversations.el.transcriptsMenuApplyButton.click({ force: true });
+        conversations.el.emptyReportsContainer.should('be.visible');
+        conversations.el.transcriptListItem.should('have.length', 0);
+
+        conversations.el.transcriptsMenuText.click();
+        conversations.el.transcriptsMenuTagsCheckbox.click();
+        conversations.el.transcriptsMenuApplyButton.click({ force: true });
+
+        cy.url().should('not.contain', 'tag=');
+        conversations.el.transcriptListItem.should('have.length', 2);
+      });
+    });
+  });
+
+  describe('when transcripts page is empty', () => {
     it('displays empty transcripts page with no test runs', () => {
       cy.createProject('general', 'prototype:speak_and_choice');
       canvasPage.goToCanvas();

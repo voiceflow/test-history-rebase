@@ -10,12 +10,13 @@ interface MenuSectionProps {
   children: React.ReactElement;
   toggleSection: () => void;
   enabled: boolean;
+  className?: string;
 }
 
-const MenuSection: React.FC<MenuSectionProps> = ({ title, enabled, toggleSection, children }) => (
+const MenuSection: React.FC<MenuSectionProps> = ({ title, enabled, toggleSection, className, children }) => (
   <>
     <HeaderContainer>
-      <Checkbox checked={enabled} onChange={toggleSection}>
+      <Checkbox checked={enabled} onChange={toggleSection} className={className}>
         <Box color="black" fontWeight={500}>
           {title}
         </Box>

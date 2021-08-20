@@ -85,18 +85,23 @@ Cypress.Commands.add('createThread', (text: string) => {
   });
 });
 
-Cypress.Commands.add('createTranscript', ({ sessionID, creatorID }: { sessionID: string; creatorID: string | null }) => {
-  const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);
+Cypress.Commands.add(
+  'createTranscript',
+  ({ sessionID, creatorID, createdAt, reportTags }: { sessionID: string; creatorID: string | null; createdAt?: number; reportTags?: string[] }) => {
+    const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);
 
-  cy.request('PUT', `${API_URL}/v2/transcripts`, {
-    projectID,
-    sessionID,
-    creatorID,
-    device: 'desktop',
-    os: 'linux',
-    browser: 'chrome',
-  });
-});
+    cy.request('PUT', `${API_URL}/v2/transcripts`, {
+      projectID,
+      sessionID,
+      creatorID,
+      device: 'desktop',
+      os: 'linux',
+      browser: 'chrome',
+      createdAt,
+      reportTags,
+    });
+  }
+);
 
 Cypress.Commands.add('createReportTag', ({ label, tagID }: { label: string; tagID: string }) => {
   const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);

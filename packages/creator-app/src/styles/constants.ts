@@ -64,12 +64,12 @@ export enum Identifier {
   INVOCATION_NAME_INPUT = 'vf-invocation-name-input',
 
   // Transcripts
-  TRANSCRIPT_LOADING = 'vf-transcript-page--loading',
   SAVE_TRANSCRIPT_BUTTON = 'vf-save-conversations-button',
   DELETE_TRANSCRIPT_BUTTON = 'vf-delete-transcript-button',
   MARK_AS_REVIEWED_TRANSCRIPT_BUTTON = 'vf-mark-reviewed-transcript-button',
   SAVE_FOR_LATER_TRANSCRIPT_BUTTON = 'vf-save-for-later-transcript-button',
   EMPTY_TRANSCRIPTS_CONTAINER = 'vf-empty-transcripts-container',
+  EMPTY_REPORTS_CONTAINER = 'vf-empty-reports-container',
   CONVERSATIONS_PAGE = 'vf-conversations-container',
 }
 
@@ -140,12 +140,18 @@ export enum ClassName {
   CREATE_PROJECT_LEFT_ACTION = 'vf-create-project-left-action',
   CREATE_PROJECT_RIGHT_ACTION = 'vf-create-project-right-action',
 
+  TRANSCRIPT_FILTERS_TAGS_INPUT = 'vf-transcripts-filters-tags-input',
+  TRANSCRIPT_FILTERS_DATE_CHECKBOX = 'vf-transcripts-filters-date-checkbox',
+  TRANSCRIPT_FILTERS_TAGS_CHECKBOX = 'vf-transcripts-filters-tags-checkbox',
+  TRANSCRIPT_FILTERS_MENU_APPLY_BUTTON = 'vf-transcripts-filters-menu-apply-button',
+  TRANSCRIPT_FILTERS_MENU_TEXT = 'vf-transcript-filters-menu-text',
   TRANSCRIPT_ITEM = 'vf-transcript-item',
   TRANSCRIPT_ITEM_DROPDOWN_BUTTON = 'vf-transcript-item-dropdown-item',
   TRANSCRIPT_ITEM_STATUSES = 'vf-transcript-item-statuses',
   TRANSCRIPT_USER_NAME = 'vf-transcript-user-name',
   TRANSCRIPT_CONTEXT_META = 'vf-transcript-context-meta',
   TRANSCRIPT_DIALOG_LOADING = 'vf-transcript-dialog--loading',
+  TRANSCRIPT_LOADING = 'vf-transcript-page--loading',
   TRANSCRIPT_DATE = 'vf-conversations-transcript-date',
   MARK_AS_REVIEWED_CONTAINER = 'vf-mark-as-reviewed-container',
   SAVED_FOR_LATER_CONTAINER = 'vf-saved-for-later-container',

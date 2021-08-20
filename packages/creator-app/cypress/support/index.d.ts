@@ -129,7 +129,7 @@ declare namespace Cypress {
     /**
      * create a new transcript
      */
-    createTranscript(options: { sessionID: string; creatorID: string | null }): Chainable;
+    createTranscript(options: { sessionID: string; creatorID: string | null; reportTags?: string[] }): Chainable;
 
     /**
      * create a new transcript report tag

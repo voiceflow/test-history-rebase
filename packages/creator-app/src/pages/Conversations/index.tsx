@@ -94,6 +94,7 @@ const Conversations: React.FC<ConversationProps> = () => {
             ) : (
               <Box flex={4}>
                 <EmptyScreen
+                  id={Identifier.EMPTY_REPORTS_CONTAINER}
                   title="No reports exist"
                   body="No reports exist with the current filters applied"
                   buttonText="Clear Filters"

@@ -30,7 +30,7 @@ const customMenuLabelRenderer = (option: ReportTag, isSelectedFunc: (val: string
     <FlexApart style={{ width: '100%' }}>
       <FlexStart>
         <Checkbox readOnly checked={isSelectedFunc(option.id)} />
-        <div>{option.label}</div>
+        <div data-testid={option.id}>{option.label}</div>
       </FlexStart>
       {isBuiltInTag(option.id) &&
         (!SentimentArray.includes(option.id as Sentiment) ? (

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.464.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.464.1...@voiceflow/creator-app@1.464.2) (2021-08-21)
+
+
+### Bug Fixes
+
+* line desync for some blocks (VF-1403) ([#3966](https://github.com/voiceflow/creator-app/issues/3966)) ([ce687d1](https://github.com/voiceflow/creator-app/commit/ce687d1e58e18e3c876615650cd8b91e469587bb))
+
+
+
+
+
 ## [1.464.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.464.0...@voiceflow/creator-app@1.464.1) (2021-08-20)
 
 **Note:** Version bump only for package @voiceflow/creator-app

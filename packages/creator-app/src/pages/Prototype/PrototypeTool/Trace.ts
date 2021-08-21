@@ -69,19 +69,24 @@ const WAIT_ENTITY_TIME = 200;
 const MIN_FOCUSED_NODE_TIME = 500;
 const WAIT_DISPLAY_TIME = 1000;
 
-const NO_FOCUS_NODE_TYPES = [
-  BlockType.USER_INFO,
-  BlockType.CARD,
-  BlockType.IF,
-  BlockType.SET,
-  BlockType.RANDOM,
-  BlockType.INTEGRATION,
-  BlockType.CANCEL_PAYMENT,
-  BlockType.PAYMENT,
-  BlockType.REMINDER,
-  BlockType.PERMISSION,
-  BlockType.ACCOUNT_LINKING,
-  BlockType.DIRECTIVE,
+// Nodes that get focused when debug mode is off
+const FOCUSABLE_NODES = [
+  BlockType.START,
+  BlockType.COMBINED,
+  BlockType.COMMAND,
+  BlockType.SPEAK,
+  BlockType.CHOICE_OLD,
+  BlockType.CAPTURE,
+  BlockType.CHOICE,
+  BlockType.INTENT,
+  BlockType.STREAM,
+  BlockType.FLOW,
+  BlockType.EXIT,
+  BlockType.PROMPT,
+  BlockType.VISUAL,
+  BlockType.DISPLAY,
+  BlockType.EVENT,
+  BlockType.TEXT,
 ];
 
 class TraceController {
@@ -367,7 +372,7 @@ class TraceController {
 
     this.saveActivePathLink(sourceNodeID, node);
 
-    if ((hasParent && !NO_FOCUS_NODE_TYPES.includes(nodeType)) || this.props.debug) {
+    if ((hasParent && FOCUSABLE_NODES.includes(nodeType)) || this.props.debug || !nodeType) {
       this.focusNode(node.parentNode!);
     }
   }

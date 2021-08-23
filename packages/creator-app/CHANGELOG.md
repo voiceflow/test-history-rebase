@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.464.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.464.3...@voiceflow/creator-app@1.464.4) (2021-08-23)
+
+
+### Bug Fixes
+
+* change text back for ur boi rob (VF-000) ([#3976](https://github.com/voiceflow/creator-app/issues/3976)) ([5109886](https://github.com/voiceflow/creator-app/commit/510988682621be9033d15f7d700ae3631a0f0155))
+
+
+
+
+
 ## [1.464.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.464.2...@voiceflow/creator-app@1.464.3) (2021-08-23)
 
 

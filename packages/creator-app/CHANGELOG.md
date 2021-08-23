@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.465.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.464.4...@voiceflow/creator-app@1.465.0) (2021-08-23)
+
+
+### Features
+
+* **creator-app:** changes intercom label on help options menu (VF-1514) ([#3977](https://github.com/voiceflow/creator-app/issues/3977)) ([699e69e](https://github.com/voiceflow/creator-app/commit/699e69edb6bcb380d56a82d8123cc0a1699e29cc))
+
+
+
+
+
 ## [1.464.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.464.3...@voiceflow/creator-app@1.464.4) (2021-08-23)
 
 

@@ -175,7 +175,7 @@ export const useHelpOptions = () => {
       },
       {
         key: 'intercom',
-        label: isIntercomVisible ? 'Hide Intercom' : 'Chat with us',
+        label: isIntercomVisible ? 'Hide Intercom' : 'Contact us',
         onClick: trackingEventsWrapper(isIntercomVisible ? hideIntercom : showIntercom, 'trackCanvasControlHelpMenuResource', {
           resource: 'Intercom',
         }),

@@ -10,7 +10,7 @@ interface TranscriptsHeaderProps {
 const TranscriptsHeader: React.FC<TranscriptsHeaderProps> = ({ resultCount, hasShadow }) => {
   return (
     <Container hasShadow={hasShadow}>
-      <b>Transcripts ({resultCount})</b>
+      <b>Conversations ({resultCount})</b>
       <TranscriptFilters />
     </Container>
   );

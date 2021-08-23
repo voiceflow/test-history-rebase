@@ -66,7 +66,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
             {
               value: CanvasOptionType.CONVERSATION,
               icon: 'conversations' as const,
-              tooltip: { title: 'Conversations', hotkey: HOTKEY_LABEL_MAP[Hotkey.CONVERSATION_PAGE] },
+              tooltip: { title: 'Transcripts', hotkey: HOTKEY_LABEL_MAP[Hotkey.CONVERSATION_PAGE] },
               onClick: goToCurrentTranscript,
               withBadge: hasUnreadTranscripts,
             },

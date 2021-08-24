@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.465.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.0...@voiceflow/creator-app@1.465.1) (2021-08-24)
+
+
+### Bug Fixes
+
+* unread transcript bool set (VF-1583) ([#3975](https://github.com/voiceflow/creator-app/issues/3975)) ([bc3250f](https://github.com/voiceflow/creator-app/commit/bc3250f44954cd10be145d2a08f494f28fa090a1))
+
+
+
+
+
 # [1.465.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.464.4...@voiceflow/creator-app@1.465.0) (2021-08-23)
 
 

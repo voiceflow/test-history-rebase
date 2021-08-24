@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.465.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.3...@voiceflow/creator-app@1.465.4) (2021-08-24)
+
+
+### Bug Fixes
+
+* distored profile and brand images (VF-000) ([#3983](https://github.com/voiceflow/creator-app/issues/3983)) ([c706af6](https://github.com/voiceflow/creator-app/commit/c706af649b513be009e1b9f1c9ae14e4ffd45be0))
+* intent conf and debug bool settings and default vals (VF-000) ([#3981](https://github.com/voiceflow/creator-app/issues/3981)) ([5f30599](https://github.com/voiceflow/creator-app/commit/5f30599b63e7a5756dc521e44779c093733532c0))
+
+
+
+
+
 ## [1.465.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.2...@voiceflow/creator-app@1.465.3) (2021-08-24)
 
 

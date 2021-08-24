@@ -2,6 +2,7 @@ import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
+import * as Transcripts from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useEventualEngine, useRouteDiagramID, useSelector, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
@@ -21,6 +22,7 @@ export type DiagramProps = RouteComponentProps;
 const Diagram: React.FC<DiagramProps> = () => {
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
+  const checkUnreadTranscripts = useDispatch(Transcripts.updateHasUnreadTranscripts);
 
   const engine = useEventualEngine();
   const isDesignMode = !useAnyModeOpen();
@@ -34,6 +36,10 @@ const Diagram: React.FC<DiagramProps> = () => {
       toggleCanvasOnly();
     }
   }, [isDesignMode]);
+
+  React.useEffect(() => {
+    checkUnreadTranscripts();
+  }, []);
 
   useTeardown(() => {
     engine()?.teardown();

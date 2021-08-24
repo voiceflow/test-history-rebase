@@ -5,7 +5,7 @@ import client from '@/client';
 import { TranscriptExportFormat } from '@/client/transcript';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
-import { patchTranscript, removeTranscript, replaceTranscripts } from '@/ducks/transcript/actions';
+import { patchTranscript, removeTranscript, replaceTranscripts, updateUnreadTranscripts } from '@/ducks/transcript/actions';
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
 import { Browser, Device, OperatingSystem, Sentiment, SystemTag } from '@/models';
 import { Thunk } from '@/store/types';
@@ -164,6 +164,16 @@ export const deleteTranscript =
       toast.error('Failed to delete transcript');
     }
   };
+
+export const updateHasUnreadTranscripts = (): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const activeProjectID = Session.activeProjectIDSelector(state);
+  try {
+    const hasUnreadTranscripts = await client.transcript.getHasUnreadTranscripts(activeProjectID!);
+    dispatch(updateUnreadTranscripts(!!hasUnreadTranscripts));
+    // eslint-disable-next-line no-empty
+  } catch (e) {}
+};
 
 export const exportTranscript =
   (format: TranscriptExportFormat, transcriptID: string, name: string): Thunk =>

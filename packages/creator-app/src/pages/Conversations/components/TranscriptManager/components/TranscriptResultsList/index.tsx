@@ -4,7 +4,6 @@ import { AutoSizer, List } from 'react-virtualized';
 
 import { TranscriptExportFormat } from '@/client/transcript';
 import * as Router from '@/ducks/router';
-import * as Transcripts from '@/ducks/transcript';
 import { currentTranscriptIDSelector } from '@/ducks/transcript';
 import { useDispatch, useSelector } from '@/hooks';
 import { Transcript } from '@/models';
@@ -19,7 +18,6 @@ interface TranscriptResultsListProps {
 const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcriptList, onScroll }) => {
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
   const goToTranscript = useDispatch(Router.goToTargetTranscript);
-  const updateUnreadTranscript = useDispatch(Transcripts.updateUnreadTranscripts);
   const location = useLocation();
   const match = matchPath(location.pathname, { path: '/project/:versionID/transcripts' });
   const noUrlTranscriptTarget = match?.isExact;
@@ -28,14 +26,7 @@ const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcrip
     if (transcriptList.length && noUrlTranscriptTarget) {
       goToTranscript(transcriptList[0].id);
     }
-
-    const unreadTranscripts = transcriptList.filter((transcript) => transcript.unread);
-    if (!unreadTranscripts.length) {
-      updateUnreadTranscript(false);
-    } else {
-      updateUnreadTranscript(true);
-    }
-  }, [transcriptList, currentTranscriptID]);
+  }, [transcriptList]);
 
   return (
     <Container onScroll={onScroll}>

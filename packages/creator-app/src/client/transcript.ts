@@ -31,6 +31,9 @@ const transcriptClient = {
   getTranscriptDialog: (projectID: string, transcriptID: string) =>
     apiV2.get<DialogMessage[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`).then(dialogAdapter.mapFromDB),
 
+  getHasUnreadTranscripts: (projectID: string) =>
+    apiV2.get<boolean>(`${TRANSCRIPT_PATH}/${projectID}/hasUnreadTranscripts`).then((response) => response),
+
   exportTranscript: (projectID: string, transcriptID: string, params: { format: TranscriptExportFormat }) =>
     apiV2.get<Blob>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/export?${new URLSearchParams(params).toString()}`).then((response) => response),
 
@@ -47,10 +50,10 @@ const transcriptClient = {
     }),
 
   addTag: (projectID: string, transcriptID: string, tagID: string) =>
-    apiV2.put<any[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/${TRANSCRIPT_REPORT_TAG_PATH}/${tagID}`),
+    apiV2.put(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/${TRANSCRIPT_REPORT_TAG_PATH}/${tagID}`),
 
   removeTag: (projectID: string, transcriptID: string, tagID: string) =>
-    apiV2.delete<any[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/${TRANSCRIPT_REPORT_TAG_PATH}/${tagID}`),
+    apiV2.delete(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/${TRANSCRIPT_REPORT_TAG_PATH}/${tagID}`),
 };
 
 export default transcriptClient;

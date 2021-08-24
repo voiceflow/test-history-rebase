@@ -52,12 +52,15 @@ export const AvatarContainer = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 export const DefaultUserContainer = styled.img`
   z-index: 2;
   width: 55px;
   height: 55px;
+  object-fit: cover;
+
   margin-left: -12px;
   border-radius: 50%;
   opacity: 1;

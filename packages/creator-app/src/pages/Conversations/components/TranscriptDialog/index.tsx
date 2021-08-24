@@ -1,15 +1,16 @@
 import { Request } from '@voiceflow/base-types';
 import React from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 
 import client from '@/client';
 import { DialogMessage } from '@/client/adapters/transcripts/dialogs';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype/types';
-import * as Recent from '@/ducks/recent';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { currentTranscriptIDSelector } from '@/ducks/transcript';
+import { useLocalStorageState } from '@/hooks/storage';
 import PrototypeChatDisplay from '@/pages/Prototype/components/PrototypeChatDisplay';
+import { Message, MessageType } from '@/pages/Prototype/types';
 import { noop } from '@/utils/functional';
 
 import { Container, DialogHeader, DialogLoader } from './components';
@@ -17,18 +18,21 @@ import { filterAndTransformDialogs, generateTurnMap } from './util';
 
 export type TurnMap = Map<string, DialogMessage[]>;
 
+const DEBUG_LOCAL_STORAGE_BOOL_KEY = 'show_conversation_debugs';
+const INTENT_CONF_LOCAL_STORAGE_BOOL_KEY = 'show_conversation_intent_conf';
+
 const TranscriptDialog: React.FC = () => {
   const [messages, setMessages] = React.useState<DialogMessage[]>([]);
   const [isScrolling, setIsScrolling] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState(false);
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
   const activeProjectID = useSelector(activeProjectIDSelector);
-  const debugMessage = useSelector(Recent.prototypeDebugSelector);
-  const intentConfidence = useSelector(Recent.prototypeIntentSelector);
+  const [showDebugs, setShowDebugs] = useLocalStorageState(DEBUG_LOCAL_STORAGE_BOOL_KEY, false);
+  const [showIntentConfidence, setShowIntentConfidence] = useLocalStorageState(INTENT_CONF_LOCAL_STORAGE_BOOL_KEY, true);
+
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
   const color = useSelector(Prototype.prototypeBrandColorSelector);
   const [dialogTurnMap, setDialogTurnMap] = React.useState<TurnMap>(new Map());
-  const dispatch = useDispatch();
   const store = useStore();
 
   const fetchDialogs = async (targetTranscriptID: string) => {
@@ -43,6 +47,24 @@ const TranscriptDialog: React.FC = () => {
     }
   };
 
+  const messageFilter = React.useCallback(
+    (messages: Message[]) => {
+      return messages.filter((message: Message) => {
+        if (message.type !== MessageType.DEBUG) return true;
+
+        if (message.message.startsWith('matched intent')) {
+          if (!showIntentConfidence) {
+            return false;
+          }
+        } else if (!showDebugs) {
+          return false;
+        }
+        return true;
+      });
+    },
+    [showDebugs, showIntentConfidence]
+  );
+
   React.useEffect(() => {
     if (!currentTranscriptID) {
       setMessages([]);
@@ -50,14 +72,6 @@ const TranscriptDialog: React.FC = () => {
       fetchDialogs(currentTranscriptID);
     }
   }, [currentTranscriptID]);
-
-  const handleMessageClick = () => {};
-
-  const handleChange = (isDebugToggled: boolean) => {
-    isDebugToggled
-      ? dispatch(Recent.updateRecentPrototype({ debug: !debugMessage }))
-      : dispatch(Recent.updateRecentPrototype({ intent: !intentConfidence }));
-  };
 
   const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
     if (e.currentTarget.scrollTop !== 0) {
@@ -69,9 +83,11 @@ const TranscriptDialog: React.FC = () => {
   return (
     <Container>
       <DialogHeader
+        showDebugs={showDebugs}
+        showIntentConfidence={showIntentConfidence}
         isScrolling={isScrolling}
-        handleChange={handleChange}
-        transcriptInformation={{ intentConfidenceToggled: intentConfidence, debugMessageToggled: debugMessage }}
+        toggleDebugs={() => setShowDebugs(!showDebugs)}
+        toggleIntentConf={() => setShowIntentConfidence(!showIntentConfidence)}
       />
       {loading ? (
         <DialogLoader />
@@ -83,7 +99,6 @@ const TranscriptDialog: React.FC = () => {
           dialogTurnMap={dialogTurnMap}
           isTranscript={true}
           messages={messages}
-          onPlay={handleMessageClick}
           debug={true}
           interactions={[]}
           status={PrototypeStatus.ENDED}
@@ -92,6 +107,7 @@ const TranscriptDialog: React.FC = () => {
           onInteraction={(request: string | Request.BaseRequest) => alert(request)}
           stepBack={() => noop()}
           autoScroll={false}
+          messageFilter={messageFilter}
         />
       )}
     </Container>

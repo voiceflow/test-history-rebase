@@ -9,25 +9,18 @@ enum DialogLabel {
   INTENT_CONFIDENCE = 'Intent confidence',
   DEBUG = 'Debug messages',
 }
-interface TranscriptDialogInformation {
-  intentConfidenceToggled: boolean;
-  debugMessageToggled: boolean;
-}
 
 interface DialogHeaderProps {
-  transcriptInformation: TranscriptDialogInformation;
-  handleChange: (isDebugToggled: boolean) => void;
   isScrolling: boolean;
+  toggleDebugs: () => void;
+  toggleIntentConf: () => void;
+  showDebugs: boolean;
+  showIntentConfidence: boolean;
 }
 
-const DialogHeader: React.FC<DialogHeaderProps> = ({ transcriptInformation, handleChange, isScrolling }) => {
-  const [intentConfidenceToggled, setIntentConfidenceToggled] = React.useState<boolean>(transcriptInformation.intentConfidenceToggled);
-  const [debugMessageToggled, setDebugMessageToggled] = React.useState<boolean>(transcriptInformation.debugMessageToggled);
-
+const DialogHeader: React.FC<DialogHeaderProps> = ({ showDebugs, showIntentConfidence, toggleDebugs, toggleIntentConf, isScrolling }) => {
   const onToggle = (isDebugMessage: boolean) => {
-    isDebugMessage ? setDebugMessageToggled(!debugMessageToggled) : setIntentConfidenceToggled(!intentConfidenceToggled);
-
-    handleChange(isDebugMessage);
+    isDebugMessage ? toggleDebugs() : toggleIntentConf();
   };
 
   const Label = (label: string, checked: boolean) => {
@@ -50,10 +43,10 @@ const DialogHeader: React.FC<DialogHeaderProps> = ({ transcriptInformation, hand
         selfDismiss
         options={[
           {
-            label: Label(DialogLabel.INTENT_CONFIDENCE, intentConfidenceToggled),
+            label: Label(DialogLabel.INTENT_CONFIDENCE, showIntentConfidence),
           },
           {
-            label: Label(DialogLabel.DEBUG, debugMessageToggled),
+            label: Label(DialogLabel.DEBUG, showDebugs),
           },
         ]}
         placement="bottom-end"

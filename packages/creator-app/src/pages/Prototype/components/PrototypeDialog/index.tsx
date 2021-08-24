@@ -12,7 +12,7 @@ import useMessageFilters from './filters';
 import { checkIfFirstInSeries } from './utils';
 
 interface DialogPrototypeProps {
-  onPlay: (src: string) => void;
+  onPlay?: (src: string) => void;
   status: Prototype.PrototypeStatus;
   messages: Message[];
   isPublic?: boolean;
@@ -32,6 +32,7 @@ interface DialogPrototypeProps {
   setFocusedTurnID: (turnID: string | null) => void;
   focusedTurnID: string | null;
   dialogTurnMap?: TurnMap;
+  messageFilter?: (messages: Message[]) => Message[];
 }
 
 const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
@@ -55,9 +56,10 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   setFocusedTurnID,
   focusedTurnID,
   dialogTurnMap,
+  messageFilter,
 }) => {
   // filter out messages based on settings
-  const messages = useMessageFilters(rawMessages);
+  const messages = useMessageFilters(rawMessages, messageFilter);
   const interactionProps = { color, interactions, onInteraction };
 
   return (
@@ -89,7 +91,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                   key={message.id}
                   {...message}
                   audioSrc={message.src ?? ''}
-                  onPlay={() => onPlay(message.src ?? '')}
+                  onPlay={() => onPlay?.(message.src ?? '')}
                   isCurrent={isCurrent}
                   isLast={isLast}
                   avatarURL={avatarURL}
@@ -108,7 +110,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                   key={message.id}
                   userSpeak={userSpeak}
                   {...message}
-                  onClick={() => onPlay(message.src ?? '')}
+                  onClick={() => onPlay?.(message.src ?? '')}
                   isLast={isLast}
                   avatarURL={avatarURL}
                 />
@@ -148,7 +150,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
                   key={message.id}
                   audioSrc={message.audio}
                   {...message}
-                  onPlay={() => onPlay(message.audio)}
+                  onPlay={() => onPlay?.(message.audio)}
                   isCurrent={isCurrent}
                   isLast={isLast}
                   avatarURL={avatarURL}

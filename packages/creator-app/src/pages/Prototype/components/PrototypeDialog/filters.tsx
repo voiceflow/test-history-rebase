@@ -47,7 +47,8 @@ const filterMap: Record<string, () => Filter> = {
   [TranscriptMessageType.BLOCK]: BlockFilter,
 };
 
-const useMessageFilters = (messages: Message[]): Message[] => {
+const useMessageFilters = (messages: Message[], messageFilter?: (messages: Message[]) => Message[]): Message[] => {
+  if (messageFilter) return messageFilter(messages);
   const filters = Object.keys(filterMap).reduce<Record<string, Filter>>((acc, type) => {
     acc[type] = filterMap[type]();
     return acc;

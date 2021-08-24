@@ -15,7 +15,7 @@ export interface PrototypeChatDisplayProps {
   atTop?: boolean;
   messages: Message[];
   setAtTop?: (val: boolean) => void;
-  onPlay: (src: string) => void;
+  onPlay?: (src: string) => void;
   debug?: boolean;
   buttons?: Button.ButtonsLayout;
   interactions: Interaction[];
@@ -31,6 +31,7 @@ export interface PrototypeChatDisplayProps {
   isTranscript?: boolean;
   dialogTurnMap?: TurnMap;
   onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
+  messageFilter?: (messages: Message[]) => Message[];
 }
 
 const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
@@ -54,6 +55,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   isTranscript,
   dialogTurnMap,
   onScroll,
+  messageFilter,
 }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const chatScrollRef = React.useRef<HTMLDivElement>(null);
@@ -117,6 +119,7 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
           isTranscript={isTranscript}
           setFocusedTurnID={setFocusedTurnID}
           focusedTurnID={focusedTurnID}
+          messageFilter={messageFilter}
         />
       </InnerChatContainer>
     </OutterChatContainer>

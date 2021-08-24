@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.465.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.1...@voiceflow/creator-app@1.465.2) (2021-08-24)
+
+
+### Bug Fixes
+
+* allow 3rd col to overflow scroll (VF-000) ([#3978](https://github.com/voiceflow/creator-app/issues/3978)) ([cca1a6c](https://github.com/voiceflow/creator-app/commit/cca1a6c33015e12909ab4e03e8a572e87cf6c2ee))
+
+
+
+
+
 ## [1.465.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.0...@voiceflow/creator-app@1.465.1) (2021-08-24)
 
 

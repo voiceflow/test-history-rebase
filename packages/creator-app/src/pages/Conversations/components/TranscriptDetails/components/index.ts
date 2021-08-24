@@ -9,7 +9,6 @@ export { default as Tags } from './Sections/Tags';
 
 export const Container = styled(Flex)`
   flex: 2;
-  height: 425px;
   max-width: 340px;
   border-left: 1px solid;
   border-color: ${({ theme }) => theme.colors.borders};

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.465.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.2...@voiceflow/creator-app@1.465.3) (2021-08-24)
+
+
+### Bug Fixes
+
+* disable `service.management` Google OAuth scope ([#3979](https://github.com/voiceflow/creator-app/issues/3979)) ([6f3c6e6](https://github.com/voiceflow/creator-app/commit/6f3c6e6618f27ca6fd9d7c31d958ea75f082e6a5))
+
+
+
+
+
 ## [1.465.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.1...@voiceflow/creator-app@1.465.2) (2021-08-24)
 
 

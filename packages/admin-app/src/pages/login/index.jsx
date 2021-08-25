@@ -1,4 +1,4 @@
-import { Input, LegacyButton } from '@voiceflow/ui';
+import { ClickableText, FlexApart, Input, LegacyButton } from '@voiceflow/ui';
 import _get from 'lodash/get';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
@@ -73,17 +73,17 @@ const LoginForm = ({ login, location }) => {
                 value={password}
               />
             </FormGroup>
-            <div className="row">
-              <div className="col-8 auth__link">
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a href="https://creator.voiceflow.com">Back to voiceflow</a>
+            <FlexApart>
+              <div className="auth__link">
+                <ClickableText href="https://creator.voiceflow.com">Back to voiceflow</ClickableText>
               </div>
-              <div className="col-4">
+
+              <div>
                 <LegacyButton isPrimary isBlock type="submit">
                   Log in
                 </LegacyButton>
               </div>
-            </div>
+            </FlexApart>
           </div>
         </Form>
         <SocialLogin entryText="Or sign in with" light />

@@ -1,4 +1,4 @@
-import { Box, LegacyButton, NetworkError, preventDefault, toast } from '@voiceflow/ui';
+import { BoxFlexApart, ClickableText, LegacyButton, NetworkError, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -37,17 +37,18 @@ const ResetEmailForm: React.FC<ResetEmailFormProps & ConnectedResetEmailFormProp
   return (
     <form onSubmit={preventDefault(resetEmail)} className="w-100">
       <EmailInput value={email} onChange={setEmail} />
-      <Box height={45} mt={32}>
-        <div className="float-left auth__link">
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <a onClick={() => goToLogin()}>Back to Signing in</a>
+
+      <BoxFlexApart mt={32}>
+        <div className="auth__link">
+          <ClickableText onClick={() => goToLogin()}>Back to Signing in</ClickableText>
         </div>
-        <div className="float-right">
+
+        <div>
           <LegacyButton isPrimary isBlock type="submit">
             Reset Password
           </LegacyButton>
         </div>
-      </Box>
+      </BoxFlexApart>
     </form>
   );
 };

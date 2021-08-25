@@ -1,4 +1,4 @@
-import { Spinner } from '@voiceflow/ui';
+import { ClickableText, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Router from '@/ducks/router';
@@ -23,9 +23,9 @@ const ResetEmail: React.FC<ConnectedResetEmailProps> = ({ goToLogin }) => {
         <div className="confirm-helper">
           The confirmation link has been sent to {email}. If it doesn't appear within a few minutes, check your spam folder.
         </div>
-        <div className="auth__link">
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <a onClick={() => goToLogin()}>Back to Signing in</a>
+
+        <div style={{ marginTop: '32px' }} className="auth__link">
+          <ClickableText onClick={() => goToLogin()}>Back to Signing in</ClickableText>
         </div>
       </>
     ),

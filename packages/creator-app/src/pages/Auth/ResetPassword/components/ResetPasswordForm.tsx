@@ -1,4 +1,4 @@
-import { Box, LegacyButton, preventDefault, toast } from '@voiceflow/ui';
+import { Box, BoxFlexApart, ClickableText, LegacyButton, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -44,17 +44,18 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps & ConnectedResetPasswor
       <Box mb={22}>
         <PasswordInput value={confirm} onChange={setConfirm} name="confirm" placeholder="Confirm Password" isInvalid={password !== confirm} />
       </Box>
-      <div style={{ height: '45px', marginTop: '32px' }}>
-        <div className="float-left auth__link">
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <a onClick={() => goToLogin()}>Back to Signing in</a>
+
+      <BoxFlexApart mt={32}>
+        <div className="auth__link">
+          <ClickableText onClick={() => goToLogin()}>Back to Signing in</ClickableText>
         </div>
-        <div className="float-right">
+
+        <div>
           <LegacyButton isPrimary isBlock type="submit">
             Update Password
           </LegacyButton>
         </div>
-      </div>
+      </BoxFlexApart>
     </form>
   );
 };

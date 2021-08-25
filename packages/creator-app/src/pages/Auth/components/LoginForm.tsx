@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, preventDefault, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, ClickableText, FlexApart, preventDefault, toast } from '@voiceflow/ui';
 import { getSearch } from 'connected-react-router';
 import _get from 'lodash/get';
 import React from 'react';
@@ -64,17 +64,19 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
                 Forgot password?
               </Link>
             </InputContainer>
-            <div className="row">
-              <div className="col-7 auth__link">
+
+            <FlexApart>
+              <div className="auth__link">
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                {IS_PRIVATE_CLOUD ? <span /> : <a onClick={goToSignup}>Don't have an account?</a>}
+                {IS_PRIVATE_CLOUD ? <span /> : <ClickableText onClick={goToSignup}>Don't have an account?</ClickableText>}
               </div>
-              <div className="col-5">
+
+              <div>
                 <Button variant={ButtonVariant.PRIMARY} type="submit">
                   {query.invite ? 'Join Team' : 'Log In'}
                 </Button>
               </div>
-            </div>
+            </FlexApart>
           </div>
         </form>
 

@@ -53,24 +53,6 @@ export const AuthBox = styled.div`
     margin-bottom: 32px;
   }
 
-  .auth__link {
-    padding-top: 10px;
-    text-align: left;
-  }
-
-  .auth__link > a {
-    color: #5d9df5;
-    font-size: 15px;
-    line-height: 18px;
-    cursor: pointer;
-    &:hover {
-      color: #5d9df5;
-    }
-    &:active {
-      color: #326fc3;
-    }
-  }
-
   .passwordInput {
     position: relative;
 

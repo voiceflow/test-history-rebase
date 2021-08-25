@@ -1,4 +1,4 @@
-import { Box, BoxFlex, LegacyButton, preventDefault, toast } from '@voiceflow/ui';
+import { Box, BoxFlex, FlexApart, LegacyButton, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import { GoogleLoginResponse } from 'react-google-login';
@@ -72,16 +72,17 @@ const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleA
               <PasswordInput value={password} onChange={setPassword} showPassword={showPassword} />
               {password.length !== 0 && <ShowPasswordIcon showPassword={showPassword} onClick={() => toggleShowPassword()} />}
             </Box>
-            <div className="row">
-              <div className="col-7 auth__link">
+            <FlexApart>
+              <div className="auth__link">
                 <span />
               </div>
-              <div className="col-5">
+
+              <div>
                 <LegacyButton isPrimary isBlock type="submit">
                   Use Okta
                 </LegacyButton>
               </div>
-            </div>
+            </FlexApart>
           </div>
         </form>
 

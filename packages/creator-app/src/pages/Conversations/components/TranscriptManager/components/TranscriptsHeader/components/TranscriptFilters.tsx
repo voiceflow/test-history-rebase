@@ -1,11 +1,13 @@
 import { TimeRange } from '@voiceflow/internal';
 import { Box, ButtonVariant, ClickableText } from '@voiceflow/ui';
+import queryString from 'query-string';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import ReportTagInput, { InputVariant } from '@/components/ReportTagInput';
 import SelectMenu, { MenuSection } from '@/components/SelectMenu';
-import { useTrackingEvents } from '@/hooks';
+import { fetchTranscripts } from '@/ducks/transcript';
+import { useDispatch, useTrackingEvents } from '@/hooks';
 import { FILTER_TAG, isBuiltInRange } from '@/pages/Conversations/constants';
 import { ClassName } from '@/styles/constants';
 import THEME from '@/styles/theme';
@@ -22,6 +24,8 @@ const TranscriptFilters = () => {
   const [tagsOpen, setTagsOpen] = React.useState(false);
   const [currentRange, setCurrentRange] = React.useState('' as TimeRange | string);
   const [tags, setTags] = React.useState<string[]>([]);
+  const updateTranscriptsList = useDispatch(fetchTranscripts);
+  const { search } = useLocation();
 
   const filtersCounter = React.useMemo(() => {
     let counter = 0;
@@ -76,6 +80,35 @@ const TranscriptFilters = () => {
 
     history.replace({ search: params.toString() });
   };
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const rangeParam = params.get(FILTER_TAG.RANGE);
+    const startDateParam = params.get(FILTER_TAG.START_DATE);
+    const endDateParam = params.get(FILTER_TAG.END_DATE);
+    const tagParams = params.getAll(FILTER_TAG.TAG);
+
+    if (rangeParam) {
+      setCurrentRange(rangeParam);
+      setTimeRangeOpen(true);
+    }
+
+    if (startDateParam && endDateParam) {
+      const startDate = new Date(parseInt(startDateParam, 10)).toLocaleDateString();
+      const endDate = new Date(parseInt(endDateParam, 10)).toLocaleDateString();
+
+      setCurrentRange(`${startDate} - ${endDate}`);
+      setTimeRangeOpen(true);
+    }
+
+    if (tagParams.length > 0) {
+      setTagsOpen(true);
+      setTags(tagParams);
+    }
+
+    const queryParams = queryString.stringify(queryString.parse(search));
+    updateTranscriptsList(queryParams || '');
+  }, []);
 
   return (
     <SelectMenu

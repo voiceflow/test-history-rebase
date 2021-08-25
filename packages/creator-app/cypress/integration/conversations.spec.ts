@@ -24,14 +24,23 @@ context.skip('Conversations', () => {
       conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
       canvasPage.goToCanvas();
 
-      conversations.goToTranscriptsTab(`?range=Yesterday&tag=${Sentiment.EMOTION_NEGATIVE}`);
+      conversations.goToTranscriptsTab(`?range=Yesterday&tag=${Sentiment.EMOTION_NEGATIVE}&tag=${Sentiment.EMOTION_POSITIVE}`);
 
       conversations.el.transcriptsMenuText.should('include.text', 'Add filters (2)');
     });
 
-    it('checks filters on filters menu', () => {
-      // TO DO: There is a bug with this behavior.
-      // The checkbox are not checked on initial state, fix this behavior and add the test here.
+    it('checks menu checkboxes and fills initial state values', () => {
+      conversations.createProjectAndTranscript(SESSION_ID, CREATOR_ID);
+      canvasPage.goToCanvas();
+
+      conversations.goToTranscriptsTab(`?range=Yesterday&tag=${Sentiment.EMOTION_NEGATIVE}&tag=${Sentiment.EMOTION_POSITIVE}`);
+
+      conversations.el.transcriptsMenuText.click();
+      conversations.el.transcriptsTimeRangeCheckbox.should('be.checked');
+      conversations.el.transcriptsMenuTagsCheckbox.should('be.checked');
+      conversations.el.transcriptTimeRangeSelectedItem.should('have.text', 'Yesterday');
+      conversations.el.transcriptsSelectedFilterTagsIcons.first().should('have.attr', 'alt', 'Negative');
+      conversations.el.transcriptsSelectedFilterTagsIcons.last().should('have.attr', 'alt', 'Positive');
     });
 
     describe('and there are transcripts for given search', () => {

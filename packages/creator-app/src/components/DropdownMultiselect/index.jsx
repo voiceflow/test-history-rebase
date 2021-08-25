@@ -106,7 +106,7 @@ function DropdownMultiselect({
           <TriggerContainer className={ClassName.MULTISELECT_DROPDOWN} ref={ref} onClick={onToggle}>
             <InnerContainer active={dropdownActive && isOpen}>
               {dropdownLabel && <Label>{dropdownLabel}</Label>}
-              <ValueContainer>{selectedValue || <span>{placeholder}</span>}</ValueContainer>
+              <ValueContainer className={ClassName.MULTISELECT_SELECTED_VALUE}>{selectedValue || <span>{placeholder}</span>}</ValueContainer>
               {withCaret ? <SvgIcon icon="caretDown" size={10} color="#6e849a" /> : <Count>{selectedItems.length}</Count>}
             </InnerContainer>
           </TriggerContainer>

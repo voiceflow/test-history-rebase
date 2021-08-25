@@ -133,6 +133,7 @@ export enum ClassName {
   PLATFORM_CARD = 'vf-platform-card',
   MULTISELECT_DROPDOWN = 'vf-multi-select-dropdown',
   MULTISELECT_ITEM = 'vf-multi-select-item',
+  MULTISELECT_SELECTED_VALUE = 'vf-multi-select-selected-value',
   COLLAPSE = 'vf-collapse',
   COLLAPSE_HEADER = 'vf-collapse__header',
   COLLAPSE_CONTENT = 'vf-collapse__content',
@@ -165,6 +166,8 @@ export enum ClassName {
 
   POPPER = 'vf-popper',
   POPPER_NAV_ITEM = 'vf-popper__nav_item',
+
+  BASE_REPORT_TAG_INPUT_ICON = 'vf-base-report-tag-input-icon',
 }
 
 export enum ExternalClassName {

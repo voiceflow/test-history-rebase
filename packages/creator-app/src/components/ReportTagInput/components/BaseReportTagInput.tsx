@@ -5,6 +5,7 @@ import Checkbox from '@/components/Checkbox';
 import { isBuiltInTag } from '@/ducks/transcript/utils';
 import { useTrackingEvents } from '@/hooks';
 import { ReportTag, Sentiment, SentimentArray } from '@/models';
+import { ClassName } from '@/styles/constants';
 
 import { ReportTagInputContext } from '../context';
 import { TagWrapper } from './components';
@@ -152,7 +153,14 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
               >
                 <Box mr={6}>
                   {onlyIcon ? (
-                    <img style={{ position: 'relative', bottom: '1px' }} width={16} height={16} alt={tag.label} src={tag.icon} />
+                    <img
+                      style={{ position: 'relative', bottom: '1px' }}
+                      width={16}
+                      height={16}
+                      alt={tag.label}
+                      src={tag.icon}
+                      className={ClassName.BASE_REPORT_TAG_INPUT_ICON}
+                    />
                   ) : (
                     <span>{allTags.find((item) => item.id === tag.id)?.label}</span>
                   )}

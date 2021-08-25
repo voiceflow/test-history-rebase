@@ -127,6 +127,12 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ currentRange, placement, on
     }
   };
 
+  const handleApplyClick = () => {
+    if (!range.from || !range.to) return;
+    setTimeRange(TimeRange.CUSTOM);
+    onHideCalendar();
+  };
+
   React.useEffect(() => {
     onChange(input);
   }, [input]);
@@ -156,14 +162,7 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ currentRange, placement, on
                 <ClearRangeLink onClick={handleClear}>
                   <b>Clear</b>
                 </ClearRangeLink>
-                <ApplyButton
-                  id="apply-date-button"
-                  variant={ButtonVariant.PRIMARY}
-                  onClick={() => {
-                    setTimeRange(TimeRange.CUSTOM);
-                    onHideCalendar();
-                  }}
-                >
+                <ApplyButton id="apply-date-button" variant={ButtonVariant.PRIMARY} onClick={handleApplyClick}>
                   Apply
                 </ApplyButton>
               </CalendarFooter>

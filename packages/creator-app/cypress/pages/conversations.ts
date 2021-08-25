@@ -104,8 +104,12 @@ export default {
       return cy.get(`.${ClassName.TRANSCRIPT_FILTERS_MENU_TEXT}`);
     },
 
+    get transcriptsTimeRangeCheckbox() {
+      return cy.get(`.${ClassName.TRANSCRIPT_FILTERS_DATE_CHECKBOX} input`);
+    },
+
     get transcriptsMenuTagsCheckbox() {
-      return cy.get(`.${ClassName.TRANSCRIPT_FILTERS_TAGS_CHECKBOX}`);
+      return cy.get(`.${ClassName.TRANSCRIPT_FILTERS_TAGS_CHECKBOX} input`);
     },
 
     get transcriptsMenuTagsInput() {
@@ -114,6 +118,14 @@ export default {
 
     get transcriptsMenuApplyButton() {
       return cy.get(`.${ClassName.TRANSCRIPT_FILTERS_MENU_APPLY_BUTTON}`);
+    },
+
+    get transcriptsSelectedFilterTagsIcons() {
+      return cy.get(`.${ClassName.BASE_REPORT_TAG_INPUT_ICON}`);
+    },
+
+    get transcriptTimeRangeSelectedItem() {
+      return cy.get(`.${ClassName.MULTISELECT_SELECTED_VALUE}`);
     },
   },
 

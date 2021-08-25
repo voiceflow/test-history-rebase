@@ -5,6 +5,9 @@ import { css, styled } from '@/hocs';
 export const Container = styled(FlexApart)<{ hasShadow: boolean }>`
   height: 72px;
   padding: 26px 32px;
+  border-bottom: 1px solid transparent;
+  transition: all 0.15s ease-in-out;
+
   width: 100%;
   z-index: 99;
   background-color: transparent;
@@ -12,7 +15,7 @@ export const Container = styled(FlexApart)<{ hasShadow: boolean }>`
   ${({ hasShadow }) =>
     hasShadow &&
     css`
-      transition: all 0.15s ease-in-out;
+      border-bottom: 1px solid #dfe3ed;
       box-shadow: 0 1px 3px 0 rgba(19, 33, 68, 0.08);
     `}
 `;

@@ -23,6 +23,7 @@ export interface EditableCommentProps {
   headerProps?: Partial<ThreadEditorHeaderProps>;
   onBlur?: (values: Pick<Comment, 'text' | 'mentions'>) => void;
   hasHeader?: boolean;
+  autoFocusInput?: boolean;
   placeholder: string;
   height?: number;
 }
@@ -35,6 +36,7 @@ const EditableComment: React.FC<EditableCommentProps> = ({
   onClose,
   onBlur: saveDraftValues,
   hasHeader = true,
+  autoFocusInput = true,
   placeholder,
   onChange,
   height,
@@ -88,7 +90,7 @@ const EditableComment: React.FC<EditableCommentProps> = ({
             value={comment.text}
             inputProps={{
               inputRef,
-              autoFocus: isEditing,
+              autoFocus: isEditing && autoFocusInput,
               onKeyDown: (e) => {
                 if ((e.metaKey || e.ctrlKey) && e.key === KeyName.ENTER) {
                   onPost();

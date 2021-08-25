@@ -26,4 +26,6 @@ export const CalendarFooter = styled(FlexApart)`
   height: 90px;
   background-color: ${THEME.backgrounds.gray};
   padding: 24px 32px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 `;

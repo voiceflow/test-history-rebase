@@ -16,19 +16,26 @@ const Item = styled(FlexCenter)<MenuItemProps>`
   height: ${({ theme, small }) => (small ? theme.components.sidebarIconMenu.smallItemHeight : theme.components.sidebarIconMenu.itemHeight)}px;
   cursor: pointer;
   color: #6e849a;
-  opacity: 0.65;
+
+  & > span {
+    opacity: 0.65;
+  }
 
   ${({ isActive }) =>
     isActive &&
     css`
-      opacity: 1;
+      & > span {
+        opacity: 1;
+      }
       color: #3d82e2;
       cursor: default;
       pointer-events: none;
     `}
 
   &:hover {
-    opacity: 1;
+    & > span {
+      opacity: 1;
+    }
   }
 `;
 

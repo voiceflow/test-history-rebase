@@ -40,6 +40,7 @@ export const SearchContainer = styled.div`
   input {
     border: none !important;
     background: transparent;
+    box-shadow: none;
     padding-right: 0px;
     padding-left: 0px;
   }

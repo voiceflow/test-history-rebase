@@ -137,7 +137,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
         getOptionValue={(tag) => tag!.id}
         getOptionLabel={(tag) => (tag ? tagsMap[tag]?.label : '')}
         createInputPlaceholder="New tag"
-        placeholder={Object.keys(selectedTagObjects).length ? '' : 'Add Tags'}
+        placeholder={Object.keys(selectedTagObjects).length ? '' : 'Add tags'}
         onSelect={onToggleTag}
         tags={() => {
           return selectedTagObjects.map((tag, i) => {

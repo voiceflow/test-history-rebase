@@ -7,7 +7,7 @@ import { ClassName } from '@/styles/constants';
 import { SlideOutDirection } from '@/styles/transitions';
 
 import Drawer from '../Drawer';
-import { Container, IconContainer, Item } from './components';
+import { Container, IconContainer, Item, StatusBubble } from './components';
 
 export interface SidebarIconMenuItem {
   id?: string;
@@ -53,7 +53,10 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
           isActive={option.value === activeValue}
           className={cn(ClassName.SIDEBAR_ICON_MENU_ITEM, open && `${ClassName.SIDEBAR_ICON_MENU_ITEM}--${option.value}`)}
         >
-          <IconContainer icon={option.icon} color="currentColor" withBadge={option.withBadge ?? false} />
+          <span>
+            <IconContainer icon={option.icon} color="currentColor" />
+          </span>
+          {option.withBadge && <StatusBubble />}
         </Item>
       </ItemContainer>
     );

@@ -27,8 +27,9 @@ const TranscriptNotes: React.FC = () => {
     <Container height={HEIGHT}>
       <EditableComment
         height={HEIGHT}
+        autoFocusInput={false}
         placeholder="Leave notes or @mention"
-        isEditing={true}
+        isEditing
         initialValues={{ text: notes || '', mentions: [] }}
         hasHeader={false}
         onBlur={saveText}

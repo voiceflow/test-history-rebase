@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.46](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.1.45...@voiceflow/admin-app@1.1.46) (2021-08-25)
+
+
+### Bug Fixes
+
+* signup buttons layout (VF-1591) ([#3980](https://github.com/voiceflow/creator-app/issues/3980)) ([a1f4af6](https://github.com/voiceflow/creator-app/commit/a1f4af6d87936f647a0ce9b3392ff1d56dbdeb86))
+
+
+
+
+
 ## [1.1.45](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.1.44...@voiceflow/admin-app@1.1.45) (2021-08-19)
 
 **Note:** Version bump only for package @voiceflow/admin-app

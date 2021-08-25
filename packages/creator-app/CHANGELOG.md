@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.465.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.4...@voiceflow/creator-app@1.465.5) (2021-08-25)
+
+
+### Bug Fixes
+
+* signup buttons layout (VF-1591) ([#3980](https://github.com/voiceflow/creator-app/issues/3980)) ([a1f4af6](https://github.com/voiceflow/creator-app/commit/a1f4af6d87936f647a0ce9b3392ff1d56dbdeb86))
+
+
+
+
+
 ## [1.465.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.3...@voiceflow/creator-app@1.465.4) (2021-08-24)
 
 

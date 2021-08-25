@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.465.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.5...@voiceflow/creator-app@1.465.6) (2021-08-25)
+
+
+### Bug Fixes
+
+* **conversations:** adds query params initial state behavior (VF-1575) ([#3971](https://github.com/voiceflow/creator-app/issues/3971)) ([c73dad8](https://github.com/voiceflow/creator-app/commit/c73dad83aa28604c716eb31369e9b94b71ba2e01))
+* small ui fixes (VF-000) ([#3985](https://github.com/voiceflow/creator-app/issues/3985)) ([9f0bd0d](https://github.com/voiceflow/creator-app/commit/9f0bd0d982ae9c6f4c909bcbf7bdd79c01e813be))
+
+
+
+
+
 ## [1.465.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.4...@voiceflow/creator-app@1.465.5) (2021-08-25)
 
 

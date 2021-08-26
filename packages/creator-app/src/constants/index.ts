@@ -9,10 +9,10 @@ export { IntegrationType } from '@voiceflow/base-types/build/node/utils';
 
 export const USER_INFO_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
 export const ACTION_BUILDER_SCOPE = 'https://www.googleapis.com/auth/actions.builder';
-export const CLOUD_RESOURCE_SCOPE = 'https://www.googleapis.com/auth/cloudplatformprojects';
+export const CLOUD_RESOURCE_SCOPE = 'https://www.googleapis.com/auth/cloudplatformprojects.readonly';
 export const FIREBASE_SCOPE = 'https://www.googleapis.com/auth/firebase';
 export const SERVICE_MANAGEMENT_SCOPE = 'https://www.googleapis.com/auth/service.management';
-export const GOOGLE_OAUTH_SCOPES = [CLOUD_RESOURCE_SCOPE, ACTION_BUILDER_SCOPE, USER_INFO_SCOPE, FIREBASE_SCOPE /* , SERVICE_MANAGEMENT_SCOPE */];
+export const GOOGLE_OAUTH_SCOPES = [CLOUD_RESOURCE_SCOPE, ACTION_BUILDER_SCOPE, USER_INFO_SCOPE /*, FIREBASE_SCOPE, SERVICE_MANAGEMENT_SCOPE */];
 
 export const CUSTOM_SLOT_TYPE = 'Custom';
 export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';

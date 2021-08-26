@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.12.0...@voiceflow/ui@1.12.1) (2021-08-26)
+
+
+### Bug Fixes
+
+* dropdown menu (VF-000) ([3687cc8](https://github.com/voiceflow/creator-app/commit/3687cc80226876c9eedf7d0f32fb66e13155fecb))
+
+
+
+
+
 # [1.12.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.11.10...@voiceflow/ui@1.12.0) (2021-08-26)
 
 

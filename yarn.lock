@@ -5319,14 +5319,6 @@
   resolved "https://registry.yarnpkg.com/@voiceflow/tsconfig/-/tsconfig-1.0.0.tgz#09406c649729c8a9d5b7fa1d76427d8a9adbc961"
   integrity sha512-+gOf2u/5xc5SHqrD+o1nBPfodAo34jQWmVR6K/h94/XZp8uoHQ7yzUnMqRpiJMrdX+Ku7WCI0xd9h1jYSHS0LA==
 
-"@voiceflow/voice-types@1.3.3", "@voiceflow/voice-types@^1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/voice-types/-/voice-types-1.3.3.tgz#d571efc0b197fa9d47f242f839a89059861e10e8"
-  integrity sha512-6gN8efD/KsEpnfUHp49KZqvCvXOG7ic7N3bXW1yWF3c1Nb2Y8hLDL+DowoRqS/Bt7p0SFoshg54aHw2oklBixg==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.36.0"
-    "@voiceflow/base-types" "^1.3.1"
-
 "@voiceflow/voice-types@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/voice-types/-/voice-types-1.1.0.tgz#29f6e861838445dde4a4fc29d6e07a7a85a606fd"
@@ -5342,6 +5334,14 @@
   dependencies:
     "@voiceflow/api-sdk" "^1.36.0"
     "@voiceflow/base-types" "^1.2.0"
+
+"@voiceflow/voice-types@^1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@voiceflow/voice-types/-/voice-types-1.3.3.tgz#d571efc0b197fa9d47f242f839a89059861e10e8"
+  integrity sha512-6gN8efD/KsEpnfUHp49KZqvCvXOG7ic7N3bXW1yWF3c1Nb2Y8hLDL+DowoRqS/Bt7p0SFoshg54aHw2oklBixg==
+  dependencies:
+    "@voiceflow/api-sdk" "^1.36.0"
+    "@voiceflow/base-types" "^1.3.1"
 
 "@voiceflow/webpack-config@1.7.1", "@voiceflow/webpack-config@^1.3.0":
   version "1.7.1"

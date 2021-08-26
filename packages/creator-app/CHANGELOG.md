@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.465.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.6...@voiceflow/creator-app@1.465.7) (2021-08-26)
+
+
+### Bug Fixes
+
+* fix lint (VF-000) ([#3989](https://github.com/voiceflow/creator-app/issues/3989)) ([aa0196f](https://github.com/voiceflow/creator-app/commit/aa0196f7da1039f75540b751b4e4d5ec65fbf701))
+* make project management scope readonly (VF-1562) ([#3988](https://github.com/voiceflow/creator-app/issues/3988)) ([335d4f0](https://github.com/voiceflow/creator-app/commit/335d4f024a41b852a54cd7bd28d3c32402bb5b8b))
+
+
+
+
+
 ## [1.465.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.465.5...@voiceflow/creator-app@1.465.6) (2021-08-25)
 
 

@@ -53,7 +53,7 @@ function RandomEditor({ data, onChange, focusedNode }) {
           </Checkbox>
         }
         tooltip={<InfoTooltip />}
-      ></Section>
+      />
     </Content>
   );
 }

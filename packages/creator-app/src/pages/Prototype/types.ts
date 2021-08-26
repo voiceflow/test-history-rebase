@@ -1,5 +1,7 @@
 import { Node, Request } from '@voiceflow/base-types';
 
+export type OnInteraction = (interaction: { name?: string | undefined; request: Request.BaseRequest | string }) => void;
+
 export enum PMStatus {
   IDLE = 'IDLE',
   ERROR = 'ERROR',
@@ -79,4 +81,5 @@ export type TypedMessage<T extends MessageType> = MessageMap[T];
 export interface Interaction {
   name: string;
   request: Request.AnyRequestButton['request'] | Request.BaseRequest<undefined>;
+  isActionButton?: boolean;
 }

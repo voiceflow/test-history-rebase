@@ -34,7 +34,7 @@ const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = (
             {title}
             {tooltip && (
               <span className="ml-2">
-                <InfoIcon tooltipProps={{ portalNode: window.document.body }}>{tooltip}</InfoIcon>
+                <InfoIcon>{tooltip}</InfoIcon>
               </span>
             )}
             <div>

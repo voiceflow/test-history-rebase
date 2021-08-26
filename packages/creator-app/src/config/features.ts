@@ -12,6 +12,7 @@ const TEST_REPORTS_ENABLED = process.env.FF_TEST_REPORTS === 'true';
 const ATOMIC_ACTIONS_ENABLED = process.env.FF_ATOMIC_ACTIONS === 'true';
 const DIALOGFLOW_ENABLED = process.env.FF_DIALOGFLOW === 'true';
 const FF_TEXT_STEP_ENABLED = process.env.FF_TEXT_STEP === 'true';
+const FF_BUTTONS_STEP_ENABLED = process.env.FF_BUTTONS_STEP === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
@@ -21,6 +22,7 @@ export enum FeatureFlag {
   MOTOROLA_SSO = 'motorola_sso',
   ATOMIC_ACTIONS = 'atomic_actions',
   TEXT_STEP = 'TEXT_STEP',
+  BUTTONS_STEP = 'buttons_step',
 
   // used by select private cloud instances to add a new role type
   OWNER_ROLE = 'owner_role',
@@ -44,4 +46,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.ATOMIC_ACTIONS]: ATOMIC_ACTIONS_ENABLED,
   [FeatureFlag.DIALOGFLOW]: DIALOGFLOW_ENABLED,
   [FeatureFlag.TEXT_STEP]: FF_TEXT_STEP_ENABLED,
+  [FeatureFlag.BUTTONS_STEP]: FF_BUTTONS_STEP_ENABLED,
 };

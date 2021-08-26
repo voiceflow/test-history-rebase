@@ -2,14 +2,14 @@ import { SVG } from '@voiceflow/ui';
 
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
-import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
+import { NO_REPLY_RESPONSE_PATH_TYPE, NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
 
 import { NodeManagerConfig } from '../types';
 import ChoiceOldEditor from './ChoiceOldEditor';
 import ChoiceOldStep from './ChoiceOldStep';
 
 const EDITORS_BY_PATH = {
-  noReplyResponse: NoReplyResponseForm,
+  [NO_REPLY_RESPONSE_PATH_TYPE]: NoReplyResponseForm,
 };
 
 const ChoiceOldManager: NodeManagerConfig<NodeData.ChoiceOld> = {

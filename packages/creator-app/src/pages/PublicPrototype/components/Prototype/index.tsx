@@ -1,4 +1,3 @@
-import { Request } from '@voiceflow/base-types';
 import { IS_IOS, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -11,7 +10,7 @@ import { useASR, useCanASR, useGuestPermission, useSpeechRecognition, useTeardow
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPrototype } from '@/pages/Prototype/hooks';
-import { PMStatus } from '@/pages/Prototype/types';
+import { OnInteraction, PMStatus } from '@/pages/Prototype/types';
 import ChatDialog from '@/pages/PublicPrototype/components/ChatDialog';
 import { ConnectedProps } from '@/types';
 import { compose } from '@/utils/functional';
@@ -64,6 +63,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     [settings.layout]
   );
 
+  const onTranscript = React.useCallback((text: string) => onInteraction({ request: text }), [onInteraction]);
+
   const {
     isListening,
     isSupported: isSpeechSpeechRecognitionSupported,
@@ -73,24 +74,25 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     interimTranscript,
     onCheckMicrophonePermission,
     isMicrophonePermissionGranted,
-  } = useSpeechRecognition({ locale, onTranscript: onInteraction, askOnSetup: isVoicePrototype });
+  } = useSpeechRecognition({ locale, onTranscript, askOnSetup: isVoicePrototype });
 
   const {
+    listening: listeningASR,
     onStopListening: onStopListeningASR,
     onStartListening: onStartListeningASR,
-    listening: listeningASR,
   } = useASR({
-    onTranscript: onInteraction,
     locale,
+    onTranscript,
   });
 
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
+
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING);
   const isIdle = status === PrototypeDuck.PrototypeStatus.IDLE;
   const isFinished = status === PrototypeDuck.PrototypeStatus.ENDED;
 
-  const sendInteraction = (customInput: string | Request.BaseRequest) => {
-    onInteraction(customInput);
+  const sendInteraction: OnInteraction = (interaction) => {
+    onInteraction(interaction);
     setInput('');
   };
 
@@ -149,8 +151,8 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
         <Footer onMute={onMute} isMuted={isMuted} onReset={resetPrototype} onFullScreen={toggleFullScreen}>
           {canUseASR ? (
             <ASRSpeechBar
-              onTranscript={onInteraction}
               locale={locale}
+              onTranscript={onTranscript}
               onCheckMicrophonePermission={onCheckMicrophonePermission}
               isMicrophonePermissionGranted={isMicrophonePermissionGranted}
             />
@@ -192,7 +194,6 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
             buttons={settings.buttons}
             onMute={onMute}
             isIdle={isIdle}
-            onSend={sendInteraction}
             isMuted={isMuted}
             onReset={resetState}
             onPlay={onPlay}
@@ -203,6 +204,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
             isListening={isListening}
             interactions={interactions}
             onInputChange={setInput}
+            onInteraction={sendInteraction}
             prototypeStatus={status}
             finalTranscript={finalTranscript}
             onStopListening={onStopListening}

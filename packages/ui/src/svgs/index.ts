@@ -165,6 +165,7 @@ export { default as notifications } from './notifications.svg';
 // o
 export { default as offRadioButton } from './images/icons/off-radio-button.svg';
 export { default as onRadioButton } from './images/icons/on-radio-button.svg';
+export { default as openLink } from './open-link.svg';
 export { default as openLock } from './open-lock.svg';
 export { default as outlinedCircle } from './outlined-circle.svg';
 export { default as outlinedFilledCircle } from './outlined-filled-circle.svg';

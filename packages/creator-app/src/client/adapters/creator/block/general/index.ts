@@ -1,5 +1,6 @@
 import { BlockType } from '@/constants';
 
+import buttonsAdapter from './buttons';
 import captureAdapter from './capture';
 import codeAdapter from './code';
 import commandAdapter from './command';
@@ -36,6 +37,7 @@ export const generalBlockAdapter = {
   [BlockType.INTENT]: intentAdapter,
   [BlockType.CHOICE]: interactionAdapter,
   [BlockType.RANDOM]: randomAdapter,
+  [BlockType.BUTTONS]: buttonsAdapter,
   [BlockType.CAPTURE]: captureAdapter,
   [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.INTEGRATION]: integrationAdapter,

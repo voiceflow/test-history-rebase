@@ -53,6 +53,7 @@ const CaptureEditor: React.FC<NodeEditorPropsType<NodeData.Capture>> = ({ data, 
         <FormControl label="Input Type">
           <SlotSelectComponent value={data.slot} onChange={updateSlot} filter={optionsFilter} />
         </FormControl>
+
         {data.slot === CUSTOM_SLOT_TYPE && (
           <FormControl>
             <ListManager
@@ -79,6 +80,7 @@ const CaptureEditor: React.FC<NodeEditorPropsType<NodeData.Capture>> = ({ data, 
             />
           </FormControl>
         )}
+
         <FormControl label="Capture Input to" contentBottomUnits={0}>
           <VariableSelectComponent value={data.variable} onChange={onSelectVariable} />
         </FormControl>

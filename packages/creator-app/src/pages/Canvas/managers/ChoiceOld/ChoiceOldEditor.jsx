@@ -5,8 +5,8 @@ import { focusedNodeSelector } from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useManager } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import NoReplyResponse, { repromptFactory } from '@/pages/Canvas/components/NoReplyResponse';
 import { EngineContext } from '@/pages/Canvas/contexts';
+import { useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 
 import ChoiceItem from './components/ChoiceOldItem';
 
@@ -35,27 +35,13 @@ function ChoiceEditor({ data, onChange, focusedNode, pushToPath }) {
     [focusedNode.id, data.choices.length, onAdd]
   );
 
-  const hasNoReplyResponse = !!data.reprompt;
-  const toggleReprompt = React.useCallback(
-    () => onChange({ reprompt: hasNoReplyResponse ? null : repromptFactory() }),
-    [hasNoReplyResponse, onChange]
-  );
+  const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
 
   return (
     <Content
       footer={({ scrollToBottom }) => (
         <Controls
-          menu={
-            <OverflowMenu
-              placement="top-end"
-              options={[
-                {
-                  label: hasNoReplyResponse ? 'Remove No Reply Response' : 'Add  No Reply Response',
-                  onClick: toggleReprompt,
-                },
-              ]}
-            />
-          }
+          menu={<OverflowMenu placement="top-end" options={[noReplyOption]} />}
           options={[
             {
               label: 'Add Choice',
@@ -68,7 +54,8 @@ function ChoiceEditor({ data, onChange, focusedNode, pushToPath }) {
       {mapManaged((choice, { key, index, onUpdate, onRemove }) => (
         <ChoiceItem key={key} index={index} choice={choice} onChange={onUpdate} onRemove={onRemove} />
       ))}
-      {hasNoReplyResponse && <NoReplyResponse pushToPath={pushToPath} />}
+
+      {noReplySection}
     </Content>
   );
 }

@@ -1,4 +1,4 @@
-import { Button, Request } from '@voiceflow/base-types';
+import { Button } from '@voiceflow/base-types';
 import { Box, BoxFlex, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +6,7 @@ import { PrototypeLayout, PrototypeStatus } from '@/ducks/prototype/types';
 import { useCanASR, useTheme } from '@/hooks';
 import { ChatDisplay } from '@/pages/Prototype/components';
 import { ASRSpeechbar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
-import { Interaction, Message } from '@/pages/Prototype/types';
+import { Interaction, Message, OnInteraction } from '@/pages/Prototype/types';
 
 import { ActionButtons, DisplayContainer, InputContainer, InteractionContainer, SpeechBarContainer, UserInput } from './components';
 
@@ -18,7 +18,6 @@ export interface ChatDialogProps {
   layout: PrototypeLayout;
   onStart: () => void;
   onMute: () => void;
-  onSend: (request: string | Request.BaseRequest) => void;
   onPlay: (src: string) => void;
   isMuted?: boolean;
   onReset: () => void;
@@ -29,6 +28,7 @@ export interface ChatDialogProps {
   testEnded?: boolean;
   isListening?: boolean;
   interactions: Interaction[];
+  onInteraction: OnInteraction;
   onInputChange: (input: string) => void;
   prototypeStatus: PrototypeStatus;
   finalTranscript: string;
@@ -52,7 +52,6 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   isIdle,
   onPlay,
   layout,
-  onSend,
   locale,
   onStart,
   isMuted,
@@ -65,6 +64,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   isListening,
   interactions,
   onInputChange,
+  onInteraction,
   prototypeStatus,
   finalTranscript,
   onStopListening,
@@ -95,9 +95,9 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
           buttons={buttons}
           color={color}
           avatarURL={avatarURL}
-          onInteraction={onSend}
           stepBack={onStepBack}
           autoScroll={autoScroll}
+          onInteraction={onInteraction}
         />
       </DisplayContainer>
 
@@ -111,14 +111,14 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                   isIdle={isIdle}
                   testEnded={testEnded}
                   value={input}
-                  onEnterPress={() => onSend(input)}
+                  onEnterPress={() => onInteraction({ request: input })}
                   onChange={onInputChange}
                   onStart={onStart}
                 />
                 <ActionButtons
                   color={color}
                   onMute={onMute}
-                  onSend={() => onSend(input)}
+                  onSend={() => onInteraction({ request: input })}
                   isMuted={isMuted}
                   onReset={onReset}
                   testEnded={testEnded}
@@ -142,7 +142,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                   <SpeechBarContainer>
                     {canUseASR ? (
                       <ASRSpeechbar
-                        onTranscript={onSend}
+                        onTranscript={(text) => onInteraction({ request: text })}
                         onCheckMicrophonePermission={onCheckMicrophonePermission}
                         isMicrophonePermissionGranted={isMicrophonePermissionGranted}
                         locale={locale}
@@ -168,7 +168,7 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                 <ActionButtons
                   color={color}
                   onMute={onMute}
-                  onSend={() => onSend(input)}
+                  onSend={() => onInteraction({ request: input })}
                   noSend
                   isMuted={isMuted}
                   onReset={onReset}

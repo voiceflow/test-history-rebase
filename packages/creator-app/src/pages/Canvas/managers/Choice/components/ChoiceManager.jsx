@@ -7,9 +7,9 @@ import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useManager, useToggle } from '@/hooks';
 import { Content, Controls, MaxOptionsMessage } from '@/pages/Canvas/components/Editor';
+import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
 import { MAX_ITEMS_PER_EDITOR } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import ElseResponse from '@/pages/Canvas/managers/Choice/components/ElseResponse';
 import { useButtonsOptionSection, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
 import { PlatformContext } from '@/pages/Skill/contexts';
 
@@ -85,7 +85,7 @@ function ChoiceManager({ data, onChange, focusedNode, pushToPath }) {
         footer={
           <>
             {buttonsSection}
-            <ElseResponse pushToPath={pushToPath} noMatches={data.else} />
+            <NoMatchSection data={data.else} pushToPath={pushToPath} />
             {noReplySection}
           </>
         }

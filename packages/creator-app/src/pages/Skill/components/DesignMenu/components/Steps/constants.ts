@@ -44,6 +44,8 @@ const CARD_STEP = createMenuStep(BlockType.CARD);
 
 const CHOICE_STEP = createMenuStep(BlockType.CHOICE);
 
+const BUTTONS_STEP = createMenuStep(BlockType.BUTTONS);
+
 const CODE_STEP = createMenuStep(BlockType.CODE);
 
 const DIRECTIVE_STEP = createMenuStep(BlockType.DIRECTIVE);
@@ -161,7 +163,8 @@ export const CHATBOT_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [CHOICE_STEP, PROMPT_STEP, INTENT_STEP],
+    // TODO: remove choice step when buttons FF is removed
+    steps: [CHOICE_STEP, BUTTONS_STEP, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,

@@ -23,6 +23,7 @@ const Spotlight = () => {
   const engine = React.useContext(EngineContext)!;
   const gadgets = useFeature(FeatureFlag.GADGETS);
   const textStep = useFeature(FeatureFlag.TEXT_STEP);
+  const buttonsStep = useFeature(FeatureFlag.BUTTONS_STEP);
   const isVisible = !!spotlight?.isVisible;
 
   const addBlock = async (blockType: BlockType, factoryData?: Partial<NodeData<unknown>>) => {
@@ -37,6 +38,8 @@ const Spotlight = () => {
         .filter((step) => {
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
           if (!textStep.isEnabled && step.type === BlockType.TEXT) return false;
+          if (!buttonsStep.isEnabled && step.type === BlockType.BUTTONS) return false;
+          if (buttonsStep.isEnabled && step.type === BlockType.CHOICE) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
           return true;
         }),

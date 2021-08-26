@@ -36,7 +36,7 @@ const TextList = ({
   getControlOptions,
 }: React.PropsWithChildren<TextListProps>): React.ReactElement<any, any> => (
   <ListEditorContent
-    type="speak-editor"
+    type="text-editor"
     items={items}
     footer={children}
     factory={factory}

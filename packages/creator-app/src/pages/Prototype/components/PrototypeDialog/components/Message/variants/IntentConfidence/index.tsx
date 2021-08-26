@@ -34,13 +34,11 @@ export const IntentConfidence: React.FC<IntentConfidenceProps & ConnectedIntentC
   focusedTurnID,
   dialogTurnMap,
 }) => {
+  const isReprompt = React.useMemo(() => turnID && dialogTurnMap?.get(turnID)?.some(({ reprompt }) => !!reprompt), [dialogTurnMap, turnID]);
+
   const intentMessage = `${message.split('**')[1]} - `;
   const confidenceMessage = ` ${message.split('confidence interval')[1].split('_')[1]}`;
-  const isReprompt = React.useMemo(() => {
-    return dialogTurnMap?.get(turnID!)?.some(({ reprompt }) => {
-      return !!reprompt;
-    });
-  }, [dialogTurnMap, turnID]);
+
   const noMatch =
     isReprompt || lastUserMessage.intentName === Constants.IntentName.NONE || (intentConfidence && intentConfidence < INTENT_CONFIDENCE_THRESHOLD);
 

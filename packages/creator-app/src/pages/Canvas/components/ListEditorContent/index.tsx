@@ -1,3 +1,4 @@
+import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, {
@@ -8,6 +9,7 @@ import DraggableList, {
 } from '@/components/DraggableList';
 import { MapManagedAPI, useManager, useToggle } from '@/hooks';
 import { Content, ContentRenderOptions, ControlOptions, Controls, EditorControlsProps } from '@/pages/Canvas/components/Editor';
+import { chain } from '@/utils/functional';
 
 export type ListItemExtraProps<E = {}> = DragPreviewComponentProps &
   E & {
@@ -28,6 +30,8 @@ export interface ListEditorContentProps<T, F extends any[] = [], E = {}> {
   factory: (...args: F) => T;
   tutorial?: EditorControlsProps['tutorial'];
   maxItems?: number;
+  onRemove?: (value: T, index: number) => void;
+  onReorder?: (dragIndex: number, hoverIndex: number) => void;
   renderMenu: (options: MapManagedAPI<T, F> & ContentRenderOptions) => React.ReactNode;
   itemComponent: ListItemComponent<T, E>;
   onChangeItems: (items: T[]) => void;
@@ -40,8 +44,10 @@ const ListEditorContent = <T, F extends any[] = [], E = {}>({
   items: listItems,
   footer,
   factory,
+  onRemove,
   maxItems,
   tutorial,
+  onReorder,
   renderMenu,
   onChangeItems,
   itemComponent,
@@ -49,8 +55,9 @@ const ListEditorContent = <T, F extends any[] = [], E = {}>({
   getControlOptions,
 }: React.PropsWithChildren<ListEditorContentProps<T, F, E>>): React.ReactElement<any, any> => {
   const [isDragging, toggleDragging] = useToggle(false);
+  const persistedOnRemove = usePersistFunction(onRemove);
 
-  const mapManagedApi = useManager(listItems, onChangeItems, { factory, maxItems });
+  const mapManagedApi = useManager(listItems, onChangeItems, { factory, maxItems, handleRemove: persistedOnRemove });
 
   return (
     <Content
@@ -67,7 +74,7 @@ const ListEditorContent = <T, F extends any[] = [], E = {}>({
         type={type}
         footer={footer}
         onDelete={mapManagedApi.onRemove}
-        onReorder={mapManagedApi.onReorder}
+        onReorder={chain(mapManagedApi.onReorder, onReorder)}
         onEndDrag={toggleDragging}
         itemProps={
           {

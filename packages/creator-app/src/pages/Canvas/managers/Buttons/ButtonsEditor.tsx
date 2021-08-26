@@ -1,0 +1,64 @@
+import { Node } from '@voiceflow/base-types';
+import cuid from 'cuid';
+import React from 'react';
+
+import OverflowMenu from '@/components/OverflowMenu';
+import { BlockType } from '@/constants';
+import * as Creator from '@/ducks/creator';
+import { useSelector } from '@/hooks';
+import { NodeData } from '@/models';
+import ListEditorContent from '@/pages/Canvas/components/ListEditorContent';
+import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
+import { EngineContext } from '@/pages/Canvas/contexts';
+import { useButtonLayoutOption, useNoReplyOptionSection } from '@/pages/Canvas/managers/hooks';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
+import { chainVoid } from '@/utils/functional';
+
+import { ButtonsListItem } from './components';
+import { NODE_CONFIG } from './constants';
+
+const factory = (): Node.Buttons.Button => ({
+  id: cuid.slug(),
+  name: '',
+  actions: [Node.Buttons.ButtonAction.PATH],
+});
+
+const ButtonsEditor: NodeEditor<NodeData.Buttons> = ({ data, nodeID, onChange, pushToPath }) => {
+  const engine = React.useContext(EngineContext);
+  const focusedNode = useSelector(Creator.focusedNodeSelector)!;
+
+  const buttonLayoutOption = useButtonLayoutOption();
+  const [noReplyOption, noReplySection] = useNoReplyOptionSection({ data, onChange, pushToPath });
+
+  return (
+    <ListEditorContent
+      type="buttons-editor"
+      items={data.buttons}
+      footer={
+        <>
+          <NoMatchSection data={data.else} pushToPath={pushToPath} />
+          {noReplySection}
+        </>
+      }
+      factory={factory}
+      tutorial={{ content: <div />, blockType: BlockType.BUTTONS }}
+      onRemove={(_, index) => engine?.port.remove(focusedNode.ports.out[index])}
+      onReorder={(from, to) => engine?.port.reorder(focusedNode.id, from + 1, to + 1)}
+      renderMenu={() => <OverflowMenu placement="top-end" options={[noReplyOption, buttonLayoutOption]} />}
+      onChangeItems={(items) => onChange({ buttons: items })}
+      itemComponent={ButtonsListItem}
+      extraItemProps={{ pushToPath }}
+      getControlOptions={({ onAdd, isMaxMatches, scrollToBottom }) => [
+        {
+          label: 'Add Button',
+          icon: NODE_CONFIG.icon,
+          onClick: chainVoid(onAdd, () => engine?.port.add(nodeID, { label: String(data.buttons.length + 1) }), scrollToBottom),
+          disabled: isMaxMatches,
+          iconProps: { color: NODE_CONFIG.iconColor },
+        },
+      ]}
+    />
+  );
+};
+
+export default ButtonsEditor;

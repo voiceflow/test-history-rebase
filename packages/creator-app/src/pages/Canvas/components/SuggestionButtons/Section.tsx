@@ -11,6 +11,8 @@ import InfoTooltip from './InfoTooltip';
 
 export const buttonsFactory = (): Button.IntentButton[] => [{ name: '', type: Button.ButtonType.INTENT, payload: { intentID: null } }];
 
+export const SUGGESTION_BUTTONS_PATH_TYPE = 'buttons';
+
 interface ButtonsSectionProps {
   pushToPath?: (path: { type: string; label: string }) => void;
 }
@@ -18,7 +20,7 @@ interface ButtonsSectionProps {
 const ButtonsSection: React.FC<ButtonsSectionProps> = ({ pushToPath }) => {
   const platform = React.useContext(PlatformContext)!;
   const openButtons = React.useCallback(
-    () => pushToPath?.({ type: 'buttons', label: getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons') }),
+    () => pushToPath?.({ type: SUGGESTION_BUTTONS_PATH_TYPE, label: getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons') }),
     [pushToPath]
   );
 
@@ -29,7 +31,6 @@ const ButtonsSection: React.FC<ButtonsSectionProps> = ({ pushToPath }) => {
       isLink
       tooltip={<InfoTooltip />}
       onClick={openButtons}
-      tooltipProps={{ helpTitle: null, helpMessage: null }}
     />
   );
 };

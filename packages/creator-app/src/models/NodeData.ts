@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
+/* eslint-disable @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-interface */
 import { Node as AlexaNode } from '@voiceflow/alexa-types';
 import { SlotMapping } from '@voiceflow/api-sdk';
 import { Button, Node as BaseNode } from '@voiceflow/base-types';
+import { Node as GeneralNode } from '@voiceflow/general-types';
 
 import { BlockType, CardType, DistinctPlatform, IntegrationType, RepromptType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
@@ -96,6 +97,7 @@ export namespace NodeData {
     content: string;
     audio?: string | null;
     voice?: string | null;
+    desc?: string | null;
   }
 
   export interface Capture {
@@ -205,7 +207,6 @@ export namespace NodeData {
     backgroundImage: string | null;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface AccountLinking {}
 
   export type Intent = Record<DistinctPlatform, Intent.PlatformData>;
@@ -277,11 +278,17 @@ export namespace NodeData {
     [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: GoogleSheets;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface Exit {}
 
+  export interface Buttons extends Omit<GeneralNode.Buttons.StepData, 'else' | 'reprompt'> {
+    else: NoMatches;
+    reprompt: Reprompt | null;
+  }
+
+  export interface Text extends BaseNode.Text.StepData {}
+
+  // union
   export type Visual = BaseNode.Visual.StepData;
-  export type Text = BaseNode.Text.StepData;
 }
 
 export namespace DBNodeData {

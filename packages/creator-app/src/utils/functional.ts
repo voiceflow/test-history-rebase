@@ -1,5 +1,7 @@
 import _isString from 'lodash/isString';
 
+import { Nullish } from '@/types';
+
 export type Transform<T = any, R = T> = (value: T) => R;
 
 export interface Compose {
@@ -32,28 +34,30 @@ export const identity = <T>(value: T): T => value;
 
 export const stringify = (value: any): string => (_isString(value) ? value : String(value));
 
+type ChainCallback<A extends any[]> = (...args: A) => void;
+
 export const chain =
-  <A extends any[]>(...fns: Array<(...args: A) => void>) =>
+  <A extends any[]>(...fns: Array<Nullish<ChainCallback<A>>>) =>
   (...args: A): void =>
-    fns.forEach((fn) => fn(...args));
+    fns.forEach((fn) => fn?.(...args));
 
 export const chainVoid =
-  (...fns: Array<() => void>) =>
+  (...fns: Array<Nullish<VoidFunction>>) =>
   (): void =>
     chain(...fns)();
 
 export const chainAsync =
-  <A extends any[]>(...fns: Array<(...args: A) => void>) =>
+  <A extends any[]>(...fns: Array<Nullish<ChainCallback<A>>>) =>
   async (...args: A): Promise<void> => {
     // eslint-disable-next-line no-restricted-syntax
     for (const fn of fns) {
       // eslint-disable-next-line no-await-in-loop
-      await fn(...args);
+      await fn?.(...args);
     }
   };
 
 export const chainVoidAsync =
-  (...fns: Array<() => void>) =>
+  (...fns: Array<Nullish<VoidFunction>>) =>
   (): Promise<void> =>
     chainAsync(...fns)();
 

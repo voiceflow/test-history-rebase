@@ -56,7 +56,7 @@ const Container: React.FC<{
   return (
     <Outer isPublic={isPublic}>
       <Middle isMobile={isMobile}>
-        <Content onScroll={(e) => onScroll!(e)} showPadding={showPadding} isMobile={isMobile} className="chat-dialog-content">
+        <Content onScroll={onScroll} showPadding={showPadding} isMobile={isMobile} className="chat-dialog-content">
           {children}
         </Content>
       </Middle>

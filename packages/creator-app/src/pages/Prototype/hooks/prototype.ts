@@ -102,11 +102,12 @@ const usePrototype = ({
     if (!status || status === PMStatus.IDLE) {
       toast.info('Please start the test.');
     }
-    onInteraction(webhook);
+
+    onInteraction({ request: webhook });
   }, [webhook]);
 
   const onInteraction = React.useCallback(
-    (request: Request.BaseRequest | string) => {
+    ({ name, request }: { name?: string; request: Request.BaseRequest | string }) => {
       perf.action(PerfAction.PROTOTYPE_INTERACTION);
 
       if (_isString(request)) {
@@ -118,7 +119,7 @@ const usePrototype = ({
         }
       }
 
-      return prototype.interact(request);
+      return prototype.interact({ name, request });
     },
     [prototype, interactions]
   );

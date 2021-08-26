@@ -40,7 +40,7 @@ function UserInfoEditor({ data, onChange }) {
       hideFooter={isDragging}
     >
       <DraggableList
-        type="speak-editor"
+        type="user-info-editor"
         items={items}
         onDelete={onRemove}
         onReorder={onReorder}

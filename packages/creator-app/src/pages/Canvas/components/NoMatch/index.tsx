@@ -23,6 +23,8 @@ import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 import NoMatchTooltip from './components/NoMatchTooltip';
 import RadiobuttonText from './components/RadiobuttonText';
 
+export { NO_MATCH_PATH_TYPE, default as NoMatchSection } from './components/NoMatchSection';
+
 const ELSE_OPTIONS: RadioOption<BaseNode.Utils.NoMatchType>[] = [
   {
     id: BaseNode.Utils.NoMatchType.REPROMPT,
@@ -84,7 +86,7 @@ const NoMatch: React.FC<NoMatchProps & ConnectedNoMatchProps> = ({ onChange, noM
   return (
     <>
       <Section borderBottom={!!localNoMatches.type && localNoMatches.type !== BaseNode.Utils.NoMatchType.PATH}>
-        <FormControl label="No Match Type" contentBottomUnits={0} tooltip={<NoMatchTooltip />} tooltipProps={{ helpTitle: null, helpMessage: null }}>
+        <FormControl label="No Match Type" contentBottomUnits={0} tooltip={<NoMatchTooltip />}>
           <RadioGroup type={CheckboxType.CHECKBOX} options={ELSE_OPTIONS} checked={localNoMatches.type!} onChange={handleChangeType} />
         </FormControl>
       </Section>

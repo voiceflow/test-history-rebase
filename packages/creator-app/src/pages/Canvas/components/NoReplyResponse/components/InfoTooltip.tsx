@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Section as TooltipSection, Title } from '@/components/Tooltip';
 
-const InfoTooltip = () => (
+const InfoTooltip: React.FC = () => (
   <>
     <Title>No Reply Response</Title>
     <TooltipSection marginBottomUnits={2}>No Reply Responses are what the system will say when the user says nothing at all.</TooltipSection>

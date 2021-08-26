@@ -2,6 +2,7 @@ import { BlockType } from '@/constants';
 
 import AccountLinkingManager from './AccountLinking';
 import ActionManager from './Action';
+import ButtonsManager from './Buttons';
 import CancelPaymentManager from './CancelPayment';
 import CaptureManager from './Capture';
 import CardManager from './Card';
@@ -41,6 +42,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.SPEAK]: SpeakManager,
   [BlockType.TEXT]: TextManager,
   [BlockType.CHOICE]: ChoiceManager,
+  [BlockType.BUTTONS]: ButtonsManager,
   [BlockType.CHOICE_OLD]: ChoiceOldManager,
   [BlockType.COMBINED]: CombinedManager,
   [BlockType.COMMENT]: CommentManager,

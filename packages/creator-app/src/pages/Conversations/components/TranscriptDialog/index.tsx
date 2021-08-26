@@ -1,6 +1,6 @@
-import { Request } from '@voiceflow/base-types';
+import { useCache } from '@voiceflow/ui';
 import React from 'react';
-import { useSelector, useStore } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import { DialogMessage } from '@/client/adapters/transcripts/dialogs';
@@ -14,9 +14,9 @@ import { Message, MessageType } from '@/pages/Prototype/types';
 import { noop } from '@/utils/functional';
 
 import { Container, DialogHeader, DialogLoader } from './components';
-import { filterAndTransformDialogs, generateTurnMap } from './util';
+import { filterAndTransformDialogs, generateTurnMap, TurnMap } from './util';
 
-export type TurnMap = Map<string, DialogMessage[]>;
+export type { TurnMap };
 
 const DEBUG_LOCAL_STORAGE_BOOL_KEY = 'show_conversation_debugs';
 const INTENT_CONF_LOCAL_STORAGE_BOOL_KEY = 'show_conversation_intent_conf';
@@ -26,24 +26,25 @@ const TranscriptDialog: React.FC = () => {
   const [isScrolling, setIsScrolling] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState(false);
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
-  const activeProjectID = useSelector(activeProjectIDSelector);
+  const activeProjectID = useSelector(activeProjectIDSelector)!;
   const [showDebugs, setShowDebugs] = useLocalStorageState(DEBUG_LOCAL_STORAGE_BOOL_KEY, false);
   const [showIntentConfidence, setShowIntentConfidence] = useLocalStorageState(INTENT_CONF_LOCAL_STORAGE_BOOL_KEY, true);
 
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
   const color = useSelector(Prototype.prototypeBrandColorSelector);
-  const [dialogTurnMap, setDialogTurnMap] = React.useState<TurnMap>(new Map());
-  const store = useStore();
+  const [dialogTurnMap, setDialogTurnMap] = React.useState<TurnMap>(() => new Map());
+
+  const cache = useCache({ currentTranscriptID });
 
   const fetchDialogs = async (targetTranscriptID: string) => {
     setLoading(true);
-    const dialogs = await client.transcript.getTranscriptDialog(activeProjectID!, targetTranscriptID!);
-    const currentTranscriptID = currentTranscriptIDSelector(store.getState());
-    if (currentTranscriptID === targetTranscriptID && dialogs) {
+
+    const dialogs = await client.transcript.getTranscriptDialog(activeProjectID, targetTranscriptID);
+
+    if (cache.current.currentTranscriptID === targetTranscriptID && dialogs) {
       setDialogTurnMap(generateTurnMap(dialogs));
+      setMessages(filterAndTransformDialogs(dialogs, dialogs[0].startTime));
       setLoading(false);
-      const modifiedDialogs = filterAndTransformDialogs(dialogs, dialogs[0].startTime);
-      setMessages(modifiedDialogs);
     }
   };
 
@@ -80,6 +81,7 @@ const TranscriptDialog: React.FC = () => {
       setIsScrolling(false);
     }
   };
+
   return (
     <Container>
       <DialogHeader
@@ -104,7 +106,7 @@ const TranscriptDialog: React.FC = () => {
           status={PrototypeStatus.ENDED}
           hideSessionMessages={false}
           showPadding
-          onInteraction={(request: string | Request.BaseRequest) => alert(request)}
+          onInteraction={alert}
           stepBack={() => noop()}
           autoScroll={false}
           messageFilter={messageFilter}

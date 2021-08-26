@@ -1,6 +1,6 @@
 import { css, styled, transition } from '@/hocs';
 
-const AnchorContainer = styled.div`
+const AnchorContainer = styled.div<{ opened?: boolean }>`
   cursor: pointer;
   color: #5d9df5;
   font-size: 15px;

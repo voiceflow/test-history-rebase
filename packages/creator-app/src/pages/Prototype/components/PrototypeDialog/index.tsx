@@ -1,11 +1,11 @@
-import { Button, Request } from '@voiceflow/base-types';
+import { Button } from '@voiceflow/base-types';
 import React from 'react';
 
 import Divider from '@/components/Divider';
 import * as Prototype from '@/ducks/prototype';
 import { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
+import { Interaction, Message, MessageType, OnInteraction, UserMessage } from '@/pages/Prototype/types';
 
-import { Interaction, Message, MessageType, UserMessage } from '../../types';
 import { Container, Ended, InlineInteractions, MessagesContainer, StickyInteractions } from './components';
 import { Audio, Debug, IntentConfidence, Loading, Speak, Text, User, Visual } from './components/Message';
 import useMessageFilters from './filters';
@@ -25,7 +25,7 @@ interface DialogPrototypeProps {
   buttons?: Button.ButtonsLayout;
   avatarURL?: string;
   interactions: Interaction[];
-  onInteraction: (request: string | Request.BaseRequest) => void;
+  onInteraction: OnInteraction;
   stepBack: () => void;
   isTranscript?: boolean;
   onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;

@@ -26,12 +26,14 @@ export const repromptAdapter = createAdapter<VoiceTypes.Prompt<any>, NodeData.Re
 
     return {
       type,
+      desc: reprompt.desc,
       voice: type === RepromptType.TEXT ? reprompt.voice : null,
       audio: type === RepromptType.TEXT ? null : reprompt.content,
       content: type === RepromptType.TEXT ? reprompt.content : '',
     };
   },
   (reprompt) => ({
+    desc: reprompt.desc ?? undefined,
     voice: reprompt.type === RepromptType.AUDIO ? Constants.Voice.AUDIO : (reprompt.voice as Constants.Voice | undefined) ?? Constants.Voice.ALEXA,
     content: (reprompt.type === RepromptType.AUDIO ? reprompt.audio : reprompt.content) ?? '',
   })

@@ -1,3 +1,4 @@
+import { SLOT_PATH_TYPE } from '@/components/IntentForm/components/Custom/components';
 import IntentSlotForm from '@/components/IntentSlotForm';
 import { NodeData } from '@/models';
 
@@ -7,7 +8,7 @@ import IntentEditor from './IntentEditor';
 import IntentStep from './IntentStep';
 
 const EDITORS_BY_PATH = {
-  slot: IntentSlotForm,
+  [SLOT_PATH_TYPE]: IntentSlotForm,
 };
 
 const IntentManager: NodeManagerConfig<NodeData.Intent> = {

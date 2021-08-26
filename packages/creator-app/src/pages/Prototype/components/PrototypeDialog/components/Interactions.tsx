@@ -8,8 +8,10 @@ import perf, { PerfAction } from '@/performance';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 import { Color } from '@/types';
+import { chainVoid } from '@/utils/functional';
+import { getValidHref } from '@/utils/string';
 
-import { Interaction } from '../../../types';
+import { Interaction, OnInteraction } from '../../../types';
 
 interface ButtonProps {
   rgbaColor: Color;
@@ -51,10 +53,8 @@ const ActionButton = styled(Button)`
 interface InteractionsProps {
   color?: string;
   interactions: Interaction[];
-  onInteraction: (request: string | Request.BaseRequest) => void;
+  onInteraction: OnInteraction;
 }
-
-const SIMPLE_BUTTON_REQUESTS = [Request.RequestType.INTENT, Request.RequestType.TEXT];
 
 const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction, color }) => {
   const hasInteractions = !!interactions.length;
@@ -69,15 +69,25 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
     return null;
   }
 
+  const handleRequestActions = (request: Interaction['request']) => () => {
+    if (request.payload && typeof request.payload === 'object') {
+      request.payload.actions?.forEach((action) => {
+        if (Request.Action.isOpenURLAction(action)) {
+          window.open(getValidHref(action.payload.url), '_blank');
+        }
+      });
+    }
+  };
+
   return (
     <>
-      {interactions.map(({ name, request }) => {
-        const ButtonElement = !request || SIMPLE_BUTTON_REQUESTS.includes(request.type as Request.RequestType) ? Button : ActionButton;
+      {interactions.map(({ name, request, isActionButton }) => {
+        const ButtonElement = isActionButton ? ActionButton : Button;
 
         return (
           <ButtonElement
             key={name}
-            onClick={() => onInteraction(request || name)}
+            onClick={chainVoid(handleRequestActions(request), () => onInteraction({ name, request: request || name }))}
             className={ClassName.PROTOTYPE_BUTTON}
             rgbaColor={hexToRGBA(color ?? '#5D9DF5')}
             onMouseDown={preventDefault()}

@@ -13,6 +13,7 @@ import {
   env,
   ff_asrBypass,
   ff_atomicActions,
+  ff_buttonsStep,
   ff_dialogflow,
   ff_gadgets,
   ff_motorolaSSO,
@@ -73,6 +74,7 @@ export default {
   FF_ATOMIC_ACTIONS: ff_atomicActions && 'true',
   FF_DIALOGFLOW: ff_dialogflow && 'true',
   FF_TEXT_STEP: ff_textStep && 'true',
+  FF_BUTTONS_STEP: ff_buttonsStep && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

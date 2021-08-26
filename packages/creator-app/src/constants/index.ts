@@ -102,6 +102,7 @@ export enum BlockType {
   RANDOM = 'random',
   // advanced
   CHOICE = 'interaction',
+  BUTTONS = 'buttons',
   INTENT = 'intent',
   STREAM = 'stream',
   INTEGRATION = 'integration',

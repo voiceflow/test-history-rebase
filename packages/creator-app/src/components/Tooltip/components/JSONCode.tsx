@@ -17,6 +17,10 @@ const Pre = styled.pre`
   }
 `;
 
-const JSONCode = ({ html, ...props }) => <Pre {...props} dangerouslySetInnerHTML={{ __html: html }} />;
+export interface JSONCodeProps extends Omit<React.ComponentProps<'pre'>, 'ref'> {
+  html: string;
+}
+
+const JSONCode: React.FC<JSONCodeProps> = ({ html, ...props }) => <Pre {...props} dangerouslySetInnerHTML={{ __html: html }} />;
 
 export default JSONCode;

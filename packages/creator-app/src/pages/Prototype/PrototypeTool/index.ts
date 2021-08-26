@@ -24,15 +24,15 @@ class PrototypeTool {
     this.props = props;
   }
 
-  public start() {
+  public start(): void {
     this.createController();
 
-    this.message!.trackStartTime();
-    this.message!.session(cuid(), 'New session started');
-    this.trace!.next();
+    this.message?.trackStartTime();
+    this.message?.session(cuid(), 'New session started');
+    this.trace?.next();
   }
 
-  public stop() {
+  public stop(): void {
     this.audio?.stop();
     this.trace?.stop();
     this.timeout?.clearAll();
@@ -44,33 +44,43 @@ class PrototypeTool {
     this.timeout = undefined;
   }
 
-  public play(src: string) {
+  public play(src: string): void {
     this.audio?.playExternal(src, this.props.isMuted);
   }
 
-  public stepBack() {
+  public stepBack(): void {
     this.trace?.historyStep(StepDirection.BACK);
   }
 
-  public stepForward() {
+  public stepForward(): void {
     this.trace?.historyStep(StepDirection.FORWARD);
   }
 
-  public async interact(request: Request.BaseRequest | string | null = null) {
-    this.audio!.stop();
+  public async interact({ name, request = null }: { name?: string; request?: Request.BaseRequest | string | null } = {}): Promise<void> {
+    this.audio?.stop();
 
     await this.trace?.emptyTrace();
 
-    this.trace?.resetInteractions();
+    const isActionRequest = request && !_isString(request) && Request.isActionRequest(request);
 
-    const formattedRequest = _isString(request) ? ({ type: Request.RequestType.TEXT, payload: request } as Request.TextRequest) : request;
+    if (!isActionRequest) {
+      this.trace?.resetInteractions();
+    }
 
-    let input = `[Action] ${formattedRequest?.type}`;
+    const formattedRequest = _isString(request) ? { type: Request.RequestType.TEXT, payload: request } : request;
 
-    if (formattedRequest?.type === Request.RequestType.TEXT && _isString(formattedRequest.payload)) {
+    if (isActionRequest) {
+      this.props.fetchContext(formattedRequest);
+
+      return;
+    }
+
+    let input = name || `[Action] ${formattedRequest?.type}`;
+
+    if (formattedRequest && Request.isTextRequest(formattedRequest) && _isString(formattedRequest.payload)) {
       input = formattedRequest.payload;
-    } else if (formattedRequest?.type === Request.RequestType.INTENT) {
-      input = (formattedRequest as Request.IntentRequest).payload.query;
+    } else if (formattedRequest && Request.isIntentRequest(formattedRequest)) {
+      input = formattedRequest.payload.query;
     }
 
     this.message?.user(cuid(), input);
@@ -78,7 +88,7 @@ class PrototypeTool {
     await this.trace?.next(formattedRequest);
   }
 
-  private createController() {
+  private createController(): void {
     this.timeout = new TimeoutController();
 
     this.message = new MessageController({

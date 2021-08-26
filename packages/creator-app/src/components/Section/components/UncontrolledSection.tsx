@@ -3,7 +3,7 @@ import _isFunction from 'lodash/isFunction';
 import React from 'react';
 import { CSSProperties } from 'styled-components';
 
-import InfoIcon from '@/components/InfoIcon';
+import InfoIcon, { InfoIconProps } from '@/components/InfoIcon';
 import { noop } from '@/utils/functional';
 
 import { SectionToggleVariant, SectionVariant } from '../constants';
@@ -42,7 +42,7 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   isCollapsed?: boolean;
   headerToggle?: boolean;
   fullWidth?: boolean;
-  tooltipProps?: any; // TODO: replace with real props
+  tooltipProps?: InfoIconProps['tooltipProps'];
   nestedIntend?: boolean;
   collapseVariant?: SectionToggleVariant | null;
   isDividerNested?: boolean;

@@ -1,3 +1,4 @@
+import { SLOT_PATH_TYPE } from '@/components/IntentForm/components/Custom/components';
 import IntentSlotForm from '@/components/IntentSlotForm';
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
@@ -8,7 +9,7 @@ import CommandEditor from './CommandEditor';
 import CommandStep from './CommandStep';
 
 const EDITORS_BY_PATH = {
-  slot: IntentSlotForm,
+  [SLOT_PATH_TYPE]: IntentSlotForm,
 };
 
 const CommandManager: NodeManagerConfig<NodeData.Command> = {

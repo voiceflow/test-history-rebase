@@ -298,16 +298,21 @@ class TraceController {
   }
 
   private processPathTrace(trace: V1Trace) {
-    this.props.setInteractions(
-      trace.paths.reduce<Interaction[]>((acc, path) => {
-        if (path.event) {
-          const { type } = path.event;
-          acc.push({ name: type, request: { type, payload: undefined } });
-        }
+    const interactions = trace.paths.reduce<Interaction[]>((acc, path) => {
+      if (path.event) {
+        const { type } = path.event;
 
-        return acc;
-      }, [])
-    );
+        acc.push({
+          name: type,
+          request: { type, payload: undefined },
+          isActionButton: true,
+        });
+      }
+
+      return acc;
+    }, []);
+
+    this.props.setInteractions(interactions);
   }
 
   private saveActivePathBlock(node: Node) {

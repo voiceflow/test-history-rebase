@@ -111,7 +111,7 @@ export const useHeaderActions = (headerActions: SidebarHeaderAction[] = DEFAULT_
   }, [sidebar.updateState, headerActions]);
 };
 
-export const useUpdateData = (nodeID?: string): NodeDataUpdater<any> => {
+export const useUpdateData = (nodeID?: string | null): NodeDataUpdater<any> => {
   // We've removed useSelector hook because it sometimes has stale redux values which was causing some insane bugs
   // now we pass in nodeID to ensure the editor sidebar is referencing / updating the correct node
   const engine = React.useContext(EngineContext)!;

@@ -1,6 +1,5 @@
 import { NodeData } from '@/models';
-import { NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
-import { ButtonsEditor } from '@/pages/Canvas/components/SuggestionButtons';
+import { NO_REPLY_RESPONSE_PATH_TYPE, NoReplyResponseForm } from '@/pages/Canvas/components/NoReplyResponse';
 
 import { NodeManagerConfig } from '../types';
 import CaptureEditor from './CaptureEditor';
@@ -8,8 +7,7 @@ import CaptureStep from './CaptureStep';
 import { NODE_CONFIG } from './constants';
 
 const EDITORS_BY_PATH = {
-  buttons: ButtonsEditor,
-  noReplyResponse: NoReplyResponseForm,
+  [NO_REPLY_RESPONSE_PATH_TYPE]: NoReplyResponseForm,
 };
 
 const CaptureManager: NodeManagerConfig<NodeData.Capture> = {

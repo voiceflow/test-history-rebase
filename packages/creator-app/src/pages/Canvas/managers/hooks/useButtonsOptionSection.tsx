@@ -2,6 +2,7 @@ import { Button } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
+// importing from Section to resolve circular dependency
 import ButtonsSection, { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons/Section';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { NodeDataUpdater } from '@/pages/Canvas/types';

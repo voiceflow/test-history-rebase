@@ -1,8 +1,7 @@
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
-import { PopperProps } from 'react-popper';
 
-import TutorialTooltip from '@/components/TutorialTooltip';
+import TutorialTooltip, { TutorialTooltipProps } from '@/components/TutorialTooltip';
 import { css, styled, transition } from '@/hocs';
 
 interface IconContainerProps {
@@ -28,8 +27,8 @@ export const IconContainer = styled.div<IconContainerProps>`
 `;
 
 export interface InfoIconProps {
-  placement?: PopperProps['placement'];
-  tooltipProps?: any;
+  placement?: TutorialTooltipProps['placement'];
+  tooltipProps?: Omit<TutorialTooltipProps, 'placement' | 'portalNode' | 'anchorRenderer'>;
 }
 
 const InfoIcon: React.FC<InfoIconProps> = ({ children, placement = 'bottom-start', tooltipProps }) => (

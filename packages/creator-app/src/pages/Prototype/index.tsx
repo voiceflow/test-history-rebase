@@ -120,7 +120,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
           setShowButtons={setShowButtons}
           showButtons={showButtons}
           disabled={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.IDLE, PMStatus.DIALOG_PROCESSING)}
-          onUserInput={onInteraction}
+          onUserInput={(request) => onInteraction({ request })}
         />
       </UserSaysContainer>
     </Container>

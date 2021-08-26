@@ -11,6 +11,8 @@ import { reorder } from '@/utils/array';
 import DraggableSlotItem from './DraggableSlotItem';
 import SlotsTooltip from './SlotsTooltip';
 
+export const SLOT_PATH_TYPE = 'slot';
+
 function SlotManager({ intent, slotsMap, reorderIntentSlots, pushToPath, isNested }) {
   const intentID = intent.id;
   const allSlotKeys = intent.slots.allKeys;
@@ -20,7 +22,7 @@ function SlotManager({ intent, slotsMap, reorderIntentSlots, pushToPath, isNeste
   const slotCount = reorderableSlots.length;
 
   const onItemClick = React.useCallback(
-    (id) => pushToPath({ id, type: 'slot', label: slotsMap[id].name, intentID }),
+    (id) => pushToPath({ id, type: SLOT_PATH_TYPE, label: slotsMap[id].name, intentID }),
     [intentID, pushToPath, slotsMap]
   );
 

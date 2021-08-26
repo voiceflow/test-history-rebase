@@ -1,7 +1,7 @@
 import { styled, units } from '@/hocs';
 
 export interface SectionProps {
-  marginBottomUnits: number;
+  marginBottomUnits?: number;
 }
 
 const Section = styled.section<SectionProps>`

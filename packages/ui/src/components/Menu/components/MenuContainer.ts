@@ -52,6 +52,7 @@ const MenuContainer = styled.ul<MenuContainerProps>`
   line-height: 18px;
   list-style: none;
   overflow: hidden;
+  will-change: transform;
 
   ${SlideDown}
 

@@ -117,11 +117,8 @@ const suite = createSuite(({ spy, stub, expect }) => ({
 
   expectAudioPlayExternal: (controller: TraceController) => expect(controller['audio']['playExternal']),
 
-  expectMessage: <T extends Exclude<keyof MessageController, 'trackStartTime'>>(
-    controller: TraceController,
-    method: T,
-    ...data: Parameters<MessageController[T]>
-  ) => expect(controller['message'][method]).to.be.calledWith(...data),
+  expectMessage: <T extends Exclude<keyof MessageController, 'trackStartTime'>>(controller: TraceController, method: T, data: any) =>
+    expect(controller['message'][method]).to.be.calledWith(data),
 
   expectUpdateStatus: (controller: TraceController) => expect(controller['props']['updateStatus']),
 
@@ -222,44 +219,43 @@ suite(
       });
 
       it('should process speak(message) trace', async () => {
+        const speakTrace = traceFactory(Node.Utils.TraceType.SPEAK, {
+          src: SRC,
+          type: SpeakTraceAudioType.MESSAGE,
+          voice: 'voice',
+          message: MESSAGE,
+          choices: [],
+        });
+
         const controller = createController({
           context: {
-            trace: [
-              traceFactory(Node.Utils.TraceType.SPEAK, {
-                src: SRC,
-                type: SpeakTraceAudioType.MESSAGE,
-                voice: 'voice',
-                message: MESSAGE,
-                choices: [],
-              }),
-            ],
+            trace: [speakTrace],
           },
         });
 
         await controller.next();
 
-        expectMessage(controller, 'speak', ID, { src: SRC, voice: 'voice', message: MESSAGE });
+        expectMessage(controller, 'speak', speakTrace);
         expectProcessSingleTrace(controller, TraceMethods.SPEAK);
         expectAudioPlay(controller).to.be.calledWithMatch(SRC);
       });
 
       it('should process speak(audio) trace', async () => {
+        const audioTrace = traceFactory(Node.Utils.TraceType.SPEAK, {
+          src: SRC,
+          type: SpeakTraceAudioType.AUDIO,
+          message: MESSAGE,
+          choices: [],
+        });
         const controller = createController({
           context: {
-            trace: [
-              traceFactory(Node.Utils.TraceType.SPEAK, {
-                src: SRC,
-                type: SpeakTraceAudioType.AUDIO,
-                message: MESSAGE,
-                choices: [],
-              }),
-            ],
+            trace: [audioTrace],
           },
         });
 
         await controller.next();
 
-        expectMessage(controller, 'audio', ID, { src: SRC, name: MESSAGE });
+        expectMessage(controller, 'speak', audioTrace);
         expectProcessSingleTrace(controller, TraceMethods.SPEAK);
         expectAudioPlay(controller).to.be.calledWithMatch(SRC);
       });
@@ -353,14 +349,15 @@ suite(
 
         const next = spy(controller, 'next');
 
+        const streamTrace = traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PLAY, token: '1' });
         emulateFetchContext(controller, {
-          trace: [traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PLAY, token: '1' })],
+          trace: [streamTrace],
         });
 
         await controller.next();
 
         expect(controller['streamState']).to.be.deep.eq({ src: SRC, token: '1', offset: 0 });
-        expectMessage(controller, 'stream', ID, { audio: SRC });
+        expectMessage(controller, 'stream', streamTrace);
         expectSetInteractions(controller, [
           { name: 'next', request: { type: 'text', payload: 'next' } },
           { name: 'previous', request: { type: 'text', payload: 'previous' } },
@@ -375,15 +372,16 @@ suite(
       it('should process stream pause', async () => {
         const controller = createController();
 
+        const streamTrace = traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PAUSE, token: '1' });
         emulateFetchContext(controller, {
-          trace: [traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PAUSE, token: '1' })],
+          trace: [streamTrace],
         });
 
         const next = spy(controller, 'next');
 
         await controller.next();
 
-        expectMessage(controller, 'stream', ID, { audio: SRC });
+        expectMessage(controller, 'stream', streamTrace);
         expectSetInteractions(controller, [
           { name: 'next', request: { type: 'text', payload: 'next' } },
           { name: 'previous', request: { type: 'text', payload: 'previous' } },
@@ -440,13 +438,14 @@ suite(
       });
 
       it('should process debug trace', async () => {
+        const debugTrace = traceFactory(Node.Utils.TraceType.DEBUG, { message: MESSAGE });
         const controller = createController({
-          context: { trace: [traceFactory(Node.Utils.TraceType.DEBUG, { message: MESSAGE })] },
+          context: { trace: [debugTrace] },
         });
 
         await controller.next();
 
-        expectMessage(controller, 'debug', ID, { message: MESSAGE });
+        expectMessage(controller, 'debug', debugTrace);
         expectProcessSingleTrace(controller);
       });
 
@@ -531,16 +530,20 @@ suite(
       it('should only log messages', async () => {
         const controller = createController();
 
+        const speakTrace = traceFactory(Node.Utils.TraceType.SPEAK, {
+          src: SRC,
+          type: SpeakTraceAudioType.MESSAGE,
+          voice: 'voice',
+          message: MESSAGE,
+          choices: [],
+        });
+
+        const audioTrace = traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PLAY, token: '1' });
+
         controller['trace'] = [
           traceFactory(Node.Utils.TraceType.BLOCK, { blockID: BLOCK_ID }),
-          traceFactory(Node.Utils.TraceType.SPEAK, {
-            src: SRC,
-            type: SpeakTraceAudioType.MESSAGE,
-            voice: 'voice',
-            message: MESSAGE,
-            choices: [],
-          }),
-          traceFactory(Node.Utils.TraceType.STREAM, { src: SRC, action: Node.Stream.TraceStreamAction.PLAY, token: '1' }),
+          speakTrace,
+          audioTrace,
           traceFactory(Node.Utils.TraceType.CHOICE, { choices: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }] }),
           traceFactory(Node.Utils.TraceType.FLOW, { diagramID: 'diagramID' }),
           traceFactory(Node.Utils.TraceType.END, {}),
@@ -548,8 +551,8 @@ suite(
 
         await controller.emptyTrace();
 
-        expectMessage(controller, 'speak', ID, { src: SRC, voice: 'voice', message: MESSAGE });
-        expectMessage(controller, 'stream', ID, { audio: SRC });
+        expectMessage(controller, 'speak', speakTrace);
+        expectMessage(controller, 'stream', audioTrace);
         expectAudioPlay(controller).not.to.be.called;
       });
     });

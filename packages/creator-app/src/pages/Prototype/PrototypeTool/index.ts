@@ -83,7 +83,7 @@ class PrototypeTool {
       input = formattedRequest.payload.query;
     }
 
-    this.message?.user(input);
+    this.message?.user({ input });
 
     await this.trace?.next(formattedRequest);
   }

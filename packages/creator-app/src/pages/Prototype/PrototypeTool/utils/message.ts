@@ -31,7 +31,7 @@ export const createSpeakMessage = (
   common: CommonProperties
 ): SpeakMessage | AudioMessage => {
   if (type === Node.Speak.TraceSpeakType.AUDIO) {
-    return { ...common, id, type: MessageType.AUDIO, name: message, src, ...common };
+    return { id, type: MessageType.AUDIO, name: message, src, ...common };
   }
   return { id, type: MessageType.SPEAK, message, voice, src, ...common };
 };
@@ -70,7 +70,7 @@ export const createVisualMessage = (trace: VisualTrace, common: CommonProperties
   };
 };
 
-export const createUserMessage = (request: Request.BaseRequest, common: CommonProperties): UserMessage => {
+export const createUserMessage = (request: Request.BaseRequest, common: CommonProperties, id = cuid()): UserMessage => {
   let input = request.type;
 
   if (Request.isIntentRequest(request)) {
@@ -81,7 +81,7 @@ export const createUserMessage = (request: Request.BaseRequest, common: CommonPr
   }
 
   return {
-    id: cuid(),
+    id,
     type: MessageType.USER,
     input,
     ...common,

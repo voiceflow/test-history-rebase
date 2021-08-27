@@ -31,7 +31,7 @@ class MessageController {
   }
 
   public session({ id, message }: { id: string; message: string }): void {
-    this.add({ id, type: MessageType.SESSION, message } as TypedMessage<MessageType.SESSION>);
+    this.add({ id, type: MessageType.SESSION, message, ...this.messageProperties() } as TypedMessage<MessageType.SESSION>);
   }
 
   public stream(trace: StreamTrace): void {
@@ -57,8 +57,8 @@ class MessageController {
     }
   }
 
-  public user(input: string): void {
-    this.add(createUserMessage({ type: Request.RequestType.TEXT, payload: input }, this.messageProperties()));
+  public user({ id, input }: { id?: string; input: string }): void {
+    this.add(createUserMessage({ type: Request.RequestType.TEXT, payload: input }, this.messageProperties(), id));
   }
 
   private add(message: Message): void {

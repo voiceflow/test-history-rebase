@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.466.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.466.1...@voiceflow/creator-app@1.466.2) (2021-08-27)
+
+
+### Bug Fixes
+
+* dialog adapter (VF-000) ([#3990](https://github.com/voiceflow/creator-app/issues/3990)) ([04348f2](https://github.com/voiceflow/creator-app/commit/04348f25d404e762d5ade56af4783493fd45a48e))
+* unit tests (VF-000) ([#3992](https://github.com/voiceflow/creator-app/issues/3992)) ([4a8e5e6](https://github.com/voiceflow/creator-app/commit/4a8e5e6c1c58ae0495d05a1a472705055800f454))
+
+
+
+
+
 ## [1.466.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.466.0...@voiceflow/creator-app@1.466.1) (2021-08-26)
 
 **Note:** Version bump only for package @voiceflow/creator-app

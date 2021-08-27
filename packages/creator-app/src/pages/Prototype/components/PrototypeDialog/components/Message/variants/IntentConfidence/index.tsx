@@ -4,7 +4,7 @@ import React from 'react';
 import * as Diagram from '@/ducks/diagram';
 import { connect } from '@/hocs';
 import { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
-import { UserMessage } from '@/pages/Prototype/types';
+import { Message, MessageType, UserMessage } from '@/pages/Prototype/types';
 import { ConnectedProps } from '@/types';
 
 import { MessageProps } from '../../components/Message';
@@ -24,6 +24,10 @@ type IntentConfidenceProps = Omit<MessageProps, 'iconProps'> & {
 
 const INTENT_CONFIDENCE_THRESHOLD = 30;
 
+const isRepromptMessage = (message: Message) => {
+  return message.type === MessageType.PATH && message.path === 'reprompt';
+};
+
 export const IntentConfidence: React.FC<IntentConfidenceProps & ConnectedIntentConfidenceProps> = ({
   message,
   intentConfidence,
@@ -34,7 +38,7 @@ export const IntentConfidence: React.FC<IntentConfidenceProps & ConnectedIntentC
   focusedTurnID,
   dialogTurnMap,
 }) => {
-  const isReprompt = React.useMemo(() => turnID && dialogTurnMap?.get(turnID)?.some(({ reprompt }) => !!reprompt), [dialogTurnMap, turnID]);
+  const isReprompt = React.useMemo(() => turnID && dialogTurnMap?.get(turnID)?.some(isRepromptMessage), [dialogTurnMap, turnID]);
 
   const intentMessage = `${message.split('**')[1]} - `;
   const confidenceMessage = ` ${message.split('confidence interval')[1].split('_')[1]}`;

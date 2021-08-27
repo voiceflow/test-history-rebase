@@ -3,7 +3,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
-import { DialogMessage } from '@/client/adapters/transcripts/dialogs';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype/types';
 import { activeProjectIDSelector } from '@/ducks/session';
@@ -14,7 +13,7 @@ import { Message, MessageType } from '@/pages/Prototype/types';
 import { noop } from '@/utils/functional';
 
 import { Container, DialogHeader, DialogLoader } from './components';
-import { filterAndTransformDialogs, generateTurnMap, TurnMap } from './util';
+import { generateTurnMap, transformDialogTimestamp, TurnMap } from './util';
 
 export type { TurnMap };
 
@@ -22,7 +21,7 @@ const DEBUG_LOCAL_STORAGE_BOOL_KEY = 'show_conversation_debugs';
 const INTENT_CONF_LOCAL_STORAGE_BOOL_KEY = 'show_conversation_intent_conf';
 
 const TranscriptDialog: React.FC = () => {
-  const [messages, setMessages] = React.useState<DialogMessage[]>([]);
+  const [messages, setMessages] = React.useState<Message[]>([]);
   const [isScrolling, setIsScrolling] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState(false);
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
@@ -43,7 +42,7 @@ const TranscriptDialog: React.FC = () => {
 
     if (cache.current.currentTranscriptID === targetTranscriptID && dialogs) {
       setDialogTurnMap(generateTurnMap(dialogs));
-      setMessages(filterAndTransformDialogs(dialogs, dialogs[0].startTime));
+      setMessages(transformDialogTimestamp(dialogs, dialogs[0].startTime));
       setLoading(false);
     }
   };

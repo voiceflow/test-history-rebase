@@ -28,7 +28,7 @@ class PrototypeTool {
     this.createController();
 
     this.message?.trackStartTime();
-    this.message?.session(cuid(), 'New session started');
+    this.message?.session({ id: cuid(), message: 'New session started' });
     this.trace?.next();
   }
 
@@ -83,7 +83,7 @@ class PrototypeTool {
       input = formattedRequest.payload.query;
     }
 
-    this.message?.user(cuid(), input);
+    this.message?.user(input);
 
     await this.trace?.next(formattedRequest);
   }

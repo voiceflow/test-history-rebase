@@ -14,11 +14,12 @@ export type DebugTrace = TraceWithID<Trace.DebugTrace>;
 export type ChoiceTrace = TraceWithID<Trace.ChoiceTrace>;
 export type StreamTrace = TraceWithID<Trace.StreamTrace>;
 export type VisualTrace = TraceWithID<Trace.VisualTrace>;
+export type PathTrace = TraceWithID<Trace.PathTrace>;
 export type TextTrace = TraceWithID<Trace.TextTrace>;
 export type V1Trace = Required<Node.Utils.BaseTraceFrame>;
 export type BaseTraceFrame = Node.Utils.BaseTraceFrame;
 
-export type Trace = BlockTrace | SpeakTrace | FlowTrace | DebugTrace | StreamTrace | EndTrace | ChoiceTrace | VisualTrace | TextTrace;
+export type Trace = BlockTrace | SpeakTrace | FlowTrace | DebugTrace | StreamTrace | EndTrace | ChoiceTrace | VisualTrace | TextTrace | PathTrace;
 
 // context types
 

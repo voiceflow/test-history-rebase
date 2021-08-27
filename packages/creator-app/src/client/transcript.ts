@@ -1,6 +1,7 @@
-import dialogAdapter, { DialogMessage } from '@/client/adapters/transcripts/dialogs';
+import dialogAdapter from '@/client/adapters/transcripts/dialogs';
 import transcriptAdapter from '@/client/adapters/transcripts/transcripts';
-import { TagType, Transcript } from '@/models';
+import { AnyTranscriptMessage, TagType, Transcript } from '@/models';
+import { Message } from '@/pages/Prototype/types';
 
 import { apiV2 } from './fetch';
 
@@ -29,7 +30,9 @@ const transcriptClient = {
     apiV2.put<{ _id: string }>(TRANSCRIPT_PATH, { ...data, projectID: projectID || undefined }),
 
   getTranscriptDialog: (projectID: string, transcriptID: string) =>
-    apiV2.get<DialogMessage[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`).then(dialogAdapter.mapFromDB),
+    apiV2
+      .get<AnyTranscriptMessage[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`)
+      .then((dialogs) => dialogs.map(dialogAdapter.fromDB).filter((message): message is Message => Boolean(message))),
 
   getHasUnreadTranscripts: (projectID: string) =>
     apiV2.get<boolean>(`${TRANSCRIPT_PATH}/${projectID}/hasUnreadTranscripts`).then((response) => response),

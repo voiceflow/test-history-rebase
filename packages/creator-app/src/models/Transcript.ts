@@ -1,3 +1,6 @@
+import { Request } from '@voiceflow/base-types';
+
+import { Trace } from '@/models/Prototype';
 import { Message } from '@/pages/Prototype/types';
 
 // Never change these, they are used in the transcript_report_tags table as specific ids for tags
@@ -79,3 +82,33 @@ export interface Transcript {
 
   annotations: Annotations;
 }
+
+export enum FormatType {
+  Trace = 'trace',
+  Request = 'request',
+}
+
+export interface TranscriptMessage {
+  ingested_at: string;
+  metadata: { end: boolean; locale: string };
+  session_id: string;
+  state: unknown;
+  timestamp: string;
+  turn_id: string;
+  type: string;
+  version_id: string;
+  format: string;
+  payload: unknown;
+}
+
+export interface TraceTranscriptMessage extends TranscriptMessage {
+  format: FormatType.Trace;
+  payload: Trace;
+}
+
+export interface RequestTranscriptMessage extends TranscriptMessage {
+  format: FormatType.Request;
+  payload: Request.BaseRequest;
+}
+
+export type AnyTranscriptMessage = TraceTranscriptMessage | RequestTranscriptMessage;

@@ -1,10 +1,17 @@
-import { Node } from '@voiceflow/base-types';
+import { Request } from '@voiceflow/base-types';
 import moment from 'moment';
 
-import { VisualTrace } from '@/models';
-import { loadImage } from '@/utils/dom';
+import { DebugTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
 
 import { Message, MessageType, TypedMessage } from '../types';
+import {
+  createDebugMessage,
+  createSpeakMessage,
+  createStreamMessage,
+  createTextMessage,
+  createUserMessage,
+  createVisualMessage,
+} from './utils/message';
 
 export interface MessageControllerProps {
   addToMessages: (message: Message) => void;
@@ -23,45 +30,45 @@ class MessageController {
     this.startTime = Date.now();
   }
 
-  public session(id: string, message: string): void {
+  public session({ id, message }: { id: string; message: string }): void {
     this.add({ id, type: MessageType.SESSION, message } as TypedMessage<MessageType.SESSION>);
   }
 
-  public stream(id: string, data: Omit<TypedMessage<MessageType.STREAM>, 'id' | 'type' | 'startTime'>): void {
-    this.add({ id, type: MessageType.STREAM, ...data } as TypedMessage<MessageType.STREAM>);
+  public stream(trace: StreamTrace): void {
+    this.add(createStreamMessage(trace, this.messageProperties()));
   }
 
-  public speak(id: string, data: Omit<TypedMessage<MessageType.SPEAK>, 'id' | 'type' | 'startTime'>): void {
-    this.add({ id, type: MessageType.SPEAK, ...data });
+  public speak(trace: SpeakTrace): void {
+    this.add(createSpeakMessage(trace, this.messageProperties()));
   }
 
-  public audio(id: string, data: Omit<TypedMessage<MessageType.AUDIO>, 'id' | 'type' | 'startTime'>): void {
-    this.add({ id, type: MessageType.AUDIO, ...data });
+  public debug(trace: DebugTrace): void {
+    this.add(createDebugMessage(trace, this.messageProperties()));
   }
 
-  public debug(id: string, data: Omit<TypedMessage<MessageType.DEBUG>, 'id' | 'type' | 'startTime'>): void {
-    this.add({ id, type: MessageType.DEBUG, ...data });
+  public text(trace: TextTrace): void {
+    this.add(createTextMessage(trace, this.messageProperties()));
   }
 
-  public text(id: string, data: Omit<TypedMessage<MessageType.TEXT>, 'id' | 'type' | 'startTime'>): void {
-    this.add({ id, type: MessageType.TEXT, ...data });
-  }
-
-  public async visual(id: string, payload: VisualTrace['payload']): Promise<void> {
-    if (payload.visualType !== Node.Visual.VisualType.IMAGE || !payload.image) {
-      return;
+  public visual(trace: VisualTrace): void {
+    const message = createVisualMessage(trace, this.messageProperties());
+    if (message) {
+      this.add(message);
     }
-    // preload image
-    await loadImage(payload.image).catch(() => null);
-    this.add({ id, type: MessageType.VISUAL, ...payload });
   }
 
-  public user(id: string, input: string): void {
-    this.add({ id, type: MessageType.USER, input } as TypedMessage<MessageType.USER>);
+  public user(input: string): void {
+    this.add(createUserMessage({ type: Request.RequestType.TEXT, payload: input }, this.messageProperties()));
   }
 
-  private add(message: Omit<Message, 'startTime'>): void {
-    this.props.addToMessages({ ...message, startTime: this.getFormattedStartTime() } as Message);
+  private add(message: Message): void {
+    this.props.addToMessages(message);
+  }
+
+  private messageProperties() {
+    return {
+      startTime: this.getFormattedStartTime(),
+    };
   }
 
   private getFormattedStartTime() {

@@ -1,67 +1,72 @@
+/* eslint-disable xss/no-mixed-html */
+import { Node } from '@voiceflow/base-types';
 import cuid from 'cuid';
 
 import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
-import { Message, MessageType } from '@/pages/Prototype/types';
+import { AnyTranscriptMessage, FormatType, SpeakTrace } from '@/models';
+import {
+  createDebugMessage,
+  createPathMessage,
+  createSpeakMessage,
+  createStreamMessage,
+  createTextMessage,
+  createUserMessage,
+  createVisualMessage,
+} from '@/pages/Prototype/PrototypeTool/utils/message';
+import { Message } from '@/pages/Prototype/types';
 
-export type DialogMessage = Message & {
-  type: string;
-  image?: string;
-  intentName?: string;
-  startTime: string;
-  timestamp: number;
-  turnID: string;
-  id: string;
-  src?: string;
-  reprompt: boolean;
-  aplType?: string;
+const transformSpeakTrace = (trace: SpeakTrace): SpeakTrace => {
+  const {
+    payload: { type, message },
+  } = trace;
+
+  if (type === Node.Speak.TraceSpeakType.MESSAGE && message.startsWith('<audio src=')) {
+    return {
+      ...trace,
+      payload: {
+        ...trace.payload,
+        type: Node.Speak.TraceSpeakType.AUDIO,
+        src: message.replace('<audio src="', '').replace('"/>', ''),
+      },
+    };
+  }
+
+  return trace;
 };
 
-const dialogAdapter = createAdapter<any, DialogMessage>(
-  (data) => {
-    const responseType = data.format;
-    const isUserInput = responseType === 'request';
-    const nestedPayload = data.payload?.payload;
-    let specificProperties = {};
-
+const dialogAdapter = createAdapter<AnyTranscriptMessage, Message | null>(
+  (transcriptMessage) => {
     const commonProperties = {
-      startTime: data.timestamp,
-      timestamp: data.timestamp,
-      sessionID: data.session_id,
-      turnID: data.turn_id,
-      reprompt: data.payload?.payload?.path?.toLowerCase() === 'reprompt',
-      id: cuid(),
+      turnID: transcriptMessage.turn_id,
+      startTime: transcriptMessage.timestamp,
     };
 
-    // eslint-disable-next-line xss/no-mixed-html
-    const isAudioSpeak = data.payload.type === 'speak' && nestedPayload?.message.includes('<audio src=');
-    if (isAudioSpeak) {
-      const { message } = nestedPayload;
-      // eslint-disable-next-line xss/no-mixed-html
-      const extractedURL = message.replace('<audio src="', '').replace('"/>', '');
-      specificProperties = {
-        type: MessageType.AUDIO,
-        src: extractedURL,
-      };
+    if (transcriptMessage.format === FormatType.Request) {
+      return createUserMessage(transcriptMessage.payload, commonProperties);
     }
 
-    return isUserInput
-      ? {
-          type: MessageType.USER,
-          input: nestedPayload?.query,
-          intentName: nestedPayload?.intent?.name,
-          ...commonProperties,
-        }
-      : {
-          ...nestedPayload,
-          image: nestedPayload?.image || nestedPayload?.imageURL,
-          type: data.type.toUpperCase(),
-          intentConfidence: data.state?.variables?.intent_confidence,
-          intentName: nestedPayload?.intent?.name,
-          ...commonProperties,
-          ...specificProperties,
-        };
-  },
+    if (transcriptMessage.format === FormatType.Trace) {
+      const trace = { ...transcriptMessage.payload, id: cuid() };
+      switch (trace.type) {
+        case Node.Utils.TraceType.SPEAK:
+          return createSpeakMessage(transformSpeakTrace(trace), commonProperties);
+        case Node.Utils.TraceType.TEXT:
+          return createTextMessage(trace, commonProperties);
+        case Node.Utils.TraceType.STREAM:
+          return createStreamMessage(trace, commonProperties);
+        case Node.Utils.TraceType.DEBUG:
+          return createDebugMessage(trace, commonProperties);
+        case Node.Utils.TraceType.VISUAL:
+          return createVisualMessage(trace, commonProperties);
+        case Node.Utils.TraceType.PATH:
+          return createPathMessage(trace, commonProperties);
+        default:
+          return null;
+      }
+    }
 
+    return null;
+  },
   () => {
     throw new AdapterNotImplementedError();
   }

@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { DialogMessage } from '@/client/adapters/transcripts/dialogs';
+import { Message } from '@/pages/Prototype/types';
 
 const calculateRelativeTimeDifference = (startTime: string, endTime: string) => {
   const start = moment(startTime);
@@ -9,30 +9,22 @@ const calculateRelativeTimeDifference = (startTime: string, endTime: string) => 
   return moment(end.diff(start)).format('mm:ss');
 };
 
-export const transformDialogTimestamp = (dialogs: DialogMessage[], startTime: string): DialogMessage[] =>
-  dialogs.map((message: DialogMessage) => ({
+export const transformDialogTimestamp = (dialogs: Message[], startTime: string): Message[] =>
+  dialogs.map((message: Message) => ({
     ...message,
     startTime: calculateRelativeTimeDifference(startTime, message.startTime),
   }));
 
-const filterDialogs = (dialogs: DialogMessage[]) => dialogs.filter((data: DialogMessage) => data.aplType !== 'JSON');
+export type TurnMap = Map<string, Message[]>;
 
-export const filterAndTransformDialogs = (dialogs: DialogMessage[], startTime: string): DialogMessage[] => {
-  const filtered = filterDialogs(dialogs);
+export const generateTurnMap = (dialogs: Message[]): TurnMap => {
+  const turnMap = new Map<string, Message[]>();
 
-  return transformDialogTimestamp(filtered, startTime);
-};
+  dialogs.forEach((message) => {
+    const turnArray = turnMap.get(message.turnID!) || [];
+    const newTurnArray = [...turnArray, message];
 
-export type TurnMap = Map<string, Omit<DialogMessage, 'turnID'>[]>;
-
-export const generateTurnMap = (dialogs: DialogMessage[]): TurnMap => {
-  const turnMap = new Map<string, Omit<DialogMessage, 'turnID'>[]>();
-
-  dialogs.forEach(({ turnID, ...props }) => {
-    const turnArray = turnMap.get(turnID) || [];
-    const newTurnArray = [...turnArray, props];
-
-    turnMap.set(turnID, newTurnArray);
+    turnMap.set(message.turnID!, newTurnArray);
   });
 
   return turnMap;

@@ -29,6 +29,7 @@ export enum MessageType {
   SESSION = 'SESSION',
   VISUAL = 'VISUAL',
   LAUNCH = 'LAUNCH',
+  PATH = 'PATH',
 }
 
 export const BotMessageTypes = [MessageType.AUDIO, MessageType.SPEAK, MessageType.TEXT, MessageType.STREAM, MessageType.VISUAL];
@@ -51,6 +52,8 @@ export type SessionMessage = GenericMessage<MessageType.SESSION, { message: stri
 
 export type VisualMessage = GenericMessage<MessageType.VISUAL, Node.Visual.ImageStepData>;
 
+export type PathMessage = GenericMessage<MessageType.PATH, { path: string }>;
+
 export type LaunchMessage = GenericMessage<MessageType.LAUNCH, {}>;
 
 export interface MessageMap {
@@ -63,6 +66,7 @@ export interface MessageMap {
   [MessageType.SESSION]: SessionMessage;
   [MessageType.VISUAL]: VisualMessage;
   [MessageType.LAUNCH]: LaunchMessage;
+  [MessageType.PATH]: PathMessage;
 }
 
 export type Message =
@@ -74,7 +78,8 @@ export type Message =
   | SessionMessage
   | StreamMessage
   | VisualMessage
-  | LaunchMessage;
+  | LaunchMessage
+  | PathMessage;
 
 export type TypedMessage<T extends MessageType> = MessageMap[T];
 

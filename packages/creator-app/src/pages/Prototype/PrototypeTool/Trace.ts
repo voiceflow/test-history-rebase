@@ -9,6 +9,7 @@ import * as Prototype from '@/ducks/prototype';
 import { BlockTrace, ChoiceTrace, FlowTrace, Link, Node, SpeakTrace, StreamTrace, Trace, V1Trace, VisualTrace } from '@/models';
 import { Engine } from '@/pages/Canvas/engine';
 import { tail, unique } from '@/utils/array';
+import { loadImage } from '@/utils/dom';
 import { noop } from '@/utils/functional';
 import { delay } from '@/utils/promise';
 
@@ -261,7 +262,7 @@ class TraceController {
         break;
       }
       case BaseNode.Utils.TraceType.TEXT: {
-        await this.message.text(topTrace.id, { slate: topTrace.payload.slate });
+        await this.message.text(topTrace);
         break;
       }
       case BaseNode.Utils.TraceType.FLOW: {
@@ -277,7 +278,7 @@ class TraceController {
         break;
       }
       case BaseNode.Utils.TraceType.DEBUG: {
-        await this.message.debug(topTrace.id, { message: topTrace.payload.message });
+        await this.message.debug(topTrace);
         break;
       }
       default:
@@ -356,9 +357,15 @@ class TraceController {
   }
 
   private async processVisual(trace: VisualTrace) {
-    await this.message.visual(trace.id, trace.payload);
+    const { payload } = trace;
+    if (payload.visualType === BaseNode.Visual.VisualType.IMAGE && payload.image) {
+      // preload image
+      await loadImage(payload.image).catch(() => null);
+    }
 
-    this.props.updatePrototypeVisualsData(trace.payload);
+    this.message.visual(trace);
+
+    this.props.updatePrototypeVisualsData(payload);
 
     if (this.props.waitVisuals) {
       await this.timeout.set(WAIT_DISPLAY_TIME);
@@ -382,11 +389,11 @@ class TraceController {
     }
   }
 
-  private async processStreamTrace(
-    { id, payload: { src, action, token } }: StreamTrace,
-    { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean }
-  ) {
-    this.message.stream(id, { audio: src });
+  private async processStreamTrace(trace: StreamTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean }) {
+    const {
+      payload: { src, action, token },
+    } = trace;
+    this.message.stream(trace);
 
     const pausing = action === BaseNode.Stream.TraceStreamAction.PAUSE;
 
@@ -432,12 +439,11 @@ class TraceController {
     await this.next({ type: Request.RequestType.TEXT, payload: Constants.IntentName.NEXT });
   }
 
-  private async processSpeakTrace({ id, payload: { src, type, voice, message } }: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
-    if (type === BaseNode.Speak.TraceSpeakType.AUDIO) {
-      this.message.audio(id, { name: message, src });
-    } else {
-      this.message.speak(id, { message, voice, src });
-    }
+  private async processSpeakTrace(trace: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
+    const {
+      payload: { src },
+    } = trace;
+    this.message.speak(trace);
 
     if (onlyMessage) {
       return;

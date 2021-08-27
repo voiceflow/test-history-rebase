@@ -1,5 +1,6 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
+import { WithRequired } from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
 import { Overwrite } from 'utility-types';

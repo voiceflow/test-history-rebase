@@ -1,4 +1,6 @@
-import { BlockType, CardType } from '@/constants';
+import { Node } from '@voiceflow/base-types';
+
+import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
@@ -19,7 +21,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Card> = {
     },
     data: {
       name: 'Card',
-      cardType: CardType.SIMPLE,
+      cardType: Node.Card.CardType.SIMPLE,
       title: '',
       content: '',
       largeImage: null,

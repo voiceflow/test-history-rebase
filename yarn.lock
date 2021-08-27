@@ -5021,18 +5021,6 @@
   resolved "https://registry.yarnpkg.com/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
   integrity sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==
 
-"@voiceflow/alexa-types@1.52.15":
-  version "1.52.15"
-  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.52.15.tgz#f067ef25579ca7f116579766c0f204550d8f8224"
-  integrity sha512-uF/xnDy0ZRBMXp33FM9C+l4JX/CXOv72AtWNsjgpJH0+PEnHsembLvBl6bUmd4wYkvZv5Z+QcSBNZD0b/iCMLQ==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.35.1"
-    "@voiceflow/base-types" "^1.0.1"
-    "@voiceflow/common" "6.5.0"
-    "@voiceflow/general-types" "^1.54.2"
-    "@voiceflow/voice-types" "^1.1.0"
-    ask-smapi-model "1.14.0"
-
 "@voiceflow/alexa-types@1.52.21":
   version "1.52.21"
   resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.52.21.tgz#568cc3e2ae0d05f6b4a6b6666213b56835fac574"
@@ -5188,15 +5176,6 @@
     "@voiceflow/api-sdk" "^1.35.1"
     slate "^0.63.0"
 
-"@voiceflow/general-types@^1.54.2":
-  version "1.54.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.54.2.tgz#388e52b169d9cff79dca85c5b037853f43461887"
-  integrity sha512-vCTCpLolRPV/ysB8SWhkIhRBMBtFW/sQu3hT3LznaC58HThXkeMBBlVr3ZREDuvNa9clhoAN5XKbAXgashyJfw==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.35.1"
-    "@voiceflow/base-types" "^1.0.1"
-    "@voiceflow/voice-types" "^1.1.0"
-
 "@voiceflow/general-types@^1.55.0":
   version "1.55.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.55.0.tgz#f8c4d47510032a4f5639488b6aa19a810460c4e7"
@@ -5228,11 +5207,6 @@
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/internal/-/internal-1.2.0.tgz#9523dffe48fb66ad3fb25700c6a3aa4b1dc701dc"
   integrity sha512-gk736sBQVzOZzjjolKwuICtkM4oKMeJ0Ip7zHxqrgBo0ric/dnK8bAwyD5MrdhxYTQ/kRAULj4kMS6AB+nqGRg==
-
-"@voiceflow/internal@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/internal/-/internal-1.4.0.tgz#27f796bb9755541a1ee93598b81041af05f33b25"
-  integrity sha512-LZ0TExCMx6wW1d1TaedLreZg3ksPjk9uhzqZaBgXOfWepmymOcnkMoN2BQpiQ4j1dvrhm3HjLsx4SCZYZ8QlIg==
 
 "@voiceflow/internal@^1.6.0":
   version "1.6.0"

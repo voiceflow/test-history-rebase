@@ -11,7 +11,6 @@ import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import InputGroup from '@/components/InputGroup';
 import InputGroupAddon, { AddonType } from '@/components/InputGroupAddon';
 import DefaultModal from '@/components/LegacyModal/DefaultModal';
-import { IntegrationType } from '@/constants';
 import { setConfirm, setError } from '@/ducks/modal';
 import { connect } from '@/hocs';
 import IntegrationsService from '@/services/Integrations';
@@ -20,13 +19,13 @@ import { copyJSONPath } from '@/utils/dom';
 import { deepDraftToMarkdown } from '../../utils';
 
 const SERVICES_MAP = {
-  [IntegrationType.GOOGLE_SHEETS]: {
+  [Node.Utils.IntegrationType.GOOGLE_SHEETS]: {
     [Node.GoogleSheets.GoogleSheetsActionType.RETRIEVE_DATA]: IntegrationsService.googleSheets.retrieveData,
     [Node.GoogleSheets.GoogleSheetsActionType.CREATE_DATA]: IntegrationsService.googleSheets.createData,
     [Node.GoogleSheets.GoogleSheetsActionType.UPDATE_DATA]: IntegrationsService.googleSheets.updateData,
     [Node.GoogleSheets.GoogleSheetsActionType.DELETE_DATA]: IntegrationsService.googleSheets.deleteData,
   },
-  [IntegrationType.ZAPIER]: {
+  [Node.Utils.IntegrationType.ZAPIER]: {
     [Node.Zapier.ZapierActionType.START_A_ZAP]: IntegrationsService.zapier.createMessage,
   },
 };
@@ -38,7 +37,7 @@ class TestSection extends Component {
   };
 
   generateLegacyActionsDataStructure = (selected_integration, selected_action, data, actionsData) => {
-    if (selected_integration === IntegrationType.GOOGLE_SHEETS) {
+    if (selected_integration === Node.Utils.IntegrationType.GOOGLE_SHEETS) {
       if (selected_action === Node.GoogleSheets.GoogleSheetsActionType.RETRIEVE_DATA) {
         actionsData.match_value = textEditorContentAdapter.toDB(data.match_value);
 
@@ -52,7 +51,7 @@ class TestSection extends Component {
         actionsData.start_row = textEditorContentAdapter.toDB(data.start_row);
         actionsData.end_row = textEditorContentAdapter.toDB(data.end_row);
       }
-    } else if (selected_integration === IntegrationType.ZAPIER) {
+    } else if (selected_integration === Node.Utils.IntegrationType.ZAPIER) {
       actionsData.value = textEditorContentAdapter.toDB(data.value);
     }
   };

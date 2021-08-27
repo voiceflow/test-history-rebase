@@ -1,3 +1,5 @@
+import { WithOptional } from '@voiceflow/realtime-sdk';
+
 import { DiagramAction } from '@/ducks/creator/diagram/actions';
 import { AnyAction } from '@/store/types';
 import { filterEntries } from '@/utils/objects';

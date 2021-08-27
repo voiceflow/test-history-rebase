@@ -1,9 +1,8 @@
+import { Adapters } from '@voiceflow/realtime-sdk';
 import _unionBy from 'lodash/unionBy';
 import { createSelector } from 'reselect';
 
-import creatorAdapter from '@/client/adapters/creator';
 import { allLinksSelector, creatorDiagramIDSelector, creatorDiagramSelector } from '@/ducks/creator/diagram/selectors';
-import { allActiveFeaturesSelector } from '@/ducks/feature';
 import { activeProjectSelector } from '@/ducks/project';
 import * as Project from '@/ducks/project';
 import { allSlotsSelector, slotNamesSelector } from '@/ducks/slot';
@@ -97,17 +96,16 @@ export const fullActiveDiagramSelector = createSelector(
     creatorDiagramSelector,
     allLinksSelector,
     activeProjectSelector,
-    allActiveFeaturesSelector,
   ],
   // eslint-disable-next-line max-params
-  (diagramID, getViewport, getLocalVariables, { rootNodeIDs, nodes, ports, data, markupNodeIDs }, links, project, features) => {
+  (diagramID, getViewport, getLocalVariables, { rootNodeIDs, nodes, ports, data, markupNodeIDs }, links, project) => {
     if (!diagramID || !project) return null;
 
     const { platform } = project;
     const viewport = getViewport(diagramID);
     const variables = getLocalVariables(diagramID);
 
-    const diagram = creatorAdapter.toDB(
+    const diagram = Adapters.creatorAdapter.toDB(
       {
         diagramID,
         viewport,
@@ -116,7 +114,7 @@ export const fullActiveDiagramSelector = createSelector(
         data,
         markupNodeIDs,
       } as CreatorDiagram,
-      { nodes, ports, platform, features }
+      { nodes, ports, platform, context: {} }
     );
 
     return { ...diagram, variables };

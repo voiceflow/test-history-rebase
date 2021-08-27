@@ -1,8 +1,9 @@
+import { Node } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
 import { Icon } from '@voiceflow/ui';
 import _isFunction from 'lodash/isFunction';
 
-import { BlockCategory, BlockType, DialogType, IntegrationType, RootOrMarkupBlockType } from '@/constants';
+import { BlockCategory, BlockType, DialogType, RootOrMarkupBlockType } from '@/constants';
 import { NodeData } from '@/models';
 import { getManager } from '@/pages/Canvas/managers';
 import { createPlatformSelector } from '@/utils/platform';
@@ -60,11 +61,11 @@ const EXIT_STEP = createMenuStep(BlockType.EXIT);
 
 const FLOW_STEP = createMenuStep(BlockType.FLOW);
 
-const API_STEP = createMenuStep(BlockType.INTEGRATION, { factoryData: { selectedIntegration: IntegrationType.CUSTOM_API } });
+const API_STEP = createMenuStep(BlockType.INTEGRATION, { factoryData: { selectedIntegration: Node.Utils.IntegrationType.CUSTOM_API } });
 
 const GOOGLE_SHEETS_STEP = createMenuStep(BlockType.INTEGRATION, {
   publicOnly: true,
-  factoryData: { selectedIntegration: IntegrationType.GOOGLE_SHEETS },
+  factoryData: { selectedIntegration: Node.Utils.IntegrationType.GOOGLE_SHEETS },
 });
 
 const INTENT_STEP = createMenuStep(BlockType.INTENT);

@@ -1,40 +1,40 @@
 import { Node } from '@voiceflow/base-types';
 import { Icon, SVG } from '@voiceflow/ui';
 
-import { BlockType, IntegrationType } from '@/constants';
+import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { NodeData } from '@/models';
 
 import { NodeConfig } from '../types';
 
-const NAME_MAP: Record<IntegrationType, string> = {
-  [IntegrationType.ZAPIER]: 'Zapier',
-  [IntegrationType.CUSTOM_API]: 'API',
-  [IntegrationType.GOOGLE_SHEETS]: 'Google Sheets',
+const NAME_MAP: Record<Node.Utils.IntegrationType, string> = {
+  [Node.Utils.IntegrationType.ZAPIER]: 'Zapier',
+  [Node.Utils.IntegrationType.CUSTOM_API]: 'API',
+  [Node.Utils.IntegrationType.GOOGLE_SHEETS]: 'Google Sheets',
 };
 
-const ICON_MAP: Record<IntegrationType, Icon> = {
-  [IntegrationType.ZAPIER]: 'zapier',
-  [IntegrationType.CUSTOM_API]: 'variable',
-  [IntegrationType.GOOGLE_SHEETS]: 'googleSheets',
+const ICON_MAP: Record<Node.Utils.IntegrationType, Icon> = {
+  [Node.Utils.IntegrationType.ZAPIER]: 'zapier',
+  [Node.Utils.IntegrationType.CUSTOM_API]: 'variable',
+  [Node.Utils.IntegrationType.GOOGLE_SHEETS]: 'googleSheets',
 };
 
-const ICON_COLOR_MAP: Record<IntegrationType, string> = {
-  [IntegrationType.ZAPIER]: '#e26d5a',
-  [IntegrationType.CUSTOM_API]: '#74a4bf',
-  [IntegrationType.GOOGLE_SHEETS]: '#279745',
+const ICON_COLOR_MAP: Record<Node.Utils.IntegrationType, string> = {
+  [Node.Utils.IntegrationType.ZAPIER]: '#e26d5a',
+  [Node.Utils.IntegrationType.CUSTOM_API]: '#74a4bf',
+  [Node.Utils.IntegrationType.GOOGLE_SHEETS]: '#279745',
 };
 
 const EMPTY_KEY_VALUE_ITEM = { key: '', val: '' };
 
-export const DEFAULT_DATA: Record<IntegrationType, NodeData.Integration> = {
-  [IntegrationType.ZAPIER]: {
+export const DEFAULT_DATA: Record<Node.Utils.IntegrationType, NodeData.Integration> = {
+  [Node.Utils.IntegrationType.ZAPIER]: {
     user: {},
     value: '',
     selectedAction: Node.Zapier.ZapierActionType.START_A_ZAP,
-    selectedIntegration: IntegrationType.ZAPIER,
+    selectedIntegration: Node.Utils.IntegrationType.ZAPIER,
   },
-  [IntegrationType.CUSTOM_API]: {
+  [Node.Utils.IntegrationType.CUSTOM_API]: {
     url: '',
     body: [EMPTY_KEY_VALUE_ITEM],
     headers: [EMPTY_KEY_VALUE_ITEM],
@@ -43,9 +43,9 @@ export const DEFAULT_DATA: Record<IntegrationType, NodeData.Integration> = {
     parameters: [EMPTY_KEY_VALUE_ITEM],
     bodyInputType: Node.Api.APIBodyType.FORM_DATA,
     selectedAction: Node.Api.APIActionType.GET,
-    selectedIntegration: IntegrationType.CUSTOM_API,
+    selectedIntegration: Node.Utils.IntegrationType.CUSTOM_API,
   },
-  [IntegrationType.GOOGLE_SHEETS]: {
+  [Node.Utils.IntegrationType.GOOGLE_SHEETS]: {
     user: {},
     sheet: null,
     mapping: [],
@@ -57,7 +57,7 @@ export const DEFAULT_DATA: Record<IntegrationType, NodeData.Integration> = {
     spreadsheet: null,
     header_column: null,
     selectedAction: '',
-    selectedIntegration: IntegrationType.GOOGLE_SHEETS,
+    selectedIntegration: Node.Utils.IntegrationType.GOOGLE_SHEETS,
   },
 };
 export const NODE_CONFIG: NodeConfig<NodeData.Integration> = {

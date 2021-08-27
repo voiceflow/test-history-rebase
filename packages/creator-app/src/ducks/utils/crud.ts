@@ -3,6 +3,7 @@ import { PickByValue } from 'utility-types';
 
 import type { State } from '@/ducks';
 import { Action, RootReducer, Selector } from '@/store/types';
+import { NormalizedValue } from '@/types';
 import { reorder } from '@/utils/array';
 import {
   addAllNormalizedByKeys,
@@ -14,7 +15,6 @@ import {
   getNormalizedByKey,
   normalize,
   Normalized,
-  NormalizedValue,
   ObjectWithId,
   removeAllNormalizedByKeys,
   removeNormalizedByKey,

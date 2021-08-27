@@ -1,8 +1,4 @@
-import { BuiltinSlot } from '@voiceflow/common';
 import { Constants } from '@voiceflow/general-types';
-
-export const generalSlotTypesByLanguage = (language: string = Constants.Language.EN) =>
-  Constants.SlotTypes[language]?.map<BuiltinSlot<Constants.SlotType, never>>((slot) => ({ type: slot.name, label: slot.label })) || [];
 
 export enum GeneralStageType {
   IDLE = 'IDLE',

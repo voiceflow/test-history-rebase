@@ -1,3 +1,4 @@
+import { WithRequired } from '@voiceflow/realtime-sdk';
 import { Overwrite } from 'utility-types';
 
 import { BlockVariant } from '@/constants/canvas';

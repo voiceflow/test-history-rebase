@@ -5,7 +5,7 @@
     "jsx": "react",
     "downlevelIteration": true,
     "allowJs": true,
-    "baseUrl": "./src",
+    "baseUrl": null,
     "lib": [
       "esnext",
       "dom"

@@ -6,7 +6,7 @@ export class AdapterNotImplementedError extends Error {
   }
 }
 
-interface AdapterOptions {
+export interface AdapterOptions {
   debug?: (message: string, value: any) => void;
 }
 

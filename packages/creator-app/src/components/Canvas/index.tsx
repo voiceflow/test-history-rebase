@@ -1,4 +1,5 @@
 import composeRefs from '@seznam/compose-react-refs';
+import { WithRequired } from '@voiceflow/realtime-sdk';
 import { IS_SAFARI, withContext } from '@voiceflow/ui';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';

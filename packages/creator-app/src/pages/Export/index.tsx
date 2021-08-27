@@ -1,10 +1,9 @@
+import { Adapters } from '@voiceflow/realtime-sdk';
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
 
 import client from '@/client';
-import creatorAdapter from '@/client/adapters/creator';
 import * as Creator from '@/ducks/creator';
-import * as Features from '@/ducks/feature';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import { ProjectLoadingGate, WorkspaceFeatureLoadingGate } from '@/gates';
@@ -111,9 +110,8 @@ const initialize =
   async (dispatch, getState) => {
     const state = getState();
     const platform = Project.activePlatformSelector(state);
-    const features = Features.allActiveFeaturesSelector(state);
 
-    const { viewport, ...creator } = creatorAdapter.fromDB(await client.api.diagram.get(diagramID), { platform, features });
+    const { viewport, ...creator } = Adapters.creatorAdapter.fromDB(await client.api.diagram.get(diagramID), { platform, context: {} });
 
     const nodesWithCoordinates = creator.nodes.filter((node) => _isNumber(node.x) && _isNumber(node.y));
     const portsWithPoints = creator.ports.filter((port) => !!port.nodeID && !!port.linkData?.points?.length);

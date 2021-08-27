@@ -1,11 +1,20 @@
 import { Node as AlexaNode } from '@voiceflow/alexa-types';
 import { Node as BaseNode } from '@voiceflow/base-types';
-import { BillingPeriod, PlanType, PlatformType, UserRole } from '@voiceflow/internal';
+import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 
 import { Pair } from '@/types';
 
-export { CardType } from '@voiceflow/base-types/build/node/card';
-export { IntegrationType } from '@voiceflow/base-types/build/node/utils';
+export type { DistinctPlatform, MarkupBlockType, RootOrMarkupBlockType } from '@voiceflow/realtime-sdk';
+export {
+  BlockType,
+  BlockVariant,
+  CUSTOM_SLOT_TYPE,
+  DialogType,
+  DISTINCT_PLATFORMS,
+  GENERAL_PLATFORMS,
+  LEGACY_CUSTOM_SLOT_TYPE,
+  RepromptType,
+} from '@voiceflow/realtime-sdk';
 
 export const USER_INFO_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
 export const ACTION_BUILDER_SCOPE = 'https://www.googleapis.com/auth/actions.builder';
@@ -13,9 +22,6 @@ export const CLOUD_RESOURCE_SCOPE = 'https://www.googleapis.com/auth/cloudplatfo
 export const FIREBASE_SCOPE = 'https://www.googleapis.com/auth/firebase';
 export const SERVICE_MANAGEMENT_SCOPE = 'https://www.googleapis.com/auth/service.management';
 export const GOOGLE_OAUTH_SCOPES = [CLOUD_RESOURCE_SCOPE, USER_INFO_SCOPE, ACTION_BUILDER_SCOPE];
-
-export const CUSTOM_SLOT_TYPE = 'Custom';
-export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';
 
 export const ROOT_DIAGRAM_NAME = 'ROOT';
 export const DIAGRAM_ID_SEPARATOR = '::';
@@ -57,12 +63,6 @@ export enum NLPProvider {
   RASA = 'rasa',
 }
 
-export const GENERAL_PLATFORMS = [PlatformType.GENERAL, PlatformType.IVR, PlatformType.MOBILE_APP, PlatformType.CHATBOT] as const;
-
-export const DISTINCT_PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.GENERAL] as const;
-
-export type DistinctPlatform = PlatformType.ALEXA | PlatformType.GOOGLE | PlatformType.GENERAL;
-
 export const BuiltInVariable = {
   SESSIONS: 'sessions',
   USER_ID: 'user_id',
@@ -81,57 +81,6 @@ export const BUILT_IN_VARIABLES = [
   BuiltInVariable.LOCALE,
   BuiltInVariable.INTENT_CONFIDENCE,
 ];
-
-export enum BlockType {
-  // internal
-  START = 'start',
-  COMBINED = 'combined',
-  COMMAND = 'command',
-  COMMENT = 'comment',
-
-  // basic
-  TEXT = 'text',
-  SPEAK = 'speak',
-  CHOICE_OLD = 'choice',
-  // logic
-  SET = 'set',
-  SETV2 = 'setV2',
-  IF = 'if',
-  IFV2 = 'ifV2',
-  CAPTURE = 'capture',
-  RANDOM = 'random',
-  // advanced
-  CHOICE = 'interaction',
-  BUTTONS = 'buttons',
-  INTENT = 'intent',
-  STREAM = 'stream',
-  INTEGRATION = 'integration',
-  FLOW = 'flow',
-  CODE = 'code',
-  EXIT = 'exit',
-  PROMPT = 'prompt',
-  TRACE = 'trace',
-  // visuals
-  CARD = 'card',
-  VISUAL = 'visual',
-  DISPLAY = 'display',
-  // user
-  PERMISSION = 'permission',
-  ACCOUNT_LINKING = 'account_linking',
-  USER_INFO = 'user_info',
-  PAYMENT = 'payment',
-  CANCEL_PAYMENT = 'cancel_payment',
-  REMINDER = 'reminder',
-  DEPRECATED = 'deprecated',
-  INVALID_PLATFORM = 'invalid_platform',
-
-  // event
-  DIRECTIVE = 'directive',
-  EVENT = 'event',
-
-  MARKUP_TEXT = 'markup_text',
-  MARKUP_IMAGE = 'markup_image',
-}
 
 export const PERMISSIONS = [
   {
@@ -203,11 +152,6 @@ export const ReminderType = {
   SCHEDULED: 'scheduled',
 };
 
-export enum DialogType {
-  AUDIO = 'audio',
-  VOICE = 'voice',
-}
-
 export enum VoiceType {
   ALEXA = 'Alexa',
 }
@@ -219,11 +163,6 @@ export const RESPONSE_COLOR_CODES = {
   YELLOW: '#e1d40b',
   RED: '#e91e63',
 };
-
-export enum RepromptType {
-  TEXT = 'text',
-  AUDIO = 'audio',
-}
 
 export const PERIOD_NAME = {
   [BillingPeriod.MONTHLY]: 'Monthly',
@@ -382,26 +321,6 @@ export const PLAN_TYPE_META = {
     color: 'linear-gradient(rgb(92, 107, 192, 0.85), #5c6bc0)',
   },
 };
-
-export type RootBlockType = BlockType.COMBINED | BlockType.START | BlockType.COMMENT;
-export const ROOT_NODES: ReadonlyArray<RootBlockType> = [BlockType.COMBINED, BlockType.START, BlockType.COMMENT];
-export const isRootBlockType = (type: BlockType): type is RootBlockType => ROOT_NODES.includes(type as any);
-
-export type InternalBlockType = BlockType.DEPRECATED | BlockType.COMMAND | RootBlockType;
-export const INTERNAL_NODES: ReadonlyArray<InternalBlockType> = [BlockType.DEPRECATED, BlockType.COMMAND, ...ROOT_NODES];
-export const isInternalBlockType = (type: BlockType): type is InternalBlockType => INTERNAL_NODES.includes(type as any);
-
-export type MarkupBlockType = BlockType.MARKUP_TEXT | BlockType.MARKUP_IMAGE;
-export const MARKUP_NODES: ReadonlyArray<MarkupBlockType> = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE];
-
-export type RootOrMarkupBlockType = RootBlockType | MarkupBlockType;
-export const ROOT_AND_MARKUP_NODES: ReadonlyArray<RootOrMarkupBlockType> = [...ROOT_NODES, ...MARKUP_NODES];
-
-export type MarkupOrCombinedBlockType = BlockType.COMBINED | MarkupBlockType;
-export const MARKUP_AND_COMBINED_NODES: ReadonlyArray<MarkupOrCombinedBlockType> = [BlockType.COMBINED, ...MARKUP_NODES];
-
-export type DiagramReferenceBlockType = BlockType.COMMAND | BlockType.FLOW;
-export const DIAGRAM_REFERENCE_NODES: ReadonlyArray<DiagramReferenceBlockType> = [BlockType.COMMAND, BlockType.FLOW];
 
 export enum ExportFormat {
   PNG = 'png',

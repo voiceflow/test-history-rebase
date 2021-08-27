@@ -1,12 +1,11 @@
+import { Adapters } from '@voiceflow/realtime-sdk';
 import { batch } from 'react-redux';
 import * as ReduxUndo from 'redux-undo';
 
 import client from '@/client';
-import creatorAdapter from '@/client/adapters/creator';
 import * as Errors from '@/config/errors';
 import { DiagramState } from '@/constants';
 import * as Diagram from '@/ducks/diagram/actions';
-import * as Features from '@/ducks/feature';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import * as Viewport from '@/ducks/viewport';
@@ -38,13 +37,12 @@ export const initializeCreatorForDiagram =
   async (dispatch, getState) => {
     const state = getState();
     const platform = Project.activePlatformSelector(state);
-    const features = Features.allActiveFeaturesSelector(state);
 
     const { diagram: DBDiagram, timestamp } = await client.api.diagram.getRTC(diagramID);
 
     const { offsetX: x, offsetY: y, zoom, variables } = DBDiagram;
 
-    const creator = creatorAdapter.fromDB(DBDiagram, { platform, features });
+    const creator = Adapters.creatorAdapter.fromDB(DBDiagram, { platform, context: {} });
 
     mutableStore.setLastRealtimeTimestamp(timestamp);
 

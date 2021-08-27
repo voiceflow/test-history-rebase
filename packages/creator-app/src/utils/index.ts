@@ -1,3 +1,3 @@
-import ObjectId from 'bson-objectid';
+import { Utils } from '@voiceflow/realtime-sdk';
 
-export const objectID = () => new ObjectId().toHexString();
+export const { objectID } = Utils.id;

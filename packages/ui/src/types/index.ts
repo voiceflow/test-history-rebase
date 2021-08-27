@@ -12,6 +12,7 @@ export type Either<T extends object, R extends object> =
   | (T & { [K in Exclude<keyof R, keyof T>]?: never })
   | (R & { [K in Exclude<keyof T, keyof R>]?: never });
 
+// TODO: move all below to @voiceflow/common
 export type Nullable<T> = T | null;
 
 export type Function<A extends any[] = any[], R = any> = (...args: A) => R;
@@ -22,7 +23,9 @@ export type Callback = Function<[], Eventual<void>>;
 
 export type Eventual<T> = Promise<T> | T;
 
+// TODO: rename this to something more generic like StringifyEnum
 export type VariantValue<T extends string> = T | `${T}`;
+// TODO: move all above to @voiceflow/common
 
 export type ConnectedProps<
   S extends SelectorLookup<any> = {},

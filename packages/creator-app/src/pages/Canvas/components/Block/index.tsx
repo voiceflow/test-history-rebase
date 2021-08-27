@@ -1,3 +1,4 @@
+import { WithOptional } from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';

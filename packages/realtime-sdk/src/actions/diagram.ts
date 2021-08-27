@@ -1,5 +1,5 @@
 import { AWARENESS_KEY, DIAGRAM_KEY } from '../constants';
-import { BaseDiagramPayload, Coords } from '../types';
+import { BaseDiagramPayload, Point } from '../types';
 import { createAction, typeFactory } from './utils';
 
 const diagramType = typeFactory(DIAGRAM_KEY);
@@ -12,7 +12,7 @@ export interface BaseCursorPayload extends BaseDiagramPayload {
 }
 
 export interface AwarenessMoveCursor extends BaseCursorPayload {
-  coords: Coords;
+  coords: Point;
 }
 
 export const awarenessHideCursor = createAction<BaseCursorPayload>(diagramAwarenessType('HIDE_CURSOR'));
@@ -25,7 +25,7 @@ export interface AddRemoveBlocksPayload extends BaseDiagramPayload {
 }
 
 export interface DragMoveBlocksPayload extends BaseDiagramPayload {
-  blocks: { [blockID: string]: Coords };
+  blocks: { [blockID: string]: Point };
 }
 
 export const addBlocks = createAction<AddRemoveBlocksPayload>(diagramType('ADD_BLOCKS'));

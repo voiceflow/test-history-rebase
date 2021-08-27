@@ -1,7 +1,7 @@
 import { Node } from '@voiceflow/base-types';
+import { Adapters } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import displayAdapter from '@/client/adapters/creator/block/alexa/display';
 import BaseRenderer from '@/components/DisplayRenderer/components/BaseRenderer';
 import * as APLDuck from '@/ducks/apl';
 import { connect } from '@/hocs';
@@ -34,7 +34,7 @@ const APL: React.FC<APLProps & ConnectedAPLProps> = ({ data, device, resolveAPL,
     if (data) {
       (async () => {
         const context = await resolveAPL(
-          displayAdapter.fromDB({
+          Adapters.alexaDisplayAdapter.fromDB({
             type: data.aplType,
             title: data.title,
             imageURL: data.imageURL,

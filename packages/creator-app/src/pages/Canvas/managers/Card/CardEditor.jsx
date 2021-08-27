@@ -1,25 +1,25 @@
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
-import { CardType } from '@/constants';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 
 import { CardForm, CardFormFooter } from './components';
 
 const CARD_TYPE_OPTIONS = [
   {
-    id: CardType.STANDARD,
+    id: Node.Card.CardType.STANDARD,
     label: 'Standard',
   },
   {
-    id: CardType.SIMPLE,
+    id: Node.Card.CardType.SIMPLE,
     label: 'Simple',
   },
 ];
 
 function CardEditor({ data, onChange }) {
-  const isStandard = data.cardType !== CardType.SIMPLE;
+  const isStandard = data.cardType !== Node.Card.CardType.SIMPLE;
   const updateCardType = React.useCallback((cardType) => onChange({ cardType }), [onChange]);
 
   return (

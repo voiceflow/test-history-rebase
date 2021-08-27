@@ -1,7 +1,4 @@
-import { Link } from './Link';
-import { Node } from './Node';
-import { NodeData } from './NodeData';
-import { Port } from './Port';
+import { Link, Node, NodeData, Port, WithRequired } from '@voiceflow/realtime-sdk';
 
 export * from './Account';
 export * from './AccountLinking';

@@ -1,7 +1,6 @@
 import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
-import { IntegrationType } from '@/constants';
 import { NodeData } from '@/models';
 import { VariableLabel } from '@/pages/Canvas/components/Step';
 
@@ -22,7 +21,7 @@ const getCustomApiAction = (action: string | undefined) => {
 
 export const getLabel = (data: NodeData.Integration): React.ReactNode => {
   switch (data.selectedIntegration) {
-    case IntegrationType.ZAPIER:
+    case Node.Utils.IntegrationType.ZAPIER:
       return data.user?.user_data ? (
         <>
           Trigger '<VariableLabel>{data.user.user_data.name}</VariableLabel>'
@@ -30,7 +29,7 @@ export const getLabel = (data: NodeData.Integration): React.ReactNode => {
       ) : (
         ''
       );
-    case IntegrationType.CUSTOM_API:
+    case Node.Utils.IntegrationType.CUSTOM_API:
       return data.url ? (
         <>
           Send <VariableLabel>{getCustomApiAction(data.selectedAction)}</VariableLabel> request
@@ -38,7 +37,7 @@ export const getLabel = (data: NodeData.Integration): React.ReactNode => {
       ) : (
         ''
       );
-    case IntegrationType.GOOGLE_SHEETS:
+    case Node.Utils.IntegrationType.GOOGLE_SHEETS:
       return data.selectedAction && data.sheet?.label ? (
         <>
           {data.selectedAction} in <VariableLabel>{data.sheet.label}</VariableLabel>
@@ -53,11 +52,11 @@ export const getLabel = (data: NodeData.Integration): React.ReactNode => {
 
 export const getPlaceholder = (data: NodeData.Integration): string => {
   switch (data.selectedIntegration) {
-    case IntegrationType.ZAPIER:
+    case Node.Utils.IntegrationType.ZAPIER:
       return 'Trigger a Zap';
-    case IntegrationType.CUSTOM_API:
+    case Node.Utils.IntegrationType.CUSTOM_API:
       return 'Custom API';
-    case IntegrationType.GOOGLE_SHEETS:
+    case Node.Utils.IntegrationType.GOOGLE_SHEETS:
       return 'Connect a Google Sheet';
     default:
       return '';

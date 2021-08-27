@@ -1,6 +1,7 @@
 import { PlatformType } from '@voiceflow/internal';
 import { createSelector } from 'reselect';
 
+import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
 import * as Project from '@/ducks/project';
 import { identity } from '@/utils/functional';
@@ -56,5 +57,6 @@ export const activeInvocationsSelector = createSelector([Project.activeProjectSe
 
 export const activeSlotTypesSelector = createSelector(
   [activeLocalesSelector, Project.activePlatformSelector, Feature.isFeatureEnabledSelector],
-  (locales, platform, isFeatureEnabled) => getSlotTypes({ locales: locales as string[], platform }, isFeatureEnabled)
+  (locales, platform, isFeatureEnabled) =>
+    getSlotTypes({ locales: locales as string[], platform, natoEnabled: !!isFeatureEnabled(FeatureFlag.NATO_APCO) })
 );

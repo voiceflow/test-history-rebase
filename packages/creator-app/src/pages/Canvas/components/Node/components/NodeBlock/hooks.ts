@@ -1,8 +1,8 @@
+import { NO_IN_PORT_NODES } from '@voiceflow/realtime-sdk';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
-import { noInPortTypes } from '@/client/adapters/creator/block';
 import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { objectID } from '@/utils';
@@ -28,7 +28,7 @@ export const useMergeInfo = (index: number) => {
     const { type } = engine.merge.virtualSource;
 
     return {
-      mustBeFirst: noInPortTypes.has(type),
+      mustBeFirst: NO_IN_PORT_NODES.has(type),
       mustBeLast: getManager(type)?.mergeTerminator,
     };
   }
@@ -47,7 +47,7 @@ export const useMergeInfo = (index: number) => {
 
     return {
       mustNotBe: parentNodeID === mergeSource.parentNode && isInRange(index, sourceIndex, sourceIndex + 1),
-      mustBeFirst: noInPortTypes.has(mergeSource.type),
+      mustBeFirst: NO_IN_PORT_NODES.has(mergeSource.type),
       mustBeLast: getManager(mergeSource.type)?.mergeTerminator,
     };
   }
@@ -58,7 +58,7 @@ export const useMergeInfo = (index: number) => {
   const lastChildNode = engine.getNodeByID(lastChildNodeID);
 
   return {
-    mustBeFirst: noInPortTypes.has(firstChildNode?.type),
+    mustBeFirst: NO_IN_PORT_NODES.has(firstChildNode?.type),
     mustBeLast: getManager(lastChildNode?.type)?.mergeTerminator,
   };
 };

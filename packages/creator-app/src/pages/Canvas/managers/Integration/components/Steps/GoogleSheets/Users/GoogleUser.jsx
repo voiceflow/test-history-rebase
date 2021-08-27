@@ -1,10 +1,10 @@
+import { Node } from '@voiceflow/base-types';
 import { Spinner } from '@voiceflow/ui';
 import cn from 'classnames';
 import _get from 'lodash/get';
 import React from 'react';
 
 import DefaultModal from '@/components/LegacyModal/DefaultModal';
-import { IntegrationType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import * as Modal from '@/ducks/modal';
@@ -45,7 +45,7 @@ function AddGoogleUser({
 
     if (user !== data.user) {
       // Reset all data except selected Action and set user
-      onChange({ ...DEFAULT_DATA[IntegrationType.GOOGLE_SHEETS], user, selectedAction: data.selectedAction });
+      onChange({ ...DEFAULT_DATA[Node.Utils.IntegrationType.GOOGLE_SHEETS], user, selectedAction: data.selectedAction });
       openNextStep();
     }
   };
@@ -68,9 +68,9 @@ function AddGoogleUser({
             setError(integration_user_error);
           } else if (targetUser.user_data?.email === data?.user?.user_data?.email) {
             onChange({ user: {} });
-            onChange({ ...DEFAULT_DATA[IntegrationType.GOOGLE_SHEETS], selectedAction: data.selectedAction });
+            onChange({ ...DEFAULT_DATA[Node.Utils.IntegrationType.GOOGLE_SHEETS], selectedAction: data.selectedAction });
           } else {
-            onChange({ ...DEFAULT_DATA[IntegrationType.GOOGLE_SHEETS], user: data.user, selectedAction: data.selectedAction });
+            onChange({ ...DEFAULT_DATA[Node.Utils.IntegrationType.GOOGLE_SHEETS], user: data.user, selectedAction: data.selectedAction });
           }
         } catch (e) {
           setError(e);

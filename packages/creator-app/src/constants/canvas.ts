@@ -1,10 +1,4 @@
-export enum BlockVariant {
-  STANDARD = 'standard',
-  RED = 'red',
-  BLUE = 'blue',
-  GREEN = 'green',
-  PURPLE = 'purple',
-}
+export { BlockVariant, PortType } from '@voiceflow/realtime-sdk';
 
 export enum BlockState {
   REGULAR = 'regular',
@@ -18,10 +12,4 @@ export enum StepLabelVariant {
   PRIMARY = 'primary',
   SECONDARY = 'secondary',
   PLACEHOLDER = 'placeholder',
-}
-
-export enum PortType {
-  NEXT = 'next',
-  PAUSE = 'pause',
-  PREVIOUS = 'previous',
 }

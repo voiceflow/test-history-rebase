@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { addTag, currentSelectedTranscriptSelector, removeTag, updateTags } from '@/ducks/transcript';
+import { addTag, currentTranscriptIDSelector, removeTag, updateTags } from '@/ducks/transcript';
 import { useDispatch, useSelector } from '@/hooks';
 
 import BaseTagInput from './BaseReportTagInput';
@@ -14,21 +14,27 @@ interface ManageTagInputProps {
 }
 
 const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags, className, ...props }) => {
-  const currentTranscript = useSelector(currentSelectedTranscriptSelector);
+  const currentTranscriptID = useSelector(currentTranscriptIDSelector);
   const dispatchAddTag = useDispatch(addTag);
   const dispatchRemoveTag = useDispatch(removeTag);
   const dispatchUpdateTags = useDispatch(updateTags);
 
   const setTags = async (tags: string[]) => {
-    await dispatchUpdateTags(currentTranscript.id, tags);
+    if (!currentTranscriptID) return;
+
+    await dispatchUpdateTags(currentTranscriptID, tags);
   };
 
   const addTagToTranscript = async (tagID: string) => {
-    await dispatchAddTag(currentTranscript.id, tagID);
+    if (!currentTranscriptID) return;
+
+    await dispatchAddTag(currentTranscriptID, tagID);
   };
 
   const removeTagFromTranscript = async (tagID: string) => {
-    await dispatchRemoveTag(currentTranscript.id, tagID);
+    if (!currentTranscriptID) return;
+
+    await dispatchRemoveTag(currentTranscriptID, tagID);
   };
 
   return (

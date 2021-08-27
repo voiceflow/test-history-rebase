@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { currentSelectedTranscriptSelector } from '@/ducks/transcript';
+import { currentTranscriptSelector } from '@/ducks/transcript';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useTrackingEvents } from '@/hooks';
 import EditableComment from '@/pages/Canvas/components/ThreadEditor/components/EditableComment';
@@ -11,15 +11,18 @@ import { Container } from './components';
 export const HEIGHT = 180;
 
 const TranscriptNotes: React.FC = () => {
-  const currentTranscript = useSelector(currentSelectedTranscriptSelector);
+  const { notes } = useSelector(currentTranscriptSelector) ?? {};
   const currentTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
   const [trackingEvents] = useTrackingEvents();
 
-  const { notes } = currentTranscript;
   const saveNote = useDispatch(Transcript.updateNotes);
 
   const saveText = ({ text }: { text: string }) => {
-    saveNote(currentTranscriptID!, text);
+    if (!currentTranscriptID) {
+      return;
+    }
+
+    saveNote(currentTranscriptID, text);
     trackingEvents.trackConversationNotesUpdated();
   };
 

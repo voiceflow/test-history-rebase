@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { currentSelectedTranscriptSelector } from '@/ducks/transcript';
+import { currentTranscriptSelector } from '@/ducks/transcript';
 
 import { Actions, Container, Context, Notes, Tags } from './components';
 
 const TranscriptDetails: React.FC = () => {
-  const currentTranscript = useSelector(currentSelectedTranscriptSelector);
+  const currentTranscript = useSelector(currentTranscriptSelector);
 
   return (
     <Container style={{ overflow: 'auto' }}>

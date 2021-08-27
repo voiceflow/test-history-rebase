@@ -1,4 +1,3 @@
-import * as ConnectedReactRouter from 'connected-react-router';
 import { batch } from 'react-redux';
 
 import client from '@/client';
@@ -6,6 +5,7 @@ import { SSOConvertPayload, SSOLoginPayload } from '@/client/sso';
 import { SessionType } from '@/constants';
 import { resetAccount, updateAccount } from '@/ducks/account/actions';
 import { goToDashboardWithSearch, goToLogin, goToOnboarding } from '@/ducks/router/actions';
+import { locationSelector } from '@/ducks/router/selectors';
 import * as Models from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
@@ -82,7 +82,7 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
 
     await dispatch(identifyUser(user));
 
-    const location = ConnectedReactRouter.getLocation(state);
+    const location = locationSelector(state);
     const search = Query.parse(location.search);
 
     if (search.promo || search.ob_plan) {
@@ -110,7 +110,7 @@ const setSession =
       dispatch(updateAccount(user));
     });
 
-    const location = ConnectedReactRouter.getLocation(state);
+    const location = locationSelector(state);
     const search = Query.parse(location.search);
 
     // Show join workspace onboarding on first login of an invite or with a workspace promo

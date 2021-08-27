@@ -2,13 +2,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import ReportTagInput from '@/components/ReportTagInput';
-import { currentSelectedTranscriptSelector } from '@/ducks/transcript';
+import { currentTranscriptSelector } from '@/ducks/transcript';
 
 import { Container, SectionTitle } from '../components';
 
 const Tags: React.FC = () => {
-  const currentTranscript = useSelector(currentSelectedTranscriptSelector);
-  const { reportTags } = currentTranscript;
+  const { reportTags = [] } = useSelector(currentTranscriptSelector) ?? {};
 
   return (
     <Container style={{ flex: 1, paddingBottom: '24px' }} withBackground>

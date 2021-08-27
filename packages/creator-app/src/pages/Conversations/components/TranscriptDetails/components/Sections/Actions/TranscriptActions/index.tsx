@@ -12,30 +12,45 @@ import { Container } from './components';
 import ActionButton from './components/ActionButton';
 
 const TranscriptActions: React.FC = () => {
-  const currentTranscript = useSelector(Transcript.currentSelectedTranscriptSelector);
+  const { reportTags } = useSelector(Transcript.currentTranscriptSelector) ?? {};
   const currentTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
   const deleteTranscript = useDispatch(Transcript.deleteTranscript);
   const confirmDelete = useDispatch(Modal.setConfirm);
 
-  const { reportTags } = currentTranscript || {};
   const isSaved = !!reportTags?.includes(SystemTag.SAVED);
   const isReviewed = !!reportTags?.includes(SystemTag.REVIEWED);
   const removeTag = useDispatch(Transcript.removeTag);
   const addTag = useDispatch(Transcript.addTag);
 
   const handleReviewedClick = () => {
-    isReviewed ? removeTag(currentTranscriptID!, SystemTag.REVIEWED) : addTag(currentTranscriptID!, SystemTag.REVIEWED);
+    if (!currentTranscriptID) return;
+
+    if (isReviewed) {
+      removeTag(currentTranscriptID, SystemTag.REVIEWED);
+    } else {
+      addTag(currentTranscriptID, SystemTag.REVIEWED);
+    }
   };
 
   const handleSavedClick = () => {
-    isSaved ? removeTag(currentTranscriptID!, SystemTag.SAVED) : addTag(currentTranscriptID!, SystemTag.SAVED);
+    if (!currentTranscriptID) return;
+
+    if (isReviewed) {
+      removeTag(currentTranscriptID, SystemTag.SAVED);
+    } else {
+      addTag(currentTranscriptID, SystemTag.SAVED);
+    }
   };
 
   const handleDelete = () => {
+    const targetID = currentTranscriptID;
+
+    if (!targetID) return;
+
     confirmDelete({
       warning: false,
       text: 'Are you sure you want to delete this conversation?',
-      confirm: () => deleteTranscript(currentTranscript.id),
+      confirm: () => deleteTranscript(targetID),
     });
   };
 
@@ -58,6 +73,7 @@ const TranscriptActions: React.FC = () => {
         label="Save for Later"
         color={isSaved ? THEME.colors.red : THEME.colors.tertiary}
       />
+
       <ActionButton id={Identifier.DELETE_TRANSCRIPT_BUTTON} onClick={handleDelete} icon="garbage" label="Delete" color={THEME.colors.tertiary} />
     </Container>
   );

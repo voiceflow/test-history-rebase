@@ -1,8 +1,8 @@
-import { getLocation } from 'connected-react-router';
 import { matchPath } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
 import { ProjectRoute, RootRoute } from '@/config/routes';
+import { pathnameSelector } from '@/ducks/router/selectors';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 
 import { STATE_KEY } from './constants';
@@ -16,20 +16,16 @@ export const {
   has: hasTranscriptsSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const currentSelectedTranscriptSelector = createSelector([mapTranscriptsSelector, getLocation], (transcripts, location) => {
-  const match: { params: { transcriptID: string | undefined } } | null = matchPath(location.pathname, {
+export const currentTranscriptIDSelector = createSelector([mapTranscriptsSelector, pathnameSelector], (_transcripts, pathname) => {
+  const match: { params: { transcriptID: string | undefined } } | null = matchPath(pathname, {
     path: `/${RootRoute.PROJECT}/:id/${ProjectRoute.CONVERSATIONS}/:transcriptID?`,
   });
 
-  const transcriptID = match?.params.transcriptID;
-  return transcripts[transcriptID!];
+  return match?.params.transcriptID ?? null;
 });
 
-export const currentTranscriptIDSelector = createSelector([mapTranscriptsSelector, getLocation], (_transcripts, location) => {
-  const match: { params: { transcriptID: string | undefined } } | null = matchPath(location.pathname, {
-    path: `/${RootRoute.PROJECT}/:id/${ProjectRoute.CONVERSATIONS}/:transcriptID?`,
-  });
-  return match?.params.transcriptID;
+export const currentTranscriptSelector = createSelector([mapTranscriptsSelector, currentTranscriptIDSelector], (transcripts, transcriptID) => {
+  return transcriptID ? transcripts[transcriptID] : null;
 });
 
 export const hasUnreadTranscriptsSelector = createSelector([rootTranscriptsSelector], ({ hasUnreadTranscripts }) => hasUnreadTranscripts);

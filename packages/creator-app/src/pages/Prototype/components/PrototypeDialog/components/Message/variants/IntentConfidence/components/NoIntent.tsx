@@ -36,13 +36,13 @@ const determineNewUtterances = (previousInputArray: IntentInput[], newInputArray
 const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIsOpened, utterance }) => {
   const history = useHistory();
   const [trackingEvents] = useTrackingEvents();
-  const { annotations } = useSelector(Transcript.currentSelectedTranscriptSelector)!;
-  const utteranceAddedToIntentID = annotations[turnID]?.utteranceAddedTo || '';
+  const { annotations } = useSelector(Transcript.currentTranscriptSelector) ?? {};
+  const utteranceAddedToIntentID = annotations?.[turnID]?.utteranceAddedTo || '';
   const { open: openIMM, isOpened: isOpenedIMM } = useModals(ModalType.INTERACTION_MODEL);
   const [initialUtterances, setInitialUtterances] = React.useState<IntentInput[] | null>(null);
   const [targetIntentID, setTargetIntentID] = React.useState<string | null>(null);
   const selectIntentByID = useSelector(Intent.intentByIDSelector);
-  const activeTranscriptID = useSelector(Transcript.currentTranscriptIDSelector)!;
+  const activeTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
   const dispatchAddUtteranceToIntent = useDispatch(Transcript.setUtteranceAddedTo);
   const [isDropdownOpened, setIsDropdownOpened] = React.useState(false);
 
@@ -83,6 +83,10 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   };
 
   const handleIMMClose = async (intentID: string, initialUtterancesArray: IntentInput[]) => {
+    if (!activeTranscriptID) {
+      return;
+    }
+
     const targetIntent = selectIntentByID(intentID);
     const updatedUtterances = targetIntent.inputs;
 

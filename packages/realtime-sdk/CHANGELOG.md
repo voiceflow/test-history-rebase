@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.9.1...@voiceflow/realtime-sdk@1.10.0) (2021-08-28)
+
+
+### Bug Fixes
+
+* remove unused chat types (VF-000) ([967492e](https://github.com/voiceflow/creator-app/commit/967492efc77ef2b26234a844a0de84bb6687d54e))
+
+
+### Features
+
+* enable no match pathname change on conditions step (VF-1253) ([#4002](https://github.com/voiceflow/creator-app/issues/4002)) ([e262431](https://github.com/voiceflow/creator-app/commit/e26243156819b487e5363ff5645d4b437cfdfc3f))
+
+
+
+
+
 ## [1.9.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.9.0...@voiceflow/realtime-sdk@1.9.1) (2021-08-27)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

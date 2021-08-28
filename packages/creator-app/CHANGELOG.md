@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.467.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.466.4...@voiceflow/creator-app@1.467.0) (2021-08-28)
+
+
+### Features
+
+* enable no match pathname change on conditions step (VF-1253) ([#4002](https://github.com/voiceflow/creator-app/issues/4002)) ([e262431](https://github.com/voiceflow/creator-app/commit/e26243156819b487e5363ff5645d4b437cfdfc3f))
+
+
+
+
+
 ## [1.466.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.466.3...@voiceflow/creator-app@1.466.4) (2021-08-27)
 
 

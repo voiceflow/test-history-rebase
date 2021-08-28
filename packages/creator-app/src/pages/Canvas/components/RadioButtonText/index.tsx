@@ -1,14 +1,14 @@
 import { Text } from '@voiceflow/ui';
 import React from 'react';
 
-export interface RadiobuttonTextProps {
+export interface RadioButtonTextProps {
   label: string;
 }
 
-const RadiobuttonText = ({ label }: RadiobuttonTextProps) => (
+const RadioButtonText: React.FC<RadioButtonTextProps> = ({ label }) => (
   <Text fontWeight="normal" color="#132144">
     {label}
   </Text>
 );
 
-export default RadiobuttonText;
+export default RadioButtonText;

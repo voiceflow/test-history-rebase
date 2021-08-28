@@ -30,6 +30,10 @@ export const NODE_CONFIG: NodeConfig<NodeData.IfV2> = {
           value: [],
         },
       ],
+      noMatch: {
+        type: null,
+        pathName: 'No Match',
+      },
     },
   }),
 };

@@ -4,8 +4,6 @@ import Section from '@/components/Section';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 
-export { NoMatchPathEditor } from './components';
-
 interface NoMatchPathProps {
   pushToPath?: PushToPath;
   borderBottom?: boolean;

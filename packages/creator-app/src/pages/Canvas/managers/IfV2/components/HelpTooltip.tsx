@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Paragraph, Title } from '@/components/Tooltip';
 
-const HelpTooltip = () => (
+const HelpTooltip: React.FC = () => (
   <>
     <Paragraph>The IF block allows you to provide your system with a condition, that is resolved as either true, or false.</Paragraph>
 

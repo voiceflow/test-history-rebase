@@ -48,7 +48,7 @@ export const noMatchRepromptAdapter = createAdapter<VoiceTypes.Prompt<any>, Spea
   })
 );
 
-export const noMatchAdapter = createAdapter<BaseNode.Utils.StepNoMatch<VoiceTypes.Prompt<any>>, NodeData.NoMatches>(
+export const noMatchAdapter = createAdapter<BaseNode.Utils.StepNoMatch<VoiceTypes.Prompt<any>>, NodeData.NoMatchPrompt>(
   ({ type = BaseNode.Utils.NoMatchType.REPROMPT, randomize, reprompts, pathName = 'No Match' }) => ({
     type,
     pathName,

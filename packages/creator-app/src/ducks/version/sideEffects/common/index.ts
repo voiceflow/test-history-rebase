@@ -177,7 +177,7 @@ export const saveIntentsAndSlots = (): Thunk => async (_, getState) => {
   const slots = slotAdapter.mapToDB(Slot.allSlotsSelector(state));
   const intents = intentAdapter(platform).mapToDB(Intent.allIntentsSelector(state));
 
-  await client.api.version.updatePlatformData<BaseVersion.BaseVersionData>(versionID, { slots, intents });
+  await client.api.version.updatePlatformData<BaseVersion.BaseVersionData>(versionID, { slots, intents } as any);
 };
 
 export const saveLocales =

@@ -17,7 +17,7 @@ const NoMatchPathEditor: React.FC<NoMatchPathEditorProps> = ({ name, onChange })
   const onSave = () => onChange(localName);
 
   return (
-    <Section borderBottom>
+    <Section isDividerNested borderBottom>
       <FormControl label="Path Label" contentBottomUnits={0}>
         <Input
           value={localName}

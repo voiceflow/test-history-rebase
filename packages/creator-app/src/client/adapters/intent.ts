@@ -2,20 +2,16 @@ import { Intent as DBIntent } from '@voiceflow/api-sdk';
 import { PlatformType } from '@voiceflow/internal';
 
 import { createAdapter } from '@/client/adapters/utils';
-import { Intent, IntentInput, IntentSlot } from '@/models';
+import { Intent } from '@/models';
 import { denormalize, normalize } from '@/utils/normalized';
 
-const IntentInputSanitizer = ({ text, slots, voice }: IntentInput) => ({
+const IntentInputSanitizer = ({ text, slots, voice }: any): any => ({
   text: text || '',
   slots: slots || [],
   voice,
 });
 
-const IntentSlotSanitizer = ({
-  id,
-  dialog: { prompt = [], confirm = [], utterances = [], confirmEnabled = false },
-  required = false,
-}: IntentSlot): IntentSlot => ({
+const IntentSlotSanitizer = ({ id, dialog: { prompt = [], confirm = [], utterances = [], confirmEnabled = false }, required = false }: any): any => ({
   id,
   dialog: {
     prompt: prompt.map(IntentInputSanitizer),
@@ -38,7 +34,7 @@ const intentAdapter = (platform: PlatformType) =>
     ({ id, name, slots, inputs }) => ({
       key: id,
       name,
-      slots: denormalize(slots).map(IntentSlotSanitizer),
+      slots: denormalize(slots as any).map(IntentSlotSanitizer),
       inputs,
     })
   );

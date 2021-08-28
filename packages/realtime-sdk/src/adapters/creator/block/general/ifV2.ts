@@ -5,15 +5,18 @@ import expressionAdapterV2 from '../../../expressionV2';
 import { createBlockAdapter, defaultPortAdapter, PortsAdapter } from '../utils';
 
 const ifAdapterV2 = createBlockAdapter<Node.IfV2.StepData, NodeData.IfV2>(
-  ({ expressions }) => ({
+  ({ expressions, noMatch }) => ({
     expressions: expressionAdapterV2.mapFromDB(expressions),
+    noMatch: {
+      type: noMatch?.type || Node.Utils.NoMatchType.PATH,
+      pathName: noMatch?.pathName || 'No Match',
+    },
   }),
-  ({ expressions }) => ({
+  ({ expressions, noMatch }) => ({
     expressions: expressionAdapterV2.mapToDB(expressions),
+    noMatch,
   })
 );
-
-export default ifAdapterV2;
 
 export const ifPortsAdapter: PortsAdapter<NodeData.IfV2> = {
   toDB: (ports, _, data) => {
@@ -36,3 +39,5 @@ export const ifPortsAdapter: PortsAdapter<NodeData.IfV2> = {
   },
   fromDB: defaultPortAdapter.fromDB,
 };
+
+export default ifAdapterV2;

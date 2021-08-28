@@ -7,6 +7,7 @@ import expressionV1toV2Adapter from './expression';
 const ifAdapter = createBlockAdapter<Node.If.StepData, NodeData.IfV2>(
   ({ expressions }) => ({
     expressions: expressionV1toV2Adapter.mapFromDB(expressions),
+    noMatch: { type: null, pathName: '' },
   }),
   ({ expressions }) => ({
     expressions: expressionV1toV2Adapter.mapToDB(expressions as any),

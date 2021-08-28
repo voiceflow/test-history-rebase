@@ -20,27 +20,27 @@ import { ConnectedProps, MergeArguments } from '@/types';
 import { head } from '@/utils/array';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
+import RadioButtonText from '../RadioButtonText';
 import NoMatchTooltip from './components/NoMatchTooltip';
-import RadiobuttonText from './components/RadiobuttonText';
 
 export { NO_MATCH_PATH_TYPE, default as NoMatchSection } from './components/NoMatchSection';
 
 const ELSE_OPTIONS: RadioOption<BaseNode.Utils.NoMatchType>[] = [
   {
     id: BaseNode.Utils.NoMatchType.REPROMPT,
-    label: <RadiobuttonText label="Reprompts" />,
+    label: <RadioButtonText label="Reprompts" />,
     customCheckedCondition: (type) => type === BaseNode.Utils.NoMatchType.REPROMPT || type === BaseNode.Utils.NoMatchType.BOTH,
   },
   {
     id: BaseNode.Utils.NoMatchType.PATH,
-    label: <RadiobuttonText label="Path" />,
+    label: <RadioButtonText label="Path" />,
     customCheckedCondition: (type) => type === BaseNode.Utils.NoMatchType.PATH || type === BaseNode.Utils.NoMatchType.BOTH,
   },
 ];
 
 interface NoMatchProps {
-  onChange: (noMatches: NodeData.NoMatches) => void;
-  noMatches: NodeData.NoMatches;
+  onChange: (noMatches: NodeData.NoMatchPrompt) => void;
+  noMatches: NodeData.NoMatchPrompt;
   pushToPath?: PushToPath;
 }
 

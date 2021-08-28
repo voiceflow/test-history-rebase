@@ -8,14 +8,14 @@ import { useSetup } from '@/hooks';
 import { ExpressionData } from '@/models';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 
-export type IfItemProps = ItemComponentProps<ExpressionData> &
+export type ConditionsSectionProps = ItemComponentProps<ExpressionData> &
   MappedItemComponentHandlers<ExpressionData> &
   DragPreviewComponentProps & {
     latestCreatedKey: string | undefined;
     isOnlyItem: boolean;
   };
 
-const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, IfItemProps> = (
+const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, ConditionsSectionProps> = (
   { itemKey, index, item, isOnlyItem, isDragging, isDraggingPreview, onUpdate, latestCreatedKey, connectedDragRef, onContextMenu, isContextMenuOpen },
   ref
 ) => {
@@ -35,7 +35,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, IfItemProps>
   return (
     <EditorSection
       ref={ref}
-      namespace={['ifItem', item.id]}
+      namespace={['ConditionsSection', item.id]}
       initialOpen={isNew || isOnlyItem}
       header={(item as ExpressionData).name || 'Condition'}
       prefix={<Badge>{index + 1}</Badge>}
@@ -68,4 +68,4 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, IfItemProps>
   );
 };
 
-export default React.forwardRef<HTMLElement, IfItemProps>(DraggableItem as any);
+export default React.forwardRef<HTMLElement, ConditionsSectionProps>(ConditionsSection as any);

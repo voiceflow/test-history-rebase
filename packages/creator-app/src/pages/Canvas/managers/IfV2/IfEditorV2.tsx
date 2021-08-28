@@ -11,7 +11,7 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { ConnectedProps } from '@/types';
 
-import { DraggableItemV2, HelpTooltip } from './components';
+import { ConditionsSection, HelpTooltip, NoMatchSection } from './components';
 import { NODE_CONFIG } from './constants';
 
 const setClone = (initVal: any, targetVal: ExpressionData) => ({
@@ -22,7 +22,7 @@ const setClone = (initVal: any, targetVal: ExpressionData) => ({
 
 const expressionFactory = () => NODE_CONFIG.factory(undefined).data.expressions[0];
 
-const IfEditor: NodeEditor<NodeData.IfV2 & ConnectedCommentingUpdatesProps> = ({ data, onChange, focusedNode }) => {
+const IfEditor: NodeEditor<NodeData.IfV2 & ConnectedCommentingUpdatesProps> = ({ data, pushToPath, onChange, focusedNode }) => {
   const [isDragging, toggleDragging] = useToggle(false);
   const engine = React.useContext(EngineContext)!;
   const updateExpressions = React.useCallback((expressions, save) => onChange({ expressions }, save), [onChange]);
@@ -102,13 +102,14 @@ const IfEditor: NodeEditor<NodeData.IfV2 & ConnectedCommentingUpdatesProps> = ({
         onDuplicate={onDuplicationExp}
         onReorder={reorderExpressions}
         onEndDrag={toggleDragging}
+        footer={<NoMatchSection noMatch={data.noMatch} pushToPath={pushToPath} />}
         itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1 }}
         mapManaged={mapManaged as MapManaged<ExpressionData>}
         onStartDrag={toggleDragging}
-        itemComponent={DraggableItemV2}
+        itemComponent={ConditionsSection}
         deleteComponent={DeleteComponent}
         partialDragItem
-        previewComponent={DraggableItemV2}
+        previewComponent={ConditionsSection}
         withContextMenuDelete
         withContextMenuDuplicate
       />

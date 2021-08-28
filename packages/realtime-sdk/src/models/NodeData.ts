@@ -48,9 +48,12 @@ export namespace NodeData {
     permissions: string[];
   }
 
-  export interface NoMatches {
+  export interface NoMatch {
     type: BaseNode.Utils.NoMatchType | null;
     pathName: string;
+  }
+
+  export interface NoMatchPrompt extends NoMatch {
     randomize: boolean;
     reprompts: SpeakData[];
   }
@@ -63,7 +66,7 @@ export namespace NodeData {
 
   export interface Interaction {
     name: string;
-    else: NoMatches;
+    else: NoMatchPrompt;
     choices: Record<DistinctPlatform, InteractionChoice>[];
     reprompt: Reprompt | null;
     buttons: Button.AnyButton[] | null;
@@ -75,7 +78,7 @@ export namespace NodeData {
   }
 
   export interface Prompt {
-    noMatchReprompt: NoMatches;
+    noMatchReprompt: NoMatchPrompt;
     reprompt: Reprompt | null;
     buttons: Button.AnyButton[] | null;
   }
@@ -179,10 +182,12 @@ export namespace NodeData {
 
   export interface If {
     expressions: Expression[];
+    noMatch: NoMatch;
   }
 
   export interface IfV2 {
     expressions: ExpressionData[];
+    noMatch: NoMatch;
   }
 
   export interface Directive {
@@ -281,7 +286,7 @@ export namespace NodeData {
   export interface Exit {}
 
   export interface Buttons extends Omit<GeneralNode.Buttons.StepData, 'else' | 'reprompt'> {
-    else: NoMatches;
+    else: NoMatchPrompt;
     reprompt: Reprompt | null;
   }
 

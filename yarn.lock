@@ -5085,14 +5085,6 @@
     "@voiceflow/api-sdk" "^1.37.1"
     slate "^0.63.0"
 
-"@voiceflow/chat-types@^1.4.6":
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-1.4.6.tgz#2ca12f4c5005534b2a8d670a5da79ac4ac5e86f5"
-  integrity sha512-+qIfiw8Iyex2hdQho3XfY+lI7FASOcrs+HPpg41SICMK2j6rn4dy9du6qka91h0h9QIw8js11b2GXm3JCKI0Jw==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.37.1"
-    "@voiceflow/base-types" "^1.4.4"
-
 "@voiceflow/commitlint-config@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/commitlint-config/-/commitlint-config-1.1.0.tgz#736b9e099830834b4f85998242d4cff6b1968dfd"

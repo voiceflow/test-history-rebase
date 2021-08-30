@@ -17,6 +17,7 @@
     "lodash": "^4.17.21",
     "moize": "^6.0.3",
     "path-to-regexp": "^6.2.0",
+    "polished": "^3.6.5",
     "regenerator-runtime": "^0.13.7",
     "typescript-fsa": "^3.0.0"
   },

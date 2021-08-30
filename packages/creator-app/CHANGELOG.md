@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.467.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.467.0...@voiceflow/creator-app@1.467.1) (2021-08-30)
+
+
+### Bug Fixes
+
+* auto select first transcript option (VF-000) ([#3984](https://github.com/voiceflow/creator-app/issues/3984)) ([4475d0a](https://github.com/voiceflow/creator-app/commit/4475d0aef3c1b135eec9711763ee8bc24dd04fdd))
+
+
+
+
+
 # [1.467.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.466.4...@voiceflow/creator-app@1.467.0) (2021-08-28)
 
 

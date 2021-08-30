@@ -1,4 +1,4 @@
-import { Box } from '@voiceflow/ui';
+import { Box, useDidUpdateEffect } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,6 +27,7 @@ const Conversations: React.FC<ConversationProps> = () => {
   const [filteredReportsExist, setFilteredReportsExist] = React.useState(true);
   const allTranscripts = useSelector(Transcripts.allTranscriptsSelector);
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
+
   const dispatch = useDispatch();
 
   const { search } = useLocation();
@@ -48,7 +49,6 @@ const Conversations: React.FC<ConversationProps> = () => {
 
     await dispatch(fetchTranscripts());
     await dispatch(fetchReportTags());
-    // dispatch(Prototype.updateActivePrototypeMode(Prototype.PrototypeMode.DISPLAY));
 
     setIsLoaded(true);
     trackingEvents.trackConversationSessionStarted();
@@ -73,10 +73,19 @@ const Conversations: React.FC<ConversationProps> = () => {
   useAsyncEffect(async () => {
     const queryParams = queryString.stringify(queryString.parse(search));
 
-    dispatch(fetchTranscripts(queryParams || ''));
+    await dispatch(fetchTranscripts(queryParams || ''));
 
     setNoTestRuns(false);
   }, [search]);
+
+  useDidUpdateEffect(() => {
+    if (allTranscripts.length) {
+      dispatch(Router.goToTargetTranscript(allTranscripts[0].id));
+    } else {
+      // Reset the target transcript URL
+      dispatch(Router.goToConversationsPage());
+    }
+  }, [allTranscripts]);
 
   if (!canViewConversations) {
     return <Redirect to={Path.DASHBOARD} />;

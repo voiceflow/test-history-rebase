@@ -55,7 +55,8 @@ export const goToSettings = (versionID: string) => goTo(generatePath(Path.PROJEC
 export const goToPublish = (versionID: string, platform: PlatformType) =>
   goTo(`${generatePath(Path.PROJECT_PUBLISH, { versionID })}${platform ? `/${platform}` : ''}`);
 
-export const goToConversations = (versionID: string) => goTo(`${generatePath(Path.CONVERSATIONS, { versionID })}`);
+export const goToConversations = (versionID: string, search = window.location.search) =>
+  goTo(`${generatePath(Path.CONVERSATIONS, { versionID })}${search}`);
 
 export const goToProducts = (versionID: string) => goTo(generatePath(Path.PRODUCT_LIST, { versionID }));
 

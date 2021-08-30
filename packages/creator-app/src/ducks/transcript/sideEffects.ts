@@ -17,6 +17,7 @@ export const fetchTranscripts =
     const state = getState();
     try {
       const activeProjectID = Session.activeProjectIDSelector(state);
+
       const transcripts = await client.transcript.find(activeProjectID || '1', queryParams);
       dispatch(replaceTranscripts(transcripts));
     } catch (e) {

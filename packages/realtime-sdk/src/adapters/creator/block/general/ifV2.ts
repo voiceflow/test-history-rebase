@@ -4,12 +4,17 @@ import { NodeData } from '../../../../models';
 import expressionAdapterV2 from '../../../expressionV2';
 import { createBlockAdapter, defaultPortAdapter, PortsAdapter } from '../utils';
 
+const defaultNoMatch: NodeData.NoMatch = {
+  type: Node.Utils.NoMatchType.PATH,
+  pathName: 'No Match',
+};
+
 const ifAdapterV2 = createBlockAdapter<Node.IfV2.StepData, NodeData.IfV2>(
-  ({ expressions, noMatch }) => ({
+  ({ expressions, noMatch: { type, pathName = defaultNoMatch.pathName } = defaultNoMatch }) => ({
     expressions: expressionAdapterV2.mapFromDB(expressions),
     noMatch: {
-      type: noMatch?.type || Node.Utils.NoMatchType.PATH,
-      pathName: noMatch?.pathName || 'No Match',
+      type,
+      pathName,
     },
   }),
   ({ expressions, noMatch }) => ({

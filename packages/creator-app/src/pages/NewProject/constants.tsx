@@ -24,7 +24,7 @@ export const StepMeta: Record<StepID, StepMetaProps> = {
     component: NameAndImage,
   },
   [StepID.PLATFORM_SELECT]: {
-    title: () => 'Select Channel',
+    title: () => 'Project Type',
     component: ({ setSelectedChannel, creatingSkill }) => (
       <ChannelSelect onSelect={(platform) => setSelectedChannel(platform)} isLoading={creatingSkill} />
     ),

@@ -1,83 +1,26 @@
 import { PlatformType } from '@voiceflow/internal';
-import { FlexCenter, SvgIcon } from '@voiceflow/ui';
+import { BoxFlexCenter, SvgIcon, useSetup } from '@voiceflow/ui';
 import React from 'react';
-import { useSelector } from 'react-redux';
 
-import { FeatureFlag } from '@/config/features';
-import * as Feature from '@/ducks/feature';
-import { styled } from '@/hocs';
-import { Container as CreateWorkspaceContainer } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
-
-import { getChannelMeta } from '../constants';
-import { InstructionContainer, PlatformCardsContainer, QuestionContainer } from './components';
-import PlatformCard from './components/PlatformCard';
-
-const OPTIONS = [
-  PlatformType.ALEXA,
-  PlatformType.GOOGLE,
-  PlatformType.DIALOGFLOW,
-  PlatformType.GENERAL,
-  PlatformType.IVR,
-  PlatformType.CHATBOT,
-  PlatformType.MOBILE_APP,
-];
-
-const PROJECT_FEATURE_FLAGS: { [key in PlatformType]?: FeatureFlag } = {
-  [PlatformType.DIALOGFLOW]: FeatureFlag.DIALOGFLOW,
-};
-
-const Container = styled(CreateWorkspaceContainer)`
-  padding-top: 0;
-`;
+import { PROJECT_SECTIONS } from '../constants';
+import { Container, Section } from './components';
 
 interface ChannelSelectProps {
   onSelect: (platform: PlatformType | null) => void;
   isLoading: boolean;
-  instruction?: string;
 }
 
-const ChannelSelect: React.FC<ChannelSelectProps> = ({
-  onSelect,
-  isLoading,
-  instruction = 'Select between Amazon Alexa, Google Assistant, or a General Assistant project type',
-}) => {
-  const isFeatureEnabled = useSelector(Feature.isFeatureEnabledSelector);
-
-  const channelOptions = React.useMemo(
-    () =>
-      OPTIONS.filter((platform) => {
-        const featureFlag = PROJECT_FEATURE_FLAGS[platform];
-        return !featureFlag || isFeatureEnabled(featureFlag);
-      }),
-    []
-  );
-
+const ChannelSelect: React.FC<ChannelSelectProps> = ({ onSelect, isLoading }) => {
   // When the user clicks back on the following step, reset platform
-  React.useEffect(() => {
-    onSelect(null);
-  }, []);
+  useSetup(() => onSelect(null));
 
   return (
-    <Container width={1080}>
-      <FlexCenter>
-        <div>
-          <QuestionContainer>What channel do you want to create for?</QuestionContainer>
-          <InstructionContainer>{instruction}</InstructionContainer>
-        </div>
-      </FlexCenter>
-      <PlatformCardsContainer>
-        {channelOptions.map((platform, index) => (
-          <PlatformCard
-            key={index}
-            channel={getChannelMeta(platform)}
-            onClick={() => {
-              if (isLoading) return;
-              onSelect(platform);
-            }}
-          />
-        ))}
-      </PlatformCardsContainer>
-      <FlexCenter style={{ marginTop: '32px' }}>{isLoading && <SvgIcon icon="publishSpin" color="#92a3b3" size={36} spin />}</FlexCenter>
+    <Container>
+      {PROJECT_SECTIONS.map(({ name, platforms }, index) => (
+        <Section key={index} name={name} platforms={platforms} onSelect={(platform) => !isLoading && onSelect(platform)} />
+      ))}
+
+      <BoxFlexCenter mt={32}>{isLoading && <SvgIcon icon="publishSpin" color="#92a3b3" size={36} spin />}</BoxFlexCenter>
     </Container>
   );
 };

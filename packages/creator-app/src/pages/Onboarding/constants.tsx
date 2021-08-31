@@ -1,12 +1,8 @@
 import { PlatformType } from '@voiceflow/internal';
-import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Documentation from '@/config/documentation';
 import * as Tracking from '@/ducks/tracking';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
-
-import DocsLink from './components/DocsLink';
 
 export enum StepID {
   WELCOME = 'welcome',
@@ -86,16 +82,10 @@ export const STEP_META: StepMetaProps = {
       }),
   },
   [StepID.SELECT_CHANNEL]: {
-    title: () => 'Select Channel',
+    title: () => 'Project Type',
     canBack: true,
     canSkip: false,
     skipTo: null,
-    docsLink: (
-      <DocsLink href={Documentation.CHANNEL_DIFFERENCES}>
-        <SvgIcon icon="information" />
-        Compare channel types
-      </DocsLink>
-    ),
     trackStep: ({ selectChannelMeta }, { skip }) =>
       Tracking.trackOnboardingSelectChannel({
         skip,

@@ -22,27 +22,28 @@ context('Onboarding', () => {
   describe('regular new user flow', () => {
     beforeEach(() => cy.removeTestAccount());
 
-    it('alexa project', () => {
+    it('Alexa project', () => {
       regularFlow();
     });
 
-    it('google project', () => {
+    it('Google project', () => {
       regularFlow('Google Assistant');
     });
 
-    it('general project', () => {
-      regularFlow('Custom Assistant');
+    it('Voice Assistant project', () => {
+      regularFlow('Voice Assistant');
     });
 
-    it('chatbot project', () => {
-      regularFlow('Chatbot');
+    it('Chat Assistant project', () => {
+      regularFlow('Chat Assistant');
     });
 
-    it('Mobile App project', () => {
+    // do not have IVR and mobile projects
+    it.skip('Mobile App project', () => {
       regularFlow('Mobile App');
     });
 
-    it('IVR project', () => {
+    it.skip('IVR project', () => {
       regularFlow('IVR');
     });
   });

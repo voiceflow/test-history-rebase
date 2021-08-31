@@ -19,22 +19,22 @@ context('Project Creation Flow', () => {
       helper.getHomeStep().should('have.text', `Hey Google, start ${PROJECT_NAME}`);
     });
 
-    it('Custom Assistant - English', () => {
-      projectCreationPage.createProject('Custom Assistant');
+    it('Voice Assistant - English', () => {
+      projectCreationPage.createProject('Voice Assistant');
       helper.getHomeStep().should('have.text', `Project starts here`);
     });
 
-    it('IVR - English', () => {
+    it('Chat Assistant - English', () => {
+      projectCreationPage.createProject('Chat Assistant');
+      helper.getHomeStep().should('have.text', `Project starts here`);
+    });
+
+    it.skip('IVR - English', () => {
       projectCreationPage.createProject('IVR');
       helper.getHomeStep().should('have.text', `Project starts here`);
     });
 
-    it('Chatbot - English', () => {
-      projectCreationPage.createProject('Chatbot');
-      helper.getHomeStep().should('have.text', `Project starts here`);
-    });
-
-    it('Mobile App - English', () => {
+    it.skip('Mobile App - English', () => {
       projectCreationPage.createProject('Mobile App');
       helper.getHomeStep().should('have.text', `Project starts here`);
     });
@@ -64,7 +64,7 @@ context('Project Creation Flow', () => {
       helper.el.projectCreationStepTitle.should('have.text', 'New Project');
       helper.el.newProjectNameInput.should('have.value', PROJECT_NAME);
       helper.completeNameImage();
-      helper.el.projectCreationStepTitle.should('have.text', 'Select Channel');
+      helper.el.projectCreationStepTitle.should('have.text', 'Project Type');
     });
 
     it('Cancel', () => {

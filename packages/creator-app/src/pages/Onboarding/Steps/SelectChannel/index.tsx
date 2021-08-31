@@ -16,7 +16,7 @@ const SelectChannel: React.FC = () => {
     actions.stepForward(state.justCreatingWorkspace && !state.hasWorkspaces ? null : StepID.PAYMENT);
   };
 
-  return <ChannelSelect onSelect={onContinue} isLoading={false} instruction="Choose a channel for your first Voiceflow project" />;
+  return <ChannelSelect onSelect={onContinue} isLoading={false} />;
 };
 
 export default SelectChannel;

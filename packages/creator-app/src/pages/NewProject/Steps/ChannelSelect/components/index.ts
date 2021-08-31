@@ -1,22 +1,12 @@
-import { Flex } from '@voiceflow/ui';
-
 import { styled } from '@/hocs';
+import { Container as CreateWorkspaceContainer } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 
-export const QuestionContainer = styled.div`
-  font-size: 22px;
-  font-weight: 600;
-  margin-top: 100px;
-  color: #132144;
-`;
+export { default as Section } from './Section';
 
-export const InstructionContainer = styled.div`
-  font-size: 15px;
-  color: #62778c;
-  margin-top: 16px;
-`;
-
-export const PlatformCardsContainer = styled(Flex)`
-  flex-direction: row;
-  margin-top: 40px;
-  flex-wrap: wrap;
+export const Container = styled(CreateWorkspaceContainer)`
+  width: 100%;
+  max-width: 950px;
+  padding-top: 40px;
+  padding-left: 24px;
+  padding-right: 24px;
 `;

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.467.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.467.1...@voiceflow/creator-app@1.467.2) (2021-08-31)
+
+
+### Bug Fixes
+
+* show choice step when buttons ff is enabled for non chat projects ([#4009](https://github.com/voiceflow/creator-app/issues/4009)) ([2741211](https://github.com/voiceflow/creator-app/commit/274121101c108e6495d57d3c3ab5298415a271ba))
+
+
+
+
+
 ## [1.467.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.467.0...@voiceflow/creator-app@1.467.1) (2021-08-30)
 
 

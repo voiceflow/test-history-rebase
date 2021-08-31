@@ -193,7 +193,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
                   slots={variablesSlots}
                   prompt={confirm}
                   onChange={onChangeConfirm}
-                  placeholder="What yes/no question will we ask to confirm the entity?"
+                  placeholder="What yes/no question to confirm the entity?"
                 />
               </FormControl>
             </UncontrolledSection>

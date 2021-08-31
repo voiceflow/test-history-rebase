@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.467.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.467.2...@voiceflow/creator-app@1.467.3) (2021-08-31)
+
+
+### Bug Fixes
+
+* line caption saving (VF-905) ([#4014](https://github.com/voiceflow/creator-app/issues/4014)) ([52027f2](https://github.com/voiceflow/creator-app/commit/52027f255d2a3e6026f4aea4f4b23858a2285131))
+
+
+
+
+
 ## [1.467.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.467.1...@voiceflow/creator-app@1.467.2) (2021-08-31)
 
 

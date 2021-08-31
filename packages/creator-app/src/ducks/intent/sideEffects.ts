@@ -6,89 +6,114 @@ import * as Slot from '@/ducks/slot';
 import { createCRUDActionCreators } from '@/ducks/utils/crud';
 import { Intent, IntentInput, IntentSlot, IntentSlotDialog } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
-import { removeSlotRefFromInput } from '@/utils/intent';
+import { inferIntentSlotsType, inferIntentSlotType, inferIntentType, removeSlotRefFromInput } from '@/utils/intent';
 import { getNormalizedByKey, patchNormalizedByKey, removeNormalizedByKey } from '@/utils/normalized';
 import { createNextName } from '@/utils/string';
 
-import { addIntent } from './actions';
+import { crudActions } from './actions';
 import { STATE_KEY } from './constants';
 import { allIntentsSelector, intentByIDSelector } from './selectors';
-import { getUniqSlots, newSlotsCreator } from './utils';
+import { getPlatformNewSlotsCreator, getUniqSlots, intentProcessor } from './utils';
 
 const NEW_INTENT_NAME = 'intent';
-const { update } = createCRUDActionCreators(STATE_KEY);
+const { patch } = createCRUDActionCreators(STATE_KEY);
 
-export const updateIntent: {
-  (id: string, data: Intent, patch?: false): SyncThunk;
-  (id: string, data: Partial<Intent>, patch: true): SyncThunk;
-} =
-  (id: string, data: Partial<Intent>, patch?: boolean): Thunk =>
+export const addIntent =
+  (id: string, data: Intent): SyncThunk =>
   (dispatch, getState) => {
-    if (data.inputs) {
-      const { slots: { byKey = {}, allKeys = [] } = {} } = intentByIDSelector(getState())(id);
-      const uniqSlots = getUniqSlots(data.inputs);
+    const state = getState();
+    const platform = Project.activePlatformSelector(state);
 
-      const keysWithoutRemoved = allKeys.filter((slotID) => uniqSlots.includes(slotID));
-      const keysToAdd = uniqSlots.filter((slotId) => !allKeys.includes(slotId));
-      let newByKey = _pick(byKey, keysWithoutRemoved);
+    dispatch(crudActions.add(id, intentProcessor(platform, data)));
+  };
 
-      newByKey = keysToAdd.reduce((obj, slotId) => Object.assign(obj, { [slotId]: newSlotsCreator(slotId) }), newByKey);
+export const addIntents =
+  (values: Intent[]): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const platform = Project.activePlatformSelector(state);
 
-      return dispatch(
-        update(
-          id,
-          {
-            ...data,
-            slots: {
-              byKey: newByKey,
-              allKeys: [...keysWithoutRemoved, ...keysToAdd],
-            },
-          },
-          patch as any
-        )
-      );
+    dispatch(crudActions.addMany(values.map(intentProcessor.bind(null, platform))));
+  };
+
+export const replaceIntents =
+  (values: Intent[], meta?: any): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const platform = Project.activePlatformSelector(state);
+
+    dispatch(crudActions.replace(values.map(intentProcessor.bind(null, platform)), meta));
+  };
+
+export const patchIntent =
+  (id: string, data: Partial<Intent>): Thunk =>
+  (dispatch, getState) => {
+    if (!data.inputs) {
+      return dispatch(patch(id, data));
     }
 
-    return dispatch(update(id, data, patch as any));
+    const state = getState();
+    const platform = Project.activePlatformSelector(state);
+    const newSlotsCreator = getPlatformNewSlotsCreator(platform);
+
+    const { slots: { byKey = {}, allKeys = [] } = {} } = intentByIDSelector(state)(id);
+    const uniqSlots = getUniqSlots(data.inputs);
+
+    const keysWithoutRemoved = allKeys.filter((slotID) => uniqSlots.includes(slotID));
+    const keysToAdd = uniqSlots.filter((slotID) => !allKeys.includes(slotID));
+
+    let newByKey = _pick(byKey, keysWithoutRemoved);
+
+    newByKey = keysToAdd.reduce((obj, slotID) => Object.assign(obj, { [slotID]: newSlotsCreator(slotID) }), newByKey);
+
+    return dispatch(
+      patch(
+        id,
+        inferIntentType({
+          ...data,
+          slots: inferIntentSlotsType({ byKey: newByKey, allKeys: [...keysWithoutRemoved, ...keysToAdd] }),
+        })
+      )
+    );
   };
 
 export const updateIntentSlot =
-  (id: string, slotId: string, data: Partial<IntentSlot>): SyncThunk =>
+  (id: string, slotID: string, data: Partial<IntentSlot>): SyncThunk =>
   (dispatch, getState) => {
     const { slots } = intentByIDSelector(getState())(id);
 
-    return dispatch(updateIntent(id, { slots: patchNormalizedByKey(slots, slotId, data) }, true));
+    return dispatch(patchIntent(id, inferIntentType({ slots: patchNormalizedByKey(slots, slotID, data) })));
   };
 
 export const removeIntentSlot =
-  (id: string, slotId: string): SyncThunk =>
+  (id: string, slotID: string): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
     const { slots, inputs } = intentByIDSelector(state)(id);
 
     const sanitizedInputs: IntentInput[] = inputs.map((input: IntentInput) => {
       if (input?.slots && input.slots.length > 0) {
-        const slotDetails = Slot.slotByIDSelector(state)(slotId);
+        const slotDetails = Slot.slotByIDSelector(state)(slotID);
 
         return {
           text: removeSlotRefFromInput(input.text, slotDetails),
-          slots: input.slots.filter((slot) => slot !== slotId),
+          slots: input.slots.filter((slot) => slot !== slotID),
         };
       }
 
       return input;
     });
 
-    return dispatch(updateIntent(id, { slots: removeNormalizedByKey(slots, slotId), inputs: sanitizedInputs }, true));
+    return dispatch(patchIntent(id, inferIntentType({ slots: removeNormalizedByKey(slots, slotID), inputs: sanitizedInputs })));
   };
 
 export const updateIntentSlotDialog =
-  (id: string, slotId: string, dialog: IntentSlotDialog): SyncThunk =>
+  (id: string, slotID: string, dialog: IntentSlotDialog): SyncThunk =>
   (dispatch, getState) => {
     const { slots } = intentByIDSelector(getState())(id);
-    const slot = getNormalizedByKey(slots, slotId);
+    const slot = getNormalizedByKey(slots, slotID);
 
-    return dispatch(updateIntentSlot(id, slotId, { dialog: { ...slot.dialog, ...dialog } }));
+    return dispatch(updateIntentSlot(id, slotID, inferIntentSlotType({ dialog: { ...slot.dialog, ...dialog } })));
   };
 
 export const reorderIntentSlots =
@@ -96,7 +121,7 @@ export const reorderIntentSlots =
   (dispatch, getState) => {
     const { slots } = intentByIDSelector(getState())(id);
 
-    return dispatch(updateIntent(id, { slots: { ...slots, allKeys: newAllKeys } }, true));
+    return dispatch(patchIntent(id, inferIntentType({ slots: { ...slots, allKeys: newAllKeys } })));
   };
 
 export const newIntent =
@@ -116,7 +141,7 @@ export const newIntent =
     const slots = intent?.slots || { byKey: {}, allKeys: [] };
     const inputs = intent?.inputs || [];
 
-    dispatch(addIntent(id, { id, name, slots, inputs, platform }));
+    dispatch(addIntent(id, inferIntentType({ id, name, slots, inputs, platform })));
 
     return id;
   };

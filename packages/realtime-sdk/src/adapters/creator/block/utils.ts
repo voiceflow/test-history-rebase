@@ -4,8 +4,8 @@ import { Button, Node as BaseNode } from '@voiceflow/base-types';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
 import cuid from 'cuid';
 
-import { DialogType, RepromptType } from '../../../constants';
-import { Link, LinkData, Node, NodeData, Port, SpeakData } from '../../../models';
+import { RepromptType } from '../../../constants';
+import { Link, LinkData, Node, NodeData, Port } from '../../../models';
 import { Nullable } from '../../../types';
 import { createAdapter, createSimpleAdapter } from '../../utils';
 import { generateOutPort } from '../utils';
@@ -17,12 +17,12 @@ export interface PortsAdapter<D = unknown> {
   fromDB: (ports: DBPort<LinkData>[], node: DBNode) => { port: Port; target: string | null }[];
 }
 
-// TODO: refactor merge repromptAdapter and noMatchRepromptAdapter to use the same types
-export const repromptAdapter = createAdapter<VoiceTypes.Prompt<any>, NodeData.Reprompt>(
+export const voiceRepromptAdapter = createAdapter<VoiceTypes.Prompt<any>, NodeData.VoicePrompt>(
   (reprompt) => {
     const type = reprompt.voice === Constants.Voice.AUDIO ? RepromptType.AUDIO : RepromptType.TEXT;
 
     return {
+      id: cuid.slug(),
       type,
       desc: reprompt.desc,
       voice: type === RepromptType.TEXT ? reprompt.voice : null,
@@ -37,29 +37,18 @@ export const repromptAdapter = createAdapter<VoiceTypes.Prompt<any>, NodeData.Re
   })
 );
 
-export const noMatchRepromptAdapter = createAdapter<VoiceTypes.Prompt<any>, SpeakData>(
-  (reprompt) =>
-    reprompt.voice === Constants.Voice.AUDIO
-      ? { url: reprompt.content, type: DialogType.AUDIO, id: cuid() }
-      : { type: DialogType.VOICE, voice: reprompt.voice, content: reprompt.content, id: cuid() },
-  (reprompt) => ({
-    voice: reprompt.type === DialogType.AUDIO ? Constants.Voice.AUDIO : (reprompt.voice as Constants.Voice | undefined) ?? Constants.Voice.ALEXA,
-    content: reprompt.type === DialogType.AUDIO ? reprompt.url : reprompt.content,
-  })
-);
-
-export const noMatchAdapter = createAdapter<BaseNode.Utils.StepNoMatch<VoiceTypes.Prompt<any>>, NodeData.NoMatchPrompt>(
+export const voiceNoMatchAdapter = createAdapter<BaseNode.Utils.StepNoMatch<VoiceTypes.Prompt<any>>, NodeData.VoiceNoMatches>(
   ({ type = BaseNode.Utils.NoMatchType.REPROMPT, randomize, reprompts, pathName = 'No Match' }) => ({
     type,
     pathName,
     randomize,
-    reprompts: noMatchRepromptAdapter.mapFromDB(reprompts),
+    reprompts: voiceRepromptAdapter.mapFromDB(reprompts),
   }),
   ({ type, randomize, reprompts, pathName }) => ({
     type,
     pathName,
     randomize,
-    reprompts: noMatchRepromptAdapter.mapToDB(reprompts),
+    reprompts: voiceRepromptAdapter.mapToDB(reprompts),
   })
 );
 

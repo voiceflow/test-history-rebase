@@ -29,8 +29,8 @@ const ELSE_OPTIONS: RadioOption<BaseNode.Utils.NoMatchType | null>[] = [
 ];
 
 interface NoMatchProps {
-  onChange: (noMatch: NodeData.NoMatch) => void;
-  noMatch: NodeData.NoMatch;
+  onChange: (noMatch: NodeData.BaseNoMatches) => void;
+  noMatch: NodeData.BaseNoMatches;
   pushToPath?: PushToPath;
 }
 

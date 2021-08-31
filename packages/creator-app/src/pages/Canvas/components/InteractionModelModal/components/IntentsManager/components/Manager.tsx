@@ -22,7 +22,7 @@ export interface ManagerProps {
 }
 
 const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, ManagerProps & ConnectedManagerProps> = (
-  { id, intent: selectedIntent, platform, slots, removeIntent, updateIntent, allIntents },
+  { id, intent: selectedIntent, platform, slots, removeIntent, patchIntent, allIntents },
   ref
 ) => {
   const isGeneral = isGeneralPlatform(platform);
@@ -52,7 +52,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
     }
 
     setNameError(null);
-    updateIntent(id, { id, name: formattedName }, true);
+    patchIntent(id, { id, name: formattedName });
   };
 
   const localNameUpdate = ({ value }: { value: string }) => {
@@ -114,13 +114,13 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  updateIntent: Intents.updateIntent,
+  patchIntent: Intents.patchIntent,
 };
 
 const mergeProps = (
   ...[{ intent: intentByIDSelector, platform }, , { id }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps, ManagerProps>
 ) => ({
-  intent: applySingleIntentNameFormatting(intentByIDSelector(id), platform),
+  intent: applySingleIntentNameFormatting(platform, intentByIDSelector(id)),
 });
 
 type ConnectedManagerProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;

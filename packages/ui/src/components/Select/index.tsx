@@ -4,7 +4,7 @@ import AutosizeInput from 'react-input-autosize';
 import { Manager, PopperProps, Reference } from 'react-popper';
 
 import { useCache, useDidUpdateEffect } from '../../hooks';
-import { Nullable } from '../../types';
+import { Nullable, Nullish } from '../../types';
 import Flex from '../Flex';
 import { AdvancedMenu, defaultMenuLabelRenderer } from '../NestedMenu';
 import Portal from '../Portal';
@@ -17,9 +17,9 @@ import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters'
 export { defaultOptionsFilter, searchableOptionsFilter };
 export * from './components';
 
-export type GetOptionLabel<V> = (value?: V) => string | undefined | null;
+export type GetOptionLabel<V> = (value?: Nullish<V>) => Nullish<string>;
 
-export type GetOptionValue<O, V> = (option?: O) => V | undefined;
+export type GetOptionValue<O, V> = (option?: Nullish<O>) => Nullish<V>;
 
 export type GroupedOption<O> = O & { options?: O[] };
 
@@ -60,7 +60,7 @@ export type SelectProps<O, V> = {
   open?: boolean;
   inputStopProp?: boolean;
   label?: string;
-  value?: V;
+  value?: V | null;
   inline?: boolean;
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onOpen?: () => void;

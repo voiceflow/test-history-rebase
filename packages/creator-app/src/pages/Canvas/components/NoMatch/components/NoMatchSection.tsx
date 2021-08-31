@@ -6,7 +6,7 @@ import { NodeData } from '@/models';
 import { getNoMatchSectionLabel } from '@/pages/Canvas/managers/utils';
 
 export interface NoMatchSectionProps {
-  data: NodeData.NoMatchPrompt;
+  data: NodeData.NoMatches;
   pushToPath?: (path: { type: string; label: string }) => void;
 }
 

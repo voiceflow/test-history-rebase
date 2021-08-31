@@ -1,13 +1,13 @@
 import { Version as GeneralVersion } from '@voiceflow/general-types';
 import { PlatformType } from '@voiceflow/internal';
+import { Adapters } from '@voiceflow/realtime-sdk';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
 
-import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { Version } from '@/models';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
-const generalVersionAdapter = createAdapter<GeneralVersion.GeneralVersion, Version<GeneralVersion.GeneralVersionData>>(
+const generalVersionAdapter = Adapters.createAdapter<GeneralVersion.GeneralVersion, Version<GeneralVersion.GeneralVersionData>>(
   ({
     _id,
     creatorID,
@@ -30,7 +30,7 @@ const generalVersionAdapter = createAdapter<GeneralVersion.GeneralVersion, Versi
     status: null,
   }),
   () => {
-    throw new AdapterNotImplementedError();
+    throw new Adapters.AdapterNotImplementedError();
   }
 );
 export default generalVersionAdapter;

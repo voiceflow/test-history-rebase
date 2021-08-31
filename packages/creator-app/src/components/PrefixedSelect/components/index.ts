@@ -1,10 +1,11 @@
-import { FlexApart, SearchInput, Select } from '@voiceflow/ui';
+import { FlexApart, SearchInput, Select, SelectProps } from '@voiceflow/ui';
+import React from 'react';
 
 import { styled } from '@/hocs';
 
 export { default as Prefix } from './Prefix';
 
-export const SelectInput = styled(Select)`
+export const SelectInput = styled<React.FC<SelectProps<any, any>>>(Select)<{ offset?: number }>`
   flex: 1;
 
   ${SearchInput} {

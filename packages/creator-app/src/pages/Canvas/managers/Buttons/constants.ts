@@ -1,12 +1,14 @@
 import { Node } from '@voiceflow/base-types';
 import cuid from 'cuid';
 
-import { BlockType, DialogType } from '@/constants';
+import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
+import { getPlatformNoMatchesFactory } from '@/utils/noMatches';
 
 import { NodeConfig } from '../types';
 
-// eslint-disable-next-line import/prefer-default-export
+export const factory = (): Node.Buttons.Button => ({ id: cuid.slug(), name: '', actions: [Node.Buttons.ButtonAction.PATH] });
+
 export const NODE_CONFIG: NodeConfig<NodeData.Buttons> = {
   type: BlockType.BUTTONS,
 
@@ -15,7 +17,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Buttons> = {
 
   mergeTerminator: true,
 
-  factory: (_, options) => ({
+  factory: (_, { platform, defaultVoice } = {}) => ({
     node: {
       ports: {
         in: [{}],
@@ -24,21 +26,9 @@ export const NODE_CONFIG: NodeConfig<NodeData.Buttons> = {
     },
     data: {
       name: 'Buttons',
-      buttons: [{ id: cuid.slug(), name: '', actions: [Node.Buttons.ButtonAction.PATH] }],
+      else: getPlatformNoMatchesFactory(platform)({ defaultVoice }),
+      buttons: [factory()],
       reprompt: null,
-      else: {
-        type: Node.Utils.NoMatchType.REPROMPT,
-        pathName: 'No Match',
-        randomize: false,
-        reprompts: [
-          {
-            id: cuid.slug(),
-            type: DialogType.VOICE,
-            voice: options?.defaultVoice ?? '',
-            content: '',
-          },
-        ],
-      },
     },
   }),
 };

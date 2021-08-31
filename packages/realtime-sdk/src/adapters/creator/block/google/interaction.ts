@@ -6,7 +6,7 @@ import cuid from 'cuid';
 import { NodeData } from '../../../../models';
 import { distinctPlatformsData } from '../../../../utils/platform';
 import { createAdapter } from '../../../utils';
-import { chipsToIntentButtons, createBlockAdapter, noMatchAdapter, repromptAdapter } from '../utils';
+import { chipsToIntentButtons, createBlockAdapter, voiceNoMatchAdapter, voiceRepromptAdapter } from '../utils';
 
 const choiceAdapter = createAdapter<BaseNode.Interaction.Choice, NodeData.InteractionChoice>(
   ({ intent, mappings = [] }) => ({ id: cuid.slug(), intent, mappings }),
@@ -16,19 +16,19 @@ const choiceAdapter = createAdapter<BaseNode.Interaction.Choice, NodeData.Intera
 const interactionAdapter = createBlockAdapter<Node.Interaction.StepData, NodeData.Interaction>(
   ({ name, else: elseData, choices, reprompt, chips, buttons }) => ({
     name,
-    else: noMatchAdapter.fromDB(elseData),
+    else: voiceNoMatchAdapter.fromDB(elseData),
     choices: choices.map((choice) => ({
       ...distinctPlatformsData({ id: cuid.slug(), intent: null, mappings: [] }),
       [PlatformType.GOOGLE]: choiceAdapter.fromDB(choice),
     })),
-    reprompt: reprompt && repromptAdapter.fromDB(reprompt),
+    reprompt: reprompt && voiceRepromptAdapter.fromDB(reprompt),
     buttons: buttons ?? chipsToIntentButtons(chips),
   }),
   ({ name, else: elseData, choices, reprompt, buttons }) => ({
     name,
-    else: noMatchAdapter.toDB(elseData),
+    else: voiceNoMatchAdapter.toDB(elseData as NodeData.VoiceNoMatches),
     choices: choices.map(({ [PlatformType.GOOGLE]: data }) => choiceAdapter.toDB(data)),
-    reprompt: reprompt && repromptAdapter.toDB(reprompt),
+    reprompt: reprompt && voiceRepromptAdapter.toDB(reprompt as NodeData.VoicePrompt),
     chips: null,
     buttons,
   })

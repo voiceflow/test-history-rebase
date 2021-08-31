@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Nullish } from '../types';
+
 export const useCache = <T extends Record<string, unknown>>(defaultData: T, dataToUpdate: Partial<T> = defaultData): React.MutableRefObject<T> => {
   const cache = React.useRef(defaultData);
 
@@ -10,8 +12,16 @@ export const useCache = <T extends Record<string, unknown>>(defaultData: T, data
 
 export const useContextApi = <T>(api: T): T => React.useMemo(() => api, Object.values(api));
 
-export const usePersistFunction = <T extends (...args: any[]) => any>(fn: T | undefined): T => {
-  const fnRef = React.useRef<T | undefined>(fn);
+export const useCachedValue = <T>(value: T): React.MutableRefObject<T> => {
+  const ref = React.useRef<T>(value);
+
+  ref.current = value;
+
+  return ref;
+};
+
+export const usePersistFunction = <T extends (...args: any[]) => any>(fn: Nullish<T>): T => {
+  const fnRef = React.useRef<Nullish<T>>(fn);
   const persistFn = React.useRef<T>();
 
   fnRef.current = fn;
@@ -21,4 +31,14 @@ export const usePersistFunction = <T extends (...args: any[]) => any>(fn: T | un
   }
 
   return persistFn.current;
+};
+
+export const useCreateConst = <T>(creator: () => T): T => {
+  const ref = React.useRef<T>();
+
+  if (ref.current === undefined) {
+    ref.current = creator();
+  }
+
+  return ref.current;
 };

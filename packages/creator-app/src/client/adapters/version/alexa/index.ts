@@ -1,9 +1,9 @@
 import { Constants, Version as AlexaVersion } from '@voiceflow/alexa-types';
 import { PlatformType } from '@voiceflow/internal';
+import { Adapters } from '@voiceflow/realtime-sdk';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
 
-import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { Version } from '@/models';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
@@ -11,7 +11,7 @@ import createSessionAdapter from '../session';
 
 const sessionAdapter = createSessionAdapter<Constants.Voice>({ platform: PlatformType.ALEXA });
 
-const alexaVersionAdapter = createAdapter<AlexaVersion.AlexaVersion, Version<AlexaVersion.AlexaVersionData>>(
+const alexaVersionAdapter = Adapters.createAdapter<AlexaVersion.AlexaVersion, Version<AlexaVersion.AlexaVersionData>>(
   ({
     _id,
     creatorID,
@@ -35,7 +35,7 @@ const alexaVersionAdapter = createAdapter<AlexaVersion.AlexaVersion, Version<Ale
     status,
   }),
   () => {
-    throw new AdapterNotImplementedError();
+    throw new Adapters.AdapterNotImplementedError();
   }
 );
 

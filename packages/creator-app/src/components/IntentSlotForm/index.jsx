@@ -6,7 +6,6 @@ import { withProps } from 'recompose';
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
 import ListManager from '@/components/ListManager';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
-import SSMLWithSlots from '@/components/SSMLWithSlots';
 import Utterance from '@/components/Utterance';
 import { SlotTag } from '@/components/VariableTag';
 import { NamespaceProvider } from '@/contexts';
@@ -17,21 +16,25 @@ import { connect } from '@/hocs';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { slotToString } from '@/utils/slot';
-import { isAlexaPlatform, isAnyGeneralPlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isAnyGeneralPlatform, isChatbotPlatform } from '@/utils/typeGuards';
 
-import { ResponseUtterancesTooltip, SlotConfirmationTooltip, SlotPromptTooltip, SlotRequiredMessage } from './components';
+import {
+  ChatPromptForm,
+  ResponseUtterancesTooltip,
+  SlotConfirmationTooltip,
+  SlotPromptTooltip,
+  SlotRequiredMessage,
+  VoicePromptForm,
+} from './components';
 
 function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalone = false, updateIntentSlot, updateIntentSlotDialog }) {
   const isAlexa = isAlexaPlatform(platform);
+  const isChatbot = isChatbotPlatform(platform);
   const isGeneral = isAnyGeneralPlatform(platform);
   const utteranceRef = React.useRef();
   const {
     required,
-    dialog: {
-      utterances,
-      prompt: [{ text: promptText, slots: promptSlots, voice: promptVoice }],
-      confirm: [{ text: confirmText, slots: confirmSlots, voice: confirmVoice }],
-    },
+    dialog: { prompt, confirm, utterances },
   } = intentSlot;
   const [isResponseUtteranceEmpty, updateIsResponseUtteranceEmpty] = React.useState(true);
 
@@ -50,23 +53,13 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
   }, [utterances]);
 
   const onChangePrompt = React.useCallback(
-    (prompt) => updateIntentSlotDialog(intent.id, slot.id, { prompt: [{ voice: promptVoice, ...prompt }] }),
-    [slot.id, intent.id, updateIntentSlotDialog, promptVoice]
+    (prompt) => updateIntentSlotDialog(intent.id, slot.id, { prompt }),
+    [slot.id, intent.id, updateIntentSlotDialog]
   );
 
   const onChangeConfirm = React.useCallback(
-    (confirm) => updateIntentSlotDialog(intent.id, slot.id, { confirm: [{ voice: confirmVoice, ...confirm }] }),
-    [slot.id, intent.id, updateIntentSlotDialog, confirmVoice]
-  );
-
-  const onChangePromptVoice = React.useCallback(
-    (voice) => updateIntentSlotDialog(intent.id, slot.id, { prompt: [{ text: promptText, slots: promptSlots, voice }] }),
-    [slot.id, intent.id, updateIntentSlotDialog, promptText, promptSlots]
-  );
-
-  const onChangeConfirmVoice = React.useCallback(
-    (voice) => updateIntentSlotDialog(intent.id, slot.id, { confirm: [{ text: confirmText, slots: confirmSlots, voice }] }),
-    [slot.id, intent.id, updateIntentSlotDialog, confirmText, confirmSlots]
+    (confirm) => updateIntentSlotDialog(intent.id, slot.id, { confirm }),
+    [slot.id, intent.id, updateIntentSlotDialog]
   );
 
   const onUpdateUtterances = React.useCallback(
@@ -106,15 +99,21 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
         >
           <Section header="Entity Prompt" tooltip={<SlotPromptTooltip />} isNested dividerIsNested>
             <FormControl>
-              <SSMLWithSlots
-                icon={null}
-                voice={promptVoice}
-                slots={variablesSlots}
-                value={promptText || ''}
-                onBlur={onChangePrompt}
-                onChangeVoice={onChangePromptVoice}
-                placeholder="What question will we ask the user to fill this entity?"
-              />
+              {isChatbot ? (
+                <ChatPromptForm
+                  slots={variablesSlots}
+                  prompt={prompt}
+                  onChange={onChangePrompt}
+                  placeholder="What question will we ask the user to fill this entity?"
+                />
+              ) : (
+                <VoicePromptForm
+                  slots={variablesSlots}
+                  prompt={prompt}
+                  onChange={onChangePrompt}
+                  placeholder="What question will we ask the user to fill this entity?"
+                />
+              )}
             </FormControl>
 
             {(isAlexa || isGeneral) && (
@@ -190,13 +189,10 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
               collapseVariant={SectionToggleVariant.TOGGLE}
             >
               <FormControl>
-                <SSMLWithSlots
-                  icon={null}
-                  voice={confirmVoice}
+                <VoicePromptForm
                   slots={variablesSlots}
-                  value={confirmText || ''}
-                  onBlur={onChangeConfirm}
-                  onChangeVoice={onChangeConfirmVoice}
+                  prompt={confirm}
+                  onChange={onChangeConfirm}
                   placeholder="What yes/no question will we ask to confirm the entity?"
                 />
               </FormControl>

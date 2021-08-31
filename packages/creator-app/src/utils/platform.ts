@@ -2,6 +2,7 @@ import { Utils } from '@voiceflow/realtime-sdk';
 
 export const {
   createPlatformSelector,
+  createAdvancedPlatformSelector,
   getPlatformDefaultVoice,
   distinctPlatformsData,
   getPlatformValue,

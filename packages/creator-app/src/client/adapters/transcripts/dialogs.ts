@@ -1,8 +1,8 @@
 /* eslint-disable xss/no-mixed-html */
 import { Node } from '@voiceflow/base-types';
+import { Adapters } from '@voiceflow/realtime-sdk';
 import cuid from 'cuid';
 
-import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { AnyTranscriptMessage, FormatType, SpeakTrace } from '@/models';
 import {
   createDebugMessage,
@@ -34,7 +34,7 @@ const transformSpeakTrace = (trace: SpeakTrace): SpeakTrace => {
   return trace;
 };
 
-const dialogAdapter = createAdapter<AnyTranscriptMessage, Message | null>(
+const dialogAdapter = Adapters.createAdapter<AnyTranscriptMessage, Message | null>(
   (transcriptMessage) => {
     const commonProperties = {
       turnID: transcriptMessage.turn_id,
@@ -68,7 +68,7 @@ const dialogAdapter = createAdapter<AnyTranscriptMessage, Message | null>(
     return null;
   },
   () => {
-    throw new AdapterNotImplementedError();
+    throw new Adapters.AdapterNotImplementedError();
   }
 );
 

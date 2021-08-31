@@ -1,36 +1,50 @@
 import { PlatformType } from '@voiceflow/internal';
+import { Adapters } from '@voiceflow/realtime-sdk';
 import _isPlainObject from 'lodash/isPlainObject';
 
-import { Intent, IntentInput, IntentSlot } from '@/models';
+import { ChatIntentSlot, Intent, IntentInput, VoiceIntentSlot } from '@/models';
 import { isCustomizableBuiltInIntent, removeBuiltInPrefix } from '@/utils/intent';
+import { Normalized } from '@/utils/normalized';
+import { createAdvancedPlatformSelector } from '@/utils/platform';
 import { capitalizeFirstLetter } from '@/utils/string';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
-export const getUniqSlots = (inputs: IntentInput[]) => [...new Set(inputs.flatMap(({ slots }) => slots || []))];
+export const getUniqSlots = (inputs: IntentInput[]): string[] => [...new Set(inputs.flatMap(({ slots }) => slots || []))];
 
-export const newSlotsCreator = (id: string): IntentSlot => ({
-  id,
-  dialog: { prompt: [{ text: '', slots: [] }], utterances: [], confirm: [{ text: '', slots: [] }], confirmEnabled: false },
-  required: false,
-});
+const newChatSlotsCreator = (id: string): ChatIntentSlot => Adapters.Intent.chatIntentSlotSanitizer({ id });
+const newVoiceSlotsCreator = (id: string): VoiceIntentSlot => Adapters.Intent.voiceIntentSlotSanitizer({ id });
 
-export const intentProcessor = ({ inputs = [], ...intent }: Intent): Intent => {
-  let { slots } = intent;
+export const getPlatformNewSlotsCreator = createAdvancedPlatformSelector(
+  {
+    [PlatformType.CHATBOT]: newChatSlotsCreator,
+  },
+  newVoiceSlotsCreator
+);
+
+export const intentProcessor = (platform: PlatformType, { inputs = [], slots, ...intent }: Intent): Intent => {
+  let nextSlots = slots;
 
   if (!_isPlainObject(slots)) {
     const allKeys = getUniqSlots(inputs);
-    const byKey = allKeys.reduce<Record<string, IntentSlot>>((obj, id) => Object.assign(obj, { [id]: newSlotsCreator(id) }), {});
+    const byKey = allKeys.reduce<Record<string, ChatIntentSlot> | Record<string, VoiceIntentSlot>>(
+      (obj, id) => Object.assign(obj, { [id]: getPlatformNewSlotsCreator(platform)(id) }),
+      {}
+    );
 
-    slots = { byKey, allKeys };
+    nextSlots = { byKey, allKeys } as Normalized<ChatIntentSlot> | Normalized<VoiceIntentSlot>;
   }
 
-  return { ...intent, slots, inputs };
+  return {
+    ...intent,
+    slots: nextSlots,
+    inputs,
+  } as Intent;
 };
 
-export const applySingleIntentNameFormatting = (intent: Intent, platform: PlatformType) => {
+export const applySingleIntentNameFormatting = (platform: PlatformType, intent: Intent): Intent => {
   let { name } = intent ?? { name: '' };
+
   if (isCustomizableBuiltInIntent(intent)) {
-    // eslint-disable-next-line prefer-destructuring
     name = removeBuiltInPrefix(name);
 
     if (isAnyGeneralPlatform(platform)) {
@@ -45,5 +59,5 @@ export const applySingleIntentNameFormatting = (intent: Intent, platform: Platfo
   };
 };
 
-export const applyIntentNameFormatting = (intents: Intent[], platform: PlatformType) =>
-  intents.map((intent) => applySingleIntentNameFormatting(intent, platform));
+export const applyIntentNameFormatting = (platform: PlatformType, intents: Intent[]): Intent[] =>
+  intents.map((intent) => applySingleIntentNameFormatting(platform, intent));

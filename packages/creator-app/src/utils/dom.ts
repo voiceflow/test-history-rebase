@@ -126,9 +126,6 @@ export const scrollTo = (node: HTMLElement | null, { top = 0, left = 0, ...opts 
   }
 };
 
-/**
- * @deprecated use withKeyNamePress
- */
 export const withKeyPress =
   <E extends KeyboardEvent | React.KeyboardEvent>(key: string, cb: (event: E) => void) =>
   (event: E) => {
@@ -291,7 +288,9 @@ export const unhighlightAllText = () => {
   }
 };
 
-export const getTargetValue = (callback: (value: string) => void) => (event: React.ChangeEvent<HTMLInputElement>) => callback(event.target.value);
+export const getTargetValue =
+  (callback: (value: string) => void) => (event: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) =>
+    callback(event.currentTarget.value);
 
 export const loadImage = (src: string) =>
   new Promise((resolve, reject) => {

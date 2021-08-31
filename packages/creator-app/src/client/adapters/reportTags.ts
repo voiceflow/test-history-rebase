@@ -1,7 +1,8 @@
-import { createAdapter } from '@/client/adapters/utils';
+import { Adapters } from '@voiceflow/realtime-sdk';
+
 import { DBReportTag, ReportTag } from '@/models';
 
-const reportTagsAdapter = createAdapter<DBReportTag, ReportTag, [{ projectID: string }]>(
+const reportTagsAdapter = Adapters.createAdapter<DBReportTag, ReportTag, [{ projectID: string }]>(
   ({ tagID, label }, { projectID }) => ({
     id: tagID,
     label,

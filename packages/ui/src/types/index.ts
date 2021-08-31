@@ -15,6 +15,8 @@ export type Either<T extends object, R extends object> =
 // TODO: move all below to @voiceflow/common
 export type Nullable<T> = T | null;
 
+export type Nullish<T> = Nullable<T> | undefined;
+
 export type Function<A extends any[] = any[], R = any> = (...args: A) => R;
 
 export type AnyFunction = Function<any[], any>;

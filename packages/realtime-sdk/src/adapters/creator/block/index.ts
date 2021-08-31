@@ -10,6 +10,7 @@ import { AdapterContext } from '../../types';
 import { BidirectionalAdapter } from '../../utils';
 import { alexaBlockAdapter, alexaPortsAdapter } from './alexa';
 import blockDataAdapter from './block';
+import { chatBlockAdapter } from './chat';
 import { generalBlockAdapter, generalPortsAdapter } from './general';
 import { googleBlockAdapter, googlePortsAdapter } from './google';
 import invalidPlatformAdapter from './invalidPlatform';
@@ -52,6 +53,7 @@ const getPlatformAdapter = createPlatformSelector<Partial<Record<BlockType, unkn
   {
     [PlatformType.ALEXA]: alexaBlockAdapter,
     [PlatformType.GOOGLE]: googleBlockAdapter,
+    [PlatformType.CHATBOT]: chatBlockAdapter,
   },
   generalBlockAdapter
 );

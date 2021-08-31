@@ -1,3 +1,4 @@
+import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
 import SSML from '@/components/SSML';
@@ -17,12 +18,13 @@ import { isSlotsInRepromptValid } from './utils';
  */
 
 interface onBlurParameters {
-  newValue: string;
+  text: string;
   pluginsData: object;
 }
 
 interface SSMLWithSlotsProps {
   // SSML props
+  icon?: Icon | null;
   value: string; // the actual SSML text content
   onBlur: (data: onBlurParameters) => void; // executed if input gets unfocused
   onChangeVoice: (newVoice: string) => void; // executed if a new 'voice' vlaue is chosen

@@ -1,10 +1,11 @@
-import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
+import { Adapters } from '@voiceflow/realtime-sdk';
+
 import { Transcript } from '@/models';
 
-const transcriptAdapter = createAdapter<any, Transcript>(
+const transcriptAdapter = Adapters.createAdapter<any, Transcript>(
   ({ _id: id, annotations, ...data }) => ({ id, annotations: annotations || {}, ...data }),
   () => {
-    throw new AdapterNotImplementedError();
+    throw new Adapters.AdapterNotImplementedError();
   }
 );
 

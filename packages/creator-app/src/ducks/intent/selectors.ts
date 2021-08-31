@@ -34,7 +34,7 @@ export const allSlotsByIntentIDSelector = createSelector([intentByIDSelector], (
 export const allPlatformIntentsSelector = createSelector(
   [allIntentsSelector, Project.activePlatformSelector, activeLocalesSelector],
   (intents, platform, locales) => {
-    const prettifiedIntents = applyIntentNameFormatting(intents, platform);
+    const prettifiedIntents = applyIntentNameFormatting(platform, intents);
 
     if (isAnyGeneralPlatform(platform)) {
       const lang = (locales[0] ?? GeneralConstants.Locale.EN_US).split('-')[0];
@@ -47,7 +47,7 @@ export const allPlatformIntentsSelector = createSelector(
 );
 
 export const allCustomIntentsSelector = createSelector([allIntentsSelector, Project.activePlatformSelector], (intents, platform) =>
-  applyIntentNameFormatting(intents, platform)
+  applyIntentNameFormatting(platform, intents)
 );
 
 export const mapPlatformIntentsSelector = createSelector([allPlatformIntentsSelector], (intents) =>

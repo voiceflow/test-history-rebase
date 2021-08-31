@@ -35,7 +35,7 @@ import { BuiltInIntentMessage } from './components';
 
 export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 
-function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customIntents, isNested }) {
+function UtteranceManager({ intent, focus, slots, addSlot, patchIntent, customIntents, isNested }) {
   const { search } = useLocation();
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM];
@@ -52,7 +52,7 @@ function UtteranceManager({ intent, focus, slots, addSlot, updateIntent, customI
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const isBuiltIn = isCustomizableBuiltInIntent(intent);
   const [showUtterances, setShowUtterances] = React.useState(!isBuiltIn || !!intent.inputs?.length || !!prefilledNewUtterance);
-  const onUpdateUtterances = React.useCallback((inputs) => updateIntent(intentID, { inputs }, true), [intentID, updateIntent]);
+  const onUpdateUtterances = React.useCallback((inputs) => patchIntent(intentID, { inputs }), [intentID, patchIntent]);
 
   React.useEffect(() => {
     if (prefilledNewUtterance) {
@@ -232,7 +232,7 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   addSlot: Slot.addSlot,
-  updateIntent: Intent.updateIntent,
+  patchIntent: Intent.patchIntent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtteranceManager);

@@ -1,20 +1,20 @@
 import { Node } from '@voiceflow/general-types';
 
 import { NodeData } from '../../../../models';
-import { chipsToIntentButtons, createBlockAdapter, repromptAdapter } from '../utils';
+import { chipsToIntentButtons, createBlockAdapter, voiceRepromptAdapter } from '../utils';
 
 const captureAdapter = createBlockAdapter<Node.Capture.StepData, NodeData.Capture>(
   ({ slot, variable, reprompt, slotInputs, chips, buttons }) => ({
     slot,
     variable,
     examples: slotInputs,
-    reprompt: reprompt && repromptAdapter.fromDB(reprompt),
+    reprompt: reprompt && voiceRepromptAdapter.fromDB(reprompt),
     buttons: buttons ?? chipsToIntentButtons(chips),
   }),
   ({ slot, variable, reprompt, examples, buttons }) => ({
     slot,
     variable,
-    reprompt: reprompt && repromptAdapter.toDB(reprompt),
+    reprompt: reprompt && voiceRepromptAdapter.toDB(reprompt as NodeData.VoicePrompt),
     slotInputs: examples,
     chips: null,
     buttons,

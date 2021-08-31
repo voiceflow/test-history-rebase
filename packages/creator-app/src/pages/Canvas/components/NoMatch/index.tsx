@@ -4,24 +4,21 @@ import React from 'react';
 import { CheckboxType } from '@/components/Checkbox';
 import RadioGroup, { RadioOption } from '@/components/RadioGroup';
 import Section from '@/components/Section';
-import { MAX_ALEXA_REPROMPTS, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { useDidUpdateEffect, useLinkedState } from '@/hooks';
 import { Node, NodeData } from '@/models';
 import { FormControl } from '@/pages/Canvas/components/Editor';
-import NoMatchItem from '@/pages/Canvas/components/NoMatchItem';
 import NoMatchPath from '@/pages/Canvas/components/NoMatchPath';
-import SpeakAudioList from '@/pages/Canvas/components/SpeakAudioList';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { head } from '@/utils/array';
-import { isAnyGeneralPlatform } from '@/utils/typeGuards';
+import { isChatbotPlatform } from '@/utils/typeGuards';
 
 import RadioButtonText from '../RadioButtonText';
-import NoMatchTooltip from './components/NoMatchTooltip';
+import { ChatNoMatchList, NoMatchTooltip, VoiceNoMatchList } from './components';
 
 export { NO_MATCH_PATH_TYPE, default as NoMatchSection } from './components/NoMatchSection';
 
@@ -39,8 +36,8 @@ const ELSE_OPTIONS: RadioOption<BaseNode.Utils.NoMatchType>[] = [
 ];
 
 interface NoMatchProps {
-  onChange: (noMatches: NodeData.NoMatchPrompt) => void;
-  noMatches: NodeData.NoMatchPrompt;
+  onChange: (noMatches: NodeData.NoMatches) => void;
+  noMatches: NodeData.NoMatches;
   pushToPath?: PushToPath;
 }
 
@@ -83,6 +80,32 @@ const NoMatch: React.FC<NoMatchProps & ConnectedNoMatchProps> = ({ onChange, noM
     }
   }, [localNoMatches]);
 
+  const renderList = () => {
+    const children = localNoMatches.type === BaseNode.Utils.NoMatchType.BOTH && <NoMatchPath pushToPath={pushToPath} />;
+
+    if (isChatbotPlatform(platform)) {
+      return (
+        <ChatNoMatchList
+          {...(localNoMatches as NodeData.ChatNoMatches)}
+          onChangeReprompts={(reprompts) => setLocalNoMatches({ ...localNoMatches, reprompts })}
+        >
+          {children}
+        </ChatNoMatchList>
+      );
+    }
+
+    return (
+      <VoiceNoMatchList
+        {...(localNoMatches as NodeData.VoiceNoMatches)}
+        platform={platform}
+        onChangeReprompts={(reprompts) => setLocalNoMatches({ ...localNoMatches, reprompts })}
+        onChangeRandomize={(randomize) => setLocalNoMatches({ ...localNoMatches, randomize })}
+      >
+        {children}
+      </VoiceNoMatchList>
+    );
+  };
+
   return (
     <>
       <Section borderBottom={!!localNoMatches.type && localNoMatches.type !== BaseNode.Utils.NoMatchType.PATH}>
@@ -96,24 +119,7 @@ const NoMatch: React.FC<NoMatchProps & ConnectedNoMatchProps> = ({ onChange, noM
           The project will end if no intent is matched.
         </Section>
       ) : (
-        <>
-          {localNoMatches.type !== BaseNode.Utils.NoMatchType.PATH ? (
-            <SpeakAudioList
-              items={localNoMatches.reprompts}
-              platform={platform}
-              maxItems={isAnyGeneralPlatform(platform) ? MAX_SPEAK_ITEMS_COUNT : MAX_ALEXA_REPROMPTS}
-              itemName="reprompts"
-              randomize={localNoMatches.randomize}
-              itemComponent={NoMatchItem}
-              onChangeItems={(reprompts) => setLocalNoMatches({ ...localNoMatches, reprompts })}
-              onChangeRandomize={(randomize) => setLocalNoMatches({ ...localNoMatches, randomize })}
-            >
-              {localNoMatches.type === BaseNode.Utils.NoMatchType.BOTH && <NoMatchPath pushToPath={pushToPath} />}
-            </SpeakAudioList>
-          ) : (
-            <NoMatchPath pushToPath={pushToPath} borderBottom />
-          )}
-        </>
+        <>{localNoMatches.type !== BaseNode.Utils.NoMatchType.PATH ? renderList() : <NoMatchPath pushToPath={pushToPath} borderBottom />}</>
       )}
     </>
   );

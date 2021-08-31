@@ -1,11 +1,11 @@
 import { Constants, Project } from '@voiceflow/alexa-types';
+import { Adapters } from '@voiceflow/realtime-sdk';
 import cuid from 'cuid';
 
-import { createAdapter } from '@/client/adapters/utils';
 import { Product } from '@/models';
 import { formatMarketPlaces, getDistributionCountries, parseLocales, parseMarketPlaces } from '@/utils/product';
 
-const productAdapter = createAdapter<Project.AlexaProduct, Product>(
+const productAdapter = Adapters.createAdapter<Project.AlexaProduct, Product>(
   // db to app
   ({
     name,

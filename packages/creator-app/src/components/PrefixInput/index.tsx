@@ -43,7 +43,12 @@ const Container = styled(InputGroup)`
   }
 `;
 
-const PrefixInput = ({ prefix, onChange }) => (
+interface PrefixInputProps {
+  prefix?: React.ReactNode;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+}
+
+const PrefixInput: React.FC<PrefixInputProps> = ({ prefix, onChange }) => (
   <Container className="mb-2">
     <InputGroupAddon addonType={AddonType.PREPEND}>
       <InputGroupText>{prefix}</InputGroupText>

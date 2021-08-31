@@ -13,21 +13,21 @@ import { defaultRenderElement, defaultRenderLeaf, defaultRenderPlaceholder } fro
 
 export * from './components';
 export { ControlledEditorProvider, useSlateEditor, useSlateEditorContext, useStaticSlateEditor } from './contexts';
-export type { PluginsOptions as SlatePluginsOptions } from './editor';
+export type { PluginsOptions as SlatePluginsOptions, VariableItem as SlateVariableItem } from './editor';
 export { EditorAPI as SlateEditorAPI, PluginType as SlatePluginType } from './editor';
 export { useSetupEditor as useSetupSlateEditor, useEditorForceNormalize as useSlateEditorForceNormalize } from './hooks';
 
 export type SlateValue = Descendant[];
 
-interface SlateEditableRef {
+export interface SlateEditableRef {
   focus: () => void;
 }
 
-interface SlateEditableProps extends Omit<EditableProps, 'value' | 'onChange' | 'decorate'> {
+export interface SlateEditableProps extends Omit<EditableProps, 'value' | 'onChange' | 'decorate'> {
   value: SlateValue;
   editor: Editor;
   onChange: (value: SlateValue) => void;
-  spellcheck?: boolean;
+  spellCheck?: boolean;
   topToolbar?: React.ReactNode;
   pluginsOptions?: PluginsOptions;
 }
@@ -40,7 +40,7 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
     onChange,
     children,
     topToolbar,
-    spellcheck = false,
+    spellCheck = false,
     renderLeaf = defaultRenderLeaf,
     renderElement = defaultRenderElement,
     pluginsOptions = DEFAULT_PLUGINS_OPTIONS,
@@ -83,9 +83,9 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
               onBlur={onLocalBlur}
               decorate={decorate ?? undefined}
               renderLeaf={renderLeaf}
+              spellCheck={spellCheck}
               renderElement={renderElement}
               renderPlaceholder={renderPlaceholder}
-              {...({ spellcheck: `${spellcheck}` } as any)}
               {...editableProps}
               onKeyDown={onKeyDown}
             />

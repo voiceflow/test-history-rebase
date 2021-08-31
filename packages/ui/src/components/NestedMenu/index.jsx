@@ -34,7 +34,6 @@ const SimpleNestedMenu = ({
   ...props
 }) => {
   const firstOptionIndex = 0;
-  const menuRef = React.useRef();
   const [focusedOptionIndex, updateFocusedOptionIndex] = React.useState(multiLevelDropdown ? null : 0);
   const [childFocusItemIndex, setChildFocusItemIndex] = React.useState(null);
   const focusedItemOptions = options[focusedOptionIndex - firstOptionIndex]?.options;
@@ -50,7 +49,7 @@ const SimpleNestedMenu = ({
   );
 
   return (
-    <BaseMenu fullWidth ref={menuRef} maxVisibleItems={maxVisibleItems}>
+    <BaseMenu fullWidth maxVisibleItems={maxVisibleItems}>
       <MenuOptions
         options={options}
         onSelect={onSelect}
@@ -58,7 +57,6 @@ const SimpleNestedMenu = ({
         onFocusItem={onFocusItem}
         optionsPath={DEFAULT_PATH}
         getOptionKey={getOptionKey}
-        portalNode={menuRef?.current}
         getOptionValue={getOptionValue}
         getOptionLabel={getOptionLabel}
         firstOptionIndex={firstOptionIndex}

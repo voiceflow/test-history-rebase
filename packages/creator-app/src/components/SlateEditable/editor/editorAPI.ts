@@ -25,6 +25,7 @@ interface BaseEditorAPI extends EditorInterface, ReactEditorType, HistoryEditorT
 
   isNewState(nodes: Descendant[]): boolean;
   getEmptyState(): Descendant[];
+  createTextState(text: string): Descendant[];
 
   // selection and range
 
@@ -86,7 +87,9 @@ const BaseEditorAPI: BaseEditorAPI = {
     Text.isText(nodes[0].children[0]) &&
     !nodes[0].children[0].text,
 
-  getEmptyState: (): Descendant[] => [{ children: [{ text: '' }] }],
+  getEmptyState: (): Descendant[] => BaseEditorAPI.createTextState(''),
+
+  createTextState: (text: string): Descendant[] => [{ children: [{ text }] }],
 
   // selection and range
 

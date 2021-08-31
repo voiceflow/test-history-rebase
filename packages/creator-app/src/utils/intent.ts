@@ -5,7 +5,20 @@ import { Constants as GoogleConstants } from '@voiceflow/google-types';
 import { PlatformType } from '@voiceflow/internal';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
-import { Intent, Slot } from '@/models';
+import {
+  ChatIntent,
+  ChatIntentSlot,
+  ChatIntentSlotDialog,
+  Intent,
+  IntentSlot,
+  IntentSlotDialog,
+  PlatformIntent,
+  Slot,
+  VoiceIntent,
+  VoiceIntentSlot,
+} from '@/models';
+import { Nullable, Nullish } from '@/types';
+import { Normalized } from '@/utils/normalized';
 import { capitalizeFirstLetter } from '@/utils/string';
 
 import { createPlatformSelector } from './platform';
@@ -20,15 +33,15 @@ const intentLabel: { [key in GeneralConstants.IntentName]?: string } = {
   [GeneralConstants.IntentName.NONE]: 'Fallback',
 };
 
-export const isCustomizableBuiltInIntent = (intent?: Intent | null) => !!intent && builtInIntentMap.has(intent.id);
+export const isCustomizableBuiltInIntent = (intent?: Nullish<Intent>): boolean => !!intent && builtInIntentMap.has(intent.id);
 
-export const formatIntentName = (name = '') =>
+export const formatIntentName = (name = ''): string =>
   name
     .replace(' ', '_')
     .replace(/[^A-Z_a-z]/g, '')
     .toLowerCase();
 
-export const prettifyIntentName = (name = '') =>
+export const prettifyIntentName = (name = ''): string =>
   intentLabel[name as GeneralConstants.IntentName] ??
   name
     .replace(/(\w)Intent/g, '$1')
@@ -37,13 +50,10 @@ export const prettifyIntentName = (name = '') =>
     .replace(/([a-z])([A-Z]+)(?=[A-Z])/g, '$1 $2') // camelCaseSHORT => camel Case SHORT
     .trim();
 
-export const prettifyIntentNames = (intents: Intent[]) =>
-  intents.map((intent) => ({
-    ...intent,
-    name: prettifyIntentName(intent.name),
-  }));
+export const prettifyIntentNames = <T extends Intent>(intents: T[]): T[] =>
+  intents.map((intent) => ({ ...intent, name: prettifyIntentName(intent.name) }));
 
-export const filterIntents = (intents: Intent[], activeIntent: Intent) =>
+export const filterIntents = <T extends Intent>(intents: T[], activeIntent: T): T[] =>
   intents.filter((intent) => {
     const isActiveIntent = intent.id === activeIntent?.id;
 
@@ -59,8 +69,8 @@ export const filterIntents = (intents: Intent[], activeIntent: Intent) =>
   });
 
 export const intentFactory =
-  (platform: PlatformType) =>
-  (intent: { name: string; slots?: string[] }): Intent => {
+  <T extends PlatformType>(platform: T) =>
+  (intent: { name: string; slots?: string[] }): PlatformIntent<T> => {
     const truncatedName = intent.name.split('.')[1];
 
     return {
@@ -72,7 +82,7 @@ export const intentFactory =
     };
   };
 
-export const generalIntentFactory = (generalIntent: GeneralConstants.DefaultIntent): Intent => {
+export const generalIntentFactory = (generalIntent: GeneralConstants.DefaultIntent): VoiceIntent => {
   const intent = intentFactory(PlatformType.GENERAL)(generalIntent);
 
   return {
@@ -81,7 +91,7 @@ export const generalIntentFactory = (generalIntent: GeneralConstants.DefaultInte
   };
 };
 
-export const validateIntentName = (intentName: string, intents: Intent[], slots: Slot[]) => {
+export const validateIntentName = (intentName: string, intents: Intent[], slots: Slot[]): Nullable<string> => {
   const lowerCasedIntentName = intentName.toLowerCase();
 
   if (intents.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {
@@ -112,12 +122,13 @@ export const getBuiltInIntents = createPlatformSelector(
   GENERAL_BUILT_INS_MAP[GeneralConstants.Locale.EN_US]
 );
 
-export const isBuiltInIntent = (intentID: string) => [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS].some((intent) => intent.id === intentID);
+export const isBuiltInIntent = (intentID: string): boolean => [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS].some((intent) => intent.id === intentID);
 
 const NUMERIC_UTTERANCE_REGEXP = /\d/;
 
-export function validateUtterance(utterance: string, intentID: string, intents: Intent[]) {
+export function validateUtterance(utterance: string, intentID: string, intents: Intent[]): string {
   const utteranceWithoutSlots = utterance.replace(SLOT_REGEXP, '');
+
   let err = '';
 
   if (utterance === '') {
@@ -146,20 +157,28 @@ export function validateUtterance(utterance: string, intentID: string, intents: 
   return err;
 }
 
-export const removeSlotRefFromInput = (text: string, slotDetails: Slot) =>
-  text.replace(SLOT_REGEXP, (match, inner) => {
-    if (inner.match(slotDetails.name)) {
-      return slotDetails.name;
-    }
+export const removeSlotRefFromInput = (text: string, slotDetails: Slot): string =>
+  text.replace(SLOT_REGEXP, (match, inner) => (inner.match(slotDetails.name) ? slotDetails.name : match));
 
-    return match;
-  });
+export const removeBuiltInPrefix = (name: string): string => (name.includes('.') ? name.split('.')[1] : name);
 
-export const removeBuiltInPrefix = (name: string) => {
-  let newName = name;
-  if (name.includes('.')) {
-    // eslint-disable-next-line prefer-destructuring
-    newName = name.split('.')[1];
-  }
-  return newName;
-};
+export const inferIntentType: {
+  <T extends Intent['slots']>(intent: Omit<Intent, 'slots'> & { slots: T }): T extends Normalized<ChatIntentSlot> ? ChatIntent : VoiceIntent;
+  <T extends Intent['slots']>(intent: Omit<Partial<Intent>, 'slots'> & { slots: T }): T extends Normalized<ChatIntentSlot>
+    ? Partial<ChatIntent>
+    : Partial<VoiceIntent>;
+} = (intent: any): any => intent;
+
+export const inferIntentSlotsType = <T extends IntentSlot>(slots: {
+  byKey: Record<string, T>;
+  allKeys: string[];
+}): T extends Record<string, ChatIntentSlot> ? Normalized<ChatIntentSlot> : Normalized<VoiceIntentSlot> => slots as any;
+
+export const inferIntentSlotType: {
+  <T extends IntentSlotDialog>(slot: Omit<IntentSlotDialog, 'dialog'> & { dialog: T }): T extends ChatIntentSlotDialog
+    ? ChatIntentSlot
+    : VoiceIntentSlot;
+  <T extends IntentSlotDialog>(slot: Omit<Partial<IntentSlotDialog>, 'dialog'> & { dialog: T }): T extends ChatIntentSlotDialog
+    ? Partial<ChatIntentSlot>
+    : Partial<VoiceIntentSlot>;
+} = (slot: any): any => slot;

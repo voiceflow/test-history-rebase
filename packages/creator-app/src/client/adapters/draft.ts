@@ -1,8 +1,7 @@
+import { Adapters } from '@voiceflow/realtime-sdk';
 import cuid from 'cuid';
 import { RawDraftContentBlock, RawDraftContentState, RawDraftEntityRange } from 'draft-js';
 import _isString from 'lodash/isString';
-
-import { createSimpleAdapter } from './utils';
 
 export type VFDraftState = RawDraftContentState & { text: string };
 export type EntityMap = RawDraftContentState['entityMap'];
@@ -76,7 +75,7 @@ export const buildDraftJSContent = (content: VFContent, existingEntitiesMap?: En
   };
 };
 
-export const draftJSContentAdapter = createSimpleAdapter<VFDraftState, VFContent>(
+export const draftJSContentAdapter = Adapters.createSimpleAdapter<VFDraftState, VFContent>(
   (draftJSContent) =>
     draftJSContent
       ? draftJSContent.blocks

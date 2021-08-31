@@ -89,7 +89,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
             <Section isNested dividers={intentChecked} isDividerNested isDividerBottom>
               <Input
                 value={url}
-                onBlur={() => (isURL(url) ? onUpdate({ url }) : toast.error('URL is not valid, please enter valid link'))}
+                onBlur={() => (!url || isURL(url) ? onUpdate({ url }) : toast.error('URL is not valid, please enter valid link'))}
                 onChange={getTargetValue(setUrl)}
                 placeholder="Enter URL"
                 rightAction={

@@ -10,6 +10,16 @@ export interface Normalized<T> {
   allKeys: string[];
 }
 
+export interface RemoveNormalizedByKey {
+  <T>(normalized: Normalized<T>, targetKey: string): Normalized<T>;
+  <T extends Normalized<any>>(normalized: T, targetKey: string): T;
+}
+
+export interface GetNormalizedByKey {
+  <T>({ byKey }: Normalized<T>, key: string): T;
+  <T extends Normalized<any>>({ byKey }: T, key: string): T extends Normalized<infer R> ? R : never;
+}
+
 export const createEmptyNormalized = (): Normalized<any> => ({ byKey: {}, allKeys: [] });
 export const EMPTY = createEmptyNormalized();
 
@@ -52,7 +62,7 @@ export const normalize = <T extends ObjectWithId | unknown>(items: T[], getKey?:
 
 export const denormalize = <T>({ allKeys, byKey }: Normalized<T>) => allKeys.map((key) => byKey[key]);
 
-export const getNormalizedByKey = <T>({ byKey }: Normalized<T>, key: string) => byKey[key];
+export const getNormalizedByKey: GetNormalizedByKey = <T>({ byKey }: Normalized<T>, key: string) => byKey[key];
 
 export const getAllNormalizedByKeys = <T>({ byKey }: Normalized<T>, keys: string[]) => keys.map((key) => byKey[key]);
 
@@ -92,7 +102,7 @@ export const addAllNormalizedByKeys = <T extends ObjectWithId | unknown, K exten
   };
 };
 
-export const removeNormalizedByKey = <T>({ allKeys, byKey }: Normalized<T>, targetKey: string): Normalized<T> => {
+export const removeNormalizedByKey: RemoveNormalizedByKey = <T>({ allKeys, byKey }: Normalized<T>, targetKey: string): Normalized<T> => {
   const filteredKeys = withoutValue(allKeys, targetKey);
 
   return {

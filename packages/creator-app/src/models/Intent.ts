@@ -1,1 +1,12 @@
-export type { Intent, IntentInput, IntentSlot, IntentSlotDialog } from '@voiceflow/realtime-sdk';
+export type {
+  ChatIntent,
+  ChatIntentSlot,
+  ChatIntentSlotDialog,
+  Intent,
+  IntentInput,
+  IntentSlot,
+  IntentSlotDialog,
+  PlatformIntent,
+  VoiceIntent,
+  VoiceIntentSlot,
+} from '@voiceflow/realtime-sdk';

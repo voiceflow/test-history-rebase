@@ -9,7 +9,7 @@ import { PluginType, withPlugins } from './plugins';
 import { Editor } from './types';
 
 export { default as EditorAPI } from './editorAPI';
-export type { PluginsOptions } from './plugins';
+export type { PluginsOptions, VariableItem } from './plugins';
 export { DEFAULT_PLUGINS_OPTIONS, PluginType } from './plugins';
 export { default as Prism, PrismLanguage, PrismVariablesProperty } from './prism';
 export * from './types';

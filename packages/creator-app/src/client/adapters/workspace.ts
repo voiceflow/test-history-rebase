@@ -1,11 +1,11 @@
-import { DBWorkspace, Workspace, WorkspaceActivationState } from '@/models';
+import { Adapters } from '@voiceflow/realtime-sdk';
 
-import { AdapterNotImplementedError, createAdapter } from './utils';
+import { DBWorkspace, Workspace, WorkspaceActivationState } from '@/models';
 
 export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];
 export const WARNING_STATES = ['past_due'];
 
-const workspaceAdapter = createAdapter<DBWorkspace, Workspace>(
+const workspaceAdapter = Adapters.createAdapter<DBWorkspace, Workspace>(
   ({
     boards,
     created,
@@ -49,7 +49,7 @@ const workspaceAdapter = createAdapter<DBWorkspace, Workspace>(
     };
   },
   () => {
-    throw new AdapterNotImplementedError();
+    throw new Adapters.AdapterNotImplementedError();
   }
 );
 

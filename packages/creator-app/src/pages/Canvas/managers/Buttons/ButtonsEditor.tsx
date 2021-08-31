@@ -1,9 +1,7 @@
-import { Node } from '@voiceflow/base-types';
-import cuid from 'cuid';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
-import { BlockType } from '@/constants';
+import * as Documentation from '@/config/documentation';
 import * as Creator from '@/ducks/creator';
 import { useSelector } from '@/hooks';
 import { NodeData } from '@/models';
@@ -15,13 +13,7 @@ import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { chainVoid } from '@/utils/functional';
 
 import { ButtonsListItem } from './components';
-import { NODE_CONFIG } from './constants';
-
-const factory = (): Node.Buttons.Button => ({
-  id: cuid.slug(),
-  name: '',
-  actions: [Node.Buttons.ButtonAction.PATH],
-});
+import { factory, NODE_CONFIG } from './constants';
 
 const ButtonsEditor: NodeEditor<NodeData.Buttons> = ({ data, nodeID, onChange, pushToPath }) => {
   const engine = React.useContext(EngineContext);
@@ -41,12 +33,12 @@ const ButtonsEditor: NodeEditor<NodeData.Buttons> = ({ data, nodeID, onChange, p
         </>
       }
       factory={factory}
-      tutorial={{ content: <div />, blockType: BlockType.BUTTONS }}
       onRemove={(_, index) => engine?.port.remove(focusedNode.ports.out[index])}
       onReorder={(from, to) => engine?.port.reorder(focusedNode.id, from + 1, to + 1)}
       renderMenu={() => <OverflowMenu placement="top-end" options={[noReplyOption, buttonLayoutOption]} />}
       onChangeItems={(items) => onChange({ buttons: items })}
       itemComponent={ButtonsListItem}
+      howItWorksLink={Documentation.BUTTONS_STEP}
       extraItemProps={{ pushToPath }}
       getControlOptions={({ onAdd, isMaxMatches, scrollToBottom }) => [
         {

@@ -1,4 +1,4 @@
-import { usePersistFunction } from '@voiceflow/ui';
+import { Link, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, {
@@ -32,9 +32,10 @@ export interface ListEditorContentProps<T, F extends any[] = [], E = {}> {
   maxItems?: number;
   onRemove?: (value: T, index: number) => void;
   onReorder?: (dragIndex: number, hoverIndex: number) => void;
-  renderMenu: (options: MapManagedAPI<T, F> & ContentRenderOptions) => React.ReactNode;
+  renderMenu?: (options: MapManagedAPI<T, F> & ContentRenderOptions) => React.ReactNode;
   itemComponent: ListItemComponent<T, E>;
   onChangeItems: (items: T[]) => void;
+  howItWorksLink?: string;
   extraItemProps?: E;
   getControlOptions: (options: MapManagedAPI<T, F> & ContentRenderOptions) => ControlOptions[];
 }
@@ -52,6 +53,7 @@ const ListEditorContent = <T, F extends any[] = [], E = {}>({
   onChangeItems,
   itemComponent,
   extraItemProps,
+  howItWorksLink,
   getControlOptions,
 }: React.PropsWithChildren<ListEditorContentProps<T, F, E>>): React.ReactElement<any, any> => {
   const [isDragging, toggleDragging] = useToggle(false);
@@ -63,10 +65,12 @@ const ListEditorContent = <T, F extends any[] = [], E = {}>({
     <Content
       footer={(options) => (
         <Controls
-          menu={renderMenu({ ...mapManagedApi, ...options })}
+          menu={renderMenu?.({ ...mapManagedApi, ...options })}
           options={getControlOptions({ ...mapManagedApi, ...options })}
           tutorial={tutorial}
-        />
+        >
+          {!!howItWorksLink && <Link href={howItWorksLink}>How it Works</Link>}
+        </Controls>
       )}
       hideFooter={isDragging}
     >

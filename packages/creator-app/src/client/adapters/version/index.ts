@@ -2,8 +2,8 @@ import { Version as AlexaVersion } from '@voiceflow/alexa-types';
 import { Version as GeneralVersion } from '@voiceflow/general-types';
 import { Version as GoogleVersion } from '@voiceflow/google-types';
 import { PlatformType } from '@voiceflow/internal';
+import { Adapters } from '@voiceflow/realtime-sdk';
 
-import { AdapterNotImplementedError, createAdapter } from '@/client/adapters/utils';
 import { Version } from '@/models';
 
 import alexaVersionAdapter from './alexa';
@@ -14,7 +14,7 @@ export type AnyDBVersion = AlexaVersion.AlexaVersion | GeneralVersion.GeneralVer
 
 type AnyVersion = Version<AlexaVersion.AlexaVersionData> | Version<GeneralVersion.GeneralVersionData> | Version<GoogleVersion.GoogleVersionData>;
 
-const versionAdapter = createAdapter<AnyDBVersion, AnyVersion, [{ platform: PlatformType }]>(
+const versionAdapter = Adapters.createAdapter<AnyDBVersion, AnyVersion, [{ platform: PlatformType }]>(
   (version, { platform = PlatformType.ALEXA }) => {
     switch (platform) {
       case PlatformType.ALEXA:
@@ -27,7 +27,7 @@ const versionAdapter = createAdapter<AnyDBVersion, AnyVersion, [{ platform: Plat
     }
   },
   () => {
-    throw new AdapterNotImplementedError();
+    throw new Adapters.AdapterNotImplementedError();
   }
 );
 export default versionAdapter;

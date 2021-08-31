@@ -5,6 +5,7 @@ import { PrismLanguage } from '../prism';
 import type { DataProcessor, DataProcessorMiddleware, Plugin, ProcessorNext, TextProcessor, TextProcessorMiddleware } from './types';
 
 export interface BasePluginEditor {
+  processText(text: string): Descendant[];
   prismLanguages(): PrismLanguage[];
   registerPrismLanguage(language: PrismLanguage): void;
   registerTextProcessingMiddleware: (middleware: TextProcessorMiddleware) => void;
@@ -12,11 +13,13 @@ export interface BasePluginEditor {
 }
 
 export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Editor) => {
-  const { insertData: originalInsertData, insertText: originalInsertText } = editor;
+  const { onChange: originalOnChange, insertData: originalInsertData, insertText: originalInsertText } = editor;
 
   const PRISM_LANGUAGES: PrismLanguage[] = [];
 
   const defaultProcessor = (value: Descendant[]) => value;
+
+  let prevContentEmpty: null | boolean = null;
 
   const processor: { text: (text: string) => ProcessorNext; data: (data: DataTransfer) => ProcessorNext } = {
     text: () => defaultProcessor,
@@ -52,6 +55,26 @@ export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Edi
 
   const isNodesEqual = (nodes: Node[], processedNodes: Node[]) =>
     nodes.length === processedNodes.length && nodes.every((node, index) => node === processedNodes[index]);
+
+  editor.onChange = () => {
+    originalOnChange();
+
+    if (prevContentEmpty === false && EditorAPI.isNewState(editor.children)) {
+      prevContentEmpty = true;
+
+      requestAnimationFrame(() => {
+        const marks = EditorAPI.marks(editor);
+
+        if (!marks) return;
+
+        EditorAPI.withoutNormalizing(editor, () => {
+          Object.keys(marks).forEach((mark) => EditorAPI.removeMark(editor, mark));
+        });
+      });
+    } else {
+      prevContentEmpty = EditorAPI.isNewState(editor.children);
+    }
+  };
 
   editor.insertText = (text: string) => {
     // insert text s called on paste and every keypress, so skipping keypress
@@ -103,6 +126,8 @@ export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Edi
   };
 
   const pluginsEditor: BasePluginEditor = {
+    processText: (text) => rooTextProcessor([{ text }], text),
+
     prismLanguages: () => PRISM_LANGUAGES,
 
     registerPrismLanguage: (language: PrismLanguage) => {

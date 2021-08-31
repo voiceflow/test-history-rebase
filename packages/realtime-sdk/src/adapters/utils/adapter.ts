@@ -19,12 +19,12 @@ export interface BidirectionalAdapter<I, O, T extends any[], R extends any[]> {
 
 export type AnyBidirectionalAdapter = BidirectionalAdapter<any, any, any[], any[]>;
 
-export type BidirectionalMultiadapter<I, O, T extends any[], R extends any[]> = BidirectionalAdapter<I, O, T, R> & {
+export type BidirectionalMultiAdapter<I, O, T extends any[], R extends any[]> = BidirectionalAdapter<I, O, T, R> & {
   mapFromDB: Adapter<I[], T, O[]>;
   mapToDB: Adapter<O[], R, I[]>;
 };
 
-export type AnyBidirectionalMultiadapter = BidirectionalMultiadapter<any, any, any[], any[]>;
+export type AnyBidirectionalMultiAdapter = BidirectionalMultiAdapter<any, any, any[], any[]>;
 
 export const createSimpleAdapter = <I, O, T extends any[] = [], R extends any[] = []>(
   fromDB: Adapter<I, T, O>,
@@ -55,7 +55,7 @@ export const createAdapter = <I, O, T extends any[] = [], R extends any[] = []>(
   fromDB: Adapter<I, T, O>,
   toDB: Adapter<O, R, I>,
   options: AdapterOptions = {}
-): BidirectionalMultiadapter<I, O, T, R> => ({
+): BidirectionalMultiAdapter<I, O, T, R> => ({
   ...createSimpleAdapter<I, O, T, R>(fromDB, toDB, options),
   mapFromDB: (dbValues, ...args) => {
     options.debug?.('adapter called with values from DB', dbValues);

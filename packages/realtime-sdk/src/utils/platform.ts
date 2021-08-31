@@ -5,19 +5,25 @@ import { PlatformType } from '@voiceflow/internal';
 
 import { DISTINCT_PLATFORMS, DistinctPlatform } from '../constants';
 import { AnyVoice } from '../models';
+import { Nullish } from '../types';
 import { isDistinctPlatform } from './typeGuards';
 
 export const createPlatformSelector: {
-  <T>(platformValues: Record<PlatformType, T>, defaultValue?: T): (platform: PlatformType) => T;
-  <T>(platformValues: Partial<Record<PlatformType, T>>, defaultValue: T): (platform: PlatformType) => T;
+  <T>(platformValues: Record<PlatformType, T>, defaultValue?: T): (platform?: Nullish<PlatformType>) => T;
+  <T>(platformValues: Partial<Record<PlatformType, T>>, defaultValue: T): (platform?: Nullish<PlatformType>) => T;
 } =
   <T>(platformValues: Partial<Record<PlatformType, T>>, defaultValue: T | undefined) =>
-  (platform: PlatformType) => {
-    const value = platform in platformValues ? platformValues[platform] : defaultValue;
+  (platform?: Nullish<PlatformType>) => {
+    const value = platform && platform in platformValues ? platformValues[platform] : defaultValue;
     if (value == null) throw new Error('no value for platform');
 
     return value;
   };
+
+export const createAdvancedPlatformSelector =
+  <T extends Partial<Record<PlatformType, any>>, D = undefined>(platformValues: T, defaultValue?: D) =>
+  <P extends PlatformType>(platform: P): P extends keyof T ? T[P] : D =>
+    createPlatformSelector(platformValues, defaultValue)(platform);
 
 export const getPlatformValue: {
   <T>(platform: PlatformType, platformValues: Record<PlatformType, T>, defaultValue?: T): T;

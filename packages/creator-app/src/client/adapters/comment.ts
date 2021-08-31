@@ -1,8 +1,8 @@
+import { Adapters } from '@voiceflow/realtime-sdk';
+
 import { Comment, DBComment } from '@/models';
 
-import { createAdapter } from './utils';
-
-const commentAdapter = createAdapter<DBComment, Comment>(
+const commentAdapter = Adapters.createAdapter<DBComment, Comment>(
   ({ comment_id, thread_id, creator_id, created_at, ...comment }: DBComment) => ({
     ...comment,
     id: comment_id,

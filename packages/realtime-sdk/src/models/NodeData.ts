@@ -2,6 +2,7 @@
 import { Node as AlexaNode } from '@voiceflow/alexa-types';
 import { SlotMapping } from '@voiceflow/api-sdk';
 import { Button, Node as BaseNode } from '@voiceflow/base-types';
+import { Types as ChatTypes } from '@voiceflow/chat-types';
 import { Node as GeneralNode } from '@voiceflow/general-types';
 
 import { BlockType, BlockVariant, DistinctPlatform, RepromptType } from '../constants';
@@ -48,15 +49,22 @@ export namespace NodeData {
     permissions: string[];
   }
 
-  export interface NoMatch {
+  export interface BaseNoMatches {
     type: BaseNode.Utils.NoMatchType | null;
     pathName: string;
   }
 
-  export interface NoMatchPrompt extends NoMatch {
+  export interface VoiceNoMatches extends BaseNoMatches {
     randomize: boolean;
-    reprompts: SpeakData[];
+    reprompts: VoicePrompt[];
   }
+
+  export interface ChatNoMatches extends BaseNoMatches {
+    randomize: boolean;
+    reprompts: ChatTypes.Prompt[];
+  }
+
+  export type NoMatches = VoiceNoMatches | ChatNoMatches;
 
   export interface InteractionChoice {
     id: string;
@@ -66,7 +74,7 @@ export namespace NodeData {
 
   export interface Interaction {
     name: string;
-    else: NoMatchPrompt;
+    else: NoMatches;
     choices: Record<DistinctPlatform, InteractionChoice>[];
     reprompt: Reprompt | null;
     buttons: Button.AnyButton[] | null;
@@ -78,7 +86,7 @@ export namespace NodeData {
   }
 
   export interface Prompt {
-    noMatchReprompt: NoMatchPrompt;
+    noMatchReprompt: NoMatches;
     reprompt: Reprompt | null;
     buttons: Button.AnyButton[] | null;
   }
@@ -93,13 +101,17 @@ export namespace NodeData {
     }
   }
 
-  export interface Reprompt {
+  export interface VoicePrompt {
+    id: string;
     type: RepromptType;
-    content: string;
+    desc?: string | null;
     audio?: string | null;
     voice?: string | null;
-    desc?: string | null;
+    content: string;
   }
+
+  // TODO: refactor node data types to be platform specific instead of unions
+  export type Reprompt = VoicePrompt | ChatTypes.Prompt;
 
   export interface Capture {
     slot: string | null;
@@ -182,12 +194,11 @@ export namespace NodeData {
 
   export interface If {
     expressions: Expression[];
-    noMatch: NoMatch;
   }
 
   export interface IfV2 {
     expressions: ExpressionData[];
-    noMatch: NoMatch;
+    noMatch: BaseNoMatches;
   }
 
   export interface Directive {
@@ -286,7 +297,7 @@ export namespace NodeData {
   export interface Exit {}
 
   export interface Buttons extends Omit<GeneralNode.Buttons.StepData, 'else' | 'reprompt'> {
-    else: NoMatchPrompt;
+    else: NoMatches;
     reprompt: Reprompt | null;
   }
 

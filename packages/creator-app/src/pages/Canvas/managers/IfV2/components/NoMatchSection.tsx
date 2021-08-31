@@ -8,7 +8,7 @@ import { getNoMatchSectionLabel } from '@/pages/Canvas/managers/utils';
 import { IFV2ManagerEditors } from '../subeditors';
 
 export interface NoMatchSectionProps {
-  noMatch: NodeData.NoMatch;
+  noMatch: NodeData.BaseNoMatches;
   pushToPath?: (path: { type: string; label: string }) => void;
 }
 

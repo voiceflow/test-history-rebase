@@ -20,4 +20,4 @@ export const jsonAdapter = Realtime.Adapters.createAdapter<string, any>(
   (value) => JSON.stringify(value)
 );
 
-export const jsonAdapterCreator = <T>(): Realtime.Adapters.BidirectionalMultiadapter<string, T, [], []> => jsonAdapter;
+export const jsonAdapterCreator = <T>(): Realtime.Adapters.BidirectionalMultiAdapter<string, T, [], []> => jsonAdapter;

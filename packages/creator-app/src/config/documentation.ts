@@ -26,7 +26,9 @@ export const SET_STEP_VIDEO = 'https://www.youtube.com/embed/6xgr-7GPZzU';
 export const COMMAND_STEP_VIDEO = 'https://www.youtube.com/watch?v=piU_PTL1wBQ&feature=emb_title';
 
 // TODO: this document hasn't been written yet
+export const TEXT_STEP = 'https://docs.voiceflow.com/#/platform/steps/response-steps/response?id=text-step';
 export const VISUALS_STEP = 'https://docs.voiceflow.com/#/platform/steps/response-steps/response?id=visuals-step';
+export const BUTTONS_STEP = 'https://docs.voiceflow.com/#/platform/steps/input-steps/user-input?id=buttons-step';
 
 // TODO: we don't have a dedicated pages for these anymore
 export const CAPTURE_STEP = 'https://docs.voiceflow.com/#/platform/steps/logic-steps/logic';

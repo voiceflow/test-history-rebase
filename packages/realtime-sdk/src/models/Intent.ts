@@ -1,30 +1,54 @@
+import { IntentInput, IntentSlot as BaseIntentSlot, IntentSlotDialog as BaseIntentSlotDialog } from '@voiceflow/api-sdk';
+import { Types as ChatTypes } from '@voiceflow/chat-types';
 import { PlatformType } from '@voiceflow/internal';
+import { Types as VoiceTypes } from '@voiceflow/voice-types';
 
-import { Normalized } from '../types';
+import { Normalized } from '../utils/normalized';
 
-export interface IntentInput {
-  text: string;
-  voice?: string;
-  slots?: string[];
+export type { BaseIntentSlot, BaseIntentSlotDialog, IntentInput };
+
+export interface VoiceIntentSlotDialog<V = string> extends BaseIntentSlotDialog {
+  prompt: VoiceTypes.IntentPrompt<V>[];
+  confirm: VoiceTypes.IntentPrompt<V>[];
 }
 
-export interface IntentSlotDialog {
-  confirm: IntentInput[];
-  utterances: IntentInput[];
-  confirmEnabled: boolean;
-  prompt: IntentInput[];
+export interface ChatIntentSlotDialog extends BaseIntentSlotDialog {
+  prompt: ChatTypes.Prompt[];
+  confirm: ChatTypes.Prompt[];
 }
 
-export interface IntentSlot {
-  id: string;
-  dialog: IntentSlotDialog;
-  required: boolean;
+export interface VoiceIntentSlot<V = string> extends BaseIntentSlot {
+  dialog: VoiceIntentSlotDialog<V>;
 }
 
-export interface Intent {
+export interface ChatIntentSlot extends BaseIntentSlot {
+  dialog: ChatIntentSlotDialog;
+}
+
+export interface BaseIntent {
   id: string;
   name: string;
-  slots: Normalized<IntentSlot>;
+  slots: Normalized<BaseIntentSlot>;
   inputs: IntentInput[];
   platform: PlatformType;
 }
+
+export interface VoiceIntent<V = string> extends BaseIntent {
+  slots: Normalized<VoiceIntentSlot<V>>;
+}
+
+export interface ChatIntent extends BaseIntent {
+  slots: Normalized<ChatIntentSlot>;
+}
+
+export interface IntentPerPlatform {
+  [PlatformType.CHATBOT]: ChatIntent;
+}
+
+export type PlatformIntent<T extends PlatformType> = T extends keyof IntentPerPlatform ? IntentPerPlatform[T] : VoiceIntent;
+
+export type Intent = ChatIntent | VoiceIntent;
+
+export type IntentSlot = VoiceIntentSlot | ChatIntentSlot;
+
+export type IntentSlotDialog = VoiceIntentSlotDialog | ChatIntentSlotDialog;

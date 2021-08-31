@@ -1,11 +1,10 @@
 import { Project as AlexaProject } from '@voiceflow/alexa-types';
-import { Version as BaseVersion } from '@voiceflow/base-types';
 import { PlatformType } from '@voiceflow/internal';
+import { Adapters } from '@voiceflow/realtime-sdk';
 import { Version as VoiceVersion } from '@voiceflow/voice-types';
 import { batch } from 'react-redux';
 
 import client from '@/client';
-import intentAdapter from '@/client/adapters/intent';
 import projectAdapter, { AnyProjectData, AnyProjectMemberData, productAdapter } from '@/client/adapters/project';
 import slotAdapter from '@/client/adapters/slot';
 import versionAdapter, { AnyDBVersion } from '@/client/adapters/version';
@@ -50,24 +49,21 @@ export const loadVersionByID =
 
 export const activateVersion =
   (versionID: string, diagramID?: string): Thunk<AnyVersion> =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const platform = Project.activePlatformSelector(state);
-
-    const [dbVersion] = await Promise.all([
-      client.api.version.get(versionID) as Promise<AnyDBVersion>,
-      dispatch(Diagram.loadDiagrams(versionID)),
-    ] as const);
+  async (dispatch) => {
+    const [dbVersion] = await Promise.all([client.api.version.get<AnyDBVersion>(versionID), dispatch(Diagram.loadDiagrams(versionID))] as const);
 
     // not a dependency for project to load
     dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));
 
     const dbProject = await client.api.project.get<AnyProjectData, AnyProjectMemberData>(dbVersion.projectID);
 
+    const platform = dbProject.platform as PlatformType;
+
     const project = projectAdapter.fromDB(dbProject);
-    const version = versionAdapter.fromDB(dbVersion, { platform: dbProject.platform as PlatformType });
+    const version = versionAdapter.fromDB(dbVersion, { platform });
     const slots = slotAdapter.mapFromDB(dbVersion.platformData.slots);
-    const intents = intentAdapter(platform).mapFromDB(dbVersion.platformData.intents);
+    const intents = Adapters.getPlatformIntentAdapter<any>(platform).mapFromDB(dbVersion.platformData.intents, { platform });
+
     const products =
       'products' in dbProject.platformData
         ? productAdapter.mapFromDB(Object.values((dbProject.platformData as AlexaProject.AlexaProjectData).products))
@@ -175,9 +171,11 @@ export const saveIntentsAndSlots = (): Thunk => async (_, getState) => {
   Errors.assertVersionID(versionID);
 
   const slots = slotAdapter.mapToDB(Slot.allSlotsSelector(state));
-  const intents = intentAdapter(platform).mapToDB(Intent.allIntentsSelector(state));
+  const intents = Adapters.getPlatformIntentAdapter(platform).mapToDB(
+    Intent.allIntentsSelector(state) as any /* TODO: find a way to fix this typing, update adapters */
+  );
 
-  await client.api.version.updatePlatformData<BaseVersion.BaseVersionData>(versionID, { slots, intents } as any);
+  await client.api.version.updatePlatformData(versionID, { slots, intents });
 };
 
 export const saveLocales =

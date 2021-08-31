@@ -1,4 +1,4 @@
-import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
+import { READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
 import { slate } from '@voiceflow/internal';
 import { Descendant, Editor, Element, Range, Text, Transforms } from 'slate';
 
@@ -30,6 +30,7 @@ export interface VariablesOptions {
   creatable?: boolean;
   withSlots?: boolean;
   searchable?: boolean;
+  fromDraftJS?: boolean;
 }
 
 export interface VariablesEditorAPI {
@@ -43,19 +44,21 @@ export const withVariablesPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor
   editor.registerPrismLanguage(PrismLanguage.VARIABLES);
 
   editor.registerTextProcessingMiddleware(() => (next) => (nodes) => {
-    const variables = editor.pluginsOptions[PluginType.VARIABLES]?.variables;
+    const { variables, fromDraftJS } = editor.pluginsOptions[PluginType.VARIABLES] ?? {};
 
     const variablesNameMap = variables
       ? Object.values(variables.byKey).reduce<Record<string, VariableItem>>((acc, variable) => Object.assign(acc, { [variable.name]: variable }), {})
       : null;
 
     return nodes.flatMap((node) => {
-      if (!Text.isText(node) || !variablesNameMap) {
+      if (!Text.isText(node) || (!variablesNameMap && !fromDraftJS)) {
         return next([node]);
       }
 
-      return matchAndProcessTextNodeToElement({ type: ElementType.VARIABLE, node, next, regexp: READABLE_VARIABLE_REGEXP }, (match, textNode) => {
-        const variable = variablesNameMap[match[1]];
+      const regexp = fromDraftJS ? SLOT_REGEXP : READABLE_VARIABLE_REGEXP;
+
+      return matchAndProcessTextNodeToElement({ type: ElementType.VARIABLE, node, next, regexp }, (match, textNode) => {
+        const variable = fromDraftJS ? { id: match[2], name: match[1], isSlot: match[1] !== match[2] } : variablesNameMap?.[match[1]] ?? '';
 
         // skip if not exists
         if (!variable) {
@@ -87,8 +90,15 @@ export const withVariablesPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor
       return;
     }
 
+    const { variables, withSlots } = options;
+
     // do nothing if variable exists
-    if (getNormalizedByKey(options.variables, node.id)) {
+    if (getNormalizedByKey(variables, node.id)) {
+      return;
+    }
+
+    // check if matched by name
+    if (!withSlots && variables.allKeys.some((id) => getNormalizedByKey(variables, id).name === node.name)) {
       return;
     }
 

@@ -10,6 +10,7 @@ import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { getSections, MenuStep } from '@/pages/Skill/components/DesignMenu/components/Steps/constants';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
+import { isChatbotPlatform } from '@/utils/typeGuards';
 
 import { Container, Select } from './components';
 
@@ -39,7 +40,7 @@ const Spotlight = () => {
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
           if (!textStep.isEnabled && step.type === BlockType.TEXT) return false;
           if (!buttonsStep.isEnabled && step.type === BlockType.BUTTONS) return false;
-          if (buttonsStep.isEnabled && step.type === BlockType.CHOICE) return false;
+          if (buttonsStep.isEnabled && isChatbotPlatform(platform) && step.type === BlockType.CHOICE) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
           return true;
         }),

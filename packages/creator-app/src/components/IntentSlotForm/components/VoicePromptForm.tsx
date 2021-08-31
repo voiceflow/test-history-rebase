@@ -12,14 +12,15 @@ interface VoicePromptFormProps {
 }
 
 const VoicePromptForm: React.FC<VoicePromptFormProps> = ({ slots, prompt: [prompt], onChange, placeholder }) => {
-  const { text, voice } = prompt;
+  const voice = prompt?.voice ?? '';
+  const text = prompt?.text ?? '';
 
   return (
     <SSMLWithSlots
       icon={null}
-      voice={voice ?? ''}
+      voice={voice}
       slots={slots}
-      value={text ?? ''}
+      value={text}
       onBlur={(ssmValue) => onChange([{ ...ssmValue, voice }])}
       placeholder={placeholder}
       onChangeVoice={(voice) => onChange([{ ...prompt, voice }])}

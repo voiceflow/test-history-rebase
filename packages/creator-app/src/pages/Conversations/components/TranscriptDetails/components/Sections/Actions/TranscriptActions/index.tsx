@@ -35,7 +35,7 @@ const TranscriptActions: React.FC = () => {
   const handleSavedClick = () => {
     if (!currentTranscriptID) return;
 
-    if (isReviewed) {
+    if (isSaved) {
       removeTag(currentTranscriptID, SystemTag.SAVED);
     } else {
       addTag(currentTranscriptID, SystemTag.SAVED);

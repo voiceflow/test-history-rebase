@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.469.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.469.1...@voiceflow/creator-app@1.469.2) (2021-08-31)
+
+
+### Bug Fixes
+
+* placeholder text overflow (VF-1635) ([64c3ef8](https://github.com/voiceflow/creator-app/commit/64c3ef85f6603ef054a66fc0f678d692d7913cea))
+
+
+
+
+
 ## [1.469.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.469.0...@voiceflow/creator-app@1.469.1) (2021-08-31)
 
 

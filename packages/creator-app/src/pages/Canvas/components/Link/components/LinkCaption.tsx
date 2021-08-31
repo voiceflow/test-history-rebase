@@ -1,4 +1,4 @@
-import { Box, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, useDidUpdateEffect, usePersistFunction, useTeardown } from '@voiceflow/ui';
 import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
@@ -39,6 +39,7 @@ const LinkCaption: React.FC<LinkCaptionProps> = ({
   onToggleEditing,
 }) => {
   const textRef = React.useRef<EditableTextAPI | null>(null);
+  const savedRef = React.useRef(false);
   const linkEntity = React.useContext(LinkEntityContext)!;
 
   const center = instance.getCenter();
@@ -55,13 +56,17 @@ const LinkCaption: React.FC<LinkCaptionProps> = ({
     }
   };
 
-  const onSave = () =>
-    onChange(
+  const onSave = async () => {
+    await onChange(
       !value ? null : { value, width: instance.captionContainerRef.current!.clientWidth, height: instance.captionContainerRef.current!.clientHeight }
     );
 
+    savedRef.current = true;
+  };
+
   const onEnterPress = async () => {
     await onSave();
+
     onToggleEditing(false);
   };
 
@@ -99,6 +104,14 @@ const LinkCaption: React.FC<LinkCaptionProps> = ({
       setValue(linkValue);
     }
   }, [linkValue]);
+
+  const persistedSave = usePersistFunction(onSave);
+
+  useTeardown(() => {
+    if (!savedRef.current) {
+      persistedSave();
+    }
+  });
 
   return (
     <foreignObject

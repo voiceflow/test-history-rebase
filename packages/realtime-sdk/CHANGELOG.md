@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.10.0...@voiceflow/realtime-sdk@1.10.1) (2021-08-31)
+
+
+### Bug Fixes
+
+* **realtime-sdk:** ifv2 adapters no match type default when null (VF-1626) ([#4010](https://github.com/voiceflow/creator-app/issues/4010)) ([1476f53](https://github.com/voiceflow/creator-app/commit/1476f53015e35b641cfeef261bf47c082f6db5df))
+
+
+
+
+
 # [1.10.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.9.1...@voiceflow/realtime-sdk@1.10.0) (2021-08-28)
 
 

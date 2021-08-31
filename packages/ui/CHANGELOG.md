@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.12.2...@voiceflow/ui@1.13.0) (2021-08-31)
+
+
+### Features
+
+* buttons/text prompt ([#4000](https://github.com/voiceflow/creator-app/issues/4000)) ([1c2f5af](https://github.com/voiceflow/creator-app/commit/1c2f5afa4344076730c58a8358fe0507a68e29d7))
+
+
+
+
+
 ## [1.12.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.12.1...@voiceflow/ui@1.12.2) (2021-08-27)
 
 **Note:** Version bump only for package @voiceflow/ui

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.469.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.469.2...@voiceflow/creator-app@1.469.3) (2021-09-01)
+
+
+### Bug Fixes
+
+* flow delete switch crash (VF-1589) ([#4026](https://github.com/voiceflow/creator-app/issues/4026)) ([b6490cd](https://github.com/voiceflow/creator-app/commit/b6490cdaf5ccb4cb6a7c6901456fb52e78670960))
+* remove chat ff (VF-1636) ([#4021](https://github.com/voiceflow/creator-app/issues/4021)) ([e8ee90d](https://github.com/voiceflow/creator-app/commit/e8ee90d822e4a6d1ae053e45360d3b7d55ba3f2f))
+
+
+### Reverts
+
+* Revert "chore: update scopes" ([464916f](https://github.com/voiceflow/creator-app/commit/464916f7890cb3672ff905736af129abf57c8157))
+
+
+
+
+
 ## [1.469.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.469.1...@voiceflow/creator-app@1.469.2) (2021-08-31)
 
 

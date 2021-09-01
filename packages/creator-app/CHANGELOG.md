@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.470.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.0...@voiceflow/creator-app@1.470.1) (2021-09-01)
+
+
+### Bug Fixes
+
+* **creator-app:** changes project creation to use platform type as channel (VF-1643) ([#4029](https://github.com/voiceflow/creator-app/issues/4029)) ([782f9e3](https://github.com/voiceflow/creator-app/commit/782f9e32202d667d5e1f74e5a7e5a4a92190abc3))
+* handle missing element instances (VF-1651) ([#4030](https://github.com/voiceflow/creator-app/issues/4030)) ([841c119](https://github.com/voiceflow/creator-app/commit/841c11935693bd051f0744bf21d0d9b3ac2da8d0))
+
+
+
+
+
 # [1.470.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.469.3...@voiceflow/creator-app@1.470.0) (2021-09-01)
 
 

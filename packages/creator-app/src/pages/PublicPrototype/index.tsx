@@ -1,6 +1,6 @@
 import { Button } from '@voiceflow/base-types';
 import { PlanType, PlatformType } from '@voiceflow/internal';
-import { FullSpinner, toast } from '@voiceflow/ui';
+import { DEVICE_INFO, FullSpinner, toast } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ import { Permission } from '@/config/permissions';
 import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useGuestPermission, useSetup, useToggle } from '@/hooks';
+import { useGuestPermission, useSetup, useToggle, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 
 import { Prototype } from './components';
@@ -24,26 +24,34 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
   const [isLoaded, toggleLoaded] = useToggle(false);
   const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings>({
     plan: PlanType.STARTER,
-    platform: PlatformType.GENERAL,
-    locales: [],
     layout: PrototypeDuck.PrototypeLayout.TEXT_DIALOG,
-    projectName: '',
-    hasPassword: false,
     buttons: Button.ButtonsLayout.STACKED,
+    locales: [],
+    platform: PlatformType.GENERAL,
+    hasPassword: false,
+    projectName: '',
   });
 
   const [isAuthenticated, setAuthenticated] = React.useState<boolean>(false);
+  const [trackingEvents] = useTrackingEvents();
 
   const [isAllowedPassword] = useGuestPermission(settings.plan, Permission.SHARE_PROTOTYPE_PASSWORD);
+
   const canUseSharedPassword = React.useMemo(() => isAllowedPassword && settings.hasPassword, [isAllowedPassword && settings]);
 
   useSetup(async () => {
     const { versionID } = match.params;
 
     try {
-      const prototypeLayout = await setupPublicPrototype(versionID);
+      const prototypeSettings = await setupPublicPrototype(versionID);
 
-      setSettings(prototypeLayout);
+      trackingEvents.trackPublicPrototypeView({
+        layout: prototypeSettings.layout,
+        device: DEVICE_INFO.platform ?? 'unknown',
+        versionID,
+      });
+
+      setSettings(prototypeSettings);
     } catch {
       toast.error("Prototype hasn't been shared or doesn't exist");
     }

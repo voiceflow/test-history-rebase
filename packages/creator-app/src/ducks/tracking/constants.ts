@@ -43,6 +43,8 @@ export enum EventName {
 
   PROTOTYPE_MANUAL_NAVIGATION = 'Manual Navigation',
 
+  PUBLIC_PROTOTYPE_VIEW = 'Share View Session',
+
   CANVAS_MENU_LOCK = 'Canvas Menu Lock',
   CANVAS_SPOTLIGHT_OPENED = 'Spotlight Opened',
   CANVAS_CONTROL_HELP_MENU = 'Canvas Control Help Menu',

@@ -2,8 +2,9 @@ import { Node } from '@voiceflow/base-types';
 
 import client from '@/client';
 import * as Prototype from '@/ducks/prototype';
-import { PrototypeMode } from '@/ducks/prototype/types';
+import { PrototypeLayout, PrototypeMode } from '@/ducks/prototype/types';
 import * as Recent from '@/ducks/recent';
+import { SyncThunk } from '@/store/types';
 
 import { EventName } from '../constants';
 import { ProjectEventInfo } from '../types';
@@ -45,3 +46,16 @@ export const trackProjectBlockPrototypeTestStart = createProjectEventTracker((op
 
   client.analytics.track(EventName.PROJECT_BLOCK_TEST_START, createProjectEventPayload(options, { debug, display, mode }));
 });
+
+export const trackPublicPrototypeView =
+  ({ versionID, ...data }: { device: string; layout: PrototypeLayout; versionID: string }): SyncThunk =>
+  () => {
+    client.analytics.track(EventName.PUBLIC_PROTOTYPE_VIEW, {
+      properties: {
+        ...data,
+        skill_id: versionID,
+        project_id: true,
+        workspace_id: true,
+      },
+    });
+  };

@@ -23,6 +23,8 @@ const DiagramsActions: React.FC = () => {
 
   const activeDiagram = activeDiagramID ? getDiagramByID(activeDiagramID) : null;
   const isOnlyRootDiagramActive = rootDiagramID === activeDiagramID;
+  const rootDiagramIsPreviousDiagram = rootDiagramID === previousDiagramID;
+  const dontRenderName = !rootDiagramIsPreviousDiagram && !getDiagramByID(previousDiagramID!);
 
   return (
     <BoxFlexCenter ml={4} overflow="hidden">
@@ -33,11 +35,11 @@ const DiagramsActions: React.FC = () => {
           <DiagramDivider />
           <DiagramName onClick={() => rootDiagramID && goToDiagramHistoryClear(rootDiagramID)}>Home</DiagramName>
 
-          {!!previousDiagramID && ![rootDiagramID, activeDiagramID].includes(previousDiagramID) && (
+          {!dontRenderName && !!previousDiagramID && ![rootDiagramID, activeDiagramID].includes(previousDiagramID) && (
             <>
               <DiagramDivider />
               <DiagramName onClick={() => goToDiagramHistoryPop(previousDiagramID)}>
-                {rootDiagramID === previousDiagramID ? 'Home' : getDiagramByID(previousDiagramID).name}
+                {rootDiagramIsPreviousDiagram ? 'Home' : getDiagramByID(previousDiagramID)?.name}
               </DiagramName>
             </>
           )}

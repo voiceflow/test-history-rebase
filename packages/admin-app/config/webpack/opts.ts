@@ -28,7 +28,7 @@ const opts: Options = {
 
   serve: {
     port: 3001,
-    publicURL: 'https://admin-local.development.voiceflow.com:3003',
+    publicURL: 'auto://0.0.0.0:0/ws',
 
     ...(E2E && {
       port: 3003,

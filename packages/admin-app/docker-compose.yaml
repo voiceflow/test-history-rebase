@@ -4,6 +4,7 @@ services:
     image: nginx:stable
     volumes:
       - ./config/nginx.proxy.template:/etc/nginx/conf.d/proxy.template
+      - ./config/proxy.conf:/etc/nginx/includes/proxy.conf
       - ./certs:/certs
     ports:
       - '3003:80'

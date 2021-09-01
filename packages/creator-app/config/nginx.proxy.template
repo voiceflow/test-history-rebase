@@ -6,5 +6,7 @@ server {
 
     location / {
         proxy_pass http://${TARGET};
+
+        include includes/proxy.conf;
     }
 }

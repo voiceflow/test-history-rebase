@@ -7,13 +7,12 @@
     "babel"
   ],
   "ignores": [
+    "@babel/core",
     "@svgr/webpack",
-    "@hot-loader/react-dom",
-    "@voiceflow/realtime-sdk",
     "@logux/state",
+    "@voiceflow/webpack-config",
     "@types/*",
     "postcss*",
-    "babel-loader",
     "css-loader",
     "postcss-loader",
     "file-loader",
@@ -33,6 +32,9 @@
     "sinon",
     "sinon-chai",
     "chai",
-    "chai-as-promised"
+    "chai-as-promised",
+    "webpack",
+    "react-hot-loader",
+    "webpack-nano"
   ]
 }

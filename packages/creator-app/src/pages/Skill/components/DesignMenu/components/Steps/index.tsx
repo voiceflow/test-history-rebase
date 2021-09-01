@@ -11,7 +11,6 @@ import { connect } from '@/hocs';
 import { useDragPreview, useFeature } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
-import { isChatbotPlatform } from '@/utils/typeGuards';
 
 import ScrollbarsContainer from '../ScrollbarsContainer';
 import { Container, Item } from './components';
@@ -20,8 +19,6 @@ import { StepDragItem } from './types';
 
 const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expandedSections }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
-  const textStep = useFeature(FeatureFlag.TEXT_STEP);
-  const buttonsStep = useFeature(FeatureFlag.BUTTONS_STEP);
 
   const sections = React.useMemo(() => {
     const platformSections = getSections(platform);
@@ -30,9 +27,6 @@ const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expande
       ...platformSection,
       steps: platformSection.steps.filter((step) => {
         if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
-        if (!textStep.isEnabled && step.type === BlockType.TEXT) return false;
-        if (!buttonsStep.isEnabled && step.type === BlockType.BUTTONS) return false;
-        if (buttonsStep.isEnabled && isChatbotPlatform(platform) && step.type === BlockType.CHOICE) return false;
         if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
 
         return true;

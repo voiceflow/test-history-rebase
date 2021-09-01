@@ -159,13 +159,12 @@ export const CHATBOT_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, TEXT_STEP, VISUAL_STEP],
+    steps: [TEXT_STEP, VISUAL_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    // TODO: remove choice step when buttons FF is removed
-    steps: [CHOICE_STEP, BUTTONS_STEP, PROMPT_STEP, INTENT_STEP],
+    steps: [BUTTONS_STEP, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,

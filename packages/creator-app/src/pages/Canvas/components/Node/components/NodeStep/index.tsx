@@ -39,8 +39,10 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, variant, isDraggable }) => 
   });
 
   const getAnchorPoint = React.useCallback(() => {
-    const { x, y } = instance.ref.current!.getBoundingClientRect();
+    const rect = instance.ref.current?.getBoundingClientRect();
+    if (!rect) return null;
 
+    const { x, y } = rect;
     return buildVirtualDOMRect([x - LINK_WIDTH * engine.canvas!.getZoom(), y]);
   }, []);
 

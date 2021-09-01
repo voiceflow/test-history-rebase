@@ -123,9 +123,11 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
 
   React.useEffect(
     () => () => {
-      const transformEl = transformRef.current!;
+      const transformEl = transformRef.current;
 
       window.requestAnimationFrame(() => {
+        if (!transformEl) return;
+
         transformEl.style.transformOrigin = '';
         transformEl.style.transform = '';
       });

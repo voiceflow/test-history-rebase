@@ -16,7 +16,7 @@ export const usePortInstance = <T extends HTMLElement>() => {
     () => ({
       ...elementInstance,
       ref,
-      getRect: () => ref.current!.getBoundingClientRect(),
+      getRect: () => ref.current?.getBoundingClientRect() ?? null,
     }),
     [elementInstance]
   );

@@ -39,7 +39,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   const observer = React.useMemo(() => new ResizeObserver(() => engine.node.redrawLinks(nodeEntity.nodeID)), []);
 
   const getAnchorPoint = React.useCallback(() => {
-    const rect = blockRef.current!.getRect();
+    const rect = blockRef.current?.getRect() ?? null;
 
     // account for the correct spacing for the header
     return rect && buildVirtualDOMRect([rect.x, rect.y + 4 * engine.canvas!.getZoom()]);

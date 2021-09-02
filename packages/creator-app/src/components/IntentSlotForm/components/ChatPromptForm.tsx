@@ -13,7 +13,7 @@ interface ChatPromptFormProps {
 }
 
 const ChatPromptForm: React.FC<ChatPromptFormProps> = ({ slots, prompt: [prompt], onChange, placeholder }) => {
-  const { content } = prompt;
+  const content = prompt?.content ?? null;
 
   const variables = React.useMemo(() => normalize(slots), [slots]);
 

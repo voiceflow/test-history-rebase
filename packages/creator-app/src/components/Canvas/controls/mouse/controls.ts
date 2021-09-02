@@ -111,8 +111,6 @@ class Controls extends BaseControls {
     if (event.defaultPrevented) return;
 
     if (event.button !== 2) {
-      event.stopPropagation();
-
       this.handle({ type: ControlType.CLICK, event });
     }
   };

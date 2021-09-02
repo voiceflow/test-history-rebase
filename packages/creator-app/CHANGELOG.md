@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.470.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.1...@voiceflow/creator-app@1.470.2) (2021-09-02)
+
+
+### Bug Fixes
+
+* chat prompt undefined (VF-000) ([c1fa666](https://github.com/voiceflow/creator-app/commit/c1fa666aeab4b38f8d947ab6d7e4254e08b25af1))
+
+
+
+
+
 ## [1.470.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.0...@voiceflow/creator-app@1.470.1) (2021-09-01)
 
 

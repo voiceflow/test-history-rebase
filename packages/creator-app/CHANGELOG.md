@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.470.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.2...@voiceflow/creator-app@1.470.3) (2021-09-02)
+
+
+### Bug Fixes
+
+* popover not closed on canvas click(VF-1648) ([#4032](https://github.com/voiceflow/creator-app/issues/4032)) ([8cedb4a](https://github.com/voiceflow/creator-app/commit/8cedb4a910470cd18357578aa72eaa4cb647423f))
+
+
+
+
+
 ## [1.470.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.1...@voiceflow/creator-app@1.470.2) (2021-09-02)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.470.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.3...@voiceflow/creator-app@1.470.4) (2021-09-03)
+
+
+### Bug Fixes
+
+* dont use setInterval for heartbeat (VF-993) ([#4036](https://github.com/voiceflow/creator-app/issues/4036)) ([9827c45](https://github.com/voiceflow/creator-app/commit/9827c4550744be2a0215c9a02749aec68e15cf4d))
+
+
+
+
+
 ## [1.470.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.2...@voiceflow/creator-app@1.470.3) (2021-09-02)
 
 

@@ -28,3 +28,6 @@ workflows:
             packages/creator-app/.* build-creator-app true
             packages/admin-app/.* build-admin-app true
             packages/realtime/.* build-realtime true
+            packages/realtime-sdk/.* build-realtime-sdk true
+            packages/ui/.* build-ui true
+            package.json build-all true

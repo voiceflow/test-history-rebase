@@ -28,7 +28,7 @@ const opts: Options = {
 
   serve: {
     port: 3000,
-    publicURL: 'auto://0.0.0.0:0/ws',
+    proxyURL: 'https://creator-local.development.voiceflow.com:3002',
 
     ...(E2E && {
       port: 3002,

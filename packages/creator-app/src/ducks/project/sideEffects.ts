@@ -62,9 +62,8 @@ export const createProject =
     }
 
     try {
-      const newProject = await client
-        .platform(platformType)
-        .project.copy(templateProjectID, { name, image, teamID: workspaceID }, { channel: platformType });
+      const channel = templateTag?.split(':')[1] || platformType;
+      const newProject = await client.platform(platformType).project.copy(templateProjectID, { name, image, teamID: workspaceID }, { channel });
 
       if (listID) {
         dispatch(addProjectToList(listID, newProject._id));

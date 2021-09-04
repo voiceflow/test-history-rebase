@@ -4,7 +4,7 @@ import { NodeData } from '../../../../models';
 import expressionAdapterV2 from '../../../expressionV2';
 import { createBlockAdapter, defaultPortAdapter, PortsAdapter } from '../utils';
 
-const defaultNoMatch: NodeData.BaseNoMatches = {
+export const defaultNoMatch: NodeData.BaseNoMatches = {
   type: Node.Utils.NoMatchType.PATH,
   pathName: 'No Match',
 };

@@ -5,6 +5,7 @@ import React from 'react';
 import { useSyncedLookup } from '@/hooks';
 import { NodeData } from '@/models';
 import Step, { ConnectedStepProps, ElseItem, Item, Section } from '@/pages/Canvas/components/Step';
+import { EngineContext } from '@/pages/Canvas/contexts';
 import { head } from '@/utils/array';
 import { expressionPreview } from '@/utils/expression';
 
@@ -50,9 +51,12 @@ export const IfStep: React.FC<IfStepProps> = ({ expressions, nodeID, elsePortID,
 type ConnectedIfStepProps = ConnectedStepProps<NodeData.IfV2>;
 
 const ConnectedIfStep: React.FC<ConnectedIfStepProps> = ({ node, data }) => {
+  const engine = React.useContext(EngineContext)!;
+
   const [elsePortID, nodeOutPorts] = React.useMemo(() => head(node.ports.out), [node.ports.out]);
   const expressionsByPortID = useSyncedLookup(nodeOutPorts, data.expressions);
-  const isPath = !!data.noMatch.type && data.noMatch.type === Node.Utils.NoMatchType.PATH;
+  const hasElseLink = engine.hasLinksByPortID(elsePortID); // also show the else port if a link exists
+  const isPath = hasElseLink || (!!data.noMatch.type && data.noMatch.type === Node.Utils.NoMatchType.PATH);
 
   const expressions = nodeOutPorts
     .filter((portID) => expressionsByPortID[portID])

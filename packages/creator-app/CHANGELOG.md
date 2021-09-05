@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.470.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.6...@voiceflow/creator-app@1.470.7) (2021-09-05)
+
+
+### Bug Fixes
+
+* flickery emoji hover (VF-1601) ([#4043](https://github.com/voiceflow/creator-app/issues/4043)) ([8d53e58](https://github.com/voiceflow/creator-app/commit/8d53e581340daccce3577a982bf35c4d66eb0470))
+
+
+
+
+
 ## [1.470.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.5...@voiceflow/creator-app@1.470.6) (2021-09-04)
 
 

@@ -18,6 +18,8 @@ export enum EMOJI_OPTION {
   DEFAULT = 'default',
 }
 
+const CLOSE_FAN_WAIT_TIME = 400;
+
 export const EMOJI_PNGS = {
   [EMOJI_OPTION.HAPPY]: positiveEmotion,
   [EMOJI_OPTION.SAD]: negativeEmotion,
@@ -35,9 +37,13 @@ interface EmojiPickerProps {
 const EmojiPicker: React.FC<EmojiPickerProps> = ({ onChange, value, fanDirection, options }) => {
   const [isHovering, setIsHovering] = React.useState(false);
   const [currentEmotion, setCurrentEmotion] = React.useState(value || EMOJI_OPTION.DEFAULT);
+
+  const closingRef = React.useRef<boolean>(false);
+
   const onHover = useDebouncedCallback(
-    50,
+    100,
     () => {
+      if (closingRef.current) return;
       setIsHovering(true);
     },
     []
@@ -49,14 +55,17 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ onChange, value, fanDirection
 
   // The component for hovering doesnt have padding, so to avoid jarring hover behavior, we wanna have this val a little higher than the onHover one
   const onHoverLeave = useDebouncedCallback(
-    50,
+    100,
     () => {
+      if (closingRef.current) return;
       setIsHovering(false);
     },
     []
   );
 
   const handleSelect = (option: EMOJI_OPTION) => {
+    closingRef.current = true;
+
     if (currentEmotion === option) {
       setCurrentEmotion(EMOJI_OPTION.DEFAULT);
       onChange(EMOJI_OPTION.DEFAULT);
@@ -65,6 +74,10 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ onChange, value, fanDirection
       onChange(option);
     }
     setIsHovering(false);
+
+    setTimeout(() => {
+      closingRef.current = false;
+    }, CLOSE_FAN_WAIT_TIME);
   };
 
   return (

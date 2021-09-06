@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.470.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.7...@voiceflow/creator-app@1.470.8) (2021-09-06)
+
+
+### Bug Fixes
+
+* reorder custom size and device options on visual block (VF-1351) ([#4051](https://github.com/voiceflow/creator-app/issues/4051)) ([14573c7](https://github.com/voiceflow/creator-app/commit/14573c7319246ca1d3f8bf4cdcf93c8574bc04ef))
+
+
+
+
+
 ## [1.470.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.6...@voiceflow/creator-app@1.470.7) (2021-09-05)
 
 

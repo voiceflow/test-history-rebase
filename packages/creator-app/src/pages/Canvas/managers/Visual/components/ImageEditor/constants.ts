@@ -2,8 +2,8 @@ import { Node } from '@voiceflow/base-types';
 
 export const FRAME_OPTIONS = [
   { id: Node.Visual.FrameType.AUTO, label: 'Auto' },
-  { id: Node.Visual.FrameType.DEVICE, label: 'Device' },
   { id: Node.Visual.FrameType.CUSTOM_SIZE, label: 'Custom Size' },
+  { id: Node.Visual.FrameType.DEVICE, label: 'Device' },
 ];
 
 export const CANVAS_VISIBILITY_OPTIONS = [

@@ -33,7 +33,7 @@ const ButtonsEditor: NodeEditor<NodeData.Buttons> = ({ data, nodeID, onChange, p
         </>
       }
       factory={factory}
-      onRemove={(_, index) => engine?.port.remove(focusedNode.ports.out[index])}
+      onRemove={(_, index) => engine?.port.remove(focusedNode.ports.out[index + 1])}
       onReorder={(from, to) => engine?.port.reorder(focusedNode.id, from + 1, to + 1)}
       renderMenu={() => <OverflowMenu placement="top-end" options={[noReplyOption, buttonLayoutOption]} />}
       onChangeItems={(items) => onChange({ buttons: items })}

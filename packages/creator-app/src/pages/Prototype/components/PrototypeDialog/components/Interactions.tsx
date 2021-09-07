@@ -114,6 +114,14 @@ const ScrollContainer = styled(SimpleBar)`
   white-space: nowrap;
 `;
 
+const InlineContainer = styled(BoxFlex)`
+  padding-top: 8px;
+  margin-left: 40px;
+  flex-direction: row-reverse;
+  direction: rtl;
+  flex-wrap: wrap;
+`;
+
 export const StickyInteractions: React.FC<InteractionsProps> = (props) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -134,8 +142,8 @@ export const StickyInteractions: React.FC<InteractionsProps> = (props) => {
 
 export const InlineInteractions: React.FC<InteractionsProps> = (props) => {
   return (
-    <BoxFlex flexWrap="wrap-reverse" pt={8} ml={40}>
+    <InlineContainer>
       <Interactions {...props} />
-    </BoxFlex>
+    </InlineContainer>
   );
 };

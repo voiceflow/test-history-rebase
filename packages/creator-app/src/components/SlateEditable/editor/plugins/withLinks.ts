@@ -24,7 +24,7 @@ export interface LinksEditorAPI {
 }
 
 export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Editor) => {
-  const { isInline: originalIsInline, onChange: originalOnChange } = editor;
+  const { isInline: originalIsInline, onChange: originalOnChange, normalizeNode: originalNormalizeNode } = editor;
 
   const addNodeStylesToChildrenNodes = (node: Node): Node => {
     if (EditorAPI.isVoid(editor, node)) {
@@ -84,6 +84,24 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
         rangeRef.unref();
       });
     }
+  };
+
+  editor.normalizeNode = (entry) => {
+    const [node, path] = entry;
+
+    // if element is not link, run original normalization
+    if (!Element.isElement(node) || !EditorAPI.isLink(node)) {
+      originalNormalizeNode(entry);
+      return;
+    }
+
+    // do nothing if children exists
+    if (EditorAPI.serialize(node.children)) {
+      return;
+    }
+
+    // remove empty link node
+    Transforms.removeNodes(editor, { at: path });
   };
 
   return editor;
@@ -156,6 +174,9 @@ export const withLinksEditorApi: APIPlugin = (EditorAPI: EditorAPIType): EditorA
           },
           { at: selectionRef.current! }
         );
+
+        EditorAPI.removeMark(editor, TextProperty.COLOR);
+        EditorAPI.removeMark(editor, TextProperty.UNDERLINE);
       } else {
         Transforms.wrapNodes(
           editor,

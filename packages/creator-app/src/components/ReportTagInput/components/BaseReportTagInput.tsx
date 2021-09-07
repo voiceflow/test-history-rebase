@@ -1,4 +1,5 @@
-import { Box, FlexApart, FlexStart, Icon, KeyName, Select, SvgIcon } from '@voiceflow/ui';
+import { Box, FlexApart, FlexStart, Icon, KeyName, Select, SelectMenuItemOptions, SvgIcon } from '@voiceflow/ui';
+import _findLastIndex from 'lodash/findLastIndex';
 import React from 'react';
 
 import Checkbox from '@/components/Checkbox';
@@ -6,6 +7,7 @@ import { isBuiltInTag } from '@/ducks/transcript/utils';
 import { useTrackingEvents } from '@/hooks';
 import { ReportTag, Sentiment, SentimentArray } from '@/models';
 import { ClassName } from '@/styles/constants';
+import { insert } from '@/utils/array';
 
 import { ReportTagInputContext } from '../context';
 import { TagWrapper } from './components';
@@ -27,13 +29,16 @@ export interface BaseReportTagInputProps {
 
 export type TagInputVariantProps = Omit<BaseReportTagInputProps, 'menu' | 'tags'>;
 
-const customMenuLabelRenderer = (option: ReportTag, isSelectedFunc: (val: string) => boolean) => {
+interface TagSelectOption extends ReportTag, SelectMenuItemOptions {}
+
+const customMenuLabelRenderer = (option: TagSelectOption, isSelectedFunc: (val: string) => boolean) => {
   return (
     <FlexApart style={{ width: '100%' }}>
       <FlexStart>
         <Checkbox readOnly checked={isSelectedFunc(option.id)} />
         <div data-testid={option.id}>{option.label}</div>
       </FlexStart>
+
       {isBuiltInTag(option.id) &&
         (!SentimentArray.includes(option.id as Sentiment) ? (
           <SvgIcon icon={option.icon as Icon} color={option.iconColor} />
@@ -68,17 +73,30 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
 
   const [trackingEvents] = useTrackingEvents();
   const containerRef = React.useRef<HTMLDivElement | null>(null);
+
   // Only use tags that exist in redux (they can be deleted in the tags manager)
-  const [selectedValidTags, setSelectedValidTags] = React.useState(() => {
-    return selectedTags.filter((tag) => !!tagsMap[tag]);
-  });
+  const [selectedValidTags, setSelectedValidTags] = React.useState(() => selectedTags.filter((tag) => !!tagsMap[tag]));
 
-  React.useEffect(() => {
-    const validTags = selectedTags.filter((tag) => !!tagsMap[tag]);
-    setSelectedValidTags(validTags);
-  }, [tagsMap, selectedTags]);
+  const options = React.useMemo<TagSelectOption[]>(() => {
+    if (selectOnly) {
+      const sortedAllTags = [...allTags].sort((lTag, rTag) => Number(isBuiltInTag(rTag.id)) - Number(isBuiltInTag(lTag.id)));
+      const lastBuiltInIndex = _findLastIndex(sortedAllTags, (tag) => isBuiltInTag(tag.id));
 
-  const nonBuiltInTags = allTags.filter((tag) => !isBuiltInTag(tag.id));
+      if (lastBuiltInIndex === -1 || lastBuiltInIndex === sortedAllTags.length - 1) {
+        return sortedAllTags;
+      }
+
+      return insert<TagSelectOption>(sortedAllTags, lastBuiltInIndex + 1, {
+        id: 'divider',
+        label: 'divider',
+        projectID: '',
+        menuItemProps: { divider: true },
+      });
+    }
+
+    return allTags.filter((tag) => !isBuiltInTag(tag.id) && filterOutSelected(tag.id, selectedValidTags));
+  }, [selectOnly, allTags, selectedValidTags]);
+
   const selectedTagObjects =
     selectedTags
       ?.map((tagId) => {
@@ -110,6 +128,12 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
     }
   };
 
+  React.useEffect(() => {
+    const validTags = selectedTags.filter((tag) => !!tagsMap[tag]);
+
+    setSelectedValidTags(validTags);
+  }, [tagsMap, selectedTags]);
+
   React.useLayoutEffect(() => {
     scrollTo({ top: containerRef.current?.scrollHeight });
   }, [selectedTags]);
@@ -126,7 +150,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
         fullWidth
         selectedOptions={selectedValidTags}
         renderOptionsFilter={selectOnly ? undefined : ({ id }: { id: string }) => filterOutSelected(id, selectedValidTags)}
-        options={selectOnly ? allTags : nonBuiltInTags.filter(({ id }) => filterOutSelected(id, selectedValidTags))}
+        options={options}
         autoDismiss={false}
         creatable={creatable}
         onKeyDown={onBackspace}
@@ -140,36 +164,33 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
         createInputPlaceholder="New tag"
         placeholder={Object.keys(selectedTagObjects).length ? '' : 'Add tags'}
         onSelect={onToggleTag}
-        tags={() => {
-          return selectedTagObjects.map((tag, i) => {
-            const onlyIcon = SentimentArray.includes(tag.id as Sentiment);
-            return (
-              <TagWrapper
-                key={i}
-                onClick={(e: React.MouseEvent) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                }}
-              >
-                <Box mr={6}>
-                  {onlyIcon ? (
-                    <img
-                      style={{ position: 'relative', bottom: '1px' }}
-                      width={16}
-                      height={16}
-                      alt={tag.label}
-                      src={tag.icon}
-                      className={ClassName.BASE_REPORT_TAG_INPUT_ICON}
-                    />
-                  ) : (
-                    <span>{allTags.find((item) => item.id === tag.id)?.label}</span>
-                  )}
-                </Box>
-                <SvgIcon size={9} icon="close" clickable onClick={onRemove(tag.id)} />
-              </TagWrapper>
-            );
-          });
-        }}
+        tags={() =>
+          selectedTagObjects.map((tag, i) => (
+            <TagWrapper
+              key={i}
+              onClick={(e: React.MouseEvent) => {
+                e.stopPropagation();
+                e.preventDefault();
+              }}
+            >
+              <Box mr={6}>
+                {SentimentArray.includes(tag.id as Sentiment) ? (
+                  <img
+                    style={{ position: 'relative', bottom: '1px' }}
+                    width={16}
+                    height={16}
+                    alt={tag.label}
+                    src={tag.icon}
+                    className={ClassName.BASE_REPORT_TAG_INPUT_ICON}
+                  />
+                ) : (
+                  <span>{allTags.find((item) => item.id === tag.id)?.label}</span>
+                )}
+              </Box>
+              <SvgIcon size={9} icon="close" clickable onClick={onRemove(tag.id)} />
+            </TagWrapper>
+          ))
+        }
       />
     </>
   );

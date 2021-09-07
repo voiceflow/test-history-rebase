@@ -17,6 +17,13 @@ import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters'
 export { defaultOptionsFilter, searchableOptionsFilter };
 export * from './components';
 
+export interface MenuItemOptions {
+  menuItemProps?: {
+    ending?: boolean;
+    divider?: boolean;
+  };
+}
+
 export type GetOptionLabel<V> = (value?: Nullish<V>) => Nullish<string>;
 
 export type GetOptionValue<O, V> = (option?: Nullish<O>) => Nullish<V>;

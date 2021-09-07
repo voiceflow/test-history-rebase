@@ -35,9 +35,11 @@ export const UnconnectedReportTagInputContextProvider: React.FC<{ selectedTags: 
 }) => {
   const [filteredTags, setFilteredTags] = React.useState<ReportTag[]>(allTags.filter((tag) => !selectedTags.includes(tag.id)));
   const [searchedTag, setSearchedTag] = React.useState('');
-  const createReportTag = useDispatch(createTag);
-  const addReportTag = useDispatch(addTag);
+
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
+
+  const addReportTag = useDispatch(addTag);
+  const createReportTag = useDispatch(createTag);
 
   React.useEffect(() => {
     if (searchedTag.trim()) {
@@ -45,34 +47,40 @@ export const UnconnectedReportTagInputContextProvider: React.FC<{ selectedTags: 
     }
   }, [searchedTag]);
 
-  const onCreateNew = async (label: string) => {
-    if (!currentTranscriptID) return;
+  const onCreateNew = React.useCallback(
+    async (label: string) => {
+      if (!currentTranscriptID) return;
 
-    const id = await createReportTag(label);
+      const id = await createReportTag(label);
 
-    if (id) {
-      addReportTag(currentTranscriptID, id);
-      setSearchedTag('');
-    }
-  };
+      if (id) {
+        addReportTag(currentTranscriptID, id);
+        setSearchedTag('');
+      }
+    },
+    [createReportTag, addReportTag, currentTranscriptID]
+  );
 
   React.useEffect(() => {
     setFilteredTags(allTags.filter((tag) => !selectedTags.includes(tag.id)));
   }, [selectedTags]);
 
-  const api = {
-    state: {
-      filteredTags,
-      searchedTag,
-      allTags,
-      tagsMap,
-    },
-    actions: {
-      onSearch: (tagLabel: string) => setSearchedTag(tagLabel),
-      updateFilteredTags: (tagID: string) => setFilteredTags(filteredTags.filter((tag) => tag.id !== tagID)),
-      onCreateNew,
-    },
-  };
+  const api = React.useMemo(
+    () => ({
+      state: {
+        allTags,
+        tagsMap,
+        searchedTag,
+        filteredTags,
+      },
+      actions: {
+        onSearch: (tagLabel: string) => setSearchedTag(tagLabel),
+        updateFilteredTags: (tagID: string) => setFilteredTags(filteredTags.filter((tag) => tag.id !== tagID)),
+        onCreateNew,
+      },
+    }),
+    [allTags, tagsMap, searchedTag, filteredTags, setSearchedTag, setFilteredTags, onCreateNew]
+  );
 
   return <ReportTagInputContext.Provider value={api}>{children}</ReportTagInputContext.Provider>;
 };

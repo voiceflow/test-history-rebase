@@ -84,7 +84,7 @@ export { defaultMenuLabelRenderer, default as NestedMenu } from './NestedMenu';
 export { default as OptionsMenu, OptionsMenuOption } from './OptionsMenu';
 export { default as Portal, portalRootNode } from './Portal';
 export { default as SearchInput, SearchInputIcon } from './SearchInput';
-export { default as Select, SelectProps, SelectWrapper } from './Select';
+export { default as Select, MenuItemOptions as SelectMenuItemOptions, SelectProps, SelectWrapper } from './Select';
 export { FullSpinner, Spinner } from './Spinner';
 export { Icon, IconVariant, default as SvgIcon, SvgIconContainer, SvgIconProps } from './SvgIcon';
 export { BlockText, ClickableText, Description, Label, Link, OverflowText, overflowTextStyles, default as Text, TextProps, Title } from './Text';

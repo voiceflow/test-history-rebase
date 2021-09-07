@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.471.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.8...@voiceflow/creator-app@1.471.0) (2021-09-07)
+
+
+### Bug Fixes
+
+* buttons port deletion (VF-1647) ([#4050](https://github.com/voiceflow/creator-app/issues/4050)) ([70d624a](https://github.com/voiceflow/creator-app/commit/70d624a806431004a7c32687fa854c2e0a537297))
+* empty text placeholder (VF-1650) ([#4052](https://github.com/voiceflow/creator-app/issues/4052)) ([2daea66](https://github.com/voiceflow/creator-app/commit/2daea6635bc8f9e82970ca261fcd42bff2a6e6ef))
+
+
+### Features
+
+* invert buttons order  (VF-1660) ([#4049](https://github.com/voiceflow/creator-app/issues/4049)) ([8626560](https://github.com/voiceflow/creator-app/commit/8626560337ac213ab0762052efe317392b19f274))
+
+
+
+
+
 ## [1.470.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.7...@voiceflow/creator-app@1.470.8) (2021-09-06)
 
 

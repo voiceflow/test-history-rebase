@@ -1,4 +1,4 @@
-import { colors, styled } from '../../../styles';
+import { colors, css, styled } from '../../../styles';
 import { ButtonContainer } from '../../Button';
 import { SvgIconContainer } from '../../SvgIcon';
 import { IconButtonVariant } from '../types';
@@ -7,7 +7,10 @@ import { BaseContainerProps } from './IconButtonContainer';
 export interface SubtleContainerProps extends BaseContainerProps {
   variant: IconButtonVariant.SUBTLE;
   hoverColor?: string;
+  active?: boolean;
 }
+
+const DEFAULT_ACTIVE_COLOR = '#2e3852';
 
 const SubtleContainer = styled(ButtonContainer)<SubtleContainerProps>`
   border-style: none;
@@ -18,8 +21,16 @@ const SubtleContainer = styled(ButtonContainer)<SubtleContainerProps>`
   }
 
   &:hover ${SvgIconContainer} {
-    color: ${({ hoverColor = '#2e3852' }) => hoverColor};
+    color: ${({ hoverColor = DEFAULT_ACTIVE_COLOR }) => hoverColor};
   }
+
+  ${({ active, hoverColor = DEFAULT_ACTIVE_COLOR }) =>
+    active &&
+    css`
+      ${SvgIconContainer} {
+        color: ${hoverColor};
+      }
+    `}
 `;
 
 export default SubtleContainer;

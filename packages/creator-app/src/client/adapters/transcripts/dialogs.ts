@@ -39,6 +39,7 @@ const dialogAdapter = Adapters.createAdapter<AnyTranscriptMessage, Message | nul
     const commonProperties = {
       turnID: transcriptMessage.turn_id,
       startTime: transcriptMessage.timestamp,
+      withAnimation: true,
     };
 
     if (transcriptMessage.format === FormatType.Request) {

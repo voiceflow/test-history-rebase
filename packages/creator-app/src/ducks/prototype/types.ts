@@ -71,6 +71,7 @@ export interface PrototypeState {
   activePathBlockIDs: string[];
   activePathLinkIDs: string[];
   inputMode: InputMode;
+  platform?: PlatformType;
   startTime: number;
   contextStep: number;
   contextHistory: Partial<Context>[];

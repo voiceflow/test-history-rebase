@@ -19,6 +19,7 @@ import PasswordScreen from './components/PasswordScreen';
 const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentProps<{ versionID: string }>> = ({
   match,
   setupPublicPrototype,
+  updatePrototype,
   checkSharedProtoPassword,
 }) => {
   const [isLoaded, toggleLoaded] = useToggle(false);
@@ -51,6 +52,7 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
         versionID,
       });
 
+      updatePrototype({ platform: prototypeSettings.platform });
       setSettings(prototypeSettings);
     } catch {
       toast.error("Prototype hasn't been shared or doesn't exist");
@@ -83,6 +85,7 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
 const mapDispatchToProps = {
   setupPublicPrototype: PrototypeDuck.setupPublicPrototype,
   checkSharedProtoPassword: PrototypeDuck.checkSharedProtoPassword,
+  updatePrototype: PrototypeDuck.updatePrototype,
 };
 
 type ConnectedPublicPrototypeProps = ConnectedProps<{}, typeof mapDispatchToProps>;

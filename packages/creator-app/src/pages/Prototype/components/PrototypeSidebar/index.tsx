@@ -4,6 +4,7 @@ import { Tooltip } from 'react-tippy';
 
 import Drawer from '@/components/Drawer';
 import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
+import SoundToggle from '@/components/SoundToggle';
 import { Permission } from '@/config/permissions';
 import * as Diagram from '@/ducks/diagram';
 import * as Project from '@/ducks/project';
@@ -19,6 +20,7 @@ import { NLPContext } from '@/pages/Skill/contexts';
 import { FadeLeftContainer } from '@/styles/animations';
 import { SlideOutDirection } from '@/styles/transitions';
 import { ConnectedProps } from '@/types';
+import { canUseSoundToggle } from '@/utils/prototype';
 import { isChatbotPlatform } from '@/utils/typeGuards';
 import * as Sentry from '@/vendors/sentry';
 
@@ -40,6 +42,8 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
   const theme = useTheme();
   const debugEnabled = useDebug();
   const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
+
+  const canSeeSoundToggle = canUseSoundToggle(platform);
 
   const [trainingOpen, toggleTrainingOpen] = useToggle(true);
   const [loading, enableLoading, disableLoading] = useEnableDisable(true);
@@ -131,11 +135,11 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
               isRounded={canRenderPrototype}
               suffix={
                 <Flex>
-                  <Box display="inline-block" mr={15}>
-                    <Tooltip title={isMuted ? 'Unmute Dialog Audio' : 'Mute Dialog Audio'}>
-                      <SvgIcon icon={isMuted ? 'soundOff' : 'sound'} clickable onClick={() => updatePrototype({ muted: !isMuted })} />
-                    </Tooltip>
-                  </Box>
+                  {canSeeSoundToggle && (
+                    <Box display="inline-block" mr={15}>
+                      <SoundToggle platform={platform} isMuted={isMuted} onClick={() => updatePrototype({ muted: !isMuted })} />
+                    </Box>
+                  )}
 
                   <Box display="inline-block">
                     <Tooltip title="Reset Test">

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.472.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.471.0...@voiceflow/creator-app@1.472.0) (2021-09-07)
+
+
+### Bug Fixes
+
+* animate all messages in transcripts (VF-1606) ([#4040](https://github.com/voiceflow/creator-app/issues/4040)) ([62c048c](https://github.com/voiceflow/creator-app/commit/62c048c62ad952ee7b1b6acba07ddd8dbea837a1))
+
+
+### Features
+
+* add built-in/custom tags divider (VF-1523) ([#4055](https://github.com/voiceflow/creator-app/issues/4055)) ([e33c1af](https://github.com/voiceflow/creator-app/commit/e33c1afa2849248d0608de6a7fb9793961c843c2))
+* conditionally render sound button (VF-1655) ([#4047](https://github.com/voiceflow/creator-app/issues/4047)) ([b673861](https://github.com/voiceflow/creator-app/commit/b6738615c9075ca03f896a45e6797110a57f8a29))
+
+
+
+
+
 # [1.471.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.470.8...@voiceflow/creator-app@1.471.0) (2021-09-07)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.13.1...@voiceflow/ui@1.14.0) (2021-09-07)
+
+
+### Features
+
+* add built-in/custom tags divider (VF-1523) ([#4055](https://github.com/voiceflow/creator-app/issues/4055)) ([e33c1af](https://github.com/voiceflow/creator-app/commit/e33c1afa2849248d0608de6a7fb9793961c843c2))
+
+
+
+
+
 ## [1.13.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.13.0...@voiceflow/ui@1.13.1) (2021-09-01)
 
 **Note:** Version bump only for package @voiceflow/ui

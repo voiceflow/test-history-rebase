@@ -17,7 +17,7 @@ import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import { withStripe } from '@/hocs';
-import { useDispatch, useFeature, useModals, useRealtimeSelector, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
 import { asyncForEach } from '@/utils/array';
 import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
@@ -93,11 +93,9 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const dispatch = useReduxDispatch();
 
   const workspacesV1 = useSelector(Workspace.allWorkspacesSelector);
-  const workspacesRealtime = useRealtimeSelector(RealtimeWorkspace.allWorkspacesSelector);
+  const workspacesRealtime = useSelector(RealtimeWorkspace.allWorkspacesSelector);
   const workspaceByIDV1 = useSelector(Workspace.workspaceByIDSelector);
-  const workspaceByIDRealtime = useRealtimeSelector(
-    (state) => (workspaceID: string) => RealtimeWorkspace.workspaceByIDSelector(state, { id: workspaceID })
-  );
+  const workspaceByIDRealtime = useSelector((state) => (workspaceID: string) => RealtimeWorkspace.workspaceByIDSelector(state, { id: workspaceID }));
   const account = useSelector(Account.userSelector);
   const firstLogin = useSelector(Account.isFirstLoginSelector);
   const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);

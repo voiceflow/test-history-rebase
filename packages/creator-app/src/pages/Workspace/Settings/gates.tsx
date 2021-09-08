@@ -7,7 +7,7 @@ import { Path } from '@/config/routes';
 import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { useDispatch, useFeature, useRealtimeSelector, useRouteWorkspaceID } from '@/hooks';
+import { useDispatch, useFeature, useRouteWorkspaceID } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -17,7 +17,7 @@ export const SettingsGate: React.FC = React.memo(({ children }) => {
   const routeWorkspaceID = useRouteWorkspaceID()!;
 
   const workspaceIDsV1 = useSelector(Workspace.allWorkspaceIDsSelector);
-  const workspaceIDsRealtime = useRealtimeSelector(RealtimeWorkspace.allWorkspaceIDsSelector);
+  const workspaceIDsRealtime = useSelector(RealtimeWorkspace.allWorkspaceIDsSelector);
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const workspaceIDs = atomicActions.isEnabled ? workspaceIDsRealtime : workspaceIDsV1;
 

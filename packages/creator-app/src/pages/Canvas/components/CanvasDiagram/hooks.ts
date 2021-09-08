@@ -3,13 +3,12 @@ import React from 'react';
 import { throttle } from 'throttle-debounce';
 
 import { MovementCalculator } from '@/components/Canvas/types';
-import { REALTIME_CURSOR_ENABLED } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as RealtimeDuck from '@/ducks/realtime';
 import * as RealtimeV2Duck from '@/ducks/realtimeV2';
 import * as Session from '@/ducks/session';
-import { useFeature, useRealtimeDispatch, useRealtimeSelector, useSelector } from '@/hooks';
+import { useFeature, useSelector, useSyncDispatch } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Pair, Point, Viewport } from '@/types';
 
@@ -22,8 +21,8 @@ export const useCursorControls = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
-  const dispatch = useRealtimeDispatch();
-  const hasDiagramViewers = useRealtimeSelector((state) => RealtimeV2Duck.hasExternalDiagramViewersByIDSelector(state, { id: diagramID }));
+  const awarenessMoveCursor = useSyncDispatch(Realtime.diagram.awarenessMoveCursor);
+  const hasDiagramViewers = useSelector((state) => RealtimeV2Duck.hasExternalDiagramViewersByIDSelector(state, { id: diagramID }));
   const prevCoords = React.useRef<Point | null>(null);
 
   const moveMouse = React.useCallback(
@@ -31,9 +30,9 @@ export const useCursorControls = () => {
       if (atomicActions.isEnabled) {
         if (hasDiagramViewers && prevCoords.current !== nextCoords) {
           prevCoords.current = nextCoords;
-          dispatch.sync(Realtime.diagram.awarenessMoveCursor({ projectID, diagramID, creatorID, workspaceID, coords: nextCoords }));
+          awarenessMoveCursor({ projectID, diagramID, creatorID, workspaceID, coords: nextCoords });
         }
-      } else if (REALTIME_CURSOR_ENABLED) {
+      } else {
         engine.realtime.sendVolatileUpdate(RealtimeDuck.moveMouse(nextCoords));
       }
     }),

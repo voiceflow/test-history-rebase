@@ -9,7 +9,7 @@ import * as Session from '@/ducks/session';
 import createCRUDReducer, { createCRUDActionCreators, createCRUDSelectors } from '@/ducks/utils/crud';
 import { activeLocalesSelector } from '@/ducks/version/selectors';
 import { Product } from '@/models';
-import { Thunk } from '@/store/types';
+import { SyncThunk, Thunk } from '@/store/types';
 
 import { createNewProduct } from './utils';
 
@@ -73,7 +73,7 @@ export const deleteProduct =
     dispatch(removeProduct(productID));
   };
 
-export const cancelProduct = (): Thunk => (dispatch) => dispatch(removeProduct(NEW_PRODUCT_ID));
+export const cancelProduct = (): SyncThunk => (dispatch) => dispatch(removeProduct(NEW_PRODUCT_ID));
 
 export const uploadProduct =
   (productID: string): Thunk =>

@@ -9,7 +9,7 @@ import * as RealtimeV2 from '@/ducks/realtimeV2';
 import * as Router from '@/ducks/router';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
-import { useFeature, useRealtimeSelector } from '@/hooks';
+import { useFeature, useSelector } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Skill/hooks';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps, MergeArguments } from '@/types';
@@ -27,7 +27,7 @@ interface ItemProps {
 const Item: React.FC<ItemProps & ConnectedItemProps> = ({ id, name, isActive, viewers, goToDiagram, rootDiagramID }) => {
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
-  const viewersV2 = useRealtimeSelector((state) => RealtimeV2.diagramViewersByIDSelector(state, { id }));
+  const viewersV2 = useSelector((state) => RealtimeV2.diagramViewersByIDSelector(state, { id }));
 
   const { catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } = useDiagramRename({
     diagramID: id,

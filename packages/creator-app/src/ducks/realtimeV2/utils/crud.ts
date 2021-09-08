@@ -8,7 +8,7 @@ import { PickByValue } from 'utility-types';
 import { reorder as arrayReorder, unique } from '@/utils/array';
 import { defaultGetKey, denormalize, getNormalizedByKey, Normalized, NormalizedValue, ObjectWithId } from '@/utils/normalized';
 
-import type { RealtimeState } from '..';
+import type { State } from '../..';
 import { CreateReducer, createRootReducer, ImmerHandler } from './reducer';
 import { createParameterSelector, createRootSelector } from './selector';
 
@@ -128,25 +128,25 @@ export const createRootCRUDReducer = <T extends CRUDState<any>>(
 };
 
 // selectors
-type CRUDStateSubset = PickByValue<RealtimeState, CRUDState<any>>;
+type CRUDStateSubset = PickByValue<State['realtimeV2'], CRUDState<any>>;
 
 interface CRUDSelectors<K extends keyof CRUDStateSubset> {
-  has: Selector<RealtimeState, boolean>;
-  all: Selector<RealtimeState, NormalizedValue<CRUDStateSubset[K]>[]>;
-  map: Selector<RealtimeState, Record<string, NormalizedValue<CRUDStateSubset[K]>>>;
-  root: Selector<RealtimeState, CRUDStateSubset[K]>;
-  byID: ParametricSelector<RealtimeState, IDSelectorParam, NormalizedValue<CRUDStateSubset[K]> | null>;
-  byIDs: ParametricSelector<RealtimeState, IDsSelectorParam, NormalizedValue<CRUDStateSubset[K]>[]>;
-  allIDs: Selector<RealtimeState, string[]>;
-  getByID: Selector<RealtimeState, (id: string) => NormalizedValue<CRUDStateSubset[K]> | null>;
-  getByIDs: Selector<RealtimeState, (ids: string[]) => NormalizedValue<CRUDStateSubset[K]>[]>;
+  has: Selector<State, boolean>;
+  all: Selector<State, NormalizedValue<CRUDStateSubset[K]>[]>;
+  map: Selector<State, Record<string, NormalizedValue<CRUDStateSubset[K]>>>;
+  root: Selector<State, CRUDStateSubset[K]>;
+  byID: ParametricSelector<State, IDSelectorParam, NormalizedValue<CRUDStateSubset[K]> | null>;
+  byIDs: ParametricSelector<State, IDsSelectorParam, NormalizedValue<CRUDStateSubset[K]>[]>;
+  allIDs: Selector<State, string[]>;
+  getByID: Selector<State, (id: string) => NormalizedValue<CRUDStateSubset[K]> | null>;
+  getByIDs: Selector<State, (ids: string[]) => NormalizedValue<CRUDStateSubset[K]>[]>;
 }
 
 export const idParamSelector = createParameterSelector<IDSelectorParam>((params) => params.id);
 export const idsParamSelector = createParameterSelector<IDsSelectorParam>((params) => params.ids);
 
 export const createCRUDSelectors = <K extends keyof CRUDStateSubset>(modelType: K): CRUDSelectors<K> => {
-  const root = createRootSelector(modelType) as Selector<RealtimeState, CRUDState<any>>;
+  const root = createRootSelector(modelType) as Selector<State, CRUDState<any>>;
   const has = createSelector(root, ({ allKeys }) => allKeys.length !== 0);
   const all = createSelector(root, denormalize);
   const map = createSelector(root, ({ byKey }) => byKey);

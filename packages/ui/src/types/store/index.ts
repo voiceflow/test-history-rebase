@@ -4,7 +4,7 @@ import type * as Generics from './generics';
 export * from './generics';
 export * from './shared';
 
-export type AnyThunk = Generics.SyncThunk<any, any>;
+export type AnyThunk = Generics.SyncThunk<any, any, any>;
 
 export type SelectorLookup<S> = Record<string, (state: S) => any>;
 

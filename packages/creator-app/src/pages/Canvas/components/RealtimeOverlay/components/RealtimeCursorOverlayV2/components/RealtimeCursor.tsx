@@ -2,48 +2,58 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { EventualEngineContext, RealtimeDiagramContext } from '@/contexts';
-import * as Session from '@/ducks/session';
-import { useAtomState, useAtomSubscription, useRealtimeDispatch, useSelector } from '@/hooks';
+import { EventualEngineContext } from '@/contexts';
+import { useLocalDispatch, useRAF } from '@/hooks';
+import { cursorCoords$, useObservableEffect } from '@/store/observables';
 import { composeRefs } from '@/utils/react';
 
 import { ANIMATION_DURATION, CURSOR_EXPIRY_TIMEOUT } from '../../../constants';
 import Cursor from '../../RealtimeOverlayCursor';
 import Nametag from '../../RealtimeOverlayNametag';
 
-export interface RealtimeCursorProps {
-  creatorID: number;
-  diagramID: string;
+enum CursorState {
+  VISIBLE = 'visible',
+  FADING = 'fading',
+  HIDDEN = 'hidden',
 }
 
-const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ diagramID, creatorID }, ref) => {
+export interface RealtimeCursorProps {
+  diagramID: string;
+  creatorID: number;
+  name: string;
+  color: string;
+  source$: ReturnType<typeof cursorCoords$>;
+}
+
+const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ source$, diagramID, creatorID, name, color: rawColor }, ref) => {
+  const [stylesScheduler] = useRAF();
   const eventualEngine = React.useContext(EventualEngineContext)!;
-  const { viewerAtom, cursorCoordsAtom } = React.useContext(RealtimeDiagramContext)!;
-  const viewer = useAtomState(viewerAtom({ creatorID }));
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+
+  const state = React.useRef(CursorState.HIDDEN);
   const innerRef = React.useRef<HTMLDivElement>(null);
-  const dispatch = useRealtimeDispatch();
+  const awarenessHideCursor = useLocalDispatch(Realtime.diagram.awarenessHideCursor);
   const removeTimerRef = React.useRef<NodeJS.Timer | null>(null);
   const fadeoutTimerRef = React.useRef<NodeJS.Timer | null>(null);
-  const color = React.useMemo(() => (viewer?.color.includes('|') ? `#${viewer.color.split('|')[0]}` : '#f8758f'), [viewer?.color]);
-  const backgroundColor = React.useMemo(() => (viewer?.color.includes('|') ? `#${viewer.color.split('|')[1]}` : '#fddae1'), [viewer?.color]);
+  const color = React.useMemo(() => (rawColor.includes('|') ? `#${rawColor.split('|')[0]}` : '#f8758f'), [rawColor]);
+  const backgroundColor = React.useMemo(() => (rawColor.includes('|') ? `#${rawColor.split('|')[1]}` : '#fddae1'), [rawColor]);
+
+  const hideCursor = React.useCallback(() => {
+    state.current = CursorState.HIDDEN;
+
+    stylesScheduler(() => {
+      const el = innerRef.current;
+      if (!el) return;
+
+      el.style.transition = `opacity ${CURSOR_EXPIRY_TIMEOUT / 2000}s ease`;
+      el.style.opacity = String(0);
+    });
+  }, []);
 
   const setTimers = React.useCallback(() => {
-    removeTimerRef.current = setTimeout(
-      () => dispatch.local(Realtime.diagram.awarenessHideCursor({ workspaceID, projectID, diagramID, creatorID })),
-      CURSOR_EXPIRY_TIMEOUT
-    );
+    removeTimerRef.current = setTimeout(() => awarenessHideCursor({ ...eventualEngine.get()!.context, creatorID }), CURSOR_EXPIRY_TIMEOUT);
 
-    fadeoutTimerRef.current = setTimeout(() => {
-      window.requestAnimationFrame(() => {
-        const el = innerRef.current;
-        if (!el) return;
-
-        el.style.opacity = String(0);
-      });
-    }, CURSOR_EXPIRY_TIMEOUT - ANIMATION_DURATION);
-  }, [diagramID, creatorID]);
+    fadeoutTimerRef.current = setTimeout(hideCursor, CURSOR_EXPIRY_TIMEOUT - ANIMATION_DURATION);
+  }, [hideCursor, diagramID, creatorID]);
 
   const clearTimers = React.useCallback(() => {
     if (removeTimerRef.current !== null) {
@@ -56,27 +66,39 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
     }
   }, []);
 
-  const initialPoint = useAtomSubscription(cursorCoordsAtom({ creatorID }), (coords) => {
-    if (!coords) {
-      return;
-    }
+  useObservableEffect(
+    source$,
+    (coords) => {
+      if (!coords) {
+        clearTimers();
+        hideCursor();
 
-    // using eventual engine to avoid having to re-bind this subscription when changing diagrams
-    const point = eventualEngine.get()!.canvas!.reverseTransformPoint(coords, true);
+        return;
+      }
 
-    window.requestAnimationFrame(() => {
-      const cursorEl = innerRef.current;
+      // using eventual engine to avoid having to re-bind this subscription when changing diagrams
+      const point = eventualEngine.get()!.canvas!.reverseTransformPoint(coords, true);
 
-      if (!cursorEl) return;
+      stylesScheduler(() => {
+        const cursorEl = innerRef.current;
 
-      cursorEl.style.opacity = String(1);
-      cursorEl.style.left = `${point[0]}px`;
-      cursorEl.style.top = `${point[1]}px`;
-    });
+        if (!cursorEl) return;
 
-    clearTimers();
-    setTimers();
-  });
+        if (state.current !== CursorState.VISIBLE) {
+          cursorEl.style.opacity = String(1);
+          cursorEl.style.transition = '';
+          state.current = CursorState.VISIBLE;
+        }
+
+        cursorEl.style.left = `${point[0]}px`;
+        cursorEl.style.top = `${point[1]}px`;
+      });
+
+      clearTimers();
+      setTimers();
+    },
+    [hideCursor, setTimers, clearTimers]
+  );
 
   React.useEffect(() => {
     setTimers();
@@ -84,18 +106,14 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
     return () => {
       clearTimers();
     };
-  }, []);
+  }, [setTimers, clearTimers]);
 
   return (
-    <Cursor
-      ref={composeRefs(innerRef, ref)}
-      style={{ left: `${initialPoint?.[0] ?? 0}px`, top: `${initialPoint?.[1] ?? 0}px` }}
-      onClick={preventDefault()}
-    >
+    <Cursor withTransition={false} ref={composeRefs(innerRef, ref)} style={{ left: 0, top: 0, opacity: 0 }} onClick={preventDefault()}>
       <SvgIcon icon="cursor" color={color} />
       <div style={{ position: 'relative' }}>
         <Nametag color={color} backgroundColor={backgroundColor}>
-          {viewer?.name}
+          {name}
         </Nametag>
       </div>
     </Cursor>

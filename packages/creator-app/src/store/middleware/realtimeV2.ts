@@ -1,27 +1,14 @@
-import { CrossTabClient } from '@logux/client';
-import { createStoreCreator } from '@logux/redux';
-import { LoguxDispatch } from '@logux/redux/create-store-creator';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import * as Redux from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { Action, ActionCreator, AnyAction, isType } from 'typescript-fsa';
 
 import { DEBUG_REALTIME } from '@/config';
-import { RealtimeStore } from '@/contexts/RealtimeStoreContext';
-import type { State } from '@/ducks';
-import { userIDSelector } from '@/ducks/account/selectors';
-import realtimeReducer, { RealtimeState } from '@/ducks/realtimeV2';
+import * as Account from '@/ducks/account/selectors';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
+import { Middleware, MiddlewareAPI } from '@/store/types';
 
-let realtimeStore: RealtimeStore;
-
-interface LoguxMiddlewareAPI extends Redux.MiddlewareAPI<LoguxDispatch<AnyAction>, RealtimeState> {
-  global: Redux.Store<State>;
-}
-
-interface LoguxMiddleware {
-  (api: LoguxMiddlewareAPI): (next: Redux.Dispatch<AnyAction>) => (action: any) => any;
-}
+import { hideCursorCoords, setCursorCoords } from '../observables';
 
 const createActionTypeMap = (actionsCreators: ActionCreator<any>[]): Record<string, true> =>
   actionsCreators.reduce<Record<string, true>>((acc, action) => Object.assign(acc, { [action.type]: true }), {});
@@ -57,13 +44,15 @@ const isProjectLevelAction = (action: AnyAction): action is Action<Realtime.Base
 
 const isDiagramLevelAction = (action: AnyAction): action is Action<Realtime.BaseDiagramPayload> => action.type in DiagramLevelActionsMap;
 
+const isAtomicActionsEnabled = (api: MiddlewareAPI) => Feature.isFeatureEnabledSelector(api.getState());
+
 export const composeEnhancers = composeWithDevTools({
   name: 'Voiceflow Creator - Realtime Store',
   actionsBlacklist: DEBUG_REALTIME ? [] : ['logux/state', Realtime.diagram.awarenessMoveCursor.type],
 });
 
 export const createIgnoreMiddleware =
-  (shouldIgnore: (api: LoguxMiddlewareAPI, action: any) => boolean): LoguxMiddleware =>
+  (shouldIgnore: (api: MiddlewareAPI, action: any) => boolean): Middleware =>
   (api) =>
   (next) =>
   (action) => {
@@ -74,14 +63,14 @@ export const createIgnoreMiddleware =
     next(action);
   };
 
-const isActiveWorkspaceAction = (api: LoguxMiddlewareAPI, action: Action<Realtime.BaseWorkspacePayload>) =>
-  action.payload.workspaceID === Session.activeWorkspaceIDSelector(api.global.getState());
+const isActiveWorkspaceAction = (api: MiddlewareAPI, action: Action<Realtime.BaseWorkspacePayload>) =>
+  action.payload.workspaceID === Session.activeWorkspaceIDSelector(api.getState());
 
-const isActiveProjectAction = (api: LoguxMiddlewareAPI, action: Action<Realtime.BaseProjectPayload>) =>
-  isActiveWorkspaceAction(api, action) && action.payload.projectID === Session.activeProjectIDSelector(api.global.getState());
+const isActiveProjectAction = (api: MiddlewareAPI, action: Action<Realtime.BaseProjectPayload>) =>
+  isActiveWorkspaceAction(api, action) && action.payload.projectID === Session.activeProjectIDSelector(api.getState());
 
-const isActiveDiagramAction = (api: LoguxMiddlewareAPI, action: Action<Realtime.BaseDiagramPayload>) =>
-  isActiveProjectAction(api, action) && action.payload.diagramID === Session.activeDiagramIDSelector(api.global.getState());
+const isActiveDiagramAction = (api: MiddlewareAPI, action: Action<Realtime.BaseDiagramPayload>) =>
+  isActiveProjectAction(api, action) && action.payload.diagramID === Session.activeDiagramIDSelector(api.getState());
 
 /**
  * ignore all unregistered actions and actions form different project/diagram/workspace
@@ -100,46 +89,49 @@ export const unregisteredActionsIgnoreMiddleware = createIgnoreMiddleware(
 /**
  * ignore actions from own cursor movements
  */
-export const ownCursorIgnoreMiddleware: LoguxMiddleware = createIgnoreMiddleware((api, action) => {
+export const ownCursorIgnoreMiddleware: Middleware = createIgnoreMiddleware((api, action) => {
   if (!isType(action, Realtime.diagram.awarenessMoveCursor)) return false;
 
-  const creatorID = userIDSelector(api.global.getState());
+  const creatorID = Account.userIDSelector(api.getState());
 
   return action.payload.creatorID === creatorID;
 });
 
-export const wrapDispatch = (getStore: () => RealtimeStore) =>
-  Object.assign((action: AnyAction) => getStore().dispatch(action), {
-    local: (action: AnyAction) => getStore().dispatch.local(action),
-    sync: (action: AnyAction) => getStore().dispatch.sync(action),
-    crossTab: (action: AnyAction) => getStore().dispatch.crossTab(action),
-  }) as LoguxDispatch<AnyAction>;
+/**
+ * capture volatile cursor movement events
+ * ignores actions from own cursor movements
+ */
+export const moveCursorMiddleware = createIgnoreMiddleware((api, action) => {
+  if (!isAtomicActionsEnabled(api)) return false;
 
-const createRealtimeStore = (globalStore: Redux.Store<State>, realtime: CrossTabClient): RealtimeStore => {
-  const createStore = createStoreCreator(realtime);
+  if (!isType(action, Realtime.diagram.awarenessMoveCursor)) return false;
 
-  const store: RealtimeStore = createStore(
-    realtimeReducer,
-    undefined,
-    composeEnhancers(
-      Redux.applyMiddleware(
-        ...[unregisteredActionsIgnoreMiddleware, ownCursorIgnoreMiddleware].map(
-          (middleware) => (api: Redux.MiddlewareAPI<LoguxDispatch<AnyAction>, RealtimeState>) =>
-            middleware({
-              ...api,
-              global: globalStore,
-              dispatch: wrapDispatch(() => store),
-            })
-        )
-      )
-    )
-  );
+  const creatorID = Account.userIDSelector(api.getState());
 
-  realtimeStore = store;
+  if (action.payload.creatorID === creatorID) return true;
 
-  return store;
-};
+  setCursorCoords(action.payload);
 
-export const getRealtimeStore = (): RealtimeStore => realtimeStore;
+  return true;
+});
 
-export default createRealtimeStore;
+/**
+ * capture hide cursor events to pipe to observable
+ * ignores actions from own cursor movements
+ */
+export const hideCursorMiddleware = createIgnoreMiddleware((api, action) => {
+  if (!isAtomicActionsEnabled(api)) return false;
+
+  if (!isType(action, Realtime.diagram.awarenessHideCursor)) return false;
+
+  const creatorID = Account.userIDSelector(api.getState());
+
+  if (action.payload.creatorID === creatorID) return true;
+
+  hideCursorCoords(action.payload);
+
+  return true;
+});
+
+// export default [unregisteredActionsIgnoreMiddleware, ownCursorIgnoreMiddleware, moveCursorMiddleware, hideCursorMiddleware];
+export default [moveCursorMiddleware, hideCursorMiddleware];

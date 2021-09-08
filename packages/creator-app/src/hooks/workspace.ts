@@ -5,7 +5,6 @@ import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 
 import { useFeature } from './feature';
-import { useRealtimeSelector } from './realtime';
 import { useSelector } from './redux';
 
 export const useActiveWorkspace = () => {
@@ -13,7 +12,7 @@ export const useActiveWorkspace = () => {
 
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const workspaceV1 = useSelector(Workspace.activeWorkspaceSelector);
-  const workspaceRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspaceByIDSelector(state, { id: activeWorkspaceID }));
+  const workspaceRealtime = useSelector((state) => RealtimeWorkspace.workspaceByIDSelector(state, { id: activeWorkspaceID }));
 
   return atomicActions.isEnabled ? workspaceRealtime : workspaceV1;
 };
@@ -23,7 +22,7 @@ export const useIsOnPaidPlanSelector = () => {
 
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const isOnPaidPlanV1 = useSelector(Workspace.isOnPaidPlanSelector);
-  const isOnPaidPlanRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspaceIsOnPaidPlanByIDSelector(state, { id: activeWorkspaceID }));
+  const isOnPaidPlanRealtime = useSelector((state) => RealtimeWorkspace.workspaceIsOnPaidPlanByIDSelector(state, { id: activeWorkspaceID }));
 
   return atomicActions.isEnabled ? isOnPaidPlanRealtime : isOnPaidPlanV1;
 };
@@ -33,7 +32,7 @@ export const useActiveWorkspaceCommentingMembersSelector = () => {
 
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const membersV1 = useSelector(Workspace.activeWorkspaceCommentingMembersSelector);
-  const membersRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspaceCommentingMembersByIDSelector(state, { id: activeWorkspaceID }));
+  const membersRealtime = useSelector((state) => RealtimeWorkspace.workspaceCommentingMembersByIDSelector(state, { id: activeWorkspaceID }));
 
   return atomicActions.isEnabled ? membersRealtime : membersV1;
 };
@@ -43,9 +42,7 @@ export const useIsTemplateWorkspaceSelector = () => {
 
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const isTemplateWorkspaceV1 = useSelector(Workspace.isTemplateWorkspaceSelector);
-  const isTemplateWorkspaceRealtime = useRealtimeSelector((state) =>
-    RealtimeWorkspace.isTemplateWorkspaceByIDSelector(state, { id: activeWorkspaceID })
-  );
+  const isTemplateWorkspaceRealtime = useSelector((state) => RealtimeWorkspace.isTemplateWorkspaceByIDSelector(state, { id: activeWorkspaceID }));
 
   return atomicActions.isEnabled ? isTemplateWorkspaceRealtime : isTemplateWorkspaceV1;
 };
@@ -55,7 +52,7 @@ export const useHasWorkspaceMemberSelector = () => {
 
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const hasWorkspaceMemberV1 = useSelector(Workspace.hasWorkspaceMemberSelector);
-  const hasWorkspaceMemberRealtime = useRealtimeSelector(
+  const hasWorkspaceMemberRealtime = useSelector(
     (state) => (creatorID: number) => RealtimeWorkspace.hasWorkspaceMemberByIDAndCreatorIDSelector(state, { id: activeWorkspaceID, creatorID })
   );
 
@@ -68,7 +65,7 @@ export const useWorkspaceUserRoleSelector = () => {
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const creatorID = useSelector(Account.userIDSelector)!;
   const userRoleV1 = useSelector(Workspace.userRoleSelector);
-  const userRoleRealtime = useRealtimeSelector((state) =>
+  const userRoleRealtime = useSelector((state) =>
     RealtimeWorkspace.workspaceUserRoleByIDAndCreatorIDSelector(state, { id: activeWorkspaceID, creatorID })
   );
 
@@ -81,7 +78,7 @@ export const useIsViewerOrLibraryRoleSelector = () => {
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const creatorID = useSelector(Account.userIDSelector)!;
   const isViewerOrLibraryRoleV1 = useSelector(Workspace.isViewerOrLibraryRoleSelector);
-  const isViewerOrLibraryRoleRealtime = useRealtimeSelector((state) =>
+  const isViewerOrLibraryRoleRealtime = useSelector((state) =>
     RealtimeWorkspace.workspaceIsViewerOrLibraryRoleByIDAndCreatorIDSelector(state, { id: activeWorkspaceID, creatorID })
   );
 

@@ -1,20 +1,32 @@
+import { Subscribe } from '@react-rxjs/core';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
 import * as Realtime from '@/ducks/realtimeV2';
 import * as Session from '@/ducks/session';
-import { useRealtimeSelector, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
+import { cursorCoords$ } from '@/store/observables';
 
 import { RealtimeCursor } from './components';
 
 const RealtimeCursorOverlay: React.FC = () => {
   const userID = useSelector(Account.userIDSelector);
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
-  const creatorIDs = useRealtimeSelector((state) => Realtime.diagramViewersIDsByIDSelector(state, { id: diagramID }));
+  const viewers = useSelector((state) => Realtime.diagramViewersByIDSelector(state, { id: diagramID }));
 
   return (
     <>
-      {creatorIDs.map((creatorID) => (userID === creatorID ? null : <RealtimeCursor key={creatorID} diagramID={diagramID} creatorID={creatorID} />))}
+      {viewers.map((viewer) => {
+        if (userID === viewer.creatorID) return null;
+
+        const source$ = cursorCoords$({ diagramID, creatorID: viewer.creatorID });
+
+        return (
+          <Subscribe key={viewer.creatorID} source$={source$}>
+            <RealtimeCursor source$={source$} diagramID={diagramID} creatorID={viewer.creatorID} name={viewer.name} color={viewer.color} />
+          </Subscribe>
+        );
+      })}
     </>
   );
 };

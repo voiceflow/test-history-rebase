@@ -6,7 +6,7 @@ export * from './styled';
 export * from './withBatchLoadingGate';
 export * from './withDebug';
 export * from './withExternalResources';
-export * from './withFeatureSwitcher';
+export * from './withFeature';
 export * from './withHook';
 export * from './withInnerRef';
 export * from './withLoadingGate';

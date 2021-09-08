@@ -16,7 +16,7 @@ import * as Slot from '@/ducks/slot';
 import * as Version from '@/ducks/version';
 import * as Workspace from '@/ducks/workspace';
 import { styled } from '@/hocs';
-import { useFeature, useModals, useRealtimeSelector, useSelector, useTeardown } from '@/hooks';
+import { useFeature, useModals, useSelector, useTeardown } from '@/hooks';
 import { replace, without } from '@/utils/array';
 import { formatIntentName } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
@@ -52,7 +52,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   const planV1 = useSelector(Workspace.planTypeSelector);
-  const planRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
+  const planRealtime = useSelector((state) => RealtimeWorkspace.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
   const slots = useSelector(Slot.allSlotsSelector);
   const intents = useSelector(Intent.allIntentsSelector);
   const slotTypes = useSelector(Version.activeSlotTypesSelector) ?? [];

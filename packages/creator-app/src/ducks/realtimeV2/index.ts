@@ -5,6 +5,7 @@ import realtimeProjectReducer, { PROJECT_STATE_KEY } from './project';
 import realtimeProjectListReducer, { PROJECT_LIST_STATE_KEY } from './projectList';
 import realtimeWorkspaceReducer, { WORKSPACE_STATE_KEY } from './workspace';
 
+export * from './constants';
 export * from './diagram';
 export * from './project';
 export * from './projectList';
@@ -18,5 +19,3 @@ const realtimeReducer = combineReducers({
 });
 
 export default realtimeReducer;
-
-export type RealtimeState = ReturnType<typeof realtimeReducer>;

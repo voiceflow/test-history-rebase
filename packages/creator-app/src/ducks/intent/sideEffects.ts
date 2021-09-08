@@ -5,7 +5,7 @@ import * as Project from '@/ducks/project';
 import * as Slot from '@/ducks/slot';
 import { createCRUDActionCreators } from '@/ducks/utils/crud';
 import { Intent, IntentInput, IntentSlot, IntentSlotDialog } from '@/models';
-import { SyncThunk, Thunk } from '@/store/types';
+import { SyncThunk } from '@/store/types';
 import { inferIntentSlotsType, inferIntentSlotType, inferIntentType, removeSlotRefFromInput } from '@/utils/intent';
 import { getNormalizedByKey, patchNormalizedByKey, removeNormalizedByKey } from '@/utils/normalized';
 import { createNextName } from '@/utils/string';
@@ -46,7 +46,7 @@ export const replaceIntents =
   };
 
 export const patchIntent =
-  (id: string, data: Partial<Intent>): Thunk =>
+  (id: string, data: Partial<Intent>): SyncThunk =>
   (dispatch, getState) => {
     if (!data.inputs) {
       return dispatch(patch(id, data));

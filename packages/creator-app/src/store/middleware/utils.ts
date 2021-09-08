@@ -1,8 +1,10 @@
+import * as Redux from 'redux';
 import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
 
 import { FeatureFlag } from '@/config/features';
 import { DiagramState } from '@/constants';
+import type { State } from '@/ducks';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
@@ -12,8 +14,8 @@ import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { unique } from '@/utils/array';
 
-import { getRealtimeStore } from '../realtime';
-import { AnyAction, Dispatchable, Selector, StoreMiddleware, StoreMiddlewareAPI } from '../types';
+import { AnyAction, Dispatch, Dispatchable, Middleware, MiddlewareAPI, Selector, Store } from '../types';
+import { wrapDispatch } from '../utils';
 
 const AUTOSAVE_DEBOUNCE_TIMEOUT = 200;
 const AUTOSAVE_IGNORED_ACTIONS: string[] = [Account.AccountAction.RESET_ACCOUNT, Creator.DiagramAction.SET_DIAGRAM_STATE];
@@ -30,9 +32,9 @@ export const createAutosaveMiddleware = <T>(
   selector: Selector<T>,
   createSaveAction: (changedKeys: string[] | null) => Dispatchable,
   { ignore = [], partial = false }: { ignore?: ActionIgnore; partial?: boolean } = {}
-): StoreMiddleware => {
+): Middleware => {
   let prevState: T | null = null;
-  const debouncedSave = debounce(AUTOSAVE_DEBOUNCE_TIMEOUT, (store: StoreMiddlewareAPI, changedKeys: string[] | null) =>
+  const debouncedSave = debounce(AUTOSAVE_DEBOUNCE_TIMEOUT, (store: MiddlewareAPI, changedKeys: string[] | null) =>
     store.dispatch(Creator.performSave(createSaveAction(changedKeys)))
   );
 
@@ -47,8 +49,8 @@ export const createAutosaveMiddleware = <T>(
     const activeDiagramID = Session.activeDiagramIDSelector(state); // do not apply creator middleware if no active diagram
 
     const isLibraryRole =
-      atomicActionsEnabled && creatorID && getRealtimeStore()
-        ? RealtimeWorkspace.workspaceIsLibraryRoleByIDAndCreatorIDSelector(getRealtimeStore().getState(), { id: activeDiagramID, creatorID })
+      atomicActionsEnabled && creatorID
+        ? RealtimeWorkspace.workspaceIsLibraryRoleByIDAndCreatorIDSelector(state, { id: activeDiagramID, creatorID })
         : Workspace.isLibraryRoleSelector(state);
 
     try {
@@ -74,7 +76,7 @@ export const createRealtimeResourceUpdateMiddleware = <T>(
   resourceID: Realtime.ResourceType,
   selector: Selector<T>,
   { ignore = [] }: { ignore?: ActionIgnore } = {}
-): StoreMiddleware => {
+): Middleware => {
   let prevState: T | null = null;
 
   return (store) => (next) => (action) => {
@@ -102,3 +104,25 @@ export const createRealtimeResourceUpdateMiddleware = <T>(
     }
   };
 };
+
+export const createIgnoreMiddleware =
+  (shouldIgnore: (api: MiddlewareAPI, action: AnyAction) => boolean): Middleware =>
+  (api) =>
+  (next) =>
+  (action) => {
+    if (shouldIgnore(api, action)) {
+      return;
+    }
+
+    next(action);
+  };
+
+export const mapMiddleware = (middleware: Middleware[], getStore: () => Store) =>
+  middleware.map(
+    (callback): Redux.Middleware<{}, State, Dispatch> =>
+      (api) =>
+        callback({
+          getState: api.getState,
+          dispatch: wrapDispatch(getStore),
+        })
+  );

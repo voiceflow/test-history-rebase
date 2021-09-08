@@ -17,8 +17,8 @@ export const listNotFoundError = () => Errors.error('List is not found');
 // TODO: move saving to the realtime(should be saved on each action) service and remove
 export const saveRealtimeProjectListsForWorkspace =
   (workspaceID: string): Thunk =>
-  async (_dispatch, _getState, { getRealtimeState }) => {
-    const projectLists = RealtimeProjectList.allProjectListsSelector(getRealtimeState());
+  async (_dispatch, getState) => {
+    const projectLists = RealtimeProjectList.allProjectListsSelector(getState());
 
     if (projectLists.length) {
       await client.projectList.update(workspaceID, projectLists);
@@ -27,18 +27,18 @@ export const saveRealtimeProjectListsForWorkspace =
 
 export const addProjectToList =
   (listID: string, projectID: string): Thunk =>
-  async (dispatch, getState, { getRealtimeState, realtimeDispatch }) => {
+  async (dispatch, getState) => {
     const state = getState();
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
     const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     if (atomicActionsEnabled) {
-      const list = RealtimeProjectList.projectListByIDSelector(getRealtimeState(), { id: listID });
+      const list = RealtimeProjectList.projectListByIDSelector(state, { id: listID });
 
       Errors.assertWorkspaceID(activeWorkspaceID);
       Errors.assert(list, listNotFoundError());
 
-      await realtimeDispatch.sync(
+      await dispatch.sync(
         Realtime.projectList.crudActions.patch({
           key: listID,
           value: { projects: unique([...list.projects, projectID]) },

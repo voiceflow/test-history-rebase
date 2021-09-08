@@ -6,7 +6,7 @@ import User from '@/components/User';
 import { FeatureFlag } from '@/config/features';
 import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Workspace from '@/ducks/workspace';
-import { useFeature, useRealtimeSelector, useSelector } from '@/hooks';
+import { useFeature, useSelector } from '@/hooks';
 import { capitalizeAllWords } from '@/utils/string';
 
 import NameContainer from './NameContainer';
@@ -20,7 +20,7 @@ export const Commenter: React.FC<CommenterProps> = ({ time, creatorID }) => {
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
   const userV1 = useSelector((state) => Workspace.anyWorkspaceMemberSelector(state)(String(creatorID)));
-  const userRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspaceMemberByCreatorIDSelector(state, { creatorID }));
+  const userRealtime = useSelector((state) => RealtimeWorkspace.workspaceMemberByCreatorIDSelector(state, { creatorID }));
 
   const user = atomicActions.isEnabled ? userRealtime : userV1;
 

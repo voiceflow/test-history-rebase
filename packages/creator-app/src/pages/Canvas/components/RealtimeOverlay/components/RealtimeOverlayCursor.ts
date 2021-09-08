@@ -1,15 +1,23 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
 import { CURSOR_EXPIRY_TIMEOUT } from '../constants';
 
-const RealtimeOverlayCursor = styled.div`
+export interface RealtimeOverlayCursorProps {
+  withTransition?: boolean;
+}
+
+const RealtimeOverlayCursor = styled.div<RealtimeOverlayCursorProps>`
+  ${({ withTransition }) =>
+    withTransition &&
+    css`
+      transition: opacity ${CURSOR_EXPIRY_TIMEOUT / 2000}s ease;
+    `}
   position: absolute;
   opacity: 1;
-  transition: opacity ${CURSOR_EXPIRY_TIMEOUT / 2000}s ease;
   pointer-events: none;
 
   svg {
-    filter: drop-shadow(0px 1px 3px rgba(19, 33, 68, 0.12));
+    filter: drop-shadow(0 1px 3px rgba(19, 33, 68, 0.12));
   }
 `;
 

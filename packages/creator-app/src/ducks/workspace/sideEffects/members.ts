@@ -9,7 +9,6 @@ import { EDITOR_SEAT_ROLES } from '@/constants';
 import type { State } from '@/ducks';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
-import type { RealtimeState } from '@/ducks/realtimeV2/index';
 import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
@@ -28,14 +27,14 @@ import { extractErrorFromResponseData, extractErrorMessages } from '../utils';
 
 export const loadMembers =
   (workspaceID: string): Thunk =>
-  async (dispatch, getState, { realtimeDispatch }) => {
+  async (dispatch, getState) => {
     try {
       const members = await client.workspace.findMembers(workspaceID);
 
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await realtimeDispatch.sync(Realtime.workspace.crudActions.patch({ key: workspaceID, value: { members }, workspaceID }));
+        await dispatch.sync(Realtime.workspace.crudActions.patch({ key: workspaceID, value: { members }, workspaceID }));
       } else {
         dispatch(patchWorkspace(workspaceID, { members }));
       }
@@ -68,25 +67,25 @@ export const validateInvite =
     }
   };
 
-const getWorkspaceActiveMembers = (state: State, realtimeState: RealtimeState) => {
+const getWorkspaceActiveMembers = (state: State) => {
   const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
   const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
   return atomicActionsEnabled
-    ? RealtimeWorkspace.workspaceMembersByIDSelector(realtimeState, { id: activeWorkspaceID })
+    ? RealtimeWorkspace.workspaceMembersByIDSelector(state, { id: activeWorkspaceID })
     : activeWorkspaceMembersSelector(state);
 };
 
 export const sendInviteToActiveWorkspace =
   (email: string, permissionType: UserRole | null, showToast = true): Thunk<boolean> =>
-  async (dispatch, getState, { getRealtimeState, realtimeDispatch }) => {
+  async (dispatch, getState) => {
     const state = getState();
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
 
     Errors.assertWorkspaceID(activeWorkspaceID);
 
     try {
-      const currentMembers = getWorkspaceActiveMembers(state, getRealtimeState());
+      const currentMembers = getWorkspaceActiveMembers(state);
       const newMember = await client.workspace.sendInvite(activeWorkspaceID, email, permissionType || undefined);
 
       if (newMember) {
@@ -95,7 +94,7 @@ export const sendInviteToActiveWorkspace =
         const updatedMembers = [...currentMembers, newMember];
 
         if (atomicActionsEnabled) {
-          await realtimeDispatch.sync(
+          await dispatch.sync(
             Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { members: updatedMembers }, workspaceID: activeWorkspaceID })
           );
         } else {
@@ -118,10 +117,10 @@ export const sendInviteToActiveWorkspace =
 
 export const updateInviteToActiveWorkspace =
   (email: string, permissionType: UserRole): Thunk =>
-  async (dispatch, getState, { getRealtimeState, realtimeDispatch }) => {
+  async (dispatch, getState) => {
     const state = getState();
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const currentMembers = getWorkspaceActiveMembers(state, getRealtimeState());
+    const currentMembers = getWorkspaceActiveMembers(state);
 
     Errors.assertWorkspaceID(activeWorkspaceID);
 
@@ -133,7 +132,7 @@ export const updateInviteToActiveWorkspace =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await realtimeDispatch.sync(
+        await dispatch.sync(
           Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { members: updatedMembers }, workspaceID: activeWorkspaceID })
         );
       } else {
@@ -149,10 +148,10 @@ export const updateInviteToActiveWorkspace =
 
 export const cancelInviteToActiveWorkspace =
   (email: string): Thunk =>
-  async (dispatch, getState, { getRealtimeState, realtimeDispatch }) => {
+  async (dispatch, getState) => {
     const state = getState();
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const currentMembers = getWorkspaceActiveMembers(state, getRealtimeState());
+    const currentMembers = getWorkspaceActiveMembers(state);
 
     Errors.assertWorkspaceID(activeWorkspaceID);
 
@@ -165,7 +164,7 @@ export const cancelInviteToActiveWorkspace =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await realtimeDispatch.sync(
+        await dispatch.sync(
           Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { members: updatedMembers }, workspaceID: activeWorkspaceID })
         );
       } else {
@@ -181,10 +180,10 @@ export const cancelInviteToActiveWorkspace =
 
 export const updateMemberOfActiveWorkspace =
   (creatorID: number, role: UserRole): Thunk =>
-  async (dispatch, getState, { getRealtimeState, realtimeDispatch }) => {
+  async (dispatch, getState) => {
     const state = getState();
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const currentMembers = getWorkspaceActiveMembers(state, getRealtimeState());
+    const currentMembers = getWorkspaceActiveMembers(state);
 
     Errors.assertWorkspaceID(activeWorkspaceID);
 
@@ -196,7 +195,7 @@ export const updateMemberOfActiveWorkspace =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await realtimeDispatch.sync(
+        await dispatch.sync(
           Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { members: updatedMembers }, workspaceID: activeWorkspaceID })
         );
       } else {
@@ -210,10 +209,10 @@ export const updateMemberOfActiveWorkspace =
 
 export const deleteMemberOfActiveWorkspace =
   (creatorID: number): Thunk =>
-  async (dispatch, getState, { getRealtimeState, realtimeDispatch }) => {
+  async (dispatch, getState) => {
     const state = getState();
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const currentMembers = getWorkspaceActiveMembers(state, getRealtimeState());
+    const currentMembers = getWorkspaceActiveMembers(state);
 
     Errors.assertWorkspaceID(activeWorkspaceID);
 
@@ -225,7 +224,7 @@ export const deleteMemberOfActiveWorkspace =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await realtimeDispatch.sync(
+        await dispatch.sync(
           Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { members: updatedMembers }, workspaceID: activeWorkspaceID })
         );
       } else {
@@ -241,26 +240,25 @@ const isVerifiedMember = (member: Member): member is Member & { creator_id: numb
 
 export const updateActiveWorkspaceMemberRole =
   (member: Member, role: UserRole): Thunk =>
-  async (dispatch, getState, { getRealtimeState }) => {
+  async (dispatch, getState) => {
     const state = getState();
-    const realtimeState = getRealtimeState();
     const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
 
     const numberOfUsedViewerSeats = atomicActionsEnabled
-      ? RealtimeWorkspace.workspaceUsedViewerSeatsByIDSelector(realtimeState, { id: activeWorkspaceID })
+      ? RealtimeWorkspace.workspaceUsedViewerSeatsByIDSelector(state, { id: activeWorkspaceID })
       : usedViewerSeatsSelector(state);
 
     const numberOfUsedEditorSeats = atomicActionsEnabled
-      ? RealtimeWorkspace.workspaceUsedEditorSeatsByIDSelector(realtimeState, { id: activeWorkspaceID })
+      ? RealtimeWorkspace.workspaceUsedEditorSeatsByIDSelector(state, { id: activeWorkspaceID })
       : usedEditorSeatsSelector(state);
 
     const seatLimits = atomicActionsEnabled
-      ? RealtimeWorkspace.workspaceSeatLimitsByIDSelector(realtimeState, { id: activeWorkspaceID })
+      ? RealtimeWorkspace.workspaceSeatLimitsByIDSelector(state, { id: activeWorkspaceID })
       : seatLimitsSelector(state);
 
     const seats = atomicActionsEnabled
-      ? RealtimeWorkspace.workspaceNumberOfSeatsByIDSelector(realtimeState, { id: activeWorkspaceID })
+      ? RealtimeWorkspace.workspaceNumberOfSeatsByIDSelector(state, { id: activeWorkspaceID })
       : workspaceNumberOfSeatsSelector(state);
 
     if (role === member.role) {

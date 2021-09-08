@@ -6,7 +6,6 @@ import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { useFeature } from '@/hooks/feature';
-import { useRealtimeSelector } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { useWorkspaceUserRoleSelector } from '@/hooks/workspace';
 
@@ -23,7 +22,7 @@ export const IdentityProvider: React.FC = ({ children }) => {
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   const activePlanV1 = useSelector(Workspace.planTypeSelector);
-  const activePlanRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
+  const activePlanRealtime = useSelector((state) => RealtimeWorkspace.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
   const activeRole = useWorkspaceUserRoleSelector();
   const activePlan = atomicActions.isEnabled ? activePlanRealtime : activePlanV1;
 

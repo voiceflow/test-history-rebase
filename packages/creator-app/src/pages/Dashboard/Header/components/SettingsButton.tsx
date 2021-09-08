@@ -9,14 +9,14 @@ import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { useDispatch, useFeature, useModals, usePermission, useRealtimeSelector, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useModals, usePermission, useSelector } from '@/hooks';
 
 const SettingsButton: React.FC = () => {
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const planV1 = useSelector(Workspace.planTypeSelector);
-  const planRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
+  const planRealtime = useSelector((state) => RealtimeWorkspace.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
 
   const plan = atomicActions.isEnabled ? planRealtime : planV1;
 

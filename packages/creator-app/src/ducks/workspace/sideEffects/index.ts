@@ -28,7 +28,7 @@ const MEMBER_UPDATE_ERROR = 'Unable to Update Members';
 
 export const loadWorkspaces =
   (isPublicUser = false): Thunk =>
-  async (dispatch, getState, { realtimeDispatch }) => {
+  async (dispatch, getState) => {
     try {
       const workspaces = await client.workspace.find({
         query: { isPublic: isPublicUser },
@@ -40,7 +40,7 @@ export const loadWorkspaces =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await realtimeDispatch.crossTab(Realtime.workspace.crudLocalActions.replace({ values: sorted }));
+        await dispatch.crossTab(Realtime.workspace.crudLocalActions.replace({ values: sorted }));
       } else {
         dispatch(replaceWorkspaces(sorted));
       }
@@ -65,15 +65,12 @@ export const createWorkspace =
 
 export const removeWorkspaceAndUpdateActive =
   (workspaceID: string): Thunk =>
-  async (dispatch, getState, { realtimeDispatch, getRealtimeState }) => {
+  async (dispatch, getState) => {
     const state = getState();
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
     const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
-    const workspaceIDs = withoutValue(
-      atomicActionsEnabled ? realtimeAllWorkspaceIDsSelector(getRealtimeState()) : allWorkspaceIDsSelector(state),
-      workspaceID
-    );
+    const workspaceIDs = withoutValue(atomicActionsEnabled ? realtimeAllWorkspaceIDsSelector(state) : allWorkspaceIDsSelector(state), workspaceID);
 
     // default to the first existing workspace
     const newWorkspaceID = workspaceIDs.length > 0 ? workspaceIDs[0] : null;
@@ -85,7 +82,7 @@ export const removeWorkspaceAndUpdateActive =
     }
 
     if (atomicActionsEnabled) {
-      await realtimeDispatch.crossTab(Realtime.workspace.crudActions.remove({ key: workspaceID, workspaceID }));
+      await dispatch.crossTab(Realtime.workspace.crudActions.remove({ key: workspaceID, workspaceID }));
     } else {
       dispatch(removeWorkspace(workspaceID));
     }
@@ -109,7 +106,7 @@ export const deleteWorkspace =
 
 export const copyProject =
   (projectID: string, workspaceID: string, listID?: string): Thunk =>
-  async (dispatch, getState, { realtimeDispatch }) => {
+  async (dispatch, getState) => {
     const state = getState();
     const project = projectByIDSelector(state)(projectID);
 
@@ -123,7 +120,7 @@ export const copyProject =
     const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
     if (atomicActionsEnabled) {
-      await realtimeDispatch.sync(
+      await dispatch.sync(
         Realtime.project.crudActions.add({
           key: copiedProject.id,
           value: copiedProject,
@@ -141,32 +138,28 @@ export const copyProject =
 
 // active workspace
 
-export const loadActiveWorkspace =
-  (): Thunk =>
-  async (dispatch, getState, { realtimeDispatch }) => {
-    try {
-      const state = getState();
-      const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
+export const loadActiveWorkspace = (): Thunk => async (dispatch, getState) => {
+  try {
+    const state = getState();
+    const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
 
-      Errors.assertWorkspaceID(activeWorkspaceID);
+    Errors.assertWorkspaceID(activeWorkspaceID);
 
-      const workspace = await client.workspace.fetchWorkspace(activeWorkspaceID);
+    const workspace = await client.workspace.fetchWorkspace(activeWorkspaceID);
 
-      const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+    const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
-      if (atomicActionsEnabled) {
-        await realtimeDispatch.crossTab(
-          Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: workspace, workspaceID: activeWorkspaceID })
-        );
-      } else {
-        dispatch(patchWorkspace(activeWorkspaceID, workspace));
-      }
-    } catch (err) {
-      dispatch(Modal.setError('Unable to fetch workspace'));
-
-      throw err;
+    if (atomicActionsEnabled) {
+      await dispatch.crossTab(Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: workspace, workspaceID: activeWorkspaceID }));
+    } else {
+      dispatch(patchWorkspace(activeWorkspaceID, workspace));
     }
-  };
+  } catch (err) {
+    dispatch(Modal.setError('Unable to fetch workspace'));
+
+    throw err;
+  }
+};
 
 export const leaveActiveWorkspace = (): Thunk => async (dispatch, getState) => {
   try {
@@ -189,7 +182,7 @@ export const leaveActiveWorkspace = (): Thunk => async (dispatch, getState) => {
 
 export const updateActiveWorkspaceMembers =
   (members: DBMember[]): Thunk =>
-  async (dispatch, getState, { realtimeDispatch }) => {
+  async (dispatch, getState) => {
     try {
       const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());
       const body = {
@@ -205,9 +198,7 @@ export const updateActiveWorkspaceMembers =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await realtimeDispatch.sync(
-          Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: workspace, workspaceID: activeWorkspaceID })
-        );
+        await dispatch.sync(Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: workspace, workspaceID: activeWorkspaceID }));
       } else {
         dispatch(patchWorkspace(activeWorkspaceID, workspace));
       }
@@ -220,7 +211,7 @@ export const updateActiveWorkspaceMembers =
 
 export const updateActiveWorkspaceName =
   (name: string): Thunk =>
-  async (dispatch, getState, { realtimeDispatch }) => {
+  async (dispatch, getState) => {
     try {
       const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());
 
@@ -232,9 +223,7 @@ export const updateActiveWorkspaceName =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await realtimeDispatch.sync(
-          Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { name }, workspaceID: activeWorkspaceID })
-        );
+        await dispatch.sync(Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { name }, workspaceID: activeWorkspaceID }));
       } else {
         dispatch(patchWorkspace(activeWorkspaceID, { name }));
       }
@@ -247,7 +236,7 @@ export const updateActiveWorkspaceName =
 
 export const updateActiveWorkspaceImage =
   (url: string): Thunk =>
-  async (dispatch, getState, { realtimeDispatch }) => {
+  async (dispatch, getState) => {
     try {
       const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());
 
@@ -259,9 +248,7 @@ export const updateActiveWorkspaceImage =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await realtimeDispatch.sync(
-          Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { image: url }, workspaceID: activeWorkspaceID })
-        );
+        await dispatch.sync(Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { image: url }, workspaceID: activeWorkspaceID }));
       } else {
         dispatch(patchWorkspace(activeWorkspaceID, { image: url }));
       }
@@ -297,7 +284,7 @@ export const saveActiveWorkspaceProjectLists = (): Thunk => async (dispatch, get
 
 export const importProjectToActiveWorkspace =
   (projectID: string, workspaceID: string): Thunk<AnyProject> =>
-  async (dispatch, getState, { realtimeDispatch }) => {
+  async (dispatch, getState) => {
     const project = await client.api.project.get(projectID);
     const state = getState();
 
@@ -310,7 +297,7 @@ export const importProjectToActiveWorkspace =
     );
 
     if (atomicActionsEnabled) {
-      await realtimeDispatch.sync(
+      await dispatch.sync(
         Realtime.project.crudActions.add({
           key: copiedProject.id,
           value: copiedProject,

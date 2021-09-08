@@ -10,12 +10,11 @@ import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 
-import { getRealtimeStore } from '../realtime';
-import { StoreMiddleware } from '../types';
+import { Middleware } from '../types';
 
 const CREATOR_HISTORY_ACTIONS: string[] = [Creator.DiagramAction.UNDO_HISTORY, Creator.DiagramAction.REDO_HISTORY];
 
-export const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (action) => {
+export const creatorHistoryMiddleware: Middleware = (store) => (next) => (action) => {
   const state = store.getState();
   const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
   const viewers = Realtime.activeDiagramViewersSelector(state);
@@ -28,8 +27,8 @@ export const creatorHistoryMiddleware: StoreMiddleware = (store) => (next) => (a
   }
 
   const isLibraryRole =
-    atomicActionsEnabled && creatorID && getRealtimeStore()
-      ? RealtimeWorkspace.workspaceIsLibraryRoleByIDAndCreatorIDSelector(getRealtimeStore().getState(), { id: activeDiagramID, creatorID })
+    atomicActionsEnabled && creatorID
+      ? RealtimeWorkspace.workspaceIsLibraryRoleByIDAndCreatorIDSelector(state, { id: activeDiagramID, creatorID })
       : Workspace.isLibraryRoleSelector(state);
 
   if (isLibraryRole) {

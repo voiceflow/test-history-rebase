@@ -1,7 +1,6 @@
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
-import { RealtimeDiagramProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
@@ -24,7 +23,7 @@ const DiagramLoadingGate: React.FC<ConnectedDiagramLoadingGateProps> = ({
     withoutSpinner={prototypeMode === Prototype.PrototypeMode.DISPLAY}
   >
     <RealtimeDiagramSubscription />
-    <RealtimeDiagramProvider>{children}</RealtimeDiagramProvider>
+    {children}
   </LoadingGate>
 );
 

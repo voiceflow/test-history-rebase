@@ -14,7 +14,7 @@ import { PERIOD_NAME } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Workspace from '@/ducks/workspace';
-import { useDebouncedCallback, useFeature, useRealtimeSelector, useSelector, useToggle } from '@/hooks';
+import { useDebouncedCallback, useFeature, useSelector, useToggle } from '@/hooks';
 import { DBMember } from '@/models';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
@@ -42,9 +42,9 @@ const Payment: React.FC = () => {
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
   const workspacesV1 = useSelector(Workspace.allWorkspacesSelector);
-  const workspacesRealtime = useRealtimeSelector(RealtimeWorkspace.allWorkspacesSelector);
+  const workspacesRealtime = useSelector(RealtimeWorkspace.allWorkspacesSelector);
   const getWorkspaceByIDV1 = useSelector(Workspace.workspaceByIDSelector);
-  const getWorkspaceByIDRealtime = useRealtimeSelector(
+  const getWorkspaceByIDRealtime = useSelector(
     (state) => (workspaceID: string) => RealtimeWorkspace.workspaceByIDSelector(state, { id: workspaceID })
   );
   const creatorID = useSelector(Account.userIDSelector);

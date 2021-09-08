@@ -1,13 +1,16 @@
+import { Client } from '@logux/client';
+import { createStoreCreator } from '@logux/redux';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { History } from 'history';
 import * as Redux from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { persistStore } from 'redux-persist';
+import { Persistor, persistStore } from 'redux-persist';
 
-import { IS_DEVELOPMENT } from '@/config';
+import { DEBUG_REALTIME, IS_DEVELOPMENT } from '@/config';
 import createReducer from '@/ducks';
-import createMiddleware from '@/store/middleware';
 
-import { Store } from './types';
+import createMiddleware from './middleware';
+import { Dispatchable, Store } from './types';
 
 declare global {
   interface Window {
@@ -15,11 +18,28 @@ declare global {
   }
 }
 
-export const composeEnhancers = composeWithDevTools({ name: 'Voiceflow Creator - Global Store' });
+export const composeEnhancers = composeWithDevTools({
+  name: 'Voiceflow Creator',
+  actionsBlacklist: DEBUG_REALTIME ? [] : ['logux/state', Realtime.diagram.awarenessMoveCursor.type],
+});
 
-function createStore(history: History) {
-  const middleware = createMiddleware(history);
-  const store = Redux.createStore(createReducer(history), {}, composeEnhancers(Redux.applyMiddleware(...middleware))) as Store;
+const createStore = (realtime: Client, history: History): { store: Store; persistor: Persistor } => {
+  const rootReducer = createReducer(history);
+  const createStore = createStoreCreator(realtime);
+
+  const store = createStore(rootReducer, undefined, composeEnhancers(Redux.applyMiddleware(...createMiddleware(history, () => store)))) as Store;
+
+  // thunk
+  const originalDispatch = store.dispatch;
+  // Object.assign is used to copy sync/crossTab/etc methods from the original dispatch method
+  store.dispatch = Object.assign((action: Dispatchable) => {
+    if (typeof action === 'function') {
+      return action(store.dispatch, store.getState);
+    }
+    originalDispatch(action);
+    return action;
+  }, originalDispatch);
+
   const persistor = persistStore(store);
 
   if (IS_DEVELOPMENT && module.hot) {
@@ -29,6 +49,6 @@ function createStore(history: History) {
   window.store = store;
 
   return { store, persistor };
-}
+};
 
 export default createStore;

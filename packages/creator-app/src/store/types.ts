@@ -1,0 +1,55 @@
+import { Client, ClientMeta } from '@logux/client';
+import * as Logux from '@logux/core';
+import { LoguxReduxStore } from '@logux/redux';
+import * as UI from '@voiceflow/ui';
+import * as Redux from 'redux';
+import { AnyAction } from 'typescript-fsa';
+import { Assign } from 'utility-types';
+
+import type { State } from '@/ducks';
+
+export type { Action, ActionPayload, ActionReducer, AnyAction, Reducer, RootReducer, RootState, ThunkDispatch, ThunkResult } from '@voiceflow/ui';
+
+export { State };
+
+// dispatch
+export type Dispatchable = AnyAction | AnyThunk;
+
+export type DispatchResult<T extends Dispatchable> = T extends AnyThunk ? ReturnType<T> : T;
+
+export type Dispatcher<A extends any[]> = (...args: A) => Dispatchable;
+
+export interface Dispatch extends Redux.Dispatch<AnyAction> {
+  <T extends Dispatchable>(action: T): DispatchResult<T>;
+
+  // cannot dispatch thunks via logux
+  local: <T extends AnyAction>(action: T) => Promise<ClientMeta>;
+  sync: <T extends AnyAction>(action: T) => Promise<ClientMeta>;
+  crossTab: <T extends AnyAction>(action: T) => Promise<ClientMeta>;
+}
+
+// store
+
+export type Store = Assign<LoguxReduxStore<State, AnyAction, Logux.Log<ClientMeta>, Client>, UI.Store<State, Dispatch>>;
+
+// middleware
+
+export type MiddlewareAPI = UI.StoreMiddlewareAPI<State, Dispatch>;
+
+export type Middleware = UI.StoreMiddleware<State, Dispatch>;
+
+// state
+
+export type GetState = UI.GetState<State>;
+
+// selector
+
+export type Selector<T, A extends any[] = []> = UI.Selector<State, T, A>;
+
+// thunk
+
+export type AnyThunk = UI.SyncThunk<any, any, Dispatch>;
+
+export type SyncThunk<R = void> = UI.SyncThunk<State, R, Dispatch>;
+
+export type Thunk<R = void> = UI.Thunk<State, R, Dispatch>;

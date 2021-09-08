@@ -10,7 +10,7 @@ import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
 import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { useFeature, useModals, useRealtimeSelector, useSelector, useTrackingEvents, useWorkspaceUserRoleSelector } from '@/hooks';
+import { useFeature, useModals, useSelector, useTrackingEvents, useWorkspaceUserRoleSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';
 import * as Sentry from '@/vendors/sentry';
@@ -37,13 +37,9 @@ const InviteByLinkFooter: React.FC = () => {
 
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const numberOfSeatsV1 = useSelector(Workspace.workspaceNumberOfSeatsSelector);
-  const numberOfSeatsRealtime = useRealtimeSelector((state) =>
-    RealtimeWorkspace.workspaceNumberOfSeatsByIDSelector(state, { id: activeWorkspaceID })
-  );
+  const numberOfSeatsRealtime = useSelector((state) => RealtimeWorkspace.workspaceNumberOfSeatsByIDSelector(state, { id: activeWorkspaceID }));
   const usedEditorSeatsV1 = useSelector(Workspace.usedEditorSeatsSelector);
-  const usedEditorSeatsRealtime = useRealtimeSelector((state) =>
-    RealtimeWorkspace.workspaceUsedEditorSeatsByIDSelector(state, { id: activeWorkspaceID })
-  );
+  const usedEditorSeatsRealtime = useSelector((state) => RealtimeWorkspace.workspaceUsedEditorSeatsByIDSelector(state, { id: activeWorkspaceID }));
   const userRole = useWorkspaceUserRoleSelector();
 
   const numberOfSeats = atomicActions.isEnabled ? numberOfSeatsRealtime : numberOfSeatsV1;

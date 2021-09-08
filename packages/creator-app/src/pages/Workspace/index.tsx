@@ -8,9 +8,9 @@ import { LegacyPath, Path } from '@/config/routes';
 import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Router from '@/ducks/router';
 import * as WorkspaceDuck from '@/ducks/workspace';
-import { CheckInvitationGate, WorkspaceLoadingGate, WorkspacesLoadingGate } from '@/gates';
+import { CheckInvitationGate, WorkspacesLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
-import { useDispatch, useFeature, useRealtimeSelector, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 const Settings = lazy(() => import('@/pages/Workspace/Settings'));
@@ -21,7 +21,7 @@ const Workspace: React.FC = () => {
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
   const personalWorkspaceIDsV1 = useSelector(WorkspaceDuck.personalWorkspaceIDsSelector);
-  const personalWorkspaceIDsRealtime = useRealtimeSelector(RealtimeWorkspace.personalWorkspaceIDsSelector);
+  const personalWorkspaceIDsRealtime = useSelector(RealtimeWorkspace.personalWorkspaceIDsSelector);
 
   const personalWorkspaceIDs = atomicActions.isEnabled ? personalWorkspaceIDsRealtime : personalWorkspaceIDsV1;
 
@@ -65,4 +65,4 @@ const Workspace: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(CheckInvitationGate, WorkspacesLoadingGate, WorkspaceLoadingGate)(Workspace);
+export default withBatchLoadingGate(CheckInvitationGate, WorkspacesLoadingGate, WorkspaceSubscriptionGate)(Workspace);

@@ -5,7 +5,7 @@ import { FeatureFlag } from '@/config/features';
 import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { useDispatch, useFeature, useRealtimeSelector, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useSelector } from '@/hooks';
 
 // TODO: remove after atomic actions
 const WorkspaceMembersLoadingGate: React.FC = ({ children }) => {
@@ -14,7 +14,7 @@ const WorkspaceMembersLoadingGate: React.FC = ({ children }) => {
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   const membersV1 = useSelector(Workspace.activeWorkspaceMembersSelector);
-  const membersRealtime = useRealtimeSelector((state) => RealtimeWorkspace.workspaceMembersByIDSelector(state, { id: activeWorkspaceID }));
+  const membersRealtime = useSelector((state) => RealtimeWorkspace.workspaceMembersByIDSelector(state, { id: activeWorkspaceID }));
 
   const members = atomicActions.isEnabled ? membersRealtime : membersV1;
 

@@ -7,18 +7,16 @@ import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import * as Workspace from '@/ducks/workspace';
-import { ThunkResult } from '@/store/types';
 
 import { useOneTimeEffect } from './effect';
 import { useFeature } from './feature';
 import { useSetup, useTeardown } from './lifecycle';
-import { useRealtimeSelector } from './realtime';
 import { useActiveWorkspace } from './workspace';
 
 const wrapDispatch = <T extends Record<string, (...args: any[]) => any>>(
   dispatch: Dispatch,
   obj: T
-): { [key in keyof T]: (...args: Parameters<T[key]>) => ThunkResult<ReturnType<T[key]>> } =>
+): { [key in keyof T]: (...args: Parameters<T[key]>) => ReturnType<T[key]> } =>
   Object.keys(obj).reduce((acc, key) => Object.assign(acc, { [key]: (...args: any[]) => dispatch(obj[key](...args)) }), {} as any);
 
 export const useTrackingEvents = () => {
@@ -49,7 +47,7 @@ export const useSessionTracking = () => {
 
   const authToken = useSelector(Session.authTokenSelector);
   const workspaceIDsV1 = useSelector(Workspace.allWorkspaceIDsSelector);
-  const workspaceIDsRealtime = useRealtimeSelector(RealtimeWorkspace.allWorkspaceIDsSelector);
+  const workspaceIDsRealtime = useSelector(RealtimeWorkspace.allWorkspaceIDsSelector);
   const workspaceIDs = atomicActions.isEnabled ? workspaceIDsRealtime : workspaceIDsV1;
 
   const startTime = React.useMemo(() => Date.now(), []);

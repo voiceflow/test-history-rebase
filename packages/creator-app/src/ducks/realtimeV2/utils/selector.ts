@@ -1,8 +1,9 @@
-import { createRootSelectorFactory } from '@/ducks/utils';
+import { createKeyedSelector, createRootSelector as createGlobalRootSelector } from '@/ducks/utils';
 
-import type { RealtimeState } from '..';
+import type { State } from '../..';
+import { STATE_KEY } from '../constants';
 
-export const createRootSelector = createRootSelectorFactory<RealtimeState>();
+export const createRootSelector = <K extends keyof State['realtimeV2']>(key: K) => createKeyedSelector(createGlobalRootSelector(STATE_KEY), key);
 
 export const createParameterSelector =
   <T extends Record<string, any>>(selector: <K extends keyof T>(params: T) => T[K]) =>

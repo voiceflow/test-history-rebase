@@ -16,6 +16,7 @@ import project, * as Project from '@/ducks/project';
 import projectList, * as ProjectList from '@/ducks/projectList';
 import prototype, * as Prototype from '@/ducks/prototype';
 import realtime, * as Realtime from '@/ducks/realtime';
+import realtimeV2, * as RealtimeV2 from '@/ducks/realtimeV2';
 import recent, * as Recent from '@/ducks/recent';
 import reportTag, * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
@@ -51,6 +52,7 @@ const getCombinedReducer = (history: History) =>
     [Recent.STATE_KEY]: recent,
     [UI.STATE_KEY]: ui,
     [Realtime.STATE_KEY]: realtime,
+    [RealtimeV2.STATE_KEY]: realtimeV2,
     [Viewport.STATE_KEY]: viewport,
     [Notifications.STATE_KEY]: notifications,
     [Tracking.STATE_KEY]: tracking,

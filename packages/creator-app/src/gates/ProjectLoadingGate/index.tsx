@@ -3,19 +3,18 @@ import { Redirect } from 'react-router-dom';
 
 import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
-import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
-import { RealtimeProjectProvider } from '@/contexts/RealtimeProjectContext';
 import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
-import { useFeature, useProjectSubscription, useRouteDiagramID, useRouteVersionID, useSelector } from '@/hooks';
+import { useRouteDiagramID, useRouteVersionID } from '@/hooks';
 import { ConnectedProps, MergeArguments } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 import CommentingUpdates from './CommentingUpdates';
+import ProjectSubscriptionGate from './ProjectSubscriptionGate';
 import TranscriptUpdates from './TranscriptsUpdates';
 
 const ProjectLoadingGate: React.FC<ConnectedProjectLoadingGateProps> = ({
@@ -25,13 +24,8 @@ const ProjectLoadingGate: React.FC<ConnectedProjectLoadingGateProps> = ({
   setError,
   children,
 }) => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
   const versionID = useRouteVersionID();
   const diagramID = useRouteDiagramID() ?? undefined;
-  const projectID = useSelector(Session.activeProjectIDSelector);
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const isSubscribed = useProjectSubscription({ projectID, workspaceID });
 
   const loadProjectAndJoinChannel = React.useCallback(async () => {
     try {
@@ -57,14 +51,10 @@ const ProjectLoadingGate: React.FC<ConnectedProjectLoadingGateProps> = ({
   }
 
   return (
-    <LoadingGate
-      label="Project"
-      isLoaded={atomicActions.isEnabled ? isSubscribed : !!activeVersion && versionID === activeVersion.id}
-      load={loadProjectAndJoinChannel}
-    >
+    <LoadingGate label="Project" isLoaded={!!activeVersion && versionID === activeVersion.id} load={loadProjectAndJoinChannel}>
       <CommentingUpdates />
       <TranscriptUpdates />
-      <RealtimeProjectProvider>{children}</RealtimeProjectProvider>
+      <ProjectSubscriptionGate>{children}</ProjectSubscriptionGate>
     </LoadingGate>
   );
 };

@@ -18,8 +18,8 @@ import {
   ProjectLockGate,
   RealtimeLoadingGate,
   WorkspaceFeatureLoadingGate,
-  WorkspaceLoadingGate,
   WorkspacesLoadingGate,
+  WorkspaceSubscriptionGate,
 } from '@/gates';
 import { connect, lazy, withBatchLoadingGate } from '@/hocs';
 import { useCanvasTracking, useEnableDisable, useEventualEngine, useLayoutDidUpdate, useSelector, useTeardown, useTheme } from '@/hooks';
@@ -182,7 +182,7 @@ export default compose(
     ProjectLockGate,
     WorkspacesLoadingGate,
     WorkspaceFeatureLoadingGate,
-    WorkspaceLoadingGate,
+    WorkspaceSubscriptionGate,
     RealtimeLoadingGate
   )
 )(Skill) as React.FC<SkillProps>;

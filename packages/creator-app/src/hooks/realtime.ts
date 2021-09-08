@@ -1,28 +1,54 @@
-import { useDispatch, useSubscription } from '@logux/redux';
+import { useSubscription } from '@logux/redux';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { useContext } from 'react';
-import { createSelectorHook, createStoreHook } from 'react-redux';
+import { useCallback } from 'react';
+import { AnyAction } from 'typescript-fsa';
 
-import { RealtimeStore, RealtimeStoreContext } from '@/contexts/RealtimeStoreContext';
-import { RealtimeState } from '@/ducks/realtimeV2';
+import { Dispatchable, DispatchResult } from '@/store/types';
 import { NullableRecord } from '@/types';
 
-export const useRealtimeDispatch = () => {
-  const { store } = useContext(RealtimeStoreContext);
+import { useStore } from './redux';
 
-  return store.dispatch as ReturnType<typeof useDispatch>;
+export const useDispatch = <S extends any[], D extends any[], R extends Dispatchable>(
+  createAction: (...args: [...S, ...D]) => R,
+  ...staticArgs: S
+) => {
+  const store = useStore();
+
+  return useCallback((...dynamicArgs: D): DispatchResult<R> => store.dispatch(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
 };
 
-export const useRealtimeStore = createStoreHook(RealtimeStoreContext as any) as () => RealtimeStore;
-export const useRealtimeSelector = createSelectorHook<RealtimeState>(RealtimeStoreContext as any);
+export const useLocalDispatch = <S extends any[], D extends any[], R extends AnyAction>(
+  createAction: (...args: [...S, ...D]) => R,
+  ...staticArgs: S
+) => {
+  const store = useStore();
+
+  return useCallback((...dynamicArgs: D) => store.dispatch.local(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
+};
+
+export const useCrossTabDispatch = <S extends any[], D extends any[], R extends AnyAction>(
+  createAction: (...args: [...S, ...D]) => R,
+  ...staticArgs: S
+) => {
+  const store = useStore();
+
+  return useCallback((...dynamicArgs: D) => store.dispatch.crossTab(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
+};
+
+export const useSyncDispatch = <S extends any[], D extends any[], R extends AnyAction>(
+  createAction: (...args: [...S, ...D]) => R,
+  ...staticArgs: S
+) => {
+  const store = useStore();
+
+  return useCallback((...dynamicArgs: D) => store.dispatch.sync(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
+};
 
 export const useWorkspaceSubscription = ({ workspaceID }: NullableRecord<Realtime.Channels.WorkspaceChannelParams>): boolean =>
-  !useSubscription(workspaceID ? [Realtime.Channels.workspace({ workspaceID })] : [], { context: RealtimeStoreContext as any });
+  !useSubscription(workspaceID ? [Realtime.Channels.workspace({ workspaceID })] : []);
 
 export const useProjectSubscription = ({ projectID, workspaceID }: NullableRecord<Realtime.Channels.ProjectChannelParams>): boolean =>
-  !useSubscription(projectID && workspaceID ? [Realtime.Channels.project({ projectID, workspaceID })] : [], { context: RealtimeStoreContext as any });
+  !useSubscription(projectID && workspaceID ? [Realtime.Channels.project({ projectID, workspaceID })] : []);
 
 export const useDiagramSubscription = ({ diagramID, projectID, workspaceID }: NullableRecord<Realtime.Channels.DiagramChannelParams>): boolean =>
-  !useSubscription(diagramID && projectID && workspaceID ? [Realtime.Channels.diagram({ diagramID, projectID, workspaceID })] : [], {
-    context: RealtimeStoreContext as any,
-  });
+  !useSubscription(diagramID && projectID && workspaceID ? [Realtime.Channels.diagram({ diagramID, projectID, workspaceID })] : []);

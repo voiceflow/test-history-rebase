@@ -16,7 +16,7 @@ import { usePermission } from '@/hooks/permission';
 import { copy } from '@/utils/clipboard';
 import * as Sentry from '@/vendors/sentry';
 
-import { useDispatch } from './redux';
+import { useDispatch } from './realtime';
 import { useTrackingEvents } from './tracking';
 import { useActiveWorkspace } from './workspace';
 

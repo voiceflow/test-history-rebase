@@ -32,11 +32,10 @@ import {
   useFeature,
   useModals,
   usePermission,
-  useRealtimeDispatch,
-  useRealtimeSelector,
   useScrollHelpers,
   useSelector,
   useSetup,
+  useSyncDispatch,
   useWorkspaceTracking,
 } from '@/hooks';
 import * as Models from '@/models';
@@ -72,10 +71,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const projects = useSelector(Project.allProjectsSelector);
   const projectsMap = useSelector(Project.projectsMapSelector);
   const projectListsV1 = useSelector(ProjectList.allProjectListsSelector);
-  const projectListsRealtime = useRealtimeSelector(RealtimeProjectList.allProjectListsSelector);
+  const projectListsRealtime = useSelector(RealtimeProjectList.allProjectListsSelector);
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const hasTemplatesWorkspaceV1 = useSelector(Workspace.hasTemplatesWorkspaceSelector);
-  const hasTemplatesWorkspaceRealtime = useRealtimeSelector(RealtimeWorkspace.hasTemplatesWorkspaceSelector);
+  const hasTemplatesWorkspaceRealtime = useSelector(RealtimeWorkspace.hasTemplatesWorkspaceSelector);
   const loadLists = useDispatch(ProjectList.loadProjectLists);
   const createList = useDispatch(ProjectList.createProjectList);
   const setConfirm = useDispatch(Modal.setConfirm);
@@ -89,7 +88,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const goToNewProject = useDispatch(Router.goToNewProject);
   const goToNewIntroProject = useDispatch(Router.goToNewIntroProject);
   const clearSearch = useDispatch(Router.clearSearch);
-  const realtimeDispatch = useRealtimeDispatch();
+  const moveProjectList = useSyncDispatch(Realtime.projectList.crudActions.move);
+  const transplantProjectBetweenLists = useSyncDispatch(Realtime.projectList.transplantProjectBetweenLists);
   const saveRealtimeProjectLists = useDispatch(ProjectList.saveRealtimeProjectListsForActiveWorkspace);
 
   const projectLists = atomicActions.isEnabled ? projectListsRealtime : projectListsV1;
@@ -135,7 +135,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const onMove = React.useCallback(
     (drag, hover) => {
       if (atomicActions.isEnabled) {
-        realtimeDispatch.sync(Realtime.projectList.crudActions.move({ workspaceID: activeWorkspaceID!, from: drag.id, to: hover.id }));
+        moveProjectList({ workspaceID: activeWorkspaceID!, from: drag.id, to: hover.id });
       } else {
         moveList(drag.id, hover.id);
       }
@@ -146,13 +146,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const onMoveProject = React.useCallback(
     (drag, hover) => {
       if (atomicActions.isEnabled) {
-        realtimeDispatch.sync(
-          Realtime.projectList.transplantProjectBetweenLists({
-            workspaceID: activeWorkspaceID!,
-            from: { listID: drag.listId, projectID: drag.id },
-            to: { listID: hover.listId, projectID: hover.id },
-          })
-        );
+        transplantProjectBetweenLists({
+          workspaceID: activeWorkspaceID!,
+          from: { listID: drag.listId, projectID: drag.id },
+          to: { listID: hover.listId, projectID: hover.id },
+        });
       } else {
         transplantProject({ listID: drag.listId, projectID: drag.id }, { listID: hover.listId, projectID: hover.id });
       }

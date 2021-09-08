@@ -12,7 +12,7 @@ import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import { extractMemberById } from '@/ducks/realtimeV2/workspace/utils';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
-import { useDispatch, useFeature, useModals, useRealtimeSelector, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { Workspace as WorkspaceModel } from '@/models';
 import * as Sentry from '@/vendors/sentry';
 
@@ -33,9 +33,9 @@ const ImportModal: React.FC = () => {
 
   const creatorID = useSelector(Account.userIDSelector);
   const workspacesV1 = useSelector(Workspace.allWorkspacesSelector);
-  const workspacesRealtime = useRealtimeSelector(RealtimeWorkspace.allWorkspacesSelector);
+  const workspacesRealtime = useSelector(RealtimeWorkspace.allWorkspacesSelector);
   const workspaceByIDSelectorV1 = useSelector(Workspace.workspaceByIDSelector);
-  const workspaceByIDSelectorRealtime = useRealtimeSelector(
+  const workspaceByIDSelectorRealtime = useSelector(
     (state) => (workspaceID: string) => RealtimeWorkspace.workspaceByIDSelector(state, { id: workspaceID })
   );
 

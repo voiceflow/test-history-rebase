@@ -1,48 +1,42 @@
-import { ChannelErrors, ClientContext } from '@logux/client/react';
+import { useClient } from '@logux/client/react';
 import React from 'react';
-import { Provider, useStore } from 'react-redux';
 
-import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
+import { withFeatureGate } from '@/hocs';
 import { useFeature, usePageAwareTeardown, useSelector } from '@/hooks';
-import createRealtimeStore from '@/store/realtime';
 
-import { RealtimeStoreContext } from '../contexts/RealtimeStoreContext';
 import ConnectionWarning from './RealtimeLoadingGate/components/RealtimeConnectionWarning';
 
+/**
+ * manages connection to realtime service
+ */
 const RealtimeConnectionGate: React.FC = ({ children }) => {
-  const globalStore = useStore();
+  const client = useClient();
   const userID = useSelector(Account.userIDSelector);
+  const isLoggedIn = useSelector(Account.isLoggedInSelector);
   const authToken = useSelector(Session.authTokenSelector);
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
   const [isSynchronized, setSynchronized] = React.useState(!atomicActions.isEnabled);
 
-  const result = React.useMemo(() => {
-    const realtime = client.realtime(userID, authToken);
-
-    return {
-      store: createRealtimeStore(globalStore, realtime),
-      client: realtime,
-    };
-  }, [userID, authToken]);
-
   // not leader nodes are connected by default if leader is connected
-  const [isConnected, setConnected] = React.useState(!atomicActions.isEnabled || result.client.connected);
+  const [isConnected, setConnected] = React.useState(client.connected);
 
   React.useEffect(() => {
     let unsubscribe: VoidFunction | null = null;
 
-    if (userID && authToken && atomicActions.isEnabled) {
-      unsubscribe = result.client.on('state', () => setConnected(result.client.connected));
+    if (isLoggedIn) {
+      client.changeUser(String(userID), authToken!);
+
+      unsubscribe = client.on('state', () => setConnected(client.connected));
 
       // eslint-disable-next-line promise/catch-or-return
-      result.client.waitFor('synchronized').then(() => setSynchronized(true));
+      client.waitFor('synchronized').then(() => setSynchronized(true));
 
-      result.client.start();
+      client.start();
     } else {
       setConnected(true);
       setSynchronized(true);
@@ -51,25 +45,19 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
     return () => {
       unsubscribe?.();
       setSynchronized(false);
-      result.client.destroy();
+      client.destroy();
     };
-  }, [result, !!atomicActions.isEnabled]);
+  }, [isLoggedIn, !!atomicActions.isEnabled]);
 
   usePageAwareTeardown(() => {
-    result.client.destroy();
+    client.destroy();
   });
 
   return (
-    <ClientContext.Provider value={result.client}>
-      <LoadingGate label="Collaboration" isLoaded={isSynchronized}>
-        <ChannelErrors>
-          <Provider store={result.store} context={RealtimeStoreContext as any}>
-            {isConnected ? children : <ConnectionWarning />}
-          </Provider>
-        </ChannelErrors>
-      </LoadingGate>
-    </ClientContext.Provider>
+    <LoadingGate label="Collaboration" isLoaded={isSynchronized}>
+      {isConnected ? children : <ConnectionWarning />}
+    </LoadingGate>
   );
 };
 
-export default RealtimeConnectionGate;
+export default withFeatureGate(FeatureFlag.ATOMIC_ACTIONS)(RealtimeConnectionGate);

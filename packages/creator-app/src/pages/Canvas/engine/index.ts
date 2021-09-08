@@ -24,7 +24,7 @@ import { useMouseMove } from '@/hooks';
 import { NodeData } from '@/models';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
-import { Selector, Store } from '@/store/types';
+import { State, Store } from '@/store/types';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
@@ -147,6 +147,14 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     ];
   }
 
+  get context() {
+    return {
+      workspaceID: this.select(Session.activeWorkspaceIDSelector)!,
+      projectID: this.select(Session.activeProjectIDSelector)!,
+      diagramID: this.getDiagramID()!,
+    };
+  }
+
   constructor(public store: Store, public mousePosition: React.RefObject<Point>, realtimeSubscription: RealtimeSubscriptionValue) {
     super();
 
@@ -163,7 +171,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   // store accessors
 
-  select = <T extends Selector<any>>(selector: T): ReturnType<T> => selector(this.store.getState());
+  select = <T, A extends any[]>(selector: (state: State, ...args: A) => T, ...args: A): T => selector(this.store.getState(), ...args);
 
   getNodeByID = (nodeID: string) => this.select(Creator.nodeByIDSelector)(nodeID);
 

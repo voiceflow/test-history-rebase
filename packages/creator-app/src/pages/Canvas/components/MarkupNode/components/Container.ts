@@ -1,4 +1,7 @@
+import { rgbaToHex } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs';
+import { Markup } from '@/models';
 import { CANVAS_COMMENTING_ENABLED_CLASSNAME, CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 
 export interface ContainerProps {
@@ -6,11 +9,19 @@ export interface ContainerProps {
   rotate: number;
   scale: number;
   maxWidth: number | null;
+  backgroundColor: Markup.Color | null;
 }
 
 const Container = styled.div<ContainerProps>`
   position: absolute;
   transform: ${({ rotate }) => `rotate(${rotate}rad)`};
+
+  ${({ backgroundColor }) =>
+    backgroundColor &&
+    `
+    background-color: ${rgbaToHex(backgroundColor)};
+    border-radius: 8px;
+  `};
 
   ${({ isText, scale, maxWidth, rotate }) =>
     isText &&

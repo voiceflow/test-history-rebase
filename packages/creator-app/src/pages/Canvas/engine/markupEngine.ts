@@ -48,6 +48,7 @@ class MarkupEngine extends EngineConsumer {
       rotate: 0,
       content: SlateEditorAPI.getEmptyState(),
       overrideWidth: 178,
+      backgroundColor: null,
     };
 
     const nodeID = await this.engine.node.add(

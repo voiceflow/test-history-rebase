@@ -2,6 +2,10 @@
 import { PROFILE_COLORS } from '../styles/colors';
 import { Color } from '../types';
 
+export const colorGetReadableAlfa = (color: Color): string => `${(color?.a ?? 1) * 100}`;
+
+export const colorReadableAlfaToOpacity = (value: string): number => Math.min(+value / 100, 1);
+
 export const getAlternativeColor = (id: number | string) => {
   const index =
     String(id)

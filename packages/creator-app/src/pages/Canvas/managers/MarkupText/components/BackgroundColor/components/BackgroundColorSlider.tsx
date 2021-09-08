@@ -1,62 +1,47 @@
 import { colorGetReadableAlfa, colorReadableAlfaToOpacity, preventDefault, useDidUpdateEffect, useToggle } from '@voiceflow/ui';
 import React from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
 
 import ColorSelect from '@/components/ColorSelect';
+import OpacitySliderHandle from '@/components/SlateEditable/components/OpacitySliderHandle';
 import SliderInputGroup from '@/components/SliderInputGroup';
 import { Markup } from '@/models';
 import { withEnterPress } from '@/utils/dom';
 
-import { DEFAULT_COLOR, TextProperty } from '../constants';
-import { useSlateEditor } from '../contexts';
-import { EditorAPI } from '../editor';
-import OpacitySliderHandle from './OpacitySliderHandle';
+export interface BackgroundColorSliderProps {
+  color: Markup.Color;
+  onChangeColor: (color: Markup.Color) => void;
+}
 
-const TextColor: React.FC = () => {
-  const editor = useSlateEditor();
-
-  const color = EditorAPI.textProperty(editor, TextProperty.COLOR, DEFAULT_COLOR);
+const BackgroundColorSlider: React.FC<BackgroundColorSliderProps> = ({ color, onChangeColor }) => {
   const [pickerInputFocused, togglePickerInputFocused] = useToggle();
 
   const [inputOpacity, setInputOpacity] = React.useState(() => colorGetReadableAlfa(color));
 
-  const setColor = (nextColor: Markup.Color) => {
-    EditorAPI.setTextProperty(editor, TextProperty.COLOR, nextColor);
-  };
-
-  const onChangeColor = (nextColor: Markup.Color) => {
+  const handleChangeColor = (nextColor: Markup.Color) => {
     setInputOpacity(`${nextColor.a * 100}`);
-    setColor(nextColor);
+    onChangeColor(nextColor);
   };
 
   const onChangeOpacitySlider = (value: number) => {
     const opacity = value / 100;
 
     setInputOpacity(`${value}`);
-    setColor({ ...color, a: opacity });
+    onChangeColor({ ...color, a: opacity });
   };
 
   const onChangeOpacityInput = ({ value }: HTMLInputElement) => {
     if (value === '') {
       setInputOpacity(value);
-      setColor({ ...color, a: 0 });
+      onChangeColor({ ...color, a: 0 });
     } else if (value.match(/^\d+$/)) {
       const opacity = colorReadableAlfaToOpacity(value);
       setInputOpacity(`${opacity * 100}`);
-      setColor({ ...color, a: opacity });
+      onChangeColor({ ...color, a: opacity });
     }
   };
 
   const onBlurOpacityInput = ({ target }: React.FocusEvent<HTMLInputElement>) => {
-    unstable_batchedUpdates(() => {
-      if (!editor.isFakeSelectionApplied()) {
-        editor.removeFakeSelection();
-      } else {
-        EditorAPI.removeFakeSelectionAndFocus(editor);
-      }
-
-      onChangeOpacityInput(target);
-    });
+    onChangeOpacityInput(target);
   };
 
   const onEnterPressOpacityInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -66,20 +51,10 @@ const TextColor: React.FC = () => {
 
   const onPickerInputFocus = () => {
     togglePickerInputFocused(true);
-
-    editor.applyFakeSelection();
   };
 
   const onPickerInputBlur = () => {
-    unstable_batchedUpdates(() => {
-      togglePickerInputFocused(false);
-
-      if (!editor.isFakeSelectionApplied()) {
-        editor.removeFakeSelection();
-      } else {
-        EditorAPI.removeFakeSelectionAndFocus(editor);
-      }
-    });
+    togglePickerInputFocused(false);
   };
 
   const onPickerContainerMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -103,7 +78,6 @@ const TextColor: React.FC = () => {
       inputValue={inputOpacity}
       inputProps={{
         onBlur: onBlurOpacityInput,
-        onFocus: editor.applyFakeSelection,
         placeholder: '100',
         onKeyPress: withEnterPress(onEnterPressOpacityInput),
       }}
@@ -113,7 +87,7 @@ const TextColor: React.FC = () => {
       sliderPrefix={
         <ColorSelect
           color={color}
-          onChange={onChangeColor}
+          onChange={handleChangeColor}
           onInputBlur={onPickerInputBlur}
           onInputFocus={onPickerInputFocus}
           onPickerPreviewMouseDown={preventDefault()}
@@ -127,4 +101,4 @@ const TextColor: React.FC = () => {
   );
 };
 
-export default TextColor;
+export default BackgroundColorSlider;

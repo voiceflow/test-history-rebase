@@ -165,7 +165,7 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
         </Header>
       )}
       {(children || emptyChildren) && (
-        <ContentContainer noHeader={!hasHeader} style={customContentStyling}>
+        <ContentContainer noHeader={!hasHeader} isCollapsed={isCollapsed} sectionToggleVariant={collapseVariant} style={customContentStyling}>
           <ContentPrefixComponent />
           <Collapse isOpen={!isCollapsed}>{_isFunction(children) ? children({ isCollapsed, toggle }) : children}</Collapse>
           <ContentSuffixComponent />

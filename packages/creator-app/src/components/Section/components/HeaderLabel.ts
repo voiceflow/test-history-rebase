@@ -6,6 +6,7 @@ import { css, styled, units } from '@/hocs';
 export enum HeaderVariant {
   SECONDARY = 'secondary',
   LINK = 'link',
+  ADD = 'add',
 }
 
 export interface HeaderLabelProps {
@@ -44,6 +45,13 @@ const HeaderLabel = styled.div<HeaderLabelProps>`
       case HeaderVariant.LINK:
         return css`
           font-weight: normal !important;
+        `;
+      case HeaderVariant.ADD:
+        return css`
+          font-size: 13px;
+          font-weight: normal !important;
+          text-transform: uppercase;
+          color: #62778c !important;
         `;
       default:
         return css`

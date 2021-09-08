@@ -2,7 +2,7 @@ import { IconVariant, SvgIcon, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant } from '../../constants';
-import { Container, ToggleArrowContainer } from './components';
+import { Container, ToggleAddContainer, ToggleArrowContainer } from './components';
 
 interface CollapseTriggerProps {
   variant: SectionToggleVariant;
@@ -20,6 +20,12 @@ const CollapseTrigger: React.FC<CollapseTriggerProps> = ({ disabled, onToggle, i
     )}
 
     {variant === SectionToggleVariant.TOGGLE && <Toggle checked={!isCollapsed} onChange={onToggle} small />}
+
+    {variant === SectionToggleVariant.ADD && (
+      <ToggleAddContainer>
+        <SvgIcon onClick={onToggle} variant={IconVariant.TERTIARY} icon={isCollapsed ? 'outlinedAdd' : 'outlinedMinus'} size={16} />
+      </ToggleAddContainer>
+    )}
   </Container>
 );
 

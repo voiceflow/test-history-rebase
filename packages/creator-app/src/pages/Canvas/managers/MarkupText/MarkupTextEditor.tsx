@@ -6,11 +6,11 @@ import { withRequiredEngine } from '@/contexts';
 import { useTrackingEvents } from '@/hooks';
 import { Markup } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
-import Section from '@/pages/Canvas/components/MarkupSection';
+import MarkupSection from '@/pages/Canvas/components/MarkupSection';
 import type { Engine } from '@/pages/Canvas/engine';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
-import { IconButton, IconButtonSeparator, TextAligns, TextStyles } from './components';
+import { BackgroundColor, IconButton, IconButtonSeparator, TextAligns, TextStyles } from './components';
 
 export const MarkupTextEditor: React.FC<NodeEditorPropsType<Markup.NodeData.Text> & { engine: Engine }> = ({ nodeID, engine }) => {
   const [key, editor] = engine.markup.useTextEditor(nodeID);
@@ -23,11 +23,11 @@ export const MarkupTextEditor: React.FC<NodeEditorPropsType<Markup.NodeData.Text
   return !editor ? null : (
     <ControlledEditorProvider editor={editor} contextKey={key}>
       <Content>
-        <Section>
+        <MarkupSection>
           <FontStyles />
-        </Section>
+        </MarkupSection>
 
-        <Section>
+        <MarkupSection>
           <FlexAround>
             <TextAligns />
 
@@ -39,11 +39,13 @@ export const MarkupTextEditor: React.FC<NodeEditorPropsType<Markup.NodeData.Text
 
             <HyperlinkButton>{(props) => <IconButton {...props} />}</HyperlinkButton>
           </FlexAround>
-        </Section>
+        </MarkupSection>
 
-        <Section>
+        <MarkupSection>
           <TextColor />
-        </Section>
+        </MarkupSection>
+
+        <BackgroundColor nodeID={nodeID} />
       </Content>
     </ControlledEditorProvider>
   );

@@ -80,6 +80,7 @@ const MarkupNode = () => {
             rotate={(data as ResizableMarkupNodeData).rotate || 0}
             scale={(data as Markup.NodeData.Text).scale ?? 1}
             maxWidth={(data as Markup.NodeData.Text).overrideWidth ?? null}
+            backgroundColor={(data as Markup.NodeData.Text).backgroundColor ?? null}
             ref={instance.transformRef}
           >
             <NodeComponent ref={instance.blockRef} node={node} data={data as any} />

@@ -10,6 +10,7 @@ export namespace Markup {
 
   export namespace NodeData {
     export interface Text {
+      backgroundColor: Color | null;
       scale: number;
       rotate: number;
       content: Descendant[];

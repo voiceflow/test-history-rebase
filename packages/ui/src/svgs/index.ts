@@ -167,8 +167,10 @@ export { default as offRadioButton } from './images/icons/off-radio-button.svg';
 export { default as onRadioButton } from './images/icons/on-radio-button.svg';
 export { default as openLink } from './open-link.svg';
 export { default as openLock } from './open-lock.svg';
+export { default as outlinedAdd } from './outlined-add.svg';
 export { default as outlinedCircle } from './outlined-circle.svg';
 export { default as outlinedFilledCircle } from './outlined-filled-circle.svg';
+export { default as outlinedMinus } from './outlined-minus.svg';
 
 // p
 export { default as power } from './images/icons/power.svg';

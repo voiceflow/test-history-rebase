@@ -206,6 +206,7 @@ const draftJSToSlateAdapter = (data: any): Markup.NodeData.Text => {
       rotate: data.rotate,
       content,
       overrideWidth: data.overrideWidth && data.overrideWidth + 18,
+      backgroundColor: data.backgroundColor,
     };
   }
 

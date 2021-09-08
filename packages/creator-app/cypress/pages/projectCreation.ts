@@ -1,8 +1,7 @@
 import { ClassName, Identifier } from '../../src/styles/constants';
-import { uploadFile } from '../utils';
 import canvasPage from './canvas';
 
-export const PROJECT_NAME = 'Project Name';
+const PROJECT_NAME = 'Untitled';
 
 export const helper = {
   clickProjectCreateButton: () => {
@@ -10,13 +9,6 @@ export const helper = {
   },
   clickButtonWithText: (text: string) => {
     cy.get(`.${ClassName.BUTTON}`).contains(text).click();
-  },
-  completeNameImage: () => {
-    helper.el.newProjectNameInput.type(PROJECT_NAME);
-    cy.intercept('POST', '/image').as('uploadImage');
-    uploadFile(`#${Identifier.NEW_PROJECT_ICON_UPLOAD_CONTAINER}`);
-    cy.wait('@uploadImage');
-    helper.clickButtonWithText('Continue');
   },
   getHomeStep: () => cy.get(`.${ClassName.HOME_BLOCK}`).find(`.${ClassName.CANVAS_STEP}`).first(),
   goBackStep: () => {
@@ -39,9 +31,6 @@ export const helper = {
     helper.clickButtonWithText('Create Project');
   },
   el: {
-    get newProjectNameInput() {
-      return cy.get(`#${Identifier.NEW_PROJECT_NAME_INPUT}`);
-    },
     get projectCreationStepTitle() {
       return cy.get(`#${Identifier.PROJECT_CREATION_STEP_TITLE}`);
     },
@@ -52,7 +41,6 @@ export default {
   createProject: (platformKeyword: string, language?: string, invocationName?: string) => {
     cy.visit('/');
     helper.clickProjectCreateButton();
-    helper.completeNameImage();
     helper.completePlatformSelect(platformKeyword);
     helper.completeInvocationLanguage(language, invocationName);
     canvasPage.el.projectTitle.should('be.visible');

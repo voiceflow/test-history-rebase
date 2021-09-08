@@ -95,6 +95,8 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
             id={Identifier.INVOCATION_NAME_INPUT}
             error={!!invocationError}
             placeholder="Enter invocation name"
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
             value={invocationName}
             onChange={(e) => setInvocationName(e.target.value)}
           />

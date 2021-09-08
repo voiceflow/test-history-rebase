@@ -1,5 +1,5 @@
 import dashboard from '../pages/dashboard';
-import projectCreationPage, { helper, PROJECT_NAME } from '../pages/projectCreation';
+import projectCreationPage, { helper } from '../pages/projectCreation';
 
 context('Project Creation Flow', () => {
   beforeEach(() => {
@@ -11,12 +11,12 @@ context('Project Creation Flow', () => {
   describe('All Platforms - Happy Path', () => {
     it('Alexa - English', () => {
       projectCreationPage.createProject('Alexa');
-      helper.getHomeStep().should('have.text', `Alexa, open ${PROJECT_NAME}`);
+      helper.getHomeStep().should('have.text', `Alexa, open Untitled`);
     });
 
     it('Google - English', () => {
       projectCreationPage.createProject('Google');
-      helper.getHomeStep().should('have.text', `Hey Google, start ${PROJECT_NAME}`);
+      helper.getHomeStep().should('have.text', `Hey Google, start Untitled`);
     });
 
     it('Voice Assistant - English', () => {
@@ -43,7 +43,7 @@ context('Project Creation Flow', () => {
   describe('Change Language', () => {
     it('Alexa - Spanish', () => {
       projectCreationPage.createProject('Alexa', 'Spanish');
-      helper.getHomeStep().should('have.text', `Alexa, open ${PROJECT_NAME}`);
+      helper.getHomeStep().should('have.text', `Alexa, open Untitled`);
     });
   });
 
@@ -59,11 +59,8 @@ context('Project Creation Flow', () => {
     it('Step Back', () => {
       cy.visit('/');
       helper.clickProjectCreateButton();
-      helper.completeNameImage();
+      helper.completePlatformSelect('Google');
       helper.goBackStep();
-      helper.el.projectCreationStepTitle.should('have.text', 'New Project');
-      helper.el.newProjectNameInput.should('have.value', PROJECT_NAME);
-      helper.completeNameImage();
       helper.el.projectCreationStepTitle.should('have.text', 'Project Type');
     });
 

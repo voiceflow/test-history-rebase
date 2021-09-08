@@ -17,9 +17,7 @@ import { noop } from '@/utils/functional';
 import { createPlatformSelector } from '@/utils/platform';
 import { isAlexaPlatform, isAnyGeneralPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
-import { StepID, StepMeta } from './constants';
-
-const NUMBER_OF_STEPS = 3;
+import { DEFAULT_PROJECT_NAME, PROJECT_CREATION_STEPS_NUMBER, StepID, StepMeta } from './constants';
 
 const getTemplateTag = createPlatformSelector({
   [PlatformType.ALEXA]: 'default',
@@ -41,12 +39,10 @@ const NewProject: React.FC = () => {
   const loadProjectsByWorkspaceID = useDispatch(Project.loadProjectsByWorkspaceID);
 
   // Once this starts getting more complex, we should move all this logic to a context, but right now that's overkill
-  const [stepStack, setStepStack] = React.useState<StepID[]>([StepID.NAME_AND_IMAGE]);
+  const [stepStack, setStepStack] = React.useState<StepID[]>([StepID.PLATFORM_SELECT]);
   const currentStep = stepStack[0];
 
-  const [name, setName] = React.useState('');
-  const [projectImage, setProjectImage] = React.useState('');
-  const [invocationName, setInvocationName] = React.useState('');
+  const [invocationName, setInvocationName] = React.useState<string>();
   const [selectedChannel, setSelectedChannel] = React.useState<PlatformType | null>(null);
   const [alexaLocales, setAlexaLocales] = React.useState<[AlexaConstants.Locale, ...AlexaConstants.Locale[]]>([LOCALE_MAP[0].value]);
   const [googleLanguage, setGoogleLanguage] = React.useState<GoogleConstants.Language>(GoogleConstants.Language.EN);
@@ -63,7 +59,7 @@ const NewProject: React.FC = () => {
     let newVersionID: string | null = null;
 
     try {
-      const project = await createProject({ platform: selectedChannel!, name, image: projectImage, listID }, getTemplateTag(selectedChannel!));
+      const project = await createProject({ platform: selectedChannel!, name: DEFAULT_PROJECT_NAME, listID }, getTemplateTag(selectedChannel!));
 
       // TODO: in the future make new project parameters much more platform specific
       if (isAlexaPlatform(selectedChannel!)) {
@@ -75,7 +71,7 @@ const NewProject: React.FC = () => {
       } else if (isGooglePlatform(selectedChannel!)) {
         await client.platform.google.version.updatePublishing(project.versionID, {
           locales: GoogleConstants.LanguageToLocale[googleLanguage],
-          displayName: name,
+          displayName: DEFAULT_PROJECT_NAME,
           pronunciation: invocationName,
           sampleInvocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
         });
@@ -100,10 +96,8 @@ const NewProject: React.FC = () => {
   };
 
   const onContinue = () => {
-    if (stepStack.length === NUMBER_OF_STEPS) {
+    if (stepStack.length === PROJECT_CREATION_STEPS_NUMBER) {
       finalizeCreation();
-    } else if (currentStep === StepID.NAME_AND_IMAGE) {
-      setStepStack((prevStepSTack) => [StepID.PLATFORM_SELECT, ...prevStepSTack]);
     } else if (currentStep === StepID.PLATFORM_SELECT) {
       setStepStack((prevStepSTack) => [StepID.PROJECT_SETTINGS, ...prevStepSTack]);
     }
@@ -121,10 +115,6 @@ const NewProject: React.FC = () => {
     }
   }, [selectedChannel]);
 
-  useDidUpdateEffect(() => {
-    setInvocationName(name);
-  }, [name]);
-
   if (!workspace || projects.length >= workspace.projects) {
     return <Redirect to={Path.DASHBOARD} />;
   }
@@ -139,15 +129,13 @@ const NewProject: React.FC = () => {
           canCancel
           stepStack={stepStack}
           onSkipClick={noop}
-          numberOfSteps={NUMBER_OF_STEPS}
+          numberOfSteps={PROJECT_CREATION_STEPS_NUMBER}
           hasBackButton={stepStack.length > 1}
           hasSkipButton={false}
         />
 
         <FlexCenter>
           <CurrentStep
-            name={name}
-            setName={setName}
             onContinue={onContinue}
             alexaLocales={alexaLocales}
             generalLocale={generalLocale}
@@ -156,8 +144,6 @@ const NewProject: React.FC = () => {
             creatingProject={creatingProject}
             setAlexaLocales={setAlexaLocales}
             setGeneralLocale={setGeneralLocale}
-            projectImage={projectImage}
-            setProjectImage={setProjectImage}
             finalizeCreation={finalizeCreation}
             selectedChannel={selectedChannel}
             setGoogleLanguage={setGoogleLanguage}

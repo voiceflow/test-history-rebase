@@ -4,11 +4,9 @@ import React from 'react';
 import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
 
 import ChannelSelect from './Steps/ChannelSelect';
-import NameAndImage from './Steps/NameAndImage';
 import ProjectSettings from './Steps/ProjectSettings';
 
 export enum StepID {
-  NAME_AND_IMAGE = 'name_and_image',
   PLATFORM_SELECT = 'platform_select',
   PROJECT_SETTINGS = 'project_settings',
 }
@@ -18,11 +16,11 @@ interface StepMetaProps {
   component: React.FC<any>;
 }
 
+export const PROJECT_CREATION_STEPS_NUMBER = Object.values(StepID).length;
+
+export const DEFAULT_PROJECT_NAME = 'Untitled';
+
 export const StepMeta: Record<StepID, StepMetaProps> = {
-  [StepID.NAME_AND_IMAGE]: {
-    title: () => 'New Project',
-    component: NameAndImage,
-  },
   [StepID.PLATFORM_SELECT]: {
     title: () => 'Project Type',
     component: ({ setSelectedChannel, creatingSkill }) => (

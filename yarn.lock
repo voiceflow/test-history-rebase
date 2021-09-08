@@ -5507,6 +5507,14 @@
     babel-plugin-styled-components "^1.13.2"
     babel-preset-react-app "^10.0.0"
 
+"@voiceflow/base-types@1.4.4", "@voiceflow/base-types@^1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.4.4.tgz#b0d4e54d752f999ddaa1edec721071113c6d9f9a"
+  integrity sha512-vkSWfxsryoVMupNp7Z4M3g2wO0O6NQ/GvMKJf4QagUjqp0CULvwL5p+R7JnJL4Gg4nONWSetGDDUTzfwsY5ewQ==
+  dependencies:
+    "@voiceflow/api-sdk" "^1.37.1"
+    slate "^0.63.0"
+
 "@voiceflow/base-types@1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.5.0.tgz#b5152f04b62e7ca5fd3a4a5cad5eaa13490e00e4"
@@ -5527,14 +5535,6 @@
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.4.3.tgz#d964ba4d4d145d3e29f424e6c86e28fb27a460c2"
   integrity sha512-GWGkyikaaH9/DMMUODv3j6cZGqTTOyXV6cUXXu6Z+Kp1c6VBF1m9Mz3jW//J4vYp88kZIQMbdaWx1rNTMw5SjQ==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.37.1"
-    slate "^0.63.0"
-
-"@voiceflow/base-types@^1.4.4":
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.4.4.tgz#b0d4e54d752f999ddaa1edec721071113c6d9f9a"
-  integrity sha512-vkSWfxsryoVMupNp7Z4M3g2wO0O6NQ/GvMKJf4QagUjqp0CULvwL5p+R7JnJL4Gg4nONWSetGDDUTzfwsY5ewQ==
   dependencies:
     "@voiceflow/api-sdk" "^1.37.1"
     slate "^0.63.0"

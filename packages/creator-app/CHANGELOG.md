@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.476.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.475.0...@voiceflow/creator-app@1.476.0) (2021-09-08)
+
+
+### Features
+
+* canvas cut hotkey (VF-1417) ([#4065](https://github.com/voiceflow/creator-app/issues/4065)) ([84f5685](https://github.com/voiceflow/creator-app/commit/84f5685c59c794b00033e25a88e4e58f6b42241e))
+* improve spotlight filter (VF-103) ([#4063](https://github.com/voiceflow/creator-app/issues/4063)) ([a10c6e8](https://github.com/voiceflow/creator-app/commit/a10c6e8741f8cb8aecb6f7d591a6485d0cbf5e6f))
+
+
+
+
+
 # [1.475.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.474.0...@voiceflow/creator-app@1.475.0) (2021-09-08)
 
 

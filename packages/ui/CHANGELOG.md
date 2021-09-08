@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.14.0...@voiceflow/ui@1.14.1) (2021-09-08)
+
+
+### Bug Fixes
+
+* subtle button active color fix (VF-1607) ([#4045](https://github.com/voiceflow/creator-app/issues/4045)) ([5175ad1](https://github.com/voiceflow/creator-app/commit/5175ad1b522e6ce7836f7b86889e564a93e11b0f))
+
+
+
+
+
 # [1.14.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.13.1...@voiceflow/ui@1.14.0) (2021-09-07)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.473.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.472.0...@voiceflow/creator-app@1.473.0) (2021-09-08)
+
+
+### Bug Fixes
+
+* subtle button active color fix (VF-1607) ([#4045](https://github.com/voiceflow/creator-app/issues/4045)) ([5175ad1](https://github.com/voiceflow/creator-app/commit/5175ad1b522e6ce7836f7b86889e564a93e11b0f))
+
+
+### Features
+
+* enter hot key for onboarding and project creation (VF-431) ([#4060](https://github.com/voiceflow/creator-app/issues/4060)) ([59ab6f0](https://github.com/voiceflow/creator-app/commit/59ab6f01208f3b75b7683c1c465add60d2d22b4a))
+
+
+
+
+
 # [1.472.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.471.0...@voiceflow/creator-app@1.472.0) (2021-09-07)
 
 

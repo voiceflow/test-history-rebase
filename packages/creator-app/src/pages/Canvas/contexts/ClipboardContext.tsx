@@ -9,8 +9,12 @@ export const BufferType = {
   BLOCK: 'block',
 };
 
+interface CopyOptions {
+  disableSuccessToast?: boolean;
+}
+
 export interface ClipboardContextValue {
-  copy: (nodeID?: string) => void;
+  copy: (nodeID?: string | null, options?: CopyOptions) => void;
 }
 
 const IGNORED_TAGS = ['TEXTAREA', 'INPUT'];
@@ -21,7 +25,7 @@ export const { Consumer: ClipboardConsumer } = ClipboardContext;
 export const ClipboardProvider: React.FC = ({ children }) => {
   const engine = React.useContext(EngineContext)!;
 
-  const copy = React.useCallback((nodeID?: string) => engine.copyActive(nodeID), []);
+  const copy = React.useCallback((nodeID?: string | null, options?: CopyOptions) => engine.copyActive(nodeID, options), []);
 
   React.useEffect(() => {
     const handlePaste = (event: ClipboardEvent) => {

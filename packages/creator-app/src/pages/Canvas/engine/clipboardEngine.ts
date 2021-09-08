@@ -45,7 +45,12 @@ class ClipboardEngine extends EngineConsumer {
   log = this.engine.log.child('clipboard');
 
   internal = {
-    storeData: async (nodeIDs: string[], keyToStore: string, keyToEncrypt: string) => {
+    storeData: async (
+      nodeIDs: string[],
+      keyToStore: string,
+      keyToEncrypt: string,
+      { disableSuccessToast }: { disableSuccessToast?: boolean } = {}
+    ) => {
       const state = this.engine.store.getState();
       const platform = Project.activePlatformSelector(state);
       const {
@@ -137,7 +142,9 @@ class ClipboardEngine extends EngineConsumer {
         })
       );
 
-      toast.success(`${copiedBlocks.length} block(s) copied to clipboard`);
+      if (!disableSuccessToast) {
+        toast.success(`${copiedBlocks.length} block(s) copied to clipboard`);
+      }
     },
 
     extractData: async (copiedKey: string) => {
@@ -186,7 +193,7 @@ class ClipboardEngine extends EngineConsumer {
     },
   };
 
-  copy(nodeIDs: string[]) {
+  copy(nodeIDs: string[], options?: { disableSuccessToast?: boolean }) {
     if (!nodeIDs.length) return;
 
     this.log.debug(this.log.pending('copying to buffer'), nodeIDs);
@@ -198,7 +205,7 @@ class ClipboardEngine extends EngineConsumer {
     localStorage.setItem(CLIPBOARD_DATA_KEY, serializedData);
 
     // we do no need await here since copying is a background job, .encrypt called here to increase the complexity of debugging
-    this.internal.storeData(nodeIDs, keyToStore, keyToEncrypt);
+    this.internal.storeData(nodeIDs, keyToStore, keyToEncrypt, options);
 
     this.log.info(this.log.success('copied to buffer'), this.log.value(nodeIDs.length));
   }

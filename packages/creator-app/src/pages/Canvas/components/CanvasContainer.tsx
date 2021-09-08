@@ -72,6 +72,13 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
 
   const showSpotlight = React.useCallback(() => !disableSpotlight && spotlight.toggle(), [disableSpotlight]);
   const deleteActive = React.useCallback<VoidFunction>(() => canDelete && engine.removeActive(), [canDelete]);
+  const cutActive = React.useCallback<VoidFunction>(async () => {
+    await clipboard.copy(null, { disableSuccessToast: true });
+
+    if (canDelete) {
+      await engine.removeActive({ disableConfirmPrompt: true });
+    }
+  }, [canDelete]);
 
   const api = React.useMemo<CanvasContainerAPI>(
     () => ({
@@ -97,6 +104,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
 
   useRegistration(() => engine.register('container', api), [api]);
 
+  useHotKeys(Hotkey.CUT, cutActive, { preventDefault: true }, [cutActive]);
   useHotKeys(Hotkey.COPY, () => clipboard.copy(), { preventDefault: true });
   useHotKeys(Hotkey.DELETE, deleteActive, { preventDefault: true }, [deleteActive]);
   useHotKeys(Hotkey.UNDO, undoHistory as VoidFunction, { preventDefault: true });

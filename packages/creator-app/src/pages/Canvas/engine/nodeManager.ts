@@ -303,7 +303,11 @@ class NodeManager extends EngineConsumer {
     return false;
   }
 
-  async validateRemove(nodeIDs: string[], remove: (nodeIDs: string[]) => Promise<void>) {
+  async validateRemove(
+    nodeIDs: string[],
+    remove: (nodeIDs: string[]) => Promise<void>,
+    { disableConfirmPrompt }: { disableConfirmPrompt?: boolean } = {}
+  ): Promise<void> {
     const removableNodes = nodeIDs.map(this.engine.getNodeByID).filter((node) => node.type !== BlockType.START);
     const removableNodeIDs = removableNodes.map(({ id }) => id);
 
@@ -312,7 +316,11 @@ class NodeManager extends EngineConsumer {
     const isSingleCombinedWithSingleStep =
       removableNodes.length === 1 && removableNodes[0].type === BlockType.COMBINED && removableNodes[0].combinedNodes.length === 1;
 
-    if (!isSingleCombinedWithSingleStep && removableNodes.some((node) => [BlockType.COMBINED, BlockType.COMMAND].includes(node.type))) {
+    if (
+      !disableConfirmPrompt &&
+      !isSingleCombinedWithSingleStep &&
+      removableNodes.some((node) => [BlockType.COMBINED, BlockType.COMMAND].includes(node.type))
+    ) {
       this.dispatch(
         Modal.setConfirm({
           warning: true,
@@ -343,21 +351,25 @@ class NodeManager extends EngineConsumer {
     });
   }
 
-  removeMany(nodeIDs: string[]) {
+  removeMany(nodeIDs: string[], { disableConfirmPrompt }: { disableConfirmPrompt?: boolean } = {}): Promise<void> {
     this.log.debug(this.log.pending('removed multiple nodes'), nodeIDs);
 
-    return this.validateRemove(nodeIDs, async (removableNodeIDs) => {
-      const allNodeIDs = [...removableNodeIDs, ...removableNodeIDs.flatMap(this.select(Creator.combinedNodeIDsSelector))];
+    return this.validateRemove(
+      nodeIDs,
+      async (removableNodeIDs) => {
+        const allNodeIDs = [...removableNodeIDs, ...removableNodeIDs.flatMap(this.select(Creator.combinedNodeIDsSelector))];
 
-      await this.engine.comment.handleNodesDelete(allNodeIDs);
+        await this.engine.comment.handleNodesDelete(allNodeIDs);
 
-      await this.engine.realtime.sendUpdate(Realtime.removeManyNodes(removableNodeIDs));
-      this.internal.removeMany(removableNodeIDs);
+        await this.engine.realtime.sendUpdate(Realtime.removeManyNodes(removableNodeIDs));
+        this.internal.removeMany(removableNodeIDs);
 
-      this.engine.saveHistory();
+        this.engine.saveHistory();
 
-      this.log.info(this.log.success('removed multiple nodes'), this.log.value(removableNodeIDs.length));
-    });
+        this.log.info(this.log.success('removed multiple nodes'), this.log.value(removableNodeIDs.length));
+      },
+      { disableConfirmPrompt }
+    );
   }
 
   // nested node management methods

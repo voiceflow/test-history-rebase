@@ -361,24 +361,24 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   /**
    * remove any selected or focused nodes
    */
-  async removeActive() {
+  async removeActive({ disableConfirmPrompt }: { disableConfirmPrompt?: boolean } = {}): Promise<void> {
     if (this.activation.hasTargets) {
       // keep reference to targets before clearing
       const activeTargets = this.activation.getTargets();
 
       this.clearActivation();
-      await this.node.removeMany(activeTargets);
+      await this.node.removeMany(activeTargets, { disableConfirmPrompt });
     }
   }
 
   /**
    * copy the active nodes to the clipboard
    */
-  copyActive(nodeID?: string) {
+  copyActive(nodeID?: string | null, options?: { disableSuccessToast?: boolean }): void {
     if (nodeID) {
-      this.clipboard.copy([nodeID]);
+      this.clipboard.copy([nodeID], options);
     } else if (this.activation.hasTargets) {
-      this.clipboard.copy(this.activation.getTargets());
+      this.clipboard.copy(this.activation.getTargets(), options);
     }
   }
 

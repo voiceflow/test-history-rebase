@@ -1,6 +1,7 @@
 import { IS_MAC } from '@voiceflow/ui';
 
 export enum Hotkey {
+  CUT = 'CUT',
   COPY = 'COPY',
   UNDO = 'UNDO',
   REDO = 'REDO',
@@ -56,6 +57,7 @@ enum SpecialKey {
  * https://craig.is/killing/mice
  */
 const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
+  [Hotkey.CUT]: [`${SpecialKey.CTRL}+x`, `${SpecialKey.META}+x`],
   [Hotkey.COPY]: [`${SpecialKey.CTRL}+c`, `${SpecialKey.META}+c`],
   [Hotkey.UNDO]: [`${SpecialKey.CTRL}+z`, `${SpecialKey.META}+z`],
   [Hotkey.REDO]: [`${SpecialKey.CTRL}+${SpecialKey.SHIFT}+z`, `${SpecialKey.META}+${SpecialKey.SHIFT}+z`],

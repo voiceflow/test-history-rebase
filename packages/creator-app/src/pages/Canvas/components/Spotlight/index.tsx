@@ -1,31 +1,35 @@
-import { preventDefault, useDidUpdateEffect } from '@voiceflow/ui';
+import { KeyName, preventDefault, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
+import ReactSelect from 'react-select';
 
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import { useFeature, useTrackingEvents } from '@/hooks';
-import { NodeData } from '@/models';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { getSections, MenuStep } from '@/pages/Skill/components/DesignMenu/components/Steps/constants';
 import { PlatformContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
+import { withKeyPress } from '@/utils/dom';
 
 import { Container, Select } from './components';
 
-export const filterSpotlightOption = (value: { label: string }, input: string) => value.label.toLowerCase().startsWith(input.toLowerCase().trim());
-
 const Spotlight = () => {
+  const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
   // NOTE: extra protection against context being falsy needed for HMR
   const spotlight = React.useContext(SpotlightContext);
+
+  const selectRef = React.useRef<ReactSelect>(null);
+  const [inputValue, setInputValue] = React.useState('');
   const [trackingEvents] = useTrackingEvents();
-  const engine = React.useContext(EngineContext)!;
   const gadgets = useFeature(FeatureFlag.GADGETS);
+
   const isVisible = !!spotlight?.isVisible;
 
-  const addBlock = async (blockType: BlockType, factoryData?: Partial<NodeData<unknown>>) => {
-    await engine.node.add(blockType, engine.getMouseCoords(), factoryData);
+  const onChange = async (step: MenuStep) => {
+    await engine.node.add(step.type, engine.getMouseCoords(), step.factoryData);
+
     spotlight?.hide();
   };
 
@@ -47,32 +51,37 @@ const Spotlight = () => {
     }
   }, [isVisible]);
 
+  React.useLayoutEffect(() => {
+    selectRef.current?.select.focusOption('first');
+  }, [inputValue]);
+
   if (!isVisible) {
     return null;
   }
 
+  const trimmedValue = inputValue.toLowerCase().trim();
+
+  const filteredOptions = options
+    .filter(({ label }) => label.toLowerCase().includes(trimmedValue))
+    .sort((leftOption, rightOption) => leftOption.label.toLowerCase().indexOf(trimmedValue) - rightOption.label.toLowerCase().indexOf(trimmedValue));
+
   return (
     <Container id={Identifier.SPOTLIGHT} onClick={preventDefault()}>
       <Select
-        onKeyDown={(event: React.KeyboardEvent) => {
-          if (event.key === 'Escape') {
-            spotlight?.hide();
-            event.preventDefault();
-          }
-        }}
+        ref={selectRef}
+        value={null}
         onBlur={spotlight?.hide}
+        options={filteredOptions}
+        onChange={onChange}
+        inputValue={inputValue}
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
-        classNamePrefix="spotlight"
-        onChange={(selected: MenuStep) => {
-          addBlock(selected.type, selected.factoryData);
-          spotlight?.hide();
-        }}
-        options={options}
-        maxMenuHeight={124}
-        value={null}
+        onKeyDown={withKeyPress(KeyName.ESCAPE, () => spotlight?.hide())}
         placeholder="Add Block"
-        filterOption={filterSpotlightOption}
+        filterOption={() => true}
+        onInputChange={setInputValue}
+        maxMenuHeight={124}
+        classNamePrefix="spotlight"
       />
     </Container>
   );

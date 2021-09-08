@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.15.0...@voiceflow/ui@1.15.1) (2021-09-08)
+
+
+### Bug Fixes
+
+* merge stores override dispatch (VF-1483) ([#4061](https://github.com/voiceflow/creator-app/issues/4061)) ([0fc6606](https://github.com/voiceflow/creator-app/commit/0fc6606943486a02c2a4149c5eda21aeb614bab6))
+
+
+
+
+
 # [1.15.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.14.1...@voiceflow/ui@1.15.0) (2021-09-08)
 
 

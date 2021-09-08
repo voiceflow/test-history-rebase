@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.12.1...@voiceflow/realtime-sdk@1.13.0) (2021-09-08)
+
+
+### Features
+
+* enabled background color change to markup text node (VF-1255) ([#4035](https://github.com/voiceflow/creator-app/issues/4035)) ([4871a26](https://github.com/voiceflow/creator-app/commit/4871a26d83652729c22ba00d350e6cd30f248445))
+
+
+
+
+
 ## [1.12.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.12.0...@voiceflow/realtime-sdk@1.12.1) (2021-09-04)
 
 

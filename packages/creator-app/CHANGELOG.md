@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.474.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.473.0...@voiceflow/creator-app@1.474.0) (2021-09-08)
+
+
+### Features
+
+* enabled background color change to markup text node (VF-1255) ([#4035](https://github.com/voiceflow/creator-app/issues/4035)) ([4871a26](https://github.com/voiceflow/creator-app/commit/4871a26d83652729c22ba00d350e6cd30f248445))
+
+
+
+
+
 # [1.473.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.472.0...@voiceflow/creator-app@1.473.0) (2021-09-08)
 
 

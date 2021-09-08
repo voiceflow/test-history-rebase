@@ -1,8 +1,9 @@
-import { Button, ClickableText, FlexCenter, toast } from '@voiceflow/ui';
+import { ClickableText, FlexCenter, KeyName, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 
+import ContinueButton from '../../components/ContinueButton';
 import { StepID } from '../../constants';
 import { OnboardingContext } from '../../context';
 import { Container, LabelContainer, NameInput } from './components';
@@ -32,12 +33,19 @@ const CreateWorkspace: React.FC = () => {
     stepForward(StepID.ADD_COLLABORATORS);
   };
 
+  const handleInputEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === KeyName.ENTER && canContinue) {
+      onContinue();
+    }
+  };
+
   return (
     <Container>
       <FlexCenter>
         <NameInput
           value={workspaceName}
           onBlur={onBlur}
+          onKeyPress={handleInputEnterPress}
           onChange={(e: React.FormEvent<HTMLInputElement>) => setWorkspaceName(e.currentTarget.value)}
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
@@ -55,9 +63,9 @@ const CreateWorkspace: React.FC = () => {
       </LabelContainer>
 
       <FlexCenter>
-        <Button disabled={!canContinue} onClick={onContinue}>
+        <ContinueButton disabled={!canContinue} onClick={onContinue}>
           Continue
-        </Button>
+        </ContinueButton>
       </FlexCenter>
     </Container>
   );

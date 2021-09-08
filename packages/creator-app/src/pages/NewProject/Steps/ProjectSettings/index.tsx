@@ -2,13 +2,14 @@ import { Utils as AlexaUtils } from '@voiceflow/alexa-types';
 import { Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Utils as GoogleUtils } from '@voiceflow/google-types';
 import { PlatformType } from '@voiceflow/internal';
-import { Button, ButtonVariant, FlexCenter, Input, Select, SvgIcon } from '@voiceflow/ui';
+import { FlexCenter, Input, Select, SvgIcon } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
+import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
 import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import { LoadingButton } from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components';
@@ -155,9 +156,9 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
             <SvgIcon icon="publishSpin" size={24} spin />
           </LoadingButton>
         ) : (
-          <Button variant={ButtonVariant.PRIMARY} disabled={!canContinue} onClick={finalizeCreation}>
+          <ContinueButton disabled={!canContinue} onClick={finalizeCreation}>
             Create Project
-          </Button>
+          </ContinueButton>
         )}
       </FlexCenter>
     </Container>

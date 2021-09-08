@@ -1,7 +1,8 @@
 import { UserRole } from '@voiceflow/internal';
-import { Badge, Button, ClickableText, FlexCenter, SvgIcon } from '@voiceflow/ui';
+import { Badge, ClickableText, FlexCenter, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
+import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { CollaboratorType, OnboardingStepProps } from '@/pages/Onboarding/types';
 
@@ -25,10 +26,10 @@ const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
     () => collaborators.filter(({ email, permission }, index) => !!email && !errors[index] && permission !== UserRole.ADMIN),
     [errors, collaborators]
   );
+  const disabledContinue = !validMembers.length || hasErrors || sendingRequests;
 
   const recalculateErrors = (members: CollaboratorType[]) => {
     const newErrors = members.map((member, index) => getError(members, member, index));
-
     if (newErrors.length) {
       updateErrors(newErrors);
     }
@@ -60,9 +61,9 @@ const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
       <AddTeamMember errors={errors} onUpdate={onMemberUpdate} collaborators={collaborators} />
 
       <FlexCenter column style={{ marginTop: '25px' }}>
-        <Button disabled={!validMembers.length || hasErrors || sendingRequests} onClick={onContinue}>
+        <ContinueButton disabled={disabledContinue} onClick={onContinue}>
           {sendingRequests ? <SvgIcon icon="publishSpin" size={24} spin /> : 'Send Invites'}
-        </Button>
+        </ContinueButton>
 
         <ClickableText onClick={advanceToNextStep} mt={16}>
           Skip for now

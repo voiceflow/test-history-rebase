@@ -1,7 +1,8 @@
-import { Button, FlexCenter } from '@voiceflow/ui';
+import { FlexCenter } from '@voiceflow/ui';
 import React, { useContext } from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
+import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 import { toggleMembership } from '@/utils/array';
 
 import { StepID } from '../../constants';
@@ -103,9 +104,9 @@ const PersonalizeWorkspace: React.FC = () => {
         </SizeRow>
       </TeamSizeContainer>
       <FlexCenter>
-        <Button disabled={!canContinue} onClick={onContinue}>
+        <ContinueButton disabled={!canContinue} onClick={onContinue}>
           Continue
-        </Button>
+        </ContinueButton>
       </FlexCenter>
     </Container>
   );

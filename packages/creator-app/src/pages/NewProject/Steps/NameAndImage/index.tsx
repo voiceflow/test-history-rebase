@@ -1,7 +1,8 @@
-import { Button, ClickableText, FlexCenter } from '@voiceflow/ui';
+import { ClickableText, FlexCenter, KeyName } from '@voiceflow/ui';
 import React from 'react';
 
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
+import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 import { Container, LabelContainer, NameInput } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import { Identifier } from '@/styles/constants';
 
@@ -17,6 +18,11 @@ interface NameAndImageProps {
 const NameAndImage: React.FC<NameAndImageProps> = ({ name, setName, projectImage, setProjectImage, onContinue }) => {
   const canContinue = !!name;
   const iconUploadRef = React.createRef<HTMLElement>();
+  const handleInputEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === KeyName.ENTER && canContinue) {
+      onContinue();
+    }
+  };
 
   return (
     <Container id={Identifier.NEW_PROJECT_ICON_UPLOAD_CONTAINER}>
@@ -24,6 +30,7 @@ const NameAndImage: React.FC<NameAndImageProps> = ({ name, setName, projectImage
         <NameInput
           id={Identifier.NEW_PROJECT_NAME_INPUT}
           value={name}
+          onKeyPress={handleInputEnterPress}
           onChange={(e: React.FormEvent<HTMLInputElement>) => setName(e.currentTarget.value)}
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
@@ -41,9 +48,9 @@ const NameAndImage: React.FC<NameAndImageProps> = ({ name, setName, projectImage
       </LabelContainer>
 
       <FlexCenter>
-        <Button disabled={!canContinue} onClick={onContinue}>
+        <ContinueButton disabled={!canContinue} onClick={onContinue}>
           Continue
-        </Button>
+        </ContinueButton>
       </FlexCenter>
     </Container>
   );

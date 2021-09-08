@@ -1,6 +1,7 @@
-import { Button, Description, FlexCenter, SvgIcon, Title } from '@voiceflow/ui';
+import { Description, FlexCenter, SvgIcon, Title } from '@voiceflow/ui';
 import React from 'react';
 
+import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { FadeDownContainer } from '@/styles/animations';
 
@@ -35,7 +36,9 @@ const Welcome: React.FC = () => {
           </FadeDownContainer>
           <FadeDownContainer delay={0.36} {...fadeConfig}>
             <FlexCenter>
-              <Button onClick={() => actions.stepForward(StepID.PERSONALIZE_WORKSPACE)}>Get Started</Button>
+              <ContinueButton disabled={false} onClick={() => actions.stepForward(StepID.PERSONALIZE_WORKSPACE)}>
+                Get Started
+              </ContinueButton>
             </FlexCenter>
           </FadeDownContainer>
         </FlexCenter>

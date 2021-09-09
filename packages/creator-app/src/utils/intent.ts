@@ -20,6 +20,7 @@ import {
 import { Nullable, Nullish } from '@/types';
 import { Normalized } from '@/utils/normalized';
 import { capitalizeFirstLetter } from '@/utils/string';
+import { isChatbotPlatform, isGeneralPlatform } from '@/utils/typeGuards';
 
 import { createPlatformSelector } from './platform';
 
@@ -42,7 +43,6 @@ export const formatIntentName = (name = ''): string =>
     .toLowerCase();
 
 export const prettifyIntentName = (name = ''): string =>
-  intentLabel[name as GeneralConstants.IntentName] ??
   name
     .replace(/(\w)Intent/g, '$1')
     .replace(/([A-Za-z])([A-Z])(?=[a-z])/g, '$1 $2') // camelCase => camel Case
@@ -52,6 +52,13 @@ export const prettifyIntentName = (name = ''): string =>
 
 export const prettifyIntentNames = <T extends Intent>(intents: T[]): T[] =>
   intents.map((intent) => ({ ...intent, name: prettifyIntentName(intent.name) }));
+
+export const applyIntentNameChanges = (name = ''): string => {
+  return intentLabel[name as GeneralConstants.IntentName] ?? name;
+};
+
+export const applyIntentsNameChanges = <T extends Intent>(intents: T[]): T[] =>
+  intents.map((intent) => ({ ...intent, name: applyIntentNameChanges(intent.name) }));
 
 export const filterIntents = <T extends Intent>(intents: T[], activeIntent: T): T[] =>
   intents.filter((intent) => {
@@ -156,6 +163,12 @@ export function validateUtterance(utterance: string, intentID: string, intents: 
 
   return err;
 }
+
+export const applyPlatformIntentNameFormatting = (name: string, platform: PlatformType) => {
+  const hasNoRules = isGeneralPlatform(platform) || isChatbotPlatform(platform);
+  if (hasNoRules) return name;
+  return formatIntentName(name);
+};
 
 export const removeSlotRefFromInput = (text: string, slotDetails: Slot): string =>
   text.replace(SLOT_REGEXP, (match, inner) => (inner.match(slotDetails.name) ? slotDetails.name : match));

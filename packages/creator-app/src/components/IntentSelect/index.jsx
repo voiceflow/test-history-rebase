@@ -11,8 +11,8 @@ import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import { ClassName } from '@/styles/constants';
 import {
+  applyPlatformIntentNameFormatting,
   filterIntents,
-  formatIntentName,
   isCustomizableBuiltInIntent,
   prettifyIntentName,
   prettifyIntentNames,
@@ -84,7 +84,6 @@ function IntentSelect({
   placeholder = 'Name new intent or select existing intent',
 }) {
   const intentID = intent?.id;
-  const isGeneral = isGeneralPlatform(platform);
   const filteredIntents = React.useMemo(() => prettifyIntentNames(filterIntents(intents, intent)), [intents, intent]);
   const intentLookup = React.useMemo(
     () =>
@@ -163,7 +162,7 @@ function IntentSelect({
         optionsFilter={(...args) => optionsFilter(...args, platform)}
         getOptionValue={getOptionValue}
         getOptionLabel={getOptionLabel}
-        formatInputValue={isGeneral ? undefined : formatIntentName}
+        formatInputValue={(val) => applyPlatformIntentNameFormatting(val, platform)}
         alwaysShowCreate={alwaysShowCreate}
         isButtonDisabled={isButtonDisabled}
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, options) =>

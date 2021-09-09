@@ -12,9 +12,8 @@ import * as Slot from '@/ducks/slot';
 import { compose, connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { formatIntentName, isCustomizableBuiltInIntent, prettifyIntentName, validateIntentName } from '@/utils/intent';
+import { applyIntentNameChanges, applyPlatformIntentNameFormatting, isCustomizableBuiltInIntent, validateIntentName } from '@/utils/intent';
 import { removeTrailingUnderscores } from '@/utils/string';
-import { isGeneralPlatform } from '@/utils/typeGuards';
 
 export interface ManagerProps {
   id: string;
@@ -25,7 +24,6 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
   { id, intent: selectedIntent, platform, slots, removeIntent, patchIntent, allIntents },
   ref
 ) => {
-  const isGeneral = isGeneralPlatform(platform);
   const [name, setName] = React.useState(selectedIntent?.name ?? '');
   const [path, setPath] = React.useState<{ type: string | null }>({ type: null });
   const resetPath = React.useCallback(() => setPath({ type: null }), []);
@@ -57,7 +55,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 
   const localNameUpdate = ({ value }: { value: string }) => {
     setNameError(null);
-    setName(isGeneral ? value : formatIntentName(value));
+    setName(applyPlatformIntentNameFormatting(value, platform));
   };
 
   React.useEffect(() => {
@@ -77,7 +75,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
         <FlexApart onClick={resetPath}>
           <Input
             error={!!nameError}
-            value={prettifyIntentName(name)}
+            value={applyIntentNameChanges(name)}
             onBlur={onBlur}
             onChange={({ currentTarget }) => localNameUpdate(currentTarget)}
             placeholder="Intent Name"

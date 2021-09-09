@@ -99,6 +99,19 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     resetStates();
   };
 
+  const triggerRenderer = ({ opened, ...props }: { opened: boolean }) => {
+    setIsDropdownOpened(opened);
+    return (
+      <Flex {...props}>
+        <TextContainer onClick={(e) => e.stopPropagation()}>
+          <StatusIcon icon="info" size={14} color="#E5B813" />
+          No Match - &nbsp;
+        </TextContainer>
+        <ClickableText>Add utterance to intent</ClickableText>
+      </Flex>
+    );
+  };
+
   useDidUpdateEffect(() => {
     if (!isOpenedIMM && targetIntentID && initialUtterances) {
       handleIMMClose(targetIntentID, initialUtterances);
@@ -112,18 +125,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
         inDropdownSearch
         intent={null}
         onChange={({ intent }: { intent: string }) => handleIntentSelectCreate(intent)}
-        triggerRenderer={({ opened, ...props }: { opened: boolean }) => {
-          setIsDropdownOpened(opened);
-          return (
-            <Flex {...props}>
-              <TextContainer onClick={(e) => e.stopPropagation()}>
-                <StatusIcon icon="info" size={14} color="#E5B813" />
-                No Match - &nbsp;
-              </TextContainer>
-              <ClickableText>Add utterance to intent</ClickableText>
-            </Flex>
-          );
-        }}
+        triggerRenderer={triggerRenderer as any}
       />
     </Container>
   ) : (

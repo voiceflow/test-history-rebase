@@ -14,6 +14,7 @@ const opts: Options = {
   mode: NODE_ENV === 'production' ? 'production' : 'development',
 
   env,
+  envOverridePrefix: 'VF_OVERRIDE',
 
   rootDir,
   paths: {

@@ -8,7 +8,12 @@ export default extendConfig(
     deadCodeIgnore: ['**/__mocks__/**/*', '**/*.md', '**/types.ts'],
   }),
   (config) => ({
-    plugins: [new webpack.IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ })],
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env.VF_OVERRIDE_API_HOST': JSON.stringify(process.env.VF_OVERRIDE_API_HOST || ''),
+      }),
+      new webpack.IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
+    ],
 
     resolveLoader: {
       modules: [resolvePath(config, '../../node_modules'), resolvePath(config, '../../node_modules/@voiceflow/webpack-config/node_modules')],

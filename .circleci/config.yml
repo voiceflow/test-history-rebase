@@ -31,3 +31,4 @@ workflows:
             packages/realtime-sdk/.* build-realtime-sdk true
             packages/ui/.* build-ui true
             package.json build-all true
+            yarn.lock build-all true

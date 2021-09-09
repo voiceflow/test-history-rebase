@@ -1,5 +1,4 @@
 import { FullSpinner, Spinner } from '@voiceflow/ui';
-import isFunction from 'lodash/isFunction';
 import React from 'react';
 
 export interface LoadingGateProps {
@@ -9,7 +8,6 @@ export interface LoadingGateProps {
   zIndex?: number;
   unload?: () => void;
   isLoaded: boolean;
-  children?: React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined | (() => React.ReactNode);
   withoutSpinner?: boolean;
   backgroundColor?: string;
 }
@@ -41,7 +39,7 @@ const LoadingGate: React.FC<LoadingGateProps> = ({
     return withoutSpinner ? null : <SpinnerComponent name={label || 'Data'} zIndex={zIndex} backgroundColor={backgroundColor} />;
   }
 
-  return <>{isFunction(children) ? children() : children}</>;
+  return <>{children}</>;
 };
 
 export default LoadingGate;

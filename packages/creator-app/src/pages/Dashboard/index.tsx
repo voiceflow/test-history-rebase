@@ -210,94 +210,92 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
 
       {/* using loading gate here instead of hock to escape header blinking  */}
       <WorkspaceFeatureLoadingGate>
-        {() =>
-          loading ? (
-            <FullSpinner name="Projects" />
-          ) : (
-            <div
-              id="dashboard"
-              className={cn({ 'thanos-ed': isLocked })}
-              onClickCapture={(e) => {
-                // prevent all click events
-                if (isLocked) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }
-              }}
-            >
-              {projects.length === 0 ? (
-                <EmptyScreen
-                  id={Identifier.NEW_PROJECT_BUTTON}
-                  title="No Projects Found"
-                  body="This workspace has no projects, create one."
-                  buttonText="New Project"
-                  onClick={goToNewIntroProject}
-                />
-              ) : (
-                <div className={DashboardClassName.LISTS_CONTAINER}>
-                  <div className={DashboardClassName.LISTS_CONTAINER_INNER}>
-                    <ScrollContextProvider value={scrollHelpers}>
-                      <div ref={bodyRef} className={DashboardClassName.LISTS}>
-                        <div ref={innerRef} className={DashboardClassName.LISTS_INNER}>
-                          {projectLists.map((list, idx) => {
-                            const projects = getBoardFilteredProjects(list.projects, projectsMap, filter);
-                            if (filter && !projects.length) {
-                              return null;
+        {loading ? (
+          <FullSpinner name="Projects" />
+        ) : (
+          <div
+            id="dashboard"
+            className={cn({ 'thanos-ed': isLocked })}
+            onClickCapture={(e) => {
+              // prevent all click events
+              if (isLocked) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
+            }}
+          >
+            {projects.length === 0 ? (
+              <EmptyScreen
+                id={Identifier.NEW_PROJECT_BUTTON}
+                title="No Projects Found"
+                body="This workspace has no projects, create one."
+                buttonText="New Project"
+                onClick={goToNewIntroProject}
+              />
+            ) : (
+              <div className={DashboardClassName.LISTS_CONTAINER}>
+                <div className={DashboardClassName.LISTS_CONTAINER_INNER}>
+                  <ScrollContextProvider value={scrollHelpers}>
+                    <div ref={bodyRef} className={DashboardClassName.LISTS}>
+                      <div ref={innerRef} className={DashboardClassName.LISTS_INNER}>
+                        {projectLists.map((list, idx) => {
+                          const projects = getBoardFilteredProjects(list.projects, projectsMap, filter);
+                          if (filter && !projects.length) {
+                            return null;
+                          }
+                          return (
+                            <List
+                              id={list.id}
+                              key={list.id}
+                              isNew={list.isNew}
+                              index={idx}
+                              name={list.name}
+                              onRename={renameList}
+                              onRemove={onDeleteBoard}
+                              projects={projects}
+                              createProject={onCreateProject}
+                              onDrop={saveRealtimeProjectLists}
+                              onDropProject={saveRealtimeProjectLists}
+                              onMove={onMove}
+                              onMoveProject={onMoveProject}
+                              clearNewBoard={clearNewList}
+                              disableDragging={!!filter}
+                            />
+                          );
+                        })}
+
+                        <DragLayer withMemo>
+                          {(item: any) => {
+                            if (item.dragType === 'dashboard-list') {
+                              return <SimpleList {...item} />;
                             }
-                            return (
-                              <List
-                                id={list.id}
-                                key={list.id}
-                                isNew={list.isNew}
-                                index={idx}
-                                name={list.name}
-                                onRename={renameList}
-                                onRemove={onDeleteBoard}
-                                projects={projects}
-                                createProject={onCreateProject}
-                                onDrop={saveRealtimeProjectLists}
-                                onDropProject={saveRealtimeProjectLists}
-                                onMove={onMove}
-                                onMoveProject={onMoveProject}
-                                clearNewBoard={clearNewList}
-                                disableDragging={!!filter}
-                              />
-                            );
-                          })}
 
-                          <DragLayer withMemo>
-                            {(item: any) => {
-                              if (item.dragType === 'dashboard-list') {
-                                return <SimpleList {...item} />;
-                              }
+                            if (item.dragType === 'dashboard-item') {
+                              return <ListItem {...item} />;
+                            }
 
-                              if (item.dragType === 'dashboard-item') {
-                                return <ListItem {...item} />;
-                              }
+                            return null;
+                          }}
+                        </DragLayer>
 
-                              return null;
-                            }}
-                          </DragLayer>
-
-                          {canManageLists && (
-                            <BoxFlex
-                              className={DashboardClassName.ADD_LIST_BUTTON}
-                              style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}
-                            >
-                              <TippyTooltip distance={8} title="Add new list" position="bottom">
-                                <IconButton large icon="addStep" onClick={() => createList()} size={13} />
-                              </TippyTooltip>
-                            </BoxFlex>
-                          )}
-                        </div>
+                        {canManageLists && (
+                          <BoxFlex
+                            className={DashboardClassName.ADD_LIST_BUTTON}
+                            style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}
+                          >
+                            <TippyTooltip distance={8} title="Add new list" position="bottom">
+                              <IconButton large icon="addStep" onClick={() => createList()} size={13} />
+                            </TippyTooltip>
+                          </BoxFlex>
+                        )}
                       </div>
-                    </ScrollContextProvider>
-                  </div>
+                    </div>
+                  </ScrollContextProvider>
                 </div>
-              )}
-            </div>
-          )
-        }
+              </div>
+            )}
+          </div>
+        )}
       </WorkspaceFeatureLoadingGate>
     </div>
   );

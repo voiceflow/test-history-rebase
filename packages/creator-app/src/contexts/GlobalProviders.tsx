@@ -26,7 +26,7 @@ export interface GlobalProvidersProps extends StoreProviderProps {
 }
 
 const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persistor, logux, children }) => {
-  const renderApp = () => (
+  const app = (
     <LifecycleProvider history={history}>
       <FeatureFlagsProvider>
         <FeatureLoadingGate>
@@ -62,7 +62,7 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
       <ConnectedRouter history={history}>
         <DndProvider backend={HTML5Backend}>
           <ThemeProvider theme={THEME}>
-            <CapabilitiesGate>{IS_PRODUCTION_ENV ? <MaintenanceGate>{renderApp}</MaintenanceGate> : renderApp()}</CapabilitiesGate>
+            <CapabilitiesGate>{IS_PRODUCTION_ENV ? <MaintenanceGate>{app}</MaintenanceGate> : app}</CapabilitiesGate>
           </ThemeProvider>
         </DndProvider>
       </ConnectedRouter>

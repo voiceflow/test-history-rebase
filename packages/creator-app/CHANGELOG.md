@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.476.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.476.1...@voiceflow/creator-app@1.476.2) (2021-09-09)
+
+
+### Bug Fixes
+
+* intent name rules (VF-1677) ([#4066](https://github.com/voiceflow/creator-app/issues/4066)) ([e3e4a3a](https://github.com/voiceflow/creator-app/commit/e3e4a3a18f6d6a0f5e5163aa4ae982068e62ffb4))
+
+
+
+
+
 ## [1.476.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.476.0...@voiceflow/creator-app@1.476.1) (2021-09-09)
 
 **Note:** Version bump only for package @voiceflow/creator-app

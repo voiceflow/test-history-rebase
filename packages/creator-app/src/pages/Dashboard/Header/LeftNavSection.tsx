@@ -6,10 +6,10 @@ import PlanBubble from '@/components/PlanBubble';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as WorkspaceDuck from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useFeature, useIsTemplateWorkspaceSelector, useSelector, useWorkspaceUserRoleSelector } from '@/hooks';
 import { Workspace } from '@/models';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
@@ -28,13 +28,13 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace, loadin
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   const planV1 = useSelector(WorkspaceDuck.planTypeSelector);
-  const planRealtime = useSelector((state) => RealtimeWorkspace.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
+  const planRealtime = useSelector((state) => WorkspaceV2.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
   const role = useWorkspaceUserRoleSelector();
   const workspacesV1 = useSelector(WorkspaceDuck.allWorkspacesSelector);
-  const workspacesRealtime = useSelector(RealtimeWorkspace.allWorkspacesSelector);
+  const workspacesRealtime = useSelector(WorkspaceV2.allWorkspacesSelector);
   const isTemplateWorkspace = useIsTemplateWorkspaceSelector();
   const isAdminOfAnyWorkspaceV1 = useSelector(WorkspaceDuck.isAdminOfAnyWorkspaceSelector);
-  const isAdminOfAnyWorkspaceRealtime = useSelector((state) => RealtimeWorkspace.isCreatorAdminOfAnyWorkspaceSelector(state, { creatorID: userID! }));
+  const isAdminOfAnyWorkspaceRealtime = useSelector((state) => WorkspaceV2.isCreatorAdminOfAnyWorkspaceSelector(state, { creatorID: userID! }));
 
   const plan = atomicActions.isEnabled ? planRealtime : planV1;
   const workspaces = atomicActions.isEnabled ? workspacesRealtime : workspacesV1;

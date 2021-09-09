@@ -2,7 +2,7 @@ import { Subscribe } from '@react-rxjs/core';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
-import * as Realtime from '@/ducks/realtimeV2';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
 import { cursorCoords$ } from '@/store/observables';
@@ -12,7 +12,7 @@ import { RealtimeCursor } from './components';
 const RealtimeCursorOverlay: React.FC = () => {
   const userID = useSelector(Account.userIDSelector);
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
-  const viewers = useSelector((state) => Realtime.diagramViewersByIDSelector(state, { id: diagramID }));
+  const viewers = useSelector((state) => DiagramV2.diagramViewersByIDSelector(state, { id: diagramID }));
 
   return (
     <>

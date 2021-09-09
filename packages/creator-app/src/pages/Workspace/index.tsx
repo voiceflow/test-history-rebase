@@ -5,9 +5,9 @@ import { Route, Switch } from 'react-router-dom';
 import { conversationGraphic } from '@/assets';
 import { FeatureFlag } from '@/config/features';
 import { LegacyPath, Path } from '@/config/routes';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Router from '@/ducks/router';
 import * as WorkspaceDuck from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { CheckInvitationGate, WorkspacesLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
 import { useDispatch, useFeature, useSelector } from '@/hooks';
@@ -21,7 +21,7 @@ const Workspace: React.FC = () => {
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
   const personalWorkspaceIDsV1 = useSelector(WorkspaceDuck.personalWorkspaceIDsSelector);
-  const personalWorkspaceIDsRealtime = useSelector(RealtimeWorkspace.personalWorkspaceIDsSelector);
+  const personalWorkspaceIDsRealtime = useSelector(WorkspaceV2.personalWorkspaceIDsSelector);
 
   const personalWorkspaceIDs = atomicActions.isEnabled ? personalWorkspaceIDsRealtime : personalWorkspaceIDsV1;
 

@@ -6,9 +6,9 @@ import ButtonDropdownInput, { OrientationType } from '@/components/ButtonDropdow
 import InvalidEmailError from '@/components/InvalidEmailError';
 import { FeatureFlag } from '@/config/features';
 import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useEnableDisable, useFeature, useModals, useSelector, useWorkspaceUserRoleSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { isValidEmail } from '@/utils/emails';
@@ -37,13 +37,13 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const userRole = useWorkspaceUserRoleSelector();
   const seatLimitsV1 = useSelector(Workspace.seatLimitsSelector);
-  const seatLimitsRealtime = useSelector((state) => RealtimeWorkspace.workspaceSeatLimitsByIDSelector(state, { id: activeWorkspaceID }));
+  const seatLimitsRealtime = useSelector((state) => WorkspaceV2.workspaceSeatLimitsByIDSelector(state, { id: activeWorkspaceID }));
   const numberOfSeatsV1 = useSelector(Workspace.workspaceNumberOfSeatsSelector);
-  const numberOfSeatsRealtime = useSelector((state) => RealtimeWorkspace.workspaceNumberOfSeatsByIDSelector(state, { id: activeWorkspaceID }));
+  const numberOfSeatsRealtime = useSelector((state) => WorkspaceV2.workspaceNumberOfSeatsByIDSelector(state, { id: activeWorkspaceID }));
   const usedEditorSeatsV1 = useSelector(Workspace.usedEditorSeatsSelector);
-  const usedEditorSeatsRealtime = useSelector((state) => RealtimeWorkspace.workspaceUsedEditorSeatsByIDSelector(state, { id: activeWorkspaceID }));
+  const usedEditorSeatsRealtime = useSelector((state) => WorkspaceV2.workspaceUsedEditorSeatsByIDSelector(state, { id: activeWorkspaceID }));
   const usedViewerSeatsV1 = useSelector(Workspace.usedViewerSeatsSelector);
-  const usedViewerSeatsRealtime = useSelector((state) => RealtimeWorkspace.workspaceUsedViewerSeatsByIDSelector(state, { id: activeWorkspaceID }));
+  const usedViewerSeatsRealtime = useSelector((state) => WorkspaceV2.workspaceUsedViewerSeatsByIDSelector(state, { id: activeWorkspaceID }));
 
   const numberOfSeats = atomicActions.isEnabled ? numberOfSeatsRealtime : numberOfSeatsV1;
   const seatLimits = atomicActions.isEnabled ? seatLimitsRealtime : seatLimitsV1;

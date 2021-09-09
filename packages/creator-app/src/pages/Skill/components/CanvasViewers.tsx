@@ -6,8 +6,8 @@ import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Realtime from '@/ducks/realtime';
-import * as RealtimeV2 from '@/ducks/realtimeV2';
 import { WorkspaceMembersLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
 import { useFeature, useModals, usePermission, useSelector } from '@/hooks';
@@ -24,7 +24,7 @@ const CanvasViewers: React.FC<CanvasViewersProps> = ({ flat, withAdd = true }) =
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
   const viewers = useSelector(Realtime.activeDiagramViewersSelector);
   const diagramIDs = useSelector(Diagram.allDiagramIDsSelector);
-  const viewersV2 = useSelector((state) => RealtimeV2.diagramsViewersByIDsSelector(state, { ids: diagramIDs }));
+  const viewersV2 = useSelector((state) => DiagramV2.diagramsViewersByIDsSelector(state, { ids: diagramIDs }));
 
   if (!canViewCollaborators) return null;
 

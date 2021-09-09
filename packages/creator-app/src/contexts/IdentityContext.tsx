@@ -2,9 +2,9 @@ import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature } from '@/hooks/feature';
 import { useSelector } from '@/hooks/redux';
 import { useWorkspaceUserRoleSelector } from '@/hooks/workspace';
@@ -22,7 +22,7 @@ export const IdentityProvider: React.FC = ({ children }) => {
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   const activePlanV1 = useSelector(Workspace.planTypeSelector);
-  const activePlanRealtime = useSelector((state) => RealtimeWorkspace.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
+  const activePlanRealtime = useSelector((state) => WorkspaceV2.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
   const activeRole = useWorkspaceUserRoleSelector();
   const activePlan = atomicActions.isEnabled ? activePlanRealtime : activePlanV1;
 

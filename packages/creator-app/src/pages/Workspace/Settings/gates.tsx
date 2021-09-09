@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 import LoadingGate from '@/components/LoadingGate';
 import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useFeature, useRouteWorkspaceID } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
@@ -17,7 +17,7 @@ export const SettingsGate: React.FC = React.memo(({ children }) => {
   const routeWorkspaceID = useRouteWorkspaceID()!;
 
   const workspaceIDsV1 = useSelector(Workspace.allWorkspaceIDsSelector);
-  const workspaceIDsRealtime = useSelector(RealtimeWorkspace.allWorkspaceIDsSelector);
+  const workspaceIDsRealtime = useSelector(WorkspaceV2.allWorkspaceIDsSelector);
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const workspaceIDs = atomicActions.isEnabled ? workspaceIDsRealtime : workspaceIDsV1;
 

@@ -4,8 +4,8 @@ import React from 'react';
 import Duration from '@/components/Duration';
 import User from '@/components/User';
 import { FeatureFlag } from '@/config/features';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature, useSelector } from '@/hooks';
 import { capitalizeAllWords } from '@/utils/string';
 
@@ -20,7 +20,7 @@ export const Commenter: React.FC<CommenterProps> = ({ time, creatorID }) => {
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
   const userV1 = useSelector((state) => Workspace.anyWorkspaceMemberSelector(state)(String(creatorID)));
-  const userRealtime = useSelector((state) => RealtimeWorkspace.workspaceMemberByCreatorIDSelector(state, { creatorID }));
+  const userRealtime = useSelector((state) => WorkspaceV2.workspaceMemberByCreatorIDSelector(state, { creatorID }));
 
   const user = atomicActions.isEnabled ? userRealtime : userV1;
 

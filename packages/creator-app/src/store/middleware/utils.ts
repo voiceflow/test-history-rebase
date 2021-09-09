@@ -9,9 +9,9 @@ import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { unique } from '@/utils/array';
 
 import { AnyAction, Dispatch, Dispatchable, Middleware, MiddlewareAPI, Selector, Store } from '../types';
@@ -50,7 +50,7 @@ export const createAutosaveMiddleware = <T>(
 
     const isLibraryRole =
       atomicActionsEnabled && creatorID
-        ? RealtimeWorkspace.workspaceIsLibraryRoleByIDAndCreatorIDSelector(state, { id: activeDiagramID, creatorID })
+        ? WorkspaceV2.workspaceIsLibraryRoleByIDAndCreatorIDSelector(state, { id: activeDiagramID, creatorID })
         : Workspace.isLibraryRoleSelector(state);
 
     try {

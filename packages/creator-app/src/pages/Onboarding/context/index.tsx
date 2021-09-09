@@ -11,11 +11,11 @@ import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs';
 import { useDispatch, useFeature, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
 import { asyncForEach } from '@/utils/array';
@@ -93,9 +93,9 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const dispatch = useReduxDispatch();
 
   const workspacesV1 = useSelector(Workspace.allWorkspacesSelector);
-  const workspacesRealtime = useSelector(RealtimeWorkspace.allWorkspacesSelector);
+  const workspacesRealtime = useSelector(WorkspaceV2.allWorkspacesSelector);
   const workspaceByIDV1 = useSelector(Workspace.workspaceByIDSelector);
-  const workspaceByIDRealtime = useSelector((state) => (workspaceID: string) => RealtimeWorkspace.workspaceByIDSelector(state, { id: workspaceID }));
+  const workspaceByIDRealtime = useSelector((state) => (workspaceID: string) => WorkspaceV2.workspaceByIDSelector(state, { id: workspaceID }));
   const account = useSelector(Account.userSelector);
   const firstLogin = useSelector(Account.isFirstLoginSelector);
   const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);

@@ -10,11 +10,11 @@ import Section from '@/components/Section';
 import { FeatureFlag } from '@/config/features';
 import { CUSTOM_SLOT_TYPE, ModalType, SLOT_COLORS } from '@/constants';
 import * as Intent from '@/ducks/intent';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
 import * as Version from '@/ducks/version';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { styled } from '@/hocs';
 import { useFeature, useModals, useSelector, useTeardown } from '@/hooks';
 import { replace, without } from '@/utils/array';
@@ -52,7 +52,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   const planV1 = useSelector(Workspace.planTypeSelector);
-  const planRealtime = useSelector((state) => RealtimeWorkspace.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
+  const planRealtime = useSelector((state) => WorkspaceV2.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
   const slots = useSelector(Slot.allSlotsSelector);
   const intents = useSelector(Intent.allIntentsSelector);
   const slotTypes = useSelector(Version.activeSlotTypesSelector) ?? [];

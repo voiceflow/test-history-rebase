@@ -5,8 +5,8 @@ import { throttle } from 'throttle-debounce';
 import { MovementCalculator } from '@/components/Canvas/types';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as RealtimeDuck from '@/ducks/realtime';
-import * as RealtimeV2Duck from '@/ducks/realtimeV2';
 import * as Session from '@/ducks/session';
 import { useFeature, useSelector, useSyncDispatch } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
@@ -22,7 +22,7 @@ export const useCursorControls = () => {
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const awarenessMoveCursor = useSyncDispatch(Realtime.diagram.awarenessMoveCursor);
-  const hasDiagramViewers = useSelector((state) => RealtimeV2Duck.hasExternalDiagramViewersByIDSelector(state, { id: diagramID }));
+  const hasDiagramViewers = useSelector((state) => DiagramV2.hasExternalDiagramViewersByIDSelector(state, { id: diagramID }));
   const prevCoords = React.useRef<Point | null>(null);
 
   const moveMouse = React.useCallback(

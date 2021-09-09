@@ -9,9 +9,9 @@ import { EDITOR_SEAT_ROLES } from '@/constants';
 import type { State } from '@/ducks';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { Member } from '@/models';
 import { Thunk } from '@/store/types';
 
@@ -71,9 +71,7 @@ const getWorkspaceActiveMembers = (state: State) => {
   const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
   const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
-  return atomicActionsEnabled
-    ? RealtimeWorkspace.workspaceMembersByIDSelector(state, { id: activeWorkspaceID })
-    : activeWorkspaceMembersSelector(state);
+  return atomicActionsEnabled ? WorkspaceV2.workspaceMembersByIDSelector(state, { id: activeWorkspaceID }) : activeWorkspaceMembersSelector(state);
 };
 
 export const sendInviteToActiveWorkspace =
@@ -246,19 +244,19 @@ export const updateActiveWorkspaceMemberRole =
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
 
     const numberOfUsedViewerSeats = atomicActionsEnabled
-      ? RealtimeWorkspace.workspaceUsedViewerSeatsByIDSelector(state, { id: activeWorkspaceID })
+      ? WorkspaceV2.workspaceUsedViewerSeatsByIDSelector(state, { id: activeWorkspaceID })
       : usedViewerSeatsSelector(state);
 
     const numberOfUsedEditorSeats = atomicActionsEnabled
-      ? RealtimeWorkspace.workspaceUsedEditorSeatsByIDSelector(state, { id: activeWorkspaceID })
+      ? WorkspaceV2.workspaceUsedEditorSeatsByIDSelector(state, { id: activeWorkspaceID })
       : usedEditorSeatsSelector(state);
 
     const seatLimits = atomicActionsEnabled
-      ? RealtimeWorkspace.workspaceSeatLimitsByIDSelector(state, { id: activeWorkspaceID })
+      ? WorkspaceV2.workspaceSeatLimitsByIDSelector(state, { id: activeWorkspaceID })
       : seatLimitsSelector(state);
 
     const seats = atomicActionsEnabled
-      ? RealtimeWorkspace.workspaceNumberOfSeatsByIDSelector(state, { id: activeWorkspaceID })
+      ? WorkspaceV2.workspaceNumberOfSeatsByIDSelector(state, { id: activeWorkspaceID })
       : workspaceNumberOfSeatsSelector(state);
 
     if (role === member.role) {

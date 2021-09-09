@@ -3,10 +3,10 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { FeatureFlag } from '@/config/features';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 
 import { useOneTimeEffect } from './effect';
 import { useFeature } from './feature';
@@ -47,7 +47,7 @@ export const useSessionTracking = () => {
 
   const authToken = useSelector(Session.authTokenSelector);
   const workspaceIDsV1 = useSelector(Workspace.allWorkspaceIDsSelector);
-  const workspaceIDsRealtime = useSelector(RealtimeWorkspace.allWorkspaceIDsSelector);
+  const workspaceIDsRealtime = useSelector(WorkspaceV2.allWorkspaceIDsSelector);
   const workspaceIDs = atomicActions.isEnabled ? workspaceIDsRealtime : workspaceIDsV1;
 
   const startTime = React.useMemo(() => Date.now(), []);

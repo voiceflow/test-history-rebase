@@ -8,10 +8,10 @@ import { FeatureFlag } from '@/config/features';
 import { hasRolePermission, Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
-import { extractMemberById } from '@/ducks/realtimeV2/workspace/utils';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { extractMemberById } from '@/ducks/workspaceV2/utils';
 import { useDispatch, useFeature, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { Workspace as WorkspaceModel } from '@/models';
 import * as Sentry from '@/vendors/sentry';
@@ -33,10 +33,10 @@ const ImportModal: React.FC = () => {
 
   const creatorID = useSelector(Account.userIDSelector);
   const workspacesV1 = useSelector(Workspace.allWorkspacesSelector);
-  const workspacesRealtime = useSelector(RealtimeWorkspace.allWorkspacesSelector);
+  const workspacesRealtime = useSelector(WorkspaceV2.allWorkspacesSelector);
   const workspaceByIDSelectorV1 = useSelector(Workspace.workspaceByIDSelector);
   const workspaceByIDSelectorRealtime = useSelector(
-    (state) => (workspaceID: string) => RealtimeWorkspace.workspaceByIDSelector(state, { id: workspaceID })
+    (state) => (workspaceID: string) => WorkspaceV2.workspaceByIDSelector(state, { id: workspaceID })
   );
 
   const workspaces = atomicActions.isEnabled ? workspacesRealtime : workspacesV1;

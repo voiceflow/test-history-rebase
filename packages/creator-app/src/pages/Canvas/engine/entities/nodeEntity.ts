@@ -5,9 +5,9 @@ import shallowEqual from 'shallowequal';
 import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useTeardown } from '@/hooks';
 import { Node, NodeData } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
@@ -141,7 +141,7 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
     if (this.engine.isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS)) {
       const activeWorkspaceID = this.engine.select(Session.activeWorkspaceIDSelector);
 
-      return this.engine.select(RealtimeWorkspace.isTemplateWorkspaceByIDSelector, { id: activeWorkspaceID });
+      return this.engine.select(WorkspaceV2.isTemplateWorkspaceByIDSelector, { id: activeWorkspaceID });
     }
 
     return this.engine.select(Workspace.isTemplateWorkspaceSelector);

@@ -6,7 +6,7 @@ import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
-import * as RealtimeProjectList from '@/ducks/realtimeV2/projectList';
+import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as Session from '@/ducks/session';
 import { ProjectList } from '@/models';
 import { Thunk } from '@/store/types';
@@ -208,7 +208,7 @@ export const addProjectToDefaultList =
     const state = getState();
     const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
-    let defaultList = atomicActionsEnabled ? RealtimeProjectList.defaultProjectListSelector(state) : defaultProjectListSelector(state);
+    let defaultList = atomicActionsEnabled ? ProjectListV2.defaultProjectListSelector(state) : defaultProjectListSelector(state);
 
     if (!defaultList) {
       defaultList = await dispatch(createProjectList(workspaceID, DEFAULT_LIST_NAME));
@@ -229,7 +229,7 @@ export const deleteProjectList =
     const state = getState();
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
     const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-    const list = atomicActionsEnabled ? RealtimeProjectList.projectListByIDSelector(state, { id: listID }) : projectListByIDSelector(state)(listID);
+    const list = atomicActionsEnabled ? ProjectListV2.projectListByIDSelector(state, { id: listID }) : projectListByIDSelector(state)(listID);
 
     Errors.assert(list, listNotFoundError());
 
@@ -256,7 +256,7 @@ export const deleteProjectFromList =
     await dispatch(Project.deleteProject(projectID));
 
     if (atomicActionsEnabled) {
-      const list = RealtimeProjectList.projectListByIDSelector(state, { id: listID });
+      const list = ProjectListV2.projectListByIDSelector(state, { id: listID });
 
       Errors.assertWorkspaceID(activeWorkspaceID);
       Errors.assert(list, listNotFoundError());

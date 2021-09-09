@@ -18,11 +18,11 @@ import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
-import * as RealtimeProjectList from '@/ducks/realtimeV2/projectList';
-import * as RealtimeWorkspace from '@/ducks/realtimeV2/workspace';
+import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
 import {
@@ -71,10 +71,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const projects = useSelector(Project.allProjectsSelector);
   const projectsMap = useSelector(Project.projectsMapSelector);
   const projectListsV1 = useSelector(ProjectList.allProjectListsSelector);
-  const projectListsRealtime = useSelector(RealtimeProjectList.allProjectListsSelector);
+  const projectListsRealtime = useSelector(ProjectListV2.allProjectListsSelector);
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const hasTemplatesWorkspaceV1 = useSelector(Workspace.hasTemplatesWorkspaceSelector);
-  const hasTemplatesWorkspaceRealtime = useSelector(RealtimeWorkspace.hasTemplatesWorkspaceSelector);
+  const hasTemplatesWorkspaceRealtime = useSelector(WorkspaceV2.hasTemplatesWorkspaceSelector);
   const loadLists = useDispatch(ProjectList.loadProjectLists);
   const createList = useDispatch(ProjectList.createProjectList);
   const setConfirm = useDispatch(Modal.setConfirm);

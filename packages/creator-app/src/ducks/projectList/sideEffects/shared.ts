@@ -4,7 +4,7 @@ import client from '@/client';
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
-import * as RealtimeProjectList from '@/ducks/realtimeV2/projectList';
+import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as Session from '@/ducks/session';
 import { Thunk } from '@/store/types';
 import { unique } from '@/utils/array';
@@ -18,7 +18,7 @@ export const listNotFoundError = () => Errors.error('List is not found');
 export const saveRealtimeProjectListsForWorkspace =
   (workspaceID: string): Thunk =>
   async (_dispatch, getState) => {
-    const projectLists = RealtimeProjectList.allProjectListsSelector(getState());
+    const projectLists = ProjectListV2.allProjectListsSelector(getState());
 
     if (projectLists.length) {
       await client.projectList.update(workspaceID, projectLists);
@@ -33,7 +33,7 @@ export const addProjectToList =
     const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     if (atomicActionsEnabled) {
-      const list = RealtimeProjectList.projectListByIDSelector(state, { id: listID });
+      const list = ProjectListV2.projectListByIDSelector(state, { id: listID });
 
       Errors.assertWorkspaceID(activeWorkspaceID);
       Errors.assert(list, listNotFoundError());

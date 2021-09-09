@@ -6,6 +6,7 @@ import { reducer as formReducer } from 'redux-form';
 import account, * as Account from '@/ducks/account';
 import creator, * as Creator from '@/ducks/creator';
 import diagram, * as Diagram from '@/ducks/diagram';
+import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
 import feature, * as Feature from '@/ducks/feature';
 import integrationUsers, * as IntegrationUsers from '@/ducks/integration';
 import intent, * as Intent from '@/ducks/intent';
@@ -14,9 +15,10 @@ import notifications, * as Notifications from '@/ducks/notifications';
 import product, * as Product from '@/ducks/product';
 import project, * as Project from '@/ducks/project';
 import projectList, * as ProjectList from '@/ducks/projectList';
+import projectListV2, * as ProjectListV2 from '@/ducks/projectListV2';
+import projectV2, * as ProjectV2 from '@/ducks/projectV2';
 import prototype, * as Prototype from '@/ducks/prototype';
 import realtime, * as Realtime from '@/ducks/realtime';
-import realtimeV2, * as RealtimeV2 from '@/ducks/realtimeV2';
 import recent, * as Recent from '@/ducks/recent';
 import reportTag, * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
@@ -30,14 +32,17 @@ import ui, * as UI from '@/ducks/ui';
 import version, * as Version from '@/ducks/version';
 import viewport, * as Viewport from '@/ducks/viewport';
 import workspace, * as Workspace from '@/ducks/workspace';
+import workspaceV2, * as WorkspaceV2 from '@/ducks/workspaceV2';
 
 const getCombinedReducer = (history: History) =>
   combineReducers({
     [Router.STATE_KEY]: connectRouter(history),
     form: formReducer,
     [ProjectList.STATE_KEY]: projectList,
+    [ProjectListV2.STATE_KEY]: projectListV2,
     [Modal.STATE_KEY]: modal,
     [Workspace.STATE_KEY]: workspace,
+    [WorkspaceV2.STATE_KEY]: workspaceV2,
     [Thread.STATE_KEY]: thread,
     [Account.STATE_KEY]: account,
     [IntegrationUsers.STATE_KEY]: integrationUsers,
@@ -45,14 +50,15 @@ const getCombinedReducer = (history: History) =>
     [Session.STATE_KEY]: session,
     [Creator.STATE_KEY]: creator,
     [Diagram.STATE_KEY]: diagram,
+    [DiagramV2.STATE_KEY]: diagramV2,
     [Product.STATE_KEY]: product,
     [Project.STATE_KEY]: project,
+    [ProjectV2.STATE_KEY]: projectV2,
     [Intent.STATE_KEY]: intent,
     [Slot.STATE_KEY]: slot,
     [Recent.STATE_KEY]: recent,
     [UI.STATE_KEY]: ui,
     [Realtime.STATE_KEY]: realtime,
-    [RealtimeV2.STATE_KEY]: realtimeV2,
     [Viewport.STATE_KEY]: viewport,
     [Notifications.STATE_KEY]: notifications,
     [Tracking.STATE_KEY]: tracking,

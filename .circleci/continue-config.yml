@@ -693,6 +693,7 @@ workflows:
           <<: *prod_creator_deploy_filters
           context: dev-test
           force_execute: true
+          name: update-track-creator-app-release
           requires:
             - build-app-release
       - build-deploy-app-image:
@@ -705,7 +706,7 @@ workflows:
                 environment_type: production
                 job_type: deployment
           requires:
-            - update-track-creator-app
+            - update-track-creator-app-release
 
   deploy-admin:
     when: 
@@ -725,13 +726,14 @@ workflows:
           <<: *prod_admin_deploy_filters
           context: dev-test
           force_execute: true
+          name: update-track-admin-ui-release
           requires:
             - build-admin-release
       - build-deploy-admin-image:
           <<: *prod_admin_deploy_filters
           context: dev-test
           requires:
-            - update-track-admin-ui
+            - update-track-admin-ui-release
 
   deploy-realtime:
     when: 
@@ -750,10 +752,11 @@ workflows:
           <<: *prod_realtime_deploy_filters
           context: dev-test
           force_execute: true
+          name: update-track-realtime-release
           requires:
             - build-realtime-release
       - build-deploy-realtime-image:
           <<: *prod_realtime_deploy_filters
           context: dev-test
           requires:
-            - update-track-realtime
+            - update-track-realtime-release

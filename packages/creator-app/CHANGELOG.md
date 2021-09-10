@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.476.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.476.2...@voiceflow/creator-app@1.476.3) (2021-09-10)
+
+
+### Bug Fixes
+
+* do not pass render prop to MaintenanceGate (VF-1628) ([#4084](https://github.com/voiceflow/creator-app/issues/4084)) ([114b00f](https://github.com/voiceflow/creator-app/commit/114b00f8463480003117d51a2765ac02cb98e9a8))
+* fixes typescript lint errors (VF-000) ([#4080](https://github.com/voiceflow/creator-app/issues/4080)) ([9462c84](https://github.com/voiceflow/creator-app/commit/9462c8403274d77e290fb5fc8a336095813096c9))
+
+
+### Reverts
+
+* Revert "build: automatically inject VF_OVERRIDE_* env variables (VF-1682) (#4068)" (#4076) ([65e4f13](https://github.com/voiceflow/creator-app/commit/65e4f139df1d2d40474ab2ea13a57f1b1952f2f7)), closes [#4068](https://github.com/voiceflow/creator-app/issues/4068) [#4076](https://github.com/voiceflow/creator-app/issues/4076)
+
+
+
+
+
 ## [1.476.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.476.1...@voiceflow/creator-app@1.476.2) (2021-09-09)
 
 

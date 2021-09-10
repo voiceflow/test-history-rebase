@@ -3586,11 +3586,11 @@
     nanoid "^3.1.23"
 
 "@logux/core@^0.7.0":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@logux/core/-/core-0.7.1.tgz#f834e74957b32cb2f67a58510c67627e2e15adc3"
-  integrity sha512-isCsAaWoimxACNyAa52Q6kaWpwW76I8kUTQN2EIGmI2DpylpHVXpA/2yFxbVRWmRElhnc12qCurUtFTHHgNgdQ==
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@logux/core/-/core-0.7.2.tgz#33d5384cd10101eb9dac735040e11292dd61c27a"
+  integrity sha512-31FIPYSWWSPsSWGYHJ6DF42xKHnnuHhZND7x99+XbpG0p2gaOV/th4QUPueQqVmRkmRfOp2iLI1ahrg4sOHG+A==
   dependencies:
-    nanoevents "^6.0.0"
+    nanoevents "^6.0.1"
 
 "@logux/redux@^0.8.0":
   version "0.8.1"
@@ -16997,10 +16997,10 @@ nanodelay@^2.0.0:
   resolved "https://registry.yarnpkg.com/nanodelay/-/nanodelay-2.0.0.tgz#e9c676d085b1dd2813da21ef377f3c0783657537"
   integrity sha512-kwm0xaJQpmkxl9RLg83kMmqqZ9BoL51nvWEF8Grd9xChHU18utE9NHU1Nzx7OiC92M1iW5JCl4xxxbXs7P3Ujg==
 
-nanoevents@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/nanoevents/-/nanoevents-6.0.0.tgz#82454023f448a1eab0df103df59d5813ac16035b"
-  integrity sha512-0ASElaiZR21yBjhmBiRboCXeNirfIVuiKIxikn6a3H/9zUL+q2HBq+4B3Cb2UdCctoGx5YSwxTXypslD/olJKA==
+nanoevents@^6.0.0, nanoevents@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/nanoevents/-/nanoevents-6.0.1.tgz#4e49e895953d15a7ba06187d7a5fcd148abde990"
+  integrity sha512-pV++eMfEBTnNQgtzW93LfVezbA1BPaPSgIgyK+ZskLSEEKjHThs4Pp2UqfOjI+EFD3UkVYbwmpxf1WSSX0ALzA==
 
 nanoid@3.1.23, nanoid@^3.1.20, nanoid@^3.1.23:
   version "3.1.23"

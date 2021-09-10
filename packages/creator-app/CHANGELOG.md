@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.479.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.478.0...@voiceflow/creator-app@1.479.0) (2021-09-10)
+
+
+### Features
+
+* added utterances count (VF-1447) ([#4054](https://github.com/voiceflow/creator-app/issues/4054)) ([d8a7cd9](https://github.com/voiceflow/creator-app/commit/d8a7cd9e8f024b06afe741433c94a2c6b3824ab6))
+
+
+
+
+
 # [1.478.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.477.0...@voiceflow/creator-app@1.478.0) (2021-09-10)
 
 

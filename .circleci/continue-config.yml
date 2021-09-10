@@ -705,7 +705,7 @@ workflows:
                 environment_type: production
                 job_type: deployment
           requires:
-            - build-app-release
+            - update-track-creator-app
 
   deploy-admin:
     when: 
@@ -731,7 +731,7 @@ workflows:
           <<: *prod_admin_deploy_filters
           context: dev-test
           requires:
-            - build-admin-release
+            - update-track-admin-ui
 
   deploy-realtime:
     when: 
@@ -756,4 +756,4 @@ workflows:
           <<: *prod_realtime_deploy_filters
           context: dev-test
           requires:
-            - build-realtime-release
+            - update-track-realtime

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.477.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.476.4...@voiceflow/creator-app@1.477.0) (2021-09-10)
+
+
+### Features
+
+* add request label (VF-1659) ([#4088](https://github.com/voiceflow/creator-app/issues/4088)) ([d147b1f](https://github.com/voiceflow/creator-app/commit/d147b1f11507f1a1f30ac1428f73d4ed018a62f6))
+
+
+
+
+
 ## [1.476.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.476.3...@voiceflow/creator-app@1.476.4) (2021-09-10)
 
 

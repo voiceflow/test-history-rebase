@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.13.1...@voiceflow/realtime-sdk@1.14.0) (2021-09-10)
+
+
+### Features
+
+* add request label (VF-1659) ([#4088](https://github.com/voiceflow/creator-app/issues/4088)) ([d147b1f](https://github.com/voiceflow/creator-app/commit/d147b1f11507f1a1f30ac1428f73d4ed018a62f6))
+
+
+
+
+
 ## [1.13.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.13.0...@voiceflow/realtime-sdk@1.13.1) (2021-09-09)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

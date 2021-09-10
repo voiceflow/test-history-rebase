@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.9.3...@voiceflow/realtime@1.9.4) (2021-09-10)
+
+
+### Reverts
+
+* Revert "build: automatically inject VF_OVERRIDE_* env variables (VF-1682) (#4068)" (#4076) ([65e4f13](https://github.com/voiceflow/creator-app/commit/65e4f139df1d2d40474ab2ea13a57f1b1952f2f7)), closes [#4068](https://github.com/voiceflow/creator-app/issues/4068) [#4076](https://github.com/voiceflow/creator-app/issues/4076)
+
+
+
+
+
 ## [1.9.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.9.2...@voiceflow/realtime@1.9.3) (2021-09-09)
 
 **Note:** Version bump only for package @voiceflow/realtime

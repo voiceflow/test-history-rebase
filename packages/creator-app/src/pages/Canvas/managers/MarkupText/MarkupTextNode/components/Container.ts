@@ -85,6 +85,7 @@ export const Container = styled.div<{ editable?: boolean; activated?: boolean; i
       css`
         width: fit-content;
         min-width: 1px;
+        margin: 0 auto;
 
         & [data-slate-node='text'] {
           white-space: pre;
@@ -96,6 +97,14 @@ export const Container = styled.div<{ editable?: boolean; activated?: boolean; i
     margin-top: 3px;
     color: #132144 !important;
     opacity: 0.333 !important;
+
+    ${({ isNew }) =>
+      isNew &&
+      css`
+        width: 112px !important;
+        max-width: 112px !important;
+        transform: translateX(-50%);
+      `}
   }
 `;
 

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
+import { Text } from '@voiceflow/base-types';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Editor } from 'slate';
@@ -46,7 +47,7 @@ class MarkupEngine extends EngineConsumer {
     const nodeData: Markup.NodeData.Text = {
       scale: 1,
       rotate: 0,
-      content: SlateEditorAPI.getEmptyState(),
+      content: [...SlateEditorAPI.createTextState('', { elementProperties: { [Text.ElementProperty.TEXT_ALIGN]: 'center' } })],
       overrideWidth: 178,
       backgroundColor: null,
     };

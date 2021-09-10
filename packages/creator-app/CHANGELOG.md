@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.478.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.477.0...@voiceflow/creator-app@1.478.0) (2021-09-10)
+
+
+### Features
+
+* center markup text by default (VF-1687) ([#4089](https://github.com/voiceflow/creator-app/issues/4089)) ([604e9b9](https://github.com/voiceflow/creator-app/commit/604e9b99d29b59fd0d6c3a3cd6438b508ba032a0))
+
+
+
+
+
 # [1.477.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.476.4...@voiceflow/creator-app@1.477.0) (2021-09-10)
 
 

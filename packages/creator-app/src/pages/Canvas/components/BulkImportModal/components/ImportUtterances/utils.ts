@@ -1,7 +1,7 @@
 import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
 import _isString from 'lodash/isString';
 
-import { matchVariables } from '@/client/adapters/textEditor';
+import { rawTextToUtteranceFormat } from '@/client/adapters/textEditor';
 import { Intent, Slot } from '@/models';
 import { validateUtterance } from '@/utils/intent';
 
@@ -38,18 +38,15 @@ export const validateUtterances = (utterances: string[], intentID: string, inten
       errors.set(index, `The Slot "${slotName}" does not exist, please create the slot in Voiceflow and re-upload.`);
     } else {
       let text = '';
-      const utteranceSlots: string[] = [];
+      let utteranceSlots: string[] = [];
+      const str = rawTextToUtteranceFormat(utterance, slotsMap);
 
-      matchVariables(utterance).forEach((str) => {
-        if (_isString(str)) {
-          text += str;
-        } else {
-          const slotID = slotsMap[str.name];
-
-          text += `{{[${str.name}].${slotID}}}`;
-          utteranceSlots.push(slotID);
-        }
-      });
+      if (_isString(str)) {
+        text = str;
+      } else {
+        text = str.text;
+        utteranceSlots = str.utteranceSlots;
+      }
 
       validUtterances.push({ text, slots: utteranceSlots });
     }

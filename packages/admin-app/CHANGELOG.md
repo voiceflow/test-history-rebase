@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.59](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.1.58...@voiceflow/admin-app@1.1.59) (2021-09-10)
+
+
+### Bug Fixes
+
+* update track on master only when release, improve services interdependencies and admin build ([3c1356c](https://github.com/voiceflow/creator-app/commit/3c1356c59cfb1b23a30e79909302bd25e4f25b00))
+
+
+### Reverts
+
+* Revert "build: automatically inject VF_OVERRIDE_* env variables (VF-1682) (#4068)" (#4076) ([65e4f13](https://github.com/voiceflow/creator-app/commit/65e4f139df1d2d40474ab2ea13a57f1b1952f2f7)), closes [#4068](https://github.com/voiceflow/creator-app/issues/4068) [#4076](https://github.com/voiceflow/creator-app/issues/4076)
+
+
+
+
+
 ## [1.1.58](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.1.57...@voiceflow/admin-app@1.1.58) (2021-09-08)
 
 **Note:** Version bump only for package @voiceflow/admin-app

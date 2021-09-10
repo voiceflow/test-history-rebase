@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.476.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.476.3...@voiceflow/creator-app@1.476.4) (2021-09-10)
+
+
+### Bug Fixes
+
+* bull upload slot parser (VF-1159) ([#4079](https://github.com/voiceflow/creator-app/issues/4079)) ([94363e9](https://github.com/voiceflow/creator-app/commit/94363e9d10b6633669529122126e47f500a7e4c6))
+
+
+
+
+
 ## [1.476.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.476.2...@voiceflow/creator-app@1.476.3) (2021-09-10)
 
 

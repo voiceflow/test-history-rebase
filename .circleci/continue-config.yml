@@ -52,6 +52,13 @@ parameters:
   build-all:
     type: boolean
     default: false
+  build-frontend:
+    type: boolean
+    default: false
+  build-backend:
+    type: boolean
+    default: false
+
 
 orbs:
   vfcommon: voiceflow/common@0.0.188
@@ -115,10 +122,10 @@ jobs:
         description: Run typechecking and other build-time analyses
         type: boolean
         default: false
-      force_check:
+      force_execute:
         description: force to update the build, if there is a change or not. This is for tracks
         type: boolean
-        default: true
+        default: false
     executor: vfcommon/node-executor
     steps:
       - when:
@@ -127,11 +134,13 @@ jobs:
               - equal: [true, << pipeline.parameters.build-creator-app >>]
               - equal: [true, << pipeline.parameters.build-ui >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+              - equal: [true, << pipeline.parameters.build-frontend >>]
               - equal: [true, << pipeline.parameters.build-all >>]
           steps:
             - checkout
             - when:
-                condition: << parameters.force_check >>
+                condition: 
+                  equal: [ false, << parameters.force_execute >> ]
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: creator-app
@@ -178,10 +187,10 @@ jobs:
         description: Checks if the Docker image exists
         type: boolean
         default: false
-      force_check:
+      force_execute:
         description: force to update the build, if there is a change or not. This is for tracks
         type: boolean
-        default: true
+        default: false
     executor: vfcommon/node-executor
     steps:
       - when:
@@ -189,11 +198,13 @@ jobs:
             or: 
               - equal: [true, << pipeline.parameters.build-realtime >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+              - equal: [true, << pipeline.parameters.build-backend >>]
               - equal: [true, << pipeline.parameters.build-all >>]
           steps:
             - checkout
             - when:
-                condition: << parameters.force_check >>
+                condition: 
+                  equal: [ false, << parameters.force_execute >> ]
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: realtime
@@ -226,10 +237,10 @@ jobs:
         description: Run typechecking and other build-time analyses
         type: boolean
         default: false
-      force_check:
+      force_execute:
         description: force to update the build, if there is a change or not. This is for tracks
         type: boolean
-        default: true
+        default: false
     executor: vfcommon/node-executor
     steps:
       - when:
@@ -238,11 +249,13 @@ jobs:
               - equal: [true, << pipeline.parameters.build-admin-app >>]
               - equal: [true, << pipeline.parameters.build-ui >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+              - equal: [true, << pipeline.parameters.build-frontend >>]
               - equal: [true, << pipeline.parameters.build-all >>]
           steps:
             - checkout
             - when:
-                condition: << parameters.force_check >>
+                condition: 
+                  equal: [ false, << parameters.force_execute >> ]
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: admin-app
@@ -332,6 +345,7 @@ jobs:
               - equal: [true, << pipeline.parameters.build-creator-app >>]
               - equal: [true, << pipeline.parameters.build-ui >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+              - equal: [true, << pipeline.parameters.build-frontend >>]
               - equal: [true, << pipeline.parameters.build-all >>]
           steps:
             - checkout
@@ -363,6 +377,7 @@ jobs:
               - equal: [true, << pipeline.parameters.build-admin-app >>]
               - equal: [true, << pipeline.parameters.build-ui >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+              - equal: [true, << pipeline.parameters.build-frontend >>]
               - equal: [true, << pipeline.parameters.build-all >>]
           steps:
             - checkout
@@ -389,6 +404,7 @@ jobs:
             or: 
               - equal: [true, << pipeline.parameters.build-realtime >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+              - equal: [true, << pipeline.parameters.build-backend >>]
               - equal: [true, << pipeline.parameters.build-all >>]
           steps:
             - checkout
@@ -408,10 +424,10 @@ jobs:
 
   update-track-creator-app:
     parameters:
-      force_check:
+      force_execute:
         description: force to update the build, if there is a change or not. This is for tracks
         type: boolean
-        default: true
+        default: false
     executor: vfcommon/build-executor
     steps:
       - when:
@@ -420,11 +436,13 @@ jobs:
               - equal: [true, << pipeline.parameters.build-creator-app >>]
               - equal: [true, << pipeline.parameters.build-ui >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+              - equal: [true, << pipeline.parameters.build-frontend >>]
               - equal: [true, << pipeline.parameters.build-all >>]
           steps:
             - checkout
             - when:
-                condition: << parameters.force_check >>
+                condition: 
+                  equal: [ false, << parameters.force_execute >> ]
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: creator-app
@@ -435,10 +453,10 @@ jobs:
 
   update-track-admin-ui:
     parameters:
-      force_check:
+      force_execute:
         description: force to update the build, if there is a change or not. This is for tracks
         type: boolean
-        default: true
+        default: false
     executor: vfcommon/build-executor
     steps:
       - when:
@@ -447,11 +465,13 @@ jobs:
               - equal: [true, << pipeline.parameters.build-admin-app >>]
               - equal: [true, << pipeline.parameters.build-ui >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+              - equal: [true, << pipeline.parameters.build-frontend >>]
               - equal: [true, << pipeline.parameters.build-all >>]
           steps:
             - checkout
             - when:
-                condition: << parameters.force_check >>
+                condition: 
+                  equal: [ false, << parameters.force_execute >> ]
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: admin-app
@@ -462,10 +482,10 @@ jobs:
 
   update-track-realtime:
     parameters:
-      force_check:
+      force_execute:
         description: force to update the build, if there is a change or not. This is for tracks
         type: boolean
-        default: true
+        default: false
     executor: vfcommon/build-executor
     steps:
       - when:
@@ -473,11 +493,13 @@ jobs:
             or: 
               - equal: [true, << pipeline.parameters.build-realtime >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+              - equal: [true, << pipeline.parameters.build-backend >>]
               - equal: [true, << pipeline.parameters.build-all >>]
           steps:
             - checkout
             - when:
-                condition: << parameters.force_check >>
+                condition: 
+                  equal: [ false, << parameters.force_execute >> ]
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: realtime
@@ -493,20 +515,23 @@ workflows:
         - equal: [true, << pipeline.parameters.build-creator-app >>]
         - equal: [true, << pipeline.parameters.build-ui >>]
         - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+        - equal: [true, << pipeline.parameters.build-frontend >>]
         - equal: [true, << pipeline.parameters.build-all >>]
     jobs:
       - build-app:
           check_image: true
           context: dev-test
           name: build-app-track
-          force_check: false
+          force_execute: true
           filters:
             <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
+            branches:
+              ignore: master
       - update-track-creator-app:
           context: dev-test
-          force_check: false
+          force_execute: true
           post-steps:
             - jira/notify:
                 environment: ${CIRCLE_BRANCH%%_*}
@@ -518,6 +543,8 @@ workflows:
             <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
+            branches:
+              ignore: master
 
   update-admin-app-track:
     when: 
@@ -525,50 +552,60 @@ workflows:
         - equal: [true, << pipeline.parameters.build-admin-app >>]
         - equal: [true, << pipeline.parameters.build-ui >>]
         - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+        - equal: [true, << pipeline.parameters.build-frontend >>]
         - equal: [true, << pipeline.parameters.build-all >>]
     jobs:
       - build-admin:
-          force_check: false
+          force_execute: true
           context: dev-test
           name: build-admin-track
           filters:
             <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
+            branches:
+              ignore: master
       - update-track-admin-ui:
           context: dev-test
-          force_check: false
+          force_execute: true
           requires:
             - build-admin-track
           filters:
             <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
+            branches:
+              ignore: master
 
   update-realtime-track:
     when: 
       or: 
         - equal: [true, << pipeline.parameters.build-realtime >>]
         - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+        - equal: [true, << pipeline.parameters.build-backend >>]
         - equal: [true, << pipeline.parameters.build-all >>]
     jobs:
       - build-realtime:
           context: dev-test
-          force_check: false
+          force_execute: true
           name: build-realtime-track
           filters:
             <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
+            branches:
+              ignore: master
       - update-track-realtime:
           context: dev-test
-          force_check: false
+          force_execute: true
           requires:
             - build-realtime-track
           filters:
             <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
+            branches:
+              ignore: master
 
   test-and-release:
     jobs:
@@ -583,7 +620,7 @@ workflows:
           github_username: GITHUB_USERNAME
           github_token: GITHUB_TOKEN
           enable: << pipeline.parameters.build-creator-app >>
-          force_execute: << pipeline.parameters.build-all >>
+          force_execute: << pipeline.parameters.build-frontend >>
           <<: *slack-fail-post-step
           filters:
             <<: *ignore_autorebase_staging_filters
@@ -592,6 +629,7 @@ workflows:
           <<: *slack-fail-post-step
           context: dev-test
           name: build-app-test
+          force_execute: << pipeline.parameters.build-frontend >>
           post-steps:
             - jira/notify
           filters:
@@ -601,6 +639,7 @@ workflows:
           <<: *slack-fail-post-step
           context: dev-test
           name: build-admin-test
+          force_execute: << pipeline.parameters.build-frontend >>
           strict: true
           post-steps:
             - jira/notify
@@ -611,6 +650,7 @@ workflows:
           <<: *slack-fail-post-step
           context: dev-test
           name: build-realtime-test
+          force_execute: << pipeline.parameters.build-backend >>
           post-steps:
             - jira/notify
           filters:
@@ -639,14 +679,22 @@ workflows:
         - equal: [true, << pipeline.parameters.build-creator-app >>]
         - equal: [true, << pipeline.parameters.build-ui >>]
         - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+        - equal: [true, << pipeline.parameters.build-frontend >>]
         - equal: [true, << pipeline.parameters.build-all >>]
     jobs:
       - build-app:
           <<: *prod_creator_deploy_filters
           context: dev-test
           name: build-app-release
+          force_execute: true
           post-steps:
             - jira/notify
+      - update-track-creator-app:
+          <<: *prod_creator_deploy_filters
+          context: dev-test
+          force_execute: true
+          requires:
+            - build-app-release
       - build-deploy-app-image:
           <<: *prod_creator_deploy_filters
           sentry: true
@@ -665,12 +713,20 @@ workflows:
         - equal: [true, << pipeline.parameters.build-admin-app >>]
         - equal: [true, << pipeline.parameters.build-ui >>]
         - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+        - equal: [true, << pipeline.parameters.build-frontend >>]
         - equal: [true, << pipeline.parameters.build-all >>]
     jobs:
       - build-admin:
           <<: *prod_admin_deploy_filters
           context: dev-test
+          force_execute: true
           name: build-admin-release
+      - update-track-admin-ui:
+          <<: *prod_admin_deploy_filters
+          context: dev-test
+          force_execute: true
+          requires:
+            - build-admin-release
       - build-deploy-admin-image:
           <<: *prod_admin_deploy_filters
           context: dev-test
@@ -682,12 +738,20 @@ workflows:
       or: 
         - equal: [true, << pipeline.parameters.build-realtime >>]
         - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
+        - equal: [true, << pipeline.parameters.build-backend >>]
         - equal: [true, << pipeline.parameters.build-all >>]
     jobs:
       - build-realtime:
           <<: *prod_realtime_deploy_filters
           context: dev-test
+          force_execute: true
           name: build-realtime-release
+      - update-track-realtime:
+          <<: *prod_realtime_deploy_filters
+          context: dev-test
+          force_execute: true
+          requires:
+            - build-realtime-release
       - build-deploy-realtime-image:
           <<: *prod_realtime_deploy_filters
           context: dev-test

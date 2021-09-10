@@ -86,10 +86,10 @@ const createSession =
             pathname: '/admin',
             search: location.search,
             state: { from: location },
-          })
+          }) as any
         );
       } else {
-        dispatch(push('/workspace/onboarding'));
+        dispatch(push('/workspace/onboarding') as any);
       }
 
       return Promise.resolve();

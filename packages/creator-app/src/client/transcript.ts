@@ -46,10 +46,11 @@ const transcriptClient = {
       turnID,
     }),
 
-  setTurnUtteranceAddedTo: (transcriptID: string, projectID: string, turnID: string, intentID: string) =>
+  setTurnUtteranceAddedTo: (transcriptID: string, projectID: string, turnID: string, intentID: string, utterancesCount: number) =>
     apiV2.put(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/${UTTERANCE_ANNOTATION}`, {
       turnID,
       intentID,
+      utterancesCount,
     }),
 
   addTag: (projectID: string, transcriptID: string, tagID: string) =>

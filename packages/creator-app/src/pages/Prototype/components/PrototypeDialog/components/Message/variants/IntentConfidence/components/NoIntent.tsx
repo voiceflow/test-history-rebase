@@ -37,7 +37,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   const history = useHistory();
   const [trackingEvents] = useTrackingEvents();
   const { annotations } = useSelector(Transcript.currentTranscriptSelector) ?? {};
-  const utteranceAddedToIntentID = annotations?.[turnID]?.utteranceAddedTo || '';
+  const { utteranceAddedTo: utteranceAddedToIntentID, utteranceAddedCount } = annotations?.[turnID] ?? {};
   const { open: openIMM, isOpened: isOpenedIMM } = useModals(ModalType.INTERACTION_MODEL);
   const [initialUtterances, setInitialUtterances] = React.useState<IntentInput[] | null>(null);
   const [targetIntentID, setTargetIntentID] = React.useState<string | null>(null);
@@ -91,6 +91,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     const updatedUtterances = targetIntent.inputs;
 
     const netNewUtterances = determineNewUtterances(initialUtterancesArray, updatedUtterances);
+
     if (netNewUtterances.length) {
       await dispatchAddUtteranceToIntent(netNewUtterances.length, targetIntent.name, targetIntent.id, activeTranscriptID, turnID);
       trackingEvents.trackConversationUtteranceSaved();
@@ -133,7 +134,8 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
       <Flex>
         <StatusIcon icon="check2" size={14} color="#3e9e3e" />
       </Flex>
-      Utterance added to&nbsp;<span>{addedIntent?.name}</span>&nbsp;intent
+      {utteranceAddedCount === 1 ? '1 utterance' : `${utteranceAddedCount ?? ''} utterances`} added to&nbsp;<span>{addedIntent?.name}</span>
+      &nbsp;intent
     </Container>
   );
 };

@@ -34,7 +34,7 @@ export const setUtteranceAddedTo =
       const activeProjectID = Session.activeProjectIDSelector(state);
       const { annotations } = transcriptByIDSelector(state)(transcriptID);
 
-      await client.transcript.setTurnUtteranceAddedTo(transcriptID, activeProjectID!, turnID, intentID);
+      await client.transcript.setTurnUtteranceAddedTo(transcriptID, activeProjectID!, turnID, intentID, newUtteranceCount);
 
       dispatch(
         patchTranscript(transcriptID, {
@@ -43,6 +43,7 @@ export const setUtteranceAddedTo =
             [turnID]: {
               ...(annotations[turnID] ? annotations[turnID] : {}),
               utteranceAddedTo: intentID,
+              utteranceAddedCount: newUtteranceCount,
             },
           },
         })

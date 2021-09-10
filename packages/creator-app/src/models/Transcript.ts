@@ -46,6 +46,7 @@ export type TagType = string | SystemTag | Sentiment;
 
 export interface AnnotationTurnType {
   utteranceAddedTo?: string;
+  utteranceAddedCount?: number;
 }
 
 export type Annotations = Record<string, AnnotationTurnType>;

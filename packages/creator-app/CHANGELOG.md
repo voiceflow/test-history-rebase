@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.480.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.479.3...@voiceflow/creator-app@1.480.0) (2021-09-13)
+
+
+### Bug Fixes
+
+* remove test reports ff (VF-1046) ([#4087](https://github.com/voiceflow/creator-app/issues/4087)) ([fe00b5a](https://github.com/voiceflow/creator-app/commit/fe00b5ada51590820e684e75c2760b5b534f195b))
+
+
+### Features
+
+* remember last conversation state (VF-1600) ([#4019](https://github.com/voiceflow/creator-app/issues/4019)) ([77ef7a5](https://github.com/voiceflow/creator-app/commit/77ef7a56169b8264744ce79fc1a8203aa9ac1171))
+
+
+
+
+
 ## [1.479.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.479.2...@voiceflow/creator-app@1.479.3) (2021-09-13)
 
 **Note:** Version bump only for package @voiceflow/creator-app

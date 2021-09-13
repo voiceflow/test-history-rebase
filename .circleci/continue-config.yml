@@ -59,7 +59,6 @@ parameters:
     type: boolean
     default: false
 
-
 orbs:
   vfcommon: voiceflow/common@0.0.190
   sonarcloud: sonarsource/sonarcloud@1.0.2
@@ -111,7 +110,6 @@ defaults:
           branch_pattern: master
 
 jobs:
-
   build-app:
     parameters:
       check_image:
@@ -130,7 +128,7 @@ jobs:
     steps:
       - when:
           condition:
-            or: 
+            or:
               - equal: [true, << pipeline.parameters.build-creator-app >>]
               - equal: [true, << pipeline.parameters.build-ui >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
@@ -139,8 +137,8 @@ jobs:
           steps:
             - checkout
             - when:
-                condition: 
-                  equal: [ false, << parameters.force_execute >> ]
+                condition:
+                  equal: [false, << parameters.force_execute >>]
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: creator-app
@@ -195,7 +193,7 @@ jobs:
     steps:
       - when:
           condition:
-            or: 
+            or:
               - equal: [true, << pipeline.parameters.build-realtime >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
               - equal: [true, << pipeline.parameters.build-backend >>]
@@ -203,8 +201,8 @@ jobs:
           steps:
             - checkout
             - when:
-                condition: 
-                  equal: [ false, << parameters.force_execute >> ]
+                condition:
+                  equal: [false, << parameters.force_execute >>]
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: realtime
@@ -245,7 +243,7 @@ jobs:
     steps:
       - when:
           condition:
-            or: 
+            or:
               - equal: [true, << pipeline.parameters.build-admin-app >>]
               - equal: [true, << pipeline.parameters.build-ui >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
@@ -254,8 +252,8 @@ jobs:
           steps:
             - checkout
             - when:
-                condition: 
-                  equal: [ false, << parameters.force_execute >> ]
+                condition:
+                  equal: [false, << parameters.force_execute >>]
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: admin-app
@@ -341,7 +339,7 @@ jobs:
     steps:
       - when:
           condition:
-            or: 
+            or:
               - equal: [true, << pipeline.parameters.build-creator-app >>]
               - equal: [true, << pipeline.parameters.build-ui >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
@@ -373,7 +371,7 @@ jobs:
     steps:
       - when:
           condition:
-            or: 
+            or:
               - equal: [true, << pipeline.parameters.build-admin-app >>]
               - equal: [true, << pipeline.parameters.build-ui >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
@@ -395,13 +393,12 @@ jobs:
                 tagged: true
                 success_slack_notify: false
 
-
   build-deploy-realtime-image:
     executor: vfcommon/build-executor
     steps:
       - when:
           condition:
-            or: 
+            or:
               - equal: [true, << pipeline.parameters.build-realtime >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
               - equal: [true, << pipeline.parameters.build-backend >>]
@@ -432,7 +429,7 @@ jobs:
     steps:
       - when:
           condition:
-            or: 
+            or:
               - equal: [true, << pipeline.parameters.build-creator-app >>]
               - equal: [true, << pipeline.parameters.build-ui >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
@@ -441,8 +438,8 @@ jobs:
           steps:
             - checkout
             - when:
-                condition: 
-                  equal: [ false, << parameters.force_execute >> ]
+                condition:
+                  equal: [false, << parameters.force_execute >>]
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: creator-app
@@ -461,7 +458,7 @@ jobs:
     steps:
       - when:
           condition:
-            or: 
+            or:
               - equal: [true, << pipeline.parameters.build-admin-app >>]
               - equal: [true, << pipeline.parameters.build-ui >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
@@ -470,8 +467,8 @@ jobs:
           steps:
             - checkout
             - when:
-                condition: 
-                  equal: [ false, << parameters.force_execute >> ]
+                condition:
+                  equal: [false, << parameters.force_execute >>]
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: admin-app
@@ -490,7 +487,7 @@ jobs:
     steps:
       - when:
           condition:
-            or: 
+            or:
               - equal: [true, << pipeline.parameters.build-realtime >>]
               - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
               - equal: [true, << pipeline.parameters.build-backend >>]
@@ -498,8 +495,8 @@ jobs:
           steps:
             - checkout
             - when:
-                condition: 
-                  equal: [ false, << parameters.force_execute >> ]
+                condition:
+                  equal: [false, << parameters.force_execute >>]
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: realtime
@@ -510,8 +507,8 @@ jobs:
 
 workflows:
   update-creator-app-track:
-    when: 
-      or: 
+    when:
+      or:
         - equal: [true, << pipeline.parameters.build-creator-app >>]
         - equal: [true, << pipeline.parameters.build-ui >>]
         - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
@@ -547,8 +544,8 @@ workflows:
               ignore: master
 
   update-admin-app-track:
-    when: 
-      or: 
+    when:
+      or:
         - equal: [true, << pipeline.parameters.build-admin-app >>]
         - equal: [true, << pipeline.parameters.build-ui >>]
         - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
@@ -578,8 +575,8 @@ workflows:
               ignore: master
 
   update-realtime-track:
-    when: 
-      or: 
+    when:
+      or:
         - equal: [true, << pipeline.parameters.build-realtime >>]
         - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
         - equal: [true, << pipeline.parameters.build-backend >>]
@@ -630,6 +627,7 @@ workflows:
           context: dev-test
           name: build-app-test
           force_execute: << pipeline.parameters.build-frontend >>
+          strict: true
           post-steps:
             - jira/notify
           filters:
@@ -674,8 +672,8 @@ workflows:
 
   # Deploy services
   deploy-app:
-    when: 
-      or: 
+    when:
+      or:
         - equal: [true, << pipeline.parameters.build-creator-app >>]
         - equal: [true, << pipeline.parameters.build-ui >>]
         - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
@@ -709,8 +707,8 @@ workflows:
             - update-track-creator-app-release
 
   deploy-admin:
-    when: 
-      or: 
+    when:
+      or:
         - equal: [true, << pipeline.parameters.build-admin-app >>]
         - equal: [true, << pipeline.parameters.build-ui >>]
         - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
@@ -736,8 +734,8 @@ workflows:
             - update-track-admin-ui-release
 
   deploy-realtime:
-    when: 
-      or: 
+    when:
+      or:
         - equal: [true, << pipeline.parameters.build-realtime >>]
         - equal: [true, << pipeline.parameters.build-realtime-sdk >>]
         - equal: [true, << pipeline.parameters.build-backend >>]

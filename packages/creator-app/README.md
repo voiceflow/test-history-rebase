@@ -16,7 +16,7 @@ This Repository Relies on `yarn` and does not work with `npm`.
 
 ### Install Dependencies
 
-Use `yarn` to install this project's dependencies.
+Run `yarn` or `yarn install` in the root directory of this monorepo to install dependencies for every package.
 
 ```sh
 yarn install

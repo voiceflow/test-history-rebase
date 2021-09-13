@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.480.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.2...@voiceflow/creator-app@1.480.3) (2021-09-13)
+
+
+### Bug Fixes
+
+* swedish remap (VF-1638) ([#4103](https://github.com/voiceflow/creator-app/issues/4103)) ([0563579](https://github.com/voiceflow/creator-app/commit/056357904916640284db1f46d36cf8c814a77cbd))
+
+
+
+
+
 ## [1.480.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.1...@voiceflow/creator-app@1.480.2) (2021-09-13)
 
 

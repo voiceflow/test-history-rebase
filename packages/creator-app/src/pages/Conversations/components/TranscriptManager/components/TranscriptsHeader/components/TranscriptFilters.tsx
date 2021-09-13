@@ -1,11 +1,12 @@
 import { TimeRange } from '@voiceflow/internal';
-import { Box, ButtonVariant, ClickableText } from '@voiceflow/ui';
+import { Box, ButtonVariant, ClickableText, useDidUpdateEffect } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import ReportTagInput, { InputVariant } from '@/components/ReportTagInput';
 import SelectMenu, { MenuSection } from '@/components/SelectMenu';
+import { goToTargetTranscript } from '@/ducks/router';
 import { fetchTranscripts } from '@/ducks/transcript';
 import { useDispatch, useTrackingEvents } from '@/hooks';
 import { FILTER_TAG, isBuiltInRange } from '@/pages/Conversations/constants';
@@ -25,6 +26,7 @@ const TranscriptFilters = () => {
   const [currentRange, setCurrentRange] = React.useState('' as TimeRange | string);
   const [tags, setTags] = React.useState<string[]>([]);
   const updateTranscriptsList = useDispatch(fetchTranscripts);
+  const goToTranscript = useDispatch(goToTargetTranscript);
   const { search } = useLocation();
 
   const filtersCounter = React.useMemo(() => {
@@ -81,6 +83,15 @@ const TranscriptFilters = () => {
     history.replace({ search: params.toString() });
   };
 
+  useDidUpdateEffect(async () => {
+    const queryParams = queryString.stringify(queryString.parse(search));
+
+    const transcripts = await updateTranscriptsList(queryParams || '');
+    if (transcripts.length) {
+      goToTranscript(transcripts[0].id);
+    }
+  }, [search]);
+
   React.useEffect(() => {
     const params = new URLSearchParams(location.search);
     const rangeParam = params.get(FILTER_TAG.RANGE);
@@ -105,9 +116,6 @@ const TranscriptFilters = () => {
       setTagsOpen(true);
       setTags(tagParams);
     }
-
-    const queryParams = queryString.stringify(queryString.parse(search));
-    updateTranscriptsList(queryParams || '');
   }, []);
 
   return (

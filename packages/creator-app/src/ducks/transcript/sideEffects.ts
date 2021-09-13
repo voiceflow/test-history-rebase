@@ -7,22 +7,25 @@ import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { patchTranscript, removeTranscript, replaceTranscripts, updateUnreadTranscripts } from '@/ducks/transcript/actions';
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
-import { Browser, Device, OperatingSystem, Sentiment, SystemTag } from '@/models';
+import { Browser, Device, OperatingSystem, Sentiment, SystemTag, Transcript } from '@/models';
 import { Thunk } from '@/store/types';
 import { downloadFromURL } from '@/utils/dom';
 
 export const fetchTranscripts =
-  (queryParams?: string): Thunk =>
+  (queryParams?: string): Thunk<Transcript[]> =>
   async (dispatch, getState) => {
     const state = getState();
     try {
       const activeProjectID = Session.activeProjectIDSelector(state);
 
-      const transcripts = await client.transcript.find(activeProjectID || '1', queryParams);
+      const transcripts = await client.transcript.find(activeProjectID!, queryParams);
       dispatch(replaceTranscripts(transcripts));
+
+      return transcripts;
     } catch (e) {
       toast.error('Error fetching transcripts');
     }
+    return [];
   };
 
 export const setUtteranceAddedTo =

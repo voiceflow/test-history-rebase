@@ -1,8 +1,8 @@
-import { Box, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, useSetup } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { matchPath, Redirect, RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
 
 import EmptyScreen from '@/components/EmptyScreen';
 import LoadingGate from '@/components/LoadingGate';
@@ -10,13 +10,19 @@ import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { fetchReportTags } from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
+import { goToTargetTranscript } from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as Transcripts from '@/ducks/transcript';
 import { fetchTranscripts } from '@/ducks/transcript';
-import { useAsyncEffect, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
+import { useDispatch, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
+import { useSessionStorageState } from '@/hooks/storage';
 import { FILTER_TAG } from '@/pages/Conversations/constants';
 import { Identifier } from '@/styles/constants';
 
 import { ConversationsContainer, TranscriptDetails, TranscriptDialog, TranscriptManager } from './components';
+
+const PREVIOUS_TRANSCRIPT_ID_KEY = 'previous-transcript-id-key';
+const PREVIOUS_TRANSCRIPT_FILTER_KEY = 'previous-transcript-filter-key';
 
 type ConversationProps = RouteComponentProps;
 
@@ -27,8 +33,18 @@ const Conversations: React.FC<ConversationProps> = () => {
   const [filteredReportsExist, setFilteredReportsExist] = React.useState(true);
   const allTranscripts = useSelector(Transcripts.allTranscriptsSelector);
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
+  const activeProjectID = useSelector(Session.activeProjectIDSelector);
+  const activeTranscriptID = useSelector(Transcripts.currentTranscriptIDSelector);
+  const location = useLocation();
+  const updateTranscriptsList = useDispatch(fetchTranscripts);
+  const goToTranscript = useDispatch(goToTargetTranscript);
+  const fetchTags = useDispatch(fetchReportTags);
 
-  const dispatch = useDispatch();
+  const [lastTranscriptID, setLastTranscriptID] = useSessionStorageState(`${PREVIOUS_TRANSCRIPT_ID_KEY}-${activeProjectID}`, '');
+  const [lastFilter, setLastFilter] = useSessionStorageState(`${PREVIOUS_TRANSCRIPT_FILTER_KEY}-${activeProjectID}`, '');
+
+  const match = matchPath(location.pathname, { path: '/project/:versionID/transcripts' });
+  const noUrlTranscriptTarget = match?.isExact;
 
   const { search } = useLocation();
   const history = useHistory();
@@ -46,13 +62,38 @@ const Conversations: React.FC<ConversationProps> = () => {
 
   const loadReports = async () => {
     setNoTestRuns(false);
+    const queryParams = queryString.stringify(queryString.parse(lastFilter));
 
-    await dispatch(fetchTranscripts());
-    await dispatch(fetchReportTags());
+    await fetchTags();
+    const transcripts = await updateTranscriptsList(queryParams || '');
+    if (noUrlTranscriptTarget) {
+      if (lastTranscriptID) {
+        goToTranscript(lastTranscriptID);
+      } else if (transcripts.length) {
+        goToTranscript(transcripts[0].id);
+      }
+    }
 
     setIsLoaded(true);
     trackingEvents.trackConversationSessionStarted();
   };
+
+  useSetup(() => {
+    if (lastFilter) {
+      const queryParams = queryString.stringify(queryString.parse(lastFilter));
+      history.replace({
+        search: queryParams.toString(),
+      });
+    }
+  }, []);
+
+  useTeardown(() => {
+    setLastFilter(search || '');
+
+    if (activeTranscriptID) {
+      setLastTranscriptID(activeTranscriptID);
+    }
+  }, [activeTranscriptID, search]);
 
   React.useEffect(() => {
     const queryParams = queryString.parse(search);
@@ -67,23 +108,6 @@ const Conversations: React.FC<ConversationProps> = () => {
       setNoTestRuns(false);
     } else {
       noFilters ? setNoTestRuns(true) : setFilteredReportsExist(false);
-    }
-  }, [allTranscripts]);
-
-  useAsyncEffect(async () => {
-    const queryParams = queryString.stringify(queryString.parse(search));
-
-    await dispatch(fetchTranscripts(queryParams || ''));
-
-    setNoTestRuns(false);
-  }, [search]);
-
-  useDidUpdateEffect(() => {
-    if (allTranscripts.length) {
-      dispatch(Router.goToTargetTranscript(allTranscripts[0].id));
-    } else {
-      // Reset the target transcript URL
-      dispatch(Router.goToConversationsPage());
     }
   }, [allTranscripts]);
 

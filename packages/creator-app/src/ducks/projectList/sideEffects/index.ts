@@ -15,8 +15,6 @@ import { cuid } from '@/utils/string';
 import * as Sentry from '@/vendors/sentry';
 
 import { addProjectList, removeProjectFromList, removeProjectList, replaceProjectLists, updateProjectList } from '../actions';
-import { DEFAULT_LIST_NAME } from '../constants';
-import { allProjectListsSelector, defaultProjectListSelector, projectListByIDSelector } from '../selectors';
 import { addProjectToList, listNotFoundError, saveRealtimeProjectListsForWorkspace } from './shared';
 
 export { addProjectToList, saveRealtimeProjectListsForWorkspace } from './shared';
@@ -58,7 +56,7 @@ export const loadProjectLists =
       // dump all projects not used in any of the other lists
       if (unusedProjects.size > 0) {
         const unusedProjectIDs = Array.from(unusedProjects);
-        const defaultList = normalizedLists.find((list) => list.name === DEFAULT_LIST_NAME);
+        const defaultList = normalizedLists.find((list) => list.name === Realtime.DEFAULT_PROJECT_LIST_NAME);
 
         if (defaultList) {
           const projects = unique([...defaultList.projects, ...unusedProjectIDs]);
@@ -66,7 +64,7 @@ export const loadProjectLists =
         } else {
           normalizedLists.push({
             id: cuid(),
-            name: DEFAULT_LIST_NAME,
+            name: Realtime.DEFAULT_PROJECT_LIST_NAME,
             projects: unusedProjectIDs,
           });
         }
@@ -82,7 +80,7 @@ export const loadProjectLists =
 export const saveProjectListsForWorkspace =
   (workspaceID: string): Thunk =>
   async (_, getState) => {
-    const projectLists = allProjectListsSelector(getState());
+    const projectLists = ProjectListV2.allProjectListsSelector(getState());
 
     if (projectLists.length) {
       await client.projectList.update(workspaceID, projectLists);
@@ -208,10 +206,10 @@ export const addProjectToDefaultList =
     const state = getState();
     const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
-    let defaultList = atomicActionsEnabled ? ProjectListV2.defaultProjectListSelector(state) : defaultProjectListSelector(state);
+    let defaultList = ProjectListV2.defaultProjectListSelector(state);
 
     if (!defaultList) {
-      defaultList = await dispatch(createProjectList(workspaceID, DEFAULT_LIST_NAME));
+      defaultList = await dispatch(createProjectList(workspaceID, Realtime.DEFAULT_PROJECT_LIST_NAME));
     }
 
     if (atomicActionsEnabled) {
@@ -229,7 +227,7 @@ export const deleteProjectList =
     const state = getState();
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
     const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-    const list = atomicActionsEnabled ? ProjectListV2.projectListByIDSelector(state, { id: listID }) : projectListByIDSelector(state)(listID);
+    const list = ProjectListV2.projectListByIDSelector(state, { id: listID });
 
     Errors.assert(list, listNotFoundError());
 

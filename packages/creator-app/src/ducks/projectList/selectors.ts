@@ -1,12 +1,14 @@
-import { createSelector } from 'reselect';
-
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 
-import { DEFAULT_LIST_NAME, STATE_KEY } from './constants';
+import { STATE_KEY } from './constants';
 
-export const { all: allProjectListsSelector, byID: projectListByIDSelector } = createCRUDSelectors(STATE_KEY);
+const projectListSelectors = createCRUDSelectors(STATE_KEY);
 
-export const defaultProjectListSelector = createSelector(
-  [allProjectListsSelector],
-  (lists) => lists.find((list) => list.name === DEFAULT_LIST_NAME) || null
-);
+/**
+ * @deprecated
+ */
+export const allProjectListsSelector = projectListSelectors.all;
+/**
+ * @deprecated
+ */
+export const projectListByIDSelector = projectListSelectors.byID;

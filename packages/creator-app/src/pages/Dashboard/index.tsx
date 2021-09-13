@@ -69,8 +69,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const workspace = useActiveWorkspace();
   const projects = useSelector(Project.allProjectsSelector);
   const projectsMap = useSelector(Project.projectsMapSelector);
-  const projectListsV1 = useSelector(ProjectList.allProjectListsSelector);
-  const projectListsRealtime = useSelector(ProjectListV2.allProjectListsSelector);
+  const projectLists = useSelector(ProjectListV2.allProjectListsSelector);
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const hasTemplatesWorkspace = useSelector(WorkspaceV2.hasTemplatesWorkspaceSelector);
   const loadLists = useDispatch(ProjectList.loadProjectLists);
@@ -89,8 +88,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const moveProjectList = useSyncDispatch(Realtime.projectList.crudActions.move);
   const transplantProjectBetweenLists = useSyncDispatch(Realtime.projectList.transplantProjectBetweenLists);
   const saveRealtimeProjectLists = useDispatch(ProjectList.saveRealtimeProjectListsForActiveWorkspace);
-
-  const projectLists = atomicActions.isEnabled ? projectListsRealtime : projectListsV1;
 
   const query = location?.search ? Query.parse(location.search) : null;
 

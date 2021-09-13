@@ -1,10 +1,15 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { generate } from '@voiceflow/ui';
+import { DeepPartial } from 'utility-types';
 
 import client from '@/client';
+import * as Feature from '@/ducks/feature';
 import * as ProjectList from '@/ducks/projectList';
-import * as ProjectListSelectors from '@/ducks/projectList/selectors';
-import { CRUDState } from '@/ducks/utils/crud';
+import * as ProjectListV2 from '@/ducks/projectListV2';
+import * as ProjectListSelectorsV2 from '@/ducks/projectListV2/selectors';
+import { CRUDState, INITIAL_STATE as CRUD_INITIAL_STATE } from '@/ducks/utils/crud';
 import * as Models from '@/models';
+import { State } from '@/store/types';
 import { normalize } from '@/utils/normalized';
 import * as StringUtils from '@/utils/string';
 
@@ -25,6 +30,12 @@ const MOCK_STATE: CRUDState<Models.ProjectList> = {
     [LIST_ID]: LIST,
   },
   allKeys: [LIST_ID],
+};
+const ROOT_STATE: DeepPartial<State> = {
+  [ProjectListV2.STATE_KEY]: CRUD_INITIAL_STATE,
+  [Feature.STATE_KEY]: {
+    features: {},
+  },
 };
 
 suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describeCRUDReducer, describeSelectors, describeSideEffects }) => {
@@ -89,10 +100,11 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
       const otherLists = generate.array(3, () => ({ id: generate.id(), name: generate.string(), projects: generate.array() }));
 
       it('should select the default project list', () => {
-        const defaultList = { id: generate.id(), name: ProjectList.DEFAULT_LIST_NAME, projects: generate.array() };
+        const defaultList = { id: generate.id(), name: Realtime.DEFAULT_PROJECT_LIST_NAME, projects: generate.array() };
 
         expect(
-          select(ProjectList.defaultProjectListSelector, {
+          select(ProjectListV2.defaultProjectListSelector, {
+            ...ROOT_STATE,
             [ProjectList.STATE_KEY]: normalize([defaultList, ...otherLists]),
           })
         ).to.eq(defaultList);
@@ -100,7 +112,8 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
       it('should return null if none found', () => {
         expect(
-          select(ProjectList.defaultProjectListSelector, {
+          select(ProjectListV2.defaultProjectListSelector, {
+            ...ROOT_STATE,
             [ProjectList.STATE_KEY]: normalize(otherLists),
           })
         ).to.be.null;
@@ -110,10 +123,8 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
 
   describeSideEffects(({ applyEffect }) => {
     const rootState = {
+      ...ROOT_STATE,
       session: {},
-      feature: {
-        features: {},
-      },
     };
 
     describe('renameProjectList()', () => {
@@ -148,7 +159,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List', ({ expect, stub, describe
         const workspaceID = generate.id();
         const lists: any[] = generate.array();
         const updateLists = stub(client.projectList, 'update');
-        stub(ProjectListSelectors, 'allProjectListsSelector').returns(lists);
+        stub(ProjectListSelectorsV2, 'allProjectListsSelector').returns(lists);
 
         await applyEffect(ProjectList.saveProjectListsForWorkspace(workspaceID));
 

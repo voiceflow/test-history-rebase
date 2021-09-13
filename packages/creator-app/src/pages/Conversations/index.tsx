@@ -9,8 +9,7 @@ import LoadingGate from '@/components/LoadingGate';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { fetchReportTags } from '@/ducks/reportTag';
-import * as Router from '@/ducks/router';
-import { goToTargetTranscript } from '@/ducks/router';
+import { goToCurrentPrototype, goToTargetTranscript } from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Transcripts from '@/ducks/transcript';
 import { fetchTranscripts } from '@/ducks/transcript';
@@ -37,6 +36,7 @@ const Conversations: React.FC<ConversationProps> = () => {
   const activeTranscriptID = useSelector(Transcripts.currentTranscriptIDSelector);
   const location = useLocation();
   const updateTranscriptsList = useDispatch(fetchTranscripts);
+  const goToPrototype = useDispatch(goToCurrentPrototype);
   const goToTranscript = useDispatch(goToTargetTranscript);
   const fetchTags = useDispatch(fetchReportTags);
 
@@ -144,7 +144,7 @@ const Conversations: React.FC<ConversationProps> = () => {
             title="No conversations exist"
             body="Save a test, or share your assistant with sharable links to access the conversations."
             buttonText="Go to Test"
-            onClick={() => dispatch(Router.goToCurrentPrototype())}
+            onClick={goToPrototype}
           />
         )}
       </LoadingGate>

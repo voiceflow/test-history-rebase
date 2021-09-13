@@ -8,7 +8,6 @@ const OWNER_ROLE_ENABLED = process.env.FF_OWNER_ROLE === 'true';
 const ASR_BYPASS_ENABLED = process.env.FF_ASR_BYPASS === 'true';
 const NATO_APCO_ENABLED = process.env.FF_NATO_ACPO === 'true';
 const MOTOROLA_SSO_ENABLED = process.env.FF_MOTOROLA_SSO === 'true';
-const TEST_REPORTS_ENABLED = process.env.FF_TEST_REPORTS === 'true';
 const ATOMIC_ACTIONS_ENABLED = process.env.FF_ATOMIC_ACTIONS === 'true';
 const DIALOGFLOW_ENABLED = process.env.FF_DIALOGFLOW === 'true';
 
@@ -26,7 +25,6 @@ export enum FeatureFlag {
   // permanent circuit breakers for vendor integrations
   INTERCOM_INTEGRATION = 'intercom_integration',
 
-  TEST_REPORTS = 'test_reports',
   DIALOGFLOW = 'dialogflow',
 }
 
@@ -38,7 +36,6 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.ASR_BYPASS]: ASR_BYPASS_ENABLED,
   [FeatureFlag.NATO_APCO]: NATO_APCO_ENABLED,
   [FeatureFlag.MOTOROLA_SSO]: MOTOROLA_SSO_ENABLED,
-  [FeatureFlag.TEST_REPORTS]: TEST_REPORTS_ENABLED,
   [FeatureFlag.ATOMIC_ACTIONS]: ATOMIC_ACTIONS_ENABLED,
   [FeatureFlag.DIALOGFLOW]: DIALOGFLOW_ENABLED,
 };

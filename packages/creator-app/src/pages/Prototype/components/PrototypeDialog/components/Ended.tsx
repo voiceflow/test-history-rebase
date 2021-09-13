@@ -1,12 +1,9 @@
-import { Box, ClickableText, Link } from '@voiceflow/ui';
+import { Box, ClickableText } from '@voiceflow/ui';
 import React from 'react';
 
 import Divider from '@/components/Divider';
-import { FeatureFlag } from '@/config/features';
-import { DOCS_LINK } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
 import { Message, MessageType } from '@/pages/Prototype/types';
 import { ConnectedProps } from '@/types';
 
@@ -16,18 +13,13 @@ interface PrototypeEndedProps {
   isTranscript?: boolean;
 }
 
-const LearnMore = <Link href={`${DOCS_LINK}/#/platform/testing/testing.md?id=no-intent-or-reprompted-matched`}>Learn More</Link>;
-
 const PrototypeEnded: React.FC<ConnectedPrototypeEndedProps & PrototypeEndedProps> = ({ contextStep, messages, stepBack, isTranscript }) => {
-  const testReports = useFeature(FeatureFlag.TEST_REPORTS);
   const goBackDisabled = contextStep <= 1;
 
-  const Action = testReports.isEnabled ? (
+  const Action = (
     <ClickableText disabled={goBackDisabled} onClick={stepBack}>
       Try Again
     </ClickableText>
-  ) : (
-    LearnMore
   );
 
   const reason = React.useMemo(() => {

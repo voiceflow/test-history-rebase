@@ -73,7 +73,7 @@ const PrototypeInput = <L extends string>({
         goBackDisabled={goBackDisabled}
       />
       {status === Prototype.PrototypeStatus.ENDED ? (
-        <Reset onClick={resetPrototype} stepBack={stepBack} goBackDisabled={goBackDisabled} />
+        <Reset onClick={resetPrototype} />
       ) : (
         <InputContainer>
           {inputMode === Prototype.InputMode.TEXT ? (

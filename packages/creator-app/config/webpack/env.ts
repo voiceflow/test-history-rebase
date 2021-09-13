@@ -18,7 +18,6 @@ import {
   ff_motorolaSSO,
   ff_natoApco,
   ff_ownerRole,
-  ff_testReports,
   ff_wavenetVoices,
   ga,
   growsurf,
@@ -68,7 +67,6 @@ export default {
   FF_ASR_BYPASS: ff_asrBypass && 'true',
   FF_NATO_ACPO: ff_natoApco && 'true',
   FF_MOTOROLA_SSO: ff_motorolaSSO && 'true',
-  FF_TEST_REPORTS: ff_testReports && 'true',
   FF_ATOMIC_ACTIONS: ff_atomicActions && 'true',
   FF_DIALOGFLOW: ff_dialogflow && 'true',
 

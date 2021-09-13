@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.480.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.0...@voiceflow/creator-app@1.480.1) (2021-09-13)
+
+
+### Bug Fixes
+
+* dispatch compile error (VF-000) ([e21030f](https://github.com/voiceflow/creator-app/commit/e21030fde7f0fdea1b2c944fda1ea4b34b81651d))
+
+
+
+
+
 # [1.480.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.479.3...@voiceflow/creator-app@1.480.0) (2021-09-13)
 
 

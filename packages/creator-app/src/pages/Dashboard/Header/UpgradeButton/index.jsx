@@ -1,16 +1,16 @@
-/* eslint-disable no-shadow */
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import PermissionGate from '@/gates/PermissionGate';
-import { useIsOnPaidPlanSelector, useModals } from '@/hooks';
+import { useModals, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import { Container, UpgradeIcon, UpgradeText } from './components';
 
 function UpgradeButton() {
-  const isOnPaidPlan = useIsOnPaidPlanSelector();
+  const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
 

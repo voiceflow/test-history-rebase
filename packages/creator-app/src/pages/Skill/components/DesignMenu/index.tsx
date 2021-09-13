@@ -6,7 +6,7 @@ import { Permission } from '@/config/permissions';
 import { DragItem } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useHotKeys, useIsViewerOrLibraryRoleSelector, usePermission, useSelector, useTheme, useTrackingEvents } from '@/hooks';
+import { useDispatch, useHotKeys, usePermission, useSelector, useTheme, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useAnyModeOpen } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
@@ -20,14 +20,13 @@ const DesignMenu: React.FC = () => {
   const isHidden = useSelector(UI.isCreatorMenuHiddenSelector);
   const activeTab = useSelector(UI.activeCreatorMenuSelector);
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
-  const isViewerOrLibraryRole = useIsViewerOrLibraryRoleSelector();
 
   const toggleIsHidden = useDispatch(UI.toggleCreatorMenuHidden);
   const hideCreatorMenu = useDispatch(UI.hideCreatorMenu);
   const showCreatorMenu = useDispatch(UI.showCreatorMenu);
   const selectActiveTab = useDispatch(UI.setActiveCreatorMenu);
 
-  const [isEditingMode] = usePermission(Permission.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const isAnyModeOpen = useAnyModeOpen();
   const [isOpenByHover, openByHover, closeByLoseHover] = useEnableDisable(false);
   const designMenuRef = React.useRef<HTMLDivElement>(null);
@@ -47,12 +46,12 @@ const DesignMenu: React.FC = () => {
   };
 
   const selectedTab = React.useMemo(() => {
-    if (isViewerOrLibraryRole) {
+    if (!canEditCanvas) {
       return Tab.FLOWS;
     }
 
     return Object.values(Tab).includes(activeTab as Tab) ? (activeTab as Tab) : Tab.STEPS;
-  }, [activeTab, isViewerOrLibraryRole]);
+  }, [activeTab, canEditCanvas]);
   const [events] = useTrackingEvents();
 
   useDidUpdateEffect(() => {
@@ -119,7 +118,7 @@ const DesignMenu: React.FC = () => {
     [dropRef]
   );
 
-  const canBeOpened = !isAnyModeOpen && (isEditingMode || isViewerOrLibraryRole);
+  const canBeOpened = !isAnyModeOpen && canEditCanvas;
   const isOpen = (!isHidden || isOpenByHover) && canBeOpened;
 
   return (
@@ -135,13 +134,13 @@ const DesignMenu: React.FC = () => {
     >
       <Content isOpen={isOpen} activeTab={selectedTab} ref={designMenuRef}>
         <Header
-          tabs={isViewerOrLibraryRole ? TABS.filter((tab) => tab.value === Tab.FLOWS) : TABS}
+          tabs={canEditCanvas ? TABS : TABS.filter((tab) => tab.value === Tab.FLOWS)}
           locked={!isHidden}
           toggleLock={toggleIsHidden}
           selectedTab={selectedTab}
           selectActiveTab={selectActiveTab}
         />
-        {selectedTab === Tab.STEPS && !isViewerOrLibraryRole && <Steps />}
+        {selectedTab === Tab.STEPS && canEditCanvas && <Steps />}
         {selectedTab === Tab.FLOWS && <Flows />}
       </Content>
     </Container>

@@ -2,11 +2,8 @@ import React from 'react';
 import { createSelector } from 'reselect';
 import shallowEqual from 'shallowequal';
 
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useTeardown } from '@/hooks';
 import { Node, NodeData } from '@/models';
@@ -138,13 +135,7 @@ class NodeEntity extends ResourceEntity<{ node: Node; data: NodeData<unknown> },
   }
 
   get isLocked() {
-    if (this.engine.isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS)) {
-      const activeWorkspaceID = this.engine.select(Session.activeWorkspaceIDSelector);
-
-      return this.engine.select(WorkspaceV2.isTemplateWorkspaceByIDSelector, { id: activeWorkspaceID });
-    }
-
-    return this.engine.select(Workspace.isTemplateWorkspaceSelector);
+    return this.engine.select(WorkspaceV2.active.isTemplatesSelector);
   }
 
   nodeType: BlockType;

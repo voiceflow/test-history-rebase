@@ -13,13 +13,12 @@ import { projectByIDSelector } from '@/ducks/project/selectors';
 import { addProjectToDefaultList, addProjectToList, saveProjectListsForWorkspace, saveProjectToList } from '@/ducks/projectList/sideEffects';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
-import { allWorkspaceIDsSelector as realtimeAllWorkspaceIDsSelector } from '@/ducks/workspaceV2/selectors';
+import { allWorkspaceIDsSelector } from '@/ducks/workspaceV2/selectors';
 import { AnyProject, DBMember, Workspace } from '@/models';
 import { Thunk } from '@/store/types';
 import { withoutValue } from '@/utils/array';
 
 import { patchWorkspace, removeWorkspace, replaceWorkspaces } from '../actions';
-import { allWorkspaceIDsSelector } from '../selectors';
 import { extractErrorFromResponseData } from '../utils';
 
 export * from './members';
@@ -70,7 +69,7 @@ export const removeWorkspaceAndUpdateActive =
     const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
     const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
-    const workspaceIDs = withoutValue(atomicActionsEnabled ? realtimeAllWorkspaceIDsSelector(state) : allWorkspaceIDsSelector(state), workspaceID);
+    const workspaceIDs = withoutValue(allWorkspaceIDsSelector(state), workspaceID);
 
     // default to the first existing workspace
     const newWorkspaceID = workspaceIDs.length > 0 ? workspaceIDs[0] : null;

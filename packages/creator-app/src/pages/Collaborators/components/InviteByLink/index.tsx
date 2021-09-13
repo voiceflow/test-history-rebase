@@ -5,12 +5,11 @@ import React from 'react';
 import client from '@/client';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import * as Errors from '@/config/errors';
-import { FeatureFlag } from '@/config/features';
+import { Permission } from '@/config/permissions';
 import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useFeature, useModals, useSelector, useTrackingEvents, useWorkspaceUserRoleSelector } from '@/hooks';
+import { useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';
 import * as Sentry from '@/vendors/sentry';
@@ -33,17 +32,10 @@ const inviteLimitMessage = (
 type ROLE_OPTIONS = UserRole.EDITOR | UserRole.VIEWER | UserRole.ADMIN;
 
 const InviteByLinkFooter: React.FC = () => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const numberOfSeatsV1 = useSelector(Workspace.workspaceNumberOfSeatsSelector);
-  const numberOfSeatsRealtime = useSelector((state) => WorkspaceV2.workspaceNumberOfSeatsByIDSelector(state, { id: activeWorkspaceID }));
-  const usedEditorSeatsV1 = useSelector(Workspace.usedEditorSeatsSelector);
-  const usedEditorSeatsRealtime = useSelector((state) => WorkspaceV2.workspaceUsedEditorSeatsByIDSelector(state, { id: activeWorkspaceID }));
-  const userRole = useWorkspaceUserRoleSelector();
-
-  const numberOfSeats = atomicActions.isEnabled ? numberOfSeatsRealtime : numberOfSeatsV1;
-  const usedEditorSeats = atomicActions.isEnabled ? usedEditorSeatsRealtime : usedEditorSeatsV1;
+  const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
+  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const [canManageAdminCollaborators] = usePermission(Permission.MANAGE_ADMIN_COLLABORATORS);
 
   const [linkInvitePermission, setLinkInvitePermission] = React.useState<ROLE_OPTIONS>(UserRole.EDITOR);
   const [inviteCode, setInviteCode] = React.useState('');
@@ -102,7 +94,7 @@ const InviteByLinkFooter: React.FC = () => {
             <Menu>
               <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.EDITOR)}>can edit</MenuItem>
               <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.VIEWER)}>can view</MenuItem>
-              {userRole === UserRole.ADMIN && <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.ADMIN)}>can admin</MenuItem>}
+              {canManageAdminCollaborators && <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.ADMIN)}>can admin</MenuItem>}
             </Menu>
           )}
           text={PermissionText[linkInvitePermission]}

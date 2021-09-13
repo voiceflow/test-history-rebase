@@ -2,27 +2,18 @@ import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import LoadingGate from '@/components/LoadingGate';
-import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useFeature, useRouteWorkspaceID, useSelector } from '@/hooks';
+import { useDispatch, useRouteWorkspaceID, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 // eslint-disable-next-line import/prefer-default-export
 export const DashboardGate: React.FC = React.memo(({ children }) => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
   const routeWorkspaceID = useRouteWorkspaceID();
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const workspaceIDsV1 = useSelector(Workspace.allWorkspaceIDsSelector);
-  const workspaceIDsRealtime = useSelector(WorkspaceV2.allWorkspaceIDsSelector);
-  const personalWorkspaceIDsV1 = useSelector(Workspace.personalWorkspaceIDsSelector);
-  const personalWorkspaceIDsRealtime = useSelector(WorkspaceV2.personalWorkspaceIDsSelector);
-
-  const workspaceIDs = atomicActions.isEnabled ? workspaceIDsRealtime : workspaceIDsV1;
-  const personalWorkspaceIDs = atomicActions.isEnabled ? personalWorkspaceIDsRealtime : personalWorkspaceIDsV1;
+  const workspaceIDs = useSelector(WorkspaceV2.allWorkspaceIDsSelector);
+  const personalWorkspaceIDs = useSelector(WorkspaceV2.personalWorkspaceIDsSelector);
 
   const load = useDispatch(Session.setActiveWorkspaceID, routeWorkspaceID);
 

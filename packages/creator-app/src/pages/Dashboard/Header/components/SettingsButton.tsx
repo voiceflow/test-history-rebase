@@ -1,24 +1,17 @@
-import { PlanType, UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/internal';
 import { ClickableText, Dropdown, IconButton, IconButtonVariant, Menu, MenuItem, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ModalType, PLAN_TYPE_META } from '@/constants';
 import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useFeature, useModals, usePermission, useSelector } from '@/hooks';
+import { useDispatch, useModals, usePermission, useSelector } from '@/hooks';
 
 const SettingsButton: React.FC = () => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
-  const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const planV1 = useSelector(Workspace.planTypeSelector);
-  const planRealtime = useSelector((state) => WorkspaceV2.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
-
-  const plan = atomicActions.isEnabled ? planRealtime : planV1;
+  const plan = useSelector(WorkspaceV2.active.planSelector);
+  const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const leaveWorkspace = useDispatch(Workspace.leaveActiveWorkspace);
   const goToWorkspaceSettings = useDispatch(Router.goToCurrentWorkspaceSettings);
@@ -46,9 +39,7 @@ const SettingsButton: React.FC = () => {
                   <MenuItem disabled capitalize ending>
                     <Text color="#62778c">{PLAN_TYPE_META[plan].label} Plan &nbsp;-&nbsp; </Text>
 
-                    <ClickableText onClick={openUpgrade}>
-                      {plan === PlanType.STARTER || plan === PlanType.OLD_STARTER ? <span>Upgrade</span> : <span>Manage</span>}
-                    </ClickableText>
+                    <ClickableText onClick={openUpgrade}>{isOnPaidPlan ? <span>Manage</span> : <span>Upgrade</span>}</ClickableText>
                   </MenuItem>
                 ) : (
                   <MenuItem onClick={togglePayment} style={{ color: '#279745' }}>

@@ -1,5 +1,4 @@
 import { Constants } from '@voiceflow/alexa-types';
-import { PlanType } from '@voiceflow/internal';
 import { Button, ClickableText, Flex, FlexApart, flexApartStyles, Input, Select, stopPropagation, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import _sample from 'lodash/sample';
 import React from 'react';
@@ -7,16 +6,13 @@ import React from 'react';
 import { ModalFooter } from '@/components/LegacyModal';
 import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
-import { FeatureFlag } from '@/config/features';
+import { Permission } from '@/config/permissions';
 import { CUSTOM_SLOT_TYPE, ModalType, SLOT_COLORS } from '@/constants';
 import * as Intent from '@/ducks/intent';
-import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
 import * as Version from '@/ducks/version';
-import * as Workspace from '@/ducks/workspace';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { styled } from '@/hocs';
-import { useFeature, useModals, useSelector, useTeardown } from '@/hooks';
+import { useModals, usePermission, useSelector, useTeardown } from '@/hooks';
 import { replace, without } from '@/utils/array';
 import { formatIntentName } from '@/utils/intent';
 import { validateSlotName } from '@/utils/slot';
@@ -47,18 +43,11 @@ const FlexModalFooter = styled(ModalFooter)`
 `;
 
 function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = [], onSave, onRemove, isCreate, onDelete, isInteraction }) {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
-  const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-
-  const planV1 = useSelector(Workspace.planTypeSelector);
-  const planRealtime = useSelector((state) => WorkspaceV2.workspacePlanTypeByIDSelector(state, { id: activeWorkspaceID }));
+  const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const slots = useSelector(Slot.allSlotsSelector);
   const intents = useSelector(Intent.allIntentsSelector);
   const slotTypes = useSelector(Version.activeSlotTypesSelector) ?? [];
   const intentsUsingSlot = useSelector(Slot.intentsUsingSlotSelector);
-
-  const plan = atomicActions.isEnabled ? planRealtime : planV1;
 
   const isDeleteable = !isCreate && !!onDelete;
 
@@ -133,9 +122,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   };
 
   const onBulkUploadClick = () => {
-    if ([PlanType.OLD_STARTER, PlanType.STARTER].includes(plan)) {
-      openImportBulkDeniedModal();
-    } else {
+    if (canBulkUpload) {
       openSlotsBulkUploadModal({
         onUpload: (slots) => {
           const newCustomLines = slots.map(([slot, ...synonyms]) => generateSlotInput(slot, synonyms.join(', ')));
@@ -143,6 +130,8 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
           setCustomLines((prevLines) => mergeSlotInputs(prevLines, newCustomLines));
         },
       });
+    } else {
+      openImportBulkDeniedModal();
     }
   };
 

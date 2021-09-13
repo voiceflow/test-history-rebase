@@ -4,7 +4,7 @@ import client from '@/client';
 import { IS_PRODUCTION } from '@/config';
 import { FeatureFlag, LOCAL_FEATURE_OVERRIDES } from '@/config/features';
 import * as Session from '@/ducks/session';
-import { Action, Reducer, RootReducer, Thunk } from '@/store/types';
+import { Action, Reducer, RootReducer, Selector, Thunk } from '@/store/types';
 
 import { createAction, createRootSelector } from './utils';
 
@@ -102,6 +102,24 @@ export const isFeatureEnabledSelector = createSelector(
   [featureSelector],
   (getFeature) => (featureID: FeatureFlag) => (!IS_PRODUCTION && LOCAL_FEATURE_OVERRIDES[featureID]) || (getFeature(featureID).isEnabled ?? null)
 );
+
+export const createAtomicActionsSelector: {
+  <T, P, R, V1, V2>(
+    selectors: [selectorV1: Selector<V1, [P]>, selectorV2: Selector<V2, [P]>, paramSelector: Selector<R, [P]>],
+    reducer: (valueV1: V1, valueV2: V2, param: R) => [T, T]
+  ): Selector<T, [P]>;
+
+  <T, P>(selectors: [selectorV1: Selector<T>, selectorV2: Selector<T>, paramSelector: Selector<P>]): Selector<T, [P]>;
+
+  <T, V1, V2>(selectors: [selectorV1: Selector<V1>, selectorV2: Selector<V2>], reducer: (valueV1: V1, valueV2: V2) => [T, T]): Selector<T>;
+
+  <T>(selectors: [selectorV1: Selector<T>, selectorV2: Selector<T>]): Selector<T>;
+} = (selectors: Selector<any, any[]>[], reducer?: (valueV1: any, valueV2: any, param?: any) => [any, any]) =>
+  createSelector([isFeatureEnabledSelector, ...selectors], (isFeatureEnabled, rawValueV1, rawValueV2, param) => {
+    const [valueV1, valueV2] = reducer ? reducer(rawValueV1, rawValueV2, param) : [rawValueV1, rawValueV2];
+
+    return isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS) ? valueV2 : valueV1;
+  });
 
 export const isLoadedSelector = createSelector([rootSelector], ({ isLoaded }) => isLoaded);
 

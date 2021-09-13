@@ -3,14 +3,12 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { conversationGraphic } from '@/assets';
-import { FeatureFlag } from '@/config/features';
 import { LegacyPath, Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
-import * as WorkspaceDuck from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { CheckInvitationGate, WorkspacesLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
-import { useDispatch, useFeature, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 const Settings = lazy(() => import('@/pages/Workspace/Settings'));
@@ -18,12 +16,7 @@ const NewProject = lazy(() => import('@/pages/NewProject'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
 
 const Workspace: React.FC = () => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
-  const personalWorkspaceIDsV1 = useSelector(WorkspaceDuck.personalWorkspaceIDsSelector);
-  const personalWorkspaceIDsRealtime = useSelector(WorkspaceV2.personalWorkspaceIDsSelector);
-
-  const personalWorkspaceIDs = atomicActions.isEnabled ? personalWorkspaceIDsRealtime : personalWorkspaceIDsV1;
+  const personalWorkspaceIDs = useSelector(WorkspaceV2.personalWorkspaceIDsSelector);
 
   const goToNewWorkspace = useDispatch(Router.goToNewWorkspace);
 

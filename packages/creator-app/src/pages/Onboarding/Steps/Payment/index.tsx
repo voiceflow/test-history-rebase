@@ -9,12 +9,10 @@ import Collapsable from '@/components/Collapsable';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import { TextVariant } from '@/components/DropdownWithCaret/types';
 import { CardElement } from '@/components/Stripe';
-import { FeatureFlag } from '@/config/features';
 import { PERIOD_NAME } from '@/constants';
 import * as Account from '@/ducks/account';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDebouncedCallback, useFeature, useSelector, useToggle } from '@/hooks';
+import { useDebouncedCallback, useSelector, useToggle } from '@/hooks';
 import { DBMember } from '@/models';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
@@ -39,20 +37,13 @@ import {
 export const GET_PRICE_WITHOUT_TEAM_ID_CONST = 'none';
 
 const Payment: React.FC = () => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
-  const workspacesV1 = useSelector(Workspace.allWorkspacesSelector);
-  const workspacesRealtime = useSelector(WorkspaceV2.allWorkspacesSelector);
-  const getWorkspaceByIDV1 = useSelector(Workspace.workspaceByIDSelector);
-  const getWorkspaceByIDRealtime = useSelector((state) => (workspaceID: string) => WorkspaceV2.workspaceByIDSelector(state, { id: workspaceID }));
+  const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
+  const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
   const creatorID = useSelector(Account.userIDSelector);
   const referrerID = useSelector(Account.referrerIDSelector);
   const referralCode = useSelector(Account.referralCodeSelector);
 
   const { state, actions } = useContext(OnboardingContext);
-
-  const workspaces = atomicActions.isEnabled ? workspacesRealtime : workspacesV1;
-  const getWorkspaceByID = atomicActions.isEnabled ? getWorkspaceByIDRealtime : getWorkspaceByIDV1;
 
   const { plan, couponCode, period } = state.paymentMeta;
   const { sendingRequests, selectableWorkspace, hasFixedPeriod, specificFlowType } = state;

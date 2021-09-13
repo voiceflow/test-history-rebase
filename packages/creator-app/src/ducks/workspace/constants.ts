@@ -21,6 +21,3 @@ export const UNKNOWN_MEMBER_DATA: DBMember = {
   created: '',
   status: null,
 };
-
-export const TEMPLATES_ADMIN_ID = 36745;
-export const TEMPLATES_EDITORS_ID = [3600, 27497];

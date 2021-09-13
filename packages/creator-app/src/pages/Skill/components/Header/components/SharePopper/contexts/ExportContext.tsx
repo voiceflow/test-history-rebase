@@ -3,7 +3,7 @@ import React from 'react';
 
 import { ExportFormat } from '@/constants';
 import * as Export from '@/ducks/export';
-import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { Nullable } from '@/types';
 
@@ -20,7 +20,7 @@ export const { Consumer: ExportConsumer } = ExportContext;
 
 export const ExportProvider: React.FC = ({ children }) => {
   const exportCanvas = useDispatch(Export.exportCanvas);
-  const isTemplateWorkspace = useSelector(Workspace.isTemplateWorkspaceSelector);
+  const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
 
   const [trackingEvents] = useTrackingEvents();
 

@@ -1,14 +1,24 @@
 import React from 'react';
 import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
+import { createSelector } from 'reselect';
 
 import Commenter from '@/components/Commenter';
-import { useActiveWorkspaceCommentingMembersSelector } from '@/hooks';
+import { hasRolePermission, Permission } from '@/config/permissions';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useSelector } from '@/hooks';
+import { Member } from '@/models';
+import { NonNullableRecord } from '@/types';
 
 import MentionPreview from '../CommentPreview';
 import { MentionEditorContainer, mentionEditorStyle, mentionStyle } from './components';
 import { formatNameToMention } from './utils';
 
 export { MentionPreview };
+
+const activeWorkspaceCommentingMembersSelector = createSelector(
+  [WorkspaceV2.active.membersSelector],
+  (members) => members.filter((member) => member.name && hasRolePermission(Permission.COMMENTING, member.role)) as NonNullableRecord<Member>[]
+);
 
 export interface MentionEditorProps {
   onChange: (value: string, mentions: number[]) => void;
@@ -20,7 +30,7 @@ export interface MentionEditorProps {
 }
 
 export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, value = '', placeholder, inputProps, height }) => {
-  const members = useActiveWorkspaceCommentingMembersSelector();
+  const members = useSelector(activeWorkspaceCommentingMembersSelector);
 
   const onValueChange: OnChangeHandlerFunc = (e, _, __, mentions) =>
     onChange(

@@ -5,10 +5,12 @@ export enum Permission {
   CONFIGURE_WORKSPACE = 'workspace.CONFIGURE',
   UPGRADE_WORKSPACE = 'workspace.UPGRADE',
   INVITE_BY_LINK = 'workspace.INVITE_BY_LINK',
+  IMPORT_PROJECT = 'workspace.IMPORT_PROJECT',
 
   // collaborator
   ADD_COLLABORATORS = 'collaborator.ADD',
   VIEW_COLLABORATORS = 'collaborator.VIEW',
+  MANAGE_ADMIN_COLLABORATORS = 'collaborator.MANAGE_ADMINS',
 
   // project
   MANAGE_PROJECTS = 'project.MANAGE',
@@ -48,6 +50,9 @@ export enum Permission {
   // Transcript
   DELETE_TRANSCRIPT = 'transcripts.DELETE',
   VIEW_CONVERSATIONS = 'transcripts.VIEW',
+
+  // private cloud
+  CREATE_PRIVATE_CLOUD_WORKSPACE = 'private_cloud.workspace.CREATE',
 }
 
 const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.OWNER, UserRole.BILLING, UserRole.GUEST];
@@ -58,11 +63,13 @@ const EDITOR_AND_BILLING_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole
 export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.ADD_COLLABORATORS]: EDITOR_AND_BILLING_USER_ROLES,
   [Permission.VIEW_COLLABORATORS]: SIGNED_USER_ROLES,
+  [Permission.MANAGE_ADMIN_COLLABORATORS]: [UserRole.ADMIN],
   [Permission.DELETE_TRANSCRIPT]: EDITOR_USER_ROLES,
   [Permission.INVITE_BY_LINK]: EDITOR_AND_BILLING_USER_ROLES,
 
   [Permission.CONFIGURE_WORKSPACE]: [UserRole.ADMIN],
   [Permission.UPGRADE_WORKSPACE]: EDITOR_AND_BILLING_USER_ROLES,
+  [Permission.IMPORT_PROJECT]: ALL_USER_ROLES,
 
   [Permission.MANAGE_PROJECTS]: EDITOR_USER_ROLES,
   [Permission.MANAGE_PROJECT_LISTS]: EDITOR_AND_BILLING_USER_ROLES,
@@ -80,6 +87,8 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.VIEW_CONVERSATIONS]: ALL_USER_ROLES,
 
   [Permission.HINT_FEATURES]: SIGNED_USER_ROLES,
+
+  [Permission.CREATE_PRIVATE_CLOUD_WORKSPACE]: [UserRole.OWNER],
 };
 
 const ALL_PERMISSIONS = Object.values(PlanType);

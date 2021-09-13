@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import { creatorDiagramIDSelector } from '@/ducks/creator/diagram/selectors';
 import * as Session from '@/ducks/session';
 import { createRootSelector } from '@/ducks/utils';
-import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 
 import { LockType, ResourceType, STATE_KEY } from './constants';
 import { AnyNodeLock } from './types';
@@ -81,12 +81,12 @@ export const creatorMappingSelector = createSelector(
  * get the team member who has the node locked
  */
 export const lockOwnerSelector = createSelector(
-  [creatorDiagramIDSelector, creatorMappingSelector, Workspace.distinctWorkspaceMemberSelector],
+  [creatorDiagramIDSelector, creatorMappingSelector, WorkspaceV2.active.getDistinctWorkspaceMemberByCreatorIDSelector],
   (diagramID, getCreatorMapping, getWorkspaceMember) => (lockType: AnyNodeLock, nodeID: string) => {
     if (!diagramID) return null;
 
     const [tabID, creatorID] = getCreatorMapping(lockType, nodeID, diagramID);
-    return creatorID ? getWorkspaceMember(creatorID, tabID) : null;
+    return creatorID ? getWorkspaceMember(Number(creatorID), tabID) : null;
   }
 );
 
@@ -99,7 +99,7 @@ export const editLockOwnerSelector = createSelector([lockOwnerSelector], (getLoc
  * get the team member who has the resource locked
  */
 export const resourceLockOwnerSelector = createSelector(
-  [realtimeLocksSelector, resourceLockOwnerTabIDSelector, Workspace.distinctWorkspaceMemberSelector],
+  [realtimeLocksSelector, resourceLockOwnerTabIDSelector, WorkspaceV2.active.getDistinctWorkspaceMemberByCreatorIDSelector],
   (locks, getTabID, getWorkspaceMember) => (resourceType: ResourceType) => {
     const tabID = getTabID(resourceType)!;
     const found =
@@ -123,7 +123,7 @@ export const isResourceLockedSelector = createSelector(
 );
 
 export const diagramViewersLookupSelector = createSelector(
-  [realtimeLocksSelector, Workspace.activeWorkspaceMemberSelector],
+  [realtimeLocksSelector, WorkspaceV2.active.getMemberByIDSelector],
   (locks, getWorkspaceMember) => {
     if (!locks) {
       return {};
@@ -131,7 +131,7 @@ export const diagramViewersLookupSelector = createSelector(
 
     return Object.values(locks.users).reduce<Record<string, ReturnType<typeof getWorkspaceMember> & { color: string }>>((acc, usersInDiagram) => {
       Object.entries(usersInDiagram).forEach(([tabID, creatorID]) => {
-        const member = getWorkspaceMember(creatorID);
+        const member = getWorkspaceMember(Number(creatorID));
         if (member) {
           acc[tabID] = { ...member, color: getAlternativeColor(tabID) };
         }
@@ -144,8 +144,9 @@ export const diagramViewersLookupSelector = createSelector(
 
 /**
  * gets a count of users for the active project
+ * @deprecated
  */
-export const projectViewerCountSelector = createSelector([realtimeLocksSelector, Workspace.activeWorkspaceSelector], (locks, team) => {
+export const projectViewerCountSelector = createSelector([realtimeLocksSelector, WorkspaceV2.active.workspaceSelector], (locks, team) => {
   if (!locks || !team) {
     return 1;
   }
@@ -157,13 +158,16 @@ export const projectViewerCountSelector = createSelector([realtimeLocksSelector,
   }, new Set()).size;
 });
 
+/**
+ * @deprecated
+ */
 export const isOnlyViewerSelector = createSelector([projectViewerCountSelector], (projectViewerCount) => projectViewerCount === 1);
 
 /**
  * gets all members for a given diagram
  */
 export const diagramViewersSelector = createSelector(
-  [realtimeLocksSelector, Workspace.activeWorkspaceMemberSelector],
+  [realtimeLocksSelector, WorkspaceV2.active.getMemberByIDSelector],
   (locks, getWorkspaceMember) => (diagramID: string) => {
     if (!locks || !diagramID) {
       return [];
@@ -171,7 +175,7 @@ export const diagramViewersSelector = createSelector(
 
     return Object.entries(locks.users[diagramID] || {}).map(([tabID, creatorID]) => ({
       tabID,
-      ...getWorkspaceMember(creatorID)!,
+      ...getWorkspaceMember(Number(creatorID))!,
       color: getAlternativeColor(tabID),
     }));
   }

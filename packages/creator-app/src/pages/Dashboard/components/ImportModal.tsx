@@ -4,7 +4,6 @@ import { Button, ButtonVariant, StatusCode, toast } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
 import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
-import { FeatureFlag } from '@/config/features';
 import { hasRolePermission, Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
@@ -12,7 +11,7 @@ import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { extractMemberById } from '@/ducks/workspaceV2/utils';
-import { useDispatch, useFeature, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { Workspace as WorkspaceModel } from '@/models';
 import * as Sentry from '@/vendors/sentry';
 
@@ -29,18 +28,9 @@ const allowedToClone = (workspace: WorkspaceModel, creatorID: number | null): bo
 };
 
 const ImportModal: React.FC = () => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
   const creatorID = useSelector(Account.userIDSelector);
-  const workspacesV1 = useSelector(Workspace.allWorkspacesSelector);
-  const workspacesRealtime = useSelector(WorkspaceV2.allWorkspacesSelector);
-  const workspaceByIDSelectorV1 = useSelector(Workspace.workspaceByIDSelector);
-  const workspaceByIDSelectorRealtime = useSelector(
-    (state) => (workspaceID: string) => WorkspaceV2.workspaceByIDSelector(state, { id: workspaceID })
-  );
-
-  const workspaces = atomicActions.isEnabled ? workspacesRealtime : workspacesV1;
-  const workspaceByIDSelector = atomicActions.isEnabled ? workspaceByIDSelectorRealtime : workspaceByIDSelectorV1;
+  const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
+  const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
 
   const importProject = useDispatch(Workspace.importProjectToActiveWorkspace);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
@@ -96,7 +86,7 @@ const ImportModal: React.FC = () => {
   const cloneProject = async (workspaceID?: string) => {
     if (!projectID || !workspaceID) return;
 
-    const workspace = workspaceByIDSelector(workspaceID);
+    const workspace = getWorkspaceByID(workspaceID);
 
     if (!workspace) return;
 

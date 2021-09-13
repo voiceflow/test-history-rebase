@@ -1,11 +1,11 @@
-import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
-import { useWorkspaceUserRoleSelector } from '@/hooks';
+import { Permission } from '@/config/permissions';
+import { usePermission } from '@/hooks';
 import { ImportButton, NotificationsButton, ResourcesHeaderButton, SettingsButton, SubHeaderItem } from '@/pages/Dashboard/Header/components';
 
 const RightNavSection = () => {
-  const userRole = useWorkspaceUserRoleSelector();
+  const [canImportProject] = usePermission(Permission.IMPORT_PROJECT);
 
   return (
     <>
@@ -13,7 +13,7 @@ const RightNavSection = () => {
         <SettingsButton />
       </SubHeaderItem>
 
-      {userRole !== UserRole.LIBRARY && (
+      {canImportProject && (
         <SubHeaderItem>
           <ImportButton />
         </SubHeaderItem>

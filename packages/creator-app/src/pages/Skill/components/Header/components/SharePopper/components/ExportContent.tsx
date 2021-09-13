@@ -5,7 +5,7 @@ import RadioGroup from '@/components/RadioGroup';
 import Upgrade from '@/components/Upgrade';
 import { Permission } from '@/config/permissions';
 import { ExportFormat } from '@/constants';
-import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, useSelector } from '@/hooks';
 import { FadeLeftContainer } from '@/styles/animations';
 
@@ -24,7 +24,7 @@ const ExportContent: React.FC = () => {
 
   const [canExportWithoutBranding] = usePermission(Permission.CANVAS_EXPORT);
 
-  const isTemplateWorkspace = useSelector(Workspace.isTemplateWorkspaceSelector);
+  const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
 
   return (
     <FadeLeftContainer style={{ height: '100%' }} paddingTop={24} paddingX={32}>

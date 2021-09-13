@@ -1,13 +1,10 @@
 import { toast } from '@voiceflow/ui';
 
-import { FeatureFlag } from '@/config/features';
-import * as Account from '@/ducks/account';
+import { Permission } from '@/config/permissions';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
-import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 
 import { Middleware } from '../types';
@@ -16,22 +13,11 @@ const CREATOR_HISTORY_ACTIONS: string[] = [Creator.DiagramAction.UNDO_HISTORY, C
 
 export const creatorHistoryMiddleware: Middleware = (store) => (next) => (action) => {
   const state = store.getState();
-  const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
   const viewers = Realtime.activeDiagramViewersSelector(state);
-  const creatorID = Account.userIDSelector(state);
   const activeDiagramID = Session.activeDiagramIDSelector(state); // do not apply creator middleware if no active diagram
+  const canEditCanvas = WorkspaceV2.active.hasPermissionSelector(state, Permission.EDIT_CANVAS);
 
-  if (!activeDiagramID) {
-    next(action);
-    return;
-  }
-
-  const isLibraryRole =
-    atomicActionsEnabled && creatorID
-      ? WorkspaceV2.workspaceIsLibraryRoleByIDAndCreatorIDSelector(state, { id: activeDiagramID, creatorID })
-      : Workspace.isLibraryRoleSelector(state);
-
-  if (isLibraryRole) {
+  if (!activeDiagramID || !canEditCanvas) {
     next(action);
     return;
   }

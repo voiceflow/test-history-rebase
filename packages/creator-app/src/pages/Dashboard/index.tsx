@@ -21,7 +21,6 @@ import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
@@ -73,8 +72,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const projectListsV1 = useSelector(ProjectList.allProjectListsSelector);
   const projectListsRealtime = useSelector(ProjectListV2.allProjectListsSelector);
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const hasTemplatesWorkspaceV1 = useSelector(Workspace.hasTemplatesWorkspaceSelector);
-  const hasTemplatesWorkspaceRealtime = useSelector(WorkspaceV2.hasTemplatesWorkspaceSelector);
+  const hasTemplatesWorkspace = useSelector(WorkspaceV2.hasTemplatesWorkspaceSelector);
   const loadLists = useDispatch(ProjectList.loadProjectLists);
   const createList = useDispatch(ProjectList.createProjectList);
   const setConfirm = useDispatch(Modal.setConfirm);
@@ -93,7 +91,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const saveRealtimeProjectLists = useDispatch(ProjectList.saveRealtimeProjectListsForActiveWorkspace);
 
   const projectLists = atomicActions.isEnabled ? projectListsRealtime : projectListsV1;
-  const hasTemplatesWorkspace = atomicActions.isEnabled ? hasTemplatesWorkspaceRealtime : hasTemplatesWorkspaceV1;
 
   const query = location?.search ? Query.parse(location.search) : null;
 

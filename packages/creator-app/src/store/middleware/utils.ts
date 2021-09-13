@@ -2,15 +2,12 @@ import * as Redux from 'redux';
 import shallowequal from 'shallowequal';
 import { debounce } from 'throttle-debounce';
 
-import { FeatureFlag } from '@/config/features';
+import { Permission } from '@/config/permissions';
 import { DiagramState } from '@/constants';
 import type { State } from '@/ducks';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
-import * as Feature from '@/ducks/feature';
 import * as Realtime from '@/ducks/realtime';
-import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { unique } from '@/utils/array';
 
@@ -44,17 +41,10 @@ export const createAutosaveMiddleware = <T>(
 
     const state = store.getState();
     const currentState = selector(state);
-    const creatorID = Account.userIDSelector(state);
-    const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
-    const activeDiagramID = Session.activeDiagramIDSelector(state); // do not apply creator middleware if no active diagram
-
-    const isLibraryRole =
-      atomicActionsEnabled && creatorID
-        ? WorkspaceV2.workspaceIsLibraryRoleByIDAndCreatorIDSelector(state, { id: activeDiagramID, creatorID })
-        : Workspace.isLibraryRoleSelector(state);
+    const canEditCanvas = WorkspaceV2.active.hasPermissionSelector(state, Permission.EDIT_CANVAS);
 
     try {
-      if (isLibraryRole) return;
+      if (!canEditCanvas) return;
 
       // do not autosave on realtime updates
       if (action.meta?.receivedAction) return;

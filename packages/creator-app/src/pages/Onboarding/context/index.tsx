@@ -7,7 +7,6 @@ import { useDispatch as useReduxDispatch } from 'react-redux';
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
-import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
@@ -17,7 +16,7 @@ import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs';
-import { useDispatch, useFeature, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
 import { asyncForEach } from '@/utils/array';
 import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
@@ -88,20 +87,13 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   checkChargeable,
   isLoginFlow, // This boolean represents if the user hits the onboarding flow from a link/new signup, or from the dashboard 'create workspace' button
 }) => {
-  const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
-
   const dispatch = useReduxDispatch();
 
-  const workspacesV1 = useSelector(Workspace.allWorkspacesSelector);
-  const workspacesRealtime = useSelector(WorkspaceV2.allWorkspacesSelector);
-  const workspaceByIDV1 = useSelector(Workspace.workspaceByIDSelector);
-  const workspaceByIDRealtime = useSelector((state) => (workspaceID: string) => WorkspaceV2.workspaceByIDSelector(state, { id: workspaceID }));
+  const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
+  const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
   const account = useSelector(Account.userSelector);
   const firstLogin = useSelector(Account.isFirstLoginSelector);
   const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-
-  const workspaces = atomicActions.isEnabled ? workspacesRealtime : workspacesV1;
-  const workspaceByID = atomicActions.isEnabled ? workspaceByIDRealtime : workspaceByIDV1;
 
   const createWorkspace = useDispatch(Workspace.createWorkspace);
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
@@ -278,7 +270,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
 
     const selectedWorkspaceID = paymentMeta.selectedWorkspaceId;
     if (selectedWorkspaceID) {
-      workspace = workspaceByID(selectedWorkspaceID);
+      workspace = getWorkspaceByID(selectedWorkspaceID);
     }
     if (!workspace) {
       try {

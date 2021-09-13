@@ -5,7 +5,8 @@ import React from 'react';
 import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
-import { useActiveWorkspace, useDispatch, useFeature, useSelector, useWorkspaceUserRoleSelector } from '@/hooks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useActiveWorkspace, useDispatch, useFeature, useSelector } from '@/hooks';
 import { DBMember } from '@/models';
 import { ClassName } from '@/styles/constants';
 
@@ -46,7 +47,8 @@ interface MemberRowProps {
 const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendInvite }) => {
   const ownerRole = useFeature(FeatureFlag.OWNER_ROLE);
 
-  const role = useWorkspaceUserRoleSelector();
+  // TODO: refactor this to use the permission system
+  const role = useSelector(WorkspaceV2.active.userRoleSelector);
   const userID = useSelector(Account.userIDSelector);
   const activeWorkspace = useActiveWorkspace();
 

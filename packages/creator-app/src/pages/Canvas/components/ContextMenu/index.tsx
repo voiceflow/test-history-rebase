@@ -6,7 +6,8 @@ import { Permission } from '@/config/permissions';
 import { CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as UIDuck from '@/ducks/ui';
-import { useDispatch, useIsTemplateWorkspaceSelector, useModals, usePermission } from '@/hooks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useDispatch, useModals, usePermission, useSelector } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Skill/contexts';
 import { Identifier } from '@/styles/constants';
@@ -89,7 +90,7 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 };
 
 const ContextMenu: React.FC = () => {
-  const isTemplateWorkspace = useIsTemplateWorkspaceSelector();
+  const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
 
   const toggleCanvasOnly = useDispatch(UIDuck.toggleCanvasOnly);
 

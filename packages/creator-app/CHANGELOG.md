@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.480.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.1...@voiceflow/creator-app@1.480.2) (2021-09-13)
+
+
+### Bug Fixes
+
+* disable all hotkeys when IMM is open (VF-1414) ([#4093](https://github.com/voiceflow/creator-app/issues/4093)) ([a612e12](https://github.com/voiceflow/creator-app/commit/a612e1203760a3f140017b429065a5a89d08c983))
+
+
+
+
+
 ## [1.480.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.0...@voiceflow/creator-app@1.480.1) (2021-09-13)
 
 

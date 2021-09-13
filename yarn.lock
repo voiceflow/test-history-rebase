@@ -5545,6 +5545,18 @@
     "@voiceflow/voice-types" "^1.4.11"
     ask-smapi-model "1.14.0"
 
+"@voiceflow/alexa-types@1.52.36":
+  version "1.52.36"
+  resolved "https://registry.yarnpkg.com/@voiceflow/alexa-types/-/alexa-types-1.52.36.tgz#0082e51d792b414727579629880af49bd64c8dd8"
+  integrity sha512-U8ajMd8EQZm5Y4R86HAWScNqIpmcZQfDCvAfg59Dw4U3ew5pUlU6uM6uzs78YlGUV4keAujIm9FngTutBTcysg==
+  dependencies:
+    "@voiceflow/api-sdk" "^1.39.0"
+    "@voiceflow/base-types" "^1.6.1"
+    "@voiceflow/common" "6.5.0"
+    "@voiceflow/general-types" "^1.55.15"
+    "@voiceflow/voice-types" "^1.4.12"
+    ask-smapi-model "1.14.0"
+
 "@voiceflow/api-sdk@1.39.0", "@voiceflow/api-sdk@^1.37.1", "@voiceflow/api-sdk@^1.39.0":
   version "1.39.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.39.0.tgz#5f9cf5f54d53f7b2ac362a79a7a29c498ad54729"
@@ -5579,6 +5591,14 @@
     "@voiceflow/api-sdk" "^1.39.0"
     slate "^0.63.0"
 
+"@voiceflow/base-types@1.6.1", "@voiceflow/base-types@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.6.1.tgz#06434e982f6af04e56a4d24563e36122339ee9b4"
+  integrity sha512-q0nVZrzEiytW28ve1mCdNFRhXKgV0i4bZ3kGCXUDWaxqzzFso/LrBIxfzizzgpBEIhhmpE9GDVH8LGK7+tHDGg==
+  dependencies:
+    "@voiceflow/api-sdk" "^1.39.0"
+    slate "^0.63.0"
+
 "@voiceflow/base-types@^1.1.0":
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.5.3.tgz#45d07657955f78f14244d6f3c03c02ff2d8f001c"
@@ -5587,13 +5607,21 @@
     "@voiceflow/api-sdk" "^1.39.0"
     slate "^0.63.0"
 
-"@voiceflow/chat-types@1.4.11", "@voiceflow/chat-types@^1.4.11":
+"@voiceflow/chat-types@1.4.11":
   version "1.4.11"
   resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-1.4.11.tgz#0ecbf0ca0aeda3307a29e85b0f85992cab9bceda"
   integrity sha512-/7FqFQ4bVkO+caGA6Ec/8/jXfkWeHLPWtBIXXindbbmx3BOwm7k2qH/DWOQa2W63mN/mi40rd6R/XuF+BWsq1Q==
   dependencies:
     "@voiceflow/api-sdk" "^1.39.0"
     "@voiceflow/base-types" "^1.6.0"
+
+"@voiceflow/chat-types@^1.4.12":
+  version "1.4.12"
+  resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-1.4.12.tgz#bc808e5df9420f15477b7895847fd9bc49d6f74f"
+  integrity sha512-nXC3808c+bAyAcT9XeFmNcExrqcrOwGSowq+LKm05LNcu/CfOtW3sWD8Jm/kqTsMe7CgEwr/CaM9f/3+zOGkDw==
+  dependencies:
+    "@voiceflow/api-sdk" "^1.39.0"
+    "@voiceflow/base-types" "^1.6.1"
 
 "@voiceflow/commitlint-config@^1.1.0":
   version "1.1.0"
@@ -5677,6 +5705,15 @@
     "@voiceflow/base-types" "^1.6.0"
     "@voiceflow/voice-types" "^1.4.11"
 
+"@voiceflow/general-types@1.55.15", "@voiceflow/general-types@^1.55.15":
+  version "1.55.15"
+  resolved "https://registry.yarnpkg.com/@voiceflow/general-types/-/general-types-1.55.15.tgz#6ed08d58b458276ff0a04105e28b25f18398ae56"
+  integrity sha512-J0gMLfv8IKsIF84ozTa921yrNMThTHUymJKnw3OFfUJupQlZzYpl9DFRCi/D2+CE1ea60bzB4sOeDH0xHI+lbw==
+  dependencies:
+    "@voiceflow/api-sdk" "^1.39.0"
+    "@voiceflow/base-types" "^1.6.1"
+    "@voiceflow/voice-types" "^1.4.12"
+
 "@voiceflow/git-branch-check@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/git-branch-check/-/git-branch-check-1.2.0.tgz#773e07c5e4558283b8f94a0e7e05b88e637bc3d0"
@@ -5693,6 +5730,17 @@
     "@voiceflow/base-types" "^1.6.0"
     "@voiceflow/common" "6.5.0"
     "@voiceflow/voice-types" "^1.4.11"
+    googleapis "^60.0.1"
+
+"@voiceflow/google-types@1.34.22":
+  version "1.34.22"
+  resolved "https://registry.yarnpkg.com/@voiceflow/google-types/-/google-types-1.34.22.tgz#bffd5fdb9a92b8af21b7fb71f6b4dbead15f00dd"
+  integrity sha512-iFQEEulRmXLdkIBqPJAYWSpj4fJ9At4JliWSTuZNIFm3IrG9nIDuq3TVrnWL6v61O/Tsna3HMOg9StK+QaCsdg==
+  dependencies:
+    "@voiceflow/api-sdk" "^1.39.0"
+    "@voiceflow/base-types" "^1.6.1"
+    "@voiceflow/common" "6.5.0"
+    "@voiceflow/voice-types" "^1.4.12"
     googleapis "^60.0.1"
 
 "@voiceflow/internal@^1.2.0":
@@ -5792,6 +5840,14 @@
   dependencies:
     "@voiceflow/api-sdk" "^1.39.0"
     "@voiceflow/base-types" "^1.6.0"
+
+"@voiceflow/voice-types@1.4.12", "@voiceflow/voice-types@^1.4.12":
+  version "1.4.12"
+  resolved "https://registry.yarnpkg.com/@voiceflow/voice-types/-/voice-types-1.4.12.tgz#527cf6d44907eaeb0e9a5416bdec277d1beb98d2"
+  integrity sha512-nuXXrKjbIgVBC4Liwz546qO59IimEk2m8KJL2tucEZoH+Nn/amSP9UzS4dh2ATCCn+bHIp1I7YMfGIV76kSgzQ==
+  dependencies:
+    "@voiceflow/api-sdk" "^1.39.0"
+    "@voiceflow/base-types" "^1.6.1"
 
 "@voiceflow/webpack-config@^1.10.0":
   version "1.10.0"

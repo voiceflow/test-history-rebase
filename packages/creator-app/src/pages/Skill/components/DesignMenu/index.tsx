@@ -3,10 +3,10 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import { Permission } from '@/config/permissions';
-import { DragItem } from '@/constants';
+import { DragItem, ModalType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useHotKeys, usePermission, useSelector, useTheme, useTrackingEvents } from '@/hooks';
+import { useDispatch, useHotKeys, useModals, usePermission, useSelector, useTheme, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useAnyModeOpen } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
@@ -17,6 +17,8 @@ import { Tab, TABS } from './constants';
 const SIDEBAR_CALCULATION_BUFFER = 50;
 
 const DesignMenu: React.FC = () => {
+  const imModal = useModals(ModalType.INTERACTION_MODEL);
+
   const isHidden = useSelector(UI.isCreatorMenuHiddenSelector);
   const activeTab = useSelector(UI.activeCreatorMenuSelector);
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
@@ -89,7 +91,7 @@ const DesignMenu: React.FC = () => {
         closeByLoseHover();
       }
     },
-    { preventDefault: true },
+    { preventDefault: true, disable: imModal.isOpened },
     [isOpenByHover]
   );
 

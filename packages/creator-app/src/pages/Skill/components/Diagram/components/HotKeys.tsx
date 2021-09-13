@@ -50,14 +50,20 @@ const HotKeys: React.FC = () => {
 
   useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true });
-  useHotKeys(Hotkey.RUN_MODE, () => goToPrototype(), { preventDefault: true });
+  useHotKeys(Hotkey.RUN_MODE, () => goToPrototype(), { preventDefault: true, disable: imModal.isOpened });
   useHotKeys(Hotkey.ROOT_NODE, onFocusHome, { preventDefault: true });
-  useHotKeys(Hotkey.MOVE_MODE, onDisableModes, { preventDefault: true }, [onDisableModes]);
+  useHotKeys(Hotkey.MOVE_MODE, onDisableModes, { preventDefault: true, disable: imModal.isOpened }, [onDisableModes]);
   useHotKeys(Hotkey.SHOW_HIDE_UI, toggleCanvasOnly, { preventDefault: true });
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenImModel, { preventDefault: true, disable: !canEditCanvas }, [onOpenImModel]);
-  useHotKeys(Hotkey.OPEN_COMMENTING, onToggleCommenting, { preventDefault: true, disable: !showHintFeatures }, [onToggleCommenting]);
-  useHotKeys(Hotkey.ADD_MARKUP_TEXT, markup.toggleTextCreating, { preventDefault: true, disable: !showHintFeatures }, [markup.toggleTextCreating]);
-  useHotKeys(Hotkey.ADD_MARKUP_IMAGE, markup.triggerImagesUpload, { preventDefault: true, disable: !showHintFeatures }, [markup.triggerImagesUpload]);
+  useHotKeys(Hotkey.OPEN_COMMENTING, onToggleCommenting, { preventDefault: true, disable: !showHintFeatures || imModal.isOpened }, [
+    onToggleCommenting,
+  ]);
+  useHotKeys(Hotkey.ADD_MARKUP_TEXT, markup.toggleTextCreating, { preventDefault: true, disable: !showHintFeatures || imModal.isOpened }, [
+    markup.toggleTextCreating,
+  ]);
+  useHotKeys(Hotkey.ADD_MARKUP_IMAGE, markup.triggerImagesUpload, { preventDefault: true, disable: !showHintFeatures || imModal.isOpened }, [
+    markup.triggerImagesUpload,
+  ]);
   useHotKeys(Hotkey.CLOSE_CANVAS_MODE, onDisableModes, { preventDefault: true }, [onDisableModes]);
   useHotKeys(Hotkey.CLOSE_CANVAS_ONLY_MODE, toggleCanvasOnly, { disable: !isCanvasOnly, preventDefault: true });
 

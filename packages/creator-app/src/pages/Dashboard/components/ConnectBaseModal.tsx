@@ -30,41 +30,40 @@ export interface ConnectBaseModalProps {
 }
 
 const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseModalProps> = ({ modalType, platform, helpLink, className }) => {
-  const { close: closeConnectModal, data, isOpened } = useModals(modalType as ModalType);
-  const { stage, updateCurrentStage } = data as any;
-  const [state, api] = useSmartReducerV2({
-    error: false,
-    loading: false,
-  });
+  const {
+    close: closeConnectModal,
+    data,
+    isOpened,
+  } = useModals<{
+    stage: AlexaStageType | GoogleStageType;
+    onCancel: VoidFunction;
+    updateCurrentStage: (data: unknown) => void;
+  }>(modalType);
+  const { stage, updateCurrentStage } = data;
+
+  const [state, api] = useSmartReducerV2({ error: false, loading: false });
 
   const onLoad = () => {
-    api.update({
-      error: false,
-      loading: true,
-    });
+    api.update({ error: false, loading: true });
   };
 
   const onFail = () => {
-    api.update({
-      error: true,
-      loading: false,
-    });
+    api.update({ error: true, loading: false });
   };
 
   const onSuccess = (account: Nullable<Account> | Models.Account.Google) => {
-    api.update({
-      error: false,
-      loading: false,
-    });
+    api.update({ error: false, loading: false });
 
     updateCurrentStage(account);
   };
 
+  const onCancel = () => {
+    closeConnectModal();
+    data.onCancel();
+  };
+
   const reset = () => {
-    api.update({
-      error: false,
-      loading: false,
-    });
+    api.update({ error: false, loading: false });
   };
 
   // this handles the edge case where modal is closed without authentication is completed
@@ -76,7 +75,7 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
 
   if (stage === AlexaStageType.IDLE || stage === GoogleStageType.IDLE) {
     return (
-      <ConnectStyledModal id={modalType} className={className} title={`connect to ${platform === PlatformType.ALEXA ? 'amazon' : 'google'}`} isSmall>
+      <ConnectStyledModal id={modalType} title={`connect to ${platform === PlatformType.ALEXA ? 'amazon' : 'google'}`} isSmall className={className}>
         <Box width="100%">
           <BodyContainer column>
             <LoadCircle />
@@ -119,9 +118,10 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
               <div>{helpLink && <Link href={helpLink}>See more</Link>}</div>
 
               <ActionContainer>
-                <Button variant={ButtonVariant.TERTIARY} onClick={closeConnectModal}>
+                <Button variant={ButtonVariant.TERTIARY} onClick={onCancel}>
                   Cancel
                 </Button>
+
                 <ButtonContainer>
                   <AmazonLoginButton disabled={state.loading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
                 </ButtonContainer>
@@ -162,9 +162,10 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
               <div>{helpLink && <Link href={helpLink}>See more</Link>}</div>
 
               <ActionContainer>
-                <Button variant={ButtonVariant.TERTIARY} onClick={closeConnectModal}>
+                <Button variant={ButtonVariant.TERTIARY} onClick={onCancel}>
                   Cancel
                 </Button>
+
                 <ButtonContainer>
                   <GoogleLoginButton scopes={GOOGLE_OAUTH_SCOPES} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
                 </ButtonContainer>

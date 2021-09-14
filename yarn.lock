@@ -5161,9 +5161,9 @@
     "@types/react" "*"
 
 "@types/recordrtc@^5.6.5":
-  version "5.6.6"
-  resolved "https://registry.yarnpkg.com/@types/recordrtc/-/recordrtc-5.6.6.tgz#0a74a20ec8ecb7e66c5447e96bb44472748ca2e1"
-  integrity sha512-lO/0EL9Mp0HBiwmzwnYIPRKCdLkzimAjaKG5M0pPwuXi++corDU9nzIBP2Hgn7+8OTZWGpy9pHdTaJn8SUiMGw==
+  version "5.6.7"
+  resolved "https://registry.yarnpkg.com/@types/recordrtc/-/recordrtc-5.6.7.tgz#3e395b976cc6db0749e6d2a5e2c22a99dacac102"
+  integrity sha512-xr4e9cePfsXZt3o9lkCbqQH/pg5h6oyCbSuyXHfkKtTvE9zMvUKxttHK/SWppkmqQmBgAmTkQkw2F1+1/TgdqQ==
 
 "@types/redux-form@^8.3.1":
   version "8.3.2"

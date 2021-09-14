@@ -17,7 +17,6 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
       'fetchWorkspace',
       'createWorkspace',
       'findMembers',
-      'updateMembers',
       'deleteWorkspace',
       'leaveWorkspace',
       'updateName',
@@ -95,17 +94,6 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
       expect(result).to.eq(members);
       expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/members`);
       expect(mapMembersFromDB).to.be.calledWithExactly(dbMembers);
-    });
-  });
-
-  describe('updateMembers()', () => {
-    it('should update members', async () => {
-      const payload: any = generate.object();
-      const fetch = stubFetch('api', 'patch');
-
-      await client.updateMembers(WORKSPACE_ID, payload);
-
-      expect(fetch).to.be.calledWithExactly(`${LEGACY_WORKSPACE_PATH}/${WORKSPACE_ID}/members`, payload);
     });
   });
 

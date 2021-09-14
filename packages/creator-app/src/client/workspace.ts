@@ -22,9 +22,6 @@ const workspaceClient = {
 
   findMembers: (workspaceID: string) => api.get<DBMember[]>(`${WORKSPACES_PATH}/${workspaceID}/members`).then(memberAdapter.mapFromDB),
 
-  updateMembers: (workspaceID: string, payload: { members: DBMember[] }) =>
-    api.patch<DBWorkspace>(`${LEGACY_WORKSPACE_PATH}/${workspaceID}/members`, payload),
-
   deleteWorkspace: (workspaceID: string) => api.delete(`${WORKSPACES_PATH}/${workspaceID}`),
 
   leaveWorkspace: (workspaceID: string) => api.delete(`${WORKSPACES_PATH}/${workspaceID}/members/self`),

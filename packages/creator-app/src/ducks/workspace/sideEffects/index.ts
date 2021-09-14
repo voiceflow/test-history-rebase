@@ -14,7 +14,7 @@ import { addProjectToDefaultList, addProjectToList, saveProjectListsForWorkspace
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import { allWorkspaceIDsSelector } from '@/ducks/workspaceV2/selectors';
-import { AnyProject, DBMember, Workspace } from '@/models';
+import { AnyProject, Workspace } from '@/models';
 import { Thunk } from '@/store/types';
 import { withoutValue } from '@/utils/array';
 
@@ -178,35 +178,6 @@ export const leaveActiveWorkspace = (): Thunk => async (dispatch, getState) => {
     throw err;
   }
 };
-
-export const updateActiveWorkspaceMembers =
-  (members: DBMember[]): Thunk =>
-  async (dispatch, getState) => {
-    try {
-      const activeWorkspaceID = Session.activeWorkspaceIDSelector(getState());
-      const body = {
-        // switch invite field to email field
-        members: members.map((member) => ({ ...member, email: member.invite || member.email })),
-      };
-
-      Errors.assertWorkspaceID(activeWorkspaceID);
-
-      // TODO: move to the realtime
-      const workspace = await client.workspace.updateMembers(activeWorkspaceID, body);
-
-      const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
-
-      if (atomicActionsEnabled) {
-        await dispatch.sync(Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: workspace, workspaceID: activeWorkspaceID }));
-      } else {
-        dispatch(patchWorkspace(activeWorkspaceID, workspace));
-      }
-    } catch (err) {
-      dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERROR)));
-
-      throw err;
-    }
-  };
 
 export const updateActiveWorkspaceName =
   (name: string): Thunk =>

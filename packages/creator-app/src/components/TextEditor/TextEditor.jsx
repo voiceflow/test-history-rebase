@@ -3,7 +3,7 @@ import React from 'react';
 import lifecycle from 'recompose/lifecycle';
 
 import DraftJSEditor from '@/components/DraftJSEditor';
-import { useEnableDisable, useForceUpdate, useTeardown } from '@/hooks';
+import { useDidUpdateEffect, useEnableDisable, useForceUpdate, useTeardown } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
 import createPlugins, { PluginType } from './plugins';
@@ -16,6 +16,7 @@ function TextEditor({
   onBlur,
   onFocus,
   onEmpty,
+  readOnly: propReadOnly,
   placeholder,
   onEnterPress,
   forwardedRef,
@@ -27,7 +28,7 @@ function TextEditor({
   newLineOnShiftEnter,
 }) {
   const initialState = React.useRef(value);
-  const [readOnly, enableReadOnly, disableReadOnly] = useEnableDisable(false);
+  const [readOnly, enableReadOnly, disableReadOnly] = useEnableDisable(!!propReadOnly);
   const [forceUpdate, forceUpdateKey] = useForceUpdate();
 
   const {
@@ -168,6 +169,14 @@ function TextEditor({
       forceUpdate();
     }
   }, [forceUpdate, shouldRecreateEditorState]);
+
+  useDidUpdateEffect(() => {
+    if (propReadOnly) {
+      enableReadOnly();
+    } else {
+      disableReadOnly();
+    }
+  }, [propReadOnly]);
 
   useTeardown(() => {
     if (!skipBlurOnUnmount && store.get('textValue') !== initialState.current) {

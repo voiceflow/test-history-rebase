@@ -8,16 +8,16 @@ import CustomIntentForm from './components/Custom';
 export { HelpTooltip } from './components/Custom/components';
 export { default as LegacyMappings } from './components/LegacyMappings';
 
-const IntentForm = ({ intent, ...props }) => {
+const IntentForm = ({ intent, isInModal = false, ...props }) => {
   if (!intent?.id) {
     return null;
   }
 
   if (isCustomizableBuiltInIntent(intent)) {
-    return <UtteranceManager intent={intent} isNested={!!props.isNested} />;
+    return <UtteranceManager intent={intent} isInModal={isInModal} isNested={!!props.isNested} />;
   }
 
-  return <CustomIntentForm intent={intent} {...props} />;
+  return <CustomIntentForm intent={intent} isInModal={isInModal} {...props} />;
 };
 
 export default IntentForm;

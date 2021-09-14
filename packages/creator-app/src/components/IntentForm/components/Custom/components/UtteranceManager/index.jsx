@@ -35,7 +35,7 @@ import { BuiltInIntentMessage } from './components';
 
 export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 
-function UtteranceManager({ intent, focus, slots, addSlot, patchIntent, customIntents, isNested }) {
+function UtteranceManager({ intent, focus, slots, addSlot, patchIntent, customIntents, isNested, isInModal }) {
   const { search } = useLocation();
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM];
@@ -197,6 +197,7 @@ function UtteranceManager({ intent, focus, slots, addSlot, patchIntent, customIn
                         placeholder={placeholder}
                         onEnterPress={onAdd}
                         error={!isValidUtterance}
+                        readOnly={!isInModal && interactionModelInstance}
                       />
                       {!isValidUtterance && <ErrorMessage>{addError}</ErrorMessage>}
                     </>
@@ -213,6 +214,7 @@ function UtteranceManager({ intent, focus, slots, addSlot, patchIntent, customIn
                     onBlur={onUpdate}
                     onEnterPress={onUpdate}
                     onAddSlot={onAddSlot}
+                    readOnly={!isInModal && interactionModelInstance}
                   />
                 )}
               />

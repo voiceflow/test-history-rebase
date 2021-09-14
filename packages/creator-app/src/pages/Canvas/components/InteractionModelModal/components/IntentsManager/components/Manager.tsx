@@ -92,7 +92,11 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
       </Section>
 
       <FadeLeftContainer key={(!slotEdit).toString()}>
-        {slotEdit ? <StandaloneIntentSlotForm key={id} activePath={path} /> : <IntentForm key={id} intent={selectedIntent} pushToPath={setPath} />}
+        {slotEdit ? (
+          <StandaloneIntentSlotForm key={id} activePath={path} isInModal />
+        ) : (
+          <IntentForm key={id} intent={selectedIntent} pushToPath={setPath} isInModal />
+        )}
       </FadeLeftContainer>
 
       {slotEdit && (

@@ -2,9 +2,9 @@ import React from 'react';
 
 import { SlotManager, UtteranceManager } from './components';
 
-const CustomIntentForm = ({ intent, pushToPath, isNested = false }) => (
+const CustomIntentForm = ({ intent, pushToPath, isNested = false, isInModal }) => (
   <>
-    <UtteranceManager intent={intent} isNested={isNested} />
+    <UtteranceManager intent={intent} isNested={isNested} isInModal={isInModal} />
     <SlotManager intent={intent} pushToPath={pushToPath} isNested={isNested} />
   </>
 );

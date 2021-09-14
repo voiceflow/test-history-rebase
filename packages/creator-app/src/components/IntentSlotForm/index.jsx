@@ -10,7 +10,7 @@ import Utterance from '@/components/Utterance';
 import { SlotTag } from '@/components/VariableTag';
 import { NamespaceProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
@@ -205,7 +205,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
 }
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
   slotsMap: Slot.mapSlotsSelector,
   getIntentByID: Intent.intentByIDSelector,
   getIntentSlotByIntentIDSlotID: Intent.intentSlotByIntentIDSlotIDSelector,

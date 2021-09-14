@@ -1,17 +1,21 @@
 import { ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
 import { PlatformType } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
 import projectAdapter from '@/client/adapters/project';
 import * as Errors from '@/config/errors';
+import { FeatureFlag } from '@/config/features';
+import * as Feature from '@/ducks/feature';
 import { addProjectToList } from '@/ducks/projectList/sideEffects/shared';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
+import { waitActionProcessed } from '@/ducks/utils';
 import { AnyProject } from '@/models';
 import { Thunk } from '@/store/types';
 
-import { addProject, patchProject, removeManyProjects, removeProject, replaceProjects, updateProjectName } from './actions';
-import { activeProjectNameSelector, projectByIDSelector } from './selectors';
+import { addProject, patchProject, removeManyProjects, removeProject, replaceProjects } from './actions';
 
 export interface CreateProjectParams {
   platform: PlatformType;
@@ -22,6 +26,9 @@ export interface CreateProjectParams {
 
 // side effects
 
+/**
+ * @deprecated remove after atomic actions complete
+ */
 export const loadProjectByID =
   (projectID: string): Thunk<AnyProject> =>
   async (dispatch) => {
@@ -34,6 +41,9 @@ export const loadProjectByID =
     return project;
   };
 
+/**
+ * @deprecated remove after atomic actions complete
+ */
 export const loadProjectsByWorkspaceID =
   (workspaceID: string): Thunk<AnyProject[]> =>
   async (dispatch) => {
@@ -78,25 +88,51 @@ export const createProject =
 
 export const importProjectFromFile =
   (workspaceID: string, data: string): Thunk<AnyProject> =>
-  async () => {
+  async (dispatch, getState) => {
+    const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
+
+    if (isAtomicActions) {
+      return dispatch(waitActionProcessed<AnyProject>(Realtime.project.importProjectFromFile({ workspaceID, data })));
+    }
+
     const project = await client.api.version.import(workspaceID, JSON.parse(data));
     return projectAdapter.fromDB(project);
   };
 
 export const deleteProject =
   (projectID: string): Thunk =>
-  async (dispatch) => {
-    await client.api.project.delete(projectID);
+  async (dispatch, getState) => {
+    const state = getState();
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
-    dispatch(removeProject(projectID));
+    if (isAtomicActions) {
+      Errors.assertWorkspaceID(workspaceID);
+
+      await dispatch.sync(Realtime.project.crudActions.remove({ key: projectID, workspaceID }));
+    } else {
+      await client.api.project.delete(projectID);
+
+      dispatch(removeProject(projectID));
+    }
   };
 
 export const deleteManyProjects =
   (projectIDs: string[]): Thunk =>
-  async (dispatch) => {
-    await Promise.all(projectIDs.map((projectID) => client.api.project.delete(projectID)));
+  async (dispatch, getState) => {
+    const state = getState();
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
-    dispatch(removeManyProjects(projectIDs));
+    if (isAtomicActions) {
+      Errors.assertWorkspaceID(workspaceID);
+
+      await dispatch.sync(Realtime.project.crudActions.removeMany({ keys: projectIDs, workspaceID }));
+    } else {
+      await Promise.all(projectIDs.map((projectID) => client.api.project.delete(projectID)));
+
+      dispatch(removeManyProjects(projectIDs));
+    }
   };
 
 export const setupProjectSocketConnection = (projectID: string) => async () => {
@@ -108,32 +144,62 @@ export const setupProjectSocketConnection = (projectID: string) => async () => {
 export const saveProjectPrivacy =
   (projectID: string, privacy: ProjectPrivacy): Thunk =>
   async (dispatch, getState) => {
-    const project = projectByIDSelector(getState())(projectID);
+    const state = getState();
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
-    if (project.privacy !== privacy) {
-      await client.api.project.update(projectID, { privacy });
-      dispatch(patchProject(projectID, { privacy }));
+    if (isAtomicActions) {
+      Errors.assertWorkspaceID(workspaceID);
+
+      await dispatch.sync(Realtime.project.crudActions.patch({ key: projectID, value: { privacy }, workspaceID }));
+    } else {
+      const project = ProjectV2.projectByIDSelector(getState(), { id: projectID });
+
+      if (project?.privacy !== privacy) {
+        await client.api.project.update(projectID, { privacy });
+        dispatch(patchProject(projectID, { privacy }));
+      }
     }
   };
 
 export const saveProjectImage =
   (projectID: string, image: string): Thunk =>
   async (dispatch, getState) => {
-    const project = projectByIDSelector(getState())(projectID);
+    const state = getState();
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
-    if (project.image !== image) {
-      await client.api.project.update(projectID, { image });
+    if (isAtomicActions) {
+      Errors.assertWorkspaceID(workspaceID);
 
-      dispatch(patchProject(projectID, { image }));
+      await dispatch.sync(Realtime.project.crudActions.patch({ key: projectID, value: { image }, workspaceID }));
+    } else {
+      const project = ProjectV2.projectByIDSelector(getState(), { id: projectID });
+
+      if (project?.image !== image) {
+        await client.api.project.update(projectID, { image });
+
+        dispatch(patchProject(projectID, { image }));
+      }
     }
   };
 
 export const saveProjectLinkType =
   (projectID: string, linkType: ProjectLinkType): Thunk =>
-  async (dispatch) => {
-    await client.api.project.update(projectID, { linkType });
+  async (dispatch, getState) => {
+    const state = getState();
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
-    dispatch(patchProject(projectID, { linkType }));
+    if (isAtomicActions) {
+      Errors.assertWorkspaceID(workspaceID);
+
+      await dispatch.sync(Realtime.project.crudActions.patch({ key: projectID, value: { linkType }, workspaceID }));
+    } else {
+      await client.api.project.update(projectID, { linkType });
+
+      dispatch(patchProject(projectID, { linkType }));
+    }
   };
 
 // active project
@@ -141,6 +207,9 @@ export const saveProjectLinkType =
 export const loadActiveProject = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const projectID = Session.activeProjectIDSelector(state);
+  const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+
+  if (isAtomicActions) return;
 
   Errors.assertProjectID(projectID);
 
@@ -152,16 +221,27 @@ export const saveProjectName =
   async (dispatch, getState) => {
     const state = getState();
     const projectID = Session.activeProjectIDSelector(state);
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     Errors.assertProjectID(projectID);
 
-    if (name === activeProjectNameSelector(state)) return;
+    if (isAtomicActions) {
+      Errors.assertWorkspaceID(workspaceID);
 
-    await client.api.project.update(projectID, { name });
+      await dispatch.sync(Realtime.project.crudActions.patch({ key: projectID, value: { name }, workspaceID }));
+    } else {
+      if (name === ProjectV2.active.nameSelector(state)) return;
 
-    dispatch(updateProjectName(projectID, name));
+      await client.api.project.update(projectID, { name });
+
+      dispatch(patchProject(projectID, { name }));
+    }
   };
 
+/**
+ * @deprecated remove after atomic actions complete
+ */
 export const updateActiveProjectName =
   (name: string, meta?: object): Thunk =>
   async (dispatch, getState) => {
@@ -170,5 +250,5 @@ export const updateActiveProjectName =
 
     Errors.assertProjectID(projectID);
 
-    dispatch(updateProjectName(projectID, name, meta));
+    dispatch(patchProject(projectID, { name }, meta));
   };

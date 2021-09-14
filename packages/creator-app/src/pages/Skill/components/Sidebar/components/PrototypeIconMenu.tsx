@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SidebarIconMenu from '@/components/SidebarIconMenu';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import { useDispatch, useSelector, useSetup, useToggle } from '@/hooks';
 import { getMenuOptions } from '@/pages/Prototype/constants';
@@ -9,7 +9,7 @@ import { getMenuOptions } from '@/pages/Prototype/constants';
 const PrototypeIconMenu: React.FC = () => {
   const [opened, toggleOpened] = useToggle(false);
   const mode = useSelector(Prototype.activePrototypeModeSelector);
-  const platform = useSelector(Project.activePlatformSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
 
   const updatePrototypeMode = useDispatch(Prototype.updateActivePrototypeMode);
 

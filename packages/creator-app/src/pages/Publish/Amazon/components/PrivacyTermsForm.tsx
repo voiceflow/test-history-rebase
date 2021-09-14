@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import { useBoundValue, useDispatch } from '@/hooks';
 import { getTargetValue } from '@/utils/dom';
@@ -12,7 +12,7 @@ import { getTargetValue } from '@/utils/dom';
 import { DEFAULT_TERM_ENDPOINT, generateTerms } from '../utils';
 
 const generatedTermsSelector = createSelector(
-  [Version.alexa.activePublishingSelector, Account.userSelector, Project.activeProjectNameSelector],
+  [Version.alexa.activePublishingSelector, Account.userSelector, ProjectV2.active.nameSelector],
   (publishing, user, projectName) => generateTerms(user.name!, projectName!, publishing?.forChildren)
 );
 const privacyPolicySelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => publishing?.privacyPolicy);

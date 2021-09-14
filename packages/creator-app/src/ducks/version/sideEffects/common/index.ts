@@ -10,12 +10,15 @@ import slotAdapter from '@/client/adapters/slot';
 import versionAdapter, { AnyDBVersion } from '@/client/adapters/version';
 import createSessionAdapter from '@/client/adapters/version/session';
 import * as Errors from '@/config/errors';
+import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
+import * as Feature from '@/ducks/feature';
 import * as Integration from '@/ducks/integration';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
@@ -37,7 +40,7 @@ export const loadVersionByID =
   (versionID: string): Thunk<AnyVersion> =>
   async (dispatch, getState) => {
     const state = getState();
-    const platform = Project.activePlatformSelector(state);
+    const platform = ProjectV2.active.platformSelector(state);
 
     const dbVersion = (await client.api.version.get(versionID)) as AnyDBVersion;
     const version = versionAdapter.fromDB(dbVersion, { platform });
@@ -49,7 +52,8 @@ export const loadVersionByID =
 
 export const activateVersion =
   (versionID: string, diagramID?: string): Thunk<AnyVersion> =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
+    const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
     const [dbVersion] = await Promise.all([client.api.version.get<AnyDBVersion>(versionID), dispatch(Diagram.loadDiagrams(versionID))] as const);
 
     // not a dependency for project to load
@@ -74,7 +78,11 @@ export const activateVersion =
       dispatch(Product.replaceProducts(products));
       dispatch(Intent.replaceIntents(intents));
       dispatch(Slot.replaceSlots(slots));
-      dispatch(Project.addProject(project.id, project));
+
+      if (!isAtomicActions) {
+        dispatch(Project.addProject(project.id, project));
+      }
+
       dispatch(addVersion(version.id, version));
       dispatch(
         Prototype.updatePrototypeSettings(
@@ -166,7 +174,7 @@ export const importProjectContext =
 export const saveIntentsAndSlots = (): Thunk => async (_, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
-  const platform = Project.activePlatformSelector(state);
+  const platform = ProjectV2.active.platformSelector(state);
 
   Errors.assertVersionID(versionID);
 
@@ -184,7 +192,7 @@ export const saveLocales =
     if (!locales?.length) return;
 
     const state = getState();
-    const platform = Project.activePlatformSelector(state);
+    const platform = ProjectV2.active.platformSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
 
     Errors.assertVersionID(versionID);
@@ -201,7 +209,7 @@ export const saveSession =
     const versionID = Session.activeVersionIDSelector(state);
     const activeSession = activeSessionSelector(state);
     const defaultVoice = activeDefaultVoiceSelector(state);
-    const platform = Project.activePlatformSelector(state);
+    const platform = ProjectV2.active.platformSelector(state);
 
     if (!versionID || !activeSession) throw Errors.noActiveVersionID();
 

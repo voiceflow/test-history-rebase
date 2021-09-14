@@ -5,7 +5,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { lazy } from '@/hocs';
 import { usePermission, useSelector } from '@/hooks';
 import { isAlexaPlatform, isGooglePlatform } from '@/utils/typeGuards';
@@ -16,7 +16,7 @@ const Export = lazy(() => import('./Export'));
 const API = lazy(() => import('./API'));
 
 const Publish: React.FC = () => {
-  const platform = useSelector(Project.activePlatformSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const [canCodeExport] = usePermission(Permission.CODE_EXPORT);
 
   return (

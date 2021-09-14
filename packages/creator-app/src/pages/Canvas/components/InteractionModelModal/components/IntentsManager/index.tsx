@@ -7,7 +7,7 @@ import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
 import * as IntentDuck from '@/ducks/intent';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
 import { useEnableDisable } from '@/hooks';
 import { Intent } from '@/models';
@@ -140,7 +140,7 @@ const mapStateToProps = {
   intents: sortedIntentsSelector,
   intentsMap: IntentDuck.mapIntentsSelector,
   intentsIDs: IntentDuck.allIntentIDsSelector,
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
 };
 
 const mapDispatchToProps = {

@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { SectionVariants, SettingsSection } from '@/components/Settings';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { useSetup, useTrackingEvents } from '@/hooks';
 import AlexaFeatures from '@/pages/Settings/components/GeneralSettings/Sections/ChannelSpecificFeatures';
 import { getSettingsMetaProps, SettingSections } from '@/pages/Settings/constants';
@@ -19,7 +19,7 @@ const SectionComponents: Record<SettingSections, React.FC<{ platform: PlatformTy
 };
 
 const SettingsContent: React.FC = () => {
-  const platform = useSelector(Project.activePlatformSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const platformMeta = getSettingsMetaProps(platform);
   const [trackingEvents] = useTrackingEvents();
 

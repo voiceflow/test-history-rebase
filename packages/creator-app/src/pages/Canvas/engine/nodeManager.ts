@@ -7,7 +7,7 @@ import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
 import * as Version from '@/ducks/version';
 import { EntityMap, Node, NodeData } from '@/models';
@@ -123,7 +123,7 @@ class NodeManager extends EngineConsumer {
     },
 
     getNodeFactoryOptions: () => {
-      const platform = this.select(Project.activePlatformSelector);
+      const platform = this.select(ProjectV2.active.platformSelector);
       const defaultVoice = this.select(Version.activeDefaultVoiceSelector);
       const allActiveFeatures = this.select(Feature.allActiveFeaturesSelector);
       const canvasNodeVisibility = this.select(Version.activeCanvasNodeVisibilitySelector);

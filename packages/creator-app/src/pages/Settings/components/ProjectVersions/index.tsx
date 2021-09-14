@@ -10,7 +10,7 @@ import { SettingsSection } from '@/components/Settings';
 import { Descriptor, TableContainer, TableHeader, TableRow } from '@/components/Table';
 import * as Errors from '@/config/errors';
 import * as Modal from '@/ducks/modal';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
@@ -141,7 +141,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
 const mapStateToProps = {
   activeVersionID: Session.activeVersionIDSelector,
   projectID: Session.activeProjectIDSelector,
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
 };
 
 const mapDispatchToProps = {

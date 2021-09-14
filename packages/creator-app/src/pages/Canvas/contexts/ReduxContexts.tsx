@@ -3,7 +3,7 @@ import React from 'react';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
 import * as Version from '@/ducks/version';
 import { createSelectorContext } from '@/utils/redux';
@@ -24,7 +24,7 @@ export const {
   Context: IsStraightLinksContext,
   Provider: IsStraightLinksProvider,
   Consumer: IsStraightLinksConsumer,
-} = createSelectorContext(Project.isStraightLinksSelector);
+} = createSelectorContext(ProjectV2.active.isStraightLinksSelector);
 
 export const {
   Context: AccountLinkingContext,

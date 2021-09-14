@@ -4,7 +4,7 @@ import { Constants as GoogleConstants, Version as GoogleVersion } from '@voicefl
 import { PlatformType } from '@voiceflow/internal';
 
 import * as Errors from '@/config/errors';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { SyncThunk, Thunk } from '@/store/types';
 import { arrayStringReplace } from '@/utils/string';
@@ -22,9 +22,9 @@ export const updateLocalesByVersionID =
   (dispatch, getState) => {
     const state = getState();
     const version = versionByIDSelector(state)(versionID);
-    const project = Project.projectByIDSelector(state)(version.projectID);
+    const project = ProjectV2.projectByIDSelector(state, { id: version.projectID });
 
-    switch (project.platform) {
+    switch (project?.platform) {
       case PlatformType.ALEXA:
         return dispatch(alexa.updatePublishing(versionID, { locales: locales as unknown as [AlexaConstants.Locale, ...AlexaConstants.Locale[]] }));
       case PlatformType.GOOGLE:
@@ -50,7 +50,7 @@ export const saveSettings =
   (settings: Partial<AnySettings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const platform = Project.activePlatformSelector(state);
+    const platform = ProjectV2.active.platformSelector(state);
 
     if (isAlexaPlatform(platform)) {
       await dispatch(alexa.saveSettings(settings as AlexaVersion.AlexaVersionSettings));
@@ -68,7 +68,7 @@ export const saveInvocationName =
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
-    const platform = Project.activePlatformSelector(state);
+    const platform = ProjectV2.active.platformSelector(state);
     const activeInvocationName = activeInvocationNameSelector(state) ?? '';
     const activeInvocations = activeInvocationsSelector(state);
 

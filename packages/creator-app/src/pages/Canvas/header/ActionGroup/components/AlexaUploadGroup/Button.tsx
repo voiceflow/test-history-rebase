@@ -4,7 +4,7 @@ import React from 'react';
 import Checkbox from '@/components/Checkbox';
 import DropdownButton from '@/components/DropdownButton';
 import * as Account from '@/ducks/account';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -66,7 +66,7 @@ const Button: React.FC<ConnectedButtonProps & ButtonProps> = ({ vendors, vendorI
 const mapStateToProps = {
   amazon: Account.amazonAccountSelector,
   vendors: Account.amazonVendorsSelector,
-  vendorID: Project.alexa.activeVendorIDSelector,
+  vendorID: ProjectV2.active.alexa.ownVendorIDSelector,
 };
 
 const mapDispatchToProps = {

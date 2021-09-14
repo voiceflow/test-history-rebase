@@ -1,2 +1,2 @@
-export * as alexa from './alexa';
+export * as active from './active';
 export * from './base';

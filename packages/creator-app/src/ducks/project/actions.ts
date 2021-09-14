@@ -4,12 +4,25 @@ import { STATE_KEY } from './constants';
 
 // action creators
 
-export const {
-  add: addProject,
-  patch: patchProject,
-  remove: removeProject,
-  replace: replaceProjects,
-  removeMany: removeManyProjects,
-} = createCRUDActionCreators(STATE_KEY);
+const projectActionCreators = createCRUDActionCreators(STATE_KEY);
 
-export const updateProjectName = (id: string, name: string, meta?: object) => patchProject(id, { name }, meta);
+/**
+ * @deprecated
+ */
+export const addProject = projectActionCreators.add;
+/**
+ * @deprecated
+ */
+export const patchProject = projectActionCreators.patch;
+/**
+ * @deprecated
+ */
+export const removeProject = projectActionCreators.remove;
+/**
+ * @deprecated
+ */
+export const replaceProjects = projectActionCreators.replace;
+/**
+ * @deprecated
+ */
+export const removeManyProjects = projectActionCreators.removeMany;

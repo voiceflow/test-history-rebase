@@ -8,7 +8,7 @@ import SampleEditor from '@/components/AceEditor/Sample';
 import { ConfirmProps } from '@/components/ConfirmModal';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { ModalType } from '@/constants';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { goToWorkspaceDeveloperSettings } from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useAsyncEffect, useDispatch, useIsAdmin, useModals, useSetup, useTrackingEvents } from '@/hooks';
@@ -30,7 +30,7 @@ const API: React.FC = () => {
   const versionID = useSelector(Session.activeVersionIDSelector)!;
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
-  const projectName = useSelector(Project.activeProjectNameSelector)!;
+  const projectName = useSelector(ProjectV2.active.nameSelector)!;
 
   const samples = getSamples(versionID, activeKey);
 

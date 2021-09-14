@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { JobStatus } from '@/constants';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { AlexaExportJob, GeneralJob, GoogleExportJob } from '@/models';
 import { Nullable } from '@/types';
@@ -27,7 +27,7 @@ export const ExportProvider: React.FC = ({ children }) => {
   const pullTimeout = React.useRef<NodeJS.Timeout>();
   const [job, setJob] = React.useState<Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob | GeneralJob.AnyJob>>(null);
 
-  const platform = useSelector(Project.activePlatformSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
 
   const platformClient = client.platform(platform);

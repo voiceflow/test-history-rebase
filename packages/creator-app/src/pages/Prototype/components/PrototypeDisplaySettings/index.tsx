@@ -2,7 +2,7 @@ import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import { getDeviceList } from '@/pages/Prototype/constants';
@@ -60,7 +60,7 @@ const PrototypeDisplaySettings: React.FC<ConnectedPrototypeDisplaySettingsProps>
 
 const mapStateToProps = {
   device: Prototype.prototypeVisualDeviceSelector,
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
 };
 
 const mapStateToDispatch = {

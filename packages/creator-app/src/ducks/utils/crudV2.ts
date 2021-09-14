@@ -133,6 +133,7 @@ type CRUDStateSubset = PickByValue<State, CRUDState<any>>;
 
 interface CRUDSelectors<K extends keyof CRUDStateSubset> {
   has: Selector<State, boolean>;
+  count: Selector<State, number>;
   all: Selector<State, NormalizedValue<CRUDStateSubset[K]>[]>;
   map: Selector<State, Record<string, NormalizedValue<CRUDStateSubset[K]>>>;
   root: Selector<State, CRUDStateSubset[K]>;
@@ -150,7 +151,8 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends N
   modelType: K
 ): CRUDSelectors<K> => {
   const root = createRootSelector(modelType) as Selector<State, CRUDStateSubset[K]>;
-  const has = createSelector([root], ({ allKeys }) => allKeys.length !== 0);
+  const count = createSelector([root], ({ allKeys }) => allKeys.length);
+  const has = createSelector([count], (size) => size !== 0);
   const all = createSelector([root], (xs) => denormalize(xs as CRUDState<T>));
   const map = createSelector([root], ({ byKey }) => byKey as Record<string, T>);
   const allIDs = createSelector([root], ({ allKeys }) => allKeys);
@@ -170,6 +172,7 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends N
 
   return {
     has,
+    count,
     all,
     map,
     root,

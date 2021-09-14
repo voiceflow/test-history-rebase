@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 
 import TextBox from '@/components/Form/TextBox';
 import TextInput from '@/components/Form/TextInput';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import { useBoundValue, useDispatch } from '@/hooks';
 import { AMAZON_CATEGORIES } from '@/services/Categories';
@@ -20,7 +20,7 @@ const summarySelector = createSelector([Version.alexa.activePublishingSelector],
 const descriptionSelector = createSelector([Version.alexa.activePublishingSelector], (publishing) => publishing?.description);
 
 const SkillDescriptionForm: React.FC = () => {
-  const isLive = useSelector(Project.isActiveProjectLiveSelector);
+  const isLive = useSelector(ProjectV2.active.isLiveSelector);
 
   const category = useSelector(categorySelector);
   const saveCategory = useDispatch((category: string) => Version.alexa.savePublishing({ category }));
@@ -126,7 +126,7 @@ const SkillDescriptionForm: React.FC = () => {
 export default SkillDescriptionForm;
 
 export const SkillDescriptionDescription: React.FC = () => {
-  const isLive = useSelector(Project.isActiveProjectLiveSelector);
+  const isLive = useSelector(ProjectV2.active.isLiveSelector);
 
   return (
     <>

@@ -1,30 +1,23 @@
-import { ProjectLinkType } from '@voiceflow/api-sdk';
-import { PlatformType } from '@voiceflow/internal';
-import { createSelector } from 'reselect';
-
-import { createCRUDSelectors } from '@/ducks/utils/crudV2';
+import * as Feature from '@/ducks/feature';
+import * as ProjectSelectorsV1 from '@/ducks/project/selectors';
+import { createCRUDSelectors, idParamSelector } from '@/ducks/utils/crudV2';
 
 import { STATE_KEY } from '../constants';
 
-export const {
-  all: allProjectsSelector,
-  map: projectsMapSelector,
-  root: rootProjectsSelector,
-  byID: projectByIDSelector,
-  allIDs: allProjectsIDsSelector,
-  getByID: getProjectByIDSelector,
+const {
+  all: _allProjectsSelector,
+  count: _projectsCountSelector,
+  byID: _projectByIDSelector,
+  getByID: _getProjectByIDSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-// project
+export const allProjectsSelector = Feature.createAtomicActionsSelector([ProjectSelectorsV1.allProjectsSelector, _allProjectsSelector]);
 
-export const projectPlatformByIDSelector = createSelector(projectByIDSelector, (project) => project?.platform || PlatformType.GENERAL);
+export const projectByIDSelector = Feature.createAtomicActionsSelector(
+  [ProjectSelectorsV1.projectByIDSelector, _projectByIDSelector, idParamSelector],
+  (getProjectV1, projectV2, projectID) => [projectID ? getProjectV1(projectID) : null, projectV2]
+);
 
-export const projectNameByIDSelector = createSelector(projectByIDSelector, (project) => project?.name ?? null);
+export const getProjectByIDSelector = Feature.createAtomicActionsSelector([ProjectSelectorsV1.projectByIDSelector, _getProjectByIDSelector]);
 
-export const projectLinkTypeByIDSelector = createSelector(projectByIDSelector, (project) => project?.linkType || ProjectLinkType.STRAIGHT);
-
-export const projectIsLiveByIDSelector = createSelector(projectByIDSelector, (project) => !!project?.isLive);
-
-export const projectIsStraightLinksByIDSelector = createSelector(projectLinkTypeByIDSelector, (linkType) => linkType === ProjectLinkType.STRAIGHT);
-
-export const projectsCountSelector = createSelector(allProjectsIDsSelector, (projectsIDs) => projectsIDs.length);
+export const projectsCountSelector = Feature.createAtomicActionsSelector([ProjectSelectorsV1.projectsCountSelector, _projectsCountSelector]);

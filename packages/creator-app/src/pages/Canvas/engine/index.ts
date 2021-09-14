@@ -13,7 +13,7 @@ import { MousePositionContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -211,7 +211,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
 
   isFeatureEnabled = (featureID: FeatureFlag) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 
-  isStraightLinks = () => this.select(Project.isStraightLinksSelector);
+  isStraightLinks = () => this.select(ProjectV2.active.isStraightLinksSelector);
 
   // entity registration methods
 

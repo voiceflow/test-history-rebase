@@ -8,7 +8,7 @@ import GoogleLoginButton from '@/components/Forms/GoogleLogin';
 import { ModalFooter } from '@/components/Modal';
 import { GOOGLE_OAUTH_SCOPES, ModalType } from '@/constants';
 import { AlexaStageType, GoogleStageType } from '@/constants/platforms';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
 import { Account } from '@/models';
@@ -179,7 +179,7 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
 };
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
 };
 
 type ConnectedConnectBaseModalProps = ConnectedProps<typeof mapStateToProps>;

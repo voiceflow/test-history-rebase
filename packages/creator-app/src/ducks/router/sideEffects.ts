@@ -4,7 +4,7 @@ import * as Errors from '@/config/errors';
 import { Path } from '@/config/routes';
 import { InteractionModelTabType } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import { activeRootDiagramIDSelector, activeVersionSelector } from '@/ducks/version/selectors';
@@ -164,7 +164,7 @@ export const goToCurrentSettings = (): SyncThunk => (dispatch, getState) => {
 export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
-  const platform = Project.activePlatformSelector(state);
+  const platform = ProjectV2.active.platformSelector(state);
 
   Errors.assertVersionID(versionID);
 

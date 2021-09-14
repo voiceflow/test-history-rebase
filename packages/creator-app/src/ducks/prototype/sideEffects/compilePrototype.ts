@@ -1,7 +1,7 @@
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Modal from '@/ducks/modal';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { Thunk } from '@/store/types';
 import { AbortControl, waitJobFinished } from '@/utils/job';
@@ -15,7 +15,7 @@ const compilePrototype =
   (abortControl: AbortControl): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const platform = Project.activePlatformSelector(state);
+    const platform = ProjectV2.active.platformSelector(state);
     const projectID = Session.activeProjectIDSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
     const diagramID = Session.activeDiagramIDSelector(state);

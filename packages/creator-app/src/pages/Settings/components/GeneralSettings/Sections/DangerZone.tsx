@@ -2,7 +2,7 @@ import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { ActionSection } from '@/components/Settings';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useDeleteProject } from '@/hooks';
@@ -28,7 +28,7 @@ const DangerZone: React.FC<ConnectedDangerZoneProps> = ({ projectName, projectID
 };
 
 const mapStateToProps = {
-  projectName: Project.activeProjectNameSelector,
+  projectName: ProjectV2.active.nameSelector,
   projectID: Session.activeProjectIDSelector,
 };
 

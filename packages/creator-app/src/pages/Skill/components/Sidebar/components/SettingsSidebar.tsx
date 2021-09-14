@@ -4,7 +4,7 @@ import { generatePath } from 'react-router-dom';
 
 import NavLinkSidebar, { NavLinkItem } from '@/components/NavLinkSidebar';
 import { Path } from '@/config/routes';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
 import { createPlatformSelector } from '@/utils/platform';
@@ -21,7 +21,7 @@ const getPlatformItems = createPlatformSelector<(versionID: string) => NavLinkIt
 );
 
 const SettingsSidebar: React.FC = () => {
-  const platform = useSelector(Project.activePlatformSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const versionID = useSelector(Session.activeVersionIDSelector)!;
 
   const items = React.useMemo<NavLinkItem[]>(() => {

@@ -4,7 +4,7 @@ import cuid from 'cuid';
 import React from 'react';
 
 import Canvas from '@/components/Canvas';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
@@ -70,7 +70,7 @@ const PrototypeVisualCanvas: React.FC<PrototypeVisualCanvasProps & ConnectedProt
 const mapStateToProps = {
   data: Prototype.prototypeVisualDataSelector,
   device: Prototype.prototypeVisualDeviceSelector,
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
   controlScheme: UI.canvasNavigationSelector,
 };
 

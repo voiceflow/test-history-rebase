@@ -3,7 +3,7 @@ import React from 'react';
 
 import { BlockVariant } from '@/constants/canvas';
 import * as Diagram from '@/ducks/diagram';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import { compose, connect } from '@/hocs';
 import PlayButton from '@/pages/Canvas/components/PlayButton';
@@ -78,7 +78,7 @@ const NodeStartBlock: React.ForwardRefRenderFunction<BlockAPI, NodeStartBlockPro
 
 const mapStateToProps = {
   diagram: Diagram.activeDiagramSelector,
-  projectName: Project.activeProjectNameSelector,
+  projectName: ProjectV2.active.nameSelector,
   invocationName: Version.activeInvocationNameSelector,
   isRootDiagram: Version.isRootDiagramActiveSelector,
 };

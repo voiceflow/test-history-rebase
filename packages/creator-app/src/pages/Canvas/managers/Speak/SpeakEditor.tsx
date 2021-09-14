@@ -4,7 +4,7 @@ import React from 'react';
 import OverflowMenu from '@/components/OverflowMenu';
 import { DialogType, MAX_SPEAK_ITEMS_COUNT } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
 import { NodeData, SpeakData } from '@/models';
 import SpeakItemList from '@/pages/Canvas/components/SpeakAudioList';
@@ -59,7 +59,7 @@ const SpeakEditor: NodeEditor<NodeData.Speak, SpeakEditorConnectedProps> = ({ da
 };
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
   focusedNode: Creator.focusedNodeSelector,
 };
 

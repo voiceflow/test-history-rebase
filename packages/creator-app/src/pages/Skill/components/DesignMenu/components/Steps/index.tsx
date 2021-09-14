@@ -5,7 +5,7 @@ import CustomScrollbars from '@/components/CustomScrollbars';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { FeatureFlag } from '@/config/features';
 import { BlockCategory, BlockType, DragItem } from '@/constants';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
 import { useDragPreview, useFeature } from '@/hooks';
@@ -70,7 +70,7 @@ const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expande
 };
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
   expandedSections: UI.openBlockMenuSectionsSelector,
 };
 

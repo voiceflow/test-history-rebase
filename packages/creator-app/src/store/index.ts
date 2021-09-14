@@ -34,7 +34,7 @@ const createStore = (realtime: Client, history: History): { store: Store; persis
   // Object.assign is used to copy sync/crossTab/etc methods from the original dispatch method
   store.dispatch = Object.assign((action: Dispatchable) => {
     if (typeof action === 'function') {
-      return action(store.dispatch, store.getState);
+      return action(store.dispatch, store.getState, { log: store.log });
     }
     originalDispatch(action);
     return action;

@@ -29,6 +29,8 @@ export type Selector<S, T, A extends any[] = []> = (state: S, ...args: A) => T;
 
 // thunk
 
-export type SyncThunk<S, R, D = Dispatch> = (dispatch: D, getState: GetState<S>) => R;
+export type SyncThunk<S, R, D = Dispatch, E = never> = [E] extends [never]
+  ? (dispatch: D, getState: GetState<S>) => R
+  : (dispatch: D, getState: GetState<S>, extra: E) => R;
 
-export type Thunk<S, R, D = Dispatch> = SyncThunk<S, Promise<R>, D>;
+export type Thunk<S, R, D = Dispatch, E = never> = SyncThunk<S, Promise<R>, D, E>;

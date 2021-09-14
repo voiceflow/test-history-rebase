@@ -1,7 +1,7 @@
 import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
-import { activePlatformSelector } from '@/ducks/project/selectors';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { ConnectedProps } from '@/types';
 
 import { connect } from './connect';
@@ -21,7 +21,7 @@ const getPlatformComponentSwitcher =
   };
 
 const mapStateToProps = {
-  platform: activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
 };
 
 type PlatformComponentSwitcherProps = ConnectedProps<typeof mapStateToProps>;

@@ -10,6 +10,7 @@ import client from '@/client';
 import { CreationHeader, InnerContainer, OuterContainer } from '@/components/CreationSteps';
 import { Path } from '@/config/routes';
 import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { useActiveWorkspace, useDispatch, useSelector, useSetup } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
@@ -30,7 +31,7 @@ const getTemplateTag = createPlatformSelector({
 });
 
 const NewProject: React.FC = () => {
-  const projects = useSelector(Project.allProjectsSelector);
+  const projects = useSelector(ProjectV2.allProjectsSelector);
   const workspace = useActiveWorkspace();
 
   const redirectToCanvas = useDispatch(Router.redirectToCanvas);

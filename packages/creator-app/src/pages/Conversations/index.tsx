@@ -9,7 +9,7 @@ import LoadingGate from '@/components/LoadingGate';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { fetchReportTags } from '@/ducks/reportTag';
-import { goToCurrentPrototype, goToTargetTranscript } from '@/ducks/router';
+import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Transcripts from '@/ducks/transcript';
 import { fetchTranscripts } from '@/ducks/transcript';
@@ -36,8 +36,8 @@ const Conversations: React.FC<ConversationProps> = () => {
   const activeTranscriptID = useSelector(Transcripts.currentTranscriptIDSelector);
   const location = useLocation();
   const updateTranscriptsList = useDispatch(fetchTranscripts);
-  const goToPrototype = useDispatch(goToCurrentPrototype);
-  const goToTranscript = useDispatch(goToTargetTranscript);
+  const goToPrototype = useDispatch(Router.goToCurrentPrototype);
+  const goToTranscript = useDispatch(Router.goToTargetTranscript);
   const fetchTags = useDispatch(fetchReportTags);
 
   const [lastTranscriptID, setLastTranscriptID] = useSessionStorageState(`${PREVIOUS_TRANSCRIPT_ID_KEY}-${activeProjectID}`, '');

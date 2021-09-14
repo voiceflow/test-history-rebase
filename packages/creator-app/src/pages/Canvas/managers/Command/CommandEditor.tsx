@@ -6,7 +6,7 @@ import IntentSelect from '@/components/IntentSelect';
 import Section, { SectionVariant } from '@/components/Section';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { NodeData } from '@/models';
@@ -80,7 +80,7 @@ const CommandEditor: NodeEditor<NodeData.Command, ConnectedCommandEditorProps> =
 };
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
   diagrams: Diagram.allDiagramsSelector,
   diagramByID: Diagram.diagramByIDSelector,
   getIntentByID: Intent.platformIntentByIDSelector,

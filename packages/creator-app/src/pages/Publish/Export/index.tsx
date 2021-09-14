@@ -3,7 +3,7 @@ import { Box, BoxFlex, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount, useSetup, useToggle, useTrackingEvents } from '@/hooks';
 import AlexaUploadButton from '@/pages/Canvas/header/ActionGroup/components/AlexaUploadGroup/Button';
@@ -120,7 +120,7 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
 };
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
 };
 
 const mapDispatchToProps = {

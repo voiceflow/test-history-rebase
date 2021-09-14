@@ -3,7 +3,7 @@ import uniqBy from 'lodash/uniqBy';
 import { createSelector } from 'reselect';
 
 import { applyIntentNameFormatting } from '@/ducks/intent/utils';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 import { activeLocalesSelector } from '@/ducks/version/selectors';
 import { Intent } from '@/models';
@@ -32,7 +32,7 @@ export const allSlotsByIntentIDSelector = createSelector([intentByIDSelector], (
 
 // This appends the builtIn intent consts to the redux intents
 export const allPlatformIntentsSelector = createSelector(
-  [allIntentsSelector, Project.activePlatformSelector, activeLocalesSelector],
+  [allIntentsSelector, ProjectV2.active.platformSelector, activeLocalesSelector],
   (intents, platform, locales) => {
     const prettifiedIntents = applyIntentNameFormatting(platform, intents);
 
@@ -46,7 +46,7 @@ export const allPlatformIntentsSelector = createSelector(
   }
 );
 
-export const allCustomIntentsSelector = createSelector([allIntentsSelector, Project.activePlatformSelector], (intents, platform) =>
+export const allCustomIntentsSelector = createSelector([allIntentsSelector, ProjectV2.active.platformSelector], (intents, platform) =>
   applyIntentNameFormatting(platform, intents)
 );
 

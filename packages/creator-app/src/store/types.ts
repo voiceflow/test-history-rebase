@@ -48,8 +48,12 @@ export type Selector<T, A extends any[] = []> = UI.Selector<State, T, A>;
 
 // thunk
 
-export type AnyThunk = UI.SyncThunk<any, any, Dispatch>;
+export interface ThunkExtra {
+  log: Store['log'];
+}
 
-export type SyncThunk<R = void> = UI.SyncThunk<State, R, Dispatch>;
+export type AnyThunk = UI.SyncThunk<any, any, Dispatch, ThunkExtra>;
 
-export type Thunk<R = void> = UI.Thunk<State, R, Dispatch>;
+export type SyncThunk<R = void> = UI.SyncThunk<State, R, Dispatch, ThunkExtra>;
+
+export type Thunk<R = void> = UI.Thunk<State, R, Dispatch, ThunkExtra>;

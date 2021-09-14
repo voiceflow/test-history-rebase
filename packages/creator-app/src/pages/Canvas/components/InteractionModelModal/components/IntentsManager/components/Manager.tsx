@@ -7,7 +7,7 @@ import RemoveDropdown from '@/components/RemoveDropdown';
 import Section from '@/components/Section';
 import * as Intents from '@/ducks/intent';
 import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Slot from '@/ducks/slot';
 import { compose, connect } from '@/hocs';
 import { FadeLeftContainer } from '@/styles/animations';
@@ -108,7 +108,7 @@ const mapStateToProps = {
   slots: Slot.allSlotsSelector,
   intent: Intents.intentByIDSelector,
   allIntents: Intents.allIntentsSelector,
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
 };
 
 const mapDispatchToProps = {

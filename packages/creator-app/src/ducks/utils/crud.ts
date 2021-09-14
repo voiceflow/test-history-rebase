@@ -176,6 +176,7 @@ export default createCRUDReducer;
 export const createCRUDSelectors = <K extends keyof CRUDStateSubset, S extends CRUDStateSubset[K], T extends NormalizedValue<S>>(modelType: K) => {
   const root = createRootSelector<any>(modelType) as Selector<CRUDState<T> & S>;
   const all = createSelector([root], denormalize as any) as Selector<T[]>;
+  const count = createSelector([root], ({ allKeys }) => allKeys.length);
   const collect = createSelector(
     [root],
     (models) =>
@@ -204,7 +205,8 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, S extends C
         )
     ),
     byID: createSelector([root], (normalized: CRUDState<T>) => (id: string) => getNormalizedByKey(normalized, id)),
-    has: createSelector([root], ({ allKeys }) => allKeys.length !== 0),
+    count,
+    has: createSelector([count], (size) => size !== 0),
   };
 };
 

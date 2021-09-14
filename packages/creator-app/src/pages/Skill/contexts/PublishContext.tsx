@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import client from '@/client';
 import { JobStatus } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useDispatch } from '@/hooks';
 import { AlexaPublishJob, GooglePublishJob } from '@/models';
@@ -28,7 +28,7 @@ export const PublishProvider: React.FC = ({ children }) => {
   const pullTimeout = React.useRef<NodeJS.Timeout>();
   const [job, setJob] = React.useState<Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>>(null);
 
-  const platform = useSelector(Project.activePlatformSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 

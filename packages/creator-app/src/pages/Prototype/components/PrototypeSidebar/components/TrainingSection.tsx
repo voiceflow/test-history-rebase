@@ -6,7 +6,7 @@ import client from '@/client';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import * as Errors from '@/config/errors';
 import { NLPTrainStageType } from '@/constants/platforms';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
@@ -208,7 +208,7 @@ const TrainingSection: React.FC<ConnectedTrainingSectionProps & TrainingSectionP
 
 const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
   versionID: Session.activeVersionIDSelector,
   diagramID: Session.activeDiagramIDSelector,
   projectID: Session.activeProjectIDSelector,

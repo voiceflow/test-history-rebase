@@ -1,7 +1,7 @@
 import cuid from 'cuid';
 import _pick from 'lodash/pick';
 
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Slot from '@/ducks/slot';
 import { createCRUDActionCreators } from '@/ducks/utils/crud';
 import { Intent, IntentInput, IntentSlot, IntentSlotDialog } from '@/models';
@@ -22,7 +22,7 @@ export const addIntent =
   (id: string, data: Intent): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
-    const platform = Project.activePlatformSelector(state);
+    const platform = ProjectV2.active.platformSelector(state);
 
     dispatch(crudActions.add(id, intentProcessor(platform, data)));
   };
@@ -31,7 +31,7 @@ export const addIntents =
   (values: Intent[]): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
-    const platform = Project.activePlatformSelector(state);
+    const platform = ProjectV2.active.platformSelector(state);
 
     dispatch(crudActions.addMany(values.map(intentProcessor.bind(null, platform))));
   };
@@ -40,7 +40,7 @@ export const replaceIntents =
   (values: Intent[], meta?: any): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
-    const platform = Project.activePlatformSelector(state);
+    const platform = ProjectV2.active.platformSelector(state);
 
     dispatch(crudActions.replace(values.map(intentProcessor.bind(null, platform)), meta));
   };
@@ -53,7 +53,7 @@ export const patchIntent =
     }
 
     const state = getState();
-    const platform = Project.activePlatformSelector(state);
+    const platform = ProjectV2.active.platformSelector(state);
     const newSlotsCreator = getPlatformNewSlotsCreator(platform);
 
     const { slots: { byKey = {}, allKeys = [] } = {} } = intentByIDSelector(state)(id);
@@ -129,7 +129,7 @@ export const newIntent =
   (dispatch, getState) => {
     const id = intent?.id || cuid.slug();
     const state = getState();
-    const platform = intent?.platform || Project.activePlatformSelector(state);
+    const platform = intent?.platform || ProjectV2.active.platformSelector(state);
 
     const name =
       intent?.name ||

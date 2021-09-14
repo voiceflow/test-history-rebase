@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 import TextInput from '@/components/Form/TextInput';
 import { UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import { useBoundValue, useDispatch } from '@/hooks';
 import { getTargetValue } from '@/utils/dom';
@@ -19,10 +20,7 @@ const smallIconSelector = createSelector([Version.alexa.activePublishingSelector
 
 const BasicSkillInfoForm: React.FC = () => {
   const [projectNameError, projectNameValidator] = useValidator('name', (name: string) => (name ? false : 'Display name is required.'));
-  const [projectName, setProjectName, saveProjectName] = useBoundValue(
-    Project.activeProjectNameSelector,
-    projectNameValidator(Project.saveProjectName)
-  );
+  const [projectName, setProjectName, saveProjectName] = useBoundValue(ProjectV2.active.nameSelector, projectNameValidator(Project.saveProjectName));
 
   const largeIcon = useSelector(largeIconSelector);
   const saveLargeIcon = useDispatch((largeIcon: string) => Version.alexa.savePublishing({ largeIcon }));

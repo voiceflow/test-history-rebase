@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { identity } from '@/utils/functional';
 import { getSlotTypes } from '@/utils/slot';
 
@@ -13,7 +13,7 @@ import * as google from '../platform/google';
 
 // active version
 
-export const activeLocalesSelector = createSelector([Project.activeProjectSelector, identity], (activeProject, rootState) => {
+export const activeLocalesSelector = createSelector([ProjectV2.active.projectSelector, identity], (activeProject, rootState) => {
   if (!activeProject) return [];
 
   switch (activeProject.platform) {
@@ -27,7 +27,7 @@ export const activeLocalesSelector = createSelector([Project.activeProjectSelect
   }
 });
 
-export const activeInvocationNameSelector = createSelector([Project.activeProjectSelector, identity], (activeProject, rootState) => {
+export const activeInvocationNameSelector = createSelector([ProjectV2.active.projectSelector, identity], (activeProject, rootState) => {
   if (!activeProject) return null;
 
   switch (activeProject.platform) {
@@ -41,7 +41,7 @@ export const activeInvocationNameSelector = createSelector([Project.activeProjec
   }
 });
 
-export const activeInvocationsSelector = createSelector([Project.activeProjectSelector, identity], (activeProject, rootState) => {
+export const activeInvocationsSelector = createSelector([ProjectV2.active.projectSelector, identity], (activeProject, rootState) => {
   if (!activeProject) return [];
 
   switch (activeProject.platform) {
@@ -56,7 +56,7 @@ export const activeInvocationsSelector = createSelector([Project.activeProjectSe
 });
 
 export const activeSlotTypesSelector = createSelector(
-  [activeLocalesSelector, Project.activePlatformSelector, Feature.isFeatureEnabledSelector],
+  [activeLocalesSelector, ProjectV2.active.platformSelector, Feature.isFeatureEnabledSelector],
   (locales, platform, isFeatureEnabled) =>
     getSlotTypes({ locales: locales as string[], platform, natoEnabled: !!isFeatureEnabled(FeatureFlag.NATO_APCO) })
 );

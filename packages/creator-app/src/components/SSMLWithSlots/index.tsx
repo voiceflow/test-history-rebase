@@ -2,7 +2,7 @@ import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
 import SSML from '@/components/SSML';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { Slot } from '@/models';
@@ -64,7 +64,7 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps & SSMLWithSlotsConnected
 };
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
   defaultVoice: Version.activeDefaultVoiceSelector,
   locales: Version.activeLocalesSelector,
 };

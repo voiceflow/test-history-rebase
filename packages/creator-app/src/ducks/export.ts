@@ -4,7 +4,7 @@ import fileSaver from 'file-saver';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { ExportFormat, NLPProvider } from '@/constants';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { Thunk } from '@/store/types';
@@ -22,7 +22,7 @@ export const exportCanvas =
     Errors.assertVersionID(versionID);
 
     if (type === ExportFormat.VF) {
-      const projectName = Project.activeProjectNameSelector(state);
+      const projectName = ProjectV2.active.nameSelector(state);
 
       try {
         const data = await client.api.version.export(versionID);
@@ -68,7 +68,7 @@ export const exportModel =
 
     try {
       let data: string;
-      const projectName = Project.activeProjectNameSelector(state)?.replace(/ /g, '_');
+      const projectName = ProjectV2.active.nameSelector(state)?.replace(/ /g, '_');
 
       if (nlpProvider === NLPProvider.ALEXA) {
         data = await client.platform.alexa.modelExport.exportBlob(versionID, 'ask');

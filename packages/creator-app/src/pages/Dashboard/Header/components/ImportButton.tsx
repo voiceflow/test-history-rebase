@@ -6,6 +6,7 @@ import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { useActiveWorkspace, useDispatch, useFeature, useModals, useSelector } from '@/hooks';
 import { readFileAsync, upload } from '@/utils/dom';
@@ -16,7 +17,7 @@ const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 const ImportButton: React.FC = () => {
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
-  const projects = useSelector(Project.allProjectsSelector);
+  const projects = useSelector(ProjectV2.allProjectsSelector);
 
   const goToCanvas = useDispatch(Router.goToCanvas);
   const importProject = useDispatch(Project.importProjectFromFile);

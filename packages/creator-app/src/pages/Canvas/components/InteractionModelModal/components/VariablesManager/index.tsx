@@ -6,7 +6,7 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import SearchableList from '@/components/SearchableList';
 import { InteractionModelTabType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as SlotDuck from '@/ducks/slot';
 import * as Version from '@/ducks/version';
@@ -180,7 +180,7 @@ const mapStateToProps = {
   diagramID: Session.activeDiagramIDSelector,
   localVariables: Diagram.activeDiagramLocalVariablesSelector,
   globalVariables: Version.activeGlobalVariablesSelector,
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
 };
 
 const mapDispatchToProps = {

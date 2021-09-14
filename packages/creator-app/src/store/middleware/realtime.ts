@@ -4,7 +4,7 @@ import { NEW_PRODUCT_ID } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
 import * as Product from '@/ducks/product';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
@@ -20,7 +20,7 @@ const realtimeMiddleware = [
       settings: Version.activeSettingsSelector,
       publishing: Version.activePublishingSelector,
       session: Version.activeSessionSelector,
-      name: Project.activeProjectNameSelector,
+      name: ProjectV2.active.nameSelector,
     }),
     { ignore: [CRUDAction.CRUD_REPLACE, Session.SessionAction.SET_ACTIVE_VERSION_ID, Session.SessionAction.SET_ACTIVE_PROJECT_ID] }
   ),

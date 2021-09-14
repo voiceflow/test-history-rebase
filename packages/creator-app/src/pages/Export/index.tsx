@@ -4,7 +4,7 @@ import React from 'react';
 
 import client from '@/client';
 import * as Creator from '@/ducks/creator';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { ProjectLoadingGate, WorkspaceFeatureLoadingGate } from '@/gates';
@@ -110,7 +110,7 @@ const initialize =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const platform = Project.activePlatformSelector(state);
+    const platform = ProjectV2.active.platformSelector(state);
 
     const { viewport, ...creator } = Adapters.creatorAdapter.fromDB(await client.api.diagram.get(diagramID), { platform, context: {} });
 
@@ -127,7 +127,7 @@ const initialize =
 
 const mapStateToProps = {
   diagramID: Session.activeDiagramIDSelector,
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
 };
 
 const mapDispatchToProps = {

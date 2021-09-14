@@ -6,6 +6,7 @@ import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionVariant } from '@/components/Section';
 import * as Documentation from '@/config/documentation';
 import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import { connect } from '@/hocs';
@@ -53,7 +54,7 @@ const Canvas: React.FC<ConnectedBasicProps> = ({ activeProjectID, activeLinkType
 const mapStateToProps = {
   canvasNavigation: UI.canvasNavigationSelector,
   activeProjectID: Session.activeProjectIDSelector,
-  activeLinkType: Project.activeProjectLinkTypeSelector,
+  activeLinkType: ProjectV2.active.linkTypeSelector,
 };
 
 const mapDispatchToProps = {

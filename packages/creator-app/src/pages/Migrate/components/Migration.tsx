@@ -6,7 +6,7 @@ import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
 import * as Product from '@/ducks/product';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useAsyncMountUnmount } from '@/hooks';
@@ -145,7 +145,7 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
 const mapStateToProps = {
   projectID: Session.activeProjectIDSelector,
   amazonAccount: Account.amazonAccountSelector,
-  selectedVendor: Project.alexa.activeVendorIDSelector,
+  selectedVendor: ProjectV2.active.alexa.ownVendorIDSelector,
   productMap: Product.productMapSelector,
 };
 

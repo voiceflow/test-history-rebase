@@ -1,50 +1,26 @@
-import { Project as AlexaProject } from '@voiceflow/alexa-types';
-import { Member } from '@voiceflow/api-sdk';
-import { createSelector } from 'reselect';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
+import { FeatureFlag } from '@/config/features';
 import { userIDSelector } from '@/ducks/account/selectors';
-import { Project } from '@/models';
+import * as Feature from '@/ducks/feature';
+import { projectSelector as alexaProjectSelector } from '@/ducks/projectV2/selectors/active/alexa';
+import * as Session from '@/ducks/session';
 import { SyncThunk } from '@/store/types';
-import { Nullable } from '@/types';
 
 import { patchProject } from '../actions';
-import { activeProjectSelector } from '../selectors';
-
-// selectors
-
-export const activeAlexaProjectSelector = createSelector(
-  [activeProjectSelector],
-  (activeProject) => activeProject as Nullable<Project<AlexaProject.AlexaProjectData, Member<AlexaProject.AlexaProjectMemberData>>>
-);
-
-export const activeProjectMembersSelector = createSelector([activeAlexaProjectSelector], (project) => project?.members ?? []);
-
-export const activeMemberSelector = createSelector(
-  [userIDSelector, activeProjectMembersSelector],
-  (creatorID, members) => members.find((member) => member.creatorID === creatorID) ?? null
-);
-
-export const activeVendorIDSelector = createSelector([activeMemberSelector], (member) => member?.platformData.selectedVendor ?? null);
-
-export const vendorByIDSelector = createSelector(
-  [activeMemberSelector],
-  (member) => (vendorID: string) => member?.platformData.vendors.find((vendor) => vendor.vendorID === vendorID) ?? null
-);
-
-export const activeSkillIDSelector = createSelector(
-  [activeVendorIDSelector, vendorByIDSelector],
-  (vendorID, getVendor) => (vendorID && getVendor(vendorID)?.skillID) ?? null
-);
 
 // side effects
 
+// eslint-disable-next-line import/prefer-default-export
 export const updateActiveVendor =
   (vendorID: string, skillID: string | null): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
-    const activeProject = activeAlexaProjectSelector(state);
+    const activeProject = alexaProjectSelector(state);
     const activeCreatorID = userIDSelector(state);
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     if (!activeProject) throw Errors.noActiveProjectID();
     Errors.assertCreatorID(activeCreatorID);
@@ -64,5 +40,11 @@ export const updateActiveVendor =
         : member
     );
 
-    dispatch(patchProject(activeProject.id, { members: updatedMembers }));
+    if (isAtomicActions) {
+      Errors.assertWorkspaceID(workspaceID);
+
+      dispatch.local(Realtime.project.crudActions.patch({ workspaceID, key: activeProject.id, value: { members: updatedMembers } }));
+    } else {
+      dispatch(patchProject(activeProject.id, { members: updatedMembers }));
+    }
   };

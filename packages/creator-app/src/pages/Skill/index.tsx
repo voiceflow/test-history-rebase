@@ -8,7 +8,7 @@ import { RemoveIntercom } from '@/components/IntercomChat';
 import ProjectPage from '@/components/ProjectPage';
 import { Path } from '@/config/routes';
 import * as Creator from '@/ducks/creator';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
@@ -159,8 +159,8 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
 };
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
-  projectName: Project.activeProjectNameSelector,
+  platform: ProjectV2.active.platformSelector,
+  projectName: ProjectV2.active.nameSelector,
   isConnected: Realtime.isRealtimeConnectedSelector,
   isOnlyViewer: Realtime.isOnlyViewerSelector,
 };

@@ -2,7 +2,7 @@ import React from 'react';
 
 import Drawer from '@/components/Drawer';
 import * as Creator from '@/ducks/creator';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import { connect } from '@/hocs';
 import { useTheme } from '@/hooks';
@@ -80,7 +80,7 @@ const PrototypeOverlay: React.FC<ConnectedDiagramProps> = ({ platform, prototype
 };
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
   prototypeMode: Prototype.activePrototypeModeSelector,
 };
 

@@ -6,7 +6,7 @@ import client from '@/client';
 import * as Errors from '@/config/errors';
 import { DiagramState } from '@/constants';
 import * as Diagram from '@/ducks/diagram/actions';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Viewport from '@/ducks/viewport';
 import mutableStore from '@/store/mutable';
@@ -36,7 +36,7 @@ export const initializeCreatorForDiagram =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const platform = Project.activePlatformSelector(state);
+    const platform = ProjectV2.active.platformSelector(state);
 
     const { diagram: DBDiagram, timestamp } = await client.api.diagram.getRTC(diagramID);
 

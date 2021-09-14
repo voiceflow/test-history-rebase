@@ -6,7 +6,7 @@ import React from 'react';
 
 import { CUSTOMIZABLE_INTENT_PREFIXS, SPACE_REGEXP } from '@/constants';
 import * as Intent from '@/ducks/intent';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Slot from '@/ducks/slot';
 import { connect } from '@/hocs';
 import { ClassName } from '@/styles/constants';
@@ -183,7 +183,7 @@ function IntentSelect({
 }
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
   slots: Slot.allSlotsSelector,
   intents: Intent.allPlatformIntentsSelector,
   intentsMap: Intent.mapCustomIntentsSelector,

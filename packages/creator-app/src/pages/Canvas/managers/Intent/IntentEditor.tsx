@@ -5,7 +5,7 @@ import IntentSelect from '@/components/IntentSelect';
 import Section from '@/components/Section';
 import { NamespaceProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
@@ -38,7 +38,7 @@ const IntentEditor: NodeEditor<NodeData.Intent, ConnectedIntentEditorProps> = ({
 
 const mapStateToProps = {
   intent: Intent.platformIntentByIDSelector,
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
 };
 
 const mergeProps = (

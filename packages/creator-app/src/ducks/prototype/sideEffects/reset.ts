@@ -1,7 +1,7 @@
 import { batch } from 'react-redux';
 
 import { BuiltInVariable } from '@/constants';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
 import { activeGlobalVariablesSelector } from '@/ducks/version/selectors';
@@ -19,7 +19,7 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
   const visualState = prototypeVisualSelector(state);
   const globalVariables = activeGlobalVariablesSelector(state);
   const slotNames = Slot.slotNamesSelector(state);
-  const platform = Project.activePlatformSelector(state);
+  const platform = ProjectV2.active.platformSelector(state);
 
   let variables: Store = {};
   [...globalVariables, ...slotNames].forEach((name) => {

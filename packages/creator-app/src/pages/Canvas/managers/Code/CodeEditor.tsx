@@ -7,7 +7,7 @@ import AceEditor from '@/components/AceEditor';
 import OverflowMenu from '@/components/OverflowMenu';
 import * as Documentation from '@/config/documentation';
 import * as Diagram from '@/ducks/diagram';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
@@ -20,7 +20,7 @@ const CodeEditor: NodeEditor<NodeData.Code> = ({ data, onChange, onExpand, expan
   const editorRef = React.useRef<AceEditorType | null>(null);
   const [editorState, onUpdateEditorState] = React.useState(data.code);
   const onUpdateCode = React.useCallback(() => onChange({ code: editorState }), [editorState, onChange]);
-  const platform = useSelector(Project.activePlatformSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const variables = useSelector(Diagram.activeDiagramAllVariablesSelector);
 
   const completer = React.useMemo<AceEditorType['editor']['completers'][number]>(

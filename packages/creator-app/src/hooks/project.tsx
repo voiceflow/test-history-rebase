@@ -9,6 +9,7 @@ import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { useModals } from '@/hooks/modals';
@@ -20,7 +21,6 @@ import { useDispatch } from './realtime';
 import { useTrackingEvents } from './tracking';
 import { useActiveWorkspace } from './workspace';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useDeleteProject = ({
   boardID,
   projectID,
@@ -32,7 +32,7 @@ export const useDeleteProject = ({
 }): (() => void) => {
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
 
-  const getProjectByID = useSelector(Project.projectByIDSelector);
+  const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
 
   const onDeleteProject = useDispatch(Project.deleteProject);
   const onGoToDashboard = useDispatch(Router.goToDashboard);
@@ -101,8 +101,8 @@ export const useProjectOptions = ({
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
 
   const workspace = useActiveWorkspace();
-  const projectsCount = useSelector(Project.projectsCountSelector);
-  const getProjectByID = useSelector(Project.projectByIDSelector);
+  const projectsCount = useSelector(ProjectV2.projectsCountSelector);
+  const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
 
   const copyProject = useDispatch(Workspace.copyProject);
   const saveProjectPrivacy = useDispatch(Project.saveProjectPrivacy);

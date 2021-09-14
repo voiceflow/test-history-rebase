@@ -3,7 +3,7 @@ import React from 'react';
 
 import SSML from '@/components/SSML';
 import * as Diagram from '@/ducks/diagram';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { compose } from '@/utils/functional';
@@ -46,7 +46,7 @@ const SSMLWithVars = ({ icon = 'alexa', voice, variables, locales, defaultVoice,
 };
 
 const mapStateToProps = {
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
   variables: Diagram.activeDiagramAllVariablesSelector,
   defaultVoice: Version.activeDefaultVoiceSelector,
   locales: Version.activeLocalesSelector,

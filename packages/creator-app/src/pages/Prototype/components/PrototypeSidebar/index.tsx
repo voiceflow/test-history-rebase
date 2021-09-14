@@ -7,7 +7,7 @@ import { SectionVariant, UncontrolledSection as Section } from '@/components/Sec
 import SoundToggle from '@/components/SoundToggle';
 import { Permission } from '@/config/permissions';
 import * as Diagram from '@/ducks/diagram';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { PrototypeStatus } from '@/ducks/prototype';
 import { connect } from '@/hocs';
@@ -168,7 +168,7 @@ const PrototypeSidebar: React.FC<PrototypeSidebarProps & ConnectedPrototypeSideb
 const mapStateToProps = {
   status: PrototypeDuck.prototypeStatusSelector,
   isMuted: PrototypeDuck.prototypeMutedSelector,
-  platform: Project.activePlatformSelector,
+  platform: ProjectV2.active.platformSelector,
 };
 
 const mapDispatchToProps = {

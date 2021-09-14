@@ -3,6 +3,7 @@ import React from 'react';
 import { EditableTextAPI } from '@/components/EditableText';
 import { Permission } from '@/config/permissions';
 import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
@@ -21,7 +22,7 @@ const ProjectAndDiagramActions: React.FC = () => {
 
   const isLocked = useSelector((state) => Realtime.isResourceLockedSelector(state)(Realtime.ResourceType.SETTINGS));
   const projectID = useSelector(Session.activeProjectIDSelector);
-  const projectName = useSelector(Project.activeProjectNameSelector);
+  const projectName = useSelector(ProjectV2.active.nameSelector);
 
   const isPrototypingMode = usePrototypingMode();
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);

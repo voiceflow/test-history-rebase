@@ -16,9 +16,9 @@ import { SeoPage } from '@/constants/seo';
 import { ScrollContextProvider } from '@/contexts';
 import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
-import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListV2 from '@/ducks/projectListV2';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -48,11 +48,11 @@ import List, { List as SimpleList } from './components/List';
 import { DashboardGate } from './gates';
 import DashboardHeader from './Header';
 
-const getBoardFilteredProjects = (projectsIDs: string[], projectsMap: Record<string, Models.AnyProject>, filter: string) => {
+const getBoardFilteredProjects = (projectsIDs: string[], getProjectByID: (projectID: string) => Models.AnyProject | null, filter: string) => {
   const filtered: Models.AnyProject[] = [];
 
   projectsIDs.forEach((id) => {
-    const project = projectsMap[id];
+    const project = getProjectByID(id);
 
     if (project?.name.toLowerCase().includes(filter)) {
       filtered.push(project);
@@ -67,8 +67,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const atomicActions = useFeature(FeatureFlag.ATOMIC_ACTIONS);
 
   const workspace = useActiveWorkspace();
-  const projects = useSelector(Project.allProjectsSelector);
-  const projectsMap = useSelector(Project.projectsMapSelector);
+  const projects = useSelector(ProjectV2.allProjectsSelector);
+  const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
   const projectLists = useSelector(ProjectListV2.allProjectListsSelector);
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const hasTemplatesWorkspace = useSelector(WorkspaceV2.hasTemplatesWorkspaceSelector);
@@ -233,7 +233,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
                     <div ref={bodyRef} className={DashboardClassName.LISTS}>
                       <div ref={innerRef} className={DashboardClassName.LISTS_INNER}>
                         {projectLists.map((list, idx) => {
-                          const projects = getBoardFilteredProjects(list.projects, projectsMap, filter);
+                          const projects = getBoardFilteredProjects(list.projects, getProjectByID, filter);
                           if (filter && !projects.length) {
                             return null;
                           }

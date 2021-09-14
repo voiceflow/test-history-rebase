@@ -9,8 +9,8 @@ import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import { addProject } from '@/ducks/project/actions';
-import { projectByIDSelector } from '@/ducks/project/selectors';
 import { addProjectToDefaultList, addProjectToList, saveProjectListsForWorkspace, saveProjectToList } from '@/ducks/projectList/sideEffects';
+import { projectByIDSelector } from '@/ducks/projectV2/selectors';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import { allWorkspaceIDsSelector } from '@/ducks/workspaceV2/selectors';
@@ -107,7 +107,7 @@ export const copyProject =
   (projectID: string, workspaceID: string, listID?: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const project = projectByIDSelector(state)(projectID);
+    const project = projectByIDSelector(state, { id: projectID });
 
     if (!project) throw new Error();
 

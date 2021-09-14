@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { Thunk } from '@/store/types';
 import { Nullable } from '@/types';
@@ -20,7 +20,7 @@ export const activeSettingsSelector = createSelector([activeGeneralVersionSelect
 
 export const activeLocalesSelector = createSelector([activeSettingsSelector], (settings) => settings?.locales ?? []);
 
-export const activeInvocationNameSelector = Project.activeProjectNameSelector;
+export const activeInvocationNameSelector = ProjectV2.active.nameSelector;
 
 // action creators
 

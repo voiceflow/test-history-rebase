@@ -8,6 +8,7 @@ import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
 import * as Product from '@/ducks/product';
 import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
@@ -233,9 +234,9 @@ const mapStateToProps = {
   user: Account.userSelector,
   versionID: Session.activeVersionIDSelector,
   publishing: Version.alexa.activePublishingSelector,
-  projectName: Project.activeProjectNameSelector,
-  skillID: Project.alexa.activeSkillIDSelector,
-  isLive: Project.isActiveProjectLiveSelector,
+  projectName: ProjectV2.active.nameSelector,
+  skillID: ProjectV2.active.alexa.ownSkillIDSelector,
+  isLive: ProjectV2.active.isLiveSelector,
   inReview: Version.alexa.inReviewSelector,
 };
 

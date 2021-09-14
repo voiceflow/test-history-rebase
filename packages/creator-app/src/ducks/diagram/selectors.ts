@@ -3,8 +3,7 @@ import _unionBy from 'lodash/unionBy';
 import { createSelector } from 'reselect';
 
 import { allLinksSelector, creatorDiagramIDSelector, creatorDiagramSelector } from '@/ducks/creator/diagram/selectors';
-import { activeProjectSelector } from '@/ducks/project';
-import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { allSlotsSelector, slotNamesSelector } from '@/ducks/slot';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
 import { activeGlobalVariablesSelector } from '@/ducks/version/selectors';
@@ -66,13 +65,13 @@ export const activeDiagramLocalVariablesSelector = createSelector(
 );
 
 export const activeDiagramAllVariablesSelector = createSelector(
-  [activeGlobalVariablesSelector, activeDiagramLocalVariablesSelector, slotNamesSelector, Project.activePlatformSelector],
+  [activeGlobalVariablesSelector, activeDiagramLocalVariablesSelector, slotNamesSelector, ProjectV2.active.platformSelector],
   (globalVariables, activeDiagramVariables, slotNames, platform) =>
     unique([...slotNames, ...getPlatformGlobalVariables(platform), ...globalVariables, ...activeDiagramVariables])
 );
 
 export const activeDiagramAllVariablesNormalizedSelector = createSelector(
-  [activeGlobalVariablesSelector, activeDiagramLocalVariablesSelector, allSlotsSelector, Project.activePlatformSelector],
+  [activeGlobalVariablesSelector, activeDiagramLocalVariablesSelector, allSlotsSelector, ProjectV2.active.platformSelector],
   (globalVariables, activeDiagramVariables, slots, platform) =>
     normalize(
       _unionBy<{ id: string; name: string; isSlot?: boolean }>(
@@ -95,7 +94,7 @@ export const fullActiveDiagramSelector = createSelector(
     localVariablesByDiagramIDSelector,
     creatorDiagramSelector,
     allLinksSelector,
-    activeProjectSelector,
+    ProjectV2.active.projectSelector,
   ],
   // eslint-disable-next-line max-params
   (diagramID, getViewport, getLocalVariables, { rootNodeIDs, nodes, ports, data, markupNodeIDs }, links, project) => {

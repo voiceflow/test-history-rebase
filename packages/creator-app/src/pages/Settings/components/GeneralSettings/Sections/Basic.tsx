@@ -11,6 +11,7 @@ import Section, { SectionVariant } from '@/components/Section';
 import { UploadIconVariant, UploadJustIcon } from '@/components/Upload/ImageUpload/IconUpload';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
@@ -187,7 +188,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 
 const mapStateToProps = {
   versionID: Session.activeVersionIDSelector,
-  project: Project.activeProjectSelector,
+  project: ProjectV2.active.projectSelector,
   invocationName: Version.activeInvocationNameSelector,
   locales: Version.activeLocalesSelector,
 };

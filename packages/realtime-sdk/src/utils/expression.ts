@@ -176,7 +176,7 @@ export const expressionfyLogicInterface = (exp: ExpressionV2 | LogicGroupData): 
     case Node.Utils.ConditionsLogicInterface.VALUE:
     case Node.Utils.ConditionsLogicInterface.VARIABLE:
       return (exp.value as Array<ExpressionV2>).reduce((acc: string, curr: ExpressionV2) => {
-        // eslint-disable-next-line no-param-reassign
+        // eslint-disable-next-line no-param-reassign, sonarjs/no-nested-template-literals
         acc = `${acc}${acc ? ` ${EXPRESSIONV2_OPERATION_SYMBOL_MAP[exp.type!]} ` : ''}${expressionfyLogicUnit(curr)}`;
 
         return acc;
@@ -191,7 +191,7 @@ export const expressionfyLogicInterface = (exp: ExpressionV2 | LogicGroupData): 
 export const expressionPreview = (expression: ExpressionData | LogicGroupData): string => {
   if (expression.type) {
     return (expression.value as Array<ExpressionV2 | LogicGroupData>).reduce((acc: string, curr: ExpressionV2 | LogicGroupData) => {
-      // eslint-disable-next-line no-param-reassign
+      // eslint-disable-next-line no-param-reassign, sonarjs/no-nested-template-literals
       acc = `${acc}${acc ? ` ${EXPRESSIONV2_OPERATION_SYMBOL_MAP[expression.type!]} ` : ''}(${expressionfyLogicInterface(curr)})`;
 
       return acc;

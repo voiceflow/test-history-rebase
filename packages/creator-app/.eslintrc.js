@@ -39,6 +39,9 @@ module.exports = {
     // high performance overhead
     'import/named': 'off',
     'import/no-cycle': 'off',
+
+    // common pattern when writing styled components
+    'sonarjs/no-nested-template-literals': 'off',
   },
   settings: {
     'import/resolver': {

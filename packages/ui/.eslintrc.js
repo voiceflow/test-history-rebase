@@ -2,6 +2,10 @@ const path = require('path');
 
 module.exports = {
   extends: ['@voiceflow/eslint-config/frontend', '@voiceflow/eslint-config/typescript'],
+  rules: {
+    // common pattern when writing styled components
+    'sonarjs/no-nested-template-literals': 'off',
+  },
   settings: {
     'import/resolver': {
       typescript: {

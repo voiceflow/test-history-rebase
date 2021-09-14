@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.480.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.8...@voiceflow/creator-app@1.480.9) (2021-09-14)
+
+
+### Bug Fixes
+
+* add audio tax catagory (VF-1734) ([#4097](https://github.com/voiceflow/creator-app/issues/4097)) ([e433930](https://github.com/voiceflow/creator-app/commit/e4339301a35100a1344e7e36ca3e453c88b2988b))
+
+
+
+
+
 ## [1.480.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.7...@voiceflow/creator-app@1.480.8) (2021-09-14)
 
 

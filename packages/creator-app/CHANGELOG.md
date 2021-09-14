@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.480.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.6...@voiceflow/creator-app@1.480.7) (2021-09-14)
+
+
+### Bug Fixes
+
+* utterances focus (VF-617) ([#4115](https://github.com/voiceflow/creator-app/issues/4115)) ([90f8576](https://github.com/voiceflow/creator-app/commit/90f8576aea4b5e24abe69aaa9fc939c58b616f60))
+
+
+
+
+
 ## [1.480.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.5...@voiceflow/creator-app@1.480.6) (2021-09-14)
 
 **Note:** Version bump only for package @voiceflow/creator-app

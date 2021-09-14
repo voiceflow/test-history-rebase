@@ -22,7 +22,6 @@ Cypress.Commands.add('setup', () => {
 });
 
 Cypress.Commands.add('teardown', () => {
-  cy.removeTestTranscripts();
   cy.removeTestAccount();
 });
 

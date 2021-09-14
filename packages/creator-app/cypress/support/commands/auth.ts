@@ -94,13 +94,6 @@ Cypress.Commands.add('removeTestAccount', () => {
   cy.exec(`${PSQL} -c "DELETE FROM creators WHERE email='${TEST_EMAIL}'"`);
 });
 
-Cypress.Commands.add('removeTestTranscripts', () => {
-  const creatorID = SESSION_CONTEXT.get(CREATOR_ID_KEY);
-  if (creatorID) {
-    cy.exec(`${PSQL} -c "DELETE FROM transcripts WHERE creator_id=${creatorID}"`);
-  }
-});
-
 Cypress.Commands.add('removeTestThreads', () => {
   const creatorID = SESSION_CONTEXT.get(CREATOR_ID_KEY);
 

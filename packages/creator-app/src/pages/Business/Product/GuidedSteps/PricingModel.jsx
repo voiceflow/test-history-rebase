@@ -27,6 +27,7 @@ export const TAX_CATEGORIES = [
   { value: 'NEWSPAPERS', label: 'Newspaper' },
   { value: 'PERIODICALS', label: 'Periodicals' },
   { value: 'SOFTWARE', label: 'Software' },
+  { value: 'STREAMING_AUDIO', label: 'Streaming Audio' },
   { value: 'STREAMING_RADIO', label: 'Streaming Radio' },
   { value: 'VIDEO', label: 'Video' },
 ];

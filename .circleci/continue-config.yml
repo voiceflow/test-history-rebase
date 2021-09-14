@@ -60,7 +60,7 @@ parameters:
     default: false
 
 orbs:
-  vfcommon: voiceflow/common@0.0.190
+  vfcommon: voiceflow/common@0.0.193
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 
@@ -296,9 +296,9 @@ jobs:
       - vfcommon/install_cpio
       - vfcommon/exec_command_when_package_changed_monorepo:
           step_name: Build dependencies
-
           command: yarn build --scope @voiceflow/realtime-sdk --scope @voiceflow/ui
           package_to_force_execution: "creator-app"
+          force_execution: << pipeline.parameters.build-all >>
           run_on_root: true
       - restore_cache:
           name: Restoring jest Cache
@@ -310,11 +310,21 @@ jobs:
           keys:
             - eslint-cache-{{ .Branch }}
             - eslint-cache-master
-      - vfcommon/unit_tests_monorepo
-      - vfcommon/integration_tests_monorepo
-      - vfcommon/lint_report_monorepo
-      - vfcommon/lint_dockerfile_monorepo
-      - vfcommon/dependency_tests_monorepo
+      - vfcommon/unit_tests_monorepo:
+          force_execution: << pipeline.parameters.build-all >>
+          run_on_root: << pipeline.parameters.build-all >>
+      - vfcommon/integration_tests_monorepo:
+          force_execution: << pipeline.parameters.build-all >>
+          run_on_root: << pipeline.parameters.build-all >>
+      - vfcommon/lint_report_monorepo:
+          force_execution: << pipeline.parameters.build-all >>
+          run_on_root: << pipeline.parameters.build-all >>
+      - vfcommon/lint_dockerfile_monorepo:
+          force_execution: << pipeline.parameters.build-all >>
+          run_on_root: << pipeline.parameters.build-all >>
+      - vfcommon/dependency_tests_monorepo:
+          force_execution: << pipeline.parameters.build-all >>
+          run_on_root: << pipeline.parameters.build-all >>
       - save_cache:
           name: Saving jest Cache
           key: jest-cache-{{ .Branch }}-{{ .BuildNum }}

@@ -257,6 +257,6 @@
     "test:dependencies": "depcheck",
     "test:integration": "NODE_ENV=test jest --coverage --config config/test/integration/jest.config.js",
     "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml",
-    "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck "
+    "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   }
 }

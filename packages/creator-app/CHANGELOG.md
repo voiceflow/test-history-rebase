@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.480.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.7...@voiceflow/creator-app@1.480.8) (2021-09-14)
+
+
+### Bug Fixes
+
+* remove old cleanup code (VF-000) ([#4116](https://github.com/voiceflow/creator-app/issues/4116)) ([b1b3ad4](https://github.com/voiceflow/creator-app/commit/b1b3ad4f5d70cc2e6d3bc12e6c342442ec596e9f))
+* unify publish hook and fix login (VF-1639) ([#4113](https://github.com/voiceflow/creator-app/issues/4113)) ([5a25376](https://github.com/voiceflow/creator-app/commit/5a25376b05bd7b5db877d78b48b18d1f1efa008f))
+
+
+
+
+
 ## [1.480.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.6...@voiceflow/creator-app@1.480.7) (2021-09-14)
 
 

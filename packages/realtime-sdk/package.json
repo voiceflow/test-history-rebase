@@ -24,10 +24,18 @@
     "utility-types": "^3.10.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.21",
+    "@types/faker": "^5.5.8",
     "@voiceflow/api-sdk": "^1.37.1",
+    "chai": "^4.3.4",
+    "cooky-cutter": "^1.5.4",
     "draft-js": "^0.11.2",
+    "faker": "^5.5.3",
+    "mocha": "^9.1.1",
     "polished": "^3.6.5",
-    "slate": "0.63.0"
+    "slate": "0.63.0",
+    "ts-mocha": "^8.0.0",
+    "tsconfig-paths": "^3.11.0"
   },
   "files": [
     "build"
@@ -57,9 +65,9 @@
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:report": "yarn lint --format json -o sonar/report.json",
-    "test": "exit 0",
+    "test": "ts-mocha --paths --config ./config/tests/mocharc.yml 'tests/**/*.{unit,it}.ts'",
     "test:dependencies": "depcheck",
-    "test:integration": "exit 0",
-    "test:unit": "exit 0"
+    "test:integration": "yarn test",
+    "test:unit": "yarn test"
   }
 }

@@ -1,13 +1,19 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": ".",
+    "rootDir": "src",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
     "outDir": "./build/common",
     "declaration": true
   },
   "exclude": [
     "node_modules/**",
     "build/**",
-    "test/**"
+    "tests/**"
   ]
 }

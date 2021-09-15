@@ -9,4 +9,14 @@ module.exports = {
       },
     },
   },
+  rules: {
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        ts: 'never',
+      },
+    ],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/tests/**/*.ts'] }],
+  },
 };

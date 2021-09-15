@@ -5,12 +5,23 @@
       "es2017",
       "es2019.array"
     ],
-    "paths": {},
-    "baseUrl": null
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/tests/*": ["./tests/__support__/*"],
+    },
+    "baseUrl": ".",
+    "typeRoots": [
+      "node_modules/@types", "./typings"
+    ],
+    "types": [
+      "mocha",
+      "chai",
+      "node",
+    ],
   },
   "compileOnSave": false,
   "exclude": [
     "node_modules/**",
     "build/**"
-  ]
+  ],
 }

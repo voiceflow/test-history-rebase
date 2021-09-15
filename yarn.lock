@@ -5631,7 +5631,7 @@
     babel-plugin-styled-components "^1.13.2"
     babel-preset-react-app "^10.0.0"
 
-"@voiceflow/base-types@1.6.0", "@voiceflow/base-types@^1.6.0":
+"@voiceflow/base-types@1.6.0":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.6.0.tgz#fd5ed05853ddf6595805777099df8862f4f431d2"
   integrity sha512-ziT48qPGN31ge5rAR0EvA+blWjJA0Nmh6ko6XM16PjuKOE7DYne8eKrdlyQBVYB3dPWh+1fdFO6FesPvBDRjDQ==
@@ -5639,7 +5639,7 @@
     "@voiceflow/api-sdk" "^1.39.0"
     slate "^0.63.0"
 
-"@voiceflow/base-types@1.6.1", "@voiceflow/base-types@^1.6.1":
+"@voiceflow/base-types@1.6.1":
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.6.1.tgz#06434e982f6af04e56a4d24563e36122339ee9b4"
   integrity sha512-q0nVZrzEiytW28ve1mCdNFRhXKgV0i4bZ3kGCXUDWaxqzzFso/LrBIxfzizzgpBEIhhmpE9GDVH8LGK7+tHDGg==
@@ -5647,29 +5647,21 @@
     "@voiceflow/api-sdk" "^1.39.0"
     slate "^0.63.0"
 
-"@voiceflow/base-types@^1.1.0":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.5.3.tgz#45d07657955f78f14244d6f3c03c02ff2d8f001c"
-  integrity sha512-d28FzrMqmIUTrwDtLLKW6j5UrTPtSFoqA5vfQxX2+fYwIlt8cA5mq2hmzi4trU/3y8cwZvCzuOTQdHYyJEqUuA==
+"@voiceflow/base-types@^1.1.0", "@voiceflow/base-types@^1.6.0", "@voiceflow/base-types@^1.6.1", "@voiceflow/base-types@^1.6.2":
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.6.2.tgz#193c5a86b05f1c3eab23c8ff0bd0ce95fcf8f6e2"
+  integrity sha512-NQ3wNQ5K0NpYKY+dBteePjHKSilnsmxrApcyte33Jb27dCnEMq4CqjYw+RVpW/FymC73V6hVGZ6eO8zRDsFeGQ==
   dependencies:
     "@voiceflow/api-sdk" "^1.39.0"
     slate "^0.63.0"
 
-"@voiceflow/chat-types@1.4.11":
-  version "1.4.11"
-  resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-1.4.11.tgz#0ecbf0ca0aeda3307a29e85b0f85992cab9bceda"
-  integrity sha512-/7FqFQ4bVkO+caGA6Ec/8/jXfkWeHLPWtBIXXindbbmx3BOwm7k2qH/DWOQa2W63mN/mi40rd6R/XuF+BWsq1Q==
+"@voiceflow/chat-types@1.4.13", "@voiceflow/chat-types@^1.4.12":
+  version "1.4.13"
+  resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-1.4.13.tgz#5e0b4dd250463ba6d0cd691f0c458484a400c2e0"
+  integrity sha512-k8YAJX0Dqfgdki3HWXHk7f8A9Cw3v8wpXt9/Nwdppq9BIL19iOdYTvg2bKTTqavvfo/olEkJgAZKnRXKZtB6QA==
   dependencies:
     "@voiceflow/api-sdk" "^1.39.0"
-    "@voiceflow/base-types" "^1.6.0"
-
-"@voiceflow/chat-types@^1.4.12":
-  version "1.4.12"
-  resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-1.4.12.tgz#bc808e5df9420f15477b7895847fd9bc49d6f74f"
-  integrity sha512-nXC3808c+bAyAcT9XeFmNcExrqcrOwGSowq+LKm05LNcu/CfOtW3sWD8Jm/kqTsMe7CgEwr/CaM9f/3+zOGkDw==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.39.0"
-    "@voiceflow/base-types" "^1.6.1"
+    "@voiceflow/base-types" "^1.6.2"
 
 "@voiceflow/commitlint-config@^1.1.0":
   version "1.1.0"

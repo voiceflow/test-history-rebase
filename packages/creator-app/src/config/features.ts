@@ -9,6 +9,7 @@ const ASR_BYPASS_ENABLED = process.env.FF_ASR_BYPASS === 'true';
 const NATO_APCO_ENABLED = process.env.FF_NATO_ACPO === 'true';
 const MOTOROLA_SSO_ENABLED = process.env.FF_MOTOROLA_SSO === 'true';
 const ATOMIC_ACTIONS_ENABLED = process.env.FF_ATOMIC_ACTIONS === 'true';
+const GOOGLE_CREATE_ENABLED = process.env.FF_GOOGLE_CREATE === 'true';
 const DIALOGFLOW_ENABLED = process.env.FF_DIALOGFLOW === 'true';
 
 export enum FeatureFlag {
@@ -26,6 +27,7 @@ export enum FeatureFlag {
   INTERCOM_INTEGRATION = 'intercom_integration',
 
   DIALOGFLOW = 'dialogflow',
+  GOOGLE_CREATE = 'google_create',
 }
 
 export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
@@ -38,4 +40,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.MOTOROLA_SSO]: MOTOROLA_SSO_ENABLED,
   [FeatureFlag.ATOMIC_ACTIONS]: ATOMIC_ACTIONS_ENABLED,
   [FeatureFlag.DIALOGFLOW]: DIALOGFLOW_ENABLED,
+  [FeatureFlag.GOOGLE_CREATE]: GOOGLE_CREATE_ENABLED,
 };

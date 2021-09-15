@@ -117,6 +117,7 @@ export namespace GooglePublishJob {
     {
       message: string;
       googleProjectID: string;
+      agentName: string;
       versionID: string;
       successType: GooglePublishJobSuccessType;
       rootDiagramID: string;

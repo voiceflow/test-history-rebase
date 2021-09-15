@@ -6,11 +6,12 @@ import { linkGraphic } from '@/assets';
 import AmazonLoginButton from '@/components/Forms/AmazonLogin';
 import GoogleLoginButton from '@/components/Forms/GoogleLogin';
 import { ModalFooter } from '@/components/Modal';
-import { GOOGLE_OAUTH_SCOPES, ModalType } from '@/constants';
+import { FeatureFlag } from '@/config/features';
+import { DIALOGFLOW_OAUTH_SCOPES, GOOGLE_OAUTH_SCOPES, GOOGLE_OAUTH_SCOPES_V2, ModalType } from '@/constants';
 import { AlexaStageType, GoogleStageType } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
-import { useModals } from '@/hooks';
+import { useFeature, useModals } from '@/hooks';
 import { Account } from '@/models';
 import * as Models from '@/models';
 import {
@@ -41,6 +42,8 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
   }>(modalType);
   const { stage, updateCurrentStage } = data;
 
+  const isGoogleCreate = useFeature(FeatureFlag.GOOGLE_CREATE)?.isEnabled;
+  const isDialogFlow = useFeature(FeatureFlag.DIALOGFLOW)?.isEnabled;
   const [state, api] = useSmartReducerV2({ error: false, loading: false });
 
   const onLoad = () => {
@@ -167,7 +170,12 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
                 </Button>
 
                 <ButtonContainer>
-                  <GoogleLoginButton scopes={GOOGLE_OAUTH_SCOPES} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
+                  <GoogleLoginButton
+                    scopes={(isGoogleCreate && GOOGLE_OAUTH_SCOPES_V2) || (isDialogFlow && DIALOGFLOW_OAUTH_SCOPES) || GOOGLE_OAUTH_SCOPES}
+                    onLoad={onLoad}
+                    onFail={onFail}
+                    onSuccess={onSuccess}
+                  />
                 </ButtonContainer>
               </ActionContainer>
             </ModalFooter>

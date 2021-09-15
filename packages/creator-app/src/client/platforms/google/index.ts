@@ -20,6 +20,10 @@ const googleServiceClient = {
   modelExport: createModelExportService(googleService),
   project: projectService,
   publish: createPublishService<GooglePublishJob.AnyJob, GoogleStageType>(GOOGLE_SERVICE_ENDPOINT),
+  // replace publish with publishV2 once FF removed
+  publishV2: createPublishService<GooglePublishJob.AnyJob, GoogleStageType>(`${GOOGLE_SERVICE_ENDPOINT}/v2`),
+  // move to separate client when DF-ES platform added
+  publishDF: createPublishService<GooglePublishJob.AnyJob, GoogleStageType>(`${GOOGLE_SERVICE_ENDPOINT}/dialogflow/es`),
   session: createSessionService<Account.Google, { code: string }>(GOOGLE_SERVICE_ENDPOINT),
   version: createVersionService<Version.GoogleVersionSettings, Version.GoogleVersionPublishing, Version.GoogleVersionData>(GOOGLE_SERVICE_ENDPOINT),
   prototype: createPrototypeService<GeneralJob.AnyJob>(GOOGLE_SERVICE_ENDPOINT),

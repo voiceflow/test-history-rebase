@@ -15,6 +15,7 @@ import {
   ff_atomicActions,
   ff_dialogflow,
   ff_gadgets,
+  ff_googleCreate,
   ff_motorolaSSO,
   ff_natoApco,
   ff_ownerRole,
@@ -69,6 +70,7 @@ export default {
   FF_MOTOROLA_SSO: ff_motorolaSSO && 'true',
   FF_ATOMIC_ACTIONS: ff_atomicActions && 'true',
   FF_DIALOGFLOW: ff_dialogflow && 'true',
+  FF_GOOGLE_CREATE: ff_googleCreate && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

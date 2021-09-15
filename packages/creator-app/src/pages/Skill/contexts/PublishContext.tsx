@@ -1,13 +1,15 @@
+import { PlatformType } from '@voiceflow/internal';
 import { useContextApi, useDidUpdateEffect, useSetup, useTeardown, withContext } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
+import { FeatureFlag } from '@/config/features';
 import { JobStatus } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useDispatch } from '@/hooks';
+import { useDispatch, useFeature } from '@/hooks';
 import { AlexaPublishJob, GooglePublishJob } from '@/models';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
@@ -28,11 +30,16 @@ export const PublishProvider: React.FC = ({ children }) => {
   const pullTimeout = React.useRef<NodeJS.Timeout>();
   const [job, setJob] = React.useState<Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>>(null);
 
+  const isGoogleCreate = useFeature(FeatureFlag.GOOGLE_CREATE)?.isEnabled;
+  const isDialogflow = useFeature(FeatureFlag.DIALOGFLOW)?.isEnabled;
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 
-  const platformClient = client.platform(platform);
+  const platformClient =
+    (platform === PlatformType.GOOGLE && isGoogleCreate && { ...client.platform.google, publish: client.platform.google.publishV2 }) ||
+    (platform === PlatformType.GOOGLE && isDialogflow && { ...client.platform.google, publish: client.platform.google.publishDF }) ||
+    client.platform(platform);
 
   const getJob = React.useCallback(async () => {
     const currentJob = await platformClient.publish.getStatus(projectID);

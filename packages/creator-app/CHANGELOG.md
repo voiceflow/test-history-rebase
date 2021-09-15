@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.481.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.10...@voiceflow/creator-app@1.481.0) (2021-09-15)
+
+
+### Features
+
+* dialogflow google ff (VF-1742) ([#4118](https://github.com/voiceflow/creator-app/issues/4118)) ([69815b0](https://github.com/voiceflow/creator-app/commit/69815b034d7367d0d6df63a35a0cdfef81f6450e))
+
+
+
+
+
 ## [1.480.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.480.9...@voiceflow/creator-app@1.480.10) (2021-09-15)
 
 **Note:** Version bump only for package @voiceflow/creator-app

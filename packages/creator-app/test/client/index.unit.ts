@@ -7,8 +7,6 @@ suite('Client - Root', ({ expect }) => {
     expect(Object.keys(client)).to.have.members([
       'api',
       'platform',
-
-      'analytics',
       'backup',
       'canvasExport',
       'comment',

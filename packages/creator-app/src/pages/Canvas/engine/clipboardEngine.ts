@@ -1,7 +1,6 @@
+import { Crypto } from '@voiceflow/common';
 import { PlatformType } from '@voiceflow/internal';
 import { toast } from '@voiceflow/ui';
-import Base64 from 'crypto-js/enc-base64';
-import Utf8 from 'crypto-js/enc-utf8';
 import { get, set } from 'idb-keyval';
 
 import * as Errors from '@/config/errors';
@@ -16,7 +15,7 @@ import * as Slot from '@/ducks/slot';
 import * as Version from '@/ducks/version';
 import * as Models from '@/models';
 import * as Clipboard from '@/utils/clipboard';
-import { base64, synchronous as synchronousCrypto } from '@/utils/crypto';
+import { synchronous as synchronousCrypto } from '@/utils/crypto';
 import { Coords } from '@/utils/geometry';
 
 import { EngineConsumer, getCopiedNodeDataIDs } from './utils';
@@ -135,7 +134,7 @@ class ClipboardEngine extends EngineConsumer {
 
       await set(
         CLIPBOARD_DATA_KEY,
-        base64.encodeObject({
+        Crypto.Base64.encodeJSON({
           data: encryptedData,
           key: keyToStore,
           version: CURRENT_VERSION,
@@ -150,7 +149,7 @@ class ClipboardEngine extends EngineConsumer {
     extractData: async (copiedKey: string) => {
       const b64Data = await get<string>(CLIPBOARD_DATA_KEY);
 
-      const { data, key, version: sourceVersion } = JSON.parse(Utf8.stringify(Base64.parse(b64Data)));
+      const { data, key, version: sourceVersion } = Crypto.Base64.decodeJSON(b64Data);
 
       if (sourceVersion !== CURRENT_VERSION) {
         throw new Error('clipboard version mismatch');

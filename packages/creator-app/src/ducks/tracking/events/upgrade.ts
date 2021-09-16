@@ -14,7 +14,7 @@ interface TrackUpgradeOptions {
 }
 
 export const trackUpgrade = createWorkspaceEventTracker<TrackUpgradeOptions>((options) =>
-  client.analytics.track(
+  client.api.analytics.track(
     EventName.EXPORT_BUTTON_CLICK,
     createWorkspaceEventPayload(options, {
       plan: options.plan,
@@ -30,7 +30,7 @@ interface TrackUpgradePromptOptions {
 }
 
 export const trackUpgradePrompt = createWorkspaceEventTracker<TrackUpgradePromptOptions>((options) =>
-  client.analytics.track(
+  client.api.analytics.track(
     EventName.UPGRADE_PROMPT,
     createWorkspaceEventPayload(options, {
       prompt_type: options.promptType,
@@ -39,5 +39,5 @@ export const trackUpgradePrompt = createWorkspaceEventTracker<TrackUpgradePrompt
 );
 
 export const trackUpgradeModal = createWorkspaceEventTracker((options) =>
-  client.analytics.track(EventName.UPGRADE_MODAL, createWorkspaceEventPayload(options))
+  client.api.analytics.track(EventName.UPGRADE_MODAL, createWorkspaceEventPayload(options))
 );

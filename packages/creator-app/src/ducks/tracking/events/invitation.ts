@@ -3,7 +3,7 @@ import client from '@/client';
 import { EventName } from '../constants';
 
 const createInvitationTracker = (eventName: EventName) => (workspaceID: string, email?: string, source?: string) => () =>
-  client.analytics.track(eventName, {
+  client.api.analytics.track(eventName, {
     teamhashed: ['invitation_workspace_id'],
     properties: {
       source,

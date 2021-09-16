@@ -1,4 +1,3 @@
-import analytics from './analytics';
 import api from './api';
 import backup from './backup';
 import canvasExport from './canvasExport';
@@ -27,7 +26,6 @@ const client = {
 
   platform: Object.assign(getPlatformClient, platformClients) as Platform,
 
-  analytics,
   backup,
   canvasExport,
   comment,

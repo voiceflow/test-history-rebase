@@ -4,14 +4,14 @@ import client from '@/client';
 
 import { EventName } from '../constants';
 
-export const trackOnboardingCreate = () => () => client.analytics.track(EventName.ONBOARDING_CREATE);
+export const trackOnboardingCreate = () => () => client.api.analytics.track(EventName.ONBOARDING_CREATE);
 
-export const trackOnboardingPersonalize = () => () => client.analytics.track(EventName.ONBOARDING_PERSONALIZE);
+export const trackOnboardingPersonalize = () => () => client.api.analytics.track(EventName.ONBOARDING_PERSONALIZE);
 
 export const trackOnboardingCollaborators =
   ({ skip, bookDemo, collaboratorCount }: { skip: boolean; bookDemo: boolean; collaboratorCount: number }) =>
   () =>
-    client.analytics.track(EventName.ONBOARDING_COLLABORATORS, {
+    client.api.analytics.track(EventName.ONBOARDING_COLLABORATORS, {
       properties: {
         skip,
         'book demo': bookDemo,
@@ -20,18 +20,18 @@ export const trackOnboardingCollaborators =
     });
 
 export const trackOnboardingPay = (properties: { skip: boolean; plan: string }) => () =>
-  client.analytics.track(EventName.ONBOARDING_PAY, { properties });
+  client.api.analytics.track(EventName.ONBOARDING_PAY, { properties });
 
 export const trackOnboardingJoin = (properties: { skip: boolean; role: string }) => () =>
-  client.analytics.track(EventName.ONBOARDING_JOIN, { properties });
+  client.api.analytics.track(EventName.ONBOARDING_JOIN, { properties });
 
 export const trackOnboardingSelectChannel = (properties: { skip: boolean; platform: PlatformType }) => () =>
-  client.analytics.track(EventName.ONBOARDING_SELECT_CHANNEL, { properties });
+  client.api.analytics.track(EventName.ONBOARDING_SELECT_CHANNEL, { properties });
 
 export const trackOnboardingComplete =
   ({ skip, workspaceID }: { skip: boolean; workspaceID: string }) =>
   () =>
-    client.analytics.track(EventName.ONBOARDING_COMPLETE, {
+    client.api.analytics.track(EventName.ONBOARDING_COMPLETE, {
       teamhashed: ['workspace_id'],
       properties: {
         skip,
@@ -56,7 +56,7 @@ export const trackOnboardingIdentify =
     workspaceIDs: string[];
   }) =>
   () =>
-    client.analytics.identify({
+    client.api.analytics.identify({
       traits: {
         name,
         role,

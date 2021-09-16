@@ -4571,7 +4571,7 @@
     tapable "^2.0.0"
     webpack "^5.1.0"
 
-"@types/crypto-js@^4.0.1":
+"@types/crypto-js@^4.0.1", "@types/crypto-js@^4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/crypto-js/-/crypto-js-4.0.2.tgz#4524325a175bf819fec6e42560c389ce1fb92c97"
   integrity sha512-sCVniU+h3GcGqxOmng11BRvf9TfN9yIs8KKjB8C8d75W69cpTfZG80gau9yTx5SxF3gvHGbJhdESzzvnjtf3Og==
@@ -5605,13 +5605,22 @@
     "@voiceflow/voice-types" "^1.4.12"
     ask-smapi-model "1.14.0"
 
-"@voiceflow/api-sdk@1.39.0", "@voiceflow/api-sdk@^1.37.1", "@voiceflow/api-sdk@^1.39.0":
+"@voiceflow/api-sdk@1.39.0":
   version "1.39.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.39.0.tgz#5f9cf5f54d53f7b2ac362a79a7a29c498ad54729"
   integrity sha512-rJERsN+FP1e80m44mtwpe3KwAVO1k5Co+WpCicUFNpC198XXaCeec+Qn7IVp0CHiIGPJEWifyrv6nT3PGofYmQ==
   dependencies:
     "@types/atob" "^2.1.2"
     atob "^2.1.2"
+    axios "^0.21.1"
+    superstruct "^0.10.12"
+
+"@voiceflow/api-sdk@^1.37.1", "@voiceflow/api-sdk@^1.39.0", "@voiceflow/api-sdk@^1.40.0":
+  version "1.40.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.40.0.tgz#c4b135c13c89c21e62fbda68e5e6e46f772adf52"
+  integrity sha512-be1UMhLo8assesraiqQD66sQPk8hFy9rO95tWwUKlDT6mkmPQNmJCH7+5Pna9VqLTmGVrIwcohsd9KISbtpAbg==
+  dependencies:
+    "@voiceflow/common" "6.8.0"
     axios "^0.21.1"
     superstruct "^0.10.12"
 
@@ -5631,28 +5640,12 @@
     babel-plugin-styled-components "^1.13.2"
     babel-preset-react-app "^10.0.0"
 
-"@voiceflow/base-types@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.6.0.tgz#fd5ed05853ddf6595805777099df8862f4f431d2"
-  integrity sha512-ziT48qPGN31ge5rAR0EvA+blWjJA0Nmh6ko6XM16PjuKOE7DYne8eKrdlyQBVYB3dPWh+1fdFO6FesPvBDRjDQ==
+"@voiceflow/base-types@1.6.3", "@voiceflow/base-types@^1.1.0", "@voiceflow/base-types@^1.6.0", "@voiceflow/base-types@^1.6.1", "@voiceflow/base-types@^1.6.2":
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.6.3.tgz#446e54dafc284d37a2e8a55e306eaa2a3a402b12"
+  integrity sha512-oVzyO4/feZm+Wk1VuHqqbZ6cg25yqgCorcfDK9Ioy28dcERtZxGuB7sAh4T/SQGOT1IxY3v21Gv5V4BC3Jk+WQ==
   dependencies:
-    "@voiceflow/api-sdk" "^1.39.0"
-    slate "^0.63.0"
-
-"@voiceflow/base-types@1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.6.1.tgz#06434e982f6af04e56a4d24563e36122339ee9b4"
-  integrity sha512-q0nVZrzEiytW28ve1mCdNFRhXKgV0i4bZ3kGCXUDWaxqzzFso/LrBIxfzizzgpBEIhhmpE9GDVH8LGK7+tHDGg==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.39.0"
-    slate "^0.63.0"
-
-"@voiceflow/base-types@^1.1.0", "@voiceflow/base-types@^1.6.0", "@voiceflow/base-types@^1.6.1", "@voiceflow/base-types@^1.6.2":
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.6.2.tgz#193c5a86b05f1c3eab23c8ff0bd0ce95fcf8f6e2"
-  integrity sha512-NQ3wNQ5K0NpYKY+dBteePjHKSilnsmxrApcyte33Jb27dCnEMq4CqjYw+RVpW/FymC73V6hVGZ6eO8zRDsFeGQ==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.39.0"
+    "@voiceflow/api-sdk" "^1.40.0"
     slate "^0.63.0"
 
 "@voiceflow/chat-types@1.4.13", "@voiceflow/chat-types@^1.4.12":
@@ -5686,6 +5679,14 @@
   integrity sha512-0ACgq44J5lWL5EudgEAPmlFc4aIYH8XaZNen9VZSrUHOVTVPaJBMgcf6R4QzG8b5QfLoebBewpfS5KebhqWTGg==
   dependencies:
     dotenv "^9.0.2"
+
+"@voiceflow/common@6.8.0":
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-6.8.0.tgz#0c7dfb5544f4e2ce42f4d52f65fd30752edb85b6"
+  integrity sha512-J8AFADt1XRICOkUHW8DwyZnsEYM5g+GKUV5tVJNBX2rZee4OK14i3VrxsFY1wnwkDYCy+lQoQi9JdJqmaQwfEg==
+  dependencies:
+    "@types/crypto-js" "^4.0.2"
+    crypto-js "^4.1.1"
 
 "@voiceflow/common@^6.5.1":
   version "6.6.1"
@@ -9609,7 +9610,7 @@ crypto-browserify@^3.0.0, crypto-browserify@^3.11.0, crypto-browserify@^3.12.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
-crypto-js@^4.0.0:
+crypto-js@^4.0.0, crypto-js@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
   integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==

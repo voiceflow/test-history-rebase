@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.15.2...@voiceflow/realtime-sdk@1.16.0) (2021-09-16)
+
+
+### Features
+
+* encrypted analytics (VF-1641) ([#4125](https://github.com/voiceflow/creator-app/issues/4125)) ([7c8184a](https://github.com/voiceflow/creator-app/commit/7c8184a4cc1acbdc0f5df12322c6b77cc3c8ab39))
+
+
+
+
+
 ## [1.15.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.15.1...@voiceflow/realtime-sdk@1.15.2) (2021-09-16)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

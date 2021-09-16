@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.2.2...@voiceflow/admin-app@1.3.0) (2021-09-16)
+
+
+### Features
+
+* encrypted analytics (VF-1641) ([#4125](https://github.com/voiceflow/creator-app/issues/4125)) ([7c8184a](https://github.com/voiceflow/creator-app/commit/7c8184a4cc1acbdc0f5df12322c6b77cc3c8ab39))
+
+
+
+
+
 ## [1.2.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.2.1...@voiceflow/admin-app@1.2.2) (2021-09-14)
 
 **Note:** Version bump only for package @voiceflow/admin-app

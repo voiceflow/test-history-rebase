@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.482.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.481.2...@voiceflow/creator-app@1.482.0) (2021-09-16)
+
+
+### Bug Fixes
+
+* if block path label (VF-1524) ([#4117](https://github.com/voiceflow/creator-app/issues/4117)) ([820d17e](https://github.com/voiceflow/creator-app/commit/820d17e505e332ba8e7a404c17c3686f66e64b80))
+
+
+### Features
+
+* encrypted analytics (VF-1641) ([#4125](https://github.com/voiceflow/creator-app/issues/4125)) ([7c8184a](https://github.com/voiceflow/creator-app/commit/7c8184a4cc1acbdc0f5df12322c6b77cc3c8ab39))
+* update transcript nav dimension ([#4135](https://github.com/voiceflow/creator-app/issues/4135)) ([eba76a3](https://github.com/voiceflow/creator-app/commit/eba76a33c7ae8532a49f15a99142946603796ed0))
+
+
+
+
+
 ## [1.481.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.481.1...@voiceflow/creator-app@1.481.2) (2021-09-16)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -29,7 +29,7 @@ export const INITIAL_STATE: RecentState = {
   prototype: {
     debug: false,
     intent: false,
-    guided: true,
+    guided: false,
   },
   redirect: null,
 };
@@ -73,8 +73,6 @@ export const recentRedirectSelector = createSelector([rootSelector], ({ redirect
 export const recentPrototypeSelector = createSelector([rootSelector], ({ prototype }) => prototype);
 
 export const prototypeDebugSelector = createSelector([recentPrototypeSelector], ({ debug }) => debug);
-
-export const prototypeIntentSelector = createSelector([recentPrototypeSelector], ({ intent }) => intent);
 
 //  action creators
 

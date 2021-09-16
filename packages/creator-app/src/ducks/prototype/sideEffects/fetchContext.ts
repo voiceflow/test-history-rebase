@@ -25,12 +25,11 @@ const getTargetFlowID = (trace: Trace[]) => {
 };
 
 const fetchContext =
-  (request: Request.BaseRequest | null): Thunk<Context | null> =>
+  (request: Request.BaseRequest | null, config: Recent.PrototypeConfig): Thunk<Context | null> =>
   async (dispatch, getState) => {
     const reduxState = getState();
     const { trace: _oldTrace, ...state } = prototypeContextSelector(reduxState);
     const { contextStep } = prototypeSelector(reduxState);
-    const settings = Recent.recentPrototypeSelector(reduxState);
     const currentVisualData = prototypeVisualDataSelector(reduxState);
     const versionID = Session.activeVersionIDSelector(reduxState);
     const activeDiagramID = Session.activeDiagramIDSelector(reduxState);
@@ -42,13 +41,15 @@ const fetchContext =
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(activeDiagramID);
 
+    const guidedConfig = { stopAll: true, stopTypes: [Node.NodeType.IF_V2] };
+
     try {
       const { state: _state, trace } = await client.prototype.interact(
         versionID,
         {
           state,
           request,
-          config: { stopAll: !!settings.guided, excludeTypes: [], tts: true },
+          config: { ...(!!config.guided && guidedConfig), excludeTypes: [], tts: true },
         },
         sessionID
       );

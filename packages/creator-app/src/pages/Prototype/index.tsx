@@ -3,6 +3,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import * as PrototypeDuck from '@/ducks/prototype';
+import * as Recent from '@/ducks/recent';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import removeIntercom from '@/hocs/removeIntercom';
@@ -29,6 +30,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
   atTop,
   debug,
   locale,
+  config,
   status,
   buttons,
   isPublic,
@@ -51,6 +53,7 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     onStepForward,
   } = usePrototype({
     debug,
+    config,
     isPublic,
     prototypeStatus: status,
   });
@@ -133,6 +136,7 @@ const mapStateToProps = {
   locales: Version.activeLocalesSelector,
   autoplay: PrototypeDuck.prototypeAutoplaySelector,
   showButtons: PrototypeDuck.prototypeShowButtonsSelector,
+  config: Recent.recentPrototypeSelector,
 };
 
 const mapDispatchProps = {

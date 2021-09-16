@@ -41,6 +41,7 @@ const ActionButton = styled(Button)`
   ${transition('border')};
   border: solid 1px rgba(141, 162, 181, 0.4);
   color: #132144;
+  text-transform: none;
 
   :hover,
   :active {
@@ -117,8 +118,7 @@ const ScrollContainer = styled(SimpleBar)`
 const InlineContainer = styled(BoxFlex)`
   padding-top: 8px;
   margin-left: 40px;
-  flex-direction: row-reverse;
-  direction: rtl;
+  justify-content: flex-start;
   flex-wrap: wrap;
 `;
 

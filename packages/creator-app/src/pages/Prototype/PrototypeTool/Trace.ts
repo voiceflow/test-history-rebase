@@ -304,7 +304,7 @@ class TraceController {
         const { type } = path.event;
 
         acc.push({
-          name: type,
+          name: path.label || type,
           request: { type, payload: undefined },
           isActionButton: true,
         });

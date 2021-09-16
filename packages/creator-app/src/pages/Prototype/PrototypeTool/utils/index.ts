@@ -1,7 +1,7 @@
 import { Context } from '@/ducks/prototype';
 import { BaseTraceFrame, V1Trace } from '@/models';
 
-export const isV1Trace = (trace: BaseTraceFrame): trace is V1Trace => !!(trace.paths && typeof trace.defaultPath === 'number');
+export const isV1Trace = (trace: BaseTraceFrame): trace is V1Trace => Array.isArray(trace.paths);
 
 export const getUpdatedContextHistory = (
   contextStep: number,

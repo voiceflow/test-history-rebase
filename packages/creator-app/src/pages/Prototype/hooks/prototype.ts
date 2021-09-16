@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Creator from '@/ducks/creator';
 import * as Modal from '@/ducks/modal';
 import * as Prototype from '@/ducks/prototype';
+import { PrototypeConfig } from '@/ducks/recent';
 import * as Session from '@/ducks/session';
 import { useEventualEngine, useTrackingEvents } from '@/hooks';
 import perf, { PerfAction } from '@/performance';
@@ -17,11 +18,13 @@ import { Interaction, Message, PMStatus } from '../types';
 
 const usePrototype = ({
   debug,
+  config,
   isPublic,
   waitVisuals = true,
   prototypeStatus,
 }: {
   debug: boolean;
+  config: PrototypeConfig;
   isPublic?: boolean;
   waitVisuals?: boolean;
   prototypeStatus: Prototype.PrototypeStatus;
@@ -56,7 +59,7 @@ const usePrototype = ({
     contextStep,
     getNodeByID,
     updateStatus: setStatus,
-    fetchContext: (request) => dispatch(Prototype.fetchContext(request)),
+    fetchContext: (request) => dispatch(Prototype.fetchContext(request, config)),
     addToMessages: (message) => updateMessages([...messages, message]),
     flowIDHistory,
     contextHistory,

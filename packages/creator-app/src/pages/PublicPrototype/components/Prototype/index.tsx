@@ -53,6 +53,11 @@ const Prototype: React.FC<PrototypeProps & ConnectedPrototypeProps> = ({
     onStepBack,
   } = usePrototype({
     debug: false,
+    config: {
+      debug: false,
+      intent: false,
+      guided: false,
+    },
     isPublic: true,
     waitVisuals: isVisuals,
     prototypeStatus: status,

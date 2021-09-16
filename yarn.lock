@@ -5640,7 +5640,7 @@
     babel-plugin-styled-components "^1.13.2"
     babel-preset-react-app "^10.0.0"
 
-"@voiceflow/base-types@1.6.3", "@voiceflow/base-types@^1.1.0", "@voiceflow/base-types@^1.6.0", "@voiceflow/base-types@^1.6.1", "@voiceflow/base-types@^1.6.2":
+"@voiceflow/base-types@1.6.3", "@voiceflow/base-types@^1.1.0", "@voiceflow/base-types@^1.6.0", "@voiceflow/base-types@^1.6.1", "@voiceflow/base-types@^1.6.2", "@voiceflow/base-types@^1.6.3":
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.6.3.tgz#446e54dafc284d37a2e8a55e306eaa2a3a402b12"
   integrity sha512-oVzyO4/feZm+Wk1VuHqqbZ6cg25yqgCorcfDK9Ioy28dcERtZxGuB7sAh4T/SQGOT1IxY3v21Gv5V4BC3Jk+WQ==
@@ -5874,21 +5874,13 @@
   resolved "https://registry.yarnpkg.com/@voiceflow/tsconfig/-/tsconfig-1.0.0.tgz#09406c649729c8a9d5b7fa1d76427d8a9adbc961"
   integrity sha512-+gOf2u/5xc5SHqrD+o1nBPfodAo34jQWmVR6K/h94/XZp8uoHQ7yzUnMqRpiJMrdX+Ku7WCI0xd9h1jYSHS0LA==
 
-"@voiceflow/voice-types@1.4.11", "@voiceflow/voice-types@^1.4.11":
-  version "1.4.11"
-  resolved "https://registry.yarnpkg.com/@voiceflow/voice-types/-/voice-types-1.4.11.tgz#45f2bf336cba77bd1f9da703e0ef51280cec0df5"
-  integrity sha512-xRuoASpeFJPzOUFMYEoPrHWbzV7KgS9jerWIIahcFQSVEDfnH6QW8ibrycs5u8uRy861C2f2J3LjfxMnDDDyUw==
+"@voiceflow/voice-types@1.4.14", "@voiceflow/voice-types@^1.4.11", "@voiceflow/voice-types@^1.4.12":
+  version "1.4.14"
+  resolved "https://registry.yarnpkg.com/@voiceflow/voice-types/-/voice-types-1.4.14.tgz#e2e65816fdc002ca3dca3066942ce7e23deaed92"
+  integrity sha512-p9ebnuGjYbjAV2wlwmEUD6Np1Y+0qo44MgxhwXJmyIEWsjkVcDty1ki4RcKXhlbOxyhX+osXhleMITVWs7jnwQ==
   dependencies:
-    "@voiceflow/api-sdk" "^1.39.0"
-    "@voiceflow/base-types" "^1.6.0"
-
-"@voiceflow/voice-types@1.4.12", "@voiceflow/voice-types@^1.4.12":
-  version "1.4.12"
-  resolved "https://registry.yarnpkg.com/@voiceflow/voice-types/-/voice-types-1.4.12.tgz#527cf6d44907eaeb0e9a5416bdec277d1beb98d2"
-  integrity sha512-nuXXrKjbIgVBC4Liwz546qO59IimEk2m8KJL2tucEZoH+Nn/amSP9UzS4dh2ATCCn+bHIp1I7YMfGIV76kSgzQ==
-  dependencies:
-    "@voiceflow/api-sdk" "^1.39.0"
-    "@voiceflow/base-types" "^1.6.1"
+    "@voiceflow/api-sdk" "^1.40.0"
+    "@voiceflow/base-types" "^1.6.3"
 
 "@voiceflow/webpack-config@^1.10.0":
   version "1.10.0"

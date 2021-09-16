@@ -27,7 +27,7 @@
     "@voiceflow/internal": "^1.6.1",
     "@voiceflow/realtime-sdk": "^1.15.1",
     "@voiceflow/ui": "^1.15.3",
-    "@voiceflow/voice-types": "1.4.12",
+    "@voiceflow/voice-types": "1.4.14",
     "@welldone-software/why-did-you-render": "^4.3.1",
     "apl-viewhost-web": "1.7.0",
     "availity-reactstrap-validation": "^2.6.1",

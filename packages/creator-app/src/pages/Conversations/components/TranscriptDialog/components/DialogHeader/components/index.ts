@@ -3,7 +3,7 @@ import { colors, FlexApart } from '@voiceflow/ui';
 import { css, styled } from '@/hocs';
 
 export const Container = styled(FlexApart)<{ hasShadow: boolean }>`
-  height: 72px;
+  height: 65px;
   padding: 26px 32px;
   border-bottom: 1px solid transparent;
   transition: all 0.15s ease-in-out;

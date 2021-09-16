@@ -7,7 +7,7 @@ export { default as DatePicker } from './TimeRangePicker/DatePicker';
 export { default as TranscriptFilters } from './TranscriptFilters';
 
 export const Container = styled(FlexApart)<{ hasShadow: boolean }>`
-  height: 72px;
+  height: 65px;
   padding: 26px 32px;
   width: 100%;
   background: ${THEME.backgrounds.white};

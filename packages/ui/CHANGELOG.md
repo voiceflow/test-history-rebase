@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.16.1...@voiceflow/ui@1.17.0) (2021-09-17)
+
+
+### Features
+
+* updated nav styles (VF-1753) ([#4128](https://github.com/voiceflow/creator-app/issues/4128)) ([076e92f](https://github.com/voiceflow/creator-app/commit/076e92f4be62ba3d80cc07c2ffcaf15e1386820c))
+
+
+
+
+
 ## [1.16.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.16.0...@voiceflow/ui@1.16.1) (2021-09-17)
 
 **Note:** Version bump only for package @voiceflow/ui

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.485.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.484.0...@voiceflow/creator-app@1.485.0) (2021-09-17)
+
+
+### Bug Fixes
+
+* coord issue (VF-000) ([#4158](https://github.com/voiceflow/creator-app/issues/4158)) ([327ef15](https://github.com/voiceflow/creator-app/commit/327ef15bbe97b3a82db3287f86daac75cf692dc9))
+* date format (VF-000) ([#4157](https://github.com/voiceflow/creator-app/issues/4157)) ([5e0e238](https://github.com/voiceflow/creator-app/commit/5e0e2389a50bc651c7d08f56cb97a5445ba87989))
+* e2e numbers (VF-000) ([d35be16](https://github.com/voiceflow/creator-app/commit/d35be162a848bf09632867ceca5cbb09ac5570e1))
+
+
+### Features
+
+* updated nav styles (VF-1753) ([#4128](https://github.com/voiceflow/creator-app/issues/4128)) ([076e92f](https://github.com/voiceflow/creator-app/commit/076e92f4be62ba3d80cc07c2ffcaf15e1386820c))
+
+
+
+
+
 # [1.484.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.483.4...@voiceflow/creator-app@1.484.0) (2021-09-17)
 
 

@@ -36,10 +36,13 @@ export const PublishProvider: React.FC = ({ children }) => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 
-  const platformClient =
-    (platform === PlatformType.GOOGLE && isGoogleCreate && { ...client.platform.google, publish: client.platform.google.publishV2 }) ||
-    (platform === PlatformType.GOOGLE && isDialogflow && { ...client.platform.google, publish: client.platform.google.publishDF }) ||
-    client.platform(platform);
+  const platformClient = React.useMemo(
+    () =>
+      (platform === PlatformType.GOOGLE && isGoogleCreate && { ...client.platform.google, publish: client.platform.google.publishV2 }) ||
+      (platform === PlatformType.GOOGLE && isDialogflow && { ...client.platform.google, publish: client.platform.google.publishDF }) ||
+      client.platform(platform),
+    [platform]
+  );
 
   const getJob = React.useCallback(async () => {
     const currentJob = await platformClient.publish.getStatus(projectID);

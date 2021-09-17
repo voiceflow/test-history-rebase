@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.483.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.483.0...@voiceflow/creator-app@1.483.1) (2021-09-17)
+
+
+### Bug Fixes
+
+* svgs watching (VF-000) ([#4147](https://github.com/voiceflow/creator-app/issues/4147)) ([d1cc737](https://github.com/voiceflow/creator-app/commit/d1cc737115aa831af236de41475e3c67e691a3a2))
+
+
+
+
+
 # [1.483.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.482.1...@voiceflow/creator-app@1.483.0) (2021-09-17)
 
 

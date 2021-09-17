@@ -8,10 +8,10 @@ export type Point = [x: number, y: number];
 
 export interface PathPoint {
   point: Point;
-  toTop: boolean;
-  locked: boolean;
-  reversed: boolean;
-  allowedToTop: boolean;
+  toTop?: boolean;
+  locked?: boolean;
+  reversed?: boolean;
+  allowedToTop?: boolean;
 }
 
 export type PathPoints = PathPoint[];

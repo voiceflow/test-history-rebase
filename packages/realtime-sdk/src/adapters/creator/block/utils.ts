@@ -3,10 +3,11 @@ import { BaseDiagramNode as DBNode, BasePort as DBPort } from '@voiceflow/api-sd
 import { Button, Node as BaseNode } from '@voiceflow/base-types';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
 import cuid from 'cuid';
+import _pickBy from 'lodash/pickBy';
 
 import { RepromptType } from '../../../constants';
 import { Link, LinkData, Node, NodeData, Port } from '../../../models';
-import { Nullable } from '../../../types';
+import { Nullable, PathPoint, PathPoints } from '../../../types';
 import { createAdapter, createSimpleAdapter } from '../../utils';
 import { generateOutPort } from '../utils';
 
@@ -52,8 +53,19 @@ export const voiceNoMatchAdapter = createAdapter<BaseNode.Utils.StepNoMatch<Voic
   })
 );
 
+const removePointsFalseyValues = (points?: PathPoints) =>
+  points?.map((pathPoint): PathPoint => ({ ..._pickBy<PathPoint>(pathPoint, (value) => value === true), point: pathPoint.point }));
+
 export const defaultPortAdapter: PortsAdapter = {
-  toDB: (ports) => ports.map(({ port, target, link }) => ({ type: port.label || '', target, id: port.id, data: link?.data })),
+  toDB: (ports) =>
+    ports.map(({ port, target, link }) => {
+      const linkData: LinkData = {
+        ...link?.data,
+        points: link?.data?.points && removePointsFalseyValues(link?.data?.points),
+      };
+
+      return { type: port.label || '', target, id: port.id, data: linkData };
+    }),
   fromDB: (ports, node) =>
     ports.map((port) => ({
       port: generateOutPort(node.nodeID, port, { label: port.type }),

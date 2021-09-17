@@ -9,6 +9,7 @@ import { SlateEditorAPI, SlatePluginType, useSetupSlateEditor } from '@/componen
 import { BlockType, MarkupBlockType } from '@/constants';
 import { useForceUpdate, useSetup, useTeardown } from '@/hooks';
 import { Markup, NodeData } from '@/models';
+import { DEFAULT_BACKGROUND_COLOR } from '@/pages/Canvas/managers/MarkupText/constants';
 import { Nullable } from '@/types';
 import { objectID } from '@/utils';
 import { isMarkupBlockType } from '@/utils/typeGuards';
@@ -49,7 +50,7 @@ class MarkupEngine extends EngineConsumer {
       rotate: 0,
       content: [...SlateEditorAPI.createTextState('', { elementProperties: { [Text.ElementProperty.TEXT_ALIGN]: 'center' } })],
       overrideWidth: 178,
-      backgroundColor: null,
+      backgroundColor: DEFAULT_BACKGROUND_COLOR,
     };
 
     const nodeID = await this.engine.node.add(

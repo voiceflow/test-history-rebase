@@ -1,0 +1,66 @@
+import { Node as BaseNode } from '@voiceflow/base-types';
+import { expect } from 'chai';
+
+import displayAdapter from '@/adapters/creator/block/alexa/display';
+import { displayNodeDataFactory, displayStepDataFactory } from '@/tests/factories/alexa/display';
+
+describe('Adapters | Creator | Block | Alexa | displayAdapter', () => {
+  describe('when transforming from db', () => {
+    it('returns correct data', () => {
+      const data = displayStepDataFactory();
+
+      const result = displayAdapter.fromDB(data);
+
+      expect(result).eql({
+        title: data.title,
+        aplType: data.type,
+        imageURL: data.imageURL,
+        document: data.document,
+        datasource: data.datasource,
+        aplCommands: data.aplCommands,
+        jsonFileName: data.jsonFileName,
+        visualType: BaseNode.Visual.VisualType.APL,
+      });
+    });
+  });
+
+  describe('when transforming to db', () => {
+    it('returns correct data for default values', () => {
+      const data = displayNodeDataFactory();
+
+      const result = displayAdapter.toDB(data);
+
+      expect(result).eql({
+        type: data.aplType,
+        title: data.title,
+        imageURL: data.imageURL,
+        document: data.document,
+        datasource: data.datasource,
+        aplCommands: data.aplCommands,
+        jsonFileName: data.jsonFileName,
+      });
+    });
+
+    it('returns correct data for empty values', () => {
+      const data = displayNodeDataFactory({
+        title: undefined,
+        imageURL: undefined,
+        document: undefined,
+        datasource: undefined,
+        jsonFileName: undefined,
+      });
+
+      const result = displayAdapter.toDB(data);
+
+      expect(result).eql({
+        type: data.aplType,
+        title: '',
+        imageURL: '',
+        document: '',
+        datasource: '',
+        aplCommands: data.aplCommands,
+        jsonFileName: '',
+      });
+    });
+  });
+});

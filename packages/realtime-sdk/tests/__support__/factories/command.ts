@@ -8,7 +8,7 @@ import { NodeData } from '@/models';
 export const commandPlatformDataFactory = define<NodeData.Command.PlatformData>({
   diagramID: () => datatype.uuid(),
   intent: () => lorem.word(),
-  mappings: () => [],
+  mappings: () => [{ slot: lorem.word(), variable: lorem.word() }],
 });
 
 export const commandStepDataFactory = define<Node.Command.StepData>({

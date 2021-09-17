@@ -2,7 +2,7 @@ import { BlockVariant } from '../../../constants';
 import { NodeData } from '../../../models';
 import { createBlockAdapter } from './utils';
 
-interface BlockData {
+export interface BlockData {
   name?: string;
   color?: BlockVariant;
   blockColor?: BlockVariant;

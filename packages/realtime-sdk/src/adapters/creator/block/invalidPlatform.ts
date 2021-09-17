@@ -1,7 +1,9 @@
 import { NodeData } from '../../../models';
 import { createBlockAdapter } from './utils';
 
-const invalidPlatformBlockAdapter = createBlockAdapter<NodeData<unknown>, NodeData<unknown> & { invalidPlatformType: NodeData<unknown>['type'] }>(
+export type InvalidPlatformNodeData = NodeData<unknown> & { invalidPlatformType: NodeData<unknown>['type'] };
+
+const invalidPlatformBlockAdapter = createBlockAdapter<NodeData<unknown>, InvalidPlatformNodeData>(
   (data) => ({ ...data, invalidPlatformType: data.type }),
   ({ invalidPlatformType, ...data }) => ({ ...data, type: invalidPlatformType })
 );

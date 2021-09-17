@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/chai": "^4.2.21",
     "@types/faker": "^5.5.8",
+    "@types/sinon": "^10.0.2",
     "@voiceflow/api-sdk": "^1.37.1",
     "chai": "^4.3.4",
     "cooky-cutter": "^1.5.4",
@@ -33,6 +34,7 @@
     "faker": "^5.5.3",
     "mocha": "^9.1.1",
     "polished": "^3.6.5",
+    "sinon": "^11.1.2",
     "slate": "0.63.0",
     "ts-mocha": "^8.0.0",
     "tsconfig-paths": "^3.11.0"

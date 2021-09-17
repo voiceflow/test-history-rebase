@@ -12,7 +12,7 @@ import { getError, withPlaceholderCollaborators } from './utils';
 
 const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
   const {
-    state: { addCollaboratorMeta, sendingRequests },
+    state: { addCollaboratorMeta, sendingRequests, justCreatingWorkspace },
     actions: { setAddCollaboratorMeta, stepForward },
   } = React.useContext(OnboardingContext);
 
@@ -40,7 +40,13 @@ const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
     setCollaborators(members);
   };
 
-  const advanceToNextStep = () => stepForward(StepID.SELECT_CHANNEL);
+  const advanceToNextStep = () => {
+    if (!justCreatingWorkspace) {
+      stepForward(StepID.SELECT_CHANNEL);
+    } else {
+      stepForward(StepID.PAYMENT);
+    }
+  };
 
   const onContinue = () => {
     setAddCollaboratorMeta({ collaborators: collaborators.filter(({ email }) => !!email) });

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.484.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.483.4...@voiceflow/creator-app@1.484.0) (2021-09-17)
+
+
+### Bug Fixes
+
+* default open user-input section (VF-1748) ([#4148](https://github.com/voiceflow/creator-app/issues/4148)) ([65b9d41](https://github.com/voiceflow/creator-app/commit/65b9d41404444f503a70b2c3af7d05cba8eab18f))
+
+
+### Features
+
+* markup text default bg-color (VF-1759) ([#4149](https://github.com/voiceflow/creator-app/issues/4149)) ([d3ef2a9](https://github.com/voiceflow/creator-app/commit/d3ef2a93c7986db8d720ccd008a053db452f92f4))
+
+
+
+
+
 ## [1.483.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.483.3...@voiceflow/creator-app@1.483.4) (2021-09-17)
 
 

@@ -1,3 +1,4 @@
+import { Button, ButtonVariant } from '@voiceflow/ui';
 import axios from 'axios';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
@@ -192,11 +193,11 @@ function APITestModal({ data, closeTestModal, testModalOpened }) {
       </ModalBody>
       <SendRequestBar>
         <div style={{ flex: 1, textAlign: 'right' }}>
-          <button className="btn btn-primary" onClick={makeRequest}>
+          <Button style={{ float: 'right' }} variant={ButtonVariant.PRIMARY} onClick={makeRequest}>
             {hasResponse && !sendingRequest && <span>Re-Send Request</span>}
             {!sendingRequest && !hasResponse && <span>Send Request</span>}
             {sendingRequest && <span>Sending...</span>}
-          </button>
+          </Button>
         </div>
       </SendRequestBar>
     </Modal>

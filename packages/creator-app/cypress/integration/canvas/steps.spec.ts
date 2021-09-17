@@ -37,7 +37,7 @@ context('Canvas - Steps', () => {
     canvasPage.el.canvas.rightclick(400, 500, { force: true });
     sharedPage.el.contextMenu.contains('Paste').click();
 
-    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [400, 572]);
+    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [400, 565]);
   });
 
   it('duplicate step via hotkey', () => {
@@ -47,7 +47,7 @@ context('Canvas - Steps', () => {
 
     buildTools.getLastStep().click().sendHotkey('{meta}d');
 
-    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [532, 398]);
+    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [532, 394]);
   });
 
   it('duplicate step via context menu', () => {
@@ -58,6 +58,6 @@ context('Canvas - Steps', () => {
     buildTools.getLastStep().rightclick();
     sharedPage.el.contextMenu.contains('Duplicate').click();
 
-    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [532, 398]);
+    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [532, 394]);
   });
 });

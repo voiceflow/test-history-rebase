@@ -21,7 +21,7 @@ const PrototypeHeader: React.FC = () => {
 
       <Share />
 
-      <Box width={30} />
+      <Box width={16} />
     </Header>
   );
 };

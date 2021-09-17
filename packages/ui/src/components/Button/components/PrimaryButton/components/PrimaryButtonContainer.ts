@@ -4,6 +4,7 @@ import Icon from './PrimaryButtonIcon';
 
 export interface PrimaryButtonContainerProps extends ButtonContainerProps {
   canHover?: boolean;
+  squareRadius?: boolean;
 }
 
 const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerProps>`
@@ -12,15 +13,17 @@ const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerPro
   font-weight: 600;
   white-space: nowrap;
   text-align: center;
-  background: linear-gradient(-180deg, ${colors('blue')} 0%, #176ce0 68%);
+  background-color: #3d82e2;
   background-size: 1px 52px;
-  box-shadow: 0 0 1px 0 rgba(17, 49, 96, 0.1), 0 4px 8px 0 rgba(17, 49, 96, 0.16);
+  box-shadow: inset 0px -1px 0px 1px rgba(19, 33, 68, 0.08), 0px 1px 3px 0px rgba(19, 33, 68, 0.16), 0px 0px 1px 0px rgba(19, 33, 68, 0.08),
+    0px 1px 1px 0px rgba(19, 33, 68, 0.1);
 
   ${({ disabled, canHover = true }) =>
     disabled
       ? css`
-          background: linear-gradient(180deg, #5d9df56b 0%, #176ce075 100%);
           box-shadow: none;
+          opacity: 0.4;
+
           & ${Icon} {
             opacity: 0.46;
           }
@@ -32,9 +35,15 @@ const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerPro
           }
         `}
 
-  &:active {
-    box-shadow: 0 0 6px 0 rgba(17, 49, 96, 0.1), 0 6px 12px 0 rgba(17, 49, 96, 0.2);
+  &:hover {
+    background-color: #2f75d6;
   }
+
+  ${({ squareRadius }) =>
+    squareRadius &&
+    css`
+      border-radius: 10px !important;
+    `}
 `;
 
 export default PrimaryButtonContainer;

@@ -29,13 +29,9 @@ const CanvasHeader: React.FC = () => {
 
         {canPublish && !isAnyGeneralPlatform(platform) && (
           <>
-            <HeaderDivider />
-
             <Upload />
           </>
         )}
-
-        <HeaderDivider />
 
         <Run />
       </Header>

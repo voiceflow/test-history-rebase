@@ -22,12 +22,10 @@ const UploadButton = styled(Button).attrs({ speed: 2000 })<UploadButtonProps>`
   ${({ isUploading }) =>
     isUploading &&
     css`
-      background: linear-gradient(-180deg, #5d9df588 0%, #176ce088 68%);
       box-shadow: none;
     `}
 
   ${PrimaryButtonIcon} {
-    background: linear-gradient(-180deg, #427fcf 0%, #125bc1 68%);
     box-shadow: none;
 
     ${SvgIconContainer} {

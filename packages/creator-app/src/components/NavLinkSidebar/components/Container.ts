@@ -1,7 +1,7 @@
 import { styled } from '@/hocs';
 
 const Container = styled.div`
-  width: ${({ theme }) => theme.components.navLinkSidebar.width}px;
+  width: 248px;
   background-color: #fff;
   border-right: 1px solid ${({ theme }) => theme.colors.borders};
   height: 100%;

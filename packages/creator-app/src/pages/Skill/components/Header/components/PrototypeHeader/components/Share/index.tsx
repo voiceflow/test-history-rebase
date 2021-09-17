@@ -26,16 +26,8 @@ const Share: React.FC = () => {
         </PopperFooter>
       )}
     >
-      {({ ref, onToggle, isOpened }) => (
-        <Button
-          id={Identifier.SHARE_BUTTON}
-          ref={ref}
-          flat
-          variant={ButtonVariant.SECONDARY}
-          onClick={onToggle}
-          disabled={!canSharePrototype}
-          isActive={isOpened}
-        >
+      {({ ref, onToggle }) => (
+        <Button id={Identifier.SHARE_BUTTON} ref={ref} squareRadius variant={ButtonVariant.PRIMARY} onClick={onToggle} disabled={!canSharePrototype}>
           Share Prototype
         </Button>
       )}

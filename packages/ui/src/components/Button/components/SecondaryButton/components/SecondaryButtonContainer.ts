@@ -33,7 +33,7 @@ const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonContaine
     css`
       padding: 9px 18px 10px;
       background-color: rgba(238, 244, 246, 0.7);
-      border-radius: 8px;
+      border-radius: 10px;
     `}
 
   ${({ disabled }) =>

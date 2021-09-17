@@ -4,7 +4,7 @@ import { styled } from '@/hocs';
 
 const ShareButton = styled(Button).attrs({ variant: ButtonVariant.SECONDARY, flat: true, small: true })<SecondaryButtonProps>`
   margin-left: 16px;
-  margin-right: 20px;
+  margin-right: 10px;
 `;
 
 export default ShareButton;

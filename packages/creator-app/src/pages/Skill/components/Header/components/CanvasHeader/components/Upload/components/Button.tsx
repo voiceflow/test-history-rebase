@@ -1,5 +1,5 @@
 import { PlatformType } from '@voiceflow/internal';
-import { Text } from '@voiceflow/ui';
+import { Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { HeaderIconButtonProps } from '@/components/ProjectPage';
@@ -49,9 +49,12 @@ const getButtonProps = (platform: PlatformType, { variant, progress }: ConnectBu
         tooltip: { title: `Connect to ${getPlatformName(platform)}`, hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT] },
       };
     case ButtonVariant.UPLOAD:
-      return { ...loadIconProps, tooltip: { title: `Upload to ${getPlatformName(platform)}`, hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT] } };
+      return {
+        ...getPlatformIconProps(platform),
+        tooltip: { title: `Upload to ${getPlatformName(platform)}`, hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT] },
+      };
     case ButtonVariant.SUCCESS:
-      return { icon: 'greenCheckMark', size: 18, tooltip: { title: 'Successfully Uploaded' } };
+      return { icon: 'greenCheckMark', size: 18, tooltip: { html: <span>Successfully Uploaded</span> } };
     case ButtonVariant.LOADING:
       return {
         ...loadIconProps,
@@ -77,14 +80,12 @@ const ConnectButton: React.FC<ConnectButtonProps> = ({ onClick, ...props }) => {
   const platform = React.useContext(PlatformContext)!;
 
   const buttonProps = getButtonProps(platform, props);
+  const ButtonContainer = buttonProps.tooltip ? TippyTooltip : React.Fragment;
 
   return (
-    <StyledButton
-      id={Identifier.UPLOAD}
-      onClick={onClick}
-      {...buttonProps}
-      tooltip={buttonProps.tooltip && { ...buttonProps.tooltip, position: 'bottom' }}
-    />
+    <ButtonContainer {...buttonProps.tooltip} position="bottom">
+      <StyledButton id={Identifier.UPLOAD} onClick={onClick} {...buttonProps} />
+    </ButtonContainer>
   );
 };
 

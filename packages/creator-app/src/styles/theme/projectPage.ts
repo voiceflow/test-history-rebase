@@ -1,5 +1,5 @@
 const SIDEBAR_WIDTH = 72;
-const HEADER_HEIGHT = 72;
+const HEADER_HEIGHT = 65;
 
 const PROJECT_PAGE = {
   header: {

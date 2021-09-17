@@ -1,15 +1,9 @@
-import { HeaderIconButton } from '@/components/ProjectPage';
-import { Button } from '@/components/ProjectPage/components/Header/components/IconButton/components';
+import { Button, ButtonVariant, SecondaryButtonProps } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
-const Popup = styled(HeaderIconButton)`
-  ${Button} {
-    background-color: #fdfdfd;
-
-    &:hover {
-      background-color: #fbfbfb;
-    }
-  }
+const Popup = styled(Button).attrs({ variant: ButtonVariant.SECONDARY, flat: true, small: true })<SecondaryButtonProps>`
+  margin-right: 10px;
 `;
 
 export default Popup;

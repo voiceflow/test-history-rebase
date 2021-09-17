@@ -13,8 +13,8 @@ const StyledLogoButton = styled(IconButton).attrs({ icon: 'voiceflowV', size: 26
   }
 
   ${ExpandIconContainer} {
-    right: 12px;
-    bottom: 15px;
+    right: 11px;
+    bottom: 11px;
   }
 
   &:hover {

@@ -11,6 +11,7 @@ export interface PrimaryButtonProps extends PrimaryButtonContainerProps {
   icon?: SvgIconProps['icon'] | null;
   variant?: ButtonVariant.PRIMARY;
   iconProps?: Omit<SvgIconProps, 'icon'>;
+  squareRadius?: boolean;
 }
 
 const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(({ icon, children, iconProps, isLoading, ...props }, ref) => (

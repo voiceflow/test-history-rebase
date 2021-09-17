@@ -11,5 +11,5 @@ function copy_assets() {
 }
 
 copy_assets css
-cp -R assets/svgs ${REPO_DIR}/build/${BUILD_DIR}/assets
+cp -R assets/svg-icons ${REPO_DIR}/build/${BUILD_DIR}/assets
 

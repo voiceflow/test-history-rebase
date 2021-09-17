@@ -5,15 +5,5 @@ export * as Intent from './intent';
 export { default as productAdapter } from './product';
 export { default as projectAdapter } from './project';
 export { default as projectListAdapter } from './projectList';
-export {
-  Adapter,
-  AdapterNotImplementedError,
-  AnyBidirectionalAdapter,
-  AnyBidirectionalMultiAdapter,
-  BidirectionalAdapter,
-  BidirectionalMultiAdapter,
-  createAdapter,
-  createSimpleAdapter,
-  identityAdapter,
-  voiceRepromptToSpeakDataAdapter,
-} from './utils';
+export type { Adapter, AnyBidirectionalAdapter, AnyBidirectionalMultiAdapter, BidirectionalAdapter, BidirectionalMultiAdapter } from './utils';
+export { AdapterNotImplementedError, createAdapter, createSimpleAdapter, identityAdapter, voiceRepromptToSpeakDataAdapter } from './utils';

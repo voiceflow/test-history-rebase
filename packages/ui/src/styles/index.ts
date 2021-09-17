@@ -1,37 +1,35 @@
-import _styled, { css as _css, ThemedCssFunction, ThemedStyledInterface, ThemedStyledProps } from 'styled-components';
-
-import type { Theme } from './theme';
+import _styled, { css as _css, DefaultTheme, ThemedCssFunction, ThemedStyledInterface, ThemedStyledProps } from 'styled-components';
 
 export { createTheme } from './theme';
 export { createGlobalStyle, keyframes } from 'styled-components';
 
-export type StyledProps<P> = ThemedStyledProps<P, Theme>;
+export type StyledProps<P> = ThemedStyledProps<P, DefaultTheme>;
 
-export const styled: ThemedStyledInterface<Theme> = _styled;
+export const styled: ThemedStyledInterface<DefaultTheme> = _styled;
 
-export const css: ThemedCssFunction<Theme> = _css;
+export const css: ThemedCssFunction<DefaultTheme> = _css;
 
 export const transition =
   (...properties: string[]) =>
-  ({ theme }: { theme: Theme }): string =>
+  ({ theme }: { theme: DefaultTheme }): string =>
     theme.transition(...properties);
 
 export const units =
   (count = 1) =>
-  ({ theme }: { theme: Theme }): number =>
+  ({ theme }: { theme: DefaultTheme }): number =>
     theme.unit * count;
 
 export const colors =
-  (color: keyof Theme['colors']) =>
-  ({ theme }: { theme: Theme }): string =>
+  (color: keyof DefaultTheme['colors']) =>
+  ({ theme }: { theme: DefaultTheme }): string =>
     theme.colors[color];
 
 export const iconColors =
-  (color: keyof Theme['iconColors']) =>
-  ({ theme }: { theme: Theme }): string =>
+  (color: keyof DefaultTheme['iconColors']) =>
+  ({ theme }: { theme: DefaultTheme }): string =>
     theme.iconColors[color];
 
 export const backgrounds =
-  (background: keyof Theme['backgrounds']) =>
-  ({ theme }: { theme: Theme }): string =>
+  (background: keyof DefaultTheme['backgrounds']) =>
+  ({ theme }: { theme: DefaultTheme }): string =>
     theme.backgrounds[background];

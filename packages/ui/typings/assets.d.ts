@@ -6,7 +6,7 @@ declare module '*.svg' {
   export default SVG;
 }
 
-declare module './svgs/*.svg' {
+declare module './svg-icons/*.svg' {
   const svgURL: string;
 
   export default svgURL;

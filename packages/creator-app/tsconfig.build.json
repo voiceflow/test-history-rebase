@@ -4,16 +4,8 @@
     "baseUrl": ".",
     "rootDir": "src",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     }
   },
-  "exclude": [
-    "node_modules/**",
-    "src/**/*.story.*",
-    "test/**",
-    "config/**",
-    "**/__tests__/**"
-  ]
+  "exclude": ["node_modules/**", "src/**/*.story.*", "test/**", "config/**", "**/__tests__/**"]
 }

@@ -21,7 +21,7 @@ import {
 import { IconButtonVariant } from './types';
 
 export { IconButtonContainer, IconButtonVariant };
-export {
+export type {
   ActionContainerProps as IconButtonActionContainerProps,
   BaseContainerProps as IconButtonBaseContainerProps,
   IconButtonContainerProps,

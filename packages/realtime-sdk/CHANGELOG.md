@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.17.0...@voiceflow/realtime-sdk@1.17.1) (2021-09-17)
+
+
+### Bug Fixes
+
+* remove falsey values from link point data (VF-1083) ([#4134](https://github.com/voiceflow/creator-app/issues/4134)) ([f6c0f5f](https://github.com/voiceflow/creator-app/commit/f6c0f5f257fab5e7af2a87181ed31bf6369f7dc2))
+
+
+
+
+
 # [1.17.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.16.1...@voiceflow/realtime-sdk@1.17.0) (2021-09-17)
 
 

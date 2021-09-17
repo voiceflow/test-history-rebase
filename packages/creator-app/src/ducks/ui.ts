@@ -30,7 +30,7 @@ export const INITIAL_STATE = {
     isHidden: false,
   },
   blockMenu: {
-    openSections: [BlockCategory.RESPONSE],
+    openSections: [BlockCategory.RESPONSE, BlockCategory.USER_INPUT],
   },
   local: {},
   canvasNavigation: IS_MAC ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,

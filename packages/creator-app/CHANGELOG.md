@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.483.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.483.3...@voiceflow/creator-app@1.483.4) (2021-09-17)
+
+
+### Bug Fixes
+
+* last utterance for chat ([#4154](https://github.com/voiceflow/creator-app/issues/4154)) ([8d70dd1](https://github.com/voiceflow/creator-app/commit/8d70dd10cad6096598502799856132f03c045dcf))
+* step count and flow (VF-1776) ([#4152](https://github.com/voiceflow/creator-app/issues/4152)) ([958a633](https://github.com/voiceflow/creator-app/commit/958a6338dda590ab5ff97b94521e3b2fb2bcd244))
+
+
+
+
+
 ## [1.483.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.483.2...@voiceflow/creator-app@1.483.3) (2021-09-17)
 
 **Note:** Version bump only for package @voiceflow/creator-app

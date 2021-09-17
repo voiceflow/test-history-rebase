@@ -1,4 +1,4 @@
-import { ClickableText, FlexApart, Input, LegacyButton } from '@voiceflow/ui';
+import { Button, ButtonVariant, ClickableText, FlexApart, Input } from '@voiceflow/ui';
 import _get from 'lodash/get';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
@@ -79,9 +79,9 @@ const LoginForm = ({ login, location }) => {
               </div>
 
               <div>
-                <LegacyButton isPrimary isBlock type="submit">
+                <Button variant={ButtonVariant.PRIMARY} type="submit">
                   Log in
-                </LegacyButton>
+                </Button>
               </div>
             </FlexApart>
           </div>

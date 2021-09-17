@@ -1,4 +1,4 @@
-import { LegacyButton, SvgIcon } from '@voiceflow/ui';
+import { Button, ButtonVariant, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import Countdown from 'react-countdown-now';
 
@@ -37,9 +37,9 @@ const InactivityModal: React.FC<InactivityModalProps & ConnectedInactivityModalP
       </BodyContainer>
     </ModalBody>
     <ModalFooter>
-      <LegacyButton className="btn-tertiary tertiary" onClick={onActive}>
+      <Button variant={ButtonVariant.TERTIARY} onClick={onActive}>
         Dismiss
-      </LegacyButton>
+      </Button>
     </ModalFooter>
   </ModalComponent>
 );

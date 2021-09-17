@@ -1,5 +1,6 @@
 /* eslint no-restricted-globals: ["error", "isFinite"] */
-import { KeyName, Label, LegacyButton, toast } from '@voiceflow/ui';
+/* eslint-disable no-underscore-dangle, promise/always-return */
+import { Button, ButtonVariant, KeyName, Label, toast } from '@voiceflow/ui';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
@@ -137,14 +138,14 @@ class Copy extends Component {
                 onBlur={this.onUserInput}
                 className="form-control"
               />
-              <LegacyButton
-                isSecondary
+              <Button
+                variant={ButtonVariant.SECONDARY}
                 onClick={() => {
                   this.setState({ target_user: this.props.user.id }, this.onUserInput);
                 }}
               >
                 Myself
-              </LegacyButton>
+              </Button>
             </ToField>
             <Select
               placeholder="Select Workspace"
@@ -156,9 +157,9 @@ class Copy extends Component {
             />
           </CopyFields>
         </CopyContent>
-        <LegacyButton isPrimary onClick={this.copy.bind(this)} className="mb-2">
-          Copy!
-        </LegacyButton>
+        <Button variant={ButtonVariant.PRIMARY} onClick={this.copy.bind(this)} className="mb-2">
+          Copy
+        </Button>
       </>
     );
   }

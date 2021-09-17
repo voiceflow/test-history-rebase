@@ -1,4 +1,4 @@
-import { BoxFlexApart, ClickableText, LegacyButton, NetworkError, preventDefault, toast } from '@voiceflow/ui';
+import { BoxFlexApart, Button, ButtonVariant, ClickableText, NetworkError, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -44,9 +44,9 @@ const ResetEmailForm: React.FC<ResetEmailFormProps & ConnectedResetEmailFormProp
         </div>
 
         <div>
-          <LegacyButton isPrimary isBlock type="submit">
+          <Button variant={ButtonVariant.PRIMARY} type="submit">
             Reset Password
-          </LegacyButton>
+          </Button>
         </div>
       </BoxFlexApart>
     </form>

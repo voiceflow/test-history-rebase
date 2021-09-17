@@ -1,4 +1,4 @@
-import { LegacyButton, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, toast } from '@voiceflow/ui';
 import Markdown from 'markdown-to-jsx';
 import React, { Component } from 'react';
 import { Form, FormGroup, Input, Label } from 'reactstrap';
@@ -91,9 +91,9 @@ class ProductUpdates extends Component {
             </p>
           </div>
 
-          <LegacyButton isBtn isPrimary onClick={this.createNewUpdate}>
+          <Button variant={ButtonVariant.PRIMARY} onClick={this.createNewUpdate}>
             Create New Update
-          </LegacyButton>
+          </Button>
         </div>
       </>
     );

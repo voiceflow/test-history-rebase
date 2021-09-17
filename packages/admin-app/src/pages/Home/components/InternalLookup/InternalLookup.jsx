@@ -1,6 +1,6 @@
 import './InternalLookup.css';
 
-import { Input, LegacyButton } from '@voiceflow/ui';
+import { Button, ButtonVariant, Input } from '@voiceflow/ui';
 import _cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
@@ -32,9 +32,9 @@ class InternalLookup extends React.Component {
       if (event.target.value === '') {
         this.clearSearch();
       } else {
-        let filtered_boards = _cloneDeep(this.props.boards);
+        let filteredBoards = _cloneDeep(this.props.boards);
         // Need to reduce the boards array
-        filtered_boards = filtered_boards.filter((board) => {
+        filteredBoards = filteredBoards.filter((board) => {
           let found = false;
           for (let i = 0; i < board.projects.length; i++) {
             if (board.projects[i].name.includes(event.target.value)) found = true;
@@ -42,13 +42,14 @@ class InternalLookup extends React.Component {
           return found;
         });
 
-        filtered_boards.map((board) => {
+        filteredBoards.map((board) => {
+          // eslint-disable-next-line no-param-reassign
           board.projects = board.projects.filter((proj) => proj.name.includes(event.target.value));
           return board;
         });
 
         this.setState({
-          filtered_boards,
+          filtered_boards: filteredBoards,
           expand_all_boards: true,
         });
       }
@@ -93,9 +94,9 @@ class InternalLookup extends React.Component {
               />
             </div>
             <div className="internalIdSearchButton">
-              <LegacyButton color="primary" className="w-30" isPrimarySmall onClick={this.lookupUserById}>
+              <Button variant={ButtonVariant.PRIMARY} className="w-30" onClick={this.lookupUserById}>
                 Search
-              </LegacyButton>
+              </Button>
             </div>
             <div className="filter_skill">
               Filter by skill name:

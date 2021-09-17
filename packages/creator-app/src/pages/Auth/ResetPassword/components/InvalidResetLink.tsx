@@ -1,4 +1,4 @@
-import { Box, BoxFlexApart, ClickableText, LegacyButton, NetworkError, preventDefault, toast } from '@voiceflow/ui';
+import { Box, BoxFlexApart, Button, ButtonVariant, ClickableText, NetworkError, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -46,9 +46,9 @@ const InvalidResetLink: React.FC<InvalidResetLinkProps & ConnectedInvalidResetLi
           </div>
 
           <div>
-            <LegacyButton isPrimary isBlock type="submit">
+            <Button variant={ButtonVariant.PRIMARY} type="submit">
               Reset Password
-            </LegacyButton>
+            </Button>
           </div>
         </BoxFlexApart>
       </form>

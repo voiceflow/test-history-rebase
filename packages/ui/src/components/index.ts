@@ -1,3 +1,5 @@
+import './LegacyButton/Button.css';
+
 export { default as Alert, AlertVariant } from './Alert';
 export { default as Badge } from './Badge';
 export {
@@ -73,7 +75,6 @@ export {
   InputWrapper,
   NestedInputIconPosition,
 } from './Input';
-export { default as LegacyButton } from './LegacyButton';
 export { LoadCircle, default as Loader } from './Loader';
 export type { MenuOption, MenuProps } from './Menu';
 export { default as Menu, MenuContainer, MenuItem, menuItemStyles } from './Menu';

@@ -1,4 +1,4 @@
-import { Box, BoxFlex, FlexApart, LegacyButton, preventDefault, toast } from '@voiceflow/ui';
+import { Box, BoxFlex, Button, ButtonVariant, FlexApart, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import { GoogleLoginResponse } from 'react-google-login';
@@ -78,9 +78,9 @@ const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleA
               </div>
 
               <div>
-                <LegacyButton isPrimary isBlock type="submit">
+                <Button variant={ButtonVariant.PRIMARY} type="submit">
                   Use Okta
-                </LegacyButton>
+                </Button>
               </div>
             </FlexApart>
           </div>

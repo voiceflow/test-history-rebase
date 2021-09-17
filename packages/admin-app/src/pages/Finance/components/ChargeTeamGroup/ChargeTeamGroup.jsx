@@ -2,7 +2,7 @@
 import './ChargeTeamGroup.css';
 import '../AdminAdvancedModal/AdminAdvancedModal.css';
 
-import { Collapse, Input, LegacyButton } from '@voiceflow/ui';
+import { Button, Collapse, Input } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 import { Alert, Card, CardBody, Modal, ModalBody, ModalFooter } from 'reactstrap';
@@ -98,13 +98,13 @@ class ChargeTeamGroup extends React.Component {
               <div className="ctg__team-subheader">Plan Expiry: {team.expiry ? dayjs(team.expiry).format('MMM Do YYYY') : 'No expiry set'}</div>
             </div>
             {team.stripe_sub_id ? (
-              <LegacyButton className="ctg__team-cancel" isWarning onClick={this.toggleSub}>
+              <Button className="ctg__team-cancel" onClick={this.toggleSub}>
                 Cancel Subscription
-              </LegacyButton>
+              </Button>
             ) : null}
-            <LegacyButton className="ctg__team-cancel" isPrimary onClick={this.togglePlanModal}>
+            <Button className="ctg__team-cancel" onClick={this.togglePlanModal}>
               Manage Plan
-            </LegacyButton>
+            </Button>
           </div>
           <Collapse isOpen={this.state.collapse}>
             <Card>
@@ -187,18 +187,15 @@ class ChargeTeamGroup extends React.Component {
               ) : null}
             </ModalBody>
             <ModalFooter>
-              <LegacyButton
-                isWarning
+              <Button
                 onClick={() => {
                   this.props.refundCharge(team.team_id, this.state.showRefundCharge.id, this.state.refundAmount);
                   this.toggle();
                 }}
               >
                 Refund User
-              </LegacyButton>
-              <LegacyButton isSecondary onClick={this.toggle}>
-                Cancel
-              </LegacyButton>
+              </Button>
+              <Button onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
           </Modal>
 
@@ -224,7 +221,7 @@ class ChargeTeamGroup extends React.Component {
               </div>
             </ModalBody>
             <ModalFooter>
-              <LegacyButton
+              <Button
                 isWarning
                 onClick={() => {
                   this.props.cancelSubscription(team.team_id, team.stripe_sub_id);
@@ -232,10 +229,10 @@ class ChargeTeamGroup extends React.Component {
                 }}
               >
                 Cancel Subscription
-              </LegacyButton>
-              <LegacyButton isSecondary onClick={this.toggleSub}>
+              </Button>
+              <Button isSecondary onClick={this.toggleSub}>
                 Cancel
-              </LegacyButton>
+              </Button>
             </ModalFooter>
           </Modal>
 

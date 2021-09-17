@@ -1,4 +1,4 @@
-import { IconVariant, LegacyButton, SvgIcon } from '@voiceflow/ui';
+import { Button, ButtonVariant, IconVariant, SVG, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import Select from 'react-select';
 
@@ -7,6 +7,15 @@ import { styled } from '@/hocs';
 
 const MapLine = styled.div`
   margin-bottom: 6px;
+`;
+
+const StyledSvgIcon = styled(SvgIcon)`
+  cursor: pointer;
+  color: #8da2b570;
+
+  &:hover {
+    color: #8da2b5;
+  }
 `;
 
 const OutputMapping = (props) => (
@@ -31,12 +40,12 @@ const OutputMapping = (props) => (
             placeholder="Variable"
           />
         </div>
-        <LegacyButton isCloseSmall className="ml-2" onClick={() => props.onRemove(i)} />
+        <StyledSvgIcon icon={SVG.close} size={12} onClick={() => props.onRemove(i)} ml="xs" />
       </MapLine>
     ))}
-    <LegacyButton isBtn isClear isLarge isBlock onClick={props.onAdd}>
+    <Button variant={ButtonVariant.SECONDARY} className="margin-auto" onClick={props.onAdd}>
       + Add Mapping
-    </LegacyButton>
+    </Button>
   </>
 );
 

@@ -1,10 +1,11 @@
 import { layout, space } from 'styled-system';
 
-import { styled } from '../../../styles';
+import { css, styled } from '../../../styles';
 import { changeColorShade } from '../../../utils/colors';
 import { TextProps } from '../types';
 
 type LinkProps = {
+  disabled?: boolean;
   link?: string;
   textDecoration?: boolean;
 } & TextProps;
@@ -24,6 +25,16 @@ const Link = styled.a.attrs<LinkProps>(({ link, href, target = '_blank', rel = '
     color: ${({ color, theme }) => changeColorShade(color || theme.colors.blue, -40)};
     ${({ textDecoration }) => !textDecoration && 'text-decoration: none !important;'}
   }
+
+  ${({ disabled }) =>
+    disabled
+      ? css`
+          color: ${({ theme }) => theme.colors.tertiary};
+          pointer-events: none;
+        `
+      : css`
+          cursor: pointer;
+        `}
 
   ${space}
   ${layout}

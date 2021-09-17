@@ -1,4 +1,4 @@
-import { Box, BoxFlexApart, ClickableText, LegacyButton, preventDefault, toast } from '@voiceflow/ui';
+import { Box, BoxFlexApart, Button, ButtonVariant, ClickableText, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -51,9 +51,9 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps & ConnectedResetPasswor
         </div>
 
         <div>
-          <LegacyButton isPrimary isBlock type="submit">
+          <Button variant={ButtonVariant.PRIMARY} type="submit">
             Update Password
-          </LegacyButton>
+          </Button>
         </div>
       </BoxFlexApart>
     </form>

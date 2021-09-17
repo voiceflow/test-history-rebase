@@ -1,4 +1,4 @@
-import { Input, KeyName, LegacyButton, MenuContainer, Portal, preventDefault, stopPropagation } from '@voiceflow/ui';
+import { Input, KeyName, Link, MenuContainer, Portal, preventDefault, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { TextEditorVariablesPopoverConsumer } from '@/contexts';
@@ -22,6 +22,7 @@ const Header = styled.div`
       }
     `}
 
+  align-items: center;
   display: flex;
   padding: 0 24px;
 `;
@@ -70,16 +71,15 @@ export default React.forwardRef(
                         onMouseDown={onFocusInput}
                       />
 
-                      <LegacyButton
-                        isBtn
+                      <Link
+                        textDecoration
                         onClick={preventDefault(onCreateMention)}
                         disabled={!variableName || !!variablesMap[variableName]}
                         className="pointer"
-                        isLinkLarge
                         onMouseDown={preventDefault()}
                       >
                         Create
-                      </LegacyButton>
+                      </Link>
                     </Header>
 
                     <Hr />

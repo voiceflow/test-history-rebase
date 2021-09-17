@@ -1,4 +1,4 @@
-import { LegacyButton } from '@voiceflow/ui';
+import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { safeGraphic } from '@/assets';
@@ -34,9 +34,9 @@ const NoProducts = ({ onClick }) => (
     <img src={safeGraphic} alt="no products" height={100} />
     <Title>No products exists</Title>
     <Description>Monetize your project with in skill purchases such as consumables and subscriptions.</Description>
-    <LegacyButton isPrimary varient="contained" color="publish" onClick={onClick}>
+    <Button variant={ButtonVariant.PRIMARY} onClick={onClick}>
       Create a product
-    </LegacyButton>
+    </Button>
   </Container>
 );
 

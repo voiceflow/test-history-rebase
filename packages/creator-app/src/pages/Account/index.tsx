@@ -1,6 +1,6 @@
 import './Account.css';
 
-import { LegacyButton } from '@voiceflow/ui';
+import { Button, ButtonVariant } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React, { Component } from 'react';
 
@@ -71,44 +71,44 @@ class AccountPage extends Component<ConnectedAccountPageProps, AccountPageState>
   amazonButton = () => {
     if (!this.state.amazonStatus) {
       return (
-        <LegacyButton isPrimary disabled>
+        <Button variant={ButtonVariant.PRIMARY} disabled>
           loading...
-        </LegacyButton>
+        </Button>
       );
     }
     if (!this.props.user.amazon) {
       return (
-        <LegacyButton isPrimary disabled>
+        <Button variant={ButtonVariant.PRIMARY} disabled>
           Unlinked
-        </LegacyButton>
+        </Button>
       );
     }
     return (
-      <LegacyButton isPrimary onClick={this.resetAmazon}>
+      <Button variant={ButtonVariant.PRIMARY} onClick={this.resetAmazon}>
         Reset
-      </LegacyButton>
+      </Button>
     );
   };
 
   googleButton = () => {
     if (!this.state.googleStatus) {
       return (
-        <LegacyButton isPrimary disabled>
+        <Button variant={ButtonVariant.PRIMARY} disabled>
           loading...
-        </LegacyButton>
+        </Button>
       );
     }
     if (!this.props.user.google) {
       return (
-        <LegacyButton isPrimary disabled>
+        <Button variant={ButtonVariant.PRIMARY} disabled>
           Unlinked
-        </LegacyButton>
+        </Button>
       );
     }
     return (
-      <LegacyButton isPrimary onClick={this.resetGoogle}>
+      <Button variant={ButtonVariant.PRIMARY} onClick={this.resetGoogle}>
         Reset
-      </LegacyButton>
+      </Button>
     );
   };
 

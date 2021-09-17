@@ -1,4 +1,4 @@
-import { LegacyButton } from '@voiceflow/ui';
+import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
@@ -35,9 +35,9 @@ const Workspace: React.FC = () => {
             incredible voice experiences
           </span>
           <br />
-          <LegacyButton id="createWorkspace" isPrimary className="mt-4" onClick={goToNewWorkspace}>
+          <Button id="createWorkspace" variant={ButtonVariant.PRIMARY} className="mt-4 margin-auto" onClick={goToNewWorkspace}>
             New Workspace
-          </LegacyButton>
+          </Button>
         </div>
       </div>
     );

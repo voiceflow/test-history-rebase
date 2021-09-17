@@ -1,4 +1,4 @@
-import { Dropdown, IconButton, KeyName, LegacyButton } from '@voiceflow/ui';
+import { Button, ButtonVariant, Dropdown, IconButton, KeyName } from '@voiceflow/ui';
 import cn from 'classnames';
 import _constant from 'lodash/constant';
 import PropTypes from 'prop-types';
@@ -189,9 +189,9 @@ export function List(props) {
                   })}
                 >
                   <div className={DashboardClassName.LIST_FOOTER_CENTER}>
-                    <LegacyButton isFlat onClick={() => createProject(id)}>
+                    <Button variant={ButtonVariant.TERTIARY} onClick={() => createProject(id)}>
                       Create Project
-                    </LegacyButton>
+                    </Button>
                   </div>
                 </div>
               )}

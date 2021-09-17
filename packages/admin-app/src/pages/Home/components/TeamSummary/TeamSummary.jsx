@@ -1,6 +1,7 @@
+/* eslint-disable no-underscore-dangle, consistent-return */
 import './TeamSummary.css';
 
-import { ClickableText, Collapse, LegacyButton } from '@voiceflow/ui';
+import { Button, ButtonVariant, ClickableText, Collapse } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -67,9 +68,9 @@ class TeamSummary extends React.Component {
               {this.props.board.expiry ? dayjs(this.props.board.expiry).format('MMM Do YYYY') : 'No expiry set'}
             </div>
 
-            <LegacyButton className="mt-2" isPrimary onClick={this.togglePlanModal}>
+            <Button variant={ButtonVariant.PRIMARY} className="mt-2" onClick={this.togglePlanModal}>
               Manage Plan
-            </LegacyButton>
+            </Button>
           </div>
 
           <div className="mb-2 col-sm-4">

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.483.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.483.1...@voiceflow/creator-app@1.483.2) (2021-09-17)
+
+
+### Bug Fixes
+
+* add df scope to df scope array ([#4150](https://github.com/voiceflow/creator-app/issues/4150)) ([b04dc92](https://github.com/voiceflow/creator-app/commit/b04dc922dff239609e5c18b43f921ef2a645bce7))
+* button label fallback (VF-1767) ([#4139](https://github.com/voiceflow/creator-app/issues/4139)) ([afae301](https://github.com/voiceflow/creator-app/commit/afae3014011200e570443cbe951392b23b403732))
+
+
+
+
+
 ## [1.483.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.483.0...@voiceflow/creator-app@1.483.1) (2021-09-17)
 
 

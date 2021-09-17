@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.16.0...@voiceflow/realtime-sdk@1.16.1) (2021-09-17)
+
+
+### Bug Fixes
+
+* remove momentjs (VF-000) ([#4127](https://github.com/voiceflow/creator-app/issues/4127)) ([dcae257](https://github.com/voiceflow/creator-app/commit/dcae25787a1e7e997eb267aa14b92399c4082684))
+
+
+
+
+
 # [1.16.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.15.2...@voiceflow/realtime-sdk@1.16.0) (2021-09-16)
 
 

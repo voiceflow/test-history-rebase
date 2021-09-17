@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.482.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.482.0...@voiceflow/creator-app@1.482.1) (2021-09-17)
+
+
+### Bug Fixes
+
+* memoize platform client (VF-000) ([#4141](https://github.com/voiceflow/creator-app/issues/4141)) ([295567b](https://github.com/voiceflow/creator-app/commit/295567b54f84e96346536d5d642c1a426c241c8e))
+* remove momentjs (VF-000) ([#4127](https://github.com/voiceflow/creator-app/issues/4127)) ([dcae257](https://github.com/voiceflow/creator-app/commit/dcae25787a1e7e997eb267aa14b92399c4082684))
+
+
+
+
+
 # [1.482.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.481.2...@voiceflow/creator-app@1.482.0) (2021-09-16)
 
 

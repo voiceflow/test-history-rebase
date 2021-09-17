@@ -121,7 +121,7 @@ context('Canvas - Blocks', () => {
 
     canvasPage.el.node.eq(0).dragNode(100, 100);
 
-    canvasPage.el.node.eq(0).should('have.coords', [500, 346]);
+    canvasPage.el.node.eq(0).should('have.coords', [500, 349]);
     canvasPage.el.node.eq(1).should('have.coords', [400, 165]);
     canvasPage.el.node.eq(2).should('have.coords', [400, 565]);
   });

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.483.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.482.1...@voiceflow/creator-app@1.483.0) (2021-09-17)
+
+
+### Features
+
+* add text url hotkey, add slack insert link behaviour (VF-1634) ([#4137](https://github.com/voiceflow/creator-app/issues/4137)) ([4130ab4](https://github.com/voiceflow/creator-app/commit/4130ab4746e6ec10110bfd325bee85044917be45))
+* watch ui/realtime-sdk packages (VF-1760) ([#4136](https://github.com/voiceflow/creator-app/issues/4136)) ([35827bf](https://github.com/voiceflow/creator-app/commit/35827bf73aec278aaee6a8e28fb0c99cc9f56d9e))
+
+
+
+
+
 ## [1.482.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.482.0...@voiceflow/creator-app@1.482.1) (2021-09-17)
 
 

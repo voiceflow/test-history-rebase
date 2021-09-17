@@ -2,10 +2,19 @@ import { Descendant, Editor, Element, Node, Range, Transforms } from 'slate';
 
 import type { EditorAPIType } from '../editorAPI';
 import { PrismLanguage } from '../prism';
-import type { DataProcessor, DataProcessorMiddleware, Plugin, ProcessorNext, TextProcessor, TextProcessorMiddleware } from './types';
+import type {
+  DataProcessor,
+  DataProcessorMiddleware,
+  DataProcessorOptions,
+  Plugin,
+  ProcessorNext,
+  TextProcessor,
+  TextProcessorMiddleware,
+  TextProcessorOptions,
+} from './types';
 
 export interface BasePluginEditor {
-  processText(text: string): Descendant[];
+  processText(options: TextProcessorOptions): Descendant[];
   prismLanguages(): PrismLanguage[];
   registerPrismLanguage(language: PrismLanguage): void;
   registerTextProcessingMiddleware: (middleware: TextProcessorMiddleware) => void;
@@ -21,14 +30,14 @@ export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Edi
 
   let prevContentEmpty: null | boolean = null;
 
-  const processor: { text: (text: string) => ProcessorNext; data: (data: DataTransfer) => ProcessorNext } = {
+  const processor: { text: (options: TextProcessorOptions) => ProcessorNext; data: (options: DataProcessorOptions) => ProcessorNext } = {
     text: () => defaultProcessor,
     data: () => defaultProcessor,
   };
 
-  const rooTextProcessor: TextProcessor = (value: Descendant[], text: string) => processor.text(text)(value);
+  const rooTextProcessor: TextProcessor = (value: Descendant[], options: TextProcessorOptions) => processor.text(options)(value);
 
-  const rooDataProcessor: DataProcessor = (value: Descendant[], data: DataTransfer) => processor.data(data)(value);
+  const rooDataProcessor: DataProcessor = (value: Descendant[], options: DataProcessorOptions) => processor.data(options)(value);
 
   const insertProcessedNodes = (nodes: Node | Node[]) => {
     if (!editor.selection) {
@@ -90,7 +99,7 @@ export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Edi
     }
 
     const nodes: Node[] = [{ text }];
-    const processedNodes = rooTextProcessor(nodes, text);
+    const processedNodes = rooTextProcessor(nodes, { pasted: true, originalText: text });
 
     if (!processedNodes || isNodesEqual(nodes, processedNodes)) {
       originalInsertText(text);
@@ -115,7 +124,7 @@ export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Edi
       editor.insertText(text);
     } else {
       const nodes: Node[] = [];
-      const processedNodes = rooDataProcessor(nodes, data);
+      const processedNodes = rooDataProcessor(nodes, { pasted: true, originalData: data });
 
       if (!processedNodes || isNodesEqual(nodes, processedNodes)) {
         originalInsertData(data);
@@ -126,7 +135,7 @@ export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Edi
   };
 
   const pluginsEditor: BasePluginEditor = {
-    processText: (text) => rooTextProcessor([{ text }], text),
+    processText: (options) => rooTextProcessor([{ text: options.originalText }], options),
 
     prismLanguages: () => PRISM_LANGUAGES,
 
@@ -138,14 +147,14 @@ export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Edi
       const next = middleware(rooTextProcessor);
       const originalProcessor = processor.text;
 
-      processor.text = (text: string) => (value: Descendant[]) => next(originalProcessor(text))(value, text);
+      processor.text = (options: TextProcessorOptions) => (value: Descendant[]) => next(originalProcessor(options))(value, options);
     },
 
     registerDataProcessingMiddleware: (middleware: DataProcessorMiddleware) => {
       const next = middleware(rooDataProcessor);
       const originalProcessor = processor.data;
 
-      processor.data = (data: DataTransfer) => (value: Descendant[]) => next(originalProcessor(data))(value, data);
+      processor.data = (options: DataProcessorOptions) => (value: Descendant[]) => next(originalProcessor(options))(value, options);
     },
   };
 

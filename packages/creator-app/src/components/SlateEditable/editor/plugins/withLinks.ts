@@ -45,12 +45,20 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
     };
   };
 
-  editor.registerTextProcessingMiddleware(() => (next) => (nodes) => {
+  editor.registerTextProcessingMiddleware(() => (next) => (nodes, { pasted, originalText }) => {
     const createLinkFromTextNode = (node: Text): LinkElement => ({
       type: ElementType.LINK,
       url: node.text,
       children: next([node]).map(addNodeStylesToChildrenNodes),
     });
+
+    const { selection } = editor;
+
+    if (pasted && selection && Range.isExpanded(selection) && isURL(originalText)) {
+      const selectedText = EditorAPI.string(editor, selection);
+
+      return [createLinkFromTextNode({ text: selectedText })];
+    }
 
     return nodes.flatMap((node) => {
       if (!Text.isText(node)) {

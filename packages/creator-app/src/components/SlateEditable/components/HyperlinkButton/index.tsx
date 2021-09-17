@@ -1,12 +1,14 @@
-import { Icon, Input, preventDefault, withHandler } from '@voiceflow/ui';
+import { Icon, Input, preventDefault, useToggle, withHandler } from '@voiceflow/ui';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
 import Popper from '@/components/Popper';
 import { withEnterPress } from '@/utils/dom';
 
+import { Hotkey } from '../../constants';
 import { useSlateEditor } from '../../contexts';
 import { EditorAPI } from '../../editor';
+import { useEditorHotkey } from '../../hooks';
 import IconButton from '../IconButton';
 import { Content, Title } from './components';
 
@@ -24,6 +26,7 @@ interface HyperlinkButtonProps {
 const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
   const editor = useSlateEditor();
 
+  const [isOpened, toggleOpen] = useToggle(false);
   const linkNode = EditorAPI.link(editor);
   const url = linkNode?.url ?? '';
   const [localUrl, setLocalUrl] = React.useState(url);
@@ -40,6 +43,10 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
     });
   };
 
+  useEditorHotkey(Hotkey.LINK, () => {
+    toggleOpen();
+  });
+
   React.useEffect(() => {
     if (EditorAPI.isFocused(editor)) {
       setLocalUrl(url);
@@ -50,6 +57,8 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
     <Popper
       width="300px"
       height="110px"
+      opened={isOpened}
+      onClose={toggleOpen}
       placement="bottom"
       modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: document.body } }}
       portalNode={document.body}
@@ -68,11 +77,11 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
         </Content>
       )}
     >
-      {({ ref, isOpened, onToggle }) =>
+      {({ ref, isOpened }) =>
         children ? (
-          children({ ref, icon: 'hyperlink', active: !!url || isOpened, onClick: preventDefault(onToggle) })
+          children({ ref, icon: 'hyperlink', active: !!url || isOpened, onClick: preventDefault(toggleOpen) })
         ) : (
-          <IconButton ref={ref} icon="hyperlink" active={!!url || isOpened} onClick={preventDefault(onToggle)} />
+          <IconButton ref={ref} icon="hyperlink" active={!!url || isOpened} onClick={preventDefault(toggleOpen)} />
         )
       }
     </Popper>

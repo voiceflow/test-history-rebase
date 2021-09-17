@@ -2,11 +2,21 @@ import type { Descendant, Editor, NodeEntry, Range } from 'slate';
 
 import type { EditorAPIType } from '../editorAPI';
 
+interface BaseProcessorOptions {
+  pasted?: boolean;
+}
+export interface TextProcessorOptions extends BaseProcessorOptions {
+  originalText: string;
+}
+export interface DataProcessorOptions extends BaseProcessorOptions {
+  originalData: DataTransfer;
+}
+
 export type ProcessorNext = (value: Descendant[]) => Descendant[];
 
-export type TextProcessor = (value: Descendant[], originalText: string) => Descendant[];
+export type TextProcessor = (value: Descendant[], options: TextProcessorOptions) => Descendant[];
 
-export type DataProcessor = (value: Descendant[], originalData: DataTransfer) => Descendant[];
+export type DataProcessor = (value: Descendant[], options: DataProcessorOptions) => Descendant[];
 
 export type TextProcessorMiddleware = (process: TextProcessor) => (next: ProcessorNext) => TextProcessor;
 

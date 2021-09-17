@@ -2,8 +2,8 @@ import './PlanModal.css';
 
 import { PlanType } from '@voiceflow/internal';
 import { Button, FlexApart, Select } from '@voiceflow/ui';
+import dayjs from 'dayjs';
 import _upperFirst from 'lodash/upperFirst';
-import moment from 'moment';
 import React from 'react';
 import DayPicker from 'react-day-picker';
 import { Modal, ModalBody } from 'reactstrap';
@@ -81,7 +81,7 @@ class PlanModal extends React.Component {
                 <div className="ctg__receipt_divider"></div>
                 <div className="ctg__charge_amount">
                   <div>Current Plan: {PlanType[workspace.plan]?.toUpperCase() || 'BASIC'}</div>
-                  <div>Expiry: {workspace.expiry ? moment(workspace.expiry).format('MMMM Do YYYY, h:mm:ss a') : 'No expiry set'}</div>
+                  <div>Expiry: {workspace.expiry ? dayjs(workspace.expiry).format('MMMM Do YYYY, h:mm:ss a') : 'No expiry set'}</div>
                   <div className="ctg__date-picker">
                     <DayPicker
                       onDayClick={this.handleDayClick}
@@ -90,12 +90,12 @@ class PlanModal extends React.Component {
                       modifiersStyles={modifiersStyles}
                     />
                     <div className="ctg__trial_details">
-                      <div>Plan will expire {moment(this.state.selectedDay).add(1, 'd').fromNow()}</div>
-                      <div>Plan Expiry: {moment(this.state.selectedDay).add(1, 'd').format('MMM Do YYYY')} (expires at midnight)</div>
+                      <div>Plan will expire {dayjs(this.state.selectedDay).add(1, 'd').fromNow()}</div>
+                      <div>Plan Expiry: {dayjs(this.state.selectedDay).add(1, 'd').format('MMM Do YYYY')} (expires at midnight)</div>
                     </div>
                   </div>
                   <FlexApart>
-                    <Button variant="secondary" onClick={this.updateExpiry(moment(this.state.selectedDay).add(1, 'd').format())}>
+                    <Button variant="secondary" onClick={this.updateExpiry(dayjs(this.state.selectedDay).add(1, 'd').format())}>
                       Update Expiry
                     </Button>
                     <Button variant="secondary" onClick={this.updateExpiry(null)}>

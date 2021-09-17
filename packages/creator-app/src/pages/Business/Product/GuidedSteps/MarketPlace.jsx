@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
-import { Button, Input } from '@voiceflow/ui';
-import { AvForm, AvGroup } from 'availity-reactstrap-validation';
+import { Box, Button, Input } from '@voiceflow/ui';
 import React from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
@@ -40,8 +39,8 @@ class MarketPlace extends React.PureComponent {
     const { product, changeStep, parentalControl } = this.props;
 
     return (
-      <AvForm onValidSubmit={changeStep}>
-        <AvGroup>
+      <Box>
+        <Box mb={24}>
           <SubSection>
             <label>Marketplace Availability</label>
             <DropdownMultiselect
@@ -110,12 +109,14 @@ class MarketPlace extends React.PureComponent {
               </AvailabilitySubSection>
             </SubSection>
           )}
-        </AvGroup>
+        </Box>
 
         <NextButtonContainer>
-          <Button variant="secondary">Next</Button>
+          <Button variant="secondary" onClick={changeStep}>
+            Next
+          </Button>
         </NextButtonContainer>
-      </AvForm>
+      </Box>
     );
   }
 

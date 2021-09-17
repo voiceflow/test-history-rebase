@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 // evaluates maintenance intervals and calls a given action callback at appropriate interavals
 class MaintenanceController {
@@ -37,7 +37,7 @@ class MaintenanceController {
 
       // only show pop up warning if within intervals
       if (closestInterval! < this.intervals[0]) {
-        this.action(moment(this.start).fromNow(true));
+        this.action(dayjs(this.start).fromNow(true));
       }
 
       this.timeout = setTimeout(() => this.maintenanceInterval(), waitTime + 1000);

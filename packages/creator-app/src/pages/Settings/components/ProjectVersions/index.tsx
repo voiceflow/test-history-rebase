@@ -1,7 +1,7 @@
 import { PlatformType } from '@voiceflow/internal';
 import { Box, BoxFlexCenter, ClickableText, LoadCircle, SvgIcon, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 
 import { noIntentsGraphic } from '@/assets';
@@ -107,7 +107,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
               </TableHeader>
               {versions.map((version, index) => (
                 <TableRow key={index}>
-                  <span>{moment(version.created).fromNow()}</span>
+                  <span>{dayjs(version.created).fromNow()}</span>
                   <span style={{ color: '#62778c' }}>
                     <Box display="inline-block" mr={6} mb={-1}>
                       <SvgIcon size={12} icon={version.platform === PlatformType.GOOGLE ? 'google' : 'amazon'} />

@@ -1,11 +1,16 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
+dayjs.extend(duration);
 
 export const getCurrentTimestamp = () => Math.floor(Date.now() / 1000);
 
 export const getTimeDuration = (pastTime: string | number) => {
-  const diff = moment().utc().diff(pastTime);
+  const diff = dayjs().utc().diff(pastTime);
 
-  return moment.duration(diff).humanize();
+  return dayjs.duration(diff).humanize();
 };
 
 export const getAbbrevatedFormat = (time: string) =>

@@ -1,9 +1,9 @@
 import { Adapters } from '@voiceflow/realtime-sdk';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { Billing, DBBilling } from '@/models';
 
-const timestampToDate = (timestamp: number) => moment.unix(timestamp).format('MMMM Do YYYY');
+const timestampToDate = (timestamp: number) => dayjs.unix(timestamp).format('MMMM Do YYYY');
 
 const convertAmountToDollars = (amount: number) => amount / 100;
 

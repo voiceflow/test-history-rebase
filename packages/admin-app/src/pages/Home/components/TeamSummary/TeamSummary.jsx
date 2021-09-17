@@ -1,7 +1,7 @@
 import './TeamSummary.css';
 
 import { ClickableText, Collapse, LegacyButton } from '@voiceflow/ui';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, ListGroup } from 'reactstrap';
@@ -55,7 +55,7 @@ class TeamSummary extends React.Component {
           <div className="team_summary_left col-sm-4">
             <h5>{this.props.board.name}</h5>
 
-            <div className="mt-2 team_summary_created">{moment(this.props.board.created).format('MMMM Do YYYY, h:mm:ss a')}</div>
+            <div className="mt-2 team_summary_created">{dayjs(this.props.board.created).format('MMMM Do YYYY, h:mm:ss a')}</div>
 
             <div className="mt-2 team_summary_created">
               <span className="bold">Plan: </span>
@@ -64,7 +64,7 @@ class TeamSummary extends React.Component {
 
             <div className="mt-2 team_summary_created">
               <span className="bold">Plan Expiry: </span>
-              {this.props.board.expiry ? moment(this.props.board.expiry).format('MMM Do YYYY') : 'No expiry set'}
+              {this.props.board.expiry ? dayjs(this.props.board.expiry).format('MMM Do YYYY') : 'No expiry set'}
             </div>
 
             <LegacyButton className="mt-2" isPrimary onClick={this.togglePlanModal}>

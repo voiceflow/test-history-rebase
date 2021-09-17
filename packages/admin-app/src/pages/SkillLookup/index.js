@@ -3,8 +3,8 @@ import './react-table.css';
 
 import { Spinner, toast } from '@voiceflow/ui';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import _get from 'lodash/get';
-import moment from 'moment';
 import React from 'react';
 import ReactTable from 'react-table-6';
 import { Button, Input } from 'reactstrap';
@@ -30,7 +30,7 @@ const COLUMNS = [
     Header: 'Made',
     accessor: 'created',
     width: 200,
-    Cell: (props) => <span>{moment(props.value).format('YYYY/MM/DD h:mm:ss a')}</span>,
+    Cell: (props) => <span>{dayjs(props.value).format('YYYY/MM/DD h:mm:ss a')}</span>,
   },
   {
     Header: 'Creator',

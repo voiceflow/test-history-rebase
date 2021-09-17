@@ -1,3 +1,5 @@
+import '@/utils/time';
+
 import { clearPersistedLogs, GLOBAL_FETCH_HEADERS, IS_SAFARI } from '@voiceflow/ui';
 import axios from 'axios';
 import cuid from 'cuid';

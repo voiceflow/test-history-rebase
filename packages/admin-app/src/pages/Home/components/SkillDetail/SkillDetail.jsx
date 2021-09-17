@@ -3,7 +3,7 @@
 import './SkillDetail.css';
 
 import { KeyName, toast } from '@voiceflow/ui';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
@@ -80,7 +80,7 @@ class SkillDetail extends Component {
             </div>
           </div>
 
-          <div className="team_summary_created">{moment(this.props.skill.created).format('MMMM Do YYYY, h:mm:ss a')}</div>
+          <div className="team_summary_created">{dayjs(this.props.skill.created).format('MMMM Do YYYY, h:mm:ss a')}</div>
         </div>
 
         <div className="col-sm-6">

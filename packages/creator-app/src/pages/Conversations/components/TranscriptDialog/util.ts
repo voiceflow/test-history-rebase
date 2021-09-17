@@ -1,12 +1,12 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { Message } from '@/pages/Prototype/types';
 
 const calculateRelativeTimeDifference = (startTime: string, endTime: string) => {
-  const start = moment(startTime);
-  const end = moment(endTime);
+  const start = dayjs(startTime);
+  const end = dayjs(endTime);
 
-  return moment(end.diff(start)).format('mm:ss');
+  return dayjs(end.diff(start)).format('mm:ss');
 };
 
 export const transformDialogTimestamp = (dialogs: Message[], startTime: string): Message[] =>

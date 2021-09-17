@@ -1,5 +1,5 @@
 import { Input, Portal, useEnableDisable } from '@voiceflow/ui';
-import moment, * as Moment from 'moment';
+import dayjs, * as Dayjs from 'dayjs';
 import React from 'react';
 import DayPicker from 'react-day-picker';
 import { Manager, Popper, Reference } from 'react-popper';
@@ -10,18 +10,17 @@ const FORMAT = 'DD/MM/YYYY';
 
 const InputComponent = Input as React.FC<any>;
 
-export type DayPickerInputProps = {
+export interface DayPickerInputProps {
   date?: string | Date;
   onChange: (date: string | Date) => void;
   addOffSet?: number;
-  addOffSetBy?: Moment.unitOfTime.Base;
+  addOffSetBy?: Dayjs.OpUnitType;
   substactOffSet?: number;
-  substactOffSetBy?: Moment.unitOfTime.Base;
-};
+  substactOffSetBy?: Dayjs.OpUnitType;
+}
 
 const DayPickerInput = ({ date, onChange, addOffSet, addOffSetBy, substactOffSet, substactOffSetBy }: DayPickerInputProps) => {
   const dayPickerRef = React.useRef<HTMLElement | null>(null);
-  // eslint-disable-next-line @typescript-eslint/ban-types
   const inputRef = React.useRef<{ blur: Function; getEditorState: Function } | null>(null);
 
   const [error, setError, clearError] = useEnableDisable(false);
@@ -30,10 +29,10 @@ const DayPickerInput = ({ date, onChange, addOffSet, addOffSetBy, substactOffSet
   const currentDate = React.useMemo(() => new Date(), []);
 
   const [selectedDay, formattedDate] = React.useMemo(() => {
-    const mdate = moment(date);
-    const isValid = !!date && mdate.isValid();
+    const ddate = dayjs(date);
+    const isValid = !!date && ddate.isValid();
 
-    return [isValid ? mdate.toDate() : undefined, isValid ? mdate.format(FORMAT) : (date && `${date}`) || ''];
+    return [isValid ? ddate.toDate() : undefined, isValid ? ddate.format(FORMAT) : (date && `${date}`) || ''];
   }, [date]);
 
   const onDayClick = React.useCallback(
@@ -41,11 +40,11 @@ const DayPickerInput = ({ date, onChange, addOffSet, addOffSetBy, substactOffSet
       let dateWithOffset = newDate;
 
       if (addOffSet) {
-        dateWithOffset = moment(newDate).add(addOffSetBy!, addOffSet!).toDate();
+        dateWithOffset = dayjs(newDate).add(addOffSet!, addOffSetBy).toDate();
       }
 
       if (substactOffSet) {
-        dateWithOffset = moment(newDate).subtract(substactOffSetBy!, substactOffSet!).toDate();
+        dateWithOffset = dayjs(newDate).subtract(substactOffSet!, substactOffSetBy!).toDate();
       }
 
       onChange(dateWithOffset);
@@ -66,10 +65,10 @@ const DayPickerInput = ({ date, onChange, addOffSet, addOffSetBy, substactOffSet
         onChange('');
       }
     } else {
-      const mdate = moment(value);
+      const ddate = dayjs(value);
 
-      if (mdate.isValid()) {
-        onChange(mdate.toDate());
+      if (ddate.isValid()) {
+        onChange(ddate.toDate());
         clearError();
       }
     }
@@ -102,7 +101,6 @@ const DayPickerInput = ({ date, onChange, addOffSet, addOffSetBy, substactOffSet
         {({ ref }) => (
           <div ref={ref} onClick={onShow}>
             <InputComponent
-              // eslint-disable-next-line @typescript-eslint/ban-types
               ref={(editor: { blur: Function; getEditorState: Function }) => {
                 inputRef.current = editor;
               }}

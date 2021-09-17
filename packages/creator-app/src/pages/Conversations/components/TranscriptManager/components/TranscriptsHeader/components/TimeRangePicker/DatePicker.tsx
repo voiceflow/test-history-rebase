@@ -1,6 +1,6 @@
 import { TimeRange } from '@voiceflow/internal';
 import { ButtonVariant } from '@voiceflow/ui';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 import { DateUtils, Modifier, RangeModifier } from 'react-day-picker';
 
@@ -38,8 +38,8 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ currentRange, placement, on
     if (!currentRange || isBuiltInRange(currentRange as string)) return initialRange;
 
     const date = (currentRange as string).split('-');
-    const from = moment(date[0]);
-    const to = moment(date[1]);
+    const from = dayjs(date[0]);
+    const to = dayjs(date[1]);
 
     if (!from.isValid() || !to.isValid()) return initialRange;
 

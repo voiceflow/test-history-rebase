@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control, no-shadow */
-import { Button, Input } from '@voiceflow/ui';
-import { AvForm, AvGroup } from 'availity-reactstrap-validation';
+import { Box, Button, Input } from '@voiceflow/ui';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -27,8 +26,8 @@ function DetailsForm({ product, updateProduct, onSave }) {
   };
 
   return (
-    <AvForm onValidSubmit={onSave}>
-      <AvGroup>
+    <Box>
+      <Box mb={24}>
         <SubSection>
           <label>Keywords</label>
           <TextArea
@@ -71,14 +70,14 @@ function DetailsForm({ product, updateProduct, onSave }) {
             onChange={onChange('testingInstructions')}
           />
         </SubSection>
-      </AvGroup>
+      </Box>
 
       <NextButtonContainer>
-        <Button disabled={!(product.name && product.summary)} variant="primary">
+        <Button disabled={!(product.name && product.summary)} variant="primary" onClick={onSave}>
           {product.id === NEW_PRODUCT_ID ? 'Create Product' : 'Save'}
         </Button>
       </NextButtonContainer>
-    </AvForm>
+    </Box>
   );
 }
 

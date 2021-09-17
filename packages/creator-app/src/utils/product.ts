@@ -1,5 +1,5 @@
 import { Constants, Project } from '@voiceflow/alexa-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { DBProduct, Product, ProductMarketPlace } from '@/models';
 import { MarketPlaceAvailability } from '@/services/LocaleMap';
@@ -20,7 +20,7 @@ export const getDistributionCountries = (marketPlaces: Record<string, ProductMar
 
 export const formatMarketPlaces = (marketPlaces: Record<string, ProductMarketPlace>) => {
   // find any valid release date
-  const generalReleaseDate = Object.values(marketPlaces).find((place) => !!place?.releaseDate)?.releaseDate || moment().format('YYYY-MM-DD');
+  const generalReleaseDate = Object.values(marketPlaces).find((place) => !!place?.releaseDate)?.releaseDate || dayjs().format('YYYY-MM-DD');
 
   return Object.keys(marketPlaces).reduce<Record<string, DBProduct.Pricing>>((acc, place) => {
     acc[Project.encodeMarketPlaceKey(place as Project.MarketPlace)] = {

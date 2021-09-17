@@ -1,5 +1,5 @@
 import { toast } from '@voiceflow/ui';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { Admin } from '@/client';
 import { Creator, Workspace } from '@/models';
@@ -94,7 +94,7 @@ export const editTrial =
       if (date) {
         // Date should be a timestamp (something like 1429482798)
         // Add one extra day to account for reset at midnight
-        const formatDate = moment(date).add(1, 'd').unix();
+        const formatDate = dayjs(date).add(1, 'd').unix();
 
         await Admin.setTrial(workspaceID, formatDate);
       } else {

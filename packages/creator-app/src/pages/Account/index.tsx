@@ -1,7 +1,7 @@
 import './Account.css';
 
 import { LegacyButton } from '@voiceflow/ui';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React, { Component } from 'react';
 
 import { UserMenu } from '@/components/Header/components';
@@ -139,7 +139,7 @@ class AccountPage extends Component<ConnectedAccountPageProps, AccountPageState>
                   <br />
                   {user.email}
                   <br />
-                  {moment(user.created).format('MMMM Do, YYYY')}
+                  {dayjs(user.created).format('MMMM Do, YYYY')}
                   <br />
                 </div>
               </div>

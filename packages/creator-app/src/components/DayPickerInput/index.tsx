@@ -1,5 +1,5 @@
 import { Portal } from '@voiceflow/ui';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
@@ -24,18 +24,18 @@ const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
   const currentDate = React.useMemo(() => new Date(), []);
 
   const [selectedDay, formattedDate] = React.useMemo(() => {
-    const mdate = moment(date);
-    const isValid = !!date && mdate.isValid();
+    const ddate = dayjs(date);
+    const isValid = !!date && ddate.isValid();
 
-    return [isValid ? mdate.toDate() : undefined, isValid ? mdate.format(FORMAT) : (date && `${date}`) || ''];
+    return [isValid ? ddate.toDate() : undefined, isValid ? ddate.format(FORMAT) : (date && `${date}`) || ''];
   }, [date]);
 
   const onBlur = React.useCallback(
     ({ text }: { text: string }) => {
-      const mdate = moment(text);
+      const ddate = dayjs(text);
 
-      if (mdate.isValid()) {
-        onChange(mdate.toDate());
+      if (ddate.isValid()) {
+        onChange(ddate.toDate());
       } else {
         onChange(text);
       }

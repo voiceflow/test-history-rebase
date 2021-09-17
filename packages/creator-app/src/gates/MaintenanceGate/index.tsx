@@ -1,8 +1,8 @@
 import { Alert } from '@voiceflow/ui';
 import axios from 'axios';
 import cuid from 'cuid';
+import dayjs from 'dayjs';
 import _noop from 'lodash/noop';
-import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -91,8 +91,8 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
             forceNotification({
               id: 'maintenance',
               type: Notifications.NotificationType.UPDATE,
-              created: moment(start).toString(),
-              details: `Voiceflow Creator will go under planned maintenance from _**${moment(start).format('h:mmA, MMM Do')}**_ to _**${moment(
+              created: dayjs(start).toString(),
+              details: `Voiceflow Creator will go under planned maintenance from _**${dayjs(start).format('h:mmA, MMM Do')}**_ to _**${dayjs(
                 end
               ).format('h:mmA, MMM Do')}**_`,
             });

@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ class UserCard extends React.Component {
           </LeftPanel>
           <RightPanel>
             <RightPanelHeader>{this.props.creator.name}</RightPanelHeader>
-            <RightPanelText>{moment(this.props.creator.created).format('MMMM Do YYYY, h:mm:ss a')}</RightPanelText>
+            <RightPanelText>{dayjs(this.props.creator.created).format('MMMM Do YYYY, h:mm:ss a')}</RightPanelText>
             <RightPanelText>{this.props.creator.email}</RightPanelText>
             <RightPanelText>{this.props.creator.subscription ? this.props.creator.subscription : 'No subscription active'}</RightPanelText>
             <RightPanelText>{this.props.creator.strip_id ? this.props.creator.strip_id : 'No Stripe Id'}</RightPanelText>

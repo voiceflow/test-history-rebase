@@ -1,5 +1,5 @@
 import { Request } from '@voiceflow/base-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { DebugTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
 
@@ -72,7 +72,7 @@ class MessageController {
   }
 
   private getFormattedStartTime() {
-    return moment
+    return dayjs
       .unix(0)
       .add(Date.now() - this.startTime!, 'ms')
       .format('mm:ss');

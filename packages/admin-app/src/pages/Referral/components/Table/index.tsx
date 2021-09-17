@@ -1,5 +1,5 @@
 import { Box, BoxFlex, BoxFlexCenter, ConnectedProps } from '@voiceflow/ui';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 import { Table } from 'reactstrap';
 
@@ -82,7 +82,7 @@ const ReferralsTable: React.FC<ConnectReferralsTableProps> = ({ referrals, getRe
                   <td className="align-middle">{stripeProducts.length > 0 ? stripeProducts?.join(', ') : 'All'}</td>
                   <td className="align-middle">{redemptionLimit}</td>
                   <td className="align-middle">{redemptions}</td>
-                  <td className="align-middle">{expiry ? moment.unix(expiry).format('YYYY-MM-DD HH:mm') : null}</td>
+                  <td className="align-middle">{expiry ? dayjs.unix(expiry).format('YYYY-MM-DD HH:mm') : null}</td>
                   <td>
                     <Status status={status} referralCode={referralCode} />
                   </td>

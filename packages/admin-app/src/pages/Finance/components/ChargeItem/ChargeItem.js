@@ -1,6 +1,6 @@
 import './ChargeItem.css';
 
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 
 const ChargeItem = (props) => {
@@ -16,7 +16,7 @@ const ChargeItem = (props) => {
         <td>
           {(charge.amount_refunded * 1.0) / 100} {charge.currency.toUpperCase()}
         </td>
-        <td>{moment(charge.created).format('MMMM Do YYYY, h:mm:ss a')}</td>
+        <td>{dayjs(charge.created).format('MMMM Do YYYY, h:mm:ss a')}</td>
         <td>{charge.description}</td>
         <td>
           <div>

@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 
 import { Callback, Eventual } from '@/types';
@@ -12,12 +12,12 @@ import { useTeardown } from './lifecycle';
 const SCHEDULE_FORMAT = ['ha', 'h:ma'];
 
 const getNextScheduledTimeout = (schedule: string[]) => {
-  const now = moment();
-  const todayTimes = schedule.map((time) => moment(time, SCHEDULE_FORMAT));
-  const tomorrowTimes = todayTimes.map((date) => moment(date).add(1, 'day'));
+  const now = dayjs();
+  const todayTimes = schedule.map((time) => dayjs(time, SCHEDULE_FORMAT));
+  const tomorrowTimes = todayTimes.map((date) => dayjs(date).add(1, 'day'));
   const validTimes = [...todayTimes, ...tomorrowTimes].filter((date) => date.isAfter(now));
 
-  return moment.min(validTimes).valueOf() - now.valueOf();
+  return dayjs.min(validTimes).valueOf() - now.valueOf();
 };
 
 export const useAsyncEffect = (effect: () => Promise<any>, dependencies: any[] = []) =>

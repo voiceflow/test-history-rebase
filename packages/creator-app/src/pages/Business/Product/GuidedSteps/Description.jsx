@@ -1,10 +1,9 @@
-/* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control, no-shadow */
-import { Button } from '@voiceflow/ui';
-import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import { Box, Button, Label } from '@voiceflow/ui';
 import moize from 'moize';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import TextInput from '@/components/Form/TextInput';
 import TextArea from '@/components/TextArea';
 import { productByIDSelector, updateProduct } from '@/ducks/product';
 import { connect } from '@/hocs';
@@ -26,27 +25,34 @@ function DescriptionForm({ product, changeStep, updateProduct }) {
   React.useEffect(() => onChange.clear, [onChange]);
 
   return (
-    <AvForm onSubmit={changeStep}>
-      <AvGroup>
-        <label>Product Name</label>
-        <AvInput maxLength="50" name="name" placeholder="Enter a name for your product" value={product.name} onChange={onChange('name')} required />
-        <AvFeedback>Name is required</AvFeedback>
-      </AvGroup>
+    <Box>
+      <Box mb={24}>
+        <Label>Product Name</Label>
+        <TextInput
+          maxLength="50"
+          name="name"
+          placeholder="Enter a name for your product"
+          value={product.name}
+          onChange={onChange('name')}
+          required
+          error="Name is required"
+        />
+      </Box>
 
-      <AvGroup>
-        <label className="label-margin-top">Short Description</label>
-        <AvInput
+      <Box mb={24}>
+        <Label className="label-margin-top">Short Description</Label>
+        <TextInput
           name="summary"
           placeholder="Enter a short description for your product"
           value={product.summary || ''}
           onChange={onChange('summary')}
           required
+          error="Description is required"
         />
-        <AvFeedback>Description is required</AvFeedback>
-      </AvGroup>
+      </Box>
 
-      <AvGroup>
-        <label className="label-margin-top">Detailed Description</label>
+      <Box mb={24}>
+        <Label className="label-margin-top">Detailed Description</Label>
         <TextArea
           minRows={3}
           name="description"
@@ -54,12 +60,14 @@ function DescriptionForm({ product, changeStep, updateProduct }) {
           value={product.description || ''}
           onChange={onChange('description')}
         />
-      </AvGroup>
+      </Box>
 
       <NextButtonContainer>
-        <Button variant="secondary">Next</Button>
+        <Button variant="secondary" onClick={changeStep}>
+          Next
+        </Button>
       </NextButtonContainer>
-    </AvForm>
+    </Box>
   );
 }
 

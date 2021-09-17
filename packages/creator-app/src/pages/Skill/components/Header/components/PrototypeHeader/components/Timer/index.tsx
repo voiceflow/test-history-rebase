@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 
 import * as Prototype from '@/ducks/prototype';
@@ -7,7 +7,7 @@ import { useSelector } from '@/hooks';
 import { Text } from './components';
 
 const getDuration = (startTime: number): string =>
-  moment
+  dayjs
     .unix(0)
     .add(startTime ? Date.now() - startTime : 0, 'ms')
     .format('mm:ss');

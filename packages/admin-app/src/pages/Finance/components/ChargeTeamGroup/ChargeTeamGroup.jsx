@@ -3,7 +3,7 @@ import './ChargeTeamGroup.css';
 import '../AdminAdvancedModal/AdminAdvancedModal.css';
 
 import { Collapse, Input, LegacyButton } from '@voiceflow/ui';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 import { Alert, Card, CardBody, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
@@ -93,9 +93,9 @@ class ChargeTeamGroup extends React.Component {
               {this.state.collapse ? <i className="fas fa-caret-down" /> : <i className="fas fa-caret-right" />}
             </div>
             <div className="ctg__header-details">
-              Team #{team.team_id} - Seats: {team.seats} - Created: {moment(team.created).format(DATETIME_FORMAT)}
+              Team #{team.team_id} - Seats: {team.seats} - Created: {dayjs(team.created).format(DATETIME_FORMAT)}
               <div className="ctg__team-subheader">Subscription id: {team.stripe_sub_id ? team.stripe_sub_id : 'Cancelled'}</div>
-              <div className="ctg__team-subheader">Plan Expiry: {team.expiry ? moment(team.expiry).format('MMM Do YYYY') : 'No expiry set'}</div>
+              <div className="ctg__team-subheader">Plan Expiry: {team.expiry ? dayjs(team.expiry).format('MMM Do YYYY') : 'No expiry set'}</div>
             </div>
             {team.stripe_sub_id ? (
               <LegacyButton className="ctg__team-cancel" isWarning onClick={this.toggleSub}>
@@ -160,7 +160,7 @@ class ChargeTeamGroup extends React.Component {
                     <div className="ctg__charge_user_id">Invoice ID: {this.state.showRefundCharge.invoice}</div>
                     <div className="ctg__receipt_divider"> </div>
                     <div className="ctg__charge_amount">
-                      <div>Created: {moment(this.state.showRefundCharge.created).format(DATETIME_FORMAT)}</div>
+                      <div>Created: {dayjs(this.state.showRefundCharge.created).format(DATETIME_FORMAT)}</div>
                       <div>
                         Total: {this.state.showRefundCharge.amount / 100} {this.state.showRefundCharge.currency}
                       </div>
@@ -218,7 +218,7 @@ class ChargeTeamGroup extends React.Component {
                   <div className="ctg__charge_header">Team #{team.team_id}</div>
                   <div className="ctg__receipt_divider"> </div>
                   <div className="ctg__charge_amount">
-                    <div>Subscription started: {moment(team.created).format(DATETIME_FORMAT)}</div>
+                    <div>Subscription started: {dayjs(team.created).format(DATETIME_FORMAT)}</div>
                   </div>
                 </div>
               </div>

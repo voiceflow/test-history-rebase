@@ -1,5 +1,5 @@
 import axios from 'axios';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { createSelector } from 'reselect';
 
 import { createAction, createRootSelector } from '@/ducks/utils';
@@ -119,7 +119,7 @@ export const fetchNotifications = (): Thunk => async (dispatch) => {
     data: { rows: notifications, last_checked: lastChecked },
   } = await axios.get(`/product_updates`);
 
-  lastChecked = lastChecked ? moment(lastChecked).unix() : 0;
+  lastChecked = lastChecked ? dayjs(lastChecked).unix() : 0;
 
   notifications = notifications.map((notification: Notification) => ({
     ...notification,

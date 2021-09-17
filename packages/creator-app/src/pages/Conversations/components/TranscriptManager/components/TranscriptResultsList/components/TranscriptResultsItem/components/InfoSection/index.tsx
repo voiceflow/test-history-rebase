@@ -1,5 +1,5 @@
 import { Box } from '@voiceflow/ui';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 
 import { mapReportTagsSelector } from '@/ducks/reportTag';
@@ -19,7 +19,7 @@ interface InfoSection {
 
 const InfoSection: React.FC<InfoSection> = ({ active, name, date, isRead, tags }) => {
   const tagsMap = useSelector(mapReportTagsSelector);
-  const formattedDate = `${moment(date).format('LT').toLocaleLowerCase()}, ${moment(date).format('MMMM Do')}`;
+  const formattedDate = `${dayjs(date).format('LT').toLocaleLowerCase()}, ${dayjs(date).format('MMMM Do')}`;
   const MetaInfoSection = () => {
     const customTags = tags.filter((tag) => !ALL_BUILTIN_TAGS_ARRAY.includes(tag as SystemTag | Sentiment));
     if (!isRead) {

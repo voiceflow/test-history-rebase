@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
 import { Constants } from '@voiceflow/alexa-types';
-import { Button, Dropdown, Input, SvgIcon } from '@voiceflow/ui';
-import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import { Box, Button, Dropdown, Input, Label, SvgIcon } from '@voiceflow/ui';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
+import TextInput from '@/components/Form/TextInput';
 import * as Product from '@/ducks/product';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
@@ -59,10 +59,10 @@ function PricingForm({ product, updateProduct, changeStep, parentalControl }) {
   };
 
   return (
-    <AvForm onValidSubmit={changeStep}>
-      <AvGroup>
+    <Box>
+      <Box mb={24}>
         <SubSection>
-          <label>Product Type</label>
+          <Label>Product Type</Label>
           <RadioButtonGroup>
             {PRODUCT_TYPES.map(({ value, label }, index) => (
               <div key={index}>
@@ -90,15 +90,14 @@ function PricingForm({ product, updateProduct, changeStep, parentalControl }) {
               </div>
             ))}
           </RadioButtonGroup>
-          <AvFeedback>Type is required</AvFeedback>
         </SubSection>
 
         {(product.type === Constants.ProductType.SUBSCRIPTION || product.type === Constants.ProductType.CONSUMABLE) && (
           <SubSection>
-            <label>Bill Customer</label>
+            <Label>Bill Customer</Label>
             {product.type === 'CONSUMABLE' && (
               <SubSection flex>
-                <AvInput
+                <TextInput
                   className="form-bg small_input"
                   name="units"
                   type="number"
@@ -128,7 +127,7 @@ function PricingForm({ product, updateProduct, changeStep, parentalControl }) {
                   </Dropdown>
                 </SubscriptionDropdown>
                 <Text>with the trial priod of</Text>
-                <AvInput
+                <TextInput
                   className="form-bg small_input"
                   name="days"
                   placeholder={product.trialPeriodDays || 0}
@@ -142,7 +141,7 @@ function PricingForm({ product, updateProduct, changeStep, parentalControl }) {
         )}
 
         <SubSection>
-          <label>Tax Category</label>
+          <Label>Tax Category</Label>
           <Dropdown onSelect={onChange('taxCategory')} options={TAX_CATEGORIES} autoWidth={true}>
             {(ref, onToggle) => (
               <DropdownWrapper size="50%" ref={ref} onClick={onToggle}>
@@ -154,12 +153,14 @@ function PricingForm({ product, updateProduct, changeStep, parentalControl }) {
             )}
           </Dropdown>
         </SubSection>
-      </AvGroup>
+      </Box>
 
       <NextButtonContainer>
-        <Button variant="secondary">Next</Button>
+        <Button variant="secondary" onClick={changeStep}>
+          Next
+        </Button>
       </NextButtonContainer>
-    </AvForm>
+    </Box>
   );
 }
 

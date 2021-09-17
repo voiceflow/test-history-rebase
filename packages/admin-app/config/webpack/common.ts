@@ -12,7 +12,6 @@ export default extendConfig(
       new webpack.DefinePlugin({
         'process.env.VF_OVERRIDE_API_HOST': JSON.stringify(process.env.VF_OVERRIDE_API_HOST || ''),
       }),
-      new webpack.IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     ],
 
     resolveLoader: {

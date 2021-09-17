@@ -1,7 +1,7 @@
 import { Link } from '@voiceflow/ui';
 import cn from 'classnames';
+import dayjs from 'dayjs';
 import Markdown from 'markdown-to-jsx';
-import moment from 'moment';
 import React from 'react';
 
 import * as Notifications from '@/ducks/notifications';
@@ -42,7 +42,7 @@ const Notification: React.FC<NotificationProps> = ({ data: { details, created, i
       {details}
     </Markdown>
 
-    <TimeContainer>{created ? moment(created).fromNow() : ''}</TimeContainer>
+    <TimeContainer>{created ? dayjs(created).fromNow() : ''}</TimeContainer>
   </Container>
 );
 

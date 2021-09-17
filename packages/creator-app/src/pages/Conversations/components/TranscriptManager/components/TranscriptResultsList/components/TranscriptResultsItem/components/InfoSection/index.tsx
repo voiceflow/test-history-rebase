@@ -19,7 +19,7 @@ interface InfoSection {
 
 const InfoSection: React.FC<InfoSection> = ({ active, name, date, isRead, tags }) => {
   const tagsMap = useSelector(mapReportTagsSelector);
-  const formattedDate = `${dayjs(date).format('LT').toLocaleLowerCase()}, ${dayjs(date).format('MMMM Do')}`;
+  const formattedDate = `${dayjs(date).format('h:mm a, MMM Do')}`;
   const MetaInfoSection = () => {
     const customTags = tags.filter((tag) => !ALL_BUILTIN_TAGS_ARRAY.includes(tag as SystemTag | Sentiment));
     if (!isRead) {

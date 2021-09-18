@@ -10,7 +10,7 @@ import { createAction, createRootSelector } from './utils';
 export interface PrototypeConfig {
   debug: boolean;
   intent: boolean;
-  guided: boolean;
+  isGuided: boolean;
 }
 
 export interface RecentState {
@@ -29,7 +29,7 @@ export const INITIAL_STATE: RecentState = {
   prototype: {
     debug: false,
     intent: false,
-    guided: false,
+    isGuided: false,
   },
   redirect: null,
 };

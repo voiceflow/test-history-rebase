@@ -49,7 +49,7 @@ const fetchContext =
         {
           state,
           request,
-          config: { ...(!!config.guided && guidedConfig), excludeTypes: [], tts: true },
+          config: { ...(!!config.isGuided && guidedConfig), excludeTypes: [], tts: true },
         },
         sessionID
       );

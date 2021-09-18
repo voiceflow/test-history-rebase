@@ -12,7 +12,7 @@ import SettingsSection from './components/SettingsSection';
 const PrototypeSettings: React.FC<ConnectedPrototypeSettingsProps> = ({ config, updateSettings }) => {
   const toggleDebug = () => updateSettings({ debug: !config.debug });
   const toggleIntentScore = () => updateSettings({ intent: !config.intent });
-  const toggleGuidedNav = () => updateSettings({ guided: !config.guided });
+  const toggleGuidedNav = () => updateSettings({ isGuided: !config.isGuided });
 
   return (
     <Drawer id={Identifier.PROTO_SETTINGS_MENU_CONTAINER}>
@@ -23,7 +23,7 @@ const PrototypeSettings: React.FC<ConnectedPrototypeSettingsProps> = ({ config, 
       <SettingsSection header="Intent Confidence Score" toggle={toggleIntentScore} value={config.intent} isDividerNested>
         Show the natural language model's confidence out of 1.00 when matching trained intents.
       </SettingsSection>
-      <SettingsSection header="Guided Navigation" toggle={toggleGuidedNav} value={config.guided} isDividerNested>
+      <SettingsSection header="Guided Navigation" toggle={toggleGuidedNav} value={config.isGuided} isDividerNested>
         Stop and wait for path selection on IF and Custom Action steps.
       </SettingsSection>
     </Drawer>

@@ -74,7 +74,7 @@ const NewProject: React.FC = () => {
           locales: GoogleConstants.LanguageToLocale[googleLanguage],
           displayName: DEFAULT_PROJECT_NAME,
           pronunciation: invocationName,
-          sampleInvocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
+          sampleInvocations: [`Talk to ${invocationName}`],
         });
       } else if (isAnyGeneralPlatform(selectedChannel!)) {
         await client.platform.general.version.updateSettings(project.versionID, {

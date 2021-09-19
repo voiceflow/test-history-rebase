@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.485.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.485.1...@voiceflow/creator-app@1.485.2) (2021-09-19)
+
+
+### Bug Fixes
+
+* google invocation (VF-746) ([#4161](https://github.com/voiceflow/creator-app/issues/4161)) ([7c90fde](https://github.com/voiceflow/creator-app/commit/7c90fde887ece3561a3b0c5b33746d4a82700d70))
+
+
+
+
+
 ## [1.485.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.485.0...@voiceflow/creator-app@1.485.1) (2021-09-18)
 
 

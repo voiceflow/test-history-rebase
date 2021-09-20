@@ -28,7 +28,6 @@ const Button = styled(FadeLeftContainer)<ButtonProps>`
   margin: 5px;
   padding: 8px 20px;
   display: inline-block;
-  text-transform: capitalize;
 
   :hover,
   :active {

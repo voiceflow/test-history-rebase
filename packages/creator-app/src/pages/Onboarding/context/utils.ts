@@ -75,10 +75,12 @@ export const getNumberOfSteps = ({
   specificFlowType,
   hasPresetSeats,
   hasWorkspaces,
+  isAdminOfEnterprisePlan,
 }: {
   specificFlowType: SpecificFlowType;
   hasPresetSeats: boolean;
   hasWorkspaces: boolean;
+  isAdminOfEnterprisePlan: boolean;
 }) => {
   switch (specificFlowType) {
     case SpecificFlowType.login_invite:
@@ -87,7 +89,7 @@ export const getNumberOfSteps = ({
     case SpecificFlowType.login_creator_existing:
       return hasPresetSeats ? 2 : 3;
     case SpecificFlowType.create_workspace:
-      return !hasWorkspaces || IS_PRIVATE_CLOUD ? 2 : 3;
+      return !hasWorkspaces || isAdminOfEnterprisePlan || IS_PRIVATE_CLOUD ? 2 : 3;
     case SpecificFlowType.login_creator_new:
       return 5;
     case SpecificFlowType.login_student_new:

@@ -128,12 +128,26 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       ).length,
     [workspaces.length, account.creator_id, isLoginFlow]
   );
+
+  const isAdminOfEnterprisePlan = React.useMemo(
+    () =>
+      workspaces.some((workspace) => {
+        const isEnterpriseWorkspace = workspace.plan === PlanType.ENTERPRISE;
+
+        if (!isEnterpriseWorkspace) return false;
+
+        return workspace.members?.some((member) => member.creator_id === account.creator_id && member.role === UserRole.ADMIN);
+      }),
+    [workspaces, account.creator_id]
+  );
+
   const specificFlowType = Utils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
   const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
   const numberOfSteps = Utils.getNumberOfSteps({
     specificFlowType,
     hasPresetSeats: !!seats,
     hasWorkspaces,
+    isAdminOfEnterprisePlan,
   });
   const firstStep = Utils.getFirstStep({
     flow,
@@ -364,7 +378,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       } else {
         goToWorkspace(workspace.id);
 
-        if (!IS_PRIVATE_CLOUD && hasWorkspaces) {
+        if (!IS_PRIVATE_CLOUD && hasWorkspaces && !isAdminOfEnterprisePlan) {
           const message = `Your Voiceflow ${state.paymentMeta.plan} subscription has been activated.`;
 
           openSuccessModal({ title: 'Payment Successful', message, icon: receiptGraphic, variant: ButtonVariant.TERTIARY });

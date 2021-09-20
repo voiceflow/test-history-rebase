@@ -33,6 +33,7 @@
     "draft-js": "^0.11.2",
     "faker": "^5.5.3",
     "mocha": "^9.1.1",
+    "nyc": "^15.1.0",
     "polished": "^3.6.5",
     "sinon": "^11.1.2",
     "slate": "0.63.0",
@@ -67,7 +68,7 @@
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:report": "yarn lint --format json -o sonar/report.json",
-    "test": "ts-mocha --paths --config ./config/tests/mocharc.yml 'tests/**/*.{unit,it}.ts'",
+    "test": "nyc ts-mocha --paths --config ./config/tests/mocharc.yml 'tests/**/*.{unit,it}.ts'",
     "test:dependencies": "depcheck",
     "test:integration": "yarn test",
     "test:unit": "yarn test"

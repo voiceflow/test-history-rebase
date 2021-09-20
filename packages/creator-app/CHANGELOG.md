@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.486.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.485.3...@voiceflow/creator-app@1.486.0) (2021-09-20)
+
+
+### Features
+
+* update section nav dimensions ([#4138](https://github.com/voiceflow/creator-app/issues/4138)) ([0ce8cc6](https://github.com/voiceflow/creator-app/commit/0ce8cc643bf7bb12c767b7c5f29a2e73aa40560b))
+
+
+
+
+
 ## [1.485.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.485.2...@voiceflow/creator-app@1.485.3) (2021-09-20)
 
 

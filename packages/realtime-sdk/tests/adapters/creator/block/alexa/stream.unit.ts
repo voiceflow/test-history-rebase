@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import streamAdapter from '@/adapters/creator/block/alexa/stream';
 import { streamNodeDataFactory, streamStepDataFactory } from '@/tests/factories/alexa/stream';
 
-describe('Adapters | Creator | Block | streamAdapter', () => {
+describe('Adapters | Creator | Block | Alexa | streamAdapter', () => {
   describe('when transforming from db', () => {
     it('returns given data', () => {
       const data = streamStepDataFactory();

@@ -8,7 +8,7 @@ import { stepNoMatchPromptFactory } from '@/tests/factories/noMatch';
 import { promptFactory } from '@/tests/factories/reprompt';
 import { noMatchesNodeDataFactory, voicePromptNodeDataFactory } from '@/tests/factories/voice';
 
-describe('Adapters | Creator | Block | promptAdapter', () => {
+describe('Adapters | Creator | Block | Alexa | promptAdapter', () => {
   afterEach(() => {
     Sinon.reset();
     Sinon.restore();

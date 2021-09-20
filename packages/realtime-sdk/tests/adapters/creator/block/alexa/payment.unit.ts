@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import paymentAdapter from '@/adapters/creator/block/alexa/payment';
 import { paymentNodeDataFactory, paymentStepDataFactory } from '@/tests/factories/alexa/payment';
 
-describe('Adapters | Creator | Block | paymentAdapter', () => {
+describe('Adapters | Creator | Block | Alexa | paymentAdapter', () => {
   describe('when transforming from db', () => {
     it('returns correct data', () => {
       const data = paymentStepDataFactory();

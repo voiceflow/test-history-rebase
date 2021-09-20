@@ -4,7 +4,20 @@ import { PlatformType } from '@voiceflow/internal';
 import { define } from 'cooky-cutter';
 import { datatype, lorem, random } from 'faker';
 
+import { DistinctPlatform } from '@/constants';
 import { NodeData } from '@/models';
+
+export const interactionChoiceFactory = define<NodeData.InteractionChoice>({
+  id: () => datatype.uuid(),
+  intent: () => '',
+  mappings: () => [{ slot: lorem.word(), variable: lorem.word() }],
+});
+
+export const interactionRecordChoiceFactory = define<Record<DistinctPlatform, NodeData.InteractionChoice>>({
+  [PlatformType.ALEXA]: () => interactionChoiceFactory(),
+  [PlatformType.GOOGLE]: () => interactionChoiceFactory(),
+  [PlatformType.GENERAL]: () => interactionChoiceFactory(),
+});
 
 export const intentButtonFactory = define<IntentButton>({
   name: () => lorem.word(),

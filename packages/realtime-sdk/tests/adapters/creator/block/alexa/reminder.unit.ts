@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import reminderAdapter from '@/adapters/creator/block/alexa/reminder';
 import { reminderFactory, reminderNodeDataFactory, reminderStepDataFactory } from '@/tests/factories/alexa/reminder';
 
-describe('Adapters | Creator | Block | reminderAdapter', () => {
+describe('Adapters | Creator | Block | Alexa | reminderAdapter', () => {
   describe('when transforming from db', () => {
     it('includes reminder data', () => {
       const reminder = reminderFactory({ type: Node.Reminder.ReminderType.SCHEDULED_RELATIVE });

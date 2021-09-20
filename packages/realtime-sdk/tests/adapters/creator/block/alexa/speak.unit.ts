@@ -9,7 +9,7 @@ import { DialogType } from '@/constants';
 import { audioDataFactory, speakNodeDataFactory, speakStepDataFactory, ssmlDataFactory } from '@/tests/factories/alexa/speak';
 import { promptFactory } from '@/tests/factories/reprompt';
 
-describe('Adapters | Creator | Block | speakAdapter', () => {
+describe('Adapters | Creator | Block | Alexa | speakAdapter', () => {
   afterEach(() => {
     Sinon.reset();
     Sinon.restore();

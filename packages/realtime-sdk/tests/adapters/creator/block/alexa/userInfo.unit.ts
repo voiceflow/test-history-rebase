@@ -6,7 +6,7 @@ import Sinon from 'sinon';
 import userInfoAdapter from '@/adapters/creator/block/alexa/userInfo';
 import { userInfoNodeData, userInfoStepDataFactory } from '@/tests/factories/alexa/userInfo';
 
-describe('Adapters | Creator | Block | userInfoAdapter', () => {
+describe('Adapters | Creator | Block | Alexa | userInfoAdapter', () => {
   afterEach(() => {
     Sinon.reset();
     Sinon.restore();

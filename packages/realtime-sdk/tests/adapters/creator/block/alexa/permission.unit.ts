@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import permissionAdapter from '@/adapters/creator/block/alexa/permission';
 import { permissionNodeDataFactory, permissionStepDataFactory } from '@/tests/factories/alexa/permission';
 
-describe('Adapters | Creator | Block | permissionAdapter', () => {
+describe('Adapters | Creator | Block | Alexa | permissionAdapter', () => {
   describe('when transforming from db', () => {
     it('returns correct data', () => {
       const data = permissionStepDataFactory();

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.487.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.486.0...@voiceflow/creator-app@1.487.0) (2021-09-20)
+
+
+### Features
+
+* applied 'Unlimited Enterprise Workspace' functionality to Production (VF-1181) ([#4094](https://github.com/voiceflow/creator-app/issues/4094)) ([3663c0a](https://github.com/voiceflow/creator-app/commit/3663c0ac2f52ac1968e4919133b38db71e5645d5))
+
+
+
+
+
 # [1.486.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.485.3...@voiceflow/creator-app@1.486.0) (2021-09-20)
 
 

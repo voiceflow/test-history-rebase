@@ -89,7 +89,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace', ({ expect, stub, rewire, descr
         });
       });
 
-      describe('getDistinctWorkspaceMemberByCreatorIDSelector()', () => {
+      describe.skip('getDistinctWorkspaceMemberByCreatorIDSelector()', () => {
         const tabID = 'xyz';
 
         it('should select a a distinct member from the active workspace by creator ID', async () => {

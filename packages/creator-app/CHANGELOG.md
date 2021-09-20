@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.485.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.485.2...@voiceflow/creator-app@1.485.3) (2021-09-20)
+
+
+### Bug Fixes
+
+* remove automatic capitalization of button text ([#4155](https://github.com/voiceflow/creator-app/issues/4155)) ([c166bef](https://github.com/voiceflow/creator-app/commit/c166bef12365257e4dc662221003c37ae088ca29))
+* run local under https, remove docker (VF-000) ([#4151](https://github.com/voiceflow/creator-app/issues/4151)) ([48f4b4a](https://github.com/voiceflow/creator-app/commit/48f4b4a99c3c72a0326501bedc8a9113c2a7dee6))
+
+
+
+
+
 ## [1.485.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.485.1...@voiceflow/creator-app@1.485.2) (2021-09-19)
 
 

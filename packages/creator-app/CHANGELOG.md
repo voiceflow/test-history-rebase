@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.488.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.487.1...@voiceflow/creator-app@1.488.0) (2021-09-21)
+
+
+### Features
+
+* adjust export scroll size (VF-1819) ([#4178](https://github.com/voiceflow/creator-app/issues/4178)) ([88d4b85](https://github.com/voiceflow/creator-app/commit/88d4b85e8cf1e8c8708044d33c4f7c98b8ab9749))
+
+
+
+
+
 ## [1.487.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.487.0...@voiceflow/creator-app@1.487.1) (2021-09-21)
 
 

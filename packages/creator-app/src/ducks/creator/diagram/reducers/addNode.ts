@@ -1,5 +1,6 @@
 import { BlockType } from '@/constants';
 import { Reducer } from '@/store/types';
+import { PathPoint } from '@/types';
 import { compose } from '@/utils/functional';
 import { getNormalizedByKey } from '@/utils/normalized';
 import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
@@ -94,15 +95,26 @@ export const addManyNodesReducer: Reducer<DiagramState, AddManyNodes> = (
 
   const [centerX, centerY] = [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
 
+  const adjustPathPoint = (point: PathPoint): PathPoint => ({
+    ...point,
+    point: [positionX + (point.point[0] - centerX), positionY + (point.point[1] - centerY)],
+  });
+
   return compose(
-    addAllPortsToState(ports),
+    addAllPortsToState(
+      ports.map((port) =>
+        port.linkData?.points ? { ...port, linkData: { ...port.linkData, points: port.linkData.points.map(adjustPathPoint) } } : port
+      )
+    ),
     addAllNodesToState(
       nodesWithData.map(({ node, data }) => ({
         node: { ...node, x: positionX + (node.x - centerX), y: positionY + (node.y - centerY) },
         data,
       }))
     ),
-    addAllLinksToState(links)
+    addAllLinksToState(
+      links.map((link) => (link.data?.points ? { ...link, data: { ...link.data, points: link.data.points.map(adjustPathPoint) } } : link))
+    )
   )(state);
 };
 

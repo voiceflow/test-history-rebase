@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -12,16 +12,16 @@ import StyledButton from './StyledButton';
 
 const getPlatformIconProps = createPlatformSelector<HeaderIconButtonProps>(
   {
-    [PlatformType.ALEXA]: { icon: 'amazonAlexa', iconProps: { color: '#5fcaf4' } },
-    [PlatformType.GOOGLE]: { icon: 'googleAssistant' },
+    [Constants.PlatformType.ALEXA]: { icon: 'amazonAlexa', iconProps: { color: '#5fcaf4' } },
+    [Constants.PlatformType.GOOGLE]: { icon: 'googleAssistant' },
   },
   { icon: 'ban' }
 );
 
 const getPlatformName = createPlatformSelector(
   {
-    [PlatformType.ALEXA]: 'Alexa',
-    [PlatformType.GOOGLE]: 'Google',
+    [Constants.PlatformType.ALEXA]: 'Alexa',
+    [Constants.PlatformType.GOOGLE]: 'Google',
   },
   ''
 );
@@ -39,7 +39,7 @@ interface ConnectButtonProps {
   progress?: number;
 }
 
-const getButtonProps = (platform: PlatformType, { variant, progress }: ConnectButtonProps): HeaderIconButtonProps & { key?: string } => {
+const getButtonProps = (platform: Constants.PlatformType, { variant, progress }: ConnectButtonProps): HeaderIconButtonProps & { key?: string } => {
   const loadIconProps: HeaderIconButtonProps = { icon: 'loader', color: '#132144', withOpacity: true, size: 18 };
 
   switch (variant) {

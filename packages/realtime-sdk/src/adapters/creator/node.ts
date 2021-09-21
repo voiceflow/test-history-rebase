@@ -1,5 +1,5 @@
 import { BaseBlock, BaseDiagramNode, NodeID } from '@voiceflow/api-sdk';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { BlockType } from '../../constants';
 import { Link, Node, NodeData, Port } from '../../models';
@@ -17,7 +17,7 @@ const nodeAdapter = createAdapter<
     {
       parentNode: BaseBlock | null;
       links: Link[];
-      platform: PlatformType;
+      platform: Constants.PlatformType;
       context: AdapterContext;
     }
   ],
@@ -25,7 +25,7 @@ const nodeAdapter = createAdapter<
     {
       portToTargets: Record<string, NodeID>;
       stepMap: Record<NodeID, NodeID>;
-      platform: PlatformType;
+      platform: Constants.PlatformType;
       portLinksMap: Record<string, Link>;
       context: AdapterContext;
     }

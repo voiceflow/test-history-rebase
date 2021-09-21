@@ -1,8 +1,7 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
-import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
-import { PlatformType } from '@voiceflow/internal';
 
 import { CUSTOM_SLOT_TYPE } from '../constants';
 import { Intent, Slot } from '../models';
@@ -16,16 +15,16 @@ export const getSlotTypes = <L extends string>({
   natoEnabled,
 }: {
   locales: L[];
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   natoEnabled: boolean;
 }): { label: string; value: string }[] => {
   let builtInSlots: BuiltinSlot<string, string | L>[];
 
   switch (platform) {
-    case PlatformType.GOOGLE:
+    case Constants.PlatformType.GOOGLE:
       builtInSlots = [...GoogleConstants.BUILT_IN_SLOTS];
       break;
-    case PlatformType.ALEXA:
+    case Constants.PlatformType.ALEXA:
       builtInSlots = [...AlexaConstants.BUILT_IN_SLOTS];
       builtInSlots = builtInSlots
         .filter((slot) => !slot.locales || locales.every((locale) => slot.locales!.includes(locale)))

@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { useContextApi, useDidUpdateEffect, useSetup, useTeardown, withContext } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -38,8 +38,8 @@ export const PublishProvider: React.FC = ({ children }) => {
 
   const platformClient = React.useMemo(
     () =>
-      (platform === PlatformType.GOOGLE && isGoogleCreate && { ...client.platform.google, publish: client.platform.google.publishV2 }) ||
-      (platform === PlatformType.GOOGLE && isDialogflow && { ...client.platform.google, publish: client.platform.google.publishDF }) ||
+      (platform === Constants.PlatformType.GOOGLE && isGoogleCreate && { ...client.platform.google, publish: client.platform.google.publishV2 }) ||
+      (platform === Constants.PlatformType.GOOGLE && isDialogflow && { ...client.platform.google, publish: client.platform.google.publishDF }) ||
       client.platform(platform),
     [platform]
   );

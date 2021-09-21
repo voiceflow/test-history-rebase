@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import * as Creator from '@/ducks/creator';
 import * as Realtime from '@/ducks/realtime';
@@ -54,7 +54,7 @@ class LinkManager extends EngineConsumer {
     return this.engine.node.isBranchActive(link.source.nodeID) || this.engine.node.isBranchActive(link.target.nodeID);
   }
 
-  isVisible(linkID: string, platform: PlatformType) {
+  isVisible(linkID: string, platform: Constants.PlatformType) {
     const link = this.engine.getLinkByID(linkID);
     const sourcePort = this.engine.getPortByID(link.source.portID);
 

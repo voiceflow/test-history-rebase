@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { NodeData } from '@/models';
 
@@ -12,7 +12,7 @@ const CancelPaymentManager: NodeManagerConfig<NodeData.CancelPayment> = {
 
   tip: "Refund a purchase or cancel an user's subscription",
   label: 'Cancel Purchase',
-  platforms: [PlatformType.ALEXA],
+  platforms: [Constants.PlatformType.ALEXA],
 
   step: CancelPaymentStep,
   editor: CancelPaymentEditor,

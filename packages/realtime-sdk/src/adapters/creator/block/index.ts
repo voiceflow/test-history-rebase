@@ -1,6 +1,6 @@
 import { BaseDiagramNode } from '@voiceflow/api-sdk';
 import { Node } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import moize from 'moize';
 
 import { BlockType } from '../../../constants';
@@ -51,9 +51,9 @@ export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: 
 
 const getPlatformAdapter = createPlatformSelector<Partial<Record<BlockType, unknown>>>(
   {
-    [PlatformType.ALEXA]: alexaBlockAdapter,
-    [PlatformType.GOOGLE]: googleBlockAdapter,
-    [PlatformType.CHATBOT]: chatBlockAdapter,
+    [Constants.PlatformType.ALEXA]: alexaBlockAdapter,
+    [Constants.PlatformType.GOOGLE]: googleBlockAdapter,
+    [Constants.PlatformType.CHATBOT]: chatBlockAdapter,
   },
   generalBlockAdapter
 );
@@ -74,8 +74,8 @@ const commonBlockAdapter = {
 
 const getPlatformPortsAdapter = createPlatformSelector<typeof alexaPortsAdapter | typeof googlePortsAdapter | typeof generalPortsAdapter>(
   {
-    [PlatformType.ALEXA]: alexaPortsAdapter,
-    [PlatformType.GOOGLE]: googlePortsAdapter,
+    [Constants.PlatformType.ALEXA]: alexaPortsAdapter,
+    [Constants.PlatformType.GOOGLE]: googlePortsAdapter,
   },
   generalPortsAdapter
 );
@@ -88,7 +88,7 @@ type PlatformBlockAdapter = Partial<
 
 const commonPortsAdapter = {};
 
-export const getBlockAdapter = moize((platform: PlatformType, migrate?: boolean): PlatformBlockAdapter => {
+export const getBlockAdapter = moize((platform: Constants.PlatformType, migrate?: boolean): PlatformBlockAdapter => {
   if (migrate) {
     return migrationBlockAdapter as unknown as PlatformBlockAdapter;
   }
@@ -103,7 +103,7 @@ export const getBlockAdapter = moize((platform: PlatformType, migrate?: boolean)
 type PlatformPortsAdapter = Partial<Record<BlockType, PortsAdapter>>;
 
 export const getPortsAdapter = moize(
-  (platform: PlatformType): PlatformPortsAdapter =>
+  (platform: Constants.PlatformType): PlatformPortsAdapter =>
     ({
       ...commonPortsAdapter,
       ...generalPortsAdapter,

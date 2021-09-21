@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import {
   BlockType,
@@ -17,8 +17,8 @@ const createBlockTypeGuard =
   (type: BlockType): type is R =>
     nodes.includes(type as R);
 const createPlatformTypeGuard =
-  <R extends PlatformType>(platform: R) =>
-  (type?: string | PlatformType | null): type is R =>
+  <R extends Constants.PlatformType>(platform: R) =>
+  (type?: string | Constants.PlatformType | null): type is R =>
     type === platform;
 
 export const isRootBlockType = createBlockTypeGuard(ROOT_NODES);
@@ -28,18 +28,18 @@ export const isRootOrMarkupBlockType = createBlockTypeGuard(ROOT_AND_MARKUP_NODE
 export const isMarkupOrCombinedBlockType = createBlockTypeGuard(MARKUP_AND_COMBINED_NODES);
 export const isDiagramReferencesBlockType = createBlockTypeGuard(DIAGRAM_REFERENCE_NODES);
 
-export const isAlexaPlatform = createPlatformTypeGuard(PlatformType.ALEXA);
-export const isGooglePlatform = createPlatformTypeGuard(PlatformType.GOOGLE);
+export const isAlexaPlatform = createPlatformTypeGuard(Constants.PlatformType.ALEXA);
+export const isGooglePlatform = createPlatformTypeGuard(Constants.PlatformType.GOOGLE);
 
-export const isIVRPlatform = createPlatformTypeGuard(PlatformType.IVR);
-export const isGeneralPlatform = createPlatformTypeGuard(PlatformType.GENERAL);
-export const isChatbotPlatform = createPlatformTypeGuard(PlatformType.CHATBOT);
-export const isMobileAppPlatform = createPlatformTypeGuard(PlatformType.MOBILE_APP);
+export const isIVRPlatform = createPlatformTypeGuard(Constants.PlatformType.IVR);
+export const isGeneralPlatform = createPlatformTypeGuard(Constants.PlatformType.GENERAL);
+export const isChatbotPlatform = createPlatformTypeGuard(Constants.PlatformType.CHATBOT);
+export const isMobileAppPlatform = createPlatformTypeGuard(Constants.PlatformType.MOBILE_APP);
 
-export const isDistinctPlatform = (type: string | PlatformType): type is typeof DISTINCT_PLATFORMS[number] =>
+export const isDistinctPlatform = (type: string | Constants.PlatformType): type is typeof DISTINCT_PLATFORMS[number] =>
   DISTINCT_PLATFORMS.includes(type as typeof DISTINCT_PLATFORMS[number]);
 
-export const isAnyGeneralPlatform = (type: string | PlatformType): type is typeof GENERAL_PLATFORMS[number] =>
+export const isAnyGeneralPlatform = (type: string | Constants.PlatformType): type is typeof GENERAL_PLATFORMS[number] =>
   GENERAL_PLATFORMS.includes(type as typeof GENERAL_PLATFORMS[number]);
 
 type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T;

@@ -1,13 +1,13 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import { Paragraph } from '@/components/Tooltip';
 import { DOCS_LINK } from '@/constants';
 
-const EditorInfoPopup: React.FC<{ platform: PlatformType }> = ({ platform }) => {
+const EditorInfoPopup: React.FC<{ platform: Constants.PlatformType }> = ({ platform }) => {
   switch (platform) {
-    case PlatformType.ALEXA:
+    case Constants.PlatformType.ALEXA:
       return (
         <Paragraph>
           The directive step will allow you to send customized directives for Alexa features that Voiceflow might not have a block for yet, or even
@@ -19,7 +19,7 @@ const EditorInfoPopup: React.FC<{ platform: PlatformType }> = ({ platform }) => 
           <Link href={`${DOCS_LINK}/#/platform/steps/channel-steps/alexa-steps?id=directive-step`}> documentation.</Link>
         </Paragraph>
       );
-    case PlatformType.GOOGLE:
+    case Constants.PlatformType.GOOGLE:
       return (
         <Paragraph>
           The directive step will allow you to send customized directives for Google features that Voiceflow might not have a block for yet, or even

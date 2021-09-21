@@ -1,5 +1,5 @@
 import { Types } from '@voiceflow/chat-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Optional, Required } from 'utility-types';
 
 import { ChatIntent, ChatIntentSlot, ChatIntentSlotDialog } from '../../models';
@@ -22,7 +22,7 @@ export const chatIntentSlotSanitizer = ({ dialog, ...baseIntentSlot }: Required<
   dialog: chatIntentSlotDialogSanitizer(dialog),
 });
 
-const chatIntentAdapter = createAdapter<Types.Intent, ChatIntent, [{ platform: PlatformType }]>(
+const chatIntentAdapter = createAdapter<Types.Intent, ChatIntent, [{ platform: Constants.PlatformType }]>(
   ({ slots = [], ...baseIntent }, options) => ({
     ...baseIntentAdapter.fromDB(baseIntent, options),
     slots: normalize(slots.map(chatIntentSlotSanitizer)),

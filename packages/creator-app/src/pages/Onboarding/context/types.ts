@@ -1,4 +1,5 @@
-import { BillingPeriod, PlanType, PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
+import { BillingPeriod, PlanType } from '@voiceflow/internal';
 
 import { Query } from '@/models';
 
@@ -53,7 +54,7 @@ export interface OnboardingContextState {
     role: string;
   };
   selectChannelMeta: {
-    channel: PlatformType;
+    channel: Constants.PlatformType;
   };
   sendingRequests: boolean;
   workspaceId: string;

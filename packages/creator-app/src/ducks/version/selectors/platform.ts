@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { createSelector } from 'reselect';
 
 import { FeatureFlag } from '@/config/features';
@@ -17,11 +17,11 @@ export const activeLocalesSelector = createSelector([ProjectV2.active.projectSel
   if (!activeProject) return [];
 
   switch (activeProject.platform) {
-    case PlatformType.ALEXA:
+    case Constants.PlatformType.ALEXA:
       return alexa.activeLocalesSelector(rootState);
-    case PlatformType.GOOGLE:
+    case Constants.PlatformType.GOOGLE:
       return google.activeLocalesSelector(rootState);
-    case PlatformType.GENERAL:
+    case Constants.PlatformType.GENERAL:
     default:
       return general.activeLocalesSelector(rootState);
   }
@@ -31,11 +31,11 @@ export const activeInvocationNameSelector = createSelector([ProjectV2.active.pro
   if (!activeProject) return null;
 
   switch (activeProject.platform) {
-    case PlatformType.ALEXA:
+    case Constants.PlatformType.ALEXA:
       return alexa.activeInvocationNameSelector(rootState);
-    case PlatformType.GOOGLE:
+    case Constants.PlatformType.GOOGLE:
       return google.activeInvocationNameSelector(rootState);
-    case PlatformType.GENERAL:
+    case Constants.PlatformType.GENERAL:
     default:
       return general.activeInvocationNameSelector(rootState);
   }
@@ -45,11 +45,11 @@ export const activeInvocationsSelector = createSelector([ProjectV2.active.projec
   if (!activeProject) return [];
 
   switch (activeProject.platform) {
-    case PlatformType.ALEXA:
+    case Constants.PlatformType.ALEXA:
       return alexa.activeInvocationsSelector(rootState);
-    case PlatformType.GOOGLE:
+    case Constants.PlatformType.GOOGLE:
       return google.activeInvocationsSelector(rootState);
-    case PlatformType.GENERAL:
+    case Constants.PlatformType.GENERAL:
     default:
       return [];
   }

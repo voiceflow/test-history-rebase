@@ -1,5 +1,5 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { WithRequired } from '@voiceflow/realtime-sdk';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
@@ -35,7 +35,7 @@ export type NodeEditor<T, E = {}> = React.FC<NodeEditorPropsType<T> & E>;
 
 interface NodeFactoryOptions {
   features?: FeatureFlagMap;
-  platform?: PlatformType;
+  platform?: Constants.PlatformType;
   defaultVoice?: string;
   canvasNodeVisibility?: BaseNode.Utils.CanvasNodeVisibility;
 }
@@ -61,7 +61,7 @@ export type NodeManagerConfig<T extends object | Markup.AnyNodeData> = NodeConfi
 
   buttons?: boolean;
   reprompt?: boolean;
-  platforms?: PlatformType[];
+  platforms?: Constants.PlatformType[];
   nameEditable?: boolean;
 
   step: React.FC<ConnectedStepProps<T>>;

@@ -1,7 +1,6 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
-import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
-import { PlatformType } from '@voiceflow/internal';
 
 import { DISTINCT_PLATFORMS, DistinctPlatform } from '../constants';
 import { AnyVoice } from '../models';
@@ -9,11 +8,11 @@ import { Nullish } from '../types';
 import { isDistinctPlatform } from './typeGuards';
 
 export const createPlatformSelector: {
-  <T>(platformValues: Record<PlatformType, T>, defaultValue?: T): (platform?: Nullish<PlatformType>) => T;
-  <T>(platformValues: Partial<Record<PlatformType, T>>, defaultValue: T): (platform?: Nullish<PlatformType>) => T;
+  <T>(platformValues: Record<Constants.PlatformType, T>, defaultValue?: T): (platform?: Nullish<Constants.PlatformType>) => T;
+  <T>(platformValues: Partial<Record<Constants.PlatformType, T>>, defaultValue: T): (platform?: Nullish<Constants.PlatformType>) => T;
 } =
-  <T>(platformValues: Partial<Record<PlatformType, T>>, defaultValue: T | undefined) =>
-  (platform?: Nullish<PlatformType>) => {
+  <T>(platformValues: Partial<Record<Constants.PlatformType, T>>, defaultValue: T | undefined) =>
+  (platform?: Nullish<Constants.PlatformType>) => {
     const value = platform && platform in platformValues ? platformValues[platform] : defaultValue;
     if (value == null) throw new Error('no value for platform');
 
@@ -21,21 +20,21 @@ export const createPlatformSelector: {
   };
 
 export const createAdvancedPlatformSelector =
-  <T extends Partial<Record<PlatformType, any>>, D = undefined>(platformValues: T, defaultValue?: D) =>
-  <P extends PlatformType>(platform: P): P extends keyof T ? T[P] : D =>
+  <T extends Partial<Record<Constants.PlatformType, any>>, D = undefined>(platformValues: T, defaultValue?: D) =>
+  <P extends Constants.PlatformType>(platform: P): P extends keyof T ? T[P] : D =>
     createPlatformSelector(platformValues, defaultValue)(platform);
 
 export const getPlatformValue: {
-  <T>(platform: PlatformType, platformValues: Record<PlatformType, T>, defaultValue?: T): T;
-  <T>(platform: PlatformType, platformValues: Partial<Record<PlatformType, T>>, defaultValue: T): T;
-} = <T>(platform: PlatformType, platformValues: Partial<Record<PlatformType, T>>, defaultValue: T | undefined) =>
+  <T>(platform: Constants.PlatformType, platformValues: Record<Constants.PlatformType, T>, defaultValue?: T): T;
+  <T>(platform: Constants.PlatformType, platformValues: Partial<Record<Constants.PlatformType, T>>, defaultValue: T): T;
+} = <T>(platform: Constants.PlatformType, platformValues: Partial<Record<Constants.PlatformType, T>>, defaultValue: T | undefined) =>
   createPlatformSelector(platformValues, defaultValue)(platform);
 
-export const getDistinctPlatformValue = <T>(platform: PlatformType, platformValues: Record<DistinctPlatform, T>): T =>
-  createPlatformSelector(platformValues, platformValues[PlatformType.GENERAL])(platform);
+export const getDistinctPlatformValue = <T>(platform: Constants.PlatformType, platformValues: Record<DistinctPlatform, T>): T =>
+  createPlatformSelector(platformValues, platformValues[Constants.PlatformType.GENERAL])(platform);
 
-export const setDistinctPlatformValue = <T>(platform: PlatformType, value: T): Partial<Record<DistinctPlatform, T>> => ({
-  [isDistinctPlatform(platform) ? platform : PlatformType.GENERAL]: value,
+export const setDistinctPlatformValue = <T>(platform: Constants.PlatformType, value: T): Partial<Record<DistinctPlatform, T>> => ({
+  [isDistinctPlatform(platform) ? platform : Constants.PlatformType.GENERAL]: value,
 });
 
 export const distinctPlatformsData = <T>(data: T) =>
@@ -43,19 +42,19 @@ export const distinctPlatformsData = <T>(data: T) =>
 
 export const getPlatformDefaultVoice = createPlatformSelector<AnyVoice>(
   {
-    [PlatformType.ALEXA]: AlexaConstants.Voice.ALEXA,
-    [PlatformType.GOOGLE]: GoogleConstants.Voice.DEFAULT,
+    [Constants.PlatformType.ALEXA]: AlexaConstants.Voice.ALEXA,
+    [Constants.PlatformType.GOOGLE]: GoogleConstants.Voice.DEFAULT,
   },
   GeneralConstants.Voice.DEFAULT
 );
 
 export const getPlatformAppName = createPlatformSelector({
-  [PlatformType.IVR]: 'IVR',
-  [PlatformType.ALEXA]: 'Alexa Skill',
-  [PlatformType.GOOGLE]: 'Google Action',
-  [PlatformType.GENERAL]: 'Voice Assistant',
-  [PlatformType.CHATBOT]: 'Chat Assistant',
-  [PlatformType.DIALOGFLOW]: 'Dialogflow',
+  [Constants.PlatformType.IVR]: 'IVR',
+  [Constants.PlatformType.ALEXA]: 'Alexa Skill',
+  [Constants.PlatformType.GOOGLE]: 'Google Action',
+  [Constants.PlatformType.GENERAL]: 'Voice Assistant',
+  [Constants.PlatformType.CHATBOT]: 'Chat Assistant',
+  [Constants.PlatformType.DIALOGFLOW]: 'Dialogflow',
 
-  [PlatformType.MOBILE_APP]: 'Mobile App Project',
+  [Constants.PlatformType.MOBILE_APP]: 'Mobile App Project',
 });

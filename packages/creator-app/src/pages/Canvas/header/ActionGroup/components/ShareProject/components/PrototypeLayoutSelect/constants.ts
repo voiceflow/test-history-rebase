@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { textAndDialogGraphic, textAndDialogGraphicInactive, voiceAndVisualsGraphic, voiceAndVisualsGraphicInactive } from '@/assets';
 import { PrototypeLayout } from '@/ducks/prototype/types';
@@ -8,19 +8,21 @@ interface OptionDetail {
   title: string;
   activeImg: string;
   inactiveImg: string;
-  description: (platform: PlatformType) => string;
+  description: (platform: Constants.PlatformType) => string;
 }
 
 export const OPTION_DETAILS: Record<PrototypeLayout, OptionDetail> = {
   [PrototypeLayout.TEXT_DIALOG]: {
     title: 'Chat Input',
-    description: (platform) => `Testers will use text and ${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
+    description: (platform) =>
+      `Testers will use text and ${getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
     activeImg: textAndDialogGraphic,
     inactiveImg: textAndDialogGraphicInactive,
   },
   [PrototypeLayout.VOICE_DIALOG]: {
     title: 'Voice Input',
-    description: (platform) => `Testers will use voice and ${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
+    description: (platform) =>
+      `Testers will use voice and ${getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} input`,
     activeImg: textAndDialogGraphic,
     inactiveImg: textAndDialogGraphic,
   },
@@ -44,7 +46,7 @@ const GENERAL_LAYOUT_OPTIONS = [PrototypeLayout.TEXT_DIALOG, PrototypeLayout.VOI
 
 export const getLayoutOptions = createPlatformSelector(
   {
-    [PlatformType.CHATBOT]: CHATBOT_LAYOUT_OPTIONS,
+    [Constants.PlatformType.CHATBOT]: CHATBOT_LAYOUT_OPTIONS,
   },
   GENERAL_LAYOUT_OPTIONS
 );

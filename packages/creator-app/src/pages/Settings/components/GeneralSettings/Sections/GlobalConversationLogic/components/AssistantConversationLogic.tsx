@@ -1,6 +1,5 @@
 import { Version } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
-import { PlatformType } from '@voiceflow/internal';
 import { ClickableText } from '@voiceflow/ui';
 import React from 'react';
 
@@ -20,7 +19,7 @@ import { REPEAT_OPTIONS, RESUME_PROMPT_MAX_LENGTH } from '../constants';
 const SSMLComponent: any = SSML;
 
 interface AssistantConversationLogicProps {
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   platformMeta: PlatformSettingsMetaProps;
   defaultVoice: VersionDuck.AnyVoice;
   platformDefaultVoice: VersionDuck.AnyVoice;

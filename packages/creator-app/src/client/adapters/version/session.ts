@@ -1,5 +1,5 @@
 import { Version as BaseVersion } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
 
@@ -7,7 +7,7 @@ import { Version } from '@/models';
 import { Nullable } from '@/types';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 
-const createSessionAdapter = <V extends string>({ platform }: { platform: PlatformType }) =>
+const createSessionAdapter = <V extends string>({ platform }: { platform: Constants.PlatformType }) =>
   Adapters.createAdapter<
     BaseVersion.RestartSession | BaseVersion.ResumeSession<VoiceTypes.Prompt<V>>,
     Nullable<Version.Session>,

@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Icon } from '@voiceflow/ui';
 import _isFunction from 'lodash/isFunction';
 
@@ -204,9 +204,9 @@ export const GENERAL_SECTIONS = [
 
 export const getSections = createPlatformSelector(
   {
-    [PlatformType.ALEXA]: ALEXA_SECTIONS,
-    [PlatformType.GOOGLE]: GOOGLE_SECTIONS,
-    [PlatformType.CHATBOT]: CHATBOT_SECTIONS,
+    [Constants.PlatformType.ALEXA]: ALEXA_SECTIONS,
+    [Constants.PlatformType.GOOGLE]: GOOGLE_SECTIONS,
+    [Constants.PlatformType.CHATBOT]: CHATBOT_SECTIONS,
   },
   GENERAL_SECTIONS
 );

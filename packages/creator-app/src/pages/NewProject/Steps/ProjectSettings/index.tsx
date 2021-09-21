@@ -1,7 +1,6 @@
 import { Utils as AlexaUtils } from '@voiceflow/alexa-types';
-import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Utils as GoogleUtils } from '@voiceflow/google-types';
-import { PlatformType } from '@voiceflow/internal';
 import { FlexCenter, Input, Select, SvgIcon } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
@@ -33,7 +32,7 @@ interface PlatformSettingsProps {
   setAlexaLocales: (locales: string[]) => void;
   setGeneralLocale: (locale: string) => void;
   finalizeCreation: () => void;
-  selectedChannel: PlatformType;
+  selectedChannel: Constants.PlatformType;
   setInvocationName: (name: string) => void;
   setGoogleLanguage: (val: string) => void;
 }
@@ -63,8 +62,8 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
     getPlatformValue<(name?: string, locales?: any[]) => string | null>(
       selectedChannel,
       {
-        [PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
-        [PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
+        [Constants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
+        [Constants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
       },
       _constant(null)
     )(invocationName, alexaLocales);
@@ -117,7 +116,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
         {getPlatformValue<() => React.ReactNode>(
           selectedChannel,
           {
-            [PlatformType.ALEXA]: () => (
+            [Constants.PlatformType.ALEXA]: () => (
               <UnTypedDropdownMultiselect
                 options={LOCALE_MAP}
                 autoWidth
@@ -125,7 +124,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
                 onSelect={(val: string) =>
                   setAlexaLocales(alexaLocales.includes(val) ? without(alexaLocales, alexaLocales.indexOf(val)) : [...alexaLocales, val])
                 }
-                placeholder={`Select ${getPlatformMeta(PlatformType.ALEXA).localesText}`}
+                placeholder={`Select ${getPlatformMeta(Constants.PlatformType.ALEXA).localesText}`}
                 buttonLabel="Unselect All"
                 buttonClick={() => setAlexaLocales([])}
                 selectedItems={alexaLocales}
@@ -133,7 +132,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
                 dropdownActive
               />
             ),
-            [PlatformType.GOOGLE]: () => (
+            [Constants.PlatformType.GOOGLE]: () => (
               <Select
                 value={FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage]}
                 options={FORMATTED_LOCALES}

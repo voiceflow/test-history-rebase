@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { CALL_HISTORY_METHOD, push, replace } from 'connected-react-router';
 import { generatePath } from 'react-router-dom';
 
@@ -52,7 +52,7 @@ export const goToPrototype = (versionID: string, nodeID?: string) =>
 
 export const goToSettings = (versionID: string) => goTo(generatePath(Path.PROJECT_SETTINGS, { versionID }));
 
-export const goToPublish = (versionID: string, platform: PlatformType) =>
+export const goToPublish = (versionID: string, platform: Constants.PlatformType) =>
   goTo(`${generatePath(Path.PROJECT_PUBLISH, { versionID })}${platform ? `/${platform}` : ''}`);
 
 export const goToConversations = (versionID: string, search = window.location.search) =>

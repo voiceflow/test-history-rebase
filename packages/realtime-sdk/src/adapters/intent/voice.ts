@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Types } from '@voiceflow/voice-types';
 import { Optional, Required } from 'utility-types';
 
@@ -28,7 +28,7 @@ export const voiceIntentSlotSanitizer = ({ dialog, ...baseIntentSlot }: Required
   dialog: voiceIntentSlotDialogSanitizer(dialog),
 });
 
-const voiceIntentAdapter = createAdapter<Types.Intent<string>, VoiceIntent, [{ platform: PlatformType }]>(
+const voiceIntentAdapter = createAdapter<Types.Intent<string>, VoiceIntent, [{ platform: Constants.PlatformType }]>(
   ({ slots = [], ...baseIntent }, options) => ({
     ...baseIntentAdapter.fromDB(baseIntent, options),
     slots: normalize(slots.map(voiceIntentSlotSanitizer)),

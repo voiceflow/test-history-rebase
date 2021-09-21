@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -35,7 +35,7 @@ export interface PlatformMetaType {
 export interface ChannelMetaType {
   name: string;
   icon: Icon;
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   features: PlatformFeature[];
   iconType: IconType;
   iconSize: number;
@@ -48,17 +48,17 @@ export interface ChannelMetaType {
 export interface PlatformFeatureMetaType {
   name: string;
   color: string;
-  description: string | ((platform: PlatformType) => string);
+  description: string | ((platform: Constants.PlatformType) => string);
 }
 
 export interface ProjectSection {
   name: string;
-  platforms: PlatformType[];
+  platforms: Constants.PlatformType[];
 }
 
 export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
   {
-    [PlatformType.ALEXA]: {
+    [Constants.PlatformType.ALEXA]: {
       icon: 'amazonAlexa',
       company: 'Amazon',
       iconColor: '#5fcaf4',
@@ -67,7 +67,7 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
       localesDescription: AmazonLanguage,
       invocationDescription: AmazonInvocationName,
     },
-    [PlatformType.GOOGLE]: {
+    [Constants.PlatformType.GOOGLE]: {
       icon: 'googleAssistant',
       company: 'Google',
       localesText: 'Language',
@@ -75,7 +75,7 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
       localesDescription: GoogleLanguage,
       invocationDescription: GoogleInvocationName,
     },
-    [PlatformType.DIALOGFLOW]: {
+    [Constants.PlatformType.DIALOGFLOW]: {
       icon: 'dialogflow',
       company: 'Google',
       localesText: 'Language',
@@ -95,29 +95,29 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
 );
 
 export const getChannelMeta = createPlatformSelector<ChannelMetaType>({
-  [PlatformType.ALEXA]: {
+  [Constants.PlatformType.ALEXA]: {
     name: 'Amazon Alexa',
     icon: 'amazonAlexa',
-    platform: PlatformType.ALEXA,
+    platform: Constants.PlatformType.ALEXA,
     features: [PlatformFeature.DESIGN, PlatformFeature.PUBLISH],
     iconType: IconType.ICON,
     iconSize: 26,
     iconColor: '#5fcaf4',
     description: 'Design, test and publish Alexa Skills',
   },
-  [PlatformType.GOOGLE]: {
+  [Constants.PlatformType.GOOGLE]: {
     name: 'Google Assistant',
     icon: 'googleAssistant',
-    platform: PlatformType.GOOGLE,
+    platform: Constants.PlatformType.GOOGLE,
     features: [PlatformFeature.DESIGN, PlatformFeature.PUBLISH],
     iconType: IconType.ICON,
     iconSize: 24,
     description: 'Design, test and publish Google Actions',
   },
-  [PlatformType.DIALOGFLOW]: {
+  [Constants.PlatformType.DIALOGFLOW]: {
     name: 'Dialogflow',
     icon: 'dialogflow',
-    platform: PlatformType.DIALOGFLOW,
+    platform: Constants.PlatformType.DIALOGFLOW,
     features: [PlatformFeature.DESIGN, PlatformFeature.PUBLISH],
     iconType: IconType.ICON,
     iconSize: 24,
@@ -125,40 +125,40 @@ export const getChannelMeta = createPlatformSelector<ChannelMetaType>({
     description: 'Design, test and export or publish conversational agents',
     featureFlag: FeatureFlag.DIALOGFLOW,
   },
-  [PlatformType.GENERAL]: {
+  [Constants.PlatformType.GENERAL]: {
     name: 'Voice Assistant',
     icon: 'microphone',
-    platform: PlatformType.GENERAL,
+    platform: Constants.PlatformType.GENERAL,
     features: [PlatformFeature.DESIGN, PlatformFeature.EXPORT, PlatformFeature.API],
     iconType: IconType.ICON,
     iconSize: 20,
     iconColor: '#85848c',
     description: 'Design, test and export a custom voice assistant for any modality (IVR, In-App, In-Car, IOT etc.)',
   },
-  [PlatformType.CHATBOT]: {
+  [Constants.PlatformType.CHATBOT]: {
     name: 'Chat Assistant',
     icon: 'speak',
-    platform: PlatformType.CHATBOT,
+    platform: Constants.PlatformType.CHATBOT,
     features: [PlatformFeature.DESIGN, PlatformFeature.EXPORT, PlatformFeature.API],
     iconType: IconType.ICON,
     iconSize: 20,
     iconColor: '#85848c',
     description: 'Design, test and export a custom chat assistant for any channel (Web, Mobile, SMS etc.)',
   },
-  [PlatformType.IVR]: {
+  [Constants.PlatformType.IVR]: {
     name: 'IVR',
     icon: 'call',
-    platform: PlatformType.IVR,
+    platform: Constants.PlatformType.IVR,
     features: [PlatformFeature.DESIGN_AND_PROTO],
     iconType: IconType.ICON,
     iconSize: 20,
     iconColor: '#5c6bc0',
     description: 'Design, prototype and export a conversational IVR.',
   },
-  [PlatformType.MOBILE_APP]: {
+  [Constants.PlatformType.MOBILE_APP]: {
     name: 'Mobile App',
     icon: 'mobile',
-    platform: PlatformType.MOBILE_APP,
+    platform: Constants.PlatformType.MOBILE_APP,
     features: [PlatformFeature.DESIGN_AND_PROTO],
     iconType: IconType.ICON,
     iconSize: 20,
@@ -184,7 +184,7 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
     description: (platform) =>
       getPlatformValue(
         platform,
-        { [PlatformType.CHATBOT]: 'Collaboratively create high fidelity chat conversation designs without coding' },
+        { [Constants.PlatformType.CHATBOT]: 'Collaboratively create high fidelity chat conversation designs without coding' },
         'Collaboratively create high fidelity voice conversation designs without coding'
       ),
   },
@@ -205,8 +205,8 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
       getPlatformValue(
         platform,
         {
-          [PlatformType.IVR]: 'Design, prototype and share IVR system call flows',
-          [PlatformType.MOBILE_APP]: 'Design and test In-App Assistant prototypes for Mobile Apps',
+          [Constants.PlatformType.IVR]: 'Design, prototype and share IVR system call flows',
+          [Constants.PlatformType.MOBILE_APP]: 'Design and test In-App Assistant prototypes for Mobile Apps',
         },
         'Design, prototype and share conversations for any channel or custom assistant'
       ),
@@ -216,10 +216,10 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
 export const PROJECT_SECTIONS: ProjectSection[] = [
   {
     name: 'Conversation Design',
-    platforms: [PlatformType.GENERAL, PlatformType.CHATBOT],
+    platforms: [Constants.PlatformType.GENERAL, Constants.PlatformType.CHATBOT],
   },
   {
     name: 'One-Click Publish',
-    platforms: [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.DIALOGFLOW],
+    platforms: [Constants.PlatformType.ALEXA, Constants.PlatformType.GOOGLE, Constants.PlatformType.DIALOGFLOW],
   },
 ];

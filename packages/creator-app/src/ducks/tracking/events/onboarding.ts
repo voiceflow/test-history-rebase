@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import client from '@/client';
 
@@ -25,7 +25,7 @@ export const trackOnboardingPay = (properties: { skip: boolean; plan: string }) 
 export const trackOnboardingJoin = (properties: { skip: boolean; role: string }) => () =>
   client.api.analytics.track(EventName.ONBOARDING_JOIN, { properties });
 
-export const trackOnboardingSelectChannel = (properties: { skip: boolean; platform: PlatformType }) => () =>
+export const trackOnboardingSelectChannel = (properties: { skip: boolean; platform: Constants.PlatformType }) => () =>
   client.api.analytics.track(EventName.ONBOARDING_SELECT_CHANNEL, { properties });
 
 export const trackOnboardingComplete =

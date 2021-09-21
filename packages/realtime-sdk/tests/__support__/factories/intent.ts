@@ -1,6 +1,6 @@
 import { Node } from '@voiceflow/base-types';
 import { ButtonType, IntentButton } from '@voiceflow/base-types/build/button';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { define } from 'cooky-cutter';
 import { datatype, lorem, random } from 'faker';
 
@@ -14,9 +14,9 @@ export const interactionChoiceFactory = define<NodeData.InteractionChoice>({
 });
 
 export const interactionRecordChoiceFactory = define<Record<DistinctPlatform, NodeData.InteractionChoice>>({
-  [PlatformType.ALEXA]: () => interactionChoiceFactory(),
-  [PlatformType.GOOGLE]: () => interactionChoiceFactory(),
-  [PlatformType.GENERAL]: () => interactionChoiceFactory(),
+  [Constants.PlatformType.ALEXA]: () => interactionChoiceFactory(),
+  [Constants.PlatformType.GOOGLE]: () => interactionChoiceFactory(),
+  [Constants.PlatformType.GENERAL]: () => interactionChoiceFactory(),
 });
 
 export const intentButtonFactory = define<IntentButton>({
@@ -31,7 +31,7 @@ export const intentStepDataFactory = define<Node.Intent.StepData>({
 });
 
 export const intentNodeDataFactory = define<NodeData.Intent>({
-  [PlatformType.ALEXA]: () => ({ intent: lorem.word(), mappings: [] }),
-  [PlatformType.GENERAL]: () => ({ intent: lorem.word(), mappings: [] }),
-  [PlatformType.GOOGLE]: () => ({ intent: lorem.word(), mappings: [] }),
+  [Constants.PlatformType.ALEXA]: () => ({ intent: lorem.word(), mappings: [] }),
+  [Constants.PlatformType.GENERAL]: () => ({ intent: lorem.word(), mappings: [] }),
+  [Constants.PlatformType.GOOGLE]: () => ({ intent: lorem.word(), mappings: [] }),
 });

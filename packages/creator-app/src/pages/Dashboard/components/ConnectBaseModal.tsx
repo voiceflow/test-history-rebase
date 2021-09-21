@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Alert, AlertVariant, Box, Button, ButtonVariant, Link, LoadCircle, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -78,7 +78,12 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
 
   if (stage === AlexaStageType.IDLE || stage === GoogleStageType.IDLE) {
     return (
-      <ConnectStyledModal id={modalType} title={`connect to ${platform === PlatformType.ALEXA ? 'amazon' : 'google'}`} isSmall className={className}>
+      <ConnectStyledModal
+        id={modalType}
+        title={`connect to ${platform === Constants.PlatformType.ALEXA ? 'amazon' : 'google'}`}
+        isSmall
+        className={className}
+      >
         <Box width="100%">
           <BodyContainer column>
             <LoadCircle />
@@ -89,7 +94,7 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
   }
 
   switch (platform) {
-    case PlatformType.ALEXA:
+    case Constants.PlatformType.ALEXA:
       return (
         <ConnectStyledModal id={modalType} className={className} title="connect to amazon" isSmall>
           <Box width="100%">
@@ -133,7 +138,7 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
           </Box>
         </ConnectStyledModal>
       );
-    case PlatformType.GOOGLE:
+    case Constants.PlatformType.GOOGLE:
       return (
         <ConnectStyledModal id={modalType} className={className} title="connect to google" isSmall>
           <Box width="100%">

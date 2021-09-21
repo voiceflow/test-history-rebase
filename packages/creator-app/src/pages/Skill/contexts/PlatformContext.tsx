@@ -1,5 +1,5 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
-export const PlatformContext = React.createContext<PlatformType | null>(null);
+export const PlatformContext = React.createContext<Constants.PlatformType | null>(null);
 export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = PlatformContext;

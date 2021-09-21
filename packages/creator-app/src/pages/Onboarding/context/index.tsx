@@ -1,4 +1,5 @@
-import { BillingPeriod, PlanType, PlatformType, UserRole } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
+import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import { ButtonVariant, toast } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
@@ -68,7 +69,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
       role: '',
     },
     selectChannelMeta: {
-      channel: PlatformType.ALEXA,
+      channel: Constants.PlatformType.ALEXA,
     },
     sendingRequests: false,
     workspaceId: '',
@@ -176,7 +177,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       role: '',
     },
     selectChannelMeta: {
-      channel: PlatformType.ALEXA,
+      channel: Constants.PlatformType.ALEXA,
     },
     sendingRequests: false,
     workspaceId: '',
@@ -360,18 +361,18 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
         let templateTag = `onboarding:${state.selectChannelMeta.channel}`;
         const platform = state.selectChannelMeta.channel;
 
-        if (platform === PlatformType.GENERAL) {
+        if (platform === Constants.PlatformType.GENERAL) {
           templateTag = `onboarding:custom_assistant`;
-        } else if (platform === PlatformType.ALEXA) {
+        } else if (platform === Constants.PlatformType.ALEXA) {
           templateTag = 'onboarding:alexa_assistant';
-        } else if (platform === PlatformType.GOOGLE) {
+        } else if (platform === Constants.PlatformType.GOOGLE) {
           templateTag = 'onboarding:google_assistant';
         }
 
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
-          const { versionID } = await createProject({ platform: state.selectChannelMeta.channel as PlatformType }, templateTag);
+          const { versionID } = await createProject({ platform: state.selectChannelMeta.channel as Constants.PlatformType }, templateTag);
           await goToCanvas(versionID!);
           await Userflow.startFlow(USERFLOW_ONBOARDING_FLOW_ID);
         }

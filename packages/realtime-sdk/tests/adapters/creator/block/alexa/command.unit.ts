@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { expect } from 'chai';
 
 import commandAdapter from '@/adapters/creator/block/alexa/command';
@@ -15,13 +15,13 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
 
       expect(result).to.eql({
         name: stepData.name,
-        [PlatformType.ALEXA]: {
+        [Constants.PlatformType.ALEXA]: {
           intent: stepData.intent,
           diagramID: null,
           mappings: [],
         },
-        [PlatformType.GENERAL]: emptyPlatformData,
-        [PlatformType.GOOGLE]: emptyPlatformData,
+        [Constants.PlatformType.GENERAL]: emptyPlatformData,
+        [Constants.PlatformType.GOOGLE]: emptyPlatformData,
       });
     });
 
@@ -32,13 +32,13 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
 
       expect(result).to.eql({
         name: stepData.name,
-        [PlatformType.ALEXA]: {
+        [Constants.PlatformType.ALEXA]: {
           intent: stepData.intent,
           diagramID: stepData.diagramID,
           mappings: stepData.mappings,
         },
-        [PlatformType.GENERAL]: emptyPlatformData,
-        [PlatformType.GOOGLE]: emptyPlatformData,
+        [Constants.PlatformType.GENERAL]: emptyPlatformData,
+        [Constants.PlatformType.GOOGLE]: emptyPlatformData,
       });
     });
   });
@@ -46,7 +46,7 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
   describe('when transforming to db', () => {
     it('returns correct default values', () => {
       const nodeData = commandNodeDataFactory({
-        [PlatformType.ALEXA]: { diagramID: null, intent: null, mappings: [{ slot: null, variable: null }] },
+        [Constants.PlatformType.ALEXA]: { diagramID: null, intent: null, mappings: [{ slot: null, variable: null }] },
       });
 
       const result = commandAdapter.toDB({ ...nodeData });
@@ -68,9 +68,9 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
 
       expect(result).to.eql({
         name: nodeData.name,
-        intent: nodeData[PlatformType.ALEXA].intent,
-        diagramID: nodeData[PlatformType.ALEXA].diagramID,
-        mappings: nodeData[PlatformType.ALEXA].mappings,
+        intent: nodeData[Constants.PlatformType.ALEXA].intent,
+        diagramID: nodeData[Constants.PlatformType.ALEXA].diagramID,
+        mappings: nodeData[Constants.PlatformType.ALEXA].mappings,
         next: null,
         ports: [],
       });

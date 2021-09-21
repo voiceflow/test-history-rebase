@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { expect } from 'chai';
 
 import intentAdapter from '@/adapters/creator/block/general/intent';
@@ -12,15 +12,15 @@ describe('Adapters | Creator | Block | General | intentAdapter', () => {
       const result = intentAdapter.fromDB(data);
 
       expect(result).eql({
-        [PlatformType.GENERAL]: {
+        [Constants.PlatformType.GENERAL]: {
           intent: data.intent,
           mappings: data.mappings,
         },
-        [PlatformType.GOOGLE]: {
+        [Constants.PlatformType.GOOGLE]: {
           intent: null,
           mappings: [],
         },
-        [PlatformType.ALEXA]: {
+        [Constants.PlatformType.ALEXA]: {
           intent: null,
           mappings: [],
         },
@@ -33,15 +33,15 @@ describe('Adapters | Creator | Block | General | intentAdapter', () => {
       const result = intentAdapter.fromDB(data);
 
       expect(result).eql({
-        [PlatformType.GENERAL]: {
+        [Constants.PlatformType.GENERAL]: {
           intent: data.intent,
           mappings: [],
         },
-        [PlatformType.GOOGLE]: {
+        [Constants.PlatformType.GOOGLE]: {
           intent: null,
           mappings: [],
         },
-        [PlatformType.ALEXA]: {
+        [Constants.PlatformType.ALEXA]: {
           intent: null,
           mappings: [],
         },

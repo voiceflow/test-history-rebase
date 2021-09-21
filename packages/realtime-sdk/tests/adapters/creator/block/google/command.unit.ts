@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { expect } from 'chai';
 
 import commandAdapter from '@/adapters/creator/block/google/command';
@@ -15,13 +15,13 @@ describe('Adapters | Creator | Block | Google | Command', () => {
 
       expect(result).to.eql({
         name: stepData.name,
-        [PlatformType.GOOGLE]: {
+        [Constants.PlatformType.GOOGLE]: {
           intent: stepData.intent,
           diagramID: null,
           mappings: [],
         },
-        [PlatformType.GENERAL]: emptyPlatformData,
-        [PlatformType.ALEXA]: emptyPlatformData,
+        [Constants.PlatformType.GENERAL]: emptyPlatformData,
+        [Constants.PlatformType.ALEXA]: emptyPlatformData,
       });
     });
 
@@ -32,13 +32,13 @@ describe('Adapters | Creator | Block | Google | Command', () => {
 
       expect(result).to.eql({
         name: stepData.name,
-        [PlatformType.GOOGLE]: {
+        [Constants.PlatformType.GOOGLE]: {
           intent: stepData.intent,
           diagramID: stepData.diagramID,
           mappings: stepData.mappings,
         },
-        [PlatformType.GENERAL]: emptyPlatformData,
-        [PlatformType.ALEXA]: emptyPlatformData,
+        [Constants.PlatformType.GENERAL]: emptyPlatformData,
+        [Constants.PlatformType.ALEXA]: emptyPlatformData,
       });
     });
   });
@@ -46,7 +46,7 @@ describe('Adapters | Creator | Block | Google | Command', () => {
   describe('when transforming to db', () => {
     it('returns correct default values', () => {
       const nodeData = commandNodeDataFactory({
-        [PlatformType.GOOGLE]: { diagramID: null, intent: null, mappings: [{ slot: null, variable: null }] },
+        [Constants.PlatformType.GOOGLE]: { diagramID: null, intent: null, mappings: [{ slot: null, variable: null }] },
       });
 
       const result = commandAdapter.toDB({ ...nodeData });
@@ -68,9 +68,9 @@ describe('Adapters | Creator | Block | Google | Command', () => {
 
       expect(result).to.eql({
         name: nodeData.name,
-        intent: nodeData[PlatformType.GOOGLE].intent,
-        diagramID: nodeData[PlatformType.GOOGLE].diagramID,
-        mappings: nodeData[PlatformType.GOOGLE].mappings,
+        intent: nodeData[Constants.PlatformType.GOOGLE].intent,
+        diagramID: nodeData[Constants.PlatformType.GOOGLE].diagramID,
+        mappings: nodeData[Constants.PlatformType.GOOGLE].mappings,
         next: null,
         ports: [],
       });

@@ -1,5 +1,6 @@
 import { Button } from '@voiceflow/base-types';
-import { PlanType, PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
+import { PlanType } from '@voiceflow/internal';
 import { DEVICE_INFO, FullSpinner, toast } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -28,7 +29,7 @@ const PublicPrototype: React.FC<ConnectedPublicPrototypeProps & RouteComponentPr
     layout: PrototypeDuck.PrototypeLayout.TEXT_DIALOG,
     buttons: Button.ButtonsLayout.STACKED,
     locales: [],
-    platform: PlatformType.GENERAL,
+    platform: Constants.PlatformType.GENERAL,
     hasPassword: false,
     projectName: '',
   });

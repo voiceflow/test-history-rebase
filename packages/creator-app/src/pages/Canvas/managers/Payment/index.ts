@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { NodeData } from '@/models';
 
@@ -12,7 +12,7 @@ const PaymentManager: NodeManagerConfig<NodeData.Payment> = {
 
   tip: 'Request payment from user',
   label: 'Purchase',
-  platforms: [PlatformType.ALEXA],
+  platforms: [Constants.PlatformType.ALEXA],
 
   step: PaymentStep,
   editor: PaymentEditor,

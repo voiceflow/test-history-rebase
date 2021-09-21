@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { Node as BaseNode } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Logger } from '@voiceflow/ui';
 
 import { CanvasAPI } from '@/components/Canvas';
@@ -266,7 +266,7 @@ export const getNodesData = (nodeData: Record<string, NodeData<unknown>>, select
   return nodeIDs.map((nodeID) => nodeData[nodeID]);
 };
 
-export const getCopiedNodeDataIDs = (nodeData: Record<string, NodeData<unknown>>, copiedNodes: Node[], platform: PlatformType) => {
+export const getCopiedNodeDataIDs = (nodeData: Record<string, NodeData<unknown>>, copiedNodes: Node[], platform: Constants.PlatformType) => {
   const copiedNodesData = getNodesData(nodeData, copiedNodes);
   const intents: string[] = [];
 

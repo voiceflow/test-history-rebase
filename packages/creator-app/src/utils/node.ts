@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Overwrite } from 'utility-types';
 
 import { BlockType, DistinctPlatform } from '@/constants';
@@ -22,7 +22,7 @@ export const isCommandNode = checkNodeType<NodeData.Command>(BlockType.COMMAND);
 
 export const isLinkedCommandNode = (
   data: NodeData<unknown>,
-  platform: PlatformType
+  platform: Constants.PlatformType
 ): data is NodeData<NodeData.Command> & Record<DistinctPlatform, NonNullishRecord<Pick<NodeData.Command.PlatformData, 'diagramID'>>> =>
   isCommandNode(data) && !!getDistinctPlatformValue(platform, data).diagramID;
 
@@ -30,7 +30,7 @@ export const isIntentNode = checkNodeType<NodeData.Intent>(BlockType.INTENT);
 
 export const isLinkedIntentNode = (
   data: NodeData<unknown>,
-  platform: PlatformType
+  platform: Constants.PlatformType
 ): data is NodeData<NodeData.Intent> & Record<DistinctPlatform, NonNullishRecord<Pick<NodeData.Intent.PlatformData, 'intent'>>> =>
   isIntentNode(data) && !!getDistinctPlatformValue(platform, data).intent;
 

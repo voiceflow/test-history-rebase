@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { define } from 'cooky-cutter';
 import { datatype, lorem } from 'faker';
 
@@ -20,8 +20,8 @@ export const commandStepDataFactory = define<Node.Command.StepData>({
 });
 
 export const commandNodeDataFactory = define<NodeData.Command>({
-  [PlatformType.ALEXA]: () => ({ ...commandPlatformDataFactory() }),
-  [PlatformType.GENERAL]: () => ({ ...commandPlatformDataFactory() }),
-  [PlatformType.GOOGLE]: () => ({ ...commandPlatformDataFactory() }),
+  [Constants.PlatformType.ALEXA]: () => ({ ...commandPlatformDataFactory() }),
+  [Constants.PlatformType.GENERAL]: () => ({ ...commandPlatformDataFactory() }),
+  [Constants.PlatformType.GOOGLE]: () => ({ ...commandPlatformDataFactory() }),
   name: () => lorem.word(),
 });

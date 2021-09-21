@@ -1,5 +1,5 @@
 import { ProjectLinkType } from '@voiceflow/api-sdk';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { AnyProject, DBProject } from '../models';
 import { AdapterNotImplementedError, createAdapter } from './utils';
@@ -24,7 +24,7 @@ const projectAdapter = createAdapter<DBProject, AnyProject>(
     module: '',
     locales: [],
     created: '',
-    platform: platform as PlatformType,
+    platform: platform as Constants.PlatformType,
     diagramID: '',
     versionID: devVersion!,
     image,

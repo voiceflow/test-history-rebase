@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Box, BoxFlexCenter, ClickableText, LoadCircle, SvgIcon, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
 import dayjs from 'dayjs';
@@ -23,7 +23,7 @@ import * as Sentry from '@/vendors/sentry';
 interface ProjectVersion {
   versionID: string;
   created: string;
-  platform: PlatformType;
+  platform: Constants.PlatformType;
 }
 
 const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, activeVersionID, setConfirm, goToCanvas, platform }) => {
@@ -110,7 +110,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
                   <span>{dayjs(version.created).fromNow()}</span>
                   <span style={{ color: '#62778c' }}>
                     <Box display="inline-block" mr={6} mb={-1}>
-                      <SvgIcon size={12} icon={version.platform === PlatformType.GOOGLE ? 'google' : 'amazon'} />
+                      <SvgIcon size={12} icon={version.platform === Constants.PlatformType.GOOGLE ? 'google' : 'amazon'} />
                     </Box>
                     Automatic
                   </span>

@@ -1,13 +1,14 @@
 import { VersionPrototype } from '@voiceflow/api-sdk';
 import { Button, Node, Request } from '@voiceflow/base-types';
-import { PlanType, PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
+import { PlanType } from '@voiceflow/internal';
 
 import { AnyLocale } from '@/ducks/version';
 import { PrototypeContext } from '@/models';
 
 export type PrototypeSettings = Omit<VersionPrototype['settings'], 'layout'> & {
   plan: PlanType;
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   layout: PrototypeLayout;
   locales: AnyLocale[];
   projectName: string;
@@ -71,7 +72,7 @@ export interface PrototypeState {
   activePathBlockIDs: string[];
   activePathLinkIDs: string[];
   inputMode: InputMode;
-  platform?: PlatformType;
+  platform?: Constants.PlatformType;
   startTime: number;
   contextStep: number;
   contextHistory: Partial<Context>[];

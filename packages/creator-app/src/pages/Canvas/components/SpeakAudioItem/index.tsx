@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -21,7 +21,7 @@ export type SpeakAudioItemProps = ListItemComponentProps<
   SpeakData,
   {
     header: React.ReactNode;
-    platform: PlatformType;
+    platform: Constants.PlatformType;
     isRandomized?: boolean;
     formControlProps?: { contentBottomUnits?: number };
   }
@@ -50,7 +50,7 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
   },
   ref
 ) => {
-  const isGoogle = platform === PlatformType.GOOGLE;
+  const isGoogle = platform === Constants.PlatformType.GOOGLE;
   const isNew = latestCreatedKey === itemKey;
 
   const updateContent = React.useCallback(({ text }) => onUpdate({ content: text }), [onUpdate]);

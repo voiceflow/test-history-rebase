@@ -1,6 +1,6 @@
 import { Node } from '@voiceflow/alexa-types';
 import { Node as BaseNode } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { NodeData } from '../../../../models';
@@ -19,7 +19,7 @@ const interactionAdapter = createBlockAdapter<Node.Interaction.StepData, NodeDat
     else: voiceNoMatchAdapter.fromDB(elseData),
     choices: choices.map((choice) => ({
       ...distinctPlatformsData({ id: cuid.slug(), intent: null, mappings: [] }),
-      [PlatformType.ALEXA]: choiceAdapter.fromDB(choice),
+      [Constants.PlatformType.ALEXA]: choiceAdapter.fromDB(choice),
     })),
     reprompt: reprompt && voiceRepromptAdapter.fromDB(reprompt),
     buttons: null, // no buttons on alexa
@@ -27,7 +27,7 @@ const interactionAdapter = createBlockAdapter<Node.Interaction.StepData, NodeDat
   ({ name, else: elseData, choices, reprompt }) => ({
     name,
     else: voiceNoMatchAdapter.toDB(elseData as NodeData.VoiceNoMatches),
-    choices: choices.map(({ [PlatformType.ALEXA]: data }) => choiceAdapter.toDB(data)),
+    choices: choices.map(({ [Constants.PlatformType.ALEXA]: data }) => choiceAdapter.toDB(data)),
     reprompt: reprompt && voiceRepromptAdapter.toDB(reprompt as NodeData.VoicePrompt),
     chips: null,
     buttons: null,

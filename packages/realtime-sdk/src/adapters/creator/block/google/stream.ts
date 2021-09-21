@@ -1,5 +1,5 @@
+import { Constants } from '@voiceflow/general-types';
 import { Node } from '@voiceflow/google-types';
-import { PlatformType } from '@voiceflow/internal';
 
 import { PortType } from '../../../../constants';
 import { NodeData } from '../../../../models';
@@ -38,7 +38,7 @@ export const streamPortsAdapter: PortsAdapter = {
   ],
   fromDB: (ports, { nodeID }) => [
     {
-      port: generateOutPort(nodeID, ports[0], { label: PortType.NEXT, platform: PlatformType.GOOGLE }),
+      port: generateOutPort(nodeID, ports[0], { label: PortType.NEXT, platform: Constants.PlatformType.GOOGLE }),
       target: ports[0].target,
     },
   ],

@@ -1,5 +1,5 @@
-import { Constants } from '@voiceflow/alexa-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
+import { Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Button, FlexCenter, FlexEnd } from '@voiceflow/ui';
 import React from 'react';
 
@@ -20,12 +20,12 @@ function getInitialValue() {
     const { text, voice } = JSON.parse(localStorage.getItem('SSML_EDITOR'));
     return { text, voice };
   } catch (err) {
-    return { text: '', voice: Constants.Voice.ALEXA };
+    return { text: '', voice: AlexaConstants.Voice.ALEXA };
   }
 }
 
 function wrapVoice({ text, voice }) {
-  if (voice === Constants.Voice.ALEXA) return text;
+  if (voice === AlexaConstants.Voice.ALEXA) return text;
 
   return `<voice name="${voice}">${text}</voice>`;
 }
@@ -95,7 +95,7 @@ function SSMLPage() {
             withDefaultVoice={false}
             withVariablesPlugin={false}
             onEditorStateChange={onEditorStateChange}
-            platform={PlatformType.ALEXA}
+            platform={GeneralConstants.PlatformType.ALEXA}
           />
 
           {state.text && (

@@ -1,5 +1,5 @@
 import { Button } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -20,13 +20,17 @@ interface ButtonsSectionProps {
 const ButtonsSection: React.FC<ButtonsSectionProps> = ({ pushToPath }) => {
   const platform = React.useContext(PlatformContext)!;
   const openButtons = React.useCallback(
-    () => pushToPath?.({ type: SUGGESTION_BUTTONS_PATH_TYPE, label: getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons') }),
+    () =>
+      pushToPath?.({
+        type: SUGGESTION_BUTTONS_PATH_TYPE,
+        label: getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'chips' }, 'buttons'),
+      }),
     [pushToPath]
   );
 
   return (
     <Section
-      header={<Text fontWeight="normal">{getPlatformValue(platform, { [PlatformType.GOOGLE]: 'Chips' }, 'Buttons')}</Text>}
+      header={<Text fontWeight="normal">{getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')}</Text>}
       status="Empty"
       isLink
       tooltip={<InfoTooltip />}

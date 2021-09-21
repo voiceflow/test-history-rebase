@@ -1,6 +1,6 @@
 import { IntentInput, IntentSlot as BaseIntentSlot, IntentSlotDialog as BaseIntentSlotDialog } from '@voiceflow/api-sdk';
 import { Types as ChatTypes } from '@voiceflow/chat-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
 
 import { Normalized } from '../utils/normalized';
@@ -30,7 +30,7 @@ export interface BaseIntent {
   name: string;
   slots: Normalized<BaseIntentSlot>;
   inputs: IntentInput[];
-  platform: PlatformType;
+  platform: Constants.PlatformType;
 }
 
 export interface VoiceIntent<V = string> extends BaseIntent {
@@ -42,10 +42,10 @@ export interface ChatIntent extends BaseIntent {
 }
 
 export interface IntentPerPlatform {
-  [PlatformType.CHATBOT]: ChatIntent;
+  [Constants.PlatformType.CHATBOT]: ChatIntent;
 }
 
-export type PlatformIntent<T extends PlatformType> = T extends keyof IntentPerPlatform ? IntentPerPlatform[T] : VoiceIntent;
+export type PlatformIntent<T extends Constants.PlatformType> = T extends keyof IntentPerPlatform ? IntentPerPlatform[T] : VoiceIntent;
 
 export type Intent = ChatIntent | VoiceIntent;
 

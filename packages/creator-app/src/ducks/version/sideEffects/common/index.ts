@@ -1,5 +1,5 @@
 import { Project as AlexaProject } from '@voiceflow/alexa-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import { Version as VoiceVersion } from '@voiceflow/voice-types';
 import { batch } from 'react-redux';
@@ -61,7 +61,7 @@ export const activateVersion =
 
     const dbProject = await client.api.project.get<AnyProjectData, AnyProjectMemberData>(dbVersion.projectID);
 
-    const platform = dbProject.platform as PlatformType;
+    const platform = dbProject.platform as Constants.PlatformType;
 
     const project = projectAdapter.fromDB(dbProject);
     const version = versionAdapter.fromDB(dbVersion, { platform });
@@ -114,8 +114,8 @@ export const importProjectContext =
     nodes: { data: Models.NodeData<unknown>; node: Models.Node }[];
     products: Models.Product[];
     diagrams: Models.Diagram[];
-    sourcePlatform: PlatformType;
-    targetPlatform: PlatformType;
+    sourcePlatform: Constants.PlatformType;
+    targetPlatform: Constants.PlatformType;
   }): Thunk<{ data: Models.NodeData<unknown>; node: Models.Node }[]> =>
   async (dispatch) => {
     let mappedNodes = nodes;

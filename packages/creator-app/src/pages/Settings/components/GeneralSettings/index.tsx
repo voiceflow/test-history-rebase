@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -10,7 +10,7 @@ import { getSettingsMetaProps, SettingSections } from '@/pages/Settings/constant
 
 import { Basic, Canvas, DangerZone, GlobalConversationLogic } from './Sections';
 
-const SectionComponents: Record<SettingSections, React.FC<{ platform: PlatformType; title: SettingSections; platformMeta: any }>> = {
+const SectionComponents: Record<SettingSections, React.FC<{ platform: Constants.PlatformType; title: SettingSections; platformMeta: any }>> = {
   [SettingSections.BASIC]: Basic,
   [SettingSections.CANVAS]: Canvas,
   [SettingSections.GLOBAL_CONVERSATION_LOGIC]: GlobalConversationLogic,

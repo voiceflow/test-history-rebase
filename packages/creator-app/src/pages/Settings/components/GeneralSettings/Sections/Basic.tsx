@@ -1,7 +1,6 @@
 import { Constants as AlexaConstants, Utils as AlexaUtils } from '@voiceflow/alexa-types';
-import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as GoogleConstants, Utils as GoogleUtils } from '@voiceflow/google-types';
-import { PlatformType } from '@voiceflow/internal';
 import { Box, BoxFlex, Input, Select, useDidUpdateEffect } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React, { ChangeEvent } from 'react';
@@ -30,7 +29,7 @@ const UnTypedUploadJustIcon: any = UploadJustIcon;
 
 interface BasicProps {
   title: SettingSections;
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   platformMeta: PlatformSettingsMetaProps;
 }
 
@@ -62,7 +61,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   const [googleLanguage, setGoogleLanguage] = React.useState<string | GoogleConstants.Language>(initialGoogleLanguage);
 
   const displayName =
-    platform === PlatformType.ALEXA
+    platform === Constants.PlatformType.ALEXA
       ? alexaLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')
       : '';
 
@@ -71,8 +70,8 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     getPlatformValue<(name?: string, locales?: any[]) => string | null>(
       platform,
       {
-        [PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
-        [PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
+        [Constants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
+        [Constants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
       },
       _constant(null)
     )(newInvocation as string, alexaLocales);
@@ -82,8 +81,8 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
       saveProjectName(newProjectName),
       !isAnyGeneralPlatform(platform) ? saveInvocationName(newInvocation) : null,
       project && projectImage ? saveProjectImage(project.id, projectImage) : null,
-      platform === PlatformType.ALEXA && locales !== alexaLocales ? saveLocales(alexaLocales) : null,
-      platform === PlatformType.GOOGLE && googleLanguage !== initialGoogleLanguage
+      platform === Constants.PlatformType.ALEXA && locales !== alexaLocales ? saveLocales(alexaLocales) : null,
+      platform === Constants.PlatformType.GOOGLE && googleLanguage !== initialGoogleLanguage
         ? saveLocales(GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language])
         : null,
     ]);
@@ -140,7 +139,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         {getPlatformValue<() => React.ReactNode>(
           platform,
           {
-            [PlatformType.ALEXA]: () => (
+            [Constants.PlatformType.ALEXA]: () => (
               <UnTypedDropdownMultiselect
                 options={LOCALE_MAP}
                 onSelect={(val: AlexaConstants.Locale) =>
@@ -156,7 +155,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
                 dropdownActive
               />
             ),
-            [PlatformType.GOOGLE]: () => (
+            [Constants.PlatformType.GOOGLE]: () => (
               <Select
                 placeholder="Language"
                 value={FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage]}

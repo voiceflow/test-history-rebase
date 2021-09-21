@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { NodeData } from '@/models';
 
@@ -12,7 +12,7 @@ const PermissionManager: NodeManagerConfig<NodeData.Permission> = {
 
   tip: 'Ask users to enable permissions (User Info, Reminders, etc.)',
   label: 'Permissions',
-  platforms: [PlatformType.ALEXA],
+  platforms: [Constants.PlatformType.ALEXA],
 
   step: PermissionStep,
   editor: PermissionEditor,

@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Badge } from '@voiceflow/ui';
 import React from 'react';
 
@@ -24,7 +24,7 @@ export type DraggableItemProps = ItemComponentProps<Record<DistinctPlatform, Nod
     | MappedItemComponentHandlers<Record<DistinctPlatform, NodeData.InteractionChoice>>
   ) & {
     items: NodeData.InteractionChoice[];
-    platform: PlatformType;
+    platform: Constants.PlatformType;
     isOnlyItem: boolean;
     latestCreatedKey: string | undefined;
     pushToPath: (subPath: string) => void;

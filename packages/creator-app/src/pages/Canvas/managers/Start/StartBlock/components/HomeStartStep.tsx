@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,7 +9,7 @@ import { getPlatformValue } from '@/utils/platform';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 export interface HomeStartStepProps {
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   invocationName: string;
   portID: string;
 }
@@ -23,8 +23,8 @@ const HomeStartStep: React.FC<HomeStartStepProps> = ({ platform, invocationName,
         label={getPlatformValue(
           platform,
           {
-            [PlatformType.ALEXA]: <Text color="#132144">Alexa, open {invocationName}</Text>,
-            [PlatformType.GOOGLE]: <Text color="#132144">Hey Google, start {invocationName}</Text>,
+            [Constants.PlatformType.ALEXA]: <Text color="#132144">Alexa, open {invocationName}</Text>,
+            [Constants.PlatformType.GOOGLE]: <Text color="#132144">Hey Google, start {invocationName}</Text>,
           },
           <>Project starts here</>
         )}

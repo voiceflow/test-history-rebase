@@ -1,7 +1,6 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
-import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
-import { PlatformType } from '@voiceflow/internal';
 import { FlexCenter, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { Redirect, useRouteMatch } from 'react-router-dom';
@@ -21,13 +20,13 @@ import { isAlexaPlatform, isAnyGeneralPlatform, isGooglePlatform } from '@/utils
 import { DEFAULT_PROJECT_NAME, PROJECT_CREATION_STEPS_NUMBER, StepID, StepMeta } from './constants';
 
 const getTemplateTag = createPlatformSelector({
-  [PlatformType.ALEXA]: 'default',
-  [PlatformType.GOOGLE]: 'default',
-  [PlatformType.DIALOGFLOW]: 'default',
-  [PlatformType.GENERAL]: 'default',
-  [PlatformType.CHATBOT]: `default:${PlatformType.CHATBOT}`,
-  [PlatformType.IVR]: `default:${PlatformType.IVR}`,
-  [PlatformType.MOBILE_APP]: `default:${PlatformType.MOBILE_APP}`,
+  [Constants.PlatformType.ALEXA]: 'default',
+  [Constants.PlatformType.GOOGLE]: 'default',
+  [Constants.PlatformType.DIALOGFLOW]: 'default',
+  [Constants.PlatformType.GENERAL]: 'default',
+  [Constants.PlatformType.CHATBOT]: `default:${Constants.PlatformType.CHATBOT}`,
+  [Constants.PlatformType.IVR]: `default:${Constants.PlatformType.IVR}`,
+  [Constants.PlatformType.MOBILE_APP]: `default:${Constants.PlatformType.MOBILE_APP}`,
 });
 
 const NewProject: React.FC = () => {
@@ -44,7 +43,7 @@ const NewProject: React.FC = () => {
   const currentStep = stepStack[0];
 
   const [invocationName, setInvocationName] = React.useState<string>();
-  const [selectedChannel, setSelectedChannel] = React.useState<PlatformType | null>(null);
+  const [selectedChannel, setSelectedChannel] = React.useState<Constants.PlatformType | null>(null);
   const [alexaLocales, setAlexaLocales] = React.useState<[AlexaConstants.Locale, ...AlexaConstants.Locale[]]>([LOCALE_MAP[0].value]);
   const [googleLanguage, setGoogleLanguage] = React.useState<GoogleConstants.Language>(GoogleConstants.Language.EN);
   const [generalLocale, setGeneralLocale] = React.useState<GeneralConstants.Locale>(GeneralConstants.Locale.EN_US);

@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { NodeData } from '@/models';
 
@@ -12,7 +12,7 @@ const ButtonsManager: NodeManagerConfig<NodeData.Buttons> = {
   ...NODE_CONFIG,
 
   label: 'Buttons',
-  platforms: [PlatformType.CHATBOT],
+  platforms: [Constants.PlatformType.CHATBOT],
 
   step: ButtonsStep,
   editor: ButtonsEditor,

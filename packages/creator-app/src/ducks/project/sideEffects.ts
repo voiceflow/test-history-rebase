@@ -1,5 +1,5 @@
 import { ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
@@ -18,7 +18,7 @@ import { Thunk } from '@/store/types';
 import { addProject, patchProject, removeManyProjects, removeProject, replaceProjects } from './actions';
 
 export interface CreateProjectParams {
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   name: string;
   image: string;
   listID?: string;
@@ -63,7 +63,7 @@ export const createProject =
 
     Errors.assertWorkspaceID(workspaceID);
 
-    const platformType = platform ?? PlatformType.GENERAL;
+    const platformType = platform ?? Constants.PlatformType.GENERAL;
     const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
 
     if (!templateProjectID) {

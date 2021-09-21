@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
@@ -263,7 +263,7 @@ export const importProjectToActiveWorkspace =
 
     // TODO: move to realtime service
     const copiedProject = projectAdapter.fromDB(
-      await client.platform(project.platform as PlatformType).project.copy(project._id, { teamID: workspaceID })
+      await client.platform(project.platform as Constants.PlatformType).project.copy(project._id, { teamID: workspaceID })
     );
 
     if (atomicActionsEnabled) {

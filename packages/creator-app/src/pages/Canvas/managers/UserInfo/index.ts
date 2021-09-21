@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { NodeData } from '@/models';
 
@@ -12,7 +12,7 @@ const UserInfoManager: NodeManagerConfig<NodeData.UserInfo> = {
 
   tip: 'Get User Information and check Permissions',
   label: 'User Info',
-  platforms: [PlatformType.ALEXA],
+  platforms: [Constants.PlatformType.ALEXA],
 
   step: UserInfoStep,
   editor: UserInfoEditor,

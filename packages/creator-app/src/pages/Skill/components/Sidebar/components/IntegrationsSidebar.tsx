@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
@@ -15,8 +15,10 @@ import IconMenuOffsetContainer from './IconMenuOffsetContainer';
 
 const getPlatformItems = createPlatformSelector<(versionID: string) => NavLinkItem[]>(
   {
-    [PlatformType.ALEXA]: (versionID) => [{ to: generatePath(Path.PUBLISH_ALEXA, { versionID }), key: 'alexa', label: 'Amazon Alexa' }],
-    [PlatformType.GOOGLE]: (versionID) => [{ to: generatePath(Path.PUBLISH_GOOGLE, { versionID }), key: 'google', label: 'Google Assistant' }],
+    [Constants.PlatformType.ALEXA]: (versionID) => [{ to: generatePath(Path.PUBLISH_ALEXA, { versionID }), key: 'alexa', label: 'Amazon Alexa' }],
+    [Constants.PlatformType.GOOGLE]: (versionID) => [
+      { to: generatePath(Path.PUBLISH_GOOGLE, { versionID }), key: 'google', label: 'Google Assistant' },
+    ],
   },
   () => []
 );

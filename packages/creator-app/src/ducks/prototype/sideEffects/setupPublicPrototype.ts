@@ -1,5 +1,6 @@
 import { Button } from '@voiceflow/base-types';
-import { PlanType, PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
+import { PlanType } from '@voiceflow/internal';
 import _constant from 'lodash/constant';
 import { batch } from 'react-redux';
 
@@ -58,7 +59,7 @@ const setupPublicPrototype =
       layout,
       buttons: prototype?.settings.buttons as Button.ButtonsLayout,
       locales: prototype.data.locales as AnyLocale[],
-      platform: prototype.platform as PlatformType,
+      platform: prototype.platform as Constants.PlatformType,
       hasPassword: prototype?.settings.hasPassword ?? false,
       projectName: prototype.data.name,
     };

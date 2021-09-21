@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { platformAware } from '@/hocs';
 
@@ -6,7 +6,7 @@ import { ChatForm, VoiceForm } from './components';
 
 const NoReplyResponseForm = platformAware(
   {
-    [PlatformType.CHATBOT]: ChatForm,
+    [Constants.PlatformType.CHATBOT]: ChatForm,
   },
   VoiceForm
 );

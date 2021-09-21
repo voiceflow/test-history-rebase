@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Icon } from '@voiceflow/ui';
 
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
@@ -47,8 +47,8 @@ const GENERAL_PROTOTYPE_MENU_OPTIONS: PrototypeMenuItem[] = [canvasIcon, display
 
 export const getMenuOptions = createPlatformSelector(
   {
-    [PlatformType.ALEXA]: ALEXA_PROTOTYPE_MENU_OPTIONS,
-    [PlatformType.GOOGLE]: GOOGLE_PROTOTYPE_MENU_OPTIONS,
+    [Constants.PlatformType.ALEXA]: ALEXA_PROTOTYPE_MENU_OPTIONS,
+    [Constants.PlatformType.GOOGLE]: GOOGLE_PROTOTYPE_MENU_OPTIONS,
   },
   GENERAL_PROTOTYPE_MENU_OPTIONS
 );
@@ -106,7 +106,7 @@ export const ALL_DEVICES = [...ALEXA_DEVICES];
 
 export const getDeviceList = createPlatformSelector<DeviceInfo[]>(
   {
-    [PlatformType.ALEXA]: ALEXA_DEVICES,
+    [Constants.PlatformType.ALEXA]: ALEXA_DEVICES,
   },
   []
 );

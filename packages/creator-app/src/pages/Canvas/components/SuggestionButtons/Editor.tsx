@@ -1,5 +1,5 @@
 import { Button } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 import { createSelector } from 'reselect';
 
@@ -56,12 +56,12 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
           menu={<OverflowMenu placement="top-end" options={[buttonLayoutOption]} />}
           options={[
             {
-              label: `Add ${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'Chip' }, 'Button')}`,
+              label: `Add ${getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'Chip' }, 'Button')}`,
               onClick: compose(() => scrollToBottom('smooth'), onAdd),
             },
           ]}
           tutorial={{ content: <HelpTooltip /> }}
-          tutorialTitle={getPlatformValue(platform, { [PlatformType.GOOGLE]: 'Chips' }, 'Buttons')}
+          tutorialTitle={getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')}
         />
       )}
       hideFooter={isDragging}

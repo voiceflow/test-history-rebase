@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
@@ -14,8 +14,13 @@ import IconMenuOffsetContainer from './IconMenuOffsetContainer';
 
 const getPlatformItems = createPlatformSelector<(versionID: string) => NavLinkItem[]>(
   {
-    [PlatformType.ALEXA]: (versionID) => [{ to: generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID }), key: 'version', label: 'Versions' }],
-    [PlatformType.GOOGLE]: (versionID) => [{ to: generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID }), key: 'version', label: 'Versions' }],
+    [Constants.PlatformType.ALEXA]: (versionID) => [
+      { to: generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID }), key: 'version', label: 'Versions' },
+    ],
+    // eslint-disable-next-line sonarjs/no-identical-functions
+    [Constants.PlatformType.GOOGLE]: (versionID) => [
+      { to: generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID }), key: 'version', label: 'Versions' },
+    ],
   },
   () => []
 );

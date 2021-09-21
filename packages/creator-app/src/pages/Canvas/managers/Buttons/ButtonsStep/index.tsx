@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Nullable } from '@voiceflow/ui';
 import React from 'react';
 
@@ -20,7 +20,12 @@ export interface ButtonsStepProps {
   elsePathName: string;
 }
 
-const getIntentName = (intentMap: Record<string, Intent>, actions: string[], platform: PlatformType, intent: Nullable<string> | undefined) => {
+const getIntentName = (
+  intentMap: Record<string, Intent>,
+  actions: string[],
+  platform: Constants.PlatformType,
+  intent: Nullable<string> | undefined
+) => {
   const intentEnabled = actions.includes(Node.Buttons.ButtonAction.INTENT);
   const intentName = intent && intentEnabled && applySingleIntentNameFormatting(platform, intentMap[intent])?.name;
   return intentName || '';

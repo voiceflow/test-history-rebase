@@ -1,7 +1,6 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
-import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
-import { PlatformType } from '@voiceflow/internal';
 import _constant from 'lodash/constant';
 
 import { createPlatformSelector } from '@/utils/platform';
@@ -788,8 +787,8 @@ const GENERAL_SSML_META = {
         options: ALEXA_SSML_META.voiceOptions(),
       },
       {
-        value: capitalizeFirstLetter(PlatformType.GOOGLE),
-        label: capitalizeFirstLetter(PlatformType.GOOGLE),
+        value: capitalizeFirstLetter(Constants.PlatformType.GOOGLE),
+        label: capitalizeFirstLetter(Constants.PlatformType.GOOGLE),
         options: GOOGLE_SSML_META.voiceOptions(allGoogleLocales, useWavenet),
       },
       {
@@ -807,8 +806,8 @@ const GENERAL_SSML_META = {
 
 export const getPlatformSSML = createPlatformSelector(
   {
-    [PlatformType.ALEXA]: ALEXA_SSML_META,
-    [PlatformType.GOOGLE]: GOOGLE_SSML_META,
+    [Constants.PlatformType.ALEXA]: ALEXA_SSML_META,
+    [Constants.PlatformType.GOOGLE]: GOOGLE_SSML_META,
   },
   GENERAL_SSML_META
 );

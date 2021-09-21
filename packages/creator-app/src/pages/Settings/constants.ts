@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
 import { Tab } from '@/components/Settings/components/SettingsTabs';
@@ -41,7 +41,7 @@ export interface PlatformSettingsMetaProps {
 
 export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaProps>(
   {
-    [PlatformType.ALEXA]: {
+    [Constants.PlatformType.ALEXA]: {
       name: 'Alexa',
       sections: [
         SettingSections.BASIC,
@@ -66,7 +66,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       tabs: [Tabs.GENERAL, Tabs.VERSIONS],
       localeText: 'Locales',
     },
-    [PlatformType.GOOGLE]: {
+    [Constants.PlatformType.GOOGLE]: {
       name: 'Google',
       sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.GLOBAL_CONVERSATION_LOGIC, SettingSections.DANGER_ZONE],
       descriptors: {
@@ -81,7 +81,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       tabs: [Tabs.GENERAL, Tabs.VERSIONS],
       localeText: 'Language',
     },
-    [PlatformType.CHATBOT]: {
+    [Constants.PlatformType.CHATBOT]: {
       name: 'Chatbot',
       sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
       descriptors: {

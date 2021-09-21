@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { expect } from 'chai';
 import cuid from 'cuid';
 import { datatype } from 'faker';
@@ -34,17 +34,17 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
         else: elseData,
         choices: [
           {
-            [PlatformType.GENERAL]: {
+            [Constants.PlatformType.GENERAL]: {
               id,
               intent: null,
               mappings: [],
             },
-            [PlatformType.GOOGLE]: {
+            [Constants.PlatformType.GOOGLE]: {
               id,
               intent: null,
               mappings: [],
             },
-            [PlatformType.ALEXA]: {
+            [Constants.PlatformType.ALEXA]: {
               id,
               intent: data.choices[0].intent,
               mappings: data.choices[0].mappings,

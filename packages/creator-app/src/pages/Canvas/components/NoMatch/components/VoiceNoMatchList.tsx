@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -10,7 +10,7 @@ import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 import { VoiceNoMatchItem } from './NoMatchItem';
 
 interface VoiceNoMatchListProps extends NodeData.VoiceNoMatches {
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   onChangeReprompts: (reprompts: NodeData.VoiceNoMatches['reprompts']) => void;
   onChangeRandomize: (randomize: NodeData.VoiceNoMatches['randomize']) => void;
 }

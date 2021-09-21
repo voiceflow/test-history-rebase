@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { NodeData } from '@/models';
 
@@ -12,7 +12,7 @@ const DisplayManager: NodeManagerConfig<NodeData.Visual> = {
 
   tip: 'Show a Multimodal Display on the screen using APL',
   label: 'Display',
-  platforms: [PlatformType.ALEXA],
+  platforms: [Constants.PlatformType.ALEXA],
 
   step: VisualStep,
   editor: VisualEditor,

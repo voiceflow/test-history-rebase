@@ -1,5 +1,5 @@
 import { Types as ChatTypes } from '@voiceflow/chat-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { EditorAPI } from '@/components/SlateEditable/editor';
@@ -23,7 +23,7 @@ export const voicePromptFactory = ({ defaultVoice }: PromptFactoryOptions = {}):
 
 export const getPlatformPromptFactory = createPlatformSelector<(options?: PromptFactoryOptions) => NodeData.Reprompt>(
   {
-    [PlatformType.CHATBOT]: chatPromptFactory,
+    [Constants.PlatformType.CHATBOT]: chatPromptFactory,
   },
   voicePromptFactory
 );

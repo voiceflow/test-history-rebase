@@ -1,5 +1,5 @@
 import { ProjectLinkType } from '@voiceflow/api-sdk';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { createSelector } from 'reselect';
 
 import * as Session from '@/ducks/session';
@@ -10,7 +10,7 @@ export const projectSelector = createSelector([Session.activeProjectIDSelector, 
   projectID ? getProjectByID(projectID) : null
 );
 
-export const platformSelector = createSelector([projectSelector], (project) => project?.platform || PlatformType.GENERAL);
+export const platformSelector = createSelector([projectSelector], (project) => project?.platform || Constants.PlatformType.GENERAL);
 
 export const nameSelector = createSelector([projectSelector], (project) => project?.name ?? null);
 

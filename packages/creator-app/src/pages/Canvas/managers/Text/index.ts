@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { NodeData } from '@/models';
 
@@ -11,7 +11,7 @@ const TextManager: NodeManagerConfig<NodeData.Text> = {
   ...NODE_CONFIG,
 
   label: 'Text',
-  platforms: [PlatformType.CHATBOT],
+  platforms: [Constants.PlatformType.CHATBOT],
 
   step: TextStep,
   editor: TextEditor,

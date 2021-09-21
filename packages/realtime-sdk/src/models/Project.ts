@@ -1,5 +1,5 @@
 import { AnyRecord, BasePlatformData, Member, Project as BaseProject, ProjectLinkType, ProjectPrivacy } from '@voiceflow/api-sdk';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 export interface Project<D extends AnyRecord, M extends Member<any>> {
   id: string;
@@ -11,7 +11,7 @@ export interface Project<D extends AnyRecord, M extends Member<any>> {
   created: string;
   privacy?: ProjectPrivacy;
   linkType: ProjectLinkType;
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   diagramID: string;
   versionID: string;
   members: M[];

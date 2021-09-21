@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { IconVariant, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -12,7 +12,7 @@ interface SoundToggleProps {
   onClick: VoidFunction;
   preventButtonDefault?: boolean;
   clickable?: boolean;
-  platform: PlatformType;
+  platform: Constants.PlatformType;
 }
 
 const SoundToggle: React.FC<SoundToggleProps> = ({ platform, isMuted, size = 16, onClick, preventButtonDefault = false, clickable = true }) => {

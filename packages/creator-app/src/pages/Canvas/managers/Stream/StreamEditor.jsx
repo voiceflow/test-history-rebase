@@ -1,5 +1,5 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { ErrorMessageWithDivider } from '@voiceflow/ui';
 import React from 'react';
 
@@ -25,7 +25,7 @@ function StreamEditor({ data, focusedNode, onChange }) {
   const engine = React.useContext(EngineContext);
 
   const hadPause = data.customPause;
-  const isAlexa = platform === PlatformType.ALEXA;
+  const isAlexa = platform === Constants.PlatformType.ALEXA;
   const toggleLoop = React.useCallback(() => onChange({ loop: !data.loop }), [data.loop, onChange]);
   const updateAudio = React.useCallback(
     ({ text }) => {
@@ -43,7 +43,7 @@ function StreamEditor({ data, focusedNode, onChange }) {
     if (hadPause) {
       await engine.port.remove(focusedNode.ports.out[focusedNode.ports.out.length - 1]);
     } else {
-      await engine.port.add(focusedNode.id, { label: focusedNode.ports.out.length, platform: PlatformType.ALEXA });
+      await engine.port.add(focusedNode.id, { label: focusedNode.ports.out.length, platform: Constants.PlatformType.ALEXA });
     }
 
     onChange({ customPause: !hadPause }, false);

@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
 import { DialogType } from '@/constants';
@@ -26,7 +26,7 @@ export interface SpeakStepProps {
   random?: boolean;
   portID: string;
   nodeID: string;
-  platform: PlatformType;
+  platform: Constants.PlatformType;
 }
 
 export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, nodeID, portID }) => {
@@ -42,8 +42,8 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
               placeholder={getPlatformValue(
                 platform,
                 {
-                  [PlatformType.ALEXA]: isAudio ? 'Upload audio file' : 'Add Alexa reply',
-                  [PlatformType.GOOGLE]: 'Add Google reply',
+                  [Constants.PlatformType.ALEXA]: isAudio ? 'Upload audio file' : 'Add Alexa reply',
+                  [Constants.PlatformType.GOOGLE]: 'Add Google reply',
                 },
                 'Add Assistant reply'
               )}
@@ -62,8 +62,8 @@ export const SpeakStep: React.FC<SpeakStepProps> = ({ items, random, platform, n
             placeholder={getPlatformValue(
               platform,
               {
-                [PlatformType.ALEXA]: 'Add Alexa reply',
-                [PlatformType.GOOGLE]: 'Add Google reply',
+                [Constants.PlatformType.ALEXA]: 'Add Alexa reply',
+                [Constants.PlatformType.GOOGLE]: 'Add Google reply',
               },
               'Add Assistant reply'
             )}

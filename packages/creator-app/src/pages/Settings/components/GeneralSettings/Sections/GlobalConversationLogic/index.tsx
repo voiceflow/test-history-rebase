@@ -1,7 +1,6 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
-import { Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
-import { PlatformType } from '@voiceflow/internal';
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
@@ -15,7 +14,7 @@ import { getPlatformDefaultVoice, getPlatformValue } from '@/utils/platform';
 import { AssistantConversationLogic } from './components';
 
 interface GlobalConversationLogicProps {
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   platformMeta: PlatformSettingsMetaProps;
 }
 
@@ -32,8 +31,8 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
     const voices = getPlatformValue<string[]>(
       platform,
       {
-        [PlatformType.ALEXA]: Object.values(AlexaConstants.Voice),
-        [PlatformType.GOOGLE]: Object.values(GoogleConstants.Voice),
+        [Constants.PlatformType.ALEXA]: Object.values(AlexaConstants.Voice),
+        [Constants.PlatformType.GOOGLE]: Object.values(GoogleConstants.Voice),
       },
       Object.values(GeneralConstants.Voice)
     );
@@ -64,8 +63,8 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
       {getPlatformValue(
         platform,
         {
-          [PlatformType.ALEXA]: assistantLogic,
-          [PlatformType.GOOGLE]: assistantLogic,
+          [Constants.PlatformType.ALEXA]: assistantLogic,
+          [Constants.PlatformType.GOOGLE]: assistantLogic,
         },
         <></>
       )}

@@ -1,6 +1,5 @@
 import { Node } from '@voiceflow/base-types';
 import { Constants } from '@voiceflow/general-types';
-import { PlatformType } from '@voiceflow/internal';
 import React from 'react';
 
 import { ZOOM_FACTOR } from '@/components/Canvas/constants';
@@ -36,7 +35,7 @@ export const useDeviceDimension = ({ data, device }: { data: Node.Visual.StepDat
     };
   }, [device, data]);
 
-export const useInitialCanvas = ({ platform, dimension }: { platform: PlatformType; dimension: Dimension }) => {
+export const useInitialCanvas = ({ platform, dimension }: { platform: Constants.PlatformType; dimension: Dimension }) => {
   const theme = useTheme();
 
   return React.useMemo(() => {

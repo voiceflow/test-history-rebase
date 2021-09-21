@@ -1,5 +1,5 @@
 import { BaseBlock, BaseDiagramNode, Diagram, NodeID } from '@voiceflow/api-sdk';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { BlockType } from '../../constants';
 import { CreatorDiagram, Link, Node, NodeData, Port } from '../../models';
@@ -20,7 +20,7 @@ const creatorAdapter = createSimpleAdapter<
   CreatorDiagram,
   [
     {
-      platform: PlatformType;
+      platform: Constants.PlatformType;
       context: AdapterContext;
     }
   ],
@@ -28,7 +28,7 @@ const creatorAdapter = createSimpleAdapter<
     {
       nodes: Normalized<Node>;
       ports: Normalized<Port>;
-      platform: PlatformType;
+      platform: Constants.PlatformType;
       context: AdapterContext;
     }
   ]

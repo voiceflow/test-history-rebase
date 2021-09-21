@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import cuid from 'cuid';
 import React from 'react';
 
@@ -33,11 +33,11 @@ const speakAudioFactory =
   (type: DialogType): SpeakData =>
     type === DialogType.VOICE ? speakFactory({ defaultVoice }) : audioFactory();
 
-export type ItemComponent = ListItemComponent<SpeakData, { platform: PlatformType; isRandomized?: boolean; isDeprecated?: boolean }>;
+export type ItemComponent = ListItemComponent<SpeakData, { platform: Constants.PlatformType; isRandomized?: boolean; isDeprecated?: boolean }>;
 
 export interface SpeakAudioListProps {
   items: SpeakData[];
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   maxItems: number;
   itemName?: string;
   randomize?: boolean;

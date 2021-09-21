@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { createPlatformSelector } from '@/utils/platform';
 
@@ -14,8 +14,8 @@ const platformClients = {
 
 export const getPlatformClient = createPlatformSelector<typeof alexa | typeof google | typeof general>(
   {
-    [PlatformType.ALEXA]: alexa,
-    [PlatformType.GOOGLE]: google,
+    [Constants.PlatformType.ALEXA]: alexa,
+    [Constants.PlatformType.GOOGLE]: google,
   },
   general
 );

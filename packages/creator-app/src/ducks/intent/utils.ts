@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import _isPlainObject from 'lodash/isPlainObject';
 
@@ -16,12 +16,12 @@ const newVoiceSlotsCreator = (id: string): VoiceIntentSlot => Adapters.Intent.vo
 
 export const getPlatformNewSlotsCreator = createAdvancedPlatformSelector(
   {
-    [PlatformType.CHATBOT]: newChatSlotsCreator,
+    [Constants.PlatformType.CHATBOT]: newChatSlotsCreator,
   },
   newVoiceSlotsCreator
 );
 
-export const intentProcessor = (platform: PlatformType, { inputs = [], slots, ...intent }: Intent): Intent => {
+export const intentProcessor = (platform: Constants.PlatformType, { inputs = [], slots, ...intent }: Intent): Intent => {
   let nextSlots = slots;
 
   if (!_isPlainObject(slots)) {
@@ -41,7 +41,7 @@ export const intentProcessor = (platform: PlatformType, { inputs = [], slots, ..
   } as Intent;
 };
 
-export const applySingleIntentNameFormatting = (platform: PlatformType, intent: Intent): Intent => {
+export const applySingleIntentNameFormatting = (platform: Constants.PlatformType, intent: Intent): Intent => {
   let { name } = intent ?? { name: '' };
 
   if (isCustomizableBuiltInIntent(intent)) {
@@ -49,7 +49,7 @@ export const applySingleIntentNameFormatting = (platform: PlatformType, intent: 
 
     if (isAnyGeneralPlatform(platform)) {
       name = capitalizeFirstLetter(name?.toLowerCase());
-    } else if (platform === PlatformType.ALEXA) {
+    } else if (platform === Constants.PlatformType.ALEXA) {
       name = name.replace(/(\w)Intent/g, '$1');
     }
   }
@@ -59,5 +59,5 @@ export const applySingleIntentNameFormatting = (platform: PlatformType, intent: 
   };
 };
 
-export const applyIntentNameFormatting = (platform: PlatformType, intents: Intent[]): Intent[] =>
+export const applyIntentNameFormatting = (platform: Constants.PlatformType, intents: Intent[]): Intent[] =>
   intents.map((intent) => applySingleIntentNameFormatting(platform, intent));

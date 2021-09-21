@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { LinkData } from './Link';
 
@@ -6,7 +6,7 @@ export interface Port {
   id: string;
   nodeID: string;
   label: string | null;
-  platform: PlatformType | null;
+  platform: Constants.PlatformType | null;
   virtual: boolean;
   linkData?: LinkData;
 }

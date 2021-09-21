@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
 import * as Tracking from '@/ducks/tracking';
@@ -89,7 +89,7 @@ export const STEP_META: StepMetaProps = {
     trackStep: ({ selectChannelMeta }, { skip }) =>
       Tracking.trackOnboardingSelectChannel({
         skip,
-        platform: selectChannelMeta.channel as PlatformType,
+        platform: selectChannelMeta.channel as Constants.PlatformType,
       }),
   },
 };

@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Box, BoxFlex, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -43,7 +43,7 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
   });
 
   useAsyncMountUnmount(async () => {
-    if (platform !== PlatformType.ALEXA) return;
+    if (platform !== Constants.PlatformType.ALEXA) return;
 
     await syncSelectedVendor();
   });
@@ -57,8 +57,8 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
   const ExportPopup = getPlatformValue(
     platform,
     {
-      [PlatformType.ALEXA]: Alexa,
-      [PlatformType.GOOGLE]: Google,
+      [Constants.PlatformType.ALEXA]: Alexa,
+      [Constants.PlatformType.GOOGLE]: Google,
     },
     General
   );
@@ -72,7 +72,7 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
               {getPlatformValue(
                 platform,
                 {
-                  [PlatformType.ALEXA]: (
+                  [Constants.PlatformType.ALEXA]: (
                     <>
                       Upload to Alexa and generate an executable project version to run on your own infrastructure.
                       <Box mt={10}>
@@ -80,7 +80,7 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
                       </Box>
                     </>
                   ),
-                  [PlatformType.GOOGLE]: (
+                  [Constants.PlatformType.GOOGLE]: (
                     <>
                       Upload to Google and generate an executable project version to run on your own infrastructure.
                       <Box mt={10}>
@@ -102,8 +102,8 @@ const Export: React.FC<ConnectedExportProps> = ({ platform, syncSelectedVendor }
               {getPlatformValue(
                 platform,
                 {
-                  [PlatformType.ALEXA]: <AlexaUploadButton isActive={isRunning(job)} onClick={exportClick} label="Export" />,
-                  [PlatformType.GOOGLE]: <GoogleUploadButton isActive={isRunning(job)} onClick={exportClick} label="Export" />,
+                  [Constants.PlatformType.ALEXA]: <AlexaUploadButton isActive={isRunning(job)} onClick={exportClick} label="Export" />,
+                  [Constants.PlatformType.GOOGLE]: <GoogleUploadButton isActive={isRunning(job)} onClick={exportClick} label="Export" />,
                 },
                 <UploadButton isActive={isRunning(job)} onClick={exportClick} label="Export" />
               )}

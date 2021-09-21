@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/alexa-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { PortType } from '../../../../constants';
 import { NodeData } from '../../../../models';
@@ -57,15 +57,15 @@ export const streamPortsAdapter: PortsAdapter = {
   },
   fromDB: (ports, { nodeID }) => [
     {
-      port: generateOutPort(nodeID, ports[0], { label: PortType.NEXT, platform: PlatformType.ALEXA }),
+      port: generateOutPort(nodeID, ports[0], { label: PortType.NEXT, platform: Constants.PlatformType.ALEXA }),
       target: ports[0].target,
     },
     {
-      port: generateOutPort(nodeID, ports[1], { label: PortType.PREVIOUS, platform: PlatformType.ALEXA }),
+      port: generateOutPort(nodeID, ports[1], { label: PortType.PREVIOUS, platform: Constants.PlatformType.ALEXA }),
       target: ports[1].target,
     },
     {
-      port: generateOutPort(nodeID, ports[2], { label: PortType.PAUSE, platform: PlatformType.ALEXA }),
+      port: generateOutPort(nodeID, ports[2], { label: PortType.PAUSE, platform: Constants.PlatformType.ALEXA }),
       target: ports[2].target,
     },
   ],

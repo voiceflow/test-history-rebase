@@ -1,7 +1,6 @@
 import { Constants as AlexaConstants, Version as AlexaVersion } from '@voiceflow/alexa-types';
-import { Constants as GeneralConstants, Version as GeneralVersion } from '@voiceflow/general-types';
+import { Constants, Constants as GeneralConstants, Version as GeneralVersion } from '@voiceflow/general-types';
 import { Constants as GoogleConstants, Version as GoogleVersion } from '@voiceflow/google-types';
-import { PlatformType } from '@voiceflow/internal';
 
 import * as Errors from '@/config/errors';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -25,11 +24,11 @@ export const updateLocalesByVersionID =
     const project = ProjectV2.projectByIDSelector(state, { id: version.projectID });
 
     switch (project?.platform) {
-      case PlatformType.ALEXA:
+      case Constants.PlatformType.ALEXA:
         return dispatch(alexa.updatePublishing(versionID, { locales: locales as unknown as [AlexaConstants.Locale, ...AlexaConstants.Locale[]] }));
-      case PlatformType.GOOGLE:
+      case Constants.PlatformType.GOOGLE:
         return dispatch(google.updatePublishing(versionID, { locales: locales as GoogleConstants.Locale[] }));
-      case PlatformType.GENERAL:
+      case Constants.PlatformType.GENERAL:
       default:
         return dispatch(general.updateSettings(versionID, { locales: locales as GeneralConstants.Locale[] }));
     }
@@ -79,9 +78,9 @@ export const saveInvocationName =
     // update all the invocation examples when invocation name changes
     const invocations = arrayStringReplace(activeInvocationName, invocationName, activeInvocations);
 
-    if (platform === PlatformType.ALEXA) {
+    if (platform === Constants.PlatformType.ALEXA) {
       await dispatch(alexa.savePublishing({ invocationName, invocations }));
-    } else if (platform === PlatformType.GOOGLE) {
+    } else if (platform === Constants.PlatformType.GOOGLE) {
       await dispatch(google.savePublishing({ pronunciation: invocationName, sampleInvocations: invocations }));
     }
   };

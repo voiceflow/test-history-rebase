@@ -1,5 +1,5 @@
 import { PrototypeModel } from '@voiceflow/api-sdk';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Box, Button, ButtonVariant, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -13,15 +13,15 @@ import NLUContainer from './NLUContainer';
 
 const getTrainText = createPlatformSelector(
   {
-    [PlatformType.ALEXA]: 'Train Alexa Skill',
-    [PlatformType.GOOGLE]: 'Train Google Action',
+    [Constants.PlatformType.ALEXA]: 'Train Alexa Skill',
+    [Constants.PlatformType.GOOGLE]: 'Train Google Action',
   },
   'Train Assistant'
 );
 
 interface TrainedProps {
   diff: ModelDiff;
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   isTrained?: boolean;
   trainedModel: PrototypeModel | null;
   lastTrainedTime: number;

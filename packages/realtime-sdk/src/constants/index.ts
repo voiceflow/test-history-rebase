@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 export * from './block';
 
@@ -18,11 +18,16 @@ export const DEFAULT_PROJECT_LIST_NAME = 'Default List';
 export const CUSTOM_SLOT_TYPE = 'Custom';
 export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';
 
-export const GENERAL_PLATFORMS = [PlatformType.GENERAL, PlatformType.IVR, PlatformType.MOBILE_APP, PlatformType.CHATBOT] as const;
+export const GENERAL_PLATFORMS = [
+  Constants.PlatformType.GENERAL,
+  Constants.PlatformType.IVR,
+  Constants.PlatformType.MOBILE_APP,
+  Constants.PlatformType.CHATBOT,
+] as const;
 
-export const DISTINCT_PLATFORMS = [PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.GENERAL] as const;
+export const DISTINCT_PLATFORMS = [Constants.PlatformType.ALEXA, Constants.PlatformType.GOOGLE, Constants.PlatformType.GENERAL] as const;
 
-export type DistinctPlatform = PlatformType.ALEXA | PlatformType.GOOGLE | PlatformType.GENERAL;
+export type DistinctPlatform = Constants.PlatformType.ALEXA | Constants.PlatformType.GOOGLE | Constants.PlatformType.GENERAL;
 
 export enum DialogType {
   AUDIO = 'audio',

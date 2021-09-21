@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
 import { URL_ONLY_REGEX } from '@/constants';
@@ -11,7 +11,7 @@ export { cuid };
 const TAGS_REGEXP = /(<([^>]+)>)/gi;
 const TRAILING_UNDERSCORES_REGEXP = /^_+|_+$/g;
 
-export const createNextName = (prefix: string, items: string[], platform: PlatformType): string => {
+export const createNextName = (prefix: string, items: string[], platform: Constants.PlatformType): string => {
   let counter = 1;
 
   const isGeneral = isGeneralPlatform(platform);

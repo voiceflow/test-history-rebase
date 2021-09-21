@@ -1,6 +1,6 @@
 import { Node as BaseNode } from '@voiceflow/base-types';
+import { Constants } from '@voiceflow/general-types';
 import { Node } from '@voiceflow/google-types';
-import { PlatformType } from '@voiceflow/internal';
 import cuid from 'cuid';
 
 import { NodeData } from '../../../../models';
@@ -19,7 +19,7 @@ const interactionAdapter = createBlockAdapter<Node.Interaction.StepData, NodeDat
     else: voiceNoMatchAdapter.fromDB(elseData),
     choices: choices.map((choice) => ({
       ...distinctPlatformsData({ id: cuid.slug(), intent: null, mappings: [] }),
-      [PlatformType.GOOGLE]: choiceAdapter.fromDB(choice),
+      [Constants.PlatformType.GOOGLE]: choiceAdapter.fromDB(choice),
     })),
     reprompt: reprompt && voiceRepromptAdapter.fromDB(reprompt),
     buttons: buttons ?? chipsToIntentButtons(chips),
@@ -27,7 +27,7 @@ const interactionAdapter = createBlockAdapter<Node.Interaction.StepData, NodeDat
   ({ name, else: elseData, choices, reprompt, buttons }) => ({
     name,
     else: voiceNoMatchAdapter.toDB(elseData as NodeData.VoiceNoMatches),
-    choices: choices.map(({ [PlatformType.GOOGLE]: data }) => choiceAdapter.toDB(data)),
+    choices: choices.map(({ [Constants.PlatformType.GOOGLE]: data }) => choiceAdapter.toDB(data)),
     reprompt: reprompt && voiceRepromptAdapter.toDB(reprompt as NodeData.VoicePrompt),
     chips: null,
     buttons,

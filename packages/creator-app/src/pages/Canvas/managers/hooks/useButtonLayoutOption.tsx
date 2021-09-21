@@ -1,5 +1,5 @@
 import { Button } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { OptionsMenuOption, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,12 +23,14 @@ const useButtonLayoutOption = (): OptionsMenuOption => {
   const updateButtons = async (buttons: Button.ButtonsLayout) => {
     await dispatch(Prototype.updateSharePrototypeSettings({ buttons }));
     toast.success(
-      `Global ${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'chips' }, 'buttons')} layout updated to '${buttonLayoutLabel[buttons]}'`
+      `Global ${getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} layout updated to '${
+        buttonLayoutLabel[buttons]
+      }'`
     );
   };
 
   return {
-    label: `${getPlatformValue(platform, { [PlatformType.GOOGLE]: 'Chips' }, 'Buttons')} Layout`,
+    label: `${getPlatformValue(platform, { [Constants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')} Layout`,
     options: [
       {
         label: (

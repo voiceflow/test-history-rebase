@@ -9,7 +9,7 @@
     "@sentry/react": "^6.2.3",
     "@sentry/tracing": "^6.2.3",
     "@voiceflow/api-sdk": "1.40.0",
-    "@voiceflow/internal": "^1.2.0",
+    "@voiceflow/internal": "2.0.0",
     "@voiceflow/ui": "^1.17.0",
     "axios": "^0.19.2",
     "bootstrap": "^4.1.1",

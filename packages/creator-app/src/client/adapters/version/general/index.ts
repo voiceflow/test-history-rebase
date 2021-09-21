@@ -1,5 +1,4 @@
-import { Version as GeneralVersion } from '@voiceflow/general-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants, Version as GeneralVersion } from '@voiceflow/general-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
@@ -23,7 +22,7 @@ const generalVersionAdapter = Adapters.createAdapter<GeneralVersion.GeneralVersi
     creatorID,
     projectID,
     rootDiagramID,
-    variables: variables.filter((variable) => !getPlatformGlobalVariables(PlatformType.GENERAL).includes(variable)),
+    variables: variables.filter((variable) => !getPlatformGlobalVariables(Constants.PlatformType.GENERAL).includes(variable)),
     session: null,
     settings: _omit(GeneralVersion.defaultGeneralVersionSettings(settings), 'session'),
     publishing,

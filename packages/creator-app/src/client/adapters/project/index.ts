@@ -1,7 +1,7 @@
 import { Project as AlexaProject } from '@voiceflow/alexa-types';
 import { BasePlatformData, Member, Project as DBProject, ProjectLinkType } from '@voiceflow/api-sdk';
+import { Constants } from '@voiceflow/general-types';
 import { Project as GoogleProject } from '@voiceflow/google-types';
-import { PlatformType } from '@voiceflow/internal';
 import { Adapters } from '@voiceflow/realtime-sdk';
 
 import { Project } from '@/models';
@@ -19,7 +19,7 @@ const projectAdapter = Adapters.createAdapter<DBProject<AnyProjectData, AnyProje
     module: '',
     locales: [],
     created: '',
-    platform: platform as PlatformType,
+    platform: platform as Constants.PlatformType,
     diagramID: '',
     versionID: devVersion!,
     image,

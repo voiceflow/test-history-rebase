@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { DialogType } from '../constants';
 
@@ -14,7 +14,7 @@ export interface AudioData {
 }
 
 export interface DBSSMLData {
-  voice: PlatformType;
+  voice: Constants.PlatformType;
 }
 
 export interface SSMLData {

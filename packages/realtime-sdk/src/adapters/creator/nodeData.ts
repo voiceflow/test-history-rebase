@@ -1,5 +1,5 @@
 import { BaseDiagramNode } from '@voiceflow/api-sdk';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { BlockType } from '../../constants';
 import { NodeData } from '../../models';
@@ -11,8 +11,8 @@ import { needsMigration } from './utils';
 const nodeDataAdapter = createSimpleAdapter<
   { data: BaseDiagramNode['data']; type: string },
   NodeData<unknown>,
-  [{ platform: PlatformType; nodeID: string; context: AdapterContext }],
-  [{ platform: PlatformType; context: AdapterContext }]
+  [{ platform: Constants.PlatformType; nodeID: string; context: AdapterContext }],
+  [{ platform: Constants.PlatformType; context: AdapterContext }]
 >(
   ({ data: dbData, type: dbType }, { platform, nodeID, context }) => {
     const getNodeType = APP_BLOCK_TYPE_FROM_DB[dbType];

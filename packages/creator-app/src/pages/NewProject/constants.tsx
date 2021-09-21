@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
 import { getPlatformMeta } from '@/pages/NewProject/Steps/constants';
@@ -12,7 +12,7 @@ export enum StepID {
 }
 
 interface StepMetaProps {
-  title: (platform: PlatformType) => string;
+  title: (platform: Constants.PlatformType) => string;
   component: React.FC<any>;
 }
 

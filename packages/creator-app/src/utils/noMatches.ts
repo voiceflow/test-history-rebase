@@ -1,5 +1,5 @@
 import { Node } from '@voiceflow/base-types';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 
 import { NodeData } from '@/models';
 
@@ -23,7 +23,7 @@ export const voiceNoMatchesFactory = (options: NoMatchesFactoryOptions = {}): No
 
 export const getPlatformNoMatchesFactory = createPlatformSelector<(options?: PromptFactoryOptions) => NodeData.NoMatches>(
   {
-    [PlatformType.CHATBOT]: chatNoMatchesFactory,
+    [Constants.PlatformType.CHATBOT]: chatNoMatchesFactory,
   },
   voiceNoMatchesFactory
 );

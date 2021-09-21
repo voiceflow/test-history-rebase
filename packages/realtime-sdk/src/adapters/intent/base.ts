@@ -1,5 +1,5 @@
 import { Intent as DBIntent, IntentSlot, IntentSlotDialog } from '@voiceflow/api-sdk';
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Optional, Required } from 'utility-types';
 
 import { BaseIntent, IntentInput } from '../../models';
@@ -28,7 +28,7 @@ export const baseIntentSlotSanitizer = ({ id, dialog, required = false }: Requir
   required,
 });
 
-export const baseIntentAdapter = createAdapter<DBIntent, Omit<BaseIntent, 'slots'>, [{ platform: PlatformType }]>(
+export const baseIntentAdapter = createAdapter<DBIntent, Omit<BaseIntent, 'slots'>, [{ platform: Constants.PlatformType }]>(
   ({ key, name, inputs = [] }, { platform }) => ({
     id: key,
     name,

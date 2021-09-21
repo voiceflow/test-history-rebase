@@ -1,4 +1,4 @@
-import { PlatformType } from '@voiceflow/internal';
+import { Constants } from '@voiceflow/general-types';
 import { Icon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +8,7 @@ import { Node, NodeData } from '@/models';
 export interface ConnectedStepProps<T = {}> {
   node: Node;
   data: NodeData<T>;
-  platform: PlatformType;
+  platform: Constants.PlatformType;
   withPorts: boolean;
 }
 

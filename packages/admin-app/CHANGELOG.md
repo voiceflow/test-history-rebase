@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.3.4...@voiceflow/admin-app@1.3.5) (2021-09-21)
+
+
+### Bug Fixes
+
+* use `PlatformType` from `@voiceflow/general-types` (VF-1544) ([#4160](https://github.com/voiceflow/creator-app/issues/4160)) ([50f9723](https://github.com/voiceflow/creator-app/commit/50f972314a7ece27958e5c6c46d57825cd9a4386))
+
+
+
+
+
 ## [1.3.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.3.3...@voiceflow/admin-app@1.3.4) (2021-09-17)
 
 **Note:** Version bump only for package @voiceflow/admin-app

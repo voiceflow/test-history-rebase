@@ -60,7 +60,7 @@ const ExportCanvas: React.FC<ConnectedExportProps> = ({ platform, diagramID, ini
   );
 };
 
-const findCanvasExportOffsets = (nodes: Node[], ports: Port[]): Point => {
+const findCanvasExportOffsets = (nodes: Node[], ports: Port[]): { maxPoint: Point; offsets: Point } => {
   const rootNodes = nodes.filter(({ type }) => isRootOrMarkupBlockType(type));
 
   const xValues = rootNodes.map((node) => node.x);
@@ -70,8 +70,16 @@ const findCanvasExportOffsets = (nodes: Node[], ports: Port[]): Point => {
 
   const minX = Math.min(...xValues, ...portXValues);
   const minY = Math.min(...yValues, ...portYValues);
+  const maxX = Math.max(...xValues, ...portXValues);
+  const maxY = Math.max(...yValues, ...portYValues);
 
-  return [0 - minX, 0 - minY];
+  const offsetX = 0 - minX;
+  const offsetY = 0 - minY;
+
+  return {
+    offsets: [offsetX, offsetY],
+    maxPoint: [maxX + offsetX, maxY + offsetY],
+  };
 };
 
 const applyOffsetsToNodes = (nodes: Node[], [offsetX, offsetY]: Point) =>
@@ -116,13 +124,24 @@ const initialize =
 
     const nodesWithCoordinates = creator.nodes.filter((node) => _isNumber(node.x) && _isNumber(node.y));
     const portsWithPoints = creator.ports.filter((port) => !!port.nodeID && !!port.linkData?.points?.length);
-    const offsets = findCanvasExportOffsets(nodesWithCoordinates, portsWithPoints);
+    const { offsets, maxPoint } = findCanvasExportOffsets(nodesWithCoordinates, portsWithPoints);
 
     creator.nodes = applyOffsetsToNodes(nodesWithCoordinates, offsets);
     creator.ports = applyOffsetsToPorts(creator.ports, offsets);
     creator.links = applyOffsetsToLinks(creator.links, offsets);
 
     dispatch(Creator.initializeCreator(creator));
+
+    const node = document.createElement('div');
+
+    node.style.top = `${maxPoint[1]}px`;
+    node.style.left = `${maxPoint[0]}px`;
+    node.style.width = '1px';
+    node.style.height = '1px';
+    node.style.position = 'absolute';
+
+    // inserting this node to adjust scroll
+    document.body.appendChild(node);
   };
 
 const mapStateToProps = {

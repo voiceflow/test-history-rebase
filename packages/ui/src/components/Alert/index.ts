@@ -1,6 +1,6 @@
 import { css, styled } from '../../styles';
 import { COLOR_BLUE } from '../../styles/constants';
-import { VariantValue } from '../../types';
+import { StringifyEnum } from '../../types';
 import Box from '../Box';
 
 export enum AlertVariant {
@@ -23,7 +23,7 @@ const COLORS: Partial<Record<AlertVariant, AlertStyle>> = {
 };
 
 interface AlertProps {
-  variant?: VariantValue<AlertVariant>;
+  variant?: StringifyEnum<AlertVariant>;
 }
 
 const Alert = styled(Box)<AlertProps>`

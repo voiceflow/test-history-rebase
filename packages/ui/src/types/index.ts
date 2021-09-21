@@ -1,33 +1,18 @@
 /* eslint-disable @typescript-eslint/ban-types */
+import type { Function } from '@voiceflow/common';
 import { RGBColor } from 'react-color';
 import { Overwrite } from 'utility-types';
 
 import { ActionCreatorLookup, MappedDispatchProps, MappedStateProps, MergeArguments, SelectorLookup } from './store';
 
 export * from './store';
+export type { AnyFunction, Callback, Eventual, Function, Nullable, Nullish, StringifyEnum } from '@voiceflow/common';
 
 export type Color = Required<RGBColor>;
 
 export type Either<T extends object, R extends object> =
   | (T & { [K in Exclude<keyof R, keyof T>]?: never })
   | (R & { [K in Exclude<keyof T, keyof R>]?: never });
-
-// TODO: move all below to @voiceflow/common
-export type Nullable<T> = T | null;
-
-export type Nullish<T> = Nullable<T> | undefined;
-
-export type Function<A extends any[] = any[], R = any> = (...args: A) => R;
-
-export type AnyFunction = Function<any[], any>;
-
-export type Callback = Function<[], Eventual<void>>;
-
-export type Eventual<T> = Promise<T> | T;
-
-// TODO: rename this to something more generic like StringifyEnum
-export type VariantValue<T extends string> = T | `${T}`;
-// TODO: move all above to @voiceflow/common
 
 export type ConnectedProps<
   S extends SelectorLookup<any> = {},

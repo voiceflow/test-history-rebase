@@ -1,4 +1,4 @@
-import { getOptionalProcessEnv, getRequiredProcessEnv, setupEnv } from '@voiceflow/common';
+import { getOptionalProcessEnv, getRequiredProcessEnv, setupEnv } from '@voiceflow/backend-utils';
 
 import { Config } from './types';
 

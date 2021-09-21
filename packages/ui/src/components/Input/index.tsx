@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { VariantValue } from '../../types';
+import { StringifyEnum } from '../../types';
 import { DefaultInput, InlineInput } from './components';
 import { InlineInputProps } from './components/InlineInput';
 import { InputVariant } from './constants';
@@ -16,7 +16,7 @@ const INPUT_VARIANTS = {
 
 export type InputProps = InlineInputProps &
   React.ComponentProps<typeof DefaultInput> & {
-    variant?: VariantValue<InputVariant>;
+    variant?: StringifyEnum<InputVariant>;
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   };
 

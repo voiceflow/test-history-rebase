@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.488.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.488.3...@voiceflow/creator-app@1.488.4) (2021-09-22)
+
+
+### Bug Fixes
+
+* keep remove button in random step ([#4184](https://github.com/voiceflow/creator-app/issues/4184)) ([dcc3c42](https://github.com/voiceflow/creator-app/commit/dcc3c427faa09ec389fc5fcb1e9989ed6a829017))
+
+
+
+
+
 ## [1.488.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.488.2...@voiceflow/creator-app@1.488.3) (2021-09-22)
 
 

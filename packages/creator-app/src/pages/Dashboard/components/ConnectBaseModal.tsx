@@ -7,7 +7,7 @@ import AmazonLoginButton from '@/components/Forms/AmazonLogin';
 import GoogleLoginButton from '@/components/Forms/GoogleLogin';
 import { ModalFooter } from '@/components/Modal';
 import { FeatureFlag } from '@/config/features';
-import { DIALOGFLOW_OAUTH_SCOPES, GOOGLE_OAUTH_SCOPES, GOOGLE_OAUTH_SCOPES_V2, ModalType } from '@/constants';
+import { GOOGLE_OAUTH_SCOPES, GOOGLE_OAUTH_SCOPES_V2, ModalType } from '@/constants';
 import { AlexaStageType, GoogleStageType } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
@@ -176,7 +176,7 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
 
                 <ButtonContainer>
                   <GoogleLoginButton
-                    scopes={(isGoogleCreate && GOOGLE_OAUTH_SCOPES_V2) || (isDialogFlow && DIALOGFLOW_OAUTH_SCOPES) || GOOGLE_OAUTH_SCOPES}
+                    scopes={isGoogleCreate || isDialogFlow ? GOOGLE_OAUTH_SCOPES_V2 : GOOGLE_OAUTH_SCOPES}
                     onLoad={onLoad}
                     onFail={onFail}
                     onSuccess={onSuccess}

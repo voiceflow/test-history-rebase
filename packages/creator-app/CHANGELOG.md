@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.488.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.488.4...@voiceflow/creator-app@1.488.5) (2021-09-22)
+
+
+### Bug Fixes
+
+* google dialogflow scope request (VF-000) ([#4192](https://github.com/voiceflow/creator-app/issues/4192)) ([c1e81bc](https://github.com/voiceflow/creator-app/commit/c1e81bc3b9c2dd94e75d8c9f83a3775b4851b5fd))
+
+
+
+
+
 ## [1.488.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.488.3...@voiceflow/creator-app@1.488.4) (2021-09-22)
 
 

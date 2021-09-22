@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.488.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.488.2...@voiceflow/creator-app@1.488.3) (2021-09-22)
+
+
+### Bug Fixes
+
+* match text markup placeholder font (VF-1780) ([#4182](https://github.com/voiceflow/creator-app/issues/4182)) ([60f408f](https://github.com/voiceflow/creator-app/commit/60f408f32c6fd2fe201cd537d7e29d0615e5f754))
+
+
+
+
+
 ## [1.488.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.488.1...@voiceflow/creator-app@1.488.2) (2021-09-21)
 
 **Note:** Version bump only for package @voiceflow/creator-app

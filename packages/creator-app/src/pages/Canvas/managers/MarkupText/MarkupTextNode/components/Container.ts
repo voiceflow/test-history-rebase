@@ -97,13 +97,14 @@ export const Container = styled.div<{ editable?: boolean; activated?: boolean; i
     margin-top: 3px;
     color: #132144 !important;
     opacity: 0.333 !important;
+    font-size: 20px;
 
     ${({ isNew }) =>
       isNew &&
       css`
-        width: 112px !important;
-        max-width: 112px !important;
-        transform: translateX(-50%);
+        width: 150px !important;
+        max-width: 150px !important;
+        transform: translate(-50%, -10%);
       `}
   }
 `;

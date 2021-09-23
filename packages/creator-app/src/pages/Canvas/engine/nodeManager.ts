@@ -14,12 +14,12 @@ import { EntityMap, Node, NodeData } from '@/models';
 import { Pair, Point } from '@/types';
 import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
-import { isCommandNode } from '@/utils/node';
+import { getNodesGroupCenter, isCommandNode } from '@/utils/node';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 import reduxBatchUndo from '@/utils/reduxBatchUndo';
-import { isMarkupBlockType } from '@/utils/typeGuards';
+import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
-import { EngineConsumer, nodeFactory } from './utils';
+import { DUPLICATE_OFFSET, EngineConsumer, nodeFactory } from './utils';
 
 class NodeManager extends EngineConsumer {
   log = this.engine.log.child('node');
@@ -225,9 +225,36 @@ class NodeManager extends EngineConsumer {
     if (duplicateNodeID) {
       this.engine.saveHistory();
       this.engine.setActive(duplicateNodeID);
-
       this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
     }
+  }
+
+  // We use the copy and paste logic to preserve the link connections, rather than reuse the single duplicate method above
+  async duplicateMany(nodeIDs: string[]): Promise<void> {
+    this.engine.selection.reset();
+
+    const clipboardData = this.engine.clipboard.getClipboardContext(nodeIDs);
+
+    const combinedAndMarkupNodes = clipboardData.nodes
+      .filter(({ type }) => isMarkupOrCombinedBlockType(type))
+      .map((node) => ({ data: clipboardData.data[node.id], node }));
+
+    const centerCoords = getNodesGroupCenter(combinedAndMarkupNodes, clipboardData.links);
+    const coords = this.engine.canvas!.toCoords(centerCoords).add(DUPLICATE_OFFSET);
+
+    const { nodesWithData } = await this.engine.clipboard.cloneClipboardContext(clipboardData, coords);
+
+    const parentNodes: string[] = [];
+
+    nodesWithData.forEach(({ node }) => {
+      if (isMarkupOrCombinedBlockType(node.type)) {
+        parentNodes.push(node.id);
+      }
+    });
+
+    this.engine.selection.replace(parentNodes);
+
+    await this.engine.saveHistory();
   }
 
   async updateData<T extends unknown = unknown>(nodeID: string, data: Partial<NodeData<T>>, save = true) {

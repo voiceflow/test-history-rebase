@@ -2,6 +2,7 @@ import { BlockType } from '@/constants';
 import { Reducer } from '@/store/types';
 import { PathPoint } from '@/types';
 import { compose } from '@/utils/functional';
+import { getNodesGroupCenter } from '@/utils/node';
 import { getNormalizedByKey } from '@/utils/normalized';
 import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
@@ -86,14 +87,8 @@ export const addManyNodesReducer: Reducer<DiagramState, AddManyNodes> = (
   }
 ) => {
   const combinedAndMarkupNodes = nodesWithData.filter(({ node }) => isMarkupOrCombinedBlockType(node.type));
-  const nodeXs = combinedAndMarkupNodes.map(({ node: { x } }) => x);
-  const nodeYs = combinedAndMarkupNodes.map(({ node: { y } }) => y);
-  const minX = Math.min(...nodeXs);
-  const maxX = Math.max(...nodeXs);
-  const minY = Math.min(...nodeYs);
-  const maxY = Math.max(...nodeYs);
 
-  const [centerX, centerY] = [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
+  const [centerX, centerY] = getNodesGroupCenter(combinedAndMarkupNodes, links);
 
   const adjustPathPoint = (point: PathPoint): PathPoint => ({
     ...point,

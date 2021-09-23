@@ -1,12 +1,9 @@
 import { BlockType } from '@/constants';
 import { EntityMap, Node } from '@/models';
-import { Pair } from '@/types';
 import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
 
-import { CloneContextOptions, cloneEntityMap, EngineConsumer, mergeEntityMaps } from './utils';
-
-const DUPLICATE_OFFSET: Pair<number> = [40, 40];
+import { CloneContextOptions, cloneEntityMap, DUPLICATE_OFFSET, EngineConsumer, mergeEntityMaps } from './utils';
 
 class DiagramEngine extends EngineConsumer {
   getEntities(nodeID: string, rename = true, nodeOverrides = {}): EntityMap {

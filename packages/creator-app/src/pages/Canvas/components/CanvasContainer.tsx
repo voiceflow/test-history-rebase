@@ -98,7 +98,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
       engine.node.api(nodeID)?.instance?.blur?.();
       engine.node.duplicate(nodeID);
     } else if (targets.length > 1) {
-      toast.error('Group duplication is not supported.');
+      engine.node.duplicateMany(targets);
     }
   }, []);
 

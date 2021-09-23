@@ -235,23 +235,29 @@ export const addAllPortsToState = (ports: Port[]) => compose(...ports.map(addPor
 
 export const addBlockToState = (node: Node, ports: Port[], data: NodeData<unknown>) => compose(addNodeToState(node, data), addAllPortsToState(ports));
 
-export const addPortToBlockInState = (port: Port) => (state: DiagramState) => {
-  const node = getNormalizedByKey(state.nodes, port.nodeID);
+export const addPortToBlockInState =
+  (port: Port) =>
+  (state: DiagramState): DiagramState => {
+    const node = getNormalizedByKey(state.nodes, port.nodeID);
 
-  return compose(patchNodeInState(port.nodeID, { ports: { ...node.ports, out: [...node.ports.out, port.id] } }), addPortToState(port))(state);
-};
+    return compose(patchNodeInState(port.nodeID, { ports: { ...node.ports, out: [...node.ports.out, port.id] } }), addPortToState(port))(state);
+  };
 
-export const patchPortInState = (portID: string, portPatch: Partial<Port>) => (state: DiagramState) => ({
-  ...state,
-  ports: patchNormalizedByKey(state.ports, portID, portPatch),
-});
+export const patchPortInState =
+  (portID: string, portPatch: Partial<Port>) =>
+  (state: DiagramState): DiagramState => ({
+    ...state,
+    ports: patchNormalizedByKey(state.ports, portID, portPatch),
+  });
 
-export const patchLinkInState = (linkID: string, linkPatch: Partial<Link>) => (state: DiagramState) => ({
-  ...state,
-  links: patchNormalizedByKey(state.links, linkID, linkPatch),
-});
+export const patchLinkInState =
+  (linkID: string, linkPatch: Partial<Link>) =>
+  (state: DiagramState): DiagramState => ({
+    ...state,
+    links: patchNormalizedByKey(state.links, linkID, linkPatch),
+  });
 
-export const updateLinkPort = (link: Link, relationship: 'source' | 'target', nodeID: string, portID: string) => ({
+export const updateLinkPort = (link: Link, relationship: 'source' | 'target', nodeID: string, portID: string): Link => ({
   ...link,
   [relationship]: {
     nodeID,
@@ -259,7 +265,7 @@ export const updateLinkPort = (link: Link, relationship: 'source' | 'target', no
   },
 });
 
-export const buildLinksByPortID = (links: Link[]) =>
+export const buildLinksByPortID = (links: Link[]): DiagramState['linksByPortID'] =>
   links.reduce<DiagramState['linksByPortID']>((acc, link) => {
     const sourcePortID = link.source.portID;
     const targetPortID = link.target.portID;
@@ -269,7 +275,7 @@ export const buildLinksByPortID = (links: Link[]) =>
     return acc;
   }, {});
 
-export const buildLinkedNodesByNodeID = (links: Link[]) =>
+export const buildLinkedNodesByNodeID = (links: Link[]): DiagramState['linkedNodesByNodeID'] =>
   links.reduce<DiagramState['linkedNodesByNodeID']>((acc, link) => {
     const sourceNodeID = link.source.nodeID;
     const targetNodeID = link.target.nodeID;
@@ -279,7 +285,7 @@ export const buildLinkedNodesByNodeID = (links: Link[]) =>
     return acc;
   }, {});
 
-export const buildLinksByNodeID = (links: Link[]) =>
+export const buildLinksByNodeID = (links: Link[]): DiagramState['linksByNodeID'] =>
   links.reduce<DiagramState['linksByNodeID']>((acc, link) => {
     const sourceNodeID = link.source.nodeID;
     const targetNodeID = link.target.nodeID;

@@ -20,6 +20,8 @@ import { getDistinctPlatformValue } from '@/utils/platform';
 
 import type { Engine } from '.';
 
+export const DUPLICATE_OFFSET: Pair<number> = [40, 40];
+
 export interface NodeCandidate {
   nodeID: string;
   containsPoint: (point: [number, number]) => boolean;

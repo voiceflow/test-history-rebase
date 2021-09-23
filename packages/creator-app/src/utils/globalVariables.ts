@@ -8,7 +8,7 @@ export const getPlatformGlobalVariables = createPlatformSelector(
     [Constants.PlatformType.GOOGLE]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],
     [Constants.PlatformType.GENERAL]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],
     [Constants.PlatformType.CHATBOT]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],
-    [Constants.PlatformType.DIALOGFLOW]: [...BUILT_IN_VARIABLES, BuiltInVariable.CHANNEL],
+    [Constants.PlatformType.DIALOGFLOW_ES]: [...BUILT_IN_VARIABLES, BuiltInVariable.CHANNEL],
   },
   BUILT_IN_VARIABLES
 );

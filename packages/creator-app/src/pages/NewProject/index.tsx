@@ -22,10 +22,10 @@ import { DEFAULT_PROJECT_NAME, PROJECT_CREATION_STEPS_NUMBER, StepID, StepMeta }
 const getTemplateTag = createPlatformSelector({
   [Constants.PlatformType.ALEXA]: 'default',
   [Constants.PlatformType.GOOGLE]: 'default',
-  [Constants.PlatformType.DIALOGFLOW]: 'default',
   [Constants.PlatformType.GENERAL]: 'default',
   [Constants.PlatformType.CHATBOT]: `default:${Constants.PlatformType.CHATBOT}`,
   [Constants.PlatformType.IVR]: `default:${Constants.PlatformType.IVR}`,
+  [Constants.PlatformType.DIALOGFLOW_ES]: 'default',
   [Constants.PlatformType.MOBILE_APP]: `default:${Constants.PlatformType.MOBILE_APP}`,
 });
 

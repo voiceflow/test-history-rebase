@@ -75,7 +75,7 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
       localesDescription: GoogleLanguage,
       invocationDescription: GoogleInvocationName,
     },
-    [Constants.PlatformType.DIALOGFLOW]: {
+    [Constants.PlatformType.DIALOGFLOW_ES]: {
       icon: 'dialogflow',
       company: 'Google',
       localesText: 'Language',
@@ -114,10 +114,10 @@ export const getChannelMeta = createPlatformSelector<ChannelMetaType>({
     iconSize: 24,
     description: 'Design, test and publish Google Actions',
   },
-  [Constants.PlatformType.DIALOGFLOW]: {
+  [Constants.PlatformType.DIALOGFLOW_ES]: {
     name: 'Dialogflow',
     icon: 'dialogflow',
-    platform: Constants.PlatformType.DIALOGFLOW,
+    platform: Constants.PlatformType.DIALOGFLOW_ES,
     features: [PlatformFeature.DESIGN, PlatformFeature.PUBLISH],
     iconType: IconType.ICON,
     iconSize: 24,
@@ -220,6 +220,6 @@ export const PROJECT_SECTIONS: ProjectSection[] = [
   },
   {
     name: 'One-Click Publish',
-    platforms: [Constants.PlatformType.ALEXA, Constants.PlatformType.GOOGLE, Constants.PlatformType.DIALOGFLOW],
+    platforms: [Constants.PlatformType.ALEXA, Constants.PlatformType.GOOGLE, Constants.PlatformType.DIALOGFLOW_ES],
   },
 ];

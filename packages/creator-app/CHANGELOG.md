@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.490.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.489.0...@voiceflow/creator-app@1.490.0) (2021-09-23)
+
+
+### Features
+
+* group duplication with offset (VF-1827) ([#4195](https://github.com/voiceflow/creator-app/issues/4195)) ([6d32cc2](https://github.com/voiceflow/creator-app/commit/6d32cc21559f0ef58fbacf184d0202ca4d04176a))
+
+
+
+
+
 # [1.489.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.488.5...@voiceflow/creator-app@1.489.0) (2021-09-23)
 
 

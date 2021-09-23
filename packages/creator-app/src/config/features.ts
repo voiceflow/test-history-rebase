@@ -11,6 +11,7 @@ const MOTOROLA_SSO_ENABLED = process.env.FF_MOTOROLA_SSO === 'true';
 const ATOMIC_ACTIONS_ENABLED = process.env.FF_ATOMIC_ACTIONS === 'true';
 const GOOGLE_CREATE_ENABLED = process.env.FF_GOOGLE_CREATE === 'true';
 const DIALOGFLOW_ENABLED = process.env.FF_DIALOGFLOW === 'true';
+const TOPICS_AND_COMPONENTS_ENABLED = process.env.FF_TOPICS_AND_COMPONENTS === 'true';
 
 export enum FeatureFlag {
   GADGETS = 'gadgets',
@@ -19,6 +20,7 @@ export enum FeatureFlag {
   NATO_APCO = 'nato_apco',
   MOTOROLA_SSO = 'motorola_sso',
   ATOMIC_ACTIONS = 'atomic_actions',
+  TOPICS_AND_COMPONENTS = 'topics_and_components',
 
   // used by select private cloud instances to add a new role type
   OWNER_ROLE = 'owner_role',
@@ -41,4 +43,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.ATOMIC_ACTIONS]: ATOMIC_ACTIONS_ENABLED,
   [FeatureFlag.DIALOGFLOW]: DIALOGFLOW_ENABLED,
   [FeatureFlag.GOOGLE_CREATE]: GOOGLE_CREATE_ENABLED,
+  [FeatureFlag.TOPICS_AND_COMPONENTS]: TOPICS_AND_COMPONENTS_ENABLED,
 };

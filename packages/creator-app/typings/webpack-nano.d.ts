@@ -50,6 +50,7 @@ declare module 'webpack-nano/argv' {
     ff_atomicActions: boolean;
     ff_dialogflow: boolean;
     ff_googleCreate: boolean;
+    ff_topicsAndComponents: boolean;
   }>;
 
   export = argv;

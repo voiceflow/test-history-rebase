@@ -81,6 +81,7 @@ export const BuiltInVariable = {
   LOCALE: 'locale',
   INTENT_CONFIDENCE: 'intent_confidence',
   LAST_UTTERANCE: 'last_utterance',
+  CHANNEL: 'channel',
 };
 
 export const BUILT_IN_VARIABLES = [

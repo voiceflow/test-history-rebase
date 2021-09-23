@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.491.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.491.1...@voiceflow/creator-app@1.491.2) (2021-09-23)
+
+
+### Bug Fixes
+
+* use dialogflow_es const (VF-1545) ([#4191](https://github.com/voiceflow/creator-app/issues/4191)) ([d2f0599](https://github.com/voiceflow/creator-app/commit/d2f059925f02d8ff0696719cc8041c3116693781))
+
+
+
+
+
 ## [1.491.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.491.0...@voiceflow/creator-app@1.491.1) (2021-09-23)
 
 

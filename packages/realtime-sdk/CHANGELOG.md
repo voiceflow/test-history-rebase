@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.17.5...@voiceflow/realtime-sdk@1.17.6) (2021-09-23)
+
+
+### Bug Fixes
+
+* use dialogflow_es const (VF-1545) ([#4191](https://github.com/voiceflow/creator-app/issues/4191)) ([d2f0599](https://github.com/voiceflow/creator-app/commit/d2f059925f02d8ff0696719cc8041c3116693781))
+
+
+
+
+
 ## [1.17.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.17.4...@voiceflow/realtime-sdk@1.17.5) (2021-09-21)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

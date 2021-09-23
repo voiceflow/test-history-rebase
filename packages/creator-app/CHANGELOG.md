@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.491.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.491.0...@voiceflow/creator-app@1.491.1) (2021-09-23)
+
+
+### Bug Fixes
+
+* safeguard for undefined prototype ID (VF-1850) ([#4200](https://github.com/voiceflow/creator-app/issues/4200)) ([2881975](https://github.com/voiceflow/creator-app/commit/2881975453c8cf02d7eac044a8223c972b329142))
+
+
+
+
+
 # [1.491.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.490.0...@voiceflow/creator-app@1.491.0) (2021-09-23)
 
 

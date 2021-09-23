@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.491.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.490.0...@voiceflow/creator-app@1.491.0) (2021-09-23)
+
+
+### Features
+
+* adds channel df-es built-in variable (VF-1359) ([#4196](https://github.com/voiceflow/creator-app/issues/4196)) ([0817730](https://github.com/voiceflow/creator-app/commit/0817730e6138c019034103bc8858dff3728f283f))
+
+
+
+
+
 # [1.490.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.489.0...@voiceflow/creator-app@1.490.0) (2021-09-23)
 
 

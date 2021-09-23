@@ -33,7 +33,7 @@ const fetchContext =
     const currentVisualData = prototypeVisualDataSelector(reduxState);
     const versionID = Session.activeVersionIDSelector(reduxState);
     const activeDiagramID = Session.activeDiagramIDSelector(reduxState);
-    const prototypeID = prototypeIDSelector(reduxState);
+    const prototypeID = prototypeIDSelector(reduxState) || cuid();
 
     // unique identifier for session analytics
     const sessionID = `${versionID}.${prototypeID}`;
@@ -66,7 +66,7 @@ const fetchContext =
       };
 
       batch(() => {
-        dispatch(updatePrototype({ contextStep: contextStep + 1 }));
+        dispatch(updatePrototype({ ID: prototypeID, contextStep: contextStep + 1 }));
         dispatch(updatePrototypeContext(newStateObj));
         dispatch(pushContextHistory(newStateObj));
         dispatch(pushPrototypeVisualDataHistory(lastVisual ? lastVisual.payload : currentVisualData));

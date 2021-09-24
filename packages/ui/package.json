@@ -6,6 +6,7 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
+    "@popperjs/core": "^2.10.1",
     "@seznam/compose-react-refs": "^1.0.6",
     "@voiceflow/common": "^6.8.1",
     "bowser": "^2.11.0",
@@ -16,6 +17,7 @@
     "lodash": "^4.17.21",
     "loglevel": "^1.7.1",
     "moize": "^5.4.7",
+    "newpopper": "npm:react-popper",
     "object-hash": "^2.1.1",
     "prop-types": "^15.7.2",
     "query-string": "^7.0.0",

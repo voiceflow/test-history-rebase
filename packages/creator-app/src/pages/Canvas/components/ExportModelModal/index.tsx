@@ -7,14 +7,12 @@ import ChatWithUsLink from '@/components/ChatLink';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
-import { ModalType, NLPProvider, PLAN_TYPE_META } from '@/constants';
+import { ModalType, NLPProvider, NLPProviderLabels, PLAN_TYPE_META } from '@/constants';
 import * as Export from '@/ducks/export';
 import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
 import UploadButton from '@/pages/Canvas/header/ActionGroup/components/UploadButton';
 import { ConnectedProps } from '@/types';
-
-import { EXPORT_TYPES } from './constants';
 
 const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ exportModel }) => {
   const [isExporting, setExporting] = React.useState(false);
@@ -48,12 +46,11 @@ const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ exportMode
           <label>Export For {!canExport && <BubbleText color={PLAN_TYPE_META[PlanType.PRO].color}>PRO</BubbleText>}</label>
           <Select
             value={exportNLPProvider}
-            options={EXPORT_TYPES}
+            options={Object.values(NLPProvider)}
             onSelect={setExportNLPProvider}
             searchable
             placeholder="Select an option"
-            getOptionLabel={(value) => EXPORT_TYPES.find((option) => option.value === value)?.label}
-            getOptionValue={(option) => option?.value}
+            getOptionLabel={(value) => NLPProviderLabels[value!]}
           />
           <BlockText fontSize={13} color="#62778c" lineHeight="normal" marginTop={12}>
             <span>Don't see the export format you're looking for? </span>

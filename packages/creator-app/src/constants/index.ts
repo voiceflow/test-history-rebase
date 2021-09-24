@@ -73,6 +73,13 @@ export enum NLPProvider {
   RASA = 'rasa',
 }
 
+export const NLPProviderLabels = {
+  [NLPProvider.ALEXA]: 'Amazon Alexa',
+  [NLPProvider.DIALOGFLOW_ES]: 'Dialogflow ES',
+  [NLPProvider.LUIS]: 'Microsoft LUIS',
+  [NLPProvider.RASA]: 'Rasa',
+};
+
 export const BuiltInVariable = {
   SESSIONS: 'sessions',
   USER_ID: 'user_id',

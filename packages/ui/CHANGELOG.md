@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.17.1...@voiceflow/ui@1.18.0) (2021-09-24)
+
+
+### Features
+
+* add create component and duplicate buttons to the header (VF-1828) ([#4199](https://github.com/voiceflow/creator-app/issues/4199)) ([3842228](https://github.com/voiceflow/creator-app/commit/3842228cb34d90aa60b7257ccc818942477808b8))
+
+
+
+
+
 ## [1.17.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.17.0...@voiceflow/ui@1.17.1) (2021-09-21)
 
 **Note:** Version bump only for package @voiceflow/ui

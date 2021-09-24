@@ -14,7 +14,7 @@ const DEFAULT_PORTAL_NODE = document.body;
 
 export type DropdownPlacement = PopperProps['placement'];
 
-export type DropdownProps<T> = {
+export interface DropdownProps<T> {
   menu?: React.ReactNode | ((onToggle: () => void) => void);
   portal?: HTMLElement | null;
   zIndex?: string | number;
@@ -32,7 +32,7 @@ export type DropdownProps<T> = {
   disabledOverlay?: boolean;
   preventOverflow?: NonNullable<PopperProps['modifiers']>['preventOverflow'];
   maxVisibleItems?: number;
-};
+}
 
 const Dropdown = <T extends any = undefined>({
   menu,
@@ -52,8 +52,7 @@ const Dropdown = <T extends any = undefined>({
   disabledOverlay = false,
   preventOverflow = { enabled: false },
   maxVisibleItems,
-}: // eslint-disable-next-line sonarjs/cognitive-complexity
-DropdownProps<T>): React.ReactElement => {
+}: DropdownProps<T>): React.ReactElement => {
   const containerRef = React.useRef<Nullable<HTMLDivElement>>(null);
 
   const [isOpen, onToggle] = useDismissable(false, { onClose, disableLayers: disabledOverlay, ref: selfDismiss ? containerRef : undefined });

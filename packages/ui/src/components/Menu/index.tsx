@@ -28,9 +28,9 @@ interface MenuOptionWithoutValue extends BaseMenuOption {
   value?: never;
 }
 
-export type MenuOption<T> = T extends undefined ? MenuOptionWithoutValue : MenuOptionWithValue<T>;
+export type MenuOption<T extends any> = T extends undefined ? MenuOptionWithoutValue : MenuOptionWithValue<T>;
 
-export type MenuProps<T> = {
+export type MenuProps<T extends any> = {
   id?: string;
   disabled?: boolean;
   footerAction?: boolean;
@@ -55,7 +55,7 @@ export type MenuProps<T> = {
 
 export type MenuRefElement = HTMLUListElement;
 
-const Menu = <T,>(
+const Menu = <T extends any>(
   {
     id,
     width,
@@ -75,7 +75,7 @@ const Menu = <T,>(
     disableAnimation = false,
     multiSelectProps,
   }: MenuProps<T>,
-  ref: Parameters<React.ForwardRefRenderFunction<MenuRefElement>>[1]
+  ref: React.Ref<MenuRefElement>
 ) => {
   const menuRef = React.useRef<MenuRefElement>(null);
   const scrollBarWidth = React.useMemo(() => getScrollbarWidth(), []);
@@ -134,7 +134,7 @@ const Menu = <T,>(
         >
           {children ||
             options?.map(({ key, value, note, label, divider, onClick }, index) => (
-              <Item key={key || `${index}-${label}`} divider={divider} onClick={onItemClick(value, onClick)}>
+              <Item key={key || `${index}-${label}`} divider={divider} onClick={onItemClick(value as T, onClick)}>
                 <FlexLabel>{label || String(value)}</FlexLabel>
                 {!!note && <MenuItemNote>{note}</MenuItemNote>}
               </Item>

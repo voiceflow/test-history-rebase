@@ -7,6 +7,8 @@ import AdvancedMenu, { DEFAULT_PATH } from './Menu';
 import MenuHeader from './MenuHeader';
 import MenuOptions from './MenuOptions';
 
+export { getFormattedLabel as getNestedMenuFormattedLabel } from './getFormattedLabel';
+
 export { AdvancedMenu, defaultMenuLabelRenderer, MenuHeader, MenuOptions };
 
 const defaultGetter = (option) => option;

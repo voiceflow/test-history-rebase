@@ -1,6 +1,6 @@
 import { Button, ButtonVariant, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
-import Countdown from 'react-countdown-now';
+import Countdown from 'react-countdown';
 
 import Modal, { ModalBody, ModalFooter, ModalHeader } from '@/components/LegacyModal';
 import * as Router from '@/ducks/router';

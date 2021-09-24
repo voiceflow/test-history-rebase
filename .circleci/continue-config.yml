@@ -3,37 +3,37 @@ version: 2.1
 parameters:
   container-image-url-creator-app:
     type: string
-    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app"
+    default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app'
   container-image-url-admin-ui:
     type: string
-    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin"
+    default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin'
   container-image-url-realtime:
     type: string
-    default: "168387678261.dkr.ecr.us-east-1.amazonaws.com/realtime"
+    default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/realtime'
   k8s-asset-admin-ui:
     type: string
-    default: "deployment/admin-ui"
+    default: 'deployment/admin-ui'
   k8s-asset-creator-app:
     type: string
-    default: "deployment/creator-app"
+    default: 'deployment/creator-app'
   k8s-asset-realtime:
     type: string
-    default: "deployment/realtime"
+    default: 'deployment/realtime'
   k8s-namespace:
     type: string
-    default: "voiceflow-v1" # This is usually voiceflow-v1
+    default: 'voiceflow-v1' # This is usually voiceflow-v1
   ssh-fingerprint:
     type: string
-    default: "93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a"
+    default: '93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a'
   track-component-creator-app:
     type: string
-    default: "creator-app"
+    default: 'creator-app'
   track-component-admin-ui:
     type: string
-    default: "admin-ui"
+    default: 'admin-ui'
   track-component-realtime:
     type: string
-    default: "realtime"
+    default: 'realtime'
   build-creator-app:
     type: boolean
     default: false
@@ -105,7 +105,7 @@ defaults:
       - vfcommon/notify_slack:
           channel: dev_general
           event: fail
-          mentions: "@eng_creator"
+          mentions: '@eng_creator'
           template: basic_fail_1
           branch_pattern: master
 
@@ -297,7 +297,7 @@ jobs:
       - vfcommon/exec_command_when_package_changed_monorepo:
           step_name: Build dependencies
           command: yarn build --scope @voiceflow/realtime-sdk --scope @voiceflow/ui
-          package_to_force_execution: "creator-app"
+          package_to_force_execution: 'creator-app'
           force_execution: << pipeline.parameters.build-all >>
           run_on_root: true
       - restore_cache:

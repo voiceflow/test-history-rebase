@@ -1,6 +1,7 @@
 import {
   Box,
   ClickableText,
+  getNestedMenuFormattedLabel,
   KeyName,
   MenuContainer,
   Nullable,
@@ -11,7 +12,6 @@ import {
   swallowEvent,
   useCache,
 } from '@voiceflow/ui';
-import { getFormattedLabel } from '@voiceflow/ui/build/module/components/NestedMenu/getFormattedLabel';
 import _shuffle from 'lodash/shuffle';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
@@ -97,7 +97,7 @@ const Popper = <T extends PopperItem>({
       if (!withHeader) {
         sorted.push({ ...suggestion, item: suggestion });
       } else if (!lowerLocalSearch || suggestion.name.toLowerCase().includes(lowerLocalSearch)) {
-        sorted.push({ ...suggestion, name: getFormattedLabel(suggestion.name, localSearch), item: suggestion });
+        sorted.push({ ...suggestion, name: getNestedMenuFormattedLabel(suggestion.name, localSearch), item: suggestion });
       } else {
         unsorted.push({ ...suggestion, item: suggestion });
       }

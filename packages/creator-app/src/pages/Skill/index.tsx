@@ -33,7 +33,7 @@ import { compose } from '@/utils/functional';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import { TIMEOUT_COUNT } from './constants';
-import { ExportProvider, MarkupProvider, NLPProvider, PlatformProvider, PublishProvider } from './contexts';
+import { ExportProvider, MarkupProvider, NLPProvider, PlatformProvider, PublishProvider, SelectionProvider } from './contexts';
 
 const Diagram = lazy(() => import(/* webpackPrefetch: true */ './components/Diagram'));
 const Business = lazy(() => import('@/pages/Business'));
@@ -127,29 +127,31 @@ const Skill: React.FC<SkillProps & ConnectedSkillProps> = ({
         <PublishProvider>
           <ExportProvider>
             <NLPProvider>
-              <ProjectPage
-                scrollable={!isDiagramRoute}
-                renderHeader={() => !canvasOnly && <Header />}
-                renderSidebar={() => !canvasOnly && <Sidebar />}
-              >
-                <Switch>
-                  <Route path={DIAGRAM_ROUTES} component={Diagram} />
+              <SelectionProvider>
+                <ProjectPage
+                  scrollable={!isDiagramRoute}
+                  renderHeader={() => !canvasOnly && <Header />}
+                  renderSidebar={() => !canvasOnly && <Sidebar />}
+                >
+                  <Switch>
+                    <Route path={DIAGRAM_ROUTES} component={Diagram} />
 
-                  <Route path={Path.CONVERSATIONS} component={Conversations} />
+                    <Route path={Path.CONVERSATIONS} component={Conversations} />
 
-                  <Route path={Path.PROJECT_TOOLS} component={Business} />
+                    <Route path={Path.PROJECT_TOOLS} component={Business} />
 
-                  <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
+                    <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
 
-                  <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
+                    <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
 
-                  <Route path={Path.PROJECT_PUBLISH} component={Publish} />
+                    <Route path={Path.PROJECT_PUBLISH} component={Publish} />
 
-                  <Route path={Path.PROJECT_SETTINGS} component={Settings} />
+                    <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 
-                  <Redirect to={Path.PROJECT_CANVAS} />
-                </Switch>
-              </ProjectPage>
+                    <Redirect to={Path.PROJECT_CANVAS} />
+                  </Switch>
+                </ProjectPage>
+              </SelectionProvider>
             </NLPProvider>
           </ExportProvider>
         </PublishProvider>

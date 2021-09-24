@@ -25,6 +25,7 @@ export enum Hotkey {
   ADD_MARKUP_TEXT = 'ADD_MARKUP_TEXT',
   ADD_MARKUP_IMAGE = 'ADD_MARKUP_IMAGE',
   DUPLICATE = 'DUPLICATE',
+  CREATE_COMPONENT = 'CREATE_COMPONENT',
   SHOW_HIDE_UI = 'SHOW_HIDE_UI',
   MOVE_FORWARD = 'MOVE_FORWARD',
   MOVE_BACKWARD = 'MOVE_BACKWARD',
@@ -48,6 +49,7 @@ enum SpecialKey {
   SHIFT = 'shift',
   SPACE = 'space',
   DELETE = 'del',
+  OPTION = 'alt',
   BACKSPACE = 'backspace',
 }
 
@@ -69,6 +71,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.ROOT_NODE]: 's',
   [Hotkey.SPOTLIGHT]: `${SpecialKey.SHIFT}+${SpecialKey.SPACE}`,
   [Hotkey.DUPLICATE]: [`${SpecialKey.CTRL}+d`, `${SpecialKey.META}+d`],
+  [Hotkey.CREATE_COMPONENT]: [`${SpecialKey.OPTION}+${SpecialKey.CTRL}+k`, `${SpecialKey.OPTION}+${SpecialKey.META}+k`],
   [Hotkey.USER_SPEECH]: SpecialKey.SPACE,
   [Hotkey.DESIGN_PAGE]: '1',
   [Hotkey.CONVERSATION_PAGE]: '2',
@@ -107,6 +110,7 @@ const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {
   [SpecialKey.RIGHT]: '>',
   [SpecialKey.SHIFT]: '⇧',
   [SpecialKey.SPACE]: 'Space',
+  [SpecialKey.OPTION]: IS_MAC ? '⌥' : 'Alt',
   [SpecialKey.DELETE]: 'Del',
   [SpecialKey.BACKSPACE]: 'Del',
 };
@@ -129,8 +133,10 @@ const getHotkeyLabel = (hotkey: Hotkey): string => {
     label = platformLabel ?? label[0];
   }
 
-  // for the mac platform remove '+' between ⌘ and hotkey
-  const formattedLabel = IS_MAC ? label.replace(`${PLATFORM_META_KEY}+`, PLATFORM_META_KEY) : label;
+  // for the mac platform remove '+' between ⌘ and ⌥ and hotkeys
+  const formattedLabel = IS_MAC
+    ? label.replace(`${PLATFORM_META_KEY}+`, PLATFORM_META_KEY).replace(`${SpecialKey.OPTION}+`, SpecialKey.OPTION)
+    : label;
 
   return replaceSpecials(formattedLabel.toUpperCase());
 };

@@ -48,13 +48,13 @@ export { default as cog } from './cog.svg';
 export { default as comment } from './comment.svg';
 export { default as commentReply } from './comment-reply.svg';
 export { default as community } from './community.svg';
+export { default as component } from './component.svg';
 export { default as connectGoogle } from './connect-google.svg';
 export { default as conversations } from './conversations.svg';
 export { default as creditCard } from './credit-card.svg';
 export { default as cursor } from './cursor.svg';
 export { default as custom } from './custom.svg';
 export { default as checked } from './images/icons/check.svg';
-
 // d
 export { default as designer } from './designer.svg';
 export { default as developer } from './developer.svg';
@@ -67,6 +67,7 @@ export { default as dollar } from './dollar.svg';
 export { default as dotsGroup } from './dots-group.svg';
 export { default as download } from './download.svg';
 export { default as downloads } from './downloads.svg';
+export { default as duplicate } from './duplicate.svg';
 
 // e
 export { default as echoShow } from './echo-show.svg';

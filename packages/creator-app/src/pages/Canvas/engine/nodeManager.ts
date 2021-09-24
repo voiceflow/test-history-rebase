@@ -231,8 +231,6 @@ class NodeManager extends EngineConsumer {
 
   // We use the copy and paste logic to preserve the link connections, rather than reuse the single duplicate method above
   async duplicateMany(nodeIDs: string[]): Promise<void> {
-    this.engine.selection.reset();
-
     const clipboardData = this.engine.clipboard.getClipboardContext(nodeIDs);
 
     const combinedAndMarkupNodes = clipboardData.nodes

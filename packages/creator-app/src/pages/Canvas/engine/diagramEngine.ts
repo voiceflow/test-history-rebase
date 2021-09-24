@@ -64,7 +64,8 @@ class DiagramEngine extends EngineConsumer {
   }
 
   async cloneEntities(entityMap: EntityMap, coords: Coords, options?: CloneContextOptions) {
-    const clonedEntityMap = await cloneEntityMap(entityMap, options);
+    const clonedEntityMap = cloneEntityMap(entityMap, options);
+
     await this.engine.node.addMany(clonedEntityMap, coords);
 
     return clonedEntityMap;

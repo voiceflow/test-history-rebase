@@ -1,43 +1,44 @@
+import { SelectionSetTargetsContextValue } from '@/pages/Skill/contexts';
 import { hasIdenticalMembers } from '@/utils/array';
 
 import { ActivationMode } from './constants';
 import { EngineConsumer } from './utils';
 
-class SelectionEngine extends EngineConsumer {
+class SelectionEngine extends EngineConsumer<{ selectionSetTargetsContext: SelectionSetTargetsContextValue }> {
   log = this.engine.log.child('selection');
 
   /**
    * should be mutually exclusive with hasFocus
    */
-  get hasTargets() {
+  get hasTargets(): boolean {
     return this.engine.activation.mode === ActivationMode.SELECTION && this.engine.activation.hasTargets;
   }
 
   /**
    * check to see if the node is selected
    */
-  isTarget(nodeID: string) {
+  isTarget(nodeID: string): boolean {
     return this.hasTargets && this.engine.activation.isTarget(nodeID);
   }
 
   /**
    * check to see if the node is one of multiple selected
    */
-  isOneOfManyTargets(nodeID: string) {
+  isOneOfManyTargets(nodeID: string): boolean {
     return this.isTarget(nodeID) && this.engine.activation.getTargets().length > 1;
   }
 
   /**
    * returns array of all selected targets
    */
-  getTargets() {
+  getTargets(): string[] {
     return this.hasTargets ? this.engine.activation.getTargets() : [];
   }
 
   /**
    * toggle the selection of the node with the given ID
    */
-  toggle(nodeID: string) {
+  toggle(nodeID: string): void {
     if (this.engine.isCanvasBusy) return;
 
     this.log.debug(this.log.pending('toggling selection of node'), this.log.slug(nodeID));
@@ -55,6 +56,7 @@ class SelectionEngine extends EngineConsumer {
     }
 
     this.engine.activation.toggle(nodeID, ActivationMode.SELECTION);
+    this.components.selectionSetTargetsContext?.(this.getTargets());
 
     const isSelected = this.isTarget(nodeID);
     this.log.info(this.log.success('toggled selection of node'), this.log.slug(nodeID), this.log.diff(!isSelected, isSelected));
@@ -63,7 +65,7 @@ class SelectionEngine extends EngineConsumer {
   /**
    * replace the entire set of selected targets
    */
-  replace(targets: string[] = [], force = false) {
+  replace(targets: string[] = [], force = false): void {
     const currentTargets = this.getTargets();
 
     if ((!force && this.engine.isCanvasBusy) || this.engine.comment.isActive || hasIdenticalMembers(targets, currentTargets)) return;
@@ -71,6 +73,7 @@ class SelectionEngine extends EngineConsumer {
     this.log.debug(this.log.pending('replacing selection'), targets);
     this.engine.focus.reset();
     this.engine.activation.replace(targets, ActivationMode.SELECTION);
+    this.components.selectionSetTargetsContext?.(this.getTargets());
 
     this.log.info(this.log.success('replaced selection'), this.log.diff(currentTargets.length, targets.length));
   }
@@ -78,13 +81,14 @@ class SelectionEngine extends EngineConsumer {
   /**
    * clears all selected nodes
    */
-  reset() {
+  reset(): void {
     if (!this.hasTargets) return;
 
     const currentTargets = this.getTargets();
 
     this.log.debug(this.log.pending('resetting selection'), currentTargets);
     this.engine.activation.reset();
+    this.components.selectionSetTargetsContext?.(this.getTargets());
 
     this.log.info(this.log.reset('reset selection'), this.log.diff(currentTargets.length, 0));
   }

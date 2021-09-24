@@ -2,12 +2,14 @@ import React from 'react';
 
 import { DiagramLoadingGate } from '@/gates';
 import { withLoadingGate } from '@/hocs';
+import { useRegistration } from '@/hooks';
 import APLPreviewModal from '@/pages/Canvas/components/APLPreviewModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import InteractionModelModal from '@/pages/Canvas/components/InteractionModelModal';
 import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
+import { SelectionSetTargetsContext } from '@/pages/Skill/contexts';
 import { compose } from '@/utils/functional';
 
 import Container from './components/CanvasContainer';
@@ -28,11 +30,15 @@ interface CanvasProps {
 const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const engine = useEngine();
 
+  const selectionSetTargetsContext = React.useContext(SelectionSetTargetsContext);
+
   React.useEffect(() => {
     if (engine.getRootNodeIDs().length === 1 && !engine.comment.isActive) {
       engine.centerHome();
     }
   }, [engine]);
+
+  useRegistration(() => engine.selection.register('selectionSetTargetsContext', selectionSetTargetsContext), [selectionSetTargetsContext]);
 
   return (
     <CanvasProviders engine={engine}>

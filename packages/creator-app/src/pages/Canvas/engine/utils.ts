@@ -13,7 +13,7 @@ import { NodeDescriptor } from '@/pages/Canvas/managers/types';
 import { Dispatchable, Dispatcher, DispatchResult, Selector } from '@/store/types';
 import { NullableRecord, Pair, Point } from '@/types';
 import { objectID } from '@/utils';
-import { asyncForEach, unique } from '@/utils/array';
+import { unique } from '@/utils/array';
 import { isChoiceNode, isLinkedFlowNode, isLinkedIntentNode, isProductLinkedNode } from '@/utils/node';
 import { isInRange } from '@/utils/number';
 import { getDistinctPlatformValue } from '@/utils/platform';
@@ -132,7 +132,7 @@ export const cloneLink =
 
 export const cloneNodeWithData =
   ({ getNodeID, getPortID }: CloneUtils) =>
-  async ({ node, data }: NodeWithData): Promise<NodeWithData> => {
+  ({ node, data }: NodeWithData): NodeWithData => {
     const originNode = node;
     const originNodeData: NodeData<unknown> = data;
 
@@ -197,24 +197,31 @@ export const mergeEntityMaps = (lhs: EntityMap, rhs: EntityMap) => ({
   links: [...lhs.links, ...rhs.links],
 });
 
-export const cloneEntityMap = async ({ nodesWithData, ports, links }: EntityMap, options?: CloneContextOptions) => {
+export const cloneEntityMap = (
+  { nodesWithData, ports, links }: EntityMap,
+  options?: CloneContextOptions
+): {
+  ports: Port[];
+  links: Link[];
+  nodesWithData: NodeWithData[];
+} => {
   const context = createCloneContext(options);
 
   const clonedPorts = ports.map(clonePort(context));
 
   const clonedNodesWithData: NodeWithData[] = [];
 
-  await asyncForEach(nodesWithData, async (nodeData) => {
-    const clonedNodeData = await cloneNodeWithData(context)(nodeData);
+  nodesWithData.forEach((node) => {
+    const clonedNodeData = cloneNodeWithData(context)(node);
     clonedNodesWithData.push(clonedNodeData);
   });
 
   const clonedLinks = links.map(cloneLink(context));
 
   return {
-    nodesWithData: clonedNodesWithData,
     ports: clonedPorts,
     links: clonedLinks,
+    nodesWithData: clonedNodesWithData,
   };
 };
 

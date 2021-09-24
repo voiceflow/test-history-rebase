@@ -12,6 +12,7 @@ import { CanvasControls, LogoButton, ProjectAndDiagramActions, Run, Share, Uploa
 
 const CanvasHeader: React.FC = () => {
   const platform = React.useContext(PlatformContext)!;
+
   const [canPublish] = usePermission(Permission.CANVAS_PUBLISH);
 
   return (

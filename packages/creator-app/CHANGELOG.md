@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.493.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.492.1...@voiceflow/creator-app@1.493.0) (2021-09-24)
+
+
+### Features
+
+* adds model export to share modal (VF-1327) ([#4194](https://github.com/voiceflow/creator-app/issues/4194)) ([cad65a6](https://github.com/voiceflow/creator-app/commit/cad65a6473ef5ddd37222f5fd20940b105c96a64))
+
+
+
+
+
 ## [1.492.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.492.0...@voiceflow/creator-app@1.492.1) (2021-09-24)
 
 

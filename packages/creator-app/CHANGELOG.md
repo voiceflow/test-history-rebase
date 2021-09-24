@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.492.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.492.0...@voiceflow/creator-app@1.492.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* minimize vite diff (VF-000) ([#4207](https://github.com/voiceflow/creator-app/issues/4207)) ([07ffa92](https://github.com/voiceflow/creator-app/commit/07ffa920cfc94f595ca5a3b203cb1ede9b7b3b61))
+
+
+
+
+
 # [1.492.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.491.2...@voiceflow/creator-app@1.492.0) (2021-09-24)
 
 

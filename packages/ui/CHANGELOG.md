@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.18.1...@voiceflow/ui@1.19.0) (2021-09-24)
+
+
+### Features
+
+* add usePopper and useVirtualElementPopper hooks in @voiceflow/ui (VF-1865) ([#4208](https://github.com/voiceflow/creator-app/issues/4208)) ([4d280a0](https://github.com/voiceflow/creator-app/commit/4d280a0f74eb2831517bbc3e76b991ad556c7af5))
+
+
+
+
+
 ## [1.18.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.18.0...@voiceflow/ui@1.18.1) (2021-09-24)
 
 

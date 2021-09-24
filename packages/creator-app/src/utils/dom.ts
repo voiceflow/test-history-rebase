@@ -188,6 +188,7 @@ export const withTargetValue = (task: (value: string) => void) => (e: React.Chan
 export enum DataTypes {
   TEXT = 'text/plain;charset=utf-8',
   JSON = 'text/json;charset=utf-8',
+  CSV = 'text/csv;encoding:utf-8',
 }
 
 export const readFileAsync = (file: File): Promise<string> =>

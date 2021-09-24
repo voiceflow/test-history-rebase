@@ -11,10 +11,11 @@ export enum ExportType {
 export const CANVAS_EXPORT_OPTIONS_LABELS: Record<string, string> = {
   [ExportFormat.PNG]: 'Image (PNG)',
   [ExportFormat.PDF]: 'PDF',
+  [ExportFormat.RESPONSES]: 'Responses',
   [ExportFormat.VF]: 'Local copy (.vf)',
 };
 
-export const CANVAS_EXPORT_OPTIONS = [ExportFormat.PDF, ExportFormat.PNG, ExportFormat.VF];
+export const CANVAS_EXPORT_OPTIONS = [ExportFormat.PDF, ExportFormat.PNG, ExportFormat.RESPONSES, ExportFormat.VF];
 
 export const CANVAS_OPTIONS_TEMPLATE_WORKSPACE = [ExportFormat.VF];
 

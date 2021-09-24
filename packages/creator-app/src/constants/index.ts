@@ -344,6 +344,7 @@ export enum ExportFormat {
   PNG = 'png',
   PDF = 'pdf',
   JSON = 'json',
+  RESPONSES = 'responses',
   VF = 'vf',
 }
 

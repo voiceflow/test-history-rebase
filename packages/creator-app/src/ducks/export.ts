@@ -1,5 +1,6 @@
 import { toast } from '@voiceflow/ui';
 import fileSaver from 'file-saver';
+import { Parser } from 'json2csv';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -20,6 +21,21 @@ export const exportCanvas =
     const diagramID = Session.activeDiagramIDSelector(state);
 
     Errors.assertVersionID(versionID);
+
+    if (type === ExportFormat.RESPONSES) {
+      const projectName = ProjectV2.active.nameSelector(state);
+      const json2csvParser = new Parser();
+
+      try {
+        const data = await client.api.version.exportResponses(versionID);
+        const csvData = json2csvParser.parse(data);
+        download(`${projectName?.replace(/ /g, '_')}.csv`, csvData, DataTypes.CSV);
+      } catch (error) {
+        Sentry.error(error);
+        toast.error('.csv export failed');
+      }
+      return;
+    }
 
     if (type === ExportFormat.VF) {
       const projectName = ProjectV2.active.nameSelector(state);

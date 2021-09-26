@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.495.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.494.0...@voiceflow/creator-app@1.495.0) (2021-09-26)
+
+
+### Features
+
+* amazon pay in user info (VF-1845) ([#4188](https://github.com/voiceflow/creator-app/issues/4188)) ([77714a5](https://github.com/voiceflow/creator-app/commit/77714a51faeed3df500df28d2525c15125ce1976))
+
+
+
+
+
 # [1.494.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.493.1...@voiceflow/creator-app@1.494.0) (2021-09-24)
 
 

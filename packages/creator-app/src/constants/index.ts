@@ -155,7 +155,10 @@ export const PERMISSIONS = [
     name: 'ISP',
     value: AlexaNode.PermissionType.UNOFFICIAL_ISP,
   },
-  // Removed for now, amazon pay permissions broken
+  {
+    name: 'Amazon Pay',
+    value: AlexaNode.PermissionType.PAYMENTS_AUTO_PAY_CONSENT,
+  },
 ];
 
 export const PERMISSIONS_WITH_VARIABLE_MAPS = PERMISSIONS.filter(({ variableMap }) => variableMap).map(({ value }) => value);

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.495.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.495.0...@voiceflow/creator-app@1.495.1) (2021-09-26)
+
+
+### Bug Fixes
+
+* use open source composite-reducer (VF-000) ([#4206](https://github.com/voiceflow/creator-app/issues/4206)) ([6dafa1d](https://github.com/voiceflow/creator-app/commit/6dafa1d8e63d6a545b69e81e77c9bb1d474dc374))
+
+
+
+
+
 # [1.495.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.494.0...@voiceflow/creator-app@1.495.0) (2021-09-26)
 
 

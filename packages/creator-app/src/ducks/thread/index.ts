@@ -1,8 +1,9 @@
+import compositeReducer from 'composite-reducer';
+
 import createCRUDReducer from '@/ducks/utils/crud';
 import { Thread } from '@/models';
 import { RootReducer } from '@/store/types';
 
-import { compositeReducer } from '../utils';
 import { CommentingAction, UpdateUnreadComments } from './actions';
 import { STATE_KEY } from './constants';
 

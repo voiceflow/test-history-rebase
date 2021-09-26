@@ -1,7 +1,8 @@
+import compositeReducer from 'composite-reducer';
+
 import { Transcript } from '@/models';
 import { RootReducer } from '@/store/types';
 
-import { compositeReducer } from '../utils';
 import createCRUDReducer from '../utils/crud';
 import { TranscriptReadingAction, UpdateUnreadTranscripts } from './actions';
 import { STATE_KEY } from './constants';

@@ -1,6 +1,6 @@
+import compositeReducer from 'composite-reducer';
 import cuid from 'cuid';
 
-import { compositeReducer } from '@/ducks/utils';
 import { localPersistor, persistReducer, rehydrateReducer, sessionPersistor } from '@/ducks/utils/persist';
 import { Reducer, RootReducer } from '@/store/types';
 import * as Cookies from '@/utils/cookies';

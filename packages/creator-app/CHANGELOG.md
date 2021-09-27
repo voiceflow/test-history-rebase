@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.495.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.495.4...@voiceflow/creator-app@1.495.5) (2021-09-27)
+
+
+### Bug Fixes
+
+* show flow menu to viewers (VF-1876) ([#4225](https://github.com/voiceflow/creator-app/issues/4225)) ([fef2ea3](https://github.com/voiceflow/creator-app/commit/fef2ea305527552de1f170f054e1296c488eaa7d))
+
+
+
+
+
 ## [1.495.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.495.3...@voiceflow/creator-app@1.495.4) (2021-09-27)
 
 

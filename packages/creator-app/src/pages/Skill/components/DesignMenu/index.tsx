@@ -120,7 +120,7 @@ const DesignMenu: React.FC = () => {
     [dropRef]
   );
 
-  const canBeOpened = !isAnyModeOpen && canEditCanvas;
+  const canBeOpened = !isAnyModeOpen;
   const isOpen = (!isHidden || isOpenByHover) && canBeOpened;
 
   return (

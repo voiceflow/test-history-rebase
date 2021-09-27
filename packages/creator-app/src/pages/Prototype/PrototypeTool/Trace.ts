@@ -87,7 +87,6 @@ const FOCUSABLE_NODES = [
   BlockType.VISUAL,
   BlockType.DISPLAY,
   BlockType.EVENT,
-  BlockType.TEXT,
 ];
 
 class TraceController {

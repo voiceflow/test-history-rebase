@@ -2,7 +2,7 @@ import AutosizeInput from 'react-input-autosize';
 
 import { css, styled } from '../../../styles';
 
-const TagsInput = styled(AutosizeInput)<{ hasTags: boolean }>`
+const TagsInput = styled(AutosizeInput)<{ hastags: boolean }>`
   border: none;
   display: inline-flex;
 
@@ -12,8 +12,8 @@ const TagsInput = styled(AutosizeInput)<{ hasTags: boolean }>`
     padding: 4px;
     margin-top: 3px;
 
-    ${({ hasTags }) =>
-      hasTags &&
+    ${({ hastags }) =>
+      hastags &&
       css`
         position: relative;
       `}

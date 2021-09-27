@@ -271,6 +271,7 @@ SelectProps<O, V>) => {
   }, [inputWrapperRef, placement]);
 
   const onUpdateOptionsToRender = React.useCallback(
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     (label: string) => {
       const { matchedOptions } = cache.current.optionsFilter(cache.current.options, label, {
         grouped: cache.current.grouped,
@@ -497,6 +498,7 @@ SelectProps<O, V>) => {
   return (
     <Manager>
       <Reference innerRef={setInputWrapperRef}>
+        {/* eslint-disable-next-line sonarjs/cognitive-complexity */}
         {({ ref }) => (
           <SelectWrapper
             as={renderAsSpan ? 'span' : undefined}
@@ -531,8 +533,10 @@ SelectProps<O, V>) => {
                   >
                     {tags()}
                     <TagsInput
-                      hasTags={selectedOptions?.length}
-                      {...inputProps}
+                      hastags={selectedOptions?.length}
+                      onChange={onChangeSearchLabel}
+                      placeholder={placeholder}
+                      onClick={searchable ? onOpenMenu : undefined}
                       onBlur={(e) => {
                         if (!renderDropdown) {
                           updateOpened(false);

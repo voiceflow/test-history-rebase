@@ -70,12 +70,15 @@ export const createVisualMessage = (trace: VisualTrace, common: CommonProperties
   };
 };
 
+const isGuidedNavRequest = (request: Request.BaseRequest): request is Request.BaseRequest<string> =>
+  !!request.type.toLowerCase().match(/^port\d+$/) && typeof request.payload === 'string';
+
 export const createUserMessage = (request: Request.BaseRequest, common: CommonProperties, id = cuid()): UserMessage => {
   let input = request.type;
 
   if (Request.isIntentRequest(request)) {
     input = request.payload.label || request.payload.query || request.payload.intent.name;
-  } else if (Request.isTextRequest(request)) {
+  } else if (Request.isTextRequest(request) || isGuidedNavRequest(request)) {
     input = request.payload;
   } else if (typeof request.payload === 'object' && !!request.payload && typeof (request.payload as any).label === 'string') {
     input = (request.payload as any).label;

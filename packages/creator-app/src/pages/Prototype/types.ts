@@ -85,6 +85,6 @@ export type TypedMessage<T extends MessageType> = MessageMap[T];
 
 export interface Interaction {
   name: string;
-  request: Request.AnyRequestButton['request'] | Request.BaseRequest<undefined>;
+  request: Request.AnyRequestButton['request'] | Request.BaseRequest<undefined> | Request.BaseRequest<string>;
   isActionButton?: boolean;
 }

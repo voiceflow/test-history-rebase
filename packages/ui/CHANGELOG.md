@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.19.0...@voiceflow/ui@1.19.1) (2021-09-27)
+
+
+### Bug Fixes
+
+* autoresize input react errors (VF-000) ([#4219](https://github.com/voiceflow/creator-app/issues/4219)) ([d96debf](https://github.com/voiceflow/creator-app/commit/d96debf61f2ad60cbcc6b3ebe257dec3f7a69b11))
+
+
+
+
+
 # [1.19.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.18.1...@voiceflow/ui@1.19.0) (2021-09-24)
 
 

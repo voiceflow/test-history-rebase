@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.495.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.495.3...@voiceflow/creator-app@1.495.4) (2021-09-27)
+
+
+### Bug Fixes
+
+* guided nav test reports (VF-1863) ([#4217](https://github.com/voiceflow/creator-app/issues/4217)) ([b342f89](https://github.com/voiceflow/creator-app/commit/b342f891820c7c0f40cb903c96856b81dc8a05e4))
+
+
+
+
+
 ## [1.495.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.495.2...@voiceflow/creator-app@1.495.3) (2021-09-27)
 
 **Note:** Version bump only for package @voiceflow/creator-app

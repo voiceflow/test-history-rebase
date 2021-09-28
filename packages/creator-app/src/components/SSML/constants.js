@@ -1,5 +1,6 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
 import _constant from 'lodash/constant';
 
@@ -280,6 +281,8 @@ export const GOOGLE_DEFAULT_TAGS = {
   },
   ...UNIVERSAL_TAGS,
 };
+
+export const GOOGLE_DIALOGFLOW_DEFAULT_TAGS = { ...GOOGLE_DEFAULT_TAGS };
 
 export const UNIVERSAL_ADD_OPTIONS = [
   {
@@ -772,6 +775,33 @@ const GOOGLE_SSML_META = {
   },
 };
 
+const GOOGLE_DIALOGFLOW_SSML_META = {
+  fallbackPlaceholder: () => 'Enter Dialogflow reply, {} to add variables',
+  canChangeVoice: true,
+  platformTags: GOOGLE_DIALOGFLOW_DEFAULT_TAGS,
+  addOptions: UNIVERSAL_ADD_OPTIONS,
+  voiceOptions: (locales) => {
+    const localeMeta = locales?.map((locale) => ({
+      locale,
+      languageCode: DialogflowConstants.LocaleToVoiceLanguageCode[locale] ?? DialogflowConstants.VoiceLanguageCode.EN_US,
+    }));
+
+    return localeMeta?.map((meta) => ({
+      label: DialogflowConstants.LocaleCodeToCountryLanguage[meta.locale] || meta.locale,
+      options: DialogflowConstants.VoiceLanguageCodeToVoice[meta.languageCode]
+        .map((voiceMeta) =>
+          voiceMeta.voiceName
+            .filter((voiceName) => voiceName.includes(GoogleConstants.VoiceType.STANDARD))
+            .map((voiceName) => ({
+              value: voiceName,
+              label: prettifyGoogleVoicesShort(voiceName),
+            }))
+        )
+        .flat(),
+    }));
+  },
+};
+
 const GENERAL_SSML_META = {
   fallbackPlaceholder: () => 'Enter Assistant reply, {} to add variables',
   canChangeVoice: true,
@@ -808,6 +838,7 @@ export const getPlatformSSML = createPlatformSelector(
   {
     [Constants.PlatformType.ALEXA]: ALEXA_SSML_META,
     [Constants.PlatformType.GOOGLE]: GOOGLE_SSML_META,
+    [Constants.PlatformType.DIALOGFLOW]: GOOGLE_DIALOGFLOW_SSML_META,
   },
   GENERAL_SSML_META
 );

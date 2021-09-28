@@ -7,6 +7,7 @@ import { HotkeyLabel } from './components';
 
 export interface TippyTooltipProps extends TooltipProps {
   hotkey?: string;
+  tag?: string;
 }
 
 const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChildren<TippyTooltipProps>> = (

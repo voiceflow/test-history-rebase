@@ -3,9 +3,18 @@ import React from 'react';
 
 import Tabs from '@/components/Tabs';
 
+import { Tab, TabItem } from '../../constants';
 import { Container, LockIcon, LockIconContainer } from './components';
 
-const Header = ({ tabs, locked, selectedTab, toggleLock, selectActiveTab }) => (
+interface HeaderProps {
+  tabs: TabItem[];
+  locked?: boolean;
+  toggleLock: VoidFunction;
+  selectedTab: Tab;
+  selectActiveTab: (tab: Tab) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ tabs, locked, selectedTab, toggleLock, selectActiveTab }) => (
   <Container>
     <Tabs selected={selectedTab} options={tabs} onChange={selectActiveTab} />
 

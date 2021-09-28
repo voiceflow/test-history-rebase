@@ -1,28 +1,29 @@
-import { TippyTooltip, useDidUpdateEffect } from '@voiceflow/ui';
+import { TippyTooltip, TippyTooltipProps, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { useKeygen, useOnScreen } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { ActiveLine, Tab, Wrapper } from './components';
+import { ActiveLine, Tab as TabItem, Wrapper } from './components';
 
-export interface Tab {
+export interface Tab<V extends string = string> {
   id?: string;
-  value: string;
+  value: V;
   label: React.ReactNode;
   color?: string;
+  tooltip?: TippyTooltipProps;
   [key: string]: any;
 }
 
-export interface TabsProps {
+export interface TabsProps<V extends string = string> {
   as?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
-  options: Tab[];
-  onChange: (nextSelected: string) => void;
+  options: Tab<V>[];
+  onChange: (nextSelected: V) => void;
   innerRef?: boolean;
-  selected?: string;
+  selected?: V;
 }
 
-const Tabs: React.FC<TabsProps> = ({ as = 'button', options, selected, onChange, innerRef }) => {
+const Tabs = <V extends string = string>({ as = 'button', options, selected, onChange, innerRef }: TabsProps<V>): React.ReactElement<any, any> => {
   const genKey = useKeygen();
   const tabsRef = React.useRef<Record<string, HTMLElement | null>>({});
   const activeLineRef = React.useRef<HTMLDivElement>(null);
@@ -68,18 +69,18 @@ const Tabs: React.FC<TabsProps> = ({ as = 'button', options, selected, onChange,
     <Wrapper ref={ref} className={ClassName.TABS}>
       {options.map(({ value, label, color, tooltip, ...tabProps }) => {
         const tab = (
-          <Tab
+          <TabItem
             {...tabProps}
             {...{ [innerRef ? 'innerRef' : 'ref']: tooltip ? null : onRef(value) }}
-            className={ClassName.TAB}
             as={as}
-            color={color}
             key={genKey(value)}
+            color={color}
             onClick={() => onChange(value)}
             isActive={selected === value}
+            className={ClassName.TAB}
           >
             {label}
-          </Tab>
+          </TabItem>
         );
 
         return tooltip ? (

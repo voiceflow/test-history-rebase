@@ -2,5 +2,6 @@ export { default as Container } from './Container';
 export { default as Content } from './Content';
 export { default as Flows } from './Flows';
 export { default as Header } from './Header';
+export { default as Layers } from './Layers';
 export { default as ScrollbarsContainer } from './ScrollbarsContainer';
 export { default as Steps } from './Steps';

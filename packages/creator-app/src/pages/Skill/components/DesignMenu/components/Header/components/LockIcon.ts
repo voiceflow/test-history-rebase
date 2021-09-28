@@ -2,7 +2,7 @@ import { SvgIcon } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs';
 
-const LockIcon = styled(SvgIcon)`
+const LockIcon = styled(SvgIcon)<{ locked?: boolean }>`
   display: inline-block;
   cursor: pointer;
 

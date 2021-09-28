@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.497.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.496.0...@voiceflow/creator-app@1.497.0) (2021-09-28)
+
+
+### Features
+
+* support google standard and TTS (VF-1331) ([#4229](https://github.com/voiceflow/creator-app/issues/4229)) ([762e379](https://github.com/voiceflow/creator-app/commit/762e379bf85fb4936ad7b257fce6d9756dde075e))
+
+
+
+
+
 # [1.496.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.495.5...@voiceflow/creator-app@1.496.0) (2021-09-28)
 
 

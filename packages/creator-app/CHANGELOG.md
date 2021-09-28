@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.496.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.495.5...@voiceflow/creator-app@1.496.0) (2021-09-28)
+
+
+### Features
+
+* resizable layers (VF-000) ([#4215](https://github.com/voiceflow/creator-app/issues/4215)) ([792e3a9](https://github.com/voiceflow/creator-app/commit/792e3a9d11fb4d6c072ea1635de000f709c81985))
+
+
+
+
+
 ## [1.495.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.495.4...@voiceflow/creator-app@1.495.5) (2021-09-27)
 
 

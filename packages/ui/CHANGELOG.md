@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.21.0...@voiceflow/ui@1.21.1) (2021-09-29)
+
+
+### Bug Fixes
+
+* redact sensitive information from redux and network tracing (VF-1900) ([#4237](https://github.com/voiceflow/creator-app/issues/4237)) ([cdb3dc3](https://github.com/voiceflow/creator-app/commit/cdb3dc38181d4244395868a267ba000d241190a4))
+
+
+
+
+
 # [1.21.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.20.0...@voiceflow/ui@1.21.0) (2021-09-29)
 
 

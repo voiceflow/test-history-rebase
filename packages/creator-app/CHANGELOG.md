@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.498.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.498.0...@voiceflow/creator-app@1.498.1) (2021-09-29)
+
+
+### Bug Fixes
+
+* line desyncing whiile zooming (VF-000) ([#4236](https://github.com/voiceflow/creator-app/issues/4236)) ([6bddf71](https://github.com/voiceflow/creator-app/commit/6bddf7123749ca77164d5d7b4da6843b951eb145))
+
+
+
+
+
 # [1.498.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.497.2...@voiceflow/creator-app@1.498.0) (2021-09-29)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.497.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.497.0...@voiceflow/creator-app@1.497.1) (2021-09-29)
+
+
+### Bug Fixes
+
+* use debounce save on change (VF-1868) ([#4230](https://github.com/voiceflow/creator-app/issues/4230)) ([8f92f27](https://github.com/voiceflow/creator-app/commit/8f92f27cd4b5505fcab8b26e8044258af4b99a6a))
+
+
+
+
+
 # [1.497.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.496.0...@voiceflow/creator-app@1.497.0) (2021-09-28)
 
 

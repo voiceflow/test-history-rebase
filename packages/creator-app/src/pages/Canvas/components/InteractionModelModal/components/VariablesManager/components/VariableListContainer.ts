@@ -1,4 +1,4 @@
-import { WindowScrollerContainer } from '@/components/SearchableList/components';
+import { WindowScrollerContainer } from '@/components/VirtualList/components';
 import { styled } from '@/hocs';
 
 const VariableListContainer = styled.div`

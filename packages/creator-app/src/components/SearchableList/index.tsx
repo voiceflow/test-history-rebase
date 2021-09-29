@@ -1,33 +1,29 @@
 import { useDidUpdateEffect } from '@voiceflow/ui';
-import _isFunction from 'lodash/isFunction';
 import _toLower from 'lodash/toLower';
 import React from 'react';
-import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 
-import CustomScrollbars, { Scrollbars } from '@/components/CustomScrollbars';
+import { Scrollbars } from '@/components/CustomScrollbars';
+import VirtualList, { VirtualListProps } from '@/components/VirtualList';
 
-import { AddButton, Container, ScrollContainer, SearchContainer, SearchInput, WindowScrollerContainer } from './components';
+import { AddButton, Container, ScrollContainer, SearchContainer, SearchInput } from './components';
 
 export { IntentName, ItemContainer as SearchableListItemContainer } from './components';
 
-export interface SearchableListProps<T> {
+export interface SearchableListProps<T> extends Pick<VirtualListProps, 'id' | 'rowHeight'> {
   items: T[];
-  getLabel: (item: T) => string;
   onAdd?: () => void;
-  addMessage?: string;
+  getLabel: (item: T) => string;
   onChange?: (value: string, items: T[]) => void;
-  rowHeight?: number;
   renderItem: (item: T, index: number) => React.ReactNode;
+  addMessage?: string;
   placeholder: string;
   formatValue?: (value: string) => string;
-  id?: string;
 }
 
 const SearchableList: React.ForwardRefRenderFunction<Scrollbars, SearchableListProps<any>> = (
-  { items, getLabel, onAdd, addMessage, onChange, rowHeight = 42, renderItem, placeholder, formatValue = (value) => value, id },
+  { items, getLabel, onAdd, addMessage, onChange, rowHeight, renderItem, placeholder, formatValue = (value) => value, id },
   ref
 ) => {
-  const [scrollbars, setCustomScrollBars] = React.useState<Scrollbars | null>(null);
   const [searchValue, setSearchValue] = React.useState('');
 
   const filteredItems = React.useMemo(() => {
@@ -35,29 +31,6 @@ const SearchableList: React.ForwardRefRenderFunction<Scrollbars, SearchableListP
 
     return items.filter((item) => _toLower(getLabel(item)).includes(lowerCasedSearchValue));
   }, [items, getLabel, searchValue]);
-
-  const rowRenderer = ({ key, index, style }: { key: string; index: number; style: object }) => (
-    <div key={key} style={style}>
-      {renderItem(filteredItems[index], index)}
-    </div>
-  );
-
-  const onRef = React.useCallback(
-    (scrls: Scrollbars) => {
-      if (ref) {
-        if (_isFunction(ref)) {
-          ref(scrls);
-        } else {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          ref.current = scrls;
-        }
-      }
-
-      setCustomScrollBars(scrls);
-    },
-    [ref]
-  );
 
   const onChangeValue = React.useCallback(
     ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,34 +48,13 @@ const SearchableList: React.ForwardRefRenderFunction<Scrollbars, SearchableListP
   return (
     <Container>
       <ScrollContainer>
-        <CustomScrollbars ref={onRef}>
-          {!scrollbars ? null : (
-            <WindowScrollerContainer>
-              <WindowScroller scrollElement={scrollbars.view}>
-                {({ height, isScrolling, registerChild, scrollTop }) =>
-                  !!height && (
-                    <AutoSizer disableHeight={true}>
-                      {({ width }) => (
-                        <div id={id} ref={registerChild}>
-                          <List
-                            width={width}
-                            height={height}
-                            scrollTop={scrollTop}
-                            rowCount={filteredItems.length}
-                            rowHeight={rowHeight}
-                            autoHeight
-                            rowRenderer={rowRenderer}
-                            isScrolling={isScrolling}
-                          />
-                        </div>
-                      )}
-                    </AutoSizer>
-                  )
-                }
-              </WindowScroller>
-            </WindowScrollerContainer>
-          )}
-        </CustomScrollbars>
+        <VirtualList
+          id={id}
+          ref={ref}
+          size={filteredItems.length}
+          rowHeight={rowHeight}
+          renderItem={(index) => renderItem(filteredItems[index], index)}
+        />
       </ScrollContainer>
 
       <SearchContainer>

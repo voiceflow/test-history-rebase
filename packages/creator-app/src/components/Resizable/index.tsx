@@ -33,10 +33,12 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
     const nextChildren = children[index + 1];
     const currentChildren = children[index];
     const initialNextHeight = heightsRef.current[index + 1];
+    const initialNextHeightPX = (heightsRef.current[index + 1] / 100) * containerHeight;
     const initialCurrentHeight = heightsRef.current[index];
+    const initialCurrentHeightPX = (heightsRef.current[index] / 100) * containerHeight;
 
-    let prevCollapsed = collapsedChildren[index];
     let prevNextCollapsed = collapsedChildren[index + 1] ?? false;
+    let prevCurrentCollapsed = collapsedChildren[index];
 
     const onMouseMove = ({ clientY: currentClientY }: MouseEvent): void => {
       updateStylesScheduler(() => {
@@ -51,23 +53,49 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
         const canResizeCurrent = currentNode && currentChildren && currentHeightPX >= currentChildren.props.minHeight;
 
         if (canResizeNext && canResizeCurrent) {
-          if (prevCollapsed) {
-            prevCollapsed = false;
-            setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index, prevCollapsed));
-          } else if (prevNextCollapsed) {
-            prevNextCollapsed = false;
-            setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
-          }
-
           heightsRef.current[index] = currentHeight;
           heightsRef.current[index + 1] = nextHeight;
 
           nextNode.style.maxHeight = `${nextHeight}%`;
           currentNode.style.maxHeight = `${currentHeight}%`;
-        } else if (!canResizeCurrent && !prevCollapsed) {
-          prevCollapsed = true;
-          setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index, prevCollapsed));
+
+          if (prevCurrentCollapsed) {
+            prevCurrentCollapsed = false;
+            setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index, prevCurrentCollapsed));
+          } else if (prevNextCollapsed) {
+            prevNextCollapsed = false;
+            setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
+          }
+        } else if (!canResizeCurrent && !prevCurrentCollapsed) {
+          if (currentNode && nextNode) {
+            const minDiffPX = initialCurrentHeightPX - currentChildren.props.minHeight;
+            const minDiff = (minDiffPX / containerHeight) * 100;
+            const nextMinHeight = initialNextHeight + minDiff;
+            const currentMinHeight = initialCurrentHeight - minDiff;
+
+            heightsRef.current[index] = currentHeight;
+            heightsRef.current[index + 1] = nextHeight;
+
+            nextNode.style.maxHeight = `${nextMinHeight}%`;
+            currentNode.style.maxHeight = `${currentMinHeight}%`;
+          }
+
+          prevCurrentCollapsed = true;
+          setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index, prevCurrentCollapsed));
         } else if (!canResizeNext && !prevNextCollapsed) {
+          if (currentNode && nextNode) {
+            const minDiffPX = initialNextHeightPX - nextChildren.props.minHeight;
+            const minDiff = (minDiffPX / containerHeight) * 100;
+            const nextMinHeight = initialNextHeight - minDiff;
+            const currentMinHeight = initialCurrentHeight + minDiff;
+
+            heightsRef.current[index] = currentHeight;
+            heightsRef.current[index + 1] = nextHeight;
+
+            nextNode.style.maxHeight = `${nextMinHeight}%`;
+            currentNode.style.maxHeight = `${currentMinHeight}%`;
+          }
+
           prevNextCollapsed = true;
           setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
         }

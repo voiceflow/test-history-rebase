@@ -3,19 +3,23 @@ import React from 'react';
 import Resizable, { ResizablePanel } from '@/components/Resizable';
 import { useLocalStorageState } from '@/hooks';
 
-const Layers = () => {
+import { ComponentsSection, Container, TopicsSection } from './components';
+
+const Layers: React.FC = () => {
   const [heights, setHeights] = useLocalStorageState<number[]>('design-menu-layers-heights', []);
 
   return (
-    <Resizable onResized={setHeights}>
-      <ResizablePanel height={heights[0]} minHeight={150}>
-        {({ collapsed }) => <div>Topics ,collapsed: {String(collapsed)}</div>}
-      </ResizablePanel>
+    <Container>
+      <Resizable onResized={setHeights}>
+        <ResizablePanel height={heights[0]} minHeight={150}>
+          {() => <TopicsSection />}
+        </ResizablePanel>
 
-      <ResizablePanel height={heights[1]} minHeight={40}>
-        {({ collapsed }) => <div>Components collapsed: {String(collapsed)}</div>}
-      </ResizablePanel>
-    </Resizable>
+        <ResizablePanel height={heights[1]} minHeight={40}>
+          {({ collapsed }) => <ComponentsSection collapsed={collapsed} />}
+        </ResizablePanel>
+      </Resizable>
+    </Container>
   );
 };
 

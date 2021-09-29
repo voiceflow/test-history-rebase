@@ -60,7 +60,7 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
       display: block;
       cursor: pointer;
       opacity: 0.8;
-      ${transition('opacity')}
+      ${transition('opacity', 'color')}
 
       &:hover,
       &:active {
@@ -72,8 +72,9 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
     theme: {
       components: { icon },
     },
-    variant,
     color,
+    variant,
+    clickable,
   }) => {
     if (!variant) return null;
 
@@ -86,7 +87,7 @@ const SvgIconContainer = styled.span<SvgIconContainerProps>`
 
       &:active {
         /* stylelint-disable-next-line value-keyword-case */
-        color: ${iconVariant?.activeColor || iconVariant?.hoverColor || color};
+        color: ${variant === IconVariant.STANDARD && clickable ? '#132144' : iconVariant?.activeColor || iconVariant?.hoverColor || color};
       }
     `;
   }}

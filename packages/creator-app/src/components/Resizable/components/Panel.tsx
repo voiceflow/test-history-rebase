@@ -2,6 +2,7 @@ import React from 'react';
 
 import Divider from './Divider';
 import PanelContainer, { PanelContainerProps } from './PanelContainer';
+import PanelContent from './PanelContent';
 
 export interface PanelProps extends PanelContainerProps {
   children: (options: { collapsed: boolean; setHeight: (height: number) => void }) => React.ReactNode;
@@ -18,7 +19,7 @@ const Panel = ({ children, setHeight, collapsed, withDivider, onDividerMouseDown
   <PanelContainer ref={ref} {...props}>
     {withDivider && <Divider onMouseDown={onDividerMouseDown} />}
 
-    {children({ collapsed, setHeight })}
+    <PanelContent>{children({ collapsed, setHeight })}</PanelContent>
   </PanelContainer>
 );
 

@@ -67,7 +67,7 @@ const AddTeamMember: React.FC<AddTeamMembersProps> = ({ errors, collaborators, o
         })}
 
       <ClickableText onClick={onAdd}>
-        <SvgIcon icon="addBoard" size={14} inline mr={8} mb={-1} />
+        <SvgIcon icon="outlinedAdd" size={14} inline mr={8} mb={-1} />
         Add another
       </ClickableText>
     </>

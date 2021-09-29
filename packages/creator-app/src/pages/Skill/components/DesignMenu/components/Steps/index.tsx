@@ -19,6 +19,7 @@ import { StepDragItem } from './types';
 
 const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expandedSections }) => {
   const gadgets = useFeature(FeatureFlag.GADGETS);
+  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
 
   const sections = React.useMemo(() => {
     const platformSections = getSections(platform);
@@ -46,7 +47,7 @@ const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expande
   return (
     <ScrollbarsContainer>
       <CustomScrollbars>
-        <Container id={Identifier.STEP_MENU}>
+        <Container id={Identifier.STEP_MENU} fadeLeft={!!topicsAndComponents.isEnabled}>
           {sections.map(({ type, label, steps }) =>
             steps.length ? (
               <UncontrolledCollapse

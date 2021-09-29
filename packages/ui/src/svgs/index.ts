@@ -5,7 +5,6 @@ export { default as accountLinking } from './account-linking.svg';
 export { default as action } from './action.svg';
 export { default as activeDelete } from './active-delete.svg';
 export { default as add } from './add.svg';
-export { default as addBoard } from './add-board.svg';
 export { default as addStep } from './add-step.svg';
 export { default as addTeammate } from './add-teammate.svg';
 export { default as alexa } from './alexa.svg';

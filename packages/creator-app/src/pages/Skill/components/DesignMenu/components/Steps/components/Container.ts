@@ -1,10 +1,10 @@
 import { Container as CollapsableContainer, Header as CollapsableHeader } from '@/components/Collapsable/components';
 import { styled } from '@/hocs';
-import { FadeRight } from '@/styles/animations';
+import { FadeLeft, FadeRight } from '@/styles/animations';
 
-const Container = styled.div`
+const Container = styled.div<{ fadeLeft?: boolean }>`
   padding: 11px 16px;
-  ${FadeRight}
+  ${({ fadeLeft }) => (fadeLeft ? FadeLeft : FadeRight)}
 
   ${CollapsableHeader} {
     color: #62778c;

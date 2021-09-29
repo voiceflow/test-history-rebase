@@ -1,41 +1,65 @@
-import { useContextApi } from '@voiceflow/ui';
+import { useCache, useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
-import { ScrollContext } from '@/contexts';
+import { Scrollbars } from '@/components/CustomScrollbars';
+import { ScrollContext, ScrollContextValue } from '@/contexts';
 import { getOffsetLeftToNode, getOffsetToNode, scrollTo, setScrollbarOffset } from '@/utils/dom';
 import { xnor, xor } from '@/utils/logic';
 
+import { useRAF } from './raf';
 import { useToggle } from './toggle';
 
-export const useScrollHelpers = <B extends HTMLElement, I extends HTMLElement>({
+interface ScrollHelpers<B extends HTMLElement | Scrollbars, I extends HTMLElement | null> {
+  bodyRef: React.RefObject<B>;
+  innerRef: React.RefObject<I>;
+  scrollHelpers: ScrollContextValue<B>;
+}
+
+const isScrollbars = (value?: null | HTMLElement | Scrollbars): value is Scrollbars => !!value && 'getValues' in value;
+
+export const useScrollHelpers = <B extends HTMLElement | Scrollbars, I extends HTMLElement | null = null>({
   enableScrollbarOffset,
-}: { enableScrollbarOffset?: boolean } = {}) => {
+}: { enableScrollbarOffset?: boolean } = {}): ScrollHelpers<B, I> => {
+  const [scheduler] = useRAF();
+
   const bodyRef = React.useRef<B>(null);
   const innerRef = React.useRef<I>(null);
 
-  const scrollHelpers = React.useRef({
-    scrollToNode(node: HTMLElement, padding = 0) {
-      const offset = getOffsetToNode(node, bodyRef.current);
+  const scrollHelpers = React.useRef<ScrollContextValue<B>>({
+    scrollRef: bodyRef,
 
-      scrollTo(bodyRef.current, { top: offset - padding });
+    scrollToNode(node: HTMLElement, padding = 0) {
+      if (isScrollbars(bodyRef.current)) {
+        const offset = getOffsetToNode(node, bodyRef.current.view);
+
+        bodyRef.current.scrollTop(offset - padding);
+      } else {
+        const offset = getOffsetToNode(node, bodyRef.current);
+
+        scrollTo(bodyRef.current, { top: offset - padding });
+      }
     },
 
     setScrollBarOffset() {
       if (enableScrollbarOffset) {
-        requestAnimationFrame(() => setScrollbarOffset(bodyRef.current, innerRef.current));
+        scheduler(() => !isScrollbars(bodyRef.current) && setScrollbarOffset(bodyRef.current, innerRef.current));
       }
     },
 
     scrollHorizontalToNode(node: HTMLElement, padding = 0) {
-      const offset = getOffsetLeftToNode(node, bodyRef.current);
+      if (isScrollbars(bodyRef.current)) {
+        const offset = getOffsetLeftToNode(node, bodyRef.current.view);
 
-      scrollTo(bodyRef.current, { left: offset - padding });
+        bodyRef.current.scrollLeft(offset - padding);
+      } else {
+        const offset = getOffsetLeftToNode(node, bodyRef.current);
+
+        scrollTo(bodyRef.current, { left: offset - padding });
+      }
     },
   });
 
-  React.useEffect(() => {
-    scrollHelpers.current.setScrollBarOffset();
-  });
+  React.useEffect(() => scrollHelpers.current.setScrollBarOffset());
 
   return useContextApi({
     bodyRef,
@@ -44,56 +68,68 @@ export const useScrollHelpers = <B extends HTMLElement, I extends HTMLElement>({
   });
 };
 
-export const useScrollContext = () => React.useContext(ScrollContext);
+export const useScrollContext = <T extends HTMLElement | Scrollbars>(): ScrollContextValue<T> | null =>
+  React.useContext(ScrollContext) as ScrollContextValue<T>;
 
 export const useHorizontalScrollToNode = <T extends HTMLElement>(
   ref: React.RefObject<T>,
   condition?: boolean,
   recallEffectFields: unknown[] = []
-) => {
-  const { scrollHorizontalToNode } = React.useContext(ScrollContext)!;
+): void => {
+  const { scrollHorizontalToNode } = React.useContext(ScrollContext) ?? {};
 
   React.useEffect(() => {
     if (!condition || !ref.current) {
       return;
     }
 
-    scrollHorizontalToNode(ref.current);
+    scrollHorizontalToNode?.(ref.current);
   }, recallEffectFields);
-
-  return scrollHorizontalToNode;
 };
 
-export const useScrollShadows = <T extends HTMLElement>(bodyRef: React.RefObject<T>, updateByProps: unknown[] = []) => {
-  const [isHeaderShadowShown, toggleHeaderShadowShown] = useToggle(false);
-  const [isFooterShadowShown, toggleFooterShadowShown] = useToggle(false);
+export const useScrollStickySides = <T extends HTMLElement | Scrollbars>(
+  bodyRef: React.RefObject<T>,
+  updateByProps: unknown[] = []
+): [isHeaderSticky: boolean, isFooterSticky: boolean] => {
+  const [isHeaderSticky, toggleHeaderSticky] = useToggle(false);
+  const [isFooterSticky, toggleFooterSticky] = useToggle(false);
+
+  const cache = useCache({ isHeaderSticky, isFooterSticky });
 
   const onScroll = React.useCallback(() => {
-    const aRef = requestAnimationFrame(() => {
-      if (!bodyRef.current) {
-        return;
-      }
+    const { current } = bodyRef;
 
-      const {
-        current: { scrollTop, clientHeight, scrollHeight },
-      } = bodyRef;
+    if (!current) {
+      return;
+    }
 
-      if (xor(!!scrollTop, isHeaderShadowShown)) {
-        toggleHeaderShadowShown();
-      }
+    // eslint-disable-next-line xss/no-mixed-html
+    const { scrollTop, clientHeight, scrollHeight } = isScrollbars(current) ? current.getValues() : (current as HTMLElement);
 
-      const isScrollExists = scrollHeight > clientHeight;
-      const clientHeightWithScrollTop = clientHeight + scrollTop;
+    if (xor(!!scrollTop, cache.current.isHeaderSticky)) {
+      toggleHeaderSticky();
+    }
 
-      if (isScrollExists ? xnor(clientHeightWithScrollTop === scrollHeight, isFooterShadowShown) : isFooterShadowShown) {
-        toggleFooterShadowShown();
-      }
-    });
+    const isScrollExists = scrollHeight > clientHeight;
+    const clientHeightWithScrollTop = clientHeight + scrollTop;
 
-    return () => cancelAnimationFrame(aRef);
-  }, [isHeaderShadowShown, isFooterShadowShown]);
+    if (isScrollExists ? xnor(clientHeightWithScrollTop >= scrollHeight, cache.current.isFooterSticky) : cache.current.isFooterSticky) {
+      toggleFooterSticky();
+    }
+  }, [cache]);
 
-  React.useEffect(onScroll, updateByProps);
+  React.useEffect(() => {
+    onScroll();
 
-  return [onScroll, isHeaderShadowShown, isFooterShadowShown] as const;
+    // eslint-disable-next-line xss/no-mixed-html
+    const scrollNode = isScrollbars(bodyRef.current) ? bodyRef.current.view : (bodyRef.current as HTMLElement | null);
+
+    scrollNode?.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => {
+      scrollNode?.removeEventListener('scroll', onScroll);
+    };
+  }, updateByProps);
+
+  return [isHeaderSticky, isFooterSticky];
 };

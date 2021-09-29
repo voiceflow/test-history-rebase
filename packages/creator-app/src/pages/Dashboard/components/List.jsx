@@ -9,7 +9,7 @@ import { Permission } from '@/config/permissions';
 import { ScrollContextProvider } from '@/contexts';
 import withDraggable from '@/hocs/withDraggable';
 import { usePermission } from '@/hooks';
-import { useHorizontalScrollToNode, useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
+import { useHorizontalScrollToNode, useScrollHelpers, useScrollStickySides } from '@/hooks/scroll';
 import { useToggle } from '@/hooks/toggle';
 import { DashboardClassName } from '@/styles/constants';
 
@@ -56,7 +56,7 @@ export function List(props) {
 
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers();
 
-  const [onScroll, isHeaderShadowShown, isFooterShadowShown] = useScrollShadows(bodyRef, [projects]);
+  const [isHeaderShadowShown, isFooterShadowShown] = useScrollStickySides(bodyRef, [projects]);
 
   const [moving, setMoving] = useState(false);
 
@@ -142,14 +142,7 @@ export function List(props) {
               </DropContainer>
 
               {!isEmpty && (
-                <div
-                  ref={bodyRef}
-                  onScroll={onScroll}
-                  className={cn(DashboardClassName.LIST_BODY, {
-                    'h-o-0': isDragging,
-                    still: !moving,
-                  })}
-                >
+                <div ref={bodyRef} className={cn(DashboardClassName.LIST_BODY, { 'h-o-0': isDragging, still: !moving })}>
                   <div ref={innerRef} className={DashboardClassName.LIST_BODY_INNER}>
                     <ul className={DashboardClassName.PROJECT_LIST}>
                       {projects.map((project, i) => {

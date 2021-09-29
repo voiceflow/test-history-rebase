@@ -8,7 +8,7 @@ import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { ScrollContextProvider } from '@/contexts';
 import { usePermission } from '@/hooks';
-import { useScrollHelpers, useScrollShadows } from '@/hooks/scroll';
+import { useScrollHelpers, useScrollStickySides } from '@/hooks/scroll';
 import { FadeLeftContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 
@@ -29,7 +29,7 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
 
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
-  const [onScroll, isHeaderShadowShown] = useScrollShadows(bodyRef, []);
+  const [isHeaderSticky] = useScrollStickySides(bodyRef);
 
   const [activeModal, setActiveModal] = React.useState(ActiveModal.NONE);
 
@@ -46,7 +46,7 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
   return (
     <ScrollContextProvider value={scrollHelpers}>
       <Container>
-        <MenuContentHeader isScrolling={!!isHeaderShadowShown}>
+        <MenuContentHeader isScrolling={!!isHeaderSticky}>
           <Header marginBottom={12}>Share Assistant with Testers</Header>
 
           <Description fontSize={inline ? 13 : 15} lineHeight="normal">
@@ -55,7 +55,7 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
           </Description>
         </MenuContentHeader>
 
-        <div ref={bodyRef} onScroll={onScroll} style={{ overflowX: 'hidden', overflowY: 'auto', height: '286px' }}>
+        <div ref={bodyRef} style={{ overflowX: 'hidden', overflowY: 'auto', height: '286px' }}>
           <Box ref={innerRef} pl={32}>
             <Box>
               <Header secondary marginBottom={12}>

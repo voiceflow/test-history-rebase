@@ -1,5 +1,5 @@
 import DeleteComponentWrapper from '@/components/DraggableList/components/DeleteComponentWrapper';
-import { WindowScrollerContainer } from '@/components/SearchableList/components';
+import { WindowScrollerContainer } from '@/components/VirtualList/components';
 import { css, styled } from '@/hocs';
 
 const LeftColumn = styled.div<{ isDragging?: boolean }>`

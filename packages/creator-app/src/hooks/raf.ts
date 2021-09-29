@@ -1,33 +1,51 @@
-import { useCache } from '@voiceflow/ui';
 import React from 'react';
 
 import { Nullable } from '@/types';
 
 import { LifecyclePhase, useLifecycle } from './lifecycle';
 
-export const useRAF = () => {
+interface RafApi {
+  cancel: VoidFunction;
+  callback: Nullable<VoidFunction>;
+  unmounted: boolean;
+  isScheduled: boolean;
+  animationFrame: number;
+}
+
+// eslint-disable-next-line import/prefer-default-export
+export const useRAF = (): [scheduler: (callback: VoidFunction) => void, apiCache: React.MutableRefObject<RafApi>] => {
   const phase = useLifecycle();
-  const cache = useCache({ unmounted: false, isScheduled: false, callback: null as Nullable<() => void> }, {});
 
-  const scheduler = React.useCallback((callback: () => void) => {
-    cache.current.callback = callback;
+  const apiCache = React.useRef<RafApi>({
+    cancel: () => {
+      apiCache.current.isScheduled = false;
+      window.cancelAnimationFrame(apiCache.current.animationFrame);
+    },
+    callback: null as Nullable<VoidFunction>,
+    unmounted: false,
+    isScheduled: false,
+    animationFrame: 0,
+  });
 
-    if (cache.current.isScheduled) {
+  const scheduler = React.useCallback((callback: VoidFunction) => {
+    apiCache.current.callback = callback;
+
+    if (apiCache.current.isScheduled) {
       return;
     }
 
-    cache.current.isScheduled = true;
+    apiCache.current.isScheduled = true;
 
-    window.requestAnimationFrame(() => {
-      cache.current.isScheduled = false;
+    apiCache.current.animationFrame = window.requestAnimationFrame(() => {
+      apiCache.current.isScheduled = false;
 
       if (phase.current === LifecyclePhase.UNMOUNTING) {
         return;
       }
 
-      cache.current.callback!();
+      apiCache.current.callback?.();
     });
   }, []);
 
-  return [scheduler, cache] as const;
+  return [scheduler, apiCache];
 };

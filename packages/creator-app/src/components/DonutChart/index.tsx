@@ -1,6 +1,5 @@
-import { Box, Flex, Portal, Text } from '@voiceflow/ui';
+import { Box, Flex, Portal, Text, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
-import { Popper } from 'react-popper';
 
 import { useThrottledCallback } from '@/hooks';
 import { Point } from '@/types';
@@ -24,6 +23,14 @@ export interface DonutChartProps<T extends DonutDataItem> {
 const DonutChart = <T extends DonutDataItem>({ size = 150, data, legend, renderTooltip }: DonutChartProps<T>) => {
   const [hoveredKey, setHoveredKey] = React.useState<null | string>(null);
   const [virtualElement, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement>>(() => buildVirtualElement([0, 0] as Point));
+
+  const popper = useVirtualElementPopper(virtualElement, {
+    placement: 'bottom-start',
+    modifiers: [
+      { name: 'offset', options: { offset: [-5, 15] } },
+      { name: 'preventOverflow', options: { boundary: document.body } },
+    ],
+  });
 
   const debounsedSetVirtualElement = useThrottledCallback(50, (clientX: number, clientY: number) =>
     setVirtualElement(buildVirtualElement([clientX, clientY] as Point))
@@ -113,17 +120,9 @@ const DonutChart = <T extends DonutDataItem>({ size = 150, data, legend, renderT
 
       {!!hoveredKey && !!renderTooltip && (
         <Portal portalNode={document.body}>
-          <Popper
-            modifiers={{ offset: { offset: '-5,15' }, preventOverflow: { boundariesElement: document.body } }}
-            placement="bottom-start"
-            referenceElement={virtualElement}
-          >
-            {({ ref, style, placement }) => (
-              <TooltipContainer ref={ref} style={style} data-placement={placement}>
-                <TooltipContent>{renderTooltip(hoveredData)}</TooltipContent>
-              </TooltipContainer>
-            )}
-          </Popper>
+          <TooltipContainer ref={popper.setPopperElement} style={popper.styles.popper} {...popper.attributes.popper}>
+            <TooltipContent>{renderTooltip(hoveredData)}</TooltipContent>
+          </TooltipContainer>
         </Portal>
       )}
     </Flex>

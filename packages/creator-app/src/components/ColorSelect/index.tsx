@@ -1,7 +1,6 @@
-import { Portal } from '@voiceflow/ui';
+import { Portal, useCachedValue, usePopper } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
-import { Manager, Popper, Reference } from 'react-popper';
 
 import ColorPicker from '@/components/ColorPicker';
 
@@ -24,9 +23,20 @@ const ColorSelect: React.FC<ColorSelectProps> = ({
   onPickerContainerMouseDown,
   ...colorPickerProps
 }) => {
-  const popperRef = React.useRef<HTMLElement>(null);
+  const popper = usePopper({
+    placement: 'bottom-start',
+    modifiers: [
+      { name: 'offset', options: { offset: [0, 5] } },
+      { name: 'preventOverflow', options: { boundary: document.body } },
+    ],
+  });
 
-  const [open, toggleOpen] = useDismissable(false, { onClose, ref: popperRef, dismissEvent: 'mousedown' });
+  const dismissableRef = useCachedValue(popper.popperElement as Element);
+  const [open, toggleOpen] = useDismissable(false, {
+    onClose,
+    ref: dismissableRef,
+    dismissEvent: 'mousedown',
+  });
 
   const onOpen = () => {
     if (!disabled) {
@@ -39,41 +49,24 @@ const ColorSelect: React.FC<ColorSelectProps> = ({
   };
 
   return (
-    <Manager>
-      <Reference>
-        {({ ref }) => (
-          <ColorPreview
-            ref={ref}
-            style={{
-              color: `rgba(${colorPickerProps.color.r}, ${colorPickerProps.color.g}, ${colorPickerProps.color.b}, ${colorPickerProps.color.a})`,
-            }}
-            disabled={disabled}
-            onClick={onOpen}
-            onMouseDown={onPickerPreviewMouseDown}
-          />
-        )}
-      </Reference>
-
+    <>
+      <ColorPreview
+        ref={popper.setReferenceElement}
+        style={{
+          color: `rgba(${colorPickerProps.color.r}, ${colorPickerProps.color.g}, ${colorPickerProps.color.b}, ${colorPickerProps.color.a})`,
+        }}
+        disabled={disabled}
+        onClick={onOpen}
+        onMouseDown={onPickerPreviewMouseDown}
+      />
       {open && (
         <Portal portalNode={document.body}>
-          <Popper
-            innerRef={(node) => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              popperRef.current = node;
-            }}
-            placement="bottom-start"
-            modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: document.body } }}
-          >
-            {({ ref, style }) => (
-              <div ref={ref} style={style} onMouseDown={onPickerContainerMouseDown}>
-                <ColorPicker {...colorPickerProps} />
-              </div>
-            )}
-          </Popper>
+          <div ref={popper.setPopperElement} style={popper.styles.popper} onMouseDown={onPickerContainerMouseDown} {...popper.attributes.popper}>
+            <ColorPicker {...colorPickerProps} />
+          </div>
         </Portal>
       )}
-    </Manager>
+    </>
   );
 };
 

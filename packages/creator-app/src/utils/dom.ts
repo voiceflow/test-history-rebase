@@ -271,8 +271,8 @@ export const buildVirtualDOMRect = ([x, y]: Point, [width, height]: Pair<number>
   },
 });
 
-export const buildVirtualElement = (point: Point) => {
-  const virtualRect = buildVirtualDOMRect(point);
+export const buildVirtualElement = (point?: Point) => {
+  const virtualRect = buildVirtualDOMRect(point ?? [0, 0]);
 
   return {
     getBoundingClientRect: () => virtualRect,

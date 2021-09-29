@@ -1,6 +1,5 @@
-import { Menu, Portal } from '@voiceflow/ui';
+import { Menu, Portal, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
-import { Popper } from 'react-popper';
 
 import SidebarIconMenu from '@/components/SidebarIconMenu';
 
@@ -10,19 +9,20 @@ const CanvasMenu: React.FC = () => {
   const helpOptions = useHelpOptions();
   const { options, activeValue, helpOpened, footerOptions, helpButtonRef } = useCanvasMenuOptionsAndHotkeys();
 
+  const popper = useVirtualElementPopper(helpButtonRef.current, {
+    placement: 'right-end',
+    modifiers: [{ name: 'offset', options: { offset: [5, -8] } }],
+  });
+
   return (
     <>
       <SidebarIconMenu open options={options} activeValue={activeValue} footerOptions={footerOptions} />
 
       {helpOpened && (
         <Portal>
-          <Popper placement="right" referenceElement={helpButtonRef.current ?? undefined}>
-            {({ ref, style }) => (
-              <div ref={ref} style={{ ...style, zIndex: 1100, marginBottom: '14px', marginLeft: '-8px' }}>
-                <Menu options={helpOptions} />
-              </div>
-            )}
-          </Popper>
+          <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 1100 }} {...popper.attributes.popper}>
+            <Menu options={helpOptions} />
+          </div>
         </Portal>
       )}
     </>

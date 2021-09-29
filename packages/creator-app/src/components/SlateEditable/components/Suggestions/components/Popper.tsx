@@ -11,11 +11,12 @@ import {
   stopPropagation,
   swallowEvent,
   useCache,
+  useCachedValue,
+  useVirtualElementPopper,
 } from '@voiceflow/ui';
 import _shuffle from 'lodash/shuffle';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
-import { Popper as ReactPopper } from 'react-popper';
 
 import { useLinkedState } from '@/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
@@ -68,8 +69,15 @@ const Popper = <T extends PopperItem>({
 }: PopperProps<T>): React.ReactElement<any, any> => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const scheduleUpdateRef = React.useRef<Nullable<VoidFunction>>(null);
+
+  const popper = useVirtualElementPopper(referenceNode, {
+    strategy: 'fixed',
+    placement: 'bottom-start',
+    modifiers: [
+      { name: 'offset', options: { offset: [0, 5] } },
+      { name: 'preventOverflow', options: { boundary: portalRootNode, padding: 16 } },
+    ],
+  });
 
   const editor = useSlateEditor();
   const formattedSearch = React.useMemo(() => formatter?.(search) ?? search, [search, formatter]);
@@ -141,7 +149,8 @@ const Popper = <T extends PopperItem>({
     editor.blurPrevented = false;
   };
 
-  useDismissable(true, { ref: containerRef, onClose: () => togglePopperFocused(false) });
+  const dismissableRef = useCachedValue(popper.popperElement as Element);
+  useDismissable(true, { ref: dismissableRef, onClose: () => togglePopperFocused(false) });
 
   React.useEffect(() => {
     const onKeydown = (event: KeyboardEvent) => {
@@ -191,70 +200,51 @@ const Popper = <T extends PopperItem>({
   }, []);
 
   React.useEffect(() => {
-    const observer = new MutationObserver(() => scheduleUpdateRef.current?.());
-
+    const observer = new MutationObserver(() => popper.forceUpdate?.());
     observer.observe(referenceNode, { subtree: true, childList: true });
-
     return () => observer.disconnect();
-  }, [referenceNode]);
+  }, [referenceNode, popper.forceUpdate]);
 
   return (
     <Portal portalNode={portalRootNode}>
-      <ReactPopper
-        innerRef={containerRef}
-        placement="bottom-start"
-        modifiers={{
-          offset: { offset: '0,5' },
-          preventOverflow: { boundariesElement: portalRootNode, padding: 16 },
-        }}
-        positionFixed
-        referenceElement={referenceNode}
-      >
-        {({ ref, style, scheduleUpdate }) => {
-          scheduleUpdateRef.current = scheduleUpdate;
+      <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 1000 }} {...popper.attributes.popper}>
+        <MenuContainer onMouseDown={onFocusPopper} onClick={stopPropagation()}>
+          <FadeDownDelayedContainer>
+            {withHeader && (
+              <Header active={activeIndex === 0} onMouseEnter={() => setActiveIndex(0)}>
+                <Input
+                  ref={inputRef}
+                  value={localSearch}
+                  onBlur={onInputBlur}
+                  onChange={getTargetValue(onInputChanged)}
+                  placeholder={inputPlaceholder}
+                />
 
-          return (
-            <div ref={ref} style={{ ...style, zIndex: 1000 }}>
-              <MenuContainer onMouseDown={onFocusPopper} onClick={stopPropagation()}>
-                <FadeDownDelayedContainer>
-                  {withHeader && (
-                    <Header active={activeIndex === 0} onMouseEnter={() => setActiveIndex(0)}>
-                      <Input
-                        ref={inputRef}
-                        value={localSearch}
-                        onBlur={onInputBlur}
-                        onChange={getTargetValue(onInputChanged)}
-                        placeholder={inputPlaceholder}
-                      />
+                {creatable && (
+                  <Box ml={8}>
+                    <ClickableText onClick={preventDefault(onCreateSuggestion)} disabled={!localSearch || !!suggestionsByNameMap[localSearch]}>
+                      Create
+                    </ClickableText>
+                  </Box>
+                )}
+              </Header>
+            )}
 
-                      {creatable && (
-                        <Box ml={8}>
-                          <ClickableText onClick={preventDefault(onCreateSuggestion)} disabled={!localSearch || !!suggestionsByNameMap[localSearch]}>
-                            Create
-                          </ClickableText>
-                        </Box>
-                      )}
-                    </Header>
-                  )}
-
-                  <Content ref={contentRef}>
-                    {suggestionsToRender.map((suggestion, index) => (
-                      <Item
-                        key={suggestion.id}
-                        active={activeIndex === index + Number(withHeader)}
-                        onClick={() => onSelect(suggestion.item)}
-                        onMouseEnter={() => setActiveIndex(index + Number(withHeader))}
-                      >
-                        {suggestion.name}
-                      </Item>
-                    ))}
-                  </Content>
-                </FadeDownDelayedContainer>
-              </MenuContainer>
-            </div>
-          );
-        }}
-      </ReactPopper>
+            <Content ref={contentRef}>
+              {suggestionsToRender.map((suggestion, index) => (
+                <Item
+                  key={suggestion.id}
+                  active={activeIndex === index + Number(withHeader)}
+                  onClick={() => onSelect(suggestion.item)}
+                  onMouseEnter={() => setActiveIndex(index + Number(withHeader))}
+                >
+                  {suggestion.name}
+                </Item>
+              ))}
+            </Content>
+          </FadeDownDelayedContainer>
+        </MenuContainer>
+      </div>
     </Portal>
   );
 };

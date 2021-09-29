@@ -1,9 +1,8 @@
 import { Node } from '@voiceflow/base-types';
-import { Box, MenuContainer, Portal, stopPropagation } from '@voiceflow/ui';
+import { Box, MenuContainer, Portal, stopPropagation, useCachedValue, usePopper } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
-import { Manager, Popper, Reference } from 'react-popper';
 
 import { Container } from '@/components/Tooltip/components';
 import { useEnableDisable } from '@/hooks';
@@ -27,8 +26,16 @@ export interface ConditionDataSelectProps {
 }
 
 const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, isLogicGroup, onChange, onDelete }) => {
-  const popperRef = React.useRef<HTMLElement | null>(null);
-  const [isShown, onToggle] = useDismissable(false, { ref: popperRef });
+  const popper = usePopper({
+    placement: 'bottom-start',
+    modifiers: [
+      { name: 'offset', options: { offset: [0, 5] } },
+      { name: 'preventOverflow', options: { rootBoundary: 'viewport' } },
+    ],
+  });
+
+  const dismissableRef = useCachedValue(popper.popperElement as Element);
+  const [isShown, onToggle] = useDismissable(false, { ref: dismissableRef });
   const [invalidCondition, setInvalidCondition, setValidCondition] = useEnableDisable(false);
 
   // methods
@@ -52,7 +59,7 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
     if (expression.logicInterface && isEmpty(expression.value[0]?.value)) {
       onToggle();
     }
-  }, [expression.logicInterface, popperRef]);
+  }, [expression.logicInterface]);
   React.useEffect(() => {
     // if pop-up is open remove error
     if (isShown && invalidCondition) {
@@ -65,84 +72,70 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
   }, [isShown, invalidCondition]);
 
   return (
-    <Manager>
-      <Reference>
-        {({ ref }) => (
-          <Box ref={ref} onClick={onToggle}>
-            <ConditionDisplay isActive={isShown} error={invalidCondition} expression={expression} onDelete={onDelete} isLogicGroup={isLogicGroup} />
-          </Box>
-        )}
-      </Reference>
+    <>
+      <Box ref={popper.setReferenceElement} onClick={onToggle}>
+        <ConditionDisplay isActive={isShown} error={invalidCondition} expression={expression} onDelete={onDelete} isLogicGroup={isLogicGroup} />
+      </Box>
 
       {isShown && (
         <Portal portalNode={document.body}>
-          <Popper
-            innerRef={(node) => {
-              popperRef.current = node;
-            }}
-            placement="bottom-start"
-            modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: 'viewport' } }}
-          >
-            {({ ref, style, placement }) => (
-              <Box ref={ref} style={style} data-placement={placement} onClick={stopPropagation()}>
-                <SlideContainer onClick={stopPropagation(null, true)}>
-                  <Container style={{ padding: '0px', overflowY: 'hidden' }}>
-                    <FadeDownDelayedContainer>
-                      <MenuContainer
-                        style={{
-                          zIndex: 1000,
-                          maxWidth: '440px',
-                          width: '440px',
-                          maxHeight: '350px',
-                          padding: '24px 32px',
-                          overflowX: 'hidden',
-                          overflowY: 'scroll',
-                        }}
-                        onClick={stopPropagation()}
-                      >
-                        {/* to add left side value */}
+          <Box ref={popper.setPopperElement} style={popper.styles.popper} onClick={stopPropagation()} {...popper.attributes.popper}>
+            <SlideContainer onClick={stopPropagation(null, true)}>
+              <Container style={{ padding: '0px', overflowY: 'hidden' }}>
+                <FadeDownDelayedContainer>
+                  <MenuContainer
+                    style={{
+                      zIndex: 1000,
+                      maxWidth: '440px',
+                      width: '440px',
+                      maxHeight: '350px',
+                      padding: '24px 32px',
+                      overflowX: 'hidden',
+                      overflowY: 'scroll',
+                    }}
+                    onClick={stopPropagation()}
+                  >
+                    {/* to add left side value */}
+                    <>
+                      {expression.logicInterface === Node.Utils.ConditionsLogicInterface.VARIABLE && (
                         <>
-                          {expression.logicInterface === Node.Utils.ConditionsLogicInterface.VARIABLE && (
-                            <>
-                              <ConditionVariableSelect value={String(expression.value[0]?.value)} onChange={onValueUpdate(0)} />
-                              <Box mt={24}>
-                                <ConditionLogicSelect
-                                  onLogicUpdate={onLogicUpdate}
-                                  logicValue={expression.type as ExpressionDataLogicType}
-                                  conditionValue={String(expression.value[1]?.value)}
-                                  onConditionValueUpdate={onValueUpdate(1)}
-                                  onClose={onToggle}
-                                />
-                              </Box>
-                            </>
-                          )}
-
-                          {/* display logic and input field for right side once left side value is saved */}
-                          {expression.logicInterface === Node.Utils.ConditionsLogicInterface.VALUE && (
-                            <>
-                              <ConditionValueSelect value={String(expression.value[0]?.value)} onChange={onValueUpdate(0)} />
-                              <Box mt={24}>
-                                <ConditionLogicSelect
-                                  onLogicUpdate={onLogicUpdate}
-                                  logicValue={expression.type as ExpressionDataLogicType}
-                                  conditionValue={String(expression.value[1]?.value)}
-                                  onConditionValueUpdate={onValueUpdate(1)}
-                                  onClose={onToggle}
-                                />
-                              </Box>
-                            </>
-                          )}
+                          <ConditionVariableSelect value={String(expression.value[0]?.value)} onChange={onValueUpdate(0)} />
+                          <Box mt={24}>
+                            <ConditionLogicSelect
+                              onLogicUpdate={onLogicUpdate}
+                              logicValue={expression.type as ExpressionDataLogicType}
+                              conditionValue={String(expression.value[1]?.value)}
+                              onConditionValueUpdate={onValueUpdate(1)}
+                              onClose={onToggle}
+                            />
+                          </Box>
                         </>
-                      </MenuContainer>
-                    </FadeDownDelayedContainer>
-                  </Container>
-                </SlideContainer>
-              </Box>
-            )}
-          </Popper>
+                      )}
+
+                      {/* display logic and input field for right side once left side value is saved */}
+                      {expression.logicInterface === Node.Utils.ConditionsLogicInterface.VALUE && (
+                        <>
+                          <ConditionValueSelect value={String(expression.value[0]?.value)} onChange={onValueUpdate(0)} />
+                          <Box mt={24}>
+                            <ConditionLogicSelect
+                              onLogicUpdate={onLogicUpdate}
+                              logicValue={expression.type as ExpressionDataLogicType}
+                              conditionValue={String(expression.value[1]?.value)}
+                              onConditionValueUpdate={onValueUpdate(1)}
+                              onClose={onToggle}
+                            />
+                          </Box>
+                        </>
+                      )}
+                    </>
+                  </MenuContainer>
+                </FadeDownDelayedContainer>
+              </Container>
+            </SlideContainer>
+          </Box>
         </Portal>
       )}
-    </Manager>
+    </>
   );
 };
 

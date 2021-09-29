@@ -1,7 +1,6 @@
 import { ProjectLinkType } from '@voiceflow/api-sdk';
-import { Portal, stopPropagation, SvgIcon } from '@voiceflow/ui';
+import { Portal, stopPropagation, SvgIcon, usePopper } from '@voiceflow/ui';
 import React from 'react';
-import { Manager, Popper, Reference } from 'react-popper';
 
 import Button from './SettingsButton';
 import Content from './SettingsContent';
@@ -16,36 +15,37 @@ interface SettingsTypeProps {
 const SettingsType: React.FC<SettingsTypeProps> = ({ type, isOpen, onToggle, onChange }) => {
   const isStraightLink = type === ProjectLinkType.STRAIGHT;
 
+  const popper = usePopper({
+    placement: 'bottom',
+    modifiers: [
+      { name: 'offset', options: { offset: [0, 5] } },
+      { name: 'preventOverflow', options: { boundary: document.body } },
+    ],
+    strategy: 'fixed',
+  });
+
   return (
-    <Manager>
-      <Reference>
-        {({ ref }) => (
-          <Button ref={ref} isActive={isOpen} onClick={onToggle} tooltipTitle="Line type">
-            <SvgIcon icon={isStraightLink ? 'lineStraight' : 'lineCurved'} />
-          </Button>
-        )}
-      </Reference>
+    <>
+      <Button ref={popper.setReferenceElement} isActive={isOpen} onClick={onToggle} tooltipTitle="Line type">
+        <SvgIcon icon={isStraightLink ? 'lineStraight' : 'lineCurved'} />
+      </Button>
 
       {isOpen && (
         <Portal portalNode={document.body}>
-          <Popper placement="bottom" modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: document.body } }} positionFixed>
-            {({ ref, style }) => (
-              <div ref={ref} style={style}>
-                <Content onClick={stopPropagation(null, true)}>
-                  <Button onClick={() => onChange(ProjectLinkType.STRAIGHT)} isActive={isStraightLink} isSimple>
-                    <SvgIcon icon="lineStraight" />
-                  </Button>
+          <div ref={popper.setPopperElement} style={popper.styles.popper} {...popper.attributes.popper}>
+            <Content onClick={stopPropagation(null, true)}>
+              <Button onClick={() => onChange(ProjectLinkType.STRAIGHT)} isActive={isStraightLink} isSimple>
+                <SvgIcon icon="lineStraight" />
+              </Button>
 
-                  <Button onClick={() => onChange(ProjectLinkType.CURVED)} isActive={!isStraightLink} isSimple>
-                    <SvgIcon icon="lineCurved" />
-                  </Button>
-                </Content>
-              </div>
-            )}
-          </Popper>
+              <Button onClick={() => onChange(ProjectLinkType.CURVED)} isActive={!isStraightLink} isSimple>
+                <SvgIcon icon="lineCurved" />
+              </Button>
+            </Content>
+          </div>
         </Portal>
       )}
-    </Manager>
+    </>
   );
 };
 

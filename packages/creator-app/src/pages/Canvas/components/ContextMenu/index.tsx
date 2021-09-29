@@ -1,6 +1,5 @@
-import { BoxFlex, NestedMenu, Text, useCache } from '@voiceflow/ui';
+import { BoxFlex, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
-import { Popper } from 'react-popper';
 
 import { Permission } from '@/config/permissions';
 import { CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
@@ -167,35 +166,38 @@ const ContextMenu: React.FC = () => {
     return () => document.removeEventListener('mousedown', onHide);
   }, [contextMenu.onHide]);
 
+  const virtualElement = React.useMemo(() => buildVirtualElement(contextMenu.position), [contextMenu.position!]);
+
+  const popper = useVirtualElementPopper(virtualElement, {
+    placement: 'right-start',
+    strategy: 'fixed',
+  });
+
   if (!contextMenu.isOpen || !options?.length) {
     return null;
   }
 
   return (
-    <Popper referenceElement={buildVirtualElement(contextMenu.position!)} placement="right-start" positionFixed>
-      {({ ref, style, placement }) => (
-        <div id={Identifier.CONTEXT_MENU} ref={ref} style={{ ...style, zIndex: 10 }} data-placement={placement}>
-          <NestedContextMenu
-            options={options}
-            onSelect={onSelect}
-            getOptionKey={getOptionKey}
-            getOptionValue={getOptionValue}
-            getOptionLabel={getOptionLabel}
-            maxVisibleItems={8}
-            renderOptionLabel={(option: ContextMenuOption<CanvasAction> | ContextMenuOption<BlockVariant>) => (
-              <BoxFlex width="100%" justifyContent="space-between">
-                <Text>{option.label}</Text>
-                {!!option.hotkey && (
-                  <Text marginLeft={32} fontSize={13} color="#8da2b5">
-                    {option?.hotkey}
-                  </Text>
-                )}
-              </BoxFlex>
+    <div id={Identifier.CONTEXT_MENU} ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 10 }} {...popper.attributes.popper}>
+      <NestedContextMenu
+        options={options}
+        onSelect={onSelect}
+        getOptionKey={getOptionKey}
+        getOptionValue={getOptionValue}
+        getOptionLabel={getOptionLabel}
+        maxVisibleItems={8}
+        renderOptionLabel={(option: ContextMenuOption<CanvasAction> | ContextMenuOption<BlockVariant>) => (
+          <BoxFlex width="100%" justifyContent="space-between">
+            <Text>{option.label}</Text>
+            {!!option.hotkey && (
+              <Text marginLeft={32} fontSize={13} color="#8da2b5">
+                {option?.hotkey}
+              </Text>
             )}
-          />
-        </div>
-      )}
-    </Popper>
+          </BoxFlex>
+        )}
+      />
+    </div>
   );
 };
 

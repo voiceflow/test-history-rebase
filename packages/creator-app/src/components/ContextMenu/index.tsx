@@ -1,7 +1,6 @@
-import { Menu, MenuOption, Portal } from '@voiceflow/ui';
+import { Menu, MenuOption, PopperPlacement, Portal, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
-import { Popper, PopperProps } from 'react-popper';
 
 import { Identifier } from '@/styles/constants';
 import { Point } from '@/types';
@@ -13,12 +12,13 @@ export const CONTEXT_MENU_IGNORED_CLASS_NAME = 'context-menu-exclude';
 
 interface ContextMenuProps<T> {
   options: MenuOption<T>[];
-  placement?: PopperProps['placement'];
+  placement?: PopperPlacement;
   children: (props: { isOpen: boolean; onContextMenu: (event: React.MouseEvent<HTMLElement>) => void }) => React.ReactNode;
 }
 
 const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...props }: ContextMenuProps<T>) => {
-  const [virtualElememt, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement> | null>(null);
+  const [virtualElement, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement> | null>(null);
+  const popper = useVirtualElementPopper(virtualElement, { placement });
   const [isOpen, onToggle] = useDismissable(false);
 
   const onContextMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -45,13 +45,14 @@ const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...p
 
       {isOpen && (
         <Portal portalNode={document.body}>
-          <Popper referenceElement={virtualElememt!} placement={placement}>
-            {({ ref, style, placement }) => (
-              <div id={Identifier.CONTEXT_MENU} ref={ref} style={{ ...style, zIndex: 1100 }} data-placement={placement}>
-                <Menu {...(props as any)} />
-              </div>
-            )}
-          </Popper>
+          <div
+            id={Identifier.CONTEXT_MENU}
+            ref={popper.setPopperElement}
+            style={{ ...popper.styles.popper, zIndex: 1100 }}
+            {...popper.attributes.popper}
+          >
+            <Menu {...(props as any)} />
+          </div>
         </Portal>
       )}
     </>

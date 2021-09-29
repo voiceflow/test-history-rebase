@@ -1,7 +1,6 @@
-import { Portal } from '@voiceflow/ui';
+import { Portal, usePopper } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
-import { Manager, Popper, Reference } from 'react-popper';
 
 import VariablesInput from '@/components/VariablesInput';
 import { useEnableDisable } from '@/hooks';
@@ -16,11 +15,16 @@ export interface DayPickerInputProps {
 }
 
 const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
-  const dayPickerRef = React.useRef<HTMLElement | null>(null);
+  const popper = usePopper({
+    placement: 'bottom-start',
+    modifiers: [
+      { name: 'offset', options: { offset: [0, 5] } },
+      { name: 'preventOverflow', options: { boundary: document.body } },
+    ],
+  });
+
   const variablesInputRef = React.useRef<{ blur: Function; getEditorState: Function } | null>(null);
-
   const [isShown, onShow, onHide] = useEnableDisable(false);
-
   const currentDate = React.useMemo(() => new Date(), []);
 
   const [selectedDay, formattedDate] = React.useMemo(() => {
@@ -58,7 +62,7 @@ const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
       const isEditorFocused = variablesInputRef.current?.getEditorState().getSelection().hasFocus;
 
       // eslint-disable-next-line xss/no-mixed-html
-      if (isEditorFocused || (e.currentTarget && dayPickerRef.current?.contains(e.target as HTMLElement))) {
+      if (isEditorFocused || (e.currentTarget && popper.popperElement?.contains(e.target as HTMLElement))) {
         return;
       }
 
@@ -75,47 +79,33 @@ const DayPickerInput = ({ date, onChange }: DayPickerInputProps) => {
   }, [isShown]);
 
   return (
-    <Manager>
-      <Reference>
-        {({ ref }) => (
-          <div ref={ref} onClick={onShow}>
-            <VariablesInputComponent
-              ref={(editor: any) => {
-                variablesInputRef.current = editor;
-              }}
-              value={formattedDate}
-              onBlur={onBlur}
-              onFocus={onShow}
-              placeholder={FORMAT}
-            />
-          </div>
-        )}
-      </Reference>
+    <>
+      <div ref={popper.setReferenceElement} onClick={onShow}>
+        <VariablesInputComponent
+          ref={(editor: any) => {
+            variablesInputRef.current = editor;
+          }}
+          value={formattedDate}
+          onBlur={onBlur}
+          onFocus={onShow}
+          placeholder={FORMAT}
+        />
+      </div>
 
       {isShown && (
         <Portal>
-          <Popper
-            innerRef={(node) => {
-              dayPickerRef.current = node;
-            }}
-            placement="bottom-start"
-            modifiers={{ offset: { offset: '0,5' }, preventOverflow: { boundariesElement: document.body } }}
-          >
-            {({ ref, style, placement }) => (
-              <DayPickerContainer ref={ref} style={{ ...style, zIndex: 1100 }} data-placement={placement}>
-                <TimeRangePicker
-                  weekdaysShort={WEEKDAYS}
-                  initialMonth={selectedDay}
-                  selectedDays={selectedDay}
-                  disabledDays={{ before: currentDate }}
-                  onDayClick={onDayClick}
-                />
-              </DayPickerContainer>
-            )}
-          </Popper>
+          <DayPickerContainer ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 1100 }} {...popper.attributes.popper}>
+            <TimeRangePicker
+              weekdaysShort={WEEKDAYS}
+              initialMonth={selectedDay}
+              selectedDays={selectedDay}
+              disabledDays={{ before: currentDate }}
+              onDayClick={onDayClick}
+            />
+          </DayPickerContainer>
         </Portal>
       )}
-    </Manager>
+    </>
   );
 };
 

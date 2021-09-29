@@ -16,6 +16,8 @@
     "cuid": "^2.1.8",
     "lodash": "^4.17.21",
     "loglevel": "^1.7.1",
+    "logrocket": "^2.0.0",
+    "logrocket-react": "^4.0.1",
     "moize": "^5.4.7",
     "newpopper": "npm:react-popper",
     "object-hash": "^2.1.1",

@@ -5,7 +5,7 @@ import { apiV2 } from './fetch';
 
 export const SSO_PATH = 'sso';
 
-const CONVERT_ENDPOINTS = {
+export const SSO_CONVERT_ENDPOINTS = {
   [SessionType.BASIC_AUTH]: 'basic',
   [SessionType.GOOGLE]: 'google',
   [SessionType.FACEBOOK]: 'facebook',
@@ -31,7 +31,7 @@ const ssoClient = {
       throw new Error('unable to convert account for this session type');
     }
 
-    return apiV2.post<{ token: string; user: Account; intercomUserHMAC?: string }>(`${SSO_PATH}/convert/${CONVERT_ENDPOINTS[session]}`, data);
+    return apiV2.post<{ token: string; user: Account; intercomUserHMAC?: string }>(`${SSO_PATH}/convert/${SSO_CONVERT_ENDPOINTS[session]}`, data);
   },
 };
 

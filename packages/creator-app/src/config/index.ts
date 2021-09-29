@@ -141,7 +141,6 @@ const STRIPE_TEST_KEY = process.env.STRIPE_TEST_KEY!;
 export const STRIPE_KEY = IS_PRODUCTION_ENV ? STRIPE_LIVE_KEY : STRIPE_TEST_KEY;
 
 // logrocket
-export const LOGROCKET_ENABLED = IS_PRODUCTION || process.env.LOGROCKET_ENABLED === 'true';
 export const LOGROCKET_PROJECT = process.env.LOGROCKET_PROJECT!;
 
 // intercom

@@ -1,12 +1,11 @@
 import '@/utils/time';
 
-import { clearPersistedLogs, GLOBAL_FETCH_HEADERS, IS_SAFARI } from '@voiceflow/ui';
+import { clearPersistedLogs, GLOBAL_FETCH_HEADERS, IS_SAFARI, Vendors } from '@voiceflow/ui';
 import axios from 'axios';
 import cuid from 'cuid';
 
 import client from '@/client';
 import { API_ENDPOINT, LOGROCKET_PROJECT, VERSION } from '@/config';
-import * as LogRocket from '@/vendors/logRocket';
 
 import setupSocket from './client/socket';
 
@@ -15,7 +14,7 @@ const TAB_ID_KEY = 'tabId';
 const ADMIN_ASCII = String.raw`
             _           __ _                __ _       _           _     __
 /\   /\___ (_) ___ ___ / _| | _____      __/ //_\   __| |_ __ ___ (_)_ __\ \
-\ \ / / _ \| |/ __/ _ \ |_| |/ _ \ \ /\ / / |//_\\ / _\` | '_ \` _ \| | '_ \| |
+\ \ / / _ \| |/ __/ _ \ |_| |/ _ \ \ /\ / / |//_\\ / _${'`'} | '_ ${'`'} _ \| | '_ \| |
  \ V / (_) | | (_|  __/  _| | (_) \ V  V /| /  _  \ (_| | | | | | | | | | | |
   \_/ \___/|_|\___\___|_| |_|\___/ \_/\_/ | \_/ \_/\__,_|_| |_| |_|_|_| |_| |
                                            \_\                           /_/
@@ -41,10 +40,23 @@ const setupAdmin = () => {
     },
   });
 
-  LogRocket.initialize(LOGROCKET_PROJECT, (sessionURL) => {
-    // add session URL to all outgoing HTTP requests
-    axios.defaults.headers.common['x-logrocket-url'] = sessionURL;
-    GLOBAL_FETCH_HEADERS.set('x-logrocket-url', sessionURL);
+  Vendors.LogRocket.initialize({
+    project: LOGROCKET_PROJECT,
+    callback: (sessionURL) => {
+      // add session URL to all outgoing HTTP requests
+      axios.defaults.headers.common['x-logrocket-url'] = sessionURL;
+      GLOBAL_FETCH_HEADERS.set('x-logrocket-url', sessionURL);
+    },
+    sessionRequestSanitizers: [
+      {
+        matcher: { method: 'PUT', route: '/session' },
+        transform: (body: { user: { password: string } }) => ({ ...body, user: { ...body.user, password: Vendors.LogRocket.REDACTED } }),
+      },
+      {
+        matcher: { method: 'PUT', route: '/googleLogin' },
+        transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: Vendors.LogRocket.REDACTED } }),
+      },
+    ],
   });
 
   setupSocket(tabID);

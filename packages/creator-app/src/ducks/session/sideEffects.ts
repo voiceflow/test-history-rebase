@@ -1,3 +1,4 @@
+import { Vendors } from '@voiceflow/ui';
 import { batch } from 'react-redux';
 
 import client from '@/client';
@@ -11,7 +12,6 @@ import { SyncThunk, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
 import * as Query from '@/utils/query';
-import * as LogRocket from '@/vendors/logRocket';
 import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
@@ -62,7 +62,7 @@ export const identifyUser =
   async () => {
     const externalID = generateID(creator_id);
 
-    LogRocket.identify(externalID, user);
+    Vendors.LogRocket.identify(externalID, user);
     await Userflow.identify(externalID, user);
   };
 

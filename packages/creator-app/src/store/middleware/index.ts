@@ -1,9 +1,9 @@
+import { LOGROCKET_ENABLED, Vendors } from '@voiceflow/ui';
 import { routerMiddleware } from 'connected-react-router';
 import { History } from 'history';
 import LogRocket from 'logrocket';
 import { createStructuredSelector } from 'reselect';
 
-import { LOGROCKET_ENABLED } from '@/config';
 import * as Account from '@/ducks/account';
 import * as Diagram from '@/ducks/diagram';
 import * as Intent from '@/ducks/intent';
@@ -65,7 +65,24 @@ const createMiddleware = (history: History, getStore: () => Store) => {
   ];
 
   if (LOGROCKET_ENABLED) {
-    middleware.push(LogRocket.reduxMiddleware());
+    middleware.push(
+      LogRocket.reduxMiddleware({
+        stateSanitizer: (state) => ({
+          ...state,
+          session: {
+            ...state.session,
+            token: { value: Vendors.LogRocket.REDACTED },
+          },
+        }),
+        actionSanitizer: (action) =>
+          action.type === Session.SessionAction.SET_AUTH_TOKEN
+            ? {
+                ...action,
+                payload: Vendors.LogRocket.REDACTED,
+              }
+            : action,
+      })
+    );
   }
 
   return middleware as Middleware[];

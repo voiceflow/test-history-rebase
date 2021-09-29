@@ -1,16 +1,16 @@
-import { GLOBAL_FETCH_HEADERS, IS_SAFARI, setUnauthorizedHandler, StatusCode, toast } from '@voiceflow/ui';
+import { GLOBAL_FETCH_HEADERS, IS_SAFARI, setUnauthorizedHandler, StatusCode, toast, Vendors } from '@voiceflow/ui';
 import axios from 'axios';
 import { History } from 'history';
 import _throttle from 'lodash/throttle';
 
 import client from './client';
 import fetch from './client/fetch';
-import { API_ENDPOINT, TRUSTED_ENDPOINTS, VERSION } from './config';
+import { SSO_CONVERT_ENDPOINTS } from './client/sso';
+import { API_ENDPOINT, LOGROCKET_PROJECT, TRUSTED_ENDPOINTS, VERSION } from './config';
 import { clearPersistedLogs } from './utils/logger';
 import * as Google from './vendors/google';
 import * as GoogleAnalytics from './vendors/googleAnalytics';
 import * as Growsurf from './vendors/growsurf';
-import * as LogRocket from './vendors/logRocket';
 import * as Userflow from './vendors/userflow';
 
 const LOGOUT_HANDLER_TIMEOUT = 3000;
@@ -68,10 +68,43 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
     },
   });
 
-  LogRocket.initialize((sessionURL) => {
-    // add session URL to all outgoing HTTP requests
-    axios.defaults.headers.common['x-logrocket-url'] = sessionURL;
-    GLOBAL_FETCH_HEADERS.set('x-logrocket-url', sessionURL);
+  Vendors.LogRocket.initialize({
+    project: LOGROCKET_PROJECT,
+    callback: (sessionURL) => {
+      // add session URL to all outgoing HTTP requests
+      axios.defaults.headers.common['x-logrocket-url'] = sessionURL;
+      GLOBAL_FETCH_HEADERS.set('x-logrocket-url', sessionURL);
+    },
+    sessionRequestSanitizers: [
+      {
+        matcher: { method: 'PUT', route: '/session' },
+        transform: (body: { user: { password: string } }) => ({ ...body, user: { ...body.user, password: Vendors.LogRocket.REDACTED } }),
+      },
+      {
+        matcher: { method: 'PUT', route: '/googleLogin' },
+        transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: Vendors.LogRocket.REDACTED } }),
+      },
+      {
+        matcher: { method: 'PUT', route: '/fbLogin' },
+        transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: Vendors.LogRocket.REDACTED } }),
+      },
+      {
+        matcher: { method: 'PUT', route: '/user' },
+        transform: (body: { password: string }) => ({ ...body, password: Vendors.LogRocket.REDACTED }),
+      },
+      {
+        matcher: { method: 'POST', route: '/v2/sso/login' },
+        transform: (body: { code: string }) => ({ ...body, code: Vendors.LogRocket.REDACTED }),
+      },
+      {
+        matcher: { method: 'POST', route: Object.values(SSO_CONVERT_ENDPOINTS).map((endpoint) => `/v2/sso/convert/${endpoint}`) },
+        transform: (body: { oktaCode: string; authCode: string }) => ({
+          ...body,
+          oktaCode: Vendors.LogRocket.REDACTED,
+          authCode: Vendors.LogRocket.REDACTED,
+        }),
+      },
+    ],
   });
 
   Google.initialize();

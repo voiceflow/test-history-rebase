@@ -7,9 +7,7 @@ const USER_API = 'user';
 
 const SESSION_ENDPOINTS = {
   [SessionType.GOOGLE]: 'googleLogin',
-  [SessionType.FACEBOOK]: 'fbLogin',
   [SessionType.BASIC_AUTH]: 'session',
-  [SessionType.SIGN_UP]: 'user',
 };
 
 const accountClient = {

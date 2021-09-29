@@ -1,3 +1,4 @@
+import { Vendors } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useIntercom } from 'react-use-intercom';
@@ -8,7 +9,6 @@ import * as Session from '@/ducks/session';
 import { useActiveWorkspace, useFeature, useSelector } from '@/hooks';
 import { generateID } from '@/utils/env';
 import * as Intercom from '@/vendors/intercom';
-import * as LogRocket from '@/vendors/logRocket';
 
 export const IntercomChat: React.FC = () => {
   const intercomIntegration = useFeature(FeatureFlag.INTERCOM_INTEGRATION);
@@ -36,7 +36,7 @@ export const IntercomChat: React.FC = () => {
   React.useEffect(() => {
     if (showIntercom) {
       intercom.boot(Intercom.createProps(user, workspace!, intercomUserHMAC));
-      LogRocket.getSessionURL((sessionURL) => intercom.trackEvent('LogRocket', { sessionURL, company_id: generateID(workspace!.id) }));
+      Vendors.LogRocket.getSessionURL((sessionURL) => intercom.trackEvent('LogRocket', { sessionURL, company_id: generateID(workspace!.id) }));
 
       isRunning.current = true;
     } else if (isRunning.current) {

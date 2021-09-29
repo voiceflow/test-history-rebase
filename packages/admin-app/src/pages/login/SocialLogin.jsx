@@ -59,7 +59,6 @@ const SocialLogin = ({ entryText, light, googleLogin }) => {
 };
 
 const mapDispatchToProps = {
-  fbLogin: AccountV2.fbLogin,
   googleLogin: AccountV2.googleLogin,
 };
 

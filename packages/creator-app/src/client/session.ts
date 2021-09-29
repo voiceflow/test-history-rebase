@@ -14,11 +14,16 @@ export const SESSION_ENDPOINTS = {
   [SessionType.SIGN_UP]: 'user',
 };
 
+export interface SessionResponsePayload {
+  user: Account;
+  token: string;
+  intercomUserHMAC?: string;
+}
+
 const sessionClient = {
   delete: () => api.delete(SESSION_PATH),
 
-  create: (type: SessionType, user: unknown) =>
-    api.put<{ user: Account; token: string; intercomUserHMAC?: string }>(SESSION_ENDPOINTS[type], { user, device: DEVICE_INFO }),
+  create: (type: SessionType, user: unknown) => api.put<SessionResponsePayload>(SESSION_ENDPOINTS[type], { user, device: DEVICE_INFO }),
 };
 
 export default sessionClient;

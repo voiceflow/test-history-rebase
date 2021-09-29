@@ -7,7 +7,5 @@ export enum Option {
 
 export enum SessionType {
   GOOGLE = 'google',
-  FACEBOOK = 'facebook',
   BASIC_AUTH = 'session',
-  SIGN_UP = 'user',
 }

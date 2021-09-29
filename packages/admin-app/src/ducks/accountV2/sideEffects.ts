@@ -98,10 +98,8 @@ const createSession =
     }
   };
 
-export const signup = createSession(SessionType.SIGN_UP);
 export const login = createSession(SessionType.BASIC_AUTH);
 export const googleLogin = createSession(SessionType.GOOGLE);
-export const fbLogin = createSession(SessionType.FACEBOOK);
 
 // Non Action functions
 export const getAuth = () => cookies.get(Cookies.AUTH_COOKIE);

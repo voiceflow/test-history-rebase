@@ -7,3 +7,4 @@ export { backgrounds, colors, createGlobalStyle, createTheme, iconColors, keyfra
 export * as SVG from './svgs';
 export * from './types';
 export * from './utils';
+export * as Vendors from './vendors';

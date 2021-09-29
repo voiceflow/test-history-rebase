@@ -117,7 +117,9 @@ class LinkManager extends EngineConsumer {
   }
 
   redraw(linkID: string) {
-    this.engine.dispatcher.redrawLink(linkID);
+    if (!this.engine.canvas?.isAnimating()) {
+      this.engine.dispatcher.redrawLink(linkID);
+    }
   }
 
   redrawLinked(linkID: string) {

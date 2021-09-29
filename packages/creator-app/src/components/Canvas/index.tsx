@@ -77,6 +77,7 @@ class Canvas extends React.PureComponent<
     applyControlScheme: (controlScheme: ControlScheme = this.props.controlScheme) => {
       this.controls = generateControls(controlScheme, this.handleControl, this.props.scrollTimeout!);
     },
+    isAnimating: () => !!this.applyTransitionTimeout,
     isPanning: () => this.controls.isPanning,
     getZoom: () => this.zoom / ZOOM_FACTOR,
     getPosition: () => this.position,
@@ -280,7 +281,6 @@ class Canvas extends React.PureComponent<
     const zoomDiffFactor = nextZoom / this.zoom;
 
     if (nextZoom === this.zoom) return;
-
     this.zoom = nextZoom;
 
     const [x, y] = this.position;

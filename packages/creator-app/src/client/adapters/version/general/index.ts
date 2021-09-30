@@ -6,27 +6,24 @@ import _omit from 'lodash/omit';
 import { Version } from '@/models';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
+import baseVersionAdapter from '../base';
+
 const generalVersionAdapter = Adapters.createAdapter<GeneralVersion.GeneralVersion, Version<GeneralVersion.GeneralVersionData>>(
   ({
-    _id,
-    creatorID,
-    projectID,
-    rootDiagramID,
     variables,
     platformData: {
       settings: { session, ...settings },
       publishing,
     },
+    ...baseVersion
   }) => ({
-    id: _id,
-    creatorID,
-    projectID,
-    rootDiagramID,
-    variables: variables.filter((variable) => !getPlatformGlobalVariables(Constants.PlatformType.GENERAL).includes(variable)),
+    ...baseVersionAdapter.fromDB(baseVersion),
+
+    status: null,
     session: null,
     settings: _omit(GeneralVersion.defaultGeneralVersionSettings(settings), 'session'),
+    variables: variables.filter((variable) => !getPlatformGlobalVariables(Constants.PlatformType.GENERAL).includes(variable)),
     publishing,
-    status: null,
   }),
   () => {
     throw new Adapters.AdapterNotImplementedError();

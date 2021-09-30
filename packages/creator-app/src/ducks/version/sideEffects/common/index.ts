@@ -1,4 +1,5 @@
 import { Project as AlexaProject } from '@voiceflow/alexa-types';
+import { VersionFolderItemType } from '@voiceflow/api-sdk';
 import { Constants } from '@voiceflow/general-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import { Version as VoiceVersion } from '@voiceflow/voice-types';
@@ -53,8 +54,22 @@ export const loadVersionByID =
 export const activateVersion =
   (versionID: string, diagramID?: string): Thunk<AnyVersion> =>
   async (dispatch, getState) => {
-    const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
-    const [dbVersion] = await Promise.all([client.api.version.get<AnyDBVersion>(versionID), dispatch(Diagram.loadDiagrams(versionID))] as const);
+    const state = getState();
+
+    const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
+    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+
+    const dbVersion = await client.api.version.get<AnyDBVersion>(versionID);
+
+    const diagrams = await dispatch(Diagram.loadDiagrams(versionID, dbVersion.rootDiagramID));
+
+    if (isTopicsAndComponents && !dbVersion.topics?.length) {
+      dbVersion.topics = [{ type: VersionFolderItemType.DIAGRAM, sourceID: dbVersion.rootDiagramID }];
+      dbVersion.folders = {};
+      dbVersion.components = diagrams
+        .filter((diagram) => diagram.id !== dbVersion.rootDiagramID)
+        .map((diagram) => ({ type: VersionFolderItemType.DIAGRAM, sourceID: diagram.id }));
+    }
 
     // not a dependency for project to load
     dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));

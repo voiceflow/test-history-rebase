@@ -1,5 +1,6 @@
 export { default as creatorAdapter } from './creator';
 export { default as alexaDisplayAdapter } from './creator/block/alexa/display';
+export { default as diagramAdapter } from './diagram';
 export { default as getPlatformIntentAdapter } from './intent';
 export * as Intent from './intent';
 export { default as productAdapter } from './product';

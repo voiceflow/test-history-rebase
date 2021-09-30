@@ -7,32 +7,28 @@ import _omit from 'lodash/omit';
 import { Version } from '@/models';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
+import baseVersionAdapter from '../base';
 import createSessionAdapter from '../session';
 
 const sessionAdapter = createSessionAdapter<AlexaConstants.Voice>({ platform: Constants.PlatformType.ALEXA });
 
 const alexaVersionAdapter = Adapters.createAdapter<AlexaVersion.AlexaVersion, Version<AlexaVersion.AlexaVersionData>>(
   ({
-    _id,
-    creatorID,
-    projectID,
-    rootDiagramID,
     variables,
     platformData: {
+      status,
       settings: { session, ...settings },
       publishing,
-      status,
     },
+    ...baseVersion
   }) => ({
-    id: _id,
-    creatorID,
-    projectID,
-    rootDiagramID,
-    variables: variables.filter((variable) => !getPlatformGlobalVariables(Constants.PlatformType.ALEXA).includes(variable)),
+    ...baseVersionAdapter.fromDB(baseVersion),
+
+    status,
     session: sessionAdapter.fromDB(session, { defaultVoice: settings.defaultVoice }),
     settings: _omit(AlexaVersion.defaultAlexaVersionSettings(settings), 'session'),
+    variables: variables.filter((variable) => !getPlatformGlobalVariables(Constants.PlatformType.ALEXA).includes(variable)),
     publishing: AlexaVersion.defaultAlexaVersionPublishing(publishing),
-    status,
   }),
   () => {
     throw new Adapters.AdapterNotImplementedError();

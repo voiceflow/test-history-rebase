@@ -86,7 +86,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  createDiagram: Diagram.createDiagram,
+  createDiagram: Diagram.createComponentDiagram,
   saveActiveDiagram: Diagram.saveActiveDiagram,
   goToDiagram: Router.goToDiagramHistoryPush,
 };

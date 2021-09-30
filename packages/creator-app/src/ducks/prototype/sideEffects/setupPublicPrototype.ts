@@ -46,6 +46,9 @@ const setupPublicPrototype =
           session: {} as any,
           publishing: {},
           status: null,
+          folders: {},
+          topics: [],
+          components: [],
         })
       );
       dispatch(updatePrototype({ muted: layout === PrototypeLayout.TEXT_DIALOG }));

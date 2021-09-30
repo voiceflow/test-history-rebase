@@ -7,6 +7,7 @@ import _omit from 'lodash/omit';
 import { Version } from '@/models';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
+import baseVersionAdapter from '../base';
 import createSessionAdapter from '../session';
 import localesAdapter from './locales';
 
@@ -14,25 +15,20 @@ const sessionAdapter = createSessionAdapter({ platform: Constants.PlatformType.G
 
 const googleVersionAdapter = Adapters.createAdapter<GoogleVersion.GoogleVersion, Version<GoogleVersion.GoogleVersionData>>(
   ({
-    _id,
-    creatorID,
-    projectID,
-    rootDiagramID,
     variables,
     platformData: {
       settings: { session, ...settings },
       publishing,
     },
+    ...baseVersion
   }) => ({
-    id: _id,
-    creatorID,
-    projectID,
-    rootDiagramID,
-    variables: variables.filter((variable) => !getPlatformGlobalVariables(Constants.PlatformType.GOOGLE).includes(variable)),
+    ...baseVersionAdapter.fromDB(baseVersion),
+
+    status: null,
     session: sessionAdapter.fromDB(session, { defaultVoice: settings.defaultVoice }),
     settings: _omit(GoogleVersion.defaultGoogleVersionSettings(settings), 'session'),
+    variables: variables.filter((variable) => !getPlatformGlobalVariables(Constants.PlatformType.GOOGLE).includes(variable)),
     publishing: { ...GoogleVersion.defaultGoogleVersionPublishing(publishing), locales: localesAdapter(publishing?.locales) },
-    status: null,
   }),
   () => {
     throw new Adapters.AdapterNotImplementedError();

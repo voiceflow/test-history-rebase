@@ -55,6 +55,8 @@ export const activeDiagramSelector = createSelector([diagramByIDSelector, creato
   activeDiagramID ? getDiagram(activeDiagramID) : null
 );
 
+export const activeDiagramTypeSelector = createSelector([activeDiagramSelector], (activeDiagram) => activeDiagram?.type ?? null);
+
 export const activeDiagramStructureSelector = createSelector([structureSelector, creatorDiagramIDSelector], (getFlowStructure, activeDiagramID) =>
   activeDiagramID ? getFlowStructure(activeDiagramID) : null
 );
@@ -95,9 +97,10 @@ export const fullActiveDiagramSelector = createSelector(
     creatorDiagramSelector,
     allLinksSelector,
     ProjectV2.active.projectSelector,
+    activeDiagramTypeSelector,
   ],
   // eslint-disable-next-line max-params
-  (diagramID, getViewport, getLocalVariables, { rootNodeIDs, nodes, ports, data, markupNodeIDs }, links, project) => {
+  (diagramID, getViewport, getLocalVariables, { rootNodeIDs, nodes, ports, data, markupNodeIDs }, links, project, diagramType) => {
     if (!diagramID || !project) return null;
 
     const { platform } = project;
@@ -116,6 +119,6 @@ export const fullActiveDiagramSelector = createSelector(
       { nodes, ports, platform, context: {} }
     );
 
-    return { ...diagram, variables };
+    return { ...diagram, variables, type: diagramType ?? undefined };
   }
 );

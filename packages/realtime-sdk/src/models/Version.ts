@@ -9,7 +9,8 @@ import { Nullable } from '../types';
 export { DBVersion };
 
 export interface Version<P extends VersionPlatformData<VoiceVersion.VoiceVersionSettings<string>, any>>
-  extends Pick<DBVersion<P>, 'creatorID' | 'variables' | 'projectID' | 'rootDiagramID'> {
+  extends Pick<DBVersion<P>, 'creatorID' | 'variables' | 'projectID' | 'rootDiagramID'>,
+    Required<Pick<DBVersion<P>, 'folders' | 'topics' | 'components'>> {
   id: string;
   status: Nullable<P['status']>;
   session: Nullable<Version.Session>;

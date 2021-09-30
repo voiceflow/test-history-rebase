@@ -27,10 +27,11 @@ export const createResourceUpdateHandlers = (dispatch: Dispatch, getState: GetSt
 
     if (data.some(({ id }) => !getDiagramByID(id))) {
       const versionID = Session.activeVersionIDSelector(state);
+      const rootDiagramID = Version.activeRootDiagramIDSelector(state);
 
-      if (!versionID) return;
+      if (!versionID || !rootDiagramID) return;
 
-      await dispatch(Diagram.loadDiagrams(versionID));
+      await dispatch(Diagram.loadDiagrams(versionID, rootDiagramID));
     }
   },
   [Realtime.ResourceType.VARIABLES]: (data: string[], meta: object) => {

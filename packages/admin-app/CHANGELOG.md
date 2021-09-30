@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.3.14...@voiceflow/admin-app@1.4.0) (2021-09-30)
+
+
+### Features
+
+* topics&components adapters (VF-1836) ([#4223](https://github.com/voiceflow/creator-app/issues/4223)) ([a1e27b1](https://github.com/voiceflow/creator-app/commit/a1e27b17a7b57227889bb21b3c3c9e45ba363bbe))
+
+
+
+
+
 ## [1.3.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.3.13...@voiceflow/admin-app@1.3.14) (2021-09-30)
 
 **Note:** Version bump only for package @voiceflow/admin-app

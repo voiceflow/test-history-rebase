@@ -36,7 +36,7 @@ export const initialize = ({ project, callback, sessionRequestSanitizers }: Init
   LogRocket.init(project, {
     network: {
       requestSanitizer: (req) => {
-        const method = req.method.toUpperCase();
+        const method = req.method?.toUpperCase() ?? '';
         const url = req.url.toLowerCase();
 
         // eslint-disable-next-line no-restricted-syntax

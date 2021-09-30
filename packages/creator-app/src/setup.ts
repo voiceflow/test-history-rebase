@@ -77,7 +77,7 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
     },
     sessionRequestSanitizers: [
       {
-        matcher: { method: 'PUT', route: '/session' },
+        matcher: { method: 'PUT', route: ['/session', '/user'] },
         transform: (body: { user: { password: string } }) => ({ ...body, user: { ...body.user, password: Vendors.LogRocket.REDACTED } }),
       },
       {
@@ -87,10 +87,6 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
       {
         matcher: { method: 'PUT', route: '/fbLogin' },
         transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: Vendors.LogRocket.REDACTED } }),
-      },
-      {
-        matcher: { method: 'PUT', route: '/user' },
-        transform: (body: { password: string }) => ({ ...body, password: Vendors.LogRocket.REDACTED }),
       },
       {
         matcher: { method: 'POST', route: '/v2/sso/login' },

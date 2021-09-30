@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.21.1...@voiceflow/ui@1.22.0) (2021-09-30)
+
+
+### Bug Fixes
+
+* redact correct properties on account creation (VF-1900) ([#4238](https://github.com/voiceflow/creator-app/issues/4238)) ([ab99e38](https://github.com/voiceflow/creator-app/commit/ab99e389e75c1486564d787e60638f10944ca192))
+
+
+### Features
+
+* Enables export specific model data (VF-1327) ([#4210](https://github.com/voiceflow/creator-app/issues/4210)) ([e891c3b](https://github.com/voiceflow/creator-app/commit/e891c3bec90c56caff8cabdfec7451ea996ff1c0))
+
+
+
+
+
 ## [1.21.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.21.0...@voiceflow/ui@1.21.1) (2021-09-29)
 
 

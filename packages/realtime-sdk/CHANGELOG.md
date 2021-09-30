@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.17.6...@voiceflow/realtime-sdk@1.18.0) (2021-09-30)
+
+
+### Features
+
+* Enables export specific model data (VF-1327) ([#4210](https://github.com/voiceflow/creator-app/issues/4210)) ([e891c3b](https://github.com/voiceflow/creator-app/commit/e891c3bec90c56caff8cabdfec7451ea996ff1c0))
+
+
+
+
+
 ## [1.17.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.17.5...@voiceflow/realtime-sdk@1.17.6) (2021-09-23)
 
 

@@ -3,12 +3,13 @@ import React from 'react';
 
 import { platformAware } from '@/hocs';
 
-import { Alexa, Google } from './components';
+import { Alexa, Dialogflow, Google } from './components';
 
 const UploadGroup = platformAware(
   {
     [Constants.PlatformType.ALEXA]: () => <Alexa />,
     [Constants.PlatformType.GOOGLE]: () => <Google />,
+    [Constants.PlatformType.DIALOGFLOW_ES]: () => <Dialogflow />,
   },
   () => null
 );

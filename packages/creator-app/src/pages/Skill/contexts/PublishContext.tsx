@@ -10,25 +10,26 @@ import * as Diagram from '@/ducks/diagram';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useDispatch, useFeature } from '@/hooks';
-import { AlexaPublishJob, GooglePublishJob } from '@/models';
+import { AlexaPublishJob, DialogflowPublishJob, GooglePublishJob } from '@/models';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
-export interface PublishContextValue<T extends AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob> {
+export interface PublishContextValue<T extends AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob> {
   job: Nullable<T>;
   cancel: () => Promise<void>;
   publish: (submit?: boolean) => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
 }
 
-export const PublishContext = React.createContext<Nullable<PublishContextValue<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>>>(null);
+export const PublishContext =
+  React.createContext<Nullable<PublishContextValue<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob>>>(null);
 export const { Consumer: PublishConsumer } = PublishContext;
 
 const PULL_TIMEOUT = 3000; // 3s
 
 export const PublishProvider: React.FC = ({ children }) => {
   const pullTimeout = React.useRef<NodeJS.Timeout>();
-  const [job, setJob] = React.useState<Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob>>(null);
+  const [job, setJob] = React.useState<Nullable<AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob>>(null);
 
   const isGoogleCreate = useFeature(FeatureFlag.GOOGLE_CREATE)?.isEnabled;
   const isDialogflow = useFeature(FeatureFlag.DIALOGFLOW)?.isEnabled;

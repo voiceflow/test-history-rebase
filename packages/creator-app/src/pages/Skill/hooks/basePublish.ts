@@ -2,19 +2,19 @@ import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { DiagramState, ModalType } from '@/constants';
-import { AlexaStageType, GoogleStageType } from '@/constants/platforms';
+import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
 import * as Creator from '@/ducks/creator';
 import { useDidUpdateEffect, useModals, useSelector, useToggle, useTrackingEvents } from '@/hooks';
-import { AlexaPublishJob, GooglePublishJob } from '@/models';
+import { AlexaPublishJob, DialogflowPublishJob, GooglePublishJob } from '@/models';
 import { Nullable } from '@/types';
 import { isNotify, isReady } from '@/utils/job';
 
 import { PublishContext, PublishContextValue } from '../contexts';
 
-type PublishStageType = typeof GoogleStageType | typeof AlexaStageType;
-type PublishJob = AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob;
+type PublishStageType = typeof GoogleStageType | typeof AlexaStageType | typeof DialogflowStageType;
+type PublishJob = AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob;
 
-export interface OnStateChangedOptions<T extends GoogleStageType | AlexaStageType> {
+export interface OnStateChangedOptions<T extends GoogleStageType | AlexaStageType | DialogflowStageType> {
   cancel: () => Promise<void>;
   stageType: T | undefined;
   popupOpened: boolean;

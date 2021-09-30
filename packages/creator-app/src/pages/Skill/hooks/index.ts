@@ -10,6 +10,7 @@ import { useCommentingMode } from './modes';
 
 export * from './alexaPublish';
 export * from './diagram';
+export * from './dialogflowPublish';
 export * from './googlePublish';
 export * from './modes';
 

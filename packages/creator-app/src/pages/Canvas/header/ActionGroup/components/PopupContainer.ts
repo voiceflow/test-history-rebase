@@ -1,4 +1,4 @@
-import { AlexaStageType, GoogleStageType } from '@/constants/platforms';
+import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
 import { css, keyframes, styled } from '@/hocs';
 import { ANIMATION_SPEED } from '@/styles/theme';
 
@@ -15,7 +15,7 @@ const fadeIn = keyframes`
 
 export interface PopupContainerProps {
   open?: boolean;
-  jobStage?: AlexaStageType | GoogleStageType | null;
+  jobStage?: AlexaStageType | GoogleStageType | DialogflowStageType | null;
   multiSelect?: boolean;
   width?: number;
 }

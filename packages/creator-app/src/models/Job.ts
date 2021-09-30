@@ -4,6 +4,10 @@ import {
   AlexaPublishJobErrorType,
   AlexaPublishJobSuccessType,
   AlexaStageType,
+  DialogflowExportJobSuccessType,
+  DialogflowPublishJobErrorType,
+  DialogflowPublishJobSuccessType,
+  DialogflowStageType,
   GeneralJobErrorType,
   GeneralJobSuccessType,
   GeneralStageType,
@@ -97,6 +101,74 @@ export namespace AlexaExportJob {
   export type WaitInvocationNameStage = AlexaPublishJob.WaitInvocationNameStage;
 
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | WaitInvocationNameStage>;
+}
+
+export namespace DialogflowPublishJob {
+  export type IdleStage = JobStage<DialogflowStageType.IDLE, Record<string, unknown>>;
+
+  export type ErrorStage = JobStage<
+    DialogflowStageType.ERROR,
+    {
+      message: string;
+      errorType: DialogflowPublishJobErrorType;
+      error?: any;
+      googleError?: boolean;
+    }
+  >;
+
+  export type SuccessStage = JobStage<
+    DialogflowStageType.SUCCESS,
+    {
+      message: string;
+      googleProjectID: string;
+      agentName: string;
+      versionID: string;
+      successType: DialogflowPublishJobSuccessType;
+      rootDiagramID: string;
+      submittedForReview?: boolean;
+    }
+  >;
+
+  export type ProgressStage = JobStage<
+    DialogflowStageType.PROGRESS,
+    {
+      message: string;
+      progress: number;
+    }
+  >;
+
+  export type WaitAccountStage = JobStage<DialogflowStageType.WAIT_ACCOUNT>;
+
+  export type WaitProjectStage = JobStage<DialogflowStageType.WAIT_PROJECT>;
+
+  export type WaitInvocationNameStage = JobStage<DialogflowStageType.WAIT_INVOCATION_NAME, { error: string }>;
+
+  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
+}
+
+export namespace DialogflowExportJob {
+  export type IdleStage = DialogflowPublishJob.IdleStage;
+
+  export type ErrorStage = DialogflowPublishJob.ErrorStage;
+
+  export type SuccessStage = JobStage<
+    DialogflowStageType.SUCCESS,
+    {
+      data: string;
+      fileName: string;
+      successType: DialogflowExportJobSuccessType;
+    }
+  >;
+
+  export type ProgressStage = DialogflowPublishJob.ProgressStage;
+
+  export type WaitAccountStage = DialogflowPublishJob.WaitAccountStage;
+
+  export type WaitProjectStage = JobStage<DialogflowStageType.WAIT_PROJECT>;
+
+  export type WaitInvocationNameStage = DialogflowPublishJob.WaitInvocationNameStage;
+
+  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
 }
 
 export namespace GooglePublishJob {

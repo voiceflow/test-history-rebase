@@ -24,6 +24,7 @@ export const generateDefaultComponentDiagram = (): PrimitiveComponentDiagram => 
   return {
     ...generateDefaultDiagram(),
     type: DiagramType.COMPONENT,
+    children: [startNodeID],
     nodes: {
       [startNodeID]: {
         nodeID: startNodeID,
@@ -51,9 +52,10 @@ export const generateDefaultTopicDiagram = (name: string): PrimitiveTopicDiagram
   return {
     ...generateDefaultDiagram(),
     type: DiagramType.TOPIC,
+    children: [combinedNodeID, intentNodeID],
     intentStepIDs: [intentNodeID],
     nodes: {
-      [intentNodeID]: {
+      [combinedNodeID]: {
         type: 'block',
         nodeID: combinedNodeID,
         coords: [360, 120],

@@ -28,6 +28,7 @@ export interface PlatformMetaType {
   iconColor?: string;
   localesText?: string;
   platformAppType: string;
+  settingsTitle: string;
   localesDescription?: React.FC;
   invocationDescription?: React.FC;
 }
@@ -64,6 +65,7 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
       iconColor: '#5fcaf4',
       localesText: 'Locales',
       platformAppType: 'Skill',
+      settingsTitle: 'Skill Settings',
       localesDescription: AmazonLanguage,
       invocationDescription: AmazonInvocationName,
     },
@@ -72,6 +74,7 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
       company: 'Google',
       localesText: 'Language',
       platformAppType: 'Action',
+      settingsTitle: 'Action Settings',
       localesDescription: GoogleLanguage,
       invocationDescription: GoogleInvocationName,
     },
@@ -80,6 +83,7 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
       company: 'Google',
       localesText: 'Language',
       platformAppType: 'Action',
+      settingsTitle: 'Agent Settings',
       localesDescription: DialogflowLanguage,
       invocationDescription: DialogflowInvocationName,
     },
@@ -90,6 +94,7 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
     iconColor: '#279745',
     localesText: 'Language',
     platformAppType: 'Assistant',
+    settingsTitle: 'Assistant Settings',
     localesDescription: GeneralLanguage,
   }
 );

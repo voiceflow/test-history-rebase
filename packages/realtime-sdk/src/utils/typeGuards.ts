@@ -30,6 +30,7 @@ export const isDiagramReferencesBlockType = createBlockTypeGuard(DIAGRAM_REFEREN
 
 export const isAlexaPlatform = createPlatformTypeGuard(Constants.PlatformType.ALEXA);
 export const isGooglePlatform = createPlatformTypeGuard(Constants.PlatformType.GOOGLE);
+export const isDialogflowPlatform = createPlatformTypeGuard(Constants.PlatformType.DIALOGFLOW_ES);
 
 export const isIVRPlatform = createPlatformTypeGuard(Constants.PlatformType.IVR);
 export const isGeneralPlatform = createPlatformTypeGuard(Constants.PlatformType.GENERAL);

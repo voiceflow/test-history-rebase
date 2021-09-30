@@ -10,7 +10,7 @@ import { LoaderStage, ProjectItem, StageContainer } from '../components';
 
 const Footer = ModalFooter as React.FC<any>;
 
-interface WaitProjectStageProps {
+interface WaitDFESProjectStageProps {
   cancel: () => void;
   onClose?: () => void;
   setMultiProjects?: (value: boolean) => void;
@@ -22,14 +22,14 @@ interface WaitProjectStageProps {
   ) => void;
 }
 
-const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage, setMultiProjects }) => {
+const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurrentStage, setMultiProjects }) => {
   const [projects, setProjects] = React.useState<{ googleProjectID: string; agentName: string }[]>([]);
 
   const [state, api] = useSmartReducerV2({ error: false, loading: true });
 
   useAsyncMountUnmount(async () => {
     try {
-      const projectIDs = await client.platform.google.project.getDialogFlowESProjects();
+      const projectIDs = await client.platform.dialogflow.project.getDialogFlowESProjects();
 
       api.update({ error: false, loading: false });
 
@@ -98,4 +98,4 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
   );
 };
 
-export default WaitProjectStage;
+export default WaitDFESProjectStage;

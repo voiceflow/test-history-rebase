@@ -9,6 +9,7 @@ export const {
   isDiagramReferencesBlockType,
   isAlexaPlatform,
   isGooglePlatform,
+  isDialogflowPlatform,
   isIVRPlatform,
   isGeneralPlatform,
   isChatbotPlatform,

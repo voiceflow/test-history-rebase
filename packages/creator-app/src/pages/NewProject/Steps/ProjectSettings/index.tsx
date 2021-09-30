@@ -17,7 +17,7 @@ import LOCALE_MAP from '@/services/LocaleMap';
 import { Identifier } from '@/styles/constants';
 import { without } from '@/utils/array';
 import { getPlatformValue } from '@/utils/platform';
-import { isAlexaPlatform, isAnyGeneralPlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform } from '@/utils/typeGuards';
 
 import { SectionDescription, SectionErrorMessage, SectionTitle } from '../components';
 
@@ -35,6 +35,8 @@ interface PlatformSettingsProps {
   selectedChannel: Constants.PlatformType;
   setInvocationName: (name: string) => void;
   setGoogleLanguage: (val: string) => void;
+  dialogflowLanguage: string;
+  setDialogflowLanguage: (val: string) => void;
 }
 
 const ProjectSettings: React.FC<PlatformSettingsProps> = ({
@@ -49,9 +51,12 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
   selectedChannel,
   setInvocationName,
   setGoogleLanguage,
+  dialogflowLanguage,
+  setDialogflowLanguage,
 }) => {
   const isAlexa = isAlexaPlatform(selectedChannel);
   const isGeneral = isAnyGeneralPlatform(selectedChannel);
+  const isDialogflow = isDialogflowPlatform(selectedChannel);
 
   const alexaDisplayName = isAlexa
     ? alexaLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')
@@ -86,7 +91,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
 
   return (
     <Container width={420} textAlign="left">
-      {!isGeneral && (
+      {!isGeneral && !isDialogflow && (
         <FieldsContainer>
           <SectionTitle>Invocation Name</SectionTitle>
 
@@ -137,6 +142,16 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
                 value={FORMATTED_GOOGLE_LOCALES_LABELS[googleLanguage]}
                 options={FORMATTED_LOCALES}
                 onSelect={setGoogleLanguage}
+                placeholder="Language"
+                getOptionValue={(option) => option?.value || ''}
+                renderOptionLabel={(option) => option.name}
+              />
+            ),
+            [Constants.PlatformType.DIALOGFLOW_ES]: () => (
+              <Select
+                value={FORMATTED_GOOGLE_LOCALES_LABELS[dialogflowLanguage]}
+                options={FORMATTED_LOCALES}
+                onSelect={setDialogflowLanguage}
                 placeholder="Language"
                 getOptionValue={(option) => option?.value || ''}
                 renderOptionLabel={(option) => option.name}

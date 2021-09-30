@@ -28,7 +28,7 @@ export const StepMeta: Record<StepID, StepMetaProps> = {
     ),
   },
   [StepID.PROJECT_SETTINGS]: {
-    title: (platform) => `${getPlatformMeta(platform).platformAppType} Settings`,
+    title: (platform) => getPlatformMeta(platform).settingsTitle,
     component: ProjectSettings,
   },
 };

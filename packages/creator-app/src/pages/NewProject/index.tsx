@@ -1,5 +1,6 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
 import { FlexCenter, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
@@ -15,7 +16,7 @@ import { useActiveWorkspace, useDispatch, useSelector, useSetup } from '@/hooks'
 import LOCALE_MAP from '@/services/LocaleMap';
 import { noop } from '@/utils/functional';
 import { createPlatformSelector } from '@/utils/platform';
-import { isAlexaPlatform, isAnyGeneralPlatform, isGooglePlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 import { DEFAULT_PROJECT_NAME, PROJECT_CREATION_STEPS_NUMBER, StepID, StepMeta } from './constants';
 
@@ -46,6 +47,7 @@ const NewProject: React.FC = () => {
   const [selectedChannel, setSelectedChannel] = React.useState<Constants.PlatformType | null>(null);
   const [alexaLocales, setAlexaLocales] = React.useState<[AlexaConstants.Locale, ...AlexaConstants.Locale[]]>([LOCALE_MAP[0].value]);
   const [googleLanguage, setGoogleLanguage] = React.useState<GoogleConstants.Language>(GoogleConstants.Language.EN);
+  const [dialogflowLanguage, setDialogflowLanguage] = React.useState<DialogflowConstants.Language>(DialogflowConstants.Language.EN);
   const [generalLocale, setGeneralLocale] = React.useState<GeneralConstants.Locale>(GeneralConstants.Locale.EN_US);
   const [creatingProject, setCreatingProject] = React.useState(false);
   const CurrentStep = StepMeta[currentStep].component;
@@ -74,6 +76,10 @@ const NewProject: React.FC = () => {
           displayName: DEFAULT_PROJECT_NAME,
           pronunciation: invocationName,
           sampleInvocations: [`Talk to ${invocationName}`],
+        });
+      } else if (isDialogflowPlatform(selectedChannel!)) {
+        await client.platform.dialogflow.version.updatePublishing(project.versionID, {
+          locales: DialogflowConstants.LanguageToLocale[dialogflowLanguage],
         });
       } else if (isAnyGeneralPlatform(selectedChannel!)) {
         await client.platform.general.version.updateSettings(project.versionID, {
@@ -149,6 +155,8 @@ const NewProject: React.FC = () => {
             setGoogleLanguage={setGoogleLanguage}
             setInvocationName={setInvocationName}
             setSelectedChannel={setSelectedChannel}
+            dialogflowLanguage={dialogflowLanguage}
+            setDialogflowLanguage={setDialogflowLanguage}
           />
         </FlexCenter>
       </InnerContainer>

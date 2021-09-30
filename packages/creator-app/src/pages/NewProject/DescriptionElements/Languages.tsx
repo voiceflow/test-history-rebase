@@ -4,7 +4,9 @@ export const GeneralLanguage: React.FC = () => <span>Choose the language your As
 
 export const GoogleLanguage: React.FC = () => <span>Choose the language your Google Action will support. This can be changed later.</span>;
 
-export const DialogflowLanguage: React.FC = () => <span>Choose the language your Google Dialogflow will support. This can be changed later.</span>;
+export const DialogflowLanguage: React.FC = () => (
+  <span>Choose the default language you want your Dialogflow assistant to support. This can be changed later.</span>
+);
 
 export const AmazonLanguage: React.FC = () => (
   <span>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.19.0...@voiceflow/realtime-sdk@1.20.0) (2021-09-30)
+
+
+### Features
+
+* Creates dialogflow agent settings project creation step (VF-1323) ([#4239](https://github.com/voiceflow/creator-app/issues/4239)) ([3a2d319](https://github.com/voiceflow/creator-app/commit/3a2d3199ac94e9b60c2ab7c25258e397eb693b15))
+
+
+
+
+
 # [1.19.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.18.0...@voiceflow/realtime-sdk@1.19.0) (2021-09-30)
 
 

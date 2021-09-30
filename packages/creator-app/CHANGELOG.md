@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.500.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.500.0...@voiceflow/creator-app@1.500.1) (2021-09-30)
+
+
+### Bug Fixes
+
+* update readme and force release ([d9f0961](https://github.com/voiceflow/creator-app/commit/d9f0961399e48562e5f60ceb59c508ece41892d6))
+
+
+
+
+
 # [1.500.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.499.0...@voiceflow/creator-app@1.500.0) (2021-09-30)
 
 

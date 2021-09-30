@@ -29,6 +29,7 @@ function DropdownMultiselect({
   isTranscript = false,
   customOptionLabelStyling,
   withCaret,
+  searchable,
 }) {
   const genKey = useKeygen();
 
@@ -61,6 +62,7 @@ function DropdownMultiselect({
               },
               buttonLabel,
             }}
+            searchable={searchable}
           >
             {dropdownOptions.map(({ sectionLabel, options }, index) => (
               <span key={index}>

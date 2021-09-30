@@ -20,7 +20,7 @@ const ExportContent: React.FC = () => {
 
   return (
     <FadeLeftContainer style={{ height: '100%' }} paddingTop={24} paddingX={32}>
-      <Title fontSize={15} mb={10} textAlign="left">
+      <Title fontSize={15} mb={8} textAlign="left">
         Export
       </Title>
 
@@ -28,7 +28,7 @@ const ExportContent: React.FC = () => {
         Export project content for sharing, or for external platforms like Dialogflow, Luis or Rasa.
       </BlockText>
 
-      <BlockText color="#62778c" fontSize={13} mb={11} fontWeight="bold">
+      <BlockText color="#62778c" fontSize={13} mb={10} fontWeight="bold">
         Export type
       </BlockText>
 

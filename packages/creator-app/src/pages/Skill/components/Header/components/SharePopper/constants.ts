@@ -8,6 +8,16 @@ export enum ExportType {
   MODEL = 'model',
 }
 
+export enum ModelExportConfig {
+  MODEL = 'model',
+  INTENTS = 'intents',
+}
+
+export const MODEL_EXPORT_OPTIONS = [
+  { id: ModelExportConfig.MODEL, label: 'Entire Model' },
+  { id: ModelExportConfig.INTENTS, label: 'Specific Data' },
+];
+
 export const CANVAS_EXPORT_OPTIONS_LABELS: Record<string, string> = {
   [ExportFormat.PNG]: 'Image (PNG)',
   [ExportFormat.PDF]: 'PDF',

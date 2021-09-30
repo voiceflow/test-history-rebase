@@ -1,4 +1,4 @@
-import { Box, FlexApart, FlexStart, Icon, KeyName, Select, SelectMenuItemOptions, SvgIcon } from '@voiceflow/ui';
+import { Box, FlexApart, FlexStart, Icon, KeyName, Select, SelectInputVariant, SelectMenuItemOptions, SvgIcon } from '@voiceflow/ui';
 import _findLastIndex from 'lodash/findLastIndex';
 import React from 'react';
 
@@ -164,6 +164,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
         createInputPlaceholder="New tag"
         placeholder={Object.keys(selectedTagObjects).length ? '' : 'Add tags'}
         onSelect={onToggleTag}
+        inputVariant={SelectInputVariant.TAGS}
         tags={() =>
           selectedTagObjects.map((tag, i) => (
             <TagWrapper

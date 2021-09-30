@@ -7,7 +7,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { Nullable } from '@/types';
 
-import { ExportType } from '../constants';
+import { ExportType, ModelExportConfig } from '../constants';
 
 interface ExportValue {
   onExport: () => void;
@@ -18,6 +18,10 @@ interface ExportValue {
   setCanvasExportFormat: (format: CanvasExportFormat) => void;
   modelExportProvider?: NLPProvider;
   setModelExportProvider: (provider: NLPProvider) => void;
+  modelExportConfig: ModelExportConfig;
+  setModelExportConfig: (config: ModelExportConfig) => void;
+  modelExportIntents: string[];
+  setModelExportIntents: (intents: string[]) => void;
 }
 
 export const ExportContext = React.createContext<Nullable<ExportValue>>(null);
@@ -36,6 +40,8 @@ export const ExportProvider: React.FC = ({ children }) => {
   const [canvasExportFormat, setCanvasExportFormat] = React.useState(isTemplateWorkspace ? CanvasExportFormat.VF : CanvasExportFormat.PNG);
 
   const [modelExportProvider, setModelExportProvider] = React.useState<NLPProvider | undefined>();
+  const [modelExportConfig, setModelExportConfig] = React.useState<ModelExportConfig>(ModelExportConfig.MODEL);
+  const [modelExportIntents, setModelExportIntents] = React.useState<string[]>([]);
 
   const onExport = React.useCallback(async () => {
     trackingEvents.trackExportButtonClick({ format: canvasExportFormat });
@@ -44,11 +50,11 @@ export const ExportProvider: React.FC = ({ children }) => {
     if (exportType === ExportType.CANVAS) {
       await exportCanvas(canvasExportFormat);
     } else if (modelExportProvider) {
-      await exportModel(modelExportProvider);
+      await exportModel(modelExportProvider, modelExportIntents);
     }
 
     setExporting(false);
-  }, [exportType, modelExportProvider, canvasExportFormat]);
+  }, [exportType, modelExportProvider, modelExportIntents, canvasExportFormat]);
 
   const api = useContextApi({
     onExport,
@@ -59,6 +65,10 @@ export const ExportProvider: React.FC = ({ children }) => {
     setExportType,
     modelExportProvider,
     setModelExportProvider,
+    modelExportConfig,
+    setModelExportConfig,
+    modelExportIntents,
+    setModelExportIntents,
   });
 
   return <ExportContext.Provider value={api}>{children}</ExportContext.Provider>;

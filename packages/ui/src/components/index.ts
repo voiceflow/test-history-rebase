@@ -84,7 +84,7 @@ export { default as OptionsMenu } from './OptionsMenu';
 export { default as Portal, portalRootNode } from './Portal';
 export { default as SearchInput, SearchInputIcon } from './SearchInput';
 export type { MenuItemOptions as SelectMenuItemOptions, SelectProps } from './Select';
-export { default as Select, SelectWrapper } from './Select';
+export { default as Select, SelectInputVariant, SelectWrapper } from './Select';
 export { FullSpinner, Spinner } from './Spinner';
 export type { Icon, SvgIconProps } from './SvgIcon';
 export { IconVariant, default as SvgIcon, SvgIconContainer } from './SvgIcon';

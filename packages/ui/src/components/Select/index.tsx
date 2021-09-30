@@ -11,11 +11,17 @@ import Portal from '../Portal';
 import SearchInput, { SearchInputIcon } from '../SearchInput';
 import { Icon, SvgIconProps } from '../SvgIcon';
 import { toast } from '../Toast';
-import { InlineInputValue, PrefixContainer, SelectWrapper, TagsContainer, TagsInput } from './components';
+import { InlineInputValue, InputBadge, PrefixContainer, SelectWrapper, TagsContainer, TagsInput } from './components';
 import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
 
 export { defaultOptionsFilter, searchableOptionsFilter };
 export * from './components';
+
+export enum SelectInputVariant {
+  DROPDOWN = 'dropdown',
+  TAGS = 'tags',
+  COUNTER = 'counter',
+}
 
 export interface MenuItemOptions {
   menuItemProps?: {
@@ -56,8 +62,11 @@ export type OptionsFilter<O, V> = (
 export type SelectProps<O, V> = {
   id?: string;
   tags?: () => JSX.Element[];
+  displayName?: string;
+  inputVariant?: SelectInputVariant;
   footerAction?: boolean;
   inDropdownSearch?: boolean;
+  searchLabel?: string;
   footerActionLabel?: string;
   onClickFooterAction?: () => void;
   onSearch?: (val: string) => void;
@@ -152,6 +161,8 @@ const AnyAdvancedMenu = AdvancedMenu as React.FC<any>;
 const Select = <O, V = O>({
   id,
   open,
+  inputVariant = SelectInputVariant.DROPDOWN,
+  displayName = undefined,
   icon,
   inDropdownSearch = false,
   inputStopProp = true,
@@ -209,9 +220,10 @@ const Select = <O, V = O>({
   createInputPlaceholder,
   validateCreate,
   tags,
+  searchLabel: searchLabelProp = '',
 }: // eslint-disable-next-line sonarjs/cognitive-complexity
 SelectProps<O, V>) => {
-  const optionLabel = getOptionLabel(value) || '';
+  const optionLabel = searchLabelProp || getOptionLabel(value) || '';
   const cachedRef = React.useRef({ updatePopperPosition: noop });
 
   const [initialValueLabel] = React.useState(optionLabel);
@@ -522,43 +534,72 @@ SelectProps<O, V>) => {
               })
             ) : (
               <Flex>
-                {tags ? (
-                  <TagsContainer
-                    hasTags={selectedOptions?.length}
-                    isActive={opened}
-                    onClick={() => {
-                      onOpenMenu();
-                      inputRef?.current?.focus();
-                    }}
-                  >
-                    {tags()}
-                    <TagsInput
-                      hastags={selectedOptions?.length}
-                      onChange={onChangeSearchLabel}
-                      placeholder={placeholder}
-                      onClick={searchable ? onOpenMenu : undefined}
-                      onBlur={(e) => {
-                        if (!renderDropdown) {
-                          updateOpened(false);
-                        }
-                        onBlur?.(e);
+                <>
+                  {inputVariant === SelectInputVariant.TAGS && tags && (
+                    <TagsContainer
+                      hasTags={selectedOptions?.length}
+                      isActive={opened}
+                      onClick={() => {
+                        onOpenMenu();
+                        inputRef?.current?.focus();
                       }}
-                      ref={inputRef as React.RefObject<AutosizeInput>}
-                      value={label || searchLabel}
-                      autoComplete="off"
-                    />
-                  </TagsContainer>
-                ) : (
-                  <>
-                    <SearchInput {...inputProps} ref={inputRef} value={label || searchLabel} type="search" autoComplete="off" clearable={clearable} />
-                    <SearchInputIcon
-                      icon={clearable ? 'close' : 'caretDown'}
-                      color={isDropDownOpened ? '#5D9DF5' : '#6e849a'}
-                      size={10}
-                      onClick={onIconClick}
-                    />
-                  </>
-                )}
+                    >
+                      {tags()}
+                      <TagsInput
+                        hastags={selectedOptions?.length}
+                        onChange={onChangeSearchLabel}
+                        placeholder={placeholder}
+                        onClick={searchable ? onOpenMenu : undefined}
+                        onBlur={(e) => {
+                          if (!renderDropdown) {
+                            updateOpened(false);
+                          }
+                          onBlur?.(e);
+                        }}
+                        ref={inputRef as React.RefObject<AutosizeInput>}
+                        value={label || searchLabel}
+                        autoComplete="off"
+                      />
+                    </TagsContainer>
+                  )}
+
+                  {inputVariant === SelectInputVariant.DROPDOWN && (
+                    <>
+                      <SearchInput
+                        {...inputProps}
+                        ref={inputRef}
+                        value={label || searchLabel}
+                        type="search"
+                        autoComplete="off"
+                        clearable={clearable}
+                      />
+                      <SearchInputIcon
+                        icon={clearable ? 'close' : 'caretDown'}
+                        color={isDropDownOpened ? '#5D9DF5' : '#6e849a'}
+                        size={10}
+                        onClick={onIconClick}
+                      />
+                    </>
+                  )}
+
+                  {inputVariant === SelectInputVariant.COUNTER && (
+                    <>
+                      <SearchInput
+                        {...inputProps}
+                        ref={inputRef}
+                        value={selectedOptions.length > 0 ? displayName : ''}
+                        type="search"
+                        autoComplete="off"
+                        onChange={() => null}
+                      />
+                      {selectedOptions.length > 0 ? (
+                        <InputBadge>{selectedOptions.length}</InputBadge>
+                      ) : (
+                        <SearchInputIcon icon="caretDown" color={isDropDownOpened ? '#5D9DF5' : '#6e849a'} size={10} onClick={onIconClick} />
+                      )}
+                    </>
+                  )}
+                </>
               </Flex>
             )}
           </SelectWrapper>

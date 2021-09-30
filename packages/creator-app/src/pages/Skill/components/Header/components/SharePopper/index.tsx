@@ -31,7 +31,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
     <ExportProvider>
       <Popper
         width="620px"
-        height="494px"
+        height="510px"
         opened={sharePopper?.opened}
         onClose={sharePopper?.close}
         initialTab={initialTab}

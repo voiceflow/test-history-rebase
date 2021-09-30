@@ -39,6 +39,7 @@ function MenuOptions({
   const renderOptions = (options, optionsPath) =>
     options.map((option, i) => {
       let index = i + firstOptionIndex;
+      const elementsKey = (option?.id ? getOptionKey(option.id) : getOptionKey(option)) || i;
 
       if (grouped) {
         index = firstOptionIndex + groupedIndex++;
@@ -46,7 +47,7 @@ function MenuOptions({
 
       if (multiLevelDropdown && !!option.options?.length) {
         return (
-          <Manager key={getOptionKey(option) || i}>
+          <Manager key={elementsKey}>
             <Reference>
               {({ ref }) => (
                 <SelectItem
@@ -96,7 +97,7 @@ function MenuOptions({
       return (
         <SelectItem
           className={ClassName.MENU_ITEM}
-          key={getOptionKey(option) || i}
+          key={elementsKey}
           ref={onItemRef(index)}
           // to prevent parent popper from closing onSelect
           onClick={stopImmediatePropagation(() => !option?.disabled && onSelect(getOptionValue(option), [...optionsPath, i], updatePosition))}

@@ -10,6 +10,7 @@ function MenuHeader({
   onFocus,
   onCreate,
   searchable,
+  creatable,
   isDropdown,
   searchLabel,
   createInputRef,
@@ -51,7 +52,7 @@ function MenuHeader({
         </>
       )}
 
-      {(!inDropdownSearch || value) && (
+      {(!inDropdownSearch || (value && creatable)) && (
         <MenuHeaderWrapper
           isDisabled={isButtonDisabled(value)}
           ref={focusedOptionIndex === 0 ? focusedOptionRef : null}

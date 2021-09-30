@@ -75,7 +75,7 @@ export const exportCanvas =
   };
 
 export const exportModel =
-  (nlpProvider: NLPProvider): Thunk =>
+  (nlpProvider: NLPProvider, intents?: string[]): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -87,19 +87,19 @@ export const exportModel =
       const projectName = ProjectV2.active.nameSelector(state)?.replace(/ /g, '_');
 
       if (nlpProvider === NLPProvider.ALEXA) {
-        data = await client.platform.alexa.modelExport.exportBlob(versionID, 'ask');
+        data = await client.platform.alexa.modelExport.exportBlob(versionID, 'ask', intents);
         downloadFromURL(`${projectName}-alexa-model.json`, data);
         URL.revokeObjectURL(data);
       } else if (nlpProvider === NLPProvider.DIALOGFLOW_ES) {
-        data = await client.platform.google.modelExport.exportBlob(versionID, 'dialogflow/es');
+        data = await client.platform.google.modelExport.exportBlob(versionID, 'dialogflow/es', intents);
         downloadFromURL(`${projectName}-dialogflow-es-model.zip`, data);
         URL.revokeObjectURL(data);
       } else if (nlpProvider === NLPProvider.RASA) {
-        data = await client.platform.general.modelExport.exportBlob(versionID, 'rasa');
+        data = await client.platform.general.modelExport.exportBlob(versionID, 'rasa', intents);
         downloadFromURL(`${projectName}-rasa-model.zip`, data);
         URL.revokeObjectURL(data);
       } else if (nlpProvider === NLPProvider.LUIS) {
-        data = await client.platform.general.modelExport.exportBlob(versionID, 'luis');
+        data = await client.platform.general.modelExport.exportBlob(versionID, 'luis', intents);
         downloadFromURL(`${projectName}-general-model.json`, data);
         URL.revokeObjectURL(data);
       } else {

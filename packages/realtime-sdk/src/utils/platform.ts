@@ -14,7 +14,7 @@ export const createPlatformSelector: {
   <T>(platformValues: Partial<Record<Constants.PlatformType, T>>, defaultValue: T | undefined) =>
   (platform?: Nullish<Constants.PlatformType>) => {
     const value = platform && platform in platformValues ? platformValues[platform] : defaultValue;
-    if (value == null) throw new Error('no value for platform');
+    if (value == null) return Constants.PlatformType.GENERAL;
 
     return value;
   };

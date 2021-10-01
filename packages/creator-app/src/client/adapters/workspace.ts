@@ -22,6 +22,7 @@ const workspaceAdapter = Adapters.createAdapter<DBWorkspace, Workspace>(
     plan,
     beta_flag,
     templates,
+    organization_id,
   }) => {
     let state: WorkspaceActivationState | null = null;
     if (INVALID_STATES.includes(stripe_status)) {
@@ -46,6 +47,7 @@ const workspaceAdapter = Adapters.createAdapter<DBWorkspace, Workspace>(
       members,
       templates,
       betaFlag: beta_flag,
+      organizationID: organization_id,
     };
   },
   () => {

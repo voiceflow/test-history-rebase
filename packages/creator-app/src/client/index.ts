@@ -10,6 +10,7 @@ import projectList from './projectList';
 import prototype from './prototype';
 import realtime from './realtime';
 import reportTags from './reportTags';
+import saml from './saml';
 import session from './session';
 import socket from './socket';
 import sso from './sso';
@@ -37,6 +38,7 @@ const client = {
   session,
   socket,
   sso,
+  saml,
   template,
   thread,
   user,

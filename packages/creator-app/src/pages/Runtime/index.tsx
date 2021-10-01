@@ -1,11 +1,11 @@
-import { Alert, Box, ClickableText, Input, Link, Text, toast } from '@voiceflow/ui';
+import { Alert, Box, ClickableText, Input, Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
 import { API_ENDPOINT, GENERAL_RUNTIME_ENDPOINT_TAG, GENERAL_SERVICE_ENDPOINT } from '@/config';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
-import { copy } from '@/utils/clipboard';
+import { onClickCopy } from '@/utils/clipboard';
 import * as Cookies from '@/utils/cookies';
 
 const GENERAL_RUNTIME_REPO = 'https://github.com/voiceflow/general-runtime';
@@ -19,11 +19,6 @@ const RuntimeConfig: React.FC = () => {
   const updateRuntime = (url: string) => {
     updateRuntimeEndpoint(url);
     localStorage.setItem(GENERAL_RUNTIME_ENDPOINT_TAG, url);
-  };
-
-  const onClickCopy = (text: string) => () => {
-    copy(text);
-    toast.success('Copied to clipboard');
   };
 
   return (

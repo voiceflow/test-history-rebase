@@ -85,6 +85,7 @@ export enum WorkspaceSettingsRoute {
   GENERAL = 'general',
   BILLING = 'billing',
   DEVELOPER = 'developer',
+  SSO = 'sso',
 }
 
 export enum ProjectSettingsRoute {
@@ -121,6 +122,7 @@ export const Path = {
   WORKSPACE_GENERAL_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.GENERAL),
   WORKSPACE_BILLING_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.BILLING),
   WORKSPACE_DEVELOPER_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.DEVELOPER),
+  WORKSPACE_SSO_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.SSO),
   NEW_WORKSPACE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.NEW),
 
   DASHBOARD: toPath(RootRoute.DASHBOARD),

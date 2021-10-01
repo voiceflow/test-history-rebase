@@ -25,6 +25,8 @@ export const membersSelector = createSelector([workspaceSelector], (workspace) =
 
 export const seatLimitsSelector = createSelector([workspaceSelector], (workspace) => workspace?.seatLimits);
 
+export const organizationIDSelector = createSelector([workspaceSelector], (workspace) => workspace?.organizationID);
+
 export const usedEditorSeatsSelector = createSelector(
   [membersSelector],
   (members) => members.filter((member) => EDITOR_SEAT_ROLES.includes(member.role)).length || 1

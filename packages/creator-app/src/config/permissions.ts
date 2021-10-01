@@ -1,6 +1,9 @@
 import { PlanType, UserRole } from '@voiceflow/internal';
 
 export enum Permission {
+  // organization
+  CONFIGURE_ORGANIZATION = 'organization.CONFIGURE',
+
   // workspace
   CONFIGURE_WORKSPACE = 'workspace.CONFIGURE',
   UPGRADE_WORKSPACE = 'workspace.UPGRADE',
@@ -61,6 +64,8 @@ const EDITOR_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER];
 const EDITOR_AND_BILLING_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING];
 
 export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
+  [Permission.CONFIGURE_ORGANIZATION]: [UserRole.ADMIN],
+
   [Permission.ADD_COLLABORATORS]: EDITOR_AND_BILLING_USER_ROLES,
   [Permission.VIEW_COLLABORATORS]: SIGNED_USER_ROLES,
   [Permission.MANAGE_ADMIN_COLLABORATORS]: [UserRole.ADMIN],
@@ -127,6 +132,7 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
     PlanType.CREATOR,
   ],
   [Permission.CODE_EXPORT]: [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
+  [Permission.CONFIGURE_ORGANIZATION]: [PlanType.ENTERPRISE],
 };
 
 export const hasRolePermission = (permission: Permission, role: UserRole) =>

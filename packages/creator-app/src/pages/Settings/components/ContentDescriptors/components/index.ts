@@ -17,6 +17,6 @@ export const DescriptorContainer = styled.div<{ variant?: DescriptorVariant }>`
           margin-bottom: 16px;
         `
       : css`
-          margin-top: 16px;
+          margin-top: 12px;
         `}
 `;

@@ -55,6 +55,7 @@ export interface Workspace {
   state: WorkspaceActivationState | null;
   betaFlag: number;
   templates: boolean;
+  organizationID: string | null;
 }
 
 export interface DBWorkspace {
@@ -66,6 +67,7 @@ export interface DBWorkspace {
   created: string;
   seatLimits: SeatLimits;
   hasSource: boolean;
+  organization_id: string | null;
   image: string;
   projects: number;
   seats: number;

@@ -18,6 +18,7 @@ suite('Client - Root', ({ expect }) => {
       'session',
       'socket',
       'sso',
+      'saml',
       'user',
       'template',
       'thread',

@@ -1,3 +1,5 @@
+import { toast } from '@voiceflow/ui';
+
 import { VERSION } from '@/config';
 
 export const CLIPBOARD_TYPE = 'voiceflow.com:project.clipboard';
@@ -37,3 +39,8 @@ export function deserialize(text) {
 
   return null;
 }
+
+export const onClickCopy = (text) => () => {
+  copy(text);
+  toast.success('Copied to clipboard');
+};

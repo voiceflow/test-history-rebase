@@ -1,11 +1,9 @@
 import { inputStyle } from '@voiceflow/ui';
 import AutosizeTextArea from 'react-textarea-autosize';
 
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const TextArea = styled(AutosizeTextArea)`
-  ${inputStyle}
-
+const textAreaStyle = css`
   box-sizing: border-box;
   min-height: ${({ theme }) => theme.components.input.height}px;
   width: 100%;
@@ -16,6 +14,16 @@ const TextArea = styled(AutosizeTextArea)`
   &:focus {
     outline: 0;
   }
+`;
+
+const TextArea = styled(AutosizeTextArea)`
+  ${inputStyle}
+  ${textAreaStyle}
+`;
+
+export const StaticTextArea = styled.textarea`
+  ${inputStyle}
+  ${textAreaStyle}
 `;
 
 export default TextArea;

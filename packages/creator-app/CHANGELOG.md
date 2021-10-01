@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.502.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.501.0...@voiceflow/creator-app@1.502.0) (2021-10-01)
+
+
+### Features
+
+* select default tts voice on project create (VF-1782) ([#4226](https://github.com/voiceflow/creator-app/issues/4226)) ([655f5b1](https://github.com/voiceflow/creator-app/commit/655f5b1ccb7e7ddd0d71660f0981e46c48beba01))
+
+
+
+
+
 # [1.501.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.500.2...@voiceflow/creator-app@1.501.0) (2021-09-30)
 
 

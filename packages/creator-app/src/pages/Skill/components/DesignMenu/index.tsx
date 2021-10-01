@@ -67,6 +67,7 @@ const DesignMenu: React.FC = () => {
   }, [isHidden]);
 
   const canBeOpened = !isAnyModeOpen;
+
   const isOpen = (!isHidden || isOpenByHover) && canBeOpened;
 
   return (

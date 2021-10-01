@@ -5,6 +5,7 @@ import { Select } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
+import { AnyVoice } from '@/ducks/version';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
@@ -39,6 +40,10 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
     return voices.filter((voice) => voice !== 'audio');
   }, [platform]);
 
+  const selectDefaultVoice = (val: string) => {
+    saveDefaultVoice(val as AnyVoice);
+  };
+
   const assistantLogic = (
     <AssistantConversationLogic
       platform={platform}
@@ -57,7 +62,7 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
         contentSuffix={descriptors.defaultVoice}
         customContentStyling={{ paddingBottom: '24px' }}
       >
-        <Select value={defaultVoice} options={platformVoices} onSelect={saveDefaultVoice} searchable placeholder={defaultVoice} />
+        <Select value={defaultVoice} options={platformVoices} onSelect={selectDefaultVoice} searchable placeholder={defaultVoice} />
       </Section>
 
       {getPlatformValue(

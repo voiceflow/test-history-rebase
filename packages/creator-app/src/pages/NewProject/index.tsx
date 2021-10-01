@@ -2,7 +2,8 @@ import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
-import { FlexCenter, useDidUpdateEffect } from '@voiceflow/ui';
+import { Voice } from '@voiceflow/google-types/build/constants';
+import { FlexCenter, Nullable, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { Redirect, useRouteMatch } from 'react-router-dom';
 
@@ -29,6 +30,59 @@ const getTemplateTag = createPlatformSelector({
   [Constants.PlatformType.DIALOGFLOW_ES]: 'default',
   [Constants.PlatformType.MOBILE_APP]: `default:${Constants.PlatformType.MOBILE_APP}`,
 });
+
+const getDefaultAlexaVoice = (locale: AlexaConstants.Locale) => {
+  return AlexaConstants.DEFAULT_LOCALE_VOICE_MAP[locale] || null;
+};
+
+const getDefaultGoogleVoice = (language?: GoogleConstants.Language, locale?: GoogleConstants.Locale) => {
+  const languageCode = language || (locale && Object.entries(GoogleConstants.LanguageToLocale).find(([_key, value]) => value.includes(locale))?.[0]);
+
+  return GoogleConstants.DEFAULT_LANGUAGE_VOICE_MAP[languageCode as GoogleConstants.Language] || null;
+};
+
+const updateAlexaMeta = async (versionID: string, locales: [AlexaConstants.Locale, ...AlexaConstants.Locale[]], invocationName?: string) => {
+  const defaultVoice = getDefaultAlexaVoice(locales[0]);
+
+  await Promise.all([
+    client.platform.alexa.version.updatePublishing(versionID, {
+      invocationName,
+      invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
+      locales,
+    }),
+    defaultVoice && client.platform.alexa.version.updateSettings(versionID!, { defaultVoice }),
+  ]);
+};
+
+const updateGoogleMeta = async (versionID: string, googleLanguage: GoogleConstants.Language, invocationName?: string) => {
+  const defaultVoice = getDefaultGoogleVoice(googleLanguage) as Nullable<Voice>;
+  await Promise.all([
+    client.platform.google.version.updatePublishing(versionID, {
+      locales: GoogleConstants.LanguageToLocale[googleLanguage],
+      displayName: DEFAULT_PROJECT_NAME,
+      pronunciation: invocationName,
+      sampleInvocations: [`Talk to ${invocationName}`],
+    }),
+    defaultVoice && client.platform.google.version.updateSettings(versionID!, { defaultVoice }),
+  ]);
+};
+
+const updateDialogFlowMeta = async (versionID: string, dialogFlowLanguage: DialogflowConstants.Language) => {
+  await client.platform.dialogflow.version.updatePublishing(versionID, {
+    locales: DialogflowConstants.LanguageToLocale[dialogFlowLanguage],
+  });
+};
+
+const updateGeneralMeta = async (versionID: string, generalLocale: GeneralConstants.Locale) => {
+  const firstAlexaVoice = getDefaultAlexaVoice(generalLocale as unknown as AlexaConstants.Locale);
+  const firstGoogleVoice = !firstAlexaVoice && getDefaultGoogleVoice(undefined, generalLocale as unknown as GoogleConstants.Locale);
+  const defaultVoice = firstAlexaVoice || firstGoogleVoice || undefined;
+
+  await client.platform.general.version.updateSettings(versionID, {
+    locales: [generalLocale],
+    defaultVoice: defaultVoice ? (defaultVoice as unknown as Nullable<Voice>) : undefined,
+  });
+};
 
 const NewProject: React.FC = () => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
@@ -62,32 +116,18 @@ const NewProject: React.FC = () => {
 
     try {
       const project = await createProject({ platform: selectedChannel!, name: DEFAULT_PROJECT_NAME, listID }, getTemplateTag(selectedChannel!));
+      newVersionID = project.versionID;
 
       // TODO: in the future make new project parameters much more platform specific
       if (isAlexaPlatform(selectedChannel!)) {
-        await client.platform.alexa.version.updatePublishing(project.versionID, {
-          invocationName,
-          invocations: [`open ${invocationName}`, `start ${invocationName}`, `launch ${invocationName}`],
-          locales: alexaLocales,
-        });
+        await updateAlexaMeta(newVersionID, alexaLocales, invocationName);
       } else if (isGooglePlatform(selectedChannel!)) {
-        await client.platform.google.version.updatePublishing(project.versionID, {
-          locales: GoogleConstants.LanguageToLocale[googleLanguage],
-          displayName: DEFAULT_PROJECT_NAME,
-          pronunciation: invocationName,
-          sampleInvocations: [`Talk to ${invocationName}`],
-        });
+        await updateGoogleMeta(newVersionID, googleLanguage, invocationName);
       } else if (isDialogflowPlatform(selectedChannel!)) {
-        await client.platform.dialogflow.version.updatePublishing(project.versionID, {
-          locales: DialogflowConstants.LanguageToLocale[dialogflowLanguage],
-        });
+        await updateDialogFlowMeta(newVersionID, dialogflowLanguage);
       } else if (isAnyGeneralPlatform(selectedChannel!)) {
-        await client.platform.general.version.updateSettings(project.versionID, {
-          locales: [generalLocale],
-        });
+        await updateGeneralMeta(newVersionID, generalLocale);
       }
-
-      newVersionID = project.versionID;
     } finally {
       setCreatingProject(false);
     }

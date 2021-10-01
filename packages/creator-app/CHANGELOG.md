@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.503.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.502.0...@voiceflow/creator-app@1.503.0) (2021-10-01)
+
+
+### Features
+
+* saml auth (VF-1903) ([#4240](https://github.com/voiceflow/creator-app/issues/4240)) ([7bf3ebf](https://github.com/voiceflow/creator-app/commit/7bf3ebf2c13c4cedb2b434eaf09983ccc4cefe59))
+
+
+
+
+
 # [1.502.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.501.0...@voiceflow/creator-app@1.502.0) (2021-10-01)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.20.0...@voiceflow/realtime-sdk@1.21.0) (2021-10-01)
+
+
+### Features
+
+* saml auth (VF-1903) ([#4240](https://github.com/voiceflow/creator-app/issues/4240)) ([7bf3ebf](https://github.com/voiceflow/creator-app/commit/7bf3ebf2c13c4cedb2b434eaf09983ccc4cefe59))
+
+
+
+
+
 # [1.20.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.19.0...@voiceflow/realtime-sdk@1.20.0) (2021-09-30)
 
 

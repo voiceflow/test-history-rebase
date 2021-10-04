@@ -73,7 +73,7 @@ function Flow({ onChange, diagrams, diagram, diagramID, goToDiagram, enterOnCrea
         clearable={value}
         getOptionValue={(option) => option?.value}
         getOptionLabel={(optionValue) => optionsMap[optionValue]?.label}
-        placeholder="Create new flow or select existing"
+        placeholder="Name new flow or select existing"
         createInputPlaceholder="New Flow Name"
       />
       {flowDoesNotExist && <Alert variant={AlertVariant.WARNING} message="Previously selected Flow is broken or has been deleted." mt={10} />}

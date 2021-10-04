@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.23.0...@voiceflow/ui@1.24.0) (2021-10-04)
+
+
+### Features
+
+* theme color enum (VF-000) ([#4256](https://github.com/voiceflow/creator-app/issues/4256)) ([7768371](https://github.com/voiceflow/creator-app/commit/7768371660996e85b1717e247657a6d70f891be6))
+
+
+
+
+
 # [1.23.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.22.0...@voiceflow/ui@1.23.0) (2021-09-30)
 
 

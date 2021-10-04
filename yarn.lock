@@ -5610,12 +5610,30 @@
     "@voiceflow/voice-types" "^1.4.19"
     ask-smapi-model "1.14.0"
 
-"@voiceflow/api-sdk@1.42.0", "@voiceflow/api-sdk@^1.39.0", "@voiceflow/api-sdk@^1.42.0":
+"@voiceflow/api-sdk@1.42.0", "@voiceflow/api-sdk@^1.42.0":
   version "1.42.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.42.0.tgz#b02a764a551c67cc71b16841b6c7f7006877dc6f"
   integrity sha512-QwTxwvmg3T+K/R64OpNe7KjV+2UhUEiqK23suRAw8I+JZJkEl6AkiLk2Jbby9o3lp7xgUOr2BXMS3ki3lDYsBg==
   dependencies:
     "@voiceflow/common" "6.8.1"
+    axios "^0.21.1"
+    superstruct "^0.10.12"
+
+"@voiceflow/api-sdk@^1.39.0":
+  version "1.40.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.40.0.tgz#c4b135c13c89c21e62fbda68e5e6e46f772adf52"
+  integrity sha512-be1UMhLo8assesraiqQD66sQPk8hFy9rO95tWwUKlDT6mkmPQNmJCH7+5Pna9VqLTmGVrIwcohsd9KISbtpAbg==
+  dependencies:
+    "@voiceflow/common" "6.8.0"
+    axios "^0.21.1"
+    superstruct "^0.10.12"
+
+"@voiceflow/api-sdk@^1.42.1":
+  version "1.42.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.42.1.tgz#0883e08fb72426b9b8841858b4f8c89a5a2a19ec"
+  integrity sha512-tIrKuCKAVPhdWKjh30DikHAFj6zLzQ5RsRnCpb7njn2VhzOwgOgywTJrEjicgmXsC2lP/AkbnZz/1WVr5b8oDw==
+  dependencies:
+    "@voiceflow/common" "^6.9.3"
     axios "^0.21.1"
     superstruct "^0.10.12"
 
@@ -5706,6 +5724,14 @@
   dependencies:
     "@commitlint/config-conventional" "^12.1.4"
 
+"@voiceflow/common@6.8.0":
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-6.8.0.tgz#0c7dfb5544f4e2ce42f4d52f65fd30752edb85b6"
+  integrity sha512-J8AFADt1XRICOkUHW8DwyZnsEYM5g+GKUV5tVJNBX2rZee4OK14i3VrxsFY1wnwkDYCy+lQoQi9JdJqmaQwfEg==
+  dependencies:
+    "@types/crypto-js" "^4.0.2"
+    crypto-js "^4.1.1"
+
 "@voiceflow/common@6.8.1":
   version "6.8.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-6.8.1.tgz#2c1e828ac889c5848d114c393d88bc3cf2b58e40"
@@ -5718,6 +5744,14 @@
   version "6.9.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-6.9.0.tgz#c4739797397828636f5a3283a080a66a2f770816"
   integrity sha512-LETJrRdunPvwdhW7y6X/QBGcb21U2AUZV0IFBywp316RVX7BJkKQk3CdDHXTwostf1pZQRHGqIIP47+/285syA==
+  dependencies:
+    "@types/crypto-js" "^4.0.2"
+    crypto-js "^4.1.1"
+
+"@voiceflow/common@^6.9.3":
+  version "6.9.3"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-6.9.3.tgz#68dfff5485901f2d62e5e55dd6cd6c65302e8bee"
+  integrity sha512-i7/8bCGzbJy+j8NY9v3dR1BjLPNnShbJWR9FQisRbLsml3gwhNuVTO3wY0U+PucR133WGX9vZlIMN+u7ibcXQQ==
   dependencies:
     "@types/crypto-js" "^4.0.2"
     crypto-js "^4.1.1"
@@ -13655,10 +13689,12 @@ icss-utils@^5.0.0, icss-utils@^5.1.0:
   resolved "https://registry.yarnpkg.com/icss-utils/-/icss-utils-5.1.0.tgz#c6be6858abd013d768e98366ae47e25d5887b1ae"
   integrity sha512-soFhflCVWLfRNOPU3iv5Z9VUdT44xFRbzjLsEzSr5AQmgqPMTHdU3PMT1Cf1ssx8fLNJDA1juftYl+PUcv3MqA==
 
-idb-keyval@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/idb-keyval/-/idb-keyval-3.2.0.tgz#cbbf354deb5684b6cdc84376294fc05932845bd6"
-  integrity sha512-slx8Q6oywCCSfKgPgL0sEsXtPVnSbTLWpyiDcu6msHOyKOLari1TD1qocXVCft80umnkk3/Qqh3lwoFt8T/BPQ==
+idb-keyval@^6.0.1:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/idb-keyval/-/idb-keyval-6.0.2.tgz#5079bae35169594d571973ac5bb387d17f21ae60"
+  integrity sha512-He4/fj9peGfjms7KSm2VuI6jubGv57SiicBEkLXEn9WEAuR+3S2SvLlvOVrXHRooAodrP5d11WOXGjONMgIypQ==
+  dependencies:
+    safari-14-idb-fix "^3.0.0"
 
 identity-obj-proxy@^3.0.0:
   version "3.0.0"
@@ -21581,6 +21617,11 @@ rxjs@^7.3.0:
   integrity sha512-p2yuGIg9S1epc3vrjKf6iVb3RCaAYjYskkO+jHIaV0IjOPlJop4UnodOoFb2xeNwlguqLYvGw1b1McillYb5Gw==
   dependencies:
     tslib "~2.1.0"
+
+safari-14-idb-fix@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/safari-14-idb-fix/-/safari-14-idb-fix-3.0.0.tgz#450fc049b996ec7f3fd9ca2f89d32e0761583440"
+  integrity sha512-eBNFLob4PMq8JA1dGyFn6G97q3/WzNtFK4RnzT1fnLq+9RyrGknzYiM/9B12MnKAxuj1IXr7UKYtTNtjyKMBog==
 
 safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"

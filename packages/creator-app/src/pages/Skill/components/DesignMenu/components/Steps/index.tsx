@@ -28,6 +28,7 @@ const Steps: React.FC<ConnectedStepsProps> = ({ platform, toggleSection, expande
       ...platformSection,
       steps: platformSection.steps.filter((step) => {
         if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
+        if (!topicsAndComponents.isEnabled && step.type === BlockType.COMPONENT) return false;
         if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
 
         return true;

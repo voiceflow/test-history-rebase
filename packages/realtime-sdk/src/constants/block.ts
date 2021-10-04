@@ -23,6 +23,7 @@ export enum BlockType {
   STREAM = 'stream',
   INTEGRATION = 'integration',
   FLOW = 'flow',
+  COMPONENT = 'component',
   CODE = 'code',
   EXIT = 'exit',
   PROMPT = 'prompt',

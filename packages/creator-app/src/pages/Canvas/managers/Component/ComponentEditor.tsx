@@ -4,19 +4,27 @@ import Section from '@/components/Section';
 import * as Diagram from '@/ducks/diagram';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
+import { NodeData } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
+import { NodeEditor, NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 import { FadeLeftContainer } from '@/styles/animations';
+import { ConnectedProps, MergeArguments } from '@/types';
 
-import { Mapping } from '../Component/components';
-import { variableMappingFactory } from '../Component/components/Mapping/components/MappingSection';
-import { Flow, Footer } from './components';
+import { Component, Footer, Mapping } from './components';
+import { variableMappingFactory } from './components/Mapping/components/MappingSection';
 
-function FlowEditor({ data, onChange, diagram, loadFlowVariables, goToDiagram }) {
+const ComponentEditor: NodeEditor<NodeData.Component, ConnectedComponentEditorProps> = ({
+  data,
+  onChange,
+  diagram,
+  loadComponentVariables,
+  goToDiagram,
+}) => {
   const hasVariableMapping = !!data.inputs?.length || !!data.outputs?.length;
 
   React.useEffect(() => {
     if (diagram?.id) {
-      loadFlowVariables(diagram.id);
+      loadComponentVariables(diagram.id);
     }
   }, [diagram?.id]);
 
@@ -44,17 +52,17 @@ function FlowEditor({ data, onChange, diagram, loadFlowVariables, goToDiagram })
       )}
     >
       <Section>
-        <Flow data={data} onChange={onChange} diagram={diagram} diagramID={data.diagramID} />
+        <Component onChange={onChange} diagram={diagram} diagramID={data.diagramID} />
       </Section>
 
       {hasVariableMapping && diagram ? (
         <FadeLeftContainer>
-          <Mapping isFlow data={data} updateInputs={(inputs) => onChange({ inputs })} updateOutputs={(outputs) => onChange({ outputs })} />
+          <Mapping data={data} updateInputs={(inputs) => onChange({ inputs })} updateOutputs={(outputs) => onChange({ outputs })} />
         </FadeLeftContainer>
       ) : null}
     </Content>
   );
-}
+};
 
 const mapStateToProps = {
   diagramByID: Diagram.diagramByIDSelector,
@@ -62,12 +70,21 @@ const mapStateToProps = {
 
 const mapDispatchToProps = {
   goToDiagram: Router.goToDiagramHistoryPush,
-  loadFlowVariables: Diagram.loadLocalVariables,
+  loadComponentVariables: Diagram.loadLocalVariables,
 };
 
-const mergeProps = ({ diagramByID }, { goToDiagram }, { data }) => ({
-  diagram: data.diagramID && diagramByID(data.diagramID),
-  goToDiagram: () => goToDiagram(data.diagramID),
-});
+const mergeProps = (
+  ...[{ diagramByID }, { goToDiagram }, { data }]: MergeArguments<
+    typeof mapStateToProps,
+    typeof mapDispatchToProps,
+    NodeEditorPropsType<NodeData.Component>
+  >
+) => {
+  return {
+    diagram: data.diagramID ? diagramByID(data.diagramID) : null,
+    goToDiagram: () => goToDiagram(data.diagramID!),
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(FlowEditor);
+type ConnectedComponentEditorProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ComponentEditor) as NodeEditor<NodeData.Component>;

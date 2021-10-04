@@ -19,6 +19,7 @@ export const GOOGLE_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/chann
 
 // canvas
 export const FLOW_STEP = 'https://docs.voiceflow.com/#/platform/steps/logic-steps/logic?id=flow-step';
+export const COMPONENT_STEP = 'https://docs.voiceflow.com/#/platform/steps/logic-steps/logic?id=component-step';
 export const CONDITION_STEP = 'https://docs.voiceflow.com/#/platform/steps/logic-steps/logic?id=condition-step';
 export const SET_STEP = 'https://docs.voiceflow.com/#/platform/steps/logic-steps/logic?id=set-step';
 export const CODE_STEP = 'https://docs.voiceflow.com/#/platform/steps/integration-steps/integration?id=custom-code-step';

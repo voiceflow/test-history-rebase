@@ -12,6 +12,7 @@ import CodeManager from './Code';
 import CombinedManager from './Combined';
 import CommandManager from './Command';
 import CommentManager from './Comment';
+import ComponentManager from './Component';
 import DeprecatedManager from './Deprecated';
 import DirectiveManager from './Directive';
 import DisplayManager from './Display';
@@ -57,6 +58,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.STREAM]: StreamManager,
   [BlockType.INTEGRATION]: IntegrationManager,
   [BlockType.FLOW]: FlowManager,
+  [BlockType.COMPONENT]: ComponentManager,
   [BlockType.CODE]: CodeManager,
   [BlockType.EXIT]: ExitManager,
   [BlockType.CARD]: CardManager,

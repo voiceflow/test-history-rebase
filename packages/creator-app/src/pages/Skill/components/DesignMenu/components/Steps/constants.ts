@@ -61,6 +61,8 @@ const EXIT_STEP = createMenuStep(BlockType.EXIT);
 
 const FLOW_STEP = createMenuStep(BlockType.FLOW);
 
+const COMPONENT_STEP = createMenuStep(BlockType.COMPONENT);
+
 const API_STEP = createMenuStep(BlockType.INTEGRATION, { factoryData: { selectedIntegration: Node.Utils.IntegrationType.CUSTOM_API } });
 
 const GOOGLE_SHEETS_STEP = createMenuStep(BlockType.INTEGRATION, {
@@ -111,7 +113,7 @@ export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -140,7 +142,7 @@ export const GOOGLE_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -169,7 +171,7 @@ export const CHATBOT_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -193,7 +195,7 @@ export const GENERAL_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,

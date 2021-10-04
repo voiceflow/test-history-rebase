@@ -142,6 +142,12 @@ export namespace NodeData {
     outputs?: { from: string | null; to: string | null }[];
   }
 
+  export interface Component {
+    diagramID: string | null;
+    inputs?: { from: string | null; to: string | null }[];
+    outputs?: { from: string | null; to: string | null }[];
+  }
+
   export interface Reminder {
     name: string;
     reminderType: string;

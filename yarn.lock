@@ -5610,7 +5610,7 @@
     "@voiceflow/voice-types" "^1.4.19"
     ask-smapi-model "1.14.0"
 
-"@voiceflow/api-sdk@1.42.0", "@voiceflow/api-sdk@^1.42.0":
+"@voiceflow/api-sdk@1.42.0", "@voiceflow/api-sdk@^1.39.0", "@voiceflow/api-sdk@^1.42.0":
   version "1.42.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-1.42.0.tgz#b02a764a551c67cc71b16841b6c7f7006877dc6f"
   integrity sha512-QwTxwvmg3T+K/R64OpNe7KjV+2UhUEiqK23suRAw8I+JZJkEl6AkiLk2Jbby9o3lp7xgUOr2BXMS3ki3lDYsBg==
@@ -5667,10 +5667,26 @@
     "@voiceflow/api-sdk" "^1.42.0"
     slate "^0.63.0"
 
-"@voiceflow/base-types@^1.1.0", "@voiceflow/base-types@^1.8.0", "@voiceflow/base-types@^1.9.0", "@voiceflow/base-types@^1.9.1":
+"@voiceflow/base-types@1.9.1", "@voiceflow/base-types@^1.8.0", "@voiceflow/base-types@^1.9.1":
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.9.1.tgz#a8ccfe1f3c9a6257d0a351565a12fbff842ddc16"
   integrity sha512-gb7ijh9snZcMQlxAoimnddZQyKrZfCyG5+YMM5pQiZnL10jVoIGcuaHEURjOn6ULY/QwSEM5kk727l/8mRGtdQ==
+  dependencies:
+    "@voiceflow/api-sdk" "^1.42.0"
+    slate "^0.63.0"
+
+"@voiceflow/base-types@^1.1.0":
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.6.2.tgz#193c5a86b05f1c3eab23c8ff0bd0ce95fcf8f6e2"
+  integrity sha512-NQ3wNQ5K0NpYKY+dBteePjHKSilnsmxrApcyte33Jb27dCnEMq4CqjYw+RVpW/FymC73V6hVGZ6eO8zRDsFeGQ==
+  dependencies:
+    "@voiceflow/api-sdk" "^1.39.0"
+    slate "^0.63.0"
+
+"@voiceflow/base-types@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-1.9.0.tgz#c099883ae069648a3c630e77ea36067a79182a6b"
+  integrity sha512-wOluOwdKtpbDayP6XPAiE+2aG0WDL2KmIfhPCqisyIQKhH9Fxi0DFg5nP3n8CJr7EeHarvcbdpgcKx/nNa0c2g==
   dependencies:
     "@voiceflow/api-sdk" "^1.42.0"
     slate "^0.63.0"

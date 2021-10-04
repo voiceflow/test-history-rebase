@@ -3,6 +3,7 @@ import buttonsAdapter from './buttons';
 import captureAdapter from './capture';
 import codeAdapter from './code';
 import commandAdapter from './command';
+import componentAdapter from './component';
 import directiveAdapter from './directive';
 import exitAdapter from './exit';
 import flowAdapter from './flow';
@@ -29,6 +30,7 @@ export const generalBlockAdapter = {
   [BlockType.EXIT]: exitAdapter,
   [BlockType.CODE]: codeAdapter,
   [BlockType.FLOW]: flowAdapter,
+  [BlockType.COMPONENT]: componentAdapter,
   [BlockType.SPEAK]: speakAdapter,
   [BlockType.TRACE]: traceAdapter,
   [BlockType.PROMPT]: promptAdapter,

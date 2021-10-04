@@ -19,7 +19,7 @@
     "@voiceflow/alexa-types": "1.52.45",
     "@voiceflow/api-sdk": "1.42.0",
     "@voiceflow/base-types": "1.8.0",
-    "@voiceflow/chat-types": "1.4.19",
+    "@voiceflow/chat-types": "1.4.21",
     "@voiceflow/common": "6.8.1",
     "@voiceflow/draft-js-mention-plugin": "3.3.15",
     "@voiceflow/general-types": "1.56.5",

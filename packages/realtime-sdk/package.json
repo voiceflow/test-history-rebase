@@ -8,7 +8,7 @@
   "dependencies": {
     "@voiceflow/alexa-types": "1.52.45",
     "@voiceflow/base-types": "1.8.0",
-    "@voiceflow/chat-types": "1.4.19",
+    "@voiceflow/chat-types": "1.4.21",
     "@voiceflow/common": "6.8.1",
     "@voiceflow/general-types": "1.56.5",
     "@voiceflow/google-types": "1.35.3",

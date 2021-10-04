@@ -31,6 +31,8 @@ function isOnRoute(_chai) {
   _chai.Assertion.addMethod('onRoute', assertIsOnRoute);
 }
 
+const between = (x, min, max) => x >= min && x <= max;
+
 function hasCoords(_chai) {
   function assertHasCoords([coordsX, coordsY]) {
     const { left, top } = this._obj.offset();
@@ -38,9 +40,9 @@ function hasCoords(_chai) {
     const y = Math.floor(top);
 
     this.assert(
-      x === coordsX && y === coordsY,
-      `expected [${x}, ${y}] to match coordinates [${coordsX}, ${coordsY}]`,
-      `expected [${x}, ${y}] to not match coordinates [${coordsX}, ${coordsY}]`,
+      between(x, coordsX - 1, coordsX + 1) && between(y, coordsY - 1, coordsY + 1),
+      `expected [${x}, ${y}] to match coordinates [${coordsX}, ${coordsY}] within a 1 pixel disparity`,
+      `expected [${x}, ${y}] to not match coordinates [${coordsX}, ${coordsY}] within a 1 pixel disparity`,
       [x, y]
     );
   }

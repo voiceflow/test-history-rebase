@@ -1,8 +1,9 @@
 import React from 'react';
 
-import EditableText, { EditableTextAPI, EditableTextProps } from '@/components/EditableText';
+import { EditableTextProps } from '@/components/EditableText';
+import TextArea from '@/components/TextArea';
 import { BlockVariant } from '@/constants/canvas';
-import { styled, transition, withBlockVariantStyle } from '@/hocs';
+import { css, styled, transition, withBlockVariantStyle } from '@/hocs';
 import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
   CANVAS_CREATING_LINK_CLASSNAME,
@@ -12,31 +13,22 @@ import {
   NODE_ACTIVE_CLASSNAME,
 } from '@/pages/Canvas/constants';
 
-type HeaderInputProps = EditableTextProps & {
+export interface BlockHeaderProps {
   nodeID: string;
-  canEdit?: boolean;
   variant: BlockVariant;
-  viewOnlyMode: boolean;
-};
+}
 
-const HeaderInput = styled(
-  // eslint-disable-next-line react/display-name
-  React.forwardRef<EditableTextAPI, HeaderInputProps>(({ canEdit, variant, viewOnlyMode, ...props }, ref) => <EditableText {...props} ref={ref} />)
-)<HeaderInputProps>`
+export type HeaderInputProps = EditableTextProps & BlockHeaderProps;
+
+export const headerInputStyles = css`
   ${transition('background')};
 
+  padding: 4px 8px;
+  border-radius: 5px;
   font-size: 15px;
   font-weight: 600;
-  padding: 0 5px;
-  border-radius: 3px;
   cursor: text;
-  box-sizing: content-box;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  user-select: ${({ readOnly }) => readOnly && 'none'};
-  pointer-events: ${({ viewOnlyMode }) => viewOnlyMode && 'none'};
-  color: ${withBlockVariantStyle((variant) => variant.color)};
+  box-sizing: border-box;
 
   .${CANVAS_MERGING_CLASSNAME} &,
   .${CANVAS_SELECTING_GROUP_CLASSNAME} &,
@@ -51,22 +43,26 @@ const HeaderInput = styled(
   .${CANVAS_COMMENTING_ENABLED_CLASSNAME}.${CANVAS_THREAD_OPEN_CLASSNAME} & {
     cursor: default;
   }
+`;
+
+const HeaderInput = styled(TextArea)<HeaderInputProps>`
+  ${headerInputStyles};
+
+  background: ${({ theme, variant }) => theme.components.block.variants[variant].editTitleColor};
+
+  border: none !important;
+  box-shadow: none;
+  min-height: 23px;
+  line-height: 1.5;
+
+  color: ${withBlockVariantStyle((variant) => variant.color)};
+
+  :focus-within {
+    background: ${({ theme, variant }) => theme.components.block.variants[variant].editTitleColor};
+  }
 
   .${NODE_ACTIVE_CLASSNAME}[data-node-id="${({ nodeID }) => nodeID}"] && {
     color: ${withBlockVariantStyle((variant) => variant.activeColor)};
-  }
-
-  :hover {
-    background: ${({ theme, variant, canEdit }) => canEdit && theme.components.block.variants[variant].editTitleColor};
-  }
-
-  :focus-within {
-    background: ${({ theme, variant, canEdit, readOnly }) => !readOnly && canEdit && theme.components.block.variants[variant].editTitleColor};
-  }
-
-  input {
-    text-align: center;
-    max-width: 100%;
   }
 `;
 

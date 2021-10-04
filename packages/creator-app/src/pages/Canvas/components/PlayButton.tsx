@@ -4,7 +4,7 @@ import React from 'react';
 import { BlockVariant } from '@/constants/canvas';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
-import { connect, styled, transition } from '@/hocs';
+import { connect, styled } from '@/hocs';
 import { useTheme, useTrackingEvents } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -17,23 +17,32 @@ import {
 } from '../constants';
 
 const Container = styled.div`
-  ${transition('opacity')}
-
+  transition: max-width 0.12s ease, margin-right 0.12s ease, opacity 0.12s ease;
+  max-width: 0;
+  margin-right: 0;
   opacity: 0;
+  overflow: hidden;
+  overflow: clip;
 
   .${CANVAS_PROTOTYPE_RUNNING_CLASSNAME} & {
     display: none;
   }
 
   .${ClassName.CANVAS_BLOCK}:hover & {
+    max-width: 16px;
     opacity: 1;
+
+    &:not(:last-child) {
+      margin-right: 12px;
+    }
   }
 
   .${NODE_HOVERED_CLASSNAME} &,
   .${NODE_MERGE_TARGET_CLASSNAME} &,
   .${CANVAS_CREATING_LINK_CLASSNAME} & {
     pointer-events: none;
-    opacity: 0 !important;
+    max-width: 0 !important;
+    margin-right: 0 !important;
   }
 `;
 

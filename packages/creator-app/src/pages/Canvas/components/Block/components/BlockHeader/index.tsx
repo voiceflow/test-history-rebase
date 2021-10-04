@@ -1,43 +1,56 @@
-import { Icon, preventDefault, SvgIcon } from '@voiceflow/ui';
+import { Icon, stopPropagation, SvgIcon, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
 import { BlockVariant } from '@/constants/canvas';
+import { useLinkedState, useTheme } from '@/hooks';
 import { BLOCK_SECTION_TITLE_CLASSNAME } from '@/pages/Canvas/constants';
 import { useEditingMode } from '@/pages/Skill/hooks';
-import { withEnterPress } from '@/utils/dom';
+import { withEnterPress, withTargetValue } from '@/utils/dom';
 
-import { Container, IconContainer, Input } from './components';
+import {
+  ActionsContainer,
+  Container,
+  Input,
+  InputContainer,
+  LeftIconContainer,
+  RadiusContainer,
+  Title,
+  TitleContainer,
+  TitleContainerInner,
+} from './components';
 
 export interface BlockHeaderProps {
-  variant: BlockVariant;
   name?: string;
   icon?: Icon;
   nodeID: string;
-  isDisabled?: boolean;
-  isLocked?: boolean;
-  canEditTitle?: boolean;
-  updateName?: (value: string) => void;
-  titleRef?: React.Ref<EditableTextAPI | null>;
+  variant: BlockVariant;
   actions?: JSX.Element;
+  titleRef?: React.Ref<EditableTextAPI | null> & { current?: any };
+  isLocked?: boolean;
+  isDisabled?: boolean;
+  updateName?: (value: string) => void;
+  canEditTitle?: boolean;
 }
 
 const BlockHeader: React.FC<BlockHeaderProps> = ({
   name,
-  nodeID,
-  canEditTitle,
   icon,
-  updateName,
+  nodeID,
   variant,
-  isDisabled,
+  actions,
   isLocked,
   titleRef,
-  actions,
+  updateName,
+  isDisabled,
+  canEditTitle,
 }) => {
+  const theme = useTheme();
   const isEditingMode = useEditingMode();
-
-  const [blockLabel, setBlockLabel] = React.useState(name ?? '');
-  const readOnly = isDisabled || !canEditTitle;
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const [editing, setEditing] = React.useState(false);
+  const [blockLabel, setBlockLabel] = useLinkedState(name ?? '');
+  const readOnly = isDisabled || !canEditTitle || !isEditingMode;
 
   const saveLabel = () => {
     if (blockLabel.trim() === '') {
@@ -47,14 +60,17 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({
     }
   };
 
-  const handleEnterPress: React.KeyboardEventHandler<HTMLInputElement> = async ({ currentTarget }) => {
+  const handleOnBlur = () => {
     saveLabel();
-    currentTarget.blur();
+    setEditing(false);
   };
 
-  React.useEffect(() => {
-    setBlockLabel(name ?? '');
-  }, [name]);
+  const handleEnterPress: React.KeyboardEventHandler<HTMLInputElement> = async ({ shiftKey, currentTarget }) => {
+    if (!shiftKey) {
+      handleOnBlur();
+      currentTarget.blur();
+    }
+  };
 
   React.useEffect(() => {
     if (isDisabled) {
@@ -62,32 +78,84 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({
     }
   }, [isDisabled]);
 
+  React.useEffect(() => {
+    if (!editing) {
+      return;
+    }
+
+    textareaRef.current?.focus();
+    textareaRef.current?.select();
+  }, [editing]);
+
+  const handleOnBlurPersisted = usePersistFunction(handleOnBlur);
+
+  React.useImperativeHandle(
+    titleRef,
+    () => ({
+      startEditing: () => {
+        setEditing(true);
+      },
+
+      stopEditing: () => {
+        handleOnBlurPersisted();
+      },
+    }),
+    []
+  );
+
   return (
     <Container>
       {icon && (
-        <IconContainer side="left">
+        <LeftIconContainer>
           <SvgIcon icon={icon} color="#6e849a" />
-        </IconContainer>
+        </LeftIconContainer>
       )}
-      <Input
-        className={BLOCK_SECTION_TITLE_CLASSNAME}
-        viewOnlyMode={!isEditingMode}
-        canEdit={canEditTitle}
-        onMouseUp={preventDefault()}
-        onBlur={saveLabel}
-        readOnly={readOnly}
-        onChange={setBlockLabel}
-        value={blockLabel}
-        variant={variant}
-        tabIndex={-1}
-        onKeyPress={withEnterPress(handleEnterPress)}
-        ref={titleRef}
-        nodeID={nodeID}
-      />
-      <IconContainer side="right">
-        {isLocked && <SvgIcon icon="lock" />}
-        {actions}
-      </IconContainer>
+
+      {editing ? (
+        <InputContainer>
+          <Input
+            value={blockLabel}
+            nodeID={nodeID}
+            onBlur={handleOnBlur}
+            variant={variant}
+            onClick={stopPropagation()}
+            inputRef={textareaRef}
+            onChange={withTargetValue(setBlockLabel)}
+            tabIndex={-1}
+            className={BLOCK_SECTION_TITLE_CLASSNAME}
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
+            onKeyPress={withEnterPress(handleEnterPress)}
+            onDoubleClick={stopPropagation()}
+          />
+        </InputContainer>
+      ) : (
+        <>
+          <TitleContainer>
+            <RadiusContainer>
+              <TitleContainerInner>
+                <Title
+                  nodeID={nodeID}
+                  variant={variant}
+                  onClick={stopPropagation(() => setEditing(true))}
+                  disabled={readOnly}
+                  className={BLOCK_SECTION_TITLE_CLASSNAME}
+                >
+                  {blockLabel}
+                </Title>
+              </TitleContainerInner>
+            </RadiusContainer>
+          </TitleContainer>
+
+          {(!!actions || isLocked) && (
+            <ActionsContainer onlyActions={!isLocked}>
+              {actions}
+
+              {isLocked && <SvgIcon icon="lock" color={theme.components.block.variants[variant || BlockVariant.STANDARD].color} />}
+            </ActionsContainer>
+          )}
+        </>
+      )}
     </Container>
   );
 };

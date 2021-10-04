@@ -27,7 +27,7 @@ context('Canvas - Blocks', () => {
 
     cy.addBlockToCanvasViaSpotlight('Audio');
 
-    canvasPage.el.node.should('have.length', 2).eq(1).and('have.coords', [400, 355]);
+    canvasPage.el.node.should('have.length', 2).eq(1).and('have.coords', [399, 356]);
   });
 
   it('add block to canvas using step menu', () => {
@@ -43,7 +43,7 @@ context('Canvas - Blocks', () => {
 
     cy.addBlockToCanvasViaSpotlight('Audio');
 
-    canvasPage.el.node.eq(1).should('have.coords', [400, 355]).dragNode(200, 200).should('have.coords', [600, 555]);
+    canvasPage.el.node.eq(1).should('have.coords', [399, 356]).dragNode(200, 200).should('have.coords', [599, 556]);
   });
 
   it('drag added block via step menu on canvas', () => {

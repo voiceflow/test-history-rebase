@@ -1,4 +1,4 @@
-import { colors, styled } from '../../../styles';
+import { colors, styled, ThemeColor } from '../../../styles';
 import { centerContent } from '../styles';
 
 const Page404Wrapper = styled.div`
@@ -10,7 +10,7 @@ const Page404Wrapper = styled.div`
 
   p {
     margin-top: 1rem;
-    color: ${colors('secondary')};
+    color: ${colors(ThemeColor.SECONDARY)};
   }
 `;
 

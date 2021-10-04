@@ -1,4 +1,4 @@
-import { Box, colors } from '@voiceflow/ui';
+import { Box, colors, ThemeColor } from '@voiceflow/ui';
 import Markdown from 'markdown-to-jsx';
 import React from 'react';
 
@@ -9,20 +9,20 @@ import { ConnectedProps } from '@/types';
 import { MessageProps } from '../components/Message';
 
 const SubjectText = styled.div`
-  color: ${colors('secondary')};
+  color: ${colors(ThemeColor.SECONDARY)};
 
   ::first-letter {
     text-transform: capitalize;
   }
 
   strong {
-    color: ${colors('red')};
+    color: ${colors(ThemeColor.RED)};
   }
 
   em {
     font-weight: bold;
     font-style: normal;
-    color: ${colors('primary')};
+    color: ${colors(ThemeColor.PRIMARY)};
   }
 `;
 

@@ -1,4 +1,4 @@
-import { colors, css, styled } from '../../../styles';
+import { colors, css, styled, ThemeColor } from '../../../styles';
 import { ButtonContainer } from '../../Button';
 import { SvgIconContainer } from '../../SvgIcon';
 import { IconButtonVariant } from '../types';
@@ -17,7 +17,7 @@ const SubtleContainer = styled(ButtonContainer)<SubtleContainerProps>`
 
   & ${SvgIconContainer} {
     max-width: 16px;
-    color: ${colors('tertiary')};
+    color: ${colors(ThemeColor.TERTIARY)};
   }
 
   &:hover ${SvgIconContainer} {

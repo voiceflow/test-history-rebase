@@ -1,9 +1,9 @@
-import { colors, FlexEnd, SvgIcon } from '@voiceflow/ui';
+import { colors, FlexEnd, SvgIcon, ThemeColor } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
 export const Container = styled(FlexEnd)<{ focused?: boolean; utteranceAdded?: boolean }>`
-  color: ${colors('secondary')};
+  color: ${colors(ThemeColor.SECONDARY)};
   margin-top: -16px;
   margin-bottom: 12px;
   font-size: 13px;
@@ -19,13 +19,13 @@ export const Container = styled(FlexEnd)<{ focused?: boolean; utteranceAdded?: b
   ${({ utteranceAdded = false }) =>
     utteranceAdded &&
     css`
-      color: ${colors('tertiary')};
+      color: ${colors(ThemeColor.TERTIARY)};
 
       & > span {
         text-align: none;
         align-items: none;
 
-        color: ${colors('secondary')};
+        color: ${colors(ThemeColor.SECONDARY)};
       }
     `}
 `;
@@ -54,5 +54,5 @@ export const StatusIcon = styled(SvgIcon)`
 `;
 
 export const TextContainer = styled.div`
-  color: ${colors('secondary')};
+  color: ${colors(ThemeColor.SECONDARY)};
 `;

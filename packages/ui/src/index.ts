@@ -3,7 +3,7 @@ export * from './config';
 export { KeyName } from './constants';
 export * from './hocs';
 export * from './hooks';
-export { backgrounds, colors, createGlobalStyle, createTheme, iconColors, keyframes, transition, units } from './styles';
+export { backgrounds, colors, createGlobalStyle, createTheme, iconColors, keyframes, ThemeColor, transition, units } from './styles';
 export * as SVG from './svgs';
 export * from './types';
 export * from './utils';

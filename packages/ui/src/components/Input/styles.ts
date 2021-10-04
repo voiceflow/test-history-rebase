@@ -1,19 +1,19 @@
 import { system } from 'styled-system';
 
 import { IS_SAFARI } from '../../config';
-import { colors, css } from '../../styles';
+import { colors, css, ThemeColor } from '../../styles';
 
 export const inputFocusStyle = css`
-  border: 1px solid ${colors('blue')};
+  border: 1px solid ${colors(ThemeColor.BLUE)};
   outline: 0;
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
 `;
 
 export const inputDisabledStyle = css`
-  color: ${colors('quaternary')};
+  color: ${colors(ThemeColor.QUARTERNARY)};
   ${IS_SAFARI &&
   css`
-    -webkit-text-fill-color: ${colors('quaternary')};
+    -webkit-text-fill-color: ${colors(ThemeColor.QUARTERNARY)};
   `}
 
   ${system({
@@ -42,7 +42,7 @@ export const inputStyle = css<StyledInputProps>`
   font: normal 15px Open Sans, Arial, sans-serif;
   font-size: 15px;
   line-height: 20px;
-  background: ${colors('white')};
+  background: ${colors(ThemeColor.WHITE)};
   border: 1px solid #d2dae2;
   border-radius: 6px;
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
@@ -62,6 +62,6 @@ export const inputStyle = css<StyledInputProps>`
   ${({ error, borderColor }) =>
     (error || borderColor) &&
     css`
-      border: 1px solid ${error ? colors('red') : borderColor} !important;
+      border: 1px solid ${error ? colors(ThemeColor.RED) : borderColor} !important;
     `}
 `;

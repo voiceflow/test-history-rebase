@@ -1,4 +1,4 @@
-import { colors, css, styled } from '../../../styles';
+import { colors, css, styled, ThemeColor } from '../../../styles';
 import { SlideDown } from '../../../styles/animations';
 import { cardStyles } from '../../Card';
 
@@ -45,8 +45,8 @@ const MenuContainer = styled.ul<MenuContainerProps>`
   margin-bottom: 5px;
   padding: ${({ padding }) => padding || `${VERTICAL_PADDING}px 0`};
   border-radius: 5px;
-  background: ${colors('white')};
-  color: ${colors('primary')};
+  background: ${colors(ThemeColor.WHITE)};
+  color: ${colors(ThemeColor.PRIMARY)};
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
   font-size: 15px;
   line-height: 18px;

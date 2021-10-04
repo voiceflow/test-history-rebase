@@ -1,4 +1,4 @@
-import { colors, css, styled, transition } from '../../../styles';
+import { colors, css, styled, ThemeColor, transition } from '../../../styles';
 import { ButtonContainer } from '../../Button';
 import { IconButtonVariant } from '../types';
 
@@ -21,17 +21,17 @@ const SIZE = {
 };
 
 export const importantStyles = css`
-  background: linear-gradient(180deg, rgba(93, 157, 245, 0.14) 0%, rgba(44, 133, 255, 0.205899) 97.03%), ${colors('white')};
+  background: linear-gradient(180deg, rgba(93, 157, 245, 0.14) 0%, rgba(44, 133, 255, 0.205899) 97.03%), ${colors(ThemeColor.WHITE)};
 `;
 
 export const activeStyle = css`
   ${importantStyles}
-  color: ${colors('blue')};
-  border: 1px solid ${colors('white')};
+  color: ${colors(ThemeColor.BLUE)};
+  border: 1px solid ${colors(ThemeColor.WHITE)};
   box-shadow: 0 0 0 1px #5b9dfa99 !important;
 
   &:hover {
-    color: ${colors('blue')};
+    color: ${colors(ThemeColor.BLUE)};
   }
 `;
 
@@ -42,7 +42,7 @@ const IconButtonContainer = styled(ButtonContainer)<IconButtonContainerProps>`
   width: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
   height: ${({ large }) => (large ? `${SIZE.large}px` : `${SIZE.small}px`)};
   color: rgba(110, 132, 154, 0.75);
-  background-color: ${colors('white')};
+  background-color: ${colors(ThemeColor.WHITE)};
   background-size: cover;
   border: 1px solid transparent;
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);

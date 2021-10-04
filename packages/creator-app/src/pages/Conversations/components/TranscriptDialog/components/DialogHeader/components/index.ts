@@ -1,4 +1,4 @@
-import { colors, FlexApart } from '@voiceflow/ui';
+import { colors, FlexApart, ThemeColor } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
@@ -22,5 +22,5 @@ export const Container = styled(FlexApart)<{ hasShadow: boolean }>`
 
 export const LabelContainer = styled.div`
   font-weight: normal;
-  color: ${colors('primary')};
+  color: ${colors(ThemeColor.PRIMARY)};
 `;

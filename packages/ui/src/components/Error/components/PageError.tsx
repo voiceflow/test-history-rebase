@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { error500Graphic } from '../../../assets';
-import { colors, styled } from '../../../styles';
+import { colors, styled, ThemeColor } from '../../../styles';
 import Page404Wrapper from './Page404Wrapper';
 
 const TitleLabel = styled.div`
-  color: ${colors('primary')};
+  color: ${colors(ThemeColor.PRIMARY)};
   display: block;
   margin-top: 1rem;
   font-weight: 600;
@@ -14,7 +14,7 @@ const TitleLabel = styled.div`
 
 export const ErrorDescription = styled.p`
   max-width: 360px;
-  color: ${colors('secondary')};
+  color: ${colors(ThemeColor.SECONDARY)};
   margin-bottom: 24px;
   text-align: center;
 `;

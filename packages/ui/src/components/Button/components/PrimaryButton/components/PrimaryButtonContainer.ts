@@ -1,4 +1,4 @@
-import { colors, css, styled, transition } from '../../../../../styles';
+import { colors, css, styled, ThemeColor, transition } from '../../../../../styles';
 import ButtonContainer, { ButtonContainerProps } from '../../ButtonContainer';
 import Icon from './PrimaryButtonIcon';
 
@@ -9,7 +9,7 @@ export interface PrimaryButtonContainerProps extends ButtonContainerProps {
 
 const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerProps>`
   ${transition('background', 'opacity', 'box-shadow')}
-  color: ${colors('white')};
+  color: ${colors(ThemeColor.WHITE)};
   font-weight: 600;
   white-space: nowrap;
   text-align: center;

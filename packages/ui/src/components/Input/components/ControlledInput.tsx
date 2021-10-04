@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { colors, styled } from '../../../styles';
+import { colors, styled, ThemeColor } from '../../../styles';
 import { FadeLeftContainer } from '../../../styles/animations';
 import { COLOR_GREEN, COLOR_RED } from '../../../styles/constants';
 import { NestedInput, NestedInputProps } from './DefaultInput';
@@ -30,7 +30,7 @@ const getIcon = (error?: boolean, complete?: boolean) => {
 };
 
 const Message = styled(FadeLeftContainer)`
-  color: ${colors('tertiary')};
+  color: ${colors(ThemeColor.TERTIARY)};
   font-size: 13px;
   text-transform: capitalize;
 `;

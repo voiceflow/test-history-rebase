@@ -1,4 +1,4 @@
-import { colors } from '@voiceflow/ui';
+import { colors, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
 import { css, styled } from '@/hocs';
@@ -14,7 +14,7 @@ export const slotStyles = css`
   padding-top: 0px;
   margin-bottom: -1px;
   background-color: ${({ color = DEFAULT_SLOT_COLOR }) => color};
-  color: ${colors('white')};
+  color: ${colors(ThemeColor.WHITE)};
 `;
 
 const SlotTagWrapper = styled.span`

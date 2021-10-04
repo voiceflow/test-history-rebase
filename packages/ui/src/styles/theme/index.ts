@@ -1,6 +1,21 @@
 import { ANIMATION_SPEED, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE } from '../constants';
 import ICON_THEME from './icon';
 
+export enum ThemeColor {
+  WHITE = 'white',
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+  TERTIARY = 'tertiary',
+  QUARTERNARY = 'quaternary',
+  RED = 'red',
+  GREEN = 'green',
+  BLUE = 'blue',
+  DARK_BLUE = 'darkBlue',
+  BORDERS = 'borders',
+  SEPERATOR = 'seperator',
+  SEPERATOR_SECONDARY = 'separatorSecondary',
+}
+
 const THEME = {
   unit: 8,
   breakpoints: {
@@ -23,18 +38,18 @@ const THEME = {
     active: '#6e849a',
   },
   colors: {
-    white: COLOR_WHITE,
-    primary: '#132144',
-    secondary: '#62778c',
-    tertiary: '#8da2b5',
-    quaternary: '#949db0',
-    red: COLOR_RED,
-    green: COLOR_GREEN,
-    blue: COLOR_BLUE,
-    darkBlue: '#4886da',
-    borders: '#dfe3ed',
-    separator: '#dfe3ed',
-    separatorSecondary: '#eaeff4',
+    [ThemeColor.WHITE]: COLOR_WHITE,
+    [ThemeColor.PRIMARY]: '#132144',
+    [ThemeColor.SECONDARY]: '#62778c',
+    [ThemeColor.TERTIARY]: '#8da2b5',
+    [ThemeColor.QUARTERNARY]: '#949db0',
+    [ThemeColor.RED]: COLOR_RED,
+    [ThemeColor.GREEN]: COLOR_GREEN,
+    [ThemeColor.BLUE]: COLOR_BLUE,
+    [ThemeColor.DARK_BLUE]: '#4886da',
+    [ThemeColor.BORDERS]: '#dfe3ed',
+    [ThemeColor.SEPERATOR]: '#dfe3ed',
+    [ThemeColor.SEPERATOR_SECONDARY]: '#eaeff4',
   },
   space: {
     xs: 4,

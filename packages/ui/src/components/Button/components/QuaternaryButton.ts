@@ -1,4 +1,4 @@
-import { colors, css, styled, transition } from '../../../styles';
+import { colors, css, styled, ThemeColor, transition } from '../../../styles';
 import { ButtonVariant } from '../constants';
 import ButtonContainer, { ButtonContainerProps } from './ButtonContainer';
 
@@ -12,9 +12,9 @@ const QuaternaryButton = styled(ButtonContainer)<QuaternaryButtonProps>`
   z-index: 1;
   display: inline-block;
   padding: 8px 22px 10px;
-  color: ${colors('blue')};
+  color: ${colors(ThemeColor.BLUE)};
   font-weight: 600;
-  background-color: ${colors('white')};
+  background-color: ${colors(ThemeColor.WHITE)};
   background-image: linear-gradient(-180deg, #5d9df515 0%, #5d9df520 78%);
   border: 0;
   border-radius: 41px;

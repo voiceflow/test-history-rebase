@@ -1,4 +1,4 @@
-import { colors, css, styled, transition } from '../../../styles';
+import { colors, css, styled, ThemeColor, transition } from '../../../styles';
 import { SvgIconContainer } from '../../SvgIcon';
 import { IconButtonVariant } from '../types';
 import IconButtonContainer, { IconButtonContainerSharedProps } from './IconButtonContainer';
@@ -13,7 +13,7 @@ export interface OutlineContainerProps extends IconButtonContainerSharedProps {
 const activeStyle = css<OutlineContainerProps>`
   color: ${({ color }) => color ?? 'rgba(19, 33, 68, 0.85)'};
   background: #eef4f6cc;
-  border: 1px solid ${colors('borders')};
+  border: 1px solid ${colors(ThemeColor.BORDERS)};
   box-shadow: none !important;
   opacity: 1;
 
@@ -25,8 +25,8 @@ const activeStyle = css<OutlineContainerProps>`
 const OutlineContainer = styled(IconButtonContainer as React.FC<OutlineContainerProps>)`
   ${transition('border', 'background', 'color', 'box-shadow', 'opacity')}
   color: ${({ color, theme }) => color ?? theme.colors.tertiary};
-  background: ${colors('white')};
-  border: 1px solid ${colors('separatorSecondary')};
+  background: ${colors(ThemeColor.WHITE)};
+  border: 1px solid ${colors(ThemeColor.SEPERATOR_SECONDARY)};
   box-shadow: none !important;
 
   ${SvgIconContainer} {
@@ -35,7 +35,7 @@ const OutlineContainer = styled(IconButtonContainer as React.FC<OutlineContainer
 
   &:hover {
     color: ${({ color, theme }) => color ?? theme.iconColors.active};
-    border: 1px solid ${colors('borders')};
+    border: 1px solid ${colors(ThemeColor.BORDERS)};
     box-shadow: none;
   }
 
@@ -57,9 +57,9 @@ const OutlineContainer = styled(IconButtonContainer as React.FC<OutlineContainer
     !preventFocusStyle &&
     css`
       &:focus {
-        color: ${colors('primary')};
+        color: ${colors(ThemeColor.PRIMARY)};
         background: #eef4f6cc;
-        border: 1px solid ${colors('borders')};
+        border: 1px solid ${colors(ThemeColor.BORDERS)};
         box-shadow: none !important;
       }
     `}

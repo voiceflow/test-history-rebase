@@ -1,4 +1,4 @@
-import { backgrounds, colors, Flex } from '@voiceflow/ui';
+import { backgrounds, colors, Flex, ThemeColor } from '@voiceflow/ui';
 
 import { styled, units } from '@/hocs';
 
@@ -10,7 +10,7 @@ const ModalFooter = styled(Flex)<ModalFooterProps>`
   justify-content: ${({ justifyContent }) => justifyContent || 'flex-end'};
   padding: ${units(3)}px ${units(4)}px;
   background: ${backgrounds('gray')};
-  border-top: 1px solid ${colors('separatorSecondary')};
+  border-top: 1px solid ${colors(ThemeColor.SEPERATOR_SECONDARY)};
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
 `;

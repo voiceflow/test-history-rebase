@@ -1,4 +1,4 @@
-import { colors, css, styled } from '../../../styles';
+import { colors, css, styled, ThemeColor } from '../../../styles';
 import { IconButtonVariant } from '../types';
 import IconButtonContainer, { IconButtonContainerSharedProps, importantStyles } from './IconButtonContainer';
 
@@ -22,7 +22,7 @@ export const beforeStyles = css`
   }
 
   &:active::before {
-    box-shadow: inset 0 0 0 1px ${colors('white')};
+    box-shadow: inset 0 0 0 1px ${colors(ThemeColor.WHITE)};
     opacity: 1;
   }
 `;
@@ -30,13 +30,13 @@ export const beforeStyles = css`
 const ActionContainer = styled(IconButtonContainer)<ActionContainerProps>`
   ${importantStyles}
   ${beforeStyles}
-  color: ${colors('blue')};
-  border: 1px solid ${colors('white')};
-  box-shadow: 0 0 0 1px ${colors('white')}, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  color: ${colors(ThemeColor.BLUE)};
+  border: 1px solid ${colors(ThemeColor.WHITE)};
+  box-shadow: 0 0 0 1px ${colors(ThemeColor.WHITE)}, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
 
   &:hover {
-    color: ${colors('blue')};
-    box-shadow: 0 0 0 1px ${colors('white')}, 0 2px 4px 1px rgba(17, 49, 96, 0.16);
+    color: ${colors(ThemeColor.BLUE)};
+    box-shadow: 0 0 0 1px ${colors(ThemeColor.WHITE)}, 0 2px 4px 1px rgba(17, 49, 96, 0.16);
   }
 
   ${({ disabled }) =>

@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import { backgrounds, colors, css, styled } from '../../../styles';
+import { backgrounds, colors, css, styled, ThemeColor } from '../../../styles';
 import { ClassName } from '../../../styles/constants';
 import { flexStyles } from '../../Flex';
 
@@ -20,7 +20,7 @@ export const itemStyles = css<MenuItemProps>`
 
   height: ${({ theme, height = theme.components.menuItem.height, divider }) => (!divider ? `${height}px` : 0)};
   padding: 0 24px;
-  background: ${colors('white')};
+  background: ${colors(ThemeColor.WHITE)};
   overflow: hidden;
   user-select: none;
   cursor: pointer;
@@ -31,8 +31,8 @@ export const itemStyles = css<MenuItemProps>`
     disabled &&
     css`
       cursor: default;
-      color: ${colors('tertiary')};
-      background: ${colors('white')};
+      color: ${colors(ThemeColor.TERTIARY)};
+      background: ${colors(ThemeColor.WHITE)};
     `}
 
   ${({ capitalize }) =>
@@ -45,28 +45,28 @@ export const itemStyles = css<MenuItemProps>`
     ${({ disabled }) =>
       !disabled &&
       css`
-        background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors('white')}fff;
+        background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors(ThemeColor.WHITE)}fff;
       `}
   }
 
   ${({ active }) =>
     active &&
     css`
-      background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors('white')}fff;
+      background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors(ThemeColor.WHITE)}fff;
     `}
 
   &:active {
     ${({ disabled }) =>
       !disabled &&
       css`
-        background: linear-gradient(180deg, rgba(230, 238, 241, 0.85) 0%, #eaf0f2 100%), ${colors('white')};
+        background: linear-gradient(180deg, rgba(230, 238, 241, 0.85) 0%, #eaf0f2 100%), ${colors(ThemeColor.WHITE)};
       `}
   }
 
   ${({ bottomAction }) =>
     bottomAction &&
     css`
-      color: ${colors('blue')};
+      color: ${colors(ThemeColor.BLUE)};
       padding: 24px 46px;
       justify-content: center;
     `}

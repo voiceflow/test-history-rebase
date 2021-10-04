@@ -1,11 +1,11 @@
-import { colors } from '@voiceflow/ui';
+import { colors, ThemeColor } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
 export const BodyTextContainer = styled.div`
   max-width: 360px;
   margin-bottom: 32px;
-  color: ${colors('secondary')};
+  color: ${colors(ThemeColor.SECONDARY)};
 `;
 
 export const ButtonContainer = styled.div`
@@ -14,7 +14,7 @@ export const ButtonContainer = styled.div`
 `;
 
 export const TitleLabel = styled.div`
-  color: ${colors('primary')};
+  color: ${colors(ThemeColor.PRIMARY)};
   margin-bottom: 15px;
   text-align: center;
   display: block;

@@ -1,4 +1,4 @@
-import { backgrounds, colors, css, styled, transition } from '../../../../../styles';
+import { backgrounds, colors, css, styled, ThemeColor, transition } from '../../../../../styles';
 import ButtonContainer, { ButtonContainerProps } from '../../ButtonContainer';
 import Icon from './SecondaryButtonIcon';
 
@@ -15,12 +15,12 @@ const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonContaine
   ${transition('background', 'opacity', 'box-shadow', 'background-color')}
   box-sizing: border-box;
   padding: 9px 22px 10px;
-  color: ${colors('primary')};
+  color: ${colors(ThemeColor.PRIMARY)};
   font-weight: 600;
   line-height: 22px;
   background-color: #eef4f6d9;
   background-size: 1px 42px;
-  border: 1px solid ${colors('borders')};
+  border: 1px solid ${colors(ThemeColor.BORDERS)};
 
   ${({ square }) =>
     square &&

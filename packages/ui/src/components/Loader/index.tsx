@@ -2,15 +2,15 @@ import cn from 'classnames';
 import React from 'react';
 
 import { loader2Icon } from '../../assets';
-import { colors, css, styled } from '../../styles';
+import { colors, css, styled, ThemeColor } from '../../styles';
 import { ClassName } from '../../styles/constants';
 
-type LoaderProps = {
+interface LoaderProps {
   isMd?: boolean;
   color?: string;
   borderLess?: boolean;
   className?: string;
-};
+}
 
 const spinnerStyles = css<LoaderProps>`
   display: inline-flex;
@@ -29,7 +29,7 @@ const LoadContainer = styled.div<LoaderProps>`
 export const LoadCircle = styled.span<LoaderProps>`
   ${spinnerStyles}
   line-height: 1;
-  background-color: ${({ color }) => color || colors('white')};
+  background-color: ${({ color }) => color || colors(ThemeColor.WHITE)};
   background-image: url(${loader2Icon});
   background-repeat: no-repeat;
   background-position: center;

@@ -1,5 +1,6 @@
-import { backgrounds, colors, css, styled, units } from '../../styles';
+import { backgrounds, colors, css, styled, ThemeColor, units } from '../../styles';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type BadgeProps = {
   onClick?: React.MouseEventHandler;
   slide?: boolean;
@@ -40,12 +41,12 @@ const Badge = styled.div.attrs((props) => (props.onClick ? { role: 'button' } : 
   ${({ color }) =>
     color
       ? css`
-          color: ${colors('white')};
+          color: ${colors(ThemeColor.WHITE)};
           background: ${color};
           border: 1px solid ${color};
         `
       : css`
-          color: ${colors('secondary')};
+          color: ${colors(ThemeColor.SECONDARY)};
           background: linear-gradient(180deg, #eff5f6a3 0%, ${backgrounds('greyGreen')} 100%), ${backgrounds('white')};
           border: 1px solid #d4d9e6;
           box-shadow: 0 1px 0 #d4d9e6;

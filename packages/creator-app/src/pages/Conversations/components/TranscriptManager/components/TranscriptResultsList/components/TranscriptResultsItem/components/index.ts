@@ -1,4 +1,4 @@
-import { colors, Flex } from '@voiceflow/ui';
+import { colors, Flex, ThemeColor } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 import { ClassName } from '@/styles/constants';
@@ -14,7 +14,7 @@ export const Container = styled(Flex)<{ active?: boolean; isLastItem: boolean; m
   ${transition()};
   padding: 20px 32px;
   border-left: 3px solid white;
-  border-bottom: 1px solid ${({ isLastItem }) => colors(isLastItem ? 'separator' : 'separatorSecondary')};
+  border-bottom: 1px solid ${({ isLastItem }) => colors(isLastItem ? ThemeColor.SEPERATOR : ThemeColor.SEPERATOR_SECONDARY)};
   border-top: 1px solid transparent;
   border-right: 0px;
   background: white;

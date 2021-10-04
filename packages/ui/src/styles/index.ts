@@ -1,6 +1,8 @@
 import _styled, { css as _css, DefaultTheme, ThemedCssFunction, ThemedStyledInterface, ThemedStyledProps } from 'styled-components';
 
-export { createTheme } from './theme';
+import { ThemeColor } from './theme';
+
+export { createTheme, ThemeColor } from './theme';
 export { createGlobalStyle, keyframes } from 'styled-components';
 
 export type StyledProps<P> = ThemedStyledProps<P, DefaultTheme>;
@@ -20,7 +22,7 @@ export const units =
     theme.unit * count;
 
 export const colors =
-  (color: keyof DefaultTheme['colors']) =>
+  (color: ThemeColor) =>
   ({ theme }: { theme: DefaultTheme }): string =>
     theme.colors[color];
 

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.505.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.505.0...@voiceflow/creator-app@1.505.1) (2021-10-04)
+
+
+### Bug Fixes
+
+* fixes model export endpoint (VF-1915) ([#4263](https://github.com/voiceflow/creator-app/issues/4263)) ([346ca39](https://github.com/voiceflow/creator-app/commit/346ca399677699f259d54343406af78c33238b4f))
+* multiline (VF-1891) ([#4257](https://github.com/voiceflow/creator-app/issues/4257)) ([a4d7d57](https://github.com/voiceflow/creator-app/commit/a4d7d57782dd40c57f699f35b035a47ca6a480f7))
+* update idb-keyval (VF-1749) ([#4250](https://github.com/voiceflow/creator-app/issues/4250)) ([e6636e7](https://github.com/voiceflow/creator-app/commit/e6636e7a512a3af9071e62011fd24b7f67839490))
+
+
+
+
+
 # [1.505.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.504.0...@voiceflow/creator-app@1.505.0) (2021-10-04)
 
 

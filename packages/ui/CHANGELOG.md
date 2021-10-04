@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.24.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.24.0...@voiceflow/ui@1.24.1) (2021-10-04)
+
+
+### Bug Fixes
+
+* multiline (VF-1891) ([#4257](https://github.com/voiceflow/creator-app/issues/4257)) ([a4d7d57](https://github.com/voiceflow/creator-app/commit/a4d7d57782dd40c57f699f35b035a47ca6a480f7))
+
+
+
+
+
 # [1.24.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.23.0...@voiceflow/ui@1.24.0) (2021-10-04)
 
 

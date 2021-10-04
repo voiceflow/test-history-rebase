@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, ClickableText, FlexApart, preventDefault, toast } from '@voiceflow/ui';
+import { BoxFlexApart, BoxFlexCenter, Button, ButtonVariant, ClickableText, preventDefault, SvgIcon, ThemeColor, toast } from '@voiceflow/ui';
 import { getSearch } from 'connected-react-router';
 import _get from 'lodash/get';
 import React from 'react';
@@ -9,12 +9,13 @@ import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useSetup, useToggle } from '@/hooks';
-import { Query } from '@/models';
+import { useDebouncedCallback, useSetup, useToggle } from '@/hooks';
+import { Query, SAMLProvider } from '@/models';
 import HeaderBox from '@/pages/Auth/components/HeaderBox';
 import perf, { PerfAction } from '@/performance';
 import { ConnectedProps, MergeArguments } from '@/types';
 
+import { getDomainSAML } from '../hooks';
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationContainer';
@@ -31,8 +32,22 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
   const [password, setPassword] = React.useState('');
   const [showPassword, toggleShowPassword] = useToggle();
+  const [sso, setSSO] = React.useState<Partial<SAMLProvider> | null>(null);
+  const debouncedCheckSSO = useDebouncedCallback(100, async (email: string) => setSSO(await getDomainSAML(email)), []);
 
-  const loginSubmit = () =>
+  const updateEmail = (email: string) => {
+    debouncedCheckSSO(email);
+    setEmail(email);
+  };
+
+  const loginSubmit = async () => {
+    const ssoLogin = await getDomainSAML(email);
+    if (ssoLogin?.entryPoint) {
+      setSSO(ssoLogin);
+      window.location.assign(ssoLogin.entryPoint);
+      return;
+    }
+
     basicAuthLogin({
       email,
       password,
@@ -40,6 +55,7 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
       const errText = _get(error, ['body', 'data']) || false;
       toast.error(errText);
     });
+  };
 
   useSetup(() => {
     perf.action(PerfAction.LOGIN_RENDERED);
@@ -55,28 +71,35 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
               <h1>Log In to your account</h1>
             </HeaderBox>
             <InputContainer>
-              <EmailInput value={email} onChange={setEmail} />
+              <EmailInput value={email} onChange={updateEmail} />
             </InputContainer>
-            <InputContainer className="passwordInput">
-              <PasswordInput value={password} onChange={setPassword} showPassword={showPassword} />
-              {password.length !== 0 && <ShowPasswordIcon showPassword={showPassword} onClick={() => toggleShowPassword()} />}
-              <Link className="forgotLink" to="/reset">
-                Forgot password?
-              </Link>
-            </InputContainer>
+            {!sso && (
+              <InputContainer className="passwordInput">
+                <PasswordInput value={password} onChange={setPassword} showPassword={showPassword} />
+                {password.length !== 0 && <ShowPasswordIcon showPassword={showPassword} onClick={() => toggleShowPassword()} />}
+                <Link className="forgotLink" to="/reset">
+                  Forgot password?
+                </Link>
+              </InputContainer>
+            )}
 
-            <FlexApart>
-              <div className="auth__link">
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                {IS_PRIVATE_CLOUD ? <span /> : <ClickableText onClick={goToSignup}>Don't have an account?</ClickableText>}
-              </div>
+            <BoxFlexApart pt={8}>
+              {sso ? (
+                <BoxFlexCenter color={ThemeColor.SECONDARY}>
+                  <SvgIcon icon="lock" inline mr={14} />
+                  SAML SSO enabled
+                </BoxFlexCenter>
+              ) : (
+                <div className="auth__link">
+                  {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                  {IS_PRIVATE_CLOUD ? <span /> : <ClickableText onClick={goToSignup}>Don't have an account?</ClickableText>}
+                </div>
+              )}
 
-              <div>
-                <Button variant={ButtonVariant.PRIMARY} type="submit">
-                  {query.invite ? 'Join Team' : 'Log In'}
-                </Button>
-              </div>
-            </FlexApart>
+              <Button variant={ButtonVariant.PRIMARY} type="submit">
+                {query.invite ? 'Join Team' : 'Log In'}
+              </Button>
+            </BoxFlexApart>
           </div>
         </form>
 

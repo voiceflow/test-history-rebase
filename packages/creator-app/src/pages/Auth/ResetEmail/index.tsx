@@ -1,6 +1,7 @@
 import { ClickableText, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
+import { wordmark } from '@/assets';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
 import { ConnectedProps } from '@/types';
@@ -34,6 +35,7 @@ const ResetEmail: React.FC<ConnectedResetEmailProps> = ({ goToLogin }) => {
   return (
     <AuthenticationContainer>
       <AuthBox>
+        <img className="auth-logo" src={wordmark} alt="logo" />
         <div className="auth-form-wrapper">{stages[stage] ?? null}</div>
       </AuthBox>
     </AuthenticationContainer>

@@ -3,6 +3,7 @@ import React from 'react';
 
 import { composeWrappers, StoreProvider, ThemeProvider } from '@/../test/_utils';
 import { SignupForm } from '@/pages/Auth/components/SignupForm';
+import * as hooks from '@/pages/Auth/hooks';
 
 const TEST_NAME = 'Voiceflow Tester';
 const TEST_EMAIL = 'tests@getvoiceflow.com';
@@ -26,6 +27,8 @@ afterEach(() => {
 describe('Onboarding', () => {
   it('creates accounts on signup', async () => {
     const signup = jest.fn();
+    jest.spyOn(hooks, 'getDomainSAML').mockResolvedValue(null);
+
     render(<SignupForm query={{}} search="" signup={signup} goToLogin={jest.fn()} />, { wrapper: TestWrapper });
 
     fireEvent.change(screen.getByPlaceholderText('Full name'), { target: { value: TEST_NAME } });

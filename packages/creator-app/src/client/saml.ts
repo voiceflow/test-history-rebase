@@ -2,9 +2,9 @@ import samlProviderAdapter from '@/client/adapters/samlProvider';
 import { SAMLProvider } from '@/models';
 
 import { apiV2 } from './fetch';
+import { ORGANIZATIONS_PATH } from './organization';
 
 export const SAML_PATH = 'saml';
-export const ORGANIZATIONS_PATH = 'organizations';
 
 const samlClient = {
   validations: (_id: string) => apiV2.post(`${SAML_PATH}/${_id}/validations`),

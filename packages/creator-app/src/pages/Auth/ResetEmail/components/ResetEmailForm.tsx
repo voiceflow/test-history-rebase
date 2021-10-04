@@ -1,12 +1,15 @@
-import { BoxFlexApart, Button, ButtonVariant, ClickableText, NetworkError, preventDefault, toast } from '@voiceflow/ui';
+import { Box, BoxFlexApart, Button, ButtonVariant, ClickableText, NetworkError, preventDefault, ThemeColor, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import * as Router from '@/ducks/router';
 import { connect } from '@/hocs';
+import HeaderBox from '@/pages/Auth/components/HeaderBox';
 import { ConnectedProps } from '@/types';
 
 import { EmailInput } from '../../components';
+import { SSO_REQUIRED } from '../../constants';
+import { getDomainSAML } from '../../hooks';
 import { ResetEmailStage } from '../constants';
 
 export interface ResetEmailFormProps {
@@ -16,9 +19,15 @@ export interface ResetEmailFormProps {
 }
 
 const ResetEmailForm: React.FC<ResetEmailFormProps & ConnectedResetEmailFormProps> = ({ email, goToLogin, setEmail, setStage }) => {
-  const resetEmail = async () => {
-    setStage(ResetEmailStage.PENDING);
+  const [ssoRequired, setSsoRequired] = React.useState(false);
 
+  const resetEmail = async () => {
+    if (await getDomainSAML(email)) {
+      setSsoRequired(true);
+      return;
+    }
+
+    setStage(ResetEmailStage.PENDING);
     try {
       await client.user.resetEmail(email);
 
@@ -36,18 +45,23 @@ const ResetEmailForm: React.FC<ResetEmailFormProps & ConnectedResetEmailFormProp
 
   return (
     <form onSubmit={preventDefault(resetEmail)} className="w-100">
-      <EmailInput value={email} onChange={setEmail} />
+      <HeaderBox>
+        <h1>Reset password</h1>
+      </HeaderBox>
+      <EmailInput value={email} onChange={setEmail} error={ssoRequired} />
+      {ssoRequired && (
+        <Box mt={8} fontSize={13} color={ThemeColor.RED}>
+          {SSO_REQUIRED}
+        </Box>
+      )}
 
       <BoxFlexApart mt={32}>
         <div className="auth__link">
-          <ClickableText onClick={() => goToLogin()}>Back to Signing in</ClickableText>
+          <ClickableText onClick={() => goToLogin()}>Back to log in</ClickableText>
         </div>
-
-        <div>
-          <Button variant={ButtonVariant.PRIMARY} type="submit">
-            Reset Password
-          </Button>
-        </div>
+        <Button variant={ButtonVariant.PRIMARY} type="submit">
+          Send Recovery Email
+        </Button>
       </BoxFlexApart>
     </form>
   );

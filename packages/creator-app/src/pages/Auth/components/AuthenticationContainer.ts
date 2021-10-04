@@ -8,14 +8,9 @@ const AuthenticationContainer = styled.div<AuthenticationContainerProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   height: 100%;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
+  padding: 10%;
+  overflow: scroll;
 
   ${({ dark }) =>
     dark

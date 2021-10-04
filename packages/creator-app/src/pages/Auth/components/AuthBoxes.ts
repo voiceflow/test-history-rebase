@@ -27,15 +27,13 @@ export const Check = styled.div`
 `;
 
 export const AuthBox = styled.div`
-  text-align: center;
-
   #login-container {
     background: linear-gradient(180deg, rgba(19, 33, 68, 0.85) 0%, #132144 100%), #fff;
   }
 
   .auth-form-wrapper {
-    width: 404px;
-    max-width: 404px;
+    width: 416px;
+    max-width: 416px;
     padding: 32px;
     background-color: #fff;
     border-radius: 5px;
@@ -50,7 +48,8 @@ export const AuthBox = styled.div`
 
   .auth-logo {
     width: 140px;
-    margin-bottom: 32px;
+    margin-left: 32px;
+    margin-bottom: 20px;
   }
 
   .passwordInput {

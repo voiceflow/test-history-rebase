@@ -1,7 +1,7 @@
 import { styled } from '@/hocs';
 
 const InputContainer = styled.div`
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 `;
 
 export default InputContainer;

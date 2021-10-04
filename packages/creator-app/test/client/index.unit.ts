@@ -13,6 +13,7 @@ suite('Client - Root', ({ expect }) => {
       'feature',
       'file',
       'integrations',
+      'organization',
       'projectList',
       'prototype',
       'session',

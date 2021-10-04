@@ -26,7 +26,7 @@ const OutlineContainer = styled(IconButtonContainer as React.FC<OutlineContainer
   ${transition('border', 'background', 'color', 'box-shadow', 'opacity')}
   color: ${({ color, theme }) => color ?? theme.colors.tertiary};
   background: ${colors(ThemeColor.WHITE)};
-  border: 1px solid ${colors(ThemeColor.SEPERATOR_SECONDARY)};
+  border: 1px solid ${colors(ThemeColor.SEPARATOR_SECONDARY)};
   box-shadow: none !important;
 
   ${SvgIconContainer} {

@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, ClickableText, ControlledInput, FlexApart, Input, preventDefault, toast } from '@voiceflow/ui';
+import { Box, BoxFlexApart, Button, ButtonVariant, ClickableText, ControlledInput, Input, preventDefault, ThemeColor, toast } from '@voiceflow/ui';
 import { getSearch } from 'connected-react-router';
 import _throttle from 'lodash/throttle';
 import React from 'react';
@@ -8,10 +8,12 @@ import client from '@/client';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useEnableDisable } from '@/hooks';
+import { useDebouncedCallback, useEnableDisable } from '@/hooks';
 import { Query } from '@/models';
 import { ConnectedProps, MergeArguments } from '@/types';
 
+import { SSO_REQUIRED } from '../constants';
+import { getDomainSAML } from '../hooks';
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationContainer';
@@ -30,6 +32,13 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
   const [password, setPassword] = React.useState('');
   const [name, setName] = React.useState(query.name ? query.name : '');
+  const [ssoRequired, setSsoRequired] = React.useState(false);
+  const debouncedCheckSSO = useDebouncedCallback(100, async (email: string) => setSsoRequired(!!(await getDomainSAML(email))), []);
+
+  const updateEmail = (email: string) => {
+    debouncedCheckSSO(email);
+    setEmail(email);
+  };
 
   const [isDisabled, onDisable, onEnable] = useEnableDisable(false);
 
@@ -39,10 +48,14 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
   const isSignupDisabled = !!coupon && !couponValid;
 
   const signupSubmit = async () => {
-    if (!isDisabled) {
-      onDisable();
-
-      try {
+    if (isDisabled || ssoRequired) {
+      return;
+    }
+    onDisable();
+    try {
+      if (await getDomainSAML(email)) {
+        setSsoRequired(true);
+      } else {
         await signup({
           name,
           email,
@@ -50,12 +63,11 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
           coupon: coupon.toLowerCase(),
           referralCode: query.referral,
         });
-      } catch (err) {
-        toast.error(err.body.data);
       }
-
-      onEnable();
+    } catch (err) {
+      toast.error(err.body.data);
     }
+    onEnable();
   };
 
   const verifyCoupon = React.useCallback(
@@ -111,7 +123,12 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
               />
             </InputContainer>
             <InputContainer>
-              <EmailInput value={email} onChange={setEmail} placeholder="Email address" />
+              <EmailInput value={email} onChange={updateEmail} placeholder="Email address" error={ssoRequired} />
+              {ssoRequired && (
+                <Box mt={8} fontSize={13} color={ThemeColor.RED}>
+                  {SSO_REQUIRED}
+                </Box>
+              )}
             </InputContainer>
             <Box mb={22}>
               <PasswordInput value={password} onChange={setPassword} />
@@ -130,7 +147,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
               </InputContainer>
             )}
 
-            <FlexApart>
+            <BoxFlexApart pt={8}>
               <div className="auth__link">
                 <ClickableText onClick={goToLogin}>Have an account?</ClickableText>
               </div>
@@ -140,7 +157,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
                   {query.invite ? 'Join Team' : 'Create Account'}
                 </Button>
               </div>
-            </FlexApart>
+            </BoxFlexApart>
           </div>
         </form>
 

@@ -1,8 +1,22 @@
 import { useEffect, useMemo } from 'react';
 
+import client from '@/client';
 import { OKTA_SCOPES } from '@/config';
 import { useTeardown } from '@/hooks';
+import { getEmailDomain, isValidEmail } from '@/utils/emails';
 import OKTA from '@/utils/okta';
+
+export const getDomainSAML = async (email: string) => {
+  if (isValidEmail(email)) {
+    const domain = getEmailDomain(email);
+    const organizationID = await client.organization.checkDomain(domain);
+
+    if (organizationID) {
+      return client.organization.getSAMLLogin(organizationID);
+    }
+  }
+  return null;
+};
 
 export const useErrorTimeout = (hasError: boolean, clearError: () => void) => {
   useEffect(() => {

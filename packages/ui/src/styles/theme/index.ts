@@ -12,8 +12,8 @@ export enum ThemeColor {
   BLUE = 'blue',
   DARK_BLUE = 'darkBlue',
   BORDERS = 'borders',
-  SEPERATOR = 'seperator',
-  SEPERATOR_SECONDARY = 'separatorSecondary',
+  SEPARATOR = 'separator',
+  SEPARATOR_SECONDARY = 'separatorSecondary',
 }
 
 const THEME = {
@@ -48,8 +48,8 @@ const THEME = {
     [ThemeColor.BLUE]: COLOR_BLUE,
     [ThemeColor.DARK_BLUE]: '#4886da',
     [ThemeColor.BORDERS]: '#dfe3ed',
-    [ThemeColor.SEPERATOR]: '#dfe3ed',
-    [ThemeColor.SEPERATOR_SECONDARY]: '#eaeff4',
+    [ThemeColor.SEPARATOR]: '#dfe3ed',
+    [ThemeColor.SEPARATOR_SECONDARY]: '#eaeff4',
   },
   space: {
     xs: 4,

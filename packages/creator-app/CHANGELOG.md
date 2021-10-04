@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.505.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.504.0...@voiceflow/creator-app@1.505.0) (2021-10-04)
+
+
+### Features
+
+* create new Component step and editor (VF-1839) ([#4233](https://github.com/voiceflow/creator-app/issues/4233)) ([f2b695f](https://github.com/voiceflow/creator-app/commit/f2b695f21af263b00080e3a47bfe0325ab6cb624))
+
+
+
+
+
 # [1.504.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.503.0...@voiceflow/creator-app@1.504.0) (2021-10-04)
 
 

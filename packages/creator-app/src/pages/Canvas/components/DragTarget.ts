@@ -12,7 +12,6 @@ const DragTarget = styled.div.attrs<DragTargetProps>(({ isTransform, position: [
 }))<DragTargetProps>`
   position: absolute;
   pointer-events: auto;
-  will-change: transform;
 
   ${({ zIndex }) =>
     zIndex &&

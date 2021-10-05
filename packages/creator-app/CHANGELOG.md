@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.506.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.506.0...@voiceflow/creator-app@1.506.1) (2021-10-05)
+
+
+### Bug Fixes
+
+* chrome rendering issue (VF-000) ([#4261](https://github.com/voiceflow/creator-app/issues/4261)) ([3096053](https://github.com/voiceflow/creator-app/commit/30960535e73477bbc95a6842e1fe3dc531d51535))
+
+
+
+
+
 # [1.506.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.505.1...@voiceflow/creator-app@1.506.0) (2021-10-05)
 
 

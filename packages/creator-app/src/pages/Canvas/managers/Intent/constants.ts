@@ -1,3 +1,5 @@
+import { Node } from '@voiceflow/base-types';
+
 import { BlockType } from '@/constants';
 import { NodeData } from '@/models';
 import { distinctPlatformsData } from '@/utils/platform';
@@ -21,7 +23,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Intent> = {
     },
     data: {
       name: 'Intent',
-      ...distinctPlatformsData({ intent: null, mappings: [] }),
+      ...distinctPlatformsData({ intent: null, mappings: [], availability: Node.Intent.IntentAvailability.GLOBAL }),
     },
   }),
 };

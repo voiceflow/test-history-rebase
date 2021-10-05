@@ -235,6 +235,7 @@ export namespace NodeData {
     export interface PlatformData {
       intent: string | null;
       mappings: SlotMapping[];
+      availability: BaseNode.Intent.IntentAvailability;
     }
   }
 

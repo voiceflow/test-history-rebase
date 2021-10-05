@@ -6,11 +6,11 @@ import { distinctPlatformsData } from '../../../../utils/platform';
 import { createBlockAdapter } from '../utils';
 
 const intentAdapter = createBlockAdapter<Node.Intent.StepData, NodeData.Intent>(
-  ({ intent, mappings }) => ({
-    ...distinctPlatformsData({ intent: null, mappings: [] }),
-    [Constants.PlatformType.GOOGLE]: { intent, mappings: mappings ?? [] },
+  ({ intent, mappings, availability }) => ({
+    ...distinctPlatformsData({ intent: null, mappings: [], availability: Node.Intent.IntentAvailability.GLOBAL }),
+    [Constants.PlatformType.GOOGLE]: { intent, mappings: mappings ?? [], availability: availability ?? Node.Intent.IntentAvailability.GLOBAL },
   }),
-  ({ [Constants.PlatformType.GOOGLE]: { intent, mappings } }) => ({ intent, mappings })
+  ({ [Constants.PlatformType.GOOGLE]: { intent, mappings, availability } }) => ({ intent, mappings, availability })
 );
 
 export default intentAdapter;

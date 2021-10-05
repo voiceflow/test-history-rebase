@@ -1,12 +1,16 @@
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import IntentForm, { HelpTooltip, LegacyMappings } from '@/components/IntentForm';
+import { AvailabilityManager } from '@/components/IntentForm/components/Custom/components';
 import IntentSelect from '@/components/IntentSelect';
 import Section from '@/components/Section';
+import { FeatureFlag } from '@/config/features';
 import { NamespaceProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
+import { useFeature } from '@/hooks';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { ConnectedProps, MergeArguments } from '@/types';
@@ -20,21 +24,39 @@ const DEFAULT_INTENT = {
   name: '',
   platform: '',
   slots: {},
+  availability: Node.Intent.IntentAvailability.LOCAL,
 };
 
 const LegacyMappingsComponent = LegacyMappings as React.FC<any>;
 
-const IntentEditor: NodeEditor<NodeData.Intent, ConnectedIntentEditorProps> = ({ intent, data, platformData, patchPlatformData, pushToPath }) => (
-  <Content footer={() => <Controls tutorial={{ content: <HelpTooltip />, blockType: data.type }} />}>
-    <Section>
-      <IntentSelect intent={intent} onChange={patchPlatformData} />
-    </Section>
-    <NamespaceProvider value={['intent', intent?.id]}>
-      <IntentForm intent={intent} pushToPath={pushToPath} />
-    </NamespaceProvider>
-    <LegacyMappingsComponent intent={intent} mappings={platformData.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
-  </Content>
-);
+const IntentEditor: NodeEditor<NodeData.Intent, ConnectedIntentEditorProps> = ({ intent, data, platformData, patchPlatformData, pushToPath }) => {
+  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+
+  return (
+    <Content footer={() => <Controls tutorial={{ content: <HelpTooltip />, blockType: data.type }} />}>
+      <Section>
+        <IntentSelect intent={intent} onChange={patchPlatformData} />
+      </Section>
+      <NamespaceProvider value={['intent', intent?.id]}>
+        <IntentForm intent={intent} pushToPath={pushToPath} />
+        {topicsAndComponents.isEnabled ? (
+          <AvailabilityManager
+            isEnabled={platformData.availability === Node.Intent.IntentAvailability.GLOBAL}
+            onChange={() =>
+              patchPlatformData({
+                availability:
+                  platformData.availability === Node.Intent.IntentAvailability.GLOBAL
+                    ? Node.Intent.IntentAvailability.LOCAL
+                    : Node.Intent.IntentAvailability.GLOBAL,
+              })
+            }
+          />
+        ) : null}
+      </NamespaceProvider>
+      <LegacyMappingsComponent intent={intent} mappings={platformData.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
+    </Content>
+  );
+};
 
 const mapStateToProps = {
   intent: Intent.platformIntentByIDSelector,

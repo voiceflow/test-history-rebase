@@ -1,3 +1,5 @@
+export { default as AvailabilityManager } from './AvailabilityManager';
+export { default as AvailabilityTooltip } from './AvailabilityTooltip';
 export { default as DraggableSlotItem } from './DraggableSlotItem';
 export { default as HelpTooltip } from './HelpTooltip';
 export { SLOT_PATH_TYPE, default as SlotManager } from './SlotManager';

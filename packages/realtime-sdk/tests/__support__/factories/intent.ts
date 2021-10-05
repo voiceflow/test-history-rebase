@@ -28,10 +28,11 @@ export const intentButtonFactory = define<IntentButton>({
 export const intentStepDataFactory = define<Node.Intent.StepData>({
   intent: () => lorem.word(),
   mappings: () => [],
+  availability: Node.Intent.IntentAvailability.GLOBAL,
 });
 
 export const intentNodeDataFactory = define<NodeData.Intent>({
-  [Constants.PlatformType.ALEXA]: () => ({ intent: lorem.word(), mappings: [] }),
-  [Constants.PlatformType.GENERAL]: () => ({ intent: lorem.word(), mappings: [] }),
-  [Constants.PlatformType.GOOGLE]: () => ({ intent: lorem.word(), mappings: [] }),
+  [Constants.PlatformType.ALEXA]: () => ({ intent: lorem.word(), mappings: [], availability: Node.Intent.IntentAvailability.GLOBAL }),
+  [Constants.PlatformType.GENERAL]: () => ({ intent: lorem.word(), mappings: [], availability: Node.Intent.IntentAvailability.GLOBAL }),
+  [Constants.PlatformType.GOOGLE]: () => ({ intent: lorem.word(), mappings: [], availability: Node.Intent.IntentAvailability.GLOBAL }),
 });

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.4.3...@voiceflow/admin-app@1.5.0) (2021-10-05)
+
+
+### Features
+
+* update admin tool to use updated permissions logic (VF-000) ([#4126](https://github.com/voiceflow/creator-app/issues/4126)) ([f01bea8](https://github.com/voiceflow/creator-app/commit/f01bea84fe8aa3df82b424ae3cf539c2ab38ac34))
+
+
+
+
+
 ## [1.4.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.4.2...@voiceflow/admin-app@1.4.3) (2021-10-05)
 
 **Note:** Version bump only for package @voiceflow/admin-app

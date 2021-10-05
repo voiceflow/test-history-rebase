@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.507.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.506.1...@voiceflow/creator-app@1.507.0) (2021-10-05)
+
+
+### Features
+
+* add intent availability toggle (VF-1829) ([#4264](https://github.com/voiceflow/creator-app/issues/4264)) ([a24f5a5](https://github.com/voiceflow/creator-app/commit/a24f5a5020193fc593f03a71302b0c4d3837354b))
+
+
+
+
+
 ## [1.506.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.506.0...@voiceflow/creator-app@1.506.1) (2021-10-05)
 
 

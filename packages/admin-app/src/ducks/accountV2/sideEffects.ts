@@ -73,9 +73,8 @@ const createSession =
 
       const { location } = state.router;
       const search = queryString.parse(location.search);
-
       // Ensure the user has admin credentials
-      if ((user.admin ?? 0) < 100) {
+      if (!user.internalAdmin) {
         // eslint-disable-next-line prefer-promise-reject-errors
         return Promise.reject('User is not an admin');
       }

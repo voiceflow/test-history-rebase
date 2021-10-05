@@ -7,7 +7,7 @@ const USER_API = 'user';
 
 const SESSION_ENDPOINTS = {
   [SessionType.GOOGLE]: 'googleLogin',
-  [SessionType.BASIC_AUTH]: 'session',
+  [SessionType.BASIC_AUTH]: 'adminSession',
 };
 
 const accountClient = {

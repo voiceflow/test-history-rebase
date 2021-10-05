@@ -2,7 +2,7 @@ export interface Creator {
   name: string;
   email: string;
   creator_id: number;
-  admin: number;
+  internalAdmin: boolean;
   password: string | null;
   created: string;
   stripe_id: string | null;

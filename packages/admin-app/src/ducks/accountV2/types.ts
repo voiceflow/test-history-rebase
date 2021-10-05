@@ -4,7 +4,7 @@ export interface AccountState {
   name: string | null;
   // eslint-disable-next-line camelcase
   creator_id: number | null;
-  admin: number;
+  internalAdmin: boolean;
   image: string | null;
   vendors: string[];
 }

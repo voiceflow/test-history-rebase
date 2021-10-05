@@ -17,7 +17,6 @@ class UserCard extends React.Component {
           <LeftPanel>
             <LeftPanelText>Id: {this.props.creator.creator_id}</LeftPanelText>
             <User user={this.props.creator} />
-            <LeftPanelText>Admin level: {this.props.creator.admin}</LeftPanelText>
           </LeftPanel>
           <RightPanel>
             <RightPanelHeader>{this.props.creator.name}</RightPanelHeader>

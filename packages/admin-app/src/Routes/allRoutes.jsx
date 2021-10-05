@@ -18,7 +18,7 @@ class AllRoutes extends React.Component {
   isInitialized = () => {
     if (!Account.getAuth()) return false;
 
-    return !!this.props.user.id && this.props.user.admin >= 100;
+    return !!this.props.user.id && this.props.user.internalAdmin;
   };
 
   render() {

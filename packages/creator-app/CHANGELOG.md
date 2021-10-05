@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.506.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.505.1...@voiceflow/creator-app@1.506.0) (2021-10-05)
+
+
+### Bug Fixes
+
+* update placeholder for flow dropdown (VF-1762) ([#4265](https://github.com/voiceflow/creator-app/issues/4265)) ([ce93f86](https://github.com/voiceflow/creator-app/commit/ce93f86af39fd72474342116326d38c8819f03c5))
+
+
+### Features
+
+* saml login (VF-1903) ([#4255](https://github.com/voiceflow/creator-app/issues/4255)) ([1e39a0f](https://github.com/voiceflow/creator-app/commit/1e39a0fb0d5b9d30a5e8cf5918e36ed9d5124801))
+
+
+
+
+
 ## [1.505.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.505.0...@voiceflow/creator-app@1.505.1) (2021-10-04)
 
 

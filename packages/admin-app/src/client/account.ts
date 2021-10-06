@@ -6,7 +6,7 @@ const SESSION_API = 'session';
 const USER_API = 'user';
 
 const SESSION_ENDPOINTS = {
-  [SessionType.GOOGLE]: 'googleLogin',
+  [SessionType.GOOGLE]: 'googleAdminLogin',
   [SessionType.BASIC_AUTH]: 'adminSession',
 };
 

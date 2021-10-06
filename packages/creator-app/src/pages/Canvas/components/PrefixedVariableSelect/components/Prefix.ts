@@ -1,14 +1,23 @@
-import { FlexCenter } from '@voiceflow/ui';
+import { Box, FlexCenter } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const Prefix = styled(FlexCenter)`
-  position: absolute;
-  left: 16px;
+export const prefixTextStyles = css`
   font-size: 13px;
   color: #62778c;
-  z-index: 1;
   font-weight: 600;
+`;
+
+export const PrefixText = styled(Box)`
+  ${prefixTextStyles};
+`;
+
+const Prefix = styled(FlexCenter)`
+  ${prefixTextStyles};
+  position: absolute;
+  left: 16px;
+
+  z-index: 1;
   margin-bottom: 1px;
 `;
 

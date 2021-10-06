@@ -1,6 +1,6 @@
 import { Node } from '@voiceflow/base-types';
 import { deepVariableSubstitution } from '@voiceflow/common';
-import { BoxFlexCenter, Button, Input, Spinner } from '@voiceflow/ui';
+import { Box, BoxFlexCenter, Button, Input, Spinner } from '@voiceflow/ui';
 import update from 'immutability-helper';
 import _cloneDeep from 'lodash/cloneDeep';
 import _isEmpty from 'lodash/isEmpty';
@@ -8,11 +8,10 @@ import React, { Component } from 'react';
 import ReactJson from 'react-json-view';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
-import InputGroup from '@/components/InputGroup';
-import InputGroupAddon, { AddonType } from '@/components/InputGroupAddon';
 import DefaultModal from '@/components/LegacyModal/DefaultModal';
 import { setConfirm, setError } from '@/ducks/modal';
 import { connect } from '@/hocs';
+import { PrefixText } from '@/pages/Canvas/components/PrefixedVariableSelect/components/Prefix';
 import IntegrationsService from '@/services/Integrations';
 import { copyJSONPath } from '@/utils/dom';
 
@@ -78,8 +77,7 @@ class TestSection extends Component {
 
     this.generateLegacyActionsDataStructure(selectedIntegration, selectedAction, data, actionsData);
 
-    const params = _isEmpty(actionsData);
-    const { variables } = deepDraftToMarkdown(params);
+    const { variables } = deepDraftToMarkdown(actionsData);
 
     if (variables && variables.length > 0) {
       try {
@@ -241,10 +239,14 @@ class TestSection extends Component {
                   <br />
                   {variables.map((val, key) => (
                     <React.Fragment key={key}>
-                      <InputGroup className="mb-2">
-                        <InputGroupAddon addonType={AddonType.PREPEND}>{val}</InputGroupAddon>
-                        <Input name={val} placeholder="set variable" onChange={this.handleVariableChange} />
-                      </InputGroup>
+                      <Box mb={8}>
+                        <Input
+                          leftAction={<PrefixText>{val.toUpperCase()}</PrefixText>}
+                          name={val}
+                          placeholder="set value"
+                          onChange={this.handleVariableChange}
+                        />
+                      </Box>
                     </React.Fragment>
                   ))}
                 </>

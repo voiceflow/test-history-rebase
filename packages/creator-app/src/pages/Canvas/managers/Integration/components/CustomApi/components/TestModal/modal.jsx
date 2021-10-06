@@ -1,4 +1,4 @@
-import { Button, ButtonVariant } from '@voiceflow/ui';
+import { Button, ButtonVariant, Input } from '@voiceflow/ui';
 import axios from 'axios';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
@@ -10,12 +10,12 @@ import ButtonGroupRouter from '@/components/ButtonGroupRouter';
 import DropdownCollapse from '@/components/DropdownCollapse';
 import { ModalHeader } from '@/components/LegacyModal';
 import { styled } from '@/hocs';
+import { PrefixText } from '@/pages/Canvas/components/PrefixedVariableSelect/components/Prefix';
 import { copyJSONPath } from '@/utils/dom';
 
 import Formatted from './Formatted';
 import Raw from './Raw';
 import Results from './Results';
-import SetVariableInput from './SetVariableInput';
 import { deepVariableReplacement, deepVariableSearch, findPath, normalize, variableReplacement } from './util';
 
 const API_TEST_TABS = [
@@ -172,7 +172,12 @@ function APITestModal({ data, closeTestModal, testModalOpened }) {
             <DropdownCollapse text="Set Variable Values" ref={dropdownRef}>
               <div className="pb-2">
                 {Object.keys(variableValues).map((name) => (
-                  <SetVariableInput prefix={name} key={name} onChange={(e) => setVarValue(name, e.target.value)} />
+                  <Input
+                    leftAction={<PrefixText>{name.toUpperCase()}</PrefixText>}
+                    placeholder="Enter value"
+                    key={name}
+                    onChange={(e) => setVarValue(name, e.target.value)}
+                  />
                 ))}
               </div>
             </DropdownCollapse>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.507.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.507.1...@voiceflow/creator-app@1.507.2) (2021-10-06)
+
+
+### Bug Fixes
+
+* google sheets integration test variables (VF-1786) ([#4271](https://github.com/voiceflow/creator-app/issues/4271)) ([68b792d](https://github.com/voiceflow/creator-app/commit/68b792dc0dbf91703396135502299160a6b62f41))
+
+
+
+
+
 ## [1.507.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.507.0...@voiceflow/creator-app@1.507.1) (2021-10-06)
 
 **Note:** Version bump only for package @voiceflow/creator-app

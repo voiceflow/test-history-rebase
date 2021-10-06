@@ -41,6 +41,8 @@ const SearchableList: React.ForwardRefRenderFunction<Scrollbars, SearchableListP
     [onChange]
   );
 
+  const renderListItem = React.useCallback((index: number) => renderItem(filteredItems[index], index), [filteredItems, renderItem]);
+
   useDidUpdateEffect(() => {
     onChange?.(searchValue, filteredItems);
   }, [filteredItems]);
@@ -48,13 +50,7 @@ const SearchableList: React.ForwardRefRenderFunction<Scrollbars, SearchableListP
   return (
     <Container>
       <ScrollContainer>
-        <VirtualList
-          id={id}
-          ref={ref}
-          size={filteredItems.length}
-          rowHeight={rowHeight}
-          renderItem={(index) => renderItem(filteredItems[index], index)}
-        />
+        <VirtualList id={id} ref={ref} size={filteredItems.length} rowHeight={rowHeight} renderItem={renderListItem} />
       </ScrollContainer>
 
       <SearchContainer>

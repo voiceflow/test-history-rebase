@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { DiagramLoadingGate } from '@/gates';
 import { withLoadingGate } from '@/hocs';
@@ -11,6 +12,7 @@ import ShortcutsModal from '@/pages/Canvas/components/ShortcutsModal';
 import SlotEditModal from '@/pages/Canvas/components/SlotEdit/SlotEditModal';
 import { SelectionSetTargetsContext } from '@/pages/Skill/contexts';
 import { compose } from '@/utils/functional';
+import * as Query from '@/utils/query';
 
 import Container from './components/CanvasContainer';
 import CanvasDiagram from './components/CanvasDiagram';
@@ -30,12 +32,32 @@ interface CanvasProps {
 const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const engine = useEngine();
 
+  // using history to do not rerender on the every location change
+  const history = useHistory();
+
   const selectionSetTargetsContext = React.useContext(SelectionSetTargetsContext);
 
   React.useEffect(() => {
-    if (engine.getRootNodeIDs().length === 1 && !engine.comment.isActive) {
-      engine.centerHome();
-    }
+    const { nodeID } = Query.parse(history.location.search);
+    const rootNodes = engine.getRootNodeIDs();
+
+    const frame = requestAnimationFrame(() => {
+      if (nodeID) {
+        history.push({ search: '' });
+
+        if (nodeID === 'start') {
+          engine.focusHome({ open: true });
+        } else {
+          engine.focusNode(nodeID, { open: true });
+        }
+      } else if (rootNodes.length === 1 && !engine.comment.isActive) {
+        engine.centerNode(rootNodes[0]);
+      }
+    });
+
+    return () => {
+      cancelAnimationFrame(frame);
+    };
   }, [engine]);
 
   useRegistration(() => engine.selection.register('selectionSetTargetsContext', selectionSetTargetsContext), [selectionSetTargetsContext]);

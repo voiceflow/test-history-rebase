@@ -1,17 +1,20 @@
 import React from 'react';
 
 import Resizable, { ResizablePanel } from '@/components/Resizable';
-import { useLocalStorageState } from '@/hooks';
+import * as Session from '@/ducks/session';
+import { useLocalStorageState, useSelector } from '@/hooks';
 
 import { ComponentsSection, Container, TopicsSection } from './components';
 
 const Layers: React.FC = () => {
-  const [heights, setHeights] = useLocalStorageState<number[]>('design-menu-layers-heights', []);
+  const activeProjectID = useSelector(Session.activeProjectIDSelector);
+
+  const [heights, setHeights] = useLocalStorageState<number[]>(`dm-layers-heights.${activeProjectID}`, []);
 
   return (
     <Container>
       <Resizable onResized={setHeights}>
-        <ResizablePanel height={heights[0]} minHeight={150}>
+        <ResizablePanel height={heights[0]} minHeight={132}>
           {() => <TopicsSection />}
         </ResizablePanel>
 

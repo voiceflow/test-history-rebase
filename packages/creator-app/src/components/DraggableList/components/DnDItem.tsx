@@ -1,12 +1,16 @@
+import { MenuOption } from '@voiceflow/ui';
 import React from 'react';
 
 import ContextMenu from '@/components/ContextMenu';
-import { MenuOption } from '@/types';
 
 import { DnDHandlers, InternalItem } from '../types';
 import useDragAndDrop from '../useDragAndDrop';
 
 type InternalWithoutType<I> = Omit<InternalItem<I>, 'type'>;
+
+export interface ContextMenuOption<I> extends Omit<MenuOption<undefined>, 'onClick'> {
+  onClick?: (props: InternalWithoutType<I>) => void;
+}
 
 export interface ItemComponentHandlers<I> {
   onRemove: (props: InternalWithoutType<I>) => void;
@@ -35,7 +39,7 @@ export type DnDItemProps<I> = InternalItem<I> & {
   itemComponent: React.NamedExoticComponent<
     React.PropsWithoutRef<ItemComponentProps<I> & (ItemComponentHandlers<I> | MappedItemComponentHandlers<I>)> & React.RefAttributes<HTMLElement>
   >;
-  contextMenuOptions?: MenuOption[];
+  contextMenuOptions?: ContextMenuOption<I>[];
   withContextMenuDelete?: boolean;
   unmountableDuringDrag?: boolean;
   withContextMenuDuplicate?: boolean;
@@ -58,7 +62,7 @@ const DnDItem = <P extends DnDItemProps<any>>({
     const options = [];
 
     if (contextMenuOptions) {
-      options.push(...contextMenuOptions);
+      options.push(...contextMenuOptions.map((option) => ({ ...option, onClick: option.onClick ? () => option.onClick?.(props) : undefined })));
     }
 
     if (withContextMenuDuplicate) {

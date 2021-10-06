@@ -6,6 +6,8 @@ import { useScrollContext, useScrollStickySides } from '@/hooks';
 
 import { Container } from './components';
 
+export { CONTAINER_MIN_HEIGHT as HEADER_MIN_HEIGHT } from './components';
+
 interface HeaderProps {
   label: string;
   forceSticky?: boolean;

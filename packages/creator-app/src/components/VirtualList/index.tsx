@@ -1,6 +1,6 @@
 import composeRef from '@seznam/compose-react-refs';
 import React from 'react';
-import { AutoSizer, List, WindowScroller } from 'react-virtualized';
+import { AutoSizer, Index, List, WindowScroller } from 'react-virtualized';
 
 import CustomScrollbars, { Scrollbars } from '@/components/CustomScrollbars';
 import { ScrollContextProvider } from '@/contexts';
@@ -12,18 +12,26 @@ export interface VirtualListProps {
   id?: string;
   size: number;
   header?: React.ReactNode;
-  rowHeight?: number;
+  listRef?: React.Ref<List>;
+  rowHeight?: number | ((index: Index) => number);
+  className?: string;
   renderItem: (index: number) => React.ReactNode;
 }
 
-const VirtualList: React.ForwardRefRenderFunction<Scrollbars, VirtualListProps> = ({ id, size, header, rowHeight = 42, renderItem }, ref) => {
+const VirtualList: React.ForwardRefRenderFunction<Scrollbars, VirtualListProps> = (
+  { id, size, header, listRef, className, rowHeight = 42, renderItem },
+  ref
+) => {
   const [scrollbars, setCustomScrollBars] = React.useState<Scrollbars | null>(null);
   const { bodyRef, scrollHelpers } = useScrollHelpers<Scrollbars>();
 
-  const rowRenderer = ({ key, index, style }: { key: string; index: number; style: object }) => (
-    <div key={key} style={style}>
-      {renderItem(index)}
-    </div>
+  const rowRenderer = React.useCallback(
+    ({ key, index, style }: { key: string; index: number; style: object }) => (
+      <div key={key} style={style}>
+        {renderItem(index)}
+      </div>
+    ),
+    [renderItem]
   );
 
   return (
@@ -32,7 +40,7 @@ const VirtualList: React.ForwardRefRenderFunction<Scrollbars, VirtualListProps> 
         {header}
 
         {!scrollbars ? null : (
-          <WindowScrollerContainer>
+          <WindowScrollerContainer className={className}>
             <WindowScroller scrollElement={scrollbars.view}>
               {({ height, isScrolling, registerChild, scrollTop }) =>
                 !!height && (
@@ -40,6 +48,7 @@ const VirtualList: React.ForwardRefRenderFunction<Scrollbars, VirtualListProps> 
                     {({ width }) => (
                       <div id={id} ref={registerChild}>
                         <List
+                          ref={listRef}
                           width={width}
                           height={height}
                           rowCount={size}
@@ -62,4 +71,4 @@ const VirtualList: React.ForwardRefRenderFunction<Scrollbars, VirtualListProps> 
   );
 };
 
-export default React.forwardRef<Scrollbars, VirtualListProps>(VirtualList);
+export default React.memo(React.forwardRef<Scrollbars, VirtualListProps>(VirtualList));

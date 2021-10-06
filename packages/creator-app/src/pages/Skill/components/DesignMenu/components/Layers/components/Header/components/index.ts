@@ -1,1 +1,1 @@
-export { default as Container } from './Container';
+export { default as Container, MIN_HEIGHT as CONTAINER_MIN_HEIGHT } from './Container';

@@ -1,5 +1,7 @@
 import { css, styled, transition } from '@/hocs';
 
+export const MIN_HEIGHT = 42;
+
 const Container = styled.div<{ isSticky?: boolean }>`
   ${transition('border-color')}
 
@@ -8,7 +10,7 @@ const Container = styled.div<{ isSticky?: boolean }>`
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 40px;
+  min-height: ${MIN_HEIGHT}px;
   padding: 8px 16px;
   background-color: #fff;
   border-bottom: solid 1px transparent;

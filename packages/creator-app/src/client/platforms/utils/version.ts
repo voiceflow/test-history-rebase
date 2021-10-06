@@ -2,16 +2,17 @@ import axios from 'axios';
 
 export const RESOURCE_ENDPOINT = 'version';
 
-const createVersionService = <S extends Record<string, any>, P extends Record<string, any>, PD extends Record<string, any>>(
-  serviceEndpoint: string
-) => ({
-  updateSettings: (versionID: string, settings: Partial<S>) =>
+const createVersionService = <V extends { platformData: { settings: any; publishing: any } }>(serviceEndpoint: string) => ({
+  updateVersion: (versionID: string, settings: Partial<V>) =>
     axios.patch<void>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/${versionID}/settings`, settings).then((res) => res.data),
 
-  updatePublishing: (versionID: string, publishing: Partial<P>) =>
+  updateSettings: (versionID: string, settings: Partial<V['platformData']['settings']>) =>
+    axios.patch<void>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/${versionID}/settings`, settings).then((res) => res.data),
+
+  updatePublishing: (versionID: string, publishing: Partial<V['platformData']['publishing']>) =>
     axios.patch<void>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/${versionID}/publishing`, publishing).then((res) => res.data),
 
-  updatePlatformData: (versionID: string, platformData: Partial<PD>) =>
+  updatePlatformData: (versionID: string, platformData: Partial<V['platformData']>) =>
     axios.patch<void>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/${versionID}`, platformData).then((res) => res.data),
 });
 

@@ -385,35 +385,49 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
   /**
    * attempt to convert text and copy canvas entities
    */
-  paste(pastedText: string, coords: Coords) {
+  paste(pastedText: string, coords: Coords): void {
     this.clearActivation();
     this.clipboard.paste(pastedText, coords);
     this.saveHistory();
   }
 
-  focusHome() {
+  getHomeNodeID(): string | null {
     const startNode = Array.from(this.nodes.entries()).find(([, { type }]) => type === BlockType.START);
 
-    if (startNode) {
-      const [nodeID] = startNode;
+    return startNode?.[0] ?? null;
+  }
 
-      this.node.center(nodeID, !this.comment.isActive);
-      this.selection.replace([nodeID]);
-      this.comment.forceRedrawThreads();
-      this.log.info(this.log.success('focused on the home block'));
+  focusHome(options: { open?: boolean } = {}): void {
+    const nodeID = this.getHomeNodeID();
+
+    if (nodeID) {
+      this.focusNode(nodeID, options);
+    }
+  }
+
+  focusNode(nodeID: string, { open }: { open?: boolean } = {}): void {
+    this.node.center(nodeID, !this.comment.isActive);
+    this.selection.replace([nodeID]);
+    this.comment.forceRedrawThreads();
+    this.log.info(this.log.success(`focused on the ${nodeID} node`));
+
+    if (open) {
+      this.focus.set(nodeID);
     }
   }
 
   centerHome(): void {
-    const startNode = Array.from(this.nodes.entries()).find(([, { type }]) => type === BlockType.START);
+    const nodeID = this.getHomeNodeID();
 
-    if (startNode) {
-      const [nodeID] = startNode;
-
-      this.node.center(nodeID, !this.comment.isActive);
-      this.comment.forceRedrawThreads();
-      this.log.info(this.log.success('centered on the home block'));
+    if (nodeID) {
+      this.centerNode(nodeID);
     }
+  }
+
+  centerNode(nodeID: string): void {
+    this.node.center(nodeID, !this.comment.isActive);
+    this.comment.forceRedrawThreads();
+    this.log.info(this.log.success(`centered on the ${nodeID} node`));
   }
 
   saveHistory() {

@@ -44,12 +44,6 @@ export type Pair<T> = [T, T];
 
 export type Quad<T> = [T, T, T, T];
 
-export interface MenuOption {
-  label: React.ReactNode;
-  value?: any;
-  onClick?: React.MouseEventHandler;
-}
-
 export type HOC<I extends object, O extends object> = (component: React.ComponentType<I>) => React.FC<O>;
 
 export type NonNullableRecord<T extends object> = { [K in keyof T]: NonNullable<T[K]> };

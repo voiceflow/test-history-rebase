@@ -4,9 +4,9 @@ import { DragSourceMonitor, useDrop } from 'react-dnd';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { MapManaged } from '@/hooks';
-import { MenuOption } from '@/types';
 
 import {
+  ContextMenuOption,
   DeleteComponent,
   DnDItem,
   DragPreview,
@@ -20,7 +20,7 @@ import {
 import { DnDHandlers, DnDItem as DnDInternalItem, InternalItem } from './types';
 
 export { DeleteComponent };
-export type { DragPreviewComponentProps, ItemComponentHandlers, ItemComponentProps, MappedItemComponentHandlers };
+export type { ContextMenuOption, DragPreviewComponentProps, ItemComponentHandlers, ItemComponentProps, MappedItemComponentHandlers };
 
 export type BaseItemData<I> = Omit<InternalItem<I>, 'type'>;
 
@@ -32,6 +32,7 @@ export type DraggableListProps<I, D, C> = {
   filter?: (item: I) => boolean;
   footer?: React.ReactNode;
   onDrop?: (item: DnDInternalItem<I>) => unknown;
+  canDrag?: boolean | ((monitor: DragSourceMonitor) => boolean);
   itemProps?: C;
   onEndDrag?: (result: void, monitor: DragSourceMonitor) => unknown;
   onReorder?: (dragIndex: number, hoverIndex: number) => void;
@@ -41,7 +42,7 @@ export type DraggableListProps<I, D, C> = {
   deleteProps?: D;
   deleteComponent?: React.NamedExoticComponent<React.PropsWithoutRef<D> & React.RefAttributes<any>>;
   partialDragItem?: boolean;
-  contextMenuOptions?: MenuOption[];
+  contextMenuOptions?: ContextMenuOption<I>[];
   unmountableDuringDrag?: boolean;
   withContextMenuDelete?: boolean;
   withContextMenuDuplicate?: boolean;
@@ -86,6 +87,7 @@ const DraggableList = <I, D, C>({
   footer = null,
   filter,
   onDrop,
+  canDrag,
   itemProps,
   onEndDrag,
   onReorder,
@@ -97,6 +99,7 @@ const DraggableList = <I, D, C>({
   deleteComponent,
   partialDragItem,
   previewComponent,
+  contextMenuOptions,
   unmountableDuringDrag,
   withContextMenuDelete,
   withContextMenuDuplicate,
@@ -164,7 +167,7 @@ const DraggableList = <I, D, C>({
     [connectDrop]
   );
 
-  handlers.current = { onDrop, onDragEnd, onReorder, onDragStart, onDeleteDrop, deleteHovered };
+  handlers.current = { onDrop, onDragEnd, onReorder, onDragStart, onDeleteDrop, deleteHovered, canDrag };
 
   const renderItem = (data: (BaseItemData<I> & MappedItemComponentHandlers<I>) | BaseItemData<I>) => (
     <DnDItem
@@ -176,6 +179,7 @@ const DraggableList = <I, D, C>({
       handlers={handlers}
       partialDrag={partialDragItem}
       itemComponent={itemComponent as any}
+      contextMenuOptions={contextMenuOptions}
       unmountableDuringDrag={unmountableDuringDrag}
       withContextMenuDelete={withContextMenuDelete}
       withContextMenuDuplicate={withContextMenuDuplicate}

@@ -21,9 +21,7 @@ const dialogflowServiceClient = {
   project: projectService,
   publish: createPublishService<GooglePublishJob.AnyJob, GoogleStageType>(`${GOOGLE_SERVICE_ENDPOINT}/dialogflow/es`),
   session: createSessionService<Account.Google, { code: string }>(GOOGLE_SERVICE_ENDPOINT),
-  version: createVersionService<Version.GoogleDFESVersionData, Version.GoogleDFESVersionPublishing, Version.GoogleDFESVersionData>(
-    GOOGLE_SERVICE_ENDPOINT
-  ),
+  version: createVersionService<Version.GoogleDFESVersion>(GOOGLE_SERVICE_ENDPOINT),
   prototype: createPrototypeService<GeneralJob.AnyJob>(GOOGLE_SERVICE_ENDPOINT),
 };
 

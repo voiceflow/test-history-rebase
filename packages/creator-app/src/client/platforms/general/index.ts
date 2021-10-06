@@ -18,7 +18,7 @@ const generalServiceClient = {
   modelExport: createModelExportService(generalService),
   project: projectService,
   publish: publishService(),
-  version: createVersionService<GeneralVersion.GeneralVersionSettings, {}, GeneralVersion.GeneralVersionData>(GENERAL_SERVICE_ENDPOINT),
+  version: createVersionService<GeneralVersion.GeneralVersion>(GENERAL_SERVICE_ENDPOINT),
   prototype: createPrototypeService<GeneralJob.AnyJob>(GENERAL_SERVICE_ENDPOINT),
 };
 

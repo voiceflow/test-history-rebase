@@ -1,4 +1,4 @@
-import { DiagramType } from '@voiceflow/api-sdk';
+import { DiagramType, VersionFolderItemType } from '@voiceflow/api-sdk';
 import { Adapters } from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
@@ -9,16 +9,17 @@ import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { activeRootDiagramIDSelector } from '@/ducks/version/selectors';
+import { activeRootDiagramIDSelector, activeTopicsSelector, activeVersionSelector } from '@/ducks/version/selectors';
+import { saveComponents, saveTopics } from '@/ducks/version/sideEffects/common/topicsComponents';
 import { DBDiagram, Diagram } from '@/models';
 import mutableStore from '@/store/mutable';
 import { SyncThunk, Thunk } from '@/store/types';
-import { append, unique, withoutValue } from '@/utils/array';
+import { append, insert, unique, withoutValue } from '@/utils/array';
 import { getCurrentTimestamp } from '@/utils/time';
 
-import { addDiagram, replaceDiagrams, replaceLocalVariables, updateDiagram } from './actions';
+import { addDiagram, patchDiagram, replaceDiagrams, replaceLocalVariables, updateDiagram } from './actions';
 import { generateDefaultComponentDiagram, generateDefaultTopicDiagram } from './constants';
-import { allDiagramsSelector, fullActiveDiagramSelector, localVariablesByDiagramIDSelector } from './selectors';
+import { allDiagramsSelector, diagramByIDSelector, fullActiveDiagramSelector, localVariablesByDiagramIDSelector } from './selectors';
 import { PrimitiveComponentDiagram, PrimitiveTopicDiagram } from './types';
 
 // side effects
@@ -56,6 +57,15 @@ export const saveDiagramVariables =
 
     const rtctimestamp = mutableStore.getRTCTimestamp();
     await client.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { variables });
+  };
+
+export const saveDiagramIntentSteps =
+  (diagramID: string, intentStepIDs: string[]): Thunk =>
+  async (dispatch) => {
+    const rtctimestamp = mutableStore.getRTCTimestamp();
+
+    dispatch(patchDiagram(diagramID, { intentStepIDs }));
+    await client.api.diagram.options({ headers: { rtctimestamp } }).update(diagramID, { intentStepIDs });
   };
 
 export const removeLocalVariable =
@@ -101,8 +111,29 @@ export const createDiagram =
 
 export const createTopicDiagram =
   (name: string, diagram: PrimitiveTopicDiagram = generateDefaultTopicDiagram(name)): Thunk<string> =>
-  async (dispatch) =>
-    dispatch(createDiagram(name, diagram));
+  async (dispatch, getState) => {
+    const state = getState();
+    const versionID = Session.activeVersionIDSelector(state);
+    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+
+    const diagramID = await dispatch(createDiagram(name, diagram));
+
+    if (isTopicsAndComponents) {
+      Errors.assertVersionID(versionID);
+
+      const activeTopics = activeTopicsSelector(state);
+      const activeDiagramID = Session.activeDiagramIDSelector(state);
+
+      const newTopicItem = { type: VersionFolderItemType.DIAGRAM, sourceID: diagramID };
+      const activeTopicIndex = activeDiagramID ? activeTopics.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
+
+      const topics = activeTopicIndex === -1 ? append(activeTopics, newTopicItem) : insert(activeTopics, activeTopicIndex + 1, newTopicItem);
+
+      await dispatch(saveTopics(topics));
+    }
+
+    return diagramID;
+  };
 
 export const createComponentDiagram =
   (name: string, diagram: PrimitiveComponentDiagram = generateDefaultComponentDiagram()): Thunk<string> =>
@@ -149,9 +180,25 @@ export const deleteDiagram =
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
     const rootDiagramID = activeRootDiagramIDSelector(state);
+    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
 
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(rootDiagramID);
+
+    if (isTopicsAndComponents) {
+      const { type } = diagramByIDSelector(state)(diagramID) ?? {};
+      const { topics = [], components = [] } = activeVersionSelector(state) ?? {};
+
+      if (type === DiagramType.TOPIC) {
+        const newTopics = topics.filter(({ sourceID }) => sourceID !== diagramID);
+
+        await dispatch(saveTopics(newTopics));
+      } else if (type === DiagramType.COMPONENT) {
+        const newComponents = components.filter(({ sourceID }) => sourceID !== diagramID);
+
+        await dispatch(saveComponents(newComponents));
+      }
+    }
 
     await client.api.diagram.options({ headers: { rtctimestamp: mutableStore.getRTCTimestamp() } }).delete(diagramID);
     await dispatch(loadDiagrams(versionID, rootDiagramID));

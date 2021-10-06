@@ -12,6 +12,8 @@ export type RouterAction = Action<typeof CALL_HISTORY_METHOD, unknown>;
 
 export const clearSearch = () => replace({ search: '' }) as RouterAction;
 
+export const pushSearch = (search: string) => push({ search }) as RouterAction;
+
 export const goTo = <T extends Struct>(path: string, state: T | null = null) => push(path.startsWith('/') ? path : `/${path}`, state) as RouterAction;
 
 export const redirectTo = <T extends Struct>(path: string, state: T | null = null) =>

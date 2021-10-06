@@ -36,7 +36,7 @@ export const useTabs = (): { tabs: TabItem[]; selectedTab: Tab; topicsAndCompone
  * but it prevents the awful lag when dropping steps back onto the step menu
  */
 export const useDropLagFix = (): ConnectDropTarget => {
-  const [, dropRef] = useDrop({ accept: DragItem.BLOCK_MENU });
+  const [, dropRef] = useDrop({ accept: [DragItem.BLOCK_MENU, DragItem.TOPICS] });
 
   React.useEffect(
     () => () => {

@@ -23,7 +23,7 @@ const alexaServiceClient = {
   handlers: handlersService,
   publish: createPublishService<AlexaPublishJob.AnyJob, AlexaStageType>(ALEXA_SERVICE_ENDPOINT),
   session: createSessionService<Account.Amazon, { code: string }>(ALEXA_SERVICE_ENDPOINT),
-  version: createVersionService<Version.AlexaVersionSettings, Version.AlexaVersionPublishing, Version.AlexaVersionData>(ALEXA_SERVICE_ENDPOINT),
+  version: createVersionService<Version.AlexaVersion>(ALEXA_SERVICE_ENDPOINT),
   prototype: createPrototypeService<GeneralJob.AnyJob>(ALEXA_SERVICE_ENDPOINT),
 };
 

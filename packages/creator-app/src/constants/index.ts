@@ -56,7 +56,9 @@ export enum BlockCategory {
 }
 
 export enum DragItem {
+  TOPICS = 'topics',
   BLOCK_MENU = 'blockMenu',
+  TOPIC_INTENTS = 'topicIntents',
 }
 
 export enum SessionType {

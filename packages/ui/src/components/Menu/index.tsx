@@ -32,19 +32,20 @@ export type MenuOption<T extends any> = T extends undefined ? MenuOptionWithoutV
 
 export type MenuProps<T extends any> = {
   id?: string;
+  width?: number;
   disabled?: boolean;
-  footerAction?: boolean;
-  footerActionComponent?: () => React.FC;
   maxHeight?: number | string;
   fullWidth?: boolean;
-  width?: number;
   searchable?: React.ReactNode;
+  noTopPadding?: boolean;
+  footerAction?: boolean;
   scrollbarsRef?: React.Ref<Scrollbars>;
   maxVisibleItems?: number;
-  noTopPadding?: boolean;
   noBottomPadding?: boolean;
   multiSelectProps?: { buttonClick: React.MouseEventHandler; buttonLabel: React.ReactNode };
   disableAnimation?: boolean;
+  stopItemPropagation?: boolean;
+  footerActionComponent?: () => React.FC;
 } & Either<
   {
     options: MenuOption<T>[];
@@ -67,13 +68,14 @@ const Menu = <T extends any>(
     fullWidth,
     searchable,
     footerAction,
-    footerActionComponent,
+    noTopPadding,
     scrollbarsRef,
     maxVisibleItems = MAX_VISIBLE_ITEMS,
-    noTopPadding,
     noBottomPadding,
     disableAnimation = false,
     multiSelectProps,
+    stopItemPropagation = true,
+    footerActionComponent,
   }: MenuProps<T>,
   ref: React.Ref<MenuRefElement>
 ) => {
@@ -81,11 +83,14 @@ const Menu = <T extends any>(
   const scrollBarWidth = React.useMemo(() => getScrollbarWidth(), []);
   const theme = useTheme();
 
-  const onItemClick = (value?: T, onClick?: (e: React.MouseEvent) => void) =>
-    stopPropagation<React.MouseEvent>((e) => {
-      onClick?.(e);
+  const onItemClick = (value?: T, onClick?: (event: React.MouseEvent) => void) => {
+    const callback = (event: React.MouseEvent) => {
+      onClick?.(event);
       onSelect?.(value!);
-    });
+    };
+
+    return stopItemPropagation ? stopPropagation<React.MouseEvent>(callback) : callback;
+  };
 
   React.useEffect(() => {
     const wheelCallback = (event: WheelEvent) => event.stopImmediatePropagation();
@@ -126,9 +131,9 @@ const Menu = <T extends any>(
 
         <Scrollbars
           ref={scrollbarsRef}
+          autoHide
           className="scrollbars"
           autoHeight
-          autoHide
           autoHeightMax={maxHeight ?? getItemsContainer(theme.components.menuItem.height, maxVisibleItems)}
           hideTracksWhenNotNeeded
         >

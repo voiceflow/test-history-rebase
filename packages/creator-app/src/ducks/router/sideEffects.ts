@@ -20,6 +20,7 @@ import {
   goToSettings,
   goToTranscript,
   goToWorkspaceSettings,
+  pushSearch,
   redirectTo,
   redirectToCanvasCommenting,
 } from './actions';
@@ -99,19 +100,23 @@ export const redirectToRootDiagram = (): Thunk => async (dispatch, getState) => 
 };
 
 export const goToDiagram =
-  (diagramID: string): Thunk =>
+  (diagramID: string, nodeID?: string): Thunk =>
   async (dispatch, getState) => {
     const versionID = Session.activeVersionIDSelector(getState());
 
     Errors.assertVersionID(versionID);
 
+    if (nodeID) {
+      dispatch(pushSearch(`?nodeID=${nodeID}`));
+    }
+
     await dispatch(goToCanvasSwitchRealtime(versionID, diagramID));
   };
 
 export const goToDiagramHistoryPush =
-  (diagramID: string): Thunk =>
+  (diagramID: string, nodeID?: string): Thunk =>
   async (dispatch) => {
-    await dispatch(goToDiagram(diagramID));
+    await dispatch(goToDiagram(diagramID, nodeID));
 
     dispatch(Creator.diagramsHistoryPush(diagramID));
   };

@@ -13,6 +13,7 @@ export type DnDItem<I extends { id: string } | any> = Omit<InternalItem<I>, 'typ
 
 export interface DnDHandlers<I> {
   onDrop?: (item: DnDItem<I>, monitor: DropTargetMonitor) => void;
+  canDrag?: boolean | ((monitor: DragSourceMonitor) => boolean);
   onDragEnd?: (result: void, monitor: DragSourceMonitor) => void;
   onReorder?: (from: number, to: number) => void;
   onDragStart?: (monitor: DragSourceMonitor) => void;

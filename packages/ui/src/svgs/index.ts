@@ -7,6 +7,7 @@ export { default as activeDelete } from './active-delete.svg';
 export { default as add } from './add.svg';
 export { default as addStep } from './add-step.svg';
 export { default as addTeammate } from './add-teammate.svg';
+export { default as addTopic } from './add-topic.svg';
 export { default as alexa } from './alexa.svg';
 export { default as amazonAlexa } from './amazon-alexa.svg';
 export { default as angle } from './angle.svg';
@@ -14,6 +15,7 @@ export { default as api } from './api.svg';
 export { default as arrow } from './arrow.svg';
 export { default as arrowLeft } from './arrow-left.svg';
 export { default as arrowRight } from './arrow-right.svg';
+export { default as arrowRightTopics } from './arrow-right-topics.svg';
 export { default as audioPlayer } from './audio-player.svg';
 export { default as amazon } from './brands/amazon.svg';
 

@@ -2,7 +2,6 @@ import { Project as AlexaProject } from '@voiceflow/alexa-types';
 import { VersionFolderItemType } from '@voiceflow/api-sdk';
 import { Constants } from '@voiceflow/general-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
-import { Version as VoiceVersion } from '@voiceflow/voice-types';
 import { batch } from 'react-redux';
 
 import client from '@/client';
@@ -35,6 +34,7 @@ import { activeDefaultVoiceSelector, activeSessionSelector } from '../../selecto
 import { AnyLocale, AnyVersion } from '../../types';
 import { updateLocalesByVersionID } from '../platform';
 
+export * from './topicsComponents';
 export * from './variables';
 
 export const loadVersionByID =
@@ -231,10 +231,7 @@ export const saveSession =
     dispatch(updateSessionByVersionID(versionID, session));
 
     await client.platform(platform).version.updateSettings(versionID, {
-      session: createSessionAdapter({ platform }).toDB(
-        { ...activeSession, ...session },
-        { defaultVoice }
-      ) as VoiceVersion.VoiceVersionSettings<any>['session'],
+      session: createSessionAdapter({ platform }).toDB({ ...activeSession, ...session }, { defaultVoice }) as any,
     });
   };
 

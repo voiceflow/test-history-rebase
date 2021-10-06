@@ -33,6 +33,16 @@ export const usePersistFunction = <T extends (...args: any[]) => any>(fn: Nullis
   return persistFn.current;
 };
 
+export const useConst = <T>(value: T): T => {
+  const ref = React.useRef<T>();
+
+  if (ref.current === undefined) {
+    ref.current = value;
+  }
+
+  return ref.current;
+};
+
 export const useCreateConst = <T>(creator: () => T): T => {
   const ref = React.useRef<T>();
 

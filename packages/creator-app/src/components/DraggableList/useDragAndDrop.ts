@@ -83,6 +83,7 @@ const useDragAndDrop = <I extends { id: string } | any>(
     end: (result, monitor) => handlers.current.onDragEnd?.(result as void, monitor),
     begin: (monitor) => handlers.current.onDragStart?.(monitor),
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
+    canDrag: handlers.current.canDrag,
     isDragging: unmountableDuringDrag ? (monitor) => cacheRef.current.id === (monitor.getItem().item.id ?? monitor.getItem().item) : undefined,
   });
 

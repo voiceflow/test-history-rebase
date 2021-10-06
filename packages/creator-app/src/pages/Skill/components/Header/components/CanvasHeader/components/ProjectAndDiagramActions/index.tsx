@@ -31,7 +31,7 @@ const ProjectAndDiagramActions: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
 
-  const engine = useEventualEngine()();
+  const getEngine = useEventualEngine();
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
 
   const isPrototypingMode = usePrototypingMode();
@@ -72,6 +72,8 @@ const ProjectAndDiagramActions: React.FC = () => {
   };
 
   const onDuplicate = () => {
+    const engine = getEngine();
+
     if (!engine) {
       return;
     }

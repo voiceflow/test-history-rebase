@@ -1,4 +1,4 @@
-import { Menu, MenuOption, PopperPlacement, Portal, useVirtualElementPopper } from '@voiceflow/ui';
+import { Menu, MenuOption, MenuProps, PopperPlacement, Portal, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
@@ -10,13 +10,13 @@ const EXCLUDED_TAG_NAME = ['input', 'textarea'];
 
 export const CONTEXT_MENU_IGNORED_CLASS_NAME = 'context-menu-exclude';
 
-interface ContextMenuProps<T> {
+interface ContextMenuProps<T> extends Omit<MenuProps<T>, 'options' | 'children'> {
   options: MenuOption<T>[];
-  placement?: PopperPlacement;
   children: (props: { isOpen: boolean; onContextMenu: (event: React.MouseEvent<HTMLElement>) => void }) => React.ReactNode;
+  placement?: PopperPlacement;
 }
 
-const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...props }: ContextMenuProps<T>) => {
+const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...props }: ContextMenuProps<T>): React.ReactElement<any, any> => {
   const [virtualElement, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement> | null>(null);
   const popper = useVirtualElementPopper(virtualElement, { placement });
   const [isOpen, onToggle] = useDismissable(false);
@@ -51,7 +51,7 @@ const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...p
             style={{ ...popper.styles.popper, zIndex: 1100 }}
             {...popper.attributes.popper}
           >
-            <Menu {...(props as any)} />
+            <Menu {...props} />
           </div>
         </Portal>
       )}

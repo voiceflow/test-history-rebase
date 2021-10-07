@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.508.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.508.0...@voiceflow/creator-app@1.508.1) (2021-10-07)
+
+
+### Bug Fixes
+
+* self dismiss dropdowns (VF-000) ([#4279](https://github.com/voiceflow/creator-app/issues/4279)) ([6f65ab8](https://github.com/voiceflow/creator-app/commit/6f65ab8e731f0af8001d01c610a3b065072900dd))
+
+
+
+
+
 # [1.508.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.507.2...@voiceflow/creator-app@1.508.0) (2021-10-07)
 
 

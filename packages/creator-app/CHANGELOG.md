@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.508.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.507.2...@voiceflow/creator-app@1.508.0) (2021-10-07)
+
+
+### Bug Fixes
+
+* modal z-index to avoid dropdown overlap (VF-1859) ([#4273](https://github.com/voiceflow/creator-app/issues/4273)) ([21992bd](https://github.com/voiceflow/creator-app/commit/21992bd4d5230222e3379b1a4e1dd772af6d1974))
+
+
+### Features
+
+* **dialogflow:** agent selection (VF-1614) ([#4251](https://github.com/voiceflow/creator-app/issues/4251)) ([4490430](https://github.com/voiceflow/creator-app/commit/44904305fdff42f6e9b18cd2c583581af7ca3dd4))
+
+
+
+
+
 ## [1.507.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.507.1...@voiceflow/creator-app@1.507.2) (2021-10-06)
 
 

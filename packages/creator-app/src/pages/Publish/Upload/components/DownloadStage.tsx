@@ -2,12 +2,16 @@ import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { useSetup } from '@/hooks';
-import { AlexaExportJob, GeneralJob, GoogleExportJob, JobStageData } from '@/models';
+import { AlexaExportJob, DialogflowExportJob, GeneralJob, GoogleExportJob, JobStageData } from '@/models';
 import { DataTypes, download } from '@/utils/dom';
 
 interface DownloadProps {
   cancel: () => void;
-  stageData: JobStageData<AlexaExportJob.SuccessStage> | JobStageData<GoogleExportJob.SuccessStage> | JobStageData<GeneralJob.SuccessStage>;
+  stageData:
+    | JobStageData<AlexaExportJob.SuccessStage>
+    | JobStageData<GoogleExportJob.SuccessStage>
+    | JobStageData<DialogflowExportJob.SuccessStage>
+    | JobStageData<GeneralJob.SuccessStage>;
 }
 
 const Download: React.FC<DownloadProps> = ({ cancel, stageData }) => {

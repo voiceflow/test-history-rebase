@@ -7,12 +7,14 @@ import * as Errors from '@/config/errors';
 import { JobStatus } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { AlexaExportJob, GeneralJob, GoogleExportJob } from '@/models';
+import { AlexaExportJob, DialogflowExportJob, GeneralJob, GoogleExportJob } from '@/models';
 import { Nullable } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
+type AnyExportJob = Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob | DialogflowExportJob.AnyJob | GeneralJob.AnyJob>;
+
 export interface ExportContextValue {
-  job: Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob | GeneralJob.AnyJob>;
+  job: AnyExportJob;
   start: () => Promise<void>;
   cancel: () => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
@@ -25,7 +27,7 @@ const PULL_TIMEOUT = 1500; // 1.5s
 
 export const ExportProvider: React.FC = ({ children }) => {
   const pullTimeout = React.useRef<NodeJS.Timeout>();
-  const [job, setJob] = React.useState<Nullable<AlexaExportJob.AnyJob | GoogleExportJob.AnyJob | GeneralJob.AnyJob>>(null);
+  const [job, setJob] = React.useState<AnyExportJob>(null);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);

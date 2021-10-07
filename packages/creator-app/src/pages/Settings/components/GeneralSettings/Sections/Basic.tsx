@@ -15,7 +15,7 @@ import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
-import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/utils';
+import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { without } from '@/utils/array';

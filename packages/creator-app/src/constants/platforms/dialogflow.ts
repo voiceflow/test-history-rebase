@@ -1,3 +1,7 @@
+export const DIALOGFLOW_AGENT_OVERVIEW_URL = 'https://cloud.google.com/dialogflow/es/docs/agents-overview';
+export const getDialogflowAgentUrl = (projectID: string) => `https://dialogflow.cloud.google.com/#/editAgent/${projectID}/`;
+export const getDialogflowProjectConsoleUrl = (projectID: string) => `https://console.actions.google.com/project/${projectID}/directoryinformation/`;
+
 export enum DialogflowStageType {
   IDLE = 'IDLE',
   ERROR = 'ERROR',

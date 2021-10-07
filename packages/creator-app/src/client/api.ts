@@ -10,5 +10,5 @@ const api = new API({
 });
 
 export default api.generatePublicClient({
-  analyticsEncryption: new Crypto.Synchronous({ alg: AES, key: 'vf-analytics' }),
+  analyticsEncryption: new Crypto.Synchronous({ alg: AES, key: 'vf-analytics' }) as any,
 });

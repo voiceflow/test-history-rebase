@@ -12,7 +12,7 @@ interface DialogflowProject {
 
 const projectDialogflowService = {
   ...createProjectService<Project.GoogleProject>(GOOGLE_SERVICE_ENDPOINT),
-  getDialogFlowESProjects: (): Promise<DialogflowProject[]> => googleService.get<DialogflowProject[]>('/dialogflow/es/project/agent-list'),
+  getDialogFlowESProjects: (): Promise<DialogflowProject[]> => googleService.get<DialogflowProject[]>('dialogflow/es/project/agent-list'),
 };
 
 export default projectDialogflowService;

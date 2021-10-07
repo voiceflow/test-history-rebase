@@ -8,10 +8,11 @@ import { Path } from '@/config/routes';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { lazy } from '@/hocs';
 import { usePermission, useSelector } from '@/hooks';
-import { isAlexaPlatform, isGooglePlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 const PublishAmazon = lazy(() => import('./Amazon'));
 const PublishGoogle = lazy(() => import('./Google'));
+const PublishDialogflow = lazy(() => import('./Dialogflow'));
 const Export = lazy(() => import('./Export'));
 const API = lazy(() => import('./API'));
 
@@ -24,6 +25,7 @@ const Publish: React.FC = () => {
       {canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
       {isAlexaPlatform(platform) && <Route path={Path.PUBLISH_ALEXA} component={PublishAmazon} />}
       {isGooglePlatform(platform) && <Route path={Path.PUBLISH_GOOGLE} component={PublishGoogle} />}
+      {isDialogflowPlatform(platform) && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
 
       <Route path={Path.PUBLISH_API} component={API} />
 

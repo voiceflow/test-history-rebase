@@ -52,6 +52,7 @@ export enum CanvasRoute {
 export enum PublishRoute {
   ALEXA = 'alexa',
   GOOGLE = 'google',
+  DIALOGFLOW = 'dialogflow',
   API = 'api',
   EXPORT = 'export',
   GENERAL = 'general',
@@ -159,6 +160,7 @@ export const Path = {
   PRODUCT_LIST: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCTS),
 
   PUBLISH_GOOGLE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.GOOGLE),
+  PUBLISH_DIALOGFLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.DIALOGFLOW),
   PUBLISH_ALEXA: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.ALEXA),
   PUBLISH_GENERAL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.GENERAL),
   PUBLISH_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.EXPORT),

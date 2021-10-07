@@ -1,11 +1,10 @@
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
-import { ModalType } from '@/constants';
 import { DialogflowStageType } from '@/constants/platforms';
-import { useHotKeys, useModals } from '@/hooks';
+import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { Google } from '@/pages/Publish/Upload';
+import { Dialogflow } from '@/pages/Publish/Upload';
 import { ProgressStage } from '@/pages/Publish/Upload/components';
 import { useDialogflowPublish } from '@/pages/Skill/hooks';
 
@@ -18,8 +17,6 @@ const DialogflowPublish: React.FC = () => {
   const { job, noPopup, onCancel, onPublish, needsLogin, popupOpened, multiProjects, setMultiProjects, successfullyPublished } =
     useDialogflowPublish();
 
-  const { open: openLoginModal } = useModals(ModalType.CONNECT);
-
   const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.includes(job?.stage.type));
 
   useHotKeys(Hotkey.UPLOAD_PROJECT, onPublish, { disable: hotkeyDisabled, preventDefault: true }, [onPublish]);
@@ -28,7 +25,7 @@ const DialogflowPublish: React.FC = () => {
 
   const button = React.useMemo(() => {
     if (needsLogin) {
-      return <Button onClick={openLoginModal} variant={ButtonVariant.CONNECT} />;
+      return <Button onClick={onPublish} variant={ButtonVariant.CONNECT} />;
     }
 
     if (successfullyPublished) {
@@ -45,7 +42,7 @@ const DialogflowPublish: React.FC = () => {
       case DialogflowStageType.SUCCESS:
         return <Button variant={ButtonVariant.SUCCESS} />;
       default:
-        return <Button onClick={openLoginModal} variant={ButtonVariant.UPLOAD} />;
+        return <Button onClick={onPublish} variant={ButtonVariant.UPLOAD} />;
     }
   }, [job, needsLogin, onPublish, successfullyPublished]);
 
@@ -57,7 +54,7 @@ const DialogflowPublish: React.FC = () => {
         {job?.stage.type === DialogflowStageType.PROGRESS && <ProgressStage progress={job.stage.data.progress} />}
 
         <Popup open={popupOpened && (isSelectProjectStage || !noPopup)} onClose={onCancel} jobStage={job?.stage.type} multiSelect={multiProjects}>
-          {(isSelectProjectStage || !noPopup) && <Google setMultiProjects={setMultiProjects} />}
+          {(isSelectProjectStage || !noPopup) && <Dialogflow setMultiProjects={setMultiProjects} />}
         </Popup>
       </Portal>
     </>

@@ -7,6 +7,7 @@ import { useAsyncMountUnmount, useTeardown } from '@/hooks';
 import { Container } from '@/pages/Collaborators/components/InviteByLink/components';
 
 import { LoaderStage, ProjectItem, StageContainer } from '../components';
+import { CreateAgentLink } from './components';
 
 const Footer = ModalFooter as React.FC<any>;
 
@@ -59,7 +60,7 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
             <StageContainer noPadding>
               <Box height={42} display="flex" mb={12} alignItems="flex-end" pl={24}>
                 <Text fontWeight={600} fontSize={15}>
-                  Select Project
+                  Connect to Agent
                 </Text>
               </Box>
 
@@ -71,8 +72,8 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
                 ))}
               </Box>
 
-              <Box mt={9} height={68} padding="24px 60px" style={{ border: '1px solid #f9f9f9', overflow: 'hidden', whiteSpace: 'nowrap' }}>
-                <ProjectItem onClick={() => updateCurrentStage(null)}>Create New Agent</ProjectItem>
+              <Box mt={9} height={68} style={{ border: '1px solid #f9f9f9', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                <CreateAgentLink onClick={() => updateCurrentStage(null)}>Create New Agent</CreateAgentLink>
               </Box>
             </StageContainer>
           ) : (
@@ -86,7 +87,9 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
               <Footer>
                 <Container>
                   <Box mt={9} height={68} padding="24px 60px" style={{ border: '1px solid #f9f9f9', overflow: 'hidden', whiteSpace: 'nowrap' }}>
-                    <ProjectItem onClick={() => updateCurrentStage(null)}>Create New Agent</ProjectItem>
+                    <ProjectItem style={{ padding: 0 }} onClick={() => updateCurrentStage(null)}>
+                      Create New Agent
+                    </ProjectItem>
                   </Box>
                 </Container>
               </Footer>

@@ -40,7 +40,8 @@ export const PublishProvider: React.FC = ({ children }) => {
   const platformClient = React.useMemo(
     () =>
       (platform === Constants.PlatformType.GOOGLE && isGoogleCreate && { ...client.platform.google, publish: client.platform.google.publishV2 }) ||
-      (platform === Constants.PlatformType.GOOGLE && isDialogflow && { ...client.platform.google, publish: client.platform.google.publishDF }) ||
+      (platform === Constants.PlatformType.DIALOGFLOW_ES &&
+        isDialogflow && { ...client.platform.google, publish: client.platform.dialogflow.publish }) ||
       client.platform(platform),
     [platform]
   );

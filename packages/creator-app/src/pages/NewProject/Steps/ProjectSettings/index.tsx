@@ -12,7 +12,8 @@ import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 import FieldsContainer from '@/pages/Onboarding/Steps/components/FieldsContainer';
 import { Container } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 import { LoadingButton } from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components';
-import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES } from '@/pages/Publish/utils';
+import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
+import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { Identifier } from '@/styles/constants';
 import { without } from '@/utils/array';
@@ -149,8 +150,8 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
             ),
             [Constants.PlatformType.DIALOGFLOW_ES]: () => (
               <Select
-                value={FORMATTED_GOOGLE_LOCALES_LABELS[dialogflowLanguage]}
-                options={FORMATTED_LOCALES}
+                value={FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage]}
+                options={FORMATTED_DIALOGFLOW_LOCALES}
                 onSelect={setDialogflowLanguage}
                 placeholder="Language"
                 getOptionValue={(option) => option?.value || ''}

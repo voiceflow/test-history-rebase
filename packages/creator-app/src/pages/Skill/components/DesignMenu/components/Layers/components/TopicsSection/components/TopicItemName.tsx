@@ -77,7 +77,7 @@ const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNam
   };
 
   return (
-    <ContextMenu options={options} stopItemPropagation={false}>
+    <ContextMenu options={options} selfDismiss>
       {({ isOpen, onContextMenu }) => (
         <TopicItemNameContainer
           ref={ref}

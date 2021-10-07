@@ -36,6 +36,8 @@ export type MenuProps<T extends any> = {
   disabled?: boolean;
   maxHeight?: number | string;
   fullWidth?: boolean;
+  onToggle?: () => void;
+  selfDismiss?: boolean;
   searchable?: React.ReactNode;
   noTopPadding?: boolean;
   footerAction?: boolean;
@@ -44,7 +46,6 @@ export type MenuProps<T extends any> = {
   noBottomPadding?: boolean;
   multiSelectProps?: { buttonClick: React.MouseEventHandler; buttonLabel: React.ReactNode };
   disableAnimation?: boolean;
-  stopItemPropagation?: boolean;
   footerActionComponent?: () => React.FC;
 } & Either<
   {
@@ -62,11 +63,13 @@ const Menu = <T extends any>(
     width,
     options,
     disabled,
+    onToggle,
     onSelect,
     children,
     maxHeight,
     fullWidth,
     searchable,
+    selfDismiss = false,
     footerAction,
     noTopPadding,
     scrollbarsRef,
@@ -74,7 +77,6 @@ const Menu = <T extends any>(
     noBottomPadding,
     disableAnimation = false,
     multiSelectProps,
-    stopItemPropagation = true,
     footerActionComponent,
   }: MenuProps<T>,
   ref: React.Ref<MenuRefElement>
@@ -83,14 +85,14 @@ const Menu = <T extends any>(
   const scrollBarWidth = React.useMemo(() => getScrollbarWidth(), []);
   const theme = useTheme();
 
-  const onItemClick = (value?: T, onClick?: (event: React.MouseEvent) => void) => {
-    const callback = (event: React.MouseEvent) => {
+  const onItemClick = (value?: T, onClick?: (event: React.MouseEvent) => void) =>
+    stopPropagation<React.MouseEvent>((event) => {
       onClick?.(event);
       onSelect?.(value!);
-    };
-
-    return stopItemPropagation ? stopPropagation<React.MouseEvent>(callback) : callback;
-  };
+      if (selfDismiss) {
+        onToggle?.();
+      }
+    });
 
   React.useEffect(() => {
     const wheelCallback = (event: WheelEvent) => event.stopImmediatePropagation();

@@ -51,7 +51,7 @@ const ContextMenu = <T extends any>({ children, placement = 'bottom-start', ...p
             style={{ ...popper.styles.popper, zIndex: 1100 }}
             {...popper.attributes.popper}
           >
-            <Menu {...props} />
+            <Menu onToggle={onToggle} {...props} />
           </div>
         </Portal>
       )}

@@ -51,7 +51,7 @@ export function Item(props) {
   const item = (
     <div>
       <ProjectListItem hasOptions={hasOptions} to={`/${RootRoute.PROJECT}/${versionID}/canvas/${diagram}`} hidden={isDragging} tabIndex={0}>
-        <Dropdown options={options}>
+        <Dropdown options={options} selfDismiss>
           {(ref, onToggle, isOpen) =>
             hasOptions ? (
               <DropdownIconWrapper className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS} onClick={stopPropagation(() => onToggle())} ref={ref}>

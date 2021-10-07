@@ -109,7 +109,15 @@ const Dropdown = <T extends any = undefined>({
               >
                 {(typeof menu === 'function' ? menu(onToggle) : menu) ||
                   (options && (
-                    <Menu<T> options={options} width={menuWidth} onSelect={onSelect} maxHeight={maxHeight} maxVisibleItems={maxVisibleItems} />
+                    <Menu<T>
+                      options={options}
+                      width={menuWidth}
+                      onSelect={onSelect}
+                      maxHeight={maxHeight}
+                      maxVisibleItems={maxVisibleItems}
+                      onToggle={onToggle}
+                      selfDismiss={selfDismiss}
+                    />
                   ))}
               </PopoverContainer>
             )}

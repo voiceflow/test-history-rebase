@@ -40,7 +40,6 @@ const DialogHeader: React.FC<DialogHeaderProps> = ({ showDebugs, showIntentConfi
     <Container hasShadow={isScrolling}>
       <b>Transcript</b>
       <Dropdown
-        selfDismiss
         options={[
           {
             label: Label(DialogLabel.INTENT_CONFIDENCE, showIntentConfidence),

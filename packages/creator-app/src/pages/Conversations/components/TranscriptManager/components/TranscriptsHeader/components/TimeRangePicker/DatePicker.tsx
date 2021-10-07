@@ -174,7 +174,7 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ currentRange, placement, on
       {({ ref, onToggle }) => (
         <div onBlur={() => setIsOpen(false)} onClick={() => setIsOpen(!isOpen)} ref={ref}>
           <TimeRangeSelect
-            selfDismiss={true}
+            selfDismiss
             open={isOpen}
             isTranscript
             options={TIME_RANGE_OPTIONS}

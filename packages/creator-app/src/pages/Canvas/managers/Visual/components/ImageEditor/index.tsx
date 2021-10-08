@@ -9,8 +9,11 @@ import Section from '@/components/Section';
 import FullImage from '@/components/Upload/ImageUpload/FullImage';
 import * as Documentation from '@/config/documentation';
 import { DEVICE_LABEL_MAP } from '@/constants';
+import * as ProjectV2 from '@/ducks/projectV2';
+import { useSelector } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
+import { createPlatformSelector } from '@/utils/platform';
 
 import { CANVAS_VISIBILITY_OPTIONS, DEVICE_OPTIONS, FRAME_OPTIONS } from './constants';
 
@@ -24,6 +27,8 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData> = ({ data, onChange }) 
   );
   const cache = React.useRef({ preDimensions: data.dimensions, prevDevice: data.device });
   const [frameType, setFrameType] = React.useState(Node.Visual.FrameType.AUTO);
+
+  const platform = useSelector(ProjectV2.active.platformSelector);
 
   const setAutoFit = (frame: Node.Visual.FrameType, url: Nullable<string> | string | undefined) => {
     const currentImage = new Image();
@@ -73,6 +78,26 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData> = ({ data, onChange }) 
     });
   };
 
+  const renderVisualSizeSection = createPlatformSelector<() => React.ReactNode>(
+    {
+      [Constants.PlatformType.GENERAL]: () => (
+        <Section dividers isDividerNested isDividerBottom>
+          <FormControl label="Size" contentBottomUnits={0}>
+            <RadioGroup
+              isFlat
+              options={FRAME_OPTIONS}
+              checked={frameType}
+              onChange={(e) => {
+                onChangeFrameType(e);
+              }}
+            />
+          </FormControl>
+        </Section>
+      ),
+    },
+    () => null
+  );
+
   const ratio = (Number(dimensions?.height) / Number(dimensions?.width)) * 100 || 0;
 
   const getImageDimensions = (frameType: Node.Visual.FrameType) => {
@@ -86,18 +111,7 @@ const ImageEditor: NodeEditor<Node.Visual.ImageStepData> = ({ data, onChange }) 
         </Controls>
       )}
     >
-      <Section dividers isDividerNested isDividerBottom>
-        <FormControl label="Size" contentBottomUnits={0}>
-          <RadioGroup
-            isFlat
-            options={FRAME_OPTIONS}
-            checked={frameType}
-            onChange={(e) => {
-              onChangeFrameType(e);
-            }}
-          />
-        </FormControl>
-      </Section>
+      {renderVisualSizeSection(platform)()}
 
       <Section dividers={!!data.image} isDividerNested isDividerBottom>
         {frameType === Node.Visual.FrameType.CUSTOM_SIZE ? (

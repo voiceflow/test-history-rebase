@@ -6,6 +6,7 @@ export const getPlatformLabel = createPlatformSelector(
   {
     [Constants.PlatformType.ALEXA]: 'Alexa',
     [Constants.PlatformType.GOOGLE]: 'Google Actions',
+    [Constants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
   },
   'General Assistant'
 );

@@ -50,3 +50,5 @@ export const conditionalReplace = (base: string, pattern: RegExp, value?: string
 export const isURL = (str: string): boolean => !!str.match(URL_ONLY_REGEX);
 
 export const getValidHref = (href: string): string => (href.startsWith('//') || href.includes('://') ? href : `//${href}`);
+
+export const formatProjectName = (value: string): string => value.trim() || 'Untitled Project';

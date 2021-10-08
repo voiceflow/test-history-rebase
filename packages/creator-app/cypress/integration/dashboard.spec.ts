@@ -35,7 +35,7 @@ context('Team Dashboard', () => {
     it('delete project', () => {
       dashboardPage.el.projectListItemTitle.should('have.text', 'my other project');
       dashboardPage.el.projectListItem.find('div').eq(1).realHover().find('.vf-svg-icon--ellipsis').should('be.visible').click();
-      menuComponent.el.item.eq(3).should('have.text', 'Delete project').click();
+      menuComponent.el.item.eq(4).should('have.text', 'Delete project').click();
       modal(ModalType.CONFIRM).el.root.should('be.visible').find('button').click();
 
       // check if last project in the list is removed

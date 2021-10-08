@@ -217,10 +217,10 @@ export const loadActiveProject = (): Thunk => async (dispatch, getState) => {
 };
 
 export const saveProjectName =
-  (name: string): Thunk =>
+  (name: string, customProjectID?: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const projectID = Session.activeProjectIDSelector(state);
+    const projectID = customProjectID ?? Session.activeProjectIDSelector(state);
     const workspaceID = Session.activeWorkspaceIDSelector(state);
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 

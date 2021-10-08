@@ -15,10 +15,9 @@ import { SelectionTargetsContext } from '@/pages/Skill/contexts';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
+import { formatProjectName } from '@/utils/string';
 
 import { Container, DiagramsActions, ProjectActions, ProjectTitle, ViewOnly } from './components';
-
-const validateTitle = (value: string) => value.trim() || 'Untitled Project';
 
 const ProjectAndDiagramActions: React.FC = () => {
   const selectedTargets = React.useContext(SelectionTargetsContext);
@@ -49,8 +48,8 @@ const ProjectAndDiagramActions: React.FC = () => {
       return;
     }
 
-    updateFormValue(validateTitle(formValue));
-    saveProjectName(validateTitle(formValue));
+    updateFormValue(formatProjectName(formValue));
+    saveProjectName(formatProjectName(formValue));
 
     setFocused(false);
     unlockResource();

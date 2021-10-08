@@ -8,12 +8,15 @@ import { Tooltip } from 'react-tippy';
 import Avatar from '@/components/Avatar';
 import { Permission } from '@/config/permissions';
 import { RootRoute } from '@/config/routes';
+import * as Project from '@/ducks/project';
 import withDraggable from '@/hocs/withDraggable';
-import { usePermission, useProjectOptions } from '@/hooks';
+import { useDispatch, useLinkedState, usePermission, useProjectOptions } from '@/hooks';
 import { PROJECT_COLORS } from '@/styles/colors';
 import { DashboardClassName } from '@/styles/constants';
+import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
 import { getPlatformAppName } from '@/utils/platform';
+import { formatProjectName } from '@/utils/string';
 
 import {
   DropdownIconWrapper,
@@ -35,11 +38,28 @@ export function Item(props) {
   const dateFromID = new Date(parseInt(id.substring(0, 8), 16));
   const color = PROJECT_COLORS[dateFromID.getTime() % PROJECT_COLORS.length] || PROJECT_COLORS[0];
 
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [formValue, updateFormValue] = useLinkedState(name);
+  const saveProjectName = useDispatch(Project.saveProjectName);
+  const onRename = () => {
+    titleRef.current?.startEditing();
+    setIsEditing(true);
+  };
+  const onBlur = () => {
+    titleRef.current?.stopEditing();
+
+    updateFormValue(formatProjectName(formValue));
+    saveProjectName(formatProjectName(formValue), id);
+
+    setIsEditing(false);
+  };
+
   const TitleWrapper = titleOverflowing ? Tooltip : React.Fragment;
   const options = useProjectOptions({
     boardID: listId,
     projectID: id,
     projectName: name,
+    onRename,
   });
 
   React.useEffect(() => {
@@ -72,9 +92,16 @@ export function Item(props) {
         <ProjectNameWrapper>
           <ProjectTitleDetails>
             <TitleWrapper {...(titleOverflowing ? { title: name } : {})}>
-              <ProjectTitle ref={titleRef} className={DashboardClassName.PROJECT_LIST_ITEM_TITLE}>
-                {name}
-              </ProjectTitle>
+              <ProjectTitle
+                ref={titleRef}
+                className={DashboardClassName.PROJECT_LIST_ITEM_TITLE}
+                readOnly={!isEditing}
+                value={formValue}
+                onBlur={onBlur}
+                onChange={updateFormValue}
+                onClick={stopPropagation()}
+                onKeyPress={withEnterPress(withInputBlur())}
+              />
             </TitleWrapper>
             <ProjectTitleCaption>
               <span>

@@ -2,6 +2,7 @@ import React from 'react';
 
 import AvatarContainer from '@/components/Avatar/components/AvatarContainer';
 import DragPlaceholder from '@/components/DragPlaceholder';
+import EditableText from '@/components/EditableText';
 import { css, styled } from '@/hocs';
 
 import Link, { LinkProps } from './Link';
@@ -24,17 +25,21 @@ export const ProjectTitleDetails = styled.div`
   margin-bottom: -1px;
 `;
 
-export const ProjectTitle = styled.div`
+export const ProjectTitle = styled(EditableText)`
   margin-bottom: 1px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
 
-export const ProjectTitleCaption = styled(ProjectTitle)`
+export const ProjectTitleCaption = styled.div`
   color: #62778c;
   font-size: 13px;
   line-height: 1.5384615385;
+  margin-bottom: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const ProjectListDragZone = styled(DragPlaceholder)`

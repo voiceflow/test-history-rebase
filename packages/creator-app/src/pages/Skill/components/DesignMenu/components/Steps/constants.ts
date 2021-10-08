@@ -45,6 +45,8 @@ const CARD_STEP = createMenuStep(BlockType.CARD);
 
 const CHOICE_STEP = createMenuStep(BlockType.CHOICE);
 
+const CUSTOM_PAYLOAD_STEP = createMenuStep(BlockType.CUSTOM_PAYLOAD);
+
 const BUTTONS_STEP = createMenuStep(BlockType.BUTTONS);
 
 const CODE_STEP = createMenuStep(BlockType.CODE);
@@ -204,11 +206,22 @@ export const GENERAL_SECTIONS = [
   },
 ];
 
+// dialogflow menu sections
+export const DIALOGFLOW_SECTIONS = [
+  ...GENERAL_SECTIONS,
+  {
+    type: BlockCategory.CHANNEL,
+    label: 'Channel',
+    steps: [CUSTOM_PAYLOAD_STEP],
+  },
+];
+
 export const getSections = createPlatformSelector(
   {
     [Constants.PlatformType.ALEXA]: ALEXA_SECTIONS,
     [Constants.PlatformType.GOOGLE]: GOOGLE_SECTIONS,
     [Constants.PlatformType.CHATBOT]: CHATBOT_SECTIONS,
+    [Constants.PlatformType.DIALOGFLOW_ES]: DIALOGFLOW_SECTIONS,
   },
   GENERAL_SECTIONS
 );

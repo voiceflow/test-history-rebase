@@ -211,6 +211,10 @@ export namespace NodeData {
     directive: any;
   }
 
+  export interface CustomPayload {
+    customPayload: any;
+  }
+
   export interface Trace {
     name: string;
     body: string;

@@ -13,6 +13,7 @@ import CombinedManager from './Combined';
 import CommandManager from './Command';
 import CommentManager from './Comment';
 import ComponentManager from './Component';
+import CustomPayloadManager from './CustomPayload';
 import DeprecatedManager from './Deprecated';
 import DirectiveManager from './Directive';
 import DisplayManager from './Display';
@@ -48,6 +49,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.COMBINED]: CombinedManager,
   [BlockType.COMMENT]: CommentManager,
   [BlockType.COMMAND]: CommandManager,
+  [BlockType.CUSTOM_PAYLOAD]: CustomPayloadManager,
   [BlockType.SET]: SetManagerV2,
   [BlockType.SETV2]: SetManagerV2,
   [BlockType.IF]: IfManagerV2,

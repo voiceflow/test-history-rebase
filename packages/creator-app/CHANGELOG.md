@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.509.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.508.1...@voiceflow/creator-app@1.509.0) (2021-10-08)
+
+
+### Features
+
+* add rename Project option to Dashboard (VF-1860) ([#4272](https://github.com/voiceflow/creator-app/issues/4272)) ([97cb62a](https://github.com/voiceflow/creator-app/commit/97cb62a1b33d1b96c5b1c3d8981e8d6632d571b0))
+
+
+
+
+
 ## [1.508.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.508.0...@voiceflow/creator-app@1.508.1) (2021-10-07)
 
 

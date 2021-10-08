@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.23.0...@voiceflow/realtime-sdk@1.24.0) (2021-10-08)
+
+
+### Features
+
+* custom payload step and editor for dialogflow (VF-1329) ([#4275](https://github.com/voiceflow/creator-app/issues/4275)) ([8d7e00f](https://github.com/voiceflow/creator-app/commit/8d7e00fd432f3bf7863f81a3705bf3ab7142fa16))
+
+
+
+
+
 # [1.23.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.22.0...@voiceflow/realtime-sdk@1.23.0) (2021-10-05)
 
 

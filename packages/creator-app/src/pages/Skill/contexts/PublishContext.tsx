@@ -37,14 +37,21 @@ export const PublishProvider: React.FC = ({ children }) => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 
-  const platformClient = React.useMemo(
-    () =>
-      (platform === Constants.PlatformType.GOOGLE && isGoogleCreate && { ...client.platform.google, publish: client.platform.google.publishV2 }) ||
-      (platform === Constants.PlatformType.DIALOGFLOW_ES &&
-        isDialogflow && { ...client.platform.google, publish: client.platform.dialogflow.publish }) ||
-      client.platform(platform),
-    [platform]
-  );
+  const platformClient = React.useMemo(() => {
+    const isGooglePlatform = platform === Constants.PlatformType.GOOGLE && isGoogleCreate;
+    const isDialogflowPlatform =
+      (platform === Constants.PlatformType.DIALOGFLOW_ES_CHAT || platform === Constants.PlatformType.DIALOGFLOW_ES_VOICE) && isDialogflow;
+
+    if (isGooglePlatform) {
+      return { ...client.platform.google, publish: client.platform.google.publishV2 };
+    }
+
+    if (isDialogflowPlatform) {
+      return { ...client.platform.google, publish: client.platform.dialogflow.publish };
+    }
+
+    return client.platform(platform);
+  }, [platform]);
 
   const getJob = React.useCallback(async () => {
     const currentJob = await platformClient.publish.getStatus(projectID);

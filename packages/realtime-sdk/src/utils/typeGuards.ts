@@ -3,6 +3,7 @@ import { Constants } from '@voiceflow/general-types';
 import {
   BlockType,
   DIAGRAM_REFERENCE_NODES,
+  DIALOGFLOW_PLATFORMS,
   DISTINCT_PLATFORMS,
   GENERAL_PLATFORMS,
   INTERNAL_NODES,
@@ -30,12 +31,14 @@ export const isDiagramReferencesBlockType = createBlockTypeGuard(DIAGRAM_REFEREN
 
 export const isAlexaPlatform = createPlatformTypeGuard(Constants.PlatformType.ALEXA);
 export const isGooglePlatform = createPlatformTypeGuard(Constants.PlatformType.GOOGLE);
-export const isDialogflowPlatform = createPlatformTypeGuard(Constants.PlatformType.DIALOGFLOW_ES);
 
 export const isIVRPlatform = createPlatformTypeGuard(Constants.PlatformType.IVR);
 export const isGeneralPlatform = createPlatformTypeGuard(Constants.PlatformType.GENERAL);
 export const isChatbotPlatform = createPlatformTypeGuard(Constants.PlatformType.CHATBOT);
 export const isMobileAppPlatform = createPlatformTypeGuard(Constants.PlatformType.MOBILE_APP);
+
+export const isDialogflowPlatform = (type: string | Constants.PlatformType): type is typeof DIALOGFLOW_PLATFORMS[number] =>
+  DIALOGFLOW_PLATFORMS.includes(type as typeof DIALOGFLOW_PLATFORMS[number]);
 
 export const isDistinctPlatform = (type: string | Constants.PlatformType): type is typeof DISTINCT_PLATFORMS[number] =>
   DISTINCT_PLATFORMS.includes(type as typeof DISTINCT_PLATFORMS[number]);

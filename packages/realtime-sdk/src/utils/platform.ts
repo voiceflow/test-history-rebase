@@ -54,7 +54,7 @@ export const getPlatformAppName = createPlatformSelector({
   [Constants.PlatformType.GOOGLE]: 'Google Action',
   [Constants.PlatformType.GENERAL]: 'Voice Assistant',
   [Constants.PlatformType.CHATBOT]: 'Chat Assistant',
-  [Constants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
-
+  [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow Chat',
+  [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow Voice',
   [Constants.PlatformType.MOBILE_APP]: 'Mobile App Project',
 });

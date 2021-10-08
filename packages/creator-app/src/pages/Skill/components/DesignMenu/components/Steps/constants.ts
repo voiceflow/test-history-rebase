@@ -206,13 +206,51 @@ export const GENERAL_SECTIONS = [
   },
 ];
 
-// dialogflow menu sections
-export const DIALOGFLOW_SECTIONS = [
-  ...GENERAL_SECTIONS,
+// dialogflow chat menu sections
+export const DIALOGFLOW_ES_CHAT_SECTIONS = [
   {
-    type: BlockCategory.CHANNEL,
-    label: 'Channel',
-    steps: [CUSTOM_PAYLOAD_STEP],
+    type: BlockCategory.RESPONSE,
+    label: 'Response',
+    steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP, CUSTOM_PAYLOAD_STEP],
+  },
+  {
+    type: BlockCategory.USER_INPUT,
+    label: 'User Input',
+    steps: [BUTTONS_STEP, PROMPT_STEP],
+  },
+  {
+    type: BlockCategory.LOGIC,
+    label: 'Logic',
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+  },
+  {
+    type: BlockCategory.INTEGRATION,
+    label: 'Integration',
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+  },
+];
+
+// dialogflow voice menu sections
+export const DIALOGFLOW_ES_VOICE_SECTIONS = [
+  {
+    type: BlockCategory.RESPONSE,
+    label: 'Response',
+    steps: [SPEAK_STEP, VISUAL_STEP, CARD_STEP, CUSTOM_PAYLOAD_STEP],
+  },
+  {
+    type: BlockCategory.USER_INPUT,
+    label: 'User Input',
+    steps: [CHOICE_STEP, PROMPT_STEP],
+  },
+  {
+    type: BlockCategory.LOGIC,
+    label: 'Logic',
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, CAPTURE_STEP, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+  },
+  {
+    type: BlockCategory.INTEGRATION,
+    label: 'Integration',
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
   },
 ];
 
@@ -221,7 +259,8 @@ export const getSections = createPlatformSelector(
     [Constants.PlatformType.ALEXA]: ALEXA_SECTIONS,
     [Constants.PlatformType.GOOGLE]: GOOGLE_SECTIONS,
     [Constants.PlatformType.CHATBOT]: CHATBOT_SECTIONS,
-    [Constants.PlatformType.DIALOGFLOW_ES]: DIALOGFLOW_SECTIONS,
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: DIALOGFLOW_ES_CHAT_SECTIONS,
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: DIALOGFLOW_ES_VOICE_SECTIONS,
   },
   GENERAL_SECTIONS
 );

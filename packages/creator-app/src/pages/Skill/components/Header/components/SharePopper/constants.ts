@@ -38,7 +38,8 @@ export const getNplModelProvider = createPlatformSelector(
   {
     [Constants.PlatformType.ALEXA]: [NLPProvider.ALEXA],
     [Constants.PlatformType.GOOGLE]: [NLPProvider.DIALOGFLOW_ES],
-    [Constants.PlatformType.DIALOGFLOW_ES]: [NLPProvider.DIALOGFLOW_ES],
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: [NLPProvider.DIALOGFLOW_ES],
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: [NLPProvider.DIALOGFLOW_ES],
   },
   Object.values(NLPProvider)
 );

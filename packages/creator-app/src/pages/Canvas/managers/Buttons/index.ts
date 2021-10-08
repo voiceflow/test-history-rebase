@@ -12,7 +12,7 @@ const ButtonsManager: NodeManagerConfig<NodeData.Buttons> = {
   ...NODE_CONFIG,
 
   label: 'Buttons',
-  platforms: [Constants.PlatformType.CHATBOT],
+  platforms: [Constants.PlatformType.CHATBOT, Constants.PlatformType.DIALOGFLOW_ES_CHAT],
 
   step: ButtonsStep,
   editor: ButtonsEditor,

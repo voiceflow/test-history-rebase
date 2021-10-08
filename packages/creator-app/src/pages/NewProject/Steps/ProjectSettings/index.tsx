@@ -90,6 +90,17 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
     />
   );
 
+  const DialogflowSelect = () => (
+    <Select
+      value={FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage]}
+      options={FORMATTED_DIALOGFLOW_LOCALES}
+      onSelect={setDialogflowLanguage}
+      placeholder="Language"
+      getOptionValue={(option) => option?.value || ''}
+      renderOptionLabel={(option) => option.name}
+    />
+  );
+
   return (
     <Container width={420} textAlign="left">
       {!isGeneral && !isDialogflow && (
@@ -148,16 +159,8 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
                 renderOptionLabel={(option) => option.name}
               />
             ),
-            [Constants.PlatformType.DIALOGFLOW_ES]: () => (
-              <Select
-                value={FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage]}
-                options={FORMATTED_DIALOGFLOW_LOCALES}
-                onSelect={setDialogflowLanguage}
-                placeholder="Language"
-                getOptionValue={(option) => option?.value || ''}
-                renderOptionLabel={(option) => option.name}
-              />
-            ),
+            [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: DialogflowSelect,
+            [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: DialogflowSelect,
           },
           GeneralLocalesSelect
         )()}

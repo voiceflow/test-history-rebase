@@ -20,7 +20,8 @@ export const getPlatformClient = createPlatformSelector<PlatformServices>(
   {
     [Constants.PlatformType.ALEXA]: alexa,
     [Constants.PlatformType.GOOGLE]: google,
-    [Constants.PlatformType.DIALOGFLOW_ES]: dialogflow,
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflow,
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflow,
   },
   general
 );

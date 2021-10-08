@@ -14,7 +14,8 @@ const getPlatformIconProps = createPlatformSelector<HeaderIconButtonProps>(
   {
     [Constants.PlatformType.ALEXA]: { icon: 'amazonAlexa', iconProps: { color: '#5fcaf4' } },
     [Constants.PlatformType.GOOGLE]: { icon: 'googleAssistant' },
-    [Constants.PlatformType.DIALOGFLOW_ES]: { icon: 'dialogflow' },
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: { icon: 'dialogflow' },
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: { icon: 'dialogflow' },
   },
   { icon: 'ban' }
 );
@@ -23,7 +24,8 @@ const getPlatformName = createPlatformSelector(
   {
     [Constants.PlatformType.ALEXA]: 'Alexa',
     [Constants.PlatformType.GOOGLE]: 'Google',
-    [Constants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow',
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow',
   },
   ''
 );

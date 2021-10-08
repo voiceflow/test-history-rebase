@@ -10,7 +10,7 @@
     "@voiceflow/base-types": "1.8.0",
     "@voiceflow/chat-types": "1.4.21",
     "@voiceflow/common": "6.8.1",
-    "@voiceflow/general-types": "1.56.5",
+    "@voiceflow/general-types": "2.0.5",
     "@voiceflow/google-types": "1.36.2",
     "@voiceflow/internal": "2.0.0",
     "@voiceflow/voice-types": "1.4.19",

@@ -25,6 +25,8 @@ export const GENERAL_PLATFORMS = [
   Constants.PlatformType.CHATBOT,
 ] as const;
 
+export const DIALOGFLOW_PLATFORMS = [Constants.PlatformType.DIALOGFLOW_ES_CHAT, Constants.PlatformType.DIALOGFLOW_ES_VOICE];
+
 export const DISTINCT_PLATFORMS = [Constants.PlatformType.ALEXA, Constants.PlatformType.GOOGLE, Constants.PlatformType.GENERAL] as const;
 
 export type DistinctPlatform = Constants.PlatformType.ALEXA | Constants.PlatformType.GOOGLE | Constants.PlatformType.GENERAL;

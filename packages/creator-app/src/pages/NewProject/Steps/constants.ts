@@ -78,7 +78,16 @@ export const getPlatformMeta = createPlatformSelector<PlatformMetaType>(
       localesDescription: GoogleLanguage,
       invocationDescription: GoogleInvocationName,
     },
-    [Constants.PlatformType.DIALOGFLOW_ES]: {
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: {
+      icon: 'dialogflow',
+      company: 'Google',
+      localesText: 'Language',
+      platformAppType: 'Action',
+      settingsTitle: 'Agent Settings',
+      localesDescription: DialogflowLanguage,
+      invocationDescription: DialogflowInvocationName,
+    },
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: {
       icon: 'dialogflow',
       company: 'Google',
       localesText: 'Language',
@@ -119,10 +128,21 @@ export const getChannelMeta = createPlatformSelector<ChannelMetaType>({
     iconSize: 24,
     description: 'Design, test and publish Google Actions',
   },
-  [Constants.PlatformType.DIALOGFLOW_ES]: {
-    name: 'Dialogflow',
+  [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: {
+    name: 'Dialogflow Chat',
     icon: 'dialogflow',
-    platform: Constants.PlatformType.DIALOGFLOW_ES,
+    platform: Constants.PlatformType.DIALOGFLOW_ES_CHAT,
+    features: [PlatformFeature.DESIGN, PlatformFeature.PUBLISH],
+    iconType: IconType.ICON,
+    iconSize: 24,
+    comingSoon: true,
+    description: 'Design, test and export or publish conversational agents',
+    featureFlag: FeatureFlag.DIALOGFLOW,
+  },
+  [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: {
+    name: 'Dialogflow Voice',
+    icon: 'dialogflow',
+    platform: Constants.PlatformType.DIALOGFLOW_ES_VOICE,
     features: [PlatformFeature.DESIGN, PlatformFeature.PUBLISH],
     iconType: IconType.ICON,
     iconSize: 24,
@@ -225,6 +245,11 @@ export const PROJECT_SECTIONS: ProjectSection[] = [
   },
   {
     name: 'One-Click Publish',
-    platforms: [Constants.PlatformType.ALEXA, Constants.PlatformType.GOOGLE, Constants.PlatformType.DIALOGFLOW_ES],
+    platforms: [
+      Constants.PlatformType.ALEXA,
+      Constants.PlatformType.GOOGLE,
+      Constants.PlatformType.DIALOGFLOW_ES_CHAT,
+      Constants.PlatformType.DIALOGFLOW_ES_VOICE,
+    ],
   },
 ];

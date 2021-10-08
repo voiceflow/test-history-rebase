@@ -9,7 +9,8 @@ const UploadGroup = platformAware(
   {
     [Constants.PlatformType.ALEXA]: () => <Alexa />,
     [Constants.PlatformType.GOOGLE]: () => <Google />,
-    [Constants.PlatformType.DIALOGFLOW_ES]: () => <Dialogflow />,
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: () => <Dialogflow />,
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: () => <Dialogflow />,
   },
   () => null
 );

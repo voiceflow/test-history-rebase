@@ -22,7 +22,7 @@
     "@voiceflow/chat-types": "1.4.21",
     "@voiceflow/common": "^6.9.3",
     "@voiceflow/draft-js-mention-plugin": "3.3.15",
-    "@voiceflow/general-types": "1.56.5",
+    "@voiceflow/general-types": "2.0.5",
     "@voiceflow/google-dfes-types": "^1.5.3",
     "@voiceflow/google-types": "^1.37.1",
     "@voiceflow/internal": "2.0.0",

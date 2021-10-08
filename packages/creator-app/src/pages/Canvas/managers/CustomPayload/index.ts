@@ -11,7 +11,7 @@ const CustomPayloadManager: NodeManagerConfig<NodeData.CustomPayload> = {
   ...NODE_CONFIG,
 
   label: 'Custom Payload',
-  platforms: [Constants.PlatformType.DIALOGFLOW_ES],
+  platforms: [Constants.PlatformType.DIALOGFLOW_ES_CHAT, Constants.PlatformType.DIALOGFLOW_ES_VOICE],
 
   step: CustomPayloadStep,
   editor: CustomPayloadEditor,

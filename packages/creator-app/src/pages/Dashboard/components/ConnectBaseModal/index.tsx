@@ -57,7 +57,7 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
         platformName: 'Google',
         projectName: 'Action',
       },
-      [Constants.PlatformType.DIALOGFLOW_ES]: {
+      [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: {
         api,
         state,
         modalType,
@@ -65,7 +65,18 @@ const ConnectBaseModal: React.FC<ConnectBaseModalProps & ConnectedConnectBaseMod
         helpLink,
         platform,
         title: 'connect to dialogflow',
-        platformName: 'Dialogflow',
+        platformName: 'Dialogflow Chat',
+        projectName: 'Dialogflow project',
+      },
+      [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: {
+        api,
+        state,
+        modalType,
+        className,
+        helpLink,
+        platform,
+        title: 'connect to dialogflow',
+        platformName: 'Dialogflow Voice',
         projectName: 'Dialogflow project',
       },
     },

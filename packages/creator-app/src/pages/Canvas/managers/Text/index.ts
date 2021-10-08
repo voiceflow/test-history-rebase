@@ -11,7 +11,7 @@ const TextManager: NodeManagerConfig<NodeData.Text> = {
   ...NODE_CONFIG,
 
   label: 'Text',
-  platforms: [Constants.PlatformType.CHATBOT],
+  platforms: [Constants.PlatformType.CHATBOT, Constants.PlatformType.DIALOGFLOW_ES_CHAT],
 
   step: TextStep,
   editor: TextEditor,

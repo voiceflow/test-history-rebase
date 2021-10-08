@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.24.0...@voiceflow/realtime-sdk@1.25.0) (2021-10-08)
+
+
+### Features
+
+* **dialogflow:** adds dialogflow chat/voice platform types (VF-1893) ([#4280](https://github.com/voiceflow/creator-app/issues/4280)) ([f4e301a](https://github.com/voiceflow/creator-app/commit/f4e301ad742c37af4de065dcec94ebf3cee88301))
+
+
+
+
+
 # [1.24.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.23.0...@voiceflow/realtime-sdk@1.24.0) (2021-10-08)
 
 

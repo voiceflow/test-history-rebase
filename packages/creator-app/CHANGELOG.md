@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.511.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.510.0...@voiceflow/creator-app@1.511.0) (2021-10-08)
+
+
+### Features
+
+* **dialogflow:** adds dialogflow chat/voice platform types (VF-1893) ([#4280](https://github.com/voiceflow/creator-app/issues/4280)) ([f4e301a](https://github.com/voiceflow/creator-app/commit/f4e301ad742c37af4de065dcec94ebf3cee88301))
+* Visuals Step variant for DF ES (VF-1328) ([#4270](https://github.com/voiceflow/creator-app/issues/4270)) ([67dfc50](https://github.com/voiceflow/creator-app/commit/67dfc50f35014d78c2ebda2a2545b0955ab8ea8e))
+
+
+
+
+
 # [1.510.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.509.0...@voiceflow/creator-app@1.510.0) (2021-10-08)
 
 

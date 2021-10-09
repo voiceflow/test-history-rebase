@@ -4,10 +4,11 @@ import React from 'react';
 
 import IntentForm from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
-import { CheckboxGroup, CheckboxOption } from '@/components/RadioGroup';
+import { CheckboxGroup } from '@/components/RadioGroup';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import { NamespaceProvider } from '@/contexts';
 import * as Intent from '@/ducks/intent';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { useLinkedState, useSelector } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -16,15 +17,10 @@ import { getTargetValue } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 import { getValidHref, isURL } from '@/utils/string';
 
+import { getButtonActions } from '../constants';
 import HelpTooltip from './HelpTooltip';
 
 export type ButtonsListItemProps = ListItemComponentProps<Node.Buttons.Button, { pushToPath: (path: { type: string; label: string }) => void }>;
-
-const BUTTON_ACTIONS: CheckboxOption<Node.Buttons.ButtonAction>[] = [
-  { id: Node.Buttons.ButtonAction.PATH, label: 'Path' },
-  { id: Node.Buttons.ButtonAction.INTENT, label: 'Intent' },
-  { id: Node.Buttons.ButtonAction.URL, label: 'URL' },
-];
 
 const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsListItemProps> = (
   {
@@ -43,7 +39,9 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
   },
   ref
 ) => {
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const getIntentByID = useSelector(Intent.platformIntentByIDSelector);
+  const buttonOptions = getButtonActions(platform);
 
   const [url, setUrl] = useLinkedState(item.url ?? '');
   const [name, setName] = useLinkedState(item.name);
@@ -82,7 +80,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
           </FormControl>
 
           <FormControl label="Button Action" tooltip={<HelpTooltip />} contentBottomUnits={intentChecked || urlChecked ? 0 : 2.5}>
-            <CheckboxGroup isFlat options={BUTTON_ACTIONS} checked={item.actions} onChange={(actions) => onUpdate({ actions })} />
+            <CheckboxGroup isFlat options={buttonOptions} checked={item.actions} onChange={(actions) => onUpdate({ actions })} />
           </FormControl>
 
           {urlChecked && (

@@ -100,7 +100,7 @@ const SSOPage: React.FC = () => {
             value={samlProvider.issuer}
             onChange={getTargetValue((issuer) => samlProviderAPI.update({ issuer }))}
           />
-          <DescriptorContainer>The URL users of your organization will be directed to on log in.</DescriptorContainer>
+          <DescriptorContainer>The IdP Entity ID for the identity provider your organization uses.</DescriptorContainer>
         </Box>
       </Section>
       <Section variant={SectionVariant.QUATERNARY} isDividerNested header="IdP SSO Target URL">
@@ -110,7 +110,7 @@ const SSOPage: React.FC = () => {
             value={samlProvider.entryPoint}
             onChange={getTargetValue((entryPoint) => samlProviderAPI.update({ entryPoint }))}
           />
-          <DescriptorContainer>The IdP Entity ID for the identity provider your organization uses.</DescriptorContainer>
+          <DescriptorContainer>The URL users of your organization will be directed to on log in.</DescriptorContainer>
         </Box>
       </Section>
       <Section variant={SectionVariant.QUATERNARY} isDividerNested header="X.509 certificate">

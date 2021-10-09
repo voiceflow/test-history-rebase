@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.512.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.512.0...@voiceflow/creator-app@1.512.1) (2021-10-09)
+
+
+### Bug Fixes
+
+* saml property definition  (VF-000) ([e22c4e6](https://github.com/voiceflow/creator-app/commit/e22c4e6fd4b069bd3d5df3ab30548757c7b37d65))
+
+
+
+
+
 # [1.512.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.511.0...@voiceflow/creator-app@1.512.0) (2021-10-09)
 
 

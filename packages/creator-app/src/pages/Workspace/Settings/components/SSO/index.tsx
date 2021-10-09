@@ -97,8 +97,8 @@ const SSOPage: React.FC = () => {
         <Box mb={24} maxWidth={480}>
           <Input
             placeholder="Enter entity ID URL"
-            value={samlProvider.entryPoint}
-            onChange={getTargetValue((entryPoint) => samlProviderAPI.update({ entryPoint }))}
+            value={samlProvider.issuer}
+            onChange={getTargetValue((issuer) => samlProviderAPI.update({ issuer }))}
           />
           <DescriptorContainer>The URL users of your organization will be directed to on log in.</DescriptorContainer>
         </Box>
@@ -107,8 +107,8 @@ const SSOPage: React.FC = () => {
         <Box mb={24} maxWidth={480}>
           <Input
             placeholder="Enter SSO target URL"
-            value={samlProvider.issuer}
-            onChange={getTargetValue((issuer) => samlProviderAPI.update({ issuer }))}
+            value={samlProvider.entryPoint}
+            onChange={getTargetValue((entryPoint) => samlProviderAPI.update({ entryPoint }))}
           />
           <DescriptorContainer>The IdP Entity ID for the identity provider your organization uses.</DescriptorContainer>
         </Box>

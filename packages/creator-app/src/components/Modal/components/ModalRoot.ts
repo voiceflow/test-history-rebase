@@ -5,7 +5,7 @@ const ModalRoot = styled.div`
   padding: 0 0.5rem;
   width: 100%;
   height: 100%;
-  z-index: 100000;
+  z-index: 1000;
   overflow-y: auto;
   pointer-events: none;
 

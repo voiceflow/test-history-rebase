@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.512.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.512.1...@voiceflow/creator-app@1.512.2) (2021-10-09)
+
+
+### Bug Fixes
+
+* saml identity provider descriptions (VF-000) ([3d8a00d](https://github.com/voiceflow/creator-app/commit/3d8a00d1164411ec3b0af537fcce36df9abe8038))
+
+
+
+
+
 ## [1.512.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.512.0...@voiceflow/creator-app@1.512.1) (2021-10-09)
 
 

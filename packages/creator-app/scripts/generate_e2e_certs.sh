@@ -9,3 +9,7 @@ mkcert localhost 127.0.0.1 ::1 $(echo "$(hostname)" | tr '[:upper:]' '[:lower:]'
 # Rename certificate and key
 mv *-key.pem localhost.key
 mv *.pem localhost.crt
+
+# Merge into a pem
+cp localhost.key server.test.pem
+cat localhost.crt >> server.test.pem

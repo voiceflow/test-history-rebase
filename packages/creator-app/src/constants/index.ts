@@ -287,6 +287,21 @@ export const URL_ONLY_REGEX = /^(((https?:)?\/\/)?(www\.)?[\w#%+.:=@~-]{2,256}\.
 export const ALL_URLS_REGEX = RegExp(URL_REGEX, 'g');
 export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,10}\b([\w#%&+./:=?@~-]*)/;
 
+export const VALID_PROTOCOLS_REGEX = [
+  'about:',
+  'bitcoin:',
+  'callto:',
+  'facetime://',
+  'http://',
+  'https://',
+  'im:',
+  'mailto',
+  'skype:',
+  'sms:',
+  'tel:',
+  'webcal://',
+];
+
 export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
 
 export const FILTERED_AMAZON_INTENTS = [

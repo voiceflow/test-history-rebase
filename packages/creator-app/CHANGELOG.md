@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.513.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.512.2...@voiceflow/creator-app@1.513.0) (2021-10-11)
+
+
+### Features
+
+* handle different kind of links in text editor (VF-1775) ([#4285](https://github.com/voiceflow/creator-app/issues/4285)) ([f692e25](https://github.com/voiceflow/creator-app/commit/f692e25298cb4094d8ac9d256c50cc51c4506b7e))
+
+
+
+
+
 ## [1.512.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.512.1...@voiceflow/creator-app@1.512.2) (2021-10-09)
 
 

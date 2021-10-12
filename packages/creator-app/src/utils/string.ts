@@ -1,7 +1,7 @@
 import { Constants } from '@voiceflow/general-types';
 import cuid from 'cuid';
 
-import { URL_ONLY_REGEX, VALID_PROTOCOLS_REGEX } from '@/constants';
+import { URL_ONLY_REGEX, VALID_LINKS_REGEXS } from '@/constants';
 import { isGeneralPlatform } from '@/utils/typeGuards';
 
 import { convertToWord, NON_ALPHANUMERIC_REGEXP } from './number';
@@ -47,10 +47,10 @@ export const conditionalReplace = (base: string, pattern: RegExp, value?: string
   return value ? base.replace(pattern, value) : base;
 };
 
-export const hasValidProtocol = (str: string): boolean => !!VALID_PROTOCOLS_REGEX.some((protocol) => str.startsWith(protocol));
+export const isURL = (str: string): boolean => !!str.match(URL_ONLY_REGEX);
 
-export const isURL = (str: string): boolean => !!str.match(URL_ONLY_REGEX) || hasValidProtocol(str);
+export const isAnyLink = (str: string): boolean => !!VALID_LINKS_REGEXS.some((regexp) => str.match(regexp));
 
-export const getValidHref = (href: string): string => (href.startsWith('//') || href.includes('://') || hasValidProtocol(href) ? href : `//${href}`);
+export const getValidHref = (href: string): string => (href.startsWith('//') || href.includes('://') || isAnyLink(href) ? href : `//${href}`);
 
 export const formatProjectName = (value: string): string => value.trim() || 'Untitled Project';

@@ -15,7 +15,7 @@ import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
 import { getTargetValue } from '@/utils/dom';
 import { compose } from '@/utils/functional';
-import { getValidHref, isURL } from '@/utils/string';
+import { getValidHref, isAnyLink } from '@/utils/string';
 
 import { getButtonActions } from '../constants';
 import HelpTooltip from './HelpTooltip';
@@ -87,7 +87,7 @@ const ButtonsListItem: React.ForwardRefRenderFunction<HTMLDivElement, ButtonsLis
             <Section isNested dividers={intentChecked} isDividerNested isDividerBottom>
               <Input
                 value={url}
-                onBlur={() => (!url || isURL(url) ? onUpdate({ url }) : toast.error('URL is not valid, please enter valid link'))}
+                onBlur={() => (!url || isAnyLink(url) ? onUpdate({ url }) : toast.error('URL is not valid, please enter valid link'))}
                 onChange={getTargetValue(setUrl)}
                 placeholder="Enter URL"
                 rightAction={

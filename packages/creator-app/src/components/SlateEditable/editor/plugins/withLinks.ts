@@ -3,7 +3,7 @@ import { Descendant, Editor, Element, Location, Node, Point, Range, Text, Transf
 
 import { ALL_URLS_REGEX } from '@/constants';
 import { Nullable } from '@/types';
-import { isURL } from '@/utils/string';
+import { isAnyLink } from '@/utils/string';
 
 import { DEFAULT_COLOR, ElementType, TextProperty } from '../../constants';
 import type { EditorAPIType } from '../editorAPI';
@@ -54,7 +54,7 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
 
     const { selection } = editor;
 
-    if (pasted && selection && Range.isExpanded(selection) && isURL(originalText)) {
+    if (pasted && selection && Range.isExpanded(selection) && isAnyLink(originalText)) {
       const selectedText = EditorAPI.string(editor, selection);
 
       return [createLinkFromTextNode({ text: selectedText })];
@@ -65,7 +65,7 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
         return next([node]);
       }
 
-      if (node.text && isURL(node.text)) {
+      if (node.text && isAnyLink(node.text)) {
         return createLinkFromTextNode(node);
       }
 
@@ -273,7 +273,7 @@ export const withLinksEditorApi: APIPlugin = (EditorAPI: EditorAPIType): EditorA
       const lastWordRange = Editor.range(editor, end, startPointOfLastCharacter);
       const lastWord = Editor.string(editor, lastWordRange);
 
-      if (isURL(lastWord)) {
+      if (isAnyLink(lastWord)) {
         return [lastWord, lastWordRange];
       }
 

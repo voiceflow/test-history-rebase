@@ -79,7 +79,7 @@ export default {
         return form.skillInvocation.root.find(`.${ClassName.INPUT_GROUP} button`);
       },
       get addInvocationButton() {
-        return form.skillInvocation.root.find('.gs__panel-body .multiple > button').eq(0);
+        return form.skillInvocation.root.find(`.${ClassName.FORMS_MULTIPLE_BUTTON}`).eq(0);
       },
     },
     locales: {

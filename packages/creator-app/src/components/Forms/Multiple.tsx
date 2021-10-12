@@ -1,13 +1,12 @@
-import { Input } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, FlexCenter, Input } from '@voiceflow/ui';
 import React from 'react';
 
 import InputGroup from '@/components/InputGroup';
 import InputGroupAddon, { AddonType } from '@/components/InputGroupAddon';
 import InputGroupText from '@/components/InputGroupText';
 import { useLinkedState } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 import { append, replace, without } from '@/utils/array';
-
-import MultipleAddButton from './components/MultipleAddButton';
 
 interface Multiple {
   max?: number;
@@ -51,7 +50,7 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
   return (
     <div className="multiple">
       {localList.map((item, index) => (
-        <div key={index} className="super-center">
+        <Box key={index} className="super-center" mb={8}>
           <span className="px-2 font-weight-bold">{index + 1}.</span>
 
           <InputGroup>
@@ -70,6 +69,10 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
               onChange={onChange(index)}
               className="form-control form-bg right outline"
               placeholder={placeholder}
+              style={{
+                borderTopLeftRadius: 0,
+                borderBottomLeftRadius: 0,
+              }}
             />
 
             {localList.length > 1 && (
@@ -78,10 +81,16 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
               </InputGroupAddon>
             )}
           </InputGroup>
-        </div>
+        </Box>
       ))}
 
-      {(max && localList.length >= max) || isDisabled ? null : <MultipleAddButton onClick={onAdd}>{add}</MultipleAddButton>}
+      {(max && localList.length >= max) || isDisabled ? null : (
+        <FlexCenter fullWidth>
+          <Button onClick={onAdd} variant={ButtonVariant.PRIMARY} className={ClassName.FORMS_MULTIPLE_BUTTON}>
+            {add}
+          </Button>
+        </FlexCenter>
+      )}
     </div>
   );
 };

@@ -168,6 +168,8 @@ export enum ClassName {
   POPPER_NAV_ITEM = 'vf-popper__nav_item',
 
   BASE_REPORT_TAG_INPUT_ICON = 'vf-base-report-tag-input-icon',
+
+  FORMS_MULTIPLE_BUTTON = 'vf-forms-multiple-button',
 }
 
 export enum ExternalClassName {

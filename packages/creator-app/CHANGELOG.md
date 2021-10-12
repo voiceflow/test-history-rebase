@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.513.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.513.0...@voiceflow/creator-app@1.513.1) (2021-10-12)
+
+
+### Bug Fixes
+
+* fixes button and inputs layout in alexa integration page (VF-1947) ([#4287](https://github.com/voiceflow/creator-app/issues/4287)) ([674d534](https://github.com/voiceflow/creator-app/commit/674d5348555a38a7b8ef2cb331fcb7548cb269cd))
+* links (VF-000) ([#4288](https://github.com/voiceflow/creator-app/issues/4288)) ([8887fa1](https://github.com/voiceflow/creator-app/commit/8887fa1e856cd2088b0a7790599ce6f040aee2af))
+
+
+
+
+
 # [1.513.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.512.2...@voiceflow/creator-app@1.513.0) (2021-10-11)
 
 

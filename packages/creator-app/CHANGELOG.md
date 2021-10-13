@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.515.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.514.0...@voiceflow/creator-app@1.515.0) (2021-10-13)
+
+
+### Features
+
+* show splash images in proto and transcripts (VF-1517) ([#4290](https://github.com/voiceflow/creator-app/issues/4290)) ([480b923](https://github.com/voiceflow/creator-app/commit/480b9233a55e49f9304c034b73b4aec61959e498))
+
+
+
+
+
 # [1.514.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.513.1...@voiceflow/creator-app@1.514.0) (2021-10-13)
 
 

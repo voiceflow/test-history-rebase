@@ -16,6 +16,7 @@ export const USE_A_TEMPLATE = 'https://docs.voiceflow.com/#/platform/project-cre
 export const CHANNEL_DIFFERENCES = 'https://docs.voiceflow.com/#/platform/project-creation/project-creation?id=differences-between-channels';
 // TODO: this document no longer exists
 export const GOOGLE_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/channel-steps/google-steps';
+export const DIALOGFLOW_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/channel-steps/dialogflow-steps';
 
 // canvas
 export const FLOW_STEP = 'https://docs.voiceflow.com/#/platform/steps/logic-steps/logic?id=flow-step';

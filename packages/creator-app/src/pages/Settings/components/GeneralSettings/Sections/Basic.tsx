@@ -1,5 +1,6 @@
 import { Constants as AlexaConstants, Utils as AlexaUtils } from '@voiceflow/alexa-types';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants, Utils as GoogleUtils } from '@voiceflow/google-types';
 import { Box, BoxFlex, Input, Select, useDidUpdateEffect } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
@@ -15,12 +16,13 @@ import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
+import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS, getDialogflowLocaleLanguage } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { without } from '@/utils/array';
 import { getPlatformValue } from '@/utils/platform';
-import { isAnyGeneralPlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 import { PlatformSettingsMetaProps, SettingSections } from '../../../constants';
 
@@ -50,6 +52,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 }) => {
   const { descriptors, localeText } = platformMeta;
 
+  const initialDialogflowLanguage = React.useMemo(() => getDialogflowLocaleLanguage(locales as any[]), [locales]);
   const initialGoogleLanguage = React.useMemo(() => getLocaleLanguage(locales as GoogleConstants.Locale[]), [locales]);
 
   const [newInvocation, setNewInvocation] = React.useState(invocationName ?? '');
@@ -59,6 +62,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   const [alexaLocales, setAlexaLocales] = React.useState<AlexaConstants.Locale[]>((locales || []) as AlexaConstants.Locale[]);
   const [generalLocale, setGeneralLocale] = React.useState<GeneralConstants.Locale>((locales as GeneralConstants.Locale[])[0]);
   const [googleLanguage, setGoogleLanguage] = React.useState<string | GoogleConstants.Language>(initialGoogleLanguage);
+  const [dialogflowLanguage, setDialogflowLanguage] = React.useState<string | DialogflowConstants.Language>(initialDialogflowLanguage);
 
   const displayName =
     platform === Constants.PlatformType.ALEXA
@@ -76,21 +80,47 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
       _constant(null)
     )(newInvocation as string, alexaLocales);
 
+  const saveAlexaLocales = () => (isAlexaPlatform(platform) && locales !== alexaLocales ? saveLocales(alexaLocales) : null);
+
+  const saveGoogleLocales = () =>
+    isGooglePlatform(platform) && googleLanguage !== initialGoogleLanguage
+      ? saveLocales(GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language])
+      : null;
+
+  const saveDialogflowLocales = () => {
+    // eslint-disable-next-line no-console
+    console.log({ isdfes: isDialogflowPlatform(platform), dialogflowLanguage, initialDialogflowLanguage });
+
+    return isDialogflowPlatform(platform) && dialogflowLanguage !== initialDialogflowLanguage
+      ? saveLocales(DialogflowConstants.LanguageToLocale[dialogflowLanguage as DialogflowConstants.Language])
+      : null;
+  };
+
   const saveSettings = async () => {
     await Promise.all([
       saveProjectName(newProjectName),
       !isAnyGeneralPlatform(platform) ? saveInvocationName(newInvocation) : null,
       project && projectImage ? saveProjectImage(project.id, projectImage) : null,
-      platform === Constants.PlatformType.ALEXA && locales !== alexaLocales ? saveLocales(alexaLocales) : null,
-      platform === Constants.PlatformType.GOOGLE && googleLanguage !== initialGoogleLanguage
-        ? saveLocales(GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language])
-        : null,
+      saveAlexaLocales(),
+      saveGoogleLocales(),
+      saveDialogflowLocales(),
     ]);
   };
 
   useDidUpdateEffect(() => {
     saveSettings();
-  }, [alexaLocales, googleLanguage, generalLocale, projectImage]);
+  }, [alexaLocales, googleLanguage, generalLocale, dialogflowLanguage, projectImage]);
+
+  const DialogflowSelect = () => (
+    <Select
+      placeholder="Language"
+      value={FORMATTED_DIALOGFLOW_LOCALES_LABELS[dialogflowLanguage]}
+      options={FORMATTED_DIALOGFLOW_LOCALES}
+      onSelect={setDialogflowLanguage}
+      getOptionValue={(option) => option?.value || ''}
+      renderOptionLabel={(option) => option.name}
+    />
+  );
 
   return (
     <>
@@ -108,7 +138,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         </BoxFlex>
       </Section>
 
-      {!isAnyGeneralPlatform(platform) && (
+      {!isAnyGeneralPlatform(platform) && !isDialogflowPlatform(platform) && (
         <Section
           header="Invocation Name"
           variant={SectionVariant.QUATERNARY}
@@ -165,6 +195,8 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
                 renderOptionLabel={(option) => option.name}
               />
             ),
+            [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: DialogflowSelect,
+            [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: DialogflowSelect,
           },
           () => (
             <Select

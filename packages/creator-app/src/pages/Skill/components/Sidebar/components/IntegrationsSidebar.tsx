@@ -13,12 +13,22 @@ import { createPlatformSelector } from '@/utils/platform';
 import CanvasIconMenu from './CanvasIconMenu';
 import IconMenuOffsetContainer from './IconMenuOffsetContainer';
 
+const getDialogflowItems = (versionID: string) => [
+  {
+    to: generatePath(Path.PUBLISH_DIALOGFLOW, { versionID }),
+    key: 'dialogflow',
+    label: 'Dialogflow',
+  },
+];
+
 const getPlatformItems = createPlatformSelector<(versionID: string) => NavLinkItem[]>(
   {
     [Constants.PlatformType.ALEXA]: (versionID) => [{ to: generatePath(Path.PUBLISH_ALEXA, { versionID }), key: 'alexa', label: 'Amazon Alexa' }],
     [Constants.PlatformType.GOOGLE]: (versionID) => [
       { to: generatePath(Path.PUBLISH_GOOGLE, { versionID }), key: 'google', label: 'Google Assistant' },
     ],
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: (versionID) => getDialogflowItems(versionID),
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: (versionID) => getDialogflowItems(versionID),
   },
   () => []
 );

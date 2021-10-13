@@ -3,10 +3,11 @@ import { Constants } from '@voiceflow/general-types';
 import { CALL_HISTORY_METHOD, push, replace } from 'connected-react-router';
 import { generatePath } from 'react-router-dom';
 
-import { Path } from '@/config/routes';
+import { Path, PublishRoute } from '@/config/routes';
 import { Action } from '@/store/types';
 import { Struct } from '@/types';
 import * as Query from '@/utils/query';
+import { isDialogflowPlatform } from '@/utils/typeGuards';
 
 export type RouterAction = Action<typeof CALL_HISTORY_METHOD, unknown>;
 
@@ -54,8 +55,15 @@ export const goToPrototype = (versionID: string, nodeID?: string) =>
 
 export const goToSettings = (versionID: string) => goTo(generatePath(Path.PROJECT_SETTINGS, { versionID }));
 
-export const goToPublish = (versionID: string, platform: Constants.PlatformType) =>
-  goTo(`${generatePath(Path.PROJECT_PUBLISH, { versionID })}${platform ? `/${platform}` : ''}`);
+export const goToPublish = (versionID: string, platform: Constants.PlatformType) => {
+  let platformPath: string = platform;
+
+  if (isDialogflowPlatform(platform)) {
+    platformPath = PublishRoute.DIALOGFLOW;
+  }
+
+  return goTo(`${generatePath(Path.PROJECT_PUBLISH, { versionID })}${platform ? `/${platformPath}` : ''}`);
+};
 
 export const goToConversations = (versionID: string, search = window.location.search) =>
   goTo(`${generatePath(Path.CONVERSATIONS, { versionID })}${search}`);

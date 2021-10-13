@@ -21,7 +21,7 @@ import {
   ContentContainer,
 } from '@/pages/Dashboard/components/ModalComponents';
 import { Nullable } from '@/types';
-import { createPlatformSelector } from '@/utils/platform';
+import { getPlatformValue } from '@/utils/platform';
 
 export interface PlatformBaseModalProps {
   modalType: ModalType;
@@ -78,20 +78,6 @@ export const PlatformBaseModal: React.FC<PlatformBaseModalProps> = ({
     data.onCancel();
   };
 
-  const renderPlatformLoginButton = createPlatformSelector<() => React.ReactNode>(
-    {
-      [Constants.PlatformType.ALEXA]: () => <AmazonLoginButton disabled={state.loading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />,
-    },
-    () => (
-      <GoogleLoginButton
-        scopes={isGoogleCreate || isDialogFlow ? GOOGLE_OAUTH_SCOPES_V2 : GOOGLE_OAUTH_SCOPES}
-        onLoad={onLoad}
-        onFail={onFail}
-        onSuccess={onSuccess}
-      />
-    )
-  );
-
   return (
     <ConnectStyledModal id={modalType} className={className} title={title} isSmall>
       <Box width="100%">
@@ -127,7 +113,24 @@ export const PlatformBaseModal: React.FC<PlatformBaseModalProps> = ({
               Cancel
             </Button>
 
-            <ButtonContainer>{renderPlatformLoginButton(platform)()}</ButtonContainer>
+            {platform !== undefined && (
+              <ButtonContainer>
+                {getPlatformValue(
+                  platform,
+                  {
+                    [Constants.PlatformType.ALEXA]: (
+                      <AmazonLoginButton disabled={state.loading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
+                    ),
+                  },
+                  <GoogleLoginButton
+                    scopes={isGoogleCreate || isDialogFlow ? GOOGLE_OAUTH_SCOPES_V2 : GOOGLE_OAUTH_SCOPES}
+                    onLoad={onLoad}
+                    onFail={onFail}
+                    onSuccess={onSuccess}
+                  />
+                )}
+              </ButtonContainer>
+            )}
           </ActionContainer>
         </ModalFooter>
       </Box>

@@ -10,6 +10,7 @@ export type {
   AnySettings,
   AnyVersion,
   AnyVoice,
+  DialogflowVersion,
   GeneralVersion,
   GoogleVersion,
 } from '@voiceflow/realtime-sdk';

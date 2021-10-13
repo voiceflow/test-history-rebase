@@ -1,6 +1,7 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
@@ -115,6 +116,10 @@ export const ALEXA_BUILT_INS = AlexaConstants.BUILT_IN_INTENTS.map(intentFactory
 
 export const GOOGLE_BUILT_INS = GoogleConstants.BUILT_IN_INTENTS.map(intentFactory(Constants.PlatformType.GOOGLE));
 
+export const DIALOGFLOW_CHAT_BUILT_INS = DialogflowConstants.BUILT_IN_INTENTS.map(intentFactory(Constants.PlatformType.DIALOGFLOW_ES_CHAT));
+
+export const DIALOGFLOW_VOICE_BUILT_INS = DialogflowConstants.BUILT_IN_INTENTS.map(intentFactory(Constants.PlatformType.DIALOGFLOW_ES_VOICE));
+
 export const GENERAL_BUILT_INS_MAP = Object.keys(GeneralConstants.DEFAULT_INTENTS_MAP).reduce<Record<string, Intent[]>>(
   (acc, key) => Object.assign(acc, { [key]: GeneralConstants.DEFAULT_INTENTS_MAP[key].map(generalIntentFactory) }),
   {}
@@ -124,6 +129,8 @@ export const getBuiltInIntents = createPlatformSelector(
   {
     [Constants.PlatformType.ALEXA]: ALEXA_BUILT_INS,
     [Constants.PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: DIALOGFLOW_CHAT_BUILT_INS,
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: DIALOGFLOW_VOICE_BUILT_INS,
   },
   GENERAL_BUILT_INS_MAP[GeneralConstants.Locale.EN_US]
 );

@@ -10,6 +10,8 @@ export const {
   isAlexaPlatform,
   isGooglePlatform,
   isDialogflowPlatform,
+  isDialogflowChatPlatform,
+  isDialogflowVoicePlatform,
   isIVRPlatform,
   isGeneralPlatform,
   isChatbotPlatform,

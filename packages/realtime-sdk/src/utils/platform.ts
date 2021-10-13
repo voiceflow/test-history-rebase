@@ -44,6 +44,7 @@ export const getPlatformDefaultVoice = createPlatformSelector<AnyVoice>(
   {
     [Constants.PlatformType.ALEXA]: AlexaConstants.Voice.ALEXA,
     [Constants.PlatformType.GOOGLE]: GoogleConstants.Voice.DEFAULT,
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: GoogleConstants.Voice.DEFAULT,
   },
   GeneralConstants.Voice.DEFAULT
 );

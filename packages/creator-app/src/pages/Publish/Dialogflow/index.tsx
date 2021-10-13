@@ -2,9 +2,8 @@ import { Box, BoxFlex, Button, ButtonVariant, Link, toast } from '@voiceflow/ui'
 import React from 'react';
 
 import client from '@/client';
-import * as Documentation from '@/config/documentation';
 import * as Errors from '@/config/errors';
-import { getDialogflowProjectConsoleUrl } from '@/constants/platforms/dialogflow';
+import { DIALOGFLOW_LEARN_MORE, getDialogflowProjectConsoleUrl } from '@/constants/platforms/dialogflow';
 import * as Session from '@/ducks/session';
 import { useAsyncMountUnmount, useSelector, useSetup, useTrackingEvents } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
@@ -40,15 +39,15 @@ const DialogflowPublish: React.FC = () => {
           <BoxFlex alignItems="flex-end">
             <Box>
               <Box mb={16} color="tertiary">
-                To publish your Google Action visit the Actions Console to submit your project for review
+                To connect your Dialogflow agent to a chat or voice channel visit the Dialogflow Console.
               </Box>
-              <Link href={Documentation.GOOGLE_ACTIONS}>Learn More</Link>
+              <Link href={DIALOGFLOW_LEARN_MORE}>Learn More</Link>
             </Box>
 
             <BoxFlex ml={16}>
               <Link href={actionsConsoleLink}>
-                <Button variant={ButtonVariant.SECONDARY} disabled={!dialogflowProjectID} nowrap>
-                  Actions Console
+                <Button variant={ButtonVariant.PRIMARY} disabled={!dialogflowProjectID} nowrap>
+                  Dialogflow Console
                 </Button>
               </Link>
             </BoxFlex>

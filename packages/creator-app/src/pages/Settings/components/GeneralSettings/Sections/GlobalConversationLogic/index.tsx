@@ -34,6 +34,7 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
       {
         [Constants.PlatformType.ALEXA]: Object.values(AlexaConstants.Voice),
         [Constants.PlatformType.GOOGLE]: Object.values(GoogleConstants.Voice),
+        [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: Object.values(GoogleConstants.Voice),
       },
       Object.values(GeneralConstants.Voice)
     );
@@ -70,6 +71,7 @@ const GlobalConversationLogic: React.FC<ConnectedGlobalConversationLogic & Globa
         {
           [Constants.PlatformType.ALEXA]: assistantLogic,
           [Constants.PlatformType.GOOGLE]: assistantLogic,
+          [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: assistantLogic,
         },
         <></>
       )}

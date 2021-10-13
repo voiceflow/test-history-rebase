@@ -4,7 +4,7 @@ import React from 'react';
 import { Tab } from '@/components/Settings/components/SettingsTabs';
 import { createPlatformSelector } from '@/utils/platform';
 
-import { Alexa, General, Google, Universal } from './components/ContentDescriptors';
+import { Alexa, Dialogflow, General, Google, Universal } from './components/ContentDescriptors';
 
 export enum SettingSections {
   BASIC = 'Basic',
@@ -76,6 +76,28 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
         continuePrevious: Universal.ContinuePrevious,
         allowRepeat: Universal.AllowRepeat,
         repeatDialog: General.RepeatDialog,
+        repeatEverything: General.RepeatEverything,
+      },
+      tabs: [Tabs.GENERAL, Tabs.VERSIONS],
+      localeText: 'Language',
+    },
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: {
+      name: 'Dialogflow Chat',
+      sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
+      descriptors: {
+        projectName: General.ProjectName,
+        localesDescriptor: Dialogflow.Locales,
+        repeatEverything: General.RepeatEverything,
+      },
+      tabs: [Tabs.GENERAL, Tabs.VERSIONS],
+      localeText: 'Language',
+    },
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: {
+      name: 'Dialogflow Voice',
+      sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
+      descriptors: {
+        projectName: General.ProjectName,
+        localesDescriptor: Dialogflow.Locales,
         repeatEverything: General.RepeatEverything,
       },
       tabs: [Tabs.GENERAL, Tabs.VERSIONS],

@@ -282,7 +282,7 @@ export const GOOGLE_DEFAULT_TAGS = {
   ...UNIVERSAL_TAGS,
 };
 
-export const GOOGLE_DIALOGFLOW_DEFAULT_TAGS = { ...GOOGLE_DEFAULT_TAGS };
+export const GOOGLE_DIALOGFLOW_DEFAULT_TAGS = GOOGLE_DEFAULT_TAGS;
 
 export const UNIVERSAL_ADD_OPTIONS = [
   {
@@ -780,25 +780,29 @@ const GOOGLE_DIALOGFLOW_SSML_META = {
   canChangeVoice: true,
   platformTags: GOOGLE_DIALOGFLOW_DEFAULT_TAGS,
   addOptions: UNIVERSAL_ADD_OPTIONS,
-  voiceOptions: (locales) => {
-    const localeMeta = locales?.map((locale) => ({
+  voiceOptions: () => {
+    const allDialogflowLocales = Object.values(DialogflowConstants.Locale);
+
+    const localeMeta = allDialogflowLocales?.map((locale) => ({
       locale,
       languageCode: DialogflowConstants.LocaleToVoiceLanguageCode[locale] ?? DialogflowConstants.VoiceLanguageCode.EN_US,
     }));
 
-    return localeMeta?.map((meta) => ({
-      label: DialogflowConstants.LocaleCodeToCountryLanguage[meta.locale] || meta.locale,
-      options: DialogflowConstants.VoiceLanguageCodeToVoice[meta.languageCode]
-        .map((voiceMeta) =>
-          voiceMeta.voiceName
-            .filter((voiceName) => voiceName.includes(GoogleConstants.VoiceType.STANDARD))
-            .map((voiceName) => ({
-              value: voiceName,
-              label: prettifyGoogleVoicesShort(voiceName),
-            }))
-        )
-        .flat(),
-    }));
+    return localeMeta
+      ?.filter((meta) => DialogflowConstants.LocaleCodeToCountryLanguage[meta.locale])
+      .map((meta) => ({
+        label: DialogflowConstants.LocaleCodeToCountryLanguage[meta.locale],
+        options: DialogflowConstants.VoiceLanguageCodeToVoice[meta.languageCode]
+          .map((voiceMeta) =>
+            voiceMeta.voiceName
+              .filter((voiceName) => voiceName.includes(GoogleConstants.VoiceType.STANDARD))
+              .map((voiceName) => ({
+                value: voiceName,
+                label: prettifyGoogleVoicesShort(voiceName),
+              }))
+          )
+          .flat(),
+      }));
   },
 };
 
@@ -838,7 +842,7 @@ export const getPlatformSSML = createPlatformSelector(
   {
     [Constants.PlatformType.ALEXA]: ALEXA_SSML_META,
     [Constants.PlatformType.GOOGLE]: GOOGLE_SSML_META,
-    [Constants.PlatformType.DIALOGFLOW]: GOOGLE_DIALOGFLOW_SSML_META,
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: GOOGLE_DIALOGFLOW_SSML_META,
   },
   GENERAL_SSML_META
 );

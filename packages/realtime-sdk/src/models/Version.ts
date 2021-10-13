@@ -1,6 +1,7 @@
 import { Constants as AlexaConstants, Version as AlexaVersion } from '@voiceflow/alexa-types';
 import { Version as DBVersion, VersionPlatformData } from '@voiceflow/api-sdk';
 import { Constants as GeneralConstants, Version as GeneralVersion } from '@voiceflow/general-types';
+import { Constants as DialogflowConstants, Version as DialogflowVersion } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants, Version as GoogleVersion } from '@voiceflow/google-types';
 import { Version as VoiceVersion } from '@voiceflow/voice-types';
 
@@ -30,14 +31,26 @@ export namespace Version {
   }
 }
 
-export type AnySettings = AlexaVersion.AlexaVersionSettings | GoogleVersion.GoogleVersionSettings | GeneralVersion.GeneralVersionSettings;
-export type AnyPublishing = AlexaVersion.AlexaVersionPublishing | GoogleVersion.GoogleVersionPublishing;
-export type AnyPlatformData = AlexaVersion.AlexaVersionData | GoogleVersion.GoogleVersionData | GeneralVersion.GeneralVersionData;
-export type AnyLocale = AlexaConstants.Locale | GoogleConstants.Locale | GeneralConstants.Locale;
+export type AnySettings =
+  | AlexaVersion.AlexaVersionSettings
+  | GoogleVersion.GoogleVersionSettings
+  | GeneralVersion.GeneralVersionSettings
+  | DialogflowVersion.GoogleDFESVersionSettings;
+export type AnyPublishing =
+  | AlexaVersion.AlexaVersionPublishing
+  | GoogleVersion.GoogleVersionPublishing
+  | DialogflowVersion.GoogleDFESVersionPublishing;
+export type AnyPlatformData =
+  | AlexaVersion.AlexaVersionData
+  | GoogleVersion.GoogleVersionData
+  | GeneralVersion.GeneralVersionData
+  | DialogflowVersion.GoogleDFESVersionData;
+export type AnyLocale = AlexaConstants.Locale | GoogleConstants.Locale | GeneralConstants.Locale | DialogflowConstants.Locale;
 export type AnyVoice = AlexaConstants.Voice | GoogleConstants.Voice | GeneralConstants.Voice;
 
 export type AlexaVersion = Version<AlexaVersion.AlexaVersionData>;
 export type GoogleVersion = Version<GoogleVersion.GoogleVersionData>;
+export type DialogflowVersion = Version<DialogflowVersion.GoogleDFESVersionData>;
 export type GeneralVersion = Version<GeneralVersion.GeneralVersionData>;
 
-export type AnyVersion = AlexaVersion | GoogleVersion | GeneralVersion;
+export type AnyVersion = AlexaVersion | GoogleVersion | GeneralVersion | DialogflowVersion;

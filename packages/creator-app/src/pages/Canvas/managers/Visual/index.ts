@@ -13,11 +13,7 @@ const VisualManager: NodeManagerConfig<NodeData.Visual> = {
   ...NODE_CONFIG,
 
   label: 'Visuals',
-  platforms: [
-    ...(GENERAL_PLATFORMS as Writeable<typeof GENERAL_PLATFORMS>),
-    Constants.PlatformType.DIALOGFLOW_ES_CHAT,
-    Constants.PlatformType.DIALOGFLOW_ES_VOICE,
-  ],
+  platforms: [...(GENERAL_PLATFORMS as Writeable<typeof GENERAL_PLATFORMS>), Constants.PlatformType.DIALOGFLOW_ES_CHAT],
 
   step: VisualStep,
   editor: VisualEditor,

@@ -216,7 +216,7 @@ export const DIALOGFLOW_ES_CHAT_SECTIONS = [
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [BUTTONS_STEP, PROMPT_STEP],
+    steps: [BUTTONS_STEP, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,
@@ -235,12 +235,12 @@ export const DIALOGFLOW_ES_VOICE_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, VISUAL_STEP, CARD_STEP, CUSTOM_PAYLOAD_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
     label: 'User Input',
-    steps: [CHOICE_STEP, PROMPT_STEP],
+    steps: [CHOICE_STEP, PROMPT_STEP, INTENT_STEP],
   },
   {
     type: BlockCategory.LOGIC,

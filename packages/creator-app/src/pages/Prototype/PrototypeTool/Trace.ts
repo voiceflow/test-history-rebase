@@ -242,7 +242,6 @@ class TraceController {
     if (!this.isPublicPrototype) {
       await this.waitEngineAndNodes();
     }
-
     switch (topTrace.type) {
       case BaseNode.Utils.TraceType.CHOICE: {
         this.processChoiceTrace(topTrace);
@@ -357,9 +356,11 @@ class TraceController {
 
   private async processVisual(trace: VisualTrace) {
     const { payload } = trace;
-    if (payload.visualType === BaseNode.Visual.VisualType.IMAGE && payload.image) {
-      // preload image
-      await loadImage(payload.image).catch(() => null);
+    const { visualType } = payload;
+    const isImageType = visualType === BaseNode.Visual.VisualType.IMAGE;
+    const image = isImageType ? payload.image : payload.imageURL;
+    if (image) {
+      await loadImage(image).catch(() => null);
     }
 
     this.message.visual(trace);

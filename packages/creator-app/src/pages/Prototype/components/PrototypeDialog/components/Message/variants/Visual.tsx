@@ -1,3 +1,4 @@
+import { VisualType } from '@voiceflow/base-types/build/node/visual';
 import { Link } from '@voiceflow/ui';
 import React from 'react';
 
@@ -39,16 +40,18 @@ const ImageContainer = styled.div<{ ratio: number; isFirstInSeries?: boolean }>`
   }
 `;
 
-const Visual: React.FC<VisualProps> = ({ visual: { image, dimensions }, isTranscript, ...props }) => {
-  const { width = 0, height = 0 } = dimensions || {};
+const Visual: React.FC<VisualProps> = ({ visual, isTranscript, ...props }) => {
+  const isImageType = visual.visualType === VisualType.IMAGE;
+  const imageURL = isImageType ? visual.image : visual.imageURL;
+  const { width = 0, height = 0 } = (isImageType && visual.dimensions) || {};
   const ratio = (height / width) * 100 || 60;
 
   return (
     <VisualContainer onClick={(e) => isTranscript && e.preventDefault()}>
       <Message bubble={false} {...props} withAnimation>
-        <Link href={image!}>
+        <Link href={imageURL!}>
           <ImageContainer ratio={ratio} isFirstInSeries={props.isFirstInSeries}>
-            <Image image={image!} position="top center" />
+            <Image image={imageURL!} position="top center" />
           </ImageContainer>
         </Link>
       </Message>

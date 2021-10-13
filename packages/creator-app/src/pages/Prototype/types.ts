@@ -50,7 +50,7 @@ export type StreamMessage = GenericMessage<MessageType.STREAM, { audio: string }
 
 export type SessionMessage = GenericMessage<MessageType.SESSION, { message: string }>;
 
-export type VisualMessage = GenericMessage<MessageType.VISUAL, Node.Visual.ImageStepData>;
+export type VisualMessage = GenericMessage<MessageType.VISUAL, Node.Visual.ImageStepData | Node.Visual.APLStepData>;
 
 export type PathMessage = GenericMessage<MessageType.PATH, { path: string }>;
 

@@ -1,4 +1,5 @@
 import { Node, Request } from '@voiceflow/base-types';
+import { APLType } from '@voiceflow/base-types/build/node/visual';
 import cuid from 'cuid';
 
 import { DebugTrace, PathTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
@@ -58,7 +59,9 @@ export const createTextMessage = (trace: TextTrace, common: CommonProperties): T
 });
 
 export const createVisualMessage = (trace: VisualTrace, common: CommonProperties): VisualMessage | null => {
-  if (trace.payload.visualType !== Node.Visual.VisualType.IMAGE || !trace.payload.image) {
+  const { payload } = trace;
+  // The only time we dont render the visual message is if the visual type is of JSON
+  if (payload.visualType === Node.Visual.VisualType.APL && payload.aplType === APLType.JSON) {
     return null;
   }
 

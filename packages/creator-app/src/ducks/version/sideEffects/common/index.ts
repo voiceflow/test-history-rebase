@@ -204,8 +204,6 @@ export const saveIntentsAndSlots = (): Thunk => async (_, getState) => {
 export const saveLocales =
   (locales: AnyLocale[]): Thunk =>
   async (dispatch, getState) => {
-    // eslint-disable-next-line no-console
-    console.log('SAVINGS', locales);
     if (!locales?.length) return;
 
     const state = getState();

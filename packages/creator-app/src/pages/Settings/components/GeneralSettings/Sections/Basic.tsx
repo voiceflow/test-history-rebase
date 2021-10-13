@@ -87,14 +87,10 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
       ? saveLocales(GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language])
       : null;
 
-  const saveDialogflowLocales = () => {
-    // eslint-disable-next-line no-console
-    console.log({ isdfes: isDialogflowPlatform(platform), dialogflowLanguage, initialDialogflowLanguage });
-
-    return isDialogflowPlatform(platform) && dialogflowLanguage !== initialDialogflowLanguage
+  const saveDialogflowLocales = () =>
+    isDialogflowPlatform(platform) && dialogflowLanguage !== initialDialogflowLanguage
       ? saveLocales(DialogflowConstants.LanguageToLocale[dialogflowLanguage as DialogflowConstants.Language])
       : null;
-  };
 
   const saveSettings = async () => {
     await Promise.all([

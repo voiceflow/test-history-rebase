@@ -22,6 +22,8 @@ export const activeLocalesSelector = createSelector([ProjectV2.active.projectSel
       return alexa.activeLocalesSelector(rootState);
     case Constants.PlatformType.GOOGLE:
       return google.activeLocalesSelector(rootState);
+    case Constants.PlatformType.DIALOGFLOW_ES_CHAT:
+      return dialogflow.activeLocalesSelector(rootState);
     case Constants.PlatformType.DIALOGFLOW_ES_VOICE:
       return dialogflow.activeLocalesSelector(rootState);
     case Constants.PlatformType.GENERAL:

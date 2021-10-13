@@ -135,7 +135,8 @@ export const getBuiltInIntents = createPlatformSelector(
   GENERAL_BUILT_INS_MAP[GeneralConstants.Locale.EN_US]
 );
 
-export const isBuiltInIntent = (intentID: string): boolean => [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS].some((intent) => intent.id === intentID);
+export const isBuiltInIntent = (intentID: string): boolean =>
+  [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS, ...DIALOGFLOW_CHAT_BUILT_INS, ...DIALOGFLOW_VOICE_BUILT_INS].some((intent) => intent.id === intentID);
 
 const NUMERIC_UTTERANCE_REGEXP = /\d/;
 

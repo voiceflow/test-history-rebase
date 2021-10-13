@@ -113,7 +113,7 @@ export const PlatformBaseModal: React.FC<PlatformBaseModalProps> = ({
               Cancel
             </Button>
 
-            {platform !== undefined && (
+            {platform && (
               <ButtonContainer>
                 {getPlatformValue(
                   platform,

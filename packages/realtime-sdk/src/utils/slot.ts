@@ -1,6 +1,7 @@
 import { Constants as AlexaConstants } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
 import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants } from '@voiceflow/google-types';
 
 import { CUSTOM_SLOT_TYPE } from '../constants';
@@ -23,6 +24,12 @@ export const getSlotTypes = <L extends string>({
   switch (platform) {
     case Constants.PlatformType.GOOGLE:
       builtInSlots = [...GoogleConstants.BUILT_IN_SLOTS];
+      break;
+    case Constants.PlatformType.DIALOGFLOW_ES_CHAT:
+      builtInSlots = [...DialogflowConstants.BUILT_IN_SLOTS];
+      break;
+    case Constants.PlatformType.DIALOGFLOW_ES_VOICE:
+      builtInSlots = [...DialogflowConstants.BUILT_IN_SLOTS];
       break;
     case Constants.PlatformType.ALEXA:
       builtInSlots = [...AlexaConstants.BUILT_IN_SLOTS];

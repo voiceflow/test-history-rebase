@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.26.0...@voiceflow/ui@1.26.1) (2021-10-13)
+
+
+### Bug Fixes
+
+* update dialogflow icon ([#4301](https://github.com/voiceflow/creator-app/issues/4301)) ([9a5ee07](https://github.com/voiceflow/creator-app/commit/9a5ee07700f818bd81677bdfdbbe3407b6a76760))
+
+
+
+
+
 # [1.26.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.25.2...@voiceflow/ui@1.26.0) (2021-10-08)
 
 

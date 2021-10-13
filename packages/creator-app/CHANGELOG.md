@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.515.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.515.1...@voiceflow/creator-app@1.515.2) (2021-10-13)
+
+
+### Bug Fixes
+
+* **dialogflow:** adds built in entities and intents (VF-1953) ([#4302](https://github.com/voiceflow/creator-app/issues/4302)) ([195044e](https://github.com/voiceflow/creator-app/commit/195044eb8ef4139d7d1be7e38297be247164a31d))
+* update dialogflow icon ([#4301](https://github.com/voiceflow/creator-app/issues/4301)) ([9a5ee07](https://github.com/voiceflow/creator-app/commit/9a5ee07700f818bd81677bdfdbbe3407b6a76760))
+* update dialogflow step for voice and chat ([#4300](https://github.com/voiceflow/creator-app/issues/4300)) ([07f9d77](https://github.com/voiceflow/creator-app/commit/07f9d7739ab3214655223ac2c30ff9196a50d9f6))
+
+
+
+
+
 ## [1.515.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.515.0...@voiceflow/creator-app@1.515.1) (2021-10-13)
 
 **Note:** Version bump only for package @voiceflow/creator-app

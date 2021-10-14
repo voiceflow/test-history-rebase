@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.517.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.5...@voiceflow/creator-app@1.517.6) (2021-10-14)
+
+
+### Bug Fixes
+
+* create vendor on migration (VF-000) ([#4321](https://github.com/voiceflow/creator-app/issues/4321)) ([c8d0e55](https://github.com/voiceflow/creator-app/commit/c8d0e55a9ec21b96fd15f77eec73c793abc57a50))
+
+
+
+
+
 ## [1.517.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.4...@voiceflow/creator-app@1.517.5) (2021-10-14)
 
 

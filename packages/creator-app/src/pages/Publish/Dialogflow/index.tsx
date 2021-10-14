@@ -34,22 +34,24 @@ const DialogflowPublish: React.FC = () => {
 
   return (
     <ContentContainer>
-      <ContentSection>
+      <ContentSection style={{ width: '700px' }}>
         <Section title="Publish">
           <BoxFlex alignItems="flex-end">
             <Box>
-              <Box mb={16} color="tertiary">
+              <Box mr={20} mb={16} color="secondary">
                 To connect your Dialogflow agent to a chat or voice channel visit the Dialogflow Console.
               </Box>
               <Link href={DIALOGFLOW_LEARN_MORE}>Learn More</Link>
             </Box>
 
-            <BoxFlex ml={16}>
-              <Link href={actionsConsoleLink}>
-                <Button variant={ButtonVariant.PRIMARY} disabled={!dialogflowProjectID} nowrap>
-                  Dialogflow Console
-                </Button>
-              </Link>
+            <BoxFlex alignItems="flex-end">
+              <Box mt={32} ml={20}>
+                <Link href={actionsConsoleLink}>
+                  <Button variant={ButtonVariant.PRIMARY} disabled={!dialogflowProjectID} nowrap>
+                    Dialogflow Console
+                  </Button>
+                </Link>
+              </Box>
             </BoxFlex>
           </BoxFlex>
         </Section>

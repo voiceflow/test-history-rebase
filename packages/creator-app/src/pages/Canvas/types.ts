@@ -15,7 +15,7 @@ export interface MarkupTransform {
   origin: Coords;
 }
 
-export type NodeDataUpdater<T> = (value: Partial<NodeData<T>>, save?: boolean) => void;
+export type NodeDataUpdater<T> = (value: Partial<NodeData<T>>, save?: boolean) => Promise<void>;
 
 export interface CanvasContainerAPI {
   addClass: (className: string) => void;

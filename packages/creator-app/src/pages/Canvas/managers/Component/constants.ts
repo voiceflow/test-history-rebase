@@ -9,7 +9,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.Component> = {
   icon: 'component',
   iconColor: '#5c6bc0',
 
-  factory: () => ({
+  factory: ({ diagramID = null } = {}) => ({
     node: {
       ports: {
         in: [{}],
@@ -18,9 +18,9 @@ export const NODE_CONFIG: NodeConfig<NodeData.Component> = {
     },
     data: {
       name: 'Component',
-      diagramID: null,
       inputs: [],
       outputs: [],
+      diagramID,
     },
   }),
 };

@@ -486,8 +486,8 @@ class TraceController {
 
     // Highlight the start block when entering a flow
     const startNode = Array.from(this.props.engine!.nodes).find((data) => data[1].type === BlockType.START);
-    const startNodeID = startNode![0];
-    let updatedActivePathBlockArray = unique([...this.props.activePathBlockIDs, startNodeID]);
+    // TODO: refactor block highlighting system, topics do not have startNodes
+    let updatedActivePathBlockArray = unique([...this.props.activePathBlockIDs, ...(startNode ? [startNode[0]] : [])]);
 
     const beginningBlock = this.props.activePathBlockIDs[0];
     const beginningFlowID = this.props.flowIDHistory[0];

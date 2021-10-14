@@ -12,6 +12,7 @@ export interface Tab<V extends string = string> {
   label: React.ReactNode;
   color?: string;
   tooltip?: TippyTooltipProps;
+  capitalize?: boolean;
   [key: string]: any;
 }
 

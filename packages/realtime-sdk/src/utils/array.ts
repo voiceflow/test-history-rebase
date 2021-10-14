@@ -6,6 +6,8 @@ export const without = <T>(items: T[], index: number): T[] => (index === -1 ? it
 
 export const withoutValue = <T>(items: T[], value: T): T[] => without(items, items.indexOf(value));
 
+export const withoutValues = <T>(items: T[], values: T[]): T[] => items.filter((item) => !values.includes(item));
+
 export const replace = <T>(items: T[], index: number, item: T): T[] => [...items.slice(0, index), item, ...items.slice(index + 1)];
 
 export const insert = <T>(items: T[], index: number, item: T): T[] => [...items.slice(0, index), item, ...items.slice(index)];

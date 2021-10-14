@@ -88,7 +88,9 @@ export const addManyNodesReducer: Reducer<DiagramState, AddManyNodes> = (
 ) => {
   const combinedAndMarkupNodes = nodesWithData.filter(({ node }) => isMarkupOrCombinedBlockType(node.type));
 
-  const [centerX, centerY] = getNodesGroupCenter(combinedAndMarkupNodes, links);
+  const {
+    center: [centerX, centerY],
+  } = getNodesGroupCenter(combinedAndMarkupNodes, links);
 
   const adjustPathPoint = (point: PathPoint): PathPoint => ({
     ...point,

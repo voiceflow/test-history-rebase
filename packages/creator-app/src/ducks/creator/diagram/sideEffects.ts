@@ -1,5 +1,7 @@
 import { DiagramType } from '@voiceflow/api-sdk';
+import { Node } from '@voiceflow/base-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
+import { toast } from '@voiceflow/ui';
 import { batch } from 'react-redux';
 import * as ReduxUndo from 'redux-undo';
 
@@ -13,12 +15,15 @@ import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Viewport from '@/ducks/viewport';
+import { NodeData } from '@/models';
 import mutableStore from '@/store/mutable';
-import { Dispatchable, Thunk } from '@/store/types';
+import { Dispatchable, SyncThunk, Thunk } from '@/store/types';
+import { getDistinctPlatformValue } from '@/utils/platform';
 
 import { initializeCreator } from '../actions';
 import { log } from '../constants';
 import { saveHistory, setDiagramState } from './actions';
+import { creatorDiagramSelector } from './selectors';
 
 export const performSave =
   (save: Dispatchable): Thunk =>
@@ -35,6 +40,36 @@ export const performSave =
       log.warn('failed to save diagram', err);
     }
   };
+
+export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) => {
+  const state = getState();
+  const diagramType = DiagramSelectors.activeDiagramTypeSelector(state);
+
+  if (diagramType !== DiagramType.TOPIC) {
+    return;
+  }
+
+  const platform = ProjectV2.active.platformSelector(state);
+
+  const { nodes, data } = creatorDiagramSelector(state);
+
+  const isTopicAvailable = nodes.allKeys.some((id) => {
+    const node = nodes.byKey[id];
+
+    if (node?.type !== BlockType.INTENT || !data[id]) {
+      return false;
+    }
+
+    const nodeData = data[id] as NodeData<NodeData.Intent>;
+    const { intent, availability } = getDistinctPlatformValue(platform, nodeData);
+
+    return !!intent && (!availability || availability === Node.Intent.IntentAvailability.GLOBAL);
+  });
+
+  if (!isTopicAvailable) {
+    toast.warn('This topic contains no intents that can be triggered from other topics.');
+  }
+};
 
 export const initializeCreatorForDiagram =
   (diagramID: string): Thunk =>

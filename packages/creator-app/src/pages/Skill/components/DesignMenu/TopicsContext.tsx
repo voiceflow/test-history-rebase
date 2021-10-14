@@ -3,10 +3,12 @@ import React from 'react';
 
 import client from '@/client';
 import { BlockType } from '@/constants';
+import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import { useDispatch, useSelector } from '@/hooks';
+import { delay } from '@/utils/promise';
 
 export interface TopicIntentStep {
   id: string;
@@ -23,8 +25,11 @@ export interface TopicsContextValue {
 export const TopicsContext = React.createContext<TopicsContextValue>({ intentStepMapPerTopic: {} });
 
 export const TopicsProvider: React.FC = ({ children }) => {
-  const rootDiagramID = useSelector(Version.activeRootDiagramIDSelector)!;
-  const activeVersionID = useSelector(Session.activeVersionIDSelector)!;
+  const rootDiagramID = useSelector(Version.activeRootDiagramIDSelector);
+  const activeVersionID = useSelector(Session.activeVersionIDSelector);
+  const intentsStepData = useSelector(Creator.intentStepsDataSelector);
+
+  const refetchRevision = React.useRef(0);
 
   // TODO: replace with the realtime
   const replaceIntentStepIDs = useDispatch(Diagram.replaceIntentStepIDs)!;
@@ -32,7 +37,23 @@ export const TopicsProvider: React.FC = ({ children }) => {
   const [value, setValue] = React.useState<TopicsContextValue>({ intentStepMapPerTopic: {} });
 
   const fetchTopics = React.useCallback(async () => {
+    if (!activeVersionID) {
+      return;
+    }
+
+    const revision = refetchRevision.current;
+
+    await delay(150);
+
+    if (revision !== refetchRevision.current) {
+      return;
+    }
+
     const { diagrams: dbDiagrams } = await client.api.version.export(activeVersionID);
+
+    if (revision !== refetchRevision.current) {
+      return;
+    }
 
     const stepMapPerTopic: IntentStepMapPerTopic = {};
 
@@ -68,9 +89,11 @@ export const TopicsProvider: React.FC = ({ children }) => {
     setValue({ intentStepMapPerTopic: stepMapPerTopic });
   }, [activeVersionID, rootDiagramID]);
 
+  // fetching topics on every intentsStepData change
   React.useEffect(() => {
+    refetchRevision.current = Math.random();
     fetchTopics();
-  }, [activeVersionID, rootDiagramID]);
+  }, [activeVersionID, rootDiagramID, intentsStepData]);
 
   return <TopicsContext.Provider value={value}>{children}</TopicsContext.Provider>;
 };

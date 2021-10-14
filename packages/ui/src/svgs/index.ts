@@ -129,6 +129,7 @@ export { default as inFlow } from './in-flow.svg';
 export { default as info } from './info.svg';
 export { default as information } from './information.svg';
 export { default as integrations } from './integrations.svg';
+export { default as intentLocal } from './intent-local.svg';
 export { default as italic } from './italic.svg';
 
 // j

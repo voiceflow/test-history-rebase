@@ -1,3 +1,4 @@
+import { Node } from '@voiceflow/base-types';
 import React from 'react';
 
 import { NodeData } from '@/models';
@@ -12,15 +13,16 @@ export interface IntentStepProps {
   label?: string | null;
   nodeID: string;
   portID?: string;
+  isLocal?: boolean;
 }
 
-export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, portID, label }) => (
+export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, portID, label, isLocal }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
         label={label}
         portID={portID}
-        icon={NODE_CONFIG.icon}
+        icon={isLocal ? 'intentLocal' : NODE_CONFIG.icon}
         iconColor={NODE_CONFIG.iconColor}
         placeholder="Create or select an intent"
         multilineLabel
@@ -33,9 +35,16 @@ export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, portID, label })
 const ConnectedIntentStep: React.FC<ConnectedStepProps<NodeData.Intent>> = ({ node, data, platform }) => {
   const intentMap = React.useContext(CustomIntentMapContext)!;
 
-  const { intent } = getDistinctPlatformValue(platform, data);
+  const { intent, availability } = getDistinctPlatformValue(platform, data);
 
-  return <IntentStep nodeID={node.id} portID={node.ports.out[0]} label={intentMap[intent!] ? prettifyIntentName(intentMap[intent!].name) : null} />;
+  return (
+    <IntentStep
+      label={intentMap[intent!] ? prettifyIntentName(intentMap[intent!].name) : null}
+      nodeID={node.id}
+      portID={node.ports.out[0]}
+      isLocal={availability === Node.Intent.IntentAvailability.LOCAL}
+    />
+  );
 };
 
 export default ConnectedIntentStep;

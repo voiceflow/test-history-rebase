@@ -7,6 +7,8 @@ import { TopicItem as TopicItemModel } from '../hooks';
 import IntentList from './IntentList';
 import TopicItemName from './TopicItemName';
 
+export { TOPIC_ITEM_HEIGHT } from './TopicItemName';
+
 interface TopicItemProps extends ItemComponentProps<TopicItemModel>, DragPreviewComponentProps {
   isSearch: boolean;
   openedTopics: Record<string, boolean>;
@@ -23,11 +25,12 @@ interface TopicItemProps extends ItemComponentProps<TopicItemModel>, DragPreview
 const TopicItem: React.ForwardRefRenderFunction<HTMLElement, TopicItemProps> = (
   {
     item: { id: diagramID, name, intentItems },
+    index,
     isSearch,
     isDragging,
     onToggleOpen,
     openedTopics,
-    disableHover,
+    isDragActive,
     rootDiagramID,
     focusedNodeID,
     activeDiagramID,
@@ -48,13 +51,14 @@ const TopicItem: React.ForwardRefRenderFunction<HTMLElement, TopicItemProps> = (
         ref={ref}
         name={name}
         isRoot={isRoot}
+        isFirst={index === 0}
         isOpened={isOpened}
         isActive={isActive}
         isSearch={isSearch}
         diagramID={diagramID}
         isDragging={isDragging}
         onToggleOpen={onToggleOpen}
-        disableHover={disableHover}
+        disableHover={isDragActive}
         searchMatchValue={searchMatchValue}
         isDraggingPreview={isDraggingPreview}
         lastCreatedDiagramID={lastCreatedDiagramID}

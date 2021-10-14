@@ -116,5 +116,8 @@ export const useUpdateData = (nodeID?: string | null): NodeDataUpdater<any> => {
   // now we pass in nodeID to ensure the editor sidebar is referencing / updating the correct node
   const engine = React.useContext(EngineContext)!;
 
-  return React.useCallback((value, save = true) => nodeID && engine.node.updateData(nodeID, value, save), [engine.node, nodeID]);
+  return React.useCallback(
+    async (value, save = true) => (nodeID ? engine.node.updateData(nodeID, value, save) : Promise.resolve()),
+    [engine.node, nodeID]
+  );
 };

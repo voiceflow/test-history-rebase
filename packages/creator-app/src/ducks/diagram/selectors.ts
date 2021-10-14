@@ -6,7 +6,7 @@ import { allLinksSelector, creatorDiagramIDSelector, creatorDiagramSelector } fr
 import * as ProjectV2 from '@/ducks/projectV2';
 import { allSlotsSelector, slotNamesSelector } from '@/ducks/slot';
 import { createCRUDSelectors } from '@/ducks/utils/crud';
-import { activeGlobalVariablesSelector, activeTopicsSelector } from '@/ducks/version/selectors';
+import { activeComponentsSelector, activeGlobalVariablesSelector, activeTopicsSelector } from '@/ducks/version/selectors';
 import * as Viewport from '@/ducks/viewport';
 import { CreatorDiagram } from '@/models';
 import { unique } from '@/utils/array';
@@ -51,6 +51,10 @@ export const localVariablesByDiagramIDSelector = createSelector(
 
 export const activeTopicsDiagramsSelector = createSelector([activeTopicsSelector, diagramsByIDsSelector], (topics, getDiagramsByIDs) =>
   getDiagramsByIDs(topics.map(({ sourceID }) => sourceID))
+);
+
+export const activeComponentsDiagramsSelector = createSelector([activeComponentsSelector, diagramsByIDsSelector], (components, getDiagramsByIDs) =>
+  getDiagramsByIDs(components.map(({ sourceID }) => sourceID))
 );
 
 //  active diagram

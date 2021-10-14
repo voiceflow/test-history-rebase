@@ -38,11 +38,11 @@ const HotKeys: React.FC = () => {
     getEngine()?.canvas?.zoomOut(CANVAS_ZOOM_DELTA);
   }, []);
 
-  const onFocusHome = React.useCallback(() => {
+  const onFocusStart = React.useCallback(() => {
     // to force close any opened tooltips/popovers
     document.body.click();
 
-    getEngine()?.focusHome();
+    getEngine()?.focusStart();
   }, []);
 
   // this callback is needed to do not store event object in the modals context
@@ -51,7 +51,7 @@ const HotKeys: React.FC = () => {
   useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true });
   useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true });
   useHotKeys(Hotkey.RUN_MODE, () => goToPrototype(), { preventDefault: true, disable: imModal.isOpened });
-  useHotKeys(Hotkey.ROOT_NODE, onFocusHome, { preventDefault: true });
+  useHotKeys(Hotkey.ROOT_NODE, onFocusStart, { preventDefault: true });
   useHotKeys(Hotkey.MOVE_MODE, onDisableModes, { preventDefault: true, disable: imModal.isOpened }, [onDisableModes]);
   useHotKeys(Hotkey.SHOW_HIDE_UI, toggleCanvasOnly, { preventDefault: true });
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenImModel, { preventDefault: true, disable: !canEditCanvas }, [onOpenImModel]);

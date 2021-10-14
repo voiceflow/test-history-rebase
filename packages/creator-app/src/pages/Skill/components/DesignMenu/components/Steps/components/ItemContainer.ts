@@ -14,7 +14,7 @@ interface ItemContainerProps {
 const ItemContainer = styled(Flex)<ItemContainerProps>`
   width: 200px;
   margin: 0 1px;
-  height: 45px;
+  height: 42px;
   padding: 0 16px;
   margin-bottom: 10px;
 

@@ -1,12 +1,14 @@
+import { DiagramType } from '@voiceflow/api-sdk';
 import { BoxFlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
+import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Diagram from '@/ducks/diagram';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useSelector } from '@/hooks';
 
 import DiagramActions from './DiagramActions';
 import DiagramDivider from './DiagramDivider';
@@ -21,6 +23,8 @@ const DiagramsActions: React.FC = () => {
   const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
   const previousDiagramID = useSelector(Creator.previousDiagramIDSelector);
 
+  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+
   const activeDiagram = activeDiagramID ? getDiagramByID(activeDiagramID) : null;
   const isOnlyRootDiagramActive = rootDiagramID === activeDiagramID;
   const rootDiagramIsPreviousDiagram = rootDiagramID === previousDiagramID;
@@ -32,8 +36,12 @@ const DiagramsActions: React.FC = () => {
         <DiagramActions diagramID={rootDiagramID} diagramName="Home" disabled />
       ) : (
         <>
-          <DiagramDivider />
-          <DiagramName onClick={() => rootDiagramID && goToDiagramHistoryClear(rootDiagramID)}>Home</DiagramName>
+          {(!topicsAndComponents.isEnabled || activeDiagram?.type !== DiagramType.TOPIC) && (
+            <>
+              <DiagramDivider />
+              <DiagramName onClick={() => rootDiagramID && goToDiagramHistoryClear(rootDiagramID)}>Home</DiagramName>{' '}
+            </>
+          )}
 
           {!dontRenderName && !!previousDiagramID && ![rootDiagramID, activeDiagramID].includes(previousDiagramID) && (
             <>

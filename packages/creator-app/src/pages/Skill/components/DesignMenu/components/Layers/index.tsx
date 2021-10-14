@@ -18,8 +18,8 @@ const Layers: React.FC = () => {
           {() => <TopicsSection />}
         </ResizablePanel>
 
-        <ResizablePanel height={heights[1]} minHeight={40}>
-          {({ collapsed }) => <ComponentsSection collapsed={collapsed} />}
+        <ResizablePanel height={heights[1]} minHeight={44}>
+          {({ setHeight, collapsed }) => <ComponentsSection collapsed={collapsed} setSectionHeight={setHeight} />}
         </ResizablePanel>
       </Resizable>
     </Container>

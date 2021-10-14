@@ -27,7 +27,7 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
 
   const childrenCount = React.Children.count(children);
 
-  const onDividerMouseDown = (index: number, { clientY, currentTarget }: React.MouseEvent<HTMLDivElement>): void => {
+  const getOnResizeByIndex = (index: number, clientY: number) => {
     const nextNode = childrenRefs.current[index + 1];
     const currentNode = childrenRefs.current[index];
     const nextChildren = children[index + 1];
@@ -40,67 +40,81 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
     let prevNextCollapsed = collapsedChildren[index + 1] ?? false;
     let prevCurrentCollapsed = collapsedChildren[index];
 
-    const onMouseMove = ({ clientY: currentClientY }: MouseEvent): void => {
-      updateStylesScheduler(() => {
-        const diffPX = currentClientY - clientY;
-        const diff = (diffPX / containerHeight) * 100;
-        const nextHeight = initialNextHeight - diff;
-        const nextHeightPX = containerHeight * (nextHeight / 100);
-        const currentHeight = initialCurrentHeight + diff;
-        const currentHeightPX = containerHeight * (currentHeight / 100);
+    return (currentClientY: number): void => {
+      const diffPX = currentClientY - clientY;
+      const diff = (diffPX / containerHeight) * 100;
+      const nextHeight = initialNextHeight - diff;
+      const nextHeightPX = containerHeight * (nextHeight / 100);
+      const currentHeight = initialCurrentHeight + diff;
+      const currentHeightPX = containerHeight * (currentHeight / 100);
 
-        const canResizeNext = nextNode && nextChildren && nextHeightPX >= nextChildren.props.minHeight;
-        const canResizeCurrent = currentNode && currentChildren && currentHeightPX >= currentChildren.props.minHeight;
+      const canResizeNext = nextNode && nextChildren && nextHeightPX >= nextChildren.props.minHeight;
+      const canResizeCurrent = currentNode && currentChildren && currentHeightPX >= currentChildren.props.minHeight;
 
-        if (canResizeNext && canResizeCurrent) {
+      let nextMaxHeightStyle: Nullable<number> = null;
+      let currentMaxHeightStyle: Nullable<number> = null;
+
+      if (canResizeNext && canResizeCurrent) {
+        heightsRef.current[index] = currentHeight;
+        heightsRef.current[index + 1] = nextHeight;
+
+        nextMaxHeightStyle = nextHeight;
+        currentMaxHeightStyle = currentHeight;
+
+        if (prevCurrentCollapsed) {
+          prevCurrentCollapsed = false;
+          setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index, prevCurrentCollapsed));
+        } else if (prevNextCollapsed) {
+          prevNextCollapsed = false;
+          setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
+        }
+      } else if (!canResizeCurrent && !prevCurrentCollapsed) {
+        if (currentNode && nextNode) {
+          const minDiffPX = initialCurrentHeightPX - currentChildren.props.minHeight;
+          const minDiff = (minDiffPX / containerHeight) * 100;
+          const nextMinHeight = initialNextHeight + minDiff;
+          const currentMinHeight = initialCurrentHeight - minDiff;
+
           heightsRef.current[index] = currentHeight;
           heightsRef.current[index + 1] = nextHeight;
 
-          nextNode.style.maxHeight = `${nextHeight}%`;
-          currentNode.style.maxHeight = `${currentHeight}%`;
+          nextMaxHeightStyle = nextMinHeight;
+          currentMaxHeightStyle = currentMinHeight;
+        }
 
-          if (prevCurrentCollapsed) {
-            prevCurrentCollapsed = false;
-            setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index, prevCurrentCollapsed));
-          } else if (prevNextCollapsed) {
-            prevNextCollapsed = false;
-            setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
-          }
-        } else if (!canResizeCurrent && !prevCurrentCollapsed) {
-          if (currentNode && nextNode) {
-            const minDiffPX = initialCurrentHeightPX - currentChildren.props.minHeight;
-            const minDiff = (minDiffPX / containerHeight) * 100;
-            const nextMinHeight = initialNextHeight + minDiff;
-            const currentMinHeight = initialCurrentHeight - minDiff;
+        prevCurrentCollapsed = true;
+        setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index, prevCurrentCollapsed));
+      } else if (!canResizeNext && !prevNextCollapsed) {
+        if (currentNode && nextNode) {
+          const minDiffPX = initialNextHeightPX - nextChildren.props.minHeight;
+          const minDiff = (minDiffPX / containerHeight) * 100;
+          const nextMinHeight = initialNextHeight - minDiff;
+          const currentMinHeight = initialCurrentHeight + minDiff;
 
-            heightsRef.current[index] = currentHeight;
-            heightsRef.current[index + 1] = nextHeight;
+          heightsRef.current[index] = currentHeight;
+          heightsRef.current[index + 1] = nextHeight;
 
-            nextNode.style.maxHeight = `${nextMinHeight}%`;
-            currentNode.style.maxHeight = `${currentMinHeight}%`;
-          }
+          nextMaxHeightStyle = nextMinHeight;
+          currentMaxHeightStyle = currentMinHeight;
+        }
 
-          prevCurrentCollapsed = true;
-          setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index, prevCurrentCollapsed));
-        } else if (!canResizeNext && !prevNextCollapsed) {
-          if (currentNode && nextNode) {
-            const minDiffPX = initialNextHeightPX - nextChildren.props.minHeight;
-            const minDiff = (minDiffPX / containerHeight) * 100;
-            const nextMinHeight = initialNextHeight - minDiff;
-            const currentMinHeight = initialCurrentHeight + minDiff;
+        prevNextCollapsed = true;
+        setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
+      }
 
-            heightsRef.current[index] = currentHeight;
-            heightsRef.current[index + 1] = nextHeight;
-
-            nextNode.style.maxHeight = `${nextMinHeight}%`;
-            currentNode.style.maxHeight = `${currentMinHeight}%`;
-          }
-
-          prevNextCollapsed = true;
-          setCollapsedChildren((prevCollapsedChildren) => replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
+      updateStylesScheduler(() => {
+        if (nextNode && currentNode && nextMaxHeightStyle !== null && currentMaxHeightStyle !== null) {
+          nextNode.style.maxHeight = `${nextMaxHeightStyle}%`;
+          currentNode.style.maxHeight = `${currentMaxHeightStyle}%`;
         }
       });
     };
+  };
+
+  const onDividerMouseDown = (index: number, { clientY, currentTarget }: React.MouseEvent<HTMLDivElement>): void => {
+    const onResize = getOnResizeByIndex(index, clientY);
+
+    const onMouseMove = ({ clientY: currentClientY }: MouseEvent) => onResize(currentClientY);
 
     const onMouseUp = (): void => {
       onResized?.([...heightsRef.current]);
@@ -127,6 +141,15 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
     setCollapsedChildren(heightsRef.current.map((height, index) => children[index].props.minHeight >= Math.ceil(containerHeight * (height / 100))));
   };
 
+  const setChildrenHeight = (index: number) => (height: number) => {
+    const prevNodeHeightPX = (heightsRef.current[index - 1] / 100) * containerHeight;
+    const currentNodeHeightPX = (heightsRef.current[index] / 100) * containerHeight;
+
+    getOnResizeByIndex(index - 1, prevNodeHeightPX)(prevNodeHeightPX - (height - currentNodeHeightPX));
+
+    onResized?.([...heightsRef.current]);
+  };
+
   useSetup(() => setRendered(true));
   useResizeObserver(containerRef, recalculateSizes);
   React.useLayoutEffect(recalculateSizes, [childrenCount]);
@@ -141,6 +164,7 @@ const Resizable = ({ children, onResized }: ResizableProps): React.ReactElement<
                 childrenRefs.current[index] = node;
               }),
               height: heightsRef.current[index],
+              setHeight: setChildrenHeight(index),
               collapsed: collapsedChildren[index],
               withDivider: index !== childrenCount - 1,
               onDividerMouseDown: swallowEvent<React.MouseEvent<HTMLDivElement>>((event) => onDividerMouseDown(index, event)),

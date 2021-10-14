@@ -7,7 +7,7 @@ interface TopicNameIconProps {
   isOpened?: boolean;
 }
 
-const TopicNameIcon = styled(SvgIcon).attrs({ size: 10, icon: 'arrowRightTopics', color: '#becedc' })<TopicNameIconProps>`
+const TopicNameIcon = styled(SvgIcon).attrs({ size: 9, icon: 'arrowRightTopics', color: '#becedc' })<TopicNameIconProps>`
   ${transition('color', 'transform')}
 
   ${({ isOpened }) =>

@@ -3,7 +3,7 @@ import React from 'react';
 import { DragSourceMonitor, useDrop } from 'react-dnd';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
-import { MapManaged } from '@/hooks';
+import { MapManaged, PreviewOptions } from '@/hooks';
 
 import {
   ContextMenuOption,
@@ -34,18 +34,20 @@ export type DraggableListProps<I, D, C> = {
   onDrop?: (item: DnDInternalItem<I>) => unknown;
   canDrag?: boolean | ((monitor: DragSourceMonitor) => boolean);
   itemProps?: C;
-  onEndDrag?: (result: void, monitor: DragSourceMonitor) => unknown;
+  onEndDrag?: (item: I, monitor: DragSourceMonitor) => unknown;
   onReorder?: (dragIndex: number, hoverIndex: number) => void;
   fullHeight?: boolean;
   getItemKey?: (item: I) => string;
-  onStartDrag?: (monitor: DragSourceMonitor) => void;
+  onStartDrag?: (item: I, monitor: DragSourceMonitor) => void;
   deleteProps?: D;
+  previewOptions?: PreviewOptions;
   deleteComponent?: React.NamedExoticComponent<React.PropsWithoutRef<D> & React.RefAttributes<any>>;
   partialDragItem?: boolean;
   contextMenuOptions?: ContextMenuOption<I>[];
   unmountableDuringDrag?: boolean;
   withContextMenuDelete?: boolean;
   withContextMenuDuplicate?: boolean;
+  disableReorderingWhileDraggingX?: boolean;
 } & (
   | {
       items: I[];
@@ -96,6 +98,7 @@ const DraggableList = <I, D, C>({
   onStartDrag,
   deleteProps,
   itemComponent,
+  previewOptions,
   deleteComponent,
   partialDragItem,
   previewComponent,
@@ -103,6 +106,7 @@ const DraggableList = <I, D, C>({
   unmountableDuringDrag,
   withContextMenuDelete,
   withContextMenuDuplicate,
+  disableReorderingWhileDraggingX,
   ...props
 }: DraggableListProps<I, D, C>): JSX.Element => {
   const handlers = React.useRef<DnDHandlers<I>>({});
@@ -146,16 +150,16 @@ const DraggableList = <I, D, C>({
     [props.onDuplicate]
   );
   const onDragEnd = React.useCallback(
-    (result: void, monitor: DragSourceMonitor) => {
+    (item: I, monitor: DragSourceMonitor) => {
       updateDragging(false);
-      onEndDrag?.(result, monitor);
+      onEndDrag?.(item, monitor);
     },
     [onEndDrag]
   );
   const onDragStart = React.useCallback(
-    (monitor: DragSourceMonitor) => {
+    (item: I, monitor: DragSourceMonitor) => {
       updateDragging(true);
-      onStartDrag?.(monitor);
+      onStartDrag?.(item, monitor);
     },
     [onStartDrag]
   );
@@ -183,6 +187,7 @@ const DraggableList = <I, D, C>({
       unmountableDuringDrag={unmountableDuringDrag}
       withContextMenuDelete={withContextMenuDelete}
       withContextMenuDuplicate={withContextMenuDuplicate}
+      disableReorderingWhileDraggingX={disableReorderingWhileDraggingX}
     />
   );
 
@@ -198,6 +203,7 @@ const DraggableList = <I, D, C>({
                 itemKey: key,
                 onRemove,
                 onUpdate,
+                isDragActive: dragging,
               };
 
               if (filter) {
@@ -212,6 +218,7 @@ const DraggableList = <I, D, C>({
                 item,
                 index,
                 itemKey: getItemKey(item),
+                isDragActive: dragging,
               };
 
               if (filter) {
@@ -225,7 +232,7 @@ const DraggableList = <I, D, C>({
 
       {footer}
 
-      <DragPreview<I> type={type} component={previewComponent as any} handlers={handlers} />
+      <DragPreview<I> type={type} component={previewComponent as any} handlers={handlers} options={previewOptions} />
 
       {!!deleteComponent && dragging && <DropDelete type={type} handlers={handlers} deleteComponent={deleteComponent} deleteProps={deleteProps} />}
     </ListContainer>

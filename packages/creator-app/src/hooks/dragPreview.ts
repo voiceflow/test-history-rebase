@@ -1,9 +1,11 @@
 import React from 'react';
 
 import { DragContext, DragContextPreviewProps } from '@/contexts/DragContext';
+import type { PreviewOptions } from '@/contexts/DragContext/DragLayer';
 
-// eslint-disable-next-line import/prefer-default-export
-export const useDragPreview = <P extends {}>(type: string, component: React.FC<DragContextPreviewProps & P>, options: Record<string, any> = {}) => {
+export type { PreviewOptions } from '@/contexts/DragContext/DragLayer';
+
+export const useDragPreview = <P extends {}>(type: string, component: React.FC<DragContextPreviewProps & P>, options: PreviewOptions = {}): void => {
   const { registerPreview } = React.useContext(DragContext)!;
 
   React.useEffect(() => {
@@ -12,5 +14,5 @@ export const useDragPreview = <P extends {}>(type: string, component: React.FC<D
     return () => {
       registerPreview(type, null);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 };

@@ -3,21 +3,24 @@ import React from 'react';
 
 import ContextMenu from '@/components/ContextMenu';
 import * as Router from '@/ducks/router';
-import { useDispatch } from '@/hooks';
+import { useDispatch, useHover } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Skill/hooks';
 import { Nullable } from '@/types';
 import { getTargetValue, withEnterPress } from '@/utils/dom';
 import { compose } from '@/utils/functional';
 
-import SearchLabel from './SearchLabel';
-import TopicItemNameContainer from './TopicItemNameContainer';
+import ItemNameContainer from '../../ItemNameContainer';
+import ItemNameInput from '../../ItemNameInput';
+import SearchLabel from '../../SearchLabel';
 import TopicNameIcon from './TopicNameIcon';
 import TopicNameIconContainer from './TopicNameIconContainer';
-import TopicNameInput from './TopicNameInput';
+
+export { ITEM_HEIGHT as TOPIC_ITEM_HEIGHT } from '../../ItemNameContainer';
 
 interface TopicItemNameProps {
   name: string;
   isRoot: boolean;
+  isFirst: boolean;
   isSearch: boolean;
   isOpened: boolean;
   isActive: boolean;
@@ -35,6 +38,7 @@ const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNam
   {
     name,
     isRoot,
+    isFirst,
     isOpened,
     isSearch,
     isActive,
@@ -49,7 +53,9 @@ const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNam
   },
   ref
 ) => {
-  const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
+  const [isHovered, , hoverHandlers] = useHover();
+
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryClear);
 
   const { inputRef, catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } = useDiagramRename({
     diagramID,
@@ -58,15 +64,9 @@ const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNam
     onNameChanged: onClearLastCreatedDiagramID,
   });
 
-  const isLastCreated = lastCreatedDiagramID === diagramID;
-
-  React.useEffect(() => {
-    if (isLastCreated) {
-      toggleRenameEnabled(true);
-    }
-  }, [isLastCreated]);
-
   const options = useDiagramOptions({ onRename: toggleRenameEnabled, diagramID });
+
+  const isLastCreated = lastCreatedDiagramID === diagramID;
 
   const onItemClick = () => {
     if (!isActive) {
@@ -76,13 +76,22 @@ const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNam
     }
   };
 
+  React.useEffect(() => {
+    if (isLastCreated) {
+      toggleRenameEnabled(true);
+    }
+  }, [isLastCreated]);
+
   return (
     <ContextMenu options={options} selfDismiss>
       {({ isOpen, onContextMenu }) => (
-        <TopicItemNameContainer
+        <ItemNameContainer
+          {...hoverHandlers}
           ref={ref}
+          isFirst={isFirst}
           onClick={onItemClick}
           isActive={isActive}
+          isHovered={isHovered}
           isDragging={isDragging}
           disableHover={disableHover}
           onContextMenu={isRoot ? undefined : onContextMenu}
@@ -96,7 +105,7 @@ const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNam
           )}
 
           {renameEnabled ? (
-            <TopicNameInput
+            <ItemNameInput
               ref={inputRef}
               value={localName}
               onBlur={onSaveName}
@@ -109,7 +118,7 @@ const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNam
           ) : (
             <OverflowText>{isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}</OverflowText>
           )}
-        </TopicItemNameContainer>
+        </ItemNameContainer>
       )}
     </ContextMenu>
   );

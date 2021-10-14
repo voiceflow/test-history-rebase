@@ -133,7 +133,7 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   }, []);
 
   const [, connectBlockDrop] = useDrop({
-    accept: DragItem.BLOCK_MENU,
+    accept: [DragItem.BLOCK_MENU, DragItem.COMPONENTS],
     hover: _throttle(
       (_, monitor) => {
         if (!monitor.isOver({ shallow: true })) {

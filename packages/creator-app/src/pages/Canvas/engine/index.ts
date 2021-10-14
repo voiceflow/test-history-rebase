@@ -1,3 +1,4 @@
+import { DiagramType } from '@voiceflow/api-sdk';
 import { logger } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
 import moize from 'moize';
@@ -27,6 +28,8 @@ import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { State, Store } from '@/store/types';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
+import { getNodesGroupCenter } from '@/utils/node';
+import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
 import ActivationEngine from './activationEngine';
 import ClipboardEngine from './clipboardEngine';
@@ -397,6 +400,26 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     return startNode?.[0] ?? null;
   }
 
+  focusStart(options: { open?: boolean } = {}): void {
+    const diagram = this.select(Diagram.activeDiagramSelector);
+    const isRootDiagramActive = this.select(Version.isRootDiagramActiveSelector);
+
+    // topics do not have start node, focus first intent step
+    if (!isRootDiagramActive && diagram?.type === DiagramType.TOPIC) {
+      const intentStepID = diagram.intentStepIDs[0];
+
+      if (intentStepID) {
+        this.focusNode(intentStepID, options);
+      }
+    } else {
+      const nodeID = this.getHomeNodeID();
+
+      if (nodeID) {
+        this.focusNode(nodeID, options);
+      }
+    }
+  }
+
   focusHome(options: { open?: boolean } = {}): void {
     const nodeID = this.getHomeNodeID();
 
@@ -430,20 +453,20 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     this.log.info(this.log.success(`centered on the ${nodeID} node`));
   }
 
-  saveHistory() {
+  saveHistory(): void {
     this.store.dispatch(Creator.saveHistory());
     this.log.debug(this.log.success('history saved'));
   }
 
-  getCanvasMousePosition() {
+  getCanvasMousePosition(): Point {
     return this.canvas!.transformPoint(this.mousePosition.current!);
   }
 
-  getMouseCoords() {
+  getMouseCoords(): Coords {
     return new Coords(this.mousePosition.current!);
   }
 
-  center([centerX, centerY]: Point, animate = true) {
+  center([centerX, centerY]: Point, animate = true): void {
     const xOffset = window.innerWidth / 2;
     const yOffset = window.innerHeight / 2;
 
@@ -458,7 +481,29 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     canvasAPI.setPosition(nextPosition, { raf: animate });
   }
 
-  async reset() {
+  async createComponent(): Promise<string> {
+    const targets = this.activation.getTargets();
+
+    const clipboardData = this.clipboard.getClipboardContext(targets);
+
+    const combinedAndMarkupNodes = clipboardData.nodes
+      .filter(({ type }) => isMarkupOrCombinedBlockType(type))
+      .map((node) => ({ data: clipboardData.data[node.id], node }));
+
+    const { center } = getNodesGroupCenter(combinedAndMarkupNodes, clipboardData.links);
+
+    const coords = this.canvas!.toCoords(center);
+
+    const { name, diagramID } = await this.store.dispatch(Diagram.createComponent(clipboardData));
+
+    await this.node.removeMany(targets, { disableConfirmPrompt: true });
+
+    await this.node.add(BlockType.COMPONENT, coords, { name, diagramID } as NodeData<any>);
+
+    return diagramID;
+  }
+
+  async reset(): Promise<void> {
     this.log.debug(this.log.pending('resetting engine'));
 
     await Promise.all(this.services.map((service) => service.reset()));
@@ -466,7 +511,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     this.log.info(this.log.reset('reset engine'));
   }
 
-  async teardown() {
+  async teardown(): Promise<void> {
     this.log.debug(this.log.pending('shutting down engine'));
 
     await this.reset();

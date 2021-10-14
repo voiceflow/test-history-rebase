@@ -6,9 +6,9 @@ import * as Router from '@/ducks/router';
 import { useDispatch, useEventualEngine } from '@/hooks';
 import { Nullable } from '@/types';
 
+import SearchLabel from '../../SearchLabel';
 import { TopicIntentItem } from '../hooks';
 import IntentContainer from './IntentContainer';
-import SearchLabel from './SearchLabel';
 
 interface IntentListItemProps extends ItemComponentProps<TopicIntentItem>, DragPreviewComponentProps {
   isSearch: boolean;

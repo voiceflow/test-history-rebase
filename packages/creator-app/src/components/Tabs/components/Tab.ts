@@ -5,6 +5,7 @@ import { css, styled, transition } from '@/hocs';
 interface TabProps {
   color?: string;
   isActive?: boolean;
+  capitalize?: boolean;
 }
 
 const Tab = styled.button<TabProps>`
@@ -15,7 +16,7 @@ const Tab = styled.button<TabProps>`
   font-size: 15px;
   font-weight: 600;
   line-height: 18px;
-  text-transform: capitalize;
+  text-transform: ${({ capitalize }) => (capitalize ? 'capitalize' : 'none')};
   user-select: none;
   cursor: pointer;
   color: #949db0;

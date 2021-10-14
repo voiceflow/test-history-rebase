@@ -1,5 +1,7 @@
+import { Nullable } from '@voiceflow/common';
+
 import { BlockType } from '@/constants';
-import { EntityMap, Node } from '@/models';
+import { EntityMap, Node, NodeWithData } from '@/models';
 import { objectID } from '@/utils';
 import { Coords } from '@/utils/geometry';
 
@@ -63,7 +65,7 @@ class DiagramEngine extends EngineConsumer {
     return node.combinedNodes.map((childNodeID) => this.getEntities(childNodeID, false, { x: node.x, y: node.y })).reduce(mergeEntityMaps);
   }
 
-  async cloneEntities(entityMap: EntityMap, coords: Coords, options?: CloneContextOptions) {
+  async cloneEntities(entityMap: EntityMap, coords: Coords, options?: CloneContextOptions): Promise<EntityMap> {
     const clonedEntityMap = cloneEntityMap(entityMap, options);
 
     await this.engine.node.addMany(clonedEntityMap, coords);
@@ -71,7 +73,7 @@ class DiagramEngine extends EngineConsumer {
     return clonedEntityMap;
   }
 
-  async duplicateCommand(node: Node) {
+  async duplicateCommand(node: Node): Promise<EntityMap> {
     const parentNode = this.engine.getNodeByID(node.parentNode!);
     const entities = this.getEntities(node.id, true);
 
@@ -88,7 +90,7 @@ class DiagramEngine extends EngineConsumer {
     return clonedEntities;
   }
 
-  duplicateParentNode(node: Node) {
+  duplicateParentNode(node: Node): Promise<EntityMap> {
     const parentNode = this.engine.getNodeByID(node.parentNode!);
     const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [node.id] };
 
@@ -104,7 +106,7 @@ class DiagramEngine extends EngineConsumer {
     return this.cloneEntities(mergedEntities, coords);
   }
 
-  duplicateChildNode(node: Node) {
+  duplicateChildNode(node: Node): Promise<EntityMap> {
     const entities = this.getEntities(node.id, true);
     const childEntities = this.getChildEntities(node.id);
     const mergedEntities = mergeEntityMaps(entities, childEntities);
@@ -114,7 +116,7 @@ class DiagramEngine extends EngineConsumer {
     return this.cloneEntities(mergedEntities, coords);
   }
 
-  async duplicateNode(nodeID: string) {
+  async duplicateNode(nodeID: string): Promise<Nullable<NodeWithData>> {
     const rootNode = this.engine.getNodeByID(nodeID);
 
     if (rootNode.type === BlockType.START) {
@@ -135,7 +137,7 @@ class DiagramEngine extends EngineConsumer {
       nodesWithData: [nodeWithData],
     } = duplicatedEntities;
 
-    return nodeWithData?.node?.id;
+    return nodeWithData;
   }
 }
 

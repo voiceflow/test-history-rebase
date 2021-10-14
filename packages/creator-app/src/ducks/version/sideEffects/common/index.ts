@@ -1,5 +1,5 @@
 import { Project as AlexaProject } from '@voiceflow/alexa-types';
-import { VersionFolderItemType } from '@voiceflow/api-sdk';
+import { DiagramType, VersionFolderItemType } from '@voiceflow/api-sdk';
 import { Constants } from '@voiceflow/general-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import { batch } from 'react-redux';
@@ -65,9 +65,12 @@ export const activateVersion =
 
     if (isTopicsAndComponents && !dbVersion.topics?.length) {
       dbVersion.topics = [{ type: VersionFolderItemType.DIAGRAM, sourceID: dbVersion.rootDiagramID }];
-      dbVersion.folders = {};
+    }
+
+    if (isTopicsAndComponents && !dbVersion.components?.length) {
+      dbVersion.folders = { ...dbVersion.folders };
       dbVersion.components = diagrams
-        .filter((diagram) => diagram.id !== dbVersion.rootDiagramID)
+        .filter((diagram) => diagram.id !== dbVersion.rootDiagramID && (!diagram.type || diagram.type === DiagramType.COMPONENT))
         .map((diagram) => ({ type: VersionFolderItemType.DIAGRAM, sourceID: diagram.id }));
     }
 

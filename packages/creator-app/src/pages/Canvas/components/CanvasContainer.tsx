@@ -11,7 +11,7 @@ import { useActiveModal, useHotKeys, useRegistration } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
-import { MarkupContext } from '@/pages/Skill/contexts';
+import { LastCreatedComponentContext, MarkupContext } from '@/pages/Skill/contexts';
 import { useCommentingMode, useEditingMode, usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
@@ -55,14 +55,16 @@ const Wrapper = styled.div`
   }
 `;
 
-const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory, redoHistory, children, prototypeStatus, isCanvasHidden }) => {
+const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ children, undoHistory, redoHistory, isCanvasHidden, prototypeStatus }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const spotlight = React.useContext(SpotlightContext)!;
-  const isCommentingMode = useCommentingMode();
+  const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
+
   const isEditingMode = useEditingMode();
+  const isCommentingMode = useCommentingMode();
   const isPrototypingMode = usePrototypingMode();
 
   const activeModal = useActiveModal();
@@ -92,6 +94,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
 
   const onDuplicate = React.useCallback(() => {
     const targets = engine.activation.getTargets();
+
     if (targets.length === 1) {
       const nodeID = targets[0];
 
@@ -99,6 +102,14 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
       engine.node.duplicate(nodeID);
     } else if (targets.length > 1) {
       engine.node.duplicateMany(targets);
+    }
+  }, []);
+
+  const onCreateComponent = React.useCallback(async () => {
+    if (engine.activation.getTargets().length > 1) {
+      const diagramID = await engine.createComponent();
+
+      lastCreatedComponent.setComponentID(diagramID);
     }
   }, []);
 
@@ -111,6 +122,7 @@ const CanvasContainer: React.FC<ConnectedCanvasContainerProps> = ({ undoHistory,
   useHotKeys(Hotkey.REDO, redoHistory as VoidFunction, { preventDefault: true });
   useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { action: 'keyup', preventDefault: true }, [showSpotlight]);
   useHotKeys(Hotkey.DUPLICATE, onDuplicate, { preventDefault: true });
+  useHotKeys(Hotkey.CREATE_COMPONENT, onCreateComponent, { preventDefault: true });
   useHotKeys(Hotkey.SAVE, onSave, { preventDefault: true });
 
   return (

@@ -179,6 +179,11 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     hotkey: HOTKEY_LABEL_MAP[Hotkey.COPY],
   },
   {
+    label: 'Duplicate',
+    value: CanvasAction.DUPLICATE_BLOCK,
+    hotkey: HOTKEY_LABEL_MAP[Hotkey.DUPLICATE],
+  },
+  {
     label: 'Divider 2',
     value: CanvasAction.DIVIDER,
     menuItemProps: { divider: true },

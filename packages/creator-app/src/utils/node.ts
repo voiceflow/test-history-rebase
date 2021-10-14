@@ -48,7 +48,10 @@ export const isCancelPaymentNode = checkNodeType<NodeData.CancelPayment>(BlockTy
 export const isProductLinkedNode = (data: NodeData<unknown>): data is NodeData<{ productID: string }> =>
   (isPaymentNode(data) || isCancelPaymentNode(data)) && !!data.productID;
 
-export const getNodesGroupCenter = (nodes: NodeWithData[], links: Link[]): Point => {
+export const getNodesGroupCenter = (
+  nodes: NodeWithData[],
+  links: Link[]
+): { center: Point; minX: number; maxX: number; minY: number; maxY: number } => {
   const combinedAndMarkupNodes = nodes.filter(({ node }) => isMarkupOrCombinedBlockType(node.type));
 
   const nodeXs = combinedAndMarkupNodes.map(({ node: { x } }) => x);
@@ -63,5 +66,5 @@ export const getNodesGroupCenter = (nodes: NodeWithData[], links: Link[]): Point
 
   const [centerX, centerY] = [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
 
-  return [centerX, centerY];
+  return { center: [centerX, centerY], minX, maxX, minY, maxY };
 };

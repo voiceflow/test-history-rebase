@@ -1,26 +1,32 @@
 import React from 'react';
 
-import { useDragPreview } from '@/hooks';
+import { PreviewOptions, useDragPreview } from '@/hooks';
 
 import { DnDHandlers } from '../types';
 import DragPreviewWrapper from './DragPreviewWrapper';
 
 export interface DragPreviewComponentProps {
   isDraggingPreview?: boolean;
+  isDraggingXEnabled?: boolean;
 }
 
 export interface DragPreviewProps<P extends {}> {
   type: string;
+  options?: PreviewOptions;
   handlers: { current: DnDHandlers<any> };
   component: React.FC<P & DragPreviewComponentProps>;
 }
 
-const DragPreview = <P extends {}>({ type, component: Preview, handlers }: DragPreviewProps<P>) => {
-  useDragPreview<P>(type, ({ getStyle, ...props }) => (
-    <DragPreviewWrapper style={getStyle()} deleteHovered={handlers.current.deleteHovered}>
-      <Preview {...(props as P)} isDraggingPreview />
-    </DragPreviewWrapper>
-  ));
+const DragPreview = <P extends {}>({ type, component: Preview, options, handlers }: DragPreviewProps<P>) => {
+  useDragPreview<P>(
+    type,
+    ({ getStyle, ...props }) => (
+      <DragPreviewWrapper style={getStyle()} deleteHovered={handlers.current.deleteHovered}>
+        <Preview {...(props as P)} isDraggingPreview />
+      </DragPreviewWrapper>
+    ),
+    options
+  );
 
   return null;
 };

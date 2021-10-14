@@ -1,6 +1,6 @@
 import _throttle from 'lodash/throttle';
 import React from 'react';
-import { useDrop } from 'react-dnd';
+import { useDrop, XYCoord } from 'react-dnd';
 import { NativeTypes } from 'react-dnd-html5-backend';
 import { useSelector } from 'react-redux';
 
@@ -19,6 +19,8 @@ import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import SelectionMarquee from '@/pages/Canvas/components/SelectionMarquee';
 import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
 import { ContextMenuContext, EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
+import { FolderItemProps } from '@/pages/Skill/components/DesignMenu/components/Layers/components/ComponentsSection/components/FolderItem';
+import { StepDragItem } from '@/pages/Skill/components/DesignMenu/components/Steps/types';
 import { MarkupContext } from '@/pages/Skill/contexts';
 import { useCommentingMode, useEditingMode } from '@/pages/Skill/hooks';
 import perf, { PerfAction } from '@/performance';
@@ -36,7 +38,20 @@ interface ConnectedCanvasDiagramProps {
   viewport: ViewportType;
 }
 
-const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU];
+interface BaseDrop {
+  type: string;
+  clientOffset: XYCoord;
+}
+
+interface FilesDrop extends BaseDrop {
+  files?: File[];
+}
+
+interface StepMenuDrop extends BaseDrop, Omit<StepDragItem, 'type'> {}
+
+interface ComponentsDrop extends BaseDrop, FolderItemProps {}
+
+const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU, DragItem.COMPONENTS];
 
 const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
   const engine = React.useContext(EngineContext)!;
@@ -89,25 +104,30 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport }) => {
     [isEditingMode]
   );
 
-  const [, connectBlockDrop] = useDrop<
-    { files?: File[]; clientOffset: { x: number; y: number }; blockType: BlockType; factoryData?: Partial<NodeData<unknown>>; type: string },
-    {},
-    {}
-  >({
+  const [, connectBlockDrop] = useDrop<FilesDrop | StepMenuDrop | ComponentsDrop, {}, {}>({
     accept: DROP_TYPES,
-    drop: async ({ clientOffset, blockType, factoryData, files }, monitor) => {
-      if (files) {
-        markup.addImages(files);
+    drop: async (item, monitor) => {
+      if ('files' in item && item.files) {
+        markup.addImages(item.files);
         return;
       }
 
       if (monitor.didDrop() && monitor.getDropResult()?.captured) return;
 
-      const { x: mouseX, y: mouseY } = monitor.getClientOffset() || clientOffset;
+      const { x: mouseX, y: mouseY } = monitor.getClientOffset() || item.clientOffset;
 
-      perf.action(PerfAction.STEP_DROP_CREATE);
+      if ('blockType' in item) {
+        perf.action(PerfAction.STEP_DROP_CREATE);
 
-      await engine.node.add(blockType, new Coords([mouseX, mouseY]), factoryData);
+        await engine.node.add(item.blockType, new Coords([mouseX, mouseY]), item.factoryData);
+      }
+
+      if (item.type === DragItem.COMPONENTS && 'searchMatchValue' in item) {
+        await engine.node.add(BlockType.COMPONENT, new Coords([mouseX, mouseY]), {
+          name: item.item.name,
+          diagramID: item.item.id,
+        } as NodeData<any>);
+      }
     },
     hover: _throttle(
       (item, monitor) => {

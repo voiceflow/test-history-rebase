@@ -11,7 +11,7 @@ export const INTENT_LIST_OFFSET = 8;
 
 const IntentListContainer = styled.div<IntentListContainerProps>`
   position: relative;
-  margin: ${INTENT_LIST_OFFSET}px 0 ${INTENT_LIST_OFFSET}px 16px;
+  margin: ${INTENT_LIST_OFFSET}px 0 ${INTENT_LIST_OFFSET}px 17px;
   padding-left: 16px;
 
   &:before {

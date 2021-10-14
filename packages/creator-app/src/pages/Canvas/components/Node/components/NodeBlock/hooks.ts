@@ -69,7 +69,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
   const [isHovered, setHovered] = React.useState(false);
 
   const [, connectBlockDrop] = useDrop({
-    accept: DragItem.BLOCK_MENU,
+    accept: [DragItem.BLOCK_MENU, DragItem.COMPONENTS],
 
     hover: _throttle(
       () => {

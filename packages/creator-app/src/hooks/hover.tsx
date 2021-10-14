@@ -19,7 +19,7 @@ export const useHover = (
     onEnd?: () => boolean | void;
     onMove?: () => boolean | void;
     cleanupOnOverride?: boolean;
-  },
+  } = { onStart: () => true },
   dependencies: any[] = []
 ): [boolean, (el: JSX.Element) => JSX.Element, Record<HoverEventHandler, () => void>, (hovering: boolean) => void] => {
   const onHoverEnd = React.useRef<(() => void) | null>(null);

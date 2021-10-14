@@ -2,6 +2,7 @@ import { DiagramType } from '@voiceflow/api-sdk';
 
 import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
+import { Point } from '@/types';
 import { objectID } from '@/utils';
 
 import { PrimitiveComponentDiagram, PrimitiveDiagram, PrimitiveTopicDiagram } from './types';
@@ -18,7 +19,7 @@ const generateDefaultDiagram = (): PrimitiveDiagram => ({
   intentStepIDs: [],
 });
 
-export const generateDefaultComponentDiagram = (): PrimitiveComponentDiagram => {
+export const generateDefaultComponentDiagram = ({ coords = [360, 120] }: { coords?: Point } = {}): PrimitiveComponentDiagram => {
   const startNodeID = objectID();
 
   return {
@@ -29,7 +30,7 @@ export const generateDefaultComponentDiagram = (): PrimitiveComponentDiagram => 
       [startNodeID]: {
         nodeID: startNodeID,
         type: BlockType.START,
-        coords: [360, 120],
+        coords,
         data: {
           name: 'Start',
           color: BlockVariant.STANDARD,

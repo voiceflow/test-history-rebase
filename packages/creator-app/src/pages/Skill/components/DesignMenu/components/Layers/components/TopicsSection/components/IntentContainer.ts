@@ -1,6 +1,8 @@
-import { OverflowText } from '@voiceflow/ui';
+import { colors, OverflowText, ThemeColor } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
+
+import SearchLabel from '../../SearchLabel';
 
 interface ItemContainerProps {
   isActive?: boolean;
@@ -29,8 +31,12 @@ const ItemIntent = styled(OverflowText)<ItemContainerProps>`
     isActive &&
     !isDraggingPreview &&
     css`
-      color: #132144;
+      color: ${colors(ThemeColor.PRIMARY)};
       font-weight: 600;
+
+      & ${SearchLabel} {
+        color: ${colors(ThemeColor.PRIMARY)};
+      }
     `};
 
   ${({ disabled }) =>

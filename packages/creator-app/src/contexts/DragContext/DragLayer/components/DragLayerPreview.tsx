@@ -2,39 +2,22 @@ import { useCache } from '@voiceflow/ui';
 import React from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
 
+import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { useThrottledCallback } from '@/hooks/callback';
 import { useForceUpdate } from '@/hooks/forceUpdate';
 import { useTeardown } from '@/hooks/lifecycle';
 import { useRAF } from '@/hooks/raf';
-import { Nullable } from '@/types';
 
-const FORCE_UPDATE_THROTTLE_TIME = 200;
-
-export interface Options {
-  horizontalEnabled: boolean;
+export interface Options<I = any> {
+  horizontalEnabled?: boolean | ((item: I, initialOffset: XYCoord, currentOffset: XYCoord) => boolean);
 }
 
-const DEFAULT_OPTIONS: Options = {
+const DEFAULT_OPTIONS: Options<any> = {
   horizontalEnabled: false,
 };
 
-const getPreviewStyle = (initialOffset: Nullable<XYCoord>, currentOffset: Nullable<XYCoord>, { horizontalEnabled }: Options) => {
-  if (!initialOffset || !currentOffset) {
-    return {
-      display: 'none',
-    };
-  }
-
-  const { x, y } = currentOffset;
-
-  return {
-    willChange: 'translate',
-    transform: `translate(${horizontalEnabled ? x : initialOffset.x}px, ${y}px)`,
-  };
-};
-
 interface DragLayerPreviewProps<I> {
-  getOptions: (type: string) => undefined | Partial<Options>;
+  getOptions: (type: string) => undefined | Options<I>;
   renderPreview: (type: string, item: I) => React.ReactNode;
 }
 
@@ -45,27 +28,50 @@ const DragLayerPreview = <I extends any>({ getOptions, renderPreview }: DragLaye
   const [forceUpdate, updateKey] = useForceUpdate();
   const cache = useCache({ getOptions });
 
-  const throttledForceUpdate = useThrottledCallback(FORCE_UPDATE_THROTTLE_TIME, forceUpdate, [], { leading: false });
+  const throttledForceUpdate = useThrottledCallback(HOVER_THROTTLE_TIMEOUT, forceUpdate, [], { leading: false });
 
   const { item, itemType } = useDragLayer((monitor) => {
     const type = monitor.getItemType() as string;
+    const item = monitor.getItem();
 
-    if (previewRef.current) {
-      const options = { ...DEFAULT_OPTIONS, ...cache.current.getOptions(type) };
+    const collected = { item, itemType: type };
 
-      updateStyles(() => {
-        if (previewRef.current) {
-          Object.assign(previewRef.current.style, getPreviewStyle(monitor.getInitialSourceClientOffset(), monitor.getSourceClientOffset(), options));
+    const node = previewRef.current;
 
-          throttledForceUpdate();
-        }
-      });
+    if (!node) {
+      return collected;
     }
 
-    return {
-      item: monitor.getItem(),
-      itemType: type,
-    };
+    const initialOffset = monitor.getInitialSourceClientOffset();
+    const currentOffset = monitor.getSourceClientOffset();
+
+    let { isDraggingXEnabled } = item;
+
+    if (!initialOffset || !currentOffset) {
+      isDraggingXEnabled = false;
+    } else {
+      const horizontalEnabled = cache.current.getOptions(type)?.horizontalEnabled ?? DEFAULT_OPTIONS.horizontalEnabled;
+
+      isDraggingXEnabled = typeof horizontalEnabled === 'function' ? horizontalEnabled(item, initialOffset, currentOffset) : horizontalEnabled;
+    }
+
+    item.isDraggingXEnabled = isDraggingXEnabled;
+    item.setIsDraggingXEnabled?.(isDraggingXEnabled);
+
+    throttledForceUpdate();
+
+    updateStyles(() => {
+      if (!initialOffset || !currentOffset) {
+        node.style.display = 'none';
+        return;
+      }
+
+      node.style.display = 'block';
+      node.style.transform = `translate(${isDraggingXEnabled ? currentOffset.x : initialOffset.x}px, ${currentOffset.y}px)`;
+      node.style.willChange = `translate`;
+    });
+
+    return collected;
   });
 
   const children = React.useMemo(() => renderPreview(itemType, item), [item, renderPreview, itemType, updateKey]);

@@ -1,26 +1,29 @@
 import { IconVariant, SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
-import { List as VirtualizedList } from 'react-virtualized';
+import { List } from 'react-virtualized';
 
 import { Scrollbars } from '@/components/CustomScrollbars';
 import DraggableList from '@/components/DraggableList';
+import VirtualList from '@/components/VirtualList';
 import { DragItem } from '@/constants';
 import { useDidUpdateEffect } from '@/hooks';
 import { getTargetValue } from '@/utils/dom';
 
+import { useOpenedIDsToggle } from '../../hooks';
 import Header, { HEADER_MIN_HEIGHT } from '../Header';
-import List from '../List';
 import SearchInput, { SEARCH_INPUT_HEIGHT } from '../SearchInput';
 import { INTENT_LIST_OFFSET, ITEM_INTENT_HEIGHT, TOPIC_ITEM_HEIGHT, TopicItem as TopicItemComponent } from './components';
-import { TopicItem, useTopics, useTopicsToggle } from './hooks';
+import { TopicItem, useTopics } from './hooks';
 
+const LAST_TOPIC_OFFSET = 8;
+const FIRST_TOPIC_OFFSET = 2;
 const SEARCHABLE_TOPICS_COUNT = 6;
 const SEARCHABLE_INTENTS_COUNT = 10;
 
 const TopicsSection: React.FC = () => {
-  const listRef = React.useRef<VirtualizedList>(null);
+  const listRef = React.useRef<List>(null);
   const scrollBarsRef = React.useRef<Scrollbars>(null);
-  const { isDragging, onDragEnd, onDragStart, openedTopics, onToggleTopicOpen } = useTopicsToggle();
+  const { onDragEnd, onDragStart, openedIDs, onToggleOpenedID } = useOpenedIDsToggle('topics');
   const {
     topicsItems,
     searchValue,
@@ -40,20 +43,23 @@ const TopicsSection: React.FC = () => {
   const isSearch = !!searchMatchValue;
 
   const topics = isSearch ? searchTopicsItems : topicsItems;
-  const opened = isSearch ? searchOpenedTopics : openedTopics;
+  const opened = isSearch ? searchOpenedTopics : openedIDs;
 
   const rowHeight = React.useCallback(
     ({ index }: { index: number }) => {
       const topic = topics[index];
       const isOpened = opened[topic.id];
 
+      const topOffset = index === 0 ? FIRST_TOPIC_OFFSET : 0;
+      const bottomOffset = index === topics.length - 1 ? LAST_TOPIC_OFFSET : 0;
+
       if (!isOpened) {
-        return TOPIC_ITEM_HEIGHT;
+        return TOPIC_ITEM_HEIGHT + topOffset + bottomOffset;
       }
 
       const childSize = topic.intentItems.length + (!isSearch && rootDiagramID === topic.id ? 1 : 0);
 
-      return TOPIC_ITEM_HEIGHT + INTENT_LIST_OFFSET * 2 + ITEM_INTENT_HEIGHT * (childSize || 1);
+      return TOPIC_ITEM_HEIGHT + INTENT_LIST_OFFSET * 2 + ITEM_INTENT_HEIGHT * (childSize || 1) + topOffset + bottomOffset;
     },
     [opened, topics, rootDiagramID]
   );
@@ -90,8 +96,7 @@ const TopicsSection: React.FC = () => {
       canDrag={canDrag}
       itemProps={{
         isSearch,
-        onToggleOpen: onToggleTopicOpen,
-        disableHover: isDragging,
+        onToggleOpen: onToggleOpenedID,
         openedTopics: opened,
         focusedNodeID,
         rootDiagramID,
@@ -109,7 +114,7 @@ const TopicsSection: React.FC = () => {
       unmountableDuringDrag
     >
       {({ renderItem }) => (
-        <List
+        <VirtualList
           ref={scrollBarsRef}
           size={topics.length}
           header={

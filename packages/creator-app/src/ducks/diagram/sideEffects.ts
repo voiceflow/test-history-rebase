@@ -7,15 +7,21 @@ import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { activeRootDiagramIDSelector, activeTopicsSelector, activeVersionSelector } from '@/ducks/version/selectors';
+import { activeComponentsSelector, activeRootDiagramIDSelector, activeTopicsSelector, activeVersionSelector } from '@/ducks/version/selectors';
 import { saveComponents, saveTopics } from '@/ducks/version/sideEffects/common/topicsComponents';
-import { DBDiagram, Diagram } from '@/models';
+import { CreatorDiagram, DBDiagram, Diagram, Link, Node, NodeData, Port } from '@/models';
 import mutableStore from '@/store/mutable';
 import { SyncThunk, Thunk } from '@/store/types';
-import { append, insert, unique, withoutValue } from '@/utils/array';
+import { BLOCK_WIDTH } from '@/styles/theme';
+import { PathPoint, Point } from '@/types';
+import { append, insert, unique, withoutValue, withoutValues } from '@/utils/array';
+import { getNodesGroupCenter } from '@/utils/node';
+import { normalize } from '@/utils/normalized';
 import { getCurrentTimestamp } from '@/utils/time';
+import { isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
 import { addDiagram, patchDiagram, replaceDiagrams, replaceLocalVariables, updateDiagram } from './actions';
 import { generateDefaultComponentDiagram, generateDefaultTopicDiagram } from './constants';
@@ -140,6 +146,83 @@ export const createComponentDiagram =
   async (dispatch) =>
     dispatch(createDiagram(name, diagram));
 
+const addDiagramIDIntoComponentsList =
+  (diagramID: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const activeDiagramID = Session.activeDiagramIDSelector(state);
+    const activeComponents = activeComponentsSelector(state);
+
+    const newTopicItem = { type: VersionFolderItemType.DIAGRAM, sourceID: diagramID };
+    const activeComponentIndex = activeDiagramID ? activeComponents.findIndex(({ sourceID }) => sourceID === activeDiagramID) : -1;
+
+    const components =
+      activeComponentIndex === -1 ? append(activeComponents, newTopicItem) : insert(activeComponents, activeComponentIndex + 1, newTopicItem);
+
+    await dispatch(saveComponents(components));
+  };
+
+export const createComponent =
+  ({
+    nodes,
+    links,
+    ports,
+    data,
+  }: {
+    nodes: Node[];
+    links: Link[];
+    ports: Port[];
+    data: Record<string, NodeData<unknown>>;
+  }): Thunk<{ name: string; diagramID: string }> =>
+  async (dispatch, getState) => {
+    const startCoords: Point = [360, 120];
+
+    const state = getState();
+    const diagram = generateDefaultComponentDiagram({ coords: startCoords });
+    const platform = ProjectV2.active.platformSelector(state);
+    const activeComponents = activeComponentsSelector(state);
+
+    const combinedAndMarkupNodes = nodes.filter(({ type }) => isMarkupOrCombinedBlockType(type)).map((node) => ({ data: data[node.id], node }));
+    const { center, minX } = getNodesGroupCenter(combinedAndMarkupNodes, links);
+
+    const adjustX = startCoords[0] - minX + BLOCK_WIDTH * 1.5;
+    const adjustY = startCoords[1] - center[1];
+
+    const adjustPathPoint = (point: PathPoint): PathPoint => ({
+      ...point,
+      point: [point.point[0] + adjustX, point.point[1] + adjustY],
+    });
+
+    const adjustedNodes = nodes.map((node) => ({ ...node, x: node.x + adjustX, y: node.y + adjustY }));
+    const adjustedPorts = ports.map((port) =>
+      port.linkData?.points ? { ...port, linkData: { ...port.linkData, points: port.linkData.points.map(adjustPathPoint) } } : port
+    );
+    const adjustedLinks = links.map((link) =>
+      link.data?.points ? { ...link, data: { ...link.data, points: link.data.points.map(adjustPathPoint) } } : link
+    );
+
+    const convertedDiagram = Adapters.creatorAdapter.toDB(
+      {
+        data,
+        links: adjustedLinks,
+        viewport: { zoom: 1, x: 0, y: 0 },
+        diagramID: '',
+      } as CreatorDiagram,
+      { nodes: normalize(adjustedNodes), ports: normalize(adjustedPorts), platform, context: {} }
+    );
+
+    diagram.nodes = { ...diagram.nodes, ...convertedDiagram.nodes };
+    diagram.children = [...diagram.children, ...convertedDiagram.children];
+
+    const name = `Component ${activeComponents.length + 1}`;
+
+    const diagramID = await dispatch(createComponentDiagram(name, diagram));
+
+    await dispatch(addDiagramIDIntoComponentsList(diagramID));
+
+    return { name, diagramID };
+  };
+
 export const copyDiagram =
   (diagramID: string, { openDiagram = false }: { openDiagram?: boolean } = {}): Thunk<string> =>
   async (dispatch, getState) => {
@@ -147,6 +230,7 @@ export const copyDiagram =
     const versionID = Session.activeVersionIDSelector(state);
     const rootDiagramID = activeRootDiagramIDSelector(state);
     const allDiagrams = allDiagramsSelector(state);
+    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
 
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(rootDiagramID);
@@ -164,6 +248,10 @@ export const copyDiagram =
     }
 
     const newDiagramID = await dispatch(createDiagram(newFlowName, { type, ...diagram } as PrimitiveTopicDiagram | PrimitiveComponentDiagram));
+
+    if (isTopicsAndComponents) {
+      await dispatch(addDiagramIDIntoComponentsList(newDiagramID));
+    }
 
     await dispatch(loadDiagrams(versionID, rootDiagramID));
 
@@ -277,4 +365,30 @@ export const replaceActiveDiagramVariables =
     Errors.assertDiagramID(activeDiagramID);
 
     dispatch(replaceLocalVariables(activeDiagramID, variables));
+  };
+
+export const removeActiveDiagramIntentStepIDs =
+  (intentStepIDs: string[]): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const activeDiagramID = Creator.creatorDiagramIDSelector(state);
+
+    Errors.assertDiagramID(activeDiagramID);
+
+    const activeDiagram = diagramByIDSelector(state)(activeDiagramID);
+
+    dispatch(saveDiagramIntentSteps(activeDiagramID, withoutValues(activeDiagram?.intentStepIDs ?? [], intentStepIDs)));
+  };
+
+export const addActiveDiagramIntentStepIDs =
+  (intentStepIDs: string[]): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const activeDiagramID = Creator.creatorDiagramIDSelector(state);
+
+    Errors.assertDiagramID(activeDiagramID);
+
+    const activeDiagram = diagramByIDSelector(state)(activeDiagramID);
+
+    dispatch(saveDiagramIntentSteps(activeDiagramID, [...(activeDiagram?.intentStepIDs ?? []), ...intentStepIDs]));
   };

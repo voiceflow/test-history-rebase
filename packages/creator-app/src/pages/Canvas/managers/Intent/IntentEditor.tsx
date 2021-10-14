@@ -1,4 +1,5 @@
 import { Node } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import IntentForm, { HelpTooltip, LegacyMappings } from '@/components/IntentForm';
@@ -7,10 +8,11 @@ import IntentSelect from '@/components/IntentSelect';
 import Section from '@/components/Section';
 import { FeatureFlag } from '@/config/features';
 import { NamespaceProvider } from '@/contexts';
+import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { connect } from '@/hocs';
-import { useFeature } from '@/hooks';
+import { useDispatch, useFeature } from '@/hooks';
 import { NodeData } from '@/models';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { ConnectedProps, MergeArguments } from '@/types';
@@ -24,35 +26,43 @@ const DEFAULT_INTENT = {
   name: '',
   platform: '',
   slots: {},
-  availability: Node.Intent.IntentAvailability.LOCAL,
+  availability: Node.Intent.IntentAvailability.GLOBAL,
 };
 
 const LegacyMappingsComponent = LegacyMappings as React.FC<any>;
 
 const IntentEditor: NodeEditor<NodeData.Intent, ConnectedIntentEditorProps> = ({ intent, data, platformData, patchPlatformData, pushToPath }) => {
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const validateTopicAvailability = useDispatch(Creator.validateTopicAvailability);
+
+  const isGlobalIntent = platformData.availability === Node.Intent.IntentAvailability.GLOBAL;
+
+  const onChangeIntent = async ({ intent }: { intent: Nullable<string> }) => {
+    await patchPlatformData({ intent });
+
+    validateTopicAvailability();
+  };
+
+  const onChangeAvailability = async () => {
+    const nextAvailability = isGlobalIntent ? Node.Intent.IntentAvailability.LOCAL : Node.Intent.IntentAvailability.GLOBAL;
+
+    await patchPlatformData({ availability: nextAvailability });
+
+    validateTopicAvailability();
+  };
 
   return (
     <Content footer={() => <Controls tutorial={{ content: <HelpTooltip />, blockType: data.type }} />}>
       <Section>
-        <IntentSelect intent={intent} onChange={patchPlatformData} />
+        <IntentSelect intent={intent} onChange={onChangeIntent} />
       </Section>
+
       <NamespaceProvider value={['intent', intent?.id]}>
         <IntentForm intent={intent} pushToPath={pushToPath} />
-        {topicsAndComponents.isEnabled ? (
-          <AvailabilityManager
-            isEnabled={platformData.availability === Node.Intent.IntentAvailability.GLOBAL}
-            onChange={() =>
-              patchPlatformData({
-                availability:
-                  platformData.availability === Node.Intent.IntentAvailability.GLOBAL
-                    ? Node.Intent.IntentAvailability.LOCAL
-                    : Node.Intent.IntentAvailability.GLOBAL,
-              })
-            }
-          />
-        ) : null}
       </NamespaceProvider>
+
+      {topicsAndComponents.isEnabled ? <AvailabilityManager isEnabled={isGlobalIntent} onChange={onChangeAvailability} /> : null}
+
       <LegacyMappingsComponent intent={intent} mappings={platformData.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
     </Content>
   );
@@ -69,9 +79,9 @@ const mergeProps = (
   const platformData = getDistinctPlatformValue(platform, data);
 
   return {
+    intent: platformData.intent ? getIntentByID(platformData.intent) : DEFAULT_INTENT,
     platformData,
     patchPlatformData: (patch: Partial<NodeData.Intent.PlatformData>) => onChange(setDistinctPlatformValue(platform, { ...platformData, ...patch })),
-    intent: platformData.intent ? getIntentByID(platformData.intent) : DEFAULT_INTENT,
   };
 };
 

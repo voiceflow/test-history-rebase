@@ -87,14 +87,12 @@ const Component: React.FC<ComponentProps & ConnectedComponentProps> = ({
         options={options}
         onSelect={setComponent}
         onCreate={onCreate}
-        creatable
         searchable
-        validateCreate={validateCreate}
         clearable={Boolean(value)}
+        validateCreate={validateCreate}
         getOptionValue={(option) => option?.value}
         getOptionLabel={(optionValue) => optionValue && optionsMap[optionValue]?.label}
-        placeholder="Create new component or select existing"
-        createInputPlaceholder="New Component Name"
+        placeholder="Select component"
       />
       {componentDoesNotExist && (
         <Alert variant={AlertVariant.WARNING} mt={10}>

@@ -1,5 +1,5 @@
 import { DiagramType } from '@voiceflow/api-sdk';
-import { Alert, AlertVariant, MenuOption, toast, usePersistFunction } from '@voiceflow/ui';
+import { MenuOption, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Errors from '@/config/errors';
@@ -90,7 +90,13 @@ export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameCha
   };
 };
 
-export const useDiagramOptions = ({ diagramID, onRename }: { diagramID?: string | null; onRename: () => void }): MenuOption<undefined>[] => {
+interface DiagramOptionsOptions {
+  onEdit?: () => void;
+  onRename: () => void;
+  diagramID?: string | null;
+}
+
+export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOptionsOptions): MenuOption<undefined>[] => {
   const copyDiagram = useDispatch(Diagram.copyDiagram);
   const deleteDiagram = useDispatch(Diagram.deleteDiagram);
   const setErrorModal = useDispatch(Modal.setError);
@@ -124,12 +130,12 @@ export const useDiagramOptions = ({ diagramID, onRename }: { diagramID?: string 
 
     setConfirmModal({
       text: (
-        <Alert variant={AlertVariant.DANGER} mb={0}>
-          Deleting this {label} permanently deletes everything inside and can not be recovered
+        <>
+          Deleting this {label} permanently deletes everything inside and can not be recovered.
           <br />
           <br />
           Are you sure ?
-        </Alert>
+        </>
       ),
       warning: true,
       confirm: () => {
@@ -145,6 +151,7 @@ export const useDiagramOptions = ({ diagramID, onRename }: { diagramID?: string 
       !canEditCanvas
         ? []
         : [
+            ...(onEdit ? [{ label: 'Edit', onClick: onEdit }] : []),
             { label: 'Rename', onClick: onRename },
             ...(!topicsAndComponents.isEnabled || !diagramID || getDiagramByID(diagramID)?.type !== DiagramType.TOPIC
               ? [{ label: 'Duplicate', onClick: onDuplicate }]
@@ -152,6 +159,6 @@ export const useDiagramOptions = ({ diagramID, onRename }: { diagramID?: string 
             { label: 'Divider', divider: true },
             { label: 'Delete', onClick: onDelete },
           ],
-    [onRename, onDuplicate, onDelete, canEditCanvas, topicsAndComponents.isEnabled]
+    [onEdit, onRename, onDuplicate, onDelete, canEditCanvas, topicsAndComponents.isEnabled]
   );
 };

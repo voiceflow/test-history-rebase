@@ -11,7 +11,7 @@ import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import { useDispatch, useEventualEngine, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
-import { SelectionTargetsContext } from '@/pages/Skill/contexts';
+import { LastCreatedComponentContext, SelectionTargetsContext } from '@/pages/Skill/contexts';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
@@ -21,6 +21,7 @@ import { Container, DiagramsActions, ProjectActions, ProjectTitle, ViewOnly } fr
 
 const ProjectAndDiagramActions: React.FC = () => {
   const selectedTargets = React.useContext(SelectionTargetsContext);
+  const lastCreatedComponent = React.useContext(LastCreatedComponentContext);
 
   const lockResource = useDispatch(() => Realtime.sendRealtimeProjectUpdate(Realtime.lockResource(Realtime.ResourceType.SETTINGS)));
   const unlockResource = useDispatch(() => Realtime.sendRealtimeProjectUpdate(Realtime.unlockResource(Realtime.ResourceType.SETTINGS)));
@@ -48,8 +49,10 @@ const ProjectAndDiagramActions: React.FC = () => {
       return;
     }
 
-    updateFormValue(formatProjectName(formValue));
-    saveProjectName(formatProjectName(formValue));
+    const formattedName = formatProjectName(formValue);
+
+    updateFormValue(formattedName);
+    saveProjectName(formattedName);
 
     setFocused(false);
     unlockResource();
@@ -68,6 +71,18 @@ const ProjectAndDiagramActions: React.FC = () => {
     setFocused(true);
 
     titleRef.current?.startEditing();
+  };
+
+  const onCreateComponent = async () => {
+    const engine = getEngine();
+
+    if (!engine) {
+      return;
+    }
+
+    const diagramID = await engine.createComponent();
+
+    lastCreatedComponent.setComponentID(diagramID);
   };
 
   const onDuplicate = () => {
@@ -90,7 +105,7 @@ const ProjectAndDiagramActions: React.FC = () => {
             icon="component"
             isSmall
             tooltip={{ title: 'Create component', hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT] }}
-            onClick={() => {}}
+            onClick={onCreateComponent}
           />
 
           <HeaderIconButton

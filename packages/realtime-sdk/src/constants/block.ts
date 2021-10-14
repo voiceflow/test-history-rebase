@@ -68,7 +68,7 @@ export const ROOT_AND_MARKUP_NODES: ReadonlyArray<RootOrMarkupBlockType> = [...R
 export type MarkupOrCombinedBlockType = BlockType.COMBINED | MarkupBlockType;
 export const MARKUP_AND_COMBINED_NODES: ReadonlyArray<MarkupOrCombinedBlockType> = [BlockType.COMBINED, ...MARKUP_NODES];
 
-export type DiagramReferenceBlockType = BlockType.COMMAND | BlockType.FLOW;
-export const DIAGRAM_REFERENCE_NODES: ReadonlyArray<DiagramReferenceBlockType> = [BlockType.COMMAND, BlockType.FLOW];
+export type DiagramReferenceBlockType = BlockType.COMMAND | BlockType.FLOW | BlockType.COMPONENT;
+export const DIAGRAM_REFERENCE_NODES: ReadonlyArray<DiagramReferenceBlockType> = [BlockType.COMMAND, BlockType.FLOW, BlockType.COMPONENT];
 
 export const NO_IN_PORT_NODES = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);

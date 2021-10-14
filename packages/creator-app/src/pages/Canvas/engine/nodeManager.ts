@@ -5,6 +5,7 @@ import { batch } from 'react-redux';
 import { BlockType } from '@/constants';
 import { BlockVariant } from '@/constants/canvas';
 import * as Creator from '@/ducks/creator';
+import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -184,8 +185,31 @@ class NodeManager extends EngineConsumer {
 
   // crud methods
 
-  async add(type: BlockType, coords: Coords, factoryData?: Partial<NodeData<unknown>>, nodeID: string = objectID(), autoFocus = true) {
+  async removeIntentStepIDs(removedNodes: Node[]): Promise<void> {
+    const removedIntentStepIDs = removedNodes.filter(({ type }) => type === BlockType.INTENT).map(({ id }) => id);
+
+    if (removedIntentStepIDs.length) {
+      await this.dispatch(Diagram.removeActiveDiagramIntentStepIDs(removedIntentStepIDs));
+    }
+  }
+
+  async addIntentStepIDs<T extends { node: { id: string; type: BlockType } }>(addNodes: T[]): Promise<void> {
+    const addedIntentStepIDs = addNodes.filter(({ node }) => node.type === BlockType.INTENT).map(({ node }) => node.id);
+
+    if (addedIntentStepIDs.length) {
+      await this.dispatch(Diagram.addActiveDiagramIntentStepIDs(addedIntentStepIDs));
+    }
+  }
+
+  async add(
+    type: BlockType,
+    coords: Coords,
+    factoryData?: Partial<NodeData<unknown>>,
+    nodeID: string = objectID(),
+    autoFocus = true
+  ): Promise<string> {
     const [x, y] = this.engine.canvas!.fromCoords(coords);
+
     const { node, data } = nodeFactory(type, factoryData, this.internal.getNodeFactoryOptions());
     const augmentedNode = { ...node, x, y, id: nodeID };
     const parentNode = { id: objectID(), ports: { in: [{ id: objectID() }], out: [] } };
@@ -197,6 +221,8 @@ class NodeManager extends EngineConsumer {
 
     this.engine.saveHistory();
 
+    await this.addIntentStepIDs([{ node: augmentedNode, data }]);
+
     if (autoFocus) {
       this.engine.setActive(nodeID);
     }
@@ -206,25 +232,32 @@ class NodeManager extends EngineConsumer {
     return nodeID;
   }
 
-  async addMany(entities: EntityMap, coords: Coords) {
+  async addMany(entities: EntityMap, coords: Coords): Promise<void> {
     this.log.debug(this.log.pending('adding many nodes'), entities);
 
     const point = this.engine.canvas!.fromCoords(coords);
+
     await this.engine.realtime.sendUpdate(Realtime.addManyNodes(entities, point));
+
     this.internal.addMany(entities, point);
     this.engine.saveHistory();
+
+    await this.addIntentStepIDs(entities.nodesWithData);
 
     this.log.info(this.log.success('added many nodes'), this.log.value(entities.nodesWithData.length));
   }
 
-  async duplicate(nodeID: string) {
+  async duplicate(nodeID: string): Promise<void> {
     this.log.debug(this.log.pending('duplicating node'), this.log.slug(nodeID));
 
-    const duplicateNodeID = await this.engine.diagram.duplicateNode(nodeID);
+    const duplicateNodeWithData = await this.engine.diagram.duplicateNode(nodeID);
 
-    if (duplicateNodeID) {
+    if (duplicateNodeWithData?.node?.id) {
       this.engine.saveHistory();
-      this.engine.setActive(duplicateNodeID);
+      this.engine.setActive(duplicateNodeWithData.node.id);
+
+      await this.addIntentStepIDs([duplicateNodeWithData]);
+
       this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
     }
   }
@@ -237,7 +270,7 @@ class NodeManager extends EngineConsumer {
       .filter(({ type }) => isMarkupOrCombinedBlockType(type))
       .map((node) => ({ data: clipboardData.data[node.id], node }));
 
-    const centerCoords = getNodesGroupCenter(combinedAndMarkupNodes, clipboardData.links);
+    const { center: centerCoords } = getNodesGroupCenter(combinedAndMarkupNodes, clipboardData.links);
     const coords = this.engine.canvas!.toCoords(centerCoords).add(DUPLICATE_OFFSET);
 
     const { nodesWithData } = await this.engine.clipboard.cloneClipboardContext(clipboardData, coords);
@@ -253,9 +286,11 @@ class NodeManager extends EngineConsumer {
     this.engine.selection.replace(parentNodes);
 
     await this.engine.saveHistory();
+
+    await this.addIntentStepIDs(nodesWithData);
   }
 
-  async updateData<T extends unknown = unknown>(nodeID: string, data: Partial<NodeData<T>>, save = true) {
+  async updateData<T extends unknown = unknown>(nodeID: string, data: Partial<NodeData<T>>, save = true): Promise<void> {
     this.log.debug(this.log.pending('updating node data'), this.log.slug(nodeID), data);
 
     await this.engine.realtime.sendUpdate(Realtime.updateNodeData(nodeID, data));
@@ -269,7 +304,7 @@ class NodeManager extends EngineConsumer {
     this.log.info(this.log.success('updated node data'), this.log.slug(nodeID));
   }
 
-  isRemovingLocked(nodeIDs: string[], remove: (nodeIDs: string[]) => Promise<void>) {
+  isRemovingLocked(nodeIDs: string[], remove: (nodeIDs: string[]) => Promise<void>): boolean {
     const lockedNodes = this.engine.getDeleteLockedNodes();
     const combinedNodes = nodeIDs.map(this.engine.getNodeByID).filter((node) => node.type === BlockType.COMBINED);
 
@@ -289,12 +324,13 @@ class NodeManager extends EngineConsumer {
           confirm: () => (unlockedNodesIDs.length ? remove(unlockedNodesIDs) : this.dispatch(Modal.clearModal())),
         })
       );
+
       return true;
     }
     return false;
   }
 
-  isRemovingDefaultCommand(nodes: Node[]) {
+  isRemovingDefaultCommand(nodes: Node[]): boolean {
     const commandNodes = nodes.filter((node) => isCommandNode(node));
     const commandNodesIDs = commandNodes.map(({ id }) => id);
     const commandNodeData = commandNodesIDs.map<NodeData<NodeData.Command>>(this.engine.getDataByNodeID);
@@ -321,7 +357,8 @@ class NodeManager extends EngineConsumer {
             confirm: () => this.dispatch(Modal.clearModal()),
           })
         );
-        return requiredCommand;
+
+        return true;
       }
     }
 
@@ -359,11 +396,12 @@ class NodeManager extends EngineConsumer {
     await remove(removableNodeIDs);
   }
 
-  remove(nodeID: string) {
+  remove(nodeID: string): Promise<void> {
     this.log.debug(this.log.pending('removing node'), this.log.slug(nodeID));
 
     return this.validateRemove([nodeID], async ([removeNodeID]) => {
       const allNodeIDs = [removeNodeID, ...this.select(Creator.combinedNodeIDsSelector)(removeNodeID)];
+      const nodesToRemove = this.select(Creator.allNodesByIDsSelector)(allNodeIDs);
 
       await this.engine.comment.handleNodesDelete(allNodeIDs);
 
@@ -371,6 +409,10 @@ class NodeManager extends EngineConsumer {
       this.internal.remove(removeNodeID);
 
       this.engine.saveHistory();
+
+      await this.removeIntentStepIDs(nodesToRemove);
+
+      this.dispatch(Creator.validateTopicAvailability());
 
       this.log.info(this.log.success('remove node'), this.log.slug(removeNodeID));
     });
@@ -383,6 +425,7 @@ class NodeManager extends EngineConsumer {
       nodeIDs,
       async (removableNodeIDs) => {
         const allNodeIDs = [...removableNodeIDs, ...removableNodeIDs.flatMap(this.select(Creator.combinedNodeIDsSelector))];
+        const nodesToRemove = this.select(Creator.allNodesByIDsSelector)(allNodeIDs);
 
         await this.engine.comment.handleNodesDelete(allNodeIDs);
 
@@ -390,6 +433,10 @@ class NodeManager extends EngineConsumer {
         this.internal.removeMany(removableNodeIDs);
 
         this.engine.saveHistory();
+
+        await this.removeIntentStepIDs(nodesToRemove);
+
+        this.dispatch(Creator.validateTopicAvailability());
 
         this.log.info(this.log.success('removed multiple nodes'), this.log.value(removableNodeIDs.length));
       },
@@ -399,7 +446,7 @@ class NodeManager extends EngineConsumer {
 
   // nested node management methods
 
-  async addNested(parentNodeID: string, type: BlockType) {
+  async addNested(parentNodeID: string, type: BlockType): Promise<string> {
     const nodeID = objectID();
     const mergedNodeID = objectID();
     const { node, data } = nodeFactory(type, undefined, this.internal.getNodeFactoryOptions());
@@ -408,9 +455,12 @@ class NodeManager extends EngineConsumer {
     this.log.debug(this.log.pending('adding nested node'), this.log.slug(nodeID));
 
     await this.engine.realtime.sendUpdate(Realtime.addNestedNode(parentNodeID, augmentedNode, data, mergedNodeID));
+
     this.internal.addNested(parentNodeID, augmentedNode, data, mergedNodeID);
     this.engine.saveHistory();
     this.engine.setActive(nodeID);
+
+    await this.addIntentStepIDs([{ node: augmentedNode, data }]);
 
     this.log.info(this.log.success('added nested node'), this.log.slug(nodeID));
 
@@ -431,7 +481,7 @@ class NodeManager extends EngineConsumer {
     type: BlockType;
     factoryData: Partial<NodeData<unknown>>;
     position: Point;
-  }) {
+  }): Promise<void> {
     const childID = objectID();
     const combinedPortID = objectID();
     const { node, data } = nodeFactory(type, factoryData, this.internal.getNodeFactoryOptions());
@@ -456,10 +506,12 @@ class NodeManager extends EngineConsumer {
 
     this.engine.setActive(childID);
 
+    await this.addIntentStepIDs([{ node: augmentedNode, data }]);
+
     this.log.info(this.log.success('added nested node'), this.log.slug(childID));
   }
 
-  async insertNested(parentNodeID: string, index: number, nodeID: string) {
+  async insertNested(parentNodeID: string, index: number, nodeID: string): Promise<void> {
     this.log.debug(this.log.pending('inserting nested node'), this.log.slug(nodeID));
 
     this.internal.insertNested(parentNodeID, index, nodeID);
@@ -470,7 +522,7 @@ class NodeManager extends EngineConsumer {
     this.log.info(this.log.success('inserted nested node'), this.log.slug(nodeID));
   }
 
-  async unmerge(nodeID: string, position: Point) {
+  async unmerge(nodeID: string, position: Point): Promise<void> {
     const parentNodeID = objectID();
     const parentPortID = objectID();
     const parentNode = {
@@ -489,7 +541,7 @@ class NodeManager extends EngineConsumer {
 
   // location / rendering methods
 
-  async translate(nodeID: string, movement: Pair<number>, volatile = true) {
+  async translate(nodeID: string, movement: Pair<number>, volatile = true): Promise<void> {
     if (!this.engine.nodes.has(nodeID)) return;
 
     const node = this.engine.nodes.get(nodeID)!;
@@ -501,7 +553,7 @@ class NodeManager extends EngineConsumer {
     await this.engine.realtime[volatile ? 'sendVolatileUpdate' : 'sendUpdate'](action);
   }
 
-  async translateMany(nodeIDs: string[], movement: Pair<number>, volatile = true) {
+  async translateMany(nodeIDs: string[], movement: Pair<number>, volatile = true): Promise<void> {
     const activeNodeIDs = nodeIDs.filter((nodeID) => this.engine.nodes.has(nodeID));
     const origins = activeNodeIDs.map<Point>((nodeID) => {
       const node = this.engine.nodes.get(nodeID)!;
@@ -515,7 +567,7 @@ class NodeManager extends EngineConsumer {
     await this.engine.realtime[volatile ? 'sendVolatileUpdate' : 'sendUpdate'](action);
   }
 
-  saveLocation(nodeID: string) {
+  saveLocation(nodeID: string): void {
     if (!this.engine.nodes.has(nodeID)) return;
 
     reduxBatchUndo.start();
@@ -528,7 +580,7 @@ class NodeManager extends EngineConsumer {
     this.log.debug('location saved', this.log.slug(nodeID));
   }
 
-  updateOrigin(nodeID: string, [moveX, moveY]: Pair<number>) {
+  updateOrigin(nodeID: string, [moveX, moveY]: Pair<number>): void {
     const node = this.engine.nodes.get(nodeID);
 
     if (node) {
@@ -536,7 +588,7 @@ class NodeManager extends EngineConsumer {
     }
   }
 
-  setOrigin(nodeID: string, [x, y]: Point) {
+  setOrigin(nodeID: string, [x, y]: Point): void {
     const node = this.engine.nodes.get(nodeID);
 
     if (node) {
@@ -546,7 +598,7 @@ class NodeManager extends EngineConsumer {
     }
   }
 
-  translateAllLinks(nodeID: string, movement: Pair<number>, { reposition = false }: { reposition?: boolean } = {}) {
+  translateAllLinks(nodeID: string, movement: Pair<number>, { reposition = false }: { reposition?: boolean } = {}): void {
     const node = this.engine.getNodeByID(nodeID);
 
     if (!node) return;
@@ -558,7 +610,7 @@ class NodeManager extends EngineConsumer {
     }
   }
 
-  translateLinks(nodeID: string, movement: Pair<number>, { reposition }: { reposition: boolean }) {
+  translateLinks(nodeID: string, movement: Pair<number>, { reposition }: { reposition: boolean }): void {
     const node = this.engine.getNodeByID(nodeID);
 
     this.engine.getLinkIDsByNodeID(node.id).forEach((linkID) => {
@@ -576,7 +628,7 @@ class NodeManager extends EngineConsumer {
     });
   }
 
-  saveLinks(nodeID: string) {
+  saveLinks(nodeID: string): void {
     const node = this.engine.getNodeByID(nodeID);
     const nodeLinkIDs = this.engine.getLinkIDsByNodeID(nodeID);
     const combinedNodes = node.combinedNodes.flatMap((childNodeID) => this.engine.getLinkIDsByNodeID(childNodeID));
@@ -585,7 +637,7 @@ class NodeManager extends EngineConsumer {
     this.engine.link.savePointsMany(linkIDs);
   }
 
-  translateAllThreads(nodeID: string, movement: Pair<number>) {
+  translateAllThreads(nodeID: string, movement: Pair<number>): void {
     const node = this.engine.getNodeByID(nodeID);
 
     if (!node) return;
@@ -593,14 +645,14 @@ class NodeManager extends EngineConsumer {
     [nodeID, ...node.combinedNodes].forEach((combinedNodeID) => this.translateThreads(combinedNodeID, movement));
   }
 
-  translateThreads(nodeID: string, movement: Pair<number>) {
+  translateThreads(nodeID: string, movement: Pair<number>): void {
     if (this.engine.comment.isActive) {
       const movementVector = this.engine.canvas!.toVector(movement);
       this.engine.getThreadIDsByNodeID(nodeID).forEach((threadID) => this.engine.comment.translateThread(threadID, movementVector));
     }
   }
 
-  async drag(nodeID: string, movement: Pair<number>) {
+  async drag(nodeID: string, movement: Pair<number>): Promise<void> {
     if (this.engine.selection.isOneOfManyTargets(nodeID)) {
       const targets = this.engine.selection.getTargets();
 
@@ -621,7 +673,7 @@ class NodeManager extends EngineConsumer {
     }
   }
 
-  async drop() {
+  async drop(): Promise<void> {
     this.engine.saveActiveLocations();
     this.engine.saveHistory();
 
@@ -629,7 +681,7 @@ class NodeManager extends EngineConsumer {
     this.engine.transformation.reinitialize();
   }
 
-  center(nodeID: string, animate = true) {
+  center(nodeID: string, animate = true): void {
     const node = this.engine.getNodeByID(nodeID);
     const center = this.api(nodeID)?.instance?.getCenterPoint();
 
@@ -640,15 +692,15 @@ class NodeManager extends EngineConsumer {
     this.log.info('centered canvas on node', this.log.slug(nodeID));
   }
 
-  rename(nodeID: string) {
+  rename(nodeID: string): void {
     return this.api(nodeID)?.instance?.rename();
   }
 
-  redraw(nodeID: string) {
+  redraw(nodeID: string): void {
     this.engine.dispatcher.redrawNode(nodeID);
   }
 
-  redrawLinks(nodeID: string) {
+  redrawLinks(nodeID: string): void {
     const node = this.engine.getNodeByID(nodeID);
 
     if (!node) return;
@@ -661,17 +713,17 @@ class NodeManager extends EngineConsumer {
     }
   }
 
-  redrawNestedLinks(parentNodeID: string) {
+  redrawNestedLinks(parentNodeID: string): void {
     const node = this.engine.getNodeByID(parentNodeID);
 
     node?.combinedNodes.forEach((nodeID) => this.redrawLinks(nodeID));
   }
 
-  redrawThreads(nodeID: string) {
+  redrawThreads(nodeID: string): void {
     this.engine.getThreadIDsByNodeID(nodeID).forEach((threadID) => this.engine.comment.redrawThread(threadID));
   }
 
-  redrawNestedThreads(nodeID: string) {
+  redrawNestedThreads(nodeID: string): void {
     const node = this.engine.getNodeByID(nodeID);
 
     if (!node) return;
@@ -679,7 +731,7 @@ class NodeManager extends EngineConsumer {
     [nodeID, ...node.combinedNodes].forEach((childNodeID) => this.redrawThreads(childNodeID));
   }
 
-  updateBlockColor(nodeID: string, color: BlockVariant) {
+  updateBlockColor(nodeID: string, color: BlockVariant): Promise<void> {
     return this.updateData(nodeID, { blockColor: color });
   }
 }

@@ -1,3 +1,4 @@
+import { usePersistFunction } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
@@ -8,14 +9,28 @@ import { DragContextPreviewProps } from '@/contexts';
 
 import { DnDHandlers, DnDItem, InternalItem } from './types';
 
+interface CollectedProps {
+  isDragging: boolean;
+  isDraggingXEnabled: boolean;
+}
+
+interface Options {
+  partialDrag?: boolean;
+  unmountableDuringDrag?: boolean;
+  disableReorderingWhileDraggingX?: boolean;
+}
+
+const dragItemsMap = new Map<string, (value: boolean) => void>();
+
 const useDragAndDrop = <I extends { id: string } | any>(
   type: string,
   handlers: { current: DnDHandlers<I> },
   props: Omit<InternalItem<I>, 'type'>,
-  { partialDrag, unmountableDuringDrag }: { partialDrag?: boolean; unmountableDuringDrag?: boolean }
-): [boolean, React.RefObject<HTMLElement>, React.RefObject<HTMLElement>] => {
+  { partialDrag, unmountableDuringDrag, disableReorderingWhileDraggingX }: Options
+): [CollectedProps, React.RefObject<HTMLElement>, React.RefObject<HTMLElement>] => {
   const rootRef = React.useRef<HTMLElement>(null);
   const dragRef = React.useRef<HTMLElement>(null);
+  const [isDraggingXEnabled, setIsDraggingXEnabled] = React.useState(false);
   const cacheRef = React.useRef<{ id: string; styles: { width?: number; height?: number } }>({ id: '', styles: {} });
 
   cacheRef.current.id = (props.item as any).id ?? props.item;
@@ -26,7 +41,7 @@ const useDragAndDrop = <I extends { id: string } | any>(
     hover: _throttle((item: DnDItem<I>, monitor: DropTargetMonitor) => {
       item.deleteHovered = false;
 
-      if (!rootRef.current || !handlers.current.onReorder) {
+      if (!rootRef.current || !handlers.current.onReorder || (disableReorderingWhileDraggingX && item.isDraggingXEnabled)) {
         return;
       }
 
@@ -61,8 +76,10 @@ const useDragAndDrop = <I extends { id: string } | any>(
     }, HOVER_THROTTLE_TIMEOUT),
   });
 
+  const persistedSetIsDraggingXEnabled = usePersistFunction((value: boolean) => dragItemsMap.get(cacheRef.current.id)?.(value));
+
   const [{ isDragging }, connectDrag, connectPreview] = useDrag<
-    DnDItem<I> & { getStyle: DragContextPreviewProps['getStyle'] },
+    DnDItem<I> & { getStyle: DragContextPreviewProps['getStyle']; setIsDraggingXEnabled: (value: boolean) => void },
     void,
     { isDragging: boolean }
   >({
@@ -79,17 +96,34 @@ const useDragAndDrop = <I extends { id: string } | any>(
 
         return cacheRef.current.styles;
       },
+      setIsDraggingXEnabled: persistedSetIsDraggingXEnabled,
     },
-    end: (result, monitor) => handlers.current.onDragEnd?.(result as void, monitor),
-    begin: (monitor) => handlers.current.onDragStart?.(monitor),
+    end: (_result, monitor) => handlers.current.onDragEnd?.(props.item as I, monitor),
+    begin: (monitor) => handlers.current.onDragStart?.(props.item as I, monitor),
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     canDrag: handlers.current.canDrag,
-    isDragging: unmountableDuringDrag ? (monitor) => cacheRef.current.id === (monitor.getItem().item.id ?? monitor.getItem().item) : undefined,
+    options: { dropEffect: 'move' },
+    isDragging: unmountableDuringDrag
+      ? (monitor) => {
+          const item = monitor.getItem();
+
+          return cacheRef.current.id === (item.item.id ?? item.item);
+        }
+      : undefined,
   });
 
   React.useEffect(() => {
     connectPreview(getEmptyImage(), { captureDraggingState: true });
   }, []);
+
+  // since the items can be unmounted, we should somehow map the preview with the remounted item
+  React.useEffect(() => {
+    dragItemsMap.set(cacheRef.current.id, setIsDraggingXEnabled);
+
+    return () => {
+      dragItemsMap.delete(cacheRef.current.id);
+    };
+  }, [cacheRef.current.id]);
 
   React.useEffect(
     () => () => {
@@ -102,7 +136,7 @@ const useDragAndDrop = <I extends { id: string } | any>(
   const connectedRootRef = partialDrag ? connectDrop(rootRef) : connectDrag(connectDrop(rootRef));
   const connectedDragRef = partialDrag ? connectDrag(dragRef) : null;
 
-  return [isDragging, connectedRootRef as any, connectedDragRef as any];
+  return [{ isDragging, isDraggingXEnabled }, connectedRootRef as any, connectedDragRef as any];
 };
 
 export default useDragAndDrop;

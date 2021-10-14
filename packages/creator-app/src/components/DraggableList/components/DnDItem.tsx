@@ -43,6 +43,7 @@ export type DnDItemProps<I> = InternalItem<I> & {
   withContextMenuDelete?: boolean;
   unmountableDuringDrag?: boolean;
   withContextMenuDuplicate?: boolean;
+  disableReorderingWhileDraggingX?: boolean;
 } & (ItemComponentHandlers<I> | MappedItemComponentHandlers<I>);
 
 const DnDItem = <P extends DnDItemProps<any>>({
@@ -54,9 +55,14 @@ const DnDItem = <P extends DnDItemProps<any>>({
   withContextMenuDelete,
   unmountableDuringDrag,
   withContextMenuDuplicate,
+  disableReorderingWhileDraggingX,
   ...props
 }: P) => {
-  const [isDragging, connectedRootRef, connectedDragRef] = useDragAndDrop(type, handlers, props, { partialDrag, unmountableDuringDrag });
+  const [{ isDragging, isDraggingXEnabled }, connectedRootRef, connectedDragRef] = useDragAndDrop(type, handlers, props, {
+    partialDrag,
+    unmountableDuringDrag,
+    disableReorderingWhileDraggingX,
+  });
 
   const menuOptions = React.useMemo(() => {
     const options = [];
@@ -82,6 +88,8 @@ const DnDItem = <P extends DnDItemProps<any>>({
     style: { opacity: isDragging ? 0 : 1 },
     isDragging,
     connectedDragRef,
+    isDraggingXEnabled,
+    disableReorderingWhileDraggingX,
   } as ItemComponentProps<any> & (ItemComponentHandlers<any> | MappedItemComponentHandlers<any>);
 
   if (menuOptions.length) {

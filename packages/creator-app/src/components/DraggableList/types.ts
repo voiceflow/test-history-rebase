@@ -6,7 +6,9 @@ export interface InternalItem<I> {
   item: I;
   index: number;
   itemKey: string;
+  isDragActive?: boolean;
   deleteHovered?: boolean;
+  isDraggingXEnabled?: boolean;
 }
 
 export type DnDItem<I extends { id: string } | any> = Omit<InternalItem<I>, 'type'> & { type: string | symbol };
@@ -14,9 +16,9 @@ export type DnDItem<I extends { id: string } | any> = Omit<InternalItem<I>, 'typ
 export interface DnDHandlers<I> {
   onDrop?: (item: DnDItem<I>, monitor: DropTargetMonitor) => void;
   canDrag?: boolean | ((monitor: DragSourceMonitor) => boolean);
-  onDragEnd?: (result: void, monitor: DragSourceMonitor) => void;
+  onDragEnd?: (item: I, monitor: DragSourceMonitor) => void;
   onReorder?: (from: number, to: number) => void;
-  onDragStart?: (monitor: DragSourceMonitor) => void;
+  onDragStart?: (item: I, monitor: DragSourceMonitor) => void;
   onDeleteDrop?: (item: DnDItem<I>, monitor?: DropTargetMonitor) => void;
 
   deleteHovered?: boolean;

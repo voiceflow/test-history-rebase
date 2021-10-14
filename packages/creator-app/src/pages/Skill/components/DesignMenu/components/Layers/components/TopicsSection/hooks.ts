@@ -6,7 +6,7 @@ import * as IntentDuck from '@/ducks/intent';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
-import { useDispatch, useLocalStorageState, useRAF, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import { Intent } from '@/models';
 import { TopicsContext } from '@/pages/Skill/components/DesignMenu/TopicsContext';
 import { Nullable } from '@/types';
@@ -128,54 +128,5 @@ export const useTopics = (): TopicsAPI => {
     searchOpenedTopics,
     lastCreatedDiagramID,
     onClearLastCreatedDiagramID,
-  };
-};
-
-interface TopicsToggleApi {
-  onDragEnd: VoidFunction;
-  isDragging: boolean;
-  onDragStart: VoidFunction;
-  openedTopics: Record<string, boolean>;
-  onToggleTopicOpen: (topicID: string) => void;
-}
-
-export const useTopicsToggle = (): TopicsToggleApi => {
-  const activeProjectID = useSelector(Session.activeProjectIDSelector);
-
-  const [isDragging, setIsDragging] = React.useState(false);
-  const [openedTopics, setOpenedTopics] = useLocalStorageState<Record<string, boolean>>(`dm-opened-topics.${activeProjectID}`, {});
-
-  const [scheduler, schedulerApi] = useRAF();
-  const openedTopicsCache = React.useRef(openedTopics);
-
-  const onDragEnd = React.useCallback(() => {
-    schedulerApi.current.cancel();
-
-    setIsDragging(false);
-    setOpenedTopics({ ...openedTopicsCache.current });
-  }, [openedTopics]);
-
-  const onDragStart = React.useCallback(() => {
-    openedTopicsCache.current = openedTopics;
-
-    scheduler(() => {
-      setIsDragging(true);
-      setOpenedTopics({});
-    });
-  }, [openedTopics]);
-
-  const onToggleTopicOpen = React.useCallback(
-    (topicID: string) => {
-      setOpenedTopics({ ...openedTopics, [topicID]: !openedTopics[topicID] });
-    },
-    [openedTopics]
-  );
-
-  return {
-    onDragEnd,
-    isDragging,
-    onDragStart,
-    openedTopics,
-    onToggleTopicOpen,
   };
 };

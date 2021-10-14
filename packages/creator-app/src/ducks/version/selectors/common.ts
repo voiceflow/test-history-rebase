@@ -32,6 +32,10 @@ export const activePublishingSelector = createSelector([activeVersionSelector], 
 
 export const activeTopicsSelector = createSelector([activeVersionSelector], (version) => version?.topics ?? []);
 
+export const activeFoldersSelector = createSelector([activeVersionSelector], (version) => version?.folders ?? {});
+
+export const activeComponentsSelector = createSelector([activeVersionSelector], (version) => version?.components ?? []);
+
 export const activeCanvasNodeVisibilitySelector = createSelector(
   [activeSettingsSelector],
   (settings) => settings?.defaultCanvasNodeVisibility ?? null

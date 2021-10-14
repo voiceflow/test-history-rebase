@@ -14,12 +14,14 @@ export interface VirtualListProps {
   header?: React.ReactNode;
   listRef?: React.Ref<List>;
   rowHeight?: number | ((index: Index) => number);
+  listStyle?: React.CSSProperties;
   className?: string;
   renderItem: (index: number) => React.ReactNode;
+  renderPlaceholder?: (props: { width: number; height: number }) => React.ReactNode;
 }
 
 const VirtualList: React.ForwardRefRenderFunction<Scrollbars, VirtualListProps> = (
-  { id, size, header, listRef, className, rowHeight = 42, renderItem },
+  { id, size, header, listRef, className, rowHeight = 42, listStyle, renderItem, renderPlaceholder },
   ref
 ) => {
   const [scrollbars, setCustomScrollBars] = React.useState<Scrollbars | null>(null);
@@ -47,17 +49,22 @@ const VirtualList: React.ForwardRefRenderFunction<Scrollbars, VirtualListProps> 
                   <AutoSizer disableHeight={true}>
                     {({ width }) => (
                       <div id={id} ref={registerChild}>
-                        <List
-                          ref={listRef}
-                          width={width}
-                          height={height}
-                          rowCount={size}
-                          scrollTop={scrollTop}
-                          rowHeight={rowHeight}
-                          autoHeight
-                          rowRenderer={rowRenderer}
-                          isScrolling={isScrolling}
-                        />
+                        {!size && renderPlaceholder ? (
+                          renderPlaceholder({ width, height })
+                        ) : (
+                          <List
+                            ref={listRef}
+                            width={width}
+                            style={listStyle}
+                            height={height}
+                            rowCount={size}
+                            scrollTop={scrollTop}
+                            rowHeight={rowHeight}
+                            autoHeight
+                            rowRenderer={rowRenderer}
+                            isScrolling={isScrolling}
+                          />
+                        )}
                       </div>
                     )}
                   </AutoSizer>

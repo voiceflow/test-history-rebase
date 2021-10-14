@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.517.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.1...@voiceflow/creator-app@1.517.2) (2021-10-14)
+
+
+### Bug Fixes
+
+* share menu ui jank(VF-000) ([#4294](https://github.com/voiceflow/creator-app/issues/4294)) ([9e5d02f](https://github.com/voiceflow/creator-app/commit/9e5d02fa33f2ea8cfa83200acd749d7f78efcc58))
+
+
+
+
+
 ## [1.517.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.0...@voiceflow/creator-app@1.517.1) (2021-10-14)
 
 

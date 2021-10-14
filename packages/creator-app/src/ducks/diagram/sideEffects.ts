@@ -4,6 +4,7 @@ import { Adapters } from '@voiceflow/realtime-sdk';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
+import { RESERVED_JS_WORDS } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
@@ -85,6 +86,9 @@ export const removeLocalVariable =
 export const addLocalVariable =
   (diagramID: string, variable: string): SyncThunk =>
   (dispatch, getState) => {
+    if (RESERVED_JS_WORDS.includes(variable)) {
+      throw new Error(`Reserved word. You can prefix with '_' to fix this issue`);
+    }
     const variables = localVariablesByDiagramIDSelector(getState())(diagramID);
 
     dispatch(replaceLocalVariables(diagramID, unique(append(variables, variable))));

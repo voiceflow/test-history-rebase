@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.517.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.0...@voiceflow/creator-app@1.517.1) (2021-10-14)
+
+
+### Bug Fixes
+
+* add export pill for dialogflow projects (VF-1963) ([#4303](https://github.com/voiceflow/creator-app/issues/4303)) ([a9b9246](https://github.com/voiceflow/creator-app/commit/a9b9246c540ed2ba62d57e8e3d550079f198dc62)), closes [#4301](https://github.com/voiceflow/creator-app/issues/4301)
+
+
+
+
+
 # [1.517.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.516.0...@voiceflow/creator-app@1.517.0) (2021-10-14)
 
 

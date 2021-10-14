@@ -1,7 +1,6 @@
 import { Box, Link } from '@voiceflow/ui';
 import React from 'react';
 
-import Divider from '@/components/Divider';
 import { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import Upgrade from '@/components/Upgrade';
 import * as Documentation from '@/config/documentation';
@@ -45,7 +44,7 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
 
   return (
     <ScrollContextProvider value={scrollHelpers}>
-      <Container>
+      <Container style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <MenuContentHeader isScrolling={!!isHeaderSticky}>
           <Header marginBottom={12}>Share Assistant with Testers</Header>
 
@@ -55,7 +54,7 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
           </Description>
         </MenuContentHeader>
 
-        <div ref={bodyRef} style={{ overflowX: 'hidden', overflowY: 'auto', height: '286px' }}>
+        <div ref={bodyRef} style={{ overflowX: 'hidden', overflowY: 'auto', paddingBottom: '50px' }}>
           <Box ref={innerRef} pl={32}>
             <Box>
               <Header secondary marginBottom={12}>
@@ -78,9 +77,12 @@ const MenuContent: React.FC<{ inline?: boolean }> = ({ inline }) => {
             </UncontrolledSection>
           </Box>
           <PrototypePasswordInput isCollapsed={activeModal !== ActiveModal.PASSWORD} onToggleCollapse={onTogglePassword} />
-          <Divider style={{ marginTop: 0, marginBottom: '32px', position: 'relative', top: 0, left: '32px' }} />
         </div>
-        {!canCustomize && <Upgrade>Customize prototype style and branding.</Upgrade>}
+        {!canCustomize && (
+          <Box position="absolute" left={0} right={0} bottom={0}>
+            <Upgrade>Customize prototype style and branding.</Upgrade>
+          </Box>
+        )}
       </Container>
     </ScrollContextProvider>
   );

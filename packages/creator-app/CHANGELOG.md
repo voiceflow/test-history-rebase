@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.517.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.3...@voiceflow/creator-app@1.517.4) (2021-10-14)
+
+
+### Bug Fixes
+
+* setting page layout issues (VF-1961) ([#4311](https://github.com/voiceflow/creator-app/issues/4311)) ([fc75812](https://github.com/voiceflow/creator-app/commit/fc75812f8c072ab077f6b69804502be737f0c6d9))
+
+
+
+
+
 ## [1.517.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.2...@voiceflow/creator-app@1.517.3) (2021-10-14)
 
 

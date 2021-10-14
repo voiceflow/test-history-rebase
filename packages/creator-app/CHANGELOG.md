@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.517.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.2...@voiceflow/creator-app@1.517.3) (2021-10-14)
+
+
+### Bug Fixes
+
+* **deps:** update voiceflow dependencies ([#4277](https://github.com/voiceflow/creator-app/issues/4277)) ([05a728f](https://github.com/voiceflow/creator-app/commit/05a728f7edebc6259f698bdefbcd6829f88431a8))
+* infinity project creation (VF-1005) ([#4312](https://github.com/voiceflow/creator-app/issues/4312)) ([45f7d27](https://github.com/voiceflow/creator-app/commit/45f7d271300a633a403e8c05abecc9173cdbeba0))
+* throw toast on new var reserved name (VF-000) ([#4298](https://github.com/voiceflow/creator-app/issues/4298)) ([8193b1f](https://github.com/voiceflow/creator-app/commit/8193b1f8ebf317227aa1811753f6df1e72e6f03d))
+
+
+
+
+
 ## [1.517.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.1...@voiceflow/creator-app@1.517.2) (2021-10-14)
 
 

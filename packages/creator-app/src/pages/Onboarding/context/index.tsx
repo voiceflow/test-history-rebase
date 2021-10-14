@@ -4,10 +4,12 @@ import { ButtonVariant, toast } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
 import { useDispatch as useReduxDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
+import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
@@ -475,7 +477,11 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     },
   };
 
-  return <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
+  return isLoginFlow && !sendingRequests && workspaces.length ? (
+    <Redirect to={Path.DASHBOARD} />
+  ) : (
+    <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>
+  );
 };
 
 export const OnboardingProvider = withStripe(UnconnectedOnboardingProvider) as React.FC<Omit<OnboardingProviderProps, 'stripe' | 'checkChargeable'>>;

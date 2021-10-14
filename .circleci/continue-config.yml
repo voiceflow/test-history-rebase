@@ -60,7 +60,7 @@ parameters:
     default: false
 
 orbs:
-  vfcommon: voiceflow/common@0.0.213
+  vfcommon: voiceflow/common@0.0.228
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 
@@ -222,13 +222,11 @@ jobs:
                   cp yarn.lock packages/realtime
                 working_directory: ~/voiceflow
             - persist_to_workspace:
-                root: ~/voiceflow/packages/realtime
+                root: ~/voiceflow
                 paths:
-                  - build
-                  - Dockerfile
-                  - config
-                  - package.json
-                  - yarn.lock
+                  - packages/realtime-sdk/build
+                  - packages/realtime/build
+                  - packages/realtime/yarn.lock
 
   build-admin:
     parameters:
@@ -442,6 +440,7 @@ jobs:
         default: false
     executor: vfcommon/build-executor
     steps:
+      - run: echo 'checking if track exists...'
       - when:
           condition:
             or:
@@ -526,6 +525,10 @@ jobs:
         description: force to update the build, if there is a change or not. This is for tracks
         type: boolean
         default: false
+      local_registry:
+        description: use a local repository proxy to publish a development version of all library packages
+        type: boolean
+        default: false
     executor: vfcommon/build-executor
     steps:
       - when:
@@ -543,10 +546,14 @@ jobs:
                 steps:
                   - vfcommon/stop_if_no_changes:
                       package: realtime
+
             - vfcommon/update_track:
                 image_repo: << pipeline.parameters.container-image-url-realtime >>
                 component: << pipeline.parameters.track-component-realtime >>
-                dockerfile: Dockerfile
+                dockerfile: <<# parameters.local_registry >> packages/realtime/Dockerfile <</ parameters.local_registry >><<^ parameters.local_registry >> Dockerfile <</ parameters.local_registry >>
+                build_context: <<# parameters.local_registry >> packages/realtime <</ parameters.local_registry >><<^ parameters.local_registry >> . <</ parameters.local_registry >>
+                local_registry: << parameters.local_registry >>
+                checkout: false
 
 workflows:
   update-creator-app-track:
@@ -679,6 +686,7 @@ workflows:
       - update-track-realtime:
           context: dev-test
           force_execute: true
+          local_registry: true
           requires:
             - check-track-realtime-exists
             - build-realtime-track

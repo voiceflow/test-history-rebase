@@ -19,9 +19,9 @@ RUN apk --no-cache add git dumb-init
 WORKDIR /usr/src/app
 COPY ./ ./
 
-RUN echo "registry \"${REGISTRY_URL}\"" > .yarnrc && \
-  echo $NPM_TOKEN > .npmrc && \
-  yarn install --production && \
+RUN echo $NPM_TOKEN > .npmrc && \
+  yarn install --registry $REGISTRY_URL --production && \
+  sed -i -e "s#https://registry.yarnpkg.com#${REGISTRY_URL}#g" yarn.lock && \
   rm -f .npmrc && \
   yarn cache clean
 

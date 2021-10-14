@@ -2,24 +2,26 @@
 import * as Voiceflow from '@voiceflow/api-sdk';
 
 import ExtraDiagramClient, { DiagramClient } from './diagram';
-import ExtraProjectClient, { ProjectClient } from './project';
+import ExtraProductClient, { ProductClient } from './product';
+import ExtraProjectClient from './project';
 import ExtraProjectListClient, { ProjectListClient } from './projectList';
 import { ExtraOptions, Options } from './types';
 import ExtraUserClient, { UserClient } from './user';
-import ExtraVersionClient, { VersionClient } from './version';
+import ExtraVersionClient from './version';
 import ExtraWorkspaceClient, { WorkspaceClient } from './workspace';
 
 interface ExtraClient {
   workspace: WorkspaceClient;
   projectList: ProjectListClient;
+  product: ProductClient;
 }
 
 export interface Client extends Voiceflow.Client, ExtraClient {
   user: Voiceflow.Client['user'] & UserClient;
 
-  project: Voiceflow.Client['project'] & ProjectClient;
+  project: Voiceflow.Client['project'] & ReturnType<typeof ExtraProjectClient>;
 
-  version: Voiceflow.Client['version'] & VersionClient;
+  version: Voiceflow.Client['version'] & ReturnType<typeof ExtraVersionClient>;
 
   diagram: Voiceflow.Client['diagram'] & DiagramClient;
 }
@@ -33,14 +35,18 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
   const voiceflow = new Voiceflow.default.default({ clientKey: 'realtime', apiEndpoint: `${config.CREATOR_API_ENDPOINT}/v2` });
 
   return (token: string) => {
-    const client = voiceflow.generateClient({ authorization: token });
-    const axiosClient = axios.create({ baseURL: config.CREATOR_API_ENDPOINT, headers: { authorization: token } });
+    const client: Voiceflow.Client = voiceflow.generateClient({ authorization: token });
+    const api = axios.create({ baseURL: config.CREATOR_API_ENDPOINT, headers: { authorization: token } });
+    const alexa = axios.create({ baseURL: config.ALEXA_SERVICE_ENDPOINT, headers: { authorization: token } });
+    const google = axios.create({ baseURL: config.GOOGLE_SERVICE_ENDPOINT, headers: { authorization: token } });
+    const general = axios.create({ baseURL: config.GENERAL_SERVICE_ENDPOINT, headers: { authorization: token } });
 
-    const extraOptions: ExtraOptions = { config, axiosClient };
+    const extraOptions: ExtraOptions = { config, api, alexa, google, general };
 
     const extraClient: ExtraClient = {
       workspace: ExtraWorkspaceClient(extraOptions),
       projectList: ExtraProjectListClient(extraOptions),
+      product: ExtraProductClient(extraOptions),
     };
 
     Object.assign(client, extraClient);

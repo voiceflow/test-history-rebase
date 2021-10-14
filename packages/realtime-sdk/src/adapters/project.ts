@@ -7,6 +7,7 @@ import { AdapterNotImplementedError, createAdapter } from './utils';
 const projectAdapter = createAdapter<DBProject, AnyProject>(
   ({
     _id,
+    teamID,
     name,
     devVersion,
     platform,
@@ -27,6 +28,7 @@ const projectAdapter = createAdapter<DBProject, AnyProject>(
     platform: platform as Constants.PlatformType,
     diagramID: '',
     versionID: devVersion!,
+    workspaceID: teamID,
     image,
     privacy,
     linkType,

@@ -1,3 +1,5 @@
+import { BaseDiagramNode, Diagram } from '@voiceflow/api-sdk';
+
 import { AbstractControl } from '../control';
 
 class DiagramService extends AbstractControl {
@@ -16,7 +18,7 @@ class DiagramService extends AbstractControl {
 
   private connectedNodesCache = this.clients.cache.createSet({ keyCreator: DiagramService.getConnectedNodesKey });
 
-  public async canRead(diagramID: string, creatorID: number): Promise<boolean> {
+  public async canRead(creatorID: number, diagramID: string): Promise<boolean> {
     const cachedCanRead = await this.canReadCache.get({ diagramID, creatorID });
 
     if (cachedCanRead !== null) {
@@ -45,6 +47,36 @@ class DiagramService extends AbstractControl {
 
   public async getConnectedNodesSize(diagramID: string): Promise<number> {
     return this.connectedNodesCache.size({ diagramID });
+  }
+
+  public async get<T extends BaseDiagramNode>(creatorID: number, diagramID: string): Promise<Diagram<T>> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    return client.diagram.get(diagramID);
+  }
+
+  public async getAll<T extends BaseDiagramNode>(creatorID: number, versionID: string): Promise<Diagram<T>[]> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    return client.version.getDiagrams(versionID);
+  }
+
+  public async create<T extends BaseDiagramNode>(creatorID: number, data: Omit<Diagram<T>, '_id'>): Promise<Diagram<T>> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    return client.diagram.create(data);
+  }
+
+  public async patch<T extends BaseDiagramNode>(creatorID: number, diagramID: string, { _id, ...data }: Partial<Diagram<T>>): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.diagram.patch(diagramID, data);
+  }
+
+  public async delete(creatorID: number, diagramID: string): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.diagram.delete(diagramID);
   }
 }
 

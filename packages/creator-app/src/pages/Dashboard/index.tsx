@@ -85,7 +85,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ location }) => {
   const goToNewProject = useDispatch(Router.goToNewProject);
   const goToNewIntroProject = useDispatch(Router.goToNewIntroProject);
   const clearSearch = useDispatch(Router.clearSearch);
-  const moveProjectList = useSyncDispatch(Realtime.projectList.crudActions.move);
+  const moveProjectList = useSyncDispatch(Realtime.projectList.crud.move);
   const transplantProjectBetweenLists = useSyncDispatch(Realtime.projectList.transplantProjectBetweenLists);
   const saveRealtimeProjectLists = useDispatch(ProjectList.saveRealtimeProjectListsForActiveWorkspace);
 

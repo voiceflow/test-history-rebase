@@ -10,7 +10,7 @@ export abstract class AbstractNodeActionControl<
   D extends object = {}
 > extends AbstractActionControl<P, D> {
   protected access = (ctx: Context<D>, action: Action<P>): Promise<boolean> =>
-    this.services.diagram.canRead(action.payload.diagramID, Number(ctx.userId));
+    this.services.diagram.canRead(Number(ctx.userId), action.payload.diagramID);
 }
 
 export abstract class AbstractResendNodeActionControl<
@@ -18,7 +18,7 @@ export abstract class AbstractResendNodeActionControl<
   D extends object = {}
 > extends AbstractNodeActionControl<P, D> {
   protected resend = (_: Context<D>, action: Action<P>): Resend => ({
-    channel: Realtime.Channels.diagram({
+    channel: Realtime.Channels.diagram.build({
       diagramID: action.payload.diagramID,
       projectID: action.payload.projectID,
       workspaceID: action.payload.workspaceID,

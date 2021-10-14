@@ -1,3 +1,5 @@
+import { ActionCreator } from 'typescript-fsa';
+
 export type { Normalized, NormalizedValue, Nullable, Nullish, WithOptional, WithRequired } from '@voiceflow/common';
 
 export interface Viewer {
@@ -18,6 +20,8 @@ export interface PathPoint {
 
 export type PathPoints = PathPoint[];
 
+export type ActionPayload<T extends ActionCreator<any>> = ReturnType<T>['payload'];
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BaseCreatorPayload {}
 
@@ -29,7 +33,11 @@ export interface BaseProjectPayload extends BaseWorkspacePayload {
   projectID: string;
 }
 
-export interface BaseDiagramPayload extends BaseProjectPayload {
+export interface BaseVersionPayload extends BaseProjectPayload {
+  versionID: string;
+}
+
+export interface BaseDiagramPayload extends BaseVersionPayload {
   diagramID: string;
 }
 

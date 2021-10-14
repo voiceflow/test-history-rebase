@@ -25,6 +25,7 @@ export default extendConfig(
         'process.env.VF_OVERRIDE_GENERAL_SERVICE_ENDPOINT': JSON.stringify(process.env.VF_OVERRIDE_GENERAL_SERVICE_ENDPOINT || ''),
         'process.env.VF_OVERRIDE_GENERAL_RUNTIME_ENDPOINT': JSON.stringify(process.env.VF_OVERRIDE_GENERAL_RUNTIME_ENDPOINT || ''),
         'process.env.VF_OVERRIDE_CANVAS_EXPORT_ENDPOINT': JSON.stringify(process.env.VF_OVERRIDE_CANVAS_EXPORT_ENDPOINT || ''),
+        'process.env.VF_OVERRIDE_REALTIME_ENDPOINT': JSON.stringify(process.env.VF_OVERRIDE_REALTIME_ENDPOINT || ''),
       }),
     ],
 

@@ -1,14 +1,10 @@
 import { Project as AlexaProject } from '@voiceflow/alexa-types';
 import { DiagramType, VersionFolderItemType } from '@voiceflow/api-sdk';
 import { Constants } from '@voiceflow/general-types';
-import { Adapters } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { batch } from 'react-redux';
 
 import client from '@/client';
-import projectAdapter, { AnyProjectData, AnyProjectMemberData, productAdapter } from '@/client/adapters/project';
-import slotAdapter from '@/client/adapters/slot';
-import versionAdapter, { AnyDBVersion } from '@/client/adapters/version';
-import createSessionAdapter from '@/client/adapters/version/session';
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
@@ -43,8 +39,8 @@ export const loadVersionByID =
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);
 
-    const dbVersion = (await client.api.version.get(versionID)) as AnyDBVersion;
-    const version = versionAdapter.fromDB(dbVersion, { platform });
+    const dbVersion = (await client.api.version.get(versionID)) as Realtime.AnyDBVersion;
+    const version = Realtime.Adapters.versionAdapter.fromDB(dbVersion, { platform });
 
     dispatch(addVersion(version.id, version));
 
@@ -59,7 +55,7 @@ export const activateVersion =
     const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
     const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
 
-    const dbVersion = await client.api.version.get<AnyDBVersion>(versionID);
+    const dbVersion = await client.api.version.get<Realtime.AnyDBVersion>(versionID);
 
     const diagrams = await dispatch(Diagram.loadDiagrams(versionID, dbVersion.rootDiagramID));
 
@@ -77,18 +73,18 @@ export const activateVersion =
     // not a dependency for project to load
     dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));
 
-    const dbProject = await client.api.project.get<AnyProjectData, AnyProjectMemberData>(dbVersion.projectID);
+    const dbProject = await client.api.project.get<Realtime.AnyProjectData, Realtime.AnyProjectMemberData>(dbVersion.projectID);
 
     const platform = dbProject.platform as Constants.PlatformType;
 
-    const project = projectAdapter.fromDB(dbProject);
-    const version = versionAdapter.fromDB(dbVersion, { platform });
-    const slots = slotAdapter.mapFromDB(dbVersion.platformData.slots);
-    const intents = Adapters.getPlatformIntentAdapter<any>(platform).mapFromDB(dbVersion.platformData.intents, { platform });
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject);
+    const version = Realtime.Adapters.versionAdapter.fromDB(dbVersion, { platform });
+    const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbVersion.platformData.slots);
+    const intents = Realtime.Adapters.getPlatformIntentAdapter<any>(platform).mapFromDB(dbVersion.platformData.intents, { platform });
 
     const products =
       'products' in dbProject.platformData
-        ? productAdapter.mapFromDB(Object.values((dbProject.platformData as AlexaProject.AlexaProjectData).products))
+        ? Realtime.Adapters.productAdapter.mapFromDB(Object.values((dbProject.platformData as AlexaProject.AlexaProjectData).products))
         : [];
 
     batch(() => {
@@ -196,8 +192,8 @@ export const saveIntentsAndSlots = (): Thunk => async (_, getState) => {
 
   Errors.assertVersionID(versionID);
 
-  const slots = slotAdapter.mapToDB(Slot.allSlotsSelector(state));
-  const intents = Adapters.getPlatformIntentAdapter(platform).mapToDB(
+  const slots = Realtime.Adapters.slotAdapter.mapToDB(Slot.allSlotsSelector(state));
+  const intents = Realtime.Adapters.getPlatformIntentAdapter(platform).mapToDB(
     Intent.allIntentsSelector(state) as any /* TODO: find a way to fix this typing, update adapters */
   );
 
@@ -234,7 +230,7 @@ export const saveSession =
     dispatch(updateSessionByVersionID(versionID, session));
 
     await client.platform(platform).version.updateSettings(versionID, {
-      session: createSessionAdapter({ platform }).toDB({ ...activeSession, ...session }, { defaultVoice }) as any,
+      session: Realtime.Adapters.createSessionAdapter({ platform }).toDB({ ...activeSession, ...session }, { defaultVoice }) as any,
     });
   };
 

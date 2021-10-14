@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractLinkActionControl } from './utils';
 
-class AddLinkActionControl extends AbstractLinkActionControl<Realtime.link.AddPayload> {
+class AddLink extends AbstractLinkActionControl<Realtime.link.AddPayload> {
   actionCreator = Realtime.link.add;
 
   process = async (): Promise<void> => {
@@ -10,4 +10,4 @@ class AddLinkActionControl extends AbstractLinkActionControl<Realtime.link.AddPa
   };
 }
 
-export default AddLinkActionControl;
+export default AddLink;

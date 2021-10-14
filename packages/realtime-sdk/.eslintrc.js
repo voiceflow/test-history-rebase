@@ -5,7 +5,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       typescript: {
-        project: path.resolve(__dirname, 'tsconfig.json'),
+        project: path.resolve(__dirname, 'tsconfig.test.json'),
       },
     },
   },

@@ -14,6 +14,7 @@ export const {
   normalize,
   denormalize,
   getNormalizedByKey,
+  safeGetNormalizedByKey,
   getAllNormalizedByKeys,
   updateNormalizedByKey,
   patchNormalizedByKey,

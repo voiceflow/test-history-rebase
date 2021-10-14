@@ -1,59 +1,39 @@
 import { LoguxControlOptions } from '../../control';
-import PatchWorkspaceControl from './patch';
+import CreateWorkspaceControl from './create';
+import LeaveWorkspaceControl from './leave';
 import {
-  AddProjectControl,
-  ImportProjectFromFileControl,
-  PatchProjectControl,
-  RemoveManyProjectsControl,
-  RemoveProjectControl,
-  ReplaceProjectsControl,
-} from './project';
-import {
-  AddProjectListControl,
-  MoveProjectListControl,
-  PatchProjectListControl,
-  RemoveProjectListControl,
-  ReplaceProjectListsControl,
-  TransplantProjectBetweenListsControl,
-} from './projectList';
+  AcceptInviteControl,
+  AddMemberControl,
+  CancelInviteControl,
+  EjectMemberControl,
+  RemoveWorkspaceMemberControl,
+  ReplaceWorkspaceMembersControl,
+  SendInviteControl,
+  UpdateInviteControl,
+} from './member';
 import RemoveWorkspaceControl from './remove';
+import UpdateWorkspaceImageControl from './updateImage';
+import UpdateWorkspaceNameControl from './updateName';
 
-export interface WorkspaceActionControlMap {
-  patchWorkspaceControl: PatchWorkspaceControl;
-  removeWorkspaceControl: RemoveWorkspaceControl;
-
-  addProjectControl: AddProjectControl;
-  patchProjectControl: PatchProjectControl;
-  removeProjectControl: RemoveProjectControl;
-  replaceProjectsControl: ReplaceProjectsControl;
-  removeManyProjectsControl: RemoveManyProjectsControl;
-  importProjectFromFileControl: ImportProjectFromFileControl;
-
-  addProjectListControl: AddProjectListControl;
-  moveProjectListControl: MoveProjectListControl;
-  patchProjectListControl: PatchProjectListControl;
-  removeProjectListControl: RemoveProjectListControl;
-  replaceProjectListsControl: ReplaceProjectListsControl;
-  transplantProjectBetweenListsControl: TransplantProjectBetweenListsControl;
-}
-
-const buildWorkspaceActionControls = (options: LoguxControlOptions): WorkspaceActionControlMap => ({
-  patchWorkspaceControl: new PatchWorkspaceControl(options),
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
+  createWorkspaceControl: new CreateWorkspaceControl(options),
+  leaveWorkspaceControl: new LeaveWorkspaceControl(options),
   removeWorkspaceControl: new RemoveWorkspaceControl(options),
+  updateWorkspaceImageControl: new UpdateWorkspaceImageControl(options),
+  updateWorkspaceNameControl: new UpdateWorkspaceNameControl(options),
 
-  addProjectControl: new AddProjectControl(options),
-  patchProjectControl: new PatchProjectControl(options),
-  removeProjectControl: new RemoveProjectControl(options),
-  replaceProjectsControl: new ReplaceProjectsControl(options),
-  removeManyProjectsControl: new RemoveManyProjectsControl(options),
-  importProjectFromFileControl: new ImportProjectFromFileControl(options),
-
-  addProjectListControl: new AddProjectListControl(options),
-  moveProjectListControl: new MoveProjectListControl(options),
-  patchProjectListControl: new PatchProjectListControl(options),
-  removeProjectListControl: new RemoveProjectListControl(options),
-  replaceProjectListsControl: new ReplaceProjectListsControl(options),
-  transplantProjectBetweenListsControl: new TransplantProjectBetweenListsControl(options),
+  // workspace member
+  acceptInviteControl: new AcceptInviteControl(options),
+  addMemberControl: new AddMemberControl(options),
+  cancelInviteControl: new CancelInviteControl(options),
+  ejectMemberControl: new EjectMemberControl(options),
+  removeWorkspaceMemberControl: new RemoveWorkspaceMemberControl(options),
+  replaceWorkspaceMembersControl: new ReplaceWorkspaceMembersControl(options),
+  sendInviteControl: new SendInviteControl(options),
+  updateInviteControl: new UpdateInviteControl(options),
 });
 
 export default buildWorkspaceActionControls;
+
+export type WorkspaceActionControlMap = ReturnType<typeof buildWorkspaceActionControls>;

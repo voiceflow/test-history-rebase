@@ -1,9 +1,17 @@
+import { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Action } from 'typescript-fsa';
 
-import { AbstractNoopWorkspaceActionControl } from './utils';
+import { AbstractWorkspaceChannelControl } from './utils';
 
-class RemoveWorkspace extends AbstractNoopWorkspaceActionControl<Realtime.BaseWorkspacePayload & Realtime.actionUtils.CRUDKeyPayload> {
-  actionCreator = Realtime.workspace.crudActions.remove;
+type RemoveWorkspacePayload = Realtime.BaseCreatorPayload & Realtime.actionUtils.CRUDKeyPayload;
+
+class RemoveWorkspace extends AbstractWorkspaceChannelControl<RemoveWorkspacePayload> {
+  protected actionCreator = Realtime.workspace.crud.remove;
+
+  protected process = async (ctx: Context, { payload }: Action<RemoveWorkspacePayload>) => {
+    await this.services.workspace.delete(Number(ctx.userId), payload.key);
+  };
 }
 
 export default RemoveWorkspace;

@@ -5,14 +5,13 @@ import { ExtraOptions } from './types';
 export interface ProjectListClient {
   getAll: (workspaceID: string) => Promise<Realtime.DBProjectList[]>;
 
-  updateAll: (workspaceID: string, lists: Realtime.DBProjectList[]) => Promise<void>;
+  replaceAll: (workspaceID: string, lists: Realtime.DBProjectList[]) => Promise<void>;
 }
 
-const Client = ({ axiosClient }: ExtraOptions): ProjectListClient => ({
-  getAll: (workspaceID: string) =>
-    axiosClient.get<{ boards: Realtime.DBProjectList[] }>(`/team/${workspaceID}/boards`).then(({ data }) => data.boards),
+const Client = ({ api }: ExtraOptions): ProjectListClient => ({
+  getAll: (workspaceID) => api.get<{ boards: Realtime.DBProjectList[] }>(`/team/${workspaceID}/boards`).then(({ data }) => data.boards),
 
-  updateAll: (workspaceID: string, lists: Realtime.DBProjectList[]) => axiosClient.patch(`/team/${workspaceID}/update_board`, { boards: lists }),
+  replaceAll: (workspaceID, lists) => api.patch(`/team/${workspaceID}/update_board`, { boards: lists }),
 });
 
 export default Client;

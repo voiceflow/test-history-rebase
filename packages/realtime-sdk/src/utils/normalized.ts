@@ -1,5 +1,6 @@
 import { withoutValue } from './array';
 import { stringify } from './functional';
+import { hasProperty } from './object';
 
 export interface ObjectWithId {
   id: number | string;
@@ -18,6 +19,11 @@ export interface RemoveNormalizedByKey {
 export interface GetNormalizedByKey {
   <T>({ byKey }: Normalized<T>, key: string): T;
   <T extends Normalized<any>>({ byKey }: T, key: string): T extends Normalized<infer R> ? R : never;
+}
+
+export interface SafeGetNormalizedByKey {
+  <T>({ byKey }: Normalized<T>, key: string): T | null;
+  <T extends Normalized<any>>({ byKey }: T, key: string): T extends Normalized<infer R> ? R | null : never;
 }
 
 export const createEmptyNormalized = (): Normalized<any> => ({ byKey: {}, allKeys: [] });
@@ -63,6 +69,9 @@ export const normalize = <T extends ObjectWithId | unknown>(items: T[], getKey?:
 export const denormalize = <T>({ allKeys, byKey }: Normalized<T>) => allKeys.map((key) => byKey[key]);
 
 export const getNormalizedByKey: GetNormalizedByKey = <T>({ byKey }: Normalized<T>, key: string) => byKey[key];
+
+export const safeGetNormalizedByKey: SafeGetNormalizedByKey = <T>({ byKey }: Normalized<T>, key: string) =>
+  hasProperty(byKey, key) ? byKey[key] : null;
 
 export const getAllNormalizedByKeys = <T>({ byKey }: Normalized<T>, keys: string[]) => keys.map((key) => byKey[key]);
 

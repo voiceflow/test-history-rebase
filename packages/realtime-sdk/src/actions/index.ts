@@ -1,8 +1,11 @@
-export * as creator from './creator';
 export * as diagram from './diagram';
+export * as intent from './intent';
 export * as link from './link';
 export * as node from './node';
+export * as product from './product';
 export * as project from './project';
 export * as projectList from './projectList';
+export * as slot from './slot';
 export * as actionUtils from './utils';
+export * as version from './version';
 export * as workspace from './workspace';

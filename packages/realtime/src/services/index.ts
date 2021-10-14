@@ -1,8 +1,11 @@
 import type { ClientMap } from '../clients';
 import type { Config } from '../types';
 import DiagramService from './diagram';
+import IntentService from './intent';
+import ProductService from './product';
 import ProjectService from './project';
 import ProjectListService from './projectList';
+import SlotService from './slot';
 import UserService from './user';
 import VersionService from './version';
 import ViewerService from './viewer';
@@ -13,7 +16,10 @@ export interface ServiceMap {
   user: UserService;
   viewer: ViewerService;
   diagram: DiagramService;
+  intent: IntentService;
+  product: ProductService;
   project: ProjectService;
+  slot: SlotService;
   version: VersionService;
   voiceflow: VoiceflowService;
   workspace: WorkspaceService;
@@ -33,7 +39,10 @@ const buildServices = ({ config, clients }: Options): ServiceMap => {
     user: new UserService(serviceOptions),
     viewer: new ViewerService(serviceOptions),
     diagram: new DiagramService(serviceOptions),
+    intent: new IntentService(serviceOptions),
+    product: new ProductService(serviceOptions),
     project: new ProjectService(serviceOptions),
+    slot: new SlotService(serviceOptions),
     version: new VersionService(serviceOptions),
     voiceflow: new VoiceflowService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),

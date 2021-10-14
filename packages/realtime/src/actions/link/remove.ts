@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractLinkActionControl } from './utils';
 
-class RemoveLinkActionControl extends AbstractLinkActionControl<Realtime.BaseLinkPayload> {
+class RemoveLink extends AbstractLinkActionControl<Realtime.BaseLinkPayload> {
   actionCreator = Realtime.link.remove;
 
   process = async (): Promise<void> => {
@@ -10,4 +10,4 @@ class RemoveLinkActionControl extends AbstractLinkActionControl<Realtime.BaseLin
   };
 }
 
-export default RemoveLinkActionControl;
+export default RemoveLink;

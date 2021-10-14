@@ -1,4 +1,6 @@
 /* eslint-disable max-classes-per-file */
+import { Eventual } from '@voiceflow/common';
+
 import type { ActionMap } from './actions';
 import type { ChannelMap } from './channels';
 import type { ClientMap } from './clients';
@@ -47,8 +49,8 @@ export abstract class AbstractLoguxControl extends AbstractControl {
     this.channels = channels;
   }
 
-  abstract setup(): void | Promise<void>;
+  abstract setup(): Eventual<void>;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function, class-methods-use-this
-  destroy(): void | Promise<void> {}
+  destroy(): Eventual<void> {}
 }

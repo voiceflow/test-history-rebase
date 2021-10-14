@@ -30,6 +30,9 @@ export interface Product {
   trialPeriodDays: string | null;
   taxCategory: string | null;
   purchasePrompt: string | null;
+
+  // TODO: need to support this in the adapter
+  consumableUnit?: string | null;
 }
 
 export type DBProduct = Project.AlexaProduct;

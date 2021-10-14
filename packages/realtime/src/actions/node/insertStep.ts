@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractNodeActionControl } from './utils';
 
-class InsertStepControl extends AbstractNodeActionControl<Realtime.node.InsertStepPayload> {
+class InsertStep extends AbstractNodeActionControl<Realtime.node.InsertStepPayload> {
   actionCreator = Realtime.node.insertStep;
 
   process = async (): Promise<void> => {
@@ -10,4 +10,4 @@ class InsertStepControl extends AbstractNodeActionControl<Realtime.node.InsertSt
   };
 }
 
-export default InsertStepControl;
+export default InsertStep;

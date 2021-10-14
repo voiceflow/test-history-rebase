@@ -14,7 +14,7 @@ import * as alexa from '../platform/alexa';
 import * as general from '../platform/general';
 import * as google from '../platform/google';
 import { activeInvocationNameSelector, activeInvocationsSelector, versionByIDSelector } from '../selectors';
-import { AnyLocale, AnySettings, AnyVersion, AnyVoice } from '../types';
+import { AnyLocale, AnyVersion, AnyVersionSettings, AnyVoice } from '../types';
 
 export const updateLocalesByVersionID =
   <L extends AnyLocale>(versionID: string, locales: L[]): SyncThunk =>
@@ -46,7 +46,7 @@ export const patchActiveVersion =
   };
 
 export const saveSettings =
-  (settings: Partial<AnySettings>): Thunk =>
+  (settings: Partial<AnyVersionSettings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);

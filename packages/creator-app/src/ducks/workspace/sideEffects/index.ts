@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
-import projectAdapter from '@/client/adapters/project';
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
@@ -39,7 +38,7 @@ export const loadWorkspaces =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await dispatch.crossTab(Realtime.workspace.crudLocalActions.replace({ values: sorted }));
+        await dispatch.crossTab(Realtime.workspace.crud.replace({ values: sorted }));
       } else {
         dispatch(replaceWorkspaces(sorted));
       }
@@ -81,7 +80,7 @@ export const removeWorkspaceAndUpdateActive =
     }
 
     if (atomicActionsEnabled) {
-      await dispatch.crossTab(Realtime.workspace.crudActions.remove({ key: workspaceID, workspaceID }));
+      await dispatch.crossTab(Realtime.workspace.crud.remove({ key: workspaceID }));
     } else {
       dispatch(removeWorkspace(workspaceID));
     }
@@ -112,7 +111,7 @@ export const copyProject =
     if (!project) throw new Error();
 
     // TODO: move to the realtime service
-    const copiedProject = projectAdapter.fromDB(
+    const copiedProject = Realtime.Adapters.projectAdapter.fromDB(
       await client.platform(project.platform).project.copy(project.id, { teamID: workspaceID, name: `${project.name} (COPY)` })
     );
 
@@ -120,7 +119,7 @@ export const copyProject =
 
     if (atomicActionsEnabled) {
       await dispatch.sync(
-        Realtime.project.crudActions.add({
+        Realtime.project.crud.add({
           key: copiedProject.id,
           value: copiedProject,
           workspaceID,
@@ -149,7 +148,7 @@ export const loadActiveWorkspace = (): Thunk => async (dispatch, getState) => {
     const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
     if (atomicActionsEnabled) {
-      await dispatch.crossTab(Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: workspace, workspaceID: activeWorkspaceID }));
+      await dispatch.crossTab(Realtime.workspace.crud.patch({ key: activeWorkspaceID, value: workspace }));
     } else {
       dispatch(patchWorkspace(activeWorkspaceID, workspace));
     }
@@ -193,7 +192,7 @@ export const updateActiveWorkspaceName =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await dispatch.sync(Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { name }, workspaceID: activeWorkspaceID }));
+        await dispatch.sync(Realtime.workspace.crud.patch({ key: activeWorkspaceID, value: { name } }));
       } else {
         dispatch(patchWorkspace(activeWorkspaceID, { name }));
       }
@@ -218,7 +217,7 @@ export const updateActiveWorkspaceImage =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await dispatch.sync(Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { image: url }, workspaceID: activeWorkspaceID }));
+        await dispatch.sync(Realtime.workspace.crud.patch({ key: activeWorkspaceID, value: { image: url } }));
       } else {
         dispatch(patchWorkspace(activeWorkspaceID, { image: url }));
       }
@@ -262,13 +261,13 @@ export const importProjectToActiveWorkspace =
     const atomicActionsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS);
 
     // TODO: move to realtime service
-    const copiedProject = projectAdapter.fromDB(
+    const copiedProject = Realtime.Adapters.projectAdapter.fromDB(
       await client.platform(project.platform as Constants.PlatformType).project.copy(project._id, { teamID: workspaceID })
     );
 
     if (atomicActionsEnabled) {
       await dispatch.sync(
-        Realtime.project.crudActions.add({
+        Realtime.project.crud.add({
           key: copiedProject.id,
           value: copiedProject,
           workspaceID,

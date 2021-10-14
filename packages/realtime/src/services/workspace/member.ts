@@ -1,0 +1,56 @@
+import { UserRole } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
+
+import { AbstractControl } from '../../control';
+
+class WorkspaceMemberService extends AbstractControl {
+  public async getAll(creatorID: number, workspaceID: string): Promise<Realtime.DBMember[]> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    return client.workspace.listMembers(workspaceID);
+  }
+
+  public async patch(creatorID: number, workspaceID: string, { role }: Pick<Realtime.DBMember, 'role'>): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.workspace.patchMember(creatorID, workspaceID, { role });
+  }
+
+  public async remove(creatorID: number, workspaceID: string): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.workspace.removeMember(creatorID, workspaceID);
+  }
+
+  public async removeSelf(creatorID: number, workspaceID: string): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.workspace.removeSelf(workspaceID);
+  }
+
+  public async sendInvite(creatorID: number, workspaceID: string, email: string, role?: UserRole): Promise<Realtime.DBMember | null> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    return client.workspace.sendInvite(workspaceID, email, role);
+  }
+
+  public async acceptInvite(creatorID: number, invite: string): Promise<string> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    return client.workspace.acceptInvite(invite);
+  }
+
+  public async updateInvite(creatorID: number, workspaceID: string, email: string, role?: UserRole): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.workspace.updateInvite(workspaceID, email, role);
+  }
+
+  public async cancelInvite(creatorID: number, workspaceID: string, email: string): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.workspace.cancelInvite(workspaceID, email);
+  }
+}
+
+export default WorkspaceMemberService;

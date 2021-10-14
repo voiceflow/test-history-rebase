@@ -1,24 +1,37 @@
-import { LoguxControlOptions } from '../../control';
+import { LoguxControlOptions } from '@/control';
+
 import AddBlocksControl from './addBlocks';
+import CreateComponentControl from './createComponent';
+import CreateTopicControl from './createTopic';
 import DragBlocksControl from './dragBlocks';
+import DuplicateDiagramControl from './duplicate';
 import MoveBlocksControl from './moveBlocks';
 import MoveCursorControl from './moveCursor';
-import RemoveBlocControl from './removeBlocks';
+import RemoveDiagramControl from './remove';
+import RemoveBlockControl from './removeBlocks';
+import { AddLocalVariableControl, RemoveLocalVariableControl } from './variable';
 
-export interface DiagramActionControlMap {
-  addBlocksControl: AddBlocksControl;
-  dragBlocksControl: DragBlocksControl;
-  moveBlocksControl: MoveBlocksControl;
-  moveCursorControl: MoveCursorControl;
-  removeBlocControl: RemoveBlocControl;
-}
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const buildDiagramActionControls = (options: LoguxControlOptions) => ({
+  createComponentControl: new CreateComponentControl(options),
+  createTopicControl: new CreateTopicControl(options),
+  duplicateDiagramControl: new DuplicateDiagramControl(options),
+  removeDiagramControl: new RemoveDiagramControl(options),
 
-const buildDiagramActionControls = (options: LoguxControlOptions): DiagramActionControlMap => ({
+  // nodes
   addBlocksControl: new AddBlocksControl(options),
   dragBlocksControl: new DragBlocksControl(options),
   moveBlocksControl: new MoveBlocksControl(options),
+  removeBlockControl: new RemoveBlockControl(options),
+
+  // variables
+  addLocalVariableControl: new AddLocalVariableControl(options),
+  removeLocalVariableControl: new RemoveLocalVariableControl(options),
+
+  // awareness
   moveCursorControl: new MoveCursorControl(options),
-  removeBlocControl: new RemoveBlocControl(options),
 });
 
 export default buildDiagramActionControls;
+
+export type DiagramActionControlMap = ReturnType<typeof buildDiagramActionControls>;

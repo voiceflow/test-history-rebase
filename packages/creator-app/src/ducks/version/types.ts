@@ -5,10 +5,10 @@ import { CRUDState } from '@/ducks/utils/crud';
 export type {
   AlexaVersion,
   AnyLocale,
-  AnyPlatformData,
-  AnyPublishing,
-  AnySettings,
   AnyVersion,
+  AnyVersionPlatformData,
+  AnyVersionPublishing,
+  AnyVersionSettings,
   AnyVoice,
   DialogflowVersion,
   GeneralVersion,

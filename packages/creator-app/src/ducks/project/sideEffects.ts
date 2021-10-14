@@ -4,14 +4,13 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
-import projectAdapter from '@/client/adapters/project';
 import * as Errors from '@/config/errors';
 import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
 import { addProjectToList } from '@/ducks/projectList/sideEffects/shared';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { waitActionProcessed } from '@/ducks/utils';
+import { waitAsync } from '@/ducks/utils';
 import { AnyProject } from '@/models';
 import { Thunk } from '@/store/types';
 
@@ -34,7 +33,7 @@ export const loadProjectByID =
   async (dispatch) => {
     const dbProject = await client.api.project.get(projectID);
 
-    const project = projectAdapter.fromDB(dbProject);
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject);
 
     dispatch(addProject(projectID, project));
 
@@ -49,7 +48,7 @@ export const loadProjectsByWorkspaceID =
   async (dispatch) => {
     const dbProjects = await client.api.project.list(workspaceID);
 
-    const projects = projectAdapter.mapFromDB(dbProjects);
+    const projects = Realtime.Adapters.projectAdapter.mapFromDB(dbProjects);
     dispatch(replaceProjects(projects));
 
     return projects;
@@ -79,7 +78,7 @@ export const createProject =
         dispatch(addProjectToList(listID, newProject._id));
       }
 
-      return projectAdapter.fromDB(newProject);
+      return Realtime.Adapters.projectAdapter.fromDB(newProject);
     } catch (err) {
       toast.error('Error creating project, please try again later or contact support.');
       throw new Error('error creating project');
@@ -92,11 +91,11 @@ export const importProjectFromFile =
     const isAtomicActions = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
     if (isAtomicActions) {
-      return dispatch(waitActionProcessed<AnyProject>(Realtime.project.importProjectFromFile({ workspaceID, data })));
+      return dispatch(waitAsync(Realtime.project.importFromFile, { workspaceID, data }));
     }
 
     const project = await client.api.version.import(workspaceID, JSON.parse(data));
-    return projectAdapter.fromDB(project);
+    return Realtime.Adapters.projectAdapter.fromDB(project);
   };
 
 export const deleteProject =
@@ -109,7 +108,7 @@ export const deleteProject =
     if (isAtomicActions) {
       Errors.assertWorkspaceID(workspaceID);
 
-      await dispatch.sync(Realtime.project.crudActions.remove({ key: projectID, workspaceID }));
+      await dispatch.sync(Realtime.project.crud.remove({ key: projectID, workspaceID }));
     } else {
       await client.api.project.delete(projectID);
 
@@ -127,7 +126,7 @@ export const deleteManyProjects =
     if (isAtomicActions) {
       Errors.assertWorkspaceID(workspaceID);
 
-      await dispatch.sync(Realtime.project.crudActions.removeMany({ keys: projectIDs, workspaceID }));
+      await dispatch.sync(Realtime.project.crud.removeMany({ keys: projectIDs, workspaceID }));
     } else {
       await Promise.all(projectIDs.map((projectID) => client.api.project.delete(projectID)));
 
@@ -151,7 +150,7 @@ export const saveProjectPrivacy =
     if (isAtomicActions) {
       Errors.assertWorkspaceID(workspaceID);
 
-      await dispatch.sync(Realtime.project.crudActions.patch({ key: projectID, value: { privacy }, workspaceID }));
+      await dispatch.sync(Realtime.project.crud.patch({ key: projectID, value: { privacy }, workspaceID }));
     } else {
       const project = ProjectV2.projectByIDSelector(getState(), { id: projectID });
 
@@ -172,7 +171,7 @@ export const saveProjectImage =
     if (isAtomicActions) {
       Errors.assertWorkspaceID(workspaceID);
 
-      await dispatch.sync(Realtime.project.crudActions.patch({ key: projectID, value: { image }, workspaceID }));
+      await dispatch.sync(Realtime.project.crud.patch({ key: projectID, value: { image }, workspaceID }));
     } else {
       const project = ProjectV2.projectByIDSelector(getState(), { id: projectID });
 
@@ -194,7 +193,7 @@ export const saveProjectLinkType =
     if (isAtomicActions) {
       Errors.assertWorkspaceID(workspaceID);
 
-      await dispatch.sync(Realtime.project.crudActions.patch({ key: projectID, value: { linkType }, workspaceID }));
+      await dispatch.sync(Realtime.project.crud.patch({ key: projectID, value: { linkType }, workspaceID }));
     } else {
       await client.api.project.update(projectID, { linkType });
 
@@ -229,7 +228,7 @@ export const saveProjectName =
     if (isAtomicActions) {
       Errors.assertWorkspaceID(workspaceID);
 
-      await dispatch.sync(Realtime.project.crudActions.patch({ key: projectID, value: { name }, workspaceID }));
+      await dispatch.sync(Realtime.project.crud.patch({ key: projectID, value: { name }, workspaceID }));
     } else {
       if (name === ProjectV2.active.nameSelector(state)) return;
 

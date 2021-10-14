@@ -154,6 +154,7 @@ export class Engine extends ComponentManager<{ container: CanvasContainerAPI }> 
     return {
       workspaceID: this.select(Session.activeWorkspaceIDSelector)!,
       projectID: this.select(Session.activeProjectIDSelector)!,
+      versionID: this.select(Session.activeVersionIDSelector)!,
       diagramID: this.getDiagramID()!,
     };
   }

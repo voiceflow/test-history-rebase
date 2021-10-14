@@ -1,4 +1,5 @@
-import { LoguxControlOptions } from '../../control';
+import { LoguxControlOptions } from '@/control';
+
 import AddLinkControl from './add';
 import RemoveLinkControl from './remove';
 import UpdateLinkDataControl from './updateData';

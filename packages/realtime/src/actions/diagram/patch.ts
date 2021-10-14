@@ -1,0 +1,18 @@
+import { Context } from '@logux/server';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import _ from 'lodash';
+import { Action } from 'typescript-fsa';
+
+import { AbstractDiagramResourceControl } from './utils';
+
+type PatchDiagramPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.Diagram>>;
+
+class PatchDiagram extends AbstractDiagramResourceControl<PatchDiagramPayload> {
+  protected actionCreator = Realtime.diagram.crud.patch;
+
+  protected process = async (ctx: Context, { payload }: Action<PatchDiagramPayload>) => {
+    await this.services.diagram.patch(Number(ctx.userId), payload.key, _.pick(payload.value, 'name'));
+  };
+}
+
+export default PatchDiagram;

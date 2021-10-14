@@ -1,4 +1,5 @@
 import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { FetchOptions } from '@voiceflow/ui';
 
 import { DBMember, DBWorkspace, Price } from '@/models';
@@ -7,18 +8,18 @@ import { DBBilling } from '@/models/Billing';
 
 import invoiceAdapter from './adapters/invoice';
 import memberAdapter from './adapters/member';
-import workspaceAdapter from './adapters/workspace';
 import { api, apiV2 } from './fetch';
 
 export const LEGACY_WORKSPACE_PATH = 'team';
 export const WORKSPACES_PATH = 'workspaces';
 
 const workspaceClient = {
-  find: (opt?: FetchOptions) => api.get<DBWorkspace[]>(WORKSPACES_PATH, opt).then(workspaceAdapter.mapFromDB),
+  find: (opt?: FetchOptions) => api.get<DBWorkspace[]>(WORKSPACES_PATH, opt).then(Realtime.Adapters.workspaceAdapter.mapFromDB),
 
-  fetchWorkspace: (workspaceID: string) => api.get<DBWorkspace>(`${WORKSPACES_PATH}/${workspaceID}`).then(workspaceAdapter.fromDB),
+  fetchWorkspace: (workspaceID: string) => api.get<DBWorkspace>(`${WORKSPACES_PATH}/${workspaceID}`).then(Realtime.Adapters.workspaceAdapter.fromDB),
 
-  createWorkspace: (data: { name: string; image?: string }) => api.post<DBWorkspace>(WORKSPACES_PATH, data).then(workspaceAdapter.fromDB),
+  createWorkspace: (data: { name: string; image?: string }) =>
+    api.post<DBWorkspace>(WORKSPACES_PATH, data).then(Realtime.Adapters.workspaceAdapter.fromDB),
 
   findMembers: (workspaceID: string) => api.get<DBMember[]>(`${WORKSPACES_PATH}/${workspaceID}/members`).then(memberAdapter.mapFromDB),
 
@@ -32,7 +33,7 @@ const workspaceClient = {
 
   acceptInvite: (invite: string) => api.post<string>(`${WORKSPACES_PATH}/invite/${invite}`),
 
-  validateInvite: (invite: string) => api.get<boolean>(`${WORKSPACES_PATH}/invite/${invite}`),
+  validateInvite: (invite: string) => api.get<boolean>(`${WORKSPACES_PATH}/invite/${invite}`).catch(() => false),
 
   getInvoice: (workspaceID: string) => api.get<DBBilling>(`${WORKSPACES_PATH}/${workspaceID}/invoice`).then(invoiceAdapter.fromDB),
 

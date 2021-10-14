@@ -13,23 +13,23 @@ import { hideCursorCoords, setCursorCoords } from '../observables';
 const createActionTypeMap = (actionsCreators: ActionCreator<any>[]): Record<string, true> =>
   actionsCreators.reduce<Record<string, true>>((acc, action) => Object.assign(acc, { [action.type]: true }), {});
 
-const CreatorLevelActionsMap = createActionTypeMap([...Object.values(Realtime.workspace.crudLocalActions)]);
+const CreatorLevelActionsMap = createActionTypeMap([]);
 
 const WorkspaceLevelActionsMap = createActionTypeMap([
-  ...Object.values(Realtime.workspace.crudActions),
-  ...Object.values(Realtime.projectList.crudActions),
+  ...Object.values(Realtime.workspace.crud),
+  ...Object.values(Realtime.projectList.crud),
   Realtime.projectList.transplantProjectBetweenLists,
 ]);
 
 const ProjectLevelActionsMap = createActionTypeMap([
-  ...Object.values(Realtime.project.crudActions),
-  Realtime.project.awarenessLoadViewers,
-  Realtime.project.awarenessUpdateViewers,
+  ...Object.values(Realtime.project.crud),
+  Realtime.project.awareness.loadViewers,
+  Realtime.project.awareness.updateViewers,
 ]);
 
 const DiagramLevelActionsMap = createActionTypeMap([
-  Realtime.diagram.awarenessMoveCursor,
-  Realtime.diagram.awarenessHideCursor,
+  Realtime.diagram.awareness.moveCursor,
+  Realtime.diagram.awareness.hideCursor,
   Realtime.diagram.addBlocks,
   Realtime.diagram.removeBlocks,
   Realtime.diagram.moveBlocks,
@@ -48,7 +48,7 @@ const isAtomicActionsEnabled = (api: MiddlewareAPI) => Feature.isFeatureEnabledS
 
 export const composeEnhancers = composeWithDevTools({
   name: 'Voiceflow Creator - Realtime Store',
-  actionsBlacklist: DEBUG_REALTIME ? [] : ['logux/state', Realtime.diagram.awarenessMoveCursor.type],
+  actionsBlacklist: DEBUG_REALTIME ? [] : ['logux/state', Realtime.diagram.awareness.moveCursor.type],
 });
 
 export const createIgnoreMiddleware =
@@ -90,7 +90,7 @@ export const unregisteredActionsIgnoreMiddleware = createIgnoreMiddleware(
  * ignore actions from own cursor movements
  */
 export const ownCursorIgnoreMiddleware: Middleware = createIgnoreMiddleware((api, action) => {
-  if (!isType(action, Realtime.diagram.awarenessMoveCursor)) return false;
+  if (!isType(action, Realtime.diagram.awareness.moveCursor)) return false;
 
   const creatorID = Account.userIDSelector(api.getState());
 
@@ -104,7 +104,7 @@ export const ownCursorIgnoreMiddleware: Middleware = createIgnoreMiddleware((api
 export const moveCursorMiddleware = createIgnoreMiddleware((api, action) => {
   if (!isAtomicActionsEnabled(api)) return false;
 
-  if (!isType(action, Realtime.diagram.awarenessMoveCursor)) return false;
+  if (!isType(action, Realtime.diagram.awareness.moveCursor)) return false;
 
   const creatorID = Account.userIDSelector(api.getState());
 
@@ -122,7 +122,7 @@ export const moveCursorMiddleware = createIgnoreMiddleware((api, action) => {
 export const hideCursorMiddleware = createIgnoreMiddleware((api, action) => {
   if (!isAtomicActionsEnabled(api)) return false;
 
-  if (!isType(action, Realtime.diagram.awarenessHideCursor)) return false;
+  if (!isType(action, Realtime.diagram.awareness.hideCursor)) return false;
 
   const creatorID = Account.userIDSelector(api.getState());
 

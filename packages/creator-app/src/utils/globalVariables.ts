@@ -1,15 +1,3 @@
-import { Constants } from '@voiceflow/general-types';
+import { Utils } from '@voiceflow/realtime-sdk';
 
-import { BUILT_IN_VARIABLES, BuiltInVariable } from '@/constants/index';
-import { createPlatformSelector } from '@/utils/platform';
-
-export const getPlatformGlobalVariables = createPlatformSelector(
-  {
-    [Constants.PlatformType.GOOGLE]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],
-    [Constants.PlatformType.GENERAL]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],
-    [Constants.PlatformType.CHATBOT]: [...BUILT_IN_VARIABLES, BuiltInVariable.LAST_UTTERANCE],
-    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: [...BUILT_IN_VARIABLES, BuiltInVariable.CHANNEL],
-    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: [...BUILT_IN_VARIABLES, BuiltInVariable.CHANNEL],
-  },
-  BUILT_IN_VARIABLES
-);
+export const { getPlatformGlobalVariables } = Utils.globalVariables;

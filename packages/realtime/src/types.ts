@@ -6,6 +6,9 @@ export interface Config {
   CLOUD_ENV: string;
   IS_PRIVATE_CLOUD: boolean;
   CREATOR_API_ENDPOINT: string;
+  ALEXA_SERVICE_ENDPOINT: string;
+  GOOGLE_SERVICE_ENDPOINT: string;
+  GENERAL_SERVICE_ENDPOINT: string;
 
   // Release information
   GIT_SHA: string | null;

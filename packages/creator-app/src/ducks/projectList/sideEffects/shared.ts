@@ -39,7 +39,7 @@ export const addProjectToList =
       Errors.assert(list, listNotFoundError());
 
       await dispatch.sync(
-        Realtime.projectList.crudActions.patch({
+        Realtime.projectList.crud.patch({
           key: listID,
           value: { projects: unique([...list.projects, projectID]) },
           workspaceID: activeWorkspaceID,

@@ -1,3 +1,7 @@
+import { Version, VersionPlatformData } from '@voiceflow/api-sdk';
+import { Constants } from '@voiceflow/general-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { AbstractControl } from '../control';
 
 class VersionService extends AbstractControl {
@@ -10,7 +14,7 @@ class VersionService extends AbstractControl {
     keyCreator: VersionService.getCanReadKey,
   });
 
-  public async canRead(versionID: string, creatorID: number): Promise<boolean> {
+  public async canRead(creatorID: number, versionID: string): Promise<boolean> {
     const cachedCanRead = await this.canReadCache.get({ versionID, creatorID });
 
     if (cachedCanRead !== null) {
@@ -23,6 +27,63 @@ class VersionService extends AbstractControl {
     await this.canReadCache.set({ versionID, creatorID }, canRead);
 
     return canRead;
+  }
+
+  public async get<P extends VersionPlatformData>(creatorID: number, versionID: string): Promise<Version<P>> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    return client.version.get(versionID);
+  }
+
+  public async getPlatform(creatorID: number, versionID: string): Promise<Constants.PlatformType> {
+    const version = await this.get(creatorID, versionID);
+
+    return this.services.project.getPlatform(creatorID, version.projectID);
+  }
+
+  public async updateVariables(creatorID: number, versionID: string, variables: string[]): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.version.update(versionID, { variables });
+  }
+
+  public async patchSettings<T extends Realtime.AnyVersionSettings>(creatorID: number, versionID: string, settings: Partial<T>): Promise<void> {
+    const [client, platform] = await Promise.all([this.services.voiceflow.getClientByUserID(creatorID), this.getPlatform(creatorID, versionID)]);
+
+    await client.version.platform(platform).patchSettings(versionID, settings);
+  }
+
+  public async patchSession(creatorID: number, versionID: string, session: Partial<Realtime.Version.Session>): Promise<void> {
+    const [client, platform] = await Promise.all([this.services.voiceflow.getClientByUserID(creatorID), this.getPlatform(creatorID, versionID)]);
+
+    const {
+      platformData: {
+        settings: { session: dbSession, defaultVoice },
+      },
+    } = await this.get<Realtime.AnyVoiceVersionPlatformData>(creatorID, versionID);
+
+    const platformSessionAdapter = Realtime.Adapters.createSessionAdapter({ platform });
+    const patchedSession = platformSessionAdapter.toDB(
+      {
+        ...platformSessionAdapter.fromDB(dbSession, { defaultVoice }),
+        ...session,
+      } as Realtime.Version.Session,
+      { defaultVoice }
+    );
+
+    await client.version.platform(platform).patchSettings(versionID, { session: patchedSession } as Partial<Realtime.AnyVersionSettings>);
+  }
+
+  public async patchPublishing(creatorID: number, versionID: string, publishing: Partial<Realtime.AnyVersionPublishing>): Promise<void> {
+    const [client, platform] = await Promise.all([this.services.voiceflow.getClientByUserID(creatorID), this.getPlatform(creatorID, versionID)]);
+
+    await client.version.platform(platform).patchPublishing(versionID, publishing);
+  }
+
+  public async patchPlatformData<T extends VersionPlatformData>(creatorID: number, versionID: string, platformData: Partial<T>): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.version.updatePlatformData(versionID, platformData);
   }
 }
 

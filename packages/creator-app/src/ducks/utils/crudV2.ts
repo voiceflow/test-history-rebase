@@ -31,7 +31,7 @@ export const CRUD_INITIAL_STATE: CRUDState<any> = {
 // reducers
 
 type CRUDReducers<T extends Realtime.actionUtils.CRUDActionCreators<any, any, any>> = {
-  [K in keyof T]: [actionCreator: T[K], handler: ImmerHandler<CRUDState<any>, any>];
+  [K in Exclude<keyof T, 'refresh'>]: [actionCreator: T[K], handler: ImmerHandler<CRUDState<any>, any>];
 };
 
 export const createCRUDReducers = <T, D extends ObjectWithId, P extends Partial<D> = Partial<D>>(

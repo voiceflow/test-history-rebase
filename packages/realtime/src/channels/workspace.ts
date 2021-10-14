@@ -5,6 +5,8 @@ import cuid from 'cuid';
 import { AbstractChannelControl, ChannelContext } from './utils';
 
 class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.WorkspaceChannelParams> {
+  protected channel = Realtime.Channels.workspace;
+
   private static normalizeProjectLists(
     dbProjects: Realtime.DBProject[],
     dbProjectLists: Realtime.DBProjectList[]
@@ -40,23 +42,22 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
     return [Realtime.Adapters.projectAdapter.mapFromDB(dbProjects), Realtime.Adapters.projectListAdapter.mapFromDB(normalizedLists)];
   }
 
-  channel = Realtime.Channels.workspace({ workspaceID: ':workspaceID' });
-
   protected access = async (ctx: ChannelContext<Realtime.Channels.WorkspaceChannelParams>): Promise<boolean> => {
-    return this.services.workspace.canRead(ctx.params.workspaceID, Number(ctx.userId));
+    return this.services.workspace.canRead(Number(ctx.userId), ctx.params.workspaceID);
   };
 
   protected load = async (ctx: ChannelContext<Realtime.Channels.WorkspaceChannelParams>): Promise<SendBackActions> => {
+    const creatorID = Number(ctx.userId);
     const [dbProjects, dbProjectLists] = await Promise.all([
-      this.services.project.getAll(ctx.params.workspaceID, Number(ctx.userId)),
-      this.services.projectList.getAll(ctx.params.workspaceID, Number(ctx.userId)),
-    ] as const);
+      this.services.project.getAll(creatorID, ctx.params.workspaceID),
+      this.services.projectList.getAll(creatorID, ctx.params.workspaceID),
+    ]);
 
     const [projects, projectLists] = WorkspaceChannel.normalizeProjectLists(dbProjects, dbProjectLists);
 
     return [
-      Realtime.project.crudActions.replace({ values: projects, workspaceID: ctx.params.workspaceID }),
-      Realtime.projectList.crudActions.replace({ values: projectLists, workspaceID: ctx.params.workspaceID }),
+      Realtime.project.crud.replace({ values: projects, workspaceID: ctx.params.workspaceID }),
+      Realtime.projectList.crud.replace({ values: projectLists, workspaceID: ctx.params.workspaceID }),
     ];
   };
 }

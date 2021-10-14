@@ -43,7 +43,7 @@ export const updateActiveVendor =
     if (isAtomicActions) {
       Errors.assertWorkspaceID(workspaceID);
 
-      dispatch.local(Realtime.project.crudActions.patch({ workspaceID, key: activeProject.id, value: { members: updatedMembers } }));
+      dispatch.local(Realtime.project.crud.patch({ workspaceID, key: activeProject.id, value: { members: updatedMembers } }));
     } else {
       dispatch(patchProject(activeProject.id, { members: updatedMembers }));
     }

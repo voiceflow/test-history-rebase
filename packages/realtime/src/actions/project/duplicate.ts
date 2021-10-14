@@ -1,0 +1,46 @@
+import type { Context, ServerMeta } from '@logux/server';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import _ from 'lodash';
+import type { Action } from 'typescript-fsa';
+
+import { terminateResend } from '@/actions/utils';
+import { WorkspaceContextData } from '@/actions/workspace/utils';
+
+import { AbstractProjectResourceControl } from './utils';
+
+class DuplicateProject extends AbstractProjectResourceControl<Realtime.project.DuplicateProjectPayload> {
+  protected actionCreator = Realtime.project.duplicate.started;
+
+  protected access = async (
+    ctx: Context<WorkspaceContextData>,
+    action: Action<Realtime.project.DuplicateProjectPayload>,
+    meta: ServerMeta
+  ): Promise<boolean> => {
+    if (!(await super.access(ctx, action, meta))) return false;
+
+    return this.services.workspace.canRead(Number(ctx.userId), action.payload.data.teamID);
+  };
+
+  protected resend = terminateResend;
+
+  protected process = this.reply(Realtime.project.duplicate, async (ctx, { payload }) => {
+    const creatorID = Number(ctx.userId);
+    const targetWorkspaceID = payload.data.teamID;
+
+    const [listID, project] = await Promise.all([
+      this.getTargetListID(ctx, targetWorkspaceID, payload.listID),
+      this.services.project
+        .duplicate(creatorID, payload.projectID, _.pick(payload.data, 'name', 'teamID'))
+        .then(Realtime.Adapters.projectAdapter.fromDB),
+    ]);
+
+    await Promise.all([
+      this.server.process(Realtime.project.crud.add({ workspaceID: targetWorkspaceID, key: project.id, value: project })),
+      this.server.process(Realtime.projectList.addProjectToList({ workspaceID: targetWorkspaceID, projectID: project.id, listID })),
+    ]);
+
+    return project;
+  });
+}
+
+export default DuplicateProject;

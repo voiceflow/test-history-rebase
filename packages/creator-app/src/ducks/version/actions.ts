@@ -4,7 +4,7 @@ import { Version } from '@/models';
 import { Action } from '@/store/types';
 
 import { STATE_KEY } from './constants';
-import { AnyPublishing, AnySettings, AnyVersion } from './types';
+import { AnyVersion, AnyVersionPublishing, AnyVersionSettings } from './types';
 
 // action types
 
@@ -14,13 +14,17 @@ export enum VersionAction {
   UPDATE_SESSION = 'VERSION:SESSION:UPDATE',
 }
 
-export type UpdateSettings<T extends AnySettings> = Action<VersionAction.UPDATE_SETTINGS, { id: string; settings: Partial<T> }>;
+export type UpdateSettings<T extends AnyVersionSettings> = Action<VersionAction.UPDATE_SETTINGS, { id: string; settings: Partial<T> }>;
 
-export type UpdatePublishing<T extends AnyPublishing> = Action<VersionAction.UPDATE_PUBLISHING, { id: string; publishing: Partial<T> }>;
+export type UpdatePublishing<T extends AnyVersionPublishing> = Action<VersionAction.UPDATE_PUBLISHING, { id: string; publishing: Partial<T> }>;
 
 export type UpdateSession = Action<VersionAction.UPDATE_SESSION, { id: string; session: Partial<Version.Session> }>;
 
-export type AnyVersionAction = CRUD.AnyCRUDAction<AnyVersion> | UpdateSettings<AnySettings> | UpdatePublishing<AnyPublishing> | UpdateSession;
+export type AnyVersionAction =
+  | CRUD.AnyCRUDAction<AnyVersion>
+  | UpdateSettings<AnyVersionSettings>
+  | UpdatePublishing<AnyVersionPublishing>
+  | UpdateSession;
 
 // action creators
 
@@ -34,10 +38,10 @@ export const {
 
 export const replaceLocalVariables = (versionID: string, variables: string[], meta?: object) => patchVersion(versionID, { variables }, meta);
 
-export const updatePublishingByVersionID = <T extends AnyPublishing>(id: string, publishing: Partial<T>): UpdatePublishing<T> =>
+export const updatePublishingByVersionID = <T extends AnyVersionPublishing>(id: string, publishing: Partial<T>): UpdatePublishing<T> =>
   createAction(VersionAction.UPDATE_PUBLISHING, { id, publishing });
 
-export const updateSettingsByVersionID = <T extends AnySettings>(id: string, settings: Partial<T>): UpdateSettings<T> =>
+export const updateSettingsByVersionID = <T extends AnyVersionSettings>(id: string, settings: Partial<T>): UpdateSettings<T> =>
   createAction(VersionAction.UPDATE_SETTINGS, { id, settings });
 
 export const updateSessionByVersionID = (id: string, session: Partial<Version.Session>): UpdateSession =>

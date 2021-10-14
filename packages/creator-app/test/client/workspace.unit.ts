@@ -1,9 +1,9 @@
 import { UserRole } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { generate } from '@voiceflow/ui';
 
 import invoiceAdapter from '@/client/adapters/invoice';
 import memberAdapter from '@/client/adapters/member';
-import workspaceAdapter from '@/client/adapters/workspace';
 import client, { LEGACY_WORKSPACE_PATH, WORKSPACES_PATH } from '@/client/workspace';
 
 import suite from './_suite';
@@ -43,7 +43,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
   describe('find()', () => {
     it('should find all workspaces', async () => {
       const dbWorkspaces = generate.array<any>(3, generate.object);
-      const [workspaces, mapWorkspacesFromDB] = stubAdapter(workspaceAdapter, 'mapFromDB', generate.array);
+      const [workspaces, mapWorkspacesFromDB] = stubAdapter(Realtime.Adapters.workspaceAdapter, 'mapFromDB', generate.array);
       const fetch = stubFetch('api').resolves(dbWorkspaces);
 
       const result = await client.find();
@@ -57,7 +57,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
   describe('fetchWorkspace()', () => {
     it('should get a workspace by its ID', async () => {
       const dbWorkspace = generate.object();
-      const [workspace, workspaceFromDB] = stubAdapter(workspaceAdapter, 'fromDB', generate.object);
+      const [workspace, workspaceFromDB] = stubAdapter(Realtime.Adapters.workspaceAdapter, 'fromDB', generate.object);
       const fetch = stubFetch('api').resolves(dbWorkspace);
 
       const result = await client.fetchWorkspace(WORKSPACE_ID);
@@ -72,7 +72,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
     it('should create a new workspace', async () => {
       const payload: any = generate.object();
       const dbWorkspace: any = generate.object();
-      const [workspace, workspaceFromDB] = stubAdapter(workspaceAdapter, 'fromDB', generate.object);
+      const [workspace, workspaceFromDB] = stubAdapter(Realtime.Adapters.workspaceAdapter, 'fromDB', generate.object);
       const fetch = stubFetch('api', 'post').resolves(dbWorkspace);
 
       const result = await client.createWorkspace(payload);

@@ -1,9 +1,10 @@
+import { Utils } from '@voiceflow/realtime-sdk';
 import _cloneDeep from 'lodash/cloneDeep';
 import _isObject from 'lodash/isObject';
 import _toPath from 'lodash/toPath';
 import _transform from 'lodash/transform';
 
-export const hasProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+export const { hasProperty, getKeys } = Utils.object;
 
 export const getIn = (rawObj, key, def, index = 0) => {
   const path = _toPath(key);

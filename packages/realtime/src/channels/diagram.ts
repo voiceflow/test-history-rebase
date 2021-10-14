@@ -8,8 +8,6 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     return `${Realtime.DIAGRAM_KEY}:${diagramID}:${nodeID}`;
   }
 
-  channel = Realtime.Channels.diagram({ diagramID: ':diagramID', projectID: ':projectID', workspaceID: ':workspaceID' });
-
   private async getViewers(diagramID: string): Promise<Realtime.Viewer[]> {
     const nodeIDs = await this.services.diagram.getConnectedNodes(diagramID);
     const userIDs = [...new Set(nodeIDs.map((userNodeID) => parseId(userNodeID).userId!))];
@@ -17,8 +15,10 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     return this.services.viewer.getViewers(userIDs);
   }
 
+  protected channel = Realtime.Channels.diagram;
+
   protected access = async (ctx: ChannelContext<Realtime.Channels.DiagramChannelParams>): Promise<boolean> => {
-    return this.services.diagram.canRead(ctx.params.diagramID, Number(ctx.userId));
+    return this.services.diagram.canRead(Number(ctx.userId), ctx.params.diagramID);
   };
 
   protected finally = async (ctx: ChannelContext<Realtime.Channels.DiagramChannelParams>): Promise<void> => {
@@ -43,7 +43,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     const viewers = await this.getViewers(ctx.params.diagramID);
 
     await ctx.server.process(
-      Realtime.project.awarenessUpdateViewers({
+      Realtime.project.awareness.updateViewers({
         viewers,
         diagramID: ctx.params.diagramID,
         projectID: ctx.params.projectID,
@@ -67,7 +67,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     const viewers = await this.getViewers(ctx.params.diagramID);
 
     await ctx.server.process(
-      Realtime.project.awarenessUpdateViewers({
+      Realtime.project.awareness.updateViewers({
         viewers,
         diagramID: ctx.params.diagramID,
         projectID: ctx.params.projectID,

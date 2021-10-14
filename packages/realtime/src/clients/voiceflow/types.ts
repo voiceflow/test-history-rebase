@@ -7,5 +7,8 @@ export interface Options extends BaseOptions {
 }
 
 export interface ExtraOptions extends BaseOptions {
-  axiosClient: AxiosInstance;
+  api: AxiosInstance;
+  alexa: AxiosInstance;
+  google: AxiosInstance;
+  general: AxiosInstance;
 }

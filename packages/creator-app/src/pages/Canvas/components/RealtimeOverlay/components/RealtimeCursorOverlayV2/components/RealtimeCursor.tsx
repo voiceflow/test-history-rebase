@@ -31,7 +31,7 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
 
   const state = React.useRef(CursorState.HIDDEN);
   const innerRef = React.useRef<HTMLDivElement>(null);
-  const awarenessHideCursor = useLocalDispatch(Realtime.diagram.awarenessHideCursor);
+  const awarenessHideCursor = useLocalDispatch(Realtime.diagram.awareness.hideCursor);
   const removeTimerRef = React.useRef<NodeJS.Timer | null>(null);
   const fadeoutTimerRef = React.useRef<NodeJS.Timer | null>(null);
   const color = React.useMemo(() => (rawColor.includes('|') ? `#${rawColor.split('|')[0]}` : '#f8758f'), [rawColor]);

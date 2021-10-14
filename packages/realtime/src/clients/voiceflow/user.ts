@@ -7,9 +7,9 @@ export interface UserClient {
   get: () => Promise<User | null>;
 }
 
-const Client = ({ axiosClient }: ExtraOptions): UserClient => ({
+const Client = ({ api }: ExtraOptions): UserClient => ({
   get: () =>
-    axiosClient
+    api
       .get<User | null>('/user')
       .then(({ data }) => data)
       .catch((err) => {

@@ -22,19 +22,19 @@ const initializeAwareness = <T extends Draft<RealtimeDiagramAwarenessState['curs
 
 const createViewer = (viewer: Realtime.Viewer) => ({ ...viewer, color: getAlternativeColor(viewer.creatorID), creator_id: viewer.creatorID });
 
-export const moveCursorReducer = createReducer(Realtime.diagram.awarenessMoveCursor, (state, { diagramID, creatorID, coords }) => {
+export const moveCursorReducer = createReducer(Realtime.diagram.awareness.moveCursor, (state, { diagramID, creatorID, coords }) => {
   const awarenessCursors = initializeAwareness(state.awareness.cursors, diagramID);
 
   awarenessCursors[creatorID] = coords;
 });
 
-export const hideCursorReducer = createReducer(Realtime.diagram.awarenessHideCursor, (state, { creatorID, diagramID }) => {
+export const hideCursorReducer = createReducer(Realtime.diagram.awareness.hideCursor, (state, { creatorID, diagramID }) => {
   const awarenessCursors = initializeAwareness(state.awareness.cursors, diagramID);
 
   delete awarenessCursors[creatorID];
 });
 
-export const updateDiagramViewers = createReducer(Realtime.project.awarenessUpdateViewers, (state, { diagramID, viewers }) => {
+export const updateDiagramViewers = createReducer(Realtime.project.awareness.updateViewers, (state, { diagramID, viewers }) => {
   initializeAwareness(state.awareness.viewers, diagramID);
 
   state.awareness.viewers[diagramID] = viewers.map(createViewer);
@@ -48,7 +48,7 @@ export const updateDiagramViewers = createReducer(Realtime.project.awarenessUpda
   }
 });
 
-export const loadViewersReducer = createReducer(Realtime.project.awarenessLoadViewers, (state, { viewers }) => {
+export const loadViewersReducer = createReducer(Realtime.project.awareness.loadViewers, (state, { viewers }) => {
   Object.keys(viewers).forEach((diagramID) => {
     initializeAwareness(state.awareness.viewers, diagramID);
 

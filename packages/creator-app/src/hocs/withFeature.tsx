@@ -39,3 +39,12 @@ export const withFeatureGate =
 
       return isEnabled ? <Component {...props} /> : <>{props.children}</>;
     });
+
+export const withoutFeatureGate =
+  (feature: FeatureFlag) =>
+  <T extends object>(Component: React.ComponentType<T>): React.ComponentType<T> =>
+    setDisplayName(wrapDisplayName(Component, 'withoutFeatureGate'))((props) => {
+      const { isEnabled } = useFeature(feature);
+
+      return isEnabled ? <>{props.children}</> : <Component {...props} />;
+    });

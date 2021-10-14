@@ -26,7 +26,7 @@ export const loadMembers =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await dispatch.sync(Realtime.workspace.crudActions.patch({ key: workspaceID, value: { members }, workspaceID }));
+        await dispatch.sync(Realtime.workspace.crud.patch({ key: workspaceID, value: { members } }));
       } else {
         dispatch(patchWorkspace(workspaceID, { members }));
       }
@@ -77,9 +77,7 @@ export const sendInviteToActiveWorkspace =
         const updatedMembers = [...currentMembers, newMember];
 
         if (atomicActionsEnabled) {
-          await dispatch.sync(
-            Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { members: updatedMembers }, workspaceID: activeWorkspaceID })
-          );
+          await dispatch.sync(Realtime.workspace.crud.patch({ key: activeWorkspaceID, value: { members: updatedMembers } }));
         } else {
           dispatch(patchWorkspace(activeWorkspaceID, { members: updatedMembers }));
         }
@@ -115,9 +113,7 @@ export const updateInviteToActiveWorkspace =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await dispatch.sync(
-          Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { members: updatedMembers }, workspaceID: activeWorkspaceID })
-        );
+        await dispatch.sync(Realtime.workspace.crud.patch({ key: activeWorkspaceID, value: { members: updatedMembers } }));
       } else {
         dispatch(patchWorkspace(activeWorkspaceID, { members: updatedMembers }));
       }
@@ -147,9 +143,7 @@ export const cancelInviteToActiveWorkspace =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await dispatch.sync(
-          Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { members: updatedMembers }, workspaceID: activeWorkspaceID })
-        );
+        await dispatch.sync(Realtime.workspace.crud.patch({ key: activeWorkspaceID, value: { members: updatedMembers } }));
       } else {
         dispatch(patchWorkspace(activeWorkspaceID, { members: updatedMembers }));
       }
@@ -178,9 +172,7 @@ export const updateMemberOfActiveWorkspace =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await dispatch.sync(
-          Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { members: updatedMembers }, workspaceID: activeWorkspaceID })
-        );
+        await dispatch.sync(Realtime.workspace.crud.patch({ key: activeWorkspaceID, value: { members: updatedMembers } }));
       } else {
         dispatch(patchWorkspace(activeWorkspaceID, { members: updatedMembers }));
       }
@@ -207,9 +199,7 @@ export const deleteMemberOfActiveWorkspace =
       const atomicActionsEnabled = Feature.isFeatureEnabledSelector(getState())(FeatureFlag.ATOMIC_ACTIONS);
 
       if (atomicActionsEnabled) {
-        await dispatch.sync(
-          Realtime.workspace.crudActions.patch({ key: activeWorkspaceID, value: { members: updatedMembers }, workspaceID: activeWorkspaceID })
-        );
+        await dispatch.sync(Realtime.workspace.crud.patch({ key: activeWorkspaceID, value: { members: updatedMembers } }));
       } else {
         dispatch(patchWorkspace(activeWorkspaceID, { members: updatedMembers }));
       }

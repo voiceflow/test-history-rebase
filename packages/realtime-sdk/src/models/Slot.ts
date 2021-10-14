@@ -1,3 +1,5 @@
+import { Version } from '@voiceflow/general-types';
+
 export interface SlotInput {
   id: string;
   value: string;
@@ -11,3 +13,5 @@ export interface Slot {
   color?: string;
   inputs: SlotInput[];
 }
+
+export type DBSlot = Version.GeneralVersionData['slots'][number];

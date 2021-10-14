@@ -1,8 +1,8 @@
 import { Constants } from '@voiceflow/alexa-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { batch } from 'react-redux';
 
 import client from '@/client';
-import { productAdapter } from '@/client/adapters/project';
 import * as Errors from '@/config/errors';
 import { NEW_PRODUCT_ID } from '@/constants';
 import * as Session from '@/ducks/session';
@@ -58,7 +58,7 @@ export const copyProduct =
 
     const copiedProduct = await client.platform.alexa.project.copyProduct(projectID, productID);
 
-    dispatch(addProduct(copiedProduct.productID, productAdapter.fromDB(copiedProduct)));
+    dispatch(addProduct(copiedProduct.productID, Realtime.Adapters.productAdapter.fromDB(copiedProduct)));
   };
 
 export const deleteProduct =
@@ -85,14 +85,14 @@ export const uploadProduct =
     Errors.assertProjectID(projectID);
 
     if (product.id === NEW_PRODUCT_ID) {
-      const alexaProduct = await client.platform.alexa.project.createProduct(projectID, productAdapter.toDB(product));
+      const alexaProduct = await client.platform.alexa.project.createProduct(projectID, Realtime.Adapters.productAdapter.toDB(product));
 
       batch(() => {
         dispatch(cancelProduct());
-        dispatch(addProduct(alexaProduct.productID, productAdapter.fromDB(alexaProduct)));
+        dispatch(addProduct(alexaProduct.productID, Realtime.Adapters.productAdapter.fromDB(alexaProduct)));
       });
     } else {
-      await client.platform.alexa.project.updateProduct(projectID, productID, { ...productAdapter.toDB(product), productID });
+      await client.platform.alexa.project.updateProduct(projectID, productID, { ...Realtime.Adapters.productAdapter.toDB(product), productID });
 
       dispatch(addProduct(productID, product));
     }
@@ -113,7 +113,7 @@ export const saveAllProductLocales =
           dispatch(updateProduct(product.id, { locales }, true));
 
           return client.platform.alexa.project.updateProduct(projectID, product.id, {
-            ...productAdapter.toDB({ ...product, locales }),
+            ...Realtime.Adapters.productAdapter.toDB({ ...product, locales }),
             productID: product.id,
           });
         })
@@ -129,9 +129,12 @@ export const copyNewProduct =
 
     Errors.assertProjectID(projectID);
 
-    const alexaProduct = await client.platform.alexa.project.createProduct(projectID, productAdapter.toDB({ ...product, id: NEW_PRODUCT_ID }));
+    const alexaProduct = await client.platform.alexa.project.createProduct(
+      projectID,
+      Realtime.Adapters.productAdapter.toDB({ ...product, id: NEW_PRODUCT_ID })
+    );
 
-    dispatch(addProduct(alexaProduct.productID, productAdapter.fromDB(alexaProduct)));
+    dispatch(addProduct(alexaProduct.productID, Realtime.Adapters.productAdapter.fromDB(alexaProduct)));
 
     return alexaProduct.productID;
   };

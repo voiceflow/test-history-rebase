@@ -4,6 +4,6 @@ import { createCRUDReducers } from '@/ducks/utils/crudV2';
 
 import { createReducer } from './utils';
 
-const crudReducers = createCRUDReducers(createReducer, Realtime.project.crudActions);
+const crudReducers = createCRUDReducers(createReducer, Realtime.project.crud);
 
 export default crudReducers;

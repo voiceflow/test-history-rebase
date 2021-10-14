@@ -1,6 +1,8 @@
 export * as array from './array';
+export * as diagram from './diagram';
 export * as expression from './expression';
 export * as functional from './functional';
+export * as globalVariables from './globalVariables';
 export * as id from './id';
 export * as mathjs from './mathjs';
 export * as normalized from './normalized';
@@ -9,3 +11,4 @@ export * as platform from './platform';
 export * as slot from './slot';
 export * as time from './time';
 export * as typeGuards from './typeGuards';
+export * as workspace from './workspace';

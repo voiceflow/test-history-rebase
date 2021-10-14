@@ -1,7 +1,6 @@
 import { BuiltInVariable } from '@/constants';
 
-// eslint-disable-next-line import/prefer-default-export
-export const VARIABLE_DESCRIPTION = {
+export const VARIABLE_DESCRIPTION: Record<string, string> = {
   [BuiltInVariable.SESSIONS]: 'The number of times a particular user has opened the app',
   [BuiltInVariable.USER_ID]: "The user's Amazon/Google unique ID",
   [BuiltInVariable.TIMESTAMP]: 'UNIX timestamp (number of seconds since January 1st, 1970 at UTC)',

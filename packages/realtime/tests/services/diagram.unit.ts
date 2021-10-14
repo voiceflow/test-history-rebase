@@ -42,7 +42,7 @@ describe('Diagram service unit tests', () => {
 
       const diagramService = new DiagramService({ services, clients } as any);
 
-      await expect(diagramService.canRead(diagramID, creatorID)).to.eventually.be.true;
+      await expect(diagramService.canRead(creatorID, diagramID)).to.eventually.be.true;
       expect(keyValueCacheClient.get).to.be.calledWithExactly({ diagramID, creatorID });
       expect(keyValueCacheClient.set).to.be.calledWithExactly({ diagramID, creatorID }, true);
       expect(voiceflowClient.diagram.canRead).be.calledWithExactly(creatorID, diagramID);

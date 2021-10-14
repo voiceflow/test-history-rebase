@@ -7,7 +7,7 @@ import { STATE_KEY } from './constants';
 import * as alexa from './platform/alexa';
 import * as general from './platform/general';
 import * as google from './platform/google';
-import { AnyPublishing, AnySettings, AnyVersion, VersionState } from './types';
+import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, VersionState } from './types';
 
 export { alexa, general, google };
 
@@ -19,7 +19,7 @@ export * from './types';
 
 export const versionCRUDReducer = createCRUDReducer<AnyVersion>(STATE_KEY);
 
-export const updateSettingsReducer: Reducer<VersionState, UpdateSettings<AnySettings>> = (state, { payload: { id, settings } }) => {
+export const updateSettingsReducer: Reducer<VersionState, UpdateSettings<AnyVersionSettings>> = (state, { payload: { id, settings } }) => {
   const version = getNormalizedByKey(state, id);
 
   return patchNormalizedByKey(state, id, {
@@ -30,7 +30,7 @@ export const updateSettingsReducer: Reducer<VersionState, UpdateSettings<AnySett
   });
 };
 
-export const updatePublishingReducer: Reducer<VersionState, UpdatePublishing<AnyPublishing>> = (state, { payload: { id, publishing } }) => {
+export const updatePublishingReducer: Reducer<VersionState, UpdatePublishing<AnyVersionPublishing>> = (state, { payload: { id, publishing } }) => {
   const version = getNormalizedByKey(state, id);
 
   return patchNormalizedByKey(state, id, {

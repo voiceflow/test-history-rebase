@@ -4,6 +4,7 @@ import { Constants } from '@voiceflow/general-types';
 import { Types as VoiceTypes } from '@voiceflow/voice-types';
 
 import { Normalized } from '../utils/normalized';
+import { AnyVersionPlatformData } from './Version';
 
 export type { BaseIntentSlot, BaseIntentSlotDialog, IntentInput };
 
@@ -52,3 +53,7 @@ export type Intent = ChatIntent | VoiceIntent;
 export type IntentSlot = VoiceIntentSlot | ChatIntentSlot;
 
 export type IntentSlotDialog = VoiceIntentSlotDialog | ChatIntentSlotDialog;
+
+export type DBIntent = AnyVersionPlatformData['intents'][number];
+
+export type AnyDBIntent = VoiceTypes.Intent<string> | ChatTypes.Intent;

@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractNodeActionControl } from './utils';
 
-class UpdateNodeDataControl extends AbstractNodeActionControl<Realtime.node.UpdateDataPayload> {
+class UpdateNodeData extends AbstractNodeActionControl<Realtime.node.UpdateDataPayload> {
   actionCreator = Realtime.node.updateData;
 
   process = async (): Promise<void> => {
@@ -10,4 +10,4 @@ class UpdateNodeDataControl extends AbstractNodeActionControl<Realtime.node.Upda
   };
 }
 
-export default UpdateNodeDataControl;
+export default UpdateNodeData;

@@ -122,7 +122,7 @@ export const createProjectList =
 
       Errors.assertWorkspaceID(_workspaceID);
 
-      await dispatch.sync(Realtime.projectList.crudActions.add({ workspaceID: _workspaceID, key: id, value: list }));
+      await dispatch.sync(Realtime.projectList.crud.add({ workspaceID: _workspaceID, key: id, value: list }));
 
       await dispatch(saveRealtimeProjectListsForWorkspace(_workspaceID));
     } else {
@@ -143,7 +143,7 @@ export const renameProjectList =
       Errors.assertWorkspaceID(activeWorkspaceID);
 
       await dispatch.sync(
-        Realtime.projectList.crudActions.patch({
+        Realtime.projectList.crud.patch({
           key: listID,
           value: { name },
           workspaceID: activeWorkspaceID,
@@ -167,7 +167,7 @@ export const clearNewProjectList =
       Errors.assertWorkspaceID(activeWorkspaceID);
 
       await dispatch.sync(
-        Realtime.projectList.crudActions.patch({
+        Realtime.projectList.crud.patch({
           key: listID,
           value: { isNew: false },
           workspaceID: activeWorkspaceID,
@@ -192,7 +192,7 @@ export const saveProjectToList =
       await client.projectList.update(workspaceID, replace(lists, 0, newList));
 
       if (atomicActionsEnabled) {
-        await dispatch.sync(Realtime.projectList.crudActions.patch({ workspaceID, key: newList.id, value: { projects: newList.projects } }));
+        await dispatch.sync(Realtime.projectList.crud.patch({ workspaceID, key: newList.id, value: { projects: newList.projects } }));
       }
     } catch (err) {
       Sentry.error(err);
@@ -213,7 +213,7 @@ export const addProjectToDefaultList =
     }
 
     if (atomicActionsEnabled) {
-      await dispatch.sync(Realtime.projectList.crudActions.patch({ workspaceID, key: defaultList.id, value: { projects: defaultList.projects } }));
+      await dispatch.sync(Realtime.projectList.crud.patch({ workspaceID, key: defaultList.id, value: { projects: defaultList.projects } }));
 
       await dispatch(saveRealtimeProjectListsForWorkspace(workspaceID));
     } else {
@@ -236,7 +236,7 @@ export const deleteProjectList =
     if (atomicActionsEnabled) {
       Errors.assertWorkspaceID(activeWorkspaceID);
 
-      await dispatch.sync(Realtime.projectList.crudActions.remove({ workspaceID: activeWorkspaceID, key: listID }));
+      await dispatch.sync(Realtime.projectList.crud.remove({ workspaceID: activeWorkspaceID, key: listID }));
 
       await dispatch(saveRealtimeProjectListsForWorkspace(activeWorkspaceID));
     } else {
@@ -260,7 +260,7 @@ export const deleteProjectFromList =
       Errors.assert(list, listNotFoundError());
 
       await dispatch.sync(
-        Realtime.projectList.crudActions.patch({
+        Realtime.projectList.crud.patch({
           key: listID,
           value: { projects: withoutValue(list.projects, projectID) },
           workspaceID: activeWorkspaceID,

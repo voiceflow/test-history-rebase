@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.27.0...@voiceflow/realtime-sdk@1.28.0) (2021-10-14)
+
+
+### Features
+
+* implement core resource action processors (VF-1980) ([#4297](https://github.com/voiceflow/creator-app/issues/4297)) ([e05626c](https://github.com/voiceflow/creator-app/commit/e05626c50e693c72fe1dcc6311d8e1dfadf74319))
+
+
+
+
+
 # [1.27.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.26.1...@voiceflow/realtime-sdk@1.27.0) (2021-10-14)
 
 

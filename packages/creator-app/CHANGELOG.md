@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.517.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.516.0...@voiceflow/creator-app@1.517.0) (2021-10-14)
+
+
+### Features
+
+* implement core resource action processors (VF-1980) ([#4297](https://github.com/voiceflow/creator-app/issues/4297)) ([e05626c](https://github.com/voiceflow/creator-app/commit/e05626c50e693c72fe1dcc6311d8e1dfadf74319))
+
+
+
+
+
 # [1.516.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.515.2...@voiceflow/creator-app@1.516.0) (2021-10-14)
 
 

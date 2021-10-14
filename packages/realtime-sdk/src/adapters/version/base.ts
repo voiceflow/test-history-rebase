@@ -1,7 +1,6 @@
 import { Version as BaseVersion } from '@voiceflow/base-types';
 
-import { Version } from '@/models';
-
+import { Version } from '../../models';
 import { AdapterNotImplementedError, createAdapter } from '../utils';
 
 type SharedFields = 'creatorID' | 'projectID' | 'rootDiagramID' | 'folders' | 'topics' | 'components';

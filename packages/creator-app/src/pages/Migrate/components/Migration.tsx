@@ -91,7 +91,9 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
         skillID,
         products: sanitizedProducts,
       };
-      if (!projectMember?.vendors?.find((vendor) => vendor.vendorID === vendorID)) {
+      if (!projectMember) {
+        await client.api.project.member.create(projectID, { platformData: { vendors: [vendorData], selectedVendor: vendorID } });
+      } else if (!projectMember?.vendors?.find((vendor) => vendor.vendorID === vendorID)) {
         await client.api.project.member.platformDataAdd(projectID, 'vendors', vendorData);
       } else {
         await client.api.project.member.platformDataUpdate(projectID, 'vendors.[$vendorID]', vendorData, { vendorID });

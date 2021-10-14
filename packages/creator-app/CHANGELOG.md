@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.517.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.4...@voiceflow/creator-app@1.517.5) (2021-10-14)
+
+
+### Bug Fixes
+
+* revert onboarding reroute (VF-000) ([2e486d0](https://github.com/voiceflow/creator-app/commit/2e486d05b668e4191a7241d09ce187170b243dc6))
+
+
+
+
+
 ## [1.517.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.3...@voiceflow/creator-app@1.517.4) (2021-10-14)
 
 

@@ -54,7 +54,11 @@ const MarkupTextNode: React.ForwardRefRenderFunction<BlockAPI, MarkupProps> = ({
     draggableParentsCache.current = draggableParents;
   }, []);
 
-  const onMouseUp = React.useCallback((event: React.MouseEvent) => event.preventDefault(), []);
+  const onMouseUp = React.useCallback((event: React.MouseEvent) => {
+    // For panning the canvas
+    const middleMouseClick = event.button === 1;
+    !middleMouseClick && event.preventDefault();
+  }, []);
 
   const onDragStart = React.useCallback(
     (event: React.DragEvent) => {

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.517.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.7...@voiceflow/creator-app@1.517.8) (2021-10-15)
+
+
+### Bug Fixes
+
+* sticky pan on markup (VF-1938) ([#4329](https://github.com/voiceflow/creator-app/issues/4329)) ([f54bb80](https://github.com/voiceflow/creator-app/commit/f54bb80cdd395fe08fda0d295663a71277f44e06))
+
+
+
+
+
 ## [1.517.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.6...@voiceflow/creator-app@1.517.7) (2021-10-15)
 
 **Note:** Version bump only for package @voiceflow/creator-app

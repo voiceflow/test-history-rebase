@@ -6,6 +6,8 @@ const ProjectItem = styled.div`
   padding: 11px 24px;
   width: 100%;
   text-align: left;
+  display: flex;
+  align-items: center;
 
   &:hover {
     cursor: pointer;

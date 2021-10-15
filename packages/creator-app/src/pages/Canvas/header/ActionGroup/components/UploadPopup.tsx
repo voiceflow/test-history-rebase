@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
+import { useHotKeys, useOnClickOutside } from '@/hooks';
+import { Hotkey } from '@/keymap';
 
 import PopupCloseIcon from './PopupCloseIcon';
 import PopupContainer from './PopupContainer';
@@ -14,12 +16,18 @@ export interface UploadPopupProps {
   multiSelect?: boolean;
 }
 
-const UploadPopup: React.FC<UploadPopupProps> = ({ open, onClose, children, jobStage, multiSelect, className }) =>
-  !children ? null : (
-    <PopupContainer open={open} jobStage={jobStage} multiSelect={multiSelect} className={className}>
+const UploadPopup: React.FC<UploadPopupProps> = ({ open, onClose, children, jobStage, multiSelect, className }) => {
+  const ref = React.useRef(null);
+  useOnClickOutside(ref, onClose);
+
+  useHotKeys(Hotkey.CLOSE_UPLOAD_MODAL, onClose, { preventDefault: true }, [onClose]);
+
+  return !children ? null : (
+    <PopupContainer open={open} jobStage={jobStage} multiSelect={multiSelect} className={className} ref={ref}>
       <PopupCloseIcon onClick={onClose} />
       <PopupTransition>{children}</PopupTransition>
     </PopupContainer>
   );
+};
 
 export default UploadPopup;

@@ -7,5 +7,7 @@ export { default as ErrorStage } from './ErrorStage';
 export { default as LoaderStage } from './LoaderStage';
 export { default as ProgressStage } from './ProgressStage';
 export { default as ProjectItem } from './ProjectItem';
+export { default as ProjectSelectionFooter } from './ProjectSelectionFooter';
+export { default as ProjectSelectionFooterLink } from './ProjectSelectionFooterLink';
 export { default as StageContainer } from './StageContainer';
 export { default as StageHeader } from './StageHeader';

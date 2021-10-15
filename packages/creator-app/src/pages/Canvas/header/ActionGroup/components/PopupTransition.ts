@@ -16,6 +16,7 @@ const PopupTransition = styled.div`
   animation: ${slideIn} ${ANIMATION_SPEED}s ease-in-out ${ANIMATION_SPEED}s;
   animation-fill-mode: both;
   width: 100%;
+  height: 100%;
 `;
 
 export default PopupTransition;

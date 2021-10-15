@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
-import { ProjectItem } from '../../components';
-
-const CreateAgentLink = styled(ProjectItem)`
+const ProjectSelectionFooterLink = styled.div`
   text-align: center;
   padding: 0;
   height: 100%;
@@ -10,6 +8,7 @@ const CreateAgentLink = styled(ProjectItem)`
   align-items: center;
   justify-content: center;
   color: #5d9df5;
+  cursor: pointer;
 `;
 
-export default CreateAgentLink;
+export default ProjectSelectionFooterLink;

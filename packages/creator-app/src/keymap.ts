@@ -38,6 +38,7 @@ export enum Hotkey {
   PROTOTYPE_CLOSE_FULL_SCREEN = 'PROTOTYPE_CLOSE_FULL_SCREEN',
   PROTOTYPE_FULL_SCREEN_TOGGLE = 'PROTOTYPE_FULL_SCREEN_TOGGLE',
   SAVE = 'SAVE',
+  CLOSE_UPLOAD_MODAL = 'CLOSE_UPLOAD_MODAL',
 
   /**
    * @deprecated remove after topics and components are released
@@ -111,6 +112,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
     `${SpecialKey.SHIFT}+${SpecialKey.CTRL}+s`,
     `${SpecialKey.SHIFT}+${SpecialKey.META}+s`,
   ],
+  [Hotkey.CLOSE_UPLOAD_MODAL]: SpecialKey.ESC,
 };
 
 const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {

@@ -3612,9 +3612,9 @@
     nanoevents "^6.0.0"
 
 "@logux/server@^0.10.0":
-  version "0.10.3"
-  resolved "https://registry.yarnpkg.com/@logux/server/-/server-0.10.3.tgz#fd7857399dddaf0f8ac3ee882e895a937d0a2e33"
-  integrity sha512-Ikhn0mWCBJ5iYQ2gWAt6ZYp1vkY+sr1aU0UWS7EtCcP88ugCx9KUkQhmQfXRSF/wfSIgCyG1/aOUrQJScj+ObA==
+  version "0.10.6"
+  resolved "https://registry.yarnpkg.com/@logux/server/-/server-0.10.6.tgz#afd5a79e854edf28514a310ea64abb35408a7346"
+  integrity sha512-ixwahCjVTW7baUma5+7PvwJtAfZihRQOorJNhV485Avfx/Lj+18tdpf5svLlT9nj1mx43QwiVxJ1uRpjpyVQcQ==
   dependencies:
     "@logux/actions" "^0.2.1"
     "@logux/core" "^0.7.2"
@@ -3624,12 +3624,12 @@
     dotenv "^10.0.0"
     globby "^11.0.4"
     ip "^1.1.5"
-    nanocolors "^0.1.1"
     nanodelay "^2.0.1"
     nanoevents "^6.0.1"
-    nanoid "^3.1.25"
+    nanoid "^3.1.28"
     node-fetch "^2.6.1"
-    pino "^6.13.2"
+    picocolors "^0.2.1"
+    pino "^6.13.3"
     semver "^7.3.5"
     strip-ansi "^7.0.1"
     url-pattern "^1.0.3"
@@ -17292,11 +17292,6 @@ nano-time@1.0.0:
   dependencies:
     big-integer "^1.6.16"
 
-nanocolors@^0.1.1:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/nanocolors/-/nanocolors-0.1.12.tgz#8577482c58cbd7b5bb1681db4cf48f11a87fd5f6"
-  integrity sha512-2nMHqg1x5PU+unxX7PGY7AuYxl2qDx7PSrTRjizr8sxdd3l/3hBuWWaki62qmtYm2U5i4Z5E7GbjlyDFhs9/EQ==
-
 nanodelay@^2.0.0, nanodelay@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/nanodelay/-/nanodelay-2.0.1.tgz#5130d339c330c09e656f2bda6032e6bf4153b80a"
@@ -17312,10 +17307,10 @@ nanoid@3.1.23:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.23.tgz#f744086ce7c2bc47ee0a8472574d5c78e4183a81"
   integrity sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==
 
-nanoid@^3.1.20, nanoid@^3.1.23, nanoid@^3.1.25:
-  version "3.1.25"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.25.tgz#09ca32747c0e543f0e1814b7d3793477f9c8e152"
-  integrity sha512-rdwtIXaXCLFAQbnfqDRnI6jaRHp9fTcYBjtFKE8eezcZ7LuLjhUaQGNeMXf1HmRoCH32CLz6XwX0TtxEOS/A3Q==
+nanoid@^3.1.20, nanoid@^3.1.23, nanoid@^3.1.28:
+  version "3.1.30"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.30.tgz#63f93cc548d2a113dc5dfbc63bfa09e2b9b64362"
+  integrity sha512-zJpuPDwOv8D2zq2WRoMe1HsfZthVewpel9CAvTfc/2mBD1uUT/agc5f7GHGWXlYkFvi1mVxe4IjvP2HNrop7nQ==
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -18863,6 +18858,11 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
+picocolors@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-0.2.1.tgz#570670f793646851d1ba135996962abad587859f"
+  integrity sha512-cMlDqaLEqfSaW8Z7N5Jw+lyIW869EzT73/F5lhtY9cLGoVxSXznfgfXMO0Z5K0o0Q2TkTXq+0KFsdnSe3jDViA==
+
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.0.tgz#f1f061de8f6a4bf022892e2d128234fb98302972"
@@ -18919,7 +18919,7 @@ pino-std-serializers@^3.1.0:
   resolved "https://registry.yarnpkg.com/pino-std-serializers/-/pino-std-serializers-3.2.0.tgz#b56487c402d882eb96cd67c257868016b61ad671"
   integrity sha512-EqX4pwDPrt3MuOAAUBMU0Tk5kR/YcCM5fNPEzgCO2zJ5HfX0vbiH9HbJglnyeQsN96Kznae6MWD47pZB5avTrg==
 
-pino@^6.0.0, pino@^6.13.2:
+pino@^6.0.0, pino@^6.13.3:
   version "6.13.3"
   resolved "https://registry.yarnpkg.com/pino/-/pino-6.13.3.tgz#60b93bcda1541f92fb37b3f2be0a25cf1d05b6fe"
   integrity sha512-tJy6qVgkh9MwNgqX1/oYi3ehfl2Y9H0uHyEEMsBe74KinESIjdMrMQDWpcZPpPicg3VV35d/GLQZmo4QgU2Xkg==

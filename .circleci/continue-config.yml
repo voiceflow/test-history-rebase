@@ -87,18 +87,10 @@ defaults:
       tags:
         only: /^@voiceflow/realtime@[0-9]*(\.[0-9]*)*$/
 
-  ignore_autorebase_staging_filters: &ignore_autorebase_staging_filters
+  ignore_staging_filters: &ignore_staging_filters
     branches:
       ignore:
-        - /rebase-pull-request-.*/
-        - /cherry-pick-rebase-pull-request-.*/
         - staging
-
-  ignore_autorebase_filters: &ignore_autorebase_filters
-    branches:
-      ignore:
-        - /rebase-pull-request-.*/
-        - /cherry-pick-rebase-pull-request-.*/
 
   slack-fail-post-step: &slack-fail-post-step
     post-steps:
@@ -571,7 +563,6 @@ workflows:
           force_execute: true
           context: dev-test
           filters:
-            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
             branches:
@@ -584,7 +575,6 @@ workflows:
           requires:
             - check-track-creator-app-exists
           filters:
-            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
             branches:
@@ -601,7 +591,6 @@ workflows:
             - check-track-creator-app-exists
             - build-app-track
           filters:
-            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
             branches:
@@ -622,7 +611,6 @@ workflows:
           force_execute: true
           context: dev-test
           filters:
-            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
             branches:
@@ -632,7 +620,6 @@ workflows:
           context: dev-test
           name: build-admin-track
           filters:
-            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
             branches:
@@ -646,7 +633,6 @@ workflows:
             - check-track-admin-app-exists
             - build-admin-track
           filters:
-            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
             branches:
@@ -666,7 +652,6 @@ workflows:
           force_execute: true
           context: dev-test
           filters:
-            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
             branches:
@@ -676,7 +661,6 @@ workflows:
           force_execute: true
           name: build-realtime-track
           filters:
-            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
             branches:
@@ -691,7 +675,6 @@ workflows:
             - check-track-realtime-exists
             - build-realtime-track
           filters:
-            <<: *ignore_autorebase_filters
             tags:
               ignore: /.*/
             branches:
@@ -703,7 +686,7 @@ workflows:
           <<: *slack-fail-post-step
           context: dev-test
           filters:
-            <<: *ignore_autorebase_staging_filters
+            <<: *ignore_staging_filters
 
       - vfcommon/test_e2e:
           context: dev-test
@@ -713,7 +696,7 @@ workflows:
           force_execute: << pipeline.parameters.build-frontend >>
           <<: *slack-fail-post-step
           filters:
-            <<: *ignore_autorebase_staging_filters
+            <<: *ignore_staging_filters
 
       - build-app:
           <<: *slack-fail-post-step
@@ -724,7 +707,7 @@ workflows:
           post-steps:
             - jira/notify
           filters:
-            <<: *ignore_autorebase_staging_filters
+            <<: *ignore_staging_filters
 
       - build-admin:
           <<: *slack-fail-post-step
@@ -735,7 +718,7 @@ workflows:
           post-steps:
             - jira/notify
           filters:
-            <<: *ignore_autorebase_staging_filters
+            <<: *ignore_staging_filters
 
       - build-realtime:
           <<: *slack-fail-post-step
@@ -745,7 +728,7 @@ workflows:
           post-steps:
             - jira/notify
           filters:
-            <<: *ignore_autorebase_staging_filters
+            <<: *ignore_staging_filters
 
       - vfcommon/release_monorepo:
           <<: *slack-fail-post-step

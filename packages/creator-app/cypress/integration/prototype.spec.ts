@@ -142,30 +142,6 @@ context('Prototype', () => {
         prototypePage.el.systemResponse.should('have.text', systemPrompt);
         prototypePage.el.messageInput.type('yes{enter}');
         prototypePage.assertFinished();
-        prototypePage.el.resetPrototypeButton.click();
-
-        // Click start button and send with send button
-        prototypePage.startPrototype();
-        prototypePage.awaitMessage();
-        prototypePage.el.systemResponse.should('have.text', systemPrompt);
-        prototypePage.el.messageInput.type('yes');
-        prototypePage.el.submitMessageInputButton.click();
-        prototypePage.assertFinished();
-        prototypePage.el.resetPrototypeButton.click();
-
-        // Use buttons
-        prototypePage.startPrototype();
-        prototypePage.awaitMessage();
-        prototypePage.el.systemResponse.should('have.text', systemPrompt);
-        prototypePage.el.buttons.should('have.length', 1).click();
-        prototypePage.assertFinished();
-        prototypePage.el.resetPrototypeButton.click();
-
-        // Reset button in the middle of a conversation
-        prototypePage.startPrototype();
-        prototypePage.awaitMessage();
-        prototypePage.el.systemResponse.should('have.text', systemPrompt);
-        prototypePage.el.resetPrototypeButton.click();
       });
 
       it('voice and transcript', () => {

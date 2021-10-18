@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.517.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.8...@voiceflow/creator-app@1.517.9) (2021-10-18)
+
+
+### Bug Fixes
+
+* fixes dialogflow upload popup layout (VF-1960) ([#4324](https://github.com/voiceflow/creator-app/issues/4324)) ([f25944a](https://github.com/voiceflow/creator-app/commit/f25944a46b347ab72a507f849848b2c5a46d2e43))
+* remove button asssert (VF-000) ([#4336](https://github.com/voiceflow/creator-app/issues/4336)) ([0079b9d](https://github.com/voiceflow/creator-app/commit/0079b9d029d06e659cd255949d45b8f73635c14c))
+
+
+
+
+
 ## [1.517.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.517.7...@voiceflow/creator-app@1.517.8) (2021-10-15)
 
 

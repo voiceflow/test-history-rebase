@@ -44,8 +44,9 @@ export const performSave =
 export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) => {
   const state = getState();
   const diagramType = DiagramSelectors.activeDiagramTypeSelector(state);
+  const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
 
-  if (diagramType !== DiagramType.TOPIC) {
+  if (diagramType !== DiagramType.TOPIC || !isTopicsAndComponents) {
     return;
   }
 

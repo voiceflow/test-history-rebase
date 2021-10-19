@@ -22,6 +22,8 @@ export interface TextListProps {
   itemComponent: ItemComponent;
   onChangeItems: (items: Node.Text.TextData[]) => void;
   howItWorksLink?: string;
+  label?: string;
+  randomize?: boolean;
   getControlOptions?: (options: { isMaxMatches: boolean; onAdd: () => void }) => ControlOptions[];
 }
 
@@ -30,9 +32,11 @@ const TextList = ({
   children,
   maxItems,
   renderMenu,
+  randomize,
   onChangeItems,
   itemComponent,
   howItWorksLink,
+  label = 'Add Variant',
   getControlOptions,
 }: React.PropsWithChildren<TextListProps>): React.ReactElement<any, any> => (
   <ListEditorContent
@@ -42,6 +46,9 @@ const TextList = ({
     factory={factory}
     maxItems={maxItems}
     renderMenu={renderMenu}
+    extraItemProps={{
+      isRandomized: randomize,
+    }}
     onChangeItems={onChangeItems}
     itemComponent={itemComponent}
     howItWorksLink={howItWorksLink}
@@ -50,7 +57,7 @@ const TextList = ({
         ? getControlOptions({ isMaxMatches, onAdd: chainVoid(onAdd, () => requestAnimationFrame(() => scrollToBottom())) })
         : [
             {
-              label: 'Add Variant',
+              label,
               icon: NODE_CONFIG.icon,
               onClick: chainVoid(onAdd, () => requestAnimationFrame(() => scrollToBottom())),
               disabled: isMaxMatches,

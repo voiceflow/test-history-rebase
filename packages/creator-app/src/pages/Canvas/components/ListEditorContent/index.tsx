@@ -14,6 +14,7 @@ import { chain } from '@/utils/functional';
 export type ListItemExtraProps<E = {}> = DragPreviewComponentProps &
   E & {
     isOnlyItem: boolean;
+    isRandomized?: boolean;
     latestCreatedKey: string | undefined;
   };
 

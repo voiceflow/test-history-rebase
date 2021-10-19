@@ -26,11 +26,11 @@ const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemP
     connectedDragRef,
     isDraggingPreview,
     isContextMenuOpen,
+    isRandomized,
   },
   ref
 ) => {
   const isNew = latestCreatedKey === itemKey;
-
   return (
     <EditorSection
       ref={ref}
@@ -39,6 +39,7 @@ const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemP
       prefix={<SvgIcon icon={NODE_CONFIG.icon!} color={NODE_CONFIG.iconColor} />}
       headerRef={connectedDragRef}
       isDragging={isDragging}
+      suffix={isRandomized && 'randomLoop'}
       initialOpen={isNew || isOnlyItem}
       headerToggle
       onContextMenu={onContextMenu}

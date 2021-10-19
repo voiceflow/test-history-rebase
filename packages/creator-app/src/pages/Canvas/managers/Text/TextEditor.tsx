@@ -10,7 +10,6 @@ import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 const TextEditor: NodeEditor<NodeData.Text> = ({ data, onChange }) => {
   const canvasVisibilityOption = useCanvasVisibilityOption(data.canvasVisibility, (canvasVisibility) => onChange({ canvasVisibility }));
-
   return (
     <TextList
       items={data.texts}

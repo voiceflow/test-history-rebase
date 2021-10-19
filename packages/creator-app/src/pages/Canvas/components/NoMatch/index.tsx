@@ -87,6 +87,7 @@ const NoMatch: React.FC<NoMatchProps & ConnectedNoMatchProps> = ({ onChange, noM
       return (
         <ChatNoMatchList
           {...(localNoMatches as NodeData.ChatNoMatches)}
+          onChangeRandomize={() => setLocalNoMatches({ ...localNoMatches, randomize: !localNoMatches.randomize })}
           onChangeReprompts={(reprompts) => setLocalNoMatches({ ...localNoMatches, reprompts })}
         >
           {children}

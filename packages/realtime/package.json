@@ -34,7 +34,7 @@
     "@types/ioredis": "^4.26.5",
     "deep-equal-in-any-order": "^1.0.27",
     "node-dev": "^7.0.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.8"
   },
   "license": "UNLICENSED",
   "private": true,

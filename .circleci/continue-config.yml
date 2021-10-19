@@ -218,6 +218,7 @@ jobs:
                 paths:
                   - packages/realtime-sdk/build
                   - packages/realtime/build
+                  - packages/realtime/Dockerfile
                   - packages/realtime/yarn.lock
 
   build-admin:

@@ -100,6 +100,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const account = useSelector(Account.userSelector);
   const firstLogin = useSelector(Account.isFirstLoginSelector);
   const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
+  const hasTemplateWorkspace = useSelector(WorkspaceV2.hasTemplatesWorkspaceSelector);
 
   const createWorkspace = useDispatch(Workspace.createWorkspace);
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
@@ -480,7 +481,10 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     },
   };
 
-  return isLoginFlow && !sendingRequests && workspaces.length && search.promo !== PromoType.STUDENT ? (
+  const templateWorkspacesLength = hasTemplateWorkspace ? 1 : 0;
+  const alreadyHasFreeWorkspace = workspaces.length - templateWorkspacesLength > 0;
+
+  return isLoginFlow && !sendingRequests && alreadyHasFreeWorkspace && search.promo !== PromoType.STUDENT ? (
     <Redirect to={Path.DASHBOARD} />
   ) : (
     <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>

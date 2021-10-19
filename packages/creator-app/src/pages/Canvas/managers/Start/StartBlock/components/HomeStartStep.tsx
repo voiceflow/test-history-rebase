@@ -9,12 +9,13 @@ import { getPlatformValue } from '@/utils/platform';
 import { isAnyGeneralPlatform } from '@/utils/typeGuards';
 
 export interface HomeStartStepProps {
+  label?: string;
+  portID: string;
   platform: Constants.PlatformType;
   invocationName: string;
-  portID: string;
 }
 
-const HomeStartStep: React.FC<HomeStartStepProps> = ({ platform, invocationName, portID }) => (
+const HomeStartStep: React.FC<HomeStartStepProps> = ({ label, platform, invocationName, portID }) => (
   <Step disableHighlightStyle>
     <Section>
       <Item
@@ -26,7 +27,7 @@ const HomeStartStep: React.FC<HomeStartStepProps> = ({ platform, invocationName,
             [Constants.PlatformType.ALEXA]: <Text color="#132144">Alexa, open {invocationName}</Text>,
             [Constants.PlatformType.GOOGLE]: <Text color="#132144">Hey Google, start {invocationName}</Text>,
           },
-          <>Project starts here</>
+          <>{label || 'Project starts here'}</>
         )}
         labelVariant={isAnyGeneralPlatform(platform) ? StepLabelVariant.SECONDARY : StepLabelVariant.PRIMARY}
         portID={portID}

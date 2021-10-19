@@ -17,6 +17,7 @@ import invalidPlatformAdapter from './invalidPlatform';
 import markupImageAdapter from './markupImage';
 import markupTextAdapter from './markupText';
 import { migrationBlockAdapter } from './migration';
+import startDataAdapter from './start';
 import { PortsAdapter } from './utils';
 
 const BLOCK_TYPE_MAPPING: [string, BlockType][] = [['block', BlockType.COMBINED]];
@@ -60,7 +61,7 @@ const getPlatformAdapter = createPlatformSelector<Partial<Record<BlockType, unkn
 
 const commonBlockAdapter = {
   // internal
-  [BlockType.START]: blockDataAdapter,
+  [BlockType.START]: startDataAdapter,
   [BlockType.COMMENT]: null,
   [BlockType.COMBINED]: blockDataAdapter,
   [BlockType.DEPRECATED]: null,

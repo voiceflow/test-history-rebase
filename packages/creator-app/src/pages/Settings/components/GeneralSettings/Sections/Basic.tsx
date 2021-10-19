@@ -1,5 +1,5 @@
 import { Constants as AlexaConstants, Utils as AlexaUtils } from '@voiceflow/alexa-types';
-import { Constants, Constants as GeneralConstants } from '@voiceflow/general-types';
+import { Constants } from '@voiceflow/general-types';
 import { Constants as DialogflowConstants } from '@voiceflow/google-dfes-types';
 import { Constants as GoogleConstants, Utils as GoogleUtils } from '@voiceflow/google-types';
 import { Box, BoxFlex, Input, Select, useDidUpdateEffect } from '@voiceflow/ui';
@@ -22,7 +22,7 @@ import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { without } from '@/utils/array';
 import { getPlatformValue } from '@/utils/platform';
-import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isAnyGeneralPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWithInvocationName } from '@/utils/typeGuards';
 
 import { PlatformSettingsMetaProps, SettingSections } from '../../../constants';
 
@@ -60,7 +60,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   const [projectImage, setProjectImage] = React.useState(project?.image ?? '');
 
   const [alexaLocales, setAlexaLocales] = React.useState<AlexaConstants.Locale[]>((locales || []) as AlexaConstants.Locale[]);
-  const [generalLocale, setGeneralLocale] = React.useState<GeneralConstants.Locale>((locales as GeneralConstants.Locale[])[0]);
+  const [generalLocale, setGeneralLocale] = React.useState<Constants.Locale>((locales as Constants.Locale[])[0]);
   const [googleLanguage, setGoogleLanguage] = React.useState<string | GoogleConstants.Language>(initialGoogleLanguage);
   const [dialogflowLanguage, setDialogflowLanguage] = React.useState<string | DialogflowConstants.Language>(initialDialogflowLanguage);
 
@@ -78,7 +78,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         [Constants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
       },
       _constant(null)
-    )(newInvocation as string, alexaLocales);
+    )(newInvocation, isGooglePlatform(platform) ? GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language] : alexaLocales);
 
   const saveAlexaLocales = () => (isAlexaPlatform(platform) && locales !== alexaLocales ? saveLocales(alexaLocales) : null);
 
@@ -134,7 +134,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         </BoxFlex>
       </Section>
 
-      {!isAnyGeneralPlatform(platform) && !isDialogflowPlatform(platform) && (
+      {isPlatformWithInvocationName(platform) && (
         <Section
           header="Invocation Name"
           variant={SectionVariant.QUATERNARY}
@@ -202,8 +202,8 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
               onSelect={setGeneralLocale}
               searchable
               placeholder="Locale"
-              getOptionValue={(option) => option?.value || GeneralConstants.Locale.EN_US}
-              getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as GeneralConstants.Locale] ?? ''}
+              getOptionValue={(option) => option?.value || Constants.Locale.EN_US}
+              getOptionLabel={(value) => GENERAL_LOCALE_NAME_MAP[value as Constants.Locale] ?? ''}
               renderOptionLabel={(option) => option.name}
             />
           )

@@ -34,7 +34,7 @@ const Component: React.FC<ComponentProps & ConnectedComponentProps> = ({
   diagramID,
   goToDiagram,
   enterOnCreate = true,
-  createDiagram,
+  createComponent,
   saveActiveDiagram,
 }) => {
   const [value, setValue] = React.useState(diagram ? generateDiagramValue(diagram) : null);
@@ -59,9 +59,8 @@ const Component: React.FC<ComponentProps & ConnectedComponentProps> = ({
   const onCreate = React.useCallback(
     async (name: string) => {
       await saveActiveDiagram();
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const newDiagramID = await createDiagram(name);
+
+      const newDiagramID = await createComponent(name);
 
       setValue(generateDiagramValue({ id: newDiagramID, name }));
       setSelectedDiagram(newDiagramID);
@@ -69,7 +68,7 @@ const Component: React.FC<ComponentProps & ConnectedComponentProps> = ({
         goToDiagram(newDiagramID);
       }
     },
-    [options, setSelectedDiagram, goToDiagram, createDiagram, saveActiveDiagram, enterOnCreate]
+    [options, setSelectedDiagram, goToDiagram, createComponent, saveActiveDiagram, enterOnCreate]
   );
 
   const validateCreate = (name: string) => {
@@ -108,7 +107,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  createDiagram: Diagram.createDiagram,
+  createComponent: Diagram.createComponentDiagram,
   saveActiveDiagram: Diagram.saveActiveDiagram,
   goToDiagram: Router.goToDiagramHistoryPush,
 };

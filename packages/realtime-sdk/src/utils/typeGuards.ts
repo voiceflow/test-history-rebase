@@ -9,6 +9,7 @@ import {
   INTERNAL_NODES,
   MARKUP_AND_COMBINED_NODES,
   MARKUP_NODES,
+  PLATFORMS_WITH_INVOCATION_NAME,
   ROOT_AND_MARKUP_NODES,
   ROOT_NODES,
 } from '../constants';
@@ -41,6 +42,9 @@ export const isMobileAppPlatform = createPlatformTypeGuard(Constants.PlatformTyp
 
 export const isDialogflowPlatform = (type: string | Constants.PlatformType): type is typeof DIALOGFLOW_PLATFORMS[number] =>
   DIALOGFLOW_PLATFORMS.includes(type as typeof DIALOGFLOW_PLATFORMS[number]);
+
+export const isPlatformWithInvocationName = (type: string | Constants.PlatformType): type is typeof PLATFORMS_WITH_INVOCATION_NAME[number] =>
+  PLATFORMS_WITH_INVOCATION_NAME.includes(type as typeof PLATFORMS_WITH_INVOCATION_NAME[number]);
 
 export const isDistinctPlatform = (type: string | Constants.PlatformType): type is typeof DISTINCT_PLATFORMS[number] =>
   DISTINCT_PLATFORMS.includes(type as typeof DISTINCT_PLATFORMS[number]);

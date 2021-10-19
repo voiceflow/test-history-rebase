@@ -32,11 +32,13 @@ const generatePath =
   ({
     type,
     engine,
+    updatePath,
     parentType,
     parentNodeID,
   }: {
     type?: BlockType | null;
     engine: Engine;
+    updatePath: (entries: PathEntry[]) => void;
     parentType?: BlockType | null;
     parentNodeID?: string | null;
   }) =>
@@ -53,6 +55,17 @@ const generatePath =
             label: (type !== BlockType.COMBINED && getManager(parentType)?.label) || 'Block',
             focus: () => engine.focus.set(parentNodeID),
           },
+          ...(parentType === BlockType.START
+            ? [
+                {
+                  label: 'Commands',
+                  focus: () => {
+                    engine.focus.set(parentNodeID);
+                    updatePath([{ label: getManager(BlockType.START)?.label || 'Block' }, { label: 'Commands', type: 'commands' }]);
+                  },
+                },
+              ]
+            : []),
           ...blockPath,
         ]
       : blockPath;
@@ -70,11 +83,19 @@ export const useEditorPath = () => {
     parent = engine.select(Creator.dataByNodeIDSelector)(node.parentNode);
   }
 
+  const updatePathRef = React.useRef<(entries: PathEntry[]) => void>(() => {});
+  const skipOriginalPathRedirect = React.useRef(false);
+
   const originalPath = React.useMemo(
     () =>
       generatePath({
         type: node?.type,
         engine,
+        updatePath: (entries: PathEntry[]) => {
+          skipOriginalPathRedirect.current = true;
+
+          updatePathRef.current(entries);
+        },
         parentType: parent?.type,
         parentNodeID: parent?.nodeID,
       })(getManager),
@@ -83,7 +104,7 @@ export const useEditorPath = () => {
   const [path, updatePath] = React.useState(originalPath);
 
   const goToPath = React.useCallback(
-    (index) =>
+    (index: number) =>
       updatePath((prevPath) => {
         const newPath = prevPath.slice(0, index + 1);
 
@@ -93,11 +114,17 @@ export const useEditorPath = () => {
       }),
     [updatePath]
   );
-  const pushToPath = React.useCallback((subPath) => updatePath((prevPath) => [...prevPath, subPath]), [updatePath]);
+  const pushToPath = React.useCallback((subPath: PathEntry) => updatePath((prevPath) => [...prevPath, subPath]), [updatePath]);
   const popFromPath = React.useCallback(() => updatePath((prevPath) => prevPath.slice(0, -1)), [updatePath]);
 
+  updatePathRef.current = updatePath;
+
   React.useEffect(() => {
-    updatePath(originalPath);
+    if (!skipOriginalPathRedirect.current) {
+      updatePath(originalPath);
+    } else {
+      skipOriginalPathRedirect.current = false;
+    }
   }, [originalPath]);
 
   return { node, path, goToPath, pushToPath, popFromPath };

@@ -18,5 +18,6 @@ export const {
   isMobileAppPlatform,
   isDistinctPlatform,
   isAnyGeneralPlatform,
+  isPlatformWithInvocationName,
   truthy,
 } = Utils.typeGuards;

@@ -25,6 +25,7 @@ export interface PlatformSettingsMetaProps {
   descriptors: {
     projectName: React.FC | string;
     invocationName?: React.FC | string;
+    invocationNameShort?: React.FC | string;
     localesDescriptor?: React.FC | string;
     continuePrevious?: React.FC | string;
     allowRepeat?: React.FC | string;
@@ -53,6 +54,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       descriptors: {
         projectName: Alexa.ProjectName,
         invocationName: Alexa.InvocationName,
+        invocationNameShort: Alexa.InvocationNameShort,
         localesDescriptor: Alexa.Locales,
         continuePrevious: Universal.ContinuePrevious,
         allowRepeat: Universal.AllowRepeat,
@@ -72,6 +74,7 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       descriptors: {
         projectName: Google.ProjectName,
         invocationName: Google.InvocationName,
+        invocationNameShort: Alexa.InvocationNameShort,
         localesDescriptor: Google.Locales,
         continuePrevious: Universal.ContinuePrevious,
         allowRepeat: Universal.AllowRepeat,

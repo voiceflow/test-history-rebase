@@ -24,6 +24,7 @@ export type BlockNodeData<T> = NodeData<T> & {
 export namespace NodeData {
   export interface Start {
     name: string;
+    label: string;
     blockColor: BlockVariant;
   }
 

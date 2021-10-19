@@ -1,3 +1,4 @@
+import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
@@ -12,14 +13,17 @@ const ProjectName: React.FC = () => (
 const InvocationName: React.FC = () => (
   <DescriptorContainer>
     The name users will say or type to interact with your Google Action. This does not need to be the same as your project name, but must comply with
-    these
-    <a target="_blank" rel="noreferrer" href="https://developers.google.com/assistant/conversational/df-asdk/discovery">
-      {' '}
-      guidelines.
-    </a>
+    these <Link href="https://developers.google.com/assistant/conversational/df-asdk/discovery">guidelines.</Link>
+  </DescriptorContainer>
+);
+
+const InvocationNameShort: React.FC = () => (
+  <DescriptorContainer>
+    The phrase users will say or type to interact with your Google Action. This name must comply with{' '}
+    <Link href="https://developers.google.com/assistant/conversational/df-asdk/discovery">Google’s guidelines.</Link>
   </DescriptorContainer>
 );
 
 const Locales: React.FC = () => <DescriptorContainer>Choose the language you would like your Google Action to support.</DescriptorContainer>;
 
-export default { ProjectName, InvocationName, Locales };
+export default { ProjectName, InvocationName, Locales, InvocationNameShort };

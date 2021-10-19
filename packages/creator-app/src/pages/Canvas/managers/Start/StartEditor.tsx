@@ -1,0 +1,49 @@
+import React from 'react';
+
+import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
+import { FeatureFlag } from '@/config/features';
+import * as Version from '@/ducks/version';
+import { useFeature, useSelector } from '@/hooks';
+import { NodeData } from '@/models';
+import { Content } from '@/pages/Canvas/components/Editor';
+import EditorSection from '@/pages/Canvas/components/EditorSection';
+import { HelpMessage, HelpTooltip } from '@/pages/Canvas/managers/Command/components';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
+import { PlatformContext } from '@/pages/Skill/contexts';
+import { isPlatformWithInvocationName } from '@/utils/typeGuards';
+
+import { InvocationNameSection, StartLabelSection } from './components';
+import { COMMANDS_PATH_TYPE } from './constants';
+
+const StartEditor: NodeEditor<NodeData.Start> = ({ data, onChange, pushToPath }) => {
+  const platform = React.useContext(PlatformContext)!;
+  const isRootDiagram = useSelector(Version.isRootDiagramActiveSelector);
+  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+
+  const componentDefaultLabel = topicsAndComponents.isEnabled ? 'Component starts here' : 'Conversation continues here';
+
+  return (
+    <Content>
+      {isRootDiagram && isPlatformWithInvocationName(platform) ? (
+        <InvocationNameSection />
+      ) : (
+        <StartLabelSection
+          label={data.label || (isRootDiagram ? 'Project starts here' : componentDefaultLabel)}
+          onChangeLabel={(label) => onChange({ label })}
+        />
+      )}
+
+      <EditorSection
+        header="Commands"
+        isLink
+        tooltip={<HelpTooltip />}
+        onClick={() => pushToPath?.({ type: COMMANDS_PATH_TYPE, label: 'Commands' })}
+        dividers
+        tooltipProps={{ title: 'Commands Tutorial', helpMessage: <HelpMessage /> }}
+        headerVariant={HeaderVariant.LINK}
+      />
+    </Content>
+  );
+};
+
+export default StartEditor;

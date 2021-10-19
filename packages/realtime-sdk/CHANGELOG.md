@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.28.1...@voiceflow/realtime-sdk@1.29.0) (2021-10-19)
+
+
+### Features
+
+* update start editor (VF-2012) ([#4328](https://github.com/voiceflow/creator-app/issues/4328)) ([e580953](https://github.com/voiceflow/creator-app/commit/e58095377e57066d3a7dd7cef0d5ced4c00032be))
+
+
+
+
+
 ## [1.28.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.28.0...@voiceflow/realtime-sdk@1.28.1) (2021-10-14)
 
 

@@ -543,8 +543,8 @@ jobs:
             - vfcommon/update_track:
                 image_repo: << pipeline.parameters.container-image-url-realtime >>
                 component: << pipeline.parameters.track-component-realtime >>
-                dockerfile: <<# parameters.local_registry >> packages/realtime/Dockerfile <</ parameters.local_registry >><<^ parameters.local_registry >> Dockerfile <</ parameters.local_registry >>
-                build_context: <<# parameters.local_registry >> packages/realtime <</ parameters.local_registry >><<^ parameters.local_registry >> . <</ parameters.local_registry >>
+                dockerfile: packages/realtime/Dockerfile
+                build_context: packages/realtime
                 local_registry: << parameters.local_registry >>
                 checkout: false
 

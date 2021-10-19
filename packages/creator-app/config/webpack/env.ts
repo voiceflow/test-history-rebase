@@ -19,6 +19,7 @@ import {
   ff_motorolaSSO,
   ff_natoApco,
   ff_ownerRole,
+  ff_project_versions,
   ff_topicsAndComponents,
   ff_wavenetVoices,
   ga,
@@ -73,6 +74,7 @@ export default {
   FF_DIALOGFLOW: ff_dialogflow && 'true',
   FF_GOOGLE_CREATE: ff_googleCreate && 'true',
   FF_TOPICS_AND_COMPONENTS: ff_topicsAndComponents && 'true',
+  FF_PROJECT_VERSIONS: ff_project_versions && 'true',
 
   API_HOST: host || 'localhost',
   ROOT_DOMAIN: '',

@@ -1,13 +1,16 @@
 import { Constants } from '@voiceflow/general-types';
-import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
+import { BillingPeriod, PlanType, PromoType, UserRole } from '@voiceflow/internal';
 import { ButtonVariant, toast } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
+import queryString from 'query-string';
 import React from 'react';
 import { useDispatch as useReduxDispatch } from 'react-redux';
+import { Redirect, useLocation } from 'react-router-dom';
 
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
 import { IS_PRIVATE_CLOUD, USERFLOW_ONBOARDING_FLOW_ID } from '@/config';
+import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
@@ -89,6 +92,8 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   isLoginFlow, // This boolean represents if the user hits the onboarding flow from a link/new signup, or from the dashboard 'create workspace' button
 }) => {
   const dispatch = useReduxDispatch();
+  const location = useLocation();
+  const search = queryString.parse(location.search);
 
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
@@ -475,7 +480,11 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     },
   };
 
-  return <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
+  return isLoginFlow && !sendingRequests && workspaces.length && search.promo !== PromoType.STUDENT ? (
+    <Redirect to={Path.DASHBOARD} />
+  ) : (
+    <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>
+  );
 };
 
 export const OnboardingProvider = withStripe(UnconnectedOnboardingProvider) as React.FC<Omit<OnboardingProviderProps, 'stripe' | 'checkChargeable'>>;

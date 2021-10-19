@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.519.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.519.0...@voiceflow/creator-app@1.519.1) (2021-10-19)
+
+
+### Bug Fixes
+
+*  onboarding redirect logic (VF-1005) ([#4340](https://github.com/voiceflow/creator-app/issues/4340)) ([c5f6d58](https://github.com/voiceflow/creator-app/commit/c5f6d582c0df58571844497c699014f2df5bd8b9))
+
+
+
+
+
 # [1.519.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.518.1...@voiceflow/creator-app@1.519.0) (2021-10-19)
 
 

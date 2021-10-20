@@ -201,7 +201,16 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
   [PlatformFeature.EXPORT]: {
     name: 'Export',
     color: '#c83e5a',
-    description: 'NLU specific exports for Rasa, Dialogflow, Luis and more...',
+    description: (platform) =>
+      getPlatformValue(
+        platform,
+        {
+          [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: 'Dialogflow specific NLU model export',
+          // eslint-disable-next-line sonarjs/no-identical-functions
+          [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: 'Dialogflow specific NLU model export',
+        },
+        'NLU specific exports for Rasa, Dialogflow, Luis and more...'
+      ),
   },
   [PlatformFeature.DESIGN]: {
     name: 'Design',

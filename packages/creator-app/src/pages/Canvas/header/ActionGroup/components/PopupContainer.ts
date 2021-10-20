@@ -28,6 +28,8 @@ const PopupContainer = styled.div<PopupContainerProps>`
   z-index: 1000;
   flex-direction: column;
   align-items: center;
+  min-width: 350px;
+  max-width: ${({ width = 350 }) => `${width}px`};
   white-space: normal;
   background-color: #fff;
   border-radius: 5px;
@@ -35,34 +37,16 @@ const PopupContainer = styled.div<PopupContainerProps>`
   transform: translate3d(0, 0, 0);
   animation: ${fadeIn} ${ANIMATION_SPEED}s ease-in-out;
 
-  ${({ jobStage }) => {
-    // eslint-disable-next-line sonarjs/no-small-switch
-    switch (jobStage) {
-      case DialogflowStageType.IDLE:
-      case DialogflowStageType.SUCCESS:
-      case DialogflowStageType.ERROR:
-      case DialogflowStageType.WAIT_PROJECT:
-        return css`
-          ${PopupCloseIcon} {
-            display: none;
-          }
-        `;
-      default:
-        return css`
-          ${PopupCloseIcon} {
-            position: absolute;
-            top: 0px;
-            right: 0px;
-            padding: 24px;
-            z-index: 100;
-          }
-        `;
-    }
-  }}
+  ${PopupCloseIcon} {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 24px;
+    z-index: 100;
+  }
 
-  ${({ open, jobStage }) =>
+  ${({ open }) =>
     open &&
-    jobStage &&
     css`
       box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
     `}
@@ -70,19 +54,6 @@ const PopupContainer = styled.div<PopupContainerProps>`
   ${({ jobStage }) => {
     // eslint-disable-next-line sonarjs/no-small-switch
     switch (jobStage) {
-      case DialogflowStageType.IDLE:
-      case DialogflowStageType.ERROR:
-      case DialogflowStageType.WAIT_PROJECT:
-        return css`
-          min-width: 254px;
-          max-width: 254px;
-          padding: 0px;
-        `;
-      case DialogflowStageType.SUCCESS:
-        return css`
-          width: 350px;
-          height: 154px;
-        `;
       case GoogleStageType.WAIT_PROJECT:
         return css`
           min-width: 420px;
@@ -103,33 +74,14 @@ const PopupContainer = styled.div<PopupContainerProps>`
     }
   }}
 
-  ${({ multiSelect, jobStage }) => {
-    if (!multiSelect) return;
-
-    switch (jobStage) {
-      case DialogflowStageType.IDLE:
-      case DialogflowStageType.ERROR:
-      case DialogflowStageType.WAIT_PROJECT:
-        return css`
-          min-width: 254px;
-          max-width: 254px;
-          padding: 0px;
-        `;
-      case DialogflowStageType.SUCCESS:
-        return css`
-          width: 350px;
-          height: 154px;
-          padding: 0px;
-        `;
-      default:
-        return css`
-          min-width: 254px;
-          max-width: 254px;
-          right: 180px;
-          padding: 0px;
-        `;
-    }
-  }}
+  ${({ multiSelect }) =>
+    multiSelect &&
+    css`
+      min-width: 254px;
+      max-width: 254px;
+      right: 180px;
+      padding: 0px;
+    `}
 `;
 
 export default PopupContainer;

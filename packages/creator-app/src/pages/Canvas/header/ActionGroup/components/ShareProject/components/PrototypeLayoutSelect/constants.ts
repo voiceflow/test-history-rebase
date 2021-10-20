@@ -47,6 +47,7 @@ const GENERAL_LAYOUT_OPTIONS = [PrototypeLayout.TEXT_DIALOG, PrototypeLayout.VOI
 export const getLayoutOptions = createPlatformSelector(
   {
     [Constants.PlatformType.CHATBOT]: CHATBOT_LAYOUT_OPTIONS,
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: CHATBOT_LAYOUT_OPTIONS,
   },
   GENERAL_LAYOUT_OPTIONS
 );

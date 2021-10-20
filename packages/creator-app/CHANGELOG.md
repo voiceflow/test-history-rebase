@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.519.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.519.4...@voiceflow/creator-app@1.519.5) (2021-10-20)
+
+
+### Bug Fixes
+
+* change speak placeholder for dfes ([#4344](https://github.com/voiceflow/creator-app/issues/4344)) ([0bddcc1](https://github.com/voiceflow/creator-app/commit/0bddcc1e234d31c9c07a333da1b862112680cff3))
+* hide voice and visual testing option for dfes chat (VF-2029) ([#4345](https://github.com/voiceflow/creator-app/issues/4345)) ([6cae152](https://github.com/voiceflow/creator-app/commit/6cae1520c244477d301287dc05329a7cb613f53f))
+
+
+
+
+
 ## [1.519.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.519.3...@voiceflow/creator-app@1.519.4) (2021-10-20)
 
 

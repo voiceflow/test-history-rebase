@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.519.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.519.3...@voiceflow/creator-app@1.519.4) (2021-10-20)
+
+
+### Bug Fixes
+
+* upload alexa/google popover (VF-2063) ([#4347](https://github.com/voiceflow/creator-app/issues/4347)) ([ddcb2f8](https://github.com/voiceflow/creator-app/commit/ddcb2f8a7af494147dd5a2ad0f49ae98c88b6758))
+
+
+
+
+
 ## [1.519.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.519.2...@voiceflow/creator-app@1.519.3) (2021-10-19)
 
 

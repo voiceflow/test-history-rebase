@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.519.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.519.5...@voiceflow/creator-app@1.519.6) (2021-10-20)
+
+
+### Bug Fixes
+
+* change export pill text for dfes ([#4341](https://github.com/voiceflow/creator-app/issues/4341)) ([b394265](https://github.com/voiceflow/creator-app/commit/b39426584d8ad14382313894b4ef3e0fec1a4fab))
+
+
+
+
+
 ## [1.519.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.519.4...@voiceflow/creator-app@1.519.5) (2021-10-20)
 
 

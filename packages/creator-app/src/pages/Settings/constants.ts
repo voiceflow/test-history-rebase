@@ -1,7 +1,6 @@
 import { Constants } from '@voiceflow/general-types';
 import React from 'react';
 
-import { Tab } from '@/components/Settings/components/SettingsTabs';
 import { createPlatformSelector } from '@/utils/platform';
 
 import { Alexa, Dialogflow, General, Google, Universal } from './components/ContentDescriptors';
@@ -13,11 +12,6 @@ export enum SettingSections {
   CHANNEL_SPECIFIC_FEATURES = 'Channel Specific Features',
   DANGER_ZONE = 'Danger Zone',
 }
-
-export const Tabs = {
-  GENERAL: { label: 'General', path: 'general' },
-  VERSIONS: { label: 'Versions', path: 'version' },
-};
 
 export interface PlatformSettingsMetaProps {
   name: string;
@@ -36,7 +30,6 @@ export interface PlatformSettingsMetaProps {
     modelSensitivity?: React.FC | string;
     defaultVoice?: React.FC | string;
   };
-  tabs: Tab[];
   localeText?: string;
 }
 
@@ -65,7 +58,6 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
         modelSensitivity: Alexa.ModelSensitivity,
         defaultVoice: Universal.DefaultVoice,
       },
-      tabs: [Tabs.GENERAL, Tabs.VERSIONS],
       localeText: 'Locales',
     },
     [Constants.PlatformType.GOOGLE]: {
@@ -81,7 +73,6 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
         repeatDialog: General.RepeatDialog,
         repeatEverything: General.RepeatEverything,
       },
-      tabs: [Tabs.GENERAL, Tabs.VERSIONS],
       localeText: 'Language',
     },
     [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: {
@@ -92,7 +83,6 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
         localesDescriptor: Dialogflow.Locales,
         repeatEverything: General.RepeatEverything,
       },
-      tabs: [Tabs.GENERAL, Tabs.VERSIONS],
       localeText: 'Language',
     },
     [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: {
@@ -103,7 +93,6 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
         localesDescriptor: Dialogflow.Locales,
         repeatEverything: General.RepeatEverything,
       },
-      tabs: [Tabs.GENERAL, Tabs.VERSIONS],
       localeText: 'Language',
     },
     [Constants.PlatformType.CHATBOT]: {
@@ -112,7 +101,6 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
       descriptors: {
         projectName: General.ProjectName,
       },
-      tabs: [Tabs.GENERAL],
     },
   },
   {
@@ -121,6 +109,5 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
     descriptors: {
       projectName: General.ProjectName,
     },
-    tabs: [Tabs.GENERAL],
   }
 );

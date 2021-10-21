@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.28.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.28.0...@voiceflow/ui@1.28.1) (2021-10-21)
+
+
+### Bug Fixes
+
+* rename custom payload and update icon (VF-2022) ([#4349](https://github.com/voiceflow/creator-app/issues/4349)) ([d7a0a15](https://github.com/voiceflow/creator-app/commit/d7a0a15015856d6ff16ed6c0763839420e49fb39))
+
+
+
+
+
 # [1.28.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.27.0...@voiceflow/ui@1.28.0) (2021-10-14)
 
 

@@ -10,7 +10,7 @@ import CustomPayloadStep from './CustomPayloadStep';
 const CustomPayloadManager: NodeManagerConfig<NodeData.CustomPayload> = {
   ...NODE_CONFIG,
 
-  label: 'Custom Payload',
+  label: 'Custom Response',
   platforms: [Constants.PlatformType.DIALOGFLOW_ES_CHAT, Constants.PlatformType.DIALOGFLOW_ES_VOICE],
 
   step: CustomPayloadStep,

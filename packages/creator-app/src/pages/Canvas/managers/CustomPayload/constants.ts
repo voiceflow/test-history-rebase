@@ -7,7 +7,7 @@ import { NodeConfig } from '../types';
 export const NODE_CONFIG: NodeConfig<NodeData.CustomPayload> = {
   type: BlockType.CUSTOM_PAYLOAD,
 
-  icon: 'customPayload',
+  icon: 'customResponse',
 
   factory: () => ({
     node: {
@@ -17,7 +17,7 @@ export const NODE_CONFIG: NodeConfig<NodeData.CustomPayload> = {
       },
     },
     data: {
-      name: 'Custom Payload',
+      name: 'Custom Response',
       customPayload: '',
     },
   }),

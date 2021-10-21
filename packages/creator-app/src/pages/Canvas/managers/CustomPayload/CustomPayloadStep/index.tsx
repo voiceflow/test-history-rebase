@@ -16,10 +16,10 @@ export const CustomPayloadStep: React.FC<CustomPayloadStepProps> = ({ nodeID, po
     <Section>
       <Item
         icon={NODE_CONFIG.icon}
-        label="Add custom payload"
+        label="Add custom response"
         portID={portID}
         iconColor={NODE_CONFIG.iconColor}
-        placeholder="Add custom payload"
+        placeholder="Add custom response"
         labelVariant={StepLabelVariant.SECONDARY}
       />
     </Section>

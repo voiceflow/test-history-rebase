@@ -56,6 +56,7 @@ export { default as creditCard } from './credit-card.svg';
 export { default as cursor } from './cursor.svg';
 export { default as custom } from './custom.svg';
 export { default as customPayload } from './custom-payload.svg';
+export { default as customResponse } from './custom-response.svg';
 export { default as checked } from './images/icons/check.svg';
 // d
 export { default as designer } from './designer.svg';

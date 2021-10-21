@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.30.0...@voiceflow/realtime-sdk@1.31.0) (2021-10-21)
+
+
+### Features
+
+* **realtime-sdk:** creates custom payload adapter (VF-2024) ([#4350](https://github.com/voiceflow/creator-app/issues/4350)) ([adf9d2a](https://github.com/voiceflow/creator-app/commit/adf9d2a5cc286b941b0abf167081cc45d9653879))
+
+
+
+
+
 # [1.30.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.29.0...@voiceflow/realtime-sdk@1.30.0) (2021-10-21)
 
 

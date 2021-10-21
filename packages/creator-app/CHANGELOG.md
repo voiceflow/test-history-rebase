@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.521.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.520.0...@voiceflow/creator-app@1.521.0) (2021-10-21)
+
+
+### Features
+
+* enable version menu for all projects (VF-818) ([#4334](https://github.com/voiceflow/creator-app/issues/4334)) ([fe63f66](https://github.com/voiceflow/creator-app/commit/fe63f66d04d948aec0a62ff38a9089fe029b3381))
+
+
+
+
+
 # [1.520.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.519.6...@voiceflow/creator-app@1.520.0) (2021-10-21)
 
 

@@ -28,7 +28,7 @@ export const waitJobFinished = async <J extends Job>({
 
     if (job.status === JobStatus.FINISHED && job.stage.type === JobBuiltinStageType.SUCCESS) return;
 
-    await delay(1000);
+    await delay(2000);
 
     await check(count + 1);
   };

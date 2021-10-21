@@ -23,9 +23,9 @@ const compilePrototype =
     Errors.assertProjectID(projectID);
     Errors.assertVersionID(versionID);
 
-    try {
-      const platformPrototypeService = client.platform(platform).prototype;
+    const platformPrototypeService = client.platform(platform).prototype;
 
+    try {
       await platformPrototypeService.run(projectID, diagramID);
 
       await waitJobFinished({
@@ -42,6 +42,7 @@ const compilePrototype =
 
       dispatch(resetPrototype());
     } catch (err) {
+      platformPrototypeService.cancel(projectID);
       Sentry.error(err);
       dispatch(Modal.setError('Could Not Render Your Test Project'));
     }

@@ -11,6 +11,7 @@ import { BidirectionalAdapter } from '../../utils';
 import { alexaBlockAdapter, alexaPortsAdapter } from './alexa';
 import blockDataAdapter from './block';
 import { chatBlockAdapter } from './chat';
+import { dialogflowAdapter } from './dialogflow';
 import { generalBlockAdapter, generalPortsAdapter } from './general';
 import { googleBlockAdapter, googlePortsAdapter } from './google';
 import invalidPlatformAdapter from './invalidPlatform';
@@ -55,6 +56,8 @@ const getPlatformAdapter = createPlatformSelector<Partial<Record<BlockType, unkn
     [Constants.PlatformType.ALEXA]: alexaBlockAdapter,
     [Constants.PlatformType.GOOGLE]: googleBlockAdapter,
     [Constants.PlatformType.CHATBOT]: chatBlockAdapter,
+    [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: dialogflowAdapter,
+    [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: dialogflowAdapter,
   },
   generalBlockAdapter
 );

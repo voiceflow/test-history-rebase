@@ -227,6 +227,16 @@ export const createComponent =
     return { name, diagramID };
   };
 
+export const createEmptyComponent =
+  (name: string): Thunk<string> =>
+  async (dispatch) => {
+    const diagramID = await dispatch(createComponentDiagram(name));
+
+    await dispatch(addDiagramIDIntoComponentsList(diagramID));
+
+    return diagramID;
+  };
+
 export const copyDiagram =
   (diagramID: string, { openDiagram = false }: { openDiagram?: boolean } = {}): Thunk<string> =>
   async (dispatch, getState) => {

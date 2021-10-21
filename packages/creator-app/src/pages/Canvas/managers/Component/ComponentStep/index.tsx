@@ -22,13 +22,13 @@ export const ComponentStep: React.FC<ComponentStepProps> = ({ label, nodeID, por
   <Step nodeID={nodeID}>
     <Section>
       <Item
+        icon={NODE_CONFIG.icon}
         label={label}
         portID={portID}
         onClick={label ? stopPropagation(onClickComponent) : undefined}
-        labelVariant={StepLabelVariant.SECONDARY}
-        icon={NODE_CONFIG.icon}
         iconColor={NODE_CONFIG.iconColor}
-        placeholder="Connect a component to this step"
+        placeholder="Select a component"
+        labelVariant={StepLabelVariant.SECONDARY}
       />
     </Section>
   </Step>

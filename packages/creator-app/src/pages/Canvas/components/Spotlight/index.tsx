@@ -24,6 +24,7 @@ const Spotlight = () => {
   const [inputValue, setInputValue] = React.useState('');
   const [trackingEvents] = useTrackingEvents();
   const gadgets = useFeature(FeatureFlag.GADGETS);
+  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
 
   const isVisible = !!spotlight?.isVisible;
 
@@ -39,6 +40,8 @@ const Spotlight = () => {
         .flatMap((section) => section.steps)
         .filter((step) => {
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
+          if (!topicsAndComponents.isEnabled && step.type === BlockType.COMPONENT) return false;
+          if (topicsAndComponents.isEnabled && step.type === BlockType.FLOW) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
           return true;
         }),

@@ -11,7 +11,7 @@ import * as Realtime from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import { useDispatch, useEventualEngine, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
-import { LastCreatedComponentContext, SelectionTargetsContext } from '@/pages/Skill/contexts';
+import { LastCreatedComponentContext, SelectionSetTargetsContext, SelectionTargetsContext } from '@/pages/Skill/contexts';
 import { usePrototypingMode } from '@/pages/Skill/hooks';
 import { Identifier } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
@@ -21,6 +21,7 @@ import { Container, DiagramsActions, ProjectActions, ProjectTitle, ViewOnly } fr
 
 const ProjectAndDiagramActions: React.FC = () => {
   const selectedTargets = React.useContext(SelectionTargetsContext);
+  const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext);
 
   const lockResource = useDispatch(() => Realtime.sendRealtimeProjectUpdate(Realtime.lockResource(Realtime.ResourceType.SETTINGS)));
@@ -83,6 +84,8 @@ const ProjectAndDiagramActions: React.FC = () => {
     const diagramID = await engine.createComponent();
 
     lastCreatedComponent.setComponentID(diagramID);
+
+    setSelectedTargets([]);
   };
 
   const onDuplicate = () => {

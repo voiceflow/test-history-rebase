@@ -20,7 +20,7 @@ const ItemNameContainer = styled(Flex)<ItemNameContainerProps>`
   ${transition('background', 'border-color', 'box-shadow')}
 
   width: calc(100% - 16px);
-  margin: ${({ isFirst }) => (isFirst ? '2px 8px 0 8px' : '0 8px')};
+  margin: ${({ isFirst }) => (isFirst ? '4px 8px 0 8px' : '0 8px')};
   padding: 6px 12px 6px 6px;
   min-height: ${ITEM_HEIGHT}px;
   border-radius: 5px;
@@ -55,6 +55,8 @@ const ItemNameContainer = styled(Flex)<ItemNameContainerProps>`
   ${({ isDraggingPreview }) =>
     isDraggingPreview &&
     css`
+      margin: 0;
+      width: 100%;
       padding-left: 16px;
       box-shadow: 0 6px 12px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.06);
       background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.3), rgba(238, 244, 246, 0.45)),

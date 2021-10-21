@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { Section } from '@/components/Tooltip';
+import { Section, Title } from '@/components/Tooltip';
 
-const AvailabilityTooltip: React.FC = () => {
-  return (
-    <>
-      <Section>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias, est quod velit cupiditate nisi eligendi libero fugit laborum nostrum hic
-        quisquam soluta ratione expedita quibusdam quis reiciendis unde adipisci aperiam!
-      </Section>
-    </>
-  );
-};
+const AvailabilityTooltip: React.FC = () => (
+  <>
+    <Title>Global and local intents</Title>
+
+    <Section>
+      When toggled on, the selected intent is global, meaning it can be triggered from anywhere in the project. When off, the selected intent is local
+      to the topic, meaning it can only be accessed if the user is already in this topic.
+    </Section>
+  </>
+);
 
 export default AvailabilityTooltip;

@@ -137,16 +137,21 @@ export namespace NodeData {
     smallImage: string | null;
   }
 
+  export interface VariableMapping {
+    to: string | null;
+    from: string | null;
+  }
+
   export interface Flow {
     diagramID: string | null;
-    inputs?: { from: string | null; to: string | null }[];
-    outputs?: { from: string | null; to: string | null }[];
+    inputs?: VariableMapping[];
+    outputs?: VariableMapping[];
   }
 
   export interface Component {
     diagramID: string | null;
-    inputs?: { from: string | null; to: string | null }[];
-    outputs?: { from: string | null; to: string | null }[];
+    inputs?: VariableMapping[];
+    outputs?: VariableMapping[];
   }
 
   export interface Reminder {

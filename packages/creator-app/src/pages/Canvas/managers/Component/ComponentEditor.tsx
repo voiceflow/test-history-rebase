@@ -3,24 +3,32 @@ import React from 'react';
 import Section from '@/components/Section';
 import * as Diagram from '@/ducks/diagram';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs';
+import { useDispatch, useSelector } from '@/hooks';
 import { NodeData } from '@/models';
 import { Content } from '@/pages/Canvas/components/Editor';
-import { NodeEditor, NodeEditorPropsType } from '@/pages/Canvas/managers/types';
+import { NodeEditor } from '@/pages/Canvas/managers/types';
 import { FadeLeftContainer } from '@/styles/animations';
-import { ConnectedProps, MergeArguments } from '@/types';
 
 import { Component, Footer, Mapping } from './components';
 import { variableMappingFactory } from './components/Mapping/components/MappingSection';
 
-const ComponentEditor: NodeEditor<NodeData.Component, ConnectedComponentEditorProps> = ({
-  data,
-  onChange,
-  diagram,
-  loadComponentVariables,
-  goToDiagram,
-}) => {
-  const hasVariableMapping = !!data.inputs?.length || !!data.outputs?.length;
+const ComponentEditor: NodeEditor<NodeData.Component> = ({ data, onChange }) => {
+  const getDiagramByID = useSelector(Diagram.diagramByIDSelector);
+
+  const diagram = data.diagramID ? getDiagramByID(data.diagramID) : null;
+
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
+  const loadComponentVariables = useDispatch(Diagram.loadLocalVariables);
+
+  const addVariableMapping = React.useCallback(() => {
+    const emptyVariableMap = variableMappingFactory();
+
+    onChange({ inputs: [emptyVariableMap], outputs: [emptyVariableMap] });
+  }, [onChange]);
+
+  const clearVariableMapping = React.useCallback(() => {
+    onChange({ inputs: [], outputs: [] });
+  }, [onChange]);
 
   React.useEffect(() => {
     if (diagram?.id) {
@@ -28,31 +36,24 @@ const ComponentEditor: NodeEditor<NodeData.Component, ConnectedComponentEditorPr
     }
   }, [diagram?.id]);
 
-  const emptyMapping = React.useCallback(() => {
-    onChange({ inputs: [], outputs: [] });
-  }, [onChange]);
-
-  const startMapping = React.useCallback(() => {
-    const emptyVariableMap = variableMappingFactory();
-    onChange({ inputs: [emptyVariableMap], outputs: [emptyVariableMap] });
-  }, [onChange]);
+  const hasVariableMapping = !!data.inputs?.length || !!data.outputs?.length;
 
   return (
     <Content
       fillHeight={false}
       footer={() => (
         <Footer
-          diagram={diagram}
-          hasVariableMapping={hasVariableMapping}
-          emptyMapping={emptyMapping}
-          startMapping={startMapping}
-          goToDiagram={goToDiagram}
+          onEdit={() => diagram && goToDiagram(diagram.id)}
+          editable={!!diagram}
           blockType={data.type}
+          addVariableMapping={addVariableMapping}
+          hasVariableMapping={hasVariableMapping}
+          clearVariableMapping={clearVariableMapping}
         />
       )}
     >
       <Section>
-        <Component onChange={onChange} diagram={diagram} diagramID={data.diagramID} />
+        <Component onChange={onChange} diagramID={diagram?.id ?? null} />
       </Section>
 
       {hasVariableMapping && diagram ? (
@@ -64,27 +65,4 @@ const ComponentEditor: NodeEditor<NodeData.Component, ConnectedComponentEditorPr
   );
 };
 
-const mapStateToProps = {
-  diagramByID: Diagram.diagramByIDSelector,
-};
-
-const mapDispatchToProps = {
-  goToDiagram: Router.goToDiagramHistoryPush,
-  loadComponentVariables: Diagram.loadLocalVariables,
-};
-
-const mergeProps = (
-  ...[{ diagramByID }, { goToDiagram }, { data }]: MergeArguments<
-    typeof mapStateToProps,
-    typeof mapDispatchToProps,
-    NodeEditorPropsType<NodeData.Component>
-  >
-) => {
-  return {
-    diagram: data.diagramID ? diagramByID(data.diagramID) : null,
-    goToDiagram: () => goToDiagram(data.diagramID!),
-  };
-};
-
-type ConnectedComponentEditorProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ComponentEditor) as NodeEditor<NodeData.Component>;
+export default ComponentEditor;

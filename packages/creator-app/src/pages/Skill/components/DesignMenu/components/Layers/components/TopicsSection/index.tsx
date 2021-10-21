@@ -16,7 +16,7 @@ import { INTENT_LIST_OFFSET, ITEM_INTENT_HEIGHT, TOPIC_ITEM_HEIGHT, TopicItem as
 import { TopicItem, useTopics } from './hooks';
 
 const LAST_TOPIC_OFFSET = 8;
-const FIRST_TOPIC_OFFSET = 2;
+const FIRST_TOPIC_OFFSET = 4;
 const SEARCHABLE_TOPICS_COUNT = 6;
 const SEARCHABLE_INTENTS_COUNT = 10;
 

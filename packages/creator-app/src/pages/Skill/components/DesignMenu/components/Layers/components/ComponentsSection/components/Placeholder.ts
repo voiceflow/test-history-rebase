@@ -4,7 +4,7 @@ import { styled } from '@/hocs';
 
 const Placeholder = styled.p<{ width: number }>`
   width: ${({ width }) => width}px;
-  padding: 0 8px;
+  padding: 0 16px;
   font-size: 13px;
   line-height: 1.38;
   color: ${colors(ThemeColor.SECONDARY)};

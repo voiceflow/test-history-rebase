@@ -91,6 +91,7 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
           isDragging={isDragging}
           onMouseDown={enableClickedState}
           disableHover={disableHover}
+          onDoubleClick={onEdit}
           onContextMenu={chain(onContextMenu, clearClickedState)}
           isDraggingPreview={isDraggingPreview}
           isContextMenuOpen={isOpen}

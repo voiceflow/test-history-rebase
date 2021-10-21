@@ -14,11 +14,11 @@ const Layers: React.FC = () => {
   return (
     <Container>
       <Resizable onResized={setHeights}>
-        <ResizablePanel height={heights[0]} minHeight={132}>
+        <ResizablePanel height={heights[0]} minHeight={138}>
           {() => <TopicsSection />}
         </ResizablePanel>
 
-        <ResizablePanel height={heights[1]} minHeight={44}>
+        <ResizablePanel height={heights[1]} minHeight={42}>
           {({ setHeight, collapsed }) => <ComponentsSection collapsed={collapsed} setSectionHeight={setHeight} />}
         </ResizablePanel>
       </Resizable>

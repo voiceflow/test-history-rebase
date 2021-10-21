@@ -14,6 +14,7 @@ import * as DiagramSelectors from '@/ducks/diagram/selectors';
 import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
+import * as VersionSelectors from '@/ducks/version/selectors';
 import * as Viewport from '@/ducks/viewport';
 import { NodeData } from '@/models';
 import mutableStore from '@/store/mutable';
@@ -43,10 +44,17 @@ export const performSave =
 
 export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) => {
   const state = getState();
-  const diagramType = DiagramSelectors.activeDiagramTypeSelector(state);
-  const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
 
-  if (diagramType !== DiagramType.TOPIC || !isTopicsAndComponents) {
+  // remove after FF removal
+  const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+  if (!isTopicsAndComponents) {
+    return;
+  }
+
+  const diagramType = DiagramSelectors.activeDiagramTypeSelector(state);
+  const isRootDiagramActive = VersionSelectors.isRootDiagramActiveSelector(state);
+
+  if (isRootDiagramActive || diagramType !== DiagramType.TOPIC) {
     return;
   }
 

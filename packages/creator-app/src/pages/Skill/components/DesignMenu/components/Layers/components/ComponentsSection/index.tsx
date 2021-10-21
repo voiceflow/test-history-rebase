@@ -18,7 +18,7 @@ import { CollapseIconContainer, COMPONENT_ITEM_HEIGHT, FolderItem, Placeholder }
 import { ComponentItem, useComponents } from './hooks';
 
 const LAST_TOPIC_OFFSET = 8;
-const FIRST_TOPIC_OFFSET = 2;
+const FIRST_TOPIC_OFFSET = 4;
 const HORIZONTAL_DRAG_OFFSET = 30;
 const SEARCHABLE_COMPONENTS_COUNT = 6;
 

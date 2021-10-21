@@ -7,16 +7,16 @@ import { NodeData } from '@/models';
 
 import MappingVariables from './MappingVariables';
 
-export const variableMappingFactory = () => ({ from: null, to: null });
+export const variableMappingFactory = (): NodeData.VariableMapping => ({ from: null, to: null });
 
 interface MappingSectionProps {
-  reverse?: boolean;
-  isDividerNested?: boolean;
   data: NodeData<NodeData.Component>;
-  items?: { from: string | null; to: string | null }[];
+  items?: NodeData.VariableMapping[];
   header: string;
   tooltip: string;
-  onChange: (items: { from: string | null; to: string | null }[]) => void;
+  onChange: (items: NodeData.VariableMapping[]) => void;
+  reverse?: boolean;
+  isDividerNested?: boolean;
 }
 
 const MappingSection: React.FC<MappingSectionProps> = ({ data, header, items, onChange, reverse, tooltip, isDividerNested }) => {

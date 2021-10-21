@@ -11,8 +11,11 @@ const HelpTooltip: React.FC = () => (
       visual design background, you can think of components a little like symbols in Sketch or Figma. If you’re a developer, you can think of
       components like components, or functions inside your project.
     </Paragraph>
+
     <Paragraph marginBottomUnits={2}>Components can be nested for further compartmentalization of your project.</Paragraph>
+
     <Title>Learn More</Title>
+
     <Paragraph>
       To learn more about components, and how they can be used check our documentation <Link href={Documentation.COMPONENT_STEP}>here.</Link>
     </Paragraph>

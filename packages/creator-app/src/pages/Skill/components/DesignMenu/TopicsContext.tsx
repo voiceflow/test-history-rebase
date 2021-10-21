@@ -28,6 +28,7 @@ export const TopicsProvider: React.FC = ({ children }) => {
   const rootDiagramID = useSelector(Version.activeRootDiagramIDSelector);
   const activeVersionID = useSelector(Session.activeVersionIDSelector);
   const intentsStepData = useSelector(Creator.intentStepsDataSelector);
+  const allDiagramIDs = useSelector(Diagram.allDiagramIDsSelector);
 
   const refetchRevision = React.useRef(0);
 
@@ -89,11 +90,11 @@ export const TopicsProvider: React.FC = ({ children }) => {
     setValue({ intentStepMapPerTopic: stepMapPerTopic });
   }, [activeVersionID, rootDiagramID]);
 
-  // fetching topics on every intentsStepData change
+  // fetching topics on every intentsStepData and size of allDiagramIDs change
   React.useEffect(() => {
     refetchRevision.current = Math.random();
     fetchTopics();
-  }, [activeVersionID, rootDiagramID, intentsStepData]);
+  }, [activeVersionID, rootDiagramID, intentsStepData, allDiagramIDs.length]);
 
   return <TopicsContext.Provider value={value}>{children}</TopicsContext.Provider>;
 };

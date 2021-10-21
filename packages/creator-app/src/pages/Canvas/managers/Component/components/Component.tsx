@@ -1,57 +1,35 @@
-import { Diagram as DiagramType } from '@voiceflow/realtime-sdk';
-import { Alert, AlertVariant, Select } from '@voiceflow/ui';
+import { Nullable } from '@voiceflow/common';
+import { Select } from '@voiceflow/ui';
 import React from 'react';
 
-import { DIAGRAM_ID_SEPARATOR, ROOT_DIAGRAM_NAME } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs';
+import { useDispatch, useSelector } from '@/hooks';
 import { NodeData } from '@/models';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
-import { ConnectedProps } from '@/types';
 
 interface ComponentProps {
-  enterOnCreate?: boolean;
   onChange: NodeDataUpdater<NodeData.Component>;
-  diagram: DiagramType | null;
-  diagramID: string | null;
+  diagramID: Nullable<string>;
 }
 
-const generateDiagramValue = (data: Pick<DiagramType, 'id' | 'name'>) => `${data.id}${DIAGRAM_ID_SEPARATOR}${data.name}`;
+const Component: React.FC<ComponentProps> = ({ onChange, diagramID }) => {
+  const componentsDiagrams = useSelector(Diagram.activeComponentsDiagramsSelector);
 
-const buildOptions = (diagrams: ConnectedComponentProps['diagrams']) =>
-  diagrams
-    .filter((diagram) => diagram.name !== ROOT_DIAGRAM_NAME)
-    .map((diagram) => ({
-      value: generateDiagramValue(diagram),
-      label: diagram.name,
-    }));
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
+  const createEmptyComponent = useDispatch(Diagram.createEmptyComponent);
+  const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 
-const Component: React.FC<ComponentProps & ConnectedComponentProps> = ({
-  onChange,
-  diagrams,
-  diagram,
-  diagramID,
-  goToDiagram,
-  enterOnCreate = true,
-  createComponent,
-  saveActiveDiagram,
-}) => {
-  const [value, setValue] = React.useState(diagram ? generateDiagramValue(diagram) : null);
-  const options = React.useMemo(() => buildOptions(diagrams), [diagrams]);
-  const optionsMap = React.useMemo<{ [key: string]: typeof options[number] }>(
-    () => options.reduce((obj, option) => Object.assign(obj, { [option.value]: option }), {}),
-    [options]
+  const optionsMap = React.useMemo<Record<string, typeof componentsDiagrams[number]>>(
+    () => componentsDiagrams.reduce((acc, diagram) => Object.assign(acc, { [diagram.id]: diagram }), {}),
+    [componentsDiagrams]
   );
-  const setSelectedDiagram = React.useCallback((diagramID: string) => onChange({ diagramID, inputs: [], outputs: [] }), [onChange]);
 
-  const componentDoesNotExist = diagramID && !diagram;
+  const setSelectedDiagram = React.useCallback((diagramID: Nullable<string>) => onChange({ diagramID, inputs: [], outputs: [] }), [onChange]);
 
   const setComponent = React.useCallback(
-    (selected) => {
-      const diagramID = selected?.substring(0, selected.indexOf(DIAGRAM_ID_SEPARATOR));
-      setSelectedDiagram(diagramID);
-      setValue(selected);
+    (nextDiagramID: Nullable<string>) => {
+      setSelectedDiagram(nextDiagramID);
     },
     [setSelectedDiagram]
   );
@@ -60,57 +38,45 @@ const Component: React.FC<ComponentProps & ConnectedComponentProps> = ({
     async (name: string) => {
       await saveActiveDiagram();
 
-      const newDiagramID = await createComponent(name);
+      const newDiagramID = await createEmptyComponent(name);
 
-      setValue(generateDiagramValue({ id: newDiagramID, name }));
       setSelectedDiagram(newDiagramID);
-      if (enterOnCreate) {
-        goToDiagram(newDiagramID);
-      }
+      goToDiagram(newDiagramID);
     },
-    [options, setSelectedDiagram, goToDiagram, createComponent, saveActiveDiagram, enterOnCreate]
+    [setSelectedDiagram, goToDiagram, createEmptyComponent, saveActiveDiagram]
   );
 
-  const validateCreate = (name: string) => {
-    options.forEach((component) => {
-      if (component.label.toLowerCase() === name.toLowerCase()) throw new Error('Component name already in use, choose a different name.');
-    });
+  const validateCreate = React.useCallback(
+    (name: string) => {
+      const lowerCasedName = name.trim().toLowerCase();
 
-    return true;
-  };
+      componentsDiagrams.forEach((component) => {
+        if (component.name.toLowerCase() === lowerCasedName) {
+          throw new Error('Component name already in use, choose a different name.');
+        }
+      });
+
+      return true;
+    },
+    [componentsDiagrams]
+  );
 
   return (
-    <>
-      <Select
-        value={value}
-        options={options}
-        onSelect={setComponent}
-        onCreate={onCreate}
-        searchable
-        clearable={Boolean(value)}
-        validateCreate={validateCreate}
-        getOptionValue={(option) => option?.value}
-        getOptionLabel={(optionValue) => optionValue && optionsMap[optionValue]?.label}
-        placeholder="Select component"
-      />
-      {componentDoesNotExist && (
-        <Alert variant={AlertVariant.WARNING} mt={10}>
-          Previously selected Component is broken or has been deleted.
-        </Alert>
-      )}
-    </>
+    <Select
+      value={diagramID}
+      options={componentsDiagrams}
+      onSelect={setComponent}
+      onCreate={onCreate}
+      clearable={!!diagramID}
+      creatable
+      searchable
+      placeholder="Name new component or select existing"
+      validateCreate={validateCreate}
+      getOptionValue={(option) => option?.id}
+      getOptionLabel={(optionValue) => optionValue && optionsMap[optionValue]?.name}
+      createInputPlaceholder="New Component Name"
+    />
   );
 };
 
-const mapStateToProps = {
-  diagrams: Diagram.allDiagramsSelector,
-};
-
-const mapDispatchToProps = {
-  createComponent: Diagram.createComponentDiagram,
-  saveActiveDiagram: Diagram.saveActiveDiagram,
-  goToDiagram: Router.goToDiagramHistoryPush,
-};
-
-type ConnectedComponentProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-export default connect(mapStateToProps, mapDispatchToProps)(Component) as React.FC<ComponentProps>;
+export default Component;

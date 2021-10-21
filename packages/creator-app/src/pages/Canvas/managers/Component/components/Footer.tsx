@@ -1,4 +1,3 @@
-import { Diagram } from '@voiceflow/realtime-sdk';
 import { ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,23 +8,23 @@ import { Controls } from '@/pages/Canvas/components/Editor';
 import HelpTooltip from './HelpTooltip';
 
 interface FooterProps {
-  diagram: Diagram | null;
-  hasVariableMapping: boolean;
-  emptyMapping: () => void;
-  startMapping: () => void;
-  goToDiagram: () => Promise<void>;
+  onEdit: VoidFunction;
+  editable: boolean;
   blockType: BlockType;
+  hasVariableMapping: boolean;
+  addVariableMapping: VoidFunction;
+  clearVariableMapping: VoidFunction;
 }
 
-const Footer: React.FC<FooterProps> = ({ diagram, hasVariableMapping, emptyMapping, startMapping, goToDiagram, blockType }) => (
+const Footer: React.FC<FooterProps> = ({ onEdit, editable, blockType, hasVariableMapping, addVariableMapping, clearVariableMapping }) => (
   <Controls
     menu={
-      diagram ? (
+      editable ? (
         <OverflowMenu
           options={[
             {
               label: hasVariableMapping ? 'Cancel Mapping' : 'Variable Mapping',
-              onClick: hasVariableMapping ? emptyMapping : startMapping,
+              onClick: hasVariableMapping ? clearVariableMapping : addVariableMapping,
             },
           ]}
         />
@@ -34,15 +33,12 @@ const Footer: React.FC<FooterProps> = ({ diagram, hasVariableMapping, emptyMappi
     options={[
       {
         label: 'Edit',
-        onClick: goToDiagram,
+        onClick: onEdit,
         variant: ButtonVariant.PRIMARY,
-        disabled: !diagram,
+        disabled: !editable,
       },
     ]}
-    tutorial={{
-      content: <HelpTooltip />,
-      blockType,
-    }}
+    tutorial={{ content: <HelpTooltip />, blockType }}
     anchor="How it Works?"
   />
 );

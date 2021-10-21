@@ -7,8 +7,8 @@ import MappingSection from './components/MappingSection';
 interface MappingProps {
   isFlow?: boolean;
   data: NodeData<NodeData.Component>;
-  updateInputs: (inputs: { from: string | null; to: string | null }[]) => void;
-  updateOutputs: (outputs: { from: string | null; to: string | null }[]) => void;
+  updateInputs: (inputs: NodeData.VariableMapping[]) => void;
+  updateOutputs: (outputs: NodeData.VariableMapping[]) => void;
 }
 
 const Mapping: React.FC<MappingProps> = ({ isFlow, data, updateInputs, updateOutputs }) => (
@@ -23,12 +23,12 @@ const Mapping: React.FC<MappingProps> = ({ isFlow, data, updateInputs, updateOut
 
     <MappingSection
       reverse
-      isDividerNested
       data={data}
       items={data.outputs}
       header="Output Mapping"
       tooltip={`Retrieve variables that are used in this ${isFlow ? 'flow' : 'component'}.`}
       onChange={updateOutputs}
+      isDividerNested
     />
   </>
 );

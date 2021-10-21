@@ -38,7 +38,7 @@ const DragLayerPreview = <I extends any>({ getOptions, renderPreview }: DragLaye
 
     const node = previewRef.current;
 
-    if (!node) {
+    if (!node || !item) {
       return collected;
     }
 

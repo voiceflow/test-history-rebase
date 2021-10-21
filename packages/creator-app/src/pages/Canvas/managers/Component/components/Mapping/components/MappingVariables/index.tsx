@@ -1,90 +1,80 @@
 import React from 'react';
 
 import * as Diagram from '@/ducks/diagram';
-import { connect } from '@/hocs';
-import { MapManaged } from '@/hooks/manager';
-import { ConnectedProps } from '@/types';
+import { MapManaged, useDispatch, useSelector } from '@/hooks';
+import { NodeData } from '@/models';
 
 import { ButtonContainer, Container, DeleteButton, MappingContainer, RegularSelect, VariableDropdown, VariableMappingContainer } from './components';
 
 interface MappingVariablesProps {
+  items?: NodeData.VariableMapping[];
   reverse?: boolean;
-  mapManaged: MapManaged<{ from: string | null; to: string | null }>;
+  onChange: (items: NodeData.VariableMapping[]) => void;
   diagramID: string | null;
-  items?: { from: string | null; to: string | null }[];
-  onChange: (items: { from: string | null; to: string | null }[]) => void;
+  mapManaged: MapManaged<NodeData.VariableMapping>;
 }
 
-const MappingVariables: React.FC<MappingVariablesProps & ConnectedMappingVariablesProps> = ({
-  mapManaged,
-  diagramID,
-  reverse,
-  items,
-  activeVariables,
-  getComponentVariables,
-  addLocalVariable,
-}) => (
-  <Container>
-    {mapManaged((mapping, { key, onUpdate, onRemove }) => {
-      const updateFrom = (from?: string | null) => onUpdate({ from });
-      const updateTo = (to?: string | null) => onUpdate({ to });
-      const GlobalVariableSelectComponent = !reverse ? RegularSelect : VariableDropdown;
-      const ComponentVariableSelectComponent = !reverse ? VariableDropdown : RegularSelect;
-      const disabledRemove = items?.length === 1;
+const MappingVariables: React.FC<MappingVariablesProps> = ({ items, reverse, diagramID, mapManaged }) => {
+  const activeVariables = useSelector(Diagram.activeDiagramAllVariablesSelector);
+  const getComponentVariables = useSelector(Diagram.localVariablesByDiagramIDSelector);
 
-      const globalVariableSelect = (
-        <GlobalVariableSelectComponent
-          value={mapping.from}
-          onChange={updateFrom}
-          fullWidth
-          searchable
-          placeholder={activeVariables.length > 0 ? 'Select Variable' : 'No Var..'}
-          options={activeVariables}
-        />
-      );
+  const addLocalVariable = useDispatch(Diagram.addActiveDiagramVariable);
 
-      const onCreateComponentVariable = (item: string) => {
-        addLocalVariable(item);
-        updateTo(item);
-      };
+  return (
+    <Container>
+      {mapManaged((mapping, { key, onUpdate, onRemove }) => {
+        const updateFrom = (from?: string | null) => onUpdate({ from });
+        const updateTo = (to?: string | null) => onUpdate({ to });
 
-      const componentVariableSelect = (
-        <ComponentVariableSelectComponent
-          value={mapping.to}
-          onChange={updateTo}
-          placeholder="Select Variable"
-          options={getComponentVariables(diagramID!)}
-          fullWidth
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          onCreate={onCreateComponentVariable}
-          creatable={false}
-        />
-      );
+        const onCreateComponentVariable = (item: string) => {
+          addLocalVariable(item);
+          updateTo(item);
+        };
 
-      return (
-        <VariableMappingContainer key={key}>
-          <MappingContainer>
-            {reverse ? componentVariableSelect : globalVariableSelect}
-            {reverse ? globalVariableSelect : componentVariableSelect}
-          </MappingContainer>
-          <ButtonContainer>
-            <DeleteButton disabled={disabledRemove} onClick={() => !disabledRemove && onRemove()} />
-          </ButtonContainer>
-        </VariableMappingContainer>
-      );
-    })}
-  </Container>
-);
+        const disabledRemove = items?.length === 1;
+        const GlobalVariableSelectComponent = !reverse ? RegularSelect : VariableDropdown;
+        const ComponentVariableSelectComponent = !reverse ? VariableDropdown : RegularSelect;
 
-const mapStateToProps = {
-  activeVariables: Diagram.activeDiagramAllVariablesSelector,
-  getComponentVariables: Diagram.localVariablesByDiagramIDSelector,
+        const globalVariableSelect = (
+          <GlobalVariableSelectComponent
+            value={mapping.from}
+            options={activeVariables}
+            onChange={updateFrom}
+            fullWidth
+            searchable
+            placeholder={activeVariables.length > 0 ? 'Select Variable' : 'No Var..'}
+          />
+        );
+
+        const componentVariableSelect = (
+          <ComponentVariableSelectComponent
+            value={mapping.to}
+            onChange={updateTo}
+            placeholder="Select Variable"
+            options={getComponentVariables(diagramID!)}
+            fullWidth
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            onCreate={onCreateComponentVariable}
+            creatable={false}
+          />
+        );
+
+        return (
+          <VariableMappingContainer key={key}>
+            <MappingContainer>
+              {reverse ? componentVariableSelect : globalVariableSelect}
+              {reverse ? globalVariableSelect : componentVariableSelect}
+            </MappingContainer>
+
+            <ButtonContainer>
+              <DeleteButton disabled={disabledRemove} onClick={() => !disabledRemove && onRemove()} />
+            </ButtonContainer>
+          </VariableMappingContainer>
+        );
+      })}
+    </Container>
+  );
 };
 
-const mapDispatchToProps = {
-  addLocalVariable: Diagram.addActiveDiagramVariable,
-};
-
-type ConnectedMappingVariablesProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-export default connect(mapStateToProps, mapDispatchToProps)(MappingVariables) as React.FC<MappingVariablesProps>;
+export default MappingVariables;

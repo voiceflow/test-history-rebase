@@ -33,9 +33,10 @@ const ComponentItemNameContainer = styled(ItemNameContainer)<{
     isDraggingXEnabled &&
     css`
       opacity: 1 !important;
-      box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.1) !important;
+      box-shadow: none;
       cursor: grabbing;
       border-color: #eaeff4;
+
       ${dragPlaceholderStyles}
 
       ${SvgIconContainer} {
@@ -64,6 +65,7 @@ const ComponentItemNameContainer = styled(ItemNameContainer)<{
       z-index: 1;
       background: #fff;
       box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.06), 0 1px 0 0 rgba(19, 33, 68, 0.04);
+      border-color: transparent !important;
 
       ${SvgIconContainer} {
         opacity: 1;

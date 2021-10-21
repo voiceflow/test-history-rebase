@@ -48,7 +48,9 @@ const IntentEditor: NodeEditor<NodeData.Intent, ConnectedIntentEditorProps> = ({
 
     await patchPlatformData({ availability: nextAvailability });
 
-    validateTopicAvailability();
+    if (nextAvailability !== Node.Intent.IntentAvailability.GLOBAL) {
+      validateTopicAvailability();
+    }
   };
 
   return (

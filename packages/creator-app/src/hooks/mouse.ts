@@ -8,7 +8,7 @@ export function useMouseMove(onMouseMove: (event: MouseEvent) => void, dependenc
   }, [onMouseMove, ...dependencies]);
 }
 
-export const useOnClickOutside = (ref: React.RefObject<HTMLElement>, handler: (event: MouseEvent | TouchEvent) => void): void => {
+export const useOnClickOutside = (ref: React.RefObject<HTMLElement>, handler: (event: MouseEvent | TouchEvent) => void, deps: any[] = []): void => {
   React.useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {
       if (!event.target) return;
@@ -24,5 +24,5 @@ export const useOnClickOutside = (ref: React.RefObject<HTMLElement>, handler: (e
       document.removeEventListener('mousedown', listener);
       document.removeEventListener('touchstart', listener);
     };
-  }, [ref, handler]);
+  }, [...deps, ref, handler]);
 };

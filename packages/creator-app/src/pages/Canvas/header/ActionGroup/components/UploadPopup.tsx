@@ -18,9 +18,10 @@ export interface UploadPopupProps {
 
 const UploadPopup: React.FC<UploadPopupProps> = ({ open, onClose, children, jobStage, multiSelect, className }) => {
   const ref = React.useRef(null);
-  useOnClickOutside(ref, onClose);
 
-  useHotKeys(Hotkey.CLOSE_UPLOAD_MODAL, onClose, { preventDefault: true }, [onClose]);
+  useOnClickOutside(ref, () => open && onClose(), [open, onClose]);
+
+  useHotKeys(Hotkey.CLOSE_UPLOAD_MODAL, () => open && onClose(), { preventDefault: true }, [open, onClose]);
 
   return !children ? null : (
     <PopupContainer open={open} jobStage={jobStage} multiSelect={multiSelect} className={className} ref={ref}>

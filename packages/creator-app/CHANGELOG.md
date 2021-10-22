@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.521.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.521.2...@voiceflow/creator-app@1.521.3) (2021-10-22)
+
+
+### Bug Fixes
+
+* only calls onclose in uploadpopup when popup is open (VF-000) ([#4356](https://github.com/voiceflow/creator-app/issues/4356)) ([4a4f131](https://github.com/voiceflow/creator-app/commit/4a4f131e621bcfa629d75f5e7c5a6b30ae0b38ea))
+
+
+
+
+
 ## [1.521.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.521.1...@voiceflow/creator-app@1.521.2) (2021-10-21)
 
 

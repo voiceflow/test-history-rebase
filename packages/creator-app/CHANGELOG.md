@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.521.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.521.3...@voiceflow/creator-app@1.521.4) (2021-10-22)
+
+
+### Bug Fixes
+
+* race condition (VF-2102) ([#4359](https://github.com/voiceflow/creator-app/issues/4359)) ([b7d685e](https://github.com/voiceflow/creator-app/commit/b7d685ebad18a08101e262dc5325ec6e6fc25b26))
+
+
+
+
+
 ## [1.521.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.521.2...@voiceflow/creator-app@1.521.3) (2021-10-22)
 
 

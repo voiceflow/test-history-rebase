@@ -57,9 +57,12 @@ const LinkCaption: React.FC<LinkCaptionProps> = ({
   };
 
   const onSave = async () => {
-    await onChange(
-      !value ? null : { value, width: instance.captionContainerRef.current!.clientWidth, height: instance.captionContainerRef.current!.clientHeight }
-    );
+    const containerInstance = instance.captionContainerRef.current;
+    if (!value) {
+      await onChange(null);
+    } else if (containerInstance) {
+      await onChange({ value, width: containerInstance.clientWidth, height: containerInstance.clientHeight });
+    }
   };
 
   const persistedSave = usePersistFunction(onSave);
@@ -67,6 +70,7 @@ const LinkCaption: React.FC<LinkCaptionProps> = ({
   const debouncedSave = useDebouncedCallback(500, persistedSave);
 
   const onEnterPress = async () => {
+    await persistedSave();
     onToggleEditing(false);
   };
 

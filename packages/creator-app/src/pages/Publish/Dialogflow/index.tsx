@@ -39,7 +39,7 @@ const DialogflowPublish: React.FC = () => {
           <BoxFlex alignItems="flex-end">
             <Box>
               <Box mr={20} mb={16} color="secondary">
-                To connect your Dialogflow agent to a chat or voice channel visit the Dialogflow Console.
+                To connect your Dialogflow agent to a chat or voice channel upload your project from the canvas.
               </Box>
               <Link href={DIALOGFLOW_LEARN_MORE}>Learn More</Link>
             </Box>

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.523.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.522.0...@voiceflow/creator-app@1.523.0) (2021-10-25)
+
+
+### Bug Fixes
+
+* changes dfes integration page copy (VF-2106) ([#4367](https://github.com/voiceflow/creator-app/issues/4367)) ([39e1bd6](https://github.com/voiceflow/creator-app/commit/39e1bd68bb7ccb8e82642f3d92046b14e5f879d9))
+
+
+### Features
+
+* new versions design (VF-812) ([#4337](https://github.com/voiceflow/creator-app/issues/4337)) ([c481d5d](https://github.com/voiceflow/creator-app/commit/c481d5d2851906225511c528e768b5f0373c8996))
+
+
+
+
+
 # [1.522.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.521.5...@voiceflow/creator-app@1.522.0) (2021-10-25)
 
 

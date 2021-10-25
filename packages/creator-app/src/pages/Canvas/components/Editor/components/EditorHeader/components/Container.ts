@@ -2,17 +2,13 @@ import { flexApartStyles } from '@voiceflow/ui';
 
 import { styled, units } from '@/hocs';
 
-import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_NAME, sectionStyles } from '../../../styles';
+import { HEADER_HEIGHT, sectionStyles } from '../../../styles';
 
-export interface ContainerProps {
-  withTitle?: boolean;
-}
-
-const Container = styled.div.attrs({ column: true })<ContainerProps>`
+const Container = styled.div`
   ${flexApartStyles}
   ${sectionStyles}
 
-  height: ${({ withTitle }) => (withTitle ? HEADER_HEIGHT_WITH_NAME : HEADER_HEIGHT)}px;
+  height: ${HEADER_HEIGHT}px;
   padding-top: ${units(2.5)}px;
   padding-bottom: ${units(2)}px;
   border-bottom: 1px solid #dfe3ed;

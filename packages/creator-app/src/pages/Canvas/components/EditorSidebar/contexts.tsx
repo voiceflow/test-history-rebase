@@ -1,6 +1,7 @@
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
+import { useLinkedState } from '@/hooks';
 import type { NodeData } from '@/models';
 import type { Engine } from '@/pages/Canvas/engine';
 
@@ -22,7 +23,11 @@ export interface SidebarContextType {
 export const SidebarContext = React.createContext<null | SidebarContextType>(null);
 export const { Consumer: SidebarConsumer } = SidebarContext;
 
-const DEFAULT_SIDEBAR_HEADER_ACTIONS: SidebarHeaderAction[] = [
+export interface SidebarProviderProps {
+  headerActions?: SidebarHeaderAction[];
+}
+
+export const DEFAULT_SIDEBAR_HEADER_ACTIONS: SidebarHeaderAction[] = [
   {
     value: 'duplicate_block',
     label: 'Duplicate',
@@ -35,12 +40,8 @@ const DEFAULT_SIDEBAR_HEADER_ACTIONS: SidebarHeaderAction[] = [
   },
 ];
 
-export interface SidebarProviderProps {
-  headerActions?: SidebarHeaderAction[];
-}
-
 export const SidebarProvider: React.FC<SidebarProviderProps> = ({ headerActions = DEFAULT_SIDEBAR_HEADER_ACTIONS, children }) => {
-  const [state, updateState] = React.useState({ headerActions });
+  const [state, updateState] = useLinkedState({ headerActions });
 
   const api = useContextApi({ state, updateState });
 

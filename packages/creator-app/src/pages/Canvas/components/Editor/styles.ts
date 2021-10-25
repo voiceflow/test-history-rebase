@@ -1,7 +1,6 @@
 import { css, units } from '@/hocs';
 
-export const HEADER_HEIGHT = 60;
-export const HEADER_HEIGHT_WITH_NAME = 100;
+export const HEADER_HEIGHT = 64;
 export const FOOTER_HEIGHT = 90;
 
 export const dividerStyles = css`

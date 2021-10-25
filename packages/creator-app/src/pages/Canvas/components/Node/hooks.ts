@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { BlockType } from '@/constants';
+import * as Creator from '@/ducks/creator';
 import { useLinkedRef } from '@/hooks';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
@@ -70,7 +72,13 @@ export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean
 
       event.preventDefault();
 
-      engine.setActive(nodeEntity.nodeID, event.shiftKey);
+      const node = engine.select(Creator.nodeByIDSelector)(nodeEntity.nodeID);
+
+      if (!event.shiftKey && node.type === BlockType.COMBINED && node.combinedNodes.length) {
+        engine.setActive(node.combinedNodes[0]);
+      } else {
+        engine.setActive(nodeEntity.nodeID, event.shiftKey);
+      }
     },
     [skipClick]
   );

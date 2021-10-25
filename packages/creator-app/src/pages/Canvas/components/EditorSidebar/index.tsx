@@ -19,11 +19,12 @@ import { SlideOutDirection } from '@/styles/transitions/SlideOut';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import EditorModal from './components/EditorModal';
-import { SidebarProvider } from './contexts';
+import { SidebarHeaderAction, SidebarProvider } from './contexts';
 import { withManagerProps } from './hocs';
 import { useEditorPath, useUpdateData } from './hooks';
 
 const UNEDITABLE_BLOCKS = [BlockType.COMMENT, BlockType.MARKUP_IMAGE];
+const EMPTY_HEADER_ACTIONS: SidebarHeaderAction[] = [];
 
 const EditSidebar = () => {
   const theme = useTheme();
@@ -97,9 +98,7 @@ const EditSidebar = () => {
             path={path}
             goToPath={goToPath}
             onRename={onRename}
-            hideTitle={node.type === BlockType.START}
             hideHeader={isModal}
-            renameRevision={focus.renameActiveRevision}
             animationDistance={prevAnimationDistance.current}
           >
             {managerEl}
@@ -115,7 +114,7 @@ const EditSidebar = () => {
   }
 
   return (
-    <SidebarProvider>
+    <SidebarProvider headerActions={node?.type === BlockType.START ? EMPTY_HEADER_ACTIONS : undefined}>
       <Drawer
         as="section"
         key={focus.target ?? undefined} // required to fix layout issue - key cannot be `null` so change it to `undefined` if it is

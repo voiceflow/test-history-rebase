@@ -1,5 +1,4 @@
 import { preventDefault, stopPropagation } from '@voiceflow/ui';
-import cuid from 'cuid';
 import React from 'react';
 import { ThemeContext } from 'styled-components';
 
@@ -37,7 +36,7 @@ export const useNodeInstance = () => {
       ...elementInstance,
 
       ref,
-      rename: () => engine.focus.set(nodeEntity.nodeID, { renameActiveRevision: cuid() }),
+      rename: () => engine.setActive(nodeEntity.nodeID),
       getRect,
       getThreadAnchorCoords: () => {
         const rect = getRect();

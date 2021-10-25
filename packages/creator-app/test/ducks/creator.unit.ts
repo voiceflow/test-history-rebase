@@ -21,7 +21,6 @@ const MOCK_STATE = {
   focus: {
     target: generate.id(),
     isActive: true,
-    renameActiveRevision: generate.id(),
   } as Creator.FocusState,
   diagramsHistory: [],
 };
@@ -61,7 +60,6 @@ suite(Creator, MOCK_STATE)('Ducks - Creator', ({ expect, describeReducer, descri
               },
               focus: {
                 isActive: false,
-                renameActiveRevision: null,
                 target: null,
               },
             });
@@ -97,7 +95,6 @@ suite(Creator, MOCK_STATE)('Ducks - Creator', ({ expect, describeReducer, descri
             focus: {
               target: nodeID,
               isActive: true,
-              renameActiveRevision: null,
             },
           });
         });
@@ -109,7 +106,6 @@ suite(Creator, MOCK_STATE)('Ducks - Creator', ({ expect, describeReducer, descri
             focus: {
               target: nodeID,
               isActive: true,
-              renameActiveRevision: revision,
             },
           });
         });
@@ -123,7 +119,6 @@ suite(Creator, MOCK_STATE)('Ducks - Creator', ({ expect, describeReducer, descri
               focus: {
                 target: nodeID,
                 isActive: true,
-                renameActiveRevision: revision,
               },
             })
             .toNotModify();
@@ -136,7 +131,6 @@ suite(Creator, MOCK_STATE)('Ducks - Creator', ({ expect, describeReducer, descri
             focus: {
               ...MOCK_STATE.focus,
               isActive: false,
-              renameActiveRevision: null,
             },
           });
         });

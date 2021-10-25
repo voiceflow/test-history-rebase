@@ -6,40 +6,27 @@ import * as Creator from '@/ducks/creator';
 import { connect } from '@/hocs';
 import { SidebarContext } from '@/pages/Canvas/components/EditorSidebar/contexts';
 import { EDITOR_BREADCRUMBS_CLASSNAME, EDITOR_HEADER_CLASSNAME } from '@/pages/Canvas/constants';
-import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
-import { ConnectedProps, Nullable } from '@/types';
+import { EngineContext } from '@/pages/Canvas/contexts';
+import { ConnectedProps } from '@/types';
 
-import { ActiveLabel, Breadcrumbs, Container, Divider, Label, Title, TitleActionsContainer } from './components';
+import { ActiveLabel, Breadcrumbs, Container, Divider, Label } from './components';
 
 export interface HeaderProps {
   path?: { label: string }[];
   onRename: (value: string) => void;
   goToPath: (index: number) => void;
   className?: string;
-  hideTitle?: boolean;
-  renameRevision?: Nullable<string>;
 }
 
-const EditorHeader: React.FC<ConnectedHeaderProps & HeaderProps> = ({
-  path = [],
-  data,
-  onRename,
-  className,
-  goToPath,
-  hideTitle,
-  renameRevision,
-}) => {
+const EditorHeader: React.FC<ConnectedHeaderProps & HeaderProps> = ({ path = [], data, className, goToPath }) => {
   const sidebar = React.useContext(SidebarContext)!;
   const engine = React.useContext(EngineContext)!;
-  const getManager = React.useContext(ManagerContext)!;
   const { headerActions } = sidebar.state;
-
-  const { label, nameEditable } = getManager(data!.type);
 
   let fullPath = '';
 
   return (
-    <Container withTitle={!hideTitle && (path.length <= 1 || !!headerActions.length)} className={cn(EDITOR_HEADER_CLASSNAME, className)}>
+    <Container className={cn(EDITOR_HEADER_CLASSNAME, className)}>
       {!!path.length && (
         <Breadcrumbs className={EDITOR_BREADCRUMBS_CLASSNAME}>
           {path.map(({ label: pathLabel }, index) => {
@@ -59,21 +46,13 @@ const EditorHeader: React.FC<ConnectedHeaderProps & HeaderProps> = ({
         </Breadcrumbs>
       )}
 
-      {!hideTitle && (
-        <TitleActionsContainer>
-          <Title name={nameEditable ? data!.name : label} disabled={!nameEditable} onChange={onRename} renameRevision={renameRevision} />
-
-          {!!headerActions.length && (
-            <Dropdown
-              options={headerActions.map(({ onClick, ...action }) => ({ ...action, onClick: () => onClick({ data: data!, engine }) }))}
-              placement="bottom-end"
-            >
-              {(ref, onOpen, isOpened) => (
-                <IconButton ref={ref} icon="ellipsis" variant={IconButtonVariant.FLAT} onClick={onOpen} active={isOpened} />
-              )}
-            </Dropdown>
-          )}
-        </TitleActionsContainer>
+      {!!headerActions.length && (
+        <Dropdown
+          options={headerActions.map(({ onClick, ...action }) => ({ ...action, onClick: () => onClick({ data: data!, engine }) }))}
+          placement="bottom-end"
+        >
+          {(ref, onOpen, isOpened) => <IconButton ref={ref} icon="ellipsis" variant={IconButtonVariant.FLAT} onClick={onOpen} active={isOpened} />}
+        </Dropdown>
       )}
     </Container>
   );

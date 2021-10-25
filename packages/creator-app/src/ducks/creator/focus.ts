@@ -11,7 +11,6 @@ import { creatorStateSelector } from './selectors';
 export interface FocusState {
   target: string | null;
   isActive: boolean;
-  renameActiveRevision: string | null;
 }
 
 export const FOCUS_STATE_KEY = 'focus';
@@ -19,7 +18,6 @@ export const FOCUS_STATE_KEY = 'focus';
 export const INITIAL_FOCUS_STATE = {
   target: null,
   isActive: false,
-  renameActiveRevision: null,
 };
 
 // actions
@@ -29,7 +27,7 @@ export enum FocusAction {
   CLEAR_FOCUS = 'CREATOR:FOCUS:CLEAR',
 }
 
-export type SetFocus = Action<FocusAction.SET_FOCUS, { nodeID: string; renameActiveRevision: string | null }>;
+export type SetFocus = Action<FocusAction.SET_FOCUS, { nodeID: string }>;
 
 export type ClearFocus = Action<FocusAction.CLEAR_FOCUS>;
 
@@ -37,15 +35,14 @@ type AnyFocusAction = SetFocus | ClearFocus;
 
 // reducers
 
-export const setFocusReducer: Reducer<FocusState, SetFocus> = (state, { payload: { nodeID, renameActiveRevision } }) => {
-  if (state.isActive && nodeID === state.target && renameActiveRevision === state.renameActiveRevision) {
+export const setFocusReducer: Reducer<FocusState, SetFocus> = (state, { payload: { nodeID } }) => {
+  if (state.isActive && nodeID === state.target) {
     return state;
   }
 
   return {
     target: nodeID,
     isActive: true,
-    renameActiveRevision,
   };
 };
 
@@ -57,7 +54,6 @@ export const clearFocusReducer: Reducer<FocusState> = (state) => {
   return {
     ...state,
     isActive: false,
-    renameActiveRevision: null,
   };
 };
 
@@ -95,7 +91,6 @@ export const focusedNodeDataSelector = createSelector([Diagram.dataByNodeIDSelec
 
 // action creators
 
-export const setFocus = (nodeID: string, renameActiveRevision: string | null = null): SetFocus =>
-  createAction(FocusAction.SET_FOCUS, { nodeID, renameActiveRevision });
+export const setFocus = (nodeID: string): SetFocus => createAction(FocusAction.SET_FOCUS, { nodeID });
 
 export const clearFocus = (): ClearFocus => createAction(FocusAction.CLEAR_FOCUS);

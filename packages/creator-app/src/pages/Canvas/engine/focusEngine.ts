@@ -27,7 +27,7 @@ class FocusEngine extends EngineConsumer {
   /**
    * focus the node with the given ID
    */
-  set(nodeID: string, { renameActiveRevision }: { renameActiveRevision?: string } = {}) {
+  set(nodeID: string) {
     if (this.engine.isCanvasBusy || this.isTarget(nodeID)) return;
 
     this.log.debug(this.log.pending('focusing node'), this.log.slug(nodeID));
@@ -35,7 +35,7 @@ class FocusEngine extends EngineConsumer {
     this.engine.transformation.reset();
 
     this.engine.activation.activate(nodeID, ActivationMode.FOCUS);
-    this.dispatch(setFocus(nodeID, renameActiveRevision));
+    this.dispatch(setFocus(nodeID));
     this.engine.node.redrawLinks(nodeID);
 
     this.log.info(this.log.success('focused node'), this.log.slug(nodeID));

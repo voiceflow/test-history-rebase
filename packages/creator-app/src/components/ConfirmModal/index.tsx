@@ -1,4 +1,4 @@
-import { Box, Button } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
@@ -8,6 +8,8 @@ import { useEnableDisable, useModals } from '@/hooks';
 export interface ConfirmProps {
   header?: string;
   body?: React.ReactNode;
+  canCancel?: boolean;
+  confirmButtonText?: string;
   confirm?: () => void | Promise<void>;
 }
 
@@ -27,6 +29,13 @@ const ConfirmModal: React.FC = () => {
       <Box width="100%">
         <ModalBody>{data.body}</ModalBody>
         <ModalFooter>
+          {data.canCancel && (
+            <Box display="inline-block" mr={6}>
+              <Button onClick={close} variant={ButtonVariant.TERTIARY}>
+                Cancel
+              </Button>
+            </Box>
+          )}
           <Button
             disabled={loading}
             onClick={async () => {
@@ -36,7 +45,7 @@ const ConfirmModal: React.FC = () => {
               disableLoading();
             }}
           >
-            Confirm
+            {data.confirmButtonText || 'Confirm'}
           </Button>
         </ModalFooter>
       </Box>

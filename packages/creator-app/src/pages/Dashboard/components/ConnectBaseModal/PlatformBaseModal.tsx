@@ -86,7 +86,7 @@ export const PlatformBaseModal: React.FC<PlatformBaseModalProps> = ({
             <>
               <LoadCircle />
               <ContentContainer>
-                Waiting for a verfied connection to your <BoldText>{platformName} Developer</BoldText> account.
+                Waiting for a verified connection to your <BoldText>{platformName} Developer</BoldText> account.
               </ContentContainer>
             </>
           ) : (

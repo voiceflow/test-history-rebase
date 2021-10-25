@@ -1,4 +1,5 @@
 import { Constants } from '@voiceflow/general-types';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -6,7 +7,7 @@ import { SectionVariants, SettingsSection } from '@/components/Settings';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSetup, useTrackingEvents } from '@/hooks';
 import AlexaFeatures from '@/pages/Settings/components/GeneralSettings/Sections/ChannelSpecificFeatures';
-import { getSettingsMetaProps, SettingSections } from '@/pages/Settings/constants';
+import { DEFAULT_MAX_WIDTH, getSettingsMetaProps, SettingSections } from '@/pages/Settings/constants';
 
 import { Basic, Canvas, DangerZone, GlobalConversationLogic } from './Sections';
 
@@ -28,7 +29,7 @@ const SettingsContent: React.FC = () => {
   });
 
   return (
-    <>
+    <Box maxWidth={DEFAULT_MAX_WIDTH}>
       {platformMeta.sections.map((section: SettingSections, index) => {
         const SectionComponent = SectionComponents[section];
         const variant = section === SettingSections.DANGER_ZONE ? SectionVariants.SECONDARY : SectionVariants.PRIMARY;
@@ -39,7 +40,7 @@ const SettingsContent: React.FC = () => {
           </SettingsSection>
         );
       })}
-    </>
+    </Box>
   );
 };
 

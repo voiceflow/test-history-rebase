@@ -32,6 +32,9 @@ export enum Permission {
   CUSTOMIZE_PROTOTYPE = 'prototype.CUSTOMIZE',
   SHARE_PROTOTYPE_PASSWORD = 'prototype.SHARE_PASSWORD',
 
+  // project versions
+  FULL_PROJECT_VERSIONS = 'versions.PROJECT_VERSIONS',
+
   // project list
   MANAGE_PROJECT_LISTS = 'project_list.MANAGE',
 
@@ -133,6 +136,7 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   ],
   [Permission.CODE_EXPORT]: [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
   [Permission.CONFIGURE_ORGANIZATION]: [PlanType.ENTERPRISE],
+  [Permission.FULL_PROJECT_VERSIONS]: ALL_BUT_STARTER_PERMISSIONS,
 };
 
 export const hasRolePermission = (permission: Permission, role: UserRole) =>

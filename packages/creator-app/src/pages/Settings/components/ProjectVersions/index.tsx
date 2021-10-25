@@ -2,26 +2,36 @@ import { Constants } from '@voiceflow/general-types';
 import { Box, BoxFlexCenter, ClickableText, LoadCircle, SvgIcon, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { noIntentsGraphic } from '@/assets';
 import client from '@/client';
 import { SettingsSection } from '@/components/Settings';
-import { Descriptor, TableContainer, TableHeader, TableRow } from '@/components/Table';
+import { TableContainer, TableHeader, TableRow } from '@/components/Table';
 import * as Errors from '@/config/errors';
+import { FeatureFlag } from '@/config/features';
+import { Permission } from '@/config/permissions';
+import { ModalType } from '@/constants';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
-import { useSetup, useTrackingEvents } from '@/hooks';
-import { getSettingsMetaProps } from '@/pages/Settings/constants';
+import { useFeature, useModals, usePermission, useSetup, useTrackingEvents } from '@/hooks';
+import { getHotkeyLabel, Hotkey } from '@/keymap';
+import { DEFAULT_MAX_WIDTH, getSettingsMetaProps } from '@/pages/Settings/constants';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
-interface ProjectVersion {
+import { Heading, HotKeyContainer } from './components';
+import VersionList from './components/VersionList';
+import { PLATFORM_VERSION_HEADER_TEXT } from './constants';
+
+// Need to move this to general types
+export interface ProjectVersion {
   versionID: string;
+  name?: string;
   created: string;
   platform: Constants.PlatformType;
 }
@@ -30,8 +40,13 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
   const [loading, setLoading] = React.useState(true);
   const [versions, setVersions] = React.useState<ProjectVersion[]>([]);
   const { name } = getSettingsMetaProps(platform);
-
+  const projectVersionsEnabled = useFeature(FeatureFlag.PROJECT_VERSIONS)?.isEnabled;
+  const [hasFullVersionPermissions] = usePermission(Permission.FULL_PROJECT_VERSIONS);
   const [trackingEvents] = useTrackingEvents();
+
+  const upgradeModal = useModals(ModalType.PAYMENT);
+
+  const onClickUpgrade = useCallback(() => upgradeModal.open(), [upgradeModal]);
 
   const swapVersions = async (versionID: string) => {
     if (!projectID) {
@@ -85,56 +100,79 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
 
   useSetup(() => {
     trackingEvents.trackActiveProjectVersionPage();
-
     fetchBackups();
   });
 
   return (
-    <SettingsSection title="All Versions">
-      <Descriptor>New versions are created every time your project is uploaded to {name}.</Descriptor>
-      {loading ? (
-        <BoxFlexCenter minHeight={320}>
-          <LoadCircle />
-        </BoxFlexCenter>
-      ) : (
-        <FadeLeftContainer>
-          {versions.length ? (
-            <TableContainer topBorder columns={[3, 8, 2]} minHeight={320}>
-              <TableHeader>
-                <span>Date</span>
-                <span>Name</span>
-                <span>Version</span>
-              </TableHeader>
-              {versions.map((version, index) => (
-                <TableRow key={index}>
-                  <span>{dayjs(version.created).fromNow()}</span>
-                  <span style={{ color: '#62778c' }}>
-                    <Box display="inline-block" mr={6} mb={-1}>
-                      <SvgIcon size={12} icon={version.platform === Constants.PlatformType.GOOGLE ? 'google' : 'amazon'} />
-                    </Box>
-                    Automatic
-                  </span>
-                  <span>
-                    {version.versionID === activeVersionID ? (
-                      'Current'
-                    ) : (
-                      <ClickableText onClick={() => confirmRestore(version.versionID)}>Restore</ClickableText>
-                    )}
-                  </span>
-                </TableRow>
-              ))}
-            </TableContainer>
+    <Box maxWidth={projectVersionsEnabled ? 900 : DEFAULT_MAX_WIDTH}>
+      <SettingsSection title="All Versions" noContentPadding={!!projectVersionsEnabled}>
+        <Heading>
+          {projectVersionsEnabled ? (
+            <>
+              {PLATFORM_VERSION_HEADER_TEXT(platform)} To manually save a version, use the shortcut{' '}
+              <HotKeyContainer>Shift + {getHotkeyLabel(Hotkey.SAVE_VERSION)}</HotKeyContainer>.{' '}
+              {!hasFullVersionPermissions && (
+                <>
+                  Free users can only view 30 days of a project's version history.{' '}
+                  <ClickableText onClick={onClickUpgrade}>Upgrade to unlock unlimited version history</ClickableText>
+                </>
+              )}
+            </>
           ) : (
-            <BoxFlexCenter minHeight={320}>
-              <Box textAlign="center">
-                <img src={noIntentsGraphic} height={64} alt="no intents" />
-                <Box mt={10}>No versions exist</Box>
-              </Box>
-            </BoxFlexCenter>
+            <>New versions are created every time your project is uploaded to {name}.</>
           )}
-        </FadeLeftContainer>
-      )}
-    </SettingsSection>
+        </Heading>
+        {loading ? (
+          <BoxFlexCenter minHeight={320}>
+            <LoadCircle />
+          </BoxFlexCenter>
+        ) : (
+          <FadeLeftContainer>
+            {projectVersionsEnabled ? (
+              // Project Versions V2
+              <VersionList versions={versions} swapVersions={swapVersions} />
+            ) : (
+              <>
+                {versions.length ? (
+                  <TableContainer topBorder columns={[3, 8, 2]} minHeight={320}>
+                    <TableHeader>
+                      <span>Date</span>
+                      <span>Name</span>
+                      <span>Version</span>
+                    </TableHeader>
+                    {versions.map((version, index) => (
+                      <TableRow key={index}>
+                        <span>{dayjs(version.created).fromNow()}</span>
+                        <span style={{ color: '#62778c' }}>
+                          <Box display="inline-block" mr={6} mb={-1}>
+                            <SvgIcon size={12} icon={version.platform === Constants.PlatformType.GOOGLE ? 'google' : 'amazon'} />
+                          </Box>
+                          Automatic
+                        </span>
+                        <span>
+                          {version.versionID === activeVersionID ? (
+                            'Current'
+                          ) : (
+                            <ClickableText onClick={() => confirmRestore(version.versionID)}>Restore</ClickableText>
+                          )}
+                        </span>
+                      </TableRow>
+                    ))}
+                  </TableContainer>
+                ) : (
+                  <BoxFlexCenter minHeight={320}>
+                    <Box textAlign="center">
+                      <img src={noIntentsGraphic} height={64} alt="no intents" />
+                      <Box mt={10}>No versions exist</Box>
+                    </Box>
+                  </BoxFlexCenter>
+                )}
+              </>
+            )}
+          </FadeLeftContainer>
+        )}
+      </SettingsSection>
+    </Box>
   );
 };
 

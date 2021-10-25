@@ -1,0 +1,27 @@
+import { Box, BoxFlexCenter } from '@voiceflow/ui';
+
+import { getColumnStyles } from '@/components/Table';
+import { styled } from '@/hocs';
+
+import { RowItem } from './VersionItem/components';
+
+export const TableHeader = styled(BoxFlexCenter)`
+  display: flex;
+  color: #62778c;
+  font-size: 13px;
+  padding: 18px 32px;
+`;
+
+export const TableContainer = styled(Box)<{ columns: number[] }>`
+  ${({ columns }) => getColumnStyles(columns)}
+  border-top: solid 1px #eaeff4;
+  padding-bottom: 16px;
+
+  ${TableHeader}, ${RowItem} {
+    display: flex;
+    justify-content: center;
+    border-bottom: solid 1px #eaeff4;
+
+    ${({ columns }) => columns && getColumnStyles(columns)}
+  }
+`;

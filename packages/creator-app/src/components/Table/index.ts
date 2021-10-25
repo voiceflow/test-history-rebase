@@ -18,6 +18,16 @@ export const TableRow = styled(BoxFlexCenter)`
   font-size: 15px;
 `;
 
+export const getColumnStyles = (columns: number[]) => {
+  return columns.map(
+    (column, index) => css`
+      & > :nth-child(${index + 1}) {
+        flex: ${column};
+      }
+    `
+  );
+};
+
 export const TableContainer = styled(Box)<{ columns?: number[]; topBorder?: boolean }>`
   padding-bottom: 10px;
 
@@ -35,13 +45,6 @@ export const TableContainer = styled(Box)<{ columns?: number[]; topBorder?: bool
     min-height: 60px;
     border-bottom: solid 1px #eaeff4;
 
-    ${({ columns }) =>
-      columns?.map(
-        (column, index) => css`
-          & > :nth-child(${index + 1}) {
-            flex: ${column};
-          }
-        `
-      )}
+    ${({ columns }) => columns && getColumnStyles(columns)}
   }
 `;

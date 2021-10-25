@@ -11,7 +11,7 @@ import GeneralSettings from './components/GeneralSettings';
 import ProjectVersions from './components/ProjectVersions';
 
 const Settings: React.FC = () => (
-  <Box id={Identifier.SETTINGS_PAGE} maxWidth={700} p={32}>
+  <Box id={Identifier.SETTINGS_PAGE} maxWidth={900} p={32}>
     <Switch>
       <Route path={Path.PROJECT_GENERAL_SETTINGS} component={GeneralSettings} />
       <Route path={Path.PROJECT_VERSION_SETTINGS} component={ProjectVersions} />

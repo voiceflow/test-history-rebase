@@ -29,6 +29,7 @@ export enum Hotkey {
   CREATE_COMPONENT = 'CREATE_COMPONENT',
   SHOW_HIDE_UI = 'SHOW_HIDE_UI',
   MOVE_FORWARD = 'MOVE_FORWARD',
+  SAVE_VERSION = 'SAVE_VERSION',
   MOVE_BACKWARD = 'MOVE_BACKWARD',
   RUN_MODE = 'RUN_MODE',
   MOVE_MODE = 'MOVE_MODE',
@@ -90,6 +91,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.INTEGRATION_PAGE]: '3',
   [Hotkey.MOVE_FORWARD]: SpecialKey.RIGHT,
   [Hotkey.SHOW_HIDE_UI]: [`${SpecialKey.CTRL}+\\`, `${SpecialKey.META}+\\`],
+  [Hotkey.SAVE_VERSION]: [`${SpecialKey.CTRL} + S`, `${SpecialKey.META} + S`],
   [Hotkey.MOVE_BACKWARD]: SpecialKey.LEFT,
   [Hotkey.UPLOAD_PROJECT]: [`${SpecialKey.CTRL}+u`, `${SpecialKey.META}+u`],
   [Hotkey.OPEN_CMS_MODAL]: 'm',
@@ -138,7 +140,7 @@ const replaceSpecials = (label: string): string =>
     label
   );
 
-const getHotkeyLabel = (hotkey: Hotkey): string => {
+export const getHotkeyLabel = (hotkey: Hotkey): string => {
   let label = HOTKEY_MAPPING[hotkey];
 
   if (Array.isArray(label)) {

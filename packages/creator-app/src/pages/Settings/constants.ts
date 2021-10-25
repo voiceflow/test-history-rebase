@@ -13,6 +13,8 @@ export enum SettingSections {
   DANGER_ZONE = 'Danger Zone',
 }
 
+export const DEFAULT_MAX_WIDTH = 700;
+
 export interface PlatformSettingsMetaProps {
   name: string;
   sections: SettingSections[];

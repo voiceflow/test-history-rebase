@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.521.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.521.4...@voiceflow/creator-app@1.521.5) (2021-10-25)
+
+
+### Bug Fixes
+
+* update google action title on account page ([#4357](https://github.com/voiceflow/creator-app/issues/4357)) ([f80f968](https://github.com/voiceflow/creator-app/commit/f80f968ea9761d7c62eee4c6bd49649062467223))
+
+
+
+
+
 ## [1.521.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.521.3...@voiceflow/creator-app@1.521.4) (2021-10-22)
 
 

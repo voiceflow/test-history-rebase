@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.28.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.28.1...@voiceflow/ui@1.28.2) (2021-10-25)
+
+
+### Bug Fixes
+
+* use popper types (VF-000) ([#4362](https://github.com/voiceflow/creator-app/issues/4362)) ([0219feb](https://github.com/voiceflow/creator-app/commit/0219febf846854f38a981c8832f25f7d83e93c39))
+
+
+
+
+
 ## [1.28.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.28.0...@voiceflow/ui@1.28.1) (2021-10-21)
 
 

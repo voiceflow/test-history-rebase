@@ -176,7 +176,7 @@ class AccountPage extends Component<ConnectedAccountPageProps, AccountPageState>
             </div>
             <div className="card mb-5">
               <div className="p-4 space-between">
-                <h5 className="mb-0 text-muted">Google Actions</h5>
+                <h5 className="mb-0 text-muted">Google</h5>
                 <div className="super-center">{this.googleButton()}</div>
               </div>
               {google && google.profile && (

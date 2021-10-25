@@ -7,6 +7,7 @@ const Container = styled(FlexCenter).attrs({ column: true })`
   position: relative;
   justify-content: center;
   align-items: center;
+  padding-bottom: 20px;
 
   ${Text} {
     text-align: center;

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.522.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.521.5...@voiceflow/creator-app@1.522.0) (2021-10-25)
+
+
+### Bug Fixes
+
+* scrolalble test area (VF-2064) ([#4361](https://github.com/voiceflow/creator-app/issues/4361)) ([c7301c1](https://github.com/voiceflow/creator-app/commit/c7301c15cfbad7205807517ba18a6e407485ce35))
+
+
+### Features
+
+* open first step on combine block click (VF-2019) ([#4364](https://github.com/voiceflow/creator-app/issues/4364)) ([a82259d](https://github.com/voiceflow/creator-app/commit/a82259d5ac67a8e53bf6a7cce877493d6e2f0f38))
+* persisted share tab session (VF-2038) ([#4360](https://github.com/voiceflow/creator-app/issues/4360)) ([ec48cfc](https://github.com/voiceflow/creator-app/commit/ec48cfc0276bb1a851ea52f1f6e10e174a09429b))
+
+
+
+
+
 ## [1.521.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.521.4...@voiceflow/creator-app@1.521.5) (2021-10-25)
 
 

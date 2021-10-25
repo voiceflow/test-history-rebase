@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import Select from 'react-select';
 
 import client from '@/client';
+import AdminClient from '@/client/admin';
 import * as Account from '@/ducks/accountV2';
 import * as Admin from '@/ducks/adminV2';
 import { connect } from '@/hocs';
@@ -30,7 +31,7 @@ class SkillDetail extends Component {
     }
 
     try {
-      const { data } = await client.admin.getUserTeams(target);
+      const { data } = await AdminClient.getUserTeams(target);
 
       this.setState({
         boards: data.map((t) => ({

@@ -11,6 +11,9 @@ export default extendConfig(
     plugins: [
       new webpack.DefinePlugin({
         'process.env.VF_OVERRIDE_API_HOST': JSON.stringify(process.env.VF_OVERRIDE_API_HOST || ''),
+        'process.env.VF_OVERRIDE_ALEXA_SERVICE_ENDPOINT': JSON.stringify(process.env.VF_OVERRIDE_ALEXA_SERVICE_ENDPOINT || ''),
+        'process.env.VF_OVERRIDE_GOOGLE_SERVICE_ENDPOINT': JSON.stringify(process.env.VF_OVERRIDE_GOOGLE_SERVICE_ENDPOINT || ''),
+        'process.env.VF_OVERRIDE_GENERAL_SERVICE_ENDPOINT': JSON.stringify(process.env.VF_OVERRIDE_GENERAL_SERVICE_ENDPOINT || ''),
       }),
     ],
 

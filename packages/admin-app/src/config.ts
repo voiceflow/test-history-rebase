@@ -42,6 +42,21 @@ export const API_HOST = window.VF_OVERRIDE_API_HOST || process.env.VF_OVERRIDE_A
 // Currently only the e2e environment runs on 'localhost', so the check below is sufficient to distinguish between the envs.
 export const API_ENDPOINT = `https://${API_HOST}${API_HOST === 'localhost' ? ':8003' : ''}`;
 
+// platform services
+export const ALEXA_SERVICE_LOCAL_ENDPOINT = process.env.ALEXA_SERVICE_LOCAL_ENDPOINT!;
+
+export const ALEXA_SERVICE_CLOUD_ENDPOINT = process.env.VF_OVERRIDE_ALEXA_SERVICE_ENDPOINT || process.env.ALEXA_SERVICE_CLOUD_ENDPOINT!;
+export const ALEXA_SERVICE_ENDPOINT =
+  IS_DEVELOPMENT && process.env.VF_OVERRIDE_ALEXA_SERVICE_ENDPOINT === '' ? ALEXA_SERVICE_LOCAL_ENDPOINT : ALEXA_SERVICE_CLOUD_ENDPOINT;
+export const GOOGLE_SERVICE_CLOUD_ENDPOINT = process.env.VF_OVERRIDE_GOOGLE_SERVICE_ENDPOINT || process.env.GOOGLE_SERVICE_CLOUD_ENDPOINT!;
+export const GOOGLE_SERVICE_LOCAL_ENDPOINT = process.env.GOOGLE_SERVICE_LOCAL_ENDPOINT!;
+export const GOOGLE_SERVICE_ENDPOINT =
+  IS_DEVELOPMENT && process.env.VF_OVERRIDE_GOOGLE_SERVICE_ENDPOINT === '' ? GOOGLE_SERVICE_LOCAL_ENDPOINT : GOOGLE_SERVICE_CLOUD_ENDPOINT;
+export const GENERAL_SERVICE_CLOUD_ENDPOINT = process.env.VF_OVERRIDE_GENERAL_SERVICE_ENDPOINT || process.env.GENERAL_SERVICE_CLOUD_ENDPOINT!;
+export const GENERAL_SERVICE_LOCAL_ENDPOINT = process.env.GENERAL_SERVICE_LOCAL_ENDPOINT!;
+export const GENERAL_SERVICE_ENDPOINT =
+  IS_DEVELOPMENT && process.env.VF_OVERRIDE_GENERAL_SERVICE_ENDPOINT === '' ? GENERAL_SERVICE_LOCAL_ENDPOINT : GENERAL_SERVICE_CLOUD_ENDPOINT;
+
 export const ROOT_DOMAIN = process.env.ROOT_DOMAIN || (API_HOST === 'localhost' ? 'localhost' : '.voiceflow.com');
 export const VERSION = process.env.VERSION!;
 

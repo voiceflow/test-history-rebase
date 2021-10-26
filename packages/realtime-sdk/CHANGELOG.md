@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.31.0...@voiceflow/realtime-sdk@1.32.0) (2021-10-26)
+
+
+### Features
+
+* dialogflow console settings (VF-2032) ([#4358](https://github.com/voiceflow/creator-app/issues/4358)) ([6fd31c8](https://github.com/voiceflow/creator-app/commit/6fd31c89e97f407080348912399bee141458329a))
+
+
+
+
+
 # [1.31.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.30.0...@voiceflow/realtime-sdk@1.31.0) (2021-10-21)
 
 

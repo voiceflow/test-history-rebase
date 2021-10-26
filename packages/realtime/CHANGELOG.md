@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.14.0...@voiceflow/realtime@1.15.0) (2021-10-26)
+
+
+### Features
+
+* set build context for realtime deploy (VF-2119) ([#4371](https://github.com/voiceflow/creator-app/issues/4371)) ([3fc3b3e](https://github.com/voiceflow/creator-app/commit/3fc3b3e1854ee1c4623737a330e3529d0f4ed5e3))
+
+
+
+
+
 # [1.14.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.13.0...@voiceflow/realtime@1.14.0) (2021-10-26)
 
 

@@ -1,6 +1,6 @@
+import logger from '@/logger';
 import { User } from '@/models';
 
-import logger from '../../logger';
 import { ExtraOptions } from './types';
 
 export interface UserClient {

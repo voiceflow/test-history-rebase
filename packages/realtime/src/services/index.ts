@@ -6,6 +6,7 @@ import ProductService from './product';
 import ProjectService from './project';
 import ProjectListService from './projectList';
 import SlotService from './slot';
+import SyncService from './sync';
 import UserService from './user';
 import VersionService from './version';
 import ViewerService from './viewer';
@@ -24,6 +25,7 @@ export interface ServiceMap {
   voiceflow: VoiceflowService;
   workspace: WorkspaceService;
   projectList: ProjectListService;
+  sync: SyncService;
 }
 
 interface Options {
@@ -47,6 +49,7 @@ const buildServices = ({ config, clients }: Options): ServiceMap => {
     voiceflow: new VoiceflowService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),
     projectList: new ProjectListService(serviceOptions),
+    sync: new SyncService(serviceOptions),
   };
 
   Object.assign(services, serviceMap);

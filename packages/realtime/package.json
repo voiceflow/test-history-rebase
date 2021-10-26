@@ -16,6 +16,7 @@
     "@voiceflow/logger": "1.6.0",
     "@voiceflow/realtime-sdk": "^1.33.0",
     "axios": "^0.21.1",
+    "cbor": "^8.0.2",
     "core-js": "^3.12.1",
     "cuid": "^2.1.8",
     "dotenv": "^9.0.2",

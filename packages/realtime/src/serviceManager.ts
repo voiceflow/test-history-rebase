@@ -22,6 +22,8 @@ class ServiceManager {
 
   public middlewares: MiddlewareMap;
 
+  private server: Server;
+
   constructor({ config, server }: Options) {
     const clients = buildClients({ config });
     const services = buildServices({ config, clients });
@@ -32,6 +34,7 @@ class ServiceManager {
     Object.assign(actions, buildActions({ server, config, services, clients, actions, channels }));
     Object.assign(channels, buildChannels({ server, config, services, clients, actions, channels }));
 
+    this.server = server;
     this.actions = actions;
     this.clients = clients;
     this.channels = channels;
@@ -46,12 +49,16 @@ class ServiceManager {
     await Promise.all(Object.values(this.middlewares).map((middleware) => middleware.setup()));
     await Promise.all(Object.values(this.channels).map((channel) => channel.setup()));
     await Promise.all(Object.values(this.actions).map((action) => action.setup()));
+
+    this.services.sync.start(this.server);
   }
 
   /**
    * Stop services
    */
   async stop(): Promise<void> {
+    this.services.sync.stop();
+
     await Promise.all(Object.values(this.actions).map((action) => action.destroy()));
     await Promise.all(Object.values(this.channels).map((channel) => channel.destroy()));
     await Promise.all(Object.values(this.middlewares).map((middleware) => middleware.destroy()));

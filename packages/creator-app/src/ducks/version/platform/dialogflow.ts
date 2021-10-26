@@ -21,6 +21,8 @@ export const activePublishingSelector = createSelector([activeDialogflowVersionS
 
 export const activeLocalesSelector = createSelector([activePublishingSelector], (publishing) => publishing?.locales ?? []);
 
+export const activeTriggerPhraseSelector = createSelector([activePublishingSelector], (publishing) => publishing?.triggerPhrase ?? []);
+
 export const activeInvocationNameSelector = createSelector([activePublishingSelector], (publishing) => publishing?.pronunciation ?? null);
 
 export const activeInvocationsSelector = createSelector([activePublishingSelector], (publishing) => publishing?.sampleInvocations ?? []);

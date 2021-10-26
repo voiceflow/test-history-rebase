@@ -9,7 +9,7 @@ import { useSetup, useTrackingEvents } from '@/hooks';
 import AlexaFeatures from '@/pages/Settings/components/GeneralSettings/Sections/ChannelSpecificFeatures';
 import { DEFAULT_MAX_WIDTH, getSettingsMetaProps, SettingSections } from '@/pages/Settings/constants';
 
-import { Basic, Canvas, DangerZone, GlobalConversationLogic } from './Sections';
+import { Basic, Canvas, DangerZone, DialogflowConsole, GlobalConversationLogic } from './Sections';
 
 const SectionComponents: Record<SettingSections, React.FC<{ platform: Constants.PlatformType; title: SettingSections; platformMeta: any }>> = {
   [SettingSections.BASIC]: Basic,
@@ -17,6 +17,7 @@ const SectionComponents: Record<SettingSections, React.FC<{ platform: Constants.
   [SettingSections.GLOBAL_CONVERSATION_LOGIC]: GlobalConversationLogic,
   [SettingSections.CHANNEL_SPECIFIC_FEATURES]: AlexaFeatures,
   [SettingSections.DANGER_ZONE]: DangerZone,
+  [SettingSections.DIALOGFLOW_CONSOLE]: DialogflowConsole,
 };
 
 const SettingsContent: React.FC = () => {

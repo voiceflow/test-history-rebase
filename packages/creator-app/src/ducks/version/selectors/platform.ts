@@ -65,3 +65,9 @@ export const activeSlotTypesSelector = createSelector(
   (locales, platform, isFeatureEnabled) =>
     getSlotTypes({ locales: locales as string[], platform, natoEnabled: !!isFeatureEnabled(FeatureFlag.NATO_APCO) })
 );
+
+export const activeTriggerPhraseSelector = createSelector([ProjectV2.active.projectSelector, identity], (activeProject, rootState) => {
+  if (!activeProject) return [];
+
+  return dialogflow.activeTriggerPhraseSelector(rootState);
+});

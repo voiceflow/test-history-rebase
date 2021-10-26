@@ -11,6 +11,7 @@ export enum SettingSections {
   GLOBAL_CONVERSATION_LOGIC = 'Global Conversation Logic',
   CHANNEL_SPECIFIC_FEATURES = 'Channel Specific Features',
   DANGER_ZONE = 'Danger Zone',
+  DIALOGFLOW_CONSOLE = 'Dialogflow Console',
 }
 
 export const DEFAULT_MAX_WIDTH = 700;
@@ -31,6 +32,7 @@ export interface PlatformSettingsMetaProps {
     repeatEverything?: any;
     modelSensitivity?: React.FC | string;
     defaultVoice?: React.FC | string;
+    triggerPhraseDescriptor?: React.FC | string;
   };
   localeText?: string;
 }
@@ -79,20 +81,22 @@ export const getSettingsMetaProps = createPlatformSelector<PlatformSettingsMetaP
     },
     [Constants.PlatformType.DIALOGFLOW_ES_CHAT]: {
       name: 'Dialogflow Chat',
-      sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
+      sections: [SettingSections.BASIC, SettingSections.DIALOGFLOW_CONSOLE, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
       descriptors: {
         projectName: General.ProjectName,
         localesDescriptor: Dialogflow.Locales,
+        triggerPhraseDescriptor: Dialogflow.TriggerPhrase,
         repeatEverything: General.RepeatEverything,
       },
       localeText: 'Language',
     },
     [Constants.PlatformType.DIALOGFLOW_ES_VOICE]: {
       name: 'Dialogflow Voice',
-      sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
+      sections: [SettingSections.BASIC, SettingSections.DIALOGFLOW_CONSOLE, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
       descriptors: {
         projectName: General.ProjectName,
         localesDescriptor: Dialogflow.Locales,
+        triggerPhraseDescriptor: Dialogflow.TriggerPhrase,
         repeatEverything: General.RepeatEverything,
       },
       localeText: 'Language',

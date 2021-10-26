@@ -11,9 +11,10 @@ import { isAlexaPlatform, isAnyGeneralPlatform, isGooglePlatform } from '@/utils
 
 import { patchVersion } from '../actions';
 import * as alexa from '../platform/alexa';
+import * as dialogflow from '../platform/dialogflow';
 import * as general from '../platform/general';
 import * as google from '../platform/google';
-import { activeInvocationNameSelector, activeInvocationsSelector, versionByIDSelector } from '../selectors';
+import { activeInvocationNameSelector, activeInvocationsSelector, activeTriggerPhraseSelector, versionByIDSelector } from '../selectors';
 import { AnyLocale, AnyVersion, AnyVersionSettings, AnyVoice } from '../types';
 
 export const updateLocalesByVersionID =
@@ -83,4 +84,18 @@ export const saveInvocationName =
     } else if (platform === Constants.PlatformType.GOOGLE) {
       await dispatch(google.savePublishing({ pronunciation: invocationName, sampleInvocations: invocations }));
     }
+  };
+
+export const saveTriggerPhrase =
+  (triggerPhrase?: string[]): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const versionID = Session.activeVersionIDSelector(state);
+    const activeTriggerPhrase = activeTriggerPhraseSelector(state) ?? '';
+
+    Errors.assertVersionID(versionID);
+
+    if (activeTriggerPhrase === triggerPhrase) return;
+
+    await dispatch(dialogflow.savePublishing({ triggerPhrase }));
   };

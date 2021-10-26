@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.523.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.523.0...@voiceflow/creator-app@1.523.1) (2021-10-26)
+
+
+### Bug Fixes
+
+* fixes intent select bug closing menu on header and footer click (VF-2037) ([#4369](https://github.com/voiceflow/creator-app/issues/4369)) ([49eaf2e](https://github.com/voiceflow/creator-app/commit/49eaf2e3dddeadd43887a149211777708b3323f7))
+
+
+
+
+
 # [1.523.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.522.0...@voiceflow/creator-app@1.523.0) (2021-10-25)
 
 
